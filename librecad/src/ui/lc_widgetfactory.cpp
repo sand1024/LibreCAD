@@ -27,6 +27,7 @@
 #include <QMenuBar>
 #include <QActionGroup>
 #include <QDesktopServices>
+#include <lc_layertreewidget.h>
 
 #include "qc_applicationwindow.h"
 #include "lc_widgetfactory.h"
@@ -212,6 +213,14 @@ LC_WidgetFactory::LC_WidgetFactory(QC_ApplicationWindow* main_win,
             << a_map["BlocksSave"]
             << a_map["BlocksCreate"]
             << a_map["BlocksExplode"];
+
+    pen_actions
+        << a_map["PenSyncFromLayer"]
+        << a_map["PenPick"]
+        << a_map["PenPickResolved"]
+        << a_map["PenApply"]
+        << a_map["PenCopy"];
+
 }
 
 
@@ -303,6 +312,7 @@ void LC_WidgetFactory::createRightSidebar(QG_ActionHandler* action_handler)
     pen_palette->setFocusPolicy(Qt::NoFocus);
     connect(pen_palette, SIGNAL(escape()), main_window, SLOT(slotFocus()));
     connect(main_window, SIGNAL(windowsChanged(bool)), pen_palette, SLOT(setEnabled(bool)));
+    pen_palette->setVisible(false);
     dock_pen_palette ->setWidget(pen_palette);
 
     QDockWidget* dock_layer = new QDockWidget(main_window);
@@ -313,7 +323,20 @@ void LC_WidgetFactory::createRightSidebar(QG_ActionHandler* action_handler)
     layer_widget->setFocusPolicy(Qt::NoFocus);
     connect(layer_widget, SIGNAL(escape()), main_window, SLOT(slotFocus()));
     connect(main_window, SIGNAL(windowsChanged(bool)), layer_widget, SLOT(setEnabled(bool)));
+    layer_widget->setVisible(false);
     dock_layer->setWidget(layer_widget);
+
+
+    QDockWidget* dock_layer_tree = new QDockWidget(main_window);
+    dock_layer_tree->setWindowTitle(QC_ApplicationWindow::tr("Layer Tree"));
+    dock_layer_tree->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    dock_layer_tree->setObjectName("layer_tree_dockwidget");
+    layer_tree_widget = new LC_LayerTreeWidget(action_handler, dock_layer_tree, "Layer Tree");
+    layer_tree_widget->setFocusPolicy(Qt::NoFocus);
+    connect(layer_tree_widget, SIGNAL(escape()), main_window, SLOT(slotFocus()));
+    connect(main_window, SIGNAL(windowsChanged(bool)), layer_tree_widget, SLOT(setEnabled(bool)));
+    dock_layer_tree->setWidget(layer_tree_widget);
+
 
     QDockWidget* dock_block = new QDockWidget(main_window);
     dock_block->setWindowTitle(QC_ApplicationWindow::tr("Block List"));
@@ -357,6 +380,7 @@ void LC_WidgetFactory::createRightSidebar(QG_ActionHandler* action_handler)
     main_window->addDockWidget(Qt::RightDockWidgetArea, dock_library);
     main_window->tabifyDockWidget(dock_library, dock_block);
     main_window->tabifyDockWidget(dock_block, dock_layer);
+    main_window->tabifyDockWidget(dock_layer, dock_layer_tree);
     main_window->addDockWidget(Qt::RightDockWidgetArea, dock_command);
     command_widget->getDockingAction()->setText(dock_command->isFloating() ? tr("Dock") : tr("Float"));
 }
@@ -418,6 +442,7 @@ void LC_WidgetFactory::createStandardToolbars(QG_ActionHandler* action_handler)
     pen_toolbar = new QG_PenToolBar(QC_ApplicationWindow::tr("Pen"), main_window);
     pen_toolbar->setSizePolicy(toolBarPolicy);
     pen_toolbar->setObjectName("pen_toolbar");
+    pen_toolbar->addActions(pen_actions);
 
     options_toolbar = new QToolBar(QC_ApplicationWindow::tr("Tool Options"), main_window);
     options_toolbar->setSizePolicy(toolBarPolicy);

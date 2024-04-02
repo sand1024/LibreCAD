@@ -47,12 +47,16 @@ public:
     void setMdiWindow(QC_MDIWindow* mdiWindow);
     void setLayerList(RS_LayerList *ll);
 
+signals:
+    void escape();
+
 public slots:
     void onTableClicked(QModelIndex modelIndex);
     void onTableSelectionChanged(
         const QItemSelection &selected,
         const QItemSelection &deselected);
     void onPenEditorChanged();
+    void keyPressEvent(QKeyEvent* e) override;
 
     void fillPenEditorBySelectedEntityAttributesPen();
     void fillPenEditorBySelectedEntityDrawingPen();
@@ -83,24 +87,24 @@ public slots:
     void applyEditorPenToActiveLayer();
     void onModelChanged();
     void doDoubleClick();
+    void updatePenToolbarByActiveLayer();
 private:
     // mouse click counter used for handling both single click and double-click on table view
     int clicksCount {0};
      QC_MDIWindow* mdi_win = nullptr;
      LC_PenPaletteModel* penPaletteModel= nullptr;
     LC_PenPaletteData* penPaletteData = nullptr;
-    RS_LayerList* layerList;
-    bool inEditorControlsSetup;
+    RS_LayerList* layerList = nullptr;
+    bool inEditorControlsSetup = false;
+    bool editorChanged = false;
     void initTableView();
     void initFilteringSection();
     void fillPenEditorByPenItem(LC_PenItem *pen);
     void markEditingPenChanged(bool changed);
     void updateModel();
     void initPenEditor();
-    bool editorChanged;
     void doUpdatePenEditorByPenAttributes(const RS_Color &color, RS2::LineWidth &width, RS2::LineType &lineType);
     void doFillPenEditorByPen(RS_Pen pen);
-    void updatePenToolbarByActiveLayer();
     RS_Pen createPenByEditor(const RS_Pen &originalPen);
     int invokeItemRemovalDialog(QString &penName);
     void doSelectEntitiesThatMatchToPenAttributes(

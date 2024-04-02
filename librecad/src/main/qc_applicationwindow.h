@@ -54,6 +54,7 @@ class QG_CadToolBar;
 class QG_CommandWidget;
 class QG_CoordinateWidget;
 class QG_LayerWidget;
+class LC_LayerTreeWidget;
 class QG_LibraryWidget;
 class QG_MouseWidget;
 class QG_PenToolBar;
@@ -108,6 +109,7 @@ public:
     bool loadStyleSheet(QString path);
 
     bool eventFilter(QObject *obj, QEvent *event) override;
+    QAction* getAction(const QString& name) const;
 
 public slots:
     void relayAction(QAction* q_action);
@@ -307,6 +309,8 @@ public:
         return snapToolBar;
     }
 
+    LC_PenPaletteWidget* getPenPaletteWidget(void) const{ return penPaletteWidget;};
+
     /**
      * Find opened window for specified document.
      */
@@ -385,6 +389,10 @@ private:
 
     /** Layer list widget */
     QG_LayerWidget* layerWidget {nullptr};
+
+    /** Layer tree widget */
+    LC_LayerTreeWidget* layerTreeWidget {nullptr};
+
     /** Block list widget */
     QG_BlockWidget* blockWidget {nullptr};
     /** Library browser widget */

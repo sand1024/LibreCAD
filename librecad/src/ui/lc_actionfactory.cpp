@@ -28,13 +28,15 @@
 // qg_actionfactory contributors:
 // Andrew Mustun, Claude Sylvain, R. van Twisk, Dongxu Li, Rallaz, Armin Stebich, ravas, korhadris
 
+#include <QAction>
+#include <QActionGroup>
+
 #include "lc_actionfactory.h"
 #include "lc_actiongroupmanager.h"
 #include "qc_applicationwindow.h"
 #include "qg_actionhandler.h"
+#include "rs_settings.h"
 
-#include <QAction>
-#include <QActionGroup>
 
 LC_ActionFactory::LC_ActionFactory(QC_ApplicationWindow* parent, QG_ActionHandler* a_handler)
     : QObject(parent)
@@ -753,6 +755,42 @@ void LC_ActionFactory::fillActionContainer(QMap<QString, QAction*>& a_map, LC_Ac
     action->setObjectName("BlocksExplode");
     a_map["BlocksExplode"] = action;
 
+
+    // pen toolbar actions
+
+    action = new QAction(tr("&Pick Pen From Entity"), agm->pen);
+    action->setIcon(QIcon(":/extui/selectsingle.png"));
+    connect(action, SIGNAL(triggered()),
+            action_handler, SLOT(slotPenPick()));
+    action->setObjectName("PenPick");
+    action->setCheckable(false);
+    a_map["PenPick"] = action;
+
+    action = new QAction(tr("&Pick Pen From Entity (Resolved)"), agm->pen);
+    action->setIcon(QIcon(":/extui/relzeromove.png"));
+    connect(action, SIGNAL(triggered()),
+            action_handler, SLOT(slotPenPickResolved()));
+    action->setCheckable(false);
+    action->setObjectName("PenPickResolved");
+
+    a_map["PenPickResolved"] = action;
+
+    action = new QAction(tr("Apply Pen to Entity"), agm->pen);
+    action->setIcon(QIcon(":/icons/pen_apply.svg"));
+    connect(action, SIGNAL(triggered()),
+            action_handler, SLOT(slotPenApply()));
+    action->setObjectName("PenApply");
+
+    a_map["PenApply"] = action;
+
+    action = new QAction(tr("Copy Pen"), agm->pen);
+    action->setIcon(QIcon(":/icons/pen_copy.svg"));
+    connect(action, SIGNAL(triggered()),
+            action_handler, SLOT(slotPenCopy()));
+    action->setObjectName("PenCopy");
+
+    a_map["PenCopy"] = action;
+
     // <[~ Info ~]>
 
     action = new QAction(tr("Point inside contour"), agm->info);
@@ -1162,7 +1200,9 @@ void LC_ActionFactory::fillActionContainer(QMap<QString, QAction*>& a_map, LC_Ac
     action = new QAction(tr("Focus on &Command Line"), agm->view);
     action->setIcon(QIcon(":/main/editclear.png"));
     QList<QKeySequence> commandLineShortcuts;
-    commandLineShortcuts<<QKeySequence(Qt::CTRL + Qt::Key_M)<<QKeySequence(Qt::Key_Colon)<<QKeySequence(Qt::Key_Space);
+    commandLineShortcuts<<QKeySequence(Qt::CTRL | Qt::Key_M)<<QKeySequence(Qt::Key_Colon);
+    if (!RS_SETTINGS->readNumEntry("/Keyboard/ToggleFreeSnapOnSpace", false))
+        commandLineShortcuts<<QKeySequence(Qt::Key_Space);
     action->setShortcuts(commandLineShortcuts);
     connect(action, SIGNAL(triggered()), main_window, SLOT(slotFocusCommandLine()));
     action->setObjectName("FocusCommand");
@@ -1470,4 +1510,14 @@ void LC_ActionFactory::commonActions(QMap<QString, QAction*>& a_map, LC_ActionGr
     connect(action, SIGNAL(triggered()), main_window, SLOT(slotFileQuit()));
     action->setObjectName("FileQuit");
     a_map["FileQuit"] = action;
+
+
+    action = new QAction(tr("Update Current Pen by Active Layer' Pen"), agm->pen);
+    action->setIcon(QIcon(":/extui/back.png"));
+    connect(action, SIGNAL(triggered()),
+            action_handler, SLOT(slotPenSyncFromLayer()));
+    action->setObjectName("PenSyncFromLayer");
+    action->setCheckable(false);
+    a_map["PenSyncFromLayer"] = action;
+
 }
