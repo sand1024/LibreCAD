@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>429</width>
-    <height>246</height>
+    <width>491</width>
+    <height>268</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Layers Tree Options</string>
@@ -20,7 +26,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabNaming">
       <attribute name="title">
@@ -172,7 +178,7 @@
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QLabel" name="label_6">
+           <widget class="QLabel" name="label_61">
             <property name="text">
              <string>Suffix</string>
             </property>
@@ -700,4 +706,13 @@
    </hints>
   </connection>
  </connections>
+ <slots>
+  <slot>validate()</slot>
+  <slot>pb_highlightedColorClicked()</slot>
+  <slot>pb_gridColorClicked()</slot>
+  <slot>pbSelectedItemsBgColorClicked()</slot>
+  <slot>pbActiveLayerBgColorClicked()</slot>
+  <slot>pb_selectedItemColorClicked()</slot>
+  <slot>showIndentedClicked()</slot>
+ </slots>
 </ui>
