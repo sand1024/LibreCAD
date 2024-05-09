@@ -145,14 +145,14 @@ int main(int argc, char** argv)
             // to control the level of debugging output use --debug with level 0-6, e.g. --debug3
             // for a list of debug levels use --debug?
             // if no level follows, the debugging level is set
-            argstr.remove(QRegExp("^"+lpDebugSwitch0));
-            argstr.remove(QRegExp("^"+lpDebugSwitch1));
+            argstr.remove(QRegularExpression("^"+lpDebugSwitch0));
+            argstr.remove(QRegularExpression("^"+lpDebugSwitch1));
             char level;
             if(argstr.size()==0)
             {
                 if(i+1<argc)
                 {
-                    if(QRegExp("\\d*").exactMatch(argv[i+1]))
+                    if(QRegularExpression(R"(\d*)").match(argv[i+1]).hasMatch())
                     {
                         ++i;
                         qDebug()<<"reading "<<argv[i]<<" as debugging level";
@@ -332,6 +332,22 @@ int main(int argc, char** argv)
     // get the file list from LC_Application
     fileList << app.fileList();
 #endif
+
+    // reopen files that we open during last close of application
+    // we'll reopen them if no explicit files to open are provided in command line
+    RS_SETTINGS->beginGroup("/Startup");
+    bool reopenLastFiles = RS_SETTINGS->readNumEntry("/OpenLastOpenedFiles", 0) == 1;
+    QString lastFiles = RS_SETTINGS->readEntry("/LastOpenFilesList", "");
+    QString activeFile = RS_SETTINGS->readEntry("/LastOpenFilesActive", "");
+    RS_SETTINGS->endGroup();
+
+    if (reopenLastFiles && fileList.isEmpty() && !lastFiles.isEmpty()){
+        foreach(const QString& filename, lastFiles.split(";")) {
+            if (!filename.isEmpty() && QFileInfo::exists(filename))
+                fileList << filename;
+        }
+    }
+
     bool files_loaded = false;
     for (QStringList::Iterator it = fileList.begin(); it != fileList.end(); ++it )
     {
@@ -344,6 +360,10 @@ int main(int argc, char** argv)
         }
         appWin.slotFileOpen(*it);
         files_loaded = true;
+    }
+
+    if (reopenLastFiles){
+        appWin.activateWindowWithFile(activeFile);
     }
     RS_DEBUG->print("main: loading files: OK");
 

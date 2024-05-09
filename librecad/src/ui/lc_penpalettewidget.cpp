@@ -44,6 +44,7 @@
 #include "rs_graphic.h"
 #include "rs_modification.h"
 #include "ui_lc_penpalettewidget.h"
+#include "lc_flexlayout.h"
 
 /**
  * Delegate used to paint underline lines for table grid
@@ -80,10 +81,35 @@ LC_PenPaletteWidget::LC_PenPaletteWidget(const QString& title, QWidget* parent) 
     Ui::LC_PenPaletteWidget(){
 
     setupUi(this);
+
+    // make buttons flexible
+    auto *layButtonsFlex = new LC_FlexLayout(2, 6, 6);
+    layButtonsFlex->fillFromLayout(layButtons);
+    int buttonsPosition = gridLayout->indexOf(layButtons);
+    QLayoutItem *pItem = gridLayout->takeAt(buttonsPosition);
+    delete pItem;
+
+    int settingsWidgetPosition = gridLayout->indexOf(tbSettings);
+    QLayoutItem *pLayoutItem = gridLayout->takeAt(settingsWidgetPosition);
+    delete pLayoutItem;
+
+    gridLayout->addLayout(layButtonsFlex, 0, 0, 1, 1);
+    gridLayout->addWidget(tbSettings, 0,1,1,1);
+    gridLayout->setAlignment(tbSettings,Qt::AlignTop);
+
+    // make controls flexible
+
+    auto *layPenColorFlex = new LC_FlexLayout(2, 6, 6, 45);
+    layPenColorFlex->fillFromLayout(layPenColor);
+    layPenColorFlex->fillFromLayout(layTypeWidth);
+    layPenColorFlex->setSoftBreakItems({2, 4, 6});
+    layPenColorFlex->setFullWidthItems({1});
+    gridLayout->addLayout(layPenColorFlex,4,0,1, 2);
+
     setWindowTitle(title);
 
     // load generic options
-    LC_PenPaletteOptions* options = new LC_PenPaletteOptions();
+    auto options = new LC_PenPaletteOptions();
     options->loadFromSettings();
 
     // load pens data from storage
@@ -234,11 +260,13 @@ void LC_PenPaletteWidget::onTableViewContextMenuInvoked([[maybe_unused]] const Q
         caption->setAlignment(Qt::AlignCenter);
         typedef void (LC_PenPaletteWidget::*MemFn)();
         auto addAction = [&contextMenu, this](const std::pair<QString, MemFn>& item) {
-#if QT_VERSION >= QT_VERSION_CHECK(6, 2, 0)
-            contextMenu->addAction(item.first, {}, this, item.second);
-#else
-            contextMenu->addAction(item.first, this, item.second);
-#endif
+            auto* action = contextMenu->addAction(item.first);
+            connect(action, &QAction::triggered, this, item.second);
+// #if QT_VERSION >= QT_VERSION_CHECK(6, 2, 0)
+//             connect(action, &QAction::triggered, this, time.second);
+// #else
+//             connect(action, SIGNAL(triggered()), this, time.second);
+// #endif
         };
         auto addActions = [&addAction](std::initializer_list<std::pair<QString, MemFn>> menuEntries){
             for (const auto& menuEntry: menuEntries)
@@ -383,9 +411,7 @@ void LC_PenPaletteWidget::invokeOptionsDialog(bool focusOnFile){
                 QMessageBox::warning( this, tr("Pen palette"),
                                       tr("Location of pens file is changed, please restart the application so new pens file will be used.\n\n"
                                          "Please note that if you'll save pen via editor without restart, current pens from palette will be saved "
-                                         "in the new file and therefore existing content of it will be overridden."),
-                                      QMessageBox::Ok,
-                                      Qt::NoButton);
+                                         "in the new file and therefore existing content of it will be overridden."));
             }
         }
     }

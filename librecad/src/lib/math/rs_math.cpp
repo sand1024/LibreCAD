@@ -47,6 +47,7 @@
 
 namespace {
     constexpr double m_piX2 = M_PI*2; //2*PI
+    constexpr double m_halfPI = M_PI/2; //PI/2
     const QRegularExpression unitreg(
         R"((?P<sign>^-?))"
         R"((?:(?:(?:(?P<degrees>\d+\.?\d*)(?:degree[s]?|deg|[Dd]|°)))"  // DMS
@@ -191,6 +192,14 @@ double RS_Math::correctAngle2(double a) {
 double RS_Math::correctAngleU(double a) {
     return std::abs(std::remainder(a, m_piX2));
 }
+
+/**
+ * Returns the given angle as an Unsigned Angle in the range of 0 to +PI.
+ */
+double RS_Math::correctAngle3(double a) {
+    return std::remainder(a, m_halfPI);
+}
+
 
 
 /**
@@ -404,8 +413,8 @@ QString RS_Math::doubleToString(double value, int prec) {
 
     if(valStr.contains('.')) {
         // Remove tailing point and zeros:
-//        valStr.replace(QRegExp("0*$"), "");
-//        valStr.replace(QRegExp(R"(\.$)"), "");
+//        valStr.replace(QRegularExpression("0*$"), "");
+//        valStr.replace(QRegularExpression(R"(\.$)"), "");
 //        while (valStr.at(valStr.length()-1)=='0') {
 //            valStr.truncate(valStr.length()-1);
 //        }

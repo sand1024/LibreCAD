@@ -40,8 +40,9 @@
 #include <QMessageBox>
 #include <QPagedPaintDevice>
 #include <QPluginLoader>
+#include <QPrinter>
 #include <QPrintDialog>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QSplitter>
 #include <QStatusBar>
 #include <QStyleFactory>
@@ -231,8 +232,10 @@ QC_ApplicationWindow::QC_ApplicationWindow()
     a_factory.fillActionContainer(a_map, ag_manager);
 
     LC_WidgetFactory widget_factory(this, a_map, ag_manager);
-    if (enable_left_sidebar)
-        widget_factory.createLeftSidebar(5, icon_size);
+    if (enable_left_sidebar){
+        int leftSidebarColumnsCount = settings.value("Widgets/LeftToolbarColumnsCount", 5).toInt();
+        widget_factory.createLeftSidebar(leftSidebarColumnsCount, icon_size);
+    }
     if (enable_cad_toolbars)
         widget_factory.createCADToolbars();
     widget_factory.createRightSidebar(actionHandler);
@@ -2155,7 +2158,7 @@ void QC_ApplicationWindow::slotFileExport() {
             QString format = "";
             int i = filter.indexOf("(*.");
             if (i!=-1) {
-                int i2 = filter.indexOf(QRegExp("[) ]"), i);
+                int i2 = filter.indexOf(QRegularExpression("[) ]"), i);
                 format = filter.mid(i+3, i2-(i+3));
                 format = format.toUpper();
             }
@@ -2406,9 +2409,9 @@ void QC_ApplicationWindow::slotFilePrint(bool printPDF) {
 
     bool landscape = false;
     RS2::PaperFormat pf = graphic->getPaperFormat(&landscape);
-    QPrinter::PageSize paperSizeName = LC_Printing::rsToQtPaperFormat(pf);
+    QPageSize::PageSizeId paperSizeName = LC_Printing::rsToQtPaperFormat(pf);
     RS_Vector paperSize = graphic->getPaperSize();
-    if(paperSizeName==QPrinter::Custom){
+    if(paperSizeName==QPageSize::Custom){
         RS_Vector&& s=RS_Units::convert(paperSize, graphic->getUnit(),RS2::Millimeter);
         if(landscape) s=s.flipXY();
         printer.setPageSize(QPageSize{QSizeF(s.x,s.y), QPageSize::Millimeter});
@@ -3041,15 +3044,41 @@ void QC_ApplicationWindow::showAboutWindow()
 /**
  * overloaded for Message box on last window exit.
  */
-bool QC_ApplicationWindow::queryExit(bool force) {
+bool QC_ApplicationWindow::queryExit(bool force){
     RS_DEBUG->print("QC_ApplicationWindow::queryExit()");
-	bool succ = true;
-	if (force) for (auto w : window_list)
-		doClose(w);
-	else succ = slotFileCloseAll();
+    bool succ = true;
+    if (force)
+        for (auto w: window_list)
+            doClose(w);
+    else {
 
-    if (succ) {
-        storeSettings();
+        RS_SETTINGS->beginGroup("/Startup");
+        bool saveOpenedFiles = RS_SETTINGS->readNumEntry("/OpenLastOpenedFiles", 0) == 1;
+        RS_SETTINGS->endGroup();
+
+        QString openedFiles;
+        QString activeFile = "";
+        if (saveOpenedFiles){
+            for (auto w: window_list) {
+                QString fileName = w->getDocument() ->getFilename();
+                if (activedMdiSubWindow != nullptr && activedMdiSubWindow == w){
+                    activeFile = fileName;
+                }
+                openedFiles += fileName;
+                openedFiles +=";";
+            }
+        }
+        succ = slotFileCloseAll();
+
+        if (succ){
+            if (!openedFiles.isEmpty()){
+                RS_SETTINGS->beginGroup("/Startup");
+                RS_SETTINGS->writeEntry("/LastOpenFilesList", openedFiles);
+                RS_SETTINGS->writeEntry("/LastOpenFilesActive", activeFile);
+                RS_SETTINGS->endGroup();
+            }
+            storeSettings();
+        }
     }
 
     RS_DEBUG->print("QC_ApplicationWindow::queryExit(): OK");
@@ -3284,6 +3313,9 @@ void QC_ApplicationWindow::widgetOptionsDialog()
     int statusbar_fontsize = settings.value("StatusbarFontSize", 12).toInt();
     dlg.statusbar_fontsize_spinbox->setValue(statusbar_fontsize);
 
+    int leftToolbarColumnsCount = settings.value("LeftToolbarColumnsCount", 5).toInt();
+    dlg.left_toobar_columns_spinbox->setValue(leftToolbarColumnsCount);
+
     if (dlg.exec())
     {
         int allow_style = dlg.style_checkbox->isChecked();
@@ -3331,6 +3363,9 @@ void QC_ApplicationWindow::widgetOptionsDialog()
             settings.setValue("StatusbarHeight", statusbar_height);
             statusBar()->setMinimumHeight(statusbar_height);
         }
+
+        int columnCount = dlg.left_toobar_columns_spinbox->value();
+        settings.setValue("LeftToolbarColumnsCount", columnCount);
     }
     settings.endGroup();
 }
@@ -3751,8 +3786,24 @@ QC_MDIWindow* QC_ApplicationWindow::getWindowWithDoc(const RS_Document* doc)
             }
         }
     }
-
     return wwd;
+}
+
+void QC_ApplicationWindow::activateWindowWithFile(QString& fileName)
+{
+    if (!fileName.isEmpty()){
+            foreach (QC_MDIWindow *w, window_list) {
+                if (w != nullptr){}
+                RS_Document *doc = w->getDocument();
+                if (doc != nullptr){
+                    const QString &docFileName = doc->getFilename();
+                    if (fileName == docFileName){
+                        doActivate(w);
+                        break;
+                    }
+                }
+            }
+    }
 }
 
 void QC_ApplicationWindow::showBlockActivated(const RS_Block *block)

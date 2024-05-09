@@ -25,7 +25,6 @@
 **********************************************************************/
 
 #include <vector>
-#include <QTextCodec>
 #include <QTextStream>
 #include <QFileDialog>
 #include <QPalette>
@@ -250,7 +249,7 @@ void QG_DlgMText::setText(RS_MText& t, bool isNew) {
             cbLayer->setLayer(*lay);
         }
 
-        wPen->setPen(text->getPen(false),lay, "Pen");
+        wPen->setPen(text,lay, "Pen");
 
         leftToRight = text->getDrawingDirection() == RS_MTextData::LeftToRight;
     }

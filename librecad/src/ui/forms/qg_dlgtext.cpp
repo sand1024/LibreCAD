@@ -25,7 +25,6 @@
 **********************************************************************/
 #include "qg_dlgtext.h"
 
-#include <QTextCodec>
 #include <QTextStream>
 #include <QFileDialog>
 #include "rs_system.h"
@@ -220,7 +219,7 @@ void QG_DlgText::setText(RS_Text& t, bool isNew) {
             cbLayer->setLayer(*lay);
         }
 
-        wPen->setPen(text->getPen(false), lay, "Pen");
+        wPen->setPen(text, lay, "Pen");
     }
 
     setFont(fon);

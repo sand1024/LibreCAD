@@ -116,6 +116,11 @@
 #include "rs_settings.h"
 #include "rs_system.h"
 #include "rs_vector.h"
+#include "lc_crossoptions.h"
+#include "lc_lineoptions.h"
+#include "lc_lineanglereloptions.h"
+#include "lc_slicedivideoptions.h"
+#include "lc_rectangle1pointoptions.h"
 
 namespace {
 
@@ -133,6 +138,8 @@ void addOptionWidget(QToolBar* toolbar, RS_ActionInterface* action, bool on)
         if (on) {
             option = std::make_unique<T>(toolbar);
             toolbar->addWidget(option.get());
+// looks like it's a bug - why action is set twice?
+//            option->setAction(action);
             option->setAction(action);
             option->show();
         }
@@ -194,6 +201,10 @@ void QG_DialogFactory::setOptionWidget(QToolBar* ow) {
     RS_DEBUG->print("QG_DialogFactory::setOptionWidget");
     optionWidget = ow;
     RS_DEBUG->print("QG_DialogFactory::setOptionWidget: OK");
+}
+
+void QG_DialogFactory::addOptionsWidget(QWidget * options){
+    optionWidget->addWidget(options);
 }
 
 
@@ -888,12 +899,13 @@ void QG_DialogFactory::requestPrintPreviewOptions(RS_ActionInterface* action,
     auto previewAction = static_cast<RS_ActionPrintPreview*>(action);
     std::unique_ptr<QG_PrintPreviewOptions>& printPreviewOptions =  previewAction->getOption();
     if(!on) {
-        if (printPreviewOptions)
+        if (printPreviewOptions != nullptr) {
             printPreviewOptions->hide();
-        return;
-    }
-    if (optionWidget ) {
-        if (!printPreviewOptions) {
+            printPreviewOptions->deleteLater();
+            printPreviewOptions.release();
+        }
+    } else if (optionWidget ) {
+        if (printPreviewOptions == nullptr) {
             printPreviewOptions = std::make_unique<QG_PrintPreviewOptions>(optionWidget);
             double f = previewAction->getScale();
             printPreviewOptions ->setAction(action, false);
@@ -987,12 +999,15 @@ void QG_DialogFactory::requestLineAngleOptions(RS_ActionInterface* action,
 
     if (optionWidget) {
         if (on) {
-            if(!m_pLineAngleOptions)
+            if(m_pLineAngleOptions == nullptr) {
                 m_pLineAngleOptions = new QG_LineAngleOptions(optionWidget);
-            optionWidget->addWidget(m_pLineAngleOptions);
-            m_pLineAngleOptions->setAction(action, update);
-            //toolWidget->setData(&angle, &length, fixedAngle, update);
-            m_pLineAngleOptions->show();
+                optionWidget->addWidget(m_pLineAngleOptions);
+                m_pLineAngleOptions->setAction(action, update);
+            } else if (update) {
+                m_pLineAngleOptions->setAction(action, update);
+            }
+            if (!m_pLineAngleOptions->isVisible())
+                m_pLineAngleOptions->show();
         }else{
             if (!m_pLineAngleOptions) return;
             m_pLineAngleOptions->hide();
@@ -1053,7 +1068,6 @@ void QG_DialogFactory::requestArcOptions(RS_ActionInterface* action,
 
     addOptionWidget<QG_ArcOptions>(optionWidget, action, on, update);
 }
-
 
 
 /**
