@@ -117,7 +117,7 @@ void QG_CommandWidget::languageChange()
 
 bool QG_CommandWidget::eventFilter(QObject */*obj*/, QEvent *event)
 {
-    if (event->type() == QEvent::KeyPress) {
+    if (event != nullptr && event->type() == QEvent::KeyPress) {
         QKeyEvent* e=static_cast<QKeyEvent*>(event);
 
         int key {e->key()};
@@ -151,7 +151,9 @@ bool QG_CommandWidget::eventFilter(QObject */*obj*/, QEvent *event)
         }
 
         this->setFocus();
-        QKeyEvent * newEvent = static_cast<QKeyEvent*>(event);
+
+        auto* keyEvent = static_cast<QKeyEvent*>(event);
+        QKeyEvent * newEvent = new QKeyEvent(keyEvent->type(), keyEvent->key(), Qt::ShiftModifier);
         QApplication::postEvent(leCommand, newEvent);
         event->accept();
 
@@ -178,6 +180,11 @@ void QG_CommandWidget::setCommand(const QString& cmd) {
         lCommand->setText(tr("Command:"));
     }
     leCommand->setText("");
+}
+
+void QG_CommandWidget::setInput(const QString& cmd) {
+    leCommand->setText(cmd);
+    leCommand->setFocus();
 }
 
 void QG_CommandWidget::appendHistory(const QString& msg) {
