@@ -33,7 +33,6 @@
 
 #include "qg_dialogfactory.h"
 
-#include "rs_arc.h"
 #include "rs_constructionline.h"
 #include "rs_debug.h"
 #include "rs_dimension.h"
@@ -1960,6 +1959,16 @@ QList<RS_Entity *>::const_iterator RS_EntityContainer::begin() const
 QList<RS_Entity *>::const_iterator RS_EntityContainer::end() const
 {
     return entities.end();
+}
+
+QList<RS_Entity *>::const_iterator RS_EntityContainer::cbegin() const
+{
+    return entities.cbegin();
+}
+
+QList<RS_Entity *>::const_iterator RS_EntityContainer::cend() const
+{
+    return entities.cend();
 }
 
 QList<RS_Entity *>::iterator RS_EntityContainer::begin()

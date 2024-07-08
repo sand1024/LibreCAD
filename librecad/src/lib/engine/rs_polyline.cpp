@@ -23,19 +23,24 @@
 ** This copyright notice MUST APPEAR in all copies of the script!
 **
 **********************************************************************/
-#include<cassert>
+
+#include <cassert>
 #include<cmath>
 #include<iostream>
 
-#include "rs_polyline.h"
+#include <QObject>
 
+#include "qc_applicationwindow.h"
 #include "rs_arc.h"
 #include "rs_debug.h"
+#include "rs_dialogfactory.h"
+#include "rs_document.h"
 #include "rs_graphicview.h"
 #include "rs_information.h"
 #include "rs_line.h"
 #include "rs_math.h"
 #include "rs_painter.h"
+#include "rs_polyline.h"
 
 RS_PolylineData::RS_PolylineData(const RS_Vector& _startpoint,
 				const RS_Vector& _endpoint,
@@ -88,6 +93,26 @@ RS_Entity* RS_Polyline::clone() const {
 	p->detach();
 	return p;
 }
+
+
+bool RS_Polyline::toggleSelected()
+{
+    if (!isSelected())
+    {
+        highlightedVertex = getNearestRef(QC_ApplicationWindow::getAppWindow()->getMouseAbsolutePosition());
+
+        QC_ApplicationWindow::getAppWindow()->getGraphicView()->moveRelativeZero(highlightedVertex);
+    }
+
+    return this->setSelected(!isSelected());
+}
+
+
+RS_Vector RS_Polyline::getHighlightedVertex()
+{
+    return highlightedVertex;
+}
+
 
 /**
  * Removes the last vertex of this polyline.
@@ -285,8 +310,7 @@ void RS_Polyline::endPolyline() {
 }
 
 //RLZ: rewrite this:
-void RS_Polyline::setClosed(bool cl, double bulge) {
-    Q_UNUSED(bulge);
+void RS_Polyline::setClosed(bool cl, [[maybe_unused]] double bulge) {
     bool areClosed = isClosed();
     setClosed(cl);
     if (isClosed()) {
@@ -504,8 +528,7 @@ bool RS_Polyline::offset(const RS_Vector& coord, const double& distance){
     //        return true;
 
     RS_Polyline* pnew= static_cast<RS_Polyline*>(clone());
-    int i;
-    i=indexNearest;
+    int i=indexNearest;
     int previousIndex(i);
     pnew->entityAt(i)->offset(coord,distance);
     RS_Vector vp;
@@ -636,10 +659,21 @@ void RS_Polyline::rotate(const RS_Vector& center, const RS_Vector& angleVector) 
 
 
 void RS_Polyline::scale(const RS_Vector& center, const RS_Vector& factor) {
+
+    if (containsArc() && !RS_Math::equal(factor.x, factor.y)) {
+        RS_DIALOGFACTORY->commandMessage(QObject::tr("Polyline contains arc segments, and scaling by different xy-factors will generate incorrect results"));
+    }
     RS_EntityContainer::scale(center, factor);
     data.startpoint.scale(center, factor);
     data.endpoint.scale(center, factor);
     calculateBorders();
+}
+
+bool RS_Polyline::containsArc() const
+{
+    return std::any_of(cbegin(), cend(), [](const RS_Entity* entity) {
+        return entity->rtti() == RS2::EntityArc;
+    });
 }
 
 
@@ -713,4 +747,3 @@ std::ostream& operator << (std::ostream& os, const RS_Polyline& l) {
 
     return os;
 }
-
