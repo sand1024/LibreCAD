@@ -25,13 +25,11 @@
 **********************************************************************/
 
 
-#ifndef RS_POLYLINE_H
-#define RS_POLYLINE_H
+#pragma once
 
 #include <memory>
-#include "rs_entity.h"
-#include "rs_entitycontainer.h"
 
+#include "rs_entitycontainer.h"
 
 
 /**
@@ -71,6 +69,10 @@ public:
     RS_PolylineData getData() const {
         return data;
     }
+
+    bool toggleSelected() override;
+
+    RS_Vector getHighlightedVertex();
 
     /** sets a new start point of the polyline */
 	void setStartpoint(RS_Vector const& v);
@@ -135,6 +137,12 @@ public:
 	void moveRef(const RS_Vector& ref, const RS_Vector& offset) override;
 	void revertDirection() override;
 
+    /**
+     * @brief containsArc whether the polyline contains an arc segment
+     * @return true - if the polyline contains any circular arc
+     */
+    bool containsArc() const;
+
 
 	void draw(RS_Painter* painter, RS_GraphicView* view,
 					  double& patternOffset) override;
@@ -149,6 +157,8 @@ protected:
     RS_PolylineData data;
     RS_Entity* closingEntity = nullptr;
     double nextBulge = 0.;
-};
 
-#endif
+private:
+
+        RS_Vector highlightedVertex;
+};

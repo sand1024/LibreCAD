@@ -49,7 +49,7 @@ DESTDIR = $${INSTALLDIR}
 
 # Make translations at the end of the process
 unix {
-    LC_VERSION=$$system([ "$(which git)x" != "x" -a -d ../../.git ] && echo "$(git describe --tags --always)" || echo "$${LC_VERSION}")
+    LC_VERSION=$$system([ "$(which git)x" != "x" -a -d ../../.git ] && echo "$(git describe --always)" || echo "$${LC_VERSION}")
 
     macx {
         TARGET = LibreCAD
@@ -277,7 +277,6 @@ HEADERS += \
     ui/lc_layertreemodel_options.h \
     ui/lc_layertreewidget.h \
     ui/lc_layertreeview.h\
-    ui/forms/lc_layerdialog_ex.h \
     ui/lc_quickinfobasedata.h \
     ui/lc_quickinfoentitydata.h \
     ui/lc_quickinfopointsdata.h \
@@ -458,6 +457,7 @@ SOURCES += \
 # ################################################################################
 # Command
 HEADERS += cmd/rs_commands.h
+HEADERS += cmd/lc_commandItems.h
 SOURCES += cmd/rs_commands.cpp
 
 # ################################################################################
