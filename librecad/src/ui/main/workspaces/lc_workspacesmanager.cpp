@@ -115,7 +115,11 @@ void LC_WorkspacesManager::fillIconsAndMenuState(LC_WorkspacesManager::LC_Worksp
     LC_GROUP("Widgets");
     {
         workspace.columnCountLeftDoc = LC_GET_INT("LeftToolbarColumnsCount", 5);
+        workspace.columnCountLeftAllDoc = LC_GET_INT("LeftToolbarAllColumnsCount", 5);
+
         workspace.iconsSizeLeftDock = LC_GET_INT("LeftToolbarIconSize", 24);
+        workspace.iconsSizeLeftAllDock = LC_GET_INT("LeftToolbarAllIconSize", 24);
+
         workspace.iconsSizeRightDoc = LC_GET_INT("DockWidgetsIconSize", 16);
         workspace.iconsSizeToolbar = LC_GET_INT("ToolbarIconSize", 25);
     }
@@ -196,7 +200,10 @@ void LC_WorkspacesManager::applyToSettings(const LC_Workspace &workspace){
     LC_GROUP("Widgets");
     {
         LC_SET("LeftToolbarColumnsCount", workspace.columnCountLeftDoc);
+        LC_SET("LeftToolbarAllColumnsCount", workspace.columnCountLeftAllDoc);
+
         LC_SET("LeftToolbarIconSize", workspace.iconsSizeLeftDock);
+        LC_SET("LeftToolbarAllIconSize", workspace.iconsSizeLeftAllDock);
         LC_SET("DockWidgetsIconSize", workspace.iconsSizeRightDoc);
         LC_SET("ToolbarIconSize", workspace.iconsSizeToolbar);
     }
@@ -332,8 +339,13 @@ void LC_WorkspacesManager::loadWorkspaces(){
                                 p->docAreaFloatingActive = wsObj["dockFloat"].toBool();
 
                                 p->columnCountLeftDoc = wsObj["columnCountLeftDock"].toInt(6);
+                                p->columnCountLeftAllDoc = wsObj["columnCountLeftAllDock"].toInt(6);
+
                                 p->iconsSizeToolbar = wsObj["iconSizeToolbar"].toInt(24);
+
                                 p->iconsSizeLeftDock = wsObj["iconSizeLeftDock"].toInt(24);
+                                p->iconsSizeLeftAllDock = wsObj["iconSizeLeftAllDock"].toInt(24);
+
                                 p->iconsSizeRightDoc = wsObj["iconSizeRightDock"].toInt(16);
 
                                 p->extendMenu  = wsObj["expandMenu"].toBool(false);
@@ -400,8 +412,13 @@ void LC_WorkspacesManager::saveWorkspaces(QWidget* parent){
                 wsObj.insert("dockFloat", QJsonValue::fromVariant(p->dockAreaBottomActive));
 
                 wsObj.insert("columnCountLeftDock", QJsonValue::fromVariant(p->columnCountLeftDoc));
+                wsObj.insert("columnCountLeftAllDock", QJsonValue::fromVariant(p->columnCountLeftAllDoc));
+
                 wsObj.insert("iconSizeToolbar", QJsonValue::fromVariant(p->iconsSizeToolbar));
+
                 wsObj.insert("iconSizeLeftDock", QJsonValue::fromVariant(p->iconsSizeLeftDock));
+                wsObj.insert("iconSizeLeftAllDock", QJsonValue::fromVariant(p->iconsSizeLeftAllDock));
+
                 wsObj.insert("iconSizeRightDock", QJsonValue::fromVariant(p->iconsSizeRightDoc));
 
                 wsObj.insert("expandMenu", QJsonValue::fromVariant(p->extendMenu));

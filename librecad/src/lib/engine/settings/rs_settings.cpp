@@ -161,7 +161,7 @@ bool RS_Settings::writeEntrySingle(const QString& group, const QString &key, con
 
     QVariant ret = readEntryCache(fullName);
     if (ret.isValid() && ret == value) {
-        return true;
+        return false;
     }
 
     // RVT_PORT not supported anymore s.insertSearchPath(QSettings::Windows, companyKey);

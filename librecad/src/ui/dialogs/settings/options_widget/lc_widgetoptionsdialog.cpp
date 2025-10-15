@@ -88,13 +88,22 @@ LC_WidgetOptionsDialog::LC_WidgetOptionsDialog(QWidget* parent)
         statusbar_fontsize_spinbox->setValue(statusbar_fontsize);
 
         int leftToolbarColumnsCount = LC_GET_INT("LeftToolbarColumnsCount", 5);
-        left_toobar_columns_spinbox->setValue(leftToolbarColumnsCount);
+        sbLeftTBColumnCount->setValue(leftToolbarColumnsCount);
+
+        int leftToolbarAllColumnsCount = LC_GET_INT("LeftToolbarAllColumnsCount", 5);
+        sbLeftTBAllColumnCount->setValue(leftToolbarAllColumnsCount);
 
         bool leftToolbarFlatIcons = LC_GET_BOOL("LeftToolbarFlatIcons", true);
         cbLeftTBFlatButtons->setChecked(leftToolbarFlatIcons);
 
+        bool leftToolbarAllFlatIcons = LC_GET_BOOL("LeftToolbarAllFlatIcons", true);
+        cbLeftTBAllFlatButtons->setChecked(leftToolbarAllFlatIcons);
+
         int leftToolbarIconSize = LC_GET_INT("LeftToolbarIconSize", 24);
         sbLeftTBIconSize->setValue(leftToolbarIconSize);
+
+        int leftToolbarAllIconSize = LC_GET_INT("LeftToolbarAllIconSize", 24);
+        sbLeftTBAllIconSize->setValue(leftToolbarAllIconSize);
 
         bool dockWidgetsFlatIcons = LC_GET_BOOL("DockWidgetsFlatIcons", true);
         cbDockWidgetsFlatButtons->setChecked(dockWidgetsFlatIcons);
@@ -174,6 +183,10 @@ LC_WidgetOptionsDialog::LC_WidgetOptionsDialog(QWidget* parent)
     }
 
     connect(pbRemoveStyle, &QPushButton::clicked, this, &LC_WidgetOptionsDialog::onRemoveStylePressed);
+
+    bool cadSidebarUngrouped = LC_GET_ONE_BOOL("Startup", "CADSideBarUngrouped", false);
+    gbCADWidgets->setEnabled(!cadSidebarUngrouped);
+    gbCADWidgetsUngrouped->setEnabled(cadSidebarUngrouped);
 }
 
 void LC_WidgetOptionsDialog::onStyleChanged(const QString & /*val*/){
@@ -366,11 +379,18 @@ void LC_WidgetOptionsDialog::accept() {
             appWindow->statusBar()->setMinimumHeight(statusbar_height);
         }
 
-        int columnCount = left_toobar_columns_spinbox->value();
+        int columnCount = sbLeftTBColumnCount->value();
         LC_SET("LeftToolbarColumnsCount", columnCount);
 
+        int columnCountAll = sbLeftTBAllColumnCount->value();
+        LC_SET("LeftToolbarAllColumnsCount", columnCountAll);
+
+
         LC_SET("LeftToolbarFlatIcons", cbLeftTBFlatButtons->isChecked());
+        LC_SET("LeftToolbarAllFlatIcons", cbLeftTBAllFlatButtons->isChecked());
+
         LC_SET("LeftToolbarIconSize", sbLeftTBIconSize->value());
+        LC_SET("LeftToolbarAllIconSize", sbLeftTBAllIconSize->value());
 
         LC_SET("DockWidgetsFlatIcons", cbDockWidgetsFlatButtons->isChecked());
         LC_SET("DockWidgetsIconSize", sbDocWidgtetIconSize->value());

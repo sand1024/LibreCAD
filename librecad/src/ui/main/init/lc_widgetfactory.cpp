@@ -79,14 +79,48 @@ void LC_WidgetFactory::initWidgets(){
 void LC_WidgetFactory::initLeftCADSidebar(){
     bool enable_left_sidebar = LC_GET_ONE_BOOL("Startup", "EnableLeftSidebar", true);
     if (enable_left_sidebar) {
+        bool cadSidebarUngrouped = LC_GET_ONE_BOOL("Startup", "CADSideBarUngrouped", false);
         LC_GROUP("Widgets"); {
+           if (cadSidebarUngrouped) {
+             int leftSidebarAllColumnsCount = LC_GET_INT("LeftToolbarAllColumnsCount", 5);
+             int leftSidebarAllIconSize = LC_GET_INT("LeftToolbarAllIconSize", 24);
+             bool flatIconsAll = LC_GET_BOOL("LeftToolbarAllFlatIcons", true);
+             createCADMegaSidebar(leftSidebarAllColumnsCount, leftSidebarAllIconSize, flatIconsAll);
+           }
+           else {
             int leftSidebarColumnsCount = LC_GET_INT("LeftToolbarColumnsCount", 5);
             int leftSidebarIconSize = LC_GET_INT("LeftToolbarIconSize", 24);
             bool flatIcons = LC_GET_BOOL("LeftToolbarFlatIcons", true);
             createCADSidebar(leftSidebarColumnsCount, leftSidebarIconSize, flatIcons);
+            }
         }
         LC_GROUP_END();
     }
+}
+
+void LC_WidgetFactory::createCADMegaSidebar(int columns, int iconSize, bool flatButtons) {
+  auto* mega = new LC_CADDockWidget(m_appWin, true);
+  mega->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+  mega->setObjectName("dock_cad_mega");
+  mega->setWindowTitle(tr("All Tools"));
+  auto actions = QList<QAction*>();
+  actions.append(m_actionFactory->line_actions);
+  actions.append(m_actionFactory->point_actions);
+  actions.append(m_actionFactory->shape_actions);
+  actions.append(m_actionFactory->circle_actions);
+  actions.append(m_actionFactory->curve_actions);
+  actions.append(m_actionFactory->ellipse_actions);
+  actions.append(m_actionFactory->polyline_actions);
+  actions.append(m_actionFactory->select_actions);
+  actions.append(m_actionFactory->dimension_actions);
+  actions.append(m_actionFactory->modify_actions);
+  actions.append(m_actionFactory->info_actions);
+  actions.append(m_actionFactory->order_actions);
+  actions.append(m_actionFactory->other_drawing_actions);
+  mega->addActions(actions, columns, iconSize, flatButtons);
+  mega->hide();
+  connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, mega, &LC_CADDockWidget::updateWidgetSettings);
+  m_appWin->addDockWidget(Qt::LeftDockWidgetArea, mega);
 }
 
 void LC_WidgetFactory::createCADSidebar(int columns, int icon_size, bool flatButtons){
@@ -370,7 +404,6 @@ void LC_WidgetFactory::setDockWidgetTitleType(QDockWidget *widget, bool vertical
             | QDockWidget::DockWidgetMovable
             | QDockWidget::DockWidgetFloatable;
 
-
     if (verticalTitleBar) {
         features |= QDockWidget::DockWidgetVerticalTitleBar;
     }
@@ -384,8 +417,7 @@ void LC_WidgetFactory::setDockWidgetTitleType(QDockWidget *widget, bool vertical
 
 LC_CADDockWidget* LC_WidgetFactory::cadDockWidget(const QString& title, const char* name, const QList<QAction*> &actions, int columns, int iconSize, bool flatButtons){
     auto* result = new LC_CADDockWidget(m_appWin);
-    result->setAllowedAreas(Qt::LeftDockWidgetArea |
-                              Qt::RightDockWidgetArea);
+    result->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     result->setObjectName("dock_" + QString(name).toLower());
     result->setWindowTitle(title);
     result->addActions(actions, columns, iconSize, flatButtons);

@@ -52,6 +52,7 @@ protected slots:
     void on_cbClassicStatusBarToggled();
     void onCheckNewVersionChanged();
     void onTabCloseButtonChanged();
+    void onEnableCADDocWidgetsChanged();
     void on_tabWidget_currentChanged(int index);
     void on_pb_background_clicked();
     void on_pb_gridPoints_clicked();
@@ -105,11 +106,8 @@ private:
     bool m_restartNeeded=false;
 
     QString m_originalLibraryPath;
-    bool m_originalUseClassicToolbar;
-    bool m_originalAllowsMenusTearOff;
-    bool m_originalExpandedToolsMenu;
     bool m_originalExpandedToolsMenuTillEntity;
-    bool m_originalShowToolbarTooltips;
+
 
     int m_initialLanguageGUIIdx{0};
 

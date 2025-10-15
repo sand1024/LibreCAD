@@ -463,12 +463,30 @@ void LC_MenuFactory::prepareWorkspaceMenuComponents() {
     m_menuDockWidgets->addSeparator();
 
     bool cadDocWidgetsAreEnabled = LC_GET_ONE_BOOL("Startup", "EnableLeftSidebar", true);
+    bool cadSidebarUngrouped = LC_GET_ONE_BOOL("Startup", "CADSideBarUngrouped", false);
+
     if (cadDocWidgetsAreEnabled) {
         m_menuCADDockWidgets = doCreateSubMenu(m_menuWorkspace, tr("CAD Wid&gets"), "caddockwidgets", nullptr);
+        auto actions = QList<QAction*>();
+        QAction* megaMenuAction = nullptr;
         for (QDockWidget* dw : dockwidgetsList) {
             if (m_appWin->dockWidgetArea(dw) == Qt::LeftDockWidgetArea) {
-                m_menuCADDockWidgets->QWidget::addAction(dw->toggleViewAction());
+              if (dw->objectName() == "dock_cad_mega") {
+                megaMenuAction = dw->toggleViewAction();
+              }
+              else {
+                actions.push_back(dw->toggleViewAction());
+              }
             }
+        }
+
+        if (megaMenuAction != nullptr) {
+          m_menuCADDockWidgets->QWidget::addAction(megaMenuAction);
+          m_menuCADDockWidgets->addSeparator();
+        }
+
+        for (const auto action : actions) {
+          m_menuCADDockWidgets->QWidget::addAction(action);
         }
     }
 

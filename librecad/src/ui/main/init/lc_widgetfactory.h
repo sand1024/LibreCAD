@@ -63,6 +63,7 @@ private:
     void modifyCommandTitleBar(Qt::DockWidgetArea area) const;
     QDockWidget* createPenWizardWidget();
     void initLeftCADSidebar();
+    void createCADMegaSidebar(int columns, int iconSize, bool flatButtons);
     void createRightSidebar(QG_ActionHandler *action_handler);
     void initStatusBar();
     void createCADSidebar(int columns, int icon_size, bool flatButtons);

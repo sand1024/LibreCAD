@@ -100,6 +100,9 @@ QG_DlgOptionsGeneral::QG_DlgOptionsGeneral(QWidget *parent)
     connect(pbImportSettings, &QPushButton::clicked, this, &QG_DlgOptionsGeneral::importSettings);
 
     connect(cbExpandToolsMenu, &QCheckBox::toggled, this, &QG_DlgOptionsGeneral::onExpandToolsMenuToggled);
+
+    connect(cbEnableCADDockWidgets, stateChangedSignal,
+            this, &QG_DlgOptionsGeneral::onEnableCADDocWidgetsChanged);
 }
 
 void QG_DlgOptionsGeneral::onExpandToolsMenuToggled([[maybe_unused]]bool checked){
@@ -241,8 +244,7 @@ void QG_DlgOptionsGeneral::init(){
         int axisSize = LC_GET_INT("ZeroShortAxisMarkSize", 20);
         sbAxisSize->setValue(axisSize);
 
-        m_originalAllowsMenusTearOff = LC_GET_BOOL("AllowMenusTearOff", true);
-        cbAllowMenusDetaching->setChecked(m_originalAllowsMenusTearOff);
+        cbAllowMenusDetaching->setChecked(LC_GET_BOOL("AllowMenusTearOff", true));
 
         checked = LC_GET_BOOL("GridDraw", true);
         cbDrawGrid->setChecked(checked);
@@ -613,31 +615,32 @@ void QG_DlgOptionsGeneral::init(){
         cbSplash->setChecked(LC_GET_BOOL("ShowSplash", true));
         tab_mode_check_box->setChecked(LC_GET_BOOL("TabMode"));
         maximize_checkbox->setChecked(LC_GET_BOOL("Maximize"));
-        left_sidebar_checkbox->setChecked(LC_GET_BOOL("EnableLeftSidebar", true));
+
+        bool enableCADDockWidgets = LC_GET_BOOL("EnableLeftSidebar", true);
+        cbEnableCADDockWidgets->setChecked(enableCADDockWidgets);
+        cbCADWidgetsUngroupped->setChecked(LC_GET_BOOL("CADSideBarUngrouped",false));
+        cbCADWidgetsUngroupped->setEnabled(enableCADDockWidgets);
+
         cad_toolbars_checkbox->setChecked(LC_GET_BOOL("EnableCADToolbars", true));
         cbOpenLastFiles->setChecked(LC_GET_BOOL("OpenLastOpenedFiles", true));
-        m_originalUseClassicToolbar = LC_GET_BOOL("UseClassicStatusBar", false);
-        cbClassicStatusBar->setChecked(m_originalUseClassicToolbar);
+        bool useClassicStatusBar = LC_GET_BOOL("UseClassicStatusBar", false);
+        cbClassicStatusBar->setChecked(useClassicStatusBar);
 
         cbCheckNewVersion->setChecked(LC_GET_BOOL("CheckForNewVersions", true));
         cbCheckNewVersionIgnorePreRelease->setChecked(LC_GET_BOOL("IgnorePreReleaseVersions", true));
 
         bool checked = LC_GET_BOOL("ShowCommandPromptInStatusBar", true);
         cbDuplicateActionsPromptsInStatusBar->setChecked(checked);
-        cbDuplicateActionsPromptsInStatusBar->setEnabled(!m_originalUseClassicToolbar);
+        cbDuplicateActionsPromptsInStatusBar->setEnabled(!useClassicStatusBar);
 
         bool useExpandedToolsMenu = LC_GET_BOOL("ExpandedToolsMenu", false);
-        m_originalExpandedToolsMenu = useExpandedToolsMenu;
         cbExpandToolsMenu->setChecked(useExpandedToolsMenu);
 
         bool expandToolsMenuTillEntity = LC_GET_BOOL("ExpandedToolsMenuTillEntity", false);
-        m_originalExpandedToolsMenuTillEntity = expandToolsMenuTillEntity;
         cbExpandToolsMenuTillEntity->setChecked(expandToolsMenuTillEntity);
 
         cbExpandToolsMenuTillEntity->setEnabled(useExpandedToolsMenu);
-
-        m_originalShowToolbarTooltips = LC_GET_BOOL("ShowToolbarsTooltip", true);
-        cbStartupTBTooltips->setChecked(m_originalShowToolbarTooltips);
+        cbStartupTBTooltips->setChecked( LC_GET_BOOL("ShowToolbarsTooltip", true));
     }
     LC_GROUP_END();
 
@@ -714,7 +717,9 @@ void QG_DlgOptionsGeneral::ok(){
             LC_SET("EntityHandleSize", sbHandleSize->value());
             LC_SET("RelZeroMarkerRadius", sbRelZeroRadius->value());
             LC_SET("ZeroShortAxisMarkSize", sbAxisSize->value());
-            LC_SET("AllowMenusTearOff", cbAllowMenusDetaching->isChecked());
+            if (LC_SET("AllowMenusTearOff", cbAllowMenusDetaching->isChecked())){
+                setRestartNeeded();
+            };
 
             LC_SET("metaGridDraw", cbDrawMetaGrid->isChecked());
             LC_SET("GridDraw", cbDrawGrid->isChecked());
@@ -910,20 +915,33 @@ void QG_DlgOptionsGeneral::ok(){
         }
         LC_GROUP_END();
 
-        LC_GROUP("Startup"); {
+        LC_GROUP("Startup");
+        {
             LC_SET("ShowSplash", cbSplash->isChecked());
             LC_SET("TabMode", tab_mode_check_box->isChecked());
             LC_SET("Maximize", maximize_checkbox->isChecked());
-            LC_SET("EnableLeftSidebar", left_sidebar_checkbox->isChecked());
-            LC_SET("EnableCADToolbars", cad_toolbars_checkbox->isChecked());
+
+            if (LC_SET("EnableLeftSidebar", cbEnableCADDockWidgets->isChecked())){
+                setRestartNeeded();
+            }
+            if (LC_SET("CADSideBarUngrouped", cbCADWidgetsUngroupped->isChecked())){
+                setRestartNeeded();
+            }
+            if (LC_SET("EnableCADToolbars", cad_toolbars_checkbox->isChecked())){
+                setRestartNeeded();
+            }
             LC_SET("OpenLastOpenedFiles", cbOpenLastFiles->isChecked());
-            LC_SET("UseClassicStatusBar", cbClassicStatusBar->isChecked());
+            if (LC_SET("UseClassicStatusBar", cbClassicStatusBar->isChecked())){
+                setRestartNeeded();
+            }
             LC_SET("ShowCommandPromptInStatusBar", cbDuplicateActionsPromptsInStatusBar->isChecked());
             LC_SET("CheckForNewVersions", cbCheckNewVersion->isChecked());
             LC_SET("IgnorePreReleaseVersions", cbCheckNewVersionIgnorePreRelease->isChecked());
             LC_SET("ExpandedToolsMenu", cbExpandToolsMenu->isChecked());
             LC_SET("ExpandedToolsMenuTillEntity", cbExpandToolsMenuTillEntity->isChecked());
-            LC_SET("ShowToolbarsTooltip", cbStartupTBTooltips->isChecked());
+            if (LC_SET("ShowToolbarsTooltip", cbStartupTBTooltips->isChecked())){
+                setRestartNeeded();
+            }
         }
         LC_GROUP_END();
 
@@ -945,10 +963,8 @@ void QG_DlgOptionsGeneral::ok(){
 }
 
 bool QG_DlgOptionsGeneral::checkRestartNeeded() {
-    bool result = m_originalUseClassicToolbar != cbClassicStatusBar->isChecked() ||
-                  m_originalLibraryPath != lePathLibrary->text().trimmed() ||
-                  m_originalAllowsMenusTearOff != cbAllowMenusDetaching->isChecked() ||
-                  m_originalShowToolbarTooltips != cbStartupTBTooltips->isChecked();
+    bool result = m_originalLibraryPath != lePathLibrary->text().trimmed() ||
+                  m_restartNeeded;
     return result;
 }
 
@@ -1178,6 +1194,10 @@ void QG_DlgOptionsGeneral::on_cbClassicStatusBarToggled(){
 
 void QG_DlgOptionsGeneral::onTabCloseButtonChanged(){
     cbTabCloseButtonMode->setEnabled(cbTabCloseButton->isChecked());
+}
+
+void QG_DlgOptionsGeneral::onEnableCADDocWidgetsChanged(){
+    cbCADWidgetsUngroupped->setEnabled(cbEnableCADDockWidgets->isChecked());
 }
 
 void QG_DlgOptionsGeneral::onInfoCursorPromptChanged(){

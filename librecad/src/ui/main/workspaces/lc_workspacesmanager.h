@@ -64,6 +64,9 @@ protected:
         int iconsSizeRightDoc = 16;
         int columnCountLeftDoc = 6;
 
+        int columnCountLeftAllDoc = 5;
+        int iconsSizeLeftAllDock = 22;
+
         bool extendMenu = false;
         bool extendMenuTillEntities = false;
 
