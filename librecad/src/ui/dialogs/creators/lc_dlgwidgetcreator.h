@@ -42,6 +42,7 @@ public:
     ~LC_DlgWidgetCreator() override;
 protected slots:
     void addChosenAction();
+    void addSeparator();
     void addChosenActionForItem(QListWidgetItem* item);
     void removeChosenAction();
     void removeAllChosenActions();
@@ -68,7 +69,7 @@ private:
     QString getSettingsGroupName();
     QString createMenuItemDisplayName(QString key, LC_MenuActivator* activator);
     QString createMenuItemDisplayName(QString key);
-    QStringList getChosenActions();
+    QStringList getChosenActionNames();
     void loadWidgetActions(int index);
     void onToolbarPlacementIndexChanged(int index);
 };

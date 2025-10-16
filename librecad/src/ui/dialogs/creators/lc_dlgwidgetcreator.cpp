@@ -96,6 +96,7 @@ LC_DlgWidgetCreator::LC_DlgWidgetCreator(QWidget *parent, bool forMenu, LC_Actio
     connect(ui->cbCategories, &QComboBox::activated, this, &LC_DlgWidgetCreator::onCategoryActivated);
 
     connect(ui->btnAdd, &QPushButton::released, this, &LC_DlgWidgetCreator::addChosenAction);
+    connect(ui->btnAddSeparator, &QPushButton::released, this, &LC_DlgWidgetCreator::addSeparator);
     connect(ui->btnRemove,  &QPushButton::released, this, &LC_DlgWidgetCreator::removeChosenAction);
     connect(ui->btnRemoveAll,  &QPushButton::released, this, &LC_DlgWidgetCreator::removeAllChosenActions);
 
@@ -134,10 +135,16 @@ void LC_DlgWidgetCreator::setCategoryAll() {
 
 void LC_DlgWidgetCreator::addChosenAction() {
     QListWidgetItem *item = ui->alOfferredActions->currentItem();
-    if (item) {
+    if (item != nullptr) {
         ui->alChosenActions->addItem(item->clone());
         delete item;
     }
+}
+
+void LC_DlgWidgetCreator::addSeparator(){
+    auto item = new QListWidgetItem("----------", nullptr);
+    item->setWhatsThis("");
+    ui->alChosenActions->addItem(item);
 }
 
 void LC_DlgWidgetCreator::addChosenActionForItem(QListWidgetItem *item) {
@@ -161,26 +168,28 @@ void LC_DlgWidgetCreator::removeChosenAction() {
 }
 
 void LC_DlgWidgetCreator::removeChosenActionForItem(QListWidgetItem *item) {
-    auto categoryData = ui->cbCategories->currentData(Qt::UserRole);
-    QString category = categoryData.toString();
-    bool mayAddToOfferedActions = false;
-    if (category == "_all") {
-        mayAddToOfferedActions = true;
-    }
-    else {
-        auto itemCategoryData = item->data(Qt::UserRole);
-        auto itemCategory = itemCategoryData.toString();
-        if (category == itemCategory) {
+    if (item->whatsThis() != ""){
+        auto categoryData = ui->cbCategories->currentData(Qt::UserRole);
+        QString category = categoryData.toString();
+        bool mayAddToOfferedActions = false;
+        if (category == "_all") {
             mayAddToOfferedActions = true;
         }
-    }
-    if (mayAddToOfferedActions) {
-        // here we try to check that there is no such item in the list of offered actions - so we avoid duplication
-        // that may occur after reloading list of offered actions and chosen actions.
-        // NOTE:: this means that unique text (action names) is expected!!!
-        auto existingItems = ui->alOfferredActions->findItems(item->text(), Qt::MatchExactly);
-        if (existingItems.isEmpty()) {
-            ui->alOfferredActions->addItem(item->clone());
+        else {
+            auto itemCategoryData = item->data(Qt::UserRole);
+            auto itemCategory = itemCategoryData.toString();
+            if (category == itemCategory) {
+                mayAddToOfferedActions = true;
+            }
+        }
+        if (mayAddToOfferedActions) {
+            // here we try to check that there is no such item in the list of offered actions - so we avoid duplication
+            // that may occur after reloading list of offered actions and chosen actions.
+            // NOTE:: this means that unique text (action names) is expected!!!
+            auto existingItems = ui->alOfferredActions->findItems(item->text(), Qt::MatchExactly);
+            if (existingItems.isEmpty()) {
+                ui->alOfferredActions->addItem(item->clone());
+            }
         }
     }
 
@@ -304,7 +313,7 @@ void LC_DlgWidgetCreator::onCategoryActivated(int index) {
     }
 
     ui->alOfferredActions->clear();
-    auto chosen_actions = getChosenActions();
+    auto chosen_actions = getChosenActionNames();
     auto action_group = m_actionGroupManager->getActionGroup(category);
     if (action_group != nullptr)
         for (auto action: action_group->actions()) {
@@ -319,7 +328,7 @@ void LC_DlgWidgetCreator::onWidgetNameIndexChanged(int index) {
 }
 
 void LC_DlgWidgetCreator::onToolbarPlacementIndexChanged(int index) {
-       LC_SET_ONE("Defaults", "NewToolBarArea", index);
+    LC_SET_ONE("Defaults", "NewToolBarArea", index);
 }
 
 void LC_DlgWidgetCreator::loadWidgetActions(int index) {
@@ -327,9 +336,9 @@ void LC_DlgWidgetCreator::loadWidgetActions(int index) {
     // w_key = key;
     QSettings settings;
     auto widget = QString("%1/%2").arg(getSettingsGroupName()).arg(key);
-    QStringList s_list = settings.value(widget).toStringList();
+    QStringList actionNamesList = settings.value(widget).toStringList();
 
-    if (s_list.isEmpty()) {
+    if (actionNamesList.isEmpty()) {
         return;
     }
 
@@ -342,10 +351,15 @@ void LC_DlgWidgetCreator::loadWidgetActions(int index) {
     ui->alChosenActions->clear();
     ui->alOfferredActions->clear();
 
-    foreach(auto str, s_list) {
-        QAction* action = m_actionGroupManager->getActionByName(str);
-        if (action != nullptr) {
-            ui->alChosenActions->addActionItem(action);
+    foreach(auto str, actionNamesList) {
+        if ("" == str){
+            addSeparator();
+        }
+        else{
+            QAction* action = m_actionGroupManager->getActionByName(str);
+            if (action != nullptr) {
+                ui->alChosenActions->addActionItem(action);
+            }
         }
     }
     setCategoryAll();
@@ -400,15 +414,13 @@ void LC_DlgWidgetCreator::saveWidget() {
         widgetName = ui->cbWidgetName->currentData().toString();
     }
 
-
-
-    QStringList a_list = getChosenActions();
-    if (!a_list.isEmpty() && !widgetName.isEmpty()) {
+    QStringList chosenActionNamesList = getChosenActionNames();
+    if (!chosenActionNamesList.isEmpty() && !widgetName.isEmpty()) {
         QSettings settings;
         auto widget = QString("%1/%2").arg(getSettingsGroupName()).arg(widgetName);
-        settings.setValue(widget, a_list);
+        settings.setValue(widget, chosenActionNamesList);
         int areaIndex = ui->cbTBPlacementArea->currentIndex();
-        emit widgetCreationRequest(widgetName, a_list, areaIndex);
+        emit widgetCreationRequest(widgetName, chosenActionNamesList, areaIndex);
     }
 }
 
@@ -443,10 +455,11 @@ void LC_DlgWidgetCreator::destroyWidget() {
     updateSaveAndDeleteButtons();
 }
 
-QStringList LC_DlgWidgetCreator::getChosenActions() {
+QStringList LC_DlgWidgetCreator::getChosenActionNames() {
     QStringList s_list;
     for (int i = 0; i < ui->alChosenActions->count(); ++i) {
-        s_list << ui->alChosenActions->item(i)->whatsThis();
+        auto listWidgetItem = ui->alChosenActions->item(i);
+        s_list << listWidgetItem->whatsThis();
     }
     return s_list;
 }

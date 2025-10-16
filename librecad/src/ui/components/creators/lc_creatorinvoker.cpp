@@ -71,18 +71,33 @@ void LC_CreatorInvoker::createCustomToolbars(bool showToolTips) {
     for (const QString& key : customToolbars) {
         QList<QAction*> actionsList;
         auto actionNames = settings.value(key).toStringList();
+        bool hasActions = false;
         for (const QString& actionName : actionNames) {
-            QAction* action = getAction(actionName);
-            if (action != nullptr)
-                actionsList.push_back(getAction(actionName));
+            if ("" == actionName){
+                actionsList.push_back(nullptr);
+            }
+            else{
+                QAction* action = getAction(actionName);
+                if (action != nullptr){
+                    actionsList.push_back(getAction(actionName));
+                    hasActions = true;
+                }
+            }
         }
-        if (!actionsList.empty()) {
+        if (hasActions) {
             auto* toolbar = new QToolBar(key, m_appWindow);
             toolbar->setObjectName(key);
             if (m_showToolbarTooltips) {
                 toolbar->setToolTip(tr("Toolbar: %1 (Custom)").arg(key));
             }
-            toolbar->addActions(actionsList);
+            for (auto action: actionsList){
+                if (action == nullptr){
+                    toolbar->addSeparator();
+                }
+                else{
+                    toolbar->addAction(action);
+                }
+            }
             m_appWindow->addToolBar(toolbar);
         }
     }
@@ -136,7 +151,12 @@ void LC_CreatorInvoker::createToolbar(const QString &toolbar_name, const QString
     }
 
     for(const auto &key: actionNames) {
-        toolbar->addAction(getAction(key));
+        if ("" == key){
+            toolbar->addSeparator();
+        }
+        else{
+            toolbar->addAction(getAction(key));
+        }
     }
 }
 

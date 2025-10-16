@@ -542,6 +542,7 @@ void LC_MenuFactory::onWorkspaceMenuAboutToShow(const QList<QC_MDIWindow*>& wind
         QMenu* menu;
 
         m_menuWorkspace->addAction(m_actionGroupManager->getActionByName("Fullscreen"));
+        m_menuWorkspace->addAction(m_actionGroupManager->getActionByName("MainMenu"));
         m_menuWorkspace->addAction(m_actionGroupManager->getActionByName("ViewStatusBar"));
 
         m_menuWorkspace->addSeparator();
@@ -906,15 +907,25 @@ QMenu* LC_MenuFactory::createGraphicViewCustomPopupMenu(QG_GraphicView* graphicV
 
     if (contextEntity == nullptr) {
         for (const auto& actionName: actionNames) {
-            QAction* a = m_actionGroupManager->getActionByName(actionName);
-            if (a != nullptr) {
-                ctxMenu->addAction(a);
+            if ("" == actionName){
+                ctxMenu->addSeparator();
+            }
+            else{
+                QAction* a = m_actionGroupManager->getActionByName(actionName);
+                if (a != nullptr) {
+                    ctxMenu->addAction(a);
+                }
             }
         }
     }
     else {
         for (const auto &actionName: actionNames) {
-            addActionProxy(ctxMenu, actionName, contextEntity, contextPosition, actionContext);
+            if ("" == actionName){
+                ctxMenu->addSeparator();
+            }
+            else {
+                addActionProxy(ctxMenu, actionName, contextEntity, contextPosition, actionContext);
+            }
         }
     }
 

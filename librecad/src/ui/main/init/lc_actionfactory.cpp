@@ -512,6 +512,7 @@ void LC_ActionFactory::createViewActions(QMap<QString, QAction*>& map, QActionGr
         {"ZoomWindow",RS2::ActionZoomWindow, tr("&Window Zoom"), ":/icons/zoom_window.lci","zoom-select"}});
 
     createMainWindowActions(map, group, {
+        {"MainMenu",         &QC_ApplicationWindow::toggleMainMenu,       tr("&Main Menu"),           ":/icons/fullscreen.lci"},
         {"Fullscreen",       &QC_ApplicationWindow::toggleFullscreen,     tr("&Fullscreen"),           ":/icons/fullscreen.lci"},
         {"ViewGrid",         &QC_ApplicationWindow::slotViewGrid,         tr("&Grid"),                 ":/icons/grid.lci"},
         {"ViewDraft",        &QC_ApplicationWindow::slotViewDraft,        tr("&Draft"),                ":/icons/draft.lci"},

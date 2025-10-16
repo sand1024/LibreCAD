@@ -210,6 +210,7 @@ public slots:
      */
     void slotUpdateActiveLayer();
     void toggleFullscreen(bool checked);
+    void toggleMainMenu(bool checked);
     void setPreviousZoomEnable(bool enable);
     void widgetOptionsDialog();
     void reloadStyleSheet();
