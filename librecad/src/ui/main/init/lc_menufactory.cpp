@@ -431,12 +431,19 @@ void LC_MenuFactory::findViewAndUCSToggleActions(QList<QDockWidget*> dockwidgets
 }
 
 void LC_MenuFactory::prepareWorkspaceMenuComponents() {
-    m_menuDockareas = subMenu(m_menuWorkspace, tr("Dock Areas"), "dockareas", nullptr, {
+    m_menuDockAreas = subMenu(m_menuWorkspace, tr("Dock Areas"), "dockareas", nullptr, {
                                   "LeftDockAreaToggle",
                                   "RightDockAreaToggle",
                                   "TopDockAreaToggle",
                                   "BottomDockAreaToggle",
                                   "FloatingDockwidgetsToggle"
+                              });
+
+    m_menuToolBarAreas = subMenu(m_menuWorkspace, tr("Toolbar Areas"), "tbareas", nullptr, {
+                                  "LeftTBAreaToggle",
+                                  "RightTBAreaToggle",
+                                  "TopTBAreaToggle",
+                                  "BottomTBAreaToggle"
                               });
 
     m_menuDockWidgets = doCreateSubMenu(m_menuWorkspace, tr("Wid&gets"), "dockwidgets", nullptr);
@@ -471,22 +478,22 @@ void LC_MenuFactory::prepareWorkspaceMenuComponents() {
         QAction* megaMenuAction = nullptr;
         for (QDockWidget* dw : dockwidgetsList) {
             if (m_appWin->dockWidgetArea(dw) == Qt::LeftDockWidgetArea) {
-              if (dw->objectName() == "dock_cad_mega") {
-                megaMenuAction = dw->toggleViewAction();
-              }
-              else {
-                actions.push_back(dw->toggleViewAction());
-              }
+                if (dw->objectName() == "dock_cad_mega") {
+                    megaMenuAction = dw->toggleViewAction();
+                }
+                else {
+                    actions.push_back(dw->toggleViewAction());
+                }
             }
         }
 
         if (megaMenuAction != nullptr) {
-          m_menuCADDockWidgets->QWidget::addAction(megaMenuAction);
-          m_menuCADDockWidgets->addSeparator();
+            m_menuCADDockWidgets->QWidget::addAction(megaMenuAction);
+            m_menuCADDockWidgets->addSeparator();
         }
 
         for (const auto action : actions) {
-          m_menuCADDockWidgets->QWidget::addAction(action);
+            m_menuCADDockWidgets->QWidget::addAction(action);
         }
     }
 
@@ -494,7 +501,7 @@ void LC_MenuFactory::prepareWorkspaceMenuComponents() {
 
     QList<QToolBar*> toolbarsList = m_appWin->findChildren<QToolBar*>();
 
-    bool cadToolbarsAreEnabled = LC_GET_ONE_BOOL("Startup", "EnableLeftSidebar", true);
+    bool cadToolbarsAreEnabled = LC_GET_ONE_BOOL("Startup", "EnableCADToolbars", true);
     if (cadToolbarsAreEnabled) {
         QList<QToolBar*> cadToolbarsList;
         QList<QToolBar*> otherToolbarsList;
@@ -508,8 +515,8 @@ void LC_MenuFactory::prepareWorkspaceMenuComponents() {
                 otherToolbarsList << tb;
             }
         }
-        m_appWin->sortWidgetsByGroupAndTitle(cadToolbarsList);
 
+        m_appWin->sortWidgetsByGroupAndTitle(cadToolbarsList);
         m_menuCADToolbars = doCreateSubMenu(m_menuWorkspace, tr("&CAD Toolbars"), "cadtoolbars", nullptr);
         for (QToolBar* tb : cadToolbarsList) {
             m_menuCADToolbars->QWidget::addAction(tb->toggleViewAction());
@@ -533,17 +540,44 @@ void LC_MenuFactory::prepareWorkspaceMenuComponents() {
     }
 }
 
+void LC_MenuFactory::createWorkspacesListSubMenu(QMenu* parentMenu) {
+    QList<QPair<int, QString>> workspacesList;
+    m_appWin->fillWorkspacesList(workspacesList);
+    if (!workspacesList.isEmpty()) {
+        QIcon wsIcon = QIcon(":/icons/workspace.lci");
+        auto wsMenu = new QMenu(tr("&Workspaces"), parentMenu);
+        wsMenu->setTearOffEnabled(m_allowTearOffMenus);
+        wsMenu->setIcon(wsIcon);
+        qsizetype workspacesCount = workspacesList.size();
+        for (int i = 0; i < workspacesCount; i++) {
+            const auto w = workspacesList.at(i);
+            auto name = w.second;
+            auto* a = wsMenu->addAction(wsIcon, name);
+            const int workspaceId = w.first;
+            connect(a, &QAction::triggered, [workspaceId, this]  {
+                m_appWin->applyWorkspaceById(workspaceId);
+            });
+            a->setEnabled(true);
+            a->setCheckable(false);
+            a->setVisible(true);
+        }
+        parentMenu->addMenu(wsMenu);
+        parentMenu->QWidget::addAction(m_actionGroupManager->getActionByName("WorkspaceRemove"));
+    }
+}
+
 void LC_MenuFactory::onWorkspaceMenuAboutToShow(const QList<QC_MDIWindow*>& window_list) {
     LC_GROUP_GUARD("WindowOptions");
     {
-        QIcon wsIcon = QIcon(":/icons/workspace.lci");
         m_menuWorkspace->clear(); // this is a temporary menu; constructed on-demand
         m_allowTearOffMenus = LC_GET_ONE_BOOL("Appearance", "AllowMenusTearOff", true);
         QMenu* menu;
 
-        m_menuWorkspace->addAction(m_actionGroupManager->getActionByName("Fullscreen"));
-        m_menuWorkspace->addAction(m_actionGroupManager->getActionByName("MainMenu"));
-        m_menuWorkspace->addAction(m_actionGroupManager->getActionByName("ViewStatusBar"));
+        addActions(m_menuWorkspace, {
+            "Fullscreen",
+            "MainMenu",
+            "ViewStatusBar"
+        });
 
         m_menuWorkspace->addSeparator();
         m_menuWorkspace->addMenu(m_menuDockWidgets);
@@ -565,32 +599,14 @@ void LC_MenuFactory::onWorkspaceMenuAboutToShow(const QList<QC_MDIWindow*>& wind
         if (needSeparator) {
             m_menuWorkspace->addSeparator();
         }
-
-        m_menuWorkspace->addMenu(m_menuDockareas);
+        m_menuWorkspace->addMenu(m_menuToolBarAreas);
+        m_menuWorkspace->addMenu(m_menuDockAreas);
         addAction(m_menuWorkspace, "RedockWidgets");
         m_menuWorkspace->addSeparator();
         m_menuWorkspace->addAction(m_actionGroupManager->getActionByName("WorkspaceCreate"));
 
-        QList<QPair<int, QString>> workspacesList;
-        m_appWin->fillWorkspacesList(workspacesList);
-        if (!workspacesList.isEmpty()) {
-            auto workspaces = new QMenu(tr("&Workspaces"), m_menuWorkspace);
-            workspaces->setTearOffEnabled(m_allowTearOffMenus);
-            workspaces->setIcon(wsIcon);
-            qsizetype workspacesCount = workspacesList.size();
-            for (int i = 0; i < workspacesCount; i++) {
-                const auto w = workspacesList.at(i);
-                auto name = w.second;
-                auto* a = workspaces->addAction(wsIcon, name);
-                connect(a, &QAction::triggered, m_appWin, &QC_ApplicationWindow::restoreWorkspace);
-                a->setEnabled(true);
-                a->setCheckable(false);
-                a->setVisible(true);
-                a->setProperty("_WSPS_IDX", QVariant(w.first));
-            }
-            m_menuWorkspace->addMenu(workspaces);
-            m_menuWorkspace->addAction(m_actionGroupManager->getActionByName("WorkspaceRemove"));
-        }
+        QMenu* workspacesListParentMenu = m_menuWorkspace;
+        createWorkspacesListSubMenu(workspacesListParentMenu);
         m_menuWorkspace->addSeparator();
 
         addAction(m_menuWorkspace, "InvokeMenuCreator");
@@ -765,6 +781,20 @@ QMenu* LC_MenuFactory::createMainWindowPopupMenu() const {
     auto* result = new QMenu(tr("Context"));
     result->setAttribute(Qt::WA_DeleteOnClose);
 
+        addActions(result, {
+           "Fullscreen",
+           "MainMenu"
+    });
+
+    result->addMenu(m_menuToolBarAreas);
+    result->addMenu(m_menuDockAreas);
+
+    addActions(result, {
+        "ViewStatusBar"
+    });
+
+    result->addSeparator();
+
     auto* tmpToolbarsMenu = new QMenu(tr("Toolbars"), result);
     tmpToolbarsMenu->addActions(m_menuToolbars->actions());
     result->addMenu(tmpToolbarsMenu);
@@ -790,11 +820,6 @@ QMenu* LC_MenuFactory::createMainWindowPopupMenu() const {
     }
     if (needSeparator) {
         result->addSeparator();
-    }
-
-    QAction* viewStatusBarAction = m_actionGroupManager->getActionByName("ViewStatusBar");
-    if (viewStatusBarAction != nullptr) {
-        result->addAction(viewStatusBarAction);
     }
     return result;
 }
@@ -937,7 +962,7 @@ QMenu* LC_MenuFactory::createGraphicViewDefaultPopupMenu(QG_GraphicView* graphic
     auto actionContext = graphicView->getActionContext();
 
     auto* ctxMenu = new QMenu(graphicView);
-    ctxMenu->setAttribute(Qt::WA_DeleteOnClose);
+    // ctxMenu->setAttribute(Qt::WA_DeleteOnClose);
 
     int selectionCount = actionContext->getSelectedEntitiesCount();
 
@@ -1095,6 +1120,31 @@ QMenu* LC_MenuFactory::createGraphicViewDefaultPopupMenu(QG_GraphicView* graphic
     ctxMenu->addSeparator();
     createGVMenuView(ctxMenu);
     createGVMenuFiles(ctxMenu);
+    if (!LC_GET_ONE_BOOL("Appearance", "MainMenuVisible", true)) {
+        auto wsMenu = subMenu(ctxMenu, tr("Workspaces"), "ctxws", "", {"Fullscreen", "MainMenu"}, false);
+        wsMenu->addMenu(m_menuToolBarAreas);
+        wsMenu->addMenu(m_menuDockAreas);
+        wsMenu->addMenu(m_menuDockWidgets);
+        wsMenu->addMenu(m_menuToolbars);
+        wsMenu->addSeparator();
+
+        bool needSeparator = false;
+        if (m_menuCADDockWidgets != nullptr) {
+            wsMenu->addMenu(m_menuCADDockWidgets);
+            needSeparator = true;
+        }
+
+        if (m_menuCADToolbars != nullptr) {
+            wsMenu->addMenu(m_menuCADToolbars);
+            needSeparator = true;
+        }
+
+        if (needSeparator) {
+            wsMenu->addSeparator();
+        }
+        wsMenu->addAction(m_actionGroupManager->getActionByName("WorkspaceCreate"));
+        createWorkspacesListSubMenu(wsMenu);
+    }
     createGVMenuOptions(ctxMenu);
 
     return ctxMenu;

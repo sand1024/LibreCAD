@@ -131,7 +131,12 @@ void LC_WorkspacesManager::fillIconsAndMenuState(LC_WorkspacesManager::LC_Worksp
     }
     LC_GROUP_END();
 
-    workspace.showStatusBar = LC_GET_ONE_BOOL("Appearance", "StatusBarVisible", false);
+    LC_GROUP("Appearance");
+    {
+        workspace.showStatusBar = LC_GET_BOOL("StatusBarVisible", false);
+        workspace.showMainMenu = LC_GET_BOOL("MainMenuVisible", true);
+        workspace.showFullScreen = LC_GET_BOOL("FullscreenMode", true);
+    }
 }
 
 void LC_WorkspacesManager::fillBySettings(LC_Workspace &workspace){
@@ -152,10 +157,14 @@ void LC_WorkspacesManager::fillBySettings(LC_Workspace &workspace){
         workspace.dockAreaToptActive = LC_GET_BOOL("TopDockArea", false);
         workspace.dockAreaBottomActive = LC_GET_BOOL("BottomDockArea", false);
         workspace.docAreaFloatingActive = LC_GET_BOOL("FloatingDockwidgets", false);
+
+        workspace.tbAreaLeftActive = LC_GET_BOOL("LeftTBArea", false);
+        workspace.tbAreaRightActive = LC_GET_BOOL("RightTBArea", true);
+        workspace.tbAreaToptActive = LC_GET_BOOL("TopTBArea", false);
+        workspace.tbAreaBottomActive = LC_GET_BOOL("BottomTBArea", false);
+        // workspace.docAreaFloatingActive = LC_GET_BOOL("FloatingDockwidgets", false);
     }
     LC_GROUP_END();
-
-    workspace.showStatusBar = LC_GET_ONE_BOOL("Appearance", "StatusBarVisible", false);
 
     fillIconsAndMenuState(workspace);
 }
@@ -172,11 +181,20 @@ void LC_WorkspacesManager::fillByState(LC_Workspace &workspace){
     workspace.windowX = appWin.x();
     workspace.windowY = appWin.y();
 
-    workspace.dockAreaLeftActive = appWin.getDockAreas().left->isChecked();
-    workspace.dockAreaRightActive = appWin.getDockAreas().right->isChecked();
-    workspace.dockAreaBottomActive = appWin.getDockAreas().bottom->isChecked();
-    workspace.dockAreaToptActive = appWin.getDockAreas().top->isChecked();
-    workspace.docAreaFloatingActive = appWin.getDockAreas().floating->isChecked();
+    auto dockAreaToggleActions = appWin.getDockAreaToggleActions();
+    workspace.dockAreaLeftActive = dockAreaToggleActions.left->isChecked();
+    workspace.dockAreaRightActive = dockAreaToggleActions.right->isChecked();
+    workspace.dockAreaBottomActive = dockAreaToggleActions.bottom->isChecked();
+    workspace.dockAreaToptActive = dockAreaToggleActions.top->isChecked();
+    workspace.docAreaFloatingActive = dockAreaToggleActions.floating->isChecked();
+
+    auto tbAreaToggleActions = appWin.getToolbarAreaToggleActions();
+
+    workspace.tbAreaLeftActive = tbAreaToggleActions.left->isChecked();
+    workspace.tbAreaRightActive = tbAreaToggleActions.right->isChecked();
+    workspace.tbAreaBottomActive = tbAreaToggleActions.bottom->isChecked();
+    workspace.tbAreaToptActive = tbAreaToggleActions.top->isChecked();
+    // workspace.docAreaFloatingActive = appWin.getDockAreas().floating->isChecked();
 
     fillIconsAndMenuState(workspace);
 }
@@ -190,11 +208,17 @@ void LC_WorkspacesManager::applyToSettings(const LC_Workspace &workspace){
         LC_SET("WindowY", workspace.windowY);
         LC_SET("WindowX", workspace.windowX);
         LC_SET("StateOfWidgets",workspace.widgetsState);
+
         LC_SET("LeftDockArea", workspace.dockAreaLeftActive);
         LC_SET("RightDockArea", workspace.dockAreaRightActive);
         LC_SET("TopDockArea", workspace.dockAreaToptActive);
         LC_SET("BottomDockArea", workspace.dockAreaBottomActive);
         LC_SET("FloatingDockwidgets", workspace.docAreaFloatingActive);
+
+        LC_SET("LeftTBArea", workspace.tbAreaLeftActive);
+        LC_SET("RightTBArea", workspace.tbAreaRightActive);
+        LC_SET("TopTBArea", workspace.tbAreaToptActive);
+        LC_SET("BottomTBArea", workspace.tbAreaBottomActive);
     }
     LC_GROUP_END();
     LC_GROUP("Widgets");
@@ -218,6 +242,8 @@ void LC_WorkspacesManager::applyToSettings(const LC_Workspace &workspace){
     LC_GROUP("Appearance");
     {
         LC_SET("StatusBarVisible",workspace.showStatusBar);
+        LC_SET("MainMenuVisible", workspace.showMainMenu);
+        LC_SET("FullscreenMode", workspace.showFullScreen);
     }
 }
 
@@ -232,11 +258,19 @@ void LC_WorkspacesManager::restoreGeometryAndState(const LC_WorkspacesManager::L
     auto widgetsState = QByteArray::fromBase64(workspace.widgetsState.toUtf8(), QByteArray::Base64Encoding);
     appWin.restoreState(widgetsState);
 
-    appWin.getDockAreas().left->setChecked(workspace.dockAreaLeftActive);
-    appWin.getDockAreas().right->setChecked(workspace.dockAreaRightActive);
-    appWin.getDockAreas().bottom->setChecked(workspace.dockAreaBottomActive);
-    appWin.getDockAreas().top->setChecked(workspace.dockAreaToptActive);
-    appWin.getDockAreas().floating->setChecked(workspace.docAreaFloatingActive);
+    auto dockAreas = appWin.getDockAreaToggleActions();
+    dockAreas.left->setChecked(workspace.dockAreaLeftActive);
+    dockAreas.right->setChecked(workspace.dockAreaRightActive);
+    dockAreas.bottom->setChecked(workspace.dockAreaBottomActive);
+    dockAreas.top->setChecked(workspace.dockAreaToptActive);
+    dockAreas.floating->setChecked(workspace.docAreaFloatingActive);
+
+    auto tbAreas = appWin.getToolbarAreaToggleActions();
+    tbAreas.left->setChecked(workspace.tbAreaLeftActive);
+    tbAreas.right->setChecked(workspace.tbAreaRightActive);
+    tbAreas.bottom->setChecked(workspace.tbAreaBottomActive);
+    tbAreas.top->setChecked(workspace.tbAreaToptActive);
+    // dockAreas.floating->setChecked(workspace.docAreaFloatingActive);
 
     appWin.rebuildMenuIfNecessary();
     appWin.setIconSize(QSize(workspace.iconsSizeToolbar, workspace.iconsSizeToolbar));
@@ -255,6 +289,7 @@ void LC_WorkspacesManager::restoreGeometryAndState(const LC_WorkspacesManager::L
     }
 
     appWin.slotViewStatusBar(workspace.showStatusBar);
+    appWin.toggleMainMenu(workspace.showMainMenu);
     appWin.setUpdatesEnabled(true);
     appWin.fireWidgetSettingsChanged();
 }
@@ -352,6 +387,8 @@ void LC_WorkspacesManager::loadWorkspaces(){
                                 p->extendMenuTillEntities = wsObj["expandMenuTillEntity"].toBool(false);
 
                                 p->showStatusBar  = wsObj["statusBarVisible"].toBool(false);
+                                p->showMainMenu  = wsObj["mainMenuBarVisible"].toBool(true);
+                                p->showFullScreen  = wsObj["fullScreenMode"].toBool(true);
 
                                 m_workspacesList << p;
                             }
@@ -424,6 +461,8 @@ void LC_WorkspacesManager::saveWorkspaces(QWidget* parent){
                 wsObj.insert("expandMenu", QJsonValue::fromVariant(p->extendMenu));
                 wsObj.insert("expandMenuTillEntity", QJsonValue::fromVariant(p->extendMenuTillEntities));
                 wsObj.insert("statusBarVisible", QJsonValue::fromVariant(p->showStatusBar));
+                wsObj.insert("mainMenuBarVisible", QJsonValue::fromVariant(p->showMainMenu));
+                wsObj.insert("fullScreenMode", QJsonValue::fromVariant(p->showFullScreen));
 
                 perspectivesArray.append(wsObj);
             }

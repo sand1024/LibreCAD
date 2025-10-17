@@ -512,7 +512,7 @@ void LC_ActionFactory::createViewActions(QMap<QString, QAction*>& map, QActionGr
         {"ZoomWindow",RS2::ActionZoomWindow, tr("&Window Zoom"), ":/icons/zoom_window.lci","zoom-select"}});
 
     createMainWindowActions(map, group, {
-        {"MainMenu",         &QC_ApplicationWindow::toggleMainMenu,       tr("&Main Menu"),           ":/icons/fullscreen.lci"},
+        {"MainMenu",         &QC_ApplicationWindow::toggleMainMenu,       tr("&Main Menu"),            ":/icons/main_menu.lci"},
         {"Fullscreen",       &QC_ApplicationWindow::toggleFullscreen,     tr("&Fullscreen"),           ":/icons/fullscreen.lci"},
         {"ViewGrid",         &QC_ApplicationWindow::slotViewGrid,         tr("&Grid"),                 ":/icons/grid.lci"},
         {"ViewDraft",        &QC_ApplicationWindow::slotViewDraft,        tr("&Draft"),                ":/icons/draft.lci"},
@@ -608,7 +608,11 @@ void LC_ActionFactory::createWidgetActions(QMap<QString, QAction *> &map, QActio
         {"RightDockAreaToggle",       &QC_ApplicationWindow::toggleRightDockArea,       tr("Right"),    ":/icons/dockwidgets_right.lci"},
         {"TopDockAreaToggle",         &QC_ApplicationWindow::toggleTopDockArea,         tr("Top"),      ":/icons/dockwidgets_top.lci"},
         {"BottomDockAreaToggle",      &QC_ApplicationWindow::toggleBottomDockArea,      tr("Bottom"),   ":/icons/dockwidgets_bottom.lci"},
-        {"FloatingDockwidgetsToggle", &QC_ApplicationWindow::toggleFloatingDockwidgets, tr("Floating"), ":/icons/dockwidgets_floating.lci"}
+        {"FloatingDockwidgetsToggle", &QC_ApplicationWindow::toggleFloatingDockwidgets, tr("Floating"), ":/icons/dockwidgets_floating.lci"},
+        {"LeftTBAreaToggle",          &QC_ApplicationWindow::toggleLeftToolbarArea,     tr("Left"),     ":/icons/dockwidgets_left.lci"},
+        {"RightTBAreaToggle",         &QC_ApplicationWindow::toggleRightToolbarArea,    tr("Right"),    ":/icons/dockwidgets_right.lci"},
+        {"TopTBAreaToggle",           &QC_ApplicationWindow::toggleTopToolbarArea,      tr("Top"),      ":/icons/dockwidgets_top.lci"},
+        {"BottomTBAreaToggle",        &QC_ApplicationWindow::toggleBottomToolbarArea,   tr("Bottom"),   ":/icons/dockwidgets_bottom.lci"}
     }, true);
 }
 
@@ -699,9 +703,15 @@ void LC_ActionFactory::createEditActions(QMap<QString, QAction*>& map, QActionGr
 void LC_ActionFactory::setupCreatedActions(QMap<QString, QAction *> &map) {
     map["ZoomPrevious"]->setEnabled(false);
     map["RightDockAreaToggle"]->setChecked(true);
-    bool statusBarVisible = LC_GET_ONE_BOOL("Appearance", "StatusBarVisible", false);
-    map["ViewStatusBar"]->setChecked(statusBarVisible);
-    map["OptionsGeneral"]->setMenuRole(QAction::NoRole);
+    LC_GROUP("Appearance"); {
+        bool statusBarVisible = LC_GET_BOOL("StatusBarVisible", false);
+        bool mainMenuVisible = LC_GET_BOOL("MainMenuVisible", true);
+        bool fullScreenMode = LC_GET_BOOL("FullscreenMode", false);
+        map["ViewStatusBar"]->setChecked(statusBarVisible);
+        map["MainMenu"]->setChecked(mainMenuVisible);
+        map["Fullscreen"]->setChecked(mainMenuVisible);
+        map["OptionsGeneral"]->setMenuRole(QAction::NoRole);
+    }
 
     connect(m_appWin, &QC_ApplicationWindow::printPreviewChanged, map["FilePrint"], &QAction::setChecked);
     connect(m_appWin, &QC_ApplicationWindow::printPreviewChanged, map["FilePrintPreview"], &QAction::setChecked);

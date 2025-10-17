@@ -81,7 +81,7 @@ void LC_ApplicationWindowInitializer::initApplication(){
 
     initCentralWidget();
     initMainMenu();
-    initDockAreasActions();
+    initDockAndToolbarAreasActions();
     initActionOptionsManager();
     initActionContext();
     initDialogFactory();
@@ -191,12 +191,18 @@ void LC_ApplicationWindowInitializer::loadCmdWidgetVariablesFile() const {
     }
 }
 
-void LC_ApplicationWindowInitializer::initDockAreasActions() const {
-    m_appWin->m_dockAreas.left = m_appWin->getAction("LeftDockAreaToggle");
-    m_appWin->m_dockAreas.right = m_appWin->getAction("RightDockAreaToggle");
-    m_appWin->m_dockAreas.top = m_appWin->getAction("TopDockAreaToggle");
-    m_appWin->m_dockAreas.bottom = m_appWin->getAction("BottomDockAreaToggle");
-    m_appWin->m_dockAreas.floating = m_appWin->getAction("FloatingDockwidgetsToggle");
+void LC_ApplicationWindowInitializer::initDockAndToolbarAreasActions() const {
+    m_appWin->m_dockAreasToggleActions.left = m_appWin->getAction("LeftDockAreaToggle");
+    m_appWin->m_dockAreasToggleActions.right = m_appWin->getAction("RightDockAreaToggle");
+    m_appWin->m_dockAreasToggleActions.top = m_appWin->getAction("TopDockAreaToggle");
+    m_appWin->m_dockAreasToggleActions.bottom = m_appWin->getAction("BottomDockAreaToggle");
+    m_appWin->m_dockAreasToggleActions.floating = m_appWin->getAction("FloatingDockwidgetsToggle");
+
+    m_appWin->m_toolbarAreasToggleActions.left = m_appWin->getAction("LeftTBAreaToggle");
+    m_appWin->m_toolbarAreasToggleActions.right = m_appWin->getAction("RightTBAreaToggle");
+    m_appWin->m_toolbarAreasToggleActions.top = m_appWin->getAction("TopTBAreaToggle");
+    m_appWin->m_toolbarAreasToggleActions.bottom = m_appWin->getAction("BottomTBAreaToggle");
+    // m_appWin->m_toolbarAreasToggleActions.floating = m_appWin->getAction("FloatingDockwidgetsToggle");
 }
 
 void LC_ApplicationWindowInitializer::initMainMenu() const {

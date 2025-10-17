@@ -59,6 +59,12 @@ protected:
         bool dockAreaBottomActive = false;
         bool docAreaFloatingActive = false;
 
+        bool tbAreaLeftActive = false;
+        bool tbAreaRightActive = false;
+        bool tbAreaToptActive = false;
+        bool tbAreaBottomActive = false;
+        bool tbAreaFloatingActive = false;
+
         int iconsSizeToolbar = 24;
         int iconsSizeLeftDock = 24;
         int iconsSizeRightDoc = 16;
@@ -71,6 +77,8 @@ protected:
         bool extendMenuTillEntities = false;
 
         bool showStatusBar = false;
+        bool showMainMenu = true;
+        bool showFullScreen= true;
     };
 
     int m_workspaceID = 0;

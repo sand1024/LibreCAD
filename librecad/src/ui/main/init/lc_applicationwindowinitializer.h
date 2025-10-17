@@ -43,7 +43,7 @@ private:
     void initCentralWidget();
     void initIconSize() const;
     void loadCmdWidgetVariablesFile() const;
-    void initDockAreasActions() const;
+    void initDockAndToolbarAreasActions() const;
     void initMainMenu() const;
     static void updateCommandsAlias();
     void initRecentFilesList() const;

@@ -75,7 +75,8 @@ void LC_WorkspacesInvoker::removeWorkspace([[maybe_unused]]bool on){
 }
 
 void LC_WorkspacesInvoker::restoreWorkspace([[maybe_unused]]bool on){
-    auto *action = qobject_cast<QAction*>(sender());
+    auto invocationSender = sender();
+    auto *action = qobject_cast<QAction*>(invocationSender);
     if (action != nullptr) {
         QVariant variant = action->property("_WSPS_IDX");
         if (variant.isValid()){

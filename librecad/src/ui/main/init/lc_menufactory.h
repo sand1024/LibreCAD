@@ -84,7 +84,8 @@ protected:
     QMenu* m_menuToolsCombined {nullptr};
 
     QMenu* m_menuRecentFiles{nullptr};
-    QMenu* m_menuDockareas {nullptr};
+    QMenu* m_menuDockAreas {nullptr};
+    QMenu* m_menuToolBarAreas {nullptr};
     QMenu* m_menuDockWidgets {nullptr};
     QMenu* m_menuCADDockWidgets {nullptr};
     QMenu* m_menuToolbars {nullptr};
@@ -93,6 +94,7 @@ protected:
     bool m_allowTearOffMenus = true;
 
     void prepareWorkspaceMenuComponents();
+    void createWorkspacesListSubMenu(QMenu* parentMenu);
     void createToolsMenu(QMenuBar *menu_bar, QList<QMenu *> &topMenuMenus);
     void createHelpMenu(QMenuBar *menu_bar, QList<QMenu *> &topMenuMenus);
     void createFileMenu(QMenuBar *menu_bar, QList<QMenu *> &topMenuMenus);

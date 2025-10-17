@@ -78,7 +78,7 @@ class RS_Pen;
 class TwoStackedLabels;
 
 
-struct DockAreas
+struct AreasToggleActions
 {
     QAction* left {nullptr};
     QAction* right {nullptr};
@@ -276,8 +276,12 @@ public:
 
     LC_PenPaletteWidget* getPenPaletteWidget(void) const{ return m_penPaletteWidget;};
 
-    DockAreas& getDockAreas(){
-        return m_dockAreas;
+    AreasToggleActions& getDockAreaToggleActions(){
+        return m_dockAreasToggleActions;
+    }
+
+    AreasToggleActions& getToolbarAreaToggleActions() {
+        return m_toolbarAreasToggleActions;
     }
 
     LC_QuickInfoWidget* getEntityInfoWidget(void) const {return m_quickInfoWidget;};
@@ -374,7 +378,8 @@ protected:
 
     // --- Dockwidgets ---
     //! toggle actions for the dock areas
-    DockAreas m_dockAreas;
+    AreasToggleActions m_dockAreasToggleActions;
+    AreasToggleActions m_toolbarAreasToggleActions;
 
     // --- Dock widgets ---
     QG_LayerWidget* m_layerWidget {nullptr};

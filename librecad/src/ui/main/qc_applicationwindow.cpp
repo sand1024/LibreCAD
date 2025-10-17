@@ -1679,15 +1679,17 @@ void QC_ApplicationWindow::relayAction(QAction *q_action) {
  * See QMainWindow::createPopupMenu() for more information.
  */
 QMenu *QC_ApplicationWindow::createPopupMenu() {
-   return  m_menuFactory->createMainWindowPopupMenu();
+   return m_menuFactory->createMainWindowPopupMenu();
 }
 
 void QC_ApplicationWindow::toggleFullscreen(bool checked) {
     checked ? showFullScreen() : showMaximized();
+    LC_SET_ONE("Appearance", "FullscreenMode", checked);
 }
 
-void QC_ApplicationWindow::toggleMainMenu(bool checked) {
-    menuBar()->setVisible(checked);
+void QC_ApplicationWindow::toggleMainMenu(bool toggle) {
+    menuBar()->setVisible(toggle);
+    LC_SET_ONE("Appearance", "MainMenuVisible", toggle);
 }
 
 void QC_ApplicationWindow::slotFileOpenRecent(const QAction *action){
