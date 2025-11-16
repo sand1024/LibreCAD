@@ -72,7 +72,7 @@ void RS_ActionModifyBevel::doTrigger() {
 
     if (isAtomic(m_entity1) && isAtomic(m_entity2)) {
         RS_Modification m(m_document, m_viewport);
-        LC_BevelResult* bevelResult = m.bevel(m_actionData->coord1, m_entity1, m_actionData->coord2, m_entity2,
+        std::unique_ptr<LC_BevelResult> bevelResult = m.bevel(m_actionData->coord1, m_entity1, m_actionData->coord2, m_entity2,
                                               m_actionData->data, false);
         if (bevelResult != nullptr) {
             switch (bevelResult->error) {
@@ -86,8 +86,6 @@ void RS_ActionModifyBevel::doTrigger() {
                     break;
             }
         }
-
-        delete bevelResult;
 
         // fixme - decide stay with selected line 1 or go to line selection status??
 
@@ -132,8 +130,8 @@ void RS_ActionModifyBevel::onMouseMoveEvent(int status, LC_MouseEvent *e) {
             if (se != m_entity1 && areBothEntityAccepted(m_entity1, se)){
                 auto atomicCandidate2 = dynamic_cast<RS_AtomicEntity *>(se);
 
-                RS_Modification m(m_document, m_viewport);
-                LC_BevelResult* bevelResult = m.bevel(m_actionData->coord1,  m_entity1, mouse, atomicCandidate2, m_actionData->data, true);
+                RS_Modification m(*m_container, m_viewport);
+                std::unique_ptr<LC_BevelResult> bevelResult = m.bevel(m_actionData->coord1,  m_entity1, mouse, atomicCandidate2, m_actionData->data, true);
 
                 if (bevelResult != nullptr){
                     if (bevelResult->error == LC_BevelResult::OK){
@@ -170,7 +168,6 @@ void RS_ActionModifyBevel::onMouseMoveEvent(int status, LC_MouseEvent *e) {
                                 .toInfoCursorZone2(false);
                         }
                     }
-                    delete bevelResult;
                 }
             }
             break;

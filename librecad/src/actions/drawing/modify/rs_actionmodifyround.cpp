@@ -192,8 +192,9 @@ void RS_ActionModifyRound::onMouseMoveEvent(int status, LC_MouseEvent *e) {
                     previewEntity(tmp2);
 
                     bool trim = m_actionData->data.trim;
-                    RS_Modification m(m_preview.get(), m_viewport, false);
-                    LC_RoundResult *roundResult = m.round(mouse,
+//                    pPoints->data.trim = false;
+                    RS_Modification m(*m_preview, m_viewport, false);
+                    std::unique_ptr<LC_RoundResult> roundResult = m.round(mouse,
                                                           m_actionData->coord1,
                                                           static_cast<RS_AtomicEntity*>(tmp1),
                                                           coord2,
