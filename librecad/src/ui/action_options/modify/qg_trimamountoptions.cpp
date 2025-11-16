@@ -105,13 +105,13 @@ void QG_TrimAmountOptions::setDistanceToActionAndView(const QString& strValue) {
     }
 }
 
-void QG_TrimAmountOptions::setByTotalToActionAndView(bool val) {
+void QG_TrimAmountOptions::setByTotalToActionAndView(bool val) const {
     m_action->setDistanceIsTotalLength(val);
     ui->cbTotalLength->setChecked(val);
     ui->cbSymmetric->setEnabled(!val);
 }
 
-void QG_TrimAmountOptions::setDistanceSymmetricToActionAndView(bool val) {
+void QG_TrimAmountOptions::setDistanceSymmetricToActionAndView(bool val) const {
     m_action->setSymmetricDistance(val);
     ui->cbSymmetric->setChecked(val);
 }

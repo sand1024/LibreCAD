@@ -51,10 +51,10 @@ private:
     LC_ActionDrawStar* m_action = nullptr;
     void setRadiusOuterToModelAndView(const QString& val);
     void setRadiusInnerToModelAndView(const QString& val);
-    void setRadiusInnerEnabledToModelAndView(bool value);
-    void setSymmetricToModelAndView(bool value);
-    void setRadiusOuterEnabledToModelAndView(bool value);
-    void setNumberToModelAndView(int value);
-    void setUsePolylineToActionAndView(bool value);
+    void setRadiusInnerEnabledToModelAndView(bool value) const;
+    void setSymmetricToModelAndView(bool value) const;
+    void setRadiusOuterEnabledToModelAndView(bool value) const;
+    void setNumberToModelAndView(int value) const;
+    void setUsePolylineToActionAndView(bool value) const;
 };
 #endif // LC_STAROPTIONS_H

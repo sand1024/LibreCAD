@@ -32,14 +32,13 @@
 
 #include "lc_actiongroupmanager.h"
 #include "lc_graphicviewport.h"
+#include "main.h"
 #include "muParserDef.h"
 #include "qc_applicationwindow.h"
 #include "qc_mdiwindow.h"
 #include "qg_graphicview.h"
-#include "rs_debug.h"
 #include "rs_ellipse.h"
 #include "rs_insert.h"
-#include "rs_polyline.h"
 #include "rs_settings.h"
 
 class QToolBar;
@@ -164,6 +163,13 @@ void LC_MenuFactory::createHelpMenu(QMenuBar* menu_bar, QList<QMenu*>& topMenuMe
     m_menuHelp->QWidget::addAction(urlActionTR(tr("&Request Feature"), "https://github.com/LibreCAD/LibreCAD/issues"));
     m_menuHelp->QWidget::addAction(urlActionTR(tr("&Releases Page"), "https://github.com/LibreCAD/LibreCAD/releases"));
     m_menuHelp->addSeparator();
+
+    if (XSTR(LC_PRERELEASE)) {
+        // fixme - this is makes sense only for pre-release versions. Of course, the generation of tag included into URL should be more intelligent..
+        m_menuHelp->QWidget::addAction(urlActionTR(tr("&Dev Snapshot Release"), " https://github.com/LibreCAD/LibreCAD/releases/tag/2.2.2_alpha-latest"));
+        m_menuHelp->addSeparator();
+    }
+
     m_menuHelp->QWidget::addAction(help_about);
     m_menuHelp->QWidget::addAction(license);
     m_menuHelp->QWidget::addAction(urlActionTR(tr("&Donate"), "https://librecad.org/donate.html"));
@@ -414,9 +420,9 @@ void LC_MenuFactory::createWorkspaceMenu(QMenuBar* menu_bar, QList<QMenu*>& topM
 }
 
 void LC_MenuFactory::findViewAndUCSToggleActions(QList<QDockWidget*> dockwidgetsList,
-                                                 QAction*& namedViewsToggleViewAction, QAction*& ucsToggleViewAction) {
+                                                 QAction*& namedViewsToggleViewAction, QAction*& ucsToggleViewAction) const {
     for (QDockWidget* dw : dockwidgetsList) {
-        if (m_appWin->dockWidgetArea(dw) == Qt::RightDockWidgetArea) {
+        if (m_appWin->dockWidgetArea(dw) == Qt::RightDockWidgetArea) { // fixme - well, it seems one docking area is limiting...
             QAction* action = dw->toggleViewAction();
             m_menuDockWidgets->QWidget::addAction(action);
             QString objectName = dw->objectName();
@@ -825,7 +831,7 @@ QMenu* LC_MenuFactory::createMainWindowPopupMenu() const {
 }
 
 void LC_MenuFactory::createGVMenuSelect(QMenu* ctxMenu, RS_Entity* contextEntity,const RS_Vector &contextPosition,
-                                        LC_ActionContext* actionContext, int selectionCount) {
+                                        LC_ActionContext* actionContext, int selectionCount) const {
     auto selectGroup = m_actionGroupManager->getActionGroup("select");
     auto selectMenu = ctxMenu->addMenu(selectGroup->getIcon(), tr("Select"));
 
@@ -862,12 +868,13 @@ void LC_MenuFactory::createGVMenuSelect(QMenu* ctxMenu, RS_Entity* contextEntity
     }
 
     addActions(selectMenu, {
-                   "SelectInvert"
+                   "SelectInvert",
+                   "SelectQuick"
                });
 }
 
 void LC_MenuFactory::createGVMenuRecent(QG_GraphicView* graphicView, QMenu* ctxMenu, LC_ActionContext* actionContext,
-                                        RS_Entity* contextEntity, const RS_Vector &contextPosition, bool hasEntity) {
+                                        RS_Entity* contextEntity, const RS_Vector &contextPosition, bool hasEntity) const {
     auto recentActions = graphicView->getRecentActions();
     if (!recentActions.empty()) {
         if (hasEntity) {
@@ -904,14 +911,13 @@ QMenu* LC_MenuFactory::createGraphicViewPopupMenu(QG_GraphicView* graphicView,
     if (contextEntity != nullptr && contextMenu != nullptr && !contextMenu->isEmpty()) {
         const bool clearEntitySelection = !contextEntity->isSelected();
         if (clearEntitySelection) {
-            contextEntity->setSelected(true);
+            contextEntity->setSelectionFlag(true); // just temporarily highlight the entity until menu is visible. This is not actual selection
             graphicView->redraw(RS2::RedrawDrawing);
         }
 
         connect(contextMenu, &QMenu::aboutToHide, this, [graphicView, contextEntity, clearEntitySelection]() {
-            // LC_ERR << "MENU_CLOSED";
             if (clearEntitySelection) {
-                contextEntity->setSelected(false);
+                contextEntity->clearSelectionFlag(); // cleanup temporary highlight
                 graphicView->redraw();
             }
         });
@@ -922,7 +928,7 @@ QMenu* LC_MenuFactory::createGraphicViewPopupMenu(QG_GraphicView* graphicView,
 
 
 QMenu* LC_MenuFactory::createGraphicViewCustomPopupMenu(QG_GraphicView* graphicView,
-    RS_Entity* contextEntity, const  RS_Vector& contextPosition, QStringList& actionNames) {
+    RS_Entity* contextEntity, const  RS_Vector& contextPosition, QStringList& actionNames) const {
     if (actionNames.isEmpty()) {
         return nullptr;
     }
@@ -1151,11 +1157,11 @@ QMenu* LC_MenuFactory::createGraphicViewDefaultPopupMenu(QG_GraphicView* graphic
 }
 
 void LC_MenuFactory::createGVMenuEdit(QMenu* ctxMenu, LC_ActionContext* actionContext,
-                                     RS_Entity* contextEntity, const RS_Vector &contextPosition) {
+                                     RS_Entity* contextEntity, const RS_Vector &contextPosition) const {
     auto edit = ctxMenu->addMenu(tr("Edit"));
     bool undoAvailable{false}, redoAvailable{false};
 
-    auto container = actionContext->getEntityContainer();
+    auto container = actionContext->getDocument();
     auto document = container->getDocument();
 
     if (document != nullptr) {
@@ -1202,7 +1208,7 @@ void LC_MenuFactory::createGVMenuEdit(QMenu* ctxMenu, LC_ActionContext* actionCo
     }
 }
 
-void LC_MenuFactory::createGVMenuOptions(QMenu* ctxMenu) {
+void LC_MenuFactory::createGVMenuOptions(QMenu* ctxMenu) const {
     subMenu(ctxMenu, tr("Options"), "sub_options", ":/icons/settings.lci", {
                 "OptionsDrawing",
                 "OptionsGeneral",
@@ -1211,7 +1217,7 @@ void LC_MenuFactory::createGVMenuOptions(QMenu* ctxMenu) {
             }, false);
 }
 
-void LC_MenuFactory::createGVMenuFiles(QMenu* ctxMenu) {
+void LC_MenuFactory::createGVMenuFiles(QMenu* ctxMenu) const {
     auto menuFile = subMenu(ctxMenu, tr("&File"), "file", ":/icons/save.lci", {
                                 "FileNew",
                                 "FileNewTemplate",

@@ -39,14 +39,14 @@ public:
 
 public slots:
     void setData( RS_ScaleData * d );
-    void updateData();
+    void updateData() const;
 protected slots:
     void languageChange();
 private slots:
-    void onIsotropicToggled(bool checked);
-    void onFactorXChanged(const QString &arg1);
+    void onIsotropicToggled(bool checked) const;
+    void onFactorXChanged(const QString &arg1) const;
     void onFactorByPoints(bool checked);
-    void onMultipleCopiesClicked();
+    void onMultipleCopiesClicked() const;
 private:
     RS_ScaleData* data = nullptr;
     void init();

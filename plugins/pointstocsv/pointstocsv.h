@@ -68,11 +68,11 @@ class lc_Exptocsvdlg : public QDialog
         const QString strPolyline = "Polyline";
         void setSelectedObj(QList<Plug_Entity *> *selectedObj);
         void clearSelectedObj();
-        void setSelectedLabelCounterText(int count);
+        void setSelectedLabelCounterText(int count) const;
         QString getFormatedText(Plug_Entity* entity);
-        QString getPointFormatedText(QHash<int, QVariant> data);
-        QString getLineFormatedText(QHash<int, QVariant> data);
-        QString getPolylineFormatedText(Plug_Entity* entity);
+        QString getPointFormatedText(QHash<int, QVariant> data) const;
+        QString getLineFormatedText(QHash<int, QVariant> data) const;
+        QString getPolylineFormatedText(Plug_Entity* entity) const;
         QLabel *selectedEntitiesLabel = nullptr;
 
 };

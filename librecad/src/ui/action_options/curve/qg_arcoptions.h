@@ -47,7 +47,7 @@ public slots:
 protected:
     RS_ActionDrawArc* m_action = nullptr;
 	std::unique_ptr<Ui::Ui_ArcOptions> ui;
-    void setReversedToActionAndView(bool reversed);
+    void setReversedToActionAndView(bool reversed) const;
     bool checkActionRttiValid(RS2::ActionType actionType) override;
     void doSaveSettings() override;
     void doSetAction(RS_ActionInterface *a, bool update) override;

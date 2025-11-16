@@ -44,7 +44,7 @@ void RS_ActionToolRegenerateDimensions::trigger() {
 
     QApplication::setOverrideCursor(Qt::WaitCursor);
     // fixme - sand - should we use autoText there? Is options needed for autotext? review this later on dims
-    int updatedDimensionsCount = m_container->updateDimensions(false);
+    int updatedDimensionsCount = m_document->updateDimensions(false);
     QApplication::restoreOverrideCursor();
     /*for(auto e: *m_container){ // fixme - iteration over all entities in container
 

@@ -500,7 +500,7 @@ LC_Division::CircleSegmentData* LC_Division::findCircleSegmentEdges(RS_Circle *c
  * @param entity entity to check for intersections
  * @return vector of intersection points
  */
-QVector<RS_Vector> LC_Division::collectAllIntersectionsWithEntity(RS_Entity *entity){
+QVector<RS_Vector> LC_Division::collectAllIntersectionsWithEntity(RS_Entity *entity) const {
     QVector<RS_Vector> result;
     RS_VectorSolutions sol;
     // iterate over all entities

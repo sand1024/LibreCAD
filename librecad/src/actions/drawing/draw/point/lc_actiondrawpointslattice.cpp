@@ -31,34 +31,32 @@
 class RS_Layer;
 
 LC_ActionDrawPointsLattice::LC_ActionDrawPointsLattice(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("Points Lattice", actionContext,RS2::ActionDrawPointsLattice) {
+    :LC_UndoablePreviewActionInterface("Points Lattice", actionContext,RS2::ActionDrawPointsLattice) {
 }
 
 void LC_ActionDrawPointsLattice::doTrigger() {
     QVector<RS_Vector> pointsToCreate;
     createPointsLattice(m_point4, pointsToCreate);
 
-    qsizetype pointsCount = pointsToCreate.size();
+    const qsizetype pointsCount = pointsToCreate.size();
     if (pointsCount > 0) {
         RS_Layer *layerToSet  = m_graphicView->getGraphic()->getActiveLayer();
-        RS_Pen penToUse = m_graphicView->getGraphic()->getActivePen();
-        undoCycleStart();
+        const RS_Pen penToUse = m_graphicView->getGraphic()->getActivePen();
+
         for (unsigned i = 0; i < pointsCount; i++) {
-            auto *point = new RS_Point(m_container, pointsToCreate.at(i));
+            auto *point = new RS_Point(m_document, pointsToCreate.at(i));
             point->setLayer(layerToSet);
             point->setPen(penToUse);
-            point->setParent(m_container);
-            m_container->addEntity(point);
+            point->setParent(m_document);
             undoableAdd(point);
         }
-        undoCycleEnd();
     }
 
     setStatus(SetPoint1);
 }
 
 void LC_ActionDrawPointsLattice::onMouseMoveEvent(int status, LC_MouseEvent *e) {
-    RS_Vector mouse = e->snapPoint;
+    const RS_Vector mouse = e->snapPoint;
     QVector<RS_Vector> pointsToCreate;
     switch (status){
         case SetPoint1:{
@@ -66,7 +64,7 @@ void LC_ActionDrawPointsLattice::onMouseMoveEvent(int status, LC_MouseEvent *e) 
             break;
         }
         case SetPoint2:{
-            RS_Vector pos = getSnapAngleAwarePoint(e, m_point1, mouse, true);
+            const RS_Vector pos = getSnapAngleAwarePoint(e, m_point1, mouse, true);
             createPointsLine(m_point1, pos, m_pointsAmountByX, pointsToCreate);
             if (m_showRefEntitiesOnPreview){
                 previewRefPoint(m_point1);
@@ -75,7 +73,7 @@ void LC_ActionDrawPointsLattice::onMouseMoveEvent(int status, LC_MouseEvent *e) 
             break;
         }
         case SetPoint3:{
-            RS_Vector pos = getSnapAngleAwarePoint(e, m_point2, mouse, true);
+            const RS_Vector pos = getSnapAngleAwarePoint(e, m_point2, mouse, true);
             createPointsLine(m_point1, m_point2, m_pointsAmountByX, pointsToCreate);
             createPointsLine(m_point2, pos, m_pointsAmountByY, pointsToCreate);
             if (m_showRefEntitiesOnPreview){
@@ -87,7 +85,7 @@ void LC_ActionDrawPointsLattice::onMouseMoveEvent(int status, LC_MouseEvent *e) 
         }
         case SetPoint4:{
             RS_Vector pos = getSnapAngleAwarePoint(e, m_point3, mouse , true);
-            bool alternateLastPointAdjustment = e->isControl;
+            const bool alternateLastPointAdjustment = e->isControl;
             pos = getLastPointPosition(pos, alternateLastPointAdjustment);
             createPointsLattice(pos, pointsToCreate);
             if (m_showRefEntitiesOnPreview){
@@ -98,8 +96,10 @@ void LC_ActionDrawPointsLattice::onMouseMoveEvent(int status, LC_MouseEvent *e) 
             }
             break;
         }
+        default:
+            break;
     }
-    qsizetype pointsCount = pointsToCreate.size();
+    const qsizetype pointsCount = pointsToCreate.size();
     for (unsigned i = 0; i < pointsCount; i++){
         previewPoint(pointsToCreate.at(i));
     }
@@ -122,10 +122,12 @@ void LC_ActionDrawPointsLattice::onMouseLeftButtonRelease(int status, LC_MouseEv
         }
         case SetPoint4:{
             pos = getSnapAngleAwarePoint(e, m_point3, pos, false);
-            bool alternateLastPointAdjustment = e->isControl;
+            const bool alternateLastPointAdjustment = e->isControl;
             pos = getLastPointPosition(pos, alternateLastPointAdjustment);
             break;
         }
+        default:
+            break;
     }
     fireCoordinateEvent(pos);
 }
@@ -136,7 +138,7 @@ RS_Vector LC_ActionDrawPointsLattice::getLastPointPosition(RS_Vector &pos, bool 
         doAdjustPoint4 = !doAdjustPoint4;
     }
     if (doAdjustPoint4) {
-         RS_Vector firstSideDelta = m_point2 - m_point1;
+         const RS_Vector firstSideDelta = m_point2 - m_point1;
          pos = m_point3 - firstSideDelta;
     }
     return pos;
@@ -156,6 +158,8 @@ void LC_ActionDrawPointsLattice::onMouseRightButtonRelease(int status, [[maybe_u
             setStatus(m_majorStatus);
             break;
         }
+        default:
+            break;
     }
 }
 
@@ -200,6 +204,8 @@ void LC_ActionDrawPointsLattice::onCoordinateEvent(int status, [[maybe_unused]]b
             }
             break;
         }
+        default:
+            break;
     }
 }
 
@@ -225,7 +231,7 @@ bool LC_ActionDrawPointsLattice::doProcessCommand(int status, const QString &com
     }
     else if (status == SetNumYPoints || status == SetNumXPoints){
         bool ok = false;
-        int count = RS_Math::eval(command, &ok);
+        const int count = RS_Math::eval(command, &ok);
         if (ok && count > 0){ // at least 1 point should be present
             if (status == SetNumXPoints){
                 m_pointsAmountByX = count;
@@ -252,7 +258,7 @@ QStringList LC_ActionDrawPointsLattice::getAvailableCommands() {
 }
 
 void LC_ActionDrawPointsLattice::updateMouseButtonHints() {
-    int state = getStatus();
+    const int state = getStatus();
     switch (state){
         case SetPoint1: {
             updateMouseWidgetTRCancel(tr("Specify first point"), MOD_SHIFT_RELATIVE_ZERO);
@@ -285,9 +291,9 @@ void LC_ActionDrawPointsLattice::updateMouseButtonHints() {
 }
 
 void LC_ActionDrawPointsLattice::createPointsLine(RS_Vector start, RS_Vector end, int count, QVector<RS_Vector> &points) {
-    double segmentAngle = start.angleTo(end);
-    double distance = start.distanceTo(end);
-    double singleSegmentLen = distance/(count-1);
+    const double segmentAngle = start.angleTo(end);
+    const double distance = start.distanceTo(end);
+    const double singleSegmentLen = distance/(count-1);
     RS_Vector pos = start;
     for (int i = 0; i < count; i++){
         points << pos;
@@ -298,14 +304,13 @@ void LC_ActionDrawPointsLattice::createPointsLine(RS_Vector start, RS_Vector end
 void LC_ActionDrawPointsLattice::createPointsLattice(RS_Vector lastPoint, QVector<RS_Vector> &pointsToCreate) {
 
     createPointsLine(m_point1, m_point2, m_pointsAmountByX, pointsToCreate);
-    int numByY = m_pointsAmountByY - 1;
-    RS_Vector dv1 = (m_point1 - lastPoint) / numByY;
-    RS_Vector dv2 = (m_point2 - m_point3) / numByY;
-    RS_Vector v1 = m_point1;
-    RS_Vector v2 = m_point2;
+    const int numByY = m_pointsAmountByY - 1;
+    const RS_Vector dv1 = (m_point1 - lastPoint) / numByY;
+    const RS_Vector dv2 = (m_point2 - m_point3) / numByY;
+    const RS_Vector v1 = m_point1;
+    const RS_Vector v2 = m_point2;
     for (int i = 1; i < numByY; ++i) {
-        createPointsLine(v1 - dv1*i,
-                         v2 - dv2*i,m_pointsAmountByX,pointsToCreate);
+        createPointsLine(v1 - dv1 * i, v2 - dv2 * i, m_pointsAmountByX, pointsToCreate);
     }
     createPointsLine(m_point3, lastPoint,  m_pointsAmountByX, pointsToCreate);
 }

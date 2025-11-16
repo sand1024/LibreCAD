@@ -26,6 +26,7 @@
 #include "lc_containertraverser.h"
 
 #include "rs_arc.h"
+#include "rs_document.h"
 #include "rs_pen.h"
 #include "rs_polyline.h"
 
@@ -51,10 +52,7 @@ void LC_ActionPolylineChangeSegmentType::doTrigger() {
     if (createdPolyline != nullptr) {
         createdPolyline->setLayer(m_polyline->getLayer());
         createdPolyline->setPen(m_polyline->getPen(false));
-
-        m_container->addEntity(createdPolyline);
-
-        undoCycleReplace(m_polyline, createdPolyline);
+        undoCycleReplace(m_polyline, createdPolyline); // fixme - undoable - change to simpler form via undoableTrigger
         m_polyline = createdPolyline;
         m_polylineSegment = nullptr;
         setStatus(SetSegment);
@@ -125,7 +123,7 @@ void LC_ActionPolylineChangeSegmentType::onMouseMoveEvent(int status, LC_MouseEv
 }
 
 RS_Polyline* LC_ActionPolylineChangeSegmentType::createModifiedPolyline() const {
-    auto* result = new RS_Polyline(m_container);
+    auto* result = new RS_Polyline(m_document);
 
     for(RS_Entity* entity: lc::LC_ContainerTraverser{*m_polyline, RS2::ResolveAll}.entities()) {
         if (m_polylineSegment == entity){

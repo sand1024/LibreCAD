@@ -95,7 +95,7 @@ void LC_ApplicationWindowInitializer::initApplication(){
     initReleaseChecker();
 }
 
-void LC_ApplicationWindowInitializer::initSnapManager() {
+void LC_ApplicationWindowInitializer::initSnapManager() const {
     m_appWin->m_snapManager = std::make_unique<LC_SnapManager>(m_appWin->m_snapToolBar);
     m_appWin->m_actionHandler->setSnapManager(m_appWin->m_snapManager.get());
 }

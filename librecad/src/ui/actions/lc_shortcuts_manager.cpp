@@ -73,7 +73,7 @@ void LC_ShortcutsManager::updateActionTooltips(const QMap<QString, QAction *> &a
     updateActionShortcutTooltips(actionsMap, showShortcutsInActionsTooltips);
 }
 
-void LC_ShortcutsManager::init() {
+void LC_ShortcutsManager::init() const {
     QString defaultFileName = getDefaultShortcutsFileName();
     if (!defaultFileName.isEmpty()) {
         QFile defaultFile(defaultFileName);

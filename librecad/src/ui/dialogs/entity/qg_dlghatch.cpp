@@ -25,12 +25,14 @@
 **********************************************************************/
 #include "qg_dlghatch.h"
 
+#include "rs_document.h"
 #include "lc_graphicviewport.h"
 #include "rs_hatch.h"
 #include "rs_line.h"
 #include "rs_math.h"
 #include "rs_pattern.h"
 #include "rs_patternlist.h"
+#include "rs_preview.h"
 #include "rs_settings.h"
 /*
  *  Constructs a QG_DlgHatch as a child of 'parent', with the
@@ -56,9 +58,10 @@ void QG_DlgHatch::languageChange(){
     retranslateUi(this);
 }
 
+
 void QG_DlgHatch::init() {
-    m_preview = std::make_unique<RS_EntityContainer>();
-    gvPreview->setContainer(m_preview.get());
+    m_previewDocument = std::make_unique<LC_PreviewDocument>(nullptr);
+    gvPreview->setDocument(m_previewDocument.get());
     gvPreview->getViewPort()->setBorders(15,15,15,15);
     gvPreview->initView();
     gvPreview->addScrollbars();
@@ -67,7 +70,7 @@ void QG_DlgHatch::init() {
     cbPattern->init();
 }
 
-void QG_DlgHatch::polish() {
+void QG_DlgHatch::polish() const {
     LC_Dialog::ensurePolished();
     gvPreview->zoomAuto();
 }
@@ -130,7 +133,7 @@ void QG_DlgHatch::updateEntity() {
     }
 }
 
-void QG_DlgHatch::showArea(){
+void QG_DlgHatch::showArea() const {
     double area = m_entity->getTotalArea();
     if (RS_Math::notEqual(area, RS_MAXDOUBLE)) {
         QString number = QString::number(m_entity->getTotalArea(), 'g', 10);
@@ -153,11 +156,11 @@ void QG_DlgHatch::resizeEvent ( QResizeEvent * ) {
 }
 
 void QG_DlgHatch::updatePreview() {
-    if (m_preview==nullptr) {
+    if (m_previewDocument==nullptr) {
         return;
     }
     if (m_entity == nullptr || !cbEnablePreview->isChecked()) {
-        m_preview->clear();
+        m_previewDocument->clear();
         gvPreview->zoomAuto();
         return;
     }
@@ -175,9 +178,9 @@ void QG_DlgHatch::updatePreview() {
         prevSize = std::max(prevSize, m_pattern->getSize().magnitude());
     }
 
-    m_preview->clear();
+    m_previewDocument->clear();
 
-    auto* prevHatch = new RS_Hatch(m_preview.get(),
+    auto* prevHatch = new RS_Hatch(m_previewDocument.get(),
                                        RS_HatchData(isSolid, scale, angle, patName));
     prevHatch->setPen(m_entity->getPen());
 
@@ -187,7 +190,7 @@ void QG_DlgHatch::updatePreview() {
     loop->setPen(pen);
     addRectangle(pen, {0., 0.}, {prevSize,prevSize}, loop);
     prevHatch->addEntity(loop);
-    m_preview->addEntity(prevHatch);
+    m_previewDocument->addEntity(prevHatch);
     if (!isSolid) {
         prevHatch->update();
     }
@@ -205,7 +208,7 @@ void QG_DlgHatch::addRectangle(RS_Pen pen, RS_Vector const &v0, RS_Vector const 
     }
 }
 
-void QG_DlgHatch::saveSettings(){
+void QG_DlgHatch::saveSettings() const {
     if (m_isNew){
         LC_GROUP_GUARD("Draw");
         LC_SET("HatchSolid", cbSolid->isChecked());

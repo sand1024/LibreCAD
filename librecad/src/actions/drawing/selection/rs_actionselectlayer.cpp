@@ -27,6 +27,7 @@
 #include "rs_actionselectlayer.h"
 
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_selection.h"
 
 RS_ActionSelectLayer::RS_ActionSelectLayer(LC_ActionContext *actionContext)
@@ -44,7 +45,7 @@ void RS_ActionSelectLayer::onMouseMoveEvent([[maybe_unused]]int status, LC_Mouse
 
 void RS_ActionSelectLayer::doTrigger() {
     if (m_entity){
-        RS_Selection s(*m_container, m_viewport);
+        RS_Selection s(m_document, m_viewport);
         s.selectLayer(m_entity);
     } else {
         RS_DEBUG->print("RS_ActionSelectLayer::trigger: Entity is NULL\n");

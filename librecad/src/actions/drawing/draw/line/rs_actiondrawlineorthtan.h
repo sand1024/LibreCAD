@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef RS_ACTIONDRAWLINEORTHTAN_H
 #define RS_ACTIONDRAWLINEORTHTAN_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_previewactioninterface.h"
 
 class RS_Line;
@@ -33,10 +34,10 @@ class RS_Line;
  *
  * @author Dongxu Li
  */
-class RS_ActionDrawLineOrthTan : public RS_PreviewActionInterface {
+class RS_ActionDrawLineOrthTan : public LC_SingleEntityCreationAction {
     Q_OBJECT
 public:
-    RS_ActionDrawLineOrthTan(LC_ActionContext *actionContext);
+    explicit RS_ActionDrawLineOrthTan(LC_ActionContext *actionContext);
     ~RS_ActionDrawLineOrthTan() override;
     void finish(bool updateTB) override;
 protected:
@@ -57,6 +58,7 @@ protected:
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
-    void doTrigger() override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
 };
 #endif

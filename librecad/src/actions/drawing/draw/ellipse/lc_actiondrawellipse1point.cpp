@@ -24,6 +24,7 @@
 
 #include "lc_ellipse1pointoptions.h"
 #include "lc_linemath.h"
+#include "rs_document.h"
 #include "rs_ellipse.h"
 
 struct LC_ActionDrawEllipse1Point::ActionData {
@@ -39,11 +40,11 @@ struct LC_ActionDrawEllipse1Point::ActionData {
     bool isArc = false;
     bool reversed = false;
 
-    double getMajorAngle(){
+    double getMajorAngle() const {
         return hasAngle ? ucsBasicMajorRadiusAngle : 0.0;
     }
 
-    double getRatio(){
+    double getRatio() const {
         return minorRadius / majorRadius;
     }
 };
@@ -61,28 +62,28 @@ void LC_ActionDrawEllipse1Point::init(int status) {
 
 LC_ActionDrawEllipse1Point::~LC_ActionDrawEllipse1Point() = default;
 
-void LC_ActionDrawEllipse1Point::doTrigger() {
+RS_Entity* LC_ActionDrawEllipse1Point::doTriggerCreateEntity() {
     double ratio = m_actionData->getRatio();
-    auto *ellipse = new RS_Ellipse{m_container,
+    auto *ellipse = new RS_Ellipse{m_document,
                                    {m_actionData->center, getMajorP(), ratio,
                                     m_actionData->angle1, m_actionData->angle2, m_actionData->reversed}
     };
-    // todo - code belos is similar to DrawEllipseAxis action.. should we make it common for all ellipse actions?
-    if   (ratio > 1.){
+    // todo - code below is similar to DrawEllipseAxis action.. should we make it common for all ellipse actions?
+    if  (ratio > 1.){
         ellipse->switchMajorMinor();
     }
-    setPenAndLayerToActive(ellipse);
 
     if (m_moveRelPointAtCenterAfterTrigger){
         moveRelativeZero(ellipse->getCenter());
     }
+    return ellipse;
+}
 
-    undoCycleAdd(ellipse);
-
+void LC_ActionDrawEllipse1Point::doTriggerCompletion(bool success) {
     setStatus(SetPoint);
 }
 
-RS_Vector LC_ActionDrawEllipse1Point::getMajorP(){
+RS_Vector LC_ActionDrawEllipse1Point::getMajorP() const {
     return RS_Vector::polar(m_actionData->majorRadius, toWorldAngleFromUCSBasis(m_actionData->getMajorAngle()));
 }
 
@@ -355,35 +356,35 @@ QStringList LC_ActionDrawEllipse1Point::getAvailableCommands() {
     }
 }
 
-double LC_ActionDrawEllipse1Point::getMajorRadius() {
+double LC_ActionDrawEllipse1Point::getMajorRadius() const {
     return m_actionData->majorRadius;
 }
 
-double LC_ActionDrawEllipse1Point::getMinorRadius() {
+double LC_ActionDrawEllipse1Point::getMinorRadius() const {
     return m_actionData->minorRadius;
 }
 
-bool LC_ActionDrawEllipse1Point::isAngleFree() {
+bool LC_ActionDrawEllipse1Point::isAngleFree() const {
     return m_actionData->freeAngle;
 }
 
-void LC_ActionDrawEllipse1Point::setMajorRadius(double val) {
+void LC_ActionDrawEllipse1Point::setMajorRadius(double val) const {
     m_actionData->majorRadius = val;
 }
 
-void LC_ActionDrawEllipse1Point::setMinorRadius(double val) {
+void LC_ActionDrawEllipse1Point::setMinorRadius(double val) const {
     m_actionData->minorRadius = val;
 }
 
-double LC_ActionDrawEllipse1Point::getUcsMajorAngleDegrees() {
+double LC_ActionDrawEllipse1Point::getUcsMajorAngleDegrees() const {
     return RS_Math::rad2deg(m_actionData->ucsBasicMajorRadiusAngle);
 }
 
-void LC_ActionDrawEllipse1Point::setUcsMajorAngleDegrees(double ucsBasisAngleDegrees) {
+void LC_ActionDrawEllipse1Point::setUcsMajorAngleDegrees(double ucsBasisAngleDegrees) const {
     m_actionData->ucsBasicMajorRadiusAngle = RS_Math::deg2rad(ucsBasisAngleDegrees);
 }
 
-void LC_ActionDrawEllipse1Point::setUcsMajorAngle(double ucsBasisAngleRad) {
+void LC_ActionDrawEllipse1Point::setUcsMajorAngle(double ucsBasisAngleRad) const {
     m_actionData->ucsBasicMajorRadiusAngle = ucsBasisAngleRad;
 }
 
@@ -398,7 +399,7 @@ void LC_ActionDrawEllipse1Point::setAngleFree(bool val) {
     toSetPointStatus();
 }
 
-bool LC_ActionDrawEllipse1Point::hasAngle() {
+bool LC_ActionDrawEllipse1Point::hasAngle() const {
     return m_actionData->hasAngle;
 }
 

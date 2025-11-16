@@ -1771,7 +1771,7 @@ bool RS_FilterDXF1::gotoBufLineString(char* _lstr) {
 
 // Replace bynary Bytes (<32) by an other (given) byte:
 //
-void RS_FilterDXF1::replaceBinaryBytesBy(char _c) {
+void RS_FilterDXF1::replaceBinaryBytesBy(char _c) const {
     int bc;
 
     for(bc=0; bc<(int)fSize; ++bc) {
@@ -1788,7 +1788,7 @@ void RS_FilterDXF1::replaceBinaryBytesBy(char _c) {
 void RS_FilterDXF1::separateBuf(char _c1,
                                 char _c2,
                                 char _c3,
-                                char _c4) {
+                                char _c4) const {
     int bc;
 
     for(bc=0; bc<(int)fSize; ++bc) {
@@ -1804,7 +1804,7 @@ void RS_FilterDXF1::separateBuf(char _c1,
 // remove comment between '_fc' and '_lc'
 //   comments get replaced by '\0'
 //
-void RS_FilterDXF1::removeComment(char _fc, char _lc) {
+void RS_FilterDXF1::removeComment(char _fc, char _lc) const {
     bool rem=false;   // Are we removing currently?
     int bc;           // counter
 

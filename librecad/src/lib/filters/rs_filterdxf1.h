@@ -64,7 +64,7 @@ public:
     void    resetBufP();
 
     void    setBufP(int _fBufP);
-    int     getBufP() {
+    int     getBufP() const {
         return fBufP;
     }
     void    delBuffer();
@@ -72,7 +72,7 @@ public:
 
     QString getBufLine();
     char*   getBufLineCh();
-    char*   getBuf() {
+    char*   getBuf() const {
         return fBuf;
     }
     void    setBuf(char* _buf) {
@@ -85,13 +85,13 @@ public:
     bool    gotoBufLine(char* _lstr);
     bool    gotoBufLineString(char* _lstr);
 
-    void    replaceBinaryBytesBy(char _c);
+    void    replaceBinaryBytesBy(char _c) const;
     void    separateBuf(char _c1=13,
                         char _c2=10,
                         char _c3=0,
-                        char _c4=0);
+                        char _c4=0) const;
     void    removeComment(char _fc='(',
-                          char _lc=')');
+                          char _lc=')') const;
 
     bool    readFileInBuffer(char* _name, int _bNum=-1);
     bool    readFileInBuffer(int _bNum=-1);

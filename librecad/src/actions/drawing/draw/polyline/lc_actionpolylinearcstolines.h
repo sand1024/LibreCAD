@@ -45,7 +45,7 @@ protected:
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void setPolylineToModify(RS_Entity* entity);
-    RS_Polyline *createPolyline(RS_Polyline *pPolyline);
+    RS_Polyline *createPolyline(RS_Polyline *pPolyline) const;
     bool hasArcsSegments(RS_Polyline *p);
     void doTrigger() override;
 };

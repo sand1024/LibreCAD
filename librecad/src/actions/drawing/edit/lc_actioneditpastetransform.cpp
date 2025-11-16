@@ -31,7 +31,7 @@
 // fixme - sand - ucs - Check for support of UCS!
 
 LC_ActionEditPasteTransform::LC_ActionEditPasteTransform(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("PasteTransform", actionContext,  RS2::ActionEditPasteTransform),
+    :LC_UndoablePreviewActionInterface("PasteTransform", actionContext,  RS2::ActionEditPasteTransform),
     m_referencePoint{new RS_Vector(false)},
     m_pasteData{new PasteData()}{
 }
@@ -45,7 +45,7 @@ void LC_ActionEditPasteTransform::init(int status) {
 }
 
 void LC_ActionEditPasteTransform::doTrigger() {
-    RS_Modification m(*m_container, m_viewport, false);
+    RS_Modification m(m_document, m_viewport, false); // undoCycle in trigger, so don't create undo section in modification
 
     int numX = m_pasteData->arrayXCount;
     int numY = m_pasteData->arrayYCount;
@@ -61,9 +61,6 @@ void LC_ActionEditPasteTransform::doTrigger() {
         numX = 1;
         numY = 1;
     }
-
-    undoCycleStart();
-
     for (int x = 0; x < numX; x++){
         for (int y = 0; y < numY; y++){
             RS_Vector currentPoint = *m_referencePoint + xArrayVector*x + yArrayVector * y;
@@ -74,9 +71,6 @@ void LC_ActionEditPasteTransform::doTrigger() {
 //            LC_ERR << "Paste: " << x+y;
         }
     }
-
-    undoCycleEnd();
-
     if (!m_invokedWithControl) {
         finish(false);
     }
@@ -160,24 +154,24 @@ bool LC_ActionEditPasteTransform::doUpdateDistanceByInteractiveInput(const QStri
 }
 
 double LC_ActionEditPasteTransform::getAngle() const {return m_pasteData-> angle;}
-void LC_ActionEditPasteTransform::setAngle(double angle) {m_pasteData->angle = angle;}
+void LC_ActionEditPasteTransform::setAngle(double angle) const {m_pasteData->angle = angle;}
 double LC_ActionEditPasteTransform::getFactor() const {return m_pasteData->factor;}
-void LC_ActionEditPasteTransform::setFactor(double factor) {m_pasteData->factor = factor;}
+void LC_ActionEditPasteTransform::setFactor(double factor) const {m_pasteData->factor = factor;}
 bool LC_ActionEditPasteTransform::isArrayCreated() const {return m_pasteData->arrayCreated;}
-void LC_ActionEditPasteTransform::setArrayCreated(bool arrayCreated) {m_pasteData->arrayCreated = arrayCreated;}
+void LC_ActionEditPasteTransform::setArrayCreated(bool arrayCreated) const {m_pasteData->arrayCreated = arrayCreated;}
 int LC_ActionEditPasteTransform::getArrayXCount() const {return m_pasteData->arrayXCount;}
-void LC_ActionEditPasteTransform::setArrayXCount(int arrayXCount) {m_pasteData->arrayXCount = arrayXCount;}
+void LC_ActionEditPasteTransform::setArrayXCount(int arrayXCount) const {m_pasteData->arrayXCount = arrayXCount;}
 int LC_ActionEditPasteTransform::getArrayYCount() const {return m_pasteData->arrayYCount;}
-void LC_ActionEditPasteTransform::setArrayYCount(int arrayYCount) {m_pasteData->arrayYCount = arrayYCount;}
+void LC_ActionEditPasteTransform::setArrayYCount(int arrayYCount) const {m_pasteData->arrayYCount = arrayYCount;}
 double LC_ActionEditPasteTransform::getArraySpacingX() const {return m_pasteData->arraySpacing.x;}
-void LC_ActionEditPasteTransform::setArraySpacingX(double arraySpacing) {m_pasteData->arraySpacing.x = arraySpacing;}
+void LC_ActionEditPasteTransform::setArraySpacingX(double arraySpacing) const {m_pasteData->arraySpacing.x = arraySpacing;}
 double LC_ActionEditPasteTransform::getArraySpacingY() const {return m_pasteData->arraySpacing.y;}
-void LC_ActionEditPasteTransform::setArraySpacingY(double arraySpacing) {m_pasteData->arraySpacing.y = arraySpacing;}
+void LC_ActionEditPasteTransform::setArraySpacingY(double arraySpacing) const {m_pasteData->arraySpacing.y = arraySpacing;}
 double LC_ActionEditPasteTransform::getArrayAngle() const {return m_pasteData->arrayAngle;}
-void LC_ActionEditPasteTransform::setArrayAngle(double arrayAngle) {m_pasteData->arrayAngle = arrayAngle;}
+void LC_ActionEditPasteTransform::setArrayAngle(double arrayAngle) const {m_pasteData->arrayAngle = arrayAngle;}
 LC_ActionOptionsWidget *LC_ActionEditPasteTransform::createOptionsWidget() {return new LC_PasteTransformOptions();}
 
-void LC_ActionEditPasteTransform::previewMultipleReferencePoints() {
+void LC_ActionEditPasteTransform::previewMultipleReferencePoints() const {
     int numX = m_pasteData->arrayXCount;
     int numY = m_pasteData->arrayYCount;
 

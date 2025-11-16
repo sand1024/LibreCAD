@@ -49,11 +49,11 @@ public:
     void setColorName(QString &value){m_colorName = value;};
     QString getLineTypeName() {return m_lineTypeName;};
     QString getLineWidthName() {return m_lineWidthName;};
-    RS2::LineType getLineType();
+    RS2::LineType getLineType() const;
 
     bool isMatched() const {return m_matched;};
     void setMatched(bool value) {m_matched = value;};
-    RS2::LineWidth getLineWidth();
+    RS2::LineWidth getLineWidth() const;
 
     RS_Color getColor();
     void setLineTypeIcon(QIcon &icon);

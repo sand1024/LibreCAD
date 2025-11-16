@@ -45,13 +45,13 @@ using LC_Rect = lc::geo::Area;
  * angle1=angle2=0.0 is reserved for whole ellipses
  * add 2*M_PI to angle1 or angle2 to make whole range ellipse arcs
  */
-struct RS_EllipseData {
-    //! Ellipse center
-    RS_Vector center;
-    //! Endpoint of major axis relative to center.
-    RS_Vector majorP;
-    //! Ratio of minor axis to major axis.
-    double ratio = 0.;
+        struct RS_EllipseData {
+            //! Ellipse center
+            RS_Vector center;
+            //! Endpoint of major axis relative to center.
+            RS_Vector majorP;
+            //! Ratio of minor axis to major axis.
+            double ratio = 0.;
     //! Start angle
     double angle1 = 0.;
     //! End angle
@@ -269,7 +269,7 @@ private:
      *        direction
      * @author Dongxu Li
      */
-    void mergeBoundingBox(LC_Rect& boundingBox, const RS_Vector& direction);
+    void mergeBoundingBox(LC_Rect& boundingBox, const RS_Vector& direction) const;
     void drawVisible(RS_Painter* painter) const;
     bool isVisibleInWindow(const RS_Painter& painter) const;
 };

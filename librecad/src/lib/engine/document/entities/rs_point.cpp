@@ -95,10 +95,10 @@ RS_Vector RS_Point::getNearestEndpoint(const RS_Vector& coord, double* dist)cons
 
 RS_Vector RS_Point::getNearestPointOnEntity(const RS_Vector& coord,
         bool /*onEntity*/, double* dist, RS_Entity** entity) const{
-    if (dist) {
+    if (dist != nullptr) {
         *dist = data.pos.distanceTo(coord);
     }
-    if (entity) {
+    if (entity != nullptr) {
         *entity = const_cast<RS_Point*>(this);
     }
     return data.pos;
@@ -139,7 +139,7 @@ double RS_Point::getDistanceToPoint(const RS_Vector& coord,
                                     RS_Entity** entity,
                                     RS2::ResolveLevel /*level*/,
                                     double /*solidDist*/)const {
-    if (entity) {
+    if (entity != nullptr) {
         *entity = const_cast<RS_Point*>(this);
     }
     return data.pos.distanceTo(coord);

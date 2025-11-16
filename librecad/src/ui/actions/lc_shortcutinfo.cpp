@@ -28,7 +28,7 @@ QString LC_ShortcutInfo::retrieveKey(bool useDefault) const {
     return useDefault ? m_defaultKey.toString() : m_key.toString();
 };
 
-QString LC_ShortcutInfo::getKeyAsString() {
+QString LC_ShortcutInfo::getKeyAsString() const {
     QString text = m_key.toString(QKeySequence::PortableText);
     return text;
 }
@@ -68,7 +68,7 @@ int LC_ShortcutInfo::translateModifiers(Qt::KeyboardModifiers state,
     return result;
 }
 
-bool LC_ShortcutInfo::hasTheSameKey(QKeySequence sequenceToTest) {
+bool LC_ShortcutInfo::hasTheSameKey(QKeySequence sequenceToTest) const {
     bool result = false;
     if (m_key.isEmpty()) {
         if (!m_defaultKey.isEmpty()) {

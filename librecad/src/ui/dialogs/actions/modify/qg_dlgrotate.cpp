@@ -120,7 +120,7 @@ void QG_DlgRotate::setData(RS_RotateData* d) {
 
 }
 
-void QG_DlgRotate::updateData() {
+void QG_DlgRotate::updateData() const {
     if (rbMove->isChecked()) {
         data->number = 0;
     } else if (rbCopy->isChecked()) {

@@ -40,7 +40,7 @@ public:
     QG_MTextOptions();
     ~QG_MTextOptions() override;
 public slots:
-    void updateText();
+    void updateText() const;
     void updateAngle();
     void languageChange() override;
 protected:

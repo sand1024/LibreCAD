@@ -46,7 +46,7 @@ protected:
     RS_Layer* m_layer = nullptr;
 
 private:
-    void deselectEntitiesOnLockedLayer(RS_Layer* layer);
+    void deselectEntitiesOnLockedLayer(RS_Layer* layer) const;
 };
 
 #endif

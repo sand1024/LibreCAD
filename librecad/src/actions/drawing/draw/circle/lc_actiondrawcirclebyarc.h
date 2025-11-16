@@ -93,9 +93,9 @@ private:
      */
     double m_radiusShift = 0.0;
 
-    RS_CircleData createCircleData(RS_Arc* arc);
-    RS_EllipseData createEllipseData(RS_Ellipse *pEllipse);
-    void deleteOriginalArcOrEllipse(RS_Entity *en);
+    RS_CircleData createCircleData(RS_Arc* arc) const;
+    RS_EllipseData createEllipseData(RS_Ellipse *pEllipse) const;
+    void deleteOriginalArcOrEllipse(RS_Entity *en) const;
 };
 
 #endif // LC_ACTIONDRAWCIRCLEBYARC_H

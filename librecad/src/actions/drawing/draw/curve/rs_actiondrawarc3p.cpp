@@ -26,6 +26,7 @@
 #include "rs_actiondrawarc3p.h"
 
 #include "rs_arc.h"
+#include "rs_document.h"
 
 /**
  * Arc data defined so far.
@@ -58,15 +59,12 @@ void RS_ActionDrawArc3P::reset() {
 
 void RS_ActionDrawArc3P::init(int status) {
     LC_ActionDrawCircleBase::init(status);
-    //reset();
 }
 
-void RS_ActionDrawArc3P::doTrigger() {
+RS_Entity* RS_ActionDrawArc3P::doTriggerCreateEntity(){
     preparePreview(m_alternatedPoints);
     if (m_actionData->data.isValid()){
-        auto *arc = new RS_Arc{m_container, m_actionData->data};
-
-        setPenAndLayerToActive(arc);
+        auto *arc = new RS_Arc{m_document, m_actionData->data};
 
         RS_Vector rz = arc->getEndpoint();
         if (m_moveRelPointAtCenterAfterTrigger){
@@ -74,18 +72,19 @@ void RS_ActionDrawArc3P::doTrigger() {
         }
         moveRelativeZero(rz);
 
-        undoCycleAdd(arc);
-
-        m_alternatedPoints = false;
-        setStatus(SetPoint1);
-        reset();
-    } else {
-        //RS_DIALOGFACTORY->requestWarningDialog(tr("Invalid arc data."));
-        commandMessage(tr("Invalid arc data."));
+        return arc;
     }
+    commandMessage(tr("Invalid arc data."));
+    return nullptr;
 }
 
-void RS_ActionDrawArc3P::preparePreview(bool alternatePoints){
+void RS_ActionDrawArc3P::doTriggerCompletion(bool success){
+    m_alternatedPoints = false;
+    setStatus(SetPoint1);
+    reset();
+}
+
+void RS_ActionDrawArc3P::preparePreview(bool alternatePoints) const {
     if (m_actionData->point1.valid && m_actionData->point2.valid && m_actionData->point3.valid){
         RS_Arc arc(nullptr, m_actionData->data);
         RS_Vector &middlePoint = m_actionData->point2;

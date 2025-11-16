@@ -132,7 +132,7 @@ public:
     void draw(RS_Painter *painter) override;
     void drawAsChild(RS_Painter *painter) override;
     friend std::ostream &operator<<(std::ostream &os, const RS_Polyline &l);
-    RS_Vector getRefPointAdjacentDirection(bool previousSegment, RS_Vector& refPoint);
+    RS_Vector getRefPointAdjacentDirection(bool previousSegment, RS_Vector& refPoint) const;
 protected:
     std::unique_ptr<RS_Entity> createVertex(
         const RS_Vector &v,

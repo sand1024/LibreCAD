@@ -99,7 +99,7 @@ std::string dwgReader::findTableName(DRW::TTYPE table, dint32 handle){
     return name;
 }
 
-bool dwgReader::readDwgHeader(DRW_Header& hdr, dwgBuffer *buf, dwgBuffer *hBuf){
+bool dwgReader::readDwgHeader(DRW_Header& hdr, dwgBuffer *buf, dwgBuffer *hBuf) const {
     bool ret = hdr.parseDwg(version, buf, hBuf, maintenanceVersion);
     //RLZ: copy objectControl handles
     return ret;

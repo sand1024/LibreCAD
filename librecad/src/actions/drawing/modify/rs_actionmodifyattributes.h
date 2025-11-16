@@ -35,10 +35,10 @@
  *
  * @author Andrew Mustun
  */
-class   RS_ActionModifyAttributes : public LC_ActionPreSelectionAwareBase {
+class RS_ActionModifyAttributes : public LC_ActionPreSelectionAwareBase {
     Q_OBJECT
 public:
-    RS_ActionModifyAttributes(LC_ActionContext *actionContext);
+    explicit RS_ActionModifyAttributes(LC_ActionContext *actionContext);
     bool mayBeTerminatedExternally() override {return !m_dialogVisible;}
 protected:
     /**
@@ -50,7 +50,8 @@ protected:
 
     bool m_dialogVisible {false};
     void updateMouseButtonHintsForSelection() override;
-    void doTrigger(bool keepSelected) override;
-
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
+    void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
 };
 #endif

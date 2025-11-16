@@ -30,13 +30,14 @@
 #include "qg_polylineequidistantoptions.h"
 #include "rs_arc.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_information.h"
 #include "rs_line.h"
 #include "rs_polyline.h"
 #include "rs_preview.h"
 
 RS_ActionPolylineEquidistant::RS_ActionPolylineEquidistant(LC_ActionContext *actionContext)
-	:RS_PreviewActionInterface("Create Equidistant Polylines", actionContext, RS2::ActionPolylineEquidistant)
+	:LC_UndoablePreviewActionInterface("Create Equidistant Polylines", actionContext, RS2::ActionPolylineEquidistant)
 	, m_dist(1.)
 	,m_number(1){
 }
@@ -60,7 +61,7 @@ void RS_ActionPolylineEquidistant::init(int status){
  *
  * @author Rallaz
  */
-RS_Entity *RS_ActionPolylineEquidistant::calculateOffset(RS_Entity *newEntity, RS_Entity *orgEntity, double distance){
+RS_Entity *RS_ActionPolylineEquidistant::calculateOffset(RS_Entity *newEntity, RS_Entity *orgEntity, double distance) const {
     if (isArc(orgEntity) && isArc(newEntity)){
         auto *arc = static_cast<RS_Arc*>(newEntity);
         auto originalEntity = static_cast<RS_Arc*>(orgEntity);
@@ -120,7 +121,7 @@ RS_Vector RS_ActionPolylineEquidistant::calculateIntersection(RS_Entity* first,R
 }
 
 void RS_ActionPolylineEquidistant::makeContour(RS_Polyline*  originalPolyline, bool contourOnRightSide, QList<RS_Polyline*> &createdPolylines){
-    if (!m_container){
+    if (!m_document){
         RS_DEBUG->print(RS_Debug::D_WARNING,
                         "RS_ActionPolylineEquidistant::makeContour: no valid container");
     }
@@ -146,7 +147,7 @@ void RS_ActionPolylineEquidistant::makeContour(RS_Polyline*  originalPolyline, b
     RS_Arc arcFirst(nullptr, RS_ArcData(origin, 0, 0, 0, false));//previous arc
 
     for (int num = 1; num <= m_number || (m_number == 0 && num <= 1); num++) {
-        auto newPolyline = new RS_Polyline(m_container);
+        auto newPolyline = new RS_Polyline(m_document);
 
         bool first = true;
         bool closed = originalPolyline->isClosed();
@@ -263,22 +264,16 @@ void RS_ActionPolylineEquidistant::makeContour(RS_Polyline*  originalPolyline, b
 void RS_ActionPolylineEquidistant::doTrigger() {
     RS_DEBUG->print("RS_ActionPolylineEquidistant::trigger()");
     if (m_originalEntity != nullptr) {
-        if (m_document != nullptr){
-            undoCycleStart();
+        QList<RS_Polyline*> polylines;
+        makeContour(m_originalEntity, m_bRightSide, polylines);
 
-            QList<RS_Polyline *> polylines;
-            makeContour(m_originalEntity, m_bRightSide, polylines);
-
-            for (RS_Polyline *newPolyline: polylines) {
-                newPolyline->setLayerToActive(); // fixme - cache layer to set
-                m_container->addEntity(newPolyline);
-                undoableAdd(newPolyline);
-            }
-            undoCycleEnd();
+        for (RS_Polyline* newPolyline : polylines) {
+            newPolyline->setLayerToActive(); // fixme - cache layer to set
+            undoableAdd(newPolyline); // fixme - undoable - change to simpler form via undoableTrigger
         }
 
         m_originalEntity = nullptr;
-        m_bRightSide = false;
+        m_bRightSide     = false;
         setStatus(ChooseEntity);
     }
 }
@@ -317,7 +312,7 @@ void RS_ActionPolylineEquidistant::onMouseMoveEvent(int status, LC_MouseEvent *e
 }
 
 void RS_ActionPolylineEquidistant::setPolylineToModify(LC_MouseEvent* e, RS_Entity* en) {
-    if (!en){
+    if (en == nullptr){
         commandMessage(tr("No Entity found."));
     } else if (en->rtti() != RS2::EntityPolyline){
         commandMessage(tr("Entity must be a polyline."));

@@ -904,7 +904,7 @@ void RS_Dimension::createDimensionLine(const RS_Vector& dimLineStart, const RS_V
 /**
  * @return general factor for linear dimensions. $DIMLFAC
  */
-double RS_Dimension::getGeneralFactor() {
+double RS_Dimension::getGeneralFactor() const {
     return m_dimStyleTransient->scaling()->linearFactor();
     // return getGraphicVariable("$DIMLFAC", 1.0, 40);
 }
@@ -912,7 +912,7 @@ double RS_Dimension::getGeneralFactor() {
 /**
  * @return General scale for dimensions (DIMSCALE)
  */
-double RS_Dimension::getGeneralScale() {
+double RS_Dimension::getGeneralScale() const {
     return m_dimStyleTransient->scaling()->scale();
     // return getGraphicVariable("$DIMSCALE", 1.0, 40);
 }
@@ -920,7 +920,7 @@ double RS_Dimension::getGeneralScale() {
 /**
  * @return arrow size in drawing units - $DIMASZ
  */
-double RS_Dimension::getArrowSize() {
+double RS_Dimension::getArrowSize() const {
     return m_dimStyleTransient->arrowhead()->size();
     // return getGraphicVariable("$DIMASZ", 2.5, 40);
 }
@@ -928,7 +928,7 @@ double RS_Dimension::getArrowSize() {
 /**
  * @return tick size in drawing units - $DIMTSZ
  */
-double RS_Dimension::getTickSize() {
+double RS_Dimension::getTickSize() const {
     return m_dimStyleTransient->arrowhead()->tickSize();
     // return getGraphicVariable("$DIMTSZ", 0., 40);
 }
@@ -936,7 +936,7 @@ double RS_Dimension::getTickSize() {
 /**
  * @return extension line overlength in drawing units. definition line definition (DIMEXE)
  */
-double RS_Dimension::getExtensionLineExtension() {
+double RS_Dimension::getExtensionLineExtension() const {
     return m_dimStyleTransient->extensionLine()->distanceBeyondDimLine();
     // return getGraphicVariable("$DIMEXE", 1.25, 40);
 }
@@ -944,7 +944,7 @@ double RS_Dimension::getExtensionLineExtension() {
 /**
  * @return extension line offset from entities in drawing units. // distance from entities (DIMEXO)
  */
-double RS_Dimension::getExtensionLineOffset() {
+double RS_Dimension::getExtensionLineOffset() const {
     return m_dimStyleTransient->extensionLine()->distanceFromOriginPoint();
 
     // return getGraphicVariable("$DIMEXO", 0.625, 40);
@@ -953,12 +953,12 @@ double RS_Dimension::getExtensionLineOffset() {
 /**
  * @return extension line gap to text in drawing units. // text distance to line (DIMGAP)
  */
-double RS_Dimension::getDimensionLineGap() {
+double RS_Dimension::getDimensionLineGap() const {
     return m_dimStyleTransient->dimensionLine()->lineGap();
     // return getGraphicVariable("$DIMGAP", 0.625, 40);
 }
 
-double RS_Dimension::getVerticalDistanceToDimLine() {
+double RS_Dimension::getVerticalDistanceToDimLine() const {
     auto text = m_dimStyleTransient->text();
     if (text->verticalPositioning() != LC_DimStyle::Text::CENTER_BETWEEN_EXT_LINES) {
         return text->verticalDistanceToDimLine();
@@ -972,7 +972,7 @@ double RS_Dimension::getVerticalDistanceToDimLine() {
 /**
  * @return Dimension labels text height. // text height (DIMTXT)
  */
-double RS_Dimension::getTextHeight() {
+double RS_Dimension::getTextHeight() const {
     return m_dimStyleTransient->text()->height();
     // return getGraphicVariable("$DIMTXT", 2.5, 40);
 }
@@ -980,7 +980,7 @@ double RS_Dimension::getTextHeight() {
 /**
  * @return Dimension labels alignment text true= horizontal, false= aligned. - $DIMTIH
  */
-bool RS_Dimension::getInsideHorizontalText() {
+bool RS_Dimension::getInsideHorizontalText() const {
     auto orientationPolicy = m_dimStyleTransient->text()->orientationInside();
     return orientationPolicy == LC_DimStyle::Text::TextOrientationPolicy::DRAW_HORIZONTALLY;
 
@@ -996,7 +996,7 @@ bool RS_Dimension::getInsideHorizontalText() {
 /**
  * @return Dimension fixed length for extension lines true= fixed, false= not fixed - $DIMFXLON
  */
-bool RS_Dimension::getFixedLengthOn() {
+bool RS_Dimension::getFixedLengthOn() const {
     return m_dimStyleTransient->extensionLine()->hasFixedLength();
     // int v = getGraphicVariableInt("$DIMFXLON", 0);
     // if (v == 1) {
@@ -1010,7 +1010,7 @@ bool RS_Dimension::getFixedLengthOn() {
 /**
  * @return Dimension fixed length for extension lines.
  */
-double RS_Dimension::getFixedLength() {
+double RS_Dimension::getFixedLength() const {
     return m_dimStyleTransient->extensionLine()->fixedLength();
     // return getGraphicVariable("$DIMFXL", 1.0, 40);
 }
@@ -1018,7 +1018,7 @@ double RS_Dimension::getFixedLength() {
 /**
  * @return extension line Width.
  */
-RS2::LineWidth RS_Dimension::getExtensionLineWidth() {
+RS2::LineWidth RS_Dimension::getExtensionLineWidth() const {
     return m_dimStyleTransient->extensionLine()->lineWidth();
     // return RS2::intToLineWidth(getGraphicVariableInt("$DIMLWE", -2)); //default -2 (RS2::WidthByBlock)
 }
@@ -1026,22 +1026,22 @@ RS2::LineWidth RS_Dimension::getExtensionLineWidth() {
 /**
  * @return dimension line Width.
  */
-RS2::LineWidth RS_Dimension::getDimensionLineWidth() {
+RS2::LineWidth RS_Dimension::getDimensionLineWidth() const {
     return m_dimStyleTransient->dimensionLine()->lineWidth();
     // return RS2::intToLineWidth(getGraphicVariableInt("$DIMLWD", -2)); //default -2 (RS2::WidthByBlock)
 }
 
-RS2::LineType RS_Dimension::getExtensionLineTypeFirst() {
+RS2::LineType RS_Dimension::getExtensionLineTypeFirst() const {
     RS2::LineType result = m_dimStyleTransient->extensionLine()->lineTypeFirst();
     return result;
 }
 
-RS2::LineType RS_Dimension::getExtensionLineTypeSecond() {
+RS2::LineType RS_Dimension::getExtensionLineTypeSecond() const {
     RS2::LineType result = m_dimStyleTransient->extensionLine()->lineTypeSecond();
     return result;
 }
 
-RS2::LineType RS_Dimension::getDimensionLineType() {
+RS2::LineType RS_Dimension::getDimensionLineType() const {
     RS2::LineType result = m_dimStyleTransient->dimensionLine()->lineType();
     return result;
 }
@@ -1049,7 +1049,7 @@ RS2::LineType RS_Dimension::getDimensionLineType() {
 /**
  * @return dimension line Color.
  */
-RS_Color RS_Dimension::getDimensionLineColor() {
+RS_Color RS_Dimension::getDimensionLineColor() const {
     // fixme - sand - temporary debug code
     return m_dimStyleTransient->dimensionLine()->color();
 
@@ -1059,7 +1059,7 @@ RS_Color RS_Dimension::getDimensionLineColor() {
 /**
  * @return extension line Color.
  */
-RS_Color RS_Dimension::getExtensionLineColor() {
+RS_Color RS_Dimension::getExtensionLineColor() const {
     // fixme - sand - temporary debug code
     return m_dimStyleTransient->extensionLine()->color();
     // return RS_FilterDXFRW::numberToColor(getGraphicVariableInt("$DIMCLRE", 0));
@@ -1068,7 +1068,7 @@ RS_Color RS_Dimension::getExtensionLineColor() {
 /**
  * @return dimension text Color.
  */
-RS_Color RS_Dimension::getTextColor() {
+RS_Color RS_Dimension::getTextColor() const {
     return m_dimStyleTransient->text()->color();
     // return RS_FilterDXFRW::numberToColor(getGraphicVariableInt("$DIMCLRT", 0));
 }
@@ -1076,27 +1076,27 @@ RS_Color RS_Dimension::getTextColor() {
 /**
  * @return text style for dimensions.
  */
-QString RS_Dimension::getTextStyle() {
+QString RS_Dimension::getTextStyle() const {
     return m_dimStyleTransient->text()->style();
     // return getGraphicVariableString("$DIMTXSTY", "standard");
 }
 
-RS2::LinearFormat RS_Dimension::getDimLinearFormat() {
+RS2::LinearFormat RS_Dimension::getDimLinearFormat() const {
     return m_dimStyleTransient->linearFormat()->format();
     // return getGraphicVariableInt("$DIMLUNIT", 2);
 }
 
-int RS_Dimension::getDimDecimalPlaces() {
+int RS_Dimension::getDimDecimalPlaces() const {
     return m_dimStyleTransient->linearFormat()->decimalPlaces();
     // return getGraphicVariableInt("$DIMDEC", 4);
 }
 
-int RS_Dimension::getDimTrailingZerosSuppressionMode() {
+int RS_Dimension::getDimTrailingZerosSuppressionMode() const {
     return m_dimStyleTransient->zerosSuppression()->linearRaw();
     // return getGraphicVariableInt("$DIMZIN", 1);
 }
 
-int RS_Dimension::getDimDecimalFormatSeparatorChar() {
+int RS_Dimension::getDimDecimalFormatSeparatorChar() const {
     return m_dimStyleTransient->linearFormat()->decimalFormatSeparatorChar();
     // return getGraphicVariableInt(QStringLiteral("$DIMDSEP"), 0);
 }
@@ -1227,20 +1227,20 @@ void RS_Dimension::mirror(const RS_Vector& axisPoint1, const RS_Vector& axisPoin
 
 void RS_Dimension::update() {
     clear();
-    if (isUndone()) {
+    if (isDeleted()) {
         return;
     }
     resolveEffectiveDimStyleAndUpdateDim();
     calculateBorders();
 }
 
-LC_DimStyle* RS_Dimension::getGlobalDimStyle() {
+LC_DimStyle* RS_Dimension::getGlobalDimStyle() const {
     auto dimStyleName = getStyle();
     auto globalDimStyle = getGraphic()->getResolvedDimStyle(dimStyleName, rtti());
     return globalDimStyle;
 }
 
-LC_DimStyle* RS_Dimension::getEffectiveDimStyle() {
+LC_DimStyle* RS_Dimension::getEffectiveDimStyle() const {
     auto dimStyleName = getStyle();
     LC_DimStyle* result = getGraphic()->getEffectiveDimStyle(dimStyleName, rtti(), getDimStyleOverride());
     return result;
@@ -1248,7 +1248,7 @@ LC_DimStyle* RS_Dimension::getEffectiveDimStyle() {
 
 void RS_Dimension::resolveEffectiveDimStyleAndUpdateDim() {
     m_dimStyleTransient = getEffectiveDimStyle();
-    if (m_dimStyleTransient != nullptr) { // it migth be null during reading of file of example
+    if (m_dimStyleTransient != nullptr) { // it might be null during reading of file of example
         doUpdateDim();
         if (getDimStyleOverride() != nullptr) {
             delete m_dimStyleTransient; // delete a copy of style that was created for override
@@ -1260,7 +1260,7 @@ void RS_Dimension::resolveEffectiveDimStyleAndUpdateDim() {
 void RS_Dimension::updateDim(bool autoText) {
     m_dimGenericData.autoText = autoText;
     clear();
-    if (isUndone()) {
+    if (isDeleted()) {
         return;
     }
     resolveEffectiveDimStyleAndUpdateDim();

@@ -47,6 +47,6 @@ protected:
     };
     RS2::CursorType doGetMouseCursorSelected(int status) override;
     void updateMouseButtonHintsForSelection() override;
-    void doTrigger(bool keepSelected) override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
 };
 #endif

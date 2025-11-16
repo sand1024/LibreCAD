@@ -53,13 +53,13 @@ protected:
 private:
     Ui::LC_ModifyScaleOptions *ui = nullptr;
     RS_ActionModifyScale* m_action = nullptr;
-    void setUseMultipleCopiesToActionAndView(bool copies);
-    void setUseCurrentLayerToActionAndView(bool val);
-    void setUseCurrentAttributesToActionAndView(bool val);
-    void setKeepOriginalsToActionAndView(bool val);
-    void setCopiesNumberToActionAndView(int number);
-    void setExplicitFactorToActionAndView(bool val);
-    void setIsotropicScalingFactorToActionAndView(bool val);
+    void setUseMultipleCopiesToActionAndView(bool copies) const;
+    void setUseCurrentLayerToActionAndView(bool val) const;
+    void setUseCurrentAttributesToActionAndView(bool val) const;
+    void setKeepOriginalsToActionAndView(bool val) const;
+    void setCopiesNumberToActionAndView(int number) const;
+    void setExplicitFactorToActionAndView(bool val) const;
+    void setIsotropicScalingFactorToActionAndView(bool val) const;
     void setFactorXToActionAndView(QString val);
     void setFactorYToActionAndView(QString val);
 };

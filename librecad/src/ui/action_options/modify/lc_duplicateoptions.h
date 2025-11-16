@@ -50,9 +50,9 @@ private:
     LC_ActionModifyDuplicate * m_action = nullptr;
     void setOffsetXToActionAndView(const QString &val);
     void setOffsetYToActionAndView(const QString &val);
-    void setInPlaceDuplicateToActionAndView(bool inplace);
-    void setPenModeToActionAndView(int mode);
-    void setLayerModeToActionAndeView(int mode);
+    void setInPlaceDuplicateToActionAndView(bool inplace) const;
+    void setPenModeToActionAndView(int mode) const;
+    void setLayerModeToActionAndeView(int mode) const;
 };
 
 #endif // LC_DUPLICATEOPTIONS_H

@@ -171,7 +171,7 @@ void LC_SelectWindowOptions::onAllToggled([[maybe_unused]]bool value) {
     setSelectAllToActionAndView(ui->cbAll->isChecked());
 }
 
-void LC_SelectWindowOptions::onTypeToggled([[maybe_unused]]bool value) {
+void LC_SelectWindowOptions::onTypeToggled([[maybe_unused]]bool value) const {
     QList<RS2::EntityType> entityTypes;
     if (ui->cbLine->isChecked()){
         entityTypes << RS2::EntityLine;
@@ -231,7 +231,7 @@ void LC_SelectWindowOptions::onTypeToggled([[maybe_unused]]bool value) {
     }*/
 }
 
-void LC_SelectWindowOptions::setEntityTypesToActinAndView(QList<RS2::EntityType> entityTypes) {
+void LC_SelectWindowOptions::setEntityTypesToActinAndView(QList<RS2::EntityType> entityTypes) const {
     m_action->setEntityTypesToSelect(entityTypes);
     ui->cbLine->setChecked(false);
     ui->cbArc->setChecked(false);

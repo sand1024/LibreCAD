@@ -370,5 +370,7 @@
         <file alias="ui_corner_top.lci">ui_corner_top.svg</file>
         <file alias="fullscreen.lci">fullscreen.svg</file>
         <file alias="main_menu.lci">main_menu.svg</file>
+        <file alias="select_conditional.lci">select_conditional.svg</file>
+        <file alias="select_mode_add.lci">select_mode_add.svg</file>
     </qresource>
 </RCC>

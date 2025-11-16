@@ -50,8 +50,8 @@ protected:
 private:
     std::unique_ptr<Ui::Ui_LibraryInsertOptions> ui;
     RS_ActionLibraryInsert* m_action = nullptr;
-    void setAngleToActionAndView(QString val);
-    void setFactorToActionAndView(QString val);
+    void setAngleToActionAndView(QString val) const;
+    void setFactorToActionAndView(QString val) const;
 };
 
 #endif // QG_LIBRARYINSERTOPTIONS_H

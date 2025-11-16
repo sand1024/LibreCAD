@@ -126,7 +126,7 @@ void LC_DuplicateOptions::setOffsetYToActionAndView(const QString &val){
     }
 }
 
-void LC_DuplicateOptions::setInPlaceDuplicateToActionAndView(bool inplace){
+void LC_DuplicateOptions::setInPlaceDuplicateToActionAndView(bool inplace) const {
     ui->leOffsetX->setEnabled(!inplace);
     ui->leOffsetY->setEnabled(!inplace);
     ui->tbPickOffsetX->setEnabled(!inplace);
@@ -137,12 +137,12 @@ void LC_DuplicateOptions::setInPlaceDuplicateToActionAndView(bool inplace){
     ui->cbInPlace->setChecked(inplace);
 }
 
-void LC_DuplicateOptions::setPenModeToActionAndView(int mode){
+void LC_DuplicateOptions::setPenModeToActionAndView(int mode) const {
     m_action->setPenMode(mode);
     ui->cbPen->setCurrentIndex(mode);
 }
 
-void LC_DuplicateOptions::setLayerModeToActionAndeView(int mode){
+void LC_DuplicateOptions::setLayerModeToActionAndeView(int mode) const {
     m_action->setLayerMode(mode);
     ui->cbLayer->setCurrentIndex(mode);
 }

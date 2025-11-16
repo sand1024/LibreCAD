@@ -129,12 +129,12 @@ void LC_LineFromPointToLineOptions::onEndOffsetEditingFinished(){
     }
 }
 
-void LC_LineFromPointToLineOptions::setSnapModeToActionAndView(int index){
+void LC_LineFromPointToLineOptions::setSnapModeToActionAndView(int index) const {
     m_action->setLineSnapMode(index);
     ui->cbSnap->setCurrentIndex(index);
 }
 
-void LC_LineFromPointToLineOptions::setSizeModelIndexToActionAndView(int index){
+void LC_LineFromPointToLineOptions::setSizeModelIndexToActionAndView(int index) const {
     m_action->setSizeMode(index);
     ui->cbSizeMode->setCurrentIndex(index);
     bool intersectionMode = index == 0;
@@ -173,7 +173,7 @@ void LC_LineFromPointToLineOptions::setEndOffsetToActionAndView(const QString& v
     }
 }
 
-void LC_LineFromPointToLineOptions::setOrthogonalToActionAndView(bool value){
+void LC_LineFromPointToLineOptions::setOrthogonalToActionAndView(bool value) const {
     m_action->setOrthogonal(value);
     ui->cbOrthogonal->setChecked(value);
 

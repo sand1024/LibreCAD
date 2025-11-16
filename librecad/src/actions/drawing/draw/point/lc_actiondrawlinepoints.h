@@ -125,7 +125,7 @@ protected:
     void setMajorStatus();
     void updateEdgePointsMode(int mode);
     bool isNonZeroLine(const RS_Vector &possiblePoint) const;
-    RS_Vector getPossibleEndPointForAngle(const RS_Vector &snap);
+    RS_Vector getPossibleEndPointForAngle(const RS_Vector &snap) const;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     bool isAllowDirectionCommands() override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) override;

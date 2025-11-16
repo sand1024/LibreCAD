@@ -62,21 +62,20 @@ void RS_ActionBlocksRemove::trigger() {
 
     undoCycleStart();
 
-    for (auto block: blocks) {
+    for (const auto block: blocks) {
         if (nullptr == block) {
             continue;
         }
-        for (auto cont: containerList) {
+        for (const auto cont: containerList) {
         // remove all inserts from the graphic:
             bool done;
             do {
                 done = true;
-                for (auto e: *cont) {
+                for (const auto e: *cont) {
                     if (e->is(RS2::EntityInsert)) {
-                        auto *ins = static_cast<RS_Insert *>(e);
-                        if (ins->getName() == block->getName() && !ins->isUndone()) {
-                            m_document->addUndoable(ins);
-                            ins->setUndoState(true);
+                        auto *insert = static_cast<RS_Insert *>(e);
+                        if (insert->getName() == block->getName() && !insert->isDeleted()) {
+                            m_document->undoableDelete(insert);
                             done = false;
                             break;
                         }
@@ -95,8 +94,7 @@ void RS_ActionBlocksRemove::trigger() {
         RS_DIALOGFACTORY->closeEditBlockWindow(block);
 
         // Now remove block from the block list, but do not delete:
-        block->setUndoState(true);
-        m_document->addUndoable(block);
+        m_document->undoableDelete(block);
     }
     undoCycleEnd();
 
@@ -109,7 +107,7 @@ void RS_ActionBlocksRemove::trigger() {
     updateSelectionWidget();
 }
 
-void RS_ActionBlocksRemove::init(int status) {
+void RS_ActionBlocksRemove::init(const int status) {
     RS_ActionInterface::init(status);
     trigger();
 }

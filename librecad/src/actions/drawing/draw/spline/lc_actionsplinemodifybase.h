@@ -26,7 +26,7 @@
 
 #include "rs_previewactioninterface.h"
 
-class LC_ActionSplineModifyBase:public RS_PreviewActionInterface{
+class LC_ActionSplineModifyBase:public LC_UndoablePreviewActionInterface{
     Q_OBJECT
 public:
     LC_ActionSplineModifyBase(const char* name, LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone);

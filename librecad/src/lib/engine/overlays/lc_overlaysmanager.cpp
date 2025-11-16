@@ -91,7 +91,7 @@ LC_OverlayDrawablesContainer *LC_OverlaysManager::getDrawablesContainer(RS2::Ove
     return container;
 }
 
-RS_EntityContainer *LC_OverlaysManager::entitiesAt(RS2::OverlayGraphics position) {
+RS_EntityContainer *LC_OverlaysManager::entitiesAt(RS2::OverlayGraphics position) const {
     return entities[position];
 }
 
@@ -104,6 +104,6 @@ void LC_OverlaysManager::addOverlay(LC_OverlayDrawable *ent, RS2::OverlayGraphic
     container->add(ent);
 }
 
-LC_OverlayDrawablesContainer *LC_OverlaysManager::drawablesAt(RS2::OverlayGraphics position) {
+LC_OverlayDrawablesContainer *LC_OverlaysManager::drawablesAt(RS2::OverlayGraphics position) const {
     return overlays[position];
 }

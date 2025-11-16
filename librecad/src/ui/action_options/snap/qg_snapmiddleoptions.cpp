@@ -51,7 +51,7 @@ void QG_SnapMiddleOptions::languageChange(){
     ui->retranslateUi(this);
 }
 
-void QG_SnapMiddleOptions::saveSettings() {
+void QG_SnapMiddleOptions::saveSettings() const {
     LC_SET_ONE("Snap", "MiddlePoints", *m_middlePoints);
 }
 
@@ -85,6 +85,6 @@ void QG_SnapMiddleOptions::doShow() {
     }
 }
 
-int *QG_SnapMiddleOptions::getMiddlePointsValue() {
+int *QG_SnapMiddleOptions::getMiddlePointsValue() const {
     return m_middlePoints;
 }

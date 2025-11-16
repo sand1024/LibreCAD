@@ -92,17 +92,19 @@ public:
 
     void setVisible(bool v) override;
 
-    bool setSelected(bool select=true) override;
     bool toggleSelected() override;
 
     void setHighlighted(bool on) override;
 
-/*virtual void selectWindow(RS_Vector v1, RS_Vector v2,
+    bool setSelected(bool select) override;
+    void setSelectionFlag(bool select) override;
+    virtual bool doSelectInDocument(bool select, RS_Document* doc);
+    /*virtual void selectWindow(RS_Vector v1, RS_Vector v2,
    bool select=true, bool cross=false);*/
-    virtual void selectWindow(enum RS2::EntityType typeToSelect, RS_Vector v1, RS_Vector v2,
-                              bool select=true, bool cross=false);
-    virtual void selectWindow(const QList<RS2::EntityType> &typesToSelect, RS_Vector v1, RS_Vector v2,
-                              bool select=true, bool cross=false);
+    // virtual void selectWindow(enum RS2::EntityType typeToSelect, RS_Vector v1, RS_Vector v2,
+                              // bool select=true, bool cross=false);
+    // virtual void selectWindow(const QList<RS2::EntityType> &typesToSelect, RS_Vector v1, RS_Vector v2,
+                              // bool select=true, bool cross=false);
     virtual void addEntity(RS_Entity* entity);
     virtual void appendEntity(RS_Entity* entity);
     virtual void prependEntity(RS_Entity* entity);
@@ -126,8 +128,8 @@ public:
     virtual RS_Entity* entityAt(int index) const;
     virtual void setEntityAt(int index,RS_Entity* en);
     virtual int findEntity(RS_Entity const* const entity);
-    int findEntityIndex(RS_Entity const* const entity);
-    bool areNeighborsEntities(RS_Entity const *const  e1, RS_Entity const *const  e2);
+    int findEntityIndex(RS_Entity const* const entity) const;
+    bool areNeighborsEntities(RS_Entity const *const  e1, RS_Entity const *const  e2) const;
     virtual void clear();
 
     //virtual unsigned long int count() {
@@ -151,7 +153,7 @@ public:
 * @param types if is not empty, only counts by types listed
 */
     virtual unsigned countSelected(bool deep=true, QList<RS2::EntityType> const& types = {});
-    virtual void collectSelected(std::vector<RS_Entity*> &collect, bool deep, QList<RS2::EntityType> const &types = {});
+    virtual void collectSelected(QList<RS_Entity*> &collect, bool deep, QList<RS2::EntityType> const &types = {});
     virtual double totalSelectedLength();
     LC_SelectionInfo getSelectionInfo(/*bool deep, */QList<RS2::EntityType> const& types = {});
 
@@ -200,10 +202,10 @@ public:
                              const RS_Vector& coord,
                              double* dist = nullptr) const override;
     RS_Vector getNearestIntersection(const RS_Vector& coord,
-                                     double* dist = nullptr);
+                                     double* dist = nullptr) const;
     RS_Vector getNearestVirtualIntersection(const RS_Vector& coord,
                                             const double& angle,
-                                            double* dist);
+                                            double* dist) const;
     RS_Vector getNearestRef(const RS_Vector& coord,
                             double* dist = nullptr) const override;
     RS_Vector getNearestSelectedRef(const RS_Vector& coord,
@@ -260,8 +262,9 @@ public:
         m_entities.push_back(entity);
     }
     void pop_back() {
-        if (!isEmpty())
+        if (!isEmpty()) {
             m_entities.pop_back();
+        }
     }
 /**
  * @brief begin/end to support range based loop
@@ -280,7 +283,7 @@ public:
     RS_Entity* first() const;
 //! \}
 
-    const QList<RS_Entity*>& getEntityList();
+    const QList<RS_Entity*>& getEntityList() const;
     inline RS_Entity* unsafeEntityAt(int index) const {return m_entities.at(index);}
     void drawAsChild(RS_Painter *painter) override;
     RS_Entity *cloneProxy() const override;
@@ -301,6 +304,8 @@ private:
  * @return true when entity of this container won't be considered for snapping points
  */
     bool ignoredSnap() const;
+
+    void debugEntityAlreadyPresentExists(RS_Entity* entity) const;
 
     /** m_entities in the container */
     QList<RS_Entity *> m_entities;

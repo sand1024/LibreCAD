@@ -41,7 +41,7 @@ LC_LayerExportOptionsWidget::~LC_LayerExportOptionsWidget(){
     delete ui;
 }
 
-void LC_LayerExportOptionsWidget::onCreateSeparateDrawingToggled([[maybe_unused]] bool enable) {
+void LC_LayerExportOptionsWidget::onCreateSeparateDrawingToggled([[maybe_unused]] bool enable) const {
     ui->cbStoreEntitiesInOriginalLayer->setEnabled(ui->cbCreateSeparateDrawingForLayer->isChecked());
 }
 
@@ -53,7 +53,7 @@ void LC_LayerExportOptionsWidget::fillLayerExportOptions(LC_LayersExportOptions*
     saveToOptions();
 }
 
-void LC_LayerExportOptionsWidget::loadFromOptions() {
+void LC_LayerExportOptionsWidget::loadFromOptions() const {
     LC_GROUP_GUARD("Export.Layers");
     {
         ui->cbExportUCSs->setChecked(LC_GET_BOOL("ExportUCS", true));
@@ -65,7 +65,7 @@ void LC_LayerExportOptionsWidget::loadFromOptions() {
     }
 }
 
-void LC_LayerExportOptionsWidget::saveToOptions() {
+void LC_LayerExportOptionsWidget::saveToOptions() const {
     LC_GROUP_GUARD("Export.Layers");
     {
         LC_SET("ExportUCS", ui->cbExportUCSs->isChecked());

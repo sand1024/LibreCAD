@@ -103,7 +103,7 @@ bool LC_ActionDrawArc2POptions::checkActionRttiValid(RS2::ActionType actionType)
     return actionType == m_supportedActionType;
 }
 
-void LC_ActionDrawArc2POptions::setReversedToActionAndView(bool reversed){
+void LC_ActionDrawArc2POptions::setReversedToActionAndView(bool reversed) const {
     ui->rbNeg->setChecked(reversed);
     m_action->setReversed(reversed);
 }

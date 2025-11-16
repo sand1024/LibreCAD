@@ -35,7 +35,7 @@ namespace {
 }
 
 LC_ActionDrawMidLine::LC_ActionDrawMidLine(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("DrawMidLine", actionContext,RS2::ActionDrawLineMiddle) {
+    :LC_UndoablePreviewActionInterface("DrawMidLine", actionContext,RS2::ActionDrawLineMiddle) {
 }
 
 void LC_ActionDrawMidLine::init(int status) {
@@ -52,15 +52,13 @@ void LC_ActionDrawMidLine::doInitWithContextEntity(RS_Entity* contextEntity, [[m
 }
 
 void LC_ActionDrawMidLine::doTrigger() {
-    if (m_document != nullptr) {
-        LineInfo lineInfo;
-        prepareLine(lineInfo, m_secondEntity, m_alternateEndpoints);
-        RS_Line *lineToCreate = lineInfo.line;
-        if (lineToCreate != nullptr) {
-            lineToCreate->reparent(m_container);
-            setupCenterlinePenLayer(lineToCreate);
-            undoCycleAdd(lineToCreate);
-        }
+    LineInfo lineInfo;
+    prepareLine(lineInfo, m_secondEntity, m_alternateEndpoints);
+    RS_Line* lineToCreate = lineInfo.line;
+    if (lineToCreate != nullptr) {
+        lineToCreate->reparent(m_document);
+        setupCenterlinePenLayer(lineToCreate);
+        undoableAdd(lineToCreate);
     }
     setStatus(SetEntity1);
 }
@@ -126,7 +124,7 @@ void LC_ActionDrawMidLine::onMouseMoveEvent(int status, LC_MouseEvent *e) {
 }
 
 // fixme - more division points?
-void LC_ActionDrawMidLine::prepareLine(LC_ActionDrawMidLine::LineInfo &info, RS_Entity *ent, bool alternate) {
+void LC_ActionDrawMidLine::prepareLine(LC_ActionDrawMidLine::LineInfo &info, RS_Entity *ent, bool alternate) const {
     RS_Vector start1 = m_firstEntity->getStartpoint();
     RS_Vector end1 = m_firstEntity->getEndpoint();
 

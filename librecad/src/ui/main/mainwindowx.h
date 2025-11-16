@@ -18,8 +18,8 @@ public:
     void sortWidgetsByTitle(QList<QToolBar*>& list);
     void sortWidgetsByGroupAndTitle(QList<QToolBar*>& list);
 protected:
-    void toggleDockArea(Qt::DockWidgetArea dockArea, bool state);
-    void toggleToolBarArea(Qt::ToolBarArea tbArea, bool state);
+    void toggleDockArea(Qt::DockWidgetArea dockArea, bool state) const;
+    void toggleToolBarArea(Qt::ToolBarArea tbArea, bool state) const;
 public slots:
     void toggleRightDockArea(bool state);
     void toggleLeftDockArea(bool state);

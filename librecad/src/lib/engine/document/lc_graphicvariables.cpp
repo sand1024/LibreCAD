@@ -43,7 +43,7 @@ void LC_GraphicVariables::loadFromVars(RS_Graphic* g) {
     m_unit = static_cast<RS2::Unit>(g->getVariableInt("$INSUNITS", 0));
 }
 
-void LC_GraphicVariables::saveToVars(RS_Graphic* g) {
+void LC_GraphicVariables::saveToVars(RS_Graphic* g) const {
     g->addVariable("$GRIDMODE", m_gridOn, 70);
     g->addVariable("$SNAPSTYLE", m_isometricGrid, 70);
     g->addVariable("$ANGBASE", m_isometricGrid, 50);
@@ -119,7 +119,7 @@ void LC_GraphicVariables::setIsoView(RS2::IsoGridViewType viewType){
  * This is the distance from the lower left paper edge to the zero
  * point of the drawing. DXF: $PINSBASE.
  */
-RS_Vector LC_GraphicVariables::getPaperInsertionBase() {
+RS_Vector LC_GraphicVariables::getPaperInsertionBase() const {
     return m_paperInsertionBase;
 }
 

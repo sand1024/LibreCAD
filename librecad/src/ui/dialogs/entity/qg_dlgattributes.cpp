@@ -71,7 +71,7 @@ void QG_DlgAttributes::setData(RS_AttributesData* data, RS_LayerList& layerList)
     //}
 }
 
-void QG_DlgAttributes::updateData() {
+void QG_DlgAttributes::updateData() const {
     m_attributesData->pen = wPen->getPen();
     m_attributesData->layer = cbLayer->currentText();
     m_attributesData->changeColor = !wPen->isColorUnchanged();

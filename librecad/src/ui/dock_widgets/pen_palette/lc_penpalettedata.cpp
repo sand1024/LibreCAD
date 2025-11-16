@@ -109,7 +109,7 @@ bool LC_PenPaletteData::loadItems(){
  * @param item
  * @return
  */
-QString LC_PenPaletteData::toStringRepresentation(LC_PenItem *item){
+QString LC_PenPaletteData::toStringRepresentation(LC_PenItem *item) const {
 
     RS2::LineType lineType = item->getLineType();
     RS2::LineWidth lineWidth = item->getLineWidth();
@@ -227,11 +227,11 @@ void LC_PenPaletteData::itemEdited([[maybe_unused]] LC_PenItem *item){
     emitDataChange();
 }
 
-int LC_PenPaletteData::getItemsCount(){
+int LC_PenPaletteData::getItemsCount() const {
     return m_persistentItems.count();
 }
 
-LC_PenItem *LC_PenPaletteData::getItemAt(int index){
+LC_PenItem *LC_PenPaletteData::getItemAt(int index) const {
     return m_persistentItems.at(index);
 }
 
@@ -240,7 +240,7 @@ LC_PenItem *LC_PenPaletteData::getItemAt(int index){
  * @param name name to search for
  * @return item with given name, or nullptr if nothing is found
  */
-LC_PenItem *LC_PenPaletteData::findItemWithName(QString &name){
+LC_PenItem *LC_PenPaletteData::findItemWithName(QString &name) const {
 
     int count = m_persistentItems.count();
     for (int i = 0; i < count; i++){

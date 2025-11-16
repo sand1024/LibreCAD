@@ -26,7 +26,7 @@ LC_View::LC_View() {}
 
 LC_View::LC_View(const QString &name):m_name(name) {}
 
-LC_View* LC_View::clone() {
+LC_View* LC_View::clone() const {
     auto* clone = new LC_View(m_name);
     clone->m_cameraPlottable = m_cameraPlottable;
     clone->m_flags = m_flags;

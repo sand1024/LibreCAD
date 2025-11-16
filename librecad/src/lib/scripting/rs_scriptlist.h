@@ -61,7 +61,7 @@ public:
     void init();
 
     void clearScripts();
-    int countScripts() {
+    int countScripts() const {
         return scripts.count();
     }
     //void activateScript(const QString& name);
@@ -71,11 +71,11 @@ public:
     //virtual void addScript(RS_Script* script);
     virtual void removeScript(RS_Script* script);
     //virtual void editScript(RS_Script* script, const RS_Script& source);
-    RS_Script* requestScript(const QString& name);
+    RS_Script* requestScript(const QString& name) const;
     //RS_Script* loadScript(const QString& name);
     //void toggleScript(const QString& name);
     //! @return a const iterator for the font list.
-    QListIterator<RS_Script *> getIteretor(){
+    QListIterator<RS_Script *> getIteretor() const {
         return QListIterator<RS_Script *>(scripts);
     }
 

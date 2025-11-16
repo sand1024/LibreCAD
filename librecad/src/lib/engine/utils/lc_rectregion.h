@@ -44,10 +44,10 @@ public:
     RS_VectorSolutions getAllPoints() const {return allPoints;};
     RS_VectorSolutions getCorners() const {return corners;}
 
-    RS_Vector getRotatedPoint(RS_Vector vect, double angle);
-    LC_RectRegion* getRotated(double angle);
+    RS_Vector getRotatedPoint(RS_Vector vect, double angle) const;
+    LC_RectRegion* getRotated(double angle) const;
 
-    RS_Vector getLeftBottomCorner(){return leftBottom;};
+    RS_Vector getLeftBottomCorner() const {return leftBottom;};
 
     LC_TransformData determineTransformData(RS_Vector ref, RS_Vector newRef);
 

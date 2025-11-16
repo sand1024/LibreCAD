@@ -43,7 +43,7 @@ class LC_DimStyle{
            SET,
            UNSET
         };
-        bool checkModifyState(unsigned f);
+        bool checkModifyState(unsigned f) const;
         CheckFlagMode getModifyCheckMode() const {return m_checkModificationMode;}
         void setModifyCheckMode(CheckFlagMode mode) {m_checkModificationMode = mode;}
     protected:
@@ -53,7 +53,7 @@ class LC_DimStyle{
         void checkModified(bool newValue, bool currentValue, unsigned flag);
         void checkModified(double newValue, double currentValue, unsigned flag);
         void checkModified(const RS_Color& newValue, const RS_Color& currentValue, unsigned int flag);
-        void copyFlags(ModificationAware* c);
+        void copyFlags(ModificationAware* c) const;
     private:
         CheckFlagMode m_checkModificationMode{SET};
     };
@@ -581,7 +581,7 @@ class LC_DimStyle{
 
         ArrowHeadSuppressionPolicy suppression() const {return DIMSOXD;}
         void copyTo(Arrowhead* arrowhead);
-        QString obtainFirstArrowName();
+        QString obtainFirstArrowName() const;
         QString obtainSecondArrowName();
         double size() const {return DIMASZ;};
         const QString &sameBlockName() const {return DIMBLK;}
@@ -689,15 +689,15 @@ class LC_DimStyle{
         ZerosSuppression() = default;
 
         int angularRaw() const {return DIMAZIN;}
-        bool isAngularSuppress(int flag) {return DIMAZIN &flag;}
+        bool isAngularSuppress(int flag) const {return DIMAZIN &flag;}
         int linearRaw() const {return DIMZIN;}
-        bool isLinearSuppress(int flag) {return DIMZIN &flag;}
+        bool isLinearSuppress(int flag) const {return DIMZIN &flag;}
         int toleranceRaw() const {return DIMTZIN;}
-        bool isToleranceSuppress(int flag){return DIMTZIN &flag;}
+        bool isToleranceSuppress(int flag) const {return DIMTZIN &flag;}
         int altLinearRaw() const {return DIMALTZ;}
-        bool isAltLinearSuppress(int flag) {return DIMALTZ &flag;}
+        bool isAltLinearSuppress(int flag) const {return DIMALTZ &flag;}
         int altToleranceRaw() const  {return DIMALTTZ;}
-        bool isAltToleranceSuppress(int flag){return DIMALTTZ &flag;}
+        bool isAltToleranceSuppress(int flag) const {return DIMALTTZ &flag;}
 
         void clearLinear(){DIMZIN = 0;}
         void setLinearRaw(int dimzin);
@@ -920,7 +920,7 @@ class LC_DimStyle{
             void parse(const QString& val);
             QString getPrefix();
             QString getSuffix();
-            bool isSuffixEndsWithLineFeed();
+            bool isSuffixEndsWithLineFeed() const;
             void setPrefix(const QString& prefix);
             void setSuffix(const QString& suffix);
             void setSuffixEndsWithNewLineFeed(bool set);
@@ -939,13 +939,13 @@ class LC_DimStyle{
         double altUnitsMultiplier() const {return DIMALTF;}
         const QString &altPrefixOrSuffix() const {return DIMAPOST;}
         RS2::LinearFormat altFormat() const {return DIMALTU;}
-        int altFormatRaw();
+        int altFormatRaw() const;
 
         TextPattern* getPrimaryPrefixOrSuffix();
         TextPattern* getAlternativePrefixOrSuffix();
 
         RS2::LinearFormat  format() const {return DIMLUNIT;}
-        int formatRaw();
+        int formatRaw() const;
         int decimalPlaces() const {return DIMDEC;}
         const QString &prefixOrSuffix() const {return DIMPOST;}
         int decimalFormatSeparatorChar() const {return DIMDSEP;}
@@ -1347,20 +1347,20 @@ class LC_DimStyle{
         DimArcSymbolPositionPolicy DIMARCSYM {BEFORE}; // DIMARCSYM - code 90 !!!! 2 - none, 1 - above, 0 (if empty) - preceeding
     };
 
-    void fillByDefaults();
-    void merge(const LC_DimStyle* src);
+    void fillByDefaults() const;
+    void merge(const LC_DimStyle* src) const;
     void mergeWith(const LC_DimStyle* src, ModificationAware::CheckFlagMode mergeMode, ModificationAware::CheckFlagMode nextMode);
-    ModificationAware::CheckFlagMode getModifyCheckMode();
-    void copyTo(LC_DimStyle* copy);
-    void resetFlags(bool toUnset = true);
+    ModificationAware::CheckFlagMode getModifyCheckMode() const;
+    void copyTo(LC_DimStyle* copy) const;
+    void resetFlags(bool toUnset = true) const;
     LC_DimStyle* getCopy();
     const QString& getName() const;
     void setName(const QString& name);
     static QString getDimStyleNameSuffixForType(RS2::EntityType dimType);
     static void parseStyleName(const QString& fullName, QString& baseName, RS2::EntityType& dimensionType);
     static QString getStyleNameForBaseAndType(const QString& baseName, RS2::EntityType dimType);
-    RS2::EntityType getDimensionType();
-    QString getBaseName();
+    RS2::EntityType getDimensionType() const;
+    QString getBaseName() const;
     bool isBaseStyle();
 
     AngularFormat* angularFormat() const {return m_angularUnitFormattingStyle.get();}
@@ -1379,9 +1379,9 @@ class LC_DimStyle{
     Fractions* fractions() const {return m_unitFractionsStyle.get();}
     ZerosSuppression* zerosSuppression() const {return m_unitZeroSuppressionStyle.get();}
 
-    void setModifyCheckMode(ModificationAware::CheckFlagMode mode);
+    void setModifyCheckMode(ModificationAware::CheckFlagMode mode) const;
 
-    bool isFromVars(){return m_fromVars;}
+    bool isFromVars() const {return m_fromVars;}
     void setFromVars(bool v){m_fromVars = v;}
 
     /*

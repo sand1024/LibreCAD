@@ -56,17 +56,17 @@ protected:
     LC_ActionDrawSliceDivide* m_action = nullptr;
     bool m_forCircle {false};
     void doSaveSettings() override;
-    void setCountToActionAndView(int val);
+    void setCountToActionAndView(int val) const;
     void setDistanceToActionAndView(const QString &val);
     void setTickLengthToActionAndView(const QString &qString);
     void setTickAngleToActionAndView(const QString &val);
     void setTickOffsetToActionAndView(const QString &val);
-    void setDrawEdgesTicksModeToActionAndView(int index);
+    void setDrawEdgesTicksModeToActionAndView(int index) const;
     void setCircleStartAngleToActionAndView(const QString &val);
-    void setTickAngleRelativeToActionAndView(bool relative);
-    void setTicksSnapModeToActionAndView(int index);
-    void setDivideFlagToActionAndView(bool value);
-    void setFixedDistanceFlagToActionAndView(bool value);
+    void setTickAngleRelativeToActionAndView(bool relative) const;
+    void setTicksSnapModeToActionAndView(int index) const;
+    void setDivideFlagToActionAndView(bool value) const;
+    void setFixedDistanceFlagToActionAndView(bool value) const;
 };
 
 #endif // LC_SLICEDIVIDEOPTIONS_H

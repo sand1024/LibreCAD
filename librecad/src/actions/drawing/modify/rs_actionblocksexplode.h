@@ -39,11 +39,13 @@
 class RS_ActionBlocksExplode : public LC_ActionPreSelectionAwareBase {
     Q_OBJECT
 public:
-    RS_ActionBlocksExplode(LC_ActionContext *actionContext);
+    explicit RS_ActionBlocksExplode(LC_ActionContext *actionContext);
 protected:
     bool isEntityAllowedToSelect(RS_Entity *ent) const override;
     void updateMouseButtonHintsForSelection() override;
-    void doTrigger(bool selected) override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& modificationData) override;
+    void doTriggerCompletion(bool success) override;
+    void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
 };
 
 #endif

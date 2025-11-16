@@ -212,17 +212,19 @@ void RS_Graphic::removeLayer(RS_Layer* layer) {
             if (!toRemove.empty()) {
                 startUndoCycle();
                 for (RS_Entity *e: toRemove) {
-                    e->setUndoState(true);
                     e->setLayer("0");
-                    addUndoable(e);
+                    undoableDelete(e);
                 }
                 endUndoCycle();
             }
 
             toRemove.clear();
+
             // remove all entities in blocks that are on that layer:
-            for (RS_Block *blk: blockList) {
-                if (!blk) continue;
+            for (RS_Block *blk: blockList) { // fixme - REVIEW this logic, why entities are deleted in blocks??
+                if (blk == nullptr) {
+                    continue;
+                }
                 for (auto e: *blk) {
                     if (e->getLayer() &&
                         e->getLayer()->getName() == layerName) {
@@ -232,7 +234,7 @@ void RS_Graphic::removeLayer(RS_Layer* layer) {
             }
 
             for (RS_Entity *e: toRemove) {
-                e->setUndoState(true);
+                e->mark(true);
                 e->setLayer("0");
             }
 
@@ -258,7 +260,7 @@ void RS_Graphic::clearVariables() {
     m_variableDict.clear();
 }
 
-QString RS_Graphic::getCustomProperty(const QString &key, const QString& defaultValue) {
+QString RS_Graphic::getCustomProperty(const QString &key, const QString& defaultValue) const {
    return m_customVariablesDict.getString(key, defaultValue);
 }
 
@@ -271,7 +273,7 @@ void RS_Graphic::removeCustomProperty(const QString &key) {
     m_customVariablesDict.remove(key);
 }
 
-bool RS_Graphic::hasCustomProperty(const QString& key) {
+bool RS_Graphic::hasCustomProperty(const QString& key) const {
     return m_customVariablesDict.has(key);
 }
 
@@ -563,7 +565,7 @@ int RS_Graphic::getAnglePrecision() const {
  * This is the distance from the lower left paper edge to the zero
  * point of the drawing. DXF: $PINSBASE.
  */
-RS_Vector RS_Graphic::getPaperInsertionBase() {
+RS_Vector RS_Graphic::getPaperInsertionBase() const {
     return getVariableVector("$PINSBASE", RS_Vector(0.0,0.0));
 }
 
@@ -638,7 +640,7 @@ RS_Vector RS_Graphic::getPrintAreaSize(bool total) const {
  *
  * @param landscape will be set to true for landscape and false for portrait if not nullptr.
  */
-RS2::PaperFormat RS_Graphic::getPaperFormat(bool* landscape) {
+RS2::PaperFormat RS_Graphic::getPaperFormat(bool* landscape) const {
     RS_Vector size = RS_Units::convert(getPaperSize(),
                                        getUnit(), RS2::Millimeter);
     if (landscape) {
@@ -746,15 +748,15 @@ bool RS_Graphic::fitToPage()
     return true;
 }
 
-bool RS_Graphic::isBiggerThanPaper() {
+bool RS_Graphic::isBiggerThanPaper() const {
     RS_Vector ps = getPrintAreaSize();
     RS_Vector s = getSize() * getPaperScale();
     return !s.isInWindow(RS_Vector(0.0, 0.0), ps);
 }
 
 void RS_Graphic::addEntity(RS_Entity *entity) {
-    RS_EntityContainer::addEntity(entity);
-    if (entity->rtti() == RS2::EntityBlock ||
+    RS_Document::addEntity(entity);
+    if (/*entity->rtti() == RS2::EntityBlock ||*/
         entity->rtti() == RS2::EntityContainer) {
         auto *e = dynamic_cast<RS_EntityContainer *>(entity);
         for (auto e1: *e) {
@@ -807,19 +809,19 @@ void RS_Graphic::setMarginsInUnits(double left, double top, double right, double
                RS_Units::convert(bottom, src, RS2::Millimeter));
 }
 
-double RS_Graphic::getMarginLeftInUnits() {
+double RS_Graphic::getMarginLeftInUnits() const {
     return RS_Units::convert(marginLeft, RS2::Millimeter, getUnit());
 }
 
-double RS_Graphic::getMarginTopInUnits() {
+double RS_Graphic::getMarginTopInUnits() const {
     return RS_Units::convert(marginTop, RS2::Millimeter, getUnit());
 }
 
-double RS_Graphic::getMarginRightInUnits() {
+double RS_Graphic::getMarginRightInUnits() const {
     return RS_Units::convert(marginRight, RS2::Millimeter, getUnit());
 }
 
-double RS_Graphic::getMarginBottomInUnits() {
+double RS_Graphic::getMarginBottomInUnits() const {
     return RS_Units::convert(marginBottom, RS2::Millimeter, getUnit());
 }
 
@@ -984,7 +986,7 @@ void RS_Graphic::prepareForSave() {
     // fixme - sand - check what if dimension
     auto entities = lc::LC_ContainerTraverser{*this, RS2::ResolveNone}.entities();
     for (const auto e: entities) {
-        if (e->isUndone()) {
+        if (e->isDeleted()) {
             continue;
         }
         QList<LC_DimStyle*> dimStyleOverrides;

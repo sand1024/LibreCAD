@@ -197,7 +197,7 @@ double RS_ActionDimLinear::getDimAngle(bool alternateMode){
     }
 }
 
-bool RS_ActionDimLinear::checkMaySwitchDimDirection() {
+bool RS_ActionDimLinear::checkMaySwitchDimDirection() const {
     bool maySwitchDirection = m_actionType == RS2::ActionDimLinearHor || m_actionType == RS2::ActionDimLinearVer;
     if (!maySwitchDirection) {
         maySwitchDirection  = !LC_LineMath::isMeaningfulAngle(m_ucsBasisAngleDegrees) || !LC_LineMath::isMeaningfulAngle(m_ucsBasisAngleDegrees - M_PI_2);

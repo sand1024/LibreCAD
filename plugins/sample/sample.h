@@ -40,7 +40,7 @@ public:
 
 public slots:
 //    void processAction(QStringList *commandList);
-    void processAction(Document_Interface *doc);
+    void processAction(Document_Interface *doc) const;
     void checkAccept();
 
 protected:
@@ -48,8 +48,8 @@ protected:
 
 private:
     void readSettings();
-    void writeSettings();
-    bool failGUI(QString *msg);
+    void writeSettings() const;
+    bool failGUI(QString *msg) const;
 
 private:
     QString errmsg;

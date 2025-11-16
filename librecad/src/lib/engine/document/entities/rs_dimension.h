@@ -144,22 +144,22 @@ public:
      * to update the subentities which make up the dimension entity.
      */
     void update() override;
-    LC_DimStyle* getGlobalDimStyle();
-    LC_DimStyle* getEffectiveDimStyle();
+    LC_DimStyle* getGlobalDimStyle() const;
+    LC_DimStyle* getEffectiveDimStyle() const;
     void resolveEffectiveDimStyleAndUpdateDim();
     void updateDim(bool autoText=false);
 
-    RS_Vector getDefinitionPoint() {return m_dimGenericData.definitionPoint;}
-    RS_Vector getMiddleOfText() {return m_dimGenericData.middleOfText;}
-    RS_MTextData::VAlign getVAlign() {return m_dimGenericData.valign;}
-    RS_MTextData::HAlign getHAlign() {return m_dimGenericData.halign;}
-    RS_MTextData::MTextLineSpacingStyle getLineSpacingStyle() {return m_dimGenericData.lineSpacingStyle;}
-    double getLineSpacingFactor() {return m_dimGenericData.lineSpacingFactor;}
+    RS_Vector getDefinitionPoint() const {return m_dimGenericData.definitionPoint;}
+    RS_Vector getMiddleOfText() const {return m_dimGenericData.middleOfText;}
+    RS_MTextData::VAlign getVAlign() const {return m_dimGenericData.valign;}
+    RS_MTextData::HAlign getHAlign() const {return m_dimGenericData.halign;}
+    RS_MTextData::MTextLineSpacingStyle getLineSpacingStyle() const {return m_dimGenericData.lineSpacingStyle;}
+    double getLineSpacingFactor() const {return m_dimGenericData.lineSpacingFactor;}
     QString getText() {return m_dimGenericData.text;}
     QString getStyle() const {return m_dimGenericData.style;}
-    double getAngle() {return m_dimGenericData.angle;}
+    double getAngle() const {return m_dimGenericData.angle;}
     double getHDir() const{return m_dimGenericData.horizontalAxisDirection;}
-    double hasUserDefinedTextLocation(){return !m_dimGenericData.autoText;}
+    double hasUserDefinedTextLocation() const {return !m_dimGenericData.autoText;}
     void setHDir(double hdir) {m_dimGenericData.horizontalAxisDirection = hdir;}
     void setDefinitionPoint(RS_Vector defPoint) {m_dimGenericData.definitionPoint = defPoint;}
     void setStyle(const QString& style){m_dimGenericData.style = style;}
@@ -169,31 +169,31 @@ public:
     void setFlipArrow1(bool val){m_dimGenericData.flipArrow1 = val;}
     void setFlipArrow2(bool val){m_dimGenericData.flipArrow2 = val;}
 
-    double getGeneralFactor();
-    double getGeneralScale();
-    double getArrowSize();
-    double getTickSize();
-    double getExtensionLineExtension();
-    double getExtensionLineOffset();
-    double getDimensionLineGap();
-    double getVerticalDistanceToDimLine();
-    double getTextHeight();
-    bool getInsideHorizontalText();
-    bool getFixedLengthOn();
-    double getFixedLength();
-    RS2::LineWidth getExtensionLineWidth();
-    RS2::LineType getExtensionLineTypeFirst();
-    RS2::LineType getExtensionLineTypeSecond();
-    RS2::LineWidth getDimensionLineWidth();
-    RS2::LineType getDimensionLineType();
-    RS_Color getDimensionLineColor();
-    RS_Color getExtensionLineColor();
-    RS_Color getTextColor();
-    QString getTextStyle();
-    RS2::LinearFormat getDimLinearFormat();
-    int getDimDecimalPlaces();
-    int getDimTrailingZerosSuppressionMode();
-    int getDimDecimalFormatSeparatorChar();
+    double getGeneralFactor() const;
+    double getGeneralScale() const;
+    double getArrowSize() const;
+    double getTickSize() const;
+    double getExtensionLineExtension() const;
+    double getExtensionLineOffset() const;
+    double getDimensionLineGap() const;
+    double getVerticalDistanceToDimLine() const;
+    double getTextHeight() const;
+    bool getInsideHorizontalText() const;
+    bool getFixedLengthOn() const;
+    double getFixedLength() const;
+    RS2::LineWidth getExtensionLineWidth() const;
+    RS2::LineType getExtensionLineTypeFirst() const;
+    RS2::LineType getExtensionLineTypeSecond() const;
+    RS2::LineWidth getDimensionLineWidth() const;
+    RS2::LineType getDimensionLineType() const;
+    RS_Color getDimensionLineColor() const;
+    RS_Color getExtensionLineColor() const;
+    RS_Color getTextColor() const;
+    QString getTextStyle() const;
+    RS2::LinearFormat getDimLinearFormat() const;
+    int getDimDecimalPlaces() const;
+    int getDimTrailingZerosSuppressionMode() const;
+    int getDimDecimalFormatSeparatorChar() const;
 
     double getGraphicVariable(const QString& key, double defMM, int code);
     static QString stripZerosAngle(QString angle, int zeros=0);
@@ -217,6 +217,8 @@ public:
             m_dimGenericData.m_dimStyleOverride.reset(dimStyleOverride->getCopy());
         }
     }
+
+    void reparent(RS_EntityContainer* parent) override {RS_Entity::reparent(parent);};
 
 private:
     static RS_VectorSolutions getIntersectionsLineContainer(const RS_Line* l, const RS_EntityContainer* c,

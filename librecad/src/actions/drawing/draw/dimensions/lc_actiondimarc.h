@@ -55,6 +55,7 @@ protected:
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
    void setArcEntity(RS_Entity* entity);
    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
-    void doTrigger() override;
+   RS_Entity* doTriggerCreateEntity() override;
+   void doTriggerCompletion(bool success) override;
 };
 #endif //LC_ACTIONDIMARC_H

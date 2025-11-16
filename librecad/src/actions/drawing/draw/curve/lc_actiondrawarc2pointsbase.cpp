@@ -25,27 +25,25 @@
 #include "lc_actiondrawarc2poptions.h"
 #include "lc_linemath.h"
 #include "rs_arc.h"
+#include "rs_document.h"
 
 LC_ActionDrawArc2PointsBase::LC_ActionDrawArc2PointsBase(const char* name, LC_ActionContext *actionContext, RS2::ActionType actionType)
-    :RS_PreviewActionInterface(name, actionContext,actionType)  {
+    :LC_SingleEntityCreationAction(name, actionContext,actionType)  {
 }
 
-void LC_ActionDrawArc2PointsBase::doTrigger() {
+RS_Entity* LC_ActionDrawArc2PointsBase::doTriggerCreateEntity() {
     RS_Entity* createdEntity = createArc(getStatus(), m_endPoint, m_alternated, true);
     if (createdEntity != nullptr){
-
-        createdEntity->setSelected(true);
-        createdEntity->setParent(m_container);
-        setPenAndLayerToActive(createdEntity);
-        undoCycleAdd(createdEntity);
-
-        setStatus(SetPoint1);
-        m_alternated = false;
-        doAfterTrigger();
+        createdEntity->setParent(m_document);
+        select(createdEntity);
+        return createdEntity;
     }
-    else{
-        doOnEntityNotCreated();
-    }
+    return nullptr;
+}
+
+void LC_ActionDrawArc2PointsBase::doTriggerCompletion(bool success) {
+    setStatus(SetPoint1);
+    m_alternated = false;
 }
 
 bool LC_ActionDrawArc2PointsBase::doUpdateAngleByInteractiveInput([[maybe_unused]]const QString& tag, double angle) {

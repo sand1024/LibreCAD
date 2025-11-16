@@ -56,7 +56,7 @@ void QG_DlgMirror::languageChange(){
     retranslateUi(this);
 }
 
-void QG_DlgMirror::init() {
+void QG_DlgMirror::init() const {
     rbCopy->setChecked(data->keepOriginals);
     rbMove->setChecked(!data->keepOriginals);
 
@@ -69,7 +69,7 @@ void QG_DlgMirror::setData(RS_MirrorData* d) {
     init();
 }
 
-void QG_DlgMirror::updateData() {
+void QG_DlgMirror::updateData() const {
     if (rbMove->isChecked()) {
         data->keepOriginals = false;
     } else if (rbCopy->isChecked()) {

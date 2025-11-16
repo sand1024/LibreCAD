@@ -58,7 +58,7 @@ void LC_DimStyle::init() {
     fillByDefaults();
 }
 
-void LC_DimStyle::fillByDefaults() {
+void LC_DimStyle::fillByDefaults() const {
     m_angularUnitFormattingStyle->fillByDefaults();
     m_arrowheadStyle->fillByDefaults();
     m_arcStyle->fillByDefaults();
@@ -76,7 +76,7 @@ void LC_DimStyle::fillByDefaults() {
     m_unitZeroSuppressionStyle->fillByDefaults();
 }
 
-void LC_DimStyle::merge(const LC_DimStyle* src) {
+void LC_DimStyle::merge(const LC_DimStyle* src) const {
     m_angularUnitFormattingStyle->merge(src->angularFormat());
     m_arrowheadStyle->merge(src->arrowhead());
     m_arcStyle->merge(src->arc());
@@ -100,11 +100,11 @@ void LC_DimStyle::mergeWith(const LC_DimStyle* src, ModificationAware::CheckFlag
     setModifyCheckMode(nextMode);
 }
 
-LC_DimStyle::ModificationAware::CheckFlagMode LC_DimStyle::getModifyCheckMode() {
+LC_DimStyle::ModificationAware::CheckFlagMode LC_DimStyle::getModifyCheckMode() const {
     return m_angularUnitFormattingStyle->getModifyCheckMode();
 }
 
-void LC_DimStyle::setModifyCheckMode(ModificationAware::CheckFlagMode mode) {
+void LC_DimStyle::setModifyCheckMode(ModificationAware::CheckFlagMode mode) const {
     m_angularUnitFormattingStyle->setModifyCheckMode(mode);
     m_arrowheadStyle->setModifyCheckMode(mode);
     m_arcStyle->setModifyCheckMode(mode);
@@ -142,7 +142,7 @@ void LC_DimStyle::ZerosSuppression::setAltToleranceFlag(ToleranceSuppressionPoli
     set ? DIMALTTZ |= dimalttz : DIMALTTZ &= ~dimalttz;
 }
 
-void LC_DimStyle::copyTo(LC_DimStyle* copy) {
+void LC_DimStyle::copyTo(LC_DimStyle* copy) const {
     copy->m_name = m_name;
     m_angularUnitFormattingStyle->copyTo(copy->angularFormat());
     m_arrowheadStyle->copyTo(copy->arrowhead());
@@ -161,7 +161,7 @@ void LC_DimStyle::copyTo(LC_DimStyle* copy) {
     m_unitZeroSuppressionStyle->copyTo(copy->zerosSuppression());
 }
 
-void LC_DimStyle::resetFlags(bool toZero ) {
+void LC_DimStyle::resetFlags(bool toZero ) const {
     int value = toZero ? 0 : UINT_MAX;
     m_angularUnitFormattingStyle->setFlags(value);
     m_arrowheadStyle->setFlags(value);
@@ -566,7 +566,7 @@ void LC_DimStyle::Arrowhead::merge(const Arrowhead* parent) {
     }
 }
 
-QString LC_DimStyle::Arrowhead::obtainFirstArrowName() {
+QString LC_DimStyle::Arrowhead::obtainFirstArrowName() const {
     auto result = arrowHeadBlockNameFirst();
     if (result.isEmpty()) {
         result = sameBlockName();
@@ -907,7 +907,7 @@ QString LC_DimStyle::LinearFormat::TextPattern::getSuffix() {
     return suffix;
 }
 
-bool LC_DimStyle::LinearFormat::TextPattern::isSuffixEndsWithLineFeed() {
+bool LC_DimStyle::LinearFormat::TextPattern::isSuffixEndsWithLineFeed() const {
     return suffixEndsWithLineFeed;
 }
 
@@ -1611,11 +1611,11 @@ void LC_DimStyle::LinearFormat::setFormatRaw(int dimlunit) {
     setFormat(_dimlunit);
 }
 
-int LC_DimStyle::LinearFormat::formatRaw() {
+int LC_DimStyle::LinearFormat::formatRaw() const {
     return linearFormat2dxf(DIMLUNIT);
 }
 
-int LC_DimStyle::LinearFormat::altFormatRaw() {
+int LC_DimStyle::LinearFormat::altFormatRaw() const {
     return linearFormat2dxf(DIMALTU);
 }
 
@@ -1812,14 +1812,14 @@ void LC_DimStyle::parseStyleName(const QString& fullName, QString& baseName, RS2
     }
 }
 
-RS2::EntityType LC_DimStyle::getDimensionType() {
+RS2::EntityType LC_DimStyle::getDimensionType() const {
     RS2::EntityType type;
     QString baseName;
     parseStyleName(m_name, baseName, type);
     return type;
 }
 
-QString LC_DimStyle::getBaseName() {
+QString LC_DimStyle::getBaseName() const {
     RS2::EntityType type;
     QString baseName;
     parseStyleName(m_name, baseName, type);
@@ -1831,7 +1831,7 @@ bool LC_DimStyle::isBaseStyle() {
     return dimensionType == RS2::EntityUnknown;
 }
 
-bool LC_DimStyle::ModificationAware::checkModifyState(unsigned f) {
+bool LC_DimStyle::ModificationAware::checkModifyState(unsigned f) const {
     switch (m_checkModificationMode) {
         case ALL:
             return true;
@@ -1881,6 +1881,6 @@ void LC_DimStyle::ModificationAware::checkModified(const QString& newValue, cons
     }
 }
 
-void    LC_DimStyle::ModificationAware::copyFlags(ModificationAware* c) {
+void    LC_DimStyle::ModificationAware::copyFlags(ModificationAware* c) const {
     c->setFlags(getFlags());
 }

@@ -48,9 +48,10 @@ protected:
     };
 
     void updateMouseButtonHintsForSelection() override;
-    void doTrigger(bool selected) override;
+    void doTrigger() override;
     bool isAllowTriggerOnEmptySelection() override;
     void finishMouseMoveOnSelection(LC_MouseEvent *event) override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override {return false;}
 };
 
 #endif

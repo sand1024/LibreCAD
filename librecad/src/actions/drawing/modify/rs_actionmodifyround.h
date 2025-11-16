@@ -45,9 +45,9 @@ public:
     void init(int status) override;
     void finish(bool updateTB) override;
     QStringList getAvailableCommands() override;
-    void setRadius(double r);
+    void setRadius(double r) const;
     double getRadius() const;
-    void setTrim(bool t);
+    void setTrim(bool t) const;
     bool isTrimOn() const;
     void drawSnapper() override;
 protected:
@@ -69,9 +69,9 @@ protected:
     Status m_lastStatus = SetEntity1;
 
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
-    bool removeOldFillet(RS_Entity *e, const bool &isPolyline);
+    bool removeOldFillet(RS_Entity *e, const bool &isPolyline) const;
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    void previewEntityModifications(const RS_Entity *original, RS_Entity *modified, RS_Vector& roundPoint, int mode);
+    void previewEntityModifications(const RS_Entity *original, RS_Entity *modified, RS_Vector& roundPoint, int mode) const;
     RS2::CursorType doGetMouseCursor(int status) override;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;

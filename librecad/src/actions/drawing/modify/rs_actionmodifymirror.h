@@ -55,7 +55,7 @@ protected:
     struct MirrorActionData;
     std::unique_ptr<MirrorActionData> m_actionData;
     bool m_mirrorToExistingLine;
-    void previewMirror(const RS_Vector &mirrorLinePoint1, const RS_Vector &mirrorLinePoint2);
+    void previewMirror(const RS_Vector &mirrorLinePoint1, const RS_Vector &mirrorLinePoint2) const;
     void showOptionsAndTrigger();
     RS2::CursorType doGetMouseCursorSelected(int status) override;
     void onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
@@ -66,8 +66,10 @@ protected:
     void doPerformTrigger();
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    void doTrigger(bool keepSelected) override;
-    void obtainFlipLineCoordinates(RS_Vector *start, RS_Vector *end, bool verticalLine);
+    void obtainFlipLineCoordinates(RS_Vector *start, RS_Vector *end, bool verticalLine) const;
     void onMouseMoveEventSelected(int status, LC_MouseEvent *event) override;
+    void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+
 };
 #endif

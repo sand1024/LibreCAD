@@ -44,7 +44,7 @@ protected:
 private:
     Ui::LC_ModifyStretchOptions *ui;
     RS_ActionModifyStretch* m_action = nullptr;
-    void setKeepOriginalsToActionAndView(bool val);
+    void setKeepOriginalsToActionAndView(bool val) const;
 };
 
 #endif // LC_MODIFYSTRETCHOPTIONS_H

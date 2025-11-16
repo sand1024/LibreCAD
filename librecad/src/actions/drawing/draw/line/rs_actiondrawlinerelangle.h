@@ -27,6 +27,7 @@
 #ifndef RS_ACTIONDRAWLINERELANGLE_H
 #define RS_ACTIONDRAWLINERELANGLE_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_previewactioninterface.h"
 
 class RS_Vector;
@@ -38,7 +39,7 @@ class RS_Vector;
  * @author Andrew Mustun
  */
 // fixme - add line snap mode (start/end, middle)
-class RS_ActionDrawLineRelAngle:public RS_PreviewActionInterface {
+class RS_ActionDrawLineRelAngle:public LC_SingleEntityCreationAction {
     Q_OBJECT
 public:
     RS_ActionDrawLineRelAngle(LC_ActionContext *actionContext,double angle = 0.0,bool fixedAngle = false);
@@ -85,7 +86,8 @@ protected:
     bool doProcessCommand(int status, const QString &command) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void updateMouseButtonHints() override;
-    void doTrigger() override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
 };

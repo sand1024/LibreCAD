@@ -107,6 +107,7 @@ protected:
     LC_ActionOptionsWidget* createOptionsWidget() override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
+
 };
 
 #endif //LC_ACTIONDRAWCROSS_H

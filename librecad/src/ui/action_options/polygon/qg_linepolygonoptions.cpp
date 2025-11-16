@@ -128,19 +128,19 @@ void QG_LinePolygonOptions::doSetAction(RS_ActionInterface *a, bool update){
     }
 }
 
-void QG_LinePolygonOptions::setPolylineToActionAndView(bool val) {
+void QG_LinePolygonOptions::setPolylineToActionAndView(bool val) const {
     m_action->setPolyline(val);
     ui->cbPolyline->setChecked(val);
 }
 
-void QG_LinePolygonOptions::setRoundedToActionAndView(bool val) {
+void QG_LinePolygonOptions::setRoundedToActionAndView(bool val) const {
     m_action->setCornersRounded(val);
     ui->cbRadius->setChecked(val);
     ui->leRadius->setEnabled(!val);
     ui->tbPickRadius->setEnabled(!val);
 }
 
-void QG_LinePolygonOptions::setVertexVertexToActionAndView(bool val) {
+void QG_LinePolygonOptions::setVertexVertexToActionAndView(bool val) const {
     if (m_sideSideAction){
         auto* specificAction = dynamic_cast<LC_ActionDrawLinePolygon4 *>(m_action);
         assert(m_action != nullptr);
@@ -158,7 +158,7 @@ void QG_LinePolygonOptions::setRadiusToActionAndView(const QString &val) {
     }
 }
 
-void QG_LinePolygonOptions::setNumberToActionAndView(int number){
+void QG_LinePolygonOptions::setNumberToActionAndView(int number) const {
     m_action->setNumber(number);
     ui->sbNumber->setValue(number);
 }

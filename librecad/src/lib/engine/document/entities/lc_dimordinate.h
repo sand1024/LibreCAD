@@ -89,7 +89,7 @@ public:
     friend std::ostream& operator <<(std::ostream& os, const LC_DimOrdinate& d);
 protected:
     void determineKneesPositions(const RS_Vector& featurePoint, const RS_Vector& leaderEndPoint, RS_Vector& kneeOne,
-                                 RS_Vector& kneeTwo, RS_Vector& textOffsetV);
+                                 RS_Vector& kneeTwo, RS_Vector& textOffsetV) const;
     void doUpdateDim() override;
     void adjustExtensionLineIfFixLength(RS_Line* extLine1, RS_Line* extLine2, bool addDimExe) const;
 private:

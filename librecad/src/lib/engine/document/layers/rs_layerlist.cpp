@@ -102,7 +102,7 @@ void RS_LayerList::sort() {
     });
 }
 
-void RS_LayerList::fireLayerAdded(RS_Layer* layer) {
+void RS_LayerList::fireLayerAdded(RS_Layer* layer) const {
     for (int i = 0; i < m_layerListListeners.size(); ++i) {
         RS_LayerListListener* l = m_layerListListeners.at(i);
         l->layerAdded(layer);
@@ -157,7 +157,7 @@ void RS_LayerList::add(RS_Layer* layerToAdd) {
     }
 }
 
-void RS_LayerList::fireLayerRemoved(RS_Layer* layer) {
+void RS_LayerList::fireLayerRemoved(RS_Layer* layer) const {
     for (int i = 0; i < m_layerListListeners.size(); ++i) {
         RS_LayerListListener* l = m_layerListListeners.at(i);
         l->layerRemoved(layer);
@@ -247,7 +247,7 @@ int RS_LayerList::getIndex(const QString& name) {
  * @return Index of the given layer in the layer list or -1 if the layer
  * was not found.
  */
-int RS_LayerList::getIndex(RS_Layer* layer) {
+int RS_LayerList::getIndex(RS_Layer* layer) const {
     //RS_DEBUG->print("RS_LayerList::find begin");
     return m_layers.indexOf(layer);
 }

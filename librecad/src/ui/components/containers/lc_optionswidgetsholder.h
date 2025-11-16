@@ -37,7 +37,7 @@ public:
     ~LC_OptionsWidgetsHolder();
     void addOptionsWidget(QWidget* optionsWidget);
     void removeOptionsWidget(QWidget *optionsWidget);
-    LC_SnapOptionsWidgetsHolder *getSnapOptionsHolder();
+    LC_SnapOptionsWidgetsHolder *getSnapOptionsHolder() const;
     void clearActionIcon();
 public slots:
     void setCurrentQAction(QAction *a);
@@ -46,7 +46,7 @@ protected:
     bool m_hasActionIcon = false;
 private:
     Ui::LC_OptionsWidgetsHolder *ui;
-    void doSetIcon(const QIcon &icon, const QString& text);
+    void doSetIcon(const QIcon &icon, const QString& text) const;
 };
 
 #endif // LC_OPTIONSWIDGETSHOLDER_H

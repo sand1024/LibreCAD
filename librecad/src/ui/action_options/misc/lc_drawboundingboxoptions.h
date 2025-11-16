@@ -48,9 +48,9 @@ protected:
 private:
     Ui::LC_DrawBoundingBoxOptions *ui;
     LC_ActionDrawBoundingBox* m_action = nullptr;
-    void setAsGroupToActionAndView(bool group);
-    void setCornerPointsOnlyToActionAndView(bool val);
-    void setPolylineToActionAndView(bool p);
+    void setAsGroupToActionAndView(bool group) const;
+    void setCornerPointsOnlyToActionAndView(bool val) const;
+    void setPolylineToActionAndView(bool p) const;
     void setOffsetToActionAndView(const QString& val);
 };
 

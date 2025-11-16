@@ -43,7 +43,7 @@ void LC_ActionSingleEntitySelectBase::updateMouseButtonHints() {
 void LC_ActionSingleEntitySelectBase::doInitialInit() {
     auto contextEntity = m_actionContext->getContextMenuActionContextEntity();
     if (contextEntity == nullptr) { // proceed selection if we have no context menu entity
-        std::vector<RS_Entity*> selectedEntities;
+        QList<RS_Entity*> selectedEntities;
         m_document->collectSelected(selectedEntities, false, {RS2::EntityDimOrdinate});
         if (selectedEntities.size() == 1) {
             RS_Entity* selectedEntity = selectedEntities[0];

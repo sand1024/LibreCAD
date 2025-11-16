@@ -65,17 +65,16 @@ struct RS_ActionDrawLine::ActionData{
 
     /// wrapper for historyIndex to avoid 'signedness' warnings where std::vector-methods expect size_t
     /// also, offset helps in close method to find starting point
-    size_t index(int offset = 0);
+    size_t index(int offset = 0) const;
 };
 
-size_t RS_ActionDrawLine::ActionData::index(int offset /*= 0*/){
+size_t RS_ActionDrawLine::ActionData::index(int offset /*= 0*/) const {
     return static_cast<size_t>( std::max( 0, historyIndex + offset));
 }
 
 RS_ActionDrawLine::RS_ActionDrawLine(LC_ActionContext *actionContext) :
-    RS_PreviewActionInterface( "Draw lines", actionContext, RS2::ActionDrawLine),
+    LC_SingleEntityCreationAction( "Draw lines", actionContext, RS2::ActionDrawLine),
     m_actionData(std::make_unique<ActionData>()){
-    RS_DEBUG->print("RS_ActionDrawLine::RS_ActionDrawLine");
 }
 
 RS_ActionDrawLine::~RS_ActionDrawLine() = default;
@@ -93,12 +92,13 @@ void RS_ActionDrawLine::init(int status){
     drawSnapper();
 }
 
-void RS_ActionDrawLine::doTrigger() {
-    auto* line = new RS_Line(m_container, m_actionData->data);
-    setPenAndLayerToActive(line);
+RS_Entity* RS_ActionDrawLine::doTriggerCreateEntity() {
+    auto* line = new RS_Line(m_document, m_actionData->data);
     moveRelativeZero(m_actionData->history.at(m_actionData->index()).currentPoint);
-    undoCycleAdd(line);
-    LC_LOG<<"RS_ActionDrawLine::trigger(): line added: "<<line->getId();
+    return line;
+}
+
+void RS_ActionDrawLine::doTriggerCompletion(bool success) {
 }
 
 void RS_ActionDrawLine::onMouseMoveEvent(int status, LC_MouseEvent *e) {
@@ -311,8 +311,7 @@ void RS_ActionDrawLine::next(){
     setStatus(SetStartpoint);
 }
 
-void RS_ActionDrawLine::addHistory(RS_ActionDrawLine::HistoryAction action, const RS_Vector& previous, const RS_Vector& current, const int start)
-{
+void RS_ActionDrawLine::addHistory(RS_ActionDrawLine::HistoryAction action, const RS_Vector& previous, const RS_Vector& current, const int start) const {
     m_actionData->historyIndex = std::max(m_actionData->historyIndex, -1);
 
     size_t offset = m_actionData->historyIndex + 1;
@@ -324,13 +323,11 @@ void RS_ActionDrawLine::addHistory(RS_ActionDrawLine::HistoryAction action, cons
 }
 
 
-bool RS_ActionDrawLine::canUndo() const
-{
+bool RS_ActionDrawLine::canUndo() const {
     return m_actionData != nullptr && 0 <= m_actionData->historyIndex;
 }
 
-bool RS_ActionDrawLine::canRedo() const
-{
+bool RS_ActionDrawLine::canRedo() const {
     return m_actionData->history.size() > m_actionData->index() + 1;
 }
 

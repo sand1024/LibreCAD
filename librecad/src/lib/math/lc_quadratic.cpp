@@ -462,8 +462,7 @@ LC_Quadratic LC_Quadratic::rotate(const RS_Vector& center, double angle)
 /**
  * @author{Dongxu Li}
  */
-LC_Quadratic LC_Quadratic::shear(double k)
-{
+LC_Quadratic LC_Quadratic::shear(double k) const {
     if(isQuadratic()){
         auto getCes = [this]() -> std::array<double, 6>{
             std::vector<double> cev = getCoefficients();

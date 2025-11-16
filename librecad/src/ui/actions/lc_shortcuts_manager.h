@@ -37,7 +37,7 @@ public:
     int loadShortcuts(QMap<QString, QAction *> &map) const;
     QString getShortcutsMappingsFolder() const;
     void updateActionTooltips(const QMap<QString, QAction *> &actionsMap) const;
-    void init();
+    void init() const;
 
     static QString getPlainActionToolTip(QAction* action);
 protected:

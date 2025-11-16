@@ -68,7 +68,7 @@ void QG_LayerDialog::setLayer(RS_Layer* l) {
     }
 }
 
-void QG_LayerDialog::updateLayer() {
+void QG_LayerDialog::updateLayer() const {
     m_layer->setName(leName->text());
     m_layer->setPen(wPen->getPen());
     m_layer->setConstruction(cbConstructionLayer->isChecked());
@@ -113,6 +113,6 @@ void QG_LayerDialog::setEditLayer(bool el) {
 }
 
 //! @return a reference to the QLineEdit object.
-QLineEdit* QG_LayerDialog::getQLineEdit() {
+QLineEdit* QG_LayerDialog::getQLineEdit() const {
     return leName;
 }

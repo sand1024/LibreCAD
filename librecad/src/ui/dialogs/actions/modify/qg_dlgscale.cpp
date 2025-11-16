@@ -51,13 +51,13 @@ void QG_DlgScale::languageChange() {
     retranslateUi(this);
 }
 
-void QG_DlgScale::onFactorXChanged(const QString &arg1) {
+void QG_DlgScale::onFactorXChanged(const QString &arg1) const {
     if (cbIsotropic->isChecked()) {
         leFactorY->setText(arg1);
     }
 }
 
-void QG_DlgScale::onIsotropicToggled(bool checked) {
+void QG_DlgScale::onIsotropicToggled(bool checked) const {
     leFactorY->setDisabled(checked);
     leFactorY->setReadOnly(checked);
     if (checked) {
@@ -108,7 +108,7 @@ void QG_DlgScale::onFactorByPoints(bool checked) {
         accept();
     }
 }
- void QG_DlgScale::onMultipleCopiesClicked(){
+ void QG_DlgScale::onMultipleCopiesClicked() const {
     sbNumber->setEnabled(cbMultipleCopies->isChecked());
 }
 
@@ -117,7 +117,7 @@ void QG_DlgScale::setData(RS_ScaleData *d) {
     init();
 }
 
-void QG_DlgScale::updateData() {
+void QG_DlgScale::updateData() const {
     if (rbDeleteOrigin->isChecked()) {
         data->keepOriginals = false;
     } else if (rbCopy->isChecked()) {

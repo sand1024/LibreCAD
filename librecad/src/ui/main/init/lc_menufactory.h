@@ -60,7 +60,7 @@ protected:
         bool expandToolsMenu = false;
         bool expandToolsTillEntity = false;
 
-        bool isDifferent(MenuOptions& other){
+        bool isDifferent(MenuOptions& other) const {
             return expandToolsMenu != other.expandToolsMenu || expandToolsTillEntity != other.expandToolsTillEntity;
         }
 
@@ -104,7 +104,7 @@ protected:
     void createPluginsMenu(QMenuBar *menu_bar, QList<QMenu *> &topMenuMenus);
     void createWorkspaceMenu(QMenuBar *menu_bar, QList<QMenu *> &topMenuMenus);
     void findViewAndUCSToggleActions(QList<QDockWidget*> dockwidgetsList, QAction*& namedViewsToggleViewAction,
-                                     QAction*& ucsToggleViewAction);
+                                     QAction*& ucsToggleViewAction) const;
     void doCreateMenus(QMenuBar *menu_bar, bool firstCreation);
 
     void addProxyActions(QMenu* menu, RS_Entity* entity, const RS_Vector& pos, LC_ActionContext* actionContext,
@@ -125,19 +125,19 @@ protected:
     void createToolsMenuCombined(QMenuBar *menu_bar, QList<QMenu *> &topMenuMenus);
     void createToolsMenuExpanded(QMenuBar *menu_bar, QList<QMenu *> &topMenuMenus) const;
     void createGVMenuView(QMenu* ctxMenu);
-    void createGVMenuFiles(QMenu* menu);
+    void createGVMenuFiles(QMenu* menu) const;
     void createGVMenuEntitySpecific(QMenu* contextMenu, QG_GraphicView* graphicView, RS_Entity* entity, const RS_Vector& pos);
     void createGVEditPropertiesAction(QMenu* menu, QG_GraphicView* graphicView, RS_Entity* entity);
     void createGVEditPropertiesAction(QMenu* menu, QG_GraphicView* graphicView, RS_Entity* entity, const QString &actionText);
     void createGVMenuModifyGeneral(QMenu* contextMenu, QG_GraphicView* graphicView, RS_Entity* entity, const RS_Vector& pos,
                                    LC_ActionContext* actionContext);
     void createGVMenuSelect(QMenu* ctxMenu, RS_Entity* contextEntity,const  RS_Vector &contextPosition,
-                            LC_ActionContext* actionContext, int selectionCount);
+                            LC_ActionContext* actionContext, int selectionCount) const;
     void createGVMenuRecent(QG_GraphicView* graphicView, QMenu* ctxMenu, LC_ActionContext* actionContext,
-                            RS_Entity* contextEntity, const RS_Vector &contextPosition, bool hasEntity);
+                            RS_Entity* contextEntity, const RS_Vector &contextPosition, bool hasEntity) const;
 
-    void createGVMenuEdit(QMenu* ctxMenu, LC_ActionContext* actionContext,RS_Entity* contextEntity, const RS_Vector &contextPosition);
-    void createGVMenuOptions(QMenu* ctxMenu);
+    void createGVMenuEdit(QMenu* ctxMenu, LC_ActionContext* actionContext,RS_Entity* contextEntity, const RS_Vector &contextPosition) const;
+    void createGVMenuOptions(QMenu* ctxMenu) const;
     QMenu* addProxyActionsSubMenu(QMenu* menu, const QString &subMenuName, const char* subMenuIconName, RS_Entity* entity,
                                   const RS_Vector& pos, LC_ActionContext* actionContext,
                                   const std::vector<QString>& actionNames) const;
@@ -145,7 +145,7 @@ protected:
                                              RS_Entity* contextEntity, const RS_Vector& contextPosition);
     QMenu* createGraphicViewCustomPopupMenu(QG_GraphicView* graphicView,
                                             RS_Entity* contextEntity, const RS_Vector& contextPosition,
-                                            QStringList& actionNames);
+                                            QStringList& actionNames) const;
 };
 
 #endif // LC_MENUFACTORY_H

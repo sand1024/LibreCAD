@@ -49,7 +49,7 @@ void LC_SnapOptionsWidgetsHolder::hideSnapOptions(){
     updateParent();
 }
 
-void LC_SnapOptionsWidgetsHolder::hideSeparator() {
+void LC_SnapOptionsWidgetsHolder::hideSeparator() const {
     if (m_widgetOnLeftWithinContainer){
         ui->lineRight->hide();
     }
@@ -58,7 +58,7 @@ void LC_SnapOptionsWidgetsHolder::hideSeparator() {
     }
 }
 
-void LC_SnapOptionsWidgetsHolder::showSeparator() {
+void LC_SnapOptionsWidgetsHolder::showSeparator() const {
     if (m_widgetOnLeftWithinContainer){
         ui->lineRight->show();
     }

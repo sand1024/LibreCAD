@@ -47,14 +47,14 @@ void RS_ActionBlocksAttributes::trigger() {
         RS_Block* block = m_graphic->getActiveBlock();
         RS_BlockList* blockList = m_graphic->getBlockList();
         if (blockList != nullptr && block != nullptr) {
-            QString oldName = block->getName();
+            const QString oldName = block->getName();
 
-            RS_BlockData d = RS_DIALOGFACTORY->requestBlockAttributesDialog(blockList);
+            const RS_BlockData d = RS_DIALOGFACTORY->requestBlockAttributesDialog(blockList);
 
             if (d.isValid()) {
-                QString newName = d.name;
+                const QString newName = d.name;
                 // update window title of opened block
-                auto& appWindow = QC_ApplicationWindow::getAppWindow();
+                const auto& appWindow = QC_ApplicationWindow::getAppWindow();
                 if (QC_MDIWindow* blockWindow = appWindow->getWindowWithDoc(block)) {
                     QString title = blockWindow->windowTitle();
                     title = title.replace(
@@ -72,7 +72,7 @@ void RS_ActionBlocksAttributes::trigger() {
     finish(false);
 }
 
-void RS_ActionBlocksAttributes::init(int status) {
+void RS_ActionBlocksAttributes::init(const int status) {
     RS_ActionInterface::init(status);
     trigger();
 }

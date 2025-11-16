@@ -27,7 +27,7 @@
 #ifndef RS_ACTIONDRAWARCTANGENTIAL_H
 #define RS_ACTIONDRAWARCTANGENTIAL_H
 
-#include "rs_previewactioninterface.h"
+#include "lc_undoabledocumentmodificationaction.h"
 
 class RS_AtomicEntity;
 struct RS_ArcData;
@@ -38,14 +38,14 @@ struct RS_ArcData;
  *
  * @author Andrew Mustun
  */
-class RS_ActionDrawArcTangential:public RS_PreviewActionInterface {
+class RS_ActionDrawArcTangential:public LC_SingleEntityCreationAction {
     Q_OBJECT
 public:
-    RS_ActionDrawArcTangential(LC_ActionContext *actionContext);
+    explicit RS_ActionDrawArcTangential(LC_ActionContext *actionContext);
     ~RS_ActionDrawArcTangential() override;
     void reset();
     void preparePreview();
-    void setRadius(double r);
+    void setRadius(double r) const;
     double getRadius() const;
     void setAngle(double r);
     double getAngle() const;
@@ -85,8 +85,8 @@ protected:
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPosition) override;
     RS_Vector forecastArcCenter() const;
     void setBaseEntity(RS_Entity* entity, RS_Vector coord);
-    void updateOptionsRadius(double radius);
-    void updateOptionsAngle(double angle);
+    void updateOptionsRadius(double radius) const;
+    void updateOptionsAngle(double angle) const;
     RS2::CursorType doGetMouseCursor(int status) override;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
@@ -94,7 +94,8 @@ protected:
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
     void updateMouseButtonHints() override;
-    void doTrigger() override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angle) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
 };

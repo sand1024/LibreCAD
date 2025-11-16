@@ -138,7 +138,7 @@ public:
 
     void writeHeader(DRW_Header& data) override;
     void writeLType(const std::string& lTypeName, const std::string& ltDescription, int ltSize, double ltLength,
-                    const std::vector<double>& ltPath);
+                    const std::vector<double>& ltPath) const;
     void writeEntities() override;
     void writeLTypes() override;
     void writeLayers() override;

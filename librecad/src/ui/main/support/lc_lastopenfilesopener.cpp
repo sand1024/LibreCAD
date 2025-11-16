@@ -33,7 +33,7 @@ void LC_LastOpenFilesOpener::collectFilesList(const QList<QC_MDIWindow*>& m_wind
     }
 }
 
-void LC_LastOpenFilesOpener::saveSettings() {
+void LC_LastOpenFilesOpener::saveSettings() const {
     LC_GROUP_GUARD("Startup"); {
         bool rememberOpenedFiles = LC_GET_BOOL("OpenLastOpenedFiles", false);
         if (rememberOpenedFiles) {
@@ -44,7 +44,7 @@ void LC_LastOpenFilesOpener::saveSettings() {
 }
 
 
-void LC_LastOpenFilesOpener::openLastOpenFiles(QStringList &fileList,  QSplashScreen* splash) {
+void LC_LastOpenFilesOpener::openLastOpenFiles(QStringList &fileList,  QSplashScreen* splash) const {
     bool files_loaded = false;
     LC_GROUP("Startup"); // fixme - sand - files - move saved files opening to the appwindow or util class out of there
     {

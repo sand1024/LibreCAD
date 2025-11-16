@@ -26,6 +26,7 @@
 
 #include "rs_actionblocksexplode.h"
 
+#include "rs_document.h"
 #include "rs_entity.h"
 #include "rs_modification.h"
 
@@ -36,11 +37,20 @@ RS_ActionBlocksExplode::RS_ActionBlocksExplode(LC_ActionContext *actionContext)
     :LC_ActionPreSelectionAwareBase("Blocks Explode", actionContext,m_actionType=RS2::ActionBlocksExplode) {
 }
 
-void RS_ActionBlocksExplode::doTrigger(bool keepSelected) {
-    RS_Modification m(*m_container, m_viewport);
+bool RS_ActionBlocksExplode::doTriggerModificationsPrepare(LC_DocumentModificationBatch& modificationData) {
+    // FIXME - TRIGGER!!! COmplete
+    RS_Modification m(m_document, m_viewport);
     // fixme - add options like "keep originals" and "current attributes"?
-    m.explode(m_selectedEntities, true, false, keepSelected);
+    m.explode(m_selectedEntities, true);
+    return true;
 }
+
+void RS_ActionBlocksExplode::doTriggerCompletion(bool success) {
+}
+
+void RS_ActionBlocksExplode::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+}
+
 
 bool RS_ActionBlocksExplode::isEntityAllowedToSelect(RS_Entity *ent) const {
     return ent->isContainer();

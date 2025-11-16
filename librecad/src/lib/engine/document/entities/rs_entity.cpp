@@ -144,16 +144,15 @@ RS_Entity::~RS_Entity() = default;
 /**
  * Initialisation. Called from all constructors.
  */
-void RS_Entity::init(bool setPenAndLayerToActive) {
+void RS_Entity::init(bool updatePenAndLayerToActive) {
     if (m_pImpl == nullptr) {
         m_pImpl = std::make_unique<Impl>();
     }
     resetBorders();
     setFlag(RS2::FlagVisible);
     updateEnabled = true;
-    if (setPenAndLayerToActive) {
-        setLayerToActive();
-        setPenToActive();
+    if (updatePenAndLayerToActive && parent != nullptr) {
+        setPenAndLayerToActive();
     }
     initId();
 }
@@ -193,24 +192,59 @@ void RS_Entity::scaleBorders(const RS_Vector& center, const RS_Vector& factor){
     maxV.scale(center,factor);
 }
 
+void RS_Entity::addToSelectionSet(bool select, RS_Document* doc) {
+    if (doc != nullptr) {
+        auto selectedSet = doc->getSelectedSet();
+        if (select) {
+            selectedSet->add(this);
+        }
+        else {
+            selectedSet->remove(this);
+        }
+    }
+}
+
+void RS_Entity::clearSelectionFlag() {
+    setSelectionFlag(false);
+}
+
+void RS_Entity::setSelectionFlag(bool select) {
+    if (select) {
+        setFlag(RS2::FlagSelected);
+    } else {
+        delFlag(RS2::FlagSelected);
+    }
+}
+
 /**
  * Selects or deselects this entity.
  *
  * @param select True to select, false to deselect.
  */
 bool RS_Entity::setSelected(bool select) {
-    // layer is locked:
-    if (select && isLocked()) {
-        return false;
+    if (select != getFlag(RS2::FlagSelected)) {
+        // layer is locked:
+        if (select && isLocked()) {
+            return false;
+        }
+        setSelectionFlag(select);
+        auto doc = getDocument();
+        addToSelectionSet(select, doc);
+        return true;
     }
+    return false;
+}
 
-    if (select) {
-        setFlag(RS2::FlagSelected);
-    } else {
-        delFlag(RS2::FlagSelected);
+bool RS_Entity::doSelectInDocument(bool select, RS_Document* doc) {
+    if (select != getFlag(RS2::FlagSelected)) {
+        if (select && isLocked()) {
+            return false;
+        }
+        setSelectionFlag(select);
+        addToSelectionSet(select, doc);
+        return true;
     }
-
-    return true;
+    return false;
 }
 
 /**
@@ -218,7 +252,6 @@ bool RS_Entity::setSelected(bool select) {
  */
 bool RS_Entity::toggleSelected() {
     return setSelected(!isSelected());
-    //toggleFlag(RS2::FlagSelected);
 }
 
 /**
@@ -271,7 +304,7 @@ bool RS_Entity::isProcessed() const {
  * @param undone true: entity has become invisible.
  *               false: entity has become visible.
  */
-void RS_Entity::undoStateChanged([[maybe_unused]] bool undone){
+void RS_Entity::deletedStateChanged([[maybe_unused]] bool undone){
     setSelected(false);
     update();
 }
@@ -279,18 +312,21 @@ void RS_Entity::undoStateChanged([[maybe_unused]] bool undone){
 /**
  * @return true if this entity or any parent entities are undone.
  */
-bool RS_Entity::isUndone() const {
-    if (!parent) {
-        return RS_Undoable::isUndone();
+bool RS_Entity::isDeleted() const {
+    if (parent == nullptr) {
+        return RS_Undoable::isDeleted();
     }
     else {
-        return RS_Undoable::isUndone() || parent->isUndone();
+        return RS_Undoable::isDeleted() || parent->isDeleted();
     }
 }
 
 /**
  * @return True if the entity is in the given range.
  */
+//******************************************************************************************************************************
+// FIXME!!! - sand - this method works incorrectly for the case where UCS is applied. So stretch etc that relies on it will fail!
+//******************************************************************************************************************************
 bool RS_Entity::isInWindow(RS_Vector v1, RS_Vector v2) const{
     return
         RS_Math::inBetween(getMin().x, v1.x, v2.x)
@@ -363,7 +399,7 @@ double RS_Entity::getDistanceToPoint(const RS_Vector& coord,
                                      RS_Entity** entity,
                                      RS2::ResolveLevel /*level*/,
                                      double /*solidDist*/) const{
-    if (entity) {
+    if (entity != nullptr) {
         *entity=const_cast<RS_Entity*>(this);
     }
     double dToEntity = RS_MAXDOUBLE;
@@ -384,12 +420,12 @@ double RS_Entity::getDistanceToPoint(const RS_Vector& coord,
  * The Layer might also be nullptr. In that case the layer visibility
 * is ignored.
  */
-bool RS_Entity::isVisible() const {
+bool RS_Entity::isVisible() const {  // FIXME _ ADD _ isInvisible method to avoid negations over the code
     if (!getFlag(RS2::FlagVisible)) {
         return false;
     }
 
-    if (isUndone()) {
+    if (isDeleted()) {
         return false;
     }
 
@@ -482,7 +518,8 @@ RS_Vector RS_Entity::getSize() const {
  * @return true if the layer this entity is on is locked.
  */
 bool RS_Entity::isLocked() const{
-    return getLayer(true) && getLayer()->isLocked();
+    auto layer = getLayer(true);
+    return layer != nullptr && layer->isLocked();
 }
 
 RS_Vector RS_Entity::getCenter() const {
@@ -534,8 +571,8 @@ m0 x^2 + m1 xy + m2 y^2 + m3 x + m4 y + m5 =0
 for linear:
 m0 x + m1 y + m2 =0
 **/
-LC_Quadratic RS_Entity::getQuadratic() const{
-		return LC_Quadratic{};
+LC_Quadratic RS_Entity::getQuadratic() const {
+    return LC_Quadratic{};
 }
 
 /**
@@ -547,7 +584,7 @@ RS_Insert* RS_Entity::getInsert() const{
     if (rtti()==RS2::EntityInsert) {
         RS_Insert const* ret=static_cast<RS_Insert const*>(this);
         return const_cast<RS_Insert*>(ret);
-    } else if (!parent) {
+    } else if (parent == nullptr) {
         return nullptr;
     } else {
         return parent->getInsert();
@@ -567,7 +604,7 @@ RS_Entity* RS_Entity::getBlockOrInsert() const{
             ret=const_cast<RS_Entity*>(this);
             break;
         default:
-            if(parent) {
+            if(parent != nullptr) {
                 return parent->getBlockOrInsert();
             }
     }
@@ -596,9 +633,9 @@ RS_Document* RS_Entity::getDocument() const{
  * @param key Variable name (e.g. "$DIMASZ")
  * @param val Default value
  */
-void RS_Entity::addGraphicVariable(const QString& key, double val, int code) {
-    RS_Graphic* graphic = getGraphic();
-    if (graphic) {
+void RS_Entity::addGraphicVariable(const QString& key, double val, int code) const {
+    auto graphic = getGraphic();
+    if (graphic != nullptr) {
         graphic->addVariable(key, val, code);
     }
 }
@@ -609,9 +646,9 @@ void RS_Entity::addGraphicVariable(const QString& key, double val, int code) {
  * @param key Variable name (e.g. "$DIMASZ")
  * @param val Default value
  */
-void RS_Entity::addGraphicVariable(const QString& key, int val, int code) {
+void RS_Entity::addGraphicVariable(const QString& key, int val, int code) const {
     RS_Graphic* graphic = getGraphic();
-    if (graphic) {
+    if (graphic != nullptr) {
         graphic->addVariable(key, val, code);
     }
 }
@@ -623,7 +660,7 @@ void RS_Entity::addGraphicVariable(const QString& key, int val, int code) {
  * @param val Default value
  */
 void RS_Entity::addGraphicVariable(const QString& key,
-                                   const QString& val, int code) {
+                                   const QString& val, int code) const {
     RS_Graphic* graphic = getGraphic();
     if (graphic) {
         graphic->addVariable(key, val, code);
@@ -639,7 +676,7 @@ void RS_Entity::addGraphicVariable(const QString& key,
  * @return value of variable or default value if the given variable
  *    doesn't exist.
  */
-double RS_Entity::getGraphicVariableDouble(const QString& key, double def) {
+double RS_Entity::getGraphicVariableDouble(const QString& key, double def) const {
     RS_Graphic* graphic = getGraphic();
     double ret=def;
     if (graphic) {
@@ -779,6 +816,19 @@ void RS_Entity::setLayerToActive() {
     }
 }
 
+void RS_Entity::setPenAndLayerToActive() {
+    auto graphic = getGraphic();
+    if (graphic) {
+        m_layer = graphic->getActiveLayer();
+    } else {
+        m_layer = nullptr;
+    }
+    auto doc = getDocument();
+    if (doc != nullptr) {
+        m_pImpl->pen = doc->getActivePen();
+    }
+}
+
 RS_Pen RS_Entity::getPenResolved() const {
     RS_Pen p = m_pImpl->pen;
     // use parental attributes (e.g. vertex of a polyline, block
@@ -858,7 +908,7 @@ RS_Pen RS_Entity::getPen(bool resolve) const {
     return resolve ? getPenResolved() : m_pImpl->pen;
 }
 
-void RS_Entity::setPen(const RS_Pen& pen) {
+void RS_Entity::setPen(const RS_Pen& pen) const {
     m_pImpl->pen = pen;
 }
 
@@ -867,7 +917,7 @@ void RS_Entity::setPen(const RS_Pen& pen) {
  * the graphic this entity is in. If this entity (and none
  * of its parents) are in a graphic the pen is not changed.
  */
-void RS_Entity::setPenToActive() {
+void RS_Entity::setPenToActive() const {
     RS_Document* doc = getDocument();
     if (doc != nullptr) {
         m_pImpl->pen = doc->getActivePen();
@@ -970,14 +1020,14 @@ RS_Vector RS_Entity::getNearestOrthTan(const RS_Vector& /*coord*/,
 /**
  * Add a user defined variable to this entity.
  */
-void RS_Entity::setUserDefVar(QString key, QString val) {
+void RS_Entity::setUserDefVar(QString key, QString val) const {
     m_pImpl->varList.emplace(key, val);
 }
 
 /**
  * Deletes the given user defined variable.
  */
-void RS_Entity::delUserDefVar(QString key) {
+void RS_Entity::delUserDefVar(QString key) const {
     m_pImpl->varList.erase(key);
 }
 
@@ -1062,11 +1112,11 @@ std::ostream& operator << (std::ostream& os, RS_Entity& e) {
     }
 
     os << " flags: " << (e.getFlag(RS2::FlagVisible) ? "RS2::FlagVisible" : "");
-    os << (e.getFlag(RS2::FlagUndone) ? " RS2::FlagUndone" : "");
+    os << (e.getFlag(RS2::FlagDeleted) ? " RS2::FlagUndone" : "");
     os << (e.getFlag(RS2::FlagSelected) ? " RS2::FlagSelected" : "");
     os << "\n";
 
-    if (!e.m_layer) {
+    if (e.m_layer == nullptr) {
         os << " layer: nullptr ";
     } else {
         os << " layer: " << e.m_layer->getName().toLatin1().data() << " ";

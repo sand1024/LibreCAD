@@ -34,6 +34,7 @@
 #include "lc_graphicviewportlistener.h"
 #include "rs.h"
 
+class RS_Document;
 class LC_EventHandler;
 struct LC_InfoCursorOverlayPrefs;
 class QDateTime;
@@ -79,7 +80,7 @@ public:
     {
         return m_viewport.get();
     }
-    void setContainer(RS_EntityContainer *c);
+    void setDocument(RS_Document *c);
 
     virtual void loadSettings();
 /** This virtual method must be overwritten to return
@@ -99,41 +100,41 @@ public:
     virtual void adjustZoomControls() = 0;
 
 /* Sets the hidden state for the relative-zero marker. */
-    void setRelativeZeroHiddenState(bool isHidden);
-    bool isRelativeZeroHidden();
+    void setRelativeZeroHiddenState(bool isHidden) const;
+    bool isRelativeZeroHidden() const;
 /**
  * This virtual method can be overwritten to set the mouse
  * cursor to the given type.
  */
     virtual void setMouseCursor(RS2::CursorType /*c*/) = 0;
 
-    RS_EntityContainer *getContainer() const;
+    RS_Document *getDocument() const;
     void switchToDefaultAction();
     void setDefaultAction(RS_ActionInterface *action) const;
     RS_ActionInterface *getDefaultAction() const;
     void hideOptions() const;
     // fixme - sand - complete changes in plugin and remove this function from the public interface!!!
-    bool setCurrentAction(std::shared_ptr<RS_ActionInterface> action);
+    bool setCurrentAction(std::shared_ptr<RS_ActionInterface> action) const;
     RS_ActionInterface *getCurrentAction() const;
     QString getCurrentActionName() const;
     QIcon getCurrentActionIcon() const;
     void killAllActions() const;
     void back() const;
-    void processEnterKey();
-    void commandEvent(RS_CommandEvent *e);
+    void processEnterKey() const;
+    void commandEvent(RS_CommandEvent *e) const;
     void keyPressEvent(QKeyEvent *event) override;
-    void enableCoordinateInput();
-    void disableCoordinateInput();
-    void zoomAuto(bool axis=true);
+    void enableCoordinateInput() const;
+    void disableCoordinateInput() const;
+    void zoomAuto(bool axis=true) const;
     void zoomPage();
     void zoomPageEx();
 
     virtual void updateGridStatusWidget(QString) = 0;
-    void setDefaultSnapMode(RS_SnapMode sm);
+    void setDefaultSnapMode(RS_SnapMode sm) const;
     RS_SnapMode getDefaultSnapMode() const;
     void setSnapRestriction(RS2::SnapRestriction sr);
     RS2::SnapRestriction getSnapRestriction() const;
-    bool isCurrentActionRunning(RS_ActionInterface* action);
+    bool isCurrentActionRunning(RS_ActionInterface* action) const;
     /**
   * Enables or disables print preview.
   */
@@ -155,19 +156,19 @@ public:
 
     bool isCleanUp(void) const;
 
-    void setLineWidthScaling(bool state);
+    void setLineWidthScaling(bool state) const;
     bool getLineWidthScaling() const;
 
     RS2::EntityType getTypeToSelect() const;
     void setTypeToSelect(RS2::EntityType mType);
     virtual QString obtainEntityDescription(RS_Entity *entity, RS2::EntityDescriptionLevel shortDescription);
-    LC_InfoCursorOverlayPrefs* getInfoCursorOverlayPreferences();
+    LC_InfoCursorOverlayPrefs* getInfoCursorOverlayPreferences() const;
 
     bool getPanOnZoom() const;
     bool getSkipFirstZoom() const;
 
     void setShowEntityDescriptionOnHover(bool show);
-    bool isShowEntityDescriptionOnHover(){
+    bool isShowEntityDescriptionOnHover() const {
         return showEntityDescriptionOnHover;
     }
     virtual void highlightUCSLocation([[maybe_unused]]LC_UCS *ucs) {}
@@ -175,8 +176,8 @@ public:
     void onRelativeZeroChanged(const RS_Vector &pos) override;
     void onUCSChanged(LC_UCS* ucs) override;
     void notifyCurrentActionChanged(RS2::ActionType actionType);
-    bool hasAction();
-    void notifyLastActionFinished();
+    bool hasAction() const;
+    void notifyLastActionFinished() const;
 signals:
     void ucsChanged(LC_UCS* ucs);
     void relativeZeroChanged(const RS_Vector &);
@@ -191,7 +192,7 @@ protected:
     LC_EventHandler *getEventHandler() const;
 private:
     std::unique_ptr<LC_EventHandler> m_eventHandler;
-    RS_EntityContainer *container = nullptr;
+    RS_Document *m_document = nullptr;
     std::unique_ptr<LC_GraphicViewport> m_viewport;
     std::unique_ptr<LC_WidgetViewPortRenderer> m_renderer;
 
@@ -218,6 +219,6 @@ private:
     bool m_skipFirstZoom = false;
     const RS_LineTypePattern *getPattern(RS2::LineType t);
 
-    bool setEventHandlerAction(std::shared_ptr<RS_ActionInterface>);
+    bool setEventHandlerAction(std::shared_ptr<RS_ActionInterface>) const;
 };
 #endif

@@ -93,8 +93,6 @@ void RS_ActionInfoDist2::doTrigger() {
         QString message = msgTemplate.arg(dists[0], dists[1], dists[2], dists[0], angle, dists[3], dists[4], dists[5], dists[6]);
         commandMessage(message);
         restoreRelZero();
-        deletePreview();
-        redrawDrawing();
     }
 }
 
@@ -301,7 +299,7 @@ RS2::CursorType RS_ActionInfoDist2::doGetMouseCursor([[maybe_unused]] int status
 }
 
 // todo - refactor, this is a copy from RS_ActionInfoDist
-void RS_ActionInfoDist2::updateInfoCursor(const RS_Vector &mouse, const RS_Vector &startPoint) {
+void RS_ActionInfoDist2::updateInfoCursor(const RS_Vector &mouse, const RS_Vector &startPoint) const {
     if (m_infoCursorOverlayPrefs->enabled){
         msg(tr("Info"))
             .linear(tr("Distance:"), startPoint.distanceTo(mouse))

@@ -65,7 +65,7 @@ void LC_EllipseArcOptions::doSetAction(RS_ActionInterface *a, bool update){
     setReversedToActionAndView(reversed);
 }
 
-void LC_EllipseArcOptions::setReversedToActionAndView(bool reversed){
+void LC_EllipseArcOptions::setReversedToActionAndView(bool reversed) const {
     ui->rbNeg->setChecked(reversed);
     m_action->setReversed(reversed);
 }

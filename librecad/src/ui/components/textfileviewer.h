@@ -43,11 +43,11 @@ public:
     explicit TextFileViewer(QWidget* parent = 0);
     ~TextFileViewer();
 
-    bool addFile(QString name, QString path);
+    bool addFile(QString name, QString path) const;
     void setFile(QString name);
 
 public slots:
-    void loadFile(QListWidgetItem* item);
+    void loadFile(QListWidgetItem* item) const;
 
 private:
     Ui::TextFileViewer* ui = nullptr;

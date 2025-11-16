@@ -85,6 +85,7 @@
 #include "lc_actionremovesplinepoints.h"
 #include "lc_actionselectdimordinatesameorigin.h"
 #include "lc_actionselectpoints.h"
+#include "lc_actionselectquick.h"
 #include "lc_actionsnapmiddlemanual.h"
 #include "lc_actionsplineaddpoint.h"
 #include "lc_actionsplineappendpoint.h"
@@ -223,19 +224,19 @@ RS_Layer* obtainLayer(LC_ActionContext* m_actionContext, void* data) {
         layer = static_cast<RS_Layer*>(data);
     }
     else {
-        RS_Document* document = m_actionContext->getEntityContainer()->getDocument();
+        RS_Document* document = m_actionContext->getDocument()->getDocument();
         layer = (document->getLayerList() != nullptr) ? document->getLayerList()->getActive() : nullptr;
     }
     return layer;
 }
 
 bool hasSelection(LC_ActionContext* m_actionContext) {
-    return m_actionContext->getEntityContainer()->countSelected() > 0;
+    return m_actionContext->getDocument()->countSelected() > 0;
     // fixme - sand - think about moving to the action context
 }
 
 bool hasNoSelection(LC_ActionContext* m_actionContext) {
-    return m_actionContext->getEntityContainer()->countSelected() == 0;
+    return m_actionContext->getDocument()->countSelected() == 0;
     // fixme - sand - think about moving to the action context
 }
 
@@ -247,8 +248,8 @@ namespace InnerFactory{
                 if (view != nullptr) {
                     // DO we need to call some form of a 'clean' function?
                     view->killAllActions();
-                    auto document = ctx->getEntityContainer();
-                    RS_Selection s(static_cast<RS_EntityContainer&>(*document), view->getViewPort());
+                    auto document = ctx->getDocument();
+                    RS_Selection s(document, view->getViewPort());
                     s.selectAll(false);
 
                     auto selectionInfo = document->getSelectionInfo();
@@ -336,6 +337,9 @@ namespace InnerFactory{
             }
             case RS2::ActionSelectLayer: {
                 return new RS_ActionSelectLayer(ctx);
+            }
+            case RS2::ActionSelectQuick: {
+                return new LC_ActionSelectQuick(ctx);
             }
             case RS2::ActionDimRegenerate: {
                 return new RS_ActionToolRegenerateDimensions(ctx);

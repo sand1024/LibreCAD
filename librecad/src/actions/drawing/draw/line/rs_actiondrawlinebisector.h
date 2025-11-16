@@ -27,6 +27,7 @@
 #ifndef RS_ACTIONDRAWLINEBISECTOR_H
 #define RS_ACTIONDRAWLINEBISECTOR_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_previewactioninterface.h"
 
 class RS_Line;
@@ -36,7 +37,7 @@ class RS_Line;
  *
  * @author Andrew Mustun
  */
-class RS_ActionDrawLineBisector:public RS_PreviewActionInterface {
+class RS_ActionDrawLineBisector:public LC_UndoableDocumentModificationAction {
     Q_OBJECT
 public:
     explicit RS_ActionDrawLineBisector(LC_ActionContext *actionContext);
@@ -82,7 +83,7 @@ protected:
     bool doProcessCommand(int status, const QString &command) override;
     void updateMouseButtonHints() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    void doTrigger() override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
 };
 #endif

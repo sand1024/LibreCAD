@@ -197,7 +197,7 @@ void LC_DlgDimension::setupDimensionAttributesUI(RS_Dimension* dim) {
         ui->cbLayer->init(*(m_graphic->getLayerList()), false, false);
     }
     RS_Layer* lay = m_entity->getLayer(false);
-    if (lay) {
+    if (lay != nullptr) {
         ui->cbLayer->setLayer(*lay);
     }
 
@@ -631,7 +631,7 @@ void LC_DlgDimension::onDimCurrentChanged(const QModelIndex &current, [[maybe_un
     }
 }
 
-void LC_DlgDimension::selectStyleItem(QModelIndex indexToSelect) {
+void LC_DlgDimension::selectStyleItem(QModelIndex indexToSelect) const {
     if (indexToSelect.isValid()) {
         ui->lvDimStyles->selectionModel()->setCurrentIndex(indexToSelect, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
         ui->lvDimStyles->scrollTo(indexToSelect); // Ensure visibility
@@ -648,7 +648,7 @@ void LC_DlgDimension::updateActiveStyleInfoLabel() {
     ui->lblDefaultStyle->setText(currentStyleName);
 }
 
-void LC_DlgDimension::updateEntityStyleInfoLabels(LC_DimStyleItem* item) {
+void LC_DlgDimension::updateEntityStyleInfoLabels(LC_DimStyleItem* item) const {
     QString styleName;
     if (item->isOverrideItem()) {
         QFont font = ui->lblStyleOverrideState->font();
@@ -667,7 +667,7 @@ void LC_DlgDimension::updateEntityStyleInfoLabels(LC_DimStyleItem* item) {
     ui->lblEntityStyle->setText(styleName);
 }
 
-void LC_DlgDimension::updateActionButtons(LC_DimStyleItem* item) {
+void LC_DlgDimension::updateActionButtons(LC_DimStyleItem* item) const {
     bool overrideItem = item->isOverrideItem();
     bool is_active = item->isActive();
     ui->tbDimDefault->setEnabled(!is_active && !overrideItem);
@@ -680,7 +680,7 @@ void LC_DlgDimension::updateActionButtons(LC_DimStyleItem* item) {
     ui->tbSelectEntityStyle->setEnabled(notEntityStyleItems);
 }
 
-QModelIndex LC_DlgDimension::getSelectedDimStyleIndex() {
+QModelIndex LC_DlgDimension::getSelectedDimStyleIndex() const {
     return ui->lvDimStyles->selectionModel()->currentIndex();
 }
 
@@ -691,21 +691,21 @@ void LC_DlgDimension::updateDimStylePreview(LC_DimStyle* dimStyle,[[maybe_unused
     m_previewView->refresh();
 }
 
-void LC_DlgDimension::updateDimStylePreview(const RS_Pen& pen) {
+void LC_DlgDimension::updateDimStylePreview(const RS_Pen& pen) const {
     m_previewView->setEntityPen(pen);
     m_previewView->updateDims();
     m_previewView->zoomAuto();
     m_previewView->refresh();
 }
 
-void LC_DlgDimension::updateDimStylePreview(bool flipArrow1, bool flipArrow2) {
+void LC_DlgDimension::updateDimStylePreview(bool flipArrow1, bool flipArrow2) const {
     m_previewView->setEntityArrowsFlipMode(flipArrow1, flipArrow2);
     m_previewView->updateDims();
     m_previewView->zoomAuto();
     m_previewView->refresh();
 }
 
-LC_DimStyleTreeModel* LC_DlgDimension::getDimStylesModel() {
+LC_DimStyleTreeModel* LC_DlgDimension::getDimStylesModel() const {
     return dynamic_cast<LC_DimStyleTreeModel*>(ui->lvDimStyles->model());
 }
 
@@ -801,7 +801,7 @@ void LC_DlgDimension::prepareDimStyleItems(QList<LC_DimStyleItem*> &items) {
     }
 }
 
-void LC_DlgDimension::expandStylesTree() {
+void LC_DlgDimension::expandStylesTree() const {
     ui->lvDimStyles->expandAll();
     ui->lvDimStyles->setItemsExpandable(false);
 }

@@ -78,7 +78,7 @@ public slots:
     void onActiveOffBackColorChanged(const QString &value);
     void onNormalOnMainColorChanged(const QString &value);
     void resetToDefaults();
-    void applyIconColors();
+    void applyIconColors() const;
 protected:
     Ui::LC_DlgIconsSetup *ui;
     LC_IconColorsOptions *m_iconColorsOptions;

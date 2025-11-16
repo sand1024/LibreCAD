@@ -189,7 +189,7 @@ void LC_OverlayInfoCursor::draw(RS_Painter *painter) {
     painter->restore();
 }
 
-void LC_OverlayInfoCursor::clear() {
+void LC_OverlayInfoCursor::clear() const {
     if (zonesData != nullptr){
         zonesData->clear();
     }

@@ -59,7 +59,7 @@ namespace {
 LC_LoopUtils::LC_Loops buildLoops(const RS_EntityContainer* cont, const std::vector<std::unique_ptr<RS_EntityContainer>>& allLoops) {
     auto loopCopy = std::make_shared<RS_EntityContainer>(nullptr, true);
     for (RS_Entity* e : *cont) {
-        if (e && !e->isContainer()) {
+        if (e != nullptr && !e->isContainer()) {
             loopCopy->addEntity(e->clone());  // Clone atomics for independent ownership
         }
     }
@@ -132,7 +132,7 @@ LoopExtractor::~LoopExtractor() = default;
  * Builds each loop by chaining connected edges, clones and orients for positive area.
  * @return Vector of unique_ptr to valid loop containers.
  */
-std::vector<std::unique_ptr<RS_EntityContainer>> LoopExtractor::extract() {
+std::vector<std::unique_ptr<RS_EntityContainer>> LoopExtractor::extract() const {
     std::vector<std::unique_ptr<RS_EntityContainer>> results;
     while (!m_data->unprocessed.empty()) {
         m_loop = std::make_unique<RS_EntityContainer>();
@@ -461,7 +461,7 @@ std::shared_ptr<std::vector<LC_Loops>> LoopOptimizer::GetResults() const {
 /**
  * @brief Processes a contour: Extract loops, sort, and build hierarchy.
  */
-void LoopOptimizer::AddContainer(const RS_EntityContainer& contour) {
+void LoopOptimizer::AddContainer(const RS_EntityContainer& contour) const {
     LoopExtractor extractor(contour);
     auto loops = extractor.extract();
     LoopSorter sorter(std::move(loops));
@@ -486,7 +486,7 @@ void LC_Loops::addChild(LC_Loops child) {
 /**
  * @brief Adds an entity to the outer loop container.
  */
-void LC_Loops::addEntity(RS_Entity* entity) {
+void LC_Loops::addEntity(RS_Entity* entity) const {
     m_loop->addEntity(entity);
 }
 

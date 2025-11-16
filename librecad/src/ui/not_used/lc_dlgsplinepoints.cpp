@@ -98,7 +98,9 @@ void LC_DlgSplinePoints::updatePoints() {
 }
 
 void LC_DlgSplinePoints::updateEntity() {
-    if (!m_entity) return;
+    if (m_entity == nullptr) {
+        return;
+    }
 
     m_entity->setClosed(ui->cbClosed->isChecked());
     m_entity->setPen(ui->wPen->getPen());

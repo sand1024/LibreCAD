@@ -56,7 +56,7 @@ bool dwgReader21::readMetaData() {
     return true;
 }
 
-bool dwgReader21::parseSysPage(duint64 sizeCompressed, duint64 sizeUncompressed, duint64 correctionFactor, duint64 offset, duint8 *decompData){
+bool dwgReader21::parseSysPage(duint64 sizeCompressed, duint64 sizeUncompressed, duint64 correctionFactor, duint64 offset, duint8 *decompData) const {
     //round to 8
     duint64 alsize = (sizeCompressed + 7) &(-8);
     //minimum RS chunk:
@@ -482,4 +482,3 @@ bool dwgReader21::readDwgBlocks(DRW_Interface& intfa){
     ret = dwgReader::readDwgBlocks(intfa, &dataBuf);
     return ret;
 }
-

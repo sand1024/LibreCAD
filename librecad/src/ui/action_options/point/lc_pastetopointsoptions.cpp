@@ -76,7 +76,7 @@ void LC_PasteToPointsOptions::onRemovePointsClicked(bool clicked){
     setRemovePointsToActionAndView(clicked);
 }
 
-void LC_PasteToPointsOptions::setRemovePointsToActionAndView(bool val) {
+void LC_PasteToPointsOptions::setRemovePointsToActionAndView(bool val) const {
     ui->cbRemovePoint->setChecked(val);
     m_action->setRemovePointAfterPaste(val);
 }

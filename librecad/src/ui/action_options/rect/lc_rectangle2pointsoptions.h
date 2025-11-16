@@ -57,13 +57,13 @@ protected:
     void setLenYToActionAnView(const QString& value);
     void setLenXToActionAnView(const QString& value);
     void setRadiusToActionAnView(const QString& value);
-    void setCornersModeToActionAndView(int index);
-    void setInsertSnapPointModeToActionAndView(int index);
-    void setSecondPointSnapPointModeToActionAndView(int index);
-    void setUsePolylineToActionAndView(bool value);
-    void setSnapToCornerArcCenter(bool value);
-    void setBaseAngleFixedToActionAndView(bool angle);
-    void setEdgesModeToActionAndView(int index);
+    void setCornersModeToActionAndView(int index) const;
+    void setInsertSnapPointModeToActionAndView(int index) const;
+    void setSecondPointSnapPointModeToActionAndView(int index) const;
+    void setUsePolylineToActionAndView(bool value) const;
+    void setSnapToCornerArcCenter(bool value) const;
+    void setBaseAngleFixedToActionAndView(bool angle) const;
+    void setEdgesModeToActionAndView(int index) const;
 };
 
 #endif // LC_RECTANGLE2POINTSOPTIONS_H

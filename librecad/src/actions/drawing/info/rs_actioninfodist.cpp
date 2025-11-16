@@ -92,7 +92,7 @@ void RS_ActionInfoDist::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     }
 }
 
-void RS_ActionInfoDist::updateInfoCursor(const RS_Vector &mouse, const RS_Vector &startPoint) {
+void RS_ActionInfoDist::updateInfoCursor(const RS_Vector &mouse, const RS_Vector &startPoint) const {
     if (m_infoCursorOverlayPrefs->enabled) {
         double distance = startPoint.distanceTo(mouse);
         msg(tr("Info"))

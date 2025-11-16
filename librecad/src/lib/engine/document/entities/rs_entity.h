@@ -51,7 +51,7 @@ class LC_Quadratic;
  */
 class RS_Entity:public RS_Undoable, public LC_Drawable {
 public:
-    RS_Entity(RS_EntityContainer *parent = nullptr);
+    explicit RS_Entity(RS_EntityContainer *parent = nullptr);
     // RS_Entity(RS_EntityContainer *parent, bool setPenToActive = false);
     RS_Entity(const RS_Entity& entity);
     RS_Entity& operator = (const RS_Entity& entity);
@@ -70,7 +70,6 @@ public:
     void resetBorders();
     void moveBorders(const RS_Vector &offset);
     void scaleBorders(const RS_Vector &center, const RS_Vector &factor);
-
 
     /**
      * Identify all entities as undoable entities.
@@ -130,6 +129,7 @@ public:
     void setLayer(const QString &name);
     void setLayer(RS_Layer *l);
     void setLayerToActive();
+    void setPenAndLayerToActive();
     RS_Layer *getLayer(bool resolve = true) const;
     RS_Layer *getLayerResolved() const;
 
@@ -137,9 +137,9 @@ public:
      * Sets the explicit pen for this entity or a pen with special
      * attributes such as BY_LAYER, ..
      */
-    void setPen(const RS_Pen &pen);
+    void setPen(const RS_Pen &pen) const;
 
-    void setPenToActive();
+    void setPenToActive() const;
     RS_Pen getPen(bool resolve = true) const;
     RS_Pen getPenResolved() const;
     /**
@@ -170,8 +170,10 @@ public:
         return false;
     }
 
+    virtual void setSelectionFlag(bool select);
     virtual bool setSelected(bool select);
     virtual bool toggleSelected();
+    void clearSelectionFlag();
     virtual bool isSelected() const;
     bool isParentSelected() const;
     virtual bool isProcessed() const;
@@ -189,8 +191,8 @@ public:
     bool isTransparent() const;
     void setTransparent(bool on);
     bool isLocked() const;
-    void undoStateChanged(bool undone) override;
-    virtual bool isUndone() const;
+    void deletedStateChanged(bool undone) override;
+    virtual bool isDeleted() const;
 
     /**
      * Can be implemented by child classes to update the entities
@@ -230,10 +232,10 @@ public:
      * @see getMax()
      */
     RS_Vector getSize() const;
-    void addGraphicVariable(const QString &key, double val, int code);
-    void addGraphicVariable(const QString &key, int val, int code);
-    void addGraphicVariable(const QString &key, const QString &val, int code);
-    double getGraphicVariableDouble(const QString &key, double def);
+    void addGraphicVariable(const QString &key, double val, int code) const;
+    void addGraphicVariable(const QString &key, int val, int code) const;
+    void addGraphicVariable(const QString &key, const QString &val, int code) const;
+    double getGraphicVariableDouble(const QString &key, double def) const;
     int getGraphicVariableInt(const QString &key, int def) const;
     QString getGraphicVariableString(
         const QString &key,
@@ -425,6 +427,8 @@ public:
         const RS_Vector &coord,
         double tolerance = 20. * RS_TOLERANCE) const;
 
+
+
     /**
      * Implementations must offset the entity by the given direction and distance.
      */
@@ -540,8 +544,8 @@ public:
 //    double getStyleFactor(RS_GraphicView *view);
     QString getUserDefVar(const QString &key) const;
     std::vector<QString> getAllKeys() const;
-    void setUserDefVar(QString key, QString val);
-    void delUserDefVar(QString key);
+    void setUserDefVar(QString key, QString val) const;
+    void delUserDefVar(QString key) const;
     friend std::ostream &operator<<(std::ostream &os, RS_Entity &e);
     /** Recalculates the borders of this entity. */
     virtual void calculateBorders() = 0;
@@ -597,15 +601,19 @@ protected:
     //! auto updating enabled?
     bool updateEnabled = false;
 
-    void init(bool setPenAndLayerToActive);
+    void init(bool updatePenAndLayerToActive);
     void initId();
 
+    void addToSelectionSet(bool select, RS_Document* doc);
+    virtual bool doSelectInDocument(bool select, RS_Document* doc);
 private:
     //! Entity m_id
     unsigned long long m_id = 0;
     // pImp to delay pulling in Qt headers
     struct Impl;
     std::unique_ptr<Impl> m_pImpl;
+
+    friend class RS_Document;
 };
 
 #endif

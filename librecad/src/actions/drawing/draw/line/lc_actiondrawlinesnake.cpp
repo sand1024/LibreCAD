@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "lc_linemath.h"
 #include "lc_lineoptions.h"
+#include "rs_document.h"
 
 LC_ActionDrawLineSnake::LC_ActionDrawLineSnake(LC_ActionContext *actionContext,RS2::ActionType actionType)
     :LC_AbstractActionDrawLine("Draw line snake",actionContext, actionType)
@@ -52,7 +53,7 @@ LC_ActionDrawLineSnake::LC_ActionDrawLineSnake(LC_ActionContext *actionContext,R
 
 LC_ActionDrawLineSnake::~LC_ActionDrawLineSnake() = default;
 
-size_t LC_ActionDrawLineSnake::ActionData::index(const int offset /*= 0*/){
+size_t LC_ActionDrawLineSnake::ActionData::index(const int offset /*= 0*/) const {
     return static_cast<size_t>( std::max(0, historyIndex + offset));
 }
 
@@ -74,7 +75,7 @@ void LC_ActionDrawLineSnake::resetPoints(){
  * @param list  list of entities to add created line
  */
 void LC_ActionDrawLineSnake::doPrepareTriggerEntities(QList<RS_Entity *> &list){
-    auto *line = new RS_Line(m_container, m_actionData->data);
+    auto *line = new RS_Line(m_document, m_actionData->data);
     list << line;
 }
 
@@ -162,7 +163,7 @@ RS_Vector LC_ActionDrawLineSnake::doGetRelativeZeroAfterTrigger(){
     return m_actionData->history.at(m_actionData->index()).currPt; // move relative end point to last point
 }
 
-void LC_ActionDrawLineSnake::createEntities(RS_Vector &potentialEndPoint, QList<RS_Entity *> &entitiesList){
+void LC_ActionDrawLineSnake::createEntities(RS_Vector &potentialEndPoint, QList<RS_Entity *> &entitiesList) const {
     auto *line = new RS_Line(m_actionData->data.startpoint, potentialEndPoint);
     entitiesList << line;
 }
@@ -615,7 +616,7 @@ void LC_ActionDrawLineSnake::redo(){
     }
 }
 
-void LC_ActionDrawLineSnake::addHistory(LC_ActionDrawLineSnake::HistoryAction a, const RS_Vector &p, const RS_Vector &c, const int s){
+void LC_ActionDrawLineSnake::addHistory(LC_ActionDrawLineSnake::HistoryAction a, const RS_Vector &p, const RS_Vector &c, const int s) const {
     if (m_actionData->historyIndex < -1){
         m_actionData->historyIndex = -1;
     }
@@ -656,11 +657,11 @@ void LC_ActionDrawLineSnake::polyline(){
     }
 }
 
-bool LC_ActionDrawLineSnake::mayClose(){
+bool LC_ActionDrawLineSnake::mayClose() const {
     return 1 < m_actionData->startOffset && 0 <= m_actionData->historyIndex - m_actionData->startOffset;
 }
 
-bool LC_ActionDrawLineSnake::mayRedo(){
+bool LC_ActionDrawLineSnake::mayRedo() const {
     return m_actionData->history.size() > (m_actionData->index() + 1);
 }
 
@@ -668,7 +669,7 @@ bool LC_ActionDrawLineSnake::mayStart(){
     return getStatus() == SetDistance || getStatus() == SetPoint;
 }
 
-double LC_ActionDrawLineSnake::defineActualSegmentAngle(double relativeAngleRad){
+double LC_ActionDrawLineSnake::defineActualSegmentAngle(double relativeAngleRad) const {
     size_t currentIndex = m_actionData->index();  // this should be start point of current line
     double ucsBasisAngle = relativeAngleRad;
     if (currentIndex > 0){
@@ -688,7 +689,7 @@ double LC_ActionDrawLineSnake::defineActualSegmentAngle(double relativeAngleRad)
     return result;
 }
 
-RS_Vector LC_ActionDrawLineSnake::calculateAngleEndpoint(const RS_Vector &snap){
+RS_Vector LC_ActionDrawLineSnake::calculateAngleEndpoint(const RS_Vector &snap) const {
     double ucsBasisAngleToUse = m_angleDegrees;
     if (m_alternativeActionMode){
         ucsBasisAngleToUse = 180 - m_angleDegrees;
@@ -707,7 +708,7 @@ RS_Vector LC_ActionDrawLineSnake::calculateAngleEndpoint(const RS_Vector &snap){
 }
 
 
-void LC_ActionDrawLineSnake::calculateAngleSegment(double distance){
+void LC_ActionDrawLineSnake::calculateAngleSegment(double distance) const {
     double wcsAngle;
     if (m_angleIsRelative){
         double angleRadians = RS_Math::deg2rad(m_angleDegrees);

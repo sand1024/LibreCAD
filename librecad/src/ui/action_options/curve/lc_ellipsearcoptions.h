@@ -45,6 +45,6 @@ protected:
 protected:
     RS_ActionDrawEllipseAxis* m_action = nullptr;
     std::unique_ptr<Ui::LC_EllipseArcOptions> ui;
-    void setReversedToActionAndView(bool reversed);
+    void setReversedToActionAndView(bool reversed) const;
 };
 #endif // LC_ELLIPSEARCOPTIONS_H

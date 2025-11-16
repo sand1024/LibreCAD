@@ -39,7 +39,7 @@ public:
 
 public slots:
     void validate();
-    void onDefaultActionAutoClicked();
+    void onDefaultActionAutoClicked() const;
 
 protected slots:
     void languageChange();

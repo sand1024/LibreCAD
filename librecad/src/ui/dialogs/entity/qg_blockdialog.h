@@ -37,7 +37,7 @@ class QG_BlockDialog : public LC_Dialog, public Ui::QG_BlockDialog{
 public:
     QG_BlockDialog(QWidget* parent = nullptr);
 	~QG_BlockDialog() override =default;
-    RS_BlockData getBlockData();
+    RS_BlockData getBlockData() const;
 public slots:
     void setBlockList( RS_BlockList * l );
     void validate();

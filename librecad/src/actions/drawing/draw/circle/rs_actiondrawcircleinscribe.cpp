@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "rs_circle.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_line.h"
 #include "rs_polyline.h"
 #include "rs_preview.h"
@@ -48,7 +49,7 @@ RS_ActionDrawCircleInscribe::RS_ActionDrawCircleInscribe(LC_ActionContext *actio
 
 RS_ActionDrawCircleInscribe::~RS_ActionDrawCircleInscribe() = default;
 
-void RS_ActionDrawCircleInscribe::clearLines(bool checkStatus){
+void RS_ActionDrawCircleInscribe::clearLines(bool checkStatus) const {
     while (!m_actionData->lines.empty()) {
         if (checkStatus && (int) m_actionData->lines.size() <= getStatus()) {
             break;
@@ -85,17 +86,17 @@ void RS_ActionDrawCircleInscribe::finish(bool updateTB){
     RS_PreviewActionInterface::finish(updateTB);
 }
 
-void RS_ActionDrawCircleInscribe::doTrigger() {
-    auto *circle = new RS_Circle(m_container, m_actionData->cData);
-
+RS_Entity* RS_ActionDrawCircleInscribe::doTriggerCreateEntity() {
+    auto *circle = new RS_Circle(m_document, m_actionData->cData);
     if (m_moveRelPointAtCenterAfterTrigger){
         moveRelativeZero(circle->getCenter());
     }
-    undoCycleAdd(circle);
+    return circle;
+}
 
+void RS_ActionDrawCircleInscribe::doTriggerCompletion(bool success) {
     clearLines(false);
     setStatus(SetLine1);
-    RS_DEBUG->print("RS_ActionDrawCircle4Line::trigger(): entity added: %lu", circle->getId());
 }
 
 void RS_ActionDrawCircleInscribe::onMouseMoveEvent(int status, LC_MouseEvent *e) {

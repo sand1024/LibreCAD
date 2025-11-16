@@ -34,9 +34,9 @@ class LC_LastOpenFilesOpener{
 public:
     LC_LastOpenFilesOpener(QC_ApplicationWindow* m_appWin);
     ~LC_LastOpenFilesOpener();
-    void openLastOpenFiles(QStringList& fileList,  QSplashScreen* spash);
+    void openLastOpenFiles(QStringList& fileList,  QSplashScreen* spash) const;
     void collectFilesList(const QList<QC_MDIWindow*> &m_windowList,  const QMdiSubWindow* activWindow);
-    void saveSettings();
+    void saveSettings() const;
 private:
     QString m_openedFiles;
     QString m_activeFile = "";

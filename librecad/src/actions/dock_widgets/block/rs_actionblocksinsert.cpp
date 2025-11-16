@@ -27,19 +27,20 @@
 
 #include "rs_actionblocksinsert.h"
 
+#include <memory>
+
 #include "qg_insertoptions.h"
 #include "rs_block.h"
 #include "rs_creation.h"
 #include "rs_graphic.h"
 #include "rs_insert.h"
-#include "rs_preview.h"
 
 /**
  * Constructor.
  */
 // fixme - sand - ucs - SUPPORT UCS, ANGLES FOR INSERTION!
 RS_ActionBlocksInsert::RS_ActionBlocksInsert(LC_ActionContext *actionContext)
-    : RS_PreviewActionInterface("Blocks Insert", actionContext, RS2::ActionBlocksInsert),
+    : LC_SingleEntityCreationAction("Blocks Insert", actionContext, RS2::ActionBlocksInsert),
       m_block(nullptr),
       m_lastStatus(SetUndefined){
     reset(); // init data Member
@@ -47,22 +48,22 @@ RS_ActionBlocksInsert::RS_ActionBlocksInsert(LC_ActionContext *actionContext)
 
 RS_ActionBlocksInsert::~RS_ActionBlocksInsert() = default;
 
-void RS_ActionBlocksInsert::init(int status){
+void RS_ActionBlocksInsert::init(const int status){
     RS_PreviewActionInterface::init(status);
     reset();
 
     if (m_graphic != nullptr) {
         m_block = m_graphic->getActiveBlock();
         if (m_block != nullptr) {
-            QString blockName = m_block->getName();
+            const QString blockName = m_block->getName();
             m_data->name = blockName;
             if (m_document->is(RS2::EntityBlock)) {
-                QString parentBlockName = static_cast<RS_Block*>(m_document)->getName();
+                const QString parentBlockName = static_cast<RS_Block*>(m_document)->getName();
                 if (parentBlockName == blockName) {
                     commandMessage(tr("Block cannot contain an insert of itself."));
                     finish(false);
                 } else {
-                    QStringList bnChain = m_block->findNestedInsert(parentBlockName);
+                    const QStringList bnChain = m_block->findNestedInsert(parentBlockName);
                     if (!bnChain.empty()) {
                         // fixme - sand - think where to report the error...
                         commandMessage(blockName
@@ -80,40 +81,41 @@ void RS_ActionBlocksInsert::init(int status){
 }
 
 void RS_ActionBlocksInsert::reset(){
-    m_data.reset(new RS_InsertData("", RS_Vector(0.0, 0.0), RS_Vector(1.0, 1.0), 0.0,
-                                   1, 1, RS_Vector(1.0, 1.0), nullptr, RS2::Update));
+    m_data = std::make_unique<RS_InsertData>("", RS_Vector(0.0, 0.0), RS_Vector(1.0, 1.0), 0.0,
+                                   1, 1, RS_Vector(1.0, 1.0), nullptr, RS2::Update);
 }
 
-void RS_ActionBlocksInsert::trigger(){
-    deletePreview();
-
+RS_Entity* RS_ActionBlocksInsert::doTriggerCreateEntity() {
     if (m_block != nullptr) {
-        RS_Creation creation(m_container, m_viewport);
         m_data->updateMode = RS2::Update;
-        auto insertData = m_data.get();
-        auto insertDataCopy = new RS_InsertData(*insertData);
+        const auto insertData = m_data.get();
+        const auto insertDataCopy = new RS_InsertData(*insertData);
         insertDataCopy->angle = toWorldAngleFromUCSBasis(insertData->angle);
-        creation.createInsert(insertDataCopy);
-    }
 
-    redrawDrawing();
+        const auto ins = new RS_Insert(m_document, *insertDataCopy);
+        ins->update();
+        return ins;
+    }
+    return nullptr;
 }
 
-void RS_ActionBlocksInsert::onMouseMoveEvent(int status, LC_MouseEvent *e){
+void RS_ActionBlocksInsert::doTriggerCompletion(bool success) {
+}
+
+void RS_ActionBlocksInsert::onMouseMoveEvent(const int status, LC_MouseEvent *e){
     switch (status) {
         case SetTargetPoint: {
             m_data->insertionPoint = e->snapPoint;
             if (m_block != nullptr) {
-                //preview->addAllFrom(*block);
-                //preview->move(data->insertionPoint);
-                RS_Creation creation(m_preview.get(), m_viewport, false);
-                // Create insert as preview only
                 m_data->updateMode = RS2::PreviewUpdate;
-                auto insertData = m_data.get();
-                auto insertDataCopy = new RS_InsertData(*insertData);
+                const auto insertData = m_data.get();
+                const auto insertDataCopy = new RS_InsertData(*insertData);
                 insertDataCopy->angle = toWorldAngleFromUCSBasis(insertData->angle);
                 insertDataCopy->updateMode = RS2::Update;
-                creation.createInsert(insertDataCopy);
+
+                const auto insert = new RS_Insert(m_document, *insertDataCopy);
+                // insert->update();
+                previewEntity(insert);
             }
             break;
         }
@@ -122,7 +124,7 @@ void RS_ActionBlocksInsert::onMouseMoveEvent(int status, LC_MouseEvent *e){
     }
 }
 
-bool RS_ActionBlocksInsert::doUpdateAngleByInteractiveInput(const QString& tag, double angle) {
+bool RS_ActionBlocksInsert::doUpdateAngleByInteractiveInput(const QString& tag, const double angle) {
     if (tag == "angle") {
         setAngle(angle);
         return true;
@@ -130,7 +132,7 @@ bool RS_ActionBlocksInsert::doUpdateAngleByInteractiveInput(const QString& tag, 
     return false;
 }
 
-bool RS_ActionBlocksInsert::doUpdateDistanceByInteractiveInput(const QString& tag, double distance) {
+bool RS_ActionBlocksInsert::doUpdateDistanceByInteractiveInput(const QString& tag, const double distance) {
     if (tag == "spacingX") {
         setColumnSpacing(distance);
         return true;
@@ -146,7 +148,7 @@ void RS_ActionBlocksInsert::onMouseLeftButtonRelease([[maybe_unused]] int status
     fireCoordinateEvent(e->snapPoint);
 }
 
-void RS_ActionBlocksInsert::onMouseRightButtonRelease(int status, [[maybe_unused]] LC_MouseEvent *e){
+void RS_ActionBlocksInsert::onMouseRightButtonRelease(const int status, [[maybe_unused]] LC_MouseEvent *e){
     initPrevious(status);
 }
 
@@ -161,32 +163,32 @@ bool RS_ActionBlocksInsert::doProcessCommand(int status, const QString &c){
         case SetTargetPoint: {
             if (checkCommand("angle", c)) {
                 deletePreview();
-                m_lastStatus = (Status) status;
+                m_lastStatus = static_cast<Status>(status);
                 setStatus(SetAngle);
                 accept = true;
             } else if (checkCommand("factor", c)) {
                 deletePreview();
-                m_lastStatus = (Status) status;
+                m_lastStatus = static_cast<Status>(status);
                 setStatus(SetFactor);
                 accept = true;
             } else if (checkCommand("columns", c)) {
                 deletePreview();
-                m_lastStatus = (Status) status;
+                m_lastStatus = static_cast<Status>(status);
                 setStatus(SetColumns);
                 accept = true;
             } else if (checkCommand("rows", c)) {
                 deletePreview();
-                m_lastStatus = (Status) status;
+                m_lastStatus = static_cast<Status>(status);
                 setStatus(SetRows);
                 accept = true;
             } else if (checkCommand("columnspacing", c)) {
                 deletePreview();
-                m_lastStatus = (Status) status;
-                accept = true;
+                m_lastStatus = static_cast<Status>(status);
+                accept       = true;
                 setStatus(SetColumnSpacing);
             } else if (checkCommand("rowspacing", c)) {
                 deletePreview();
-                m_lastStatus = (Status) status;
+                m_lastStatus = static_cast<Status>(status);
                 setStatus(SetRowSpacing);
                 accept = true;
             }
@@ -194,7 +196,7 @@ bool RS_ActionBlocksInsert::doProcessCommand(int status, const QString &c){
         }
         case SetAngle: {
             bool ok;
-            double a = RS_Math::eval(c, &ok);
+            const double a = RS_Math::eval(c, &ok);
             if (ok) {
                 accept = true;
                 m_data->angle = RS_Math::deg2rad(a);
@@ -207,7 +209,7 @@ bool RS_ActionBlocksInsert::doProcessCommand(int status, const QString &c){
         }
         case SetFactor: {
             bool ok;
-            double f = RS_Math::eval(c, &ok);
+            const double f = RS_Math::eval(c, &ok);
             if (ok) {
                 setFactor(f);
                 accept = true;
@@ -220,7 +222,7 @@ bool RS_ActionBlocksInsert::doProcessCommand(int status, const QString &c){
         }
         case SetColumns: {
             bool ok;
-            int cols = (int) RS_Math::eval(c, &ok);
+            const int cols = static_cast<int>(RS_Math::eval(c, &ok));
             if (ok) {
                 m_data->cols = cols;
                 accept = true;
@@ -233,7 +235,7 @@ bool RS_ActionBlocksInsert::doProcessCommand(int status, const QString &c){
         }
         case SetRows: {
             bool ok;
-            int rows = (int) RS_Math::eval(c, &ok);
+            const int rows = static_cast<int>(RS_Math::eval(c, &ok));
             if (ok) {
                 m_data->rows = rows;
                 accept = true;
@@ -246,7 +248,7 @@ bool RS_ActionBlocksInsert::doProcessCommand(int status, const QString &c){
         }
         case SetColumnSpacing: {
             bool ok;
-            double cs = (int) RS_Math::eval(c, &ok);
+            const double cs = static_cast<int>(RS_Math::eval(c, &ok));
             if (ok) {
                 m_data->spacing.x = cs;
                 accept = true;
@@ -259,7 +261,7 @@ bool RS_ActionBlocksInsert::doProcessCommand(int status, const QString &c){
         }
         case SetRowSpacing: {
             bool ok;
-            int rs = (int) RS_Math::eval(c, &ok);
+            const int rs = static_cast<int>(RS_Math::eval(c, &ok));
             if (ok) {
                 m_data->spacing.y = rs;
                 accept = true;
@@ -280,7 +282,7 @@ double RS_ActionBlocksInsert::getAngle() const{
     return m_data->angle;
 }
 
-void RS_ActionBlocksInsert::setAngle(double a){
+void RS_ActionBlocksInsert::setAngle(const double a) const {
     m_data->angle = a;
 }
 
@@ -288,7 +290,7 @@ double RS_ActionBlocksInsert::getFactor() const{
     return m_data->scaleFactor.x;
 }
 
-void RS_ActionBlocksInsert::setFactor(double f){
+void RS_ActionBlocksInsert::setFactor(const double f) const {
     m_data->scaleFactor = RS_Vector(f, f);
 }
 
@@ -296,7 +298,7 @@ int RS_ActionBlocksInsert::getColumns() const{
     return m_data->cols;
 }
 
-void RS_ActionBlocksInsert::setColumns(int c){
+void RS_ActionBlocksInsert::setColumns(const int c) const {
     m_data->cols = c;
 }
 
@@ -304,7 +306,7 @@ int RS_ActionBlocksInsert::getRows() const{
     return m_data->rows;
 }
 
-void RS_ActionBlocksInsert::setRows(int r){
+void RS_ActionBlocksInsert::setRows(const int r) const {
     m_data->rows = r;
 }
 
@@ -312,7 +314,7 @@ double RS_ActionBlocksInsert::getColumnSpacing() const{
     return m_data->spacing.x;
 }
 
-void RS_ActionBlocksInsert::setColumnSpacing(double cs){
+void RS_ActionBlocksInsert::setColumnSpacing(const double cs) const {
     m_data->spacing.x = cs;
 }
 
@@ -320,7 +322,7 @@ double RS_ActionBlocksInsert::getRowSpacing() const{
     return m_data->spacing.y;
 }
 
-void RS_ActionBlocksInsert::setRowSpacing(double rs){
+void RS_ActionBlocksInsert::setRowSpacing(const double rs) const {
     m_data->spacing.y = rs;
 }
 

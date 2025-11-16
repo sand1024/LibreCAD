@@ -28,6 +28,7 @@
 
 #include "qg_linerelangleoptions.h"
 #include "rs_creation.h"
+#include "rs_document.h"
 #include "rs_line.h"
 #include "rs_polyline.h"
 
@@ -39,7 +40,7 @@ const auto g_enTypeList = EntityTypeList{RS2::EntityLine, RS2::EntityArc, RS2::E
 
 // fixme - sand - add support of options for line snap point
 RS_ActionDrawLineRelAngle::RS_ActionDrawLineRelAngle(LC_ActionContext *actionContext,double ang,bool fixedAngle)
-    :RS_PreviewActionInterface("Draw Lines with relative angles",actionContext)
+    :LC_SingleEntityCreationAction("Draw Lines with relative angles",actionContext)
     , m_pos(std::make_unique<RS_Vector>())
     , m_fixedAngle(fixedAngle){
     m_relativeAngleRad = /*RS_Math::rad2deg(ang)*/ ang;
@@ -96,11 +97,13 @@ void RS_ActionDrawLineRelAngle::finish(bool updateTB) {
     RS_PreviewActionInterface::finish(updateTB);
 }
 
-void RS_ActionDrawLineRelAngle::doTrigger() {
-    RS_Creation creation(m_container, m_viewport);
-    moveRelativeZero(*m_pos); // fixme - to undoable?
-    // the created line is added to undo and the view automatically by RS_Creation
-    creation.createLineRelAngle(*m_pos,m_entity,m_relativeAngleRad,m_length);
+RS_Entity* RS_ActionDrawLineRelAngle::doTriggerCreateEntity() {
+    moveRelativeZero(*m_pos);
+    auto line = RS_Creation::createLineRelAngle(*m_pos,m_entity,m_relativeAngleRad,m_length);
+    return line;
+}
+
+void RS_ActionDrawLineRelAngle::doTriggerCompletion(bool success) {
 }
 
 void RS_ActionDrawLineRelAngle::onMouseMoveEvent(int status, LC_MouseEvent *e) {
@@ -116,11 +119,9 @@ void RS_ActionDrawLineRelAngle::onMouseMoveEvent(int status, LC_MouseEvent *e) {
         case SetPos: {
             highlightSelected(m_entity);
             *m_pos = getRelZeroAwarePoint(e, snap);
-            //fixme - sand - files - MERGE REGRESSION?
-            RS_Creation creation(nullptr, nullptr, false);
-            std::unique_ptr<RS_Line> lineToCreate = creation.createLineRelAngle(*m_pos, m_entity, m_relativeAngleRad, m_length);
+            auto lineToCreate = RS_Creation::createLineRelAngle(*m_pos, m_entity, m_relativeAngleRad, m_length);
             if (lineToCreate != nullptr){
-                previewEntityToCreate(lineToCreate.get()->clone(), true);
+                previewEntityToCreate(lineToCreate, true);
                 if (m_showRefEntitiesOnPreview) {
                     auto const vp = m_entity->getNearestPointOnEntity(*m_pos, false);
                     previewRefPoint(vp);

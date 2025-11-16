@@ -63,7 +63,7 @@ public:
     void setFilteringRegexp(const QString &reqgexp, bool highlightMode);
     Qt::DropActions supportedDropActions() const override{return Qt::CopyAction | Qt::MoveAction;}
     void setCurrentlyDraggingItem(LC_LayerTreeItem *item);
-    LC_LayerTreeItem *getCurrentlyDraggingItem();
+    LC_LayerTreeItem *getCurrentlyDraggingItem() const;
     void setFlatMode(bool mode);
     bool performReStructure(LC_LayerTreeItem *source, LC_LayerTreeItem *destination);
     bool convertToType(const QModelIndex &index, int toLayerType);
@@ -88,7 +88,7 @@ private:
     bool renameLayers(QList<LC_LayerTreeItem *> layersList, QString &fromNamePrefix, QString &toNamePrefix);
     void emitDataChanged();
     QString generateLayersPathString(QList<LC_LayerTreeItem *> items, bool alternateName, QString &alternativeName);
-    QString restoreNamePart(QString name, int layerType);
+    QString restoreNamePart(QString name, int layerType) const;
     void setupDisplayNames(LC_LayerTreeItem *item);
     QString findNewUniqueName(const LC_LayerTreeItem *destination, const QString &name, const QString &copyPrefix, const QString &copySuffix, int layerType);
     QString createItemPathString(LC_LayerTreeItem *item, bool includeSelf, bool alternateItemName, QString &newItemName);

@@ -50,7 +50,7 @@ private:
     void setXToActionAndView(const QString &strValue);
     void setYToActionAndView(const QString &strValue);
     void setAngleToActionAndView(const QString &expr);
-    void setModeToActionAndView(int mode);
+    void setModeToActionAndView(int mode) const;
 };
 
 #endif // LC_CROSSOPTIONS_H

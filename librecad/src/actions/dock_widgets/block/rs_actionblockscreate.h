@@ -52,7 +52,9 @@ protected:
 
     std::unique_ptr<RS_Vector> m_referencePoint;
 
-    void doTrigger(bool keepSelected) override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
+
     void onCoordinateEvent(int status, bool isZero, const RS_Vector& pos) override;
     void onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent* pEvent) override;
     void onMouseRightButtonReleaseSelected(int status, LC_MouseEvent* pEvent) override;

@@ -28,6 +28,7 @@
 
 #include "lc_actioncontext.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_entity.h"
 #include "rs_modification.h"
 #include "rs_polyline.h"
@@ -38,7 +39,6 @@ RS_ActionPolylineAdd::RS_ActionPolylineAdd(LC_ActionContext *actionContext)
 }
 
 RS_ActionPolylineAdd::~RS_ActionPolylineAdd() = default;
-
 
 
 void RS_ActionPolylineAdd::init(int status) {
@@ -55,10 +55,10 @@ void RS_ActionPolylineAdd::doInitWithContextEntity(RS_Entity* contextEntity,[[ma
 void RS_ActionPolylineAdd::doTrigger() {
     RS_DEBUG->print("RS_ActionPolylineAdd::trigger()");
 
-    if (m_polylineToModify && m_addSegment->isAtomic() && m_addCoord->valid &&
+    if (m_polylineToModify != nullptr && m_addSegment->isAtomic() && m_addCoord->valid &&
         m_addSegment->isPointOnEntity(*m_addCoord)) {
-        RS_Modification m(*m_container, m_viewport);
-        RS_Polyline* createdPolyline = m.addPolylineNode(*m_polylineToModify,
+        RS_Modification m(m_document, m_viewport);
+        RS_Polyline* createdPolyline = m.addPolylineNode(m_polylineToModify,
                                                          reinterpret_cast<RS_AtomicEntity&>(*m_addSegment),
                                                          *m_addCoord);
         if (createdPolyline != nullptr){
@@ -104,7 +104,7 @@ void RS_ActionPolylineAdd::setPolylineToModify(RS_Entity* en) {
         commandMessage(tr("Entity must be a polyline."));
     } else {
         m_polylineToModify = dynamic_cast<RS_Polyline *>(en);
-        m_polylineToModify->setSelected(true);
+        select(m_polylineToModify);
         redraw();
         setStatus(SetAddCoord);
     }
@@ -125,7 +125,7 @@ void RS_ActionPolylineAdd::onMouseLeftButtonRelease(int status, LC_MouseEvent *e
 
             const RS_Vector newCoord = m_polylineToModify->getNearestPointOnEntity(snap, true);
             *m_addCoord = newCoord;
-            if (!m_polylineToModify){
+            if (m_polylineToModify == nullptr){
                 commandMessage(tr("No Entity found."));
             } else if (!m_addCoord->valid){
                 commandMessage(tr("Adding point is invalid."));
@@ -152,8 +152,8 @@ void RS_ActionPolylineAdd::onMouseRightButtonRelease([[maybe_unused]] int status
 }
 
 void RS_ActionPolylineAdd::finish(bool updateTB){
-    if (m_polylineToModify){
-        m_polylineToModify->setSelected(false);
+    if (m_polylineToModify != nullptr){
+        unselect(m_polylineToModify);
         redraw();
         m_polylineToModify = nullptr;
         m_addSegment = nullptr;

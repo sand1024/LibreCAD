@@ -25,6 +25,7 @@
 **********************************************************************/
 #include "rs_selection.h"
 
+#include "dl_jww.h"
 #include "lc_containertraverser.h"
 #include "lc_graphicviewport.h"
 #include "qc_applicationwindow.h"
@@ -35,6 +36,9 @@
 #include "rs_insert.h"
 #include "rs_layer.h"
 #include "rs_line.h"
+#include "lc_selectedset.h"
+#include "rs_graphicview.h"
+#include "rs_solid.h"
 
 /**
  * Default constructor.
@@ -43,78 +47,148 @@
  *        entities. Usually that's an RS_Graphic entity but
  *        it can also be a polyline, text, ...
  */
-RS_Selection::RS_Selection(
-    RS_EntityContainer &container,
-    LC_GraphicViewport *graphicView):
-    m_container{&container}, m_graphic{container.getGraphic()}, m_graphicView{graphicView}{
+RS_Selection::RS_Selection(RS_Document* container, LC_GraphicViewport* graphicView) : m_document{container}, m_viewPort{graphicView} {
 }
+
+RS_Selection::RS_Selection(RS_GraphicView* gv):m_document{gv->getDocument()}, m_viewPort{gv->getViewPort()} {}
 
 /**
  * Selects or deselects the given entity.
  */
-void RS_Selection::selectSingle(RS_Entity *e){
-    if (e && (!(e->getLayer() && e->getLayer()->isLocked()))){
-
+void RS_Selection::selectSingle(RS_Entity* e) const {
+    if (e != nullptr && (!(e->getLayer() && e->getLayer()->isLocked()))) {
         e->toggleSelected();
 
-        if (m_graphicView){
-            if (e->isSelected() && (e->rtti() == RS2::EntityInsert)){
-                const RS_Block *selectedBlock = dynamic_cast<RS_Insert *>(e)->getBlockForInsert();
+        if (m_viewPort) {
+            if (e->isSelected() && (e->rtti() == RS2::EntityInsert)) {
+                const RS_Block* selectedBlock = dynamic_cast<RS_Insert*>(e)->getBlockForInsert();
 
-                if (selectedBlock != nullptr){
+                if (selectedBlock != nullptr) {
                     // Display the selected block as active in the block widget
                     QC_ApplicationWindow::getAppWindow()->showBlockActivated(selectedBlock);
                     // Display the selected block name
                     QG_DIALOGFACTORY->displayBlockName(selectedBlock->getName(), true);
                 }
-            } else {
+            }
+            else {
                 QG_DIALOGFACTORY->displayBlockName("", false);
             }
-            m_graphicView->notifyChanged();
+            m_viewPort->notifyChanged();
         }
     }
 }
 
-/**
- * Selects all entities on visible layers.
- */
-void RS_Selection::selectAll(bool select){
-    if (m_graphicView){
-        for (auto e: *m_container) {
-            if (e && e->isVisible()){
-                e->setSelected(select);
-                // fixme - sand - selectAll by entity type - check whether it will not break plugin interface:
-                // NOTE:
-                // this is actually bad practice and development by side-effect.
-                // type to select for graphic view is set only in  Doc_plugin_interface::getSelectByType
-                // and in general it's hardly that this flag is propertly used (as later
-                // RS_ActionSelectSingle with own check is invoked.
-                // So better just create separate function with explicit type of entity, if one will be really
-                // necessary.
-               /* if (graphicView->getTypeToSelect() == RS2::EntityType::EntityUnknown){
-                    e->setSelected(select);
-                } else {
-                    if (e->rtti() == graphicView->getTypeToSelect()){
-                        e->setSelected(select);
-                    }
-                }*/
+using FunBulkSelection = std::function<void(RS_EntityContainer*, LC_GraphicViewport*, RS_Document*)>;
+
+void RS_Selection::unselectAllInDocument(RS_Document* document, LC_GraphicViewport* vp){
+    RS_Selection select(document, vp);
+    select.selectAll(false);
+}
+
+void RS_Selection::selectEntitiesList(RS_Document* document, LC_GraphicViewport* vp, const QList<RS_Entity*>& entities, bool doSelect){
+   RS_Selection select(document, vp);
+   select.selectEntitiesList(entities, doSelect);
+}
+
+void RS_Selection::selectEntitiesVector(RS_Document* document, LC_GraphicViewport* vp, const std::vector<RS_Entity*>& entities, bool doSelect){
+    RS_Selection select(document, vp);
+    select.performBulkSelection([doSelect, entities](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+        for (const auto e : entities) {
+            doc->select(e, doSelect);
+        }
+    });
+}
+
+void RS_Selection::unselectLayer(RS_Document* document, LC_GraphicViewport* vp, RS_Layer* layer) {
+    RS_Selection sel(document, vp);
+    sel.selectIfMatched(document->getEntityList(), false, [layer](RS_Entity* e)->bool {
+        return e != nullptr && e->isVisible() && e->getLayer() == layer;
+    });
+}
+
+void RS_Selection::selectEntitiesList(const QList<RS_Entity*>& entities, bool select) {
+    performBulkSelection([select, entities](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+        for (const auto e: entities) {
+            doc->select(e,select);
+        }
+    });
+}
+
+void RS_Selection::selectIfMatched(const QList<RS_Entity*> &entities, bool select, FunEntityMatch matchFun){
+    performBulkSelection([select, entities, matchFun](RS_EntityContainer*, LC_GraphicViewport*, RS_Document* doc)-> void {
+        for (const auto e: entities) {
+            if (matchFun(e)) {
+                doc->select(e,select);
             }
         }
-        m_graphicView->notifyChanged();
-    }
+    });
 }
 
 /**
  * Selects all entities on visible layers.
  */
-void RS_Selection::invertSelection(){
-    for (auto e: *m_container) {
-        if (e && e->isVisible()){
-            e->toggleSelected();
-        }
+void RS_Selection::selectAll(bool select) {
+    if (m_viewPort != nullptr) {
+        performBulkSelection([select](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+            if (select) {
+                for (auto e : *container) {
+                    if (e != nullptr && e->isVisible()) {
+                        doc->select(e);
+                        // fixme - sand - selectAll by entity type - check whether it will not break plugin interface:
+                        // NOTE:
+                        // this is actually bad practice and development by side-effect.
+                        // type to select for graphic view is set only in  Doc_plugin_interface::getSelectByType
+                        // and in general it's hardly that this flag is properly used (as later
+                        // RS_ActionSelectSingle with own check is invoked.
+                        // So better just create separate function with explicit type of entity, if one will be really
+                        // necessary.
+                        /* if (graphicView->getTypeToSelect() == RS2::EntityType::EntityUnknown){
+                             e->setSelected(select);
+                         } else {
+                             if (e->rtti() == graphicView->getTypeToSelect()){
+                                 e->setSelected(select);
+                             }
+                         }*/
+                    }
+                }
+            }
+            else {
+                for (auto e : *container) {
+                    if (e != nullptr) {
+                        e->clearSelectionFlag();
+                    }
+                }
+                doc->getSelectedSet()->clear();
+            }
+        });
     }
+}
 
-    m_graphicView->notifyChanged();
+void RS_Selection::performBulkSelection(FunBulkSelection fun) const {
+    auto doc         = m_document->getDocument();
+    auto selectedSet = doc->getSelectedSet();
+    selectedSet->disableListeners();
+
+    fun(m_document, m_viewPort, doc);
+
+    bool listenersFired = selectedSet->enableListeners();
+    if (!listenersFired && !selectedSet->isSilent()) {
+        selectedSet->fireSelectionChanged();
+    }
+    m_viewPort->notifyChanged();
+}
+
+/**
+ * Selects all entities on visible layers.
+ */
+void RS_Selection::invertSelection() { // fixme - review which container is actually used there
+    performBulkSelection([](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+        for (auto e : *container) {
+            if (e != nullptr && e->isVisible()) {
+                doc->select(e, !e->isSelected());
+            }
+        }
+    });
 }
 
 /**
@@ -124,51 +198,52 @@ void RS_Selection::invertSelection(){
  * @param v2 Second corner of the window to select.
  * @param select true: select, false: invertSelectionOperation
  */
-void RS_Selection::selectWindow(
-    enum RS2::EntityType typeToSelect, const RS_Vector &v1, const RS_Vector &v2,
-    bool select, bool cross){
-    m_container->selectWindow(typeToSelect, v1, v2, select, cross);
-    m_graphicView->notifyChanged();
+void RS_Selection::selectWindow(enum RS2::EntityType typeToSelect, const RS_Vector& v1, const RS_Vector& v2, bool select, bool cross) {
+    performBulkSelection([typeToSelect, v1, v2, select, cross, this](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+        doSelectEntitiesWithTypeInWindow(container, doc, typeToSelect, v1, v2, select, cross);
+    });
 }
 
-void RS_Selection::selectWindow(const QList<RS2::EntityType> &typesToSelect, const RS_Vector &v1, const RS_Vector &v2,
-    bool select, bool cross){
-
-    m_container->selectWindow(typesToSelect, v1, v2, select, cross);
-    m_graphicView->notifyChanged();
+void RS_Selection::selectWindow(const QList<RS2::EntityType>& typesToSelect, const RS_Vector& v1, const RS_Vector& v2, bool select, bool cross) {
+    performBulkSelection([typesToSelect, v1, v2, select, cross, this](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+        doSelectEntitiesWithTypesInWindow(container, doc, typesToSelect, v1, v2, select, cross);
+    });
 }
 
 void RS_Selection::selectIntersected(RS_Entity* entity, bool select) {
-    if (entity->isAtomic()) {
-        selectIntersectedAtomic(entity, select);
-    }
-    else if (entity->isContainer()) {
-        selectIntersectedContainer(entity, select);
-    }
+    performBulkSelection([entity, select, this](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+        if (entity->isAtomic()) {
+            doSelectIntersectedAtomic(entity, doc, select);
+        }
+        else if (entity->isContainer()) {
+            doSelectIntersectedContainer(entity, doc, select);
+        }
+    });
 }
 
-void RS_Selection::selectIntersectedContainer(RS_Entity* entity, bool select) {
-    auto* cont = dynamic_cast<RS_EntityContainer*>(entity);
+void RS_Selection::doSelectIntersectedContainer(RS_Entity* entity, RS_Document* doc, bool select) const {
+    auto* cont             = dynamic_cast<RS_EntityContainer*>(entity);
     auto containerEntities = lc::LC_ContainerTraverser{*cont, RS2::ResolveAll}.entities();
 
-    bool inters;
-    for (auto e : *m_container) { // fixme - iteration over ALL entities, limit area
+    for (auto e : *m_document) {
+        // fixme - iteration over ALL entities, limit area
         if (e == nullptr || e == entity || !e->isVisible()) {
             continue;
         }
-        inters = false;
+        bool hasIntersection = false;
 
         // select containers / groups:
         if (e->isContainer()) {
             auto* ec = static_cast<RS_EntityContainer*>(e);
-            if (entity->getParent() == e) { // case for segment of polyline
+            if (entity->getParent() == e) {
+                // case for segment of polyline
                 continue;
             }
             for (RS_Entity* e2 : lc::LC_ContainerTraverser{*ec, RS2::ResolveAll}.entities()) {
                 for (RS_Entity* e3 : containerEntities) {
                     RS_VectorSolutions sol = RS_Information::getIntersection(e3, e2, true);
                     if (sol.hasValid()) {
-                        inters = true;
+                        hasIntersection = true;
                         break;
                     }
                 }
@@ -178,49 +253,50 @@ void RS_Selection::selectIntersectedContainer(RS_Entity* entity, bool select) {
             for (RS_Entity* e2 : containerEntities) {
                 RS_VectorSolutions sol = RS_Information::getIntersection(e2, e, true);
                 if (sol.hasValid()) {
-                    inters = true;
+                    hasIntersection = true;
                     break;
                 }
             }
         }
-        if (inters) {
-            e->setSelected(select);
+        if (hasIntersection) {
+            doc->select(e,select);
         }
     }
-    m_graphicView->notifyChanged();
+    m_viewPort->notifyChanged();
 }
 
-void RS_Selection::selectIntersectedAtomic(RS_Entity* entity, bool select) {
-    bool inters;
-
-    for (auto e: *m_container) { // fixme - iteration over ALL entities, limit area
-        if (e != nullptr && e->isVisible()){
-            inters = false;
+void RS_Selection::doSelectIntersectedAtomic(RS_Entity* entity, RS_Document* doc, bool select) const {
+    for (auto e : *m_document) {
+        // fixme - iteration over ALL entities, limit area
+        if (e != nullptr && e->isVisible()) {
+            bool hasIntersections = false;
 
             // select containers / groups:
-            if (e->isContainer()){
-                auto *ec = static_cast<RS_EntityContainer*>(e);
-                if (entity->getParent() == e) { // case for segment of polyline
+            if (e->isContainer()) {
+                auto* ec = static_cast<RS_EntityContainer*>(e);
+                if (entity->getParent() == e) {
+                    // case for segment of polyline
                     continue;
                 }
-                for(RS_Entity* e2: lc::LC_ContainerTraverser{*ec, RS2::ResolveAll}.entities()) {
+                for (RS_Entity* e2 : lc::LC_ContainerTraverser{*ec, RS2::ResolveAll}.entities()) {
                     RS_VectorSolutions sol = RS_Information::getIntersection(entity, e2, true);
-                    if (sol.hasValid()){
-                        inters = true;
+                    if (sol.hasValid()) {
+                        hasIntersections = true;
                     }
                 }
-            } else {
+            }
+            else {
                 RS_VectorSolutions sol = RS_Information::getIntersection(entity, e, true);
-                if (sol.hasValid()){
-                    inters = true;
+                if (sol.hasValid()) {
+                    hasIntersections = true;
                 }
             }
-            if (inters){
-                e->setSelected(select);
+            if (hasIntersections) {
+                doc->select(e);
             }
         }
     }
-    m_graphicView->notifyChanged();
+    m_viewPort->notifyChanged();
 }
 
 /**
@@ -230,7 +306,7 @@ void RS_Selection::selectIntersectedAtomic(RS_Entity* entity, bool select) {
  * @param v2 Endpoint of line.
  * @param select true: select, false: invertSelectionOperation
  */
-void RS_Selection::selectIntersected(const RS_Vector &v1, const RS_Vector &v2, bool select){
+void RS_Selection::selectIntersected(const RS_Vector& v1, const RS_Vector& v2, bool select) {
     RS_Line line{v1, v2};
     selectIntersected(&line, select);
 }
@@ -240,104 +316,318 @@ void RS_Selection::selectIntersected(const RS_Vector &v1, const RS_Vector &v2, b
  *
  * @param e The entity where the algorithm starts. Must be an atomic entity.
  */
-void RS_Selection::selectContour(RS_Entity *e){
-
-    if (e == nullptr){
+void RS_Selection::selectContour(RS_Entity* e) {
+    if (e == nullptr) {
+        return;
+    }
+    if (!e->isAtomic()) {
         return;
     }
 
-    if (!e->isAtomic()){
-        return;
-    }
+    performBulkSelection([ e](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+        bool select        = !e->isSelected();
+        auto* atomicEntity = static_cast<RS_AtomicEntity*>(e);
+        RS_Vector p1       = atomicEntity->getStartpoint();
+        RS_Vector p2       = atomicEntity->getEndpoint();
+        bool found         = false;
 
-    bool select = !e->isSelected();
-    auto *ae = (RS_AtomicEntity *) e;
-    RS_Vector p1 = ae->getStartpoint();
-    RS_Vector p2 = ae->getEndpoint();
-    bool found = false;
+        // (de)select 1st entity:
+        doc->select(e, select);
+        do {
+            found = false;
+            for (auto en : *container) {
+                if (en != nullptr && en->isAtomic() && en->isVisible()  &&  (en->getFlag(RS2::FlagSelected) != select) && (!(en->getLayer() && en->getLayer()->isLocked()))) {
+                    atomicEntity        = static_cast<RS_AtomicEntity*>(en);
+                    bool neighbourFound = false;
+                    auto atomicStart      = atomicEntity->getStartpoint();
+                    auto atomicEnd      = atomicEntity->getEndpoint();
 
-    // (de)select 1st entity:
-    e->setSelected(select);
-
-    do {// fixme - hm...iterating over all entities of drawing in cycle???? too nice for me...
-        found = false;
-        // fixme - iterating over all entities of drawing
-        for (auto en: *m_container) {
-
-            if (en && en->isVisible() &&
-                en->isAtomic() && en->isSelected() != select &&
-                (!(en->getLayer() && en->getLayer()->isLocked()))){
-
-                ae = (RS_AtomicEntity *) en;
-                bool doit = false;
-
-                // startpoint connects to 1st point
-                if (ae->getStartpoint().distanceTo(p1) < 1.0e-4){
-                    doit = true;
-                    p1 = ae->getEndpoint();
-                }
+                    // startpoint connects to 1st point
+                    if (atomicStart.distanceTo(p1) < 1.0e-4) { // fixme - use constant for tolerance
+                        neighbourFound = true;
+                        p1   = atomicEnd;
+                    }
 
                     // endpoint connects to 1st point
-                else if (ae->getEndpoint().distanceTo(p1) < 1.0e-4){
-                    doit = true;
-                    p1 = ae->getStartpoint();
-                }
+                    else if (atomicEnd.distanceTo(p1) < 1.0e-4) {
+                        neighbourFound = true;
+                        p1   = atomicStart;
+                    }
 
                     // startpoint connects to 2nd point
-                else if (ae->getStartpoint().distanceTo(p2) < 1.0e-4){
-                    doit = true;
-                    p2 = ae->getEndpoint();
-                }
+                    else if (atomicStart.distanceTo(p2) < 1.0e-4) {
+                        neighbourFound = true;
+                        p2   = atomicEnd;
+                    }
 
                     // endpoint connects to 1st point
-                else if (ae->getEndpoint().distanceTo(p2) < 1.0e-4){
-                    doit = true;
-                    p2 = ae->getStartpoint();
-                }
+                    else if (atomicEnd.distanceTo(p2) < 1.0e-4) {
+                        neighbourFound = true;
+                        p2   = atomicStart;
+                    }
 
-                if (doit){
-                    ae->setSelected(select);
-                    found = true;
+                    if (neighbourFound) {
+                        doc->select(atomicEntity,select);
+                        found = true;
+                    }
                 }
             }
         }
-    } while (found);
-    m_graphicView->notifyChanged();
+        while (found);
+    });
+
+
+    m_viewPort->notifyChanged();
 }
 
 /**
  * Selects all entities on the given layer.
  */
-void RS_Selection::selectLayer(RS_Entity *e){
-    if (e == nullptr)
+void RS_Selection::selectLayer(RS_Entity* e) {
+    if (e == nullptr) {
         return;
+    }
 
-    bool select = !e->isSelected();
-    RS_Layer *layer = e->getLayer(true);
+    bool select     = !e->isSelected();
+    RS_Layer* layer = e->getLayer(true);
     if (layer == nullptr) {
         return;
     }
 
-    QString layerName = layer->getName();
+    const QString layerName = layer->getName();
     selectLayer(layerName, select);
 }
 
 /**
  * Selects all entities on the given layer.
  */
-void RS_Selection::selectLayer(const QString &layerName, bool select){
-    for (auto en: *m_container) {
-        // fixme - review and make more efficient... why check for locking upfront? Why just not use layer pointers but names?
-        if (en && en->isVisible() &&
-            en->isSelected() != select &&
-            (!(en->getLayer() && en->getLayer()->isLocked()))){
+void RS_Selection::selectLayer(const QString& layerName, bool select) {
+    performBulkSelection([layerName, select, this](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+        for (auto en : *container) {
+            // fixme - review and make more efficient... why check for locking upfront? Why just not use layer pointers but names?
+            if (en != nullptr && en->isVisible() && en->isSelected() != select && (!(en->getLayer() && en->getLayer()->isLocked()))) {
+                RS_Layer* l = en->getLayer(true);
 
-            RS_Layer *l = en->getLayer(true);
+                if (l != nullptr && l->getName() == layerName) {
+                    doc->select(en,select);
+                }
+            }
+        }
+    });
+}
 
-            if (l != nullptr && l->getName() == layerName){
-                en->setSelected(select);
+// fixme - rework, use setSelected? At least, fix the selection state issue
+void RS_Selection::conditionalSelection(RS_Document* doc, const LC_SelectionOptions& options, const LC_SelectionPredicate& predicate, std::list<RS_Entity>& selectedEntities) {
+    QList<RS_Entity*> newEntitiesSet;
+    auto selectedSet             = doc->getSelectedSet();
+    bool includeIntoSelectionSet = options.m_includeIntoSelectionSet;
+    bool excludeFromSelectionSet = !options.m_includeIntoSelectionSet;
+    if (options.m_applyArea == LC_SelectionOptions::Document) {
+        for (const auto e : *doc) {
+            if (predicate.acceptRtti(e)) {
+                bool matched = predicate.accept(e);
+                if (matched) {
+                    if (includeIntoSelectionSet) {
+                        newEntitiesSet.append(e);
+                    }
+                }
+                else {
+                    if (excludeFromSelectionSet) {
+                        newEntitiesSet.append(e);
+                    }
+                }
+            }
+        }
+        if (options.m_appendToSelectionSet) {
+            for (const auto e : *doc) {
+                selectedSet->add(e);
+            }
+        }
+        else {
+            selectedSet->replaceBy(newEntitiesSet);
+        }
+    }
+    else {
+        // refining existing selection
+        for (const auto e : *doc) {
+            if (predicate.acceptRtti(e)) {
+                bool matched = predicate.accept(e);
+                if (matched) {
+                    if (includeIntoSelectionSet) {
+                        newEntitiesSet.append(e);
+                    }
+                }
+                else {
+                    if (excludeFromSelectionSet) {
+                        newEntitiesSet.append(e);
+                    }
+                }
+            }
+            else {
+                if (options.m_appendToSelectionSet) {
+                    // entity with other rtti stays in the selection
+                    newEntitiesSet.append(e);
+                }
+            }
+        }
+        selectedSet->replaceBy(newEntitiesSet);
+    }
+}
+
+void RS_Selection::countSelectedEntities(QMap<RS2::EntityType, int>& entityTypeMaps) const {
+    if (m_viewPort != nullptr) {
+        auto doc         = m_document->getDocument();
+        auto selectedSet = doc->getSelectedSet();
+        for (auto e : *selectedSet) {
+            if (e != nullptr && e->isVisible()) {
+                if (e->getFlag(RS2::FlagSelected)) {
+                    auto rtti = e->rtti();
+                    int count = entityTypeMaps[rtti];
+                    count++;
+                    entityTypeMaps[rtti] = count;
+                }
             }
         }
     }
-    m_graphicView->notifyChanged();
+}
+
+void RS_Selection::collectCurrentSelectionState(CurrentSelectionState& selectionState) const {
+    if (m_viewPort != nullptr) {
+        for (auto e : *m_document) {
+            if (e != nullptr && e->isVisible()) {
+                auto rtti = e->rtti();
+                selectionState.documentEntityTypes.insert(rtti);
+                if (e->getFlag(RS2::FlagSelected)) {
+                    selectionState.selectedEntityTypes.insert(rtti);
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Selects all entities within the given area.
+ *
+ * @param select True to select, False to invertSelectionOperation the entities.
+ */
+// todo - sand - ucs - add method for selecting entities within rect that is rotated in wcs
+// Such method is needed for better support UCS with rotation and more precise selection of m_entities.
+void RS_Selection::doSelectEntitiesWithTypeInWindow(RS_EntityContainer* container, RS_Document* doc, enum RS2::EntityType typeToSelect, RS_Vector v1, RS_Vector v2, bool select, bool cross) {
+    for (RS_Entity* e : *container) {
+        bool included = false;
+        if (e->isVisible()) {
+            if (e->isInWindow(v1, v2)) {
+                included = true;
+            }
+            else if (cross) {
+                RS_EntityContainer l;
+                l.addRectangle(v1, v2);
+                RS_VectorSolutions sol;
+
+                if (e->isContainer()) {
+                    auto* ec = static_cast<RS_EntityContainer*>(e);
+                    lc::LC_ContainerTraverser traverser{*ec, RS2::ResolveAll};
+                    for (RS_Entity* se = traverser.first(); se != nullptr && !included; se = traverser.next()) {
+                        if (se->rtti() == RS2::EntitySolid) {
+                            included = static_cast<RS_Solid*>(se)->isInCrossWindow(v1, v2);
+                        }
+                        else {
+                            for (RS_Entity* line : l) {
+                                sol = RS_Information::getIntersection(se, line, true);
+                                if (sol.hasValid()) {
+                                    included = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (e->rtti() == RS2::EntitySolid) {
+                    included = static_cast<RS_Solid*>(e)->isInCrossWindow(v1, v2);
+                }
+                else {
+                    for (RS_Entity* line : l) {
+                        sol = RS_Information::getIntersection(e, line, true);
+                        if (sol.hasValid()) {
+                            included = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (included) {
+            if (typeToSelect != RS2::EntityType::EntityUnknown) {
+                if (typeToSelect == e->rtti()) {
+                    doc->select(e, select);
+                }
+                else {
+                    //Do not select
+                }
+            }
+            else {
+                doc->select(e, select);
+            }
+        }
+    }
+}
+
+/**
+ * Selects all entities within the given area with given types.
+ *
+ * @param select True to select, False to invertSelectionOperation the entities.
+ */
+void RS_Selection::doSelectEntitiesWithTypesInWindow(RS_EntityContainer* container, RS_Document* doc, const QList<RS2::EntityType>& typesToSelect, RS_Vector v1, RS_Vector v2, bool select, bool cross) {
+    for (RS_Entity* e : *container) {
+        if (!typesToSelect.contains(e->rtti())) {
+            continue;
+        }
+        bool included = false;
+        if (e->isVisible()) {
+            if (e->isInWindow(v1, v2)) {
+                included = true;
+            }
+            else if (cross) {
+                RS_EntityContainer l;
+                l.addRectangle(v1, v2);
+                RS_VectorSolutions sol;
+
+                if (e->isContainer()) {
+                    auto* ec = static_cast<RS_EntityContainer*>(e);
+                    lc::LC_ContainerTraverser traverser{*ec, RS2::ResolveAll};
+                    for (RS_Entity* se = traverser.first(); se != nullptr && !included; se = traverser.next()) {
+                        if (se->rtti() == RS2::EntitySolid) {
+                            included = dynamic_cast<RS_Solid*>(se)->isInCrossWindow(v1, v2);
+                        }
+                        else {
+                            for (auto line : l) {
+                                sol = RS_Information::getIntersection(se, line, true);
+                                if (sol.hasValid()) {
+                                    included = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (e->rtti() == RS2::EntitySolid) {
+                    included = dynamic_cast<RS_Solid*>(e)->isInCrossWindow(v1, v2);
+                }
+                else {
+                    for (auto line : l) {
+                        sol = RS_Information::getIntersection(e, line, true);
+                        if (sol.hasValid()) {
+                            included = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (included) {
+            doc->select(e, select);
+        }
+    }
 }

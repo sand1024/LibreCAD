@@ -34,7 +34,7 @@
 #include "rs_preview.h"
 
 RS_ActionDrawMText::RS_ActionDrawMText(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("Draw Text",actionContext, RS2::ActionDrawMText)
+    :LC_UndoablePreviewActionInterface("Draw Text",actionContext, RS2::ActionDrawMText)
     ,m_pos(std::make_unique<RS_Vector>()),m_textChanged(true){
 }
 
@@ -85,11 +85,10 @@ void RS_ActionDrawMText::reset() {
 }
 
 void RS_ActionDrawMText::doTrigger() {
-    RS_DEBUG->print("RS_ActionDrawText::trigger()");
     if (m_pos->valid){
-        auto text = std::make_unique<RS_MText>(m_container, *m_mtextData);
+        auto text = std::make_unique<RS_MText>(m_document, *m_mtextData);
         text->update();
-        undoCycleAdd(text.get());
+        undoableAdd(text.get());
         text.release();
         m_textChanged = true;
         setStatus(SetPos);
@@ -110,7 +109,7 @@ void RS_ActionDrawMText::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     if (status == SetPos){
         RS_Vector mouse = e->snapPoint;
         mouse = getRelZeroAwarePoint(e, mouse);
-        RS_Vector mov = mouse - *m_pos;
+        const RS_Vector mov = mouse - *m_pos;
         *m_pos = mouse;
         if (m_textChanged || m_pos->valid == false || m_preview->isEmpty()){
             preparePreview();
@@ -202,7 +201,7 @@ void RS_ActionDrawMText::setText(const QString &t){
     m_textChanged = true;
 }
 
-QString RS_ActionDrawMText::getText(){
+QString RS_ActionDrawMText::getText() const {
     return m_mtextData->text;
 }
 
@@ -216,7 +215,7 @@ void RS_ActionDrawMText::setUcsAngle(double ucsRelAngle){
     m_textChanged = true;
 }
 
-double RS_ActionDrawMText::getUcsAngleDegrees(){
+double RS_ActionDrawMText::getUcsAngleDegrees() const {
     return toUCSBasisAngleDegrees(m_mtextData->angle);
 }
 

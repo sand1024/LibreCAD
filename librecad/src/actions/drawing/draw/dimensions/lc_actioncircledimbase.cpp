@@ -40,19 +40,21 @@ void LC_ActionCircleDimBase::doInitWithContextEntity(RS_Entity* contextEntity, c
     setDimSourceEntity(contextEntity, false, clickPos);
 }
 
-void LC_ActionCircleDimBase::doTrigger() {
+RS_Entity* LC_ActionCircleDimBase::doTriggerCreateEntity() {
     if (m_entity != nullptr) {
         preparePreview(m_entity, *m_position, m_alternateAngle);
-        auto *newEntity = createDim(m_container);
-
-        setPenAndLayerToActive(newEntity);
+        auto* newEntity = createDim(m_document);
         newEntity->update();
-        undoCycleAdd(newEntity);
-        m_alternateAngle = false;
-        RS_Snapper::finish();
-    } else {
-        RS_DEBUG->print("RS_ActionDimDiametric::trigger: Entity is nullptr\n");
+
+        return newEntity;
     }
+    RS_DEBUG->print("RS_ActionDimDiametric::trigger: Entity is nullptr\n");
+    return nullptr;
+}
+
+void LC_ActionCircleDimBase::doTriggerCompletion(bool success) {
+    m_alternateAngle = false;
+    RS_Snapper::finish();
 }
 
 void LC_ActionCircleDimBase::onMouseMoveEvent(int status, LC_MouseEvent *e) {
@@ -244,7 +246,7 @@ void LC_ActionCircleDimBase::setAngleIsFree(bool angleIsFree) {
     this->m_angleIsFree = angleIsFree;
 }
 
-double LC_ActionCircleDimBase::getCurrentAngle() {
+double LC_ActionCircleDimBase::getCurrentAngle() const {
     double angleDeg = toUCSBasisAngleDegrees(m_currentAngle);
     return angleDeg;
 }

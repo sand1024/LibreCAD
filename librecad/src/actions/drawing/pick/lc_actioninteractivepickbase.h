@@ -35,7 +35,7 @@ public:
     void keyPressEvent(QKeyEvent* e) override;
     bool isSupportsPredecessorAction() override {return true;}
 protected:
-    void skipInteractiveInput();
+    void skipInteractiveInput() const;
     void storeInteractiveInput();
     virtual void doSetInteractiveInputValue(LC_ActionContext::InteractiveInputInfo* interactiveInputInfo) = 0;
     virtual bool isInteractiveDataValid() = 0;

@@ -117,7 +117,7 @@ void QG_BevelOptions::setLength2ToActionAndView(QString val) {
     }
 }
 
-void QG_BevelOptions::setTrimToActionAndView(bool val) {
+void QG_BevelOptions::setTrimToActionAndView(bool val) const {
     m_action->setTrim(val);
     ui->cbTrim->setChecked(val);
 }

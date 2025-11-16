@@ -149,7 +149,7 @@ LC_ExtDataGroup* LC_ExtDataAppData::addGroup(const QString& groupName) {
     return group;
 }
 
-LC_ExtDataGroup* LC_ExtDataAppData::getGroupByName(const QString& groupName) {
+LC_ExtDataGroup* LC_ExtDataAppData::getGroupByName(const QString& groupName) const {
     if (groupName.isEmpty()) {
         return nullptr;
     }
@@ -187,7 +187,7 @@ LC_ExtDataAppData* LC_ExtEntityData::addAppData(const QString& appName) {
 
 }
 
-LC_ExtDataAppData* LC_ExtEntityData::getAppDataByName(const QString& groupName) {
+LC_ExtDataAppData* LC_ExtEntityData::getAppDataByName(const QString& groupName) const {
     if (groupName.isEmpty()) {
         return nullptr;
     }

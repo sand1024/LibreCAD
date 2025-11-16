@@ -34,7 +34,7 @@ public:
     ~LC_ApplicationWindowInitializer() override = default;
     void initApplication();
 private:
-    void initSnapManager();
+    void initSnapManager() const;
     void initReleaseChecker();
     void initActionGroupManager();
     void initActionOptionsManager();

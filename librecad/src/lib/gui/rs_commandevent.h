@@ -61,7 +61,7 @@ public:
     /**
 	 * @return Whether the event was already accepted or not.
 	 */
-	bool isAccepted() {
+	bool isAccepted() const {
 		return accepted;
 	}
  

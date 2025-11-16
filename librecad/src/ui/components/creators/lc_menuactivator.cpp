@@ -48,7 +48,7 @@ LC_MenuActivator* LC_MenuActivator::getCopy() {
     return new LC_MenuActivator(*this);
 }
 
-void LC_MenuActivator::copyTo(LC_MenuActivator& other) {
+void LC_MenuActivator::copyTo(LC_MenuActivator& other) const {
     other.m_shortcutString = m_shortcutString;
     other.m_button = m_button;
     other.m_eventType = m_eventType;
@@ -56,7 +56,7 @@ void LC_MenuActivator::copyTo(LC_MenuActivator& other) {
     other.m_requiresEntity = m_requiresEntity;
 }
 
-bool LC_MenuActivator::isEventApplicable(QMouseEvent* event) {
+bool LC_MenuActivator::isEventApplicable(QMouseEvent* event) const {
     auto type = event->type();
 
     switch (type) {
@@ -141,7 +141,7 @@ bool LC_MenuActivator::isEventApplicable(QMouseEvent* event) {
     return true;
 }
 
-bool LC_MenuActivator::isSameAs(LC_MenuActivator* other) {
+bool LC_MenuActivator::isSameAs(LC_MenuActivator* other) const {
     if (other != nullptr) {
         return other->getShortcut() == m_shortcutString;
     }
@@ -419,7 +419,7 @@ QString LC_MenuActivator::getShortcut() const {
     return m_shortcutString;
 }
 
-QString LC_MenuActivator::getEventView() {
+QString LC_MenuActivator::getEventView() const {
     QString result = "";
     if (m_keyModifiers & CTRL) {
         result.append("CTRL+");
@@ -570,13 +570,13 @@ LC_MenuActivator::Type LC_MenuActivator::getEventType() const {
     return m_eventType;
 }
 
-void LC_MenuActivator::getKeysState(bool& ctrl, bool& alt, bool& shift) {
+void LC_MenuActivator::getKeysState(bool& ctrl, bool& alt, bool& shift) const {
     ctrl = m_keyModifiers & CTRL;
     alt = m_keyModifiers & ALT;
     shift = m_keyModifiers & SHIFT;
 }
 
-bool LC_MenuActivator::hasKeys() {
+bool LC_MenuActivator::hasKeys() const {
     return m_keyModifiers != NONE;
 }
 

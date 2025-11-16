@@ -37,16 +37,16 @@ namespace Ui {
 class LC_DlgWidgetCreator : public LC_Dialog{
     Q_OBJECT
 public:
-    void updateSaveAndDeleteButtons();
+    void updateSaveAndDeleteButtons() const;
     explicit LC_DlgWidgetCreator(QWidget *parent, bool forMenu, LC_ActionGroupManager* actionGroupManager);
     ~LC_DlgWidgetCreator() override;
 protected slots:
-    void addChosenAction();
-    void addSeparator();
-    void addChosenActionForItem(QListWidgetItem* item);
+    void addChosenAction() const;
+    void addSeparator() const;
+    void addChosenActionForItem(QListWidgetItem* item) const;
     void removeChosenAction();
     void removeAllChosenActions();
-    void removeChosenActionForItem(QListWidgetItem* item);
+    void removeChosenActionForItem(QListWidgetItem* item) const;
     void onCategoryActivated(int index);
     void onAssignMenu(bool checked);
     void onUnAssignMenu(bool checked);
@@ -66,10 +66,10 @@ private:
     void loadCustomWidgets();
     LC_MenuActivator* findMenuActivator(const QString& menuName);
     void removeMenuActivator(const QString& menuName);
-    QString getSettingsGroupName();
+    QString getSettingsGroupName() const;
     QString createMenuItemDisplayName(QString key, LC_MenuActivator* activator);
     QString createMenuItemDisplayName(QString key);
-    QStringList getChosenActionNames();
+    QStringList getChosenActionNames() const;
     void loadWidgetActions(int index);
     void onToolbarPlacementIndexChanged(int index);
 };

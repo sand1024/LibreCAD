@@ -51,11 +51,19 @@ RS_ActionModifyMirror::RS_ActionModifyMirror(LC_ActionContext *actionContext)
 
 RS_ActionModifyMirror::~RS_ActionModifyMirror() = default;
 
-void RS_ActionModifyMirror::doTrigger(bool keepSelected) {
-    RS_DEBUG->print("RS_ActionModifyMirror::trigger()");
-    RS_Modification m(*m_container, m_viewport);
-    m.mirror(m_actionData->data, m_selectedEntities, false, keepSelected);
-}
+    bool RS_ActionModifyMirror::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+        ctx.setActiveLayerAndPen(m_actionData->data.useCurrentLayer, m_actionData->data.useCurrentAttributes);
+        return RS_Modification::mirror(m_actionData->data, m_selectedEntities, false, ctx);
+    }
+
+    void RS_ActionModifyMirror::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+        if (m_actionData->data.keepOriginals) {
+            unselect(m_selectedEntities);
+        }
+        if (keepSelected) {
+            select(ctx.entitiesToAdd);
+        }
+    }
 
 void RS_ActionModifyMirror::onMouseMoveEventSelected(int status, LC_MouseEvent *e){
     RS_Vector mouse = e->snapPoint;
@@ -100,13 +108,15 @@ void RS_ActionModifyMirror::onMouseMoveEventSelected(int status, LC_MouseEvent *
     }
 }
 
-void RS_ActionModifyMirror::previewMirror(const RS_Vector &mirrorLinePoint1, const RS_Vector &mirrorLinePoint2){
+void RS_ActionModifyMirror::previewMirror(const RS_Vector &mirrorLinePoint1, const RS_Vector &mirrorLinePoint2) const {
     RS_MirrorData tmpData;
     tmpData.axisPoint1 = mirrorLinePoint1;
     tmpData.axisPoint2 = mirrorLinePoint2;
 
-    RS_Modification m(*m_preview, m_viewport, false);
-    m.mirror(tmpData, m_selectedEntities, true, false);
+    LC_DocumentModificationBatch ctx;
+    RS_Modification::mirror(tmpData, m_selectedEntities, true, ctx);
+    previewEntitiesToAdd(ctx);
+
     previewLine(mirrorLinePoint1, mirrorLinePoint2);
 
     if (m_showRefEntitiesOnPreview) {
@@ -273,7 +283,7 @@ LC_ActionOptionsWidget* RS_ActionModifyMirror::createOptionsWidget(){
     return new LC_ModifyMirrorOptions();
 }
 
-void RS_ActionModifyMirror::obtainFlipLineCoordinates(RS_Vector *start, RS_Vector *end, bool verticalLine) {
+void RS_ActionModifyMirror::obtainFlipLineCoordinates(RS_Vector *start, RS_Vector *end, bool verticalLine) const {
     RS_Vector selectionMin;
     RS_Vector selectionMax;
     LC_Align::collectSelectionBounds(m_selectedEntities, selectionMin, selectionMax);

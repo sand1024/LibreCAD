@@ -50,9 +50,9 @@ protected slots:
 private:
     Ui::LC_CircleByArcOptions *ui = nullptr;
     LC_ActionDrawCircleByArc* m_action;
-    void setReplaceArcToActionAndView(bool value);
-    void setPenModeToActionAndView(int mode);
-    void setLayerModeToActionAndeView(int mode);
+    void setReplaceArcToActionAndView(bool value) const;
+    void setPenModeToActionAndView(int mode) const;
+    void setLayerModeToActionAndeView(int mode) const;
     void setRadiusShiftToModelAndView(QString val);
 };
 

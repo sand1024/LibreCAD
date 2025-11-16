@@ -31,6 +31,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "lc_modifybreakdivideoptions.h"
 #include "rs_arc.h"
 #include "rs_circle.h"
+#include "rs_document.h"
 #include "rs_entity.h"
 #include "rs_entitycontainer.h"
 #include "rs_information.h"
@@ -180,7 +181,7 @@ void LC_ActionModifyBreakDivide::doFinish([[maybe_unused]]bool updateTB){
  * @param list list to which entities should be added
  * @param preview true if entities for preview
  */
-void LC_ActionModifyBreakDivide::createEntitiesForLine(RS_Line *line, RS_Vector &snap, QList<RS_Entity*> &list, bool preview){
+void LC_ActionModifyBreakDivide::createEntitiesForLine(RS_Line *line, RS_Vector &snap, QList<RS_Entity*> &list, bool preview) const {
     // check whether selection entity may be expanded
     if (checkMayExpandEntity(line, "")){
         // determine snap point projection on line
@@ -191,7 +192,7 @@ void LC_ActionModifyBreakDivide::createEntitiesForLine(RS_Line *line, RS_Vector 
         // create segments only if tick snap point is between of original lines endpoints
         if (nearestPoint != start && nearestPoint != end){
             // calculate segments data
-            LC_Division division(m_container);
+            LC_Division division(m_document);
             bool allowEntireLineAsSegment = m_alternativeActionMode && m_removeSegments;
             LC_Division::LineSegmentData *data = division.findLineSegmentBetweenIntersections(line, snap, allowEntireLineAsSegment);
             if (data != nullptr){
@@ -290,14 +291,14 @@ void LC_ActionModifyBreakDivide::createLineEntity(bool preview, const RS_Vector 
  * @param list
  * @param preview
  */
-void LC_ActionModifyBreakDivide::createEntitiesForCircle(RS_Circle *circle, RS_Vector &snap, QList<RS_Entity *> &list, bool preview){
+void LC_ActionModifyBreakDivide::createEntitiesForCircle(RS_Circle *circle, RS_Vector &snap, QList<RS_Entity *> &list, bool preview) const {
     // check that we may expand the circle
     if (checkMayExpandEntity(circle, "")){
         // determine snap point projection on entity
         RS_Vector nearestPoint = circle->getNearestPointOnEntity(snap, true);
 
         // compute segment data
-        LC_Division division(m_container);
+        LC_Division division(m_document);
         bool allowEntireCircleAsSegment = m_alternativeActionMode && m_removeSegments;
         LC_Division::CircleSegmentData *data = division.findCircleSegmentBetweenIntersections(circle, nearestPoint, allowEntireCircleAsSegment);
         if (data != nullptr){
@@ -378,7 +379,7 @@ void LC_ActionModifyBreakDivide::createEntitiesForCircle(RS_Circle *circle, RS_V
  * @param list list of entities to add
  * @param preview true if we generate entities for preview, false otherwise
  */
-void LC_ActionModifyBreakDivide::createEntitiesForArc(RS_Arc *arc, RS_Vector &snap, QList<RS_Entity *> &list, bool preview){
+void LC_ActionModifyBreakDivide::createEntitiesForArc(RS_Arc *arc, RS_Vector &snap, QList<RS_Entity *> &list, bool preview) const {
     // check that arc is expandable
     if (checkMayExpandEntity(arc, "")){
         // determine snap point
@@ -389,7 +390,7 @@ void LC_ActionModifyBreakDivide::createEntitiesForArc(RS_Arc *arc, RS_Vector &sn
         // create segments only if tick snap point is between of original lines endpoints
         if (nearestPoint != start && nearestPoint != end){
             // determine snap segment coordinates
-            LC_Division division(m_container);
+            LC_Division division(m_document);
             bool allowEntireArcAsSegment = m_alternativeActionMode && m_removeSegments;
             LC_Division::ArcSegmentData *data = division.findArcSegmentBetweenIntersections(arc, snap, allowEntireArcAsSegment);
             if (data != nullptr){
@@ -483,11 +484,11 @@ void LC_ActionModifyBreakDivide::createEntitiesForArc(RS_Arc *arc, RS_Vector &sn
 void LC_ActionModifyBreakDivide::createArcEntity(const RS_ArcData &arcData, bool preview, const RS_Pen &pen, RS_Layer *layer, QList<RS_Entity *> &list) const{
     if (preview){
         createRefArc(arcData, list);
-        auto arc = new RS_Arc(m_container, arcData);
+        auto arc = new RS_Arc(m_document, arcData);
         list << arc;
     }
     else{
-        auto createdArc = new RS_Arc(m_container, arcData);
+        auto createdArc = new RS_Arc(m_document, arcData);
         createdArc->setPen(pen);
         createdArc->setLayer(layer);
         list << createdArc;

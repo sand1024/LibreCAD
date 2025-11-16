@@ -155,7 +155,7 @@ public:
      *
      * @param v true: visible, false: invisible
      */
-    void visibleInBlockList(bool v);
+    void visibleInBlockList(bool v) const;
 
     /**
      * Returns the visibility of the Block in block list

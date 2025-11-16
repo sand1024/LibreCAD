@@ -33,6 +33,7 @@
 #include "lc_namedviewslistwidget.h"
 #include "lc_penpalettewidget.h"
 #include "lc_penwizard.h"
+#include "lc_propertysheetwidget.h"
 #include "lc_qtstatusbarmanager.h"
 #include "lc_quickinfowidget.h"
 #include "lc_relzerocoordinateswidget.h"
@@ -109,14 +110,15 @@ void LC_WidgetFactory::createCADMegaSidebar(int columns, int iconSize, bool flat
   actions.append(m_actionFactory->shape_actions);
   actions.append(m_actionFactory->circle_actions);
   actions.append(m_actionFactory->curve_actions);
+  actions.append(m_actionFactory->spline_actions);
   actions.append(m_actionFactory->ellipse_actions);
   actions.append(m_actionFactory->polyline_actions);
   actions.append(m_actionFactory->select_actions);
-  actions.append(m_actionFactory->dimension_actions);
   actions.append(m_actionFactory->modify_actions);
+  actions.append(m_actionFactory->dimension_actions);
   actions.append(m_actionFactory->info_actions);
-  actions.append(m_actionFactory->order_actions);
   actions.append(m_actionFactory->other_drawing_actions);
+  actions.append(m_actionFactory->order_actions);
   mega->addActions(actions, columns, iconSize, flatButtons);
   mega->hide();
   connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, mega, &LC_CADDockWidget::updateWidgetSettings);
@@ -254,6 +256,16 @@ QDockWidget* LC_WidgetFactory::createEntityInfoWidget(){
     return dock;
 }
 
+QDockWidget* LC_WidgetFactory::createPropertySheetWidget(){
+    QDockWidget* dock = createDockWidget(tr("Properties"), "property_sheet", tr("Properties"));
+    auto widget = new LC_PropertySheetWidget(dock);
+    widget->setFocusPolicy(Qt::NoFocus);
+    dock->setWidget(widget);
+    connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, widget, &LC_PropertySheetWidget::updateWidgetSettings);
+    m_appWin->m_propertySheetWidget = widget;
+    return dock;
+}
+
 QDockWidget*  LC_WidgetFactory::createBlockListWidget(QG_ActionHandler *actionHandler){
     auto dock =  createDockWidget(tr("Blocks"), "block_dockwidget", tr("Blocks"));
 
@@ -348,21 +360,24 @@ void LC_WidgetFactory::createRightSidebar(QG_ActionHandler* action_handler){
     QDockWidget *dock_block = createBlockListWidget(action_handler);
     QDockWidget *dock_library = createLibraryWidget(action_handler);
     QDockWidget *dock_command = createCmdWidget(action_handler);
-    QDockWidget *doc_pen_wiz = createPenWizardWidget();
+    QDockWidget *dock_pen_wiz = createPenWizardWidget();
+    QDockWidget *dock_property_sheet = createPropertySheetWidget();
 
-    m_appWin->addDockWidget(Qt::RightDockWidgetArea, doc_pen_wiz);
+    m_appWin->addDockWidget(Qt::RightDockWidgetArea, dock_pen_wiz);
 
     m_appWin->addDockWidget(Qt::RightDockWidgetArea, dock_library);
     m_appWin->tabifyDockWidget(dock_library, dock_block);
     m_appWin->tabifyDockWidget(dock_block, dock_layer);
-    m_appWin->tabifyDockWidget(dock_block, dock_quick_info);
-    m_appWin->tabifyDockWidget(dock_layer, dock_pen_palette);
+    m_appWin->tabifyDockWidget(dock_layer, dock_quick_info);
+    m_appWin->tabifyDockWidget(dock_quick_info, dock_pen_palette);
     m_appWin->tabifyDockWidget(dock_pen_palette, dock_layer_tree);
 
     m_appWin->addDockWidget(Qt::RightDockWidgetArea, dock_views);
     m_appWin->tabifyDockWidget(dock_views, dock_ucss);
     m_appWin->addDockWidget(Qt::RightDockWidgetArea, dock_command);
 
+    m_appWin->addDockWidget(Qt::RightDockWidgetArea, dock_property_sheet);
+    m_appWin->tabifyDockWidget(dock_quick_info, dock_property_sheet);
     updateDockWidgetsTitleBarType(m_appWin, verticalTitle);
 }
 

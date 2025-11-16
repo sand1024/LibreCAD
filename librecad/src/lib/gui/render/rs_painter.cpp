@@ -787,7 +787,7 @@ void RS_Painter::drawEllipseArcUI(const RS_Vector& uiCenter, const RS_Vector& ui
     }
 }
 
-void RS_Painter::addEllipseArcToPath(QPainterPath& localPath, const RS_Vector& uiRadii, double startAngleDeg, double angularLengthDeg, bool useSpline) {
+void RS_Painter::addEllipseArcToPath(QPainterPath& localPath, const RS_Vector& uiRadii, double startAngleDeg, double angularLengthDeg, bool useSpline) const {
     if (useSpline) {
         double startRad = RS_Math::deg2rad(toUCSAngleDegrees(startAngleDeg));
         double lenRad = RS_Math::deg2rad(toUCSAngleDegrees(angularLengthDeg));
@@ -799,8 +799,7 @@ void RS_Painter::addEllipseArcToPath(QPainterPath& localPath, const RS_Vector& u
     }
 }
 
-void RS_Painter::drawEllipseSegmentBySplinePointsUI(const RS_Vector& uiRadii, double startRad, double lenRad, QPainterPath &path, bool closed)
-{
+void RS_Painter::drawEllipseSegmentBySplinePointsUI(const RS_Vector& uiRadii, double startRad, double lenRad, QPainterPath &path, bool closed) const {
     double r = std::max(uiRadii.x, uiRadii.y);
     // maximum angular step size: using this angular step size keeps the maximum
     // deviation of an arc from its parabola fitting
@@ -879,7 +878,7 @@ void RS_Painter::addSplinePointsToPath(const std::vector<RS_Vector> &uiControlPo
     }
 }
 
-QPainterPath RS_Painter::createSolidFillPath(const RS_EntityContainer& loops)  {
+QPainterPath RS_Painter::createSolidFillPath(const RS_EntityContainer& loops) const {
     QPainterPath path;
     for(auto* loop: loops) {
         if (loop == nullptr || loop->rtti()!=RS2::EntityContainer)
@@ -1710,7 +1709,7 @@ void RS_Painter::disableUCS(){
     useUCS(false);
 }
 
-bool RS_Painter::isFullyWithinBoundingRect(RS_Entity* e){
+bool RS_Painter::isFullyWithinBoundingRect(RS_Entity* e) const {
     // we have checks LC_GraphicViewportRenderer::isOutsideOfBoundingClipRect(RS_Entity* e, bool constructionEntity)
     // this check we are not outside view rect. It ensures that max coordinate of entity is larger than min coordinate of viewport (same for min coordinate).
     // Thus, we can use a shorter check - instead checking for ranges, we check that max coordinate of viewport is less than max coordinate of view
@@ -1720,7 +1719,7 @@ bool RS_Painter::isFullyWithinBoundingRect(RS_Entity* e){
 
 }
 
-bool RS_Painter::isFullyWithinBoundingRect(const LC_Rect &rect){
+bool RS_Painter::isFullyWithinBoundingRect(const LC_Rect &rect) const {
     return rect.maxP().x < wcsBoundingRect.maxP().x && rect.minP().x > wcsBoundingRect.minP().x &&
     rect.maxP().y < wcsBoundingRect.maxP().y && rect.minP().y > wcsBoundingRect.minP().y;
 }

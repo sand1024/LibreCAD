@@ -228,12 +228,12 @@ void RS_Debug::setLevel(RS_DebugLevel level)
 /**
  * Gets the current debugging level.
  */
-RS_Debug::RS_DebugLevel RS_Debug::getLevel() { return m_debugLevel; }
+RS_Debug::RS_DebugLevel RS_Debug::getLevel() const { return m_debugLevel; }
 
 /**
  * Prints the given message to stdout.
  */
-void RS_Debug::print(const char *format...) {
+void RS_Debug::print(const char *format...)  {
     if (m_debugLevel == D_DEBUGGING) {
         va_list ap;
         va_start(ap, format);
@@ -250,7 +250,7 @@ void RS_Debug::print(const char *format...) {
  *
  * @param level Debug level.
  */
-void RS_Debug::print(RS_DebugLevel level, const char *format...) {
+void RS_Debug::print(RS_DebugLevel level, const char *format...) const {
 
     if (m_debugLevel >= level) {
         va_list ap;

@@ -66,13 +66,13 @@ void LC_ModifyBreakDivideOptions::onRemoveSelectedClicked(bool clicked) {
     }
 }
 
-void LC_ModifyBreakDivideOptions::setRemoveSegmentsToActionAndView(bool val) {
+void LC_ModifyBreakDivideOptions::setRemoveSegmentsToActionAndView(bool val) const {
     m_action->setRemoveSegment(val);
     ui->cbRemoveSegments->setChecked(val);
     ui->cbRemoveSelected->setEnabled(val);
 }
 
-void LC_ModifyBreakDivideOptions::setRemoveSelectedToActionAndView(bool val) {
+void LC_ModifyBreakDivideOptions::setRemoveSelectedToActionAndView(bool val) const {
     m_action->setRemoveSelected(val);
     ui->cbRemoveSelected->setChecked(val);
 }

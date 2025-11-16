@@ -53,13 +53,13 @@ protected:
 private:
     Ui::LC_Rotate2Options *ui;
     RS_ActionModifyRotate2* m_action = nullptr;
-    void setUseMultipleCopiesToActionAndView(bool copies);
-    void setUseCurrentLayerToActionAndView(bool val);
-    void setUseCurrentAttributesToActionAndView(bool val);
-    void setKeepOriginalsToActionAndView(bool val);
-    void setCopiesNumberToActionAndView(int number);
+    void setUseMultipleCopiesToActionAndView(bool copies) const;
+    void setUseCurrentLayerToActionAndView(bool val) const;
+    void setUseCurrentAttributesToActionAndView(bool val) const;
+    void setKeepOriginalsToActionAndView(bool val) const;
+    void setCopiesNumberToActionAndView(int number) const;
     void setAnglesMirroredToModelAndView(bool checked);
-    void setSameAngleForCopiesToActionAndView(bool val);
+    void setSameAngleForCopiesToActionAndView(bool val) const;
     void setAngle1ToActionAndView(QString val);
     void setAngle2ToActionAndView(QString val);
 };

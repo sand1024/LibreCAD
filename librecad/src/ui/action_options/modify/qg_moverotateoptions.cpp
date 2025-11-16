@@ -120,7 +120,7 @@ void QG_MoveRotateOptions::setAngleToActionAndView(QString val) {
     }
 }
 
-void QG_MoveRotateOptions::setCopiesNumberToActionAndView(int number) {
+void QG_MoveRotateOptions::setCopiesNumberToActionAndView(int number) const {
     if (number < 1){
         number = 1;
     }
@@ -128,36 +128,36 @@ void QG_MoveRotateOptions::setCopiesNumberToActionAndView(int number) {
     ui->sbNumberOfCopies->setValue(number);
 }
 
-void QG_MoveRotateOptions::setUseMultipleCopiesToActionAndView(bool copies) {
+void QG_MoveRotateOptions::setUseMultipleCopiesToActionAndView(bool copies) const {
     m_action->setUseMultipleCopies(copies);
     ui->cbMultipleCopies->setChecked(copies);
     ui->sbNumberOfCopies->setEnabled(copies);
     ui->cbSameAngleForCopies->setEnabled(copies);
 }
 
-void QG_MoveRotateOptions::setUseCurrentLayerToActionAndView(bool val) {
+void QG_MoveRotateOptions::setUseCurrentLayerToActionAndView(bool val) const {
     m_action->setUseCurrentLayer(val);
     ui->cbCurrentLayer->setChecked(val);
 }
 
-void QG_MoveRotateOptions::setUseCurrentAttributesToActionAndView(bool val) {
+void QG_MoveRotateOptions::setUseCurrentAttributesToActionAndView(bool val) const {
     m_action->setUseCurrentAttributes(val);
     ui->cbCurrentAttr->setChecked(val);
 }
 
-void QG_MoveRotateOptions::setKeepOriginalsToActionAndView(bool val) {
+void QG_MoveRotateOptions::setKeepOriginalsToActionAndView(bool val) const {
     m_action->setKeepOriginals(val);
     ui->cbKeepOriginals->setChecked(val);
 }
 
-void QG_MoveRotateOptions::setFreeAngleToModelAndView(bool val) {
+void QG_MoveRotateOptions::setFreeAngleToModelAndView(bool val) const {
     ui->leAngle->setEnabled(!val);
     ui->tbPickAngle->setEnabled(!val);
     ui->cbFreeAngle->setChecked(val);
     m_action->setAngleIsFree(val);
 }
 
-void QG_MoveRotateOptions::setSameAngleForCopiesToActionAndView(bool val) {
+void QG_MoveRotateOptions::setSameAngleForCopiesToActionAndView(bool val) const {
    m_action->setUseSameAngleForCopies(val);
    ui->cbSameAngleForCopies->setChecked(val);
 }

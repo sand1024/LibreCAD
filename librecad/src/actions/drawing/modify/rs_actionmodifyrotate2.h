@@ -43,14 +43,14 @@ public:
     RS_ActionModifyRotate2(LC_ActionContext *actionContext);
     ~RS_ActionModifyRotate2() override;
     void init(int status) override;
-    void setAngle1(double angleRad);
-    double getAngle1();
-    void setAngle2(double angleRad);
-    double getAngle2();
-    void setUseSameAngle2ForCopies(bool b);
-    bool isUseSameAngle2ForCopies();
-    bool isMirrorAngles();
-    void setMirrorAngles(bool b);
+    void setAngle1(double angleRad) const;
+    double getAngle1() const;
+    void setAngle2(double angleRad) const;
+    double getAngle2() const;
+    void setUseSameAngle2ForCopies(bool b) const;
+    bool isUseSameAngle2ForCopies() const;
+    bool isMirrorAngles() const;
+    void setMirrorAngles(bool b) const;
 protected:
     /**
      * Action States.
@@ -62,7 +62,7 @@ protected:
     };
 
     std::unique_ptr<RS_Rotate2Data> m_actionData;
-    void previewRefPointsForMultipleCopies(const RS_Vector& mouse);
+    void previewRefPointsForMultipleCopies(const RS_Vector& mouse) const;
     void doPerformTrigger();
     LC_ModifyOperationFlags *getModifyOperationFlags() override;
     void onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
@@ -74,7 +74,9 @@ protected:
     bool isAllowTriggerOnEmptySelection() override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     LC_ActionOptionsWidget *createOptionsWidget() override;
-    void doTrigger(bool keepSelected) override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) override;
+    void doTriggerCompletion(bool success) override;
+    void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
 };
 #endif

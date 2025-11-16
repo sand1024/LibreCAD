@@ -47,7 +47,7 @@ void LC_CirclePropertiesEditingWidget::setEntity(RS_Entity* entity) {
     toUIValue(m_entity->getRadius(), ui->leRadius);
 }
 
-void LC_CirclePropertiesEditingWidget::onCenterEditingFinished() {
+void LC_CirclePropertiesEditingWidget::onCenterEditingFinished() const {
     m_entity->setCenter(toWCS(ui->leCenterX, ui->leCenterY, m_entity->getCenter()));
 }
 

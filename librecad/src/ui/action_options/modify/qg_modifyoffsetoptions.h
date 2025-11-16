@@ -47,7 +47,7 @@ protected:
     void doSetAction(RS_ActionInterface *a, bool update) override;
     void doSaveSettings() override;
     void setDistanceToActionAndView(QString qString);
-    void setDistanceFixedToActionAndView(bool val);
+    void setDistanceFixedToActionAndView(bool val) const;
 protected slots:
     void languageChange() override;
     void onDistEditingFinished();
@@ -60,11 +60,11 @@ protected slots:
 private:
     std::unique_ptr<Ui::Ui_ModifyOffsetOptions> ui;
     RS_ActionModifyOffset* m_action = nullptr;
-    void setCopiesNumberToActionAndView(int number);
-    void setUseMultipleCopiesToActionAndView(bool copies);
-    void setUseCurrentLayerToActionAndView(bool val);
-    void setUseCurrentAttributesToActionAndView(bool val);
-    void setKeepOriginalsToActionAndView(bool val);
+    void setCopiesNumberToActionAndView(int number) const;
+    void setUseMultipleCopiesToActionAndView(bool copies) const;
+    void setUseCurrentLayerToActionAndView(bool val) const;
+    void setUseCurrentAttributesToActionAndView(bool val) const;
+    void setKeepOriginalsToActionAndView(bool val) const;
 };
 
 #endif

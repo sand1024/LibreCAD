@@ -59,7 +59,7 @@ void QG_SnapDistOptions::languageChange(){
     ui->retranslateUi(this);
 }
 
-void QG_SnapDistOptions::saveSettings() {
+void QG_SnapDistOptions::saveSettings() const {
     LC_SET_ONE("Snap", "Distance", ui->leDist->text());
 }
 
@@ -100,7 +100,7 @@ void QG_SnapDistOptions::doShow() {
     }
 }
 
-double* QG_SnapDistOptions::getDistanceValue() {
+double* QG_SnapDistOptions::getDistanceValue() const {
     return m_dist;
 }
 

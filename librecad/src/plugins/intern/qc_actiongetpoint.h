@@ -45,11 +45,11 @@ public:
     void trigger() override;
     void mouseMoveEvent(QMouseEvent* e) override;
     void mouseReleaseEvent(QMouseEvent* e) override;
-    void getPoint(QPointF *point);
+    void getPoint(QPointF *point) const;
     void setBasepoint(QPointF* basepoint);
-    void setMessage(QString msg);
-    bool isCompleted(){return m_completed;}
-    bool wasCanceled(){return m_canceled;}
+    void setMessage(QString msg) const;
+    bool isCompleted() const {return m_completed;}
+    bool wasCanceled() const {return m_canceled;}
 protected:
     bool m_canceled;
     bool m_completed;

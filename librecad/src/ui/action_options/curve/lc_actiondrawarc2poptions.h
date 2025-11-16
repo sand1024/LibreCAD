@@ -23,7 +23,7 @@ public slots:
 protected:
     void doSaveSettings() override;
     void doSetAction(RS_ActionInterface *a, bool update) override;
-    void setReversedToActionAndView(bool reversed);
+    void setReversedToActionAndView(bool reversed) const;
     bool checkActionRttiValid(RS2::ActionType actionType) override;
     QString getSettingsOptionNamePrefix() override;
 private:

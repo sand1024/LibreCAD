@@ -147,7 +147,7 @@ protected:
 
     void setCodePage(const std::string &c){decoder.setCodePage(c, false);}
     std::string getCodePage(){ return decoder.getCodePage();}
-    bool readDwgHeader(DRW_Header& hdr, dwgBuffer *buf, dwgBuffer *hBuf);
+    bool readDwgHeader(DRW_Header& hdr, dwgBuffer *buf, dwgBuffer *hBuf) const;
     bool readDwgHandles(dwgBuffer *dbuf, duint64 offset, duint64 size);
     bool readDwgTables(DRW_Header& hdr, dwgBuffer *dbuf);
     bool checkSentinel(dwgBuffer *buf, enum secEnum::DWGSection, bool start);

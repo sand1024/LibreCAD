@@ -63,18 +63,18 @@ void LC_DimStylePreviewPanel::setGraphicView(LC_DimStylePreviewGraphicView* gv) 
     connect(ui->tbZoomPan, &QToolButton::pressed, this, &LC_DimStylePreviewPanel::zoomPan);
 }
 
-void LC_DimStylePreviewPanel::zoomOut() {
+void LC_DimStylePreviewPanel::zoomOut() const {
     m_graphicView->getViewPort()->zoomOut(1.137, {});
 }
 
-void LC_DimStylePreviewPanel::zoomIn() {
+void LC_DimStylePreviewPanel::zoomIn() const {
     m_graphicView->getViewPort()->zoomIn(1.137, {});
 }
 
-void LC_DimStylePreviewPanel::zoomAuto() {
+void LC_DimStylePreviewPanel::zoomAuto() const {
     m_graphicView->zoomAuto();
 }
 
-void LC_DimStylePreviewPanel::zoomPan() {
+void LC_DimStylePreviewPanel::zoomPan() const {
     m_graphicView->zoomPan();
 }

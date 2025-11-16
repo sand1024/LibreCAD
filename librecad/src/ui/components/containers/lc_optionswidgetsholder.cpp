@@ -40,7 +40,7 @@ LC_OptionsWidgetsHolder::~LC_OptionsWidgetsHolder(){
     delete ui;
 }
 
-LC_SnapOptionsWidgetsHolder *LC_OptionsWidgetsHolder::getSnapOptionsHolder() {
+LC_SnapOptionsWidgetsHolder *LC_OptionsWidgetsHolder::getSnapOptionsHolder() const {
     return ui->snapOptionsHolder;
 }
 
@@ -111,7 +111,7 @@ void LC_OptionsWidgetsHolder::setCurrentQAction(QAction *a) {
     doSetIcon(icon, text);
 }
 
-void LC_OptionsWidgetsHolder::doSetIcon(const QIcon &icon, const QString& text) {
+void LC_OptionsWidgetsHolder::doSetIcon(const QIcon &icon, const QString& text) const {
     ui->lCurrentAction->setPixmap(icon.pixmap(iconSize));
     ui->lCurrentAction->setToolTip(tr("Current Action:")+ " " + text);
 }

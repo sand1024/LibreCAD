@@ -41,14 +41,14 @@ public:
     ~QG_SnapMiddleOptions();
     void useMiddlePointsValue(int* i);
     void doShow();
-    int* getMiddlePointsValue();
+    int* getMiddlePointsValue() const;
 protected:
     int* m_middlePoints = nullptr;
 protected slots:
     void languageChange();
     void on_sbMiddlePoints_valueChanged(int arg1);
 private:
-    void saveSettings();
+    void saveSettings() const;
     std::unique_ptr<Ui::Ui_SnapMiddleOptions> ui;
 };
 #endif // QG_SNAPMIDDLEOPTIONS_H

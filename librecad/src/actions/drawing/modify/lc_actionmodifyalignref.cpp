@@ -25,16 +25,26 @@
 #include "lc_actioninfomessagebuilder.h"
 #include "lc_linemath.h"
 #include "lc_modifyalignrefoptions.h"
+#include "rs_document.h"
 #include "rs_preview.h"
 
 LC_ActionModifyAlignRef::LC_ActionModifyAlignRef(LC_ActionContext *actionContext)
   : LC_ActionModifyBase("ModifyAlignRef", actionContext, RS2::ActionModifyAlignRef) {
 }
 
-void LC_ActionModifyAlignRef::doTrigger(bool keepSelected) {
+bool LC_ActionModifyAlignRef::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
     prepareAlignRefData(m_actionData.targetPoint2);
-    RS_Modification m(*m_container, m_viewport);
-    m.alignRef(m_actionData.data, m_selectedEntities, false, keepSelected);
+    RS_Modification m(m_document, m_viewport);
+    m.alignRef(m_actionData.data, m_selectedEntities, false, /*keepSelected*/false); // fixme - complete
+    return true;
+
+}
+
+void LC_ActionModifyAlignRef::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+    // fixme - complete
+}
+
+void LC_ActionModifyAlignRef::doTriggerCompletion(bool success) {
     finish(false);
 }
 
@@ -75,7 +85,7 @@ void LC_ActionModifyAlignRef::onMouseMoveEventSelected(int status, LC_MouseEvent
 
             prepareAlignRefData(snap);
 
-            RS_Modification m(*m_preview, m_viewport, false);
+            RS_Modification m(m_preview.get(), m_viewport, false);
             m.alignRef(m_actionData.data, m_selectedEntities, true, true);
 
             if (isInfoCursorForModificationEnabled()) {
@@ -236,7 +246,7 @@ void LC_ActionModifyAlignRef::setScale(bool val) {
    m_actionData.data.scale = val;
 }
 
-bool LC_ActionModifyAlignRef::isScale() {
+bool LC_ActionModifyAlignRef::isScale() const {
     return m_actionData.data.scale;
 }
 

@@ -25,6 +25,8 @@
 **********************************************************************/
 
 #include "rs_actionselectinvert.h"
+
+#include "rs_document.h"
 #include "rs_selection.h"
 
 RS_ActionSelectInvert::RS_ActionSelectInvert(LC_ActionContext *actionContext)
@@ -39,7 +41,7 @@ void RS_ActionSelectInvert::init(int status) {
 }
 
 void RS_ActionSelectInvert::trigger() {
-    RS_Selection s(*m_container, m_viewport);
+    RS_Selection s(m_document, m_viewport);
     s.invertSelection();
     updateSelectionWidget();
 }

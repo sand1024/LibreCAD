@@ -31,8 +31,8 @@ public:
     //read: return true if all ok
     bool read(DRW_Interface *interface_, bool ext);
     bool getPreview();
-    DRW::Version getVersion(){return version;}
-    DRW::error getError(){return error;}
+    DRW::Version getVersion() const {return version;}
+    DRW::error getError() const {return error;}
 bool testReader();
     void setDebug(DRW::DebugLevel lvl);
 

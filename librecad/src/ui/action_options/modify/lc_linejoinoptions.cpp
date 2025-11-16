@@ -134,27 +134,27 @@ void LC_LineJoinOptions::onAttributesSourceIndexChanged(int index){
     }
 }
 
-void LC_LineJoinOptions::setEdgeModeLine1ToActionAndView(int index){
+void LC_LineJoinOptions::setEdgeModeLine1ToActionAndView(int index) const {
     m_action->setLine1EdgeMode(index);
     ui->cbLine1EdgeMode->setCurrentIndex(index);
 }
 
-void LC_LineJoinOptions::setAttributesSourceToActionAndView(int index){
+void LC_LineJoinOptions::setAttributesSourceToActionAndView(int index) const {
     m_action->setAttributesSource(index);
     ui->cbAttributesSource->setCurrentIndex(index);
 }
 
-void LC_LineJoinOptions::setEdgeModeLine2ToActionAndView(int index){
+void LC_LineJoinOptions::setEdgeModeLine2ToActionAndView(int index) const {
     m_action->setLine2EdgeMode(index);
     ui->cbLine2EdgeMode->setCurrentIndex(index);
 }
 
-void LC_LineJoinOptions::setUsePolylineToActionAndView(bool value){
+void LC_LineJoinOptions::setUsePolylineToActionAndView(bool value) const {
     m_action->setCreatePolyline(value);
     ui->cbPolyline->setChecked(value);
 }
 
-void LC_LineJoinOptions::setRemoveOriginalsToActionAndView(bool value){
+void LC_LineJoinOptions::setRemoveOriginalsToActionAndView(bool value) const {
    m_action->setRemoveOriginalLines(value);
    ui->cbRemoveOriginals->setChecked(value);
 }

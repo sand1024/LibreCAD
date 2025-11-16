@@ -86,10 +86,9 @@ void RS_GraphicView::cleanUp() {
  * Sets the pointer to the graphic which contains the entities
  * which are visualized by this widget.
  */
-void RS_GraphicView::setContainer(RS_EntityContainer *c) {
-    container = c;
+void RS_GraphicView::setDocument(RS_Document *c) {
+    m_document = c;
     m_viewport->setContainer(c);
-//adjustOffsetControls();
 }
 
 /**
@@ -149,7 +148,7 @@ QIcon RS_GraphicView::getCurrentActionIcon() const {
     return {};
 }
 
-bool RS_GraphicView::setEventHandlerAction(std::shared_ptr<RS_ActionInterface> action){
+bool RS_GraphicView::setEventHandlerAction(std::shared_ptr<RS_ActionInterface> action) const {
     bool actionActive = m_eventHandler->setCurrentAction(action);
     return actionActive;
 }
@@ -157,7 +156,7 @@ bool RS_GraphicView::setEventHandlerAction(std::shared_ptr<RS_ActionInterface> a
 /**
  * Sets the current action of the event handler.
  */
-bool RS_GraphicView::setCurrentAction(std::shared_ptr<RS_ActionInterface> action) {
+bool RS_GraphicView::setCurrentAction(std::shared_ptr<RS_ActionInterface> action) const {
     if (m_eventHandler != nullptr) {
         m_viewport->markRelativeZero();
         return setEventHandlerAction(action);
@@ -187,7 +186,7 @@ void RS_GraphicView::back() const {
 /**
  * Go forward with the current action.
  */
-void RS_GraphicView::processEnterKey() {
+void RS_GraphicView::processEnterKey() const {
     if (m_eventHandler && m_eventHandler->hasAction()) {
         m_eventHandler->enter();
     }
@@ -203,7 +202,7 @@ void RS_GraphicView::keyPressEvent(QKeyEvent *event) {
 /**
  * Called by the actual GUI class which implements a command line.
  */
-void RS_GraphicView::commandEvent(RS_CommandEvent *e) {
+void RS_GraphicView::commandEvent(RS_CommandEvent *e) const {
     if (m_eventHandler) {
         m_eventHandler->commandEvent(e);
     }
@@ -212,7 +211,7 @@ void RS_GraphicView::commandEvent(RS_CommandEvent *e) {
 /**
  * Enables coordinate input in the command line.
  */
-void RS_GraphicView::enableCoordinateInput() {
+void RS_GraphicView::enableCoordinateInput() const {
     if (m_eventHandler) {
         m_eventHandler->enableCoordinateInput();
     }
@@ -221,13 +220,13 @@ void RS_GraphicView::enableCoordinateInput() {
 /**
  * Disables coordinate input in the command line.
  */
-void RS_GraphicView::disableCoordinateInput() {
+void RS_GraphicView::disableCoordinateInput() const {
     if (m_eventHandler) {
         m_eventHandler->disableCoordinateInput();
     }
 }
 
-void RS_GraphicView::zoomAuto(bool axis){
+void RS_GraphicView::zoomAuto(bool axis) const {
     m_viewport->zoomAuto(axis);
 }
 
@@ -255,11 +254,11 @@ void RS_GraphicView::notifyCurrentActionChanged(RS2::ActionType actionType) {
     emit currentActionChanged(actionType);
 }
 
-bool RS_GraphicView::hasAction() {
+bool RS_GraphicView::hasAction() const {
     return getEventHandler()->hasAction();
 }
 
-void RS_GraphicView::notifyLastActionFinished() {
+void RS_GraphicView::notifyLastActionFinished() const {
     return getEventHandler()->notifyLastActionFinished();
 }
 
@@ -287,7 +286,7 @@ RS_SnapMode RS_GraphicView::getDefaultSnapMode() const {
 /**
  * Sets the default snap mode used by newly created actions.
  */
-void RS_GraphicView::setDefaultSnapMode(RS_SnapMode sm) {
+void RS_GraphicView::setDefaultSnapMode(RS_SnapMode sm) const {
     *defaultSnapMode = sm;
     if (m_eventHandler) {
         m_eventHandler->setSnapMode(sm);
@@ -309,30 +308,29 @@ LC_EventHandler *RS_GraphicView::getEventHandler() const {
     return m_eventHandler.get();
 }
 
-bool RS_GraphicView::isCurrentActionRunning(RS_ActionInterface* action) {
+bool RS_GraphicView::isCurrentActionRunning(RS_ActionInterface* action) const {
     return m_eventHandler->isValid(action);
 }
 
 RS_Graphic *RS_GraphicView::getGraphic(bool resolve) const {
-    if (container != nullptr){
+    if (m_document != nullptr){
         if (resolve) {
-            return container->getGraphic();
+            return m_document->getGraphic();
         }
-        if (container->rtti() == RS2::EntityGraphic) {
-            return static_cast<RS_Graphic *>(container);
+        if (m_document->rtti() == RS2::EntityGraphic) {
+            return static_cast<RS_Graphic *>(m_document);
         }
     }
     return nullptr;
 }
 
-RS_EntityContainer *RS_GraphicView::getContainer() const {
-    return container;
+RS_Document *RS_GraphicView::getDocument() const {
+    return m_document;
 }
 
 void RS_GraphicView::switchToDefaultAction() {
     killAllActions();
-    RS_Selection s(*container, m_viewport.get());
-    s.selectAll(false);
+    RS_Selection::unselectAllInDocument(m_document, m_viewport.get());
     redraw(RS2::RedrawAll);
 }
 
@@ -341,11 +339,11 @@ bool RS_GraphicView::isCleanUp(void) const {
 }
 
 /* Sets the hidden state for the relative-zero marker. */
-void RS_GraphicView::setRelativeZeroHiddenState(bool isHidden) {
+void RS_GraphicView::setRelativeZeroHiddenState(bool isHidden) const {
     return m_viewport->setRelativeZeroHiddenState(isHidden);
 }
 
-bool RS_GraphicView::isRelativeZeroHidden() {
+bool RS_GraphicView::isRelativeZeroHidden() const {
     return m_viewport->isRelativeZeroHidden();
 }
 
@@ -374,7 +372,7 @@ bool RS_GraphicView::getSkipFirstZoom() const{
     return m_skipFirstZoom;
 }
 
-LC_InfoCursorOverlayPrefs* RS_GraphicView::getInfoCursorOverlayPreferences(){
+LC_InfoCursorOverlayPrefs* RS_GraphicView::getInfoCursorOverlayPreferences() const {
     return infoCursorOverlayPreferences.get();
 }
 
@@ -391,7 +389,7 @@ void RS_GraphicView::setPrintPreview(bool pv) {
     printPreview = pv;
 }
 
-void RS_GraphicView::setLineWidthScaling(bool state){
+void RS_GraphicView::setLineWidthScaling(bool state) const {
     m_renderer->setLineWidthScaling(state);
 }
 

@@ -41,12 +41,12 @@ void LC_ActionOptionsManager::setOptionWidget(QToolBar* ow) {
     m_snapOptionsWidgetHolderOptionsToolbar = m_actionOptionWidgetHolder->getSnapOptionsHolder();
 }
 
-void LC_ActionOptionsManager::addOptionsWidget(LC_ActionOptionsWidget * options){
+void LC_ActionOptionsManager::addOptionsWidget(LC_ActionOptionsWidget * options) const {
     m_actionOptionWidgetHolder->addOptionsWidget(options);
     m_actionOptionsToolbar->update();
 }
 
-void LC_ActionOptionsManager::removeOptionsWidget(LC_ActionOptionsWidget * options){
+void LC_ActionOptionsManager::removeOptionsWidget(LC_ActionOptionsWidget * options) const {
     m_actionOptionWidgetHolder->removeOptionsWidget(options);
 }
 
@@ -91,6 +91,6 @@ void LC_ActionOptionsManager::update(){
     getSnapOptionsHolder();
 }
 
-void LC_ActionOptionsManager::clearActionIcon(){
+void LC_ActionOptionsManager::clearActionIcon() const {
     m_actionOptionWidgetHolder->clearActionIcon();
 }

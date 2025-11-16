@@ -110,7 +110,7 @@ protected:
     void drawLayerEntitiesOver(RS_Painter *painter) override;
     void drawRelativeZero(RS_Painter *painter);
     void drawOverlay(RS_Painter *painter);
-    void drawDraftSign(RS_Painter *painter);
+    void drawDraftSign(RS_Painter *painter) const;
     void drawCoordinateSystems(RS_Painter *painter);
     void drawEntitiesInOverlay(LC_OverlaysManager *overlaysManager, RS_Painter *painter, RS2::OverlayGraphics overlayType);
     void drawOverlayEntitiesInOverlay(LC_OverlaysManager *overlaysManager, RS_Painter *painter, RS2::OverlayGraphics overlayType);

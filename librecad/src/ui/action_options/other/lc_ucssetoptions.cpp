@@ -83,7 +83,7 @@ void LC_UCSSetOptions::setAngleToActionAndView(QString val) {
     }
 }
 
-void LC_UCSSetOptions::setAngleIsFreeToActionAndView(bool val) {
+void LC_UCSSetOptions::setAngleIsFreeToActionAndView(bool val) const {
     ui->cbFreeAngle->setChecked(val);
     m_action->setFixedAngle(!val);
     bool showAngle = !val;

@@ -56,7 +56,7 @@ protected:
     void doSetAction(RS_ActionInterface *a, bool update) override;
     void setRadiusToActionAndView(const QString& s  );
     void setAngleToActionAndView(const QString& s  );
-    void setByRadiusToActionAndView(const bool byRadius);
+    void setByRadiusToActionAndView(const bool byRadius) const;
     std::unique_ptr<Ui::Ui_ArcTangentialOptions> ui;
 };
 

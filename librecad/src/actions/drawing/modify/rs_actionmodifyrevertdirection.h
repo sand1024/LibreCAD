@@ -37,12 +37,14 @@
 class RS_ActionModifyRevertDirection : public LC_ActionPreSelectionAwareBase {
 Q_OBJECT
 public:
-    RS_ActionModifyRevertDirection(LC_ActionContext *actionContext);
+    explicit RS_ActionModifyRevertDirection(LC_ActionContext *actionContext);
 protected:
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
     void updateMouseButtonHintsForSelection() override;
     bool isEntityAllowedToSelect(RS_Entity *ent) const override;
     bool isShowRefPointsOnHighlight() override;
-    void doTrigger(bool keepSelected) override;
 };
 
 #endif

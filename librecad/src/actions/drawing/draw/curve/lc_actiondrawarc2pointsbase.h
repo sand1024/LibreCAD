@@ -23,9 +23,10 @@
 #ifndef LC_ACTIONDRAWARC2POINTSBASE_H
 #define LC_ACTIONDRAWARC2POINTSBASE_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_previewactioninterface.h"
 
-class LC_ActionDrawArc2PointsBase:public RS_PreviewActionInterface{
+class LC_ActionDrawArc2PointsBase:public LC_SingleEntityCreationAction{
     Q_OBJECT
 public:
     LC_ActionDrawArc2PointsBase(const char* name, LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone);
@@ -58,15 +59,14 @@ protected:
     LC_ActionOptionsWidget *createOptionsWidget() override;
     RS_Arc *createArc(int status, RS_Vector vector, bool reverse, bool reportErrors = false);
     virtual bool createArcData(RS_ArcData &data, int status, RS_Vector vector, bool alternate, bool reportErrors = false) = 0;
-    virtual void doOnEntityNotCreated() {};
-    virtual void doAfterTrigger(){};
     virtual void doPreviewOnPoint2Custom(RS_Arc *pArc) = 0;
     void proceedFromSetPoint2();
     virtual QString getParameterCommand() = 0;
     virtual void setParameterValue(double r);
     virtual QString getParameterPromptValue() const = 0;
     virtual QString getAlternativePoint2Prompt() const;
-    void doTrigger() override;
+    RS_Entity* doTriggerCreateEntity() override;
+    void doTriggerCompletion(bool success) override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angle) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
 };

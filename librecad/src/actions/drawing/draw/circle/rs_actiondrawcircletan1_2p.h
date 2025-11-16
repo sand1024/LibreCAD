@@ -39,8 +39,8 @@ public:
     RS_ActionDrawCircleTan1_2P(LC_ActionContext *actionContext);
     ~RS_ActionDrawCircleTan1_2P() override;
     void init(int status) override;
-    bool getCenters();
-    bool preparePreview();
+    bool getCenters() const;
+    bool preparePreview() const;
     void finish(bool updateTB) override;
     double getRadius() const;
 protected:
@@ -66,7 +66,8 @@ protected:
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     RS_Vector getTangentPoint(RS_Vector &creatingCircleCenter, bool fromOriginalCircle) const;
     void updateMouseButtonHints() override;
-    void doTrigger() override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
 };
 #endif

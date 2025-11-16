@@ -75,17 +75,17 @@ void LC_PointsLatticeOptions::onAdjustLastPointToggled([[maybe_unused]]bool valu
     setAdjustLastPointToActionAndView(ui->cbAdjustLastPoint->isChecked());
 }
 
-void LC_PointsLatticeOptions::setAdjustLastPointToActionAndView(bool value) {
+void LC_PointsLatticeOptions::setAdjustLastPointToActionAndView(bool value) const {
    ui->cbAdjustLastPoint->setChecked(value);
    m_action->setAdjustLastPointToFirst(value);
 }
 
-void LC_PointsLatticeOptions::setColumnsToActionAndView(int value) {
+void LC_PointsLatticeOptions::setColumnsToActionAndView(int value) const {
     ui->sbNumX->setValue(value);
     m_action->setColumnPointsCount(value);
 }
 
-void LC_PointsLatticeOptions::setRowsToActionAndView(int value) {
+void LC_PointsLatticeOptions::setRowsToActionAndView(int value) const {
     ui->sbNumY->setValue(value);
     m_action->setRowPointsCount(value);
 }

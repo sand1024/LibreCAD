@@ -51,7 +51,8 @@ public:
     virtual RS_ActionInterface* getCurrentAction() {return nullptr;}
     virtual void requestSnapMiddleOptions([[maybe_unused]]int* middlePoints, [[maybe_unused]]bool on) {}
     virtual void hideSnapOptions() {}
-    virtual void updateSelectionWidget([[maybe_unused]]int countSelected, [[maybe_unused]]double selectedLength){}
+    [[deprecated]]
+    virtual void updateSelectionWidget([[maybe_unused]]int countSelected, [[maybe_unused]]double selectedLength){} // fixme - remove!!!!
 
     virtual void updateMouseWidget([[maybe_unused]]const QString& left,
                                   [[maybe_unused]]const QString& right,
@@ -65,7 +66,7 @@ public:
                                         [[maybe_unused]]const RS_Vector& rel,
                                         [[maybe_unused]]bool updateFormat) {}
 
-    virtual RS_EntityContainer* getEntityContainer();
+    virtual RS_Document* getDocument();
     virtual RS_GraphicView* getGraphicView();
 
     virtual void setDocumentAndView(RS_Document *document, RS_GraphicView *view);
@@ -75,8 +76,8 @@ public:
     int getSelectedEntitiesCount() const {return m_selectionCount;}
     void saveContextMenuActionContext(RS_Entity* entity, const RS_Vector &position, bool clearEntitySelection);
     void clearContextMenuActionContext();
-    RS_Entity* getContextMenuActionContextEntity();
-    RS_Vector getContextMenuActionClickPosition();
+    RS_Entity* getContextMenuActionContextEntity() const;
+    RS_Vector getContextMenuActionClickPosition() const;
 
     struct InteractiveInputInfo {
         enum State {
@@ -105,12 +106,12 @@ public:
     InteractiveInputInfo* getInteractiveInputInfo(){return &m_interactiveInputInfo;}
 protected:
     InteractiveInputInfo m_interactiveInputInfo;
-    RS_EntityContainer * m_entityContainer {nullptr};
+    RS_Document * m_document {nullptr};
     RS_GraphicView * m_graphicView {nullptr};
     int m_selectionCount{0};
     RS_Vector m_contextMenuClickPosition {false};
     RS_Entity* m_contextMenuActionEntity {nullptr};
-    bool m_uselectContextMenuActionEntity {false};
+    bool m_unselectContextMenuActionEntity {false};
 
     void interactiveInputInvoke(InteractiveInputInfo::InputType inputType);
     void interactiveInputRequest(InteractiveInputInfo::InputType inputType, LC_LateCompletionRequestor* m_requestor, const QString &tag);

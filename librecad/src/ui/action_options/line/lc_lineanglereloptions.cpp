@@ -161,27 +161,27 @@ void LC_LineAngleRelOptions::setOffsetToActionAndView(const QString& val){
     }
 }
 
-void LC_LineAngleRelOptions::setAngleIsRelativeToActionAndView(bool relative){
+void LC_LineAngleRelOptions::setAngleIsRelativeToActionAndView(bool relative) const {
     m_action->setAngleIsRelative(relative);
     ui->cbRelativeAngle->setChecked(relative);
 }
 
-void LC_LineAngleRelOptions::setDivideToActionAndView(bool divide){
+void LC_LineAngleRelOptions::setDivideToActionAndView(bool divide) const {
     m_action->setDivideLine(divide);
     ui->cbDivide->setChecked(divide);
 }
 
-void LC_LineAngleRelOptions::setLengthIsFreeToActionAndView(bool free){
+void LC_LineAngleRelOptions::setLengthIsFreeToActionAndView(bool free) const {
     m_action->setLengthIsFree(free);
     ui->cbFree->setChecked(free);
 }
 
-void LC_LineAngleRelOptions::setTickSnapModeToActionAndView(int mode){
+void LC_LineAngleRelOptions::setTickSnapModeToActionAndView(int mode) const {
     m_action->setTickSnapMode(mode);
     ui->cbTickSnapMode->setCurrentIndex(mode);
 }
 
-void LC_LineAngleRelOptions::setLineSnapModeToActionAndView(int mode){
+void LC_LineAngleRelOptions::setLineSnapModeToActionAndView(int mode) const {
     m_action->setLineSnapMode(mode);
     ui->cbLineSnapMode->setCurrentIndex(mode);
     bool notFreeSnap = mode != 0;

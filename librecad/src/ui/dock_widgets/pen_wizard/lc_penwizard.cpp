@@ -33,6 +33,7 @@
 #include "qc_mdiwindow.h"
 #include "qg_graphicview.h"
 #include "rs_color.h"
+#include "rs_selection.h"
 #include "rs_settings.h"
 
 LC_PenWizard::LC_PenWizard(QWidget* parent)
@@ -52,31 +53,34 @@ LC_PenWizard::LC_PenWizard(QWidget* parent)
     updateWidgetSettings();
 }
 
-void LC_PenWizard::setColorForSelected(QColor color) {
+void LC_PenWizard::setColorForSelected(QColor color) const {
     auto graphic = m_graphicView->getGraphic();
     auto pen = graphic->getActivePen();
     pen.setColor(RS_Color(color));
 
     foreach(auto e, graphic->getEntityList()) {
         if (e->isSelected()) {
-            e->setPen(pen);
-            e->setSelected(false);
+            e->setPen(pen);  // fixme - pen_wizard - add support of undo!!!!
         }
     }
+    RS_Selection::unselectAllInDocument(m_graphicView->getDocument(), m_graphicView->getViewPort());
     m_graphicView->redraw(RS2::RedrawDrawing);
 }
 
-void LC_PenWizard::selectByColor(QColor color) {
+void LC_PenWizard::selectByColor(QColor color) const {
     auto graphic = m_graphicView->getGraphic();
-    foreach(auto e, graphic->getEntityList()) {
-        if (e->getPen().getColor().name() == color.name()) {
-            e->setSelected(true);
-        }
-    }
+    RS_Selection sel(m_graphicView);
+    sel.performBulkSelection([graphic, color](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+        foreach(auto e, graphic->getEntityList()) {
+          if (e->getPen().getColor().name() == color.name()) {
+              doc->select(e);
+          }
+      }
+    });
     m_graphicView->redraw(RS2::RedrawDrawing);
 }
 
-void LC_PenWizard::setActivePenColor(QColor color) {
+void LC_PenWizard::setActivePenColor(QColor color) const {
     auto graphic = m_graphicView->getGraphic();
     auto pen = graphic->getActivePen();
     pen.setColor(RS_Color(color));
@@ -87,7 +91,7 @@ void LC_PenWizard::setGraphicView(RS_GraphicView* mdiWindow) {
     m_graphicView = mdiWindow;
 }
 
-void LC_PenWizard::updateWidgetSettings() {
+void LC_PenWizard::updateWidgetSettings() const {
     LC_GROUP("Widgets");
     {
         bool flatIcons = LC_GET_BOOL("DockWidgetsFlatIcons", true);

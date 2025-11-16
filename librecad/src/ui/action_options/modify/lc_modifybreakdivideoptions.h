@@ -45,8 +45,8 @@ protected:
 private:
     Ui::LC_ModifyBreakDivideOptions *ui = nullptr;
     LC_ActionModifyBreakDivide* m_action = nullptr;
-    void setRemoveSegmentsToActionAndView(bool val);
-    void setRemoveSelectedToActionAndView(bool val);
+    void setRemoveSegmentsToActionAndView(bool val) const;
+    void setRemoveSelectedToActionAndView(bool val) const;
 };
 
 #endif // LC_MODIFYBREAKOUTOPTIONS_H

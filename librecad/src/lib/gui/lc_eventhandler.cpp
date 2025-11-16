@@ -22,7 +22,6 @@
  */
 
 
-
 #include <QMouseEvent>
 
 #include "lc_coordinates_parser.h"
@@ -71,7 +70,7 @@ void LC_EventHandler::enter() {
     keyPressEvent(&e);
 }
 
-void LC_EventHandler::mousePressEvent(QMouseEvent* e) {
+void LC_EventHandler::mousePressEvent(QMouseEvent* e) const {
     if (hasAction()) {
         m_currentAction->mousePressEvent(e);
         e->accept();
@@ -115,7 +114,7 @@ void LC_EventHandler::mouseMoveEvent(QMouseEvent* e){
     }
 }
 
-void LC_EventHandler::mouseLeaveEvent() {
+void LC_EventHandler::mouseLeaveEvent() const {
     if(hasAction()){
         m_currentAction->suspend();
     } else {
@@ -125,7 +124,7 @@ void LC_EventHandler::mouseLeaveEvent() {
     }
 }
 
-void LC_EventHandler::mouseEnterEvent() {
+void LC_EventHandler::mouseEnterEvent() const {
     if(hasAction()){
         m_currentAction->resume();
     } else {
@@ -328,7 +327,7 @@ void LC_EventHandler::disableCoordinateInput() {
 /**
  * @return Current action.
  */
-RS_ActionInterface* LC_EventHandler::getCurrentAction(){
+RS_ActionInterface* LC_EventHandler::getCurrentAction() const {
     if(hasAction()){
         return m_currentAction.get();
     } else {
@@ -392,14 +391,14 @@ bool LC_EventHandler::isValid(RS_ActionInterface* action) const{
 /**
  * @return true if there is at least one action in the action stack.
  */
-bool LC_EventHandler::hasAction(){
+bool LC_EventHandler::hasAction() const {
     return m_currentAction != nullptr;
 }
 
 /**
  * Sets the snap mode for all currently active actions.
  */
-void LC_EventHandler::setSnapMode(RS_SnapMode sm) {
+void LC_EventHandler::setSnapMode(RS_SnapMode sm) const {
     if (isActive(m_currentAction)) {
         m_currentAction->setSnapMode(sm);
     }
@@ -412,7 +411,7 @@ void LC_EventHandler::setSnapMode(RS_SnapMode sm) {
 /**
  * Sets the snap restriction for all currently active actions.
  */
-void LC_EventHandler::setSnapRestriction(RS2::SnapRestriction sr) {
+void LC_EventHandler::setSnapRestriction(RS2::SnapRestriction sr) const {
     if (isActive(m_currentAction)) {
         m_currentAction->setSnapRestriction(sr);
     }
@@ -422,7 +421,7 @@ void LC_EventHandler::setSnapRestriction(RS2::SnapRestriction sr) {
     }
 }
 
-QAction* LC_EventHandler::getQAction(){
+QAction* LC_EventHandler::getQAction() const {
   return m_QAction;
 }
 

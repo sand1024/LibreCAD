@@ -244,7 +244,7 @@ void RS_Hatch::update() {
         RS_DEBUG->print(RS_Debug::D_NOTICE, "RS_Hatch::update: Updates disabled, skipping");
         return;
     }
-    if (isUndone()) {
+    if (isDeleted()) {
         RS_DEBUG->print(RS_Debug::D_NOTICE, "RS_Hatch::update: Undone hatch, skipping");
         return;
     }
@@ -290,7 +290,7 @@ void RS_Hatch::update() {
 /**
  * Helper: Generates and caches QPainterPaths for solid fill from optimized loops.
  */
-void RS_Hatch::updateSolidHatch([[maybe_unused]] RS_Layer* layer, [[maybe_unused]] const RS_Pen& pen) {
+void RS_Hatch::updateSolidHatch([[maybe_unused]] RS_Layer* layer, [[maybe_unused]] const RS_Pen& pen) const {
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Hatch::updateSolidHatch");
 
     // Transform loops into painter paths
@@ -391,12 +391,12 @@ void RS_Hatch::updatePatternHatch(RS_Layer* layer, const RS_Pen& pen) {
  *
  * @param visible true to show boundaries, false to hide.
  */
-void RS_Hatch::activateContour(bool visible) {
+void RS_Hatch::activateContour(bool visible) const {
     RS_DEBUG->print("RS_Hatch::activateContour: %d", static_cast<int>(visible));
     for (const auto& sub : m_boundaryContainers) {
         if (sub) {
             for (RS_Entity* entity : *sub) {
-                if (!entity->isUndone() && !entity->getFlag(RS2::FlagTemp)) {
+                if (!entity->isDeleted() && !entity->getFlag(RS2::FlagTemp)) {
                     RS_DEBUG->print("RS_Hatch::activateContour: Setting visibility for entity %d",
                                     entity->getId());
                     entity->setVisible(visible);
@@ -428,7 +428,7 @@ void RS_Hatch::draw(RS_Painter* painter) {
 /**
  * Helper: Draws solid fill using cached QPainterPaths.
  */
-void RS_Hatch::drawSolidFill(RS_Painter* painter) {
+void RS_Hatch::drawSolidFill(RS_Painter* painter) const {
     if (!m_solidPath || m_solidPath->empty()) {
         LC_ERR << __func__ << "(): No cached paths for solid fill";
         return;
@@ -464,7 +464,7 @@ void RS_Hatch::drawPatternLines(RS_Painter* painter) const {
     for (RS_Entity* subEntity : *this) {
         // Draw only direct atomic children with FlagHatchChild (patterns); skip subcontainers
         if (subEntity && !subEntity->isContainer() && subEntity->getFlag(RS2::FlagHatchChild)) {
-            subEntity->setSelected(selected);
+            subEntity->setSelectionFlag(selected); // fixme - selection - just utility entity used on draw?
             painter->drawEntity(subEntity);
         }
     }

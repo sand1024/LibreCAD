@@ -31,7 +31,7 @@
 #include "qg_dlgimageoptions.h"
 #include "rs_graphic.h"
 
-bool LC_ExportToImageService::exportGraphicsToImage(RS_Graphic* graphic, const QString& documentFileName) {
+bool LC_ExportToImageService::exportGraphicsToImage(RS_Graphic* graphic, const QString& documentFileName) const {
     QG_ImageOptionsDialog imageOptionsDialog = new QG_ImageOptionsDialog(m_appWin);
     graphic->calculateBorders();
     imageOptionsDialog.setGraphicSize(graphic->getSize() * 2.);

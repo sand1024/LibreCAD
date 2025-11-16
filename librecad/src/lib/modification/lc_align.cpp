@@ -76,7 +76,7 @@ RS_Vector LC_Align::getReferencePoint(const RS_Vector &min, const RS_Vector &max
     return RS_Vector(x, y);
 }
 
-void LC_Align::collectSelectionBounds( std::vector<RS_Entity*> selectedEntities, RS_Vector &boxMin, RS_Vector &boxMax) {
+void LC_Align::collectSelectionBounds( QList<RS_Entity*> selectedEntities, RS_Vector &boxMin, RS_Vector &boxMax) {
     RS_Vector minV;
     RS_Vector maxV;
     for (auto e: selectedEntities) {

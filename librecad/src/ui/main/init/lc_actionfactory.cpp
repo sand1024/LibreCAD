@@ -99,7 +99,7 @@ void LC_ActionFactory::initActionGroupManager(LC_ActionGroupManager* agm) {
     }*/
 }
 
-void LC_ActionFactory::createEntityLayerActions(QMap<QString, QAction*>& map, LC_ActionGroup* group) {
+void LC_ActionFactory::createEntityLayerActions(QMap<QString, QAction*>& map, LC_ActionGroup* group) const {
     createActionHandlerActions(map, group,{
      {"EntityLayerActivate",     RS2::ActionLayerEntityActivate,          tr("Activate Entity's Layer"),           ":/icons/select_entity.lci"},
      {"EntityLayerView",         RS2::ActionLayerEntityToggleView,        tr("Hide Entity's Layer"),  ":/icons/not_visible.lci"},
@@ -242,7 +242,8 @@ void LC_ActionFactory::createSelectActions(QMap<QString, QAction*>& map, QAction
         {"SelectContour",       RS2::ActionSelectContour,       tr("(De-)Select &Contour"),          ":/icons/deselect_contour.lci"},
         {"SelectIntersected",   RS2::ActionSelectIntersected,   tr("Select Intersected Entities"),   ":/icons/select_intersected_entities.lci"},
         {"DeselectIntersected", RS2::ActionDeselectIntersected, tr("Deselect Intersected Entities"), ":/icons/deselect_intersected_entities.lci"},
-        {"SelectLayer",         RS2::ActionSelectLayer,         tr("(De-)Select Layer"),             ":/icons/deselect_layer.lci"}
+        {"SelectLayer",         RS2::ActionSelectLayer,         tr("(De-)Select Layer"),             ":/icons/deselect_layer.lci"},
+        {"SelectQuick",   RS2::ActionSelectQuick,         tr("Select Quick"),                  ":/icons/select_conditional.lci"}
     });
 }
 
@@ -709,7 +710,7 @@ void LC_ActionFactory::setupCreatedActions(QMap<QString, QAction *> &map) {
         bool fullScreenMode = LC_GET_BOOL("FullscreenMode", false);
         map["ViewStatusBar"]->setChecked(statusBarVisible);
         map["MainMenu"]->setChecked(mainMenuVisible);
-        map["Fullscreen"]->setChecked(mainMenuVisible);
+        map["Fullscreen"]->setChecked(fullScreenMode);
         map["OptionsGeneral"]->setMenuRole(QAction::NoRole);
     }
 
@@ -954,7 +955,8 @@ void LC_ActionFactory::fillActionLists(QMap<QString, QAction *> &map){
                         "SelectIntersected",
                         "DeselectIntersected",
                         "SelectLayer",
-                        "SelectInvert"
+                        "SelectInvert",
+                        "SelectQuick"
                     }, map);
 
     fillActionsList(dimension_actions, {
@@ -1085,7 +1087,7 @@ void LC_ActionFactory::fillActionLists(QMap<QString, QAction *> &map){
                     }, map);
 }
 
-void LC_ActionFactory::prepareActionsToDisableInPrintPreview(QList<QAction*>& actionsList, QMap<QString, QAction *> &map){
+void LC_ActionFactory::prepareActionsToDisableInPrintPreview(QList<QAction*>& actionsList, QMap<QString, QAction *> &map) const {
     fillActionsList(actionsList, {
         "EditCut",
         "EditCutQuick",

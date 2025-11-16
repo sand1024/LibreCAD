@@ -136,14 +136,14 @@ void LC_Ellipse1PointOptions::setAngleToActionAndView(QString val) {
     }
 }
 
-void LC_Ellipse1PointOptions::setAngleIsFreeToActionAndView(bool val) {
+void LC_Ellipse1PointOptions::setAngleIsFreeToActionAndView(bool val) const {
     m_action->setAngleFree(val);
     ui->cbFreeAngle->setChecked(val);
     ui->leAngle->setEnabled(!val);
     ui->tbPickAngle->setEnabled(!val);
 }
 
-void LC_Ellipse1PointOptions::setUseAngleAngleToActionAndView(bool val) {
+void LC_Ellipse1PointOptions::setUseAngleAngleToActionAndView(bool val) const {
     ui->cbAngle->setChecked(val);
     m_action->setHasAngle(val);
     bool angleInputAllowed = val && !ui->cbFreeAngle->isChecked();
@@ -172,7 +172,7 @@ void LC_Ellipse1PointOptions::onFreeAngleClicked([[maybe_unused]]bool val) {
     setAngleIsFreeToActionAndView(ui->cbFreeAngle->isChecked());
 }
 
-void LC_Ellipse1PointOptions::onDirectionChanged([[maybe_unused]] bool val) {
+void LC_Ellipse1PointOptions::onDirectionChanged([[maybe_unused]] bool val) const {
     bool negative = ui->rbNeg->isChecked();
     m_action->setReversed(negative);
 }

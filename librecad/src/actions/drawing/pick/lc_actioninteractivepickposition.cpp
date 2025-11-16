@@ -69,7 +69,7 @@ void LC_ActionInteractivePickPosition::onMouseMoveEvent(int status, LC_MouseEven
     }
 }
 
-void LC_ActionInteractivePickPosition::updateInfoCursor(const RS_Vector &mouse, const RS_Vector &relZero) {
+void LC_ActionInteractivePickPosition::updateInfoCursor(const RS_Vector &mouse, const RS_Vector &relZero) const {
     if (m_infoCursorOverlayPrefs->enabled) {
         msgStart()
             .string (tr("Pick Coordinates"))

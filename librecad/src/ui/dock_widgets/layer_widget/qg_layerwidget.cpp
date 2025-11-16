@@ -361,7 +361,7 @@ void QG_LayerWidget::update() {
     RS_DEBUG->print("QG_LayerWidget::update(): OK");
 }
 
-void QG_LayerWidget::restoreSelections() {
+void QG_LayerWidget::restoreSelections() const {
     QItemSelectionModel* selectionModel = m_layerView->selectionModel();
     for (auto* layer: *m_layerList) {
         if (!layer) continue;
@@ -378,7 +378,7 @@ void QG_LayerWidget::restoreSelections() {
  * Activates the given layer and makes it the active
  * layer in the layerlist.
  */
-void QG_LayerWidget::activateLayer(RS_Layer* layer, bool updateScroll) {
+void QG_LayerWidget::activateLayer(RS_Layer* layer, bool updateScroll) const {
     RS_DEBUG->print("QG_LayerWidget::activateLayer() begin");
 
     if (!layer || !m_layerList) {
@@ -430,7 +430,7 @@ void QG_LayerWidget::activateLayer(RS_Layer* layer, bool updateScroll) {
 /**
  * Called when the user activates (highlights) a layer.
  */
-void QG_LayerWidget::slotActivated(QModelIndex layerIdx /*const QString& layerName*/) {
+void QG_LayerWidget::slotActivated(QModelIndex layerIdx /*const QString& layerName*/) const {
     if (!layerIdx.isValid() || m_layerList==nullptr) {
         return;
     }
@@ -471,7 +471,7 @@ void QG_LayerWidget::slotActivated(QModelIndex layerIdx /*const QString& layerNa
  */
 void QG_LayerWidget::slotSelectionChanged(
     const QItemSelection &selected,
-    const QItemSelection &deselected){
+    const QItemSelection &deselected) const {
     QModelIndex index;
     QItemSelectionModel *selectionModel {m_layerView->selectionModel()};
 
@@ -513,7 +513,7 @@ void QG_LayerWidget::slotUpdateLayerList() {
     restoreSelections();
 }
 
-void QG_LayerWidget::addMenuItem(QMenu* contextMenu, RS2::ActionType actionType) {
+void QG_LayerWidget::addMenuItem(QMenu* contextMenu, RS2::ActionType actionType) const {
     auto action = m_actionGroupManager->getActionByType(actionType);
     if (action != nullptr) {
         contextMenu->QWidget::addAction(action);
@@ -563,7 +563,7 @@ void QG_LayerWidget::keyPressEvent(QKeyEvent* e) {
     }
 }
 
-void QG_LayerWidget::activateLayer(int row){
+void QG_LayerWidget::activateLayer(int row) const {
     auto layer = m_layerModel->getLayer(row);
     if (layer) {
         m_layerList->activate(layer, true);
@@ -572,7 +572,7 @@ void QG_LayerWidget::activateLayer(int row){
         qWarning("activateLayer: row %d doesn't exist", row);
 }
 
-void QG_LayerWidget::updateWidgetSettings(){
+void QG_LayerWidget::updateWidgetSettings() const {
     LC_GROUP("Widgets"); {
         bool flatIcons = LC_GET_BOOL("DockWidgetsFlatIcons", true);
         int iconSize = LC_GET_INT("DockWidgetsIconSize", 16);
@@ -593,10 +593,12 @@ void QG_LayerWidget::setGraphicView(RS_GraphicView *gview){
         setLayerList(nullptr, false);
     }
     else {
-        auto doc = gview->getContainer();
+        auto doc = gview->getDocument();
         bool showByBlock = doc->rtti() == RS2::EntityBlock;
         if (showByBlock) {
-            setLayerList(gview->getGraphic(true)->getLayerList(), false);
+            auto graphic  = gview->getGraphic(true);
+            auto layerList = graphic->getLayerList();
+            setLayerList(layerList, false);
         }
         else {
             auto layerList = doc->getGraphic()->getLayerList();

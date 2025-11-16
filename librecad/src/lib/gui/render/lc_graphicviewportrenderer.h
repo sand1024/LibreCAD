@@ -76,7 +76,7 @@ protected:
 
     RS_Pen lastPaintEntityPen = {};
 
-    LC_Rect prepareBoundingClipRect();
+    LC_Rect prepareBoundingClipRect() const;
     virtual void doRender() = 0;
 
     // painting cached values
@@ -102,9 +102,9 @@ protected:
     void updateJoinStyle(const RS_Graphic *graphic);
     void updatePointEntitiesStyle(RS_Graphic *graphic);
     void updateUnitAndDefaultWidthFactors(const RS_Graphic *g);
-    bool isOutsideOfBoundingClipRect(RS_Entity *e, bool constructionEntity);
+    bool isOutsideOfBoundingClipRect(RS_Entity *e, bool constructionEntity) const;
 
-    RS_Graphic* getGraphic(){return graphic;}
+    RS_Graphic* getGraphic() const {return graphic;}
 
 #ifdef DEBUG_RENDERING
     QElapsedTimer drawTimer;

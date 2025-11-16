@@ -36,8 +36,8 @@ public:
     virtual ~LC_OverlaysManager();
     RS_EntityContainer* getEntitiesContainer(RS2::OverlayGraphics position);
     LC_OverlayDrawablesContainer* getDrawablesContainer(RS2::OverlayGraphics position);
-    RS_EntityContainer* entitiesAt(RS2::OverlayGraphics position);
-    LC_OverlayDrawablesContainer* drawablesAt(RS2::OverlayGraphics position);
+    RS_EntityContainer* entitiesAt(RS2::OverlayGraphics position) const;
+    LC_OverlayDrawablesContainer* drawablesAt(RS2::OverlayGraphics position) const;
     void addOverlay(LC_OverlayDrawable* ent, RS2::OverlayGraphics position);
     void setGraphic(RS_Graphic* graphic);
 protected:

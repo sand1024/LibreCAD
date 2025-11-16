@@ -46,18 +46,24 @@ void RS_ActionPolylineAppend::doInitWithContextEntity(RS_Entity* contextEntity, 
     }
 }
 
-void RS_ActionPolylineAppend::doTrigger() {
-    RS_DEBUG->print("RS_ActionPolylineAppend::trigger()");
+void RS_ActionPolylineAppend::prepareDocumentModificationContext(LC_DocumentModificationBatch& ctx) {
+    ctx.m_setActiveLayer = false;
+    ctx.m_setActivePen = false;
+}
 
+RS_Entity* RS_ActionPolylineAppend::doTriggerCreateEntity() {
     auto newPolyline = m_actionData->polyline;
-    if (newPolyline == nullptr){
-        return;
+    if (newPolyline != nullptr) {
+        moveRelativeZero(newPolyline->getEndpoint());
+        newPolyline->setLayer(m_originalPolyline->getLayer(false));
+        newPolyline->setPen(m_originalPolyline->getPen(false));
+        undoCycleReplace(m_originalPolyline, newPolyline);
+        return newPolyline;
     }
-    moveRelativeZero(newPolyline->getEndpoint()); // fixme - relative zero check!
-    undoCycleReplace(m_originalPolyline, newPolyline);
-    m_viewport->notifyChanged();
+    return nullptr;
+}
 
-    RS_DEBUG->print("RS_ActionDrawPolyline::trigger(): polyline added: %lu",newPolyline->getId());
+void RS_ActionPolylineAppend::doTriggerCompletion(bool success) {
     m_originalPolyline = nullptr;
     m_actionData->polyline = nullptr;
 }
@@ -115,7 +121,7 @@ void RS_ActionPolylineAppend::onMouseMoveEvent(int status, LC_MouseEvent *e) {
 
 bool RS_ActionPolylineAppend::setPolylineToModify(RS_Entity* entity, const RS_Vector& mouse) {
     m_originalPolyline = dynamic_cast<RS_Polyline *>(entity);
-    if (!m_originalPolyline) {
+    if (m_originalPolyline == nullptr) {
         commandMessage(tr("No Entity found."));
         return false;
     } else if (!isPolyline(m_originalPolyline)) {
@@ -145,13 +151,15 @@ bool RS_ActionPolylineAppend::setPolylineToModify(RS_Entity* entity, const RS_Ve
             auto *clone = dynamic_cast<RS_Polyline *>(m_originalPolyline->clone());
             m_actionData->polyline = clone;
             m_actionData->data = clone->getData();
-            m_container->addEntity(clone);
+            undoCycleReplace(m_originalPolyline, clone);
+            select(clone);
         } else {
             auto nearestSegment = m_originalPolyline->getNearestEntity(mouse, &dist, RS2::ResolveNone);
             auto *clone = dynamic_cast<RS_Polyline *>(m_originalPolyline->clone());
             m_actionData->polyline = clone;
             m_actionData->data = clone->getData();
-            m_container->addEntity(clone);
+            undoCycleReplace(m_originalPolyline, clone);
+            select(clone);
             m_prepend = false;
             if (nearestSegment == entFirst) {
                 m_prepend = true;
@@ -181,6 +189,7 @@ void RS_ActionPolylineAppend::onMouseLeftButtonRelease(int status, LC_MouseEvent
 
 void RS_ActionPolylineAppend::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
     if (status == SetNextPoint){
+        m_actionData->polyline = nullptr;
         trigger();
     }
     deleteSnapper();

@@ -26,7 +26,7 @@
 #include "lc_dimordinate.h"
 #include "lc_graphicviewport.h"
 #include "lc_linemath.h"
-
+#include "rs_selection.h"
 
 LC_ActionSelectDimOrdinateSameOrigin::LC_ActionSelectDimOrdinateSameOrigin(LC_ActionContext* actionContext)
     : LC_ActionSingleEntitySelectBase("SelectDimOrdinateSameOriginAction", actionContext, RS2::ActionDimOrdByOriginSelect){
@@ -34,30 +34,28 @@ LC_ActionSelectDimOrdinateSameOrigin::LC_ActionSelectDimOrdinateSameOrigin(LC_Ac
 
 LC_ActionSelectDimOrdinateSameOrigin::~LC_ActionSelectDimOrdinateSameOrigin() = default;
 
-
-
-void LC_ActionSelectDimOrdinateSameOrigin::selectOrdinatesWithTheSameBase() {
-    auto dimOrdinate = dynamic_cast<LC_DimOrdinate*>(m_entity);
+void LC_ActionSelectDimOrdinateSameOrigin::selectOrdinatesWithTheSameBase() const {
+    const auto dimOrdinate = dynamic_cast<LC_DimOrdinate*>(m_entity);
     if (dimOrdinate != nullptr) {
-        double horizontalDirection = dimOrdinate->getHDir();
-        auto definitionPoint = dimOrdinate->getDefinitionPoint();
-        for (auto en: *m_document) {
-            if (en->isUndone()) {
+        const double horizontalDirection = dimOrdinate->getHDir();
+        const auto definitionPoint= dimOrdinate->getDefinitionPoint();
+        QList<RS_Entity*> sameBaseDimensionsList;
+        for (auto en : *m_document) {
+            if (en->isDeleted()) {
                 continue;
             }
             if (en->rtti() == RS2::EntityDimOrdinate) {
-                if (en->isVisible()){
+                if (en->isVisible()) {
                     auto otherDimOrdinate = dynamic_cast<LC_DimOrdinate*>(en);
-                    bool sameBasePoint = LC_LineMath::isSameAngle(otherDimOrdinate->getHDir(), horizontalDirection)
-                        &&
-                        LC_LineMath::isNotMeaningfulDistance(otherDimOrdinate->getDefinitionPoint(),
-                                                             definitionPoint);
+                    bool sameBasePoint    = LC_LineMath::isSameAngle(otherDimOrdinate->getHDir(), horizontalDirection) &&
+                        LC_LineMath::isNotMeaningfulDistance(otherDimOrdinate->getDefinitionPoint(), definitionPoint);
                     if (sameBasePoint) {
-                        en->setSelected(true);
+                        sameBaseDimensionsList.push_back(en);
                     }
                 }
             }
         }
+        RS_Selection::selectEntitiesList(m_document, m_viewport, sameBaseDimensionsList, true);
     }
 }
 

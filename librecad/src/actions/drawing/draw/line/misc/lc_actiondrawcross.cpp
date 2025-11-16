@@ -143,22 +143,22 @@ void LC_ActionDrawCross::addCrossDataEntities(QList<RS_Entity *> &list, const LC
     // create horizontal and vertical lines
 
     RS_LineData horizontalData = crossData.horizontal;
-    auto *horizontalLine = new RS_Line(m_container, horizontalData);
+    auto *horizontalLine = new RS_Line(m_document, horizontalData);
 
     setupCrossLinePenAndLayer(horizontalLine);
 
     list << horizontalLine;
 
     RS_LineData verticalData = crossData.vertical;
-    auto *verticalLine = new RS_Line(m_container, verticalData);
+    auto *verticalLine = new RS_Line(m_document, verticalData);
 
     setupCrossLinePenAndLayer(verticalLine);
 
     list << verticalLine;
 
     /*
-
-    // Drawing centermark from center point using 2 segments for each direction
+    // todo - this is temproary code, yet don't delete it so far!!
+    // Drawing the centermark from center point using 2 segments for each direction
 
     RS_LineData horizontalData = crossData.horizontal;
 

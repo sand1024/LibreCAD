@@ -14,7 +14,7 @@ public:
         : LC_AppWindowAware{mainWin},
           m_dlgHelpr{dlgHelper} {
     }
-    bool exportGraphicsToImage(RS_Graphic* graphic, const QString& documentFileName);
+    bool exportGraphicsToImage(RS_Graphic* graphic, const QString& documentFileName) const;
 private:
     LC_AppWindowDialogsInvoker* m_dlgHelpr;
 };

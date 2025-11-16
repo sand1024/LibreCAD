@@ -58,8 +58,8 @@ public:
     void layerToggledLock(RS_Layer *) override;
     void layerToggledPrint(RS_Layer *) override;
     void layerToggledConstruction(RS_Layer *) override;
-    void onDragEnterEvent(const QModelIndex &dropIndex);
-    void onDropEvent(const QModelIndex &dropIndex, DropIndicatorPosition position);
+    void onDragEnterEvent(const QModelIndex &dropIndex) const;
+    void onDropEvent(const QModelIndex &dropIndex, DropIndicatorPosition position) const;
     void setGraphicView(RS_GraphicView* gview) override;
 signals:
     void escape();
@@ -67,9 +67,9 @@ public slots:
     void slotTreeClicked(const QModelIndex &layerIdx);
     void slotTreeDoubleClicked(const QModelIndex &layerIdx);
     void slotFilteringMaskChanged();
-    void expandAllLayers();
-    void collapseAllLayers();
-    void collapseSecondaryLayers();
+    void expandAllLayers() const;
+    void collapseAllLayers() const;
+    void collapseSecondaryLayers() const;
     void onCustomContextMenu(const QPoint &point);
     void addChildLayerForSelectedItem();
     void editSelectedLayer();
@@ -85,13 +85,13 @@ public slots:
     void addLayer();
     void toggleFlatView();
     void removeEmptyLayers();
-    void updateWidgetSettings();
+    void updateWidgetSettings() const;
 protected:
     void setLayerList(RS_LayerList *ll);
-    void update();
+    void update() const;
     void keyPressEvent(QKeyEvent *e) override;
-    void expandItems(int depth);
-    QModelIndex getSelectedItemIndex();
+    void expandItems(int depth) const;
+    QModelIndex getSelectedItemIndex() const;
     QList<RS_Layer *> collectLayersForSelectedItem();
     void addDimensionalLayerForSelectedItem();
     void addDimensionalLayerForActiveLayer();
@@ -110,7 +110,7 @@ protected:
     void moveSelectionToLayer();
     void duplicateSelectionToLayer();
     void exportSelectedLayer();
-    void exportLayersList(QList<RS_Layer*> layersToExport);
+    void exportLayersList(QList<RS_Layer*> layersToExport) const;
     void exportLayerSubTree();
     void exportVisibleLayers();
 private:
@@ -141,23 +141,23 @@ private:
     QLayout *initFilterAndSettingsSection();
     LC_LayerTreeView *initTreeView();
 
-    void updateToolBarButtons();
+    void updateToolBarButtons() const;
     void doConvertSelectedItemLayerToNewType(int newType);
     void deselectEntitiesOnLockedLayer(RS_Layer *layer);
     void deselectEntities(RS_Layer *layer);
-    void manageLayersVisibilityFlag(QList<RS_Layer*>& layersToEnable, QList<RS_Layer*>& layersToDisable, bool toggleMode);
+    void manageLayersVisibilityFlag(QList<RS_Layer*>& layersToEnable, QList<RS_Layer*>& layersToDisable, bool toggleMode) const;
     void manageLayersConstructionFlag(QList<RS_Layer*>& layersToBeConstruction, QList<RS_Layer*>& layersNonConstruction,
                                       bool toggleMode);
     void manageLayersLockFlag(QList<RS_Layer*>& layersToLockOrToggle, QList<RS_Layer*>& layersToUnlock, bool toggleMode);
     void manageLayersPrintFlag(QList<RS_Layer*>& layersToPrint, QList<RS_Layer*>& layersNoPrint, bool toggleMode);
     void doSelectLayersEntities(QList<RS_Layer *> &layers);
     void copyLayerAttributes(RS_Layer *copyLayer, RS_Layer *sourceLayer);
-    void redrawView();
+    void redrawView() const;
     void doCreateLayersCopy(const QModelIndex &sourceIndex, bool duplicateEntities);
-    void duplicateLayerEntities(RS_Layer *sourceLayer, RS_Layer *copyLayer);
+    void duplicateLayerEntities(RS_Layer *sourceLayer, RS_Layer *copyLayer) const;
     void doMoveSelectionToLayer(LC_LayerTreeItem *layerItem, bool duplicate, bool resolvePens = false);
     void doRemoveLayersFromSource(LC_LayerTreeItem *source, bool removeChildrenOnly);
-    void doRemoveLayers(QList<RS_Layer *> &layers);
+    void doRemoveLayers(QList<RS_Layer *> &layers) const;
 	void editActiveLayer();
     void showActiveLayerOnly();
     int invokeLayersRemovalDialog(QStringList &layerNames);

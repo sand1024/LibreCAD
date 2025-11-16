@@ -27,18 +27,29 @@
 #include "rs_actionmodifyrevertdirection.h"
 
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_ellipse.h"
 #include "rs_entity.h"
 #include "rs_modification.h"
+#include "rs_selection.h"
 
 RS_ActionModifyRevertDirection::RS_ActionModifyRevertDirection(LC_ActionContext *actionContext)
 	:LC_ActionPreSelectionAwareBase("Revert direction", actionContext,RS2::ActionModifyRevertDirection,{}){
 }
 
-void RS_ActionModifyRevertDirection::doTrigger(bool keepSelected) {
-    RS_DEBUG->print("RS_ActionModifyRevertDirection::trigger");
-    RS_Modification m(*m_container, m_viewport);
-    m.revertDirection(m_selectedEntities, keepSelected);
+bool RS_ActionModifyRevertDirection::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+    RS_Modification::revertDirection(m_selectedEntities, ctx);
+    ctx.dontSetActiveLayerAndPen();
+    return true;
+}
+
+void RS_ActionModifyRevertDirection::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) { // fixme - INCLUDE TO GENERIC FLOW?
+    if (keepSelected) {
+        select(ctx.entitiesToAdd);
+    }
+}
+
+void RS_ActionModifyRevertDirection::doTriggerCompletion(bool success) { // fixme - remove?
 }
 
 bool RS_ActionModifyRevertDirection::isShowRefPointsOnHighlight() {

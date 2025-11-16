@@ -44,7 +44,7 @@ protected:
     void doSetAction(RS_ActionInterface *a, bool update) override;
     void doSaveSettings() override;
     void setAngleToActionAndView(QString val);
-    void setAngleIsFreeToActionAndView(bool val);
+    void setAngleIsFreeToActionAndView(bool val) const;
 private:
     Ui::LC_UCSSetOptions *ui;
     LC_ActionUCSCreate* m_action = nullptr;

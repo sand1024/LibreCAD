@@ -37,10 +37,10 @@ class RS_Polyline;
  *
  * @author Andrew Mustun
  */
-class RS_ActionDrawLineFree : public RS_PreviewActionInterface {
+class RS_ActionDrawLineFree : public LC_UndoablePreviewActionInterface {
     Q_OBJECT
 public:
-    RS_ActionDrawLineFree(LC_ActionContext *actionContext);
+    explicit RS_ActionDrawLineFree(LC_ActionContext *actionContext);
     ~RS_ActionDrawLineFree() override;
 protected:
     /**

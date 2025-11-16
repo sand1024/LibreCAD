@@ -119,7 +119,7 @@ void LC_CrossOptions::setAngleToActionAndView(const QString& expr) {
     }
 }
 
-void LC_CrossOptions::setModeToActionAndView(int mode) {
+void LC_CrossOptions::setModeToActionAndView(int mode) const {
     m_action->setCrossMode(mode);
     ui->cbMode->setCurrentIndex(mode);
 }

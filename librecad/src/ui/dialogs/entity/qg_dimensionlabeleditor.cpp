@@ -66,7 +66,7 @@ void QG_DimensionLabelEditor::updateRawLabelText() {
      leRawText->setText(label);
 }
 
-void QG_DimensionLabelEditor::setLabel(const QString& l) {
+void QG_DimensionLabelEditor::setLabel(const QString& l) const {
     int i0, i1a, i1b, i2;
     QString label, tol1, tol2;
     bool hasDiameter = false;
@@ -106,7 +106,7 @@ void QG_DimensionLabelEditor::setLabel(const QString& l) {
     leTol2->setText(tol2);
 }
 
-QString QG_DimensionLabelEditor::getLabel() {
+QString QG_DimensionLabelEditor::getLabel() const {
     // TODO: an extra '&' shouldn't be added
     // TODO: fix the the root cause
     QString l = leLabel->text();

@@ -95,7 +95,7 @@ public:
     /**
      * @return A list of absolute paths to all NEW font files found.
      */
-    QStringList getNewFontList() {
+    QStringList getNewFontList() const {
         QStringList ret = getFileList("fonts", "lff");
         return ret;
     }
@@ -103,7 +103,7 @@ public:
     /**
      * @return A list of absolute paths to all hatch pattern files found.
      */
-    QStringList getPatternList() {
+    QStringList getPatternList() const {
         QStringList ret = getFileList("patterns", "dxf");
         return ret;
     }
@@ -111,7 +111,7 @@ public:
     /**
      * @return A list of absolute paths to all script files found.
      */
-    QStringList getScriptList() {
+    QStringList getScriptList() const {
         QStringList ret = getFileList("scripts/qsa", "qs");
         return ret;
     }
@@ -119,7 +119,7 @@ public:
     /**
      * @return A list of absolute paths to all machine configuration files found.
      */
-    QStringList getMachineList() {
+    QStringList getMachineList() const {
         QStringList ret = getFileList("machines", "cxm");
         return ret;
     }
@@ -127,7 +127,7 @@ public:
     /**
      * @return Absolute path to the documentation.
      */
-    QString getDocPath() {
+    QString getDocPath() const {
         QStringList lst = getDirectoryList("doc");
 
         if( !lst.isEmpty()) {

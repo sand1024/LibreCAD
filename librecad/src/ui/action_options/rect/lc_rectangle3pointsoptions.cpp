@@ -147,7 +147,7 @@ void LC_Rectangle3PointsOptions::onCornersIndexChanged(int index){
     }
 }
 
-void LC_Rectangle3PointsOptions::setCornersModeToActionAndView(int index){
+void LC_Rectangle3PointsOptions::setCornersModeToActionAndView(int index) const {
     m_action->setCornersMode(index);
     bool round = index == LC_AbstractActionDrawRectangle::CORNER_RADIUS;
     bool bevel = index == LC_AbstractActionDrawRectangle::CORNER_BEVEL;
@@ -265,12 +265,12 @@ void LC_Rectangle3PointsOptions::onBaseAngleFixedClicked(bool value){
     }
 }
 
-void LC_Rectangle3PointsOptions::setUsePolylineToActionAndView(bool value){
+void LC_Rectangle3PointsOptions::setUsePolylineToActionAndView(bool value) const {
     m_action->setUsePolyline(value);
     ui->cbPolyline->setChecked(value);
 }
 
-void LC_Rectangle3PointsOptions::setSnapToCornerArcCenter(bool value){
+void LC_Rectangle3PointsOptions::setSnapToCornerArcCenter(bool value) const {
     m_action->setSnapToCornerArcCenter(value);
     ui->cbSnapRadiusCenter->setChecked(value);
 }
@@ -283,14 +283,14 @@ void LC_Rectangle3PointsOptions::setQuadrangleToActionAndView(bool value){
     setCornersModeToActionAndView(ui->cbCorners->currentIndex());
 }
 
-void LC_Rectangle3PointsOptions::setInnerAngleFixedToActionAndView(bool value){
+void LC_Rectangle3PointsOptions::setInnerAngleFixedToActionAndView(bool value) const {
     ui->cbFixedInnerAngle->setChecked(value);
     m_action->setInnerAngleFixed(value);
     ui->leInnerAngle->setEnabled(value);
     ui->tbPickAngleInner->setEnabled(value);
 }
 
-void LC_Rectangle3PointsOptions::setBaseAngleFixedToActionAndView(bool value){
+void LC_Rectangle3PointsOptions::setBaseAngleFixedToActionAndView(bool value) const {
     ui->chkFixedBaseAngle->setChecked(value);
     m_action->setBaseAngleFixed(value);
     ui->leAngle->setEnabled(value);
@@ -311,7 +311,7 @@ void LC_Rectangle3PointsOptions::onEdgesIndexChanged(int index){
     }
 }
 
-void LC_Rectangle3PointsOptions::setEdgesModeToActionAndView(int index){
+void LC_Rectangle3PointsOptions::setEdgesModeToActionAndView(int index) const {
     m_action->setEdgesDrawMode(index);
     ui->cbEdges->setCurrentIndex(index);
 }

@@ -62,10 +62,9 @@ bool RS_UndoCycle::empty() const
     return undoables.empty();
 }
 
-void RS_UndoCycle::changeUndoState()
-{
+void RS_UndoCycle::changeUndoState() const {
 	for (RS_Undoable* u: undoables)
-		u->changeUndoState();
+		u->changeDeleteState();
 }
 
 std::set<RS_Undoable*> const& RS_UndoCycle::getUndoables() const
@@ -90,7 +89,7 @@ std::ostream& operator << (std::ostream& os,
 	for (auto u: uc.undoables) {
 		if (u->undoRtti()==RS2::UndoableEntity) {
             auto e = static_cast<RS_Entity*>(u);
-			os << e->getId() << (u->isUndone() ? "*" : "") << " ";
+			os << e->getId() << (u->isDeleted() ? "*" : "") << " ";
 		} else {
 			os << "|";
 		}

@@ -28,11 +28,12 @@
 
 #include "rs_actiondrawlinefree.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_polyline.h"
 #include "rs_preview.h"
 
 RS_ActionDrawLineFree::RS_ActionDrawLineFree(LC_ActionContext *actionContext)
-        :RS_PreviewActionInterface("Draw freehand lines", actionContext,RS2::ActionDrawLineFree)
+        :LC_UndoablePreviewActionInterface("Draw freehand lines", actionContext,RS2::ActionDrawLineFree)
     ,m_vertex(std::make_unique<RS_Vector>()){
 	m_preview->setOwner(false);
 }
@@ -44,11 +45,10 @@ void RS_ActionDrawLineFree::doTrigger() {
         m_polyline->endPolyline();
         RS_VectorSolutions sol = m_polyline->getRefPoints();
         if (sol.getNumber() > 2){
-            RS_Entity *entity = m_polyline->clone();
-            entity->reparent(m_container);
-            entity->calculateBorders();
-            undoCycleAdd(entity);
-            LC_LOG<<"RS_ActionDrawLineFree::trigger(): polyline added: "<< entity->getId();
+            RS_Entity *clone = m_polyline->clone();
+            clone->reparent(m_document);
+            clone->calculateBorders();
+            undoableAdd(clone);
         }
         m_polyline.reset();
     }
@@ -73,7 +73,8 @@ void RS_ActionDrawLineFree::onMouseMoveEvent(int status, LC_MouseEvent *e) {
 
         if (ent->count()) {
             deletePreview();
-            m_preview->addCloneOf(m_polyline.get(), m_viewport);
+            // m_preview->addCloneOf(m_polyline.get(), m_viewport);
+            m_preview->addEntity(m_polyline->clone());
             drawPreview();
         }
 
@@ -89,7 +90,7 @@ void RS_ActionDrawLineFree::onMouseLeftButtonPress([[maybe_unused]]int status, L
             // fall-through
         case Dragging:
             *m_vertex = e->snapPoint;
-            m_polyline = std::make_unique<RS_Polyline>(m_container, RS_PolylineData(*m_vertex, *m_vertex, false));
+            m_polyline = std::make_unique<RS_Polyline>(m_document, RS_PolylineData(*m_vertex, *m_vertex, false));
             setPenAndLayerToActive(m_polyline.get());
             break;
         default:

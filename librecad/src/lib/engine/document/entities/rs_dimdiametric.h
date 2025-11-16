@@ -87,10 +87,10 @@ public:
 
 	QString getMeasuredLabel() override;
 
-    RS_Vector getDefinitionPoint() {
+    RS_Vector getDefinitionPoint() const {
         return m_dimDiametricData.definitionPoint;
     }
-    double getLeader() {
+    double getLeader() const {
         return m_dimDiametricData.leader;
     }
 	void move(const RS_Vector& offset) override;

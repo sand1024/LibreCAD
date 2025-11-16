@@ -80,18 +80,18 @@ void LC_ActionDimOrdinate::doInitWithContextEntity(RS_Entity* contextEntity, con
     setStatus(SetLeaderEnd);
 }
 
-void LC_ActionDimOrdinate::doTrigger() {
+RS_Entity* LC_ActionDimOrdinate::doTriggerCreateEntity() {
     LC_DimOrdinate* dim  = createDim(m_actionData->m_leaderEndPoint, m_actionData->ctrlPressed, m_document);
+    return dim;
+}
 
-    setPenAndLayerToActive(dim);
-    undoCycleAdd(dim);
-
+void LC_ActionDimOrdinate::doTriggerCompletion(bool success) {
     m_actionData->ctrlPressed = false;
     m_dimensionData->text = "";
     setStatus(SetFeaturePoint);
 }
 
- LC_DimOrdinate*  LC_ActionDimOrdinate::createDim(RS_Vector leaderEndPoint, bool alternateOrdinate, RS_EntityContainer* container) {
+LC_DimOrdinate*  LC_ActionDimOrdinate::createDim(RS_Vector leaderEndPoint, bool alternateOrdinate, RS_EntityContainer* container) const {
     double horAxisDirection = 0;
     RS_Vector originPoint;
     m_viewport->fillCurrentUCSInfo(originPoint, horAxisDirection);

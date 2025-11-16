@@ -51,9 +51,9 @@ public:
     QIcon getOrthoTypeIcon(LC_UCS *ucs) const;
     QModelIndex getIndexForUCS(LC_UCS* ucs) const;
     void markActive(LC_UCS *ucs);
-    LC_UCS* getActiveUCS();
-    int count();
-    LC_UCS *getWCS();
+    LC_UCS* getActiveUCS() const;
+    int count() const;
+    LC_UCS *getWCS() const;
 
     /**
    * Columns that are shown in the table
@@ -66,7 +66,7 @@ public:
         LAST
     };
 
-    QString getUCSInfo(LC_UCS *ucs);
+    QString getUCSInfo(LC_UCS *ucs) const;
 
     struct UCSItem{
         LC_UCS* ucs;

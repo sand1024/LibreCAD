@@ -41,13 +41,13 @@ public:
 
 public slots:
     void setData( RS_MoveData * d );
-    void updateData();
-    void cbMultipleCopiesClicked(bool val);
+    void updateData() const;
+    void cbMultipleCopiesClicked(bool val) const;
 protected slots:
     void languageChange();
 private:
     RS_MoveData* data = nullptr;
-    void init();
+    void init() const;
 
 
 };

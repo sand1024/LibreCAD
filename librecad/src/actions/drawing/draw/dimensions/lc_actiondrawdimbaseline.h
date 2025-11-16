@@ -28,6 +28,9 @@
 
 struct RS_DimLinearData;
 
+
+// fixme - NOTE!!! which pen and layer to use for new dim? Active or from picked entity?  ADD OPTION!!!
+
 class LC_ActionDrawDimBaseline:public LC_ActionDimLinearBase{
     Q_OBJECT
 public:
@@ -50,7 +53,7 @@ protected:
     double m_currentDistance = 0.0;
     Status m_lastStatus = SetExtPoint1;
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
-    bool isBaseline();
+    bool isBaseline() const;
     RS_Entity *createDim(RS_EntityContainer* parent) override;
     RS_Vector getExtensionPoint1() override;
     void setExtensionPoint1(RS_Vector p) override;
@@ -59,12 +62,12 @@ protected:
     void preparePreview(bool alternativeMode) override;
     double getDimAngle(bool alternateMode) override;
     bool doProcessCommand(int status, const QString &command) override;
-    void doTrigger() override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void pickOriginalEntity(RS_Entity* dimCandidate, const RS_Vector& mouse);
     void updateMouseButtonHints() override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    RS_Entity* doTriggerCreateEntity() override;
 };
 
 #endif // LC_ACTIONDRAWDIMBASELINE_H

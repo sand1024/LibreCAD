@@ -35,7 +35,7 @@ QG_ActiveLayerName::QG_ActiveLayerName(QWidget *parent) :
     lActiveLayerName->setText("");
 }
 
-void QG_ActiveLayerName::activeLayerChanged(const QString& name){
+void QG_ActiveLayerName::activeLayerChanged(const QString& name) const {
     lActiveLayerName->setText(name);
 }
 

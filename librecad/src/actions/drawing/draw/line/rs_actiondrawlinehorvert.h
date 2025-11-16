@@ -27,6 +27,7 @@
 #ifndef RS_ACTIONDRAWLINEHORVERT_H
 #define RS_ACTIONDRAWLINEHORVERT_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_previewactioninterface.h"
 
 /**
@@ -37,12 +38,12 @@
  *
  * @author Ulf Lehnert
  */
-class RS_ActionDrawLineHorVert : public RS_PreviewActionInterface {
+class RS_ActionDrawLineHorVert : public LC_SingleEntityCreationAction {
     Q_OBJECT
 public:
-    RS_ActionDrawLineHorVert(LC_ActionContext *actionContext);
+    explicit RS_ActionDrawLineHorVert(LC_ActionContext *actionContext);
     ~RS_ActionDrawLineHorVert() override;
-    void reset();
+    void reset() const;
     void init(int status) override;
 protected:
     /**
@@ -60,6 +61,7 @@ protected:
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
-    void doTrigger() override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
 };
 #endif

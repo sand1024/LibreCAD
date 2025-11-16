@@ -92,22 +92,22 @@ void LC_ModifyAlignRefOptions::cbUseCurrentLayerClicked(bool val) {
     setUseCurrentLayerToActionAndView(val);
 }
 
-void LC_ModifyAlignRefOptions::setScaleToActionAndView(bool val) {
+void LC_ModifyAlignRefOptions::setScaleToActionAndView(bool val) const {
     m_action->setScale(val);
     ui->cbScale->setChecked(val);
 }
 
-void LC_ModifyAlignRefOptions::setUseCurrentLayerToActionAndView(bool val) {
+void LC_ModifyAlignRefOptions::setUseCurrentLayerToActionAndView(bool val) const {
     m_action->setUseCurrentLayer(val);
     ui->cbLayer->setChecked(val);
 }
 
-void LC_ModifyAlignRefOptions::setUseCurrentAttributesToActionAndView(bool val) {
+void LC_ModifyAlignRefOptions::setUseCurrentAttributesToActionAndView(bool val) const {
     m_action->setUseCurrentAttributes(val);
     ui->cbCurrentAttr->setChecked(val);
 }
 
-void LC_ModifyAlignRefOptions::setKeepOriginalsToActionAndView(bool val) {
+void LC_ModifyAlignRefOptions::setKeepOriginalsToActionAndView(bool val) const {
     m_action->setKeepOriginals(val);
     ui->cbKeepOriginals->setChecked(val);
 }

@@ -282,8 +282,7 @@ void RS_Ellipse::calculateBorders() {
     updateLength();
 }
 
-void RS_Ellipse::mergeBoundingBox(LC_Rect& boundingBox, const RS_Vector& direction)
-{
+void RS_Ellipse::mergeBoundingBox(LC_Rect& boundingBox, const RS_Vector& direction) const {
     const double angle = direction.angle();
     // Test the given direction and its opposite
     for(double a: {angle, angle + M_PI})
@@ -1900,7 +1899,7 @@ void RS_Ellipse::draw(RS_Painter* painter) {
     //draw visible
 
     RS_Ellipse arc(*this);
-    arc.setSelected(isSelected());
+    arc.setSelectionFlag(isSelected());  // fixme - tmp angle?
     arc.setPen(getPen());
     arc.setReversed(false);
     arc.calculateBorders();

@@ -28,6 +28,7 @@
 #ifndef RS_Line_INCLUDE_H
 #define RS_Line_INCLUDE_H
 #include "lc_cachedlengthentity.h"
+#include "rs_actiondrawlinehorvert.h"
 class LC_Quadratic;
 
 /**

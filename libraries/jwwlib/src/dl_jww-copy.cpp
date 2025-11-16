@@ -734,7 +734,7 @@ bool DL_Jww::processDXFGroup(DL_CreationInterface* creationInterface,
 /**
  * Adds a variable from the DXF file.
  */
-void DL_Jww::addSetting(DL_CreationInterface* creationInterface) {
+void DL_Jww::addSetting(DL_CreationInterface* creationInterface) const {
     int c = -1;
     for (int i=0; i<=380; ++i) {
         if (values[i][0]!='\0') {
@@ -836,7 +836,7 @@ void DL_Jww::endBlock(DL_CreationInterface* creationInterface) {
 /**
  * Adds a point entity that was read from the file via the creation interface.
  */
-void DL_Jww::addPoint(DL_CreationInterface* creationInterface) {
+void DL_Jww::addPoint(DL_CreationInterface* creationInterface) const {
     DL_PointData d(toReal(values[10]),
                    toReal(values[20]),
                    toReal(values[30]));
@@ -848,7 +848,7 @@ void DL_Jww::addPoint(DL_CreationInterface* creationInterface) {
 /**
  * Adds a line entity that was read from the file via the creation interface.
  */
-void DL_Jww::addLine(DL_CreationInterface* creationInterface) {
+void DL_Jww::addLine(DL_CreationInterface* creationInterface) const {
     DL_LineData d(toReal(values[10]),
                   toReal(values[20]),
                   toReal(values[30]),
@@ -864,7 +864,7 @@ void DL_Jww::addLine(DL_CreationInterface* creationInterface) {
 /**
  * Adds a polyline entity that was read from the file via the creation interface.
  */
-void DL_Jww::addPolyline(DL_CreationInterface* creationInterface) {
+void DL_Jww::addPolyline(DL_CreationInterface* creationInterface) const {
     DL_PolylineData pd(maxVertices, toInt(values[71], 0), toInt(values[72], 0), toInt(values[70], 0));
     creationInterface->addPolyline(pd);
 
@@ -884,10 +884,10 @@ void DL_Jww::addPolyline(DL_CreationInterface* creationInterface) {
 
 
 /**
- * Adds a polyline vertex entity that was read from the file 
+ * Adds a polyline vertex entity that was read from the file
  * via the creation interface.
  */
-void DL_Jww::addVertex(DL_CreationInterface* creationInterface) {
+void DL_Jww::addVertex(DL_CreationInterface* creationInterface) const {
     DL_VertexData d(toReal(values[10]),
                     toReal(values[20]),
                     toReal(values[30]),
@@ -904,7 +904,7 @@ void DL_Jww::addVertex(DL_CreationInterface* creationInterface) {
 /**
  * Adds a spline entity that was read from the file via the creation interface.
  */
-void DL_Jww::addSpline(DL_CreationInterface* creationInterface) {
+void DL_Jww::addSpline(DL_CreationInterface* creationInterface) const {
     DL_SplineData sd(toInt(values[71], 3), toInt(values[72], 0),
                      toInt(values[73], 0), toInt(values[70], 4));
     creationInterface->addSpline(sd);
@@ -921,7 +921,7 @@ void DL_Jww::addSpline(DL_CreationInterface* creationInterface) {
 
 
 /**
- * Adds a knot to the previously added spline. 
+ * Adds a knot to the previously added spline.
  */
 /*
 void DL_Jww::addKnot(DL_CreationInterface* creationInterface) {
@@ -932,7 +932,7 @@ void DL_Jww::addKnot(DL_CreationInterface* creationInterface) {
 
 
 /**
- * Adds a control point to the previously added spline. 
+ * Adds a control point to the previously added spline.
  */
 /*
 void DL_Jww::addControlPoint(DL_CreationInterface* creationInterface) {
@@ -945,7 +945,7 @@ void DL_Jww::addControlPoint(DL_CreationInterface* creationInterface) {
 /**
  * Adds an arc entity that was read from the file via the creation interface.
  */
-void DL_Jww::addArc(DL_CreationInterface* creationInterface) {
+void DL_Jww::addArc(DL_CreationInterface* creationInterface) const {
     DL_ArcData d(toReal(values[10]),
                  toReal(values[20]),
                  toReal(values[30]),
@@ -961,7 +961,7 @@ void DL_Jww::addArc(DL_CreationInterface* creationInterface) {
 /**
  * Adds a circle entity that was read from the file via the creation interface.
  */
-void DL_Jww::addCircle(DL_CreationInterface* creationInterface) {
+void DL_Jww::addCircle(DL_CreationInterface* creationInterface) const {
     DL_CircleData d(toReal(values[10]),
                     toReal(values[20]),
                     toReal(values[30]),
@@ -975,7 +975,7 @@ void DL_Jww::addCircle(DL_CreationInterface* creationInterface) {
 /**
  * Adds an ellipse entity that was read from the file via the creation interface.
  */
-void DL_Jww::addEllipse(DL_CreationInterface* creationInterface) {
+void DL_Jww::addEllipse(DL_CreationInterface* creationInterface) const {
     DL_EllipseData d(toReal(values[10]),
                      toReal(values[20]),
                      toReal(values[30]),
@@ -1022,9 +1022,9 @@ void DL_Jww::addInsert(DL_CreationInterface* creationInterface) {
  *
  * @author AHM
  */
-void DL_Jww::addTrace(DL_CreationInterface* creationInterface) {
+void DL_Jww::addTrace(DL_CreationInterface* creationInterface) const {
     DL_TraceData td;
-    
+
     for (int k = 0; k < 4; k++) {
        td.x[k] = toReal(values[10 + k]);
        td.y[k] = toReal(values[20 + k]);
@@ -1035,12 +1035,12 @@ void DL_Jww::addTrace(DL_CreationInterface* creationInterface) {
 
 /**
  * Adds a solid entity (filled trace) that was read from the file via the creation interface.
- * 
+ *
  * @author AHM
  */
-void DL_Jww::addSolid(DL_CreationInterface* creationInterface) {
+void DL_Jww::addSolid(DL_CreationInterface* creationInterface) const {
     DL_SolidData sd;
-    
+
     for (int k = 0; k < 4; k++) {
        sd.x[k] = toReal(values[10 + k]);
        sd.y[k] = toReal(values[20 + k]);
@@ -1109,7 +1109,7 @@ void DL_Jww::addMText(DL_CreationInterface* creationInterface) {
 /**
  * Handles additional MText data.
  */
-bool DL_Jww::handleMTextData(DL_CreationInterface* creationInterface) {
+bool DL_Jww::handleMTextData(DL_CreationInterface* creationInterface) const {
     // Special handling of text chunks for MTEXT entities:
     if (groupCode==3) {
         creationInterface->addMTextChunk(groupValue);
@@ -1721,7 +1721,7 @@ void DL_Jww::addAttrib(DL_CreationInterface* creationInterface) {
 /**
  * @return dimension data from current values.
  */
-DL_DimensionData DL_Jww::getDimData() {
+DL_DimensionData DL_Jww::getDimData() const {
     // generic dimension data:
     return DL_DimensionData(
                // def point
@@ -1889,7 +1889,7 @@ void DL_Jww::addDimAngular3P(DL_CreationInterface* creationInterface) {
 /**
  * Adds a leader entity that was read from the file via the creation interface.
  */
-void DL_Jww::addLeader(DL_CreationInterface* creationInterface) {
+void DL_Jww::addLeader(DL_CreationInterface* creationInterface) const {
     // leader (arrow)
     DL_LeaderData le(
         // arrow head flag
@@ -2068,10 +2068,10 @@ DL_WriterA* DL_Jww::out(const char* file, DL_Codes::version version) {
 
 
 /**
- * @brief Writes a DXF header to the file currently opened 
+ * @brief Writes a DXF header to the file currently opened
  * by the given DXF writer object.
  */
-void DL_Jww::writeHeader(DL_WriterA& dw) {
+void DL_Jww::writeHeader(DL_WriterA& dw) const {
     dw.comment("dxflib " DL_VERSION);
     dw.sectionHeader();
 
@@ -2112,7 +2112,7 @@ void DL_Jww::writeHeader(DL_WriterA& dw) {
  */
 void DL_Jww::writePoint(DL_WriterA& dw,
                         const DL_PointData& data,
-                        const DL_Attributes& attrib) {
+                        const DL_Attributes& attrib) const {
     dw.entity("POINT");
     if (version==VER_2000) {
         dw.dxfString(100, "AcDbEntity");
@@ -2133,7 +2133,7 @@ void DL_Jww::writePoint(DL_WriterA& dw,
  */
 void DL_Jww::writeLine(DL_WriterA& dw,
                        const DL_LineData& data,
-                       const DL_Attributes& attrib) {
+                       const DL_Attributes& attrib) const {
     dw.entity("LINE");
     if (version==VER_2000) {
         dw.dxfString(100, "AcDbEntity");
@@ -2184,7 +2184,7 @@ void DL_Jww::writePolyline(DL_WriterA& dw,
  * @param attrib Attributes
  */
 void DL_Jww::writeVertex(DL_WriterA& dw,
-                         const DL_VertexData& data) {
+                         const DL_VertexData& data) const {
 
 
     if (version==VER_2000) {
@@ -2204,12 +2204,12 @@ void DL_Jww::writeVertex(DL_WriterA& dw,
     }
 }
 
-    
-	
+
+
 /**
  * Writes the polyline end. Only needed for DXF R12.
  */
-void DL_Jww::writePolylineEnd(DL_WriterA& dw) {
+void DL_Jww::writePolylineEnd(DL_WriterA& dw) const {
     if (version==VER_2000) {
     } else {
         dw.entity("SEQEND");
@@ -2227,7 +2227,7 @@ void DL_Jww::writePolylineEnd(DL_WriterA& dw) {
  */
 void DL_Jww::writeSpline(DL_WriterA& dw,
                          const DL_SplineData& data,
-                         const DL_Attributes& attrib) {
+                         const DL_Attributes& attrib) const {
 
     dw.entity("SPLINE");
     dw.entityAttributes(attrib);
@@ -2285,7 +2285,7 @@ void DL_Jww::writeKnot(DL_WriterA& dw,
  */
 void DL_Jww::writeCircle(DL_WriterA& dw,
                          const DL_CircleData& data,
-                         const DL_Attributes& attrib) {
+                         const DL_Attributes& attrib) const {
     dw.entity("CIRCLE");
     if (version==VER_2000) {
         dw.dxfString(100, "AcDbEntity");
@@ -2307,7 +2307,7 @@ void DL_Jww::writeCircle(DL_WriterA& dw,
  */
 void DL_Jww::writeArc(DL_WriterA& dw,
                       const DL_ArcData& data,
-                      const DL_Attributes& attrib) {
+                      const DL_Attributes& attrib) const {
     dw.entity("ARC");
     if (version==VER_2000) {
         dw.dxfString(100, "AcDbEntity");
@@ -2336,7 +2336,7 @@ void DL_Jww::writeArc(DL_WriterA& dw,
  */
 void DL_Jww::writeEllipse(DL_WriterA& dw,
                           const DL_EllipseData& data,
-                          const DL_Attributes& attrib) {
+                          const DL_Attributes& attrib) const {
 
     if (version>VER_R12) {
         dw.entity("ELLIPSE");
@@ -2364,7 +2364,7 @@ void DL_Jww::writeEllipse(DL_WriterA& dw,
  */
 void DL_Jww::writeInsert(DL_WriterA& dw,
                          const DL_InsertData& data,
-                         const DL_Attributes& attrib) {
+                         const DL_Attributes& attrib) const {
 
     if (data.name.empty()) {
         std::cerr << "DL_Jww::writeInsert: "
@@ -2412,7 +2412,7 @@ void DL_Jww::writeInsert(DL_WriterA& dw,
  */
 void DL_Jww::writeMText(DL_WriterA& dw,
                         const DL_MTextData& data,
-                        const DL_Attributes& attrib) {
+                        const DL_Attributes& attrib) const {
 
     dw.entity("MTEXT");
     if (version==VER_2000) {
@@ -2462,7 +2462,7 @@ void DL_Jww::writeMText(DL_WriterA& dw,
  */
 void DL_Jww::writeText(DL_WriterA& dw,
                        const DL_TextData& data,
-                       const DL_Attributes& attrib) {
+                       const DL_Attributes& attrib) const {
 
     dw.entity("TEXT");
     if (version==VER_2000) {
@@ -2501,7 +2501,7 @@ void DL_Jww::writeText(DL_WriterA& dw,
 void DL_Jww::writeDimAligned(DL_WriterA& dw,
                              const DL_DimensionData& data,
                              const DL_DimAlignedData& edata,
-                             const DL_Attributes& attrib) {
+                             const DL_Attributes& attrib) const {
 
     dw.entity("DIMENSION");
 
@@ -2560,7 +2560,7 @@ void DL_Jww::writeDimAligned(DL_WriterA& dw,
 void DL_Jww::writeDimLinear(DL_WriterA& dw,
                             const DL_DimensionData& data,
                             const DL_DimLinearData& edata,
-                            const DL_Attributes& attrib) {
+                            const DL_Attributes& attrib) const {
 
     dw.entity("DIMENSION");
 
@@ -2633,7 +2633,7 @@ void DL_Jww::writeDimLinear(DL_WriterA& dw,
 void DL_Jww::writeDimRadial(DL_WriterA& dw,
                             const DL_DimensionData& data,
                             const DL_DimRadialData& edata,
-                            const DL_Attributes& attrib) {
+                            const DL_Attributes& attrib) const {
 
     dw.entity("DIMENSION");
 
@@ -2690,7 +2690,7 @@ void DL_Jww::writeDimRadial(DL_WriterA& dw,
 void DL_Jww::writeDimDiametric(DL_WriterA& dw,
                                const DL_DimensionData& data,
                                const DL_DimDiametricData& edata,
-                               const DL_Attributes& attrib) {
+                               const DL_Attributes& attrib) const {
 
     dw.entity("DIMENSION");
 
@@ -2747,7 +2747,7 @@ void DL_Jww::writeDimDiametric(DL_WriterA& dw,
 void DL_Jww::writeDimAngular(DL_WriterA& dw,
                              const DL_DimensionData& data,
                              const DL_DimAngularData& edata,
-                             const DL_Attributes& attrib) {
+                             const DL_Attributes& attrib) const {
 
     dw.entity("DIMENSION");
 
@@ -2814,7 +2814,7 @@ void DL_Jww::writeDimAngular(DL_WriterA& dw,
 void DL_Jww::writeDimAngular3P(DL_WriterA& dw,
                                const DL_DimensionData& data,
                                const DL_DimAngular3PData& edata,
-                               const DL_Attributes& attrib) {
+                               const DL_Attributes& attrib) const {
 
     dw.entity("DIMENSION");
 
@@ -2876,7 +2876,7 @@ void DL_Jww::writeDimAngular3P(DL_WriterA& dw,
  */
 void DL_Jww::writeLeader(DL_WriterA& dw,
                          const DL_LeaderData& data,
-                         const DL_Attributes& attrib) {
+                         const DL_Attributes& attrib) const {
     if (version>VER_R12) {
         dw.entity("LEADER");
         dw.entityAttributes(attrib);
@@ -2905,7 +2905,7 @@ void DL_Jww::writeLeader(DL_WriterA& dw,
  * @param data Entity data
  */
 void DL_Jww::writeLeaderVertex(DL_WriterA& dw,
-                               const DL_LeaderVertexData& data) {
+                               const DL_LeaderVertexData& data) const {
     if (version>VER_R12) {
         dw.dxfReal(10, data.x);
         dw.dxfReal(20, data.y);
@@ -2925,7 +2925,7 @@ void DL_Jww::writeLeaderVertex(DL_WriterA& dw,
  */
 void DL_Jww::writeHatch1(DL_WriterA& dw,
                          const DL_HatchData& data,
-                         const DL_Attributes& attrib) {
+                         const DL_Attributes& attrib) const {
 
     dw.entity("HATCH");
     dw.entityAttributes(attrib);
@@ -3055,7 +3055,7 @@ void DL_Jww::writeHatchEdge(DL_WriterA& dw,
  */
 int DL_Jww::writeImage(DL_WriterA& dw,
                        const DL_ImageData& data,
-                       const DL_Attributes& attrib) {
+                       const DL_Attributes& attrib) const {
 
     /*if (data.file.empty()) {
         std::cerr << "DL_Jww::writeImage: "
@@ -3115,7 +3115,7 @@ int DL_Jww::writeImage(DL_WriterA& dw,
  */
 void DL_Jww::writeImageDef(DL_WriterA& dw,
                            int handle,
-                           const DL_ImageData& data) {
+                           const DL_ImageData& data) const {
 
     /*if (data.file.empty()) {
         std::cerr << "DL_Jww::writeImage: "
@@ -3150,7 +3150,7 @@ void DL_Jww::writeImageDef(DL_WriterA& dw,
 
 
 /**
- * Writes a layer to the file. Layers are stored in the 
+ * Writes a layer to the file. Layers are stored in the
  * tables section of a DXF file.
  *
  * @param dw DXF writer
@@ -3159,7 +3159,7 @@ void DL_Jww::writeImageDef(DL_WriterA& dw,
  */
 void DL_Jww::writeLayer(DL_WriterA& dw,
                         const DL_LayerData& data,
-                        const DL_Attributes& attrib) {
+                        const DL_Attributes& attrib) const {
 
     if (data.name.empty()) {
         std::cerr << "DL_Jww::writeLayer: "
@@ -3205,11 +3205,11 @@ void DL_Jww::writeLayer(DL_WriterA& dw,
 
 
 /**
- * Writes a line type to the file. Line types are stored in the 
+ * Writes a line type to the file. Line types are stored in the
  * tables section of a DXF file.
  */
 void DL_Jww::writeLineType(DL_WriterA& dw,
-                           const DL_LineTypeData& data) {
+                           const DL_LineTypeData& data) const {
     //const char* description,
     //int elements,
     //double patternLength) {
@@ -3712,7 +3712,7 @@ void DL_Jww::writeEndBlock(DL_WriterA& dw, const string& name) {
  * Note that this method currently only writes a faked VPORT section
  * to make the file readable by Aut*cad.
  */
-void DL_Jww::writeVPort(DL_WriterA& dw) {
+void DL_Jww::writeVPort(DL_WriterA& dw) const {
     dw.dxfString(0, "TABLE");
     dw.dxfString(2, "VPORT");
     if (version==VER_2000) {
@@ -3794,7 +3794,7 @@ void DL_Jww::writeVPort(DL_WriterA& dw) {
  * Note that this method currently only writes a faked STYLE section
  * to make the file readable by Aut*cad.
  */
-void DL_Jww::writeStyle(DL_WriterA& dw) {
+void DL_Jww::writeStyle(DL_WriterA& dw) const {
     dw.dxfString(  0, "TABLE");
     dw.dxfString(  2, "STYLE");
     if (version==VER_2000) {
@@ -3834,7 +3834,7 @@ void DL_Jww::writeStyle(DL_WriterA& dw) {
  * Note that this method currently only writes a faked VIEW section
  * to make the file readable by Aut*cad.
  */
-void DL_Jww::writeView(DL_WriterA& dw) {
+void DL_Jww::writeView(DL_WriterA& dw) const {
     dw.dxfString(  0, "TABLE");
     dw.dxfString(  2, "VIEW");
     if (version==VER_2000) {
@@ -3855,7 +3855,7 @@ void DL_Jww::writeView(DL_WriterA& dw) {
  * Note that this method currently only writes a faked UCS section
  * to make the file readable by Aut*cad.
  */
-void DL_Jww::writeUcs(DL_WriterA& dw) {
+void DL_Jww::writeUcs(DL_WriterA& dw) const {
     dw.dxfString(  0, "TABLE");
     dw.dxfString(  2, "UCS");
     if (version==VER_2000) {
@@ -3876,9 +3876,9 @@ void DL_Jww::writeUcs(DL_WriterA& dw) {
  * Note that this method currently only writes a faked DIMSTYLE section
  * to make the file readable by Aut*cad.
  */
-void DL_Jww::writeDimStyle(DL_WriterA& dw, 
+void DL_Jww::writeDimStyle(DL_WriterA& dw,
 					double dimasz, double dimexe, double dimexo,
-                       double dimgap, double dimtxt) {
+                       double dimgap, double dimtxt) const {
 
     dw.dxfString(  0, "TABLE");
     dw.dxfString(  2, "DIMSTYLE");
@@ -3982,7 +3982,7 @@ void DL_Jww::writeDimStyle(DL_WriterA& dw,
  * Note that this method currently only writes a faked BLOCKRECORD section
  * to make the file readable by Aut*cad.
  */
-void DL_Jww::writeBlockRecord(DL_WriterA& dw) {
+void DL_Jww::writeBlockRecord(DL_WriterA& dw) const {
     dw.dxfString(  0, "TABLE");
     dw.dxfString(  2, "BLOCK_RECORD");
     if (version==VER_2000) {
@@ -4044,7 +4044,7 @@ void DL_Jww::writeBlockRecord(DL_WriterA& dw) {
 /**
  * Writes a single block record with the given name.
  */
-void DL_Jww::writeBlockRecord(DL_WriterA& dw, const string& name) {
+void DL_Jww::writeBlockRecord(DL_WriterA& dw, const string& name) const {
     dw.dxfString(  0, "BLOCK_RECORD");
     if (version==VER_2000) {
     	dw.handle();

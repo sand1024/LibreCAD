@@ -26,16 +26,18 @@ protected:
     bool m_createPolyline = false;
     double m_offset = 0.0;
 
-    void createPoint(RS_Layer *activeLayer, const RS_Pen &pen, double x, double y);
-    void createLine(RS_Layer *activeLayer, const RS_Pen &pen, double x1, double y1, double x2, double y2);
-    void createCornerPoints(RS_Layer *activeLayer, const RS_Pen &pen, const RS_Vector &selectionMin, const RS_Vector &selectionMax);
-    void createBoxLines(RS_Layer *activeLayer, const RS_Pen &pen, const RS_Vector &selectionMin, const RS_Vector &selectionMax);
-    void createBoxPolyline(RS_Layer *activeLayer, const RS_Pen &pen, const RS_Vector &selectionMin, const RS_Vector &selectionMax);
+    void createPoint(double x, double y,QList<RS_Entity*> &entitiesList ) const;
+    void createLine(double x1, double y1, double x2, double y2,QList<RS_Entity*> &entitiesList ) const;
+    void createCornerPoints(const RS_Vector &selectionMin, const RS_Vector &selectionMax,QList<RS_Entity*> &entitiesList ) const;
+    void createBoxLines(const RS_Vector &selectionMin, const RS_Vector &selectionMax,QList<RS_Entity*> &entitiesList ) const;
+    void createBoxPolyline(const RS_Vector &selectionMin, const RS_Vector &selectionMax,QList<RS_Entity*> &entitiesList ) const;
     LC_ActionOptionsWidget *createOptionsWidget() override;
     void updateMouseButtonHintsForSelection() override;
-    void doTrigger(bool keepSelected) override;
     bool isAllowTriggerOnEmptySelection() override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
+    void doTriggerCompletion(bool success) override;
+    void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
 };
 
 #endif // LC_ACTIONDRAWBOUNDINGBOX_H

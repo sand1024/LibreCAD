@@ -50,7 +50,7 @@ public:
 /**
  * @return ucs at given position or NULL if it is out of range.
  */
-    LC_UCS *at(unsigned int i) {
+    LC_UCS *at(unsigned int i) const {
         return m_ucsList.at(i);
     }
 

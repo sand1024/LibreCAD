@@ -51,7 +51,7 @@ LC_RelZeroCoordinatesWidget::~LC_RelZeroCoordinatesWidget(){
     delete ui;
 }
 
-void LC_RelZeroCoordinatesWidget::clearContent() {
+void LC_RelZeroCoordinatesWidget::clearContent() const {
     ui->lCartesianCoordinates->setText("0 , 0");
     ui->lPolarCoordinates->setText("0 < 0");
 }

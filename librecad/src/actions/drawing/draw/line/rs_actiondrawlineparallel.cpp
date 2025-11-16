@@ -30,7 +30,9 @@
 #include "qg_lineparalleloptions.h"
 #include "rs_creation.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_graphicview.h"
+#include "rs_preview.h"
 
 namespace {
     //this holds a list of entity types which supports tangent
@@ -40,7 +42,7 @@ namespace {
 }
 
 RS_ActionDrawLineParallel::RS_ActionDrawLineParallel(LC_ActionContext *actionContext, RS2::ActionType actionType)
-	:RS_PreviewActionInterface("Draw Parallels", actionContext, actionType)
+	:LC_UndoableDocumentModificationAction("Draw Parallels", actionContext, actionType)
 	,m_parallel(nullptr)
 	,m_distance(1.0)
 	,m_numberToCreate(1)
@@ -81,13 +83,9 @@ bool RS_ActionDrawLineParallel::doUpdateDistanceByInteractiveInput(const QString
     return false;
 }
 
-void RS_ActionDrawLineParallel::doTrigger() {
-    RS_Creation creation(m_container, m_viewport);
-    RS_Entity *e = creation.createParallel(*m_coord,m_distance, m_numberToCreate,m_entity);
-
-    if (e != nullptr){
-        RS_DEBUG->print("RS_ActionDrawLineParallel::trigger:No parallels added\n");
-    }
+bool RS_ActionDrawLineParallel::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+    RS_Creation::createParallel(*m_coord,m_distance, m_numberToCreate,m_entity, false, ctx.entitiesToAdd);
+    return true;
 }
 
 void RS_ActionDrawLineParallel::onMouseMoveEvent([[maybe_unused]]int status, LC_MouseEvent *e) {
@@ -98,12 +96,13 @@ void RS_ActionDrawLineParallel::onMouseMoveEvent([[maybe_unused]]int status, LC_
     switch (status) {
         case SetEntity: {
             if (m_entity != nullptr){
-                RS_Creation creation(m_preview.get(), nullptr, false);
-                RS_Entity* createdParallel = creation.createParallel(*m_coord,m_distance, m_numberToCreate,m_entity);
-                if (createdParallel != nullptr){
+                QList<RS_Entity*> parallels;
+                RS_Creation::createParallel(*m_coord,m_distance, m_numberToCreate,m_entity, false, parallels);
+                if (!parallels.empty()){
+                    m_preview->addAllFromList(parallels);
                     highlightHover(m_entity);
                     if (m_numberToCreate == 1){
-                        prepareEntityDescription(createdParallel, RS2::EntityDescriptionLevel::DescriptionCreating);
+                        prepareEntityDescription(parallels.front(), RS2::EntityDescriptionLevel::DescriptionCreating);
                     }
                     else{
                        appendInfoCursorZoneMessage(QString::number(m_numberToCreate) + tr(" entities will be created"), 2, false);

@@ -29,7 +29,7 @@
 #include "rs_debug.h"
 #include "rs_graphic.h"
 
-RS_ActionBlocksFreezeAll::RS_ActionBlocksFreezeAll(bool freeze,LC_ActionContext *actionContext)
+RS_ActionBlocksFreezeAll::RS_ActionBlocksFreezeAll(const bool freeze,LC_ActionContext *actionContext)
     :RS_ActionInterface("Freeze all Blocks", actionContext, RS2::ActionBlocksFreezeAll),
      m_freeze(freeze){
 }
@@ -43,7 +43,7 @@ void RS_ActionBlocksFreezeAll::trigger() {
     finish(false);
 }
 
-void RS_ActionBlocksFreezeAll::init(int status) {
+void RS_ActionBlocksFreezeAll::init(const int status) {
     RS_ActionInterface::init(status);
     trigger();
 }

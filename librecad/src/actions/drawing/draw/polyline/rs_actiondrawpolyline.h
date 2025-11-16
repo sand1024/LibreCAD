@@ -27,6 +27,7 @@
 #ifndef RS_ACTIONDRAWPOLYLINE_H
 #define RS_ACTIONDRAWPOLYLINE_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_arc.h"
 #include "rs_polyline.h"
 #include "rs_previewactioninterface.h"
@@ -47,7 +48,7 @@ class RS_GraphicView;
  *
  * @author Andrew Mustun
 */
-class RS_ActionDrawPolyline : public RS_PreviewActionInterface {
+class RS_ActionDrawPolyline : public LC_SingleEntityCreationAction {
     Q_OBJECT
 public:
     enum SegmentMode {
@@ -63,7 +64,7 @@ public:
 
     RS_ActionDrawPolyline(LC_ActionContext *actionContext);
     ~RS_ActionDrawPolyline() override;
-    void reset();
+    void reset() const;
     void init(int status) override;
     QStringList getAvailableCommands() override;
     void close();
@@ -160,8 +161,9 @@ protected:
     void drawEquation(int numberOfPolylines);
     void setParserExpression(const QString& expression);
     bool getPlottingX(QString command, double& x);
-    void doTrigger() override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angle) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
 };
 #endif

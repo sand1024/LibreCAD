@@ -37,8 +37,8 @@ public:
     void setEntity(RS_Entity* entity) override;
     void setupInteractiveInputWidgets() override;
 protected slots:
-    void onStartEditingFinished();
-    void onEndEditingFinished();
+    void onStartEditingFinished() const;
+    void onEndEditingFinished() const;
 private:
     Ui::LC_LinePropertiesEditingWidget *ui;
     RS_Line* m_entity{nullptr};

@@ -103,29 +103,31 @@ void QG_InsertOptions::doSetAction(RS_ActionInterface *a, bool update) {
 
 // fixme - use proper string to double conversions
 
-void QG_InsertOptions::setRowSpacingToActionAndView(QString val) {
+void QG_InsertOptions::setRowSpacingToActionAndView(QString val) const {
     ui->leRowSpacing->setText(val);
     m_action->setRowSpacing(RS_Math::eval(val));
 }
 
-void QG_InsertOptions::setColumnSpacingActionAndView(QString val) {
+void QG_InsertOptions::setColumnSpacingActionAndView(QString val) const {
     ui->leColumnSpacing->setText(val);
     m_action->setColumnSpacing(RS_Math::eval(val));
 }
 
-void QG_InsertOptions::setColumnsToActionAndView(int columns) {
+void QG_InsertOptions::setColumnsToActionAndView(int columns) const {
     m_action->setColumns(columns);
     ui->sbColumns->setValue(columns);
 }
 
-void QG_InsertOptions::setRowsToActionAndView(int rows) {
+void QG_InsertOptions::setRowsToActionAndView(int rows) const {
     ui->sbRows->setValue(rows);
     m_action->setRows(rows);
 }
 
 void QG_InsertOptions::setFactorToActionAndView(QString val) {
-    ui->leFactor->setText(val);
-    m_action->setFactor(RS_Math::eval(val));
+    double param;
+    toDouble(val, param, 0.000001, true);
+    ui->leFactor->setText(fromDouble(param));
+    m_action->setFactor(param);
 }
 
 void QG_InsertOptions::setAngleToActionAndView(QString val) {

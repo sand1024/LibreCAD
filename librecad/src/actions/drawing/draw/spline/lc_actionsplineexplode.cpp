@@ -46,53 +46,50 @@ LC_ActionSplineExplode::LC_ActionSplineExplode(LC_ActionContext *actionContext)
 }
 
 void LC_ActionSplineExplode::doTrigger() {
-    if (m_document) {
-        int segmentsCount = obtainSegmentsCount();
-        std::vector<RS_Vector> strokePoints;
-        bool closed;
-        fillStrokePoints(m_entityToModify, segmentsCount, strokePoints, closed);
-        if (!strokePoints.empty()) {
-            RS_Layer *layerToSet;
-            if (m_useCurrentLayer) {
-                layerToSet = m_graphicView->getGraphic()->getActiveLayer();
-            } else {
-                layerToSet = m_entityToModify->getLayer();
-            }
-
-            RS_Pen penToUse;
-            if (m_useCurrentAttributes) {
-                penToUse = m_graphicView->getGraphic()->getActivePen();
-            } else {
-                penToUse = m_entityToModify->getPen(false);
-            }
-
-            undoCycleStart();
-
-            if (m_createPolyline) {
-                RS_Entity *createdEntity = createPolylineByVertexes(strokePoints, closed);
-                setupAndAddCreatedEntity(createdEntity, layerToSet, penToUse);
-            } else {
-                RS_Vector startPoint = strokePoints.at(0);
-                RS_Vector firstPoint = startPoint;
-                for (unsigned int i=1; i < strokePoints.size(); i++){
-                    RS_Vector end = strokePoints.at(i);
-                    RS_Entity* createdEntity = new RS_Line(m_container, startPoint, end);
-                    setupAndAddCreatedEntity(createdEntity, layerToSet, penToUse);
-                    startPoint = end;
-                }
-                if (closed){
-                    RS_Entity* createdEntity = new RS_Line(m_container, startPoint, firstPoint);
-                    setupAndAddCreatedEntity(createdEntity, layerToSet, penToUse);
-                }
-
-            }
-            if (!m_keepOriginals){
-                undoableDeleteEntity(m_entityToModify);
-            }
-
-            undoCycleEnd();
-            m_entityToModify = nullptr;
+    int segmentsCount = obtainSegmentsCount();
+    std::vector<RS_Vector> strokePoints;
+    bool closed;
+    fillStrokePoints(m_entityToModify, segmentsCount, strokePoints, closed);
+    if (!strokePoints.empty()) {
+        RS_Layer* layerToSet;
+        if (m_useCurrentLayer) {
+            layerToSet = m_graphicView->getGraphic()->getActiveLayer();
         }
+        else {
+            layerToSet = m_entityToModify->getLayer();
+        }
+
+        RS_Pen penToUse;
+        if (m_useCurrentAttributes) {
+            penToUse = m_graphicView->getGraphic()->getActivePen();
+        }
+        else {
+            penToUse = m_entityToModify->getPen(false);
+        }
+
+        if (m_createPolyline) {
+            RS_Entity* createdEntity = createPolylineByVertexes(strokePoints, closed);
+            setupAndAddCreatedEntity(createdEntity, layerToSet, penToUse);
+        }
+        else {
+            RS_Vector startPoint = strokePoints.at(0);
+            RS_Vector firstPoint = startPoint;
+            for (unsigned int i = 1; i < strokePoints.size(); i++) {
+                RS_Vector end            = strokePoints.at(i);
+                RS_Entity* createdEntity = new RS_Line(m_document, startPoint, end);
+                setupAndAddCreatedEntity(createdEntity, layerToSet, penToUse);
+                startPoint = end;
+            }
+            if (closed) {
+                RS_Entity* createdEntity = new RS_Line(m_document, startPoint, firstPoint);
+                setupAndAddCreatedEntity(createdEntity, layerToSet, penToUse);
+            }
+        }
+        if (!m_keepOriginals) {
+            undoableDeleteEntity(m_entityToModify);
+        }
+
+        m_entityToModify = nullptr;
     }
 }
 
@@ -100,19 +97,18 @@ bool LC_ActionSplineExplode::mayModifySplineEntity(RS_Entity* e) {
     return e != nullptr && g_enTypeList.contains(e->rtti());
 }
 
-void LC_ActionSplineExplode::setupAndAddCreatedEntity(RS_Entity *createdEntity, RS_Layer *layerToSet, const RS_Pen &penToUse) {
-    createdEntity->setParent(m_container);
+void LC_ActionSplineExplode::setupAndAddCreatedEntity(RS_Entity *createdEntity, RS_Layer *layerToSet, const RS_Pen &penToUse) const {
+    createdEntity->setParent(m_document);
     createdEntity->setPen(penToUse);
     createdEntity->setLayer(layerToSet);
-    createdEntity->setSelected(true); // fixme - sand - check whether it should be selected??
-    m_container->addEntity(createdEntity);
+    select(createdEntity);
     undoableAdd(createdEntity);
 }
 
 void LC_ActionSplineExplode::onMouseMove(RS_Vector mouse, int status, LC_MouseEvent *e) {
     switch (status) {
         case SetEntity: {
-            auto entity = catchEntityByEvent(e, g_enTypeList);
+            const auto entity = catchEntityByEvent(e, g_enTypeList);
             if (entity != nullptr){
                 if (mayModifySplineEntity(entity)) {
                     highlightHoverWithRefPoints(entity, true);
@@ -135,7 +131,7 @@ void LC_ActionSplineExplode::setEntityToModify(RS_Entity* entity) {
 }
 
 void LC_ActionSplineExplode::onMouseLeftButtonRelease([[maybe_unused]]int status, LC_MouseEvent *e) {
-    auto entity = catchEntityByEvent(e, g_enTypeList);
+    const auto entity = catchEntityByEvent(e, g_enTypeList);
     if (entity != nullptr) {
         if (mayModifySplineEntity(entity)) {
             setEntityToModify(entity);
@@ -144,7 +140,7 @@ void LC_ActionSplineExplode::onMouseLeftButtonRelease([[maybe_unused]]int status
 }
 
 RS_Entity *LC_ActionSplineExplode::createModifiedSplineEntity(RS_Entity *e, [[maybe_unused]]RS_Vector controlPoint, [[maybe_unused]]bool startDirection) {
-    int segmentsCount = obtainSegmentsCount();
+    const int segmentsCount = obtainSegmentsCount();
     std::vector<RS_Vector> strokePoints;
     bool closed;
     fillStrokePoints(e, segmentsCount, strokePoints, closed);
@@ -159,7 +155,7 @@ RS_Entity *LC_ActionSplineExplode::createModifiedSplineEntity(RS_Entity *e, [[ma
 void  LC_ActionSplineExplode::fillStrokePoints(RS_Entity *e, int segmentsCount, std::vector<RS_Vector> &strokePoints, bool &closed) const {
     switch (e->rtti()){
         case RS2::EntitySplinePoints:{
-            auto* splinePoints = static_cast<LC_SplinePoints *>(e);
+            const auto* splinePoints = static_cast<LC_SplinePoints *>(e);
             splinePoints->fillStrokePoints(segmentsCount, strokePoints);
             closed = splinePoints->isClosed();
             break;
@@ -175,7 +171,7 @@ void  LC_ActionSplineExplode::fillStrokePoints(RS_Entity *e, int segmentsCount, 
     }
 }
 
-int LC_ActionSplineExplode::obtainSegmentsCount() {
+int LC_ActionSplineExplode::obtainSegmentsCount() const {
     int segmentsCount;
     if (m_useCustomSegmentsCount){
         segmentsCount = m_customSegmentsCount;
@@ -187,7 +183,7 @@ int LC_ActionSplineExplode::obtainSegmentsCount() {
 }
 
 RS_Entity *LC_ActionSplineExplode::createPolylineByVertexes(const std::vector<RS_Vector> &strokePoints, bool closed) const {
-    auto result = new RS_Polyline(nullptr);
+    const auto result = new RS_Polyline(nullptr);
     for (unsigned int i= 0; i < strokePoints.size(); i++){
         RS_Vector vertex = strokePoints[i];
         result->addVertex(vertex);
@@ -211,8 +207,8 @@ LC_ActionOptionsWidget *LC_ActionSplineExplode::createOptionsWidget() {
     return new LC_SplineExplodeOptions();
 }
 
-int LC_ActionSplineExplode::getSegmentsCountFromDrawing() {
-    RS_Graphic* graphic = m_graphicView->getGraphic();
+int LC_ActionSplineExplode::getSegmentsCountFromDrawing() const {
+    const RS_Graphic* graphic = m_graphicView->getGraphic();
     int result=8;
     if (graphic) {
         result = graphic->getVariableInt("$SPLINESEGS", result);

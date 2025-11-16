@@ -52,11 +52,11 @@ LC_InsertPropertiesEditingWidget::~LC_InsertPropertiesEditingWidget(){
     delete ui;
 }
 
-void LC_InsertPropertiesEditingWidget::onInsertionPointEditingFinished() {
+void LC_InsertPropertiesEditingWidget::onInsertionPointEditingFinished() const {
     m_entity->setInsertionPoint(toWCS(ui->leInsertionPointX, ui->leInsertionPointY, m_entity->getInsertionPoint()));
 }
 
-void LC_InsertPropertiesEditingWidget::onScaleEditingFinishedChanged() {
+void LC_InsertPropertiesEditingWidget::onScaleEditingFinishedChanged() const {
     m_entity->setScale(toWCSRaw(ui->leScaleX,ui->leScaleY, m_entity->getScale()));
 }
 
@@ -64,15 +64,15 @@ void LC_InsertPropertiesEditingWidget::onAngleEditingFinished() {
     m_entity->setAngle(toWCSAngle(ui->leAngle, m_entity->getAngle()));
 }
 
-void LC_InsertPropertiesEditingWidget::onRowsEditingFinished() {
+void LC_InsertPropertiesEditingWidget::onRowsEditingFinished() const {
     m_entity->setRows(RS_Math::round(RS_Math::eval(ui->leRows->text())));
 }
 
-void LC_InsertPropertiesEditingWidget::onColsEditingFinished() {
+void LC_InsertPropertiesEditingWidget::onColsEditingFinished() const {
     m_entity->setCols(RS_Math::round(RS_Math::eval(ui->leCols->text())));
 }
 
-void LC_InsertPropertiesEditingWidget::onSpacingEditingFinished() {
+void LC_InsertPropertiesEditingWidget::onSpacingEditingFinished() const {
     m_entity->setSpacing(RS_Vector(RS_Math::eval(ui->leColSpacing->text()),
                                  RS_Math::eval(ui->leRowSpacing->text())));
 }

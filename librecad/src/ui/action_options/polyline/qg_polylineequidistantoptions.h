@@ -53,7 +53,7 @@ protected:
 private:
     RS_ActionPolylineEquidistant *m_action = nullptr;
     std::unique_ptr<Ui::PolylineEquidistantOptions> ui;
-    void setNumberToActionAndView(int number);
+    void setNumberToActionAndView(int number) const;
     void setDistanceToActionAndView(QString strVal);
 };
 #endif // QG_POLYLINEEQUIDISTANTOPTIONS_H

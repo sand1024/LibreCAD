@@ -55,19 +55,19 @@ void RS_ActionDimAngular::doInitWithContextEntity(RS_Entity* contextEntity, cons
     }
 }
 
-void RS_ActionDimAngular::doTrigger() {
+RS_Entity* RS_ActionDimAngular::doTriggerCreateEntity() {
     if (m_line1->getStartpoint().valid && m_line2->getStartpoint().valid) {
-        auto* newEntity = new RS_DimAngular( m_container,*m_dimensionData,*m_edata);
-
-        setPenAndLayerToActive(newEntity);
+        auto* newEntity = new RS_DimAngular( m_document,*m_dimensionData,*m_edata);
         newEntity->update();
-        undoCycleAdd(newEntity);
-        setStatus( SetLine1);
-        RS_Snapper::finish();
+        return newEntity;
     }
-    else {
-        RS_DEBUG->print( "RS_ActionDimAngular::trigger: Entity is nullptr\n");
-    }
+    RS_DEBUG->print( "RS_ActionDimAngular::trigger: One of endpoints invalid\n");
+    return nullptr;
+}
+
+void RS_ActionDimAngular::doTriggerCompletion(bool success) {
+    setStatus( SetLine1);
+    RS_Snapper::finish();
 }
 
 void RS_ActionDimAngular::onMouseMoveEvent(int status, LC_MouseEvent *e) {
@@ -239,7 +239,7 @@ void RS_ActionDimAngular::updateMouseButtonHints(){
  * @param click The click pos which selected the line
  * @param center The intersection of the 2 lines to dimension
  */
-RS_LineData RS_ActionDimAngular::justify(RS_Line* line, const RS_Vector &click){
+RS_LineData RS_ActionDimAngular::justify(RS_Line* line, const RS_Vector &click) const {
     RS_Vector vStartPoint( line->getStartpoint());
     RS_LineData lineData = line->getData();
     if( RS_Math::notEqual( vStartPoint.angleTo(m_center), click.angleTo( m_center), RS_TOLERANCE_ANGLE)
@@ -302,7 +302,7 @@ void RS_ActionDimAngular::lineOrder(const RS_Vector &dimPos, RS_LineData& ld1, R
  * @param angle The angle, e.g. mouse or coordinate position
  * @return The quadrant of \p angle, relative to the 1st selection quadrant
  */
-int RS_ActionDimAngular::determineQuadrant(const double angle){
+int RS_ActionDimAngular::determineQuadrant(const double angle) const {
     if(m_angles.empty()) {
         return 0;
     }

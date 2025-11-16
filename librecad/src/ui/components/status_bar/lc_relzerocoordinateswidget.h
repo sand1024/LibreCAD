@@ -41,7 +41,7 @@ public:
     explicit LC_RelZeroCoordinatesWidget(QWidget *parent = 0, const char *name = 0);
     ~LC_RelZeroCoordinatesWidget();
 
-    void clearContent();
+    void clearContent() const;
     void setGraphicView( RS_GraphicView * graphic ) override;
     void setRelativeZero( const RS_Vector & rel, bool updateFormat );
 public slots:

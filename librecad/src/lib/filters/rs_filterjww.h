@@ -174,7 +174,7 @@ public:
 
     static QString toDxfString(const QString& string);
     QString toNativeString(const char* data, const QString& encoding);
-    QString getDXFEncoding();
+    QString getDXFEncoding() const;
 
 public:
     RS_Pen attributesToPen(const DL_Attributes& attrib) const;

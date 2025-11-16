@@ -112,7 +112,7 @@ double RS_Line::getProjectionValueAlongLine(const RS_Vector& coord) const {
 }
 
 RS_Vector RS_Line::getNearestPointOnEntity(const RS_Vector& coord,bool onEntity,double* dist,RS_Entity** entity) const{
-    if (entity) {
+    if (entity != nullptr) {
         *entity = const_cast<RS_Line*>(this);
     }
 

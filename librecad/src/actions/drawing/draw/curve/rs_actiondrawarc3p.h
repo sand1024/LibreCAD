@@ -54,13 +54,14 @@ protected:
     std::unique_ptr<ActionData> m_actionData;
     bool m_alternatedPoints = false;
     void reset() override;
-    void preparePreview(bool alternatePoints);
+    void preparePreview(bool alternatePoints) const;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     bool doProcessCommand(int status, const QString &command) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void updateMouseButtonHints() override;
-    void doTrigger() override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
 };
 #endif

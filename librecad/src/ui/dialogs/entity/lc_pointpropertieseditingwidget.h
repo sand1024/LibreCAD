@@ -40,8 +40,8 @@ public:
     ~LC_PointPropertiesEditingWidget() override;
     void setEntity(RS_Entity* entity) override;
 protected slots:
-    void onPosXEditingFinished();
-    void onPosYEditingFinished();
+    void onPosXEditingFinished() const;
+    void onPosYEditingFinished() const;
 private:
     Ui::LC_PointPropertiesEditingWidget *ui;
 

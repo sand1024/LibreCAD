@@ -2704,7 +2704,7 @@ RS_VectorSolutions getLineLineIntersect(
 }
 
 
-RS_VectorSolutions LC_SplinePoints::getLineIntersect(const RS_Vector& x1, const RS_Vector& x2) {
+RS_VectorSolutions LC_SplinePoints::getLineIntersect(const RS_Vector& x1, const RS_Vector& x2) const {
 	RS_VectorSolutions ret;
 
 	size_t n = data.controlPoints.size();
@@ -2845,8 +2845,7 @@ void addQuadQuadIntersect(RS_VectorSolutions *pVS,
 }
 
 void LC_SplinePoints::addQuadIntersect(RS_VectorSolutions *pVS, const RS_Vector& x1,
-	const RS_Vector& c1, const RS_Vector& x2)
-{
+	const RS_Vector& c1, const RS_Vector& x2) const {
 	size_t n = data.controlPoints.size();
 	if(n < 2) return;
 
@@ -2916,8 +2915,7 @@ void LC_SplinePoints::addQuadIntersect(RS_VectorSolutions *pVS, const RS_Vector&
 	}
 }
 
-RS_VectorSolutions LC_SplinePoints::getSplinePointsIntersect(LC_SplinePoints* l1)
-{
+RS_VectorSolutions LC_SplinePoints::getSplinePointsIntersect(LC_SplinePoints* l1) const {
 	RS_VectorSolutions ret;
 
 	size_t n = data.controlPoints.size();
@@ -3114,7 +3112,7 @@ void addQuadraticQuadIntersect(RS_VectorSolutions *pVS, std::vector<double> dQua
     }
 }
 
-RS_VectorSolutions LC_SplinePoints::getQuadraticIntersect(RS_Entity const* e1){
+RS_VectorSolutions LC_SplinePoints::getQuadraticIntersect(RS_Entity const* e1) const {
     RS_VectorSolutions ret;
 
     size_t n = data.controlPoints.size();

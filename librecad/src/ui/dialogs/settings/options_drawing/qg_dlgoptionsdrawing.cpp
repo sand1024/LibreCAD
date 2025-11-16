@@ -89,7 +89,7 @@ QG_DlgOptionsDrawing::QG_DlgOptionsDrawing(QWidget* parent)
     init();
 }
 
-void QG_DlgOptionsDrawing::onTabCurrentChanged(int index) {
+void QG_DlgOptionsDrawing::onTabCurrentChanged(int index) const {
     if (index == 3) { // dimensions tab
         if (m_previewView != nullptr) {
             m_previewView->zoomAuto();
@@ -284,28 +284,29 @@ void QG_DlgOptionsDrawing::setupDimStylesTab() {
     dbDimEmbeddArrowBlocks->setVisible(false);
 }
 
-void QG_DlgOptionsDrawing::collectStylesUsage(QMap<QString, int>& map) {
+void QG_DlgOptionsDrawing::collectStylesUsage(QMap<QString, int>& map) const {
     for (RS_Entity* e : m_graphic->getEntityList()) {
         auto entityType = e->rtti();
-        if (!e->isUndone() && RS2::isDimensionalEntity(entityType)) {
-            auto* dim = dynamic_cast<RS_Dimension*>(e);
-            QString styleName = dim->getStyle();
+        if (e->isDeleted() || ! RS2::isDimensionalEntity(entityType)) {
+             continue;
+        }
 
-            auto dimStyleForNameAndType = m_graphic->getDimStyleByName(styleName, entityType);
-            if (dimStyleForNameAndType != nullptr) {
-                QString resolvedStyleName = dimStyleForNameAndType->getName();
-                int value = map.value(resolvedStyleName, 0);
-                value++;
-                map[resolvedStyleName] = value;
-            }
-            else {
-               // weird case - style is referenced in entity, but is not present in dim styles... looks like DXF error
-            }
+        auto* dim = dynamic_cast<RS_Dimension*>(e);
+        QString styleName = dim->getStyle();
+        auto dimStyleForNameAndType = m_graphic->getDimStyleByName(styleName, entityType);
+        if (dimStyleForNameAndType != nullptr) {
+            QString resolvedStyleName = dimStyleForNameAndType->getName();
+            int value = map.value(resolvedStyleName, 0);
+            value++;
+            map[resolvedStyleName] = value;
+        }
+        else {
+            // weird case - style is referenced in entity, but is not present in dim styles... looks like DXF error
         }
     }
 }
 
-void QG_DlgOptionsDrawing::setupMetaTab() {
+void QG_DlgOptionsDrawing::setupMetaTab() const {
     QString title = m_graphic->getVariableString("$TITLE", "");
     QString subject = m_graphic->getVariableString("$SUBJECT", "");
     QString author = m_graphic->getVariableString("$AUTHOR", "");
@@ -319,7 +320,7 @@ void QG_DlgOptionsDrawing::setupMetaTab() {
     leMetaComments->setText(comments);
 }
 
-void QG_DlgOptionsDrawing::setupUserREditor(QLineEdit* edit, const QString &key) {
+void QG_DlgOptionsDrawing::setupUserREditor(QLineEdit* edit, const QString &key) const {
     double rval = m_graphic->getVariableDouble(key, 0.0);
     QString val = QString::number(rval, 'g', 12);
     edit->setText(val);
@@ -431,7 +432,7 @@ void QG_DlgOptionsDrawing::reject() {
     LC_Dialog::reject();
 }
 
-LC_DimStyleTreeModel* QG_DlgOptionsDrawing::getDimStylesModel() {
+LC_DimStyleTreeModel* QG_DlgOptionsDrawing::getDimStylesModel() const {
     return dynamic_cast<LC_DimStyleTreeModel*>(lvDimStyles->model());
 }
 
@@ -535,7 +536,7 @@ void QG_DlgOptionsDrawing::onDimStyleNew([[maybe_unused]]bool checked) {
     }
 }
 
-void QG_DlgOptionsDrawing::expandStylesTree() {
+void QG_DlgOptionsDrawing::expandStylesTree() const {
     lvDimStyles->expandAll();
     lvDimStyles->setItemsExpandable(false);
 }
@@ -626,7 +627,7 @@ void QG_DlgOptionsDrawing::onDimStyleEdit([[maybe_unused]]bool checked) {
     }
 }
 
-QModelIndex QG_DlgOptionsDrawing::getSelectedDimStyleIndex() {
+QModelIndex QG_DlgOptionsDrawing::getSelectedDimStyleIndex() const {
     return lvDimStyles->selectionModel()->currentIndex();
 }
 
@@ -732,7 +733,7 @@ void QG_DlgOptionsDrawing::onDimStyleImport([[maybe_unused]]bool checked) {
     }
 }
 
-void QG_DlgOptionsDrawing::updateActiveStyleLabel(LC_DimStyleTreeModel* model) {
+void QG_DlgOptionsDrawing::updateActiveStyleLabel(LC_DimStyleTreeModel* model) const {
     auto activeStyleItem = model->getActiveStyleItem();
     QString styleName = "";
     if (activeStyleItem != nullptr){
@@ -871,7 +872,7 @@ void QG_DlgOptionsDrawing::setupPointsTab() {
     updateLPtSzUnits();
 }
 
-void QG_DlgOptionsDrawing::setupSplinesTab() {
+void QG_DlgOptionsDrawing::setupSplinesTab() const {
     // spline line segments per patch:
     int splinesegs = m_graphic->getVariableInt("$SPLINESEGS", 8);
     //RLZ    cbSplineSegs->setCurrentText(QString("%1").arg(splinesegs));
@@ -886,7 +887,7 @@ void QG_DlgOptionsDrawing::setupSplinesTab() {
     cbLineJoin ->setCurrentIndex(joinStyle);
 }
 
-void QG_DlgOptionsDrawing::setupGridTab() {
+void QG_DlgOptionsDrawing::setupGridTab() const {
     // Grid:
     cbGridOn->setChecked(m_graphic->isGridOn());
     bool isometricGrid = m_graphic->isIsometricGrid();
@@ -1003,7 +1004,7 @@ void QG_DlgOptionsDrawing::setupPaperTab() {
     sbPagesNumV->setValue(m_graphic->getPagesNumVert());
 }
 
-void QG_DlgOptionsDrawing::_toRemoveSetupLegacyDimsTab(RS2::LinearFormat& linearFormat, int lunits, int luprec, int aunits, int auprec) {
+void QG_DlgOptionsDrawing::_toRemoveSetupLegacyDimsTab(RS2::LinearFormat& linearFormat, int lunits, int luprec, int aunits, int auprec) const {
     // dimension text height:
     auto unit = static_cast<RS2::Unit>(cbUnit->currentIndex());
 
@@ -1175,7 +1176,7 @@ void QG_DlgOptionsDrawing::setGraphic(RS_Graphic *g) {
     setupVariablesTab();
 }
 
-void QG_DlgOptionsDrawing::setupVariablesTab(){
+void QG_DlgOptionsDrawing::setupVariablesTab() const {
     QHash<QString, RS_Variable>vars = m_graphic->getVariableDict();
     tabVariables->setRowCount(vars.count());
     QHash<QString, RS_Variable>::iterator it = vars.begin();
@@ -1227,7 +1228,7 @@ void QG_DlgOptionsDrawing::setupVariablesTab(){
     tabVariables->setSortingEnabled(true);
 }
 
-void QG_DlgOptionsDrawing::_toRemove_validateDimsOld() {
+void QG_DlgOptionsDrawing::_toRemove_validateDimsOld() const {
     // dim:
     bool ok1 = true;
     double oldValue = m_graphic->getVariableDouble("$DIMTXT", 1.);
@@ -1338,7 +1339,7 @@ bool QG_DlgOptionsDrawing::validateDimensionsTab() {
     return true;
 }
 
-bool QG_DlgOptionsDrawing::validatePointsTab() {
+bool QG_DlgOptionsDrawing::validatePointsTab() const {
     // Points drawing style:
     // Get currently selected point style from which button is checked
     int pdmode = LC_DEFAULTS_PDMode;
@@ -1420,7 +1421,7 @@ bool QG_DlgOptionsDrawing::validatePointsTab() {
     return true;
 }
 
-void QG_DlgOptionsDrawing::validateSplinesTab() {
+void QG_DlgOptionsDrawing::validateSplinesTab() const {
     // splines:
     m_graphic->addVariable("$SPLINESEGS",(int) RS_Math::eval(cbSplineSegs->currentText()), 70);
 
@@ -1433,7 +1434,7 @@ void QG_DlgOptionsDrawing::validateSplinesTab() {
     m_graphic->updateSplines();
 }
 
-void QG_DlgOptionsDrawing::validateGridTab() {
+void QG_DlgOptionsDrawing::validateGridTab() const {
     // grid:
     //graphic->addVariable("$GRIDMODE", (int)cbGridOn->isChecked() , 70);
 
@@ -1473,7 +1474,7 @@ void QG_DlgOptionsDrawing::validateGridTab() {
     }
 }
 
-void QG_DlgOptionsDrawing::validatePaperTab() {
+void QG_DlgOptionsDrawing::validatePaperTab() const {
     RS2::PaperFormat currentFormat{static_cast<RS2::PaperFormat>(cbPaperFormat->currentIndex())};
     // paper:
     m_graphic->setPaperFormat(currentFormat, rbLandscape->isChecked());
@@ -1496,7 +1497,7 @@ void QG_DlgOptionsDrawing::validatePaperTab() {
                            sbPagesNumV->value());
 }
 
-void QG_DlgOptionsDrawing::validateMetaTab() {
+void QG_DlgOptionsDrawing::validateMetaTab() const {
     m_graphic->addVariable("$TITLE", leMetaTitle->text(), 1);
     m_graphic->addVariable("$SUBJECT", leMetaSubject->text(), 1);
     m_graphic->addVariable("$AUTHOR", leMetaAuthor->text(), 1);
@@ -1504,7 +1505,7 @@ void QG_DlgOptionsDrawing::validateMetaTab() {
     m_graphic->addVariable("$COMMENTS", leMetaComments->toPlainText(), 1);
 }
 
-void QG_DlgOptionsDrawing::validateUserTab() {
+void QG_DlgOptionsDrawing::validateUserTab() const {
     m_graphic->addVariable("$USERI1", sbUserI1->value(),70);
     m_graphic->addVariable("$USERI2", sbUserI2->value(),70);
     m_graphic->addVariable("$USERI3", sbUserI3->value(),70);
@@ -1528,7 +1529,7 @@ void QG_DlgOptionsDrawing::validateUserTab() {
     m_graphic->replaceCustomVars(newCustomVars);
 }
 
-void QG_DlgOptionsDrawing::validateUnitsTab() {
+void QG_DlgOptionsDrawing::validateUnitsTab() const {
     // units:
     auto unit = static_cast<RS2::Unit>(cbUnit->currentIndex());
     m_graphic->setUnit(unit);
@@ -1598,7 +1599,7 @@ void QG_DlgOptionsDrawing::validate() {
 /**
  * Updates the length precision combobox
  */
-void QG_DlgOptionsDrawing::updateLengthPrecision() {
+void QG_DlgOptionsDrawing::updateLengthPrecision() const {
     RS2::LinearFormat linearFormat = linearFormatFromUI(cbLengthFormat->currentIndex());
     updateLengthPrecisionCombobox(linearFormat, cbLengthPrecision);
 
@@ -1627,7 +1628,7 @@ void QG_DlgOptionsDrawing::updateLengthPrecision() {
 /**
  * Updates the Dimension length precision combobox
  */
-void QG_DlgOptionsDrawing::updateDimLengthPrecision() {
+void QG_DlgOptionsDrawing::updateDimLengthPrecision() const {
     RS2::LinearFormat linearFormat = linearFormatFromUI(cbDimLUnit->currentIndex());
     updateLengthPrecisionCombobox(linearFormat, cbDimDec);
 }
@@ -1719,7 +1720,7 @@ void QG_DlgOptionsDrawing::updateLengthPrecisionCombobox(RS2::LinearFormat unit,
 /**
  * Updates the angle precision combobox
  */
-void QG_DlgOptionsDrawing::updateAnglePrecision() {
+void QG_DlgOptionsDrawing::updateAnglePrecision() const {
     RS2::AngleFormat angleFormat = angleFormatFromUI(cbAngleFormat->currentIndex());
     updateAnglePrecisionCombobox(angleFormat, cbAnglePrecision);
 }
@@ -1727,7 +1728,7 @@ void QG_DlgOptionsDrawing::updateAnglePrecision() {
 /**
  * Updates the dimension angle precision combobox
  */
-void QG_DlgOptionsDrawing::updateDimAnglePrecision() {
+void QG_DlgOptionsDrawing::updateDimAnglePrecision() const {
     RS2::AngleFormat angleFormat = angleFormatFromUI(cbDimAUnit->currentIndex());
     updateAnglePrecisionCombobox(angleFormat, cbDimADec);
 }
@@ -1735,7 +1736,7 @@ void QG_DlgOptionsDrawing::updateDimAnglePrecision() {
 /**
  * Updates the preview of unit display.
  */
-void QG_DlgOptionsDrawing::updateUnitsPreview() {
+void QG_DlgOptionsDrawing::updateUnitsPreview() const {
     QString prev = RS_Units::formatLinear(14.43112351,
 								  static_cast<RS2::Unit>(cbUnit->currentIndex()),
 								  static_cast<RS2::LinearFormat>(cbLengthFormat->currentIndex()),
@@ -1810,7 +1811,7 @@ void QG_DlgOptionsDrawing::updateUnitLabels() {
 /**
  * Updates paper preview with specified size and margins.
  */
-void QG_DlgOptionsDrawing::updatePaperPreview() {
+void QG_DlgOptionsDrawing::updatePaperPreview() const {
     auto paperWidthText = lePaperWidth->text();
     auto paperHeightText = lePaperHeight->text();
 
@@ -1864,7 +1865,7 @@ void QG_DlgOptionsDrawing::showEvent(QShowEvent* event) {
 }
 
 // fixme - sand - review and probably remove after investigating GridSpacingX setting
-void QG_DlgOptionsDrawing::on_cbGridOn_toggled(bool checked){
+void QG_DlgOptionsDrawing::on_cbGridOn_toggled(bool checked) const {
     rbIsoTop->setEnabled(checked);
     rbOrthogonalGrid->setEnabled(checked);
     rbIsoLeft->setEnabled(checked);
@@ -1877,19 +1878,19 @@ void QG_DlgOptionsDrawing::onLandscapeToggled(bool /*checked*/) {
     updatePaperSize();
 }
 
-void QG_DlgOptionsDrawing::disableXSpacing(bool checked) {
+void QG_DlgOptionsDrawing::disableXSpacing(bool checked) const {
     if (checked){
         cbXSpacing->setEnabled(false);
     }
 }
 
-void QG_DlgOptionsDrawing::enableXSpacing(bool checked) {
+void QG_DlgOptionsDrawing::enableXSpacing(bool checked) const {
     if (checked){
         cbXSpacing ->setEnabled(true);
     }
 }
 
-void QG_DlgOptionsDrawing::onDimFxLonToggled(bool checked) {
+void QG_DlgOptionsDrawing::onDimFxLonToggled(bool checked) const {
     cbDimFxL->setEnabled(checked);
 }
 
@@ -1899,7 +1900,7 @@ void QG_DlgOptionsDrawing::onRelSizeToggled([[maybe_unused]] bool checked) {
 }
 
 /*	Updates the text string for the point size units label  */
-void QG_DlgOptionsDrawing::updateLPtSzUnits() {
+void QG_DlgOptionsDrawing::updateLPtSzUnits() const {
 //	RS_DEBUG->print(RS_Debug::D_ERROR,"QG_DlgOptionsDrawing::updateLPtSzUnits, rbRelSize->isChecked() = %d",rbRelSize->isChecked());
     if (rbRelSize->isChecked())
         lPtSzUnits->setText(QApplication::translate("QG_DlgOptionsDrawing", "Screen %", nullptr));
@@ -1907,7 +1908,7 @@ void QG_DlgOptionsDrawing::updateLPtSzUnits() {
         lPtSzUnits->setText(QApplication::translate("QG_DlgOptionsDrawing", "Dwg Units", nullptr));
 }
 
-void QG_DlgOptionsDrawing::showInitialTab(int tabIndex) {
+void QG_DlgOptionsDrawing::showInitialTab(int tabIndex) const {
     if (tabIndex > 0){
         tabWidget->setCurrentIndex(tabIndex);
     }

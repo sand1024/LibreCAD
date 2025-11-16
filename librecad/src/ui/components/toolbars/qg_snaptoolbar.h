@@ -41,22 +41,22 @@ public:
                  , QG_ActionHandler* ah
                  , LC_ActionGroupManager* agm,
                  const QMap<QString, QAction*> &actionMap);
-	~QG_SnapToolBar() = default;
+	~QG_SnapToolBar() override = default;
 
     RS_SnapMode getSnaps () const;
-    void saveSnapMode();
+    void saveSnapMode() const;
     bool lockedRelativeZero() const;
-    void setLockedRelativeZero(bool on);
-    void setUCSActive(bool on);
+    void setLockedRelativeZero(bool on) const;
+    void setUCSActive(bool on) const;
     LC_SnapOptionsWidgetsHolder *getSnapOptionsHolder();
 
 public slots:
-    void setSnaps(RS_SnapMode const & s);
-    void slotEnableRelativeZeroSnaps(const bool);
-    void slotUnsetSnapMiddleManual();
+    void setSnaps(RS_SnapMode const & s) const;
+    void slotEnableRelativeZeroSnaps(const bool) const;
+    void slotUnsetSnapMiddleManual() const;
 
 private slots:
-    void actionTriggered(void);
+    void actionTriggered(void) const;
     void slotRestrictOrthogonal(bool checked);
     void slotRestrictNothing(bool checked);
 

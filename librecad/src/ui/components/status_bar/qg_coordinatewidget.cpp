@@ -97,7 +97,7 @@ void QG_CoordinateWidget::setCoordinates(const RS_Vector& wcsAbs, const RS_Vecto
     setCoordinates(ucsX, ucsY, ucsDeltaX, ucsDeltaY, updateFormat);
 }
 
-void QG_CoordinateWidget::clearContent(){
+void QG_CoordinateWidget::clearContent() const {
     lCoord1->setText("0 , 0");
     lCoord2->setText("@  0 , 0");
     lCoord1b->setText("0 < 0");

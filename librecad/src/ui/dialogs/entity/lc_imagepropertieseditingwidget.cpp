@@ -92,7 +92,7 @@ void LC_ImagePropertiesEditingWidget::onDPIChanged(){
     toUIValue(m_entity->getHeight()*m_scale, ui->leHeight);
 }
 
-void LC_ImagePropertiesEditingWidget::onInsertionPointEditingFinished() {
+void LC_ImagePropertiesEditingWidget::onInsertionPointEditingFinished() const {
     m_entity->setInsertionPoint(toWCS(ui->leInsertX, ui->leInsertY, m_entity->getInsertionPoint()));
 }
 
@@ -105,11 +105,11 @@ void LC_ImagePropertiesEditingWidget::onAngleEditingFinished() {
     m_entity->rotate(m_entity->getInsertionPoint(), angle - orgAngle);
 }
 
-void LC_ImagePropertiesEditingWidget::onImageFileClick() {
+void LC_ImagePropertiesEditingWidget::onImageFileClick() const {
     ui->lePath->setText(RS_DIALOGFACTORY->requestImageOpenDialog()); // fixme - is it bad dependency?
 }
 
-void LC_ImagePropertiesEditingWidget::onPathChanged(const QString&) {
+void LC_ImagePropertiesEditingWidget::onPathChanged(const QString&) const {
     auto text = ui->lePath->text().trimmed();
     if (QFileInfo(text).isFile()) {
         m_entity->setFile(text);

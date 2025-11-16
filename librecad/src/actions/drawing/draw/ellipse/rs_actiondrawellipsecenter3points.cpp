@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "rs_circle.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_ellipse.h"
 #include "rs_preview.h"
 
@@ -54,14 +55,14 @@ void RS_ActionDrawEllipseCenter3Points::init(int status){
     drawSnapper();
 }
 
-void RS_ActionDrawEllipseCenter3Points::doTrigger() {
-    auto *ellipse = new RS_Ellipse(m_container, m_actionData->eData);
-
-    undoCycleAdd(ellipse);
+RS_Entity* RS_ActionDrawEllipseCenter3Points::doTriggerCreateEntity() {
+    auto *ellipse = new RS_Ellipse(m_document, m_actionData->eData);
     moveRelativeZero(ellipse->getCenter());
-    setStatus(SetCenter);
+    return ellipse;
+}
 
-    RS_DEBUG->print("RS_ActionDrawEllipseCenter3Points::trigger():entity added: %lu", ellipse->getId());
+void RS_ActionDrawEllipseCenter3Points::doTriggerCompletion(bool success) {
+    setStatus(SetCenter);
 }
 
 void RS_ActionDrawEllipseCenter3Points::onMouseMoveEvent(int status, LC_MouseEvent *e) {
@@ -103,7 +104,7 @@ void RS_ActionDrawEllipseCenter3Points::onMouseMoveEvent(int status, LC_MouseEve
     }
 }
 
-bool RS_ActionDrawEllipseCenter3Points::preparePreview(){
+bool RS_ActionDrawEllipseCenter3Points::preparePreview() const {
     m_actionData->valid = false;
     switch (getStatus()) {
         case SetPoint1: {

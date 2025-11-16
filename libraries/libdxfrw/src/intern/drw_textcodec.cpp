@@ -130,11 +130,11 @@ void DRW_TextCodec::setCodePage(const std::string &c, bool dxfFormat){
     }
 }
 
-std::string DRW_TextCodec::toUtf8(const std::string &s) {
+std::string DRW_TextCodec::toUtf8(const std::string &s) const {
     return conv->toUtf8(s);
 }
 
-std::string DRW_TextCodec::fromUtf8(const std::string &s) {
+std::string DRW_TextCodec::fromUtf8(const std::string &s) const {
     return conv->fromUtf8(s);
 }
 

@@ -43,19 +43,19 @@ public:
     ~RS_ActionModifyRotate() override;
     void init(int status) override;
     double getAngle() const;
-    void setAngle(double angleRad);
+    void setAngle(double angleRad) const;
     void setFreeAngle(bool enable);
     bool isFreeAngle() const {return m_freeAngle;};
-    double getRefPointAngle();
-    void setRefPointAngle(double angle);
+    double getRefPointAngle() const;
+    void setRefPointAngle(double angle) const;
     void setFreeRefPointAngle(bool value);
     bool isFreeRefPointAngle() const{return m_freeRefPointAngle;};
-    bool isRefPointAngleAbsolute();
-    void setRefPointAngleAbsolute(bool val);
-    bool isRotateAlsoAroundReferencePoint();
-    void setRotateAlsoAroundReferencePoint(bool value);
-    double getCurrentAngleDegrees();
-    double getCurrentAngle2Degrees();
+    bool isRefPointAngleAbsolute() const;
+    void setRefPointAngleAbsolute(bool val) const;
+    bool isRotateAlsoAroundReferencePoint() const;
+    void setRotateAlsoAroundReferencePoint(bool value) const;
+    double getCurrentAngleDegrees() const;
+    double getCurrentAngle2Degrees() const;
     void keyPressEvent(QKeyEvent *e) override;
 protected:
     /**
@@ -75,7 +75,7 @@ protected:
     double m_currentAngle = 0.0;
     double m_currentAngle2 = 0.0;
 
-    void previewRotationCircleAndPoints(const RS_Vector &center,const RS_Vector &refPoint, double angle);
+    void previewRotationCircleAndPoints(const RS_Vector &center,const RS_Vector &refPoint, double angle) const;
     LC_ModifyOperationFlags *getModifyOperationFlags() override;
     void onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
     void onMouseRightButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
@@ -86,9 +86,12 @@ protected:
     void tryTrigger();
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     LC_ActionOptionsWidget *createOptionsWidget() override;
-    void doTrigger(bool keepSelected) override;
     void onMouseMoveEventSelected(int status, LC_MouseEvent *e) override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) override;
+    void doTriggerCompletion(bool success) override;
+    void previewRotatedEntities(RS_RotateData& rotateData) const;
+    void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
 };
 
 #endif

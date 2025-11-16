@@ -56,7 +56,7 @@ public:
     /**
      * @return Layer at given position or NULL if i is out of range.
      */
-    RS_Layer* at(unsigned int i) {
+    RS_Layer* at(unsigned int i) const {
         return m_layers.at(i);
     }
     QList<RS_Layer*>::iterator begin();
@@ -72,12 +72,12 @@ public:
         return m_activeLayer;
     }
     virtual void add(RS_Layer* layerToAdd);
-    void fireLayerRemoved(RS_Layer* layer);
+    void fireLayerRemoved(RS_Layer* layer) const;
     virtual void remove(RS_Layer* layerToRemove);
     virtual void edit(RS_Layer* layer, const RS_Layer& source);
     RS_Layer* find(const QString& name);
     int getIndex(const QString& name);
-    int getIndex(RS_Layer* layer);
+    int getIndex(RS_Layer* layer) const;
     void toggle(const QString& name);
     void toggle(RS_Layer* layer);
     void toggleLock(RS_Layer* layer);
@@ -114,7 +114,7 @@ public:
      * @brief sort by layer names
      */
     void sort();
-    void fireLayerAdded(RS_Layer* layer);
+    void fireLayerAdded(RS_Layer* layer) const;
     void fireLayerToggled();
     void slotUpdateLayerList();
     friend std::ostream& operator << (std::ostream& os, RS_LayerList& l);

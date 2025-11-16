@@ -27,8 +27,7 @@
 #ifndef RS_ACTIONDRAWLINEPARALLEL_H
 #define RS_ACTIONDRAWLINEPARALLEL_H
 
-#include "lc_latecompletionrequestor.h"
-#include "rs_previewactioninterface.h"
+#include "lc_undoabledocumentmodificationaction.h"
 
 class RS_Vector;
 /**
@@ -37,7 +36,7 @@ class RS_Vector;
  *
  * @author Andrew Mustun
  */
-class RS_ActionDrawLineParallel:public RS_PreviewActionInterface {
+class RS_ActionDrawLineParallel:public LC_UndoableDocumentModificationAction {
     Q_OBJECT
 public:
     RS_ActionDrawLineParallel(LC_ActionContext *actionContext, RS2::ActionType actionType);
@@ -69,6 +68,7 @@ private:
 protected:
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
 private:
     RS2::CursorType doGetMouseCursor(int status) override;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
@@ -77,6 +77,5 @@ private:
     bool doProcessCommand(int status, const QString &command) override;
     void updateMouseButtonHints() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    void doTrigger() override;
 };
 #endif

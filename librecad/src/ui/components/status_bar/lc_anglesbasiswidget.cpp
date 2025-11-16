@@ -85,6 +85,6 @@ void LC_AnglesBasisWidget::update(QString angle, bool counterclockwise) {
     ui->lblPositiveDirection->setToolTip(tooltip);
 }
 
-void LC_AnglesBasisWidget::onIconsRefreshed(){
+void LC_AnglesBasisWidget::onIconsRefreshed() const {
     ui->lblPositiveDirection->setPixmap(m_counterclockwise ? m_iconCounterClockwise.pixmap(m_iconSize) : m_iconClockwise.pixmap(m_iconSize));
 }

@@ -29,8 +29,10 @@
 
 #include "qg_linebisectoroptions.h"
 #include "rs_creation.h"
+#include "rs_document.h"
 #include "rs_line.h"
 #include "rs_polyline.h"
+#include "rs_preview.h"
 
 namespace {
 
@@ -47,7 +49,7 @@ struct RS_ActionDrawLineBisector::ActionData {
 };
 
 RS_ActionDrawLineBisector::RS_ActionDrawLineBisector(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("Draw Bisectors", actionContext, RS2::ActionDrawLineBisector),
+    :LC_UndoableDocumentModificationAction("Draw Bisectors", actionContext, RS2::ActionDrawLineBisector),
     m_bisector(nullptr), m_line1(nullptr), m_line2(nullptr), m_length(10.), m_numberToCreate(1),
     m_actionData(std::make_unique<ActionData>()), m_lastStatus(SetLine1){
 }
@@ -100,9 +102,11 @@ void RS_ActionDrawLineBisector::setStatus(int status) {
     invalidateSnapSpot();
 }
 
-void RS_ActionDrawLineBisector::doTrigger() {
-    RS_Creation creation(m_container, m_viewport);
-    creation.createBisector(m_actionData->coord1, m_actionData->coord2, m_length, m_numberToCreate, m_line1, m_line2);
+bool RS_ActionDrawLineBisector::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+    std::list<RS_Entity*> bisectorLines;
+    bool created = RS_Creation::createBisector(m_actionData->coord1, m_actionData->coord2, m_length,
+            m_numberToCreate, m_line1, m_line2, ctx.entitiesToAdd);
+    return created;
 }
 
 void RS_ActionDrawLineBisector::onMouseMoveEvent(int status, LC_MouseEvent *e) {
@@ -125,10 +129,12 @@ void RS_ActionDrawLineBisector::onMouseMoveEvent(int status, LC_MouseEvent *e) {
             } else if (en != nullptr){
                 m_line2 = dynamic_cast<RS_Line *>(en);
 
-                RS_Creation creation(m_preview.get(), nullptr, false);
-                auto ent = creation.createBisector(m_actionData->coord1, m_actionData->coord2, m_length, m_numberToCreate, m_line1, m_line2);
-                if (ent != nullptr){
+                QList<RS_Entity*> lines;
+                bool created = RS_Creation::createBisector(m_actionData->coord1, m_actionData->coord2, m_length, m_numberToCreate, m_line1, m_line2, lines);
+                if (created){
                     highlightHover(m_line2);
+                    m_preview->addAllFromList(lines);
+                    RS_Entity* ent = lines.front();
                     if (m_numberToCreate == 1){
                         prepareEntityDescription(ent, RS2::EntityDescriptionLevel::DescriptionCreating);
                     }

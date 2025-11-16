@@ -101,7 +101,7 @@ void QG_LineParallelOptions::setDistanceToActionAndView(QString val) {
     }
 }
 
-void QG_LineParallelOptions::setNumberToActionAndView(int number) {
+void QG_LineParallelOptions::setNumberToActionAndView(int number) const {
     m_action->setNumber(number);
     ui->sbNumber->setValue(number);
 }

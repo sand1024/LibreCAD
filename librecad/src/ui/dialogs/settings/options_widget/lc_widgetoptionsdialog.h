@@ -9,7 +9,7 @@ class LC_WidgetOptionsDialog: public LC_Dialog, public Ui::LC_WidgetOptionsDialo
     Q_OBJECT
 public:
     QString selectFolder(QString title);
-    void updateUIByOptions();
+    void updateUIByOptions() const;
     explicit LC_WidgetOptionsDialog(QWidget* parent = nullptr);
     void reject() override;
 public slots:

@@ -25,6 +25,7 @@
 #include "lc_quadratic.h"
 #include "rs_circle.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_line.h"
 
 namespace {
@@ -67,7 +68,7 @@ void RS_ActionDrawCircleTan1_2P::init(int status) {
 }
 
 void RS_ActionDrawCircleTan1_2P::finish(bool updateTB){
-    if (m_baseEntity){
+    if (m_baseEntity != nullptr){
         redrawDrawing();
     }
     RS_PreviewActionInterface::finish(updateTB);
@@ -83,20 +84,19 @@ void RS_ActionDrawCircleTan1_2P::doInitialInit() {
     LC_ActionDrawCircleBase::doInitialInit();
 }
 
-void RS_ActionDrawCircleTan1_2P::doTrigger() {
-    //    std::cout<<__FILE__<<" : "<<__func__<<" : line "<<__LINE__<<std::endl;
-    //    std::cout<<"begin"<<std::endl;
-    auto *c = new RS_Circle(m_container, m_actionData->cData);
 
+RS_Entity* RS_ActionDrawCircleTan1_2P::doTriggerCreateEntity() {
+    auto *circle = new RS_Circle(m_document, m_actionData->cData);
     if (m_moveRelPointAtCenterAfterTrigger){
-        moveRelativeZero(c->getCenter());
+        moveRelativeZero(circle->getCenter());
     }
-
-    undoCycleAdd(c);
-
-    setStatus(SetCircle1);
-    RS_DEBUG->print("RS_ActionDrawCircleTan1_2P::trigger(): entity added: %lu", c->getId());
+    return circle;
 }
+
+void RS_ActionDrawCircleTan1_2P::doTriggerCompletion(bool success) {
+    setStatus(SetCircle1);
+}
+
 
 void RS_ActionDrawCircleTan1_2P::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     RS_Vector const &mouse = e->snapPoint;
@@ -227,7 +227,7 @@ RS_Vector RS_ActionDrawCircleTan1_2P::getTangentPoint(RS_Vector& creatingCircleC
 //    }
 //}
 
-bool RS_ActionDrawCircleTan1_2P::getCenters(){
+bool RS_ActionDrawCircleTan1_2P::getCenters() const {
     m_actionData->centers.clear();
     if (getStatus() < SetPoint2) {
         return false;
@@ -280,7 +280,7 @@ bool RS_ActionDrawCircleTan1_2P::getCenters(){
     return m_actionData->valid;
 }
 
-bool RS_ActionDrawCircleTan1_2P::preparePreview(){
+bool RS_ActionDrawCircleTan1_2P::preparePreview() const {
     if (m_actionData->centers.empty()) {
         getCenters();
     }

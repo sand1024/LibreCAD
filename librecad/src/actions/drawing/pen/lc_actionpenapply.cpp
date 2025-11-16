@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "qc_applicationwindow.h"
 #include "qg_pentoolbar.h"
+#include "rs_document.h"
 #include "rs_entity.h"
 #include "rs_modification.h"
 #include "rs_pen.h"
@@ -87,7 +88,7 @@ void LC_ActionPenApply::finish(bool updateTB){
     m_srcEntity = nullptr;
 }
 
-void LC_ActionPenApply::applyPen(RS_Entity* en, RS_Pen penToApply) {
+void LC_ActionPenApply::applyPen(RS_Entity* en, RS_Pen penToApply) const {
     // do actual modifications
     RS_AttributesData data;
     data.pen = penToApply;
@@ -97,11 +98,11 @@ void LC_ActionPenApply::applyPen(RS_Entity* en, RS_Pen penToApply) {
     data.changeWidth = true;
     data.changeLayer = false;
 
-    std::vector<RS_Entity *> selectedEntities;
+    QList<RS_Entity *> selectedEntities;
     selectedEntities.push_back(en);
 
-    RS_Modification m(*m_container, m_viewport);
-    m.changeAttributes(data, selectedEntities, m_container, false);
+    RS_Modification m(m_document, m_viewport);
+    m.changeAttributesOld(data, selectedEntities, false);
 }
 
 void LC_ActionPenApply::onMouseLeftButtonRelease([[maybe_unused]]int status, LC_MouseEvent *e) {

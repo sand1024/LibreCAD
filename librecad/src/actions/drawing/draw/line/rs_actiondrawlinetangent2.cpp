@@ -26,6 +26,7 @@
 
 #include "rs_actiondrawlinetangent2.h"
 
+#include "rs_document.h"
 #include "rs_creation.h"
 #include "rs_line.h"
 #include "rs_polyline.h"
@@ -50,7 +51,7 @@ namespace {
 }
 
 RS_ActionDrawLineTangent2::RS_ActionDrawLineTangent2(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("Draw Tangents 2", actionContext, RS2::ActionDrawLineTangent2), m_actionData{std::make_unique<ActionData>()}{
+    :LC_SingleEntityCreationAction("Draw Tangents 2", actionContext, RS2::ActionDrawLineTangent2), m_actionData{std::make_unique<ActionData>()}{
 }
 
 RS_ActionDrawLineTangent2::~RS_ActionDrawLineTangent2(){
@@ -85,20 +86,20 @@ void RS_ActionDrawLineTangent2::finish(bool updateTB){
     RS_PreviewActionInterface::finish(updateTB);
 }
 
-void RS_ActionDrawLineTangent2::doTrigger() {
+RS_Entity* RS_ActionDrawLineTangent2::doTriggerCreateEntity() {
     if (m_actionData->tangents.empty() || m_actionData->tangents.front() == nullptr) {
-        return;
+        return nullptr;
     }
+    auto newEntity = new RS_Line{m_document, m_actionData->tangents.front()->getData()};
+    return newEntity;
+}
 
-    auto *newEntity = new RS_Line{m_container, m_actionData->tangents.front()->getData()};
-
-    setPenAndLayerToActive(newEntity);
-    undoCycleAdd(newEntity);
+void RS_ActionDrawLineTangent2::doTriggerCompletion(bool success) {
     cleanup();
     setStatus(SetCircle1);
 }
 
-void RS_ActionDrawLineTangent2::cleanup(){
+void RS_ActionDrawLineTangent2::cleanup() const {
     m_actionData->circle1 = nullptr;
     m_actionData->circle2 = nullptr;
 }
@@ -121,7 +122,7 @@ void RS_ActionDrawLineTangent2::onMouseMoveEvent(int status, LC_MouseEvent *e) {
                 highlightHover(en);
                 m_actionData->circle2 = en;
 
-                m_actionData->tangents = RS_Creation{m_preview.get(), nullptr, false}.createTangent2(m_actionData->circle1, m_actionData->circle2);
+                m_actionData->tangents = RS_Creation::createTangent2(m_actionData->circle1, m_actionData->circle2);
                 if (m_actionData->tangents.empty()){
                 } else {
                     preparePreview(status, e);
@@ -151,7 +152,7 @@ void RS_ActionDrawLineTangent2::onMouseLeftButtonRelease(int status, LC_MouseEve
             break;
         }
         case SetCircle2: {
-            m_actionData->tangents = RS_Creation{m_preview.get()}.createTangent2(m_actionData->circle1, m_actionData->circle2);
+            m_actionData->tangents = RS_Creation::createTangent2(m_actionData->circle1, m_actionData->circle2);
             if (!m_actionData->tangents.empty()){
                 if (m_actionData->tangents.size() == 1){
                     trigger();

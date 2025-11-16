@@ -169,18 +169,18 @@ private:
     bool writeLineTypeGenerics(DRW_LType* ent, int handle);
     bool setError(const DRW::error lastError);
 
-    inline bool writeString(int code, const std::string &text);
-    inline bool writeDouble(int code, double d);
-    inline bool writeDoubleOpt(int code, double d);
-    inline bool writeUtf8String(int code, const std::string &text);
-    inline bool writeUtf8Caps(int code, const std::string& text);
-    inline bool writeHandle(int code, int handle);
-    inline bool writeInt16(int code, int val);
-    inline bool writeInt32(int code, int val);
-    inline bool writeBool(int code, bool val);
-    inline bool readRec(int *codeData);
+    inline bool writeString(int code, const std::string &text) const;
+    inline bool writeDouble(int code, double d) const;
+    inline bool writeDoubleOpt(int code, double d) const;
+    inline bool writeUtf8String(int code, const std::string &text) const;
+    inline bool writeUtf8Caps(int code, const std::string& text) const;
+    inline bool writeHandle(int code, int handle) const;
+    inline bool writeInt16(int code, int val) const;
+    inline bool writeInt32(int code, int val) const;
+    inline bool writeBool(int code, bool val) const;
+    inline bool readRec(int *codeData) const;
 
-    inline std::string getString();
+    inline std::string getString() const;
     inline void writeSectionStart(const std::string& name);
     inline void writeSectionEnd();
     inline void writeSymTypeRecord(const std::string& typeName);

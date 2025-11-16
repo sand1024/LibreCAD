@@ -40,7 +40,7 @@ public:
 
 public slots:
     void setData( RS_Rotate2Data * d );
-    void updateData();
+    void updateData() const;
 
 protected:
     int newVariable = 0;
@@ -57,7 +57,7 @@ private:
     RS_Rotate2Data* data = nullptr;
     QString angle1;
 
-    void init();
+    void init() const;
 };
 
 #endif // QG_DLGROTATE2_H

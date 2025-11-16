@@ -51,15 +51,15 @@ QString LC_ShortcutTreeItem::getName() {
     return m_text;
 }
 
-void LC_ShortcutTreeItem::clearShortcut(){
+void LC_ShortcutTreeItem::clearShortcut() const {
     m_shortcutInfo->clear();
 }
 
-void LC_ShortcutTreeItem::resetShortcutToDefault(){
+void LC_ShortcutTreeItem::resetShortcutToDefault() const {
     m_shortcutInfo->resetToDefault();
 }
 
-LC_ShortcutInfo* LC_ShortcutTreeItem::getShortcutInfo() {
+LC_ShortcutInfo* LC_ShortcutTreeItem::getShortcutInfo() const {
     return m_shortcutInfo;
 }
 
@@ -96,11 +96,11 @@ LC_ShortcutTreeItem* LC_ShortcutTreeItem::addChild(QAction *act, LC_ShortcutInfo
     return child;
 }
 
-LC_ShortcutTreeItem *LC_ShortcutTreeItem::child(int row){
+LC_ShortcutTreeItem *LC_ShortcutTreeItem::child(int row) const {
     return m_childItems.value(row);
 }
 
-QString LC_ShortcutTreeItem::getShortcutViewString() {
+QString LC_ShortcutTreeItem::getShortcutViewString() const {
     if (m_group){
         return "";
     }

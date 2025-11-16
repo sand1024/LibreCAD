@@ -27,7 +27,7 @@
 #include "rs_actiondrawcircle.h"
 
 #include "rs_circle.h"
-#include "rs_debug.h"
+#include "rs_document.h"
 
 RS_ActionDrawCircle::RS_ActionDrawCircle(LC_ActionContext *actionContext)
         :LC_ActionDrawCircleBase("Draw circles",actionContext, RS2::ActionDrawCircle)
@@ -40,19 +40,17 @@ void RS_ActionDrawCircle::reset() {
     m_circleData = std::make_unique<RS_CircleData>();
 }
 
-void RS_ActionDrawCircle::doTrigger() {
-    auto* circle = new RS_Circle(m_container,*m_circleData);
-    setPenAndLayerToActive(circle);
-
+RS_Entity* RS_ActionDrawCircle::doTriggerCreateEntity() {
+    auto* circle = new RS_Circle(m_document,*m_circleData);
     if (m_moveRelPointAtCenterAfterTrigger){
         moveRelativeZero(circle->getCenter());
     }
+    return circle;
+}
 
-    undoCycleAdd(circle);
+void RS_ActionDrawCircle::doTriggerCompletion(bool success) {
     setStatus(SetCenter);
     reset();
-
-    RS_DEBUG->print("RS_ActionDrawCircle::trigger(): circle added: %lu",circle->getId());
 }
 
 void RS_ActionDrawCircle::onMouseMoveEvent(int status, LC_MouseEvent *e) {
@@ -94,7 +92,6 @@ void RS_ActionDrawCircle::onCoordinateEvent(int status, [[maybe_unused]] bool is
                 m_circleData->radius = m_circleData->center.distanceTo(mouse);
                 trigger();
             }
-            //setStatus(SetCenter);
             break;
         default:
             break;

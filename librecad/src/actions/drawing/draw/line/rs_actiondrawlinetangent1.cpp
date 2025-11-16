@@ -28,6 +28,7 @@
 
 #include "rs_creation.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_line.h"
 #include "rs_polyline.h"
 
@@ -41,7 +42,7 @@ namespace {
 }
 
 RS_ActionDrawLineTangent1::RS_ActionDrawLineTangent1(LC_ActionContext *actionContext)
-	:RS_PreviewActionInterface("Draw Tangents 1", actionContext,RS2::ActionDrawLineTangent1)
+	:LC_SingleEntityCreationAction("Draw Tangents 1", actionContext,RS2::ActionDrawLineTangent1)
 	,m_tangent(nullptr)
 	,m_point(new RS_Vector{}){
 }
@@ -62,17 +63,18 @@ void RS_ActionDrawLineTangent1::doInitWithContextEntity(RS_Entity* contextEntity
     }
 }
 
-void RS_ActionDrawLineTangent1::doTrigger() {
+RS_Entity* RS_ActionDrawLineTangent1::doTriggerCreateEntity() {
     if (m_tangent != nullptr){
-        auto *newEntity = new RS_Line(m_container, m_tangent->getData());
-
-        setPenAndLayerToActive(newEntity);
-        undoCycleAdd(newEntity);
-        setStatus(SetPoint);
-        m_tangent.reset();
-    } else {
-        RS_DEBUG->print("RS_ActionDrawLineTangent1::trigger: Entity is nullptr\n");
+        auto *newEntity = new RS_Line(m_document, m_tangent->getData());
+        return newEntity;
     }
+    RS_DEBUG->print("RS_ActionDrawLineTangent1::trigger: Entity is nullptr\n");  // fixme - sand - check whether it's possible
+    return nullptr;
+}
+
+void RS_ActionDrawLineTangent1::doTriggerCompletion(bool success) {
+    setStatus(SetPoint);
+    m_tangent.reset();
 }
 
 void RS_ActionDrawLineTangent1::onMouseMoveEvent(int status, LC_MouseEvent *e) {
@@ -86,12 +88,11 @@ void RS_ActionDrawLineTangent1::onMouseMoveEvent(int status, LC_MouseEvent *e) {
                 highlightSelected(m_entity);
                 RS_Vector tangentPoint;
                 RS_Vector altTangentPoint;
-                RS_Creation creation(nullptr, nullptr);
-                auto* tangentLine = creation.createTangent1(mouse, *m_point, m_entity, tangentPoint, altTangentPoint);
+                auto* tangentLine = RS_Creation::createTangent1(mouse, *m_point, m_entity, tangentPoint, altTangentPoint);
                 m_tangent.reset(tangentLine);
                 if (tangentLine != nullptr) {
                     if (e->isControl) {
-                        tangentLine = creation.createTangent1(altTangentPoint, *m_point, m_entity, tangentPoint, altTangentPoint);
+                        tangentLine = RS_Creation::createTangent1(altTangentPoint, *m_point, m_entity, tangentPoint, altTangentPoint);
                         m_tangent.reset(tangentLine);
                     }
 
@@ -121,8 +122,7 @@ void RS_ActionDrawLineTangent1::onMouseMoveEvent(int status, LC_MouseEvent *e) {
                     else {
                         RS_Vector tangentPoint;
                         RS_Vector altTangentPoint;
-                        RS_Creation creation(nullptr, nullptr);
-                        auto* tangentLine = creation.createTangent1(mouse, *m_point, en, tangentPoint, altTangentPoint);
+                        auto* tangentLine = RS_Creation::createTangent1(mouse, *m_point, en, tangentPoint, altTangentPoint);
                         m_tangent.reset(tangentLine);
 
                         if (tangentLine != nullptr) {

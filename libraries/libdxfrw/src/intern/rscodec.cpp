@@ -57,7 +57,7 @@ RScodec::~RScodec() {
                    polynomial form -> index form  index_of[j=alpha**i] = i
    alpha=2 is the primitive element of GF(2^mm)
 */
-void RScodec::RSgenerate_gf(unsigned int pp) {
+void RScodec::RSgenerate_gf(unsigned int pp) const {
     int i, mask ;
     int pb;
 
@@ -111,8 +111,7 @@ void RScodec::RSgen_poly() {
     for (i=0; i<=bb; i++)  gg[i] = index_of[gg[i]] ;
 }
 
-int RScodec::calcDecode(unsigned char* data, int* recd, int** elp, int* d, int* l, int* u_lu, int* s, int* root, int* loc, int* z, int* err, int* reg, int bb)
-{
+int RScodec::calcDecode(unsigned char* data, int* recd, int** elp, int* d, int* l, int* u_lu, int* s, int* root, int* loc, int* z, int* err, int* reg, int bb) const {
     if (!isOk) return -1;
     int count = 0;
     int syn_error = 0;
@@ -316,7 +315,7 @@ int RScodec::calcDecode(unsigned char* data, int* recd, int** elp, int* d, int* 
    Encoding is done by using a feedback shift register with appropriate
    connections specified by the elements of gg[], which was generated above.
    Codeword is   c(X) = data(X)*X**(nn-kk)+ b(X)         */
-bool RScodec::encode(unsigned char *data, unsigned char *parity) {
+bool RScodec::encode(unsigned char *data, unsigned char *parity) const {
     if (!isOk) return false;
     int i,j ;
     int feedback ;

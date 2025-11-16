@@ -63,9 +63,9 @@ public slots:
     void buildTree();
     void appendTree( QStandardItem * item, QString directory );
     void updatePreview( QModelIndex idx );
-    void expandView( QModelIndex idx );
-    void collapseView( QModelIndex idx );
-    void updateWidgetSettings();
+    void expandView( QModelIndex idx ) const;
+    void collapseView( QModelIndex idx ) const;
+    void updateWidgetSettings() const;
 signals:
     void escape();private:
     QG_ActionHandler* actionHandler = nullptr;

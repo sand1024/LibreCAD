@@ -252,7 +252,7 @@ void LC_UCSListWidget::updateData(bool restoreSelectionIfPossible) {
     emit ucsListChanged();
 }
 
-void LC_UCSListWidget::restoreSingleSelectedRow(bool restoreSelectionIfPossible, int selectedRow) {
+void LC_UCSListWidget::restoreSingleSelectedRow(bool restoreSelectionIfPossible, int selectedRow) const {
     if (restoreSelectionIfPossible && selectedRow > 0){
         int itemsCount = m_ucsListModel->count();
         if (itemsCount > 0) {
@@ -290,7 +290,7 @@ void LC_UCSListWidget::invokeOptionsDialog() {
     }
 }
 
-void LC_UCSListWidget::saveCurrentUCS() {
+void LC_UCSListWidget::saveCurrentUCS(){
     m_viewport->extractUCS(); // fixme -sand - ucs - hm... to much logic under the hood of viewport, huh?
 }
 
@@ -308,7 +308,7 @@ void LC_UCSListWidget::previewUCS(){
     }
 }
 
-void LC_UCSListWidget::previewExistingUCS(LC_UCS* ucs){
+void LC_UCSListWidget::previewExistingUCS(LC_UCS* ucs) const {
     m_graphicView->highlightUCSLocation(ucs);
 }
 
@@ -394,7 +394,7 @@ void LC_UCSListWidget::removeUCS() {
     }
 }
 
-void LC_UCSListWidget::setUCSByDimOrdinate() {
+void LC_UCSListWidget::setUCSByDimOrdinate() const {
     if (m_graphicView != nullptr) {
         auto actionContext = QC_ApplicationWindow::getAppWindow()->getActionContext();
         actionContext->setCurrentAction(RS2::ActionUCSSetByDimOrdinate, nullptr);
@@ -410,7 +410,7 @@ void LC_UCSListWidget::editUCS() {
     }
 }
 
-void LC_UCSListWidget::setWCS() {
+void LC_UCSListWidget::setWCS() const {
     if (m_viewport != nullptr) {
         if (m_currentUCSList == nullptr) { // block is edited
             m_viewport->applyUCS(new LC_WCS());
@@ -461,7 +461,7 @@ void LC_UCSListWidget::loadOptions() {
 }
 
 void LC_UCSListWidget::onTableSelectionChanged([[maybe_unused]] const QItemSelection &selected,
-                                                      [[maybe_unused]] const QItemSelection &deselected){
+                                                      [[maybe_unused]] const QItemSelection &deselected) const {
     updateButtonsState();
 }
 
@@ -589,7 +589,7 @@ LC_UCS *LC_UCSListWidget::getSelectedUCS() {
     return result;
 }
 
-QModelIndex LC_UCSListWidget::getSelectedItemIndex(){
+QModelIndex LC_UCSListWidget::getSelectedItemIndex() const {
     QModelIndex result;
     QModelIndexList selectedIndexes = ui->tvTable->selectionModel()->selectedRows();
     if (selectedIndexes.size() == 1){ // only one selected item is expected
@@ -598,7 +598,7 @@ QModelIndex LC_UCSListWidget::getSelectedItemIndex(){
     return result;
 }
 
-void LC_UCSListWidget::removeExistingUCS(LC_UCS *ucs) {
+void LC_UCSListWidget::removeExistingUCS(LC_UCS *ucs) const {
     m_currentUCSList->remove(ucs);
 }
 
@@ -608,7 +608,7 @@ void LC_UCSListWidget::renameExistingUCS(QString newName, LC_UCS *ucs) {
 }
 
 
-void LC_UCSListWidget::selectUCS(LC_UCS *view) {
+void LC_UCSListWidget::selectUCS(LC_UCS *view) const {
     QModelIndex index = m_ucsListModel->getIndexForUCS(view);
     if (index.isValid()){
         ui->tvTable->clearSelection();
@@ -616,17 +616,17 @@ void LC_UCSListWidget::selectUCS(LC_UCS *view) {
     }
 }
 
-void LC_UCSListWidget::applyUCS(LC_UCS *ucs) {
+void LC_UCSListWidget::applyUCS(LC_UCS *ucs) const {
     m_viewport->applyUCS(ucs);
 }
 
-void LC_UCSListWidget::fillUCSList(QList<LC_UCS *> &list) {
+void LC_UCSListWidget::fillUCSList(QList<LC_UCS *> &list) const {
     if (m_currentUCSList != nullptr){
         m_ucsListModel->fillUCSsList(list);
     }
 }
 
-QIcon LC_UCSListWidget::getUCSTypeIcon(LC_UCS *view) {
+QIcon LC_UCSListWidget::getUCSTypeIcon(LC_UCS *view) const {
     return m_ucsListModel->getTypeIcon(view);
 }
 
@@ -639,7 +639,7 @@ QWidget *LC_UCSListWidget::createSelectionWidget(QAction* createAction, QAction*
     return m_ucsListButton;
 }
 
-QModelIndex LC_UCSListWidget::getIndexForUCS(LC_UCS *u) {
+QModelIndex LC_UCSListWidget::getIndexForUCS(LC_UCS *u) const {
     return m_ucsListModel->getIndexForUCS(u);
 }
 
@@ -652,7 +652,7 @@ void LC_UCSListWidget::applyUCSByIndex(QModelIndex index) {
     }
 }
 
-LC_UCS *LC_UCSListWidget::getActiveUCS() {
+LC_UCS *LC_UCSListWidget::getActiveUCS() const {
     return m_ucsListModel->getActiveUCS();
 }
 
@@ -660,7 +660,7 @@ void LC_UCSListWidget::setStateWidget(LC_UCSStateWidget *stateWidget) {
     m_ucsStateWidget = stateWidget;
 }
 
-void LC_UCSListWidget::updateWidgetSettings(){
+void LC_UCSListWidget::updateWidgetSettings() const {
     LC_GROUP("Widgets"); {
         bool flatIcons = LC_GET_BOOL("DockWidgetsFlatIcons", true);
         int iconSize = LC_GET_INT("DockWidgetsIconSize", 16);

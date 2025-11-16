@@ -43,7 +43,7 @@ public:
     ~RS_ActionSelectWindow() override;
     void init(int status) override;
     void mousePressEvent(QMouseEvent *e) override;
-    bool isSelectAllEntityTypes();
+    bool isSelectAllEntityTypes() const;
     void setSelectAllEntityTypes(bool val);
     QList<RS2::EntityType> getEntityTypesToSelect();
     void setEntityTypesToSelect(QList<RS2::EntityType> type);
@@ -71,5 +71,8 @@ protected:
     void updateMouseButtonHints() override;
     void doTrigger() override;
     LC_ActionOptionsWidget *createOptionsWidget() override;
+
+    // fixme - sand - complete!
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& modificationData) override {return true;};
 };
 #endif

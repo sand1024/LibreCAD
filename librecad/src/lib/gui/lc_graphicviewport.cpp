@@ -76,14 +76,14 @@ void LC_GraphicViewport::setBorders(int left, int top, int right, int bottom) {
     borderBottom = bottom;
 }
 
-bool LC_GraphicViewport::areAnglesCounterClockwise(){
+bool LC_GraphicViewport::areAnglesCounterClockwise() const {
     if (graphic != nullptr){
         return graphic->areAnglesCounterClockWise();
     }
     return true;
 }
 
-double LC_GraphicViewport::getAnglesBaseAngle(){
+double LC_GraphicViewport::getAnglesBaseAngle() const {
     if (graphic != nullptr){
         return graphic->getAnglesBase();
     }
@@ -113,7 +113,7 @@ bool LC_GraphicViewport::isGridIsometric() const {
 }
 
 
-void LC_GraphicViewport::setIsoViewType(RS2::IsoGridViewType chType) {
+void LC_GraphicViewport::setIsoViewType(RS2::IsoGridViewType chType) const {
     grid->setIsoViewType(chType);
 }
 
@@ -382,7 +382,7 @@ void LC_GraphicViewport::removeViewportListener(LC_GraphicViewPortListener *list
 }
 
 
-void LC_GraphicViewport::fireViewportChanged(){
+void LC_GraphicViewport::fireViewportChanged() const {
     invalidateGrid();
     for (int i=0; i<viewportListeners.size(); ++i) {
         LC_GraphicViewPortListener* l = viewportListeners.at(i);
@@ -390,18 +390,18 @@ void LC_GraphicViewport::fireViewportChanged(){
     }
 }
 
-void LC_GraphicViewport::invalidateGrid() {
+void LC_GraphicViewport::invalidateGrid() const {
     grid->invalidate(isGridOn());
 }
 
-void LC_GraphicViewport::fireRedrawNeeded(){
+void LC_GraphicViewport::fireRedrawNeeded() const {
     for (int i=0; i<viewportListeners.size(); ++i) {
         LC_GraphicViewPortListener* l = viewportListeners.at(i);
         l->onViewportRedrawNeeded();
     }
 }
 
-void LC_GraphicViewport::fireUcsChanged(LC_UCS *ucs) {
+void LC_GraphicViewport::fireUcsChanged(LC_UCS *ucs) const {
     invalidateGrid();
     for (int i=0; i<viewportListeners.size(); ++i) {
         LC_GraphicViewPortListener* l = viewportListeners.at(i);
@@ -414,7 +414,7 @@ void LC_GraphicViewport::firePreviousZoomChanged([[maybe_unused]]bool value) {
 //     emit previous_zoom_state(true);
 }
 
-void LC_GraphicViewport::fireRelativeZeroChanged(const RS_Vector &pos){
+void LC_GraphicViewport::fireRelativeZeroChanged(const RS_Vector &pos) const {
     for (int i=0; i<viewportListeners.size(); ++i) {
         LC_GraphicViewPortListener* l = viewportListeners.at(i);
         l->onRelativeZeroChanged(pos);
@@ -759,7 +759,7 @@ void LC_GraphicViewport::toUI(RS_Vector wcsCoordinate, double &uiX, double &uiY)
     }
 };
 
-void LC_GraphicViewport::loadGridSettings() {
+void LC_GraphicViewport::loadGridSettings() const {
     if (grid != nullptr){
         grid->loadSettings();
     }
@@ -1037,7 +1037,6 @@ void LC_GraphicViewport::doUpdateViewByGraphicView(LC_View *view) const {
  */
 void LC_GraphicViewport::setRelativeZero(const RS_Vector &pos) {
     if (!relativeZeroLocked) {
-        markedRelativeZero = relativeZero;
         relativeZero = pos;
         fireRelativeZeroChanged(pos);
     }
@@ -1197,14 +1196,14 @@ void LC_GraphicViewport::zoomPageEx() {
     fireViewportChanged();
 }
 
-void LC_GraphicViewport::clearOverlayEntitiesContainer(RS2::OverlayGraphics overlayType) {
+void LC_GraphicViewport::clearOverlayEntitiesContainer(RS2::OverlayGraphics overlayType) const {
     auto overlayEntities = overlaysManager.entitiesAt(overlayType);
     if (overlayEntities != nullptr) {
         overlayEntities->clear();
     }
 }
 
-void LC_GraphicViewport::clearOverlayDrawablesContainer(RS2::OverlayGraphics overlayType) {
+void LC_GraphicViewport::clearOverlayDrawablesContainer(RS2::OverlayGraphics overlayType) const {
     auto overlayDrawables = overlaysManager.drawablesAt(overlayType);
     if (overlayDrawables != nullptr) {
         overlayDrawables->clear();

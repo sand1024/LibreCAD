@@ -53,12 +53,12 @@ private:
     Ui::LC_LinePointsOptions *ui = nullptr;
     LC_ActionDrawLinePoints* m_action = nullptr;
     bool m_inUpdateCycle = false;
-    void setPointsCountActionAndView(int value);
-    void setEdgePointsModeToActionAndView(int index);
-    void setFixedDistanceModeToActionAndView(bool value);
-    void setWithinLineModeToActionAndView(bool value);
+    void setPointsCountActionAndView(int value) const;
+    void setEdgePointsModeToActionAndView(int index) const;
+    void setFixedDistanceModeToActionAndView(bool value) const;
+    void setWithinLineModeToActionAndView(bool value) const;
     void setDistanceToActionAndView(QString val);
-    void setAngleModeToActionAndView(bool value);
+    void setAngleModeToActionAndView(bool value) const;
     void setAngleToActionAndView(QString val, bool affectState);
 };
 #endif // LC_LINEPOINTSOPTIONS_H

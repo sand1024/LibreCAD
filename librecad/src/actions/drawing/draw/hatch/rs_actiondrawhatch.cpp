@@ -33,6 +33,7 @@
 #include "rs_information.h"
 #include "rs_pen.h"
 
+
 namespace {
     bool hatchAble(RS_Entity *entity) {
         if (entity == nullptr) {
@@ -76,79 +77,73 @@ bool RS_ActionDrawHatch::isAllowTriggerOnEmptySelection() {
     return false;
 }
 
-void RS_ActionDrawHatch::doTrigger([[maybe_unused]]bool keepSelected) {
+void RS_ActionDrawHatch::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+   // fixme - complete
+}
 
+bool RS_ActionDrawHatch::doTriggerModificationsPrepare(LC_DocumentModificationBatch& modificationData) {
+    // fixme - complete ! !!!!
     RS_DEBUG->print("RS_ActionDrawHatch::trigger()");
 
-    RS_Hatch tmp(m_container, *m_hatchData);
+    RS_Hatch tmp(m_document, *m_hatchData);
     setPenAndLayerToActive(&tmp);
 
     if (RS_DIALOGFACTORY->requestHatchDialog(&tmp, m_viewport)) {
         *m_hatchData = tmp.getData();
 
-        // fixme - sand - optimize that mess with cycles!!!
-        // deselect unhatchable entities:
-        // fixme - sand -  iteration over all entities in container
-        for(auto e: *m_container) {
-            if (e->isSelected() && !hatchAble(e))
-                e->setSelected(false);
-        }
-        // fixme - sand -  iteration over all entities in container
-        std::vector<RS_Entity*> entities = lc::LC_ContainerTraverser{*m_container, RS2::ResolveAll}.entities();
-        for (RS_Entity* e: entities) {
-            if (e->isSelected() && !hatchAble(e))
-                e->setSelected(false);
-        }
+        LC_SelectedSet* selection = m_document->getSelectedSet();
+        QList<RS_Entity*> entitiesList;
 
-        // fixme - sand -  iteration over all entities in container
-        // look for selected contours:
-        bool haveContour = false;
+        // deselect unhatchable entities:
+        for(auto e: *m_document) {
+            if (!hatchAble(e)) {
+                entitiesList.push_back(e);
+            }
+        }
+        for (const auto e: entitiesList) {
+            unselect(e);
+        }
+        entitiesList.clear();
+
+        // fixme - sand -  iteration over all entities in container... Is it really necessary????
+        std::vector<RS_Entity*> entities = lc::LC_ContainerTraverser{*m_document, RS2::ResolveAll}.entities();
         for (RS_Entity* e: entities) {
-            if (e->isSelected()) {
-                haveContour = true;
+            if (e->isSelected()){
+                if (!hatchAble(e)) {
+                    unselect(e);
+                }
+                else {
+                    entitiesList.push_back(e); // store to later use and to avoid full traversal
+                }
             }
         }
 
-        if (!haveContour){
+        // look for selected contours:
+        bool hasContour = !selection->isEmpty();
+        if (!hasContour){
             LC_ERR << "RS_ActionDrawHatch:: "<<__func__<<"(): line "<<__LINE__<<", no contour selected\n";
-            return;
+            return false;
         }
 
-        std::unique_ptr<RS_Hatch> hatch = std::make_unique<RS_Hatch>(m_container, *m_hatchData);
-        hatch->setLayerToActive();
-        hatch->setPenToActive();
-        auto *loop = new RS_EntityContainer(hatch.get());
+        auto* hatch = new RS_Hatch(m_document, *m_hatchData);
+        hatch->setPenAndLayerToActive();
+        auto *loop = new RS_EntityContainer(hatch);
         loop->setPen(RS_Pen(RS2::FlagInvalid));
 
         // add selected contour:
-        entities = lc::LC_ContainerTraverser{*m_container, RS2::ResolveAll}.entities();
-        for (RS_Entity* e: entities) {
-
-            if (e->isSelected()){
-                e->setSelected(false);
-                // entity is part of a complex entity (spline, polyline, ..):
-                if (e->getParent() &&
-                    // RVT - Don't de-delect the parent EntityPolyline, this is messing up the getFirst and getNext iterators
-                    //			    (e->getParent()->rtti()==RS2::EntitySpline ||
-                    //				 e->getParent()->rtti()==RS2::EntityPolyline)) {
-                    (e->getParent()->rtti()==RS2::EntitySpline)) {
-                    e->getParent()->setSelected(false);
-                }
-                RS_Entity *cp = e->clone();
-                cp->setPen(RS_Pen(RS2::FlagInvalid));
-                cp->reparent(loop);
-                loop->addEntity(cp);
-            }
+        for (RS_Entity* e: entitiesList) {
+            RS_Entity* clone = e->clone();
+            clone->setPen(RS_Pen(RS2::FlagInvalid));
+            clone->reparent(loop);
+            loop->addEntity(clone);
         }
+
+        unselectAll();
 
         hatch->addEntity(loop);
         if (hatch->validate()){
-
-            undoCycleAdd(hatch.get());
-
+            undoableAdd(hatch);
             hatch->update();
-
-            redrawDrawing();
 
             bool printArea = true;
             switch( hatch->getUpdateError()) {
@@ -177,18 +172,17 @@ void RS_ActionDrawHatch::doTrigger([[maybe_unused]]bool keepSelected) {
                 commandMessage(tr("Total hatch area = %1").
                     arg(hatch->getTotalArea(), 12, 'g', 10));
             }
-
-            hatch.release();
-
         } else {
-            hatch.reset();
+            delete hatch;
             commandMessage(tr("Invalid hatch area. Please check that the entities chosen form one or more closed contours."));
         }
     }
-    finish(false);
+    return true;
 }
 
-
+void RS_ActionDrawHatch::doTriggerCompletion(bool success) {
+    finish(false);
+}
 
 void RS_ActionDrawHatch::doSelectEntity(RS_Entity* entityToSelect, [[maybe_unused]] bool selectContour) const {
     // try to minimize selection clicks - and select contour based on selected entity. May be optional, but what for?

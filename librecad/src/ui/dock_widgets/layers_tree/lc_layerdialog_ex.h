@@ -59,8 +59,8 @@ public:
     void setLayer(const RS_Layer *layer) const;
     void allowChangingLayerType(bool value);
     RS_Pen getPen() const;
-    bool isConstruction() {return cbConstructionLayer->isChecked();};
-    void setConstruction(bool enable) {cbConstructionLayer->setChecked(enable);};
+    bool isConstruction() const {return cbConstructionLayer->isChecked();};
+    void setConstruction(bool enable) const {cbConstructionLayer->setChecked(enable);};
     QString getLayerName() const;
 public slots:
     void validate();

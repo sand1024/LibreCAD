@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "lc_quadratic.h"
 #include "rs_circle.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_information.h"
 #include "rs_line.h"
 
@@ -45,6 +46,7 @@ struct RS_ActionDrawCircleTan3::ActionData {
 		std::vector<std::shared_ptr<RS_CircleData> > candidates;
 		RS_VectorSolutions centers;
 };
+
 /**
  * Constructor.
  *
@@ -85,19 +87,17 @@ void RS_ActionDrawCircleTan3::finish(bool updateTB){
     RS_PreviewActionInterface::finish(updateTB);
 }
 
-void RS_ActionDrawCircleTan3::doTrigger() {
-    auto circle = new RS_Circle(m_container, *m_actionData->cData);
-
+RS_Entity* RS_ActionDrawCircleTan3::doTriggerCreateEntity() {
+    auto circle = new RS_Circle(m_document, *m_actionData->cData);
     if (m_moveRelPointAtCenterAfterTrigger){
         moveRelativeZero(circle->getCenter());
     }
+    return circle;
+}
 
-    undoCycleAdd(circle);
-
+void RS_ActionDrawCircleTan3::doTriggerCompletion(bool success) {
     m_actionData->circles.clear();
     setStatus(SetCircle1);
-
-    RS_DEBUG->print("RS_ActionDrawCircleTan3::trigger(): entity added: %lu", circle->getId());
 }
 
 void RS_ActionDrawCircleTan3::onMouseMoveEvent(int status, LC_MouseEvent *e) {
@@ -150,7 +150,7 @@ void RS_ActionDrawCircleTan3::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     }
 }
 
-bool RS_ActionDrawCircleTan3::getData(RS_Entity* testThirdEntity) {
+bool RS_ActionDrawCircleTan3::getData(RS_Entity* testThirdEntity) const {
     std::vector<RS_AtomicEntity*> circlesList;
     if (testThirdEntity != nullptr) {
         std::vector<RS_AtomicEntity*> testCirclesList = m_actionData->circles;
@@ -320,7 +320,7 @@ bool RS_ActionDrawCircleTan3::getData(RS_Entity* testThirdEntity) {
     return m_actionData->valid;
 }
 
-bool RS_ActionDrawCircleTan3::preparePreview(){
+bool RS_ActionDrawCircleTan3::preparePreview() const {
     if (getStatus() != SetCenter || m_actionData->valid == false){
         m_actionData->valid = false;
         return false;

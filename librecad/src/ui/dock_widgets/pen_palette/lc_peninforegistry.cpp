@@ -241,7 +241,7 @@ QString LC_PenInfoRegistry::getColorName(const RS_Color &color, int colorNameMod
  * @param typeCandidate potential line type
  * @return true if this is valid line type value
  */
-bool LC_PenInfoRegistry::hasLineType(int typeCandidate){
+bool LC_PenInfoRegistry::hasLineType(int typeCandidate) const {
     RS2::LineType lineType = static_cast<RS2::LineType>(typeCandidate);
     return m_lineTypesNamesMap.contains(lineType);
 }
@@ -251,7 +251,7 @@ bool LC_PenInfoRegistry::hasLineType(int typeCandidate){
  * @param typeCandidate potential line width
  * @return true if this is valid line width value
  */
-bool LC_PenInfoRegistry::hasLineWidth(int widthCandidate){
+bool LC_PenInfoRegistry::hasLineWidth(int widthCandidate) const {
     RS2::LineWidth lineWidth = static_cast<RS2::LineWidth>(widthCandidate);
     return m_lineWidthNamesMap.contains(lineWidth);
 }

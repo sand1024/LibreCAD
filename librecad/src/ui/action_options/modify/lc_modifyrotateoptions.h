@@ -62,17 +62,17 @@ protected:
 private:
     Ui::LC_ModifyRotateOptions *ui;
     RS_ActionModifyRotate* m_action = nullptr;
-    void setUseMultipleCopiesToActionAndView(bool copies);
-    void setUseCurrentLayerToActionAndView(bool val);
-    void setUseCurrentAttributesToActionAndView(bool val);
-    void setKeepOriginalsToActionAndView(bool val);
-    void setCopiesNumberToActionAndView(int number);
-    void setFreeAngleToActionAndView(bool val);
-    void setFreeRefAngleToActionAndView(bool val);
-    void setAbsoluteRefAngleToActionAndView(bool val);
+    void setUseMultipleCopiesToActionAndView(bool copies) const;
+    void setUseCurrentLayerToActionAndView(bool val) const;
+    void setUseCurrentAttributesToActionAndView(bool val) const;
+    void setKeepOriginalsToActionAndView(bool val) const;
+    void setCopiesNumberToActionAndView(int number) const;
+    void setFreeAngleToActionAndView(bool val) const;
+    void setFreeRefAngleToActionAndView(bool val) const;
+    void setAbsoluteRefAngleToActionAndView(bool val) const;
     void setTwoRotationsToActionAndView(bool val);
     void setAngleToActionAndView(QString val);
     void setRefPointAngleToActionAndView(QString val);
-    void allowSecondRotationUI(bool enable);
+    void allowSecondRotationUI(bool enable) const;
 };
 #endif // LC_MODIFYROTATEOPTIONS_H

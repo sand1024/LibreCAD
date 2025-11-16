@@ -151,7 +151,7 @@ public:
     QString readStr(const QString& key,const QString& def = QString());
     bool readBool(const QString &key, bool defaultValue = false);
     bool readBoolSingle(const QString& group, const QString &key, bool defaultValue = false);
-    QByteArray readByteArraySingle(const QString &group, const QString &key);
+    QByteArray readByteArraySingle(const QString &group, const QString &key) const;
     QByteArray readByteArray(const QString &key);
 
     void clear_all();

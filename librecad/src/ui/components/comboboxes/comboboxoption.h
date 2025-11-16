@@ -20,7 +20,7 @@ signals:
     void optionToSave(QString);
 private slots:
     void saveIndexAndEmitOption();
-    void setButtonState(int);
+    void setButtonState(int) const;
 private:
     Ui::ComboBoxOption* ui;
 };

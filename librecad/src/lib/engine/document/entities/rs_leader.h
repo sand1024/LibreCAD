@@ -76,7 +76,7 @@ public:
 	}
 
 	/** @return true: if this leader has an arrow at the beginning. */
-	bool hasArrowHead() {
+	bool hasArrowHead() const {
 		return data.arrowHead;
 	}
 

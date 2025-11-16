@@ -60,9 +60,9 @@ protected:
     int         m_quadrantOffset {0};             ///< Offset on starting determineQuadrant
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     void reset() override;
-    RS_LineData justify( RS_Line* line, const RS_Vector &click);
+    RS_LineData justify( RS_Line* line, const RS_Vector &click) const;
     void lineOrder(const RS_Vector &dimPos, RS_LineData& ld1, RS_LineData& ld2);
-    int determineQuadrant(const double angle);
+    int determineQuadrant(const double angle) const;
     bool setData(const RS_Vector& dimPos, const bool calcCenter = false);
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
@@ -71,6 +71,7 @@ protected:
     bool doProcessCommand(int status, const QString &command) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void updateMouseButtonHints() override;
-    void doTrigger() override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
 };
 #endif

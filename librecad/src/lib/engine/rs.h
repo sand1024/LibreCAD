@@ -55,7 +55,7 @@ namespace RS2 {
      */
     enum Flags : unsigned {
         /** Flag for Undoables. */
-        FlagUndone      = 1<<0,
+        FlagDeleted      = 1<<0,
         /** Entity Visibility. */
         FlagVisible     = 1<<1,
         /** Entity attribute (e.g. color) is defined by layer. */
@@ -252,6 +252,7 @@ namespace RS2 {
         ActionDeselectIntersected,
         ActionSelectInvert,
         ActionSelectLayer,
+        ActionSelectQuick,
         ActionSelectDouble,
         ActionGetSelect,
         ActionGetEntity,

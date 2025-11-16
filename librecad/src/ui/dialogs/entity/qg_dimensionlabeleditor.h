@@ -31,9 +31,9 @@ public:
     QG_DimensionLabelEditor(QWidget* parent = nullptr, Qt::WindowFlags fl = {});
     ~QG_DimensionLabelEditor() override;
     void setRadialType(const RS_Dimension&);
-    QString getLabel();
+    QString getLabel() const;
 public slots:
-    void setLabel( const QString & l );
+    void setLabel( const QString & l ) const;
     void insertSign( const QString & s );
     void updatePrefix(bool isChecked);
 protected slots:

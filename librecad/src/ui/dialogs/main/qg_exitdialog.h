@@ -43,10 +43,10 @@ public:
 	};
 
 public slots:
-    void setText( const QString & text );
+    void setText( const QString & text ) const;
     void setTitle( const QString & text );
-    void setForce( bool force );
-	void setShowOptionsForAll(bool show);
+    void setForce( bool force ) const;
+	void setShowOptionsForAll(bool show) const;
     void clicked(QAbstractButton * button);
 protected slots:
     void languageChange();

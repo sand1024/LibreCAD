@@ -61,11 +61,11 @@ private:
     void setLengthToActionAndView(const QString& val);
     void setDistanceToActionAndView(const QString& val);
     void setOffsetToActionAndView(const QString& val);
-    void setLineSnapModeToActionAndView(int mode);
-    void setTickSnapModeToActionAndView(int mode);
-    void setAngleIsRelativeToActionAndView(bool relative);
-    void setLengthIsFreeToActionAndView(bool free);
-    void setDivideToActionAndView(bool divide);
+    void setLineSnapModeToActionAndView(int mode) const;
+    void setTickSnapModeToActionAndView(int mode) const;
+    void setAngleIsRelativeToActionAndView(bool relative) const;
+    void setLengthIsFreeToActionAndView(bool free) const;
+    void setDivideToActionAndView(bool divide) const;
 };
 
 #endif // LC_LINEANGLERELOPTIONS_H

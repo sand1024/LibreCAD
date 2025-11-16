@@ -48,7 +48,7 @@ private:
     LC_ActionPasteToPoints* m_action = nullptr;
     void setAngleToActionAndView(QString val);
     void setFactorToActionAndView(QString val);
-    void setRemovePointsToActionAndView(bool val);
+    void setRemovePointsToActionAndView(bool val) const;
 };
 
 #endif // LC_PASTETOPOINTSACTION_H

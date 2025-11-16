@@ -33,17 +33,17 @@ public:
     QMap<QString, QAction *> &getActionsMap();
     QAction *getActionByName(const QString &name) const;
     bool hasActionGroup(const QString& categoryName) const;
-    LC_ActionGroup* getActionGroup(const QString& groupName);
+    LC_ActionGroup* getActionGroup(const QString& groupName) const;
     bool isActionTypeSetsTheIcon(RS2::ActionType actionType);
     void completeInit();
-    QAction* getActionByType(RS2::ActionType actionType);
+    QAction* getActionByType(RS2::ActionType actionType) const;
     static void associateQActionWithActionType(QAction* action, RS2::ActionType actionType);
     void persist();
     LC_ActionGroup* getGroupByName(const QString &name) const;
     void addActionGroup(const QString &name, LC_ActionGroup *actionGroup, bool isToolsGroup);
 public slots:
     void toggleExclusiveSnapMode(bool state); // fixme - sand - refactor later!!! Should be out of generic AGM?
-    void toggleTools(bool state);
+    void toggleTools(bool state) const;
     void onOptionsChanged() const;
 private:
     QList<LC_ActionGroup *> m_toolsGroups;

@@ -37,48 +37,41 @@
 class RS_Layer;
 
 LC_ActionDrawLinePolygonBase::LC_ActionDrawLinePolygonBase( const char *name, LC_ActionContext *actionContext, RS2::ActionType actionType)
-    :RS_PreviewActionInterface(name, actionContext, actionType),m_edgesNumber(3), m_actionData(std::make_unique<ActionData>()), m_lastStatus(SetPoint1){}
+    :LC_UndoablePreviewActionInterface(name, actionContext, actionType),m_edgesNumber(3), m_actionData(std::make_unique<ActionData>()), m_lastStatus(SetPoint1){}
 
 LC_ActionDrawLinePolygonBase::~LC_ActionDrawLinePolygonBase() = default;
 
 void LC_ActionDrawLinePolygonBase::doTrigger() {
-    if (m_document != nullptr) {
-        PolygonInfo polygonInfo;
-        preparePolygonInfo(polygonInfo, m_actionData->point2);
-        RS_Polyline *polyline = createShapePolyline(polygonInfo, false);
-        if (polyline != nullptr) {
-            undoCycleStart();
-            RS_Graphic* graphic = m_graphicView->getGraphic();
-            RS_Layer* layer;
-            RS_Pen pen = m_document->getActivePen();
-            layer = graphic->getActiveLayer();
+    PolygonInfo polygonInfo;
+    preparePolygonInfo(polygonInfo, m_actionData->point2);
+    RS_Polyline* polyline = createShapePolyline(polygonInfo, false);
+    if (polyline != nullptr) {
+        RS_Graphic* graphic = m_graphicView->getGraphic();
+        RS_Layer* layer;
+        RS_Pen pen = m_document->getActivePen();
+        layer      = graphic->getActiveLayer();
 
-            if (c_createPolyline) {
-                polyline->setLayer(layer);
-                polyline->setPen(pen);
-                polyline->reparent(m_container);
-                m_container->addEntity(polyline);
-                undoableAdd(polyline);
-            }
-            else{
-                for(RS_Entity* entity: lc::LC_ContainerTraverser{*polyline, RS2::ResolveAll}.entities()) {
-                    if (entity != nullptr){
-                        auto *clone = entity->clone(); // use clone for safe deletion of polyline
-                        clone->setPen(pen);
-                        clone->setLayer(layer);
-                        clone->reparent(m_container);
-                        m_container->addEntity(clone);
-                        undoableAdd(clone);
-                    }
+        if (m_createPolyline) {
+            polyline->setLayer(layer);
+            polyline->setPen(pen);
+            polyline->reparent(m_document);
+            undoableAdd(polyline);
+        }
+        else {
+            for (RS_Entity* entity : lc::LC_ContainerTraverser{*polyline, RS2::ResolveAll}.entities()) {
+                if (entity != nullptr) {
+                    auto* clone = entity->clone(); // use clone for safe deletion of polyline
+                    clone->setPen(pen);
+                    clone->setLayer(layer);
+                    clone->reparent(m_document);
+                    undoableAdd(clone);
                 }
-                delete polyline; //don't need it anymore
             }
-            undoCycleEnd();
+            delete polyline; //don't need it anymore
         }
-
-        if (m_completeActionOnTrigger) {
-            setStatus(-1);
-        }
+    }
+    if (m_completeActionOnTrigger) {
+        setStatus(-1);
     }
 }
 
@@ -169,12 +162,12 @@ bool LC_ActionDrawLinePolygonBase::doProcessCommand(int status, const QString &c
         accept = true;
     }
     else if (checkCommand("usepoly", c)){
-        c_createPolyline = true;
+        m_createPolyline = true;
         updateOptions();
         accept = true;
     }
     else if (checkCommand("nopoly", c)){
-        c_createPolyline = false;
+        m_createPolyline = false;
         updateOptions();
         accept = true;
     }

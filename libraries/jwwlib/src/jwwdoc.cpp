@@ -1,7 +1,7 @@
 #include "jwwdoc.h"
 #define	LINEBUF_SIZE	1024
 
-void JWWDocument::WriteString(string s){
+void JWWDocument::WriteString(string s) const {
     int len = s.length();
     if( len == 0 ){
         *ofs << (jwBYTE)0x0;
@@ -15,8 +15,7 @@ void JWWDocument::WriteString(string s){
     ofs->write(s.c_str(), len);
 }
 
-string JWWDocument::ReadData(int n)
-{
+string JWWDocument::ReadData(int n) const {
     //avoid buffer overflow
     if(n>LINEBUF_SIZE){
         //should not happen
@@ -1586,19 +1585,16 @@ JWWList::~JWWList()
     FList.clear();
 }
 
-int JWWList::GetCount()
-{
+int JWWList::GetCount() const {
     return FList.size();
 }
 
-NoList& JWWList::GetItem(int i)
-{
+NoList& JWWList::GetItem(int i) const {
     return *FList[i];
 }
 
 
-NoList& JWWList::GetNoByItem(int No)
-{
+NoList& JWWList::GetNoByItem(int No) const {
 //	vector<PNoList>::iterator   itr    = vect.begin();
 //	vector<PNoList>::iterator   itrEnd = vect.end();
     for( unsigned int i=0; i < FList.size(); i++)
@@ -1638,16 +1634,14 @@ JWWBlockList::~JWWBlockList()
 */
 }
 
-CDataList JWWBlockList::GetBlockList(unsigned int i)
-{
+CDataList JWWBlockList::GetBlockList(unsigned int i) const {
     for(unsigned int k=0; k < FBlockList.size(); k++)
         if(i == FBlockList[k]->m_n_Number)
             return *(PCDataList)FBlockList[k];
     return {};
 }
 
-int JWWBlockList::getBlockListCount()
-{
+int JWWBlockList::getBlockListCount() const {
     return FBlockList.size();
 }
 
@@ -1698,8 +1692,7 @@ CDataType JWWBlockList::GetCDataType(int i, int j)
     return GetDataType(i,j);
 }
 
-void* JWWBlockList::GetData(unsigned int i, int j)
-{
+void* JWWBlockList::GetData(unsigned int i, int j) const {
     int l = 0;
     for( unsigned int k=0; k < FBlockList.size(); k++ )
     {
@@ -1710,8 +1703,7 @@ void* JWWBlockList::GetData(unsigned int i, int j)
     return (void *)NULL;
 }
 
-int JWWBlockList::GetDataListCount(unsigned int i)
-{
+int JWWBlockList::GetDataListCount(unsigned int i) const {
     for(unsigned int k=0; k < FBlockList.size(); k++)
     {
         if( i == PCDataList(FBlockList[k])->m_nNumber )
@@ -1720,8 +1712,7 @@ int JWWBlockList::GetDataListCount(unsigned int i)
     return 0;
 }
 
-CDataType JWWBlockList::GetDataType(unsigned int i, int j)
-{
+CDataType JWWBlockList::GetDataType(unsigned int i, int j) const {
     int l = 0;
     for( unsigned int k=0; k < FBlockList.size(); k++ )
     {

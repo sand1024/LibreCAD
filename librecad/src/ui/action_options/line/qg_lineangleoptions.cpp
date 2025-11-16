@@ -146,7 +146,7 @@ void QG_LineAngleOptions::setAngleToActionAndView(QString val){
     }
 }
 
-void QG_LineAngleOptions::setSnapPointToActionAndView(int val){
+void QG_LineAngleOptions::setSnapPointToActionAndView(int val) const {
     m_action->setSnapPoint(val);
     ui->cbSnapPoint->setCurrentIndex(val);
 }
@@ -159,7 +159,7 @@ void QG_LineAngleOptions::setLengthToActionAndView(QString val){
     }
 }
 
-void QG_LineAngleOptions::setToAngleBasis(bool val) {
+void QG_LineAngleOptions::setToAngleBasis(bool val) const {
     ui->cbForAnglesBasis->setChecked(val);
     m_action->setInAngleBasis(val);
 }

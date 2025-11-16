@@ -54,7 +54,7 @@ namespace
 LC_ActionLayersExport::LC_ActionLayersExport(LC_ActionContext *actionContext, Mode inputExportMode)
     : RS_ActionInterface("Export selected layer(s)",actionContext, inputExportMode == SelectedMode ? RS2::ActionLayersExportSelected:RS2::ActionLayersExportVisible),
     m_exportMode{inputExportMode}{
-    auto container = actionContext->getEntityContainer() ->getDocument();
+    auto container = actionContext->getDocument() ->getDocument();
     m_layersList = container->getLayerList();
 }
 
@@ -64,7 +64,7 @@ void LC_ActionLayersExport::init(int status){
     trigger();
 }
 
-bool LC_ActionLayersExport::collectLayersToExport(LC_LayersExportOptions* exportOptions) {
+bool LC_ActionLayersExport::collectLayersToExport(LC_LayersExportOptions* exportOptions) const {
     RS_LayerList *originalLayersList = m_document->getLayerList();
     // layers to use: by selected or not frozen
     std::copy_if(originalLayersList->begin(), originalLayersList->end(), std::back_inserter(exportOptions->m_layers),

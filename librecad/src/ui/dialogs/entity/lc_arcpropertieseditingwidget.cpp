@@ -53,7 +53,7 @@ void LC_ArcPropertiesEditingWidget::setEntity(RS_Entity* entity) {
     toUIBool(m_entity->isReversed(), ui->cbReversed);
 }
 
-void LC_ArcPropertiesEditingWidget::onCenterEditingFinished() {
+void LC_ArcPropertiesEditingWidget::onCenterEditingFinished() const {
     m_entity->setCenter(toWCS(ui->leCenterX, ui->leCenterY, m_entity->getCenter()));
 }
 
@@ -69,7 +69,7 @@ void LC_ArcPropertiesEditingWidget::onAngle2EditingFinished() {
     m_entity->setAngle2(toWCSAngle(ui->leAngle2, m_entity->getAngle2()));
 }
 
-void LC_ArcPropertiesEditingWidget::onReversedToggled([[maybe_unused]]bool checked) {
+void LC_ArcPropertiesEditingWidget::onReversedToggled([[maybe_unused]]bool checked) const {
     if (m_entity->isReversed() != ui->cbReversed->isChecked()) {
         m_entity->revertDirection();
     }

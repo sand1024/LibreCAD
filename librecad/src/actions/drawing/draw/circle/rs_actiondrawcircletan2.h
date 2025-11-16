@@ -39,8 +39,8 @@ public:
     RS_ActionDrawCircleTan2(LC_ActionContext *actionContext);
     ~RS_ActionDrawCircleTan2() override;
     void init(int status) override;
-    bool getCenters(RS_Entity* secondEntityCandidate = nullptr);
-    bool preparePreview();
+    bool getCenters(RS_Entity* secondEntityCandidate = nullptr) const;
+    bool preparePreview() const;
     void finish(bool updateTB) override;
     void setRadius(double);
     double getRadius() const;
@@ -68,7 +68,8 @@ protected:
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void updateMouseButtonHints() override;
-    void doTrigger() override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
 };
 #endif

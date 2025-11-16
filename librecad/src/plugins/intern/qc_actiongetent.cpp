@@ -57,7 +57,7 @@ void QC_ActionGetEnt::setMessage(QString msg){
 
 void QC_ActionGetEnt::trigger() {
     if (m_entity) {
-        RS_Selection s(*m_container, m_viewport);
+        RS_Selection s(m_document, m_viewport);
         s.selectSingle(m_entity);
         m_completed = true;
         updateMouseButtonHints();
@@ -88,7 +88,7 @@ void QC_ActionGetEnt::keyPressEvent(QKeyEvent *e){
 /**
  * Add selected entity from 'container' to the selection.
  */
-Plugin_Entity *QC_ActionGetEnt::getSelected(Doc_plugin_interface* d) {
+Plugin_Entity *QC_ActionGetEnt::getSelected(Doc_plugin_interface* d) const {
     Plugin_Entity *pe = m_entity ? new Plugin_Entity(m_entity, d) : nullptr;
     return pe;
 }

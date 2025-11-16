@@ -27,6 +27,7 @@
 
 #include "lc_actioncontext.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_modification.h"
 #include "rs_polyline.h"
 #include "rs_preview.h"
@@ -51,8 +52,8 @@ void RS_ActionPolylineDel::drawSnapper() {
 
 void RS_ActionPolylineDel::doTrigger() {
     RS_DEBUG->print("RS_ActionPolylineDel::trigger()");
-    RS_Modification m(*m_container, m_viewport);
-    auto createdPolyline = m.deletePolylineNode(*m_polylineToModify, m_vertexToDelete, false);
+    RS_Modification m(m_document, m_viewport);
+    auto createdPolyline = m.deletePolylineNode(m_polylineToModify, m_vertexToDelete, false);
     if (createdPolyline != nullptr){
         m_polylineToModify = createdPolyline;
         m_vertexToDelete = RS_Vector(false);
@@ -77,8 +78,8 @@ void RS_ActionPolylineDel::onMouseMoveEvent(int status, LC_MouseEvent *e) {
             if (vertex.valid){
                 highlightHover(segment);
                 previewRefSelectablePoint(vertex);
-                RS_Modification m(*m_preview, m_viewport);
-                m.deletePolylineNode(*m_polylineToModify, vertex, true);
+                RS_Modification m(m_preview.get(), m_viewport);
+                m.deletePolylineNode(m_polylineToModify, vertex, true);
             }
             break;
          }
@@ -94,7 +95,7 @@ void RS_ActionPolylineDel::setPolylineToModify(RS_Entity* en) {
         commandMessage(tr("Entity must be a polyline."));
     } else {
         m_polylineToModify = dynamic_cast<RS_Polyline *>(en);
-        m_polylineToModify->setSelected(true);
+        select(m_polylineToModify);
         setStatus(SetVertex1);
         redraw();
     }

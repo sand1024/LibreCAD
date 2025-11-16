@@ -41,10 +41,10 @@ class QG_SelectionWidget : public QWidget, public LC_GraphicViewAware, public Ui
 public:
     QG_SelectionWidget(QWidget* parent = nullptr, const char* name = nullptr, Qt::WindowFlags fl = {});
     ~QG_SelectionWidget() override;
-    QToolButton* getActionsButton();
+    QToolButton* getActionsButton() const;
 public slots:
-    void setNumber(int n);
-    void setTotalLength(double l);
+    void setNumber(int n) const;
+    void setTotalLength(double l) const;
     void flashAuxData(const QString& header, const QString& data, const unsigned int& timeout, const bool& flash);
     void removeAuxData();
     void setGraphicView(RS_GraphicView* gview) override;

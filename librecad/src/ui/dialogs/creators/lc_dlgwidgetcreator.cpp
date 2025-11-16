@@ -116,7 +116,7 @@ LC_DlgWidgetCreator::LC_DlgWidgetCreator(QWidget *parent, bool forMenu, LC_Actio
     updateSaveAndDeleteButtons();
 }
 
-void LC_DlgWidgetCreator::updateSaveAndDeleteButtons() {
+void LC_DlgWidgetCreator::updateSaveAndDeleteButtons() const {
     int widgetsCount = ui->cbWidgetName->count();
     auto hasItems = widgetsCount > 0;
     ui->btnDelete->setEnabled(hasItems);
@@ -133,7 +133,7 @@ void LC_DlgWidgetCreator::setCategoryAll() {
 }
 
 
-void LC_DlgWidgetCreator::addChosenAction() {
+void LC_DlgWidgetCreator::addChosenAction() const {
     QListWidgetItem *item = ui->alOfferredActions->currentItem();
     if (item != nullptr) {
         ui->alChosenActions->addItem(item->clone());
@@ -141,13 +141,13 @@ void LC_DlgWidgetCreator::addChosenAction() {
     }
 }
 
-void LC_DlgWidgetCreator::addSeparator(){
+void LC_DlgWidgetCreator::addSeparator() const {
     auto item = new QListWidgetItem("----------", nullptr);
     item->setWhatsThis("");
     ui->alChosenActions->addItem(item);
 }
 
-void LC_DlgWidgetCreator::addChosenActionForItem(QListWidgetItem *item) {
+void LC_DlgWidgetCreator::addChosenActionForItem(QListWidgetItem *item) const {
     ui->alChosenActions->addItem(item->clone());
     delete item;
 }
@@ -167,7 +167,7 @@ void LC_DlgWidgetCreator::removeChosenAction() {
     }
 }
 
-void LC_DlgWidgetCreator::removeChosenActionForItem(QListWidgetItem *item) {
+void LC_DlgWidgetCreator::removeChosenActionForItem(QListWidgetItem *item) const {
     if (item->whatsThis() != ""){
         auto categoryData = ui->cbCategories->currentData(Qt::UserRole);
         QString category = categoryData.toString();
@@ -455,7 +455,7 @@ void LC_DlgWidgetCreator::destroyWidget() {
     updateSaveAndDeleteButtons();
 }
 
-QStringList LC_DlgWidgetCreator::getChosenActionNames() {
+QStringList LC_DlgWidgetCreator::getChosenActionNames() const {
     QStringList s_list;
     for (int i = 0; i < ui->alChosenActions->count(); ++i) {
         auto listWidgetItem = ui->alChosenActions->item(i);
@@ -464,7 +464,7 @@ QStringList LC_DlgWidgetCreator::getChosenActionNames() {
     return s_list;
 }
 
-QString LC_DlgWidgetCreator::getSettingsGroupName() {
+QString LC_DlgWidgetCreator::getSettingsGroupName() const {
     return m_forMenu ? "CustomMenus" : "CustomToolbars";
 }
 

@@ -38,18 +38,18 @@ public:
     LC_LineOptions();
     ~LC_LineOptions() override;
 public slots:
-    void closeLine();
-    void undo();
-    void redo();
-    void polyline();
-    void start();
+    void closeLine() const;
+    void undo() const;
+    void redo() const;
+    void polyline() const;
+    void start() const;
 protected slots:
-    void onAngleClicked(bool value);
-    void onXClicked(bool value);
-    void onYClicked(bool value);
+    void onAngleClicked(bool value) const;
+    void onXClicked(bool value) const;
+    void onYClicked(bool value) const;
     void onPointClicked(bool value) const;
     void onSetAngle();
-    void onAngleRelativeClicked(bool value);
+    void onAngleRelativeClicked(bool value) const;
     void languageChange() override;
 protected:
     LC_ActionDrawLineSnake* m_action = nullptr;

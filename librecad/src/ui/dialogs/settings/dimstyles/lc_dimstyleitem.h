@@ -72,17 +72,17 @@ public:
     LC_DimStyleItem* findEntityStyleItem() const;
     void cleanup(bool deleteDimStyles);
     void removeChild(LC_DimStyleItem* item);
-    void collectChildren(QList<LC_DimStyleItem*>& items);
+    void collectChildren(QList<LC_DimStyleItem*>& items) const;
     void setNewBaseName(const QString& newBaseName);
     static QString composeDisplayName(QString baseName, RS2::EntityType entityType);
     static QString getDisplayDimStyleName(LC_DimStyle* style);
-    bool hasUsedChildren();
+    bool hasUsedChildren() const;
     bool isNotUsedInDrawing();
     bool isOverrideItem() const {return m_overrideItem;}
     void setOverrideItem(bool val) {m_overrideItem = val;}
     bool isEntityStyleItem() const {return m_entityStyle;}
     void setEntityStyleItem(bool val) {m_entityStyle = val;}
-    bool isUnsaved(){return m_unsavedItem;}
+    bool isUnsaved() const {return m_unsavedItem;}
     void setUnsaved(bool value){m_unsavedItem = value;}
 private:
     LC_DimStyle* m_dimStyle{nullptr};

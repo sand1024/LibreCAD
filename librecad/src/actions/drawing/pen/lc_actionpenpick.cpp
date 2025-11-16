@@ -95,7 +95,7 @@ RS2::CursorType LC_ActionPenPick::doGetMouseCursor([[maybe_unused]] int status){
  * Set pen picked from entity as active in pen toolbar
  * @param entity entity from which pen will be picked
  */
-void LC_ActionPenPick::applyPenToPenToolBar(RS_Entity* entity){
+void LC_ActionPenPick::applyPenToPenToolBar(RS_Entity* entity) const {
     QG_PenToolBar* penToolBar  = QC_ApplicationWindow::getAppWindow()->getPenToolBar();
     if (penToolBar != nullptr){
             RS_Layer *layer = entity->getLayer(true);

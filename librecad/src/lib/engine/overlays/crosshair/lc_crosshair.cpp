@@ -39,8 +39,7 @@ LC_Crosshair::LC_Crosshair(const RS_Vector& coord,
      this->pointType = pointType;
 }
 
-double LC_Crosshair::drawIndicator(RS_Painter* painter, const RS_Vector& uiPos)
-{
+double LC_Crosshair::drawIndicator(RS_Painter* painter, const RS_Vector& uiPos) const {
     double offset = 0.0;
       switch (indicatorShape) {
           case Circle: {

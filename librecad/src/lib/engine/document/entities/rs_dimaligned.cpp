@@ -173,7 +173,7 @@ void RS_DimAligned::doUpdateDim() {
     createDimensionLine(dimLineStart,dimLineEnd,showArrow1, showArrow2, showDimLine1, showDimLine2, m_dimGenericData.autoText);
 }
 
-void RS_DimAligned::getDimPoints(RS_Vector& dimP1, RS_Vector& dimP2){
+void RS_DimAligned::getDimPoints(RS_Vector& dimP1, RS_Vector& dimP2) const {
     double extAngle = m_dimAlignedData.extensionPoint2.angleTo(m_dimGenericData.definitionPoint);
     RS_Vector e1 = RS_Vector::polar(1.0, extAngle);
     double extLength = m_dimAlignedData.extensionPoint2.distanceTo(m_dimGenericData.definitionPoint);

@@ -31,7 +31,7 @@ class LC_FontFileViewer{
 public:
     LC_FontFileViewer(RS_Document* doc);
     ~LC_FontFileViewer() = default;
-    void drawFontChars();
+    void drawFontChars() const;
 private:
     RS_Document* m_document;
 };

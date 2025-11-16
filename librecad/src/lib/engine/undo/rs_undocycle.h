@@ -73,7 +73,7 @@ public:
 
 
     //! change undo state of all undoable in the current cycle
-    void changeUndoState();
+    void changeUndoState() const;
 
     friend std::ostream& operator << (std::ostream& os, RS_UndoCycle& uc);
 

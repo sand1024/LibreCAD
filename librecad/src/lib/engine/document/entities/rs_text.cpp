@@ -128,7 +128,7 @@ void RS_Text::setText(const QString& t) {
  * @return  1: top left ... 9: bottom right
  */
 //RLZ: bad function, this is MText style align
-int RS_Text::getAlignment() {
+int RS_Text::getAlignment() const {
     if (data.valign==RS_TextData::VATop) {
         if (data.halign==RS_TextData::HALeft) {
             return 1;
@@ -222,7 +222,7 @@ void RS_Text::setAlignment(int a) {
 /**
  * @return Number of lines in this text entity.
  */
-int RS_Text::getNumberOfLines() {
+int RS_Text::getNumberOfLines() const {
     int c=1;
     for (int i=0; i<(int)data.text.length(); ++i) {
         if (data.text.at(i).unicode()==0x0A) {
@@ -243,7 +243,7 @@ void RS_Text::update() {
 
     clear();
 
-    if (isUndone()) {
+    if (isDeleted()) {
         return;
     }
 

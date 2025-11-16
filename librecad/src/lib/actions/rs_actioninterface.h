@@ -31,6 +31,8 @@
 #include "lc_latecompletionrequestor.h"
 #include "lc_modifiersinfo.h"
 #include "rs.h"
+#include "rs_document.h"
+#include "rs_entity.h"
 #include "rs_math.h"
 #include "rs_snapper.h"
 
@@ -66,14 +68,10 @@ namespace{
 class RS_ActionInterface : public RS_Snapper, public LC_LateCompletionRequestor {
 Q_OBJECT
 public:
+    ~RS_ActionInterface() override;
     enum ActionStatus {
         InitialActionStatus = 0
     };
-    RS_ActionInterface(const char* name,
-                       LC_ActionContext *actionContext,
-                       RS2::ActionType actionType /*= RS2::ActionNone*/);
-   ~RS_ActionInterface() override;
-
     virtual RS2::ActionType rtti() const;
     virtual bool isSupportsPredecessorAction(){return false;}
     void setName(const char* _name);
@@ -114,6 +112,10 @@ private:
      */
     int m_status = 0;
 protected:
+    RS_ActionInterface(const char* name,
+                       LC_ActionContext *actionContext,
+                       RS2::ActionType actionType /*= RS2::ActionNone*/);
+
     /** Action name. Used internally for debugging */
     QString m_name;
 
@@ -130,11 +132,6 @@ protected:
     RS_Graphic *m_graphic = nullptr; // // fixme- sand - review!!!
 
     /**
-    * Pointer to the document (graphic or block) or NULL.
-    */
-
-    RS_Document *m_document = nullptr;// fixme- sand - review!!!
-    /**
      * Predecessor of this action or NULL.
      */
     std::shared_ptr<RS_ActionInterface> m_predecessor = nullptr; // fixme - sand - review!!!
@@ -146,7 +143,7 @@ protected:
     virtual void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos);
     virtual void doInitialInit();
 
-    void switchToAction(RS2::ActionType actionType, void* data = nullptr);
+    void switchToAction(RS2::ActionType actionType, void* data = nullptr) const;
     QString msgAvailableCommands();
     void setActionType(RS2::ActionType actionType);
     // Accessor for drawing keys
@@ -157,19 +154,19 @@ protected:
 
     virtual LC_ActionOptionsWidget* createOptionsWidget();
     void updateOptions(const QString& tagToFocus = "");
-    void updateOptionsUI(int mode);
+    void updateOptionsUI(int mode) const;
 
     virtual RS2::CursorType doGetMouseCursor(int status);
     void updateMouseCursor();
-    void setMouseCursor(const RS2::CursorType &cursor);
+    void setMouseCursor(const RS2::CursorType &cursor) const;
 
     virtual void updateMouseButtonHints();
 
     // simplified mouse widget and command message operations
-    void updateMouseWidgetTRBack(const QString &msg,const LC_ModifiersInfo& modifiers = LC_ModifiersInfo::NONE());
-    void updateMouseWidgetTRCancel(const QString &msg,const LC_ModifiersInfo& modifiers = LC_ModifiersInfo::NONE());
-    void updateMouseWidget(const QString& = QString(),const QString& = QString(), const LC_ModifiersInfo& modifiers = LC_ModifiersInfo::NONE());
-    void clearMouseWidgetIcon();
+    void updateMouseWidgetTRBack(const QString &msg,const LC_ModifiersInfo& modifiers = LC_ModifiersInfo::NONE()) const;
+    void updateMouseWidgetTRCancel(const QString &msg,const LC_ModifiersInfo& modifiers = LC_ModifiersInfo::NONE()) const;
+    void updateMouseWidget(const QString& = QString(),const QString& = QString(), const LC_ModifiersInfo& modifiers = LC_ModifiersInfo::NONE()) const;
+    void clearMouseWidgetIcon() const;
 
     static bool isControl(const QInputEvent *e);
     static bool isShift(const QInputEvent *e);
@@ -202,15 +199,24 @@ protected:
 
     virtual void onCoordinateEvent(int status, bool isZero, const RS_Vector& pos);
     void initPrevious(int status);
-    void preparePromptForInfoCursorOverlay(const QString &msg, const LC_ModifiersInfo &modifiers);
+    void preparePromptForInfoCursorOverlay(const QString &msg, const LC_ModifiersInfo &modifiers) const;
 
-    void undoableDeleteEntity(RS_Entity *entity);
+    void undoableDeleteEntity(RS_Entity *entity) const;
+    void undoableDeleteEntitiesList(QList<RS_Entity*>& entitiesList) const;
     void undoableAdd(RS_Undoable *e) const;
     bool undoCycleAdd(RS_Entity *entity, bool addToContainer = true) const;
-    void undoCycleReplace(RS_Entity *entityToReplace, RS_Entity* entityReplacing);
+    void undoCycleReplace(RS_Entity* entityToReplace, RS_Entity* entityReplacing) const;
+    void undoableAdd(RS_Entity *entity, bool addToContainer = true) const;
+    void undoableAddWithCurrentAttributes(RS_Entity* e) const;
+    void undoableReplace(RS_Entity* entityToReplace, RS_Entity* entityReplacing) const;
     void undoCycleEnd() const;
     void undoCycleStart() const;
     void setPenAndLayerToActive(RS_Entity* e);
+    void select(RS_Entity* e) const {m_document->select(e);}
+    void select(QList<RS_Entity*> e) const;
+    void unselect(QList<RS_Entity*> list) const;
+    void unselectAll() const;
+    void unselect(RS_Entity* e) const {m_document->unselect(e);}
 
     virtual bool doUpdateAngleByInteractiveInput([[maybe_unused]]const QString& tag,[[maybe_unused]] double angleRad) {return false;}
     virtual bool doUpdateDistanceByInteractiveInput([[maybe_unused]]const QString& tag, [[maybe_unused]]double distance) {return false;}

@@ -48,8 +48,8 @@ protected slots:
 private:
     Ui::LC_PointsLatticeOptions *ui;
     LC_ActionDrawPointsLattice* m_action = nullptr;
-    void setColumnsToActionAndView(int value);
-    void setRowsToActionAndView(int value);
-    void setAdjustLastPointToActionAndView(bool value);
+    void setColumnsToActionAndView(int value) const;
+    void setRowsToActionAndView(int value) const;
+    void setAdjustLastPointToActionAndView(bool value) const;
 };
 #endif // LC_POINTSLATTICEOPTIONS_H

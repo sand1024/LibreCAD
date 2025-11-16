@@ -28,6 +28,7 @@
 
 #include "lc_actioninfomessagebuilder.h"
 #include "qg_modifyoffsetoptions.h"
+#include "rs_document.h"
 #include "rs_modification.h"
 #include "rs_preview.h"
 
@@ -54,9 +55,17 @@ RS_ActionModifyOffset::RS_ActionModifyOffset(LC_ActionContext *actionContext)
 
 RS_ActionModifyOffset::~RS_ActionModifyOffset() = default;
 
-void RS_ActionModifyOffset::doTrigger(bool keepSelected) {
-    RS_Modification m(*m_container, m_viewport);
-    m.offset(*m_offsetData, m_selectedEntities, false, keepSelected);
+bool RS_ActionModifyOffset::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+    RS_Modification m(m_document, m_viewport);
+    m.offset(*m_offsetData, m_selectedEntities, false, /*keepSelected*/ false); // fixme - trigger complete
+    return true;
+}
+
+void RS_ActionModifyOffset::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+    LC_ActionModifyBase::doTriggerSelectionUpdate(keepSelected, ctx);
+}
+
+void RS_ActionModifyOffset::doTriggerCompletion(bool success) {
     finish(false);
 }
 
@@ -65,7 +74,7 @@ void RS_ActionModifyOffset::onMouseMoveEventSelected(int status, LC_MouseEvent *
     switch (status){
         case SetReferencePoint:{
             m_offsetData->coord = getRelZeroAwarePoint(e, mouse);
-            RS_Modification m(*m_preview, m_viewport, false);
+            RS_Modification m(m_preview.get(), m_viewport, false);
             m.offset(*m_offsetData, m_selectedEntities, true, false);
             break;
         }
@@ -75,7 +84,7 @@ void RS_ActionModifyOffset::onMouseMoveEventSelected(int status, LC_MouseEvent *
             if (!m_distanceIsFixed){
                 m_offsetData->distance = offset.magnitude();
             }
-            RS_Modification m(*m_preview, m_viewport, false);
+            RS_Modification m(m_preview.get(), m_viewport, false);
             m.offset(*m_offsetData, m_selectedEntities, true, false);
 
             if (m_showRefEntitiesOnPreview) {
@@ -133,11 +142,11 @@ LC_ActionOptionsWidget* RS_ActionModifyOffset::createOptionsWidget() {
     return new QG_ModifyOffsetOptions();
 }
 
-double RS_ActionModifyOffset::getDistance() {
+double RS_ActionModifyOffset::getDistance() const {
     return m_offsetData->distance;
 }
 
-void RS_ActionModifyOffset::setDistance(double distance) {
+void RS_ActionModifyOffset::setDistance(double distance) const {
     m_offsetData->distance = distance;
 }
 

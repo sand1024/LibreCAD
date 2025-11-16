@@ -30,11 +30,8 @@
 #include "rs_document.h"
 
 
-
-
-
 LC_ActionDrawGDTFeatureControlFrame::LC_ActionDrawGDTFeatureControlFrame(LC_ActionContext* actionContext)
-    : RS_PreviewActionInterface("GDTFeatureControlFrame", actionContext, RS2::ActionGTDFCFrame)
+    : LC_SingleEntityCreationAction("GDTFeatureControlFrame", actionContext, RS2::ActionGTDFCFrame)
     ,m_actionData{std::make_unique<ActionData>()}{
 }
 
@@ -55,7 +52,7 @@ void LC_ActionDrawGDTFeatureControlFrame::init(int status) {
     }
 }
 
-void LC_ActionDrawGDTFeatureControlFrame::doTrigger() {
+RS_Entity* LC_ActionDrawGDTFeatureControlFrame::doTriggerCreateEntity() {
     auto e = m_actionData->m_entity;
 
     auto entityData = e->getData();
@@ -68,12 +65,13 @@ void LC_ActionDrawGDTFeatureControlFrame::doTrigger() {
 
     // create a copy that will be added into the document (and not deleted by the action)
     auto controlFrame  = new LC_Tolerance(m_document, entityData);
-    setPenAndLayerToActive(controlFrame);
     controlFrame->update();
-    undoCycleAdd(controlFrame);
-
     moveRelativeZero(m_actionData->m_insertionPoint);
 
+    return controlFrame;
+}
+
+void LC_ActionDrawGDTFeatureControlFrame::doTriggerCompletion(bool success) {
     m_actionData->clear();
     setStatus(ShowDialog);
 }

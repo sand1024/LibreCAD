@@ -27,15 +27,14 @@
 #ifndef RS_ACTIONMODIFYCUT_H
 #define RS_ACTIONMODIFYCUT_H
 
-
-#include "rs_previewactioninterface.h"
+#include "lc_undoabledocumentmodificationaction.h"
 
 /**
  * This action class can handle user events to divide entities.
  *
  * @author Andrew Mustun
  */
-class RS_ActionModifyCut : public RS_PreviewActionInterface {
+class RS_ActionModifyCut : public LC_UndoableDocumentModificationAction {
     Q_OBJECT
 public:
     RS_ActionModifyCut(LC_ActionContext *actionContext);
@@ -59,8 +58,8 @@ protected:
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void updateMouseButtonHints() override;
-    void doTrigger() override;
-
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
 };
 
 #endif

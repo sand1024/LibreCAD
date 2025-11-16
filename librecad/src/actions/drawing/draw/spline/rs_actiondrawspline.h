@@ -27,6 +27,7 @@
 #ifndef RS_ACTIONDRAWSPLINE_H
 #define RS_ACTIONDRAWSPLINE_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_previewactioninterface.h"
 
 struct RS_SplineData;
@@ -37,18 +38,18 @@ class RS_Spline;
  *
  * @author Andrew Mustun
  */
-class RS_ActionDrawSpline : public RS_PreviewActionInterface {
+class RS_ActionDrawSpline : public LC_SingleEntityCreationAction {
     Q_OBJECT
 public:
-    RS_ActionDrawSpline(LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionDrawSpline);
+    explicit RS_ActionDrawSpline(LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionDrawSpline);
     ~RS_ActionDrawSpline() override;
-    void reset();
+    void reset() const;
     void init(int status) override;
     QStringList getAvailableCommands() override;
     virtual void undo();
 
     virtual void setDegree(int deg);
-    int getDegree();
+    int getDegree() const;
     virtual void setClosed(bool c);
     virtual bool isClosed();
 
@@ -70,7 +71,8 @@ private:
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void updateMouseButtonHints() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    void doTrigger() override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
 
     struct ActionData;
     std::unique_ptr<ActionData> m_actionData;

@@ -92,7 +92,7 @@ void QG_LineBisectorOptions::setLengthToActionAndView(QString val){
     }
 }
 
-void QG_LineBisectorOptions::setNumberToActionAndView(int number){
+void QG_LineBisectorOptions::setNumberToActionAndView(int number) const {
     m_action->setNumber(number);
     ui->sbNumber->setValue(number);
 }

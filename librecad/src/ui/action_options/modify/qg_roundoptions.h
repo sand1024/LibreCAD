@@ -51,7 +51,7 @@ protected:
     void doSaveSettings() override;
 private:
     std::unique_ptr<Ui::Ui_RoundOptions> ui;
-    void setTrimToActionAndView(bool checked);
+    void setTrimToActionAndView(bool checked) const;
     void setRadiusToActionAndView(const QString &val);
 };
 

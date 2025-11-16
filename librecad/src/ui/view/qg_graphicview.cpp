@@ -39,6 +39,8 @@
 
 #include "qg_graphicview.h"
 
+#include <boost/geometry/io/wkt/read.hpp>
+
 #include "lc_actioncontext.h"
 #include "lc_actionmodifymoveadjust.h"
 #include "lc_eventhandler.h"
@@ -62,6 +64,7 @@
 #include "rs_entitycontainer.h"
 #include "rs_graphic.h"
 #include "rs_insert.h"
+#include "rs_selection.h"
 #include "rs_settings.h"
 
 #ifdef EMU_C99
@@ -129,16 +132,16 @@ RS_Entity* snapEntity(const QG_GraphicView& view, const QMouseEvent* event) {
     if (event == nullptr) {
         return nullptr;
     }
-    RS_EntityContainer* container = view.getContainer();
-    if (container == nullptr) {
+    const auto doc = view.getDocument();
+    if (doc == nullptr) { // how it might be???
         return nullptr;
     }
     const QPointF mapped = event->pos();
     double distance = RS_MAXDOUBLE;
-    const LC_GraphicViewport* viewPort = view.getViewPort();
+    const auto viewPort = view.getViewPort();
 
-    auto pos = viewPort->toWorldFromUi(mapped.x(), mapped.y());
-    RS_Entity* entity = container->getNearestEntity(pos, &distance, RS2::ResolveNone);
+    const auto pos = viewPort->toWorldFromUi(mapped.x(), mapped.y());
+    const auto entity = doc->getNearestEntity(pos, &distance, RS2::ResolveNone);
 
     return (viewPort->toGuiDX(distance) <= g_cursorSize) ? entity : nullptr;
 }
@@ -185,18 +188,14 @@ void QG_GraphicView::showEntityPropertiesDialog(RS_Entity* entity){
     launchEditProperty(entity);
 }
 
-void QG_GraphicView::launchEditProperty(RS_Entity* entity){
-    RS_EntityContainer* container = getContainer();
-    if (entity == nullptr || container == nullptr) {
+void QG_GraphicView::launchEditProperty(RS_Entity* entity) const {
+    auto* doc = getDocument();
+    if (entity == nullptr || doc == nullptr) {
         return;
     }
     editAction( *entity);
+    doc->startUndoCycle();
 
-    //container->removeEntity(entity);
-    auto* doc = dynamic_cast<RS_Document*>(container);
-    if (doc != nullptr) {
-        doc->startUndoCycle();
-    }
     // delete any temporary highlighting duplicates of the original
     auto* defaultAction = dynamic_cast<RS_ActionDefault*>(getEventHandler()->getDefaultAction());
     if (defaultAction != nullptr){
@@ -208,9 +207,10 @@ void QG_GraphicView::launchEditProperty(RS_Entity* entity){
 // Start the edit action:
 // Edit Block for an insert
 // Edit entity, otherwise
-void QG_GraphicView::editAction( RS_Entity& entity){
-    RS_EntityContainer* container = getContainer();
-    if (container==nullptr) {
+void QG_GraphicView::editAction( RS_Entity& entity) const {
+    auto doc = getDocument();
+    if (doc == nullptr) {
+        // fixme - DOC - review what for this check is used
         return;
     }
     switch(entity.rtti()) {
@@ -218,7 +218,7 @@ void QG_GraphicView::editAction( RS_Entity& entity){
             auto& appWindow = QC_ApplicationWindow::getAppWindow(); // fixme - sand - remove static, it just one of parents?
             RS_BlockList* blockList = appWindow->getBlockWidget()->getBlockList();
             RS_Block* active = (blockList != nullptr) ? blockList->getActive() : nullptr;
-            auto* insert = static_cast<RS_Insert*>(&entity);
+            const auto* insert = static_cast<RS_Insert*>(&entity);
             RS_Block* current = insert->getBlockForInsert();
             if (current == active) {
                 active=nullptr;
@@ -323,7 +323,7 @@ QG_GraphicView::QG_GraphicView(QWidget* parent, RS_Document* doc, LC_ActionConte
     RS_DEBUG->print("QG_GraphicView::QG_GraphicView()..");
 
     if (doc != nullptr){
-        setContainer(doc);
+        setDocument(doc);
         doc->setGraphicView(this);
         actionContext->setDocumentAndView(doc, this);
         setDefaultAction(new RS_ActionDefault(actionContext));
@@ -359,9 +359,8 @@ void QG_GraphicView::createViewRenderer() {
 }
 
 void QG_GraphicView::layerToggled(RS_Layer *) {
-    const RS_EntityContainer::LC_SelectionInfo &info = getContainer()->getSelectionInfo();
+    const RS_EntityContainer::LC_SelectionInfo &info = getDocument()->getSelectionInfo();
     m_actionContext->updateSelectionWidget(info.count, info.length);
-    // RS_DIALOGFACTORY->updateSelectionWidget(info.count, info.length);
     redraw(RS2::RedrawDrawing);
 }
 
@@ -504,7 +503,7 @@ void QG_GraphicView::dragEnterEvent(QDragEnterEvent* event) {
  */
 void QG_GraphicView::redraw(RS2::RedrawMethod method) {
     getRenderer()->invalidate(method);
-    update(); // Paint when reeady to pain
+    update(); // Paint when ready to paint
 }
 
 void QG_GraphicView::resizeEvent(QResizeEvent* e) {
@@ -524,9 +523,9 @@ void QG_GraphicView::switchToAction(RS2::ActionType actionType, void* data) cons
     m_actionContext->setCurrentAction(actionType, data);
 }
 
-RS_Entity* QG_GraphicView::catchContextEntity(QMouseEvent* event, RS_Vector& clickPos) {
-    auto container = getContainer();
-    if (container == nullptr || event == nullptr) {
+RS_Entity* QG_GraphicView::catchContextEntity(QMouseEvent* event, RS_Vector& clickPos) const {
+    auto doc = getDocument();
+    if (doc == nullptr || event == nullptr) {
         return nullptr;
     }
 
@@ -535,7 +534,7 @@ RS_Entity* QG_GraphicView::catchContextEntity(QMouseEvent* event, RS_Vector& cli
     const LC_GraphicViewport* viewPort = getViewPort();
 
     clickPos = viewPort->toWorldFromUi(mapped.x(), mapped.y());
-    RS_Entity* entity = container->getNearestEntity(clickPos, &distance, RS2::ResolveNone);
+    RS_Entity* entity = doc->getNearestEntity(clickPos, &distance, RS2::ResolveNone);
 
     if (viewPort->toGuiDX(distance) <= g_cursorSize) {
         return entity;
@@ -739,7 +738,7 @@ bool QG_GraphicView::proceedEvent(QEvent* event) {
     return proceedEvent(event);
 }
 
-void QG_GraphicView::doZoom(RS2::ZoomDirection direction, RS_Vector& center, double zoom_factor) {
+void QG_GraphicView::doZoom(RS2::ZoomDirection direction, RS_Vector& center, double zoom_factor) const {
     if (direction==RS2::In) {
         getViewPort()->zoomIn(zoom_factor, center);
     } else {
@@ -756,7 +755,7 @@ void QG_GraphicView::tabletEvent(QTabletEvent* e) {
         switch(e->pointerType()) {
         case QPointingDevice::PointerType::Eraser:
             if (e->type()==QEvent::TabletRelease) {
-                if (getContainer() != nullptr) {
+                if (getDocument() != nullptr) {
 			        auto a = std::make_shared<RS_ActionSelectSingle>(m_actionContext);
                     setCurrentAction(a);
                     QMouseEvent ev(QEvent::MouseButtonRelease, e->position(), e->globalPosition(),
@@ -764,7 +763,7 @@ void QG_GraphicView::tabletEvent(QTabletEvent* e) {
                     mouseReleaseEvent(&ev);
                     a->finish();
 
-                    if (getContainer()->countSelected()>0) {
+                    if (getDocument()->countSelected()>0) {
                         switchToAction(RS2::ActionModifyDelete);
                     }
                 }
@@ -799,19 +798,19 @@ void QG_GraphicView::tabletEvent(QTabletEvent* e) {
 #endif
         case QTabletEvent::Eraser:
             if (e->type()==QEvent::TabletRelease) {
-                if (getContainer() != nullptr) {
+                if (getDocument() != nullptr) {
 
                     RS_ActionSelectSingle* a =
-                        new RS_ActionSelectSingle(*getContainer(), *this);
+                        new RS_ActionSelectSingle(*getDocument(), *this);
                     setCurrentAction(a);
                     QMouseEvent ev(QEvent::MouseButtonRelease, e->position(),
                                    Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);//RLZ
                     mouseReleaseEvent(&ev);
                     a->finish();
 
-                    if (getContainer()->countSelected()>0) {
+                    if (getDocument()->countSelected()>0) {
                         setCurrentAction(
-                            new RS_ActionModifyDelete(*getContainer(), *this));
+                            new RS_ActionModifyDelete(*getDocument(), *this));
                     }
                 }
             }
@@ -893,7 +892,7 @@ void QG_GraphicView::wheelEvent(QWheelEvent *e) {
     //printf("state: %d\n", e->state());
     //printf("ctrl: %d\n", Qt::ControlButton);
 
-    if (getContainer() == nullptr) {
+    if (getDocument() == nullptr) {
         return;
     }
 
@@ -1067,7 +1066,7 @@ void QG_GraphicView::wheelEvent(QWheelEvent *e) {
 
 // fixme - sand -  move by keyboard support!!!
 void QG_GraphicView::keyPressEvent(QKeyEvent * e) {
-    if (getContainer() == nullptr) {
+    if (getDocument() == nullptr) {
         return;
     }
     if (m_allowScrollAndMoveAdjustByKeys) {
@@ -1142,14 +1141,14 @@ void QG_GraphicView::adjustOffsetControls(){
         return;
     }
 
-    if (getContainer()==nullptr || m_hScrollBar==nullptr || m_vScrollBar==nullptr) {
+    if (getDocument()==nullptr || m_hScrollBar==nullptr || m_vScrollBar==nullptr) {
         return;
     }
     LC_LOG<<__func__<<"(): begin";
 
-    getContainer()->forcedCalculateBorders();
-    RS_Vector vpMin = getContainer()->getMin();
-    RS_Vector vpMax = getContainer()->getMax();
+    getDocument()->forcedCalculateBorders();
+    RS_Vector vpMin = getDocument()->getMin();
+    RS_Vector vpMax = getDocument()->getMax();
 
     // no drawing yet - still allow to scroll
     if (!isRectValid(vpMin, vpMax)) {
@@ -1210,18 +1209,11 @@ void QG_GraphicView::adjustZoomControls()
  * Slot for horizontal scroll events.
  */
 void QG_GraphicView::slotHScrolled(int value) {
-    // Scrollbar behaviour tends to change with every Qt version..
-    // so let's keep old code in here for now
-
     auto viewport = getViewPort();
-    //static int running = false;
-    //if (!running) {
-    //running = true;
-    ////RS_DEBUG->print("value x: %d\n", value);
     if (m_hScrollBar->maximum()==m_hScrollBar->minimum()) {
-        getContainer()->calculateBorders();
-        RS_Vector min = getContainer()->getMin();
-        RS_Vector max = getContainer()->getMax();
+        getDocument()->calculateBorders();
+        RS_Vector min = getDocument()->getMin();
+        RS_Vector max = getDocument()->getMax();
         RS_Vector ucsMin;
         RS_Vector ucsMax;
         viewport->ucsBoundingBox(min, max, ucsMin, ucsMax);
@@ -1230,8 +1222,6 @@ void QG_GraphicView::slotHScrolled(int value) {
     } else {
         viewport->setOffsetX(-value);
     }
-    //if (isUpdateEnabled()) {
-//         updateGrid();
     redraw();
 }
 
@@ -1243,9 +1233,9 @@ void QG_GraphicView::slotVScrolled(int value) {
     // so let's keep old code in here for now
 
     if (m_vScrollBar->maximum()==m_vScrollBar->minimum()) {
-        getContainer()->calculateBorders();
-        RS_Vector min = getContainer()->getMin();
-        RS_Vector max = getContainer()->getMax();
+        getDocument()->calculateBorders();
+        RS_Vector min = getDocument()->getMin();
+        RS_Vector max = getDocument()->getMax();
         RS_Vector ucsMin;
         RS_Vector ucsMax;
         getViewPort()->ucsBoundingBox(min, max, ucsMin, ucsMax);
@@ -1254,8 +1244,6 @@ void QG_GraphicView::slotVScrolled(int value) {
     } else {
         getViewPort()->setOffsetY(value);
     }
-    //if (isUpdateEnabled()) {
-  //  updateGrid();
     redraw();
 }
 
@@ -1272,41 +1260,32 @@ void QG_GraphicView::setOffset([[maybe_unused]]int ox, [[maybe_unused]]int oy) {
 }
 
 void QG_GraphicView::layerActivated(RS_Layer *layer) {
-    bool toActivated = LC_GET_ONE_BOOL("Modify", "ModifyEntitiesToActiveLayer");
+    bool applyLayerToSelectedEntities = LC_GET_ONE_BOOL("Modify", "ModifyEntitiesToActiveLayer");
 
-    if (toActivated) {
-        RS_EntityContainer *container = getContainer();
+    if (applyLayerToSelectedEntities) {
         RS_Graphic *graphic = getGraphic();
         if (graphic != nullptr) {
-            QList<RS_Entity *> clones;
-
             graphic->startUndoCycle();
 
-            for (auto en: *container) { // fixme - sand - iterating all elements in container
-                if (en != nullptr) {
-                    if (en->isSelected()) {
-                        RS_Entity *cl = en->clone();
-                        cl->setLayer(layer);
-                        en->setSelected(false);
-                        cl->setSelected(false);
-                        clones << cl;
+            auto doc = getDocument();
+            auto selection  = doc->getSelectedSet();
 
-                        en->setUndoState(true);
-                        graphic->addUndoable(en);
-                    }
+            for (auto en: *selection) {
+                if (en != nullptr && en->isAlive()) {
+                    RS_Entity *clone = en->clone();
+                    clone->setLayer(layer);
+                    clone->clearSelectionFlag();
+                    clone->update();
+                    doc->undoableAdd(clone);
+                    doc->undoableDelete(en);
                 }
             }
-
-            for (auto cl: clones) {
-                container->addEntity(cl);
-                graphic->addUndoable(cl);
-            }
-
+            RS_Selection::unselectAllInDocument(doc,getViewPort());
             graphic->endUndoCycle();
             graphic->updateInserts();
+            doc->calculateBorders();
+            doc->clearSelectionFlag();
 
-            container->calculateBorders();
-            container->setSelected(false);
             redraw(RS2::RedrawDrawing);
         }
     }
@@ -1364,7 +1343,7 @@ void QG_GraphicView::loadSettings() {
     m_ucsMarkOptions->loadSettings();
 }
 
-void QG_GraphicView::setAntialiasing(bool state){
+void QG_GraphicView::setAntialiasing(bool state) const {
     getRenderer()->setAntialiasing(state);
 }
 
@@ -1381,7 +1360,7 @@ void QG_GraphicView::setDraftMode(bool dm) {
     }
 }
 
-void QG_GraphicView::setDraftLinesMode(bool mode) {
+void QG_GraphicView::setDraftLinesMode(bool mode) const {
     auto* viewRenderer = dynamic_cast<LC_GraphicViewRenderer*>(getRenderer());
     if (viewRenderer != nullptr) {
         viewRenderer->setLineWidthScaling(!mode);
@@ -1420,7 +1399,7 @@ void QG_GraphicView::addScrollbars(){
     connect(m_vScrollBar, &QG_ScrollBar::valueChanged, this, &QG_GraphicView::slotVScrolled);
 }
 
-bool QG_GraphicView::hasScrollbars(){
+bool QG_GraphicView::hasScrollbars() const {
     return m_scrollbars;
 }
 
@@ -1545,7 +1524,7 @@ bool QG_GraphicView::isAutoPan(QMouseEvent *event) const{
     return cadArea_actual.inArea(mouseCoord) && !cadArea_unprobed.inArea(mouseCoord);
 }
 
-void QG_GraphicView::deleteActionContext() {
+void QG_GraphicView::deleteActionContext() const {
     delete m_actionContext;
 }
 
@@ -1553,7 +1532,7 @@ void QG_GraphicView::deleteActionContext() {
     Auto-pans the CAD area.
     - by Melwyn Francis Carlo <carlo.melwyn@outlook.com>
 */
-void QG_GraphicView::autoPanStep(){
+void QG_GraphicView::autoPanStep() const {
     // skip first steps to avoid unintensional panning
     m_panData->m_delayCounter = std::min(++ m_panData->m_delayCounter, m_panData->delayCounterMax);
     if (m_panData->m_delayCounter < m_panData->delayCounterMax) {

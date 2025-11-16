@@ -125,7 +125,7 @@ private:
     TickData* m_tickData = nullptr;
 
     RS_Vector obtainLineSnapPointForMode(RS_Line* targetLine, RS_Vector& snap) const;
-    TickData* prepareLineData(RS_Line* targetLine, const RS_Vector& tickSnapPosition, const RS_Vector& tickEndPosition, bool alternateAngle);
+    TickData* prepareLineData(RS_Line* targetLine, const RS_Vector& tickSnapPosition, const RS_Vector& tickEndPosition, bool alternateAngle) const;
 protected:
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
@@ -138,7 +138,7 @@ protected:
     bool doCheckMayDrawPreview(LC_MouseEvent *event, int status) override;
     bool doCheckMayTrigger() override;
     void performTriggerDeletions() override;
-    void divideOriginalLine(TickData *pData, QList<RS_Entity *> &list);
+    void divideOriginalLine(TickData *pData, QList<RS_Entity *> &list) const;
     bool isSetActivePenAndLayerOnTrigger() override;
     void doFinish(bool updateTB) override;
     void setLine(RS_Entity* en, const RS_Vector& snapPoint);

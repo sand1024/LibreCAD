@@ -133,7 +133,7 @@ public:
     void setAngle2(double a2);
 
     /** get angle relative arc center*/
-    double getArcAngle(const RS_Vector& vp) {
+    double getArcAngle(const RS_Vector& vp) const {
         return (vp - data.center).angle();
     }
 

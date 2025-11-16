@@ -32,7 +32,7 @@ class LC_UndoableRelZero:public RS_Undoable
 {
 public:
     LC_UndoableRelZero(LC_GraphicViewport* view, const RS_Vector &mFrom, const RS_Vector &mTo);
-    void undoStateChanged(bool undone) override;
+    void deletedStateChanged(bool undone) override;
 
 private:
     LC_GraphicViewport* viewport = nullptr;

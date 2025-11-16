@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "lc_containertraverser.h"
 #include "lc_linemath.h"
 #include "lc_staroptions.h"
+#include "rs_document.h"
 #include "rs_line.h"
 #include "rs_polyline.h"
 
@@ -213,7 +214,7 @@ void LC_ActionDrawStar::doPrepareTriggerEntities(QList<RS_Entity *> &list){
  * @param list
  * @param preview
  */
-void LC_ActionDrawStar::addPolylineToEntitiesList(RS_Polyline *polyline, QList<RS_Entity *> &list, bool preview){
+void LC_ActionDrawStar::addPolylineToEntitiesList(RS_Polyline *polyline, QList<RS_Entity *> &list, bool preview) const {
     if (polyline != nullptr){
         if (preview){
             list << polyline;
@@ -226,7 +227,7 @@ void LC_ActionDrawStar::addPolylineToEntitiesList(RS_Polyline *polyline, QList<R
                 for(RS_Entity* entity: lc::LC_ContainerTraverser{*polyline, RS2::ResolveAll}.entities()) {
                     if (entity != nullptr){
                         RS_Entity *clone = entity->clone(); // use clone for safe deletion of polyline
-                        clone->reparent(m_container);
+                        clone->reparent(m_document);
                         list << clone;
                     }
                 }
@@ -549,7 +550,7 @@ RS_Polyline *LC_ActionDrawStar::createShapePolyline(RS_Vector &snap, QList<RS_En
     }
 
     // now all preparations completed, and we'll create shape
-    auto* polyline = new RS_Polyline(m_container);
+    auto* polyline = new RS_Polyline(m_document);
 
     // the very first vertex from which shape creation begins.
     RS_Vector startingVertex;

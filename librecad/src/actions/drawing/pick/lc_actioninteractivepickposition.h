@@ -58,7 +58,7 @@ protected:
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void updateMouseButtonHints() override;
-    void updateInfoCursor(const RS_Vector &mouse, const RS_Vector &relZero);
+    void updateInfoCursor(const RS_Vector &mouse, const RS_Vector &relZero) const;
 };
 
 #endif // LC_ACTIONINTERACTIVEPICKPOSITION_H

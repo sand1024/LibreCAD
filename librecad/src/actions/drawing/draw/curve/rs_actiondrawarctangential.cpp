@@ -29,9 +29,10 @@
 #include "qg_arctangentialoptions.h"
 #include "rs_arc.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 
 RS_ActionDrawArcTangential::RS_ActionDrawArcTangential(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("Draw arcs tangential",actionContext, RS2::ActionDrawArcTangential)
+    :LC_SingleEntityCreationAction("Draw arcs tangential",actionContext, RS2::ActionDrawArcTangential)
     , m_point(false)
     , m_arcData(std::make_unique<RS_ArcData>()){
 }
@@ -50,23 +51,22 @@ void RS_ActionDrawArcTangential::doInitWithContextEntity(RS_Entity* contextEntit
     setBaseEntity(contextEntity, m_actionContext->getContextMenuActionClickPosition());
 }
 
-void RS_ActionDrawArcTangential::doTrigger() {
+RS_Entity* RS_ActionDrawArcTangential::doTriggerCreateEntity() {
     if (!(m_point.valid && m_baseEntity)) {
         RS_DEBUG->print("RS_ActionDrawArcTangential::trigger: conditions not met");
-        return;
+        return nullptr;
     }
 
     preparePreview();
     if (m_alternateArc){
         m_arcData->reversed = !m_arcData->reversed;
     }
-    auto* arc = new RS_Arc(m_container, *m_arcData);
-
-    setPenAndLayerToActive(arc);
+    auto* arc = new RS_Arc(m_document, *m_arcData);
     moveRelativeZero(arc->getCenter());
+    return arc;
+}
 
-    undoCycleAdd(arc);
-
+void RS_ActionDrawArcTangential::doTriggerCompletion(bool success) {
     setStatus(SetBaseEntity);
     double oldRadius = m_arcData->radius;
 
@@ -291,7 +291,7 @@ RS2::CursorType RS_ActionDrawArcTangential::doGetMouseCursor([[maybe_unused]] in
     return RS2::SelectCursor;
 }
 
-void RS_ActionDrawArcTangential::setRadius(double r){
+void RS_ActionDrawArcTangential::setRadius(double r) const {
     m_arcData->radius = std::abs(r);
 }
 
@@ -319,14 +319,14 @@ LC_ActionOptionsWidget* RS_ActionDrawArcTangential::createOptionsWidget(){
     return new QG_ArcTangentialOptions();
 }
 
-void RS_ActionDrawArcTangential::updateOptionsRadius(double radius){
+void RS_ActionDrawArcTangential::updateOptionsRadius(double radius) const {
     if (m_optionWidget != nullptr){
         auto* options = dynamic_cast <QG_ArcTangentialOptions*> (m_optionWidget.get());
         options->updateRadius(radius);
     }
 }
 
-void RS_ActionDrawArcTangential::updateOptionsAngle(double angle){
+void RS_ActionDrawArcTangential::updateOptionsAngle(double angle) const {
     if (m_optionWidget != nullptr){
         auto* options = dynamic_cast <QG_ArcTangentialOptions*> (m_optionWidget.get());
         options->updateAngle(angle);

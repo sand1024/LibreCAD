@@ -41,21 +41,21 @@ public:
     QAction* getDockingAction() const {
         return m_docking;
     }
-    void setInput(const QString &cmd);
+    void setInput(const QString &cmd) const;
 public slots:
     virtual void setFocus();
-    void setCommand( const QString & cmd );
-    void appendHistory( const QString & msg );
+    void setCommand( const QString & cmd ) const;
+    void appendHistory( const QString & msg ) const;
     void handleCommand(QString cmd);
-    void handleKeycode(QString code);
-    void spacePressed();
+    void handleKeycode(QString code) const;
+    void spacePressed() const;
     void tabPressed();
-    void escape();
+    void escape() const;
     void setActionHandler( QG_ActionHandler * ah );
-    void setCommandMode();
-    void setNormalMode();
+    void setCommandMode() const;
+    void setNormalMode() const;
     static QString getRootCommand( const QStringList & cmdList, const QString & typed );
-    void setKeycodeMode(bool state);
+    void setKeycodeMode(bool state) const;
 protected slots:
     void languageChange();
     void chooseCommandFile();

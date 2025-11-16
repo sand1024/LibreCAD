@@ -57,6 +57,7 @@ private:
     QDockWidget *createUCSListWidget();
     QDockWidget *createLayerTreeWidget(QG_ActionHandler *action_handler);
     QDockWidget *createEntityInfoWidget();
+    QDockWidget* createPropertySheetWidget();
     QDockWidget *createBlockListWidget(QG_ActionHandler *actionHandler);
     QDockWidget *createLibraryWidget(QG_ActionHandler *action_handler);
     QDockWidget *createCmdWidget(QG_ActionHandler *action_handler);

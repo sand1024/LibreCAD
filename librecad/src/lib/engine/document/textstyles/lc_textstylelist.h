@@ -33,7 +33,7 @@ public:
     virtual ~LC_TextStyleList() = default;
     void clear();
     unsigned int count() const;
-    LC_TextStyle* at(unsigned int i);
+    LC_TextStyle* at(unsigned int i) const;
     void addStyle(LC_TextStyle* style);
     void remove(LC_TextStyle* style);
     void remove(const QString& name);

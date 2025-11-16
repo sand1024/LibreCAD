@@ -36,7 +36,7 @@ class LC_GraphicVariables{
     RS2::AngleFormat angleUnitsDXF2LC(int aunits);
 
     void loadFromVars(RS_Graphic* graphic);
-    void saveToVars(RS_Graphic* graphic);
+    void saveToVars(RS_Graphic* graphic) const;
     bool isGridOn() const;
     void setGridOn(bool on);
     bool isIsometricGrid() const;
@@ -49,7 +49,7 @@ class LC_GraphicVariables{
     void setDefaultDimStyleName(QString name);
     RS2::IsoGridViewType getIsoView() const;
     void setIsoView(RS2::IsoGridViewType viewType);
-    RS_Vector getPaperInsertionBase();
+    RS_Vector getPaperInsertionBase() const;
     void setPaperInsertionBase(const RS_Vector& p);
     int getAnglePrecision() const;
     int getLinearPrecision() const;

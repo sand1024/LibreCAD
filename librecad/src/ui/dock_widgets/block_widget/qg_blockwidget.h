@@ -88,7 +88,7 @@ public:
     QG_BlockWidget(LC_ActionGroupManager* m_actionGroupManager, QG_ActionHandler* ah, QWidget* parent,
                    const char* name=nullptr, Qt::WindowFlags f = {});
     void setGraphicView(RS_GraphicView* doc) override;
-    RS_BlockList* getBlockList() {
+    RS_BlockList* getBlockList() const {
         return m_blockList;
     }
     void update();
@@ -112,7 +112,7 @@ public slots:
     void updateWidgetSettings() const;
 protected:
     void contextMenuEvent(QContextMenuEvent *e) override;
-    void addMenuItem(QMenu* contextMenu, RS2::ActionType actionType);
+    void addMenuItem(QMenu* contextMenu, RS2::ActionType actionType) const;
     void keyPressEvent(QKeyEvent* e) override;
     void setBlockList(RS_BlockList* blockList);
     void addToolbarButton(LC_FlexLayout* layButtons, RS2::ActionType actionType);

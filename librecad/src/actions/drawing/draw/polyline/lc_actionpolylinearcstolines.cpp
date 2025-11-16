@@ -25,6 +25,7 @@
 #include "lc_actioncontext.h"
 #include "lc_containertraverser.h"
 
+#include "rs_document.h"
 #include "rs_pen.h"
 #include "rs_polyline.h"
 
@@ -48,12 +49,9 @@ void LC_ActionPolylineArcsToLines::doTrigger() {
     // todo - move to RS_Modification?
     if (hasArcsSegments(m_polyline)) {
         auto* createdPolyline =  createPolyline(m_polyline);
-
         createdPolyline->setLayer(m_polyline->getLayer());
         createdPolyline->setPen(m_polyline->getPen(false));
-
-        m_container->addEntity(createdPolyline);
-        undoCycleReplace(m_polyline, createdPolyline);
+        undoCycleReplace(m_polyline, createdPolyline); // fixme - undoable - change to simpler form via undoableTrigger
     }
     m_polyline = nullptr;
 }
@@ -88,8 +86,8 @@ void LC_ActionPolylineArcsToLines::onMouseRightButtonRelease([[maybe_unused]] in
     init(-1);
 }
 
-RS_Polyline *LC_ActionPolylineArcsToLines::createPolyline(RS_Polyline *original) {
-    auto* clone = new RS_Polyline(m_container);
+RS_Polyline *LC_ActionPolylineArcsToLines::createPolyline(RS_Polyline *original) const {
+    auto* clone = new RS_Polyline(m_document);
 
     clone->addVertex(original->getStartpoint());
     for(RS_Entity* entity: lc::LC_ContainerTraverser{*original, RS2::ResolveAll}.entities()) {

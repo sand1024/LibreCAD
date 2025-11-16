@@ -44,10 +44,10 @@ protected slots:
 protected:
     void doSaveSettings() override;
     void doSetAction(RS_ActionInterface *a, bool update) override;
-    void setScaleToActionAndView(bool val);
-    void setUseCurrentLayerToActionAndView(bool val);
-    void setUseCurrentAttributesToActionAndView(bool val);
-    void setKeepOriginalsToActionAndView(bool val);
+    void setScaleToActionAndView(bool val) const;
+    void setUseCurrentLayerToActionAndView(bool val) const;
+    void setUseCurrentAttributesToActionAndView(bool val) const;
+    void setKeepOriginalsToActionAndView(bool val) const;
 private:
     Ui::LC_ModifyAlignRefOptions *ui;
     LC_ActionModifyAlignRef* m_action = nullptr;

@@ -53,7 +53,7 @@ public:
     LC_ActionLayersExport( LC_ActionContext *actionContext,
                            Mode inputExportMode);
     void init(int status) override;
-    bool collectLayersToExport(LC_LayersExportOptions* exportOptions);
+    bool collectLayersToExport(LC_LayersExportOptions* exportOptions) const;
     void exportLayers(LC_LayersExportOptions& exportOptions, RS_Graphic* sourceGraphic);
     void performExport();
     void trigger() override;

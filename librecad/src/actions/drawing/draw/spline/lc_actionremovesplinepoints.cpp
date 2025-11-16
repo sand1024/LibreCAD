@@ -36,7 +36,7 @@ LC_ActionRemoveSplinePoints::LC_ActionRemoveSplinePoints(LC_ActionContext *actio
 
 void LC_ActionRemoveSplinePoints::doAfterTrigger() {
     if (!mayModifySplineEntity(m_entityToModify)) {
-        m_entityToModify->setSelected(false);
+        unselect(m_entityToModify);
         setStatus(SetEntity);
     }
 }
@@ -44,7 +44,7 @@ void LC_ActionRemoveSplinePoints::doAfterTrigger() {
 void LC_ActionRemoveSplinePoints::onMouseMove(RS_Vector mouse, int status, LC_MouseEvent *e) {
     switch (status) {
         case SetEntity: {
-            auto entity = catchEntityByEvent(e, g_enTypeList);
+            const auto entity = catchEntityByEvent(e, g_enTypeList);
             if (entity != nullptr){
                if (mayModifySplineEntity(entity)) {
                    highlightHoverWithRefPoints(entity, true);
@@ -54,7 +54,7 @@ void LC_ActionRemoveSplinePoints::onMouseMove(RS_Vector mouse, int status, LC_Mo
         }
         case SetControlPoint:{
             double dist;
-            RS_Vector nearestPoint = m_entityToModify->getNearestRef(mouse, &dist);
+            const RS_Vector nearestPoint = m_entityToModify->getNearestRef(mouse, &dist);
             if (nearestPoint.valid) {
                 previewRefSelectablePoint(nearestPoint);
                 RS_Entity *previewUpdatedEntity = createModifiedSplineEntity(m_entityToModify, nearestPoint, m_directionFromStart);
@@ -71,7 +71,7 @@ void LC_ActionRemoveSplinePoints::onMouseMove(RS_Vector mouse, int status, LC_Mo
 
 void LC_ActionRemoveSplinePoints::setEntityToModify(RS_Entity* entity) {
     m_entityToModify = entity;
-    m_entityToModify->setSelected(true);
+    select(m_entityToModify);
     redrawDrawing();
     setStatus(SetControlPoint);
 }
@@ -79,16 +79,16 @@ void LC_ActionRemoveSplinePoints::setEntityToModify(RS_Entity* entity) {
 void LC_ActionRemoveSplinePoints::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
     switch (status){
         case SetEntity:{
-            auto entity = catchEntityByEvent(e, g_enTypeList);
+            const auto entity = catchEntityByEvent(e, g_enTypeList);
             if (entity != nullptr && mayModifySplineEntity(entity)){
                 setEntityToModify(entity);
             }
             break;
         }
         case SetControlPoint: {
-            RS_Vector mouse = e->snapPoint;
+            const RS_Vector mouse = e->snapPoint;
             double dist;
-            RS_Vector nearestPoint = m_entityToModify->getNearestRef(mouse, &dist);
+            const RS_Vector nearestPoint = m_entityToModify->getNearestRef(mouse, &dist);
             if (nearestPoint.valid){
                 m_vertexPoint = nearestPoint;
                 trigger();
@@ -105,17 +105,17 @@ RS_Entity *LC_ActionRemoveSplinePoints::createModifiedSplineEntity(RS_Entity *e,
     RS_Entity* result = nullptr;
     switch (e->rtti()){
         case RS2::EntitySplinePoints:{
-            auto* splinePoints = dynamic_cast<LC_SplinePoints *>(e->clone());
-            LC_SplinePointsData &data = splinePoints->getData();
-            unsigned int controlPointsCount = data.controlPoints.size();
-            unsigned int splinePointsCount = data.splinePoints.size();
+            auto* clone = dynamic_cast<LC_SplinePoints *>(e->clone());
+            LC_SplinePointsData &data = clone->getData();
+            const unsigned int controlPointsCount = data.controlPoints.size();
+            const unsigned int splinePointsCount = data.splinePoints.size();
             if (splinePointsCount > 0){
                 for (unsigned int i = 0; i < splinePointsCount; i++) {
                     RS_Vector cp = data.splinePoints.at(i);
                     if (cp == controlPoint) {
                         data.splinePoints.erase(data.splinePoints.begin() + i);
-                        splinePoints->update();
-                        result = splinePoints;
+                        clone->update();
+                        result = clone;
                         break;
                     }
                 }
@@ -125,8 +125,8 @@ RS_Entity *LC_ActionRemoveSplinePoints::createModifiedSplineEntity(RS_Entity *e,
                     RS_Vector cp = data.controlPoints.at(i);
                     if (cp == controlPoint) {
                         data.controlPoints.erase(data.controlPoints.begin() + i);
-                        splinePoints->update();
-                        result = splinePoints;
+                        clone->update();
+                        result = clone;
                         break;
                     }
                 }
@@ -134,9 +134,9 @@ RS_Entity *LC_ActionRemoveSplinePoints::createModifiedSplineEntity(RS_Entity *e,
             break;
         }
         case RS2::EntitySpline:{
-            auto* spline = dynamic_cast<RS_Spline *>(e);
+            const auto* spline = dynamic_cast<RS_Spline *>(e);
             RS_SplineData data = spline->getData();
-            unsigned int count = data.controlPoints.size();
+            const unsigned int count = data.controlPoints.size();
             for (unsigned int i = 0; i < count; i++ ){
                 RS_Vector cp = data.controlPoints.at(i);
                 if (cp == controlPoint){
@@ -162,7 +162,7 @@ bool LC_ActionRemoveSplinePoints::mayModifySplineEntity(RS_Entity *e) {
     switch (e->rtti()){
         case RS2::EntitySplinePoints:{
             auto* splinePoints = dynamic_cast<LC_SplinePoints *>(e);
-            unsigned int size = splinePoints->getData().controlPoints.size();
+            const unsigned int size = splinePoints->getData().controlPoints.size();
             if (splinePoints->isClosed()){
                 return size > 3;
             }
@@ -171,13 +171,13 @@ bool LC_ActionRemoveSplinePoints::mayModifySplineEntity(RS_Entity *e) {
             }
         }
         case RS2::EntitySpline:{
-            auto* spline = dynamic_cast<RS_Spline *>(e);
-            unsigned int size = spline->getData().controlPoints.size();
+            const auto* spline = dynamic_cast<RS_Spline *>(e);
+            const unsigned int size = spline->getData().controlPoints.size();
             if (spline->isClosed()){
                 return size > 3;
             }
             else{
-                int degree = spline->getDegree();
+                const int degree = spline->getDegree();
                 switch (degree){
                     case 1:
                         return size > 3;

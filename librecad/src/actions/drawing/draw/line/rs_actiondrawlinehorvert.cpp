@@ -27,6 +27,7 @@
 #include "rs_actiondrawlinehorvert.h"
 
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_line.h"
 
 struct RS_ActionDrawLineHorVert::ActionData {
@@ -42,7 +43,7 @@ struct RS_ActionDrawLineHorVert::ActionData {
 };
 
 RS_ActionDrawLineHorVert::RS_ActionDrawLineHorVert(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("Draw horizontal/vertical lines",actionContext,RS2::ActionDrawLineHorVert),
+    :LC_SingleEntityCreationAction("Draw horizontal/vertical lines",actionContext,RS2::ActionDrawLineHorVert),
     m_actionData(std::make_unique<ActionData>()){
     reset();
     RS_DEBUG->print("RS_ActionDrawLineHorVert::constructor");
@@ -50,7 +51,7 @@ RS_ActionDrawLineHorVert::RS_ActionDrawLineHorVert(LC_ActionContext *actionConte
 
 RS_ActionDrawLineHorVert::~RS_ActionDrawLineHorVert() = default;
 
-void RS_ActionDrawLineHorVert::reset(){
+void RS_ActionDrawLineHorVert::reset() const {
     m_actionData->data = {};
 }
 
@@ -60,19 +61,20 @@ void RS_ActionDrawLineHorVert::init(int status){
     RS_DEBUG->print("RS_ActionDrawLineHorVert::init");
 }
 
-void RS_ActionDrawLineHorVert::doTrigger() {
-    auto *line = new RS_Line(m_container, m_actionData->data);
-    setPenAndLayerToActive(line);
+RS_Entity* RS_ActionDrawLineHorVert::doTriggerCreateEntity() {
+    auto *line = new RS_Line(m_document, m_actionData->data);
     moveRelativeZero(line->getMiddlePoint());
-    undoCycleAdd(line);
-    RS_DEBUG->print("RS_ActionDrawLineHorVert::trigger(): line added: %lu", line->getId());
+    return line;
+}
+
+void RS_ActionDrawLineHorVert::doTriggerCompletion(bool success) {
 }
 
 void RS_ActionDrawLineHorVert::onMouseMoveEvent([[maybe_unused]]int status, LC_MouseEvent *e) {
     RS_Vector mouse = e->snapPoint;
     if (getStatus() == SetEndpoint && m_actionData->p1.valid){
-        RS_Vector p2x = RS_Vector(mouse.x, m_actionData->p1.y);
-        RS_Vector p2y = RS_Vector(m_actionData->p1.x, mouse.y);
+        auto p2x = RS_Vector(mouse.x, m_actionData->p1.y);
+        auto p2y = RS_Vector(m_actionData->p1.x, mouse.y);
         if (mouse.distanceTo(p2y) > mouse.distanceTo(p2x)) {
             m_actionData->p2 = p2x;
         }

@@ -61,7 +61,7 @@ void RS_ActionModifyEntity::init(int status) {
     }
 }
 
-void  RS_ActionModifyEntity::notifyFinished() {
+void  RS_ActionModifyEntity::notifyFinished() const {
     m_graphicView->notifyLastActionFinished();
 }
 
@@ -90,24 +90,15 @@ void RS_ActionModifyEntity::onLateRequestCompleted(bool shouldBeSkipped) {
     m_allowExternalTermination = true;
 }
 
-void RS_ActionModifyEntity::completeEditing() {
+void RS_ActionModifyEntity::completeEditing() const {
     m_clonedEntity->update();
-
-    m_entity->setSelected(false);
-    m_clonedEntity->setSelected(false);
-
     m_clonedEntity->calculateBorders();
-    m_container->addEntity(m_clonedEntity);
-
-    m_entity->setSelected(false);
-    m_clonedEntity->setSelected(false);
+    m_clonedEntity->clearSelectionFlag();
 
     unsigned long cloneEntityId = m_clonedEntity->getId();
     unsigned long originalEntityId = m_entity->getId();
 
-    if (m_document != nullptr) {
-        undoCycleReplace(m_entity, m_clonedEntity);
-    }
+    undoCycleReplace(m_entity, m_clonedEntity);
 
     // hm... probably there is a better way to notify (signal, broadcasting etc) without direct dependency?
     LC_QuickInfoWidget *entityInfoWidget = QC_ApplicationWindow::getAppWindow()->getEntityInfoWidget();
@@ -121,16 +112,8 @@ void RS_ActionModifyEntity::doTrigger() {
     if (status == ShowDialog) {
         if (m_entity != nullptr) {
             bool selected = m_entity->isSelected();
-            // RAII style: restore the highlighted status
-            /*std::shared_ptr<bool> scopedFlag(&selected, [this](bool* pointer) {
-                if (pointer != nullptr && m_entity->isSelected() != *pointer) {
-                    setDisplaySelected(*pointer);
-                }});*/
-            // Always show the entity being edited as "Selected"
-            setDisplaySelected(true);
-
+            select(m_entity);
             setStatus(InEditing);
-
             LC_EntityPropertiesDlg* editDialog {nullptr};
             QWidget* parent = QC_ApplicationWindow::getAppWindow().get();
             m_clonedEntity = m_entity->clone();
@@ -185,18 +168,14 @@ void RS_ActionModifyEntity::doTrigger() {
                 m_allowExternalTermination = false;
                 if (editDialog->exec()) {
                     editDialog->updateEntity();
-                    m_container->addEntity(m_clonedEntity);
-
-                    if (m_document != nullptr) {
-                        undoCycleReplace(m_entity, m_clonedEntity);
-                    }
+                    undoCycleReplace(m_entity, m_clonedEntity); // fixme - undoable - change to simpler form via undoableTrigger
                     if (!selected) {
-                        m_clonedEntity->setSelected(false);
+                        m_clonedEntity->clearSelectionFlag();
                     }
                 }
                 else {
                     if (!selected) {
-                        m_entity->setSelected(false);
+                        unselect(m_entity);
                     }
                     delete m_clonedEntity;
                 }
@@ -213,12 +192,6 @@ void RS_ActionModifyEntity::doTrigger() {
     else if (status == InEditing) {
         completeEditing();
         setStatus(EditComplete);
-    }
-}
-
-void RS_ActionModifyEntity::setDisplaySelected(bool highlighted){
-    if (m_entity != nullptr) {
-        m_entity->setSelected(highlighted);
     }
 }
 

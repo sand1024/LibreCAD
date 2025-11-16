@@ -34,10 +34,10 @@
  *
  * @author Andrew Mustun
  */
-class RS_ActionDrawPoint : public RS_PreviewActionInterface {
+class RS_ActionDrawPoint : public LC_UndoablePreviewActionInterface {
 Q_OBJECT
 public:
-    RS_ActionDrawPoint(LC_ActionContext *actionContext);
+    explicit RS_ActionDrawPoint(LC_ActionContext *actionContext);
     ~RS_ActionDrawPoint() override;
 protected:
     RS2::CursorType doGetMouseCursor(int status) override;
@@ -49,7 +49,6 @@ protected:
     void doTrigger() override;
 private:
     std::unique_ptr<RS_Vector> m_pointPosition;
-
     RS_Vector getFreeSnapAwarePointAlt(const LC_MouseEvent *e, const RS_Vector &pos) const;
 };
 #endif

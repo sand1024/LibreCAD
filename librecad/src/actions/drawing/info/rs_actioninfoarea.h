@@ -54,7 +54,7 @@ protected:
     };
     std::unique_ptr<RS_InfoArea> m_infoArea;
     bool m_lastPointRequested = false;
-    void display(bool forPreview);//display results from current polygon
+    void display(bool forPreview) const;//display results from current polygon
     RS2::CursorType doGetMouseCursor(int status) override;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;

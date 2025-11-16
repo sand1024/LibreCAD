@@ -189,7 +189,7 @@ void LC_ActionDrawRectangle2Points::doPreparePreviewEntities(LC_MouseEvent *e, R
     }
 }
 
-RS_Vector LC_ActionDrawRectangle2Points::createSecondCornerSnapForGivenRectSize(RS_Vector size){
+RS_Vector LC_ActionDrawRectangle2Points::createSecondCornerSnapForGivenRectSize(RS_Vector size) const {
     RS_Vector result;
 
     // take care of adjustment for second point snap according to current snap mode of insertion point

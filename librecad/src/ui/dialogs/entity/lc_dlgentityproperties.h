@@ -46,8 +46,8 @@ public:
     LC_ActionContext::InteractiveInputInfo::InputType isInteractiveInputRequested() const {return m_interactiveInputRequested;}
     QString getInteractiveInputTag(){return m_inputTag;}
 protected slots:
-    void onLayerChanged(RS_Layer* layer);
-    void onPenChanged();
+    void onLayerChanged(RS_Layer* layer) const;
+    void onPenChanged() const;
     void onInteractiveInputRequested(LC_ActionContext::InteractiveInputInfo::InputType inputType, QString tag);
 private:
     Ui::LC_DlgEntityProperties *ui;

@@ -46,7 +46,7 @@ public:
     void init(int status) override;
     QStringList getAvailableCommands() override;
     double getRadius() const;
-    void setRadius(double val);
+    void setRadius(double val) const;
 protected:
     /**
      * Action States.
@@ -60,11 +60,12 @@ protected:
      * Circle data defined so far.
      */
     std::unique_ptr<RS_CircleData> m_circleData;
-    bool setRadiusStr(const QString &sr) ;
+    bool setRadiusStr(const QString &sr) const;
     bool doProcessCommand(int status, const QString &command) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void updateMouseButtonHints() override;
-    void doTrigger() override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
 };

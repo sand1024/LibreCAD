@@ -81,12 +81,12 @@ void QG_LineParallelThroughOptions::on_sbNumber_valueChanged(int number) {
     setCopyNumberToActionAndView(number);
 }
 
-void QG_LineParallelThroughOptions::setCopyNumberToActionAndView(int number) {
+void QG_LineParallelThroughOptions::setCopyNumberToActionAndView(int number) const {
     m_action->setNumber(number);
     ui->sbNumber->setValue(number);
 }
 
-void QG_LineParallelThroughOptions::setSymmetricToActionAndView(bool symmetric) {
+void QG_LineParallelThroughOptions::setSymmetricToActionAndView(bool symmetric) const {
     m_action->setSymmetric(symmetric);
     ui->cbSymmetric->setChecked(symmetric);
 }

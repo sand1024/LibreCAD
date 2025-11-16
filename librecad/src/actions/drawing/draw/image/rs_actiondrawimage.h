@@ -27,7 +27,7 @@
 #ifndef RS_ACTIONDRAWIMAGE_H
 #define RS_ACTIONDRAWIMAGE_H
 
-#include "rs_previewactioninterface.h"
+#include "lc_undoabledocumentmodificationaction.h"
 
 struct RS_ImageData;
 class QImage;
@@ -38,18 +38,18 @@ class QImage;
  *
  * @author Andrew Mustun
  */
-class RS_ActionDrawImage : public RS_PreviewActionInterface {
+class RS_ActionDrawImage : public LC_SingleEntityCreationAction {
 Q_OBJECT
 public:
     RS_ActionDrawImage(LC_ActionContext *actionContext);
     ~RS_ActionDrawImage() override;
 
     void init(int status) override;
-    void reset();
+    void reset() const;
     QStringList getAvailableCommands() override;
 //    void updateToolBar() override;
     double getUcsAngleDegrees() const;
-    void setUcsAngleDegrees(double ucsRelAngleDegrees);
+    void setUcsAngleDegrees(double ucsRelAngleDegrees) const;
     void setAngle(double wcsAngle) const;
     double getFactor() const;
     void setFactor(double f) const;
@@ -84,7 +84,8 @@ protected:
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
     void updateMouseButtonHints() override;
-    void doTrigger() override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angle) override;
 };
 #endif

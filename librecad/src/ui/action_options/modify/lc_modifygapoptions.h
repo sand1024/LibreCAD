@@ -48,10 +48,10 @@ private:
     LC_ActionModifyLineGap* m_action = nullptr;
     Ui::LC_ModifyGapOptions *ui;
     void setGapSizeToActionAndView(const QString &val);
-    void setGapIsFreeToActionAndView(bool val);
-    void setLineSnapToActionAndView(int val);
+    void setGapIsFreeToActionAndView(bool val) const;
+    void setLineSnapToActionAndView(int val) const;
     void setSnapDistanceToActionAndView(const QString &val);
-    void setGapSnapToActionAndView(int val);
+    void setGapSnapToActionAndView(int val) const;
 };
 
 #endif // LC_MODIFYGAPOPTIONS_H

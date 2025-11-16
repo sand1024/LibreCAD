@@ -55,7 +55,7 @@ void QG_DlgInitial::languageChange(){
     retranslateUi(this);
 }
 
-void QG_DlgInitial::init() {
+void QG_DlgInitial::init() const {
     // Fill combobox with languages:
     QStringList languageList = RS_SYSTEM->getLanguageList();
     QString defaultLanguage=RS_SYSTEM->symbolToLanguage(QString("en"));
@@ -76,11 +76,11 @@ void QG_DlgInitial::init() {
     cbLanguageCmd->setCurrentIndex( cbLanguageCmd->findText(defaultLanguage) );
 }
 
-void QG_DlgInitial::setText(const QString& t) {
+void QG_DlgInitial::setText(const QString& t) const {
     lWelcome->setText(t);
 }
 
-void QG_DlgInitial::setPixmap(const QPixmap& p) {
+void QG_DlgInitial::setPixmap(const QPixmap& p) const {
     lImage->setPixmap(p);
 }
 

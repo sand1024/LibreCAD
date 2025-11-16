@@ -76,7 +76,7 @@ public:
      * @brief Adds an entity to the outer loop.
      * @param entity Pointer to the entity to add.
      */
-    void addEntity(RS_Entity* entity);
+    void addEntity(RS_Entity* entity) const;
     /**
      * @brief Checks if a point is inside this loop (considering odd-even rule for hierarchy).
      * @param point The point to test.
@@ -264,7 +264,7 @@ public:
      * @brief Extracts all closed loops from the edges.
      * @return Vector of unique_ptr to loop containers.
      */
-    std::vector<std::unique_ptr<RS_EntityContainer>> extract();
+    std::vector<std::unique_ptr<RS_EntityContainer>> extract() const;
 
 private:
     // validate the loop m_loop
@@ -376,7 +376,7 @@ private:
      * @brief Adds and processes a contour container.
      * @param contour The input contour.
      */
-    void AddContainer(const RS_EntityContainer& contour);
+    void AddContainer(const RS_EntityContainer& contour) const;
 
     struct Data;
     std::shared_ptr<Data> m_data;  ///< Private data for optimization results

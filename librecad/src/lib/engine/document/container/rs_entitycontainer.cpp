@@ -216,7 +216,7 @@ RS_Entity *RS_EntityContainer::cloneProxy() const {
 
     RS_DEBUG->print("RS_EntityContainer::cloneproxy: clone autoDel: %d", ec->isOwner());
 
-    ec->detach();
+    ec->detach(); // fixme - review whether detach is always need... looks like a double clone() ??
     return ec;
 }
 
@@ -293,18 +293,52 @@ double RS_EntityContainer::getLength() const {
  * Selects this entity.
  */
 bool RS_EntityContainer::setSelected(bool select) {
-    // This entity's select:
-    if (RS_Entity::setSelected(select)) {
-        // All sub-entity's select:
-        for (RS_Entity* e: *this) {
-            if (e->isVisible()) {
-                e->setSelected(select);
-            }
-        }
-        return true;
+    // layer is locked:
+    if (select && isLocked()) {
+        return false;
     }
-    return false;
+    RS_Entity::setSelectionFlag(select);
+    auto doc = getDocument();
+    addToSelectionSet(select, doc);
+
+    // All sub-entity's select:
+    for (RS_Entity* e : *this) {
+        if (e->isVisible()) {
+            e->setSelectionFlag(select);
+        }
+    }
+    return true;
 }
+
+bool RS_EntityContainer::doSelectInDocument(bool select, RS_Document* doc) {
+    if (select && isLocked()) {
+        return false;
+    }
+    RS_Entity::setSelectionFlag(select);
+    addToSelectionSet(select, doc);
+
+    // All sub-entity's select:
+    for (RS_Entity* e : *this) {
+        if (e->isVisible()) {
+            e->setSelectionFlag(select);
+        }
+    }
+    return true;
+}
+
+void RS_EntityContainer::setSelectionFlag(bool select) {
+    // layer is locked:
+    if (select && isLocked()) {
+        return;
+    }
+    RS_Entity::setSelectionFlag(select);
+    // All sub-entity's select:
+    for (RS_Entity* e : *this) {
+        if (e->isVisible()) {
+            e->setSelectionFlag(select);
+        }
+    }
+};
 
 /**
  * Toggles select on this entity.
@@ -322,156 +356,14 @@ void RS_EntityContainer::setHighlighted(bool on){
 }
 
 /**
- * Selects all entities within the given area.
- *
- * @param select True to select, False to invertSelectionOperation the entities.
- */
- // todo - sand - ucs - add method for selecting entities within rect that is rotated in wcs
- // Such method is needed for better support UCS with rotation and more precise selection of m_entities.
-void RS_EntityContainer::selectWindow(
-    enum RS2::EntityType typeToSelect, RS_Vector v1, RS_Vector v2,
-    bool select, bool cross){
-    for (RS_Entity* e: *this) {
-        bool included = false;
-        if (e->isVisible()) {
-            if (e->isInWindow(v1, v2)) {
-                //e->setSelected(select);
-                included = true;
-            } else if (cross) {
-                RS_EntityContainer l;
-                l.addRectangle(v1, v2);
-                RS_VectorSolutions sol;
-
-                if (e->isContainer()) {
-                    auto *ec = (RS_EntityContainer *) e;
-                    lc::LC_ContainerTraverser traverser{*ec, RS2::ResolveAll};
-                    for (RS_Entity *se = traverser.first(); se != nullptr && !included; se = traverser.next()){
-                        if (se->rtti() == RS2::EntitySolid) {
-                            included = static_cast<RS_Solid *>(se)->isInCrossWindow(v1, v2);
-                        } else {
-                            for (RS_Entity* line: l) {
-                                sol = RS_Information::getIntersection(se, line, true);
-                                if (sol.hasValid()) {
-                                    included = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                } else if (e->rtti() == RS2::EntitySolid) {
-                    included = static_cast<RS_Solid *>(e)->isInCrossWindow(v1, v2);
-                } else {
-                    for (RS_Entity* line: l) {
-                        sol = RS_Information::getIntersection(e, line, true);
-                        if (sol.hasValid()) {
-                            included = true;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        if (included) {
-            if (typeToSelect != RS2::EntityType::EntityUnknown) {
-                if (typeToSelect == e->rtti()) {
-                    e->setSelected(select);
-                } else {
-                    //Do not select
-                }
-            } else {
-                e->setSelected(select);
-            }
-        }
-    }
-}
-/**
- * Selects all entities within the given area with given types.
- *
- * @param select True to select, False to invertSelectionOperation the entities.
- */
-void RS_EntityContainer::selectWindow(
-    const QList<RS2::EntityType> &typesToSelect, RS_Vector v1, RS_Vector v2,
-    bool select, bool cross){
-    for (RS_Entity* e: *this) {
-        if (!typesToSelect.contains(e->rtti())){
-            continue;
-        }
-        bool included = false;
-        if (e->isVisible()) {
-            if (e->isInWindow(v1, v2)) {
-                //e->setSelected(select);
-                included = true;
-            } else if (cross) {
-                RS_EntityContainer l;
-                l.addRectangle(v1, v2);
-                RS_VectorSolutions sol;
-
-                if (e->isContainer()) {
-                    auto *ec = (RS_EntityContainer *) e;
-                    lc::LC_ContainerTraverser traverser{*ec, RS2::ResolveAll};
-                    for (RS_Entity* se = traverser.first(); se != nullptr && !included; se = traverser.next()) {
-                        if (se->rtti() == RS2::EntitySolid) {
-                            included = dynamic_cast<RS_Solid *>(se)->isInCrossWindow(v1, v2);
-                        } else {
-                            for (auto line: l) {
-                                sol = RS_Information::getIntersection(
-                                    se, line, true);
-                                if (sol.hasValid()) {
-                                    included = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                } else if (e->rtti() == RS2::EntitySolid) {
-                    included = dynamic_cast<RS_Solid *>(e)->isInCrossWindow(v1, v2);
-                } else {
-                    for (auto line: l) {
-                        sol = RS_Information::getIntersection(e, line, true);
-                        if (sol.hasValid()) {
-                            included = true;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        if (included) {
-          /*  if (typeToSelect != RS2::EntityType::EntityUnknown) {
-                if (typeToSelect == e->rtti()) {
-                    e->setSelected(select);
-                } else {
-                    //Do not select
-                }
-            } else {*/
-                e->setSelected(select);
-//            }
-        }
-    }
-}
-
-/**
  * Adds a entity to this container and updates the borders of this
  * entity-container if autoUpdateBorders is true.
  */
 void RS_EntityContainer::addEntity(RS_Entity *entity) {
-    /*
-       if (isDocument()) {
-           RS_LayerList* lst = getDocument()->getLayerList();
-           if (lst) {
-               RS_Layer* l = lst->getActive();
-               if (l && l->isLocked()) {
-                   return;
-               }
-           }
-       }
-    */
-
     if (entity == nullptr) {
         return;
     }
+    debugEntityAlreadyPresentExists(entity);
     if (entity->rtti() == RS2::EntityImage || entity->rtti() == RS2::EntityHatch) {
         m_entities.prepend(entity);
     } else {
@@ -488,6 +380,7 @@ void RS_EntityContainer::appendEntity(RS_Entity *entity) {
     if (entity == nullptr) {
         return;
     }
+    debugEntityAlreadyPresentExists(entity);
     m_entities.append(entity);
     adjustBordersIfNeeded(entity);
 }
@@ -500,6 +393,7 @@ void RS_EntityContainer::prependEntity(RS_Entity *entity) {
     if (entity == nullptr) {
         return;
     }
+    debugEntityAlreadyPresentExists(entity);
     m_entities.prepend(entity);
     adjustBordersIfNeeded(entity);
 }
@@ -555,7 +449,7 @@ void RS_EntityContainer::insertEntity(int index, RS_Entity *entity) {
     if (entity == nullptr) {
         return;
     }
-
+    debugEntityAlreadyPresentExists(entity);
     m_entities.insert(index, entity);
     adjustBordersIfNeeded(entity);
 }
@@ -564,16 +458,21 @@ void RS_EntityContainer::insertEntity(int index, RS_Entity *entity) {
  * this entity-container if autoUpdateBorders is true.
  */
 bool RS_EntityContainer::removeEntity(RS_Entity *entity) {
-    //RLZ TODO: in Q3PtrList if 'entity' is nullptr remove the current item-> at.(entIdx)
-    //    and sets 'entIdx' in next() or last() if 'entity' is the last item in the list.
-    //    in LibreCAD is never called with nullptr
-    bool ret = m_entities.removeOne(entity);
-
-    if (autoDelete && ret) {
-        delete entity;
+    if (entity != nullptr) {
+        bool ret = m_entities.removeOne(entity);
+        if (ret) {
+            // actually was contained in container
+            bool mayAffectBorders = entity->isVisible();
+            if (autoDelete) {
+                delete entity;
+            }
+            if (mayAffectBorders) {
+                calculateBordersIfNeeded();
+            }
+        }
+        return ret;
     }
-    calculateBordersIfNeeded();
-    return ret;
+    return false;
 }
 
 /**
@@ -609,6 +508,7 @@ unsigned int RS_EntityContainer::countDeep() const {
 /**
  * Counts the selected entities in this container.
  */
+[[deprecated]]
 unsigned RS_EntityContainer::countSelected(bool deep, QList<RS2::EntityType> const &types) {
     unsigned count = 0;
     std::set<RS2::EntityType> type{types.cbegin(), types.cend()};
@@ -626,11 +526,11 @@ unsigned RS_EntityContainer::countSelected(bool deep, QList<RS2::EntityType> con
     return count;
 }
 
-void RS_EntityContainer::collectSelected(std::vector<RS_Entity*> &collect, bool deep, QList<RS2::EntityType> const &types) {    
+void RS_EntityContainer::collectSelected(QList<RS_Entity*> &collect, bool deep, QList<RS2::EntityType> const &types) {
     std::set<RS2::EntityType> type{types.cbegin(), types.cend()};
     for (RS_Entity *e: m_entities) {
         if (e != nullptr) {
-            if (e->isSelected()) {
+            if (e->isSelected()) { // fixme - rework!!!
                 if (types.empty() || type.count(e->rtti())) {
                     collect.push_back(e);
                 }
@@ -643,10 +543,11 @@ void RS_EntityContainer::collectSelected(std::vector<RS_Entity*> &collect, bool 
     }
 }
 // fixme - sand - avoid usage in actions as it enumerates all entities. Rework or rely on entities list!!!!
+[[deprecated]]
 RS_EntityContainer::LC_SelectionInfo RS_EntityContainer::getSelectionInfo(/*bool deep, */const QList<RS2::EntityType> &types) {
     LC_SelectionInfo result;
     std::set<RS2::EntityType> type{types.cbegin(), types.cend()};
-    for (RS_Entity *e: *this) {
+    for (RS_Entity *e: *this) { // rework to use document selection
         if (e != nullptr) {
             if (e->isSelected()) {
                 if (types.empty() || type.count(e->rtti())) {
@@ -687,7 +588,7 @@ void RS_EntityContainer::adjustBorders(RS_Entity *entity) {
     //RS_DEBUG->print("RS_EntityContainer::adjustBorders");
     //resetBorders();
 
-    if (entity) {
+    if (entity != nullptr) {
         // make sure a container is not empty (otherwise the border
         //   would get extended to 0/0):
         if (!entity->isContainer() || entity->count() > 0) {
@@ -706,14 +607,11 @@ void RS_EntityContainer::adjustBorders(RS_Entity *entity) {
 /**
  * Recalculates the borders of this entity container.
  */
-void RS_EntityContainer::calculateBorders() {
+void RS_EntityContainer::calculateBorders() { // fixme - sand verify that there are no not needed borders calculations!!!
     RS_DEBUG->print("RS_EntityContainer::calculateBorders");
 
     resetBorders();
     for (RS_Entity *e: *this) {
-        //        RS_DEBUG->print("RS_EntityContainer::calculateBorders: "
-        //                        "isVisible: %d", (int)e->isVisible());
-
         if (e != nullptr && e->isVisible()) {
             e->calculateBorders();
             adjustBorders(e);
@@ -737,11 +635,6 @@ void RS_EntityContainer::calculateBorders() {
 
     RS_DEBUG->print("RS_EntityContainer::calculateBorders: size: %f,%f",
                     getSize().x, getSize().y);
-
-    //RS_DEBUG->print("  borders: %f/%f %f/%f", minV.x, minV.y, maxV.x, maxV.y);
-
-    //printf("borders: %lf/%lf  %lf/%lf\n", minV.x, minV.y, maxV.x, maxV.y);
-    //RS_Entity::calculateBorders();
 }
 
 /**
@@ -749,7 +642,6 @@ void RS_EntityContainer::calculateBorders() {
  * invisible entities.
  */
 void RS_EntityContainer::forcedCalculateBorders() {
-    //RS_DEBUG->print("RS_EntityContainer::calculateBorders");
     resetBorders();
     for (RS_Entity* e : *this) {
         if (e->isContainer()) {
@@ -775,11 +667,6 @@ void RS_EntityContainer::forcedCalculateBorders() {
         minV.y = 0.0;
         maxV.y = 0.0;
     }
-
-    //RS_DEBUG->print("  borders: %f/%f %f/%f", minV.x, minV.y, maxV.x, maxV.y);
-
-    //printf("borders: %lf/%lf  %lf/%lf\n", minV.x, minV.y, maxV.x, maxV.y);
-    //RS_Entity::calculateBorders();
 }
 
 /**
@@ -793,7 +680,7 @@ int RS_EntityContainer::updateDimensions(bool autoText) {
     int updatedDimsCount = 0;
 
     for (RS_Entity *e: *this) {
-        if (e->isUndone()) {
+        if (e->isDeleted()) {
             continue;
         }
         if (e->rtti() == RS2::EntityDimLeader) {
@@ -954,7 +841,7 @@ RS_Entity *RS_EntityContainer::firstEntity(RS2::ResolveLevel level) const {
                 entIdx = 0;
                 e = m_entities.first();
             }
-            if (e && e->isContainer() && e->rtti() != RS2::EntityInsert) {
+            if (e != nullptr && e->isContainer() && e->rtti() != RS2::EntityInsert) {
                 subContainer = static_cast<RS_EntityContainer*>(e);
                 e = subContainer->firstEntity(level);
                 // empty container:
@@ -1286,6 +1173,7 @@ void RS_EntityContainer::setEntityAt(int index, RS_Entity *en) {
     if (autoDelete && m_entities.at(index)) {
         delete m_entities.at(index);
     }
+    debugEntityAlreadyPresentExists(en);
     m_entities[index] = en;
 }
 
@@ -1297,11 +1185,11 @@ int RS_EntityContainer::findEntity(RS_Entity const *const entity) {
     return entIdx;
 }
 
-int RS_EntityContainer::findEntityIndex(RS_Entity const *const entity) {
+int RS_EntityContainer::findEntityIndex(RS_Entity const *const entity) const {
     return m_entities.indexOf(const_cast<RS_Entity *>(entity));
 }
 
-bool  RS_EntityContainer::areNeighborsEntities(RS_Entity const *const  e1, RS_Entity const *const  e2) {
+bool  RS_EntityContainer::areNeighborsEntities(RS_Entity const *const  e1, RS_Entity const *const  e2) const {
    return abs(m_entities.indexOf(e1) - m_entities.indexOf(e2)) <= 1;
 }
 
@@ -1432,7 +1320,7 @@ RS_Vector RS_EntityContainer::getNearestDist(double distance,const RS_Vector &co
 /**
  * @return The intersection which is closest to 'coord'
  */
-RS_Vector RS_EntityContainer::getNearestIntersection(const RS_Vector &coord, double *dist){
+RS_Vector RS_EntityContainer::getNearestIntersection(const RS_Vector &coord, double *dist) const {
     double minDist = RS_MAXDOUBLE;  // minimum measured distance
     RS_Vector closestPoint(false);  // closest found endpoint
     RS_Entity* closestEntity = getNearestEntity(coord, nullptr, RS2::ResolveAllButTextImage);
@@ -1464,7 +1352,7 @@ RS_Vector RS_EntityContainer::getNearestIntersection(const RS_Vector &coord, dou
     return closestPoint;
 }
 
-RS_Vector RS_EntityContainer::getNearestVirtualIntersection(const RS_Vector &coord, const double &angle, double *dist) {
+RS_Vector RS_EntityContainer::getNearestVirtualIntersection(const RS_Vector &coord, const double &angle, double *dist) const {
     RS_Entity* closestEntity = getNearestEntity(coord, nullptr, RS2::ResolveAllButTextImage);
     if (closestEntity != nullptr) {
         RS_Vector second_coord{angle};
@@ -1954,6 +1842,15 @@ bool RS_EntityContainer::ignoredSnap() const{
     return ignoredOnModification();
 }
 
+#define DEBUG_CONTAINER_DUPLICATE  // fixme - sand - disable before push!
+
+void RS_EntityContainer::debugEntityAlreadyPresentExists(RS_Entity* entity) const {
+#ifdef DEBUG_CONTAINER_DUPLICATE
+    qint64 countOfEntities = m_entities.count(entity);
+    Q_ASSERT(countOfEntities == 0);
+#endif
+}
+
 QList<RS_Entity *>::const_iterator RS_EntityContainer::begin() const{
     return m_entities.begin();
 }
@@ -2001,7 +1898,7 @@ std::ostream &operator<<(std::ostream &os, RS_EntityContainer &ec) {
 
     os << tab << " Flags[" << id << "]: "
        << (ec.getFlag(RS2::FlagVisible) ? "RS2::FlagVisible" : "");
-    os << (ec.getFlag(RS2::FlagUndone) ? " RS2::FlagUndone" : "");
+    os << (ec.getFlag(RS2::FlagDeleted) ? " RS2::FlagUndone" : "");
     os << (ec.getFlag(RS2::FlagSelected) ? " RS2::FlagSelected" : "");
     os << "\n";
 
@@ -2036,7 +1933,7 @@ RS_Entity *RS_EntityContainer::last() const {
     return m_entities.last();
 }
 
-const QList<RS_Entity *> &RS_EntityContainer::getEntityList() {
+const QList<RS_Entity *> &RS_EntityContainer::getEntityList() const {
     return m_entities;
 }
 

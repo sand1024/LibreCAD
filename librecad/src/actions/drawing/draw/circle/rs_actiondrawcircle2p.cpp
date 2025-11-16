@@ -57,22 +57,22 @@ void RS_ActionDrawCircle2P::reset() {
     m_actionData->point2 = {};
 }
 
-void RS_ActionDrawCircle2P::doTrigger() {
+RS_Entity* RS_ActionDrawCircle2P::doTriggerCreateEntity() {
     preparePreview();
     if (m_circleData->isValid()){
-        auto *circle = new RS_Circle(m_container,*m_circleData);
-
-        setPenAndLayerToActive(circle);
-
+        auto *circle = new RS_Circle(m_document,*m_circleData);
         if (m_moveRelPointAtCenterAfterTrigger){
             moveRelativeZero(m_circleData->center);
         }
+        return circle;
+    }
+    RS_DIALOGFACTORY->requestWarningDialog(tr("Invalid Circle data.")); // fixme - sand - check whether it's possible at all??
+    return nullptr;
+}
 
-        undoCycleAdd(circle);
-        setStatus(SetPoint1);
-        reset();
-    } else
-        RS_DIALOGFACTORY->requestWarningDialog(tr("Invalid Circle data."));
+void RS_ActionDrawCircle2P::doTriggerCompletion(bool success) {
+    setStatus(SetPoint1);
+    reset();
 }
 
 void RS_ActionDrawCircle2P::preparePreview() {

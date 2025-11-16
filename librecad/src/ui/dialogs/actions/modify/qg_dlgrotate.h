@@ -40,7 +40,7 @@ public:
 
 public slots:
     void setData(RS_RotateData* d );
-    void updateData();
+    void updateData() const;
 
 protected slots:
     void languageChange();

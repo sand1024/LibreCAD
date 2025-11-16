@@ -98,18 +98,18 @@ QG_SnapToolBar::QG_SnapToolBar(QWidget* parent, QG_ActionHandler* ah, LC_ActionG
     setSnaps( RS_SnapMode::fromInt(LC_GET_ONE_INT("Snap", "SnapMode", 0)));
 }
 
-void QG_SnapToolBar::slotUnsetSnapMiddleManual(){
+void QG_SnapToolBar::slotUnsetSnapMiddleManual() const {
     m_actionSnapMiddleManual->setChecked(false);
 }
 
-void QG_SnapToolBar::saveSnapMode(){
+void QG_SnapToolBar::saveSnapMode() const {
     //@write default snap mode from prefrences.
     unsigned int snapFlags {RS_SnapMode::toInt( getSnaps())};
     LC_SET_ONE("Snap", "SnapMode", QString::number(snapFlags));
     // no need to delete child widgets, Qt does it all for us
 }
 
-void QG_SnapToolBar::setSnaps ( RS_SnapMode const& s ){
+void QG_SnapToolBar::setSnaps ( RS_SnapMode const& s ) const {
     m_actionSnapFree->setChecked(s.snapFree);
     m_actionSnapGrid->setChecked(s.snapGrid);
     m_actionSnapEnd->setChecked(s.snapEndpoint);
@@ -164,12 +164,12 @@ bool QG_SnapToolBar::lockedRelativeZero() const{
     return m_actionLockRelZero->isChecked();
 }
 
-void QG_SnapToolBar::setLockedRelativeZero(bool on){
+void QG_SnapToolBar::setLockedRelativeZero(bool on) const {
     m_actionLockRelZero->setChecked(on);
     m_actionLockRelZero->setToolTip(tr("Relative zero position is %1").arg(on ? tr("locked") : tr("unlocked")));
 }
 
-void QG_SnapToolBar::setUCSActive(bool on){
+void QG_SnapToolBar::setUCSActive(bool on) const {
     ucsMode->setChecked(on);
     ucsMode->setToolTip(tr("Coordinate system: %1").arg(on ? tr("User") : tr("World")));
 }
@@ -193,12 +193,12 @@ void QG_SnapToolBar::slotRestrictOrthogonal(bool checked){
     actionTriggered();
 }
 
-void QG_SnapToolBar::slotEnableRelativeZeroSnaps(const bool enabled){
+void QG_SnapToolBar::slotEnableRelativeZeroSnaps(const bool enabled) const {
     m_actionRelZero->setEnabled(enabled);
     m_actionLockRelZero->setEnabled(enabled);
 }
 
-void QG_SnapToolBar::actionTriggered(){
+void QG_SnapToolBar::actionTriggered() const {
     m_actionHandler->setSnaps(getSnaps());
 }
 

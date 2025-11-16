@@ -32,22 +32,22 @@ public:
     virtual ~LC_ShortcutTreeItem();
     QIcon getIcon();
     QString getName();
-    LC_ShortcutInfo* getShortcutInfo();
+    LC_ShortcutInfo* getShortcutInfo() const;
     LC_ShortcutTreeItem* addChild(QAction* action, LC_ShortcutInfo *shortcutInfo);
     void addChild(LC_ShortcutTreeItem* child) {m_childItems << child;};
-    bool isModified(){ return m_group? false:m_shortcutInfo->isModified();};
-    bool hasCollision(){ return m_group? false:m_shortcutInfo->hasCollision();};
+    bool isModified() const { return m_group? false:m_shortcutInfo->isModified();};
+    bool hasCollision() const { return m_group? false:m_shortcutInfo->hasCollision();};
     LC_ShortcutTreeItem *parent() const;
     const QList<LC_ShortcutTreeItem *> &getChildItems() const;
-    LC_ShortcutTreeItem *child(int row);
+    LC_ShortcutTreeItem *child(int row) const;
     int row() const;
     int childCount() const;
     bool isMatched() const;
     void setMatched(bool val){m_matched = val;};
     bool isGroup() const;
-    QString getShortcutViewString();
-    void clearShortcut();
-    void resetShortcutToDefault();
+    QString getShortcutViewString() const;
+    void clearShortcut() const;
+    void resetShortcutToDefault() const;
 private:
     // parent item
     LC_ShortcutTreeItem *m_parentItem = nullptr;

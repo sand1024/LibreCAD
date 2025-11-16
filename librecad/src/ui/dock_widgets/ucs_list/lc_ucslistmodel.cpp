@@ -280,22 +280,22 @@ void LC_UCSListModel::markActive(LC_UCS *ucs) {
     emit dataChanged(topLeft, bottomRight);
 }
 
-LC_UCS *LC_UCSListModel::getWCS() {
+LC_UCS *LC_UCSListModel::getWCS() const {
     return m_ucsList->getWCS();
 }
 
-LC_UCS* LC_UCSListModel::getActiveUCS(){
+LC_UCS* LC_UCSListModel::getActiveUCS() const {
     LC_UCS* result = nullptr;
     if (m_ucsList != nullptr) {
         result = m_ucsList->getActive();
     }
     return result;
 }
-int LC_UCSListModel::count(){
+int LC_UCSListModel::count() const {
     return m_ucss.count();
 }
 
-QString LC_UCSListModel::getUCSInfo(LC_UCS *ucs) {
+QString LC_UCSListModel::getUCSInfo(LC_UCS *ucs) const {
     QString originX = RS_Units::formatLinear(ucs->getOrigin().x, m_unit, m_linearFormat, m_prec);
     QString originY = RS_Units::formatLinear(ucs->getOrigin().y, m_unit, m_linearFormat, m_prec);
     QString angle = RS_Units::formatAngle(ucs->getXAxis().angle(), m_angleFormat, m_anglePrec);

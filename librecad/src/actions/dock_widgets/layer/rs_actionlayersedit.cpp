@@ -39,19 +39,14 @@ RS_ActionLayersEdit::RS_ActionLayersEdit(LC_ActionContext *actionContext)
 
 void RS_ActionLayersEdit::trigger() {
     RS_DEBUG->print("RS_ActionLayersEdit::trigger");
-
-    if (m_graphic) {
+    if (m_graphic != nullptr) {
         RS_Layer* layer = RS_DIALOGFACTORY->requestEditLayerDialog(m_graphic->getLayerList());
-
-        if (layer) {
+        if (layer != nullptr) {
             m_graphic->editLayer(m_graphic->getActiveLayer(), *layer);
-
             // update updateable entities on the layer that has changed
-
             for(auto e: *m_graphic){
-
                 RS_Layer* l = e->getLayer();
-                if (l && l->getName()==layer->getName()) {
+                if (l != nullptr && l->getName()==layer->getName()) {
                     e->update();
                 }
             }

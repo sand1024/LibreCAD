@@ -38,7 +38,7 @@ public:
     explicit QG_CommandHistory(QWidget* parent);
 private slots:
     void mouseReleaseEvent(QMouseEvent* event) override;
-	void slotTextChanged();
+	void slotTextChanged() const;
 private:
 	/*menu item for Copy*/
     QAction* m_pCopy = nullptr;

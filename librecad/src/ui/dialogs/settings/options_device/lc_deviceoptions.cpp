@@ -43,7 +43,7 @@ LC_DeviceOptions::~LC_DeviceOptions(){
     delete ui;
 }
 
-void LC_DeviceOptions::save(){
+void LC_DeviceOptions::save() const {
     int index = ui->device_combobox->currentIndex();
     QString device = ui->device_combobox->itemText(index);
     LC_SET_ONE("Hardware","Device", device);

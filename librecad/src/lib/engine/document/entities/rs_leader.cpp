@@ -77,7 +77,7 @@ void RS_Leader::update() {
         }
     }
 
-    if (isUndone()) {
+    if (isDeleted()) {
         return;
     }
 
@@ -159,7 +159,7 @@ void RS_Leader::addEntity(RS_Entity* entity) {
     RS_DEBUG->print(RS_Debug::D_WARNING, "RS_Leader::addEntity:"
                                          " should never be called");
 
-    if (!entity) return;
+    if (entity == nullptr) return;
 
     delete entity;
 }

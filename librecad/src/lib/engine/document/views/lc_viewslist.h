@@ -48,7 +48,7 @@ public:
 /**
  * @return View at given position or NULL if i is out of range.
  */
-    LC_View *at(unsigned int i) {
+    LC_View *at(unsigned int i) const {
         return m_namedViews.at(i);
     }
 

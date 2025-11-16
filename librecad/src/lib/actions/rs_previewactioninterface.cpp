@@ -44,6 +44,7 @@
 #include "rs_arc.h"
 #include "rs_circle.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_ellipse.h"
 #include "rs_graphicview.h"
 #include "rs_line.h"
@@ -65,7 +66,7 @@
 RS_PreviewActionInterface::RS_PreviewActionInterface(const char* name, LC_ActionContext* actionContext,
                                                      RS2::ActionType actionType) : RS_ActionInterface(name, actionContext, actionType)
     , m_msgBuilder{std::make_unique<LC_ActionInfoMessageBuilder>(this)},
-    m_preview(std::make_unique<RS_Preview>(actionContext->getEntityContainer(), m_viewport)),
+    m_preview(std::make_unique<RS_Preview>(actionContext->getDocument(), m_viewport)),
     m_highlight(std::make_unique<LC_Highlight>()) {
 
     RS_DEBUG->print("RS_PreviewActionInterface::RS_PreviewActionInterface: Setting up action with preview: \"%s\"", name);
@@ -121,7 +122,14 @@ void RS_PreviewActionInterface::trigger() {
     deleteHighlights();
     deleteSnapper();
 
-    doTrigger();
+    if (isTriggerUndoable()) {
+        undoCycleStart();
+        doTrigger();
+        undoCycleEnd();
+    }
+    else {
+        doTrigger();
+    }
 
     drawSnapper();
     updateSelectionWidget();
@@ -163,7 +171,7 @@ void RS_PreviewActionInterface::drawPreview(){
    m_hasPreview = true;
 }
 
-void RS_PreviewActionInterface::deleteHighlights(){
+void RS_PreviewActionInterface::deleteHighlights() const {
     // fixme - optimize if empty
     m_highlight->clear();
     if (!m_graphicView->isCleanUp()){
@@ -175,7 +183,7 @@ void RS_PreviewActionInterface::deleteHighlights(){
     }
 }
 
-void RS_PreviewActionInterface::drawHighlights(){
+void RS_PreviewActionInterface::drawHighlights() const {
     RS_EntityContainer *overlayContainer=m_viewport->getOverlayEntitiesContainer(RS2::OverlayEffects);
     overlayContainer->clear();
     overlayContainer->setOwner(false);
@@ -183,16 +191,16 @@ void RS_PreviewActionInterface::drawHighlights(){
     m_graphicView->redraw(RS2::RedrawOverlay);
 }
 
-void RS_PreviewActionInterface::highlightHoverWithRefPoints(RS_Entity* e, bool value){
+void RS_PreviewActionInterface::highlightHoverWithRefPoints(RS_Entity* e, bool value) const {
     m_highlight->addEntity(e, value);
 }
 
-void RS_PreviewActionInterface::highlightHover(RS_Entity* e){
+void RS_PreviewActionInterface::highlightHover(RS_Entity* e) const {
     m_highlight->addEntity(e, m_highlightEntitiesRefPointsOnHover);
 }
 
 
-void RS_PreviewActionInterface::highlightSelected(RS_Entity *e, bool enable){
+void RS_PreviewActionInterface::highlightSelected(RS_Entity *e, bool enable) const {
     if (enable){
         m_highlight->addEntity(e, false);
     }
@@ -201,7 +209,7 @@ void RS_PreviewActionInterface::highlightSelected(RS_Entity *e, bool enable){
     }
 }
 
-void RS_PreviewActionInterface::addToHighlights(RS_Entity *e, bool enable){
+void RS_PreviewActionInterface::addToHighlights(RS_Entity *e, bool enable) const {
     if (enable){
         m_highlight->addEntity(e, false);
     }
@@ -241,7 +249,7 @@ RS_Vector RS_PreviewActionInterface::getSnapAngleAwarePoint(const LC_MouseEvent 
     return getSnapAngleAwarePoint(e, basepoint, pos, drawMark, e->isShift);
 }
 
-RS_Vector RS_PreviewActionInterface::getRelZeroAwarePoint(const LC_MouseEvent *e, const RS_Vector& pos){
+RS_Vector RS_PreviewActionInterface::getRelZeroAwarePoint(const LC_MouseEvent *e, const RS_Vector& pos) const {
     RS_Vector result = pos;
     if (e->isShift){
         RS_Vector relZero = getRelativeZero();
@@ -252,13 +260,13 @@ RS_Vector RS_PreviewActionInterface::getRelZeroAwarePoint(const LC_MouseEvent *e
     return result;
 }
 
-RS_Ellipse *RS_PreviewActionInterface::previewEllipse(const RS_EllipseData &ellipseData){
+RS_Ellipse *RS_PreviewActionInterface::previewEllipse(const RS_EllipseData &ellipseData) const {
     auto *ellipse = new RS_Ellipse(m_preview.get(), ellipseData);
     m_preview->addEntity(ellipse);
     return ellipse;
 }
 
-RS_Circle* RS_PreviewActionInterface::previewCircle(const RS_CircleData &circleData){
+RS_Circle* RS_PreviewActionInterface::previewCircle(const RS_CircleData &circleData) const {
     auto *circle = new RS_Circle(m_preview.get(), circleData);
     m_preview->addEntity(circle);
     return circle;
@@ -307,93 +315,93 @@ void RS_PreviewActionInterface::previewEntityToCreate(RS_Entity* en, bool addToP
     prepareEntityDescription(en, RS2::EntityDescriptionLevel::DescriptionCreating);
 }
 
-RS_Arc* RS_PreviewActionInterface::previewArc(const RS_ArcData &arcData){
+RS_Arc* RS_PreviewActionInterface::previewArc(const RS_ArcData &arcData) const {
     auto *arc = new RS_Arc(m_preview.get(), arcData);
     m_preview->addEntity(arc);
     return arc;
 }
 
-RS_Arc* RS_PreviewActionInterface::previewRefArc(const RS_ArcData &arcData){
+RS_Arc* RS_PreviewActionInterface::previewRefArc(const RS_ArcData &arcData) const {
     auto *arc = new LC_RefArc(m_preview.get(), arcData);
     m_preview->addEntity(arc);
     return arc;
 }
 
-LC_RefEllipse* RS_PreviewActionInterface::previewRefEllipse(const RS_EllipseData &arcData){
+LC_RefEllipse* RS_PreviewActionInterface::previewRefEllipse(const RS_EllipseData &arcData) const {
     auto *arc = new LC_RefEllipse(m_preview.get(), arcData);
     m_preview->addEntity(arc);
     return arc;
 }
 
-RS_Line* RS_PreviewActionInterface::previewLine(const RS_LineData& data){
+RS_Line* RS_PreviewActionInterface::previewLine(const RS_LineData& data) const {
     auto *line = new RS_Line(this->m_preview.get(),data);
     m_preview->addEntity(line);
     return line;
 }
 
-RS_Line* RS_PreviewActionInterface::previewLine(const RS_Vector &start, const RS_Vector &end){
+RS_Line* RS_PreviewActionInterface::previewLine(const RS_Vector &start, const RS_Vector &end) const {
     auto *line = new RS_Line(this->m_preview.get(), start, end);
     m_preview->addEntity(line);
     return line;
 }
 
-void RS_PreviewActionInterface::previewEntity(RS_Entity* en){
+void RS_PreviewActionInterface::previewEntity(RS_Entity* en) const {
     m_preview->addEntity(en);
 }
 
-void RS_PreviewActionInterface::addOverlay(LC_OverlayDrawable* drawable, RS2::OverlayGraphics position){
+void RS_PreviewActionInterface::addOverlay(LC_OverlayDrawable* drawable, RS2::OverlayGraphics position) const {
     LC_OverlayDrawablesContainer *drawablesContainer = m_viewport->getOverlaysDrawablesContainer(position);
     drawablesContainer->add(drawable);
 }
 
-void RS_PreviewActionInterface::previewRefPoint(const RS_Vector &coord){
+void RS_PreviewActionInterface::previewRefPoint(const RS_Vector &coord) const {
     auto *point = new LC_RefPoint(this->m_preview.get(), coord, m_refPointSize, m_refPointMode);
     m_preview->addEntity(point);
 }
 
-void RS_PreviewActionInterface::previewRefSelectablePoint(const RS_Vector &coord){
+void RS_PreviewActionInterface::previewRefSelectablePoint(const RS_Vector &coord) const {
     auto *point = new LC_RefPoint(this->m_preview.get(), coord, m_refPointSize, m_refPointMode);
     point->setHighlighted(true);
     m_preview->addEntity(point);
 }
 
-void RS_PreviewActionInterface::previewRefSelectableLine(const RS_Vector &start, const RS_Vector &end){
+void RS_PreviewActionInterface::previewRefSelectableLine(const RS_Vector &start, const RS_Vector &end) const {
     auto *line = new LC_RefLine(this->m_preview.get(), start, end);
     line->setHighlighted(true);
     m_preview->addEntity(line);
 }
 
-RS_Point* RS_PreviewActionInterface::previewPoint(const RS_Vector &coord){
+RS_Point* RS_PreviewActionInterface::previewPoint(const RS_Vector &coord) const {
     auto *point = new RS_Point(this->m_preview.get(), coord);
     m_preview->addEntity(point);
     return point;
 }
 
-void RS_PreviewActionInterface::previewRefPoints(const std::vector<RS_Vector>& points){
+void RS_PreviewActionInterface::previewRefPoints(const std::vector<RS_Vector>& points) const {
     for (auto v: points) {
         previewRefPoint(v);
     }
 }
 
-void RS_PreviewActionInterface::previewRefLines(const std::vector<RS_LineData>& points){
+void RS_PreviewActionInterface::previewRefLines(const std::vector<RS_LineData>& points) const {
     for (auto v: points) {
         previewRefLine(v.startpoint, v.endpoint);
     }
 }
 
-RS_Line* RS_PreviewActionInterface::previewRefLine(const RS_Vector &start, const RS_Vector &end){
+RS_Line* RS_PreviewActionInterface::previewRefLine(const RS_Vector &start, const RS_Vector &end) const {
     auto *line = new LC_RefLine(this->m_preview.get(), start, end);
     m_preview->addEntity(line);
     return line;
 }
 
-RS_ConstructionLine* RS_PreviewActionInterface::previewRefConstructionLine(const RS_Vector &start, const RS_Vector &end){
+RS_ConstructionLine* RS_PreviewActionInterface::previewRefConstructionLine(const RS_Vector &start, const RS_Vector &end) const {
     auto *line = new LC_RefConstructionLine(this->m_preview.get(), start, end);
     m_preview->addEntity(line);
     return line;
 }
 
-RS_Arc* RS_PreviewActionInterface::previewRefArc(const RS_Vector &center, const RS_Vector &startPoint, const RS_Vector &mouse, bool determineReversal){
+RS_Arc* RS_PreviewActionInterface::previewRefArc(const RS_Vector &center, const RS_Vector &startPoint, const RS_Vector &mouse, bool determineReversal) const {
         double radius = center.distanceTo(startPoint);
         double angle1 = center.angleTo(mouse);
         double angle2 = center.angleTo(startPoint);
@@ -403,7 +411,7 @@ RS_Arc* RS_PreviewActionInterface::previewRefArc(const RS_Vector &center, const 
         return arc;
 }
 
-RS_Arc* RS_PreviewActionInterface::previewRefArc(bool reversed, const RS_Vector &center, const RS_Vector &startPoint, const RS_Vector &mouse){
+RS_Arc* RS_PreviewActionInterface::previewRefArc(bool reversed, const RS_Vector &center, const RS_Vector &startPoint, const RS_Vector &mouse) const {
     double radius = center.distanceTo(startPoint);
     double angle1 = center.angleTo(mouse);
     double angle2 = center.angleTo(startPoint);
@@ -426,7 +434,7 @@ void RS_PreviewActionInterface::initFromSettings() {
 
 // fixme - sand - snap to relative angle support!!!
 // fixme - rework to natural paint via overlay
-void RS_PreviewActionInterface::previewSnapAngleMark(const RS_Vector &center, double angle) {
+void RS_PreviewActionInterface::previewSnapAngleMark(const RS_Vector &center, double angle) const {
 // todo - add separate option that will control visibility of mark?
     int radiusInPixels = m_angleSnapMarkerSize; // todo - move to settings
     int lineInPixels = radiusInPixels * 2; // todo - move to settings
@@ -442,7 +450,7 @@ void RS_PreviewActionInterface::previewSnapAngleMark(const RS_Vector &center, do
     previewRefLine(center, center.relative(lineLength, angleZero));
 }
 
-RS_Circle* RS_PreviewActionInterface::previewRefCircle(const RS_Vector &center, const double radius){
+RS_Circle* RS_PreviewActionInterface::previewRefCircle(const RS_Vector &center, const double radius) const {
     auto *circle = new LC_RefCircle(m_preview.get(), center, radius);
     m_preview->addEntity(circle);
     return circle;
@@ -488,7 +496,7 @@ void RS_PreviewActionInterface::moveRelativeZero(const RS_Vector& zero){
     m_viewport->moveRelativeZero(zero);
 }
 
-void RS_PreviewActionInterface::markRelativeZero() {
+void RS_PreviewActionInterface::markRelativeZero() const {
     m_viewport->markRelativeZero();
 }
 
@@ -517,7 +525,7 @@ RS_Entity* RS_PreviewActionInterface::catchModifiableEntity(LC_MouseEvent *e, co
     }
 }
 
-RS_Entity* RS_PreviewActionInterface::catchModifiableEntity(RS_Vector& coord, const RS2::EntityType &enType){
+RS_Entity* RS_PreviewActionInterface::catchModifiableEntity(RS_Vector& coord, const RS2::EntityType &enType) const {
     RS_Entity *en = catchEntity(coord, enType, RS2::ResolveAll);
     if (en != nullptr && !en->isParentIgnoredOnModifications()){
         return en;
@@ -543,16 +551,16 @@ RS_Entity* RS_PreviewActionInterface::catchModifiableAndDescribe(LC_MouseEvent *
     return en;
 }
 
-LC_ActionInfoMessageBuilder& RS_PreviewActionInterface::msg(const QString& name, const QString& value) {
+LC_ActionInfoMessageBuilder& RS_PreviewActionInterface::msg(const QString& name, const QString& value) const {
    return m_msgBuilder->string(name, value);
 }
 
-LC_ActionInfoMessageBuilder& RS_PreviewActionInterface::msg(const QString& name) {
+LC_ActionInfoMessageBuilder& RS_PreviewActionInterface::msg(const QString& name) const {
     m_msgBuilder->add(name);
     return *m_msgBuilder;
 }
 
-LC_ActionInfoMessageBuilder& RS_PreviewActionInterface::msgStart() {
+LC_ActionInfoMessageBuilder& RS_PreviewActionInterface::msgStart() const {
     m_msgBuilder->cleanup();
     return *m_msgBuilder;
 }
@@ -590,7 +598,7 @@ RS_Entity* RS_PreviewActionInterface::catchAndDescribe(LC_MouseEvent* e, RS2::Re
     return entity;
 }
 
-void RS_PreviewActionInterface::prepareEntityDescription(RS_Entity *entity, RS2::EntityDescriptionLevel level) {
+void RS_PreviewActionInterface::prepareEntityDescription(RS_Entity *entity, RS2::EntityDescriptionLevel level) const {
     if (m_infoCursorOverlayPrefs->enabled){
         if ((m_infoCursorOverlayPrefs->showEntityInfoOnCatch && level == RS2::EntityDescriptionLevel::DescriptionCatched)
            || (m_infoCursorOverlayPrefs->showEntityInfoOnCreation && level == RS2::EntityDescriptionLevel::DescriptionCreating)
@@ -611,13 +619,13 @@ void RS_PreviewActionInterface::prepareEntityDescription(RS_Entity *entity, RS2:
     }
 }
 
-void RS_PreviewActionInterface::appendInfoCursorEntityCreationMessage(QString message){
+void RS_PreviewActionInterface::appendInfoCursorEntityCreationMessage(QString message) const {
     if (m_infoCursorOverlayPrefs->enabled && m_infoCursorOverlayPrefs->showEntityInfoOnCreation) {
         appendInfoCursorZoneMessage(message, 2, false);
     }
 }
 
-void RS_PreviewActionInterface::appendInfoCursorZoneMessage(QString message, int zoneNumber, bool replaceContent){
+void RS_PreviewActionInterface::appendInfoCursorZoneMessage(QString message, int zoneNumber, bool replaceContent) const {
     if (!message.isEmpty()) {
         bool enable = m_infoCursorOverlayPrefs->enabled;
         if (enable) {
@@ -693,7 +701,7 @@ void RS_PreviewActionInterface::appendInfoCursorZoneMessage(QString message, int
     }
 }
 
-QString RS_PreviewActionInterface::obtainEntityDescriptionForInfoCursor(RS_Entity *e, RS2::EntityDescriptionLevel level) {
+QString RS_PreviewActionInterface::obtainEntityDescriptionForInfoCursor(RS_Entity *e, RS2::EntityDescriptionLevel level) const {
    return m_graphicView->obtainEntityDescription(e, level);
 }
 
@@ -767,11 +775,11 @@ void RS_PreviewActionInterface::fireCoordinateEventForSnap(LC_MouseEvent *e){
     fireCoordinateEvent(e->snapPoint);
 }
 
-RS_Entity *RS_PreviewActionInterface::catchEntityByEvent(LC_MouseEvent *e, RS2::ResolveLevel level) {
+RS_Entity *RS_PreviewActionInterface::catchEntityByEvent(LC_MouseEvent *e, RS2::ResolveLevel level) const {
     return catchEntity(e->graphPoint, level);
 }
 
-RS_Entity *RS_PreviewActionInterface::catchEntityByEvent(LC_MouseEvent *e, RS2::EntityType enType, RS2::ResolveLevel level) {
+RS_Entity *RS_PreviewActionInterface::catchEntityByEvent(LC_MouseEvent *e, RS2::EntityType enType, RS2::ResolveLevel level) const {
     return catchEntity(e->graphPoint, enType, level);
 }
 
@@ -779,7 +787,7 @@ RS_Entity *RS_PreviewActionInterface::catchEntityByEvent(LC_MouseEvent *e, const
     return catchEntity(e->graphPoint, enTypeList, level);
 }
 
-bool RS_PreviewActionInterface::parseToWCSAngle(const QString &c, double& wcsAngleRad){
+bool RS_PreviewActionInterface::parseToWCSAngle(const QString &c, double& wcsAngleRad) const {
     bool ok = false;
     double ucsBasisAngleDeg = evalAngleValue(c, &ok);
     if (ok){
@@ -791,7 +799,7 @@ bool RS_PreviewActionInterface::parseToWCSAngle(const QString &c, double& wcsAng
     return ok;
 }
 
-bool RS_PreviewActionInterface::parseToUCSBasisAngle(const QString &c, double& ucsBasisAngleRad){
+bool RS_PreviewActionInterface::parseToUCSBasisAngle(const QString &c, double& ucsBasisAngleRad) const {
     bool ok = false;
     double ucsBasisAngleDeg = evalAngleValue(c, &ok);
     if (ok){
@@ -801,7 +809,7 @@ bool RS_PreviewActionInterface::parseToUCSBasisAngle(const QString &c, double& u
     return ok;
 }
 
-bool RS_PreviewActionInterface::parseToRelativeAngle(const QString &c, double& ucsBasisAngleRad){
+bool RS_PreviewActionInterface::parseToRelativeAngle(const QString &c, double& ucsBasisAngleRad) const {
     bool ok = false;
     double ucsBasisAngleDeg = evalAngleValue(c, &ok);
     if (ok){

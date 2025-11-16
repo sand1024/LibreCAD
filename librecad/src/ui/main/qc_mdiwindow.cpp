@@ -253,7 +253,7 @@ void QC_MDIWindow::closeEvent(QCloseEvent* ce) {
  * Called when the current pen (color, style, width) has changed.
  * Sets the active pen for the document in this MDI window.
  */
-void QC_MDIWindow::slotPenChanged(const RS_Pen& pen) {
+void QC_MDIWindow::slotPenChanged(const RS_Pen& pen) const {
 	if (m_document != nullptr) {
         m_document->setActivePen(pen);
     }
@@ -262,7 +262,7 @@ void QC_MDIWindow::slotPenChanged(const RS_Pen& pen) {
 /**
  * Creates a new empty document in this MDI window.
  */
-void QC_MDIWindow::slotFileNew() {
+void QC_MDIWindow::slotFileNew() const {
 	if (m_document != nullptr && m_graphicView != nullptr) {
         m_document->newDoc();
         m_graphicView->redraw();
@@ -272,7 +272,7 @@ void QC_MDIWindow::slotFileNew() {
 /**
  * Creates a new document, loading template, in this MDI window.
  */
-bool QC_MDIWindow::loadDocumentFromTemplate(const QString& fileName, RS2::FormatType type) {
+bool QC_MDIWindow::loadDocumentFromTemplate(const QString& fileName, RS2::FormatType type) const {
     return m_documentsStorage->loadDocumentFromTemplate(m_document, m_graphicView, fileName, type);
 }
 
@@ -327,7 +327,7 @@ bool QC_MDIWindow::saveDocument(bool &cancelled, [[maybe_unused]]bool isAutoSave
     return result;
 }
 
-bool QC_MDIWindow::autoSaveDocument(QString& autosaveFileName){
+bool QC_MDIWindow::autoSaveDocument(QString& autosaveFileName) const {
     bool result = m_documentsStorage->autoSaveDocument(m_document, m_graphicView, autosaveFileName);
     return result;
 }
@@ -346,7 +346,7 @@ bool QC_MDIWindow::saveDocumentAs(bool &cancelled) {
     return result;
 }
 
-void QC_MDIWindow::zoomAuto() {
+void QC_MDIWindow::zoomAuto() const {
 	if(m_graphicView){
         if(m_graphicView->isPrintPreview()){
             m_graphicView->getViewPort()->zoomPage();
@@ -356,11 +356,11 @@ void QC_MDIWindow::zoomAuto() {
     }
 }
 
-bool QC_MDIWindow::isModified(){
+bool QC_MDIWindow::isModified() const {
     return getDocument()->isModified();
 }
 
-void QC_MDIWindow::drawChars() {
+void QC_MDIWindow::drawChars() const {
    LC_FontFileViewer viewer(m_document);
    viewer.drawFontChars();
 }

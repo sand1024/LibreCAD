@@ -56,8 +56,26 @@ RS_Block::RS_Block(RS_EntityContainer* parent,
 }
 
 RS_Entity* RS_Block::clone() const {
-    auto blk = new RS_Block(*this);
-    blk->setOwner(isOwner());
+    auto blk = new RS_Block(getParent(), RS_BlockData(data));
+    blk->setGraphicView(getGraphicView()); // fixme - remove this dependency
+
+    // blk->setOwner(isOwner());
+    // blk->detach();
+    if (isOwner()) {
+        const auto entitylist = getEntityList();
+        for (const RS_Entity *entity: entitylist) {
+            if (entity != nullptr) {
+                blk->push_back(entity->clone());
+            }
+        }
+    } else {
+        const auto entitylist = getEntityList();
+        for (RS_Entity *entity: entitylist) {
+            if (entity != nullptr) {
+                blk->push_back(entity);
+            }
+        }
+    }
     blk->detach();
     return blk;
 }
@@ -118,7 +136,7 @@ void RS_Block::setModified(bool m) {
  *
  * @param v true: visible, false: invisible
  */
-void RS_Block::visibleInBlockList(bool v) {
+void RS_Block::visibleInBlockList(bool v) const {
     data.visibleInBlockList = v;
 }
 

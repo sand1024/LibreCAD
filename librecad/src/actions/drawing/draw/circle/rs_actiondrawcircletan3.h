@@ -60,16 +60,17 @@ protected:
     void doInitialInit() override;
 
     void drawSnapper() override;
-    bool preparePreview();
+    bool preparePreview() const;
     RS_Entity *catchCircle(LC_MouseEvent *e, bool forPreview);
     void setCircle(RS_Entity* en, int status);
-    bool getData(RS_Entity *en = nullptr);
+    bool getData(RS_Entity *en = nullptr) const;
     RS_Vector getTangentPoint(RS_Vector creatingCircleCenter, double creatingCircleRadius, RS_AtomicEntity *pEntity);
     RS2::CursorType doGetMouseCursor(int status) override;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void updateMouseButtonHints() override;
-    void doTrigger() override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
 };
 #endif

@@ -26,7 +26,7 @@
 #ifndef LC_UNDOSECTION_H
 #define LC_UNDOSECTION_H
 
-
+class RS_Entity;
 class RS_Document;
 class RS_Undoable;
 class LC_GraphicViewport;
@@ -47,8 +47,9 @@ public:
     LC_UndoSection(RS_Document * doc, LC_GraphicViewport *view, bool handleUndo = true);
     ~LC_UndoSection();
 
-    void addUndoable(RS_Undoable * undoable);
-
+    void undoableDelete(RS_Entity* e) const;
+    void undoableAdd(RS_Entity* e) const;
+    void undoableReplace(RS_Entity* entityToDelete, RS_Entity* entityToAdd) const;
 private:
     RS_Document *document {nullptr};
     LC_GraphicViewport* viewport {nullptr};

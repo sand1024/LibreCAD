@@ -32,7 +32,7 @@
 
 LC_CoordinatesParser::LC_CoordinatesParser(RS_GraphicView* gview):m_graphicView{gview} {}
 
-RS_CoordinateEvent LC_CoordinatesParser::parseCoordinate(const QString& inputStr, bool &stringContainsCoordinate) {
+RS_CoordinateEvent LC_CoordinatesParser::parseCoordinate(const QString& inputStr, bool &stringContainsCoordinate) const {
     RS_CoordinateEvent invalid(RS_Vector(false));
 
     stringContainsCoordinate = true;
@@ -161,18 +161,18 @@ RS_CoordinateEvent LC_CoordinatesParser::parseCoordinate(const QString& inputStr
     return invalid;
 }
 
-RS_Vector LC_CoordinatesParser::toWCS(const RS_Vector &ucs) {
+RS_Vector LC_CoordinatesParser::toWCS(const RS_Vector &ucs) const {
     return m_graphicView->getViewPort()->toWorld(ucs);
 }
 
-RS_Vector LC_CoordinatesParser::toUCS(const RS_Vector &wcs) {
+RS_Vector LC_CoordinatesParser::toUCS(const RS_Vector &wcs) const {
     return m_graphicView->getViewPort()->toUCS(wcs);
 }
 
-double LC_CoordinatesParser::toAbsUCSAngle(double ucsBasisAngle) {
+double LC_CoordinatesParser::toAbsUCSAngle(double ucsBasisAngle) const {
     return m_graphicView->getViewPort()->toAbsUCSAngle(ucsBasisAngle);
 }
 
-double LC_CoordinatesParser::toWCSAngle(double ucsAngle) {
+double LC_CoordinatesParser::toWCSAngle(double ucsAngle) const {
     return m_graphicView->getViewPort()->toWorldAngle(ucsAngle);
 }

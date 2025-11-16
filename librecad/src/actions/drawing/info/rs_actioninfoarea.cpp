@@ -56,7 +56,7 @@ void RS_ActionInfoArea::init(int status) {
 // fixme - sand - add area info to entity info widget for coordinates mode
 //todo: we regenerate the whole preview, it's possible to generate needed lines only
 /** display area circumference and preview of polygon **/
-void RS_ActionInfoArea::display(bool forPreview){
+void RS_ActionInfoArea::display(bool forPreview) const {
     if (m_infoArea->size() < 1){
         return;
     }

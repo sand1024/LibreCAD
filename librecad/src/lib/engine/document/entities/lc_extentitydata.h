@@ -76,7 +76,7 @@ public:
     LC_ExtDataAppData(const QString& applicationName);
     ~LC_ExtDataAppData();
     LC_ExtDataGroup* addGroup(const QString& applicationName);
-    LC_ExtDataGroup* getGroupByName(const QString& applicationName);
+    LC_ExtDataGroup* getGroupByName(const QString& applicationName) const;
     QString getName();
     std::vector<LC_ExtDataGroup*>* getGroups();
 private:
@@ -89,7 +89,7 @@ public:
     LC_ExtEntityData();
     ~LC_ExtEntityData();
     LC_ExtDataAppData* addAppData(const QString& appName);
-    LC_ExtDataAppData* getAppDataByName(const QString& groupName);
+    LC_ExtDataAppData* getAppDataByName(const QString& groupName) const;
     LC_ExtDataGroup* getGroupByName(const QString& appName, const QString& groupName);
     std::vector<LC_ExtDataAppData*>* getAppData();
 private:

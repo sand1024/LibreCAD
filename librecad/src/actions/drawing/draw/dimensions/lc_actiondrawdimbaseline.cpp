@@ -56,10 +56,9 @@ void LC_ActionDrawDimBaseline::doInitWithContextEntity(RS_Entity* contextEntity,
     }
 }
 
-void LC_ActionDrawDimBaseline::doTrigger() {
+RS_Entity* LC_ActionDrawDimBaseline::doTriggerCreateEntity() {
     preparePreview(m_alternateDimDirection);
-    auto *dim = createDim(m_container);
-    setPenAndLayerToActive(dim);
+    auto *dim = createDim(m_document);
     dim->update();
 
     bool baseline = isBaseline();
@@ -70,8 +69,6 @@ void LC_ActionDrawDimBaseline::doTrigger() {
     else{
         moveRelativeZero(m_edata->extensionPoint2);
     }
-
-    undoCycleAdd(dim);
 
     if (baseline) {
         m_prevExtensionPointEnd = m_edata->extensionPoint2;
@@ -86,6 +83,7 @@ void LC_ActionDrawDimBaseline::doTrigger() {
         m_prevExtensionPointEnd = m_edata->extensionPoint1; // todo - check whether this is necessary. Potentially - for ordnance continued
     }
     m_baseDefPoint = m_dimensionData->definitionPoint;
+    return dim;
 }
 
 RS_Entity *LC_ActionDrawDimBaseline::createDim(RS_EntityContainer* parent){
@@ -93,7 +91,7 @@ RS_Entity *LC_ActionDrawDimBaseline::createDim(RS_EntityContainer* parent){
     return dim;
 }
 
-bool LC_ActionDrawDimBaseline::isBaseline(){
+bool LC_ActionDrawDimBaseline::isBaseline() const {
     return m_actionType == RS2::ActionDimBaseline;
 }
 

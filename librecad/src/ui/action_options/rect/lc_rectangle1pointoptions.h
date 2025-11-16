@@ -67,14 +67,14 @@ private:
     void setRadiusToActionAnView(const QString& value);
     void setHeightToActionAnView(const QString& height);
     void setWidthToActionAnView(const QString& width);
-    void setCornersModeToActionAndView(int index);
-    void setSnapPointModeToActionAndView(int index);
-    void setUsePolylineToActionAndView(bool value);
-    void setSnapToCornerArcCenterToActionAndView(bool value);
-    void setSizeInnerToActionAndView(bool value);
-    void setFreeAngleToActionAndView(bool value);
-    void setEdgesModeToActionAndView(int index);
-    void setBaseAngleFixedToActionAndView(bool angle);
+    void setCornersModeToActionAndView(int index) const;
+    void setSnapPointModeToActionAndView(int index) const;
+    void setUsePolylineToActionAndView(bool value) const;
+    void setSnapToCornerArcCenterToActionAndView(bool value) const;
+    void setSizeInnerToActionAndView(bool value) const;
+    void setFreeAngleToActionAndView(bool value) const;
+    void setEdgesModeToActionAndView(int index) const;
+    void setBaseAngleFixedToActionAndView(bool angle) const;
 };
 
 

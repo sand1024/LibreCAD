@@ -36,10 +36,9 @@ LC_ActionPreSelectionAwareBase::LC_ActionPreSelectionAwareBase(
     :RS_ActionSelectBase(name, actionContext, actionType, entityTypeList),
     m_countDeep(countSelectionDeep){}
 
-void LC_ActionPreSelectionAwareBase::doTrigger() {
-    bool keepSelected = LC_GET_ONE_BOOL("Modify", "KeepModifiedSelected", true);
-    doTrigger(keepSelected);
-    // updateMouseButtonHints(); // todo - is it really necessary??
+bool LC_ActionPreSelectionAwareBase::isKeepModifiedEntitiesSelected() {
+    bool keepSelected      = LC_GET_ONE_BOOL("Modify", "KeepModifiedSelected", true);
+    return keepSelected;
 }
 
 LC_ActionPreSelectionAwareBase::~LC_ActionPreSelectionAwareBase() {
@@ -48,7 +47,7 @@ LC_ActionPreSelectionAwareBase::~LC_ActionPreSelectionAwareBase() {
 
 void LC_ActionPreSelectionAwareBase::doInitWithContextEntity(RS_Entity* contextEntity, [[maybe_unused]]const RS_Vector& clickPos) {
     if (isForceSelectContextEntity()) {
-        contextEntity->setSelected(true);
+        select(contextEntity);
         redrawDrawing();
     }
     m_selectedEntities.push_back(contextEntity);
@@ -119,7 +118,7 @@ void LC_ActionPreSelectionAwareBase::onMouseLeftButtonRelease(int status, LC_Mou
 
             bool selectIntersecting = (ucsP1.x > ucsP2.x);
 
-            RS_Selection s(*m_container, m_viewport);
+            RS_Selection s(m_document, m_viewport);
             bool performSelection = !e->isShift;
             bool alterSelectIntersecting = e->isControl;
             if (alterSelectIntersecting) {
@@ -231,6 +230,7 @@ void LC_ActionPreSelectionAwareBase::onSelectionCompleted([[maybe_unused]]bool s
         } else {
             setStatus(-1);
         }
+        m_graphicView->redraw(RS2::RedrawDrawing);
         updateSelectionWidget();
     }
 }
@@ -276,13 +276,19 @@ RS2::CursorType LC_ActionPreSelectionAwareBase::doGetMouseCursorSelected([[maybe
     return RS2::CadCursor;
 }
 
+void LC_ActionPreSelectionAwareBase::clearDocumentModificationContext(LC_DocumentModificationBatch& ctx) {
+    bool keepSelected = isKeepModifiedEntitiesSelected();
+    doTriggerSelectionUpdate(keepSelected, ctx);
+    RS_ActionSelectBase::clearDocumentModificationContext(ctx);
+}
+
 void LC_ActionPreSelectionAwareBase::finishMouseMoveOnSelection([[maybe_unused]]LC_MouseEvent *event) {
 
 }
 
 void LC_ActionPreSelectionAwareBase::doSelectEntity(RS_Entity *entityToSelect, bool selectContour) const {
     if (entityToSelect != nullptr){
-        RS_Selection s(*m_container, m_viewport);
+        RS_Selection s(m_document, m_viewport);
         // try to minimize selection clicks - and select contour based on selected entity. May be optional, but what for?
         if (entityToSelect->isAtomic() && selectContour) {
             s.selectContour(entityToSelect);

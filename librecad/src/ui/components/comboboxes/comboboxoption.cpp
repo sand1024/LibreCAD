@@ -60,6 +60,6 @@ void ComboBoxOption::saveIndexAndEmitOption(){
     emit optionToSave(option);
 }
 
-void ComboBoxOption::setButtonState(int index){
+void ComboBoxOption::setButtonState(int index) const {
     ui->pushButton->setDisabled((m_lastSavedIndex == index) ? true : false);
 }

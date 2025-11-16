@@ -47,7 +47,6 @@ public:
     };
 
     LC_ActionModifyMoveAdjust(LC_ActionContext *actionContext, MovementInfo info);
-    void onSelectionCompleted(bool singleEntity, bool fromInit);
     ~LC_ActionModifyMoveAdjust() override = default;
     bool isSupportsPredecessorAction() override {return true;};
 protected:
@@ -57,12 +56,14 @@ protected:
 
     MovementInfo m_movementInfo;
     RS_MoveData m_moveData;
-
+    void onSelectionCompleted(bool singleEntity, bool fromInit) override;
     RS2::CursorType doGetMouseCursorSelected(int status) override;
     LC_ModifyOperationFlags *getModifyOperationFlags() override;
     RS_Vector calculateOffset() const;
-    void doTrigger(bool keepSelected) override;
     void updateMouseButtonHintsForSelection() override {};
+    void doTriggerCompletion(bool success) override;
+    void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
 };
 
 #endif // LC_ACTIONMODIFYMOVEADJUST_H

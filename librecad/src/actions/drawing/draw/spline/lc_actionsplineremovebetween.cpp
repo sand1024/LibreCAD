@@ -45,7 +45,7 @@ void LC_ActionSplineRemoveBetween::doOnEntityNotCreated() {
 void LC_ActionSplineRemoveBetween::onMouseMove(RS_Vector mouse, int status, LC_MouseEvent *e) {
     switch (status) {
         case SetEntity: {
-            auto entity = catchEntityByEvent(e, g_enTypeList);
+            const auto entity = catchEntityByEvent(e, g_enTypeList);
             if (entity != nullptr){
                 if (mayModifySplineEntity(entity)) {
                     highlightHoverWithRefPoints(entity, true);
@@ -55,7 +55,7 @@ void LC_ActionSplineRemoveBetween::onMouseMove(RS_Vector mouse, int status, LC_M
         }
         case SetBeforeControlPoint:{
             double dist;
-            RS_Vector nearestPoint = m_entityToModify->getNearestRef(mouse, &dist);
+            const RS_Vector nearestPoint = m_entityToModify->getNearestRef(mouse, &dist);
             if (nearestPoint.valid) {
                 previewRefSelectablePoint(nearestPoint);
             }
@@ -63,7 +63,7 @@ void LC_ActionSplineRemoveBetween::onMouseMove(RS_Vector mouse, int status, LC_M
         }
         case SetControlPoint:{
             double dist;
-            RS_Vector nearestPoint = m_entityToModify->getNearestRef(mouse, &dist);
+            const RS_Vector nearestPoint = m_entityToModify->getNearestRef(mouse, &dist);
             if (nearestPoint.valid) {
                 previewRefPoint(m_selectedVertexPoint);
                 previewRefSelectablePoint(nearestPoint);
@@ -81,15 +81,15 @@ void LC_ActionSplineRemoveBetween::onMouseMove(RS_Vector mouse, int status, LC_M
 
 void LC_ActionSplineRemoveBetween::setEntityToModify(RS_Entity* entity) {
     m_entityToModify = entity;
-    m_entityToModify->setSelected(true);
+    select(m_entityToModify);
     switch (m_entityToModify->rtti()){
         case RS2::EntitySplinePoints:{
-            auto* sp = dynamic_cast<LC_SplinePoints *>(m_entityToModify);
+            const auto* sp = dynamic_cast<LC_SplinePoints *>(m_entityToModify);
             m_splineIsClosed = sp->isClosed();
             break;
         }
         case RS2::EntitySpline:{
-            auto* sp = dynamic_cast<RS_Spline*>(m_entityToModify);
+            const auto* sp = dynamic_cast<RS_Spline*>(m_entityToModify);
             m_splineIsClosed = sp->isClosed();
             break;
         }
@@ -108,16 +108,16 @@ bool LC_ActionSplineRemoveBetween::mayModifySplineEntity(RS_Entity* e) {
 void LC_ActionSplineRemoveBetween::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
     switch (status){
         case SetEntity:{
-            auto entity = catchEntityByEvent(e, g_enTypeList);
+            const auto entity = catchEntityByEvent(e, g_enTypeList);
             if (entity != nullptr && mayModifySplineEntity(entity)){
                 setEntityToModify(entity);
             }
             break;
         }
         case SetBeforeControlPoint:{
-            RS_Vector mouse = e->snapPoint;
+            const RS_Vector mouse = e->snapPoint;
             double dist;
-            RS_Vector nearestPoint = m_entityToModify->getNearestRef(mouse, &dist);
+            const RS_Vector nearestPoint = m_entityToModify->getNearestRef(mouse, &dist);
             if (nearestPoint.valid){
                 m_selectedVertexPoint = nearestPoint;
                 setStatus(SetControlPoint);
@@ -125,9 +125,9 @@ void LC_ActionSplineRemoveBetween::onMouseLeftButtonRelease(int status, LC_Mouse
             break;
         }
         case SetControlPoint: {
-            RS_Vector mouse = e->snapPoint;
+            const RS_Vector mouse = e->snapPoint;
             double dist;
-            RS_Vector nearestPoint = m_entityToModify->getNearestRef(mouse, &dist);
+            const RS_Vector nearestPoint = m_entityToModify->getNearestRef(mouse, &dist);
             if (nearestPoint.valid){
                 if (nearestPoint != m_vertexPoint) {
                     m_vertexPoint = nearestPoint;
@@ -144,35 +144,35 @@ void LC_ActionSplineRemoveBetween::onMouseLeftButtonRelease(int status, LC_Mouse
 
 RS_Entity *LC_ActionSplineRemoveBetween::createModifiedSplineEntity(RS_Entity *e, RS_Vector controlPoint, bool startDirection) {
     RS_Entity* result = nullptr;
-    bool deleteNotFoundPoints = startDirection && m_splineIsClosed;
+    const bool deleteNotFoundPoints = startDirection && m_splineIsClosed;
     std::vector<RS_Vector> remainingPoints;
     switch (e->rtti()){
         case RS2::EntitySplinePoints:{
-            auto* splinePoints = dynamic_cast<LC_SplinePoints *>(e->clone());
-            LC_SplinePointsData &data = splinePoints->getData();
-            unsigned int splinePointsCount = data.splinePoints.size();
+            auto* clone = dynamic_cast<LC_SplinePoints *>(e->clone());
+            LC_SplinePointsData &data = clone->getData();
+            const unsigned int splinePointsCount = data.splinePoints.size();
 
             if (splinePointsCount > 0){
                 collectPointsThatRemainsAfterDeletion(controlPoint, splinePointsCount, deleteNotFoundPoints, data.splinePoints, remainingPoints);
             }
             else {
-                unsigned int controlPointsCount = data.controlPoints.size();
+                const unsigned int controlPointsCount = data.controlPoints.size();
                 collectPointsThatRemainsAfterDeletion(controlPoint, controlPointsCount, deleteNotFoundPoints, data.controlPoints, remainingPoints);
             }
 
             if (isValidSplinePointsData(remainingPoints.size(), m_splineIsClosed)) {
                 data.splinePoints.clear();
                 data.splinePoints = remainingPoints;
-                splinePoints->update();
-                result = splinePoints;
+                clone->update();
+                result = clone;
             }
 
             break;
         }
         case RS2::EntitySpline:{
-            auto* spline = dynamic_cast<RS_Spline *>(e);
+            const auto* spline = dynamic_cast<RS_Spline *>(e);
             RS_SplineData data = spline->getData();
-            unsigned int count = data.controlPoints.size();
+            const unsigned int count = data.controlPoints.size();
 
             collectPointsThatRemainsAfterDeletion(controlPoint, count, deleteNotFoundPoints, data.controlPoints, remainingPoints);
 

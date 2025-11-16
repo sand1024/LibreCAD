@@ -27,8 +27,9 @@
 #include "rs_previewactioninterface.h"
 #include <lc_tolerance.h>
 
+#include "lc_undoabledocumentmodificationaction.h"
 
-class LC_ActionDrawGDTFeatureControlFrame: public RS_PreviewActionInterface{
+class LC_ActionDrawGDTFeatureControlFrame: public LC_SingleEntityCreationAction{
     Q_OBJECT
 public:
     explicit LC_ActionDrawGDTFeatureControlFrame(LC_ActionContext* actionContext);
@@ -58,7 +59,8 @@ protected:
     void updateMouseButtonHints() override;
     bool doProcessCommand(int status, const QString& command) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector& pos) override;
-    void doTrigger() override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
     void onMouseMoveEvent(int status, LC_MouseEvent* event) override;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent* e) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent* e) override;

@@ -44,74 +44,74 @@ RS_Clipboard* RS_Clipboard::instance() {
     return uniqueInstance.get();
 }
 
-void RS_Clipboard::clear() {
+void RS_Clipboard::clear() const {
     m_graphic->clear();
     m_graphic->clearBlocks();
     m_graphic->clearLayers();
     m_graphic->clearVariables();
 }
 
-void RS_Clipboard::addBlock(RS_Block* b) {
-    if (b) {
+void RS_Clipboard::addBlock(RS_Block* b) const {
+    if (b != nullptr) {
         m_graphic->addBlock(b, false);
     }
 }
 
-bool RS_Clipboard::hasBlock(const QString& name) {
+bool RS_Clipboard::hasBlock(const QString& name) const {
     return (m_graphic->findBlock(name));
 }
 
-void RS_Clipboard::addLayer(RS_Layer* l) {
-    if (l) {
+void RS_Clipboard::addLayer(RS_Layer* l) const {
+    if (l != nullptr) {
         //m_graphic->addLayer(l->clone());
         m_graphic->addLayer(l);
     }
 }
 
-bool RS_Clipboard::hasLayer(const QString& name) {
+bool RS_Clipboard::hasLayer(const QString& name) const {
     return (m_graphic->findLayer(name));
 }
 
-void RS_Clipboard::addEntity(RS_Entity* e) {
-    if (e) {
+void RS_Clipboard::addEntity(RS_Entity* e) const {
+    if (e != nullptr) {
         //m_graphic->addEntity(e->clone());
         m_graphic->addEntity(e);
         e->reparent(m_graphic.get());
     }
 }
 
-int  RS_Clipboard::countBlocks() {
+int  RS_Clipboard::countBlocks() const {
     return m_graphic->countBlocks();
 }
-RS_Block* RS_Clipboard::blockAt(int i) {
+RS_Block* RS_Clipboard::blockAt(int i) const {
     return m_graphic->blockAt(i);
 }
 
-int  RS_Clipboard::countLayers() {
+int  RS_Clipboard::countLayers() const {
     return m_graphic->countLayers();
 }
 
-RS_Layer* RS_Clipboard::layerAt(int i) {
+RS_Layer* RS_Clipboard::layerAt(int i) const {
     return m_graphic->layerAt(i);
 }
 
-unsigned RS_Clipboard::count() {
+unsigned RS_Clipboard::count() const {
     return m_graphic->count();
 }
 
-RS_Entity* RS_Clipboard::entityAt(unsigned i) {
+RS_Entity* RS_Clipboard::entityAt(unsigned i) const {
     return m_graphic->entityAt(i);
 }
 
-RS_Entity* RS_Clipboard::firstEntity() {
+RS_Entity* RS_Clipboard::firstEntity() const {
     return m_graphic->firstEntity();
 }
 
-RS_Entity* RS_Clipboard::nextEntity() {
+RS_Entity* RS_Clipboard::nextEntity() const {
     return m_graphic->nextEntity();
 }
 
-RS_Graphic* RS_Clipboard::getGraphic() {
+RS_Graphic* RS_Clipboard::getGraphic() const {
     return m_graphic.get();
 }
 

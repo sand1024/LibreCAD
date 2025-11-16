@@ -28,6 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "lc_slicedivideoptions.h"
 #include "rs_arc.h"
 #include "rs_circle.h"
+#include "rs_document.h"
 #include "rs_line.h"
 #include "rs_pen.h"
 
@@ -252,7 +253,7 @@ void LC_ActionDrawSliceDivide::doPrepareTriggerEntities(QList<RS_Entity *> &list
         for (uint i = 0; i < count; i++) {
             TickData* tick = m_ticksData.at(i);
             if (tick->isVisible){
-                auto *line = new RS_Line(m_container, tick->tickLine);
+                auto *line = new RS_Line(m_document, tick->tickLine);
                 // for ticks, we'll always use current pen and layer
                 setPenAndLayerToActive(line);
                 list<<line;
@@ -306,7 +307,7 @@ bool LC_ActionDrawSliceDivide::checkShouldDivideEntity(const RS_Entity *e, const
  * @param pLine original line
  * @param list list of entities to which created segments are added
  */
-void LC_ActionDrawSliceDivide::createLineSegments(RS_Line *pLine, QList<RS_Entity *> &list){
+void LC_ActionDrawSliceDivide::createLineSegments(RS_Line *pLine, QList<RS_Entity *> &list) const {
     uint count = m_ticksData.size();
     if (count > 2){ // we always set 2 ticks for edges
         RS_Pen originalPen = pLine->getPen(false);
@@ -330,7 +331,7 @@ void LC_ActionDrawSliceDivide::createLineSegments(RS_Line *pLine, QList<RS_Entit
  * @param pArc original arc
  * @param list list of entities to add created segments
  */
-void LC_ActionDrawSliceDivide::createArcSegments(RS_Arc *pArc, QList<RS_Entity *> &list){
+void LC_ActionDrawSliceDivide::createArcSegments(RS_Arc *pArc, QList<RS_Entity *> &list) const {
     RS_Vector center = pArc->getCenter();
     double radius = pArc->getRadius();
     bool reversed = pArc->isReversed();
@@ -343,7 +344,7 @@ void LC_ActionDrawSliceDivide::createArcSegments(RS_Arc *pArc, QList<RS_Entity *
  * @param pArc original circle
  * @param list list of entities to add created segments
  */
-void LC_ActionDrawSliceDivide::createCircleSegments(RS_Circle *pCircle, QList<RS_Entity *> &list){
+void LC_ActionDrawSliceDivide::createCircleSegments(RS_Circle *pCircle, QList<RS_Entity *> &list) const {
     RS_Vector center = pCircle->getCenter();
     double radius = pCircle->getRadius();
     doCreateArcSegments(pCircle, center, radius, false, list);
@@ -357,7 +358,7 @@ void LC_ActionDrawSliceDivide::createCircleSegments(RS_Circle *pCircle, QList<RS
  * @param reversed is reversed (for arc)
  * @param list list of entities to add segments
  */
-void LC_ActionDrawSliceDivide::doCreateArcSegments(RS_Entity *pArc, const RS_Vector &center, double radius, bool reversed, QList<RS_Entity *> &list){
+void LC_ActionDrawSliceDivide::doCreateArcSegments(RS_Entity *pArc, const RS_Vector &center, double radius, bool reversed, QList<RS_Entity *> &list) const {
     size_t count = m_ticksData.size();
 
     if (count > 2){ // we always set 2 ticks for edges
@@ -373,7 +374,7 @@ void LC_ActionDrawSliceDivide::doCreateArcSegments(RS_Entity *pArc, const RS_Vec
             if (reversed){
                 std::swap(startAngle, endAngle);
             }
-            auto *newArc = new RS_Arc(m_container, RS_ArcData(center, radius, startAngle, endAngle, reversed));
+            auto *newArc = new RS_Arc(m_document, RS_ArcData(center, radius, startAngle, endAngle, reversed));
             newArc->setLayer(originalLayer);
             newArc->setPen(originalPen);
             list << newArc;
@@ -539,7 +540,7 @@ void LC_ActionDrawSliceDivide::addTick(RS_Vector &tickSnapPoint, RS_LineData &li
  * @param ent original entiy
  * @param tickLineData tick line data
  */
-void LC_ActionDrawSliceDivide::prepareTickData(RS_Vector &tickSnapPosition, RS_Entity *ent, RS_LineData &tickLineData){
+void LC_ActionDrawSliceDivide::prepareTickData(RS_Vector &tickSnapPosition, RS_Entity *ent, RS_LineData &tickLineData) const {
     double actualTickLength = m_tickLength;
     auto const vp = ent->getNearestPointOnEntity(tickSnapPosition, false);
 

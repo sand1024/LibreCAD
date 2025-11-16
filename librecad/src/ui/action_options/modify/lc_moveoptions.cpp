@@ -74,29 +74,29 @@ void LC_MoveOptions::languageChange() {
     ui->retranslateUi(this);
 }
 
-void LC_MoveOptions::setCopiesNumberToActionAndView(int number) {
+void LC_MoveOptions::setCopiesNumberToActionAndView(int number) const {
     number = std::max(number, 1);
     m_action->setCopiesNumber(number);
     ui->sbNumberOfCopies->setValue(number);
 }
 
-void LC_MoveOptions::setUseMultipleCopiesToActionAndView(bool copies) {
+void LC_MoveOptions::setUseMultipleCopiesToActionAndView(bool copies) const {
    m_action->setUseMultipleCopies(copies);
    ui->cbMultipleCopies->setChecked(copies);
    ui->sbNumberOfCopies->setEnabled(copies);
 }
 
-void LC_MoveOptions::setUseCurrentLayerToActionAndView(bool val) {
+void LC_MoveOptions::setUseCurrentLayerToActionAndView(bool val) const {
     m_action->setUseCurrentLayer(val);
     ui->cbCurrentLayer->setChecked(val);
 }
 
-void LC_MoveOptions::setUseCurrentAttributesToActionAndView(bool val) {
+void LC_MoveOptions::setUseCurrentAttributesToActionAndView(bool val) const {
     m_action->setUseCurrentAttributes(val);
     ui->cbCurrentAttr->setChecked(val);
 }
 
-void LC_MoveOptions::setKeepOriginalsToActionAndView(bool val) {
+void LC_MoveOptions::setKeepOriginalsToActionAndView(bool val) const {
     m_action->setKeepOriginals(val);
     ui->cbKeepOriginals->setChecked(val);
 }

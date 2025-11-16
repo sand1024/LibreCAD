@@ -430,7 +430,7 @@ RS_Vector RS_Arc::getNearestPointOnEntity(const RS_Vector& coord,
                                           bool onEntity, double* dist, RS_Entity** entity) const{
 
     RS_Vector vec(false);
-    if (entity) {
+    if (entity != nullptr) {
         *entity = const_cast<RS_Arc*>(this);
     }
 

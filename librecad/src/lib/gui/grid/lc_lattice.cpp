@@ -443,20 +443,20 @@ const std::vector<RS_Vector> LC_Lattice::getPoints() {
     return {};// points;
 }
 
-RS_Vector LC_Lattice::getOffset(int xPointsDelta, int yPointsDelta) {
+RS_Vector LC_Lattice::getOffset(int xPointsDelta, int yPointsDelta) const {
     RS_Vector result = deltaX*xPointsDelta + deltaY*yPointsDelta;
     return result;
 }
 
-const  RS_Vector &LC_Lattice::getMajorVector() {
+const  RS_Vector &LC_Lattice::getMajorVector() const {
     return majorVector;
 }
 
-const RS_Vector &LC_Lattice::getDeltaX() {
+const RS_Vector &LC_Lattice::getDeltaX() const {
     return deltaX;
 }
 
-const  RS_Vector &LC_Lattice::getDeltaY() {
+const  RS_Vector &LC_Lattice::getDeltaY() const {
     return deltaY;
 }
 

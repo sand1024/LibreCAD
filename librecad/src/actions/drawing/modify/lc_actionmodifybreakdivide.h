@@ -69,9 +69,9 @@ protected:
     bool doCheckMayDrawPreview(LC_MouseEvent *event, int status) override;
     void doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    void createEntitiesForLine(RS_Line *line, RS_Vector &snap, QList<RS_Entity *> &list, bool preview);
-    void createEntitiesForCircle(RS_Circle *circle, RS_Vector &vector, QList<RS_Entity *> &list, bool preview);
-    void createEntitiesForArc(RS_Arc *arc, RS_Vector &snap, QList<RS_Entity *> &list, bool preview);
+    void createEntitiesForLine(RS_Line *line, RS_Vector &snap, QList<RS_Entity *> &list, bool preview) const;
+    void createEntitiesForCircle(RS_Circle *circle, RS_Vector &vector, QList<RS_Entity *> &list, bool preview) const;
+    void createEntitiesForArc(RS_Arc *arc, RS_Vector &snap, QList<RS_Entity *> &list, bool preview) const;
     void doOnLeftMouseButtonRelease(LC_MouseEvent *e, int status, const RS_Vector &snapPoint) override;
     bool doCheckMayTrigger() override;
     void performTriggerDeletions() override;

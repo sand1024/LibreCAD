@@ -52,7 +52,7 @@ protected:
     std::unique_ptr<Ui::Ui_BevelOptions> ui;
     void setLength1ToActionAndView(QString val);
     void setLength2ToActionAndView(QString val);
-    void setTrimToActionAndView(bool val);
+    void setTrimToActionAndView(bool val) const;
 };
 
 #endif // QG_BEVELOPTIONS_H

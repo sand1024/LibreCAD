@@ -155,16 +155,16 @@ private:
     void prepareLineTicks(RS_Line *e);
     void prepareArcTicks(RS_Arc *arc);
     void prepareCircleTicks(RS_Circle *circle);
-    void prepareTickData(RS_Vector &tickSnapPosition, RS_Entity *entity, RS_LineData &tickLineData);
+    void prepareTickData(RS_Vector &tickSnapPosition, RS_Entity *entity, RS_LineData &tickLineData) const;
     void addTick(RS_Vector &tickSnapPoint, RS_LineData &lineData, bool edge, bool visible, double angle);
     void createTickData(RS_Entity *e, RS_Vector tickSnapPoint, double arcAngle, bool edge, bool visible = true);
     void prepareStartTick(RS_Entity *entity, const RS_Vector &tickSnapPoint, double arcAngle);
     void prepareEndTick(RS_Entity *entity, const RS_Vector &tickSnapPoint, double arcAngle);
     void prepareArcSegments(RS_Entity *e, double radius, RS_Vector &center, double startPointAngle, double arcLength);
-    void createLineSegments(RS_Line *pLine, QList<RS_Entity *> &list);
-    void createArcSegments(RS_Arc *pArc, QList<RS_Entity *> &list);
-    void createCircleSegments(RS_Circle *pCircle, QList<RS_Entity *> &list);
-    void doCreateArcSegments(RS_Entity *pArc, const RS_Vector &center, double radius, bool reversed, QList<RS_Entity *> &list);
+    void createLineSegments(RS_Line *pLine, QList<RS_Entity *> &list) const;
+    void createArcSegments(RS_Arc *pArc, QList<RS_Entity *> &list) const;
+    void createCircleSegments(RS_Circle *pCircle, QList<RS_Entity *> &list) const;
+    void doCreateArcSegments(RS_Entity *pArc, const RS_Vector &center, double radius, bool reversed, QList<RS_Entity *> &list) const;
     bool checkShouldDivideEntity(const RS_Entity *entity, const QString &entityName) const;
 protected:
     LC_ActionOptionsWidget* createOptionsWidget() override;

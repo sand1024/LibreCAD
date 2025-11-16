@@ -112,7 +112,7 @@ void LC_ActionGroupManager::toggleExclusiveSnapMode(bool state) {
     snap_memory = temp_memory;
 }
 
-void LC_ActionGroupManager::toggleTools(bool state) {
+void LC_ActionGroupManager::toggleTools(bool state) const {
     for (auto group: toolGroups()) {
         for (auto action: group->actions()) {
             action->setDisabled(state);
@@ -165,7 +165,7 @@ bool LC_ActionGroupManager::hasActionGroup(const QString& categoryName) const {
     return m_actionGroups.contains(categoryName);
 }
 
-LC_ActionGroup* LC_ActionGroupManager::getActionGroup(const QString& groupName) {
+LC_ActionGroup* LC_ActionGroupManager::getActionGroup(const QString& groupName) const {
     return m_actionGroups.value(groupName, nullptr);
 }
 
@@ -212,6 +212,6 @@ void LC_ActionGroupManager::completeInit(){
    }
 }
 
-QAction* LC_ActionGroupManager::getActionByType(RS2::ActionType actionType){
+QAction* LC_ActionGroupManager::getActionByType(RS2::ActionType actionType) const {
     return m_actionsByTypes.value(actionType);
 }

@@ -49,20 +49,20 @@ public:
     void setUCSList(LC_UCSList* viewsList);
     void setGraphicView(RS_GraphicView* gv) override;
     void reload();
-    void fillUCSList(QList<LC_UCS *> &list);
-    QIcon getUCSTypeIcon(LC_UCS *view);
+    void fillUCSList(QList<LC_UCS *> &list) const;
+    QIcon getUCSTypeIcon(LC_UCS *view) const;
     QWidget* createSelectionWidget(QAction* saveViewAction, QAction* defaultAction);
     void ucsListModified([[maybe_unused]]bool changed) override{refresh();}
-    QModelIndex getIndexForUCS(LC_UCS *u);
+    QModelIndex getIndexForUCS(LC_UCS *u) const;
     void applyUCSByIndex(QModelIndex index);
-    LC_UCS* getActiveUCS();
+    LC_UCS* getActiveUCS() const;
 signals:
     void ucsListChanged();
 public slots:
-    void setWCS();
+    void setWCS() const;
     void onViewUCSChanged(LC_UCS* ucs);
     void setStateWidget(LC_UCSStateWidget *stateWidget);
-    void updateWidgetSettings();
+    void updateWidgetSettings() const;
 protected slots:
     void invokeOptionsDialog();
     void saveCurrentUCS();
@@ -71,10 +71,10 @@ protected slots:
     void removeUCS();
     void removeAllUCSs();
     void editUCS();
-    void setUCSByDimOrdinate();
+    void setUCSByDimOrdinate() const;
     void onCustomContextMenu(const QPoint &point);
     void slotTableClicked(QModelIndex layerIdx);
-    void onTableSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+    void onTableSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected) const;
     void onTableDoubleClicked();
 protected:
     LC_UCSList* m_currentUCSList{nullptr};
@@ -98,17 +98,17 @@ protected:
     void updateData(bool restoreSelectionIfPossible);
     void loadOptions();
     void createModel();
-    void applyUCS(LC_UCS* ucs);
-    void previewExistingUCS(LC_UCS* ucs);
+    void applyUCS(LC_UCS* ucs) const;
+    void previewExistingUCS(LC_UCS* ucs) const;
     LC_UCS *getSelectedUCS();
-    void removeExistingUCS(LC_UCS *ucs);
-    QModelIndex getSelectedItemIndex();
+    void removeExistingUCS(LC_UCS *ucs) const;
+    QModelIndex getSelectedItemIndex() const;
     void renameExistingUCS(QString newName, LC_UCS *ucs);
     void renameExistingUCS(LC_UCS *selectedUCS);
     void updateButtonsState() const;
-    void selectUCS(LC_UCS *ucs);
+    void selectUCS(LC_UCS *ucs) const;
     int getSingleSelectedRow() const;
-    void restoreSingleSelectedRow(bool restoreSelectionIfPossible, int selectedRow);
+    void restoreSingleSelectedRow(bool restoreSelectionIfPossible, int selectedRow) const;
     void loadFormats(RS_Graphic *graphic);
 };
 

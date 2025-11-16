@@ -51,7 +51,7 @@ private:
     RS_ActionModifyTrimAmount *m_action = nullptr;
     std::unique_ptr<Ui::Ui_TrimAmountOptions> ui;
     void setDistanceToActionAndView(const QString &strValue);
-    void setByTotalToActionAndView(bool val);
-    void setDistanceSymmetricToActionAndView(bool val);
+    void setByTotalToActionAndView(bool val) const;
+    void setDistanceSymmetricToActionAndView(bool val) const;
 };
 #endif // QG_TRIMAMOUNTOPTIONS_H

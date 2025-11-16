@@ -40,10 +40,12 @@
 #include "lc_flexlayout.h"
 #include "lc_layersexporter.h"
 #include "lc_layertreemodel.h"
+#include "lc_undosection.h"
 #include "rs_settings.h"
 #include "lc_widgets_common.h"
 #include "rs_graphicview.h"
 #include "rs_layer.h"
+#include "rs_selection.h"
 /**
  * Constructor.
  */
@@ -311,7 +313,7 @@ void LC_LayerTreeWidget::setLayerList(RS_LayerList *ll){
  * Primary method used to rebuild model for modifications and
  * updating the UI.
  */
-void LC_LayerTreeWidget::update(){
+void LC_LayerTreeWidget::update() const {
 
     RS_DEBUG->print("QG_LayerWidget::update() begin");
 
@@ -373,15 +375,15 @@ void LC_LayerTreeWidget::activateLayer(RS_Layer *layer){
 
 //---------------- three expanded state control ----------------------
 
-void LC_LayerTreeWidget::collapseAllLayers(){
+void LC_LayerTreeWidget::collapseAllLayers() const {
     m_layerTreeView->collapseAll();
 }
 
-void LC_LayerTreeWidget::expandAllLayers(){
+void LC_LayerTreeWidget::expandAllLayers() const {
     m_layerTreeView->expandAll();
 }
 
-void LC_LayerTreeWidget::expandItems(int depth){
+void LC_LayerTreeWidget::expandItems(int depth) const {
     if (depth == -1){
         m_layerTreeView->expandAll();
     } else {
@@ -391,7 +393,7 @@ void LC_LayerTreeWidget::expandItems(int depth){
 /**
  * Collapsing all secondary items  - all that are not normal or virtual
  */
-void LC_LayerTreeWidget::collapseSecondaryLayers(){
+void LC_LayerTreeWidget::collapseSecondaryLayers() const {
     m_layerTreeView->setUpdatesEnabled(false);
         foreach (QModelIndex index, m_layerTreeModel->getPersistentIndexList()) {
             if (m_layerTreeView->isExpanded(index)){
@@ -1031,7 +1033,7 @@ void LC_LayerTreeWidget::layerToggledConstruction(RS_Layer *){
  * Drag start event = just saving the item which starts dragging
  * @param dropIndex
  */
-void LC_LayerTreeWidget::onDragEnterEvent(const QModelIndex &dropIndex){
+void LC_LayerTreeWidget::onDragEnterEvent(const QModelIndex &dropIndex) const {
     // save source item for which drag is invoked
     LC_LayerTreeItem *currentlyDraggingItem = m_layerTreeModel->getItemForIndex(dropIndex);
     // LC_ERR << "Drag Enter for " << currentlyDraggingItem->getName() << "  " << currentlyDraggingItem->getFullName();
@@ -1043,7 +1045,7 @@ void LC_LayerTreeWidget::onDragEnterEvent(const QModelIndex &dropIndex){
  * @param dropIndex
  * @param position
  */
-void LC_LayerTreeWidget::onDropEvent(const QModelIndex &dropIndex, DropIndicatorPosition position){
+void LC_LayerTreeWidget::onDropEvent(const QModelIndex &dropIndex, DropIndicatorPosition position) const {
     RS_DEBUG->print(RS_Debug::D_WARNING, "onDropEvent");
     LC_LayerTreeItem *currentlyDraggingItem = m_layerTreeModel->getCurrentlyDraggingItem();
     if (currentlyDraggingItem){
@@ -1377,7 +1379,7 @@ void LC_LayerTreeWidget::toggleFlatView(){
 /**
  * Utility method that updates visibility/state for buttons in toolbar according to current view mode
  */
-void LC_LayerTreeWidget::updateToolBarButtons(){
+void LC_LayerTreeWidget::updateToolBarButtons() const {
     m_btnCollapseSecondary->setVisible(!m_flatListMode);
     m_btnCollapseAll->setVisible(!m_flatListMode);
     m_btnExpandAll->setVisible(!m_flatListMode);
@@ -1389,7 +1391,7 @@ void LC_LayerTreeWidget::updateToolBarButtons(){
  * Returns model index for currently selected item
  * @return
  */
-QModelIndex LC_LayerTreeWidget::getSelectedItemIndex(){
+QModelIndex LC_LayerTreeWidget::getSelectedItemIndex() const {
     QModelIndex result;
     QModelIndexList selectedIndexes = m_layerTreeView->selectionModel()->selectedIndexes();
     if (selectedIndexes.size() == 1){ // only one selected item is expected
@@ -1420,14 +1422,14 @@ QList<RS_Layer *> LC_LayerTreeWidget::collectLayersForSelectedItem(){
  * @param layer
  */
 void LC_LayerTreeWidget::deselectEntitiesOnLockedLayer(RS_Layer *layer){
-    if (layer == nullptr) return;
-    if (!layer->isLocked()) return;
-
-    for (auto e: *m_document) {
-        if (e != nullptr && e->isVisible() && e->getLayer() == layer){
-            e->setSelected(false);
-        }
+    if (layer == nullptr) {
+        return;
     }
+    if (!layer->isLocked()) {
+        return;
+    }
+
+    RS_Selection::unselectLayer(m_document, m_graphicView->getViewPort(), layer);
     redrawView();
 }
 
@@ -1436,13 +1438,10 @@ void LC_LayerTreeWidget::deselectEntitiesOnLockedLayer(RS_Layer *layer){
  * @param layer
  */
 void LC_LayerTreeWidget::deselectEntities(RS_Layer *layer){
-    if (layer == nullptr) return;
-
-    for (auto entity: *m_document) {
-        if (entity != nullptr && entity->isVisible() && entity->getLayer() == layer){
-            entity->setSelected(false);
-        }
+    if (layer == nullptr) {
+        return;
     }
+    RS_Selection::unselectLayer(m_document, m_graphicView->getViewPort(), layer);
     redrawView();
 }
 
@@ -1452,7 +1451,7 @@ void LC_LayerTreeWidget::deselectEntities(RS_Layer *layer){
  * @param layersToDisable  list of layers to hide
  * @param toggleMode - flag whether toggle mode should be called internally. if true, list in layersToDisable is ignored
  */
-void LC_LayerTreeWidget::manageLayersVisibilityFlag(QList<RS_Layer *> &layersToEnable, QList<RS_Layer *> &layersToDisable, bool toggleMode){
+void LC_LayerTreeWidget::manageLayersVisibilityFlag(QList<RS_Layer *> &layersToEnable, QList<RS_Layer *> &layersToDisable, bool toggleMode) const {
     if (m_graphicView != nullptr){
         if (toggleMode){
             m_layerList->toggleFreezeMulti(layersToEnable);
@@ -1544,17 +1543,16 @@ void LC_LayerTreeWidget::manageLayersPrintFlag(QList<RS_Layer *> &layersToPrint,
  * @param layers layers on which entities should be selected
  */
 void LC_LayerTreeWidget::doSelectLayersEntities(QList<RS_Layer *> &layers){
-    // NOTE:  actually, the more correct location for this logic is RS_Selection class or something like that...
-    // yet leave it for now here to reduce amount of codebase modifications.
-
-    for (auto en: *m_document) {
-        if (en != nullptr && en->isVisible() && !en->isSelected() && (!(en->getLayer() && en->getLayer()->isLocked()))){
-            RS_Layer *l = en->getLayer(true);
-            if (l != nullptr && layers.contains(l)){
-                en->setSelected(true);
+    RS_Selection sel(m_graphicView);
+    sel.selectIfMatched(m_document->getEntityList(), true, [layers](RS_Entity* en)-> bool {
+        if (en != nullptr) {
+            auto entityLayer = en->getLayer(false);
+            if (entityLayer != nullptr && !entityLayer->isLocked() && en->isVisible()) {
+                return layers.contains(entityLayer);
             }
         }
-    }
+        return false;
+    });
 
     redrawView();
 
@@ -1570,7 +1568,8 @@ void LC_LayerTreeWidget::doSelectLayersEntities(QList<RS_Layer *> &layers){
  */
 void LC_LayerTreeWidget::doCreateLayersCopy(const QModelIndex &sourceIndex, bool duplicateEntities){
     QHash<RS_Layer *, RS_Layer *> layersMap = m_layerTreeModel->createLayersCopy(sourceIndex);
-    if (layersMap.count() > 0){
+    if (!layersMap.empty()){
+        // fixme - selection - UNDO START
         QHashIterator<RS_Layer *, RS_Layer *> iter{layersMap};
         while (iter.hasNext()) {
             iter.next();
@@ -1582,8 +1581,9 @@ void LC_LayerTreeWidget::doCreateLayersCopy(const QModelIndex &sourceIndex, bool
             }
             // that's pretty ugly that there are no batch operations in LayerList....
             // it may lead to exceeding invocation of listeners
-            m_layerList->add(copyLayer);
+            m_layerList->add(copyLayer); // fixme - sand - add batch invocation for layer's list modification!!
         }
+        // fixme - selection - UNDO END
         // just additional invocation of listeners on layer list...
         m_layerList->fireEdit(nullptr);
     }
@@ -1594,14 +1594,15 @@ void LC_LayerTreeWidget::doCreateLayersCopy(const QModelIndex &sourceIndex, bool
  * @param sourceLayer  layer which is copied
  * @param copyLayer  created copy of source layer
  */
-void LC_LayerTreeWidget::duplicateLayerEntities(RS_Layer *sourceLayer, RS_Layer *copyLayer){
+void LC_LayerTreeWidget::duplicateLayerEntities(RS_Layer *sourceLayer, RS_Layer *copyLayer) const {
     // TODO - what about UNDO?
     for (auto entity: *m_document) {
         RS_Layer *layer = entity->getLayer(true);
         if (layer != nullptr && layer == sourceLayer){
-            RS_Entity *duplicateEntity = entity->clone();
-            duplicateEntity->setLayer(copyLayer);
-            m_document->addEntity(duplicateEntity);
+            RS_Entity *clone = entity->clone();
+            clone->setLayer(copyLayer);
+            m_document->addEntity(clone);  // fixme - selection - rework to support UNDO!!!!
+            // m_document->addUndoable(clone);
         }
     }
 }
@@ -1632,7 +1633,7 @@ void LC_LayerTreeWidget::copyLayerAttributes(RS_Layer *copyLayer, RS_Layer *sour
     copyLayer->freeze(sourceLayer->isFrozen());
 }
 
-void LC_LayerTreeWidget::redrawView(){
+void LC_LayerTreeWidget::redrawView() const {
     if (m_graphicView != nullptr){
         m_graphicView->redraw();
     }
@@ -1652,51 +1653,55 @@ void LC_LayerTreeWidget::redrawView(){
 void LC_LayerTreeWidget::doMoveSelectionToLayer(LC_LayerTreeItem* layerItem, bool duplicate, bool resolvePens){
     RS_Layer *targetLayer = layerItem->getLayer();
 
-    // using if there is just for a bit better performance
-    if (duplicate){
-        for (auto en: *m_document) { // iterate over all entities
-            if (en != nullptr){
-                if (en->isVisible() && en->isSelected() && !en->isParentSelected()){
-                    RS_Layer *l = en->getLayer(true);
-                    if (l != nullptr && l != targetLayer){ // don't move to itself
-                        en->setSelected(false);
-                        RS_Entity *duplicateEntity = en->clone();
-                        if (resolvePens){
-                            // resolve pen in original entities, so "by layer" and "by block" values will be replaced by resolved values
-                            RS_Pen resolvedPen = en->getPen(true);
-                            // assigning resolved pen back to the entity's copy
-                            duplicateEntity ->setPen(resolvedPen);
-                        }
-                        // switch selection to newly duplicated entity
-                        duplicateEntity->setSelected(true);
-                        duplicateEntity->setLayer(targetLayer);
-                        m_document->addEntity(duplicateEntity);
+    LC_SelectedSet* selection = m_document->getSelectedSet();
+
+    std::vector<RS_Entity*> originalEntities;
+    std::vector<RS_Entity*> clones;
+
+    bool removeOriginals = !duplicate;
+
+    for (auto en : *selection) {
+        // iterate over all entities
+        if (en != nullptr) {
+            if (en->isVisible() && en->isSelected() && !en->isParentSelected()) {
+                RS_Layer* l = en->getLayer(true);
+                if (l != nullptr && l != targetLayer) {
+                    RS_Entity* clone = en->clone();
+                    if (resolvePens) {
+                        // resolve pen in original entities, so "by layer" and "by block" values will be replaced by resolved values
+                        RS_Pen resolvedPen = en->getPen(true);
+                        // assigning resolved pen back to the entity's copy
+                        clone->setPen(resolvedPen);
                     }
-                }
-            }
-        }
-    } else {
-        for (auto en: *m_document) {
-            if (en != nullptr){
-                if (en->isVisible() && en->isSelected() && !en->isParentSelected()){
-                    RS_Layer *l = en->getLayer(true);
-                    if (l != nullptr && l != targetLayer){
-                        if (resolvePens){
-                            // before changing the layer, resolve pen and
-                            // set it back to the entity.
-                            RS_Pen resolvedPen = en->getPen(true);
-                            en ->setPen(resolvedPen);
-                        }
-                        en->setLayer(targetLayer);
-                    }
+
+                    clone->setLayer(targetLayer);
+                    originalEntities.push_back(en);
+                    clones.push_back(clone);
                 }
             }
         }
     }
+
+    LC_UndoSection undo(m_document, m_graphicView->getViewPort());
+    if (removeOriginals) {
+        for (const auto e: originalEntities) {
+            undo.undoableDelete(e);
+        }
+    }
+    else {
+        for (const auto e: originalEntities) {
+            m_document->unselect(e);
+        }
+    }
+
+    for (const auto e: clones) {
+        m_document->select(e);
+        undo.undoableAdd(e);
+    }
+
     redrawView();
 }
 
-// TBD - Undo support?
 /**
  * Removes layers starting from provide source
  * @param source starting point for removal
@@ -1747,7 +1752,7 @@ void LC_LayerTreeWidget::doRemoveLayerItems(QList<LC_LayerTreeItem *> &itemsToRe
  * Performs actual removal of provided list of layers
  * @param layersToRemove list of layers to remove
  */
-void LC_LayerTreeWidget::doRemoveLayers(QList<RS_Layer *> &layersToRemove){
+void LC_LayerTreeWidget::doRemoveLayers(QList<RS_Layer *> &layersToRemove) const {
     for (auto layer: layersToRemove) {
         RS_Graphic *graphic = m_document->getGraphic();
         if (graphic != nullptr){
@@ -1920,7 +1925,7 @@ void LC_LayerTreeWidget::invokeSettingsDialog(){
     }
 }
 
-void LC_LayerTreeWidget::updateWidgetSettings(){
+void LC_LayerTreeWidget::updateWidgetSettings() const {
     LC_GROUP("Widgets"); {
         bool flatIcons = LC_GET_BOOL("DockWidgetsFlatIcons", true);
         int iconSize = LC_GET_INT("DockWidgetsIconSize", 16);
@@ -1945,8 +1950,8 @@ void LC_LayerTreeWidget::setGraphicView(RS_GraphicView *gview){
         m_document = nullptr;
     }
     else {
-        auto doc = gview->getContainer()->getDocument();
-        setLayerList(gview->getGraphic(true)->getLayerList());
+        auto doc = gview->getDocument();
+        setLayerList(gview->getGraphic(true)->getLayerList()); // fixme - DOC - SIMPLIFY
         m_document = doc;
     }
 }
@@ -1965,7 +1970,7 @@ void LC_LayerTreeWidget::exportSelectedLayer() {
     }
 }
 
-void LC_LayerTreeWidget::exportLayersList(QList<RS_Layer*> layersToExport) {
+void LC_LayerTreeWidget::exportLayersList(QList<RS_Layer*> layersToExport) const {
     if (!layersToExport.isEmpty()) {
         LC_LayersExportOptions exportOptions;
         for (const auto layer: layersToExport) {

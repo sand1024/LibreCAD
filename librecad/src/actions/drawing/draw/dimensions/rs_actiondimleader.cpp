@@ -36,17 +36,14 @@ std::vector<RS_Vector> points;
 };
 
 RS_ActionDimLeader::RS_ActionDimLeader(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("Draw leaders", actionContext, RS2::ActionDimLeader)
+    :LC_SingleEntityCreationAction("Draw leaders", actionContext, RS2::ActionDimLeader)
 	, m_actionData(std::make_unique<ActionData>()) {
     reset();
 }
 
 RS_ActionDimLeader::~RS_ActionDimLeader() = default;
 
-void RS_ActionDimLeader::reset() {
-    //data = RS_LineData(RS_Vector(false), RS_Vector(false));
-    //start = RS_Vector(false);
-    //history.clear();
+void RS_ActionDimLeader::reset() const {
     m_actionData->points.clear();
 }
 
@@ -55,21 +52,15 @@ void RS_ActionDimLeader::init(int status) {
     reset();
 }
 
-void RS_ActionDimLeader::doTrigger() {
-    if (!m_actionData->points.empty()){
-
-        auto *leaderEntity = new RS_Leader(m_container, RS_LeaderData(true, ""));
-        setPenAndLayerToActive(leaderEntity);
-
-        for (const auto &vp: m_actionData->points) {
+RS_Entity* RS_ActionDimLeader::doTriggerCreateEntity() {
+    if (!m_actionData->points.empty()) {
+        auto* leaderEntity = new RS_Leader(m_document, RS_LeaderData(true, ""));
+        for (const auto& vp : m_actionData->points) {
             leaderEntity->addVertex(vp);
         }
-
-        undoCycleAdd(leaderEntity);
-
-        RS_DEBUG->print("RS_ActionDimLeader::trigger(): leaderEntity added: %lu",
-                        leaderEntity->getId());
+        return leaderEntity;
     }
+    return nullptr;
 }
 
 void RS_ActionDimLeader::onMouseMoveEvent(int status, LC_MouseEvent *e) {
@@ -171,7 +162,6 @@ bool RS_ActionDimLeader::doProcessCommand([[maybe_unused]]int status, const QStr
         reset();
         setStatus(SetStartpoint);
         accept = true;
-        //finish();
     }
     return accept;
 }

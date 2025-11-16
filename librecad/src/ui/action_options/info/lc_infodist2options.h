@@ -47,7 +47,7 @@ protected:
 private:
     Ui::LC_InfoDist2Options *ui;
     RS_ActionInfoDist2* m_action = nullptr;
-    void setOnEntitySnapToActionAndView(bool value);
+    void setOnEntitySnapToActionAndView(bool value) const;
 };
 
 #endif // LC_INFODIST2OPTIONS_H

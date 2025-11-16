@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "lc_actioninfomessagebuilder.h"
 #include "lc_cursoroverlayinfo.h"
 #include "lc_linemath.h"
+#include "rs_document.h"
 #include "rs_polyline.h"
 
 LC_AbstractActionDrawRectangle::LC_AbstractActionDrawRectangle(const char *name,LC_ActionContext *actionContext, RS2::ActionType actionType)
@@ -99,7 +100,7 @@ void LC_AbstractActionDrawRectangle::doAddPolylineToListOfEntities(RS_Polyline *
                 }
                 // create clone of entity for safe deletion of original polyline
                 RS_Entity *clone = entity->clone();
-                clone->reparent(m_container);
+                clone->reparent(m_document);
                 list << clone;
             }
         }
@@ -457,7 +458,7 @@ void LC_AbstractActionDrawRectangle::doUpdateMouseButtonHints([[maybe_unused]]in
 RS_Polyline *LC_AbstractActionDrawRectangle::createPolylineByVertexes(RS_Vector bottomLeftCorner, RS_Vector bottomRightCorner,
                                                                       RS_Vector topRightCorner, RS_Vector topLeftCorner,
                                                                       bool drawBulge, bool drawComplex, double radiusX, double radiusY) const{
-    auto *polyline = new RS_Polyline(m_container);
+    auto *polyline = new RS_Polyline(m_document);
 
     if (drawComplex){ // we'll draw complex shape
 

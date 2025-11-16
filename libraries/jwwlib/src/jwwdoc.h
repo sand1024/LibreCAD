@@ -870,11 +870,11 @@ protected:
 public:
 	JWWBlockList();
 	~JWWBlockList();
-	CDataList GetBlockList(unsigned int i);
-	int getBlockListCount();
-    int GetDataListCount(unsigned int i);
-    void* GetData(unsigned int i, int j );
-    CDataType GetDataType(unsigned int i, int j );
+	CDataList GetBlockList(unsigned int i) const;
+	int getBlockListCount() const;
+    int GetDataListCount(unsigned int i) const;
+    void* GetData(unsigned int i, int j ) const;
+    CDataType GetDataType(unsigned int i, int j ) const;
 
 	CDataEnko GetCDataEnko(int i, int j );
 	CDataMoji GetCDataMoji(int i, int j );
@@ -912,9 +912,9 @@ private:
 public:
 	JWWList();
 	~JWWList();
-	int GetCount();
-	NoList& GetItem(int i);
-	NoList& GetNoByItem(int i);
+	int GetCount() const;
+	NoList& GetItem(int i) const;
+	NoList& GetNoByItem(int i) const;
 	void AddItem(int No,string& str);
 };
 
@@ -992,8 +992,8 @@ public:
 	JWWBlockList*	pBlockList;//ブロックデータ定義部のリスト
 	vector<CData*>   m_DataList;    //図形データのリスト
 	vector<CDataList*>	m_DataListList;  //ブロックデータ定義部のリスト
-	void WriteString(string s);
-	string ReadData(int n);
+	void WriteString(string s) const;
+	string ReadData(int n) const;
 	string ReadString();
 	jwBOOL ReadHeader();
 	jwBOOL WriteHeader();

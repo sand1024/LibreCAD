@@ -257,7 +257,7 @@ void QG_LibraryWidget::appendTree(QStandardItem* item, QString directory) {
  *
  * @author Rallaz
  */
-void QG_LibraryWidget::expandView( QModelIndex idx ){
+void QG_LibraryWidget::expandView( QModelIndex idx ) const {
     QStandardItem * item = dirModel->itemFromIndex ( idx );
     if (item != nullptr) {
         item->setIcon(QIcon(":/icons/fileopen.lci"));
@@ -269,7 +269,7 @@ void QG_LibraryWidget::expandView( QModelIndex idx ){
  *
  * @author Rallaz
  */
-void QG_LibraryWidget::collapseView( QModelIndex idx ){
+void QG_LibraryWidget::collapseView( QModelIndex idx ) const {
     QStandardItem * item = dirModel->itemFromIndex ( idx );
     if (item != nullptr) {
         item->setIcon(QIcon(":/icons/folderclosed.lci"));
@@ -486,7 +486,7 @@ QString QG_LibraryWidget::getPathToPixmap(const QString& dir,
     return pngPath;
 }
 
-void QG_LibraryWidget::updateWidgetSettings(){
+void QG_LibraryWidget::updateWidgetSettings() const {
     LC_GROUP("Widgets"); {
         bool flatIcons = LC_GET_BOOL("DockWidgetsFlatIcons", true);
         int iconSize = LC_GET_INT("DockWidgetsIconSize", 16);

@@ -112,22 +112,22 @@ void LC_SplineExplodeOptions::languageChange() {
     ui->retranslateUi(this);
 }
 
-void LC_SplineExplodeOptions::setKeepOriginalsToActionAndView(bool val) {
+void LC_SplineExplodeOptions::setKeepOriginalsToActionAndView(bool val) const {
     m_action->setKeepOriginals(val);
     ui->cbKeepOriginals->setChecked(val);
 }
 
-void LC_SplineExplodeOptions::setUseCurrentAttributesToActionAndView(bool val) {
+void LC_SplineExplodeOptions::setUseCurrentAttributesToActionAndView(bool val) const {
     m_action->setUseCurrentAttributes(val);
     ui->cbCurrentAttr->setChecked(val);
 }
 
-void LC_SplineExplodeOptions::setUseCurrentLayerToActionAndView(bool val) {
+void LC_SplineExplodeOptions::setUseCurrentLayerToActionAndView(bool val) const {
     m_action->setUseCurrentLayer(val);
     ui->cbLayer->setChecked(val);
 }
 
-void LC_SplineExplodeOptions::setUseCustomSegmentCount(bool val) {
+void LC_SplineExplodeOptions::setUseCustomSegmentCount(bool val) const {
     m_action->setUseCustomSegmentsCount(val);
     ui->cbCustomSegmentsCount->setChecked(val);
     ui->sbSegmentsCount->setEnabled(val);
@@ -136,12 +136,12 @@ void LC_SplineExplodeOptions::setUseCustomSegmentCount(bool val) {
     }
 }
 
-void LC_SplineExplodeOptions::setPolylineToActionAndView(bool val) {
+void LC_SplineExplodeOptions::setPolylineToActionAndView(bool val) const {
     m_action->setUsePolyline(val);
     ui->cbPolyline->setChecked(val);
 }
 
-void LC_SplineExplodeOptions::setSegmentsCountValueToActionAndView(int value) {
+void LC_SplineExplodeOptions::setSegmentsCountValueToActionAndView(int value) const {
     m_action->setSegmentsCountValue(value);
     ui->sbSegmentsCount->setValue(value);
 }

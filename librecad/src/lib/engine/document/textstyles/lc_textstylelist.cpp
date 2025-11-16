@@ -34,7 +34,7 @@ void LC_TextStyleList::clear() {
     m_styles.clear(); // fixme - sand - check whether items should be deleted!
 }
 
-LC_TextStyle* LC_TextStyleList::at(unsigned int i) {
+LC_TextStyle* LC_TextStyleList::at(unsigned int i) const {
     return m_styles.at(i);
 }
 

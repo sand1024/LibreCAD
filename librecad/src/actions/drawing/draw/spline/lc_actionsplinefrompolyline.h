@@ -29,7 +29,7 @@ class RS_Layer;
 class RS_Pen;
 class RS_Polyline;
 
-class LC_ActionSplineFromPolyline :public RS_PreviewActionInterface{
+class LC_ActionSplineFromPolyline :public LC_UndoablePreviewActionInterface{
     Q_OBJECT
 public:
     explicit LC_ActionSplineFromPolyline(LC_ActionContext *actionContext);
@@ -61,9 +61,9 @@ protected:
     int m_segmentMiddlePoints = 1;
 
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
-    RS_Entity* createSplineForPolyline(RS_Entity *p);
+    RS_Entity* createSplineForPolyline(RS_Entity *p) const;
     void fillControlPointsListFromPolyline(const RS_Polyline *polyline, std::vector<RS_Vector> &controlPoints) const;
-    void setupAndAddCreatedEntity(RS_Entity *createdEntity, RS_Layer *layerToSet, const RS_Pen &penToUse);
+    void setupAndAddCreatedEntity(RS_Entity *createdEntity, RS_Layer *layerToSet, const RS_Pen &penToUse) const;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;

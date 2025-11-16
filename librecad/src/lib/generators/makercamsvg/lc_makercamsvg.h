@@ -70,7 +70,7 @@ public:
 	~LC_MakerCamSVG() = default;
 
     bool generate(RS_Graphic* graphic);
-    std::string resultAsString();
+    std::string resultAsString() const;
     void setExportPoints(bool exportPoints) {
         m_exportPoints = exportPoints;
     }
@@ -88,18 +88,18 @@ private:
     void writeEntity(RS_Entity* entity);
 
     void writeInsert(RS_Insert* insert);
-    void writePoint(RS_Point* point);
-    void writeLine(RS_Line* line);
-    void writePolyline(RS_Polyline* polyline);
-    void writeCircle(RS_Circle* circle);
-    void writeArc(RS_Arc* arc);
-    void writeEllipse(RS_Ellipse* ellipse);
+    void writePoint(RS_Point* point) const;
+    void writeLine(RS_Line* line) const;
+    void writePolyline(RS_Polyline* polyline) const;
+    void writeCircle(RS_Circle* circle) const;
+    void writeArc(RS_Arc* arc) const;
+    void writeEllipse(RS_Ellipse* ellipse) const;
     void writeSpline(RS_Spline* spline);
     void writeSplinepoints(LC_SplinePoints* splinepoints);
 
     void writeCubicBeziers(const std::vector<RS_Vector> &control_points, bool is_closed);
     void writeQuadraticBeziers(const std::vector<RS_Vector> &control_points, bool is_closed);
-    void writeImage(RS_Image* image);
+    void writeImage(RS_Image* image) const;
 
     std::vector<RS_Vector> calcCubicBezierPoints(const std::vector<RS_Vector> &control_points, bool is_closed);
     std::vector<RS_Vector> calcQuadraticBezierPoints(const std::vector<RS_Vector> &control_points, bool is_closed);

@@ -27,7 +27,6 @@
 #include "rs_actiondrawtext.h"
 
 #include "qg_textoptions.h"
-#include "rs_debug.h"
 #include "rs_dialogfactory.h"
 #include "rs_dialogfactoryinterface.h"
 #include "rs_line.h"
@@ -40,7 +39,7 @@ struct RS_ActionDrawText::ActionData {
 };
 
 RS_ActionDrawText::RS_ActionDrawText(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("Draw Text",actionContext, RS2::ActionDrawText)
+    :LC_SingleEntityCreationAction("Draw Text",actionContext, RS2::ActionDrawText)
 	, m_actionData(std::make_unique<ActionData>())
 	,m_textChanged(true){
 }
@@ -96,15 +95,18 @@ void RS_ActionDrawText::reset(){
                                RS2::Update));
 }
 
-void RS_ActionDrawText::doTrigger() {
-    RS_DEBUG->print("RS_ActionDrawText::trigger()");
-    if (m_actionData->pos.valid){
+RS_Entity* RS_ActionDrawText::doTriggerCreateEntity(){
+    if (m_actionData->pos.valid) {
         m_textData->angle = toWorldAngleFromUCSBasisDegrees(m_ucsBasicAngleDegrees);
-        auto *text = new RS_Text(m_container, *m_textData);
+        auto* text        = new RS_Text(m_document, *m_textData);
         text->update();
+        return text;
+    }
+    return nullptr;
+}
 
-        undoCycleAdd(text);
-
+void RS_ActionDrawText::doTriggerCompletion(bool success) {
+    if (success) {
         m_textChanged = true;
         m_actionData->secPos = {};
         if (m_snappedToRelZero){

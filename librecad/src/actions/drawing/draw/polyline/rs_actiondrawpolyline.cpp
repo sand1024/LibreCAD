@@ -26,11 +26,13 @@
 
 #include "rs_actiondrawpolyline.h"
 
+#include "lc_undosection.h"
 #include "muParser.h"
 #include "qg_polylineoptions.h"
 #include "rs_arc.h"
 #include "rs_commandevent.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_line.h"
 #include "rs_polyline.h"
 
@@ -39,14 +41,14 @@
 #endif
 
 RS_ActionDrawPolyline::RS_ActionDrawPolyline(LC_ActionContext *actionContext)
-        :RS_PreviewActionInterface("Draw polylines",actionContext, RS2::ActionDrawPolyline)
+        :LC_SingleEntityCreationAction("Draw polylines",actionContext, RS2::ActionDrawPolyline)
         , m_actionData(std::make_unique<Points>()){
     reset();
 }
 
 RS_ActionDrawPolyline::~RS_ActionDrawPolyline() = default;
 
-void RS_ActionDrawPolyline::reset(){
+void RS_ActionDrawPolyline::reset() const {
     m_actionData->polyline = nullptr;
     m_actionData->data = {};
     m_actionData->start = {};
@@ -59,15 +61,18 @@ void RS_ActionDrawPolyline::init(int status){
     RS_PreviewActionInterface::init(status);
 }
 
-void RS_ActionDrawPolyline::doTrigger() {
-    if (!m_actionData->polyline) {
-        return;
+void RS_ActionDrawPolyline::doTriggerCompletion(bool success) {
+    LC_SingleEntityCreationAction::doTriggerCompletion(success);
+}
+
+RS_Entity* RS_ActionDrawPolyline::doTriggerCreateEntity() {
+    if (m_actionData->polyline == nullptr) {
+        return nullptr;
     }
-
     moveRelativeZero(m_actionData->polyline->getEndpoint());
-    undoCycleAdd(m_actionData->polyline, false); // todo - check whether we actially should not add to container
-
-    RS_DEBUG->print("RS_ActionDrawLinePolyline::trigger(): polyline added: %lu",m_actionData->polyline->getId());
+    // undoCycleAdd(m_actionData->polyline, false); // todo - check whether we actially should not add to container*/
+    // return m_actionData->polyline;
+    return nullptr;
 
     m_actionData->polyline = nullptr;
 }
@@ -369,24 +374,25 @@ void RS_ActionDrawPolyline::onCoordinateEvent(int status, [[maybe_unused]]bool i
                 if (m_alternateArc && m_mode != Ang && m_mode != Line){
                     RS_ArcData tmpArcData = m_actionData->arc_data;
                     tmpArcData.reversed = !tmpArcData.reversed;
-                    RS_Arc arc = RS_Arc(nullptr, tmpArcData);
+                    const auto arc = RS_Arc(nullptr, tmpArcData);
                     bulge = arc.getBulge();
                 }
                 m_alternateArc = false;
                 m_actionData->point = mouse;
                 m_actionData->history.append(mouse);
                 m_actionData->bHistory.append(bulge);
-                if (!m_actionData->polyline){
-                    m_actionData->polyline = new RS_Polyline(m_container, m_actionData->data);
+                if (m_actionData->polyline == nullptr){
+                    m_actionData->polyline = new RS_Polyline(m_document, m_actionData->data);
                     m_actionData->polyline->addVertex(m_actionData->start, 0.0);
                 }
-                if (m_actionData->polyline){
+                if (m_actionData->polyline != nullptr){
                     m_actionData->polyline->setNextBulge(bulge);
                     m_actionData->polyline->addVertex(mouse, 0.0);
                     m_actionData->polyline->setEndpoint(mouse);
                     if (m_actionData->polyline->count() == 1){
+                        LC_UndoSection undo(m_document, m_viewport, true); // fixme - sand - review creation lifecycle
                         setPenAndLayerToActive(m_actionData->polyline);
-                        m_container->addEntity(m_actionData->polyline);
+                        undo.undoableAdd(m_actionData->polyline);
                     }
                     deletePreview();
                     deleteSnapper();
@@ -624,6 +630,7 @@ bool RS_ActionDrawPolyline::getPlottingX(QString command, double& x){
     return true;
 }
 
+// fixme - review polyline equation functionality!!!!!
 void RS_ActionDrawPolyline::drawEquation(int numberOfPolylines) {
     deleteSnapper();
     const double stepSize = (m_endPointX - m_startPointX) / numberOfPolylines;
@@ -659,7 +666,7 @@ void RS_ActionDrawPolyline::drawEquation(int numberOfPolylines) {
         m_actionData->history.append(m_actionData->point);
 
         if (m_actionData->polyline == nullptr) {
-            m_actionData->polyline = new RS_Polyline(m_container, m_actionData->data);
+            m_actionData->polyline = new RS_Polyline(m_document, m_actionData->data);
             m_actionData->polyline->addVertex(m_actionData->start, 0.0);
         }
 
@@ -668,7 +675,7 @@ void RS_ActionDrawPolyline::drawEquation(int numberOfPolylines) {
 
         if (m_actionData->polyline->count() == 1) {
             setPenAndLayerToActive(m_actionData->polyline);
-            m_container->addEntity(m_actionData->polyline);
+            m_document->addEntity(m_actionData->polyline);  // fixme - selection - check UNDO state
         }
 
         plottingX += stepSize;
@@ -791,7 +798,7 @@ void RS_ActionDrawPolyline::undo(){
             moveRelativeZero(m_actionData->history.front());
             //remove polyline from container,
             //container calls delete over polyline
-            m_container->removeEntity(m_actionData->polyline);
+            m_document->removeEntity(m_actionData->polyline);
             m_actionData->polyline = nullptr;
         }
         if (m_actionData->polyline){

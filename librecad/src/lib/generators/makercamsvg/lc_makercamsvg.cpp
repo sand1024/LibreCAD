@@ -79,7 +79,7 @@ bool LC_MakerCamSVG::generate(RS_Graphic* graphic) {
     return true;
 }
 
-std::string LC_MakerCamSVG::resultAsString() {
+std::string LC_MakerCamSVG::resultAsString() const {
 
     return xmlWriter->documentAsString();
 }
@@ -217,15 +217,10 @@ void LC_MakerCamSVG::writeLayer(RS_Document* document, RS_Layer* layer) {
 }
 
 void LC_MakerCamSVG::writeEntities(RS_Document* document, RS_Layer* layer) {
-
     RS_DEBUG->print("RS_MakerCamSVG::writeEntities: Writing entities from layer ...");
-
 	for (auto e: *document) {
-
         if (e->getLayer() == layer) {
-
-            if (!(e->getFlag(RS2::FlagUndone))) {
-
+            if (e->isAlive()) {
                 writeEntity(e);
             }
         }
@@ -323,7 +318,7 @@ void LC_MakerCamSVG::writeInsert(RS_Insert* insert) {
     }
 }
 
-void LC_MakerCamSVG::writePoint(RS_Point* point) {
+void LC_MakerCamSVG::writePoint(RS_Point* point) const {
 
     RS_DEBUG->print("RS_MakerCamSVG::writePoint: Writing point ...");
 
@@ -341,7 +336,7 @@ void LC_MakerCamSVG::writePoint(RS_Point* point) {
     xmlWriter->closeElement();
 }
 
-void LC_MakerCamSVG::writeLine(RS_Line* line) {
+void LC_MakerCamSVG::writeLine(RS_Line* line) const {
 
     RS_DEBUG->print("RS_MakerCamSVG::writeLine: Writing line ...");
 
@@ -380,7 +375,7 @@ void LC_MakerCamSVG::writeLine(RS_Line* line) {
     }
 }
 
-void LC_MakerCamSVG::writePolyline(RS_Polyline* polyline) {
+void LC_MakerCamSVG::writePolyline(RS_Polyline* polyline) const {
 
     RS_DEBUG->print("RS_MakerCamSVG::writePolyline: Writing polyline ...");
 
@@ -414,7 +409,7 @@ void LC_MakerCamSVG::writePolyline(RS_Polyline* polyline) {
     xmlWriter->closeElement();
 }
 
-void LC_MakerCamSVG::writeCircle(RS_Circle* circle) {
+void LC_MakerCamSVG::writeCircle(RS_Circle* circle) const {
 
     RS_DEBUG->print("RS_MakerCamSVG::writeCircle: Writing circle ...");
 
@@ -429,7 +424,7 @@ void LC_MakerCamSVG::writeCircle(RS_Circle* circle) {
     xmlWriter->closeElement();
 }
 
-void LC_MakerCamSVG::writeArc(RS_Arc* arc) {
+void LC_MakerCamSVG::writeArc(RS_Arc* arc) const {
 
     RS_DEBUG->print("RS_MakerCamSVG::writeArc: Writing arc ...");
 
@@ -443,7 +438,7 @@ void LC_MakerCamSVG::writeArc(RS_Arc* arc) {
     xmlWriter->closeElement();
 }
 
-void LC_MakerCamSVG::writeEllipse(RS_Ellipse* ellipse) {
+void LC_MakerCamSVG::writeEllipse(RS_Ellipse* ellipse) const {
 
     RS_Vector center = convertToSvg(ellipse->getCenter());
 	const RS_Vector centerTranslation=center - ellipse->getCenter();
@@ -864,8 +859,7 @@ double LC_MakerCamSVG::calcAlpha(double angle) {
     return sin(angle) * ((sqrt(4.0 + 3.0 * pow(tan(angle / 2), 2.0)) - 1.0) / 3.0);
 }
 
-void LC_MakerCamSVG::writeImage(RS_Image* image)
-{
+void LC_MakerCamSVG::writeImage(RS_Image* image) const {
     RS_DEBUG->print("RS_MakerCamSVG::writeImage: Writing image ...");
     if (exportImages){
         RS_Vector insertionPoint = convertToSvg(image->getInsertionPoint());

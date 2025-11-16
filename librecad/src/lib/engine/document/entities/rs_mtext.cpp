@@ -55,7 +55,7 @@ RS_MText::LC_TextLine *RS_MText::LC_TextLine::clone() const {
     return ec;
 }
 
-const RS_Vector &RS_MText::LC_TextLine::getTextSize() {
+const RS_Vector &RS_MText::LC_TextLine::getTextSize() const {
     return textSize;
 }
 
@@ -182,7 +182,7 @@ void RS_MText::setText(QString t) {
  *
  * @return  1: top left ... 9: bottom right
  */
-int RS_MText::getAlignment() {
+int RS_MText::getAlignment() const {
     if (data.valign == RS_MTextData::VATop) {
         if (data.halign == RS_MTextData::HALeft) {
             return 1;
@@ -248,7 +248,7 @@ void RS_MText::setAlignment(int a) {
 /**
  * @return Number of lines in this text entity.
  */
-int RS_MText::getNumberOfLines() {
+int RS_MText::getNumberOfLines() const {
     return 1 + std::count_if(data.text.cbegin(), data.text.cend(),
                              [](QChar c) { return c.unicode() == 0xA; });
 }
@@ -262,7 +262,7 @@ void RS_MText::update() {
   RS_DEBUG->print("RS_MText::update");
 
   clear();
-  if (isUndone()) {
+  if (isDeleted()) {
     return;
   }
 

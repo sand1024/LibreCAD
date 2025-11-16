@@ -112,6 +112,6 @@ RS_ActionInterface* LC_DefaultActionContext::getCurrentAction() {
     return m_actionHandler->getCurrentAction();
 }
 
-void LC_DefaultActionContext::deleteActionHandler() {
+void LC_DefaultActionContext::deleteActionHandler() const {
     delete m_actionHandler;
 }

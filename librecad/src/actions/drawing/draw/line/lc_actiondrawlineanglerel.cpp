@@ -26,6 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "lc_lineanglereloptions.h"
 #include "lc_linemath.h"
 #include "rs_line.h"
+#include "rs_document.h"
 #include "rs_pen.h"
 #include "rs_polyline.h"
 
@@ -76,7 +77,7 @@ bool LC_ActionDrawLineAngleRel::isSetActivePenAndLayerOnTrigger(){
  * @param list
  */
 void LC_ActionDrawLineAngleRel::doPrepareTriggerEntities(QList<RS_Entity *> &list){
-    auto* en = new RS_Line{m_container, m_tickData->tickLineData};
+    auto* en = new RS_Line{m_document, m_tickData->tickLineData};
     setPenAndLayerToActive(en);
     list<<en;
 
@@ -96,7 +97,7 @@ void LC_ActionDrawLineAngleRel::doPrepareTriggerEntities(QList<RS_Entity *> &lis
  * @param data tick data
  * @param list list to which created line segments should be added
  */
-void LC_ActionDrawLineAngleRel::divideOriginalLine(LC_ActionDrawLineAngleRel::TickData* data, QList<RS_Entity *> &list){
+void LC_ActionDrawLineAngleRel::divideOriginalLine(LC_ActionDrawLineAngleRel::TickData* data, QList<RS_Entity *> &list) const {
     RS_Line* line = data->line;
     RS_Vector snap = data->tickSnapPosition;
 
@@ -295,7 +296,7 @@ void LC_ActionDrawLineAngleRel::doPreparePreviewEntities(LC_MouseEvent *e, RS_Ve
  * @param useAlternateAngle  should we use original or alternative angle
  * @return tick data
  */
-LC_ActionDrawLineAngleRel::TickData* LC_ActionDrawLineAngleRel::prepareLineData(RS_Line* targetLine, const RS_Vector& tickSnapPosition, const RS_Vector& tickEndSnapPosition, bool useAlternateAngle){
+LC_ActionDrawLineAngleRel::TickData* LC_ActionDrawLineAngleRel::prepareLineData(RS_Line* targetLine, const RS_Vector& tickSnapPosition, const RS_Vector& tickEndSnapPosition, bool useAlternateAngle) const {
     auto* result = new TickData();
 
     // store position for later use

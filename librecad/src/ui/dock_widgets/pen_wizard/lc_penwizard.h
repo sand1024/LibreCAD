@@ -11,10 +11,10 @@ public:
     explicit LC_PenWizard(QWidget* parent = nullptr);
     void setGraphicView(RS_GraphicView* gview) override;
 protected slots:
-    void setColorForSelected(QColor color);
-    void selectByColor(QColor color);
-    void setActivePenColor(QColor color);
-    void updateWidgetSettings();
+    void setColorForSelected(QColor color) const;
+    void selectByColor(QColor color) const;
+    void setActivePenColor(QColor color) const;
+    void updateWidgetSettings() const;
 private:
     RS_GraphicView* m_graphicView = nullptr;
     ColorWizard* m_colorWizard = nullptr;

@@ -38,7 +38,7 @@ public:
 
     void updatePixmap(QString iconName, QLabel *label);
     void setHelp( const QString & left, const QString & right, const LC_ModifiersInfo& modifiersInfo) const;
-    void setActionIcon(QIcon icon);
+    void setActionIcon(QIcon icon) const;
     void clearActionIcon();
 public slots:
     void languageChange();

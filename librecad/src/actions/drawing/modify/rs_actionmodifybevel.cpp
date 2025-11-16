@@ -30,6 +30,7 @@
 #include "qg_beveloptions.h"
 #include "rs_atomicentity.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_information.h"
 #include "rs_line.h"
 #include "rs_modification.h"
@@ -70,7 +71,7 @@ void RS_ActionModifyBevel::doTrigger() {
     RS_DEBUG->print("RS_ActionModifyBevel::trigger()");
 
     if (isAtomic(m_entity1) && isAtomic(m_entity2)) {
-        RS_Modification m(*m_container, m_viewport);
+        RS_Modification m(m_document, m_viewport);
         LC_BevelResult* bevelResult = m.bevel(m_actionData->coord1, m_entity1, m_actionData->coord2, m_entity2,
                                               m_actionData->data, false);
         if (bevelResult != nullptr) {
@@ -131,7 +132,7 @@ void RS_ActionModifyBevel::onMouseMoveEvent(int status, LC_MouseEvent *e) {
             if (se != m_entity1 && areBothEntityAccepted(m_entity1, se)){
                 auto atomicCandidate2 = dynamic_cast<RS_AtomicEntity *>(se);
 
-                RS_Modification m(*m_container, m_viewport);
+                RS_Modification m(m_document, m_viewport);
                 LC_BevelResult* bevelResult = m.bevel(m_actionData->coord1,  m_entity1, mouse, atomicCandidate2, m_actionData->data, true);
 
                 if (bevelResult != nullptr){
@@ -179,7 +180,7 @@ void RS_ActionModifyBevel::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     }
 }
 
-void RS_ActionModifyBevel::previewLineModifications(const RS_Entity *original, const RS_Entity *trimmed, bool trimOnStart){
+void RS_ActionModifyBevel::previewLineModifications(const RS_Entity *original, const RS_Entity *trimmed, bool trimOnStart) const {
     bool originalIncreased = original->getLength() < trimmed->getLength();
     if (originalIncreased){
         if (trimOnStart){
@@ -321,7 +322,7 @@ bool RS_ActionModifyBevel::doProcessCommand(int status, const QString &c) {
     return accept;
 }
 
-void RS_ActionModifyBevel::setLength1(double l1){
+void RS_ActionModifyBevel::setLength1(double l1) const {
     m_actionData->data.length1 = l1;
 }
 
@@ -329,7 +330,7 @@ double RS_ActionModifyBevel::getLength1() const{
     return m_actionData->data.length1;
 }
 
-void RS_ActionModifyBevel::setLength2(double l2){
+void RS_ActionModifyBevel::setLength2(double l2) const {
     m_actionData->data.length2 = l2;
 }
 
@@ -337,7 +338,7 @@ double RS_ActionModifyBevel::getLength2() const{
     return m_actionData->data.length2;
 }
 
-void RS_ActionModifyBevel::setTrim(bool t){
+void RS_ActionModifyBevel::setTrim(bool t) const {
     m_actionData->data.trim = t;
 }
 

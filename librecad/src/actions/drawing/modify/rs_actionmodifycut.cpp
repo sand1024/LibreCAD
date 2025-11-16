@@ -31,12 +31,12 @@
 #include "rs_atomicentity.h"
 #include "rs_commandevent.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_entity.h"
 #include "rs_modification.h"
 
 RS_ActionModifyCut::RS_ActionModifyCut(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("Cut Entity",actionContext, RS2::ActionModifyCut)
-    ,m_cutEntity(nullptr), m_cutCoord(new RS_Vector{}){
+    :LC_UndoableDocumentModificationAction("Cut Entity",actionContext, RS2::ActionModifyCut), m_cutCoord(new RS_Vector{}){
 }
 
 RS_ActionModifyCut::~RS_ActionModifyCut() = default;
@@ -52,15 +52,17 @@ void RS_ActionModifyCut::doInitWithContextEntity(RS_Entity* contextEntity, [[may
     }
 }
 
-void RS_ActionModifyCut::doTrigger() {
-    RS_DEBUG->print("RS_ActionModifyCut::trigger()");
-
+bool RS_ActionModifyCut::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
     if (isAtomic(m_cutEntity) && m_cutCoord->valid && m_cutEntity->isPointOnEntity(*m_cutCoord)){
         m_cutEntity->setHighlighted(false);
+        RS_Modification::cut(*m_cutCoord, static_cast<RS_AtomicEntity*>(m_cutEntity), ctx);
+        return true;
+    }
+    return false;
+}
 
-        RS_Modification m(*m_container, m_viewport);
-        m.cut(*m_cutCoord, static_cast<RS_AtomicEntity*>(m_cutEntity));
-
+void RS_ActionModifyCut::doTriggerCompletion(bool success) {
+    if (success) {
         m_cutEntity = nullptr;
         *m_cutCoord = RS_Vector(false);
         setStatus(ChooseCutEntity);

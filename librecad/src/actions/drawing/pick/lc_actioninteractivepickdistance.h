@@ -52,10 +52,10 @@ protected:
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
-    void updateInfoCursorForPoint1(const RS_Vector& mouse);
+    void updateInfoCursorForPoint1(const RS_Vector& mouse) const;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void updateMouseButtonHints() override;
-    void updateInfoCursorForPoint2(const RS_Vector &mouse, const RS_Vector &startPoint);
+    void updateInfoCursorForPoint2(const RS_Vector &mouse, const RS_Vector &startPoint) const;
 };
 
 #endif // LC_ACTIONINTERACTIVEPICKDISTANCE_H

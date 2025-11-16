@@ -31,6 +31,7 @@
 #include "rs_actionselectsingle.h"
 #include "rs_graphicview.h"
 
+
 class Plugin_Entity;
 
 QC_ActionGetSelect::QC_ActionGetSelect(LC_ActionContext* actionContext)
@@ -63,7 +64,7 @@ RS2::CursorType QC_ActionGetSelect::doGetMouseCursor([[maybe_unused]] int status
     return RS2::SelectCursor;
 }
 
-void QC_ActionGetSelect::setMessage(QString msg){
+void QC_ActionGetSelect::setMessage(QString msg) const {
     *m_message = std::move(msg);
 }
 
@@ -93,19 +94,15 @@ void QC_ActionGetSelect::keyPressEvent(QKeyEvent* e){
  * Adds all selected entities from 'container' to the selection.
  */
 void QC_ActionGetSelect::getSelected(QList<Plug_Entity *> *se, Doc_plugin_interface *d) const{
-    for (auto e: *m_container) {
+    for (auto e: *m_document) { // fixme - selection, rework and rely on SelectedSEt
         if (e->isSelected()) {
             Plugin_Entity *pe = new Plugin_Entity(e, d);
             se->append(reinterpret_cast<Plug_Entity *>(pe));
         }
     }
 }
-
-void QC_ActionGetSelect::unselectEntities(){
-    for(auto e: *m_container){ // fixme - iterating all entities for selection
-        if (e->isSelected()) {
-            e->setSelected(false);
-        }
-    }
+[[deprecated]]
+void QC_ActionGetSelect::unselectEntities() const { // fixme - rework by inlinining
+    unselectAll();
     updateSelectionWidget();
 }

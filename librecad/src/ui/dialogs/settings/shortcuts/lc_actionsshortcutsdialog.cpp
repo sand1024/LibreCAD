@@ -74,7 +74,7 @@ LC_ActionsShortcutsDialog::~LC_ActionsShortcutsDialog(){
     delete ui;
 }
 
-void LC_ActionsShortcutsDialog::initTreeView(){
+void LC_ActionsShortcutsDialog::initTreeView() const {
     LC_ShortcutsTreeView* treeView = ui->tvMappingsTree;
 
     treeView->setup(m_mappingTreeModel);
@@ -300,7 +300,7 @@ void LC_ActionsShortcutsDialog::selectItem(LC_ShortcutTreeItem *item, int row, i
     }
 }
 
-void LC_ActionsShortcutsDialog::editItem([[maybe_unused]]LC_ShortcutTreeItem *item) {
+void LC_ActionsShortcutsDialog::editItem([[maybe_unused]]LC_ShortcutTreeItem *item) const {
     ui->btnRecord->setChecked(true);
     ui->btnRecord->setFocus();
 }
@@ -356,7 +356,7 @@ void LC_ActionsShortcutsDialog::onKeySequenceChanged(const QKeySequence &key) {
     }
 }
 
-bool LC_ActionsShortcutsDialog::checkHasCollisions(LC_ShortcutInfo *shortcutInfo) {
+bool LC_ActionsShortcutsDialog::checkHasCollisions(LC_ShortcutInfo *shortcutInfo) const {
     bool hasCollisions = m_mappingTreeModel-> checkForCollisions(shortcutInfo);
     if (hasCollisions){
         QString msg;

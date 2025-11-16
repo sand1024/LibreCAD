@@ -36,8 +36,7 @@ RS_ActionLayersAdd::RS_ActionLayersAdd(LC_ActionContext *actionContext)
 
 void RS_ActionLayersAdd::trigger() {
     RS_DEBUG->print("add layer");
-
-    if (m_graphic) {
+    if (m_graphic != nullptr) {
         RS_Layer* layer = RS_DIALOGFACTORY->requestNewLayerDialog(m_graphic->getLayerList());
         if (layer != nullptr) {
             m_graphic->addLayer(layer);

@@ -115,7 +115,7 @@ void LC_DimensionsBuilder::buildOrdinate(LC_DimOrdinate* dimLinear) {
 }
 
 
-RS_Line* LC_DimensionsBuilder::addDimComponentLine(RS_Vector start, RS_Vector end, const RS_Pen &pen) {
+RS_Line* LC_DimensionsBuilder::addDimComponentLine(RS_Vector start, RS_Vector end, const RS_Pen &pen) const {
     auto line = new RS_Line(m_dimension, {start, end});
     line->setPen(pen);
     line->setLayer(nullptr);
@@ -124,19 +124,19 @@ RS_Line* LC_DimensionsBuilder::addDimComponentLine(RS_Vector start, RS_Vector en
 }
 
 
-RS_Pen LC_DimensionsBuilder::getPenForText() {
+RS_Pen LC_DimensionsBuilder::getPenForText() const {
     auto text = m_dimStyle->text();
     RS_Pen result(text->color(), RS2::WidthByBlock, RS2::SolidLine);
     return result;
 }
 
-RS_Pen LC_DimensionsBuilder::getPenExtensionLine() {
+RS_Pen LC_DimensionsBuilder::getPenExtensionLine() const {
     auto extLine = m_dimStyle->extensionLine();
     RS_Pen result(extLine->color(), extLine->lineWidth(), RS2::LineByBlock);
     return result;
 }
 
-RS_Pen LC_DimensionsBuilder::getPenDimensionLine() {
+RS_Pen LC_DimensionsBuilder::getPenDimensionLine() const {
     auto dimLine = m_dimStyle->dimensionLine();
     RS_Pen result(dimLine->color(), dimLine->lineWidth(), RS2::LineByBlock);
     return result;

@@ -77,7 +77,7 @@ void LC_ModifyMirrorOptions::doSetAction(RS_ActionInterface *a, bool update) {
     setMirrorToLineLineToActionAndView(useLine);
 }
 
-void LC_ModifyMirrorOptions::setMirrorToLineLineToActionAndView(bool value){
+void LC_ModifyMirrorOptions::setMirrorToLineLineToActionAndView(bool value) const {
     m_action->setMirrorToExistingLine(value);
     ui->cbMirrorToLine->setChecked(value);
 }
@@ -86,17 +86,17 @@ void LC_ModifyMirrorOptions::languageChange() {
     ui->retranslateUi(this);
 }
 
-void LC_ModifyMirrorOptions::setUseCurrentLayerToActionAndView(bool val) {
+void LC_ModifyMirrorOptions::setUseCurrentLayerToActionAndView(bool val) const {
     m_action->setUseCurrentLayer(val);
     ui->cbLayer->setChecked(val);
 }
 
-void LC_ModifyMirrorOptions::setUseCurrentAttributesToActionAndView(bool val) {
+void LC_ModifyMirrorOptions::setUseCurrentAttributesToActionAndView(bool val) const {
     m_action->setUseCurrentAttributes(val);
     ui->cbCurrentAttr->setChecked(val);
 }
 
-void LC_ModifyMirrorOptions::setKeepOriginalsToActionAndView(bool val) {
+void LC_ModifyMirrorOptions::setKeepOriginalsToActionAndView(bool val) const {
     m_action->setKeepOriginals(val);
     ui->cbKeepOriginals->setChecked(val);
 }

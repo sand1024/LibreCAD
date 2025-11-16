@@ -26,6 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "lc_linemath.h"
 #include "lc_rectangle3pointsoptions.h"
 #include "rs_polyline.h"
+#include "rs_document.h"
 
 /**
  * data that holds corners of rectangle
@@ -166,7 +167,7 @@ LC_AbstractActionDrawRectangle::ShapeData LC_ActionDrawRectangle3Points::createP
 
         if (drawPrimitiveShape){
             // simple mode - just create a polyline that connects calculated corner vertexes
-            polyline = new RS_Polyline(m_container);
+            polyline = new RS_Polyline(m_document);
             polyline->addVertex(m_actionData->corner1);
             polyline->addVertex(m_actionData->corner2);
             polyline->addVertex(m_actionData->corner3);
@@ -385,7 +386,7 @@ void LC_ActionDrawRectangle3Points::resetPoints(){
       doResetPoints(zero);
 }
 
-void LC_ActionDrawRectangle3Points::doResetPoints(const RS_Vector &zero){
+void LC_ActionDrawRectangle3Points::doResetPoints(const RS_Vector &zero) const {
     m_actionData->corner1 = zero;
     m_actionData->corner2 = zero;
     m_actionData->corner3 = zero;
@@ -411,7 +412,7 @@ RS_Vector LC_ActionDrawRectangle3Points::calculatePossibleEndpointForAngle(const
  * Calculates coordinates of rect/quadrangle (if inner angle is set) based on previously set corner1 and provided size
  * @param size width and height of rectangle
  */
-void LC_ActionDrawRectangle3Points::calculateCornersBySize(RS_Vector size){
+void LC_ActionDrawRectangle3Points::calculateCornersBySize(RS_Vector size) const {
     double angleRad = getActualBaseAngle();
     RS_Vector result1 =m_actionData->corner1.relative(size.x, angleRad);
     m_actionData->corner2 = result1;

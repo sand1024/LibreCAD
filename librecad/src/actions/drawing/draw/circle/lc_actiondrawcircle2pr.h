@@ -48,14 +48,15 @@ protected:
 
     struct Points;
     std::unique_ptr<Points> m_actionData;
-    bool preparePreview(const RS_Vector &mouse, RS_Vector& altCenter);
+    bool preparePreview(const RS_Vector &mouse, RS_Vector& altCenter) const;
     void reset() override;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
     bool doProcessCommand(int status, const QString &command)  override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void updateMouseButtonHints() override;
-    void doTrigger() override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
 };
 #endif

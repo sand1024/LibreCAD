@@ -44,16 +44,16 @@ public:
     ~LC_EventHandler() override;
     void uncheckQAction();
     void setQAction(QAction* action);
-    QAction* getQAction();
+    QAction* getQAction() const;
 
     void back();
     void enter();
 
-    void mousePressEvent(QMouseEvent *e);
+    void mousePressEvent(QMouseEvent *e) const;
     void mouseReleaseEvent(QMouseEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
-    void mouseLeaveEvent();
-    void mouseEnterEvent();
+    void mouseLeaveEvent() const;
+    void mouseEnterEvent() const;
 
     void keyPressEvent(QKeyEvent* e);
     void keyReleaseEvent(QKeyEvent* e);
@@ -67,12 +67,12 @@ public:
 
     bool setCurrentAction(std::shared_ptr<RS_ActionInterface> action);
     void resumeAction(const std::shared_ptr<RS_ActionInterface>& action);
-    RS_ActionInterface* getCurrentAction();
+    RS_ActionInterface* getCurrentAction() const;
     bool isValid(RS_ActionInterface* action) const;
     void killAllActions();
-    bool hasAction();
-    void setSnapMode(RS_SnapMode sm);
-    void setSnapRestriction(RS2::SnapRestriction sr);
+    bool hasAction() const;
+    void setSnapMode(RS_SnapMode sm) const;
+    void setSnapRestriction(RS2::SnapRestriction sr) const;
     void notifyLastActionFinished();
 private:
     std::unique_ptr<LC_CoordinatesParser> m_coordinatesParser;

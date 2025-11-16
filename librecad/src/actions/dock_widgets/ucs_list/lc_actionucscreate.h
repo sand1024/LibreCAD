@@ -39,7 +39,7 @@ public:
     bool isParentIsWcs() const {return m_parentIsWCS;};
     void setParentIsWcs(bool parentIsWcs) {m_parentIsWCS =parentIsWcs;};
     QStringList getAvailableCommands() override;
-    double getCurrentAngle(){return m_currentAngle;}
+    double getCurrentAngle() const {return m_currentAngle;}
 protected:
 
     enum{

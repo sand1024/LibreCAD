@@ -57,10 +57,10 @@ private:
     std::unique_ptr<Ui::Ui_InsertOptions> ui;
     void setAngleToActionAndView(QString val);
     void setFactorToActionAndView(QString val);
-    void setColumnSpacingActionAndView(QString val);
-    void setRowSpacingToActionAndView(QString val);
-    void setColumnsToActionAndView(int columns);
-    void setRowsToActionAndView(int rows);
+    void setColumnSpacingActionAndView(QString val) const;
+    void setRowSpacingToActionAndView(QString val) const;
+    void setColumnsToActionAndView(int columns) const;
+    void setRowsToActionAndView(int rows) const;
 };
 
 #endif // QG_INSERTOPTIONS_H

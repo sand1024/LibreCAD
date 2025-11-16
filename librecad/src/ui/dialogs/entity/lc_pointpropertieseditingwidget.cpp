@@ -43,10 +43,10 @@ void LC_PointPropertiesEditingWidget::setEntity(RS_Entity* entity) {
     toUI(m_entity->getPos(), ui->lePosX, ui->lePosY);
 }
 
-void LC_PointPropertiesEditingWidget::onPosXEditingFinished() {
+void LC_PointPropertiesEditingWidget::onPosXEditingFinished() const {
     m_entity->setPos(toWCS(ui->lePosX, ui->lePosY, m_entity->getPos()));
 }
 
-void LC_PointPropertiesEditingWidget::onPosYEditingFinished() {
+void LC_PointPropertiesEditingWidget::onPosYEditingFinished() const {
     m_entity->setPos(toWCS(ui->lePosX, ui->lePosY, m_entity->getPos()));
 }

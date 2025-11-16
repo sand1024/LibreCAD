@@ -276,98 +276,98 @@ void LC_DlgDimStyleManager::connectToleranceTab() {
     connect(ui->cbTolAltZeros0Inches, &QCheckBox::toggled, this, &LC_DlgDimStyleManager::cbTolAlternateZerosSuppressionToggled);
 }
 
-void LC_DlgDimStyleManager::addDimStyle(LC_DimStyle* dimStyle) {
+void LC_DlgDimStyleManager::addDimStyle(LC_DimStyle* dimStyle) const {
     m_previewView->addDimStyle(dimStyle);
 }
 
-void LC_DlgDimStyleManager::onDimLineColorChanged(const RS_Color& color) {
+void LC_DlgDimStyleManager::onDimLineColorChanged(const RS_Color& color) const {
     m_dimStyle->dimensionLine()->setColor(color);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onDimLineTypeChanged(RS2::LineType lineType) {
+void LC_DlgDimStyleManager::onDimLineTypeChanged(RS2::LineType lineType) const {
     m_dimStyle->dimensionLine()->setLineType(lineType);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onDimLineWidthChanged(RS2::LineWidth w) {
+void LC_DlgDimStyleManager::onDimLineWidthChanged(RS2::LineWidth w) const {
     m_dimStyle->dimensionLine()->setLineWidth(w);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onDimLineExtBeyondChanged(double d) {
+void LC_DlgDimStyleManager::onDimLineExtBeyondChanged(double d) const {
     m_dimStyle->dimensionLine()->setDistanceBeyondExtLinesForObliqueStroke(d);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onDimLineBaselineSpacingChanged(double d) {
+void LC_DlgDimStyleManager::onDimLineBaselineSpacingChanged(double d) const {
     m_dimStyle->dimensionLine()->setBaselineDimLinesSpacing(d);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onDimLineSuppress1Toggled(bool val) {
+void LC_DlgDimStyleManager::onDimLineSuppress1Toggled(bool val) const {
     m_dimStyle->dimensionLine()->setSuppressFirstLine(val? LC_DimStyle::DimensionLine::SUPPRESS : LC_DimStyle::DimensionLine::DONT_SUPPRESS);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onDimLineSuppress2Toggled(bool val) {
+void LC_DlgDimStyleManager::onDimLineSuppress2Toggled(bool val) const {
     m_dimStyle->dimensionLine()->setSuppressSecondLine(val? LC_DimStyle::DimensionLine::SUPPRESS : LC_DimStyle::DimensionLine::DONT_SUPPRESS);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onExtLineColorChanged(const RS_Color& color) {
+void LC_DlgDimStyleManager::onExtLineColorChanged(const RS_Color& color) const {
     m_dimStyle->extensionLine()->setColor(color);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onExtLineType1Changed(RS2::LineType lineType) {
+void LC_DlgDimStyleManager::onExtLineType1Changed(RS2::LineType lineType) const {
     m_dimStyle->extensionLine()->setLineTypeFirst(lineType);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onExtLineType2Changed(RS2::LineType lineType) {
+void LC_DlgDimStyleManager::onExtLineType2Changed(RS2::LineType lineType) const {
     m_dimStyle->extensionLine()->setLineTypeSecond(lineType);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onExtLineWidthChanged(RS2::LineWidth w) {
+void LC_DlgDimStyleManager::onExtLineWidthChanged(RS2::LineWidth w) const {
     m_dimStyle->extensionLine()->setLineWidth(w);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onExtLineBeyondDimChanged(double d) {
+void LC_DlgDimStyleManager::onExtLineBeyondDimChanged(double d) const {
     m_dimStyle->extensionLine()->setDistanceBeyondDimLine(d);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onExtLineOffsetFromOriginChanged(double d) {
+void LC_DlgDimStyleManager::onExtLineOffsetFromOriginChanged(double d) const {
     m_dimStyle->extensionLine()->setDistanceFromOriginPoint(d);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onExtLineFixedLengthToggled(bool val) {
+void LC_DlgDimStyleManager::onExtLineFixedLengthToggled(bool val) const {
     m_dimStyle->extensionLine()->setHasFixedLength(val);
 
     ui->bsbExtLineFixedLength->setEnabled(val);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onExtLineFixedLengthChanged(double d) {
+void LC_DlgDimStyleManager::onExtLineFixedLengthChanged(double d) const {
     m_dimStyle->extensionLine()->setFixedLength(d);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onExtLineSuppress1Toggled(bool val) {
+void LC_DlgDimStyleManager::onExtLineSuppress1Toggled(bool val) const {
     m_dimStyle->extensionLine()->setSuppressFirst(val? LC_DimStyle::ExtensionLine::SUPPRESS : LC_DimStyle::ExtensionLine::DONT_SUPPRESS);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onExtLineSuppress2Toggled(bool val) {
+void LC_DlgDimStyleManager::onExtLineSuppress2Toggled(bool val) const {
     m_dimStyle->extensionLine()->setSuppressSecond(val? LC_DimStyle::ExtensionLine::SUPPRESS : LC_DimStyle::ExtensionLine::DONT_SUPPRESS);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onArrowheadTheSameToggled(bool val) {
+void LC_DlgDimStyleManager::onArrowheadTheSameToggled(bool val) const {
     m_dimStyle->arrowhead()->setUseSeparateArrowHeads(!val);
     ui->cbArrowheadSecond->setEnabled(!val);
     refreshPreview();
@@ -456,12 +456,12 @@ void LC_DlgDimStyleManager::onArrowheadLeaderChanged([[maybe_unused]]int index) 
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onArrowheadArrowSizeChanged(double d) {
+void LC_DlgDimStyleManager::onArrowheadArrowSizeChanged(double d) const {
     m_dimStyle->arrowhead()->setSize(d);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onDimBreakChanged([[maybe_unused]]double d) {
+void LC_DlgDimStyleManager::onDimBreakChanged([[maybe_unused]]double d) const {
     // m_dimStyle->arrowhead()->setSize(d);
     // fixme - complete later if we'll support dim breaks
     refreshPreview();
@@ -525,7 +525,7 @@ void LC_DlgDimStyleManager::onDimarkSymbolToggled([[maybe_unused]]bool val) cons
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onJogHeightFactorChanged([[maybe_unused]]double d) {
+void LC_DlgDimStyleManager::onJogHeightFactorChanged([[maybe_unused]]double d) const {
    // fixme - sand - discover where this setting is stored in DIMSTYLE?
     refreshPreview();
 }
@@ -536,7 +536,7 @@ void LC_DlgDimStyleManager::onJogAngleChanged(double d) const {
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onTextStyleChanged(RS_Font* font) {
+void LC_DlgDimStyleManager::onTextStyleChanged(RS_Font* font) const {
     // fixme - sand - complete support of text style
     auto text = m_dimStyle->text();
     auto names = font->getNames();
@@ -551,28 +551,28 @@ void LC_DlgDimStyleManager::onTextStyleChanged(RS_Font* font) {
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onTextColorChanged(const RS_Color& color) {
+void LC_DlgDimStyleManager::onTextColorChanged(const RS_Color& color) const {
     m_dimStyle->text()->setColor(color);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onTextFillByBackgroundToggled(bool b) {
+void LC_DlgDimStyleManager::onTextFillByBackgroundToggled(bool b) const {
     m_dimStyle->text()->setBackgroundFillMode(b ? LC_DimStyle::Text::EXPLICIT : LC_DimStyle::Text::NONE);
     ui->cbTextFillColor->setEnabled(b);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onTextFillColorChanged(const RS_Color& color) {
+void LC_DlgDimStyleManager::onTextFillColorChanged(const RS_Color& color) const {
     m_dimStyle->text()->setExplicitBackgroundFillColor(color);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onTextHeightChanged(double d) {
+void LC_DlgDimStyleManager::onTextHeightChanged(double d) const {
     m_dimStyle->text()->setHeight(d);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onTextFractionHeightChanged(double d) {
+void LC_DlgDimStyleManager::onTextFractionHeightChanged(double d) const {
     m_dimStyle->latteralTolerance()->setHeightScaleFactorToDimText(d);
     refreshPreview();
 }
@@ -607,22 +607,22 @@ void LC_DlgDimStyleManager::onTextPlacementVerticalChanged(int d) {
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onTextPlacementHorizontalChanged(int d) {
+void LC_DlgDimStyleManager::onTextPlacementHorizontalChanged(int d) const {
     m_dimStyle->text()->setHorizontalPositioningRaw(d);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onTextReadingDirectionChanged(int d) {
+void LC_DlgDimStyleManager::onTextReadingDirectionChanged(int d) const {
     m_dimStyle->text()->setReadingDirectionRaw(d);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onTextOffsetFromDimLine(double d) {
+void LC_DlgDimStyleManager::onTextOffsetFromDimLine(double d) const {
     m_dimStyle->text()->setVerticalDistanceToDimLine(d);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onTextAlignmentToggled([[maybe_unused]]bool d) {
+void LC_DlgDimStyleManager::onTextAlignmentToggled([[maybe_unused]]bool d) const {
     if (ui->rbTextAlignmentAligned->isChecked()) {
         m_dimStyle->text()->setOrientationInside(LC_DimStyle::Text::ALIGN_WITH_DIM_LINE);
         m_dimStyle->text()->setOrientationOutside(LC_DimStyle::Text::ALIGN_WITH_DIM_LINE);
@@ -638,7 +638,7 @@ void LC_DlgDimStyleManager::onTextAlignmentToggled([[maybe_unused]]bool d) {
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onTextFitToggled([[maybe_unused]]bool d) {
+void LC_DlgDimStyleManager::onTextFitToggled([[maybe_unused]]bool d) const {
     auto text = m_dimStyle->text();
     if (ui->rbFitEither->isChecked()) {
         text->setUnsufficientSpacePolicy(LC_DimStyle::Text::EITHER_TEXT_OR_ARROW);
@@ -662,13 +662,13 @@ void LC_DlgDimStyleManager::onTextFitToggled([[maybe_unused]]bool d) {
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onFitSuppressArrowsToggled([[maybe_unused]]bool d) {
+void LC_DlgDimStyleManager::onFitSuppressArrowsToggled([[maybe_unused]]bool d) const {
     auto arrowhead = m_dimStyle->arrowhead();
     arrowhead->setSuppressionsRaw(ui->cbFitSuppressArrows->isChecked() ? LC_DimStyle::Arrowhead::SUPPRESS :  LC_DimStyle::Arrowhead::DONT_SUPPRESS);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onTextPlacementToggled([[maybe_unused]]bool d) {
+void LC_DlgDimStyleManager::onTextPlacementToggled([[maybe_unused]]bool d) const {
     auto text = m_dimStyle->text();
     if (ui->rbTextPlacementBeside->isChecked()) {
         text->setPositionMovementPolicy(LC_DimStyle::Text::DIM_LINE_WITH_TEXT);
@@ -680,13 +680,13 @@ void LC_DlgDimStyleManager::onTextPlacementToggled([[maybe_unused]]bool d) {
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onFitScaleExplicitChanged(double d) {
+void LC_DlgDimStyleManager::onFitScaleExplicitChanged(double d) const {
     auto scaling = m_dimStyle->scaling();
     scaling->setScale(d);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onFitScaleToggled([[maybe_unused]]bool d) {
+void LC_DlgDimStyleManager::onFitScaleToggled([[maybe_unused]]bool d) const {
     // fixme - sand - dims - complete, define how to set these values!!
     auto scaling = m_dimStyle->scaling();
     if (ui->rbFitScaleToLayout->isChecked()) {
@@ -700,7 +700,7 @@ void LC_DlgDimStyleManager::onFitScaleToggled([[maybe_unused]]bool d) {
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onFitFineManuallyToggled([[maybe_unused]]bool d) {
+void LC_DlgDimStyleManager::onFitFineManuallyToggled([[maybe_unused]]bool d) const {
     auto text = m_dimStyle->text();
     if (ui->cbFitFineManually->isChecked()) {
         text->setCursorControlPolicy( LC_DimStyle::Text::TEXT_AND_DIM_LINE_LOCATION);
@@ -711,7 +711,7 @@ void LC_DlgDimStyleManager::onFitFineManuallyToggled([[maybe_unused]]bool d) {
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onFitFineDrawDimlineBetweenToggled([[maybe_unused]]bool d) {
+void LC_DlgDimStyleManager::onFitFineDrawDimlineBetweenToggled([[maybe_unused]]bool d) const {
     auto dimLine = m_dimStyle->dimensionLine();
     dimLine->setDrawPolicyForOutsideText(ui->cbFitFineDrawDimLineBetwenExt->isChecked() ?
        LC_DimStyle::DimensionLine::DRAW_EVEN_IF_ARROWHEADS_ARE_OUTSIDE : LC_DimStyle::DimensionLine::DONT_DRAW_IF_ARROWHEADS_ARE_OUTSIDE);
@@ -727,30 +727,30 @@ void LC_DlgDimStyleManager::onLinearDimUnitFormatIndexChanged(int index) {
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onLinearDimPrecisionIndexChanged(int index) {
+void LC_DlgDimStyleManager::onLinearDimPrecisionIndexChanged(int index) const {
     auto linear = m_dimStyle->linearFormat();
     linear->setDecimalPlaces(index);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onLinearDimFractionIndexChanged(int index) {
+void LC_DlgDimStyleManager::onLinearDimFractionIndexChanged(int index) const {
     auto fractions = m_dimStyle->fractions();
     fractions->setStyleRaw(index);
 }
 
-void LC_DlgDimStyleManager::onLinearDimUnitDecimalSeparatorIndexChanged(int index) {
+void LC_DlgDimStyleManager::onLinearDimUnitDecimalSeparatorIndexChanged(int index) const {
     auto linear = m_dimStyle->linearFormat();
     linear->setDecimalFormatSeparatorChar(index == 1 ?  ',' : '.');
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onLinearDimRoundOffChanged(double d) {
+void LC_DlgDimStyleManager::onLinearDimRoundOffChanged(double d) const {
     auto roundOff = m_dimStyle->roundOff();
     roundOff->setRoundToValue(d);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onLinearDimPrefixEditingFinished() {
+void LC_DlgDimStyleManager::onLinearDimPrefixEditingFinished() const {
     auto linear = m_dimStyle->linearFormat();
     QString val = ui->leLinearDimPrefix->text();
     LC_DimStyle::LinearFormat::TextPattern* pattern = linear->getPrimaryPrefixOrSuffix();
@@ -758,7 +758,7 @@ void LC_DlgDimStyleManager::onLinearDimPrefixEditingFinished() {
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onLinearDimSuffixEditingFinished() {
+void LC_DlgDimStyleManager::onLinearDimSuffixEditingFinished() const {
     auto linear = m_dimStyle->linearFormat();
     QString val = ui->leLinearDimSuffix->text();
     LC_DimStyle::LinearFormat::TextPattern* pattern = linear->getPrimaryPrefixOrSuffix();
@@ -766,7 +766,7 @@ void LC_DlgDimStyleManager::onLinearDimSuffixEditingFinished() {
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onLinearScaleFactorChanged(double d) {
+void LC_DlgDimStyleManager::onLinearScaleFactorChanged(double d) const {
     auto scale = m_dimStyle->scaling();
     if (ui->cbLinearScaleApplyToLayoutDimsOnly->isChecked()) {
         d = -d; // negative value is used for layout dims
@@ -775,7 +775,7 @@ void LC_DlgDimStyleManager::onLinearScaleFactorChanged(double d) {
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onLinearScaleApplyToLayoutDimsOnlyToggled(bool val) {
+void LC_DlgDimStyleManager::onLinearScaleApplyToLayoutDimsOnlyToggled(bool val) const {
     auto scale = m_dimStyle->scaling();
     double currentVar = std::abs(scale->linearFactor());
     if (val) {
@@ -812,12 +812,12 @@ void LC_DlgDimStyleManager::onLinearZerosSuppressionToggled([[maybe_unused]]bool
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onLinearUnitFactorChanged([[maybe_unused]]double d) {
+void LC_DlgDimStyleManager::onLinearUnitFactorChanged([[maybe_unused]]double d) const {
     // fixme - sand - dim - where to store?
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onLinearUnitPrefixEditingFinished() {
+void LC_DlgDimStyleManager::onLinearUnitPrefixEditingFinished() const {
     // fixme - sand - dim - where to store?
     refreshPreview();
 }
@@ -837,7 +837,7 @@ void LC_DlgDimStyleManager::onAngularPrecisionIndexChanged(int index) const {
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onAngularZerosSuppressionToggled([[maybe_unused]]bool d) {
+void LC_DlgDimStyleManager::onAngularZerosSuppressionToggled([[maybe_unused]]bool d) const {
     auto zeroSuppress = m_dimStyle->zerosSuppression();
     zeroSuppress->clearAngular();
     if (ui->cbAngularZerosLeading->isChecked()) {
@@ -849,17 +849,17 @@ void LC_DlgDimStyleManager::onAngularZerosSuppressionToggled([[maybe_unused]]boo
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onAlternateSubUnitFactorChanged([[maybe_unused]]double d) {
+void LC_DlgDimStyleManager::onAlternateSubUnitFactorChanged([[maybe_unused]]double d) const {
     // fixme - sand - dim - where to store?
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onAlternateSubUnitPrefixEditingFinished() {
+void LC_DlgDimStyleManager::onAlternateSubUnitPrefixEditingFinished() const {
     // fixme - sand - dim - where to store?
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::enableAltUnitsControls(bool enable) {
+void LC_DlgDimStyleManager::enableAltUnitsControls(bool enable) const {
     ui->gbAltUnits->setEnabled(enable);
     ui->grpTolAltUnit->setEnabled(enable);
 }
@@ -881,32 +881,32 @@ void LC_DlgDimStyleManager::onAlternateLinearFormatIndexChanged(int index) {
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onAlternateLinearPrecisionIndexChanged(int index) {
+void LC_DlgDimStyleManager::onAlternateLinearPrecisionIndexChanged(int index) const {
     auto linear = m_dimStyle->linearFormat();
     linear->setAltDecimalPlaces(index);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onAltMutliplierChanged(double d) {
+void LC_DlgDimStyleManager::onAltMutliplierChanged(double d) const {
     auto linearFormat = m_dimStyle->linearFormat();
     linearFormat->setAltUnitsMultiplier(d);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onAlternateRoundToChanged(double d) {
+void LC_DlgDimStyleManager::onAlternateRoundToChanged(double d) const {
     auto roundOff = m_dimStyle->roundOff();
     roundOff->setAltRoundToValue(d);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onAlternatePrefixEditingFinished() {
+void LC_DlgDimStyleManager::onAlternatePrefixEditingFinished() const {
     auto linear = m_dimStyle->linearFormat();
     LC_DimStyle::LinearFormat::TextPattern* pattern = linear->getAlternativePrefixOrSuffix();
     pattern->setPrefix(ui->leAlternatePrefix->text());
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onAlternateSuffixEditingFinished() {
+void LC_DlgDimStyleManager::onAlternateSuffixEditingFinished() const {
     auto linear = m_dimStyle->linearFormat();
     LC_DimStyle::LinearFormat::TextPattern* pattern = linear->getAlternativePrefixOrSuffix();
     pattern->setSuffix(ui->leAlternateSuffix->text());
@@ -939,7 +939,7 @@ void LC_DlgDimStyleManager::cbAltZerosSuppressionToggled([[maybe_unused]]bool va
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::cbAlternatePlacementToggled([[maybe_unused]]bool val) {
+void LC_DlgDimStyleManager::cbAlternatePlacementToggled([[maybe_unused]]bool val) const {
     auto linear = m_dimStyle->linearFormat();
     bool placeAfter = ui->rbAlternatePlacementAfter->isChecked();
 
@@ -948,7 +948,7 @@ void LC_DlgDimStyleManager::cbAlternatePlacementToggled([[maybe_unused]]bool val
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::uiUpdateToleranceControls(bool enable, bool showLowerLimit, bool showVerticalPosition) {
+void LC_DlgDimStyleManager::uiUpdateToleranceControls(bool enable, bool showLowerLimit, bool showVerticalPosition) const {
     ui->cbTolPrecision->setEnabled(enable);
     ui->dsbTolUpperLimit->setEnabled(enable);
     ui->dsbTolLowerLimit->setEnabled(enable & showLowerLimit);
@@ -1021,37 +1021,37 @@ void LC_DlgDimStyleManager::onTolMethodChangedIndexChanged(int index) {
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onTolPrecisionIndexChanged(int index) {
+void LC_DlgDimStyleManager::onTolPrecisionIndexChanged(int index) const {
     auto tol = m_dimStyle->latteralTolerance();
     tol->setDecimalPlaces(index);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onTolUpperLimitChanged(double d) {
+void LC_DlgDimStyleManager::onTolUpperLimitChanged(double d) const {
     auto tol = m_dimStyle->latteralTolerance();
     tol->setUpperToleranceLimit(d);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onTolLowerLimitChangedChanged(double d) {
+void LC_DlgDimStyleManager::onTolLowerLimitChangedChanged(double d) const {
     auto tol = m_dimStyle->latteralTolerance();
     tol->setLowerToleranceLimit(d);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onTolHeightScaleChanged(double d) {
+void LC_DlgDimStyleManager::onTolHeightScaleChanged(double d) const {
     auto tol = m_dimStyle->latteralTolerance();
     tol->setHeightScaleFactorToDimText(d);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onTolVerticalPositionIndexChanged(int index) {
+void LC_DlgDimStyleManager::onTolVerticalPositionIndexChanged(int index) const {
     auto tol = m_dimStyle->latteralTolerance();
     tol->setVerticalJustificationRaw(index);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onTolMeasurementAlignToggled([[maybe_unused]]bool val) {
+void LC_DlgDimStyleManager::onTolMeasurementAlignToggled([[maybe_unused]]bool val) const {
     auto tol = m_dimStyle->latteralTolerance();
     if (ui->rbTolAjustAlignDecimal->isChecked()) {
         tol->setAdjustment(LC_DimStyle::LatteralTolerance::ALIGN_DECIMAL_SEPARATORS);
@@ -1062,7 +1062,7 @@ void LC_DlgDimStyleManager::onTolMeasurementAlignToggled([[maybe_unused]]bool va
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onTolLinearZerosSuppressionToggled([[maybe_unused]]bool val) {
+void LC_DlgDimStyleManager::onTolLinearZerosSuppressionToggled([[maybe_unused]]bool val) const {
     auto zerosSuppression = m_dimStyle->zerosSuppression();
     zerosSuppression->clearTolerance();
     // linear
@@ -1086,13 +1086,13 @@ void LC_DlgDimStyleManager::onTolLinearZerosSuppressionToggled([[maybe_unused]]b
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::onTolAltPrecisionIndexChanged(int index) {
+void LC_DlgDimStyleManager::onTolAltPrecisionIndexChanged(int index) const {
     auto tol = m_dimStyle->latteralTolerance();
     tol->setDecimalPlacesAltDim(index);
     refreshPreview();
 }
 
-void LC_DlgDimStyleManager::cbTolAlternateZerosSuppressionToggled([[maybe_unused]]bool val) {
+void LC_DlgDimStyleManager::cbTolAlternateZerosSuppressionToggled([[maybe_unused]]bool val) const {
     auto zerosSuppression = m_dimStyle->zerosSuppression();
     zerosSuppression->clearAltTolerance();
     // linear
@@ -1132,7 +1132,7 @@ void LC_DlgDimStyleManager::setDimStyle(LC_DimStyle* dimStyle) {
     initConnections();
 }
 
-void LC_DlgDimStyleManager::fillLinesTab(LC_DimStyle* dimStyle, const LC_DimStyle::DimensionLine* dimLine) {
+void LC_DlgDimStyleManager::fillLinesTab(LC_DimStyle* dimStyle, const LC_DimStyle::DimensionLine* dimLine) const {
     ui->cbDimLineColor->setColor(dimLine->color());
     ui->cbDimLineLineType->setLineType(dimLine->lineType());
     ui->cbDimLineWidth->setWidth(dimLine->lineWidth());
@@ -1163,7 +1163,7 @@ void LC_DlgDimStyleManager::fillLinesTab(LC_DimStyle* dimStyle, const LC_DimStyl
     ui->cbExtLineSuppress2->setChecked(extLine->suppressSecondLine() == LC_DimStyle::ExtensionLine::SUPPRESS);
 }
 
-void LC_DlgDimStyleManager::setDimGap([[maybe_unused]]LC_DimStyle::DimensionLine* dimLine, double lineGap) {
+void LC_DlgDimStyleManager::setDimGap([[maybe_unused]]LC_DimStyle::DimensionLine* dimLine, double lineGap) const {
     bool drawFrame = std::signbit(lineGap); // draw is line gap less than zero
     double val = lineGap;
     if (drawFrame) {
@@ -1245,7 +1245,7 @@ void LC_DlgDimStyleManager::fillArrowsTab(LC_DimStyle* dimStyle, [[maybe_unused]
     ui->dsbJogAngle->setValue(joggedRadius);
 }
 
-void LC_DlgDimStyleManager::uiUpdateAltLinearFormat(RS2::LinearFormat format) {
+void LC_DlgDimStyleManager::uiUpdateAltLinearFormat(RS2::LinearFormat format) const {
     bool imperialEnabled = format == RS2::Engineering || format == RS2::Fractional || format == RS2::Architectural;
     ui->cbAltZeros0Inches->setEnabled(imperialEnabled);
     ui->cbAltZeros0Feet->setEnabled(imperialEnabled);
@@ -1273,7 +1273,7 @@ void LC_DlgDimStyleManager::uiUpdateAltLinearFormat(RS2::LinearFormat format) {
     }
 }
 
-void LC_DlgDimStyleManager::uiUpdateLinearFormat(RS2::LinearFormat format) {
+void LC_DlgDimStyleManager::uiUpdateLinearFormat(RS2::LinearFormat format) const {
     switch (format) {
         case RS2::Scientific:
         case RS2::Decimal:
@@ -1316,7 +1316,7 @@ void LC_DlgDimStyleManager::uiUpdateLinearFormat(RS2::LinearFormat format) {
     }
 }
 
-void LC_DlgDimStyleManager::uiUpdateTextOffsetFromDimLine(LC_DimStyle::Text::VerticalPositionPolicy verticalPositioning) {
+void LC_DlgDimStyleManager::uiUpdateTextOffsetFromDimLine(LC_DimStyle::Text::VerticalPositionPolicy verticalPositioning) const {
     bool textIsNotCenteredVertically = verticalPositioning != LC_DimStyle::Text::CENTER_BETWEEN_EXT_LINES;
     ui->dsbTextOffsetFromDimLine->setEnabled(textIsNotCenteredVertically);
     ui->lblTextOffsetFromDimLine->setEnabled(textIsNotCenteredVertically);
@@ -1376,7 +1376,7 @@ void LC_DlgDimStyleManager::fillTextTab(LC_DimStyle* dimStyle) {
     }
 }
 
-void LC_DlgDimStyleManager::setArrowComboboxValue(QComboBox* arrowComboBox, const QString& arrowBlockName) {
+void LC_DlgDimStyleManager::setArrowComboboxValue(QComboBox* arrowComboBox, const QString& arrowBlockName) const {
     arrowComboBox->blockSignals(true);
     int existingItemIndex = -1;
     if (arrowBlockName.isEmpty()) {
@@ -1398,21 +1398,21 @@ void LC_DlgDimStyleManager::setArrowComboboxValue(QComboBox* arrowComboBox, cons
     arrowComboBox->blockSignals(false);
 }
 
-void LC_DlgDimStyleManager::uiUpdateZerosLeading(bool suppressLeading) {
+void LC_DlgDimStyleManager::uiUpdateZerosLeading(bool suppressLeading) const {
     ui->lblPrimarySubUnitFactor->setEnabled(suppressLeading);
     ui->lblPrimarySubUnitSuffix->setEnabled(suppressLeading);
     ui->bsbLinearZerosSuppressionSubUnitFactor->setEnabled(suppressLeading);
     ui->leLinearZerosSuppressionSubUnitSuffix->setEnabled(suppressLeading);
 }
 
-void LC_DlgDimStyleManager::uiUpdateAltZerosLeading(bool suppressLeading) {
+void LC_DlgDimStyleManager::uiUpdateAltZerosLeading(bool suppressLeading) const {
     ui->lblAltSubUnitFactor->setEnabled(suppressLeading);
     ui->lblAltSubUnitSuffix->setEnabled(suppressLeading);
     ui->dbsAlternateSubUnitFactor->setEnabled(suppressLeading);
     ui->leAlternateSubUnitSuffix->setEnabled(suppressLeading);
 }
 
-void LC_DlgDimStyleManager::uiUpdateArrowsControlsByTickSize(double tickSize) {
+void LC_DlgDimStyleManager::uiUpdateArrowsControlsByTickSize(double tickSize) const {
     bool drawObliqueTicks = LC_LineMath::isMeaningful(tickSize);
 
     ui->cbArrowheadTheSame->setEnabled(!drawObliqueTicks);
@@ -1424,7 +1424,7 @@ void LC_DlgDimStyleManager::uiUpdateArrowsControlsByTickSize(double tickSize) {
     ui->dsbArrowheadArrowSize->setEnabled(!drawObliqueTicks);
 }
 
-void LC_DlgDimStyleManager::fillFitTab(LC_DimStyle* dimStyle) {
+void LC_DlgDimStyleManager::fillFitTab(LC_DimStyle* dimStyle) const {
     auto text = dimStyle->text();
 
     // fit box with several radio buttons is actually created based on values of several variables...
@@ -1805,7 +1805,7 @@ void LC_DlgDimStyleManager::init(RS2::EntityType dimensionType) {
     adjustUIForDimensionType(dimensionType);
 }
 
-void LC_DlgDimStyleManager::hideFieldsReservedForTheFuture() {
+void LC_DlgDimStyleManager::hideFieldsReservedForTheFuture() const {
     // temporary method that should be eliminated later.
     // Some Ui settings are supported by AutoCAD UI, but it seems that they are not directly supported by DXF.
     // potentially, they might be used via Dimension Style override mechanism, or dictionaries...

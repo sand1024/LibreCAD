@@ -50,7 +50,7 @@ void RS_ActionOrder::onSelectionCompleted([[maybe_unused]]bool singleEntity, boo
     }
 }
 
-void RS_ActionOrder::doTrigger(bool keepSelected) {
+void RS_ActionOrder::doTrigger() {
     // fixme - sand - review SELECTION STATE
     RS_DEBUG->print("RS_ActionOrder::trigger()");
 
@@ -90,6 +90,7 @@ void RS_ActionOrder::doTrigger(bool keepSelected) {
         }
     }
     // todo - sand - override mode with ctrl?
+    bool keepSelected = isKeepModifiedEntitiesSelected();
     if (!keepSelected) {
         deselectAll();
     }

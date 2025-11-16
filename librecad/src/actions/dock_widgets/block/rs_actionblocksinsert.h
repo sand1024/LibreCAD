@@ -26,6 +26,7 @@
 #ifndef RS_ACTIONBLOCKSINSERT_H
 #define RS_ACTIONBLOCKSINSERT_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_previewactioninterface.h"
 
 class RS_Block;
@@ -37,27 +38,26 @@ struct RS_InsertData;
  *
  * @author Andrew Mustun
  */
-class RS_ActionBlocksInsert:public RS_PreviewActionInterface {
+class RS_ActionBlocksInsert:public LC_SingleEntityCreationAction {
     Q_OBJECT
 public:
-    RS_ActionBlocksInsert(LC_ActionContext *actionContext);
+    explicit RS_ActionBlocksInsert(LC_ActionContext *actionContext);
     ~RS_ActionBlocksInsert() override;
     void init(int status) override;
     void reset();
-    void trigger() override;
     QStringList getAvailableCommands() override;
     double getAngle() const;
-    void setAngle(double a);
+    void setAngle(double a) const;
     double getFactor() const;
-    void setFactor(double f);
+    void setFactor(double f) const;
     int getColumns() const;
-    void setColumns(int c);
+    void setColumns(int c) const;
     int getRows() const;
-    void setRows(int r);
+    void setRows(int r) const;
     double getColumnSpacing() const;
-    void setColumnSpacing(double cs);
+    void setColumnSpacing(double cs) const;
     double getRowSpacing() const;
-    void setRowSpacing(double rs);
+    void setRowSpacing(double rs) const;
 protected:
     /**
  * Action States.
@@ -87,5 +87,8 @@ protected:
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angle) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
+
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
 };
 #endif

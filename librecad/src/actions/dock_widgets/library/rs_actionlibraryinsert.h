@@ -27,6 +27,7 @@
 #ifndef RS_ACTIONLIBRARYINSERT_H
 #define RS_ACTIONLIBRARYINSERT_H
 
+#include "rs_creation.h"
 #include "rs_previewactioninterface.h"
 
 /**
@@ -41,14 +42,14 @@ public:
     RS_ActionLibraryInsert(LC_ActionContext *actionContext);
     ~RS_ActionLibraryInsert() override;
     void init(int status) override;
-    void reset();
+    void reset() const;
     void trigger() override;
     QStringList getAvailableCommands() override;
-    void setFile(const QString& file);
+    void setFile(const QString& file) const;
     double getAngle() const;
-    void setAngle(double a);
+    void setAngle(double a) const;
     double getFactor() const;
-    void setFactor(double f);
+    void setFactor(double f) const;
 /*int getColumns() {
  return data.cols;
 }
@@ -97,6 +98,7 @@ protected:
 
     struct ActionData;
     std::unique_ptr<ActionData> m_actionData;
+    class RS_LibraryInsertData;
 
 /** Last status before entering option. */
     Status m_lastStatus = SetTargetPoint;
@@ -109,5 +111,6 @@ protected:
     void updateMouseButtonHints() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angle) override;
+    RS_Insert* createLibraryInsert(RS_LibraryInsertData& data) const;
 };
 #endif

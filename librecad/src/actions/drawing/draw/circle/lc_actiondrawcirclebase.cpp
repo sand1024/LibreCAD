@@ -25,7 +25,7 @@
 #include "rs_ellipse.h"
 
 LC_ActionDrawCircleBase::LC_ActionDrawCircleBase(const char *name, LC_ActionContext *actionContext, RS2::ActionType type)
-    :RS_PreviewActionInterface(name,actionContext, type){}
+    :LC_SingleEntityCreationAction(name,actionContext, type){}
 
 LC_ActionDrawCircleBase::~LC_ActionDrawCircleBase() = default;
 
@@ -54,7 +54,7 @@ void LC_ActionDrawCircleBase::reset(){
 
 }
 
-void LC_ActionDrawCircleBase::previewEllipseReferencePoints(const RS_Ellipse *ellipse, bool drawAxises, bool allPointsNotSelectable, RS_Vector mouse){
+void LC_ActionDrawCircleBase::previewEllipseReferencePoints(const RS_Ellipse *ellipse, bool drawAxises, bool allPointsNotSelectable, RS_Vector mouse) const {
     if (m_showRefEntitiesOnPreview) {
         RS_Vector center = ellipse->getCenter();
         RS_Vector majorP = ellipse->getMajorP();

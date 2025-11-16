@@ -27,7 +27,7 @@
 #include "rs_pen.h"
 
 LC_ActionSplineModifyBase::LC_ActionSplineModifyBase(const char* name, LC_ActionContext *actionContext, RS2::ActionType actionType)
-    :RS_PreviewActionInterface(name, actionContext, actionType) {
+    :LC_UndoablePreviewActionInterface(name, actionContext, actionType) {
 }
 
 void LC_ActionSplineModifyBase::doInitWithContextEntity(RS_Entity* contextEntity,[[maybe_unused]] const RS_Vector& clickPos) {
@@ -37,18 +37,16 @@ void LC_ActionSplineModifyBase::doInitWithContextEntity(RS_Entity* contextEntity
 }
 
 void LC_ActionSplineModifyBase::doTrigger() {
-    RS_Entity* createdEntity = createModifiedSplineEntity(m_entityToModify, m_vertexPoint, m_directionFromStart);
-    if (createdEntity != nullptr){
-        if (m_document) {
-            createdEntity->setSelected(true);
-            createdEntity->setLayer(m_entityToModify->getLayer());
-            createdEntity->setPen(m_entityToModify->getPen(false));
-            createdEntity->setParent(m_entityToModify->getParent());
-            m_container->addEntity(createdEntity);
+    RS_Entity* splineClone = createModifiedSplineEntity(m_entityToModify, m_vertexPoint, m_directionFromStart);
+    if (splineClone != nullptr){
+            splineClone->setLayer(m_entityToModify->getLayer());
+            splineClone->setPen(m_entityToModify->getPen(false));
+            splineClone->setParent(m_entityToModify->getParent());
+            select(splineClone);
             doCompleteTrigger();
-            undoCycleReplace(m_entityToModify, createdEntity);
-        }
-        m_entityToModify = createdEntity;
+            undoCycleReplace(m_entityToModify, splineClone);
+
+        m_entityToModify = splineClone;
         m_vertexPoint = RS_Vector(false);
         doAfterTrigger();
     }
@@ -67,15 +65,15 @@ void LC_ActionSplineModifyBase::finish(bool updateTB) {
 }
 
 void LC_ActionSplineModifyBase::clean() {
-    if (m_entityToModify){
-        m_entityToModify->setSelected(false);
+    if (m_entityToModify != nullptr){
+        unselect(m_entityToModify);
     }
     deletePreview();
     redraw();
 }
 
 void LC_ActionSplineModifyBase::onMouseMoveEvent(int status, LC_MouseEvent *e) {
-    RS_Vector mouse = e->snapPoint;
+    const RS_Vector mouse = e->snapPoint;
     onMouseMove(mouse, status, e);
 }
 

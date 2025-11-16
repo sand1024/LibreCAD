@@ -32,7 +32,7 @@ public:
     LC_ActionDrawLinePolygon4(LC_ActionContext *actionContext);
     ~LC_ActionDrawLinePolygon4() override;
     void setVertexVertexMode(bool val){m_useVertexVertexMode = val;}
-    bool isVertexVertexMode(){return m_useVertexVertexMode;}
+    bool isVertexVertexMode() const {return m_useVertexVertexMode;}
 protected:
     /* Status
     SetPoint1 - Setting side/vertex.

@@ -152,14 +152,14 @@ void LC_StarOptions::setRadiusInnerToModelAndView(const QString& value){
     }
 }
 
-void LC_StarOptions::setRadiusInnerEnabledToModelAndView(bool value){
+void LC_StarOptions::setRadiusInnerEnabledToModelAndView(bool value) const {
     m_action->setInnerRounded(value);
     ui->cbRadiusInner ->setChecked(value);
     ui->leRadiusInner->setEnabled(value);
     ui->tbPickRadiusInner->setEnabled(value);
 }
 
-void LC_StarOptions::setSymmetricToModelAndView(bool value){
+void LC_StarOptions::setSymmetricToModelAndView(bool value) const {
     m_action->setSymmetric(value);
     ui->cbSymmertix->setChecked(value);
 }
@@ -170,19 +170,19 @@ void LC_StarOptions::onPolylineClicked(bool value){
     }
 }
 
-void LC_StarOptions::setRadiusOuterEnabledToModelAndView(bool value){
+void LC_StarOptions::setRadiusOuterEnabledToModelAndView(bool value) const {
     m_action->setOuterRounded(value);
     ui->cbRadiusOuter->setChecked(value);
     ui->leRadusOuter->setEnabled(value);
     ui->tbPickRadiusOuter->setEnabled(value);
 }
 
-void LC_StarOptions::setNumberToModelAndView(int value){
+void LC_StarOptions::setNumberToModelAndView(int value) const {
     m_action->setRaysNumber(value);
     ui->sbNumber->setValue(value);
 }
 
-void LC_StarOptions::setUsePolylineToActionAndView(bool value){
+void LC_StarOptions::setUsePolylineToActionAndView(bool value) const {
     m_action->setPolyline(value);
     ui->cbPolyline->setChecked(value);
 }

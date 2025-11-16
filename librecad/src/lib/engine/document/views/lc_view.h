@@ -31,7 +31,7 @@ public:
     LC_View();
     explicit LC_View(const QString &name);
 
-    LC_View* clone();
+    LC_View* clone() const;
     QString getName()const {return m_name;}
     void setName(const QString& name);
     void setCenter(RS_Vector c);
@@ -61,7 +61,7 @@ public:
     int getViewMode() const;
     void setUCS(LC_UCS *pUcs);
     LC_UCS* getUCS() const;
-    bool isForPaperView() {return  m_flags & 1;}
+    bool isForPaperView() const {return  m_flags & 1;}
     void setForPaperView(bool forPaper) {
         if (forPaper) {
             m_flags |= 1;

@@ -60,7 +60,7 @@ protected:
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void updateMouseButtonHints() override;
-    void updateInfoCursor(const RS_Vector &mouse, const RS_Vector &startPoint);
+    void updateInfoCursor(const RS_Vector &mouse, const RS_Vector &startPoint) const;
     void doTrigger() override;
 };
 #endif

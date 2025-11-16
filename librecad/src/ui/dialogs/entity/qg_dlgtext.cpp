@@ -120,7 +120,7 @@ void QG_DlgText::init() {
 }
 
 
-void QG_DlgText::updateUniCharComboBox(int) {
+void QG_DlgText::updateUniCharComboBox(int) const {
     QString t = cbUniPage->currentText();
     int i1 = t.indexOf('-');
     int i2 = t.indexOf(']');
@@ -312,7 +312,7 @@ void QG_DlgText::setAlignmentMiddle() {
     setAlignment(15);
 }
 
-void QG_DlgText::setAlignment(int a) {
+void QG_DlgText::setAlignment(int a) const {
     bTL->setChecked(false);
     bTC->setChecked(false);
     bTR->setChecked(false);
@@ -380,7 +380,7 @@ void QG_DlgText::setAlignment(int a) {
     }
 }
 
-int QG_DlgText::getAlignment() {
+int QG_DlgText::getAlignment() const {
     if (bTL->isChecked()) {
         return 1;
     } else if (bTC->isChecked()) {
@@ -443,7 +443,7 @@ void QG_DlgText::loadText() {
     }
 }
 
-void QG_DlgText::load(const QString& fn) {
+void QG_DlgText::load(const QString& fn) const {
     QFile f(fn);
     if (!f.open(QIODevice::ReadOnly)) {
         return;
@@ -460,7 +460,7 @@ void QG_DlgText::saveText() {
     }
 }
 
-void QG_DlgText::save(const QString& fn) {
+void QG_DlgText::save(const QString& fn) const {
     QString text = teText->text();
     QFile f(fn);
     if (f.open(QIODevice::WriteOnly)) {
@@ -470,7 +470,7 @@ void QG_DlgText::save(const QString& fn) {
     }
 }
 
-void QG_DlgText::insertSymbol(int) {
+void QG_DlgText::insertSymbol(int) const {
     QString str = cbSymbol->currentText();
     int i=str.indexOf('(');
     if (i!=-1) {
@@ -479,14 +479,14 @@ void QG_DlgText::insertSymbol(int) {
     }
 }
 
-void QG_DlgText::updateUniCharButton(int) {
+void QG_DlgText::updateUniCharButton(int) const {
     QString t = cbUniChar->currentText();
     int i1 = t.indexOf(']');
     int c = t.mid(1, i1-1).toInt(NULL, 16);
     bUnicode->setText(QString("%1").arg(QChar(c)));
 }
 
-void QG_DlgText::insertChar() {
+void QG_DlgText::insertChar() const {
     QString t = cbUniChar->currentText();
     int i1 = t.indexOf(']');
     int c = t.mid(1, i1-1).toInt(NULL, 16);

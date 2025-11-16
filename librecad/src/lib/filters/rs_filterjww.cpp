@@ -488,7 +488,7 @@ void RS_FilterJWW::addMTextChunk(const char* text) {
  * get the encoding of the DXF files,
  * Acad versions >= 2007 are UTF-8, others in ANSI_1252
  */
-QString RS_FilterJWW::getDXFEncoding() {
+QString RS_FilterJWW::getDXFEncoding() const {
 
     QString acadver=variables.getString("$ACADVER", "");
     acadver.replace(QRegularExpression("[a-zA-Z]"), "");
@@ -1305,7 +1305,7 @@ bool RS_FilterJWW::fileExport(RS_Graphic& g, const QString& file, RS2::FormatTyp
 
                 for (unsigned i=0; i<graphic->countBlocks(); ++i) {
                         RS_Block* blk = graphic->blockAt(i);
-                        if (!blk->isUndone())
+                        if (!blk->isDeleted())
                             jww.writeBlockRecord(*dw,
                                 std::string((const char*)blk->getName().toLocal8Bit().data()));
                         /*
@@ -1352,7 +1352,7 @@ bool RS_FilterJWW::fileExport(RS_Graphic& g, const QString& file, RS2::FormatTyp
                 // Careful: other blocks with * / $ exist
                 //if (blk->getName().at(0)!='*' &&
                 //		blk->getName().at(0)!='$') {
-                if (!blk->isUndone())
+                if (!blk->isDeleted())
                     writeBlock(*dw, blk);
                 //}
         }
@@ -1583,7 +1583,7 @@ void RS_FilterJWW::writeEntity(DL_WriterA& dw, RS_Entity* e) {
 void RS_FilterJWW::writeEntity(DL_WriterA& dw, RS_Entity* e,
                                                            const DL_Attributes& attrib) {
 
-		if (!e || e->getFlag(RS2::FlagUndone)) {
+		if (!e || e->getFlag(RS2::FlagDeleted)) {
                 return;
         }
         RS_DEBUG->print("writing Entity");
@@ -2423,7 +2423,7 @@ void RS_FilterJWW::writeAtomicEntities(DL_WriterA& dw, RS_EntityContainer* c,
  * Writes an IMAGEDEF object into an OBJECT section.
  */
 void RS_FilterJWW::writeImageDef(DL_WriterA& dw, RS_Image* i) {
-		if (!i || i->getFlag(RS2::FlagUndone)) {
+		if (!i || i->getFlag(RS2::FlagDeleted)) {
                 return;
         }
 

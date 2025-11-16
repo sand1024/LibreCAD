@@ -29,6 +29,7 @@
 #include "qg_circleoptions.h"
 #include "rs_circle.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_entitycontainer.h"
 
 /**
@@ -50,10 +51,8 @@ void RS_ActionDrawCircleCR::init(int status){
     LC_ActionDrawCircleBase::init(status);
 }
 
-void RS_ActionDrawCircleCR::doTrigger() {
-    auto *circle = new RS_Circle(m_container, *m_circleData);
-    setPenAndLayerToActive(circle);
-
+RS_Entity* RS_ActionDrawCircleCR::doTriggerCreateEntity() {
+    auto *circle = new RS_Circle(m_document, *m_circleData);
     switch (getStatus()) {
         case SetCenter:
             moveRelativeZero(circle->getCenter());
@@ -63,11 +62,11 @@ void RS_ActionDrawCircleCR::doTrigger() {
         default:
             break;
     }
+    return circle;
+}
 
-    undoCycleAdd(circle);
+void RS_ActionDrawCircleCR::doTriggerCompletion(bool success) {
     setStatus(SetCenter);
-
-    RS_DEBUG->print("RS_ActionDrawCircleCR::trigger(): circle added: %lu",circle->getId());
 }
 
 void RS_ActionDrawCircleCR::onMouseMoveEvent(int status, LC_MouseEvent *e) {
@@ -139,7 +138,7 @@ bool RS_ActionDrawCircleCR::doProcessCommand(int status, const QString &c) {
     return accept;
 }
 
-bool RS_ActionDrawCircleCR::setRadiusStr(const QString &sr){
+bool RS_ActionDrawCircleCR::setRadiusStr(const QString &sr) const {
     bool ok = false;
     double r = RS_Math::eval(sr, &ok);
     if (!ok){ // fixme - good candidate for generic utility method, may be useful for setting values via ui
@@ -182,7 +181,7 @@ void RS_ActionDrawCircleCR::updateMouseButtonHints(){
     }
 }
 
-void RS_ActionDrawCircleCR::setRadius(double val){
+void RS_ActionDrawCircleCR::setRadius(double val) const {
     m_circleData->radius = val;
 }
 

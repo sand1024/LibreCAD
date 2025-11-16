@@ -35,9 +35,9 @@ public:
     LC_Lattice() = default;
 
     virtual ~LC_Lattice();
-    const RS_Vector& getMajorVector();
-    const RS_Vector& getDeltaX();
-    const RS_Vector& getDeltaY();
+    const RS_Vector& getMajorVector() const;
+    const RS_Vector& getDeltaX() const;
+    const RS_Vector& getDeltaY() const;
     void init(int projectedPointsCount);
 
     void update(double angleX, double angleY, const RS_Vector& gridWidth, int numPointsTotal);
@@ -54,18 +54,18 @@ public:
     void fillVerticalEdge(int numPointsByX, const RS_Vector& baseGridPoint, bool reverseX, bool reverseY, bool skipFirstPoint = false);
     void fillHorizontalEdge(int numPointsByX, const RS_Vector& baseGridPoint, bool reverseX, bool reverseY, bool skipFirstPoint = false);
 
-    int getPointsSize(){return pointsX.size();}
+    int getPointsSize() const {return pointsX.size();}
     const std::vector<RS_Vector>getPoints();
 
-    inline RS_Vector getPoint(int index) {return RS_Vector(pointsX[index], pointsY[index]);};
+    inline RS_Vector getPoint(int index) const {return RS_Vector(pointsX[index], pointsY[index]);};
 
-    RS_Vector getOffset(int xPoints, int yPoints);
+    RS_Vector getOffset(int xPoints, int yPoints) const;
 
     void fillByLines(int numPointsByX, int numPointsByY, const RS_Vector &baseGridPoint, bool reverseX, bool reverseY, bool fillLeftEdge, bool fillRightEdge);
     void fillAllByLinesExceptDiagonal(int numPointsByX, int numPointsByY, const RS_Vector &baseGridPoint, bool reverseX, bool reverseY, bool fillLeftEdge, bool fillRightEdge);
 
-    double getPointX(int i){return pointsX[i];};
-    double getPointY(int i){return pointsY[i];};
+    double getPointX(int i) const {return pointsX[i];};
+    double getPointY(int i) const {return pointsY[i];};
 
     const std::vector<double> &getPointsX() const;
     const std::vector<double> &getPointsY() const;

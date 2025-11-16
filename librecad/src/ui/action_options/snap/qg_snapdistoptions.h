@@ -41,7 +41,7 @@ public:
     ~QG_SnapDistOptions();
     void useSnapDistanceValue( double* d);
     void doShow();
-    double *getDistanceValue();
+    double *getDistanceValue() const;
     void onLateRequestCompleted(bool shouldBeSkipped) override;
 protected:
     double* m_dist;
@@ -50,7 +50,7 @@ protected slots:
     void onDistEditingFinished();
     void onPickDistanceClicked(bool clicked);
 private:
-    void saveSettings();
+    void saveSettings() const;
     std::unique_ptr<Ui::Ui_SnapDistOptions> ui;
 };
 #endif // QG_SNAPDISTOPTIONS_H

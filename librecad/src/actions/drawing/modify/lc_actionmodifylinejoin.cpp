@@ -26,6 +26,7 @@
 #include "lc_linejoinoptions.h"
 #include "lc_linemath.h"
 #include "rs_line.h"
+#include "rs_document.h"
 #include "rs_pen.h"
 #include "rs_polyline.h"
 
@@ -284,7 +285,7 @@ void LC_ActionModifyLineJoin::performTriggerDeletions(){
 }
 
 bool LC_ActionModifyLineJoin::doCheckMayTrigger(){
-    return m_linesJoinData != nullptr && m_document != nullptr;
+    return m_linesJoinData != nullptr;
 }
 
 bool LC_ActionModifyLineJoin::isSetActivePenAndLayerOnTrigger(){
@@ -310,7 +311,7 @@ void LC_ActionModifyLineJoin::doPrepareTriggerEntities(QList<RS_Entity *> &list)
         RS_Line *l2;
 
         if (m_createPolyline && major1.valid && major2.valid){ // handle polyline mode
-            auto *poly = new RS_Polyline(m_container);
+            auto *poly = new RS_Polyline(m_document);
             poly->addVertex(major1);
             poly->addVertex(intersectionPoint);
             poly->addVertex(major2);
@@ -415,14 +416,14 @@ LC_ActionModifyLineJoin::LC_LineJoinData *LC_ActionModifyLineJoin::proceedNonPar
      RS_Vector& line1ClickPoint, RS_Vector &snapPoint,
     const RS_Vector &intersectPoint,
     const RS_Vector &line1Start, const RS_Vector &line1End,
-    const RS_Vector &line2Start, const RS_Vector &line2End){
+    const RS_Vector &line2Start, const RS_Vector &line2End) const {
     auto *result = new LC_LineJoinData();
 
     result->intersectPoint = intersectPoint;
     result->parallelLines = false;
 
     // resulting polyline
-    auto *polyline = new RS_Polyline(m_container);
+    auto *polyline = new RS_Polyline(m_document);
 
     // processing of line 1
     // determining how intersection and snap points are located relating to line endpoints
@@ -468,7 +469,7 @@ LC_ActionModifyLineJoin::LC_LineJoinData *LC_ActionModifyLineJoin::proceedNonPar
  * Snap point specified by the user indicates part of line 1 that should survive trim operation.
  * @param snap snap point
  */
-void LC_ActionModifyLineJoin::updateLine1TrimData(RS_Vector snap){
+void LC_ActionModifyLineJoin::updateLine1TrimData(RS_Vector snap) const {
 
     const RS_Vector &line1Start = m_line1->getStartpoint();
     const RS_Vector &line1End = m_line1->getEndpoint();
@@ -476,7 +477,7 @@ void LC_ActionModifyLineJoin::updateLine1TrimData(RS_Vector snap){
     if (polyline != nullptr){ // we'll rebuild polyline, so delete original one
         delete polyline;
     }
-    polyline = new RS_Polyline(m_container);
+    polyline = new RS_Polyline(m_document);
     m_linesJoinData->polyline = polyline;
 
     RS_Vector &intersection = m_linesJoinData->intersectPoint;
@@ -679,7 +680,7 @@ LC_ActionModifyLineJoin::LC_LineJoinData *LC_ActionModifyLineJoin::proceedParall
         // merge to lines into single line. Here we don't care whether lines are overlapping
         // or not - just use external endpoints for the new line
         if (m_line1EdgeMode == EDGE_EXTEND_TRIM || m_line2EdgeMode == EDGE_EXTEND_TRIM){
-            auto *polyline = new RS_Polyline(m_container);
+            auto *polyline = new RS_Polyline(m_document);
 
             // we just use most left and most right point as vertexes
             polyline->addVertex(leftPoint);
@@ -699,7 +700,7 @@ LC_ActionModifyLineJoin::LC_LineJoinData *LC_ActionModifyLineJoin::proceedParall
             // fills a gap between lines if there is no intersection
             if (!hasIntersection){
                 // we can do this only if lines are not overlapped
-                auto *polyline = new RS_Polyline(m_container);
+                auto *polyline = new RS_Polyline(m_document);
 
                 // add gap points
                 polyline->addVertex(middleLeftPoint);

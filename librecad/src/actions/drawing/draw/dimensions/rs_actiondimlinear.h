@@ -76,7 +76,7 @@ protected:
 
     void preparePreview(bool alternateMode) override;
     void updateMouseButtonHintForExtPoint2() override;
-    bool checkMaySwitchDimDirection();
+    bool checkMaySwitchDimDirection() const;
     void updateMouseButtonHintForDefPoint() override;
     void reset() override;
     RS_Vector getExtensionPoint1() override;

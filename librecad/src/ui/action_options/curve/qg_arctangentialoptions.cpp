@@ -112,7 +112,7 @@ void QG_ArcTangentialOptions::setAngleToActionAndView(const QString& s) {
     }
 }
 
-void QG_ArcTangentialOptions::setByRadiusToActionAndView(bool byRadius) {
+void QG_ArcTangentialOptions::setByRadiusToActionAndView(bool byRadius) const {
     m_action->setByRadius(byRadius);
     ui->rbRadius->setChecked(byRadius);
     ui->rbAngle->setChecked(!byRadius);

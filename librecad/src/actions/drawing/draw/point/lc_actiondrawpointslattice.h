@@ -25,10 +25,10 @@
 
 #include "rs_previewactioninterface.h"
 
-class LC_ActionDrawPointsLattice:public RS_PreviewActionInterface{
+class LC_ActionDrawPointsLattice:public LC_UndoablePreviewActionInterface{
    Q_OBJECT
 public:
-    LC_ActionDrawPointsLattice(LC_ActionContext *actionContext);
+    explicit LC_ActionDrawPointsLattice(LC_ActionContext *actionContext);
     int getColumnPointsCount() const;
     void setColumnPointsCount(int pointsByX);
     int getRowPointsCount() const;

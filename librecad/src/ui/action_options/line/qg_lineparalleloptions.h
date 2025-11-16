@@ -52,7 +52,7 @@ private:
     RS_ActionDrawLineParallel* m_action = nullptr;
 	std::unique_ptr<Ui::Ui_LineParallelOptions> ui;
     void setDistanceToActionAndView(QString val);
-    void setNumberToActionAndView(int number);
+    void setNumberToActionAndView(int number) const;
 };
 
 #endif // QG_LINEPARALLELOPTIONS_H

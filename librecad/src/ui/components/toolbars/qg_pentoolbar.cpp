@@ -63,7 +63,7 @@ QG_PenToolBar::QG_PenToolBar( const QString & title, QWidget * parent )
  */
 QG_PenToolBar::~QG_PenToolBar() = default;
 
-void QG_PenToolBar::updateByLayer(RS_Layer* l) {
+void QG_PenToolBar::updateByLayer(RS_Layer* l) const {
     if (l==nullptr) return;
     m_colorBox->setLayerColor(l->getPen().getColor());
     m_widthBox->setLayerWidth(l->getPen().getWidth());
@@ -87,7 +87,7 @@ void QG_PenToolBar::setLayerColor(RS_Color color, bool updateSelection){
     emitPenChanged();
 }
 
-void QG_PenToolBar::setColor(RS_Color color){
+void QG_PenToolBar::setColor(RS_Color color) const {
     m_colorBox->setColor(color);
 }
 
@@ -100,7 +100,7 @@ void QG_PenToolBar::setLayerLineType(RS2::LineType lineType, bool updateSelectio
     emitPenChanged();
 }
 
-void QG_PenToolBar::setLineType(RS2::LineType lineType){
+void QG_PenToolBar::setLineType(RS2::LineType lineType) const {
     m_lineTypeBox->setLineType(lineType);
 }
 
@@ -113,7 +113,7 @@ void QG_PenToolBar::setLayerWidth(RS2::LineWidth width, bool updateSelection){
     emitPenChanged();
 }
 
-void QG_PenToolBar::setWidth(RS2::LineWidth width){
+void QG_PenToolBar::setWidth(RS2::LineWidth width) const {
     m_widthBox->setWidth(width);
 }
 

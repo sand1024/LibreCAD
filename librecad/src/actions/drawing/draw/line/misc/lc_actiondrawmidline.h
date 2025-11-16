@@ -25,7 +25,7 @@
 
 #include "rs_previewactioninterface.h"
 
-class LC_ActionDrawMidLine: public RS_PreviewActionInterface{
+class LC_ActionDrawMidLine: public LC_UndoablePreviewActionInterface{
     Q_OBJECT
 public:
     LC_ActionDrawMidLine(LC_ActionContext *actionContext);
@@ -69,7 +69,7 @@ protected:
 
     int m_mainStatus = 0;
     void restoreMainStatus(){setStatus(m_mainStatus);}
-    void prepareLine(LineInfo &info, RS_Entity* ent, bool alternate);
+    void prepareLine(LineInfo &info, RS_Entity* ent, bool alternate) const;
     RS2::LineType getLineTypeForCenterLine() const;
     void setupCenterlinePenLayer(RS_Line* line) const;
     void doTrigger() override;

@@ -110,32 +110,32 @@ void LC_SplineFromPolylineOptions::languageChange() {
     ui->retranslateUi(this);
 }
 
-void LC_SplineFromPolylineOptions::setKeepOriginalsToActionAndView(bool val) {
+void LC_SplineFromPolylineOptions::setKeepOriginalsToActionAndView(bool val) const {
     m_action->setKeepOriginals(val);
     ui->cbKeepOriginals->setChecked(val);
 }
 
-void LC_SplineFromPolylineOptions::setUseCurrentAttributesToActionAndView(bool val) {
+void LC_SplineFromPolylineOptions::setUseCurrentAttributesToActionAndView(bool val) const {
     m_action->setUseCurrentAttributes(val);
     ui->cbCurrentAttr->setChecked(val);
 }
 
-void LC_SplineFromPolylineOptions::setUseCurrentLayerToActionAndView(bool val) {
+void LC_SplineFromPolylineOptions::setUseCurrentLayerToActionAndView(bool val) const {
     m_action->setUseCurrentLayer(val);
     ui->cbLayer->setChecked(val);
 }
 
-void LC_SplineFromPolylineOptions::setUseFitPointsToActionAndView(bool val) {
+void LC_SplineFromPolylineOptions::setUseFitPointsToActionAndView(bool val) const {
     m_action->setUseFitPoints(val);
     ui->cbFitPoints->setChecked(val);
 }
 
-void LC_SplineFromPolylineOptions::setMidPointsToActionAndView(int value) {
+void LC_SplineFromPolylineOptions::setMidPointsToActionAndView(int value) const {
    m_action->setSegmentPoints(value);
    ui->sbMidPoints->setValue(value);
 }
 
-void LC_SplineFromPolylineOptions::setDegreeToActionAndView(int value) {
+void LC_SplineFromPolylineOptions::setDegreeToActionAndView(int value) const {
     m_action->setSplineDegree(value);
     ui->sbDegree->setValue(value);
     ui->cbFitPoints->setEnabled(value == 2);

@@ -73,17 +73,17 @@ public:
     int translateColumn(int column) const;
 
     void update(bool updateNames);
-    LC_PenPaletteOptions* getOptions(){return m_options;};
+    LC_PenPaletteOptions* getOptions() const {return m_options;};
 
-    LC_PenItem *createNewItem(QString qString);
+    LC_PenItem *createNewItem(QString qString) const;
     void addItem(LC_PenItem *item);
     void itemEdited(LC_PenItem * item);
     void removeItem(LC_PenItem *pItem);
 
     LC_PenItem* getActivePen() const;
     LC_PenItem *getPen( int row ) const;
-    LC_PenItem *findPenForName(QString &name);
-    LC_PenItem *getItemForIndex(QModelIndex index);
+    LC_PenItem *findPenForName(QString &name) const;
+    LC_PenItem *getItemForIndex(QModelIndex index) const;
 signals:
     void modelChange();
 private:
@@ -115,7 +115,7 @@ private:
      * Reference for registry of meta information for line widths, colors and line types
      */
     LC_PenInfoRegistry* m_registry;
-    void setupItemForDisplay(LC_PenItem *penItem);
+    void setupItemForDisplay(LC_PenItem *penItem) const;
     void emitModelChange();
 };
 

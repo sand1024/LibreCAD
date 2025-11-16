@@ -140,7 +140,7 @@ void LC_Rectangle2PointsOptions::onCornersIndexChanged(int index){
     }
 }
 
-void LC_Rectangle2PointsOptions::setCornersModeToActionAndView(int index){
+void LC_Rectangle2PointsOptions::setCornersModeToActionAndView(int index) const {
     m_action->setCornersMode(index);
     bool round = index == LC_AbstractActionDrawRectangle::CORNER_RADIUS;
     bool bevel = index == LC_AbstractActionDrawRectangle::CORNER_BEVEL;
@@ -203,17 +203,17 @@ void LC_Rectangle2PointsOptions::onEdgesIndexChanged(int index){
     }
 }
 
-void LC_Rectangle2PointsOptions::setEdgesModeToActionAndView(int index){
+void LC_Rectangle2PointsOptions::setEdgesModeToActionAndView(int index) const {
     m_action->setEdgesDrawMode(index);
     ui->cbEdges->setCurrentIndex(index);
 }
 
-void LC_Rectangle2PointsOptions::setInsertSnapPointModeToActionAndView(int index){
+void LC_Rectangle2PointsOptions::setInsertSnapPointModeToActionAndView(int index) const {
     m_action->setInsertionPointSnapMode(index);
     ui->cbSnapStart->setCurrentIndex(index);
 }
 
-void LC_Rectangle2PointsOptions::setSecondPointSnapPointModeToActionAndView(int index){
+void LC_Rectangle2PointsOptions::setSecondPointSnapPointModeToActionAndView(int index) const {
     m_action->setSecondPointSnapMode(index);
     ui->cbSnapEnd->setCurrentIndex(index);
 }
@@ -230,7 +230,7 @@ void LC_Rectangle2PointsOptions::onBaseAngleFixedClicked(bool value){
     }
 }
 
-void LC_Rectangle2PointsOptions::setBaseAngleFixedToActionAndView(bool value){
+void LC_Rectangle2PointsOptions::setBaseAngleFixedToActionAndView(bool value) const {
     ui->chkFixedBaseAngle->setChecked(value);
     m_action->setBaseAngleFixed(value);
     ui->leAngle->setEnabled(value);
@@ -281,12 +281,12 @@ void LC_Rectangle2PointsOptions::onSnapToCornerArcCenterClicked(bool value){
     }
 }
 
-void LC_Rectangle2PointsOptions::setUsePolylineToActionAndView(bool value){
+void LC_Rectangle2PointsOptions::setUsePolylineToActionAndView(bool value) const {
     m_action->setUsePolyline(value);
     ui->cbPolyline->setChecked(value);
 }
 
-void LC_Rectangle2PointsOptions::setSnapToCornerArcCenter(bool value){
+void LC_Rectangle2PointsOptions::setSnapToCornerArcCenter(bool value) const {
     m_action->setSnapToCornerArcCenter(value);
     ui->cbSnapRadiusCenter->setChecked(value);
 }

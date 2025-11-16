@@ -56,10 +56,10 @@ protected:
 private:
     LC_ActionDrawLinePolygonBase* m_action = nullptr;
 	   std::unique_ptr<Ui::Ui_LinePolygonOptions> ui;
-    void setNumberToActionAndView(int number);
-    void setPolylineToActionAndView(bool val);
-    void setRoundedToActionAndView(bool val);
-    void setVertexVertexToActionAndView(bool val);
+    void setNumberToActionAndView(int number) const;
+    void setPolylineToActionAndView(bool val) const;
+    void setRoundedToActionAndView(bool val) const;
+    void setVertexVertexToActionAndView(bool val) const;
     void setRadiusToActionAndView(const QString &val);
 };
 

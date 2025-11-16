@@ -127,8 +127,7 @@ RTree::RTree(const RS_VectorSolutions& points, double toleranceSize):
  * @return bool - true, if successful; false, if a coincident point is already in the the container
  * @author Dongxu Li
  */
-bool RTree::Insert(const RS_Vector& point)
-{
+bool RTree::Insert(const RS_Vector& point) const {
 
     // create a box
     BBox b = m_pRTree->ToBox(point);
@@ -141,8 +140,7 @@ bool RTree::Insert(const RS_Vector& point)
      * @param area box
      * @return
      */
-bool RTree::Insert(const Area& area)
-{
+bool RTree::Insert(const Area& area) const {
     // create a box
     BBox b = m_pRTree->ToBox(area);
     // insert new value

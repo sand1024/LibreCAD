@@ -35,6 +35,7 @@
 #include "rs_dialogfactoryinterface.h"
 #include "rs_document.h"
 #include "rs_image.h"
+#include "rs_preview.h"
 #include "rs_units.h"
 
 struct RS_ActionDrawImage::ImageData {
@@ -46,7 +47,7 @@ struct RS_ActionDrawImage::ImageData {
  * Constructor.
  */
 RS_ActionDrawImage::RS_ActionDrawImage(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("Image", actionContext, RS2::ActionDrawImage)
+    :LC_SingleEntityCreationAction("Image", actionContext, RS2::ActionDrawImage)
     , m_imageData(std::make_unique<ImageData>())
 	, m_lastStatus(ShowDialog){
 }
@@ -56,26 +57,17 @@ RS_ActionDrawImage::~RS_ActionDrawImage() = default;
 
 void RS_ActionDrawImage::init(int status){
     RS_PreviewActionInterface::init(status);
-
     reset();
-
     m_imageData->data.file = RS_DIALOGFACTORY->requestImageOpenDialog();
-    // RVT_PORT should we really redarw here?? graphicView->redraw();
-
     if (!m_imageData->data.file.isEmpty()){
-//std::cout << "file: " << pImg->data.file << "\n";
-//qDebug() << "file: " << pImg->data.file;
-
         m_imageData->img = QImage(m_imageData->data.file);
-
         setStatus(SetTargetPoint);
     } else {
         setFinished();
-        //RS_DIALOGFACTORY->requestToolBar(RS2::ToolBarMain);
     }
 }
 
-void RS_ActionDrawImage::reset() {
+void RS_ActionDrawImage::reset() const {
 	m_imageData->data = {
 				   0,
 				   {0.0,0.0},
@@ -87,12 +79,16 @@ void RS_ActionDrawImage::reset() {
 			   };
 }
 
-void RS_ActionDrawImage::doTrigger() {
+RS_Entity* RS_ActionDrawImage::doTriggerCreateEntity() {
     if (!m_imageData->data.file.isEmpty()){
-        RS_Creation creation(m_container, m_viewport);
-        creation.createImage(&m_imageData->data);
+        auto* img = new RS_Image(m_document, m_imageData->data);
+        img->update();
+        return img;
     }
+    return nullptr;
+}
 
+void RS_ActionDrawImage::doTriggerCompletion(bool success) {
     m_viewport->zoomAuto();
     finish(false);
 }
@@ -213,7 +209,7 @@ double RS_ActionDrawImage::getUcsAngleDegrees() const{
     return toUCSBasisAngleDegrees(m_imageData->data.uVector.angle());
 }
 
-void RS_ActionDrawImage::setUcsAngleDegrees(double ucsRelAngleDegrees){
+void RS_ActionDrawImage::setUcsAngleDegrees(double ucsRelAngleDegrees) const {
     double wcsAngle = toWorldAngleFromUCSBasisDegrees(ucsRelAngleDegrees);
     setAngle(wcsAngle);
 }

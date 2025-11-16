@@ -83,7 +83,7 @@ void QG_RoundOptions::onTrimToggled(bool checked){
     setTrimToActionAndView(checked);
 }
 
-void QG_RoundOptions::setTrimToActionAndView(bool checked){
+void QG_RoundOptions::setTrimToActionAndView(bool checked) const {
     ui->cbTrim->setChecked(checked);
     m_action->setTrim(checked);
 }

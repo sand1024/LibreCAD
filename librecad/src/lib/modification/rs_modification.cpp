@@ -48,6 +48,7 @@
 #include "rs_modification.h"
 #include "rs_mtext.h"
 #include "rs_polyline.h"
+#include "rs_selection.h"
 #include "rs_settings.h"
 #include "rs_text.h"
 #include "rs_units.h"
@@ -76,8 +77,8 @@ namespace {
             RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::paste: add graphic source from clipboard");
             source = RS_CLIPBOARD->getGraphic();
             // graphics from the clipboard need to be scaled. From the part lib not:
-            RS2::Unit sourceUnit = source->getUnit();
-            RS2::Unit targetUnit = graphic.getUnit();
+            const RS2::Unit sourceUnit = source->getUnit();
+            const RS2::Unit targetUnit = graphic.getUnit();
             factor = RS_Units::convert(factor, sourceUnit, targetUnit);
         }
         RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::paste: pasting scale factor: %g", factor);
@@ -92,8 +93,8 @@ namespace {
  * @return RS_Block - the block created
  */
     RS_Block *addNewBlock(const QString &name, RS_Graphic &graphic){
-        RS_BlockData db = RS_BlockData(name, {0.0, 0.0}, false);
-        auto *b = new RS_Block(&graphic, db);
+        const auto db = RS_BlockData(name, {0.0, 0.0}, false);
+        const auto b = new RS_Block(&graphic, db);
         b->reparent(&graphic);
         graphic.addBlock(b);
         return b;
@@ -107,7 +108,7 @@ namespace {
             return RS_Information::getIntersection(&trimEntity, &limitEntity, false);
         }
         if (limitEntity.isContainer()){
-            auto ec = static_cast<const RS_EntityContainer *>(&limitEntity);
+            const auto ec = static_cast<const RS_EntityContainer *>(&limitEntity);
 
             for(RS_Entity* e: lc::LC_ContainerTraverser{*ec, RS2::ResolveAll}.entities()) {
                 RS_VectorSolutions s2 = RS_Information::getIntersection(&trimEntity,
@@ -135,7 +136,7 @@ namespace {
             case 2:
                 //trim according to intersections
                 const RS_Vector& center0 = circle->getCenter();
-                std::vector<double> angles { {center0.angleTo(sol[0]), center0.angleTo(sol[1])}};
+                const std::vector<double> angles { {center0.angleTo(sol[0]), center0.angleTo(sol[1])}};
                 const double a0 = center0.angleTo(trimCoord);
                 aStart = angles.front();
                 aEnd = angles.back();
@@ -144,7 +145,7 @@ namespace {
                 }
                 break;
         }
-        RS_ArcData arcData(circle->getCenter(),
+        const RS_ArcData arcData(circle->getCenter(),
                            circle->getRadius(),
                            aStart,
                            aEnd,
@@ -170,16 +171,16 @@ namespace {
         if (entity->rtti() != RS2::EntityEllipse) {
             return entity;
         }
-        auto ellipse = dynamic_cast<RS_Ellipse *>(entity);
+        const auto ellipse = dynamic_cast<RS_Ellipse *>(entity);
         if (ellipse->isEllipticArc()) {
             return entity;
         }
         RS_Vector tangent = entity->getNearestPointOnEntity(arcFillet.getCenter(), false);
-        RS_Line line{nullptr, {arcFillet.getCenter(), tangent}};
-        RS_Vector middle = arcFillet.getMiddlePoint();
-        RS_Vector opposite = arcFillet.getCenter() + (arcFillet.getCenter() - middle).normalized() * ellipse->getMinorRadius() * 0.01;
-        RS_Vector trimCoord = ellipse->getNearestPointOnEntity(opposite, false);
-        RS_VectorSolutions sol = RS_Information::getIntersection(entity, &line, false);
+        const RS_Line line{nullptr, {arcFillet.getCenter(), tangent}};
+        const RS_Vector middle = arcFillet.getMiddlePoint();
+        const RS_Vector opposite = arcFillet.getCenter() + (arcFillet.getCenter() - middle).normalized() * ellipse->getMinorRadius() * 0.01;
+        const RS_Vector trimCoord = ellipse->getNearestPointOnEntity(opposite, false);
+        const RS_VectorSolutions sol = RS_Information::getIntersection(entity, &line, false);
         ellipse->prepareTrim(trimCoord, sol);
         return entity;
     }
@@ -195,20 +196,20 @@ namespace {
         if (entity->rtti() != RS2::EntityCircle) {
             return entity;
         }
-        RS_Line line{nullptr, {arcFillet.getCenter(), entity->getCenter()}};
-        RS_Vector middle = arcFillet.getMiddlePoint();
+        const RS_Line line{nullptr, {arcFillet.getCenter(), entity->getCenter()}};
+        const RS_Vector middle = arcFillet.getMiddlePoint();
         // prefer acute angle for fillet
         // Use a trimCoord at the opposite side of the arc wrt to the
-        RS_Vector opposite = arcFillet.getCenter() + (arcFillet.getCenter() - middle).normalized() * entity->getRadius() * 0.01;
-        RS_Vector trimCoord = entity->getNearestPointOnEntity(opposite, true);
-        RS_VectorSolutions sol = RS_Information::getIntersection(entity, &line, false);
+        const RS_Vector opposite = arcFillet.getCenter() + (arcFillet.getCenter() - middle).normalized() * entity->getRadius() * 0.01;
+        const RS_Vector trimCoord = entity->getNearestPointOnEntity(opposite, true);
+        const RS_VectorSolutions sol = RS_Information::getIntersection(entity, &line, false);
         RS_Arc *arc = trimCircle(dynamic_cast<RS_Circle *>(entity), trimCoord, sol);
         delete entity;
         return arc;
     }
 
     inline bool isOneOfPoints(const RS_Vector& candidate, const RS_Vector& point1, const RS_Vector& point2) {
-       bool result = point1.distanceTo(candidate) < RS_TOLERANCE || point2.distanceTo(candidate) < RS_TOLERANCE;
+       const bool result = point1.distanceTo(candidate) < RS_TOLERANCE || point2.distanceTo(candidate) < RS_TOLERANCE;
        return result;
     }
 }
@@ -237,89 +238,35 @@ RS_PasteData::RS_PasteData(RS_Vector _insertionPoint,
  *        any views to be updated.
  * @param handleUndo true: Handle undo functionalitiy.
  */
-RS_Modification::RS_Modification(RS_EntityContainer& container,
+RS_Modification::RS_Modification(RS_EntityContainer* container,
                                  LC_GraphicViewport* vp,
                                  bool handleUndo) {
-    this->container = &container;
-    this->handleUndo = handleUndo;
-    viewport = vp;
-    graphic = container.getGraphic();
-    document = container.getDocument();
+
+    Q_ASSERT(container != nullptr && vp != nullptr);
+    this->m_handleUndo = handleUndo;
+    m_viewport = vp;
+    graphic = container->getGraphic();
+    m_document = container->getDocument();
 }
 
-/**
- * Deletes all selected entities.
- */
-void RS_Modification::remove() {
-    RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::remove");
-
-    if (container == nullptr) {
-        RS_DEBUG->print(RS_Debug::D_ERROR, "RS_Modification::remove: no valid container");
-        return;
+void RS_Modification::revertDirection(QList<RS_Entity*>& originalEntities, LC_DocumentModificationBatch &ctx){
+    for (const auto e : originalEntities) {
+        RS_Entity* clone = e->clone();
+        clone->revertDirection();
+        ctx += clone;
     }
-
-    std::vector<RS_Entity*> selectedEntities;
-    container->collectSelected(selectedEntities, false);
-    if (!selectedEntities.empty()) {
-        remove(selectedEntities);
-    }
-    else{
-       RS_DEBUG->print(RS_Debug::D_WARNING, "RS_Modification::remove: no valid container is selected");
-    }
-}
-
-void RS_Modification::remove(const std::vector<RS_Entity*> &entitiesList){
-    LC_UndoSection undo(document,viewport);
-
-    for(auto e: entitiesList) {
-        e->setSelected(false);
-        e->changeUndoState();
-        undo.addUndoable(e);
-    }
-
-    RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::remove: OK");
-}
-
-/**
- * Revert direction of selected entities.
- */
-void RS_Modification::revertDirection(bool keepSelected) {
-
-    RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::revertDirection");
-
-    if (!container) {
-        RS_DEBUG->print(RS_Debug::D_ERROR, "RS_Modification::revertDirection: no valid container");
-        return;
-    }
-
-    std::vector<RS_Entity*> selectedEntities;
-    container->collectSelected(selectedEntities, false);
-    if (!selectedEntities.empty()) {
-        revertDirection(selectedEntities, keepSelected);
-    }
-}
-
-void RS_Modification::revertDirection(const std::vector<RS_Entity*> &entitiesList, [[maybe_unused]]bool keepSelected){
-    std::vector<RS_Entity*> clonesList;
-    for(auto e: entitiesList) {
-            RS_Entity* ec = e->clone();
-            ec->revertDirection();
-            clonesList.push_back(ec);
-    }
-
-    deleteOriginalAndAddNewEntities(clonesList, entitiesList, false, true);
-    clonesList.clear();
-    RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::revertDirection: OK");
+    ctx -= originalEntities;
+    ctx.success = true;
 }
 
 /**
  * Changes the attributes of all selected
  */
-bool RS_Modification::changeAttributes(RS_AttributesData& data, const bool keepSelected){
-    return changeAttributes(data, container, keepSelected);
+bool RS_Modification::changeAttributesOld(RS_AttributesData& data, const bool keepSelected){
+    return changeAttributesOld(data, m_document, keepSelected);
 }
 
-bool RS_Modification::changeAttributes(
+bool RS_Modification::changeAttributesOld(
     RS_AttributesData& data,
     RS_EntityContainer* cont,
     const bool keepSelected) {
@@ -327,26 +274,28 @@ bool RS_Modification::changeAttributes(
     if (cont == nullptr) {
         return false;
     }
-    std::vector<RS_Entity *> selectedEntities;
-    container->collectSelected(selectedEntities, false);
-    return changeAttributes(data, selectedEntities, cont, keepSelected);
+    QList<RS_Entity *> selectedEntities;
+    m_document->collectSelected(selectedEntities, false);
+    return changeAttributesOld(data, selectedEntities, keepSelected);
 }
 
-bool RS_Modification::changeAttributes(RS_AttributesData& data, const std::vector<RS_Entity*> &entitiesList, RS_EntityContainer *cont, bool keepSelected){
-    LC_UndoSection  undo(document, viewport);
-    QList<RS_Entity*> clones;
+bool RS_Modification::changeAttributes(const QList<RS_Entity*>& originalEntities, RS_AttributesData& data, LC_DocumentModificationBatch& ctx) {
     QSet<RS_Block*> blocks;
 
-    for (auto en: entitiesList) {
-        if (data.applyBlockDeep && en->rtti() == RS2::EntityInsert) {
+    for (const auto en: originalEntities) {
+        if  (en == nullptr) {
+            continue;
+        }
+        auto rtti = en->rtti();
+        if (data.applyBlockDeep && rtti == RS2::EntityInsert) {
             RS_Block *bl = dynamic_cast<RS_Insert *>(en)->getBlockForInsert();
             blocks << bl;
         }
 
-        RS_Entity *cl = en->clone();
-        RS_Pen pen = cl->getPen(false);
+        RS_Entity *clone = en->clone();
+        RS_Pen pen = clone->getPen(false);
         if (data.changeLayer) {
-            cl->setLayer(data.layer);
+            clone->setLayer(data.layer);
         }
         if (data.changeColor) {
             pen.setColor(data.pen.getColor());
@@ -357,52 +306,85 @@ bool RS_Modification::changeAttributes(RS_AttributesData& data, const std::vecto
         if (data.changeWidth) {
             pen.setWidth(data.pen.getWidth());
         }
-        cl->setPen(pen);
+        clone->setPen(pen);
+        clone->calculateBorders();
 
-        en->setSelected(false);
-        cl->setSelected(keepSelected);
+        ctx += clone;
+        ctx -= en;
 
-        clones << cl;
-
-        // if (graphic != nullptr) {
-            // en->setUndoState(true);
-            // graphic->addUndoable(en);
-            // undo.addUndoable(en);
-        // }
-        en->setUndoState(true);
-        undo.addUndoable(en);
-
+        if (RS2::isDimensionalEntity(rtti)) {
+            clone->update();
+        }
     }
 
-    for (auto block: blocks) {
-        for (auto en: *block) {
+     for (const auto block: blocks) {
+         changeAttributes(block->getEntityList(), data, ctx);
+    }
+    return true;
+
+}
+
+bool RS_Modification::changeAttributesOld(RS_AttributesData& data, const QList<RS_Entity*> &entitiesList, bool keepSelected){
+    const LC_UndoSection  undo(m_document, m_viewport);
+    QList<RS_Entity*> clones;
+    QSet<RS_Block*> blocks;
+
+    const auto selection = m_document->getSelectedSet();
+    selection->disableListeners();
+
+    for (const auto en: entitiesList) {
+        if (data.applyBlockDeep && en->rtti() == RS2::EntityInsert) {
+            RS_Block *bl = dynamic_cast<RS_Insert *>(en)->getBlockForInsert();
+            blocks << bl;
+        }
+
+        RS_Entity *clone = en->clone();
+        RS_Pen pen = clone->getPen(false);
+        if (data.changeLayer) {
+            clone->setLayer(data.layer);
+        }
+        if (data.changeColor) {
+            pen.setColor(data.pen.getColor());
+        }
+        if (data.changeLineType) {
+            pen.setLineType(data.pen.getLineType());
+        }
+        if (data.changeWidth) {
+            pen.setWidth(data.pen.getWidth());
+        }
+        clone->setPen(pen);
+        clones << clone;
+
+        undo.undoableDelete(en);
+    }
+
+    for (const auto block: blocks) {
+        for (const auto en: *block) {
             if (en == nullptr) {
                 continue;
             }
-            en->setSelected(true);
+            en->setSelectionFlag(true);  // actual selection will be performed later
         }
-        changeAttributes(data, block, keepSelected);
+        changeAttributesOld(data, block, keepSelected);
     }
 
-    for (auto cl: clones) {
-        RS2::EntityType rtti = cl->rtti();
+    for (const auto clone: clones) {
+        m_document->select(clone,keepSelected);
+        const RS2::EntityType rtti = clone->rtti();
         if (RS2::isDimensionalEntity(rtti)) {
-            cl->update();
+            clone->update();
         }
-
-        cont->addEntity(cl);
-        // if (graphic != nullptr) {
-            // graphic->addUndoable(cl);
-        // }
-        undo.addUndoable(cl);
+        undo.undoableAdd(clone);
     }
 
     if (graphic != nullptr) {
         graphic->updateInserts();
     }
 
-    cont->calculateBorders();
-    viewport->notifyChanged();
+    m_document->calculateBorders();
+
+    selection->enableListeners();
+    m_viewport->notifyChanged();
     return true;
 }
 
@@ -419,11 +401,6 @@ void RS_Modification::copy(const RS_Vector& ref, const bool cut) {
 
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::copy");
 
-    if (!container) {
-        RS_DEBUG->print(RS_Debug::D_ERROR, "RS_Modification::copy: no valid container");
-        return;
-    }
-
     RS_CLIPBOARD->clear();
     if (graphic) {
         RS_CLIPBOARD->getGraphic()->setUnit(graphic->getUnit());
@@ -432,46 +409,43 @@ void RS_Modification::copy(const RS_Vector& ref, const bool cut) {
     }
 
     // start undo cycle for the container if we're cutting
-    LC_UndoSection undo( document, viewport, cut && handleUndo);
+    LC_UndoSection undo( m_document, m_viewport, cut && m_handleUndo);
+    const auto selection = m_document->getSelectedSet();
 
-    bool selectedEntityFound{false};
-    std::vector<RS_Entity *> selected;
-    collectSelectedEntities(selected);
-
-    selectedEntityFound = !selected.empty();
-    if (selectedEntityFound) {
+    if (!selection->isEmpty()) {
         RS_Vector refPoint;
-
         if (ref.valid) {
             refPoint = ref;
         } else { // no ref-point set, determine center of selection
-            RS_BoundData bound = getBoundingRect(selected);
+            RS_BoundData bound = getBoundingRect(selection);
             refPoint =  bound.getCenter();
         }
-
-        for (auto e: selected) {
-            copyEntity(e, refPoint, cut);
+        for (const auto e : *selection) {
+            doCopyEntity(e, refPoint);
+            if (cut) {
+                RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::copyEntity: cut ID/flag: %s", getIdFlagString(e).c_str());
+                e->setFlag(RS2::FlagDeleted);
+                m_document->addUndoable(e);
+            }
         }
-        selected.clear();
+        RS_Selection::unselectAllInDocument(m_document, m_viewport);
         RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::copy: OK");
-    }
-    else{
-        RS_DEBUG->print(RS_Debug::D_WARNING, "RS_Modification::copy: no valid container is selected");
     }
 }
 
- void RS_Modification::collectSelectedEntities(std::vector<RS_Entity *> &selected) const{
-    for (auto e: *container) {
+// fixme - selection - rework based on selected set!
+ void RS_Modification::collectSelectedEntities(QList<RS_Entity *> &selected) const{
+    for (auto e: *m_document) {
         if (e != nullptr  && e->isSelected()) {
             selected.push_back(e);
         }
     }
 }
 
-RS_BoundData RS_Modification::getBoundingRect(std::vector<RS_Entity *> &selected)  {
+RS_BoundData RS_Modification::getBoundingRect(QList<RS_Entity *> &selected)  {
     RS_Vector min = RS_Vector(10e10, 10e10,0);
     RS_Vector max = RS_Vector(-10e10, -10e10,0);
-    for (auto e: selected) {
+    for (const auto e: selected) {
         const RS_Vector &entityMin = e->getMin();
         const RS_Vector &entityMax = e->getMax();
 
@@ -481,7 +455,24 @@ RS_BoundData RS_Modification::getBoundingRect(std::vector<RS_Entity *> &selected
         max.y = std::max(max.y, entityMax.y);
     }
 
-    RS_BoundData result(min, max);
+    const RS_BoundData result(min, max);
+    return result;
+}
+
+RS_BoundData RS_Modification::getBoundingRect(LC_SelectedSet* selected)  {
+    RS_Vector min = RS_Vector(10e10, 10e10,0);
+    RS_Vector max = RS_Vector(-10e10, -10e10,0);
+    for (const auto e: *selected) {
+        const RS_Vector &entityMin = e->getMin();
+        const RS_Vector &entityMax = e->getMax();
+
+        min.x = std::min(min.x, entityMin.x);
+        min.y = std::min(min.y, entityMin.y);
+        max.x = std::max(max.x, entityMax.x);
+        max.y = std::max(max.y, entityMax.y);
+    }
+
+    const RS_BoundData result(min, max);
     return result;
 }
 
@@ -492,83 +483,62 @@ RS_BoundData RS_Modification::getBoundingRect(std::vector<RS_Entity *> &selected
  *
  * @param e The entity.
  * @param ref Reference point. The entities will be moved by -ref.
- * @param cut true: cut instead of copying, false: copy
  */
-void RS_Modification::copyEntity(RS_Entity* e, const RS_Vector& ref, const bool cut) {
+void RS_Modification::doCopyEntity(RS_Entity* e, const RS_Vector& ref) {
 
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::copyEntity");
 
-    if (!e || !e->isSelected()) {
+    if (e == nullptr || !e->isSelected()) {
         RS_DEBUG->print(RS_Debug::D_ERROR, "RS_Modification::copyEntity: no entity is selected");
         return;
     }
 
     // add entity to clipboard:
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::copyEntity: to clipboard: %s", getIdFlagString(e).c_str());
-    RS_Entity* c = e->clone();
-
-    c->move(-ref);
+    RS_Entity* clone = e->clone();
+    clone->move(-ref);
 
     // issue #1616: copy&paste a rotated block results in a double rotated block
     // At this point the copied block entities are already rotated, but at
     // pasting, RS_Insert::update() would still rotate the entities again and
     // cause double rotation.
-    bool isBlock = c->rtti() == RS2::EntityInsert;
-    double angle = isBlock ? dynamic_cast<RS_Insert*>(c)->getAngle() : 0.;
+    const bool isBlock = clone->rtti() == RS2::EntityInsert;
+    const double angle = isBlock ? dynamic_cast<RS_Insert*>(clone)->getAngle() : 0.;
     // issue #1616: A quick fix: rotate back all block entities in the clipboard back by the
     // rotation angle before pasting
-    if (isBlock && std::abs(std::remainder(angle, 2. * M_PI)) > RS_TOLERANCE_ANGLE)
-    {
-        auto* insert = dynamic_cast<RS_Insert*>(c);
+    if (isBlock && std::abs(std::remainder(angle, 2. * M_PI)) > RS_TOLERANCE_ANGLE){
+        auto* insert = dynamic_cast<RS_Insert*>(clone);
         //insert->rotate(insert->getData().insertionPoint, - angle);
         insert->setAngle(0.);
     }
 
-    RS_CLIPBOARD->addEntity(c);
-    copyLayers(e);
-    copyBlocks(e);
+    RS_CLIPBOARD->addEntity(clone);
+    doCopyLayers(e);
+    doCopyBlocks(e);
 
     // set layer to the layer clone:
-    auto originalLayer = e->getLayer();
+    const auto originalLayer = e->getLayer();
     // layer could be null if copy is performed in font file, where block is open. LibreCAD#2110
     if (originalLayer != nullptr) {
-        c->setLayer(e->getLayer()->getName());
+        clone->setLayer(e->getLayer()->getName());
     }
-
-
-    if (cut) {
-        LC_UndoSection undo(document, viewport);
-        RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::copyEntity: cut ID/flag: %s", getIdFlagString(e).c_str());
-        e->changeUndoState();
-        undo.addUndoable(e);
-
-        e->setSelected(false);
-    } else {
-        RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::copyEntity: delete in view ID/flag: %s", getIdFlagString(e).c_str());
-        // delete entity in graphic view:
-        e->setSelected(false);
-    }
-
-    viewport->notifyChanged();
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::copyEntity: OK");
 }
-
-
 
 /**
  * Copies all layers of the given entity to the clipboard.
  */
-void RS_Modification::copyLayers(RS_Entity* e) {
+void RS_Modification::doCopyLayers(RS_Entity* e) {
 
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::copyLayers");
 
-	if (!e) {
+	if (e == nullptr) {
         RS_DEBUG->print(RS_Debug::D_ERROR, "RS_Modification::copyLayers: no entity is selected");
         return;
     }
 
     // add layer(s) of the entity insert can also be into any layer
-    RS_Layer* l = e->getLayer();
+    const RS_Layer* l = e->getLayer();
     if (!l) {
         RS_DEBUG->print(RS_Debug::D_ERROR, "RS_Modification::copyLayers: no valid layer found");
         return;
@@ -582,13 +552,13 @@ void RS_Modification::copyLayers(RS_Entity* e) {
     if (e->rtti()==RS2::EntityInsert) {
         // insert: add layer(s) of subentities:
         RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::copyLayers: copy insert entity ID/flag layers: %s", getIdFlagString(e).c_str());
-        RS_Block* b = ((RS_Insert*)e)->getBlockForInsert();
+        RS_Block* b = static_cast<RS_Insert*>(e)->getBlockForInsert();
         if (!b) {
             RS_DEBUG->print(RS_Debug::D_ERROR, "RS_Modification::copyLayers: could not find block for insert entity");
             return;
         }
-        for(auto e2: *b) {
-            copyLayers(e2);
+        for(const auto e2: *b) {
+            doCopyLayers(e2);
         }
     } else {
         RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::copyLayers: skip noninsert entity");
@@ -598,15 +568,14 @@ void RS_Modification::copyLayers(RS_Entity* e) {
 }
 
 
-
 /**
  * Copies all blocks of the given entity to the clipboard.
  */
-void RS_Modification::copyBlocks(RS_Entity* e) {
+void RS_Modification::doCopyBlocks(RS_Entity* e) {
 
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::copyBlocks");
 
-	if (!e) {
+	if (e == nullptr) {
         RS_DEBUG->print(RS_Debug::D_ERROR, "RS_Modification::copyBlocks: no entity to process");
         return;
     }
@@ -624,24 +593,22 @@ void RS_Modification::copyBlocks(RS_Entity* e) {
         return;
     }
     // add block of an insert
-    QString bn = b->getName();
+    const QString bn = b->getName();
     if (!RS_CLIPBOARD->hasBlock(bn)) {
         RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::copyBlocks: add block name: %s", bn.toLatin1().data());
         RS_CLIPBOARD->addBlock((RS_Block*)b->clone());
     }
     //find insert into insert
-    for(auto e2: *b) {
+    for(const auto e2: *b) {
         //call copyBlocks only if entity are insert
         if (e2->rtti()==RS2::EntityInsert) {
             RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::copyBlocks: process insert-into-insert blocks for %s", getIdFlagString(e).c_str());
-            copyBlocks(e2);
+            doCopyBlocks(e2);
         }
     }
 
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::copyBlocks: OK");
 }
-
-
 
 /**
  * Pastes all entities from the clipboard into the container.
@@ -653,7 +620,6 @@ void RS_Modification::copyBlocks(RS_Entity* e) {
  *      is the clipboard.
  */
 void RS_Modification::paste(const RS_PasteData& data, RS_Graphic* source) {
-
     RS_DEBUG->print(RS_Debug::D_INFORMATIONAL, "RS_Modification::paste");
 
 	if (!graphic) {
@@ -662,7 +628,7 @@ void RS_Modification::paste(const RS_PasteData& data, RS_Graphic* source) {
     }
 
     // scale factor as vector
-    RS_Vector vfactor = getPasteScale(data, source, *graphic);
+    const RS_Vector vfactor = getPasteScale(data, source, *graphic);
     // select source for paste
     if (source == nullptr) {
         RS_DEBUG->print(RS_Debug::D_ERROR, "RS_Modification::%s(): line %d: no source found", __func__, __LINE__);
@@ -670,7 +636,7 @@ void RS_Modification::paste(const RS_PasteData& data, RS_Graphic* source) {
     }
 
     // default insertion point for container
-    RS_Vector ip = data.insertionPoint;
+    const RS_Vector ip = data.insertionPoint;
 
     // remember active layer before inserting absent layers
     RS_Layer *layer = graphic->getActiveLayer();
@@ -693,81 +659,78 @@ void RS_Modification::paste(const RS_PasteData& data, RS_Graphic* source) {
 
     // fixme - perf - is it really necessary to do something based on blocks for ordinary copy-paste?
     // create block to paste entities as a whole
-    QString name_old = (data.blockName != nullptr) ? data.blockName : "paste-block";
-    QString name_new = (graphic->findBlock(name_old) != nullptr) ? graphic->getBlockList()->newName(name_old) : name_old;
+    const QString name_old = (data.blockName != nullptr) ? data.blockName : "paste-block";
+    const QString name_new = (graphic->findBlock(name_old) != nullptr) ? graphic->getBlockList()->newName(name_old) : name_old;
     if (graphic->findBlock(name_old) != nullptr) {
         RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::paste: paste block name: %s", name_new.toLatin1().data());
     }
     blocksDict[name_old] = name_new;
 
     // create block
-    RS_Block* b = addNewBlock(name_new, *graphic);
-
-    // create insert object for the paste block
-    RS_InsertData di = RS_InsertData(b->getName(), ip, vfactor, data.angle, 1, 1, RS_Vector(0.0,0.0));
-    auto* i = new RS_Insert(document, di);
-    i->setLayerToActive();
-    i->setPenToActive();
-    i->reparent(document);
-    document->addEntity(i);
+    RS_Block* pastedBlock = addNewBlock(name_new, *graphic);
 
     // copy sub-blocks, inserts and entities from source to the paste block
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::paste: copy content to the paste block");
-    for(auto e: *source) {
-
-        if (!e) {
+    for(const auto sourceEntity: *source) {
+        if (sourceEntity == nullptr) {
             RS_DEBUG->print(RS_Debug::D_WARNING, "RS_Modification::paste: nullptr entity in source");
             continue;
         }
 
         // paste subcontainers
-        if (e->rtti() == RS2::EntityInsert) {
-            if (!pasteContainer(e, b, blocksDict, RS_Vector(0.0, 0.0))) {
+        if (sourceEntity->rtti() == RS2::EntityInsert) {
+            if (!pasteContainer(sourceEntity, pastedBlock, blocksDict, RS_Vector(0.0, 0.0))) {
                 RS_DEBUG->print(RS_Debug::D_ERROR, "RS_Modification::paste: unable to paste due to subcontainer paste error");
                 return;
             }
             // clear selection due to the following processing of selected entities
-            e->setSelected(false);
+            m_document->unselect(sourceEntity);
         } else {
             // paste individual entities including Polylines, etc.
-            if (!pasteEntity(e, b)) {
+            if (!pasteEntity(sourceEntity, pastedBlock)) {
                 RS_DEBUG->print(RS_Debug::D_ERROR, "RS_Modification::paste: unable to paste due to entity paste error");
                 return;
             }
             // clear selection due to the following processing of selected entities
-            e->setSelected(false);
+            m_document->unselect(sourceEntity);
         }
     }
 
-    // update insert
-    i->update();
-    i->setSelected(false);
+
+    // create insert object for the paste block
+    const auto di = RS_InsertData(pastedBlock->getName(), ip, vfactor, data.angle, 1, 1, RS_Vector(0.0,0.0));
+    auto* insert = new RS_Insert(m_document, di);
+    insert->setPenAndLayerToActive();
+    insert->reparent(m_document);
+    insert->update();
+    m_document->unselect(insert);
 
     // unblock all entities if not pasting as a new block by demand
-    LC_UndoSection undo(document,viewport, handleUndo);
-    if (!data.asInsert) {
-        // no inserts should be selected except from paste block and insert
-        container->setSelected(false);
-        i->setSelected(true);
-        explode(false, true);
-        document->removeEntity(i);
-        b->clear();
-        // if this call a destructor for the block?
-        graphic->removeBlock(b);
+
+    if (data.asInsert) {
+        const LC_UndoSection undo(m_document,m_viewport, m_handleUndo);
+        undo.undoableAdd(insert);
     } else {
-        undo.addUndoable(i);
+        // no inserts should be selected except from paste block and insert. this is normal paste...
+        const bool savedAutoupdateBorders = m_document->getAutoUpdateBorders();
+        m_document->setAutoUpdateBorders(false);
+        explode({insert}, false); // fixme - review and REWORK for avoiding block/explode operations...
+        m_document->setAutoUpdateBorders(savedAutoupdateBorders);
+        m_document->calculateBorders();
+        pastedBlock->clear();
+        delete insert;
+        // if this call a destructor for the block?
+        graphic->removeBlock(pastedBlock);
     }
 
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::paste: OK");
 }
 
-
-
 /**
  * Create layers in destination graphic corresponding to entity to be copied
  *
  **/
-bool RS_Modification::pasteLayers(RS_Graphic* source) {
+bool RS_Modification::pasteLayers(RS_Graphic* source) const {
 
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::pasteLayers");
 
@@ -777,17 +740,17 @@ bool RS_Modification::pasteLayers(RS_Graphic* source) {
     }
 
     RS_LayerList* lrs=source->getLayerList();
-    for(RS_Layer* l: *lrs) {
+    for(const RS_Layer* layer: *lrs) {
 
-        if(!l) {
+        if(!layer) {
             RS_DEBUG->print(RS_Debug::D_WARNING, "RS_Modification::pasteLayers: nullptr layer in source");
             continue;
         }
 
         // add layers if absent
-        QString ln = l->getName();
+        QString ln = layer->getName();
         if (!graphic->findLayer(ln)) {
-            graphic->addLayer(l->clone());
+            graphic->addLayer(layer->clone());
             RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::pasteLayers: layer added: %s", ln.toLatin1().data());
         }
     }
@@ -795,8 +758,6 @@ bool RS_Modification::pasteLayers(RS_Graphic* source) {
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::pasteLayers: OK");
     return true;
 }
-
-
 
 /**
  * Create inserts and blocks in destination graphic corresponding to entity to be copied
@@ -807,19 +768,15 @@ bool RS_Modification::pasteContainer(RS_Entity* entity, RS_EntityContainer* cont
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::pasteInsert");
 
     auto* insert = dynamic_cast<RS_Insert*>(entity);
-    if (insert == nullptr) {
-        RS_DEBUG->print(RS_Debug::D_ERROR, "RS_Modification::pasteInsert: no container to process");
-        return false;
-    }
 
     // get block for this insert object
-    RS_Block* insertBlock = insert->getBlockForInsert();
+    const RS_Block* insertBlock = insert->getBlockForInsert();
     if (insertBlock == nullptr) {
         RS_DEBUG->print(RS_Debug::D_ERROR, "RS_Modification::pasteInsert: no block to process");
         return false;
     }
     // get name for this insert object
-    QString name_old = insertBlock->getName();
+    const QString name_old = insertBlock->getName();
     QString name_new = name_old;
     if (name_old != insert->getName()) {
         RS_DEBUG->print(RS_Debug::D_ERROR, "RS_Modification::pasteInsert: block and insert names don't coincide");
@@ -830,7 +787,7 @@ bool RS_Modification::pasteContainer(RS_Entity* entity, RS_EntityContainer* cont
     if (graphic->findBlock(name_old)) {
         if (insertBlock->getParent() == graphic) {
             // If block is already in graphic, only paste a new insert
-            pasteEntity(entity, container);
+            pasteEntity(entity, m_document);
             return true;
         } else {
             name_new = graphic->getBlockList()->newName(name_old);
@@ -841,14 +798,14 @@ bool RS_Modification::pasteContainer(RS_Entity* entity, RS_EntityContainer* cont
     // make new block in the destination
     RS_Block* blockClone = addNewBlock(name_new, *graphic);
     // create insert for the new block
-    RS_InsertData di = RS_InsertData(name_new, insertionPoint, RS_Vector(1.0, 1.0), 0.0, 1, 1, RS_Vector(0.0,0.0));
+    const auto di = RS_InsertData(name_new, insertionPoint, RS_Vector(1.0, 1.0), 0.0, 1, 1, RS_Vector(0.0,0.0));
     auto* insertClone = new RS_Insert(containerToPaste, di);
     insertClone->reparent(containerToPaste);
     containerToPaste->addEntity(insertClone);
 
     // set the same layer in clone as in source
-    QString ln = entity->getLayer()->getName();
-    RS_Layer* layer = graphic->getLayerList()->find(ln);
+    const QString layerName = entity->getLayer()->getName();
+    RS_Layer* layer = graphic->getLayerList()->find(layerName);
     if (!layer) {
         RS_DEBUG->print(RS_Debug::D_ERROR, "RS_Modification::pasteInsert: unable to select layer to paste in");
         return false;
@@ -866,12 +823,10 @@ bool RS_Modification::pasteContainer(RS_Entity* entity, RS_EntityContainer* cont
     // copy content of block/insert to destination
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::pasteInsert: copy content to the subcontainer");
     for(auto* e: *insert) {
-
-        if(!e) {
+        if(e == nullptr) {
             RS_DEBUG->print(RS_Debug::D_NOTICE, "RS_Modification::pasteInsert: nullptr entity in block");
             continue;
         }
-
         if (e->rtti() == RS2::EntityInsert) {
             RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::pasteInsert: process sub-insert for %s", ((RS_Insert*)e)->getName().toLatin1().data());
             if (!pasteContainer(e, blockClone, blocksDict, ip)) {
@@ -887,7 +842,7 @@ bool RS_Modification::pasteContainer(RS_Entity* entity, RS_EntityContainer* cont
     }
 
     insertClone->update();
-    insertClone->setSelected(false);
+    insertClone->clearSelectionFlag();
 
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::pasteInsert: OK");
     return true;
@@ -897,41 +852,36 @@ bool RS_Modification::pasteContainer(RS_Entity* entity, RS_EntityContainer* cont
  * Paste entity in supplied container
  *
  **/
-bool RS_Modification::pasteEntity(RS_Entity* entity, RS_EntityContainer* containerToPaste) {
+bool RS_Modification::pasteEntity(RS_Entity* entity, RS_EntityContainer* containerToPaste) const {
 
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::pasteEntity");
 
-    if (!entity) {
-        RS_DEBUG->print(RS_Debug::D_ERROR, "RS_Modification::pasteEntity: no entity to process");
-        return false;
-    }
-
     // create entity copy to paste
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::pasteEntity ID/flag: %s", getIdFlagString(entity).c_str());
-    RS_Entity* e = entity->clone();
+
 
     // set the same layer in clone as in source
-    QString ln = entity->getLayer()->getName();
+    const QString ln = entity->getLayer()->getName();
     RS_Layer* layer = graphic->getLayerList()->find(ln); // fixme - perf- layer search is not needed if copy paste within the same document
     if (!layer) {
         RS_DEBUG->print(RS_Debug::D_ERROR, "RS_Modification::pasteInsert: unable to select layer to paste in");
         return false;
     }
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::pasteInsert: selected layer: %s", layer->getName().toLatin1().data());
-    e->setLayer(layer);
-    e->setPen(entity->getPen(false));
+
+    RS_Entity* clone = entity->clone();
+    clone->setLayer(layer);
+    clone->setPen(entity->getPen(false));
 
     // scaling entity doesn't needed as it scaled with insert object
     // paste entity
-    e->reparent(containerToPaste);
-    containerToPaste->addEntity(e);
-    e->setSelected(false);
+    clone->reparent(containerToPaste);
+    clone->clearSelectionFlag();
+    containerToPaste->addEntity(clone);
 
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::pasteEntity: OK");
     return true;
 }
-
-
 
 /**
  * Splits a polyline into two leaving out a gap.
@@ -952,29 +902,23 @@ bool RS_Modification::pasteEntity(RS_Entity* entity, RS_EntityContainer* contain
  *
  * @return true
  */
-bool RS_Modification::splitPolyline(RS_Polyline& polyline,
+bool RS_Modification::splitPolyline(RS_Polyline* polyline,
                                     RS_Entity& e1, RS_Vector v1,
                                     RS_Entity& e2, RS_Vector v2,
                                     RS_Polyline** polyline1,
                                     RS_Polyline** polyline2) const {
 
-	if (!container) {
-        RS_DEBUG->print(RS_Debug::D_WARNING,
-                        "RS_Modification::splitPolyline: no valid container");
-        return false;
-    }
-
-    RS_Entity* firstEntity = polyline.firstEntity();
+    RS_Entity* firstEntity = polyline->firstEntity();
     RS_Vector firstPoint(false);
     if (firstEntity->rtti()==RS2::EntityLine) {
-        firstPoint = ((RS_Line*)firstEntity)->getStartpoint();
+        firstPoint = static_cast<RS_Line*>(firstEntity)->getStartpoint();
     }
-    auto* pl1 = new RS_Polyline(container,
+    auto* pl1 = new RS_Polyline(m_document,
                         RS_PolylineData(firstPoint, RS_Vector(0.0,0.0), 0));
-    auto* pl2 = new RS_Polyline(container);
+    auto* pl2 = new RS_Polyline(m_document);
     RS_Polyline* pl = pl1;	// Current polyline
-	RS_Line* line = nullptr;
-	[[maybe_unused]] RS_Arc* arc = nullptr;
+	const RS_Line* line = nullptr;
+	[[maybe_unused]] const RS_Arc* arc = nullptr;
 
     if (polyline1) {
         *polyline1 = pl1;
@@ -983,26 +927,25 @@ bool RS_Modification::splitPolyline(RS_Polyline& polyline,
         *polyline2 = pl2;
     }
 
-    for(auto e: polyline){
-
+    for(const auto e: *polyline){
         if (e->rtti()==RS2::EntityLine) {
-            line = (RS_Line*)e;
-            arc = nullptr;
+            line = static_cast<RS_Line*>(e);
+            arc  = nullptr;
         } else if (e->rtti()==RS2::EntityArc) {
-            arc = (RS_Arc*)e;
+            arc  = static_cast<RS_Arc*>(e);
             line = nullptr;
         } else {
             line = nullptr;
             arc = nullptr;
         }
 
-        if (line /*|| arc*/) {
+        if (line != nullptr /*|| arc*/) {
 
             if (e==&e1 && e==&e2) {
                 // Trim within a single entity:
                 RS_Vector sp = line->getStartpoint();
-                double dist1 = (v1-sp).magnitude();
-                double dist2 = (v2-sp).magnitude();
+                const double dist1 = (v1-sp).magnitude();
+                const double dist2 = (v2-sp).magnitude();
                 pl->addVertex(dist1<dist2 ? v1 : v2, 0.0);
                 pl = pl2;
                 pl->setStartpoint(dist1<dist2 ? v2 : v1);
@@ -1013,7 +956,6 @@ bool RS_Modification::splitPolyline(RS_Polyline& polyline,
                 if (pl==pl1) {
                     // Trim endpoint of entity to first vector
                     pl->addVertex(v, 0.0);
-//					pl = nullptr;
                 } else {
                     // Trim startpoint of entity to second vector
                     pl = pl2;
@@ -1029,15 +971,30 @@ bool RS_Modification::splitPolyline(RS_Polyline& polyline,
         }
     }
 
-    container->addEntity(pl1);
-    container->addEntity(pl2);
-    //container->removeEntity(&polyline);
-    polyline.changeUndoState();
+
+    if (m_handleUndo) {
+        const LC_UndoSection undo(m_document,m_viewport);
+        undo.undoableAdd(pl1);
+        undo.undoableAdd(pl2);
+        undo.undoableDelete(polyline);
+    }
+    else {
+        m_document->addEntity(pl1);
+        m_document->addEntity(pl2);
+    }
 
     return true;
 }
 
-
+void RS_Modification::selectClone(RS_Entity* original, RS_Entity* clone) const {
+    const bool select = original->isSelected();
+    if (select) {
+        m_document->select(clone,select);
+    }
+    else {
+        clone->clearSelectionFlag();
+    }
+}
 
 /**
  * Adds a node to the given polyline. The new node is placed between
@@ -1047,35 +1004,28 @@ bool RS_Modification::splitPolyline(RS_Polyline& polyline,
  *
  * @return Pointer to the new polyline or nullptr.
  */
-RS_Polyline* RS_Modification::addPolylineNode(RS_Polyline& polyline,
+RS_Polyline* RS_Modification::addPolylineNode(RS_Polyline* polyline,
         const RS_AtomicEntity& segment,
-        const RS_Vector& node) {
+        const RS_Vector& node) const {
     RS_DEBUG->print("RS_Modification::addPolylineNode");
-
-	if (!container) {
-        RS_DEBUG->print(RS_Debug::D_WARNING,
-                        "RS_Modification::addPolylineNode: no valid container");
-		return nullptr;
-    }
-
-    if (segment.getParent()!=&polyline) {
+    if (segment.getParent()!=polyline) {
         RS_DEBUG->print(RS_Debug::D_WARNING,
                         "RS_Modification::addPolylineNode: segment not part of the polyline");
 		return nullptr;
     }
 
-    auto newPolyline = new RS_Polyline(container);
-    newPolyline->setClosed(polyline.isClosed());
-    newPolyline->setSelected(polyline.isSelected());
-    newPolyline->setLayer(polyline.getLayer());
-    newPolyline->setPen(polyline.getPen(false));
+    const auto newPolyline = new RS_Polyline(m_document);
+    newPolyline->setClosed(polyline->isClosed());
+    selectClone(polyline, newPolyline);
+    newPolyline->setLayer(polyline->getLayer());
+    newPolyline->setPen(polyline->getPen(false));
 
     // copy polyline and add new node:
     bool first = true;
-    RS_Entity* lastEntity = polyline.lastEntity();
-    for(auto e: polyline){
+    const RS_Entity* lastEntity = polyline->lastEntity();
+    for(const auto e: *polyline){
         if (e->isAtomic()) {
-            auto ae = (RS_AtomicEntity*)e;
+            const auto ae = (RS_AtomicEntity*)e;
             double bulge = 0.0;
             if (ae->rtti()==RS2::EntityArc) {
                 RS_DEBUG->print("RS_Modification::addPolylineNode: arc segment");
@@ -1107,7 +1057,7 @@ RS_Polyline* RS_Modification::addPolylineNode(RS_Polyline& polyline,
                 RS_DEBUG->print("RS_Modification::addPolylineNode: after node: %f/%f",
                                 ae->getEndpoint().x, ae->getEndpoint().y);
 
-                if (ae!=lastEntity || !polyline.isClosed()) {
+                if (ae!=lastEntity || !polyline->isClosed()) {
                     newPolyline->setNextBulge(0.0);
                     newPolyline->addVertex(ae->getEndpoint());
                 }
@@ -1115,7 +1065,7 @@ RS_Polyline* RS_Modification::addPolylineNode(RS_Polyline& polyline,
                 RS_DEBUG->print("RS_Modification::addPolylineNode: normal vertex found: %f/%f",
                                 ae->getEndpoint().x, ae->getEndpoint().y);
 
-                if (ae!=lastEntity || !polyline.isClosed()) {
+                if (ae!=lastEntity || !polyline->isClosed()) {
                     newPolyline->setNextBulge(bulge);
                     newPolyline->addVertex(ae->getEndpoint());
                 }
@@ -1126,22 +1076,19 @@ RS_Polyline* RS_Modification::addPolylineNode(RS_Polyline& polyline,
         }
     }
 
-    newPolyline->setNextBulge(polyline.getClosingBulge());
+    newPolyline->setNextBulge(polyline->getClosingBulge());
     newPolyline->endPolyline();
 
     // add new polyline:
-    container->addEntity(newPolyline);
-
-    if (handleUndo) {
-        LC_UndoSection undo( document,viewport);
-
-        polyline.setUndoState(true);
-        undo.addUndoable(&polyline);
-        undo.addUndoable(newPolyline);
+    if (m_handleUndo) {
+        const LC_UndoSection undo(m_document,m_viewport);
+        undo.undoableReplace(polyline, newPolyline);
+    }
+    else {
+        m_document->addEntity(newPolyline);
     }
 
-    viewport->notifyChanged();
-
+    m_viewport->notifyChanged();
     return newPolyline;
 }
 
@@ -1152,18 +1099,10 @@ RS_Polyline* RS_Modification::addPolylineNode(RS_Polyline& polyline,
  *
  * @return Pointer to the new polyline or nullptr.
  */
-
-RS_Polyline* RS_Modification::deletePolylineNode(RS_Polyline& polyline,
-        const RS_Vector& node, bool createOnly) {
+RS_Polyline* RS_Modification::deletePolylineNode(RS_Polyline* polyline,
+        const RS_Vector& node, bool createOnly) const {
 
     RS_DEBUG->print("RS_Modification::deletePolylineNode");
-
-    if (!container){
-        RS_DEBUG->print(RS_Debug::D_WARNING,
-                        "RS_Modification::addPolylineNode: no valid container");
-        return nullptr;
-    }
-
     if (!node.valid){
         RS_DEBUG->print(RS_Debug::D_WARNING,
                         "RS_Modification::deletePolylineNode: node not valid");
@@ -1171,49 +1110,48 @@ RS_Polyline* RS_Modification::deletePolylineNode(RS_Polyline& polyline,
     }
 
     // check if the polyline is no longer there after deleting the node:
-    if (polyline.count() == 1){
-        RS_Entity *e = polyline.firstEntity();
-        if (e && e->isAtomic()){
-            auto ae = dynamic_cast<RS_AtomicEntity *>(e);
-            if (node.distanceTo(ae->getStartpoint()) < 1.0e-6 ||
-                node.distanceTo(ae->getEndpoint()) < 1.0e-6){
+    if (polyline->count() == 1){
+        RS_Entity *e = polyline->firstEntity();
+        if (e != nullptr && e->isAtomic()){
+            const auto atomic = dynamic_cast<RS_AtomicEntity *>(e);
+            if (node.distanceTo(atomic->getStartpoint()) < 1.0e-6 ||
+                node.distanceTo(atomic->getEndpoint()) < 1.0e-6){
 
-                if (handleUndo){
-                    LC_UndoSection undo(document,viewport);
-                    polyline.setUndoState(true);
-                    undo.addUndoable(&polyline);
+                if (m_handleUndo){
+                    const LC_UndoSection undo(m_document,m_viewport);
+                    undo.undoableDelete(polyline);
                 }
             }
         }
         return nullptr;
     }
 
-    auto* newPolyline = new RS_Polyline(container);
-    newPolyline->setClosed(polyline.isClosed());
+    auto* newPolyline = new RS_Polyline(m_document);
+    newPolyline->setClosed(polyline->isClosed());
     if (!createOnly){
-        newPolyline->setSelected(polyline.isSelected());
-        newPolyline->setLayer(polyline.getLayer());
-        newPolyline->setPen(polyline.getPen(false));
+        selectClone(polyline, newPolyline);
+        newPolyline->setLayer(polyline->getLayer());
+        newPolyline->setPen(polyline->getPen(false));
     }
 
     // copy polyline and drop deleted node:
     bool first = true;
     bool lastDropped = false;
-    RS_Entity* lastEntity = polyline.lastEntity();
-    for (auto e: polyline) {
+    const RS_Entity* lastEntity = polyline->lastEntity();
+    for (const auto e: *polyline) {
         if (e->isAtomic()){
-            auto ae = dynamic_cast<RS_AtomicEntity *>(e);
+            const auto ae = dynamic_cast<RS_AtomicEntity *>(e);
             double bulge = 0.0;
             if (ae->rtti() == RS2::EntityArc){
                 RS_DEBUG->print("RS_Modification::deletePolylineNode: arc segment");
-                bulge = ((RS_Arc *) ae)->getBulge();
+                bulge = static_cast<RS_Arc*>(ae)->getBulge();
             } else {
                 RS_DEBUG->print("RS_Modification::deletePolylineNode: line segment");
                 bulge = 0.0;
             }
 
             // last entity is closing entity and will be added below with endPolyline()
-            if (e == lastEntity && polyline.isClosed()){
+            if (e == lastEntity && polyline->isClosed()){
                 continue;
             }
 
@@ -1238,8 +1176,7 @@ RS_Polyline* RS_Modification::deletePolylineNode(RS_Polyline& polyline,
                 newPolyline->addVertex(ae->getEndpoint());
                 lastDropped = false;
             }
-
-                // drop deleted node:
+            // drop deleted node:
             else {
                 RS_DEBUG->print("RS_Modification::deletePolylineNode: deleting vertex: %f/%f",
                                 ae->getEndpoint().x, ae->getEndpoint().y);
@@ -1252,25 +1189,23 @@ RS_Polyline* RS_Modification::deletePolylineNode(RS_Polyline& polyline,
     }
 
     RS_DEBUG->print("RS_Modification::deletePolylineNode: ending polyline");
-    newPolyline->setNextBulge(polyline.getClosingBulge());
+    newPolyline->setNextBulge(polyline->getClosingBulge());
     newPolyline->endPolyline();
 
     // add new polyline:
     RS_DEBUG->print("RS_Modification::deletePolylineNode: adding new polyline");
 
-    container->addEntity(newPolyline);
-    if (!createOnly){
-
+    if (createOnly){
+        m_document->addEntity(newPolyline);
+    }
+    else {
         RS_DEBUG->print("RS_Modification::deletePolylineNode: handling undo");
-        if (handleUndo){
-            LC_UndoSection undo(document, viewport);
-
-            polyline.setUndoState(true);
-            undo.addUndoable(&polyline);
-            undo.addUndoable(newPolyline);
+        if (m_handleUndo){
+            const LC_UndoSection undo(m_document, m_viewport);
+            undo.undoableReplace(polyline, newPolyline);
         }
     }
-    viewport->notifyChanged();
+    m_viewport->notifyChanged();
     return newPolyline;
 }
 
@@ -1282,18 +1217,11 @@ RS_Polyline* RS_Modification::deletePolylineNode(RS_Polyline& polyline,
  *
  * @return Pointer to the new polyline or nullptr.
  */
-
 RS_Polyline *RS_Modification::deletePolylineNodesBetween(
-    RS_Polyline &polyline,
-    const RS_Vector &node1, const RS_Vector &node2, bool createOnly){
+    RS_Polyline* polyline,
+    const RS_Vector &node1, const RS_Vector &node2) const {
 
     RS_DEBUG->print("RS_Modification::deletePolylineNodesBetween");
-
-    if (!container){
-        RS_DEBUG->print(RS_Debug::D_WARNING,
-                        "RS_Modification::addPolylineNodesBetween: no valid container");
-        return nullptr;
-    }
 
     if (node1.valid == false || node2.valid == false){
         RS_DEBUG->print(RS_Debug::D_WARNING,
@@ -1308,15 +1236,15 @@ RS_Polyline *RS_Modification::deletePolylineNodesBetween(
     }
 
     // check if there's nothing to delete:
-    for (auto e: polyline) {
+    for (const auto e: *polyline) {
 
         if (e->isAtomic()){
-            auto *ae = dynamic_cast<RS_AtomicEntity *>(e);
+            const auto *atomic = dynamic_cast<RS_AtomicEntity *>(e);
             /// FIXME- RS_TOLERANCE?
-            if ((node1.distanceTo(ae->getStartpoint()) < RS_TOLERANCE  &&
-                 node2.distanceTo(ae->getEndpoint()) < 1.0e-6) ||
-                (node2.distanceTo(ae->getStartpoint()) < 1.0e-6 &&
-                 node1.distanceTo(ae->getEndpoint()) < 1.0e-6)){
+            if ((node1.distanceTo(atomic->getStartpoint()) < RS_TOLERANCE  &&
+                 node2.distanceTo(atomic->getEndpoint()) < 1.0e-6) ||
+                (node2.distanceTo(atomic->getStartpoint()) < 1.0e-6 &&
+                 node1.distanceTo(atomic->getEndpoint()) < 1.0e-6)){
 
                 RS_DEBUG->print(RS_Debug::D_WARNING,
                                 "RS_Modification::deletePolylineNodesBetween: nothing to delete");
@@ -1325,40 +1253,38 @@ RS_Polyline *RS_Modification::deletePolylineNodesBetween(
         }
     }
 
-
     // check if the start point is involved:
-    const RS_Vector &polylineStartpoint = polyline.getStartpoint();
-    bool startpointInvolved = isOneOfPoints(polylineStartpoint, node1, node2);
-
+    const RS_Vector &polylineStartpoint = polyline->getStartpoint();
+    const bool startpointInvolved = isOneOfPoints(polylineStartpoint, node1, node2);
 
     // check which part of the polyline has to be deleted:
     bool deleteStart = false;
-    if (polyline.isClosed()){
+    if (polyline->isClosed()){
         bool found = false;
         double length1 = 0.0;
         double length2 = 0.0;
-        RS_Entity *e = polyline.firstEntity();
+        RS_Entity *e = polyline->firstEntity();
 
         if (startpointInvolved){
             if (e->isAtomic()){
-                auto *ae = dynamic_cast<RS_AtomicEntity *>(e);
-                length1 += ae->getLength();
+                const auto *atomic = dynamic_cast<RS_AtomicEntity *>(e);
+                length1 += atomic->getLength();
             }
-            e = polyline.nextEntity();
+            e = polyline->nextEntity();
         }
-        for (; e; e = polyline.nextEntity()) {
+        for (; e; e = polyline->nextEntity()) {
 
             if (e->isAtomic()){
-                auto *ae = dynamic_cast<RS_AtomicEntity *>(e);
+                const auto *atomic = dynamic_cast<RS_AtomicEntity *>(e);
 
-                if (isOneOfPoints(ae->getStartpoint(), node1, node2)){
+                if (isOneOfPoints(atomic->getStartpoint(), node1, node2)){
                     found = !found;
                 }
 
                 if (found){
-                    length2 += ae->getLength();
+                    length2 += atomic->getLength();
                 } else {
-                    length1 += ae->getLength();
+                    length1 += atomic->getLength();
                 }
             }
         }
@@ -1369,15 +1295,9 @@ RS_Polyline *RS_Modification::deletePolylineNodesBetween(
         }
     }
 
-    auto *newPolyline = new RS_Polyline(container);
-    newPolyline->setClosed(polyline.isClosed());
-    if (!createOnly){
-        newPolyline->setSelected(polyline.isSelected());
-        newPolyline->setLayer(polyline.getLayer());
-        newPolyline->setPen(polyline.getPen(false));
-    }
-
-    if (startpointInvolved && deleteStart && polyline.isClosed()){
+    auto *newPolyline = new RS_Polyline(m_document);
+    newPolyline->setClosed(polyline->isClosed());
+    if (startpointInvolved && deleteStart && polyline->isClosed()){
         newPolyline->setNextBulge(0.0);
         newPolyline->addVertex(polylineStartpoint);
     }
@@ -1387,31 +1307,30 @@ RS_Polyline *RS_Modification::deletePolylineNodesBetween(
     bool removing = deleteStart;
     bool done = false;
     bool nextIsStraight = false;
-    RS_Entity *lastEntity = polyline.lastEntity();
+    const RS_Entity *lastEntity = polyline->lastEntity();
     int i = 0;
     double bulge = 0.0;
 
-    for (auto e: polyline) {
-
+    for (const auto e: *polyline) {
         RS_DEBUG->print("RS_Modification::deletePolylineNodesBetween: entity: %d", i++);
         RS_DEBUG->print("RS_Modification::deletePolylineNodesBetween: removing: %d", (int) removing);
 
         if (e->isAtomic()){
-            auto ae = dynamic_cast<RS_AtomicEntity *>(e);
-            if (ae->rtti() == RS2::EntityArc){
+            const auto atomic = dynamic_cast<RS_AtomicEntity *>(e);
+            if (atomic->rtti() == RS2::EntityArc){
                 RS_DEBUG->print("RS_Modification::deletePolylineNodesBetween: arc segment");
-                auto arc = dynamic_cast<RS_Arc *>(ae);
+                const auto arc = dynamic_cast<RS_Arc *>(atomic);
                 bulge = arc->getBulge();
             } else {
                 RS_DEBUG->print("RS_Modification::deletePolylineNodesBetween: line segment");
                 bulge = 0.0;
             }
 
-            const RS_Vector &endpoint = ae->getEndpoint();
-            const RS_Vector &startpoint = ae->getStartpoint();
+            const RS_Vector &endpoint = atomic->getEndpoint();
+            const RS_Vector &startpoint = atomic->getStartpoint();
 
             // last entity is closing entity and will be added below with endPolyline()
-            if (e == lastEntity && polyline.isClosed()){
+            if (e == lastEntity && polyline->isClosed()){
                 RS_DEBUG->print("RS_Modification::deletePolylineNodesBetween: dropping last vertex of closed polyline");
                 continue;
             }
@@ -1426,9 +1345,7 @@ RS_Polyline *RS_Modification::deletePolylineNodesBetween(
                 }
             }
 
-
             // stop removing nodes:
-
             if (removing == true && isOneOfPoints(endpoint, node1, node2)){
                 RS_DEBUG->print("RS_Modification::deletePolylineNodesBetween: stop removing at: %f/%f",endpoint.x, endpoint.y);
                 removing = false;
@@ -1468,24 +1385,26 @@ RS_Polyline *RS_Modification::deletePolylineNodesBetween(
     }
 
     RS_DEBUG->print("RS_Modification::deletePolylineNodesBetween: ending polyline");
-    newPolyline->setNextBulge(polyline.getClosingBulge());
+    newPolyline->setNextBulge(polyline->getClosingBulge());
     newPolyline->endPolyline();
 
     // add new polyline:
     RS_DEBUG->print("RS_Modification::deletePolylineNodesBetween: adding new polyline");
-    container->addEntity(newPolyline);
-    if (!createOnly){
-
+    if (m_handleUndo) {
         RS_DEBUG->print("RS_Modification::deletePolylineNodesBetween: handling undo");
-        if (handleUndo){
-            LC_UndoSection undo(document, viewport);
+        selectClone(polyline, newPolyline);
+        newPolyline->setLayer(polyline->getLayer());
+        newPolyline->setPen(polyline->getPen(false));
 
-            polyline.setUndoState(true);
-            undo.addUndoable(&polyline);
-            undo.addUndoable(newPolyline);
-        }
+        const LC_UndoSection undo(m_document, m_viewport);
+        undo.undoableReplace(polyline,newPolyline);
     }
-    viewport->notifyChanged();
+    else {
+        m_document->addEntity(newPolyline);
+    }
+
+
+    m_viewport->notifyChanged();
     return newPolyline;
 }
 
@@ -1500,20 +1419,14 @@ RS_Polyline *RS_Modification::deletePolylineNodesBetween(
  * @return Pointer to the new polyline or nullptr.
  */
 RS_Polyline *RS_Modification::polylineTrim(
-    RS_Polyline &polyline,
+    RS_Polyline *polyline,
     RS_AtomicEntity &segment1,
     RS_AtomicEntity &segment2,
-    bool createOnly){
+    bool createOnly) const {
 
     RS_DEBUG->print("RS_Modification::polylineTrim");
 
-    if (!container){
-        RS_DEBUG->print(RS_Debug::D_WARNING,
-                        "RS_Modification::addPolylineNodesBetween: no valid container");
-        return nullptr;
-    }
-
-    if (segment1.getParent() != &polyline || segment2.getParent() != &polyline){
+    if (segment1.getParent() != polyline || segment2.getParent() != polyline){
         RS_DEBUG->print(RS_Debug::D_WARNING,
                         "RS_Modification::polylineTrim: segments not in polyline");
         return nullptr;
@@ -1536,7 +1449,7 @@ RS_Polyline *RS_Modification::polylineTrim(
 
     // check which segment comes first in the polyline:
     RS_AtomicEntity *firstSegment;
-    if (polyline.findEntity(&segment1) > polyline.findEntity(&segment2)){
+    if (polyline->findEntity(&segment1) > polyline->findEntity(&segment2)){
         firstSegment = &segment2;
     } else {
         firstSegment = &segment1;
@@ -1549,12 +1462,12 @@ RS_Polyline *RS_Modification::polylineTrim(
     //reverseTrim = reverseTrim || !RS_Math::isSameDirection(segment2.getDirection1(),
 //	segment2.getStartpoint().angleTo(sol.get(0)), M_PI_2);
 
-    auto *newPolyline = new RS_Polyline(container);
-    newPolyline->setClosed(polyline.isClosed());
+    auto *newPolyline = new RS_Polyline(m_document);
+    newPolyline->setClosed(polyline->isClosed());
     if (!createOnly){
-        newPolyline->setSelected(polyline.isSelected());
-        newPolyline->setLayer(polyline.getLayer());
-        newPolyline->setPen(polyline.getPen(false));
+        selectClone(polyline, newPolyline);
+        newPolyline->setLayer(polyline->getLayer());
+        newPolyline->setPen(polyline->getPen(false));
     }
 
     // normal trimming: start removing nodes at trim segment. ends stay the same
@@ -1563,22 +1476,22 @@ RS_Polyline *RS_Modification::polylineTrim(
         bool first = true;
         bool removing = false;
         bool nextIsStraight = false;
-        RS_Entity *lastEntity = polyline.lastEntity();
-        for (auto e: polyline) {
+        const RS_Entity *lastEntity = polyline->lastEntity();
+        for (const auto e: *polyline) {
 
             if (e->isAtomic()){
-                auto ae = dynamic_cast<RS_AtomicEntity *>(e);
+                const auto ae = dynamic_cast<RS_AtomicEntity *>(e);
                 double bulge = 0.0;
                 if (ae->rtti() == RS2::EntityArc){
                     RS_DEBUG->print("RS_Modification::polylineTrim: arc segment");
-                    bulge = ((RS_Arc *) ae)->getBulge();
+                    bulge = static_cast<RS_Arc*>(ae)->getBulge();
                 } else {
                     RS_DEBUG->print("RS_Modification::polylineTrim: line segment");
                     bulge = 0.0;
                 }
 
                 // last entity is closing entity and will be added below with endPolyline()
-                if (e == lastEntity && polyline.isClosed()){
+                if (e == lastEntity && polyline->isClosed()){
                     RS_DEBUG->print("RS_Modification::polylineTrim: "
                                     "dropping last vertex of closed polyline");
                     continue;
@@ -1637,15 +1550,15 @@ RS_Polyline *RS_Modification::polylineTrim(
         //bool first = true;
         bool removing = true;
         bool nextIsStraight = false;
-        RS_Entity *lastEntity = polyline.lastEntity();
-        for (auto e: polyline) {
+        const RS_Entity *lastEntity = polyline->lastEntity();
+        for (const auto e: *polyline) {
 
             if (e->isAtomic()){
                 auto *ae = dynamic_cast<RS_AtomicEntity *>(e);
                 double bulge = 0.0;
                 if (ae->rtti() == RS2::EntityArc){
                     RS_DEBUG->print("RS_Modification::polylineTrim: arc segment");
-                    auto arc = dynamic_cast<RS_Arc *>(ae);
+                    const auto arc = dynamic_cast<RS_Arc *>(ae);
                     bulge = arc ->getBulge();
                 } else {
                     RS_DEBUG->print("RS_Modification::polylineTrim: line segment");
@@ -1653,9 +1566,8 @@ RS_Polyline *RS_Modification::polylineTrim(
                 }
 
                 // last entity is closing entity and will be added below with endPolyline()
-                if (e == lastEntity && polyline.isClosed()){
-                    RS_DEBUG->print("RS_Modification::polylineTrim: "
-                                    "dropping last vertex of closed polyline");
+                if (e == lastEntity && polyline->isClosed()){
+                    RS_DEBUG->print("RS_Modification::polylineTrim: dropping last vertex of closed polyline");
                     continue;
                 }
 
@@ -1701,24 +1613,24 @@ RS_Polyline *RS_Modification::polylineTrim(
     }
 
     RS_DEBUG->print("RS_Modification::polylineTrim: ending polyline");
-    newPolyline->setNextBulge(polyline.getClosingBulge());
+    newPolyline->setNextBulge(polyline->getClosingBulge());
     newPolyline->endPolyline();
 
     // add new polyline:
     RS_DEBUG->print("RS_Modification::polylineTrim: adding new polyline");
-    container->addEntity(newPolyline);
-    if (!createOnly){
-        RS_DEBUG->print("RS_Modification::polylineTrim: handling undo");
-        if (handleUndo){
-            LC_UndoSection undo(document, viewport);
 
-            polyline.setUndoState(true);
-            undo.addUndoable(&polyline);
-            undo.addUndoable(newPolyline);
+    if (createOnly){
+        m_document->addEntity(newPolyline);
+    }
+    else {
+        RS_DEBUG->print("RS_Modification::polylineTrim: handling undo");
+        if (m_handleUndo){
+            const LC_UndoSection undo(m_document, m_viewport);
+            undo.undoableReplace(polyline, newPolyline);
         }
     }
 
-    viewport->notifyChanged();
+    m_viewport->notifyChanged();
     return newPolyline;
 }
 
@@ -1726,48 +1638,42 @@ RS_Polyline *RS_Modification::polylineTrim(
  * Moves all selected entities with the given data for the move
  * modification.
  */
-bool RS_Modification::move(RS_MoveData &data, bool previewOnly, [[maybe_unused]]RS_EntityContainer* previewContainer){
-    if (!container) {
-        RS_DEBUG->print(RS_Debug::D_WARNING,
-                        "RS_Modification::move: no valid container");
-        return false;
-    }
-    std::vector<RS_Entity*> selectedEntities;
-    container->collectSelected(selectedEntities, false);
-    return move(data, selectedEntities, previewOnly, true);
+
+void RS_Modification::addClonesAndDeleteOriginals(const LC_ModifyOperationFlags& data, const QList<RS_Entity*>& entitiesList,
+        bool forPreviewOnly, bool keepSelected, QList<RS_Entity*> clonesList) const {
+    setupModifiedClones(clonesList, data, forPreviewOnly, keepSelected);
+    deleteOriginalAndAddNewEntities(clonesList, entitiesList, forPreviewOnly, !data.keepOriginals);
+    clonesList.clear();
 }
 
+void RS_Modification::move(RS_MoveData& data, const QList<RS_Entity*> &entitiesList, bool forPreviewOnly, LC_DocumentModificationBatch& ctx) {
+    const int numberOfCopies = data.obtainNumberOfCopies();
+    QList<RS_Entity*> clonesList;
 
-bool RS_Modification::move(RS_MoveData& data, const std::vector<RS_Entity*> &entitiesList, bool forPreviewOnly, bool keepSelected) {
-
-    int numberOfCopies = data.obtainNumberOfCopies();
-    std::vector<RS_Entity*> clonesList;
-
-    for(auto e: entitiesList){
+    for(const auto e: entitiesList){
         // Create new entities
         for (int num = 1; num <= numberOfCopies; num++) {
-            RS_Entity* ec = getClone(forPreviewOnly, e);
-            ec->move(data.offset*num);
-            clonesList.push_back(ec);
+            RS_Entity* clone = getClone(forPreviewOnly, e);
+            clone->move(data.offset*num);
+            ctx += clone;
         }
     }
 
-    setupModifiedClones(clonesList, data, forPreviewOnly, keepSelected);
-
-    deleteOriginalAndAddNewEntities(clonesList, entitiesList, forPreviewOnly, !data.keepOriginals);
-    clonesList.clear();
-    return true;
+    if (!data.keepOriginals) {
+        ctx -= entitiesList;
+    }
+    ctx.success = true;
 }
 
-RS_Entity *RS_Modification::getClone(bool forPreviewOnly, const RS_Entity *e) const {
+RS_Entity *RS_Modification::getClone(bool forPreviewOnly, const RS_Entity *e){
     RS_Entity* result = nullptr;
     if (forPreviewOnly){
-        int rtti = e->rtti();
+        const int rtti = e->rtti();
         switch (rtti){
             case RS2::EntityText:
             case RS2::EntityMText:{
                 // fixme - sand - ucs - BAD dependency, rework.
-                bool  drawTextAsDraftInPreview = LC_GET_ONE_BOOL("Render","DrawTextsAsDraftInPreview", true);
+                const bool  drawTextAsDraftInPreview = LC_GET_ONE_BOOL("Render","DrawTextsAsDraftInPreview", true);
                 if (drawTextAsDraftInPreview) {
                     result = e->cloneProxy();
                 }
@@ -1791,65 +1697,55 @@ RS_Entity *RS_Modification::getClone(bool forPreviewOnly, const RS_Entity *e) co
     return result;
 }
 
-void RS_Modification::setupModifiedClones(
-    std::vector<RS_Entity *> &addList, const LC_ModifyOperationFlags &data, bool forPreviewOnly, bool keepSelected) const {
+void RS_Modification::setupModifiedClones(QList<RS_Entity *> &clonesList,
+        const LC_ModifyOperationFlags &data, bool forPreviewOnly, bool keepSelected) const {
+
     if (!forPreviewOnly && (data.useCurrentLayer || data.useCurrentAttributes)){
         RS_Layer* layer = nullptr;
         RS_Pen pen;
         if (data.useCurrentLayer) {
-            layer = viewport->getGraphic()->getActiveLayer();
+            layer = m_viewport->getGraphic()->getActiveLayer();
         }
         if (data.useCurrentAttributes) {
-            pen = document->getActivePen();
+            pen = m_document->getActivePen();
         }
-        for (auto e: addList){
+        for (const auto clone: clonesList){
             if (data.useCurrentLayer) {
-                e->setLayer(layer);
+                clone->setLayer(layer);
             }
             if (data.useCurrentAttributes) {
-                e->setPen(pen);
+                clone->setPen(pen);
             }
         }
     }
 
-    for (auto e: addList){
-        if (e->rtti()==RS2::EntityInsert) {
-            ((RS_Insert*)e)->update();
+    for (const auto clone: clonesList){
+        if (clone->rtti()==RS2::EntityInsert) {
+            static_cast<RS_Insert*>(clone)->update();
         }
         // since 2.0.4.0: keep selection
-        e->setSelected(keepSelected);
+        clone->setSelectionFlag(keepSelected);
     }
 }
 
-bool RS_Modification::alignRef(LC_AlignRefData & data, const std::vector<RS_Entity*> &entitiesList, bool forPreviewOnly, bool keepSelected) {
-
-    int numberOfCopies = 1; /*data.obtainNumberOfCopies();*/
-    std::vector<RS_Entity*> clonesList;
-
-    RS_Vector offset = data.offset;
-
+bool RS_Modification::alignRef(LC_AlignRefData & data, const QList<RS_Entity*> &entitiesList, bool forPreviewOnly, bool keepSelected) {
+    const int numberOfCopies = 1; /*data.obtainNumberOfCopies();*/
+    QList<RS_Entity*> clonesList;
+    const RS_Vector offset = data.offset;
     // too slow:
-    for(auto e: entitiesList){
+    for(const auto e: entitiesList){
         // Create new entities
         for (int num = 1; num <= numberOfCopies; num++) {
-            RS_Entity* ec = getClone(forPreviewOnly, e);
-
-            ec->rotate(data.rotationCenter, data.rotationAngle);
-
+            RS_Entity* clone = getClone(forPreviewOnly, e);
+            clone->rotate(data.rotationCenter, data.rotationAngle);
             if (data.scale && LC_LineMath::isMeaningful(data.scaleFactor - 1.0)){
-                ec->scale(data.rotationCenter, data.scaleFactor);
+                clone->scale(data.rotationCenter, data.scaleFactor);
             }
-
-            ec->move(offset*num);
-
-            clonesList.push_back(ec);
+            clone->move(offset*num);
+            clonesList.push_back(clone);
         }
     }
-
-    setupModifiedClones(clonesList, data, forPreviewOnly, keepSelected);
-
-    deleteOriginalAndAddNewEntities(clonesList, entitiesList, forPreviewOnly, !data.keepOriginals);
-    clonesList.clear();
+    addClonesAndDeleteOriginals(data, entitiesList, forPreviewOnly, keepSelected, clonesList);
     return true;
 }
 
@@ -1858,26 +1754,13 @@ bool RS_Modification::alignRef(LC_AlignRefData & data, const std::vector<RS_Enti
  *
  *@Author: Dongxu Li
  */
-bool RS_Modification::offset(const RS_OffsetData& data, [[maybe_unused]]bool previewOnly,[[maybe_unused]] RS_EntityContainer* previewContainer) {
-    if (container == nullptr) {
-        RS_DEBUG->print(RS_Debug::D_WARNING,
-                        "RS_Modification::offset: no valid container");
-        return false;
-    }
+bool RS_Modification::offset(const RS_OffsetData& data, const QList<RS_Entity*> &entitiesList, bool forPreviewOnly, bool keepSelected) {
+    QList<RS_Entity*> clonesList;
 
-    std::vector<RS_Entity*> selectedEntities;
-    container->collectSelected(selectedEntities, false);
-    return offset(data, selectedEntities, false, true);
-}
-
-bool RS_Modification::offset(const RS_OffsetData& data, const std::vector<RS_Entity*> &entitiesList, bool forPreviewOnly, bool keepSelected) {
-    std::vector<RS_Entity*> clonesList;
-
-    int numberOfCopies = data.obtainNumberOfCopies();
-
+    const int numberOfCopies = data.obtainNumberOfCopies();
     // Create new entities
     // too slow:
-    for(auto e: entitiesList){
+    for(const auto e: entitiesList){
         for (int num=1; num<= numberOfCopies; num++) {
             auto ec = e->clone();
             //highlight is used by trim actions. do not carry over flag
@@ -1891,43 +1774,25 @@ bool RS_Modification::offset(const RS_OffsetData& data, const std::vector<RS_Ent
             clonesList.push_back(ec);
         }
     }
-
-    setupModifiedClones(clonesList, data, forPreviewOnly, keepSelected);
-
-    deleteOriginalAndAddNewEntities(clonesList, entitiesList, forPreviewOnly, !data.keepOriginals);
-    clonesList.clear();
+    addClonesAndDeleteOriginals(data, entitiesList, forPreviewOnly, keepSelected, clonesList);
     return true;
 }
 
 /**
  * Rotates all selected entities with the given data for the rotation.
  */
-bool RS_Modification::rotate(RS_RotateData &data, bool forPreviewOnly, bool keepSelected){
-    if (!container){
-        RS_DEBUG->print(RS_Debug::D_WARNING,
-                        "RS_Modification::rotate: no valid container");
-        return false;
-    }
-
-    std::vector<RS_Entity*> selectedEntities;
-    container->collectSelected(selectedEntities, false);
-    return rotate(data, selectedEntities, forPreviewOnly, keepSelected);
-}
-
-bool RS_Modification::rotate(RS_RotateData& data, const std::vector<RS_Entity*> &entitiesList, bool forPreviewOnly, bool keepSelected) {
-    std::vector<RS_Entity *> clonesList;
-    // Create new entities
-
-    int numberOfCopies = data.obtainNumberOfCopies();
-    for (auto e: entitiesList) {
+bool RS_Modification::rotate(RS_RotateData& data, const QList<RS_Entity*> &entitiesList, bool forPreviewOnly, LC_DocumentModificationBatch& ctx) {
+        // Create new entities
+    const int numberOfCopies = data.obtainNumberOfCopies();
+    for (const auto e: entitiesList) {
         for (int num = 1; num <= numberOfCopies; num++) {
-            RS_Entity* ec = getClone(forPreviewOnly, e);
+            RS_Entity* clone = getClone(forPreviewOnly, e);
 
-            double rotationAngle = data.angle * num;
-            ec->rotate(data.center, rotationAngle);
+            const double rotationAngle = data.angle * num;
+            clone->rotate(data.center, rotationAngle);
 
             bool rotateTwice = data.twoRotations;
-            double distance = data.refPoint.distanceTo(data.center);
+            const double distance = data.refPoint.distanceTo(data.center);
             if (distance < RS_TOLERANCE){
                 rotateTwice = false;
             }
@@ -1940,261 +1805,183 @@ bool RS_Modification::rotate(RS_RotateData& data, const std::vector<RS_Entity*> 
                 if (data.secondAngleIsAbsolute){
                     secondRotationAngle -= rotationAngle;
                 }
-                ec->rotate(rotatedRefPoint, secondRotationAngle);
+                clone->rotate(rotatedRefPoint, secondRotationAngle);
             }
-
-            clonesList.push_back(ec);
+            ctx += clone;
         }
     }
-    setupModifiedClones(clonesList, data, forPreviewOnly, keepSelected);
+    if (!data.keepOriginals) {
+        ctx -= entitiesList;
+    }
+    return true;
+}
 
-    deleteOriginalAndAddNewEntities(clonesList, entitiesList, forPreviewOnly, !data.keepOriginals);
-    clonesList.clear();
-    
+
+/**
+ * Moves all selected entities with the given data for the scale
+ * modification.
+ */
+bool RS_Modification::scale(RS_ScaleData& data, const QList<RS_Entity*> &entitiesList, bool forPreviewOnly, LC_DocumentModificationBatch& ctx) {
+    QList<RS_Entity*> entitiesToScale;
+    QList<RS_Entity*> createdEntities;
+
+    for(auto e: entitiesList){
+        RS_Entity* entityToScale = e;
+        if (e->rtti() == RS2::EntityImage) {
+            entityToScale = getClone(forPreviewOnly, e);
+            createdEntities.append(entityToScale);
+        }
+        else if ( data.isotropicScaling ) {
+            // do nothing, scale original entity
+        }
+        else {
+            const RS2::EntityType rtti = e->rtti();
+            if (rtti == RS2::EntityCircle ) {
+                //non-isotropic scaling, replacing selected circles with ellipses
+                const auto* c =dynamic_cast<RS_Circle*>(e);
+                entityToScale = new RS_Ellipse{nullptr,
+                                               {c->getCenter(), {c->getRadius(),0.},
+                                                1.,
+                                                0., 0., false}};
+                createdEntities.append(entityToScale);
+            } else if (rtti == RS2::EntityArc ) {
+                //non-isotropic scaling, replacing selected arcs with ellipses
+                const auto *c =dynamic_cast<RS_Arc*>(e);
+                entityToScale = new RS_Ellipse{nullptr,
+                                               {c->getCenter(),
+                                                {c->getRadius(),0.},
+                                                1.0,
+                                                c->getAngle1(),
+                                                c->getAngle2(),
+                                                c->isReversed()}};
+                createdEntities.append(entityToScale);
+            }
+            // todo - non isotropicScaling - blocks? splines? images?  Should they be also affected?
+        }
+        entitiesToScale.push_back(entityToScale);
+    }
+
+    const int numberOfCopies = data.obtainNumberOfCopies();
+
+    // Create new entities
+    for(const RS_Entity* e: entitiesToScale) {
+        if (e != nullptr) {
+            for (int num= 1; num <= numberOfCopies; num++) {
+                RS_Entity* clone = getClone(forPreviewOnly, e);
+                clone->scale(data.referencePoint, RS_Math::pow(data.factor, num));
+                ctx += clone;
+            }
+        }
+    }
+
+    // delete temporary entities created for scale
+    for (const auto e:createdEntities) {
+        delete e;
+    }
+
+    if (!data.keepOriginals){
+       ctx -= entitiesList;
+    }
+
     return true;
 }
 
 /**
- * Moves all selected entities with the given data for the scale
- * modification.
- */
-bool RS_Modification::scale(RS_ScaleData& data, bool forPreviewOnly, const bool keepSelected) {
-    if (container == nullptr) {
-        RS_DEBUG->print(RS_Debug::D_WARNING,
-                        "RS_Modification::scale: no valid container");
-        return false;
-    }
-    
-    std::vector<RS_Entity*> selectedEntities;
-    container->collectSelected(selectedEntities, false);
-    return scale(data, selectedEntities, forPreviewOnly, keepSelected);
-}
-/**
- * Moves all selected entities with the given data for the scale
- * modification.
- */
-bool RS_Modification::scale(RS_ScaleData& data, const std::vector<RS_Entity*> &entitiesList, bool forPreviewOnly, const bool keepSelected) {
-    std::vector<RS_Entity*> selectedList,clonesList;
-
-    for(auto ec: entitiesList){
-        if ( !data.isotropicScaling ) {
-            RS2::EntityType rtti = ec->rtti();
-            if (rtti == RS2::EntityCircle ) {
-                //non-isotropic scaling, replacing selected circles with ellipses
-                auto* c=dynamic_cast<RS_Circle*>(ec);
-                ec= new RS_Ellipse{container,
-                                   {c->getCenter(), {c->getRadius(),0.},
-                                    1.,
-                                    0., 0., false}};
-            } else if (rtti == RS2::EntityArc ) {
-                //non-isotropic scaling, replacing selected arcs with ellipses
-                auto *c=dynamic_cast<RS_Arc*>(ec);
-                ec= new RS_Ellipse{container,
-                                   {c->getCenter(),
-                                    {c->getRadius(),0.},
-                                    1.0,
-                                    c->getAngle1(),
-                                    c->getAngle2(),
-                                    c->isReversed()}};
-            }
-        }
-        if (ec->rtti() == RS2::EntityImage) {
-            ec = getClone(forPreviewOnly, ec);
-        }
-        selectedList.push_back(ec);
-    }
-
-    int numberOfCopies = data.obtainNumberOfCopies();
-
-    // Create new entities
-    for(RS_Entity* e: selectedList) {
-        if (e != nullptr) {
-            for (int num= 1; num <= numberOfCopies; num++) {
-                RS_Entity* ec = getClone(forPreviewOnly, e);
-                ec->scale(data.referencePoint, RS_Math::pow(data.factor, num));
-                clonesList.push_back(ec);
-            }
-        }
-    }
-    selectedList.clear();
-    setupModifiedClones(clonesList, data, forPreviewOnly, keepSelected);
-    deleteOriginalAndAddNewEntities(clonesList, entitiesList, forPreviewOnly, !data.keepOriginals);
-    clonesList.clear();
-
-    return true; 
-}
-/**
  * Mirror all selected entities with the given data for the mirror
  * modification.
  */
-bool RS_Modification::mirror(RS_MirrorData& data, bool keepSelected) {
-    if (!container) {
-        RS_DEBUG->print(RS_Debug::D_WARNING,"RS_Modification::mirror: no valid container");
-        return false;
-    }
 
-    std::vector<RS_Entity*> selectedEntities;
-    container->collectSelected(selectedEntities, false);
-    return mirror(data, selectedEntities, false, keepSelected);
-}
-
-bool RS_Modification::mirror(RS_MirrorData& data, const std::vector<RS_Entity*> &entitiesList, bool forPreviewOnly, bool keepSelected) {
-
-    std::vector<RS_Entity*> clonesList;
-
-//    int numberOfCopies = obtainNumberOfCopies(data);
-    int numberOfCopies = 1; // fixme - think about support of multiple copies.... may it be be something like moving the central point of selection? Like mirror+move?
+bool RS_Modification::mirror(RS_MirrorData& data, const QList<RS_Entity*>& entitiesList, bool forPreviewOnly, LC_DocumentModificationBatch& ctx) {
+    //    int numberOfCopies = obtainNumberOfCopies(data);
+    const int numberOfCopies = 1;
+    // fixme - think about support of multiple copies.... may it be be something like moving the central point of selection? Like mirror+move?
 
     // Create new entities
-
-    for(auto e: entitiesList){
-        for (int num=1; num<=numberOfCopies; ++num) {
-            RS_Entity* ec = getClone(forPreviewOnly, e);
-            ec->mirror(data.axisPoint1, data.axisPoint2);
-            clonesList.push_back(ec);
+    for (const auto e : entitiesList) {
+        for (int num = 1; num <= numberOfCopies; ++num) {
+            RS_Entity* clone = getClone(forPreviewOnly, e);
+            clone->mirror(data.axisPoint1, data.axisPoint2);
+            ctx += clone;
         }
     }
 
-    setupModifiedClones(clonesList, data, forPreviewOnly, keepSelected);
+    if (!data.keepOriginals) {
+        ctx -= entitiesList;
+    }
 
-    deleteOriginalAndAddNewEntities(clonesList, entitiesList, forPreviewOnly, !data.keepOriginals);
-    clonesList.clear();
     return true;
 }
 
 /**
  * Rotates entities around two centers with the given parameters.
  */
-bool RS_Modification::rotate2(RS_Rotate2Data& data,[[maybe_unused]] bool forPreviewOnly, bool keepSelected) {
-    if (!container) {
-        RS_DEBUG->print(RS_Debug::D_WARNING, "RS_Modification::rotate2: no valid container");
-        return false;
-    }
-    std::vector<RS_Entity*> selectedEntities;
-    container->collectSelected(selectedEntities, false);
-    return rotate2(data, selectedEntities, false, keepSelected);
-}
+bool RS_Modification::rotate2(RS_Rotate2Data& data, const QList<RS_Entity*> &entitiesList, bool forPreviewOnly, LC_DocumentModificationBatch& ctx) {
 
-bool RS_Modification::rotate2(RS_Rotate2Data& data, const std::vector<RS_Entity*> &entitiesList, bool forPreviewOnly, bool keepSelected) {
-
-    std::vector<RS_Entity*> clonesList;
-
-    int numberOfCopies = data.obtainNumberOfCopies();
+    const int numberOfCopies = data.obtainNumberOfCopies();
 
     // Create new entities
-
-    for(auto e: entitiesList){
+    for(const auto e: entitiesList){
         for (int num= 1; num <= numberOfCopies; num++) {
-            RS_Entity* ec = getClone(forPreviewOnly, e);
+            RS_Entity* clone = getClone(forPreviewOnly, e);
 
-            double angle1ForCopy = /*data.sameAngle1ForCopies ?  data.angle1 :*/ data.angle1 * num;
-            double angle2ForCopy = data.sameAngle2ForCopies ?  data.angle2 : data.angle2 * num;
-
-            ec->rotate(data.center1, angle1ForCopy);
+            const double angle1ForCopy = /*data.sameAngle1ForCopies ?  data.angle1 :*/ data.angle1 * num;
+            const double angle2ForCopy = data.sameAngle2ForCopies ?  data.angle2 : data.angle2 * num;
+            clone->rotate(data.center1, angle1ForCopy);
 
             RS_Vector center2 = data.center2;
             center2.rotate(data.center1, angle1ForCopy);
+            clone->rotate(center2, angle2ForCopy);
 
-            ec->rotate(center2, angle2ForCopy);
-
-            clonesList.push_back(ec);
+            ctx += clone;
         }
     }
-    setupModifiedClones(clonesList, data, forPreviewOnly, keepSelected);
 
-    deleteOriginalAndAddNewEntities(clonesList, entitiesList, forPreviewOnly, !data.keepOriginals);
-    clonesList.clear();
+    if (!data.keepOriginals) {
+        ctx -= entitiesList;
+    }
     return true;
 }
 
-void RS_Modification::deleteOriginalAndAddNewEntities(const std::vector<RS_Entity*> &addList, const std::vector<RS_Entity*> &originalEntities, bool addOnly, bool deleteOriginals, bool forceUndoable){
-    LC_UndoSection undo(document, viewport, handleUndo); // bundle remove/add entities in one undoCycle
-    if (addOnly) {
-        for (RS_Entity *e: addList) {
-            if (e != nullptr) {
-                container->addEntity(e);
-                undo.addUndoable(e);
-            }
+void RS_Modification::deleteOriginalAndAddNewEntities(const QList<RS_Entity*>& clonesList, const QList<RS_Entity*>& originalEntities, bool addOnly,
+                                                      bool deleteOriginals) const {
+    LC_UndoSection undo(m_document, m_viewport, m_handleUndo); // bundle remove/add entities in one undoCycle
+    if (deleteOriginals) {
+        for (const auto e : originalEntities) {
+            undo.undoableDelete(e);
         }
-    } else {
-        deselectOriginals(originalEntities,deleteOriginals);
-        addNewEntities(addList, forceUndoable);
     }
+    else {
+        for (const auto e : originalEntities) {
+            m_document->unselect(e);
+        }
+    }
+    addNewEntities(clonesList, undo, addOnly);
 }
 
 /**
  * Moves and rotates entities with the given parameters.
  */
-bool RS_Modification::moveRotate(RS_MoveRotateData& data, bool previewOnly, [[maybe_unused]]RS_EntityContainer* previewContainer, bool keepSelected) {
-    if (!container) {
-        RS_DEBUG->print(RS_Debug::D_WARNING,
-                        "RS_Modification::moveRotate: no valid container");
-        return false;
-    }
-
-    std::vector<RS_Entity*> selectedEntities;
-    container->collectSelected(selectedEntities, false);
-    return moveRotate(data, selectedEntities, previewOnly, keepSelected);
-}
-
-bool RS_Modification::moveRotate(RS_MoveRotateData &data, const std::vector<RS_Entity*> &entitiesList, bool forPreviewOnly, bool keepSelected){
-    std::vector<RS_Entity*> clonesList;
-
-    int numberOfCopies = data.obtainNumberOfCopies();
+bool RS_Modification::moveRotate(RS_MoveRotateData &data, const QList<RS_Entity*> &entitiesList, bool forPreviewOnly, LC_DocumentModificationBatch& ctx){
+     const int numberOfCopies = data.obtainNumberOfCopies();
 
     // Create new entities
-    for(auto e: entitiesList){
-        for (int num=1; num <= numberOfCopies; ++num) {
-            RS_Entity* ec = getClone(forPreviewOnly, e);
+    for (const auto entity : entitiesList) {
+        for (int num = 1; num <= numberOfCopies; ++num) {
+            RS_Entity* clone = getClone(forPreviewOnly, entity);
 
-            const RS_Vector &offset = data.offset * num;
-            ec->move(offset);
-            double angleForCopy = data.sameAngleForCopies ?  data.angle : data.angle * num;
-            ec->rotate(data.referencePoint + offset, angleForCopy);
+            const RS_Vector& offset = data.offset * num;
+            clone->move(offset);
+            const double angleForCopy = data.sameAngleForCopies ? data.angle : data.angle * num;
+            clone->rotate(data.referencePoint + offset, angleForCopy);
 
-            clonesList.push_back(ec);
+            ctx += clone;
         }
     }
 
-    setupModifiedClones(clonesList, data, forPreviewOnly, keepSelected);
-
-
-    deleteOriginalAndAddNewEntities(clonesList, entitiesList, forPreviewOnly, !data.keepOriginals);
-    clonesList.clear();
+    if (!data.keepOriginals) {
+        ctx -= entitiesList;
+    }
     return true;
-}
-
-/**
- * Deselects all selected entities and removes them if remove is true;
- *
- * @param remove true: Remove entities.
- */
-void RS_Modification::deselectOriginals(bool remove) {
-    LC_UndoSection undo(document, viewport,handleUndo);
-
-    for (auto e: *container) {
-        if (e != nullptr) {
-            if (e->isSelected()) {
-                e->setSelected(false);
-                if (remove) {
-                    e->changeUndoState();
-                    undo.addUndoable(e);
-                }
-            }
-        }
-    }
-}
-
-void RS_Modification::deselectOriginals(const std::vector<RS_Entity*> &entitiesList, bool remove) {
-    LC_UndoSection undo(document,viewport,handleUndo);
-
-    for (auto e: entitiesList) {
-        e->setSelected(false);
-        if (remove) {
-            e->changeUndoState();
-            undo.addUndoable(e);
-        }
-    }
 }
 
 /**
@@ -2203,19 +1990,20 @@ void RS_Modification::deselectOriginals(const std::vector<RS_Entity*> &entitiesL
  *
  * @param addList Entities to add.
  */
-void RS_Modification::addNewEntities(const std::vector<RS_Entity*>& addList, bool forceUndoable) {
-    LC_UndoSection undo( document, viewport, handleUndo || forceUndoable);
-
+void RS_Modification::addNewEntities(const QList<RS_Entity*>& addList, LC_UndoSection& undo, bool addOnly) const {
     for (RS_Entity* e: addList) {
-        if (e) {
-            container->addEntity(e);
-            undo.addUndoable(e);
+        if (e != nullptr) {
+            undo.undoableAdd(e);
+            if (!addOnly && e->getFlag(RS2::FlagSelected)) {
+                e->clearSelectionFlag(); // clear flag to force subsequent selection
+                m_document->select(e);
+            }
         }
     }
-
-    container->calculateBorders();
-
-    viewport->notifyChanged();
+    if (!addOnly) {
+        m_document->calculateBorders();
+        m_viewport->notifyChanged();
+    }
 }
 
 /**
@@ -2239,37 +2027,35 @@ LC_TrimResult RS_Modification::trim(const RS_Vector& trimCoord,
                                     bool both,
                                     bool forPreview) {
 
+    Q_ASSERT(trimEntity  != nullptr && limitEntity != nullptr);
+    if (both && !limitEntity->isAtomic()) {
+        RS_DEBUG->print(RS_Debug::D_WARNING, "RS_Modification::trim: limitEntity is not atomic");
+    }
+
     LC_TrimResult result;
-    if (trimEntity == nullptr || limitEntity == nullptr) {
-        RS_DEBUG->print(RS_Debug::D_WARNING,
-                        "RS_Modification::trim: At least one entity is nullptr");
+
+    if(trimEntity->isLocked()|| !trimEntity->isVisible()) {
         return result;
     }
 
-    if (both && !limitEntity->isAtomic()) {
-        RS_DEBUG->print(RS_Debug::D_WARNING,
-                        "RS_Modification::trim: limitEntity is not atomic");
-    }
-    if(trimEntity->isLocked()|| !trimEntity->isVisible()) return result;
-
     RS_VectorSolutions sol = findIntersection(*trimEntity, *limitEntity);
 
-//if intersection are in start or end point can't trim/extend in this point, remove from solution. sf.net #3537053
+    //if intersection are in start or end point can't trim/extend in this point, remove from solution. sf.net #3537053
     if (trimEntity->rtti()==RS2::EntityLine){
-        auto *lin = dynamic_cast<RS_Line *>(trimEntity);
+        const auto *line = dynamic_cast<RS_Line *>(trimEntity);
         for (unsigned int i=0; i< sol.size(); i++) {
             RS_Vector v = sol.at(i);
-            if (v == lin->getStartpoint()) {
+            if (v == line->getStartpoint()) {
                 sol.removeAt(i);
             }
-            else if (v == lin->getEndpoint()) {
+            else if (v == line->getEndpoint()) {
                 sol.removeAt(i);
             }
         }
     }
 
     if (!sol.hasValid()) {
-        return both ? trim( limitCoord, (RS_AtomicEntity*)limitEntity, trimCoord, trimEntity, false, forPreview) : result;
+        return both ? trim( limitCoord, static_cast<RS_AtomicEntity*>(limitEntity), trimCoord, trimEntity, false, forPreview) : result;
     }
 
     RS_AtomicEntity* trimmed1 = nullptr;
@@ -2281,7 +2067,7 @@ LC_TrimResult RS_Modification::trim(const RS_Vector& trimCoord,
         // convert a circle into a trimmable arc, need to start from intersections
         trimmed1 = trimCircle(dynamic_cast<RS_Circle*>(trimEntity), trimCoord, sol);
     } else {
-        trimmed1 = (RS_AtomicEntity*)trimEntity->clone();
+        trimmed1 = static_cast<RS_AtomicEntity*>(trimEntity->clone());
         trimmed1->setHighlighted(false);
     }
 
@@ -2312,9 +2098,9 @@ LC_TrimResult RS_Modification::trim(const RS_Vector& trimCoord,
     }
 
     // remove limit entity from view:
-    bool trimBoth= both && !limitEntity->isLocked() && limitEntity->isVisible();
+    const bool trimBoth= both && !limitEntity->isLocked() && limitEntity->isVisible();
     if (trimBoth) {
-        trimmed2 = (RS_AtomicEntity*)limitEntity->clone();
+        trimmed2 = static_cast<RS_AtomicEntity*>(limitEntity->clone());
         if (!forPreview) {
             trimmed2->setHighlighted(false);
         }
@@ -2333,27 +2119,20 @@ LC_TrimResult RS_Modification::trim(const RS_Vector& trimCoord,
 
         trimEnding(limitCoord, trimmed2, is2);
     }
-
     if (!forPreview) {
-        // add new trimmed trim entity:
-        container->addEntity(trimmed1);
-
-        // add new trimmed limit entity:
-        if (trimBoth) {
-            container->addEntity(trimmed2);
-        }
-    }
-    if (!forPreview) {
-        if (handleUndo) {
-            LC_UndoSection undo(document,viewport);
-
-            undo.addUndoable(trimmed1);
-            trimEntity->setUndoState(true);
-            undo.addUndoable(trimEntity);
+        if (m_handleUndo) {
+            const LC_UndoSection undo(m_document,m_viewport);
+            undo.undoableReplace(trimEntity,trimmed1);
             if (trimBoth) {
-                undo.addUndoable(trimmed2);
-                limitEntity->setUndoState(true);
-                undo.addUndoable(limitEntity);
+                undo.undoableReplace(limitEntity, trimmed2);
+            }
+        }
+        else {
+            // add new trimmed trim entity:
+            m_document->addEntity(trimmed1);
+            // add new trimmed limit entity:
+            if (trimBoth) {
+                m_document->addEntity(trimmed2);
             }
         }
     }
@@ -2368,12 +2147,12 @@ LC_TrimResult RS_Modification::trim(const RS_Vector& trimCoord,
         result.intersection2 = trimmed1->getEndpoint();
     }
 
-    viewport->notifyChanged();
+    m_viewport->notifyChanged();
     return result;
 }
 
 void RS_Modification::trimEnding(const RS_Vector &trimCoord, RS_AtomicEntity *trimmed1, const RS_Vector &is) const {
-    RS2::Ending ending = trimmed1->getTrimPoint(trimCoord, is);
+    const RS2::Ending ending = trimmed1->getTrimPoint(trimCoord, is);
     switch (ending) {
         case RS2::EndingStart: {
             trimmed1->trimStartpoint(is);
@@ -2388,7 +2167,6 @@ void RS_Modification::trimEnding(const RS_Vector &trimCoord, RS_AtomicEntity *tr
     }
 }
 
-
 /**
  * Trims or extends the given trimEntity by the given amount.
  *
@@ -2401,8 +2179,7 @@ RS_Entity* RS_Modification::trimAmount(const RS_Vector& trimCoord,
                                  RS_AtomicEntity* trimEntity,
                                  double dist,
                                  bool trimBoth,
-                                 bool &trimStart, bool &trimEnd,
-                                 bool forPreview) {
+                                 bool &trimStart, bool &trimEnd) const {
 
     if (!trimEntity){
         RS_DEBUG->print(RS_Debug::D_WARNING, "RS_Modification::trimAmount: Entity is nullptr");
@@ -2416,15 +2193,14 @@ RS_Entity* RS_Modification::trimAmount(const RS_Vector& trimCoord,
     RS_AtomicEntity *trimmed = nullptr;
 
     // remove trim entity:
-    trimmed = (RS_AtomicEntity *) trimEntity->clone();
+    trimmed = static_cast<RS_AtomicEntity*>(trimEntity->clone());
 
     // trim trim entity
-
     trimStart = false;
     trimEnd = false;
     if (trimBoth){
-        RS_Vector isStart = trimmed->getNearestDist(-dist, trimmed->getStartpoint());
-        RS_Vector isEnd = trimmed->getNearestDist(-dist, trimmed->getEndpoint());
+        const RS_Vector isStart = trimmed->getNearestDist(-dist, trimmed->getStartpoint());
+        const RS_Vector isEnd = trimmed->getNearestDist(-dist, trimmed->getEndpoint());
 
         trimmed->trimStartpoint(isStart);
         trimmed->trimEndpoint(isEnd );
@@ -2432,7 +2208,7 @@ RS_Entity* RS_Modification::trimAmount(const RS_Vector& trimCoord,
         trimEnd = true;
     }
     else {
-        RS_Vector is = trimmed->getNearestDist(-dist, trimCoord);
+        const RS_Vector is = trimmed->getNearestDist(-dist, trimCoord);
 
         if (trimCoord.distanceTo(trimmed->getStartpoint()) <
             trimCoord.distanceTo(trimmed->getEndpoint())){
@@ -2444,53 +2220,43 @@ RS_Entity* RS_Modification::trimAmount(const RS_Vector& trimCoord,
         }
     }
 
-    if (!forPreview){
-        // add new trimmed trim entity:
-        if (container != nullptr){
-            container->addEntity(trimmed);
-        }
-
-        if (handleUndo){
-            LC_UndoSection undo(document,viewport);
-            undo.addUndoable(trimmed);
-            trimEntity->setUndoState(true);
-            undo.addUndoable(trimEntity);
+    // add new trimmed trim entity:
+    if (m_handleUndo) {
+        const LC_UndoSection undo(m_document, m_viewport);
+        undo.undoableReplace(trimEntity,trimmed);
+    }
+    else {
+        if (m_document != nullptr) {
+            m_document->addEntity(trimmed);
         }
     }
-    viewport->notifyChanged();
+    m_viewport->notifyChanged();
     return trimmed;
 }
-
-
 
 /**
  * Cuts the given entity at the given point.
  */
-bool RS_Modification::cut(const RS_Vector& cutCoord,
-                          RS_AtomicEntity* cutEntity) {
+bool RS_Modification::cut(const RS_Vector& cutCoord, RS_AtomicEntity* cutEntity, LC_DocumentModificationBatch& ctx){
 
 #ifndef EMU_C99
     using std::isnormal;
 #endif
 
-    if (cutEntity == nullptr) {
-        RS_DEBUG->print(RS_Debug::D_WARNING,
-                        "RS_Modification::cut: Entity is nullptr");
+    Q_ASSERT(cutEntity != nullptr);
+
+    if(cutEntity->isLocked() || ! cutEntity->isVisible()) {
         return false;
     }
-    if(cutEntity->isLocked() || ! cutEntity->isVisible()) return false;
-
     if (!cutCoord.valid) {
-        RS_DEBUG->print(RS_Debug::D_WARNING,
-                        "RS_Modification::cut: Point invalid.");
+        RS_DEBUG->print(RS_Debug::D_WARNING, "RS_Modification::cut: Point invalid.");
         return false;
     }
 
     // cut point is at endpoint of entity:
     if (cutCoord.distanceTo(cutEntity->getStartpoint())<RS_TOLERANCE ||
         cutCoord.distanceTo(cutEntity->getEndpoint())<RS_TOLERANCE) {
-        RS_DEBUG->print(RS_Debug::D_WARNING,
-                        "RS_Modification::cut: Cutting point on endpoint");
+        RS_DEBUG->print(RS_Debug::D_WARNING, "RS_Modification::cut: Cutting point on endpoint");
         return false;
     }
 
@@ -2503,12 +2269,10 @@ bool RS_Modification::cut(const RS_Vector& cutCoord,
     switch (cutEntity->rtti()) {
         case RS2::EntityCircle: {
             // convert to a whole 2 pi range arc
-            auto *originalCircle = dynamic_cast<RS_Circle *>(cutEntity);
+            const auto *originalCircle = dynamic_cast<RS_Circle *>(cutEntity);
             a = originalCircle->getCenter().angleTo(cutCoord);
             cut1 = new RS_Arc(cutEntity->getParent(),
-                              RS_ArcData(originalCircle->getCenter(),
-                                         originalCircle->getRadius(),
-                                         a, a + 2. * M_PI, false));
+                RS_ArcData(originalCircle->getCenter(), originalCircle->getRadius(), a, a + 2. * M_PI, false));
             cut1->setPen(originalPen);
             cut1->setLayer(originalLayer);
             // cut2 is nullptr by default
@@ -2518,7 +2282,7 @@ bool RS_Modification::cut(const RS_Vector& cutCoord,
             // interpolation spline can be closed
             // so we cannot use the default implementation
             cut2 = static_cast<LC_SplinePoints*>(cutEntity)->cut(cutCoord);
-            cut1 = (RS_AtomicEntity *) cutEntity->clone();
+            cut1 = static_cast<RS_AtomicEntity*>(cutEntity->clone());
 
             cut1->setPen(originalPen);
             cut1->setLayer(originalLayer);
@@ -2558,35 +2322,23 @@ bool RS_Modification::cut(const RS_Vector& cutCoord,
         }
             // fall-through
         default:
-            cut1 = (RS_AtomicEntity*)cutEntity->clone();
-            cut2 = (RS_AtomicEntity*)cutEntity->clone();
+            cut1 = static_cast<RS_AtomicEntity*>(cutEntity->clone());
+            cut2 = static_cast<RS_AtomicEntity*>(cutEntity->clone());
 
             cut1->trimEndpoint(cutCoord);
             cut2->trimStartpoint(cutCoord);
     }
+
     // add new cut entity:
-    container->addEntity(cut1);
+    ctx += cut1;
     if (cut2 != nullptr) {
-        container->addEntity(cut2);
+        ctx += cut2;
     }
 
-    if (handleUndo) {
-        LC_UndoSection undo(document, viewport);
-
-        undo.addUndoable(cut1);
-        if (cut2 != nullptr) {
-            undo.addUndoable(cut2);
-        }
-        cutEntity->setUndoState(true);
-        undo.addUndoable(cutEntity);
-    }
-
-    viewport->notifyChanged();
+    ctx -= cutEntity;
 
     return true;
 }
-
-
 
 /**
  * Stretching.
@@ -2595,35 +2347,30 @@ bool RS_Modification::cut(const RS_Vector& cutCoord,
 bool RS_Modification::stretch(const RS_Vector& firstCorner,
                               const RS_Vector& secondCorner,
                               const RS_Vector& offset,
-                              bool removeOriginals) {
+                              bool removeOriginals) const {
 
     if (!offset.valid) {
-        RS_DEBUG->print(RS_Debug::D_WARNING,
-                        "RS_Modification::stretch: Offset invalid");
+        RS_DEBUG->print(RS_Debug::D_WARNING, "RS_Modification::stretch: Offset invalid");
         return false;
     }
 
-    std::vector<RS_Entity*> addList;
+    QList<RS_Entity*> clonesList;
+    QList<RS_Entity*> originalEntities;
 
-// Create new entities
-    for(auto e: *container){ // fixme - sand - iteration over all entities in container
-        if (e && e->isVisible() && !e->isLocked()) {
+    // Create new entities
+    for(auto e: *m_document){ // fixme - sand - iteration over all entities in container???
+        if (e != nullptr && e->isVisible() && !e->isLocked()) {
             if ((e->isInWindow(firstCorner, secondCorner) ||
                 e->hasEndpointsWithinWindow(firstCorner, secondCorner))) {
-                RS_Entity* ec = e->clone(); // fixme - sand - should we use proxy there?
-                ec->stretch(firstCorner, secondCorner, offset);
-                addList.push_back(ec);
-                e->setSelected(true);
+                RS_Entity* clone = e->clone(); // fixme - sand - should we use proxy there?
+                clone->stretch(firstCorner, secondCorner, offset);
+                clonesList.push_back(clone);
+                originalEntities.push_back(e);
             }
         }
     }
 
-    LC_UndoSection undo( document,viewport, handleUndo); // bundle remove/add entities in one undoCycle
-    if (removeOriginals) { // todo - so far, it seems better to stay with
-        deselectOriginals(true); // fixme - entities are not selected, so this is error - fix it
-    }
-    addNewEntities(addList);
-
+    deleteOriginalAndAddNewEntities(clonesList, originalEntities, false, removeOriginals);
     return true;
 }
 
@@ -2636,31 +2383,20 @@ bool RS_Modification::stretch(const RS_Vector& firstCorner,
  * @param entity2 Second entity of the corner.
  * @param data Lengths and trim flag.
  */
-LC_BevelResult* RS_Modification::bevel(
-    const RS_Vector &coord1, RS_AtomicEntity *entity1,
-    const RS_Vector &coord2, RS_AtomicEntity *entity2,
-    RS_BevelData &data,
-    bool previewOnly){
-
+LC_BevelResult* RS_Modification::bevel(const RS_Vector& coord1, RS_AtomicEntity* entity1, const RS_Vector& coord2, RS_AtomicEntity* entity2, RS_BevelData& data,
+                                       bool previewOnly) const {
     RS_DEBUG->print("RS_Modification::bevel");
 
-    if (!(entity1 && entity2)){
-        RS_DEBUG->print(RS_Debug::D_WARNING,
-                        "RS_Modification::bevel: At least one entity is nullptr");
-        return nullptr;
-    }
-    if (entity1->isLocked() || !entity1->isVisible()) {
-        return nullptr;
-    }
-    if (entity2->isLocked() || !entity2->isVisible()) {
+    Q_ASSERT(entity1 != nullptr && entity2 != nullptr);
+
+    if (entity1->isLocked() || !entity1->isVisible() || entity2->isLocked() || !entity2->isVisible()) {
         return nullptr;
     }
 
-    RS_EntityContainer *baseContainer = container;
+    RS_EntityContainer *baseContainer = m_document;
     bool isPolyline = false;
-//    bool isClosedPolyline = false;
 
-    LC_UndoSection undo(document, viewport,handleUndo);
+    const LC_UndoSection undo(m_document, m_viewport,m_handleUndo && !previewOnly);
 
     // find out whether we're bevelling within a polyline:
 
@@ -2681,27 +2417,19 @@ LC_BevelResult* RS_Modification::bevel(
         // clone polyline for undo
         auto *cl = dynamic_cast<RS_EntityContainer *>(entity1->getParent()->clone());
         baseContainer = cl;
-        if (handleUndo && !previewOnly){
-            container->addEntity(cl);
-            //cl->setUndoState(true);
-            undo.addUndoable(cl);
-
-            undo.addUndoable(entity1->getParent());
-            entity1->getParent()->setUndoState(true);
-
+        if (m_handleUndo && !previewOnly){
+            undo.undoableReplace(entity1->getParent(), cl);
         }
 
-        entity1 = (RS_AtomicEntity *) baseContainer->entityAt(entity1->getParent()->findEntity(entity1));
-        entity2 = (RS_AtomicEntity *) baseContainer->entityAt(entity2->getParent()->findEntity(entity2));
+        entity1 = static_cast<RS_AtomicEntity*>(baseContainer->entityAt(entity1->getParent()->findEntity(entity1)));
+        entity2 = static_cast<RS_AtomicEntity*>(baseContainer->entityAt(entity2->getParent()->findEntity(entity2)));
 
-        //baseContainer = entity1->getParent();
         isPolyline = true;
-//        isClosedPolyline = ((RS_Polyline*)entity1)->isClosed();
     }
 
     RS_DEBUG->print("RS_Modification::bevel: getting intersection");
 
-    RS_VectorSolutions sol =
+    const RS_VectorSolutions sol =
         RS_Information::getIntersection(entity1, entity2, false);
 
     if (sol.getNumber() == 0){
@@ -2711,7 +2439,6 @@ LC_BevelResult* RS_Modification::bevel(
 
     RS_AtomicEntity *trimmed1 = nullptr;
     RS_AtomicEntity *trimmed2 = nullptr;
-
 
     result->polyline = isPolyline;
 
@@ -2723,21 +2450,9 @@ LC_BevelResult* RS_Modification::bevel(
         //bevel can't be part of the polyline
         data.trim = true;
     } else {
-        trimmed1 = (RS_AtomicEntity *) entity1->clone();
-        trimmed2 = (RS_AtomicEntity *) entity2->clone();
+        trimmed1 = static_cast<RS_AtomicEntity*>(entity1->clone());
+        trimmed2 = static_cast<RS_AtomicEntity*>(entity2->clone());
     }
-
-//    // remove trim entity (on screen):
-//    if (data.trim || isPolyline){
-//        if (graphicView){
-//            if (isPolyline){
-//                graphicView->deleteEntity(baseContainer);
-//            } else {
-//                graphicView->deleteEntity(entity1);
-//                graphicView->deleteEntity(entity2);
-//            }
-//        }
-//    }
 
     // trim entities to intersection
     RS_DEBUG->print("RS_Modification::bevel: trim entities to intersection 01");
@@ -2745,7 +2460,7 @@ LC_BevelResult* RS_Modification::bevel(
     RS_Vector is = sol.getClosest(coord2);
     result->intersectionPoint = is;
 
-    RS2::Ending ending1 = trimmed1->getTrimPoint(coord1, is);
+    const RS2::Ending ending1 = trimmed1->getTrimPoint(coord1, is);
     switch (ending1) {
         case RS2::EndingStart:
             trimmed1->trimStartpoint(is);
@@ -2764,7 +2479,7 @@ LC_BevelResult* RS_Modification::bevel(
     RS_DEBUG->print("RS_Modification::bevel: trim entities to intersection 02");
     bool start2 = false;
     is = sol.getClosest(coord1);
-    RS2::Ending ending2 = trimmed2->getTrimPoint(coord2, is);
+    const RS2::Ending ending2 = trimmed2->getTrimPoint(coord2, is);
     switch (ending2) {
         case RS2::EndingStart:
             trimmed2->trimStartpoint(is);
@@ -2782,8 +2497,8 @@ LC_BevelResult* RS_Modification::bevel(
 
     // find definitive bevel points
     RS_DEBUG->print("RS_Modification::bevel: find definitive bevel points");
-    RS_Vector bp1 = trimmed1->getNearestDist(data.length1, start1);
-    RS_Vector bp2 = trimmed2->getNearestDist(data.length2, start2);
+    const RS_Vector bp1 = trimmed1->getNearestDist(data.length1, start1);
+    const RS_Vector bp2 = trimmed2->getNearestDist(data.length2, start2);
 
     // final trim:
     RS_DEBUG->print("RS_Modification::bevel: final trim");
@@ -2812,11 +2527,10 @@ LC_BevelResult* RS_Modification::bevel(
 
         // add new trimmed entities:
         if (!isPolyline && !previewOnly){
-            container->addEntity(trimmed1);
-            container->addEntity(trimmed2);
+            m_document->addEntity(trimmed1);
+            m_document->addEntity(trimmed2);
         }
     }
-
 
     // add bevel line:
     RS_DEBUG->print("RS_Modification::bevel: add bevel line");
@@ -2851,7 +2565,7 @@ LC_BevelResult* RS_Modification::bevel(
         idx = idx1;
 
         if (!previewOnly){
-            bevel->setSelected(baseContainer->isSelected());
+            selectClone(baseContainer, bevel);
             bevel->setLayer(baseContainer->getLayer());
             bevel->setPen(baseContainer->getPen(false));
         }
@@ -2869,7 +2583,7 @@ LC_BevelResult* RS_Modification::bevel(
                 bevel->reverse();
             }
         }
-        baseContainer->insertEntity(idx + 1, bevel);
+        baseContainer->insertEntity(idx + 1, bevel); // fixme - selection - probably it's better check selection flag on insert?
     }
 
     result->trimmed1 = trimmed1;
@@ -2883,22 +2597,16 @@ LC_BevelResult* RS_Modification::bevel(
 
     RS_DEBUG->print("RS_Modification::bevel: handling undo");
 
-    if (handleUndo && !previewOnly){
-        if (!isPolyline && data.trim){
-            undo.addUndoable(trimmed1);
-            entity1->setUndoState(true);
-            undo.addUndoable(entity1);
-
-            undo.addUndoable(trimmed2);
-            entity2->setUndoState(true);
-            undo.addUndoable(entity2);
-        }
-
-        if (!isPolyline){
-            undo.addUndoable(bevel);
+    if (m_handleUndo && !previewOnly){
+        if (!isPolyline) {
+            if (data.trim){
+                undo.undoableReplace(entity2, trimmed1);
+                undo.undoableReplace(entity1, trimmed2);
+            }
+            undo.undoableAdd(bevel);
         }
     }
-//Do not delete trimmed* if are part of a polyline
+    //Do not delete trimmed* if are part of a polyline
     if (!(data.trim || isPolyline)){
         RS_DEBUG->print("RS_Modification::bevel: delete trimmed elements");
         delete trimmed1;
@@ -2906,11 +2614,9 @@ LC_BevelResult* RS_Modification::bevel(
         RS_DEBUG->print("RS_Modification::bevel: delete trimmed elements: ok");
     }
 
-    viewport->notifyChanged();
+    m_viewport->notifyChanged();
     return result;
 }
-
-
 
 /**
  * Rounds a corner.
@@ -2925,30 +2631,22 @@ LC_RoundResult* RS_Modification::round(const RS_Vector& coord,
                             RS_AtomicEntity* entity1,
                             const RS_Vector& coord2,
                             RS_AtomicEntity* entity2,
-                            RS_RoundData& data){
+                            RS_RoundData& data) const {
+    Q_ASSERT(entity1 != nullptr && entity2 != nullptr);
 
-    if (!(entity1 && entity2)){
-        RS_DEBUG->print(RS_Debug::D_WARNING,
-                        "RS_Modification::round: At least one entity is nullptr");
-        return nullptr;
-    }
-    if (entity1->isLocked() || !entity1->isVisible()) {
-        return nullptr;
-    }
-    if (entity2->isLocked() || !entity2->isVisible()) {
+    if (entity1->isLocked() || !entity1->isVisible() ||
+        entity2->isLocked() || !entity2->isVisible()) {
         return nullptr;
     }
 
     auto* result = new LC_RoundResult();
 
-    RS_EntityContainer *baseContainer = container;
+    RS_EntityContainer *baseContainer = m_document;
     bool isPolyline = false;
-//    bool isClosedPolyline = false;
+    const LC_UndoSection undo(m_document, m_viewport,m_handleUndo);
 
-    LC_UndoSection undo(document, viewport,handleUndo);
-
-    auto parent1 = entity1->getParent();
-    auto parent2 = entity2->getParent();
+    const auto parent1 = entity1->getParent();
+    const auto parent2 = entity2->getParent();
     // find out whether we're rounding within a polyline:
     if (parent1 != nullptr &&  parent1->rtti() == RS2::EntityPolyline){
 
@@ -2961,60 +2659,53 @@ LC_RoundResult* RS_Modification::round(const RS_Vector& coord,
         }
 
         // clone polyline for undo
-        auto cl = dynamic_cast<RS_EntityContainer *>(parent1->clone());
+        const auto cl = dynamic_cast<RS_EntityContainer *>(parent1->clone());
         baseContainer = cl;
 
-        if (handleUndo){
-            container->addEntity(cl);
-            undo.addUndoable(cl);
-            undo.addUndoable(parent1);
-            parent1->setUndoState(true);
+        if (m_handleUndo){
+            undo.undoableReplace(parent1, cl);
         }
 
-        int index1 = parent1->findEntity(entity1);
+        const int index1 = parent1->findEntity(entity1);
         entity1 = static_cast<RS_AtomicEntity*>(baseContainer->entityAt(index1));
 
-        int index2 = parent2->findEntity(entity2);
+        const int index2 = parent2->findEntity(entity2);
         entity2 = static_cast<RS_AtomicEntity*>(baseContainer->entityAt(index2));
 
         isPolyline = true;
         result->polyline = true;
-//        isClosedPolyline = ((RS_Polyline*)entity1->getParent())->isClosed();
     }
 
     // create 2 tmp parallels
-    RS_Creation creation(nullptr, nullptr);
-    RS_Entity *par1 = creation.createParallel(coord, data.radius, 1, entity1);
-    RS_Entity *par2 = creation.createParallel(coord, data.radius, 1, entity2);
+    QList<RS_Entity*> parallels;
+    RS_Creation::createParallel(coord, data.radius, 1, entity1, false, parallels);
+    const RS_Entity *par1 =  parallels.empty()? nullptr: parallels.front();
+    parallels.clear();
+
+    RS_Creation::createParallel(coord, data.radius, 1, entity2, false, parallels);
+    const RS_Entity *par2 = parallels.empty()? nullptr: parallels.front();
 
     if ((par1 == nullptr) || (par2 == nullptr)) {
         result->error = LC_RoundResult::NO_PARALLELS;
         return result;
     }
 
-    RS_VectorSolutions sol2 =
-        RS_Information::getIntersection(entity1, entity2, false);
+    const RS_VectorSolutions sol2 = RS_Information::getIntersection(entity1, entity2, false);
+    const RS_VectorSolutions sol = RS_Information::getIntersection(par1, par2, false);
 
-    RS_VectorSolutions sol =
-        RS_Information::getIntersection(par1, par2, false);
-
-    if (sol.getNumber() == 0){
+    if (sol.getNumber() == 0) {
         result->error = LC_RoundResult::ERR_NO_INTERSECTION;
         return result;
     }
 
     // there might be two intersections: choose the closest:
-    RS_Vector is = sol.getClosest(coord);
-    RS_Vector p1 = entity1->getNearestPointOnEntity(is, false);
-    RS_Vector p2 = entity2->getNearestPointOnEntity(is, false);
-    double ang1 = is.angleTo(p1);
-    double ang2 = is.angleTo(p2);
-    bool reversed = (RS_Math::getAngleDifference(ang1, ang2) > M_PI);
-    auto *arc = new RS_Arc(baseContainer,
-                             RS_ArcData(is,
-                                        data.radius,
-                                        ang1, ang2,
-                                        reversed));
+    const RS_Vector is  = sol.getClosest(coord);
+    const RS_Vector p1  = entity1->getNearestPointOnEntity(is, false);
+    const RS_Vector p2  = entity2->getNearestPointOnEntity(is, false);
+    const double ang1   = is.angleTo(p1);
+    const double ang2   = is.angleTo(p2);
+    const bool reversed = (RS_Math::getAngleDifference(ang1, ang2) > M_PI);
+    auto* arc     = new RS_Arc(baseContainer, RS_ArcData(is, data.radius, ang1, ang2, reversed));
 
     result->round = arc;
 
@@ -3030,19 +2721,9 @@ LC_RoundResult* RS_Modification::round(const RS_Vector& coord,
             trimmed2 = static_cast<RS_AtomicEntity*>(entity2->clone());
         }
 
-     /*   // remove trim entity:
-        if (graphicView){
-            if (isPolyline){
-                graphicView->deleteEntity(baseContainer);
-            } else {
-                graphicView->deleteEntity(entity1);
-                graphicView->deleteEntity(entity2);
-            }
-        }*/
-
         // trim entities to intersection
         RS_Vector is2 = sol2.getClosest(coord2);
-        RS2::Ending ending1 = trimmed1->getTrimPoint(coord1, is2);
+        const RS2::Ending ending1 = trimmed1->getTrimPoint(coord1, is2);
         switch (ending1) {
             case RS2::EndingStart:
                 trimmed1->trimStartpoint(p1);
@@ -3059,7 +2740,7 @@ LC_RoundResult* RS_Modification::round(const RS_Vector& coord,
         }
 
         is2 = sol2.getClosest(coord1);
-        RS2::Ending ending2 = trimmed2->getTrimPoint(coord2, is2);
+        const RS2::Ending ending2 = trimmed2->getTrimPoint(coord2, is2);
         switch (ending2) {
             case RS2::EndingStart:
                 trimmed2->trimStartpoint(p2);
@@ -3074,23 +2755,14 @@ LC_RoundResult* RS_Modification::round(const RS_Vector& coord,
                 result->trim2Mode = LC_RoundResult::TRIM_CIRCLE;
                 break;
         }
-
-        // add new trimmed entities:
-        if (!isPolyline){
-            container->addEntity(trimmed1);
-            container->addEntity(trimmed2);
-        }
     }
 
-    // add rounding:
-    if (!isPolyline){
-        baseContainer->addEntity(arc);
-    } else {
+    if (isPolyline){
         // find out which base entity is before the rounding:
-        int idx1 = baseContainer->findEntity(trimmed1);
-        int idx2 = baseContainer->findEntity(trimmed2);
+        const int idx1 = baseContainer->findEntity(trimmed1);
+        const int idx2 = baseContainer->findEntity(trimmed2);
 
-        arc->setSelected(baseContainer->isSelected());
+        selectClone(baseContainer, arc);
         arc->setLayer(baseContainer->getLayer());
         arc->setPen(baseContainer->getPen(false));
 
@@ -3100,13 +2772,9 @@ LC_RoundResult* RS_Modification::round(const RS_Vector& coord,
         RS_DEBUG->print("RS_Modification::round: idx1==(int)baseContainer->count()-1: %d",
                         (int) (idx1 == (int) baseContainer->count() - 1));
 
-        bool insertAfter1 = ((idx1 < idx2 && idx1 != 0) || (idx1 == 0 && idx2 == 1) ||
+        const bool insertAfter1 = ((idx1 < idx2 && idx1 != 0) || (idx1 == 0 && idx2 == 1) ||
                              (idx2 == 0 && idx1 == (int) baseContainer->count() - 1));
 
-        // insert rounding at the right position:
-        //if ((idx1<idx2 && idx1!=0) ||
-        //	(idx2==0 && idx1==(int)baseContainer->count()-1)) {
-        //if (idx1<idx2) {
         if (insertAfter1){
             if (trimmed1->getEndpoint().distanceTo(arc->getStartpoint()) > 1.0e-4){
                 arc->reverse();
@@ -3127,40 +2795,36 @@ LC_RoundResult* RS_Modification::round(const RS_Vector& coord,
         static_cast<RS_Polyline*>(baseContainer)->updateEndpoints();
     }
 
-    if (handleUndo){
-        if (!isPolyline && data.trim){
-            undo.addUndoable(trimmed1);
-            entity1->setUndoState(true);
-            undo.addUndoable(entity1);
-
-            undo.addUndoable(trimmed2);
-            entity2->setUndoState(true);
-            undo.addUndoable(entity2);
+    if (m_handleUndo){
+        if (!isPolyline) {
+            if (data.trim) {
+                undo.undoableReplace(entity2, trimmed2);
+                undo.undoableReplace(entity1, trimmed1);
+            }
+            undo.undoableAdd(arc);
         }
-
-        if (!isPolyline){
-            undo.addUndoable(arc);
-        }
+    }
+    else {
+        // add new trimmed entities:
+         if (!isPolyline) {
+             m_document->addEntity(arc);
+         }
+         m_document->addEntity(trimmed1);
+         m_document->addEntity(trimmed2);
     }
 
     delete par1;
     delete par2;
 
-    viewport->notifyChanged();
+    m_viewport->notifyChanged();
     return result;
 }
-
 
 /**
  * Repetitive recursive block of code for the explode() method.
  */
-static void updateExplodedChildrenRecursively(
-        RS_EntityContainer* ec,
-        RS_Entity* e,
-        RS_Entity* clone,
-        RS2::ResolveLevel rl,
-        bool resolveLayer,
-        bool resolvePen) {
+static void updateExplodedChildrenRecursively(RS_EntityContainer* ec, RS_Entity* e, RS_Entity* clone, RS2::ResolveLevel rl, bool resolveLayer,
+                                              bool resolvePen) {
 
     if (ec == nullptr || e == nullptr || clone == nullptr) {
         return;
@@ -3188,60 +2852,25 @@ static void updateExplodedChildrenRecursively(
         for(RS_Entity* en: lc::LC_ContainerTraverser{*ec, rl}.entities()) {
             if (en != nullptr) {
                 // Run the same code for every children recursively
-                updateExplodedChildrenRecursively(ec, clone, en,
-                                                  rl, resolveLayer, resolvePen);
+                updateExplodedChildrenRecursively(ec, clone, en, rl, resolveLayer, resolvePen);
             }
         }
     }
 }
 
-/**
- * Removes the selected entity containers and adds the entities in them as
- * new single entities.
- * @param forceUndoableOperation - flag that indicates that explode should be in undo section regardless of handleUndo flag (for paste transform)
- */
-bool RS_Modification::explode(const bool remove /*= true*/,  const bool forceUndoableOperation) {
-    if (container == nullptr) {
-        RS_DEBUG->print(RS_Debug::D_WARNING,
-                        "RS_Modification::explode: no valid container for addinge entities");
-        return false;
-    }
-
-    std::vector<RS_Entity*> selectedEntities;
-    RS_Layer* activeLayer = graphic->getActiveLayer();
-
-    // Issue #2271 : copy/paste across documents is through the current active layer
-    // collectSelected() may fail, if the active layer is frozen
-    const bool isFrozen = activeLayer->isFrozen();
-    activeLayer->freeze(false);
-    container->collectSelected(selectedEntities, false);
-    activeLayer->freeze(isFrozen);
-
-    return explode(selectedEntities, remove, forceUndoableOperation);
-}
-
 // fixme - sand - decide how to treat keepSelected flag. So far one is ignored.
-bool RS_Modification::explode(const std::vector<RS_Entity*> &entitiesList, const bool remove, const bool forceUndoableOperation, [[maybe_unused]]const bool keepSelected) {
-    if (container->isLocked() || ! container->isVisible()) {
-        return false;
-    }
-
-    std::vector<RS_Entity*> clonesList;
-
-    for(auto e: entitiesList){
+bool RS_Modification::explode(const QList<RS_Entity*> &entitiesList, const bool remove, [[maybe_unused]]const bool keepSelected) const {
+    QList<RS_Entity*> clonesList;
+    for(const auto e: entitiesList){
         if (e->isContainer()) {
             // add entities from container:
             auto* ec = static_cast<RS_EntityContainer*>(e);
-            //ec->setSelected(false);
 
-            // iterate and explode container:
-            //for (unsigned i2=0; i2<ec->count(); ++i2) {
-            //    RS_Entity* e2 = ec->entityAt(i2);
             RS2::ResolveLevel rl;
             bool resolvePen;
             bool resolveLayer;
 
-            auto containerType = ec->rtti();
+            const auto containerType = ec->rtti();
             switch (containerType) {
                 case RS2::EntityMText:
                 case RS2::EntityText:
@@ -3276,8 +2905,8 @@ bool RS_Modification::explode(const std::vector<RS_Entity*> &entitiesList, const
             for(RS_Entity* e2: entities) {
                 if (e2 != nullptr) {
                     RS_Entity* clone = e2->clone();
-                    clone->setSelected(false);
-                    clone->reparent(container);
+                    clone->clearSelectionFlag();
+                    clone->reparent(m_document);
 
                     clonesList.push_back(clone);
 
@@ -3287,76 +2916,49 @@ bool RS_Modification::explode(const std::vector<RS_Entity*> &entitiesList, const
                     // subjects to the current explode() call.
                     updateExplodedChildrenRecursively(ec, e2, clone,
                                                          rl, resolveLayer, resolvePen);
-/*
-                        if (resolveLayer) {
-                            clone->setLayer(ec->getLayer());
-                        } else {
-                            clone->setLayer(e2->getLayer());
-                        }
 
-//                        clone->setPen(ec->getPen(resolvePen));
-                        if (resolvePen) {
-                            clone->setPen(ec->getPen(true));
-                        } else {
-                            clone->setPen(e2->getPen(false));
-                        }
-
-						addList.push_back(clone);
-
-                        clone->update();
-*/
                 }
             }
         } else {
-            e->setSelected(false);
+            m_document->unselect(e); // fixme- selection - should it be called ? Check whether later e is deleted
         }
     }
-
-    deleteOriginalAndAddNewEntities(clonesList, entitiesList, false, remove, forceUndoableOperation);
+    // fixme - sand - review why explode deletes original atomic entities
+    deleteOriginalAndAddNewEntities(clonesList, entitiesList, false, remove);
     clonesList.clear();
-
-    container->updateInserts();
+    m_document->updateInserts();
     return true;
 }
 
-bool RS_Modification::explodeTextIntoLetters(bool keepSelected) {
-    if (container == nullptr) {
-        RS_DEBUG->print(RS_Debug::D_WARNING,
-                        "RS_Modification::explodeTextIntoLetters: no valid container for adding entities");
-        return false;
-    }
-
-    std::vector<RS_Entity*> selectedEntities;
-    container->collectSelected(selectedEntities, false);
-    return explodeTextIntoLetters(selectedEntities, keepSelected);
-}
-
-bool RS_Modification::explodeTextIntoLetters(const std::vector<RS_Entity*> &entitiesList, [[maybe_unused]]bool keepSelected) {
-    if(container->isLocked() || ! container->isVisible()) {
-        return false;
-    }
-    std::vector<RS_Entity*> clonesList;
-
-    for(auto e: entitiesList){
-        if (e->rtti()==RS2::EntityMText) {
-            // add letters of text:
-            auto text = dynamic_cast<RS_MText *>(e);
-            explodeTextIntoLetters(text, clonesList);
-        } else if (e->rtti()==RS2::EntityText) {
-            // add letters of text:
-            auto text = dynamic_cast<RS_Text *>(e);
-            explodeTextIntoLetters(text, clonesList);
-        } else {
-            e->setSelected(false);
+bool RS_Modification::explodeTextIntoLetters(const QList<RS_Entity*> &selectedEntitiesList, LC_DocumentModificationBatch& ctx) {
+    for (const auto e : selectedEntitiesList) { // fixme - create generic iterator function with lambda!
+        if (e == nullptr || e->isDeleted() || !e->isVisible()) {
+            continue;
+        }
+        const auto rtti = e->rtti();
+        switch (rtti) {
+            case (RS2::EntityMText): {
+                // add letters of text:
+                const auto text = dynamic_cast<RS_MText*>(e);
+                doExplodeTextIntoLetters(text, ctx);
+                ctx -= e; // originals are always deleted
+                break;
+            }
+            case (RS2::EntityText): {
+                // add letters of text:
+                const auto text = dynamic_cast<RS_Text*>(e);
+                doExplodeTextIntoLetters(text, ctx);
+                ctx -= e; // originals are always deleted
+                break;
+            }
+            default: {
+            }
         }
     }
-
-    deleteOriginalAndAddNewEntities(clonesList, entitiesList, false, true);
-    clonesList.clear();
     return true;
 }
 
-bool RS_Modification::explodeTextIntoLetters(RS_MText* text, std::vector<RS_Entity*>& addList) {
+bool RS_Modification::doExplodeTextIntoLetters(RS_MText* text, LC_DocumentModificationBatch& ctx) {
     if (text == nullptr) {
         return false;
     }
@@ -3365,31 +2967,29 @@ bool RS_Modification::explodeTextIntoLetters(RS_MText* text, std::vector<RS_Enti
     }
 
     // iterate though lines:
-    for(auto e2: *text){
+    for(const auto e2: *text){
         if (e2 == nullptr) {
             break;
         }
-
         // text lines:
         if (e2->rtti()==RS2::EntityContainer) {
-
-            auto line = dynamic_cast<RS_EntityContainer *>(e2);
+            const auto line = dynamic_cast<RS_EntityContainer *>(e2);
 
             // iterate though letters:
-            for(auto e3: *line){
+            for(const auto e3: *line){
                 if (e3 == nullptr) {
                     break;
                 }
 
                 if (e3->rtti()==RS2::EntityMText) { // super / sub texts:
-                    auto e3MText = dynamic_cast<RS_MText *>(e3);
-                    explodeTextIntoLetters(e3MText, addList);
+                    const auto e3MText = dynamic_cast<RS_MText *>(e3);
+                    doExplodeTextIntoLetters(e3MText, ctx);
                 }
                 else if (e3->rtti()==RS2::EntityInsert) {    // normal letters:
-                    auto letter = dynamic_cast<RS_Insert *>(e3);
+                    const auto letter = dynamic_cast<RS_Insert *>(e3);
 
-                    auto tl = new RS_MText(
-                        container,
+                    const auto letterAsText = new RS_MText(
+                        nullptr,
                         RS_MTextData(letter->getInsertionPoint(),
                                      text->getHeight(),
                                      100.0,
@@ -3401,11 +3001,11 @@ bool RS_Modification::explodeTextIntoLetters(RS_MText* text, std::vector<RS_Enti
                                      letter->getAngle(),
                                      RS2::Update));
 
-                    tl->setLayer(text->getLayer());
-                    tl->setPen(text->getPen(false));
+                    letterAsText->setLayer(text->getLayer());
+                    letterAsText->setPen(text->getPen(false));
 
-                    addList.push_back(tl);
-                    tl->update();
+                    ctx += letterAsText;
+                    letterAsText->update();
                 }
             }
         }
@@ -3414,27 +3014,21 @@ bool RS_Modification::explodeTextIntoLetters(RS_MText* text, std::vector<RS_Enti
     return true;
 }
 
-bool RS_Modification::explodeTextIntoLetters(RS_Text* text, std::vector<RS_Entity*>& addList) {
-
-    if (text == nullptr) {
+bool RS_Modification::doExplodeTextIntoLetters(RS_Text* text, LC_DocumentModificationBatch& ctx) {
+    if(text->isLocked() || ! text->isVisible()) {
         return false;
     }
 
-    if(text->isLocked() || ! text->isVisible()) return false;
-
     // iterate though letters:
-    for(auto e2: *text){
-
+    for(const auto e2: *text){
         if (e2 == nullptr) {
             break;
         }
 
         if (e2->rtti()==RS2::EntityInsert) {
-
-            auto letter = dynamic_cast<RS_Insert *>(e2);
-
-            auto tl = new RS_Text(
-                container,
+            const auto letter = dynamic_cast<RS_Insert *>(e2);
+            const auto letterAsText = new RS_Text(
+                nullptr,
                 RS_TextData(letter->getInsertionPoint(),
                             letter->getInsertionPoint(),
                             text->getHeight(),
@@ -3445,45 +3039,12 @@ bool RS_Modification::explodeTextIntoLetters(RS_Text* text, std::vector<RS_Entit
                             letter->getAngle(),
                             RS2::Update));
 
-            tl->setLayer(text->getLayer());
-            tl->setPen(text->getPen(false));
+            letterAsText->setLayer(text->getLayer());
+            letterAsText->setPen(text->getPen(false));
 
-            addList.push_back(tl);
-            tl->update();
+            ctx += letterAsText;
+            letterAsText->update();
         }
     }
-
-    return true;
-}
-
-/**
- * Moves all reference points of selected entities with the given data.
- */
-bool RS_Modification::moveRef(RS_MoveRefData& data) {
-    if (container == nullptr) {
-        RS_DEBUG->print(RS_Debug::D_WARNING,
-                        "RS_Modification::moveRef: no valid container");
-        return false;
-    }
-    if(container->isLocked() || ! container->isVisible()) return false;
-
-    std::vector<RS_Entity*> addList;
-
-    // Create new entities
-    for(auto e: *container){ // fixme - iterating all entities for selection
-        if (e != nullptr && e->isSelected()) {
-            RS_Entity* ec = e->clone();
-
-            ec->moveRef(data.ref, data.offset);
-            // since 2.0.4.0: keep it selected
-            ec->setSelected(true);
-            addList.push_back(ec);
-        }
-    }
-
-    LC_UndoSection undo( document,viewport, handleUndo); // bundle remove/add entities in one undoCycle
-    deselectOriginals(true);
-    addNewEntities(addList);
-
     return true;
 }

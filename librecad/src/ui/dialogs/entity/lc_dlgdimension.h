@@ -47,18 +47,18 @@ public:
     ~LC_DlgDimension() override;
     void updateEntity() override;
 protected:
-    void selectStyleItem(QModelIndex index);
+    void selectStyleItem(QModelIndex index) const;
     void updateActiveStyleInfoLabel();
-    void updateEntityStyleInfoLabels(LC_DimStyleItem* item);
+    void updateEntityStyleInfoLabels(LC_DimStyleItem* item) const;
     void setEntity(RS_Dimension* dim);
-    void expandStylesTree();
+    void expandStylesTree() const;
     QModelIndex setupStylesList();
     void getOverrideItemIndex(LC_DimStyleTreeModel* model, LC_DimStyleItem* entityStyleItem, QModelIndex& itemIndex);
-    void updateActionButtons(LC_DimStyleItem* item);
+    void updateActionButtons(LC_DimStyleItem* item) const;
     void updateDimStylePreview(LC_DimStyle* dimStyle, LC_DimStyleTreeModel* model, bool override, const QString& baseName) const;
-    void updateDimStylePreview(const RS_Pen& pen);
-    void updateDimStylePreview(bool flipArrow1, bool flipArrow2);
-    LC_DimStyleTreeModel* getDimStylesModel();
+    void updateDimStylePreview(const RS_Pen& pen) const;
+    void updateDimStylePreview(bool flipArrow1, bool flipArrow2) const;
+    LC_DimStyleTreeModel* getDimStylesModel() const;
     bool isDimensionTypeMatchedToStyleType(RS2::EntityType styleType, RS2::EntityType dimensionType);
     RS2::EntityType adjustDimentityTypeForStyleName(RS2::EntityType entityType);
     void prepareDimStyleItems(QList<LC_DimStyleItem*>& items);
@@ -72,7 +72,7 @@ protected:
 protected slots:
     void languageChange();
     void onDimStyleDoubleClick();
-    QModelIndex getSelectedDimStyleIndex();
+    QModelIndex getSelectedDimStyleIndex() const;
     void onDimStyleOverrideEdit(bool checked);
     void onDimStyleOverrideSave(bool val);
     void onDimStyleOverrideRemove(bool val);

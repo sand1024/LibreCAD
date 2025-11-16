@@ -40,7 +40,7 @@ public:
     QG_TextOptions();
     ~QG_TextOptions() override;
 public slots:
-    void onTextChanged();
+    void onTextChanged() const;
     void onAngleChanged();
     void languageChange() override;
 protected:

@@ -68,13 +68,13 @@ public:
  * @return bool - true, if successful; false, if a coincident point is already in the the container
  * @author Dongxu Li
  */
-    bool Insert(const RS_Vector& point);
+    bool Insert(const RS_Vector& point) const;
     /**
      * @brief Insert insert a new box
      * @param area box
      * @return
      */
-    bool Insert(const Area& area);
+    bool Insert(const Area& area) const;
 
     RS_VectorSolutions NearestNeighbors(const RS_Vector& point) const;
     RS_VectorSolutions PointsInBox(const Area& area) const;

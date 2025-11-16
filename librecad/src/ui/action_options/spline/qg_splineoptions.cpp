@@ -85,7 +85,7 @@ void QG_SplineOptions::onClosedClicked(bool value){
     setClosedToActionAndView(value);
 }
 
-void QG_SplineOptions::undo(){
+void QG_SplineOptions::undo() const {
     if (m_action) m_action->undo();
 }
 
@@ -93,12 +93,12 @@ void QG_SplineOptions::onDegreeIndexChanged(int index){
     setDegreeToActionAndView(index+1);
 }
 
-void QG_SplineOptions::setClosedToActionAndView(bool closed){
+void QG_SplineOptions::setClosedToActionAndView(bool closed) const {
     ui->cbClosed->setChecked(closed);
     m_action->setClosed(closed);
 }
 
-void QG_SplineOptions::setDegreeToActionAndView(int degree){
+void QG_SplineOptions::setDegreeToActionAndView(int degree) const {
     ui->cbDegree->setCurrentIndex(degree-1);
     m_action->setDegree(degree);
 }

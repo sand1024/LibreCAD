@@ -57,7 +57,7 @@ void QG_CommandHistory::mouseReleaseEvent(QMouseEvent* event){
     }
 }
 
-void QG_CommandHistory::slotTextChanged(){
+void QG_CommandHistory::slotTextChanged() const {
 //only show the selectAll item when there is text
     m_pSelectAll->setVisible(! toPlainText().isEmpty());
 }

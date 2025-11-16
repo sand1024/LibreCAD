@@ -153,8 +153,8 @@ public:
     LC_OverlayInfoCursor(const RS_Vector &coord, LC_InfoCursorOptions* cursorOverlaySettings);
     void setZonesData(LC_InfoCursorData *data);
     void draw(RS_Painter *painter) override;
-    void clear();
-    LC_InfoCursorData* getData(){return zonesData;}
+    void clear() const;
+    LC_InfoCursorData* getData() const {return zonesData;}
     LC_InfoCursorData *getZonesData() const;
     LC_InfoCursorOptions *getOptions() const;
     void setOptions(LC_InfoCursorOptions *options);

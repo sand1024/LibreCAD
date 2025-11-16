@@ -99,7 +99,7 @@ protected:
      */
     int m_raysNumber = 5;
 
-    void addPolylineToEntitiesList(RS_Polyline *pPolyline, QList<RS_Entity *> &list, bool b);
+    void addPolylineToEntitiesList(RS_Polyline *pPolyline, QList<RS_Entity *> &list, bool b) const;
     RS_Polyline *createShapePolyline(RS_Vector &snap, QList<RS_Entity *> &list, int status, bool preview);
     void doOnLeftMouseButtonRelease(LC_MouseEvent *e, int status, const RS_Vector &snapPoint) override;
     bool doCheckMayDrawPreview(LC_MouseEvent *event, int status) override;

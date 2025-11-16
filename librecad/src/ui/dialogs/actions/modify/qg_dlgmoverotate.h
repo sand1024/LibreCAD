@@ -42,7 +42,7 @@ public:
 
 public slots:
     void setData( RS_MoveRotateData * d );
-    void updateData();
+    void updateData() const;
 
 protected slots:
     void languageChange();
@@ -54,7 +54,7 @@ private:
     RS_MoveRotateData* data = nullptr;
     QString angle;
 
-    void init();
+    void init() const;
 
 };
 

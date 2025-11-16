@@ -68,8 +68,6 @@ struct LC_MouseEvent{
  */
 class RS_PreviewActionInterface : public RS_ActionInterface {
 public:
-    RS_PreviewActionInterface(const char *name,LC_ActionContext *actionContext,RS2::ActionType actionType = RS2::ActionNone);
-    ~RS_PreviewActionInterface() override;
     void init(int status) override;
     void finish(bool updateTB = true) override;
     void suspend() override;
@@ -78,6 +76,8 @@ public:
     void mouseMoveEvent(QMouseEvent *event) override;
     QStringList getAvailableCommands() override;
 protected:
+    RS_PreviewActionInterface(const char *name,LC_ActionContext *actionContext,RS2::ActionType actionType = RS2::ActionNone);
+    ~RS_PreviewActionInterface() override;
     std::unique_ptr<LC_ActionInfoMessageBuilder> m_msgBuilder;
     // fixme - sand - tmp -  move to overlay!!!
     int m_angleSnapMarkerSize = 20;
@@ -97,72 +97,78 @@ protected:
     bool m_doNotAllowNonDecimalAnglesInput = false;
 
     virtual void doTrigger(){}
+    /**
+    * Controls whether trigger should be within undoable cycle
+    * @return true if trigger execution should be within undo cycle
+    */
+    virtual bool isTriggerUndoable() {return false;}
 
     void deletePreview();
-    void deleteHighlights();
+    void deleteHighlights() const;
     void deletePreviewAndHighlights();
     void drawPreview();
-    void drawHighlights();
+    void drawHighlights() const;
     void drawPreviewAndHighlights();
 
-    void addToHighlights(RS_Entity *e, bool enable = true);
+    void addToHighlights(RS_Entity *e, bool enable = true) const;
 
     bool trySnapToRelZeroCoordinateEvent(const LC_MouseEvent *e);
 
-    RS_Vector getRelZeroAwarePoint(const LC_MouseEvent *e, const RS_Vector &pos);
+    RS_Vector getRelZeroAwarePoint(const LC_MouseEvent *e, const RS_Vector &pos) const;
     RS_Vector getSnapAngleAwarePoint(const LC_MouseEvent *e, const RS_Vector &basepoint, const RS_Vector &pos, bool drawMark = false);
     RS_Vector getSnapAngleAwarePoint(const LC_MouseEvent *e, const RS_Vector &basepoint, const RS_Vector &pos, bool drawMark, bool force);
     RS_Vector getFreeSnapAwarePoint(const LC_MouseEvent *e, const RS_Vector &pos) const;
 
-    void addOverlay(LC_OverlayDrawable* en, RS2::OverlayGraphics position);
+    void addOverlay(LC_OverlayDrawable* en, RS2::OverlayGraphics position) const;
 
-    void previewEntity(RS_Entity *en);
-    RS_Circle* previewCircle(const RS_CircleData& circleData);
-    RS_Arc *previewArc(const RS_ArcData &arcData);
-    RS_Ellipse *previewEllipse(const RS_EllipseData &ellipseData);
-    RS_Point* previewPoint(const RS_Vector &coord);
-    RS_Line* previewLine(const RS_Vector &start, const RS_Vector &end);
-    RS_Line* previewLine(const RS_LineData &data);
-    RS_Line* previewRefLine(const RS_Vector &start, const RS_Vector &end);
-    RS_ConstructionLine* previewRefConstructionLine(const RS_Vector &start, const RS_Vector &end);
-    void previewRefLines(const std::vector<RS_LineData>& points);
-    void previewRefSelectableLine(const RS_Vector &start, const RS_Vector &end);
-    void previewRefPoint(const RS_Vector &coord);
-    void previewRefSelectablePoint(const RS_Vector &coord);
-    void previewRefPoints(const std::vector<RS_Vector>& points);
-    RS_Arc* previewRefArc(const RS_Vector &center, const RS_Vector &startPoint, const RS_Vector &mouse, bool determineReversal);
-    RS_Arc* previewRefArc(bool reversed, const RS_Vector &center, const RS_Vector &startPoint, const RS_Vector &mouse);
-    RS_Circle* previewRefCircle(const RS_Vector &center, const double radius);
-    RS_Arc *previewRefArc(const RS_ArcData &arcData);
-    LC_RefEllipse *previewRefEllipse(const RS_EllipseData &arcData);
+    void previewEntity(RS_Entity *en) const;
+    RS_Circle* previewCircle(const RS_CircleData& circleData) const;
+    RS_Arc *previewArc(const RS_ArcData &arcData) const;
+    RS_Ellipse *previewEllipse(const RS_EllipseData &ellipseData) const;
+    RS_Point* previewPoint(const RS_Vector &coord) const;
+    RS_Line* previewLine(const RS_Vector &start, const RS_Vector &end) const;
+    RS_Line* previewLine(const RS_LineData &data) const;
+    RS_Line* previewRefLine(const RS_Vector &start, const RS_Vector &end) const;
+    RS_ConstructionLine* previewRefConstructionLine(const RS_Vector &start, const RS_Vector &end) const;
+    void previewRefLines(const std::vector<RS_LineData>& points) const;
+    void previewRefSelectableLine(const RS_Vector &start, const RS_Vector &end) const;
+    void previewRefPoint(const RS_Vector &coord) const;
+    void previewRefSelectablePoint(const RS_Vector &coord) const;
+    void previewRefPoints(const std::vector<RS_Vector>& points) const;
+    RS_Arc* previewRefArc(const RS_Vector &center, const RS_Vector &startPoint, const RS_Vector &mouse, bool determineReversal) const;
+    RS_Arc* previewRefArc(bool reversed, const RS_Vector &center, const RS_Vector &startPoint, const RS_Vector &mouse) const;
+    RS_Circle* previewRefCircle(const RS_Vector &center, const double radius) const;
+    RS_Arc *previewRefArc(const RS_ArcData &arcData) const;
+    LC_RefEllipse *previewRefEllipse(const RS_EllipseData &arcData) const;
 
     void initRefEntitiesMetrics();
 
-    void highlightHover(RS_Entity *e);
-    void highlightHoverWithRefPoints(RS_Entity* e, bool value);
-    void highlightSelected(RS_Entity *e, bool enable=true);
+    void highlightHover(RS_Entity *e) const;
+    void highlightHoverWithRefPoints(RS_Entity* e, bool value) const;
+    void highlightSelected(RS_Entity *e, bool enable=true) const;
 
     virtual void moveRelativeZero(const RS_Vector &zero);
-    void markRelativeZero();
+    void markRelativeZero() const;
 
     bool is(RS_Entity* e, RS2::EntityType type) const;
     bool isLine(RS_Entity*  e) const{return is(e, RS2::EntityLine);}
     bool isPolyline(RS_Entity*  e) const{return is(e, RS2::EntityPolyline);}
     bool isCircle(RS_Entity*  e) const {return is(e, RS2::EntityCircle);}
     bool isArc(RS_Entity*  e) const {return is(e, RS2::EntityArc);}
+    bool isInsert(RS_Entity*  e) const {return is(e, RS2::EntityInsert);}
     bool isEllipse(RS_Entity*  e) const {return is(e, RS2::EntityEllipse);}
     bool isAtomic(RS_Entity* e) const {return e != nullptr && e->isAtomic();}
 
-    void previewSnapAngleMark(const RS_Vector &center, double angle);
+    void previewSnapAngleMark(const RS_Vector &center, double angle) const;
     void previewSnapAngleMark(const RS_Vector &center, const RS_Vector &refPoint);
 
     RS_Entity *catchModifiableEntity(LC_MouseEvent *e, const EntityTypeList &enTypeList);
     RS_Entity *catchModifiableEntity(LC_MouseEvent *e, const RS2::EntityType &enType);
 
-    RS_Entity *catchModifiableEntity(RS_Vector &coord, const RS2::EntityType &enType);
+    RS_Entity *catchModifiableEntity(RS_Vector &coord, const RS2::EntityType &enType) const;
 
-    RS_Entity *catchEntityByEvent(LC_MouseEvent *e, RS2::ResolveLevel level = RS2::ResolveNone);
-    RS_Entity *catchEntityByEvent(LC_MouseEvent *e, RS2::EntityType enType, RS2::ResolveLevel level = RS2::ResolveNone);
+    RS_Entity *catchEntityByEvent(LC_MouseEvent *e, RS2::ResolveLevel level = RS2::ResolveNone) const;
+    RS_Entity *catchEntityByEvent(LC_MouseEvent *e, RS2::EntityType enType, RS2::ResolveLevel level = RS2::ResolveNone) const;
     RS_Entity *catchEntityByEvent(LC_MouseEvent *e, const EntityTypeList &enTypeList, RS2::ResolveLevel level = RS2::ResolveNone);
 
     RS_Entity* catchAndDescribe(LC_MouseEvent *e, const EntityTypeList &enTypeList, RS2::ResolveLevel level);
@@ -174,14 +180,14 @@ protected:
     RS_Entity* catchModifiableAndDescribe(LC_MouseEvent *e, const RS2::EntityType &enType);
     RS_Entity* catchModifiableAndDescribe(LC_MouseEvent *e, const EntityTypeList &enTypeList);
 
-    LC_ActionInfoMessageBuilder& msg(const QString& name, const QString& value);
-    LC_ActionInfoMessageBuilder& msg(const QString& name);
-    LC_ActionInfoMessageBuilder& msgStart();
+    LC_ActionInfoMessageBuilder& msg(const QString& name, const QString& value) const;
+    LC_ActionInfoMessageBuilder& msg(const QString& name) const;
+    LC_ActionInfoMessageBuilder& msgStart() const;
 
-    QString obtainEntityDescriptionForInfoCursor(RS_Entity *e, RS2::EntityDescriptionLevel level);
-    void prepareEntityDescription(RS_Entity *entity, RS2::EntityDescriptionLevel level);
-    void appendInfoCursorZoneMessage(QString message, int zoneNumber, bool replaceContent);
-    void appendInfoCursorEntityCreationMessage(QString message);
+    QString obtainEntityDescriptionForInfoCursor(RS_Entity *e, RS2::EntityDescriptionLevel level) const;
+    void prepareEntityDescription(RS_Entity *entity, RS2::EntityDescriptionLevel level) const;
+    void appendInfoCursorZoneMessage(QString message, int zoneNumber, bool replaceContent) const;
+    void appendInfoCursorEntityCreationMessage(QString message) const;
 
     RS_Circle *previewToCreateCircle(const RS_CircleData &circleData);
     RS_Arc *previewToCreateArc(const RS_ArcData &arcData);
@@ -205,13 +211,23 @@ protected:
     virtual void onMouseRightButtonPress(int status, LC_MouseEvent *e);
     virtual QStringList doGetAvailableCommands(int status);
 
-    bool parseToWCSAngle(const QString &c, double &wcsAngleRad);
-    bool parseToUCSBasisAngle(const QString &c, double& ucsBasisAngleRad);
-    bool parseToRelativeAngle(const QString&c, double &ucsBasisAngleRad);
+    bool parseToWCSAngle(const QString &c, double &wcsAngleRad) const;
+    bool parseToUCSBasisAngle(const QString &c, double& ucsBasisAngleRad) const;
+    bool parseToRelativeAngle(const QString&c, double &ucsBasisAngleRad) const;
     double evalAngleValue(const QString &c, bool *ok) const;
     void initFromSettings() override;
 private:
     LC_MouseEvent toLCMouseMoveEvent(QMouseEvent *e);
     friend LC_ActionInfoMessageBuilder;
 };
+
+class LC_UndoablePreviewActionInterface: public RS_PreviewActionInterface {
+public:
+    LC_UndoablePreviewActionInterface(const char *name,LC_ActionContext *actionContext,RS2::ActionType actionType = RS2::ActionNone):
+     RS_PreviewActionInterface(name, actionContext, actionType){};
+    ~LC_UndoablePreviewActionInterface() override = default;
+protected:
+    bool isTriggerUndoable() override {return true;}
+};
+
 #endif

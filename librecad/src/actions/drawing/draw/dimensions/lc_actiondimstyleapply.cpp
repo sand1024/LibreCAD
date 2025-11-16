@@ -123,7 +123,6 @@ void LC_ActionDimStyleApply::onMouseLeftButtonRelease([[maybe_unused]]int status
                         clonedDimension->setDimStyleOverride(overrideStyle);
                     }
 
-                    m_container->addEntity(clonedDimension);
                     undoCycleReplace(en, clonedDimension);
                     clonedDimension->update();
                     redraw();

@@ -45,11 +45,11 @@ public:
     void init(int status) override;
     void finish(bool updateTB) override;
     QStringList getAvailableCommands() override;
-    void setLength1(double l1);
+    void setLength1(double l1) const;
     double getLength1() const;
-    void setLength2(double l2);
+    void setLength2(double l2) const;
     double getLength2() const;
-    void setTrim(bool t);
+    void setTrim(bool t) const;
     bool isTrimOn() const;
     void drawSnapper() override;
 protected:
@@ -72,7 +72,7 @@ protected:
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     bool isEntityAccepted(RS_Entity *en) const;
     bool areBothEntityAccepted(RS_Entity *en1, RS_Entity *en2) const;
-    void previewLineModifications(const RS_Entity *original, const RS_Entity *trimmed, bool trimOnStart);
+    void previewLineModifications(const RS_Entity *original, const RS_Entity *trimmed, bool trimOnStart) const;
     RS2::CursorType doGetMouseCursor(int status) override;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;

@@ -59,7 +59,7 @@ void QG_LineOptions::doSetAction(RS_ActionInterface *a, [[maybe_unused]]bool upd
     enableButtons();
 }
 
-void QG_LineOptions::close() {
+void QG_LineOptions::close() const {
     if (m_action) {
         m_action->close();
     }
@@ -80,8 +80,7 @@ void QG_LineOptions::redo() {
     }
 }
 
-void QG_LineOptions::enableButtons()
-{
+void QG_LineOptions::enableButtons() const {
 
     if (m_action) {
         ui->bUndo->setEnabled(m_action->canUndo());

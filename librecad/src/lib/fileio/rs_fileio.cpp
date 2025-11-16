@@ -50,7 +50,7 @@
  * @param file Path and name of the file to import.
  */
 bool RS_FileIO::fileImport(RS_Graphic& graphic, const QString& file,
-                           RS2::FormatType type) {
+                           RS2::FormatType type) const {
 
     RS_DEBUG->print("Trying to import file '%s'...", file.toLatin1().data());
 
@@ -213,7 +213,7 @@ RS2::FormatType RS_FileIO::detectFormat(QString const& file, bool forRead)
  * @param file Path and name of the file to import.
  */
 bool RS_FileIO::fileExport(RS_Graphic& graphic, const QString& file,
-                           RS2::FormatType type) {
+                           RS2::FormatType type) const {
 
     RS_DEBUG->print("RS_FileIO::fileExport");
     //RS_DEBUG->print("Trying to export file '%s'...", file.latin1());

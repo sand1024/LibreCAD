@@ -144,7 +144,7 @@ public:
      * Toggles visibility of boundary contours in subcontainers.
      * @param on true to show boundaries.
      */
-    void activateContour(bool on);
+    void activateContour(bool on) const;
 
     /**
      * @return Subcontainer for the boundary loop at index (0-based).
@@ -173,9 +173,9 @@ protected:
 private:
     void debugOutPath(const QPainterPath& tmpPath) const;
     void drawPatternLines(RS_Painter* painter) const;
-    void drawSolidFill(RS_Painter* painter);
+    void drawSolidFill(RS_Painter* painter) const;
     void updatePatternHatch(RS_Layer* layer, const RS_Pen& pen);
-    void updateSolidHatch(RS_Layer* layer, const RS_Pen& pen);
+    void updateSolidHatch(RS_Layer* layer, const RS_Pen& pen) const;
     void prepareUpdate();
 
     mutable double m_area = RS_MAXDOUBLE;

@@ -29,6 +29,7 @@
 #ifndef RS_ACTIONDRAWLINE_H
 #define RS_ACTIONDRAWLINE_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_previewactioninterface.h"
 
 /**
@@ -37,10 +38,10 @@
  *
  * @author Andrew Mustun
  */
-class RS_ActionDrawLine : public RS_PreviewActionInterface{
+class RS_ActionDrawLine : public LC_SingleEntityCreationAction{
     Q_OBJECT
 public:
-    RS_ActionDrawLine(LC_ActionContext *actionContext);
+    explicit RS_ActionDrawLine(LC_ActionContext *actionContext);
     ~RS_ActionDrawLine() override;
     void reset();
     void init(int status) override;
@@ -72,7 +73,7 @@ protected:
     std::unique_ptr<ActionData> m_actionData;
     RS2::CursorType doGetMouseCursor(int status) override;
 
-    void addHistory(RS_ActionDrawLine::HistoryAction action, const RS_Vector& previous, const RS_Vector& current, int start);
+    void addHistory(RS_ActionDrawLine::HistoryAction action, const RS_Vector& previous, const RS_Vector& current, int start) const;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
@@ -80,6 +81,7 @@ protected:
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void updateMouseButtonHints() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    void doTrigger() override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
 };
 #endif

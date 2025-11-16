@@ -44,12 +44,12 @@ public:
     RS_ActionModifyMoveRotate(LC_ActionContext *actionContext);
     ~RS_ActionModifyMoveRotate() override;
     QStringList getAvailableCommands() override;
-    void setAngle(double angleRad);
+    void setAngle(double angleRad) const;
     double getAngle() const;
-    void setUseSameAngleForCopies(bool b);
-    bool isUseSameAngleForCopies();
+    void setUseSameAngleForCopies(bool b) const;
+    bool isUseSameAngleForCopies() const;
     void setAngleIsFree(bool b);
-    bool isAngleFree(){return !m_angleIsFixed;};
+    bool isAngleFree() const {return !m_angleIsFixed;};
 protected:
     /**
  * Action States.
@@ -71,13 +71,15 @@ protected:
     void updateMouseButtonHintsForSelection() override;
     void updateMouseButtonHintsForSelected(int status) override;
     LC_ModifyOperationFlags *getModifyOperationFlags() override;
-    void previewRefPointsForMultipleCopies();
+    void previewRefPointsForMultipleCopies() const;
     void doPerformTrigger();
     bool doProcessCommand(int status, const QString &command) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    void doTrigger(bool keepSelected) override;
     void onMouseMoveEventSelected(int status, LC_MouseEvent *e) override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) override;
+    void doTriggerCompletion(bool success) override;
+    void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
 };
 #endif

@@ -146,7 +146,6 @@ protected:
 
     // additional triggering action support
     virtual bool isSetActivePenAndLayerOnTrigger();
-    virtual bool isUndoableTrigger();
     virtual void performTrigger();
     virtual void performTriggerInsertions();
     virtual void performTriggerDeletions();
@@ -168,7 +167,7 @@ protected:
 
     void unHighlightEntity();
     void highlightEntity(RS_Entity *en);
-    void highlightEntityExplicit(RS_Entity *en, bool highlight);
+    void highlightEntityExplicit(RS_Entity *en, bool highlight) const;
 
     void drawPreviewForLastPoint();
 
@@ -184,7 +183,6 @@ protected:
     void setFreeSnap();
     void setGlobalSnapMode(const RS_SnapMode &mode);
     void setupAndAddTriggerEntities(const QList<RS_Entity *> &entities);
-    void unSelectEntities(const QList<RS_Entity *> &entities);
     virtual bool isUnselectEntitiesOnInitTrigger();
     void applyPenAndLayerBySourceEntity(const RS_Entity *source, RS_Entity *target, int penMode, int layerMode) const;
     bool checkMayExpandEntity(const RS_Entity *e, const QString &entityName) const;
@@ -201,6 +199,7 @@ protected:
     static bool isMouseMove(LC_MouseEvent* e);
     void createRefArc(const RS_ArcData &data, QList<RS_Entity *> &list) const;
     void doTrigger() override;
+    bool isTriggerUndoable() override {return true;}
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;

@@ -27,8 +27,6 @@
 **
 **********************************************************************/
 
-// Changes: https://github.com/LibreCAD/LibreCAD/commits/master/librecad/src/main/qc_applicationwindow.cpp
-
 
 #include <QCloseEvent>
 #include <QMdiArea>
@@ -73,6 +71,7 @@
 
 #include <QMenuBar>
 
+#include "lc_propertysheetwidget.h"
 #include "qc_dialogfactory.h"
 #include "qc_mdiwindow.h"
 #include "qg_actionhandler.h"
@@ -143,15 +142,15 @@ QC_ApplicationWindow::~QC_ApplicationWindow() {
 
 }
 
-void QC_ApplicationWindow::checkForNewVersion() {
+void QC_ApplicationWindow::checkForNewVersion() const {
     m_releaseChecker->checkForNewVersion();
 }
 
-void QC_ApplicationWindow::forceCheckForNewVersion() {
+void QC_ApplicationWindow::forceCheckForNewVersion() const {
     m_releaseChecker->checkForNewVersion(true);
 }
 
-void QC_ApplicationWindow::onNewVersionAvailable() {
+void QC_ApplicationWindow::onNewVersionAvailable() const {
    m_dlgHelpr->showNewVersionAvailableDialog(m_releaseChecker.get());
 }
 
@@ -334,6 +333,7 @@ void QC_ApplicationWindow::setupWidgetsByWindow(QC_MDIWindow *w) const {
     m_activeLayerNameWidget->setGraphicView(gv);
     m_selectionWidget->setGraphicView(gv);
     m_penWizard->setGraphicView(gv);
+    m_propertySheetWidget->setGraphicView(gv);
 }
 
 /**
@@ -345,7 +345,7 @@ void QC_ApplicationWindow::doActivate(QMdiSubWindow *w) {
     // fixme - sand - potentially, there we may just fire signal to widgets...
 }
 
-int QC_ApplicationWindow::showCloseDialog(QC_MDIWindow *w, bool showSaveAll) {
+int QC_ApplicationWindow::showCloseDialog(QC_MDIWindow *w, bool showSaveAll) const {
     return m_dlgHelpr->showCloseDialog(w, showSaveAll);
 }
 
@@ -445,18 +445,18 @@ void QC_ApplicationWindow::setRedoEnable(bool enable){
     enableAction("EditRedo", enable);
 }
 
-void QC_ApplicationWindow::setSaveEnable(bool enable){
+void QC_ApplicationWindow::setSaveEnable(bool enable) const {
     enableAction("FileSave", enable);
 }
 
-void QC_ApplicationWindow::slotEnableActions(bool enable) {
+void QC_ApplicationWindow::slotEnableActions(bool enable) const {
     enableAction("ZoomPrevious", enable && m_previousZoomEnable);
     enableAction("EditUndo", enable && m_undoEnable);
     enableAction("EditRedo", enable && m_redoEnable);
 }
 
 // fixme - sand - rework, think about changed to signal from the widget?
-void QC_ApplicationWindow::slotUpdateActiveLayer() {
+void QC_ApplicationWindow::slotUpdateActiveLayer() const {
     if (m_layerWidget != nullptr && m_activeLayerNameWidget != nullptr) {
         m_activeLayerNameWidget->activeLayerChanged(m_layerWidget->getActiveName());
     }
@@ -496,7 +496,7 @@ void QC_ApplicationWindow::initSettings() {
 /**
  * Stores the global application settings to file or registry.
  */
-void QC_ApplicationWindow::storeSettings() {
+void QC_ApplicationWindow::storeSettings() const {
     if (RS_Settings::save_is_allowed) {
        m_workspacesInvoker->persist();
        m_penPaletteWidget->persist();
@@ -514,7 +514,7 @@ void QC_ApplicationWindow::slotKillAllActions() {
         RS_GraphicView* gv = win->getGraphicView();
         if (gv != nullptr) {
             gv->switchToDefaultAction();
-            auto doc = gv->getContainer();
+            auto doc = gv->getDocument();
             if (doc != nullptr) {
                 const RS_EntityContainer::LC_SelectionInfo &selectionInfo = doc->getSelectionInfo();
 
@@ -538,7 +538,7 @@ void QC_ApplicationWindow::slotFocusCommandLine() {
     m_commandWidget->setFocus();
 }
 
-void QC_ApplicationWindow::slotFocusOptionsWidget(){
+void QC_ApplicationWindow::slotFocusOptionsWidget()  {
     // fixme - sand - files - fix for mor reliable focus settings
     if (m_toolOptionsToolbar != nullptr){
         m_toolOptionsToolbar->setFocus();
@@ -548,15 +548,15 @@ void QC_ApplicationWindow::slotFocusOptionsWidget(){
 /**
  * Shows the given error on the command line.
  */
-void QC_ApplicationWindow::slotError(const QString& msg) {
+void QC_ApplicationWindow::slotError(const QString& msg) const {
   m_commandWidget->appendHistory(msg);
 }
 
-void QC_ApplicationWindow::slotShowDrawingOptions() {
+void QC_ApplicationWindow::slotShowDrawingOptions() const {
     m_actionHandler->setCurrentAction(RS2::ActionOptionsDrawingGrid);
 }
 
-void QC_ApplicationWindow::slotShowDrawingOptionsUnits() {
+void QC_ApplicationWindow::slotShowDrawingOptionsUnits() const {
     m_actionHandler->setCurrentAction(RS2::ActionOptionsDrawingUnits);
 }
 
@@ -694,11 +694,11 @@ void QC_ApplicationWindow::doWindowActivated(QMdiSubWindow *w, bool forced) {
  * Called when the menu 'workspaces' is about to be shown.
  * This is used to update the window list in the menu.
  */
-void QC_ApplicationWindow::slotWorkspacesMenuAboutToShow() {
+void QC_ApplicationWindow::slotWorkspacesMenuAboutToShow() const {
     m_menuFactory->onWorkspaceMenuAboutToShow(m_windowList);
 }
 
-QMenu* QC_ApplicationWindow::createGraphicViewContentMenu(QMouseEvent* event, QG_GraphicView* view, RS_Entity* entity, const RS_Vector& pos) {
+QMenu* QC_ApplicationWindow::createGraphicViewContentMenu(QMouseEvent* event, QG_GraphicView* view, RS_Entity* entity, const RS_Vector& pos) const {
     QStringList actions;
     bool mayInvokeDefaultMenu = m_creatorInvoker->getMenuActionsForMouseEvent(event, entity, actions);
     return m_menuFactory->createGraphicViewPopupMenu(view, entity, pos, actions, mayInvokeDefaultMenu);
@@ -944,17 +944,18 @@ QString QC_ApplicationWindow::getFileNameFromFullPath(const QString &path) {
     return info.fileName();
 }
 
-void QC_ApplicationWindow::updateCoordinateWidgetFormat(){
+void QC_ApplicationWindow::updateCoordinateWidgetFormat() const {
     m_coordinateWidget->setCoordinates({0.0, 0.0}, {0.0, 0.0}, true);
 }
 
 void QC_ApplicationWindow::updateWidgetsAsDocumentLoaded(const QC_MDIWindow *w){
-    m_layerWidget->slotUpdateLayerList();
+    m_layerWidget->slotUpdateLayerList(); // fixme - sand - rework to signals...?
     m_layerWidget->activateLayer(0);
     m_layerTreeWidget->slotFilteringMaskChanged();
     m_namedViewsWidget->reload();
     m_ucsListWidget->reload();
     m_quickInfoWidget->updateFormats();
+    m_propertySheetWidget->updateFormats();
 
     auto graphic = w->getGraphic();
     if (graphic != nullptr) {
@@ -1050,6 +1051,7 @@ void QC_ApplicationWindow::changeDrawingOptions(int tabToShow){
     if (dialogResult == QDialog::Accepted) {
         updateCoordinateWidgetFormat();
         m_quickInfoWidget->updateFormats();
+        m_propertySheetWidget->updateFormats();
         m_anglesBasisWidget->update(graphic);
         graphicView->loadSettings();
         graphic->update();
@@ -1367,7 +1369,7 @@ void QC_ApplicationWindow::slotFilePrintPreview(bool on) {
 /**
  * Menu file -> quit.
  */
-void QC_ApplicationWindow::slotFileQuit() {
+void QC_ApplicationWindow::slotFileQuit()  {
     showStatusMessage(tr("Exiting application..."));
     qApp->quit();  // signal handler closeEvent() will take care of modifications
 }
@@ -1437,7 +1439,7 @@ void QC_ApplicationWindow::slotViewAntialiasing(bool toggle) {
 /**
  * Updates all grids of all graphic views.
  */
-void QC_ApplicationWindow::updateGrids() {
+void QC_ApplicationWindow::updateGrids() const {
     doForEachSubWindowGraphicView([](QG_GraphicView *gv, [[maybe_unused]] QC_MDIWindow *w){
             gv->loadSettings();
             gv->redraw(RS2::RedrawGrid);
@@ -1454,19 +1456,19 @@ void QC_ApplicationWindow::slotViewStatusBar(bool toggle) {
     LC_SET_ONE("Appearance", "StatusBarVisible", toggle);
 }
 
-void QC_ApplicationWindow::slotViewGridOrtho(bool toggle) {
+void QC_ApplicationWindow::slotViewGridOrtho(bool toggle)  {
      m_gridViewInvoker->setGridView(toggle, false, RS2::IsoGridViewType::IsoLeft);
 }
 
-void QC_ApplicationWindow::slotViewGridIsoLeft(bool toggle) {
+void QC_ApplicationWindow::slotViewGridIsoLeft(bool toggle)  {
      m_gridViewInvoker->setGridView(toggle, true, RS2::IsoGridViewType::IsoLeft);
 }
 
-void QC_ApplicationWindow::slotViewGridIsoRight(bool toggle) {
+void QC_ApplicationWindow::slotViewGridIsoRight(bool toggle)  {
      m_gridViewInvoker->setGridView(toggle, true, RS2::IsoGridViewType::IsoRight);
 }
 
-void QC_ApplicationWindow::slotViewGridIsoTop(bool toggle) {
+void QC_ApplicationWindow::slotViewGridIsoTop(bool toggle)  {
      m_gridViewInvoker->setGridView(toggle, true, RS2::IsoGridViewType::IsoTop);
 }
 
@@ -1479,7 +1481,7 @@ void QC_ApplicationWindow::slotOptionsShortcuts() {
     dlg.exec();
 }
 
-void QC_ApplicationWindow::rebuildMenuIfNecessary(){
+void QC_ApplicationWindow::rebuildMenuIfNecessary() const {
     m_menuFactory->recreateMainMenuIfNeeded(menuBar());
 }
 
@@ -1543,11 +1545,11 @@ void QC_ApplicationWindow::slotImportBlock() {
     }
 }
 
-void QC_ApplicationWindow::showAboutWindow() {
+void QC_ApplicationWindow::showAboutWindow() const {
     m_dlgHelpr->showAboutWindow();
 }
 
-void QC_ApplicationWindow::openFilesOnStartup(QStringList &fileList, QSplashScreen* splash) {
+void QC_ApplicationWindow::openFilesOnStartup(QStringList &fileList, QSplashScreen* splash) const {
     m_lastFilesOpener->openLastOpenFiles(fileList, splash);
 }
 
@@ -1687,7 +1689,7 @@ void QC_ApplicationWindow::toggleFullscreen(bool checked) {
     LC_SET_ONE("Appearance", "FullscreenMode", checked);
 }
 
-void QC_ApplicationWindow::toggleMainMenu(bool toggle) {
+void QC_ApplicationWindow::toggleMainMenu(bool toggle)  {
     menuBar()->setVisible(toggle);
     LC_SET_ONE("Appearance", "MainMenuVisible", toggle);
 }
@@ -1711,7 +1713,7 @@ void QC_ApplicationWindow::widgetOptionsDialog() {
     }
 }
 
-bool QC_ApplicationWindow::loadStyleSheet(const QString &path) {
+bool QC_ApplicationWindow::loadStyleSheet(const QString &path) const {
    return m_styleHelper->loadStyleSheet(path);
 }
 
@@ -1738,11 +1740,11 @@ void QC_ApplicationWindow::onViewCurrentActionChanged(RS2::ActionType actionType
     }
 }
 
-void QC_ApplicationWindow::updateGridStatus(const QString &status) {
+void QC_ApplicationWindow::updateGridStatus(const QString &status) const {
     m_gridStatusWidget->setBottomLabel(status);
 }
 
-void QC_ApplicationWindow::showDeviceOptions() {
+void QC_ApplicationWindow::showDeviceOptions(){
    m_dlgHelpr->showDeviceOptions();
 }
 
@@ -1761,19 +1763,19 @@ void QC_ApplicationWindow::saveWorkspace(bool on) {
     m_workspacesInvoker->saveWorkspace(on);
 }
 
-void  QC_ApplicationWindow::fillWorkspacesList(QList<QPair<int, QString>> &list){
+void  QC_ApplicationWindow::fillWorkspacesList(QList<QPair<int, QString>> &list) const {
     m_workspacesInvoker->fillWorkspacesList(list);
 }
 
-void QC_ApplicationWindow::applyWorkspaceById(int id){
+void QC_ApplicationWindow::applyWorkspaceById(int id) const {
     m_workspacesInvoker->applyWorkspaceById(id);
 }
 
-void QC_ApplicationWindow::removeWorkspace(bool on){
+void QC_ApplicationWindow::removeWorkspace(bool on) {
     m_workspacesInvoker->removeWorkspace(on);
 }
 
-void QC_ApplicationWindow::restoreWorkspace(bool on){
+void QC_ApplicationWindow::restoreWorkspace(bool on) {
     m_workspacesInvoker->restoreWorkspace(on);
 }
 
@@ -1793,7 +1795,7 @@ void QC_ApplicationWindow::restoreNamedView4() {
     doRestoreNamedView(4);
 }
 
-void QC_ApplicationWindow::restoreNamedViewCurrent() {
+void QC_ApplicationWindow::restoreNamedViewCurrent()  {
      m_namedViewsWidget->restoreSelectedView();
 }
 
@@ -1801,7 +1803,7 @@ void QC_ApplicationWindow::restoreNamedView5() {
     doRestoreNamedView(5);
 }
 
-void QC_ApplicationWindow::restoreNamedView(const QString& viewName){
+void QC_ApplicationWindow::restoreNamedView(const QString& viewName) const {
     m_namedViewsWidget->restoreView(viewName);
 }
 
@@ -1813,7 +1815,7 @@ void QC_ApplicationWindow::invokeToolbarCreator() {
     m_creatorInvoker->invokeToolbarCreator();
 }
 
-void QC_ApplicationWindow::invokeMenuCreator()  {
+void QC_ApplicationWindow::invokeMenuCreator() {
     m_creatorInvoker->invokeMenuCreator();
 }
 
@@ -1882,6 +1884,7 @@ void QC_ApplicationWindow::enableWidgets(bool enable) {
     enableWidgetList(enable, {
                           m_penPaletteWidget,
                           m_quickInfoWidget,
+                          m_propertySheetWidget,
                           m_blockWidget,
                           m_penToolBar,
                           m_penWizard,

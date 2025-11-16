@@ -41,11 +41,11 @@ TwoStackedLabels::TwoStackedLabels(QWidget* parent)
     setLayout(layout);
 }
 
-void TwoStackedLabels::setTopLabel(const QString& status){
+void TwoStackedLabels::setTopLabel(const QString& status) const {
     m_topLabel->setText(status);
 }
 
-void TwoStackedLabels::setBottomLabel(const QString& status){
+void TwoStackedLabels::setBottomLabel(const QString& status) const {
     m_bottomLabel->setText(status);
 }
 
@@ -56,10 +56,10 @@ void TwoStackedLabels::mouseReleaseEvent(QMouseEvent *e) {
     QWidget::mouseReleaseEvent(e);
 }
 
-void TwoStackedLabels::setTopLabelToolTip(const QString &tooltip) {
+void TwoStackedLabels::setTopLabelToolTip(const QString &tooltip) const {
   m_topLabel->setToolTip(tooltip);
 }
 
-void TwoStackedLabels::setBottomLabelToolTips(const QString &tooltip) {
+void TwoStackedLabels::setBottomLabelToolTips(const QString &tooltip) const {
     m_bottomLabel->setToolTip(tooltip);
 }

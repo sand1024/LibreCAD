@@ -523,11 +523,11 @@ public:
      * Sets the handle of the model space. Entities refer to 
      * this handle.
      */
-    void setModelSpaceHandle(unsigned long h) {
+    void setModelSpaceHandle(unsigned long h) const {
         modelSpaceHandle = h;
     }
 
-    unsigned long getModelSpaceHandle() {
+    unsigned long getModelSpaceHandle() const {
         return modelSpaceHandle;
     }
 
@@ -535,11 +535,11 @@ public:
      * Sets the handle of the paper space. Some special blocks refer to 
      * this handle.
      */
-    void setPaperSpaceHandle(unsigned long h) {
+    void setPaperSpaceHandle(unsigned long h) const {
         paperSpaceHandle = h;
     }
 
-    unsigned long getPaperSpaceHandle() {
+    unsigned long getPaperSpaceHandle() const {
         return paperSpaceHandle;
     }
 
@@ -547,11 +547,11 @@ public:
      * Sets the handle of the paper space 0. Some special blocks refer to 
      * this handle.
      */
-    void setPaperSpace0Handle(unsigned long h) {
+    void setPaperSpace0Handle(unsigned long h) const {
         paperSpace0Handle = h;
     }
 
-    unsigned long getPaperSpace0Handle() {
+    unsigned long getPaperSpace0Handle() const {
         return paperSpace0Handle;
     }
 

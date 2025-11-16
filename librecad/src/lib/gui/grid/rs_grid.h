@@ -82,8 +82,8 @@ public:
 	RS_Vector getMetaGridWidth() const;
 	RS_Vector const &getCellVector() const;
 	void loadSettings();
-	void drawGrid(RS_Painter *painter);
-    int getMetaGridEvery(){return m_metaGridEvery;}
+	void drawGrid(RS_Painter *painter) const;
+    int getMetaGridEvery() const {return m_metaGridEvery;}
 private:
 	//! copy ctor disabled
     RS_Grid(RS_Grid const&) = delete;

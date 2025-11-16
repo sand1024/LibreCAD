@@ -39,7 +39,7 @@ struct RS_MoveData;
 class RS_ActionModifyMove : public LC_ActionModifyBase {
     Q_OBJECT
 public:
-    RS_ActionModifyMove(LC_ActionContext *actionContext);
+    explicit RS_ActionModifyMove(LC_ActionContext *actionContext);
     ~RS_ActionModifyMove() override;
 protected:
     /**
@@ -60,7 +60,10 @@ protected:
     LC_ActionOptionsWidget* createOptionsWidget() override;
     LC_ModifyOperationFlags *getModifyOperationFlags() override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
-    void doTrigger(bool keepSelected) override;
     void onMouseMoveEventSelected(int status, LC_MouseEvent *e) override;
+
+    void doTriggerCompletion(bool success) override;
+    void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& modificationData) override;
 };
 #endif

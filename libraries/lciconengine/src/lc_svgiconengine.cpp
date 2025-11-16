@@ -132,8 +132,7 @@ public:
 
     static int hashKey(QIcon::Mode mode, QIcon::State state)  { return (((mode)<<4)|state); }
 
-    QString pmcKey(const QSize &size, QIcon::Mode mode, QIcon::State state)
-    { return QLatin1String("$lc_svgicon_")
+    QString pmcKey(const QSize &size, QIcon::Mode mode, QIcon::State state) const { return QLatin1String("$lc_svgicon_")
                + QString::number(serialNum, 16).append(QLatin1Char('_'))
                + QString::number((((((qint64(size.width()) << 11) | size.height()) << 11) | mode) << 4) | state, 16); }
 

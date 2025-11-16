@@ -31,26 +31,29 @@
  * The undoable thing gets activated if it was undone and 
  * deactivated otherwise.
  */
-void RS_Undoable::changeUndoState() {
-    toggleFlag(RS2::FlagUndone);
-	undoStateChanged(isUndone());
+void RS_Undoable::changeDeleteState() {
+    toggleFlag(RS2::FlagDeleted);
+	deletedStateChanged(isDeleted());
 }
 
 /**
  * Undoes or redoes an undoable.
  */
-void RS_Undoable::setUndoState(bool undone) {
-    if (undone) {
-        setFlag(RS2::FlagUndone);
+void RS_Undoable::mark(bool deleted) {
+    if (deleted) {
+        setFlag(RS2::FlagDeleted);
     } else {
-        delFlag(RS2::FlagUndone);
+        delFlag(RS2::FlagDeleted);
     }
-	undoStateChanged(isUndone());
+	deletedStateChanged(isDeleted());
 }
 
-/**
- * Is this entity in the Undo memory and not active?
- */
-bool RS_Undoable::isUndone() const {
-    return getFlag(RS2::FlagUndone);
+void RS_Undoable::markDeleted() {
+    setFlag(RS2::FlagDeleted);
+    deletedStateChanged(true);
+}
+
+void RS_Undoable::markLive() {
+    delFlag(RS2::FlagDeleted);
+    deletedStateChanged(false);
 }

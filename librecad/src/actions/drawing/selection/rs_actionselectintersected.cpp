@@ -27,6 +27,7 @@
 #include "rs_actionselectintersected.h"
 
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_entity.h"
 #include "rs_selection.h"
 
@@ -70,14 +71,14 @@ void RS_ActionSelectIntersected::doInitWithContextEntity(RS_Entity* contextEntit
 
 void RS_ActionSelectIntersected::doTrigger() {
     if (m_actionData->m_entityToIntersect != nullptr) { // do intersection with entity
-        RS_Selection s(*m_container, m_viewport);
+        RS_Selection s(m_document, m_viewport);
         s.selectIntersected(m_actionData->m_entityToIntersect, m_performSelect);
         reset();
         setStatus(SetPoint1);
     }
     else if (m_actionData->v1.valid && m_actionData->v2.valid){ // do intersection with point
         if (toGuiDX(m_actionData->v1.distanceTo(m_actionData->v2)) > 10){
-            RS_Selection s(*m_container, m_viewport);
+            RS_Selection s(m_document, m_viewport);
             s.selectIntersected(m_actionData->v1, m_actionData->v2, m_performSelect);
             reset();
             setStatus(SetPoint1);

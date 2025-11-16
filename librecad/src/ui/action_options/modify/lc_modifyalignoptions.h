@@ -46,8 +46,8 @@ protected slots:
 protected:
     void doSaveSettings() override;
     void doSetAction(RS_ActionInterface *a, bool update) override;
-    int getHAlignFromUI();
-    int getVAlignFromUI();
+    int getHAlignFromUI() const;
+    int getVAlignFromUI() const;
     bool checkActionRttiValid(RS2::ActionType actionType) override;
     QString getSettingsGroupName() override;
     QString getSettingsOptionNamePrefix() override;
@@ -55,10 +55,10 @@ private:
     Ui::LC_ModifyAlignOptions *ui;
     LC_ActionModifyAlignData* m_action = nullptr;
     bool m_forAlignAction = false;
-    void setAlignTypeToActionAndView(int type);
-    void setVAlignToActionAndView(int valign);
-    void setHAlignToActionAndView(int halign);
-    void setAsGroupToActionAndView(bool group);
+    void setAlignTypeToActionAndView(int type) const;
+    void setVAlignToActionAndView(int valign) const;
+    void setHAlignToActionAndView(int halign) const;
+    void setAsGroupToActionAndView(bool group) const;
 };
 
 #endif // LC_MODIFYALIGNOPTIONS_H

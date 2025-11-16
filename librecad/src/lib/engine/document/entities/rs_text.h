@@ -154,22 +154,22 @@ public:
 
     void update() override;
 
-    int getNumberOfLines();
+    int getNumberOfLines() const;
 
 
-    RS_Vector getInsertionPoint() {
+    RS_Vector getInsertionPoint() const {
         return data.insertionPoint;
     }
-    RS_Vector getSecondPoint() {
+    RS_Vector getSecondPoint() const {
         return data.secondPoint;
     }
-    double getHeight() {
+    double getHeight() const {
         return data.height;
     }
     void setHeight(double h) {
         data.height = h;
     }
-    double getWidthRel() {
+    double getWidthRel() const {
         return data.widthRel;
     }
     void setWidthRel(double w) {
@@ -177,21 +177,21 @@ public:
     }
     //RLZ: bad functions, this is MText style align
     void setAlignment(int a);
-    int getAlignment();
+    int getAlignment() const;
 
-    RS_TextData::VAlign getVAlign() {
+    RS_TextData::VAlign getVAlign() const {
         return data.valign;
     }
     void setVAlign(RS_TextData::VAlign va) {
         data.valign = va;
     }
-    RS_TextData::HAlign getHAlign() {
+    RS_TextData::HAlign getHAlign() const {
         return data.halign;
     }
     void setHAlign(RS_TextData::HAlign ha) {
         data.halign = ha;
     }
-    RS_TextData::TextGeneration getTextGeneration() {
+    RS_TextData::TextGeneration getTextGeneration() const {
         return data.textGeneration;
     }
     void setText(const QString& t);
@@ -207,13 +207,13 @@ public:
         void setAngle(double a) {
                 data.angle = a;
         }
-    double getAngle() {
+    double getAngle() const {
         return data.angle;
     }
-    double getUsedTextWidth() {
+    double getUsedTextWidth() const {
         return usedTextWidth;
     }
-    double getUsedTextHeight() {
+    double getUsedTextHeight() const {
         return usedTextHeight;
     }
 

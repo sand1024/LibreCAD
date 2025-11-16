@@ -137,7 +137,7 @@ void LC_ActionDrawLinePoints::doPreparePreviewEntities([[maybe_unused]]LC_MouseE
     }
 }
 
-RS_Vector LC_ActionDrawLinePoints::getPossibleEndPointForAngle(const RS_Vector &snap){
+RS_Vector LC_ActionDrawLinePoints::getPossibleEndPointForAngle(const RS_Vector &snap) const {
     // if shift is pressed, we'll use alternative mirrored angle for direction
     double angleToUse = m_angleDegrees;
     if (m_alternativeActionMode){

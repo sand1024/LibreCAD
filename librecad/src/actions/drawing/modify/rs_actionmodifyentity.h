@@ -44,7 +44,7 @@ public:
     RS_ActionModifyEntity(LC_ActionContext *actionContext);
     ~RS_ActionModifyEntity() override;
     void init(int status) override;
-    void notifyFinished();
+    void notifyFinished() const;
     bool mayBeTerminatedExternally() override {return m_allowExternalTermination;};
 protected:
     enum State {
@@ -60,9 +60,7 @@ protected:
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void updateMouseButtonHints() override;
     void doTrigger() override;
-    // display the entity as selected
-    void setDisplaySelected(bool selected);
-    void completeEditing();
+    void completeEditing() const;
     void onLateRequestCompleted(bool shouldBeSkipped) override;
 private:
     RS_Entity* m_entity = nullptr;

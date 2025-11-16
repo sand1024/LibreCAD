@@ -52,9 +52,9 @@ protected:
 private:
     LC_ActionDrawLineFromPointToLine* m_action = nullptr;
     Ui::LC_LineFromPointToLineOptions *ui;
-    void setOrthogonalToActionAndView(bool value);
-    void setSizeModelIndexToActionAndView(int index);
-    void setSnapModeToActionAndView(int index);
+    void setOrthogonalToActionAndView(bool value) const;
+    void setSizeModelIndexToActionAndView(int index) const;
+    void setSnapModeToActionAndView(int index) const;
     void setAngleToActionAndView(const QString& value);
     void setLengthToActionAndView(const QString& value);
     void setEndOffsetToActionAndView(const QString& value);

@@ -41,7 +41,7 @@ public:
     void init(QC_ApplicationWindow* win);
     void persist();
     bool isWorkspacesFileExists();
-    bool hasWorkspaces();
+    bool hasWorkspaces() const;
 protected:
     struct LC_Workspace {
         int id;

@@ -26,6 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "lc_linemath.h"
 #include "rs_arc.h"
 #include "rs_circle.h"
+#include "rs_document.h"
 #include "rs_ellipse.h"
 #include "rs_entity.h"
 
@@ -98,7 +99,7 @@ void LC_ActionDrawCircleByArc::doCreateEntitiesOnTrigger(RS_Entity *en, QList<RS
             auto* arc = dynamic_cast<RS_Arc*>(en);
             RS_CircleData circleData = createCircleData(arc);
             // setup new circle
-            RS_Entity* circle = new RS_Circle(m_container, circleData);
+            RS_Entity* circle = new RS_Circle(m_document, circleData);
             // apply attributes
             applyPenAndLayerBySourceEntity(arc, circle, m_penMode, m_layerMode);
             list << circle;
@@ -109,7 +110,7 @@ void LC_ActionDrawCircleByArc::doCreateEntitiesOnTrigger(RS_Entity *en, QList<RS
             auto* ellipseArc = dynamic_cast<RS_Ellipse*>(en);
             RS_EllipseData ellipseData = createEllipseData(ellipseArc);
             // setup new circle
-            auto ellipse = new RS_Ellipse(m_container, ellipseData);
+            auto ellipse = new RS_Ellipse(m_document, ellipseData);
             // apply attributes
             applyPenAndLayerBySourceEntity(ellipseArc, ellipse, m_penMode, m_layerMode);
             list << ellipse;
@@ -128,13 +129,13 @@ void LC_ActionDrawCircleByArc::performTriggerDeletions(){
     }
 }
 
-void LC_ActionDrawCircleByArc::deleteOriginalArcOrEllipse(RS_Entity *en){
+void LC_ActionDrawCircleByArc::deleteOriginalArcOrEllipse(RS_Entity *en) const {
     if (checkMayExpandEntity(en,  en->is(RS2::EntityArc) ? "Arc":"Ellipse")){
         undoableDeleteEntity(en);
     }
 }
 
-RS_CircleData LC_ActionDrawCircleByArc::createCircleData(RS_Arc* arc){
+RS_CircleData LC_ActionDrawCircleByArc::createCircleData(RS_Arc* arc) const {
     RS_Vector center = arc->getCenter();
     double radius = arc->getRadius();
     if (!m_replaceArcByCircle){
@@ -147,7 +148,7 @@ RS_CircleData LC_ActionDrawCircleByArc::createCircleData(RS_Arc* arc){
     return result;
 }
 
-RS_EllipseData LC_ActionDrawCircleByArc::createEllipseData(RS_Ellipse *ellipseArc){
+RS_EllipseData LC_ActionDrawCircleByArc::createEllipseData(RS_Ellipse *ellipseArc) const {
     RS_EllipseData originalData = ellipseArc->getData();
 
     RS_EllipseData result;
@@ -188,7 +189,7 @@ void LC_ActionDrawCircleByArc::doPreparePreviewEntities([[maybe_unused]]LC_Mouse
             auto *arc = dynamic_cast<RS_Arc *>(en);
 
             RS_CircleData circleData = createCircleData(arc);
-            RS_Entity *circle = new RS_Circle(m_container, circleData);
+            RS_Entity *circle = new RS_Circle(m_document, circleData);
             prepareEntityDescription(circle, RS2::EntityDescriptionLevel::DescriptionCreating);
             list << circle;
 
@@ -203,7 +204,7 @@ void LC_ActionDrawCircleByArc::doPreparePreviewEntities([[maybe_unused]]LC_Mouse
 
                 if (ellipseArc->isEllipticArc()){
                     RS_EllipseData ellipseData = createEllipseData(ellipseArc);
-                    auto ellipse = new RS_Ellipse(m_container, ellipseData);
+                    auto ellipse = new RS_Ellipse(m_document, ellipseData);
                     prepareEntityDescription(ellipse, RS2::EntityDescriptionLevel::DescriptionCreating);
                     list << ellipse;
 

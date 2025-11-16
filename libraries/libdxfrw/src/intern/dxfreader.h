@@ -36,13 +36,13 @@ public:
 
     std::string getString() {return strData;}
     int getHandleId();//Convert hex string to int
-    std::string toUtf8String(std::string t) {return decoder.toUtf8(t);}
-    std::string getUtf8String() {return decoder.toUtf8(strData);}
-    double getDouble() {return doubleData;}
-    int getInt32() {return intData;}
-    unsigned long long int getInt64() {return int64;}
-    bool getBool() { return (intData==0) ? false : true;}
-    int getVersion(){return decoder.getVersion();}
+    std::string toUtf8String(std::string t) const {return decoder.toUtf8(t);}
+    std::string getUtf8String() const {return decoder.toUtf8(strData);}
+    double getDouble() const {return doubleData;}
+    int getInt32() const {return intData;}
+    unsigned long long int getInt64() const {return int64;}
+    bool getBool() const { return (intData==0) ? false : true;}
+    int getVersion() const {return decoder.getVersion();}
     void setVersion(const std::string &v, bool dxfFormat){decoder.setVersion(v, dxfFormat);}
     void setCodePage(const std::string &c){decoder.setCodePage(c, true);}
     std::string getCodePage(){ return decoder.getCodePage();}

@@ -50,7 +50,7 @@ void LC_ActionInteractivePickBase::keyPressEvent(QKeyEvent* e) {
     }
 }
 
-void LC_ActionInteractivePickBase::skipInteractiveInput() {
+void LC_ActionInteractivePickBase::skipInteractiveInput() const {
     auto interactiveInputInfo = m_actionContext->getInteractiveInputInfo();
     if (interactiveInputInfo->m_state == LC_ActionContext::InteractiveInputInfo::REQUESTED) {
         if (interactiveInputInfo->m_requestor != nullptr) {

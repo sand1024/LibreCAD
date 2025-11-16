@@ -37,19 +37,19 @@ struct RS_MTextData;
  *
  * @author Andrew Mustun
  */
-class RS_ActionDrawMText:public RS_PreviewActionInterface {
+class RS_ActionDrawMText:public LC_UndoablePreviewActionInterface {
     Q_OBJECT
 public:
-    RS_ActionDrawMText(LC_ActionContext *actionContext);
+    explicit  RS_ActionDrawMText(LC_ActionContext *actionContext);
     ~RS_ActionDrawMText() override;
     void init(int status) override;
     void reset();
     void preparePreview();
     QStringList getAvailableCommands() override;
     void setText(const QString &t);
-    QString getText();
+    QString getText() const;
     void setUcsAngleDegrees(double a);
-    double getUcsAngleDegrees();
+    double getUcsAngleDegrees() const;
 protected:
     /**
     * Action States.

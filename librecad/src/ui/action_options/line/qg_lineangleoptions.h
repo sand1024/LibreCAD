@@ -55,9 +55,9 @@ private:
     std::unique_ptr<Ui::Ui_LineAngleOptions> ui;
     RS_ActionDrawLineAngle *m_action = nullptr;
     void setAngleToActionAndView(QString val);
-    void setSnapPointToActionAndView(int val);
+    void setSnapPointToActionAndView(int val) const;
     void setLengthToActionAndView(QString val);
-    void setToAngleBasis(bool val);
+    void setToAngleBasis(bool val) const;
 };
 
 #endif // QG_LINEANGLEOPTIONS_H

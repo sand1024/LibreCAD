@@ -66,7 +66,7 @@ void LG_DimzerosBox::setLinear(){
     model->appendRow(item);
 }
 
-void LG_DimzerosBox::setData(int i){
+void LG_DimzerosBox::setData(int i) const {
     if (dimLine) {
         if (i & 1) {
             if (i&2)
@@ -88,7 +88,7 @@ void LG_DimzerosBox::setData(int i){
     }
 }
 
-int LG_DimzerosBox::getData(){
+int LG_DimzerosBox::getData() const {
     int ret = 0;
     if (dimLine){
         if (model->item(1)->checkState() == Qt::Checked)

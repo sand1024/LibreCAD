@@ -82,7 +82,7 @@ public:
     ArcSegmentData* findArcSegmentEdges(RS_Arc* arc, RS_Vector& snap, const QVector<RS_Vector>& intersections, bool allowEntireArcAsSegment);
     CircleSegmentData* findCircleSegmentEdges(RS_Circle* circle, RS_Vector& snap, const QVector<RS_Vector>& intersections);
 
-    QVector<RS_Vector> collectAllIntersectionsWithEntity(RS_Entity *entity);
+    QVector<RS_Vector> collectAllIntersectionsWithEntity(RS_Entity *entity) const;
 private:
     RS_EntityContainer *m_container = nullptr;
 protected:

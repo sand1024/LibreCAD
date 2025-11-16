@@ -25,26 +25,26 @@
 
 #include "rs_previewactioninterface.h"
 
-class LC_ActionEditPasteTransform :public RS_PreviewActionInterface{
+class LC_ActionEditPasteTransform :public LC_UndoablePreviewActionInterface{
 Q_OBJECT
 public:
-    LC_ActionEditPasteTransform(LC_ActionContext *actionContext);
+    explicit LC_ActionEditPasteTransform(LC_ActionContext *actionContext);
     void init(int status) override;
-    void setAngle(double value);
+    void setAngle(double value) const;
     double getFactor() const;
-    void setFactor(double factor);
+    void setFactor(double factor) const;
     bool isArrayCreated() const;
-    void setArrayCreated(bool arrayCreated);
+    void setArrayCreated(bool arrayCreated) const;
     int getArrayXCount() const;
-    void setArrayXCount(int arrayXCount);
+    void setArrayXCount(int arrayXCount) const;
     int getArrayYCount() const;
-    void setArrayYCount(int arrayYCount);
+    void setArrayYCount(int arrayYCount) const;
     double getArraySpacingX() const;
-    void setArraySpacingX(double arraySpacing);
+    void setArraySpacingX(double arraySpacing) const;
     double getArraySpacingY() const;
-    void setArraySpacingY(double arraySpacing);
+    void setArraySpacingY(double arraySpacing) const;
     double getArrayAngle() const;
-    void setArrayAngle(double arrayAngle);
+    void setArrayAngle(double arrayAngle) const;
     bool isSameAngles() const {return m_sameAngles;}
     void setSameAngles(bool val) {m_sameAngles = val;}
     double getAngle() const;
@@ -74,7 +74,7 @@ protected:
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     LC_ActionOptionsWidget *createOptionsWidget() override;
-    void previewMultipleReferencePoints();
+    void previewMultipleReferencePoints() const;
     void updateMouseButtonHints() override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void doTrigger() override;

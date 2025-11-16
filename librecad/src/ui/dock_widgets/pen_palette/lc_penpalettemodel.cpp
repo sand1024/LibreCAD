@@ -374,7 +374,7 @@ int LC_PenPaletteModel::columnCount(const QModelIndex &) const{
  * Method performs resolving of internal attributes to their display values (icon and text)
  * @param newPen
  */
-void LC_PenPaletteModel::setupItemForDisplay(LC_PenItem *newPen){
+void LC_PenPaletteModel::setupItemForDisplay(LC_PenItem *newPen) const {
 
     // handling line type
     RS2::LineType lineType = newPen->getLineType();
@@ -417,7 +417,7 @@ void LC_PenPaletteModel::addItem(LC_PenItem *item){
  * @param name name to find
  * @return item or null if not found
  */
-LC_PenItem *LC_PenPaletteModel::findPenForName(QString &name){
+LC_PenItem *LC_PenPaletteModel::findPenForName(QString &name) const {
     return m_penPaletteData->findItemWithName(name);
 }
 
@@ -456,7 +456,7 @@ void LC_PenPaletteModel::removeItem(LC_PenItem *item){
  * @param index model index
  * @return item or nullptr if index is not valid
  */
-LC_PenItem *LC_PenPaletteModel::getItemForIndex(QModelIndex index){
+LC_PenItem *LC_PenPaletteModel::getItemForIndex(QModelIndex index) const {
     LC_PenItem* result = nullptr;
     if (index.isValid()){
         int row = index.row();
@@ -491,6 +491,6 @@ LC_PenItem *LC_PenPaletteModel::getActivePen() const{
  * @param qString
  * @return
  */
-LC_PenItem *LC_PenPaletteModel::createNewItem(QString name){
+LC_PenItem *LC_PenPaletteModel::createNewItem(QString name) const {
     return m_penPaletteData->createNewPenItem(name);
 }

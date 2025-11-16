@@ -26,6 +26,7 @@
 #include "lc_graphicviewport.h"
 #include "rs_entity.h"
 #include "lc_dimordinate.h"
+#include "rs_selection.h"
 
 class LC_DimOrdinate;
 
@@ -45,28 +46,31 @@ bool LC_ActionDimOrdinateRebase::isAllowTriggerOnEmptySelection() {
     return false;
 }
 
-void LC_ActionDimOrdinateRebase::doTrigger([[maybe_unused]]bool keepSelected) {
-    if (m_document != nullptr) {
-        undoCycleStart();
-        double horizontalDirection = 0;
-        RS_Vector origin {false};
+bool LC_ActionDimOrdinateRebase::doTriggerModificationsPrepare(LC_DocumentModificationBatch& modificationData) {
+    double horizontalDirection = 0;
+    RS_Vector origin{false};
+    m_viewport->fillCurrentUCSInfo(origin, horizontalDirection);
 
-        m_viewport->fillCurrentUCSInfo(origin, horizontalDirection);
+    for (auto e : m_selectedEntities) {
+        auto* dimOrdinate = dynamic_cast<LC_DimOrdinate*>(e);
+        if (dimOrdinate != nullptr) {
+            auto clone = dynamic_cast<LC_DimOrdinate*>(dimOrdinate->clone());
+            clone->setHDir(horizontalDirection);
+            clone->setDefinitionPoint(origin);
+            clone->clearSelectionFlag();
+            clone->update();
 
-        for (auto e: m_selectedEntities) {
-            auto* dimOrdinate = dynamic_cast<LC_DimOrdinate*>(e);
-            if (dimOrdinate != nullptr) {
-                auto clone = dynamic_cast<LC_DimOrdinate*>(dimOrdinate->clone());
-                clone->setHDir(horizontalDirection);
-                clone->setDefinitionPoint(origin);
-                m_container->addEntity(clone); // fixme - sand - dims - probably it's better to merge adding to container with undo?
-                undoCycleReplace(e, clone);
-                clone->update();
-            }
+            modificationData.replace(e, clone);
         }
-
-        undoCycleEnd();
-
-        m_viewport->notifyChanged();
     }
+    return true;
+}
+
+void LC_ActionDimOrdinateRebase::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+    if (keepSelected) {
+        RS_Selection::selectEntitiesList(m_document, m_viewport, ctx.entitiesToAdd, true);
+    }
+}
+
+void LC_ActionDimOrdinateRebase::doTriggerCompletion(bool success) {
 }

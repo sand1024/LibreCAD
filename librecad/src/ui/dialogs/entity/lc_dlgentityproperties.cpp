@@ -153,11 +153,11 @@ void LC_DlgEntityProperties::setupEntityLayerAndAttributesUI(RS_Entity* entity) 
 }
 
 
-void LC_DlgEntityProperties::onLayerChanged(RS_Layer* layer) {
+void LC_DlgEntityProperties::onLayerChanged(RS_Layer* layer) const {
     m_entity->setLayer(layer);
 }
 
-void LC_DlgEntityProperties::onPenChanged() {
+void LC_DlgEntityProperties::onPenChanged() const {
     m_entity->setPen(ui->wPen->getPen());
 }
 

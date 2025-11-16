@@ -171,7 +171,7 @@ void LC_Rectangle1PointOptions::updateUI(int mode) {
      }
 }
 
-void LC_Rectangle1PointOptions::setCornersModeToActionAndView(int index){
+void LC_Rectangle1PointOptions::setCornersModeToActionAndView(int index) const {
     m_action->setCornersMode(index);
     bool round = index == LC_AbstractActionDrawRectangle::CORNER_RADIUS;
     bool bevel = index == LC_AbstractActionDrawRectangle::CORNER_BEVEL;
@@ -240,7 +240,7 @@ void LC_Rectangle1PointOptions::onSnapPointIndexChanged(int index){
   }
 }
 
-void LC_Rectangle1PointOptions::setSnapPointModeToActionAndView(int index){
+void LC_Rectangle1PointOptions::setSnapPointModeToActionAndView(int index) const {
     m_action->setInsertionPointSnapMode(index);
     ui->cbSnapPoint->setCurrentIndex(index);
 }
@@ -328,7 +328,7 @@ void LC_Rectangle1PointOptions::onBaseAngleFixedClicked(bool value){
     }
 }
 
-void LC_Rectangle1PointOptions::setBaseAngleFixedToActionAndView(bool value){
+void LC_Rectangle1PointOptions::setBaseAngleFixedToActionAndView(bool value) const {
     ui->chkFixedBaseAngle->setChecked(value);
     m_action->setBaseAngleFixed(value);
     bool angleEnabled = value && !ui->cbFreeAngle->isChecked();
@@ -337,22 +337,22 @@ void LC_Rectangle1PointOptions::setBaseAngleFixedToActionAndView(bool value){
     ui->cbFreeAngle->setEnabled(value);
 }
 
-void LC_Rectangle1PointOptions::setUsePolylineToActionAndView(bool value){
+void LC_Rectangle1PointOptions::setUsePolylineToActionAndView(bool value) const {
    m_action->setUsePolyline(value);
    ui->cbPolyline->setChecked(value);
 }
 
-void LC_Rectangle1PointOptions::setSnapToCornerArcCenterToActionAndView(bool value){
+void LC_Rectangle1PointOptions::setSnapToCornerArcCenterToActionAndView(bool value) const {
    m_action->setSnapToCornerArcCenter(value);
    ui->cbSnapRadiusCenter->setChecked(value);
 }
 
-void LC_Rectangle1PointOptions::setSizeInnerToActionAndView(bool value){
+void LC_Rectangle1PointOptions::setSizeInnerToActionAndView(bool value) const {
    m_action->setSizeInner(value);
    ui->cbInnerSize->setChecked(value);
 }
 
-void LC_Rectangle1PointOptions::setFreeAngleToActionAndView(bool value){
+void LC_Rectangle1PointOptions::setFreeAngleToActionAndView(bool value) const {
    m_action->setBaseAngleFree(value);
    ui->cbFreeAngle->setChecked(value);
    ui->leAngle->setEnabled(!value);
@@ -365,7 +365,7 @@ void LC_Rectangle1PointOptions::onEdgesIndexChanged(int index){
     }
 }
 
-void LC_Rectangle1PointOptions::setEdgesModeToActionAndView(int index){
+void LC_Rectangle1PointOptions::setEdgesModeToActionAndView(int index) const {
     m_action->setEdgesDrawMode(index);
     ui->cbEdges->setCurrentIndex(index);
 }

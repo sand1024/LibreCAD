@@ -28,6 +28,7 @@
 
 #include "lc_actioncontext.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_modification.h"
 #include "rs_polyline.h"
 #include "rs_preview.h"
@@ -53,8 +54,8 @@ void RS_ActionPolylineDelBetween::drawSnapper() {
 void RS_ActionPolylineDelBetween::doTrigger() {
     RS_DEBUG->print("RS_ActionPolylineDelBetween::trigger()");
 
-    RS_Modification m(*m_container, m_viewport);
-    RS_Polyline *modifiedPolyline = m.deletePolylineNodesBetween(*m_polylineToModify, m_vertexToDelete, m_vertexToDelete2, false);
+    RS_Modification m(m_document, m_viewport);
+    RS_Polyline *modifiedPolyline = m.deletePolylineNodesBetween(m_polylineToModify, m_vertexToDelete, m_vertexToDelete2);
     if (modifiedPolyline != nullptr){
         m_polylineToModify = modifiedPolyline;
         setStatus(SetVertex1);
@@ -100,8 +101,8 @@ void RS_ActionPolylineDelBetween::onMouseMoveEvent(int status, LC_MouseEvent *e)
                         highlightHover(er);
                     }
                     previewRefSelectablePoint(vertex);
-                    RS_Modification m(*m_preview, m_viewport);
-                    m.deletePolylineNodesBetween(*m_polylineToModify, m_vertexToDelete, vertex  , true);
+                    RS_Modification m(m_preview.get(), m_viewport, false);
+                    m.deletePolylineNodesBetween(m_polylineToModify, m_vertexToDelete, vertex);
                 }
             }
             break;
@@ -118,7 +119,7 @@ void RS_ActionPolylineDelBetween::setPolylineToModify(RS_Entity* en) {
         commandMessage(tr("Entity must be a polyline."));
     } else {
         m_polylineToModify = dynamic_cast<RS_Polyline *>(en);
-        m_polylineToModify->setSelected(true);
+        select(m_polylineToModify);
         setStatus(SetVertex1);
         redraw();
     }
@@ -206,7 +207,7 @@ void RS_ActionPolylineDelBetween::updateMouseButtonHints() {
     }
 }
 
-void RS_ActionPolylineDelBetween::collectEntitiesToRemove(RS_Vector first, RS_Vector second, QList<RS_Entity *> &list){
+void RS_ActionPolylineDelBetween::collectEntitiesToRemove(RS_Vector first, RS_Vector second, QList<RS_Entity *> &list) const {
     if (first.distanceTo(second) > RS_TOLERANCE){
         bool found = false;
         for (unsigned int i = 0; i < m_polylineToModify->count(); i++){

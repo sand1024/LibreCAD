@@ -29,6 +29,7 @@
 #include "lc_actioncontext.h"
 #include "rs_atomicentity.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_modification.h"
 #include "rs_polyline.h"
 #include "rs_preview.h"
@@ -49,11 +50,9 @@ void RS_ActionPolylineTrim::doInitWithContextEntity(RS_Entity* contextEntity, [[
 
 void RS_ActionPolylineTrim::doTrigger() {
     RS_DEBUG->print("RS_ActionPolylineTrim::trigger()");
-
-    m_polylineToModify->setSelected(false);
-
-    RS_Modification m(*m_container, m_viewport);
-    auto newPolyline = m.polylineTrim((RS_Polyline &) *m_polylineToModify, *m_segment1, *m_segment2, false);
+    unselect(m_polylineToModify);
+    RS_Modification m(m_document, m_viewport);
+    auto newPolyline = m.polylineTrim(m_polylineToModify, *m_segment1, *m_segment2, false);
     if (newPolyline != nullptr){
         m_polylineToModify = newPolyline;
         m_segment1 = m_segment2 = nullptr;
@@ -91,8 +90,8 @@ void RS_ActionPolylineTrim::onMouseMoveEvent(int status, LC_MouseEvent *e) {
                 previewRefPoint(m_segment1->getStartpoint());
                 previewRefPoint(m_segment1->getEndpoint());
 
-                RS_Modification m(*m_preview, m_viewport);
-                auto polyline = m.polylineTrim((RS_Polyline &) *m_polylineToModify, *m_segment1, *candidate, true);
+                RS_Modification m(m_preview.get(), m_viewport);
+                auto polyline = m.polylineTrim(m_polylineToModify, *m_segment1, *candidate, true);
                 if (polyline != nullptr){
                     highlightHover(en);
                     previewRefSelectablePoint(candidate->getStartpoint());
@@ -113,7 +112,7 @@ void RS_ActionPolylineTrim::setPolylineToModify(RS_Entity* en) {
         commandMessage(tr("Entity must be a polyline."));
     } else {
         m_polylineToModify = dynamic_cast<RS_Polyline *>(en);
-        m_polylineToModify->setSelected(true);
+        select(m_polylineToModify);
         redraw();
         setStatus(SetSegment1);
         redraw(); // fixme - why redraw twice??
@@ -161,8 +160,8 @@ void RS_ActionPolylineTrim::onMouseRightButtonRelease(int status, [[maybe_unused
     deletePreview();
     int newStatus = status - 1;
     if (newStatus == ChooseEntity){
-        if (m_polylineToModify){
-            m_polylineToModify->setSelected(false);
+        if (m_polylineToModify != nullptr){
+            unselect(m_polylineToModify);
             redraw();
         }
     }
@@ -170,8 +169,8 @@ void RS_ActionPolylineTrim::onMouseRightButtonRelease(int status, [[maybe_unused
 }
 
 void RS_ActionPolylineTrim::finish(bool updateTB){
-    if (m_polylineToModify){
-        m_polylineToModify->setSelected(false);
+    if (m_polylineToModify != nullptr){
+        unselect(m_polylineToModify);
         redraw();
     }
     RS_PreviewActionInterface::finish(updateTB);

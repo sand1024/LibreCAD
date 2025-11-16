@@ -46,7 +46,7 @@ void LC_ActionSplineAddPoint::doAfterTrigger() {
 void LC_ActionSplineAddPoint::onMouseMove(RS_Vector mouse, int status, LC_MouseEvent *e) {
     switch (status) {
         case SetEntity: {
-            auto entity = catchEntityByEvent(e, g_enTypeList);
+            const auto entity = catchEntityByEvent(e, g_enTypeList);
             if (entity != nullptr){
                 if (mayModifySplineEntity(entity)) {
                     highlightHoverWithRefPoints(entity, true);
@@ -55,9 +55,9 @@ void LC_ActionSplineAddPoint::onMouseMove(RS_Vector mouse, int status, LC_MouseE
             break;
         }
         case SetBeforeControlPoint:{
-            RS_Vector nearestRef = m_entityToModify->getNearestRef(mouse);
+            const RS_Vector nearestRef = m_entityToModify->getNearestRef(mouse);
             if (nearestRef != m_entityToModify->getStartpoint()){
-                RS_Vector nearestPointOnEntity = m_entityToModify->getNearestPointOnEntity(mouse, true);
+                const RS_Vector nearestPointOnEntity = m_entityToModify->getNearestPointOnEntity(mouse, true);
                 previewRefPoint(nearestPointOnEntity);
                 previewRefSelectablePoint(nearestRef);
             }
@@ -65,7 +65,7 @@ void LC_ActionSplineAddPoint::onMouseMove(RS_Vector mouse, int status, LC_MouseE
         }
         case SetControlPoint:{
             previewRefSelectablePoint(mouse);
-            RS_Vector nearestPointOnEntity = m_entityToModify->getNearestPointOnEntity(mouse, true);
+            const RS_Vector nearestPointOnEntity = m_entityToModify->getNearestPointOnEntity(mouse, true);
             if (nearestPointOnEntity.valid){
                 previewRefPoint(nearestPointOnEntity);
                 previewRefPoint(m_selectedVertexPoint);
@@ -89,7 +89,7 @@ void LC_ActionSplineAddPoint::onMouseMove(RS_Vector mouse, int status, LC_MouseE
 
 void LC_ActionSplineAddPoint::setEntityToModify(RS_Entity* entity) {
     m_entityToModify = entity;
-    m_entityToModify->setSelected(true);
+    select(m_entityToModify);
     redrawDrawing();
     setStatus(SetBeforeControlPoint);
 }
@@ -101,15 +101,15 @@ bool LC_ActionSplineAddPoint::mayModifySplineEntity(RS_Entity* e) {
 void LC_ActionSplineAddPoint::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
     switch (status){
         case SetEntity:{
-            auto entity = catchEntityByEvent(e, g_enTypeList);
+            const auto entity = catchEntityByEvent(e, g_enTypeList);
             if (entity != nullptr && mayModifySplineEntity(entity)){
                 setEntityToModify(entity);
             }
             break;
         }
         case SetBeforeControlPoint:{
-            RS_Vector mouse = e->snapPoint;
-            RS_Vector nearestRef = m_entityToModify->getNearestRef(mouse);
+            const RS_Vector mouse = e->snapPoint;
+            const RS_Vector nearestRef = m_entityToModify->getNearestRef(mouse);
             if (nearestRef != m_entityToModify->getStartpoint()){
                 m_selectedVertexPoint = nearestRef;
                 moveRelativeZero(nearestRef);
@@ -135,11 +135,11 @@ RS_Entity *LC_ActionSplineAddPoint::createModifiedSplineEntity(RS_Entity *e, RS_
     RS_Entity* result = nullptr;
     switch (e->rtti()){
         case RS2::EntitySplinePoints:{
-            auto* splinePoints = dynamic_cast<LC_SplinePoints *>(e->clone());
-            LC_SplinePointsData &data = splinePoints->getData();
-            unsigned int controlPointsCount = data.controlPoints.size();
-            unsigned int splinePointsCount = data.splinePoints.size();
-            int insertIndexAdjustment = adjustPosition ? 1 : 0;
+            auto* clone = dynamic_cast<LC_SplinePoints *>(e->clone());
+            LC_SplinePointsData &data = clone->getData();
+            const unsigned int controlPointsCount = data.controlPoints.size();
+            const unsigned int splinePointsCount = data.splinePoints.size();
+            const int insertIndexAdjustment = adjustPosition ? 1 : 0;
             if (splinePointsCount > 0){
                 for (unsigned int i = 0; i < splinePointsCount; i++) {
                     RS_Vector cp = data.splinePoints.at(i);
@@ -159,15 +159,15 @@ RS_Entity *LC_ActionSplineAddPoint::createModifiedSplineEntity(RS_Entity *e, RS_
                 }
             }
 
-            splinePoints->update();
-            result = splinePoints;
+            clone->update();
+            result = clone;
             break;
         }
         case RS2::EntitySpline:{
-            auto* spline = dynamic_cast<RS_Spline *>(e);
+            const auto* spline = dynamic_cast<RS_Spline *>(e);
             RS_SplineData data = spline->getData();
-            unsigned int controlPointsCount = data.controlPoints.size();
-            int insertIndexAdjustment = adjustPosition ? 1 : 0;
+            const unsigned int controlPointsCount = data.controlPoints.size();
+            const int insertIndexAdjustment = adjustPosition ? 1 : 0;
             for (unsigned int i = 0; i < controlPointsCount; i++) {
                 RS_Vector cp = data.controlPoints.at(i);
                 if (cp == m_selectedVertexPoint) {

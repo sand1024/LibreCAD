@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "rs_actiondrawellipsefocipoint.h"
 
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_ellipse.h"
 
 struct RS_ActionDrawEllipseFociPoint::ActionData {
@@ -58,20 +59,20 @@ double RS_ActionDrawEllipseFociPoint::findRatio() const{
     return std::sqrt(m_actionData->d*m_actionData->d-m_actionData->c*m_actionData->c)/m_actionData->d;
 }
 
-void RS_ActionDrawEllipseFociPoint::doTrigger() {
-    auto* ellipse = new RS_Ellipse{m_container,
+RS_Entity* RS_ActionDrawEllipseFociPoint::doTriggerCreateEntity() {
+    auto* ellipse = new RS_Ellipse{m_document,
                                    {m_actionData->center,
                                     m_actionData->major*m_actionData->d,
                                     findRatio(),
                                     0., 0.,false}
     };
-    setPenAndLayerToActive(ellipse);
 
     moveRelativeZero(ellipse->getCenter());
-    undoCycleAdd(ellipse);
-    setStatus(SetFocus1);
+    return ellipse;
+}
 
-    RS_DEBUG->print("RS_ActionDrawEllipseFociPoint::trigger():entity added: %lu", ellipse->getId());
+void RS_ActionDrawEllipseFociPoint::doTriggerCompletion(bool success) {
+    setStatus(SetFocus1);
 }
 
 void RS_ActionDrawEllipseFociPoint::onMouseMoveEvent(int status, LC_MouseEvent *e) {

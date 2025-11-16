@@ -27,6 +27,7 @@
 #ifndef RS_ACTIONDRAWLINEPARALLELTHROUGH_H
 #define RS_ACTIONDRAWLINEPARALLELTHROUGH_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_previewactioninterface.h"
 
 class RS_Vector;
@@ -37,10 +38,10 @@ class RS_Vector;
  *
  * @author Andrew Mustun
  */
-class RS_ActionDrawLineParallelThrough:public RS_PreviewActionInterface {
+class RS_ActionDrawLineParallelThrough:public LC_UndoableDocumentModificationAction {
     Q_OBJECT
 public:
-    RS_ActionDrawLineParallelThrough(LC_ActionContext *actionContext);
+    explicit RS_ActionDrawLineParallelThrough(LC_ActionContext *actionContext);
     ~RS_ActionDrawLineParallelThrough() override;
     QStringList getAvailableCommands() override;
     void finish(bool updateTB) override;
@@ -76,6 +77,7 @@ protected:
     void updateMouseButtonHints() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
-    void doTrigger() override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
 };
 #endif

@@ -26,7 +26,7 @@
 #include "rs_previewactioninterface.h"
 class RS_Polyline;
 
-class LC_ActionDrawLinePolygonBase:public RS_PreviewActionInterface{
+class LC_ActionDrawLinePolygonBase:public LC_UndoablePreviewActionInterface{
     Q_OBJECT
 public:
     LC_ActionDrawLinePolygonBase(const char *name, LC_ActionContext *actionContext, RS2::ActionType actionType);
@@ -35,11 +35,11 @@ public:
     QStringList getAvailableCommands() override;
     int getNumber() const{return m_edgesNumber;}
     void setNumber(int n) {m_edgesNumber = n;}
-    bool isPolyline() const {return c_createPolyline;};
-    void setPolyline(bool value){ c_createPolyline = value;};
+    bool isPolyline() const {return m_createPolyline;};
+    void setPolyline(bool value){ m_createPolyline = value;};
     bool isCornersRounded() const {return m_roundedCorners;};
     void setCornersRounded(bool value){m_roundedCorners = value;};
-    double getRoundingRadius(){return m_roundingRadius;}
+    double getRoundingRadius() const {return m_roundingRadius;}
     void setRoundingRadius(double val){m_roundingRadius = val;}
     void updateMouseButtonHints() override;
 protected:
@@ -70,7 +70,7 @@ protected:
 /** Last status before entering text. */
     Status m_lastStatus = SetPoint1;
 
-    bool c_createPolyline = false;
+    bool m_createPolyline = false;
     bool m_roundedCorners = false;
     double m_roundingRadius = 0.0;
 

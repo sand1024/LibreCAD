@@ -115,7 +115,7 @@ public:
     ~QG_LayerWidget() override = default;
 
     void update();
-    void activateLayer(RS_Layer* layer, bool updateScroll = true);
+    void activateLayer(RS_Layer* layer, bool updateScroll = true) const;
     void layerActivated(RS_Layer* layer) override { activateLayer(layer); }
     void layerAdded(RS_Layer* layer) override;
     void layerEdited(RS_Layer*) override;
@@ -137,7 +137,7 @@ public:
         update();
     }
 
-    QLineEdit* getMatchLayerName() {
+    QLineEdit* getMatchLayerName() const {
         return m_matchLayerName;
     }
 
@@ -150,20 +150,20 @@ public:
 signals:
     void escape();
 public slots:
-    void slotActivated(QModelIndex layerIdx);
+    void slotActivated(QModelIndex layerIdx) const;
     void slotSelectionChanged(
         const QItemSelection& selected,
-        const QItemSelection& deselected);
+        const QItemSelection& deselected) const;
     void slotUpdateLayerList();
-    void activateLayer(int row);
-    void updateWidgetSettings();
+    void activateLayer(int row) const;
+    void updateWidgetSettings() const;
 protected:
     void contextMenuEvent(QContextMenuEvent* e) override;
     void keyPressEvent(QKeyEvent* e) override;
     void setLayerList(RS_LayerList* layerList, bool showByBlock);
     void updateFiltering();
     void addToolbarButton(LC_FlexLayout* layButtons, RS2::ActionType actionType);
-    void addMenuItem(QMenu* contextMenu, RS2::ActionType actionType);
+    void addMenuItem(QMenu* contextMenu, RS2::ActionType actionType) const;
 private:
     RS_LayerList* m_layerList = nullptr;
     bool m_showByBlock = false;
@@ -173,7 +173,7 @@ private:
     RS_Layer* m_lastLayer = nullptr;
     QG_ActionHandler* m_actionHandler = nullptr;
     LC_ActionGroupManager* m_actionGroupManager{nullptr};
-    void restoreSelections();
+    void restoreSelections() const;
 };
 
 #endif

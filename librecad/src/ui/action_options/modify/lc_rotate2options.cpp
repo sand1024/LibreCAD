@@ -115,29 +115,29 @@ void LC_Rotate2Options::doSetAction(RS_ActionInterface *a, bool update){
     setAngle2ToActionAndView(angle2);
 }
 
-void LC_Rotate2Options::setUseMultipleCopiesToActionAndView(bool copies) {
+void LC_Rotate2Options::setUseMultipleCopiesToActionAndView(bool copies) const {
     m_action->setUseMultipleCopies(copies);
     ui->cbMultipleCopies->setChecked(copies);
     ui->sbNumberOfCopies->setEnabled(copies);
     ui->cbSameAngleForCopies->setEnabled(copies);
 }
 
-void LC_Rotate2Options::setUseCurrentLayerToActionAndView(bool val) {
+void LC_Rotate2Options::setUseCurrentLayerToActionAndView(bool val) const {
     m_action->setUseCurrentLayer(val);
     ui->cbCurrentLayer->setChecked(val);
 }
 
-void LC_Rotate2Options::setUseCurrentAttributesToActionAndView(bool val) {
+void LC_Rotate2Options::setUseCurrentAttributesToActionAndView(bool val) const {
     m_action->setUseCurrentAttributes(val);
     ui->cbCurrentAttr->setChecked(val);
 }
 
-void LC_Rotate2Options::setKeepOriginalsToActionAndView(bool val) {
+void LC_Rotate2Options::setKeepOriginalsToActionAndView(bool val) const {
     m_action->setKeepOriginals(val);
     ui->cbKeepOriginals->setChecked(val);
 }
 
-void LC_Rotate2Options::setCopiesNumberToActionAndView(int number) {
+void LC_Rotate2Options::setCopiesNumberToActionAndView(int number) const {
     if (number < 1){
         number = 1;
     }
@@ -153,7 +153,7 @@ void LC_Rotate2Options::setAnglesMirroredToModelAndView(bool checked) {
     setAngle1ToActionAndView(ui->leAngle1->text()); // just force update both edits
 }
 
-void LC_Rotate2Options::setSameAngleForCopiesToActionAndView(bool val) {
+void LC_Rotate2Options::setSameAngleForCopiesToActionAndView(bool val) const {
     m_action->setUseSameAngle2ForCopies(val);
     ui->cbSameAngleForCopies->setChecked(val);
 }

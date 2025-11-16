@@ -25,8 +25,8 @@
 #include "lc_cursoroverlayinfo.h"
 #include "lc_graphicviewport.h"
 #include "lc_modifyalignoptions.h"
+#include "rs_document.h"
 #include "rs_entity.h"
-#include "rs_entitycontainer.h"
 
 LC_ActionModifyAlign::LC_ActionModifyAlign(LC_ActionContext *actionContext)
     :LC_ActionPreSelectionAwareBase("ModifyAlign", actionContext, RS2::ActionModifyAlign) {
@@ -43,38 +43,28 @@ void LC_ActionModifyAlign::init(int status) {
     }
 }
 
+bool LC_ActionModifyAlign::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+    createAlignedEntities(ctx.entitiesToAdd, m_alignMin, m_alignMax, false);
+    ctx.dontSetActiveLayerAndPen();
+    ctx -= m_selectedEntities;
+    return true;
+}
+
+void LC_ActionModifyAlign::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+    if (keepSelected) {
+        select(ctx.entitiesToAdd);
+    }
+}
+
 void LC_ActionModifyAlign::onSelectionCompleted([[maybe_unused]]bool singleEntity, bool fromInit) {
     setSelectionComplete(isAllowTriggerOnEmptySelection(), fromInit);
     updateMouseButtonHints();
     updateSelectionWidget();
 }
 
-void LC_ActionModifyAlign::doTrigger([[maybe_unused]]bool keepSelected) {
-    QList<RS_Entity *> entitiesToCreate;
-    createAlignedEntities(entitiesToCreate, m_alignMin, m_alignMax, false);
-    if (!entitiesToCreate.isEmpty()) {
-        if (m_document != nullptr) {
-            undoCycleStart();
-
-            for (auto e: entitiesToCreate) {
-                // fixme - review!!
-                // todo - this is a place to think about regarding usability and consistency. Other Modify actions does not clear "selected" status.
-                // todo - however, from the usability point of view - if the user would like to continue aligning operation, not cleared selection is not convenient.
-                e->setSelected(false);
-                m_container->addEntity(e);
-                undoableAdd(e);
-            }
-
-            for (auto e: m_selectedEntities) {
-                undoableDeleteEntity(e);
-            }
-
-            undoCycleEnd();
-
-            m_selectedEntities.clear();
-            m_selectionComplete = false;
-        }
-    }
+void LC_ActionModifyAlign::doTriggerCompletion(bool success) {
+    m_selectionComplete = false;
+    m_selectedEntities.clear();
 }
 
 void LC_ActionModifyAlign::onMouseMoveEventSelected([[maybe_unused]]int status, LC_MouseEvent *e) {
@@ -105,8 +95,8 @@ void LC_ActionModifyAlign::onMouseMoveEventSelected([[maybe_unused]]int status, 
             break;
         }
         case LC_Align::DRAWING: {
-            min = m_container->getMin();
-            max = m_container->getMax();
+            min = m_document->getMin();
+            max = m_document->getMax();
             break;
         }
         default:
@@ -122,9 +112,9 @@ void LC_ActionModifyAlign::onMouseMoveEventSelected([[maybe_unused]]int status, 
 
     // preview entities
     if (showPreview) {
-        QList<RS_Entity *> entitiesList;
-        RS_Vector groupOffset = createAlignedEntities(entitiesList, min, max, true);
-        for (auto ent: entitiesList) {
+        QList<RS_Entity *> alignedEntitiesList;
+        RS_Vector groupOffset = createAlignedEntities(alignedEntitiesList, min, max, true);
+        for (auto ent: alignedEntitiesList) {
             previewEntity(ent);
         }
         if (m_showRefEntitiesOnPreview) {
@@ -174,7 +164,7 @@ void LC_ActionModifyAlign::onMouseMoveEventSelected([[maybe_unused]]int status, 
     }
 }
 
-void LC_ActionModifyAlign::previewRefLines(bool drawVertical, [[maybe_unused]]double verticalRef, bool drawHorizontal, [[maybe_unused]]double horizontalRef) {
+void LC_ActionModifyAlign::previewRefLines(bool drawVertical, [[maybe_unused]]double verticalRef, bool drawHorizontal, [[maybe_unused]]double horizontalRef) const {
     // NOTE:
     // AS Action so far do not support UCS, coordinates below will be in WCS despite used methods.
     RS_Vector wcsLeftBottom = m_viewport->getUCSViewLeftBottom();
@@ -186,6 +176,7 @@ void LC_ActionModifyAlign::previewRefLines(bool drawVertical, [[maybe_unused]]do
         previewRefConstructionLine({wcsLeftBottom.x, horizontalRef}, {wcsRightTop.x, horizontalRef});
     }
 }
+
 
 void LC_ActionModifyAlign::onMouseLeftButtonReleaseSelected([[maybe_unused]]int status, LC_MouseEvent *e) {
     RS_Vector snap = e->snapPoint;
@@ -209,8 +200,8 @@ void LC_ActionModifyAlign::onMouseLeftButtonReleaseSelected([[maybe_unused]]int 
             break;
         }
         case LC_Align::DRAWING: {
-            m_alignMin = m_container->getMin();
-            m_alignMax = m_container->getMax();
+            m_alignMin = m_document->getMin();
+            m_alignMax = m_document->getMax();
             break;
         }
         default:
@@ -278,7 +269,7 @@ LC_ActionOptionsWidget *LC_ActionModifyAlign::createOptionsWidget() {
     return new LC_ModifyAlignOptions();
 }
 
-RS_Vector LC_ActionModifyAlign::createAlignedEntities(QList<RS_Entity *> &list, RS_Vector min, RS_Vector max, bool previewOnly) {
+RS_Vector LC_ActionModifyAlign::createAlignedEntities(QList<RS_Entity *> &clonesList, RS_Vector min, RS_Vector max, bool previewOnly) {
     auto result =  RS_Vector(false);
 
     RS_Vector targetPoint = getReferencePoint(min, max);
@@ -297,17 +288,17 @@ RS_Vector LC_ActionModifyAlign::createAlignedEntities(QList<RS_Entity *> &list, 
 
         for (auto e: m_selectedEntities) {
             RS_Entity* clone = LC_Align::createCloneMovedToOffset(e, offset, updateAttributes);
-            list << clone;
+            clonesList << clone;
         }
     } else {
         for (auto e: m_selectedEntities) {
             RS_Entity *clone = LC_Align::createCloneMovedToTarget(e, targetPoint, updateAttributes, hAlign, vAlign);
-            list << clone;
+            clonesList << clone;
         }
     }
     return result;
 }
 
-RS_Vector LC_ActionModifyAlign::getReferencePoint(const RS_Vector &min, const RS_Vector &max) {
+RS_Vector LC_ActionModifyAlign::getReferencePoint(const RS_Vector &min, const RS_Vector &max) const {
     return LC_Align::getReferencePoint(min, max, hAlign, vAlign);
 }

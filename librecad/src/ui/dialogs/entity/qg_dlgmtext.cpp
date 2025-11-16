@@ -114,7 +114,7 @@ void QG_DlgMText::init() {
 }
 
 
-void QG_DlgMText::updateUniCharComboBox(int) {
+void QG_DlgMText::updateUniCharComboBox(int) const {
     QString t = cbUniPage->currentText();
     int i1 = t.indexOf('-');
     int i2 = t.indexOf(']');
@@ -267,8 +267,7 @@ void QG_DlgMText::setEntity(RS_MText* t, bool isNew) {
     layoutDirectionChanged();
 }
 
-void QG_DlgMText::layoutDirectionChanged()
-{
+void QG_DlgMText::layoutDirectionChanged() const {
     bool leftToRight = rbLeftToRight->isChecked();
     rbRightToLeft->setChecked(!leftToRight);
     Qt::LayoutDirection direction =  leftToRight ? Qt::LeftToRight : Qt::RightToLeft;
@@ -365,7 +364,7 @@ void QG_DlgMText::setAlignment(QToolButton& button) {
     button.setChecked(true);
 }
 
-int QG_DlgMText::getAlignment() {
+int QG_DlgMText::getAlignment() const {
 
     auto it = std::find_if(m_alignmentButtons.cbegin(), m_alignmentButtons.cend(), [](QToolButton* button){
             return button->isChecked();});
@@ -386,7 +385,7 @@ void QG_DlgMText::setFont(const QString& f) {
     }
 }
 
-void QG_DlgMText::defaultChanged(bool) {
+void QG_DlgMText::defaultChanged(bool) const {
     if (cbDefault->isChecked() && m_font != nullptr) {
         leLineSpacingFactor->setText(
                         QString::number(m_font->getLineSpacingFactor()));
@@ -400,7 +399,7 @@ void QG_DlgMText::loadText() {
     }
 }
 
-void QG_DlgMText::load(const QString& fn) {
+void QG_DlgMText::load(const QString& fn) const {
     QFile f(fn);
     if (!f.open(QIODevice::ReadOnly)) {
         return;
@@ -417,7 +416,7 @@ void QG_DlgMText::saveText() {
     }
 }
 
-void QG_DlgMText::save(const QString& fn) {
+void QG_DlgMText::save(const QString& fn) const {
     QString text = teText->toPlainText();
     QFile f(fn);
     if (f.open(QIODevice::WriteOnly)) {
@@ -427,7 +426,7 @@ void QG_DlgMText::save(const QString& fn) {
     }
 }
 
-void QG_DlgMText::insertSymbol(int) {
+void QG_DlgMText::insertSymbol(int) const {
     QString str = cbSymbol->currentText();
     int i=str.indexOf('(');
     if (i!=-1) {
@@ -435,14 +434,14 @@ void QG_DlgMText::insertSymbol(int) {
     }
 }
 
-void QG_DlgMText::updateUniCharButton(int) {
+void QG_DlgMText::updateUniCharButton(int) const {
     QString t = cbUniChar->currentText();
     int i1 = t.indexOf(']');
     int c = t.mid(1, i1-1).toInt(nullptr, 16);
     bUnicode->setText(QString{QChar{c}});
 }
 
-void QG_DlgMText::insertChar() {
+void QG_DlgMText::insertChar() const {
     QString t = cbUniChar->currentText();
     int i1 = t.indexOf(']');
     int c = t.mid(1, i1-1).toInt(nullptr, 16);

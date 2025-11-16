@@ -78,7 +78,7 @@ public:
     }
 
     /** @return Default letter spacing for this font */
-    double getLetterSpacing() {
+    double getLetterSpacing() const {
         return letterSpacing;
     }
 

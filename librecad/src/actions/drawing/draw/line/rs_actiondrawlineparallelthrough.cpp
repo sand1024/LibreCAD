@@ -29,7 +29,9 @@
 #include "qg_lineparallelthroughoptions.h"
 #include "rs_creation.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_polyline.h"
+#include "rs_preview.h"
 // fixme - sand - consider relaxing existing restrictions, if any - and use no-restrictions mode for this action.
 
 namespace {
@@ -40,7 +42,7 @@ namespace {
 }
 
 RS_ActionDrawLineParallelThrough::RS_ActionDrawLineParallelThrough(LC_ActionContext *actionContext)
-		:RS_PreviewActionInterface("Draw Parallels", actionContext,RS2::ActionDrawLineParallelThrough)
+		:LC_UndoableDocumentModificationAction("Draw Parallels", actionContext,RS2::ActionDrawLineParallelThrough)
 		, m_coord(new RS_Vector{}),m_lastStatus(SetEntity){
     m_SnapDistance=1.;
 }
@@ -68,15 +70,16 @@ void RS_ActionDrawLineParallelThrough::doInitWithContextEntity(RS_Entity* contex
     }
 }
 
-void RS_ActionDrawLineParallelThrough::doTrigger() {
+bool RS_ActionDrawLineParallelThrough::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
     if (m_entity != nullptr){
-        RS_Creation creation(m_container, m_viewport);
-        RS_Entity *e = creation.createParallelThrough(*m_coord,m_numberToCreate,m_entity, m_symmetric);
-
-        if (e == nullptr){
-            RS_DEBUG->print("RS_ActionDrawLineParallelThrough::trigger: No parallels added\n");
-        }
+         std::list<RS_Entity*> parallels;
+         RS_Creation::createParallelThrough(*m_coord,m_numberToCreate,m_entity, m_symmetric,ctx.entitiesToAdd);
+         return true;
     }
+    return false;
+}
+
+void RS_ActionDrawLineParallelThrough::doTriggerCompletion(bool success) {
 }
 
 void RS_ActionDrawLineParallelThrough::onMouseMoveEvent([[maybe_unused]]int status, LC_MouseEvent *e) {
@@ -97,9 +100,11 @@ void RS_ActionDrawLineParallelThrough::onMouseMoveEvent([[maybe_unused]]int stat
         case SetPos: {
             *m_coord = getFreeSnapAwarePoint(e, snap);
             highlightSelected(m_entity);
-            RS_Creation creation(m_preview.get(), nullptr, false);
-            auto en = creation.createParallelThrough(*m_coord, m_numberToCreate, m_entity, m_symmetric);
-            if (en != nullptr){
+            QList<RS_Entity*> parallels;
+            RS_Creation::createParallelThrough(*m_coord, m_numberToCreate, m_entity, m_symmetric, parallels);
+            if (!parallels.empty()){
+                auto en = parallels.front();
+                m_preview->addAllFromList(parallels);
                 RS_Vector nearest = m_entity->getNearestPointOnEntity(*m_coord, false);
                 moveRelativeZero(nearest); // fixme - should we restore original relzero?
                 if (m_numberToCreate == 1 && !m_symmetric){

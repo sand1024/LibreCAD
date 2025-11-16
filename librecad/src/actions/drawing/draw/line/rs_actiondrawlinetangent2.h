@@ -27,7 +27,7 @@
 #ifndef RS_ACTIONDRAWLINETANGENT2_H
 #define RS_ACTIONDRAWLINETANGENT2_H
 
-#include "rs_previewactioninterface.h"
+#include "lc_undoabledocumentmodificationaction.h"
 
 /**
  * This action class can handle user events to draw tangents from circle to
@@ -35,10 +35,10 @@
  *
  * @author Andrew Mustun
  */
-class RS_ActionDrawLineTangent2:public RS_PreviewActionInterface {
+class RS_ActionDrawLineTangent2:public LC_SingleEntityCreationAction {
     Q_OBJECT
 public:
-    RS_ActionDrawLineTangent2(LC_ActionContext *actionContext);
+    explicit RS_ActionDrawLineTangent2(LC_ActionContext *actionContext);
     ~RS_ActionDrawLineTangent2() override;
     void init(int status) override;
     void finish(bool updateTB) override;
@@ -49,7 +49,7 @@ protected:
         SelectLine      /**<Choose the tangent*/
     };
 
-    void cleanup();
+    void cleanup() const;
     void preparePreview(int status, LC_MouseEvent *e);
     struct ActionData;
     std::unique_ptr<ActionData> m_actionData;
@@ -61,6 +61,7 @@ protected:
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void updateMouseButtonHints() override;
-    void doTrigger() override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
 };
 #endif

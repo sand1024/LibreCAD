@@ -16,8 +16,8 @@ class ColorWizard : public QFrame{
 public:
     explicit ColorWizard(QWidget* parent = nullptr);
     ~ColorWizard();
-    QStringList getFavList();
-    void addFavorite(QString color);
+    QStringList getFavList() const;
+    void addFavorite(QString color) const;
 private:
     std::unique_ptr<Ui::ColorWizard> ui;
 signals:
@@ -29,7 +29,7 @@ protected slots:
     void requestSelection();
     void invokeColorDialog();
     void addOrRemove();
-    void removeFavorite();
+    void removeFavorite() const;
     void handleDoubleClick(QListWidgetItem* item);
 };
 

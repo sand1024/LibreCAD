@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "rs_actiondrawlineorthtan.h"
 
 #include "rs_creation.h"
+#include "rs_document.h"
 #include "rs_line.h"
 #include "rs_polyline.h"
 
@@ -50,11 +51,12 @@ struct RS_ActionDrawLineOrthTan::ActionData {
  * @author Dongxu Li
  */
 RS_ActionDrawLineOrthTan::RS_ActionDrawLineOrthTan(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("Draw Tangent Orthogonal", actionContext,RS2::ActionDrawLineOrthTan),
+    :LC_SingleEntityCreationAction("Draw Tangent Orthogonal", actionContext,RS2::ActionDrawLineOrthTan),
     m_actionData{std::make_unique<ActionData>()}{
 }
 
 RS_ActionDrawLineOrthTan::~RS_ActionDrawLineOrthTan() = default;
+
 void RS_ActionDrawLineOrthTan::finish(bool updateTB){
 	clearLines();
     RS_PreviewActionInterface::finish(updateTB);
@@ -82,23 +84,20 @@ void RS_ActionDrawLineOrthTan::doInitWithContextEntity(RS_Entity* contextEntity,
     }
 }
 
-void RS_ActionDrawLineOrthTan::doTrigger() {
-    RS_Creation creation(m_container, m_viewport, false);
+RS_Entity* RS_ActionDrawLineOrthTan::doTriggerCreateEntity() {
     RS_Vector altTangentPosition;
-    auto tangent = creation.createLineOrthTan(m_actionData->mousePosition,
-        m_actionData->normal, m_actionData->circle, altTangentPosition);
-
+    auto tangent = RS_Creation::createLineOrthTan(m_actionData->mousePosition, m_actionData->normal, m_actionData->circle, altTangentPosition);
     if (m_actionData->altMode) {
         tangent.reset();
-        tangent = creation.createLineOrthTan(altTangentPosition,m_actionData->normal, m_actionData->circle, altTangentPosition);
+        tangent = RS_Creation::createLineOrthTan(altTangentPosition, m_actionData->normal, m_actionData->circle, altTangentPosition);
     }
 
     auto tangentData = tangent->getData();
-    auto *newEntity = new RS_Line(m_container, tangentData);
+    auto* newEntity = new RS_Line(m_document, tangentData);
+    return newEntity;
+}
 
-    setPenAndLayerToActive(newEntity);
-    undoCycleAdd(newEntity);
-
+void RS_ActionDrawLineOrthTan::doTriggerCompletion(bool success) {
     setStatus(SetCircle);
     m_actionData->circle = nullptr;
 }
@@ -113,16 +112,15 @@ void RS_ActionDrawLineOrthTan::onMouseMoveEvent(int status, LC_MouseEvent *e) {
             if (m_actionData->m_setCircleFirst) {
                 highlightSelected(m_actionData->circle);
                 RS_Vector alternativeTangentPoint;
-                RS_Creation creation(m_preview.get(), m_viewport, false);
                 RS_Vector mouse = e->graphPoint;
                 auto line = static_cast<RS_Line*>(en);
-                auto tangent = creation.createLineOrthTan(mouse,line, m_actionData->circle, alternativeTangentPoint);
+                auto tangent = RS_Creation::createLineOrthTan(mouse,line, m_actionData->circle, alternativeTangentPoint);
                 if (tangent != nullptr){
                     if (e->isControl) {
                         tangent.reset();
-                        tangent = creation.createLineOrthTan(alternativeTangentPoint,line, m_actionData->circle, alternativeTangentPoint);
+                        tangent = RS_Creation::createLineOrthTan(alternativeTangentPoint,line, m_actionData->circle, alternativeTangentPoint);
                     }
-                    auto tangentClone = tangent.get()->clone();
+                    auto tangentClone = tangent->clone();
                     previewEntityToCreate(tangentClone, true);
                     previewRefSelectablePoint(alternativeTangentPoint);
                     previewRefSelectablePoint(tangent->getEndpoint());
@@ -149,8 +147,7 @@ void RS_ActionDrawLineOrthTan::onMouseMoveEvent(int status, LC_MouseEvent *e) {
                 if (en != nullptr){
                     highlightHover(en);
                     RS_Vector alternativeTangentPoint;
-                    RS_Creation creation(m_preview.get(), m_viewport, false);
-                    auto tangent = creation.createLineOrthTan(mouse,normal, en, alternativeTangentPoint);
+                    auto tangent = RS_Creation::createLineOrthTan(mouse,normal, en, alternativeTangentPoint);
                     if (tangent != nullptr){
                         previewEntityToCreate(tangent.get()->clone(), true);
                         previewRefSelectablePoint(alternativeTangentPoint);

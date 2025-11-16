@@ -461,7 +461,7 @@ QString LC_LayerTreeModel::cleanupLayerName(const QString &layerName) const{
  * @param layerType type of the layer
  * @return internal name of the layer that takes into consideration naming convention for layer type
  */
-QString LC_LayerTreeModel::restoreNamePart(QString name, int layerType){
+QString LC_LayerTreeModel::restoreNamePart(QString name, int layerType) const {
     switch (layerType){
     case LC_LayerTreeItem::VIRTUAL:
     case LC_LayerTreeItem::NORMAL:
@@ -1322,4 +1322,4 @@ void LC_LayerTreeModel::setCurrentlyDraggingItem(LC_LayerTreeItem *item){m_curre
 
 void LC_LayerTreeModel::setFlatMode(bool mode){m_flatMode = mode;}
 
-LC_LayerTreeItem *LC_LayerTreeModel::getCurrentlyDraggingItem() {return m_currentlyDraggingItem;}
+LC_LayerTreeItem *LC_LayerTreeModel::getCurrentlyDraggingItem() const {return m_currentlyDraggingItem;}

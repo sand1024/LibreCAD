@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "rs_actiondrawellipse4points.h"
 
 #include "rs_circle.h"
+#include "rs_document.h"
 #include "rs_ellipse.h"
 #include "rs_preview.h"
 
@@ -52,22 +53,21 @@ void RS_ActionDrawEllipse4Points::init(int status) {
     }
 }
 
-void RS_ActionDrawEllipse4Points::doTrigger() {
+RS_Entity* RS_ActionDrawEllipse4Points::doTriggerCreateEntity() {
     RS_Entity *en;
     if (getStatus() == SetPoint4 && m_actionData->evalid){
-        en = new RS_Ellipse(m_container, m_actionData->eData);
+        en = new RS_Ellipse(m_document, m_actionData->eData);
     } else {
-        en = new RS_Circle(m_container, m_actionData->cData);
+        en = new RS_Circle(m_document, m_actionData->cData);
     }
-
     if (m_moveRelPointAtCenterAfterTrigger){
         moveRelativeZero(en->getCenter());
     }
+    return en;
+}
 
-    undoCycleAdd(en);
-
+void RS_ActionDrawEllipse4Points::doTriggerCompletion(bool success) {
     setStatus(SetPoint1);
-    //    RS_DEBUG->print("RS_ActionDrawEllipse4Point::trigger():" " entity added: %lu", ellipse->getId());
 }
 
 void RS_ActionDrawEllipse4Points::onMouseMoveEvent(int status, LC_MouseEvent *e) {
@@ -131,7 +131,7 @@ void RS_ActionDrawEllipse4Points::onMouseRightButtonRelease(int status, [[maybe_
     initPrevious(status);
 }
 
-bool RS_ActionDrawEllipse4Points::preparePreview(){
+bool RS_ActionDrawEllipse4Points::preparePreview() const {
     m_actionData->valid = false;
     switch (getStatus()) {
         case SetPoint2:

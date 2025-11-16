@@ -205,13 +205,15 @@ struct RS_Snapper::ImpData {
  * Constructor.
  */
 RS_Snapper::RS_Snapper(LC_ActionContext *actionContext)
-    :m_container(actionContext->getEntityContainer())
+    :m_document(actionContext->getDocument())
     ,m_graphicView(actionContext->getGraphicView())
     ,m_actionContext(actionContext)
     ,m_infoCursorOverlayData{std::make_unique<LC_InfoCursorData>()}
     ,pImpData(new ImpData),
     m_snapIndicator(new Indicator)
 {
+    Q_ASSERT(m_document != nullptr);
+    Q_ASSERT(m_graphicView != nullptr);
     m_viewport = m_graphicView->getViewPort();
     m_infoCursorOverlayPrefs = m_graphicView->getInfoCursorOverlayPreferences();
 }
@@ -299,7 +301,6 @@ void RS_Snapper::finish() {
     m_finished = true;
     deleteSnapper();
     deleteInfoCursor();
-
 }
 
 void RS_Snapper::setSnapMode(const RS_SnapMode& snapMode) {
@@ -317,8 +318,8 @@ RS_SnapMode* RS_Snapper::getSnapMode() {
 }
 
 //get current mouse coordinates
-RS_Vector RS_Snapper::snapFree(QMouseEvent* e) {
-    if (!e) {
+RS_Vector RS_Snapper::snapFree(QMouseEvent* e) const {
+    if (e == nullptr) {
         RS_DEBUG->print(RS_Debug::D_WARNING,
                         "RS_Snapper::snapFree: event is nullptr");
         return RS_Vector(false);
@@ -339,7 +340,7 @@ RS_Vector RS_Snapper::snapPoint(QMouseEvent* e){
     pImpData->snapSpot = RS_Vector(false);
     RS_Vector t(false);
 
-    if (!e) {
+    if (e == nullptr) {
         RS_DEBUG->print(RS_Debug::D_WARNING,
                         "RS_Snapper::snapPoint: event is nullptr");
         return pImpData->snapSpot;
@@ -519,14 +520,16 @@ double RS_Snapper::getSnapRange() const{
             minGrid = cellVector.magnitude() * m_minGridCellSnapFactor;
         }
     }
-    if (m_container != nullptr && isSizeValid(m_container->getSize())) {
+    if (isSizeValid(m_document->getSize())) {
         // The size bounding box
-        minSize = getValidSize(m_container->getSize());
+        minSize = getValidSize(m_document->getSize());
     }
-    if (std::min(minGui, minGrid) < 0.99 * RS_MAXDOUBLE)
+    if (std::min(minGui, minGrid) < 0.99 * RS_MAXDOUBLE) {
         return std::min(minGui, minGrid);
-    if (minSize < 0.99 * RS_MAXDOUBLE)
+    }
+    if (minSize < 0.99 * RS_MAXDOUBLE) {
         return minSize;
+    }
     // shouldn't happen: no graphicview or a valid size
     // Allow free snapping by returning the floating point tolerance
     return RS_TOLERANCE;
@@ -549,8 +552,8 @@ RS_Vector RS_Snapper::snapFree(const RS_Vector& coord) {
  * @param coord The mouse coordinate.
  * @return The coordinates of the point or an invalid vector.
  */
-RS_Vector RS_Snapper::snapEndpoint(const RS_Vector& coord) {
-    RS_Vector vec = m_container->getNearestEndpoint(coord, nullptr/*, &keyEntity*/);
+RS_Vector RS_Snapper::snapEndpoint(const RS_Vector& coord) const {
+    RS_Vector vec = m_document->getNearestEndpoint(coord, nullptr/*, &keyEntity*/);
     return vec;
 }
 
@@ -560,7 +563,7 @@ RS_Vector RS_Snapper::snapEndpoint(const RS_Vector& coord) {
  * @param coord The mouse coordinate.
  * @return The coordinates of the point or an invalid vector.
  */
-RS_Vector RS_Snapper::snapGrid(const RS_Vector& coord) {
+RS_Vector RS_Snapper::snapGrid(const RS_Vector& coord) const {
 //    RS_DEBUG->print("RS_Snapper::snapGrid begin");
 
 //    std::cout<<__FILE__<<" : "<<__func__<<" : line "<<__LINE__<<std::endl;
@@ -577,7 +580,7 @@ RS_Vector RS_Snapper::snapGrid(const RS_Vector& coord) {
  */
 RS_Vector RS_Snapper::snapOnEntity(const RS_Vector& coord) {
     RS_Vector vec{};
-    vec = m_container->getNearestPointOnEntity(coord, true, nullptr, &m_keyEntity);
+    vec = m_document->getNearestPointOnEntity(coord, true, nullptr, &m_keyEntity);
     return vec;
 }
 
@@ -587,8 +590,8 @@ RS_Vector RS_Snapper::snapOnEntity(const RS_Vector& coord) {
  * @param coord The mouse coordinate.
  * @return The coordinates of the point or an invalid vector.
  */
-RS_Vector RS_Snapper::snapCenter(const RS_Vector& coord) {
-    RS_Vector vec = m_container->getNearestCenter(coord, nullptr);
+RS_Vector RS_Snapper::snapCenter(const RS_Vector& coord) const {
+    RS_Vector vec = m_document->getNearestCenter(coord, nullptr);
     return vec;
 }
 
@@ -598,9 +601,9 @@ RS_Vector RS_Snapper::snapCenter(const RS_Vector& coord) {
  * @param coord The mouse coordinate.
  * @return The coordinates of the point or an invalid vector.
  */
-RS_Vector RS_Snapper::snapMiddle(const RS_Vector& coord) {
+RS_Vector RS_Snapper::snapMiddle(const RS_Vector& coord) const {
 //std::cout<<"RS_Snapper::snapMiddle(): middlePoints="<<middlePoints<<std::endl;
-    return m_container->getNearestMiddle(coord,static_cast<double *>(nullptr),m_middlePoints);
+    return m_document->getNearestMiddle(coord,static_cast<double *>(nullptr),m_middlePoints);
 }
 
 /**
@@ -609,10 +612,10 @@ RS_Vector RS_Snapper::snapMiddle(const RS_Vector& coord) {
  * @param coord The mouse coordinate.
  * @return The coordinates of the point or an invalid vector.
  */
-RS_Vector RS_Snapper::snapDist(const RS_Vector& coord) {
+RS_Vector RS_Snapper::snapDist(const RS_Vector& coord) const {
     RS_Vector vec;
 //std::cout<<" RS_Snapper::snapDist(RS_Vector coord): distance="<<distance<<std::endl;
-    vec = m_container->getNearestDist(m_SnapDistance,
+    vec = m_document->getNearestDist(m_SnapDistance,
                                     coord,
                                     nullptr);
     return vec;
@@ -624,9 +627,9 @@ RS_Vector RS_Snapper::snapDist(const RS_Vector& coord) {
  * @param coord The mouse coordinate.
  * @return The coordinates of the point or an invalid vector.
  */
-RS_Vector RS_Snapper::snapIntersection(const RS_Vector& coord) {
+RS_Vector RS_Snapper::snapIntersection(const RS_Vector& coord) const {
     RS_Vector vec{};
-    vec = m_container->getNearestIntersection(coord,nullptr);
+    vec = m_document->getNearestIntersection(coord,nullptr);
     return vec;
 }
 
@@ -637,7 +640,7 @@ RS_Vector RS_Snapper::snapIntersection(const RS_Vector& coord) {
  * @param coord The uncorrected coordinates.
  * @return The corrected coordinates.
  */
-RS_Vector RS_Snapper::restrictOrthogonal(const RS_Vector& coord) {
+RS_Vector RS_Snapper::restrictOrthogonal(const RS_Vector& coord) const {
     RS_Vector rz = m_viewport->getRelativeZero();
     RS_Vector ret(coord);
 
@@ -661,7 +664,7 @@ RS_Vector RS_Snapper::restrictOrthogonal(const RS_Vector& coord) {
  * @return The corrected coordinates.
  */
 
-RS_Vector RS_Snapper::restrictHorizontal(const RS_Vector& coord) {
+RS_Vector RS_Snapper::restrictHorizontal(const RS_Vector& coord) const {
 //    RS_Vector rz = graphicView->getRelativeZero();
 ////    RS_Vector ret = RS_Vector(coord.x, rz.y);
 //    RS_Vector ucsRZ = graphicView->toUCS(rz);
@@ -678,7 +681,7 @@ RS_Vector RS_Snapper::restrictHorizontal(const RS_Vector& coord) {
  * @param coord The uncorrected coordinates.
  * @return The corrected coordinates.
  */
-RS_Vector RS_Snapper::restrictVertical(const RS_Vector& coord) {
+RS_Vector RS_Snapper::restrictVertical(const RS_Vector& coord) const {
 //    RS_Vector rz = graphicView->getRelativeZero();
 //    RS_Vector ret = RS_Vector(rz.x, coord.y);
 //    return ret;
@@ -693,7 +696,7 @@ RS_Vector RS_Snapper::restrictHorizontal(const RS_Vector &base, const RS_Vector 
     return m_viewport->restrictHorizontal(base, coord);
 }
 
-RS_Vector RS_Snapper::restrictAngle(const RS_Vector &basePoint, const RS_Vector& snap, double angle){
+RS_Vector RS_Snapper::restrictAngle(const RS_Vector &basePoint, const RS_Vector& snap, double angle) const {
     RS_Vector possibleEndPoint;
     double realAngle = toWorldAngle(angle);
     RS_Vector infiniteTickEndPoint = basePoint.relative(10.0, realAngle);
@@ -712,7 +715,7 @@ RS_Vector RS_Snapper::restrictAngle(const RS_Vector &basePoint, const RS_Vector&
  * @return Pointer to the entity or nullptr.
  */
 RS_Entity* RS_Snapper::catchEntity(const RS_Vector& pos,
-                                   RS2::ResolveLevel level) {
+                                   RS2::ResolveLevel level) const {
 
     RS_DEBUG->print("RS_Snapper::catchEntity");
 
@@ -720,7 +723,7 @@ RS_Entity* RS_Snapper::catchEntity(const RS_Vector& pos,
     double dist (0.);
 //    std::cout<<"getSnapRange()="<<getSnapRange()<<"\tsnap distance = "<<dist<<std::endl;
 
-    RS_Entity* entity = m_container->getNearestEntity(pos, &dist, level);
+    RS_Entity* entity = m_document->getNearestEntity(pos, &dist, level);
 
     int idx = -1;
     if (entity != nullptr && entity->getParent()) {
@@ -748,7 +751,7 @@ RS_Entity* RS_Snapper::catchEntity(const RS_Vector& pos,
  * @return Pointer to the entity or nullptr.
  */
 RS_Entity* RS_Snapper::catchEntity(const RS_Vector& pos, RS2::EntityType enType,
-                                   RS2::ResolveLevel level) {
+                                   RS2::ResolveLevel level) const {
 
     RS_DEBUG->print("RS_Snapper::catchEntity");
 //                    std::cout<<"RS_Snapper::catchEntity(): enType= "<<enType<<std::endl;
@@ -767,16 +770,17 @@ RS_Entity* RS_Snapper::catchEntity(const RS_Vector& pos, RS2::EntityType enType,
             break;
     }
 
+    auto traversedEntities = lc::LC_ContainerTraverser{*m_document, level}.entities();
     // fixme - iteration over all elements of drawing
-    for(RS_Entity* en: lc::LC_ContainerTraverser{*m_container, level}.entities()){
-        if(!en->isVisible())
+    for(RS_Entity* en: traversedEntities){
+        if(!en->isVisible()) {
             continue;
+        }
         if(en->rtti() != enType && isContainer){
             //whether this entity is a member of member of the type enType
             RS_Entity* parent(en->getParent());
             bool matchFound{false};
             while(parent ) {
-//                    std::cout<<"RS_Snapper::catchEntity(): parent->rtti()="<<parent->rtti()<<" enType= "<<enType<<std::endl;
                 if(parent->rtti() == enType) {
                     matchFound=true;
                     ec.addEntity(en);
@@ -784,13 +788,17 @@ RS_Entity* RS_Snapper::catchEntity(const RS_Vector& pos, RS2::EntityType enType,
                 }
                 parent=parent->getParent();
             }
-            if(!matchFound) continue;
+            if(!matchFound) {
+                continue;
+            }
         }
         if (en->rtti() == enType){
             ec.addEntity(en);
         }
     }
-    if (ec.count() == 0 ) return nullptr;
+    if (ec.count() == 0 ) {
+        return nullptr;
+    }
     double dist(0.);
 
     RS_Entity* entity = ec.getNearestEntity(pos, &dist, RS2::ResolveNone);
@@ -882,7 +890,7 @@ void RS_Snapper::resume() {
 /**
  * Hides the snapper options. Default implementation does nothing.
  */
-void RS_Snapper::hideSnapOptions() {
+void RS_Snapper::hideSnapOptions() const {
     m_actionContext->hideSnapOptions();
 }
 
@@ -890,7 +898,7 @@ void RS_Snapper::hideSnapOptions() {
 /**
  * Deletes the snapper from the screen.
  */
-void RS_Snapper::deleteSnapper(){
+void RS_Snapper::deleteSnapper() const {
 //    LC_ERR<<"Delete Snapper";
     if (m_graphicView != nullptr && !m_graphicView->isCleanUp()) {
         m_viewport->clearOverlayDrawablesContainer(RS2::Snapper);
@@ -898,7 +906,7 @@ void RS_Snapper::deleteSnapper(){
     }
 }
 
-void RS_Snapper::deleteInfoCursor(){
+void RS_Snapper::deleteInfoCursor() const {
 //    LC_ERR<<"Delete Info Cursor";
     if (m_graphicView != nullptr && !m_graphicView->isCleanUp()) {
         m_viewport->clearOverlayDrawablesContainer(RS2::InfoCursor);
@@ -924,7 +932,7 @@ void RS_Snapper::drawSnapper(){
 }
 
 
-LC_OverlayInfoCursor* RS_Snapper::obtainInfoCursor(){
+LC_OverlayInfoCursor* RS_Snapper::obtainInfoCursor() const {
     auto overlayContainer = m_viewport->getOverlaysDrawablesContainer(RS2::InfoCursor);
     LC_OverlayInfoCursor * result = nullptr;
     // fixme - this is not absolutely safe if someone put another cursor to overlay container! Rework later!!
@@ -1015,7 +1023,7 @@ QString RS_Snapper::getSnapName(int snapType){
     }
 }
 
-bool RS_Snapper::isSnapToGrid(){
+bool RS_Snapper::isSnapToGrid() const {
     bool result = m_snapMode.snapGrid;
     if (result) {
         if (m_ignoreSnapToGridIfNoGrid) {
@@ -1042,7 +1050,7 @@ RS_Vector RS_Snapper::snapToRelativeAngle(double baseAngle, const RS_Vector &cur
     res += referenceCoord;
 
     if (m_snapMode.snapOnEntity) {
-        RS_Vector t = m_container->getNearestVirtualIntersection(res, wcsAngleSnapped, nullptr);
+        RS_Vector t = m_document->getNearestVirtualIntersection(res, wcsAngleSnapped, nullptr);
         pImpData->snapSpot = t;
         pImpData->snapType = (t == res) ? SnapType::ANGLE_REL : SnapType::ANGLE_ON_ENTITY;
         pImpData->angle = ucsAngleSnapped;
@@ -1077,7 +1085,7 @@ RS_Vector RS_Snapper::doSnapToAngle(const RS_Vector &currentCoord, const RS_Vect
     res += referenceCoord;
 
     if (this->m_snapMode.snapOnEntity) {
-        RS_Vector t = this->m_container->getNearestVirtualIntersection(res, wcsAngleSnapped, nullptr);
+        RS_Vector t = this->m_document->getNearestVirtualIntersection(res, wcsAngleSnapped, nullptr);
         this->pImpData->snapSpot = t;
         this->pImpData->snapType = (t == res) ? ANGLE : ANGLE_ON_ENTITY;
         this->pImpData->angle = ucsAngleSnapped;
@@ -1109,7 +1117,7 @@ RS_Vector const &RS_Snapper::getRelativeZero() const {
     return m_viewport->getRelativeZero();
 }
 
-void RS_Snapper::updateCoordinateWidgetFormat(){
+void RS_Snapper::updateCoordinateWidgetFormat() const {
     m_actionContext->updateCoordinateWidget(toWorld(RS_Vector(0.0,0.0)),toWorld(RS_Vector(0.0,0.0)), true);
 }
 
@@ -1216,7 +1224,7 @@ void RS_Snapper::updateUnitFormat(RS_Graphic* graphic){
     m_unit = graphic->getUnit();
 }
 
-void RS_Snapper::invalidateSnapSpot() {
+void RS_Snapper::invalidateSnapSpot() const {
     pImpData->snapSpot.valid = false;
 }
 
@@ -1272,7 +1280,7 @@ QString RS_Snapper::formatRelativePolar(const RS_Vector &wcsAngle) const {
     return QString("@ ").append(formatLinear(wcsAngle.magnitude())).append(" < ").append(formatWCSAngle(wcsAngle.angle()));
 }
 
-void RS_Snapper::forceUpdateInfoCursor(const RS_Vector &pos) {
+void RS_Snapper::forceUpdateInfoCursor(const RS_Vector &pos) const {
     LC_OverlayInfoCursor* infoCursor = obtainInfoCursor();
     infoCursor->setPos(pos);
     infoCursor->setZonesData(m_infoCursorOverlayData.get());
@@ -1361,34 +1369,34 @@ void RS_Snapper::calcRectCorners(const RS_Vector &worldCorner1, const RS_Vector 
     worldCorner4 = toWorld(ucsCorner4);
 }
 
-bool RS_Snapper::hasNonDefaultAnglesBasis(){
+bool RS_Snapper::hasNonDefaultAnglesBasis() const {
     return  LC_LineMath::isMeaningfulAngle(m_anglesBase) || !m_anglesCounterClockWise;
 }
 
 // get catching entity distance in graph distance
-double RS_Snapper::getCatchDistance(double catchDistance, int catchEntityGuiRange){
+double RS_Snapper::getCatchDistance(double catchDistance, int catchEntityGuiRange) const {
     return (m_graphicView != nullptr) ? std::min(catchDistance, toGraphDX(catchEntityGuiRange)) : catchDistance;
 }
 
 // fixme - sand - review
-void RS_Snapper::enableCoordinateInput(){
+void RS_Snapper::enableCoordinateInput() const {
     m_graphicView->enableCoordinateInput();
 }
 
-void RS_Snapper::disableCoordinateInput(){
+void RS_Snapper::disableCoordinateInput() const {
     m_graphicView->disableCoordinateInput();
 };
 
-void RS_Snapper::redraw(RS2::RedrawMethod method) {
+void RS_Snapper::redraw(RS2::RedrawMethod method) const {
     // fixme - sand - ucs - decide how it's better to invoke redraw
 //    viewport->requestRedraw(method);
     m_graphicView->redraw(method);
 }
 
-void RS_Snapper::redrawDrawing() {
+void RS_Snapper::redrawDrawing() const {
     redraw(RS2::RedrawMethod::RedrawDrawing);
 }
 
-void RS_Snapper::redrawAll() {
+void RS_Snapper::redrawAll() const {
     redraw(RS2::RedrawMethod::RedrawAll);
 }

@@ -39,8 +39,8 @@ public:
     RS_ActionDrawCircleTan2_1P(LC_ActionContext *actionContext);
     ~RS_ActionDrawCircleTan2_1P() override;
     void init(int status) override;
-    bool getCenters();
-    bool preparePreview();
+    bool getCenters() const;
+    bool preparePreview() const;
     void finish(bool updateTB) override;
 protected:
     /**
@@ -64,7 +64,7 @@ protected:
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void updateMouseButtonHints() override;
-
-    void doTrigger() override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
 };
 #endif

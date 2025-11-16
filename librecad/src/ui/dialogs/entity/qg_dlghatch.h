@@ -29,6 +29,7 @@
 #include "ui_qg_dlghatch.h"
 #include "lc_entitypropertiesdlg.h"
 
+class LC_PreviewDocument;
 class RS_Hatch;
 
 class QG_DlgHatch : public LC_EntityPropertiesDlg, public Ui::QG_DlgHatch{
@@ -36,9 +37,9 @@ class QG_DlgHatch : public LC_EntityPropertiesDlg, public Ui::QG_DlgHatch{
 public:
     QG_DlgHatch(QWidget *parent, LC_GraphicViewport *pViewport, RS_Hatch* hatch, bool isNew);
     ~QG_DlgHatch() override;
-    void saveSettings();
+    void saveSettings() const;
 public slots:
-    void polish();
+    void polish() const;
     void showEvent( QShowEvent * e ) override;
     void updateEntity() override;
     void setPattern( const QString & p );
@@ -47,13 +48,13 @@ public slots:
 protected slots:
     void languageChange();
 protected:
-    std::unique_ptr<RS_EntityContainer> m_preview;
+    std::unique_ptr<LC_PreviewDocument> m_previewDocument;
     std::shared_ptr<RS_Pattern> m_pattern;
     RS_Hatch* m_entity = nullptr;
     bool m_isNew = false;
     void addRectangle(RS_Pen pen, const RS_Vector &v0, const RS_Vector &v1, RS_EntityContainer *container);
     void init();
-    void showArea();
+    void showArea() const;
     void setEntity(RS_Hatch *h, bool isNew);
 };
 

@@ -219,7 +219,7 @@ void LC_StylesListModel::sort([[maybe_unused]]int column,[[maybe_unused]] Qt::So
     emit layoutChanged({QModelIndex()}, QAbstractItemModel::VerticalSortHint);*/
 }
 
-void LC_StylesListModel::cleanup() {
+void LC_StylesListModel::cleanup() const {
     qDeleteAll(m_items);
 }
 

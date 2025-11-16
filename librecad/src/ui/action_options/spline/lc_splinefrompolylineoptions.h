@@ -48,11 +48,11 @@ protected:
     LC_ActionSplineFromPolyline* m_action = nullptr;
     void doSaveSettings() override;
     void doSetAction(RS_ActionInterface *a, bool update) override;
-    void setKeepOriginalsToActionAndView(bool val);
-    void setUseCurrentAttributesToActionAndView(bool val);
-    void setUseCurrentLayerToActionAndView(bool val);
-    void setUseFitPointsToActionAndView(bool val);
-    void setMidPointsToActionAndView(int value);
-    void setDegreeToActionAndView(int value);
+    void setKeepOriginalsToActionAndView(bool val) const;
+    void setUseCurrentAttributesToActionAndView(bool val) const;
+    void setUseCurrentLayerToActionAndView(bool val) const;
+    void setUseFitPointsToActionAndView(bool val) const;
+    void setMidPointsToActionAndView(int value) const;
+    void setDegreeToActionAndView(int value) const;
 };
 #endif // LC_SPLINEFROMPOLYLINEOPTIONS_H

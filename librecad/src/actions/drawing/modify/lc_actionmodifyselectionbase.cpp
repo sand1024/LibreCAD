@@ -23,6 +23,8 @@
 #include <QKeyEvent>
 
 #include "lc_actionmodifyselectionbase.h"
+
+#include "rs_document.h"
 #include "rs_entitycontainer.h"
 
 
@@ -37,8 +39,8 @@ void LC_ActionModifySelectionBase::mouseReleaseEvent(QMouseEvent *event){
     RS_ActionInterface::mouseReleaseEvent(event);
 }
 
-int LC_ActionModifySelectionBase::countSelected() {
-    unsigned int ret = m_container->countSelected();
+int LC_ActionModifySelectionBase::countSelected() const {
+    unsigned int ret = m_document->countSelected(); // fixme - rework base on selection??
     // fixme - ensure that this is correct place for method
     if (ret == 0) {
         commandMessage(tr("No entity selected!"));

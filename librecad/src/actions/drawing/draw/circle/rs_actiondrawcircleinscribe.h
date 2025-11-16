@@ -60,13 +60,14 @@ protected:
 	 * @brief clearLines unset highlighten lines, and clear the vector "lines"
 	 * @param checkStatus keep lines members according to getStatus()
 	 */
-    void clearLines(bool checkStatus = false);
+    void clearLines(bool checkStatus = false) const;
     RS2::CursorType doGetMouseCursor(int status) override;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void setLine1(RS_Line* line);
     void updateMouseButtonHints() override;
-    void doTrigger() override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
 };
 #endif

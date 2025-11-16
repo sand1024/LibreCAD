@@ -49,11 +49,11 @@ protected:
     int m_segmentsCountFromDrawing;
     void doSetAction(RS_ActionInterface *a, bool update) override;
     void doSaveSettings() override;
-    void setKeepOriginalsToActionAndView(bool val);
-    void setUseCurrentAttributesToActionAndView(bool val);
-    void setUseCurrentLayerToActionAndView(bool val);
-    void setUseCustomSegmentCount(bool val);
-    void setPolylineToActionAndView(bool val);
-    void setSegmentsCountValueToActionAndView(int value);
+    void setKeepOriginalsToActionAndView(bool val) const;
+    void setUseCurrentAttributesToActionAndView(bool val) const;
+    void setUseCurrentLayerToActionAndView(bool val) const;
+    void setUseCustomSegmentCount(bool val) const;
+    void setPolylineToActionAndView(bool val) const;
+    void setSegmentsCountValueToActionAndView(int value) const;
 };
 #endif // LC_SPLINEEXPLODEOPTIONS_H

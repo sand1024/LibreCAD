@@ -30,6 +30,7 @@
 #include "lc_linemath.h"
 #include "rs_arc.h"
 #include "rs_circle.h"
+#include "rs_document.h"
 #include "rs_line.h"
 
 namespace {
@@ -118,7 +119,7 @@ void LC_ActionInteractivePickDistance::onMouseMoveEvent(int status, LC_MouseEven
                     if (isLine(entity)) {
                         highlightHover(entity);
                         auto line = static_cast<RS_Line*>(entity);
-                        LC_Division division(m_container);
+                        LC_Division division(m_document);
                         LC_Division::LineSegmentData* data = division.findLineSegmentBetweenIntersections(
                             line, e->graphPoint, true);
 
@@ -163,7 +164,7 @@ void LC_ActionInteractivePickDistance::onMouseMoveEvent(int status, LC_MouseEven
     }
 }
 
-void LC_ActionInteractivePickDistance::updateInfoCursorForPoint1(const RS_Vector &mouse) {
+void LC_ActionInteractivePickDistance::updateInfoCursorForPoint1(const RS_Vector &mouse) const {
     if (m_infoCursorOverlayPrefs->enabled) {
         msg(tr("Pick Distance"))
             .vector(tr("Absolute:"), mouse)
@@ -174,7 +175,7 @@ void LC_ActionInteractivePickDistance::updateInfoCursorForPoint1(const RS_Vector
     }
 }
 
-void LC_ActionInteractivePickDistance::updateInfoCursorForPoint2(const RS_Vector &mouse, const RS_Vector &startPoint) {
+void LC_ActionInteractivePickDistance::updateInfoCursorForPoint2(const RS_Vector &mouse, const RS_Vector &startPoint) const {
     if (m_infoCursorOverlayPrefs->enabled) {
         double distance = startPoint.distanceTo(mouse);
         msg(tr("Pick Distance"))
@@ -214,7 +215,7 @@ void LC_ActionInteractivePickDistance::onMouseLeftButtonRelease(int status, LC_M
                 else if (e->isControl) {
                     if (isLine(entity)) {
                         auto line = static_cast<RS_Line*>(entity);
-                        LC_Division division(m_container);
+                        LC_Division division(m_document);
                         LC_Division::LineSegmentData *data = division.findLineSegmentBetweenIntersections(line, snap, true);
                         if (data != nullptr) {
                             m_distance = data->snapSegmentEnd.distanceTo(data->snapSegmentStart);

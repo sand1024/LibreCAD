@@ -50,8 +50,8 @@ protected:
 private:
     RS_ActionDrawLineParallelThrough *m_action = nullptr;
     std::unique_ptr<Ui::Ui_LineParallelThroughOptions> ui;
-    void setCopyNumberToActionAndView(int number);
-    void setSymmetricToActionAndView(bool symmetric);
+    void setCopyNumberToActionAndView(int number) const;
+    void setSymmetricToActionAndView(bool symmetric) const;
 };
 
 #endif // QG_LINEPARALLELTHROUGHOPTIONS_H

@@ -92,7 +92,7 @@ bool LC_LayersExporter::exportLayersToIndividualDocuments(LC_LayersExportOptions
 
     bool hasBlocks = false;
     for (RS_Entity* originalEntity : *originalGraphic) {
-        if (originalEntity == nullptr || originalEntity->getLayer() == nullptr || originalEntity->isUndone()) {
+        if (originalEntity == nullptr || originalEntity->getLayer() == nullptr || originalEntity->isDeleted()) {
             continue;
         }
 
@@ -174,7 +174,7 @@ bool LC_LayersExporter::exportLayersToSingleDocument(LC_LayersExportOptions* opt
     std::unordered_set<RS_Block*> usedBlocksSet;
 
     for (RS_Entity* originalEntity : *originalGraphic) {
-        if (originalEntity == nullptr || originalEntity->getLayer() == nullptr || originalEntity->isUndone()) {
+        if (originalEntity == nullptr || originalEntity->getLayer() == nullptr || originalEntity->isDeleted()) {
             continue;
         }
 

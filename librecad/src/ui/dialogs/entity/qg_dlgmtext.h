@@ -35,9 +35,9 @@ class QG_DlgMText : public LC_EntityPropertiesDlg, public Ui::QG_DlgMText{
 public:
     QG_DlgMText(QWidget *parent, LC_GraphicViewport *pViewport, RS_MText* mtext, bool forNew);
     ~QG_DlgMText() override;
-    int getAlignment();
+    int getAlignment() const;
 public slots:
-     void updateUniCharComboBox( int );
+     void updateUniCharComboBox( int ) const;
      void updateEntity() override;
      void setAlignmentTL();
      void setAlignmentTC();
@@ -49,20 +49,20 @@ public slots:
      void setAlignmentBC();
      void setAlignmentBR();
      void setFont( const QString & f );
-     void defaultChanged( bool );
+     void defaultChanged( bool ) const;
      void loadText();
-     void load( const QString & fn );
+     void load( const QString & fn ) const;
      void saveText();
-     void save( const QString & fn );
-     void insertSymbol( int );
-     void updateUniCharButton( int );
-     void insertChar();
+     void save( const QString & fn ) const;
+     void insertSymbol( int ) const;
+     void updateUniCharButton( int ) const;
+     void insertChar() const;
      void reject() override;
 protected slots:
     void languageChange();
 protected:
     void setAlignment(QToolButton& button);
-    void layoutDirectionChanged();
+    void layoutDirectionChanged() const;
     bool m_isNew = false;
     bool m_saveSettings = true;
     RS_MText* m_entity = nullptr;

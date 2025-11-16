@@ -94,7 +94,7 @@ void LC_CircleByArcOptions::onReplaceClicked(bool value){
     }
 }
 
-void LC_CircleByArcOptions::setReplaceArcToActionAndView(bool value){
+void LC_CircleByArcOptions::setReplaceArcToActionAndView(bool value) const {
     m_action->setReplaceArcByCircle(value);
     ui->cbReplace->setChecked(value);
 
@@ -103,12 +103,12 @@ void LC_CircleByArcOptions::setReplaceArcToActionAndView(bool value){
     ui->tbPickRadius->setEnabled(!value);
 }
 
-void LC_CircleByArcOptions::setPenModeToActionAndView(int mode){
+void LC_CircleByArcOptions::setPenModeToActionAndView(int mode) const {
     m_action->setPenMode(mode);
     ui->cbPen->setCurrentIndex(mode);
 }
 
-void LC_CircleByArcOptions::setLayerModeToActionAndeView(int mode){
+void LC_CircleByArcOptions::setLayerModeToActionAndeView(int mode) const {
     m_action->setLayerMode(mode);
     ui->cbLayer->setCurrentIndex(mode);
 }

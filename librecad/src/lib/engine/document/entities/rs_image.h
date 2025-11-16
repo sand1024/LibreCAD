@@ -162,14 +162,14 @@ public:
     /**
      * @return image with in graphic units.
      */
-    double getImageWidth() {
+    double getImageWidth() const {
             return data.size.x * data.uVector.magnitude();
     }
 
     /**
      * @return image height in graphic units.
      */
-    double getImageHeight() {
+    double getImageHeight() const {
             return data.size.y * data.vVector.magnitude();
     }
 

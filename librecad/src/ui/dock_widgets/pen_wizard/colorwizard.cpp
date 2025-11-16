@@ -129,8 +129,7 @@ void ColorWizard::addOrRemove()
 
 }
 
-QStringList ColorWizard::getFavList()
-{
+QStringList ColorWizard::getFavList() const {
     QStringList s_list;
 
     for (int i = 0; i < ui->fav_list->count(); ++i)
@@ -140,8 +139,7 @@ QStringList ColorWizard::getFavList()
     return s_list;
 }
 
-void ColorWizard::addFavorite(QString color)
-{
+void ColorWizard::addFavorite(QString color) const {
     auto item = new QListWidgetItem;
     item->setText(color);
     QPixmap pixmap(32, 32);
@@ -150,8 +148,7 @@ void ColorWizard::addFavorite(QString color)
     ui->fav_list->addItem(item);
 }
 
-void ColorWizard::removeFavorite()
-{
+void ColorWizard::removeFavorite() const {
     delete ui->fav_list->currentItem();
 }
 

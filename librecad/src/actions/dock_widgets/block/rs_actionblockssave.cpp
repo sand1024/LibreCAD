@@ -40,7 +40,7 @@ RS_ActionBlocksSave::RS_ActionBlocksSave(LC_ActionContext *actionContext)
 
 /*recursive add blocks in graphic*/
 void RS_ActionBlocksSave::addBlock(RS_Insert *in, RS_Graphic *g) {
-    for (auto e: *in) {
+    for (const auto e: *in) {
         if (e->rtti() == RS2::EntityInsert) {
             auto *insert = static_cast<RS_Insert *>(e);
             addBlock(insert, g);
@@ -70,14 +70,14 @@ RS_Graphic* RS_ActionBlocksSave::createGraphicForBlock(RS_Block *activeBlock){
 }
 
 void RS_ActionBlocksSave::trigger() {
-    auto& appWindow = QC_ApplicationWindow::getAppWindow();
+    const auto& appWindow = QC_ApplicationWindow::getAppWindow();
     if(!appWindow) {
         finish(false);
         return;
     }
-    RS_BlockList* blockList = appWindow->getBlockWidget() -> getBlockList();
+    const RS_BlockList* blockList = appWindow->getBlockWidget() -> getBlockList();
     if (blockList != nullptr) {
-        auto activeBlock= blockList->getActive();
+        const auto activeBlock= blockList->getActive();
         if(activeBlock != nullptr) {
             RS2::FormatType format = RS2::FormatDXFRW;
             QG_FileDialog dlg(appWindow->getCurrentMDIWindow(), {}, QG_FileDialog::BlockFile);
@@ -105,7 +105,7 @@ void RS_ActionBlocksSave::trigger() {
     finish(false);
 }
 
-void RS_ActionBlocksSave::init(int status) {
+void RS_ActionBlocksSave::init(const int status) {
     RS_ActionInterface::init(status);
     trigger();
 }

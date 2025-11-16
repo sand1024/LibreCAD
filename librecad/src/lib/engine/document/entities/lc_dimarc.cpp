@@ -150,9 +150,12 @@ void LC_DimArc::doUpdateDim() {
 
     clear();
 
-    if (isUndone()) return;
-
-    if (!m_dimArcData.centre.valid) return;
+    if (isDeleted()) {
+        return;
+    }
+    if (!m_dimArcData.centre.valid) {
+        return;
+    }
 
     calcDimension();
 

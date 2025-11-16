@@ -27,21 +27,21 @@
 LC_Highlight::LC_Highlight()= default;
 
 void LC_Highlight::addEntity(RS_Entity* entity, bool selected) {
-    if (entity == nullptr || entity->isUndone()) {
+    if (entity == nullptr || entity->isDeleted()) {
         return;
     }
-    RS_Entity *duplicatedEntity = entity->clone();
+    RS_Entity *clone = entity->clone();
     RS_Pen pen = entity->getPen(true);
-    duplicatedEntity->setPen(pen);
+    clone->setPen(pen);
 
-    duplicatedEntity->setHighlighted(true);
+    clone->setHighlighted(true);
     if (selected) {
-        duplicatedEntity->setSelected(true);
+        clone->setSelectionFlag(true);  // fixme - selection - overlay?
     }
 
-    entitiesMap.insert(entity, duplicatedEntity);
+    entitiesMap.insert(entity, clone);
 //    entity->setTransparent(true);
-    push_back(duplicatedEntity);
+    push_back(clone);
 }
 
 bool LC_Highlight::removeEntity(RS_Entity *entity){

@@ -27,6 +27,7 @@
 #include "lc_cursoroverlayinfo.h"
 #include "lc_graphicviewport.h"
 #include "lc_modifyalignoptions.h"
+#include "rs_document.h"
 #include "rs_entity.h"
 #include "rs_entitycontainer.h"
 
@@ -50,15 +51,11 @@ void LC_ActionModifyAlignSingle::doInitWithContextEntity(RS_Entity* contextEntit
 
 void LC_ActionModifyAlignSingle::doTrigger() {
     if (m_entityToAlign != nullptr) {
-        if (m_document != nullptr) {
-            RS_Vector target = LC_Align::getReferencePoint(m_alignMin, m_alignMax, hAlign, vAlign);
-            RS_Entity *clone = LC_Align::createCloneMovedToTarget(m_entityToAlign, target, true, hAlign, vAlign);
-            if (clone != nullptr) {
-                clone->setSelected(false);
-                m_container->addEntity(clone);
-
-                undoCycleReplace(m_entityToAlign, clone);
-            }
+        RS_Vector target = LC_Align::getReferencePoint(m_alignMin, m_alignMax, hAlign, vAlign);
+        RS_Entity* clone = LC_Align::createCloneMovedToTarget(m_entityToAlign, target, true, hAlign, vAlign);
+        if (clone != nullptr) {
+            clone->clearSelectionFlag();
+            undoCycleReplace(m_entityToAlign, clone);
         }
     }
     m_entityToAlign = nullptr;
@@ -128,8 +125,8 @@ void LC_ActionModifyAlignSingle::onMouseMoveEvent(int status, LC_MouseEvent *e) 
                     break;
                 }
                 case LC_Align::DRAWING: {
-                    min = m_container->getMin();
-                    max = m_container->getMax();
+                    min = m_document->getMin();
+                    max = m_document->getMax();
                     break;
                 }
                 default:
@@ -177,7 +174,7 @@ void LC_ActionModifyAlignSingle::onMouseMoveEvent(int status, LC_MouseEvent *e) 
     }
 }
 
-QString LC_ActionModifyAlignSingle::prepareInfoCursorMessage(double verticalRef, bool drawVertical, double horizontalRef, bool drawHorizontal) {
+QString LC_ActionModifyAlignSingle::prepareInfoCursorMessage(double verticalRef, bool drawVertical, double horizontalRef, bool drawHorizontal) const {
     QString msg = tr("Align to ");
     switch (alignType) {
         case LC_Align::ENTITY:{
@@ -208,7 +205,7 @@ QString LC_ActionModifyAlignSingle::prepareInfoCursorMessage(double verticalRef,
     return msg;
 }
 
-void LC_ActionModifyAlignSingle::previewRefLines(bool drawVertical, double verticalRef, bool drawHorizontal, double horizontalRef) {
+void LC_ActionModifyAlignSingle::previewRefLines(bool drawVertical, double verticalRef, bool drawHorizontal, double horizontalRef) const {
     // NOTE:
     // AS Action so far do not support UCS, coordinates below will be in WCS despite used methods.
     RS_Vector wcsLeftBottom = m_viewport->getUCSViewLeftBottom();
@@ -221,7 +218,7 @@ void LC_ActionModifyAlignSingle::previewRefLines(bool drawVertical, double verti
     }
 }
 
-void LC_ActionModifyAlignSingle::previewAlignRefPoint(const RS_Vector &min, const RS_Vector &max) {
+void LC_ActionModifyAlignSingle::previewAlignRefPoint(const RS_Vector &min, const RS_Vector &max) const {
     double verticalRef;
     bool drawVertical  = LC_Align::getVerticalRefCoordinate(min, max, hAlign, verticalRef);
     RS_Vector wcsLeftBottom = m_viewport->getUCSViewLeftBottom();
@@ -292,8 +289,8 @@ void LC_ActionModifyAlignSingle::onMouseLeftButtonRelease(int status, LC_MouseEv
                     break;
                 }
                 case LC_Align::DRAWING:
-                    m_alignMin = m_container->getMin();
-                    m_alignMax = m_container->getMax();
+                    m_alignMin = m_document->getMin();
+                    m_alignMax = m_document->getMax();
                     setStatus(SelectEntity);
                     break;
                 default:
@@ -361,8 +358,8 @@ void LC_ActionModifyAlignSingle::setAlignType(int a) {
     if (a != alignType) {
         LC_ActionModifyAlignData::setAlignType(a);
         if (a == LC_Align::AlignMode::DRAWING){
-            m_alignMin = m_container->getMin();
-            m_alignMax = m_container->getMax();
+            m_alignMin = m_document->getMin();
+            m_alignMax = m_document->getMax();
             setStatus(SelectEntity);
         }
         else {

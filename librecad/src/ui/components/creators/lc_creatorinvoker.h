@@ -44,14 +44,14 @@ public:
     bool getMenuActionsForMouseEvent(QMouseEvent* event, RS_Entity* entity, QStringList& actions);
 protected slots:
     void createToolbar(const QString& toolbar_name, const QStringList& actionNames, int areaIndex);
-    void destroyToolbar(const QString& toolbar_name);
+    void destroyToolbar(const QString& toolbar_name) const;
 private:
     QC_ApplicationWindow *m_appWindow;
     LC_ActionGroupManager* m_actionGroupManager {nullptr};
     QList<LC_MenuActivator*> m_menuActivators;
     bool m_showToolbarTooltips {false};
     void loadMenuActivators();
-    QAction*  getAction(const QString & key);
+    QAction*  getAction(const QString & key) const;
     bool isDefaultMenuInvokerEvent(QMouseEvent* event);
 };
 #endif // LC_CREATORINVOKER_H

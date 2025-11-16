@@ -35,7 +35,7 @@ namespace {
 }
 
 RS_ActionDimension::RS_ActionDimension(const char *name,LC_ActionContext *actionContext, RS2::EntityType dimType,  RS2::ActionType actionType)
-    :RS_PreviewActionInterface(name,actionContext, actionType),  m_dimTypeToCreate {dimType}{
+    :LC_SingleEntityCreationAction(name,actionContext, actionType),  m_dimTypeToCreate {dimType}{
     reset();
     readSettings();
 }
@@ -117,7 +117,7 @@ QString RS_ActionDimension::getText() const{
     return l;
 }
 
-void RS_ActionDimension::setText(const QString &t){
+void RS_ActionDimension::setText(const QString &t) const {
     m_dimensionData->text = t;
 }
 
@@ -168,7 +168,7 @@ void RS_ActionDimension::resume() {
     readSettings();
 }
 
-void RS_ActionDimension::setDimStyleName(const QString& styleName) {
+void RS_ActionDimension::setDimStyleName(const QString& styleName) const {
     LC_DimStylesList* stylesList = m_graphic->getDimStyleList();
     auto typeSpecificDimStyle = stylesList->findByBaseNameAndType(styleName, m_dimTypeToCreate);
     if (typeSpecificDimStyle != nullptr) {
@@ -179,6 +179,6 @@ void RS_ActionDimension::setDimStyleName(const QString& styleName) {
     }
 }
 
-QString RS_ActionDimension::getDimStyleName() {
+QString RS_ActionDimension::getDimStyleName() const {
     return m_dimensionData->style;
 }

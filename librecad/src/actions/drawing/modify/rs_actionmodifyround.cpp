@@ -30,6 +30,7 @@
 #include "qg_roundoptions.h"
 #include "rs_arc.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_entity.h"
 #include "rs_entitycontainer.h"
 #include "rs_information.h"
@@ -97,7 +98,7 @@ void RS_ActionModifyRound::finish(bool updateTB){
 
     - by Melwyn Francis Carlo.
 */
-bool RS_ActionModifyRound::removeOldFillet(RS_Entity *e, const bool &isPolyline){
+bool RS_ActionModifyRound::removeOldFillet(RS_Entity *e, const bool &isPolyline) const {
     if (!isArc(e) || m_entity1 == nullptr || m_entity2 == nullptr) {
         return false;
     }
@@ -112,7 +113,7 @@ bool RS_ActionModifyRound::removeOldFillet(RS_Entity *e, const bool &isPolyline)
     }
 
     if (!isPolyline) {
-        m_container->removeEntity(e);
+        m_document->removeEntity(e);
     }
 
     return true;
@@ -144,7 +145,7 @@ void RS_ActionModifyRound::doTrigger() {
         }
 
         if (!foundPolyline) {
-            for (auto* e : m_container->getEntityList()) {
+            for (auto* e : m_document->getEntityList()) {
                 if ((e != m_entity1) && (e != m_entity2)) {
                     if (removeOldFillet(e, foundPolyline))
                         break;
@@ -153,11 +154,10 @@ void RS_ActionModifyRound::doTrigger() {
         }
     }
 
-    RS_Modification m(*m_container, m_viewport);
+    RS_Modification m(m_document, m_viewport);
     m.round(m_actionData->coord2, m_actionData->coord1, m_entity1,
             m_actionData->coord2, m_entity2, m_actionData->data);
 
-    //coord = RS_Vector(false);
     m_actionData->coord1 = RS_Vector(false);
     m_entity1 = nullptr;
     m_actionData->coord2 = RS_Vector(false);
@@ -192,13 +192,12 @@ void RS_ActionModifyRound::onMouseMoveEvent(int status, LC_MouseEvent *e) {
                     previewEntity(tmp2);
 
                     bool trim = m_actionData->data.trim;
-//                    pPoints->data.trim = false;
-                    RS_Modification m(*m_preview, m_viewport, false);
+                    RS_Modification m(m_preview.get(), m_viewport, false);
                     LC_RoundResult *roundResult = m.round(mouse,
                                                           m_actionData->coord1,
-                                                          (RS_AtomicEntity *) tmp1,
+                                                          static_cast<RS_AtomicEntity*>(tmp1),
                                                           coord2,
-                                                          (RS_AtomicEntity *) tmp2,
+                                                          static_cast<RS_AtomicEntity*>(tmp2),
                                                           m_actionData->data);
 
                     if (roundResult != nullptr && roundResult->error == LC_RoundResult::OK){
@@ -255,7 +254,7 @@ bool RS_ActionModifyRound::doUpdateDistanceByInteractiveInput(const QString& tag
     return false;
 }
 
-void RS_ActionModifyRound::previewEntityModifications(const RS_Entity *original, RS_Entity *modified, RS_Vector& roundPoint, int mode){
+void RS_ActionModifyRound::previewEntityModifications(const RS_Entity *original, RS_Entity *modified, RS_Vector& roundPoint, int mode) const {
     bool decreased = modified->getLength() < original->getLength();
     if (isLine(modified)){ // fixme - support of polyline
         if (decreased){
@@ -303,7 +302,6 @@ void RS_ActionModifyRound::onMouseLeftButtonRelease(int status, LC_MouseEvent *e
             if (isAtomic(se) &&  RS_Information::isTrimmable(m_entity1, se)){
                 m_entity2 = static_cast<RS_AtomicEntity*>(se);
                 m_actionData->coord2 = mouse;/* se->getNearestPointOnEntity(mouse, true);*/
-                //setStatus(ChooseRounding);
                 trigger();
             }
             break;
@@ -365,20 +363,6 @@ bool RS_ActionModifyRound::doProcessCommand(int status, const QString &c) {
             setStatus(m_lastStatus);
             break;
         }
-            /*case SetTrim: {
-                if (c==cmdYes.lower() || c==cmdYes2) {
-                data->trim = true;
-            } else if (c==cmdNo.lower() || c==cmdNo2) {
-                data->trim = false;
-                        } else {
-                            RS_DIALOGFACTORY->commandMessage(tr("Please enter 'Yes' "
-                       "or 'No'"));
-                        }
-                        RS_DIALOGFACTORY->requestOptions(this, true, true);
-                        setStatus(lastStatus);
-                    }
-                    break;*/
-
         default:
             break;
     }
@@ -399,7 +383,7 @@ QStringList RS_ActionModifyRound::getAvailableCommands(){
     return cmd;
 }
 
-void RS_ActionModifyRound::setRadius(double r){
+void RS_ActionModifyRound::setRadius(double r) const {
     m_actionData->data.radius = r;
 }
 
@@ -407,7 +391,7 @@ double RS_ActionModifyRound::getRadius() const{
     return m_actionData->data.radius;
 }
 
-void RS_ActionModifyRound::setTrim(bool t){
+void RS_ActionModifyRound::setTrim(bool t) const {
     m_actionData->data.trim = t;
 }
 
@@ -426,10 +410,6 @@ void RS_ActionModifyRound::updateMouseButtonHints(){
         case SetRadius:
             updateMouseWidgetTRCancel(tr("Enter radius:"));
             break;
-            /*case SetTrim:
-                        RS_DIALOGFACTORY->updateMouseWidget(tr("Trim on? (yes/no):"),
-                                                            "");
-                        break;*/
         default:
             updateMouseWidget();
             break;

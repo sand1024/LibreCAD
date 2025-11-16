@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "lc_actiondrawparabola4points.h"
 
 #include "lc_parabola.h"
+#include "rs_document.h"
 #include "rs_line.h"
 #include "rs_preview.h"
 
@@ -36,7 +37,7 @@ struct LC_ActionDrawParabola4Points::ActionData {
  *
  */
 LC_ActionDrawParabola4Points::LC_ActionDrawParabola4Points(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("Draw parabola from 4 points", actionContext,RS2::ActionDrawParabola4Points),
+    :LC_UndoablePreviewActionInterface("Draw parabola from 4 points", actionContext,RS2::ActionDrawParabola4Points),
      m_actionData(std::make_unique<ActionData>()){
 }
 
@@ -51,8 +52,8 @@ void LC_ActionDrawParabola4Points::init(int status) {
 
 void LC_ActionDrawParabola4Points::doTrigger() {
     if(m_actionData->valid){
-        auto* en = new LC_Parabola{m_container, m_actionData->data};
-        undoCycleAdd(en);
+        auto* en = new LC_Parabola{m_document, m_actionData->data};
+        undoableAdd(en);
     }
     setStatus(SetPoint1);
 }
@@ -85,7 +86,7 @@ void LC_ActionDrawParabola4Points::onMouseMoveEvent(int status, LC_MouseEvent *e
     }
 }
 
-bool LC_ActionDrawParabola4Points::preparePreview(const RS_Vector& mouse, bool rebuild){
+bool LC_ActionDrawParabola4Points::preparePreview(const RS_Vector& mouse, bool rebuild) const {
     m_actionData->valid = false;
     if (rebuild|| m_actionData->pData.empty()) {
         m_actionData->pData = LC_ParabolaData::From4Points({m_actionData->points.begin(), m_actionData->points.end()});

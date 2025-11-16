@@ -28,6 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "lc_linefrompointtolineoptions.h"
 #include "lc_linemath.h"
 #include "rs_line.h"
+#include "rs_document.h"
 #include "rs_polyline.h"
 
 // fixme - sand - add support of line and circle!
@@ -280,7 +281,7 @@ void LC_ActionDrawLineFromPointToLine::onCoordinateEvent(int status, [[maybe_unu
  * @param line
  * @return
  */
-RS_Line *LC_ActionDrawLineFromPointToLine::createLineFromPointToTarget(RS_Line *line, const RS_Vector& point, RS_Vector& intersection){
+RS_Line *LC_ActionDrawLineFromPointToLine::createLineFromPointToTarget(RS_Line *line, const RS_Vector& point, RS_Vector& intersection) const {
     RS_Vector lineStart = line->getStartpoint();
     RS_Vector lineEnd = line->getEndpoint();
 
@@ -394,7 +395,7 @@ RS_Line *LC_ActionDrawLineFromPointToLine::createLineFromPointToTarget(RS_Line *
         }
     }
     // resulting line
-    auto* result = new RS_Line(m_container,ortLineStart, ortLineEnd);
+    auto* result = new RS_Line(m_document,ortLineStart, ortLineEnd);
     return result;
 }
 

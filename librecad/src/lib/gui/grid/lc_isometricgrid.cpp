@@ -146,7 +146,7 @@ int LC_IsometricGrid::determineTotalPointsAmount([[maybe_unused]]bool drawGridWi
     return numPointsTotal;
 }
 
-void LC_IsometricGrid::createGridLinesNoGaps(const RS_Vector &min, const RS_Vector &max) {
+void LC_IsometricGrid::createGridLinesNoGaps(const RS_Vector &min, const RS_Vector &max) const {
 
     double minX = min.x;
     double maxX = max.x;
@@ -533,7 +533,7 @@ void LC_IsometricGrid::calculateTilesGridMetrics(const RS_Vector &maxCorner, con
 }
 
 
-void LC_IsometricGrid::fillTilesRowsByPointsExceptDiagonal() {
+void LC_IsometricGrid::fillTilesRowsByPointsExceptDiagonal() const {
     RS_Vector startPoint = tilesStartPoint;
     double currentY = startPoint.y;
     RS_Vector basePoint = startPoint;
@@ -559,7 +559,7 @@ void LC_IsometricGrid::fillTilesRowsByPointsExceptDiagonal() {
     }
 }
 
-void LC_IsometricGrid::fillTilesRowsByPoints() {
+void LC_IsometricGrid::fillTilesRowsByPoints() const {
     RS_Vector startPoint = tilesStartPoint;
     double currentY = startPoint.y;
     RS_Vector basePoint = startPoint;
@@ -584,7 +584,7 @@ void LC_IsometricGrid::fillTilesRowsByPoints() {
     }
 }
 
-void LC_IsometricGrid::fillTilesRowsByLinesNoDiagonals() {
+void LC_IsometricGrid::fillTilesRowsByLinesNoDiagonals() const {
     RS_Vector startPoint = tilesStartPoint;
     double currentY = startPoint.y;
     RS_Vector basePoint = startPoint;
@@ -620,7 +620,7 @@ void LC_IsometricGrid::fillTilesRowsByLinesNoDiagonals() {
     }
 }
 
-void LC_IsometricGrid::fillTilesRowsBylines() {
+void LC_IsometricGrid::fillTilesRowsBylines() const {
     RS_Vector startPoint = tilesStartPoint;
     double currentY = startPoint.y;
     RS_Vector basePoint = startPoint;
@@ -646,7 +646,7 @@ void LC_IsometricGrid::fillTilesRowsBylines() {
     }
 }
 
-void LC_IsometricGrid::fillPointsNoGaps(const RS_Vector &min, const RS_Vector &max) {
+void LC_IsometricGrid::fillPointsNoGaps(const RS_Vector &min, const RS_Vector &max) const {
     RS_Vector deltaX = m_gridLattice->getDeltaX();
     RS_Vector deltaY = m_gridLattice->getDeltaY();
     double pointsDeltaX = deltaX.x;

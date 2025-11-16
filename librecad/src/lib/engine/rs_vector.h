@@ -154,6 +154,11 @@ public:
 
     friend std::ostream& operator << (std::ostream&, const RS_Vector& v);
 
+    double getX() const {return x;}
+    double getY() const {return y;}
+    void setX(double val){ x = val;}
+    void setY(double val){ y = val;}
+
 #ifdef RS_TEST
 
     static bool test();
@@ -196,7 +201,7 @@ public:
     const RS_Vector&  operator [] (const size_t i) const;
     RS_Vector&  operator [] (const size_t i);
     size_t getNumber() const;
-    bool isEmpty();
+    bool isEmpty() const;
     size_t size() const;
     bool empty() const;
     void resize(size_t n);

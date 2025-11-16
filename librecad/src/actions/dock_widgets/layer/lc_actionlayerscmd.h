@@ -41,8 +41,8 @@ protected:
     void updateMouseButtonHints() override;
     bool doProcessCommand(int status, const QString& command) override;
     void onMouseRightButtonRelease(int status, QMouseEvent* e) override;
-    void activateLayer();
-    void createLayer();
+    void activateLayer() const;
+    void createLayer() const;
 };
 
 #endif // LC_ACTIONLAYERSCMD_H

@@ -109,7 +109,7 @@ void RS_ScriptList::removeScript(RS_Script* script) {
  * \p NULL if no such script was found. The script will be loaded into
  * memory if it's not already.
  */
-RS_Script* RS_ScriptList::requestScript(const QString& name) {
+RS_Script* RS_ScriptList::requestScript(const QString& name) const {
     RS_DEBUG->print("RS_ScriptList::requestScript %s",  name.toLatin1().data());
 
     QString name2 = name.toLower();

@@ -59,11 +59,11 @@ void QG_DlgMove::languageChange(){
     retranslateUi(this);
 }
 
-void QG_DlgMove::cbMultipleCopiesClicked(bool val) {
+void QG_DlgMove::cbMultipleCopiesClicked(bool val) const {
    sbNumber->setEnabled(val);
 }
 
-void QG_DlgMove::init() {
+void QG_DlgMove::init() const {
     rbCopy->setChecked(data->keepOriginals);
     rbMove->setChecked(!data->keepOriginals);
     cbMultipleCopies -> setChecked(data->multipleCopies);
@@ -79,7 +79,7 @@ void QG_DlgMove::setData(RS_MoveData* d) {
     init();
 }
 
-void QG_DlgMove::updateData() {
+void QG_DlgMove::updateData() const {
     if (rbMove->isChecked()) {
         data->keepOriginals = false;
     } else if (rbCopy->isChecked()) {

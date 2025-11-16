@@ -38,11 +38,12 @@
 class RS_ActionModifyExplodeText : public LC_ActionPreSelectionAwareBase {
     Q_OBJECT
 public:
-    RS_ActionModifyExplodeText(LC_ActionContext *actionContext);
+    explicit RS_ActionModifyExplodeText(LC_ActionContext *actionContext);
     ~RS_ActionModifyExplodeText() override;
 protected:
     void updateMouseButtonHintsForSelection() override;
-    void doTrigger(bool keepSelected) override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& modificationData) override;
+    void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
 };
 
 #endif

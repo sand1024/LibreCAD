@@ -77,7 +77,7 @@ protected:
     bool m_createQuadrangle = false;
 
     void resetPoints();
-    void doResetPoints(const RS_Vector &zero);
+    void doResetPoints(const RS_Vector &zero) const;
     RS_Vector calculatePossibleEndpointForAngle(const RS_Vector &snap, const RS_Vector lineStartPoint, double angle) const;
     void calculateCorner2(const RS_Vector &snapPoint, double angleRad, bool cornerSet) const;
     void calculateCorner4() const;
@@ -96,7 +96,7 @@ protected:
     int doGetStatusForInitialSnapToRelativeZero() override;
     void doInitialSnapToRelativeZero(RS_Vector vector) override;
     void doUpdateMouseButtonHints(int status) override;
-    void calculateCornersBySize(RS_Vector size);
+    void calculateCornersBySize(RS_Vector size) const;
     double getActualInnerAngle() const;
     void doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) override;

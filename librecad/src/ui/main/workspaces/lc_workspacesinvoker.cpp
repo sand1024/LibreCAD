@@ -32,19 +32,19 @@ LC_WorkspacesInvoker::LC_WorkspacesInvoker(QC_ApplicationWindow* mainWin):
 
 LC_WorkspacesInvoker::~LC_WorkspacesInvoker() = default;
 
-void LC_WorkspacesInvoker::init() {
+void LC_WorkspacesInvoker::init() const {
     m_workspacesManager->init(m_appWin);
 }
 
-void LC_WorkspacesInvoker::persist() {
+void LC_WorkspacesInvoker::persist() const {
     m_workspacesManager->persist();
 }
 
-bool LC_WorkspacesInvoker::hasWorkspaces() {
+bool LC_WorkspacesInvoker::hasWorkspaces() const {
     return m_workspacesManager->hasWorkspaces();
 }
 
-void LC_WorkspacesInvoker::saveWorkspace([[maybe_unused]]bool on) {
+void LC_WorkspacesInvoker::saveWorkspace([[maybe_unused]]bool on) const {
     QStringList options;
     m_workspacesManager->getWorkspaceNames(options);
     bool ok;
@@ -55,15 +55,15 @@ void LC_WorkspacesInvoker::saveWorkspace([[maybe_unused]]bool on) {
     }
 }
 
-void  LC_WorkspacesInvoker::fillWorkspacesList(QList<QPair<int, QString>> &list){
+void  LC_WorkspacesInvoker::fillWorkspacesList(QList<QPair<int, QString>> &list) const {
     m_workspacesManager->getWorkspaces(list);
 }
 
-void LC_WorkspacesInvoker::applyWorkspaceById(int id){
+void LC_WorkspacesInvoker::applyWorkspaceById(int id) const {
     m_workspacesManager->activateWorkspace(id);
 }
 
-void LC_WorkspacesInvoker::removeWorkspace([[maybe_unused]]bool on){
+void LC_WorkspacesInvoker::removeWorkspace([[maybe_unused]]bool on) const {
     QList<QPair<int, QString>> options;
     m_workspacesManager->getWorkspaces(options);
     bool ok;

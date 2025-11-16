@@ -95,14 +95,14 @@ public:
      */
     void setOffset(int ox, int oy);
 
-    void setAntialiasing(bool state);
+    void setAntialiasing(bool state) const;
     bool isDraftMode() const;
     void setDraftMode(bool dm);
-    void setDraftLinesMode(bool mode);
+    void setDraftLinesMode(bool mode) const;
 
     void setCursorHiding(bool state);
     void addScrollbars();
-    bool hasScrollbars();
+    bool hasScrollbars() const;
     void setCurrentQAction(QAction* q_action);
     QString obtainEntityDescription(RS_Entity *entity, RS2::EntityDescriptionLevel shortDescription) override;
     virtual void initView();
@@ -114,7 +114,7 @@ public:
     }
     const QList<QAction*>& getRecentActions() const {return m_recent_actions;}
     LC_ActionContext* getActionContext() const {return m_actionContext;}
-    void launchEditProperty(RS_Entity *entity);
+    void launchEditProperty(RS_Entity *entity) const;
 protected slots:
     void slotHScrolled(int value);
     void slotVScrolled(int value);
@@ -135,12 +135,12 @@ protected:
     void keyPressEvent(QKeyEvent* e) override;
     void keyReleaseEvent(QKeyEvent* e) override;
     bool event(QEvent * e) override;
-    void doZoom(RS2::ZoomDirection direction, RS_Vector& center, double zoom_factor);
+    void doZoom(RS2::ZoomDirection direction, RS_Vector& center, double zoom_factor) const;
     void paintEvent(QPaintEvent *)override;
     void resizeEvent(QResizeEvent* e) override;
     void switchToAction(RS2::ActionType actionType, void* data = nullptr) const;
-    RS_Entity* catchContextEntity(QMouseEvent* event, RS_Vector& clickPos);
-    void autoPanStep();
+    RS_Entity* catchContextEntity(QMouseEvent* event, RS_Vector& clickPos) const;
+    void autoPanStep() const;
     void highlightUCSLocation(LC_UCS *ucs) override;
     void ucsHighlightStep();
 
@@ -148,7 +148,7 @@ protected:
     // For auto panning by the cursor close to the view border
     void startAutoPanTimer(QMouseEvent *e);
     bool isAutoPan(QMouseEvent* e) const;
-    void deleteActionContext();
+    void deleteActionContext() const;
 signals:
     void xbutton1_released();
     void gridStatusChanged(QString);
@@ -196,7 +196,7 @@ private:
     LC_ActionContext* m_actionContext {nullptr};
 
     void showEntityPropertiesDialog(RS_Entity *entity);
-    void editAction(RS_Entity &entity);
+    void editAction(RS_Entity &entity) const;
     // for scroll bar adjustment
     std::mutex m_scrollbarMutex;
 

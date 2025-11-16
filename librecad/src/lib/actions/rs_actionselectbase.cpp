@@ -25,6 +25,7 @@
 #include <QKeyEvent>
 
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_entitycontainer.h"
 #include "rs_selection.h"
 
@@ -51,7 +52,7 @@ void RS_ActionSelectBase::keyPressEvent(QKeyEvent *e){
             break;
         }
         case Qt::Key_Enter:{
-            if (m_container->countSelected() > 0){
+            if (m_document->countSelected() > 0){
                 selectionFinishedByKey(e, false);
             }
             break;
@@ -65,7 +66,7 @@ RS2::CursorType RS_ActionSelectBase::doGetMouseCursor([[maybe_unused]] int statu
     return RS2::SelectCursor;
 }
 
-bool RS_ActionSelectBase::selectEntity(RS_Entity* entityToSelect, bool selectContour) {
+bool RS_ActionSelectBase::selectEntity(RS_Entity* entityToSelect, bool selectContour) const {
     bool result = false;
     if (entityToSelect != nullptr){
         bool selectionAllowed = isEntityAllowedToSelect(entityToSelect);
@@ -83,7 +84,7 @@ bool RS_ActionSelectBase::selectEntity(RS_Entity* entityToSelect, bool selectCon
 }
 
 void RS_ActionSelectBase::doSelectEntity(RS_Entity* entityToSelect,  [[maybe_unused]]bool selectContour) const {
-    RS_Selection s(*m_container, m_viewport);
+    RS_Selection s(m_document, m_viewport);
     s.selectSingle(entityToSelect);
 }
 
@@ -105,7 +106,7 @@ bool RS_ActionSelectBase::isShowRefPointsOnHighlight() {
     return m_highlightEntitiesRefPointsOnHover;
 }
 
-void RS_ActionSelectBase::deselectAll(){
-    RS_Selection s(*m_container, m_viewport);
+void RS_ActionSelectBase::deselectAll() const {
+    RS_Selection s(m_document, m_viewport);
     s.selectAll(false);
 }

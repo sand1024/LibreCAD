@@ -60,7 +60,7 @@ void LC_QuickInfoWidgetOptionsDialog::validate(){
     accept();
 }
 
-void LC_QuickInfoWidgetOptionsDialog::onDefaultActionAutoClicked(){
+void LC_QuickInfoWidgetOptionsDialog::onDefaultActionAutoClicked() const {
     ui->cbInDefaultAction->setEnabled(!ui->cbDefaultActionAuto->isChecked());
 }
 

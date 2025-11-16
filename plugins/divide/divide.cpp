@@ -359,8 +359,7 @@ void divide::execComm( Document_Interface *doc,
 
 
 void divide::segmentLine( QPointF startPoint, QPointF lineEnd, QPointF lineStart,
-                          QString type, int qty, int count )
-{
+                          QString type, int qty, int count ) const {
     QString layerName = ( "Break layer - " + type );
     QString cl = d->getCurrentLayer();
     d->setLayer( layerName );
@@ -382,8 +381,7 @@ void divide::segmentLine( QPointF startPoint, QPointF lineEnd, QPointF lineStart
 }
 
 void divide::segment( QPointF * centerCircle, double radius,
-                      double angle, double arcAngle, QString type )
-{
+                      double angle, double arcAngle, QString type ) const {
     QString layerName = ( "Break layer - " + type );
     QString cl = d->getCurrentLayer();
     d->setLayer( layerName );

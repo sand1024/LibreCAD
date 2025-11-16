@@ -34,13 +34,13 @@ public:
     QG_DlgInitial(QWidget* parent = 0, bool modal = false, Qt::WindowFlags fl = {});
     ~QG_DlgInitial() override;
 public slots:
-    void setText( const QString & t );
-    void setPixmap( const QPixmap & p );
+    void setText( const QString & t ) const;
+    void setPixmap( const QPixmap & p ) const;
     void ok();
 protected slots:
     void languageChange();
 private:
-    void init();
+    void init() const;
 };
 
 #endif // QG_DLGINITIAL_H

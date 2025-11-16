@@ -58,7 +58,7 @@ void QG_DlgRotate2::languageChange(){
     retranslateUi(this);
 }
 
-void QG_DlgRotate2::init() {
+void QG_DlgRotate2::init() const {
     rbCopy->setChecked(data->keepOriginals);
     rbMove->setChecked(!data->keepOriginals);
     rbMultiCopy -> setChecked(data->multipleCopies);
@@ -77,7 +77,7 @@ void QG_DlgRotate2::setData(RS_Rotate2Data* d) {
     init();
 }
 
-void QG_DlgRotate2::updateData() {
+void QG_DlgRotate2::updateData() const {
     if (rbMove->isChecked()) {
         data->keepOriginals = false;
     } else if (rbCopy->isChecked()) {

@@ -710,7 +710,7 @@ size_t RS_VectorSolutions::getNumber() const {
     return vector.size();
 }
 
-bool RS_VectorSolutions::isEmpty() {
+bool RS_VectorSolutions::isEmpty() const {
     return vector.empty();
 }
 

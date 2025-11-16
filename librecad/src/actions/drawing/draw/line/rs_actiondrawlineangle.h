@@ -27,7 +27,8 @@
 #ifndef RS_ACTIONDRAWLINEANGLE_H
 #define RS_ACTIONDRAWLINEANGLE_H
 
-#include "rs_previewactioninterface.h"
+#include "lc_undoabledocumentmodificationaction.h"
+
 
 /**
  * This action class can handle user events to draw 
@@ -35,23 +36,23 @@
  *
  * @author Andrew Mustun
  */
-class RS_ActionDrawLineAngle : public RS_PreviewActionInterface {
+class RS_ActionDrawLineAngle : public LC_SingleEntityCreationAction {
 	Q_OBJECT
 public:
-    RS_ActionDrawLineAngle(LC_ActionContext *actionContext, bool fixedAngle = false, RS2::ActionType actionType = RS2::ActionDrawLineAngle);
+    explicit RS_ActionDrawLineAngle(LC_ActionContext *actionContext, bool fixedAngle = false, RS2::ActionType actionType = RS2::ActionDrawLineAngle);
     ~RS_ActionDrawLineAngle() override;
-    void reset();
+    void reset() const;
     void init(int status) override;
     QStringList getAvailableCommands() override;
-    void setSnapPoint(int sp);
+    void setSnapPoint(int sp) const;
     int getSnapPoint() const;
-    void setUcsAngleDegrees(double ucsRelAngle);
+    void setUcsAngleDegrees(double ucsRelAngle) const;
     double getUcsAngleDegrees() const;
-    void setLength(double l);
+    void setLength(double l) const;
     double getLength() const;
     bool hasFixedAngle() const;
     void setInAngleBasis(bool b);
-    bool isInAngleBasis(){return m_orthoToAnglesBasis;}
+    bool isInAngleBasis() const {return m_orthoToAnglesBasis;}
 protected:
     /**
  * Action States.
@@ -70,7 +71,7 @@ protected:
     bool m_alternateDirection = false;
     bool m_orthoToAnglesBasis = false;
 
-    void preparePreview();
+    void preparePreview() const;
     RS2::CursorType doGetMouseCursor(int status) override;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
@@ -79,9 +80,10 @@ protected:
     bool doProcessCommand(int status, const QString &command) override;
     void updateMouseButtonHints() override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
-    void doTrigger() override;
     void initFromSettings() override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
 };
 #endif

@@ -45,8 +45,11 @@ protected:
     bool isAllowTriggerOnEmptySelection() override;
     bool isEntityAllowedToSelect(RS_Entity *ent) const override;
     void updateMouseButtonHintsForSelection() override;
-    void doTrigger(bool selected) override;
+    bool isTriggerUndoable() override {return true;}
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angle) override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;;
+    void doTriggerCompletion(bool success) override;
+    void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
 };
 
 #endif // LC_ACTIONPASTETOPOINTS_H

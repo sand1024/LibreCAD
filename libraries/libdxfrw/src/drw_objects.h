@@ -168,10 +168,10 @@ public:
 
     class ValueHolder {
     public:
-        bool has() {return m_var != nullptr;}
-        UTF8STRING sval(){return m_var->c_str();} // string value
-        double dval() {return m_var->d_val();} // double value
-        int ival() {return m_var->i_val();} // int value
+        bool has() const {return m_var != nullptr;}
+        UTF8STRING sval() const {return m_var->c_str();} // string value
+        double dval() const {return m_var->d_val();} // double value
+        int ival() const {return m_var->i_val();} // int value
         void update(DRW_Variant* var) {m_var = var;}
     private:
         DRW_Variant* m_var{nullptr};

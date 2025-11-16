@@ -39,14 +39,14 @@ public:
     ~LC_ImagePropertiesEditingWidget() override;
     void setEntity(RS_Entity* entity) override;
 protected slots:
-    void onInsertionPointEditingFinished();
+    void onInsertionPointEditingFinished() const;
     void onAngleEditingFinished();
-    void onImageFileClick();
+    void onImageFileClick() const;
     void onWidthChanged();
     void onHeightChanged();
     void onScaleChanged();
     void onDPIChanged();
-    void onPathChanged(const QString &);
+    void onPathChanged(const QString &) const;
 public:
     void setupInteractiveInputWidgets() override;
 private:

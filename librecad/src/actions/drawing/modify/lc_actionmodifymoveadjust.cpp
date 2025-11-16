@@ -24,6 +24,7 @@
 #include "lc_actionmodifymoveadjust.h"
 
 #include "lc_graphicviewport.h"
+#include "rs_document.h"
 #include "rs_grid.h"
 
 LC_ActionModifyMoveAdjust::LC_ActionModifyMoveAdjust(LC_ActionContext* actionContext, MovementInfo movement)
@@ -43,12 +44,20 @@ LC_ModifyOperationFlags* LC_ActionModifyMoveAdjust::getModifyOperationFlags() {
     return &m_moveData;
 }
 
-void LC_ActionModifyMoveAdjust::doTrigger([[maybe_unused]]bool keepSelected) {
+bool LC_ActionModifyMoveAdjust::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
     m_moveData.offset = calculateOffset();
     m_moveData.keepOriginals = false;
-    m_moveData.keepOriginals = false;
-    RS_Modification m(*m_container, m_viewport);
-    m.move(m_moveData, m_selectedEntities, false, true);
+
+    RS_Modification::move(m_moveData, m_selectedEntities, false, ctx);
+    ctx.dontSetActiveLayerAndPen();
+    return true;
+}
+
+void LC_ActionModifyMoveAdjust::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+    select(ctx.entitiesToAdd);
+}
+
+void LC_ActionModifyMoveAdjust::doTriggerCompletion(bool success) {
     finish(false);
 }
 

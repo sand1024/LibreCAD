@@ -26,16 +26,30 @@
 
 #include "rs_actionlibraryinsert.h"
 
+#include <QFileInfo>
+
 #include "lc_documentsstorage.h"
 #include "qg_libraryinsertoptions.h"
 #include "rs_creation.h"
 #include "rs_graphic.h"
+#include "rs_modification.h"
 #include "rs_preview.h"
 #include "rs_units.h"
 
+/**
+ * Data needed to insert library items.
+ */
+struct RS_ActionLibraryInsert::RS_LibraryInsertData {
+    QString file;
+    RS_Vector insertionPoint;
+    double factor = 0.;
+    double angle  = 0.;
+    RS_Graphic* graphic;
+};
+
 struct RS_ActionLibraryInsert::ActionData {
     RS_Graphic* prev;
-    RS_LibraryInsertData data;
+    RS_ActionLibraryInsert::RS_LibraryInsertData data;
 };
 
 // fixme - sand - UCS - support of UCS for inserting blocks (angle)!!!
@@ -55,8 +69,8 @@ void RS_ActionLibraryInsert::init(int status) {
     RS_PreviewActionInterface::init(status);
     reset();
 }
-
-void RS_ActionLibraryInsert::setFile(const QString& file) {
+// fixme - blocks - review usage of this methods, why it's called from outside? Should it be part of the action or widget?
+void RS_ActionLibraryInsert::setFile(const QString& file) const {
     m_actionData->data.file = file;
     LC_DocumentsStorage storage;
     delete m_actionData->prev;
@@ -66,21 +80,38 @@ void RS_ActionLibraryInsert::setFile(const QString& file) {
     }
 }
 
-void RS_ActionLibraryInsert::reset() {
+void RS_ActionLibraryInsert::reset() const {
     m_actionData->data.insertionPoint = {};
     m_actionData->data.factor = 1.0;
     m_actionData->data.angle = 0.0;
     delete m_actionData->prev;
 }
-
+// fixme - rework further!
 void RS_ActionLibraryInsert::trigger() {
     deletePreview();
-    RS_Creation creation(m_container, m_viewport);
     auto insertData    = m_actionData->data;
     insertData.graphic = m_actionData->prev;
     insertData.angle = toWorldAngleFromUCSBasis(m_actionData->data.angle);
-    creation.createLibraryInsert(insertData);
+    createLibraryInsert(insertData);
     redrawDrawing();
+}
+
+// fixme - rework further!
+RS_Insert* RS_ActionLibraryInsert::createLibraryInsert(RS_LibraryInsertData& data) const {
+    RS_Graphic* insertGraphic = data.graphic;
+    if (insertGraphic == nullptr) {
+        return nullptr;
+    }
+    // unit conversion:
+    if (m_graphic != nullptr) {
+        double uf = RS_Units::convert(1.0, insertGraphic->getUnit(),m_graphic->getUnit());
+        insertGraphic->scale(RS_Vector(0.0, 0.0), RS_Vector(uf, uf));
+    }
+    QString insertFileName = QFileInfo(data.file).completeBaseName();
+    RS_Modification m(m_document, m_viewport);
+    m.paste( RS_PasteData(data.insertionPoint,data.factor, data.angle, true,insertFileName),insertGraphic); // fixme- create separate method for library insert!
+
+    return nullptr;
 }
 
 void RS_ActionLibraryInsert::onMouseMoveEvent(int status, LC_MouseEvent *e) {
@@ -209,7 +240,7 @@ double RS_ActionLibraryInsert::getAngle() const{
     return m_actionData->data.angle;
 }
 
-void RS_ActionLibraryInsert::setAngle(double a) {
+void RS_ActionLibraryInsert::setAngle(double a) const {
     m_actionData->data.angle = a;
 }
 
@@ -217,7 +248,7 @@ double RS_ActionLibraryInsert::getFactor() const{
     return m_actionData->data.factor;
 }
 
-void RS_ActionLibraryInsert::setFactor(double f) {
+void RS_ActionLibraryInsert::setFactor(double f) const {
     m_actionData->data.factor = f;
 }
 

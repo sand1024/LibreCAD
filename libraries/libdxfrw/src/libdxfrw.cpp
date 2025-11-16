@@ -3220,50 +3220,50 @@ void dxfRW::setVersion(DRW::Version v) {
     afterAC1018 = v > DRW::AC1018;
 }
 
-bool dxfRW::writeString(int code, const std::string &text) {
+bool dxfRW::writeString(int code, const std::string &text) const {
     return writer->writeString(code, text);
 }
 
-bool dxfRW::writeDouble(int code, double d) {
+bool dxfRW::writeDouble(int code, double d) const {
     return writer->writeDouble(code, d);
 }
 
-bool dxfRW::writeDoubleOpt(int code, double d) {
+bool dxfRW::writeDoubleOpt(int code, double d) const {
     if (d != 0.0) {
         return writer->writeDouble(code, d);
     }
     return true;
 }
 
-bool dxfRW::writeUtf8String(int code, const std::string &text) {
+bool dxfRW::writeUtf8String(int code, const std::string &text) const {
     return writer->writeUtf8String(code, text);
 }
 
-bool dxfRW::writeUtf8Caps(int code, const std::string &text) {
+bool dxfRW::writeUtf8Caps(int code, const std::string &text) const {
     return writer->writeUtf8Caps(code, text);
 }
 
-bool dxfRW::writeHandle(int code, int handle) {
+bool dxfRW::writeHandle(int code, int handle) const {
     return writer->writeString(code, toHexStr(handle));
 }
 
-bool dxfRW::writeInt16(int code, int val) {
+bool dxfRW::writeInt16(int code, int val) const {
     return writer->writeInt16(code, val);
 }
 
-bool dxfRW::writeInt32(int code, int val) {
+bool dxfRW::writeInt32(int code, int val) const {
     return writer->writeInt32(code, val);
 }
 
-bool dxfRW::writeBool(int code, bool val) {
+bool dxfRW::writeBool(int code, bool val) const {
     return writer->writeBool(code, val);
 }
 
-bool dxfRW::readRec(int* codeData) {
+bool dxfRW::readRec(int* codeData) const {
     return reader->readRec(codeData);
 }
 
-std::string dxfRW::getString() {
+std::string dxfRW::getString() const {
     return reader->getString();
 }
 

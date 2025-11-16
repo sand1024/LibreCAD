@@ -39,7 +39,7 @@ public:
     ~LC_PolylinePropertiesEditingWidget() override;
     void setEntity(RS_Entity* entity) override;
 protected slots:
-    void onClosedToggled(bool checked);
+    void onClosedToggled(bool checked) const;
 private:
     Ui::LC_PolylinePropertiesEditingWidget *ui;
     RS_Polyline* m_entity{nullptr};

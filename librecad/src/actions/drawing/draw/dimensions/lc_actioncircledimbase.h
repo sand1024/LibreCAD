@@ -38,7 +38,7 @@ public:
     void setUcsAngleDegrees(double angle);
     bool isAngleIsFree() const;
     void setAngleIsFree(bool angleIsFree);
-    double getCurrentAngle();
+    double getCurrentAngle() const;
 protected:
 
     enum Status {
@@ -68,7 +68,8 @@ protected:
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     virtual RS_Vector preparePreview(RS_Entity *en, RS_Vector &position, bool forcePosition) = 0;
     virtual RS_Dimension* createDim(RS_EntityContainer *parent) const = 0;
-    void doTrigger() override;
+    RS_Entity* doTriggerCreateEntity() override;
+    void doTriggerCompletion(bool success) override;
 };
 
 #endif // LC_ACTIONCIRCLEDIMBASE_H

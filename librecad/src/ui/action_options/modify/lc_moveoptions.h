@@ -45,11 +45,11 @@ public slots:
 protected:
     void doSaveSettings() override;
     void doSetAction(RS_ActionInterface *a, bool update) override;
-    void setCopiesNumberToActionAndView(int number);
-    void setUseMultipleCopiesToActionAndView(bool copies);
-    void setUseCurrentLayerToActionAndView(bool val);
-    void setUseCurrentAttributesToActionAndView(bool val);
-    void setKeepOriginalsToActionAndView(bool val);
+    void setCopiesNumberToActionAndView(int number) const;
+    void setUseMultipleCopiesToActionAndView(bool copies) const;
+    void setUseCurrentLayerToActionAndView(bool val) const;
+    void setUseCurrentAttributesToActionAndView(bool val) const;
+    void setKeepOriginalsToActionAndView(bool val) const;
 private:
     Ui::LC_MoveOptions *ui = nullptr;
     RS_ActionModifyMove* m_action = nullptr;

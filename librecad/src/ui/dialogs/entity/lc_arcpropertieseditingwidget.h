@@ -39,11 +39,11 @@ public:
     ~LC_ArcPropertiesEditingWidget() override;
     void setEntity(RS_Entity* entity) override;
 protected slots:
-    void onCenterEditingFinished();
+    void onCenterEditingFinished() const;
     void onRadiusEditingFinished();
     void onAngle1EditingFinished();
     void onAngle2EditingFinished();
-    void onReversedToggled(bool checked);
+    void onReversedToggled(bool checked) const;
 public:
     void setupInteractiveInputWidgets() override;
 private:

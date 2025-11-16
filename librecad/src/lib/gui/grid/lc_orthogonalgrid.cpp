@@ -104,7 +104,7 @@ RS_Vector LC_OrthogonalGrid::snapGrid(const RS_Vector& coord) const {
 
 }
 
-void LC_OrthogonalGrid::fillPointsLatticeWithGapsForMetaGrid() {
+void LC_OrthogonalGrid::fillPointsLatticeWithGapsForMetaGrid() const {
     RS_Vector tileBasePoint;
     // if metagrid is visible, we generate points with gaps, so there is no overlap between metagrid lines and points
     // to achieve this, we'll generate points for each individual cell of metagrid
@@ -387,7 +387,7 @@ void LC_OrthogonalGrid::drawMetaGridLines(RS_Painter *painter, LC_GraphicViewpor
 #endif
 }
 
-void LC_OrthogonalGrid::createGridLinesWithoutGaps(const RS_Vector &min, const RS_Vector &max) {
+void LC_OrthogonalGrid::createGridLinesWithoutGaps(const RS_Vector &min, const RS_Vector &max) const {
     // draw vertical line
 
     double firstMX = 0;
@@ -454,7 +454,7 @@ void LC_OrthogonalGrid::createGridLines(const RS_Vector& min, const RS_Vector &m
     }
 }
 
-void LC_OrthogonalGrid::createGridLinesWithGaps(const RS_Vector &min, const RS_Vector &max, const RS_Vector &lineOffset) {
+void LC_OrthogonalGrid::createGridLinesWithGaps(const RS_Vector &min, const RS_Vector &max, const RS_Vector &lineOffset) const {
     double height = max.y;
     double width = max.x;
 

@@ -26,6 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "rs_atomicentity.h"
 #include "rs_circle.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 
 namespace {
 
@@ -81,22 +82,20 @@ void RS_ActionDrawCircleTan2::finish(bool updateTB){
     RS_PreviewActionInterface::finish(updateTB);
 }
 
-void RS_ActionDrawCircleTan2::doTrigger() {
-    auto *circle = new RS_Circle(m_container, m_actionData->cData);
-
+RS_Entity* RS_ActionDrawCircleTan2::doTriggerCreateEntity() {
+    auto *circle = new RS_Circle(m_document, m_actionData->cData);
     if (m_moveRelPointAtCenterAfterTrigger){
         moveRelativeZero(circle->getCenter());
     }
+    return circle;
+}
 
-    undoCycleAdd(circle);
-
+void RS_ActionDrawCircleTan2::doTriggerCompletion(bool success) {
     for (auto p: m_actionData->circles) {
         p->setHighlighted(false);
     }
     m_actionData->circles.clear();
     setStatus(SetCircle1);
-
-    RS_DEBUG->print("RS_ActionDrawCircleTan2::trigger(): entity added: %lu", circle->getId());
 }
 
 bool RS_ActionDrawCircleTan2::doUpdateDistanceByInteractiveInput(const QString& tag, double distance) {
@@ -166,7 +165,7 @@ void RS_ActionDrawCircleTan2::setRadius(double r){
     }
 }
 
-bool RS_ActionDrawCircleTan2::getCenters(RS_Entity *secondEntityCandidate){
+bool RS_ActionDrawCircleTan2::getCenters(RS_Entity *secondEntityCandidate) const {
     std::vector<RS_AtomicEntity *> circlesList;
     if (secondEntityCandidate != nullptr){
         std::vector<RS_AtomicEntity *> testCirclesList = m_actionData->circles;
@@ -182,7 +181,7 @@ bool RS_ActionDrawCircleTan2::getCenters(RS_Entity *secondEntityCandidate){
     return m_actionData->valid;
 }
 
-bool RS_ActionDrawCircleTan2::preparePreview(){
+bool RS_ActionDrawCircleTan2::preparePreview() const {
     if (m_actionData->valid){
         m_actionData->cData.center = m_actionData->centers.getClosest(m_actionData->coord);
     }
@@ -263,7 +262,6 @@ void RS_ActionDrawCircleTan2::onMouseLeftButtonRelease(int status, LC_MouseEvent
 void RS_ActionDrawCircleTan2::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
     // Return to last status:
     if (getStatus() > 0){
-//            pPoints->circles[getStatus() - 1]->setHighlighted(false);
         m_actionData->circles.pop_back();
         redrawDrawing();
         deletePreview();

@@ -28,6 +28,7 @@
 
 #include "lc_actioninfomessagebuilder.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_entitycontainer.h"
 
 RS_ActionInfoTotalLength::RS_ActionInfoTotalLength(LC_ActionContext *actionContext)
@@ -42,9 +43,9 @@ bool RS_ActionInfoTotalLength::isAllowTriggerOnEmptySelection() {
     return false;
 }
 
-void RS_ActionInfoTotalLength::doTrigger([[maybe_unused]]bool selected) {
+void RS_ActionInfoTotalLength::doTrigger() {
     RS_DEBUG->print("RS_ActionInfoTotalLength::trigger()");
-    double l=m_container->totalSelectedLength();
+    double l=m_document->totalSelectedLength();
 
     if (l>0.0) {
         QString len= formatLinear(l);
@@ -57,7 +58,7 @@ void RS_ActionInfoTotalLength::doTrigger([[maybe_unused]]bool selected) {
 }
 
 void RS_ActionInfoTotalLength::finishMouseMoveOnSelection([[maybe_unused]] LC_MouseEvent *event) {
-    const RS_EntityContainer::LC_SelectionInfo &selectionInfo = m_container->getSelectionInfo();
+    const RS_EntityContainer::LC_SelectionInfo &selectionInfo = m_document->getSelectionInfo();
     unsigned int selectedCount = selectionInfo.count;
     auto builder = msgStart().string(tr("Selected:"), QString::number(selectedCount));
     if (selectedCount > 0) {

@@ -252,7 +252,7 @@ void RS_DimLinear::scale(const RS_Vector& center, const RS_Vector& factor) {
     update();
 }
 
-void RS_DimLinear::getDimPoints(RS_Vector& dimP1, RS_Vector& dimP2){
+void RS_DimLinear::getDimPoints(RS_Vector& dimP1, RS_Vector& dimP2) const {
     RS_Vector dirDim = RS_Vector::polar(100.0, m_dimLinearData.angle);
 
     // construction line for dimension line

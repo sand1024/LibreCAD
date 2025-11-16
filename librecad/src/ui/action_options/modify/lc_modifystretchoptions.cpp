@@ -61,7 +61,7 @@ void LC_ModifyStretchOptions::onKeepOriginalsClicked(bool val) {
     setKeepOriginalsToActionAndView(val);
 }
 
-void LC_ModifyStretchOptions::setKeepOriginalsToActionAndView(bool val) {
+void LC_ModifyStretchOptions::setKeepOriginalsToActionAndView(bool val) const {
     ui->cbKeepOriginals->setChecked(val);
     m_action->setRemoveOriginals(!val);
 }

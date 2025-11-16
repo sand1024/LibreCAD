@@ -27,6 +27,7 @@
 #include "rs_insert.h"
 
 #include<iostream>
+#include <boost/move/algo/adaptive_merge.hpp>
 
 #include "rs_arc.h"
 #include "rs_block.h"
@@ -75,15 +76,15 @@ RS_InsertData::RS_InsertData(const QString& _name,
 							 int _cols, int _rows, RS_Vector _spacing,
 							 RS_BlockList* _blockSource ,
 							 RS2::UpdateMode _updateMode ):
-	name(_name)
-  ,insertionPoint(_insertionPoint)
-  ,scaleFactor(_scaleFactor)
-  ,angle(_angle)
-  ,cols(_cols)
-  ,rows(_rows)
-  ,spacing(_spacing)
-  ,blockSource(_blockSource)
-  ,updateMode(_updateMode){
+	    name(_name)
+      ,insertionPoint(_insertionPoint)
+      ,scaleFactor(_scaleFactor)
+      ,angle(_angle)
+      ,cols(_cols)
+      ,rows(_rows)
+      ,spacing(_spacing)
+      ,blockSource(_blockSource)
+      ,updateMode(_updateMode){
 }
 
 RS_InsertData::RS_InsertData(const RS_InsertData &other):
@@ -109,8 +110,7 @@ std::ostream& operator <<(std::ostream& os,
  */
 RS_Insert::RS_Insert(RS_EntityContainer* parent,
                      const RS_InsertData& d)
-    : RS_EntityContainer(parent)
-      , m_data(d) {
+    : RS_EntityContainer(parent), m_data(d) {
     if (m_data.updateMode != RS2::NoUpdate) {
         RS_Insert::update();
         //calculateBorders();
@@ -118,10 +118,10 @@ RS_Insert::RS_Insert(RS_EntityContainer* parent,
 }
 
 RS_Entity* RS_Insert::clone() const{
-	auto i = new RS_Insert(*this);
-	i->setOwner(isOwner());
-	i->detach();
-	return i;
+	auto result = new RS_Insert(*this);
+	result->setOwner(isOwner());
+	result->detach();
+	return result;
 }
 
 /**
@@ -129,11 +129,8 @@ RS_Entity* RS_Insert::clone() const{
  * needs to be called whenever the block this insert is based on changes.
  */
 void RS_Insert::update() {
-
     RS_DEBUG->print("RS_Insert::update");
     RS_DEBUG->print("RS_Insert::update: name: %s", m_data.name.toLatin1().data());
-    //        RS_DEBUG->print("RS_Insert::update: insertionPoint: %f/%f",
-    //                data.insertionPoint.x, data.insertionPoint.y);
 
     if (updateEnabled==false) {
         return;
@@ -141,47 +138,41 @@ void RS_Insert::update() {
 
     clear();
 
+    bool oldAutoUpdateBorders = getAutoUpdateBorders();
+    setAutoUpdateBorders(false);
+
     RS_Block* blk = getBlockForInsert();
     if (blk == nullptr) {
         RS_DEBUG->print("RS_Insert::update: Block is nullptr");
         return;
     }
 
-    if (isUndone()) {
+    if (isDeleted()) {
         RS_DEBUG->print("RS_Insert::update: Insert is in undo list");
         return;
     }
 
-    if (std::abs(m_data.scaleFactor.x)<MIN_Scale_Factor || std::abs(m_data.scaleFactor.y)<MIN_Scale_Factor) {
+    double scaleFactorX = m_data.scaleFactor.x;
+    double scaleFactorY = m_data.scaleFactor.y;
+    if (std::abs(scaleFactorX)<MIN_Scale_Factor || std::abs(scaleFactorY)<MIN_Scale_Factor) {
         RS_DEBUG->print("RS_Insert::update: scale factor is 0");
         return;
     }
 
-    RS_DEBUG->print("RS_Insert::update: cols: %d, rows: %d",
-                    m_data.cols, m_data.rows);
-    RS_DEBUG->print("RS_Insert::update: block has %d entities",
-                    blk->count());
-        for(auto* e: *blk){
-            for (int c=0; c<m_data.cols; ++c) {
-//            RS_DEBUG->print("RS_Insert::update: col %d", c);
-                for (int r=0; r<m_data.rows; ++r) {
-//                i_en_counts++;
-//                RS_DEBUG->print("RS_Insert::update: row %d", r);
+    RS_DEBUG->print("RS_Insert::update: cols: %d, rows: %d",m_data.cols, m_data.rows);
+    RS_DEBUG->print("RS_Insert::update: block has %d entities",blk->count());
+    for (auto* e : *blk) {
+        for (int c = 0; c < m_data.cols; ++c) {
+            for (int r = 0; r < m_data.rows; ++r) {
                     // fixme - sand - this is quick fix for #2177 - yet it's necessary to check why undone entity is in block?
-                    if (e->isUndone()) {
+                    if (e->isDeleted()) {
                         continue;
                     }
-                    if (e->rtti()==RS2::EntityInsert &&
-                            m_data.updateMode!=RS2::PreviewUpdate) {
-
-//                                        RS_DEBUG->print("RS_Insert::update: updating sub-insert");
+                    if (e->rtti()==RS2::EntityInsert &&m_data.updateMode!=RS2::PreviewUpdate) {
                         e->update();
-                }
-
-//                                RS_DEBUG->print("RS_Insert::update: cloning entity");
-
+                    }
                     RS_Entity* ne = nullptr;
-                    if ( (m_data.scaleFactor.x - m_data.scaleFactor.y)>MIN_Scale_Factor) {
+                    if ( (scaleFactorX - scaleFactorY)>MIN_Scale_Factor) {
                         if (e->rtti()== RS2::EntityArc) {
                             auto a= static_cast<RS_Arc*>(e);
                             ne = new RS_Ellipse{this,
@@ -203,40 +194,32 @@ void RS_Insert::update() {
                         ne = e->clone();
                     }
                     ne->setUpdateEnabled(false);
-                // if entity layer are 0 set to insert layer to allow "1 layer control" bug ID #3602152
-                    RS_Layer *l= ne->getLayer();//special fontchar block don't have
-                    if (l != nullptr  && ne->getLayer()->getName() == "0")
-                    ne->setLayer(getLayer());
+                    // if entity layer are 0 set to insert layer to allow "1 layer control" bug ID #3602152
+                    RS_Layer *layer= ne->getLayer(); //special fontchar block don't have
+                    if (layer != nullptr  && ne->getLayer()->getName() == "0") {
+                        ne->setLayer(getLayer());
+                    }
                     ne->setParent(this);
                     ne->setVisible(getFlag(RS2::FlagVisible));
 
-//                                RS_DEBUG->print("RS_Insert::update: transforming entity");
-
-                // Move:
-//                                RS_DEBUG->print("RS_Insert::update: move 1");
-                    if (std::abs(m_data.scaleFactor.x)>MIN_Scale_Factor &&
-                            std::abs(m_data.scaleFactor.y)>MIN_Scale_Factor) {
+                    if (std::abs(scaleFactorX)>MIN_Scale_Factor &&
+                            std::abs(scaleFactorY)>MIN_Scale_Factor) {
                         ne->move(m_data.insertionPoint +
-                                 RS_Vector(m_data.spacing.x/m_data.scaleFactor.x*c,
-                                           m_data.spacing.y/m_data.scaleFactor.y*r));
+                                 RS_Vector(m_data.spacing.x/scaleFactorX*c,
+                                           m_data.spacing.y/scaleFactorY*r));
                     }
                     else {
                         ne->move(m_data.insertionPoint);
                     }
                 // Move because of block base point:
-//                                RS_DEBUG->print("RS_Insert::update: move 2");
                     ne->move(blk->getBasePoint()*(-1));
                 // Scale:
-//                                RS_DEBUG->print("RS_Insert::update: scale");
                     ne->scale(m_data.insertionPoint, m_data.scaleFactor);
                 // Rotate:
-//                                RS_DEBUG->print("RS_Insert::update: rotate");
                     ne->rotate(m_data.insertionPoint, m_data.angle);
-
-                   // RS_DEBUG->print(RS_Debug::D_ERROR, "ne: angle: %lg\n", data.angle);
+                // RS_DEBUG->print(RS_Debug::D_ERROR, "ne: angle: %lg\n", data.angle);
                 // Select:
-                    ne->setSelected(isSelected());
-
+                    ne->setSelectionFlag(isSelected());
                 // individual entities can be on indiv. layers
                     RS_Pen tmpPen = updatePen(ne->getPen(false), getPen());
                 // now that we've evaluated all flags, let's strip them:
@@ -246,21 +229,18 @@ void RS_Insert::update() {
 
                     ne->setUpdateEnabled(true);
 
-                // insert must be updated even in preview mode
+                 // insert must be updated even in preview mode
                     if (m_data.updateMode != RS2::PreviewUpdate
                             || ne->rtti() == RS2::EntityInsert) {
                         //RS_DEBUG->print("RS_Insert::update: updating new entity");
                         ne->update();
                     }
-
-//                                RS_DEBUG->print("RS_Insert::update: adding new entity");
                     appendEntity(ne);
-//                std::cout<<"done # of entity: "<<i_en_counts<<std::endl;
                 }
             }
         }
+        setAutoUpdateBorders(oldAutoUpdateBorders);
         calculateBorders();
-
         RS_DEBUG->print("RS_Insert::update: OK");
 }
 

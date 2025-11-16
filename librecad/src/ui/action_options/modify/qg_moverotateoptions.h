@@ -43,14 +43,14 @@ public:
 protected:
     void doSaveSettings() override;
     void doSetAction(RS_ActionInterface *a, bool update) override;
-    void setCopiesNumberToActionAndView(int number);
-    void setUseMultipleCopiesToActionAndView(bool copies);
-    void setUseCurrentLayerToActionAndView(bool val);
-    void setUseCurrentAttributesToActionAndView(bool val);
-    void setKeepOriginalsToActionAndView(bool val);
+    void setCopiesNumberToActionAndView(int number) const;
+    void setUseMultipleCopiesToActionAndView(bool copies) const;
+    void setUseCurrentLayerToActionAndView(bool val) const;
+    void setUseCurrentAttributesToActionAndView(bool val) const;
+    void setKeepOriginalsToActionAndView(bool val) const;
     void setAngleToActionAndView(QString val);
-    void setFreeAngleToModelAndView(bool val);
-    void setSameAngleForCopiesToActionAndView(bool val);
+    void setFreeAngleToModelAndView(bool val) const;
+    void setSameAngleForCopiesToActionAndView(bool val) const;
 protected slots:
     void languageChange() override;
     void cbKeepOriginalsClicked(bool val);

@@ -100,7 +100,7 @@ void LC_ModifyRotateOptions::updateUI(int mode) {
     }
 }
 
-void LC_ModifyRotateOptions::allowSecondRotationUI(bool enable) {
+void LC_ModifyRotateOptions::allowSecondRotationUI(bool enable) const {
     bool enableSecondAngle = enable && !ui->cbFreeRefAngle->isChecked();
     ui->leAngle2->setEnabled(enableSecondAngle);
     ui->tbPickAngle2->setEnabled(enableSecondAngle);
@@ -169,28 +169,28 @@ void LC_ModifyRotateOptions::doSetAction(RS_ActionInterface *a, bool update) {
     setTwoRotationsToActionAndView(twoRotations);
 }
 
-void LC_ModifyRotateOptions::setUseMultipleCopiesToActionAndView(bool copies) {
+void LC_ModifyRotateOptions::setUseMultipleCopiesToActionAndView(bool copies) const {
     m_action->setUseMultipleCopies(copies);
     ui->cbMultipleCopies->setChecked(copies);
     ui->sbNumberOfCopies->setEnabled(copies);
 }
 
-void LC_ModifyRotateOptions::setUseCurrentLayerToActionAndView(bool val) {
+void LC_ModifyRotateOptions::setUseCurrentLayerToActionAndView(bool val) const {
     m_action->setUseCurrentLayer(val);
     ui->cbCurrentLayer->setChecked(val);
 }
 
-void LC_ModifyRotateOptions::setUseCurrentAttributesToActionAndView(bool val) {
+void LC_ModifyRotateOptions::setUseCurrentAttributesToActionAndView(bool val) const {
     m_action->setUseCurrentAttributes(val);
     ui->cbCurrentAttr->setChecked(val);
 }
 
-void LC_ModifyRotateOptions::setKeepOriginalsToActionAndView(bool val) {
+void LC_ModifyRotateOptions::setKeepOriginalsToActionAndView(bool val) const {
     m_action->setKeepOriginals(val);
     ui->cbKeepOriginals->setChecked(val);
 }
 
-void LC_ModifyRotateOptions::setCopiesNumberToActionAndView(int number) {
+void LC_ModifyRotateOptions::setCopiesNumberToActionAndView(int number) const {
     if (number < 1){
         number = 1;
     }
@@ -205,7 +205,7 @@ void LC_ModifyRotateOptions::setTwoRotationsToActionAndView(bool val) {
     m_action->setRotateAlsoAroundReferencePoint(val);
 }
 
-void LC_ModifyRotateOptions::setFreeAngleToActionAndView(bool val) {
+void LC_ModifyRotateOptions::setFreeAngleToActionAndView(bool val) const {
     ui->cbFreeAngle->setChecked(val);
     m_action->setFreeAngle(val);
     if (val){
@@ -218,12 +218,12 @@ void LC_ModifyRotateOptions::setFreeAngleToActionAndView(bool val) {
     }
 }
 
-void LC_ModifyRotateOptions::setAbsoluteRefAngleToActionAndView(bool checked){
+void LC_ModifyRotateOptions::setAbsoluteRefAngleToActionAndView(bool checked) const {
     ui->cbAbsoluteRefAngle->setChecked(checked);
     m_action->setRefPointAngleAbsolute(checked);
 }
 
-void LC_ModifyRotateOptions::setFreeRefAngleToActionAndView(bool checked) {
+void LC_ModifyRotateOptions::setFreeRefAngleToActionAndView(bool checked) const {
     ui->cbFreeRefAngle->setChecked(checked);
     if (ui->cbTwoRotations->isChecked()) {
         ui->leAngle2->setEnabled(!checked);

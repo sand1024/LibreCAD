@@ -172,7 +172,7 @@ void QG_CommandWidget::setFocus() {
     leCommand->setFocus();
 }
 
-void QG_CommandWidget::setCommand(const QString& cmd) {
+void QG_CommandWidget::setCommand(const QString& cmd) const {
     if (cmd.isEmpty()) {
         lCommand->setText(tr("Enter Command:"));
     }
@@ -186,12 +186,12 @@ void QG_CommandWidget::setCommand(const QString& cmd) {
     }
 }
 
-void QG_CommandWidget::setInput(const QString& cmd) {
+void QG_CommandWidget::setInput(const QString& cmd) const {
     leCommand->setText(cmd);
     leCommand->setFocus();
 }
 
-void QG_CommandWidget::appendHistory(const QString& msg) {
+void QG_CommandWidget::appendHistory(const QString& msg) const {
     teHistory->append(msg);
 }
 
@@ -213,7 +213,7 @@ void QG_CommandWidget::handleCommand(QString cmd) {
     leCommand->setText("");
 }
 
-void QG_CommandWidget::spacePressed() {
+void QG_CommandWidget::spacePressed() const {
     if (m_actionHandler)
         m_actionHandler->command({});
 }
@@ -252,7 +252,7 @@ void QG_CommandWidget::tabPressed() {
     }
 }
 
-void QG_CommandWidget::escape() {
+void QG_CommandWidget::escape() const {
     //leCommand->clearFocus();
     if (m_actionHandler) {
         m_actionHandler->command(QString(tr("escape", "escape, go back from action steps")));
@@ -263,13 +263,13 @@ void QG_CommandWidget::setActionHandler(QG_ActionHandler* ah) {
     m_actionHandler = ah;
 }
 
-void QG_CommandWidget::setCommandMode() {
+void QG_CommandWidget::setCommandMode() const {
     QPalette palette;
     palette.setColor(lCommand->foregroundRole(), Qt::blue);
     lCommand->setPalette(palette);
 }
 
-void QG_CommandWidget::setNormalMode() {
+void QG_CommandWidget::setNormalMode() const {
     QPalette palette;
     palette.setColor(lCommand->foregroundRole(), Qt::black);
     lCommand->setPalette(palette);
@@ -323,13 +323,13 @@ void QG_CommandWidget::chooseCommandFile() {
     }
 }
 
-void QG_CommandWidget::handleKeycode(QString code) {
+void QG_CommandWidget::handleKeycode(QString code) const {
     if (m_actionHandler->keycode(code)) {
         leCommand->clear();
     }
 }
 
-void QG_CommandWidget::setKeycodeMode(bool state) {
+void QG_CommandWidget::setKeycodeMode(bool state) const {
     leCommand->m_keycode_mode = state;
 }
 

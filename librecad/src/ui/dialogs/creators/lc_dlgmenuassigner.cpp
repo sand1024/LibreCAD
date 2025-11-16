@@ -102,7 +102,7 @@ LC_DlgMenuAssigner::LC_DlgMenuAssigner(QWidget *parent, LC_MenuActivator* activa
     setWindowTitle(tr("Menu Assignment - \"%1\" Menu").arg(m_activator->getMenuName()));
 }
 
-void LC_DlgMenuAssigner::initEntityContextCombobox() {
+void LC_DlgMenuAssigner::initEntityContextCombobox() const {
     ui->cbEntityContext->addItem(tr("Either Absent or Any Entity"), "EE");
     ui->cbEntityContext->addItem(tr("Absent Entity"), "NE");
     ui->cbEntityContext->addItem(tr("Any Entity"), "AE");
@@ -197,7 +197,7 @@ void LC_DlgMenuAssigner::updateShortcutView() {
     validateShortcut();
 }
 
-QString LC_DlgMenuAssigner::findMenuForActivator() {
+QString LC_DlgMenuAssigner::findMenuForActivator() const {
     qsizetype size = m_activators->size();
     for (int i = 0; i< size; i++) {
         auto a = m_activators->at(i);

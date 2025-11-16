@@ -50,31 +50,29 @@ RS_ActionDrawCircle3P::RS_ActionDrawCircle3P(LC_ActionContext *actionContext)
 
 RS_ActionDrawCircle3P::~RS_ActionDrawCircle3P() = default;
 
-
 void RS_ActionDrawCircle3P::reset(){
     m_actionData.reset(new Points{});
 }
 
-void RS_ActionDrawCircle3P::doTrigger() {
+RS_Entity* RS_ActionDrawCircle3P::doTriggerCreateEntity() {
     preparePreview();
     if (m_actionData->data.isValid()){
-        auto *circle = new RS_Circle{m_container, m_actionData->data};
-
-        setPenAndLayerToActive(circle);
-
+        auto *circle = new RS_Circle{m_document, m_actionData->data};
         if (m_moveRelPointAtCenterAfterTrigger){
             moveRelativeZero(m_actionData->data.center);
         }
-
-        undoCycleAdd(circle);
-
-        setStatus(SetPoint1);
-        reset();
-    } else
-        RS_DIALOGFACTORY->requestWarningDialog(tr("Invalid circle data."));
+        return circle;
+    }
+    RS_DIALOGFACTORY->requestWarningDialog(tr("Invalid circle data.")); // fixme - sand - check whether this is possible?
+    return nullptr;
 }
 
-void RS_ActionDrawCircle3P::preparePreview(){
+void RS_ActionDrawCircle3P::doTriggerCompletion(bool success) {
+    setStatus(SetPoint1);
+    reset();
+}
+
+void RS_ActionDrawCircle3P::preparePreview() const {
     m_actionData->data = RS_CircleData{};
     if (m_actionData->point1.valid && m_actionData->point2.valid && m_actionData->point3.valid){
         RS_Circle circle{nullptr, m_actionData->data};

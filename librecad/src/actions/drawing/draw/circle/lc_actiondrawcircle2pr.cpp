@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "lc_actiondrawcircle2pr.h"
 
 #include "rs_circle.h"
+#include "rs_document.h"
 #include "rs_preview.h"
 
 struct LC_ActionDrawCircle2PR::Points{
@@ -54,19 +55,20 @@ void LC_ActionDrawCircle2PR::init(int status){
     }
 }
 
-void LC_ActionDrawCircle2PR::doTrigger() {
-    auto *circle = new RS_Circle(m_container, *m_circleData);
-    setPenAndLayerToActive(circle);
-
+RS_Entity* LC_ActionDrawCircle2PR::doTriggerCreateEntity() {
+    auto *circle = new RS_Circle(m_document, *m_circleData);
     if (m_moveRelPointAtCenterAfterTrigger){
         moveRelativeZero(circle->getCenter());
     }
-    undoCycleAdd(circle);
+    return circle;
+}
+
+void LC_ActionDrawCircle2PR::doTriggerCompletion(bool success) {
     setStatus(SetPoint1);
     reset();
 }
 
-bool LC_ActionDrawCircle2PR::preparePreview(const RS_Vector &mouse, RS_Vector& altCenter){
+bool LC_ActionDrawCircle2PR::preparePreview(const RS_Vector &mouse, RS_Vector& altCenter) const {
     const RS_Vector vp = (m_actionData->point1 + m_actionData->point2) * 0.5;
     double const angle = m_actionData->point1.angleTo(m_actionData->point2) + 0.5 * M_PI;
     double const &r0 = m_circleData->radius;

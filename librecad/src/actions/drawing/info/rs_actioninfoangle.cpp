@@ -262,7 +262,7 @@ RS2::CursorType RS_ActionInfoAngle::doGetMouseCursor([[maybe_unused]] int status
     return RS2::SelectCursor;
 }
 
-void RS_ActionInfoAngle::updateInfoCursor1(RS_Line* line) {
+void RS_ActionInfoAngle::updateInfoCursor1(RS_Line* line) const {
     if (m_infoCursorOverlayPrefs->enabled) {
         double wcsLineAngle = line->getAngle1();
         double angleComplementary, angleSupplementary, alt;
@@ -282,7 +282,7 @@ void RS_ActionInfoAngle::updateInfoCursor1(RS_Line* line) {
     }
 }
 
-void RS_ActionInfoAngle::updateInfoCursor2(const RS_Vector &point2, const RS_Vector &intersection) {
+void RS_ActionInfoAngle::updateInfoCursor2(const RS_Vector &point2, const RS_Vector &intersection) const {
     if (m_infoCursorOverlayPrefs->enabled){
         double angle = LC_LineMath::angleFor3Points(m_actionData->point1, intersection, point2);
         double angle1 = intersection.angleTo(m_actionData->point1);

@@ -13,7 +13,7 @@ public:
     explicit LC_DeviceOptions(QWidget* parent);
     ~LC_DeviceOptions() override;
 public slots:
-    void save();
+    void save() const;
 private:
     Ui::LC_DeviceOptions* ui = nullptr;
 };

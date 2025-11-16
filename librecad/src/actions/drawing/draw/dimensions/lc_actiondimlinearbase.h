@@ -72,6 +72,6 @@ protected:
     void onMouseMoveEvent(int status, LC_MouseEvent* event) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector& pos) override;
     void updateMouseButtonHints() override;
-    void doTrigger() override;
+    RS_Entity* doTriggerCreateEntity() override;
 };
 #endif //LIBRECAD_LC_ACTIONDIMLINEARBASE_H

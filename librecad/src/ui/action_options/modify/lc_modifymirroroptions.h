@@ -48,10 +48,10 @@ protected:
 private:
     Ui::LC_ModifyMirrorOptions *ui = nullptr;
     RS_ActionModifyMirror* m_action = nullptr;
-    void setMirrorToLineLineToActionAndView(bool line);
-    void setUseCurrentLayerToActionAndView(bool val);
-    void setUseCurrentAttributesToActionAndView(bool val);
-    void setKeepOriginalsToActionAndView(bool val);
+    void setMirrorToLineLineToActionAndView(bool line) const;
+    void setUseCurrentLayerToActionAndView(bool val) const;
+    void setUseCurrentAttributesToActionAndView(bool val) const;
+    void setKeepOriginalsToActionAndView(bool val) const;
 };
 
 #endif // LC_MODIFYMIRROROPTIONS_H

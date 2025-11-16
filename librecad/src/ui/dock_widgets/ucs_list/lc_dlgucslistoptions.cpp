@@ -59,7 +59,7 @@ void LC_DlgUCSListOptions::languageChange() {
     ui->retranslateUi(this);
 }
 
-void LC_DlgUCSListOptions::validate() {
+void LC_DlgUCSListOptions::validate() const {
     m_options->showColumnTypeIcon = ui->cbShowTypeIcon->isChecked();
     m_options->showColumnPositionAndAngle = ui->cbShowPositionAndAngle->isChecked();
     m_options->showColumnGridType= ui->cbShowGridType->isChecked();

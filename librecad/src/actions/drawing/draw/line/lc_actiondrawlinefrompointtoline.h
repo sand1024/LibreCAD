@@ -121,7 +121,7 @@ protected:
 
     bool m_selectLineFirst = false;
 
-    RS_Line *createLineFromPointToTarget(RS_Line *line, const RS_Vector& point, RS_Vector& intersection);
+    RS_Line *createLineFromPointToTarget(RS_Line *line, const RS_Vector& point, RS_Vector& intersection) const;
     int doGetStatusForInitialSnapToRelativeZero() override;
     void doInitialSnapToRelativeZero(RS_Vector zero) override;
     bool doCheckMayTrigger() override;

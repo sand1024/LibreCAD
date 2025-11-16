@@ -63,13 +63,13 @@ void LC_ActionLayersCmd::onMouseRightButtonRelease([[maybe_unused]]int status, [
     init(-1);
 }
 
-void LC_ActionLayersCmd::activateLayer() {
+void LC_ActionLayersCmd::activateLayer() const {
     if (m_graphic != nullptr) {
         m_graphic->activateLayer(m_layerName, true);
     }
 }
 
-void LC_ActionLayersCmd::createLayer() {
+void LC_ActionLayersCmd::createLayer() const {
     if (m_graphic != nullptr) {
         auto layer = new RS_Layer(m_layerName);
         m_graphic->addLayer(layer);

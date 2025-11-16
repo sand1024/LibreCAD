@@ -40,7 +40,7 @@ public:
     LC_ActionPenApply(LC_ActionContext *actionContext, bool copy);
     void init(int status) override;
     void finish(bool updateTB) override;
-    void applyPen(RS_Entity* en, RS_Pen penToApply);
+    void applyPen(RS_Entity* en, RS_Pen penToApply) const;
 private:
     // entity that might be used as source for pen applying
     RS_Entity* m_srcEntity {nullptr};

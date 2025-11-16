@@ -32,13 +32,13 @@ void LC_RectRegion::setCorners(RS_Vector lBottom, RS_Vector lTop, RS_Vector rTop
     updateOther();
 }
 
-RS_Vector LC_RectRegion::getRotatedPoint(RS_Vector vect, double angle) {
+RS_Vector LC_RectRegion::getRotatedPoint(RS_Vector vect, double angle) const {
     RS_Vector result = vect;
     result.rotate(leftBottom, angle);
     return result;
 }
 
-LC_RectRegion* LC_RectRegion::getRotated(double angle) {
+LC_RectRegion* LC_RectRegion::getRotated(double angle) const {
     LC_RectRegion* result = new LC_RectRegion();
     RS_Vector ltop = leftTop;
     ltop.rotate(leftBottom, angle);

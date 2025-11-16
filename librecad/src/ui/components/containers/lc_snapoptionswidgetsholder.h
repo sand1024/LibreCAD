@@ -44,8 +44,8 @@ public slots:
 private:
     bool m_widgetOnLeftWithinContainer = true;
     Ui::LC_SnapOptionsWidgetsHolder *ui;
-    void hideSeparator();
-    void showSeparator();
+    void hideSeparator() const;
+    void showSeparator() const;
     void updateParent() const;
 };
 

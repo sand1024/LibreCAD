@@ -43,7 +43,7 @@ protected slots:
     void onMinorRadiusEditingFinished();
     void onUseAngleClicked(bool val);
     void onFreeAngleClicked(bool val);
-    void onDirectionChanged(bool val);
+    void onDirectionChanged(bool val) const;
 protected:
     LC_ActionDrawEllipse1Point* m_action = nullptr;
     Ui::LC_Ellipse1PointOptions *ui;
@@ -52,8 +52,8 @@ protected:
     void setMajorRadiusToActionAndView(QString val);
     void setMinorRadiusToActionAndView(QString val);
     void setAngleToActionAndView(QString val);
-    void setAngleIsFreeToActionAndView(bool val);
-    void setUseAngleAngleToActionAndView(bool val);
+    void setAngleIsFreeToActionAndView(bool val) const;
+    void setUseAngleAngleToActionAndView(bool val) const;
     bool checkActionRttiValid(RS2::ActionType actionType) override;
 };
 

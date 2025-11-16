@@ -144,16 +144,16 @@ public:
 
 
 
-    RS_Vector getDefinitionPoint1() {
+    RS_Vector getDefinitionPoint1() const {
         return m_dimAngularData.definitionPoint1;
     }
-    RS_Vector getDefinitionPoint2() {
+    RS_Vector getDefinitionPoint2() const {
         return m_dimAngularData.definitionPoint2;
     }
-    RS_Vector getDefinitionPoint3() {
+    RS_Vector getDefinitionPoint3() const {
         return m_dimAngularData.definitionPoint3;
     }
-    RS_Vector getDefinitionPoint4() {
+    RS_Vector getDefinitionPoint4() const {
         return m_dimAngularData.definitionPoint4;
     }
 

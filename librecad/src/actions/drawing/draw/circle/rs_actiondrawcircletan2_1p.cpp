@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "lc_quadratic.h"
 #include "rs_circle.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 
 namespace {
 
@@ -84,23 +85,20 @@ void RS_ActionDrawCircleTan2_1P::finish(bool updateTB){
     RS_PreviewActionInterface::finish(updateTB);
 }
 
-void RS_ActionDrawCircleTan2_1P::doTrigger() {
-    auto *circle = new RS_Circle(m_container, m_actionData->cData);
-
+RS_Entity* RS_ActionDrawCircleTan2_1P::doTriggerCreateEntity() {
+    auto *circle = new RS_Circle(m_document, m_actionData->cData);
     if (m_moveRelPointAtCenterAfterTrigger){
         moveRelativeZero(circle->getCenter());
     }
+    return circle;
+}
 
-    undoCycleAdd(circle);
-
+void RS_ActionDrawCircleTan2_1P::doTriggerCompletion(bool success) {
     m_actionData->circles.clear();
-
-    RS_DEBUG->print("RS_ActionDrawCircleTan2_1P::trigger():"
-                    " entity added: %lu", circle->getId());
     init(SetCircle1);
 }
 
-bool RS_ActionDrawCircleTan2_1P::getCenters(){
+bool RS_ActionDrawCircleTan2_1P::getCenters() const {
     if (m_actionData->circles.size() < 2) {
         return false;
     }
@@ -178,7 +176,7 @@ void RS_ActionDrawCircleTan2_1P::onMouseMoveEvent(int status, LC_MouseEvent *e) 
     }
 }
 
-bool RS_ActionDrawCircleTan2_1P::preparePreview(){
+bool RS_ActionDrawCircleTan2_1P::preparePreview() const {
     if (!getCenters()) {
         return false;
     }

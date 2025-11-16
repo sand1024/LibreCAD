@@ -23,6 +23,7 @@
 
 #include "lc_parabola.h"
 #include "rs_constructionline.h"
+#include "rs_document.h"
 #include "rs_line.h"
 #include "rs_preview.h"
 
@@ -33,12 +34,12 @@ struct LC_ActionDrawParabolaFD::ActionData {
     LC_ParabolaData data;
     double h = 0.;
     bool valid = false;
-    double getX(const RS_Vector& point) {
+    double getX(const RS_Vector& point) const {
         auto vp = point - vertex;
         return vp.rotate(M_PI/2 - axis.angle()).x;
     }
 
-    std::pair<RS_Vector, RS_Vector> fromX(double x) {
+    std::pair<RS_Vector, RS_Vector> fromX(double x) const {
         return {RS_Vector{x, x*x/(4.*h)}.rotate(axis.angle() - M_PI/2) + vertex,
                     RS_Vector{2.*h, x}.rotate(axis.angle() - M_PI/2)};
     }
@@ -92,7 +93,7 @@ struct LC_ActionDrawParabolaFD::ActionData {
  *
  */
 LC_ActionDrawParabolaFD::LC_ActionDrawParabolaFD(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("Draw parabola by focus and directrix", actionContext,RS2::ActionDrawParabolaFD)
+    :LC_UndoablePreviewActionInterface("Draw parabola by focus and directrix", actionContext,RS2::ActionDrawParabolaFD)
     , m_actionData(std::make_unique<ActionData>()){
 }
 
@@ -115,8 +116,8 @@ void LC_ActionDrawParabolaFD::init(int status) {
 
 void LC_ActionDrawParabolaFD::doTrigger() {
     if(m_actionData->data.valid){
-        auto* en = new LC_Parabola{m_container, m_actionData->data};
-        undoCycleAdd(en);
+        auto* en = new LC_Parabola{m_document, m_actionData->data};
+        undoableAdd(en);
     }
     init(SetFocus);
 }
@@ -205,7 +206,7 @@ void LC_ActionDrawParabolaFD::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     }
 }
 
-LC_Parabola* LC_ActionDrawParabolaFD::preparePreview(){
+LC_Parabola* LC_ActionDrawParabolaFD::preparePreview() const {
     if (m_actionData->data.valid) {
         auto* pl = new LC_Parabola{m_preview.get(), m_actionData->data};
         previewEntity(pl);

@@ -29,6 +29,7 @@
 #include "lc_actioninfomessagebuilder.h"
 #include "lc_modifystretchoptions.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_modification.h"
 #include "rs_preview.h"
 
@@ -53,7 +54,8 @@ RS_ActionModifyStretch::~RS_ActionModifyStretch() = default;
 void RS_ActionModifyStretch::doTrigger() {
     RS_DEBUG->print("RS_ActionModifyStretch::trigger()");
 
-    RS_Modification m(*m_container, m_viewport);
+    RS_Modification m(m_document, m_viewport);
+    // fixme - implementation is pretty ugly, review it
     m.stretch(m_actionData->firstCorner,
               m_actionData->secondCorner,
               m_actionData->targetPoint - m_actionData->referencePoint, m_removeOriginals);
@@ -99,7 +101,7 @@ void RS_ActionModifyStretch::onMouseMoveEvent(int status, LC_MouseEvent *e) {
                 mouse= getSnapAngleAwarePoint(e, m_actionData->referencePoint, mouse, true);
                 m_actionData->targetPoint = mouse;
                 // fixme - isn't it more reliable to rely on RS_Modification::stretch there?
-                m_preview->addStretchablesFrom(*m_container, m_viewport, m_actionData->firstCorner, m_actionData->secondCorner);
+                m_preview->addStretchablesFrom(*m_document, m_viewport, m_actionData->firstCorner, m_actionData->secondCorner);
                 const RS_Vector &offset = m_actionData->targetPoint - m_actionData->referencePoint;
                 m_preview->stretch(m_actionData->firstCorner, m_actionData->secondCorner,offset);
                 if (m_showRefEntitiesOnPreview) {
@@ -124,7 +126,7 @@ void RS_ActionModifyStretch::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     }
 }
 
-void RS_ActionModifyStretch::previewStretchRect(bool selected) {
+void RS_ActionModifyStretch::previewStretchRect(bool selected) const {
     if (m_showRefEntitiesOnPreview){
         RS_Vector v0 = m_actionData->firstCorner;
         RS_Vector v1 = m_actionData->secondCorner;

@@ -91,7 +91,7 @@ public:
      *                 and the value of the next()
      * @return - the last entity, as defined by the traverser
      */
-    RS_Entity* last();
+    RS_Entity* last() const;
 
     /**
      * @brief next() - intended to replace RS_Container::nextEntity()
@@ -105,7 +105,7 @@ public:
      *                calling this method does NOT modify the traverser position
      * @return the previous entity traversed
      */
-    RS_Entity* prev();
+    RS_Entity* prev() const;
 
     /**
      * @brief entities - collect entities in the current container according to
@@ -113,7 +113,7 @@ public:
      *                   Calling this method does not modify the traverser position
      * @return std::vector<RS_Entity*> - collected entities in the container
      */
-    std::vector<RS_Entity*> entities();
+    std::vector<RS_Entity*> entities() const;
 
 private:
     // traverse by one step

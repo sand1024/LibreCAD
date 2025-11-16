@@ -46,7 +46,7 @@ protected:
 
     void doTrigger();
     void onMouseMoveEvent(int status, LC_MouseEvent* e);
-    void updateInfoCursor(const RS_Vector& mouse, const RS_Vector& relZero);
+    void updateInfoCursor(const RS_Vector& mouse, const RS_Vector& relZero) const;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent* e);
     void onMouseRightButtonRelease(int status, LC_MouseEvent* e);
     void onCoordinateEvent(int status, bool isZero, const RS_Vector& mouse);

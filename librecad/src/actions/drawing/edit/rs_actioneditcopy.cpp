@@ -72,13 +72,22 @@ void RS_ActionEditCopyPaste::onSelectionCompleted([[maybe_unused]] bool singleEn
     }
 }
 
-void RS_ActionEditCopyPaste::doTrigger([[maybe_unused]]bool keepSelected) {
+void RS_ActionEditCopyPaste::doTriggerCompletion(bool success) {
+    LC_ActionPreSelectionAwareBase::doTriggerCompletion(success);
+}
+
+void RS_ActionEditCopyPaste::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+    LC_ActionPreSelectionAwareBase::doTriggerSelectionUpdate(keepSelected, ctx);
+}
+
+bool RS_ActionEditCopyPaste::doTriggerModificationsPrepare(LC_DocumentModificationBatch& modificationData) {
+    // fixme - complete TRIGGER!!!
     switch (m_actionType){
         case  RS2::ActionEditCut:
         case  RS2::ActionEditCutQuick:
         case  RS2::ActionEditCopy:
         case  RS2::ActionEditCopyQuick:{
-            RS_Modification m(*m_container, m_viewport);
+            RS_Modification m(m_document, m_viewport, false); // undoCycle in trigger, so don't create undo section in modification
             m.copy(*m_referencePoint, m_actionType ==  RS2::ActionEditCut || m_actionType == RS2::ActionEditCutQuick);
 
             if (m_invokedWithControl){
@@ -91,7 +100,7 @@ void RS_ActionEditCopyPaste::doTrigger([[maybe_unused]]bool keepSelected) {
             break;
         }
         case RS2::ActionEditPaste: {
-            RS_Modification m(*m_container, m_viewport);
+            RS_Modification m(m_document, m_viewport, false); // undoCycle in trigger, so don't create undo section in modification
             m.paste(RS_PasteData(*m_referencePoint, 1.0, 0.0, false, ""));
 
             if (!m_invokedWithControl) {
@@ -102,6 +111,7 @@ void RS_ActionEditCopyPaste::doTrigger([[maybe_unused]]bool keepSelected) {
         default:
             break;
     }
+    return true;
 }
 
 void RS_ActionEditCopyPaste::onMouseMoveEventSelected(int status, LC_MouseEvent *e) {

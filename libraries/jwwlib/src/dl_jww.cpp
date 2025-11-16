@@ -937,7 +937,7 @@ void DL_Jww::addAttrib(DL_CreationInterface* /*creationInterface*/) {
 /**
  * @return dimension data from current values.
  */
-DL_DimensionData DL_Jww::getDimData() {
+DL_DimensionData DL_Jww::getDimData() const {
     // tin-pot@gmx.net 2011-12-29: make compiler happy.
     DL_DimensionData dummy(0.,0.,0.,0.,0.,0.,0,0,0,0.,"DUMMY","",0.);
     return dummy;
@@ -995,7 +995,7 @@ void DL_Jww::addDimAngular3P(DL_CreationInterface* /*creationInterface*/) {
 /**
  * Adds a leader entity that was read from the file via the creation interface.
  */
-void DL_Jww::addLeader(DL_CreationInterface* /*creationInterface*/) {
+void DL_Jww::addLeader(DL_CreationInterface* /*creationInterface*/) const {
 }
 
 

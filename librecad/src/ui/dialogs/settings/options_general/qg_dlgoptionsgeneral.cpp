@@ -105,7 +105,7 @@ QG_DlgOptionsGeneral::QG_DlgOptionsGeneral(QWidget *parent)
             this, &QG_DlgOptionsGeneral::onEnableCADDocWidgetsChanged);
 }
 
-void QG_DlgOptionsGeneral::onExpandToolsMenuToggled([[maybe_unused]]bool checked){
+void QG_DlgOptionsGeneral::onExpandToolsMenuToggled([[maybe_unused]]bool checked) const {
     cbExpandToolsMenuTillEntity->setEnabled(cbExpandToolsMenu->isChecked());
 }
 
@@ -962,7 +962,7 @@ void QG_DlgOptionsGeneral::ok(){
     accept();
 }
 
-bool QG_DlgOptionsGeneral::checkRestartNeeded() {
+bool QG_DlgOptionsGeneral::checkRestartNeeded() const {
     bool result = m_originalLibraryPath != lePathLibrary->text().trimmed() ||
                   m_restartNeeded;
     return result;
@@ -1180,23 +1180,23 @@ void QG_DlgOptionsGeneral::setLibraryPath(){
     }
 }
 
-void QG_DlgOptionsGeneral::on_cbVisualizeHoveringClicked(){
+void QG_DlgOptionsGeneral::on_cbVisualizeHoveringClicked() const {
     cbShowRefPointsOnHovering->setEnabled(cbVisualizeHovering->isChecked());
 }
 
-void QG_DlgOptionsGeneral::on_cbPersistentDialogsClicked(){
+void QG_DlgOptionsGeneral::on_cbPersistentDialogsClicked() const {
     cbPersistentDialogSizeOnly->setEnabled(cbPersistentDialogs->isChecked());
 }
 
-void QG_DlgOptionsGeneral::on_cbClassicStatusBarToggled(){
+void QG_DlgOptionsGeneral::on_cbClassicStatusBarToggled() const {
     cbDuplicateActionsPromptsInStatusBar->setEnabled(!cbClassicStatusBar->isChecked());
 }
 
-void QG_DlgOptionsGeneral::onTabCloseButtonChanged(){
+void QG_DlgOptionsGeneral::onTabCloseButtonChanged() const {
     cbTabCloseButtonMode->setEnabled(cbTabCloseButton->isChecked());
 }
 
-void QG_DlgOptionsGeneral::onEnableCADDocWidgetsChanged(){
+void QG_DlgOptionsGeneral::onEnableCADDocWidgetsChanged() const {
     cbCADWidgetsUngroupped->setEnabled(cbEnableCADDockWidgets->isChecked());
 }
 
@@ -1212,14 +1212,14 @@ void QG_DlgOptionsGeneral::onInfoCursorRelativeChanged(){
 void QG_DlgOptionsGeneral::onInfoCursorSnapChanged(){
 }
 
-void QG_DlgOptionsGeneral::on_cbGridExtendAxisLinesToggled(){
+void QG_DlgOptionsGeneral::on_cbGridExtendAxisLinesToggled() const {
     bool extend = cbGridExtendAxisLines->isChecked();
     sbAxisSize->setEnabled(!extend);
     cbXAxisAreas->setEnabled(extend);
     cbYAxisAreas->setEnabled(extend);
 }
 
-void QG_DlgOptionsGeneral::onCheckNewVersionChanged(){
+void QG_DlgOptionsGeneral::onCheckNewVersionChanged() const {
     if (cbCheckNewVersion->isChecked()) {
         cbCheckNewVersionIgnorePreRelease->setEnabled(!XSTR(LC_PRERELEASE));
     } else {
@@ -1227,7 +1227,7 @@ void QG_DlgOptionsGeneral::onCheckNewVersionChanged(){
     }
 }
 
-void QG_DlgOptionsGeneral::onAutoBackupChanged([[maybe_unused]] int state){
+void QG_DlgOptionsGeneral::onAutoBackupChanged([[maybe_unused]] int state) const {
     bool allowBackup = cbAutoBackup->isChecked();
     cbAutoSaveTime->setEnabled(allowBackup);
     auto &appWindow = QC_ApplicationWindow::getAppWindow(); // fixme - sand - files - remove static
@@ -1334,7 +1334,7 @@ void QG_DlgOptionsGeneral::initReferencePoints(){
     updateLPtSzUnits();
 }
 
-void QG_DlgOptionsGeneral::updateLPtSzUnits(){
+void QG_DlgOptionsGeneral::updateLPtSzUnits() const {
     //	RS_DEBUG->print(RS_Debug::D_ERROR,"QG_DlgOptionsDrawing::updateLPtSzUnits, rbRelSize->isChecked() = %d",rbRelSize->isChecked());
     if (rbRelSize->isChecked())
         lPtSzUnits->setText(QApplication::translate("QG_DlgOptionsDrawing", "Screen %", nullptr));
@@ -1342,7 +1342,7 @@ void QG_DlgOptionsGeneral::updateLPtSzUnits(){
         lPtSzUnits->setText(QApplication::translate("QG_DlgOptionsDrawing", "Dwg Units", nullptr));
 }
 
-void QG_DlgOptionsGeneral::saveReferencePoints(){
+void QG_DlgOptionsGeneral::saveReferencePoints() const {
     // Points drawing style:
     // Get currently selected point style from which button is checked
     int pdmode = LC_DEFAULTS_PDMode;

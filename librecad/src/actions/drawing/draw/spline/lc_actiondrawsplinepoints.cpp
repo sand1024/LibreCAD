@@ -68,38 +68,38 @@ void LC_ActionDrawSplinePoints::init(int status){
     reset(); // fixme - review reset, try to make it common with base action
 }
 
-void LC_ActionDrawSplinePoints::doTrigger() {
-    if (m_actionData->spline.get() != nullptr) {
-        setPenAndLayerToActive(m_actionData->spline.get());
-        auto spline = std::make_unique<LC_SplinePoints>(m_container, m_actionData->spline->getData());
-        setPenAndLayerToActive(spline.get());
-        undoCycleAdd(spline.get());
+void LC_ActionDrawSplinePoints::doTriggerCompletion(bool success) {
+    reset();
+}
 
-        LC_LOG<<"RS_ActionDrawSplinePoints::trigger(): spline added: "<<spline->getId();
-        spline.release();
-        reset();
+RS_Entity* LC_ActionDrawSplinePoints::doTriggerCreateEntity(){
+    if (m_actionData->spline.get() != nullptr) {
+        // setPenAndLayerToActive(m_actionData->spline.get());
+        const auto spline = new LC_SplinePoints(m_document, m_actionData->spline->getData());
+        return spline;
     }
+    return nullptr;
 }
 
 void LC_ActionDrawSplinePoints::onMouseMoveEvent(int status, LC_MouseEvent *e) {
-    RS_Vector mouse = e->snapPoint;
+    const RS_Vector mouse = e->snapPoint;
     switch (status) {
         case SetStartPoint:
             trySnapToRelZeroCoordinateEvent(e);
             break;
         case SetNextPoint: {
-            auto *sp = dynamic_cast<LC_SplinePoints *>(m_actionData->spline->clone());
+            auto *clone = dynamic_cast<LC_SplinePoints *>(m_actionData->spline->clone());
 
             if (m_showRefEntitiesOnPreview) {
-                for (auto const &v: sp->getPoints()) {
+                for (auto const &v: clone->getPoints()) {
                     previewRefPoint(v);
                 }
                 previewRefSelectablePoint(mouse);
             }
 
-            sp->addPoint(mouse);
-            sp->update();
-            previewEntity(sp);
+            clone->addPoint(mouse);
+            clone->update();
+            previewEntity(clone);
             break;
         }
         default:
@@ -123,7 +123,7 @@ void LC_ActionDrawSplinePoints::onCoordinateEvent(int status, [[maybe_unused]] b
         case SetStartPoint: {
             m_actionData->undoBuffer.clear();
             if (m_actionData->spline.get() == nullptr){
-                m_actionData->spline = std::make_unique<LC_SplinePoints>(m_container, m_actionData->data);
+                m_actionData->spline = std::make_unique<LC_SplinePoints>(m_document, m_actionData->data);
                 m_actionData->spline->addPoint(mouse);
 
                 if (m_showRefEntitiesOnPreview) {
@@ -266,8 +266,8 @@ void LC_ActionDrawSplinePoints::undo(){
         return;
     }
 
-    auto &splinePts = m_actionData->spline->getData().splinePoints;
-    size_t nPoints = splinePts.size();
+    const auto &splinePts = m_actionData->spline->getData().splinePoints;
+    const size_t nPoints = splinePts.size();
     if (nPoints > 1){
         RS_Vector v = splinePts.back();
         m_actionData->undoBuffer.push_back(v);
@@ -288,7 +288,7 @@ void LC_ActionDrawSplinePoints::undo(){
 }
 
 void LC_ActionDrawSplinePoints::redo(){
-    int iBufLen = m_actionData->undoBuffer.size();
+    const int iBufLen = m_actionData->undoBuffer.size();
     if (iBufLen > 1){
         RS_Vector v = m_actionData->undoBuffer.back();
         m_actionData->spline->addPoint(v);

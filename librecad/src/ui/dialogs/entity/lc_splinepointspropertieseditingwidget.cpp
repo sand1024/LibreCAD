@@ -100,6 +100,6 @@ void LC_SplinePointsPropertiesEditingWidget::updatePoints() {
     ui->tvPoints->setModel(model);
 }
 
-void LC_SplinePointsPropertiesEditingWidget::onClosedToggled([[maybe_unused]]bool checked) {
+void LC_SplinePointsPropertiesEditingWidget::onClosedToggled([[maybe_unused]]bool checked) const {
     m_entity->setClosed(ui->cbClosed->isChecked());
 }

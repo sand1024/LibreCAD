@@ -28,21 +28,28 @@
 class LC_ActionPreSelectionAwareBase:public RS_ActionSelectBase{
     Q_OBJECT
 public:
-    LC_ActionPreSelectionAwareBase(const char *name, LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone,
-        const QList<RS2::EntityType> &entityTypeList = {}, bool countSelectionDeep = false);
-    ~LC_ActionPreSelectionAwareBase() override;
     void mousePressEvent(QMouseEvent*) override;
     void init(int status) override;
     void drawSnapper() override;
 
 protected:
+    LC_ActionPreSelectionAwareBase(const char *name, LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone,
+        const QList<RS2::EntityType> &entityTypeList = {}, bool countSelectionDeep = false);
+    ~LC_ActionPreSelectionAwareBase() override;
+
+    bool isKeepModifiedEntitiesSelected();
+
     bool m_selectionComplete = false;
     bool m_countDeep = false;
-    std::vector<RS_Entity*> m_selectedEntities;
+    QList<RS_Entity*> m_selectedEntities;
 
     RS_Vector m_selectionCorner1 = RS_Vector(false);
     bool m_inBoxSelectionMode = false;
     bool m_forceSelectContextEntity = false;
+
+    void undoableDeleteEntities() {
+        undoableDeleteEntitiesList(m_selectedEntities);
+    }
 
     virtual bool isForceSelectContextEntity() {return true;}
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
@@ -57,7 +64,8 @@ protected:
     virtual void updateMouseButtonHintsForSelection() = 0;
     virtual void updateMouseButtonHintsForSelected(int status);
     virtual bool isAllowTriggerOnEmptySelection(){return true;};
-    virtual void doTrigger(bool keepSelected) = 0;
+    virtual void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {};
+    void clearDocumentModificationContext(LC_DocumentModificationBatch& ctx) override;
     virtual void finishMouseMoveOnSelection(LC_MouseEvent *event);
     virtual void proceedSelectedEntity(LC_MouseEvent* e);
     RS2::CursorType doGetMouseCursor(int status) override;
@@ -66,9 +74,9 @@ protected:
     void setSelectionComplete(bool allowEmptySelection, bool fromInit);
     void updateMouseButtonHints() override;
     void doSelectEntity(RS_Entity *entityToSelect, bool selectContour) const override;
-    void doTrigger() override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
-
 };
+
+
 
 #endif // LC_ACTIONPRESELECTIONAWAREBASE_H

@@ -54,7 +54,7 @@ public:
     void updateViewsUCSNames(LC_UCSList *ucsList);
 
     void clear();
-    int count(){
+    int count() const {
         return m_views.count();
     }
     /**

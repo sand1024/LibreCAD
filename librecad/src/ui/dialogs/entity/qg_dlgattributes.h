@@ -39,7 +39,7 @@ public:
     ~QG_DlgAttributes() override;
 public slots:
     void setData( RS_AttributesData * data, RS_LayerList & layerList );
-    void updateData();
+    void updateData() const;
 protected slots:
     void languageChange();
 private:

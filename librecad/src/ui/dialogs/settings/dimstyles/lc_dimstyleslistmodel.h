@@ -59,7 +59,7 @@ public:
     void collectItemsForBaseStyleName(const QString& baseName, QList<LC_DimStyleItem*>* list);
     void collectItemsForStyle(LC_DimStyle* dim_style, QList<LC_DimStyleItem*>* list);
     void sort(int column, Qt::SortOrder order) override;
-    void cleanup();
+    void cleanup() const;
 private:
     QList<LC_DimStyleItem*> m_items;
     bool m_showUsagesCount{true};

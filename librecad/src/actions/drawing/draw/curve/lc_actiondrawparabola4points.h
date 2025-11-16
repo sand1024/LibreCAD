@@ -32,10 +32,10 @@ class RS_Vector;
  *
  * @author Dongxu Li
  */
-class LC_ActionDrawParabola4Points : public RS_PreviewActionInterface {
+class LC_ActionDrawParabola4Points : public LC_UndoablePreviewActionInterface {
     Q_OBJECT
 public:
-    LC_ActionDrawParabola4Points(LC_ActionContext *actionContext);
+    explicit LC_ActionDrawParabola4Points(LC_ActionContext *actionContext);
     ~LC_ActionDrawParabola4Points() override;
     void init(int status) override;
     QStringList getAvailableCommands() override;
@@ -59,7 +59,7 @@ protected:
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void updateMouseButtonHints() override;
-    bool preparePreview(const RS_Vector& mouse, bool rebuild);
+    bool preparePreview(const RS_Vector& mouse, bool rebuild) const;
     void doTrigger() override;
 };
 #endif

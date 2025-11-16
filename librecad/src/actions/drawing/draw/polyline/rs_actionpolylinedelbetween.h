@@ -48,7 +48,7 @@ protected:
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void setPolylineToModify(RS_Entity* en);
-    void collectEntitiesToRemove(RS_Vector vector, RS_Vector vector1, QList<RS_Entity *> &list);
+    void collectEntitiesToRemove(RS_Vector vector, RS_Vector vector1, QList<RS_Entity *> &list) const;
     void updateMouseButtonHints() override;
     void doTrigger() override;
 };

@@ -26,19 +26,20 @@
 
 #include "rs_actiondrawpoint.h"
 
+#include "rs_document.h"
 #include "rs_point.h"
 
 RS_ActionDrawPoint::RS_ActionDrawPoint(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("Draw Points",actionContext, RS2::ActionDrawPoint), m_pointPosition(new RS_Vector{}){
+    :LC_UndoablePreviewActionInterface("Draw Points",actionContext, RS2::ActionDrawPoint), m_pointPosition(new RS_Vector{}){
 }
 
 RS_ActionDrawPoint::~RS_ActionDrawPoint() = default;
 
 void RS_ActionDrawPoint::doTrigger() {
     if (m_pointPosition->valid){
-        auto *point = new RS_Point(m_container, RS_PointData(*m_pointPosition));
+        auto *point = new RS_Point(m_document, RS_PointData(*m_pointPosition));
         moveRelativeZero(*m_pointPosition);
-        undoCycleAdd(point);
+        undoableAdd(point);
     }
 }
 

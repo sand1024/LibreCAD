@@ -40,17 +40,17 @@ public:
     bool hasNoKey() const {return m_key.isEmpty();};
     bool hasKey() const {return !m_key.isEmpty();};
     QString retrieveKey(bool useDefault)const;
-    QString getKeyAsString();
+    QString getKeyAsString() const;
     QKeySequence getKey() const {return m_key;};
     QList<QKeySequence> getKeysList() const;
     void resetToDefault();
     void setKey(QKeySequence newKey);
-    bool isModified(){return m_modified;}
+    bool isModified() const {return m_modified;}
     void clear();
-    bool hasCollision(){return m_collision;};
+    bool hasCollision() const {return m_collision;};
     void setCollision(bool val){m_collision = val;};
     static int translateModifiers(Qt::KeyboardModifiers state,const QString &text);
-    bool hasTheSameKey(QKeySequence sequenceToTest);
+    bool hasTheSameKey(QKeySequence sequenceToTest) const;
 protected:
     QString m_name;
     QKeySequence m_defaultKey;

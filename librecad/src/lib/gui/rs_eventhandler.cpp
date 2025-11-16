@@ -517,7 +517,7 @@ void RS_EventHandler::debugActions() const{
     }
 }
 
-QAction* RS_EventHandler::getQAction(){
+QAction* RS_EventHandler::getQAction() const {
   return m_QAction;
 }
 

@@ -63,7 +63,7 @@ void LC_InfoDist2Options::onOnEntityClicked([[maybe_unused]]bool value){
     }
 }
 
-void LC_InfoDist2Options::setOnEntitySnapToActionAndView(bool value){
+void LC_InfoDist2Options::setOnEntitySnapToActionAndView(bool value) const {
     m_action->setUseNearestPointOnEntity(value);
     ui->cbOnEntity->setChecked(value);
 }

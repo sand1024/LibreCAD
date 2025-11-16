@@ -58,8 +58,8 @@ void LC_ActionPolylineDeleteBase::finish(bool updateTB){
 }
 
 void LC_ActionPolylineDeleteBase::clean(){
-    if (m_polylineToModify){
-        m_polylineToModify->setSelected(false);
+    if (m_polylineToModify != nullptr){
+        unselect(m_polylineToModify);
     }
     deletePreview();
     redraw();

@@ -79,14 +79,14 @@ void MainWindowX::sortWidgetsByGroupAndTitle(QList<QToolBar*>& list) {
     std::sort(list.begin(), list.end(), Sorting::byGroupAndWindowTitle);
 }
 
-void MainWindowX::toggleDockArea(Qt::DockWidgetArea dockArea, bool state) {
+void MainWindowX::toggleDockArea(Qt::DockWidgetArea dockArea, bool state) const {
     foreach(QDockWidget* dw, findChildren<QDockWidget*>()) {
         if (dockWidgetArea(dw) == dockArea && !dw->isFloating())
             dw->setVisible(state);
     }
 }
 
-void MainWindowX::toggleToolBarArea(Qt::ToolBarArea tbArea, bool state) {
+void MainWindowX::toggleToolBarArea(Qt::ToolBarArea tbArea, bool state) const {
     foreach(QToolBar* tb, findChildren<QToolBar*>()) {
         if (toolBarArea(tb) == tbArea && !tb->isFloating())
             tb->setVisible(state);

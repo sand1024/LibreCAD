@@ -39,7 +39,7 @@ public:
     ~LC_UCSStateWidget() override;
     void update(QIcon icon, QString ucsName, QString ucsInfo);
 public slots:
-    void onIconsRefreshed();
+    void onIconsRefreshed() const;
 private:
     Ui::LC_UCSStateWidget *ui;
     int m_iconSize = 24;

@@ -36,7 +36,7 @@ namespace Ui {
 class LC_DlgMenuAssigner : public LC_Dialog {
     Q_OBJECT
 public:
-    void initEntityContextCombobox();
+    void initEntityContextCombobox() const;
     explicit LC_DlgMenuAssigner(QWidget *parent, LC_MenuActivator* activator, QList<LC_MenuActivator*>* activators);
     ~LC_DlgMenuAssigner() override;
 public slots:
@@ -53,7 +53,7 @@ private:
     bool eventFilter(QObject *object, QEvent *event);
 
     void updateShortcutView();
-    QString findMenuForActivator();
+    QString findMenuForActivator() const;
     bool validateShortcut();
 };
 

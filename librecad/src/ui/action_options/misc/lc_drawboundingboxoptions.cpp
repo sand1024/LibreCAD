@@ -87,18 +87,18 @@ void LC_DrawBoundingBoxOptions::onPolylineToggled([[maybe_unused]] bool val) {
     setPolylineToActionAndView(ui->cbPolyline->isChecked());
 }
 
-void LC_DrawBoundingBoxOptions::setAsGroupToActionAndView(bool group) {
+void LC_DrawBoundingBoxOptions::setAsGroupToActionAndView(bool group) const {
     m_action->setSelectionAsGroup(group);
     ui->cbAsGroup->setChecked(group);
 }
 
-void LC_DrawBoundingBoxOptions::setCornerPointsOnlyToActionAndView(bool val) {
+void LC_DrawBoundingBoxOptions::setCornerPointsOnlyToActionAndView(bool val) const {
     m_action->setCornersOnly(val);
     ui->cbCornerPointsOnly->setChecked(val);
     ui->cbPolyline->setEnabled(!val);
 }
 
-void LC_DrawBoundingBoxOptions::setPolylineToActionAndView(bool p) {
+void LC_DrawBoundingBoxOptions::setPolylineToActionAndView(bool p) const {
     m_action->setCreatePolyline(p);
     ui->cbPolyline->setChecked(p);
 }

@@ -32,6 +32,7 @@
 #include "rs_entitycontainer.h"
 #include "rs_pen.h"
 #include "rs_undo.h"
+#include "selection/lc_selectedset.h"
 
 class LC_TextStyleList;
 class LC_DimStylesList;
@@ -41,6 +42,35 @@ class LC_ViewList;
 class RS_BlockList;
 class RS_LayerList;
 
+struct LC_DocumentModificationBatch {
+    bool success {false};
+    QList<RS_Entity*> entitiesToAdd;
+    QList<RS_Entity*> entitiesToDelete;
+
+    bool m_setActiveLayer{true};
+    bool m_setActivePen{true};
+
+    ~LC_DocumentModificationBatch() = default;
+
+    void dontSetActiveLayerAndPen(){m_setActiveLayer = false; m_setActivePen = false;}
+    void setActiveLayerAndPen(bool setLayer, bool setPen){m_setActiveLayer = setLayer; m_setActivePen = setPen;}
+
+    void add(RS_Entity* entity) {entitiesToAdd.append(entity);}
+    void remove(QList<RS_Entity*>& list) {entitiesToDelete.append(list);}
+    void remove(RS_Entity* e) {entitiesToDelete.append(e);}
+    void replace(RS_Entity* original, RS_Entity* clone) {entitiesToDelete.append(original);entitiesToAdd.append(clone); }
+};
+
+inline void operator +=(LC_DocumentModificationBatch &ctx, RS_Entity* e) {ctx.entitiesToAdd.append(e);};
+inline void operator -=(LC_DocumentModificationBatch &ctx, RS_Entity* e) {ctx.entitiesToDelete.append(e);};
+inline void operator -=(LC_DocumentModificationBatch &ctx, QList<RS_Entity*> &list) {
+    ctx.entitiesToDelete.append(list);
+}
+inline void operator -=(LC_DocumentModificationBatch &ctx, const QList<RS_Entity*> &list) {
+    ctx.entitiesToDelete.append(list);
+};
+
+
 /**
  * Base class for documents. Documents can be either graphics or
  * blocks and are typically shown in graphic views. Documents hold
@@ -49,10 +79,10 @@ class RS_LayerList;
  *
  * @author Andrew Mustun
  */
-class RS_Document : public RS_EntityContainer,
-    public RS_Undo {
+class RS_Document : public RS_EntityContainer, public RS_Undo {
 public:
-	RS_Document(RS_EntityContainer* parent=nullptr);
+    explicit RS_Document(RS_EntityContainer* parent=nullptr);
+    ~RS_Document() override = default;
 
     virtual RS_LayerList* getLayerList()= 0;
     virtual RS_BlockList* getBlockList() = 0;
@@ -68,14 +98,29 @@ public:
      */
     bool isDocument() const override {return true;}
 
-    /**
-     * Removes an entity from the entity container. Implementation
-     * from RS_Undo.
-     */
-    void removeUndoable(RS_Undoable* u) override {
-        if (u && u->undoRtti()==RS2::UndoableEntity && u->isUndone()) {
-            removeEntity(static_cast<RS_Entity*>(u));
+    void addEntity(RS_Entity* entity) override;
+
+    void undoableAdd(RS_Entity* entity, bool undoable = true) {
+        addEntity(entity);
+        if (undoable) {
+           addUndoable(entity);
         }
+    }
+
+    void undoableDelete(RS_Entity* e) {
+        e->setFlag(RS2::FlagDeleted);
+        if (e->isSelected()) {
+            unselect(e);
+        }
+        addUndoable(e);
+    }
+
+    void select(RS_Entity* entity, bool select = true) {
+        entity->doSelectInDocument(select, this);
+    }
+
+    void unselect(RS_Entity* entity) {
+        entity->doSelectInDocument(false, this);
     }
 
     /**
@@ -91,7 +136,6 @@ public:
  * Sets the documents modified status to 'm'.
  */
     virtual void setModified(bool m) {
-//std::cout << "RS_Document::setModified: %d" << (int)m << std::endl;
         modified = m;
     }
 
@@ -104,11 +148,14 @@ public:
     /**
      * Overwritten to set modified flag when undo cycle finished with undoable(s).
      */
-     void endUndoCycle() override;
-
+    void endUndoCycle() override;
+    void startUndoCycle() override;
     void setGraphicView(RS_GraphicView * g) {gv = g;}
-    RS_GraphicView* getGraphicView() {return gv;} // fixme - sand -- REALLY BAD DEPENDANCE TO UI here, REWORK!
+    RS_GraphicView* getGraphicView() const {return gv;} // fixme - sand -- REALLY BAD DEPENDANCE TO UI here, REWORK!
 
+    LC_SelectedSet* getSelectedSet() const {return m_selectedSet.get();}
+
+    void modify(LC_DocumentModificationBatch& batch);
 protected:
     /** Flag set if the document was modified and not yet saved. */
     bool modified = false;
@@ -117,6 +164,24 @@ protected:
 
     //used to read/save current view
     RS_GraphicView * gv = nullptr; // fixme - sand -- REALLY BAD DEPENDANCE TO UI here, REWORK!
+
+    std::unique_ptr<LC_SelectedSet> m_selectedSet;
+
+    void startBulkUndoablesCleanup() override;
+    void endBulkUndoablesCleanup() override;
+
+    /**
+     * Removes an entity from the entity container. Implementation
+     * from RS_Undo.
+     */
+    void removeUndoable(RS_Undoable* u) override {
+        if (u != nullptr && u->undoRtti()==RS2::UndoableEntity && u->isDeleted()) {
+            removeEntity(static_cast<RS_Entity*>(u));
+        }
+    }
+
+    bool m_inBulkUndoableCleanup = false;
+    bool m_savedAutoUpdateBorders = false;
 
 };
 #endif

@@ -102,7 +102,7 @@ void LC_UCSListButton::fillMenu() {
     }
 }
 
-void LC_UCSListButton::menuTriggered([[maybe_unused]]bool checked){
+void LC_UCSListButton::menuTriggered([[maybe_unused]]bool checked) const {
     auto *action = qobject_cast<QAction*>(sender());
     if (action != nullptr) {
         QVariant variant = action->property("_UCS_IDX");

@@ -211,34 +211,34 @@ void LC_SliceDivideOptions::onTickSnapIndexChanged(int index){
     setTicksSnapModeToActionAndView(index);
 }
 
-void LC_SliceDivideOptions::setDrawEdgesTicksModeToActionAndView(int index){
+void LC_SliceDivideOptions::setDrawEdgesTicksModeToActionAndView(int index) const {
     m_action->setDrawTickOnEdgeMode(index);
     ui->cbEdgeTick->setCurrentIndex(index);
 }
 
-void LC_SliceDivideOptions::setTicksSnapModeToActionAndView(int index){
+void LC_SliceDivideOptions::setTicksSnapModeToActionAndView(int index) const {
     m_action->setTickSnapMode(index);
     ui->cbTickSnap->setCurrentIndex(index);
 }
 
-void LC_SliceDivideOptions::setTickAngleRelativeToActionAndView(bool relative){
+void LC_SliceDivideOptions::setTickAngleRelativeToActionAndView(bool relative) const {
     m_action->setTickAngleRelative(relative);
     ui->cbRelAngle->setChecked(relative);
 }
 
-void LC_SliceDivideOptions::setDivideFlagToActionAndView(bool value){
+void LC_SliceDivideOptions::setDivideFlagToActionAndView(bool value) const {
     m_action->setDivideEntity(value);
     ui->cbDivide->setChecked(value);
 }
 
-void LC_SliceDivideOptions::setFixedDistanceFlagToActionAndView(bool value){
+void LC_SliceDivideOptions::setFixedDistanceFlagToActionAndView(bool value) const {
     m_action->setFixedDistance(value);
     ui->cbMode->setChecked(value);
     ui->frmCount->setVisible(!value);
     ui->frmDistance->setVisible(value);
 }
 
-void LC_SliceDivideOptions::setCountToActionAndView(int val){
+void LC_SliceDivideOptions::setCountToActionAndView(int val) const {
   m_action->setTickCount(val);
   ui->sbCount->setValue(val);
 }

@@ -35,6 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "rs_line.h"
 #include "rs_point.h"
 #include "rs_preview.h"
+#include "rs_selection.h"
 
 /**
  * Utility base class for actions. It includes some basic logic and utilities, that simplifies creation of specific actions
@@ -62,13 +63,15 @@ LC_AbstractActionWithPreview::LC_AbstractActionWithPreview(const char *name,LC_A
 }
 
 void LC_AbstractActionWithPreview::collectEntitiesForTriggerOnInit(QList<RS_Entity*> &selectedEntities, QList<RS_Entity*> &entitiesForTrigger) {
-    for (RS_Entity *e: *m_container) {
-        if (!e->isUndone() && e->isSelected()){
-            selectedEntities << e;
-            // check whether specific entity is suitable for processing
-            if (isAcceptSelectedEntityToTriggerOnInit(e)){
-                entitiesForTrigger << e;
-            }
+    auto selection = m_document->getSelectedSet();
+    for (RS_Entity *e: *selection) {
+        if (e->isDeleted()) {
+            continue;
+        }
+        selectedEntities << e;
+        // check whether specific entity is suitable for processing
+        if (isAcceptSelectedEntityToTriggerOnInit(e)) {
+            entitiesForTrigger << e;
         }
     }
 }
@@ -86,13 +89,13 @@ void LC_AbstractActionWithPreview::init(int status){
         // collect selected entities
 
         QList<RS_Entity*> selectedEntities;
-        QList<RS_Entity*> entitiesForTrigger;
+        QList<RS_Entity*> entitiesForTrigger; // fixme - selection - rework to SelectedSet!!
         collectEntitiesForTriggerOnInit(selectedEntities, entitiesForTrigger);
         if (!entitiesForTrigger.isEmpty()){
             showOptions(); // use this as simplest way to read settings for the action
             if (m_document){
                 // take care of undo cycle
-                if (isUndoableTrigger()){
+                if (isTriggerUndoable()){
                     undoCycleStart();
                     // invoke trigger
                     performTriggerOnInit(entitiesForTrigger);
@@ -106,7 +109,7 @@ void LC_AbstractActionWithPreview::init(int status){
             finishAction();
             // if necessary - unselect currently selected entities
             if (isUnselectEntitiesOnInitTrigger()){
-                unSelectEntities(selectedEntities);
+                unselectAll();
             }
             redrawDrawing();
         }
@@ -194,16 +197,8 @@ bool LC_AbstractActionWithPreview::isUnselectEntitiesOnInitTrigger(){
  *
  */
 void LC_AbstractActionWithPreview::doTrigger() {
-    if (doCheckMayTrigger()){
-        if (m_document){
-            if (isUndoableTrigger()){
-                undoCycleStart();
-                performTrigger();
-                undoCycleEnd();
-            } else {
-                performTrigger();
-            }
-        }
+    if (doCheckMayTrigger()) {
+        performTrigger();
     }
 
     // cleanup alternative mode after trigger
@@ -247,13 +242,13 @@ void LC_AbstractActionWithPreview::performTriggerInsertions(){
 void LC_AbstractActionWithPreview::setupAndAddTriggerEntities(const QList<RS_Entity *> &entities){
     // check whether layer and pen should be set to active. If not  - it's up to doPrepareTriggerEntities to perform proper setup of pen and layer
     bool setActiveLayerAndPen = isSetActivePenAndLayerOnTrigger();
-    bool undoableTrigger = isUndoableTrigger();
+    bool undoableTrigger = isTriggerUndoable();
     for (auto ent: entities) {
         if (setActiveLayerAndPen){
             // do setup
             setPenAndLayerToActive(ent);
         }
-        m_container->addEntity(ent);
+        m_document->addEntity(ent);
         if (undoableTrigger){
             m_document->addUndoable(ent);
         }
@@ -265,14 +260,6 @@ void LC_AbstractActionWithPreview::setupAndAddTriggerEntities(const QList<RS_Ent
  * @return true if trigger() may be executed.
  */
 bool LC_AbstractActionWithPreview::doCheckMayTrigger(){
-    return true;
-}
-
-/**
- * Controls whether trigger should be within undoable cycle
- * @return true if trigger execution should be within undo cycle
- */
-bool LC_AbstractActionWithPreview::isUndoableTrigger(){
     return true;
 }
 
@@ -439,7 +426,7 @@ void LC_AbstractActionWithPreview::unHighlightEntity(){
  * @param en entity to highlight
  * @param highlight true if the entity should be highlighted, false otherwise
  */
-void LC_AbstractActionWithPreview::highlightEntityExplicit(RS_Entity* en, bool highlight){
+void LC_AbstractActionWithPreview::highlightEntityExplicit(RS_Entity* en, bool highlight) const {
     en->setHighlighted(highlight);
     redraw(RS2::RedrawDrawing);
 }
@@ -662,16 +649,6 @@ void LC_AbstractActionWithPreview::setFreeSnap(){
 }
 
 /**
- * Utility method for un-selecting list of provided entities
- * @param entities list of entities
- */
-void LC_AbstractActionWithPreview::unSelectEntities(const QList<RS_Entity*>& entities){
-    for (auto original: entities) {
-        original ->setSelected(false);
-    }
-}
-
-/**
  * Utility method that applies pen and layer to target entity based on provided source entity and provided modes
  * @param source source entity to pick attributes (if needed)
  * @param target entity to which attributes are applied
@@ -755,7 +732,7 @@ bool LC_AbstractActionWithPreview::checkMayExpandEntity(const RS_Entity *e, cons
  * @return created point entity
  */
 RS_Point* LC_AbstractActionWithPreview::createPoint(const RS_Vector &coord, QList<RS_Entity *> &list) const{
-    auto *result = new RS_Point(m_container, coord);
+    auto *result = new RS_Point(m_document, coord);
     list << result;
     return result;
 }
@@ -785,13 +762,13 @@ void LC_AbstractActionWithPreview::createRefSelectablePoint(const RS_Vector &coo
  * @return created line
  */
 RS_Line* LC_AbstractActionWithPreview::createLine(const RS_Vector &startPoint, const RS_Vector &endPoint, QList<RS_Entity *> &list) const{
-    auto *result = new RS_Line(m_container, startPoint, endPoint);
+    auto *result = new RS_Line(m_document, startPoint, endPoint);
     list << result;
     return result;
 }
 
 RS_Line* LC_AbstractActionWithPreview::createLine(const RS_LineData &lineData, QList<RS_Entity *> &list) const{
-    auto *result = new RS_Line(m_container, lineData);
+    auto *result = new RS_Line(m_document, lineData);
     list << result;
     return result;
 }

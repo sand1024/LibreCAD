@@ -48,10 +48,10 @@ void LC_SplinePropertiesEditingWidget::setEntity(RS_Entity* entity) {
     toUIBool(m_entity->isClosed(), ui->cbClosed);
 }
 
-void LC_SplinePropertiesEditingWidget::onClosedToggled([[maybe_unused]]bool checked) {
+void LC_SplinePropertiesEditingWidget::onClosedToggled([[maybe_unused]]bool checked) const {
     m_entity->setClosed(ui->cbClosed->isChecked());
 }
 
-void LC_SplinePropertiesEditingWidget::onDegreeIndexChanged([[maybe_unused]]int index) {
+void LC_SplinePropertiesEditingWidget::onDegreeIndexChanged([[maybe_unused]]int index) const {
     m_entity->setDegree(RS_Math::round(RS_Math::eval(ui->cbDegree->currentText())));
 }

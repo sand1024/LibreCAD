@@ -27,14 +27,14 @@
 #define RS_ACTIONPOLYLINEAPPEND_H
 #include "rs_actiondrawpolyline.h"
 class RS_Polyline;
+
 /**
  * This action class can handle user events to move entities.
  *
  * @author Andrew Mustun
  */
 class RS_ActionPolylineAppend:public RS_ActionDrawPolyline {
-    Q_OBJECT
-public:
+    Q_OBJECT public:
     explicit RS_ActionPolylineAppend(LC_ActionContext *actionContext);
     void undo() override;
 protected:
@@ -45,9 +45,11 @@ protected:
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void updateMouseButtonHints() override;
     RS2::CursorType doGetMouseCursor(int status) override;
-    void doTrigger() override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
     void doInitialInit() override;
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& pos) override;
+    void prepareDocumentModificationContext(LC_DocumentModificationBatch& ctx) override;
 private:
     /**
      * Polyline entity we're working on.

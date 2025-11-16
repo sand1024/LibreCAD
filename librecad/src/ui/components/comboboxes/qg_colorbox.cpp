@@ -164,7 +164,7 @@ void QG_ColorBox::readCustomColorSettings(){
     }
 }
 
-void QG_ColorBox::writeCustomColorSettings(){
+void QG_ColorBox::writeCustomColorSettings() const {
     LC_GROUP_GUARD("ColorBox");
     {
         int customIndex = 0;
@@ -228,7 +228,7 @@ void QG_ColorBox::addColor(QColor color, QString text){
     addItem(QIcon(pixmap), text, color);
 }
 
-int QG_ColorBox::findColor(const RS_Color& color){
+int QG_ColorBox::findColor(const RS_Color& color) const {
     for (int cIndex = m_colorIndexStart; cIndex < count(); cIndex++) {
         //searching for the color, allowing difference up to 2
         if (getDictionaryDistance(QColor{itemData(cIndex).value<QColor>()}, color) <= 3)

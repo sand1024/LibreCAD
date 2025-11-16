@@ -54,10 +54,10 @@ private:
     LC_ActionEditPasteTransform* m_action = nullptr;
     void setAngleToActionAndView(QString val);
     void setFactorToActionAndView(QString val);
-    void setIsArrayToActionAndView(bool val);
-    void setSameAnglesToActionAndView(bool val);
-    void setArrayXCountToActionAndView(int count);
-    void setArrayYCountToActionAndView(int count);
+    void setIsArrayToActionAndView(bool val) const;
+    void setSameAnglesToActionAndView(bool val) const;
+    void setArrayXCountToActionAndView(int count) const;
+    void setArrayYCountToActionAndView(int count) const;
     void setArrayXSpacingToActionAndView(QString val);
     void setArrayYSpacingToActionAndView(QString val);
     void setArrayAngleToActionAndView(QString val);

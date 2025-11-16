@@ -41,9 +41,9 @@ public:
     QG_PolylineOptions();
     ~QG_PolylineOptions() override;
 public slots:
-    void close(); // fixme - rename
-    void undo();
-    void setModeToActionAndView(int m );
+    void close() const; // fixme - rename
+    void undo() const;
+    void setModeToActionAndView(int m ) const;
     void onAngleEditingFinished();
     void onRadiusEditingFinished();
     void onNegToggled(bool checked);
@@ -60,7 +60,7 @@ protected:
     bool checkActionRttiValid(RS2::ActionType actionType) override;
 private:
 	std::unique_ptr<Ui::Ui_PolylineOptions> ui;
-    void setReversedToActionAndView(bool reversed);
+    void setReversedToActionAndView(bool reversed) const;
     void setAngleToActionAndView(const QString &strVal);
     void setRadiusToActionAndView(const QString &strVal);
 };

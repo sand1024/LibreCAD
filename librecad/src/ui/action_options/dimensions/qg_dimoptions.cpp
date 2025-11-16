@@ -207,7 +207,7 @@ void QG_DimOptions::doSetAction(RS_ActionInterface *a, bool update){
     ui->cbAngleCircleFree->setVisible(circleDim);
 }
 
-void QG_DimOptions::updateLabel(){
+void QG_DimOptions::updateLabel() const {
     m_action->setText("");
     m_action->setLabel(ui->leLabel->text());
     m_action->setDiameter(ui->bDiameter->isChecked());
@@ -216,7 +216,7 @@ void QG_DimOptions::updateLabel(){
     m_action->setText(m_action->getText());
 }
 
-void QG_DimOptions::insertSign(const QString &c){
+void QG_DimOptions::insertSign(const QString &c) const {
     ui->leLabel->insert(c);
 }
 
@@ -253,14 +253,14 @@ void QG_DimOptions::onAngleEditingFinished(){
     updateAngle(ui->leAngle->text());
 }
 
-void QG_DimOptions::onBaselineDistanceFreeClicked() {
+void QG_DimOptions::onBaselineDistanceFreeClicked() const {
     bool freeDistance = ui->cbFreeBaselineDistance->isChecked();
     ui->leBaselineDistance->setEnabled(!freeDistance);
     auto dimBaselineAction = dynamic_cast<LC_ActionDrawDimBaseline *>(m_action);
     dimBaselineAction->setFreeBaselineDistance(freeDistance);
 }
 
-void QG_DimOptions::onAngleCircleFreeClicked() {
+void QG_DimOptions::onAngleCircleFreeClicked() const {
     bool freeAngle = ui->cbAngleCircleFree->isChecked();
     ui->leAngleCircle->setEnabled(!freeAngle);
     auto dimAction = dynamic_cast<LC_ActionCircleDimBase *>(m_action);
@@ -314,7 +314,7 @@ void QG_DimOptions::updateUI(int mode) {
     }
 }
 
-void QG_DimOptions::onDimStyleChanged(int index) {
+void QG_DimOptions::onDimStyleChanged(int index) const {
     if (m_action != nullptr) {
         auto styleItem = m_dimItemsListModel->getItemAtRow(index);
         if (styleItem != nullptr) {

@@ -35,10 +35,14 @@ class RS_Polyline;
  *
  * @author Andrew Mustun
  */
-class RS_ActionPolylineEquidistant:public RS_PreviewActionInterface {
+class RS_ActionPolylineEquidistant:public LC_UndoablePreviewActionInterface {
     Q_OBJECT
 public:
-    RS_ActionPolylineEquidistant(LC_ActionContext *actionContext);
+    /**
+     *
+     * @param actionContext
+     */
+    explicit RS_ActionPolylineEquidistant(LC_ActionContext *actionContext);
     ~RS_ActionPolylineEquidistant() override;
     void init(int status) override;
     void setDist(const double &d){m_dist = d;}
@@ -58,7 +62,7 @@ protected:
     int m_number = 0;
     bool m_bRightSide = false;
 
-    RS_Entity *calculateOffset(RS_Entity *newEntity, RS_Entity *orgEntity, double dist);
+    RS_Entity *calculateOffset(RS_Entity *newEntity, RS_Entity *orgEntity, double dist) const;
     RS_Vector calculateIntersection(RS_Entity *first, RS_Entity *last);
     void makeContour(RS_Polyline *originalPolyline, bool contourOnRightSide, QList<RS_Polyline *> &createdPolylines);
     bool isPointOnRightSideOfPolyline(const RS_Polyline *polyline, const RS_Vector &snapPoint) const;

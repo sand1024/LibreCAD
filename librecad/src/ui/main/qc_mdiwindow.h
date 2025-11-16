@@ -46,12 +46,12 @@ public:
     void removeWidgetsListeners() const;
     ~QC_MDIWindow() override;
 public slots:
-    void slotPenChanged(const RS_Pen &p);
-    void slotFileNew();
-    bool loadDocumentFromTemplate(const QString &fileName, RS2::FormatType type);
+    void slotPenChanged(const RS_Pen &p) const;
+    void slotFileNew() const;
+    bool loadDocumentFromTemplate(const QString &fileName, RS2::FormatType type) const;
     bool loadDocument(const QString &fileName, RS2::FormatType type);
     bool saveDocument(bool &cancelled, bool isAutoSave = false);
-    bool autoSaveDocument(QString &autosaveFileName);
+    bool autoSaveDocument(QString &autosaveFileName) const;
     bool saveDocumentAs(bool &cancelled);
     void slotFilePrint();
 public:
@@ -89,8 +89,8 @@ public:
 
     void graphicModified(const RS_Graphic *g, bool modified) override;
     void undoStateChanged(const RS_Graphic* g, bool undoAvailable, bool redoAvailable) override;
-    void zoomAuto();
-    bool isModified();
+    void zoomAuto() const;
+    bool isModified() const;
 
     SaveOnClosePolicy getSaveOnClosePolicy() const{
         return m_saveOnClosePolicy;
@@ -117,7 +117,7 @@ protected:
     QMdiArea *m_cadMdiArea = nullptr;
 
     SaveOnClosePolicy m_saveOnClosePolicy = ASK;
-    void drawChars(); // fime - sand - files - refactor and remove from there!
+    void drawChars() const; // fime - sand - files - refactor and remove from there!
     void closeEvent(QCloseEvent *) override;
     void addWidgetsListeners();
     void setupGraphicView(QWidget *parent, bool printPreview, LC_ActionContext* actionContext);

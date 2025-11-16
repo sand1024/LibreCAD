@@ -37,12 +37,12 @@ public:
     ~LC_InsertPropertiesEditingWidget() override;
     void setEntity(RS_Entity* entity) override;
 protected slots:
-    void onInsertionPointEditingFinished();
-    void onScaleEditingFinishedChanged();
+    void onInsertionPointEditingFinished() const;
+    void onScaleEditingFinishedChanged() const;
     void onAngleEditingFinished();
-    void onRowsEditingFinished();
-    void onColsEditingFinished();
-    void onSpacingEditingFinished();
+    void onRowsEditingFinished() const;
+    void onColsEditingFinished() const;
+    void onSpacingEditingFinished() const;
 public:
     void setupInteractiveInputWidgets() override;
 private:

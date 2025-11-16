@@ -68,14 +68,27 @@ void RS_ActionModifyScale::init(int status) {
     LC_ActionPreSelectionAwareBase::init(status);
 }
 
-void RS_ActionModifyScale::doTrigger(bool keepSelected) {
-    RS_DEBUG->print("RS_ActionModifyScale::trigger()");
+bool RS_ActionModifyScale::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
     deletePreview();
-    if (m_actionData->data.isotropicScaling){
-        m_actionData->data.factor.y = m_actionData->data.factor.x;
+    auto scaleData = m_actionData->data;
+    if (scaleData.isotropicScaling){
+        scaleData.factor.y = scaleData.factor.x;
     }
-    RS_Modification m(*m_container, m_viewport);
-    m.scale(m_actionData->data, m_selectedEntities, false, keepSelected);
+    RS_Modification::scale(scaleData, m_selectedEntities, false, ctx);
+    ctx.setActiveLayerAndPen(scaleData.useCurrentLayer, scaleData.useCurrentAttributes);
+    return true;
+}
+
+void RS_ActionModifyScale::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+    if (m_actionData->data.keepOriginals) {
+        unselect(m_selectedEntities);
+    }
+    if (keepSelected) {
+        select(ctx.entitiesToAdd);
+    }
+}
+
+void RS_ActionModifyScale::doTriggerCompletion(bool success) {
 }
 
 #define DRAW_TRIANGLES_ON_PREVIEW_NO
@@ -207,9 +220,10 @@ void RS_ActionModifyScale::showPreview(){
     updateOptionsUI(0);
 }
 
-void RS_ActionModifyScale::showPreview(RS_ScaleData &previewData) {
-    RS_Modification m(*m_preview, m_viewport, false);
-    m.scale(previewData, m_selectedEntities, true, false);
+void RS_ActionModifyScale::showPreview(RS_ScaleData &previewData) const {
+    LC_DocumentModificationBatch ctx;
+    RS_Modification::scale(previewData, m_selectedEntities, true, ctx);
+    previewEntitiesToAdd(ctx);
 
     if (m_showRefEntitiesOnPreview) {
         int numberOfCopies = previewData.obtainNumberOfCopies();
@@ -221,7 +235,7 @@ void RS_ActionModifyScale::showPreview(RS_ScaleData &previewData) {
                 previewRefPoint(scaledSource);
             }
         }
-    }
+    };
 }
 
 void RS_ActionModifyScale::onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent *e) {
@@ -386,31 +400,31 @@ LC_ModifyOperationFlags *RS_ActionModifyScale::getModifyOperationFlags() {
     return &m_actionData->data;
 }
 
-bool RS_ActionModifyScale::isIsotropicScaling(){
+bool RS_ActionModifyScale::isIsotropicScaling() const {
     return m_actionData->data.isotropicScaling;
 }
 
-void RS_ActionModifyScale::setIsotropicScaling(bool enable){
+void RS_ActionModifyScale::setIsotropicScaling(bool enable) const {
     m_actionData->data.isotropicScaling = enable;
 }
 
-double RS_ActionModifyScale::getFactorX() {
+double RS_ActionModifyScale::getFactorX() const {
     return m_actionData->data.factor.x;
 }
 
-void RS_ActionModifyScale::setFactorX(double val) {
+void RS_ActionModifyScale::setFactorX(double val) const {
     m_actionData->data.factor.x = val;
 }
 
-double RS_ActionModifyScale::getFactorY() {
+double RS_ActionModifyScale::getFactorY() const {
     return m_actionData->data.factor.y;
 }
 
-void RS_ActionModifyScale::setFactorY(double val) {
+void RS_ActionModifyScale::setFactorY(double val) const {
     m_actionData->data.factor.y = val;
 }
 
-bool RS_ActionModifyScale::isExplicitFactor() {
+bool RS_ActionModifyScale::isExplicitFactor() const {
     return m_actionData->data.toFindFactor;
 }
 

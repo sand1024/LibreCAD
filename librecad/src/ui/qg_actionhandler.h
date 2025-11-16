@@ -54,8 +54,8 @@ public:
     * @brief killAllActions kill all actions
     */
     void killAllActions() const;
-    bool keycode(const QString &code);
-    bool command(const QString &cmd);
+    bool keycode(const QString &code) const;
+    bool command(const QString &cmd) const;
     QStringList getAvailableCommands() const;
     void setDocumentAndView(RS_Document* document, RS_GraphicView* graphicView);
     void setActionContext(LC_DefaultActionContext* actionContext) {m_actionContext = actionContext;};
@@ -63,9 +63,9 @@ public:
     std::shared_ptr<RS_ActionInterface> createActionInstance(RS2::ActionType id, void* data) const;
 public slots:
     void setSnaps(RS_SnapMode const &s) const;
-    void slotSnapMiddleManual();
-    void slotSetRelativeZero();
-    void slotLockRelativeZero(bool on);
+    void slotSnapMiddleManual() const;
+    void slotSetRelativeZero() const;
+    void slotLockRelativeZero(bool on) const;
 private:
     RS_GraphicView *view {nullptr};
     RS_Document* document {nullptr};

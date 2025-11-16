@@ -534,7 +534,7 @@ void LC_MDIApplicationWindow::slotWindowActivatedByIndex(int index){
     slotWindowActivated(m_mdiAreaCAD->subWindowList().at(index));
 }
 
-void LC_MDIApplicationWindow::slotRedockWidgets()  {
+void LC_MDIApplicationWindow::slotRedockWidgets() {
     const QList<QDockWidget *> dockwidgets = findChildren<QDockWidget *>();
     for (auto *dockwidget: dockwidgets) {
         dockwidget->setFloating(false);

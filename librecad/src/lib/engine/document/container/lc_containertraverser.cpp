@@ -108,25 +108,22 @@ LC_ContainerTraverser::LC_ContainerTraverser(const RS_EntityContainer& container
 
 LC_ContainerTraverser::~LC_ContainerTraverser() = default;
 
-std::vector<RS_Entity*> LC_ContainerTraverser::entities()
-{
+std::vector<RS_Entity*> LC_ContainerTraverser::entities() const {
     std::vector<RS_Entity*> ret;
     // collecting entities by the DFS order
     collect(ret, m_pImp->container);
     return ret;
 }
 
-void LC_ContainerTraverser::collect(std::vector<RS_Entity*>& items, const RS_EntityContainer* container) const
-{
-    if (container == nullptr)
-        return;
-
+void LC_ContainerTraverser::collect(std::vector<RS_Entity*>& items, const RS_EntityContainer* container) const {
     for (RS_Entity* entity: std::as_const(*container)) {
-        if (entity == nullptr)
+        if (entity == nullptr) {
             continue;
-
-        if (entity->isContainer() && m_pImp->canResolve(container)) {
-            collect(items, static_cast<RS_EntityContainer*>(entity));
+        }
+        // if (entity->isContainer() && m_pImp->canResolve(entity)) {
+        if (entity->isContainer() && m_pImp->canResolve(entity)) { // fixme - CHECK THIS, previously it was canResolve(container), but shouldn't it check the entity?
+            auto subContainer = static_cast<RS_EntityContainer*>(entity);
+            collect(items, subContainer);
         } else {
             items.push_back(entity);
         }
@@ -144,8 +141,7 @@ RS_Entity* LC_ContainerTraverser::next()
     return get();
 }
 
-RS_Entity* LC_ContainerTraverser::prev()
-{
+RS_Entity* LC_ContainerTraverser::prev() const {
     // create a traverser with reverted direction
     // so the next traversed node is the previous of the current traverser
     LC_ContainerTraverser revTraverser{*m_pImp->container, m_pImp->level, LC_ContainerTraverser::Direction::Backword};
@@ -167,8 +163,7 @@ RS_Entity* LC_ContainerTraverser::prev()
     return revTraverser.get();
 }
 
-RS_Entity* LC_ContainerTraverser::last()
-{
+RS_Entity* LC_ContainerTraverser::last() const {
     LC_ContainerTraverser revTraverser{*m_pImp->container, m_pImp->level, LC_ContainerTraverser::Direction::Backword};
     return revTraverser.get();
 }

@@ -62,7 +62,7 @@ void QG_BlockDialog::setBlockList(RS_BlockList* l) {
     }
 }
 
-RS_BlockData QG_BlockDialog::getBlockData() {
+RS_BlockData QG_BlockDialog::getBlockData() const {
     return RS_BlockData(leName->text(), RS_Vector(0.0,0.0), false);
 }
 

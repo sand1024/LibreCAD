@@ -154,7 +154,7 @@ void RS_Spline::update() {
 
     clear();
 
-    if (isUndone()) {
+    if (isDeleted()) {
         return;
     }
 

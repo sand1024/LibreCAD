@@ -133,7 +133,7 @@ void QG_MouseWidget::clearActionIcon(){
     lCurrentAction->setToolTip("");
 }
 
-void QG_MouseWidget::setActionIcon(QIcon icon) {
+void QG_MouseWidget::setActionIcon(QIcon icon) const {
     lCurrentAction->setPixmap(icon.pixmap(iconSize));
 }
 

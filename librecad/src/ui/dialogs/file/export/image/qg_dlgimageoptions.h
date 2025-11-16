@@ -33,17 +33,17 @@ class QG_ImageOptionsDialog : public LC_Dialog, public Ui::QG_ImageOptionsDialog
 public:
     QG_ImageOptionsDialog(QWidget* parent = nullptr);
     ~QG_ImageOptionsDialog() override = default;
-    QSize getSize();
-    QSize getBorders();
-    bool isBackgroundBlack();
-    bool isBlackWhite();
+    QSize getSize() const;
+    QSize getBorders() const;
+    bool isBackgroundBlack() const;
+    bool isBlackWhite() const;
 public slots:
     void setGraphicSize( const RS_Vector & s );
     void ok();
     void sizeChanged();
     void resolutionChanged();
-    void sameBordersChanged();
-    void borderChanged();
+    void sameBordersChanged() const;
+    void borderChanged() const;
 protected slots:
     void languageChange();
 private:

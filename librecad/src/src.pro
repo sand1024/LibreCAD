@@ -334,6 +334,7 @@ HEADERS += \
     actions/drawing/pick/lc_actioninteractivepickbase.h \
     actions/drawing/pick/lc_actioninteractivepickdistance.h \
     actions/drawing/pick/lc_actioninteractivepickposition.h \
+    actions/drawing/selection/lc_actionselectquick.h \
     actions/drawing/selection/lc_actionsingleentityselectbase.h \
     lib/actions/lc_actioninfomessagebuilder.h \
     lib/actions/lc_overlayboxaction.h \
@@ -359,6 +360,8 @@ HEADERS += \
     lib/engine/document/entities/support/lc_dimarrowblock.h \
     lib/engine/document/entities/support/lc_dimarrowblockpoly.h \
     lib/engine/document/lc_graphicvariables.h \
+    lib/engine/document/lc_selectedset.h \
+    lib/engine/document/selection/lc_selectedsetlistener.h \
     lib/engine/document/textstyles/lc_textstyle.h \
     lib/engine/document/textstyles/lc_textstylelist.h \
     lib/engine/document/ucs/lc_ucslist.h \
@@ -471,6 +474,8 @@ HEADERS += \
     lib/gui/render/headless/lc_printviewportrenderer.h \
     lib/gui/render/lc_graphicviewportrenderer.h \
     lib/modification/lc_division.h \
+    lib/modification/lc_selectionoptions.h \
+    lib/modification/lc_selectionpredicate.h \
     plugins/lc_plugininvoker.h \
     lib/actions/lc_actioncontext.h \
     ui/components/creators/lc_creatorinvoker.h \
@@ -516,6 +521,9 @@ HEADERS += \
     ui/dock_widgets/lc_graphicviewawarewidget.h \
     ui/dock_widgets/lc_widgets_common.h \
     #ui/dock_widgets/library_widget/lc_librarywidget.h \
+    ui/dock_widgets/property_sheet/entity_info/lc_metainfoprovider.h \
+    ui/dock_widgets/property_sheet/lc_propertysheetwidget.h \
+    ui/dock_widgets/property_sheet/quick_selection/lc_dlgquickselection.h \
     ui/lc_actionhandlerfactory.h \
     ui/lc_graphicviewaware.h \
     ui/lc_snapmanager.h \
@@ -645,6 +653,7 @@ SOURCES += \
     actions/drawing/pick/lc_actioninteractivepickbase.cpp \
     actions/drawing/pick/lc_actioninteractivepickdistance.cpp \
     actions/drawing/pick/lc_actioninteractivepickposition.cpp \
+    actions/drawing/selection/lc_actionselectquick.cpp \
     actions/drawing/selection/lc_actionsingleentityselectbase.cpp \
     lib/actions/lc_actioninfomessagebuilder.cpp \
     lib/actions/lc_overlayboxaction.cpp \
@@ -670,6 +679,8 @@ SOURCES += \
     lib/engine/document/entities/support/lc_dimarrowblock.cpp \
     lib/engine/document/entities/support/lc_dimarrowblockpoly.cpp \
     lib/engine/document/lc_graphicvariables.cpp \
+    lib/engine/document/lc_selectedset.cpp \
+    lib/engine/document/selection/lc_selectedsetlistener.cpp \
     lib/engine/document/textstyles/lc_textstyle.cpp \
     lib/engine/document/textstyles/lc_textstylelist.cpp \
     lib/engine/document/ucs/lc_ucslist.cpp \
@@ -694,6 +705,8 @@ SOURCES += \
     lib/gui/lc_latecompletionrequestor.cpp \
     lib/gui/render/headless/lc_printviewportrenderer.cpp \
     lib/modification/lc_division.cpp \
+    lib/modification/lc_selectionoptions.cpp \
+    lib/modification/lc_selectionpredicate.cpp \
     plugins/lc_plugininvoker.cpp \
     lib/actions/lc_actioncontext.cpp \
     ui/components/creators/lc_creatorinvoker.cpp \
@@ -739,6 +752,9 @@ SOURCES += \
     ui/dock_widgets/cad/lc_caddockwidget.cpp \
     ui/dock_widgets/lc_dockwidget.cpp \
     ui/dock_widgets/lc_graphicviewawarewidget.cpp \
+    ui/dock_widgets/property_sheet/entity_info/lc_metainfoprovider.cpp \
+    ui/dock_widgets/property_sheet/lc_propertysheetwidget.cpp \
+    ui/dock_widgets/property_sheet/quick_selection/lc_dlgquickselection.cpp \
     ui/lc_actionhandlerfactory.cpp \
     ui/lc_snapmanager.cpp \
     ui/lc_uiutils.cpp \
@@ -1787,6 +1803,8 @@ FORMS = ui/action_options/circle/lc_circlebyarcoptions.ui \
        ui/dock_widgets/pen_palette/lc_penpaletteoptionsdialog.ui \
        ui/dock_widgets/pen_palette/lc_penpalettewidget.ui \
        ui/dock_widgets/pen_wizard/colorwizard.ui \
+       ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui \
+       ui/dock_widgets/property_sheet/quick_selection/lc_dlgquickselection.ui \
        ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui \
        ui/dock_widgets/ucs_list/lc_dlgucsproperties.ui \
        ui/dock_widgets/ucs_list/lc_ucslistwidget.ui \

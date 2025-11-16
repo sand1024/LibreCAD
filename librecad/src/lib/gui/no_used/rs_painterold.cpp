@@ -36,7 +36,7 @@
 void RS_PainterOld::createArc(QPolygon& pa,
                            const RS_Vector& cp, double radius,
                            double a1, double a2,
-                           bool reversed) {
+                           bool reversed) const {
 
     if (radius<1.0e-6) {
         RS_DEBUG->print(RS_Debug::D_WARNING,
@@ -82,8 +82,7 @@ void RS_PainterOld::createEllipse(QPolygon& pa,
                                double radius1, double radius2,
                                double angle,
                                double angle1, double angle2,
-                               bool reversed)
-{
+                               bool reversed) const {
 
     const RS_Vector vr(radius1,radius2);
     const RS_Vector rvp(radius2,radius1);

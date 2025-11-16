@@ -28,6 +28,7 @@
 #include <QSettings>
 #include <QTimer>
 
+#include "rs_document.h"
 #include "rs_entitycontainer.h"
 #include "rs_graphicview.h"
 
@@ -57,7 +58,7 @@ QG_SelectionWidget::~QG_SelectionWidget(){
     delete m_timer;
 }
 
-QToolButton* QG_SelectionWidget::getActionsButton() {
+QToolButton* QG_SelectionWidget::getActionsButton() const {
     return tbSelectionActions;
 }
 
@@ -69,7 +70,7 @@ void QG_SelectionWidget::languageChange(){
     retranslateUi(this);
 }
 
-void QG_SelectionWidget::setNumber(int n){
+void QG_SelectionWidget::setNumber(int n) const {
     if (m_auxDataMode)    {
         QSettings settings("QGDialogFactory", "QGSelectionWidget");
         settings.setValue("lEntities_text", n);
@@ -81,7 +82,7 @@ void QG_SelectionWidget::setNumber(int n){
     }
 }
 
-void QG_SelectionWidget::setTotalLength(double l) {
+void QG_SelectionWidget::setTotalLength(double l) const {
     QString str;
     str.setNum(l, 'g', 6);
     lTotalLength->setText(str);
@@ -168,8 +169,8 @@ void QG_SelectionWidget::setGraphicView(RS_GraphicView* gview) {
         setTotalLength(0);
     }
     else {
-        RS_EntityContainer* container = gview->getContainer();
-        const RS_EntityContainer::LC_SelectionInfo &info = container->getSelectionInfo();
+        auto doc = gview->getDocument();
+        const RS_EntityContainer::LC_SelectionInfo &info = doc->getSelectionInfo();
         setNumber(info.count);
         setTotalLength(info.length);
     }

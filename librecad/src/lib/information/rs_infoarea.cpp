@@ -69,7 +69,7 @@ void RS_InfoArea::reset(){
   *@return true if the point is a duplicate
   *@return false if the point is not in contour
   **/
-bool RS_InfoArea::duplicated(const RS_Vector &p){
+bool RS_InfoArea::duplicated(const RS_Vector &p) const {
     if (m_points.size() < 1) return false;
     for (const RS_Vector &v: m_points) {
         if ((v - p).squared() < RS_TOLERANCE2) return true;
@@ -117,7 +117,7 @@ double RS_InfoArea::getArea(const QPolygon &polygon){
  * @param p1 first point
  * @param p2 second point
  */
-double RS_InfoArea::calcSubArea(const RS_Vector &p1, const RS_Vector &p2){
+double RS_InfoArea::calcSubArea(const RS_Vector &p1, const RS_Vector &p2) const {
     double width = p2.x - p1.x;
     double height = (p1.y - baseY) + (p2.y - baseY);
 

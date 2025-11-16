@@ -40,7 +40,7 @@ public:
     void setEntity(RS_Entity* entity) override;
     void updateEntityData() override;
 protected slots:
-    void onClosedToggled(bool checked);
+    void onClosedToggled(bool checked) const;
 private:
     Ui::LC_SplinePointsPropertiesEditingWidget* ui;
     LC_SplinePoints* m_entity{nullptr};

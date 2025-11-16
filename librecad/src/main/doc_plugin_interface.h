@@ -31,31 +31,30 @@
 #include "document_interface.h"
 #include "rs_graphic.h"
 
+class LC_GraphicViewport;
 class LC_ActionContext;
 class Doc_plugin_interface;
 
-class convLTW
-{
+class convLTW{
 public:
     convLTW();
-    QString lt2str(enum RS2::LineType lt);
-    QString lw2str(enum RS2::LineWidth lw);
+    QString lt2str(enum RS2::LineType lt) const;
+    QString lw2str(enum RS2::LineWidth lw) const;
     QString intColor2str(int col);
-    enum RS2::LineType str2lt(QString s);
-    enum RS2::LineWidth str2lw(QString w);
+    enum RS2::LineType str2lt(QString s) const;
+    enum RS2::LineWidth str2lw(QString w) const;
 private:
     QHash<RS2::LineType, QString> lType;
     QHash<RS2::LineWidth, QString> lWidth;
 };
 
-class Plugin_Entity
-{
+class Plugin_Entity{
 public:
     Plugin_Entity(RS_Entity* ent, Doc_plugin_interface* d);
     Plugin_Entity(RS_EntityContainer* parent, enum DPI::ETYPE type);
     virtual ~Plugin_Entity();
-    bool isValid(){if (entity) return true; else return false;}
-    RS_Entity* getEnt() {return entity;}
+    bool isValid() const {if (entity) return true; else return false;}
+    RS_Entity* getEnt() const {return entity;}
     virtual RS2::EntityType getEntityType();
     virtual void getData(QHash<int, QVariant> *data);
     virtual void updateData(QHash<int, QVariant> *data);
@@ -73,15 +72,14 @@ private:
     Doc_plugin_interface* dpi = nullptr;
 };
 
-class Doc_plugin_interface : public Document_Interface
-{
+class Doc_plugin_interface : public Document_Interface{
 public:
     Doc_plugin_interface(LC_ActionContext* actionContext, QWidget* parent);
     void updateView() override;
     void addPoint(QPointF *start) override;
     void addLine(QPointF *start, QPointF *end) override;
     void addMText(QString txt, QString sty, QPointF *start,
-            double height, double angle, DPI::HAlign ha,  DPI::VAlign va);
+            double height, double angle, DPI::HAlign ha,  DPI::VAlign va) const;
     void addText(QString txt, QString sty, QPointF *start,
             double height, double angle, DPI::HAlign ha,  DPI::VAlign va) override;
 
@@ -98,7 +96,7 @@ public:
     void addEntity(Plug_Entity *handle) override;
     Plug_Entity *newEntity( enum DPI::ETYPE type) override;
     void removeEntity(Plug_Entity *ent) override;
-    void updateEntity(RS_Entity *org, RS_Entity *newe);
+    void updateEntity(RS_Entity *original, RS_Entity *clone) const;
 
     void setLayer(QString name) override;
     QString getCurrentLayer() override;
@@ -130,11 +128,12 @@ public:
     QString realToStr(const qreal num, const int units = 0, const int prec = 0) override;
 
     //method to handle undo in Plugin_Entity 
-    bool addToUndo(RS_Entity* current, RS_Entity* modified, DPI::Disposition how);
+    bool addToUndo(RS_Entity* current, RS_Entity* modified, DPI::Disposition how) const;
 private:
-    RS_Document *doc;
+    RS_Document *m_document;
+    LC_GraphicViewport *m_viewport;
     RS_Graphic *docGr;
-    RS_GraphicView *gView;
+    RS_GraphicView *m_graphicView;
     QWidget* main_window;
     LC_ActionContext* m_actionContext;
 };

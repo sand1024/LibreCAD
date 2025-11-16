@@ -31,6 +31,7 @@
 #include "lc_graphicviewport.h"
 #include "lc_selectwindowoptions.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_selection.h"
 
 struct RS_ActionSelectWindow::Points {
@@ -81,7 +82,7 @@ void RS_ActionSelectWindow::doTrigger() {
             RS_Vector ucsP2 = toUCS(m_actionData->v2);
 
             bool selectIntersecting = (ucsP1.x > ucsP2.x) || m_selectIntersecting;
-            RS_Selection s(*m_container, m_viewport);
+            RS_Selection s(m_document, m_viewport);
             bool doSelect = m_select;
             if (m_invertSelectionOperation){
                 doSelect = !doSelect;
@@ -185,7 +186,7 @@ LC_ActionOptionsWidget *RS_ActionSelectWindow::createOptionsWidget() {
     return new LC_SelectWindowOptions();
 }
 
-bool RS_ActionSelectWindow::isSelectAllEntityTypes() {
+bool RS_ActionSelectWindow::isSelectAllEntityTypes() const {
     return m_selectAllEntityTypes;
 }
 

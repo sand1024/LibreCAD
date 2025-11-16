@@ -84,7 +84,7 @@ void QG_PolylineEquidistantOptions::onDistEditingFinished(){
     setDistanceToActionAndView(ui->leDist->text());
 }
 
-void QG_PolylineEquidistantOptions::setNumberToActionAndView(int number){
+void QG_PolylineEquidistantOptions::setNumberToActionAndView(int number) const {
     m_action->setNumber(number);
     ui->sbNumber->setValue(number);
 }

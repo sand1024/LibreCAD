@@ -45,14 +45,14 @@ protected slots:
     void setTemplateFile();
     void setLibraryPath();
     void setRestartNeeded();
-    void onAutoBackupChanged(int state);
-    void on_cbVisualizeHoveringClicked();
-    void on_cbPersistentDialogsClicked();
-    void on_cbGridExtendAxisLinesToggled();
-    void on_cbClassicStatusBarToggled();
-    void onCheckNewVersionChanged();
-    void onTabCloseButtonChanged();
-    void onEnableCADDocWidgetsChanged();
+    void onAutoBackupChanged(int state) const;
+    void on_cbVisualizeHoveringClicked() const;
+    void on_cbPersistentDialogsClicked() const;
+    void on_cbGridExtendAxisLinesToggled() const;
+    void on_cbClassicStatusBarToggled() const;
+    void onCheckNewVersionChanged() const;
+    void onTabCloseButtonChanged() const;
+    void onEnableCADDocWidgetsChanged() const;
     void on_tabWidget_currentChanged(int index);
     void on_pb_background_clicked();
     void on_pb_gridPoints_clicked();
@@ -83,7 +83,7 @@ protected slots:
     void setTranslationsFolder();
     void setHatchPatternsFolder();
     void setOtherSettingsFolder();
-    bool checkRestartNeeded();
+    bool checkRestartNeeded() const;
     void on_pbOverlayBoxLine_clicked();
     void on_pbOverlayBoxFill_clicked();
     void on_pbOverlayBoxLineInverted_clicked();
@@ -96,7 +96,7 @@ protected slots:
     void onInfoCursorRelativeChanged();
     void onInfoCursorSnapChanged();
     void on_pbDraftModeColor_clicked();
-    void onExpandToolsMenuToggled(bool checked);
+    void onExpandToolsMenuToggled(bool checked) const;
 
     void set_color(QComboBox* combo, QColor custom);
 
@@ -115,8 +115,8 @@ private:
     void initComboBox(QComboBox* cb, const QString& text);
     void destroy();
     void initReferencePoints();
-    void updateLPtSzUnits();
-    void saveReferencePoints();
+    void updateLPtSzUnits() const;
+    void saveReferencePoints() const;
     QString selectFolder(const QString& title);
 };
 

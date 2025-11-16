@@ -134,8 +134,8 @@ public:
     bool getBytes(duint8 *buf, duint64 size);
     int numRemainingBytes() const {return (maxSize- filestr->getPos());}
 
-    duint16 crc8(duint16 dx,dint32 start,dint32 end);
-    duint32 crc32(duint32 seed,dint32 start,dint32 end);
+    duint16 crc8(duint16 dx,dint32 start,dint32 end) const;
+    duint32 crc32(duint32 seed,dint32 start,dint32 end) const;
 
 //    duint8 getCurrByte(){return currByte;}
     DRW_TextCodec *decoder{nullptr};

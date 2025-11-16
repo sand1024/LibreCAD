@@ -2529,7 +2529,7 @@ void RS_FilterDXFRW::prepareBlocks() {
     }
     //Add a name to each dimension, in dxfR12 also for hatches
     for(RS_Entity* e: lc::LC_ContainerTraverser{*graphic, RS2::ResolveNone}.entities()) {
-        if (!(e->getFlag(RS2::FlagUndone)) ) {
+        if (e->isAlive()) {
             switch (e->rtti()) {
             case RS2::EntityDimLinear:
             case RS2::EntityDimOrdinate:
@@ -2572,7 +2572,7 @@ void RS_FilterDXFRW::writeBlockRecords(){
     RS_Block *blk;
     for (unsigned i = 0; i < graphic->countBlocks(); i++) {
         blk = graphic->blockAt(i);
-        if (!blk->isUndone()){
+        if (!blk->isDeleted()){
             RS_DEBUG->print("writing block record: %s", (const char*)blk->getName().toLocal8Bit());
             dxfW->writeBlockRecord(blk->getName().toUtf8().data());
         }
@@ -2595,9 +2595,9 @@ void RS_FilterDXFRW::writeBlocks() {
         block.basePoint.z = 0.0;
         block.flags = 1;//flag for unnamed block
         dxfW->writeBlock(&block);
-        RS_EntityContainer *ct = (RS_EntityContainer *)it.key();
+        auto ct = static_cast<RS_EntityContainer*>(it.key());
         for(RS_Entity* e: lc::LC_ContainerTraverser{*ct, RS2::ResolveNone}.entities()) {
-            if ( !(e->getFlag(RS2::FlagUndone)) ) {
+            if (e->isAlive()) {
                 writeEntity(e);
             }
         }
@@ -2607,7 +2607,7 @@ void RS_FilterDXFRW::writeBlocks() {
     //next write "normal" blocks
     for (unsigned i = 0; i < graphic->countBlocks(); i++) {
         blk = graphic->blockAt(i);
-        if (!blk->isUndone()) {
+        if (!blk->isDeleted()) {
             RS_DEBUG->print("writing block: %s", (const char*)blk->getName().toLocal8Bit());
 
             DRW_Block block;
@@ -2617,7 +2617,7 @@ void RS_FilterDXFRW::writeBlocks() {
             block.basePoint.z = blk->getBasePoint().z;
             dxfW->writeBlock(&block);
             for(RS_Entity* e: lc::LC_ContainerTraverser{*blk, RS2::ResolveNone}.entities()) {
-                if ( !(e->getFlag(RS2::FlagUndone)) ) {
+                if (e->isAlive()) {
                     writeEntity(e);
                 }
             }
@@ -2686,7 +2686,7 @@ void RS_FilterDXFRW::writeHeader(DRW_Header& data){
 }
 
 void RS_FilterDXFRW::writeLType(const UTF8STRING& lTypeName, const UTF8STRING& ltDescription, int ltSize,
-                                double ltLength, const std::vector<double>& ltPath) {
+                                double ltLength, const std::vector<double>& ltPath) const {
     DRW_LType ltype;
     ltype.updateValues(lTypeName, ltDescription, ltSize, ltLength, ltPath);
     dxfW->writeLineType(&ltype);
@@ -2874,7 +2874,7 @@ void RS_FilterDXFRW::writeTextstyles(){
     QString sty;
     //Find fonts used by text entities in drawing
     for (RS_Entity* e : lc::LC_ContainerTraverser{*graphic, RS2::ResolveNone}.entities()) {
-        if (!e->isUndone()) {
+        if (!e->isDeleted()) {
             auto rtti = e->rtti();
             switch (rtti) {
                 case RS2::EntityMText:
@@ -2909,7 +2909,7 @@ void RS_FilterDXFRW::writeTextstyles(){
     for (unsigned i = 0; i < graphic->countBlocks(); i++) {
         blk = graphic->blockAt(i);
         for(RS_Entity* e: lc::LC_ContainerTraverser{*blk, RS2::ResolveNone}.entities()) {
-            if (!e->isUndone()) {
+            if (!e->isDeleted()) {
                 RS2::EntityType rtti = e->rtti();
                 switch (rtti) {
                     case RS2::EntityMText:
@@ -3444,7 +3444,7 @@ void RS_FilterDXFRW::writeAppId(){
 
 void RS_FilterDXFRW::writeEntities(){
     for(RS_Entity* e: lc::LC_ContainerTraverser{*graphic, RS2::ResolveNone}.entities()) {
-        if ( !(e->getFlag(RS2::FlagUndone)) ) {
+        if (e->isAlive()) {
             writeEntity(e);
         }
     }

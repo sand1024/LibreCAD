@@ -132,28 +132,28 @@ void LC_ModifyScaleOptions::doSetAction(RS_ActionInterface* a, bool update) {
     setIsotropicScalingFactorToActionAndView(isotrophic);
 }
 
-void LC_ModifyScaleOptions::setUseMultipleCopiesToActionAndView(bool copies) {
+void LC_ModifyScaleOptions::setUseMultipleCopiesToActionAndView(bool copies) const {
     m_action->setUseMultipleCopies(copies);
     ui->cbMultipleCopies->setChecked(copies);
     ui->sbNumberOfCopies->setEnabled(copies);
 }
 
-void LC_ModifyScaleOptions::setUseCurrentLayerToActionAndView(bool val) {
+void LC_ModifyScaleOptions::setUseCurrentLayerToActionAndView(bool val) const {
     m_action->setUseCurrentLayer(val);
     ui->cbCurrentLayer->setChecked(val);
 }
 
-void LC_ModifyScaleOptions::setUseCurrentAttributesToActionAndView(bool val) {
+void LC_ModifyScaleOptions::setUseCurrentAttributesToActionAndView(bool val) const {
     m_action->setUseCurrentAttributes(val);
     ui->cbCurrentAttr->setChecked(val);
 }
 
-void LC_ModifyScaleOptions::setKeepOriginalsToActionAndView(bool val) {
+void LC_ModifyScaleOptions::setKeepOriginalsToActionAndView(bool val) const {
     m_action->setKeepOriginals(val);
     ui->cbKeepOriginals->setChecked(val);
 }
 
-void LC_ModifyScaleOptions::setCopiesNumberToActionAndView(int number) {
+void LC_ModifyScaleOptions::setCopiesNumberToActionAndView(int number) const {
     if (number < 1) {
         number = 1;
     }
@@ -161,13 +161,13 @@ void LC_ModifyScaleOptions::setCopiesNumberToActionAndView(int number) {
     ui->sbNumberOfCopies->setValue(number);
 }
 
-void LC_ModifyScaleOptions::setIsotropicScalingFactorToActionAndView(bool val) {
+void LC_ModifyScaleOptions::setIsotropicScalingFactorToActionAndView(bool val) const {
     ui->cbIsotrpic->setChecked(val);
     m_action->setIsotropicScaling(val);
     ui->leFactorY->setEnabled(!val && !ui->cbExplicitFactor->isChecked());
 }
 
-void LC_ModifyScaleOptions::setExplicitFactorToActionAndView(bool val) {
+void LC_ModifyScaleOptions::setExplicitFactorToActionAndView(bool val) const {
     ui->cbExplicitFactor->setChecked(val);
     m_action->setExplicitFactor(val);
     ui->leFactorX->setEnabled(!val);

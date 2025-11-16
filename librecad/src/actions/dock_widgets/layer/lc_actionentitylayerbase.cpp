@@ -39,7 +39,7 @@ void LC_ActionLayerBase::onSelectionCompleted([[maybe_unused]]bool singleEntity,
     }
 }
 
-void LC_ActionLayerBase::doTrigger([[maybe_unused]]bool keepSelected) {
+void LC_ActionLayerBase::doTrigger() {
     if (!m_selectedEntities.empty()) {
         auto firstEntity = m_selectedEntities.front();
         RS_Layer* layer = firstEntity->getLayer();

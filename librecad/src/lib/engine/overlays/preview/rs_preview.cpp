@@ -36,7 +36,7 @@
  * Constructor.
  */
 RS_Preview::RS_Preview(RS_EntityContainer* parent, LC_GraphicViewport* viewport)
-        : RS_EntityContainer(parent, true), m_viewport{viewport}{
+        : LC_PreviewDocument(parent), m_viewport{viewport}{
 
 // fixme - sand - ucs - check when preview is created and whether this may be delegated to actio init?
 
@@ -50,7 +50,7 @@ RS_Preview::RS_Preview(RS_EntityContainer* parent, LC_GraphicViewport* viewport)
  * connections before that.
  */
 void RS_Preview::addEntity(RS_Entity* entity) {
-    if (!entity || entity->isUndone()) {
+    if (entity == nullptr || entity->isDeleted()) {
         return;
     }
 
@@ -80,6 +80,8 @@ void RS_Preview::addEntity(RS_Entity* entity) {
             break;
         }
         // todo - sand - hm... spline and texts are not included into limit of preview entities?
+        case RS2::EntityPolyline:
+            break;
         case RS2::EntitySpline:
             break;
         case RS2::EntityMText:
@@ -98,7 +100,6 @@ void RS_Preview::addEntity(RS_Entity* entity) {
     }
 
     if (addBorder) {
-
         RS_Line *l1, *l2, *l3, *l4;
 
         RS_Vector min = entity->getMin();
@@ -128,7 +129,7 @@ void RS_Preview::addEntity(RS_Entity* entity) {
     }
     else {
         entity->setLayer(nullptr);
-        entity->setSelected(false);
+        entity->clearSelectionFlag();
         entity->reparent(this);
         // Don't set this pen, let drawing routines decide entity->setPenToActive();
         if (refEntity) {
@@ -163,18 +164,6 @@ void RS_Preview::clear() {
     RS_EntityContainer::clear();
 }
 
-/**
- * Clones the given entity and adds the clone to the preview.
- */
-void RS_Preview::addCloneOf(RS_Entity* entity, [[maybe_unused]]LC_GraphicViewport* view) {
-    if (!entity) {
-        return;
-    }
-
-    RS_Entity* clone = entity->cloneProxy();
-    clone->reparent(this);
-    addEntity(clone);
-}
 
 /**
  * Adds all entities from 'container' to the preview (unselected).
@@ -184,12 +173,28 @@ void RS_Preview::addAllFrom(RS_EntityContainer& container, [[maybe_unused]]LC_Gr
     for(auto e: container){
         if (c < m_maxEntities) {
             RS_Entity* clone = e->cloneProxy();
-            clone->setSelected(false);
+            clone->clearSelectionFlag();
             clone->reparent(this);
 
             c+=clone->countDeep();
             addEntity(clone);
             // clone might be nullptr after this point
+        }
+    }
+}
+
+void RS_Preview::addAllFromList(const QList<RS_Entity*>& list) {
+    for (const auto e: list) {
+        if (e != nullptr) {
+            addEntity(e);
+        }
+    }
+}
+
+void RS_Preview::addAllFromList(const std::list<RS_Entity*>& list) {
+    for (const auto e: list) {
+        if (e != nullptr) {
+            addEntity(e);
         }
     }
 }
@@ -268,6 +273,6 @@ void RS_Preview::addReferenceEntitiesToContainer(RS_EntityContainer *container){
     }
 }
 
-int RS_Preview::getMaxAllowedEntities() {
+int RS_Preview::getMaxAllowedEntities() const {
     return m_maxEntities;
 }

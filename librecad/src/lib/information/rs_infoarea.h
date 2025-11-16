@@ -42,7 +42,7 @@ public:
     void reset();
     void push_back(const RS_Vector &p);
     //whether the point p is already in contour
-    bool duplicated(const RS_Vector &p);
+    bool duplicated(const RS_Vector &p) const;
     void pop_back();
     double getArea() const;
     double getCircumference();
@@ -66,7 +66,7 @@ public:
 
 private:
     void calculate();
-    double calcSubArea(const RS_Vector &p1, const RS_Vector &p2);
+    double calcSubArea(const RS_Vector &p1, const RS_Vector &p2) const;
     std::vector<RS_Vector> m_points;
     double baseY = 0.;
     double area = 0.;

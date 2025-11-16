@@ -91,7 +91,7 @@ void LC_GraphicViewRenderer::loadSettings() {
 
 void LC_GraphicViewRenderer::renderEntity(RS_Painter *painter, RS_Entity *e) {
     // check for selected entity drawing
-    if (/*!e->isContainer() && */(e->getFlag(RS2::FlagSelected) != painter->shouldDrawSelected())) {
+        if (/*!e->isContainer() && */(e->getFlag(RS2::FlagSelected) != painter->shouldDrawSelected())) {
         return;
     }
 #ifdef DEBUG_RENDERING
@@ -282,8 +282,8 @@ void LC_GraphicViewRenderer::drawEntitiesInOverlay(LC_OverlaysManager *overlaysM
         foreach (auto e, overlayContainer->getEntityList()) {
             setPenForOverlayEntity(painter, e);
             bool selected = e->isSelected();
-            // within overlays, we use temporary entities (or clones), os it's safe to modify selection state
-            e->setSelected(false);
+            // within overlays, we use temporary entities (or clones), so it's safe to modify selection flag there
+            e->clearSelectionFlag();
             e->draw(painter);
             if (selected) {
                drawEntityReferencePoints(painter, e);
@@ -315,7 +315,7 @@ void LC_GraphicViewRenderer::drawEntityReferencePoints(RS_Painter *painter, cons
     }
 }
 
-void LC_GraphicViewRenderer::drawDraftSign(RS_Painter *painter) {
+void LC_GraphicViewRenderer::drawDraftSign(RS_Painter *painter) const {
     painter->setPen(m_draftSignColor);
     painter->setFont(m_draftSignFont);
     const QSize &size = QFontMetrics(painter->font()).size(Qt::TextSingleLine, m_draftMarkText);

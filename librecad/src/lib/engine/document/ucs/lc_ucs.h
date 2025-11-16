@@ -39,32 +39,32 @@ public:
     LC_UCS();
     LC_UCS(QString name);
     virtual ~LC_UCS();
-    LC_UCS* clone();
+    LC_UCS* clone() const;
     void setOrigin(RS_Vector o);
     RS_Vector getOrigin() const {return m_ucsOrigin;}
     void setElevation(double d);
     double getElevation() const {return m_ucsElevation;}
     void setXAxis(RS_Vector pos);
-    RS_Vector getXAxis(){return m_ucsXAxis;}
+    RS_Vector getXAxis() const {return m_ucsXAxis;}
     void setYAxis(RS_Vector axis);
-    RS_Vector getYAxis(){return m_ucsYAxis;}
+    RS_Vector getYAxis() const {return m_ucsYAxis;}
     void setOrthoType(int type);
-    int getOrthoType(){return m_ucsOrthoType;}
+    int getOrthoType() const {return m_ucsOrthoType;}
     void setName(const QString &name);
     const QString getName() const;
     long getNamedUcsId() const;
     long getBaseUcsId() const;
-    bool isSameTo(LC_UCS* other);
+    bool isSameTo(LC_UCS* other) const;
     const RS_Vector getOrthoOrigin() const;
     void setOrthoOrigin(const RS_Vector &orthoOrigin);
     virtual bool isUCS() const {return true;}
     bool isTemporary() const {return m_temporary;}
     void setTemporary(bool temp){m_temporary = temp;}
-    double getXAxisDirection(){
+    double getXAxisDirection() const {
         return m_ucsXAxis.angle();
     }
-    RS2::IsoGridViewType getIsoGridViewType();
-    bool isIsometric();
+    RS2::IsoGridViewType getIsoGridViewType() const;
+    bool isIsometric() const;
     static bool isValidName(const QString &nameCandidate);
 
     enum UCSOrthoType{

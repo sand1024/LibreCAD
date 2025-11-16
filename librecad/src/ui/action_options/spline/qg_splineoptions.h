@@ -42,7 +42,7 @@ public:
     ~QG_SplineOptions() override;
 public slots:
     void onClosedClicked(bool value);
-    void undo();
+    void undo() const;
     void onDegreeIndexChanged(int index);
     void languageChange() override;
 protected:
@@ -51,7 +51,7 @@ protected:
     void doSaveSettings() override;
     void doSetAction(RS_ActionInterface *a, bool update) override;
     bool checkActionRttiValid(RS2::ActionType actionType) override;
-    void setClosedToActionAndView(bool closed);
-    void setDegreeToActionAndView(int degree);
+    void setClosedToActionAndView(bool closed) const;
+    void setDegreeToActionAndView(int degree) const;
 };
 #endif // QG_SPLINEOPTIONS_H

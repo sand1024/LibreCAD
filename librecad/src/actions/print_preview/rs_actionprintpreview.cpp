@@ -79,7 +79,7 @@ void RS_ActionPrintPreview::invokeSettingsDialog(){
     }
 }
 
-bool RS_ActionPrintPreview::isPortrait(){
+bool RS_ActionPrintPreview::isPortrait() const {
     bool landscape;
     m_graphic->getPaperFormat(&landscape);
     return !landscape;
@@ -238,7 +238,7 @@ void RS_ActionPrintPreview::resume() {
 }
 
 //printout warning in command widget
-void RS_ActionPrintPreview::printWarning(const QString& s) {
+void RS_ActionPrintPreview::printWarning(const QString& s) const {
     commandMessage(s);
 }
 
@@ -251,14 +251,14 @@ RS2::CursorType RS_ActionPrintPreview::doGetMouseCursor([[maybe_unused]] int sta
     }
 }
 
-void RS_ActionPrintPreview::center() {
+void RS_ActionPrintPreview::center() const {
     if (m_graphic) {
         m_graphic->centerToPage();
         m_viewport->zoomPage();
     }
 }
 
-void RS_ActionPrintPreview::zoomToPage(){
+void RS_ActionPrintPreview::zoomToPage() const {
     if (m_graphic) {
         m_viewport->zoomPageEx();
     }
@@ -313,7 +313,7 @@ bool RS_ActionPrintPreview::setScale(double newScale, bool autoZoom) {
     return false;
 }
 
-void RS_ActionPrintPreview::zoomPageExWithBorder(int borderSize) {
+void RS_ActionPrintPreview::zoomPageExWithBorder(int borderSize) const {
     int bBottom = m_viewport->getBorderBottom();
     int bTop = m_viewport->getBorderTop();
     int bLeft = m_viewport->getBorderLeft();
@@ -333,16 +333,16 @@ double RS_ActionPrintPreview::getScale() const{
     return ret;
 }
 
-bool RS_ActionPrintPreview::isLineWidthScaling(){
+bool RS_ActionPrintPreview::isLineWidthScaling() const {
     return m_graphicView->getLineWidthScaling();
 }
 
-void RS_ActionPrintPreview::setLineWidthScaling(bool state) {
+void RS_ActionPrintPreview::setLineWidthScaling(bool state) const {
     m_graphicView->setLineWidthScaling(state);
     redraw();
 }
 
-bool RS_ActionPrintPreview::isBlackWhite() {
+bool RS_ActionPrintPreview::isBlackWhite() const {
     LC_PrintPreviewView* printPreview = dynamic_cast<LC_PrintPreviewView *>(m_graphicView);
     if (printPreview != nullptr) {
         return printPreview->getDrawingMode() == RS2::ModeBW;
@@ -350,7 +350,7 @@ bool RS_ActionPrintPreview::isBlackWhite() {
     return false;
 }
 
-void RS_ActionPrintPreview::setBlackWhite(bool bw) {
+void RS_ActionPrintPreview::setBlackWhite(bool bw) const {
     auto* printPreview = dynamic_cast<LC_PrintPreviewView *>(m_graphicView);
     if (printPreview != nullptr) {
         if (bw) {
@@ -361,7 +361,7 @@ void RS_ActionPrintPreview::setBlackWhite(bool bw) {
     }
 }
 
-RS2::Unit RS_ActionPrintPreview::getUnit() {
+RS2::Unit RS_ActionPrintPreview::getUnit() const {
     if (m_graphic) {
         return m_graphic->getUnit();
     }
@@ -371,12 +371,12 @@ RS2::Unit RS_ActionPrintPreview::getUnit() {
 }
 
 /** set paperscale fixed */
-void RS_ActionPrintPreview::setPaperScaleFixed(bool fixed){
+void RS_ActionPrintPreview::setPaperScaleFixed(bool fixed) const {
     m_graphic->setPaperScaleFixed(fixed);
 }
 
 /** get paperscale fixed */
-bool RS_ActionPrintPreview::isPaperScaleFixed(){
+bool RS_ActionPrintPreview::isPaperScaleFixed() const {
     return m_graphic->getPaperScaleFixed();
 }
 
@@ -442,11 +442,11 @@ void RS_ActionPrintPreview::setPagesNumVertical(int pagesCount) {
     updateOptions();
 }
 
-int RS_ActionPrintPreview::getPagesNumHorizontal() {
+int RS_ActionPrintPreview::getPagesNumHorizontal() const {
     return m_graphic->getPagesNumHoriz();
 }
 
-int RS_ActionPrintPreview::getPagesNumVertical() {
+int RS_ActionPrintPreview::getPagesNumVertical() const {
     return m_graphic->getPagesNumVert();
 }
     void RS_ActionPrintPreview::updateMouseButtonHints() {

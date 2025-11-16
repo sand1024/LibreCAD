@@ -27,7 +27,7 @@
 #ifndef RS_ACTIONDRAWLINERECTANGLE_H
 #define RS_ACTIONDRAWLINERECTANGLE_H
 
-#include "rs_previewactioninterface.h"
+#include "lc_undoabledocumentmodificationaction.h"
 
 /**
  * This action class can handle user events to draw 
@@ -35,10 +35,10 @@
  *
  * @author Andrew Mustun
  */
-class RS_ActionDrawLineRectangle : public RS_PreviewActionInterface {
+class RS_ActionDrawLineRectangle : public LC_SingleEntityCreationAction{
     Q_OBJECT
 public:
-    RS_ActionDrawLineRectangle(LC_ActionContext *actionContext);
+    explicit RS_ActionDrawLineRectangle(LC_ActionContext *actionContext);
     ~RS_ActionDrawLineRectangle() override;
 protected:
     /**
@@ -57,6 +57,7 @@ protected:
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void updateMouseButtonHints() override;
-    void doTrigger() override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
 };
 #endif

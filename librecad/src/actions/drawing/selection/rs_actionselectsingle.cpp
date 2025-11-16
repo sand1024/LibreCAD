@@ -26,6 +26,7 @@
 
 #include "rs_actionselectsingle.h"
 
+#include "rs_document.h"
 #include "rs_entity.h"
 #include "rs_selection.h"
 
@@ -76,7 +77,7 @@ void RS_ActionSelectSingle::onMouseLeftButtonRelease([[maybe_unused]] int status
 
 void RS_ActionSelectSingle::doSelectEntity(RS_Entity *entityToSelect, bool selectContour) const {
     if (entityToSelect != nullptr){
-        RS_Selection s(*m_container, m_viewport);
+        RS_Selection s(m_document, m_viewport);
         // try to minimize selection clicks - and select contour based on selected entity. May be optional, but what for?
         if (entityToSelect->isAtomic() && selectContour) {
             s.selectContour(entityToSelect);
@@ -99,7 +100,7 @@ RS2::CursorType RS_ActionSelectSingle::doGetMouseCursor([[maybe_unused]] int sta
     return RS2::SelectCursor;
 }
 
-enum RS2::EntityType RS_ActionSelectSingle::getTypeToSelect(){
+enum RS2::EntityType RS_ActionSelectSingle::getTypeToSelect() const {
     return m_typeToSelect;
 }
 

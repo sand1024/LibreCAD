@@ -54,7 +54,7 @@ public:
     ~RS_EventHandler() override;
     void uncheckQAction();
     void setQAction(QAction* action, bool forceKillOtherActions);
-    QAction* getQAction();
+    QAction* getQAction() const;
 
     void back();
     void enter();

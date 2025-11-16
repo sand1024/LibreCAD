@@ -39,7 +39,7 @@ class QG_CoordinateWidget : public QWidget, public LC_GraphicViewAware,  public 
 public:
     QG_CoordinateWidget(QWidget *parent = nullptr, const char *name = nullptr, Qt::WindowFlags fl = {});
     ~QG_CoordinateWidget() override;
-    void clearContent();
+    void clearContent() const;
     void setGraphicView(RS_GraphicView* gv) override;
 public slots:
     void setCoordinates(const RS_Vector & wcsAbs, const RS_Vector & wcsDelta, bool updateFormat ); // fixme - check why updateFormat is always true

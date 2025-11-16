@@ -64,8 +64,9 @@ QModelIndex QG_BlockModel::parent ( const QModelIndex & /*index*/ ) const {
 }
 
 QModelIndex QG_BlockModel::index ( int row, int column, const QModelIndex & /*parent*/ ) const {
-    if ( row >= m_listBlock.size() || row < 0)
+    if ( row >= m_listBlock.size() || row < 0) {
         return QModelIndex();
+    }
     return createIndex ( row, column);
 }
 
@@ -84,8 +85,9 @@ void QG_BlockModel::setBlockList(RS_BlockList* bl) {
         return;
     }
     for (int i=0; i<bl->count(); ++i) {
-        if ( !bl->at(i)->isUndone() )
+        if ( !bl->at(i)->isDeleted() ) {
             m_listBlock.append(bl->at(i));
+        }
     }
     setActiveBlock(bl->getActive());
     std::sort( m_listBlock.begin(), m_listBlock.end(), blockLessThan);
@@ -358,7 +360,7 @@ void QG_BlockWidget::contextMenuEvent(QContextMenuEvent *e) {
     e->accept();
 }
 
-void QG_BlockWidget::addMenuItem(QMenu* contextMenu, RS2::ActionType actionType) {
+void QG_BlockWidget::addMenuItem(QMenu* contextMenu, RS2::ActionType actionType) const {
     auto action = m_actionGroupManager->getActionByType(actionType);
     if (action != nullptr) {
         contextMenu->addAction(action);

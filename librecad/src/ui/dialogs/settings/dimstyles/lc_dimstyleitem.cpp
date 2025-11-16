@@ -68,7 +68,7 @@ QString LC_DimStyleItem::getDisplayDimStyleName(LC_DimStyle* style) {
     return composeDisplayName(baseName, entityType);
 }
 
-bool LC_DimStyleItem::hasUsedChildren() {
+bool LC_DimStyleItem::hasUsedChildren() const {
     int childCount = m_childItems.count();
     for (int i = 0; i < childCount; ++i) {
         LC_DimStyleItem* child = m_childItems.at(i);
@@ -201,7 +201,7 @@ void LC_DimStyleItem::removeChild(LC_DimStyleItem* item) {
     item->setParentItem(nullptr);
 }
 
-void LC_DimStyleItem::collectChildren(QList<LC_DimStyleItem*>& items) {
+void LC_DimStyleItem::collectChildren(QList<LC_DimStyleItem*>& items) const {
     int childCount = m_childItems.count();
     for (int i = 0; i < childCount; ++i) {
         LC_DimStyleItem* child = m_childItems.at(i);

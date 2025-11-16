@@ -39,6 +39,7 @@
 #include "rs_entitycontainer.h"
 #include "rs_graphic.h"
 #include "rs_graphicview.h"
+#include "rs_selection.h"
 #include "rs_settings.h"
 
 /**
@@ -64,8 +65,7 @@ RS_ActionInterface::RS_ActionInterface(const char *name,
     , m_status{0}
     , m_name{name}
     , m_finished{false}
-    , m_graphic{m_container->getGraphic()}
-    , m_document{m_container->getDocument()}
+    , m_graphic{actionContext->getDocument()->getGraphic()}
     , m_actionType{actionType}{
 
     RS_DEBUG->print("RS_ActionInterface::RS_ActionInterface: Setting up action: \"%s\"", name);
@@ -100,6 +100,22 @@ RS_ActionInterface::~RS_ActionInterface(){
  */
 RS2::ActionType RS_ActionInterface::rtti() const{
 	return m_actionType;
+}
+
+void RS_ActionInterface::select(QList<RS_Entity*> list) const {
+    for (const auto e : list) {
+        m_document->select(e, true);
+    }
+}
+
+void RS_ActionInterface::unselect(QList<RS_Entity*> list) const {
+    for (const auto e : list) {
+        m_document->select(e,false);
+    }
+}
+
+void RS_ActionInterface::unselectAll() const { // fixme - review and check where it's invoked - in trigger or not. That's related to selection notification listeners invocations!!!!
+    RS_Selection::unselectAllInDocument(m_document, m_viewport);
 }
 
 /**
@@ -449,7 +465,7 @@ void RS_ActionInterface::updateOptions(const QString &tagToFocus){
     }
 }
 
-void RS_ActionInterface::updateOptionsUI(int mode){
+void RS_ActionInterface::updateOptionsUI(int mode) const {
     if (m_optionWidget != nullptr){
         m_optionWidget->updateUI(mode);
     }
@@ -530,7 +546,7 @@ QString RS_ActionInterface::command(const QString& cmd) {
     return RS_COMMANDS->command(cmd);
 }
 
-void RS_ActionInterface::switchToAction(RS2::ActionType actionType, void* data) {
+void RS_ActionInterface::switchToAction(RS2::ActionType actionType, void* data) const {
     m_actionContext->setCurrentAction(actionType, data);
 }
 
@@ -546,7 +562,7 @@ int RS_ActionInterface::getGraphicVariableInt(const QString& key, int def) const
 }
 
 void RS_ActionInterface::updateSelectionWidget() const{
-    const RS_EntityContainer::LC_SelectionInfo &info = m_container->getSelectionInfo();
+    const RS_EntityContainer::LC_SelectionInfo &info = m_document->getSelectionInfo();
     updateSelectionWidget(info.count, info.length);
 }
 
@@ -554,7 +570,7 @@ void RS_ActionInterface::updateSelectionWidget(int countSelected, double selecte
     m_actionContext->updateSelectionWidget(countSelected,selectedLength);
 }
 
-void RS_ActionInterface::setMouseCursor(const RS2::CursorType &cursor){
+void RS_ActionInterface::setMouseCursor(const RS2::CursorType &cursor) const {
     if (m_graphicView != nullptr) {
         m_graphicView->setMouseCursor(cursor);
     }
@@ -565,14 +581,14 @@ void RS_ActionInterface::setMouseCursor(const RS2::CursorType &cursor){
  * @param left left string (key for tr())
  * @param right right string (key for tr())
  */
-void RS_ActionInterface::updateMouseWidgetTRBack(const QString &msg, const LC_ModifiersInfo& modifiers){
+void RS_ActionInterface::updateMouseWidgetTRBack(const QString &msg, const LC_ModifiersInfo& modifiers) const {
     if  (m_infoCursorOverlayPrefs->enabled) {
         preparePromptForInfoCursorOverlay(msg, modifiers);
     }
     m_actionContext->updateMouseWidget(msg,tr("Back"), modifiers);
 }
 
-void RS_ActionInterface::preparePromptForInfoCursorOverlay(const QString &msg, const LC_ModifiersInfo &modifiers) {
+void RS_ActionInterface::preparePromptForInfoCursorOverlay(const QString &msg, const LC_ModifiersInfo &modifiers) const {
     QString prompt = "";
     LC_InfoCursorOverlayPrefs* prefs = getInfoCursorOverlayPrefs();
     if (prefs->showCommandPrompt){
@@ -613,7 +629,7 @@ void RS_ActionInterface::preparePromptForInfoCursorOverlay(const QString &msg, c
  * @param left left string (key for tr())
  * @param right right string (key for tr())
  */
-void RS_ActionInterface::updateMouseWidgetTRCancel(const QString &msg, const LC_ModifiersInfo& modifiers){
+void RS_ActionInterface::updateMouseWidgetTRCancel(const QString &msg, const LC_ModifiersInfo& modifiers) const {
     if (m_infoCursorOverlayPrefs->enabled) {
         preparePromptForInfoCursorOverlay(msg, modifiers);
     }
@@ -625,14 +641,14 @@ void RS_ActionInterface::updateMouseWidgetTRCancel(const QString &msg, const LC_
  * @param left string
  * @param right string
  */
-void RS_ActionInterface::updateMouseWidget(const QString& left,const QString& right, const LC_ModifiersInfo& modifiers){
+void RS_ActionInterface::updateMouseWidget(const QString& left,const QString& right, const LC_ModifiersInfo& modifiers) const {
     if (m_infoCursorOverlayPrefs->enabled) {
         preparePromptForInfoCursorOverlay(left, modifiers);
     }
     m_actionContext->updateMouseWidget(left, right, modifiers);
 }
 
-void RS_ActionInterface::clearMouseWidgetIcon(){
+void RS_ActionInterface::clearMouseWidgetIcon() const {
     m_infoCursorOverlayData->setZone4("");
 }
 
@@ -700,7 +716,6 @@ bool RS_ActionInterface::isAlt(const QInputEvent *e){
     return  e->modifiers() & Qt::AltModifier;
 }
 
-
 void RS_ActionInterface::fireCoordinateEvent(const RS_Vector &coord){
     auto ce = RS_CoordinateEvent(coord);
     coordinateEvent(&ce);
@@ -712,34 +727,52 @@ void RS_ActionInterface::initPrevious(int stat) {
 
 bool RS_ActionInterface::undoCycleAdd(RS_Entity *e, bool addToContainer) const{
     // upd. undo list:
-    if (addToContainer){
-        m_container->addEntity(e);
-    }
     if (m_document){
         undoCycleStart();
-        undoableAdd(e);
+        undoableAdd(e, addToContainer);
         undoCycleEnd();
         return true;
     }
     return false;
 }
 
+void RS_ActionInterface::undoableAdd(RS_Entity *e, bool addToContainer) const{
+    if (addToContainer){
+        m_document->addEntity(e);
+    }
+    m_document->addUndoable(e);
+}
+
+void RS_ActionInterface::undoableAddWithCurrentAttributes(RS_Entity *e) const {
+    e->setPenAndLayerToActive();
+    m_document->addEntity(e);
+    m_document->addUndoable(e);
+}
+
 /**
  * Just utility method for deleting given entity from drawing - should be called within undo cycle
  * @param entity entity to delete
  */
-void RS_ActionInterface::undoableDeleteEntity(RS_Entity *entity){
-    entity->changeUndoState();
-    undoableAdd(entity);
+void RS_ActionInterface::undoableDeleteEntity(RS_Entity *entity) const {
+    m_document->undoableDelete(entity);
 }
 
-void RS_ActionInterface::undoCycleReplace(RS_Entity *entityToReplace, RS_Entity *entityReplacing) {
-    if (m_document != nullptr) {
-        undoCycleStart();
-        undoableDeleteEntity(entityToReplace);
-        undoableAdd(entityReplacing);
-        undoCycleEnd();
+void RS_ActionInterface::undoableDeleteEntitiesList(QList<RS_Entity*> &entitiesList) const {
+    for (auto entity: entitiesList) {
+        m_document->undoableDelete(entity);
     }
+}
+
+void RS_ActionInterface::undoCycleReplace(RS_Entity *entityToReplace, RS_Entity *entityReplacing) const {
+    undoCycleStart();
+    undoableDeleteEntity(entityToReplace);
+    undoableAdd(entityReplacing);
+    undoCycleEnd();
+}
+
+void RS_ActionInterface::undoableReplace(RS_Entity* entityToReplace, RS_Entity* entityReplacing) const {
+    undoableDeleteEntity(entityToReplace);
+    undoableAdd(entityReplacing);
 }
 
 void RS_ActionInterface::undoCycleEnd() const {
@@ -751,7 +784,7 @@ void RS_ActionInterface::undoCycleEnd() const {
 }
 
 void RS_ActionInterface::undoCycleStart() const { m_document->startUndoCycle(); }
-void RS_ActionInterface::undoableAdd(RS_Undoable *e) const { m_document->addUndoable(e); }
+void RS_ActionInterface::undoableAdd(RS_Undoable *e) const { m_document->addUndoable(e); } // fixme - check usage??
 
 void RS_ActionInterface::setPenAndLayerToActive(RS_Entity *e) {
     e->setLayerToActive();

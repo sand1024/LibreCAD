@@ -50,10 +50,21 @@ void RS_ActionModifyRotate2::init(int status) {
     LC_ActionModifyBase::init(status);
 }
 
-void RS_ActionModifyRotate2::doTrigger(bool keepSelected) {
-    RS_DEBUG->print("RS_ActionModifyRotate2::trigger()");
-    RS_Modification m(*m_container, m_viewport);
-    m.rotate2(*m_actionData, m_selectedEntities,false, keepSelected);
+bool RS_ActionModifyRotate2::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+    ctx.setActiveLayerAndPen(m_actionData->useCurrentLayer, m_actionData->useCurrentAttributes);
+    return RS_Modification::rotate2(*m_actionData, m_selectedEntities,false, ctx);
+}
+
+void RS_ActionModifyRotate2::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+    if (m_actionData->keepOriginals) {
+        unselect(m_selectedEntities);
+    }
+    if (keepSelected) {
+        select(ctx.entitiesToAdd);
+    }
+}
+
+void RS_ActionModifyRotate2::doTriggerCompletion(bool success) {
     finish(false);
 }
 
@@ -80,8 +91,9 @@ void RS_ActionModifyRotate2::onMouseMoveEventSelected(int status, LC_MouseEvent 
             if (m_actionData->center1.valid){
                 mouse = getSnapAngleAwarePoint(e, m_actionData->center1, mouse, true);
                 m_actionData->center2 = mouse;
-                RS_Modification m(*m_preview, m_viewport, false);
-                m.rotate2(*m_actionData, m_selectedEntities, true, false);
+                LC_DocumentModificationBatch ctx;
+                RS_Modification::rotate2(*m_actionData, m_selectedEntities, true, ctx);
+                previewEntitiesToAdd(ctx);
 
                 if (m_showRefEntitiesOnPreview) {
                     previewRefPoint(m_actionData->center1);
@@ -142,7 +154,6 @@ void RS_ActionModifyRotate2::onCoordinateEvent(int status, [[maybe_unused]]bool 
         }
         case SetReferencePoint2: {
             m_actionData->center2 = pos;
-//            setStatus(ShowDialog);
             doPerformTrigger();
             break;
         }
@@ -187,7 +198,7 @@ RS2::CursorType RS_ActionModifyRotate2::doGetMouseCursorSelected([[maybe_unused]
     return RS2::CadCursor;
 }
 
-void RS_ActionModifyRotate2::previewRefPointsForMultipleCopies( [[maybe_unused]]const RS_Vector &mouse) {
+void RS_ActionModifyRotate2::previewRefPointsForMultipleCopies( [[maybe_unused]]const RS_Vector &mouse) const {
     int numPoints = m_actionData->number;
     if (!m_actionData->multipleCopies) {
         numPoints = 1;
@@ -211,35 +222,35 @@ LC_ActionOptionsWidget *RS_ActionModifyRotate2::createOptionsWidget() {
     return new LC_Rotate2Options();
 }
 
-void RS_ActionModifyRotate2::setAngle2(double angleRad) {
+void RS_ActionModifyRotate2::setAngle2(double angleRad) const {
     m_actionData->angle2 = toWorldAngleFromUCSBasis(angleRad);
 }
 
-void RS_ActionModifyRotate2::setAngle1(double angleRad) {
+void RS_ActionModifyRotate2::setAngle1(double angleRad) const {
     m_actionData->angle1 = toWorldAngleFromUCSBasis(angleRad);
 }
 
-double RS_ActionModifyRotate2::getAngle1() {
+double RS_ActionModifyRotate2::getAngle1() const {
     return toUCSBasisAngle(m_actionData->angle1);
 }
 
-double RS_ActionModifyRotate2::getAngle2() {
+double RS_ActionModifyRotate2::getAngle2() const {
     return toUCSBasisAngle(m_actionData->angle2);
 }
 
-void RS_ActionModifyRotate2::setUseSameAngle2ForCopies(bool b) {
+void RS_ActionModifyRotate2::setUseSameAngle2ForCopies(bool b) const {
     m_actionData->sameAngle2ForCopies = b;
 }
 
-bool RS_ActionModifyRotate2::isUseSameAngle2ForCopies() {
+bool RS_ActionModifyRotate2::isUseSameAngle2ForCopies() const {
     return m_actionData->sameAngle2ForCopies;
 }
 
-void RS_ActionModifyRotate2::setMirrorAngles(bool b) {
+void RS_ActionModifyRotate2::setMirrorAngles(bool b) const {
     m_actionData->mirrorAngles = b;
 }
 
-bool RS_ActionModifyRotate2::isMirrorAngles() {
+bool RS_ActionModifyRotate2::isMirrorAngles() const {
     return m_actionData->mirrorAngles;
 }
 

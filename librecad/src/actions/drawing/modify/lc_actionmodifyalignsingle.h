@@ -51,9 +51,9 @@ protected:
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     LC_ActionOptionsWidget *createOptionsWidget() override;
-    void previewAlignRefPoint(const RS_Vector &min, const RS_Vector &max);
-    void previewRefLines(bool drawVertical, double verticalRef, bool drawHorizontal, double horizontalRef);
-    QString prepareInfoCursorMessage(double verticalRef, bool drawVertical, double horizontalRef, bool drawHorizontal);
+    void previewAlignRefPoint(const RS_Vector &min, const RS_Vector &max) const;
+    void previewRefLines(bool drawVertical, double verticalRef, bool drawHorizontal, double horizontalRef) const;
+    QString prepareInfoCursorMessage(double verticalRef, bool drawVertical, double horizontalRef, bool drawHorizontal) const;
     void doTrigger() override;
     void previewAlign(RS_Entity* entity, double verticalRef, bool drawVertical, double horizontalRef,
                       bool drawHorizontal, const RS_Vector& alignMin, const RS_Vector& m_alignMax);

@@ -38,12 +38,12 @@ public:
 	~QG_LayerDialog() override;
 public slots:
     void setLayer( RS_Layer * l );
-    void updateLayer();
+    void updateLayer() const;
     void validate();
     void setLayerList( RS_LayerList * ll );
     void setEditLayer( bool el );
     //! @return a reference to the QLineEdit object.
-    QLineEdit* getQLineEdit ();
+    QLineEdit* getQLineEdit () const;
 protected:
     RS_Layer* m_layer;
     RS_LayerList* m_layerList;

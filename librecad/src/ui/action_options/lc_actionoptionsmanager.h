@@ -33,13 +33,13 @@ public:
     LC_ActionOptionsManager(QWidget *parent, QToolBar *optionsToolbar, LC_SnapOptionsWidgetsHolder *snapOptionsHolder);
     ~LC_ActionOptionsManager() = default;
     void setOptionWidget(QToolBar *ow);
-    void addOptionsWidget(LC_ActionOptionsWidget *options);
-    void removeOptionsWidget(LC_ActionOptionsWidget *options);
+    void addOptionsWidget(LC_ActionOptionsWidget *options) const;
+    void removeOptionsWidget(LC_ActionOptionsWidget *options) const;
     void hideSnapOptions();
     void requestSnapMiddleOptions(int *middlePoints, bool on);
     void requestSnapDistOptions(double *dist, bool on);
     void update();
-    void clearActionIcon();
+    void clearActionIcon() const;
     LC_OptionsWidgetsHolder * getActionOptionWidgetHolder() const{
         return m_actionOptionWidgetHolder;
     }

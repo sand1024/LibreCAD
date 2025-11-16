@@ -128,7 +128,7 @@ int LC_ShortcutsTreeModel::translateColumn(int column) const{
     return column;
 }
 
-QModelIndexList LC_ShortcutsTreeModel::getPersistentIndexList() {
+QModelIndexList LC_ShortcutsTreeModel::getPersistentIndexList() const {
     return persistentIndexList();
 }
 

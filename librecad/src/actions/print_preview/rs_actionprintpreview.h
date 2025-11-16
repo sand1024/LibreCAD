@@ -53,29 +53,29 @@ public:
 
     QStringList getAvailableCommands() override;
 
-    void center();
-    void zoomToPage();
+    void center() const;
+    void zoomToPage() const;
     void fit();
     bool setScale(double f, bool autoZoom = true);
     double getScale() const;
-    void printWarning(const QString& s);
+    void printWarning(const QString& s) const;
     void calcPagesNum(bool multiplePages);
-    bool isLineWidthScaling();
-    void setLineWidthScaling(bool state);
-    void setBlackWhite(bool bw);
-    bool isBlackWhite();
+    bool isLineWidthScaling() const;
+    void setLineWidthScaling(bool state) const;
+    void setBlackWhite(bool bw) const;
+    bool isBlackWhite() const;
 
-    RS2::Unit getUnit();
-    void setPaperScaleFixed(bool fixed);
-    bool isPaperScaleFixed();
+    RS2::Unit getUnit() const;
+    void setPaperScaleFixed(bool fixed) const;
+    bool isPaperScaleFixed() const;
 
-    int getPagesNumHorizontal();
+    int getPagesNumHorizontal() const;
     void setPagesNumHorizontal(int pagesCount);
-    int getPagesNumVertical();
+    int getPagesNumVertical() const;
     void setPagesNumVertical(int pagesCount);
 
     void invokeSettingsDialog();
-    bool isPortrait();
+    bool isPortrait() const;
     void setPaperOrientation(bool portrait);
 protected:
     /**
@@ -95,7 +95,7 @@ protected:
     bool doProcessCommand(int status, const QString &command) override;
     QString getAdditionalHelpMessage() override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
-    void zoomPageExWithBorder(int borderSize);
+    void zoomPageExWithBorder(int borderSize) const;
     LC_ActionOptionsWidget* createOptionsWidget() override;
 };
 #endif

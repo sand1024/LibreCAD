@@ -40,10 +40,10 @@ public:
     LC_DimStyleItem* getItemForIndex(const QModelIndex& index) const;
     void collectUnsavedItems(QList<LC_DimStyleItem*>& items) const;
     void setUsageCount(bool val) {m_showUsageCount = val;}
-    LC_DimStyleItem* getActiveStyleItem();
-    LC_DimStyleItem* getEntityStyleItem();
-    LC_DimStyleItem* getStandardItem();
-    LC_DimStyleItem* findByName(const QString& chars);
+    LC_DimStyleItem* getActiveStyleItem() const;
+    LC_DimStyleItem* getEntityStyleItem() const;
+    LC_DimStyleItem* getStandardItem() const;
+    LC_DimStyleItem* findByName(const QString& chars) const;
     void addItem(LC_DimStyleItem* item);
     void collectItemsForBaseStyleItem(QList<LC_DimStyleItem*>* list, LC_DimStyleItem* baseItem);
     void collectAllItemsForStyle(LC_DimStyle* lc_dim_style, QList<LC_DimStyleItem*>* list);
@@ -54,10 +54,10 @@ public:
     void setEntityItem(LC_DimStyleItem* item);
     void setEntityItem(const QModelIndex& model_index);
     void cleanup(bool deleteDimStyles);
-    void collectAllStyleItems(QList<LC_DimStyleItem*>& items);
+    void collectAllStyleItems(QList<LC_DimStyleItem*>& items) const;
     void mergeWith(const QList<LC_DimStyle*>& list);
-    int itemsCount();
-    LC_DimStyleItem*  rootItem() {return m_rootItem.get();}
+    int itemsCount() const;
+    LC_DimStyleItem*  rootItem() const {return m_rootItem.get();}
 private:
     void addToParent(LC_DimStyleItem* item);
     void buildTree(const QList<LC_DimStyleItem*>& list);

@@ -25,6 +25,7 @@
 **********************************************************************/
 #include "rs_actiondrawlinerectangle.h"
 
+#include "rs_document.h"
 #include "lc_actioninfomessagebuilder.h"
 #include "lc_cursoroverlayinfo.h"
 #include "rs_polyline.h"
@@ -42,13 +43,14 @@ struct RS_ActionDrawLineRectangle::ActionData {
 };
 
 RS_ActionDrawLineRectangle::RS_ActionDrawLineRectangle(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("Draw rectangles",actionContext, RS2::ActionDrawLineRectangle), m_actionData(std::make_unique<ActionData>()){
+    :LC_SingleEntityCreationAction("Draw rectangles",actionContext, RS2::ActionDrawLineRectangle),
+    m_actionData(std::make_unique<ActionData>()){
 }
 
 RS_ActionDrawLineRectangle::~RS_ActionDrawLineRectangle() = default;
 
-void RS_ActionDrawLineRectangle::doTrigger() {
-    auto *polyline = new RS_Polyline(m_container);
+RS_Entity* RS_ActionDrawLineRectangle::doTriggerCreateEntity() {
+    auto *polyline = new RS_Polyline(m_document);
 
     // create and add rectangle:
     RS_Vector worldCorner1 = m_actionData->corner1;
@@ -64,9 +66,12 @@ void RS_ActionDrawLineRectangle::doTrigger() {
     polyline->setClosed(true);
     polyline->endPolyline();
 
-    setPenAndLayerToActive(polyline);
     moveRelativeZero(worldCorner3);
-    undoCycleAdd(polyline);
+
+    return polyline;
+}
+
+void RS_ActionDrawLineRectangle::doTriggerCompletion(bool success) {
 }
 
 void RS_ActionDrawLineRectangle::onMouseMoveEvent(int status, LC_MouseEvent *e) {

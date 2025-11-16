@@ -208,7 +208,7 @@ void LC_IconColorsOptions::applyOptions(){
     qApp->setProperty(LC_SVGIconEngineAPI::KEY_ICONS_OVERRIDES_DIR,  iconOverridesDir);
 }
 
-QString LC_IconColorsOptions::getColor(LC_SVGIconEngineAPI::IconMode mode, LC_SVGIconEngineAPI::IconState state, LC_SVGIconEngineAPI::ColorType type){
+QString LC_IconColorsOptions::getColor(LC_SVGIconEngineAPI::IconMode mode, LC_SVGIconEngineAPI::IconState state, LC_SVGIconEngineAPI::ColorType type) const {
     int key = iconHashKey(mode, state, type);
     QString result = colors.value(key);
     return result;
@@ -232,7 +232,7 @@ void LC_IconColorsOptions::restore(){
     iconOverridesDir = iconOverridesDirMarkCopy;
 }
 
-bool LC_IconColorsOptions::isIconOverridesChanged(){
+bool LC_IconColorsOptions::isIconOverridesChanged() const {
     return iconOverridesDir != iconOverridesDirMarkCopy;
 }
 
@@ -299,7 +299,7 @@ bool LC_IconColorsOptions::loadFromFile(QString styleName){
     return true;
 }
 
-QString LC_IconColorsOptions::loadStyleNameFromFile(QString fileName){
+QString LC_IconColorsOptions::loadStyleNameFromFile(QString fileName) const {
     QString absFileName = iconOverridesDir;
     absFileName.append("/").append(fileName);
 

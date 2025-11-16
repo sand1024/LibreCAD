@@ -48,8 +48,8 @@ public slots:
     void setup(LC_DimStyleItem* initialStyle, QList<LC_DimStyleItem*>& items);
     QString getStyleName() const;
     void onAccept();
-    RS2::EntityType getDimensionType(){return dimType;}
-    LC_DimStyleItem* getBaseDimStyle(){return baseDimStyle;}
+    RS2::EntityType getDimensionType() const {return dimType;}
+    LC_DimStyleItem* getBaseDimStyle() const {return baseDimStyle;}
 private:
     Ui::LC_DlgNewDimStyle *ui;
     bool nameWasEntered = false;

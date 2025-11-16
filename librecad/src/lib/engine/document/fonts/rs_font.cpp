@@ -444,10 +444,10 @@ RS_Block* RS_Font::generateLffFont(const QString& key)
                 bk = letterList.find(ch);
             }
             if (nullptr != bk) {
-                RS_Entity* bk2 = bk->clone();
-                bk2->setPen(RS_Pen(RS2::FlagInvalid));
-                bk2->setLayer(nullptr);
-                letter->addEntity(bk2);
+                RS_Entity* bkClone = bk->clone();
+                bkClone->setPen(RS_Pen(RS2::FlagInvalid));
+                bkClone->setLayer(nullptr);
+                letter->addEntity(bkClone);
             }
         }
         //sequence:

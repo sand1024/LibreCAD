@@ -25,8 +25,8 @@
 #include "rs_document.h"
 #include "rs_graphicview.h"
 
-RS_EntityContainer * LC_ActionContext::getEntityContainer(){
-    return m_entityContainer;
+RS_Document * LC_ActionContext::getDocument(){
+    return m_document;
 }
 
 RS_GraphicView * LC_ActionContext::getGraphicView(){
@@ -34,29 +34,29 @@ RS_GraphicView * LC_ActionContext::getGraphicView(){
 }
 
 void LC_ActionContext::setDocumentAndView(RS_Document *document, RS_GraphicView *view){
-        m_graphicView = view;
-        m_entityContainer = document;
+    m_graphicView     = view;
+    m_document = document;
 }
 
 void LC_ActionContext::saveContextMenuActionContext(RS_Entity* entity, const RS_Vector& position, bool clearEntitySelection) {
     m_contextMenuActionEntity = entity;
     m_contextMenuClickPosition = position;
-    m_uselectContextMenuActionEntity = clearEntitySelection;
+    m_unselectContextMenuActionEntity = clearEntitySelection;
 }
 
 void LC_ActionContext::clearContextMenuActionContext() {
-    if (m_uselectContextMenuActionEntity) {
-        m_contextMenuActionEntity->setSelected(false);
+    if (m_unselectContextMenuActionEntity) {
+        m_document->unselect(m_contextMenuActionEntity);
     }
     m_contextMenuActionEntity = nullptr;
     m_contextMenuClickPosition = RS_Vector(false);
 }
 
-RS_Entity* LC_ActionContext::getContextMenuActionContextEntity() {
+RS_Entity* LC_ActionContext::getContextMenuActionContextEntity() const {
     return m_contextMenuActionEntity;
 }
 
-RS_Vector LC_ActionContext::getContextMenuActionClickPosition() {
+RS_Vector LC_ActionContext::getContextMenuActionClickPosition() const {
     return m_contextMenuClickPosition;
 }
 

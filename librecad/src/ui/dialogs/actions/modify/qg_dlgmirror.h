@@ -42,7 +42,7 @@ public:
 
 public slots:
     void setData( RS_MirrorData * d );
-    void updateData();
+    void updateData() const;
 
 protected slots:
     void languageChange();
@@ -54,7 +54,7 @@ private:
     bool useCurrentLayer = false;
     bool useCurrentAttributes = false;
 
-    void init();
+    void init() const;
 };
 
 #endif // QG_DLGMIRROR_H

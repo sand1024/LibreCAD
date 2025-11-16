@@ -78,14 +78,14 @@ public:
     }
 
     // When true, only selected items will be draw
-    bool shouldDrawSelected() {
+    bool shouldDrawSelected() const {
         return drawSelectedEntities;
     }
 
     /**
      * @return Current drawing mode.
      */
-    RS2::DrawingMode getDrawingMode() {
+    RS2::DrawingMode getDrawingMode() const {
         return drawingMode;
     }
 
@@ -104,13 +104,13 @@ public:
     void createArc(QPolygon& pa,
                    const RS_Vector& cp, double radius,
                    double a1, double a2,
-                   bool reversed);
+                   bool reversed) const;
     void createEllipse(QPolygon& pa,
                        const RS_Vector& cp,
                        double radius1, double radius2,
                        double angle,
                        double angle1, double angle2,
-                       bool reversed);
+                       bool reversed) const;
     virtual void drawCircle(const RS_Vector& cp, double radius) = 0;
     virtual void drawEllipse(const RS_Vector& cp,
                              double radius1, double radius2,

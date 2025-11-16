@@ -55,18 +55,18 @@ protected:
     LC_ActionDrawRectangle3Points* m_action = nullptr;
     Ui::LC_Rectangle3PointsOptions *ui;
     void doSetAction(RS_ActionInterface *a, bool update) override;
-    void setSnapToCornerArcCenter(bool value);
-    void setUsePolylineToActionAndView(bool value);
+    void setSnapToCornerArcCenter(bool value) const;
+    void setUsePolylineToActionAndView(bool value) const;
     void setRadiusToActionAnView(const QString& value);
     void setLenXToActionAnView(const QString& value);
     void setLenYToActionAnView(const QString& value);
     void setAngleToActionAndView(const QString &val);
-    void setCornersModeToActionAndView(int index);
+    void setCornersModeToActionAndView(int index) const;
     void setQuadrangleToActionAndView(bool value);
-    void setBaseAngleFixedToActionAndView(bool angle);
-    void setInnerAngleFixedToActionAndView(bool angle);
+    void setBaseAngleFixedToActionAndView(bool angle) const;
+    void setInnerAngleFixedToActionAndView(bool angle) const;
     void setInnerAngleToActionAndView(const QString& value);
-    void setEdgesModeToActionAndView(int index);
+    void setEdgesModeToActionAndView(int index) const;
 };
 
 #endif // LC_RECTANGLE3POINTSOPTIONS_H

@@ -32,6 +32,7 @@
 #include "lc_actioncontext.h"
 #include "lc_mdiapplicationwindow.h"
 
+class LC_PropertySheetWidget;
 class LC_ActionFactory;
 class LC_ActionGroupManager;
 class LC_ActionGroup;
@@ -102,15 +103,15 @@ public:
     ~QC_ApplicationWindow();
 
     void initSettings();
-    void storeSettings();
+    void storeSettings() const;
 
     /** Catch hotkey for giving focus to command line. */
     void keyPressEvent(QKeyEvent* e) override;
     void setRedoEnable(bool enable);
 
     void setUndoEnable(bool enable);
-    void setSaveEnable(bool enable);
-    bool loadStyleSheet(const QString &path);
+    void setSaveEnable(bool enable) const;
+    bool loadStyleSheet(const QString &path) const;
 
     bool eventFilter(QObject *obj, QEvent *event) override;
     void onViewCurrentActionChanged(RS2::ActionType actionType);
@@ -134,20 +135,20 @@ public slots:
     void slotFocus();
     void disableUIForAbsentDrawing();
     void slotKillAllActions();
-    void slotFocusCommandLine();
-    void slotFocusOptionsWidget();
-    void slotError(const QString& msg);
-    void slotShowDrawingOptions();
-    void slotShowDrawingOptionsUnits();
-    void slotWorkspacesMenuAboutToShow();
-    QMenu* createGraphicViewContentMenu(QMouseEvent* event, QG_GraphicView* view, RS_Entity* entity, const RS_Vector& pos);
+    void slotFocusCommandLine() ;
+    void slotFocusOptionsWidget() ;
+    void slotError(const QString& msg) const;
+    void slotShowDrawingOptions() const;
+    void slotShowDrawingOptionsUnits() const;
+    void slotWorkspacesMenuAboutToShow() const;
+    QMenu* createGraphicViewContentMenu(QMouseEvent* event, QG_GraphicView* view, RS_Entity* entity, const RS_Vector& pos) const;
 
     void slotWindowsMenuActivated(bool);
     void slotPenChanged(const RS_Pen& p);
 
 
     //void slotSnapsChanged(RS_SnapMode s);
-    void slotEnableActions(bool enable);
+    void slotEnableActions(bool enable) const;
     /** generates a new document for a graphic. */
     QC_MDIWindow* createNewDrawingWindow(RS_Document* doc, const QString& expectedFileName);
     /** generates a new document based in predefined template */
@@ -190,7 +191,7 @@ public slots:
     void slotViewDraft(bool toggle);
     void slotViewDraftLines(bool toggle);
     /** toggle the statusbar */
-    void slotViewStatusBar(bool toggle);
+    void slotViewStatusBar(bool toggle) ;
     void slotViewAntialiasing(bool toggle);
 
     void slotViewGridOrtho(bool toggle);
@@ -201,20 +202,20 @@ public slots:
     void slotOptionsShortcuts();
     void slotImportBlock();
     /** shows an about dlg*/
-    void showAboutWindow();
-    void openFilesOnStartup(QStringList& fileList, QSplashScreen* spash);
+    void showAboutWindow() const;
+    void openFilesOnStartup(QStringList& fileList, QSplashScreen* spash) const;
 
     /**
      * @brief slotUpdateActiveLayer
      * update layer name when active layer changed
      */
-    void slotUpdateActiveLayer();
+    void slotUpdateActiveLayer() const;
     void toggleFullscreen(bool checked);
     void toggleMainMenu(bool checked);
     void setPreviousZoomEnable(bool enable);
     void widgetOptionsDialog();
     void reloadStyleSheet();
-    void updateGridStatus(const QString&);
+    void updateGridStatus(const QString&) const;
     void showDeviceOptions();
     void updateDevice(const QString&);
     void invokeMenuCreator();
@@ -228,12 +229,12 @@ public slots:
     void restoreNamedView3();
     void restoreNamedView4();
     void restoreNamedView5();
-    void restoreNamedViewCurrent();
-    void restoreNamedView(const QString& viewName);
+    void restoreNamedViewCurrent() ;
+    void restoreNamedView(const QString& viewName) const;
     void invokeLicenseWindow() const;
-    void onNewVersionAvailable();
-    void checkForNewVersion();
-    void forceCheckForNewVersion();
+    void onNewVersionAvailable() const;
+    void checkForNewVersion() const;
+    void forceCheckForNewVersion() const;
     void slotShowEntityDescriptionOnHover(bool toggle);
 signals:
     void gridChanged(bool on);
@@ -255,14 +256,14 @@ public:
      */
     static std::unique_ptr<QC_ApplicationWindow>&  getAppWindow();
 
-    QG_PenToolBar* getPenToolBar() {return m_penToolBar;};
+    QG_PenToolBar* getPenToolBar() const {return m_penToolBar;};
 
     /**
      * Updates all grids of all graphic views.
      */
-    void updateGrids();
+    void updateGrids() const;
 
-    QG_BlockWidget* getBlockWidget(void){
+    QG_BlockWidget* getBlockWidget(void) const {
         return m_blockWidget;
     }
 
@@ -293,16 +294,16 @@ public:
     // Auto-save
     void startAutoSaveTimer(bool enabled);
 
-    int showCloseDialog(QC_MDIWindow* w, bool showSaveAll = false);
+    int showCloseDialog(QC_MDIWindow* w, bool showSaveAll = false) const;
     bool doSave(QC_MDIWindow* w, bool forceSaveAs = false);
     void activeMDIWindowChanged(QC_MDIWindow *window);
     void doClose(QC_MDIWindow* w, bool activateNext = true);
     void setupWidgetsByWindow(QC_MDIWindow *w) const;
     void updateActionsAndWidgetsForPrintPreview(bool printPreviewOn);
     void updateGridViewActions(bool isometric, RS2::IsoGridViewType type) const;
-    void fillWorkspacesList(QList<QPair<int, QString>> &list);
-    void applyWorkspaceById(int id);
-    void rebuildMenuIfNecessary();
+    void fillWorkspacesList(QList<QPair<int, QString>> &list) const;
+    void applyWorkspaceById(int id) const;
+    void rebuildMenuIfNecessary() const;
     void openFile(const QString& fileName); // Assume Unknown type
     /**
  * opens the given file.
@@ -326,7 +327,7 @@ protected:
     QC_ApplicationWindow();
     QMenu* createPopupMenu() override;
     QString getFileNameFromFullPath(const QString &path);
-    void updateCoordinateWidgetFormat();
+    void updateCoordinateWidgetFormat() const;
     void updateWidgetsAsDocumentLoaded(const QC_MDIWindow *w);
     void autoZoomAfterLoad(QG_GraphicView *graphicView);
     bool newDrawingFromTemplate(const QString &fileName, QC_MDIWindow* w = nullptr);
@@ -385,6 +386,7 @@ protected:
     QG_LayerWidget* m_layerWidget {nullptr};
     LC_LayerTreeWidget* m_layerTreeWidget {nullptr};
     LC_QuickInfoWidget* m_quickInfoWidget {nullptr};
+    LC_PropertySheetWidget* m_propertySheetWidget {nullptr};
     QG_BlockWidget* m_blockWidget {nullptr};
     QG_LibraryWidget* m_libraryWidget {nullptr};
     QG_CommandWidget* m_commandWidget {nullptr};

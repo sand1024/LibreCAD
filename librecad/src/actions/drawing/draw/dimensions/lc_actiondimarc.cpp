@@ -55,23 +55,22 @@ void LC_ActionDimArc::doInitWithContextEntity(RS_Entity* contextEntity, [[maybe_
    setArcEntity(contextEntity);
 }
 
-void LC_ActionDimArc::doTrigger() {
+RS_Entity* LC_ActionDimArc::doTriggerCreateEntity() {
     if (m_selectedArcEntity == nullptr){
         RS_DEBUG->print(RS_Debug::D_ERROR, "LC_ActionDimArc::trigger: selectedArcEntity is nullptr.\n");
-        return;
+        return nullptr;
     }
-
     if (!m_dimArcData.centre.valid){
         RS_DEBUG->print(RS_Debug::D_ERROR, "LC_ActionDimArc::trigger: dimArcData.centre is not valid.\n");
-        return;
+        return nullptr;
     }
-
-    auto newEntity= new LC_DimArc(m_container, *m_dimensionData, m_dimArcData);
-    setPenAndLayerToActive(newEntity);
+    auto newEntity = new LC_DimArc(m_document, *m_dimensionData, m_dimArcData);
     newEntity->update();
-    undoCycleAdd(newEntity);
-    setStatus(SetEntity);
+    return newEntity;
+}
 
+void LC_ActionDimArc::doTriggerCompletion(bool success) {
+    setStatus(SetEntity);
     RS_Snapper::finish();
 }
 

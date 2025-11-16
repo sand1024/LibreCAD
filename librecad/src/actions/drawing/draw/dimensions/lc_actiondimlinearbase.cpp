@@ -44,13 +44,11 @@ namespace {
     const auto dimEntityTypes = EntityTypeList{RS2::EntityDimLinear, RS2::EntityDimAligned};
 }
 
-void LC_ActionDimLinearBase::doTrigger() {
+RS_Entity* LC_ActionDimLinearBase::doTriggerCreateEntity() {
     preparePreview(m_alternateDimDirection);
-    auto *dim = createDim(m_container);
-    setPenAndLayerToActive(dim);
+    auto *dim = createDim(m_document);
     dim->update();
-    undoCycleAdd(dim);
-    RS_DEBUG->print("LC_ActionDimLinearBase::trigger(): dim added: %lu", dim->getId());
+    return dim;
 }
 
 void LC_ActionDimLinearBase::doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) {

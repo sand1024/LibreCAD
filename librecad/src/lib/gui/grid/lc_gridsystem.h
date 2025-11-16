@@ -63,9 +63,9 @@ public:
     virtual RS_Vector snapGrid(const RS_Vector &coord) const = 0;
     void createGrid(LC_GraphicViewport* view, const RS_Vector &viewZero, const RS_Vector &viewSize, const RS_Vector &metaGridWidth, const RS_Vector &gridWidth);
     void draw(RS_Painter *painter, LC_GraphicViewport* view);
-    void clearGrid();
+    void clearGrid() const;
     void setGridInfiniteState(bool hasIndefiniteAxis, bool undefinedX);
-    bool isGridDisabledByPanning(LC_GraphicViewport *view);
+    bool isGridDisabledByPanning(LC_GraphicViewport *view) const;
     bool isValid() const;
     void calculateSnapInfo(RS_Vector& viewZero,RS_Vector& viewSize,RS_Vector& metaGridWidthToUse,RS_Vector& gridWidthToUse);
 
@@ -123,9 +123,9 @@ protected:
     virtual void createMetaGridLines(const RS_Vector& min, const RS_Vector &max)  = 0;
     void drawMetaGrid(RS_Painter *painter, LC_GraphicViewport *view);
     void drawGrid(RS_Painter *painter, LC_GraphicViewport *view);
-    void drawGridPoints(RS_Painter *painter, LC_GraphicViewport *view);
+    void drawGridPoints(RS_Painter *painter, LC_GraphicViewport *view) const;
     void drawGridLines(RS_Painter *painter, LC_GraphicViewport *view);
-    int getGridPointsCount();
+    int getGridPointsCount() const;
     virtual void drawMetaGridLines(RS_Painter *painter, LC_GraphicViewport *view) = 0;
     virtual void createGridPoints(const RS_Vector &min, const RS_Vector &max,const RS_Vector &gridWidth, bool drawGridWithoutGaps, int numPointsTotal) = 0;
     virtual void createGridLines(const RS_Vector& min, const RS_Vector &max, const RS_Vector & gridWidth, bool gaps, const RS_Vector& lineOffset) = 0;

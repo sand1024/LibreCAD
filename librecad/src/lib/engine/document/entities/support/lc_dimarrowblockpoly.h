@@ -43,7 +43,7 @@ protected:
     void addVertex(double x, double y) {m_vertices.push_back({x, y});}
     void setVertex(int index, RS_Vector vertex) {m_vertices[index] = vertex;}
     void setVertex(int index, double x, double y) {m_vertices[index] = {x,y};}
-    RS_Vector vertexAt(int index){return m_vertices[index];}
+    RS_Vector vertexAt(int index) const {return m_vertices[index];}
 
     const std::vector<RS_Vector> &getVertexes() const {
         return m_vertices;

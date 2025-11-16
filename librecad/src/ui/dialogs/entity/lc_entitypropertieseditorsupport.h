@@ -56,16 +56,16 @@ protected:
     double toDouble(const QString &strValue, double notMeaningful = 0.0, double defValue = 0.0) const;
     double toDoubleAngle(const QString &strValue, double notMeaningful = 0.0, double defValue = 0.0) const;
 
-    double toWCSValue(const QString &val, double wcsDefault);
+    double toWCSValue(const QString &val, double wcsDefault) const;
     double toWCSValue(QLineEdit *ed, double wcsDefault);
-    void toUIValue(double val, QLineEdit *ed);
-    void toUIAngleDeg(double wcsAngle, QLineEdit *ed);
-    void toUIAngleDegRaw(double val, QLineEdit *ed);
+    void toUIValue(double val, QLineEdit *ed) const;
+    void toUIAngleDeg(double wcsAngle, QLineEdit *ed) const;
+    void toUIAngleDegRaw(double val, QLineEdit *ed) const;
     void toUIBool(bool val, QCheckBox *ed);
 
     double toWCSAngle(QLineEdit *ed, double wcsDefault);
-    double toWCSAngle(const QString &val, double wcsDefault);
-    double toRawAngleValue(QLineEdit *ed, double ucsDefault);
+    double toWCSAngle(const QString &val, double wcsDefault) const;
+    double toRawAngleValue(QLineEdit *ed, double ucsDefault) const;
     void toUIRaw(const RS_Vector &vect, QLineEdit *leX, QLineEdit *leY) const;
     QPair<QString, QString> toUIStrRaw(const RS_Vector &vect) const;
     RS_Vector toWCSRaw(QLineEdit *leX, const QLineEdit *leY, const RS_Vector& defs) const;

@@ -155,17 +155,17 @@ public:
 
   void update() override;
 
-  int getNumberOfLines();
+  int getNumberOfLines() const;
 
-  RS_Vector getInsertionPoint() { return data.insertionPoint; }
-  double getHeight() { return data.height; }
+  RS_Vector getInsertionPoint() const { return data.insertionPoint; }
+  double getHeight() const { return data.height; }
   void setHeight(double h) { data.height = h; }
-  double getWidth() { return data.width; }
+  double getWidth() const { return data.width; }
   void setAlignment(int a);
-  int getAlignment();
-  RS_MTextData::VAlign getVAlign() { return data.valign; }
+  int getAlignment() const;
+  RS_MTextData::VAlign getVAlign() const { return data.valign; }
   void setVAlign(RS_MTextData::VAlign va) { data.valign = va; }
-  RS_MTextData::HAlign getHAlign() { return data.halign; }
+  RS_MTextData::HAlign getHAlign() const { return data.halign; }
   void setHAlign(RS_MTextData::HAlign ha) { data.halign = ha; }
   RS_MTextData::MTextDrawingDirection getDrawingDirection() const {
     return data.drawingDirection;
@@ -226,7 +226,7 @@ protected:
         ~LC_TextLine() override = default;
 
         LC_TextLine* clone() const override;
-        const RS_Vector &getTextSize();
+        const RS_Vector &getTextSize() const;
         void setTextSize(const RS_Vector &textSize);
         const RS_Vector &getLeftBottomCorner() const;
         void setLeftBottomCorner(const RS_Vector leftBottomCorner);

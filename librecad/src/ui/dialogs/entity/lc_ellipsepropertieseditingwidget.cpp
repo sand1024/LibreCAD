@@ -68,7 +68,7 @@ void LC_EllipsePropertiesEditingWidget::setEntity(RS_Entity* entity) {
     toUIBool(m_entity->isReversed(), ui->cbReversed);
 }
 
-void LC_EllipsePropertiesEditingWidget::onCenterEditingFinished() {
+void LC_EllipsePropertiesEditingWidget::onCenterEditingFinished() const {
     m_entity->setCenter(toWCS(ui->leCenterX, ui->leCenterY, m_entity->getCenter()));
 }
 
@@ -106,7 +106,7 @@ void LC_EllipsePropertiesEditingWidget::onAngle2EditingFinished() {
     toRawAngleValue(ui->leAngle1, m_entity->getAngle1());
 }
 
-void LC_EllipsePropertiesEditingWidget::onReversedToggled([[maybe_unused]]bool checked) {
+void LC_EllipsePropertiesEditingWidget::onReversedToggled([[maybe_unused]]bool checked) const {
     m_entity->setReversed(ui->cbReversed->isChecked());
 }
 

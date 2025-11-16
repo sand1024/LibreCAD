@@ -73,7 +73,7 @@ protected:
 
     int  determineTotalPointsAmount(bool drawGridWithoutGaps) override;
 
-    void fillPointsLatticeWithGapsForMetaGrid();
+    void fillPointsLatticeWithGapsForMetaGrid() const;
 
     void determineGridBoundaries(const RS_Vector &viewZero,const RS_Vector &viewSize);
 
@@ -95,9 +95,9 @@ protected:
     void doCreateHorizontalLines(LC_Lattice *lattice, const double &start, const double &end, const double &baseY,
                                  const double &delta, const int &pointsToDraw) const;
 
-    void createGridLinesWithoutGaps(const RS_Vector &min, const RS_Vector &max);
+    void createGridLinesWithoutGaps(const RS_Vector &min, const RS_Vector &max) const;
 
-    void createGridLinesWithGaps(const RS_Vector &min, const RS_Vector &max, const RS_Vector &lineOffset);
+    void createGridLinesWithGaps(const RS_Vector &min, const RS_Vector &max, const RS_Vector &lineOffset) const;
 
     void createCellVector(const RS_Vector &gridWidth) override;
 

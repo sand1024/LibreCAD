@@ -111,15 +111,15 @@ void QG_PolylineOptions::doSetAction(RS_ActionInterface *a, bool update){
     setModeToActionAndView(mode);
 }
 
-void QG_PolylineOptions::close(){
+void QG_PolylineOptions::close() const {
     m_action->close();
 }
 
-void QG_PolylineOptions::undo(){
+void QG_PolylineOptions::undo() const {
     m_action->undo();
 }
 
-void QG_PolylineOptions::setReversedToActionAndView(bool reversed){
+void QG_PolylineOptions::setReversedToActionAndView(bool reversed) const {
     ui->rbNeg->setChecked(reversed);
     m_action->setReversed(reversed);
 }
@@ -143,7 +143,7 @@ void QG_PolylineOptions::setRadiusToActionAndView(const QString& strVal){
     }
 }
 
-void QG_PolylineOptions::setModeToActionAndView(int m){
+void QG_PolylineOptions::setModeToActionAndView(int m) const {
 //    enum Mode {
 //        Line,Right-click on the package and choose Mark for Upgrade from the context menu, or press Ctrl + U.
 //        Tangential,

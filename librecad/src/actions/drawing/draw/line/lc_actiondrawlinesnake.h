@@ -36,10 +36,10 @@ public:
     void undo();
     void redo();
     void polyline();
-    bool mayClose();
+    bool mayClose() const;
     bool mayUndo() const;
     bool mayStart() override;
-    bool mayRedo();
+    bool mayRedo() const;
     QStringList getAvailableCommands() override;
 protected:
     LC_ActionOptionsWidget* createOptionsWidget() override;
@@ -110,7 +110,7 @@ private:
 
         /// wrapper for historyIndex to avoid 'signedness' warnings where std::vector-methods expect size_t
         /// also, offset helps in close method to find starting point
-        size_t index(const int offset = 0);
+        size_t index(const int offset = 0) const;
     };
 
     /**
@@ -118,13 +118,13 @@ private:
      */
     std::unique_ptr<ActionData> m_actionData;
     void resetPoints();
-    void addHistory(HistoryAction a, const RS_Vector& p, const RS_Vector& c, const int s);
+    void addHistory(HistoryAction a, const RS_Vector& p, const RS_Vector& c, const int s) const;
     void completeLineSegment(bool close);
-    void calculateAngleSegment(double distance);
-    RS_Vector calculateAngleEndpoint(const RS_Vector &snap);
-    double defineActualSegmentAngle(double relativeAngleRad);
+    void calculateAngleSegment(double distance) const;
+    RS_Vector calculateAngleEndpoint(const RS_Vector &snap) const;
+    double defineActualSegmentAngle(double relativeAngleRad) const;
     bool isNonZeroLine(const RS_Vector &possiblePoint) const;
-    void createEntities(RS_Vector &potentialEndPoint, QList<RS_Entity *> &entitiesList);
+    void createEntities(RS_Vector &potentialEndPoint, QList<RS_Entity *> &entitiesList) const;
 protected:
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) override;
 };

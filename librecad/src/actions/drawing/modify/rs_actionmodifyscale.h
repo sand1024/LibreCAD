@@ -42,13 +42,13 @@ public:
     ~RS_ActionModifyScale() override;
 
     void init(int status) override;
-    bool isIsotropicScaling();
-    void setIsotropicScaling(bool enable);
-    double getFactorX();
-    void setFactorX(double val);
-    double getFactorY();
-    void setFactorY(double val);
-    bool isExplicitFactor();
+    bool isIsotropicScaling() const;
+    void setIsotropicScaling(bool enable) const;
+    double getFactorX() const;
+    void setFactorX(double val) const;
+    double getFactorY() const;
+    void setFactorY(double val) const;
+    bool isExplicitFactor() const;
     void setExplicitFactor(bool val);
     QStringList getAvailableCommands() override;
 protected:
@@ -67,7 +67,7 @@ protected:
     RS_Vector getTargetPoint(LC_MouseEvent* e);
     void findFactor();
     void showPreview();
-    void showPreview(RS_ScaleData &previewData);
+    void showPreview(RS_ScaleData &previewData) const;
     void determineScaleFactor(RS_ScaleData& data, const RS_Vector &reference, const RS_Vector &source, const RS_Vector &target);
     LC_ModifyOperationFlags *getModifyOperationFlags() override;
     void onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
@@ -79,8 +79,9 @@ protected:
     void tryTrigger();
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     LC_ActionOptionsWidget *createOptionsWidget() override;
-    void doTrigger(bool keepSelected) override;
-
     void onMouseMoveEventSelected(int status, LC_MouseEvent *e) override;
+    void doTriggerCompletion(bool success) override;
+    void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
 };
 #endif

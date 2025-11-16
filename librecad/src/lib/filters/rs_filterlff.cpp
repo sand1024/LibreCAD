@@ -199,7 +199,7 @@ bool RS_FilterLFF::fileExport(RS_Graphic& g, const QString& file, RS2::FormatTyp
 
             RS_DEBUG->print("block: %d", i);
 
-            if (blk && !blk->isUndone()) {
+            if (blk && !blk->isDeleted()) {
                 RS_DEBUG->print("002a: %s",
                                 (blk->getName().toLocal8Bit().data()));
 
@@ -207,7 +207,7 @@ bool RS_FilterLFF::fileExport(RS_Graphic& g, const QString& file, RS2::FormatTyp
 
                 // iterate through entities of this letter:
                 for(RS_Entity* e: lc::LC_ContainerTraverser{*blk, RS2::ResolveNone}.entities()) {
-                    if (!e->isUndone()) {
+                    if (!e->isDeleted()) {
 
                         // lines:
                         if (e->rtti()==RS2::EntityLine) {

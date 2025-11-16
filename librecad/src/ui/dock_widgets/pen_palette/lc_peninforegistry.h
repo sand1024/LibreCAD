@@ -64,8 +64,8 @@ public:
 
     static LC_PenInfoRegistry* instance();
     static RS_Color createUnchangedColor();
-    bool hasLineType(int typeCandidate);
-    bool hasLineWidth(int widthCandidate);
+    bool hasLineType(int typeCandidate) const;
+    bool hasLineWidth(int widthCandidate) const;
 private:
 
     QMap<RS2::LineType, QIcon> m_lineTypesIconMap;

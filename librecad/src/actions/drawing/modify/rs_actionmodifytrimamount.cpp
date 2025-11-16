@@ -30,6 +30,7 @@
 #include "rs_arc.h"
 #include "rs_atomicentity.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_modification.h"
 
 // fixme - sand - add support of selection of the endpoint that is fixed during length increase/descrease.
@@ -61,7 +62,7 @@ void RS_ActionModifyTrimAmount::init(int status) {
 // fixme - check if negative total length is larger than the overall length of the entity
 void RS_ActionModifyTrimAmount::doTrigger() {
     RS_DEBUG->print("RS_ActionModifyTrimAmount::trigger()");
-    RS_Modification m(*m_container, m_viewport, true);
+    RS_Modification m(m_document, m_viewport, true);
     double dist = determineDistance(m_trimEntity);
 
     bool trimStart;
@@ -99,12 +100,12 @@ void RS_ActionModifyTrimAmount::onMouseMoveEvent([[maybe_unused]]int status, LC_
     if (isAtomic(en)) {
         highlightHover(en);
         auto* atomic = static_cast<RS_AtomicEntity*>(en);
-        RS_Modification m(*m_container, m_viewport, false);
+        RS_Modification m(m_document, m_viewport, false);
         double dist = determineDistance(atomic);
         bool trimBoth = m_symmetricDistance && !m_distanceIsTotalLength;
         bool trimStart;
         bool trimEnd;
-        auto trimmed = m.trimAmount(coord, atomic, dist, trimBoth, trimStart, trimEnd, true);
+        auto trimmed = m.trimAmount(coord, atomic, dist, trimBoth, trimStart, trimEnd);
         if (trimmed != nullptr) {
             double originalLen = atomic->getLength();
             double trimmedLen = trimmed->getLength();

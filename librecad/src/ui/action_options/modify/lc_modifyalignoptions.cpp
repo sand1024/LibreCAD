@@ -118,12 +118,12 @@ void LC_ModifyAlignOptions::languageChange() {
     ui->retranslateUi(this);
 }
 
-void LC_ModifyAlignOptions::setAlignTypeToActionAndView(int type) {
+void LC_ModifyAlignOptions::setAlignTypeToActionAndView(int type) const {
     m_action->setAlignType(type);
     ui->cbAlignTo->setCurrentIndex(type);
 }
 
-void LC_ModifyAlignOptions::setVAlignToActionAndView(int valign) {
+void LC_ModifyAlignOptions::setVAlignToActionAndView(int valign) const {
     switch (valign){
       case LC_Align::Align::LEFT_TOP:{
             ui->tbVAlignTop->setChecked(true);
@@ -143,7 +143,7 @@ void LC_ModifyAlignOptions::setVAlignToActionAndView(int valign) {
     m_action->setVAlign(valign);
 }
 
-void LC_ModifyAlignOptions::setHAlignToActionAndView(int halign) {
+void LC_ModifyAlignOptions::setHAlignToActionAndView(int halign) const {
     switch (halign){
         case LC_Align::Align::LEFT_TOP:{
             ui->tbHAlignLeft->setChecked(true);
@@ -163,7 +163,7 @@ void LC_ModifyAlignOptions::setHAlignToActionAndView(int halign) {
     m_action->setHAlign(halign);
 }
 
-int LC_ModifyAlignOptions::getHAlignFromUI() {
+int LC_ModifyAlignOptions::getHAlignFromUI() const {
     if (ui->tbHAlignLeft->isChecked()) {
         return LC_Align::Align::LEFT_TOP;
     }
@@ -176,7 +176,7 @@ int LC_ModifyAlignOptions::getHAlignFromUI() {
     return LC_Align::Align::NONE;
 }
 
-int LC_ModifyAlignOptions::getVAlignFromUI() {
+int LC_ModifyAlignOptions::getVAlignFromUI() const {
     if (ui->tbVAlignTop->isChecked()) {
         return LC_Align::Align::LEFT_TOP;
     }
@@ -189,7 +189,7 @@ int LC_ModifyAlignOptions::getVAlignFromUI() {
     return LC_Align::Align::NONE;
 }
 
-void LC_ModifyAlignOptions::setAsGroupToActionAndView(bool group) {
+void LC_ModifyAlignOptions::setAsGroupToActionAndView(bool group) const {
     m_action->setAsGroup(group);
     ui->cbAsGroup->setChecked(group);
 }

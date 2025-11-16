@@ -128,7 +128,7 @@ QStringList QG_ActionHandler::getAvailableCommands() const {
  *         false: the command is not known and was probably intended for a
  *            running action.
  */
-bool QG_ActionHandler::keycode(const QString& code) {
+bool QG_ActionHandler::keycode(const QString& code) const {
     RS_DEBUG->print("QG_ActionHandler::keycode()");
 
     // keycode for new action:
@@ -150,7 +150,7 @@ bool QG_ActionHandler::keycode(const QString& code) {
  *         false: the command is not known and was probably intended for a
  *            running action.
  */
-bool QG_ActionHandler::command(const QString& cmd){
+bool QG_ActionHandler::command(const QString& cmd) const {
     if (view == nullptr) {
         return false;
     }
@@ -226,15 +226,15 @@ void QG_ActionHandler::setSnaps(RS_SnapMode const& s) const {
 // }
 
 // fixme - sand - files - rework snap middle value, it's not consistent with other actions !!!!
-void QG_ActionHandler::slotSnapMiddleManual(){
+void QG_ActionHandler::slotSnapMiddleManual() const {
   setCurrentAction(RS2::ActionSnapMiddleManual);
 }
 
-void QG_ActionHandler::slotSetRelativeZero() {
+void QG_ActionHandler::slotSetRelativeZero() const {
     setCurrentAction(RS2::ActionSetRelativeZero);
 }
 
-void QG_ActionHandler::slotLockRelativeZero(bool on){
+void QG_ActionHandler::slotLockRelativeZero(bool on) const {
     m_snapManager->setRelativeZeroLock(on);
     // calling view directly instead of action to ensure that button for action will not be unchecked after action init/finish
     view->getViewPort()->lockRelativeZero(on);

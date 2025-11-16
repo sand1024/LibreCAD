@@ -33,7 +33,7 @@ Q_OBJECT
 public:
     explicit LC_ActionSplineExplode(LC_ActionContext *actionContext);
     ~LC_ActionSplineExplode() override = default;
-    int getSegmentsCountFromDrawing();
+    int getSegmentsCountFromDrawing() const;
     bool isUseCurrentAttributes() const {return m_useCurrentAttributes;};
     void setUseCurrentAttributes(bool b) {m_useCurrentAttributes  = b;};
     bool isUseCurrentLayer() const {return m_useCurrentLayer;};
@@ -55,12 +55,12 @@ protected:
     int m_customSegmentsCount = 8;
     bool mayModifySplineEntity(RS_Entity* pEntity) override;
     RS_Entity *createPolylineByVertexes(const std::vector<RS_Vector> &strokePoints, bool closed) const;
-    int obtainSegmentsCount();
+    int obtainSegmentsCount() const;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMove(RS_Vector mouse, int status, LC_MouseEvent *e) override;
     void setEntityToModify(RS_Entity* entity) override;
     void fillStrokePoints(RS_Entity *e, int segmentsCount, std::vector<RS_Vector> &strokePoints, bool &closed) const;
-    void setupAndAddCreatedEntity(RS_Entity *createdEntity, RS_Layer *layerToSet, const RS_Pen &penToUse);
+    void setupAndAddCreatedEntity(RS_Entity *createdEntity, RS_Layer *layerToSet, const RS_Pen &penToUse) const;
     void updateMouseButtonHints() override;
     RS_Entity *createModifiedSplineEntity(RS_Entity *e, RS_Vector controlPoint, bool startDirection) override;
     LC_ActionOptionsWidget *createOptionsWidget() override;

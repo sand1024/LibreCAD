@@ -268,7 +268,7 @@ QString LC_WidgetOptionsDialog::selectFolder(QString title) {
     return folder;
 }
 
-void LC_WidgetOptionsDialog::updateUIByOptions(){
+void LC_WidgetOptionsDialog::updateUIByOptions() const {
     QString colorMain = m_iconColorsOptions.getColor(LC_SVGIconEngineAPI::AnyMode, LC_SVGIconEngineAPI::AnyState, LC_SVGIconEngineAPI::Main);
     QString colorAccent = m_iconColorsOptions.getColor(LC_SVGIconEngineAPI::AnyMode, LC_SVGIconEngineAPI::AnyState, LC_SVGIconEngineAPI::Accent);
     QString colorBack = m_iconColorsOptions.getColor(LC_SVGIconEngineAPI::AnyMode, LC_SVGIconEngineAPI::AnyState, LC_SVGIconEngineAPI::Background);

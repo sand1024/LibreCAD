@@ -50,7 +50,7 @@ public:
     void setFilteringRegexp(QString &reqgexp, bool highlightMode);
     LC_ShortcutTreeItem *getItemForIndex(const QModelIndex &index) const;
     void rebuildModel(LC_ActionGroupManager *pManager);
-    QModelIndexList getPersistentIndexList();
+    QModelIndexList getPersistentIndexList() const;
     void resetAllToDefault();
     int translateColumn(int column) const;
     bool checkForCollisions(LC_ShortcutInfo *shortcutInfo);

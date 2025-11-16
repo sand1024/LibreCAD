@@ -148,7 +148,7 @@ void LC_ActionInteractivePickAngle::onMouseMoveEvent(int status, LC_MouseEvent* 
     }
 }
 
-void LC_ActionInteractivePickAngle::updateInfoCursor2(const RS_Vector &point2, const RS_Vector &intersection) {
+void LC_ActionInteractivePickAngle::updateInfoCursor2(const RS_Vector &point2, const RS_Vector &intersection) const {
     if (m_infoCursorOverlayPrefs->enabled){
         double angle1 = intersection.angleTo(m_point1);
         double angle2 = intersection.angleTo(point2);
@@ -306,7 +306,7 @@ void LC_ActionInteractivePickAngle::updateMouseButtonHints() {
     }
 }
 
-void LC_ActionInteractivePickAngle::updateInfoCursor(const RS_Vector &mouse, const RS_Vector &point2, const RS_Vector &startPoint) {
+void LC_ActionInteractivePickAngle::updateInfoCursor(const RS_Vector &mouse, const RS_Vector &point2, const RS_Vector &startPoint) const {
     if (m_infoCursorOverlayPrefs->enabled) {
 
         double angle = LC_LineMath::angleFor3Points(m_point1, point2, mouse);
@@ -330,7 +330,7 @@ void LC_ActionInteractivePickAngle::updateInfoCursor(const RS_Vector &mouse, con
     }
 }
 
-void LC_ActionInteractivePickAngle::updateInfoCursor(const RS_Vector& mouse, const RS_Vector& startPoint) {
+void LC_ActionInteractivePickAngle::updateInfoCursor(const RS_Vector& mouse, const RS_Vector& startPoint) const {
     if (m_infoCursorOverlayPrefs->enabled){
         msg(tr("Pick Angle"))
             .linear(tr("Distance:"), startPoint.distanceTo(mouse))

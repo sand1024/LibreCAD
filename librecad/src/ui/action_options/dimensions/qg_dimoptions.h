@@ -51,17 +51,17 @@ public:
     };
 
 public slots:
-    void updateLabel();
-    void insertSign( const QString & c );
+    void updateLabel() const;
+    void insertSign( const QString & c ) const;
     void languageChange() override;
     void onAngleEditingFinished();
     void onHorClicked();
     void onVerClicked();
-    void onBaselineDistanceFreeClicked();
-    void onAngleCircleFreeClicked();
+    void onBaselineDistanceFreeClicked() const;
+    void onAngleCircleFreeClicked() const;
     void onBaselineDistanceTextChanged();
     void onAngleCircleTextChanged();
-    void onDimStyleChanged(int index);
+    void onDimStyleChanged(int index) const;
     void updateUI(int mode) override;
 protected:
     RS_ActionDimension* m_action = nullptr;

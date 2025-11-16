@@ -43,7 +43,7 @@ public:
 signals:
     void clicked();
 public slots:
-    void onIconsRefreshed();
+    void onIconsRefreshed() const;
 protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
     QIcon m_iconClockwise;

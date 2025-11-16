@@ -52,10 +52,10 @@ void LC_LinePropertiesEditingWidget::setEntity(RS_Entity* entity) {
     toUI(m_entity->getEndpoint(), ui->leEndX, ui->leEndY);
 }
 
-void LC_LinePropertiesEditingWidget::onStartEditingFinished() {
+void LC_LinePropertiesEditingWidget::onStartEditingFinished() const {
     m_entity->setStartpoint(toWCS(ui->leStartX, ui->leStartY, m_entity->getStartpoint()));
 }
 
-void LC_LinePropertiesEditingWidget::onEndEditingFinished() {
+void LC_LinePropertiesEditingWidget::onEndEditingFinished() const {
     m_entity->setEndpoint(toWCS(ui->leEndX, ui->leEndY, m_entity->getStartpoint()));
 }

@@ -60,7 +60,7 @@ public:
     QList<QAction*> entity_layer_actions;
 private:
     void initActionGroupManager(LC_ActionGroupManager* agm);
-    void createEntityLayerActions(QMap<QString, QAction*>& map, LC_ActionGroup* group);
+    void createEntityLayerActions(QMap<QString, QAction*>& map, LC_ActionGroup* group) const;
     void fillActionContainer(LC_ActionGroupManager* agm, bool useTheme);
     void createDrawLineActions(QMap<QString, QAction *> &map, QActionGroup *group) const;
     void createDrawPointsActions(QMap<QString, QAction *> &map, QActionGroup *group) const;
@@ -102,7 +102,7 @@ private:
     void setupCreatedActions(QMap<QString, QAction *> &map);
     void markNotEditableActionsShortcuts(const QMap<QString, QAction *> &map);
     void fillActionLists(QMap<QString, QAction *> &map);
-    void prepareActionsToDisableInPrintPreview(QList<QAction *> &actionsList,QMap<QString, QAction *> &map);
+    void prepareActionsToDisableInPrintPreview(QList<QAction *> &actionsList,QMap<QString, QAction *> &map) const;
     void createRestrictActions(QMap<QString, QAction *> &map, QActionGroup *group) const;
     void createRelZeroActions(QMap<QString, QAction *> &map, QActionGroup *group) const;
     void createUCSActions(QMap<QString, QAction *> &map, QActionGroup *group) const;

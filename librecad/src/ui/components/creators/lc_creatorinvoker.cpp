@@ -160,7 +160,7 @@ void LC_CreatorInvoker::createToolbar(const QString &toolbar_name, const QString
     }
 }
 
-void LC_CreatorInvoker::destroyToolbar(const QString &toolbar_name) {
+void LC_CreatorInvoker::destroyToolbar(const QString &toolbar_name) const {
     auto toolbar = m_appWindow->findChild<QToolBar *>(toolbar_name);
     delete toolbar;
 }
@@ -283,6 +283,6 @@ void LC_CreatorInvoker::loadMenuActivators() {
     LC_GROUP_END();
 }
 
-QAction *LC_CreatorInvoker::getAction(const QString &key) {
+QAction *LC_CreatorInvoker::getAction(const QString &key) const {
     return m_actionGroupManager->getActionByName(key);
 }

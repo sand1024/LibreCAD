@@ -39,14 +39,14 @@ public:
     ~LC_EllipsePropertiesEditingWidget() override;
     void setEntity(RS_Entity* entity) override;
 protected slots:
-    void onCenterEditingFinished();
+    void onCenterEditingFinished() const;
     bool updateEllipseGeometry();
     void onMajorEditingFinished();
     void onMinorEditingFinished();
     void onRotationEditingFinished();
     void onAngle1EditingFinished();
     void onAngle2EditingFinished();
-    void onReversedToggled(bool checked);
+    void onReversedToggled(bool checked) const;
 public:
     void setupInteractiveInputWidgets() override;
 private:

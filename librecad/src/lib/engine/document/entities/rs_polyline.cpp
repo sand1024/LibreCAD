@@ -251,7 +251,7 @@ std::unique_ptr<RS_Entity> RS_Polyline::createVertex(const RS_Vector& v, double 
             entity = std::make_unique<RS_Arc>(this, d);
         }
     }
-    entity->setSelected(isSelected());
+    entity->setSelectionFlag(isSelected());
     entity->setPen(RS_Pen(RS2::FlagInvalid));
     entity->setLayer(nullptr);
     return entity;
@@ -339,7 +339,7 @@ RS_Vector RS_Polyline::getEndpoint() const {
 double RS_Polyline::getClosingBulge() const{
     if (isClosed()) {
         RS_Entity const* e = last();
-        if (e && e->rtti()==RS2::EntityEllipse) {
+        if (e != nullptr && e->rtti()==RS2::EntityEllipse) {
             return static_cast<RS_Ellipse const*>(e)->getBulge();
         }
     }
@@ -470,8 +470,9 @@ bool RS_Polyline::offset(const RS_Vector& coord, const double& distance){
 
     }
     RS_Entity* en(getNearestEntity(coord, &dist, RS2::ResolveNone));
-    if(!en)
+    if(en == nullptr) {
         return false;
+    }
     int indexNearest=findEntity(en);
     //        RS_Vector vp(en->getNearestPointOnEntity(coord,false));
     //        RS_Vector direction(en->getTangentDirection(vp));
@@ -698,7 +699,7 @@ std::ostream& operator << (std::ostream& os, const RS_Polyline& l) {
  * @param refPoint
  * @return
  */
-RS_Vector RS_Polyline::getRefPointAdjacentDirection(bool previousSegment, RS_Vector& refPoint) {
+RS_Vector RS_Polyline::getRefPointAdjacentDirection(bool previousSegment, RS_Vector& refPoint) const {
     RS_Vector previous = getStartpoint();
     if (refPoint == previous){ // handle start point
         return entityAt(0)->getEndpoint();

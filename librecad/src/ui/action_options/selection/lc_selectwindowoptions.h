@@ -38,14 +38,14 @@ public:
 public slots:
     void languageChange() override;
     void onAllToggled(bool value);
-    void onTypeToggled(bool value);
+    void onTypeToggled(bool value) const;
 protected:
     Ui::LC_SelectWindowOptions *ui;
     RS_ActionSelectWindow* m_action = nullptr;
     void doSaveSettings() override;
     void doSetAction(RS_ActionInterface *a, bool update) override;
     void setSelectAllToActionAndView(bool value);
-    void setEntityTypesToActinAndView(QList<RS2::EntityType> entityTypes);
+    void setEntityTypesToActinAndView(QList<RS2::EntityType> entityTypes) const;
     void enableEntityTypes(bool enable) const;
 };
 #endif // LC_SELECTWINDOWOPTIONS_H

@@ -32,7 +32,7 @@ class LC_ActionModifyAlignRef: public LC_ActionModifyBase{
 public:
     LC_ActionModifyAlignRef(LC_ActionContext *actionContext);
     void setScale(bool val);
-    bool isScale();
+    bool isScale() const;
 protected:
     enum State{
         SetRefPoint1,
@@ -63,7 +63,9 @@ protected:
     LC_ActionOptionsWidget *createOptionsWidget() override;
     bool isAllowTriggerOnEmptySelection() override;
     void prepareAlignRefData(const RS_Vector &snap);
-    void doTrigger(bool keepSelected) override;
+    void doTriggerCompletion(bool success) override;
+    void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
 };
 
 #endif // LC_ACTIONMODIFYALIGNREF_H

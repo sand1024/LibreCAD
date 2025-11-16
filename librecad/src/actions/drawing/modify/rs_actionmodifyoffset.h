@@ -44,9 +44,9 @@ class RS_ActionModifyOffset : public LC_ActionModifyBase {
 public:
     RS_ActionModifyOffset(LC_ActionContext *actionContext);
     ~RS_ActionModifyOffset() override;
-    double getDistance();
-    void setDistance(double distance);
-    bool isFixedDistance() {return m_distanceIsFixed;};
+    double getDistance() const;
+    void setDistance(double distance) const;
+    bool isFixedDistance() const {return m_distanceIsFixed;};
     void setDistanceFixed(bool value);
 protected:
     /**
@@ -68,8 +68,10 @@ protected:
     void updateMouseButtonHintsForSelected(int status) override;
     bool isAllowTriggerOnEmptySelection() override;
     LC_ModifyOperationFlags *getModifyOperationFlags() override;
-    void doTrigger(bool keepSelected) override;
     void onMouseMoveEventSelected(int status, LC_MouseEvent *e) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
+    void doTriggerCompletion(bool success) override;
+    void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
 };
 #endif

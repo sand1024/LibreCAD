@@ -53,7 +53,7 @@ void LC_GridSystem::createGrid(
     }
 }
 
-bool LC_GridSystem::isGridDisabledByPanning(LC_GraphicViewport* view){
+bool LC_GridSystem::isGridDisabledByPanning(LC_GraphicViewport* view) const {
     return m_gridOptions->disableGridOnPanning && view->isPanning();
 }
 
@@ -166,7 +166,7 @@ void LC_GridSystem::drawGrid(RS_Painter *painter, LC_GraphicViewport *view) {
     }
 }
 
-void LC_GridSystem::drawGridPoints(RS_Painter *painter, [[maybe_unused]]LC_GraphicViewport *view) {
+void LC_GridSystem::drawGridPoints(RS_Painter *painter, [[maybe_unused]]LC_GraphicViewport *view) const {
     int pointsCount = getGridPointsCount();
     for (int i = 0; i < pointsCount; i++){
         double pX = m_gridLattice->getPointX(i);
@@ -194,7 +194,7 @@ void LC_GridSystem::doDrawLines(RS_Painter *painter, [[maybe_unused]]LC_GraphicV
     }
 }
 
-int LC_GridSystem::getGridPointsCount() {
+int LC_GridSystem::getGridPointsCount() const {
     return m_gridLattice->getPointsSize();
 }
 
@@ -207,7 +207,7 @@ bool LC_GridSystem::isNumberOfPointsValid(int numberOfPoints){
     return numberOfPoints >= 0 && numberOfPoints < maxGridPoints;
 }
 
-void LC_GridSystem::clearGrid() {
+void LC_GridSystem::clearGrid() const {
     m_gridLattice->init(0);
     if (m_metaGridLattice != nullptr){
         m_metaGridLattice->init(0);

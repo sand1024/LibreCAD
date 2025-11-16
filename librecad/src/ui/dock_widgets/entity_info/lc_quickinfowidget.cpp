@@ -539,7 +539,7 @@ void LC_QuickInfoWidget::drawPreviewPoint(const RS_Vector& vector) {
     // create preview point
     auto *entity = new RS_Point(container, vector);
     entity->setLayer(nullptr);
-    entity->setSelected(false);
+    entity->clearSelectionFlag(); // as we're in preview
     entity->reparent(m_document);
     entity->setPen(pen);
     container->addEntity(entity);
@@ -664,7 +664,7 @@ void LC_QuickInfoWidget::onSelectEntity() const {
         RS_Entity* e = findEntityById(entityId);
         if (e != nullptr){
             // entity found, do selection
-            e->setSelected(true);
+            m_document->select(e);
             m_graphicView->redraw();
         }
         else{
@@ -698,30 +698,29 @@ void LC_QuickInfoWidget::onEditEntityProperties(){
         RS_Entity *en = findEntityById(entityId);
         if (en != nullptr){
             // entity found, do editing
-            std::unique_ptr<RS_Entity> clone{en->clone()};
-            en->setSelected(true);
+            std::unique_ptr<RS_Entity> clonePtr{en->clone()};
+            en->setSelected(true); // fixme - selection - why selected?
 
-            RS_Entity* newEntity = clone.get();
-            if (RS_DIALOGFACTORY->requestModifyEntityDialog(newEntity, m_graphicView->getViewPort())){
+            RS_Entity* clone = clonePtr.get(); // fixme - Selection - RESTORE AND REWORK TO THE ACTION!!! DialogFactory does not work!!!
+            if (RS_DIALOGFACTORY->requestModifyEntityDialog(clone, m_graphicView->getViewPort())){
                 // properties changed, do edit
-                m_document->addEntity(newEntity);
+
 
                 // update widget view
-                processEntity(newEntity);
-                en->setSelected(false);
-                clone->setSelected(false);
+                processEntity(clone);
+                en->setSelected(false); // fixme - selection why selected
 
                 m_document->startUndoCycle();
-                m_document->addUndoable(newEntity);
-                en->setUndoState(true);
-                m_document->addUndoable(en);
+                clone->clearSelectionFlag();
+                m_document->undoableDelete(en);
+                m_document->undoableAdd(clone);
                 m_document->endUndoCycle();
 
-                clone.release();
+                clonePtr.release();
 
                 auto selectionInfo = m_document->getSelectionInfo();
                 LC_ActionContext* ctx =  QC_ApplicationWindow::getAppWindow().get()->getActionContext();
-                ctx->updateSelectionWidget(selectionInfo.count, selectionInfo.length);
+                ctx->updateSelectionWidget(selectionInfo.count, selectionInfo.length); // fixme - selection - notify via listener?
             }
         }
         else{ // entity not found, cleanup
@@ -750,7 +749,7 @@ void LC_QuickInfoWidget::setGraphicView(RS_GraphicView* gv){
     if (gv != nullptr){
         connect(m_graphicView, &RS_GraphicView::relativeZeroChanged, this, &LC_QuickInfoWidget::onRelativeZeroChanged);
         viewport = gv->getViewPort();
-        doc = gv->getContainer()->getDocument();
+        doc = gv->getDocument();
     }
 
     m_document = doc;

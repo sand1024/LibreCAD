@@ -65,19 +65,11 @@ void RS_ActionModifyDeleteFree::trigger(){
                     // splits up the polyline in the container:
                     RS_Polyline *pl1 = nullptr;
                     RS_Polyline *pl2 = nullptr;
-                    RS_Modification m(*m_container,m_viewport);
-                    m.splitPolyline(*m_polyline,
+                    RS_Modification m(m_document,m_viewport);
+                    m.splitPolyline(m_polyline,
                                     *m_entity1, m_actionData->v1,
                                     *m_entity2, m_actionData->v2,
                                     &pl1, &pl2);
-
-                    if (m_document != nullptr) {
-                        m_document->startUndoCycle();
-                        m_document->addUndoable(m_polyline);
-                        m_document->addUndoable(pl1);
-                        m_document->addUndoable(pl2);
-                        m_document->endUndoCycle();
-                    }
 
                     // draws the new polylines on the screen:
                     redraw(RS2::RedrawDrawing);

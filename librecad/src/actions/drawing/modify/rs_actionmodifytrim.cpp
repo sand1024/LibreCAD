@@ -30,6 +30,7 @@
 #include "rs_arc.h"
 #include "rs_atomicentity.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_ellipse.h"
 #include "rs_modification.h"
 
@@ -70,7 +71,7 @@ void RS_ActionModifyTrim::doTrigger() {
     RS_DEBUG->print("RS_ActionModifyTrim::trigger()");
 
     if (isAtomic(m_trimEntity) && m_limitEntity /* && limitEntity->isAtomic()*/) {
-        RS_Modification m(*m_container, m_viewport);
+        RS_Modification m(m_document, m_viewport);
         [[maybe_unused]] LC_TrimResult trimResult =  m.trim(m_actionData->trimCoord,  m_trimEntity,
                m_actionData->limitCoord, m_limitEntity,
                m_both);
@@ -90,7 +91,7 @@ void RS_ActionModifyTrim::previewTrim(RS_Entity* entityToTrimCandidate, RS_Entit
         if (entityToTrimCandidate->isAtomic()) {
             auto *atomicTrimCandidate = dynamic_cast<RS_AtomicEntity *>(entityToTrimCandidate);
 
-            RS_Modification m(*m_container, m_viewport);
+            RS_Modification m(m_document, m_viewport);
             LC_TrimResult trimResult = m.trim(trimCoordinates, atomicTrimCandidate,
                                               limitCoordinates, limitingEntity,
                                               m_both, true);

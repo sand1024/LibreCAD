@@ -40,13 +40,13 @@ class QG_LayerBox: public QComboBox {
 public:
     QG_LayerBox(QWidget* parent=nullptr);
     ~QG_LayerBox() override;
-    RS_Layer* getLayer() {
+    RS_Layer* getLayer() const {
         return m_currentLayer;
     }
     void setLayer(RS_Layer& layer);
     void setLayer(QString& layer);
     void init(RS_LayerList& ll, bool doShowByBlock, bool doShowUnchanged);
-	bool isUnchanged() {
+	bool isUnchanged() const {
 		return m_unchanged;
 	}
 private slots:

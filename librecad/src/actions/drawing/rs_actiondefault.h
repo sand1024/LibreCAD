@@ -59,7 +59,7 @@ public:
 
     // clear temporary entities for highlighting
     void clearHighLighting();
-    enum RS2::EntityType getTypeToSelect();
+    enum RS2::EntityType getTypeToSelect() const;
 protected:
     /**
     * Action States.
@@ -89,14 +89,19 @@ protected:
     void onMouseRightButtonPress(int status, LC_MouseEvent *e) override;
 
     void highlightHoveredEntities(LC_MouseEvent* currentMousePosition);
-    void highlightEntity(RS_Entity* entity);
+    void highlightEntity(RS_Entity* entity) const;
     void updateMouseButtonHints() override;
-    void createEditedLineDescription(RS_Line* clone, bool ctrlPressed, bool shiftPressed);
-    void createEditedArcDescription(RS_Arc* clone, bool ctrlPressed, bool shiftPressed);
-    void createEditedCircleDescription(RS_Circle* clone, bool ctrlPressed, bool shiftPressed);
-    bool isShowEntityDescriptionOnHighlight();
-    void forceUpdateInfoCursor(const LC_MouseEvent *event);
+    void createEditedLineDescription(RS_Line* clone, bool ctrlPressed, bool shiftPressed) const;
+    void createEditedArcDescription(RS_Arc* clone, bool ctrlPressed, bool shiftPressed) const;
+    void createEditedCircleDescription(RS_Circle* clone, bool ctrlPressed, bool shiftPressed) const;
+    void onMouseMovingRefCompleted(LC_MouseEvent* e);
+    void onMouseMovingCompleted(LC_MouseEvent* e);
+    bool isShowEntityDescriptionOnHighlight() const;
+    void forceUpdateInfoCursor(const LC_MouseEvent *event) const;
     RS_Entity* getClone(RS_Entity* e);
+
+    // fixme - sand - complete!
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& modificationData) override {return true;};
 
 private:
 
@@ -107,6 +112,8 @@ private:
 
     bool allowEntityQuickInfoForCTRL = false;
     bool allowEntityQuickInfoAuto = false;
-    bool m_selectWithPressedMouseOnly = true; // fixme - sand - retrieve from setting (for backward compatibility or rather historic bug support)
+    bool m_completeMovingByMousePressed = true; // fixme - selection - ADD OPTION to control this!!!!
+    bool m_selectWithPressedMouseOnly = false; // fixme - sand - ADD OPTION and retrieve from setting (for backward compatibility or rather historic bug support)
+    bool m_movingJustCompleted = false;
 };
 #endif

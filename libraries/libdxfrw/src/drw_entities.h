@@ -121,7 +121,7 @@ protected:
     //calculates extrusion axis (normal vector)
     void calculateAxis(DRW_Coord extPoint);
     //apply extrusion to @extPoint and return data in @point
-    void extrudePoint(DRW_Coord extPoint, DRW_Coord *point);
+    void extrudePoint(DRW_Coord extPoint, DRW_Coord *point) const;
     virtual bool parseDwg(DRW::Version version, dwgBuffer *buf, duint32 bs=0)=0;
     //parses dwg common start part to read entity
     virtual bool parseDwg(DRW::Version version, dwgBuffer *buf, dwgBuffer* strBuf, duint32 bs=0);
@@ -292,17 +292,17 @@ public:
      void applyExtrusion() override;
 
     //! center point in OCS
-    const DRW_Coord & center() { return basePoint; }
+    const DRW_Coord & center() const { return basePoint; }
     //! the radius of the circle
-    double radius() { return radious; }
+    double radius() const { return radious; }
     //! start angle in radians
-    double startAngle() { return staangle; }
+    double startAngle() const { return staangle; }
     //! end angle in radians
-    double endAngle() { return endangle; }
+    double endAngle() const { return endangle; }
     //! thickness
-    double thick() { return thickness; }
+    double thick() const { return thickness; }
     //! extrusion
-    const DRW_Coord & extrusion() { return extPoint; }
+    const DRW_Coord & extrusion() const { return extPoint; }
 
 protected:
     //! interpret code in dxf reading process or dispatch to inherited class
@@ -331,7 +331,7 @@ public:
         isccw = 1;
     }
 
-    void toPolyline(DRW_Polyline *pol, int parts = 128);
+    void toPolyline(DRW_Polyline *pol, int parts = 128) const;
      void applyExtrusion() override;
 
 protected:
@@ -393,19 +393,19 @@ protected:
 
 public:
     //! first corner (2D)
-    const DRW_Coord & firstCorner() { return basePoint; }
+    const DRW_Coord & firstCorner() const { return basePoint; }
     //! second corner (2D)
-    const DRW_Coord & secondCorner() { return secPoint; }
+    const DRW_Coord & secondCorner() const { return secPoint; }
     //! third corner (2D)
-    const DRW_Coord & thirdCorner() { return thirdPoint; }
+    const DRW_Coord & thirdCorner() const { return thirdPoint; }
     //! fourth corner (2D)
-    const DRW_Coord & fourthCorner() { return fourPoint; }
+    const DRW_Coord & fourthCorner() const { return fourPoint; }
     //! thickness
-    double thick() { return thickness; }
+    double thick() const { return thickness; }
     //! elevation
-    double elevation() { return basePoint.z; }
+    double elevation() const { return basePoint.z; }
     //! extrusion
-    const DRW_Coord & extrusion() { return extPoint; }
+    const DRW_Coord & extrusion() const { return extPoint; }
 
 };
 
@@ -432,13 +432,13 @@ public:
     }
 
     //! first corner in WCS
-    const DRW_Coord & firstCorner() { return basePoint; }
+    const DRW_Coord & firstCorner() const { return basePoint; }
     //! second corner in WCS
-    const DRW_Coord & secondCorner() { return secPoint; }
+    const DRW_Coord & secondCorner() const { return secPoint; }
     //! third corner in WCS
-    const DRW_Coord & thirdCorner() { return thirdPoint; }
+    const DRW_Coord & thirdCorner() const { return thirdPoint; }
     //! fourth corner in WCS
-    const DRW_Coord & fourthCorner() { return fourPoint; }
+    const DRW_Coord & fourthCorner() const { return fourPoint; }
     //! edge visibility flags
     InvisibleEdgeFlags edgeFlags() { return (InvisibleEdgeFlags)invisibleflag; }
 

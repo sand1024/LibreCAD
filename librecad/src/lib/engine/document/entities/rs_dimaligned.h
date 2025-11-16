@@ -105,7 +105,7 @@ public:
     friend std::ostream &operator<<(
         std::ostream &os,
         const RS_DimAligned &d);
-    void getDimPoints(RS_Vector &dimP1, RS_Vector &dimP2);
+    void getDimPoints(RS_Vector &dimP1, RS_Vector &dimP2) const;
 
     double getDistanceToPoint(const RS_Vector& coord,
                               RS_Entity** entity,

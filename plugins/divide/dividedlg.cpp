@@ -246,8 +246,7 @@ dividedlg::dividedlg( Document_Interface *doc, QString passedData,
                    "(if required?) to<br>draw ticks on."));
 }
 
-QFrame* dividedlg::choice(ElementKind ek, QFont font )
-{
+QFrame* dividedlg::choice(ElementKind ek, QFont font ) const {
     QString msg1 = tr("Ticks");
     QString msg2;
     QString msg3;
@@ -320,8 +319,7 @@ bool dividedlg::eventFilter( QObject * obj, QEvent * event )
 }
 
 //auto add decinal point after 6 digits
-void dividedlg::onStartAngleChangedSlot( const QString & passed )
-{
+void dividedlg::onStartAngleChangedSlot( const QString & passed ) const {
     if ( backSpace ) //allows backspace on len = 6 or -7 & decimal point
     {                //see eventFilter
         int len = passed.length();

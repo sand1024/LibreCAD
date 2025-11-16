@@ -47,23 +47,23 @@ public:
     };
 public slots:
     void updateUI(int mode) override;
-    void onCenterClicked();
-    void onZoomToPageClicked();
+    void onCenterClicked() const;
+    void onZoomToPageClicked() const;
     void onScaleLineClicked(bool state);
-    void onBlackWhiteClicked(bool on);
+    void onBlackWhiteClicked(bool on) const;
     void onFitClicked();
     void scale(const QString& newScale, bool force = false);
     void updateScaleBox(double factor);
     /** print scale fixed to saved value **/
     void onScaleFixedClicked(bool fixed);
-    void onCalcPagesNumClicked();
+    void onCalcPagesNumClicked() const;
     void onTiledPrintClicked();
-    void onSettingsClicked();
+    void onSettingsClicked() const;
     void onPortraitClicked();
     void onLandscapeClicked();
-    void setPaperOrientation(bool isPortait);
-    void onVerticalPagesValueChanges(int value);
-    void onHorizontalPagesValueChanges(int value);
+    void setPaperOrientation(bool isPortait) const;
+    void onVerticalPagesValueChanges(int value) const;
+    void onHorizontalPagesValueChanges(int value) const;
 protected:
     RS_ActionPrintPreview* m_action = nullptr;
     void doSaveSettings() override;
@@ -73,16 +73,16 @@ protected slots:
 private:
     int m_defaultScalesStartIndex = 1;
     std::unique_ptr<Ui::Ui_PrintPreviewOptions> ui;
-    bool isUseImperialScales();
+    bool isUseImperialScales() const;
     void initializeScaleBoxItems();
     double parseScaleString(const QString &scaleText, bool& parseOk) const;
-    bool addScaleToScaleCombobox(const QString &scaleString);
+    bool addScaleToScaleCombobox(const QString &scaleString) const;
     void addScalesToCombobox(QStringList &scales);
-    void setScaleFixedToUI(bool fixed);
-    void setScaleLineToUI(bool state);
+    void setScaleFixedToUI(bool fixed) const;
+    void setScaleLineToUI(bool state) const;
     QStringList readCustomRatios(bool metric);
     void saveCustomRatios();
     void fitPage();
-    void updatePageNumbers();
+    void updatePageNumbers() const;
 };
 #endif // QG_PRINTPREVIEWOPTIONS_H

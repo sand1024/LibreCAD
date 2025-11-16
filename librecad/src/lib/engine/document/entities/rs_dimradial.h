@@ -86,10 +86,10 @@ public:
 	QString getMeasuredLabel() override;
 
 
-    RS_Vector getDefinitionPoint() {
+    RS_Vector getDefinitionPoint() const {
         return m_dimRadialData.definitionPoint;
     }
-    double getLeader() {
+    double getLeader() const {
         return m_dimRadialData.leader;
     }
 

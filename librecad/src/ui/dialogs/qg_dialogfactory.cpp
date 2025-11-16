@@ -699,7 +699,9 @@ bool QG_DialogFactory::requestRotate2Dialog(RS_Rotate2Data& data) {
 
 // fixme - sand - files - remove from there, move to action or so (introduces additional dependencies)
 bool QG_DialogFactory::requestModifyEntityDialog(RS_Entity *entity, [[maybe_unused]]LC_GraphicViewport *viewport) {
-    if (!entity) return false;
+    if (entity == nullptr) {
+        return false;
+    }
 
     bool ret = false;
 

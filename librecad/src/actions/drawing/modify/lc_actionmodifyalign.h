@@ -48,7 +48,7 @@ protected:
 class LC_ActionModifyAlign:public LC_ActionPreSelectionAwareBase, public LC_ActionModifyAlignData {
     Q_OBJECT
 public:
-    LC_ActionModifyAlign(LC_ActionContext *actionContext);
+    explicit LC_ActionModifyAlign(LC_ActionContext *actionContext);
     void setAlignType(int a) override;
     void init(int status) override;
 protected:
@@ -62,12 +62,15 @@ protected:
     RS2::CursorType doGetMouseCursorSelected(int status) override;
     bool isAllowTriggerOnEmptySelection() override;
     void onMouseMoveEventSelected(int status, LC_MouseEvent *e) override;
-    RS_Vector createAlignedEntities(QList<RS_Entity *> &list, RS_Vector min, RS_Vector max, bool previewOnly);
-    RS_Vector getReferencePoint(const RS_Vector &min, const RS_Vector &max);
+    RS_Vector createAlignedEntities(QList<RS_Entity *> &clonesList, RS_Vector min, RS_Vector max, bool previewOnly);
+    RS_Vector getReferencePoint(const RS_Vector &min, const RS_Vector &max) const;
     void onSelectionCompleted(bool singleEntity, bool fromInit) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
-    void doTrigger(bool selected) override;
-    void previewRefLines(bool drawVertical, double verticalRef, bool drawHorizontal, double horizontalRef);
+    bool isTriggerUndoable() override {return true;}
+    void previewRefLines(bool drawVertical, double verticalRef, bool drawHorizontal, double horizontalRef) const;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
+    void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
 };
 
 #endif // LC_ACTIONMODIFYALIGN_H

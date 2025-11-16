@@ -33,8 +33,11 @@ public:
 protected:
      void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
      void updateMouseButtonHintsForSelection() override;
-    void doTrigger(bool keepSelected) override;
-    bool isAllowTriggerOnEmptySelection() override;
+     bool isTriggerUndoable() override {return true;}
+     bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& modificationData) override;
+     void doTriggerCompletion(bool success) override;
+     void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
+     bool isAllowTriggerOnEmptySelection() override;
 };
 
 #endif // LC_ACTIONDIMORDINATEREBASE_H

@@ -44,6 +44,7 @@
 #include "rs_graphicview.h"
 #include "rs_layer.h"
 #include "rs_modification.h"
+#include "rs_selection.h"
 #include "rs_settings.h"
 
 
@@ -94,14 +95,12 @@ LC_PenPaletteWidget::LC_PenPaletteWidget(const QString& title, QWidget* parent) 
     delete pItem;
 
     int settingsWidgetPosition = gridLayout->indexOf(tbSettings);
-//     int settingsWidgetPosition = gridLayout->indexOf(laySettings);
-     QLayoutItem *pLayoutItem = gridLayout->takeAt(settingsWidgetPosition);
-     delete pLayoutItem;
+    QLayoutItem *pLayoutItem = gridLayout->takeAt(settingsWidgetPosition);
+    delete pLayoutItem;
 
     gridLayout->addLayout(layButtonsFlex, 0, 0, 1, 1);
     gridLayout->addWidget(tbSettings, 0,1,1,1);
-   //  gridLayout->addLayout(laySettings, 0,1,1,1);
-   gridLayout->setAlignment(tbSettings,Qt::AlignTop);
+    gridLayout->setAlignment(tbSettings,Qt::AlignTop);
 
     // make controls flexible
 
@@ -295,7 +294,7 @@ void LC_PenPaletteWidget::onTableViewContextMenuInvoked([[maybe_unused]] const Q
 /**
  * Handles changes in the model to properly update remove button
  */
-void LC_PenPaletteWidget::onModelChanged(){
+void LC_PenPaletteWidget::onModelChanged() const {
     int count = m_penPaletteModel->rowCount(QModelIndex());
     bool hasActivePen  = m_penPaletteModel->getActivePen() != nullptr;
     tbRemove->setEnabled((count > 0) && hasActivePen);
@@ -368,7 +367,7 @@ void LC_PenPaletteWidget::onTableRowDoubleClicked(){
  */
 void LC_PenPaletteWidget::onTableSelectionChanged(
     const QItemSelection &selected,
-        const QItemSelection &deselected){
+        const QItemSelection &deselected) const {
 
     QItemSelectionModel *selectionModel {tableView->selectionModel()};
 
@@ -484,7 +483,7 @@ void LC_PenPaletteWidget::applySelectedPenToSelection(){
 /**
  * Applies pen from editor to selected entities in drawing
  */
-void LC_PenPaletteWidget::applyEditorPenToSelection(){
+void LC_PenPaletteWidget::applyEditorPenToSelection() const {
     RS2::LineType lineType;
     int lineTypeIndex = cbType->currentIndex();
     lineType = RS2::LineType::LineTypeUnchanged;
@@ -519,20 +518,29 @@ void LC_PenPaletteWidget::applyEditorPenToSelection(){
  * @param color
  * @param modifyColor
  */
-void LC_PenPaletteWidget::doApplyPenAttributesToSelection(RS2::LineType lineType, RS2::LineWidth width, RS_Color color, bool modifyColor){
+void LC_PenPaletteWidget::doApplyPenAttributesToSelection(RS2::LineType lineType, RS2::LineWidth width, RS_Color color, bool modifyColor) const {
 
     if (m_graphicView != nullptr){
         RS_AttributesData data;
         data.pen = RS_Pen(color, width, lineType);
-        data.layer = "0";
         data.changeColor = modifyColor;
         data.changeLineType = lineType != RS2::LineTypeUnchanged;
         data.changeWidth = width != RS2::WidthUnchanged;
         data.changeLayer = false;
 
-        RS_EntityContainer container = m_graphicView->getContainer();
-        RS_Modification m(container, m_graphicView->getViewPort());
-        m.changeAttributes(data, false);
+        auto doc = m_graphicView->getDocument();
+        // fixme - rework and move outside?
+        LC_DocumentModificationBatch batch;
+        auto selectedSet                    = doc->getSelectedSet();
+        if (!selectedSet->isEmpty()) {
+            QList<RS_Entity*> selectedEntities;
+            selectedSet->collecteSelectedEntities(selectedEntities);
+            RS_Modification::changeAttributes(selectedEntities, data, batch);
+            doc->startUndoCycle();
+            doc->modify(batch);
+            // fixme - keep entities selected?
+            doc->endUndoCycle();
+        }
     }
 }
 
@@ -616,7 +624,7 @@ void LC_PenPaletteWidget::doSelectEntitiesBySelectedPenItem(bool resolvePens, bo
 /**
  * Selects entities with pen attributes as it is set in editor pen
  */
-void LC_PenPaletteWidget::selectEntitiesWithAttributesPenByPenEditor(){
+void LC_PenPaletteWidget::selectEntitiesWithAttributesPenByPenEditor() const {
     bool resolvePens = false;
     bool resolveLayers  = false;
     doSelectEntitiesByPenEditor(resolvePens, resolveLayers);
@@ -625,7 +633,7 @@ void LC_PenPaletteWidget::selectEntitiesWithAttributesPenByPenEditor(){
 /**
  * Selects entities with drawing pen attributes as it is set in editor pen
  */
-void LC_PenPaletteWidget::selectEntitiesWithDrawingPenByPenEditor(){
+void LC_PenPaletteWidget::selectEntitiesWithDrawingPenByPenEditor() const {
     bool resolvePens = true;
     bool resolveLayers  = true;
     doSelectEntitiesByPenEditor(resolvePens, resolveLayers);
@@ -636,7 +644,7 @@ void LC_PenPaletteWidget::selectEntitiesWithDrawingPenByPenEditor(){
  * @param resolvePens - true if entity's pen should be resolved, false otherwise
  * @param resolveLayers  - true entity's layer should be resolve, false otherwise
  */
-void LC_PenPaletteWidget::doSelectEntitiesByPenEditor(bool resolvePens, bool resolveLayers){
+void LC_PenPaletteWidget::doSelectEntitiesByPenEditor(bool resolvePens, bool resolveLayers) const {
     RS2::LineType lineType;
     int lineTypeIndex = cbType->currentIndex();
     lineType = RS2::LineTypeUnchanged;
@@ -683,6 +691,7 @@ void LC_PenPaletteWidget::doSelectEntitiesThatMatchToPenAttributes(
     int selectedCount = 0;
     int hasEntitiesOnFrozenLayers = false;
     int hasEntitiesOnLockedLayers = false;
+    QList<RS_Entity*> entitiesToSelect;
         foreach (auto e, graphic->getEntityList()) {
 
             // based on parameter, we'll use either entity's attributes pen - or resolved pen that is actually used for drawing
@@ -719,10 +728,12 @@ void LC_PenPaletteWidget::doSelectEntitiesThatMatchToPenAttributes(
                 hasEntitiesOnLockedLayers = true;
             } else {
                 // we are on normal layer and entity is matched - so simply select it
-                e->setSelected(true);
+                entitiesToSelect.append(e);
                 selectedCount++;
             }
         }
+
+
 
     if (selectedCount == 0){
         // no entities are actually selected
@@ -732,6 +743,7 @@ void LC_PenPaletteWidget::doSelectEntitiesThatMatchToPenAttributes(
         }
     } else {
         // just update drawing with selected entities
+        RS_Selection::selectEntitiesList(m_graphicView->getDocument(), m_graphicView->getViewPort(), entitiesToSelect, true);
         redrawDrawing();
     }
 }
@@ -743,9 +755,10 @@ void LC_PenPaletteWidget::doSelectEntitiesThatMatchToPenAttributes(
  * Therefore, if it is necessary to return active pen to "by layer" state, it's necessary to do this manually and set all 3 attributes of pen there.
  * This method eliminates that and simply sets the pen of active layer to pen toolbar in one click.
  */
-void LC_PenPaletteWidget::updatePenToolbarByActiveLayer(){
-    if (!isVisible())
+void LC_PenPaletteWidget::updatePenToolbarByActiveLayer() const {
+    if (!isVisible()) {
         return;
+    }
     QG_PenToolBar *penToolBar = QC_ApplicationWindow::getAppWindow()->getPenToolBar();
     if (penToolBar != nullptr){
         if (m_layerList != nullptr){
@@ -764,11 +777,10 @@ void LC_PenPaletteWidget::updatePenToolbarByActiveLayer(){
  *  Applies attributes of pen in the editor to the pen toolbar.
  *  Only attributes that are not "unchanged" are applied.
  */
-void LC_PenPaletteWidget::applyEditorPenToPenToolBar(){
+void LC_PenPaletteWidget::applyEditorPenToPenToolBar() const {
     QG_PenToolBar *penToolBar = QC_ApplicationWindow::getAppWindow()->getPenToolBar();
 
     if (penToolBar != nullptr){
-
         if (m_layerList != nullptr){
             RS_Layer* layer = m_layerList->getActive();
             if (layer != nullptr){
@@ -988,7 +1000,7 @@ void LC_PenPaletteWidget::applySelectedPenItemToActiveLayer(){
  * expect existence of only one selected item.
  * @return selected pen item or null if none
  */
-LC_PenItem *LC_PenPaletteWidget::getSelectedPenItem(){
+LC_PenItem *LC_PenPaletteWidget::getSelectedPenItem() const {
     LC_PenItem *selectedPenItem = nullptr;
     QModelIndex selectedIndex = getSelectedItemIndex();
     if (selectedIndex.isValid()){
@@ -1001,7 +1013,7 @@ LC_PenItem *LC_PenPaletteWidget::getSelectedPenItem(){
  * Returns list of pen items selected in pens table
  * @return list of selected items (empty list if none)
  */
-QList<LC_PenItem *> LC_PenPaletteWidget::getSelectedPenItems(){
+QList<LC_PenItem *> LC_PenPaletteWidget::getSelectedPenItems() const {
     QList<LC_PenItem *> result;
     QModelIndexList selectedIndexes = tableView->selectionModel()->selectedRows();
     int count = selectedIndexes.size();
@@ -1019,7 +1031,7 @@ QList<LC_PenItem *> LC_PenPaletteWidget::getSelectedPenItems(){
  * Utility method that returns only one selected pen item
  * @return selected item (or null if no selection or more than one item is selected)
  */
-QModelIndex LC_PenPaletteWidget::getSelectedItemIndex(){
+QModelIndex LC_PenPaletteWidget::getSelectedItemIndex() const {
     QModelIndex result;
     QModelIndexList selectedIndexes = tableView->selectionModel()->selectedRows();
     if (selectedIndexes.size() == 1){ // only one selected item is expected
@@ -1047,7 +1059,7 @@ void LC_PenPaletteWidget::fillPenEditorByActiveLayer(){
  * @param originalPen original pen to which attributes from pen editor will be applied
  * @return copy of original pen with applied pen attributes from editor
  */
-RS_Pen LC_PenPaletteWidget::createPenByEditor(const RS_Pen &originalPen){
+RS_Pen LC_PenPaletteWidget::createPenByEditor(const RS_Pen &originalPen) const {
     RS_Pen penCopy = RS_Pen(originalPen);
 
     // apply linetype
@@ -1108,7 +1120,7 @@ RS_Pen LC_PenPaletteWidget::createPenByPenItem(RS_Pen &originalPen, LC_PenItem *
 /**
  * Applies pen attributes that are in pen editor to active layer.
  */
-void LC_PenPaletteWidget::applyEditorPenToActiveLayer(){
+void LC_PenPaletteWidget::applyEditorPenToActiveLayer() const {
     if (m_layerList != nullptr){
         RS_Layer* layer = m_layerList->getActive();
         if (layer != nullptr){
@@ -1132,7 +1144,7 @@ void LC_PenPaletteWidget::applyEditorPenToActiveLayer(){
  * Handles changes in filtering section (text or mode flag).
  * Simpy stores the value of filtering mode in setting and updates table model accordingly
  */
-void LC_PenPaletteWidget::filterMaskChanged(){
+void LC_PenPaletteWidget::filterMaskChanged() const {
     QString mask = leFilterMask->text();
     bool highlightMode = cbHighlightMode->isChecked();
 
@@ -1150,7 +1162,7 @@ void LC_PenPaletteWidget::filterMaskChanged(){
 /**
  * Updates table view and pens model
  */
-void LC_PenPaletteWidget::updateModel(){
+void LC_PenPaletteWidget::updateModel() const {
     // complete rebuild of the model and update of UI
     int yPos = tableView->verticalScrollBar()->value();
     tableView->verticalScrollBar()->setValue(yPos);
@@ -1182,7 +1194,7 @@ void LC_PenPaletteWidget::fillPenEditorByPenItem(LC_PenItem *pen){
  *  Fill pen editor by attributes from given pen
  * @param pen pen with attributes
  */
-void LC_PenPaletteWidget::doFillPenEditorByPen(RS_Pen pen){    
+void LC_PenPaletteWidget::doFillPenEditorByPen(const RS_Pen& pen){
     lePenName->setText("");
     RS_Color color = pen.getColor();
     RS2::LineWidth width = pen.getWidth();
@@ -1288,7 +1300,7 @@ void LC_PenPaletteWidget::setGraphicView(RS_GraphicView *gv){
     }
 }
 
-void LC_PenPaletteWidget::persist() {
+void LC_PenPaletteWidget::persist() const {
     m_penPaletteData ->saveItems();
 }
 
@@ -1406,7 +1418,7 @@ bool LC_PenPaletteWidget::invokeUnableToSavePenDataDialog(){
     return result;
 }
 
-void LC_PenPaletteWidget::updateWidgetSettings(){
+void LC_PenPaletteWidget::updateWidgetSettings() const {
     LC_GROUP("Widgets"); {
         bool flatIcons = LC_GET_BOOL("DockWidgetsFlatIcons", true);
         int iconSize = LC_GET_INT("DockWidgetsIconSize", 16);

@@ -72,7 +72,7 @@ void QG_MTextOptions::doSetAction(RS_ActionInterface *a, bool update){
     ui->leAngle->setText(angle);
 }
 
-void QG_MTextOptions::updateText() {
+void QG_MTextOptions::updateText() const {
     if (m_action) {
         /*#if defined(OOPL_VERSION) && defined(Q_WS_WIN)
                 QCString iso = RS_System::localeToISO( QTextCodec::locale() );

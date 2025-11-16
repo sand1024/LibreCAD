@@ -88,7 +88,7 @@ LC_DimStylePreviewGraphicView* LC_DimStylePreviewGraphicView::createAndSetupView
     actionHandler->setActionContext(actionContext);
     auto* result = new LC_DimStylePreviewGraphicView(parent, actionContext);
     actionHandler->setDocumentAndView(graphic->getDocument(), result);
-    result->setContainer(graphic);
+    result->setDocument(graphic);
     auto viewport = result->getViewPort();
     viewport->setBorders(15,15,15,15);
 
@@ -149,14 +149,13 @@ LC_DimStylePreviewGraphicView* LC_DimStylePreviewGraphicView::init(QWidget* pare
     graphic->newDoc();
 
     auto clone = dimension->clone();
-
     graphic->getDocument()->addEntity(clone);
 
     copyBlocks(originalGraphic, graphic);
     return createAndSetupView(parent, graphic, originalGraphic, false);
 }
 
-void LC_DimStylePreviewGraphicView::hideNonRelevantLayers(RS2::EntityType dimType) {
+void LC_DimStylePreviewGraphicView::hideNonRelevantLayers(RS2::EntityType dimType) const {
     if (dimType == RS2::EntityUnknown) {
         auto layersList = getGraphic(false)->getLayerList();
         for (auto layer: *layersList) {
@@ -215,7 +214,7 @@ void LC_DimStylePreviewGraphicView::refresh() {
     repaint();
 }
 
-void LC_DimStylePreviewGraphicView::addDimStyle(LC_DimStyle* dimStyle) {
+void LC_DimStylePreviewGraphicView::addDimStyle(LC_DimStyle* dimStyle) const {
     auto* graphic = dynamic_cast<LC_PreviewGraphic*>(getGraphic());
     graphic->addDimStyle(dimStyle);
 }
@@ -228,7 +227,7 @@ void LC_DimStylePreviewGraphicView::setDimStyle(LC_DimStyle* dimStyle) {
     hideNonRelevantLayers(dimType);
 }
 
-void LC_DimStylePreviewGraphicView::setEntityDimStyle(LC_DimStyle* dimStyle, bool override, const QString& baseName) {
+void LC_DimStylePreviewGraphicView::setEntityDimStyle(LC_DimStyle* dimStyle, bool override, const QString& baseName) const {
     auto* graphic = dynamic_cast<LC_PreviewGraphic*>(getGraphic());
     auto doc = graphic->getDocument();
 
@@ -250,7 +249,7 @@ void LC_DimStylePreviewGraphicView::setEntityDimStyle(LC_DimStyle* dimStyle, boo
     }
 }
 
-void LC_DimStylePreviewGraphicView::setEntityPen(const RS_Pen &pen) {
+void LC_DimStylePreviewGraphicView::setEntityPen(const RS_Pen &pen) const {
     auto* graphic = dynamic_cast<LC_PreviewGraphic*>(getGraphic());
     auto doc = graphic->getDocument();
 
@@ -264,7 +263,7 @@ void LC_DimStylePreviewGraphicView::setEntityPen(const RS_Pen &pen) {
     }
 }
 
-void LC_DimStylePreviewGraphicView::setEntityArrowsFlipMode(bool flipArrow1, bool flipArrow2) {
+void LC_DimStylePreviewGraphicView::setEntityArrowsFlipMode(bool flipArrow1, bool flipArrow2) const {
     auto* graphic = dynamic_cast<LC_PreviewGraphic*>(getGraphic());
     auto doc = graphic->getDocument();
 
@@ -279,7 +278,7 @@ void LC_DimStylePreviewGraphicView::setEntityArrowsFlipMode(bool flipArrow1, boo
     }
 }
 
-void LC_DimStylePreviewGraphicView::zoomPan() {
+void LC_DimStylePreviewGraphicView::zoomPan() const {
     switchToAction(RS2::ActionZoomPan);
 }
 

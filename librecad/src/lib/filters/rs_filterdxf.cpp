@@ -1570,7 +1570,7 @@ void RS_FilterDXF::writeEntity(DL_WriterA& dw, RS_Entity* e) {
 void RS_FilterDXF::writeEntity(DL_WriterA& dw, RS_Entity* e,
                                const DL_Attributes& attrib) {
 
-    if (e==NULL || e->getFlag(RS2::FlagUndone)) {
+    if (e == nullptr || e->isDeleted()) {
         return;
     }
     RS_DEBUG->print("writing Entity");
@@ -2435,7 +2435,7 @@ void RS_FilterDXF::writeAtomicEntities(DL_WriterA& dw, RS_EntityContainer* c,
  * Writes an IMAGEDEF object into an OBJECT section.
  */
 void RS_FilterDXF::writeImageDef(DL_WriterA& dw, RS_Image* i) {
-    if (i==NULL || i->getFlag(RS2::FlagUndone)) {
+    if (i == nullptr || i->isDeleted()) {
         return;
     }
 
@@ -2508,7 +2508,7 @@ DL_Attributes RS_FilterDXF::getEntityAttributes(RS_Entity* entity) {
     // Layer:
     RS_Layer* layer = entity->getLayer();
     QString layerName;
-    if (layer!=NULL) {
+    if (layer!= nullptr) {
         layerName = layer->getName();
     } else {
         layerName = "NULL";

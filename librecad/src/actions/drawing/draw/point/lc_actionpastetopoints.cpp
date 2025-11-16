@@ -24,8 +24,10 @@
 
 #include "lc_pastetopointsoptions.h"
 #include "rs_clipboard.h"
+#include "rs_document.h"
 #include "rs_entity.h"
 #include "rs_modification.h"
+#include "rs_selection.h"
 
 LC_ActionPasteToPoints::LC_ActionPasteToPoints(LC_ActionContext *actionContext):
     LC_ActionPreSelectionAwareBase("PasteToPoints", actionContext, RS2::ActionPasteToPoints, {RS2::EntityPoint}){
@@ -42,24 +44,30 @@ void LC_ActionPasteToPoints::init(int status) {
     }
 }
 
-void LC_ActionPasteToPoints::doTrigger(bool keepSelected) {
-    undoCycleStart();
-    RS_Modification m(*m_container, m_viewport, false);
+bool LC_ActionPasteToPoints::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+    RS_Modification m(m_document, m_viewport, false); // undoCycle in trigger, so don't create undo section in modification
     for (auto p: m_selectedEntities){
         RS_Vector currentPoint = p->getCenter();
+        // fixme - TRIGGER complete!!!
         const RS_PasteData &pasteData = RS_PasteData(currentPoint, m_scaleFactor , m_angleRad, false, "");
         m.paste(pasteData);
         // fixme - some progress is needed there, ++++ speed improvement for paste operation!!
 //        LC_ERR << "Paste: " << currentPoint;
-
-        if (m_removePointAfterPaste){
-            undoableDeleteEntity(p);
-        }
-        else{
-            p->setSelected(keepSelected);
-        }
     }
-    undoCycleEnd();
+    if (m_removePointAfterPaste){
+        ctx.remove(m_selectedEntities);
+    }
+    return true;
+}
+
+void LC_ActionPasteToPoints::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+    if (!m_removePointAfterPaste) {
+        RS_Selection::selectEntitiesList(m_document, m_viewport, m_selectedEntities, keepSelected);
+    }
+}
+
+void LC_ActionPasteToPoints::doTriggerCompletion(bool success) {
+    LC_ActionPreSelectionAwareBase::doTriggerCompletion(success);
 }
 
 bool LC_ActionPasteToPoints::doUpdateAngleByInteractiveInput(const QString& tag, double angle) {

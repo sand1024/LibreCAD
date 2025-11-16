@@ -42,7 +42,7 @@ void LC_PolylinePropertiesEditingWidget::setEntity(RS_Entity* entity) {
     toUIBool(m_entity->isClosed(), ui->cbClosed);
 }
 
-void LC_PolylinePropertiesEditingWidget::onClosedToggled([[maybe_unused]]bool checked) {
+void LC_PolylinePropertiesEditingWidget::onClosedToggled([[maybe_unused]]bool checked) const {
     m_entity->setClosed(ui->cbClosed->isChecked(),0);
 
     // fixme - sand move to upper level in call hierarchy

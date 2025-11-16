@@ -30,6 +30,7 @@
 
 #include "rs_coordinateevent.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_line.h"
 #include "rs_modification.h"
 #include "rs_preview.h"
@@ -73,7 +74,7 @@ void QC_ActionGetPoint::mouseMoveEvent(QMouseEvent* e) {
             line->setPen(RS_Pen(RS_Color(0,0,0), RS2::Width00, RS2::DotLine ));
             m_preview->addEntity(line);
             RS_DEBUG->print("QC_ActionGetPoint::mouseMoveEvent: draw preview");
-            m_preview->addSelectionFrom(*m_container,m_viewport);
+            m_preview->addSelectionFrom(*m_document,m_viewport);
         }
     } else {
         m_actionData->targetPoint = mouse;
@@ -119,11 +120,11 @@ void QC_ActionGetPoint::setBasepoint(QPointF* basepoint){
     m_setTargetPoint = true;
 }
 
-void QC_ActionGetPoint::setMessage(QString msg){
+void QC_ActionGetPoint::setMessage(QString msg) const {
     m_actionData->message = msg;
 }
 
-void QC_ActionGetPoint::getPoint(QPointF *point){
+void QC_ActionGetPoint::getPoint(QPointF *point) const {
     if (m_actionData)    {
         point->setX(m_actionData->targetPoint.x);
         point->setY(m_actionData->targetPoint.y);

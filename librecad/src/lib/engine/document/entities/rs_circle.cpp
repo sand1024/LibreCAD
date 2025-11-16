@@ -556,7 +556,7 @@ RS_Vector RS_Circle::getNearestEndpoint(const RS_Vector& coord, double* dist /*=
 RS_Vector RS_Circle::getNearestPointOnEntity(const RS_Vector& coord,
         bool /*onEntity*/, double* dist, RS_Entity** entity)const {
 
-	if (entity) {
+	if (entity != nullptr) {
         *entity = const_cast<RS_Circle*>(this);
     }
 	RS_Vector vp(coord - data.center);

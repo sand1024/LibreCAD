@@ -44,6 +44,6 @@ void LC_UCSStateWidget::update(QIcon icon, QString ucsName, QString ucsInfo) {
     m_savedIcon = icon;
 }
 
-void LC_UCSStateWidget::onIconsRefreshed(){
+void LC_UCSStateWidget::onIconsRefreshed() const {
     ui->lblType->setPixmap(m_savedIcon.pixmap(m_iconSize));
 }

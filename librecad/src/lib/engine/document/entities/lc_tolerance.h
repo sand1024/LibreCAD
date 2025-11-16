@@ -88,10 +88,10 @@ protected:
     void setDimtxt(double f);
     double getGeneralScale();
     double getDimscale();
-    QString getTextStyle();
-    RS_Color getTextColor();
+    QString getTextStyle() const;
+    RS_Color getTextColor() const;
     RS_Pen getPenForText();
-    RS_Color getDimensionLineColor();
+    RS_Color getDimensionLineColor() const;
     RS_Pen getPenForLines();
     void createTextLabels(QList<QList<double>>& divisions);
     void createFrameLines(QList<QList<double>>& divisions);

@@ -52,8 +52,8 @@ public:
     explicit LG_DimzerosBox(QWidget *parent = nullptr);
     ~LG_DimzerosBox() override;
     void setLinear();
-    void setData(int i);
-    int getData();
+    void setData(int i) const;
+    int getData() const;
 private:
     QStandardItemModel *model = nullptr;
     QListView *view = nullptr;

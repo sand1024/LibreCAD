@@ -31,6 +31,7 @@
 #include "rs_arc.h"
 #include "rs_circle.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_line.h"
 
 // fixme - sand -  expand actions options widget to support all possible settings (like angle, radius, start angle, end/total angle, chordlen)
@@ -58,17 +59,18 @@ void RS_ActionDrawArc::init(int status){
     reset();
 }
 
-void RS_ActionDrawArc::doTrigger() {
+RS_Entity* RS_ActionDrawArc::doTriggerCreateEntity() {
     if (m_alternateArcDirection){
         m_arcData->reversed = !m_arcData->reversed;
     }
-    auto arc = new RS_Arc(m_container, *m_arcData);
-    setPenAndLayerToActive(arc);
+    auto arc = new RS_Arc(m_document, *m_arcData);
     moveRelativeZero(arc->getCenter());
-    undoCycleAdd(arc);
+    return arc;
+}
+
+void RS_ActionDrawArc::doTriggerCompletion(bool success) {
     setStatus(SetCenter);
     reset();
-    RS_DEBUG->print("RS_ActionDrawArc::trigger(): arc added: %lu", arc->getId());
 }
 
 void RS_ActionDrawArc::onMouseMoveEvent(int status, LC_MouseEvent *e) {

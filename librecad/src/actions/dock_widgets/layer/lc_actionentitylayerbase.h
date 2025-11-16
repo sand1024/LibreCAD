@@ -36,9 +36,10 @@ protected:
     bool isAllowTriggerOnEmptySelection() override {return false;};
     virtual void doProceedLayer(RS_Layer* layer);
     virtual void doWithLayer(RS_Graphic* graphic, RS_Layer* layer) = 0;
-    void doTrigger(bool keepSelected) override;
+    void doTrigger() override;
     void applyBoxSelectionModeIfNeeded(RS_Vector mouse) override;
     void proceedSelectedEntity(LC_MouseEvent* e) override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override {return false;}
 };
 
 #endif // LC_ACTIONLAYERBASE_H

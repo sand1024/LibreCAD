@@ -30,8 +30,9 @@
 LC_UndoSection::LC_UndoSection(RS_Document *doc, LC_GraphicViewport* view, const bool handleUndo /*= true*/) :
     document( doc),
     viewport(view),
-    valid( handleUndo && nullptr != doc && nullptr != view){
-    if (valid) {
+    valid{handleUndo} {
+    Q_ASSERT(nullptr != doc && nullptr != view);
+    if (valid) { // fixme - actually check for valid is additional not needed check - that should be solved on higher level! Review case when handleUndo = false;
         document->startUndoCycle();
     }
 }
@@ -49,8 +50,21 @@ LC_UndoSection::~LC_UndoSection(){
     }
 }
 
-void LC_UndoSection::addUndoable(RS_Undoable *undoable){
+void LC_UndoSection::undoableDelete(RS_Entity* e) const {
     if (valid) {
-        document->addUndoable( undoable);
+        document->undoableDelete(e);
+    }
+}
+
+void LC_UndoSection::undoableAdd(RS_Entity* e) const {
+    if (valid) {
+        document->undoableAdd(e);
+    }
+}
+
+void LC_UndoSection::undoableReplace(RS_Entity* entityToDelete, RS_Entity* entityToAdd) const {
+    if (valid) {
+        document->undoableDelete(entityToDelete);
+        document->undoableAdd(entityToAdd);
     }
 }

@@ -75,12 +75,12 @@ void QG_LibraryInsertOptions::doSetAction(RS_ActionInterface *a, bool update) {
     setFactorToActionAndView(factor);
 }
 
-void QG_LibraryInsertOptions::setAngleToActionAndView(QString val) {
+void QG_LibraryInsertOptions::setAngleToActionAndView(QString val) const {
     ui->leAngle->setText(val);
     m_action->setAngle(RS_Math::deg2rad(RS_Math::eval(val)));
 }
 
-void QG_LibraryInsertOptions::setFactorToActionAndView(QString val) {
+void QG_LibraryInsertOptions::setFactorToActionAndView(QString val) const {
     ui->leFactor->setText(val);
     m_action->setFactor(RS_Math::eval(val));
 }

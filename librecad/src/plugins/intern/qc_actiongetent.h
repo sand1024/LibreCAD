@@ -47,7 +47,7 @@ public:
 
     void setMessage(QString msg);
     bool isCompleted() const {return m_completed;}
-    Plugin_Entity *getSelected(Doc_plugin_interface* d);
+    Plugin_Entity *getSelected(Doc_plugin_interface* d) const;
 
 protected:
     RS2::CursorType doGetMouseCursor(int status) override;

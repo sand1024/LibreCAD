@@ -61,7 +61,7 @@ void LC_GraphicViewportRenderer::loadSettings() {
    }
 }
 
-LC_Rect LC_GraphicViewportRenderer::prepareBoundingClipRect(){
+LC_Rect LC_GraphicViewportRenderer::prepareBoundingClipRect() const {
     int width = viewport->getWidth();
     int height = viewport->getHeight();
     const RS_Vector ucsViewportLeftBottom = viewport->toUCSFromGui(0, 0);
@@ -84,7 +84,7 @@ LC_Rect LC_GraphicViewportRenderer::prepareBoundingClipRect(){
     }
 }
 
-bool LC_GraphicViewportRenderer::isOutsideOfBoundingClipRect(RS_Entity* e, bool constructionEntity){
+bool LC_GraphicViewportRenderer::isOutsideOfBoundingClipRect(RS_Entity* e, bool constructionEntity) const {
     // test if the entity is in the viewport
     switch (e->rtti()){
         /* case RS2::EntityGraphic:

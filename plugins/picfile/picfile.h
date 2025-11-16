@@ -61,14 +61,14 @@ class picPunto : public QDialog
     
     private:
         void readSettings();
-        void writeSettings();
+        void writeSettings() const;
         void processFilePic(QFile* file);
         void drawLine();
         void drawCircle(QString x, QString y, QString rad);
         void drawText(QString x, QString y, QString txt, QString align);
         void drawBox(QString posx, QString posy, QString width, QString height);
-        bool failGUI(QString *msg);
-        double getPValue(QString posxy);
+        bool failGUI(QString *msg) const;
+        double getPValue(QString posxy) const;
     
     private:
         QString errmsg;

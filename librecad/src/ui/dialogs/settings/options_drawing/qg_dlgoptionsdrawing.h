@@ -42,7 +42,7 @@ public:
     void _to_remove_ConnectLegacyDimsTab();
     explicit QG_DlgOptionsDrawing(QWidget* parent = nullptr);
 	~QG_DlgOptionsDrawing() override;
-    void showInitialTab(int tabIndex);
+    void showInitialTab(int tabIndex) const;
     void setGraphic( RS_Graphic * g );
     static void fillLinearUnitsCombobox(QComboBox* combobox);
     static void fillAngleUnitsCombobox(QComboBox* combobox);
@@ -53,30 +53,30 @@ public:
 protected slots:
     void languageChange();
     void validate();
-    void updateLengthPrecision();
-    void updateAnglePrecision();
-    void updateUnitsPreview();
+    void updateLengthPrecision() const;
+    void updateAnglePrecision() const;
+    void updateUnitsPreview() const;
     void updatePaperSize();
     void updateUnitLabels();
-    void updateDimLengthPrecision();
-    void updateDimAnglePrecision();
-    void updatePaperPreview();
-    void onTabCurrentChanged(int index);
-    void on_cbGridOn_toggled(bool checked);
+    void updateDimLengthPrecision() const;
+    void updateDimAnglePrecision() const;
+    void updatePaperPreview() const;
+    void onTabCurrentChanged(int index) const;
+    void on_cbGridOn_toggled(bool checked) const;
 	void onLandscapeToggled(bool checked);
-    void onDimFxLonToggled(bool checked);
+    void onDimFxLonToggled(bool checked) const;
     void onRelSizeToggled(bool checked);
-    void disableXSpacing(bool checked);
-    void enableXSpacing(bool checked);
+    void disableXSpacing(bool checked) const;
+    void enableXSpacing(bool checked) const;
 
     void onDimStyleNew(bool checked);
-    void expandStylesTree();
+    void expandStylesTree() const;
     void onDimStyleEdit(bool checked=false);
     void onDimStyleRename(bool checked);
     void onDimStyleRemove(bool checked);
     void onDimStyleExport(bool checked);
     void onDimStyleImport(bool checked);
-    void updateActiveStyleLabel(LC_DimStyleTreeModel* model);
+    void updateActiveStyleLabel(LC_DimStyleTreeModel* model) const;
     void onDimStyleSetDefault(bool checked);
     void updateActionButtons(LC_DimStyleItem* item);
     void onDimCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
@@ -90,14 +90,14 @@ protected slots:
     void reject() override;
 protected:
     void setupPointsTab();
-    void setupSplinesTab();
-    void setupGridTab();
+    void setupSplinesTab() const;
+    void setupGridTab() const;
     void setupPaperTab();
-    void setupMetaTab();
-    void setupUserREditor(QLineEdit* edit, const QString &key);
+    void setupMetaTab() const;
+    void setupUserREditor(QLineEdit* edit, const QString &key) const;
     void setupUserTab();
-    void _toRemoveSetupLegacyDimsTab(RS2::LinearFormat& linearFormat, int lunits, int luprec, int aunits, int auprec);
-    LC_DimStyleTreeModel* getDimStylesModel();
+    void _toRemoveSetupLegacyDimsTab(RS2::LinearFormat& linearFormat, int lunits, int luprec, int aunits, int auprec) const;
+    LC_DimStyleTreeModel* getDimStylesModel() const;
     void doCreateDimStyle(const QString &newStyleName, LC_DimStyleTreeModel* model, LC_DimStyleItem* styleItemBasedOn, RS2::EntityType newDimType);
     void connectPaperTab();
     void connectUnitTab();
@@ -105,7 +105,7 @@ protected:
     void connectUserVarsTab();
     void resizeEvent(QResizeEvent* event) override;
     void showEvent(QShowEvent* event) override;
-    void updateLPtSzUnits();
+    void updateLPtSzUnits() const;
     QString askForUniqueDimStyleName(const QString &caption, const QString& prompt, const QString &defaultText);
     void updateDimStylePreview(LC_DimStyle* dimStyle, LC_DimStyleTreeModel* model) const;
 private:
@@ -118,19 +118,19 @@ private:
 
     void init();
     void prepareDimStyleItems(QList<LC_DimStyleItem*> &items);
-    void collectStylesUsage(QMap<QString, int>& map);
+    void collectStylesUsage(QMap<QString, int>& map) const;
     void setupDimStylesTab();
-    void setupVariablesTab();
-    void _toRemove_validateDimsOld();
+    void setupVariablesTab() const;
+    void _toRemove_validateDimsOld() const;
     bool validateDimensionsTab();
-    bool validatePointsTab();
-    void validateSplinesTab();
-    void validateGridTab();
-    void validatePaperTab();
-    void validateMetaTab();
-    void validateUserTab();
-    void validateUnitsTab();
-    QModelIndex getSelectedDimStyleIndex();
+    bool validatePointsTab() const;
+    void validateSplinesTab() const;
+    void validateGridTab() const;
+    void validatePaperTab() const;
+    void validateMetaTab() const;
+    void validateUserTab() const;
+    void validateUnitsTab() const;
+    QModelIndex getSelectedDimStyleIndex() const;
 
 
 };

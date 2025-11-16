@@ -95,7 +95,7 @@ RS_Vector RS_ConstructionLine::getNearestEndpoint(const RS_Vector& coord,
 RS_Vector RS_ConstructionLine::getNearestPointOnEntity(const RS_Vector& coord,
         bool /*onEntity*/, double* /*dist*/, RS_Entity** entity) const{
 
-	if (entity) {
+	if (entity != nullptr) {
         *entity = const_cast<RS_ConstructionLine*>(this);
     }
 
@@ -218,7 +218,7 @@ double RS_ConstructionLine::getDistanceToPoint(const RS_Vector& coord,
 
     RS_DEBUG->print("RS_ConstructionLine::getDistanceToPoint");
 
-	if (entity) {
+	if (entity != nullptr) {
         *entity = const_cast<RS_ConstructionLine*>(this);
     }
     //double dist = RS_MAXDOUBLE;

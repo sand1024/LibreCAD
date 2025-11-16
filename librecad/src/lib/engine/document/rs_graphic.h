@@ -82,7 +82,7 @@ public:
     // Wrappers for Layer functions:
     void clearLayers() {layerList.clear();}
     unsigned countLayers() const {return layerList.count();}
-    RS_Layer* layerAt(unsigned i) {return layerList.at(i);}
+    RS_Layer* layerAt(unsigned i) const {return layerList.at(i);}
     void activateLayer(const QString& name, bool notify = false) {layerList.activate(name, notify);}
     void activateLayer(RS_Layer* layer, bool notify = false) {layerList.activate(layer, notify);}
     RS_Layer*   getActiveLayer() const {return layerList.getActive();}
@@ -106,7 +106,7 @@ public:
 
     // Wrapper for block functions:
     void clearBlocks() {blockList.clear();}
-    unsigned countBlocks() {return blockList.count();}
+    unsigned countBlocks() const {return blockList.count();}
     RS_Block* blockAt(unsigned i) {return blockList.at(i);}
     void activateBlock(const QString& name) {blockList.activate(name);}
     void activateBlock(RS_Block* block) {blockList.activate(block);}
@@ -124,10 +124,10 @@ public:
 
         // Wrappers for variable functions:
     void clearVariables();
-    QString getCustomProperty(const QString& key, const QString& defaultValue);
+    QString getCustomProperty(const QString& key, const QString& defaultValue) const;
     void addCustomProperty(const QString& key, const QString& value);
     void removeCustomProperty(const QString& key);
-    bool hasCustomProperty(const QString& key);
+    bool hasCustomProperty(const QString& key) const;
     const QHash<QString, RS_Variable>& getCustomProperties() const;
     int countVariables() const;
 
@@ -168,10 +168,10 @@ public:
     void setPaperSize(const RS_Vector& s);
     RS_Vector getPrintAreaSize(bool total=true) const;
 
-    RS_Vector getPaperInsertionBase();
+    RS_Vector getPaperInsertionBase() const;
     void setPaperInsertionBase(const RS_Vector& p);
 
-    RS2::PaperFormat getPaperFormat(bool* landscape);
+    RS2::PaperFormat getPaperFormat(bool* landscape) const;
     void setPaperFormat(RS2::PaperFormat f, bool landscape);
 
     double getPaperScale() const;
@@ -190,7 +190,7 @@ public:
     void setIsoView(RS2::IsoGridViewType viewType);
     void centerToPage();
     bool fitToPage();
-    bool isBiggerThanPaper();
+    bool isBiggerThanPaper() const;
     /**
      * @retval true The document has been modified since it was last saved.
      * @retval false The document has not been modified since it was last saved.
@@ -228,10 +228,10 @@ public:
      * Paper margins in graphic units
      */
     void setMarginsInUnits(double left, double top, double right, double bottom);
-    double getMarginLeftInUnits();
-    double getMarginTopInUnits();
-    double getMarginRightInUnits();
-    double getMarginBottomInUnits();
+    double getMarginLeftInUnits() const;
+    double getMarginTopInUnits() const;
+    double getMarginRightInUnits() const;
+    double getMarginBottomInUnits() const;
     /**
      * Number of pages drawing occupies
      */
@@ -241,8 +241,8 @@ public:
     int getPagesNumVert() const {return pagesNumV;}
     friend std::ostream& operator << (std::ostream& os, RS_Graphic& g);
     int clean();
-    LC_View *findNamedView(QString viewName) {return namedViewsList.find(viewName);};
-    LC_UCS *findNamedUCS(QString ucsName) {return ucsList.find(ucsName);};
+    LC_View *findNamedView(QString viewName) const {return namedViewsList.find(viewName);};
+    LC_UCS *findNamedUCS(QString ucsName) const {return ucsList.find(ucsName);};
     void addNamedView(LC_View *view) {namedViewsList.add(view);};
     void addUCS(LC_UCS *ucs) {ucsList.add(ucs);};
 

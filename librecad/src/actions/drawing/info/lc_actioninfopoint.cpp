@@ -64,7 +64,7 @@ void LC_ActionInfoPoint::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     }
 }
 
-void LC_ActionInfoPoint::updateInfoCursor(const RS_Vector &mouse, const RS_Vector &relZero) {
+void LC_ActionInfoPoint::updateInfoCursor(const RS_Vector &mouse, const RS_Vector &relZero) const {
     if (m_infoCursorOverlayPrefs->enabled) {
         msgStart()
             .string (tr("Point Coordinates"))

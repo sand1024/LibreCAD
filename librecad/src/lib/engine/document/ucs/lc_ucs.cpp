@@ -84,7 +84,7 @@ bool LC_UCS::isValidName([[maybe_unused]]const QString &nameCandidate) {
     return true;
 }
 
-bool LC_UCS::isSameTo(LC_UCS *other) {
+bool LC_UCS::isSameTo(LC_UCS *other) const {
     bool result = false;
     if (other != nullptr){
 //        if (isUCS() == other->isUCS()) {
@@ -101,7 +101,7 @@ bool LC_UCS::isSameTo(LC_UCS *other) {
 }
 
 
-RS2::IsoGridViewType LC_UCS::getIsoGridViewType() {
+RS2::IsoGridViewType LC_UCS::getIsoGridViewType() const {
     RS2::IsoGridViewType isoType = RS2::Ortho;
     switch (m_ucsOrthoType){
         case LC_UCS::FRONT:
@@ -127,7 +127,7 @@ RS2::IsoGridViewType LC_UCS::getIsoGridViewType() {
     return isoType;
 }
 
-bool LC_UCS::isIsometric() {
+bool LC_UCS::isIsometric() const {
     return m_ucsOrthoType != LC_UCS::NON_ORTHO;
 }
 
@@ -137,7 +137,7 @@ LC_WCS::LC_WCS():
 
 LC_UCS::~LC_UCS() = default;
 
-LC_UCS* LC_UCS::clone() {
+LC_UCS* LC_UCS::clone() const {
     auto* clone = new LC_UCS();
     clone->m_name =  m_name;
     clone->m_ucsOrigin = m_ucsOrigin;

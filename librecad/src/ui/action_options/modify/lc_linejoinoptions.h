@@ -48,11 +48,11 @@ protected:
 private:
     Ui::LC_LineJoinOptions *ui;
     LC_ActionModifyLineJoin *m_action = nullptr;
-    void setEdgeModeLine1ToActionAndView(int index);
-    void setEdgeModeLine2ToActionAndView(int index);
-    void setUsePolylineToActionAndView(bool value);
-    void setAttributesSourceToActionAndView(int index);
-    void setRemoveOriginalsToActionAndView(bool value);
+    void setEdgeModeLine1ToActionAndView(int index) const;
+    void setEdgeModeLine2ToActionAndView(int index) const;
+    void setUsePolylineToActionAndView(bool value) const;
+    void setAttributesSourceToActionAndView(int index) const;
+    void setRemoveOriginalsToActionAndView(bool value) const;
 };
 
 #endif // LC_LINEJOINOPTIONS_H

@@ -34,6 +34,6 @@ LC_PointPickButton::~LC_PointPickButton(){
     delete ui;
 }
 
-QToolButton* LC_PointPickButton::getButton() {
+QToolButton* LC_PointPickButton::getButton() const {
     return ui->toolButton;
 }

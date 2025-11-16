@@ -45,7 +45,7 @@ class QG_PenToolBar: public QToolBar, public LC_GraphicViewAware, public RS_Laye
 public:
 	QG_PenToolBar( const QString & title, QWidget * parent = 0 );
     ~QG_PenToolBar() override;
-    void updateByLayer(RS_Layer* l);
+    void updateByLayer(RS_Layer* l) const;
 
     RS_Pen getPen() const;
 
@@ -57,9 +57,9 @@ public:
     void setLayerWidth(RS2::LineWidth width, bool b);
     void setLayerLineType(RS2::LineType lineType, bool b);
 
-    void setColor(RS_Color color);
-    void setWidth(RS2::LineWidth width);
-    void setLineType(RS2::LineType lineType);
+    void setColor(RS_Color color) const;
+    void setWidth(RS2::LineWidth width) const;
+    void setLineType(RS2::LineType lineType) const;
     void emitPenChanged();
 
     void setGraphicView(RS_GraphicView* gview) override;

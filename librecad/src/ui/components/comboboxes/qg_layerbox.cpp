@@ -106,8 +106,9 @@ void QG_LayerBox::setLayer(QString& layer) {
  * choose an individual color.
  */
 void QG_LayerBox::slotLayerChanged(int index) {
-    if (m_layerList == nullptr)
+    if (m_layerList == nullptr) {
         return;
+    }
     m_unchanged = m_showUnchanged && index == 0;
     m_currentLayer = m_layerList->find(itemText(index));
     emit layerChanged(m_currentLayer);

@@ -146,19 +146,19 @@ void LC_DimStyleTreeModel::collectUnsavedItems(QList<LC_DimStyleItem*>& items) c
     }
 }
 
-LC_DimStyleItem* LC_DimStyleTreeModel::getActiveStyleItem() {
+LC_DimStyleItem* LC_DimStyleTreeModel::getActiveStyleItem() const {
     return m_rootItem->findActive();
 }
 
-LC_DimStyleItem* LC_DimStyleTreeModel::getEntityStyleItem() {
+LC_DimStyleItem* LC_DimStyleTreeModel::getEntityStyleItem() const {
     return m_rootItem->findEntityStyleItem();
 }
 
-LC_DimStyleItem* LC_DimStyleTreeModel::getStandardItem() {
+LC_DimStyleItem* LC_DimStyleTreeModel::getStandardItem() const {
     return m_rootItem->child(0);
 }
 
-LC_DimStyleItem* LC_DimStyleTreeModel::findByName(const QString& name) {
+LC_DimStyleItem* LC_DimStyleTreeModel::findByName(const QString& name) const {
     return m_rootItem->findByName(name);
 }
 
@@ -232,7 +232,7 @@ void LC_DimStyleTreeModel::cleanup(bool deleteDimStyles) {
     m_itemsCount = 0;
 }
 
-void LC_DimStyleTreeModel::collectAllStyleItems(QList<LC_DimStyleItem*>& items) {
+void LC_DimStyleTreeModel::collectAllStyleItems(QList<LC_DimStyleItem*>& items) const {
     m_rootItem->collectChildren(items);
 }
 
@@ -259,7 +259,7 @@ void LC_DimStyleTreeModel::mergeWith(const QList<LC_DimStyle*>& list) {
     emitDataChanged();
 }
 
-int LC_DimStyleTreeModel::itemsCount() {
+int LC_DimStyleTreeModel::itemsCount() const {
     return m_itemsCount;
 }
 

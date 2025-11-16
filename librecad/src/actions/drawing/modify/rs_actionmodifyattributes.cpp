@@ -26,6 +26,8 @@
 
 #include "rs_actionmodifyattributes.h"
 
+#include <boost/mpl/bool_fwd.hpp>
+
 #include "rs_debug.h"
 #include "rs_dialogfactory.h"
 #include "rs_dialogfactoryinterface.h"
@@ -37,9 +39,7 @@ RS_ActionModifyAttributes::RS_ActionModifyAttributes(LC_ActionContext *actionCon
     :LC_ActionPreSelectionAwareBase("Change Attributes",actionContext, RS2::ActionModifyAttributes) {
 }
 
-void RS_ActionModifyAttributes::doTrigger(bool keepSelected){
-    RS_DEBUG->print("RS_ActionModifyAttributes::trigger()");
-
+bool RS_ActionModifyAttributes::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
     RS_AttributesData data;
     data.pen = RS_Pen();
     data.layer = "0";
@@ -48,13 +48,26 @@ void RS_ActionModifyAttributes::doTrigger(bool keepSelected){
     data.changeWidth = false;
     data.changeLayer = false;
 
-    if (m_graphic) {
+    if (m_graphic != nullptr) {
         m_dialogVisible = true;
         if (RS_DIALOGFACTORY->requestAttributesDialog(data,*m_graphic->getLayerList())) {
-            RS_Modification m(*m_container, m_viewport);
-            m.changeAttributes(data, m_selectedEntities, m_container, keepSelected);
+            RS_Modification::changeAttributes(m_selectedEntities, data, ctx);
+            ctx.dontSetActiveLayerAndPen();
+            /*if (data.applyBlockDeep) {
+                m_graphic->updateInserts();
+            }*/
         }
         m_dialogVisible = false;
+    }
+    return true;
+}
+
+void RS_ActionModifyAttributes::doTriggerCompletion(bool success) {
+}
+
+void RS_ActionModifyAttributes::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {  // fixme - INCLUDE TO GENERIC FLOW?
+    if (keepSelected) {
+        select(ctx.entitiesToAdd);
     }
 }
 

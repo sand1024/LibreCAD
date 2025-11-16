@@ -225,11 +225,11 @@ public:
     std::vector<RS_Entity*> offsetTwoSides(const double& distance) const override;
 
     static RS_VectorSolutions getIntersection(RS_Entity const* e1, RS_Entity const* e2);
-    RS_VectorSolutions getLineIntersect(const RS_Vector& x1, const RS_Vector& x2);
+    RS_VectorSolutions getLineIntersect(const RS_Vector& x1, const RS_Vector& x2) const;
     void addQuadIntersect(RS_VectorSolutions *pVS, const RS_Vector& x1,
-                          const RS_Vector& c1, const RS_Vector& x2);
-    RS_VectorSolutions getSplinePointsIntersect(LC_SplinePoints* l1);
-    RS_VectorSolutions getQuadraticIntersect(RS_Entity const* e1);
+                          const RS_Vector& c1, const RS_Vector& x2) const;
+    RS_VectorSolutions getSplinePointsIntersect(LC_SplinePoints* l1) const;
+    RS_VectorSolutions getQuadraticIntersect(RS_Entity const* e1) const;
 
 // we will not enable trimming, maybe in the future
 //void trimStartpoint(const RS_Vector& pos) override;

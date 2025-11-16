@@ -43,7 +43,7 @@ double LC_EntityPropertiesDlg::toUCSAngle(double wcsAngle) const {
     return ucsBasisAngle;
 }
 
-double LC_EntityPropertiesDlg::toWCSAngle(const QString &val, double wcsDefault){
+double LC_EntityPropertiesDlg::toWCSAngle(const QString &val, double wcsDefault) const {
     double ucsDefault = toUCSAngle(wcsDefault);
     double ucsDefaultDeg = RS_Math::rad2deg(ucsDefault);
 
@@ -54,7 +54,7 @@ double LC_EntityPropertiesDlg::toWCSAngle(const QString &val, double wcsDefault)
     return wcsAngle;
 }
 
-double LC_EntityPropertiesDlg::toWCSValue(const QString& val, double wcsDefault){
+double LC_EntityPropertiesDlg::toWCSValue(const QString& val, double wcsDefault) const {
     // note - this implementation assumes that there is no scale transformations due to coordinate system!
     return toDouble(val, 0, wcsDefault);
 }
@@ -64,7 +64,7 @@ RS_Vector LC_EntityPropertiesDlg::toWCSVector(const RS_Vector &vect) const{
     return result;
 }
 
-double LC_EntityPropertiesDlg::toRawAngleValue(QLineEdit* ed, double ucsDefault) {
+double LC_EntityPropertiesDlg::toRawAngleValue(QLineEdit* ed, double ucsDefault) const {
     double ucsDefaultDeg = RS_Math::rad2deg(ucsDefault);
     double rawAngleDeg = toDoubleAngle(ed->text(), 0.0, ucsDefaultDeg);
     double rawAngle = RS_Math::deg2rad(rawAngleDeg);
@@ -98,12 +98,12 @@ void LC_EntityPropertiesDlg::toUIRaw(const RS_Vector &vect, QLineEdit* leX, QLin
     leY->setText(pair.second);
 }
 
-void LC_EntityPropertiesDlg::toUIValue(double val, QLineEdit* ed){
+void LC_EntityPropertiesDlg::toUIValue(double val, QLineEdit* ed) const {
     QString sValue = asString(val);
     ed->setText(sValue);
 }
 
-void LC_EntityPropertiesDlg::toUIAngleDeg(double wcsAngle, QLineEdit* ed){
+void LC_EntityPropertiesDlg::toUIAngleDeg(double wcsAngle, QLineEdit* ed) const {
     QString sValue = toUIAngleDeg(wcsAngle);
     ed->setText(sValue);
 }
@@ -118,7 +118,7 @@ void LC_EntityPropertiesDlg::toUIBool(bool val, QCheckBox* ed){
     ed->setChecked(val);
 }
 
-void LC_EntityPropertiesDlg::toUIAngleDegRaw(double val, QLineEdit* ed){
+void LC_EntityPropertiesDlg::toUIAngleDegRaw(double val, QLineEdit* ed) const {
     QString sValue = asStringAngleDeg(val);
     ed->setText(sValue);
 }

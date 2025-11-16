@@ -43,7 +43,7 @@ public:
     explicit LC_ActionOptionsWidget(QWidget *parent = nullptr, Qt::WindowFlags fl = {});
     ~LC_ActionOptionsWidget() override;
     void setAction(RS_ActionInterface * a, bool update = false);
-    void requestFocusForTag(const QString& tag);
+    void requestFocusForTag(const QString& tag) const;
     /**
      * Called externally when the widget should be hidded
      */
@@ -112,7 +112,7 @@ protected:
                                      QString tag);
     void pickDistanceSetup(QString tag, QToolButton* button, QLineEdit* lineedit);
     void pickAngleSetup(QString tag, QToolButton* button, QLineEdit* editor);
-    void onInteractiveInputButtonClicked(bool checked);
+    void onInteractiveInputButtonClicked(bool checked) const;
 protected slots:
     virtual void languageChange() {}
 };

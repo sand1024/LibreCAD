@@ -122,7 +122,7 @@ void LC_ModifyGapOptions::setGapSizeToActionAndView(const QString &val){
     }
 }
 
-void LC_ModifyGapOptions::setGapIsFreeToActionAndView(bool val){
+void LC_ModifyGapOptions::setGapIsFreeToActionAndView(bool val) const {
     m_action->setFreeGapSize(val);
     ui->cbFree->setChecked(val);
 
@@ -131,13 +131,13 @@ void LC_ModifyGapOptions::setGapIsFreeToActionAndView(bool val){
     ui->cbGapSnap->setEnabled(!val);
 }
 
-void LC_ModifyGapOptions::setLineSnapToActionAndView(int val){
+void LC_ModifyGapOptions::setLineSnapToActionAndView(int val) const {
     m_action->setLineSnapMode(val);
     ui->cbLineSnap->setCurrentIndex(val);
     ui->leDistance->setEnabled(val > 0);
 }
 
-void LC_ModifyGapOptions::setGapSnapToActionAndView(int val){
+void LC_ModifyGapOptions::setGapSnapToActionAndView(int val) const {
     m_action->setGapSnapMode(val);
     ui->cbGapSnap->setCurrentIndex(val);
 }

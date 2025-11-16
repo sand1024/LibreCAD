@@ -50,7 +50,7 @@ QG_WidgetPen::QG_WidgetPen(QWidget* parent, Qt::WindowFlags fl)
 //    setTabOrder(cbWidth, cbLineType); // cbColor to cbWidth to cbLineType
 }
 
-void QG_WidgetPen::disableVerticalSpacer() {
+void QG_WidgetPen::disableVerticalSpacer() const {
     vsSpacerVertical->changeSize(0,0);
 }
 
@@ -116,7 +116,7 @@ void QG_WidgetPen::setPen(RS_Pen pen, RS_Layer* layer, const QString &title){
     setPen(pen, layer, false, title);
 }
 
-RS_Pen QG_WidgetPen::getPen() {
+RS_Pen QG_WidgetPen::getPen() const {
     RS_Pen pen;
 
     pen.setColor(cbColor->getColor());
@@ -126,15 +126,15 @@ RS_Pen QG_WidgetPen::getPen() {
     return pen;
 }
 
-bool QG_WidgetPen::isColorUnchanged() {
+bool QG_WidgetPen::isColorUnchanged() const {
     return cbColor->isUnchanged();
 }
 
-bool QG_WidgetPen::isLineTypeUnchanged() {
+bool QG_WidgetPen::isLineTypeUnchanged() const {
     return cbLineType->isUnchanged();
 }
 
-bool QG_WidgetPen::isWidthUnchanged() {
+bool QG_WidgetPen::isWidthUnchanged() const {
     return cbWidth->isUnchanged();
 }
 

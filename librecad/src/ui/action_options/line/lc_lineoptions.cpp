@@ -107,13 +107,13 @@ void LC_LineOptions::doSetAction(RS_ActionInterface* a, bool update) {
     m_inUpdateCycle = false;
 }
 
-void LC_LineOptions::onXClicked(bool value){
+void LC_LineOptions::onXClicked(bool value) const {
     if (m_action != nullptr){
         setXDirectionToActionAndView(value);
     }
 }
 
-void LC_LineOptions::onYClicked(bool value){
+void LC_LineOptions::onYClicked(bool value) const {
     if (m_action != nullptr){
         setYDirectionToActionAndView(value);
     }
@@ -125,37 +125,37 @@ void LC_LineOptions::onPointClicked(bool value) const {
     }
 }
 
-void LC_LineOptions::onAngleClicked(bool value){
+void LC_LineOptions::onAngleClicked(bool value) const {
     if (m_action != nullptr){
         setAngleDirectionToActionAndView(value);
     }
 }
 
-void LC_LineOptions::closeLine() {
+void LC_LineOptions::closeLine() const {
     if (m_action != nullptr) {
         m_action->close();
     }
 }
 
-void LC_LineOptions::undo() {
+void LC_LineOptions::undo() const {
     if (m_action != nullptr) {
         m_action->undo();
     }
 }
 
-void LC_LineOptions::redo() {
+void LC_LineOptions::redo() const {
     if (m_action != nullptr) {
         m_action->redo();
     }
 }
 
-void LC_LineOptions::polyline() {
+void LC_LineOptions::polyline() const {
     if (m_action != nullptr) {
         m_action->polyline();
     }
 }
 
-void LC_LineOptions::onAngleRelativeClicked(bool value){
+void LC_LineOptions::onAngleRelativeClicked(bool value) const {
     if (m_action != nullptr) {
         setAngleRelativeToActionAndView(value);
     }
@@ -167,7 +167,7 @@ void LC_LineOptions::onSetAngle() {
     }
 }
 
-void LC_LineOptions::start() {
+void LC_LineOptions::start() const {
     if (m_action) {
         m_action->setNewStartPointState();
     }

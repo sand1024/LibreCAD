@@ -183,7 +183,7 @@ RS2::CursorType LC_ActionInfo3PointsAngle::doGetMouseCursor([[maybe_unused]] int
     return RS2::CadCursor;
 }
 
-void LC_ActionInfo3PointsAngle::updateInfoCursor(const RS_Vector &mouse, const RS_Vector &startPoint) {
+void LC_ActionInfo3PointsAngle::updateInfoCursor(const RS_Vector &mouse, const RS_Vector &startPoint) const {
     if (m_infoCursorOverlayPrefs->enabled){
         msg(tr("Angle Info"))
             .linear(tr("Distance:"), startPoint.distanceTo(mouse))
@@ -194,7 +194,7 @@ void LC_ActionInfo3PointsAngle::updateInfoCursor(const RS_Vector &mouse, const R
     }
 }
 
-void LC_ActionInfo3PointsAngle::updateInfoCursor(const RS_Vector &mouse, const RS_Vector &point2, const RS_Vector &startPoint) {
+void LC_ActionInfo3PointsAngle::updateInfoCursor(const RS_Vector &mouse, const RS_Vector &point2, const RS_Vector &startPoint) const {
     if (m_infoCursorOverlayPrefs->enabled) {
         double angle = LC_LineMath::angleFor3Points(m_point1, point2, mouse);
 

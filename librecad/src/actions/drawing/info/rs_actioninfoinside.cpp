@@ -29,6 +29,8 @@
 
 #include "lc_actioncontext.h"
 #include "rs_actioninfoinside.h"
+
+#include "rs_document.h"
 #include "rs_entitycontainer.h"
 #include "rs_information.h"
 #include "rs_vector.h"
@@ -38,7 +40,7 @@ RS_ActionInfoInside::RS_ActionInfoInside(LC_ActionContext *actionContext)
     , m_point(std::make_unique<RS_Vector>())
     , m_contour(std::make_unique<RS_EntityContainer>())
 {
-    RS_EntityContainer* container = actionContext->getEntityContainer();
+    RS_Document* container = actionContext->getDocument();
     for(auto* e: container->getEntityList()){
         if (e->isSelected()) {
             m_contour->addEntity(e);

@@ -39,7 +39,7 @@ public:
     ~LC_CirclePropertiesEditingWidget() override;
     void setEntity(RS_Entity* entity) override;
 protected slots:
-    void onCenterEditingFinished();
+    void onCenterEditingFinished() const;
     void onRadiusEditingFinished();
 public:
     void setupInteractiveInputWidgets() override;

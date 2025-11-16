@@ -540,7 +540,7 @@ RS2::IsoGridViewType RS_Grid::getIsoViewType() const {
 }
 
 
-void RS_Grid::drawGrid(RS_Painter *painter) {
+void RS_Grid::drawGrid(RS_Painter *painter) const {
     gridSystem->draw(painter, m_viewport);
 }
 

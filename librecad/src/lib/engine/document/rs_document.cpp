@@ -25,7 +25,6 @@
 **
 **********************************************************************/
 
-
 #include "rs_document.h"
 #include "rs_debug.h"
 
@@ -37,8 +36,16 @@
  */
 RS_Document::RS_Document(RS_EntityContainer* parent)
     : RS_EntityContainer{parent}
-    , activePen {RS_Color{RS2::FlagByLayer}, RS2::WidthByLayer, RS2::LineByLayer}{
+    , activePen {RS_Color{RS2::FlagByLayer}, RS2::WidthByLayer, RS2::LineByLayer}
+    , m_selectedSet{std::make_unique<LC_SelectedSet>()}
+
+{
     RS_DEBUG->print("RS_Document::RS_Document() ");
+}
+
+void RS_Document::addEntity(RS_Entity* entity) {
+    entity->parent = this;
+    RS_EntityContainer::addEntity(entity);
 }
 
 /**
@@ -48,5 +55,34 @@ void RS_Document::endUndoCycle(){
     if (hasUndoable()) {
         setModified(true);
     }
+    m_selectedSet->enableListeners();
     RS_Undo::endUndoCycle();
+    setAutoUpdateBorders(m_savedAutoUpdateBorders);
+    calculateBorders();
+}
+
+void RS_Document::startUndoCycle() {
+    m_selectedSet->disableListeners();
+    RS_Undo::startUndoCycle();
+    m_savedAutoUpdateBorders = getAutoUpdateBorders();
+    setAutoUpdateBorders(false);
+}
+
+void RS_Document::modify(LC_DocumentModificationBatch& batch) {
+    for (auto e: batch.entitiesToAdd) {
+        undoableAdd(e);
+    }
+    for (auto e: batch.entitiesToDelete) {
+        undoableDelete(e);
+    }
+}
+
+void RS_Document::startBulkUndoablesCleanup() {
+    m_savedAutoUpdateBorders = getAutoUpdateBorders();
+    setAutoUpdateBorders(false);
+}
+
+void RS_Document::endBulkUndoablesCleanup() {
+    setAutoUpdateBorders(m_savedAutoUpdateBorders);
+    calculateBorders();
 }

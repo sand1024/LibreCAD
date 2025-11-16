@@ -28,6 +28,7 @@
 
 #include "qg_splineoptions.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_spline.h"
 
 struct RS_ActionDrawSpline::ActionData {
@@ -52,15 +53,14 @@ struct RS_ActionDrawSpline::ActionData {
 };
 
 RS_ActionDrawSpline::RS_ActionDrawSpline(LC_ActionContext *actionContext, RS2::ActionType actionType)
-    :RS_PreviewActionInterface("Draw splines",actionContext, actionType)
-    , m_actionData(std::make_unique<ActionData>())
-{
+    :LC_SingleEntityCreationAction("Draw splines",actionContext, actionType)
+    , m_actionData(std::make_unique<ActionData>()){
     reset();
 }
 
 RS_ActionDrawSpline::~RS_ActionDrawSpline() = default;
 
-void RS_ActionDrawSpline::reset(){
+void RS_ActionDrawSpline::reset() const {
     m_actionData->spline = nullptr;
     m_actionData->history.clear();
 }
@@ -70,26 +70,21 @@ void RS_ActionDrawSpline::init(int status){
     reset();
 }
 
-void RS_ActionDrawSpline::doTrigger() {
+RS_Entity* RS_ActionDrawSpline::doTriggerCreateEntity() {
     if (!m_actionData->spline){
-        return;
+        return nullptr;
     }
 
-    // add the entity
-    //RS_Spline* spline = new RS_Spline(container, data);
-    setPenAndLayerToActive(m_actionData->spline);
     m_actionData->spline->update();
-    undoCycleAdd(m_actionData->spline);
+    return m_actionData->spline;
+}
 
-    RS_DEBUG->print("RS_ActionDrawSpline::trigger(): spline added: %lu",
-                    m_actionData->spline->getId());
-
+void RS_ActionDrawSpline::doTriggerCompletion(bool success) {
     m_actionData->spline = nullptr;
-    //history.clear();
 }
 
 void RS_ActionDrawSpline::onMouseMoveEvent(int status, LC_MouseEvent *e) {
-    RS_Vector mouse = e->snapPoint;
+    const RS_Vector mouse = e->snapPoint;
     switch (status) {
         case SetStartPoint: {
             trySnapToRelZeroCoordinateEvent(e);
@@ -97,13 +92,13 @@ void RS_ActionDrawSpline::onMouseMoveEvent(int status, LC_MouseEvent *e) {
         }
         case SetNextPoint: {
             if (m_actionData->spline /*&& point.valid*/){
-                auto *tmpSpline = dynamic_cast<RS_Spline *>(m_actionData->spline->clone());
-                tmpSpline->addControlPoint(mouse);
-                tmpSpline->update();
-                previewEntity(tmpSpline);
+                auto *tmpSplineClone = dynamic_cast<RS_Spline *>(m_actionData->spline->clone());
+                tmpSplineClone->addControlPoint(mouse);
+                tmpSplineClone->update();
+                previewEntity(tmpSplineClone);
 
                 if (m_showRefEntitiesOnPreview) {
-                    auto cpts = tmpSpline->getControlPoints();
+                    const auto cpts = tmpSplineClone->getControlPoints();
                     for (size_t i = 0; i < cpts.size() - 1; i++) {
                         const RS_Vector &vp = cpts[i];
                         previewRefPoint(vp);
@@ -125,7 +120,7 @@ void RS_ActionDrawSpline::onMouseLeftButtonRelease([[maybe_unused]]int status, L
 void RS_ActionDrawSpline::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
     if (status == SetNextPoint && m_actionData->spline){
         const size_t nPoints = m_actionData->spline->getNumberOfControlPoints();
-        bool isClosed = m_actionData->spline->isClosed();
+        const bool isClosed = m_actionData->spline->isClosed();
         // Issue #1689: allow closed splines by 3 control points
         if (nPoints > size_t(m_actionData->spline->getDegree()) || (isClosed && nPoints == 3))
             trigger();
@@ -140,7 +135,7 @@ void RS_ActionDrawSpline::onCoordinateEvent(int status,  [[maybe_unused]]bool is
             m_actionData->history.clear();
             m_actionData->history.append(mouse);
             if (!m_actionData->spline){
-                m_actionData->spline = new RS_Spline(m_container, m_actionData->data);
+                m_actionData->spline = new RS_Spline(m_document, m_actionData->data);
                 m_actionData->spline->addControlPoint(mouse);
             }
             setStatus(SetNextPoint);
@@ -273,7 +268,7 @@ void RS_ActionDrawSpline::undo(){
         if (m_actionData->spline){
             m_actionData->spline->removeLastControlPoint();
             if (!m_actionData->history.isEmpty()){
-                RS_Vector v = m_actionData->history.last();
+                const RS_Vector v = m_actionData->history.last();
                 moveRelativeZero(v);
             }
             redrawDrawing();
@@ -291,7 +286,7 @@ void RS_ActionDrawSpline::setDegree(int deg){
     }
 }
 
-int RS_ActionDrawSpline::getDegree(){
+int RS_ActionDrawSpline::getDegree() const {
     return m_actionData->data.degree;
 }
 

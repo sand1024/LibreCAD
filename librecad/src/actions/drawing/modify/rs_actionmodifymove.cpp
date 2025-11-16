@@ -48,21 +48,30 @@ RS_ActionModifyMove::RS_ActionModifyMove(LC_ActionContext *actionContext)
 
 RS_ActionModifyMove::~RS_ActionModifyMove() = default;
 
-void RS_ActionModifyMove::doTrigger(bool keepSelected) {
-    RS_DEBUG->print("RS_ActionModifyMove::trigger()");
-    RS_Modification m(*m_container, m_viewport);
-
+bool RS_ActionModifyMove::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+    auto &moveData = m_actionData->data;
     if (m_actionData->createCopy) {
-        bool oldKeepOriginals = m_actionData->data.keepOriginals;
-        m_actionData->data.keepOriginals = true;
-        m.move(m_actionData->data, m_selectedEntities, false, keepSelected);
-        m_actionData->data.keepOriginals = oldKeepOriginals;
+        bool oldKeepOriginals = moveData.keepOriginals;
+        moveData.keepOriginals = true;
+        RS_Modification::move(moveData, m_selectedEntities, false, ctx);
+        moveData.keepOriginals = oldKeepOriginals;
     }
     else {
-        m.move(m_actionData->data, m_selectedEntities, false, keepSelected);
-        finish(false);
+        RS_Modification::move(moveData, m_selectedEntities, false, ctx);
         moveRelativeZero(m_actionData->targetPoint);
     }
+    ctx.setActiveLayerAndPen(moveData.useCurrentLayer, moveData.useCurrentAttributes);
+    return true;
+}
+
+void RS_ActionModifyMove::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+   if (keepSelected) {
+       select(ctx.entitiesToAdd);
+   }
+}
+
+void RS_ActionModifyMove::doTriggerCompletion(bool success) {
+    finish(false);
 }
 
 void RS_ActionModifyMove::onMouseMoveEventSelected(int status, LC_MouseEvent *e) {
@@ -82,8 +91,9 @@ void RS_ActionModifyMove::onMouseMoveEventSelected(int status, LC_MouseEvent *e)
                 const RS_Vector &offset = m_actionData->targetPoint - m_actionData->referencePoint;
                 m_actionData->data.offset = offset;
 
-                RS_Modification m(*m_preview, m_viewport, false);
-                m.move(m_actionData->data, m_selectedEntities, true, false);
+                LC_DocumentModificationBatch ctx;
+                RS_Modification::move(m_actionData->data, m_selectedEntities, true, ctx);
+                m_preview->addAllFromList(ctx.entitiesToAdd);
 
                 if (e->isShift){
                     previewLine(m_actionData->referencePoint, mouse);

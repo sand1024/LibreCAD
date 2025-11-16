@@ -203,7 +203,7 @@ void LC_ActionOptionsWidget::connectInteractiveInputButton(QToolButton* button,
     }
 }
 
-void LC_ActionOptionsWidget::requestFocusForTag(const QString& tag) {
+void LC_ActionOptionsWidget::requestFocusForTag(const QString& tag) const {
     auto widgets = findChildren<QWidget*>();
     for (auto le:widgets) {
         auto tagProperty = le->property("_tagHolder");
@@ -227,7 +227,7 @@ void LC_ActionOptionsWidget::pickAngleSetup(QString tag, QToolButton* button, QL
     lineedit->setProperty("_tagHolder", tag);
 }
 
-void LC_ActionOptionsWidget::onInteractiveInputButtonClicked([[maybe_unused]]bool checked) {
+void LC_ActionOptionsWidget::onInteractiveInputButtonClicked([[maybe_unused]]bool checked) const {
     auto senderButton = dynamic_cast<QToolButton*>(sender());
     if (senderButton != nullptr) {
         auto property = senderButton->property ("_interactiveInputButton");

@@ -135,7 +135,7 @@ void LC_WorkspacesManager::fillIconsAndMenuState(LC_WorkspacesManager::LC_Worksp
     {
         workspace.showStatusBar = LC_GET_BOOL("StatusBarVisible", false);
         workspace.showMainMenu = LC_GET_BOOL("MainMenuVisible", true);
-        workspace.showFullScreen = LC_GET_BOOL("FullscreenMode", true);
+        workspace.showFullScreen = LC_GET_BOOL("FullscreenMode", false);
     }
 }
 
@@ -414,7 +414,7 @@ bool LC_WorkspacesManager::isWorkspacesFileExists(){
     return false;
 }
 
-bool LC_WorkspacesManager::hasWorkspaces(){
+bool LC_WorkspacesManager::hasWorkspaces() const {
     return !m_workspacesList.isEmpty();
 }
 

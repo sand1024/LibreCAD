@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "rs_actiondrawellipseinscribe.h"
 
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_ellipse.h"
 #include "rs_line.h"
 #include "rs_preview.h"
@@ -60,7 +61,7 @@ void RS_ActionDrawEllipseInscribe::doInitWithContextEntity(RS_Entity* contextEnt
     }
 }
 
-void RS_ActionDrawEllipseInscribe::clearLines(bool checkStatus) {
+void RS_ActionDrawEllipseInscribe::clearLines(bool checkStatus) const {
     while (m_actionData->lines.size()) {
         if (checkStatus && (int)m_actionData->lines.size() <= getStatus()) {
             break;
@@ -84,26 +85,23 @@ void RS_ActionDrawEllipseInscribe::finish(bool updateTB) {
     LC_ActionDrawCircleBase::finish(updateTB);
 }
 
-void RS_ActionDrawEllipseInscribe::doTrigger() {
-    auto* ellipse = new RS_Ellipse(m_container, m_actionData->eData);
-
+RS_Entity* RS_ActionDrawEllipseInscribe::doTriggerCreateEntity() {
+    auto* ellipse = new RS_Ellipse(m_document, m_actionData->eData);
     if (m_moveRelPointAtCenterAfterTrigger) {
         moveRelativeZero(ellipse->getCenter());
     }
+    return ellipse;
+}
 
-    undoCycleAdd(ellipse);
-
+void RS_ActionDrawEllipseInscribe::doTriggerCompletion(bool success) {
     for (RS_Line* const p : m_actionData->lines) {
         if (p == nullptr) {
             continue;
         }
         p->setHighlighted(false);
     }
-
     clearLines(false);
     setStatus(SetLine1);
-
-    RS_DEBUG->print("RS_ActionDrawEllipse4Line::trigger():entity added: %lu", ellipse->getId());
 }
 
 void RS_ActionDrawEllipseInscribe::drawSnapper() {
@@ -176,7 +174,7 @@ void RS_ActionDrawEllipseInscribe::onMouseMoveEvent(int status, LC_MouseEvent* e
     }
 }
 
-bool RS_ActionDrawEllipseInscribe::preparePreview(RS_Line* fourthLineCandidate, std::vector<RS_Vector>& tangent) {
+bool RS_ActionDrawEllipseInscribe::preparePreview(RS_Line* fourthLineCandidate, std::vector<RS_Vector>& tangent) const {
     m_actionData->valid = false;
     m_actionData->lines.push_back(fourthLineCandidate);
     RS_Ellipse e{m_preview.get(), RS_EllipseData()};

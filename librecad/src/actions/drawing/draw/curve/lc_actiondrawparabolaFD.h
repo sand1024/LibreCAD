@@ -33,10 +33,10 @@ class LC_Parabola;
  *
  * @author Dongxu Li
  */
-class LC_ActionDrawParabolaFD : public RS_PreviewActionInterface {
+class LC_ActionDrawParabolaFD : public LC_UndoablePreviewActionInterface {
     Q_OBJECT
 public:
-    LC_ActionDrawParabolaFD(LC_ActionContext *actionContext);
+    explicit LC_ActionDrawParabolaFD(LC_ActionContext *actionContext);
     ~LC_ActionDrawParabolaFD() override;
     void init(int status) override;
     QStringList getAvailableCommands() override;
@@ -56,7 +56,7 @@ protected:
     RS2::CursorType doGetMouseCursor(int status) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void updateMouseButtonHints() override;
-    LC_Parabola* preparePreview();
+    LC_Parabola* preparePreview() const;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;

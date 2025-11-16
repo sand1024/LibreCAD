@@ -42,13 +42,13 @@ void RS_ActionBlocksAdd::trigger(){
     if (m_graphic != nullptr){
         RS_BlockList *blockList = m_graphic->getBlockList();
         if (blockList){
-            RS_BlockData d = RS_DIALOGFACTORY->requestNewBlockDialog(blockList);
+            const RS_BlockData d = RS_DIALOGFACTORY->requestNewBlockDialog(blockList);
             if (d.isValid()){
                 // Block cannot contain blocks.
-                if (m_container->is(RS2::EntityBlock)){
-                    m_graphic->addBlock(new RS_Block(m_container->getParent(), d));
+                if (m_document->is(RS2::EntityBlock)){
+                    m_graphic->addBlock(new RS_Block(m_document->getParent(), d));
                 } else {
-                    m_graphic->addBlock(new RS_Block(m_container, d));
+                    m_graphic->addBlock(new RS_Block(m_document, d));
                 }
             }
         }
@@ -56,7 +56,7 @@ void RS_ActionBlocksAdd::trigger(){
     finish(false);
 }
 
-void RS_ActionBlocksAdd::init(int status) {
+void RS_ActionBlocksAdd::init(const int status) {
     RS_ActionInterface::init(status);
     trigger();
 }

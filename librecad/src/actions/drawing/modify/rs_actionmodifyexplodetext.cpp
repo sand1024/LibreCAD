@@ -25,6 +25,8 @@
 **********************************************************************/
 
 #include "rs_actionmodifyexplodetext.h"
+
+#include "rs_document.h"
 #include "rs_modification.h"
 
 /**
@@ -37,10 +39,15 @@ RS_ActionModifyExplodeText::RS_ActionModifyExplodeText(LC_ActionContext *actionC
 
 RS_ActionModifyExplodeText::~RS_ActionModifyExplodeText() = default;
 
+bool RS_ActionModifyExplodeText::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+    RS_Modification::explodeTextIntoLetters(m_selectedEntities, ctx);
+    return true;
+}
 
-void RS_ActionModifyExplodeText::doTrigger(bool keepSelected) {
-    RS_Modification m(*m_container, m_viewport);
-    m.explodeTextIntoLetters(m_selectedEntities, keepSelected);
+void RS_ActionModifyExplodeText::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+    if (keepSelected) {
+        select(ctx.entitiesToAdd);
+    }
 }
 
 void RS_ActionModifyExplodeText::updateMouseButtonHintsForSelection() {

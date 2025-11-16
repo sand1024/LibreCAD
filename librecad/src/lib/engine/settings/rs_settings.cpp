@@ -240,7 +240,7 @@ QByteArray RS_Settings::readByteArray(const QString &key) {
     return readByteArraySingle(m_group, key);
 }
 
-QByteArray RS_Settings::readByteArraySingle(const QString& group, const QString &key) {
+QByteArray RS_Settings::readByteArraySingle(const QString& group, const QString &key) const {
     QString fullName = getFullName(group, key);
     return settings->value(fullName, "").toByteArray();
 }

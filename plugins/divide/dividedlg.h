@@ -39,7 +39,7 @@ public slots:
     void onOffBreaksSlot( bool );
     void onSizeChangedSlot( int );
     void onQtyChangedSlot( int );
-    void onStartAngleChangedSlot( const QString & );
+    void onStartAngleChangedSlot( const QString & ) const;
     void onOkClickedSlot();
     void onInOutSlot( bool );
 
@@ -48,7 +48,7 @@ signals:
 
 private:
     enum ElementKind { STRAIGHT, CURVED };
-    QFrame* choice(ElementKind ek, QFont font);
+    QFrame* choice(ElementKind ek, QFont font) const;
     Document_Interface *d;
     QRadioButton *R1; //on/off ticks
     QRadioButton *R2; //on/off breaks

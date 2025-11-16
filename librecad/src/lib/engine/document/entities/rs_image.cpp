@@ -233,7 +233,7 @@ RS_Vector RS_Image::getNearestEndpoint(const RS_Vector& coord,
 RS_Vector RS_Image::getNearestPointOnEntity(const RS_Vector& coord,
                                             bool onEntity, double* dist, RS_Entity** entity) const{
 
-    if (entity) {
+    if (entity != nullptr) {
         *entity = const_cast<RS_Image*>(this);
     }
 
@@ -306,7 +306,7 @@ double RS_Image::getDistanceToPoint(const RS_Vector& coord,
                                     RS_Entity** entity,
                                     RS2::ResolveLevel /*level*/,
                                     double /*solidDist*/) const{
-    if (entity) {
+    if (entity != nullptr) {
         *entity = const_cast<RS_Image*>(this);
     }
 

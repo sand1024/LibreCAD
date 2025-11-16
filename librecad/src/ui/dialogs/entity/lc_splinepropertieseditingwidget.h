@@ -41,8 +41,8 @@ public:
     ~LC_SplinePropertiesEditingWidget() override;
     void setEntity(RS_Entity* entity) override;
 protected slots:
-    void onClosedToggled(bool checked);
-    void onDegreeIndexChanged(int index);
+    void onClosedToggled(bool checked) const;
+    void onDegreeIndexChanged(int index) const;
 private:
     Ui::LC_SplinePropertiesEditingWidget *ui;
     RS_Spline* m_entity{nullptr};

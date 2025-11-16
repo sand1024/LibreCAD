@@ -36,7 +36,7 @@
 LC_FontFileViewer::LC_FontFileViewer(RS_Document* doc): m_document{doc} {
 }
 
-void LC_FontFileViewer::drawFontChars() {
+void LC_FontFileViewer::drawFontChars() const {
     RS_BlockList* bl = m_document->getBlockList();
     double sep = m_document->getGraphic()->getVariableDouble("LetterSpacing", 3.0);
     double h = sep/3;

@@ -49,7 +49,7 @@ RS_Entity* LC_Tolerance::clone() const {
 
 void LC_Tolerance::update() {
     clear();
-    if (isUndone()) {
+    if (isDeleted()) {
         return;
     }
 
@@ -178,11 +178,11 @@ double LC_Tolerance::getDimscale()  {
     return v;
 }
 
-QString LC_Tolerance::getTextStyle() {
+QString LC_Tolerance::getTextStyle() const {
     return getGraphicVariableString("$DIMTXSTY", "standard");
 }
 
-RS_Color LC_Tolerance::getTextColor() {
+RS_Color LC_Tolerance::getTextColor() const {
     return RS_FilterDXFRW::numberToColor(getGraphicVariableInt("$DIMCLRT", 0));
 }
 
@@ -191,7 +191,7 @@ RS_Pen LC_Tolerance::getPenForText() {
     return result;
 }
 
-RS_Color LC_Tolerance::getDimensionLineColor() {
+RS_Color LC_Tolerance::getDimensionLineColor() const {
     return RS_FilterDXFRW::numberToColor(getGraphicVariableInt("$DIMCLRD", 0));
 }
 

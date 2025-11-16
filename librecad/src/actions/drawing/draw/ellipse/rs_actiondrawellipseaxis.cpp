@@ -28,6 +28,7 @@
 
 #include "lc_ellipsearcoptions.h"
 #include "rs_debug.h"
+#include "rs_document.h"
 #include "rs_ellipse.h"
 #include "rs_line.h"
 
@@ -83,24 +84,23 @@ void RS_ActionDrawEllipseAxis::init(int status){
     }
 }
 
-void RS_ActionDrawEllipseAxis::doTrigger() {
-    auto *ellipse = new RS_Ellipse{m_container,
+RS_Entity* RS_ActionDrawEllipseAxis::doTriggerCreateEntity() {
+    auto *ellipse = new RS_Ellipse{m_document,
                                    {m_actionData->center, m_actionData->m_vMajorP, m_actionData->ratio,
                                     m_actionData->angle1, m_actionData->angle2, m_actionData->reversed}
     };
     if (m_actionData->ratio > 1.){
         ellipse->switchMajorMinor();
     }
-    setPenAndLayerToActive(ellipse);
 
     if (m_moveRelPointAtCenterAfterTrigger){
         moveRelativeZero(ellipse->getCenter());
     }
+    return ellipse;
+}
 
-    undoCycleAdd(ellipse);
+void RS_ActionDrawEllipseAxis::doTriggerCompletion(bool success) {
     setStatus(SetCenter);
-
-    RS_DEBUG->print("RS_ActionDrawEllipseAxis::trigger():entity added: %lu", ellipse->getId());
 }
 
 void RS_ActionDrawEllipseAxis::onMouseMoveEvent([[maybe_unused]]int status, LC_MouseEvent *e) {

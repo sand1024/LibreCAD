@@ -45,7 +45,7 @@ public:
         RS_ActionInterface *actionSelect = nullptr,
         const QList<RS2::EntityType> &entityTypeList = {});
     void trigger() override;
-    enum RS2::EntityType getTypeToSelect();
+    enum RS2::EntityType getTypeToSelect() const;
 protected:
     bool m_selectContour = false;
     RS_Entity *m_entityToSelect = nullptr;
@@ -60,6 +60,7 @@ protected:
     void selectionFinishedByKey(QKeyEvent *e, bool escape) override;
     void doSelectEntity(RS_Entity *entityToSelect, bool selectContour) const override;
     void updateMouseButtonHints() override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& modificationData) override{return true;}
 };
 
 #endif

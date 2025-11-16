@@ -41,11 +41,11 @@ void LC_PenItem::setPen(const RS_Pen& newPen){
     m_color = newPen.getColor();
 }
 
-RS2::LineType LC_PenItem::getLineType(){
+RS2::LineType LC_PenItem::getLineType() const {
     return m_lineType;
 }
 
-RS2::LineWidth LC_PenItem::getLineWidth(){
+RS2::LineWidth LC_PenItem::getLineWidth() const {
     return m_lineWidth;
 }
 

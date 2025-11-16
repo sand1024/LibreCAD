@@ -65,7 +65,7 @@ protected:
     bool doCheckMayDrawPreview(LC_MouseEvent *pEvent, int status) override;
     void doAfterTrigger() override;
     void doUpdateMouseButtonHints(int status) override;
-    RS_Vector createSecondCornerSnapForGivenRectSize(RS_Vector size);
+    RS_Vector createSecondCornerSnapForGivenRectSize(RS_Vector size) const;
     void doProcessCoordinateEvent(const RS_Vector &vector, bool zero, int status) override;
     int doGetStatusForInitialSnapToRelativeZero() override;
     void doInitialSnapToRelativeZero(RS_Vector vector) override;

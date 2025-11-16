@@ -31,7 +31,7 @@ class LC_PrintViewportRenderer :public LC_GraphicViewportRenderer{
 public:
     explicit LC_PrintViewportRenderer(LC_GraphicViewport *viewport, RS_Painter* painter);
     void renderEntity(RS_Painter *painter, RS_Entity *entity) override;
-    RS2::DrawingMode getDrawingMode() {
+    RS2::DrawingMode getDrawingMode() const {
         return drawingMode;
     }
     void setDrawingMode(RS2::DrawingMode mode){

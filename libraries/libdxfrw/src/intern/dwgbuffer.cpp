@@ -846,7 +846,7 @@ bool dwgBuffer::getBytes(unsigned char *buf, duint64 size){
     return true;
 }
 
-duint16 dwgBuffer::crc8(duint16 dx,dint32 start,dint32 end){
+duint16 dwgBuffer::crc8(duint16 dx,dint32 start,dint32 end) const {
     duint64 pos = filestr->getPos();
     filestr->setPos(start);
     int n = end-start;
@@ -869,7 +869,7 @@ duint16 dwgBuffer::crc8(duint16 dx,dint32 start,dint32 end){
   return(dx);
 }
 
-duint32 dwgBuffer::crc32(duint32 seed,dint32 start,dint32 end){
+duint32 dwgBuffer::crc32(duint32 seed,dint32 start,dint32 end) const {
     duint64 pos = filestr->getPos();
     filestr->setPos(start);
     int n = end-start;
@@ -911,4 +911,3 @@ duint32 dwgBuffer::crc32(duint32 seed,dint32 start,dint32 end){
     return st;
 //    return std::string(buffer);
 }*/
-

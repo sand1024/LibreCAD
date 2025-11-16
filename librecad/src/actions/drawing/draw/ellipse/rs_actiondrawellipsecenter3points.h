@@ -36,7 +36,7 @@ public:
     explicit RS_ActionDrawEllipseCenter3Points(LC_ActionContext *actionContext);
     ~RS_ActionDrawEllipseCenter3Points() override;
     void init(int status) override;
-    bool preparePreview();
+    bool preparePreview() const;
     QStringList getAvailableCommands() override;
 protected:
     /**
@@ -57,7 +57,7 @@ protected:
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void updateMouseButtonHints() override;
-
-    void doTrigger() override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
 };
 #endif

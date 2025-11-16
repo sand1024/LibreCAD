@@ -43,8 +43,7 @@ TextFileViewer::~TextFileViewer()
     delete ui;
 }
 
-bool TextFileViewer::addFile(QString name, QString path)
-{
+bool TextFileViewer::addFile(QString name, QString path) const {
     QFile file(path);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
         return false;
@@ -57,8 +56,7 @@ bool TextFileViewer::addFile(QString name, QString path)
     return true;
 }
 
-void TextFileViewer::loadFile(QListWidgetItem* item)
-{
+void TextFileViewer::loadFile(QListWidgetItem* item) const {
     ui->text_edit->setPlainText(item->whatsThis());
 }
 

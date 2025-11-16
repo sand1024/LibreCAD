@@ -38,10 +38,10 @@ public:
     ~LC_LayerExportOptionsWidget() override;
     void fillLayerExportOptions(LC_LayersExportOptions *options);
 protected:
-    void loadFromOptions();
-    void saveToOptions();
+    void loadFromOptions() const;
+    void saveToOptions() const;
 protected slots:
-    void onCreateSeparateDrawingToggled(bool enable);
+    void onCreateSeparateDrawingToggled(bool enable) const;
 private:
     Ui::LC_LayerExportOptionsWidget *ui;
 };

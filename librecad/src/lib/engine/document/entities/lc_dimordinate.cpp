@@ -131,7 +131,7 @@ std::ostream& operator<<(std::ostream& os, const LC_DimOrdinate& d) {
 }
 
 void LC_DimOrdinate::determineKneesPositions(const RS_Vector& featurePoint, const RS_Vector& leaderEndPoint,
-                                             RS_Vector& kneeOne, RS_Vector& kneeTwo, RS_Vector& textOffsetV) {
+                                             RS_Vector& kneeOne, RS_Vector& kneeTwo, RS_Vector& textOffsetV) const {
     bool xAxisRotatedInUCS = LC_LineMath::isMeaningfulAngle(m_dimGenericData.horizontalAxisDirection);
     bool inXDirection = m_dimOrdinateData.ordinateForX;
     double legSize = getArrowSize()*2; // fixme - sand - play with factors, settings?
@@ -200,7 +200,7 @@ void LC_DimOrdinate::determineKneesPositions(const RS_Vector& featurePoint, cons
 void LC_DimOrdinate::doUpdateDim() {
     RS_DEBUG->print("RS_DimLinear::update");
     clear();
-    if (isUndone()) {
+    if (isDeleted()) {
         return;
     }
 

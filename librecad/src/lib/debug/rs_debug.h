@@ -136,8 +136,8 @@ public:
     static LogStream Log(RS_DebugLevel level = D_DEBUGGING);
 
     void setLevel(RS_DebugLevel level);
-    RS_DebugLevel getLevel();
-    void print(RS_DebugLevel level, const char* format ...);
+    RS_DebugLevel getLevel() const;
+    void print(RS_DebugLevel level, const char* format ...) const;
     void print(const char* format ...);
     void print(const QString& text);
     void printUnicode(const QString& text);

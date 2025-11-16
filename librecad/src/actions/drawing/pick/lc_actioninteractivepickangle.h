@@ -58,11 +58,11 @@ protected:
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
-    void updateInfoCursor2(const RS_Vector& point2, const RS_Vector& intersection);
+    void updateInfoCursor2(const RS_Vector& point2, const RS_Vector& intersection) const;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void updateMouseButtonHints() override;
-    void updateInfoCursor(const RS_Vector& mouse, const RS_Vector& point2, const RS_Vector& startPoint);
-    void updateInfoCursor(const RS_Vector &mouse, const RS_Vector &startPoint);
+    void updateInfoCursor(const RS_Vector& mouse, const RS_Vector& point2, const RS_Vector& startPoint) const;
+    void updateInfoCursor(const RS_Vector &mouse, const RS_Vector &startPoint) const;
     void doTrigger() override;
 };
 

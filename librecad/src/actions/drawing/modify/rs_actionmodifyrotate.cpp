@@ -60,11 +60,29 @@ void RS_ActionModifyRotate::onSelectionCompleted(bool singleEntity, bool fromIni
     }
 }
 
-void RS_ActionModifyRotate::doTrigger(bool keepSelected) {
-    RS_DEBUG->print("RS_ActionModifyRotate::trigger()");
+bool RS_ActionModifyRotate::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
     moveRelativeZero(m_rotateData->center);
-    RS_Modification m(*m_container, m_viewport);
-    m.rotate(*m_rotateData, m_selectedEntities, false, keepSelected);
+    ctx.setActiveLayerAndPen(m_rotateData->useCurrentLayer, m_rotateData->useCurrentAttributes);
+    return RS_Modification::rotate(*m_rotateData, m_selectedEntities, false, ctx);
+}
+
+void RS_ActionModifyRotate::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+    if (m_rotateData->keepOriginals) {
+        unselect(m_selectedEntities);
+    }
+    if (keepSelected) {
+        select(ctx.entitiesToAdd);
+    }
+}
+
+void RS_ActionModifyRotate::doTriggerCompletion(bool success) {
+}
+
+
+void RS_ActionModifyRotate::previewRotatedEntities(RS_RotateData &rotateData) const {
+    LC_DocumentModificationBatch ctx;
+    RS_Modification::rotate(rotateData, m_selectedEntities, true, ctx);
+    previewEntitiesToAdd(ctx);
 }
 
 void RS_ActionModifyRotate::onMouseMoveEventSelected(int status, LC_MouseEvent *e) {
@@ -99,8 +117,7 @@ void RS_ActionModifyRotate::onMouseMoveEventSelected(int status, LC_MouseEvent *
                 if (!m_freeAngle){
                     RS_RotateData tmpData = *m_rotateData;
                     tmpData.refPoint = mouse;
-                    RS_Modification m(*m_preview, m_viewport, false);
-                    m.rotate(tmpData, m_selectedEntities, true, false);
+                    previewRotatedEntities(tmpData);
                     previewRotationCircleAndPoints(m_rotateData->center, mouse, m_rotateData->angle);
                 }
             }
@@ -123,8 +140,7 @@ void RS_ActionModifyRotate::onMouseMoveEventSelected(int status, LC_MouseEvent *
                 if (!m_freeAngle) {
                     RS_RotateData tmpData = *m_rotateData;
                     tmpData.center = mouse;
-                    RS_Modification m(*m_preview, m_viewport, false);
-                    m.rotate(tmpData, m_selectedEntities, true, false);
+                    previewRotatedEntities(tmpData);
                     previewRotationCircleAndPoints(mouse, m_rotateData->refPoint, m_rotateData->angle);
 
                     if (isInfoCursorForModificationEnabled()) {
@@ -190,8 +206,7 @@ void RS_ActionModifyRotate::onMouseMoveEventSelected(int status, LC_MouseEvent *
             double wcsRotationAngle = adjustRelativeAngleSignByBasis(rotationAngle);
             tmpData.angle = wcsRotationAngle;
 
-            RS_Modification m(*m_preview, m_viewport, false);
-            m.rotate(tmpData, m_selectedEntities, true, false);
+            previewRotatedEntities(tmpData);
 
             // todo - sand - we can temporarily add a copy of circle to the document, so intersection snap for target reference point will work.
             previewRotationCircleAndPoints(center, m_rotateData->refPoint, wcsRotationAngle);
@@ -233,15 +248,14 @@ void RS_ActionModifyRotate::onMouseMoveEventSelected(int status, LC_MouseEvent *
             RS_RotateData tmpData = *m_rotateData;
             tmpData.secondAngle = adjustRelativeAngleSignByBasis(rotationAngle);
 
-            RS_Modification m(*m_preview, m_viewport, false);
-            m.rotate(tmpData, m_selectedEntities, true, false);
+            previewRotatedEntities(tmpData);
 
             if (isInfoCursorForModificationEnabled()) {
                 RS_Vector offset = newRefPoint - originalRefPoint;
                 msg(tr("Rotation"))
                     .rawAngle(tr("Angle:"), m_rotateData->angle)
-                    .vector("Source Point:", originalRefPoint)
-                    .vector("Target Point:", newRefPoint)
+                    .vector(tr("Source Point:"), originalRefPoint)
+                    .vector(tr("Target Point:"), newRefPoint)
                     .string(tr("Offset:"))
                     .relative(offset)
                     .relativePolar(offset)
@@ -267,7 +281,7 @@ bool RS_ActionModifyRotate::doUpdateAngleByInteractiveInput(const QString& tag, 
     return false;
 }
 
-void RS_ActionModifyRotate::previewRotationCircleAndPoints(const RS_Vector &center, const RS_Vector &refPoint, double angle) {
+void RS_ActionModifyRotate::previewRotationCircleAndPoints(const RS_Vector &center, const RS_Vector &refPoint, double angle) const {
     if (m_showRefEntitiesOnPreview) {
         double radius = center.distanceTo(refPoint);
         previewRefCircle(center, radius);
@@ -538,11 +552,11 @@ void RS_ActionModifyRotate::setFreeRefPointAngle(bool value) {
     m_freeRefPointAngle = value;
 }
 
-double RS_ActionModifyRotate::getCurrentAngleDegrees() {
+double RS_ActionModifyRotate::getCurrentAngleDegrees() const {
     return RS_Math::rad2deg(m_currentAngle);
 }
 
-double RS_ActionModifyRotate::getCurrentAngle2Degrees() {
+double RS_ActionModifyRotate::getCurrentAngle2Degrees() const {
     return toUCSBasisAngleDegrees(m_currentAngle2);
 }
 
@@ -550,31 +564,31 @@ double RS_ActionModifyRotate::getAngle() const{
     return adjustRelativeAngleSignByBasis(m_rotateData->angle);
 }
 
-void RS_ActionModifyRotate::setAngle(double angleRad) {
+void RS_ActionModifyRotate::setAngle(double angleRad) const {
     m_rotateData->angle = adjustRelativeAngleSignByBasis(angleRad);
 }
 
-double RS_ActionModifyRotate::getRefPointAngle() {
+double RS_ActionModifyRotate::getRefPointAngle() const {
     return adjustRelativeAngleSignByBasis(m_rotateData->secondAngle);
 }
 
-void RS_ActionModifyRotate::setRefPointAngle(double angle) {
+void RS_ActionModifyRotate::setRefPointAngle(double angle) const {
     m_rotateData->secondAngle = adjustRelativeAngleSignByBasis(angle);
 }
 
-bool RS_ActionModifyRotate::isRotateAlsoAroundReferencePoint() {
+bool RS_ActionModifyRotate::isRotateAlsoAroundReferencePoint() const {
     return m_rotateData->twoRotations;
 }
 
-void RS_ActionModifyRotate::setRotateAlsoAroundReferencePoint(bool value) {
+void RS_ActionModifyRotate::setRotateAlsoAroundReferencePoint(bool value) const {
     m_rotateData->twoRotations = value;
 }
 
-bool RS_ActionModifyRotate::isRefPointAngleAbsolute() {
+bool RS_ActionModifyRotate::isRefPointAngleAbsolute() const {
     return m_rotateData->secondAngleIsAbsolute;
 }
 
-void RS_ActionModifyRotate::setRefPointAngleAbsolute(bool val) {
+void RS_ActionModifyRotate::setRefPointAngleAbsolute(bool val) const {
     m_rotateData->secondAngleIsAbsolute = val;
 }
 

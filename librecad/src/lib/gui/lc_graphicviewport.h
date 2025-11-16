@@ -21,6 +21,7 @@
  ******************************************************************************/
 #ifndef LC_GRAPHICVIEWPORT_H
 #define LC_GRAPHICVIEWPORT_H
+
 #include <QList>
 #include <memory>
 
@@ -29,6 +30,7 @@
 
 #include "rs.h"
 #include "rs_vector.h"
+
 class LC_OverlayDrawablesContainer;
 class QString;
 class RS_EntityContainer;
@@ -59,7 +61,7 @@ public:
 
     bool isGridOn() const;
     bool isGridIsometric() const;
-    void setIsoViewType(RS2::IsoGridViewType chType);
+    void setIsoViewType(RS2::IsoGridViewType chType) const;
     RS2::IsoGridViewType getIsoViewType() const;
     void justSetOffsetAndFactor(int ox, int oy, double f);
     void setOffsetAndFactor(int ox, int oy, double f);
@@ -104,10 +106,10 @@ public:
     void setRelativeZero(const RS_Vector &pos);
     void moveRelativeZero(const RS_Vector &pos);
     void setRelativeZeroHiddenState(bool isHidden) {hideRelativeZero = isHidden;};
-    bool isRelativeZeroHidden() {return hideRelativeZero;};
+    bool isRelativeZeroHidden() const {return hideRelativeZero;};
     void markRelativeZero(){markedRelativeZero = relativeZero;}
 
-    RS_Vector getMarkedRelativeZero(){return markedRelativeZero;}
+    RS_Vector getMarkedRelativeZero() const {return markedRelativeZero;}
     RS_Undoable* getRelativeZeroUndoable();
 
     RS_Vector getUCSViewLeftBottom() const;
@@ -141,7 +143,7 @@ public:
     LC_View* createNamedView(QString name) const;
     void updateNamedView(LC_View* view) const;
     void initAfterDocumentOpen();
-    void loadGridSettings();
+    void loadGridSettings() const;
     void setPrintPreview(bool pv) {printPreview = pv;}
     bool isPrintPreview() const {return printPreview;}
     void setPrinting(bool p) {printing = p;}
@@ -154,19 +156,19 @@ public:
     void loadSettings();
     RS_EntityContainer* getOverlayEntitiesContainer(RS2::OverlayGraphics overlayType) {return overlaysManager.getEntitiesContainer(overlayType);}
     LC_OverlayDrawablesContainer* getOverlaysDrawablesContainer(RS2::OverlayGraphics overlayType) {return overlaysManager.getDrawablesContainer(overlayType);}
-    void clearOverlayEntitiesContainer(RS2::OverlayGraphics overlayType);
-    void clearOverlayDrawablesContainer(RS2::OverlayGraphics overlayType);
+    void clearOverlayEntitiesContainer(RS2::OverlayGraphics overlayType) const;
+    void clearOverlayDrawablesContainer(RS2::OverlayGraphics overlayType) const;
     RS_Grid *getGrid() const;
     LC_OverlaysManager* getOverlaysManager() { return &overlaysManager;}
     bool isPanning() const {return panning;}
     void setPanning(bool state) {  panning = state;}
-    RS_Graphic* getGraphic() {return graphic;}
+    RS_Graphic* getGraphic() const {return graphic;}
     void addViewportListener(LC_GraphicViewPortListener* listener);
     void removeViewportListener(LC_GraphicViewPortListener* listener);
-    void notifyChanged(){ fireRedrawNeeded();}
+    void notifyChanged() const { fireRedrawNeeded();}
 
-    bool areAnglesCounterClockwise();
-    double getAnglesBaseAngle();
+    bool areAnglesCounterClockwise() const;
+    double getAnglesBaseAngle() const;
 
 protected:
     RS_Vector factor{1., 1.};
@@ -221,11 +223,11 @@ protected:
 
     void applyUCSAfterLoad();
 
-    void fireViewportChanged();
-    void fireUcsChanged(LC_UCS* ucs);
-    void fireRedrawNeeded();
+    void fireViewportChanged() const;
+    void fireUcsChanged(LC_UCS* ucs) const;
+    void fireRedrawNeeded() const;
     void firePreviousZoomChanged(bool value);
-    void fireRelativeZeroChanged(const RS_Vector &pos);
+    void fireRelativeZeroChanged(const RS_Vector &pos) const;
 
 
     void setOffset(int ox, int oy);
@@ -249,10 +251,8 @@ protected:
 
     void setGraphic(RS_Graphic* g);
 
-    void invalidateGrid();
+    void invalidateGrid() const;
 private:
-    void zoomViewPortImpl();
-
     int m_width = 0;
     int m_height = 0;
     int borderLeft = 0;

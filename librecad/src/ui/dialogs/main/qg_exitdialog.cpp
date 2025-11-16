@@ -81,7 +81,7 @@ void QG_ExitDialog::clicked(QAbstractButton * button){
     };
 }
 
-void QG_ExitDialog::setText(const QString& text) {
+void QG_ExitDialog::setText(const QString& text) const {
 	ui->lQuestion->setText(text);
 }
 
@@ -89,12 +89,12 @@ void QG_ExitDialog::setTitle(const QString& text) {
     setWindowTitle(text);
 }
 
-void QG_ExitDialog::setForce(bool force) {
+void QG_ExitDialog::setForce(bool force) const {
 	 QPushButton * bCancel = ui->buttonBox->button ( QDialogButtonBox::Cancel );
      bCancel->setDisabled(force);
 }
 
-void QG_ExitDialog::setShowOptionsForAll(bool show){
+void QG_ExitDialog::setShowOptionsForAll(bool show) const {
 
     auto yesToAll = ui->buttonBox->button(QDialogButtonBox::YesToAll);
     yesToAll->setVisible(show);

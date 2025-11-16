@@ -40,9 +40,9 @@ class QG_LineOptions : public LC_ActionOptionsWidgetBase{
 public:
     QG_LineOptions();
     ~QG_LineOptions() override;
-    void enableButtons();
+    void enableButtons() const;
 public slots:
-    void close(); // fixme - rename
+    void close() const; // fixme - rename
     void undo();
     void redo();
     void languageChange() override;

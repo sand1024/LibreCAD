@@ -127,7 +127,7 @@ public:
     friend std::ostream &operator<<(
         std::ostream &os,
         const RS_DimLinear &d);
-    void getDimPoints(RS_Vector &dimP1, RS_Vector &dimP2);
+    void getDimPoints(RS_Vector &dimP1, RS_Vector &dimP2) const;
 protected:
     /** Extended data. */
     RS_DimLinearData m_dimLinearData;

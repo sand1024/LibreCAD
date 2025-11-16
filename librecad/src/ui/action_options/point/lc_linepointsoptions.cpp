@@ -151,7 +151,7 @@ void LC_LinePointsOptions::languageChange(){
     ui->retranslateUi(this);
 }
 
-void LC_LinePointsOptions::setPointsCountActionAndView(int val){
+void LC_LinePointsOptions::setPointsCountActionAndView(int val) const {
     m_action->setPointsCount(val);
     ui->sbPointsCount->setValue(val);
 }
@@ -162,7 +162,7 @@ void LC_LinePointsOptions::onEdgePointsModeIndexChanged(int index){
     }
 }
 
-void LC_LinePointsOptions::setEdgePointsModeToActionAndView(int index){
+void LC_LinePointsOptions::setEdgePointsModeToActionAndView(int index) const {
     m_action->setEdgePointsMode(index);
     ui->cbEdgePoints->setCurrentIndex(index);
 }
@@ -179,7 +179,7 @@ void LC_LinePointsOptions::onAngleClicked(bool value){
     }
 }
 
-void LC_LinePointsOptions::setFixedDistanceModeToActionAndView(bool value){
+void LC_LinePointsOptions::setFixedDistanceModeToActionAndView(bool value) const {
     ui->cbFixedDistance->setChecked(value);
     m_action->setFixedDistanceMode(value);
     ui->frmFixed->setVisible(value && m_action->rtti()==RS2::ActionDrawLinePoints);
@@ -189,7 +189,7 @@ void LC_LinePointsOptions::setFixedDistanceModeToActionAndView(bool value){
     }
 }
 
-void LC_LinePointsOptions::setWithinLineModeToActionAndView(bool value){
+void LC_LinePointsOptions::setWithinLineModeToActionAndView(bool value) const {
     ui->cbWithinLine->setChecked(value);
     m_action->setWithinLineMode(value);
 
@@ -221,7 +221,7 @@ void LC_LinePointsOptions::setDistanceToActionAndView(QString val){
     }
 }
 
-void LC_LinePointsOptions::setAngleModeToActionAndView(bool value){
+void LC_LinePointsOptions::setAngleModeToActionAndView(bool value) const {
     if (value){
         m_action->setSetAngleDirectionState();
     }

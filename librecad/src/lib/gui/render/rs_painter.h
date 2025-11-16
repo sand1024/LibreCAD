@@ -171,7 +171,7 @@ public:
     /**
      * @return Current drawing mode.
      */
-    RS2::DrawingMode getDrawingMode() {return drawingMode;}
+    RS2::DrawingMode getDrawingMode() const {return drawingMode;}
     void setPointsMode(int pdMode){pointsMode = pdMode;}
 
     void drawGridPoint(const RS_Vector& p);
@@ -213,7 +213,7 @@ public:
      * @param entities
      * @return
      */
-    QPainterPath createSolidFillPath(const RS_EntityContainer& contour);
+    QPainterPath createSolidFillPath(const RS_EntityContainer& contour) const;
     void noCapStyle();
     RS_Pen& getRsPen();
     void setPenJoinStyle(Qt::PenJoinStyle penJoinStyle);
@@ -238,8 +238,8 @@ public:
     void disableUCS();
 
     void setWorldBoundingRect(LC_Rect &worldBoundingRect) {wcsBoundingRect = worldBoundingRect;}
-    bool isFullyWithinBoundingRect(RS_Entity* e);
-    bool isFullyWithinBoundingRect(const LC_Rect &rect);
+    bool isFullyWithinBoundingRect(RS_Entity* e) const;
+    bool isFullyWithinBoundingRect(const LC_Rect &rect) const;
 
     const LC_Rect &getWcsBoundingRect() const;
     /**
@@ -355,9 +355,9 @@ protected:
     void drawArcSegmentBySplinePointsUI(const RS_Vector& center, double uiRadiusX, double uiStartAngleDegrees,
                                         double angularLength, QPainterPath &path);
 private:
-    void addEllipseArcToPath(QPainterPath& localPath, const RS_Vector& uiRadii, double startAngleDeg, double angularLengthDeg, bool useSpline);
+    void addEllipseArcToPath(QPainterPath& localPath, const RS_Vector& uiRadii, double startAngleDeg, double angularLengthDeg, bool useSpline) const;
     // helper method: approximate a centered ellipse with lc_splinepoints
-    void drawEllipseSegmentBySplinePointsUI(const RS_Vector& uiRadii, double startRad, double lenRad, QPainterPath &path, bool closed);
+    void drawEllipseSegmentBySplinePointsUI(const RS_Vector& uiRadii, double startRad, double lenRad, QPainterPath &path, bool closed) const;
     void addSplinePointsToPath(const std::vector<RS_Vector> &uiControlPoints, bool closed, QPainterPath &path) const;
 };
 

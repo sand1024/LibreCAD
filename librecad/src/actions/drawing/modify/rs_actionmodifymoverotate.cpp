@@ -46,11 +46,23 @@ RS_ActionModifyMoveRotate::RS_ActionModifyMoveRotate(LC_ActionContext *actionCon
 
 RS_ActionModifyMoveRotate::~RS_ActionModifyMoveRotate() = default;
 
-void RS_ActionModifyMoveRotate::doTrigger(bool keepSelected) {
-    RS_DEBUG->print("RS_ActionModifyMoveRotate::trigger()");
-    RS_Modification m(*m_container, m_viewport);
-	m.moveRotate(m_actionData->data, m_selectedEntities, false, keepSelected);
+bool RS_ActionModifyMoveRotate::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+    ctx.setActiveLayerAndPen(m_actionData->data.useCurrentLayer, m_actionData->data.useCurrentAttributes);
+	RS_Modification::moveRotate(m_actionData->data, m_selectedEntities, false, ctx);
     m_actionData->targetPoint = RS_Vector(false);
+    return true;
+}
+
+void RS_ActionModifyMoveRotate::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+    if (m_actionData->data.keepOriginals) {
+        unselect(m_selectedEntities);
+    }
+    if (keepSelected) {
+        select(ctx.entitiesToAdd);
+    }
+}
+
+void RS_ActionModifyMoveRotate::doTriggerCompletion(bool success) {
     finish(false);
 }
 
@@ -67,8 +79,9 @@ void RS_ActionModifyMoveRotate::onMouseMoveEventSelected(int status, LC_MouseEve
             if (originalRefPoint.valid) {
                 mouse = getSnapAngleAwarePoint(e, originalRefPoint, mouse, true);
                 m_actionData->data.offset = mouse - originalRefPoint;
-                RS_Modification m(*m_preview, m_viewport);
-                m.moveRotate(m_actionData->data, m_selectedEntities, true, false);
+                LC_DocumentModificationBatch ctx;
+                RS_Modification::moveRotate(m_actionData->data, m_selectedEntities, true, ctx);
+                previewEntitiesToAdd(ctx);
                 if (m_showRefEntitiesOnPreview) {
                     previewRefPoint(originalRefPoint);
                     previewRefSelectablePoint(mouse);
@@ -96,8 +109,9 @@ void RS_ActionModifyMoveRotate::onMouseMoveEventSelected(int status, LC_MouseEve
                 double rotationAngle = RS_Math::correctAngle(toUCSBasisAngle(wcsAngle));
                 double wcsRotationAngle = adjustRelativeAngleSignByBasis(rotationAngle);
                 m_actionData->data.angle = wcsRotationAngle;
-                RS_Modification m(*m_preview, m_viewport);
-                m.moveRotate(m_actionData->data, m_selectedEntities, true);
+                LC_DocumentModificationBatch ctx;
+                RS_Modification::moveRotate(m_actionData->data, m_selectedEntities, true, ctx);
+                previewEntitiesToAdd(ctx);
                 if (m_showRefEntitiesOnPreview) {
                     previewSnapAngleMark(targetPoint, mouse);
                     previewRefPoint(originalRefPoint);
@@ -134,7 +148,7 @@ bool RS_ActionModifyMoveRotate::doUpdateAngleByInteractiveInput(const QString& t
     return false;
 }
 
-void RS_ActionModifyMoveRotate::previewRefPointsForMultipleCopies() {
+void RS_ActionModifyMoveRotate::previewRefPointsForMultipleCopies() const {
     if (m_actionData->data.multipleCopies){
         int numPoints = m_actionData->data.number;
         if (numPoints > 1){
@@ -308,7 +322,7 @@ QStringList RS_ActionModifyMoveRotate::getAvailableCommands(){
     return cmd;
 }
 
-void RS_ActionModifyMoveRotate::setAngle(double angleRad){
+void RS_ActionModifyMoveRotate::setAngle(double angleRad) const {
     m_actionData->data.angle = adjustRelativeAngleSignByBasis(angleRad);
 }
 
@@ -353,11 +367,11 @@ void RS_ActionModifyMoveRotate::setAngleIsFree(bool b) {
     }
 }
 
-void RS_ActionModifyMoveRotate::setUseSameAngleForCopies(bool b) {
+void RS_ActionModifyMoveRotate::setUseSameAngleForCopies(bool b) const {
     m_actionData->data.sameAngleForCopies = b;
 }
 
-bool RS_ActionModifyMoveRotate::isUseSameAngleForCopies() {
+bool RS_ActionModifyMoveRotate::isUseSameAngleForCopies() const {
     return m_actionData->data.sameAngleForCopies;
 }
 
