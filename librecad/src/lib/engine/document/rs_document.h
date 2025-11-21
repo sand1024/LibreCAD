@@ -55,20 +55,20 @@ struct LC_DocumentModificationBatch {
     void dontSetActiveLayerAndPen(){m_setActiveLayer = false; m_setActivePen = false;}
     void setActiveLayerAndPen(bool setLayer, bool setPen){m_setActiveLayer = setLayer; m_setActivePen = setPen;}
 
+
     void add(RS_Entity* entity) {entitiesToAdd.append(entity);}
     void remove(QList<RS_Entity*>& list) {entitiesToDelete.append(list);}
     void remove(RS_Entity* e) {entitiesToDelete.append(e);}
     void replace(RS_Entity* original, RS_Entity* clone) {entitiesToDelete.append(original);entitiesToAdd.append(clone); }
+    void clear() {entitiesToAdd.clear(); entitiesToDelete.clear();};
 };
 
-inline void operator +=(LC_DocumentModificationBatch &ctx, RS_Entity* e) {ctx.entitiesToAdd.append(e);};
-inline void operator -=(LC_DocumentModificationBatch &ctx, RS_Entity* e) {ctx.entitiesToDelete.append(e);};
-inline void operator -=(LC_DocumentModificationBatch &ctx, QList<RS_Entity*> &list) {
-    ctx.entitiesToDelete.append(list);
-}
-inline void operator -=(LC_DocumentModificationBatch &ctx, const QList<RS_Entity*> &list) {
-    ctx.entitiesToDelete.append(list);
-};
+inline void operator +=(LC_DocumentModificationBatch &ctx, RS_Entity* e) {ctx.entitiesToAdd.append(e);}
+inline void operator +=(LC_DocumentModificationBatch &ctx, QList<RS_Entity*> &list) {ctx.entitiesToAdd.append(list);}
+inline void operator +=(LC_DocumentModificationBatch &ctx, const QList<RS_Entity*> &list) {ctx.entitiesToAdd.append(list);}
+inline void operator -=(LC_DocumentModificationBatch &ctx, RS_Entity* e) {ctx.entitiesToDelete.append(e);}
+inline void operator -=(LC_DocumentModificationBatch &ctx, QList<RS_Entity*> &list) {ctx.entitiesToDelete.append(list);}
+inline void operator -=(LC_DocumentModificationBatch &ctx, const QList<RS_Entity*> &list) {ctx.entitiesToDelete.append(list);};
 
 
 /**
@@ -108,10 +108,10 @@ public:
     }
 
     void undoableDelete(RS_Entity* e) {
-        e->setFlag(RS2::FlagDeleted);
-        if (e->isSelected()) {
+        if (e->getFlag(RS2::FlagSelected)) {
             unselect(e);
         }
+        e->setFlag(RS2::FlagDeleted);
         addUndoable(e);
     }
 

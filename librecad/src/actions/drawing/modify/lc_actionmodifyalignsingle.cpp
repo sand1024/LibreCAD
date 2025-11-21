@@ -21,8 +21,6 @@
  ******************************************************************************/
 #include "lc_actionmodifyalignsingle.h"
 
-#include <boost/numeric/ublas/functional.hpp>
-
 #include "lc_actioninfomessagebuilder.h"
 #include "lc_cursoroverlayinfo.h"
 #include "lc_graphicviewport.h"

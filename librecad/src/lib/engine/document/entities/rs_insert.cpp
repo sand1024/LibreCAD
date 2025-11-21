@@ -27,7 +27,6 @@
 #include "rs_insert.h"
 
 #include<iostream>
-#include <boost/move/algo/adaptive_merge.hpp>
 
 #include "rs_arc.h"
 #include "rs_block.h"

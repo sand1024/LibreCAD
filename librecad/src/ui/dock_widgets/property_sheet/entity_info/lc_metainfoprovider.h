@@ -27,7 +27,6 @@
 #include <QString>
 #include <QMap>
 #include <QObject>
-#include <boost/geometry/strategies/cartesian/box_in_box.hpp>
 
 #include "rs.h"
 

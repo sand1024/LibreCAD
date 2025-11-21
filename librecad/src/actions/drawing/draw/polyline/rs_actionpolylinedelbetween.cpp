@@ -27,6 +27,7 @@
 #include "rs_actionpolylinedelbetween.h"
 
 #include "lc_actioncontext.h"
+#include "lc_linemath.h"
 #include "rs_debug.h"
 #include "rs_document.h"
 #include "rs_modification.h"
@@ -51,16 +52,24 @@ void RS_ActionPolylineDelBetween::drawSnapper() {
     // disable snapper for action
 }
 
-void RS_ActionPolylineDelBetween::doTrigger() {
-    RS_DEBUG->print("RS_ActionPolylineDelBetween::trigger()");
-
-    RS_Modification m(m_document, m_viewport);
-    RS_Polyline *modifiedPolyline = m.deletePolylineNodesBetween(m_polylineToModify, m_vertexToDelete, m_vertexToDelete2);
+bool RS_ActionPolylineDelBetween::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+    RS_Polyline *modifiedPolyline = RS_Modification::deletePolylineNodesBetween(m_polylineToModify, m_vertexToDelete, m_vertexToDelete2, ctx);
     if (modifiedPolyline != nullptr){
+        modifiedPolyline->setLayer(m_polylineToModify->getLayer(false));
+        modifiedPolyline->setPen(m_polylineToModify->getPen(false));
         m_polylineToModify = modifiedPolyline;
+        ctx.dontSetActiveLayerAndPen();
+        return true;
+    }
+    return false;
+}
+
+void RS_ActionPolylineDelBetween::doTriggerCompletion(bool success) {
+    if (success) {
+        select(m_polylineToModify);
         setStatus(SetVertex1);
     }
-    else{
+    else {
         setStatus(SetVertex2);
     }
 }
@@ -97,12 +106,15 @@ void RS_ActionPolylineDelBetween::onMouseMoveEvent(int status, LC_MouseEvent *e)
                 QList<RS_Entity *> entitiesToRemove;
                 collectEntitiesToRemove(m_vertexToDelete, vertex, entitiesToRemove);
                 if (!entitiesToRemove.isEmpty()){
-                    for (auto er: entitiesToRemove) {
+                    for (const auto er: entitiesToRemove) {
                         highlightHover(er);
                     }
                     previewRefSelectablePoint(vertex);
-                    RS_Modification m(m_preview.get(), m_viewport, false);
-                    m.deletePolylineNodesBetween(m_polylineToModify, m_vertexToDelete, vertex);
+                    LC_DocumentModificationBatch ctx;
+                    auto polyline = RS_Modification::deletePolylineNodesBetween(m_polylineToModify, m_vertexToDelete, vertex, ctx);
+                    if (polyline != nullptr) {
+                        previewEntity(polyline);
+                    }
                 }
             }
             break;
@@ -210,11 +222,12 @@ void RS_ActionPolylineDelBetween::updateMouseButtonHints() {
 void RS_ActionPolylineDelBetween::collectEntitiesToRemove(RS_Vector first, RS_Vector second, QList<RS_Entity *> &list) const {
     if (first.distanceTo(second) > RS_TOLERANCE){
         bool found = false;
+        bool polylineClosed = m_polylineToModify->isClosed();
         for (unsigned int i = 0; i < m_polylineToModify->count(); i++){
             auto* en = m_polylineToModify->entityAt(i);
             auto start = en->getStartpoint();
 
-            if (start == first || start == second){
+            if (LC_LineMath::isMeaningfulDistance(start, first) || LC_LineMath::isMeaningfulDistance(start, second)){
                 found = !found;
                 if (!found){
                     continue;

@@ -26,8 +26,6 @@
 
 #include "rs_actionmodifyattributes.h"
 
-#include <boost/mpl/bool_fwd.hpp>
-
 #include "rs_debug.h"
 #include "rs_dialogfactory.h"
 #include "rs_dialogfactoryinterface.h"
@@ -53,9 +51,9 @@ bool RS_ActionModifyAttributes::doTriggerModificationsPrepare(LC_DocumentModific
         if (RS_DIALOGFACTORY->requestAttributesDialog(data,*m_graphic->getLayerList())) {
             RS_Modification::changeAttributes(m_selectedEntities, data, ctx);
             ctx.dontSetActiveLayerAndPen();
-            /*if (data.applyBlockDeep) {
+            if (data.applyBlockDeep) {
                 m_graphic->updateInserts();
-            }*/
+            }
         }
         m_dialogVisible = false;
     }
@@ -72,6 +70,6 @@ void RS_ActionModifyAttributes::doTriggerSelectionUpdate(bool keepSelected, cons
 }
 
 void RS_ActionModifyAttributes::updateMouseButtonHintsForSelection() {
-    updateMouseWidgetTRCancel(tr("Select to modify attributes (Enter to complete)"),
-        MOD_SHIFT_AND_CTRL(tr("Select contour"),tr("Modify attributes immediately after selecting")));
+    updateMouseWidgetTRCancel(tr("Select to modify attributes") + getSelectionCompletionHintMsg(),
+                              MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Modify attributes immediately after selecting")));
 }

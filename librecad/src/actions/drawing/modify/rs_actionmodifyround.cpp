@@ -33,8 +33,10 @@
 #include "rs_document.h"
 #include "rs_entity.h"
 #include "rs_entitycontainer.h"
+#include "rs_graphic.h"
 #include "rs_information.h"
 #include "rs_modification.h"
+#include "rs_polyline.h"
 #include "rs_preview.h"
 
 namespace {
@@ -62,13 +64,15 @@ struct RS_ActionModifyRound::RoundActionData {
     RS_Vector coord1;
     RS_Vector coord2;
     RS_RoundData data{};
+    LC_DocumentModificationBatch triggerContext;
+    LC_RoundResult roundResult;
 };
 
 // fixme - review cases for rounding circles and arcs, it's weird enough
 // fixme - potentially, it's better to support more fine grained trim mode that will control which entities should be trimmed (first, second, both)?
 
 RS_ActionModifyRound::RS_ActionModifyRound(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("Round Entities", actionContext, RS2::ActionModifyRound),
+    :LC_UndoableDocumentModificationAction("Round Entities", actionContext, RS2::ActionModifyRound),
     m_actionData(std::make_unique<RoundActionData>()), m_lastStatus(SetEntity1){
 }
 
@@ -123,52 +127,40 @@ void RS_ActionModifyRound::drawSnapper() {
     // disable snapper for action   
 }
 
-void RS_ActionModifyRound::doTrigger() {
-    RS_DEBUG->print("RS_ActionModifyRound::trigger()");
-
-    bool foundPolyline = false;
-
-    if ((m_entity1->getParent() != nullptr) && (m_entity2->getParent() != nullptr)) {
-        if (isPolyline(m_entity1->getParent()) &&
-            isPolyline(m_entity2->getParent()) &&
-            (m_entity1->getParent() == m_entity2->getParent())) {
-            foundPolyline = true;
-
-            for (auto* e : m_entity1->getParent()->getEntityList()) {
-                if ((e != m_entity1) && (e != m_entity2)) {
-                    if (removeOldFillet(e, foundPolyline)) {
-                        m_entity1->getParent()->removeEntity(e);
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (!foundPolyline) {
-            for (auto* e : m_document->getEntityList()) {
-                if ((e != m_entity1) && (e != m_entity2)) {
-                    if (removeOldFillet(e, foundPolyline))
-                        break;
-                }
-            }
+bool RS_ActionModifyRound::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+    auto roundResult = m_actionData->roundResult;
+    if (roundResult.isPolyline) {
+        auto polyline = m_entity1->getParent();
+        roundResult.polyline->setPen(polyline->getPen(false));
+        roundResult.polyline->setLayer(polyline->getLayer(false));
+    }
+    else {
+        if (roundResult.round != nullptr) {
+            roundResult.round->setPen(m_document->getActivePen());
+            roundResult.round->setLayer(m_graphic->getActiveLayer());
         }
     }
+    ctx.dontSetActiveLayerAndPen();
+    auto tmpContext = m_actionData->triggerContext;
+    ctx += tmpContext.entitiesToAdd;
+    ctx -= tmpContext.entitiesToDelete;
+    return true;
+}
 
-    RS_Modification m(m_document, m_viewport);
-    m.round(m_actionData->coord2, m_actionData->coord1, m_entity1,
-            m_actionData->coord2, m_entity2, m_actionData->data);
-
-    m_actionData->coord1 = RS_Vector(false);
-    m_entity1 = nullptr;
-    m_actionData->coord2 = RS_Vector(false);
-    m_entity2 = nullptr;
+void RS_ActionModifyRound::doTriggerCompletion(bool success) {
+    m_actionData->coord1 = {};
+    m_actionData->coord2 = {};
+    m_entity1            = nullptr;
+    m_entity2            = nullptr;
+    m_actionData->triggerContext.clear();
     // fixme - decide to which state go after trigger - probably it's more convenient to say in SetEntity2?
     setStatus(SetEntity1);
 }
 
+
 void RS_ActionModifyRound::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     RS_Vector mouse = e->graphPoint;
-    RS_Entity *se = catchAndDescribe(e, eType, RS2::ResolveAllButTextImage);
+    RS_Entity *se = catchAndDescribe(e, eType, RS2::ResolveAll);
     switch (status) {
         case SetEntity1: {
             if (se != nullptr){
@@ -181,50 +173,43 @@ void RS_ActionModifyRound::onMouseMoveEvent(int status, LC_MouseEvent *e) {
         case SetEntity2: {
             highlightSelected(m_entity1);
             if (se != nullptr){
-                if (m_entity1 != se && RS_Information::isTrimmable(se) && se->isAtomic()){
-
+                if (m_entity1 != se && se->isAtomic()){
                     RS_Vector coord2 = se->getNearestPointOnEntity(mouse, true);
-                    RS_Entity *tmp1 = m_entity1->clone();
-                    RS_Entity *tmp2 = se->clone();
-                    tmp1->reparent(m_preview.get());
-                    tmp2->reparent(m_preview.get());
-                    previewEntity(tmp1);
-                    previewEntity(tmp2);
+
 
                     bool trim = m_actionData->data.trim;
-//                    pPoints->data.trim = false;
-                    RS_Modification m(*m_preview, m_viewport, false);
-                    std::unique_ptr<LC_RoundResult> roundResult = m.round(mouse,
-                                                          m_actionData->coord1,
-                                                          static_cast<RS_AtomicEntity*>(tmp1),
-                                                          coord2,
-                                                          static_cast<RS_AtomicEntity*>(tmp2),
-                                                          m_actionData->data);
+                    LC_DocumentModificationBatch ctx;
+                    LC_RoundResult roundResult = RS_Modification::round(mouse, m_actionData->coord1, static_cast<RS_AtomicEntity*>(m_entity1), coord2,
+                                                                        static_cast<RS_AtomicEntity*>(se), m_actionData->data, ctx);
 
-                    if (roundResult != nullptr && roundResult->error == LC_RoundResult::OK){
+                    if (roundResult.error == LC_RoundResult::OK){
                         highlightHover(se);
-                        auto *arc = roundResult->round;
-                        if (arc != nullptr){
+                        if (m_showRefEntitiesOnPreview) {
+                            previewRefPoint(m_actionData->coord1);
+                            previewRefSelectablePoint(coord2);
+                            previewRefPoint(mouse);
+                            previewRefLine(mouse, coord2);
+                            previewRefPoint( roundResult.trimmingPoint1);
+                            previewRefPoint(roundResult.trimmingPoint2);
+                            if (m_actionData->data.trim){
+                                previewEntityModifications(m_entity1, roundResult.trimmed1, roundResult.trimmingPoint1, roundResult.trim1Mode);
+                                previewEntityModifications(se, roundResult.trimmed2, roundResult.trimmingPoint2, roundResult.trim2Mode);
+                            }
+                        }
+                        if (m_actionData->data.trim && !roundResult.isPolyline){
+                            m_preview->removeEntity(roundResult.trimmed1);
+                            m_preview->removeEntity(roundResult.trimmed2);
+                        }
 
+                        auto *arc = roundResult.round;
+                        if (arc != nullptr){
                             RS_Vector arcStartPoint = arc->getStartpoint();
                             RS_Vector arcEndPoint = arc->getEndpoint();
                             if (m_showRefEntitiesOnPreview) {
-                                previewRefPoint(arcStartPoint);
-                                previewRefPoint(arcEndPoint);
-                                previewRefPoint(m_actionData->coord1);
-                                previewRefSelectablePoint(coord2);
-                                previewRefPoint(mouse);
-                                previewRefLine(mouse, coord2);
-                                if (trim){
-                                    previewEntityModifications(m_entity1, roundResult->trimmed1, arcStartPoint, roundResult->trim1Mode);
-                                    previewEntityModifications(se, roundResult->trimmed2, arcEndPoint, roundResult->trim2Mode);
+                                if (!roundResult.isPolyline) {
+                                    previewEntity(arc);
                                 }
                             }
-                            if (trim){
-                                m_preview->removeEntity(roundResult->trimmed1);
-                                m_preview->removeEntity(roundResult->trimmed2);
-                            }
-
                             if (isInfoCursorForModificationEnabled()){
                                 msg(tr("Round"))
                                     .vector(tr("Point 1:"), arcStartPoint)
@@ -232,12 +217,12 @@ void RS_ActionModifyRound::onMouseMoveEvent(int status, LC_MouseEvent *e) {
                                     .toInfoCursorZone2(false);
                             }
                         }
+                        if (roundResult.isPolyline) {
+                            previewEntity(roundResult.polyline);
+                        }
                     }
 
                     m_actionData->data.trim = trim;
-
-                    m_preview->removeEntity(tmp1);
-                    m_preview->removeEntity(tmp2);
                 }
             }
             break;
@@ -300,10 +285,16 @@ void RS_ActionModifyRound::onMouseLeftButtonRelease(int status, LC_MouseEvent *e
             break;
         }
         case SetEntity2: {
-            if (isAtomic(se) &&  RS_Information::isTrimmable(m_entity1, se)){
+            if (isAtomic(se) ){
                 m_entity2 = static_cast<RS_AtomicEntity*>(se);
-                m_actionData->coord2 = mouse;/* se->getNearestPointOnEntity(mouse, true);*/
-                trigger();
+                m_actionData->coord2 = mouse;
+                auto roundResult = RS_Modification::round(m_actionData->coord2, m_actionData->coord1, m_entity1,
+                                                                m_actionData->coord2, m_entity2, m_actionData->data, m_actionData->triggerContext);
+
+                if (roundResult.error == LC_RoundResult::OK) {
+                    m_actionData->roundResult = roundResult;
+                    trigger();
+                }
             }
             break;
         }

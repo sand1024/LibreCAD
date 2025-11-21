@@ -25,7 +25,7 @@
 #include "rs_polyline.h"
 
 LC_ActionPolylineDeleteBase::LC_ActionPolylineDeleteBase(const char *name, LC_ActionContext *actionContext, RS2::ActionType actionType)
-   :RS_PreviewActionInterface(name, actionContext, actionType){
+   :LC_UndoableDocumentModificationAction(name, actionContext, actionType){
 }
 
 void LC_ActionPolylineDeleteBase::getSelectedPolylineVertex(LC_MouseEvent *e, RS_Vector &vertex, RS_Entity *&segment){

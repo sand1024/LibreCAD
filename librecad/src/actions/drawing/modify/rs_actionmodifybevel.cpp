@@ -29,20 +29,23 @@
 #include "lc_actioninfomessagebuilder.h"
 #include "qg_beveloptions.h"
 #include "rs_atomicentity.h"
-#include "rs_debug.h"
 #include "rs_document.h"
+#include "rs_graphic.h"
 #include "rs_information.h"
 #include "rs_line.h"
 #include "rs_modification.h"
+#include "rs_polyline.h"
 
 struct RS_ActionModifyBevel::BevelActionData {
     RS_Vector coord1;
     RS_Vector coord2;
     RS_BevelData data;
+    LC_BevelResult bevelResult;
+    LC_DocumentModificationBatch triggerContext;
 };
 
 RS_ActionModifyBevel::RS_ActionModifyBevel(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("Bevel Entities",actionContext, RS2::ActionModifyBevel)
+    :LC_UndoableDocumentModificationAction("Bevel Entities",actionContext, RS2::ActionModifyBevel)
     , m_actionData(std::make_unique<BevelActionData>())
     ,m_lastStatus(SetEntity1){
 }
@@ -67,33 +70,30 @@ void RS_ActionModifyBevel::doInitWithContextEntity(RS_Entity* contextEntity, con
     }
 }
 
-void RS_ActionModifyBevel::doTrigger() {
-    RS_DEBUG->print("RS_ActionModifyBevel::trigger()");
-
+bool RS_ActionModifyBevel::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
     if (isAtomic(m_entity1) && isAtomic(m_entity2)) {
-        RS_Modification m(m_document, m_viewport);
-        std::unique_ptr<LC_BevelResult> bevelResult = m.bevel(m_actionData->coord1, m_entity1, m_actionData->coord2, m_entity2,
-                                              m_actionData->data, false);
-        if (bevelResult != nullptr) {
-            switch (bevelResult->error) {
-                case LC_BevelResult::OK:
-                    break;
-                case LC_BevelResult::ERR_NO_INTERSECTION:
-                    commandMessage(tr("Selected lines are parallel"));
-                    break;
-                case LC_BevelResult::ERR_NOT_THE_SAME_POLYLINE:
-                    commandMessage(tr("Selected lines are not children of the same polyline"));
-                    break;
-            }
+        LC_BevelResult bevelResult = m_actionData->bevelResult;
+        ctx.setActiveLayerAndPen(false, false);
+        if (!bevelResult.isPolyline) {
+            bevelResult.bevel->setLayer(m_graphic->getActiveLayer());
+            bevelResult.bevel->setPen(m_document->getActivePen());
         }
-
-        // fixme - decide stay with selected line 1 or go to line selection status??
-
-        m_actionData->coord1 = {};
-        m_actionData->coord2 = {};
-        m_entity1 = nullptr;
-        setStatus(SetEntity1);
+        auto tmpContext = m_actionData->triggerContext;
+        ctx += tmpContext.entitiesToAdd;
+        ctx -= tmpContext.entitiesToDelete;
+        return true;
     }
+    return false;
+}
+
+void RS_ActionModifyBevel::doTriggerCompletion(bool success) {
+    m_actionData->coord1 = {};
+    m_actionData->coord2 = {};
+    m_entity1            = nullptr;
+    m_entity2            = nullptr;
+    m_actionData->triggerContext.clear();
+    // fixme - decide - should we stay with selected line 1 or go to line selection status??
+    setStatus(SetEntity1);
 }
 
 bool RS_ActionModifyBevel::doUpdateDistanceByInteractiveInput(const QString& tag, double distance) {
@@ -116,7 +116,7 @@ void RS_ActionModifyBevel::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     RS_Vector mouse = e->graphPoint;
     // it seems that bevel works properly with lines only... it relies on trimEndpoint/moveEndpoint methods, which
     // have some support for arc and ellipse, yet still...
-    RS_Entity *se = catchAndDescribe(e, RS2::EntityLine, RS2::ResolveAllButTextImage);
+    RS_Entity *se = catchAndDescribe(e, RS2::EntityLine, RS2::ResolveAll);
 
     switch (status) {
         case SetEntity1: {
@@ -127,46 +127,52 @@ void RS_ActionModifyBevel::onMouseMoveEvent(int status, LC_MouseEvent *e) {
         }
         case SetEntity2: {
             highlightSelected(m_entity1);
-            if (se != m_entity1 && areBothEntityAccepted(m_entity1, se)){
+            if (areBothEntityAccepted(m_entity1, se)){
                 auto atomicCandidate2 = dynamic_cast<RS_AtomicEntity *>(se);
 
-                RS_Modification m(*m_container, m_viewport);
-                std::unique_ptr<LC_BevelResult> bevelResult = m.bevel(m_actionData->coord1,  m_entity1, mouse, atomicCandidate2, m_actionData->data, true);
+                LC_DocumentModificationBatch ctx;
+                LC_BevelResult bevelResult = RS_Modification::bevel(m_actionData->coord1,  m_entity1, mouse, atomicCandidate2, m_actionData->data, true, ctx);
 
-                if (bevelResult != nullptr){
-                    if (bevelResult->error == LC_BevelResult::OK){
-                        highlightHover(se);
+                if (bevelResult.error == LC_BevelResult::OK) {
+                    highlightHover(se);
 
-                        // bevel
-                        previewEntity(bevelResult->bevel);
+                    // bevel
+                    if (bevelResult.isPolyline) {
+                        previewEntity(bevelResult.polyline);
+                    }
+                    else {
+                        previewEntity(bevelResult.bevel);
+                    }
 
-                        if (m_showRefEntitiesOnPreview) {
-                            // bevel points
-                            previewRefPoint(bevelResult->bevel->getStartpoint());
-                            previewRefPoint(bevelResult->bevel->getEndpoint());
+                    if (m_showRefEntitiesOnPreview) {
+                        // bevel points
+                        previewRefPoint(bevelResult.bevel->getStartpoint());
+                        previewRefPoint(bevelResult.bevel->getEndpoint());
 
-                            // lines intersection
-                            previewRefPoint(bevelResult->intersectionPoint);
+                        // lines intersection
+                        previewRefPoint(bevelResult.intersectionPoint);
 
-                            // changes in lines
-                            if (m_actionData->data.trim) {
-                                previewLineModifications(m_entity1, bevelResult->trimmed1, bevelResult->trimStart1);
-                                previewLineModifications(atomicCandidate2, bevelResult->trimmed2,
-                                                         bevelResult->trimStart2);
-                            }
-
-                            // selection points
-                            previewRefSelectablePoint(m_actionData->coord1);
-                            previewRefSelectablePoint(se->getNearestPointOnEntity(mouse));
+                        // changes in lines
+                        if (m_actionData->data.trim) {
+                            previewLineModifications(m_entity1, bevelResult.trimmed1, bevelResult.trimStart1);
+                            previewLineModifications(atomicCandidate2, bevelResult.trimmed2, bevelResult.trimStart2);
                         }
 
-                        if (isInfoCursorForModificationEnabled()){
-                            msg(tr("Trim"))
-                                .vector(tr("Intersection:"), bevelResult->intersectionPoint)
-                                .vector(tr("Point 1:"), bevelResult->bevel->getStartpoint())
-                                .vector(tr("Point 2:"), bevelResult->bevel->getEndpoint())
+                        // selection points
+                        previewRefSelectablePoint(m_actionData->coord1);
+                        previewRefSelectablePoint(se->getNearestPointOnEntity(mouse));
+                    }
+
+                    if (isInfoCursorForModificationEnabled()) {
+                        msg(tr("Trim"))
+                                .vector(tr("Intersection:"),bevelResult.intersectionPoint)
+                                .vector(tr("Point 1:"),bevelResult.bevel->getStartpoint())
+                                .vector(tr("Point 2:"),bevelResult.bevel->getEndpoint())
                                 .toInfoCursorZone2(false);
-                        }
+                    }
+                    if (!bevelResult.isPolyline) {
+                        delete bevelResult.trimmed1;
+                        delete bevelResult.trimmed2;
                     }
                 }
             }
@@ -200,11 +206,10 @@ void RS_ActionModifyBevel::previewLineModifications(const RS_Entity *original, c
 }
 
 void RS_ActionModifyBevel::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
-    RS_Entity *se = catchEntityByEvent(e,RS2::EntityLine, RS2::ResolveAllButTextImage);
-    if (se != nullptr){
-        switch (status) {
+    RS_Entity *se = catchEntityByEvent(e,RS2::EntityLine, RS2::ResolveAll);
+    switch (status) {
             case SetEntity1: {
-                if (se->isAtomic()){
+                if (isAtomic(se)){
                     if (RS_Information::isTrimmable(se)){
                         m_entity1 = dynamic_cast<RS_AtomicEntity *>(se);
                         m_actionData->coord1 = m_entity1->getNearestPointOnEntity(e->graphPoint, true);
@@ -218,14 +223,33 @@ void RS_ActionModifyBevel::onMouseLeftButtonRelease(int status, LC_MouseEvent *e
                 break;
             }
             case SetEntity2: {
-                if (se->isAtomic()){
-                    if (RS_Information::isTrimmable(m_entity1, se)){
-                        m_entity2 = dynamic_cast<RS_AtomicEntity *>(se);
-                        m_actionData->coord2 = e->graphPoint;
-                        trigger();
-                    }
-                    else{
-                        commandMessage(tr("Invalid entity selected (non-trimmable with first entity)."));
+                if (isAtomic(se)){
+                    m_entity2 = dynamic_cast<RS_AtomicEntity *>(se);
+                    m_actionData->coord2 = e->graphPoint;
+                    LC_BevelResult bevelResult = RS_Modification::bevel(m_actionData->coord1, m_entity1, m_actionData->coord2, m_entity2,
+                                            m_actionData->data, false, m_actionData->triggerContext);
+                    switch (bevelResult.error) {
+                        case LC_BevelResult::OK: {
+                            m_actionData->bevelResult = bevelResult;
+                            trigger();
+                            break;
+                        }
+                        case LC_BevelResult::ERR_NO_INTERSECTION: {
+                            commandMessage(tr("Selected lines are parallel"));
+                            break;
+                        }
+                        case LC_BevelResult::ERR_NOT_THE_SAME_POLYLINE: {
+                            commandMessage(tr("Selected lines are not children of the same polyline"));
+                            break;
+                        }
+                        case LC_BevelResult::ERR_NOT_LINES: {
+                            commandMessage(tr("Both selected entities should be lines"));
+                            break;
+                        }
+                        case LC_BevelResult::ERR_VISIBILITY: {
+                            commandMessage(tr("Invalid entity selected (non-trimmable with first entity)."));
+                            break;
+                        }
                     }
                 } else {
                     commandMessage(tr("Invalid entity selected (non-atomic)."));
@@ -235,7 +259,7 @@ void RS_ActionModifyBevel::onMouseLeftButtonRelease(int status, LC_MouseEvent *e
             default:
                 break;
         }
-    }
+
 }
 
 void RS_ActionModifyBevel::onMouseRightButtonRelease(int status, [[maybe_unused]] LC_MouseEvent *e) {
@@ -262,7 +286,7 @@ bool RS_ActionModifyBevel::isEntityAccepted(RS_Entity *en) const{
 }
 
 bool RS_ActionModifyBevel::areBothEntityAccepted(RS_Entity *en1, RS_Entity *en2) const{
-    return isAtomic(en2) && en2 != en1 && RS_Information::isTrimmable(en1,en2);
+    return isAtomic(en2) && en2 != en1 /* && RS_Information::isTrimmable(en1,en2)*/;
 }
 
 bool RS_ActionModifyBevel::doProcessCommand(int status, const QString &c) {

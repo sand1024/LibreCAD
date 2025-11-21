@@ -796,7 +796,7 @@ RS_Entity* RS_Snapper::catchEntity(const RS_Vector& pos, RS2::EntityType enType,
             ec.addEntity(en);
         }
     }
-    if (ec.count() == 0 ) {
+        if (ec.count() == 0 ) {
         return nullptr;
     }
     double dist(0.);

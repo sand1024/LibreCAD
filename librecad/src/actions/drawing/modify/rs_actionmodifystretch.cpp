@@ -28,10 +28,10 @@
 
 #include "lc_actioninfomessagebuilder.h"
 #include "lc_modifystretchoptions.h"
-#include "rs_debug.h"
 #include "rs_document.h"
 #include "rs_modification.h"
 #include "rs_preview.h"
+#include "rs_settings.h"
 
 struct RS_ActionModifyStretch::StretchActionData {
     RS_Vector firstCorner;
@@ -40,8 +40,12 @@ struct RS_ActionModifyStretch::StretchActionData {
     RS_Vector targetPoint;
 };
 
+// fixme - add for consistency support of "Use current Attributes" and "Use Current Layer" options
+
+// fime - FIX: trigger is not consistent with preview!!!!
+
 RS_ActionModifyStretch::RS_ActionModifyStretch(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("Stretch Entities", actionContext, RS2::ActionModifyStretch),
+    :LC_UndoableDocumentModificationAction("Stretch Entities", actionContext, RS2::ActionModifyStretch),
     m_actionData(std::make_unique<StretchActionData>()){
 }
 
@@ -51,14 +55,32 @@ void RS_ActionModifyStretch::init(int status) {
 
 RS_ActionModifyStretch::~RS_ActionModifyStretch() = default;
 
-void RS_ActionModifyStretch::doTrigger() {
-    RS_DEBUG->print("RS_ActionModifyStretch::trigger()");
+bool RS_ActionModifyStretch::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+    if (m_entitiesList.empty()) {
+        for (const auto e : *m_document) { // fixme - we don't rely on selection for stretch :(
+            //
+            // fixme - and check that e is editable.
+            if (e->isVisible() && e->rtti() != RS2::EntityHatch && e->isInWindow(m_actionData->firstCorner, m_actionData->secondCorner)
+                || e ->hasEndpointsWithinWindow(m_actionData->firstCorner, m_actionData->secondCorner)) {
+                m_entitiesList.append(e);
+            }
+        }
+    }
+    RS_Modification::stretch(m_actionData->firstCorner, m_actionData->secondCorner, m_actionData->targetPoint - m_actionData->referencePoint, m_entitiesList,
+                             m_removeOriginals, ctx);
+    if (!m_removeOriginals) {
+        unselect(m_entitiesList);
+    }
+    else {
+        bool keepSelected =  LC_GET_ONE_BOOL("Modify", "KeepModifiedSelected", true);
+        if (keepSelected) {
+            select(m_entitiesList);
+        }
+    }
+    return true;
+}
 
-    RS_Modification m(m_document, m_viewport);
-    // fixme - implementation is pretty ugly, review it
-    m.stretch(m_actionData->firstCorner,
-              m_actionData->secondCorner,
-              m_actionData->targetPoint - m_actionData->referencePoint, m_removeOriginals);
+void RS_ActionModifyStretch::doTriggerCompletion(bool success) {
     if (m_removeOriginals) {
         setStatus(SetFirstCorner);
     }

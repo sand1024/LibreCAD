@@ -41,8 +41,6 @@ struct RS_DimensionData;
 class RS_ActionDimension:public LC_SingleEntityCreationAction {
     Q_OBJECT
 public:
-    RS_ActionDimension(const char *name, LC_ActionContext *actionContext, RS2::EntityType dimType, RS2::ActionType actionType = RS2::ActionNone);
-    ~RS_ActionDimension() override;
     void init(int status) override;
 
     QString getText() const;
@@ -69,6 +67,8 @@ protected:
     QString m_tol1;
     QString m_tol2;
     bool m_diameter = false;
+    RS_ActionDimension(const char *name, LC_ActionContext *actionContext, RS2::EntityType dimType, RS2::ActionType actionType = RS2::ActionNone);
+    ~RS_ActionDimension() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
     RS2::CursorType doGetMouseCursor(int status) override;
     bool m_previewShowsFullDimension = false;

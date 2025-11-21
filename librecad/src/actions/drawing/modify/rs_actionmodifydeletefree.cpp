@@ -65,11 +65,13 @@ void RS_ActionModifyDeleteFree::trigger(){
                     // splits up the polyline in the container:
                     RS_Polyline *pl1 = nullptr;
                     RS_Polyline *pl2 = nullptr;
-                    RS_Modification m(m_document,m_viewport);
-                    m.splitPolyline(m_polyline,
+
+                    // FIXME - TEMPORARAY TO COMPILE!!! Add property cut for polyline!
+                    LC_DocumentModificationBatch ctx;
+                    RS_Modification::splitPolyline(m_polyline,
                                     *m_entity1, m_actionData->v1,
                                     *m_entity2, m_actionData->v2,
-                                    &pl1, &pl2);
+                                    &pl1, &pl2, ctx);
 
                     // draws the new polylines on the screen:
                     redraw(RS2::RedrawDrawing);

@@ -61,7 +61,7 @@ protected:
     void onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
     void onMouseRightButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
     RS2::CursorType doGetMouseCursorSelected(int status) override;
-    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& modificationData) override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
     void doTriggerCompletion(bool success) override;
     void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
 };

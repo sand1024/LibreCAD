@@ -26,10 +26,10 @@
 
 #include "rs_actioneditcopy.h"
 
+#include "lc_copyutils.h"
 #include "rs_clipboard.h"
 #include "rs_graphic.h"
 #include "rs_graphicview.h"
-#include "rs_modification.h"
 #include "rs_preview.h"
 #include "rs_units.h"
 
@@ -72,37 +72,36 @@ void RS_ActionEditCopyPaste::onSelectionCompleted([[maybe_unused]] bool singleEn
     }
 }
 
-void RS_ActionEditCopyPaste::doTriggerCompletion(bool success) {
-    LC_ActionPreSelectionAwareBase::doTriggerCompletion(success);
-}
-
-void RS_ActionEditCopyPaste::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
-    LC_ActionPreSelectionAwareBase::doTriggerSelectionUpdate(keepSelected, ctx);
-}
-
-bool RS_ActionEditCopyPaste::doTriggerModificationsPrepare(LC_DocumentModificationBatch& modificationData) {
-    // fixme - complete TRIGGER!!!
+bool RS_ActionEditCopyPaste::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
     switch (m_actionType){
         case  RS2::ActionEditCut:
         case  RS2::ActionEditCutQuick:
         case  RS2::ActionEditCopy:
         case  RS2::ActionEditCopyQuick:{
-            RS_Modification m(m_document, m_viewport, false); // undoCycle in trigger, so don't create undo section in modification
-            m.copy(*m_referencePoint, m_actionType ==  RS2::ActionEditCut || m_actionType == RS2::ActionEditCutQuick);
+            QList<RS_Entity*> selection;
+            m_document->getSelectedSet()->collectSelectedEntities(selection);
+            if (!selection.empty()) {
+                bool cut = m_actionType ==  RS2::ActionEditCut || m_actionType == RS2::ActionEditCutQuick;
+                LC_CopyUtils::copy(*m_referencePoint, selection, m_graphic);
+                unselectAll();
+                if (cut) {
+                    ctx-= selection;
+                }
 
-            if (m_invokedWithControl){
-                m_actionType = RS2::ActionEditPaste;
-                m_invokedWithControl = false;
-            }
-            else{
-                finish(false);
+                if (m_invokedWithControl){
+                    m_actionType = RS2::ActionEditPaste;
+                    m_invokedWithControl = false;
+                }
+                else{
+                    finish(false);
+                }
             }
             break;
         }
         case RS2::ActionEditPaste: {
-            RS_Modification m(m_document, m_viewport, false); // undoCycle in trigger, so don't create undo section in modification
-            m.paste(RS_PasteData(*m_referencePoint, 1.0, 0.0, false, ""));
-
+            LC_CopyUtils::RS_PasteData pasteData(*m_referencePoint);
+            LC_CopyUtils::paste(pasteData, m_graphic, ctx);
+            ctx.dontSetActiveLayerAndPen();
             if (!m_invokedWithControl) {
                 finish(false);
             }
@@ -112,6 +111,14 @@ bool RS_ActionEditCopyPaste::doTriggerModificationsPrepare(LC_DocumentModificati
             break;
     }
     return true;
+}
+
+void RS_ActionEditCopyPaste::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+    LC_ActionPreSelectionAwareBase::doTriggerSelectionUpdate(keepSelected, ctx); // fixme - complete!
+}
+
+void RS_ActionEditCopyPaste::doTriggerCompletion(bool success) {
+    LC_ActionPreSelectionAwareBase::doTriggerCompletion(success); // fixme - complete!
 }
 
 void RS_ActionEditCopyPaste::onMouseMoveEventSelected(int status, LC_MouseEvent *e) {
@@ -160,19 +167,23 @@ void RS_ActionEditCopyPaste::onCoordinateEvent( [[maybe_unused]]int status, [[ma
 void RS_ActionEditCopyPaste::updateMouseButtonHintsForSelection() {
    switch (m_actionType) {
        case RS2::ActionEditCut: {
-           updateMouseWidgetTRCancel(tr("Select to cut (Enter to complete)"),  MOD_SHIFT_AND_CTRL(tr("Select contour"),tr("Set point after selection")));
+           updateMouseWidgetTRCancel(tr("Select to cut") + getSelectionCompletionHintMsg(),
+                                     MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Set point after selection")));
            break;
        }
        case RS2::ActionEditCutQuick: {
-           updateMouseWidgetTRCancel(tr("Select to cut (Enter to complete)"),  MOD_SHIFT_AND_CTRL(tr("Select contour"),tr("Cut right after selection")));
+           updateMouseWidgetTRCancel(tr("Select to cut") + getSelectionCompletionHintMsg(),
+                                     MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Cut right after selection")));
            break;
        }
        case RS2::ActionEditCopy: {
-           updateMouseWidgetTRCancel(tr("Select to copy (Enter to complete)"), MOD_SHIFT_AND_CTRL(tr("Select contour"),tr("Set point after selection")));
+           updateMouseWidgetTRCancel(tr("Select to copy") + getSelectionCompletionHintMsg(),
+                                     MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Set point after selection")));
            break;
        }
        case RS2::ActionEditCopyQuick: {
-           updateMouseWidgetTRCancel(tr("Select to cut (Enter to complete)"),  MOD_SHIFT_AND_CTRL(tr("Select contour"),tr("Copy right after selection")));
+           updateMouseWidgetTRCancel(tr("Select to cut") + getSelectionCompletionHintMsg(),
+                                     MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Copy right after selection")));
            break;
        }
        default:

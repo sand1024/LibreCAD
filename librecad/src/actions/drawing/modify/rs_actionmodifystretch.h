@@ -27,6 +27,7 @@
 #ifndef RS_ACTIONMODIFYSTRETCH_H
 #define RS_ACTIONMODIFYSTRETCH_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_previewactioninterface.h"
 
 /**
@@ -34,10 +35,11 @@
  *
  * @author Andrew Mustun
  */
-class RS_ActionModifyStretch : public RS_PreviewActionInterface {
+// fixme - rework to
+class RS_ActionModifyStretch : public LC_UndoableDocumentModificationAction {
     Q_OBJECT
 public:
-    RS_ActionModifyStretch(LC_ActionContext *actionContext);
+    explicit RS_ActionModifyStretch(LC_ActionContext *actionContext);
     ~RS_ActionModifyStretch() override;
 
     void init(int status) override;
@@ -55,6 +57,7 @@ protected:
     };
     struct StretchActionData;
     std::unique_ptr<StretchActionData> m_actionData;
+    QList<RS_Entity*> m_entitiesList;
     bool m_removeOriginals = true;
     RS2::CursorType doGetMouseCursor(int status) override;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
@@ -64,6 +67,7 @@ protected:
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void updateMouseButtonHints() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    void doTrigger() override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
 };
 #endif

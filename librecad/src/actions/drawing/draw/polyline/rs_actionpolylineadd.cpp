@@ -27,6 +27,7 @@
 #include "rs_actionpolylineadd.h"
 
 #include "lc_actioncontext.h"
+#include "rs_atomicentity.h"
 #include "rs_debug.h"
 #include "rs_document.h"
 #include "rs_entity.h"
@@ -34,7 +35,7 @@
 #include "rs_polyline.h"
 
 RS_ActionPolylineAdd::RS_ActionPolylineAdd(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("Add node", actionContext, RS2::ActionPolylineAdd)
+    :LC_UndoableDocumentModificationAction("Add node", actionContext, RS2::ActionPolylineAdd)
     , m_addCoord(std::make_unique<RS_Vector>()){
 }
 
@@ -52,20 +53,25 @@ void RS_ActionPolylineAdd::doInitWithContextEntity(RS_Entity* contextEntity,[[ma
     setPolylineToModify(contextEntity);
 }
 
-void RS_ActionPolylineAdd::doTrigger() {
-    RS_DEBUG->print("RS_ActionPolylineAdd::trigger()");
-
+bool RS_ActionPolylineAdd::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
     if (m_polylineToModify != nullptr && m_addSegment->isAtomic() && m_addCoord->valid &&
         m_addSegment->isPointOnEntity(*m_addCoord)) {
-        RS_Modification m(m_document, m_viewport);
-        RS_Polyline* createdPolyline = m.addPolylineNode(m_polylineToModify,
-                                                         reinterpret_cast<RS_AtomicEntity&>(*m_addSegment),
-                                                         *m_addCoord);
+        auto segment                 = static_cast<RS_AtomicEntity*>(m_addSegment);
+        RS_Polyline* createdPolyline = RS_Modification::addPolylineNode(m_polylineToModify, *segment, *m_addCoord, ctx);
         if (createdPolyline != nullptr){
+            createdPolyline->setLayer(m_polylineToModify->getLayer(false));
+            createdPolyline->setPen(m_polylineToModify->getPen(false));
             m_polylineToModify = createdPolyline;
         }
+        ctx.dontSetActiveLayerAndPen();
         *m_addCoord = {};
+        return true;
     }
+    return false;
+}
+
+void RS_ActionPolylineAdd::doTriggerCompletion(bool success) {
+    select(m_polylineToModify);
 }
 
 void RS_ActionPolylineAdd::onMouseMoveEvent(int status, LC_MouseEvent *e) {

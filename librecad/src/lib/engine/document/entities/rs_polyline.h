@@ -127,10 +127,7 @@ public:
     void rotate(const RS_Vector &center, const RS_Vector &angleVector) override;
     void scale(const RS_Vector &center, const RS_Vector &factor) override;
     void mirror(const RS_Vector &axisPoint1, const RS_Vector &axisPoint2) override;
-    void stretch(
-        const RS_Vector &firstCorner,
-        const RS_Vector &secondCorner,
-        const RS_Vector &offset) override;
+    void stretch(const RS_Vector& firstCorner, const RS_Vector& secondCorner, const RS_Vector& offset) override;
     void moveRef(const RS_Vector &ref, const RS_Vector &offset) override;
     void revertDirection() override;
 
@@ -147,10 +144,7 @@ public:
     static std::pair<RS_Arc*, double> convertToArcPair(const RS_Ellipse* ellipse);
     static RS_Arc* arcFromBulge(const RS_Vector& start, const RS_Vector& end, double bulge);
 protected:
-    std::unique_ptr<RS_Entity> createVertex(
-        const RS_Vector &v,
-        double bulge = 0.0, bool prepend = false);
-
+    std::unique_ptr<RS_Entity> createVertex(const RS_Vector& v, double bulge = 0.0, bool prepend = false);
 private:
     /**
      * @brief Converts all circular arc (RS_Arc) segments to equivalent elliptic arcs (RS_Ellipse)

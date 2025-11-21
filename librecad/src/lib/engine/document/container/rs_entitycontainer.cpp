@@ -226,7 +226,7 @@ RS_Entity *RS_EntityContainer::cloneProxy() const {
  * This is called after cloning entity containers.
  */
 void RS_EntityContainer::detach() {
-    QList<RS_Entity *> tmp;
+    QList<RS_Entity *> clonesList;
     bool autoDel = isOwner();
     RS_DEBUG->print("RS_EntityContainer::detach: autoDel: %d",(int) autoDel);
     setOwner(false);
@@ -234,7 +234,7 @@ void RS_EntityContainer::detach() {
     // make deep copies of all entities:
     for(RS_Entity* e: *this) {
         if (!e->getFlag(RS2::FlagTemp)) {
-            tmp.append(e->clone());
+            clonesList.append(e->clone());
         }
     }
 
@@ -243,7 +243,7 @@ void RS_EntityContainer::detach() {
     setOwner(autoDel);
 
     // point to new deep copies:
-    for(RS_Entity* e: tmp) {
+    for(RS_Entity* e: clonesList) {
         push_back(e);
         e->reparent(this);
     }

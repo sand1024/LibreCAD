@@ -50,14 +50,25 @@ void RS_ActionPolylineDel::drawSnapper() {
     // completely disable snapper for action
 }
 
-void RS_ActionPolylineDel::doTrigger() {
-    RS_DEBUG->print("RS_ActionPolylineDel::trigger()");
-    RS_Modification m(m_document, m_viewport);
-    auto createdPolyline = m.deletePolylineNode(m_polylineToModify, m_vertexToDelete, false);
-    if (createdPolyline != nullptr){
-        m_polylineToModify = createdPolyline;
-        m_vertexToDelete = RS_Vector(false);
-        deleteHighlights();
+bool RS_ActionPolylineDel::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+    auto createdPolyline = RS_Modification::deletePolylineNode(m_polylineToModify, m_vertexToDelete, ctx);
+    if (createdPolyline != nullptr) {
+        createdPolyline->setLayer(m_polylineToModify->getLayer());
+        createdPolyline->setPen(m_polylineToModify->getPen(false));
+        ctx.dontSetActiveLayerAndPen();
+    }
+    m_polylineToModify = createdPolyline;
+    m_vertexToDelete   = RS_Vector(false);
+    deleteHighlights();
+    return true;
+}
+
+void RS_ActionPolylineDel::doTriggerCompletion(bool success) {
+    if (m_polylineToModify != nullptr) {
+        select(m_polylineToModify);
+    }
+    else {
+        setStatus(SetPolyline);
     }
 }
 
@@ -78,8 +89,11 @@ void RS_ActionPolylineDel::onMouseMoveEvent(int status, LC_MouseEvent *e) {
             if (vertex.valid){
                 highlightHover(segment);
                 previewRefSelectablePoint(vertex);
-                RS_Modification m(m_preview.get(), m_viewport);
-                m.deletePolylineNode(m_polylineToModify, vertex, true);
+                LC_DocumentModificationBatch ctx;
+                auto modifiedPolyline = RS_Modification::deletePolylineNode(m_polylineToModify, vertex, ctx);
+                if (modifiedPolyline != nullptr) {
+                    previewEntity(modifiedPolyline);
+                }
             }
             break;
          }

@@ -49,7 +49,7 @@ struct RS_ActionLibraryInsert::RS_LibraryInsertData {
 
 struct RS_ActionLibraryInsert::ActionData {
     RS_Graphic* prev;
-    RS_ActionLibraryInsert::RS_LibraryInsertData data;
+    RS_LibraryInsertData data;
 };
 
 // fixme - sand - UCS - support of UCS for inserting blocks (angle)!!!
@@ -58,7 +58,7 @@ struct RS_ActionLibraryInsert::ActionData {
  * Constructor.
  */
 RS_ActionLibraryInsert::RS_ActionLibraryInsert(LC_ActionContext *actionContext)
-        :RS_PreviewActionInterface("Library Insert", actionContext, RS2::ActionLibraryInsert)
+        :LC_UndoableDocumentModificationAction("Library Insert", actionContext, RS2::ActionLibraryInsert)
 		, m_actionData(std::make_unique<ActionData>())
 		,m_lastStatus(SetTargetPoint){
 }
@@ -86,32 +86,28 @@ void RS_ActionLibraryInsert::reset() const {
     m_actionData->data.angle = 0.0;
     delete m_actionData->prev;
 }
-// fixme - rework further!
-void RS_ActionLibraryInsert::trigger() {
-    deletePreview();
-    auto insertData    = m_actionData->data;
-    insertData.graphic = m_actionData->prev;
-    insertData.angle = toWorldAngleFromUCSBasis(m_actionData->data.angle);
-    createLibraryInsert(insertData);
-    redrawDrawing();
+
+bool RS_ActionLibraryInsert::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+    auto insertData           = m_actionData->data;
+    insertData.graphic        = m_actionData->prev;
+    insertData.angle          = toWorldAngleFromUCSBasis(m_actionData->data.angle);
+    RS_Graphic* insertGraphic = insertData.graphic;
+    if (insertGraphic != nullptr) {
+        // unit conversion:
+        if (m_graphic != nullptr) {
+            double uf = RS_Units::convert(1.0, insertGraphic->getUnit(), m_graphic->getUnit());
+            insertGraphic->scale(RS_Vector(0.0, 0.0), RS_Vector(uf, uf));
+        }
+        QString insertFileName = QFileInfo(insertData.file).completeBaseName();
+        LC_LibraryInsertData pasteData(insertData.insertionPoint, insertData.factor, insertData.angle, insertFileName, insertGraphic);
+        RS_Modification::libraryInsert(pasteData, m_graphic, ctx);
+        // fixme- create separate method for library insert!
+    }
+    return true;
 }
 
-// fixme - rework further!
-RS_Insert* RS_ActionLibraryInsert::createLibraryInsert(RS_LibraryInsertData& data) const {
-    RS_Graphic* insertGraphic = data.graphic;
-    if (insertGraphic == nullptr) {
-        return nullptr;
-    }
-    // unit conversion:
-    if (m_graphic != nullptr) {
-        double uf = RS_Units::convert(1.0, insertGraphic->getUnit(),m_graphic->getUnit());
-        insertGraphic->scale(RS_Vector(0.0, 0.0), RS_Vector(uf, uf));
-    }
-    QString insertFileName = QFileInfo(data.file).completeBaseName();
-    RS_Modification m(m_document, m_viewport);
-    m.paste( RS_PasteData(data.insertionPoint,data.factor, data.angle, true,insertFileName),insertGraphic); // fixme- create separate method for library insert!
-
-    return nullptr;
+void RS_ActionLibraryInsert::doTriggerCompletion(bool success) {
+    LC_UndoableDocumentModificationAction::doTriggerCompletion(success);
 }
 
 void RS_ActionLibraryInsert::onMouseMoveEvent(int status, LC_MouseEvent *e) {

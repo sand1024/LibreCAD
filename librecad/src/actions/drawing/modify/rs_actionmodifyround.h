@@ -28,7 +28,8 @@
 #ifndef RS_ACTIONMODIFYROUND_H
 #define RS_ACTIONMODIFYROUND_H
 
-#include "rs_previewactioninterface.h"
+#include "lc_undoabledocumentmodificationaction.h"
+
 
 class RS_AtomicEntity;
 struct RS_RoundData;
@@ -37,10 +38,10 @@ struct RS_RoundData;
  *
  * @author Andrew Mustun
  */
-class RS_ActionModifyRound:public RS_PreviewActionInterface {
+class RS_ActionModifyRound:public LC_UndoableDocumentModificationAction {
     Q_OBJECT
 public:
-    RS_ActionModifyRound(LC_ActionContext *actionContext);
+    explicit RS_ActionModifyRound(LC_ActionContext *actionContext);
     ~RS_ActionModifyRound() override;
     void init(int status) override;
     void finish(bool updateTB) override;
@@ -77,8 +78,9 @@ protected:
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
     bool doProcessCommand(int status, const QString &command) override;
     void updateMouseButtonHints() override;
-    void doTrigger() override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
 };
 #endif

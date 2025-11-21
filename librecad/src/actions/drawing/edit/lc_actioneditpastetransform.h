@@ -23,9 +23,10 @@
 #ifndef LC_ACTIONEDITPASTETRANSFORM_H
 #define LC_ACTIONEDITPASTETRANSFORM_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_previewactioninterface.h"
 
-class LC_ActionEditPasteTransform :public LC_UndoablePreviewActionInterface{
+class LC_ActionEditPasteTransform :public LC_UndoableDocumentModificationAction{
 Q_OBJECT
 public:
     explicit LC_ActionEditPasteTransform(LC_ActionContext *actionContext);
@@ -77,8 +78,9 @@ protected:
     void previewMultipleReferencePoints() const;
     void updateMouseButtonHints() override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
-    void doTrigger() override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angle) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
 };
 #endif // LC_ACTIONEDITPASTETRANSFORM_H

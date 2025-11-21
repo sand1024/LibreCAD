@@ -1639,7 +1639,7 @@ void LC_LayerTreeWidget::redrawView() const {
     }
 }
 
-// TODO - actually this operations are good candidates for moving them into separate actions
+// Fixme - actually this operations are good candidates for moving them into separate actions
 // that may be invoked  not only from layers widget... at least, moving to active layer may be...
 /**
  * Moves or copies currently selected entities to the layer that is stored by provided tree item.
@@ -1653,14 +1653,13 @@ void LC_LayerTreeWidget::redrawView() const {
 void LC_LayerTreeWidget::doMoveSelectionToLayer(LC_LayerTreeItem* layerItem, bool duplicate, bool resolvePens){
     RS_Layer *targetLayer = layerItem->getLayer();
 
-    LC_SelectedSet* selection = m_document->getSelectedSet();
-
-    std::vector<RS_Entity*> originalEntities;
-    std::vector<RS_Entity*> clones;
-
+    LC_DocumentModificationBatch ctx;
     bool removeOriginals = !duplicate;
+    LC_SelectedSet* selection = m_document->getSelectedSet();
+    QList<RS_Entity*> selectedEntities;
 
-    for (auto en : *selection) {
+    selection->collectSelectedEntities(selectedEntities);
+    for (auto en : selectedEntities) {
         // iterate over all entities
         if (en != nullptr) {
             if (en->isVisible() && en->isSelected() && !en->isParentSelected()) {
@@ -1675,8 +1674,8 @@ void LC_LayerTreeWidget::doMoveSelectionToLayer(LC_LayerTreeItem* layerItem, boo
                     }
 
                     clone->setLayer(targetLayer);
-                    originalEntities.push_back(en);
-                    clones.push_back(clone);
+                    ctx += clone;
+                    ctx -= en;
                 }
             }
         }
@@ -1684,21 +1683,20 @@ void LC_LayerTreeWidget::doMoveSelectionToLayer(LC_LayerTreeItem* layerItem, boo
 
     LC_UndoSection undo(m_document, m_graphicView->getViewPort());
     if (removeOriginals) {
-        for (const auto e: originalEntities) {
+        for (const auto e: ctx.entitiesToDelete) {
             undo.undoableDelete(e);
         }
     }
     else {
-        for (const auto e: originalEntities) {
+        for (const auto e: ctx.entitiesToDelete) {
             m_document->unselect(e);
         }
     }
 
-    for (const auto e: clones) {
+    for (const auto e: ctx.entitiesToAdd) {
         m_document->select(e);
         undo.undoableAdd(e);
     }
-
     redrawView();
 }
 

@@ -44,6 +44,15 @@ RS_Clipboard* RS_Clipboard::instance() {
     return uniqueInstance.get();
 }
 
+void RS_Clipboard::startCopy() {
+    m_graphic->setAutoUpdateBorders(false);
+}
+
+void RS_Clipboard::endCopy() {
+    m_graphic->setAutoUpdateBorders(true);
+    m_graphic->calculateBorders();
+}
+
 void RS_Clipboard::clear() const {
     m_graphic->clear();
     m_graphic->clearBlocks();

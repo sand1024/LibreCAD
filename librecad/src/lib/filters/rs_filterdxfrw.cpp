@@ -2966,6 +2966,7 @@ void RS_FilterDXFRW::writeViews() {
     }
 }
 
+// fixme - sand -  umh... eliminate duplicated code which is the same in cycles body (entity/block)!!!
 void RS_FilterDXFRW::writeTextstyles(){
     QHash<QString, QString> styles;
     QString sty;

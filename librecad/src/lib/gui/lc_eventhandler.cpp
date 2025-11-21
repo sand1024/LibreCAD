@@ -203,6 +203,10 @@ void LC_EventHandler::commandEvent(RS_CommandEvent* e) {
 
 
 bool  LC_EventHandler::checkLastActionFinishedAndUncheckQAction() {
+    if (m_currentAction == nullptr) {
+        // action may be null due to switch to default action.
+        return true;
+    }
     int lastActionStatus = m_currentAction->getStatus();
     bool result = false;
     if (lastActionStatus < 0 || m_currentAction->isFinished()){

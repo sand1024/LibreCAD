@@ -194,7 +194,7 @@ bool RS_ActionDrawHatch::isEntityAllowedToSelect(RS_Entity *ent) const {
 }
 
 void RS_ActionDrawHatch::updateMouseButtonHintsForSelection() {
-    updateMouseWidgetTRCancel(tr("Select to hatch (Enter to complete)"), MOD_CTRL(tr("Hatch immediately after selection")));
+    updateMouseWidgetTRCancel(tr("Select to hatch") + getSelectionCompletionHintMsg(), MOD_CTRL(tr("Hatch immediately after selection")));
 }
 
 RS2::CursorType RS_ActionDrawHatch::doGetMouseCursorSelected([[maybe_unused]]int status) {

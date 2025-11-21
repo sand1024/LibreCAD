@@ -793,7 +793,7 @@ void RS_ActionDefault::onMouseMovingCompleted(LC_MouseEvent* e) {
     // fixme =  ad-hoc document editing operation like in some action. Think about using some reusable utility!!!
     LC_DocumentModificationBatch ctx;
     QList<RS_Entity*> selectedEntities;
-    m_document->getSelectedSet()->collecteSelectedEntities(selectedEntities);
+    m_document->getSelectedSet()->collectSelectedEntities(selectedEntities);
     RS_Modification::move(data, selectedEntities, false, ctx);
     if (ctx.success) {
         undoCycleStart();

@@ -27,8 +27,6 @@
 #include <tuple>
 #include "qg_widthbox.h"
 
-#include <boost/container/vector.hpp>
-
 #include "rs_debug.h"
 
 namespace

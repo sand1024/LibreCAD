@@ -27,7 +27,7 @@
 #ifndef RS_ACTIONMODIFYTRIM_H
 #define RS_ACTIONMODIFYTRIM_H
 
-#include "rs_previewactioninterface.h"
+#include "lc_undoabledocumentmodificationaction.h"
 
 class RS_AtomicEntity;
 /**
@@ -35,10 +35,10 @@ class RS_AtomicEntity;
  *
  * @author Andrew Mustun
  */
-class RS_ActionModifyTrim:public RS_PreviewActionInterface {
+class RS_ActionModifyTrim:public LC_UndoableDocumentModificationAction {
     Q_OBJECT
 public:
-    RS_ActionModifyTrim(LC_ActionContext *actionContext,bool both = false);
+    explicit RS_ActionModifyTrim(LC_ActionContext *actionContext,bool both = false);
     ~RS_ActionModifyTrim() override;
     void init(int status) override;
     void finish(bool updateTB) override;
@@ -64,8 +64,9 @@ protected:
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
-    void doTrigger() override;
     void previewTrim(RS_Entity* entityToTrimCandidate, RS_Entity* limitingEntity, RS_Vector trimCoordinates,
                      RS_Vector limitCoordinates, bool& trimInvalid);
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
 };
 #endif

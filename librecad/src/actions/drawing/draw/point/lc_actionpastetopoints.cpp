@@ -22,11 +22,11 @@
 
 #include "lc_actionpastetopoints.h"
 
+#include "lc_copyutils.h"
 #include "lc_pastetopointsoptions.h"
 #include "rs_clipboard.h"
 #include "rs_document.h"
 #include "rs_entity.h"
-#include "rs_modification.h"
 #include "rs_selection.h"
 
 LC_ActionPasteToPoints::LC_ActionPasteToPoints(LC_ActionContext *actionContext):
@@ -45,12 +45,12 @@ void LC_ActionPasteToPoints::init(int status) {
 }
 
 bool LC_ActionPasteToPoints::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
-    RS_Modification m(m_document, m_viewport, false); // undoCycle in trigger, so don't create undo section in modification
     for (auto p: m_selectedEntities){
         RS_Vector currentPoint = p->getCenter();
         // fixme - TRIGGER complete!!!
-        const RS_PasteData &pasteData = RS_PasteData(currentPoint, m_scaleFactor , m_angleRad, false, "");
-        m.paste(pasteData);
+        const auto pasteData = LC_CopyUtils::RS_PasteData(currentPoint, m_scaleFactor , m_angleRad);
+        LC_CopyUtils::paste(pasteData, m_graphic, ctx);
+        ctx.dontSetActiveLayerAndPen();
         // fixme - some progress is needed there, ++++ speed improvement for paste operation!!
 //        LC_ERR << "Paste: " << currentPoint;
     }
@@ -115,5 +115,5 @@ bool LC_ActionPasteToPoints::isEntityAllowedToSelect(RS_Entity *ent) const {
 }
 
 void LC_ActionPasteToPoints::updateMouseButtonHintsForSelection() {
-    updateMouseWidgetTRCancel("Select insertion points (Enter to complete)"), MOD_CTRL(tr("Select and paste"));
+    updateMouseWidgetTRCancel(tr("Select insertion points") + getSelectionCompletionHintMsg(), MOD_CTRL(tr("Select and paste")));
 }

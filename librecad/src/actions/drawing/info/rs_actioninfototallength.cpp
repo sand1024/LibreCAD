@@ -69,5 +69,6 @@ void RS_ActionInfoTotalLength::finishMouseMoveOnSelection([[maybe_unused]] LC_Mo
 
 
 void RS_ActionInfoTotalLength::updateMouseButtonHintsForSelection() {
-    updateMouseWidgetTRCancel(tr("Select to measure total length (Enter to complete)"), MOD_SHIFT_AND_CTRL(tr("Select contour"),tr("Select and finish")));
+    updateMouseWidgetTRCancel(tr("Select to measure total length") + getSelectionCompletionHintMsg(),
+                              MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Select and finish")));
 }

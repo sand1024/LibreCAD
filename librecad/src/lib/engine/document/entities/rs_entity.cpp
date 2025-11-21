@@ -522,6 +522,19 @@ bool RS_Entity::isLocked() const{
     return layer != nullptr && layer->isLocked();
 }
 
+// FIXME - add something like isEditable() for entity
+bool RS_Entity::isEditable() const{
+    auto layer = m_layer;
+    if (layer == nullptr) {
+        if (parent != nullptr) {
+            return parent->isEditable();
+        }
+        return true;
+    }
+    return layer != nullptr ?  layer->isLocked() : true;
+}
+
+
 RS_Vector RS_Entity::getCenter() const {
     return {};
 }

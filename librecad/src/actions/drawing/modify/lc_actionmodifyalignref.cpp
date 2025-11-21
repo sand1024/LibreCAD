@@ -34,14 +34,15 @@ LC_ActionModifyAlignRef::LC_ActionModifyAlignRef(LC_ActionContext *actionContext
 
 bool LC_ActionModifyAlignRef::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
     prepareAlignRefData(m_actionData.targetPoint2);
-    RS_Modification m(m_document, m_viewport);
-    m.alignRef(m_actionData.data, m_selectedEntities, false, /*keepSelected*/false); // fixme - complete
+    RS_Modification::alignRef(m_actionData.data, m_selectedEntities, false, ctx);
+    ctx.setActiveLayerAndPen(false, false);
     return true;
-
 }
 
 void LC_ActionModifyAlignRef::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
-    // fixme - complete
+    if (keepSelected) {
+        select(ctx.entitiesToAdd);
+    }
 }
 
 void LC_ActionModifyAlignRef::doTriggerCompletion(bool success) {
@@ -85,8 +86,9 @@ void LC_ActionModifyAlignRef::onMouseMoveEventSelected(int status, LC_MouseEvent
 
             prepareAlignRefData(snap);
 
-            RS_Modification m(m_preview.get(), m_viewport, false);
-            m.alignRef(m_actionData.data, m_selectedEntities, true, true);
+            LC_DocumentModificationBatch ctx;
+            RS_Modification::alignRef(m_actionData.data, m_selectedEntities, true, ctx);
+            previewEntitiesToAdd(ctx);
 
             if (isInfoCursorForModificationEnabled()) {
                 msg(tr("Align References"))
@@ -212,7 +214,7 @@ bool LC_ActionModifyAlignRef::doProcessCommand(int status, const QString &comman
 }
 
 void LC_ActionModifyAlignRef::updateMouseButtonHintsForSelection() {
-    updateMouseWidgetTRCancel(tr("Select to align (Enter to complete)"),  MOD_SHIFT_AND_CTRL(tr("Select contour"),tr("Align immediately after selection")));
+    updateMouseWidgetTRCancel(tr("Select to align")+getSelectionCompletionHintMsg(),  MOD_SHIFT_AND_CTRL(tr("Select contour"),tr("Align immediately after selection")));
 }
 
 void LC_ActionModifyAlignRef::updateMouseButtonHintsForSelected(int status) {

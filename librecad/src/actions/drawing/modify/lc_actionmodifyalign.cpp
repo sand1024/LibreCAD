@@ -249,7 +249,8 @@ void LC_ActionModifyAlign::updateMouseButtonHintsForSelected([[maybe_unused]]int
 }
 
 void LC_ActionModifyAlign::updateMouseButtonHintsForSelection() {
-    updateMouseWidgetTRCancel(tr("Select entities to align (Enter to complete)"),  MOD_SHIFT_AND_CTRL(tr("Select contour"),tr("Select and align")));
+    updateMouseWidgetTRCancel(tr("Select entities to align") + getSelectionCompletionHintMsg(),
+                              MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Select and align")));
 }
 
 RS2::CursorType LC_ActionModifyAlign::doGetMouseCursorSelected([[maybe_unused]]int status) {

@@ -51,7 +51,9 @@ public:
      * @return Instance to the unique clipboard object.
      */
     static RS_Clipboard* instance();
-	void clear() const;
+    void startCopy();
+    void endCopy();
+    void clear() const;
 	void addBlock(RS_Block* b) const;
     bool hasBlock(const QString& name) const;
     int  countBlocks() const;

@@ -38,7 +38,8 @@ public:
     void removeListener(LC_SelectedSetListener* listener);
     void fireSelectionChanged();
     bool isSilent() const {return m_silentMode != 0;}
-    void collecteSelectedEntities(QList<RS_Entity*>& list) const {list.append(m_entitiesList);};
+    void cleanup() ;
+    void collectSelectedEntities(QList<RS_Entity*>& list);
 private:
     QList<RS_Entity*> m_entitiesList;
     QList<LC_SelectedSetListener*> m_listeners;

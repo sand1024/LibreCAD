@@ -23,8 +23,6 @@
 
 #include "lc_dimarrowblockpoly.h"
 
-#include <boost/next_prior.hpp>
-
 LC_DimArrowPoly::LC_DimArrowPoly(RS_EntityContainer* parent, const RS_Vector &pos, double angle, double size)
       : LC_DimArrow(parent,pos,angle,size) {
 }

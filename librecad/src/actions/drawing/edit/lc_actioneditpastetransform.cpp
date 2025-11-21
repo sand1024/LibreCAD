@@ -21,17 +21,17 @@
  ******************************************************************************/
 #include "lc_actioneditpastetransform.h"
 
+#include "lc_copyutils.h"
 #include "lc_pastetransformoptions.h"
 #include "rs_clipboard.h"
 #include "rs_graphic.h"
-#include "rs_modification.h"
 #include "rs_preview.h"
 #include "rs_units.h"
 
 // fixme - sand - ucs - Check for support of UCS!
 
 LC_ActionEditPasteTransform::LC_ActionEditPasteTransform(LC_ActionContext *actionContext)
-    :LC_UndoablePreviewActionInterface("PasteTransform", actionContext,  RS2::ActionEditPasteTransform),
+    :LC_UndoableDocumentModificationAction("PasteTransform", actionContext,  RS2::ActionEditPasteTransform),
     m_referencePoint{new RS_Vector(false)},
     m_pasteData{new PasteData()}{
 }
@@ -44,9 +44,7 @@ void LC_ActionEditPasteTransform::init(int status) {
     }
 }
 
-void LC_ActionEditPasteTransform::doTrigger() {
-    RS_Modification m(m_document, m_viewport, false); // undoCycle in trigger, so don't create undo section in modification
-
+bool LC_ActionEditPasteTransform::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
     int numX = m_pasteData->arrayXCount;
     int numY = m_pasteData->arrayYCount;
 
@@ -63,14 +61,18 @@ void LC_ActionEditPasteTransform::doTrigger() {
     }
     for (int x = 0; x < numX; x++){
         for (int y = 0; y < numY; y++){
-            RS_Vector currentPoint = *m_referencePoint + xArrayVector*x + yArrayVector * y;
-            const RS_PasteData &pasteData = RS_PasteData(currentPoint, m_pasteData->factor , m_pasteData->angle,
-                                                         false, "");
-            m.paste(pasteData);
+            RS_Vector currentPoint  = *m_referencePoint + xArrayVector*x + yArrayVector * y;
+            const auto pasteData = LC_CopyUtils::RS_PasteData(currentPoint, m_pasteData->factor , m_pasteData->angle);
+            LC_CopyUtils::paste(pasteData, m_graphic, ctx);
             // fixme - some progress is needed there, ++++ speed improvement for paste operation!!
 //            LC_ERR << "Paste: " << x+y;
         }
     }
+    ctx.dontSetActiveLayerAndPen();
+    return true;
+}
+
+void LC_ActionEditPasteTransform::doTriggerCompletion(bool success) {
     if (!m_invokedWithControl) {
         finish(false);
     }
@@ -79,14 +81,13 @@ void LC_ActionEditPasteTransform::doTrigger() {
 void LC_ActionEditPasteTransform::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     if (status==SetReferencePoint) {
         *m_referencePoint = e->snapPoint;
-        m_preview->addAllFrom(*RS_CLIPBOARD->getGraphic(),m_viewport);
+        auto clipboardGraphics   = RS_CLIPBOARD->getGraphic();
+        m_preview->addAllFrom(*clipboardGraphics,m_viewport);
         m_preview->move(*m_referencePoint);
 
         if (m_graphic) {
-            RS2::Unit sourceUnit = RS_CLIPBOARD->getGraphic()->getUnit();
-            RS2::Unit targetUnit = m_graphic->getUnit();
-            double const f = RS_Units::convert(m_pasteData->factor, sourceUnit, targetUnit);
-            m_preview->scale(*m_referencePoint, {f, f});
+            RS_Vector scaleFactor = LC_CopyUtils::getInterGraphicsScaleFactor(m_pasteData->factor, clipboardGraphics, m_graphic);
+            m_preview->scale(*m_referencePoint, scaleFactor);
             m_preview->rotate(*m_referencePoint, m_pasteData->angle);
 
             if (m_showRefEntitiesOnPreview) {

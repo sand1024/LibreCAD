@@ -39,8 +39,6 @@
 
 #include "qg_graphicview.h"
 
-#include <boost/geometry/io/wkt/read.hpp>
-
 #include "lc_actioncontext.h"
 #include "lc_actionmodifymoveadjust.h"
 #include "lc_eventhandler.h"

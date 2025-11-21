@@ -29,7 +29,6 @@
 #include "qg_trimamountoptions.h"
 #include "rs_arc.h"
 #include "rs_atomicentity.h"
-#include "rs_debug.h"
 #include "rs_document.h"
 #include "rs_modification.h"
 
@@ -45,7 +44,7 @@ namespace {
 }
 
 RS_ActionModifyTrimAmount::RS_ActionModifyTrimAmount(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("Trim Entity by a given amount",actionContext, RS2::ActionModifyTrimAmount)
+    :LC_UndoableDocumentModificationAction("Trim Entity by a given amount",actionContext, RS2::ActionModifyTrimAmount)
     , m_trimEntity(nullptr), m_trimCoord(new RS_Vector{}), m_distance(0.0), m_distanceIsTotalLength(false){
 }
 
@@ -60,16 +59,29 @@ void RS_ActionModifyTrimAmount::init(int status) {
 }
 
 // fixme - check if negative total length is larger than the overall length of the entity
-void RS_ActionModifyTrimAmount::doTrigger() {
-    RS_DEBUG->print("RS_ActionModifyTrimAmount::trigger()");
-    RS_Modification m(m_document, m_viewport, true);
-    double dist = determineDistance(m_trimEntity);
 
-    bool trimStart;
-    bool trimEnd;
-    bool trimBoth = m_symmetricDistance && !m_distanceIsTotalLength;
-    m.trimAmount(*m_trimCoord, m_trimEntity, dist, trimBoth, trimStart, trimEnd);
+// FIXME - HANDLE SITUATION WITH LOCKED LAYER ON ENTITY MODIFICATION
 
+// FIXME - CURRENT LAYER IS INVISIBLE OR LOCKED
+
+bool RS_ActionModifyTrimAmount::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+    if (m_trimEntity != nullptr && m_trimEntity->isVisible() && !m_trimEntity->isLocked()) {
+        double dist = determineDistance(m_trimEntity);
+        bool trimStart;
+        bool trimEnd;
+        bool trimBoth = m_symmetricDistance && !m_distanceIsTotalLength;
+        RS_Entity* trimmed = RS_Modification::trimAmount(*m_trimCoord, m_trimEntity, dist, trimBoth, trimStart, trimEnd, ctx);
+        if (trimmed != nullptr) {
+            trimmed->setPen(m_trimEntity->getPen(false));
+            trimmed->setLayer(m_trimEntity->getLayer(false));
+            ctx.dontSetActiveLayerAndPen();
+        }
+        return true;
+    }
+    return false;
+}
+
+void RS_ActionModifyTrimAmount::doTriggerCompletion(bool success) {
     m_trimEntity = nullptr;
     setStatus(ChooseTrimEntity);
 }
@@ -100,12 +112,12 @@ void RS_ActionModifyTrimAmount::onMouseMoveEvent([[maybe_unused]]int status, LC_
     if (isAtomic(en)) {
         highlightHover(en);
         auto* atomic = static_cast<RS_AtomicEntity*>(en);
-        RS_Modification m(m_document, m_viewport, false);
         double dist = determineDistance(atomic);
         bool trimBoth = m_symmetricDistance && !m_distanceIsTotalLength;
         bool trimStart;
         bool trimEnd;
-        auto trimmed = m.trimAmount(coord, atomic, dist, trimBoth, trimStart, trimEnd);
+        LC_DocumentModificationBatch ctx;
+        auto trimmed = RS_Modification::trimAmount(coord, atomic, dist, trimBoth, trimStart, trimEnd, ctx);
         if (trimmed != nullptr) {
             double originalLen = atomic->getLength();
             double trimmedLen = trimmed->getLength();

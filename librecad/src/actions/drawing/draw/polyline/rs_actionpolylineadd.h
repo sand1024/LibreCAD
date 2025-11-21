@@ -27,6 +27,7 @@
 #ifndef RS_ACTIONPOLYLINEADD_H
 #define RS_ACTIONPOLYLINEADD_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_previewactioninterface.h"
 class RS_Polyline;
 
@@ -35,10 +36,10 @@ class RS_Polyline;
  *
  * @author Andrew Mustun
  */
-class RS_ActionPolylineAdd:public RS_PreviewActionInterface {
+class RS_ActionPolylineAdd:public LC_UndoableDocumentModificationAction {
     Q_OBJECT
 public:
-    RS_ActionPolylineAdd(LC_ActionContext *actionContext);
+    explicit RS_ActionPolylineAdd(LC_ActionContext *actionContext);
     ~RS_ActionPolylineAdd() override;
     void init(int status) override;
     void finish(bool updateTB) override;
@@ -59,8 +60,9 @@ protected:
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
     void updateMouseButtonHints() override;
-    void doTrigger() override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void setPolylineToModify(RS_Entity* en);
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
 };
 #endif

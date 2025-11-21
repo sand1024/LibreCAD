@@ -56,6 +56,13 @@ bool RS_ActionModifyCut::doTriggerModificationsPrepare(LC_DocumentModificationBa
     if (isAtomic(m_cutEntity) && m_cutCoord->valid && m_cutEntity->isPointOnEntity(*m_cutCoord)){
         m_cutEntity->setHighlighted(false);
         RS_Modification::cut(*m_cutCoord, static_cast<RS_AtomicEntity*>(m_cutEntity), ctx);
+        const RS_Pen &originalPen = m_cutEntity->getPen(false);
+        RS_Layer *originalLayer = m_cutEntity->getLayer(false);
+        for (auto e: ctx.entitiesToAdd) {
+            e->setPen(originalPen);
+            e->setLayer(originalLayer);
+        }
+        ctx.dontSetActiveLayerAndPen();
         return true;
     }
     return false;

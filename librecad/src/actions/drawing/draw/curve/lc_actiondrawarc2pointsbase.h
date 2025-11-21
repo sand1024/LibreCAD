@@ -29,7 +29,6 @@
 class LC_ActionDrawArc2PointsBase:public LC_SingleEntityCreationAction{
     Q_OBJECT
 public:
-    LC_ActionDrawArc2PointsBase(const char* name, LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone);
     bool isReversed() const;
     void setReversed(bool reversed);
     double getParameter() const;
@@ -48,6 +47,7 @@ protected:
     bool m_alternated = false;
     int m_savedState = SetPoint1;
 
+    LC_ActionDrawArc2PointsBase(const char* name, LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone);
     RS2::CursorType doGetMouseCursor(int status) override;
     void updateMouseButtonHints() override;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;

@@ -36,16 +36,17 @@
 class RS_ActionPolylineDel:public LC_ActionPolylineDeleteBase {
     Q_OBJECT
 public:
-    RS_ActionPolylineDel(LC_ActionContext *actionContext);
+    explicit RS_ActionPolylineDel(LC_ActionContext *actionContext);
     ~RS_ActionPolylineDel() override;
     void drawSnapper() override;
 protected:
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     void doInitialInit() override;
     void updateMouseButtonHints() override;
-    void doTrigger() override;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void setPolylineToModify(RS_Entity* en);
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
 };
 #endif

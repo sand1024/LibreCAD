@@ -67,11 +67,8 @@ bool RS_Undo::hasUndoable()
 void RS_Undo::addUndoCycle(std::shared_ptr<RS_UndoCycle> undoCycle) {
     RS_DEBUG->print("RS_Undo::addUndoCycle");
 
-//    undoList.insert(++undoPointer, i);
     m_undoList.push_back(std::move(undoCycle));
     m_redoPointer = m_undoList.cend();
-
-    updateUndoState();
 
     RS_DEBUG->print("RS_Undo::addUndoCycle: ok");
 }

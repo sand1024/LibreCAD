@@ -22,16 +22,15 @@
 
 #ifndef LC_ACTIONPOLYLINEDELETEBASE_H
 #define LC_ACTIONPOLYLINEDELETEBASE_H
+#include "lc_undoabledocumentmodificationaction.h"
 
-#include "rs_previewactioninterface.h"
 class RS_Polyline;
 
-class LC_ActionPolylineDeleteBase:public RS_PreviewActionInterface {
+class LC_ActionPolylineDeleteBase:public LC_UndoableDocumentModificationAction {
     Q_OBJECT
-public:
-    LC_ActionPolylineDeleteBase(const char *name, LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone);
-    ~LC_ActionPolylineDeleteBase() override = default;
 protected:
+    explicit LC_ActionPolylineDeleteBase(const char *name, LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone);
+    ~LC_ActionPolylineDeleteBase() override = default;
     /**
    * Action States.
    */

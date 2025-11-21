@@ -29,14 +29,16 @@
 class LC_ActionDrawCircleBase:public LC_SingleEntityCreationAction {
     Q_OBJECT
 public:
-    LC_ActionDrawCircleBase(const char* name, LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone);
-    ~LC_ActionDrawCircleBase() override;
     void init(int status) override;
     virtual bool isReversed() const{return false;}
     virtual void setReversed ([[maybe_unused]]bool b) const{};
 protected:
     virtual void reset();
     bool m_moveRelPointAtCenterAfterTrigger = true; // todo - move to options?
+
+    LC_ActionDrawCircleBase(const char* name, LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone);
+    ~LC_ActionDrawCircleBase() override;
+
     void previewEllipseReferencePoints(const RS_Ellipse *ellipse, bool drawAxises = false,  bool allPointsNotSelectable = false, RS_Vector mouse=RS_Vector(false)) const;
     RS2::CursorType doGetMouseCursor(int status) override;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;

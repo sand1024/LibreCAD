@@ -31,7 +31,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class QG_PenToolBar;
 
 LC_ActionPenApply::LC_ActionPenApply(LC_ActionContext *actionContext, bool copy):
-    RS_PreviewActionInterface(copy? "PenCopy" : "PenApply", actionContext, copy? RS2::ActionPenCopy :  RS2::ActionPenApply),
+    LC_UndoableDocumentModificationAction(copy? "PenCopy" : "PenApply", actionContext, copy? RS2::ActionPenCopy :  RS2::ActionPenApply),
     m_copyMode{copy}{
 }
 
@@ -49,6 +49,33 @@ bool LC_ActionPenApply::mayInitWithContextEntity([[maybe_unused]]int status) {
    return true;
 }
 
+bool LC_ActionPenApply::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+    // do actual modifications
+    RS_AttributesData data;
+    data.pen            = m_penToApply;
+    data.layer          = "0";
+    data.changeColor    = true;
+    data.changeLineType = true;
+    data.changeWidth    = true;
+    data.changeLayer    = false;
+    data.applyBlockDeep = false;
+
+    QList<RS_Entity *> selectedEntities;
+    selectedEntities.push_back(m_entityToApply);
+
+    m_updateInserts = RS_Modification::changeAttributes(selectedEntities, data, ctx);
+    ctx.dontSetActiveLayerAndPen();
+    return true;
+}
+
+void LC_ActionPenApply::doTriggerCompletion(bool success) {
+    if (m_updateInserts) {
+        m_document->updateInserts();
+        m_updateInserts = false;
+    }
+    m_entityToApply = nullptr;
+}
+
 void LC_ActionPenApply::doInitWithContextEntity(RS_Entity* contextEntity, [[maybe_unused]]const RS_Vector& clickPos) {
     if (getStatus() == SelectEntity) {
         m_srcEntity = contextEntity;
@@ -57,8 +84,9 @@ void LC_ActionPenApply::doInitWithContextEntity(RS_Entity* contextEntity, [[mayb
     else {
         QG_PenToolBar *penToolBar = QC_ApplicationWindow::getAppWindow()->getPenToolBar();
         if (penToolBar != nullptr){
-            auto penToApply = penToolBar->getPen();
-            applyPen(contextEntity, penToApply);
+            m_penToApply = penToolBar->getPen();
+            m_entityToApply = contextEntity;
+            trigger();
             redraw();
         }
     }
@@ -88,23 +116,6 @@ void LC_ActionPenApply::finish(bool updateTB){
     m_srcEntity = nullptr;
 }
 
-void LC_ActionPenApply::applyPen(RS_Entity* en, RS_Pen penToApply) const {
-    // do actual modifications
-    RS_AttributesData data;
-    data.pen = penToApply;
-    data.layer = "0";
-    data.changeColor = true;
-    data.changeLineType = true;
-    data.changeWidth = true;
-    data.changeLayer = false;
-
-    QList<RS_Entity *> selectedEntities;
-    selectedEntities.push_back(en);
-
-    RS_Modification m(m_document, m_viewport);
-    m.changeAttributesOld(data, selectedEntities, false);
-}
-
 void LC_ActionPenApply::onMouseLeftButtonRelease([[maybe_unused]]int status, LC_MouseEvent *e) {
     RS_Entity* en= catchEntityByEvent(e, RS2::ResolveNone);
 
@@ -118,21 +129,20 @@ void LC_ActionPenApply::onMouseLeftButtonRelease([[maybe_unused]]int status, LC_
             }
             case ApplyToEntity:{
                 if (!en->isLocked() && en != m_srcEntity){
-                    RS_Pen penToApply;
                     if (m_copyMode){
                         // we apply pen from source entity, if Shift is pressed - resolved pen is used.
                         bool resolvePen = e->isShift;
-                        penToApply = m_srcEntity->getPen(resolvePen);
+                        m_penToApply = m_srcEntity->getPen(resolvePen);
 
                     } else {
                         // we apply active pen from pen toolbar
                         QG_PenToolBar *penToolBar = QC_ApplicationWindow::getAppWindow()->getPenToolBar();
                         if (penToolBar != nullptr){
-                            penToApply = penToolBar->getPen();
+                             m_penToApply = penToolBar->getPen();
                         }
                     }
-
-                    applyPen(en, penToApply);
+                    m_entityToApply = en;
+                    trigger();
                 }
                 break;
             }

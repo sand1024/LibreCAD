@@ -37,26 +37,28 @@ RS_ActionBlocksExplode::RS_ActionBlocksExplode(LC_ActionContext *actionContext)
     :LC_ActionPreSelectionAwareBase("Blocks Explode", actionContext,m_actionType=RS2::ActionBlocksExplode) {
 }
 
-bool RS_ActionBlocksExplode::doTriggerModificationsPrepare(LC_DocumentModificationBatch& modificationData) {
-    // FIXME - TRIGGER!!! COmplete
-    RS_Modification m(m_document, m_viewport);
-    // fixme - add options like "keep originals" and "current attributes"?
-    m.explode(m_selectedEntities, true);
+bool RS_ActionBlocksExplode::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+    RS_Modification::explode(m_selectedEntities, true, ctx);
+    ctx.setActiveLayerAndPen(false, false);
     return true;
 }
 
-void RS_ActionBlocksExplode::doTriggerCompletion(bool success) {
-}
-
 void RS_ActionBlocksExplode::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+    unselect(m_selectedEntities); // deselect atomics, if any included into selection. They should not be included into selection, yet still...
+    if (keepSelected) {
+        select(ctx.entitiesToAdd);
+    }
 }
 
+void RS_ActionBlocksExplode::doTriggerCompletion(bool success) {
+    m_document->updateInserts();
+}
 
 bool RS_ActionBlocksExplode::isEntityAllowedToSelect(RS_Entity *ent) const {
     return ent->isContainer();
 }
 
 void RS_ActionBlocksExplode::updateMouseButtonHintsForSelection() {
-    updateMouseWidgetTRCancel(tr("Select to explode container (Enter to complete)"),
+    updateMouseWidgetTRCancel(tr("Select to explode container")+getSelectionCompletionHintMsg(),
         MOD_CTRL(tr("Select and explode")));
 }

@@ -191,6 +191,7 @@ public:
     bool isTransparent() const;
     void setTransparent(bool on);
     bool isLocked() const;
+    bool isEditable() const;
     void deletedStateChanged(bool undone) override;
     virtual bool isDeleted() const;
 

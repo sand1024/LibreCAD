@@ -35,7 +35,7 @@
 #include "rs_preview.h"
 
 RS_ActionPolylineTrim::RS_ActionPolylineTrim(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("Trim segments",actionContext, RS2::ActionPolylineTrim) {
+    :LC_UndoableDocumentModificationAction("Trim segments",actionContext, RS2::ActionPolylineTrim) {
 }
 
 void RS_ActionPolylineTrim::init(int status) {
@@ -48,16 +48,21 @@ void RS_ActionPolylineTrim::doInitWithContextEntity(RS_Entity* contextEntity, [[
     setPolylineToModify(contextEntity);
 }
 
-void RS_ActionPolylineTrim::doTrigger() {
-    RS_DEBUG->print("RS_ActionPolylineTrim::trigger()");
-    unselect(m_polylineToModify);
-    RS_Modification m(m_document, m_viewport);
-    auto newPolyline = m.polylineTrim(m_polylineToModify, *m_segment1, *m_segment2, false);
+bool RS_ActionPolylineTrim::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+    auto newPolyline = RS_Modification::polylineTrim(m_polylineToModify, *m_segment1, *m_segment2, ctx);
     if (newPolyline != nullptr){
+        newPolyline->setLayer(m_polylineToModify->getLayer(false));
+        newPolyline->setPen(m_polylineToModify->getPen(false));
         m_polylineToModify = newPolyline;
-        m_segment1 = m_segment2 = nullptr;
-        setStatus(SetSegment1);
+        ctx.dontSetActiveLayerAndPen();
+        select(m_polylineToModify);
     }
+    return false;
+}
+
+void RS_ActionPolylineTrim::doTriggerCompletion(bool success) {
+    m_segment1 = m_segment2 = nullptr;
+    setStatus(SetSegment1);
 }
 
 void RS_ActionPolylineTrim::onMouseMoveEvent(int status, LC_MouseEvent *e) {
@@ -90,10 +95,11 @@ void RS_ActionPolylineTrim::onMouseMoveEvent(int status, LC_MouseEvent *e) {
                 previewRefPoint(m_segment1->getStartpoint());
                 previewRefPoint(m_segment1->getEndpoint());
 
-                RS_Modification m(m_preview.get(), m_viewport);
-                auto polyline = m.polylineTrim(m_polylineToModify, *m_segment1, *candidate, true);
+                LC_DocumentModificationBatch ctx;
+                auto polyline = RS_Modification::polylineTrim(m_polylineToModify, *m_segment1, *candidate, ctx);
                 if (polyline != nullptr){
                     highlightHover(en);
+                    previewEntity(polyline);
                     previewRefSelectablePoint(candidate->getStartpoint());
                     previewRefSelectablePoint(candidate->getEndpoint());
                 }

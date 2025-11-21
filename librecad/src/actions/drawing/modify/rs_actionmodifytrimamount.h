@@ -27,7 +27,7 @@
 #ifndef RS_ACTIONMODIFYTRIMAMOUNT_H
 #define RS_ACTIONMODIFYTRIMAMOUNT_H
 
-#include "rs_previewactioninterface.h"
+#include "lc_undoabledocumentmodificationaction.h"
 
 class RS_AtomicEntity;
 /**
@@ -36,10 +36,10 @@ class RS_AtomicEntity;
  *
  * @author Andrew Mustun
  */
-class RS_ActionModifyTrimAmount:public RS_PreviewActionInterface {
+class RS_ActionModifyTrimAmount:public LC_UndoableDocumentModificationAction {
     Q_OBJECT
 public:
-    RS_ActionModifyTrimAmount(LC_ActionContext *actionContext);
+    explicit RS_ActionModifyTrimAmount(LC_ActionContext *actionContext);
     ~RS_ActionModifyTrimAmount() override;
     void init(int status) override;
     QStringList getAvailableCommands() override;
@@ -71,7 +71,8 @@ protected:
     bool doProcessCommand(int status, const QString &command) override;
     void updateMouseButtonHints() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    void doTrigger() override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
 };
 #endif

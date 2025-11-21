@@ -593,7 +593,8 @@ void RS_ActionModifyRotate::setRefPointAngleAbsolute(bool val) const {
 }
 
 void RS_ActionModifyRotate::updateMouseButtonHintsForSelection() {
-    updateMouseWidgetTRCancel(tr("Select to rotate (Enter to complete)"),  MOD_SHIFT_AND_CTRL(tr("Select contour"),tr("Rotate immediately after selection")));
+    updateMouseWidgetTRCancel(tr("Select to rotate") + getSelectionCompletionHintMsg(),
+                              MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Rotate immediately after selection")));
 }
 
 void RS_ActionModifyRotate::updateMouseButtonHintsForSelected(int status){

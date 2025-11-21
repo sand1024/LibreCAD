@@ -534,7 +534,7 @@ void LC_PenPaletteWidget::doApplyPenAttributesToSelection(RS2::LineType lineType
         auto selectedSet                    = doc->getSelectedSet();
         if (!selectedSet->isEmpty()) {
             QList<RS_Entity*> selectedEntities;
-            selectedSet->collecteSelectedEntities(selectedEntities);
+            selectedSet->collectSelectedEntities(selectedEntities);
             RS_Modification::changeAttributes(selectedEntities, data, batch);
             doc->startUndoCycle();
             doc->modify(batch);

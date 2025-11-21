@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef LC_ACTIONPENAPPLY_H
 #define LC_ACTIONPENAPPLY_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_pen.h"
 #include "rs_previewactioninterface.h"
 
@@ -29,7 +30,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * Action that applies pen (either from pen toolbar or from selected entity) to
  * entity selected by the user.
  */
-class LC_ActionPenApply:public RS_PreviewActionInterface {
+class LC_ActionPenApply:public LC_UndoableDocumentModificationAction {
     Q_OBJECT
 public:
     // statuses of action
@@ -40,12 +41,14 @@ public:
     LC_ActionPenApply(LC_ActionContext *actionContext, bool copy);
     void init(int status) override;
     void finish(bool updateTB) override;
-    void applyPen(RS_Entity* en, RS_Pen penToApply) const;
 private:
     // entity that might be used as source for pen applying
     RS_Entity* m_srcEntity {nullptr};
     // controls whether pen should be copied from source entity or applied from pen toolbar
     bool m_copyMode;
+    RS_Entity* m_entityToApply {nullptr};
+    bool m_updateInserts {false};
+    RS_Pen m_penToApply;
 protected:
     bool mayInitWithContextEntity(int status) override;
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
@@ -54,6 +57,8 @@ protected:
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void updateMouseButtonHints() override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
 };
 
 #endif // LC_ACTIONPENAPPLY_H

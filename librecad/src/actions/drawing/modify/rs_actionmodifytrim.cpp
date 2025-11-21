@@ -43,7 +43,7 @@ struct RS_ActionModifyTrim::TrimActionData {
  * @param both Trim both entities.
  */
 RS_ActionModifyTrim::RS_ActionModifyTrim(LC_ActionContext *actionContext, bool both)
-    : RS_PreviewActionInterface("Trim Entity",actionContext, both ? RS2::ActionModifyTrim2 : RS2::ActionModifyTrim)
+    : LC_UndoableDocumentModificationAction("Trim Entity",actionContext, both ? RS2::ActionModifyTrim2 : RS2::ActionModifyTrim)
     , m_trimEntity{nullptr}, m_limitEntity{nullptr}
     , m_actionData(std::make_unique<TrimActionData>()), m_both{both} {
 }
@@ -67,15 +67,29 @@ void RS_ActionModifyTrim::finish(bool updateTB) {
     RS_PreviewActionInterface::finish(updateTB);
 }
 
-void RS_ActionModifyTrim::doTrigger() {
-    RS_DEBUG->print("RS_ActionModifyTrim::trigger()");
-
-    if (isAtomic(m_trimEntity) && m_limitEntity /* && limitEntity->isAtomic()*/) {
-        RS_Modification m(m_document, m_viewport);
-        [[maybe_unused]] LC_TrimResult trimResult =  m.trim(m_actionData->trimCoord,  m_trimEntity,
+bool RS_ActionModifyTrim::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+    if (isAtomic(m_trimEntity) && m_limitEntity != nullptr /* && limitEntity->isAtomic()*/) {
+        LC_TrimResult trimResult =  RS_Modification::trim(m_actionData->trimCoord,  m_trimEntity,
                m_actionData->limitCoord, m_limitEntity,
-               m_both);
+               m_both, ctx);
 
+        trimResult.trimmed1->setPen(m_trimEntity->getPen(false));
+        trimResult.trimmed1->setLayer(m_trimEntity->getLayer(false));
+
+        if (m_both) {
+            if (trimResult.trimmed2 != nullptr) {
+                trimResult.trimmed2->setPen(m_limitEntity->getPen(false));
+                trimResult.trimmed2->setLayer(m_limitEntity->getLayer(false));
+            }
+        }
+        ctx.dontSetActiveLayerAndPen();
+        return trimResult.result;
+    }
+    return false;
+}
+
+void RS_ActionModifyTrim::doTriggerCompletion(bool success) {
+    if (success) {
         m_trimEntity = nullptr;
         if (m_both) {
             m_limitEntity = nullptr;
@@ -91,10 +105,10 @@ void RS_ActionModifyTrim::previewTrim(RS_Entity* entityToTrimCandidate, RS_Entit
         if (entityToTrimCandidate->isAtomic()) {
             auto *atomicTrimCandidate = dynamic_cast<RS_AtomicEntity *>(entityToTrimCandidate);
 
-            RS_Modification m(m_document, m_viewport);
-            LC_TrimResult trimResult = m.trim(trimCoordinates, atomicTrimCandidate,
+            LC_DocumentModificationBatch ctx;
+            LC_TrimResult trimResult = RS_Modification::trim(trimCoordinates, atomicTrimCandidate,
                                               limitCoordinates, limitingEntity,
-                                              m_both, true);
+                                              m_both, ctx);
             if (trimResult.result) {
                 trimInvalid = false;
                 highlightHover(entityToTrimCandidate);

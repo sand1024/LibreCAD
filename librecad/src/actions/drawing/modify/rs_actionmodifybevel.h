@@ -27,6 +27,7 @@
 #ifndef RS_ACTIONMODIFYBEVEL_H
 #define RS_ACTIONMODIFYBEVEL_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_previewactioninterface.h"
 
 class RS_AtomicEntity;
@@ -37,7 +38,7 @@ class RS_Entity;
  *
  * @author Andrew Mustun
  */
-class RS_ActionModifyBevel : public RS_PreviewActionInterface {
+class RS_ActionModifyBevel : public LC_UndoableDocumentModificationAction {
     Q_OBJECT
 public:
     RS_ActionModifyBevel(LC_ActionContext *actionContext);
@@ -80,7 +81,8 @@ protected:
     bool doProcessCommand(int status, const QString &command) override;
     void updateMouseButtonHints() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    void doTrigger() override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
 };
 #endif

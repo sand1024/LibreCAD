@@ -30,8 +30,6 @@ class RS_Dimension;
 class LC_ActionCircleDimBase:public RS_ActionDimension {
     Q_OBJECT
 public:
-    LC_ActionCircleDimBase(const char* name, LC_ActionContext *actionContext, RS2::EntityType dimType, RS2::ActionType actionType);
-    ~LC_ActionCircleDimBase() override;
     void updateMouseButtonHints() override;
     QStringList getAvailableCommands() override;
     double getUcsAngleDegrees() const;
@@ -59,6 +57,8 @@ protected:
     bool m_alternateAngle = false;
     double m_currentAngle = 0.0;
 
+    LC_ActionCircleDimBase(const char* name, LC_ActionContext *actionContext, RS2::EntityType dimType, RS2::ActionType actionType);
+    ~LC_ActionCircleDimBase() override;
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;

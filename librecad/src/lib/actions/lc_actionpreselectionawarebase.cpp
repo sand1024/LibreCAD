@@ -144,6 +144,9 @@ void LC_ActionPreSelectionAwareBase::onMouseLeftButtonRelease(int status, LC_Mou
             if (selectEntity(entityToSelect, selectContour)) {
                 proceedSelectedEntity(e);
             }
+            else if (e->isControl) { // completion of selection by click with CTRL
+                onSelectionCompleted(false, false);
+            }
         }
         m_inBoxSelectionMode = false;
         m_selectionCorner1.valid = false;

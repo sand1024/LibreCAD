@@ -241,7 +241,7 @@ void RS_ActionModifyMirror::doPerformTrigger() {
 }
 
 void RS_ActionModifyMirror::updateMouseButtonHintsForSelection() {
-    updateMouseWidgetTRCancel(tr("Select to mirror (Enter to complete)"), MOD_SHIFT_LC(tr("Select contour")));
+    updateMouseWidgetTRCancel(tr("Select to mirror") + getSelectionCompletionHintMsg(), MOD_SHIFT_LC(tr("Select contour")));
 }
 
 void RS_ActionModifyMirror::updateMouseButtonHintsForSelected(int status) {

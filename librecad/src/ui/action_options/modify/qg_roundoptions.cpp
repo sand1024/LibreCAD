@@ -89,12 +89,9 @@ void QG_RoundOptions::setTrimToActionAndView(bool checked) const {
 }
 
 void QG_RoundOptions::setRadiusToActionAndView(const QString &strValue){
-    bool okay = false;
-    double radius = RS_Math::eval(strValue, &okay);
-    if (!okay) {
-        radius = 1.;
+    double radius;
+    if (toDouble(strValue, radius, 0.0, false)){
+        m_action->setRadius(radius);
+        ui->leRadius->setText(fromDouble(radius));
     }
-
-    m_action->setRadius(radius);
-    ui->leRadius->setText(fromDouble(radius));
 }

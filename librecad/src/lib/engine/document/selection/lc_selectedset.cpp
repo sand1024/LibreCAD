@@ -23,6 +23,8 @@
 
 #include "lc_selectedset.h"
 
+#include "rs_entity.h"
+
 LC_SelectedSet::LC_SelectedSet() {}
 
 LC_SelectedSet::~LC_SelectedSet() {
@@ -80,6 +82,40 @@ void LC_SelectedSet::fireSelectionChanged() {
     }
     else{
         m_changedInSilent = true;
+    }
+}
+
+void LC_SelectedSet::cleanup() {
+    if (m_entitiesList.empty()) {
+        return;
+    }
+    QList<RS_Entity*> validEntities;
+    for (const auto e: m_entitiesList) {
+        if (e->isSet(RS2::FlagSelected) && !e->isDeleted() && !e->isLocked()) {
+            validEntities.append(e);
+        }
+    }
+    auto validEntitiesCount = validEntities.count();
+    auto currentEntitiesCount        = m_entitiesList.count();
+    if (validEntitiesCount != currentEntitiesCount) {
+        m_entitiesList.clear();
+        m_entitiesList.append(validEntities);
+        fireSelectionChanged();
+    }
+}
+
+void LC_SelectedSet::collectSelectedEntities(QList<RS_Entity*>& list) {
+    bool cleanupNeeded = false;
+    for (const auto e: m_entitiesList) {
+        if (e->isSet(RS2::FlagSelected) && e->isNotSet(RS2::FlagDeleted)) {
+            list.append(e);
+        }
+        else {
+            cleanupNeeded = true;
+        }
+    }
+    if (cleanupNeeded) {
+        cleanup();
     }
 }
 

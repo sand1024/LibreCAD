@@ -27,6 +27,7 @@
 #ifndef RS_ACTIONLIBRARYINSERT_H
 #define RS_ACTIONLIBRARYINSERT_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_creation.h"
 #include "rs_previewactioninterface.h"
 
@@ -36,14 +37,13 @@
  *
  * @author Andrew Mustun
  */
-class RS_ActionLibraryInsert : public RS_PreviewActionInterface {
+class RS_ActionLibraryInsert : public LC_UndoableDocumentModificationAction {
     Q_OBJECT
 public:
-    RS_ActionLibraryInsert(LC_ActionContext *actionContext);
+    explicit RS_ActionLibraryInsert(LC_ActionContext *actionContext);
     ~RS_ActionLibraryInsert() override;
     void init(int status) override;
     void reset() const;
-    void trigger() override;
     QStringList getAvailableCommands() override;
     void setFile(const QString& file) const;
     double getAngle() const;
@@ -111,6 +111,7 @@ protected:
     void updateMouseButtonHints() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angle) override;
-    RS_Insert* createLibraryInsert(RS_LibraryInsertData& data) const;
+    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
 };
 #endif

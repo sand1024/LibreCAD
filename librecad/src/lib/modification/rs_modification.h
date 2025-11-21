@@ -29,6 +29,7 @@
 #include <memory>
 #include <QString>
 
+#include "lc_copyutils.h"
 #include "rs_pen.h"
 #include "rs_vector.h"
 
@@ -39,6 +40,8 @@ class RS_EntityContainer;
 class RS_MText;
 class RS_Text;
 class RS_Line;
+class RS_Insert;
+class RS_Block;
 class RS_Polyline;
 class RS_Document;
 class RS_Graphic;
@@ -179,7 +182,8 @@ struct LC_TrimResult{
 
 struct LC_BevelResult{
     RS_Line* bevel = nullptr;
-    bool polyline = false;
+    bool isPolyline = false;
+    RS_Polyline* polyline = nullptr;
     RS_Entity* trimmed1 = nullptr;
     RS_Entity* trimmed2 = nullptr;
     bool trimStart1 = false;
@@ -190,7 +194,9 @@ struct LC_BevelResult{
     enum{
         OK,
         ERR_NO_INTERSECTION,
-        ERR_NOT_THE_SAME_POLYLINE
+        ERR_NOT_THE_SAME_POLYLINE,
+        ERR_VISIBILITY,
+        ERR_NOT_LINES
     };
 };
 
@@ -203,18 +209,19 @@ struct LC_ModificationContext {
 };
 
 struct LC_RoundResult{
-    RS_Arc* round = nullptr;
-    bool polyline = false;
-    RS_Entity* trimmed1 = nullptr;
-    RS_Entity* trimmed2 = nullptr;
-    int trim1Mode = false;
-    int trim2Mode = false;
-    RS_Vector trimmingPoint1 = RS_Vector(false);
-    RS_Vector trimmingPoint2 = RS_Vector(false);
+    bool isPolyline             = false;
+    RS_Arc* round               = nullptr;
+    RS_Entity* trimmed1         = nullptr;
+    RS_Entity* trimmed2         = nullptr;
+    RS_Polyline* polyline       = nullptr;
+    int trim1Mode               = false;
+    int trim2Mode               = false;
+    RS_Vector trimmingPoint1    = RS_Vector(false);
+    RS_Vector trimmingPoint2    = RS_Vector(false);
     RS_Vector intersectionPoint = RS_Vector(false);
-    int error = OK;
+    int error                   = OK;
 
-    enum {
+    enum TrimMode {
         TRIM_START,
         TRIM_END,
         TRIM_CIRCLE
@@ -223,8 +230,8 @@ struct LC_RoundResult{
     enum{
         OK,
         ERR_NO_INTERSECTION,
-        ERR_NOT_THE_SAME_POLYLINE,
-        NO_PARALLELS
+        NO_PARALLELS,
+        ERR_INPUT
     };
 };
 
@@ -257,26 +264,13 @@ struct RS_AttributesData {
     bool applyBlockDeep = false;
 };
 
-/**
- * Holds the data needed for pasting.
- */
-struct RS_PasteData {
-        RS_PasteData(RS_Vector insertionPoint,
-                double factor,
-                double angle,
-                bool asInsert,
-				const QString& blockName);
 
-        //! Insertion point.
-        RS_Vector insertionPoint;
-        //! Scale factor.
-        double factor = 1.;
-        //! Rotation angle.
-        double angle = 0.;
-        //! Paste as an insert rather than individual entities.
-        bool asInsert = false;
-        //! Name of the block to create or an empty string to assign a new auto name.
-        QString blockName;
+
+struct LC_LibraryInsertData: LC_CopyUtils::RS_PasteData {
+    LC_LibraryInsertData(RS_Vector insertionPoint, double factor, double angle, const QString& blockName, RS_Graphic* source);
+    //! Name of the block to create or an empty string to assign a new auto name.
+    QString blockName;
+    RS_Graphic* source;
 };
 
 /**
@@ -296,14 +290,11 @@ public:
     RS_Modification(RS_EntityContainer* entityContainer, LC_GraphicViewport* viewport, bool handleUndo = true);
 
     static void revertDirection(QList<RS_Entity*>& originalEntities, LC_DocumentModificationBatch& ctx);
-
+    static void doChangeEntityAttributes(RS_Entity* en, RS_Entity*& clone, const RS_AttributesData& data, QSet<RS_Block*> &blocks);
     static bool changeAttributes(const QList<RS_Entity*>& originalEntities, RS_AttributesData& data, LC_DocumentModificationBatch& ctx);
+    static void doChangeBlockAttributes(RS_Block* block, RS_AttributesData& data, QSet<QString>& processedBlockNames);
 
-    bool changeAttributesOld(RS_AttributesData& data, const QList<RS_Entity*>& entitiesList, bool keepSelected);
-    bool changeAttributesOld(RS_AttributesData& data, const bool keepSelected);
-
-    void copy(const RS_Vector& ref, const bool cut);
-    void paste(const RS_PasteData& data, RS_Graphic* source = nullptr);
+    static void libraryInsert(const LC_LibraryInsertData& data,  RS_Graphic* destination, LC_DocumentModificationBatch& ctx);
 
     static void move(RS_MoveData& data, const QList<RS_Entity*>& entitiesList, bool forPreviewOnly, LC_DocumentModificationBatch& ctx);
 
@@ -317,100 +308,55 @@ public:
 
     static bool rotate2(RS_Rotate2Data& data, const QList<RS_Entity*>& entitiesList, bool forPreviewOnly, LC_DocumentModificationBatch& ctx);
 
-    LC_TrimResult trim(
-        const RS_Vector& trimCoord, RS_AtomicEntity* trimEntity,
-        const RS_Vector& limitCoord, RS_Entity* limitEntity,
-        bool both, bool forPreview = false);
+    static LC_TrimResult trim(const RS_Vector& trimCoord, RS_AtomicEntity* trimEntity, const RS_Vector& limitCoord, RS_Entity* limitEntity, bool both,
+                              LC_DocumentModificationBatch& ctx);
 
-    RS_Entity* trimAmount(const RS_Vector& trimCoord, RS_AtomicEntity* trimEntity,
-                          double dist, bool trimBoth, bool& trimStart, bool& trimEnd) const;
+    static RS_Entity* trimAmount(const RS_Vector& trimCoord, RS_AtomicEntity* entityToTrim, double dist, bool trimBoth, bool& trimStart, bool& trimEnd,
+                          LC_DocumentModificationBatch& ctx);
 
-    bool offset(const RS_OffsetData& data, const QList<RS_Entity*>& entitiesList, bool forPreviewOnly,
-                bool keepSelected);
+    static bool offset(const RS_OffsetData& data, const QList<RS_Entity*>& entitiesList, bool forPreviewOnly, LC_DocumentModificationBatch& ctx);
 
     static bool cut(const RS_Vector& cutCoord, RS_AtomicEntity* cutEntity, LC_DocumentModificationBatch& ctx);
 
-    bool stretch(
-        const RS_Vector& firstCorner,
-        const RS_Vector& secondCorner,
-        const RS_Vector& offset,
-        bool removeOriginals);
-    std::unique_ptr<LC_BevelResult> bevel(
-        const RS_Vector& coord1, RS_AtomicEntity* entity1,
-        const RS_Vector& coord2, RS_AtomicEntity* entity2,
-        RS_BevelData& data, bool previewOnly);
-    std::unique_ptr<LC_RoundResult> round(
-        const RS_Vector& coord,
-        const RS_Vector& coord1,
-        RS_AtomicEntity* entity1,
-        const RS_Vector& coord2,
-        RS_AtomicEntity* entity2,
-        RS_RoundData& data) const;
-    bool explode(const QList<RS_Entity*>& entitiesList, const bool remove = true,
-                 const bool keepSelected = false) const;
+    // FIXME - sand - review & complete
+    static bool stretch(const RS_Vector& firstCorner, const RS_Vector& secondCorner, const RS_Vector& offset, const QList<RS_Entity*>& entitiesList, bool removeOriginals,
+                        LC_DocumentModificationBatch& ctx);
+
+    static LC_BevelResult bevel(const RS_Vector& coord1, RS_AtomicEntity* entity1, const RS_Vector& coord2, RS_AtomicEntity* entity2, RS_BevelData& data,
+                                bool previewOnly, LC_DocumentModificationBatch& ctx);
+
+    static LC_RoundResult round(const RS_Vector& coord, const RS_Vector& coord1, RS_AtomicEntity* entity1, const RS_Vector& coord2, RS_AtomicEntity* entity2,
+                                RS_RoundData& data, LC_DocumentModificationBatch& ctx);
+
+    static bool explode(const QList<RS_Entity*>& entitiesList, bool remove, LC_DocumentModificationBatch& ctx);
 
     static bool explodeTextIntoLetters(const QList<RS_Entity*>& selectedEntitiesList, LC_DocumentModificationBatch& ctx);
 
-    bool splitPolyline(
-        RS_Polyline* polyline,
-        RS_Entity& e1, RS_Vector v1,
-        RS_Entity& e2, RS_Vector v2,
-        RS_Polyline** polyline1,
-        RS_Polyline** polyline2) const;
+    // fixme - review what for this method is used? action is not enabled
+    static bool splitPolyline(RS_Polyline* polyline, RS_Entity& e1, RS_Vector v1, RS_Entity& e2, RS_Vector v2, RS_Polyline** polyline1, RS_Polyline** polyline2, LC_DocumentModificationBatch& ctx);
 
-    RS_Polyline* addPolylineNode(
-        RS_Polyline* polyline,
-        const RS_AtomicEntity& segment,
-        const RS_Vector& node) const;
-    RS_Polyline* deletePolylineNode(
-        RS_Polyline* polyline,
-        const RS_Vector& node, bool createOnly) const;
-    RS_Polyline* deletePolylineNodesBetween(
-        RS_Polyline* polyline,
-        const RS_Vector& node1, const RS_Vector& node2) const;
-    RS_Polyline* polylineTrim(
-        RS_Polyline* polyline,
-        RS_AtomicEntity& segment1,
-        RS_AtomicEntity& segment2,
-        bool createOnly) const;
+    static RS_Polyline* addPolylineNode(RS_Polyline* polyline, const RS_AtomicEntity& segment, const RS_Vector& node, LC_DocumentModificationBatch& ctx);
+    static RS_Polyline* deletePolylineNode(RS_Polyline* polyline, const RS_Vector& node, LC_DocumentModificationBatch& ctx);
+    // fixme - complete!!!
+    static RS_Polyline* deletePolylineNodesBetween(RS_Polyline* polyline, const RS_Vector& node1, const RS_Vector& node2, LC_DocumentModificationBatch& ctx);
+    static RS_Polyline* polylineTrim(RS_Polyline* polyline, RS_AtomicEntity& segment1, RS_AtomicEntity& segment2, LC_DocumentModificationBatch& ctx);
+
     static RS_BoundData getBoundingRect(QList<RS_Entity*>& selected);
-    RS_BoundData getBoundingRect(LC_SelectedSet* selected);
-    // todo - probably it should be located in other utility class..
-    void collectSelectedEntities(QList<RS_Entity*>& entitiesList) const;
-    bool alignRef(LC_AlignRefData& data, const QList<RS_Entity*>& entitiesList, bool forPreviewOnly,
-                  bool keepSelected);
-private:
-    void doCopyEntity(RS_Entity* e, const RS_Vector& ref);
-    void doCopyLayers(RS_Entity* e);
-    void doCopyBlocks(RS_Entity* e);
-    bool pasteLayers(RS_Graphic* source) const;
-    bool pasteContainer(RS_Entity* entity, RS_EntityContainer* containerToPaste, QHash<QString, QString> blocksDict,
-                        RS_Vector insertionPoint);
-    bool pasteEntity(RS_Entity* entity, RS_EntityContainer* containerToPaste) const;
+    static bool alignRef(LC_AlignRefData& data, const QList<RS_Entity*>& entitiesList, bool forPreviewOnly, LC_DocumentModificationBatch& ctx);
 
-    void addNewEntities(const QList<RS_Entity*>& addList, LC_UndoSection& undo,  bool addOnly = false) const;
+private:
+    static bool trimAtomicByEnding(RS_AtomicEntity* atomicToTrim, RS_Vector trimPoint, RS2::Ending ending);
     static bool doExplodeTextIntoLetters(RS_MText* text, LC_DocumentModificationBatch& ctx);
     static bool doExplodeTextIntoLetters(RS_Text* text,  LC_DocumentModificationBatch& ctx);
-    bool changeAttributesOld(RS_AttributesData& data, RS_EntityContainer* container, const bool keepSelected);
 protected:
-    RS_Graphic* graphic = nullptr;
-    RS_Document* m_document = nullptr;
-    LC_GraphicViewport* m_viewport = nullptr;
-    bool m_handleUndo = false;
 
-    void trimEnding(const RS_Vector& trimCoord, RS_AtomicEntity* trimmed1, const RS_Vector& is) const;
+    static void trimEnding(const RS_Vector& trimCoord, RS_AtomicEntity* trimmed1, const RS_Vector& is);
+    static LC_RoundResult::TrimMode roundingTrimEntity(RS_VectorSolutions entitiesIntersection, RS_AtomicEntity*& entityToTrim,
+                               RS_Arc* arc, RS_Vector trimPoint, RS_Vector selectionPoint1, RS_Vector selectionPoint2);
 
-    void deleteOriginalAndAddNewEntities(const QList<RS_Entity*>& clonesList,
-                                         const QList<RS_Entity*>& originalEntities,
-                                         bool addOnly, bool deleteOriginals) const;
-
-    void setupModifiedClones(QList<RS_Entity*>& clonesList, const LC_ModifyOperationFlags& data,
-                             bool forPreviewOnly, bool keepSelected) const;
-
-    void addClonesAndDeleteOriginals(const LC_ModifyOperationFlags& data, const QList<RS_Entity*>& entitiesList, bool forPreviewOnly, bool keepSelected, QList<RS_Entity*> clonesList) const;
 
     static RS_Entity* getClone(bool forPreviewOnly, const RS_Entity* e);
-    void selectClone(RS_Entity* original, RS_Entity* clone) const;
+    static void selectClone(RS_Entity* original, RS_Entity* clone);
 };
 
 #endif

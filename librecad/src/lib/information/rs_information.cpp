@@ -322,7 +322,7 @@ bool RS_Information::isDimension(RS2::EntityType type) {
  * i.e. it is in a graphic or in a polyline.
  */
 bool RS_Information::isTrimmable(RS_Entity *e){
-    if (e){
+    if (e != nullptr){
         if (e->getParent()){
             switch (e->getParent()->rtti()) {
                 case RS2::EntityPolyline:
@@ -333,53 +333,6 @@ bool RS_Information::isTrimmable(RS_Entity *e){
                 default:
                     return false;
             }
-        }
-    }
-
-    return false;
-}
-
-// fixme - return more meaningful information regarding why two entities are not trimmable and show it in UI by action
-/**
- * @retval true the two entities can be trimmed to each other;
- * i.e. they are in a graphic or in the same polyline.
- */
-bool RS_Information::isTrimmable(RS_Entity *e1, RS_Entity *e2){
-    if (e1 && e2){
-        if (e1->getParent() && e2->getParent()){
-            if (e1->getParent()->rtti() == RS2::EntityPolyline &&
-                e2->getParent()->rtti() == RS2::EntityPolyline &&
-                e1->getParent() == e2->getParent()){
-
-                // in the same polyline
-                RS_Polyline* pl = static_cast<RS_Polyline *>(e1->getParent());
-                int idx1 = pl->findEntity(e1);
-                int idx2 = pl->findEntity(e2);
-                int length = pl->count();
-                LC_LOG<<"RS_Information::isTrimmable: "
-                          "idx1: "<<idx1<<" idx2:"<<idx2<<", length: "<<length;
-                bool adjacentSegments = std::abs(idx1 - idx2) == 1;
-                if (adjacentSegments ||
-                    (pl->isClosed() && std::abs(idx1 - idx2) == length - 1)){
-                    // directly following entities
-                    return true;
-                } else {
-                    // not directly following entities
-                    return false;
-                }
-            } else if ((e1->getParent()->rtti() == RS2::EntityContainer ||
-                        e1->getParent()->rtti() == RS2::EntityGraphic ||
-                        e1->getParent()->rtti() == RS2::EntityBlock) &&
-                       (e2->getParent()->rtti() == RS2::EntityContainer ||
-                        e2->getParent()->rtti() == RS2::EntityGraphic ||
-                        e2->getParent()->rtti() == RS2::EntityBlock)){
-
-                // normal entities:
-                return true;
-            }
-        } else {
-            // independent entities with the same parent:
-            return (e1->getParent() == e2->getParent());
         }
     }
 

@@ -104,7 +104,7 @@ void RS_ActionBlocksCreate::onCoordinateEvent(const int status, [[maybe_unused]]
 }
 
 void RS_ActionBlocksCreate::updateMouseButtonHintsForSelection() {
-    updateMouseWidgetTRCancel(tr("Select to create block (Enter to complete)"), MOD_SHIFT_LC(tr("Select contour")));
+    updateMouseWidgetTRCancel(tr("Select to create block") + getSelectionCompletionHintMsg(), MOD_SHIFT_LC(tr("Select contour")));
 }
 
 void RS_ActionBlocksCreate::updateMouseButtonHintsForSelected(const int status) {

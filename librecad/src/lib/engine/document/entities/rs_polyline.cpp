@@ -339,9 +339,7 @@ double RS_Polyline::getClosingBulge() const{
 }
 
 bool RS_Polyline::isClosed() const {
-    // Issue #2360, test coincidence of end points for closed polylines
-    return (count() > 2 && getStartpoint() == getEndpoint())
-        || data.getFlag(RS2::FlagClosed);
+    return data.getFlag(RS2::FlagClosed);
 }
 
 void RS_Polyline::setClosed(bool cl) {
@@ -611,12 +609,12 @@ void RS_Polyline::scale(const RS_Vector& center, const RS_Vector& factor) {
         for (int i = 0; i < count(); ++i) {
             RS_Entity* e = entityAt(i);
             if (e->rtti() == RS2::EntityArc) {
-                RS_Arc* arc = static_cast<RS_Arc*>(e);
+                auto* arc = static_cast<RS_Arc*>(e);
                 RS_Vector majorP(arc->getRadius(), 0.0);
                 RS_EllipseData ed{arc->getCenter(), majorP, 1.0,
                                   arc->getAngle1(), arc->getAngle2(),
                                   arc->isReversed()};
-                RS_Ellipse* ellipse = new RS_Ellipse(this, ed);
+                auto* ellipse = new RS_Ellipse(this, ed);
                 ellipse->setSelected(arc->isSelected());
                 ellipse->setPen(RS_Pen(RS2::FlagInvalid));
                 ellipse->setLayer(nullptr);
@@ -710,7 +708,7 @@ RS_Ellipse* RS_Polyline::convertToEllipse(const std::pair<RS_Arc*, double>& arcP
     RS_EllipseData d{arc->getCenter(), majorP, ratio,
                      arc->getAngle1(), arc->getAngle2(), reversed};
 
-    RS_Ellipse* ellipse = new RS_Ellipse(arc->getParent(), d);
+    auto* ellipse = new RS_Ellipse(arc->getParent(), d);
     ellipse->setSelected(arc->isSelected());
     ellipse->setPen(RS_Pen(RS2::FlagInvalid));
     ellipse->setLayer(nullptr);
@@ -746,7 +744,7 @@ std::pair<RS_Arc*, double> RS_Polyline::convertToArcPair(const RS_Ellipse* ellip
                  ellipse->getAngle1(), ellipse->getAngle2(),
                  ellipse->isReversed());
 
-    RS_Arc* arc = new RS_Arc(ellipse->getParent(), d);
+    auto arc = new RS_Arc(ellipse->getParent(), d);
     arc->setSelected(ellipse->isSelected());
     arc->setPen(RS_Pen(RS2::FlagInvalid));
     arc->setLayer(nullptr);

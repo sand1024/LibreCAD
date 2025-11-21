@@ -56,13 +56,16 @@ RS_ActionModifyOffset::RS_ActionModifyOffset(LC_ActionContext *actionContext)
 RS_ActionModifyOffset::~RS_ActionModifyOffset() = default;
 
 bool RS_ActionModifyOffset::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
-    RS_Modification m(m_document, m_viewport);
-    m.offset(*m_offsetData, m_selectedEntities, false, /*keepSelected*/ false); // fixme - trigger complete
-    return true;
+    return RS_Modification::offset(*m_offsetData, m_selectedEntities, false, ctx);
 }
 
 void RS_ActionModifyOffset::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
-    LC_ActionModifyBase::doTriggerSelectionUpdate(keepSelected, ctx);
+    if (m_offsetData->keepOriginals) {
+        unselect(m_selectedEntities);
+    }
+    if (keepSelected) {
+        select(ctx.entitiesToAdd);
+    }
 }
 
 void RS_ActionModifyOffset::doTriggerCompletion(bool success) {
@@ -74,8 +77,9 @@ void RS_ActionModifyOffset::onMouseMoveEventSelected(int status, LC_MouseEvent *
     switch (status){
         case SetReferencePoint:{
             m_offsetData->coord = getRelZeroAwarePoint(e, mouse);
-            RS_Modification m(m_preview.get(), m_viewport, false);
-            m.offset(*m_offsetData, m_selectedEntities, true, false);
+            LC_DocumentModificationBatch ctx;
+            RS_Modification::offset(*m_offsetData, m_selectedEntities, true, ctx);
+            previewEntitiesToAdd(ctx);
             break;
         }
         case SetPosition:{
@@ -84,9 +88,9 @@ void RS_ActionModifyOffset::onMouseMoveEventSelected(int status, LC_MouseEvent *
             if (!m_distanceIsFixed){
                 m_offsetData->distance = offset.magnitude();
             }
-            RS_Modification m(m_preview.get(), m_viewport, false);
-            m.offset(*m_offsetData, m_selectedEntities, true, false);
-
+            LC_DocumentModificationBatch ctx;
+            RS_Modification::offset(*m_offsetData, m_selectedEntities, true, ctx);
+            previewEntitiesToAdd(ctx);
             if (m_showRefEntitiesOnPreview) {
                 previewRefPoint(m_referencePoint);
                 previewRefSelectablePoint(mouse);
@@ -198,7 +202,8 @@ void RS_ActionModifyOffset::updateMouseButtonHintsForSelected(int status) {
 }
 
 void RS_ActionModifyOffset::updateMouseButtonHintsForSelection() {
-    updateMouseWidgetTRCancel(tr("Select line, polyline, circle or arc to create offset (Enter to complete)"), MOD_SHIFT_AND_CTRL(tr("Select contour"),tr("Offset immediately after selection")));
+    updateMouseWidgetTRCancel(tr("Select line, polyline, circle or arc to create offset") + getSelectionCompletionHintMsg(),
+                              MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Offset immediately after selection")));
 }
 
 LC_ModifyOperationFlags* RS_ActionModifyOffset::getModifyOperationFlags() {

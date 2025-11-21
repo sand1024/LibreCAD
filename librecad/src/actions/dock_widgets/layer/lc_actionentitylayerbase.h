@@ -29,9 +29,8 @@
 class RS_Layer;
 
 class LC_ActionLayerBase: public LC_ActionPreSelectionAwareBase{
-public:
-    LC_ActionLayerBase(const char* name, LC_ActionContext* actionContext, RS2::ActionType actionType);
 protected:
+    LC_ActionLayerBase(const char* name, LC_ActionContext* actionContext, RS2::ActionType actionType);
     void onSelectionCompleted(bool singleEntity, bool fromInit) override;
     bool isAllowTriggerOnEmptySelection() override {return false;};
     virtual void doProceedLayer(RS_Layer* layer);
