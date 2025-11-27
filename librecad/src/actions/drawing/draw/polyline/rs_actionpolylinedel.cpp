@@ -50,7 +50,7 @@ void RS_ActionPolylineDel::drawSnapper() {
     // completely disable snapper for action
 }
 
-bool RS_ActionPolylineDel::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionPolylineDel::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     auto createdPolyline = RS_Modification::deletePolylineNode(m_polylineToModify, m_vertexToDelete, ctx);
     if (createdPolyline != nullptr) {
         createdPolyline->setLayer(m_polylineToModify->getLayer());

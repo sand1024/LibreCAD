@@ -28,7 +28,7 @@
 #ifndef RS_ACTIONDRAWMTEXT_H
 #define RS_ACTIONDRAWMTEXT_H
 
-#include "rs_previewactioninterface.h"
+#include "lc_undoabledocumentmodificationaction.h"
 
 struct RS_MTextData;
 
@@ -37,7 +37,7 @@ struct RS_MTextData;
  *
  * @author Andrew Mustun
  */
-class RS_ActionDrawMText:public LC_UndoablePreviewActionInterface {
+class RS_ActionDrawMText : public LC_SingleEntityCreationAction {
     Q_OBJECT
 public:
     explicit  RS_ActionDrawMText(LC_ActionContext *actionContext);
@@ -72,7 +72,8 @@ protected:
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void updateMouseButtonHints() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    void doTrigger() override;
+    RS_Entity* doTriggerCreateEntity() override;
+    void doTriggerCompletion(bool success) override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) override;
     void setUcsAngle(double ucsRelAngle);
 };

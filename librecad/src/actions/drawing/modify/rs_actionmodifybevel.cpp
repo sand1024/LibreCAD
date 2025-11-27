@@ -70,7 +70,7 @@ void RS_ActionModifyBevel::doInitWithContextEntity(RS_Entity* contextEntity, con
     }
 }
 
-bool RS_ActionModifyBevel::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionModifyBevel::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     if (isAtomic(m_entity1) && isAtomic(m_entity2)) {
         LC_BevelResult bevelResult = m_actionData->bevelResult;
         ctx.setActiveLayerAndPen(false, false);

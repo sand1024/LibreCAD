@@ -83,7 +83,7 @@ protected:
     bool doProcessCommand(int status, const QString &command) override;
     void updateMouseButtonHints() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
 };
 #endif

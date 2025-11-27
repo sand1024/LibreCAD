@@ -68,7 +68,7 @@ void RS_ActionModifyScale::init(int status) {
     LC_ActionPreSelectionAwareBase::init(status);
 }
 
-bool RS_ActionModifyScale::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionModifyScale::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     deletePreview();
     auto scaleData = m_actionData->data;
     if (scaleData.isotropicScaling){

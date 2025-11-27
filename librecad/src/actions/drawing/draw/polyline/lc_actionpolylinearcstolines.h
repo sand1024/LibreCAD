@@ -23,11 +23,12 @@
 #ifndef LC_ACTIONPOLYLINEARCSTOLINES_H
 #define LC_ACTIONPOLYLINEARCSTOLINES_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_previewactioninterface.h"
 
 class RS_Polyline;
 
-class LC_ActionPolylineArcsToLines:public RS_PreviewActionInterface {
+class LC_ActionPolylineArcsToLines:public LC_UndoableDocumentModificationAction {
     Q_OBJECT
 public:
     explicit LC_ActionPolylineArcsToLines(LC_ActionContext *actionContext);
@@ -47,6 +48,7 @@ protected:
     void setPolylineToModify(RS_Entity* entity);
     RS_Polyline *createPolyline(RS_Polyline *pPolyline) const;
     bool hasArcsSegments(RS_Polyline *p);
-    void doTrigger() override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
 };
 #endif // LC_ACTIONPOLYLINEARCSTOLINES_H

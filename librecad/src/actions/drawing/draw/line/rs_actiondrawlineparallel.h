@@ -68,7 +68,7 @@ private:
 protected:
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
-    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
 private:
     RS2::CursorType doGetMouseCursor(int status) override;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;

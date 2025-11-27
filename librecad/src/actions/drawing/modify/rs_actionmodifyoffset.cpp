@@ -34,8 +34,7 @@
 
 RS_ActionModifyOffset::RS_ActionModifyOffset(LC_ActionContext *actionContext)
     :LC_ActionModifyBase("Modify Offset", actionContext,RS2::ActionModifyOffset,
-                         {RS2::EntityArc, RS2::EntityCircle, RS2::EntityLine, RS2::EntityPolyline},
-                         true)
+                         {RS2::EntityArc, RS2::EntityCircle, RS2::EntityLine, RS2::EntityPolyline})
     , m_offsetData(new RS_OffsetData()){
 
     m_offsetData->distance = 0.;
@@ -55,7 +54,7 @@ RS_ActionModifyOffset::RS_ActionModifyOffset(LC_ActionContext *actionContext)
 
 RS_ActionModifyOffset::~RS_ActionModifyOffset() = default;
 
-bool RS_ActionModifyOffset::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionModifyOffset::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     return RS_Modification::offset(*m_offsetData, m_selectedEntities, false, ctx);
 }
 

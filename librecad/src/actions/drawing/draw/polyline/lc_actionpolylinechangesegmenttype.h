@@ -23,11 +23,12 @@
 #ifndef LC_ACTIONPOLYLINECHANGESEGMENTTYPE_H
 #define LC_ACTIONPOLYLINECHANGESEGMENTTYPE_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_previewactioninterface.h"
 
 class RS_Polyline;
 
-class LC_ActionPolylineChangeSegmentType : public RS_PreviewActionInterface {
+class LC_ActionPolylineChangeSegmentType : public LC_UndoableDocumentModificationAction {
     Q_OBJECT
 public:
     explicit LC_ActionPolylineChangeSegmentType(LC_ActionContext* actionContext);
@@ -52,7 +53,8 @@ protected:
     RS_Polyline* createModifiedPolyline() const;
     void setPolylineToModify(RS_Entity* entity);
     void onCoordinateEvent(int status, bool isZero, const RS_Vector& pos) override;
-    void doTrigger() override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
 };
 
 #endif // LC_ACTIONPOLYLINECHANGESEGMENTTYPE_H

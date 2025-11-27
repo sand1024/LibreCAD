@@ -131,13 +131,12 @@ protected:
     LC_ActionOptionsWidget* createOptionsWidget() override;
     void doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
     void doOnLeftMouseButtonRelease(LC_MouseEvent *e, int status, const RS_Vector &snapPoint) override;
-    void doPrepareTriggerEntities(QList<RS_Entity *> &list) override;
+    bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx) override;
     RS_Vector doGetRelativeZeroAfterTrigger() override;
     void doAfterTrigger() override;
     RS2::CursorType doGetMouseCursor(int status) override;
     bool doCheckMayDrawPreview(LC_MouseEvent *event, int status) override;
     bool doCheckMayTrigger() override;
-    void performTriggerDeletions() override;
     void divideOriginalLine(TickData *pData, QList<RS_Entity *> &list) const;
     bool isSetActivePenAndLayerOnTrigger() override;
     void doFinish(bool updateTB) override;

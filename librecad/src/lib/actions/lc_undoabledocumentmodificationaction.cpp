@@ -24,64 +24,21 @@
 
 #include "lc_undoabledocumentmodificationaction.h"
 
+#include "lc_undosection.h"
 #include "rs_graphic.h"
-#include "rs_insert.h"
-#include "rs_layer.h"
 #include "rs_preview.h"
 
 void LC_UndoableDocumentModificationAction::doTrigger() {
-    bool success  = triggerModifyDocumentContent();
-    doTriggerCompletion(success);
-}
-
-bool LC_UndoableDocumentModificationAction::triggerModifyDocumentContent() {
-    LC_DocumentModificationBatch ctx;
-    prepareDocumentModificationContext(ctx);
-    bool success = doTriggerModificationsPrepare(ctx);
-    ctx.success = success;
-    if (success) {
-        if (!ctx.entitiesToAdd.isEmpty()) {
-            setupAndUndoableAdd(ctx);   // FIXME - WHAT IF THE THE LAYER IS LOCKED???
-        }
-
-        if (!ctx.entitiesToDelete.isEmpty()) {
-            for (const auto e: ctx.entitiesToDelete) {
-                auto layer = e->getLayer(true);
-                if (!layer->isLocked()) {   // FIXME - review this logic. We can't let removing from locked layer, yet how to inform the user????
-                    undoableDeleteEntity(e);
-                }
-            }
-        }
-    }
-    clearDocumentModificationContext(ctx);
-    return success;
-}
-
-void LC_UndoableDocumentModificationAction::clearDocumentModificationContext(LC_DocumentModificationBatch& ctx) {
-    ctx.entitiesToAdd.clear();
-    ctx.entitiesToDelete.clear();
-}
-
-void LC_UndoableDocumentModificationAction::setupAndUndoableAdd(const QList<RS_Entity*>& entitiesToInsert, bool setActiveLayer, bool setActivePen) {
-    RS_Layer *activeLayer = setActiveLayer ? m_graphic->getActiveLayer() : nullptr;
-    RS_Pen activePen      = setActivePen ? m_graphic->getActivePen() : RS_Pen();
-    for (auto ent: entitiesToInsert) {
-        undoableAdd(ent);
-        if (setActiveLayer) {
-            ent->setLayer(activeLayer);
-        }
-        if (setActivePen){
-            ent->setPen(activePen);
-        }
-        auto rtti = ent->rtti();
-        if (rtti == RS2::EntityInsert || RS2::isDimensionalEntity(rtti)) { // fixme - sand - review and check, to ensure that this is performed only once during trigger!!!! (DIMS, etc)
-            static_cast<RS_Insert*>(ent)->update();
-        }
-    }
-}
-
-void LC_UndoableDocumentModificationAction::setupAndUndoableAdd(LC_DocumentModificationBatch &ctx) {
-    setupAndUndoableAdd(ctx.entitiesToAdd, ctx.m_setActiveLayer, ctx.m_setActivePen);
+    LC_UndoSection undoSection(m_document, m_viewport);
+    bool result = undoSection.undoableExecute([this](LC_DocumentModificationBatch& ctx)->bool {
+       bool success = doTriggerModifications(ctx);
+       ctx.success = success;
+       return success;
+    },
+    [this](LC_DocumentModificationBatch& ctx, [[maybe_unused]]RS_Document* doc)->void {
+        doTriggerSelections(ctx);
+    });
+    doTriggerCompletion(result);
 }
 
 void LC_UndoableDocumentModificationAction::previewEntitiesToAdd(LC_DocumentModificationBatch &ctx) const {
@@ -97,7 +54,7 @@ void LC_UndoableDocumentModificationAction::previewEntitiesToAdd(LC_DocumentModi
     }
 }
 
-bool LC_SingleEntityCreationAction::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool LC_SingleEntityCreationAction::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     RS_Entity* e = doTriggerCreateEntity();
     if (e == nullptr) {
         return false;

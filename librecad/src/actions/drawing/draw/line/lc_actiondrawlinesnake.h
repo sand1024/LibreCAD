@@ -49,7 +49,7 @@ protected:
     void doBack(LC_MouseEvent *pEvent, int status) override;
     bool isStartPointValid() const override;
     void doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
-    void doPrepareTriggerEntities(QList<RS_Entity *> &list) override;
+    bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx)  override;
     RS_Vector doGetRelativeZeroAfterTrigger() override;
     void doSetStartPoint(RS_Vector vector) override;
     bool doCheckMayDrawPreview(LC_MouseEvent *pEvent, int status) override;

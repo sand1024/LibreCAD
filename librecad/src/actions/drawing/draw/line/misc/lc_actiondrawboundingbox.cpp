@@ -47,7 +47,7 @@ void LC_ActionDrawBoundingBox::updateMouseButtonHintsForSelection() {
                               MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Select and draw")));
 }
 
-bool LC_ActionDrawBoundingBox::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool LC_ActionDrawBoundingBox::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     if (m_selectionAsGroup) {
         RS_Vector selectionMin;
         RS_Vector selectionMax;

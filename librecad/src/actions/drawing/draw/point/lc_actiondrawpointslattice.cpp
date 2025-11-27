@@ -21,6 +21,8 @@
  ******************************************************************************/
 #include "lc_actiondrawpointslattice.h"
 
+#include <boost/geometry/algorithms/buffer.hpp>
+
 #include "lc_linemath.h"
 #include "lc_pointslatticeoptions.h"
 #include "rs_graphic.h"
@@ -31,27 +33,24 @@
 class RS_Layer;
 
 LC_ActionDrawPointsLattice::LC_ActionDrawPointsLattice(LC_ActionContext *actionContext)
-    :LC_UndoablePreviewActionInterface("Points Lattice", actionContext,RS2::ActionDrawPointsLattice) {
+    : LC_UndoableDocumentModificationAction("Points Lattice", actionContext, RS2::ActionDrawPointsLattice), m_majorStatus(0) {
 }
 
-void LC_ActionDrawPointsLattice::doTrigger() {
+bool LC_ActionDrawPointsLattice::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     QVector<RS_Vector> pointsToCreate;
     createPointsLattice(m_point4, pointsToCreate);
 
     const qsizetype pointsCount = pointsToCreate.size();
     if (pointsCount > 0) {
-        RS_Layer *layerToSet  = m_graphicView->getGraphic()->getActiveLayer();
-        const RS_Pen penToUse = m_graphicView->getGraphic()->getActivePen();
-
         for (unsigned i = 0; i < pointsCount; i++) {
             auto *point = new RS_Point(m_document, pointsToCreate.at(i));
-            point->setLayer(layerToSet);
-            point->setPen(penToUse);
-            point->setParent(m_document);
-            undoableAdd(point);
+            ctx += point;
         }
     }
+    return true;
+}
 
+void LC_ActionDrawPointsLattice::doTriggerCompletion(bool success) {
     setStatus(SetPoint1);
 }
 

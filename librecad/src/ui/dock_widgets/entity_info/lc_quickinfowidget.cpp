@@ -27,6 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <QStandardItemModel>
 
 #include "lc_actioncontext.h"
+#include "lc_undosection.h"
 #include "qc_applicationwindow.h"
 #if defined(Q_OS_LINUX)
 #include <QThread>
@@ -698,29 +699,31 @@ void LC_QuickInfoWidget::onEditEntityProperties(){
         RS_Entity *en = findEntityById(entityId);
         if (en != nullptr){
             // entity found, do editing
-            std::unique_ptr<RS_Entity> clonePtr{en->clone()};
-            en->setSelected(true); // fixme - selection - why selected?
+            RS_Entity* clone = en->clone();
 
-            RS_Entity* clone = clonePtr.get(); // fixme - Selection - RESTORE AND REWORK TO THE ACTION!!! DialogFactory does not work!!!
-            if (RS_DIALOGFACTORY->requestModifyEntityDialog(clone, m_graphicView->getViewPort())){
+            bool selected = en->isSelected();
+            en->setSelectionFlag(true);
+
+            auto viewport    = m_graphicView->getViewPort();
+            if (RS_DIALOGFACTORY->requestModifyEntityDialog(clone, viewport)){
                 // properties changed, do edit
-
-
                 // update widget view
                 processEntity(clone);
-                en->setSelected(false); // fixme - selection why selected
 
-                m_document->startUndoCycle();
-                clone->clearSelectionFlag();
-                m_document->undoableDelete(en);
-                m_document->undoableAdd(clone);
-                m_document->endUndoCycle();
-
-                clonePtr.release();
-
+                LC_UndoSection undo(m_document, viewport);
+                undo.undoableExecute([this, en, clone](LC_DocumentModificationBatch& ctx)->bool {
+                    clone->clearSelectionFlag();
+                    ctx-=en;
+                    ctx+= clone;
+                    return true;
+                });
                 auto selectionInfo = m_document->getSelectionInfo();
                 LC_ActionContext* ctx =  QC_ApplicationWindow::getAppWindow().get()->getActionContext();
                 ctx->updateSelectionWidget(selectionInfo.count, selectionInfo.length); // fixme - selection - notify via listener?
+            }
+            else {
+                delete clone;
+                en->setSelectionFlag(selected);
             }
         }
         else{ // entity not found, cleanup

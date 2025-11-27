@@ -23,7 +23,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef LC_ABSTRACTACTIONWITHPREVIEW_H
 #define LC_ABSTRACTACTIONWITHPREVIEW_H
 
-#include "rs_previewactioninterface.h"
+#include "lc_undoabledocumentmodificationaction.h"
+
 #include "rs_vector.h"
 
 class RS_Line;
@@ -34,11 +35,11 @@ class RS_Polyline;
  * Utility base class for actions. It includes some basic logic and utilities, that simplifies creation of specific actions
  * and reduces repetitive code, as well as defines generic workflow for various action methods processing.
  */
-class LC_AbstractActionWithPreview :public RS_PreviewActionInterface{
+class LC_AbstractActionWithPreview :public LC_UndoableDocumentModificationAction{
    Q_OBJECT
 public:
     LC_AbstractActionWithPreview(const char *name, LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone);
-   // inherited methods with basic template method implementation
+      // inherited methods with basic template method implementation
     void init(int status) override;
     void finish(bool updateTB) override;
     void updateMouseButtonHints() override;
@@ -132,7 +133,6 @@ protected:
 
     virtual bool onMouseMove([[maybe_unused]]LC_MouseEvent *e, RS_Vector snap, int status);
     virtual void doPreparePreviewEntities([[maybe_unused]]LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status);
-    virtual bool doCheckMayTrigger();
     virtual void doAfterTrigger();
     RS2::CursorType doGetMouseCursor(int status) override;
     virtual RS_Vector doGetRelativeZeroAfterTrigger();
@@ -140,23 +140,21 @@ protected:
     virtual void doInitialSnapToRelativeZero(RS_Vector relZero);
     virtual void doMouseMoveEnd(int status, [[maybe_unused]]LC_MouseEvent *e);
     virtual void doMouseMoveStart(int status, LC_MouseEvent *pEvent);
-    virtual void doPrepareTriggerEntities(QList<RS_Entity *> &list);
+    virtual bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx);
 
     // additional setup methods, that may be overridden if necessary
 
     // additional triggering action support
     virtual bool isSetActivePenAndLayerOnTrigger();
-    virtual void performTrigger();
-    virtual void performTriggerInsertions();
-    virtual void performTriggerDeletions();
+
     virtual void finishAction();
 
     // trigger on init support (for selected entities)
     virtual bool doCheckMayTriggerOnInit(int status);
     virtual bool isAcceptSelectedEntityToTriggerOnInit(RS_Entity *pEntity);
     virtual void doCreateEntitiesOnTrigger(RS_Entity *entity, QList<RS_Entity *> &list);
-    virtual void performTriggerOnInit(QList<RS_Entity*>  entities);
-    virtual void doPerformOriginalEntitiesDeletionOnInitTrigger(QList<RS_Entity *> &list);
+    virtual bool performTriggerOnInit(QList<RS_Entity*>  entities, LC_DocumentModificationBatch & ctx);
+    virtual void doPerformOriginalEntitiesDeletionOnInitTrigger(QList<RS_Entity *> &list, LC_DocumentModificationBatch & ctx);
     virtual void collectEntitiesForTriggerOnInit(QList<RS_Entity*> &selectedEntities, QList<RS_Entity*> &entitiesForTrigger);
 
     // utility functions
@@ -182,7 +180,6 @@ protected:
     void restoreSnapMode();
     void setFreeSnap();
     void setGlobalSnapMode(const RS_SnapMode &mode);
-    void setupAndAddTriggerEntities(const QList<RS_Entity *> &entities);
     virtual bool isUnselectEntitiesOnInitTrigger();
     void applyPenAndLayerBySourceEntity(const RS_Entity *source, RS_Entity *target, int penMode, int layerMode) const;
     bool checkMayExpandEntity(const RS_Entity *e, const QString &entityName) const;
@@ -198,9 +195,10 @@ protected:
     void createRefSelectablePoint(const RS_Vector &coord, QList<RS_Entity *> &list) const;
     static bool isMouseMove(LC_MouseEvent* e);
     void createRefArc(const RS_ArcData &data, QList<RS_Entity *> &list) const;
-    void doTrigger() override;
-    bool isTriggerUndoable() override {return true;}
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+   bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
+   void doTriggerCompletion(bool success) override;
+   void doTriggerSelections(const LC_DocumentModificationBatch& ctx) override;
+   void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
 };

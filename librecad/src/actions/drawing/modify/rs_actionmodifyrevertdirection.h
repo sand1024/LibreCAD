@@ -39,7 +39,7 @@ Q_OBJECT
 public:
     explicit RS_ActionModifyRevertDirection(LC_ActionContext *actionContext);
 protected:
-    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
     void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
     void doTriggerCompletion(bool success) override;
     void updateMouseButtonHintsForSelection() override;

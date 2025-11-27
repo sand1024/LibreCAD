@@ -64,6 +64,6 @@ protected:
 
     void doTriggerCompletion(bool success) override;
     void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
-    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& modificationData) override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& modificationData) override;
 };
 #endif

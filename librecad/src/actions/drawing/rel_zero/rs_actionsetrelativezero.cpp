@@ -27,6 +27,7 @@
 #include "rs_actionsetrelativezero.h"
 
 #include "lc_graphicviewport.h"
+#include "lc_undosection.h"
 #include "rs_document.h"
 
 RS_ActionSetRelativeZero::RS_ActionSetRelativeZero(LC_ActionContext *actionContext)
@@ -41,12 +42,11 @@ void RS_ActionSetRelativeZero::trigger(){
     if (m_position->valid) {
         m_viewport->lockRelativeZero(false);
         moveRelativeZero(*m_position);
-        undoCycleStart();
         RS_Undoable *relativeZeroUndoable = m_viewport->getRelativeZeroUndoable();
         if (relativeZeroUndoable != nullptr) {
-            m_document->addUndoable(relativeZeroUndoable);
+            LC_UndoSection undo(m_document, m_viewport);
+            undo.addUndoable(relativeZeroUndoable);
         }
-        undoCycleEnd();
         m_viewport->lockRelativeZero(wasLocked);
     }
     finish(false);

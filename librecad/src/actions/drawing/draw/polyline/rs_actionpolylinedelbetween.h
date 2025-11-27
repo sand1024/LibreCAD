@@ -50,7 +50,7 @@ protected:
     void setPolylineToModify(RS_Entity* en);
     void collectEntitiesToRemove(RS_Vector vector, RS_Vector vector1, QList<RS_Entity *> &list) const;
     void updateMouseButtonHints() override;
-    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
     void doTriggerCompletion(bool success) override;
 };
 

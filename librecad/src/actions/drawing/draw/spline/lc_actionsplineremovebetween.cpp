@@ -34,7 +34,7 @@ LC_ActionSplineRemoveBetween::LC_ActionSplineRemoveBetween(LC_ActionContext *act
     :LC_ActionSplineModifyBase("SplineRemovePointTwo", actionContext, RS2::ActionDrawSplinePointDelTwo) {
 }
 
-void LC_ActionSplineRemoveBetween::doCompleteTrigger() {
+void LC_ActionSplineRemoveBetween::doTriggerOther() {
     m_directionFromStart = false;
 }
 

@@ -44,7 +44,7 @@ LC_ModifyOperationFlags* LC_ActionModifyMoveAdjust::getModifyOperationFlags() {
     return &m_moveData;
 }
 
-bool LC_ActionModifyMoveAdjust::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool LC_ActionModifyMoveAdjust::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     m_moveData.offset = calculateOffset();
     m_moveData.keepOriginals = false;
 

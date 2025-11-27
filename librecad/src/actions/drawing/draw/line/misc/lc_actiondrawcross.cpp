@@ -124,10 +124,11 @@ RS2::LineType LC_ActionDrawCross::getLineTypeForCenterLine() const{
 
 /**
  * Creates entities (2 lines) that will added as result of trigger to the drawing
- * @param list
  */
-void LC_ActionDrawCross::doPrepareTriggerEntities(QList<RS_Entity *> &list){
-    doCreateEntitiesOnTrigger(m_entity, list);
+
+bool LC_ActionDrawCross::doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx) {
+    doCreateEntitiesOnTrigger(m_entity, ctx.entitiesToAdd);
+    return true;
 }
 
 /**

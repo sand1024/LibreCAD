@@ -315,7 +315,7 @@ bool slotFileExport(RS_Graphic* graphic, const QString& name,
     viewport.setSize(size.width(), size.height());
     viewport.setBorders(borders.width(), borders.height(), borders.width(), borders.height());
 
-    viewport.setContainer(graphic);
+    viewport.setDocument(graphic);
     viewport.loadSettings();
     viewport.zoomAuto(false);
 

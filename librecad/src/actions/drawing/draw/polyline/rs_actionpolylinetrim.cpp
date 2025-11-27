@@ -48,7 +48,7 @@ void RS_ActionPolylineTrim::doInitWithContextEntity(RS_Entity* contextEntity, [[
     setPolylineToModify(contextEntity);
 }
 
-bool RS_ActionPolylineTrim::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionPolylineTrim::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     auto newPolyline = RS_Modification::polylineTrim(m_polylineToModify, *m_segment1, *m_segment2, ctx);
     if (newPolyline != nullptr){
         newPolyline->setLayer(m_polylineToModify->getLayer(false));

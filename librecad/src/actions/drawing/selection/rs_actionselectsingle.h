@@ -60,7 +60,7 @@ protected:
     void selectionFinishedByKey(QKeyEvent *e, bool escape) override;
     void doSelectEntity(RS_Entity *entityToSelect, bool selectContour) const override;
     void updateMouseButtonHints() override;
-    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& modificationData) override{return true;}
+    bool doTriggerModifications(LC_DocumentModificationBatch& modificationData) override{return true;}
 };
 
 #endif

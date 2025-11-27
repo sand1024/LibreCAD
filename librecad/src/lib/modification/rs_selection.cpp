@@ -158,7 +158,7 @@ void RS_Selection::selectAll(bool select) {
                         e->clearSelectionFlag();
                     }
                 }
-                doc->getSelectedSet()->clear();
+                doc->getSelection()->clear();
             }
         });
     }
@@ -166,7 +166,7 @@ void RS_Selection::selectAll(bool select) {
 
 void RS_Selection::performBulkSelection(FunBulkSelection fun) const {
     auto doc         = m_document->getDocument();
-    auto selectedSet = doc->getSelectedSet();
+    auto selectedSet = doc->getSelection();
     selectedSet->disableListeners();
 
     fun(m_document, m_viewPort, doc);
@@ -419,7 +419,7 @@ void RS_Selection::selectLayer(const QString& layerName, bool select) {
 // fixme - rework, use setSelected? At least, fix the selection state issue
 void RS_Selection::conditionalSelection(RS_Document* doc, const LC_SelectionOptions& options, const LC_SelectionPredicate& predicate, std::list<RS_Entity>& selectedEntities) {
     QList<RS_Entity*> newEntitiesSet;
-    auto selectedSet             = doc->getSelectedSet();
+    auto selectedSet             = doc->getSelection();
     bool includeIntoSelectionSet = options.m_includeIntoSelectionSet;
     bool excludeFromSelectionSet = !options.m_includeIntoSelectionSet;
     if (options.m_applyArea == LC_SelectionOptions::Document) {
@@ -477,7 +477,7 @@ void RS_Selection::conditionalSelection(RS_Document* doc, const LC_SelectionOpti
 void RS_Selection::countSelectedEntities(QMap<RS2::EntityType, int>& entityTypeMaps) const {
     if (m_viewPort != nullptr) {
         auto doc         = m_document->getDocument();
-        auto selectedSet = doc->getSelectedSet();
+        auto selectedSet = doc->getSelection();
         for (auto e : *selectedSet) {
             if (e != nullptr && e->isVisible()) {
                 if (e->getFlag(RS2::FlagSelected)) {

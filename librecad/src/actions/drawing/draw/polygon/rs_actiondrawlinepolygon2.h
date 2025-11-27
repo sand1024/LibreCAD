@@ -37,13 +37,9 @@
 class RS_ActionDrawLinePolygonCorCor:public LC_ActionDrawLinePolygonBase {
     Q_OBJECT
 public:
-    RS_ActionDrawLinePolygonCorCor(LC_ActionContext *actionContext);
+    explicit RS_ActionDrawLinePolygonCorCor(LC_ActionContext *actionContext);
     ~RS_ActionDrawLinePolygonCorCor() override;
 protected:
- /* Status
-    SetPoint1 - Setting corner.
-    SetPoint2 - Setting corner.
-  */
     RS_Vector determinePolygonCenter(const RS_Vector &mouse) const;
     QString getPoint1Hint() const override;
     QString getPoint2Hint() const override;

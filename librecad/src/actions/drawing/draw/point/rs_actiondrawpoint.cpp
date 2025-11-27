@@ -30,17 +30,22 @@
 #include "rs_point.h"
 
 RS_ActionDrawPoint::RS_ActionDrawPoint(LC_ActionContext *actionContext)
-    :LC_UndoablePreviewActionInterface("Draw Points",actionContext, RS2::ActionDrawPoint), m_pointPosition(new RS_Vector{}){
+    :LC_SingleEntityCreationAction("Draw Points",actionContext, RS2::ActionDrawPoint), m_pointPosition(new RS_Vector{}){
 }
 
 RS_ActionDrawPoint::~RS_ActionDrawPoint() = default;
 
-void RS_ActionDrawPoint::doTrigger() {
-    if (m_pointPosition->valid){
+
+RS_Entity* RS_ActionDrawPoint::doTriggerCreateEntity() {
+    if (m_pointPosition->valid) {
         auto *point = new RS_Point(m_document, RS_PointData(*m_pointPosition));
-        moveRelativeZero(*m_pointPosition);
-        undoableAdd(point);
+        return point;
     }
+    return nullptr;
+}
+
+void RS_ActionDrawPoint::doTriggerCompletion(bool success) {
+    moveRelativeZero(*m_pointPosition);
 }
 
 RS_Vector RS_ActionDrawPoint::getFreeSnapAwarePointAlt(const LC_MouseEvent *e, const RS_Vector &pos) const{

@@ -170,7 +170,7 @@ void QG_SelectionWidget::setGraphicView(RS_GraphicView* gview) {
     }
     else {
         auto doc = gview->getDocument();
-        const RS_EntityContainer::LC_SelectionInfo &info = doc->getSelectionInfo();
+        const RS_Document::LC_SelectionInfo &info = doc->getSelectionInfo();
         setNumber(info.count);
         setTotalLength(info.length);
     }

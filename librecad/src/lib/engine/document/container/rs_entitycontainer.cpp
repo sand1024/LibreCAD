@@ -506,64 +506,8 @@ unsigned int RS_EntityContainer::countDeep() const {
     return c;
 }
 
-/**
- * Counts the selected entities in this container.
- */
-[[deprecated]]
-unsigned RS_EntityContainer::countSelected(bool deep, QList<RS2::EntityType> const &types) {
-    unsigned count = 0;
-    std::set<RS2::EntityType> type{types.cbegin(), types.cend()};
 
-    for (RS_Entity *entity: *this) {
-        if (entity->isSelected()) {
-            if (!types.size() || type.count(entity->rtti())) {
-                count++;
-            }
-        }
-        if (entity->isContainer()) {
-            count += dynamic_cast<RS_EntityContainer *>(entity)->countSelected(deep); // fixme - hm... - what about entity types there? and deep flag?
-        }
-    }
-    return count;
-}
 
-void RS_EntityContainer::collectSelected(QList<RS_Entity*> &collect, bool deep, QList<RS2::EntityType> const &types) {
-    std::set<RS2::EntityType> type{types.cbegin(), types.cend()};
-    for (RS_Entity *e: m_entities) {
-        if (e != nullptr) {
-            if (e->isSelected()) { // fixme - rework!!!
-                if (types.empty() || type.count(e->rtti())) {
-                    collect.push_back(e);
-                }
-                if (deep && e->isContainer()) {
-                    auto *container = dynamic_cast<RS_EntityContainer *>(e);
-                    container->collectSelected(collect, false); // todo - check whether we need deep and types?
-                }
-            }
-        }
-    }
-}
-// fixme - sand - avoid usage in actions as it enumerates all entities. Rework or rely on entities list!!!!
-[[deprecated]]
-RS_EntityContainer::LC_SelectionInfo RS_EntityContainer::getSelectionInfo(/*bool deep, */const QList<RS2::EntityType> &types) {
-    LC_SelectionInfo result;
-    std::set<RS2::EntityType> type{types.cbegin(), types.cend()};
-    for (RS_Entity *e: *this) { // rework to use document selection
-        if (e != nullptr) {
-            if (e->isSelected()) {
-                if (types.empty() || type.count(e->rtti())) {
-                    result.count ++;
-                    double entityLength = e->getLength();
-                    if (entityLength >= 0.) {
-                        result.length += entityLength;
-                    }
-                }
-            }
-        }
-    }
-
-    return result;
-}
 
 // fixme - sand - avoid usage in actions as it enumerates all entities. Rework or rely on entities list!!!!
 /**
@@ -571,7 +515,7 @@ RS_EntityContainer::LC_SelectionInfo RS_EntityContainer::getSelectionInfo(/*bool
  */
 double RS_EntityContainer::totalSelectedLength() {
     double ret(0.0);
-    for (RS_Entity *e: *this) {
+    for (RS_Entity *e: *this) {  // fixme - SELECTION - selection collection!
         if (e->isVisible() && e->isSelected()) {
             double l = e->getLength();
             if (l >= 0.) {
@@ -1403,7 +1347,7 @@ RS_EntityContainer::RefInfo RS_EntityContainer::getNearestSelectedRefInfo(const 
     RS_Entity *closestPointEntity = nullptr;
 
     for (RS_Entity* en: *this) { // fixme - sand - iteration of ver all entities
-        if (en->isVisible() && en->isSelected() && !en->isParentSelected()) {
+        if (en->isVisible() && en->isSelected() && !en->isParentSelected()) {  // fixme - SELECTION - selection collection!
             double curDist = 0.;                 // currently measured distance
             RS_Vector point = en->getNearestSelectedRef(coord, &curDist);
             if (point.valid && curDist < minDist) {

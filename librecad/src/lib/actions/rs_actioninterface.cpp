@@ -32,6 +32,7 @@
 #include "lc_actionoptionswidget.h"
 #include "lc_cursoroverlayinfo.h"
 #include "lc_graphicviewport.h"
+#include "lc_undosection.h"
 #include "rs_commandevent.h"
 #include "rs_commands.h"
 #include "rs_coordinateevent.h"
@@ -86,7 +87,7 @@ RS_ActionInterface::RS_ActionInterface(const char *name,
 }
 
 RS_ActionInterface::~RS_ActionInterface(){
-        if (m_optionWidget != nullptr){
+    if (m_optionWidget != nullptr) {
         m_optionWidget->deleteLater();
         m_optionWidget.release();
         m_optionWidget.reset();
@@ -114,7 +115,7 @@ void RS_ActionInterface::unselect(QList<RS_Entity*> list) const {
     }
 }
 
-void RS_ActionInterface::unselectAll() const { // fixme - review and check where it's invoked - in trigger or not. That's related to selection notification listeners invocations!!!!
+void RS_ActionInterface::unselectAll() const {
     RS_Selection::unselectAllInDocument(m_document, m_viewport);
 }
 
@@ -562,7 +563,7 @@ int RS_ActionInterface::getGraphicVariableInt(const QString& key, int def) const
 }
 
 void RS_ActionInterface::updateSelectionWidget() const{
-    const RS_EntityContainer::LC_SelectionInfo &info = m_document->getSelectionInfo();
+    const RS_Document::LC_SelectionInfo &info = m_document->getSelectionInfo();
     updateSelectionWidget(info.count, info.length);
 }
 
@@ -725,66 +726,15 @@ void RS_ActionInterface::initPrevious(int stat) {
     init(stat - 1);
 }
 
-bool RS_ActionInterface::undoCycleAdd(RS_Entity *e, bool addToContainer) const{
-    // upd. undo list:
-    if (m_document){
-        undoCycleStart();
-        undoableAdd(e, addToContainer);
-        undoCycleEnd();
-        return true;
-    }
-    return false;
-}
+ void RS_ActionInterface::undoCycleReplace(RS_Entity *entityToReplace, RS_Entity *entityReplacing) const {
+     LC_UndoSection undo(m_document, m_viewport);
+     undo.undoableExecute([entityToReplace, entityReplacing](LC_DocumentModificationBatch& ctx)->bool {
+         ctx += entityReplacing;
+         ctx -= entityToReplace;
+         return true;
+     });
+ }
 
-void RS_ActionInterface::undoableAdd(RS_Entity *e, bool addToContainer) const{
-    if (addToContainer){
-        m_document->addEntity(e);
-    }
-    m_document->addUndoable(e);
-}
-
-void RS_ActionInterface::undoableAddWithCurrentAttributes(RS_Entity *e) const {
-    e->setPenAndLayerToActive();
-    m_document->addEntity(e);
-    m_document->addUndoable(e);
-}
-
-/**
- * Just utility method for deleting given entity from drawing - should be called within undo cycle
- * @param entity entity to delete
- */
-void RS_ActionInterface::undoableDeleteEntity(RS_Entity *entity) const {
-    m_document->undoableDelete(entity);
-}
-
-void RS_ActionInterface::undoableDeleteEntitiesList(QList<RS_Entity*> &entitiesList) const {
-    for (auto entity: entitiesList) {
-        m_document->undoableDelete(entity);
-    }
-}
-
-void RS_ActionInterface::undoCycleReplace(RS_Entity *entityToReplace, RS_Entity *entityReplacing) const {
-    undoCycleStart();
-    undoableDeleteEntity(entityToReplace);
-    undoableAdd(entityReplacing);
-    undoCycleEnd();
-}
-
-void RS_ActionInterface::undoableReplace(RS_Entity* entityToReplace, RS_Entity* entityReplacing) const {
-    undoableDeleteEntity(entityToReplace);
-    undoableAdd(entityReplacing);
-}
-
-void RS_ActionInterface::undoCycleEnd() const {
-    RS_Undoable* relZeroUndoable = m_viewport->getRelativeZeroUndoable();
-    if (relZeroUndoable != nullptr) {
-        m_document->addUndoable(relZeroUndoable);
-    }
-    m_document->endUndoCycle();
-}
-
-void RS_ActionInterface::undoCycleStart() const { m_document->startUndoCycle(); }
-void RS_ActionInterface::undoableAdd(RS_Undoable *e) const { m_document->addUndoable(e); } // fixme - check usage??
 
 void RS_ActionInterface::setPenAndLayerToActive(RS_Entity *e) {
     e->setLayerToActive();

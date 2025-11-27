@@ -121,19 +121,21 @@ void RS_PreviewActionInterface::trigger() {
     deleteInfoCursor();
     deleteHighlights();
     deleteSnapper();
-
-    if (isTriggerUndoable()) {
-        undoCycleStart();
-        doTrigger();
-        undoCycleEnd();
-    }
-    else {
+    if (doCheckMayTrigger()) {
         doTrigger();
     }
-
     drawSnapper();
     updateSelectionWidget();
     m_graphicView->redraw();
+}
+
+
+/**
+ * Extension method that checks whether all data are collected and trigger may be invoked.
+ * @return true if trigger() may be executed.
+ */
+bool RS_PreviewActionInterface::doCheckMayTrigger(){
+    return true;
 }
 
 /**

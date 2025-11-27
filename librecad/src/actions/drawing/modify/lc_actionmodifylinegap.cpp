@@ -181,7 +181,7 @@ bool LC_ActionModifyLineGap::isSetActivePenAndLayerOnTrigger(){
     return false; // we'll pick attributes from original line
 }
 
-void LC_ActionModifyLineGap::doPrepareTriggerEntities(QList<RS_Entity *> &list){
+bool LC_ActionModifyLineGap::doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx){
      RS_Line* originalLine = m_gapData->originalLine;
 
      RS_Vector lineStart = originalLine->getStartpoint();
@@ -217,7 +217,7 @@ void LC_ActionModifyLineGap::doPrepareTriggerEntities(QList<RS_Entity *> &list){
              // will add segment, actually.
              if ((lineStart.x - rotatedGapEnd.x)>=0){
                  gapOutsideTheLine = true;
-                 auto *segment1 = createLine(gapStart, gapEnd, list);
+                 auto *segment1 = createLine(gapStart, gapEnd, ctx.entitiesToAdd);
                  // apply attributes from original line
                  applyPenAndLayerBySourceEntity(originalLine, segment1, PEN_ORIGINAL, LAYER_ORIGINAL);
                  // prevent deletion of original line
@@ -228,7 +228,7 @@ void LC_ActionModifyLineGap::doPrepareTriggerEntities(QList<RS_Entity *> &list){
              // gap is not on the edge, actual creation of line segment is needed
              if (rotatedGapStart.x < rotatedLineEnd.x){
                  // we'll create first segment only if gap start point is not outsider of line (after line endpoint)
-                 auto segment1 = createLine(lineStart, gapStart, list);
+                 auto segment1 = createLine(lineStart, gapStart, ctx.entitiesToAdd);
                  // apply attributes from original line
                  applyPenAndLayerBySourceEntity(originalLine, segment1, PEN_ORIGINAL, LAYER_ORIGINAL);
              }
@@ -242,35 +242,33 @@ void LC_ActionModifyLineGap::doPrepareTriggerEntities(QList<RS_Entity *> &list){
 
              if ((rotatedGapStart.x - rotatedLineEnd.x)>=0){
                  // gap is outside of line, so we'll extend the line
-                 auto *segment1 = createLine(gapStart, gapEnd, list);
+                 auto *segment1 = createLine(gapStart, gapEnd, ctx.entitiesToAdd);
                  // apply attributes from original line
                  applyPenAndLayerBySourceEntity(originalLine, segment1, PEN_ORIGINAL, LAYER_ORIGINAL);
                  // prevent deletion of original line
                  m_gapData->originalLine = nullptr;
              }
              else {
-                 auto *segment2 = createLine(gapEnd, lineEnd, list);
+                 auto *segment2 = createLine(gapEnd, lineEnd, ctx.entitiesToAdd);
                  // apply attributes from original line
                  applyPenAndLayerBySourceEntity(originalLine, segment2, PEN_ORIGINAL, LAYER_ORIGINAL);
              }
          }
      }
 
+    if (m_gapData != nullptr){
+        // just deleting original entity as it is replaced by created segments
+        RS_Line* line = m_gapData->originalLine;
+        if (line != nullptr){
+            ctx -= line;
+        }
+    }
+   return true;
 }
 
 void LC_ActionModifyLineGap::doAfterTrigger(){
     delete m_gapData; // just do a cleanup
     m_gapData = nullptr;
-}
-
-void LC_ActionModifyLineGap::performTriggerDeletions(){
-    if (m_gapData != nullptr){
-        // just deleting original entity as it is replaced by created segments
-        RS_Line* line = m_gapData->originalLine;
-        if (line != nullptr){
-            undoableDeleteEntity(line);
-        }
-    }
 }
 
 /**

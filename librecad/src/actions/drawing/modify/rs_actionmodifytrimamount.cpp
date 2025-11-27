@@ -64,7 +64,7 @@ void RS_ActionModifyTrimAmount::init(int status) {
 
 // FIXME - CURRENT LAYER IS INVISIBLE OR LOCKED
 
-bool RS_ActionModifyTrimAmount::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionModifyTrimAmount::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     if (m_trimEntity != nullptr && m_trimEntity->isVisible() && !m_trimEntity->isLocked()) {
         double dist = determineDistance(m_trimEntity);
         bool trimStart;

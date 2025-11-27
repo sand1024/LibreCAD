@@ -1652,50 +1652,41 @@ void LC_LayerTreeWidget::redrawView() const {
  */
 void LC_LayerTreeWidget::doMoveSelectionToLayer(LC_LayerTreeItem* layerItem, bool duplicate, bool resolvePens){
     RS_Layer *targetLayer = layerItem->getLayer();
-
-    LC_DocumentModificationBatch ctx;
     bool removeOriginals = !duplicate;
-    LC_SelectedSet* selection = m_document->getSelectedSet();
+
     QList<RS_Entity*> selectedEntities;
+    if (m_document->collectSelected(selectedEntities)) {
+        LC_UndoSection undo(m_document, m_graphicView->getViewPort());
+        undo.undoableExecute([this, removeOriginals, targetLayer, resolvePens, selectedEntities](LC_DocumentModificationBatch& ctx)-> bool {
+                                 for (auto en : selectedEntities) {
+                                     // iterate over all entities
+                                     if (!en->isParentSelected()) {
+                                         RS_Layer* l = en->getLayer(true);
+                                         if (l != nullptr && l != targetLayer) {
+                                             RS_Entity* clone = en->clone();
+                                             if (resolvePens) {
+                                                 // resolve pen in original entities, so "by layer" and "by block" values will be replaced by resolved values
+                                                 RS_Pen resolvedPen = en->getPen(true);
+                                                 // assigning resolved pen back to the entity's copy
+                                                 clone->setPen(resolvedPen);
+                                             }
 
-    selection->collectSelectedEntities(selectedEntities);
-    for (auto en : selectedEntities) {
-        // iterate over all entities
-        if (en != nullptr) {
-            if (en->isVisible() && en->isSelected() && !en->isParentSelected()) {
-                RS_Layer* l = en->getLayer(true);
-                if (l != nullptr && l != targetLayer) {
-                    RS_Entity* clone = en->clone();
-                    if (resolvePens) {
-                        // resolve pen in original entities, so "by layer" and "by block" values will be replaced by resolved values
-                        RS_Pen resolvedPen = en->getPen(true);
-                        // assigning resolved pen back to the entity's copy
-                        clone->setPen(resolvedPen);
-                    }
+                                             clone->setLayer(targetLayer);
+                                             ctx += clone;
+                                         }
+                                     }
+                                 }
 
-                    clone->setLayer(targetLayer);
-                    ctx += clone;
-                    ctx -= en;
-                }
-            }
-        }
-    }
-
-    LC_UndoSection undo(m_document, m_graphicView->getViewPort());
-    if (removeOriginals) {
-        for (const auto e: ctx.entitiesToDelete) {
-            undo.undoableDelete(e);
-        }
-    }
-    else {
-        for (const auto e: ctx.entitiesToDelete) {
-            m_document->unselect(e);
-        }
-    }
-
-    for (const auto e: ctx.entitiesToAdd) {
-        m_document->select(e);
-        undo.undoableAdd(e);
+                                 if (removeOriginals) {
+                                     ctx -= selectedEntities;
+                                 }
+                                 return true;
+                             }, [this, removeOriginals, selectedEntities](LC_DocumentModificationBatch& ctx, RS_Document* doc)-> void {
+                                 if (!removeOriginals) {
+                                     doc->select(selectedEntities, false);
+                                 }
+                                 doc->select(ctx.entitiesToAdd);
+                             });
     }
     redrawView();
 }

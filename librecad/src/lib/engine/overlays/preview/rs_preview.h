@@ -61,6 +61,7 @@ public:
     void addEntity(RS_Entity* entity) override;
     void calcRectCorners(const RS_Vector& worldCorner1, const RS_Vector& worldCorner3, RS_Vector& worldCorner2,
                          RS_Vector& worldCorner4) const;
+    [[deprecated]]
     void addSelectionFrom(RS_EntityContainer& container, LC_GraphicViewport* view);
     void addAllFrom(RS_EntityContainer& container, LC_GraphicViewport* view);
     void addAllFromList(const QList<RS_Entity*>& list);

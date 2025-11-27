@@ -27,6 +27,7 @@
 #ifndef RS_ACTIONDRAWPOINT_H
 #define RS_ACTIONDRAWPOINT_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_previewactioninterface.h"
 
 /**
@@ -34,7 +35,7 @@
  *
  * @author Andrew Mustun
  */
-class RS_ActionDrawPoint : public LC_UndoablePreviewActionInterface {
+class RS_ActionDrawPoint : public LC_SingleEntityCreationAction {
 Q_OBJECT
 public:
     explicit RS_ActionDrawPoint(LC_ActionContext *actionContext);
@@ -46,7 +47,8 @@ protected:
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void updateMouseButtonHints() override;
-    void doTrigger() override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
 private:
     std::unique_ptr<RS_Vector> m_pointPosition;
     RS_Vector getFreeSnapAwarePointAlt(const LC_MouseEvent *e, const RS_Vector &pos) const;

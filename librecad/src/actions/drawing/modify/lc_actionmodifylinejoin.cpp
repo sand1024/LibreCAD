@@ -270,20 +270,6 @@ void LC_ActionModifyLineJoin::doAfterTrigger(){
     init(SetLine1);
 }
 
-void LC_ActionModifyLineJoin::performTriggerDeletions(){
-    // check whether original lines should be deleted
-    if (m_removeOriginalLines){
-        // proceed line 1
-        if (m_line1EdgeMode == EDGE_EXTEND_TRIM){
-            undoableDeleteEntity(m_line1);
-        }
-        // proceed line 2
-        if (m_line2EdgeMode == EDGE_EXTEND_TRIM){
-            undoableDeleteEntity(m_line2);
-        }
-    }
-}
-
 bool LC_ActionModifyLineJoin::doCheckMayTrigger(){
     return m_linesJoinData != nullptr;
 }
@@ -293,10 +279,10 @@ bool LC_ActionModifyLineJoin::isSetActivePenAndLayerOnTrigger(){
     return false;
 }
 
-void LC_ActionModifyLineJoin::doPrepareTriggerEntities(QList<RS_Entity *> &list){
+bool LC_ActionModifyLineJoin::doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx){
     if (m_linesJoinData->parallelLines && m_linesJoinData->straightLinesConnection){ // process straight lines
         // simply create straight line
-        auto *line = createLine(m_linesJoinData->majorPointLine1, m_linesJoinData->majorPointLine2, list);
+        auto *line = createLine(m_linesJoinData->majorPointLine1, m_linesJoinData->majorPointLine2, ctx.entitiesToAdd);
         // apply attributes according to settings
         applyAttributes(line, true);
     } else { // process lines that are not on the same ray, and are not parallel
@@ -316,19 +302,31 @@ void LC_ActionModifyLineJoin::doPrepareTriggerEntities(QList<RS_Entity *> &list)
             poly->addVertex(intersectionPoint);
             poly->addVertex(major2);
             applyAttributes(poly, true);
-            list << poly;
+            ctx += poly;
 
         } else { // handle individual lines
             if (major1.valid){  // proceed line 1 (extend or segment)
-                l1 = createLine(major1, intersectionPoint, list);
+                l1 = createLine(major1, intersectionPoint, ctx.entitiesToAdd);
                 applyAttributes(l1, true);
             }
             if (major2.valid){ // proceed line 2
-                l2 = createLine(intersectionPoint, major2, list);
+                l2 = createLine(intersectionPoint, major2, ctx.entitiesToAdd);
                 applyAttributes(l2, false);
             }
         }
     }
+    // check whether original lines should be deleted
+    if (m_removeOriginalLines){
+        // proceed line 1
+        if (m_line1EdgeMode == EDGE_EXTEND_TRIM){
+            ctx -= m_line1;
+        }
+        // proceed line 2
+        if (m_line2EdgeMode == EDGE_EXTEND_TRIM){
+            ctx -= m_line2;
+        }
+    }
+    return true;
 }
 
 /**

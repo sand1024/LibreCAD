@@ -105,7 +105,7 @@ protected:
     bool doCheckMayDrawPreview(LC_MouseEvent *event, int status) override;
     void doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
     bool doCheckMayTrigger() override;
-    void doPrepareTriggerEntities(QList<RS_Entity *> &list) override;
+    bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx)  override;
     int doGetStatusForInitialSnapToRelativeZero() override;
     void doInitialSnapToRelativeZero(RS_Vector vector) override;
     bool doProcessCommand(int status, const QString &c) override;

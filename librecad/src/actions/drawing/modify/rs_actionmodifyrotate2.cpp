@@ -50,7 +50,7 @@ void RS_ActionModifyRotate2::init(int status) {
     LC_ActionModifyBase::init(status);
 }
 
-bool RS_ActionModifyRotate2::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionModifyRotate2::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     ctx.setActiveLayerAndPen(m_actionData->useCurrentLayer, m_actionData->useCurrentAttributes);
     return RS_Modification::rotate2(*m_actionData, m_selectedEntities,false, ctx);
 }

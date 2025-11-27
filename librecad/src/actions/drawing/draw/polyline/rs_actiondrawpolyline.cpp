@@ -41,7 +41,7 @@
 #endif
 
 RS_ActionDrawPolyline::RS_ActionDrawPolyline(LC_ActionContext *actionContext)
-        :LC_SingleEntityCreationAction("Draw polylines",actionContext, RS2::ActionDrawPolyline)
+        :LC_UndoableDocumentModificationAction("Draw polylines",actionContext, RS2::ActionDrawPolyline)
         , m_actionData(std::make_unique<Points>()){
     reset();
 }
@@ -61,19 +61,18 @@ void RS_ActionDrawPolyline::init(int status){
     RS_PreviewActionInterface::init(status);
 }
 
-void RS_ActionDrawPolyline::doTriggerCompletion(bool success) {
-    LC_SingleEntityCreationAction::doTriggerCompletion(success);
+
+bool RS_ActionDrawPolyline::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
+    if (m_actionData->polyline == nullptr) {
+        return false;
+    }
+    ctx+= m_actionData->polyline;
+
+    moveRelativeZero(m_actionData->polyline->getEndpoint());
+    return true;
 }
 
-RS_Entity* RS_ActionDrawPolyline::doTriggerCreateEntity() {
-    if (m_actionData->polyline == nullptr) {
-        return nullptr;
-    }
-    moveRelativeZero(m_actionData->polyline->getEndpoint());
-    // undoCycleAdd(m_actionData->polyline, false); // todo - check whether we actially should not add to container*/
-    // return m_actionData->polyline;
-    return nullptr;
-
+void RS_ActionDrawPolyline::doTriggerCompletion(bool success) {
     m_actionData->polyline = nullptr;
 }
 
@@ -390,7 +389,7 @@ void RS_ActionDrawPolyline::onCoordinateEvent(int status, [[maybe_unused]]bool i
                     m_actionData->polyline->addVertex(mouse, 0.0);
                     m_actionData->polyline->setEndpoint(mouse);
                     if (m_actionData->polyline->count() == 1){
-                        LC_UndoSection undo(m_document, m_viewport, true); // fixme - sand - review creation lifecycle
+                        LC_UndoSection undo(m_document, m_viewport); // fixme - sand - review creation lifecycle
                         setPenAndLayerToActive(m_actionData->polyline);
                         undo.undoableAdd(m_actionData->polyline);
                     }

@@ -70,7 +70,7 @@ void RS_ActionDrawLineParallelThrough::doInitWithContextEntity(RS_Entity* contex
     }
 }
 
-bool RS_ActionDrawLineParallelThrough::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionDrawLineParallelThrough::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     if (m_entity != nullptr){
          std::list<RS_Entity*> parallels;
          RS_Creation::createParallelThrough(*m_coord,m_numberToCreate,m_entity, m_symmetric,ctx.entitiesToAdd);

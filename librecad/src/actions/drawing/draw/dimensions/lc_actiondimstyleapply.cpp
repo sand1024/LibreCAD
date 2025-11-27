@@ -24,14 +24,12 @@
 #include "lc_actiondimstyleapply.h"
 
 #include "lc_graphicviewport.h"
-#include "qg_pentoolbar.h"
 #include "rs_dimension.h"
 #include "rs_entity.h"
 #include "rs_modification.h"
-#include "rs_pen.h"
 
 LC_ActionDimStyleApply::LC_ActionDimStyleApply(LC_ActionContext *actionContext):
-    RS_PreviewActionInterface("DimStyleApply", actionContext, RS2::ActionDimStyleApply){
+    LC_UndoableDocumentModificationAction("DimStyleApply", actionContext, RS2::ActionDimStyleApply){
 }
 
 void LC_ActionDimStyleApply::init(int status){
@@ -43,6 +41,49 @@ void LC_ActionDimStyleApply::init(int status){
 
 void LC_ActionDimStyleApply::doInitWithContextEntity(RS_Entity* contextEntity,[[maybe_unused]] const RS_Vector& clickPos) {
     setSourceEntity(contextEntity);
+}
+
+bool LC_ActionDimStyleApply::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
+    auto clone = m_entityToApply->clone();
+    auto clonedDimension = static_cast<RS_Dimension*>(clone);
+
+    QString originalStyle = m_srcEntity->getStyle();
+    LC_DimStyle* overrideStyle {nullptr};
+
+    RS2::EntityType dimensionType = m_entityToApply->rtti();
+
+    if (m_srcEntityStyleType != dimensionType) {
+        // types of entities are different, potentially there might be type-specific styles
+        auto dimStylesList = m_graphic->getDimStyleList();
+        // try to find style with the same base name as for source entity, but with type of target one
+        auto exactDimStyle = dimStylesList->findByBaseNameAndType(m_srcEntityBaseStyleName, dimensionType);
+        if (exactDimStyle != nullptr) {
+            // here we use style name for the exact style for target dimension type
+            clonedDimension->setStyle(exactDimStyle->getName());
+        }
+        else {
+            // there is no type-specific style, use base name of style from source entity
+            clonedDimension->setStyle(m_srcEntityBaseStyleName);
+        }
+    }
+    else { // source dimension and target dimension have the same type, so we can just assign style name
+        clonedDimension->setStyle(originalStyle);
+    }
+
+    if (m_applyStyleOverride) {
+        overrideStyle = m_srcEntity->getDimStyleOverride();
+        clonedDimension->setDimStyleOverride(overrideStyle);
+    }
+
+    ctx.replace(m_entityToApply,clonedDimension);
+    clonedDimension->update();
+
+    return true;
+}
+
+void LC_ActionDimStyleApply::doTriggerCompletion(bool success) {
+    m_entityToApply = nullptr;
+    m_applyStyleOverride = false;
 }
 
 void LC_ActionDimStyleApply::onMouseMoveEvent(int status, LC_MouseEvent *e) {
@@ -93,39 +134,9 @@ void LC_ActionDimStyleApply::onMouseLeftButtonRelease([[maybe_unused]]int status
                 RS2::EntityType dimensionType = en->rtti();
                 bool dimensionalEntity = RS2::isDimensionalEntity(dimensionType);
                 if (!en->isLocked() && en != m_srcEntity && dimensionalEntity){
-
-                    auto clone = en->clone();
-                    auto clonedDimension = static_cast<RS_Dimension*>(clone);
-
-                    QString originalStyle = m_srcEntity->getStyle();
-                    LC_DimStyle* overrideStyle {nullptr};
-
-                    if (m_srcEntityStyleType != dimensionType) {
-                        // types of entities are different, potentially there might be type-specific styles
-                        auto dimStylesList = m_graphic->getDimStyleList();
-                        // try to find style with the same base name as for source entity, but with type of target one
-                        auto exactDimStyle = dimStylesList->findByBaseNameAndType(m_srcEntityBaseStyleName, dimensionType);
-                        if (exactDimStyle != nullptr) {
-                            // here we use style name for the exact style for target dimension type
-                            clonedDimension->setStyle(exactDimStyle->getName());
-                        }
-                        else {
-                            // there is no type-specific style, use base name of style from source entity
-                            clonedDimension->setStyle(m_srcEntityBaseStyleName);
-                        }
-                    }
-                    else { // source dimension and target dimension have the same type, so we can just assign style name
-                       clonedDimension->setStyle(originalStyle);
-                    }
-
-                    if (!e->isShift) {
-                        overrideStyle = m_srcEntity->getDimStyleOverride();
-                        clonedDimension->setDimStyleOverride(overrideStyle);
-                    }
-
-                    undoCycleReplace(en, clonedDimension);
-                    clonedDimension->update();
-                    redraw();
+                    m_entityToApply = static_cast<RS_Dimension*>(en);
+                    m_applyStyleOverride = !e->isShift;
+                    trigger();
                 }
                 break;
             }

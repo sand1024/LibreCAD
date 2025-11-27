@@ -49,7 +49,7 @@ bool LC_ActionPenApply::mayInitWithContextEntity([[maybe_unused]]int status) {
    return true;
 }
 
-bool LC_ActionPenApply::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool LC_ActionPenApply::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     // do actual modifications
     RS_AttributesData data;
     data.pen            = m_penToApply;

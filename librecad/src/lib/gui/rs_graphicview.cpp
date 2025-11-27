@@ -88,7 +88,7 @@ void RS_GraphicView::cleanUp() {
  */
 void RS_GraphicView::setDocument(RS_Document *c) {
     m_document = c;
-    m_viewport->setContainer(c);
+    m_viewport->setDocument(c);
 }
 
 /**

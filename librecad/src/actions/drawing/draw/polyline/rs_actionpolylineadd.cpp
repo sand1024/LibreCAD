@@ -53,7 +53,7 @@ void RS_ActionPolylineAdd::doInitWithContextEntity(RS_Entity* contextEntity,[[ma
     setPolylineToModify(contextEntity);
 }
 
-bool RS_ActionPolylineAdd::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionPolylineAdd::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     if (m_polylineToModify != nullptr && m_addSegment->isAtomic() && m_addCoord->valid &&
         m_addSegment->isPointOnEntity(*m_addCoord)) {
         auto segment                 = static_cast<RS_AtomicEntity*>(m_addSegment);

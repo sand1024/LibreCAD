@@ -37,39 +37,32 @@
 class RS_Layer;
 
 LC_ActionDrawLinePolygonBase::LC_ActionDrawLinePolygonBase( const char *name, LC_ActionContext *actionContext, RS2::ActionType actionType)
-    :LC_UndoablePreviewActionInterface(name, actionContext, actionType),m_edgesNumber(3), m_actionData(std::make_unique<ActionData>()), m_lastStatus(SetPoint1){}
+    :LC_UndoableDocumentModificationAction(name, actionContext, actionType),m_edgesNumber(3), m_actionData(std::make_unique<ActionData>()), m_lastStatus(SetPoint1){}
 
 LC_ActionDrawLinePolygonBase::~LC_ActionDrawLinePolygonBase() = default;
 
-void LC_ActionDrawLinePolygonBase::doTrigger() {
+bool LC_ActionDrawLinePolygonBase::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     PolygonInfo polygonInfo;
     preparePolygonInfo(polygonInfo, m_actionData->point2);
-    RS_Polyline* polyline = createShapePolyline(polygonInfo, false);
+    auto polyline = createShapePolyline(polygonInfo, false);
     if (polyline != nullptr) {
-        RS_Graphic* graphic = m_graphicView->getGraphic();
-        RS_Layer* layer;
-        RS_Pen pen = m_document->getActivePen();
-        layer      = graphic->getActiveLayer();
-
         if (m_createPolyline) {
-            polyline->setLayer(layer);
-            polyline->setPen(pen);
-            polyline->reparent(m_document);
-            undoableAdd(polyline);
+            ctx += polyline;
         }
         else {
-            for (RS_Entity* entity : lc::LC_ContainerTraverser{*polyline, RS2::ResolveAll}.entities()) {
+            for (RS_Entity* entity : *polyline) {
                 if (entity != nullptr) {
                     auto* clone = entity->clone(); // use clone for safe deletion of polyline
-                    clone->setPen(pen);
-                    clone->setLayer(layer);
-                    clone->reparent(m_document);
-                    undoableAdd(clone);
+                    ctx += clone;
                 }
             }
             delete polyline; //don't need it anymore
         }
     }
+    return true;
+}
+
+void LC_ActionDrawLinePolygonBase::doTriggerCompletion(bool success) {
     if (m_completeActionOnTrigger) {
         setStatus(-1);
     }

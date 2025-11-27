@@ -123,7 +123,7 @@ void LC_ImageExporter::prepareViewport(RS_Graphic* graphic, const ExportOptions&
     auto borderWidth = options.borders.width();
     auto borderHeight = options.borders.height();
     viewport.setBorders(borderWidth, borderHeight, borderWidth, borderHeight);
-    viewport.setContainer(graphic);
+    viewport.setDocument(graphic);
     viewport.zoomAuto(false);
     viewport.loadSettings();
 }

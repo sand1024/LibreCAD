@@ -44,12 +44,12 @@ void LC_AbstractActionDrawRectangle::createShapeData(const RS_Vector &snapPoint)
 
 /**
  * Extract polyline from shape data and add it (or it's entities) to the resulting list of entities
- * @param list created entities list for trigger
  */
-void LC_AbstractActionDrawRectangle::doPrepareTriggerEntities(QList<RS_Entity *> &list){
+bool LC_AbstractActionDrawRectangle::doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx) {
     RS_Polyline *polyline = m_shapeData.resultingPolyline;
     // extract entities from polyline and insert them as result of action
-    doAddPolylineToListOfEntities(polyline, list, false);
+    doAddPolylineToListOfEntities(polyline, ctx.entitiesToAdd, false);
+    return true;
 }
 
 /**

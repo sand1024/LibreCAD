@@ -58,7 +58,7 @@ protected:
     bool m_both = false;
 
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
-    void previewRefTrimmedEntity(RS_Entity *trimmed, RS_Entity *original);
+    void previewRefTrimmedEntity(RS_Entity *trimmed, RS_Entity *original) const;
     RS2::CursorType doGetMouseCursor(int status) override;
     void updateMouseButtonHints() override;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
@@ -66,7 +66,7 @@ protected:
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void previewTrim(RS_Entity* entityToTrimCandidate, RS_Entity* limitingEntity, RS_Vector trimCoordinates,
                      RS_Vector limitCoordinates, bool& trimInvalid);
-    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
     void doTriggerCompletion(bool success) override;
 };
 #endif

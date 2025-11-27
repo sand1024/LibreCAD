@@ -196,15 +196,15 @@ unsigned RS_Graphic::countLayerEntities(RS_Layer *layer) const
 /**
  * Removes the given layer and undoes all m_entities on it.
  */
-void RS_Graphic::removeLayer(RS_Layer* layer) {
+void RS_Graphic::removeLayer(RS_Layer* layer) { // fixme - move to other class?
     if (layer != nullptr) {
         const QString &layerName = layer->getName();
         if (layerName != "0") {
             std::vector<RS_Entity *> toRemove;
             //find entities on layer
             for(RS_Entity *e: *this) {
-                if (e->getLayer() &&
-                    e->getLayer()->getName() == layerName) {
+                auto layer = e->getLayer();
+                if (layer != nullptr && layer->getName() == layerName) {
                     toRemove.push_back(e);
                 }
             }
@@ -226,8 +226,8 @@ void RS_Graphic::removeLayer(RS_Layer* layer) {
                     continue;
                 }
                 for (auto e: *blk) {
-                    if (e->getLayer() &&
-                        e->getLayer()->getName() == layerName) {
+                    auto layer = e->getLayer();
+                    if (layer && layer->getName() == layerName) {
                         toRemove.push_back(e);
                     }
                 }

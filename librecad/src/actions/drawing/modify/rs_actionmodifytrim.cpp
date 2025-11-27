@@ -67,7 +67,7 @@ void RS_ActionModifyTrim::finish(bool updateTB) {
     RS_PreviewActionInterface::finish(updateTB);
 }
 
-bool RS_ActionModifyTrim::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionModifyTrim::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     if (isAtomic(m_trimEntity) && m_limitEntity != nullptr /* && limitEntity->isAtomic()*/) {
         LC_TrimResult trimResult =  RS_Modification::trim(m_actionData->trimCoord,  m_trimEntity,
                m_actionData->limitCoord, m_limitEntity,
@@ -233,7 +233,7 @@ RS2::CursorType RS_ActionModifyTrim::doGetMouseCursor([[maybe_unused]] int statu
     return RS2::SelectCursor;
 }
 
-void RS_ActionModifyTrim::previewRefTrimmedEntity(RS_Entity *trimmed, RS_Entity* original) {
+void RS_ActionModifyTrim::previewRefTrimmedEntity(RS_Entity *trimmed, RS_Entity* original) const {
     int rtti = trimmed->rtti();
     switch (rtti){
         case RS2::EntityLine:{

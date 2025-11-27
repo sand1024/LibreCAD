@@ -37,8 +37,8 @@ protected:
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMove(RS_Vector mouse, int status, LC_MouseEvent *e) override;
     void setEntityToModify(RS_Entity* entity) override;
-    void doCompleteTrigger() override;
-    void doAfterTrigger() override;
+    void doTriggerOther() override;
+    void doTriggerCompletion(bool success) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     bool mayModifySplineEntity(RS_Entity* pEntity) override;
 };

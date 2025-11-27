@@ -23,12 +23,12 @@
 #ifndef LC_ACTIONDRAWMIDLINE_H
 #define LC_ACTIONDRAWMIDLINE_H
 
-#include "rs_previewactioninterface.h"
+#include "lc_undoabledocumentmodificationaction.h"
 
-class LC_ActionDrawMidLine: public LC_UndoablePreviewActionInterface{
+class LC_ActionDrawMidLine: public LC_UndoableDocumentModificationAction{
     Q_OBJECT
 public:
-    LC_ActionDrawMidLine(LC_ActionContext *actionContext);
+    explicit LC_ActionDrawMidLine(LC_ActionContext *actionContext);
     QStringList getAvailableCommands() override;
     double getOffset() const;
     void setOffset(double offset);
@@ -72,8 +72,10 @@ protected:
     void prepareLine(LineInfo &info, RS_Entity* ent, bool alternate) const;
     RS2::LineType getLineTypeForCenterLine() const;
     void setupCenterlinePenLayer(RS_Line* line) const;
-    void doTrigger() override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
+
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
 };
 
 #endif // LC_ACTIONDRAWMIDLINE_H

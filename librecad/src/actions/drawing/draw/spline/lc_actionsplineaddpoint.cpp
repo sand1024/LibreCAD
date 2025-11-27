@@ -33,11 +33,11 @@ LC_ActionSplineAddPoint::LC_ActionSplineAddPoint(LC_ActionContext *actionContext
    :LC_ActionSplineModifyBase("SplineAddPoint", actionContext, RS2::ActionDrawSplinePointAdd) {
 }
 
-void LC_ActionSplineAddPoint::doCompleteTrigger() {
+void LC_ActionSplineAddPoint::doTriggerOther() {
     moveRelativeZero(m_vertexPoint);
 }
 
-void LC_ActionSplineAddPoint::doAfterTrigger() {
+void LC_ActionSplineAddPoint::doTriggerCompletion(bool success) {
     m_directionFromStart = false;
     m_endpointIsSelected = false;
     setStatus(SetBeforeControlPoint);

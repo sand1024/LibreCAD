@@ -60,7 +60,7 @@ void RS_ActionModifyRotate::onSelectionCompleted(bool singleEntity, bool fromIni
     }
 }
 
-bool RS_ActionModifyRotate::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionModifyRotate::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     moveRelativeZero(m_rotateData->center);
     ctx.setActiveLayerAndPen(m_rotateData->useCurrentLayer, m_rotateData->useCurrentAttributes);
     return RS_Modification::rotate(*m_rotateData, m_selectedEntities, false, ctx);

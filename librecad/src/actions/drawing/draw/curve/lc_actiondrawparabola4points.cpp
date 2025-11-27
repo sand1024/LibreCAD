@@ -37,7 +37,7 @@ struct LC_ActionDrawParabola4Points::ActionData {
  *
  */
 LC_ActionDrawParabola4Points::LC_ActionDrawParabola4Points(LC_ActionContext *actionContext)
-    :LC_UndoablePreviewActionInterface("Draw parabola from 4 points", actionContext,RS2::ActionDrawParabola4Points),
+    :LC_SingleEntityCreationAction("Draw parabola from 4 points", actionContext,RS2::ActionDrawParabola4Points),
      m_actionData(std::make_unique<ActionData>()){
 }
 
@@ -50,11 +50,15 @@ void LC_ActionDrawParabola4Points::init(int status) {
     }
 }
 
-void LC_ActionDrawParabola4Points::doTrigger() {
+RS_Entity* LC_ActionDrawParabola4Points::doTriggerCreateEntity() {
     if(m_actionData->valid){
         auto* en = new LC_Parabola{m_document, m_actionData->data};
-        undoableAdd(en);
+        return en;
     }
+    return nullptr;
+}
+
+void LC_ActionDrawParabola4Points::doTriggerCompletion(bool success) {
     setStatus(SetPoint1);
 }
 

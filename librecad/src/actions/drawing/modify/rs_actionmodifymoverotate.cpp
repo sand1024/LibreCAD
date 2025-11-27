@@ -46,7 +46,7 @@ RS_ActionModifyMoveRotate::RS_ActionModifyMoveRotate(LC_ActionContext *actionCon
 
 RS_ActionModifyMoveRotate::~RS_ActionModifyMoveRotate() = default;
 
-bool RS_ActionModifyMoveRotate::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionModifyMoveRotate::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     ctx.setActiveLayerAndPen(m_actionData->data.useCurrentLayer, m_actionData->data.useCurrentAttributes);
 	RS_Modification::moveRotate(m_actionData->data, m_selectedEntities, false, ctx);
     m_actionData->targetPoint = RS_Vector(false);

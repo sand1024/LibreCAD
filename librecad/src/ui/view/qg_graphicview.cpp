@@ -48,6 +48,7 @@
 #include "lc_quickinfowidget.h"
 #include "lc_rect.h"
 #include "lc_ucs_mark.h"
+#include "lc_undosection.h"
 #include "qc_applicationwindow.h"
 #include "qg_blockwidget.h"
 #include "qg_scrollbar.h"
@@ -192,14 +193,13 @@ void QG_GraphicView::launchEditProperty(RS_Entity* entity) const {
         return;
     }
     editAction( *entity);
-    doc->startUndoCycle();
 
     // delete any temporary highlighting duplicates of the original
     auto* defaultAction = dynamic_cast<RS_ActionDefault*>(getEventHandler()->getDefaultAction());
     if (defaultAction != nullptr){
         defaultAction->clearHighLighting();
     }
-    doc->endUndoCycle();
+
 }
 
 // Start the edit action:
@@ -357,7 +357,8 @@ void QG_GraphicView::createViewRenderer() {
 }
 
 void QG_GraphicView::layerToggled(RS_Layer *) {
-    const RS_EntityContainer::LC_SelectionInfo &info = getDocument()->getSelectionInfo();
+    // FIXME - UPDATE SELECTION IF LAYER IS LOCKED/INVISIBLE!
+    const RS_Document::LC_SelectionInfo &info = getDocument()->getSelectionInfo();
     m_actionContext->updateSelectionWidget(info.count, info.length);
     redraw(RS2::RedrawDrawing);
 }
@@ -1263,27 +1264,38 @@ void QG_GraphicView::layerActivated(RS_Layer *layer) {
     if (applyLayerToSelectedEntities) {
         RS_Graphic *graphic = getGraphic();
         if (graphic != nullptr) {
-            graphic->startUndoCycle();
-
             auto doc = getDocument();
-            auto selection  = doc->getSelectedSet();
-
-            for (auto en: *selection) {
-                if (en != nullptr && en->isAlive()) {
-                    RS_Entity *clone = en->clone();
-                    clone->setLayer(layer);
-                    clone->clearSelectionFlag();
-                    clone->update();
-                    doc->undoableAdd(clone);
-                    doc->undoableDelete(en);
+            auto selection  = doc->getSelection();
+            if (!selection->isEmpty()) {
+                QList<RS_Entity*> selected;
+                selection->collectSelectedEntities(selected);
+                if (!selected.isEmpty()) {
+                    LC_UndoSection undo(doc, getViewPort());
+                    undo.undoableExecute(
+                    [selected, layer](LC_DocumentModificationBatch& ctx)->bool {
+                        for (auto en: selected) {
+                            if (en != nullptr && en->isAlive()) {
+                                RS_Entity* clone = en->clone();
+                                clone->setLayer(layer);
+                                clone->setPen(en->getPen(false));
+                                clone->clearSelectionFlag();
+                                clone->update();
+                                ctx += clone;
+                                ctx -= en;
+                            }
+                        }
+                        ctx.dontSetActiveLayerAndPen();
+                        return true;
+                    },
+                    [this](LC_DocumentModificationBatch& ctx, RS_Document* doc)->void {
+                        RS_Selection::unselectAllInDocument(doc, getViewPort());
+                    });
                 }
             }
-            RS_Selection::unselectAllInDocument(doc,getViewPort());
-            graphic->endUndoCycle();
+
             graphic->updateInserts();
             doc->calculateBorders();
             doc->clearSelectionFlag();
-
             redraw(RS2::RedrawDrawing);
         }
     }

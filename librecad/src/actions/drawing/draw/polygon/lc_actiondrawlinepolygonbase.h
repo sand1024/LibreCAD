@@ -23,15 +23,13 @@
 #ifndef LC_ACTIONDRAWLINEPOLYGONBASE_H
 #define LC_ACTIONDRAWLINEPOLYGONBASE_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_previewactioninterface.h"
 class RS_Polyline;
 
-class LC_ActionDrawLinePolygonBase:public LC_UndoablePreviewActionInterface{
+class LC_ActionDrawLinePolygonBase:public LC_UndoableDocumentModificationAction{
     Q_OBJECT
 public:
-    LC_ActionDrawLinePolygonBase(const char *name, LC_ActionContext *actionContext, RS2::ActionType actionType);
-    ~LC_ActionDrawLinePolygonBase() override;
-
     QStringList getAvailableCommands() override;
     int getNumber() const{return m_edgesNumber;}
     void setNumber(int n) {m_edgesNumber = n;}
@@ -76,6 +74,9 @@ protected:
 
     bool m_completeActionOnTrigger = false;
 
+    explicit LC_ActionDrawLinePolygonBase(const char *name, LC_ActionContext *actionContext, RS2::ActionType actionType);
+    ~LC_ActionDrawLinePolygonBase() override;
+
     LC_ActionOptionsWidget* createOptionsWidget() override;
     RS2::CursorType doGetMouseCursor(int status) override;
     bool doProcessCommand(int status, const QString &command) override;
@@ -89,8 +90,9 @@ protected:
     virtual void previewAdditionalReferences([[maybe_unused]]const RS_Vector &mouse) {};
     virtual void preparePolygonInfo([[maybe_unused]]PolygonInfo &polygonInfo, [[maybe_unused]]const RS_Vector &snap){};
     RS_Polyline *createShapePolyline(PolygonInfo &polygonInfo, bool preview);
-    void doTrigger() override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
 };
 
 #endif // LC_ACTIONDRAWLINEPOLYGONBASE_H

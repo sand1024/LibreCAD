@@ -43,7 +43,7 @@ protected:
     bool isValidSplinePointsData(unsigned long long int size, bool closed);
     bool isValidSplineData(unsigned long long int size, bool closed, int degree);
     void doOnEntityNotCreated() override;
-    void doCompleteTrigger() override;
+    void doTriggerOther() override;
     bool mayModifySplineEntity(RS_Entity* pEntity) override;
 };
 

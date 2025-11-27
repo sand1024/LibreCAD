@@ -34,7 +34,7 @@ LC_ActionSplineAppendPoint::LC_ActionSplineAppendPoint(LC_ActionContext *actionC
     :LC_ActionSplineModifyBase("SplineAppendPoint",actionContext, RS2::ActionDrawSplinePointAppend) {
 }
 
-void LC_ActionSplineAppendPoint::doCompleteTrigger() {
+void LC_ActionSplineAppendPoint::doTriggerOther() {
     moveRelativeZero(m_vertexPoint);
 }
 

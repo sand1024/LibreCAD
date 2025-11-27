@@ -66,9 +66,8 @@ protected:
     RS_Vector getReferencePoint(const RS_Vector &min, const RS_Vector &max) const;
     void onSelectionCompleted(bool singleEntity, bool fromInit) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
-    bool isTriggerUndoable() override {return true;}
     void previewRefLines(bool drawVertical, double verticalRef, bool drawHorizontal, double horizontalRef) const;
-    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
     void doTriggerCompletion(bool success) override;
     void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
 };

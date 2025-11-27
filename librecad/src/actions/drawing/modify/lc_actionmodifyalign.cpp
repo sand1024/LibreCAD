@@ -43,7 +43,7 @@ void LC_ActionModifyAlign::init(int status) {
     }
 }
 
-bool LC_ActionModifyAlign::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool LC_ActionModifyAlign::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     createAlignedEntities(ctx.entitiesToAdd, m_alignMin, m_alignMax, false);
     ctx.dontSetActiveLayerAndPen();
     ctx -= m_selectedEntities;

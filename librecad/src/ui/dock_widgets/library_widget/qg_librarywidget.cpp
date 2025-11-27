@@ -460,7 +460,7 @@ QString QG_LibraryWidget::getPathToPixmap(const QString& dir,
         return {};
     }
 
-    viewport.setContainer(&graphic);
+    viewport.setDocument(&graphic);
     viewport.initAfterDocumentOpen();
     viewport.zoomAuto(false);
 

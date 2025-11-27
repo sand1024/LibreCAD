@@ -26,6 +26,7 @@
 #ifndef RS_ACTIONPOLYLINESEGMENT_H
 #define RS_ACTIONPOLYLINESEGMENT_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_previewactioninterface.h"
 
 class RS_Entity;
@@ -39,10 +40,10 @@ class RS_Vector;
  *
  * @author Andrew Mustun
  */
-class RS_ActionPolylineSegment:public RS_PreviewActionInterface {
+class RS_ActionPolylineSegment:public LC_UndoableDocumentModificationAction {
     Q_OBJECT
 public:
-    RS_ActionPolylineSegment(LC_ActionContext *actionContext);
+    explicit RS_ActionPolylineSegment(LC_ActionContext *actionContext);
     RS_ActionPolylineSegment(LC_ActionContext *actionContext, RS_Entity *targetEntity);
     void init(int status) override;
     void drawSnapper() override;
@@ -61,7 +62,7 @@ protected:
 
     //! create polyline from segments
 //! @param useSelected only create from selected entities
-    RS_Polyline* convertPolyline(RS_EntityContainer* cnt, RS_Entity *selectedEntity, bool useSelected = false, bool createOnly=false);
+    RS_Polyline* convertPolyline(RS_Entity *selectedEntity, bool useSelected, LC_DocumentModificationBatch& ctx);
     RS_Vector appendPol(RS_Polyline *current, RS_Polyline *toAdd, bool reversed) const;
 
     RS2::CursorType doGetMouseCursor(int status) override;
@@ -69,6 +70,7 @@ protected:
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void updateMouseButtonHints() override;
-    void doTrigger() override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
 };
 #endif

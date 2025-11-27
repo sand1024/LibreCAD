@@ -51,7 +51,7 @@ RS_ActionModifyMirror::RS_ActionModifyMirror(LC_ActionContext *actionContext)
 
 RS_ActionModifyMirror::~RS_ActionModifyMirror() = default;
 
-    bool RS_ActionModifyMirror::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+    bool RS_ActionModifyMirror::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
         ctx.setActiveLayerAndPen(m_actionData->data.useCurrentLayer, m_actionData->data.useCurrentAttributes);
         return RS_Modification::mirror(m_actionData->data, m_selectedEntities, false, ctx);
     }

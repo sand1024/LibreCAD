@@ -46,21 +46,19 @@ void RS_ActionPolylineAppend::doInitWithContextEntity(RS_Entity* contextEntity, 
     }
 }
 
-void RS_ActionPolylineAppend::prepareDocumentModificationContext(LC_DocumentModificationBatch& ctx) {
-    ctx.m_setActiveLayer = false;
-    ctx.m_setActivePen = false;
-}
-
-RS_Entity* RS_ActionPolylineAppend::doTriggerCreateEntity() {
+bool RS_ActionPolylineAppend::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     auto newPolyline = m_actionData->polyline;
     if (newPolyline != nullptr) {
-        moveRelativeZero(newPolyline->getEndpoint());
         newPolyline->setLayer(m_originalPolyline->getLayer(false));
         newPolyline->setPen(m_originalPolyline->getPen(false));
-        undoCycleReplace(m_originalPolyline, newPolyline);
-        return newPolyline;
+
+        ctx.dontSetActiveLayerAndPen();
+        ctx.replace(m_originalPolyline, newPolyline);
+
+        moveRelativeZero(newPolyline->getEndpoint());
+        return true;
     }
-    return nullptr;
+    return false;
 }
 
 void RS_ActionPolylineAppend::doTriggerCompletion(bool success) {

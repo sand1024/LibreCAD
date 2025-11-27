@@ -47,10 +47,6 @@ public:
         RS_Entity* entity = nullptr;
     };
 
-    struct LC_SelectionInfo{
-        unsigned count = 0;
-        double length = 0.0;
-    };
 
     RS_EntityContainer(RS_EntityContainer* parent=nullptr, bool owner=true);
     RS_EntityContainer(const RS_EntityContainer& other);
@@ -147,15 +143,7 @@ public:
     {
         return m_entities.size();
     }
-//virtual unsigned long int countLayerEntities(RS_Layer* layer);
-/** \brief countSelected number of selected
-* @param deep count sub-containers, if true
-* @param types if is not empty, only counts by types listed
-*/
-    virtual unsigned countSelected(bool deep=true, QList<RS2::EntityType> const& types = {});
-    virtual void collectSelected(QList<RS_Entity*> &collect, bool deep, QList<RS2::EntityType> const &types = {});
     virtual double totalSelectedLength();
-    LC_SelectionInfo getSelectionInfo(/*bool deep, */QList<RS2::EntityType> const& types = {});
 
     /**
      * Enables / disables automatic update of borders on entity removals

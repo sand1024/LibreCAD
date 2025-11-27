@@ -30,7 +30,7 @@ struct LC_OverlayBoxOptions;
 
 class LC_OverlayBoxAction:public LC_UndoableDocumentModificationAction{
 protected:
-    LC_OverlayBoxAction(const char *name,LC_ActionContext *actionContext,RS2::ActionType actionType = RS2::ActionNone);
+    explicit LC_OverlayBoxAction(const char *name,LC_ActionContext *actionContext,RS2::ActionType actionType = RS2::ActionNone);
     ~LC_OverlayBoxAction() override;
     std::unique_ptr<LC_OverlayBoxOptions> m_overlayBoxOptions;
     void drawOverlayBox(const RS_Vector &corner1, const RS_Vector &corner2) const;

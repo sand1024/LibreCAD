@@ -83,7 +83,7 @@ bool RS_ActionDrawLineParallel::doUpdateDistanceByInteractiveInput(const QString
     return false;
 }
 
-bool RS_ActionDrawLineParallel::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionDrawLineParallel::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     RS_Creation::createParallel(*m_coord,m_distance, m_numberToCreate,m_entity, false, ctx.entitiesToAdd);
     return true;
 }

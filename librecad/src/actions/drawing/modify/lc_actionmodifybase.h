@@ -40,7 +40,7 @@ public:
     void setKeepOriginals(bool b);
 protected:
     LC_ActionModifyBase(const char *name,LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone,
-        const QList<RS2::EntityType> &entityTypeList = {}, bool countSelectionDeep = false);
+        const QList<RS2::EntityType> &entityTypeList = {});
     virtual bool isShowModifyActionDialog();
     void onSelectionCompleted(bool singleEntity, bool fromInit) override;
     virtual LC_ModifyOperationFlags* getModifyOperationFlags()=0;

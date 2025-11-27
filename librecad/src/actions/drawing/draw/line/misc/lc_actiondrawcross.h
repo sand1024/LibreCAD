@@ -90,7 +90,7 @@ protected:
     void setupCrossLinePenAndLayer(RS_Line* line) const;
     RS2::LineType getLineTypeForCenterLine() const;
     void collectEntitiesForTriggerOnInit(QList<RS_Entity*> &selectedEntities, QList<RS_Entity*> &entitiesForTrigger) override;
-    void doPrepareTriggerEntities(QList<RS_Entity*>& list) override;
+    bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx) override;
     bool doCheckMayTrigger() override;
     RS_Vector doGetRelativeZeroAfterTrigger() override;
     void doOnLeftMouseButtonRelease(LC_MouseEvent *e, int status, const RS_Vector &snapPoint) override;

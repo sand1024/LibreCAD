@@ -52,7 +52,7 @@ void RS_ActionPolylineDelBetween::drawSnapper() {
     // disable snapper for action
 }
 
-bool RS_ActionPolylineDelBetween::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionPolylineDelBetween::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     RS_Polyline *modifiedPolyline = RS_Modification::deletePolylineNodesBetween(m_polylineToModify, m_vertexToDelete, m_vertexToDelete2, ctx);
     if (modifiedPolyline != nullptr){
         modifiedPolyline->setLayer(m_polylineToModify->getLayer(false));

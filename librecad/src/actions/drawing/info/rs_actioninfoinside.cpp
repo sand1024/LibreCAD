@@ -41,9 +41,10 @@ RS_ActionInfoInside::RS_ActionInfoInside(LC_ActionContext *actionContext)
     , m_contour(std::make_unique<RS_EntityContainer>())
 {
     RS_Document* container = actionContext->getDocument();
-    for(auto* e: container->getEntityList()){
-        if (e->isSelected()) {
-            m_contour->addEntity(e);
+    QList<RS_Entity*> selection;
+    if (container->collectSelected(selection)) {
+        for(auto* e: selection){
+           m_contour->addEntity(e);
         }
     }
 }

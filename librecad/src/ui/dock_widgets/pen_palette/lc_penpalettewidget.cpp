@@ -37,6 +37,7 @@
 #include "lc_penpalettemodel.h"
 #include "lc_penpaletteoptions.h"
 #include "lc_penpaletteoptionsdialog.h"
+#include "lc_undosection.h"
 #include "qc_applicationwindow.h"
 #include "qg_pentoolbar.h"
 #include "rs_entity.h"
@@ -521,25 +522,27 @@ void LC_PenPaletteWidget::applyEditorPenToSelection() const {
 void LC_PenPaletteWidget::doApplyPenAttributesToSelection(RS2::LineType lineType, RS2::LineWidth width, RS_Color color, bool modifyColor) const {
 
     if (m_graphicView != nullptr){
-        RS_AttributesData data;
-        data.pen = RS_Pen(color, width, lineType);
-        data.changeColor = modifyColor;
-        data.changeLineType = lineType != RS2::LineTypeUnchanged;
-        data.changeWidth = width != RS2::WidthUnchanged;
-        data.changeLayer = false;
-
         auto doc = m_graphicView->getDocument();
-        // fixme - rework and move outside?
-        LC_DocumentModificationBatch batch;
-        auto selectedSet                    = doc->getSelectedSet();
+        auto selectedSet = doc->getSelection();
         if (!selectedSet->isEmpty()) {
             QList<RS_Entity*> selectedEntities;
             selectedSet->collectSelectedEntities(selectedEntities);
-            RS_Modification::changeAttributes(selectedEntities, data, batch);
-            doc->startUndoCycle();
-            doc->modify(batch);
-            // fixme - keep entities selected?
-            doc->endUndoCycle();
+            if (!selectedEntities.isEmpty()) {
+                LC_UndoSection undo(doc, m_graphicView->getViewPort());
+                undo.undoableExecute([color, width, lineType, modifyColor, selectedEntities](LC_DocumentModificationBatch& ctx)->bool {
+                    RS_AttributesData data;
+                    data.pen            = RS_Pen(color, width, lineType);
+                    data.changeColor    = modifyColor;
+                    data.changeLineType = lineType != RS2::LineTypeUnchanged;
+                    data.changeWidth    = width != RS2::WidthUnchanged;
+                    data.changeLayer    = false;
+                    RS_Modification::changeAttributes(selectedEntities, data, ctx);
+                    return true;
+                },
+                [](LC_DocumentModificationBatch& ctx, RS_Document* doc)->void {
+                     doc->select(ctx.entitiesToAdd);
+                });
+            }
         }
     }
 }
@@ -569,11 +572,8 @@ void LC_PenPaletteWidget::doFillPenEditorBySelectedEntity(bool resolvePenOnEntit
     // first we collect selected entitites
     QList<RS_Entity *> selectedEntities;
     auto graphic = m_graphicView->getGraphic();
-    foreach (auto e, graphic->getEntityList()) {
-        if (e->isSelected()){
-            selectedEntities << e;
-        }
-    }
+    graphic->collectSelected(selectedEntities);
+
     if (selectedEntities.size() != 1){ // only one entity selected is expected
         showEntitySelectionInfoDialog();
     } else {

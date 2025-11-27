@@ -32,6 +32,7 @@
 #include "lc_graphicviewport.h"
 #include "lc_linemath.h"
 #include "lc_quickinfowidget.h"
+#include "lc_undosection.h"
 #include "qc_applicationwindow.h"
 #include "rs_arc.h"
 #include "rs_circle.h"
@@ -271,7 +272,7 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]]int status, LC_MouseEven
                 } else {
                     // test for an entity to drag:
                     RS_Entity *en =  catchEntity(m_actionData->v1);
-                    if (en && en->isSelected()){
+                    if (en != nullptr && en->isSelected()){
                         RS_Vector vp = en->getNearestRef(m_actionData->v1);
                         if (vp.valid) {
                             m_actionData->v1 = vp;
@@ -510,10 +511,9 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]]int status, LC_MouseEven
             m_actionData->v2 = getSnapAngleAwarePoint(e, m_actionData->v1, mouse, true);
             updateCoordinateWidgetByRelZero(m_actionData->v2);
 
-//            preview->addSelectionFrom(*container,viewport);
-             // fixme - sand - iterating over all entities!!! Rework selection. Add selection manager to the document, after all...
-             for(auto ent: *m_document) {
-                if (ent->isSelected()) {
+            QList<RS_Entity*> selection;
+            if (m_document->collectSelected(selection)) {
+                for (auto ent : selection) {
                     RS_Entity* clone = getClone(ent);
                     m_preview->addEntity(clone);
                 }
@@ -782,34 +782,23 @@ void RS_ActionDefault::onMouseMovingCompleted(LC_MouseEvent* e) {
     m_actionData->v2 = e->snapPoint;
     m_actionData->v2 = getSnapAngleAwarePoint(e, m_actionData->v1, m_actionData->v2);
     deletePreview();
-    RS_MoveData data;
-    data.number               = 0;
-    data.useCurrentLayer      = false;
-    data.useCurrentAttributes = false;
-    data.keepOriginals        = e->isControl;
-    data.offset               = m_actionData->v2 - m_actionData->v1;
 
 
-    // fixme =  ad-hoc document editing operation like in some action. Think about using some reusable utility!!!
-    LC_DocumentModificationBatch ctx;
-    QList<RS_Entity*> selectedEntities;
-    m_document->getSelectedSet()->collectSelectedEntities(selectedEntities);
-    RS_Modification::move(data, selectedEntities, false, ctx);
-    if (ctx.success) {
-        undoCycleStart();
-        if (!ctx.entitiesToAdd.isEmpty()) {
-            setupAndUndoableAdd(ctx.entitiesToAdd, false, false);
-        }
+    LC_UndoSection undo(m_document, m_viewport);
+    undo.undoableExecute([this, e](LC_DocumentModificationBatch& ctx)->bool {
+        RS_MoveData data;
+        data.number               = 0;
+        data.useCurrentLayer      = false;
+        data.useCurrentAttributes = false;
+        data.keepOriginals        = e->isControl;
+        data.offset               = m_actionData->v2 - m_actionData->v1;
 
-        if (!ctx.entitiesToDelete.isEmpty()) {
-            for (const auto ent: ctx.entitiesToDelete) {
-                undoableDeleteEntity(ent);
-            }
-        }
-        undoCycleEnd();
-        m_graphicView->redraw();
-    }
-    // fixme - end of ad-hoc document editing
+        QList<RS_Entity*> selectedEntities;
+        m_document->getSelection()->collectSelectedEntities(selectedEntities);
+        RS_Modification::move(data, selectedEntities, false, ctx);
+        return true;
+    });
+
 
     if (e->isControl) { // allow creation of several copies
         m_actionData->v1 = m_actionData->v2;

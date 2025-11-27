@@ -44,7 +44,7 @@ void LC_ActionEditPasteTransform::init(int status) {
     }
 }
 
-bool LC_ActionEditPasteTransform::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool LC_ActionEditPasteTransform::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     int numX = m_pasteData->arrayXCount;
     int numY = m_pasteData->arrayYCount;
 

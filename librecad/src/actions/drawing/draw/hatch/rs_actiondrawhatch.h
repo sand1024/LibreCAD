@@ -53,12 +53,11 @@ protected:
     std::unique_ptr<RS_HatchData> m_hatchData;
     bool m_bShowArea{true};
     void updateMouseButtonHintsForSelection() override;
-    bool isTriggerUndoable() override {return true;}
     bool isAllowTriggerOnEmptySelection() override;
     RS2::CursorType doGetMouseCursorSelected(int status) override;
     void doSelectEntity(RS_Entity* entityToSelect, bool selectContour) const override;
     bool isEntityAllowedToSelect(RS_Entity *ent) const override;
-    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& modificationData) override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& modificationData) override;
     void doTriggerCompletion(bool success) override;
     void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
 };

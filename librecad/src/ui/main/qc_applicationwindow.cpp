@@ -516,11 +516,8 @@ void QC_ApplicationWindow::slotKillAllActions() {
             gv->switchToDefaultAction();
             auto doc = gv->getDocument();
             if (doc != nullptr) {
-                const RS_EntityContainer::LC_SelectionInfo &selectionInfo = doc->getSelectionInfo();
-
+                const RS_Document::LC_SelectionInfo &selectionInfo = doc->getSelectionInfo();
                 m_actionContext->updateSelectionWidget((int)selectionInfo.count, selectionInfo.length);
-                // m_selectionWidget->setNumber((int)selectionInfo.count);
-                // m_selectionWidget->setTotalLength(selectionInfo.length);
             }
         }
     }

@@ -781,7 +781,7 @@ Doc_plugin_interface::Doc_plugin_interface(LC_ActionContext* actionContext, QWid
     ,m_actionContext{actionContext}{
     
     Q_ASSERT(m_document != nullptr && m_graphicView != nullptr);
-    m_viewport = m_viewport;
+    m_viewport = m_graphicView->getViewPort();
 }
 
 bool Doc_plugin_interface::addToUndo(RS_Entity* current, RS_Entity* modified,

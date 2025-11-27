@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef LC_ActionDrawParabola4Points_H
 #define LC_ActionDrawParabola4Points_H
 
-#include "rs_previewactioninterface.h"
+#include "lc_undoabledocumentmodificationaction.h"
 
 class RS_Vector;
 
@@ -32,7 +32,7 @@ class RS_Vector;
  *
  * @author Dongxu Li
  */
-class LC_ActionDrawParabola4Points : public LC_UndoablePreviewActionInterface {
+class LC_ActionDrawParabola4Points : public LC_SingleEntityCreationAction {
     Q_OBJECT
 public:
     explicit LC_ActionDrawParabola4Points(LC_ActionContext *actionContext);
@@ -60,6 +60,7 @@ protected:
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void updateMouseButtonHints() override;
     bool preparePreview(const RS_Vector& mouse, bool rebuild) const;
-    void doTrigger() override;
+    RS_Entity* doTriggerCreateEntity() override;
+    void doTriggerCompletion(bool success) override;
 };
 #endif

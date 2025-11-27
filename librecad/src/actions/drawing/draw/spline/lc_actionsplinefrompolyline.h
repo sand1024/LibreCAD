@@ -23,13 +23,14 @@
 #ifndef LC_ACTIONSPLINEFROMPOLYLINE_H
 #define LC_ACTIONSPLINEFROMPOLYLINE_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_previewactioninterface.h"
 
 class RS_Layer;
 class RS_Pen;
 class RS_Polyline;
 
-class LC_ActionSplineFromPolyline :public LC_UndoablePreviewActionInterface{
+class LC_ActionSplineFromPolyline :public LC_UndoableDocumentModificationAction{
     Q_OBJECT
 public:
     explicit LC_ActionSplineFromPolyline(LC_ActionContext *actionContext);
@@ -52,7 +53,7 @@ protected:
         SetEntity = InitialActionStatus
     };
 
-    RS_Polyline *m_entityToModify = nullptr;
+    RS_Polyline *m_polyline = nullptr;
     bool m_keepOriginals {false};
     bool m_useCurrentLayer {false};
     bool m_useCurrentAttributes {false};
@@ -63,7 +64,6 @@ protected:
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     RS_Entity* createSplineForPolyline(RS_Entity *p) const;
     void fillControlPointsListFromPolyline(const RS_Polyline *polyline, std::vector<RS_Vector> &controlPoints) const;
-    void setupAndAddCreatedEntity(RS_Entity *createdEntity, RS_Layer *layerToSet, const RS_Pen &penToUse) const;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
@@ -71,7 +71,9 @@ protected:
     RS2::CursorType doGetMouseCursor(int status) override;
     void updateMouseButtonHints() override;
     LC_ActionOptionsWidget *createOptionsWidget() override;
-    void doTrigger() override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
+    void doTriggerSelections(const LC_DocumentModificationBatch& ctx) override;
 };
 
 #endif // LC_ACTIONSPLINEFROMPOLYLINE_H

@@ -201,16 +201,8 @@ protected:
     void initPrevious(int status);
     void preparePromptForInfoCursorOverlay(const QString &msg, const LC_ModifiersInfo &modifiers) const;
 
-    void undoableDeleteEntity(RS_Entity *entity) const;
-    void undoableDeleteEntitiesList(QList<RS_Entity*>& entitiesList) const;
-    void undoableAdd(RS_Undoable *e) const;
-    bool undoCycleAdd(RS_Entity *entity, bool addToContainer = true) const;
-    void undoCycleReplace(RS_Entity* entityToReplace, RS_Entity* entityReplacing) const;
-    void undoableAdd(RS_Entity *entity, bool addToContainer = true) const;
-    void undoableAddWithCurrentAttributes(RS_Entity* e) const;
-    void undoableReplace(RS_Entity* entityToReplace, RS_Entity* entityReplacing) const;
-    void undoCycleEnd() const;
-    void undoCycleStart() const;
+     void undoCycleReplace(RS_Entity* entityToReplace, RS_Entity* entityReplacing) const;
+
     void setPenAndLayerToActive(RS_Entity* e);
     void select(RS_Entity* e) const {m_document->select(e);}
     void select(QList<RS_Entity*> e) const;

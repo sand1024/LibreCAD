@@ -91,7 +91,7 @@ protected:
     void doTriggerCompletion(bool success) override;
     void previewRotatedEntities(RS_RotateData& rotateData) const;
     void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
-    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
 };
 
 #endif

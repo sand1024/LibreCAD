@@ -73,6 +73,6 @@ protected:
     LC_ActionOptionsWidget *createOptionsWidget() override;
 
     // fixme - sand - complete!
-    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& modificationData) override {return true;};
+    bool doTriggerModifications(LC_DocumentModificationBatch& modificationData) override {return true;};
 };
 #endif

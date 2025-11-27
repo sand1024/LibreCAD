@@ -38,7 +38,7 @@ protected:
     void updateMouseButtonHints() override;
     RS_Entity *createModifiedSplineEntity(RS_Entity *e, RS_Vector controlPoint, bool direction) override;
     bool mayModifySplineEntity(RS_Entity *e) override;
-    void doAfterTrigger() override;
+    void doTriggerCompletion(bool success) override;
 };
 
 #endif // LC_ACTIONREMOVESPLINEPOINTS_H

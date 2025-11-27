@@ -46,10 +46,9 @@ protected:
     void updateMouseButtonHints() override;
     RS2::CursorType doGetMouseCursor(int status) override;
     void doTriggerCompletion(bool success) override;
-    RS_Entity* doTriggerCreateEntity() override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
     void doInitialInit() override;
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& pos) override;
-    void prepareDocumentModificationContext(LC_DocumentModificationBatch& ctx) override;
 private:
     /**
      * Polyline entity we're working on.

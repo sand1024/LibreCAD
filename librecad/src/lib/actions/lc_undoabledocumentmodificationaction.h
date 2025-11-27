@@ -26,22 +26,16 @@
 
 #include "rs_previewactioninterface.h"
 
-
 class LC_UndoableDocumentModificationAction: public RS_PreviewActionInterface {
 protected:
     LC_UndoableDocumentModificationAction(const char *name,LC_ActionContext *actionContext,RS2::ActionType actionType = RS2::ActionNone):
      RS_PreviewActionInterface(name, actionContext, actionType){};
     ~LC_UndoableDocumentModificationAction() override = default;
-    void setupAndUndoableAdd(LC_DocumentModificationBatch& ctx);
     void previewEntitiesToAdd(LC_DocumentModificationBatch& ctx) const;
-    virtual bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx)  = 0;
-    virtual void doTriggerCompletion(bool success) {};
-    virtual void clearDocumentModificationContext(LC_DocumentModificationBatch& ctx);
-    virtual void prepareDocumentModificationContext(LC_DocumentModificationBatch& ctx) {}
-    void setupAndUndoableAdd(const QList<RS_Entity*>& entitiesToInsert, bool setActiveLayer, bool setActivePen); ;
-    bool triggerModifyDocumentContent();
+    virtual bool doTriggerModifications(LC_DocumentModificationBatch& ctx)  = 0;
+    virtual void doTriggerCompletion(bool success) {}
+    virtual void doTriggerSelections(const LC_DocumentModificationBatch& ctx){};
     void doTrigger() override;
-    bool isTriggerUndoable() override {return true;}
 };
 
 
@@ -50,7 +44,7 @@ protected:
     LC_SingleEntityCreationAction(const char *name,LC_ActionContext *actionContext,RS2::ActionType actionType = RS2::ActionNone):
     LC_UndoableDocumentModificationAction(name, actionContext, actionType){};
     ~LC_SingleEntityCreationAction() override = default;
-    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& modificationData) override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& modificationData) override;
     virtual RS_Entity* doTriggerCreateEntity() = 0;
 };
 #endif

@@ -42,7 +42,7 @@ public:
     ~RS_ActionModifyExplodeText() override;
 protected:
     void updateMouseButtonHintsForSelection() override;
-    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& modificationData) override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& modificationData) override;
     void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
 };
 

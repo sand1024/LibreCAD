@@ -32,7 +32,7 @@ LC_ActionModifyAlignRef::LC_ActionModifyAlignRef(LC_ActionContext *actionContext
   : LC_ActionModifyBase("ModifyAlignRef", actionContext, RS2::ActionModifyAlignRef) {
 }
 
-bool LC_ActionModifyAlignRef::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool LC_ActionModifyAlignRef::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     prepareAlignRefData(m_actionData.targetPoint2);
     RS_Modification::alignRef(m_actionData.data, m_selectedEntities, false, ctx);
     ctx.setActiveLayerAndPen(false, false);

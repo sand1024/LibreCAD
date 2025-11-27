@@ -72,11 +72,11 @@ void LC_ActionDrawLineSnake::resetPoints(){
 
 /**
  * create line segment based on points data
- * @param list  list of entities to add created line
  */
-void LC_ActionDrawLineSnake::doPrepareTriggerEntities(QList<RS_Entity *> &list){
+bool LC_ActionDrawLineSnake::doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx){
     auto *line = new RS_Line(m_document, m_actionData->data);
-    list << line;
+    ctx += line;
+    return true;
 }
 
 void LC_ActionDrawLineSnake::doSetStartPoint(RS_Vector start){

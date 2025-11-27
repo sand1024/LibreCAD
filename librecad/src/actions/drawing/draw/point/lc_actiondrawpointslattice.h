@@ -23,9 +23,10 @@
 #ifndef LC_ACTIONDRAWPOINTSLATTICE_H
 #define LC_ACTIONDRAWPOINTSLATTICE_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_previewactioninterface.h"
 
-class LC_ActionDrawPointsLattice:public LC_UndoablePreviewActionInterface{
+class LC_ActionDrawPointsLattice:public LC_UndoableDocumentModificationAction{
    Q_OBJECT
 public:
     explicit LC_ActionDrawPointsLattice(LC_ActionContext *actionContext);
@@ -67,7 +68,8 @@ protected:
     void createPointsLine(RS_Vector start, RS_Vector end, int count, QVector<RS_Vector> &points);
     void createPointsLattice(RS_Vector vector, QVector<RS_Vector> &points);
     RS_Vector getLastPointPosition(RS_Vector &pos, bool alternate) const;
-    void doTrigger() override;
+   bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
+   void doTriggerCompletion(bool success) override;
 };
 
 #endif // LC_ACTIONDRAWPOINTSLATTICE_H

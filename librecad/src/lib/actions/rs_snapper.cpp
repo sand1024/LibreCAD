@@ -860,7 +860,9 @@ RS_Entity* RS_Snapper::catchEntity(const RS_Vector& coord, const EntityTypeList&
             RS_EntityContainer ec(nullptr, false);
             for (auto t0: enTypeList) {
                 RS_Entity *en = catchEntity(coord, t0, level);
-                if (en) ec.addEntity(en);
+                if (en != nullptr) {
+                    ec.addEntity(en);
+                }
 //			if(en) {
 //            std::cout<<__FILE__<<" : "<<__func__<<" : lines "<<__LINE__<<std::endl;
 //            std::cout<<"caught id= "<<en->getId()<<std::endl;

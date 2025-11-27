@@ -173,7 +173,7 @@ protected:
     void doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
     void stateUpdated(bool toMainStatus);
     double getActualBaseAngle() const;
-    void doPrepareTriggerEntities(QList<RS_Entity *> &list) override;
+    bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx) override;
     bool doCheckMayTrigger() override;
     void doAfterTrigger() override;
     RS_Vector doGetRelativeZeroAfterTrigger() override;

@@ -29,12 +29,12 @@
 class LC_ActionInteractivePickBase :public RS_PreviewActionInterface {
     Q_OBJECT
 public:
-    explicit LC_ActionInteractivePickBase(const char* name, LC_ActionContext* actionContext, RS2::ActionType actionType);
     void doTrigger() override;
-    ~LC_ActionInteractivePickBase() override = default;
     void keyPressEvent(QKeyEvent* e) override;
     bool isSupportsPredecessorAction() override {return true;}
 protected:
+    explicit LC_ActionInteractivePickBase(const char* name, LC_ActionContext* actionContext, RS2::ActionType actionType);
+    ~LC_ActionInteractivePickBase() override = default;
     void skipInteractiveInput() const;
     void storeInteractiveInput();
     virtual void doSetInteractiveInputValue(LC_ActionContext::InteractiveInputInfo* interactiveInputInfo) = 0;

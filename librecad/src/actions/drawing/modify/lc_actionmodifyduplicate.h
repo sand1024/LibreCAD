@@ -56,7 +56,7 @@ protected:
     LC_ActionOptionsWidget* createOptionsWidget() override;
     void doOnLeftMouseButtonRelease(LC_MouseEvent *e, int status, const RS_Vector &snapPoint) override;
     bool doCheckMayTrigger() override;
-    void doPrepareTriggerEntities(QList<RS_Entity *> &list) override;
+    bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx) override;
     bool isSetActivePenAndLayerOnTrigger() override;
     bool doCheckMayTriggerOnInit(int status) override;
     bool isAcceptSelectedEntityToTriggerOnInit(RS_Entity *pEntity) override;

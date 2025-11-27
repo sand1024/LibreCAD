@@ -30,7 +30,7 @@
 #include "rs_entitycontainer.h"
 
 LC_ActionModifyAlignSingle::LC_ActionModifyAlignSingle(LC_ActionContext *actionContext)
-  :RS_PreviewActionInterface("ModifyAlignSingle", actionContext, RS2::ActionModifyAlignOne){
+  :LC_UndoableDocumentModificationAction("ModifyAlignSingle", actionContext, RS2::ActionModifyAlignOne){
 }
 
 void LC_ActionModifyAlignSingle::init(int status) {
@@ -47,15 +47,20 @@ void LC_ActionModifyAlignSingle::doInitWithContextEntity(RS_Entity* contextEntit
     m_entityToAlign = contextEntity;
 }
 
-void LC_ActionModifyAlignSingle::doTrigger() {
+bool LC_ActionModifyAlignSingle::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     if (m_entityToAlign != nullptr) {
         RS_Vector target = LC_Align::getReferencePoint(m_alignMin, m_alignMax, hAlign, vAlign);
         RS_Entity* clone = LC_Align::createCloneMovedToTarget(m_entityToAlign, target, true, hAlign, vAlign);
         if (clone != nullptr) {
             clone->clearSelectionFlag();
-            undoCycleReplace(m_entityToAlign, clone);
+            ctx.replace(m_entityToAlign, clone);
+            ctx.dontSetActiveLayerAndPen();
         }
     }
+    return true;
+}
+
+void LC_ActionModifyAlignSingle::doTriggerCompletion(bool success) {
     m_entityToAlign = nullptr;
     if (m_finishActionAfterTrigger){
         setStatus(-1);
@@ -69,7 +74,7 @@ void LC_ActionModifyAlignSingle::doTrigger() {
 }
 
 void LC_ActionModifyAlignSingle::previewAlign(RS_Entity* entity, double verticalRef, bool drawVertical,
-    double horizontalRef, bool drawHorizontal, const RS_Vector& alignMin, const RS_Vector& alignMax) {
+                                              double horizontalRef, bool drawHorizontal, const RS_Vector& alignMin, const RS_Vector& alignMax) const {
     RS_Vector offset;
     if (entity != nullptr){
         highlightHover(entity);

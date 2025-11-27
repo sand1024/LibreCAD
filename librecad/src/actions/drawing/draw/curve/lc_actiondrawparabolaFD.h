@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef LC_ActionDrawParabolaFD_H
 #define LC_ActionDrawParabolaFD_H
 
-#include "rs_previewactioninterface.h"
+#include "lc_undoabledocumentmodificationaction.h"
 
 class RS_Vector;
 class LC_Parabola;
@@ -33,7 +33,7 @@ class LC_Parabola;
  *
  * @author Dongxu Li
  */
-class LC_ActionDrawParabolaFD : public LC_UndoablePreviewActionInterface {
+class LC_ActionDrawParabolaFD : public LC_SingleEntityCreationAction {
     Q_OBJECT
 public:
     explicit LC_ActionDrawParabolaFD(LC_ActionContext *actionContext);
@@ -60,6 +60,7 @@ protected:
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void doTrigger() override;
+    RS_Entity* doTriggerCreateEntity() override;
+    void doTriggerCompletion(bool success) override;
 };
 #endif

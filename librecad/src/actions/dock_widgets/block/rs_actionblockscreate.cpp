@@ -54,7 +54,7 @@ void RS_ActionBlocksCreate::onSelectionCompleted([[maybe_unused]]bool singleEnti
     }
 }
 
-bool RS_ActionBlocksCreate::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionBlocksCreate::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     if (m_graphic == nullptr) {
         return false;
     }

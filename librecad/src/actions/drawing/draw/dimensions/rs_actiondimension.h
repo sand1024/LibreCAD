@@ -42,7 +42,6 @@ class RS_ActionDimension:public LC_SingleEntityCreationAction {
     Q_OBJECT
 public:
     void init(int status) override;
-
     QString getText() const;
     void setText(const QString &t) const;
     const QString &getLabel() const;

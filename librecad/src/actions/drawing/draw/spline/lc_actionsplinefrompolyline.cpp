@@ -34,7 +34,7 @@
 #include "rs_spline.h"
 
 LC_ActionSplineFromPolyline::LC_ActionSplineFromPolyline(LC_ActionContext *actionContext)
-    :LC_UndoablePreviewActionInterface("ActionSplineFromPolyline", actionContext, RS2::ActionDrawSplineFromPolyline) {
+    :LC_UndoableDocumentModificationAction("ActionSplineFromPolyline", actionContext, RS2::ActionDrawSplineFromPolyline) {
 }
 
 void LC_ActionSplineFromPolyline::doInitWithContextEntity(RS_Entity* contextEntity, [[maybe_unused]]const RS_Vector& clickPos) {
@@ -43,8 +43,8 @@ void LC_ActionSplineFromPolyline::doInitWithContextEntity(RS_Entity* contextEnti
    }
 }
 
-void LC_ActionSplineFromPolyline::doTrigger() {
-    RS_Entity* createdEntity = createSplineForPolyline(m_entityToModify);
+bool LC_ActionSplineFromPolyline::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
+    auto createdEntity = createSplineForPolyline(m_polyline);
 
     if (createdEntity != nullptr) {
         RS_Layer* layerToSet;
@@ -52,7 +52,7 @@ void LC_ActionSplineFromPolyline::doTrigger() {
             layerToSet = m_graphicView->getGraphic()->getActiveLayer();
         }
         else {
-            layerToSet = m_entityToModify->getLayer();
+            layerToSet = m_polyline->getLayer();
         }
 
         RS_Pen penToUse;
@@ -60,30 +60,40 @@ void LC_ActionSplineFromPolyline::doTrigger() {
             penToUse = m_graphicView->getGraphic()->getActivePen();
         }
         else {
-            penToUse = m_entityToModify->getPen(false);
+            penToUse = m_polyline->getPen(false);
         }
+        createdEntity->setPen(penToUse);
+        createdEntity->setLayer(layerToSet);
 
-        setupAndAddCreatedEntity(createdEntity, layerToSet, penToUse);
+        ctx.dontSetActiveLayerAndPen();
+
+        ctx += createdEntity;
 
         if (!m_keepOriginals) {
-            undoableDeleteEntity(m_entityToModify);
+            ctx -= m_polyline;
         }
+        return true;
+    }
+    return false;
+}
 
-        m_entityToModify = nullptr;
+void LC_ActionSplineFromPolyline::doTriggerSelections(const LC_DocumentModificationBatch& ctx) {
+    if (ctx.success) {
+        if (m_keepOriginals) {
+            unselect(m_polyline);
+        }
+        select(ctx.entitiesToAdd);
+    }
+}
+
+void LC_ActionSplineFromPolyline::doTriggerCompletion(bool success) {
+    if (success) {
+        m_polyline = nullptr;
     }
 }
 
 void LC_ActionSplineFromPolyline::finish(bool updateTB) {
     RS_PreviewActionInterface::finish(updateTB);
-}
-
-void LC_ActionSplineFromPolyline::setupAndAddCreatedEntity(RS_Entity *createdEntity, RS_Layer *layerToSet, const RS_Pen &penToUse) const {
-    // todo - sand - isn't it a candidates for some reusable util?
-    createdEntity->setParent(m_document);
-    createdEntity->setPen(penToUse);
-    createdEntity->setLayer(layerToSet);
-    select(createdEntity);
-    undoableAdd(createdEntity);
 }
 
 void LC_ActionSplineFromPolyline::onMouseMoveEvent(int status, LC_MouseEvent *e) {
@@ -105,7 +115,7 @@ void LC_ActionSplineFromPolyline::onMouseMoveEvent(int status, LC_MouseEvent *e)
 }
 
 void LC_ActionSplineFromPolyline::setEntityToModify(RS_Entity* polyline) {
-    m_entityToModify = dynamic_cast<RS_Polyline *>(polyline);
+    m_polyline = dynamic_cast<RS_Polyline *>(polyline);
     trigger();
 }
 

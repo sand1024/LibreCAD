@@ -201,7 +201,8 @@ void LC_ActionDrawSliceDivide::clearTickData() {
     m_ticksData.clear();
 }
 
-void LC_ActionDrawSliceDivide::doPrepareTriggerEntities(QList<RS_Entity *> &list){
+
+bool LC_ActionDrawSliceDivide::doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx){
     clearTickData();
     int rtti = m_entity->rtti();
     RS_Entity *entityToDelete = nullptr;
@@ -212,7 +213,7 @@ void LC_ActionDrawSliceDivide::doPrepareTriggerEntities(QList<RS_Entity *> &list
             prepareLineTicks(lineEntity);
             bool mayDivide = checkShouldDivideEntity(lineEntity, tr("Line"));
             if (mayDivide){
-                createLineSegments(lineEntity, list);
+                createLineSegments(lineEntity, ctx.entitiesToAdd);
                 entityToDelete = lineEntity;
             }
             break;
@@ -222,7 +223,7 @@ void LC_ActionDrawSliceDivide::doPrepareTriggerEntities(QList<RS_Entity *> &list
             prepareArcTicks(arcEntity);
             bool mayDivide = checkShouldDivideEntity(arcEntity, tr("Arc"));
             if (mayDivide){
-                createArcSegments(arcEntity, list);
+                createArcSegments(arcEntity, ctx.entitiesToAdd);
                 entityToDelete = arcEntity;
             }
             break;
@@ -232,7 +233,7 @@ void LC_ActionDrawSliceDivide::doPrepareTriggerEntities(QList<RS_Entity *> &list
             prepareCircleTicks(circleEntity);
             bool mayDivide = checkShouldDivideEntity(circleEntity, tr("Circle"));
             if (mayDivide){
-                createCircleSegments(circleEntity, list);
+                createCircleSegments(circleEntity, ctx.entitiesToAdd);
                 entityToDelete = circleEntity;
             }
             break;
@@ -243,7 +244,7 @@ void LC_ActionDrawSliceDivide::doPrepareTriggerEntities(QList<RS_Entity *> &list
 
     // delete original entity, if necessary
     if (entityToDelete != nullptr){
-        undoableDeleteEntity(entityToDelete);
+        ctx -= entityToDelete;
     }
 
     bool hasTickLength = LC_LineMath::isMeaningful(m_tickLength);
@@ -256,10 +257,11 @@ void LC_ActionDrawSliceDivide::doPrepareTriggerEntities(QList<RS_Entity *> &list
                 auto *line = new RS_Line(m_document, tick->tickLine);
                 // for ticks, we'll always use current pen and layer
                 setPenAndLayerToActive(line);
-                list<<line;
+                ctx += line;
             }
         }
     }
+    return true;
 }
 
 void LC_ActionDrawSliceDivide::doOnLeftMouseButtonRelease(LC_MouseEvent *e, int status, [[maybe_unused]]const RS_Vector &snapPoint){
@@ -311,7 +313,7 @@ void LC_ActionDrawSliceDivide::createLineSegments(RS_Line *pLine, QList<RS_Entit
     uint count = m_ticksData.size();
     if (count > 2){ // we always set 2 ticks for edges
         RS_Pen originalPen = pLine->getPen(false);
-        RS_Layer *originalLayer = pLine->getLayer();
+        RS_Layer *originalLayer = pLine->getLayer(false);
 
         for (uint i = 1; i < count; i++) {
             TickData* startTick = m_ticksData.at(i - 1);

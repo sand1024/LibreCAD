@@ -52,7 +52,7 @@ void RS_ActionModifyCut::doInitWithContextEntity(RS_Entity* contextEntity, [[may
     }
 }
 
-bool RS_ActionModifyCut::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionModifyCut::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     if (isAtomic(m_cutEntity) && m_cutCoord->valid && m_cutEntity->isPointOnEntity(*m_cutCoord)){
         m_cutEntity->setHighlighted(false);
         RS_Modification::cut(*m_cutCoord, static_cast<RS_AtomicEntity*>(m_cutEntity), ctx);

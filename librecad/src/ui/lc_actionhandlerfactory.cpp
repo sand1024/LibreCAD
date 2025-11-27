@@ -249,8 +249,7 @@ namespace InnerFactory{
                     // DO we need to call some form of a 'clean' function?
                     view->killAllActions();
                     auto document = ctx->getDocument();
-                    RS_Selection s(document, view->getViewPort());
-                    s.selectAll(false);
+                    RS_Selection::unselectAllInDocument(document, view->getViewPort());
 
                     auto selectionInfo = document->getSelectionInfo();
                     ctx->updateSelectionWidget(selectionInfo.count, selectionInfo.length);

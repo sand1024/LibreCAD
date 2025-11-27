@@ -45,7 +45,7 @@ LC_ActionSplineExplode::LC_ActionSplineExplode(LC_ActionContext *actionContext)
     :LC_ActionSplineModifyBase("SplineExplode", actionContext, m_actionType = RS2::ActionDrawSplineExplode) {
 }
 
-void LC_ActionSplineExplode::doTrigger() {
+bool LC_ActionSplineExplode::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     int segmentsCount = obtainSegmentsCount();
     std::vector<RS_Vector> strokePoints;
     bool closed;
@@ -67,9 +67,13 @@ void LC_ActionSplineExplode::doTrigger() {
             penToUse = m_entityToModify->getPen(false);
         }
 
+        ctx.dontSetActiveLayerAndPen();
+
         if (m_createPolyline) {
             RS_Entity* createdEntity = createPolylineByVertexes(strokePoints, closed);
-            setupAndAddCreatedEntity(createdEntity, layerToSet, penToUse);
+            createdEntity->setPen(penToUse);
+            createdEntity->setLayer(layerToSet);
+            ctx += createdEntity;
         }
         else {
             RS_Vector startPoint = strokePoints.at(0);
@@ -77,32 +81,41 @@ void LC_ActionSplineExplode::doTrigger() {
             for (unsigned int i = 1; i < strokePoints.size(); i++) {
                 RS_Vector end            = strokePoints.at(i);
                 RS_Entity* createdEntity = new RS_Line(m_document, startPoint, end);
-                setupAndAddCreatedEntity(createdEntity, layerToSet, penToUse);
+                createdEntity->setPen(penToUse);
+                createdEntity->setLayer(layerToSet);
+                ctx += createdEntity;
                 startPoint = end;
             }
             if (closed) {
                 RS_Entity* createdEntity = new RS_Line(m_document, startPoint, firstPoint);
-                setupAndAddCreatedEntity(createdEntity, layerToSet, penToUse);
+                createdEntity->setPen(penToUse);
+                createdEntity->setLayer(layerToSet);
+                ctx += createdEntity;
             }
         }
         if (!m_keepOriginals) {
-            undoableDeleteEntity(m_entityToModify);
+            ctx -= m_entityToModify;
         }
-
-        m_entityToModify = nullptr;
+        return true;
     }
+    return false;
+}
+
+void LC_ActionSplineExplode::doTriggerSelections(const LC_DocumentModificationBatch& ctx) {
+    if (ctx.success) {
+        if (m_keepOriginals) {
+            unselect(m_entityToModify);
+        }
+        select(ctx.entitiesToAdd);
+    }
+}
+
+void LC_ActionSplineExplode::doTriggerCompletion(bool success) {
+    m_entityToModify = nullptr;
 }
 
 bool LC_ActionSplineExplode::mayModifySplineEntity(RS_Entity* e) {
     return e != nullptr && g_enTypeList.contains(e->rtti());
-}
-
-void LC_ActionSplineExplode::setupAndAddCreatedEntity(RS_Entity *createdEntity, RS_Layer *layerToSet, const RS_Pen &penToUse) const {
-    createdEntity->setParent(m_document);
-    createdEntity->setPen(penToUse);
-    createdEntity->setLayer(layerToSet);
-    select(createdEntity);
-    undoableAdd(createdEntity);
 }
 
 void LC_ActionSplineExplode::onMouseMove(RS_Vector mouse, int status, LC_MouseEvent *e) {

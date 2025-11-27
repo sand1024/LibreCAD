@@ -260,7 +260,7 @@ static void drawGraphic(RS_Graphic* graphic, QPrinter& printer,
                         printer.height() - (marginTop + marginBottom) * printerFy);
 
     LC_GraphicViewport viewport;
-    viewport.setContainer(graphic);
+    viewport.setDocument(graphic);
     viewport.setSize(printer.width(), printer.height());
     viewport.setBorders(0,0,0,0);
 

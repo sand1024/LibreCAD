@@ -37,13 +37,9 @@
 class RS_ActionDrawLinePolygonCenCor : public LC_ActionDrawLinePolygonBase {
 Q_OBJECT
 public:
-    RS_ActionDrawLinePolygonCenCor(LC_ActionContext *actionContext);
+    explicit RS_ActionDrawLinePolygonCenCor(LC_ActionContext *actionContext);
     ~RS_ActionDrawLinePolygonCenCor() override;
 protected:
-    /* Status
-        SetPoint1 - Setting center.
-        SetPoint2 - Setting corner.
-    */
     QString getPoint2Hint() const override;
     void preparePolygonInfo(PolygonInfo &polygonInfo, const RS_Vector &snap) override;
 };

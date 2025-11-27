@@ -48,7 +48,7 @@ class RS_GraphicView;
  *
  * @author Andrew Mustun
 */
-class RS_ActionDrawPolyline : public LC_SingleEntityCreationAction {
+class RS_ActionDrawPolyline : public LC_UndoableDocumentModificationAction {
     Q_OBJECT
 public:
     enum SegmentMode {
@@ -62,7 +62,7 @@ public:
         // RadAngCenp
     };
 
-    RS_ActionDrawPolyline(LC_ActionContext *actionContext);
+    explicit RS_ActionDrawPolyline(LC_ActionContext *actionContext);
     ~RS_ActionDrawPolyline() override;
     void reset() const;
     void init(int status) override;
@@ -164,6 +164,6 @@ protected:
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angle) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
     void doTriggerCompletion(bool success) override;
-    RS_Entity* doTriggerCreateEntity() override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
 };
 #endif

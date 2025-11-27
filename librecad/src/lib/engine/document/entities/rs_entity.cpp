@@ -193,14 +193,13 @@ void RS_Entity::scaleBorders(const RS_Vector& center, const RS_Vector& factor){
 }
 
 void RS_Entity::addToSelectionSet(bool select, RS_Document* doc) {
-    if (doc != nullptr) {
-        auto selectedSet = doc->getSelectedSet();
-        if (select) {
-            selectedSet->add(this);
-        }
-        else {
-            selectedSet->remove(this);
-        }
+    Q_ASSERT(doc != nullptr);
+    auto selectedSet = doc->getSelection();
+    if (select) {
+        selectedSet->add(this);
+    }
+    else {
+        selectedSet->remove(this);
     }
 }
 

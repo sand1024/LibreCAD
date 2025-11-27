@@ -23,6 +23,7 @@
 #include "lc_printviewportrenderer.h"
 
 #include "lc_graphicviewport.h"
+#include "rs_document.h"
 #include "rs_entitycontainer.h"
 #include "rs_math.h"
 #include "rs_painter.h"
@@ -31,15 +32,14 @@ class RS_EntityContainer;
 
 LC_PrintViewportRenderer::LC_PrintViewportRenderer(LC_GraphicViewport *viewport, RS_Painter* p)
    :LC_GraphicViewportRenderer(viewport, nullptr)
-    ,painter{p}
-{
+    ,painter{p}{
    setBackground({255,255,255});
 }
 
 
 void LC_PrintViewportRenderer::doRender() {
     setupPainter(painter);
-    RS_EntityContainer *container = viewport->getContainer();
+    RS_EntityContainer *container = viewport->getDocument();
     container->draw(painter);
 }
 

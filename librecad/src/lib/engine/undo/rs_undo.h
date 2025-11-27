@@ -49,9 +49,6 @@ public:
 
     virtual bool undo();
     virtual bool redo();
-    virtual void startUndoCycle();
-    virtual void endUndoCycle();
-    virtual void addUndoable(RS_Undoable* u);
     /**
 	  *\brief enable/disable redo/undo buttons in main application window
 	  *\author: Dongxu Li
@@ -63,6 +60,10 @@ protected:
     virtual bool hasUndoable();
     virtual int countUndoCycles();
     virtual int countRedoCycles();
+
+    virtual void startUndoCycle();
+    virtual void endUndoCycle();
+    virtual void addUndoable(RS_Undoable* u);
 
     virtual void fireUndoStateChanged([[maybe_unused]]bool undoAvailable, [[maybe_unused]] bool redoAvailable) const {};
     virtual void startBulkUndoablesCleanup() = 0;

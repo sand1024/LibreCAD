@@ -52,7 +52,7 @@ protected:
 
     std::unique_ptr<RS_Vector> m_referencePoint;
 
-    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
     void doTriggerCompletion(bool success) override;
 
     void onCoordinateEvent(int status, bool isZero, const RS_Vector& pos) override;

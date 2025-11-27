@@ -280,7 +280,7 @@ void LC_Printing::Print(QC_MDIWindow &mdiWindow, PrinterType printerType)
                             printerHeight - (margins.top() + margins.bottom()) * printerFy);
 
         LC_GraphicViewport viewport;
-        viewport.setContainer(graphic);
+        viewport.setDocument(graphic);
         viewport.setBorders(0, 0, 0, 0);
         viewport.setSize(printerWidth, printerHeight);
 

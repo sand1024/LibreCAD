@@ -74,8 +74,7 @@ protected:
     void createEntitiesForArc(RS_Arc *arc, RS_Vector &snap, QList<RS_Entity *> &list, bool preview) const;
     void doOnLeftMouseButtonRelease(LC_MouseEvent *e, int status, const RS_Vector &snapPoint) override;
     bool doCheckMayTrigger() override;
-    void performTriggerDeletions() override;
-    void doPrepareTriggerEntities(QList<RS_Entity *> &list) override;
+    bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx) override;
     RS2::CursorType doGetMouseCursor(int status) override;
     bool isSetActivePenAndLayerOnTrigger() override;
     void createArcEntity(const RS_ArcData &arcData, bool preview, const RS_Pen &pen, RS_Layer *layer, QList<RS_Entity *> &list) const;

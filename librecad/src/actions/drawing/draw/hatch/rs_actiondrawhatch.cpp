@@ -77,102 +77,88 @@ bool RS_ActionDrawHatch::isAllowTriggerOnEmptySelection() {
     return false;
 }
 
-void RS_ActionDrawHatch::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
-   // fixme - complete
-}
-
-bool RS_ActionDrawHatch::doTriggerModificationsPrepare(LC_DocumentModificationBatch& modificationData) {
+bool RS_ActionDrawHatch::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     // fixme - complete ! !!!!
     RS_DEBUG->print("RS_ActionDrawHatch::trigger()");
 
+    LC_SelectedSet* selection = m_document->getSelection();
+    QList<RS_Entity*> selectedEntities;
+    selection->collectSelectedEntities(selectedEntities);
+
+    QList<RS_Entity*> entitiesList;
+    // deselect unhatchable entities:
+    for (auto e : selectedEntities) {
+        if (!hatchAble(e)) {
+            unselect(e);
+        }
+        else {
+            entitiesList.push_back(e); // store to later use and to avoid full traversal
+        }
+    }
+
+    // look for selected contours:
+    bool hasContour = !entitiesList.isEmpty();
+    if (!hasContour) {
+        LC_ERR << "RS_ActionDrawHatch:: " << __func__ << "(): line " << __LINE__ << ", no contour selected\n";
+        return false;
+    }
     RS_Hatch tmp(m_document, *m_hatchData);
     setPenAndLayerToActive(&tmp);
 
+    // fixme - sand - todo - Hatches may be automatically put into some specific layer (like dimensional) based on settings
+
+    // fixme - how to validate the hatch BEFORE displaying the dialog? Dialog is not needed if no valid hatch contour
     if (RS_DIALOGFACTORY->requestHatchDialog(&tmp, m_viewport)) {
         *m_hatchData = tmp.getData();
-
-        LC_SelectedSet* selection = m_document->getSelectedSet();
-        QList<RS_Entity*> entitiesList;
-
-        // deselect unhatchable entities:
-        for(auto e: *m_document) {
-            if (!hatchAble(e)) {
-                entitiesList.push_back(e);
-            }
-        }
-        for (const auto e: entitiesList) {
-            unselect(e);
-        }
-        entitiesList.clear();
-
-        // fixme - sand -  iteration over all entities in container... Is it really necessary????
-        std::vector<RS_Entity*> entities = lc::LC_ContainerTraverser{*m_document, RS2::ResolveAll}.entities();
-        for (RS_Entity* e: entities) {
-            if (e->isSelected()){
-                if (!hatchAble(e)) {
-                    unselect(e);
-                }
-                else {
-                    entitiesList.push_back(e); // store to later use and to avoid full traversal
-                }
-            }
-        }
-
-        // look for selected contours:
-        bool hasContour = !selection->isEmpty();
-        if (!hasContour){
-            LC_ERR << "RS_ActionDrawHatch:: "<<__func__<<"(): line "<<__LINE__<<", no contour selected\n";
-            return false;
-        }
-
-        auto* hatch = new RS_Hatch(m_document, *m_hatchData);
-        hatch->setPenAndLayerToActive();
-        auto *loop = new RS_EntityContainer(hatch);
+        auto* hatch  = new RS_Hatch(m_document, *m_hatchData);
+        auto* loop = new RS_EntityContainer(hatch);
         loop->setPen(RS_Pen(RS2::FlagInvalid));
 
         // add selected contour:
-        for (RS_Entity* e: entitiesList) {
+        for (RS_Entity* e : entitiesList) {
             RS_Entity* clone = e->clone();
             clone->setPen(RS_Pen(RS2::FlagInvalid));
             clone->reparent(loop);
             loop->addEntity(clone);
         }
 
-        unselectAll();
-
         hatch->addEntity(loop);
-        if (hatch->validate()){
-            undoableAdd(hatch);
+        if (hatch->validate()) {
             hatch->update();
-
             bool printArea = true;
-            switch( hatch->getUpdateError()) {
-                case RS_Hatch::HATCH_OK :
+            bool ok        = false;
+            switch (hatch->getUpdateError()) {
+                case RS_Hatch::HATCH_OK:
+                    ctx += hatch;
+                    ok = true;
                     commandMessage(tr("Hatch created successfully."));
                     break;
-                case RS_Hatch::HATCH_INVALID_CONTOUR :
+                case RS_Hatch::HATCH_INVALID_CONTOUR:
                     commandMessage(tr("Hatch Error: Invalid contour found!"));
                     printArea = false;
                     break;
-                case RS_Hatch::HATCH_PATTERN_NOT_FOUND :
+                case RS_Hatch::HATCH_PATTERN_NOT_FOUND:
                     commandMessage(tr("Hatch Error: Pattern not found!"));
                     break;
-                case RS_Hatch::HATCH_TOO_SMALL :
+                case RS_Hatch::HATCH_TOO_SMALL:
                     commandMessage(tr("Hatch Error: Contour or pattern too small!"));
                     break;
-                case RS_Hatch::HATCH_AREA_TOO_BIG :
+                case RS_Hatch::HATCH_AREA_TOO_BIG:
                     commandMessage(tr("Hatch Error: Contour too big!"));
                     break;
-                default :
+                default:
                     commandMessage(tr("Hatch Error: Undefined Error!"));
                     printArea = false;
                     break;
             }
-            if (m_bShowArea && printArea){
-                commandMessage(tr("Total hatch area = %1").
-                    arg(hatch->getTotalArea(), 12, 'g', 10));
+            if (m_bShowArea && printArea) {
+                commandMessage(tr("Total hatch area = %1").arg(hatch->getTotalArea(), 12, 'g', 10));
             }
-        } else {
+            if (!ok) {
+                delete hatch;
+            }
+        }
+        else {
             delete hatch;
             commandMessage(tr("Invalid hatch area. Please check that the entities chosen form one or more closed contours."));
         }
@@ -180,7 +166,12 @@ bool RS_ActionDrawHatch::doTriggerModificationsPrepare(LC_DocumentModificationBa
     return true;
 }
 
+void RS_ActionDrawHatch::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+    // fixme - complete
+}
+
 void RS_ActionDrawHatch::doTriggerCompletion(bool success) {
+    unselectAll();
     finish(false);
 }
 

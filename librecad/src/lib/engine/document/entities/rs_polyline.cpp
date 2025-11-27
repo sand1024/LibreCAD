@@ -242,9 +242,9 @@ std::unique_ptr<RS_Entity> RS_Polyline::createVertex(const RS_Vector& v, double 
 
         entity = std::make_unique<RS_Arc>(this, d);
     }
-    entity->setSelectionFlag(isSelected());
-    entity->setPen(RS_Pen(RS2::FlagInvalid));
-    entity->setLayer(nullptr);
+    // entity->setSelectionFlag(isSelected());  // fixme - what for? entity is part of the polyline, selected status is from polyline..
+    // entity->setPen(RS_Pen(RS2::FlagInvalid));
+    // entity->setLayer(nullptr);
     return entity;
 }
 
@@ -615,7 +615,7 @@ void RS_Polyline::scale(const RS_Vector& center, const RS_Vector& factor) {
                                   arc->getAngle1(), arc->getAngle2(),
                                   arc->isReversed()};
                 auto* ellipse = new RS_Ellipse(this, ed);
-                ellipse->setSelected(arc->isSelected());
+                ellipse->setSelected(arc->isSelected());  // fixme - review what for? this is part of polyline anyway...
                 ellipse->setPen(RS_Pen(RS2::FlagInvalid));
                 ellipse->setLayer(nullptr);
                 setEntityAt(i, ellipse);
@@ -745,7 +745,7 @@ std::pair<RS_Arc*, double> RS_Polyline::convertToArcPair(const RS_Ellipse* ellip
                  ellipse->isReversed());
 
     auto arc = new RS_Arc(ellipse->getParent(), d);
-    arc->setSelected(ellipse->isSelected());
+    arc->setSelected(ellipse->isSelected()); // fixme - review what for? this is part of polyline anyway...
     arc->setPen(RS_Pen(RS2::FlagInvalid));
     arc->setLayer(nullptr);
 

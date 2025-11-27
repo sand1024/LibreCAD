@@ -127,7 +127,7 @@ void RS_ActionModifyRound::drawSnapper() {
     // disable snapper for action   
 }
 
-bool RS_ActionModifyRound::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionModifyRound::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     auto roundResult = m_actionData->roundResult;
     if (roundResult.isPolyline) {
         auto polyline = m_entity1->getParent();

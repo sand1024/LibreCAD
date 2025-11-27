@@ -27,7 +27,8 @@
 #ifndef RS_ACTIONMODIFYENTITY_H
 #define RS_ACTIONMODIFYENTITY_H
 
-#include "lc_latecompletionrequestor.h"
+
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_previewactioninterface.h"
 
 class LC_EntityPropertiesEditor;
@@ -38,10 +39,10 @@ class RS_Entity;
  *
  * @author Andrew Mustun
  */
-class RS_ActionModifyEntity : public RS_PreviewActionInterface {
+class RS_ActionModifyEntity : public LC_UndoableDocumentModificationAction {
     Q_OBJECT
 public:
-    RS_ActionModifyEntity(LC_ActionContext *actionContext);
+    explicit RS_ActionModifyEntity(LC_ActionContext *actionContext);
     ~RS_ActionModifyEntity() override;
     void init(int status) override;
     void notifyFinished() const;
@@ -59,9 +60,9 @@ protected:
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void updateMouseButtonHints() override;
-    void doTrigger() override;
-    void completeEditing() const;
     void onLateRequestCompleted(bool shouldBeSkipped) override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
 private:
     RS_Entity* m_entity = nullptr;
     RS_Entity* m_clonedEntity = nullptr;

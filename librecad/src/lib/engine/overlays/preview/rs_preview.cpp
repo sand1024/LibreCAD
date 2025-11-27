@@ -202,10 +202,11 @@ void RS_Preview::addAllFromList(const std::list<RS_Entity*>& list) {
 /**
  * Adds all selected entities from 'container' to the preview (unselected).
  */
+
 void RS_Preview::addSelectionFrom(RS_EntityContainer& container, [[maybe_unused]]LC_GraphicViewport* view) {
     unsigned int c=0;
     for(auto e: container){ // fixme - sand - wow - iterating over all entities!!! Rework selection
-        if (e->isSelected() && c<m_maxEntities) {
+        if (e->isSelected() && c<m_maxEntities) {  // fixme - review what for? this is part of polyline anyway...
             RS_Entity* clone = e->cloneProxy();
 
             c+=clone->countDeep();

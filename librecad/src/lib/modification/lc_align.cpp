@@ -28,7 +28,7 @@ RS_Entity* LC_Align::createCloneMovedToOffset(const RS_Entity *e, const RS_Vecto
     RS_Entity *clone = e->clone();
     clone->move(offset);
     if (updateAttributes){
-        clone->setLayer(e->getLayer());
+        clone->setLayer(e->getLayer(false));
         clone->setPen(e->getPen(false));
     }
     return clone;

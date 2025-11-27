@@ -32,7 +32,7 @@
 #include "rs_entitycontainer.h"
 #include "rs_pen.h"
 #include "rs_undo.h"
-#include "selection/lc_selectedset.h"
+#include "lc_selectedset.h"
 
 class LC_TextStyleList;
 class LC_DimStylesList;
@@ -41,20 +41,20 @@ class LC_UCSList;
 class LC_ViewList;
 class RS_BlockList;
 class RS_LayerList;
+class RS_ActionInterface;
 
 struct LC_DocumentModificationBatch {
-    bool success {false};
-    QList<RS_Entity*> entitiesToAdd;
-    QList<RS_Entity*> entitiesToDelete;
+    bool success {false}; // generic result of applying the batch to document
+    QList<RS_Entity*> entitiesToAdd; // list of entities that should be added to the document
+    QList<RS_Entity*> entitiesToDelete; // list of entities that should be marked as deleted in the document
 
-    bool m_setActiveLayer{true};
-    bool m_setActivePen{true};
+    bool m_setActiveLayer{true}; // flag that indicates that for entities to be added currently active layer should be set
+    bool m_setActivePen{true};  // flag that indicates that for entities to be added currently active pen should be set
 
     ~LC_DocumentModificationBatch() = default;
 
     void dontSetActiveLayerAndPen(){m_setActiveLayer = false; m_setActivePen = false;}
     void setActiveLayerAndPen(bool setLayer, bool setPen){m_setActiveLayer = setLayer; m_setActivePen = setPen;}
-
 
     void add(RS_Entity* entity) {entitiesToAdd.append(entity);}
     void remove(QList<RS_Entity*>& list) {entitiesToDelete.append(list);}
@@ -84,6 +84,11 @@ public:
     explicit RS_Document(RS_EntityContainer* parent=nullptr);
     ~RS_Document() override = default;
 
+    struct LC_SelectionInfo{
+        unsigned count = 0;
+        double length = 0.0;
+    };
+
     virtual RS_LayerList* getLayerList()= 0;
     virtual RS_BlockList* getBlockList() = 0;
     virtual LC_DimStylesList* getDimStyleList() = 0;
@@ -100,28 +105,25 @@ public:
 
     void addEntity(RS_Entity* entity) override;
 
-    void undoableAdd(RS_Entity* entity, bool undoable = true) {
-        addEntity(entity);
-        if (undoable) {
-           addUndoable(entity);
-        }
-    }
-
-    void undoableDelete(RS_Entity* e) {
-        if (e->getFlag(RS2::FlagSelected)) {
-            unselect(e);
-        }
-        e->setFlag(RS2::FlagDeleted);
-        addUndoable(e);
-    }
-
     void select(RS_Entity* entity, bool select = true) {
         entity->doSelectInDocument(select, this);
+    }
+
+    void select(const QList<RS_Entity*>& list, bool select = true) {
+        for (auto e: list) {
+            e->doSelectInDocument(select, this);
+        }
     }
 
     void unselect(RS_Entity* entity) {
         entity->doSelectInDocument(false, this);
     }
+
+    bool collectSelected(QList<RS_Entity*> &entitiesList) const;
+
+    LC_SelectionInfo getSelectionInfo(/*bool deep, */QList<RS2::EntityType> const& types = {}) const;
+    virtual unsigned countSelected(bool deep=true, QList<RS2::EntityType> const& types = {});
+    virtual void collectSelected(QList<RS_Entity*> &collect, bool deep, QList<RS2::EntityType> const &types = {});
 
     /**
      * @return Currently active drawing pen.
@@ -145,17 +147,10 @@ public:
 	 */
     virtual bool isModified() const {return modified;}
 
-    /**
-     * Overwritten to set modified flag when undo cycle finished with undoable(s).
-     */
-    void endUndoCycle() override;
-    void startUndoCycle() override;
     void setGraphicView(RS_GraphicView * g) {gv = g;}
     RS_GraphicView* getGraphicView() const {return gv;} // fixme - sand -- REALLY BAD DEPENDANCE TO UI here, REWORK!
 
-    LC_SelectedSet* getSelectedSet() const {return m_selectedSet.get();}
-
-    void modify(LC_DocumentModificationBatch& batch);
+    LC_SelectedSet* getSelection() const {return m_selectedSet.get();}
 protected:
     /** Flag set if the document was modified and not yet saved. */
     bool modified = false;
@@ -171,6 +166,29 @@ protected:
     void endBulkUndoablesCleanup() override;
 
     /**
+     * Overwritten to set modified flag when undo cycle finished with undoable(s).
+     */
+    void endUndoCycle() override;
+    void startUndoCycle() override;
+
+
+    void undoableAdd(RS_Entity* entity, bool undoable = true) {
+        addEntity(entity);
+        if (undoable) {
+            addUndoable(entity);
+        }
+    }
+
+    void undoableDelete(RS_Entity* e) {
+        if (e->getFlag(RS2::FlagSelected)) {
+            unselect(e);
+        }
+        e->setFlag(RS2::FlagDeleted);
+        addUndoable(e);
+    }
+
+
+    /**
      * Removes an entity from the entity container. Implementation
      * from RS_Undo.
      */
@@ -183,5 +201,6 @@ protected:
     bool m_inBulkUndoableCleanup = false;
     bool m_savedAutoUpdateBorders = false;
 
+    friend class LC_UndoSection;
 };
 #endif

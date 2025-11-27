@@ -27,6 +27,7 @@
 #ifndef RS_ACTIONPOLYLINEEQUIDISTANT_H
 #define RS_ACTIONPOLYLINEEQUIDISTANT_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 #include "rs_previewactioninterface.h"
 class RS_Polyline;
 
@@ -35,13 +36,9 @@ class RS_Polyline;
  *
  * @author Andrew Mustun
  */
-class RS_ActionPolylineEquidistant:public LC_UndoablePreviewActionInterface {
+class RS_ActionPolylineEquidistant:public LC_UndoableDocumentModificationAction {
     Q_OBJECT
 public:
-    /**
-     *
-     * @param actionContext
-     */
     explicit RS_ActionPolylineEquidistant(LC_ActionContext *actionContext);
     ~RS_ActionPolylineEquidistant() override;
     void init(int status) override;
@@ -73,7 +70,8 @@ protected:
     void setPolylineToModify(LC_MouseEvent* e, RS_Entity* en);
     void updateMouseButtonHints() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    void doTrigger() override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
 };
 #endif

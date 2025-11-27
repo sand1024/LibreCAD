@@ -53,7 +53,6 @@ protected:
     bool m_invokedWithControl = false;
     std::unique_ptr<RS_Vector> m_referencePoint;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
-    bool isTriggerUndoable() override {return true;}
     void onSelectionCompleted(bool singleEntity, bool fromInit) override;
     void onMouseMoveEventSelected(int status, LC_MouseEvent *e) override;
     void updateMouseButtonHintsForSelection() override;
@@ -61,7 +60,7 @@ protected:
     void onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
     void onMouseRightButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
     RS2::CursorType doGetMouseCursorSelected(int status) override;
-    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
     void doTriggerCompletion(bool success) override;
     void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
 };

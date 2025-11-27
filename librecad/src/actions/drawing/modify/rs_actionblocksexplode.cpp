@@ -37,7 +37,7 @@ RS_ActionBlocksExplode::RS_ActionBlocksExplode(LC_ActionContext *actionContext)
     :LC_ActionPreSelectionAwareBase("Blocks Explode", actionContext,m_actionType=RS2::ActionBlocksExplode) {
 }
 
-bool RS_ActionBlocksExplode::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionBlocksExplode::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     RS_Modification::explode(m_selectedEntities, true, ctx);
     ctx.setActiveLayerAndPen(false, false);
     return true;

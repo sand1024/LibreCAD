@@ -32,9 +32,8 @@
 
 LC_ActionPreSelectionAwareBase::LC_ActionPreSelectionAwareBase(
     const char *name, LC_ActionContext *actionContext, RS2::ActionType actionType,
-    const QList<RS2::EntityType> &entityTypeList, const bool countSelectionDeep)
-    :RS_ActionSelectBase(name, actionContext, actionType, entityTypeList),
-    m_countDeep(countSelectionDeep){}
+    const QList<RS2::EntityType> &entityTypeList)
+    :RS_ActionSelectBase(name, actionContext, actionType, entityTypeList){}
 
 bool LC_ActionPreSelectionAwareBase::isKeepModifiedEntitiesSelected() {
     bool keepSelected      = LC_GET_ONE_BOOL("Modify", "KeepModifiedSelected", true);
@@ -71,7 +70,7 @@ void LC_ActionPreSelectionAwareBase::init(int status) {
 
 unsigned int LC_ActionPreSelectionAwareBase::countSelectedEntities() {
     m_selectedEntities.clear();
-    m_document->collectSelected(m_selectedEntities, m_countDeep, m_catchForSelectionEntityTypes);
+    m_document->collectSelected(m_selectedEntities, false, m_catchForSelectionEntityTypes);
     unsigned int selectedCount = m_selectedEntities.size();
 //    LC_ERR << " Selected Count: " << selectedCount;
     return selectedCount;
@@ -280,10 +279,9 @@ RS2::CursorType LC_ActionPreSelectionAwareBase::doGetMouseCursorSelected([[maybe
     return RS2::CadCursor;
 }
 
-void LC_ActionPreSelectionAwareBase::clearDocumentModificationContext(LC_DocumentModificationBatch& ctx) {
+void LC_ActionPreSelectionAwareBase::doTriggerSelections(const LC_DocumentModificationBatch& ctx) {
     bool keepSelected = isKeepModifiedEntitiesSelected();
     doTriggerSelectionUpdate(keepSelected, ctx);
-    RS_ActionSelectBase::clearDocumentModificationContext(ctx);
 }
 
 void LC_ActionPreSelectionAwareBase::finishMouseMoveOnSelection([[maybe_unused]]LC_MouseEvent *event) {

@@ -33,24 +33,28 @@
 #include "rs_preview.h"
 
 RS_ActionDrawLineFree::RS_ActionDrawLineFree(LC_ActionContext *actionContext)
-        :LC_UndoablePreviewActionInterface("Draw freehand lines", actionContext,RS2::ActionDrawLineFree)
-    ,m_vertex(std::make_unique<RS_Vector>()){
-	m_preview->setOwner(false);
+    : LC_SingleEntityCreationAction("Draw freehand lines", actionContext, RS2::ActionDrawLineFree),
+    m_vertex({0, 0, 0}), m_polyline(nullptr) {
 }
 
 RS_ActionDrawLineFree::~RS_ActionDrawLineFree() = default;
 
-void RS_ActionDrawLineFree::doTrigger() {
+
+RS_Entity* RS_ActionDrawLineFree::doTriggerCreateEntity() {
     if (m_polyline != nullptr){
         m_polyline->endPolyline();
         RS_VectorSolutions sol = m_polyline->getRefPoints();
         if (sol.getNumber() > 2){
-            RS_Entity *clone = m_polyline->clone();
-            clone->reparent(m_document);
-            clone->calculateBorders();
-            undoableAdd(clone);
+            m_polyline->calculateBorders();
+            return m_polyline;
         }
-        m_polyline.reset();
+    }
+    return nullptr;
+}
+
+void RS_ActionDrawLineFree::doTriggerCompletion(bool success) {
+    if (m_polyline != nullptr) {
+        m_polyline = nullptr;
     }
     setStatus(SetStartpoint);
 }
@@ -59,26 +63,21 @@ void RS_ActionDrawLineFree::doTrigger() {
  * 11 Aug 2011, Dongxu Li
  */
 // todo - relative point snap?
-// fixme - sand - review drawing line free
 void RS_ActionDrawLineFree::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     RS_Vector v = e->snapPoint;
-    drawSnapper();
     if (status==Dragging && m_polyline != nullptr)     {
         const QPointF mousePosition = e->uiPosition;
         if (QLineF(mousePosition,m_oldMousePosition).length() < 1) {
             //do not add the same mouse position
             return;
         }
-        auto ent = static_cast<RS_Polyline*>(m_polyline->addVertex(v));
+        m_polyline->addVertex(v);
 
-        if (ent->count()) {
-            deletePreview();
-            // m_preview->addCloneOf(m_polyline.get(), m_viewport);
+        if (!m_polyline->isEmpty()) {
             m_preview->addEntity(m_polyline->clone());
-            drawPreview();
         }
 
-        *m_vertex = v;
+        m_vertex = v;
         m_oldMousePosition = mousePosition;
     }
 }
@@ -89,9 +88,8 @@ void RS_ActionDrawLineFree::onMouseLeftButtonPress([[maybe_unused]]int status, L
             setStatus(Dragging);
             // fall-through
         case Dragging:
-            *m_vertex = e->snapPoint;
-            m_polyline = std::make_unique<RS_Polyline>(m_document, RS_PolylineData(*m_vertex, *m_vertex, false));
-            setPenAndLayerToActive(m_polyline.get());
+            m_vertex = e->snapPoint;
+            m_polyline = new RS_Polyline(m_document, RS_PolylineData(m_vertex, m_vertex, false));
             break;
         default:
             break;
@@ -99,15 +97,16 @@ void RS_ActionDrawLineFree::onMouseLeftButtonPress([[maybe_unused]]int status, L
 }
 
 void RS_ActionDrawLineFree::onMouseLeftButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
-    if(status==Dragging){
-        *m_vertex = {};
+    if(status == Dragging){
+        m_vertex = {};
         trigger();
     }
 }
 
 void RS_ActionDrawLineFree::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
-    if (m_polyline.get() != nullptr) {
-        m_polyline.reset();
+    if (m_polyline != nullptr) {
+        delete m_polyline;
+        m_polyline = nullptr;
     }
     initPrevious(status);
 }

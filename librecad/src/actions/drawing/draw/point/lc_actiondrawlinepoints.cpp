@@ -57,9 +57,10 @@ void LC_ActionDrawLinePoints::doSetStartPoint(RS_Vector vector){
     }
 }
 
-void LC_ActionDrawLinePoints::doPrepareTriggerEntities(QList<RS_Entity *> &list){
+bool LC_ActionDrawLinePoints::doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx){
     // prepare points data
-    createPoints(m_endpoint, list);
+    createPoints(m_endpoint, ctx.entitiesToAdd);
+    return true;
 }
 
 bool LC_ActionDrawLinePoints::doCheckMayTrigger(){

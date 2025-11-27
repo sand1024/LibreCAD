@@ -34,7 +34,7 @@
 #include "rs_preview.h"
 
 RS_ActionDrawMText::RS_ActionDrawMText(LC_ActionContext *actionContext)
-    :LC_UndoablePreviewActionInterface("Draw Text",actionContext, RS2::ActionDrawMText)
+    :LC_SingleEntityCreationAction("Draw Text",actionContext, RS2::ActionDrawMText)
     ,m_pos(std::make_unique<RS_Vector>()),m_textChanged(true){
 }
 
@@ -84,12 +84,17 @@ void RS_ActionDrawMText::reset() {
                                           RS2::Update);
 }
 
-void RS_ActionDrawMText::doTrigger() {
+RS_Entity* RS_ActionDrawMText::doTriggerCreateEntity() {
     if (m_pos->valid){
-        auto text = std::make_unique<RS_MText>(m_document, *m_mtextData);
+        auto text = new RS_MText(m_document, *m_mtextData);
         text->update();
-        undoableAdd(text.get());
-        text.release();
+        return text;
+    }
+    return nullptr;
+}
+
+void RS_ActionDrawMText::doTriggerCompletion(bool success) {
+    if (success) {
         m_textChanged = true;
         setStatus(SetPos);
     }

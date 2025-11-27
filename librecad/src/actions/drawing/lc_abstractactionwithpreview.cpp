@@ -28,6 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "lc_refarc.h"
 #include "lc_refline.h"
 #include "lc_refpoint.h"
+#include "lc_undosection.h"
 #include "rs_document.h"
 #include "rs_entity.h"
 #include "rs_entitycontainer.h"
@@ -58,12 +59,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * @param graphicView
  */
 LC_AbstractActionWithPreview::LC_AbstractActionWithPreview(const char *name,LC_ActionContext *actionContext,RS2::ActionType actionType)
-    :RS_PreviewActionInterface(name, actionContext, actionType),
+    :LC_UndoableDocumentModificationAction(name, actionContext, actionType),
     m_highlightedEntity{nullptr}{
 }
 
 void LC_AbstractActionWithPreview::collectEntitiesForTriggerOnInit(QList<RS_Entity*> &selectedEntities, QList<RS_Entity*> &entitiesForTrigger) {
-    auto selection = m_document->getSelectedSet();
+    auto selection = m_document->getSelection();
     for (RS_Entity *e: *selection) {
         if (e->isDeleted()) {
             continue;
@@ -95,16 +96,12 @@ void LC_AbstractActionWithPreview::init(int status){
             showOptions(); // use this as simplest way to read settings for the action
             if (m_document){
                 // take care of undo cycle
-                if (isTriggerUndoable()){
-                    undoCycleStart();
-                    // invoke trigger
-                    performTriggerOnInit(entitiesForTrigger);
-                    undoCycleEnd();
-                } else {
-                    performTriggerOnInit(entitiesForTrigger);
-                }
+                LC_UndoSection undo(m_document, m_viewport);
+                // invoke trigger
+                undo.undoableExecute([this, entitiesForTrigger](LC_DocumentModificationBatch& ctx)->bool {
+                    return performTriggerOnInit(entitiesForTrigger, ctx);
+                });
             }
-            entitiesForTrigger.clear();
             // as we've completed - finish the action
             finishAction();
             // if necessary - unselect currently selected entities
@@ -113,7 +110,6 @@ void LC_AbstractActionWithPreview::init(int status){
             }
             redrawDrawing();
         }
-        selectedEntities.clear();
     }
 }
 
@@ -140,7 +136,7 @@ bool LC_AbstractActionWithPreview::isAcceptSelectedEntityToTriggerOnInit([[maybe
  * trigger on init process (i.e - some original selected entities.
  * @param list list of entities
  */
-void LC_AbstractActionWithPreview::doPerformOriginalEntitiesDeletionOnInitTrigger([[maybe_unused]]QList<RS_Entity *> &list){}
+void LC_AbstractActionWithPreview::doPerformOriginalEntitiesDeletionOnInitTrigger([[maybe_unused]]QList<RS_Entity *> &list, [[maybe_unused]]LC_DocumentModificationBatch & ctx){}
 
 
 void LC_AbstractActionWithPreview::updateSnapperAndCoordinateWidget([[maybe_unused]]LC_MouseEvent* e, [[maybe_unused]]int status){
@@ -163,16 +159,18 @@ void LC_AbstractActionWithPreview::doUpdateCoordinateWidgetByMouse(LC_MouseEvent
  * Creation of entities on init trigger
  * @param entities selected entities to trigger
  */
-void LC_AbstractActionWithPreview::performTriggerOnInit(QList<RS_Entity*>  entities){
-    QList<RS_Entity*> createdEntities;
+bool LC_AbstractActionWithPreview::performTriggerOnInit(QList<RS_Entity*>  entities, LC_DocumentModificationBatch & ctx){
+
     // only valid entities are there, so we can create do trigger action for each of them
     for (auto e: entities){
-        doCreateEntitiesOnTrigger(e, createdEntities);
+        doCreateEntitiesOnTrigger(e, ctx.entitiesToAdd);
     }
-    doPerformOriginalEntitiesDeletionOnInitTrigger(entities);
+    doPerformOriginalEntitiesDeletionOnInitTrigger(entities, ctx);
     // do setup of layer and pen and add to drawing
-    setupAndAddTriggerEntities(createdEntities);
-    createdEntities.clear();
+    if (!isSetActivePenAndLayerOnTrigger()) {
+        ctx.dontSetActiveLayerAndPen();
+    }
+    return true;
 }
 
 /**
@@ -189,79 +187,34 @@ void LC_AbstractActionWithPreview::doCreateEntitiesOnTrigger([[maybe_unused]]RS_
 bool LC_AbstractActionWithPreview::isUnselectEntitiesOnInitTrigger(){
     return true;
 }
-/**
- * Default implementation of trigger method. First checks whether all conditions are fine for the trigger via doCheckMayTrigger().
- *
- * If trigger may be executed, checks whether trigger represents undoable operation and if it is so, wraps actual trigger processing into undo cycle.
- * if not - just delegate trigger processing to performTrigger method.
- *
- */
-void LC_AbstractActionWithPreview::doTrigger() {
-    if (doCheckMayTrigger()) {
-        performTrigger();
-    }
 
+bool LC_AbstractActionWithPreview::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
+    // collect entities that should be created in the list
+    bool result = doTriggerEntitiesPrepare(ctx);
+    if (result) {
+        bool setActiveLayerAndPen = isSetActivePenAndLayerOnTrigger();
+        if (!setActiveLayerAndPen) {
+            ctx.dontSetActiveLayerAndPen();
+        }
+
+        RS_Vector newRelativeZeroPosition = doGetRelativeZeroAfterTrigger();
+        if (newRelativeZeroPosition.valid){
+            moveRelativeZero(newRelativeZeroPosition);
+        }
+    }
+    return result;
+}
+
+void LC_AbstractActionWithPreview::doTriggerCompletion(bool success) {
+    doAfterTrigger(); // inherited actions may do additional processing there
     // cleanup alternative mode after trigger
     clearAlternativeActionMode();
 }
 
-
-/**
- * Template method for performing trigger operation. Actual processing is delegated to corresponding methods.
- * First, methods executes insertion of entities, than performs deletion of entities.
- * Based on provided point, may set new relative zero.
- * The last step is potential cleanup of data not needed after trigger completion
- */
-void LC_AbstractActionWithPreview::performTrigger(){
-    performTriggerInsertions();
-    performTriggerDeletions();
-    RS_Vector newRelativeZeroPosition = doGetRelativeZeroAfterTrigger();
-    if (newRelativeZeroPosition.valid){
-        moveRelativeZero(newRelativeZeroPosition);
-    }
-    doAfterTrigger(); // inherited actions may do additional processing there
+void LC_AbstractActionWithPreview::doTriggerSelections(const LC_DocumentModificationBatch& ctx) {
+    LC_UndoableDocumentModificationAction::doTriggerSelections(ctx);
 }
 
-/**
- * Method that handles insertion entities, that are created during trigger operation.
- * Method collects entities that should be inserted (created in doPrepareTriggerEntities method) in the list,
- * and iterates over them but setting layer and pen (if needed) and adding entities to container and document.
- */
-void LC_AbstractActionWithPreview::performTriggerInsertions(){
-    QList<RS_Entity*> entities;
-    // collect entities that should be created in the list
-    doPrepareTriggerEntities(entities);
-    setupAndAddTriggerEntities(entities);
-    entities.clear();
-}
-
-/**
- * Perform setup of layer and pen for entity created for trigger (if needed) and adds entity to container and document
- * @param entities list of entities
- */
-void LC_AbstractActionWithPreview::setupAndAddTriggerEntities(const QList<RS_Entity *> &entities){
-    // check whether layer and pen should be set to active. If not  - it's up to doPrepareTriggerEntities to perform proper setup of pen and layer
-    bool setActiveLayerAndPen = isSetActivePenAndLayerOnTrigger();
-    bool undoableTrigger = isTriggerUndoable();
-    for (auto ent: entities) {
-        if (setActiveLayerAndPen){
-            // do setup
-            setPenAndLayerToActive(ent);
-        }
-        m_document->addEntity(ent);
-        if (undoableTrigger){
-            m_document->addUndoable(ent);
-        }
-    }
-}
-
-/**
- * Extension method that checks whether all data are collected and trigger may be invoked.
- * @return true if trigger() may be executed.
- */
-bool LC_AbstractActionWithPreview::doCheckMayTrigger(){
-    return true;
-}
 
 /**
  * Expansion method that controls whether layer and pen should be set to active for entities created as part of trigger.
@@ -282,7 +235,7 @@ void LC_AbstractActionWithPreview::doAfterTrigger(){}
  * Method should create entities and add to provided list.
  * @param list list of entities to which created entities should be added.
  */
-void LC_AbstractActionWithPreview::doPrepareTriggerEntities([[maybe_unused]]QList<RS_Entity *> &list){}
+bool LC_AbstractActionWithPreview::doTriggerEntitiesPrepare([[maybe_unused]]LC_DocumentModificationBatch& ctx){return false;}
 
 /**
  * Extension method that returns position for setting relative zero after trigger operation execution
@@ -292,11 +245,6 @@ RS_Vector LC_AbstractActionWithPreview::doGetRelativeZeroAfterTrigger(){
     return RS_Vector(false);
 }
 
-/**
- * Extension method that might be used by inherited actions for performing deletions of some entities from drawing as result of trigger operation execution.
- * Called as part of trigger() execution workflow.
- */
-void LC_AbstractActionWithPreview::performTriggerDeletions(){}
 
 /**
  * Default implementation of finish. It removes highlight on entity (if any),

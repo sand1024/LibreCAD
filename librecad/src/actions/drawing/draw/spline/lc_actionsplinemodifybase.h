@@ -23,14 +23,12 @@
 #ifndef LC_ACTIONSPLINEMODIFYBASE_H
 #define LC_ACTIONSPLINEMODIFYBASE_H
 
+#include "lc_undoabledocumentmodificationaction.h"
 
-#include "rs_previewactioninterface.h"
 
-class LC_ActionSplineModifyBase:public LC_UndoablePreviewActionInterface{
+class LC_ActionSplineModifyBase:public LC_UndoableDocumentModificationAction{
     Q_OBJECT
 public:
-    LC_ActionSplineModifyBase(const char* name, LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone);
-    ~LC_ActionSplineModifyBase() override = default;
     void drawSnapper() override;
     void finish(bool updateTB) override;
 protected:
@@ -45,19 +43,22 @@ protected:
     RS_Vector m_selectedVertexPoint = RS_Vector(false);
     bool m_directionFromStart = false;
 
+    LC_ActionSplineModifyBase(const char* name, LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone);
+    ~LC_ActionSplineModifyBase() override = default;
+
     void clean();
     virtual void setEntityToModify(RS_Entity* entity) = 0;
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     virtual bool mayModifySplineEntity([[maybe_unused]]RS_Entity *pEntity) {return true;};
     RS2::CursorType doGetMouseCursor(int status) override;
     void onMouseRightButtonRelease(int status, QMouseEvent *e) override;
-    virtual void doCompleteTrigger();
-    virtual void doAfterTrigger();
+    virtual void doTriggerOther();
     virtual RS_Entity *createModifiedSplineEntity(RS_Entity *e, RS_Vector controlPoint, bool startDirection)=0;
     virtual void onMouseMove(RS_Vector mouse, int status, LC_MouseEvent *e) = 0;
     virtual void doOnEntityNotCreated();
-    void doTrigger() override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void doTriggerSelections(const LC_DocumentModificationBatch& ctx) override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
 };
 
 #endif // LC_ACTIONSPLINEMODIFYBASE_H

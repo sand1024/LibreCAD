@@ -69,7 +69,7 @@ void QC_ActionGetPoint::mouseMoveEvent(QMouseEvent* e) {
     if(m_setTargetPoint){
         if (m_actionData->referencePoint.valid) {
             m_actionData->targetPoint = mouse;
-            RS_Line *line =new RS_Line{m_preview.get(),
+            auto *line =new RS_Line{m_preview.get(),
                                        m_actionData->referencePoint, mouse};
             line->setPen(RS_Pen(RS_Color(0,0,0), RS2::Width00, RS2::DotLine ));
             m_preview->addEntity(line);

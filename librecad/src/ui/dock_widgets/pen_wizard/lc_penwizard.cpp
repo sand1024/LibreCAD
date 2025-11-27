@@ -30,6 +30,7 @@
 #include <QVBoxLayout>
 
 #include "colorwizard.h"
+#include "lc_undosection.h"
 #include "qc_mdiwindow.h"
 #include "qg_graphicview.h"
 #include "rs_color.h"
@@ -58,13 +59,22 @@ void LC_PenWizard::setColorForSelected(QColor color) const {
     auto pen = graphic->getActivePen();
     pen.setColor(RS_Color(color));
 
-    foreach(auto e, graphic->getEntityList()) {
-        if (e->isSelected()) {
-            e->setPen(pen);  // fixme - pen_wizard - add support of undo!!!!
-        }
+    QList<RS_Entity*> selection;
+    if (graphic->collectSelected(selection)) {
+        LC_UndoSection undo(graphic, m_graphicView->getViewPort());
+        undo.undoableExecute([this, selection, pen](LC_DocumentModificationBatch& ctx)->bool {
+            for (auto e: selection) {
+                RS_Entity* clone = e->clone();
+                clone->setPen(pen);
+                ctx += clone;
+                ctx -= e;
+            }
+            return true;
+        },
+        [this, selection, pen](LC_DocumentModificationBatch& ctx, RS_Document* doc)->void {
+            doc->select(ctx.entitiesToAdd);
+        });
     }
-    RS_Selection::unselectAllInDocument(m_graphicView->getDocument(), m_graphicView->getViewPort());
-    m_graphicView->redraw(RS2::RedrawDrawing);
 }
 
 void LC_PenWizard::selectByColor(QColor color) const {

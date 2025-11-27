@@ -30,7 +30,7 @@
 #include "rs_polyline.h"
 
 LC_ActionPolylineArcsToLines::LC_ActionPolylineArcsToLines(LC_ActionContext *actionContext)
-    : RS_PreviewActionInterface("PolylineArcsToLines", actionContext, RS2::ActionPolylineArcsToLines),
+    : LC_UndoableDocumentModificationAction("PolylineArcsToLines", actionContext, RS2::ActionPolylineArcsToLines),
       m_polyline{nullptr} {
 }
 
@@ -45,14 +45,18 @@ void LC_ActionPolylineArcsToLines::init(int status) {
     RS_PreviewActionInterface::init(status);
 }
 
-void LC_ActionPolylineArcsToLines::doTrigger() {
-    // todo - move to RS_Modification?
+bool LC_ActionPolylineArcsToLines::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     if (hasArcsSegments(m_polyline)) {
         auto* createdPolyline =  createPolyline(m_polyline);
         createdPolyline->setLayer(m_polyline->getLayer());
         createdPolyline->setPen(m_polyline->getPen(false));
-        undoCycleReplace(m_polyline, createdPolyline); // fixme - undoable - change to simpler form via undoableTrigger
+        ctx.replace(m_polyline, createdPolyline);
+        return true;
     }
+    return false;
+}
+
+void LC_ActionPolylineArcsToLines::doTriggerCompletion(bool success) {
     m_polyline = nullptr;
 }
 

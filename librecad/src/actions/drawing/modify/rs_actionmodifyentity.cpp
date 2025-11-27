@@ -36,12 +36,11 @@
 #include "rs_debug.h"
 #include "rs_dimension.h"
 #include "rs_entity.h"
-#include "rs_eventhandler.h"
 #include "rs_graphicview.h"
 #include "rs_text.h"
 
 RS_ActionModifyEntity::RS_ActionModifyEntity(LC_ActionContext *actionContext)
-		:RS_PreviewActionInterface("Modify Entity", actionContext, RS2::ActionModifyEntity){
+		:LC_UndoableDocumentModificationAction("Modify Entity", actionContext, RS2::ActionModifyEntity){
 }
 
 RS_ActionModifyEntity::~RS_ActionModifyEntity() {
@@ -77,8 +76,7 @@ void RS_ActionModifyEntity::onLateRequestCompleted(bool shouldBeSkipped) {
         }
     }
     else {
-        setStatus(EditComplete);
-        completeEditing();
+        trigger();
         if (m_invokedForSingleEntity) {
             finish(false);
         }
@@ -90,24 +88,7 @@ void RS_ActionModifyEntity::onLateRequestCompleted(bool shouldBeSkipped) {
     m_allowExternalTermination = true;
 }
 
-void RS_ActionModifyEntity::completeEditing() const {
-    m_clonedEntity->update();
-    m_clonedEntity->calculateBorders();
-    m_clonedEntity->clearSelectionFlag();
-
-    unsigned long cloneEntityId = m_clonedEntity->getId();
-    unsigned long originalEntityId = m_entity->getId();
-
-    undoCycleReplace(m_entity, m_clonedEntity);
-
-    // hm... probably there is a better way to notify (signal, broadcasting etc) without direct dependency?
-    LC_QuickInfoWidget *entityInfoWidget = QC_ApplicationWindow::getAppWindow()->getEntityInfoWidget();
-    if (entityInfoWidget != nullptr){
-        entityInfoWidget->onEntityPropertiesEdited(originalEntityId, cloneEntityId);
-    }
-}
-
-void RS_ActionModifyEntity::doTrigger() {
+bool RS_ActionModifyEntity::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     int status = getStatus();
     if (status == ShowDialog) {
         if (m_entity != nullptr) {
@@ -168,7 +149,7 @@ void RS_ActionModifyEntity::doTrigger() {
                 m_allowExternalTermination = false;
                 if (editDialog->exec()) {
                     editDialog->updateEntity();
-                    undoCycleReplace(m_entity, m_clonedEntity); // fixme - undoable - change to simpler form via undoableTrigger
+                    ctx.replace(m_entity, m_clonedEntity);
                     if (!selected) {
                         m_clonedEntity->clearSelectionFlag();
                     }
@@ -190,9 +171,28 @@ void RS_ActionModifyEntity::doTrigger() {
         }
     }
     else if (status == InEditing) {
-        completeEditing();
+        m_clonedEntity->update();
+        m_clonedEntity->calculateBorders();
+        m_clonedEntity->clearSelectionFlag();
+
+        unsigned long cloneEntityId = m_clonedEntity->getId();
+        unsigned long originalEntityId = m_entity->getId();
+
+        ctx.replace(m_entity, m_clonedEntity);
+
+        // hm... probably there is a better way to notify (signal, broadcasting etc) without direct dependency?
+        LC_QuickInfoWidget *entityInfoWidget = QC_ApplicationWindow::getAppWindow()->getEntityInfoWidget();
+        if (entityInfoWidget != nullptr){
+            entityInfoWidget->onEntityPropertiesEdited(originalEntityId, cloneEntityId);
+        }
         setStatus(EditComplete);
     }
+    ctx.dontSetActiveLayerAndPen();
+    return true;
+}
+
+void RS_ActionModifyEntity::doTriggerCompletion(bool success) {
+    LC_UndoableDocumentModificationAction::doTriggerCompletion(success);
 }
 
 void RS_ActionModifyEntity::onMouseMoveEvent([[maybe_unused]]int status, LC_MouseEvent *e) {

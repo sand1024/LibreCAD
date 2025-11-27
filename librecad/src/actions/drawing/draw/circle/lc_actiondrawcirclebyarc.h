@@ -56,13 +56,12 @@ protected:
     void doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
     RS_Vector doGetRelativeZeroAfterTrigger() override;
     void doAfterTrigger() override;
-    void doPrepareTriggerEntities(QList<RS_Entity *> &list) override;
-    void performTriggerDeletions() override;
+    bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx)  override;
     bool doCheckMayDrawPreview(LC_MouseEvent *event, int status) override;
     bool doCheckMayTriggerOnInit(int status) override;
     bool isAcceptSelectedEntityToTriggerOnInit(RS_Entity *pEntity) override;
     void doCreateEntitiesOnTrigger(RS_Entity *entity, QList<RS_Entity *> &list) override;
-    void doPerformOriginalEntitiesDeletionOnInitTrigger(QList<RS_Entity *> &list) override;
+    void doPerformOriginalEntitiesDeletionOnInitTrigger(QList<RS_Entity *> &list, LC_DocumentModificationBatch & ctx) override;
     bool isSetActivePenAndLayerOnTrigger() override;
     void updateMouseButtonHints() override;
 
@@ -95,7 +94,7 @@ private:
 
     RS_CircleData createCircleData(RS_Arc* arc) const;
     RS_EllipseData createEllipseData(RS_Ellipse *pEllipse) const;
-    void deleteOriginalArcOrEllipse(RS_Entity *en) const;
+    void deleteOriginalArcOrEllipse(RS_Entity *en,LC_DocumentModificationBatch& ctx) const;
 };
 
 #endif // LC_ACTIONDRAWCIRCLEBYARC_H

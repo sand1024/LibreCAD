@@ -38,14 +38,10 @@
 class LC_ActionDrawLinePolygonCenTan : public LC_ActionDrawLinePolygonBase {
     Q_OBJECT
 public:
-    LC_ActionDrawLinePolygonCenTan(LC_ActionContext *actionContext);
+    explicit LC_ActionDrawLinePolygonCenTan(LC_ActionContext *actionContext);
     ~LC_ActionDrawLinePolygonCenTan() override;
 protected:
-    /* Status
-    SetPoint1 - Setting center.
-    SetPoint2 - Setting tangent.
-*/
     QString getPoint2Hint() const override;
     void preparePolygonInfo(PolygonInfo &polygonInfo, const RS_Vector &snap) override;
 };
-#endif // LC_ACTIONDRAWLINEPOLYGON3_H
+#endif

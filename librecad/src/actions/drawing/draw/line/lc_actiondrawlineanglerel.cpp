@@ -76,10 +76,10 @@ bool LC_ActionDrawLineAngleRel::isSetActivePenAndLayerOnTrigger(){
  * Create entities for trigger operations
  * @param list
  */
-void LC_ActionDrawLineAngleRel::doPrepareTriggerEntities(QList<RS_Entity *> &list){
+bool LC_ActionDrawLineAngleRel::doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx){
     auto* en = new RS_Line{m_document, m_tickData->tickLineData};
     setPenAndLayerToActive(en);
-    list<<en;
+    ctx += en;
 
     // optionally, try to divide original line if needed
     if (m_divideLine){
@@ -87,9 +87,15 @@ void LC_ActionDrawLineAngleRel::doPrepareTriggerEntities(QList<RS_Entity *> &lis
         bool mayDivide = checkMayExpandEntity(m_tickData->line, "Line");
         if (mayDivide){
             // do divide original line
-            divideOriginalLine(m_tickData, list);
+            divideOriginalLine(m_tickData, ctx.entitiesToAdd);
         }
     }
+
+    if (m_tickData->deleteOriginalLine){
+        // removing original line from drawing
+        ctx -= m_tickData->line;
+    }
+    return true;
 }
 
 /**
@@ -134,16 +140,6 @@ void LC_ActionDrawLineAngleRel::divideOriginalLine(LC_ActionDrawLineAngleRel::Ti
  */
 RS_Vector LC_ActionDrawLineAngleRel::doGetRelativeZeroAfterTrigger(){
     return m_tickData->tickLineData.endpoint; // just rely on endpoint of created tick
-}
-
-/**
- * Removes original line, if needed
- */
-void LC_ActionDrawLineAngleRel::performTriggerDeletions(){
-    if (m_tickData->deleteOriginalLine){
-        // removing original line from drawing
-        undoableDeleteEntity(m_tickData->line);
-    }
 }
 
 void LC_ActionDrawLineAngleRel::doAfterTrigger(){

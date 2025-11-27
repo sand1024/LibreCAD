@@ -29,20 +29,15 @@
 class LC_ActionDrawLinePolygon4:public LC_ActionDrawLinePolygonBase {
     Q_OBJECT
 public:
-    LC_ActionDrawLinePolygon4(LC_ActionContext *actionContext);
+    explicit LC_ActionDrawLinePolygon4(LC_ActionContext *actionContext);
     ~LC_ActionDrawLinePolygon4() override;
     void setVertexVertexMode(bool val){m_useVertexVertexMode = val;}
     bool isVertexVertexMode() const {return m_useVertexVertexMode;}
 protected:
-    /* Status
-    SetPoint1 - Setting side/vertex.
-    SetPoint2 - Setting side/vertex.
-*/
     bool m_useVertexVertexMode = false;
-
     QString getPoint2Hint() const override;
     QString getPoint1Hint() const override;
     void preparePolygonInfo(PolygonInfo &polygonInfo, const RS_Vector &snap) override;
 };
 
-#endif // LC_ACTIONDRAWLINEPOLYGON4_H
+#endif

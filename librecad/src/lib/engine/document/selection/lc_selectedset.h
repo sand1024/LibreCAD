@@ -39,7 +39,7 @@ public:
     void fireSelectionChanged();
     bool isSilent() const {return m_silentMode != 0;}
     void cleanup() ;
-    void collectSelectedEntities(QList<RS_Entity*>& list);
+    bool collectSelectedEntities(QList<RS_Entity*>& list);
 private:
     QList<RS_Entity*> m_entitiesList;
     QList<LC_SelectedSetListener*> m_listeners;

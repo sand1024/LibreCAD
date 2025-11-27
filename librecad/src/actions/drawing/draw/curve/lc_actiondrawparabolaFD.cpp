@@ -93,7 +93,7 @@ struct LC_ActionDrawParabolaFD::ActionData {
  *
  */
 LC_ActionDrawParabolaFD::LC_ActionDrawParabolaFD(LC_ActionContext *actionContext)
-    :LC_UndoablePreviewActionInterface("Draw parabola by focus and directrix", actionContext,RS2::ActionDrawParabolaFD)
+    :LC_SingleEntityCreationAction("Draw parabola by focus and directrix", actionContext,RS2::ActionDrawParabolaFD)
     , m_actionData(std::make_unique<ActionData>()){
 }
 
@@ -114,11 +114,15 @@ void LC_ActionDrawParabolaFD::init(int status) {
     }
 }
 
-void LC_ActionDrawParabolaFD::doTrigger() {
+RS_Entity* LC_ActionDrawParabolaFD::doTriggerCreateEntity() {
     if(m_actionData->data.valid){
         auto* en = new LC_Parabola{m_document, m_actionData->data};
-        undoableAdd(en);
+        return en;
     }
+    return nullptr;
+}
+
+void LC_ActionDrawParabolaFD::doTriggerCompletion(bool success) {
     init(SetFocus);
 }
 

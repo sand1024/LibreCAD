@@ -26,6 +26,9 @@
 **********************************************************************/
 
 #include "rs_document.h"
+
+#include <set>
+
 #include "rs_debug.h"
 
 /**
@@ -68,15 +71,6 @@ void RS_Document::startUndoCycle() {
     setAutoUpdateBorders(false);
 }
 
-void RS_Document::modify(LC_DocumentModificationBatch& batch) {
-    for (auto e: batch.entitiesToAdd) {
-        undoableAdd(e);
-    }
-    for (auto e: batch.entitiesToDelete) {
-        undoableDelete(e);
-    }
-}
-
 void RS_Document::startBulkUndoablesCleanup() {
     m_savedAutoUpdateBorders = getAutoUpdateBorders();
     setAutoUpdateBorders(false);
@@ -85,4 +79,70 @@ void RS_Document::startBulkUndoablesCleanup() {
 void RS_Document::endBulkUndoablesCleanup() {
     setAutoUpdateBorders(m_savedAutoUpdateBorders);
     calculateBorders();
+}
+
+bool RS_Document::collectSelected(QList<RS_Entity*>& entitiesList) const {
+    auto selection = getSelection();
+    if (selection->isEmpty()) {
+        return false;
+    }
+    return selection->collectSelectedEntities(entitiesList);
+}
+
+RS_Document::LC_SelectionInfo RS_Document::getSelectionInfo(const QList<RS2::EntityType> &types) const {
+    LC_SelectionInfo result;
+    std::set<RS2::EntityType> type{types.cbegin(), types.cend()};
+    QList<RS_Entity*> selection;
+
+    if (collectSelected(selection)) {
+        for (RS_Entity* e : selection) {
+            if (types.empty() || type.count(e->rtti())) {
+                result.count++;
+                double entityLength = e->getLength();
+                if (entityLength >= 0.) {
+                    result.length += entityLength;
+                }
+            }
+        }
+    }
+    return result;
+}
+
+/**
+ * Counts the selected entities in this container.
+ */
+[[deprecated]]
+unsigned RS_Document::countSelected(bool deep, QList<RS2::EntityType> const &types) {
+    unsigned count = 0;
+    std::set<RS2::EntityType> type{types.cbegin(), types.cend()};
+
+    for (RS_Entity *entity: *this) {
+        if (entity->isSelected()) {  // fixme - SELECTION - selection collection! Review where it's used and rework
+            if (!types.size() || type.count(entity->rtti())) {
+                count++;
+            }
+        }
+        /*if (entity->isContainer()) {
+            count += dynamic_cast<RS_EntityContainer *>(entity)->countSelected(deep); // fixme - hm... - what about entity types there? and deep flag?
+        }*/
+    }
+    return count;
+}
+
+void RS_Document::collectSelected(QList<RS_Entity*> &collect, bool deep, QList<RS2::EntityType> const &types) {
+    std::set<RS2::EntityType> type{types.cbegin(), types.cend()};
+    QList<RS_Entity*> m_entities; // FIXME _ COMPLETE!!!
+    for (RS_Entity *e: m_entities) {
+        if (e != nullptr) {
+            if (e->isSelected()) { // fixme - rework!!! // fixme - SELECTION - selection collection!
+                if (types.empty() || type.count(e->rtti())) {
+                    collect.push_back(e);
+                }
+                /*if (deep && e->isContainer()) {
+                    auto *container = dynamic_cast<RS_EntityContainer *>(e);
+                    container->collectSelected(collect, false); // todo - check whether we need deep and types?
+                }*/
+            }
+        }
+    }
 }

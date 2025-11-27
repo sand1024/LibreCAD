@@ -38,7 +38,7 @@ protected:
     void updateMouseButtonHints() override;
     bool mayModifySplineEntity(RS_Entity *e) override;
     RS_Entity *createModifiedSplineEntity(RS_Entity *e, RS_Vector controlPoint, bool fromStart) override;
-    void doCompleteTrigger() override;
+    void doTriggerOther() override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
 };
 

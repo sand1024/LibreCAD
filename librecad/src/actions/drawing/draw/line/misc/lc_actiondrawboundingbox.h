@@ -37,7 +37,7 @@ protected:
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
     void doTriggerCompletion(bool success) override;
     void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
-    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
 };
 
 #endif // LC_ACTIONDRAWBOUNDINGBOX_H

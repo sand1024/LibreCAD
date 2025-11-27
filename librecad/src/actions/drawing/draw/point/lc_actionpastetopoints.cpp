@@ -44,10 +44,9 @@ void LC_ActionPasteToPoints::init(int status) {
     }
 }
 
-bool LC_ActionPasteToPoints::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool LC_ActionPasteToPoints::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     for (auto p: m_selectedEntities){
         RS_Vector currentPoint = p->getCenter();
-        // fixme - TRIGGER complete!!!
         const auto pasteData = LC_CopyUtils::RS_PasteData(currentPoint, m_scaleFactor , m_angleRad);
         LC_CopyUtils::paste(pasteData, m_graphic, ctx);
         ctx.dontSetActiveLayerAndPen();

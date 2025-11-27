@@ -26,7 +26,7 @@
 #include "lc_actionmodifyalign.h"
 #include "rs_previewactioninterface.h"
 
-class LC_ActionModifyAlignSingle:public RS_PreviewActionInterface, public LC_ActionModifyAlignData{
+class LC_ActionModifyAlignSingle:public LC_UndoableDocumentModificationAction, public LC_ActionModifyAlignData{
     Q_OBJECT
 public:
     explicit LC_ActionModifyAlignSingle(LC_ActionContext *actionContext);
@@ -54,9 +54,10 @@ protected:
     void previewAlignRefPoint(const RS_Vector &min, const RS_Vector &max) const;
     void previewRefLines(bool drawVertical, double verticalRef, bool drawHorizontal, double horizontalRef) const;
     QString prepareInfoCursorMessage(double verticalRef, bool drawVertical, double horizontalRef, bool drawHorizontal) const;
-    void doTrigger() override;
     void previewAlign(RS_Entity* entity, double verticalRef, bool drawVertical, double horizontalRef,
-                      bool drawHorizontal, const RS_Vector& alignMin, const RS_Vector& m_alignMax);
+                      bool drawHorizontal, const RS_Vector& alignMin, const RS_Vector& m_alignMax) const;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
 };
 
 #endif // LC_ACTIONMODIFYALIGNSINGLE_H

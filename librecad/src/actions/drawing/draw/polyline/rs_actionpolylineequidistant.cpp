@@ -37,7 +37,7 @@
 #include "rs_preview.h"
 
 RS_ActionPolylineEquidistant::RS_ActionPolylineEquidistant(LC_ActionContext *actionContext)
-	:LC_UndoablePreviewActionInterface("Create Equidistant Polylines", actionContext, RS2::ActionPolylineEquidistant)
+	:LC_UndoableDocumentModificationAction("Create Equidistant Polylines", actionContext, RS2::ActionPolylineEquidistant)
 	, m_dist(1.)
 	,m_number(1){
 }
@@ -48,6 +48,27 @@ void RS_ActionPolylineEquidistant::init(int status){
     m_originalEntity = nullptr;
     m_bRightSide = false;
     RS_PreviewActionInterface::init(status);
+}
+
+bool RS_ActionPolylineEquidistant::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
+    if (m_originalEntity != nullptr) {
+        QList<RS_Polyline*> polylines;
+        makeContour(m_originalEntity, m_bRightSide, polylines);
+
+        for (RS_Polyline* newPolyline : polylines) {
+            ctx += newPolyline;
+        }
+        return true;
+    }
+    return false;
+}
+
+void RS_ActionPolylineEquidistant::doTriggerCompletion(bool success) {
+    if (success) {
+        m_originalEntity = nullptr;
+        m_bRightSide     = false;
+        setStatus(ChooseEntity);
+    }
 }
 
 /**
@@ -120,12 +141,7 @@ RS_Vector RS_ActionPolylineEquidistant::calculateIntersection(RS_Entity* first,R
     return solPoint0;
 }
 
-void RS_ActionPolylineEquidistant::makeContour(RS_Polyline*  originalPolyline, bool contourOnRightSide, QList<RS_Polyline*> &createdPolylines){
-    if (!m_document){
-        RS_DEBUG->print(RS_Debug::D_WARNING,
-                        "RS_ActionPolylineEquidistant::makeContour: no valid container");
-    }
-
+void RS_ActionPolylineEquidistant::makeContour(RS_Polyline* originalPolyline, bool contourOnRightSide, QList<RS_Polyline*> &createdPolylines){
     //create a list of entities to offset without length = 0
     QList<RS_Entity *> entities;
     for (auto en: *originalPolyline) {
@@ -261,22 +277,6 @@ void RS_ActionPolylineEquidistant::makeContour(RS_Polyline*  originalPolyline, b
     }
 }
 
-void RS_ActionPolylineEquidistant::doTrigger() {
-    RS_DEBUG->print("RS_ActionPolylineEquidistant::trigger()");
-    if (m_originalEntity != nullptr) {
-        QList<RS_Polyline*> polylines;
-        makeContour(m_originalEntity, m_bRightSide, polylines);
-
-        for (RS_Polyline* newPolyline : polylines) {
-            newPolyline->setLayerToActive(); // fixme - cache layer to set
-            undoableAdd(newPolyline); // fixme - undoable - change to simpler form via undoableTrigger
-        }
-
-        m_originalEntity = nullptr;
-        m_bRightSide     = false;
-        setStatus(ChooseEntity);
-    }
-}
 
 bool RS_ActionPolylineEquidistant::doUpdateDistanceByInteractiveInput(const QString& tag, double distance) {
     if (tag == "spacing") {
@@ -351,18 +351,22 @@ bool RS_ActionPolylineEquidistant::isPointOnRightSideOfPolyline(const RS_Polylin
     bool pointOnRightSide = false;
     double d = toGraphDX(m_catchEntityGuiRange) * 0.9;
     auto segment = polyline->getNearestEntity(snapPoint, &d, RS2::ResolveNone);
-    if (isLine(segment)){ // fixme - support of polyline
-        auto line = dynamic_cast<RS_Line *>(segment);
+    if (isLine(segment)){
+        auto line = dynamic_cast<RS_Line*>(segment);
         double ang = line->getAngle1();
         double ang1 = line->getStartpoint().angleTo(snapPoint);
         if (ang > ang1 || ang + M_PI < ang1) {
             pointOnRightSide = true;
         }
-    } else {
-        RS_Vector cen = ((RS_Arc *) segment)->getCenter();
-        if (cen.distanceTo(snapPoint) > ((RS_Arc *) segment)->getRadius() && ((RS_Arc *) segment)->getBulge() > 0) {
+    } else if (isArc(segment)) {
+        auto arcSegment    = static_cast<RS_Arc*>(segment);
+        RS_Vector cen = arcSegment->getCenter();
+        if (cen.distanceTo(snapPoint) > arcSegment->getRadius() && arcSegment->getBulge() > 0) {
             pointOnRightSide = true;
         }
+    }
+    else {
+        // fixme - sand - ELLIPTICIC SEGMENT!!!
     }
     return pointOnRightSide;
 }

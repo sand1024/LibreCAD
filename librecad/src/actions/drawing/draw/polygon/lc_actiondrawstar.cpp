@@ -200,11 +200,13 @@ bool LC_ActionDrawStar::doCheckMayTrigger(){
 
 /**
  * entities created for trigger
- * @param list
  */
-void LC_ActionDrawStar::doPrepareTriggerEntities(QList<RS_Entity *> &list){
-    RS_Polyline* polyline = createShapePolyline(m_innerPoint, list, SetInnerPoint, false);
-    addPolylineToEntitiesList(polyline, list, false);
+
+
+bool LC_ActionDrawStar::doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx){
+    RS_Polyline* polyline = createShapePolyline(m_innerPoint, ctx.entitiesToAdd, SetInnerPoint, false);
+    addPolylineToEntitiesList(polyline, ctx.entitiesToAdd, false);
+    return true;
 }
 
 /**

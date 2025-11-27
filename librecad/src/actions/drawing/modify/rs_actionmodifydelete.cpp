@@ -32,7 +32,7 @@ RS_ActionModifyDelete::RS_ActionModifyDelete(LC_ActionContext *actionContext)
     :LC_ActionPreSelectionAwareBase("Delete Entities", actionContext, RS2::ActionModifyDelete) {
 }
 
-bool RS_ActionModifyDelete::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionModifyDelete::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     ctx.remove(m_selectedEntities);
     return true;
 }

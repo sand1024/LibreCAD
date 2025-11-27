@@ -25,6 +25,7 @@
 
 #include "lc_graphicviewport.h"
 #include "rs_entitycontainer.h"
+#include "rs_document.h"
 #include "rs_math.h"
 #include "rs_painter.h"
 #include "rs_settings.h"
@@ -129,7 +130,7 @@ void LC_WidgetViewPortRenderer::paintSequental(QPaintDevice* pd) {
     QSize const s0(width, height);
     if (pixmapLayerBackground->size() != s0){
         pixmapLayerBackground = std::make_unique<QPixmap>(width, height);
-        redrawMethod=(RS2::RedrawMethod ) (redrawMethod | RS2::RedrawGrid);
+        redrawMethod=static_cast<RS2::RedrawMethod>(redrawMethod | RS2::RedrawGrid);
     }
 
     if (redrawMethod & RS2::RedrawGrid) {
@@ -138,7 +139,7 @@ void LC_WidgetViewPortRenderer::paintSequental(QPaintDevice* pd) {
         setupPainter(&painterBackground);
         drawLayerBackground(&painterBackground);
         painterBackground.end();
-        redrawMethod=(RS2::RedrawMethod ) (redrawMethod | RS2::RedrawDrawing);
+        redrawMethod=static_cast<RS2::RedrawMethod>(redrawMethod | RS2::RedrawDrawing);
     }
 
     if (redrawMethod & RS2::RedrawDrawing) {
@@ -150,7 +151,7 @@ void LC_WidgetViewPortRenderer::paintSequental(QPaintDevice* pd) {
         drawLayerEntities(&painterLayerDrawing);
         drawLayerEntitiesOver(&painterLayerDrawing);
         painterLayerDrawing.end();
-        redrawMethod=(RS2::RedrawMethod ) (redrawMethod | RS2::RedrawOverlay);
+        redrawMethod=static_cast<RS2::RedrawMethod>(redrawMethod | RS2::RedrawOverlay);
     }
 
     if (redrawMethod & RS2::RedrawOverlay) {
@@ -251,7 +252,7 @@ void LC_WidgetViewPortRenderer::drawLayerEntities(RS_Painter* painter) {
     drawLayerEntitiesTimer.start();
 #endif
 
-    RS_EntityContainer *container = viewport->getContainer();
+    RS_Document *container = viewport->getDocument();
     painter->setDrawSelectedOnly(false);
     doSetupBeforeContainerDraw();
     justDrawEntity(painter, container);

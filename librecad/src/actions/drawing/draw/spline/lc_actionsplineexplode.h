@@ -60,11 +60,12 @@ protected:
     void onMouseMove(RS_Vector mouse, int status, LC_MouseEvent *e) override;
     void setEntityToModify(RS_Entity* entity) override;
     void fillStrokePoints(RS_Entity *e, int segmentsCount, std::vector<RS_Vector> &strokePoints, bool &closed) const;
-    void setupAndAddCreatedEntity(RS_Entity *createdEntity, RS_Layer *layerToSet, const RS_Pen &penToUse) const;
     void updateMouseButtonHints() override;
     RS_Entity *createModifiedSplineEntity(RS_Entity *e, RS_Vector controlPoint, bool startDirection) override;
     LC_ActionOptionsWidget *createOptionsWidget() override;
-    void doTrigger() override;
+    void doTriggerSelections(const LC_DocumentModificationBatch& ctx) override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
+    void doTriggerCompletion(bool success) override;
 };
 
 #endif // LC_ACTIONSPLINEEXPLODE_H

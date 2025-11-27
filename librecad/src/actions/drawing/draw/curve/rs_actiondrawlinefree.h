@@ -28,7 +28,7 @@
 #ifndef RS_ACTIONDRAWLINEFREE_H
 #define RS_ACTIONDRAWLINEFREE_H
 
-#include "rs_previewactioninterface.h"
+#include "lc_undoabledocumentmodificationaction.h"
 
 class RS_Polyline;
 
@@ -37,7 +37,7 @@ class RS_Polyline;
  *
  * @author Andrew Mustun
  */
-class RS_ActionDrawLineFree : public LC_UndoablePreviewActionInterface {
+class RS_ActionDrawLineFree : public LC_SingleEntityCreationAction {
     Q_OBJECT
 public:
     explicit RS_ActionDrawLineFree(LC_ActionContext *actionContext);
@@ -51,14 +51,16 @@ protected:
         Dragging      /**< Setting the endpoint. */
     };
     QPointF m_oldMousePosition = QPointF(-100,-100);
-    std::unique_ptr<RS_Vector> m_vertex; // fixme - why poiner there?
-    std::unique_ptr<RS_Polyline> m_polyline;
+    RS_Vector m_vertex;
+    RS_Polyline* m_polyline;
+
     RS2::CursorType doGetMouseCursor(int status) override;
     void updateMouseButtonHints() override;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
-    void doTrigger() override;
+    void doTriggerCompletion(bool success) override;
+    RS_Entity* doTriggerCreateEntity() override;
     void onMouseLeftButtonPress(int status, LC_MouseEvent *e) override;
 };
 #endif

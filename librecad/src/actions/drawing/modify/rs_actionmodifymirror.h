@@ -69,7 +69,7 @@ protected:
     void obtainFlipLineCoordinates(RS_Vector *start, RS_Vector *end, bool verticalLine) const;
     void onMouseMoveEventSelected(int status, LC_MouseEvent *event) override;
     void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
-    bool doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
 
 };
 #endif

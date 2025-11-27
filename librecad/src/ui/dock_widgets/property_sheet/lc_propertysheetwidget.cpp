@@ -71,7 +71,7 @@ void LC_PropertySheetWidget::setGraphicView(RS_GraphicView* gv) {
         disconnect(m_graphicView, &RS_GraphicView::relativeZeroChanged, this, &LC_PropertySheetWidget::onRelativeZeroChanged);
         disconnect(m_graphicView, &RS_GraphicView::ucsChanged, this, &LC_PropertySheetWidget::onUcsChanged);
         if (m_document != nullptr) {
-            m_document->getSelectedSet()->removeListener(this);
+            m_document->getSelection()->removeListener(this);
         }
     }
 
@@ -83,7 +83,7 @@ void LC_PropertySheetWidget::setGraphicView(RS_GraphicView* gv) {
         connect(m_graphicView, &RS_GraphicView::ucsChanged, this, &LC_PropertySheetWidget::onUcsChanged);
         viewport = gv->getViewPort();
         doc = gv->getDocument();
-        doc->getSelectedSet()->addListener(this);
+        doc->getSelection()->addListener(this);
     }
 
     m_document = doc;

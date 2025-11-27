@@ -37,7 +37,7 @@ RS_ActionModifyRevertDirection::RS_ActionModifyRevertDirection(LC_ActionContext 
 	:LC_ActionPreSelectionAwareBase("Revert direction", actionContext,RS2::ActionModifyRevertDirection,{}){
 }
 
-bool RS_ActionModifyRevertDirection::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionModifyRevertDirection::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     RS_Modification::revertDirection(m_selectedEntities, ctx);
     ctx.dontSetActiveLayerAndPen();
     return true;

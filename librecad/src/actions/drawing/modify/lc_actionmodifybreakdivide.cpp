@@ -152,13 +152,11 @@ bool LC_ActionModifyBreakDivide::isSetActivePenAndLayerOnTrigger(){
     return false; // action will handle attributes
 }
 
-void LC_ActionModifyBreakDivide::doPrepareTriggerEntities(QList<RS_Entity *> &list){
-    list.append(m_triggerData->entitiesToCreate);
-}
-
-void LC_ActionModifyBreakDivide::performTriggerDeletions(){
+bool LC_ActionModifyBreakDivide::doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx){
+    ctx += m_triggerData->entitiesToCreate;
     // delete original entity as we'll expand it and create segment entities
-    undoableDeleteEntity(m_triggerData->entity);
+    ctx -= m_triggerData->entity;
+    return true;
 }
 
 void LC_ActionModifyBreakDivide::doAfterTrigger(){

@@ -39,7 +39,7 @@ RS_ActionModifyExplodeText::RS_ActionModifyExplodeText(LC_ActionContext *actionC
 
 RS_ActionModifyExplodeText::~RS_ActionModifyExplodeText() = default;
 
-bool RS_ActionModifyExplodeText::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionModifyExplodeText::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     RS_Modification::explodeTextIntoLetters(m_selectedEntities, ctx);
     return true;
 }

@@ -59,10 +59,10 @@ bool LC_ActionDrawCircleByArc::isAcceptSelectedEntityToTriggerOnInit(RS_Entity *
     return result;
 }
 
-void LC_ActionDrawCircleByArc::doPerformOriginalEntitiesDeletionOnInitTrigger(QList<RS_Entity *> &list){
+void LC_ActionDrawCircleByArc::doPerformOriginalEntitiesDeletionOnInitTrigger(QList<RS_Entity *> &list, LC_DocumentModificationBatch & ctx){
     if (m_replaceArcByCircle){
         for (auto e: list){
-            deleteOriginalArcOrEllipse(e);
+            deleteOriginalArcOrEllipse(e, ctx);
         }
     }
 }
@@ -82,8 +82,12 @@ void LC_ActionDrawCircleByArc::doAfterTrigger(){
     setStatus(SetArc);
 }
 
-void LC_ActionDrawCircleByArc::doPrepareTriggerEntities(QList<RS_Entity *> &list){
-    doCreateEntitiesOnTrigger(m_entity, list);
+bool LC_ActionDrawCircleByArc::doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx) {
+    doCreateEntitiesOnTrigger(m_entity, ctx.entitiesToAdd);
+    if (m_replaceArcByCircle){
+        deleteOriginalArcOrEllipse(m_entity, ctx);
+    }
+    return true;
 }
 
 bool LC_ActionDrawCircleByArc::isSetActivePenAndLayerOnTrigger(){
@@ -121,17 +125,10 @@ void LC_ActionDrawCircleByArc::doCreateEntitiesOnTrigger(RS_Entity *en, QList<RS
     }
 }
 
-// deletion of original entities, if needed
-void LC_ActionDrawCircleByArc::performTriggerDeletions(){
-    // check whether we need to delete original arc
-    if (m_replaceArcByCircle){
-        deleteOriginalArcOrEllipse(m_entity);
-    }
-}
 
-void LC_ActionDrawCircleByArc::deleteOriginalArcOrEllipse(RS_Entity *en) const {
+void LC_ActionDrawCircleByArc::deleteOriginalArcOrEllipse(RS_Entity *en, LC_DocumentModificationBatch& ctx) const {
     if (checkMayExpandEntity(en,  en->is(RS2::EntityArc) ? "Arc":"Ellipse")){
-        undoableDeleteEntity(en);
+        ctx -= en;
     }
 }
 

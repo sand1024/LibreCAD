@@ -91,7 +91,7 @@ void LC_SelectedSet::cleanup() {
     }
     QList<RS_Entity*> validEntities;
     for (const auto e: m_entitiesList) {
-        if (e->isSet(RS2::FlagSelected) && !e->isDeleted() && !e->isLocked()) {
+        if (e->isSet(RS2::FlagSelected) && !e->isDeleted() && !e->isLocked()) { // FIXME _ CHECK _FOR LOCK AND VISIBILITY - IF LAYER WAS TOGGLED?
             validEntities.append(e);
         }
     }
@@ -104,19 +104,22 @@ void LC_SelectedSet::cleanup() {
     }
 }
 
-void LC_SelectedSet::collectSelectedEntities(QList<RS_Entity*>& list) {
+bool LC_SelectedSet::collectSelectedEntities(QList<RS_Entity*>& list) {
     bool cleanupNeeded = false;
     for (const auto e: m_entitiesList) {
-        if (e->isSet(RS2::FlagSelected) && e->isNotSet(RS2::FlagDeleted)) {
-            list.append(e);
-        }
-        else {
-            cleanupNeeded = true;
+        if (e != nullptr) {
+            if (e->isSet(RS2::FlagSelected) && e->isNotSet(RS2::FlagDeleted)) {
+                list.append(e);
+            }
+            else {
+                cleanupNeeded = true;
+            }
         }
     }
     if (cleanupNeeded) {
         cleanup();
     }
+    return !list.isEmpty();
 }
 
 void LC_SelectedSet::disableListeners() {

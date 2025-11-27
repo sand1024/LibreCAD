@@ -169,7 +169,7 @@ private:
 protected:
     LC_ActionOptionsWidget* createOptionsWidget() override;
     bool doCheckMayTrigger() override;
-    void doPrepareTriggerEntities(QList<RS_Entity *> &list) override;
+    bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx)  override;
     void doAfterTrigger() override;
     void doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
     void doOnLeftMouseButtonRelease(LC_MouseEvent *e, int status, const RS_Vector &snapPoint) override;

@@ -31,7 +31,7 @@
 #include "rs_polyline.h"
 
 LC_ActionPolylineChangeSegmentType::LC_ActionPolylineChangeSegmentType(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("PolylineChangeSegment",actionContext, RS2::ActionPolylineChangeSegmentType) {
+    :LC_UndoableDocumentModificationAction("PolylineChangeSegment",actionContext, RS2::ActionPolylineChangeSegmentType) {
 }
 
 LC_ActionPolylineChangeSegmentType::~LC_ActionPolylineChangeSegmentType() = default;
@@ -46,19 +46,26 @@ void LC_ActionPolylineChangeSegmentType::doInitWithContextEntity(RS_Entity* cont
     setPolylineToModify(contextEntity);
 }
 
-void LC_ActionPolylineChangeSegmentType::doTrigger() {
-    // todo - move to RS_Modification?
-    auto* createdPolyline =  createModifiedPolyline();
-    if (createdPolyline != nullptr) {
-        createdPolyline->setLayer(m_polyline->getLayer());
-        createdPolyline->setPen(m_polyline->getPen(false));
-        undoCycleReplace(m_polyline, createdPolyline); // fixme - undoable - change to simpler form via undoableTrigger
-        m_polyline = createdPolyline;
-        m_polylineSegment = nullptr;
-        setStatus(SetSegment);
+bool LC_ActionPolylineChangeSegmentType::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
+    auto* clone = createModifiedPolyline();
+    if (clone != nullptr) {
+        clone->setLayer(m_polyline->getLayer());
+        clone->setPen(m_polyline->getPen(false));
+        ctx.dontSetActiveLayerAndPen();
+        ctx.replace(m_polyline, clone);
+        m_polyline  = clone;
+        return true;
     }
     else {
         commandMessage(tr("Invalid arc point to create arc, select another one"));
+    }
+    return false;
+}
+
+void LC_ActionPolylineChangeSegmentType::doTriggerCompletion(bool success) {
+    if (true) {
+        m_polylineSegment = nullptr;
+        setStatus(SetSegment);
     }
 }
 
@@ -147,6 +154,7 @@ RS_Polyline* LC_ActionPolylineChangeSegmentType::createModifiedPolyline() const 
                     break;
                 }
                 default:
+                    // fixme - polyline - ELLIPTIC SEGMENT!
                     break;
             }
         }

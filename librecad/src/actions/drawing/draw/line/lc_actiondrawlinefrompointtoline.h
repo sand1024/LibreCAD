@@ -125,7 +125,7 @@ protected:
     int doGetStatusForInitialSnapToRelativeZero() override;
     void doInitialSnapToRelativeZero(RS_Vector zero) override;
     bool doCheckMayTrigger() override;
-    void doPrepareTriggerEntities(QList<RS_Entity *> &list) override;
+    bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx) override;
     void doAfterTrigger() override;
     void doBack(LC_MouseEvent *pEvent, int status) override;
     void doFinish(bool updateTB) override;

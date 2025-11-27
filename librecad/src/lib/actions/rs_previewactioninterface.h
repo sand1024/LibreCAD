@@ -97,12 +97,6 @@ protected:
     bool m_doNotAllowNonDecimalAnglesInput = false;
 
     virtual void doTrigger(){}
-    /**
-    * Controls whether trigger should be within undoable cycle
-    * @return true if trigger execution should be within undo cycle
-    */
-    virtual bool isTriggerUndoable() {return false;}
-
     void deletePreview();
     void deleteHighlights() const;
     void deletePreviewAndHighlights();
@@ -216,18 +210,11 @@ protected:
     bool parseToRelativeAngle(const QString&c, double &ucsBasisAngleRad) const;
     double evalAngleValue(const QString &c, bool *ok) const;
     void initFromSettings() override;
+
+    virtual bool doCheckMayTrigger();
 private:
     LC_MouseEvent toLCMouseMoveEvent(QMouseEvent *e);
     friend LC_ActionInfoMessageBuilder;
-};
-
-class LC_UndoablePreviewActionInterface: public RS_PreviewActionInterface {
-public:
-    LC_UndoablePreviewActionInterface(const char *name,LC_ActionContext *actionContext,RS2::ActionType actionType = RS2::ActionNone):
-     RS_PreviewActionInterface(name, actionContext, actionType){};
-    ~LC_UndoablePreviewActionInterface() override = default;
-protected:
-    bool isTriggerUndoable() override {return true;}
 };
 
 #endif

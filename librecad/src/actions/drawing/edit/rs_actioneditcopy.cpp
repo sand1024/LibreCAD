@@ -72,14 +72,14 @@ void RS_ActionEditCopyPaste::onSelectionCompleted([[maybe_unused]] bool singleEn
     }
 }
 
-bool RS_ActionEditCopyPaste::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionEditCopyPaste::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     switch (m_actionType){
         case  RS2::ActionEditCut:
         case  RS2::ActionEditCutQuick:
         case  RS2::ActionEditCopy:
         case  RS2::ActionEditCopyQuick:{
             QList<RS_Entity*> selection;
-            m_document->getSelectedSet()->collectSelectedEntities(selection);
+            m_document->getSelection()->collectSelectedEntities(selection);
             if (!selection.empty()) {
                 bool cut = m_actionType ==  RS2::ActionEditCut || m_actionType == RS2::ActionEditCutQuick;
                 LC_CopyUtils::copy(*m_referencePoint, selection, m_graphic);

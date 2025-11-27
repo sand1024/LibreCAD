@@ -46,7 +46,7 @@ bool LC_ActionDimOrdinateRebase::isAllowTriggerOnEmptySelection() {
     return false;
 }
 
-bool LC_ActionDimOrdinateRebase::doTriggerModificationsPrepare(LC_DocumentModificationBatch& modificationData) {
+bool LC_ActionDimOrdinateRebase::doTriggerModifications(LC_DocumentModificationBatch& modificationData) {
     double horizontalDirection = 0;
     RS_Vector origin{false};
     m_viewport->fillCurrentUCSInfo(origin, horizontalDirection);

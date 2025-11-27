@@ -102,7 +102,7 @@ void RS_ActionDrawLineBisector::setStatus(int status) {
     invalidateSnapSpot();
 }
 
-bool RS_ActionDrawLineBisector::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionDrawLineBisector::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     std::list<RS_Entity*> bisectorLines;
     bool created = RS_Creation::createBisector(m_actionData->coord1, m_actionData->coord2, m_length,
             m_numberToCreate, m_line1, m_line2, ctx.entitiesToAdd);

@@ -106,11 +106,11 @@ protected:
         LC_PointsDisposition line1Disposition; // intersection point disposition for line 1
         LC_PointsDisposition line2Disposition; // intersection point disposition for line 2
 
-        bool areLinesAlreadyIntersected(){
+        bool areLinesAlreadyIntersected() const {
             return line1Disposition.isIntersectionPointBelongsLine() && line2Disposition.isIntersectionPointBelongsLine();
         }
 
-        bool isIntersectionOnLine1(){
+        bool isIntersectionOnLine1() const {
             return line1Disposition.isIntersectionPointBelongsLine();
         }
     };
@@ -191,9 +191,8 @@ protected:
 
     void doOnLeftMouseButtonRelease(LC_MouseEvent *e, int status, const RS_Vector &snapPoint) override;
     void doAfterTrigger() override;
-    void performTriggerDeletions() override;
     bool doCheckMayTrigger() override;
-    void doPrepareTriggerEntities(QList<RS_Entity *> &list) override;
+    bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx) override;
     bool isSetActivePenAndLayerOnTrigger() override;
     void updateMouseButtonHints() override;
 

@@ -37,7 +37,7 @@ RS_ActionModifyAttributes::RS_ActionModifyAttributes(LC_ActionContext *actionCon
     :LC_ActionPreSelectionAwareBase("Change Attributes",actionContext, RS2::ActionModifyAttributes) {
 }
 
-bool RS_ActionModifyAttributes::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionModifyAttributes::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     RS_AttributesData data;
     data.pen = RS_Pen();
     data.layer = "0";

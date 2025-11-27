@@ -35,14 +35,12 @@
 class RS_BlockList;
 
 RS_ActionBlocksRemove::RS_ActionBlocksRemove(LC_ActionContext *actionContext)
-    :RS_ActionInterface("Remove Block", actionContext, RS2::ActionBlocksRemove) {}
+    :LC_UndoableDocumentModificationAction("Remove Block", actionContext, RS2::ActionBlocksRemove) {}
 
-void RS_ActionBlocksRemove::trigger() {
-    RS_DEBUG->print("RS_ActionBlocksRemove::trigger");
-
-    if (!(m_graphic && m_document)) {
+bool RS_ActionBlocksRemove::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
+    if (!(m_graphic && m_document)) { /// fixme - remove, should be checked on init
         finish(false);
-        return;
+        return false;
     }
 
     RS_BlockList *blockList = m_graphic->getBlockList();
@@ -50,7 +48,7 @@ void RS_ActionBlocksRemove::trigger() {
 
     if (blocks.isEmpty()) {
         finish(false);
-        return;
+        return false;
     }
 
     // list of containers that might refer to the block via inserts:
@@ -59,8 +57,6 @@ void RS_ActionBlocksRemove::trigger() {
     for (int bi = 0; bi < blockList->count(); bi++) {
         containerList.push_back(blockList->at(bi));
     }
-
-    undoCycleStart();
 
     for (const auto block: blocks) {
         if (nullptr == block) {
@@ -75,7 +71,7 @@ void RS_ActionBlocksRemove::trigger() {
                     if (e->is(RS2::EntityInsert)) {
                         auto *insert = static_cast<RS_Insert *>(e);
                         if (insert->getName() == block->getName() && !insert->isDeleted()) {
-                            m_document->undoableDelete(insert);
+                            ctx -= insert;
                             done = false;
                             break;
                         }
@@ -94,17 +90,16 @@ void RS_ActionBlocksRemove::trigger() {
         RS_DIALOGFACTORY->closeEditBlockWindow(block);
 
         // Now remove block from the block list, but do not delete:
-        m_document->undoableDelete(block);
+        ctx -= block;
     }
-    undoCycleEnd();
 
     m_graphic->addBlockNotification();
     m_graphic->updateInserts();
-    redrawDrawing();
     blockList->activate(nullptr);
 
-    finish(false);
-    updateSelectionWidget();
+    finish(false); // fixme - is it needed there?
+    updateSelectionWidget(); // fixme - remove!
+    return true;
 }
 
 void RS_ActionBlocksRemove::init(const int status) {

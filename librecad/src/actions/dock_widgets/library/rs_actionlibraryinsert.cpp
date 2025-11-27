@@ -87,7 +87,7 @@ void RS_ActionLibraryInsert::reset() const {
     delete m_actionData->prev;
 }
 
-bool RS_ActionLibraryInsert::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionLibraryInsert::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     auto insertData           = m_actionData->data;
     insertData.graphic        = m_actionData->prev;
     insertData.angle          = toWorldAngleFromUCSBasis(m_actionData->data.angle);

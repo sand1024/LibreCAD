@@ -35,7 +35,7 @@ namespace {
 }
 
 LC_ActionDrawMidLine::LC_ActionDrawMidLine(LC_ActionContext *actionContext)
-    :LC_UndoablePreviewActionInterface("DrawMidLine", actionContext,RS2::ActionDrawLineMiddle) {
+    :LC_UndoableDocumentModificationAction("DrawMidLine", actionContext,RS2::ActionDrawLineMiddle) {
 }
 
 void LC_ActionDrawMidLine::init(int status) {
@@ -51,15 +51,21 @@ void LC_ActionDrawMidLine::doInitWithContextEntity(RS_Entity* contextEntity, [[m
     }
 }
 
-void LC_ActionDrawMidLine::doTrigger() {
+bool LC_ActionDrawMidLine::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     LineInfo lineInfo;
     prepareLine(lineInfo, m_secondEntity, m_alternateEndpoints);
     RS_Line* lineToCreate = lineInfo.line;
     if (lineToCreate != nullptr) {
         lineToCreate->reparent(m_document);
         setupCenterlinePenLayer(lineToCreate);
-        undoableAdd(lineToCreate);
+        ctx += lineToCreate;
+        ctx.dontSetActiveLayerAndPen();
+        return true;
     }
+    return false;
+}
+
+void LC_ActionDrawMidLine::doTriggerCompletion(bool success) {
     setStatus(SetEntity1);
 }
 
@@ -88,7 +94,7 @@ RS2::LineType LC_ActionDrawMidLine::getLineTypeForCenterLine() const {
 void LC_ActionDrawMidLine::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     switch (status){
         case SetEntity1: {
-            RS_Entity* ent = catchAndDescribe(e, g_enTypeList, RS2::ResolveLevel::ResolveAllButTextImage);
+            RS_Entity* ent = catchAndDescribe(e, g_enTypeList, RS2::ResolveLevel::ResolveAll/*ButTextImage*/);
             if (ent != nullptr){
                 highlightHover(ent);
             }
@@ -96,7 +102,7 @@ void LC_ActionDrawMidLine::onMouseMoveEvent(int status, LC_MouseEvent *e) {
         }
         case SetEntity2:{
             highlightSelected(m_firstEntity);
-            RS_Entity* ent = catchAndDescribe(e, g_enTypeList, RS2::ResolveLevel::ResolveAllButTextImage);
+            RS_Entity* ent = catchAndDescribe(e, g_enTypeList, RS2::ResolveLevel::ResolveAll/*ButTextImage*/);
             if (ent != nullptr){
                 highlightHover(ent);
                 bool alternate = e->isShift;
@@ -193,7 +199,7 @@ void LC_ActionDrawMidLine::prepareLine(LC_ActionDrawMidLine::LineInfo &info, RS_
 void LC_ActionDrawMidLine::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
     switch (status){
         case SetEntity1: {
-            RS_Entity* ent = catchEntityByEvent(e, g_enTypeList, RS2::ResolveLevel::ResolveAllButTextImage);
+            RS_Entity* ent = catchEntityByEvent(e, g_enTypeList, RS2::ResolveLevel::ResolveAll/*ButTextImage*/);
             if (ent != nullptr){
                 m_firstEntity = ent;
                 setStatus(SetEntity2);
@@ -203,7 +209,7 @@ void LC_ActionDrawMidLine::onMouseLeftButtonRelease(int status, LC_MouseEvent *e
         }
         case SetEntity2:{
             highlightSelected(m_firstEntity);
-            RS_Entity* ent = catchEntityByEvent(e, g_enTypeList, RS2::ResolveLevel::ResolveAllButTextImage);
+            RS_Entity* ent = catchEntityByEvent(e, g_enTypeList, RS2::ResolveLevel::ResolveAll/*ButTextImage*/);
             if (ent != nullptr){
                 m_secondEntity = ent;
             }

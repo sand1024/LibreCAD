@@ -55,7 +55,7 @@ void RS_ActionModifyStretch::init(int status) {
 
 RS_ActionModifyStretch::~RS_ActionModifyStretch() = default;
 
-bool RS_ActionModifyStretch::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionModifyStretch::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     if (m_entitiesList.empty()) {
         for (const auto e : *m_document) { // fixme - we don't rely on selection for stretch :(
             //

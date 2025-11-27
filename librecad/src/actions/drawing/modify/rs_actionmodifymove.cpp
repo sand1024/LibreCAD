@@ -48,7 +48,7 @@ RS_ActionModifyMove::RS_ActionModifyMove(LC_ActionContext *actionContext)
 
 RS_ActionModifyMove::~RS_ActionModifyMove() = default;
 
-bool RS_ActionModifyMove::doTriggerModificationsPrepare(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionModifyMove::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     auto &moveData = m_actionData->data;
     if (m_actionData->createCopy) {
         bool oldKeepOriginals = moveData.keepOriginals;

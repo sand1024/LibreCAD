@@ -64,8 +64,9 @@ bool LC_ActionModifyDuplicate::isSetActivePenAndLayerOnTrigger(){
     return m_duplicateInplace; // if inplace, use settings from active layer and pen
 }
 
-void LC_ActionModifyDuplicate::doPrepareTriggerEntities(QList<RS_Entity *> &list){
-    doCreateEntitiesOnTrigger(m_selectedEntity, list);
+bool LC_ActionModifyDuplicate::doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx){
+    doCreateEntitiesOnTrigger(m_selectedEntity, ctx.entitiesToAdd);
+    return true;
 }
 
 void LC_ActionModifyDuplicate::doCreateEntitiesOnTrigger(RS_Entity *en, QList<RS_Entity *> &list){

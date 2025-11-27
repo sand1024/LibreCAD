@@ -61,12 +61,12 @@ bool LC_ActionDrawLineFromPointToLine::doCheckMayTrigger(){
 
 /**
  * just create line according to given parameters
- * @param list
  */
-void LC_ActionDrawLineFromPointToLine::doPrepareTriggerEntities(QList<RS_Entity *> &list){
+bool LC_ActionDrawLineFromPointToLine::doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx){
     RS_Vector intersection;
     RS_Line* line = createLineFromPointToTarget(m_targetLine, m_startPoint, intersection);
-    list << line;
+    ctx += line;
+    return true;
 }
 
 /*

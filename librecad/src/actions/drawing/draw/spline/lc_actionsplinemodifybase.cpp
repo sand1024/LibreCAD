@@ -27,7 +27,7 @@
 #include "rs_pen.h"
 
 LC_ActionSplineModifyBase::LC_ActionSplineModifyBase(const char* name, LC_ActionContext *actionContext, RS2::ActionType actionType)
-    :LC_UndoablePreviewActionInterface(name, actionContext, actionType) {
+    :LC_UndoableDocumentModificationAction(name, actionContext, actionType) {
 }
 
 void LC_ActionSplineModifyBase::doInitWithContextEntity(RS_Entity* contextEntity,[[maybe_unused]] const RS_Vector& clickPos) {
@@ -36,28 +36,33 @@ void LC_ActionSplineModifyBase::doInitWithContextEntity(RS_Entity* contextEntity
     }
 }
 
-void LC_ActionSplineModifyBase::doTrigger() {
+bool LC_ActionSplineModifyBase::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     RS_Entity* splineClone = createModifiedSplineEntity(m_entityToModify, m_vertexPoint, m_directionFromStart);
-    if (splineClone != nullptr){
-            splineClone->setLayer(m_entityToModify->getLayer());
-            splineClone->setPen(m_entityToModify->getPen(false));
-            splineClone->setParent(m_entityToModify->getParent());
-            select(splineClone);
-            doCompleteTrigger();
-            undoCycleReplace(m_entityToModify, splineClone);
+    if (splineClone != nullptr) {
+        splineClone->setLayer(m_entityToModify->getLayer());
+        splineClone->setPen(m_entityToModify->getPen(false));
+
+        doTriggerOther();
+
+        ctx.replace(m_entityToModify, splineClone);
 
         m_entityToModify = splineClone;
-        m_vertexPoint = RS_Vector(false);
-        doAfterTrigger();
+        m_vertexPoint    = RS_Vector(false);
+        return true;
     }
-    else{
-        doOnEntityNotCreated();
+    doOnEntityNotCreated();
+    return false;
+}
+
+void LC_ActionSplineModifyBase::doTriggerSelections(const LC_DocumentModificationBatch& ctx) {
+    if (ctx.success) {
+        if (m_entityToModify != nullptr) {
+            select(m_entityToModify);
+        }
     }
 }
 
-void LC_ActionSplineModifyBase::doCompleteTrigger() {}
-void LC_ActionSplineModifyBase::doAfterTrigger() {}
-
+void LC_ActionSplineModifyBase::doTriggerOther() {}
 
 void LC_ActionSplineModifyBase::finish(bool updateTB) {
     clean();
