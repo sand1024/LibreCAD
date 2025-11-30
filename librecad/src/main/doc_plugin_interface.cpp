@@ -1041,7 +1041,10 @@ void Doc_plugin_interface::setLayer(QString name){
         lay = new RS_Layer(name);
         docGr->addLayer(lay);
     }
-    listLay->activate(lay, true);
+    RS_Graphic* graphic = m_document->getGraphic();
+    if (graphic != nullptr) {
+        graphic->activateLayer(lay, true);
+    }
 }
 
 QString Doc_plugin_interface::getCurrentLayer(){

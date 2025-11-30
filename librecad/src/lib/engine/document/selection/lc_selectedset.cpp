@@ -24,8 +24,9 @@
 #include "lc_selectedset.h"
 
 #include "rs_entity.h"
+#include "rs_layer.h"
 
-LC_SelectedSet::LC_SelectedSet() {}
+LC_SelectedSet::LC_SelectedSet() = default;
 
 LC_SelectedSet::~LC_SelectedSet() {
     m_entitiesList.clear();
@@ -91,8 +92,18 @@ void LC_SelectedSet::cleanup() {
     }
     QList<RS_Entity*> validEntities;
     for (const auto e: m_entitiesList) {
-        if (e->isSet(RS2::FlagSelected) && !e->isDeleted() && !e->isLocked()) { // FIXME _ CHECK _FOR LOCK AND VISIBILITY - IF LAYER WAS TOGGLED?
+        bool valid = false;
+        if (e->isSet(RS2::FlagSelected) && e->isAlive()) {
+            RS_Layer* layer = e->getLayerResolved();
+            if (!layer->isLocked() && !layer->isFrozen()) {  // also clear selection for locked and freezed layers
+                valid = true;
+            }
+        }
+        if (valid) {
             validEntities.append(e);
+        }
+        else {
+            e->setSelectionFlag(false);
         }
     }
     auto validEntitiesCount = validEntities.count();

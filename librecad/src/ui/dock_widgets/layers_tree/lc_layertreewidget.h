@@ -26,8 +26,10 @@
 #define LC_LAYERTREEWIDGET_H
 
 #include "lc_graphicviewawarewidget.h"
+#include "rs_document.h"
 #include "rs_layerlistlistener.h"
 
+class RS_Graphic;
 class QCheckBox;
 class QToolButton;
 class QG_ActionHandler;
@@ -120,7 +122,8 @@ private:
     LC_LayerTreeView *m_layerTreeView {nullptr};
     LC_LayerTreeModel *m_layerTreeModel {nullptr};
     RS_GraphicView *m_graphicView {nullptr};
-    RS_Document *m_document {nullptr};
+    RS_Document *m_document {nullptr}; // fixme - do we need it at all??
+    RS_Graphic *m_graphic {nullptr};
     QG_ActionHandler *m_actionHandler {nullptr};
     bool m_flatListMode{false};
     QToolButton *m_btnCollapseSecondary {nullptr};
@@ -154,7 +157,7 @@ private:
     void copyLayerAttributes(RS_Layer *copyLayer, RS_Layer *sourceLayer);
     void redrawView() const;
     void doCreateLayersCopy(const QModelIndex &sourceIndex, bool duplicateEntities);
-    void duplicateLayerEntities(RS_Layer *sourceLayer, RS_Layer *copyLayer) const;
+    void duplicateLayerEntities(RS_Layer *sourceLayer, RS_Layer *copyLayer, LC_DocumentModificationBatch& ctx) const;
     void doMoveSelectionToLayer(LC_LayerTreeItem *layerItem, bool duplicate, bool resolvePens = false);
     void doRemoveLayersFromSource(LC_LayerTreeItem *source, bool removeChildrenOnly);
     void doRemoveLayers(QList<RS_Layer *> &layers) const;

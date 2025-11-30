@@ -201,10 +201,10 @@ void RS_LayerList::edit(RS_Layer* layer, const RS_Layer& source) {
         return;
     }
     *layer = source;
-    fireEdit(layer);
+    fireLayerEdited(layer);
 }
 
-void RS_LayerList::fireEdit(RS_Layer* layer) {
+void RS_LayerList::fireLayerEdited(RS_Layer* layer) {
     for (auto l : m_layerListListeners) {
         l->layerEdited(layer);
     }

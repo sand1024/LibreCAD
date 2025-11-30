@@ -83,7 +83,6 @@ public:
      * Called when layer list is modified.
      */
     virtual void layerListModified(bool) {}
-}
-;
+};
 
 #endif

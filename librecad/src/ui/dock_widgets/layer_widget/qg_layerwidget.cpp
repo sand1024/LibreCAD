@@ -381,12 +381,12 @@ void QG_LayerWidget::restoreSelections() const {
 void QG_LayerWidget::activateLayer(RS_Layer* layer, bool updateScroll) const {
     RS_DEBUG->print("QG_LayerWidget::activateLayer() begin");
 
-    if (!layer || !m_layerList) {
+    if (layer == nullptr || m_graphic == nullptr) {
         RS_DEBUG->print(RS_Debug::D_ERROR, "QG_LayerWidget::activateLayer: nullptr layer or layerList");
         return;
     }
 
-    m_layerList->activate(layer);
+    m_graphic->activateLayer(layer);
 
     if (!m_layerModel) {
         RS_DEBUG->print(RS_Debug::D_ERROR, "QG_LayerWidget::activateLayer: nullptr layerModel");
@@ -440,7 +440,7 @@ void QG_LayerWidget::slotActivated(QModelIndex layerIdx /*const QString& layerNa
         return;
 
     if (layerIdx.column() == QG_LayerModel::NAME) {
-        m_layerList->activate(lay, true);
+        m_graphic->activateLayer(lay, true);
         return;
     }
 
@@ -566,10 +566,11 @@ void QG_LayerWidget::keyPressEvent(QKeyEvent* e) {
 void QG_LayerWidget::activateLayer(int row) const {
     auto layer = m_layerModel->getLayer(row);
     if (layer) {
-        m_layerList->activate(layer, true);
+        m_graphic->activateLayer(layer, true);
     }
-    else
+    else {
         qWarning("activateLayer: row %d doesn't exist", row);
+    }
 }
 
 void QG_LayerWidget::updateWidgetSettings() const {
@@ -591,18 +592,13 @@ void QG_LayerWidget::updateWidgetSettings() const {
 void QG_LayerWidget::setGraphicView(RS_GraphicView *gview){
     if (gview == nullptr) {
         setLayerList(nullptr, false);
+        m_graphic = nullptr;
     }
     else {
         auto doc = gview->getDocument();
         bool showByBlock = doc->rtti() == RS2::EntityBlock;
-        if (showByBlock) {
-            auto graphic  = gview->getGraphic(true);
-            auto layerList = graphic->getLayerList();
-            setLayerList(layerList, false);
-        }
-        else {
-            auto layerList = doc->getGraphic()->getLayerList();
-            setLayerList(layerList, showByBlock);
-        }
+        m_graphic  = gview->getGraphic(true);
+        auto layerList = m_graphic->getLayerList();
+        setLayerList(layerList, showByBlock);
     }
 }

@@ -233,7 +233,7 @@ bool RS_FilterDXFRW::fileImport(RS_Graphic& g, const QString& file, [[maybe_unus
     auto cl = m_graphic->findLayer(m_graphic->getVariableString("$CLAYER", "0"));
 	if (cl ){
         //require to notify
-        m_graphic->getLayerList()->activate(cl, true);
+        m_graphic->activateLayer(cl, true);
     }
     RS_DEBUG->print("RS_FilterDXFRW::fileImport: updating inserts");
     m_graphic->updateInserts();

@@ -62,7 +62,7 @@ public:
 // At least "active" one, so viewport will be accessible via document, not via graphic view.
 class RS_Graphic : public RS_Document {
 public:
-    RS_Graphic(RS_EntityContainer* parent=nullptr);
+    explicit RS_Graphic(RS_EntityContainer* parent=nullptr);
     ~RS_Graphic() override;
 
     virtual void onLoadingCompleted();
@@ -80,7 +80,10 @@ public:
     void addDimStyle(LC_DimStyle* style) {dimstyleList.addDimStyle(style);}
     void newDoc() override;
     // Wrappers for Layer functions:
-    void clearLayers() {layerList.clear();}
+    void clearLayers() {
+        layerList.clear();
+        validateSelection();
+    }
     unsigned countLayers() const {return layerList.count();}
     RS_Layer* layerAt(unsigned i) const {return layerList.at(i);}
     void activateLayer(const QString& name, bool notify = false) {layerList.activate(name, notify);}
@@ -91,16 +94,24 @@ public:
     void removeLayer(RS_Layer* layer);
     void editLayer(RS_Layer* layer, const RS_Layer& source) {layerList.edit(layer, source);}
     RS_Layer* findLayer(const QString& name) {return layerList.find(name);}
-    void toggleLayer(const QString& name) {layerList.toggle(name);}
-    void toggleLayer(RS_Layer* layer) {layerList.toggle(layer);}
-    void toggleLayerLock(RS_Layer* layer) {layerList.toggleLock(layer);}
+    void toggleLayer(const QString& name) {layerList.toggle(name);validateSelection();}
+    void toggleLayer(RS_Layer* layer) {layerList.toggle(layer); validateSelection();}
+    void toggleLayerLock(RS_Layer* layer) {layerList.toggleLock(layer); validateSelection();}
     void toggleLayerPrint(RS_Layer* layer) {layerList.togglePrint(layer);}
     void toggleLayerConstruction(RS_Layer* layer) {layerList.toggleConstruction(layer);}
-    void freezeAllLayers(bool freeze) {layerList.freezeAll(freeze);}
-    void lockAllLayers(bool lock) {layerList.lockAll(lock);}
+    void freezeAllLayers(bool freeze) {layerList.freezeAll(freeze);validateSelection();}
+    void lockAllLayers(bool lock) {layerList.lockAll(lock);validateSelection();}
+    void toggleLockLayers(QList<RS_Layer*> layers){layerList.toggleLockMulti(layers);validateSelection();}
+    void togglePrintLayers(QList<RS_Layer*> layers){layerList.togglePrintMulti(layers);validateSelection();}
+    void toggleConstructionLayers(QList<RS_Layer*> layers){layerList.toggleConstructionMulti(layers);validateSelection();}
+    void toggleFreezeLayers(QList<RS_Layer*> layers){layerList.toggleFreezeMulti(layers);validateSelection();}
+    void setFreezeLayers(QList<RS_Layer*> layersEnable, QList<RS_Layer*> layersDisable){layerList.setFreezeMulti(layersEnable, layersDisable);validateSelection();}
+    void setLockLayers(QList<RS_Layer*> layersToUnlock, QList<RS_Layer*> layersToLock){layerList.setLockMulti(layersToUnlock, layersToLock);validateSelection();}
+    void setPrintLayers(QList<RS_Layer*> layersNoPrint, QList<RS_Layer*> layersPrint){layerList.setPrintMulti(layersNoPrint, layersPrint);validateSelection();}
+    void setConstructionLayers(QList<RS_Layer*> layersNoConstruction, QList<RS_Layer*> layersConstruction){layerList.setConstructionMulti(layersNoConstruction, layersConstruction);validateSelection();}
+
     void addLayerListListener(RS_LayerListListener* listener) {layerList.addListener(listener);}
     void removeLayerListListener(RS_LayerListListener* listener) {layerList.removeListener(listener);}
-
     void addViewListListener(LC_ViewListListener* listener) { namedViewsList.addListener(listener);}
     void removeViewListListener(LC_ViewListListener* listener) { namedViewsList.removeListener(listener);}
 
@@ -287,6 +298,7 @@ public:
     virtual LC_DimStyle* getResolvedDimStyle(const QString &dimStyleName, RS2::EntityType dimType = RS2::EntityUnknown) const;
     void updateFallbackDimStyle(LC_DimStyle* get_copy);
     void replaceDimStylesList(const QString& defaultStyleName, const QList<LC_DimStyle*>& styles);
+    void validateSelection() {m_selectedSet->cleanup();}
 protected:
     void fireUndoStateChanged(bool undoAvailable, bool redoAvailable) const override;
 private:

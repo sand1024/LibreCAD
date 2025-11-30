@@ -252,14 +252,19 @@ void LC_WidgetViewPortRenderer::drawLayerEntities(RS_Painter* painter) {
     drawLayerEntitiesTimer.start();
 #endif
 
-    RS_Document *container = viewport->getDocument();
+    RS_Document *document = viewport->getDocument();
     painter->setDrawSelectedOnly(false);
     doSetupBeforeContainerDraw();
-    justDrawEntity(painter, container);
+    justDrawEntity(painter, document);
 
-    painter->setDrawSelectedOnly(true);
-    doSetupBeforeContainerDraw();
-    justDrawEntity(painter, container);
+    QList<RS_Entity*> selectedEntities;
+    if (document->collectSelected(selectedEntities)) {
+        painter->setDrawSelectedOnly(true);
+        doSetupBeforeContainerDraw();
+        for (const auto e: selectedEntities) {
+            painter->drawEntity(e);
+        }
+    }
 
 #ifdef DEBUG_RENDERING_DETAILS
     drawLayerEntitiesTime += drawLayerEntitiesTimer.elapsed();

@@ -569,9 +569,12 @@ void LC_PenPaletteWidget::fillPenEditorBySelectedEntityDrawingPen(){
  * @param resolvePenOnEntitySelect flag that indicates whether resolved pen should be applied to the editor (if true) or just pen from entity's attributes
  */
 void LC_PenPaletteWidget::doFillPenEditorBySelectedEntity(bool resolvePenOnEntitySelect){
+    if (m_graphicView == nullptr) {
+        return;
+    }
     // first we collect selected entitites
     QList<RS_Entity *> selectedEntities;
-    auto graphic = m_graphicView->getGraphic();
+    auto graphic = m_graphicView->getGraphic(true);
     graphic->collectSelected(selectedEntities);
 
     if (selectedEntities.size() != 1){ // only one entity selected is expected
@@ -687,12 +690,15 @@ void LC_PenPaletteWidget::doSelectEntitiesByPenEditor(bool resolvePens, bool res
  */
 void LC_PenPaletteWidget::doSelectEntitiesThatMatchToPenAttributes(
     const RS2::LineType &lineType, const RS2::LineWidth &width, const RS_Color &color, bool colorCheck, bool resolvePens, bool resolveLayers) const{
-    auto graphic = m_graphicView->getGraphic();
+    if (m_graphicView == nullptr) {
+        return;
+    }
+    auto graphic = m_graphicView->getGraphic(true);
     int selectedCount = 0;
     int hasEntitiesOnFrozenLayers = false;
     int hasEntitiesOnLockedLayers = false;
     QList<RS_Entity*> entitiesToSelect;
-        foreach (auto e, graphic->getEntityList()) {
+        foreach (auto e, graphic->getEntityList()) {  // fixme - review and change!
 
             // based on parameter, we'll use either entity's attributes pen - or resolved pen that is actually used for drawing
             RS_Pen pen = e->getPen(resolvePens);
@@ -979,7 +985,7 @@ void LC_PenPaletteWidget::applySelectedPenItemToPenToolBar(){
 void LC_PenPaletteWidget::applySelectedPenItemToActiveLayer(){
     LC_PenItem *selectedPenItem = getSelectedPenItem();
     if (selectedPenItem != nullptr){
-        if (m_layerList != nullptr){
+        if (m_layerList != nullptr && m_graphicView != nullptr){
             RS_Layer *layer = m_layerList->getActive();
             if (layer != nullptr){
                 RS_Pen layerPen = layer->getPen();
@@ -987,7 +993,8 @@ void LC_PenPaletteWidget::applySelectedPenItemToActiveLayer(){
                 RS_Pen penCopy = createPenByPenItem(layerPen, selectedPenItem);
 
                 layer->setPen(penCopy);
-                m_layerList->activate(layer, true);
+                RS_Graphic* graphic = m_graphicView->getGraphic(true);
+                graphic->activateLayer(layer, true);
             }
         }
         redrawDrawing();
@@ -1121,7 +1128,7 @@ RS_Pen LC_PenPaletteWidget::createPenByPenItem(RS_Pen &originalPen, LC_PenItem *
  * Applies pen attributes that are in pen editor to active layer.
  */
 void LC_PenPaletteWidget::applyEditorPenToActiveLayer() const {
-    if (m_layerList != nullptr){
+    if (m_layerList != nullptr && m_graphicView != nullptr){
         RS_Layer* layer = m_layerList->getActive();
         if (layer != nullptr){
             // original pen of layer
@@ -1134,7 +1141,8 @@ void LC_PenPaletteWidget::applyEditorPenToActiveLayer() const {
             layer->setPen(penCopy);
 
             // activate layer again for refreshing layers view
-            m_layerList->activate(layer, true);
+            RS_Graphic* graphic = m_graphicView->getGraphic(true);
+            graphic->activateLayer(layer, true);
         }
     }
     redrawDrawing();

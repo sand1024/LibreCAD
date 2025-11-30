@@ -36,6 +36,7 @@
 #include "rs.h"
 #include "rs_layerlistlistener.h"
 
+class RS_Graphic;
 class QItemSelection;
 class RS_LayerList;
 class RS_Layer;
@@ -165,6 +166,7 @@ protected:
     void addToolbarButton(LC_FlexLayout* layButtons, RS2::ActionType actionType);
     void addMenuItem(QMenu* contextMenu, RS2::ActionType actionType) const;
 private:
+    RS_Graphic* m_graphic {nullptr};
     RS_LayerList* m_layerList = nullptr;
     bool m_showByBlock = false;
     QLineEdit* m_matchLayerName = nullptr;

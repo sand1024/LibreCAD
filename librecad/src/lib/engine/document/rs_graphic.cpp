@@ -240,6 +240,7 @@ void RS_Graphic::removeLayer(RS_Layer* layer) { // fixme - move to other class?
 
             layerList.remove(layer);
         }
+        validateSelection();
     }
 }
 
