@@ -67,7 +67,7 @@ void LC_UndoSection::undoableReplace(RS_Entity* entityToDelete, RS_Entity* entit
 }
 
 bool LC_UndoSection::undoableExecute(FunUndoable doUndoable) {
-    return undoableExecute(doUndoable, {});
+    return undoableExecute(doUndoable, [](LC_DocumentModificationBatch&ctx, RS_Document* doc){});
 }
 
 bool LC_UndoSection::undoableExecute(FunUndoable doUndoable, FunSelection doSelection) {
@@ -88,6 +88,7 @@ bool LC_UndoSection::undoableExecute(FunUndoable doUndoable, FunSelection doSele
         }
     }
     doSelection(ctx, m_document);
+    m_viewport->notifyChanged();
     return success;
 }
 

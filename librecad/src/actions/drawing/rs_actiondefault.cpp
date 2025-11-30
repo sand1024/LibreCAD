@@ -262,7 +262,13 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]]int status, LC_MouseEven
             if (toGuiDX(m_actionData->v1.distanceTo(m_actionData->v2)) > 10){
                 // look for reference points to drag:
                 double dist;
-                RS_EntityContainer::RefInfo refInfo = m_document->getNearestSelectedRefInfo(m_actionData->v1, &dist);
+                bool singleEntitySelection = m_document->isSingleEntitySelected();
+                RS_EntityContainer::RefInfo refInfo;
+                if (singleEntitySelection) {
+                    // we'll try to change ref point if there is single entity selected
+                    // fixme - sand - rework this function!!! No need to iterate over the entire document, we may rely on selection, as entity should be selected first for moving reference!!!
+                    refInfo = m_document->getNearestSelectedRefInfo(m_actionData->v1, &dist);
+                }
                 RS_Vector ref = refInfo.ref;
                 if (ref.valid == true && toGuiDX(dist) < 8){
                     m_actionData->refMovingEntity = refInfo.entity;
@@ -274,9 +280,9 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]]int status, LC_MouseEven
                     RS_Entity *en =  catchEntity(m_actionData->v1);
                     if (en != nullptr && en->isSelected()){
                         RS_Vector vp = en->getNearestRef(m_actionData->v1);
-                        if (vp.valid) {
+                        /*if (vp.valid) {
                             m_actionData->v1 = vp;
-                        }
+                        }*/
                         moveRelativeZero(m_actionData->v1);
                         setStatus(Moving);
                     }
@@ -783,21 +789,26 @@ void RS_ActionDefault::onMouseMovingCompleted(LC_MouseEvent* e) {
     m_actionData->v2 = getSnapAngleAwarePoint(e, m_actionData->v1, m_actionData->v2);
     deletePreview();
 
-
+    QList<RS_Entity*> selectedEntities;
+    m_document->getSelection()->collectSelectedEntities(selectedEntities);
     LC_UndoSection undo(m_document, m_viewport);
-    undo.undoableExecute([this, e](LC_DocumentModificationBatch& ctx)->bool {
-        RS_MoveData data;
-        data.number               = 0;
-        data.useCurrentLayer      = false;
-        data.useCurrentAttributes = false;
-        data.keepOriginals        = e->isControl;
-        data.offset               = m_actionData->v2 - m_actionData->v1;
+    bool keepOriginal = e->isControl;
 
-        QList<RS_Entity*> selectedEntities;
-        m_document->getSelection()->collectSelectedEntities(selectedEntities);
-        RS_Modification::move(data, selectedEntities, false, ctx);
-        return true;
-    });
+    undo.undoableExecute([this,keepOriginal, selectedEntities](LC_DocumentModificationBatch& ctx)-> bool {
+                             RS_MoveData data;
+                             data.number               = 0;
+                             data.useCurrentLayer      = false;
+                             data.useCurrentAttributes = false;
+                             data.keepOriginals        = keepOriginal;
+                             data.offset               = m_actionData->v2 - m_actionData->v1;
+                             RS_Modification::move(data, selectedEntities, false, ctx);
+                             return true;
+                         }, [keepOriginal, selectedEntities](LC_DocumentModificationBatch& ctx, RS_Document* doc)-> void {
+                             if (keepOriginal) {
+                                 doc->select(selectedEntities, false);
+                             }
+                             doc->select(ctx.entitiesToAdd);
+                         });
 
 
     if (e->isControl) { // allow creation of several copies

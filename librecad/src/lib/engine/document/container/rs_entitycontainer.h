@@ -43,7 +43,7 @@ public:
     using value_type = RS_Entity * ;
 
     struct RefInfo{
-        RS_Vector ref;
+        RS_Vector ref{false};
         RS_Entity* entity = nullptr;
     };
 

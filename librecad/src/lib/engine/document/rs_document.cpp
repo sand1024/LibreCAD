@@ -81,6 +81,12 @@ void RS_Document::endBulkUndoablesCleanup() {
     calculateBorders();
 }
 
+bool RS_Document::isSingleEntitySelected() const {
+    QList<RS_Entity*> entitiesList;
+    collectSelected(entitiesList);
+    return entitiesList.size() == 1;
+}
+
 bool RS_Document::collectSelected(QList<RS_Entity*>& entitiesList) const {
     auto selection = getSelection();
     if (selection->isEmpty()) {

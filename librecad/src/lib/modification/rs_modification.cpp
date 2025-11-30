@@ -957,6 +957,8 @@ void RS_Modification::move(RS_MoveData& data, const QList<RS_Entity*> &entitiesL
     if (!data.keepOriginals) {
         ctx -= entitiesList;
     }
+    ctx.m_setActiveLayer = data.useCurrentLayer;
+    ctx.m_setActivePen = data.useCurrentAttributes;
     ctx.success = true;
 }
 

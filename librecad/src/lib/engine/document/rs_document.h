@@ -115,6 +115,8 @@ public:
         }
     }
 
+    bool isSingleEntitySelected() const;
+
     void unselect(RS_Entity* entity) {
         entity->doSelectInDocument(false, this);
     }
