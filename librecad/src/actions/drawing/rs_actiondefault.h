@@ -36,7 +36,6 @@
  *
  * @author Andrew Mustun
  */
-//todo - support of moving by keyboard
 //todo - joint move of endpoint ref? So if moving ref will move refs for adjusent entities
 class RS_ActionDefault : public LC_OverlayBoxAction {
     Q_OBJECT
@@ -44,7 +43,7 @@ class RS_ActionDefault : public LC_OverlayBoxAction {
     using BASE_CLASS = RS_PreviewActionInterface;
 
 public:
-    RS_ActionDefault(LC_ActionContext *actionContext);
+    explicit RS_ActionDefault(LC_ActionContext *actionContext);
     ~RS_ActionDefault() override;
 
     void finish(bool) override{}
@@ -75,7 +74,7 @@ protected:
         Panning /**< view panning triggered by Ctl- mouse dragging */
     };
 
-
+    void initFromSettings() override;
     void checkSupportOfQuickEntityInfo();
     void clearQuickInfoWidget();
     void updateQuickInfoWidget(RS_Entity *pEntity);
@@ -112,8 +111,7 @@ private:
 
     bool allowEntityQuickInfoForCTRL = false;
     bool allowEntityQuickInfoAuto = false;
-    bool m_completeMovingByMousePressed = true; // fixme - selection - ADD OPTION to control this!!!!
-    bool m_selectWithPressedMouseOnly = false; // fixme - sand - ADD OPTION and retrieve from setting (for backward compatibility or rather historic bug support)
+    bool m_completeMovingByMousePressed = false;
     bool m_movingJustCompleted = false;
 };
 #endif

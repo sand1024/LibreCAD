@@ -263,7 +263,6 @@ void LC_ApplicationWindowInitializer::initActionContext() const {
     action_context->setCommandWidget(m_appWin->m_commandWidget);
     action_context->setCoordinateWidget(m_appWin->m_coordinateWidget);
     action_context->setMouseWidget(m_appWin->m_mouseWidget);
-    action_context->setSelectionWidget(m_appWin->m_selectionWidget);
     action_context->setStatusBarManager(m_appWin->m_statusbarManager);
 
     m_appWin->m_actionContext = action_context;

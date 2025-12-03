@@ -131,8 +131,7 @@ protected:
     void createGVEditPropertiesAction(QMenu* menu, QG_GraphicView* graphicView, RS_Entity* entity, const QString &actionText);
     void createGVMenuModifyGeneral(QMenu* contextMenu, QG_GraphicView* graphicView, RS_Entity* entity, const RS_Vector& pos,
                                    LC_ActionContext* actionContext);
-    void createGVMenuSelect(QMenu* ctxMenu, RS_Entity* contextEntity,const  RS_Vector &contextPosition,
-                            LC_ActionContext* actionContext, int selectionCount) const;
+    void createGVMenuSelect(QMenu* ctxMenu, RS_Entity* contextEntity, const RS_Vector& contextPosition, LC_ActionContext* actionContext, bool hasSelection) const;
     void createGVMenuRecent(QG_GraphicView* graphicView, QMenu* ctxMenu, LC_ActionContext* actionContext,
                             RS_Entity* contextEntity, const RS_Vector &contextPosition, bool hasEntity) const;
 

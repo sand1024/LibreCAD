@@ -98,7 +98,7 @@ bool RS_ActionBlocksRemove::doTriggerModifications(LC_DocumentModificationBatch&
     blockList->activate(nullptr);
 
     finish(false); // fixme - is it needed there?
-    updateSelectionWidget(); // fixme - remove!
+
     return true;
 }
 

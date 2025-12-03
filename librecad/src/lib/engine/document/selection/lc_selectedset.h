@@ -25,6 +25,7 @@
 #define LC_SELECTEDSET_H
 #include <QList>
 
+#include "lc_dimstyleslistmodel.h"
 #include "lc_selectedsetlistener.h"
 
 class RS_Entity;
@@ -64,6 +65,9 @@ public:
     bool isSilent() const {return m_silentMode != 0;}
     void cleanup();
     bool collectSelectedEntities(QList<RS_Entity*>& list);
+    bool collectSelectedEntities(QList<RS_Entity*>& list, QList<RS2::EntityType> const& types);
+    bool hasSelection();
+
 private:
     QList<RS_Entity*> m_entitiesList;
     QList<LC_SelectedSetListener*> m_listeners;

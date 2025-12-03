@@ -562,15 +562,6 @@ int RS_ActionInterface::getGraphicVariableInt(const QString& key, int def) const
     return (m_graphic != nullptr) ? m_graphic->getGraphicVariableInt(key, def) : def;
 }
 
-void RS_ActionInterface::updateSelectionWidget() const{
-    const RS_Document::LC_SelectionInfo &info = m_document->getSelectionInfo();
-    updateSelectionWidget(info.count, info.length);
-}
-
-void RS_ActionInterface::updateSelectionWidget(int countSelected, double selectedLength) const{
-    m_actionContext->updateSelectionWidget(countSelected,selectedLength);
-}
-
 void RS_ActionInterface::setMouseCursor(const RS2::CursorType &cursor) const {
     if (m_graphicView != nullptr) {
         m_graphicView->setMouseCursor(cursor);

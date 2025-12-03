@@ -831,7 +831,7 @@ QMenu* LC_MenuFactory::createMainWindowPopupMenu() const {
 }
 
 void LC_MenuFactory::createGVMenuSelect(QMenu* ctxMenu, RS_Entity* contextEntity,const RS_Vector &contextPosition,
-                                        LC_ActionContext* actionContext, int selectionCount) const {
+                                        LC_ActionContext* actionContext, bool hasSelection) const {
     auto selectGroup = m_actionGroupManager->getActionGroup("select");
     auto selectMenu = ctxMenu->addMenu(selectGroup->getIcon(), tr("Select"));
 
@@ -861,7 +861,7 @@ void LC_MenuFactory::createGVMenuSelect(QMenu* ctxMenu, RS_Entity* contextEntity
                    "SelectAll"
                });
 
-    if (selectionCount > 0) {
+    if (hasSelection) {
         addActions(selectMenu, {
                        "DeselectAll"
                    });
@@ -869,7 +869,8 @@ void LC_MenuFactory::createGVMenuSelect(QMenu* ctxMenu, RS_Entity* contextEntity
 
     addActions(selectMenu, {
                    "SelectInvert",
-                   "SelectQuick"
+                   "SelectQuick",
+                   "SelectionModeToggle"
                });
 }
 
@@ -970,10 +971,8 @@ QMenu* LC_MenuFactory::createGraphicViewDefaultPopupMenu(QG_GraphicView* graphic
     auto* ctxMenu = new QMenu(graphicView);
     // ctxMenu->setAttribute(Qt::WA_DeleteOnClose);
 
-    int selectionCount = actionContext->getSelectedEntitiesCount();
-
     bool hasEntity = contextEntity != nullptr;
-    bool hasSelection = selectionCount > 0;
+    bool hasSelection = actionContext->hasSelection();
 
     createGVMenuRecent(graphicView, ctxMenu, actionContext, contextEntity, contextPosition, hasEntity);
 
@@ -981,7 +980,7 @@ QMenu* LC_MenuFactory::createGraphicViewDefaultPopupMenu(QG_GraphicView* graphic
         addAction(ctxMenu, "EditKillAllActions");
     }
 
-    createGVMenuSelect(ctxMenu, contextEntity, contextPosition, actionContext, selectionCount);
+    createGVMenuSelect(ctxMenu, contextEntity, contextPosition, actionContext, hasSelection);
     createGVMenuEdit(ctxMenu, actionContext, contextEntity, contextPosition);
 
     if (hasEntity) {

@@ -172,7 +172,6 @@ public:
 
     virtual void setSelectionFlag(bool select);
     virtual bool setSelected(bool select);
-    virtual bool toggleSelected();
     void clearSelectionFlag();
     virtual bool isSelected() const;
     bool isParentSelected() const;

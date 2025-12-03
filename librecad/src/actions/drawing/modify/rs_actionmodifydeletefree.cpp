@@ -77,8 +77,6 @@ void RS_ActionModifyDeleteFree::trigger(){
                     redraw(RS2::RedrawDrawing);
 
                     init(0);
-
-                    updateSelectionWidget();
                 } else {
                     commandMessage(tr("Entities not in the same polyline."));
                 }

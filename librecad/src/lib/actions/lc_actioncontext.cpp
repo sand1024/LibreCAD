@@ -60,8 +60,15 @@ RS_Vector LC_ActionContext::getContextMenuActionClickPosition() const {
     return m_contextMenuClickPosition;
 }
 
+bool LC_ActionContext::hasSelection() {
+    if (m_document == nullptr) {
+        return false;
+    }
+    return m_document->hasSelection();
+}
+
 void LC_ActionContext::interactiveInputStart(InteractiveInputInfo::InputType inputType,
-    LC_LateCompletionRequestor* requestor, const QString& tag) {
+                                             LC_LateCompletionRequestor* requestor, const QString& tag) {
     interactiveInputRequest(inputType, requestor, tag);
     interactiveInputInvoke(inputType);
 }

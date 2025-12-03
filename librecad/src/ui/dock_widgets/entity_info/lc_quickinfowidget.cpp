@@ -717,9 +717,6 @@ void LC_QuickInfoWidget::onEditEntityProperties(){
                     ctx+= clone;
                     return true;
                 });
-                auto selectionInfo = m_document->getSelectionInfo();
-                LC_ActionContext* ctx =  QC_ApplicationWindow::getAppWindow().get()->getActionContext();
-                ctx->updateSelectionWidget(selectionInfo.count, selectionInfo.length); // fixme - selection - notify via listener?
             }
             else {
                 delete clone;

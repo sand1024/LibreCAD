@@ -42,6 +42,9 @@ struct LC_OverlayBoxOptions{
     RS_Color m_colorBoxFill;
     RS_Color m_colorLineInverted;
     RS_Color m_colorBoxFillInverted;
+    RS2::LineType m_lineType = RS2::SolidLine;
+    RS2::LineType m_invertedLineType = RS2::DashLine;
+
     void loadSettings();
 };
 

@@ -44,5 +44,4 @@ void RS_ActionSelectAll::init(int status) {
 void RS_ActionSelectAll::trigger() {
     RS_Selection s(m_document, m_viewport);
     s.selectAll(m_select);
-    updateSelectionWidget();
 }

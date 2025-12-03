@@ -257,6 +257,7 @@ namespace RS2 {
         ActionSelectDouble,
         ActionGetSelect,
         ActionGetEntity,
+        ActionSelectModeToggle,
 
         ActionEntityInfoSelectSingle,
 

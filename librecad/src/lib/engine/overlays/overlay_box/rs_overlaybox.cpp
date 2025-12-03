@@ -29,7 +29,7 @@
 #include "rs_settings.h"
 
 void LC_OverlayBoxOptions::loadSettings() {
-    LC_GROUP_GUARD("Colors");
+    LC_GROUP("Colors");
     {
         int overlayTransparency = LC_GET_INT("overlay_box_transparency",90);
         m_colorBoxLine = QColor(LC_GET_STR("overlay_box_line", RS_Settings::overlayBoxLine));
@@ -40,7 +40,13 @@ void LC_OverlayBoxOptions::loadSettings() {
         tmp = QColor(LC_GET_STR("overlay_box_fill_inv", RS_Settings::overlayBoxFillInverted));
         RS_Color fillColorInverted(tmp.red(), tmp.green(), tmp.blue(), overlayTransparency);
         m_colorBoxFillInverted = fillColorInverted;
-    } // colors group
+    }// colors group
+    LC_GROUP_END();
+    LC_GROUP("Appearance"); {
+        m_lineType = static_cast<RS2::LineType>(LC_GET_INT("selection_overlay_line_type", RS2::SolidLine));
+        m_invertedLineType = static_cast<RS2::LineType>(LC_GET_INT("selection_overlay_inverted_line_type", RS2::DashLine));
+    }
+    LC_GROUP_END();
 }
 
 RS_OverlayBox::RS_OverlayBox(const RS_Vector &corner1, const RS_Vector &corner2, LC_OverlayBoxOptions *options)
@@ -56,13 +62,14 @@ void RS_OverlayBox::draw(RS_Painter* painter) {
     QRectF selectRect(v1x,v1y,v2x - v1x,v2y - v1y);
 
     if (v1x > v2x) {
-        RS_Pen p(options->m_colorLineInverted, RS2::Width00, RS2::DashLine);
+        RS_Pen p(options->m_colorLineInverted, RS2::Width00, options->m_invertedLineType);
         painter->setPen(p);
         const RS_Color &fillColor = options->m_colorBoxFillInverted;
         painter->fillRect(selectRect, fillColor);
     }
     else {
-        painter->setPen(options->m_colorBoxLine);
+        RS_Pen p(options->m_colorBoxLine, RS2::Width00, options->m_lineType);
+        painter->setPen(p);
         const RS_Color &fillColor = options->m_colorBoxFill;
         painter->fillRect(selectRect, fillColor);
     }

@@ -341,13 +341,6 @@ void RS_EntityContainer::setSelectionFlag(bool select) {
     }
 };
 
-/**
- * Toggles select on this entity.
- */
-bool RS_EntityContainer::toggleSelected() {
-    // Toggle this entity's select:
-    return RS_Entity::toggleSelected();
-}
 
 void RS_EntityContainer::setHighlighted(bool on){
     for (RS_Entity* e: *this) {

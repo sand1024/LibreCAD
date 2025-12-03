@@ -243,7 +243,8 @@ void LC_ActionFactory::createSelectActions(QMap<QString, QAction*>& map, QAction
         {"SelectIntersected",   RS2::ActionSelectIntersected,   tr("Select Intersected Entities"),   ":/icons/select_intersected_entities.lci"},
         {"DeselectIntersected", RS2::ActionDeselectIntersected, tr("Deselect Intersected Entities"), ":/icons/deselect_intersected_entities.lci"},
         {"SelectLayer",         RS2::ActionSelectLayer,         tr("(De-)Select Layer"),             ":/icons/deselect_layer.lci"},
-        {"SelectQuick",   RS2::ActionSelectQuick,         tr("Select Quick"),                  ":/icons/select_conditional.lci"}
+        {"SelectQuick",         RS2::ActionSelectQuick,         tr("Select Quick"),                  ":/icons/select_conditional.lci"},
+        {"SelectionModeToggle", RS2::ActionSelectModeToggle,    tr("Additive Selection"),            ":/icons/select_mode_add.lci"}
     });
 }
 
@@ -714,6 +715,9 @@ void LC_ActionFactory::setupCreatedActions(QMap<QString, QAction *> &map) {
         map["OptionsGeneral"]->setMenuRole(QAction::NoRole);
     }
 
+    bool additiveSelection = LC_GET_ONE_BOOL("Selection", "Additivity", true);
+    map["SelectionModeToggle"]->setChecked(additiveSelection);
+
     connect(m_appWin, &QC_ApplicationWindow::printPreviewChanged, map["FilePrint"], &QAction::setChecked);
     connect(m_appWin, &QC_ApplicationWindow::printPreviewChanged, map["FilePrintPreview"], &QAction::setChecked);
     connect(m_appWin, &QC_ApplicationWindow::gridChanged, map["ViewGrid"], &QAction::setChecked);
@@ -746,6 +750,7 @@ void LC_ActionFactory::setupCreatedActions(QMap<QString, QAction *> &map) {
     // with this setting, the action's icon will not be set as current item in action's options bar and status bar (in QC_ApplicationWindow::relayAction())
     map["DimStyles"]->setProperty("_SetAsCurrentActionInView", false);
     map["LockRelativeZero"]->setProperty("_SetAsCurrentActionInView", false);
+    map["SelectionModeToggle"]->setProperty("_SetAsCurrentActionInView", false);
 }
 
 void LC_ActionFactory::setDefaultShortcuts(QMap<QString, QAction*>& map, LC_ActionGroupManager* agm) {
@@ -956,7 +961,8 @@ void LC_ActionFactory::fillActionLists(QMap<QString, QAction *> &map){
                         "DeselectIntersected",
                         "SelectLayer",
                         "SelectInvert",
-                        "SelectQuick"
+                        "SelectQuick",
+                        "SelectionModeToggle"
                     }, map);
 
     fillActionsList(dimension_actions, {

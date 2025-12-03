@@ -32,11 +32,12 @@
 #endif // _MSC_VER > 1000
 
 #include "lc_graphicviewaware.h"
+#include "lc_selectedsetlistener.h"
 #include "ui_qg_selectionwidget.h"
 
 class QTimer;
 
-class QG_SelectionWidget : public QWidget, public LC_GraphicViewAware, public Ui::QG_SelectionWidget{
+class QG_SelectionWidget : public QWidget, public LC_GraphicViewAware, public Ui::QG_SelectionWidget, public LC_SelectedSetListener{
     Q_OBJECT
 public:
     QG_SelectionWidget(QWidget* parent = nullptr, const char* name = nullptr, Qt::WindowFlags fl = {});
@@ -48,9 +49,11 @@ public slots:
     void flashAuxData(const QString& header, const QString& data, const unsigned int& timeout, const bool& flash);
     void removeAuxData();
     void setGraphicView(RS_GraphicView* gview) override;
+    void selectionChanged() override;
 protected slots:
     void languageChange();
 private:
+    RS_Document* m_document {nullptr};
     bool m_auxDataMode    {false};
     QTimer *m_timer       {nullptr};
 };

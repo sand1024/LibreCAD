@@ -22,6 +22,7 @@
 
 #include "lc_overlayboxaction.h"
 #include "rs_overlaybox.h"
+#include "rs_settings.h"
 
 LC_OverlayBoxAction::LC_OverlayBoxAction(const char *name, LC_ActionContext *actionContext, RS2::ActionType actionType)
     : LC_UndoableDocumentModificationAction(name, actionContext, actionType),
@@ -38,4 +39,8 @@ void LC_OverlayBoxAction::drawOverlayBox(const RS_Vector &corner1, const RS_Vect
 void LC_OverlayBoxAction::initFromSettings() {
     RS_Snapper::initFromSettings();
     m_overlayBoxOptions->loadSettings();
+
+    LC_GROUP("CADPreferences"); {
+        m_selectWithPressedMouseOnly = LC_GET_BOOL("SelectionWindowBy2Clicks", false);
+    }
 }

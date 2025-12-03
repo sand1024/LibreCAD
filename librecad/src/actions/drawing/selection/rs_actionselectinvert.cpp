@@ -43,5 +43,4 @@ void RS_ActionSelectInvert::init(int status) {
 void RS_ActionSelectInvert::trigger() {
     RS_Selection s(m_document, m_viewport);
     s.invertSelection();
-    updateSelectionWidget();
 }

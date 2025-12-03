@@ -125,7 +125,6 @@ void RS_PreviewActionInterface::trigger() {
         doTrigger();
     }
     drawSnapper();
-    updateSelectionWidget();
     m_graphicView->redraw();
 }
 

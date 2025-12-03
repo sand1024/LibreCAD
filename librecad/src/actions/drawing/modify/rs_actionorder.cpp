@@ -41,7 +41,6 @@ void RS_ActionOrder::drawSnapper() {
 void RS_ActionOrder::onSelectionCompleted([[maybe_unused]]bool singleEntity, bool fromInit) {
     setSelectionComplete(isAllowTriggerOnEmptySelection(), fromInit);
     updateMouseButtonHints();
-    updateSelectionWidget();
     if (m_actionType == RS2::ActionOrderBottom || m_actionType ==  RS2::ActionOrderTop){
         trigger();
     }

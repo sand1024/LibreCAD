@@ -48,7 +48,7 @@ public:
     };
 
 
-    RS_EntityContainer(RS_EntityContainer* parent=nullptr, bool owner=true);
+    explicit RS_EntityContainer(RS_EntityContainer* parent=nullptr, bool owner=true);
     RS_EntityContainer(const RS_EntityContainer& other);
     RS_EntityContainer(const RS_EntityContainer& other, bool copyChildren);
     RS_EntityContainer& operator = (const RS_EntityContainer& other);
@@ -88,13 +88,11 @@ public:
 
     void setVisible(bool v) override;
 
-    bool toggleSelected() override;
-
     void setHighlighted(bool on) override;
 
     bool setSelected(bool select) override;
     void setSelectionFlag(bool select) override;
-    virtual bool doSelectInDocument(bool select, RS_Document* doc);
+    bool doSelectInDocument(bool select, RS_Document* doc) override;
     /*virtual void selectWindow(RS_Vector v1, RS_Vector v2,
    bool select=true, bool cross=false);*/
     // virtual void selectWindow(enum RS2::EntityType typeToSelect, RS_Vector v1, RS_Vector v2,

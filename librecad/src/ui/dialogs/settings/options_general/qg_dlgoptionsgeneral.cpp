@@ -164,6 +164,14 @@ void QG_DlgOptionsGeneral::init(){
         RS2::LineType snapIndicatorLineType = static_cast<RS2::LineType>(LC_GET_INT("indicator_lines_line_type", RS2::DashLine2));
         wSnapLinesLineType->setLineType(snapIndicatorLineType);
 
+        wOverlaySelectionLineType->init(false, false, false);
+        RS2::LineType selectionOverlayLineType = static_cast<RS2::LineType>(LC_GET_INT("selection_overlay_line_type", RS2::SolidLine));
+        wOverlaySelectionLineType->setLineType(selectionOverlayLineType);
+
+        wOverlaySelectionInvertedLineType->init(false, false, false);
+        RS2::LineType selectionOverlayInvertedLineType = static_cast<RS2::LineType>(LC_GET_INT("selection_overlay_inverted_line_type", RS2::SolidLine));
+        wOverlaySelectionInvertedLineType->setLineType(selectionOverlayInvertedLineType);
+
         int snapIndicatorLineWidth = static_cast<RS2::LineType>(LC_GET_INT("indicator_lines_line_width", 1));
         sbSnapLinesLineWidth->setValue(snapIndicatorLineWidth);
 
@@ -608,6 +616,8 @@ void QG_DlgOptionsGeneral::init(){
     LC_GROUP("CADPreferences"); {
         cbAutoZoomDrawing->setChecked(LC_GET_BOOL("AutoZoomDrawing"));
         cbAnglesInputInDecimalDegreesOnly->setChecked(LC_GET_BOOL("InputAnglesAsDecimalsOnly", false));
+        cbSelectionWindowByMBClickAndUp->setChecked(LC_GET_BOOL("SelectionWindowBy2Clicks", false));
+        cbFinishMovingByMouseUp->setChecked(LC_GET_BOOL("AdHockMovingEndsByMouseClick", true));
     }
     LC_GROUP_END();
 
@@ -699,6 +709,8 @@ void QG_DlgOptionsGeneral::ok(){
             LC_SET("indicator_shape_state", indicator_shape_checkbox->isChecked());
             LC_SET("indicator_shape_type", indicator_shape_combobox->currentIndex());
             LC_SET("indicator_lines_line_type", wSnapLinesLineType->getLineType());
+            LC_SET("selection_overlay_line_type", wOverlaySelectionLineType->getLineType());
+            LC_SET("selection_overlay_inverted_line_type", wOverlaySelectionInvertedLineType->getLineType());
             LC_SET("indicator_lines_line_width", sbSnapLinesLineWidth->value());
             LC_SET("cursor_hiding", cursor_hiding_checkbox->isChecked());
             LC_SET("showSnapOptionsInSnapToolbar", cbShowSnapOptionsInSnapBar->isChecked());
@@ -912,6 +924,8 @@ void QG_DlgOptionsGeneral::ok(){
         LC_GROUP("CADPreferences"); {
             LC_SET("AutoZoomDrawing", cbAutoZoomDrawing->isChecked());
             LC_SET("InputAnglesAsDecimalsOnly", cbAnglesInputInDecimalDegreesOnly->isChecked());
+            LC_SET("SelectionWindowBy2Clicks", cbSelectionWindowByMBClickAndUp->isChecked());
+            LC_SET("AdHockMovingEndsByMouseClick", cbFinishMovingByMouseUp->isChecked());
         }
         LC_GROUP_END();
 

@@ -53,14 +53,6 @@ void LC_DefaultActionContext::hideSnapOptions(){
     m_actionOptionsManager->hideSnapOptions();
 }
 
-void LC_DefaultActionContext::updateSelectionWidget(int countSelected, double selectedLength){
-    if (m_selectionWidget != nullptr) {
-        m_selectionWidget->setNumber(countSelected);
-        m_selectionWidget->setTotalLength(selectedLength);
-    }
-    m_selectionCount = countSelected;
-}
-
 void LC_DefaultActionContext::updateMouseWidget(const QString &left, const QString &right, const LC_ModifiersInfo &modifiers){
     if (m_mouseWidget != nullptr) {
         m_mouseWidget->setHelp(left, right, modifiers);

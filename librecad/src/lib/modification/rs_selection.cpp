@@ -38,28 +38,38 @@
 #include "rs_line.h"
 #include "lc_selectedset.h"
 #include "rs_graphicview.h"
+#include "rs_settings.h"
 #include "rs_solid.h"
 
-/**
- * Default constructor.
- *
- * @param container The container to which we will add
- *        entities. Usually that's an RS_Graphic entity but
- *        it can also be a polyline, text, ...
- */
 RS_Selection::RS_Selection(RS_Document* container, LC_GraphicViewport* graphicView) : m_document{container}, m_viewPort{graphicView} {
+    m_additiveSelection = LC_GET_ONE_BOOL("Selection", "Additivity", true);
 }
 
-RS_Selection::RS_Selection(RS_GraphicView* gv):m_document{gv->getDocument()}, m_viewPort{gv->getViewPort()} {}
+RS_Selection::RS_Selection(RS_GraphicView* gv):m_document{gv->getDocument()}, m_viewPort{gv->getViewPort()} {
+    m_additiveSelection = LC_GET_ONE_BOOL("Selection", "Additivity", true);
+}
 
 /**
  * Selects or deselects the given entity.
  */
 void RS_Selection::selectSingle(RS_Entity* e) const {
     if (e != nullptr && (!(e->getLayer() && e->getLayer()->isLocked()))) {
-        e->toggleSelected();
-
-        if (m_viewPort) {
+        const bool selected = e->isSelected();
+        if (m_additiveSelection){
+            m_document->select(e, !selected);
+        }
+        else {
+           if (selected) {
+               m_document->select(e, false);
+           }
+           else {
+               performBulkSelection([e, this](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+                   doUnselectAll(container, doc);
+                   doc->select(e, true);
+               });
+           }
+        }
+        if (m_viewPort != nullptr) { // fixme - how it could be null?
             if (e->isSelected() && (e->rtti() == RS2::EntityInsert)) {
                 const RS_Block* selectedBlock = dynamic_cast<RS_Insert*>(e)->getBlockForInsert();
 
@@ -92,7 +102,10 @@ void RS_Selection::selectEntitiesList(RS_Document* document, LC_GraphicViewport*
 
 void RS_Selection::selectEntitiesVector(RS_Document* document, LC_GraphicViewport* vp, const std::vector<RS_Entity*>& entities, bool doSelect){
     RS_Selection select(document, vp);
-    select.performBulkSelection([doSelect, entities](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+    select.performBulkSelection([doSelect, entities, select](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+        if (doSelect) {
+            select.doUnselectAllIfNeeded(container, doc);
+        }
         for (const auto e : entities) {
             doc->select(e, doSelect);
         }
@@ -106,16 +119,22 @@ void RS_Selection::unselectLayer(RS_Document* document, LC_GraphicViewport* vp, 
     });
 }
 
-void RS_Selection::selectEntitiesList(const QList<RS_Entity*>& entities, bool select) {
-    performBulkSelection([select, entities](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+void RS_Selection::selectEntitiesList(const QList<RS_Entity*>& entities, bool select) const {
+    performBulkSelection([select, entities, this](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+        if (select) {
+            doUnselectAllIfNeeded(container, doc);
+        }
         for (const auto e: entities) {
             doc->select(e,select);
         }
     });
 }
 
-void RS_Selection::selectIfMatched(const QList<RS_Entity*> &entities, bool select, FunEntityMatch matchFun){
-    performBulkSelection([select, entities, matchFun](RS_EntityContainer*, LC_GraphicViewport*, RS_Document* doc)-> void {
+void RS_Selection::selectIfMatched(const QList<RS_Entity*> &entities, bool select, FunEntityMatch matchFun) const {
+    performBulkSelection([select, entities, matchFun, this](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+        if (select) {
+            doUnselectAllIfNeeded(container, doc);
+        }
         for (const auto e: entities) {
             if (matchFun(e)) {
                 doc->select(e,select);
@@ -129,7 +148,7 @@ void RS_Selection::selectIfMatched(const QList<RS_Entity*> &entities, bool selec
  */
 void RS_Selection::selectAll(bool select) {
     if (m_viewPort != nullptr) {
-        performBulkSelection([select](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+        performBulkSelection([select, this](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
             if (select) {
                 for (auto e : *container) {
                     if (e != nullptr && e->isVisible()) {
@@ -153,12 +172,7 @@ void RS_Selection::selectAll(bool select) {
                 }
             }
             else {
-                for (auto e : *container) {
-                    if (e != nullptr) {
-                        e->clearSelectionFlag();
-                    }
-                }
-                doc->getSelection()->clear();
+                doUnselectAll(container, doc);
             }
         });
     }
@@ -176,6 +190,21 @@ void RS_Selection::performBulkSelection(FunBulkSelection fun) const {
         selectedSet->fireSelectionChanged();
     }
     m_viewPort->notifyChanged();
+}
+
+void RS_Selection::doUnselectAllIfNeeded(RS_EntityContainer* container, RS_Document* doc) const {
+    if (!m_additiveSelection) {
+        doUnselectAll(container, doc);
+    }
+}
+
+void RS_Selection::doUnselectAll(RS_EntityContainer* container, RS_Document* doc) const {
+    for (auto e : *container) {
+        if (e != nullptr) {
+            e->clearSelectionFlag();
+        }
+    }
+    doc->getSelection()->clear();
 }
 
 /**
@@ -200,18 +229,27 @@ void RS_Selection::invertSelection() { // fixme - review which container is actu
  */
 void RS_Selection::selectWindow(enum RS2::EntityType typeToSelect, const RS_Vector& v1, const RS_Vector& v2, bool select, bool cross) {
     performBulkSelection([typeToSelect, v1, v2, select, cross, this](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+        if (select) {
+            doUnselectAllIfNeeded(container, doc);
+        }
         doSelectEntitiesWithTypeInWindow(container, doc, typeToSelect, v1, v2, select, cross);
     });
 }
 
 void RS_Selection::selectWindow(const QList<RS2::EntityType>& typesToSelect, const RS_Vector& v1, const RS_Vector& v2, bool select, bool cross) {
     performBulkSelection([typesToSelect, v1, v2, select, cross, this](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+        if (select) {
+            doUnselectAllIfNeeded(container, doc);
+        }
         doSelectEntitiesWithTypesInWindow(container, doc, typesToSelect, v1, v2, select, cross);
     });
 }
 
 void RS_Selection::selectIntersected(RS_Entity* entity, bool select) {
     performBulkSelection([entity, select, this](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+        if (select) {
+            doUnselectAllIfNeeded(container, doc);
+        }
         if (entity->isAtomic()) {
             doSelectIntersectedAtomic(entity, doc, select);
         }
@@ -292,7 +330,7 @@ void RS_Selection::doSelectIntersectedAtomic(RS_Entity* entity, RS_Document* doc
                 }
             }
             if (hasIntersections) {
-                doc->select(e);
+                doc->select(e, select);
             }
         }
     }
@@ -324,8 +362,12 @@ void RS_Selection::selectContour(RS_Entity* e) {
         return;
     }
 
-    performBulkSelection([ e](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+    performBulkSelection([e, this](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+
         bool select        = !e->isSelected();
+
+        doUnselectAllIfNeeded(container, doc);
+
         auto* atomicEntity = static_cast<RS_AtomicEntity*>(e);
         RS_Vector p1       = atomicEntity->getStartpoint();
         RS_Vector p2       = atomicEntity->getEndpoint();
@@ -376,7 +418,6 @@ void RS_Selection::selectContour(RS_Entity* e) {
         while (found);
     });
 
-
     m_viewPort->notifyChanged();
 }
 
@@ -403,6 +444,7 @@ void RS_Selection::selectLayer(RS_Entity* e) {
  */
 void RS_Selection::selectLayer(const QString& layerName, bool select) {
     performBulkSelection([layerName, select, this](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+        doUnselectAllIfNeeded(container, doc);
         for (auto en : *container) {
             // fixme - review and make more efficient... why check for locking upfront? Why just not use layer pointers but names?
             if (en != nullptr && en->isVisible() && en->isSelected() != select && (!(en->getLayer() && en->getLayer()->isLocked()))) {
@@ -418,6 +460,8 @@ void RS_Selection::selectLayer(const QString& layerName, bool select) {
 
 // fixme - rework, use setSelected? At least, fix the selection state issue
 void RS_Selection::conditionalSelection(RS_Document* doc, const LC_SelectionOptions& options, const LC_SelectionPredicate& predicate, std::list<RS_Entity>& selectedEntities) {
+    // fixme - do as bulk selection, rework via document???
+    // doUnselectAllIfNeeded(container, doc);
     QList<RS_Entity*> newEntitiesSet;
     auto selectedSet             = doc->getSelection();
     bool includeIntoSelectionSet = options.m_includeIntoSelectionSet;

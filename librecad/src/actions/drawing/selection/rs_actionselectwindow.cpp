@@ -45,13 +45,13 @@ struct RS_ActionSelectWindow::Points {
  * @param select true: select window. false: invertSelectionOperation window
  */
 RS_ActionSelectWindow::RS_ActionSelectWindow(LC_ActionContext *actionContext,bool select)
-    : LC_OverlayBoxAction("Select Window",actionContext, RS2::ActionSelectWindow)
+    : LC_OverlayBoxAction("Select Window",actionContext, select ? RS2::ActionSelectWindow : RS2::ActionDeselectWindow)
     , m_actionData(std::make_unique<Points>())
     , m_select(select){
 }
 
 RS_ActionSelectWindow::RS_ActionSelectWindow(enum RS2::EntityType typeToSelect,LC_ActionContext *actionContext,bool select)
-    : LC_OverlayBoxAction("Select Window",actionContext, RS2::ActionSelectWindow)
+    : LC_OverlayBoxAction("Select Window",actionContext, select ? RS2::ActionSelectWindow : RS2::ActionDeselectWindow)
     , m_actionData(std::make_unique<Points>())
     , m_select(select){
     if (typeToSelect == RS2::EntityUnknown){

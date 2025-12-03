@@ -514,11 +514,6 @@ void QC_ApplicationWindow::slotKillAllActions() {
         RS_GraphicView* gv = win->getGraphicView();
         if (gv != nullptr) {
             gv->switchToDefaultAction();
-            auto doc = gv->getDocument();
-            if (doc != nullptr) {
-                const RS_Document::LC_SelectionInfo &selectionInfo = doc->getSelectionInfo();
-                m_actionContext->updateSelectionWidget((int)selectionInfo.count, selectionInfo.length);
-            }
         }
     }
 }

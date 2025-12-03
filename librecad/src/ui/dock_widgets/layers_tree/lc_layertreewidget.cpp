@@ -1554,10 +1554,6 @@ void LC_LayerTreeWidget::doSelectLayersEntities(QList<RS_Layer *> &layers){
     });
 
     redrawView();
-
-    auto selectionInfo = m_document->getSelectionInfo();
-    LC_ActionContext* ctx =  QC_ApplicationWindow::getAppWindow().get()->getActionContext();
-    ctx->updateSelectionWidget(selectionInfo.count, selectionInfo.length);
 }
 
 /**

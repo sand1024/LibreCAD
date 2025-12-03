@@ -30,7 +30,6 @@ LC_ActionModifyBase::LC_ActionModifyBase(const char *name, LC_ActionContext *act
 void LC_ActionModifyBase::onSelectionCompleted([[maybe_unused]] bool singleEntity, bool fromInit) {
     setSelectionComplete(isAllowTriggerOnEmptySelection(), fromInit);
     updateMouseButtonHints();
-    updateSelectionWidget();
 }
 
 #define SHOW_MODIFICATION_DIALOGS  false;

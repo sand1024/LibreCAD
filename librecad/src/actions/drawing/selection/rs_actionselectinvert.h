@@ -38,7 +38,7 @@
 class RS_ActionSelectInvert : public RS_ActionInterface {
 	Q_OBJECT
 public:
-    RS_ActionSelectInvert(LC_ActionContext *actionContext);
+    explicit RS_ActionSelectInvert(LC_ActionContext *actionContext);
 	void init(int status) override;
 	void trigger() override;
 };

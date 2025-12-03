@@ -775,7 +775,6 @@ void RS_ActionDefault::onMouseMovingRefCompleted(LC_MouseEvent* e) {
         undoCycleReplace(refMovingEntity, clone);
     }
     goToNeutralStatus();
-    updateSelectionWidget();
     redraw();
     m_movingJustCompleted = true;
     // fixme ***********************************************************************************************************************
@@ -818,7 +817,6 @@ void RS_ActionDefault::onMouseMovingCompleted(LC_MouseEvent* e) {
         goToNeutralStatus();
     }
     moveRelativeZero(m_actionData->v2);
-    updateSelectionWidget();
     deleteSnapper();
     m_movingJustCompleted = true;
 }
@@ -884,7 +882,6 @@ void RS_ActionDefault::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
                 else {
                     s.selectSingle(en);
                 }
-                updateSelectionWidget();
                 goToNeutralStatus();
             } else {
                 if (m_selectWithPressedMouseOnly){
@@ -906,7 +903,6 @@ void RS_ActionDefault::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
             RS_Vector ucsP2 = toUCS(m_actionData->v2);
             bool selectIntersecting = (ucsP1.x > ucsP2.x);
 
-            RS_Selection s(m_document, m_viewport);
             bool select = !e->isShift;
 
             bool alterSelectIntersecting = e->isControl;
@@ -917,8 +913,9 @@ void RS_ActionDefault::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
             RS_Vector wcsP1, wcsP2;
             m_viewport->worldBoundingBox(ucsP1, ucsP2, wcsP1, wcsP2);
 
+            RS_Selection s(m_document, m_viewport);
             s.selectWindow(m_typeToSelect, wcsP1, wcsP2, select, selectIntersecting);
-            updateSelectionWidget();
+
             goToNeutralStatus();
             //}
             break;
@@ -1061,6 +1058,13 @@ void RS_ActionDefault::highlightEntity(RS_Entity *entity) const {
 
 RS2::EntityType RS_ActionDefault::getTypeToSelect() const {
     return m_typeToSelect;
+}
+
+void RS_ActionDefault::initFromSettings() {
+    LC_OverlayBoxAction::initFromSettings();
+    LC_GROUP("CADPreferences"); {
+        m_completeMovingByMousePressed = LC_GET_BOOL("AdHockMovingEndsByMouseClick", true);
+    }
 }
 
 // fixme - sand - avoid direct call to appWindow??

@@ -53,6 +53,10 @@ void LC_SelectWindowOptions::languageChange(){
     ui->retranslateUi(this);
 }
 
+bool LC_SelectWindowOptions::checkActionRttiValid(RS2::ActionType actionType) {
+    return RS2::ActionDeselectWindow == actionType || RS2::ActionSelectWindow == actionType;
+}
+
 void LC_SelectWindowOptions::doSaveSettings() {
     save("All", ui->cbAll->isChecked());
     save("Line", ui->cbLine->isChecked());

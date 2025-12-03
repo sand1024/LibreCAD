@@ -60,7 +60,7 @@ void LC_ActionPreSelectionAwareBase::init(int status) {
     }
     else{
         if (!m_selectionComplete) {
-            unsigned int selectedCount = countSelectedEntities();
+            unsigned int selectedCount = collectSelectedEntities();
             if (selectedCount > 0) {
                 onSelectionCompleted(false, true);
             }
@@ -68,9 +68,15 @@ void LC_ActionPreSelectionAwareBase::init(int status) {
     }
 }
 
-unsigned int LC_ActionPreSelectionAwareBase::countSelectedEntities() {
+unsigned int LC_ActionPreSelectionAwareBase::collectSelectedEntities() {
     m_selectedEntities.clear();
-    m_document->collectSelected(m_selectedEntities, false, m_catchForSelectionEntityTypes);
+    QList<RS_Entity*> entities;
+    m_document->collectSelected(entities, false, m_catchForSelectionEntityTypes);
+    for (const auto e: entities) {
+        if (isEntityAllowedToSelect(e)) {
+            m_selectedEntities.push_back(e);
+        }
+    }
     unsigned int selectedCount = m_selectedEntities.size();
 //    LC_ERR << " Selected Count: " << selectedCount;
     return selectedCount;
@@ -88,17 +94,49 @@ void LC_ActionPreSelectionAwareBase::selectionFinishedByKey([[maybe_unused]]QKey
     }
 }
 
-void LC_ActionPreSelectionAwareBase::mousePressEvent(QMouseEvent * e) {
-    if (!m_selectionComplete){
-        if (e->button() == Qt::LeftButton){
-            m_selectionCorner1 = toGraph(e);
-        }
-    }
-}
-
 void LC_ActionPreSelectionAwareBase::proceedSelectedEntity(LC_MouseEvent* e) {
     if (e->isControl) {
         onSelectionCompleted(true, false);
+    }
+}
+
+void LC_ActionPreSelectionAwareBase::endBoxSelectionMode(LC_MouseEvent* e) {
+    RS_Vector mouse = e->graphPoint;
+    // Issue #2299: also delete the overlay box for selection
+    deletePreviewAndHighlights();
+
+    // restore selection box to ucs
+    RS_Vector ucsP1 = toUCS(m_selectionCorner1);
+    RS_Vector ucsP2 = toUCS(mouse);
+
+    bool selectIntersecting = (ucsP1.x > ucsP2.x);
+
+    bool performSelection        = !e->isShift;
+    bool alterSelectIntersecting = e->isControl;
+    if (alterSelectIntersecting) {
+        selectIntersecting = !selectIntersecting;
+    }
+
+    // expand selection wcs to ensure that selection box in ucs is full within bounding rect in wcs
+    RS_Vector wcsP1, wcsP2;
+    m_viewport->worldBoundingBox(ucsP1, ucsP2, wcsP1, wcsP2);
+
+    RS_Selection s(m_document, m_viewport);
+    if (m_catchForSelectionEntityTypes.isEmpty()){
+        s.selectWindow(RS2::EntityUnknown, wcsP1, wcsP2, performSelection, selectIntersecting);
+    }
+    else {
+        s.selectWindow(m_catchForSelectionEntityTypes, wcsP1, wcsP2, performSelection, selectIntersecting);
+    }
+}
+
+void LC_ActionPreSelectionAwareBase::onMouseLeftButtonPress(int status, LC_MouseEvent* e) {
+    if (!m_selectionComplete){
+        if (!m_inBoxSelectionMode) {
+            m_selectionCorner1 = e->graphPoint;
+        }
+        m_lmbPressed = true;
+        m_secondMousePressWhileInSelectionMode = m_inBoxSelectionMode;
     }
 }
 
@@ -108,34 +146,18 @@ void LC_ActionPreSelectionAwareBase::onMouseLeftButtonRelease(int status, LC_Mou
     }
     else{
         if (m_inBoxSelectionMode){
-            RS_Vector mouse = e->graphPoint;
-            // Issue #2299: also delete the overlay box for selection
-            deletePreviewAndHighlights();
-
-            // restore selection box to ucs
-            RS_Vector ucsP1 = toUCS(m_selectionCorner1);
-            RS_Vector ucsP2 = toUCS(mouse);
-
-            bool selectIntersecting = (ucsP1.x > ucsP2.x);
-
-            RS_Selection s(m_document, m_viewport);
-            bool performSelection = !e->isShift;
-            bool alterSelectIntersecting = e->isControl;
-            if (alterSelectIntersecting) {
-                selectIntersecting = !selectIntersecting;
-            }
-
-            // expand selection wcs to ensure that selection box in ucs is full within bounding rect in wcs
-            RS_Vector wcsP1, wcsP2;
-            m_viewport->worldBoundingBox(ucsP1, ucsP2, wcsP1, wcsP2);
-
-            if (m_catchForSelectionEntityTypes.isEmpty()){
-                s.selectWindow(RS2::EntityUnknown, wcsP1, wcsP2, performSelection, selectIntersecting);
+            if (m_selectWithPressedMouseOnly || m_lmbPressed) {
+                endBoxSelectionMode(e);
+                m_inBoxSelectionMode = false;
+                m_selectionCorner1.valid = false;
             }
             else {
-                s.selectWindow(m_catchForSelectionEntityTypes, wcsP1, wcsP2, performSelection, selectIntersecting);
+                 if (m_secondMousePressWhileInSelectionMode) {
+                     endBoxSelectionMode(e);
+                     m_inBoxSelectionMode = false;
+                     m_selectionCorner1.valid = false;
+                 }
             }
-            updateSelectionWidget();
         }
         else{
             RS_Entity* entityToSelect = catchEntityByEvent(e, m_catchForSelectionEntityTypes);
@@ -147,10 +169,9 @@ void LC_ActionPreSelectionAwareBase::onMouseLeftButtonRelease(int status, LC_Mou
                 onSelectionCompleted(false, false);
             }
         }
-        m_inBoxSelectionMode = false;
-        m_selectionCorner1.valid = false;
         invalidateSnapSpot();
     }
+    m_lmbPressed = false;
 }
 
 void LC_ActionPreSelectionAwareBase::onMouseRightButtonRelease(int status, LC_MouseEvent *e) {
@@ -164,8 +185,15 @@ void LC_ActionPreSelectionAwareBase::onMouseRightButtonRelease(int status, LC_Mo
 }
 
 void LC_ActionPreSelectionAwareBase::applyBoxSelectionModeIfNeeded(RS_Vector mouse) {
-    if (m_selectionCorner1.valid && (m_viewport->toGuiDX(m_selectionCorner1.distanceTo(mouse)) > 10.0)){
-        m_inBoxSelectionMode = true;
+    if (!m_inBoxSelectionMode) {
+        if (m_selectionCorner1.valid && (m_viewport->toGuiDX(m_selectionCorner1.distanceTo(mouse)) > 10.0)){
+            if (m_selectWithPressedMouseOnly) {
+                m_inBoxSelectionMode = m_lmbPressed;
+            }
+            else {
+                m_inBoxSelectionMode = true;
+            }
+        }
     }
 }
 
@@ -234,7 +262,6 @@ void LC_ActionPreSelectionAwareBase::onSelectionCompleted([[maybe_unused]]bool s
             setStatus(-1);
         }
         m_graphicView->redraw(RS2::RedrawDrawing);
-        updateSelectionWidget();
     }
 }
 
@@ -244,7 +271,7 @@ void LC_ActionPreSelectionAwareBase::setSelectionComplete(bool allowEmptySelecti
        selectedCount = m_selectedEntities.size();
     }
     else{
-        selectedCount = countSelectedEntities();
+        selectedCount = collectSelectedEntities();
     }
     bool proceed = selectedCount > 0 || allowEmptySelection;
     if (proceed) {

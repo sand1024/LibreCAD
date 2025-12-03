@@ -84,6 +84,7 @@
 #include "lc_actionpolylinechangesegmenttype.h"
 #include "lc_actionremovesplinepoints.h"
 #include "lc_actionselectdimordinatesameorigin.h"
+#include "lc_actionselectmodetoggle.h"
 #include "lc_actionselectpoints.h"
 #include "lc_actionselectquick.h"
 #include "lc_actionsnapmiddlemanual.h"
@@ -230,16 +231,6 @@ RS_Layer* obtainLayer(LC_ActionContext* m_actionContext, void* data) {
     return layer;
 }
 
-bool hasSelection(LC_ActionContext* m_actionContext) {
-    return m_actionContext->getDocument()->countSelected() > 0;
-    // fixme - sand - think about moving to the action context
-}
-
-bool hasNoSelection(LC_ActionContext* m_actionContext) {
-    return m_actionContext->getDocument()->countSelected() == 0;
-    // fixme - sand - think about moving to the action context
-}
-
 namespace InnerFactory{
     RS_ActionInterface* doCreateActionInstance(RS2::ActionType actionType, LC_ActionContext* ctx, void* data) {
         auto view = ctx->getGraphicView();
@@ -250,10 +241,6 @@ namespace InnerFactory{
                     view->killAllActions();
                     auto document = ctx->getDocument();
                     RS_Selection::unselectAllInDocument(document, view->getViewPort());
-
-                    auto selectionInfo = document->getSelectionInfo();
-                    ctx->updateSelectionWidget(selectionInfo.count, selectionInfo.length);
-                    // RS_DIALOGFACTORY->updateSelectionWidget(document->countSelected(), document->totalSelectedLength());
                 }
                 return nullptr;
             }
@@ -339,6 +326,9 @@ namespace InnerFactory{
             }
             case RS2::ActionSelectQuick: {
                 return new LC_ActionSelectQuick(ctx);
+            }
+            case RS2::ActionSelectModeToggle: {
+                return new LC_ActionSelectModeToggle(ctx);
             }
             case RS2::ActionDimRegenerate: {
                 return new RS_ActionToolRegenerateDimensions(ctx);

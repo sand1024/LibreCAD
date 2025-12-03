@@ -358,8 +358,6 @@ void QG_GraphicView::createViewRenderer() {
 
 void QG_GraphicView::layerToggled(RS_Layer *) {
     // FIXME - UPDATE SELECTION IF LAYER IS LOCKED/INVISIBLE!
-    const RS_Document::LC_SelectionInfo &info = getDocument()->getSelectionInfo();
-    m_actionContext->updateSelectionWidget(info.count, info.length);
     redraw(RS2::RedrawDrawing);
 }
 

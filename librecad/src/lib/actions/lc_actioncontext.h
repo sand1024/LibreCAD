@@ -51,8 +51,6 @@ public:
     virtual RS_ActionInterface* getCurrentAction() {return nullptr;}
     virtual void requestSnapMiddleOptions([[maybe_unused]]int* middlePoints, [[maybe_unused]]bool on) {}
     virtual void hideSnapOptions() {}
-    [[deprecated]]
-    virtual void updateSelectionWidget([[maybe_unused]]int countSelected, [[maybe_unused]]double selectedLength){} // fixme - remove!!!!
 
     virtual void updateMouseWidget([[maybe_unused]]const QString& left,
                                   [[maybe_unused]]const QString& right,
@@ -73,11 +71,12 @@ public:
 
     virtual void setSnapMode([[maybe_unused]]const RS_SnapMode &mode) {}
     virtual void setCurrentAction(RS2::ActionType, [[maybe_unused]]void* data){}
-    int getSelectedEntitiesCount() const {return m_selectionCount;}
+
     void saveContextMenuActionContext(RS_Entity* entity, const RS_Vector &position, bool clearEntitySelection);
     void clearContextMenuActionContext();
     RS_Entity* getContextMenuActionContextEntity() const;
     RS_Vector getContextMenuActionClickPosition() const;
+    bool hasSelection();
 
     struct InteractiveInputInfo {
         enum State {

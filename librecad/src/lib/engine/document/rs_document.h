@@ -115,6 +115,7 @@ public:
         }
     }
 
+    bool hasSelection();
     bool isSingleEntitySelected() const;
 
     void unselect(RS_Entity* entity) {
@@ -125,7 +126,7 @@ public:
 
     LC_SelectionInfo getSelectionInfo(/*bool deep, */QList<RS2::EntityType> const& types = {}) const;
     virtual unsigned countSelected(bool deep=true, QList<RS2::EntityType> const& types = {});
-    virtual void collectSelected(QList<RS_Entity*> &collect, bool deep, QList<RS2::EntityType> const &types = {});
+    virtual bool collectSelected(QList<RS_Entity*> &collect, bool deep, QList<RS2::EntityType> const &types = {});
 
     /**
      * @return Currently active drawing pen.

@@ -35,6 +35,8 @@ protected:
     std::unique_ptr<LC_OverlayBoxOptions> m_overlayBoxOptions;
     void drawOverlayBox(const RS_Vector &corner1, const RS_Vector &corner2) const;
     void initFromSettings() override;
+
+    bool m_selectWithPressedMouseOnly = true;
 };
 
-#endif // LC_OVERLAYBOXACTION_H
+#endif

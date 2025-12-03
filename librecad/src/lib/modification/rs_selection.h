@@ -78,8 +78,8 @@ public:
     static void selectEntitiesVector(RS_Document* document, LC_GraphicViewport* vp, const std::vector<RS_Entity*>& entities, bool select);
     static void unselectLayer(RS_Document* document, LC_GraphicViewport* vp, RS_Layer* layer);
     void selectSingle(RS_Entity* e) const;
-    void selectEntitiesList(const QList<RS_Entity*> &entities, bool select);
-    void selectIfMatched(const QList<RS_Entity*> &entities, bool select, FunEntityMatch matchFun);
+    void selectEntitiesList(const QList<RS_Entity*> &entities, bool select) const;
+    void selectIfMatched(const QList<RS_Entity*> &entities, bool select, FunEntityMatch matchFun) const;
     void selectAll(bool select=true);
     void deselectAll() {selectAll(false);}
     void invertSelection();
@@ -97,14 +97,19 @@ public:
     void countSelectedEntities(QMap<RS2::EntityType, int> &entityTypeMaps) const;
     void collectCurrentSelectionState(CurrentSelectionState& selectionState) const;
     void performBulkSelection(std::function<void(RS_EntityContainer*, LC_GraphicViewport*, RS_Document*)> fun) const;
+
+
 protected:
-    RS_EntityContainer* m_document = nullptr;
+    RS_Document* m_document = nullptr;
     LC_GraphicViewport* m_viewPort = nullptr;
+    bool m_additiveSelection = true;
 
     void doSelectEntitiesWithTypeInWindow(RS_EntityContainer* container, RS_Document* doc, RS2::EntityType typeToSelect, RS_Vector v1, RS_Vector v2, bool select, bool cross);
     void doSelectEntitiesWithTypesInWindow(RS_EntityContainer* container, RS_Document* doc, const QList<RS2::EntityType>& typesToSelect, RS_Vector v1, RS_Vector v2, bool select, bool cross);
     void doSelectIntersectedContainer(RS_Entity* entity, RS_Document* doc, bool select) const;
     void doSelectIntersectedAtomic(RS_Entity* entity, RS_Document* doc, bool select) const;
+    void doUnselectAll(RS_EntityContainer* container, RS_Document* doc) const;
+    void doUnselectAllIfNeeded(RS_EntityContainer* container, RS_Document* doc) const;
 };
 
 #endif

@@ -63,5 +63,4 @@ void RS_ActionEditUndo::trigger(){
     m_document->updateInserts();
     redrawDrawing();
     finish(false);
-    updateSelectionWidget();
 }

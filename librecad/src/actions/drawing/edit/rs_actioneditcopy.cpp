@@ -67,7 +67,6 @@ void RS_ActionEditCopyPaste::onSelectionCompleted([[maybe_unused]] bool singleEn
         default: {
             setSelectionComplete(isAllowTriggerOnEmptySelection(), fromInit);
             updateMouseButtonHints();
-            updateSelectionWidget();
         }
     }
 }

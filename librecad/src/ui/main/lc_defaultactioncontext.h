@@ -41,8 +41,6 @@ public:
     void requestSnapDistOptions(double *dist, bool on) override;
     void requestSnapMiddleOptions(int *middlePoints, bool on) override;
     void hideSnapOptions() override;
-    void updateSelectionWidget(int countSelected, double selectedLength) override;
-
     void updateMouseWidget(const QString &, const QString &, const LC_ModifiersInfo &modifiers) override;
     void commandMessage(const QString &message) override;
     void commandPrompt(const QString &message) override;
@@ -58,10 +56,6 @@ public:
 
     void setCommandWidget(QG_CommandWidget *command_widget){
         m_commandWidget = command_widget;
-    }
-
-    void setSelectionWidget(QG_SelectionWidget *selection_widget){
-        m_selectionWidget = selection_widget;
     }
 
     void setMouseWidget(QG_MouseWidget *mouse_widget){
@@ -81,7 +75,6 @@ private:
     LC_ActionOptionsManager* m_actionOptionsManager {nullptr};
     QG_CoordinateWidget* m_coordinateWidget{nullptr};
     QG_CommandWidget* m_commandWidget{nullptr};
-    QG_SelectionWidget* m_selectionWidget{nullptr};
     QG_MouseWidget* m_mouseWidget{nullptr};
     LC_QTStatusbarManager* m_statusBarManager{nullptr};
     QG_ActionHandler* m_actionHandler{nullptr};

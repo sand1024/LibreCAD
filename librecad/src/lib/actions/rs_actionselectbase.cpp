@@ -72,7 +72,6 @@ bool RS_ActionSelectBase::selectEntity(RS_Entity* entityToSelect, bool selectCon
         bool selectionAllowed = isEntityAllowedToSelect(entityToSelect);
         if (selectionAllowed){
             doSelectEntity(entityToSelect, selectContour);
-            updateSelectionWidget();
             result = true;
         }
     }

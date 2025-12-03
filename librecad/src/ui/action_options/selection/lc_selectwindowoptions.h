@@ -33,7 +33,7 @@ namespace Ui {
 class LC_SelectWindowOptions: public LC_ActionOptionsWidgetBase {
 Q_OBJECT
 public:
-    LC_SelectWindowOptions();
+    explicit LC_SelectWindowOptions();
     ~LC_SelectWindowOptions() override;
 public slots:
     void languageChange() override;
@@ -42,10 +42,12 @@ public slots:
 protected:
     Ui::LC_SelectWindowOptions *ui;
     RS_ActionSelectWindow* m_action = nullptr;
+    bool checkActionRttiValid(RS2::ActionType actionType) override;
     void doSaveSettings() override;
     void doSetAction(RS_ActionInterface *a, bool update) override;
     void setSelectAllToActionAndView(bool value);
     void setEntityTypesToActinAndView(QList<RS2::EntityType> entityTypes) const;
     void enableEntityTypes(bool enable) const;
+
 };
 #endif // LC_SELECTWINDOWOPTIONS_H

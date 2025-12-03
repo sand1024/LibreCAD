@@ -163,15 +163,32 @@ void QG_SelectionWidget::removeAuxData(){
 }
 
 void QG_SelectionWidget::setGraphicView(RS_GraphicView* gview) {
+    if (m_document != nullptr) {
+        m_document->getSelection()->removeListener(this);
+    }
     if (gview == nullptr) {
         removeAuxData();
         setNumber(0);
         setTotalLength(0);
+        m_document = nullptr;
     }
     else {
-        auto doc = gview->getDocument();
-        const RS_Document::LC_SelectionInfo &info = doc->getSelectionInfo();
-        setNumber(info.count);
-        setTotalLength(info.length);
+        m_document = gview->getDocument();
+        if (m_document != nullptr) {
+           m_document->getSelection()->addListener(this);
+        }
+        selectionChanged();
     }
+}
+
+void QG_SelectionWidget::selectionChanged() {
+    int number = 0;
+    double length = 0.0;
+    if (m_document != nullptr) {
+        const RS_Document::LC_SelectionInfo &info = m_document->getSelectionInfo();
+        number = info.count;
+        length = info.length;
+    }
+    setNumber(number);
+    setTotalLength(length);
 }

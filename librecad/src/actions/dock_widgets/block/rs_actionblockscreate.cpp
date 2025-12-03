@@ -50,7 +50,6 @@ void RS_ActionBlocksCreate::onSelectionCompleted([[maybe_unused]]bool singleEnti
     setSelectionComplete(isAllowTriggerOnEmptySelection(), fromInit);
     if (m_selectionComplete) {
         updateMouseButtonHints();
-        updateSelectionWidget();
     }
 }
 

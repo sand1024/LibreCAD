@@ -81,6 +81,10 @@ void RS_Document::endBulkUndoablesCleanup() {
     calculateBorders();
 }
 
+bool RS_Document::hasSelection() {
+    return m_selectedSet->hasSelection();
+}
+
 bool RS_Document::isSingleEntitySelected() const {
     QList<RS_Entity*> entitiesList;
     collectSelected(entitiesList);
@@ -135,20 +139,10 @@ unsigned RS_Document::countSelected(bool deep, QList<RS2::EntityType> const &typ
     return count;
 }
 
-void RS_Document::collectSelected(QList<RS_Entity*> &collect, bool deep, QList<RS2::EntityType> const &types) {
-    std::set<RS2::EntityType> type{types.cbegin(), types.cend()};
-    QList<RS_Entity*> m_entities; // FIXME _ COMPLETE!!!
-    for (RS_Entity *e: m_entities) {
-        if (e != nullptr) {
-            if (e->isSelected()) { // fixme - rework!!! // fixme - SELECTION - selection collection!
-                if (types.empty() || type.count(e->rtti())) {
-                    collect.push_back(e);
-                }
-                /*if (deep && e->isContainer()) {
-                    auto *container = dynamic_cast<RS_EntityContainer *>(e);
-                    container->collectSelected(collect, false); // todo - check whether we need deep and types?
-                }*/
-            }
-        }
+bool RS_Document::collectSelected(QList<RS_Entity*> &collect, bool deep, QList<RS2::EntityType> const &types) {
+    auto selection = getSelection();
+    if (selection->isEmpty()) {
+        return false;
     }
+    return selection->collectSelectedEntities(collect, types);
 }

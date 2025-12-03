@@ -59,7 +59,6 @@ void LC_ActionModifyAlign::doTriggerSelectionUpdate(bool keepSelected, const LC_
 void LC_ActionModifyAlign::onSelectionCompleted([[maybe_unused]]bool singleEntity, bool fromInit) {
     setSelectionComplete(isAllowTriggerOnEmptySelection(), fromInit);
     updateMouseButtonHints();
-    updateSelectionWidget();
 }
 
 void LC_ActionModifyAlign::doTriggerCompletion(bool success) {

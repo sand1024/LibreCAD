@@ -43,7 +43,7 @@ struct RS_ActionSelectIntersected::ActionData {
  * @param select true: select window. false: deselect window
  */
 RS_ActionSelectIntersected::RS_ActionSelectIntersected(LC_ActionContext *actionContext, bool select)
-    :RS_PreviewActionInterface("Select Intersected",actionContext, RS2::ActionSelectIntersected),
+    :RS_PreviewActionInterface("Select Intersected",actionContext, select ? RS2::ActionSelectIntersected : RS2::ActionDeselectIntersected),
     m_actionData(std::make_unique<ActionData>()), m_performSelect(select){
 }
 

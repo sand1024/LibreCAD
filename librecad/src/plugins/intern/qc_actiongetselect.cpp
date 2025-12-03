@@ -104,5 +104,4 @@ void QC_ActionGetSelect::getSelected(QList<Plug_Entity *> *se, Doc_plugin_interf
 [[deprecated]]
 void QC_ActionGetSelect::unselectEntities() const { // fixme - rework by inlinining
     unselectAll();
-    updateSelectionWidget();
 }

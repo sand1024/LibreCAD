@@ -133,6 +133,53 @@ bool LC_SelectedSet::collectSelectedEntities(QList<RS_Entity*>& list) {
     return !list.isEmpty();
 }
 
+bool LC_SelectedSet::collectSelectedEntities(QList<RS_Entity*>& list, QList<RS2::EntityType> const &types) {
+    bool specificTypesNeeded = types.size() > 0;
+    bool cleanupNeeded = false;
+    for (const auto e: m_entitiesList) {
+        if (e != nullptr) {
+            if (e->isSet(RS2::FlagSelected) && e->isNotSet(RS2::FlagDeleted)) {
+                if (specificTypesNeeded) {
+                    RS2::EntityType type = e->rtti();
+                    if (types.count(type) > 0) {
+                        list.append(e);
+                    }
+                }
+                else {
+                    list.append(e);
+                }
+            }
+            else {
+                cleanupNeeded = true;
+            }
+        }
+    }
+    if (cleanupNeeded) {
+        cleanup();
+    }
+    return !list.isEmpty();
+}
+
+bool LC_SelectedSet::hasSelection() {
+    bool cleanupNeeded = false;
+    bool hasSelection = false;
+    for (const auto e: m_entitiesList) {
+        if (e != nullptr) {
+            if (e->isSet(RS2::FlagSelected) && e->isNotSet(RS2::FlagDeleted)) {
+                hasSelection = true;
+                break;
+            }
+            else {
+                cleanupNeeded = true;
+            }
+        }
+    }
+    if (cleanupNeeded) {
+        cleanup();
+    }
+    return hasSelection;
+}
+
 void LC_SelectedSet::disableListeners() {
     m_silentMode++;
 }

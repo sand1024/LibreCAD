@@ -28,7 +28,6 @@
 
 #include "lc_actioninfomessagebuilder.h"
 #include "lc_moveoptions.h"
-#include "rs_debug.h"
 #include "rs_dialogfactory.h"
 #include "rs_dialogfactoryinterface.h"
 #include "rs_modification.h"
@@ -66,6 +65,9 @@ bool RS_ActionModifyMove::doTriggerModifications(LC_DocumentModificationBatch& c
 
 void RS_ActionModifyMove::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
    if (keepSelected) {
+       if (m_actionData->createCopy || m_actionData->data.keepOriginals) {
+           unselect(m_selectedEntities);
+       }
        select(ctx.entitiesToAdd);
    }
 }

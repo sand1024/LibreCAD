@@ -149,9 +149,6 @@ protected:
     // Accessor for drawing keys
     int getGraphicVariableInt(const QString& key, int def) const;
 
-    void updateSelectionWidget() const;
-    void updateSelectionWidget(int countSelected, double selectedLength) const;
-
     virtual LC_ActionOptionsWidget* createOptionsWidget();
     void updateOptions(const QString& tagToFocus = "");
     void updateOptionsUI(int mode) const;

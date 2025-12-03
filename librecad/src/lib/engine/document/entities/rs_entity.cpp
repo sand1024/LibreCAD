@@ -246,12 +246,7 @@ bool RS_Entity::doSelectInDocument(bool select, RS_Document* doc) {
     return false;
 }
 
-/**
- * Toggles select on this entity.
- */
-bool RS_Entity::toggleSelected() {
-    return setSelected(!isSelected());
-}
+
 
 /**
  * @return True if the entity is selected. Note that an entity might
