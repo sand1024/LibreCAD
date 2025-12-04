@@ -214,24 +214,24 @@ std::unique_ptr<RS_Entity> RS_Polyline::createVertex(const RS_Vector& v, double 
                                            prepend ? data.startpoint : v);
     } else {
         // create arc for the polyline:
-        bool reversed = std::signbit(bulge);
-        double alpha = std::atan(std::abs(bulge)) * 4.0;
+        const bool reversed = std::signbit(bulge);
+        const double alpha = std::atan(std::abs(bulge)) * 4.0;
 
-        RS_Vector start = prepend ? data.startpoint : data.endpoint;
-        RS_Vector middle = (start + v)/2.0;
-        double dist=start.distanceTo(v)/2.0;
-        double angle=start.angleTo(v);
+        const RS_Vector start = prepend ? data.startpoint : data.endpoint;
+        const RS_Vector middle = (start + v)/2.0;
+        const double dist=start.distanceTo(v)/2.0;
+        const double angle=start.angleTo(v);
 
         // alpha can't be 0.0 at this point
         double const radius = std::abs(dist / std::sin(alpha/2.0));
 
         double const wu = std::abs(radius*radius - dist*dist);
-        double angleNew = reversed ? angle - M_PI_2 : angle + M_PI_2;
-        double h = (std::abs(alpha)>M_PI) ? -std::sqrt(wu) : std::sqrt(wu);
+        const double angleNew = reversed ? angle - M_PI_2 : angle + M_PI_2;
+        const double h = (std::abs(alpha)>M_PI) ? -std::sqrt(wu) : std::sqrt(wu);
 
-        auto center = middle + RS_Vector::polar(h, angleNew);
-        double startAngle = center.angleTo(prepend ? v : data.endpoint);
-        double endAngle = center.angleTo(prepend ? data.startpoint : v);
+        const auto center = middle + RS_Vector::polar(h, angleNew);
+        const double startAngle = center.angleTo(prepend ? v : data.endpoint);
+        const double endAngle = center.angleTo(prepend ? data.startpoint : v);
 
         // Issue #1946: always create Ellipse for fonts
         // Issue #2067: limit elliptic segments for fonts
@@ -276,7 +276,7 @@ void RS_Polyline::endPolyline() {
 
 //RLZ: rewrite this:
 void RS_Polyline::setClosed(bool cl, [[maybe_unused]] double bulge) {
-    bool areClosed = isClosed();
+    const bool areClosed = isClosed();
     setClosed(cl);
     if (isClosed()) {
         endPolyline();
@@ -357,7 +357,7 @@ void RS_Polyline::setClosed(bool cl) {
 void RS_Polyline::updateEndpoints() {
     using namespace lc;
     LC_ContainerTraverser traverser{*this, RS2::ResolveNone};
-    RS_Entity* e1 = firstEntity();
+    const RS_Entity* e1 = firstEntity();
     if (e1 != nullptr && e1->isAtomic()) {
         RS_Vector const& v = e1->getStartpoint();
         setStartpoint(v);
@@ -391,7 +391,7 @@ void RS_Polyline::addEntity(RS_Entity* /*entity*/) {
 
 RS_VectorSolutions RS_Polyline::getRefPoints() const{
     RS_VectorSolutions ret{{data.startpoint}};
-    for(auto e: *this){
+    for(const auto e: *this){
         if (e->isAtomic()) {
             if (e->isArc()){
                 ret.push_back(e->getMiddlePoint());
@@ -605,17 +605,18 @@ void RS_Polyline::rotate(const RS_Vector& center, const RS_Vector& angleVector) 
 }
 
 void RS_Polyline::scale(const RS_Vector& center, const RS_Vector& factor) {
+    // fixme - this is incorrect in-place editing of polyline - it will break undo!!! First, clone should be created and that clone should be modified
     if (!RS_Math::equal(factor.x, factor.y)) {
         for (int i = 0; i < count(); ++i) {
             RS_Entity* e = entityAt(i);
             if (e->rtti() == RS2::EntityArc) {
-                auto* arc = static_cast<RS_Arc*>(e);
-                RS_Vector majorP(arc->getRadius(), 0.0);
+                const auto* arc = static_cast<RS_Arc*>(e);
+                const RS_Vector majorP(arc->getRadius(), 0.0);
                 RS_EllipseData ed{arc->getCenter(), majorP, 1.0,
                                   arc->getAngle1(), arc->getAngle2(),
                                   arc->isReversed()};
                 auto* ellipse = new RS_Ellipse(this, ed);
-                ellipse->setSelected(arc->isSelected());  // fixme - review what for? this is part of polyline anyway...
+                ellipse->setSelectionFlag(arc->isSelected());  // fixme - review what for? this is part of polyline anyway...
                 ellipse->setPen(RS_Pen(RS2::FlagInvalid));
                 ellipse->setLayer(nullptr);
                 setEntityAt(i, ellipse);
@@ -655,7 +656,7 @@ void RS_Polyline::moveRef(const RS_Vector& ref, const RS_Vector& offset) {
 
 void RS_Polyline::revertDirection() {
     RS_EntityContainer::revertDirection();
-    RS_Vector tmp = data.startpoint;
+    const RS_Vector tmp = data.startpoint;
     data.startpoint = data.endpoint;
     data.endpoint = tmp;
 }
@@ -687,12 +688,12 @@ void RS_Polyline::drawAsChild(RS_Painter *painter) {
 }
 
 RS_Ellipse* RS_Polyline::convertToEllipse(const std::pair<RS_Arc*, double>& arcPair) {
-    RS_Arc* arc = arcPair.first;
-    double scaleRatio = arcPair.second;
-    double radius = arc->getRadius();
+    const RS_Arc* arc = arcPair.first;
+    const double scaleRatio = arcPair.second;
+    const double radius = arc->getRadius();
     double major, ratio;
     RS_Vector majorP;
-    bool reversed = arc->isReversed();
+    const bool reversed = arc->isReversed();
     if (scaleRatio >= 1.0) {
         // Major along y
         major = radius * scaleRatio;
@@ -705,11 +706,11 @@ RS_Ellipse* RS_Polyline::convertToEllipse(const std::pair<RS_Arc*, double>& arcP
         majorP = RS_Vector(major, 0.0);
     }
 
-    RS_EllipseData d{arc->getCenter(), majorP, ratio,
+    const RS_EllipseData d{arc->getCenter(), majorP, ratio,
                      arc->getAngle1(), arc->getAngle2(), reversed};
 
     auto* ellipse = new RS_Ellipse(arc->getParent(), d);
-    ellipse->setSelected(arc->isSelected());
+    ellipse->setSelectionFlag(arc->isSelected());
     ellipse->setPen(RS_Pen(RS2::FlagInvalid));
     ellipse->setLayer(nullptr);
 
@@ -717,12 +718,12 @@ RS_Ellipse* RS_Polyline::convertToEllipse(const std::pair<RS_Arc*, double>& arcP
 }
 
 std::pair<RS_Arc*, double> RS_Polyline::convertToArcPair(const RS_Ellipse* ellipse) {
-    double elRatio = ellipse->getRatio();
-    RS_Vector elMajorP = ellipse->getMajorP();
-    double majorRadius = elMajorP.magnitude();
-    double angle = elMajorP.angle();
-    bool alongX = (fabs(angle) < RS_TOLERANCE || fabs(angle - M_PI) < RS_TOLERANCE);
-    bool alongY = (fabs(angle - M_PI_2) < RS_TOLERANCE || fabs(angle - 3 * M_PI_2) < RS_TOLERANCE);
+    const double elRatio = ellipse->getRatio();
+    const RS_Vector elMajorP = ellipse->getMajorP();
+    const double majorRadius = elMajorP.magnitude();
+    const double angle = elMajorP.angle();
+    const bool alongX = (fabs(angle) < RS_TOLERANCE || fabs(angle - M_PI) < RS_TOLERANCE);
+    const bool alongY = (fabs(angle - M_PI_2) < RS_TOLERANCE || fabs(angle - 3 * M_PI_2) < RS_TOLERANCE);
 
     if (!alongX && !alongY) {
         // Not axis-aligned, cannot convert simply
@@ -740,12 +741,12 @@ std::pair<RS_Arc*, double> RS_Polyline::convertToArcPair(const RS_Ellipse* ellip
         scaleRatio = 1.0 / elRatio;
     }
 
-    RS_ArcData d(ellipse->getCenter(), arcRadius,
+    const RS_ArcData d(ellipse->getCenter(), arcRadius,
                  ellipse->getAngle1(), ellipse->getAngle2(),
                  ellipse->isReversed());
 
     auto arc = new RS_Arc(ellipse->getParent(), d);
-    arc->setSelected(ellipse->isSelected()); // fixme - review what for? this is part of polyline anyway...
+    arc->setSelectionFlag(ellipse->isSelected()); // fixme - review what for? this is part of polyline anyway...
     arc->setPen(RS_Pen(RS2::FlagInvalid));
     arc->setLayer(nullptr);
 
@@ -773,7 +774,7 @@ RS_Vector RS_Polyline::getRefPointAdjacentDirection(bool previousSegment, RS_Vec
         return entityAt(0)->getEndpoint();
     }
     bool breakOnNextVertex = false;
-    for (RS_Entity *entity: lc::LC_ContainerTraverser{*this, RS2::ResolveAll}.entities()) {
+    for (const RS_Entity *entity: lc::LC_ContainerTraverser{*this, RS2::ResolveAll}.entities()) {
         RS_Vector segmentEndPoint = entity->getEndpoint();
         if (breakOnNextVertex){
             return segmentEndPoint;
@@ -797,20 +798,20 @@ RS_Arc* RS_Polyline::arcFromBulge(const RS_Vector& start, const RS_Vector& end, 
     if (std::abs(bulge) < RS_TOLERANCE || std::abs(bulge) >= RS_MAXDOUBLE) {
         return nullptr;
     }
-    bool reversed = std::signbit(bulge);
-    double alpha = std::atan(std::abs(bulge)) * 4.0;
-    RS_Vector middle = (start + end) / 2.0;
-    double dist = start.distanceTo(end) / 2.0;
-    double angle = start.angleTo(end);
-    double radius = std::abs(dist / std::sin(alpha / 2.0));
-    double wu = std::abs(radius * radius - dist * dist);
-    double h = (std::abs(alpha) > M_PI) ? -std::sqrt(wu) : std::sqrt(wu);
-    double angleNew = reversed ? angle - M_PI_2 : angle + M_PI_2;
-    RS_Vector center = middle + RS_Vector::polar(h, angleNew);
+    const bool reversed = std::signbit(bulge);
+    const double alpha = std::atan(std::abs(bulge)) * 4.0;
+    const RS_Vector middle = (start + end) / 2.0;
+    const double dist = start.distanceTo(end) / 2.0;
+    const double angle = start.angleTo(end);
+    const double radius = std::abs(dist / std::sin(alpha / 2.0));
+    const double wu = std::abs(radius * radius - dist * dist);
+    const double h = (std::abs(alpha) > M_PI) ? -std::sqrt(wu) : std::sqrt(wu);
+    const double angleNew = reversed ? angle - M_PI_2 : angle + M_PI_2;
+    const RS_Vector center = middle + RS_Vector::polar(h, angleNew);
     double a1 = center.angleTo(start);
     double a2 = center.angleTo(end);
     if (reversed)
         std::swap(a1, a2);
-    RS_ArcData d(center, radius, a1, a2, reversed);
+    const RS_ArcData d(center, radius, a1, a2, reversed);
     return new RS_Arc(nullptr, d);
 }

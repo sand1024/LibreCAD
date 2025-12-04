@@ -94,16 +94,16 @@ void LC_ActionModifyLineJoin::doPreparePreviewEntities(LC_MouseEvent *e, [[maybe
 
                     if (m_showRefEntitiesOnPreview) {
                         if (!lineJoinData->parallelLines) {
-                            RS_Vector &intersectionPoint = lineJoinData->intersectPoint;
+                            const RS_Vector &intersectionPoint = lineJoinData->intersectPoint;
                             createRefPoint(intersectionPoint, list);
                         }
 
-                        RS_Vector &major1 = lineJoinData->majorPointLine1;
+                        const RS_Vector &major1 = lineJoinData->majorPointLine1;
                         if (major1.valid) {
                             createRefPoint(major1, list);
                         }
 
-                        RS_Vector &major2 = lineJoinData->majorPointLine2;
+                        const RS_Vector &major2 = lineJoinData->majorPointLine2;
                         if (major2.valid) {
                             createRefPoint(major2, list);
                         }
@@ -137,15 +137,15 @@ void LC_ActionModifyLineJoin::doPreparePreviewEntities(LC_MouseEvent *e, [[maybe
             if (snappedLine != nullptr){
                 // retrieve current mouse position and recalculate line join data considering that mose position denotes part of line 1 that
                 // will survive trim operation
-                RS_Vector coord = e->graphPoint;
+                const RS_Vector coord = e->graphPoint;
                 updateLine1TrimData(coord);
 
-                RS_Polyline *polyline = m_linesJoinData->polyline;
+                const RS_Polyline *polyline = m_linesJoinData->polyline;
                 if (polyline != nullptr){
                     list << polyline->clone();
                     if (m_showRefEntitiesOnPreview) {
                         if (!m_linesJoinData->parallelLines) {
-                            RS_Vector &intersectionPoint = m_linesJoinData->intersectPoint;
+                            const RS_Vector &intersectionPoint = m_linesJoinData->intersectPoint;
                             createRefPoint(intersectionPoint, list);
                         }
                         createRefPoint(m_linesJoinData->majorPointLine1, list);
@@ -225,11 +225,11 @@ void LC_ActionModifyLineJoin::doOnLeftMouseButtonRelease(LC_MouseEvent *e, int s
 
         case ResolveFirstLineTrim:
             if (snappedLine == m_line1){ // we need trim hint on the first line
-                RS_Vector snap = e->graphPoint;
+                const RS_Vector snap = e->graphPoint;
                 // update trim data according to selected part of line 1
                 updateLine1TrimData(snap);
                 // check if polyline is built and if it so - trigger action
-                RS_Polyline *polyline = m_linesJoinData->polyline;
+                const RS_Polyline *polyline = m_linesJoinData->polyline;
                 if (polyline != nullptr){
                     trigger();
                 }
@@ -287,12 +287,12 @@ bool LC_ActionModifyLineJoin::doTriggerEntitiesPrepare(LC_DocumentModificationBa
         applyAttributes(line, true);
     } else { // process lines that are not on the same ray, and are not parallel
 
-        RS_Vector &intersectionPoint = m_linesJoinData->intersectPoint;
+        const RS_Vector &intersectionPoint = m_linesJoinData->intersectPoint;
 
         // during calculation of line data, we've already processed various modes for each line,
         // therefore we rely on major points there and draw lines from them to intersection point
-        RS_Vector &major1 = m_linesJoinData->majorPointLine1;
-        RS_Vector &major2 = m_linesJoinData->majorPointLine2;
+        const RS_Vector &major1 = m_linesJoinData->majorPointLine1;
+        const RS_Vector &major2 = m_linesJoinData->majorPointLine2;
         RS_Line *l1;
         RS_Line *l2;
 
@@ -382,12 +382,12 @@ LC_ActionModifyLineJoin::LC_LineJoinData *LC_ActionModifyLineJoin::createLineJoi
     if (m_line1 != nullptr && secondLine != nullptr){
 
         // prepare endpoints vectors
-        RS_Vector line1Start = m_line1->getStartpoint();
-        RS_Vector line1End = m_line1->getEndpoint();
-        RS_Vector line2Start = secondLine->getStartpoint();
-        RS_Vector line2End = secondLine->getEndpoint();
+        const RS_Vector line1Start = m_line1->getStartpoint();
+        const RS_Vector line1End = m_line1->getEndpoint();
+        const RS_Vector line2Start = secondLine->getStartpoint();
+        const RS_Vector line2End = secondLine->getEndpoint();
 
-        RS_Vector intersection = LC_LineMath::getIntersectionLineLine(line1Start, line1End, line2Start, line2End);
+        const RS_Vector intersection = LC_LineMath::getIntersectionLineLine(line1Start, line1End, line2Start, line2End);
 
         // determine intersection point for line 1 and given line 2
         if (intersection.valid){// has intersection between lines, proceed them
@@ -425,12 +425,12 @@ LC_ActionModifyLineJoin::LC_LineJoinData *LC_ActionModifyLineJoin::proceedNonPar
 
     // processing of line 1
     // determining how intersection and snap points are located relating to line endpoints
-    LC_PointsDisposition line1Disposition = determine3PointsDisposition(line1Start, line1End, intersectPoint, /*snapPoint*/line1ClickPoint);
+    const LC_PointsDisposition line1Disposition = determine3PointsDisposition(line1Start, line1End, intersectPoint, /*snapPoint*/line1ClickPoint);
 
     // determine major point that will be used for drawing of resulting entities.
     // Based on options, major point may be either one of line endpoints or intersection point
 
-    RS_Vector pointFromLine1 = getMajorPointFromLine(m_line1EdgeMode, line1Start, line1End, line1Disposition);
+    const RS_Vector pointFromLine1 = getMajorPointFromLine(m_line1EdgeMode, line1Start, line1End, line1Disposition);
     result->majorPointLine1 = pointFromLine1;
 
     // add major point for line 1 to polyline, if needed
@@ -443,10 +443,10 @@ LC_ActionModifyLineJoin::LC_LineJoinData *LC_ActionModifyLineJoin::proceedNonPar
 
     // processing of line 2
     // again, determine how endpoints of line are located relating to intersection and snap points
-    LC_PointsDisposition line2Disposition = determine3PointsDisposition(line2Start, line2End, intersectPoint, snapPoint);
+    const LC_PointsDisposition line2Disposition = determine3PointsDisposition(line2Start, line2End, intersectPoint, snapPoint);
 
     // determine major point for line 2
-    RS_Vector pointFromLine2 = getMajorPointFromLine(m_line2EdgeMode, line2Start, line2End, line2Disposition);
+    const RS_Vector pointFromLine2 = getMajorPointFromLine(m_line2EdgeMode, line2Start, line2End, line2Disposition);
     result->majorPointLine2 = pointFromLine2;
 
     // add major point from line 2 to polyline, if needed
@@ -478,13 +478,13 @@ void LC_ActionModifyLineJoin::updateLine1TrimData(RS_Vector snap) const {
     polyline = new RS_Polyline(m_document);
     m_linesJoinData->polyline = polyline;
 
-    RS_Vector &intersection = m_linesJoinData->intersectPoint;
+    const RS_Vector &intersection = m_linesJoinData->intersectPoint;
 
     // recalculate disposition of line 1 taking into consideration updated snap point
-    LC_ActionModifyLineJoin::LC_PointsDisposition line1Disposition = determine3PointsDisposition(line1Start, line1End, intersection, snap);
+    const LC_ActionModifyLineJoin::LC_PointsDisposition line1Disposition = determine3PointsDisposition(line1Start, line1End, intersection, snap);
 
     // update major point for line 1 based updated disposition
-    RS_Vector pointFromLine1 = getMajorPointFromLine(m_line1EdgeMode, line1Start, line1End, line1Disposition);
+    const RS_Vector pointFromLine1 = getMajorPointFromLine(m_line1EdgeMode, line1Start, line1End, line1Disposition);
     m_linesJoinData->majorPointLine1 = pointFromLine1;
 
     // add major point from line 1 to polyline
@@ -496,7 +496,7 @@ void LC_ActionModifyLineJoin::updateLine1TrimData(RS_Vector snap) const {
     polyline->addVertex(intersection);
 
     // get major point for line 2
-    RS_Vector pointFromLine2 = getMajorPointFromLine(m_line2EdgeMode, m_line2->getStartpoint(), m_line2->getEndpoint(), m_linesJoinData->line2Disposition);
+    const RS_Vector pointFromLine2 = getMajorPointFromLine(m_line2EdgeMode, m_line2->getStartpoint(), m_line2->getEndpoint(), m_linesJoinData->line2Disposition);
     m_linesJoinData->majorPointLine2 = pointFromLine2;
 
     // add major point form line 2, if needed
@@ -734,7 +734,7 @@ LC_ActionModifyLineJoin::LC_PointsDisposition LC_ActionModifyLineJoin::determine
     // align all 3 points horizontally for simplicity of calculations, rotate them as needed
 
     // angle of line
-    double angle = start.angleTo(end);
+    const double angle = start.angleTo(end);
 
     // copy of endpoints for rotation
     auto startOnX = RS_Vector(start);
@@ -747,12 +747,12 @@ LC_ActionModifyLineJoin::LC_PointsDisposition LC_ActionModifyLineJoin::determine
     RS_Vector snapProjection = LC_LineMath::getNearestPointOnInfiniteLine(snapPoint, start, end);
 
     // rotated snap point projection
-    RS_Vector snapOnX = snapProjection.rotate(intersection, -angle);
+    const RS_Vector snapOnX = snapProjection.rotate(intersection, -angle);
 
     // move coordinates so that the intersection point is in 0
 
-    double ix = intersection.x;
-    double delta = ix;
+    const double ix = intersection.x;
+    const double delta = ix;
 
 
     double startX = startOnX.x;

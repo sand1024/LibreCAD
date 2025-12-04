@@ -201,7 +201,7 @@ protected:
      void undoCycleReplace(RS_Entity* entityToReplace, RS_Entity* entityReplacing) const;
 
     void setPenAndLayerToActive(RS_Entity* e);
-    void select(RS_Entity* e) const {m_document->select(e);}
+    void select(RS_Entity* e) const;
     void select(QList<RS_Entity*> e) const;
     void unselect(QList<RS_Entity*> list) const;
     void unselectAll() const;

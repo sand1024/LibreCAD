@@ -89,6 +89,7 @@ QToolBar* LC_ToolbarFactory::createFileToolbar(const QSizePolicy &tbPolicy) cons
 }
 
 QToolBar *LC_ToolbarFactory::createEditToolbar(const QSizePolicy &tbPolicy) const {
+    #ifdef SEPARATE_SELECTION_TOLBAR
     auto *result = createGenericToolbar(tr("Edit"), "Edit", tbPolicy,
                                         {
                                             "EditKillAllActions",
@@ -102,7 +103,58 @@ QToolBar *LC_ToolbarFactory::createEditToolbar(const QSizePolicy &tbPolicy) cons
                                             "EditPaste",
                                             "EditPasteTransform"
                                         }, 1);
+    #else
+    auto *result = createGenericToolbar(tr("Edit"), "Edit", tbPolicy,
+                                        {
+                                            "EditKillAllActions",
+                                            "SelectionModeToggle",
+                                            "EntityDescriptionInfo",
+                                            "",
+                                            "EditUndo",
+                                            "EditRedo",
+                                            "",
+                                            "EditCut",
+                                            "EditCopy",
+                                            "EditPaste",
+                                            "EditPasteTransform"
+                                        }, 1);
+
+    QAction* actionDeselectAll  = m_agm->getActionByName("EditKillAllActions");
+    QWidget* w = result->widgetForAction(actionDeselectAll);
+    if (w != nullptr) {
+        auto* btn = dynamic_cast<QToolButton *>(w);
+
+        if (btn != nullptr) {
+            btn->setPopupMode(QToolButton::MenuButtonPopup);
+            auto* menu      = new QMenu();
+            auto actions    = m_actionFactory->select_actions;
+            menu->addActions(actions);
+            btn->setMenu(menu);
+        }
+    }
+    #endif
     return result;
+}
+
+QToolBar* LC_ToolbarFactory::createSelectionToolbar(const QSizePolicy& tbPolicy) const {
+    auto selectionToolBar = createGenericToolbar(tr("Selection"), "Selection", tbPolicy, {
+        "DeselectAll","SelectionModeToggle"
+    },1);
+
+    QAction* actionDeselectAll  = m_agm->getActionByName("DeselectAll");
+    QWidget* w = selectionToolBar->widgetForAction(actionDeselectAll);
+    if (w != nullptr) {
+        auto* btn = dynamic_cast<QToolButton *>(w);
+
+        if (btn != nullptr) {
+            btn->setPopupMode(QToolButton::MenuButtonPopup);
+            auto* menu      = new QMenu();
+            auto actions    = m_actionFactory->select_actions;
+            menu->addActions(actions);
+            btn->setMenu(menu);
+        }
+    }
+    return selectionToolBar;
 }
 
 QToolBar *LC_ToolbarFactory::createOrderToolbar(const QSizePolicy &tbPolicy) const {
@@ -183,10 +235,10 @@ void LC_ToolbarFactory::createStandardToolbars(){
     auto file = createFileToolbar(tbPolicy);
     auto edit = createEditToolbar(tbPolicy);
     auto order = createOrderToolbar(tbPolicy);
-    auto *view = createViewToolbar(tbPolicy);
-    auto *viewsList = createNamedViewsToolbar(tbPolicy);
-    auto *ucsList = createUCSToolbar(tbPolicy);
-    auto *perspectivesToolbar = createWorkspacesToolbar(tbPolicy);
+    auto view = createViewToolbar(tbPolicy);
+    auto viewsList = createNamedViewsToolbar(tbPolicy);
+    auto ucsList = createUCSToolbar(tbPolicy);
+    auto perspectivesToolbar = createWorkspacesToolbar(tbPolicy);
 
     auto snap = createSnapToolbar(tbPolicy);
 
@@ -196,9 +248,9 @@ void LC_ToolbarFactory::createStandardToolbars(){
     m_appWin->m_toolOptionsToolbar = createGenericToolbar(tr("Tool Options"), "Tool Options", tbPolicy, {},1);
 
     auto infoCursor = createInfoCursorToolbar(tbPolicy);
-    auto *dockareas = createDockAreasToolbar(tbPolicy);
-    auto *creators = createCreatorsToolbar(tbPolicy);
-    auto *preferences = createPreferencesToolbar(tbPolicy);
+    auto dockareas = createDockAreasToolbar(tbPolicy);
+    auto creators = createCreatorsToolbar(tbPolicy);
+    auto preferences = createPreferencesToolbar(tbPolicy);
 
     addToTop(infoCursor);
     addToTop(file);
@@ -215,6 +267,10 @@ void LC_ToolbarFactory::createStandardToolbars(){
     addToLeft(order);
 
     addToBottom(snap);
+#ifdef SEPARATE_SELECTION_TOLBAR
+    auto selection = createSelectionToolbar(tbPolicy);
+    addToBottom(selection);
+#endif
     addToBottom(dockareas);
     addToBottom(creators);
 }
@@ -425,6 +481,7 @@ QToolButton* LC_ToolbarFactory::toolButton(QToolBar* toolbar, const QString &too
 auto LC_ToolbarFactory::addToTop(QToolBar* toolbar) const -> void { m_appWin->addToolBar(Qt::TopToolBarArea, toolbar); }
 void LC_ToolbarFactory::addToBottom(QToolBar *toolbar) const { m_appWin->addToolBar(Qt::BottomToolBarArea, toolbar); }
 void LC_ToolbarFactory::addToLeft(QToolBar *toolbar) const { m_appWin->addToolBar(Qt::LeftToolBarArea, toolbar); }
+
 
 void LC_ToolbarFactory::createCustomToolbars(){
     m_appWin->m_creatorInvoker = std::make_unique<LC_CreatorInvoker>(m_appWin, m_agm);

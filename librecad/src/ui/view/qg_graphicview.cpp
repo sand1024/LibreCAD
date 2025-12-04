@@ -174,7 +174,7 @@ RS_Entity* getParentText(RS_Insert* insert) {
 }
 
 // Show the entity property dialog on the closest entity in range
-void QG_GraphicView::showEntityPropertiesDialog(RS_Entity* entity){
+void QG_GraphicView::showEntityPropertiesDialog(RS_Entity* entity) const {
     if (entity == nullptr) {
         return;
     }
@@ -760,7 +760,7 @@ void QG_GraphicView::tabletEvent(QTabletEvent* e) {
                     mouseReleaseEvent(&ev);
                     a->finish();
 
-                    if (getDocument()->countSelected()>0) {
+                    if (getDocument()->hasSelection()) {
                         switchToAction(RS2::ActionModifyDelete);
                     }
                 }
@@ -805,7 +805,7 @@ void QG_GraphicView::tabletEvent(QTabletEvent* e) {
                     mouseReleaseEvent(&ev);
                     a->finish();
 
-                    if (getDocument()->countSelected()>0) {
+                    if (getDocument()->hasSelection()) {
                         setCurrentAction(
                             new RS_ActionModifyDelete(*getDocument(), *this));
                     }
@@ -1268,26 +1268,23 @@ void QG_GraphicView::layerActivated(RS_Layer *layer) {
                 QList<RS_Entity*> selected;
                 selection->collectSelectedEntities(selected);
                 if (!selected.isEmpty()) {
-                    LC_UndoSection undo(doc, getViewPort());
-                    undo.undoableExecute(
-                    [selected, layer](LC_DocumentModificationBatch& ctx)->bool {
-                        for (auto en: selected) {
-                            if (en != nullptr && en->isAlive()) {
-                                RS_Entity* clone = en->clone();
-                                clone->setLayer(layer);
-                                clone->setPen(en->getPen(false));
-                                clone->clearSelectionFlag();
-                                clone->update();
-                                ctx += clone;
-                                ctx -= en;
-                            }
-                        }
-                        ctx.dontSetActiveLayerAndPen();
-                        return true;
-                    },
-                    [this](LC_DocumentModificationBatch& ctx, RS_Document* doc)->void {
-                        RS_Selection::unselectAllInDocument(doc, getViewPort());
-                    });
+                    doc->undoableModify(getViewPort(), [selected, layer](LC_DocumentModificationBatch& ctx)-> bool {
+                                            for (auto en : selected) {
+                                                if (en != nullptr && en->isAlive()) {
+                                                    RS_Entity* clone = en->clone();
+                                                    clone->setLayer(layer);
+                                                    clone->setPen(en->getPen(false));
+                                                    clone->clearSelectionFlag();
+                                                    clone->update();
+                                                    ctx += clone;
+                                                    ctx -= en;
+                                                }
+                                            }
+                                            ctx.dontSetActiveLayerAndPen();
+                                            return true;
+                                        }, [this](LC_DocumentModificationBatch& ctx, RS_Document* doc)-> void {
+                                            RS_Selection::unselectAllInDocument(doc, getViewPort());
+                                        });
                 }
             }
 

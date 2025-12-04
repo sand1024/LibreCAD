@@ -72,7 +72,7 @@ void RS_ActionModifyOffset::doTriggerCompletion(bool success) {
 }
 
 void RS_ActionModifyOffset::onMouseMoveEventSelected(int status, LC_MouseEvent *e) {
-    RS_Vector mouse = e->snapPoint;
+    const RS_Vector mouse = e->snapPoint;
     switch (status){
         case SetReferencePoint:{
             m_offsetData->coord = getRelZeroAwarePoint(e, mouse);
@@ -83,7 +83,7 @@ void RS_ActionModifyOffset::onMouseMoveEventSelected(int status, LC_MouseEvent *
         }
         case SetPosition:{
             m_offsetData->coord = m_referencePoint;
-            RS_Vector offset = mouse - m_referencePoint;
+            const RS_Vector offset = mouse - m_referencePoint;
             if (!m_distanceIsFixed){
                 m_offsetData->distance = offset.magnitude();
             }

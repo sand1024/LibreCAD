@@ -5350,7 +5350,7 @@ void RS_FilterDXFRW::addPolylineSegment(RS_Polyline& polyline, RS_Vector prev_po
             RS_Ellipse* ellipse = RS_Polyline::convertToEllipse(std::make_pair(arc.get(), scaleRatio));
             if (ellipse != nullptr) {
                 ellipse->setParent(&polyline);
-                ellipse->setSelected(polyline.isSelected());
+                ellipse->setSelectionFlag(polyline.isSelected());
                 ellipse->setPen(RS_Pen(RS2::FlagInvalid));
                 ellipse->setLayer(nullptr);
                 polyline.addEntity(ellipse);

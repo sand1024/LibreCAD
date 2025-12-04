@@ -1564,25 +1564,24 @@ void LC_LayerTreeWidget::doSelectLayersEntities(QList<RS_Layer *> &layers){
 void LC_LayerTreeWidget::doCreateLayersCopy(const QModelIndex &sourceIndex, bool duplicateEntities){
     QHash<RS_Layer *, RS_Layer *> layersMap = m_layerTreeModel->createLayersCopy(sourceIndex);
     if (!layersMap.empty()) {
-        LC_UndoSection undo(m_graphic, m_graphicView->getViewPort());
-        undo.undoableExecute([this, layersMap,duplicateEntities](LC_DocumentModificationBatch& ctx)-> bool {
-            QHashIterator<RS_Layer*, RS_Layer*> iter{layersMap};
-            while (iter.hasNext()) {
-                iter.next();
-                RS_Layer* sourceLayer = iter.key();
-                RS_Layer* copyLayer   = iter.value();
-                copyLayerAttributes(copyLayer, sourceLayer);
-                if (duplicateEntities) {
-                    duplicateLayerEntities(sourceLayer, copyLayer, ctx);
-                }
-                // that's pretty ugly that there are no batch operations in LayerList....
-                // it may lead to exceeding invocation of listeners
-                m_layerList->add(copyLayer); // fixme - sand - add batch invocation for layer's list modification!!
-            }
-            return true;
-        }
-        // fixme - selection - UNDO END
-        );
+        m_graphic->undoableModify(m_graphicView->getViewPort(), [this, layersMap,duplicateEntities](LC_DocumentModificationBatch& ctx)-> bool {
+                                      QHashIterator<RS_Layer*, RS_Layer*> iter{layersMap};
+                                      while (iter.hasNext()) {
+                                          iter.next();
+                                          RS_Layer* sourceLayer = iter.key();
+                                          RS_Layer* copyLayer   = iter.value();
+                                          copyLayerAttributes(copyLayer, sourceLayer);
+                                          if (duplicateEntities) {
+                                              duplicateLayerEntities(sourceLayer, copyLayer, ctx);
+                                          }
+                                          // that's pretty ugly that there are no batch operations in LayerList....
+                                          // it may lead to exceeding invocation of listeners
+                                          m_layerList->add(copyLayer); // fixme - sand - add batch invocation for layer's list modification!!
+                                      }
+                                      return true;
+                                  }
+                                  // fixme - selection - UNDO END
+            );
 
         // just additional invocation of listeners on layer list...
         m_layerList->fireLayerEdited(nullptr);
@@ -1654,37 +1653,37 @@ void LC_LayerTreeWidget::doMoveSelectionToLayer(LC_LayerTreeItem* layerItem, boo
 
     QList<RS_Entity*> selectedEntities;
     if (m_document->collectSelected(selectedEntities)) {
-        LC_UndoSection undo(m_document, m_graphicView->getViewPort());
-        undo.undoableExecute([this, removeOriginals, targetLayer, resolvePens, selectedEntities](LC_DocumentModificationBatch& ctx)-> bool {
-                                 for (auto en : selectedEntities) {
-                                     // iterate over all entities
-                                     if (!en->isParentSelected()) {
-                                         RS_Layer* l = en->getLayer(true);
-                                         if (l != nullptr && l != targetLayer) {
-                                             RS_Entity* clone = en->clone();
-                                             if (resolvePens) {
-                                                 // resolve pen in original entities, so "by layer" and "by block" values will be replaced by resolved values
-                                                 RS_Pen resolvedPen = en->getPen(true);
-                                                 // assigning resolved pen back to the entity's copy
-                                                 clone->setPen(resolvedPen);
-                                             }
+        m_document->undoableModify(m_graphicView->getViewPort(),
+                                   [ removeOriginals, targetLayer, resolvePens, selectedEntities](LC_DocumentModificationBatch& ctx)-> bool {
+                                       for (auto en : selectedEntities) {
+                                           // iterate over all entities
+                                           if (!en->isParentSelected()) {
+                                               RS_Layer* l = en->getLayer(true);
+                                               if (l != nullptr && l != targetLayer) {
+                                                   RS_Entity* clone = en->clone();
+                                                   if (resolvePens) {
+                                                       // resolve pen in original entities, so "by layer" and "by block" values will be replaced by resolved values
+                                                       RS_Pen resolvedPen = en->getPen(true);
+                                                       // assigning resolved pen back to the entity's copy
+                                                       clone->setPen(resolvedPen);
+                                                   }
 
-                                             clone->setLayer(targetLayer);
-                                             ctx += clone;
-                                         }
-                                     }
-                                 }
+                                                   clone->setLayer(targetLayer);
+                                                   ctx += clone;
+                                               }
+                                           }
+                                       }
 
-                                 if (removeOriginals) {
-                                     ctx -= selectedEntities;
-                                 }
-                                 return true;
-                             }, [this, removeOriginals, selectedEntities](LC_DocumentModificationBatch& ctx, RS_Document* doc)-> void {
-                                 if (!removeOriginals) {
-                                     doc->select(selectedEntities, false);
-                                 }
-                                 doc->select(ctx.entitiesToAdd);
-                             });
+                                       if (removeOriginals) {
+                                           ctx -= selectedEntities;
+                                       }
+                                       return true;
+                                   }, [removeOriginals, selectedEntities](LC_DocumentModificationBatch& ctx, RS_Document* doc)-> void {
+                                       if (!removeOriginals) {
+                                           doc->select(selectedEntities, false);
+                                       }
+                                       doc->select(ctx.entitiesToAdd);
+                                   });
     }
     redrawView();
 }

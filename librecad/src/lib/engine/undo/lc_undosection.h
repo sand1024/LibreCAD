@@ -48,17 +48,15 @@ public:
     LC_UndoSection(RS_Document * doc, LC_GraphicViewport *view);
     ~LC_UndoSection();
 
-    using FunUndoable  = std::function<bool(LC_DocumentModificationBatch& ctx)>;
-    using FunSelection  = std::function<void(LC_DocumentModificationBatch& ctx, RS_Document* doc)>;
-
-    void undoableDelete(RS_Entity* e) const;
-    void undoableAdd(RS_Entity* e) const;
     void addUndoable(RS_Undoable* u) const;
-    void undoableReplace(RS_Entity* entityToDelete, RS_Entity* entityToAdd) const;
-    bool undoableExecute(FunUndoable doUndoable, FunSelection doSelection);
-    bool undoableExecute(FunUndoable doUndoable);
+    bool undoableExecute(RS_Document::FunUndoable doUndoable, RS_Document::FunSelection doSelection);
+    bool undoableExecute(RS_Document::FunUndoable doUndoable);
 protected:
     void setupAndUndoableAdd(const QList<RS_Entity*>& entitiesToInsert, bool setActiveLayer, bool setActivePen) const;
+    void undoableReplace(RS_Entity* entityToDelete, RS_Entity* entityToAdd) const;
+    void undoableDelete(RS_Entity* e) const;
+    void undoableAdd(RS_Entity* e) const;
+    friend class Doc_plugin_interface;
 private:
     RS_Document *m_document {nullptr};
     LC_GraphicViewport* m_viewport {nullptr};

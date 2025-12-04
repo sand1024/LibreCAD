@@ -45,12 +45,14 @@ bool RS_ActionInfoTotalLength::isAllowTriggerOnEmptySelection() {
 
 void RS_ActionInfoTotalLength::doTrigger() {
     RS_DEBUG->print("RS_ActionInfoTotalLength::trigger()");
-    double l=m_document->totalSelectedLength();
+    auto selectionInfo = m_document->getSelectionInfo();
+    double length      = selectionInfo.length;
 
-    if (l>0.0) {
-        QString len= formatLinear(l);
+    if (length > 0.0) {
+        QString len = formatLinear(length);
         commandMessage(tr("Total Length of selected entities: %1").arg(len));
-    } else {
+    }
+    else {
         commandMessage(tr("At least one of the selected entities cannot be measured."));
     }
 

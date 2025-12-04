@@ -54,7 +54,7 @@ void RS_ActionOrder::doTrigger() {
     RS_DEBUG->print("RS_ActionOrder::trigger()");
 
     QList<RS_Entity*> entList;
-    for (auto e : m_selectedEntities) {
+    for (const auto e : m_selectedEntities) {
         entList.append(e);
     }
 
@@ -89,7 +89,7 @@ void RS_ActionOrder::doTrigger() {
         }
     }
     // todo - sand - override mode with ctrl?
-    bool keepSelected = isKeepModifiedEntitiesSelected();
+    const bool keepSelected = isKeepModifiedEntitiesSelected();
     if (!keepSelected) {
         deselectAll();
     }

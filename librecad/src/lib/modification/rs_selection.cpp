@@ -76,14 +76,16 @@ void RS_Selection::selectSingle(RS_Entity* e) const {
                 if (selectedBlock != nullptr) {
                     // Display the selected block as active in the block widget
                     QC_ApplicationWindow::getAppWindow()->showBlockActivated(selectedBlock);
+                    // fixme - remove
                     // Display the selected block name
-                    QG_DIALOGFACTORY->displayBlockName(selectedBlock->getName(), true);
+                    // QG_DIALOGFACTORY->displayBlockName(selectedBlock->getName(), true);
                 }
             }
             else {
-                QG_DIALOGFACTORY->displayBlockName("", false);
+                // fixme - remove
+                // QG_DIALOGFACTORY->displayBlockName("", false);
             }
-            m_viewPort->notifyChanged();
+            m_viewPort->notifyChanged(); // fixme - is it needed?
         }
     }
 }
@@ -434,25 +436,30 @@ void RS_Selection::selectLayer(RS_Entity* e) {
     if (layer == nullptr) {
         return;
     }
+    if (layer->isFrozen() || layer->isLocked()) {
+        return;
+    }
 
-    const QString layerName = layer->getName();
-    selectLayer(layerName, select);
+    selectLayer(layer, select);
 }
 
-/**
- * Selects all entities on the given layer.
- */
-void RS_Selection::selectLayer(const QString& layerName, bool select) {
-    performBulkSelection([layerName, select, this](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+
+void RS_Selection::selectLayer(const RS_Layer* layer, bool select) {
+    performBulkSelection([layer, select, this](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
         doUnselectAllIfNeeded(container, doc);
         for (auto en : *container) {
-            // fixme - review and make more efficient... why check for locking upfront? Why just not use layer pointers but names?
-            if (en != nullptr && en->isVisible() && en->isSelected() != select && (!(en->getLayer() && en->getLayer()->isLocked()))) {
-                RS_Layer* l = en->getLayer(true);
-
-                if (l != nullptr && l->getName() == layerName) {
-                    doc->select(en,select);
-                }
+            if (en == nullptr) {
+                continue;
+            }
+            if (en->isDeleted()) {
+                continue;
+            }
+            if (en->isSet(RS2::FlagSelected) == select) {
+                continue;
+            }
+            RS_Layer* l = en->getLayer(true);
+            if (l == layer) {
+                doc->select(en,select);
             }
         }
     });

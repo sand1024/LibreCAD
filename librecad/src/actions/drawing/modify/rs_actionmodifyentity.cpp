@@ -89,10 +89,10 @@ void RS_ActionModifyEntity::onLateRequestCompleted(bool shouldBeSkipped) {
 }
 
 bool RS_ActionModifyEntity::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
-    int status = getStatus();
+    const int status = getStatus();
     if (status == ShowDialog) {
         if (m_entity != nullptr) {
-            bool selected = m_entity->isSelected();
+            const bool selected = m_entity->isSelected();
             select(m_entity);
             setStatus(InEditing);
             LC_EntityPropertiesDlg* editDialog {nullptr};
@@ -175,8 +175,8 @@ bool RS_ActionModifyEntity::doTriggerModifications(LC_DocumentModificationBatch&
         m_clonedEntity->calculateBorders();
         m_clonedEntity->clearSelectionFlag();
 
-        unsigned long cloneEntityId = m_clonedEntity->getId();
-        unsigned long originalEntityId = m_entity->getId();
+        const unsigned long cloneEntityId = m_clonedEntity->getId();
+        const unsigned long originalEntityId = m_entity->getId();
 
         ctx.replace(m_entity, m_clonedEntity);
 

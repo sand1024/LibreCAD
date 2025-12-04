@@ -69,7 +69,7 @@ void RS_ActionModifyTrim::finish(bool updateTB) {
 
 bool RS_ActionModifyTrim::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     if (isAtomic(m_trimEntity) && m_limitEntity != nullptr /* && limitEntity->isAtomic()*/) {
-        LC_TrimResult trimResult =  RS_Modification::trim(m_actionData->trimCoord,  m_trimEntity,
+        const LC_TrimResult trimResult =  RS_Modification::trim(m_actionData->trimCoord,  m_trimEntity,
                m_actionData->limitCoord, m_limitEntity,
                m_both, ctx);
 
@@ -106,7 +106,7 @@ void RS_ActionModifyTrim::previewTrim(RS_Entity* entityToTrimCandidate, RS_Entit
             auto *atomicTrimCandidate = dynamic_cast<RS_AtomicEntity *>(entityToTrimCandidate);
 
             LC_DocumentModificationBatch ctx;
-            LC_TrimResult trimResult = RS_Modification::trim(trimCoordinates, atomicTrimCandidate,
+            const LC_TrimResult trimResult = RS_Modification::trim(trimCoordinates, atomicTrimCandidate,
                                               limitCoordinates, limitingEntity,
                                               m_both, ctx);
             if (trimResult.result) {
@@ -124,7 +124,7 @@ void RS_ActionModifyTrim::previewTrim(RS_Entity* entityToTrimCandidate, RS_Entit
                         }
                     }
                     if (isInfoCursorForModificationEnabled()){
-                        auto msg = rtti() == RS2::ActionModifyTrim2 ? tr("Trim Two") : tr("Trim");
+                        const auto msg = rtti() == RS2::ActionModifyTrim2 ? tr("Trim Two") : tr("Trim");
                         auto builder = msgStart().string(msg).vector(
                             tr("Intersection:"), trimResult.intersection1);
                         if (trimResult.intersection2.valid) {
@@ -140,7 +140,7 @@ void RS_ActionModifyTrim::previewTrim(RS_Entity* entityToTrimCandidate, RS_Entit
 
 // todo - check trim both mode - it seems that limiting entity should be atomic too...
 void RS_ActionModifyTrim::onMouseMoveEvent(int status, LC_MouseEvent *e) {
-    RS_Vector mouse = e->graphPoint;
+    const RS_Vector mouse = e->graphPoint;
     bool trimInvalid = true;
     switch (status) {
         case ChooseLimitEntity: {
@@ -171,7 +171,7 @@ void RS_ActionModifyTrim::onMouseMoveEvent(int status, LC_MouseEvent *e) {
 }
 
 void RS_ActionModifyTrim::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
-    RS_Vector mouse = e->graphPoint;
+    const RS_Vector mouse = e->graphPoint;
     switch (status) {
         case ChooseLimitEntity: {
             RS_Entity *se = catchEntityByEvent(e, RS2::ResolveAllButTextImage);
@@ -234,15 +234,15 @@ RS2::CursorType RS_ActionModifyTrim::doGetMouseCursor([[maybe_unused]] int statu
 }
 
 void RS_ActionModifyTrim::previewRefTrimmedEntity(RS_Entity *trimmed, RS_Entity* original) const {
-    int rtti = trimmed->rtti();
+    const int rtti = trimmed->rtti();
     switch (rtti){
         case RS2::EntityLine:{
             RS_Vector start = original->getStartpoint();
-            RS_Vector startTrimmed = trimmed->getStartpoint();
+            const RS_Vector startTrimmed = trimmed->getStartpoint();
             RS_Vector end = original->getEndpoint();
-            RS_Vector endTrimmed = trimmed->getEndpoint();
-            bool sameStart = start == startTrimmed;
-            bool sameEnd = end == endTrimmed;
+            const RS_Vector endTrimmed = trimmed->getEndpoint();
+            const bool sameStart = start == startTrimmed;
+            const bool sameEnd = end == endTrimmed;
 
             if (!sameStart) {
                 end = startTrimmed;
@@ -267,7 +267,7 @@ void RS_ActionModifyTrim::previewRefTrimmedEntity(RS_Entity *trimmed, RS_Entity*
             break;
         }
         case RS2::EntityEllipse:{
-            auto* ellipse = dynamic_cast<RS_Ellipse *>(trimmed);
+            const auto* ellipse = dynamic_cast<RS_Ellipse *>(trimmed);
             auto data = ellipse->getData();
             data.reversed = !data.reversed;
             previewRefEllipse(data);

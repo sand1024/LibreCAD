@@ -337,7 +337,7 @@ bool RS_Entity::isArc() const{
     switch (rtti()) {
         case RS2::EntityArc:
         case RS2::EntityCircle:
-//ellipse implements its own test
+        //ellipse implements its own test
         case RS2::EntityEllipse:
             return true;
         default:

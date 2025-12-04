@@ -91,14 +91,11 @@ public:
     void deselectIntersected(const RS_Vector& v1, const RS_Vector& v2) {selectIntersected(v1, v2, false);}
     void selectContour(RS_Entity* e);
     void selectLayer(RS_Entity* e);
-    void selectLayer(const QString& layerName, bool select=true);
-    void deselectLayer(QString& layerName) {selectLayer(layerName, false);}
+    void selectLayer(const RS_Layer* layer, bool select);
     void conditionalSelection(RS_Document* doc,const LC_SelectionOptions &options, const LC_SelectionPredicate& predicate, std::list<RS_Entity>& selectedEntities);
     void countSelectedEntities(QMap<RS2::EntityType, int> &entityTypeMaps) const;
     void collectCurrentSelectionState(CurrentSelectionState& selectionState) const;
     void performBulkSelection(std::function<void(RS_EntityContainer*, LC_GraphicViewport*, RS_Document*)> fun) const;
-
-
 protected:
     RS_Document* m_document = nullptr;
     LC_GraphicViewport* m_viewPort = nullptr;

@@ -94,13 +94,14 @@ void QC_ActionGetSelect::keyPressEvent(QKeyEvent* e){
  * Adds all selected entities from 'container' to the selection.
  */
 void QC_ActionGetSelect::getSelected(QList<Plug_Entity *> *se, Doc_plugin_interface *d) const{
-    for (auto e: *m_document) { // fixme - selection, rework and rely on SelectedSEt
-        if (e->isSelected()) {  // fixme - pen_wizard - add support of undo!!!!
-            Plugin_Entity *pe = new Plugin_Entity(e, d);
-            se->append(reinterpret_cast<Plug_Entity *>(pe));
-        }
+    QList<RS_Entity*> selection;
+    m_document->collectSelected(selection);
+    for (const auto e: selection) {
+        Plugin_Entity* pe = new Plugin_Entity(e, d);
+        se->append(reinterpret_cast<Plug_Entity*>(pe));
     }
 }
+
 [[deprecated]]
 void QC_ActionGetSelect::unselectEntities() const { // fixme - rework by inlinining
     unselectAll();

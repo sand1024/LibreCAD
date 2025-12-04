@@ -31,6 +31,9 @@ void LC_Highlight::addEntity(RS_Entity* entity, bool selected) {
         return;
     }
     RS_Entity *clone = entity->clone();
+    if (entity->rtti() == RS2::EntityInsert) {
+        clone->update();
+    }
     RS_Pen pen = entity->getPen(true);
     clone->setPen(pen);
 
@@ -40,7 +43,6 @@ void LC_Highlight::addEntity(RS_Entity* entity, bool selected) {
     }
 
     entitiesMap.insert(entity, clone);
-//    entity->setTransparent(true);
     push_back(clone);
 }
 

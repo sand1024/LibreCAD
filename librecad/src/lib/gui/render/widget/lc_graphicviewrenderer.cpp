@@ -30,6 +30,7 @@
 #include "rs_settings.h"
 #include "lc_overlayentitiescontainer.h"
 #include "lc_linemath.h"
+#include "rs_debug.h"
 #include "rs_entity.h"
 #include "rs_entitycontainer.h"
 
@@ -280,9 +281,17 @@ void LC_GraphicViewRenderer::drawEntitiesInOverlay(LC_OverlaysManager *overlaysM
     RS_EntityContainer* overlayContainer = overlaysManager->entitiesAt(overlayType);
     if (overlayContainer != nullptr) {
         foreach (auto e, overlayContainer->getEntityList()) {
-            setPenForOverlayEntity(painter, e);
             bool selected = e->isSelected();
             // within overlays, we use temporary entities (or clones), so it's safe to modify selection flag there
+#ifdef DEBUG_INSERT_PAINT
+            if (selected) {
+                RS2::EntityType entityType = e->rtti();
+                if (entityType == RS2::EntityInsert) {
+                    LC_ERR << "Insert";
+                }
+            }
+#endif
+            setPenForOverlayEntity(painter, e);
             e->clearSelectionFlag();
             e->draw(painter);
             if (selected) {

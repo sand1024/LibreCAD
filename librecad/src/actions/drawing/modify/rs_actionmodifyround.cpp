@@ -51,7 +51,7 @@ namespace {
 // Whether the point is on an endPoint of the entity
     bool atEndPoint(RS_Entity &entity, const RS_Vector &point){
         double distance = 1.;
-        RS_Vector nearestPoint = entity.getNearestEndpoint(point, &distance);
+        const RS_Vector nearestPoint = entity.getNearestEndpoint(point, &distance);
         return nearestPoint.valid && distance < RS_TOLERANCE;
     }
 
@@ -111,7 +111,7 @@ bool RS_ActionModifyRound::removeOldFillet(RS_Entity *e, const bool &isPolyline)
         return atEndPoint(*m_entity1, *m_entity2, point);
     };
     std::vector<RS_Vector> endPoints = {e->getStartpoint(), e->getEndpoint()};
-    bool chained = std::all_of(endPoints.begin(), endPoints.end(), isChained);
+    const bool chained = std::all_of(endPoints.begin(), endPoints.end(), isChained);
     if (!chained) {
         return false;
     }
@@ -128,9 +128,9 @@ void RS_ActionModifyRound::drawSnapper() {
 }
 
 bool RS_ActionModifyRound::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
-    auto roundResult = m_actionData->roundResult;
+    const auto roundResult = m_actionData->roundResult;
     if (roundResult.isPolyline) {
-        auto polyline = m_entity1->getParent();
+        const auto polyline = m_entity1->getParent();
         roundResult.polyline->setPen(polyline->getPen(false));
         roundResult.polyline->setLayer(polyline->getLayer(false));
     }
@@ -159,7 +159,7 @@ void RS_ActionModifyRound::doTriggerCompletion(bool success) {
 
 
 void RS_ActionModifyRound::onMouseMoveEvent(int status, LC_MouseEvent *e) {
-    RS_Vector mouse = e->graphPoint;
+    const RS_Vector mouse = e->graphPoint;
     RS_Entity *se = catchAndDescribe(e, eType, RS2::ResolveAll);
     switch (status) {
         case SetEntity1: {
@@ -174,10 +174,10 @@ void RS_ActionModifyRound::onMouseMoveEvent(int status, LC_MouseEvent *e) {
             highlightSelected(m_entity1);
             if (se != nullptr){
                 if (m_entity1 != se && se->isAtomic()){
-                    RS_Vector coord2 = se->getNearestPointOnEntity(mouse, true);
+                    const RS_Vector coord2 = se->getNearestPointOnEntity(mouse, true);
 
 
-                    bool trim = m_actionData->data.trim;
+                    const bool trim = m_actionData->data.trim;
                     LC_DocumentModificationBatch ctx;
                     LC_RoundResult roundResult = RS_Modification::round(mouse, m_actionData->coord1, static_cast<RS_AtomicEntity*>(m_entity1), coord2,
                                                                         static_cast<RS_AtomicEntity*>(se), m_actionData->data, ctx);
@@ -203,8 +203,8 @@ void RS_ActionModifyRound::onMouseMoveEvent(int status, LC_MouseEvent *e) {
 
                         auto *arc = roundResult.round;
                         if (arc != nullptr){
-                            RS_Vector arcStartPoint = arc->getStartpoint();
-                            RS_Vector arcEndPoint = arc->getEndpoint();
+                            const RS_Vector arcStartPoint = arc->getStartpoint();
+                            const RS_Vector arcEndPoint = arc->getEndpoint();
                             if (m_showRefEntitiesOnPreview) {
                                 if (!roundResult.isPolyline) {
                                     previewEntity(arc);
@@ -241,7 +241,7 @@ bool RS_ActionModifyRound::doUpdateDistanceByInteractiveInput(const QString& tag
 }
 
 void RS_ActionModifyRound::previewEntityModifications(const RS_Entity *original, RS_Entity *modified, RS_Vector& roundPoint, int mode) const {
-    bool decreased = modified->getLength() < original->getLength();
+    const bool decreased = modified->getLength() < original->getLength();
     if (isLine(modified)){ // fixme - support of polyline
         if (decreased){
             if (mode == LC_RoundResult::TRIM_START){
@@ -273,7 +273,7 @@ void RS_ActionModifyRound::previewEntityModifications(const RS_Entity *original,
 }
 
 void RS_ActionModifyRound::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
-    RS_Vector mouse = e->graphPoint;
+    const RS_Vector mouse = e->graphPoint;
     RS_Entity *se = catchEntityByEvent(e, eType, RS2::ResolveAll);
     switch (status) {
         case SetEntity1: {
@@ -288,7 +288,7 @@ void RS_ActionModifyRound::onMouseLeftButtonRelease(int status, LC_MouseEvent *e
             if (isAtomic(se) ){
                 m_entity2 = static_cast<RS_AtomicEntity*>(se);
                 m_actionData->coord2 = mouse;
-                auto roundResult = RS_Modification::round(m_actionData->coord2, m_actionData->coord1, m_entity1,
+                const auto roundResult = RS_Modification::round(m_actionData->coord2, m_actionData->coord1, m_entity1,
                                                                 m_actionData->coord2, m_entity2, m_actionData->data, m_actionData->triggerContext);
 
                 if (roundResult.error == LC_RoundResult::OK) {
@@ -328,7 +328,7 @@ bool RS_ActionModifyRound::doProcessCommand(int status, const QString &c) {
                 accept = true;
             } else {
                 bool ok;
-                double r = RS_Math::eval(c, &ok);
+                const double r = RS_Math::eval(c, &ok);
                 if (ok && r > 1.0e-10){
                     accept = true;
                     m_actionData->data.radius = r;
@@ -344,7 +344,7 @@ bool RS_ActionModifyRound::doProcessCommand(int status, const QString &c) {
         }
         case SetRadius: {
             bool ok;
-            double r = RS_Math::eval(c, &ok);
+            const double r = RS_Math::eval(c, &ok);
             if (ok){
                 accept = true;
                 m_actionData->data.radius = r;

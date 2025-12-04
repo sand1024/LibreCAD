@@ -66,10 +66,10 @@ void RS_ActionModifyTrimAmount::init(int status) {
 
 bool RS_ActionModifyTrimAmount::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     if (m_trimEntity != nullptr && m_trimEntity->isVisible() && !m_trimEntity->isLocked()) {
-        double dist = determineDistance(m_trimEntity);
+        const double dist = determineDistance(m_trimEntity);
         bool trimStart;
         bool trimEnd;
-        bool trimBoth = m_symmetricDistance && !m_distanceIsTotalLength;
+        const bool trimBoth = m_symmetricDistance && !m_distanceIsTotalLength;
         RS_Entity* trimmed = RS_Modification::trimAmount(*m_trimCoord, m_trimEntity, dist, trimBoth, trimStart, trimEnd, ctx);
         if (trimmed != nullptr) {
             trimmed->setPen(m_trimEntity->getPen(false));
@@ -106,30 +106,30 @@ double RS_ActionModifyTrimAmount::determineDistance(const RS_AtomicEntity *e) co
 }
 
 void RS_ActionModifyTrimAmount::onMouseMoveEvent([[maybe_unused]]int status, LC_MouseEvent *e) {
-    RS_Vector coord =  e->graphPoint;
-    auto en = catchAndDescribe(e, g_enTypeList, RS2::ResolveNone);
+    const RS_Vector coord =  e->graphPoint;
+    const auto en = catchAndDescribe(e, g_enTypeList, RS2::ResolveNone);
     deleteSnapper();
     if (isAtomic(en)) {
         highlightHover(en);
         auto* atomic = static_cast<RS_AtomicEntity*>(en);
-        double dist = determineDistance(atomic);
-        bool trimBoth = m_symmetricDistance && !m_distanceIsTotalLength;
+        const double dist = determineDistance(atomic);
+        const bool trimBoth = m_symmetricDistance && !m_distanceIsTotalLength;
         bool trimStart;
         bool trimEnd;
         LC_DocumentModificationBatch ctx;
-        auto trimmed = RS_Modification::trimAmount(coord, atomic, dist, trimBoth, trimStart, trimEnd, ctx);
+        const auto trimmed = RS_Modification::trimAmount(coord, atomic, dist, trimBoth, trimStart, trimEnd, ctx);
         if (trimmed != nullptr) {
-            double originalLen = atomic->getLength();
-            double trimmedLen = trimmed->getLength();
-            bool increased = originalLen < trimmedLen;
+            const double originalLen = atomic->getLength();
+            const double trimmedLen = trimmed->getLength();
+            const bool increased = originalLen < trimmedLen;
             if (increased) {
                 previewEntity(trimmed);
             }
 
             if (m_showRefEntitiesOnPreview) {
-                RS_Arc* atomicArc = nullptr;
-                RS_Arc* trimmedArc = nullptr;
-                bool entityIsArc = isArc(atomic);
+                const RS_Arc* atomicArc = nullptr;
+                const RS_Arc* trimmedArc = nullptr;
+                const bool entityIsArc = isArc(atomic);
                 if (entityIsArc) {
                     atomicArc = dynamic_cast<RS_Arc*>(atomic);
                     trimmedArc = dynamic_cast<RS_Arc*>(trimmed);
@@ -210,7 +210,7 @@ bool RS_ActionModifyTrimAmount::doProcessCommand(int status, const QString &c) {
     switch (status) {
         case ChooseTrimEntity: {
             bool ok;
-            double d = RS_Math::eval(c, &ok);
+            const double d = RS_Math::eval(c, &ok);
             if (ok){
                 accept = true;
                 m_distance = d;

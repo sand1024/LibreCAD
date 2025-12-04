@@ -170,7 +170,7 @@ RS_Polyline* RS_ActionPolylineSegment::convertPolyline(RS_Entity *selectedEntity
     QList<RS_Entity *> completed;
     RS_Vector start = selectedEntity->getStartpoint();
     RS_Vector end = selectedEntity->getEndpoint();
-    if (!useSelected || (selectedEntity && selectedEntity->isSelected())){
+    if (!useSelected || selectedEntity->isSelected()){
         completed.append(selectedEntity);
     }
 

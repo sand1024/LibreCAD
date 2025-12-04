@@ -72,7 +72,7 @@ void RS_ActionModifyBevel::doInitWithContextEntity(RS_Entity* contextEntity, con
 
 bool RS_ActionModifyBevel::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     if (isAtomic(m_entity1) && isAtomic(m_entity2)) {
-        LC_BevelResult bevelResult = m_actionData->bevelResult;
+        const LC_BevelResult bevelResult = m_actionData->bevelResult;
         ctx.setActiveLayerAndPen(false, false);
         if (!bevelResult.isPolyline) {
             bevelResult.bevel->setLayer(m_graphic->getActiveLayer());
@@ -113,7 +113,7 @@ void RS_ActionModifyBevel::drawSnapper() {
 }
 
 void RS_ActionModifyBevel::onMouseMoveEvent(int status, LC_MouseEvent *e) {
-    RS_Vector mouse = e->graphPoint;
+    const RS_Vector mouse = e->graphPoint;
     // it seems that bevel works properly with lines only... it relies on trimEndpoint/moveEndpoint methods, which
     // have some support for arc and ellipse, yet still...
     RS_Entity *se = catchAndDescribe(e, RS2::EntityLine, RS2::ResolveAll);
@@ -128,10 +128,10 @@ void RS_ActionModifyBevel::onMouseMoveEvent(int status, LC_MouseEvent *e) {
         case SetEntity2: {
             highlightSelected(m_entity1);
             if (areBothEntityAccepted(m_entity1, se)){
-                auto atomicCandidate2 = dynamic_cast<RS_AtomicEntity *>(se);
+                const auto atomicCandidate2 = dynamic_cast<RS_AtomicEntity *>(se);
 
                 LC_DocumentModificationBatch ctx;
-                LC_BevelResult bevelResult = RS_Modification::bevel(m_actionData->coord1,  m_entity1, mouse, atomicCandidate2, m_actionData->data, true, ctx);
+                const LC_BevelResult bevelResult = RS_Modification::bevel(m_actionData->coord1,  m_entity1, mouse, atomicCandidate2, m_actionData->data, true, ctx);
 
                 if (bevelResult.error == LC_BevelResult::OK) {
                     highlightHover(se);
@@ -184,7 +184,7 @@ void RS_ActionModifyBevel::onMouseMoveEvent(int status, LC_MouseEvent *e) {
 }
 
 void RS_ActionModifyBevel::previewLineModifications(const RS_Entity *original, const RS_Entity *trimmed, bool trimOnStart) const {
-    bool originalIncreased = original->getLength() < trimmed->getLength();
+    const bool originalIncreased = original->getLength() < trimmed->getLength();
     if (originalIncreased){
         if (trimOnStart){
             previewLine(original->getStartpoint(), trimmed->getStartpoint());
@@ -226,7 +226,7 @@ void RS_ActionModifyBevel::onMouseLeftButtonRelease(int status, LC_MouseEvent *e
                 if (isAtomic(se)){
                     m_entity2 = dynamic_cast<RS_AtomicEntity *>(se);
                     m_actionData->coord2 = e->graphPoint;
-                    LC_BevelResult bevelResult = RS_Modification::bevel(m_actionData->coord1, m_entity1, m_actionData->coord2, m_entity2,
+                    const LC_BevelResult bevelResult = RS_Modification::bevel(m_actionData->coord1, m_entity1, m_actionData->coord2, m_entity2,
                                             m_actionData->data, false, m_actionData->triggerContext);
                     switch (bevelResult.error) {
                         case LC_BevelResult::OK: {
@@ -313,7 +313,7 @@ bool RS_ActionModifyBevel::doProcessCommand(int status, const QString &c) {
         }
         case SetLength1: {
             bool ok;
-            double l = RS_Math::eval(c, &ok);
+            const double l = RS_Math::eval(c, &ok);
             if (ok){
                 accept = true;
                 m_actionData->data.length1 = l;
@@ -326,7 +326,7 @@ bool RS_ActionModifyBevel::doProcessCommand(int status, const QString &c) {
         }
         case SetLength2: {
             bool ok;
-            double l = RS_Math::eval(c, &ok);
+            const double l = RS_Math::eval(c, &ok);
             if (ok){
                 m_actionData->data.length2 = l;
                 accept = true;

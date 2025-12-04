@@ -76,7 +76,7 @@ void LC_ActionModifyAlign::onMouseMoveEventSelected([[maybe_unused]]int status, 
     // defining boundaries
     switch (alignType) {
         case LC_Align::ENTITY: {
-            RS2::ResolveLevel resolveLevel = e->isControl ? RS2::ResolveAll : RS2::ResolveNone;
+            const RS2::ResolveLevel resolveLevel = e->isControl ? RS2::ResolveAll : RS2::ResolveNone;
             RS_Entity *entity = catchEntity(snap, resolveLevel);
             if (entity != nullptr) {
                 min = entity->getMin();
@@ -104,16 +104,16 @@ void LC_ActionModifyAlign::onMouseMoveEventSelected([[maybe_unused]]int status, 
 
     // reference points
     double verticalRef;
-    bool drawVertical  = LC_Align::getVerticalRefCoordinate(min, max, hAlign, verticalRef);
+    const bool drawVertical  = LC_Align::getVerticalRefCoordinate(min, max, hAlign, verticalRef);
     double horizontalRef;
-    bool drawHorizontal = LC_Align::getHorizontalRefCoordinate(min, max, vAlign, horizontalRef);
+    const bool drawHorizontal = LC_Align::getHorizontalRefCoordinate(min, max, vAlign, horizontalRef);
 
 
     // preview entities
     if (showPreview) {
         QList<RS_Entity *> alignedEntitiesList;
-        RS_Vector groupOffset = createAlignedEntities(alignedEntitiesList, min, max, true);
-        for (auto ent: alignedEntitiesList) {
+        const RS_Vector groupOffset = createAlignedEntities(alignedEntitiesList, min, max, true);
+        for (const auto ent: alignedEntitiesList) {
             previewEntity(ent);
         }
         if (m_showRefEntitiesOnPreview) {
@@ -182,8 +182,8 @@ void LC_ActionModifyAlign::onMouseLeftButtonReleaseSelected([[maybe_unused]]int 
     bool mayTrigger = true;
     switch (alignType) {
         case LC_Align::ENTITY: {
-            RS2::ResolveLevel resolveLevel = e->isControl ? RS2::ResolveAll : RS2::ResolveNone;
-            RS_Entity *entity  = catchEntity(snap, resolveLevel);
+            const RS2::ResolveLevel resolveLevel = e->isControl ? RS2::ResolveAll : RS2::ResolveNone;
+            const RS_Entity *entity  = catchEntity(snap, resolveLevel);
             if (entity != nullptr) {
                 m_alignMin = entity->getMin();
                 m_alignMax = entity->getMax();
@@ -272,26 +272,26 @@ LC_ActionOptionsWidget *LC_ActionModifyAlign::createOptionsWidget() {
 RS_Vector LC_ActionModifyAlign::createAlignedEntities(QList<RS_Entity *> &clonesList, RS_Vector min, RS_Vector max, bool previewOnly) {
     auto result =  RS_Vector(false);
 
-    RS_Vector targetPoint = getReferencePoint(min, max);
-    bool updateAttributes = !previewOnly;
+    const RS_Vector targetPoint = getReferencePoint(min, max);
+    const bool updateAttributes = !previewOnly;
 
     if (asGroup || m_selectedEntities.size() == 1) {
         RS_Vector selectionMin;
         RS_Vector selectionMax;
 
         LC_Align::collectSelectionBounds(m_selectedEntities, selectionMin, selectionMax);
-        RS_Vector selectionRefPoint = getReferencePoint(selectionMin, selectionMax);
-        RS_Vector offset = targetPoint - selectionRefPoint;
+        const RS_Vector selectionRefPoint = getReferencePoint(selectionMin, selectionMax);
+        const RS_Vector offset = targetPoint - selectionRefPoint;
 
         result = offset;
         result.valid = true;
 
-        for (auto e: m_selectedEntities) {
+        for (const auto e: m_selectedEntities) {
             RS_Entity* clone = LC_Align::createCloneMovedToOffset(e, offset, updateAttributes);
             clonesList << clone;
         }
     } else {
-        for (auto e: m_selectedEntities) {
+        for (const auto e: m_selectedEntities) {
             RS_Entity *clone = LC_Align::createCloneMovedToTarget(e, targetPoint, updateAttributes, hAlign, vAlign);
             clonesList << clone;
         }

@@ -108,15 +108,15 @@ void LC_ActionModifyAlignRef::prepareAlignRefData(const RS_Vector &snap) {
     m_actionData.data.offset = m_actionData.targetPoint1 - m_actionData.referencePoint1;
     m_actionData.data.rotationCenter = m_actionData.referencePoint1;
 
-    double angleOriginal = m_actionData.referencePoint1.angleTo(m_actionData.referencePoint2);
-    double angleNew = m_actionData.targetPoint1.angleTo(snap);
+    const double angleOriginal = m_actionData.referencePoint1.angleTo(m_actionData.referencePoint2);
+    const double angleNew = m_actionData.targetPoint1.angleTo(snap);
 
-    double rotationAngle = angleNew - angleOriginal;
+    const double rotationAngle = angleNew - angleOriginal;
 
     m_actionData.data.rotationAngle = rotationAngle;
 
-    double distanceOriginal = m_actionData.referencePoint1.distanceTo(m_actionData.referencePoint2);
-    double distanceNew = m_actionData.targetPoint1.distanceTo(snap);
+    const double distanceOriginal = m_actionData.referencePoint1.distanceTo(m_actionData.referencePoint2);
+    const double distanceNew = m_actionData.targetPoint1.distanceTo(snap);
 
     double scaleFactor = distanceNew / distanceOriginal;
     if (LC_LineMath::isNotMeaningful(scaleFactor)){

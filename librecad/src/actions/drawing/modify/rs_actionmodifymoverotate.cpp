@@ -75,7 +75,7 @@ void RS_ActionModifyMoveRotate::onMouseMoveEventSelected(int status, LC_MouseEve
             break;
         }
         case SetTargetPoint: {
-            RS_Vector &originalRefPoint = m_actionData->data.referencePoint;
+            const RS_Vector &originalRefPoint = m_actionData->data.referencePoint;
             if (originalRefPoint.valid) {
                 mouse = getSnapAngleAwarePoint(e, originalRefPoint, mouse, true);
                 m_actionData->data.offset = mouse - originalRefPoint;
@@ -101,13 +101,13 @@ void RS_ActionModifyMoveRotate::onMouseMoveEventSelected(int status, LC_MouseEve
             break;
         }
         case SetAngle:{
-            RS_Vector &targetPoint = m_actionData->targetPoint;
-            RS_Vector &originalRefPoint = m_actionData->data.referencePoint;
+            const RS_Vector &targetPoint = m_actionData->targetPoint;
+            const RS_Vector &originalRefPoint = m_actionData->data.referencePoint;
             if (targetPoint.valid) {
                 mouse = getSnapAngleAwarePoint(e, targetPoint, mouse, true);
-                double wcsAngle = targetPoint.angleTo(mouse);
-                double rotationAngle = RS_Math::correctAngle(toUCSBasisAngle(wcsAngle));
-                double wcsRotationAngle = adjustRelativeAngleSignByBasis(rotationAngle);
+                const double wcsAngle = targetPoint.angleTo(mouse);
+                const double rotationAngle = RS_Math::correctAngle(toUCSBasisAngle(wcsAngle));
+                const double wcsRotationAngle = adjustRelativeAngleSignByBasis(rotationAngle);
                 m_actionData->data.angle = wcsRotationAngle;
                 LC_DocumentModificationBatch ctx;
                 RS_Modification::moveRotate(m_actionData->data, m_selectedEntities, true, ctx);
@@ -150,7 +150,7 @@ bool RS_ActionModifyMoveRotate::doUpdateAngleByInteractiveInput(const QString& t
 
 void RS_ActionModifyMoveRotate::previewRefPointsForMultipleCopies() const {
     if (m_actionData->data.multipleCopies){
-        int numPoints = m_actionData->data.number;
+        const int numPoints = m_actionData->data.number;
         if (numPoints > 1){
             for (int i = 1; i <= numPoints; i++){
                 RS_Vector offset = m_actionData->data.offset * i;
@@ -236,9 +236,9 @@ void RS_ActionModifyMoveRotate::onCoordinateEvent(int status, [[maybe_unused]]bo
         case SetAngle: {
             if (m_actionData->targetPoint.valid){
 //                double angle = pPoints->targetPoint.angleTo(pos);
-                double wcsAngle = m_actionData->targetPoint.angleTo(pos);
-                double rotationAngle = RS_Math::correctAngle(toUCSBasisAngle(wcsAngle));
-                double wcsRotationAngle = adjustRelativeAngleSignByBasis(rotationAngle);
+                const double wcsAngle = m_actionData->targetPoint.angleTo(pos);
+                const double rotationAngle = RS_Math::correctAngle(toUCSBasisAngle(wcsAngle));
+                const double wcsRotationAngle = adjustRelativeAngleSignByBasis(rotationAngle);
                 m_actionData->data.angle = wcsRotationAngle;
                 doPerformTrigger();
             }
@@ -279,7 +279,7 @@ bool RS_ActionModifyMoveRotate::doProcessCommand(int status, const QString &c) {
         }
         case SetAngle: {
             bool ok;
-            double a = RS_Math::eval(c, &ok);
+            const double a = RS_Math::eval(c, &ok);
             if (ok){
                 accept = true;
                 // relative angle is used, no need to translate

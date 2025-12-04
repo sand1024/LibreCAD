@@ -34,6 +34,9 @@ LC_QuickInfoBaseData::LC_QuickInfoBaseData()= default;
  * @return  formatted string
  */
 QString LC_QuickInfoBaseData::formatWCSVector(const RS_Vector &wcsPos) const{
+    if (m_viewport == nullptr) {
+        return "";
+    }
     double ucsX, ucsY;
     m_viewport->toUCS(wcsPos, ucsX, ucsY);
 
@@ -53,6 +56,9 @@ QString LC_QuickInfoBaseData::formatUCSVector(const RS_Vector &ucsPos) const{
 }
 
 QString LC_QuickInfoBaseData::formatWCSDeltaVector(const RS_Vector &wcsDelta) const{
+    if (m_viewport == nullptr) {
+        return "";
+    }
     double ucsX, ucsY;
     m_viewport->toUCSDelta(wcsDelta, ucsX, ucsY);
 
@@ -69,6 +75,9 @@ QString LC_QuickInfoBaseData::formatWCSDeltaVector(const RS_Vector &wcsDelta) co
  * @return
  */
 QString LC_QuickInfoBaseData::formatWCSAngle(double wcsAngle) const {
+    if (m_viewport == nullptr) {
+        return "";
+    }
     if (m_viewport->hasUCS()){
         wcsAngle = m_viewport->toUCSAngle(wcsAngle);
     }
@@ -197,6 +206,9 @@ void LC_QuickInfoBaseData::appendValue(QString &result, const QString &label, co
 }
 
 void LC_QuickInfoBaseData::appendWCSAbsolute(QString &result, const QString &label, const RS_Vector &value) const {
+    if (m_viewport == nullptr) {
+        return;
+    }
     result.append("\n");
     result.append(label);
     result.append(": ");
@@ -206,6 +218,9 @@ void LC_QuickInfoBaseData::appendWCSAbsolute(QString &result, const QString &lab
 }
 
 void LC_QuickInfoBaseData::appendWCSAbsoluteDelta(QString &result, const QString &label, const RS_Vector &value) const {
+    if (m_viewport == nullptr) {
+        return;
+    }
     result.append("\n");
     result.append(label);
     result.append(": ");
@@ -250,5 +265,8 @@ QString LC_QuickInfoBaseData::formatInt(const int &x) const{
 }
 
 const RS_Vector &LC_QuickInfoBaseData::getRelativeZero() const {
+    if (m_viewport == nullptr) {
+        return RS_Vector(false);
+    }
     return m_viewport->getRelativeZero();
 }

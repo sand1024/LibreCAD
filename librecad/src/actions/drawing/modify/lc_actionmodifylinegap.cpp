@@ -54,10 +54,10 @@ void LC_ActionModifyLineGap::doPreparePreviewEntities(LC_MouseEvent *e, RS_Vecto
                 if (checkMayExpandEntity(line, "")){
 
                     // determine snap point
-                    RS_Vector nearestPoint = line->getNearestPointOnEntity(snap);
+                    const RS_Vector nearestPoint = line->getNearestPointOnEntity(snap);
 
                     // determine start point for gap
-                    RS_Vector gapStartPosition = obtainLineSnapPointForMode(line, nearestPoint);
+                    const RS_Vector gapStartPosition = obtainLineSnapPointForMode(line, nearestPoint);
 
                     highlightHover(line);
 
@@ -85,7 +85,7 @@ void LC_ActionModifyLineGap::doPreparePreviewEntities(LC_MouseEvent *e, RS_Vecto
             highlightSelected(line);
 
             // gap end is projection of snap point to previously selected line
-            RS_Vector nearestPoint = line->getNearestPointOnEntity(snap);
+            const RS_Vector nearestPoint = line->getNearestPointOnEntity(snap);
             m_gapData->endPoint = nearestPoint;
 
             createPreviewEntities(m_gapData, list, true);
@@ -111,8 +111,8 @@ void LC_ActionModifyLineGap::doPreparePreviewEntities(LC_MouseEvent *e, RS_Vecto
  * @param startPointNoSelected - if true, first entity is not selected
  */
 void LC_ActionModifyLineGap::createPreviewEntities(LC_ActionModifyLineGap::GapData *data, QList<RS_Entity *> &list, bool startPointNoSelected) const{
-    RS_Vector &startPoint = data->startPoint;
-    RS_Vector &endPoint = data->endPoint;
+    const RS_Vector &startPoint = data->startPoint;
+    const RS_Vector &endPoint = data->endPoint;
 
     // create preview line
     createLine(startPoint, endPoint, list);
@@ -138,8 +138,8 @@ void LC_ActionModifyLineGap::doOnLeftMouseButtonRelease(LC_MouseEvent *e, int st
                 // check whether line is expandable
                 if (checkMayExpandEntity(line, "")){
                     // determine where gap should be positioned on original line
-                    RS_Vector nearestPoint = line->getNearestPointOnEntity(snapPoint);
-                    RS_Vector gapStartPosition = obtainLineSnapPointForMode(line, nearestPoint);
+                    const RS_Vector nearestPoint = line->getNearestPointOnEntity(snapPoint);
+                    const RS_Vector gapStartPosition = obtainLineSnapPointForMode(line, nearestPoint);
 
                     // prepare gap data for the gap
                     m_gapData = prepareGapData(line, snapPoint, gapStartPosition);
@@ -157,10 +157,10 @@ void LC_ActionModifyLineGap::doOnLeftMouseButtonRelease(LC_MouseEvent *e, int st
             break;
         }
         case SetGapEndPoint: {
-            RS_Line *line = m_gapData->originalLine;
+            const RS_Line *line = m_gapData->originalLine;
 
             // update gap end position as projection of snap point on selected entity
-            RS_Vector nearestPoint = line->getNearestPointOnEntity(snapPoint);
+            const RS_Vector nearestPoint = line->getNearestPointOnEntity(snapPoint);
             m_gapData->endPoint = nearestPoint;
 
             // invoke trigger
@@ -182,15 +182,15 @@ bool LC_ActionModifyLineGap::isSetActivePenAndLayerOnTrigger(){
 }
 
 bool LC_ActionModifyLineGap::doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx){
-     RS_Line* originalLine = m_gapData->originalLine;
+     const RS_Line* originalLine = m_gapData->originalLine;
 
-     RS_Vector lineStart = originalLine->getStartpoint();
-     RS_Vector lineEnd = originalLine->getEndpoint();
+     const RS_Vector lineStart = originalLine->getStartpoint();
+     const RS_Vector lineEnd = originalLine->getEndpoint();
 
      RS_Vector gapStart = m_gapData->startPoint;
      RS_Vector gapEnd = m_gapData->endPoint;
 
-     double angle = originalLine->getAngle1();
+     const double angle = originalLine->getAngle1();
 
      RS_Vector rotatedLineEnd = lineEnd;
      rotatedLineEnd.rotate(lineStart, -angle);
@@ -228,7 +228,7 @@ bool LC_ActionModifyLineGap::doTriggerEntitiesPrepare(LC_DocumentModificationBat
              // gap is not on the edge, actual creation of line segment is needed
              if (rotatedGapStart.x < rotatedLineEnd.x){
                  // we'll create first segment only if gap start point is not outsider of line (after line endpoint)
-                 auto segment1 = createLine(lineStart, gapStart, ctx.entitiesToAdd);
+                 const auto segment1 = createLine(lineStart, gapStart, ctx.entitiesToAdd);
                  // apply attributes from original line
                  applyPenAndLayerBySourceEntity(originalLine, segment1, PEN_ORIGINAL, LAYER_ORIGINAL);
              }
@@ -281,7 +281,7 @@ RS_Vector LC_ActionModifyLineGap::obtainLineSnapPointForMode(const RS_Line* targ
     RS_Vector snapPoint;
 
     // angle of target line
-    double angle = targetLine->getAngle1();
+    const double angle = targetLine->getAngle1();
 
     // vector will use to move gap snap point along base original line, if needed
     RS_Vector snapDistanceCorrectionVector = RS_Vector(0, 0, 0);
@@ -348,19 +348,19 @@ RS_Vector LC_ActionModifyLineGap::obtainLineSnapPointForMode(const RS_Line* targ
  */
 LC_ActionModifyLineGap::GapData *LC_ActionModifyLineGap::prepareGapData(RS_Line *line, [[maybe_unused]]const RS_Vector &snap, const RS_Vector &startPoint) const{
     // angle of target line
-    double angle = line->getAngle1();
+    const double angle = line->getAngle1();
 
-    RS_Vector lineStartPoint = line->getStartpoint();
-    RS_Vector lineEndPoint = line->getEndpoint();
+    const RS_Vector lineStartPoint = line->getStartpoint();
+    const RS_Vector lineEndPoint = line->getEndpoint();
 
     RS_Vector gapStart;
     RS_Vector gapEnd;
 
-    double size = m_gapSize;
+    const double size = m_gapSize;
     if (!m_freeGapSize){
 
         // vector that describes gap (from zero point)
-        RS_Vector gapVector = RS_Vector::polar(size, angle);
+        const RS_Vector gapVector = RS_Vector::polar(size, angle);
 
         // vector that will be used for adjusting start point of gap based on gap snap mode
         RS_Vector snapCorrectionVector;
@@ -399,7 +399,7 @@ LC_ActionModifyLineGap::GapData *LC_ActionModifyLineGap::prepareGapData(RS_Line 
         if (m_lineSnapMode == LINE_SNAP_FREE){
 
             // check that we're not outside the line, if it so - limit gap by line edge points
-            double distanceToEnd = gapStart.distanceTo(lineEndPoint);
+            const double distanceToEnd = gapStart.distanceTo(lineEndPoint);
             if (distanceToEnd < m_gapSize){
                 gapEnd = lineEndPoint;
             }

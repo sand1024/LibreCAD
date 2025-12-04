@@ -26,6 +26,8 @@
 
 #include "rs_actiondrawpolyline.h"
 
+#include <boost/function_types/property_tags.hpp>
+
 #include "lc_undosection.h"
 #include "muParser.h"
 #include "qg_polylineoptions.h"
@@ -66,7 +68,7 @@ bool RS_ActionDrawPolyline::doTriggerModifications(LC_DocumentModificationBatch&
     if (m_actionData->polyline == nullptr) {
         return false;
     }
-    ctx+= m_actionData->polyline;
+    // ctx+= m_actionData->polyline;
 
     moveRelativeZero(m_actionData->polyline->getEndpoint());
     return true;
@@ -335,8 +337,7 @@ void RS_ActionDrawPolyline::onCoordinateEvent(int status, [[maybe_unused]]bool i
     switch (status) {
         case SetStartpoint: {
             if (!m_startPointSettingOn){
-                //	data.startpoint = mouse;
-                //printf ("SetStartpoint\n");
+
                 m_actionData->point = mouse;
                 m_actionData->history.clear();
                 m_actionData->history.append(mouse);
@@ -380,23 +381,40 @@ void RS_ActionDrawPolyline::onCoordinateEvent(int status, [[maybe_unused]]bool i
                 m_actionData->point = mouse;
                 m_actionData->history.append(mouse);
                 m_actionData->bHistory.append(bulge);
+
+                RS_Polyline* polylineToUse = nullptr;
+                bool addPolylineToDocument = false;
+
                 if (m_actionData->polyline == nullptr){
-                    m_actionData->polyline = new RS_Polyline(m_document, m_actionData->data);
-                    m_actionData->polyline->addVertex(m_actionData->start, 0.0);
+                    polylineToUse = new RS_Polyline(m_document, m_actionData->data);
+                    polylineToUse->addVertex(m_actionData->start, 0.0);
+                    addPolylineToDocument = true;
                 }
-                if (m_actionData->polyline != nullptr){
-                    m_actionData->polyline->setNextBulge(bulge);
-                    m_actionData->polyline->addVertex(mouse, 0.0);
-                    m_actionData->polyline->setEndpoint(mouse);
-                    if (m_actionData->polyline->count() == 1){
-                        LC_UndoSection undo(m_document, m_viewport); // fixme - sand - review creation lifecycle
-                        setPenAndLayerToActive(m_actionData->polyline);
-                        undo.undoableAdd(m_actionData->polyline);
-                    }
-                    deletePreview();
-                    deleteSnapper();
-                    redraw();
+                else {
+                    polylineToUse = m_actionData->polyline;
                 }
+
+                polylineToUse->setNextBulge(bulge);
+                polylineToUse->addVertex(mouse, 0.0);
+                polylineToUse->setEndpoint(mouse);
+
+                if (addPolylineToDocument) {
+                    LC_UndoSection undo(m_document, m_viewport);
+                    undo.undoableExecute([this, polylineToUse](LC_DocumentModificationBatch& ctx)-> bool {
+                        ctx += polylineToUse;
+                        if (m_actionData->polyline != nullptr) {
+                            ctx -= m_actionData->polyline;
+                        }
+                        return true;
+                    });
+                }
+
+                m_actionData->polyline = polylineToUse;
+
+                deletePreview();
+                deleteSnapper();
+                redraw();
+
                 updateMouseButtonHints();
             } else {
                 m_endPointSettingOn = false;

@@ -63,13 +63,10 @@ LC_AbstractActionWithPreview::LC_AbstractActionWithPreview(const char *name,LC_A
     m_highlightedEntity{nullptr}{
 }
 
-void LC_AbstractActionWithPreview::collectEntitiesForTriggerOnInit(QList<RS_Entity*> &selectedEntities, QList<RS_Entity*> &entitiesForTrigger) {
-    auto selection = m_document->getSelection();
-    for (RS_Entity *e: *selection) {
-        if (e->isDeleted()) {
-            continue;
-        }
-        selectedEntities << e;
+void LC_AbstractActionWithPreview::collectEntitiesForTriggerOnInit(QList<RS_Entity*> &entitiesForTrigger) {
+    QList<RS_Entity*> selection;
+    m_document->collectSelected(selection);
+    for (RS_Entity *e: selection) {
         // check whether specific entity is suitable for processing
         if (isAcceptSelectedEntityToTriggerOnInit(e)) {
             entitiesForTrigger << e;
@@ -89,16 +86,12 @@ void LC_AbstractActionWithPreview::init(int status){
     if (doCheckMayTriggerOnInit(getStatus())){
         // collect selected entities
 
-        QList<RS_Entity*> selectedEntities;
-        QList<RS_Entity*> entitiesForTrigger; // fixme - selection - rework to SelectedSet!!
-        collectEntitiesForTriggerOnInit(selectedEntities, entitiesForTrigger);
+        QList<RS_Entity*> entitiesForTrigger;
+        collectEntitiesForTriggerOnInit(entitiesForTrigger);
         if (!entitiesForTrigger.isEmpty()){
             showOptions(); // use this as simplest way to read settings for the action
             if (m_document){
-                // take care of undo cycle
-                LC_UndoSection undo(m_document, m_viewport);
-                // invoke trigger
-                undo.undoableExecute([this, entitiesForTrigger](LC_DocumentModificationBatch& ctx)->bool {
+                m_document->undoableModify(m_viewport, [this, entitiesForTrigger](LC_DocumentModificationBatch& ctx)->bool {
                     return performTriggerOnInit(entitiesForTrigger, ctx);
                 });
             }

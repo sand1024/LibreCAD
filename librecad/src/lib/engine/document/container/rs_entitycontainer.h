@@ -85,12 +85,8 @@ public:
     }
 
     double getLength() const override;
-
     void setVisible(bool v) override;
-
     void setHighlighted(bool on) override;
-
-    bool setSelected(bool select) override;
     void setSelectionFlag(bool select) override;
     bool doSelectInDocument(bool select, RS_Document* doc) override;
     /*virtual void selectWindow(RS_Vector v1, RS_Vector v2,
@@ -141,7 +137,7 @@ public:
     {
         return m_entities.size();
     }
-    virtual double totalSelectedLength();
+
 
     /**
      * Enables / disables automatic update of borders on entity removals
@@ -197,7 +193,7 @@ public:
     RS_Vector getNearestSelectedRef(const RS_Vector& coord,
                                     double* dist = nullptr) const override;
 
-    RefInfo getNearestSelectedRefInfo(const RS_Vector& coord,
+    virtual RefInfo getNearestSelectedRefInfo(const RS_Vector& coord,
                                       double* dist = nullptr) const;
 
     double getDistanceToPoint(const RS_Vector& coord,
@@ -281,6 +277,8 @@ protected:
      * closed loop. Each loop is assumed to be simply closed, and loops never cross each other.
      */
     virtual std::vector<std::unique_ptr<RS_EntityContainer>> getLoops() const;
+
+    bool setSelected(bool select) override;
 
     /** sub container used only temporarily for iteration. */
     mutable RS_EntityContainer* subContainer = nullptr;

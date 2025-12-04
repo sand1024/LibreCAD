@@ -29,6 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "lc_actioncontext.h"
 #include "lc_undosection.h"
 #include "qc_applicationwindow.h"
+#include "rs_selection.h"
 #if defined(Q_OS_LINUX)
 #include <QThread>
 #endif
@@ -665,8 +666,8 @@ void LC_QuickInfoWidget::onSelectEntity() const {
         RS_Entity* e = findEntityById(entityId);
         if (e != nullptr){
             // entity found, do selection
-            m_document->select(e);
-            m_graphicView->redraw();
+            RS_Selection sel(m_document, m_graphicView->getViewPort());
+            sel.selectSingle(e);
         }
         else{
             // if we're there - entity may be selected, or its id may be changed due to modification.
@@ -709,12 +710,10 @@ void LC_QuickInfoWidget::onEditEntityProperties(){
                 // properties changed, do edit
                 // update widget view
                 processEntity(clone);
-
-                LC_UndoSection undo(m_document, viewport);
-                undo.undoableExecute([this, en, clone](LC_DocumentModificationBatch& ctx)->bool {
+                m_document->undoableModify(viewport, [en, clone](LC_DocumentModificationBatch& ctx)->bool {
                     clone->clearSelectionFlag();
-                    ctx-=en;
-                    ctx+= clone;
+                    ctx -= en;
+                    ctx += clone;
                     return true;
                 });
             }

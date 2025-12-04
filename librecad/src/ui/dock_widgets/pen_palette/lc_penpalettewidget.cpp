@@ -520,7 +520,6 @@ void LC_PenPaletteWidget::applyEditorPenToSelection() const {
  * @param modifyColor
  */
 void LC_PenPaletteWidget::doApplyPenAttributesToSelection(RS2::LineType lineType, RS2::LineWidth width, RS_Color color, bool modifyColor) const {
-
     if (m_graphicView != nullptr){
         auto doc = m_graphicView->getDocument();
         auto selectedSet = doc->getSelection();
@@ -528,20 +527,19 @@ void LC_PenPaletteWidget::doApplyPenAttributesToSelection(RS2::LineType lineType
             QList<RS_Entity*> selectedEntities;
             selectedSet->collectSelectedEntities(selectedEntities);
             if (!selectedEntities.isEmpty()) {
-                LC_UndoSection undo(doc, m_graphicView->getViewPort());
-                undo.undoableExecute([color, width, lineType, modifyColor, selectedEntities](LC_DocumentModificationBatch& ctx)->bool {
-                    RS_AttributesData data;
-                    data.pen            = RS_Pen(color, width, lineType);
-                    data.changeColor    = modifyColor;
-                    data.changeLineType = lineType != RS2::LineTypeUnchanged;
-                    data.changeWidth    = width != RS2::WidthUnchanged;
-                    data.changeLayer    = false;
-                    RS_Modification::changeAttributes(selectedEntities, data, ctx);
-                    return true;
-                },
-                [](LC_DocumentModificationBatch& ctx, RS_Document* doc)->void {
-                     doc->select(ctx.entitiesToAdd);
-                });
+                doc->undoableModify(m_graphicView->getViewPort(),
+                                    [color, width, lineType, modifyColor, selectedEntities](LC_DocumentModificationBatch& ctx)-> bool {
+                                        RS_AttributesData data;
+                                        data.pen            = RS_Pen(color, width, lineType);
+                                        data.changeColor    = modifyColor;
+                                        data.changeLineType = lineType != RS2::LineTypeUnchanged;
+                                        data.changeWidth    = width != RS2::WidthUnchanged;
+                                        data.changeLayer    = false;
+                                        RS_Modification::changeAttributes(selectedEntities, data, ctx);
+                                        return true;
+                                    }, [](LC_DocumentModificationBatch& ctx, RS_Document* doc)-> void {
+                                        doc->select(ctx.entitiesToAdd);
+                                    });
             }
         }
     }

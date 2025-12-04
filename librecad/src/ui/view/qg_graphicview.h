@@ -195,7 +195,7 @@ private:
 
     LC_ActionContext* m_actionContext {nullptr};
 
-    void showEntityPropertiesDialog(RS_Entity *entity);
+    void showEntityPropertiesDialog(RS_Entity *entity) const;
     void editAction(RS_Entity &entity) const;
     // for scroll bar adjustment
     std::mutex m_scrollbarMutex;

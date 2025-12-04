@@ -89,7 +89,7 @@ protected:
     bool isSetActivePenAndLayerOnTrigger() override;
     void setupCrossLinePenAndLayer(RS_Line* line) const;
     RS2::LineType getLineTypeForCenterLine() const;
-    void collectEntitiesForTriggerOnInit(QList<RS_Entity*> &selectedEntities, QList<RS_Entity*> &entitiesForTrigger) override;
+    void collectEntitiesForTriggerOnInit(QList<RS_Entity*> &entitiesForTrigger) override;
     bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx) override;
     bool doCheckMayTrigger() override;
     RS_Vector doGetRelativeZeroAfterTrigger() override;

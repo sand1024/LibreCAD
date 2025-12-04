@@ -74,6 +74,7 @@ private:
     void addToTop(QToolBar *toolbar) const;
     void addToBottom(QToolBar *toolbar) const;
     void addToLeft(QToolBar *toolbar) const;
+    QToolBar* createSelectionToolbar(const QSizePolicy& tbPolicy) const;
     void setToolbarTooltip(QToolBar* toolbar, const QString& text) const;
 };
 #endif // LC_TOOLBARFACTORY_H

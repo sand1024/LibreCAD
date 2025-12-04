@@ -58,7 +58,7 @@ bool RS_ActionModifyCut::doTriggerModifications(LC_DocumentModificationBatch& ct
         RS_Modification::cut(*m_cutCoord, static_cast<RS_AtomicEntity*>(m_cutEntity), ctx);
         const RS_Pen &originalPen = m_cutEntity->getPen(false);
         RS_Layer *originalLayer = m_cutEntity->getLayer(false);
-        for (auto e: ctx.entitiesToAdd) {
+        for (const auto e: ctx.entitiesToAdd) {
             e->setPen(originalPen);
             e->setLayer(originalLayer);
         }
@@ -82,21 +82,21 @@ void RS_ActionModifyCut::finish(bool updateTB){
 }
 
 void RS_ActionModifyCut::onMouseMoveEvent(int status, LC_MouseEvent *e) {
-    RS_Vector snap = e->snapPoint;
+    const RS_Vector snap = e->snapPoint;
     switch (status) {
         case ChooseCutEntity: {
             deleteSnapper();
-            auto en = catchAndDescribe(e);
+            const auto en = catchAndDescribe(e);
             if (en != nullptr &&  en->trimmable()){
                 highlightHover(en);
-                RS_Vector nearest = en->getNearestPointOnEntity(snap, true);
+                const RS_Vector nearest = en->getNearestPointOnEntity(snap, true);
                 previewRefSelectablePoint(nearest);
             }
             break;
         }
         case SetCutCoord: {
             highlightSelected(m_cutEntity);
-            RS_Vector nearest = m_cutEntity->getNearestPointOnEntity(snap, true);
+            const RS_Vector nearest = m_cutEntity->getNearestPointOnEntity(snap, true);
             previewRefSelectablePoint(nearest);
             // todo - is description for selected entity necessary there?
             if (isInfoCursorForModificationEnabled()){
@@ -124,8 +124,8 @@ void RS_ActionModifyCut::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) 
             break;
         }
         case SetCutCoord: {
-            RS_Vector snap = e->snapPoint;
-            RS_Vector nearest = m_cutEntity->getNearestPointOnEntity(snap, true);
+            const RS_Vector snap = e->snapPoint;
+            const RS_Vector nearest = m_cutEntity->getNearestPointOnEntity(snap, true);
             if (LC_LineMath::isNotMeaningfulDistance(m_cutEntity->getStartpoint(), nearest) ||
                 LC_LineMath::isNotMeaningfulDistance(m_cutEntity->getEndpoint(), nearest)){
                 commandMessage(tr("Cutting point may not be entity's endpoint."));

@@ -50,7 +50,7 @@ RS_ActionModifyMove::~RS_ActionModifyMove() = default;
 bool RS_ActionModifyMove::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     auto &moveData = m_actionData->data;
     if (m_actionData->createCopy) {
-        bool oldKeepOriginals = moveData.keepOriginals;
+        const bool oldKeepOriginals = moveData.keepOriginals;
         moveData.keepOriginals = true;
         RS_Modification::move(moveData, m_selectedEntities, false, ctx);
         moveData.keepOriginals = oldKeepOriginals;
@@ -106,7 +106,7 @@ void RS_ActionModifyMove::onMouseMoveEventSelected(int status, LC_MouseEvent *e)
                     previewRefLine(m_actionData->referencePoint, mouse);
 
                     if (m_actionData->data.multipleCopies) {
-                        int numCopies = m_actionData->data.number;
+                        const int numCopies = m_actionData->data.number;
                         if (numCopies > 1) {
                             for (int i = 2; i <= numCopies; i++) {
                                 previewRefPoint(m_actionData->referencePoint + offset * i);

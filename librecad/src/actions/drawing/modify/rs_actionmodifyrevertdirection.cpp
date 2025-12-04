@@ -66,7 +66,7 @@ bool RS_ActionModifyRevertDirection::isEntityAllowedToSelect(RS_Entity *ent) con
         return true;
     }
     else{
-        int rtti = ent->rtti();
+        const int rtti = ent->rtti();
         switch (rtti){
             case RS2::EntityParabola:
             case RS2::EntityPolyline:
@@ -76,7 +76,7 @@ bool RS_ActionModifyRevertDirection::isEntityAllowedToSelect(RS_Entity *ent) con
             case  RS2::EntitySplinePoints:
                 return true;
             case RS2::EntityEllipse: {
-                auto ellipse = static_cast<RS_Ellipse*>(ent);
+                const auto ellipse = static_cast<RS_Ellipse*>(ent);
                 return ellipse->isEllipticArc();
             }
             default:

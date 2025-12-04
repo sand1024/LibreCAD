@@ -49,7 +49,7 @@ void LC_ActionModifyAlignSingle::doInitWithContextEntity(RS_Entity* contextEntit
 
 bool LC_ActionModifyAlignSingle::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     if (m_entityToAlign != nullptr) {
-        RS_Vector target = LC_Align::getReferencePoint(m_alignMin, m_alignMax, hAlign, vAlign);
+        const RS_Vector target = LC_Align::getReferencePoint(m_alignMin, m_alignMax, hAlign, vAlign);
         RS_Entity* clone = LC_Align::createCloneMovedToTarget(m_entityToAlign, target, true, hAlign, vAlign);
         if (clone != nullptr) {
             clone->clearSelectionFlag();
@@ -78,9 +78,9 @@ void LC_ActionModifyAlignSingle::previewAlign(RS_Entity* entity, double vertical
     RS_Vector offset;
     if (entity != nullptr){
         highlightHover(entity);
-        RS_Vector target = LC_Align::getReferencePoint(alignMin, alignMax, hAlign, vAlign);
+        const RS_Vector target = LC_Align::getReferencePoint(alignMin, alignMax, hAlign, vAlign);
 
-        RS_Vector entityRefPoint = LC_Align::getReferencePoint(entity->getMin(), entity->getMax(), hAlign, vAlign);
+        const RS_Vector entityRefPoint = LC_Align::getReferencePoint(entity->getMin(), entity->getMax(), hAlign, vAlign);
         offset = target - entityRefPoint;
 
         RS_Entity* clone =  LC_Align::createCloneMovedToOffset(entity, offset, false);
@@ -90,7 +90,7 @@ void LC_ActionModifyAlignSingle::previewAlign(RS_Entity* entity, double vertical
     }
 
     if (isInfoCursorForModificationEnabled()){
-        QString message = prepareInfoCursorMessage(verticalRef, drawVertical, horizontalRef, drawHorizontal);
+        const QString message = prepareInfoCursorMessage(verticalRef, drawVertical, horizontalRef, drawHorizontal);
 
         auto builder = msgStart().string(message);
         if (entity != nullptr){
@@ -137,16 +137,16 @@ void LC_ActionModifyAlignSingle::onMouseMoveEvent(int status, LC_MouseEvent *e) 
             }
             if (showPreview) {
                 double verticalRef;
-                bool drawVertical  = LC_Align::getVerticalRefCoordinate(min, max, hAlign, verticalRef);
+                const bool drawVertical  = LC_Align::getVerticalRefCoordinate(min, max, hAlign, verticalRef);
 
                 double horizontalRef;
-                bool drawHorizontal = LC_Align::getHorizontalRefCoordinate(min, max, vAlign, horizontalRef);
+                const bool drawHorizontal = LC_Align::getHorizontalRefCoordinate(min, max, vAlign, horizontalRef);
 
                 previewRefLines(drawVertical, verticalRef, drawHorizontal, horizontalRef);
 
                 // info cursor
                 if (m_infoCursorOverlayPrefs->enabled){
-                    QString msg = prepareInfoCursorMessage(verticalRef, drawVertical, horizontalRef, drawHorizontal);
+                    const QString msg = prepareInfoCursorMessage(verticalRef, drawVertical, horizontalRef, drawHorizontal);
                     appendInfoCursorZoneMessage(msg, 2, false);
                 }
 
@@ -158,10 +158,10 @@ void LC_ActionModifyAlignSingle::onMouseMoveEvent(int status, LC_MouseEvent *e) 
         }
         case SelectEntity:{
             double verticalRef;
-            bool drawVertical  = LC_Align::getVerticalRefCoordinate(m_alignMin, m_alignMax, hAlign, verticalRef);
+            const bool drawVertical  = LC_Align::getVerticalRefCoordinate(m_alignMin, m_alignMax, hAlign, verticalRef);
 
             double horizontalRef;
-            bool drawHorizontal = LC_Align::getHorizontalRefCoordinate(m_alignMin, m_alignMax, vAlign, horizontalRef);
+            const bool drawHorizontal = LC_Align::getHorizontalRefCoordinate(m_alignMin, m_alignMax, vAlign, horizontalRef);
 
             if (m_showRefEntitiesOnPreview){
                 previewRefLines(drawVertical, verticalRef, drawHorizontal, horizontalRef);
@@ -223,7 +223,7 @@ void LC_ActionModifyAlignSingle::previewRefLines(bool drawVertical, double verti
 
 void LC_ActionModifyAlignSingle::previewAlignRefPoint(const RS_Vector &min, const RS_Vector &max) const {
     double verticalRef;
-    bool drawVertical  = LC_Align::getVerticalRefCoordinate(min, max, hAlign, verticalRef);
+    const bool drawVertical  = LC_Align::getVerticalRefCoordinate(min, max, hAlign, verticalRef);
     RS_Vector wcsLeftBottom = m_viewport->getUCSViewLeftBottom();
     RS_Vector wcsRightTop = m_viewport->getUCSViewRightTop();
     if (drawVertical) {
@@ -231,7 +231,7 @@ void LC_ActionModifyAlignSingle::previewAlignRefPoint(const RS_Vector &min, cons
         previewRefConstructionLine({verticalRef, wcsLeftBottom.y}, {verticalRef, wcsRightTop.y});
     }
     double horizontalRef;
-    bool drawHorizontal = LC_Align::getHorizontalRefCoordinate(min, max, vAlign, horizontalRef);
+    const bool drawHorizontal = LC_Align::getHorizontalRefCoordinate(min, max, vAlign, horizontalRef);
     if (drawHorizontal) {
         // NOTE:: works properly for WCS only
         previewRefConstructionLine({wcsLeftBottom.x, horizontalRef}, {wcsRightTop.x, horizontalRef});

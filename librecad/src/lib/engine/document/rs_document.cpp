@@ -29,6 +29,7 @@
 
 #include <set>
 
+#include "lc_undosection.h"
 #include "rs_debug.h"
 
 /**
@@ -69,6 +70,42 @@ void RS_Document::startUndoCycle() {
     RS_Undo::startUndoCycle();
     m_savedAutoUpdateBorders = getAutoUpdateBorders();
     setAutoUpdateBorders(false);
+}
+
+RS_EntityContainer::RefInfo RS_Document::getNearestSelectedRefInfo(const RS_Vector& coord, double* dist) const {
+    double minDist = RS_MAXDOUBLE; // minimum measured distance
+    RS_Vector closestPoint(false); // closest found endpoint
+    RS_Entity* closestPointEntity = nullptr;
+
+    QList<RS_Entity*>selection;
+    collectSelected(selection);
+
+    for (RS_Entity* en : selection) {
+        if (en->isVisible() && !en->isParentSelected()) {
+            double curDist  = 0.; // currently measured distance
+            RS_Vector point = en->getNearestSelectedRef(coord, &curDist);
+            if (point.valid && curDist < minDist) {
+                closestPoint       = point;
+                closestPointEntity = en;
+                minDist            = curDist;
+                if (dist) {
+                    *dist = minDist;
+                }
+            }
+        }
+    }
+    RefInfo result{closestPoint, closestPointEntity};
+    return result;
+}
+
+bool RS_Document::undoableModify(LC_GraphicViewport* viewport, const FunUndoable& funModification, const FunSelection& funSelection) {
+    LC_UndoSection undo(this, viewport);
+    bool result = undo.undoableExecute(funModification, funSelection);
+    return result;
+}
+
+bool RS_Document::undoableModify(LC_GraphicViewport* viewport, const FunUndoable& funModification) {
+    return undoableModify(viewport, funModification,  [](LC_DocumentModificationBatch&ctx, RS_Document* doc){});
 }
 
 void RS_Document::startBulkUndoablesCleanup() {
@@ -116,27 +153,6 @@ RS_Document::LC_SelectionInfo RS_Document::getSelectionInfo(const QList<RS2::Ent
         }
     }
     return result;
-}
-
-/**
- * Counts the selected entities in this container.
- */
-[[deprecated]]
-unsigned RS_Document::countSelected(bool deep, QList<RS2::EntityType> const &types) {
-    unsigned count = 0;
-    std::set<RS2::EntityType> type{types.cbegin(), types.cend()};
-
-    for (RS_Entity *entity: *this) {
-        if (entity->isSelected()) {  // fixme - SELECTION - selection collection! Review where it's used and rework
-            if (!types.size() || type.count(entity->rtti())) {
-                count++;
-            }
-        }
-        /*if (entity->isContainer()) {
-            count += dynamic_cast<RS_EntityContainer *>(entity)->countSelected(deep); // fixme - hm... - what about entity types there? and deep flag?
-        }*/
-    }
-    return count;
 }
 
 bool RS_Document::collectSelected(QList<RS_Entity*> &collect, bool deep, QList<RS2::EntityType> const &types) {

@@ -244,7 +244,7 @@ void LC_ActionFactory::createSelectActions(QMap<QString, QAction*>& map, QAction
         {"DeselectIntersected", RS2::ActionDeselectIntersected, tr("Deselect Intersected Entities"), ":/icons/deselect_intersected_entities.lci"},
         {"SelectLayer",         RS2::ActionSelectLayer,         tr("(De-)Select Layer"),             ":/icons/deselect_layer.lci"},
         {"SelectQuick",         RS2::ActionSelectQuick,         tr("Select Quick"),                  ":/icons/select_conditional.lci"},
-        {"SelectionModeToggle", RS2::ActionSelectModeToggle,    tr("Additive Selection"),            ":/icons/select_mode_add.lci"}
+        {"SelectionModeToggle", RS2::ActionSelectModeToggle,    tr("Additive/Exclusive Selection"),            ":/icons/select_mode_add.lci"}
     });
 }
 
@@ -961,8 +961,7 @@ void LC_ActionFactory::fillActionLists(QMap<QString, QAction *> &map){
                         "DeselectIntersected",
                         "SelectLayer",
                         "SelectInvert",
-                        "SelectQuick",
-                        "SelectionModeToggle"
+                        "SelectQuick"
                     }, map);
 
     fillActionsList(dimension_actions, {

@@ -58,10 +58,6 @@ QG_SelectionWidget::~QG_SelectionWidget(){
     delete m_timer;
 }
 
-QToolButton* QG_SelectionWidget::getActionsButton() const {
-    return tbSelectionActions;
-}
-
 /*
  *  Sets the strings of the subwidgets using the current
  *  language.

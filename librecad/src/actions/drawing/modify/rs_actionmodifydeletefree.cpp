@@ -57,7 +57,7 @@ void RS_ActionModifyDeleteFree::init(int status) {
 
 void RS_ActionModifyDeleteFree::trigger(){
     if (m_entity1 != nullptr && m_entity2 != nullptr) {
-        RS_EntityContainer *parent = m_entity2->getParent();
+        const RS_EntityContainer *parent = m_entity2->getParent();
         if (parent != nullptr) {
             if (parent->rtti() == RS2::EntityPolyline) {
                 if (parent->getId() == m_polyline->getId()) {

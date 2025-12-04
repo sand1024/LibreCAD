@@ -44,7 +44,7 @@ void LC_ActionModifyBase::setUseCurrentLayer(bool b) {
 }
 
 bool LC_ActionModifyBase::isUseCurrentLayer() {
-    LC_ModifyOperationFlags* data = getModifyOperationFlags();
+    const LC_ModifyOperationFlags* data = getModifyOperationFlags();
     return data->useCurrentLayer;
 }
 
@@ -54,12 +54,12 @@ void LC_ActionModifyBase::setUseCurrentAttributes(bool b) {
 }
 
 bool LC_ActionModifyBase::isUseCurrentAttributes() {
-    LC_ModifyOperationFlags* data = getModifyOperationFlags();
+    const LC_ModifyOperationFlags* data = getModifyOperationFlags();
     return data->useCurrentAttributes;
 }
 
 int LC_ActionModifyBase::getCopiesNumber() {
-    LC_ModifyOperationFlags* data = getModifyOperationFlags();
+    const LC_ModifyOperationFlags* data = getModifyOperationFlags();
     return data->number;
 }
 
@@ -79,11 +79,11 @@ void LC_ActionModifyBase::setUseMultipleCopies(bool val) {
 }
 
 bool LC_ActionModifyBase::isUseMultipleCopies() {
-    LC_ModifyOperationFlags* data = getModifyOperationFlags();
+    const LC_ModifyOperationFlags* data = getModifyOperationFlags();
     return data->multipleCopies;
 }
 
 bool LC_ActionModifyBase::isKeepOriginals() {
-    LC_ModifyOperationFlags* data = getModifyOperationFlags();
+    const LC_ModifyOperationFlags* data = getModifyOperationFlags();
     return data->keepOriginals;
 }

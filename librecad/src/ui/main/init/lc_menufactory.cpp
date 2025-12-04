@@ -94,6 +94,7 @@ void LC_MenuFactory::doCreateMenus(QMenuBar* menu_bar, bool firstCreation) {
         if (m_menuOptions.expandToolsMenu) {
             auto select = menu(tr("&Select"), "select", menu_bar);
             select->addActions(m_actionFactory->select_actions);
+            select->addAction(m_actionGroupManager->getActionByName("SelectionModeToggle"));
             topMenuMenus << select;
         }
         createToolsMenu(menu_bar, topMenuMenus);
@@ -112,6 +113,7 @@ void LC_MenuFactory::doCreateMenus(QMenuBar* menu_bar, bool firstCreation) {
         if (m_menuOptions.expandToolsMenu) {
             auto select = menu(tr("&Select"), "select", menu_bar);
             select->addActions(m_actionFactory->select_actions);
+            select->addAction(m_actionGroupManager->getActionByName("SelectionModeToggle"));
             topMenuMenus << select;
             // fixme - sand - icons - potentially this may lead to the waste if menus are switched often (which is hardly the case but still).
             // this is due to the fact that menubar.clear() does not delete original actions/sub menus, but just removes them from the list.
@@ -273,8 +275,9 @@ void LC_MenuFactory::createToolsMenuCombined(QMenuBar* menu_bar, QList<QMenu*>& 
                        m_actionFactory->ellipse_actions);
     subMenuWithActions(m_menuToolsCombined, tr("&Polyline"), "polyline", ":/icons/polylines_polyline.lci",
                        m_actionFactory->polyline_actions);
-    subMenuWithActions(m_menuToolsCombined, tr("&Select"), "select", ":/icons/select.lci",
+    auto selectMenu = subMenuWithActions(m_menuToolsCombined, tr("&Select"), "select", ":/icons/select.lci",
                        m_actionFactory->select_actions);
+    selectMenu->addAction(m_actionGroupManager->getActionByName("SelectionModeToggle"));
     subMenuWithActions(m_menuToolsCombined, tr("Dime&nsion"), "dimension", ":/icons/dim_horizontal.lci",
                        m_actionFactory->dimension_actions);
     subMenuWithActions(m_menuToolsCombined, tr("Ot&her"), "other", ":/icons/text.lci",

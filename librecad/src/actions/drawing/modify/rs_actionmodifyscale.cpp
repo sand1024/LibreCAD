@@ -98,8 +98,8 @@ void RS_ActionModifyScale::onMouseMoveEventSelected(int status, LC_MouseEvent *e
     switch (status) {
         case SetReferencePoint: {
             m_actionData->data.referencePoint = mouse;
-            RS_BoundData boundingForSelected = RS_Modification::getBoundingRect(m_selectedEntities);
-            RS_Vector selectionCenter = boundingForSelected.getCenter();
+            const RS_BoundData boundingForSelected = RS_Modification::getBoundingRect(m_selectedEntities);
+            const RS_Vector selectionCenter = boundingForSelected.getCenter();
             m_actionData->sourcePoint = selectionCenter;
             if (!trySnapToRelZeroCoordinateEvent(e)){
                 if (e->isControl){
@@ -177,8 +177,8 @@ void RS_ActionModifyScale::onMouseMoveEventSelected(int status, LC_MouseEvent *e
             showPreview();
 
             if (isInfoCursorForModificationEnabled()) {
-                RS_Vector centerPoint =  m_actionData->data.referencePoint;
-                RS_Vector offset = m_actionData->sourcePoint - mouse;
+                const RS_Vector centerPoint =  m_actionData->data.referencePoint;
+                const RS_Vector offset = m_actionData->sourcePoint - mouse;
                 msg(tr("Scale"))
                     .vector(tr("Center:"), centerPoint)
                     .vector(tr("Source Point:"), m_actionData->sourcePoint)
@@ -204,8 +204,8 @@ RS_Vector RS_ActionModifyScale::getTargetPoint(LC_MouseEvent* e){
             mouse = e->graphPoint;
         }
         // project mouse to the line (center, source)
-        RS_Line centerSourceLine{nullptr, {m_actionData->data.referencePoint, m_actionData->sourcePoint}};
-        RS_Vector projected = centerSourceLine.getNearestPointOnEntity(mouse, false);
+        const RS_Line centerSourceLine{nullptr, {m_actionData->data.referencePoint, m_actionData->sourcePoint}};
+        const RS_Vector projected = centerSourceLine.getNearestPointOnEntity(mouse, false);
         snapPoint(projected, true);
         return projected;
     } else {
@@ -226,7 +226,7 @@ void RS_ActionModifyScale::showPreview(RS_ScaleData &previewData) const {
     previewEntitiesToAdd(ctx);
 
     if (m_showRefEntitiesOnPreview) {
-        int numberOfCopies = previewData.obtainNumberOfCopies();
+        const int numberOfCopies = previewData.obtainNumberOfCopies();
 
         if (numberOfCopies > 1) {
             for (int i = 1; i <= numberOfCopies; i++) {
@@ -243,7 +243,7 @@ void RS_ActionModifyScale::onMouseLeftButtonReleaseSelected(int status, LC_Mouse
     switch (status){
         case SetReferencePoint: {
             if (e->isControl){
-                RS_BoundData boundingForSelected = RS_Modification::getBoundingRect(m_selectedEntities);
+                const RS_BoundData boundingForSelected = RS_Modification::getBoundingRect(m_selectedEntities);
                 snapped = boundingForSelected.getCenter();
             }
             break;
@@ -286,8 +286,8 @@ bool RS_ActionModifyScale::doProcessCommand(int status, const QString &c) {
     switch (status){
         case SetReferencePoint: {
             if (checkCommand("center",c)) {
-                RS_BoundData boundingForSelected = RS_Modification::getBoundingRect(m_selectedEntities);
-                RS_Vector centerPoint = boundingForSelected.getCenter();
+                const RS_BoundData boundingForSelected = RS_Modification::getBoundingRect(m_selectedEntities);
+                const RS_Vector centerPoint = boundingForSelected.getCenter();
                 fireCoordinateEvent(centerPoint);
                 accepted = true;
             }
@@ -352,9 +352,9 @@ void RS_ActionModifyScale::onCoordinateEvent(int status, [[maybe_unused]]bool is
 }
 
 void RS_ActionModifyScale::findFactor(){
-    auto& reference = m_actionData->data.referencePoint;
-    auto& source = m_actionData->sourcePoint;
-    auto& target = m_actionData->targetPoint;
+    const auto& reference = m_actionData->data.referencePoint;
+    const auto& source = m_actionData->sourcePoint;
+    const auto& target = m_actionData->targetPoint;
     determineScaleFactor(m_actionData->data, reference, source, target);
 }
 
@@ -431,7 +431,7 @@ bool RS_ActionModifyScale::isExplicitFactor() const {
 
 void RS_ActionModifyScale::setExplicitFactor(bool val) {
     if (!val){
-        int status = getStatus();
+        const int status = getStatus();
         if (status == SetTargetPoint || status == SetSourcePoint){
             setStatus(SetReferencePoint);
         }

@@ -34,6 +34,7 @@
 #include "rs_undo.h"
 #include "lc_selectedset.h"
 
+class LC_GraphicViewport;
 class LC_TextStyleList;
 class LC_DimStylesList;
 class RS_GraphicView;
@@ -89,6 +90,9 @@ public:
         double length = 0.0;
     };
 
+    using FunUndoable  = std::function<bool(LC_DocumentModificationBatch& ctx)>;
+    using FunSelection  = std::function<void(LC_DocumentModificationBatch& ctx, RS_Document* doc)>;
+
     virtual RS_LayerList* getLayerList()= 0;
     virtual RS_BlockList* getBlockList() = 0;
     virtual LC_DimStylesList* getDimStyleList() = 0;
@@ -105,9 +109,6 @@ public:
 
     void addEntity(RS_Entity* entity) override;
 
-    void select(RS_Entity* entity, bool select = true) {
-        entity->doSelectInDocument(select, this);
-    }
 
     void select(const QList<RS_Entity*>& list, bool select = true) {
         for (auto e: list) {
@@ -123,9 +124,7 @@ public:
     }
 
     bool collectSelected(QList<RS_Entity*> &entitiesList) const;
-
     LC_SelectionInfo getSelectionInfo(/*bool deep, */QList<RS2::EntityType> const& types = {}) const;
-    virtual unsigned countSelected(bool deep=true, QList<RS2::EntityType> const& types = {});
     virtual bool collectSelected(QList<RS_Entity*> &collect, bool deep, QList<RS2::EntityType> const &types = {});
 
     /**
@@ -154,6 +153,13 @@ public:
     RS_GraphicView* getGraphicView() const {return gv;} // fixme - sand -- REALLY BAD DEPENDANCE TO UI here, REWORK!
 
     LC_SelectedSet* getSelection() const {return m_selectedSet.get();}
+
+    RefInfo getNearestSelectedRefInfo(const RS_Vector& coord, double* dist) const override;
+
+    // high-level document modification functions. All changes (except initial reading) should go via these functions in order to support undo propertly!
+    bool undoableModify(LC_GraphicViewport* viewport, const FunUndoable& funModification, const FunSelection& funSelection);
+    bool undoableModify(LC_GraphicViewport* viewport, const FunUndoable& funModification);
+
 protected:
     /** Flag set if the document was modified and not yet saved. */
     bool modified = false;
@@ -174,6 +180,9 @@ protected:
     void endUndoCycle() override;
     void startUndoCycle() override;
 
+    void select(RS_Entity* entity, bool select = true) {
+        entity->doSelectInDocument(select, this);
+    }
 
     void undoableAdd(RS_Entity* entity, bool undoable = true) {
         addEntity(entity);
@@ -205,5 +214,6 @@ protected:
     bool m_savedAutoUpdateBorders = false;
 
     friend class LC_UndoSection;
+    friend class RS_Selection;
 };
 #endif

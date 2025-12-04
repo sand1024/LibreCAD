@@ -37,6 +37,7 @@
 #include "lc_qtstatusbarmanager.h"
 #include "lc_quickinfowidget.h"
 #include "lc_relzerocoordinateswidget.h"
+#include "lc_selectiontoolbar.h"
 #include "lc_ucslistwidget.h"
 #include "lc_ucsstatewidget.h"
 #include "qc_applicationwindow.h"
@@ -476,24 +477,6 @@ void LC_WidgetFactory::initStatusBar() {
     m_appWin->m_statusbarManager = new LC_QTStatusbarManager(status_bar);
     m_appWin->m_statusbarManager->loadSettings();
 
-    auto selectionActionsButton = m_appWin->m_selectionWidget->tbSelectionActions;
-    bool showExtendedActionsInStatusBar = true; // fixme - sand - add options for this?
-    if (showExtendedActionsInStatusBar) {
-        selectionActionsButton->setPopupMode(QToolButton::MenuButtonPopup);
-        selectionActionsButton->addActions(m_actionFactory->select_actions);
-        selectionActionsButton->setAutoRaise(true);
-        auto deselectAll = m_agm->getActionByName("DeselectAll");
-        selectionActionsButton->setDefaultAction(deselectAll);
-        selectionActionsButton->setCheckable(true);
-
-        /*connect(selectionActionsButton, &QToolButton::triggered, [deselectAll] (bool){
-            deselectAll->triggered(true);
-        });*/
-    }
-    else {
-        selectionActionsButton->setVisible(false);
-    }
-
     bool useClassicalStatusBar = LC_GET_ONE_BOOL("Startup", "UseClassicStatusBar", false);
     if (useClassicalStatusBar) {
         status_bar->addWidget(m_appWin->m_coordinateWidget);
@@ -524,13 +507,12 @@ void LC_WidgetFactory::initStatusBar() {
         }
     }
     else {
-        bool showToolbarTooltips = LC_GET_ONE_BOOL("Startup", "ShowToolbarsTooltip", true);
         QSizePolicy tbPolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
-
+        bool showToolbarTooltips = LC_GET_ONE_BOOL("Startup", "ShowToolbarsTooltip", true);
         createStatusBarToolbar(tbPolicy, m_appWin->m_coordinateWidget, tr("Coordinates"), "TBCoordinates", showToolbarTooltips);
         createStatusBarToolbar(tbPolicy, m_appWin->m_relativeZeroCoordinatesWidget, tr("Relative Zero"), "TBRelZero", showToolbarTooltips);
         createStatusBarToolbar(tbPolicy, m_appWin->m_mouseWidget, tr("Mouse"), "TBMouse", showToolbarTooltips);
-        createStatusBarToolbar(tbPolicy, m_appWin->m_selectionWidget, tr("Selection Info"), "TBSelection", showToolbarTooltips);
+        createStatusBarToolbar(tbPolicy, m_appWin->m_selectionWidget, tr("Selection Info"), "TBSelectionInfo", showToolbarTooltips);
         createStatusBarToolbar(tbPolicy, m_appWin->m_activeLayerNameWidget, tr("Active Layer"), "TBActiveLayer", showToolbarTooltips);
         createStatusBarToolbar(tbPolicy, m_appWin->m_gridStatusWidget, tr("Grid Status"), "TBGridStatus", showToolbarTooltips);
         createStatusBarToolbar(tbPolicy, m_appWin->m_ucsStateWidget, tr("UCS Status"), "TBUCSStatus", showToolbarTooltips);

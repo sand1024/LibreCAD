@@ -155,7 +155,7 @@ protected:
     virtual void doCreateEntitiesOnTrigger(RS_Entity *entity, QList<RS_Entity *> &list);
     virtual bool performTriggerOnInit(QList<RS_Entity*>  entities, LC_DocumentModificationBatch & ctx);
     virtual void doPerformOriginalEntitiesDeletionOnInitTrigger(QList<RS_Entity *> &list, LC_DocumentModificationBatch & ctx);
-    virtual void collectEntitiesForTriggerOnInit(QList<RS_Entity*> &selectedEntities, QList<RS_Entity*> &entitiesForTrigger);
+    virtual void collectEntitiesForTriggerOnInit(QList<RS_Entity*> &entitiesForTrigger);
 
     // utility functions
     virtual void drawPreviewForPoint(LC_MouseEvent *e, RS_Vector& snap);

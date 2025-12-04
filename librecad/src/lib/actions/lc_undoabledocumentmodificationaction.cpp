@@ -29,8 +29,7 @@
 #include "rs_preview.h"
 
 void LC_UndoableDocumentModificationAction::doTrigger() {
-    LC_UndoSection undoSection(m_document, m_viewport);
-    bool result = undoSection.undoableExecute([this](LC_DocumentModificationBatch& ctx)->bool {
+    bool result = m_document->undoableModify(m_viewport, [this](LC_DocumentModificationBatch& ctx)->bool {
        bool success = doTriggerModifications(ctx);
        ctx.success = success;
        return success;

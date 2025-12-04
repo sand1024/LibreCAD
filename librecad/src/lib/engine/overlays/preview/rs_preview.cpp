@@ -171,47 +171,55 @@ void RS_Preview::clear() {
 void RS_Preview::addAllFrom(RS_EntityContainer& container, [[maybe_unused]]LC_GraphicViewport* view) {
     unsigned int c=0;
     for(auto e: container){
-        if (c < m_maxEntities) {
-            RS_Entity* clone = e->cloneProxy();
-            clone->clearSelectionFlag();
-            clone->reparent(this);
+        if (c > m_maxEntities) {
+            break;
+        }
+        RS_Entity* clone = e->cloneProxy();
+        clone->clearSelectionFlag();
+        clone->reparent(this);
 
-            c+=clone->countDeep();
+        c += clone->countDeep();
+        addEntity(clone);
+        // clone might be nullptr after this point
+    }
+}
+
+void RS_Preview::addClonesFromList(const QList<RS_Entity*>& list) {
+    unsigned int c = 0;
+    for (const auto e: list) {
+        if (c > m_maxEntities) {
+            break;
+        }
+        if (e != nullptr) {
+            RS_Entity* clone = e->cloneProxy();
+            c += clone->countDeep();
             addEntity(clone);
-            // clone might be nullptr after this point
         }
     }
 }
 
 void RS_Preview::addAllFromList(const QList<RS_Entity*>& list) {
+    unsigned int c = 0;
     for (const auto e: list) {
+        if (c > m_maxEntities) {
+            break;
+        }
         if (e != nullptr) {
+            c += e->countDeep();
             addEntity(e);
         }
     }
 }
 
 void RS_Preview::addAllFromList(const std::list<RS_Entity*>& list) {
+    unsigned int c = 0;
     for (const auto e: list) {
-        if (e != nullptr) {
-            addEntity(e);
+        if (c > m_maxEntities) {
+            break;
         }
-    }
-}
-
-/**
- * Adds all selected entities from 'container' to the preview (unselected).
- */
-
-void RS_Preview::addSelectionFrom(RS_EntityContainer& container, [[maybe_unused]]LC_GraphicViewport* view) {
-    unsigned int c=0;
-    for(auto e: container){ // fixme - sand - wow - iterating over all entities!!! Rework selection
-        if (e->isSelected() && c<m_maxEntities) {  // fixme - review what for? this is part of polyline anyway...
-            RS_Entity* clone = e->cloneProxy();
-
-            c+=clone->countDeep();
-            addEntity(clone);
-            // clone might be nullptr after this point
+        if (e != nullptr) {
+            c += e->countDeep();
+            addEntity(e);
         }
     }
 }

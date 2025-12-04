@@ -171,9 +171,8 @@ public:
     }
 
     virtual void setSelectionFlag(bool select);
-    virtual bool setSelected(bool select);
     void clearSelectionFlag();
-    virtual bool isSelected() const;
+    bool isSelected() const;
     bool isParentSelected() const;
     virtual bool isProcessed() const;
     virtual void setProcessed(bool on);
@@ -192,7 +191,7 @@ public:
     bool isLocked() const;
     bool isEditable() const;
     void deletedStateChanged(bool undone) override;
-    virtual bool isDeleted() const;
+    bool isDeleted() const override;
 
     /**
      * Can be implemented by child classes to update the entities
@@ -427,8 +426,6 @@ public:
         const RS_Vector &coord,
         double tolerance = 20. * RS_TOLERANCE) const;
 
-
-
     /**
      * Implementations must offset the entity by the given direction and distance.
      */
@@ -606,6 +603,8 @@ protected:
 
     void addToSelectionSet(bool select, RS_Document* doc);
     virtual bool doSelectInDocument(bool select, RS_Document* doc);
+
+    virtual bool setSelected(bool select);
 private:
     //! Entity m_id
     unsigned long long m_id = 0;

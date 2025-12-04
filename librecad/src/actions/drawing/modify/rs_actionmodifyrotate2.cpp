@@ -205,12 +205,12 @@ void RS_ActionModifyRotate2::previewRefPointsForMultipleCopies( [[maybe_unused]]
         numPoints = 1;
     }
     for (int i = 1; i <= numPoints; i++) {
-        double angle1ForCopy = /*m_actionData->sameAngle1ForCopies ?  m_actionData->angle1 :*/ m_actionData->angle1 * i;
-        double angle2ForCopy = m_actionData->sameAngle2ForCopies ? m_actionData->angle2 : m_actionData->angle2 * i;
+        const double angle1ForCopy = /*m_actionData->sameAngle1ForCopies ?  m_actionData->angle1 :*/ m_actionData->angle1 * i;
+        const double angle2ForCopy = m_actionData->sameAngle2ForCopies ? m_actionData->angle2 : m_actionData->angle2 * i;
         RS_Vector center2 = m_actionData->center2;
         center2.rotate(m_actionData->center1, angle1ForCopy);
 
-        double angleSum = angle1ForCopy + angle2ForCopy;
+        const double angleSum = angle1ForCopy + angle2ForCopy;
         previewSnapAngleMark(center2, angleSum);
         if (i == 1) {
             previewRefLine(m_actionData->center1, center2);

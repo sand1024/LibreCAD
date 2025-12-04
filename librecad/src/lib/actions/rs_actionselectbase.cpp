@@ -52,7 +52,7 @@ void RS_ActionSelectBase::keyPressEvent(QKeyEvent *e){
             break;
         }
         case Qt::Key_Enter:{
-            if (m_document->countSelected() > 0){
+            if (m_document->hasSelection()){
                 selectionFinishedByKey(e, false);
             }
             break;

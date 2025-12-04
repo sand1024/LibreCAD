@@ -74,7 +74,9 @@ void QC_ActionGetPoint::mouseMoveEvent(QMouseEvent* e) {
             line->setPen(RS_Pen(RS_Color(0,0,0), RS2::Width00, RS2::DotLine ));
             m_preview->addEntity(line);
             RS_DEBUG->print("QC_ActionGetPoint::mouseMoveEvent: draw preview");
-            m_preview->addSelectionFrom(*m_document,m_viewport);
+            QList<RS_Entity*> selection;
+            m_document->collectSelected(selection);
+            m_preview->addClonesFromList(selection);
         }
     } else {
         m_actionData->targetPoint = mouse;

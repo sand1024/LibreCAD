@@ -63,7 +63,7 @@ void LC_ActionModifyBreakDivide::doPreparePreviewEntities(LC_MouseEvent *e, RS_V
         deleteSnapper();
         RS_Entity *en = catchModifiableAndDescribe(e, g_enTypeList);
         if (en != nullptr){
-            int rtti = en->rtti();
+            const int rtti = en->rtti();
             switch (rtti) {
                 case RS2::EntityLine: { // process line
                     auto *line = dynamic_cast<RS_Line *>(en);
@@ -91,7 +91,7 @@ void LC_ActionModifyBreakDivide::doOnLeftMouseButtonRelease(LC_MouseEvent *e, in
     if (status == SetLine){
         RS_Entity *en = catchModifiableEntity(e, g_enTypeList);
         if (en != nullptr){
-            int rtti = en->rtti();
+            const int rtti = en->rtti();
             switch (rtti) {
                 case RS2::EntityLine:
                 case RS2::EntityCircle:
@@ -116,7 +116,7 @@ bool LC_ActionModifyBreakDivide::doCheckMayTrigger(){
         RS_Entity* en = m_triggerData->entity;
         RS_Vector snap = m_triggerData->snapPoint;
         if (en != nullptr){
-            int rtti = en->rtti();
+            const int rtti = en->rtti();
             // do processing of individual entity types
             switch (rtti) {
                 case RS2::EntityLine: {
@@ -183,16 +183,16 @@ void LC_ActionModifyBreakDivide::createEntitiesForLine(RS_Line *line, RS_Vector 
     // check whether selection entity may be expanded
     if (checkMayExpandEntity(line, "")){
         // determine snap point projection on line
-        RS_Vector nearestPoint = LC_LineMath::getNearestPointOnLine(line, snap, false);
-        RS_Vector start = line->getStartpoint();
-        RS_Vector end = line->getEndpoint();
+        const RS_Vector nearestPoint = LC_LineMath::getNearestPointOnLine(line, snap, false);
+        const RS_Vector start = line->getStartpoint();
+        const RS_Vector end = line->getEndpoint();
 
         // create segments only if tick snap point is between of original lines endpoints
         if (nearestPoint != start && nearestPoint != end){
             // calculate segments data
             LC_Division division(m_document);
-            bool allowEntireLineAsSegment = m_alternativeActionMode && m_removeSegments;
-            LC_Division::LineSegmentData *data = division.findLineSegmentBetweenIntersections(line, snap, allowEntireLineAsSegment);
+            const bool allowEntireLineAsSegment = m_alternativeActionMode && m_removeSegments;
+            const LC_Division::LineSegmentData *data = division.findLineSegmentBetweenIntersections(line, snap, allowEntireLineAsSegment);
             if (data != nullptr){
                 if (preview){
                     highlightHover(line);
@@ -214,14 +214,14 @@ void LC_ActionModifyBreakDivide::createEntitiesForLine(RS_Line *line, RS_Vector 
                 }
 
                 // attributes of original entity
-                RS_Pen pen = line->getPen(false);
+                const RS_Pen pen = line->getPen(false);
                 RS_Layer* layer = line->getLayer(true);
 
                 // creating snap segment (where snap was performed)
                 if (createSnapSegment){
                     createLineEntity(preview, data->snapSegmentStart, data->snapSegmentEnd, pen, layer, list);
                 }
-                int segmentDisposition = data->segmentDisposition;
+                const int segmentDisposition = data->segmentDisposition;
 
                 // in preview mode provide visual indication of division/break points
                 if (preview){
@@ -482,11 +482,11 @@ void LC_ActionModifyBreakDivide::createEntitiesForArc(RS_Arc *arc, RS_Vector &sn
 void LC_ActionModifyBreakDivide::createArcEntity(const RS_ArcData &arcData, bool preview, const RS_Pen &pen, RS_Layer *layer, QList<RS_Entity *> &list) const{
     if (preview){
         createRefArc(arcData, list);
-        auto arc = new RS_Arc(m_document, arcData);
+        const auto arc = new RS_Arc(m_document, arcData);
         list << arc;
     }
     else{
-        auto createdArc = new RS_Arc(m_document, arcData);
+        const auto createdArc = new RS_Arc(m_document, arcData);
         createdArc->setPen(pen);
         createdArc->setLayer(layer);
         list << createdArc;

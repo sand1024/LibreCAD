@@ -50,7 +50,7 @@ bool LC_ActionModifyDuplicate::isAcceptSelectedEntityToTriggerOnInit([[maybe_unu
 
 void LC_ActionModifyDuplicate::doInitWithContextEntity(RS_Entity* contextEntity, [[maybe_unused]]const RS_Vector& clickPos) {
     m_selectedEntity = contextEntity;
-    RS_Vector center = getEntityCenterPoint(m_selectedEntity);
+    const RS_Vector center = getEntityCenterPoint(m_selectedEntity);
     moveRelativeZero(center);
     setStatus(SetOffsetDirection);
 }
@@ -76,7 +76,7 @@ void LC_ActionModifyDuplicate::doCreateEntitiesOnTrigger(RS_Entity *en, QList<RS
         clone->setHighlighted(false);
 
         // move clone if needed to offset        
-        RS_Vector offset = determineOffset(m_triggerPoint, getEntityCenterPoint(en));
+        const RS_Vector offset = determineOffset(m_triggerPoint, getEntityCenterPoint(en));
         if (offset.valid){
             clone->move(offset);
         }
@@ -111,22 +111,22 @@ namespace {
 RS_Vector LC_ActionModifyDuplicate::determineOffset(RS_Vector& snapOfOffset, const RS_Vector& center) const{
     RS_Vector wcsOffset(false);
     if (!m_duplicateInplace){
-        bool moveX = LC_LineMath::isMeaningful(m_offsetX);
-        bool moveY = LC_LineMath::isMeaningful(m_offsetY);
+        const bool moveX = LC_LineMath::isMeaningful(m_offsetX);
+        const bool moveY = LC_LineMath::isMeaningful(m_offsetY);
 
         if (moveX || moveY){
             // create offset vector
-            double ucsMoveX = LC_LineMath::getMeaningful(m_offsetX);
-            double ucsMoveY = LC_LineMath::getMeaningful(m_offsetY);
-            auto ucsOffset = RS_Vector(ucsMoveX, ucsMoveY);
+            const double ucsMoveX = LC_LineMath::getMeaningful(m_offsetX);
+            const double ucsMoveY = LC_LineMath::getMeaningful(m_offsetY);
+            const auto ucsOffset = RS_Vector(ucsMoveX, ucsMoveY);
             wcsOffset = toWorldDelta(ucsOffset);
         }       
         if (snapOfOffset.valid){
-            double wcsAngle = center.angleTo(snapOfOffset);
-            double correctedAngle = RS_Math::correctAngle(wcsAngle);
-            auto wcsOffsetDirection = RS_Vector(correctedAngle);
+            const double wcsAngle = center.angleTo(snapOfOffset);
+            const double correctedAngle = RS_Math::correctAngle(wcsAngle);
+            const auto wcsOffsetDirection = RS_Vector(correctedAngle);
             // prepare vector we'll use for moving shape
-            auto resultingOffset = wcsOffsetDirection * wcsOffset;
+            const auto resultingOffset = wcsOffsetDirection * wcsOffset;
             wcsOffset = resultingOffset;
         }
     }
@@ -136,7 +136,7 @@ RS_Vector LC_ActionModifyDuplicate::determineOffset(RS_Vector& snapOfOffset, con
 void LC_ActionModifyDuplicate::doAfterTrigger(){
     LC_AbstractActionWithPreview::doAfterTrigger();
     m_triggerPoint = RS_Vector{false};
-    int status = getStatus();
+    const int status = getStatus();
     if (status == SelectEntity){
         m_selectedEntity = nullptr;
     }
@@ -157,7 +157,7 @@ void LC_ActionModifyDuplicate::doOnLeftMouseButtonRelease([[maybe_unused]]LC_Mou
                 // just call trigger for duplicate creation
                 m_selectedEntity = en;
                 if (m_alternativeActionMode && !m_duplicateInplace){
-                    RS_Vector center = getEntityCenterPoint(m_selectedEntity);
+                    const RS_Vector center = getEntityCenterPoint(m_selectedEntity);
                     moveRelativeZero(center);
                     setStatus(SetOffsetDirection);
                 } else {
@@ -189,16 +189,16 @@ bool LC_ActionModifyDuplicate::doCheckMayDrawPreview([[maybe_unused]]LC_MouseEve
 void LC_ActionModifyDuplicate::doPreparePreviewEntities(LC_MouseEvent *e, [[maybe_unused]]RS_Vector &snap, QList<RS_Entity *> &list, [[maybe_unused]]int status){
     switch (status){
         case SelectEntity:{
-            auto en = catchEntityByEvent(e);
+            const auto en = catchEntityByEvent(e);
             if (en != nullptr){
                 // highlight original
                 highlightHover(en);
 
                 // handle offset - if it is present, create a clone of snapped entity and display it for preview
                 auto snapForOffset = RS_Vector(false);
-                auto offset = determineOffset(snapForOffset, getEntityCenterPoint(en));
+                const auto offset = determineOffset(snapForOffset, getEntityCenterPoint(en));
                 if (offset.valid){
-                    auto clone = en->clone();
+                    const auto clone = en->clone();
                     clone->move(offset);
                     list << clone;
                     if (isInfoCursorForModificationEnabled()){
@@ -223,9 +223,9 @@ void LC_ActionModifyDuplicate::doPreparePreviewEntities(LC_MouseEvent *e, [[mayb
                     previewRefLine(center, snap);
                     previewRefPoint(center);
                 }
-                RS_Vector offset = determineOffset(snapOffset, center);
+                const RS_Vector offset = determineOffset(snapOffset, center);
                 if (offset.valid){
-                    auto clone = m_selectedEntity->clone();
+                    const auto clone = m_selectedEntity->clone();
                     clone->move(offset);
                     list << clone;
                     if (m_showRefEntitiesOnPreview) {

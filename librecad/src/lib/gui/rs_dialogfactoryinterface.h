@@ -345,7 +345,7 @@ public:
                                             [[maybe_unused]]QString* selectedFilter = nullptr) { return "";};
 
 
-
+    [[deprecated]]
     virtual void displayBlockName([[maybe_unused]]const QString& blockName, [[maybe_unused]]const bool& display){};
 
     /**

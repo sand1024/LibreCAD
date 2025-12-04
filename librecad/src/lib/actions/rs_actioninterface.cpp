@@ -104,19 +104,20 @@ RS2::ActionType RS_ActionInterface::rtti() const{
 }
 
 void RS_ActionInterface::select(QList<RS_Entity*> list) const {
-    for (const auto e : list) {
-        m_document->select(e, true);
-    }
+    RS_Selection::selectEntitiesList(m_document, m_viewport, list, true);
 }
 
 void RS_ActionInterface::unselect(QList<RS_Entity*> list) const {
-    for (const auto e : list) {
-        m_document->select(e,false);
-    }
+    RS_Selection::selectEntitiesList(m_document, m_viewport, list, false);
 }
 
 void RS_ActionInterface::unselectAll() const {
     RS_Selection::unselectAllInDocument(m_document, m_viewport);
+}
+
+void RS_ActionInterface::select(RS_Entity* e) const {
+    RS_Selection sel(m_document, m_viewport);
+    sel.selectSingle(e);
 }
 
 /**
@@ -718,14 +719,12 @@ void RS_ActionInterface::initPrevious(int stat) {
 }
 
  void RS_ActionInterface::undoCycleReplace(RS_Entity *entityToReplace, RS_Entity *entityReplacing) const {
-     LC_UndoSection undo(m_document, m_viewport);
-     undo.undoableExecute([entityToReplace, entityReplacing](LC_DocumentModificationBatch& ctx)->bool {
+     m_document->undoableModify(m_viewport, [entityToReplace, entityReplacing](LC_DocumentModificationBatch& ctx)->bool {
          ctx += entityReplacing;
          ctx -= entityToReplace;
          return true;
      });
  }
-
 
 void RS_ActionInterface::setPenAndLayerToActive(RS_Entity *e) {
     e->setLayerToActive();

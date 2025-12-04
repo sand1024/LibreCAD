@@ -480,6 +480,7 @@ HEADERS += \
     lib/actions/lc_actioncontext.h \
     ui/components/creators/lc_creatorinvoker.h \
     # ui/components/toolbars/lc_snapoptionsholdermanager.h \
+    ui/components/status_bar/lc_selectiontoolbar.h \
     ui/dialogs/creators/lc_dlgmenuassigner.h \
     ui/dialogs/creators/lc_dlgwidgetcreator.h \
     ui/components/creators/lc_menuactivator.h \
@@ -711,6 +712,7 @@ SOURCES += \
     lib/actions/lc_actioncontext.cpp \
     ui/components/creators/lc_creatorinvoker.cpp \
     #ui/components/toolbars/lc_snapoptionsholdermanager.cpp \
+    ui/components/status_bar/lc_selectiontoolbar.cpp \
     ui/dialogs/creators/lc_dlgmenuassigner.cpp \
     ui/dialogs/creators/lc_dlgwidgetcreator.cpp \
     ui/components/creators/lc_menuactivator.cpp \
@@ -1725,6 +1727,7 @@ FORMS = ui/action_options/circle/lc_circlebyarcoptions.ui \
        ui/components/comboboxes/comboboxoption.ui \
        ui/components/containers/lc_optionswidgetsholder.ui \
        ui/components/containers/lc_snapoptionswidgetsholder.ui \
+       ui/components/status_bar/lc_selectiontoolbar.ui \
        ui/dialogs/creators/lc_dlgmenuassigner.ui \
        ui/dialogs/creators/lc_dlgwidgetcreator.ui \
        ui/components/pen/qg_widgetpen.ui \

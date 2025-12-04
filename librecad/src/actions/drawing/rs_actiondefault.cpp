@@ -790,10 +790,9 @@ void RS_ActionDefault::onMouseMovingCompleted(LC_MouseEvent* e) {
 
     QList<RS_Entity*> selectedEntities;
     m_document->getSelection()->collectSelectedEntities(selectedEntities);
-    LC_UndoSection undo(m_document, m_viewport);
     bool keepOriginal = e->isControl;
 
-    undo.undoableExecute([this,keepOriginal, selectedEntities](LC_DocumentModificationBatch& ctx)-> bool {
+    m_document->undoableModify(m_viewport, [this,keepOriginal, selectedEntities](LC_DocumentModificationBatch& ctx)-> bool {
                              RS_MoveData data;
                              data.number               = 0;
                              data.useCurrentLayer      = false;
@@ -808,7 +807,6 @@ void RS_ActionDefault::onMouseMovingCompleted(LC_MouseEvent* e) {
                              }
                              doc->select(ctx.entitiesToAdd);
                          });
-
 
     if (e->isControl) { // allow creation of several copies
         m_actionData->v1 = m_actionData->v2;

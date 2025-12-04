@@ -797,7 +797,7 @@ bool Doc_plugin_interface::addToUndo(RS_Entity* current, RS_Entity* modified,
 }
 
 void Doc_plugin_interface::updateView(){
-    m_document->setSelected(false);
+    m_document->setSelectionFlag(false);
     m_graphicView->getDocument()->calculateBorders();
     m_graphicView->redraw();
 }

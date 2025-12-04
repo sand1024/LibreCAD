@@ -28,6 +28,7 @@
 
 #include <QToolButton>
 #include <QVBoxLayout>
+#include <qnetworkreply.h>
 
 #include "colorwizard.h"
 #include "lc_undosection.h"
@@ -61,33 +62,27 @@ void LC_PenWizard::setColorForSelected(QColor color) const {
 
     QList<RS_Entity*> selection;
     if (graphic->collectSelected(selection)) {
-        LC_UndoSection undo(graphic, m_graphicView->getViewPort());
-        undo.undoableExecute([this, selection, pen](LC_DocumentModificationBatch& ctx)->bool {
-            for (auto e: selection) {
-                RS_Entity* clone = e->clone();
-                clone->setPen(pen);
-                ctx += clone;
-                ctx -= e;
-            }
-            return true;
-        },
-        [this, selection, pen](LC_DocumentModificationBatch& ctx, RS_Document* doc)->void {
-            doc->select(ctx.entitiesToAdd);
-        });
+        graphic->undoableModify(m_graphicView->getViewPort(), [this, selection, pen](LC_DocumentModificationBatch& ctx)-> bool {
+                                    for (auto e : selection) {
+                                        RS_Entity* clone = e->clone();
+                                        clone->setPen(pen);
+                                        ctx += clone;
+                                        ctx -= e;
+                                    }
+                                    return true;
+                                }, [this, selection, pen](LC_DocumentModificationBatch& ctx, RS_Document* doc)-> void {
+                                    doc->select(ctx.entitiesToAdd);
+                                });
     }
 }
 
 void LC_PenWizard::selectByColor(QColor color) const {
     auto graphic = m_graphicView->getGraphic();
+    QString colorName = color.name();
     RS_Selection sel(m_graphicView);
-    sel.performBulkSelection([graphic, color](RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
-        foreach(auto e, graphic->getEntityList()) {
-          if (e->getPen().getColor().name() == color.name()) {
-              doc->select(e);
-          }
-      }
+    sel.selectIfMatched(graphic->getEntityList(), true, [colorName](RS_Entity* e)->bool {
+        return e->getPen().getColor().name() == colorName;
     });
-    m_graphicView->redraw(RS2::RedrawDrawing);
 }
 
 void LC_PenWizard::setActivePenColor(QColor color) const {

@@ -77,10 +77,9 @@ void LC_ActionDrawCross::doInitWithContextEntity(RS_Entity* contextEntity, [[may
     }
 }
 
-void LC_ActionDrawCross::collectEntitiesForTriggerOnInit(QList<RS_Entity*> &selectedEntities,
-    QList<RS_Entity*> &entitiesForTrigger) {
+void LC_ActionDrawCross::collectEntitiesForTriggerOnInit(QList<RS_Entity*> &entitiesForTrigger) {
     if (m_entity == nullptr) {
-        LC_AbstractActionWithPreview::collectEntitiesForTriggerOnInit(selectedEntities, entitiesForTrigger);
+        LC_AbstractActionWithPreview::collectEntitiesForTriggerOnInit(entitiesForTrigger);
     }
     else {
         entitiesForTrigger << m_entity;

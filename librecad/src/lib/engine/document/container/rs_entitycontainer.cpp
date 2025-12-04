@@ -502,22 +502,6 @@ unsigned int RS_EntityContainer::countDeep() const {
 
 
 
-// fixme - sand - avoid usage in actions as it enumerates all entities. Rework or rely on entities list!!!!
-/**
- * Counts the selected entities in this container.
- */
-double RS_EntityContainer::totalSelectedLength() {
-    double ret(0.0);
-    for (RS_Entity *e: *this) {  // fixme - SELECTION - selection collection!
-        if (e->isVisible() && e->isSelected()) {
-            double l = e->getLength();
-            if (l >= 0.) {
-                ret += l;
-            }
-        }
-    }
-    return ret;
-}
 
 /**
  * Adjusts the borders of this graphic (max/min values)

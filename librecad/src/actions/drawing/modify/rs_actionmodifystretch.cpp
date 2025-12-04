@@ -72,7 +72,7 @@ bool RS_ActionModifyStretch::doTriggerModifications(LC_DocumentModificationBatch
         unselect(m_entitiesList);
     }
     else {
-        bool keepSelected =  LC_GET_ONE_BOOL("Modify", "KeepModifiedSelected", true);
+        const bool keepSelected =  LC_GET_ONE_BOOL("Modify", "KeepModifiedSelected", true);
         if (keepSelected) {
             select(m_entitiesList);
         }
@@ -171,7 +171,7 @@ void RS_ActionModifyStretch::previewStretchRect(bool selected) const {
 
 void RS_ActionModifyStretch::onMouseLeftButtonRelease([[maybe_unused]]int status, LC_MouseEvent *e) {
     if (status == SetTargetPoint){
-        RS_Vector mouse= getSnapAngleAwarePoint(e, m_actionData->referencePoint, e->snapPoint);
+        const RS_Vector mouse= getSnapAngleAwarePoint(e, m_actionData->referencePoint, e->snapPoint);
         fireCoordinateEvent(mouse);
     }
     else {

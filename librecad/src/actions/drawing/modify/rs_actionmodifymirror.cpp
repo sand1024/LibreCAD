@@ -86,7 +86,7 @@ void RS_ActionModifyMirror::onMouseMoveEventSelected(int status, LC_MouseEvent *
                 else {
                     RS_Entity *en = catchEntityByEvent(e, RS2::EntityLine, RS2::ResolveAll);
                     if (en != nullptr) {
-                        auto line = dynamic_cast<RS_Line *>(en);
+                        const auto line = dynamic_cast<RS_Line *>(en);
                         previewMirror(line->getStartpoint(), line->getEndpoint());
                     }
                 }
@@ -158,7 +158,7 @@ void RS_ActionModifyMirror::onMouseLeftButtonReleaseSelected(int status, LC_Mous
         else {
             RS_Entity *en = catchEntityByEvent(e, RS2::EntityLine, RS2::ResolveAll);
             if (en != nullptr) {
-                auto line = dynamic_cast<RS_Line *>(en);
+                const auto line = dynamic_cast<RS_Line *>(en);
                 m_actionData->axisPoint1 = line->getStartpoint();
                 m_actionData->axisPoint2 = line->getEndpoint();
                 setStatus(ShowDialog);
@@ -289,7 +289,7 @@ void RS_ActionModifyMirror::obtainFlipLineCoordinates(RS_Vector *start, RS_Vecto
     LC_Align::collectSelectionBounds(m_selectedEntities, selectionMin, selectionMax);
 
     if (verticalLine){
-        double x = (selectionMin.x + selectionMax.x) / 2;
+        const double x = (selectionMin.x + selectionMax.x) / 2;
         start->x = x;
         end->x = x;
 
@@ -297,7 +297,7 @@ void RS_ActionModifyMirror::obtainFlipLineCoordinates(RS_Vector *start, RS_Vecto
         end->y = selectionMax.y;
     }
     else{
-        double y = (selectionMin.y + selectionMax.y) / 2;
+        const double y = (selectionMin.y + selectionMax.y) / 2;
         start->y = y;
         end->y = y;
 

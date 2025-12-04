@@ -62,14 +62,14 @@ void LC_ActionModifyMoveAdjust::doTriggerCompletion(bool success) {
 }
 
 RS_Vector LC_ActionModifyMoveAdjust::calculateOffset() const {
-    auto grid = m_viewport->getGrid();
-    auto cellVector = grid->getCellVector();
+    const auto grid = m_viewport->getGrid();
+    const auto cellVector = grid->getCellVector();
 
-    int metagridFactor = grid->getMetaGridEvery();
+    const int metagridFactor = grid->getMetaGridEvery();
 
     double offsetValueX = 0.0;
     double offsetValueY = 0.0;
-    bool isometricGrid = grid->isIsometric();
+    const bool isometricGrid = grid->isIsometric();
 
     switch (m_movementInfo.getDirection()) {
         case RS2::Down:{
@@ -112,7 +112,7 @@ RS_Vector LC_ActionModifyMoveAdjust::calculateOffset() const {
             break;
     }
 
-    RS_Vector ucsDelta(offsetValueX*factor, offsetValueY*factor);
-    RS_Vector result = toWorldDelta(ucsDelta);
+    const RS_Vector ucsDelta(offsetValueX*factor, offsetValueY*factor);
+    const RS_Vector result = toWorldDelta(ucsDelta);
     return result;
 }
