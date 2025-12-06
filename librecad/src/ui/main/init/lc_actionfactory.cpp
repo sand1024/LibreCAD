@@ -606,15 +606,15 @@ void LC_ActionFactory::createFileActionsUncheckable(QMap<QString, QAction *> &ma
 
 void LC_ActionFactory::createWidgetActions(QMap<QString, QAction *> &map, QActionGroup *group) {
     createMainWindowActions(map, group, {
-        {"LeftDockAreaToggle",        &QC_ApplicationWindow::toggleLeftDockArea,        tr("Left"),     ":/icons/dockwidgets_left.lci"},
-        {"RightDockAreaToggle",       &QC_ApplicationWindow::toggleRightDockArea,       tr("Right"),    ":/icons/dockwidgets_right.lci"},
-        {"TopDockAreaToggle",         &QC_ApplicationWindow::toggleTopDockArea,         tr("Top"),      ":/icons/dockwidgets_top.lci"},
-        {"BottomDockAreaToggle",      &QC_ApplicationWindow::toggleBottomDockArea,      tr("Bottom"),   ":/icons/dockwidgets_bottom.lci"},
-        {"FloatingDockwidgetsToggle", &QC_ApplicationWindow::toggleFloatingDockwidgets, tr("Floating"), ":/icons/dockwidgets_floating.lci"},
-        {"LeftTBAreaToggle",          &QC_ApplicationWindow::toggleLeftToolbarArea,     tr("Left"),     ":/icons/dockwidgets_left.lci"},
-        {"RightTBAreaToggle",         &QC_ApplicationWindow::toggleRightToolbarArea,    tr("Right"),    ":/icons/dockwidgets_right.lci"},
-        {"TopTBAreaToggle",           &QC_ApplicationWindow::toggleTopToolbarArea,      tr("Top"),      ":/icons/dockwidgets_top.lci"},
-        {"BottomTBAreaToggle",        &QC_ApplicationWindow::toggleBottomToolbarArea,   tr("Bottom"),   ":/icons/dockwidgets_bottom.lci"}
+        {"LeftDockAreaToggle",        &QC_ApplicationWindow::toggleLeftDockArea,        tr("Left Dock Area"),     ":/icons/dockwidgets_left.lci"},
+        {"RightDockAreaToggle",       &QC_ApplicationWindow::toggleRightDockArea,       tr("Right Dock Area"),    ":/icons/dockwidgets_right.lci"},
+        {"TopDockAreaToggle",         &QC_ApplicationWindow::toggleTopDockArea,         tr("Top Dock Area"),      ":/icons/dockwidgets_top.lci"},
+        {"BottomDockAreaToggle",      &QC_ApplicationWindow::toggleBottomDockArea,      tr("Bottom Dock Area"),   ":/icons/dockwidgets_bottom.lci"},
+        {"FloatingDockwidgetsToggle", &QC_ApplicationWindow::toggleFloatingDockwidgets, tr("Floating Widgets"), ":/icons/dockwidgets_floating.lci"},
+        {"LeftTBAreaToggle",          &QC_ApplicationWindow::toggleLeftToolbarArea,     tr("Left Toolbar Area"),     ":/icons/dockwidgets_left.lci"},
+        {"RightTBAreaToggle",         &QC_ApplicationWindow::toggleRightToolbarArea,    tr("Right Toolbar Area"),    ":/icons/dockwidgets_right.lci"},
+        {"TopTBAreaToggle",           &QC_ApplicationWindow::toggleTopToolbarArea,      tr("Top Toolbar Area"),      ":/icons/dockwidgets_top.lci"},
+        {"BottomTBAreaToggle",        &QC_ApplicationWindow::toggleBottomToolbarArea,   tr("Bottom Toolbar Area"),   ":/icons/dockwidgets_bottom.lci"}
     }, true);
 }
 
