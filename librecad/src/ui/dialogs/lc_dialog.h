@@ -28,7 +28,7 @@
 class LC_Dialog : public QDialog{
 public:
     LC_Dialog(QWidget *parent, const QString &dlgName);
-    virtual ~LC_Dialog() = default;
+    ~LC_Dialog() override = default;
     void accept() override;
     void reject() override;
 protected:

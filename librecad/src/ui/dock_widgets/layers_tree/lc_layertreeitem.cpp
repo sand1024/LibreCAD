@@ -57,7 +57,7 @@ int LC_LayerTreeItem::childCountAll() const{
     if (isVirtual()){
         const int count = m_childItems.length();
         for (int i = 0; i < count; i++) {
-            LC_LayerTreeItem *child = m_childItems.at(i);
+            const LC_LayerTreeItem *child = m_childItems.at(i);
             result = result + (child->childCountAll());
         }
     }
@@ -69,8 +69,9 @@ LC_LayerTreeItem *LC_LayerTreeItem::parent() const {
 }
 
 int LC_LayerTreeItem::row() const{
-    if (m_parentItem)
+    if (m_parentItem) {
         return m_parentItem->m_childItems.indexOf(const_cast<LC_LayerTreeItem *>(this));
+    }
     return 0;
 }
 
@@ -81,7 +82,7 @@ bool LC_LayerTreeItem::isVirtual() const{
  * Sort children of this item alphabetically, and recursively sort descendants
  */
 void LC_LayerTreeItem::sortChildren(){
-    int count = m_childItems.length();
+    const int count = m_childItems.length();
 
     if (count > 0){
         std::stable_sort(m_childItems.begin(), m_childItems.end(), [](LC_LayerTreeItem *l0, LC_LayerTreeItem *l1) -> bool{
@@ -102,7 +103,7 @@ void LC_LayerTreeItem::sortChildren(){
  */
 void LC_LayerTreeItem::updateCalculatedFlagsForDescendentVirtualLayers(){
     if (isVirtual()){
-        int count = m_childItems.length();
+        const int count = m_childItems.length();
         m_virtualConstruction = true;
         m_virtualLocked = true;
         m_virtualPrint = true;
@@ -133,7 +134,7 @@ void LC_LayerTreeItem::collectLayers(QList<RS_Layer *> &result, LC_LayerTreeItem
         }
     }
 
-    int count = m_childItems.length();
+    const int count = m_childItems.length();
     for (int i = 0; i < count; i++) {
         LC_LayerTreeItem *child = m_childItems.at(i);
         if (child->isVirtual()){
@@ -158,7 +159,7 @@ void LC_LayerTreeItem::collectDescendantChildren(QList<LC_LayerTreeItem *> &resu
         result << this;
     }
 
-    int count = m_childItems.length();
+    const int count = m_childItems.length();
     for (int i = 0; i < count; i++) {
         LC_LayerTreeItem *child = m_childItems.at(i);
         if (acceptor->acceptLayerTreeItem(child)){
@@ -179,7 +180,7 @@ LC_LayerTreeItem *LC_LayerTreeItem::findItemWithLayer(RS_Layer *source){
     if (m_layer == source){
         return this;
     }
-    int count = m_childItems.length();
+    const int count = m_childItems.length();
     for (int i = 0; i < count; i++) {
         LC_LayerTreeItem *child = m_childItems.at(i);
         LC_LayerTreeItem *res = child->findItemWithLayer(source);
@@ -213,7 +214,7 @@ void LC_LayerTreeItem::collectPathToParent(QList<LC_LayerTreeItem *> &result, bo
  */
 bool LC_LayerTreeItem::isDescendantOf(const LC_LayerTreeItem *item) const {
     bool result = false;
-    LC_LayerTreeItem *parent = m_parentItem;
+    const LC_LayerTreeItem *parent = m_parentItem;
     while (parent != nullptr) {
         if (parent == item){
             result = true;
@@ -232,7 +233,7 @@ bool LC_LayerTreeItem::isDescendantOf(const LC_LayerTreeItem *item) const {
  */
 bool LC_LayerTreeItem::hasChildWithName(const QString &nameToFind, int layerTypeToFind) const {
     bool result = false;
-    int count = m_childItems.length();
+    const int count = m_childItems.length();
     for (int i = 0; i < count; i++) {
         LC_LayerTreeItem *child = m_childItems.at(i);
         if (layerTypeToFind == child->getLayerType()){
@@ -252,9 +253,9 @@ bool LC_LayerTreeItem::hasChildWithName(const QString &nameToFind, int layerType
  */
 bool LC_LayerTreeItem::hasChildOfType(int type) const {
     bool result = false;
-    int count = m_childItems.length();
+    const int count = m_childItems.length();
     for (int i = 0; i < count; i++) {
-        LC_LayerTreeItem *child = m_childItems.at(i);
+        const LC_LayerTreeItem *child = m_childItems.at(i);
         if (child->getLayerType() == type){
             result = true;
             break;
@@ -311,7 +312,7 @@ void LC_LayerTreeItem::rebuildActivePath(RS_Layer *layerToBeActive){
     QList<LC_LayerTreeItem *> items = m_childItems;
     bool found = true;
     while (found) {
-        int count = items.length();
+        const int count = items.length();
         found = false;
         for (int i = 0; i < count; i++) {
             LC_LayerTreeItem *child = items.at(i);
@@ -351,10 +352,10 @@ LC_LayerTreeItem *LC_LayerTreeItem::createLayerChild(const QString &childName, R
  */
 LC_LayerTreeItem *LC_LayerTreeItem::findPrimaryLayerChild(const QString &childNameToFind) const {
     LC_LayerTreeItem *result = nullptr;
-    int count = m_childItems.length();
+    const int count = m_childItems.length();
     for (int i = 0; i < count; i++) {
         LC_LayerTreeItem *child = m_childItems.at(i);
-        int type = child->getLayerType();
+        const int type = child->getLayerType();
         if (type == NORMAL){ // virtual is supported there to handle not proper layer names convention, actually
             QString childName = child->getName();
             if (childNameToFind == childName){
@@ -374,7 +375,7 @@ LC_LayerTreeItem *LC_LayerTreeItem::findPrimaryLayerChild(const QString &childNa
  */
 LC_LayerTreeItem *LC_LayerTreeItem::getOrCreateVirtualChild(const QString &targetChildName){
     LC_LayerTreeItem *result = nullptr;
-    int count = m_childItems.length();
+    const int count = m_childItems.length();
     for (int i = 0; i < count; i++) {
         LC_LayerTreeItem *child = m_childItems.at(i);
         QString childName = child->getName();
@@ -436,7 +437,7 @@ RS_Layer *LC_LayerTreeItem::getLayer() const {return this->m_layer;}
  */
 void LC_LayerTreeItem::invalidate(){
     m_layerType = -1;
-    int count = m_childItems.length();
+    const int count = m_childItems.length();
     for (int i = 0; i < count; i++) {
         LC_LayerTreeItem *child = m_childItems.at(i);
         child->invalidate();

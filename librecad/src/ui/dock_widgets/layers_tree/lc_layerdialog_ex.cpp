@@ -32,8 +32,7 @@
 #include "rs_layerlist.h"
 
 LC_LayerDialogEx::LC_LayerDialogEx(QWidget* parent, const QString& name, LC_LayerTreeModel* model, LC_LayerTreeItem *treeItem, RS_LayerList* ll)
-      : QDialog(parent/*, f*l*/)
-{
+      : LC_Dialog(parent, "LayersTreeLayerDialog"){
     setupUi(this);
     setModal(true);
     setObjectName(name);
@@ -48,7 +47,7 @@ void LC_LayerDialogEx::languageChange(){
 }
 
 void LC_LayerDialogEx::setMode(int viewMode){
-    int mode = viewMode;
+    const int mode = viewMode;
     this->setProperty("mode", mode);
     leParentPath->setEnabled(false);
     switch (mode){
@@ -210,7 +209,7 @@ void LC_LayerDialogEx::layerTypeChanged() const {
 
     if (layerType > 0){
         RS_Pen defaultPen = m_layerTreeModel ->getOptions()->getDefaultPen(layerType);
-        RS_Pen penCopy  = RS_Pen(defaultPen);
+        const RS_Pen penCopy  = RS_Pen(defaultPen);
         wPen->setPen(penCopy, false, false, tr("Default Pen"));
     }
 }
@@ -224,36 +223,36 @@ void LC_LayerDialogEx::validate() {
                                  QMessageBox::Ok);
     }
     else{
-        int newLayerType = getEditedLayerType();
+        const int newLayerType = getEditedLayerType();
         QStringList newLayerNamesList;
 
-        int dialogMode = property("mode").toInt();
+        const int dialogMode = property("mode").toInt();
         switch (dialogMode) {
             case MODE_ADD_LAYER: {
-                QString newLayerName = m_layerTreeModel->createFullLayerName(
+                const QString newLayerName = m_layerTreeModel->createFullLayerName(
                     m_editedTreeItem, layerName, newLayerType, true);
                 newLayerNamesList << newLayerName;
                 break;
             }
             case MODE_ADD_CHILD_LAYER:
             case MODE_ADD_SECONDARY_LAYER: {
-                QString newLayerName = m_layerTreeModel->createFullLayerName(
+                const QString newLayerName = m_layerTreeModel->createFullLayerName(
                     m_editedTreeItem, layerName, newLayerType, true);
                 newLayerNamesList << newLayerName;
                 break;
             }
             case MODE_RENAME_VIRTUAL: {
-                QString oldLayerName = m_editedTreeItem->getName();
+                const QString oldLayerName = m_editedTreeItem->getName();
                 if (layerName != oldLayerName) {
                     newLayerNamesList = m_layerTreeModel->getLayersListForRenamedVirtualLayer(m_editedTreeItem, layerName);
                 }
                 break;
             }
             case MODE_EDIT_LAYER: {
-                QString originalName = m_editedTreeItem->getName();
-                int originalLayerType = m_editedTreeItem->getLayerType();
-                bool typeChanged = newLayerType != originalLayerType;
-                bool nameChanged = originalName != layerName;
+                const QString originalName = m_editedTreeItem->getName();
+                const int originalLayerType = m_editedTreeItem->getLayerType();
+                const bool typeChanged = newLayerType != originalLayerType;
+                const bool nameChanged = originalName != layerName;
                 if (nameChanged || typeChanged) {
                     // inner name should be changed - so we have to check for possible duplicates.
                     newLayerNamesList = m_layerTreeModel->getLayersListForRenamedPrimary(
@@ -269,7 +268,7 @@ void LC_LayerDialogEx::validate() {
           accept();
         }
         else{
-            bool duplicateNameFound = checkForDuplicatedNames(newLayerNamesList);
+            const bool duplicateNameFound = checkForDuplicatedNames(newLayerNamesList);
             if (!duplicateNameFound){                
                 accept();
             }
@@ -278,12 +277,12 @@ void LC_LayerDialogEx::validate() {
 }
 
 bool LC_LayerDialogEx::checkForDuplicatedNames(const QStringList &newLayerNamesList) const {
-    int count = newLayerNamesList.size();
+    const int count = newLayerNamesList.size();
     bool duplicateNameFound = false;
     for (int i = 0; i < count; i++) {
-        QString candidateLayerName = newLayerNamesList.at(i);
+        const QString& candidateLayerName = newLayerNamesList.at(i);
         // here we check against layer list and not against model, since some filtering may be applied
-        RS_Layer* existingLayer = m_layerList->find(candidateLayerName);
+        const RS_Layer* existingLayer = m_layerList->find(candidateLayerName);
         if (existingLayer != nullptr){
             QMessageBox::information(parentWidget(),
                                      QMessageBox::tr("Layer Properties"),

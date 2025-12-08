@@ -27,6 +27,7 @@
 
 #include <QString>
 
+#include "lc_dialog.h"
 #include "rs_pen.h"
 #include "ui_lc_layerdialog_ex.h"
 
@@ -35,10 +36,8 @@ class RS_Layer;
 class LC_LayerTreeItem;
 class LC_LayerTreeModel;
 
-class LC_LayerDialogEx :public QDialog, public Ui::LC_LayerDialogEx
-{
+class LC_LayerDialogEx :public LC_Dialog, public Ui::LC_LayerDialogEx{
     Q_OBJECT
-
 public:
     enum{
         MODE_RENAME_VIRTUAL,
@@ -48,7 +47,7 @@ public:
         MODE_ADD_SECONDARY_LAYER
     };
     LC_LayerDialogEx(QWidget* parent, const QString& name, LC_LayerTreeModel* model, LC_LayerTreeItem *editedTreeItem, RS_LayerList* layerList);
-    ~LC_LayerDialogEx() = default;
+    ~LC_LayerDialogEx() override = default;
 
     void setMode(int mode);
     void setLayerName(const QString& name) const;

@@ -153,8 +153,8 @@ public:
     }
 
     bool acceptLayerTreeItem(LC_LayerTreeItem* item) const override{
-        int ltype = item -> getLayerType();
-        bool result = ltype == layerType;
+        const int ltype = item -> getLayerType();
+        const bool result = ltype == layerType;
         return result;
     }
 private:
@@ -164,7 +164,7 @@ private:
 class QG_LayerTreeItemAcceptorVisible: public virtual LC_LayerTreeItemAcceptor{
 public:
     bool acceptLayerTreeItem(LC_LayerTreeItem* item) const override{
-        bool result = item->isNotFrozen();
+        const bool result = item->isNotFrozen();
         return result;
     }
 };
@@ -201,7 +201,7 @@ public:
     }
 
     bool acceptLayerTreeItem(LC_LayerTreeItem* item) const override{
-        int ltype = item -> getLayerType();
+        const int ltype = item -> getLayerType();
         bool result = true;
 
         if (includeMode){
