@@ -110,7 +110,7 @@ void LC_ActionSplineExplode::doTriggerSelections(const LC_DocumentModificationBa
     }
 }
 
-void LC_ActionSplineExplode::doTriggerCompletion(bool success) {
+void LC_ActionSplineExplode::doTriggerCompletion([[maybe_unused]]bool success) {
     m_entityToModify = nullptr;
 }
 

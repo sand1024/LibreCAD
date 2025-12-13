@@ -58,7 +58,7 @@ RS_Entity* LC_ActionDrawParabola4Points::doTriggerCreateEntity() {
     return nullptr;
 }
 
-void LC_ActionDrawParabola4Points::doTriggerCompletion(bool success) {
+void LC_ActionDrawParabola4Points::doTriggerCompletion([[maybe_unused]]bool success) {
     setStatus(SetPoint1);
 }
 

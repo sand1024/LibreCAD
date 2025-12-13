@@ -69,7 +69,7 @@ RS_Entity* LC_ActionDimArc::doTriggerCreateEntity() {
     return newEntity;
 }
 
-void LC_ActionDimArc::doTriggerCompletion(bool success) {
+void LC_ActionDimArc::doTriggerCompletion([[maybe_unused]]bool success) {
     setStatus(SetEntity);
     RS_Snapper::finish();
 }

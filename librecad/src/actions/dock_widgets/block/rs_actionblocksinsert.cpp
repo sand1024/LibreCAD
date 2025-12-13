@@ -99,7 +99,7 @@ RS_Entity* RS_ActionBlocksInsert::doTriggerCreateEntity() {
     return nullptr;
 }
 
-void RS_ActionBlocksInsert::doTriggerCompletion(bool success) {
+void RS_ActionBlocksInsert::doTriggerCompletion([[maybe_unused]]bool success) {
 }
 
 void RS_ActionBlocksInsert::onMouseMoveEvent(const int status, LC_MouseEvent *e){

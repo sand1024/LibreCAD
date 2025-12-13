@@ -66,7 +66,7 @@ RS_Entity* RS_ActionDrawEllipse4Points::doTriggerCreateEntity() {
     return en;
 }
 
-void RS_ActionDrawEllipse4Points::doTriggerCompletion(bool success) {
+void RS_ActionDrawEllipse4Points::doTriggerCompletion([[maybe_unused]]bool success) {
     setStatus(SetPoint1);
 }
 

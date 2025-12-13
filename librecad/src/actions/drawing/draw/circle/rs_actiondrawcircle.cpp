@@ -48,7 +48,7 @@ RS_Entity* RS_ActionDrawCircle::doTriggerCreateEntity() {
     return circle;
 }
 
-void RS_ActionDrawCircle::doTriggerCompletion(bool success) {
+void RS_ActionDrawCircle::doTriggerCompletion([[maybe_unused]]bool success) {
     setStatus(SetCenter);
     reset();
 }

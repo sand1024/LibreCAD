@@ -70,7 +70,7 @@ bool RS_ActionPolylineAdd::doTriggerModifications(LC_DocumentModificationBatch& 
     return false;
 }
 
-void RS_ActionPolylineAdd::doTriggerCompletion(bool success) {
+void RS_ActionPolylineAdd::doTriggerCompletion([[maybe_unused]]bool success) {
     select(m_polylineToModify);
 }
 

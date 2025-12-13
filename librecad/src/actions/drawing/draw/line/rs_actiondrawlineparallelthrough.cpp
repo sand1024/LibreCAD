@@ -79,7 +79,7 @@ bool RS_ActionDrawLineParallelThrough::doTriggerModifications(LC_DocumentModific
     return false;
 }
 
-void RS_ActionDrawLineParallelThrough::doTriggerCompletion(bool success) {
+void RS_ActionDrawLineParallelThrough::doTriggerCompletion([[maybe_unused]]bool success) {
 }
 
 void RS_ActionDrawLineParallelThrough::onMouseMoveEvent([[maybe_unused]]int status, LC_MouseEvent *e) {

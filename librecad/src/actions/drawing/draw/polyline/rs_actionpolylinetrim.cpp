@@ -60,7 +60,7 @@ bool RS_ActionPolylineTrim::doTriggerModifications(LC_DocumentModificationBatch&
     return false;
 }
 
-void RS_ActionPolylineTrim::doTriggerCompletion(bool success) {
+void RS_ActionPolylineTrim::doTriggerCompletion([[maybe_unused]]bool success) {
     m_segment1 = m_segment2 = nullptr;
     setStatus(SetSegment1);
 }

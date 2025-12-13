@@ -65,7 +65,7 @@ RS_Entity* RS_ActionDimAngular::doTriggerCreateEntity() {
     return nullptr;
 }
 
-void RS_ActionDimAngular::doTriggerCompletion(bool success) {
+void RS_ActionDimAngular::doTriggerCompletion([[maybe_unused]]bool success) {
     setStatus( SetLine1);
     RS_Snapper::finish();
 }

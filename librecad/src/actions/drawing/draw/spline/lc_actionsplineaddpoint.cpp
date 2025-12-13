@@ -37,7 +37,7 @@ void LC_ActionSplineAddPoint::doTriggerOther() {
     moveRelativeZero(m_vertexPoint);
 }
 
-void LC_ActionSplineAddPoint::doTriggerCompletion(bool success) {
+void LC_ActionSplineAddPoint::doTriggerCompletion([[maybe_unused]]bool success) {
     m_directionFromStart = false;
     m_endpointIsSelected = false;
     setStatus(SetBeforeControlPoint);

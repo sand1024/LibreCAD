@@ -1282,7 +1282,7 @@ void QG_GraphicView::layerActivated(RS_Layer *layer) {
                                             }
                                             ctx.dontSetActiveLayerAndPen();
                                             return true;
-                                        }, [this](LC_DocumentModificationBatch& ctx, RS_Document* doc)-> void {
+                                        }, [this]([[maybe_unused]]LC_DocumentModificationBatch& ctx, RS_Document* doc)-> void {
                                             RS_Selection::unselectAllInDocument(doc, getViewPort());
                                         });
                 }

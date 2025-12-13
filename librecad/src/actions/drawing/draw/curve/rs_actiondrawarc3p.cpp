@@ -78,7 +78,7 @@ RS_Entity* RS_ActionDrawArc3P::doTriggerCreateEntity(){
     return nullptr;
 }
 
-void RS_ActionDrawArc3P::doTriggerCompletion(bool success){
+void RS_ActionDrawArc3P::doTriggerCompletion([[maybe_unused]]bool success){
     m_alternatedPoints = false;
     setStatus(SetPoint1);
     reset();

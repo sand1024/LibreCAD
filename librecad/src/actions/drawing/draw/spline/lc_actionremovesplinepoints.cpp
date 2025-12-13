@@ -34,7 +34,7 @@ LC_ActionRemoveSplinePoints::LC_ActionRemoveSplinePoints(LC_ActionContext *actio
     :LC_ActionSplineModifyBase("SplineRemovePoint", actionContext,RS2::ActionDrawSplinePointRemove) {
 }
 
-void LC_ActionRemoveSplinePoints::doTriggerCompletion(bool success) {
+void LC_ActionRemoveSplinePoints::doTriggerCompletion([[maybe_unused]]bool success) {
     if (!mayModifySplineEntity(m_entityToModify)) {
         unselect(m_entityToModify);
         setStatus(SetEntity);

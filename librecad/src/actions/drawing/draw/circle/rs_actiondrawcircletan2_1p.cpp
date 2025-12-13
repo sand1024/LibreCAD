@@ -93,7 +93,7 @@ RS_Entity* RS_ActionDrawCircleTan2_1P::doTriggerCreateEntity() {
     return circle;
 }
 
-void RS_ActionDrawCircleTan2_1P::doTriggerCompletion(bool success) {
+void RS_ActionDrawCircleTan2_1P::doTriggerCompletion([[maybe_unused]]bool success) {
     m_actionData->circles.clear();
     init(SetCircle1);
 }

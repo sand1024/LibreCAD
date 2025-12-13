@@ -94,7 +94,7 @@ RS_Entity* RS_ActionDrawCircleInscribe::doTriggerCreateEntity() {
     return circle;
 }
 
-void RS_ActionDrawCircleInscribe::doTriggerCompletion(bool success) {
+void RS_ActionDrawCircleInscribe::doTriggerCompletion([[maybe_unused]]bool success) {
     clearLines(false);
     setStatus(SetLine1);
 }

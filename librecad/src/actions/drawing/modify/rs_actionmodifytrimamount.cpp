@@ -81,7 +81,7 @@ bool RS_ActionModifyTrimAmount::doTriggerModifications(LC_DocumentModificationBa
     return false;
 }
 
-void RS_ActionModifyTrimAmount::doTriggerCompletion(bool success) {
+void RS_ActionModifyTrimAmount::doTriggerCompletion([[maybe_unused]]bool success) {
     m_trimEntity = nullptr;
     setStatus(ChooseTrimEntity);
 }

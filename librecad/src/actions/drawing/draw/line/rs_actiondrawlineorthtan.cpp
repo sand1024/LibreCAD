@@ -97,7 +97,7 @@ RS_Entity* RS_ActionDrawLineOrthTan::doTriggerCreateEntity() {
     return newEntity;
 }
 
-void RS_ActionDrawLineOrthTan::doTriggerCompletion(bool success) {
+void RS_ActionDrawLineOrthTan::doTriggerCompletion([[maybe_unused]]bool success) {
     setStatus(SetCircle);
     m_actionData->circle = nullptr;
 }

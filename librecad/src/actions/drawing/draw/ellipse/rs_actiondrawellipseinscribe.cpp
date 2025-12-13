@@ -93,7 +93,7 @@ RS_Entity* RS_ActionDrawEllipseInscribe::doTriggerCreateEntity() {
     return ellipse;
 }
 
-void RS_ActionDrawEllipseInscribe::doTriggerCompletion(bool success) {
+void RS_ActionDrawEllipseInscribe::doTriggerCompletion([[maybe_unused]]bool success) {
     for (RS_Line* const p : m_actionData->lines) {
         if (p == nullptr) {
             continue;

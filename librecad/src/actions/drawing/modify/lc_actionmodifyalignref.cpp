@@ -45,7 +45,7 @@ void LC_ActionModifyAlignRef::doTriggerSelectionUpdate(bool keepSelected, const 
     }
 }
 
-void LC_ActionModifyAlignRef::doTriggerCompletion(bool success) {
+void LC_ActionModifyAlignRef::doTriggerCompletion([[maybe_unused]]bool success) {
     finish(false);
 }
 

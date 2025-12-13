@@ -50,7 +50,7 @@ void RS_ActionBlocksExplode::doTriggerSelectionUpdate(bool keepSelected, const L
     }
 }
 
-void RS_ActionBlocksExplode::doTriggerCompletion(bool success) {
+void RS_ActionBlocksExplode::doTriggerCompletion([[maybe_unused]]bool success) {
     m_document->updateInserts();
 }
 

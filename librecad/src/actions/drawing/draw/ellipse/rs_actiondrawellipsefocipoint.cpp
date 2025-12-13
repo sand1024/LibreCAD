@@ -71,7 +71,7 @@ RS_Entity* RS_ActionDrawEllipseFociPoint::doTriggerCreateEntity() {
     return ellipse;
 }
 
-void RS_ActionDrawEllipseFociPoint::doTriggerCompletion(bool success) {
+void RS_ActionDrawEllipseFociPoint::doTriggerCompletion([[maybe_unused]]bool success) {
     setStatus(SetFocus1);
 }
 

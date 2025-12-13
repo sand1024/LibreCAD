@@ -198,7 +198,7 @@ bool LC_AbstractActionWithPreview::doTriggerModifications(LC_DocumentModificatio
     return result;
 }
 
-void LC_AbstractActionWithPreview::doTriggerCompletion(bool success) {
+void LC_AbstractActionWithPreview::doTriggerCompletion([[maybe_unused]]bool success) {
     doAfterTrigger(); // inherited actions may do additional processing there
     // cleanup alternative mode after trigger
     clearAlternativeActionMode();

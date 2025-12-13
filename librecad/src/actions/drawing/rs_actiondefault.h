@@ -100,7 +100,7 @@ protected:
     RS_Entity* getClone(RS_Entity* e);
 
     // fixme - sand - complete!
-    bool doTriggerModifications(LC_DocumentModificationBatch& modificationData) override {return true;};
+    bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& modificationData) override {return true;};
 
 private:
 

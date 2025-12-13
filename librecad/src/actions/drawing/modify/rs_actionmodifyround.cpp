@@ -147,7 +147,7 @@ bool RS_ActionModifyRound::doTriggerModifications(LC_DocumentModificationBatch& 
     return true;
 }
 
-void RS_ActionModifyRound::doTriggerCompletion(bool success) {
+void RS_ActionModifyRound::doTriggerCompletion([[maybe_unused]]bool success) {
     m_actionData->coord1 = {};
     m_actionData->coord2 = {};
     m_entity1            = nullptr;

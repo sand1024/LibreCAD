@@ -63,7 +63,7 @@ RS_Entity* LC_ActionDrawCircle2PR::doTriggerCreateEntity() {
     return circle;
 }
 
-void LC_ActionDrawCircle2PR::doTriggerCompletion(bool success) {
+void LC_ActionDrawCircle2PR::doTriggerCompletion([[maybe_unused]]bool success) {
     setStatus(SetPoint1);
     reset();
 }

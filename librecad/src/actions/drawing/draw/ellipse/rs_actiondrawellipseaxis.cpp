@@ -99,7 +99,7 @@ RS_Entity* RS_ActionDrawEllipseAxis::doTriggerCreateEntity() {
     return ellipse;
 }
 
-void RS_ActionDrawEllipseAxis::doTriggerCompletion(bool success) {
+void RS_ActionDrawEllipseAxis::doTriggerCompletion([[maybe_unused]]bool success) {
     setStatus(SetCenter);
 }
 

@@ -61,7 +61,7 @@ void LC_ActionModifyAlign::onSelectionCompleted([[maybe_unused]]bool singleEntit
     updateMouseButtonHints();
 }
 
-void LC_ActionModifyAlign::doTriggerCompletion(bool success) {
+void LC_ActionModifyAlign::doTriggerCompletion([[maybe_unused]]bool success) {
     m_selectionComplete = false;
     m_selectedEntities.clear();
 }

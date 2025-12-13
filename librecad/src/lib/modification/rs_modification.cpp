@@ -1542,7 +1542,7 @@ bool RS_Modification::trimAtomicByEnding(RS_AtomicEntity* atomicToTrim, RS_Vecto
 }
 
 LC_BevelResult RS_Modification::bevel(const RS_Vector& coord1, RS_AtomicEntity* entity1, const RS_Vector& coord2, RS_AtomicEntity* entity2,
-                                                       RS_BevelData& data, bool previewOnly, LC_DocumentModificationBatch& ctx){
+                                                       RS_BevelData& data, [[maybe_unused]]bool previewOnly, LC_DocumentModificationBatch& ctx){
 
     Q_ASSERT(entity1 != nullptr && entity2 != nullptr);
 

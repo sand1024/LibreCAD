@@ -67,7 +67,7 @@ RS_Entity* RS_ActionDrawCircle3P::doTriggerCreateEntity() {
     return nullptr;
 }
 
-void RS_ActionDrawCircle3P::doTriggerCompletion(bool success) {
+void RS_ActionDrawCircle3P::doTriggerCompletion([[maybe_unused]]bool success) {
     setStatus(SetPoint1);
     reset();
 }

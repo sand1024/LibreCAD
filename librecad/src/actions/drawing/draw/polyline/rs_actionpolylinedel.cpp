@@ -63,7 +63,7 @@ bool RS_ActionPolylineDel::doTriggerModifications(LC_DocumentModificationBatch& 
     return true;
 }
 
-void RS_ActionPolylineDel::doTriggerCompletion(bool success) {
+void RS_ActionPolylineDel::doTriggerCompletion([[maybe_unused]]bool success) {
     if (m_polylineToModify != nullptr) {
         select(m_polylineToModify);
     }

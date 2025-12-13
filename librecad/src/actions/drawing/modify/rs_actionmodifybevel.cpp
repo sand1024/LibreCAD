@@ -86,7 +86,7 @@ bool RS_ActionModifyBevel::doTriggerModifications(LC_DocumentModificationBatch& 
     return false;
 }
 
-void RS_ActionModifyBevel::doTriggerCompletion(bool success) {
+void RS_ActionModifyBevel::doTriggerCompletion([[maybe_unused]]bool success) {
     m_actionData->coord1 = {};
     m_actionData->coord2 = {};
     m_entity1            = nullptr;

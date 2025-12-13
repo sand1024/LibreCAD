@@ -67,7 +67,7 @@ RS_Entity* RS_ActionDrawLineHorVert::doTriggerCreateEntity() {
     return line;
 }
 
-void RS_ActionDrawLineHorVert::doTriggerCompletion(bool success) {
+void RS_ActionDrawLineHorVert::doTriggerCompletion([[maybe_unused]]bool success) {
 }
 
 void RS_ActionDrawLineHorVert::onMouseMoveEvent([[maybe_unused]]int status, LC_MouseEvent *e) {

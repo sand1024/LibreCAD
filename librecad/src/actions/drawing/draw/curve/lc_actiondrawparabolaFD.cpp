@@ -122,7 +122,7 @@ RS_Entity* LC_ActionDrawParabolaFD::doTriggerCreateEntity() {
     return nullptr;
 }
 
-void LC_ActionDrawParabolaFD::doTriggerCompletion(bool success) {
+void LC_ActionDrawParabolaFD::doTriggerCompletion([[maybe_unused]]bool success) {
     init(SetFocus);
 }
 

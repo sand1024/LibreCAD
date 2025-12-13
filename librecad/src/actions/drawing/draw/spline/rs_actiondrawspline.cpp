@@ -79,7 +79,7 @@ RS_Entity* RS_ActionDrawSpline::doTriggerCreateEntity() {
     return m_actionData->spline;
 }
 
-void RS_ActionDrawSpline::doTriggerCompletion(bool success) {
+void RS_ActionDrawSpline::doTriggerCompletion([[maybe_unused]]bool success) {
     m_actionData->spline = nullptr;
 }
 

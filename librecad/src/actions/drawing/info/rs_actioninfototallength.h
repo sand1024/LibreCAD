@@ -51,7 +51,7 @@ protected:
     void doTrigger() override;
     bool isAllowTriggerOnEmptySelection() override;
     void finishMouseMoveOnSelection(LC_MouseEvent *event) override;
-    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override {return false;}
+    bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& ctx) override {return false;}
 };
 
 #endif

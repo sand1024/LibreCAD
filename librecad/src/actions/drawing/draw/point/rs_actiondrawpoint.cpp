@@ -44,7 +44,7 @@ RS_Entity* RS_ActionDrawPoint::doTriggerCreateEntity() {
     return nullptr;
 }
 
-void RS_ActionDrawPoint::doTriggerCompletion(bool success) {
+void RS_ActionDrawPoint::doTriggerCompletion([[maybe_unused]]bool success) {
     moveRelativeZero(*m_pointPosition);
 }
 

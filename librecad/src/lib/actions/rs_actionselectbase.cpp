@@ -26,7 +26,6 @@
 
 #include "rs_debug.h"
 #include "rs_document.h"
-#include "rs_entitycontainer.h"
 #include "rs_selection.h"
 
 RS_ActionSelectBase::RS_ActionSelectBase(const char* name,LC_ActionContext *actionContext, RS2::ActionType actionType, QList<RS2::EntityType> entityTypeList)

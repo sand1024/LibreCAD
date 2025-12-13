@@ -65,7 +65,7 @@ bool LC_ActionDrawMidLine::doTriggerModifications(LC_DocumentModificationBatch& 
     return false;
 }
 
-void LC_ActionDrawMidLine::doTriggerCompletion(bool success) {
+void LC_ActionDrawMidLine::doTriggerCompletion([[maybe_unused]]bool success) {
     setStatus(SetEntity1);
 }
 

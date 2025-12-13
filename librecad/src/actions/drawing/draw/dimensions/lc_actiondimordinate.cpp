@@ -85,7 +85,7 @@ RS_Entity* LC_ActionDimOrdinate::doTriggerCreateEntity() {
     return dim;
 }
 
-void LC_ActionDimOrdinate::doTriggerCompletion(bool success) {
+void LC_ActionDimOrdinate::doTriggerCompletion([[maybe_unused]]bool success) {
     m_actionData->ctrlPressed = false;
     m_dimensionData->text = "";
     setStatus(SetFeaturePoint);

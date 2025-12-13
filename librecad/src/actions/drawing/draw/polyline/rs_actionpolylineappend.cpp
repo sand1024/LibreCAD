@@ -61,7 +61,7 @@ bool RS_ActionPolylineAppend::doTriggerModifications(LC_DocumentModificationBatc
     return false;
 }
 
-void RS_ActionPolylineAppend::doTriggerCompletion(bool success) {
+void RS_ActionPolylineAppend::doTriggerCompletion([[maybe_unused]]bool success) {
     m_originalPolyline = nullptr;
     m_actionData->polyline = nullptr;
 }

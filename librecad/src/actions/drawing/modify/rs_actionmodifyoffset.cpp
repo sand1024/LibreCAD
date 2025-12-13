@@ -67,7 +67,7 @@ void RS_ActionModifyOffset::doTriggerSelectionUpdate(bool keepSelected, const LC
     }
 }
 
-void RS_ActionModifyOffset::doTriggerCompletion(bool success) {
+void RS_ActionModifyOffset::doTriggerCompletion([[maybe_unused]]bool success) {
     finish(false);
 }
 

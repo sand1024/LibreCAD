@@ -28,7 +28,6 @@
 #include "lc_actioncontext.h"
 #include "lc_dlgentityproperties.h"
 #include "lc_latecompletionrequestor.h"
-#include "qc_applicationwindow.h"
 #include "rs_graphicview.h"
 
 LC_EntityPropertiesEditor::LC_EntityPropertiesEditor(LC_ActionContext* actionContext,  LC_LateCompletionRequestor* requestor)

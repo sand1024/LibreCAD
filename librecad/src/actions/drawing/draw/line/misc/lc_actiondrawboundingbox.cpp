@@ -92,12 +92,12 @@ bool LC_ActionDrawBoundingBox::doTriggerModifications(LC_DocumentModificationBat
     return true;
 }
 
-void LC_ActionDrawBoundingBox::doTriggerCompletion(bool success) {
+void LC_ActionDrawBoundingBox::doTriggerCompletion([[maybe_unused]]bool success) {
     m_selectedEntities.clear();
     finish(false);
 }
 
-void LC_ActionDrawBoundingBox::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+void LC_ActionDrawBoundingBox::doTriggerSelectionUpdate(bool keepSelected, [[maybe_unused]]const LC_DocumentModificationBatch& ctx) {
     if (!keepSelected) {
         unselect(m_selectedEntities);
     }

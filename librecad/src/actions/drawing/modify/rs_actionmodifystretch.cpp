@@ -60,8 +60,9 @@ bool RS_ActionModifyStretch::doTriggerModifications(LC_DocumentModificationBatch
         for (const auto e : *m_document) { // fixme - we don't rely on selection for stretch :(
             //
             // fixme - and check that e is editable.
-            if (e->isVisible() && e->rtti() != RS2::EntityHatch && e->isInWindow(m_actionData->firstCorner, m_actionData->secondCorner)
-                || e ->hasEndpointsWithinWindow(m_actionData->firstCorner, m_actionData->secondCorner)) {
+            if (e->isVisible() && (e->rtti() != RS2::EntityHatch) &&
+                (e->isInWindow(m_actionData->firstCorner, m_actionData->secondCorner) ||
+                 e ->hasEndpointsWithinWindow(m_actionData->firstCorner, m_actionData->secondCorner))) {
                 m_entitiesList.append(e);
             }
         }
@@ -80,7 +81,7 @@ bool RS_ActionModifyStretch::doTriggerModifications(LC_DocumentModificationBatch
     return true;
 }
 
-void RS_ActionModifyStretch::doTriggerCompletion(bool success) {
+void RS_ActionModifyStretch::doTriggerCompletion([[maybe_unused]]bool success) {
     if (m_removeOriginals) {
         setStatus(SetFirstCorner);
     }

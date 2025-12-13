@@ -61,7 +61,7 @@ RS_Entity* RS_ActionDrawEllipseCenter3Points::doTriggerCreateEntity() {
     return ellipse;
 }
 
-void RS_ActionDrawEllipseCenter3Points::doTriggerCompletion(bool success) {
+void RS_ActionDrawEllipseCenter3Points::doTriggerCompletion([[maybe_unused]]bool success) {
     setStatus(SetCenter);
 }
 

@@ -41,7 +41,7 @@ RS_Entity* LC_ActionDrawArc2PointsBase::doTriggerCreateEntity() {
     return nullptr;
 }
 
-void LC_ActionDrawArc2PointsBase::doTriggerCompletion(bool success) {
+void LC_ActionDrawArc2PointsBase::doTriggerCompletion([[maybe_unused]]bool success) {
     setStatus(SetPoint1);
     m_alternated = false;
 }

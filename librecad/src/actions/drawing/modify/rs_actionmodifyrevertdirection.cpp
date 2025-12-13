@@ -49,7 +49,7 @@ void RS_ActionModifyRevertDirection::doTriggerSelectionUpdate(bool keepSelected,
     }
 }
 
-void RS_ActionModifyRevertDirection::doTriggerCompletion(bool success) { // fixme - remove?
+void RS_ActionModifyRevertDirection::doTriggerCompletion([[maybe_unused]]bool success) { // fixme - remove?
 }
 
 bool RS_ActionModifyRevertDirection::isShowRefPointsOnHighlight() {

@@ -62,7 +62,7 @@ void RS_ActionModifyMoveRotate::doTriggerSelectionUpdate(bool keepSelected, cons
     }
 }
 
-void RS_ActionModifyMoveRotate::doTriggerCompletion(bool success) {
+void RS_ActionModifyMoveRotate::doTriggerCompletion([[maybe_unused]]bool success) {
     finish(false);
 }
 

@@ -90,7 +90,7 @@ RS_Entity* RS_ActionDrawCircleTan2::doTriggerCreateEntity() {
     return circle;
 }
 
-void RS_ActionDrawCircleTan2::doTriggerCompletion(bool success) {
+void RS_ActionDrawCircleTan2::doTriggerCompletion([[maybe_unused]]bool success) {
     for (auto p: m_actionData->circles) {
         p->setHighlighted(false);
     }

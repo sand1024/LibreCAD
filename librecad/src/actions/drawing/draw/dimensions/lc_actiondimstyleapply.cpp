@@ -81,7 +81,7 @@ bool LC_ActionDimStyleApply::doTriggerModifications(LC_DocumentModificationBatch
     return true;
 }
 
-void LC_ActionDimStyleApply::doTriggerCompletion(bool success) {
+void LC_ActionDimStyleApply::doTriggerCompletion([[maybe_unused]]bool success) {
     m_entityToApply = nullptr;
     m_applyStyleOverride = false;
 }

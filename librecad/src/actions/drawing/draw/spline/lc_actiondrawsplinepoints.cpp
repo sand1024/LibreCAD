@@ -68,7 +68,7 @@ void LC_ActionDrawSplinePoints::init(int status){
     reset(); // fixme - review reset, try to make it common with base action
 }
 
-void LC_ActionDrawSplinePoints::doTriggerCompletion(bool success) {
+void LC_ActionDrawSplinePoints::doTriggerCompletion([[maybe_unused]]bool success) {
     reset();
 }
 

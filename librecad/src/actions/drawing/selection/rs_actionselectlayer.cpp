@@ -27,7 +27,6 @@
 #include "rs_actionselectlayer.h"
 
 #include "rs_debug.h"
-#include "rs_document.h"
 #include "rs_selection.h"
 
 RS_ActionSelectLayer::RS_ActionSelectLayer(LC_ActionContext *actionContext)

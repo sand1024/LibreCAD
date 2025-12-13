@@ -98,7 +98,7 @@ RS_Entity* RS_ActionDrawLine::doTriggerCreateEntity() {
     return line;
 }
 
-void RS_ActionDrawLine::doTriggerCompletion(bool success) {
+void RS_ActionDrawLine::doTriggerCompletion([[maybe_unused]]bool success) {
 }
 
 void RS_ActionDrawLine::onMouseMoveEvent(int status, LC_MouseEvent *e) {

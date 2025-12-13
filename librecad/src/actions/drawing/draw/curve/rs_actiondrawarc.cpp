@@ -68,7 +68,7 @@ RS_Entity* RS_ActionDrawArc::doTriggerCreateEntity() {
     return arc;
 }
 
-void RS_ActionDrawArc::doTriggerCompletion(bool success) {
+void RS_ActionDrawArc::doTriggerCompletion([[maybe_unused]]bool success) {
     setStatus(SetCenter);
     reset();
 }

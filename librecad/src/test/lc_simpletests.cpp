@@ -142,7 +142,7 @@ void LC_SimpleTests::slotTestDumpEntities(RS_EntityContainer* d){
 			dumpFile
 					<< "<tr><td><table><tr>"
 					<< "<td>VIS:" << e->isVisible() << "</td>"
-					<< "<td>UND:" << e->isUndone() << "</td>"
+                    << "<td>UND:" << e->isDeleted() << "</td>"
 					<< "<td>SEL:" << e->isSelected() << "</td>"
 					<< "<td>TMP:" << e->getFlag(RS2::FlagTemp) << "</td>";
 			QString lay = "NULL";

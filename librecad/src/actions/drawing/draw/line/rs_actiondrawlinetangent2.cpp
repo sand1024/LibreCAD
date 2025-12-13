@@ -94,7 +94,7 @@ RS_Entity* RS_ActionDrawLineTangent2::doTriggerCreateEntity() {
     return newEntity;
 }
 
-void RS_ActionDrawLineTangent2::doTriggerCompletion(bool success) {
+void RS_ActionDrawLineTangent2::doTriggerCompletion([[maybe_unused]]bool success) {
     cleanup();
     setStatus(SetCircle1);
 }

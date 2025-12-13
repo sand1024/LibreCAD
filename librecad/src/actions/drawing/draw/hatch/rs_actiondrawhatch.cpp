@@ -166,11 +166,11 @@ bool RS_ActionDrawHatch::doTriggerModifications(LC_DocumentModificationBatch& ct
     return true;
 }
 
-void RS_ActionDrawHatch::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+void RS_ActionDrawHatch::doTriggerSelectionUpdate([[maybe_unused]]bool keepSelected, [[maybe_unused]]const LC_DocumentModificationBatch& ctx) {
     // fixme - complete
 }
 
-void RS_ActionDrawHatch::doTriggerCompletion(bool success) {
+void RS_ActionDrawHatch::doTriggerCompletion([[maybe_unused]]bool success) {
     unselectAll();
     finish(false);
 }

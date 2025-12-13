@@ -88,7 +88,7 @@ RS_Entity* RS_ActionDrawImage::doTriggerCreateEntity() {
     return nullptr;
 }
 
-void RS_ActionDrawImage::doTriggerCompletion(bool success) {
+void RS_ActionDrawImage::doTriggerCompletion([[maybe_unused]]bool success) {
     m_viewport->zoomAuto();
     finish(false);
 }

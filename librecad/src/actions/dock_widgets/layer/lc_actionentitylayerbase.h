@@ -38,7 +38,7 @@ protected:
     void doTrigger() override;
     void applyBoxSelectionModeIfNeeded(RS_Vector mouse) override;
     void proceedSelectedEntity(LC_MouseEvent* e) override;
-    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override {return false;}
+    bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& ctx) override {return false;}
 };
 
 #endif // LC_ACTIONLAYERBASE_H

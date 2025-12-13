@@ -33,8 +33,8 @@ protected:
     ~LC_UndoableDocumentModificationAction() override = default;
     void previewEntitiesToAdd(LC_DocumentModificationBatch& ctx) const;
     virtual bool doTriggerModifications(LC_DocumentModificationBatch& ctx)  = 0;
-    virtual void doTriggerCompletion(bool success) {}
-    virtual void doTriggerSelections(const LC_DocumentModificationBatch& ctx){};
+    virtual void doTriggerCompletion([[maybe_unused]]bool success) {}
+    virtual void doTriggerSelections([[maybe_unused]]const LC_DocumentModificationBatch& ctx){};
     void doTrigger() override;
 };
 

@@ -130,7 +130,7 @@ void LC_ActionPreSelectionAwareBase::endBoxSelectionMode(LC_MouseEvent* e) {
     }
 }
 
-void LC_ActionPreSelectionAwareBase::onMouseLeftButtonPress(int status, LC_MouseEvent* e) {
+void LC_ActionPreSelectionAwareBase::onMouseLeftButtonPress([[maybe_unused]]int status, LC_MouseEvent* e) {
     if (!m_selectionComplete){
         if (!m_inBoxSelectionMode) {
             m_selectionCorner1 = e->graphPoint;

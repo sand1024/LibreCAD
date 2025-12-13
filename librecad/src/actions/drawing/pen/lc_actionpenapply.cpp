@@ -68,7 +68,7 @@ bool LC_ActionPenApply::doTriggerModifications(LC_DocumentModificationBatch& ctx
     return true;
 }
 
-void LC_ActionPenApply::doTriggerCompletion(bool success) {
+void LC_ActionPenApply::doTriggerCompletion([[maybe_unused]]bool success) {
     if (m_updateInserts) {
         m_document->updateInserts();
         m_updateInserts = false;

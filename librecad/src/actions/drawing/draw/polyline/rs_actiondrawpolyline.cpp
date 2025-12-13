@@ -64,7 +64,7 @@ void RS_ActionDrawPolyline::init(int status){
 }
 
 
-bool RS_ActionDrawPolyline::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
+bool RS_ActionDrawPolyline::doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& ctx) {
     if (m_actionData->polyline == nullptr) {
         return false;
     }
@@ -74,7 +74,7 @@ bool RS_ActionDrawPolyline::doTriggerModifications(LC_DocumentModificationBatch&
     return true;
 }
 
-void RS_ActionDrawPolyline::doTriggerCompletion(bool success) {
+void RS_ActionDrawPolyline::doTriggerCompletion([[maybe_unused]]bool success) {
     m_actionData->polyline = nullptr;
 }
 

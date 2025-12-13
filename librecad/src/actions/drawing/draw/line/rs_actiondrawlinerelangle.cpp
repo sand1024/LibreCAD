@@ -103,7 +103,7 @@ RS_Entity* RS_ActionDrawLineRelAngle::doTriggerCreateEntity() {
     return line;
 }
 
-void RS_ActionDrawLineRelAngle::doTriggerCompletion(bool success) {
+void RS_ActionDrawLineRelAngle::doTriggerCompletion([[maybe_unused]]bool success) {
 }
 
 void RS_ActionDrawLineRelAngle::onMouseMoveEvent(int status, LC_MouseEvent *e) {

@@ -76,7 +76,7 @@ bool RS_ActionBlocksCreate::doTriggerModifications(LC_DocumentModificationBatch&
     return true;
 }
 
-void RS_ActionBlocksCreate::doTriggerCompletion(bool success) {
+void RS_ActionBlocksCreate::doTriggerCompletion([[maybe_unused]]bool success) {
     setStatus(getStatus()+1); // clear mouse button hints
     updateMouseButtonHints();
     finish(false);

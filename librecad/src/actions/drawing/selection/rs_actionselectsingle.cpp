@@ -26,7 +26,6 @@
 
 #include "rs_actionselectsingle.h"
 
-#include "rs_document.h"
 #include "rs_entity.h"
 #include "rs_selection.h"
 

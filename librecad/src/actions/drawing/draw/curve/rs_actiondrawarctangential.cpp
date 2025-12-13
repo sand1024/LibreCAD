@@ -66,7 +66,7 @@ RS_Entity* RS_ActionDrawArcTangential::doTriggerCreateEntity() {
     return arc;
 }
 
-void RS_ActionDrawArcTangential::doTriggerCompletion(bool success) {
+void RS_ActionDrawArcTangential::doTriggerCompletion([[maybe_unused]]bool success) {
     setStatus(SetBaseEntity);
     double oldRadius = m_arcData->radius;
 

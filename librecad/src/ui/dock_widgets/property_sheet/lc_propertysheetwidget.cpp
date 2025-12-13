@@ -25,7 +25,7 @@
 
 #include <ostream>
 
-#include "lc_entity_meta_utils.h"
+#include "lc_entitymetauiutils.h"
 #include "lc_entitypropertyvaluedelegate.h"
 #include "lc_graphicviewport.h"
 #include "lc_parabola.h"
@@ -118,7 +118,7 @@ void LC_PropertySheetWidget::setupSelectionCombobox() const {
         auto selection = RS_Selection(m_document, m_viewport);
         QMap<RS2::EntityType, int> selectedEntityTypesMap;
         selection.countSelectedEntities(selectedEntityTypesMap);
-        LC_EntityMetaUtils::setupSelectionEntityTypesCombobox(ui->cbSelection, selectedEntityTypesMap);
+        LC_EntityMetaUIUtils::setupSelectionEntityTypesCombobox(ui->cbSelection, selectedEntityTypesMap);
     }
     ui->cbSelection->blockSignals(false);
 }

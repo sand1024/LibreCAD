@@ -53,11 +53,11 @@ bool LC_ActionModifyMoveAdjust::doTriggerModifications(LC_DocumentModificationBa
     return true;
 }
 
-void LC_ActionModifyMoveAdjust::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+void LC_ActionModifyMoveAdjust::doTriggerSelectionUpdate([[maybe_unused]]bool keepSelected, const LC_DocumentModificationBatch& ctx) {
     select(ctx.entitiesToAdd);
 }
 
-void LC_ActionModifyMoveAdjust::doTriggerCompletion(bool success) {
+void LC_ActionModifyMoveAdjust::doTriggerCompletion([[maybe_unused]]bool success) {
     finish(false);
 }
 

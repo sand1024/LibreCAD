@@ -71,7 +71,7 @@ RS_Entity* LC_ActionDrawGDTFeatureControlFrame::doTriggerCreateEntity() {
     return controlFrame;
 }
 
-void LC_ActionDrawGDTFeatureControlFrame::doTriggerCompletion(bool success) {
+void LC_ActionDrawGDTFeatureControlFrame::doTriggerCompletion([[maybe_unused]]bool success) {
     m_actionData->clear();
     setStatus(ShowDialog);
 }

@@ -70,7 +70,7 @@ RS_Entity* RS_ActionDrawCircle2P::doTriggerCreateEntity() {
     return nullptr;
 }
 
-void RS_ActionDrawCircle2P::doTriggerCompletion(bool success) {
+void RS_ActionDrawCircle2P::doTriggerCompletion([[maybe_unused]]bool success) {
     setStatus(SetPoint1);
     reset();
 }

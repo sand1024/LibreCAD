@@ -72,7 +72,7 @@ void RS_ActionModifyMove::doTriggerSelectionUpdate(bool keepSelected, const LC_D
    }
 }
 
-void RS_ActionModifyMove::doTriggerCompletion(bool success) {
+void RS_ActionModifyMove::doTriggerCompletion([[maybe_unused]]bool success) {
     finish(false);
 }
 

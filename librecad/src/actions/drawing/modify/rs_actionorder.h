@@ -48,7 +48,7 @@ protected:
     void onSelectionCompleted(bool singleEntity, bool fromInit) override;
     void onMouseMoveEventSelected(int status, LC_MouseEvent *e) override;
     void doTrigger() override;
-    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override {return false;}
+    bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& ctx) override {return false;}
 };
 
 #endif

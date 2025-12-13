@@ -72,7 +72,7 @@ bool LC_ActionEditPasteTransform::doTriggerModifications(LC_DocumentModification
     return true;
 }
 
-void LC_ActionEditPasteTransform::doTriggerCompletion(bool success) {
+void LC_ActionEditPasteTransform::doTriggerCompletion([[maybe_unused]]bool success) {
     if (!m_invokedWithControl) {
         finish(false);
     }

@@ -62,7 +62,7 @@ bool LC_ActionDrawLinePolygonBase::doTriggerModifications(LC_DocumentModificatio
     return true;
 }
 
-void LC_ActionDrawLinePolygonBase::doTriggerCompletion(bool success) {
+void LC_ActionDrawLinePolygonBase::doTriggerCompletion([[maybe_unused]]bool success) {
     if (m_completeActionOnTrigger) {
         setStatus(-1);
     }

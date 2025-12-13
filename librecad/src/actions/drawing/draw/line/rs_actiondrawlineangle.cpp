@@ -92,7 +92,7 @@ RS_Entity* RS_ActionDrawLineAngle::doTriggerCreateEntity() {
     return line;
 }
 
-void RS_ActionDrawLineAngle::doTriggerCompletion(bool success) {
+void RS_ActionDrawLineAngle::doTriggerCompletion([[maybe_unused]]bool success) {
     if (!m_persistRelativeZero){
         RS_Vector &newRelZero = m_actionData->data.startpoint;
         if (m_actionData->snpPoint == SNAP_MIDDLE){ // snap to middle

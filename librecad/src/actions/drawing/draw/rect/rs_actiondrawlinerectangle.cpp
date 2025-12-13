@@ -71,7 +71,7 @@ RS_Entity* RS_ActionDrawLineRectangle::doTriggerCreateEntity() {
     return polyline;
 }
 
-void RS_ActionDrawLineRectangle::doTriggerCompletion(bool success) {
+void RS_ActionDrawLineRectangle::doTriggerCompletion([[maybe_unused]]bool success) {
 }
 
 void RS_ActionDrawLineRectangle::onMouseMoveEvent(int status, LC_MouseEvent *e) {

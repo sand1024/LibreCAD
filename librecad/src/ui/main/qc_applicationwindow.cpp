@@ -71,7 +71,7 @@
 
 #include <QMenuBar>
 
-#include "lc_propertysheetwidget.h"
+// #include "lc_propertysheetwidget.h"
 #include "qc_dialogfactory.h"
 #include "qc_mdiwindow.h"
 #include "qg_actionhandler.h"
@@ -333,7 +333,7 @@ void QC_ApplicationWindow::setupWidgetsByWindow(QC_MDIWindow *w) const {
     m_activeLayerNameWidget->setGraphicView(gv);
     m_selectionWidget->setGraphicView(gv);
     m_penWizard->setGraphicView(gv);
-    m_propertySheetWidget->setGraphicView(gv);
+    // m_propertySheetWidget->setGraphicView(gv);
 }
 
 /**
@@ -947,7 +947,7 @@ void QC_ApplicationWindow::updateWidgetsAsDocumentLoaded(const QC_MDIWindow *w){
     m_namedViewsWidget->reload();
     m_ucsListWidget->reload();
     m_quickInfoWidget->updateFormats();
-    m_propertySheetWidget->updateFormats();
+    // m_propertySheetWidget->updateFormats();
 
     auto graphic = w->getGraphic();
     if (graphic != nullptr) {
@@ -1043,7 +1043,7 @@ void QC_ApplicationWindow::changeDrawingOptions(int tabToShow){
     if (dialogResult == QDialog::Accepted) {
         updateCoordinateWidgetFormat();
         m_quickInfoWidget->updateFormats();
-        m_propertySheetWidget->updateFormats();
+        // m_propertySheetWidget->updateFormats();
         m_anglesBasisWidget->update(graphic);
         graphicView->loadSettings();
         graphic->update();
@@ -1876,7 +1876,7 @@ void QC_ApplicationWindow::enableWidgets(bool enable) {
     enableWidgetList(enable, {
                           m_penPaletteWidget,
                           m_quickInfoWidget,
-                          m_propertySheetWidget,
+                          // m_propertySheetWidget,
                           m_blockWidget,
                           m_penToolBar,
                           m_penWizard,

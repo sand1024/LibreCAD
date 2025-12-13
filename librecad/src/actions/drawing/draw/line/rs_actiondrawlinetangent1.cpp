@@ -72,7 +72,7 @@ RS_Entity* RS_ActionDrawLineTangent1::doTriggerCreateEntity() {
     return nullptr;
 }
 
-void RS_ActionDrawLineTangent1::doTriggerCompletion(bool success) {
+void RS_ActionDrawLineTangent1::doTriggerCompletion([[maybe_unused]]bool success) {
     setStatus(SetPoint);
     m_tangent.reset();
 }

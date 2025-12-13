@@ -60,7 +60,7 @@ bool RS_ActionModifyAttributes::doTriggerModifications(LC_DocumentModificationBa
     return true;
 }
 
-void RS_ActionModifyAttributes::doTriggerCompletion(bool success) {
+void RS_ActionModifyAttributes::doTriggerCompletion([[maybe_unused]]bool success) {
 }
 
 void RS_ActionModifyAttributes::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {  // fixme - INCLUDE TO GENERIC FLOW?

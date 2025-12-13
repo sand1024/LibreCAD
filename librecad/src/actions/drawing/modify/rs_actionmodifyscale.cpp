@@ -88,7 +88,7 @@ void RS_ActionModifyScale::doTriggerSelectionUpdate(bool keepSelected, const LC_
     }
 }
 
-void RS_ActionModifyScale::doTriggerCompletion(bool success) {
+void RS_ActionModifyScale::doTriggerCompletion([[maybe_unused]]bool success) {
 }
 
 #define DRAW_TRIANGLES_ON_PREVIEW_NO
