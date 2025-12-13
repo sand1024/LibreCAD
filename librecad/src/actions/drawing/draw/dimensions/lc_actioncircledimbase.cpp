@@ -52,7 +52,7 @@ RS_Entity* LC_ActionCircleDimBase::doTriggerCreateEntity() {
     return nullptr;
 }
 
-void LC_ActionCircleDimBase::doTriggerCompletion(bool success) {
+void LC_ActionCircleDimBase::doTriggerCompletion([[maybe_unused]]bool success) {
     m_alternateAngle = false;
     RS_Snapper::finish();
 }

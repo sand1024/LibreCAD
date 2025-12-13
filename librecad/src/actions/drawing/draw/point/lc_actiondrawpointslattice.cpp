@@ -50,7 +50,7 @@ bool LC_ActionDrawPointsLattice::doTriggerModifications(LC_DocumentModificationB
     return true;
 }
 
-void LC_ActionDrawPointsLattice::doTriggerCompletion(bool success) {
+void LC_ActionDrawPointsLattice::doTriggerCompletion([[maybe_unused]] bool success) {
     setStatus(SetPoint1);
 }
 

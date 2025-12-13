@@ -62,7 +62,7 @@ bool LC_ActionPolylineChangeSegmentType::doTriggerModifications(LC_DocumentModif
     return false;
 }
 
-void LC_ActionPolylineChangeSegmentType::doTriggerCompletion(bool success) {
+void LC_ActionPolylineChangeSegmentType::doTriggerCompletion([[maybe_unused]]bool success) {
     if (true) {
         m_polylineSegment = nullptr;
         setStatus(SetSegment);

@@ -79,7 +79,7 @@ RS_Entity* LC_ActionDrawEllipse1Point::doTriggerCreateEntity() {
     return ellipse;
 }
 
-void LC_ActionDrawEllipse1Point::doTriggerCompletion(bool success) {
+void LC_ActionDrawEllipse1Point::doTriggerCompletion([[maybe_unused]]bool success) {
     setStatus(SetPoint);
 }
 

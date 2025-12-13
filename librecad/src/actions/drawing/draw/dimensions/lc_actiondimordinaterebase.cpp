@@ -72,5 +72,5 @@ void LC_ActionDimOrdinateRebase::doTriggerSelectionUpdate(bool keepSelected, con
     }
 }
 
-void LC_ActionDimOrdinateRebase::doTriggerCompletion(bool success) {
+void LC_ActionDimOrdinateRebase::doTriggerCompletion([[maybe_unused]]bool success) {
 }

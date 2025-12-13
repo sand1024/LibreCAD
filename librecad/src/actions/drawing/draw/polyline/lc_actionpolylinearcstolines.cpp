@@ -56,7 +56,7 @@ bool LC_ActionPolylineArcsToLines::doTriggerModifications(LC_DocumentModificatio
     return false;
 }
 
-void LC_ActionPolylineArcsToLines::doTriggerCompletion(bool success) {
+void LC_ActionPolylineArcsToLines::doTriggerCompletion([[maybe_unused]]bool success) {
     m_polyline = nullptr;
 }
 

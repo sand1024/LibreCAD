@@ -105,7 +105,7 @@ bool RS_Document::undoableModify(LC_GraphicViewport* viewport, const FunUndoable
 }
 
 bool RS_Document::undoableModify(LC_GraphicViewport* viewport, const FunUndoable& funModification) {
-    return undoableModify(viewport, funModification,  [](LC_DocumentModificationBatch&ctx, RS_Document* doc){});
+    return undoableModify(viewport, funModification,  []([[maybe_unused]]LC_DocumentModificationBatch&ctx, [[maybe_unused]]RS_Document* doc){});
 }
 
 void RS_Document::startBulkUndoablesCleanup() {
@@ -155,7 +155,7 @@ RS_Document::LC_SelectionInfo RS_Document::getSelectionInfo(const QList<RS2::Ent
     return result;
 }
 
-bool RS_Document::collectSelected(QList<RS_Entity*> &collect, bool deep, QList<RS2::EntityType> const &types) {
+bool RS_Document::collectSelected(QList<RS_Entity*> &collect, [[maybe_unused]] bool deep, QList<RS2::EntityType> const &types) {
     auto selection = getSelection();
     if (selection->isEmpty()) {
         return false;

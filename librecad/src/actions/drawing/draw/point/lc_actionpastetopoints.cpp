@@ -59,7 +59,7 @@ bool LC_ActionPasteToPoints::doTriggerModifications(LC_DocumentModificationBatch
     return true;
 }
 
-void LC_ActionPasteToPoints::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+void LC_ActionPasteToPoints::doTriggerSelectionUpdate(bool keepSelected, [[maybe_unused]] const LC_DocumentModificationBatch& ctx) {
     if (!m_removePointAfterPaste) {
         RS_Selection::selectEntitiesList(m_document, m_viewport, m_selectedEntities, keepSelected);
     }

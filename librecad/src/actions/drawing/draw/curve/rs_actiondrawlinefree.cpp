@@ -52,7 +52,7 @@ RS_Entity* RS_ActionDrawLineFree::doTriggerCreateEntity() {
     return nullptr;
 }
 
-void RS_ActionDrawLineFree::doTriggerCompletion(bool success) {
+void RS_ActionDrawLineFree::doTriggerCompletion([[maybe_unused]]bool success) {
     if (m_polyline != nullptr) {
         m_polyline = nullptr;
     }

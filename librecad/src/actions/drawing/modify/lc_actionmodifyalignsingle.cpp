@@ -60,7 +60,7 @@ bool LC_ActionModifyAlignSingle::doTriggerModifications(LC_DocumentModificationB
     return true;
 }
 
-void LC_ActionModifyAlignSingle::doTriggerCompletion(bool success) {
+void LC_ActionModifyAlignSingle::doTriggerCompletion( [[maybe_unused]] bool success) {
     m_entityToAlign = nullptr;
     if (m_finishActionAfterTrigger){
         setStatus(-1);

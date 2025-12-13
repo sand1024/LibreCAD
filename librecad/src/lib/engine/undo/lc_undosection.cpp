@@ -67,7 +67,7 @@ void LC_UndoSection::undoableReplace(RS_Entity* entityToDelete, RS_Entity* entit
 }
 
 bool LC_UndoSection::undoableExecute(RS_Document::FunUndoable doUndoable) {
-    return undoableExecute(doUndoable, [](LC_DocumentModificationBatch&ctx, RS_Document* doc){});
+    return undoableExecute(doUndoable, []([[maybe_unused]]LC_DocumentModificationBatch&ctx, [[maybe_unused]]RS_Document* doc){});
 }
 
 bool LC_UndoSection::undoableExecute(RS_Document::FunUndoable doUndoable, RS_Document::FunSelection doSelection) {
