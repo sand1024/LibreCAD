@@ -183,6 +183,7 @@ public:
     }
 
     virtual bool isVisible() const;
+    bool isInvisible() const {return !isVisible();}
     virtual void setVisible(bool v);
     virtual void setHighlighted(bool on);
     virtual bool isHighlighted() const;

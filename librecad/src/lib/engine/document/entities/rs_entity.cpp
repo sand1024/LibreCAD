@@ -423,16 +423,10 @@ bool RS_Entity::isVisible() const {  // FIXME _ ADD _ isInvisible method to avoi
         return false;
     }
 
-    // inserts are usually visible - the entities in them have their own
-    //   layers which might be frozen
-    // upd: i'm not sure if that is the best behaviour
-    //if (rtti()==RS2::EntityInsert) {
-    //	return true;
-    //}
-    // blocks are visible in editing window, issue#253
+    /*// blocks are visible in editing window, issue#253
     if (isDocument() && (rtti() == RS2::EntityBlock || rtti() == RS2::EntityInsert)) {
         return true;
-    }
+    }*/
     if (m_layer != nullptr) {
         return !m_layer->isFrozen();
     } else {
