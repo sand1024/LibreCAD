@@ -78,7 +78,13 @@ namespace RS_Math {
     double correctAngle(double a);
     //! \brief correct angle to be within [-PI, +PI)
     double correctAnglePlusMinusPi(double a);
-    //! \brief correct angle to be unsigned [0, +PI)
+    //! \brief correct angle to be unsigned [0, +2PI)
+    double correctAngle0To2Pi(double a);
+    //! \brief correct angle to be unsigned [0, PI)
+
+    // check whether angles defines the line with the same inclination to x axix (useful for comparing similar lines with different directions, for example)
+    bool isSameInclineAngles(double first, double second, double tolerance);
+
     double correctAngle0ToPi(double a);
 
     void calculateAngles(double &angle, double &complementary, double &supplementary, double &alt);

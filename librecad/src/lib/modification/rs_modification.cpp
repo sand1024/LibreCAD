@@ -24,7 +24,6 @@
 ** This copyright notice MUST APPEAR in all copies of the script!
 **
 **********************************************************************/
-// File: rs_modification.cpp
 #include <QSet>
 
 #include "lc_containertraverser.h"
@@ -46,9 +45,6 @@
 #include "rs_line.h"
 #include "rs_math.h"
 #include "rs_modification.h"
-
-#include <boost/container/options.hpp>
-#include <boost/intrusive/pointer_traits.hpp>
 
 #include "rs_mtext.h"
 #include "rs_polyline.h"

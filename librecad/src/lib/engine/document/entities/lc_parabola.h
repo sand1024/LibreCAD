@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef LC_Parabola_H
 #define LC_Parabola_H
 #include <vector>
+#include <boost/geometry/algorithms/buffer.hpp>
 
 #include "lc_quadratic.h"
 #include "lc_splinepoints.h"
@@ -182,6 +183,9 @@ public:
      * @return an approximate offset
      */
     std::unique_ptr<LC_Parabola> approximateOffset(double dist) const;
+
+    RS_Vector getFocus() {return data.focus;}
+    RS_Vector getVertex() {return data.vertex;}
 
 private:
     // rotate a point around the parabola vertex so, the parabola is y= ax^2 + bx + c, with a > 0 after the

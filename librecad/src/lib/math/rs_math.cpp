@@ -198,12 +198,23 @@ double RS_Math::correctAnglePlusMinusPi(double a) {
 /**
  * Returns the given angle as an Unsigned Angle in the range of 0 to +PI.
  */
-double RS_Math::correctAngle0ToPi(double a) {
+double RS_Math::correctAngle0To2Pi(double a) {
     return std::abs(std::remainder(a, g_twoPi));
 }
 
+double RS_Math::correctAngle0ToPi(double a) {
+    return std::abs(std::remainder(a, M_PI));
+}
+
+bool RS_Math::isSameInclineAngles(double first, double second, double tolerance) {
+    double a1 = correctAngle0ToPi(first);
+    double a2 = correctAngle0ToPi(second);
+
+    return equal(a1, a2, tolerance);
+}
+
 void RS_Math::calculateAngles(double &angle, double& complementary, double& supplementary, double& alt) {
-    angle = correctAngle0ToPi(angle);
+    angle = correctAngle0To2Pi(angle);
     complementary = M_PI_2 - angle;
     supplementary = M_PI - angle;
     alt =  M_PI + supplementary;
@@ -221,7 +232,7 @@ double RS_Math::getAngleDifference(double a1, double a2, bool reversed) {
 }
 
 double RS_Math::getAngleDifferenceU(double a1, double a2){
-    return correctAngle0ToPi(a1 - a2);
+    return correctAngle0To2Pi(a1 - a2);
 }
 
 /**

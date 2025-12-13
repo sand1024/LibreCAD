@@ -35,6 +35,7 @@ namespace LC_Convert{
     QString evaluateFraction(QString input, QRegularExpression rx, int index, int tailI);
     QString updateForFraction(QString input);
     double evalAngleValue(const QString &angleStr, bool &ok2);
+    bool toInt(const QString& strVal, int& res);
 };
 
 #endif // LC_CONVERT_H

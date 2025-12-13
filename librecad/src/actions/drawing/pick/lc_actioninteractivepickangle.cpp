@@ -210,7 +210,7 @@ void LC_ActionInteractivePickAngle::onMouseLeftButtonRelease(int status, LC_Mous
             if (e->isControl) {
                 double wcsPointAngle = m_point1.angleTo(snapped);
                 double ucsAngle = toUCSBasisAngle(wcsPointAngle);
-                m_angle = RS_Math::correctAngle0ToPi(ucsAngle);
+                m_angle = RS_Math::correctAngle0To2Pi(ucsAngle);
                 m_mayTrigger = true;
                 trigger();
             }
@@ -233,7 +233,7 @@ void LC_ActionInteractivePickAngle::onMouseLeftButtonRelease(int status, LC_Mous
                     auto point2 = ent->getNearestPointOnEntity(snapped, true);
                     auto intersection = sol.get(0);
                     double angle = LC_LineMath::angleFor3Points(m_point1, intersection, point2);
-                    m_angle = RS_Math::correctAngle0ToPi(angle);
+                    m_angle = RS_Math::correctAngle0To2Pi(angle);
                     double angleComplementary, angleSupplementary, angleAlt;
                     RS_Math::calculateAngles(m_angle, angleComplementary, angleSupplementary, angleAlt);
                     if (e->isShift) {

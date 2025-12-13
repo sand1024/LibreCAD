@@ -46,19 +46,19 @@ public:
 
     void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override{
         QStyledItemDelegate::paint(painter, option, index);
-        int col = index.column();
+        const int col = index.column();
 
         if (col > 0){
             bool draw = true;
             if (col == LC_LayerTreeModel::NAME){
-                LC_LayerTreeItem *layerItem = treeModel->getItemForIndex(index);
+                const LC_LayerTreeItem *layerItem = treeModel->getItemForIndex(index);
                 if (layerItem && (!layerItem->isVirtual())){
                     draw = false;
                 }
             }
             if (draw){
-                LC_LayerTreeModelOptions* options = treeModel->getOptions();
-                QColor color = options->itemsGridColor;
+                const LC_LayerTreeModelOptions* options = treeModel->getOptions();
+                const QColor color = options->itemsGridColor;
                 painter->save();
                 painter->setPen(color);
                 painter->drawRect(option.rect);
@@ -84,8 +84,8 @@ void LC_LayerTreeView::setup(LC_LayerTreeModel *treeModel){
 void LC_LayerTreeView::dragLeaveEvent(QDragLeaveEvent *event) {
      RS_DEBUG->print(RS_Debug::D_WARNING, "dragLeaveEvent");
      event->accept();
-     QModelIndex dropIndex = QModelIndex();
-     auto* widget = static_cast<LC_LayerTreeWidget*>(parentWidget());
+     const QModelIndex dropIndex = QModelIndex();
+     const auto* widget = static_cast<LC_LayerTreeWidget*>(parentWidget());
      widget->onDropEvent(dropIndex , LC_LayerTreeWidget::InvalidDrop);
 }
 
@@ -93,14 +93,14 @@ void LC_LayerTreeView::dragEnterEvent(QDragEnterEvent *event) {
      RS_DEBUG->print(RS_Debug::D_WARNING, "dragEnterEvent");
 
     // we disable drag&drop here rather than on model and flags() level
-    LC_LayerTreeModel *layerTreeModel = getTreeModel();
-    bool dragDropEnabled = layerTreeModel->getOptions()->dragDropEnabled;
+    const LC_LayerTreeModel *layerTreeModel = getTreeModel();
+    const bool dragDropEnabled = layerTreeModel->getOptions()->dragDropEnabled;
     if (!dragDropEnabled){
         return;
     }
 
-    QModelIndex dropIndex = indexAt(event->position().toPoint());
-    auto* layerTree = dynamic_cast<LC_LayerTreeWidget*>(parentWidget());
+    const QModelIndex dropIndex = indexAt(event->position().toPoint());
+    const auto* layerTree = dynamic_cast<LC_LayerTreeWidget*>(parentWidget());
     if( !dropIndex.isValid()) {
         return;
     }
@@ -117,13 +117,13 @@ void LC_LayerTreeView::dropEvent(QDropEvent* event) {
     }
     event->accept();
 
-    QModelIndex dropIndex = indexAt(event->position().toPoint());
-    auto* widget = dynamic_cast<LC_LayerTreeWidget*>(parentWidget());
+    const QModelIndex dropIndex = indexAt(event->position().toPoint());
+    const auto* widget = dynamic_cast<LC_LayerTreeWidget*>(parentWidget());
     if (widget == nullptr) {
         return;
     }
 
-    int dropIndicator = dropIndicatorPosition();
+    const int dropIndicator = dropIndicatorPosition();
 
     if (!dropIndex.isValid()) {
         // drop to empty space on viewpoint? Need to verify this case more
@@ -168,7 +168,7 @@ void LC_LayerTreeView::dropEvent(QDropEvent* event) {
 
 QStringList LC_LayerTreeView::saveTreeExpansionState() const {
     QStringList treeExpansionState;
-    LC_LayerTreeModel *layerTreeModel = getTreeModel();
+    const LC_LayerTreeModel *layerTreeModel = getTreeModel();
     foreach (QModelIndex index, layerTreeModel->getPersistentIndexList()) {
         if (this->isExpanded(index)){
             treeExpansionState << index.data(Qt::UserRole).toString();
@@ -183,7 +183,7 @@ QStringList LC_LayerTreeView::saveTreeExpansionState() const {
  * @param treeExpansionState
  */
 void LC_LayerTreeView::restoreTreeExpansionState(QStringList treeExpansionState){
-    LC_LayerTreeModel *layerTreeModel = getTreeModel();
+    const LC_LayerTreeModel *layerTreeModel = getTreeModel();
     this->setUpdatesEnabled(false);
     applyExpandState(treeExpansionState, layerTreeModel->index(0, 0, QModelIndex()));
     this->setUpdatesEnabled(true);
@@ -205,7 +205,7 @@ void LC_LayerTreeView::expandChildren(const QModelIndex &index){
     }
     expand(index);
 
-    int childCount = index.model()->rowCount(index);
+    const int childCount = index.model()->rowCount(index);
     for (int i = 0; i < childCount; i++) {
             const QModelIndex &child = model()->index(i, 0, index);
         // Recursively call the function for each child node.
@@ -221,7 +221,7 @@ void LC_LayerTreeView::expandChildren(const QModelIndex &index){
  * @param startIndex
  */
 void LC_LayerTreeView::applyExpandState(QStringList &expandedItems, const QModelIndex& startIndex){
-    LC_LayerTreeModel* layerTreeModel = getTreeModel();
+    const LC_LayerTreeModel* layerTreeModel = getTreeModel();
         foreach (QString item, expandedItems) {
             QModelIndexList matches = layerTreeModel->match(startIndex, Qt::UserRole, item);
                 foreach (QModelIndex index, matches) {

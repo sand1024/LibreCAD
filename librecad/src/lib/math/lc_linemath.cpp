@@ -252,9 +252,9 @@ bool LC_LineMath::areLinesOnSameRay(const RS_Vector& line1Start, const RS_Vector
 
     // if all points are on the same ray, the angles from first point to remaining 3 points will be the same
 
-    angle1 = RS_Math::correctAngle0ToPi(angle1);
-    angle2 = RS_Math::correctAngle0ToPi(angle2);
-    angle3 = RS_Math::correctAngle0ToPi(angle3);
+    angle1 = RS_Math::correctAngle0To2Pi(angle1);
+    angle2 = RS_Math::correctAngle0To2Pi(angle2);
+    angle3 = RS_Math::correctAngle0To2Pi(angle3);
 
     bool sameLine = false;
     if (std::abs(angle1 - angle2) < RS_TOLERANCE_ANGLE && std::abs(angle1 - angle3) < RS_TOLERANCE_ANGLE) {
@@ -548,7 +548,7 @@ double LC_LineMath::angleFor3Points(const RS_Vector& edgePoint1, const RS_Vector
     double angle1 = intersection.angleTo(edgePoint1);
     double angle2 = intersection.angleTo(edgePoint2);
     double angle = RS_Math::getAngleDifference(angle1, angle2, false);
-    angle = RS_Math::correctAngle0ToPi(angle);
+    angle = RS_Math::correctAngle0To2Pi(angle);
     // double angle = RS_Math::correctAngle(angle1-angle2);
     return angle;
 }

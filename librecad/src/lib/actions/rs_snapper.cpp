@@ -861,7 +861,10 @@ RS_Entity* RS_Snapper::catchEntity(const RS_Vector& coord, const EntityTypeList&
             for (auto t0: enTypeList) {
                 RS_Entity *en = catchEntity(coord, t0, level);
                 if (en != nullptr) {
-                    ec.addEntity(en);
+                    // fixme - sand - due to some unknown reasons, there is a duplication of entity to be added on catch!!! Investigate and fix!!
+                    if (ec.findEntity(en) == -1) {
+                        ec.addEntity(en);
+                    }
                 }
 //			if(en) {
 //            std::cout<<__FILE__<<" : "<<__func__<<" : lines "<<__LINE__<<std::endl;

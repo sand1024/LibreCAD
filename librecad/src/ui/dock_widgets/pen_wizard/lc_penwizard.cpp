@@ -31,7 +31,6 @@
 #include <qnetworkreply.h>
 
 #include "colorwizard.h"
-#include "lc_undosection.h"
 #include "qc_mdiwindow.h"
 #include "qg_graphicview.h"
 #include "rs_color.h"

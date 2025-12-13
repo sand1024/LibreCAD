@@ -213,7 +213,7 @@ void LC_LayerTreeOptionsDialog::showIndentedClicked() const {
 }
 
 void LC_LayerTreeOptionsDialog::initComboBox(QComboBox* cb, const QColor color) {
-    QString text = color.name();
+    const QString text = color.name();
     int idx = cb->findText(text);
     if( idx < 0) {
         idx =0;

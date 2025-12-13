@@ -171,3 +171,9 @@ double LC_Convert::evalAngleValue(const QString &angleStr, bool &ok2) {
     ok2 = parseToToDoubleAngleDegrees(angleStr, angleDegrees, 0.0, false);
     return angleDegrees;
 }
+
+bool LC_Convert::toInt(const QString& strVal, int& res) {
+    bool ok;
+    res = strVal.toInt(&ok);
+    return ok;
+}
