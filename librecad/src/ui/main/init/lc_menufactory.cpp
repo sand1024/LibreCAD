@@ -479,7 +479,6 @@ void LC_MenuFactory::prepareWorkspaceMenuComponents() {
     m_menuDockWidgets->addSeparator();
 
     bool cadDocWidgetsAreEnabled = LC_GET_ONE_BOOL("Startup", "EnableLeftSidebar", true);
-    bool cadSidebarUngrouped = LC_GET_ONE_BOOL("Startup", "CADSideBarUngrouped", false);
 
     if (cadDocWidgetsAreEnabled) {
         m_menuCADDockWidgets = doCreateSubMenu(m_menuWorkspace, tr("CAD Wid&gets"), "caddockwidgets", nullptr);
