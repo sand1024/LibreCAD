@@ -196,6 +196,7 @@ public:
     double getAngleLength() const;
 
     double getBulge() const;
+    double getSagitta() const;
 
     bool createFrom3P(const RS_Vector& p1, const RS_Vector& p2,
                       const RS_Vector& p3);

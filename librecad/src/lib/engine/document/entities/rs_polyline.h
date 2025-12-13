@@ -140,6 +140,7 @@ public:
     void drawAsChild(RS_Painter *painter) override;
     friend std::ostream &operator<<(std::ostream &os, const RS_Polyline &l);
     RS_Vector getRefPointAdjacentDirection(bool previousSegment, RS_Vector& refPoint) const;
+    QList<RS_Vector> getVertexes();
     static RS_Ellipse* convertToEllipse(const std::pair<RS_Arc*, double>& arcPair);
     static std::pair<RS_Arc*, double> convertToArcPair(const RS_Ellipse* ellipse);
     static RS_Arc* arcFromBulge(const RS_Vector& start, const RS_Vector& end, double bulge);

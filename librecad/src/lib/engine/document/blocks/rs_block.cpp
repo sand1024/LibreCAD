@@ -120,6 +120,17 @@ LC_TextStyleList* RS_Block::getTextStyleList() {
 //     }
 // }
 
+bool RS_Block::isVisible() const {
+    if (!getFlag(RS2::FlagVisible)) {
+        return false;
+    }
+
+    if (isDeleted()) {
+        return false;
+    }
+    return true;
+}
+
 /**
  * Sets the parent documents modified status to 'm'.
  */

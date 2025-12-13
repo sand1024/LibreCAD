@@ -1017,6 +1017,13 @@ double RS_Arc::getBulge() const {
     return isReversed() ? -bulge : bulge;
 }
 
+double RS_Arc::getSagitta() const {
+    double radius = data.radius;
+    double chord = m_endPoint.distanceTo(m_startPoint);
+    double result = radius - std::sqrt(radius*radius - chord*chord/4);
+    return result;
+}
+
 /** return the equation of the entity
 for quadratic,
 

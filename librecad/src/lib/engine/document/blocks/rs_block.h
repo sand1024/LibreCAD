@@ -138,8 +138,10 @@ public:
     void freeze(bool freeze) {
         data.frozen = freeze;
     }
-	
-    /**
+
+   bool isVisible() const override;
+
+   /**
      * Sets the parent documents modified status to 'm'.
      */
 	   void setModified(bool m) override;

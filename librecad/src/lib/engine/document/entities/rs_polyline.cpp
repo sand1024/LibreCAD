@@ -794,6 +794,14 @@ RS_Vector RS_Polyline::getRefPointAdjacentDirection(bool previousSegment, RS_Vec
     return previous;
 }
 
+QList<RS_Vector> RS_Polyline::getVertexes() {
+    QList<RS_Vector> result;
+    for (const auto e: getEntityList()) {
+        result.push_back(e->getStartpoint());
+    }
+    return result;
+}
+
 RS_Arc* RS_Polyline::arcFromBulge(const RS_Vector& start, const RS_Vector& end, double bulge) {
     if (std::abs(bulge) < RS_TOLERANCE || std::abs(bulge) >= RS_MAXDOUBLE) {
         return nullptr;
