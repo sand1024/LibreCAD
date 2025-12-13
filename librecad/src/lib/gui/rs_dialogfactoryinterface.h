@@ -235,61 +235,6 @@ public:
 
     /**
      * This virtual method must be overwritten and must present
-     * a widget for move options (number of copies).
-     *
-     * @param data Move data which can be directly changed
-     *             by the presented widget.
-     */
-    virtual bool requestMoveDialog([[maybe_unused]]RS_MoveData& data) {return false;};
-
-    /**
-     * This virtual method must be overwritten and must present
-     * a widget for rotate options (number of copies, angle).
-     *
-     * @param data Rotation data which can be directly changed
-     *             by the presented widget.
-     */
-    virtual bool requestRotateDialog([[maybe_unused]]RS_RotateData& data) { return false;};
-
-    /**
-     * This virtual method must be overwritten and must present
-     * a widget for rotate options (number of copies, angle).
-     *
-     * @param data Scaling data which can be directly changed
-     *             by the presented widget.
-     */
-    virtual bool requestScaleDialog([[maybe_unused]]RS_ScaleData& data) {return false;};
-
-    /**
-     * This virtual method must be overwritten and must present
-     * a widget for mirror options (number of copies).
-     *
-     * @param data Mirror data which can be directly changed
-     *             by the presented widget.
-     */
-    virtual bool requestMirrorDialog([[maybe_unused]]RS_MirrorData& data) { return false;};
-
-    /**
-     * This virtual method must be overwritten and must present
-     * a widget for move/rotate options (number of copies, angle).
-     *
-     * @param data Move/rotate data which can be directly changed
-     *             by the presented widget.
-     */
-    virtual bool requestMoveRotateDialog([[maybe_unused]]RS_MoveRotateData& data) { return false;};
-
-    /**
-     * This virtual method must be overwritten and must present
-     * a widget for rotate around two centers options (number of
-    * copies, angles).
-     *
-     * @param data Rotate data which can be directly changed
-     *             by the presented widget.
-     */
-    virtual bool requestRotate2Dialog([[maybe_unused]]RS_Rotate2Data& data) {return false;};
-
-    /**
-     * This virtual method must be overwritten and must present
      * a dialog to edit the given entity.
      *
      * @param entity Pointer to the entity.

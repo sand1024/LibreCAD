@@ -94,12 +94,6 @@ protected:
 public:
     bool requestAttributesDialog(RS_AttributesData& data,
                                  RS_LayerList& layerList) override;
-    bool requestMoveDialog(RS_MoveData& data) override;
-    bool requestRotateDialog(RS_RotateData& data) override;
-    bool requestScaleDialog(RS_ScaleData& data) override;
-    bool requestMirrorDialog(RS_MirrorData& data) override;
-    bool requestMoveRotateDialog(RS_MoveRotateData& data) override;
-    bool requestRotate2Dialog(RS_Rotate2Data& data) override;
 
     bool requestModifyEntityDialog(RS_Entity *entity, LC_GraphicViewport *viewport) override;
     bool requestMTextDialog(RS_MText *text, LC_GraphicViewport *viewport) override;

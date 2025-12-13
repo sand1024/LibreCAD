@@ -434,17 +434,8 @@ void RS_ActionModifyRotate::onCoordinateEvent(int status, [[maybe_unused]]bool i
 }
 
 void RS_ActionModifyRotate::tryTrigger(){
-    if (isShowModifyActionDialog()) {
-        if (RS_DIALOGFACTORY->requestRotateDialog(*m_rotateData)) {
-            updateOptions();
-            trigger();
-            finish(false);
-        }
-    }
-    else{
-        trigger();
-        finish(false);
-    }
+    trigger();
+    finish(false);
 }
 
 void RS_ActionModifyRotate::onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent *e) {

@@ -215,21 +215,7 @@ void RS_ActionModifyMirror::onCoordinateEvent(int status, [[maybe_unused]]bool i
 }
 
 void RS_ActionModifyMirror::showOptionsAndTrigger(){
-    if (isShowModifyActionDialog()) {
-        if (RS_DIALOGFACTORY->requestMirrorDialog(m_actionData->data)) {
-            updateOptions();
-            doPerformTrigger();
-        } else {
-            if (m_mirrorToExistingLine) {
-                setStatus(SetAxisPoint1);
-            } else {
-                setStatus(SetAxisPoint2);
-            }
-        }
-    }
-    else{
-        doPerformTrigger();
-    }
+   doPerformTrigger();
 }
 
 void RS_ActionModifyMirror::doPerformTrigger() {

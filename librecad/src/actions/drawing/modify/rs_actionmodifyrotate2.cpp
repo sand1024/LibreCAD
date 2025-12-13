@@ -163,18 +163,7 @@ void RS_ActionModifyRotate2::onCoordinateEvent(int status, [[maybe_unused]]bool 
 }
 
 void RS_ActionModifyRotate2::doPerformTrigger() {
-    if (isShowModifyActionDialog()) {
-        if (RS_DIALOGFACTORY->requestRotate2Dialog(*m_actionData)) {
-            updateOptions();
-            trigger();
-        }
-        else{
-            setStatus(SetReferencePoint2);
-        }
-    }
-    else{
-        trigger();
-    }
+    trigger();
 }
 
 void RS_ActionModifyRotate2::updateMouseButtonHintsForSelection() {

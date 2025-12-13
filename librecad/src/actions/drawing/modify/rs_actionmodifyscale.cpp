@@ -320,14 +320,7 @@ void RS_ActionModifyScale::onCoordinateEvent(int status, [[maybe_unused]]bool is
         case SetReferencePoint: {
             m_actionData->data.referencePoint = mouse;
             moveRelativeZero(mouse);
-            if (isShowModifyActionDialog()) {
-                if (RS_DIALOGFACTORY->requestScaleDialog(m_actionData->data)) {
-                    tryTrigger();
-                }
-            }
-            else{
-                tryTrigger();
-            }
+            tryTrigger();
             break;
         }
         case SetSourcePoint: {

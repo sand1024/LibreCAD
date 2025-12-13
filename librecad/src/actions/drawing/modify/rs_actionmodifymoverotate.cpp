@@ -250,18 +250,7 @@ void RS_ActionModifyMoveRotate::onCoordinateEvent(int status, [[maybe_unused]]bo
 }
 
 void RS_ActionModifyMoveRotate::doPerformTrigger() {
-    if (isShowModifyActionDialog()) {
-        if (RS_DIALOGFACTORY->requestMoveRotateDialog(m_actionData->data)) {
-            updateOptions();
-            trigger();
-        }
-        else{
-            setStatus(SetTargetPoint);
-        }
-    }
-    else{
-        trigger();
-    }
+   trigger();
 }
 
 bool RS_ActionModifyMoveRotate::doProcessCommand(int status, const QString &c) {

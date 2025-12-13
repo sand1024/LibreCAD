@@ -38,7 +38,7 @@ class QG_DlgMirror : public QDialog, public Ui::QG_DlgMirror
 
 public:
     QG_DlgMirror(QWidget* parent = nullptr, bool modal = false, Qt::WindowFlags fl = {});
-    ~QG_DlgMirror();
+    ~QG_DlgMirror() override;
 
 public slots:
     void setData( RS_MirrorData * d );

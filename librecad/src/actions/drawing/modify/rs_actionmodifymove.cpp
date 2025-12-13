@@ -167,22 +167,8 @@ void RS_ActionModifyMove::onCoordinateEvent(int status, [[maybe_unused]] bool is
         }
         case SetTargetPoint: {
             m_actionData->targetPoint = pos;
-            if (isShowModifyActionDialog()){
-                setStatus(ShowDialog); // todo - hm... what for?
-                if (RS_DIALOGFACTORY->requestMoveDialog(m_actionData->data)){
-                    updateOptions();
-                    m_actionData->data.offset = m_actionData->targetPoint - m_actionData->referencePoint;
-                    trigger();
-                    moveRelativeZero(m_actionData->targetPoint);
-                }
-                else{
-                    setStatus(SetTargetPoint);
-                }
-            }
-            else{
-                m_actionData->data.offset = m_actionData->targetPoint - m_actionData->referencePoint;
-                trigger();
-            }
+            m_actionData->data.offset = m_actionData->targetPoint - m_actionData->referencePoint;
+            trigger();
             break;
         }
         default:

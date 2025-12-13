@@ -43,15 +43,9 @@
 #include "qg_commandwidget.h"
 #include "qg_dlgattributes.h"
 #include "qg_dlghatch.h"
-#include "qg_dlgmirror.h"
-#include "qg_dlgmove.h"
-#include "qg_dlgmoverotate.h"
 #include "qg_dlgmtext.h"
 #include "qg_dlgoptionsdrawing.h"
 #include "qg_dlgoptionsmakercam.h"
-#include "qg_dlgrotate.h"
-#include "qg_dlgrotate2.h"
-#include "qg_dlgscale.h"
 #include "qg_dlgtext.h"
 #include "qg_layerdialog.h"
 #include "qg_selectionwidget.h"
@@ -615,83 +609,6 @@ bool QG_DialogFactory::requestAttributesDialog(RS_AttributesData& data,
     return false;
 }
 
-/**
- * Shows move options dialog presenting the given data.
- */
-bool QG_DialogFactory::requestMoveDialog(RS_MoveData& data) {
-    QG_DlgMove dlg(parent);
-    dlg.setData(&data);
-    if (dlg.exec()) {
-        dlg.updateData();
-        return true;
-    }
-    return false;
-}
-
-/**
- * Shows rotate options dialog presenting the given data.
- */
-bool QG_DialogFactory::requestRotateDialog(RS_RotateData& data) {
-    QG_DlgRotate dlg(parent);
-    dlg.setData(&data);
-    if (dlg.exec()) {
-        dlg.updateData();
-        return true;
-    }
-    return false;
-}
-
-/**
- * Shows scale options dialog presenting the given data.
- */
-bool QG_DialogFactory::requestScaleDialog(RS_ScaleData& data) {
-    QG_DlgScale dlg(parent);
-    dlg.setData(&data);
-    if (dlg.exec()) {
-        dlg.updateData();
-        return true;
-    }
-    return false;
-}
-
-/**
- * Shows mirror options dialog presenting the given data.
- */
-bool QG_DialogFactory::requestMirrorDialog(RS_MirrorData& data) {
-    QG_DlgMirror dlg(parent);
-    dlg.setData(&data);
-    if (dlg.exec()) {
-        dlg.updateData();
-        return true;
-    }
-    return false;
-}
-
-/**
- * Shows move/rotate options dialog presenting the given data.
- */
-bool QG_DialogFactory::requestMoveRotateDialog(RS_MoveRotateData& data) {
-    QG_DlgMoveRotate dlg(parent);
-    dlg.setData(&data);
-    if (dlg.exec()) {
-        dlg.updateData();
-        return true;
-    }
-    return false;
-}
-
-/**
- * Shows rotate around two centers options dialog presenting the given data.
- */
-bool QG_DialogFactory::requestRotate2Dialog(RS_Rotate2Data& data) {
-    QG_DlgRotate2 dlg(parent);
-    dlg.setData(&data);
-    if (dlg.exec()) {
-        dlg.updateData();
-        return true;
-    }
-    return false;
-}
 
 /**
  * Shows a dialog to edit the given entity.

@@ -32,11 +32,6 @@ void LC_ActionModifyBase::onSelectionCompleted([[maybe_unused]] bool singleEntit
     updateMouseButtonHints();
 }
 
-#define SHOW_MODIFICATION_DIALOGS  false;
-
-bool LC_ActionModifyBase::isShowModifyActionDialog() {
-    return SHOW_MODIFICATION_DIALOGS; // fixme - add options support? or just remove dialogs later?
-}
 
 void LC_ActionModifyBase::setUseCurrentLayer(bool b) {
     LC_ModifyOperationFlags* data = getModifyOperationFlags();
