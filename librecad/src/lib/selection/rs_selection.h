@@ -1,36 +1,34 @@
-/****************************************************************************
-**
-** This file is part of the LibreCAD project, a 2D CAD program
-**
-** Copyright (C) 2010 R. van Twisk (librecad@rvt.dds.nl)
-** Copyright (C) 2001-2003 RibbonSoft. All rights reserved.
-**
-**
-** This file may be distributed and/or modified under the terms of the
-** GNU General Public License version 2 as published by the Free Software 
-** Foundation and appearing in the file gpl-2.0.txt included in the
-** packaging of this file.
-**
-** This program is distributed in the hope that it will be useful,
-** but WITHOUT ANY WARRANTY; without even the implied warranty of
-** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-** GNU General Public License for more details.
-** 
-** You should have received a copy of the GNU General Public License
-** along with this program; if not, write to the Free Software
-** Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-**
-** This copyright notice MUST APPEAR in all copies of the script!  
-**
-**********************************************************************/
+/*
+ * ********************************************************************************
+ * This file is part of the LibreCAD project, a 2D CAD program
+ *
+ * Copyright (C) 2025 LibreCAD.org
+ * Copyright (C) 2025 sand1024
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * ********************************************************************************
+ */
 
 #ifndef RS_SELECTION_H
 #define RS_SELECTION_H
 #include <QList>
 #include <QSet>
+#include <qcombobox.h>
 
-#include "lc_selectionoptions.h"
 #include "lc_selectionpredicate.h"
+#include "rs_document.h"
 #include "rs_graphicview.h"
 #include "rs_layer.h"
 
@@ -62,12 +60,31 @@ public:
     using FunEntityMatch  = std::function<bool(RS_Entity*)>;
 
     struct CurrentSelectionState {
-        QSet<RS2::EntityType> documentEntityTypes; // fixme - rework to more efficient structure (like flags)
-        QSet<RS2::EntityType> selectedEntityTypes;
+        QMap<RS2::EntityType, int> documentEntityTypes;
+        QMap<RS2::EntityType, int> selectedEntityTypes;
+
+        int totalDocumentEntities {0};
+        int totalSelectedEntities {0};
 
         bool hasSelection() const {
             return !selectedEntityTypes.empty();
         }
+    };
+
+
+    struct ConditionalSelectionOptions {
+
+        enum ApplyTo {
+            Selection,
+            Document
+        };
+
+        ApplyTo m_applyArea {Document};
+        bool m_includeIntoSelectionSet {false};
+        bool m_appendToSelectionSet {false};
+        FunEntityMatch m_entityMatcher;
+        FunEntityMatch m_rttiMatcher;
+        ConditionalSelectionOptions() = default;
     };
 
     explicit RS_Selection(RS_Document* entityContainer,
@@ -92,10 +109,12 @@ public:
     void selectContour(RS_Entity* e);
     void selectLayer(RS_Entity* e);
     void selectLayer(const RS_Layer* layer, bool select);
-    void conditionalSelection(RS_Document* doc,const LC_SelectionOptions &options, const LC_SelectionPredicate& predicate, std::list<RS_Entity>& selectedEntities);
+    void conditionalSelection(const ConditionalSelectionOptions &options);
+    [[deprecated]]
     void countSelectedEntities(QMap<RS2::EntityType, int> &entityTypeMaps) const;
     void collectCurrentSelectionState(CurrentSelectionState& selectionState) const;
     void performBulkSelection(std::function<void(RS_EntityContainer*, LC_GraphicViewport*, RS_Document*)> fun) const;
+    void justSelect(RS_Entity* rsEntity, bool on = true) const {m_document->select(rsEntity, on);}
 protected:
     RS_Document* m_document = nullptr;
     LC_GraphicViewport* m_viewPort = nullptr;

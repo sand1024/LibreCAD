@@ -90,6 +90,8 @@ win32 {
     contains(DISABLE_POSTSCRIPT, false) {
         QMAKE_POST_LINK = "$$_PRO_FILE_PWD_/../../scripts/postprocess-win.bat" $$LC_VERSION
     }
+
+    QMAKE_CXXFLAGS += -Wa,-mbig-obj
 }
 
 DEFINES += LC_VERSION=\"$$LC_VERSION\"
@@ -119,6 +121,7 @@ INCLUDEPATH += \
     lib/engine/document/io \
     lib/engine/document/layers \
     lib/engine/document/patterns \
+    lib/engine/document/selection \
     lib/engine/document/textstyles \
     lib/engine/document/ucs \
     lib/engine/document/variables \
@@ -150,6 +153,9 @@ INCLUDEPATH += \
     lib/information \
     lib/math \
     lib/modification \
+    lib/selection \
+    lib/selection/metaentity \
+    lib/selection/metaentity/entities \
     lib/printing \
     actions \
     actions/dock_widgets \
@@ -223,9 +229,11 @@ INCLUDEPATH += \
     ui/components/pen \
     ui/components/status_bar \
     ui/components/toolbars \
+    ui/components/utils \
     ui/dialogs \
     ui/dialogs/actions \
     ui/dialogs/actions/modify \
+    ui/dialogs/actions/quick_selection \
     ui/dialogs/modify \
     ui/dialogs/entity \
     ui/dialogs/creators \
@@ -361,7 +369,7 @@ HEADERS += \
     lib/engine/document/entities/support/lc_dimarrowblock.h \
     lib/engine/document/entities/support/lc_dimarrowblockpoly.h \
     lib/engine/document/lc_graphicvariables.h \
-    lib/engine/document/lc_selectedset.h \
+    lib/engine/document/selection/lc_selectedset.h \
     lib/engine/document/selection/lc_selectedsetlistener.h \
     lib/engine/document/textstyles/lc_textstyle.h \
     lib/engine/document/textstyles/lc_textstylelist.h \
@@ -744,9 +752,9 @@ SOURCES += \
     lib/modification/lc_copyutils.cpp \
     plugins/lc_plugininvoker.cpp \
     lib/actions/lc_actioncontext.cpp \
+    ui/components/utils/lc_entitymetauiutils.cpp \
     ui/components/creators/lc_creatorinvoker.cpp \
-    #ui/components/toolbars/lc_snapoptionsholdermanager.cpp \
-    ui/components/status_bar/lc_selectiontoolbar.cpp \
+    #ui/components/toolbars/lc_snapoptionsholdermanager.cpp \    
     ui/dialogs/creators/lc_dlgmenuassigner.cpp \
     ui/dialogs/creators/lc_dlgwidgetcreator.cpp \
     ui/components/creators/lc_menuactivator.cpp \
@@ -788,9 +796,8 @@ SOURCES += \
     ui/dock_widgets/cad/lc_caddockwidget.cpp \
     ui/dock_widgets/lc_dockwidget.cpp \
     ui/dock_widgets/lc_graphicviewawarewidget.cpp \
-    ui/dock_widgets/property_sheet/entity_info/lc_metainfoprovider.cpp \
-    ui/dock_widgets/property_sheet/lc_propertysheetwidget.cpp \
-    ui/dock_widgets/property_sheet/quick_selection/lc_dlgquickselection.cpp \
+    # ui/dock_widgets/property_sheet/entity_info/lc_metainfoprovider.cpp \
+    # ui/dock_widgets/property_sheet/lc_propertysheetwidget.cpp \
     ui/lc_actionhandlerfactory.cpp \
     ui/lc_snapmanager.cpp \
     ui/lc_uiutils.cpp \
@@ -946,7 +953,34 @@ SOURCES += \
     lib/math/rs_math.cpp \
     lib/math/lc_quadratic.cpp \
     lib/modification/rs_modification.cpp \
-    lib/modification/rs_selection.cpp \
+    lib/selection/rs_selection.cpp \
+    lib/selection/lc_selectionpredicate.cpp \
+    lib/selection/metaentity/lc_entitymatchdescriptorsregistry.cpp \
+    lib/selection/metaentity/lc_propertymatchertypes.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_line.cpp       \
+    lib/selection/metaentity/entities/lc_matchdescriptor_circle.cpp     \
+    lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp        \
+    lib/selection/metaentity/entities/lc_matchdescriptor_polyline.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_spline.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_hatch.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_text.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_mtext.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_image.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimlinear.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimaligned.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimradial.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimdiametric.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimangular.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimarc.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_leader.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_parabola.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_tolerance.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_multiple.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_ellipse.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_point.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp \
     lib/engine/rs_color.cpp \
     lib/engine/rs_pen.cpp \
     main/console_dxf2png.cpp \
@@ -1090,8 +1124,7 @@ HEADERS += actions/dock_widgets/block/rs_actionblocksadd.h \
     actions/drawing/modify/lc_actionmodifybreakdivide.h \
     actions/drawing/modify/lc_actionmodifyduplicate.h \
     actions/drawing/modify/lc_actionmodifylinegap.h \
-    actions/drawing/modify/lc_actionmodifylinejoin.h \
-    actions/drawing/modify/lc_actionmodifyselectionbase.h \
+    actions/drawing/modify/lc_actionmodifylinejoin.h \    
     lib/actions/lc_actionpreselectionawarebase.h \
     actions/drawing/modify/rs_actionblocksexplode.h \
     actions/drawing/modify/rs_actionmodifyattributes.h \
@@ -1129,6 +1162,7 @@ HEADERS += actions/dock_widgets/block/rs_actionblocksadd.h \
     actions/drawing/selection/rs_actionselectlayer.h \
     actions/drawing/selection/rs_actionselectsingle.h \
     actions/drawing/selection/rs_actionselectwindow.h \
+    actions/drawing/selection/lc_actionselectmodetoggle.h \    
     actions/drawing/snap/lc_actionsnapmiddlemanual.h \
     actions/drawing/snap/rs_actionsnapintersectionmanual.h \
     actions/drawing/zoom/rs_actionzoomauto.h \
@@ -1260,8 +1294,7 @@ SOURCES += actions/dock_widgets/block/rs_actionblocksadd.cpp \
     actions/drawing/modify/lc_actionmodifybreakdivide.cpp \
     actions/drawing/modify/lc_actionmodifyduplicate.cpp \
     actions/drawing/modify/lc_actionmodifylinegap.cpp \
-    actions/drawing/modify/lc_actionmodifylinejoin.cpp \
-    actions/drawing/modify/lc_actionmodifyselectionbase.cpp \
+    actions/drawing/modify/lc_actionmodifylinejoin.cpp \    
     lib/actions/lc_actionpreselectionawarebase.cpp \
     actions/drawing/modify/rs_actionblocksexplode.cpp \
     actions/drawing/modify/rs_actionmodifyattributes.cpp \
@@ -1299,6 +1332,7 @@ SOURCES += actions/dock_widgets/block/rs_actionblocksadd.cpp \
     actions/drawing/selection/rs_actionselectlayer.cpp \
     actions/drawing/selection/rs_actionselectsingle.cpp \
     actions/drawing/selection/rs_actionselectwindow.cpp \
+    actions/drawing/selection/lc_actionselectmodetoggle.cpp \    
     actions/drawing/snap/lc_actionsnapmiddlemanual.cpp \
     actions/drawing/snap/rs_actionsnapintersectionmanual.cpp \
     actions/drawing/zoom/rs_actionzoomauto.cpp \
@@ -1397,12 +1431,7 @@ HEADERS += ui/action_options/lc_actionoptionsmanager.h \
     ui/components/textfileviewer.h \
     ui/components/toolbars/qg_pentoolbar.h \
     ui/components/toolbars/qg_snaptoolbar.h \
-    ui/dialogs/actions/modify/qg_dlgmirror.h \
-    ui/dialogs/actions/modify/qg_dlgmove.h \
-    ui/dialogs/actions/modify/qg_dlgmoverotate.h \
-    ui/dialogs/actions/modify/qg_dlgrotate.h \
-    ui/dialogs/actions/modify/qg_dlgrotate2.h \
-    ui/dialogs/actions/modify/qg_dlgscale.h \
+    ui/dialogs/actions/quick_selection/lc_dlgquickselection.h \    
     ui/dialogs/actions/qg_layerdialog.h \
     #ui/dialogs/entity/LC_DlgParabola.h \
     #ui/dialogs/entity/lc_dlgsplinepoints.h \
@@ -1503,6 +1532,11 @@ HEADERS += ui/action_options/lc_actionoptionsmanager.h \
     # ui/not_used/qg_dlgdimlinear.h \
     # ui/not_used/lc_dlgdimordinate.h \
     # ui/not_used/qg_dlgdimension.h \
+    # ui/not_used/qg_dlgmove.h \
+    # ui/not_used/qg_dlgmoverotate.h \
+    # ui/not_used/qg_dlgrotate.h \
+    # ui/not_used/qg_dlgrotate2.h \
+    # ui/not_used/qg_dlgscale.h \
     ui/qg_actionhandler.h \
     ui/view/lc_centralwidget.h \
     ui/view/qg_graphicview.h
@@ -1587,12 +1621,7 @@ SOURCES +=ui/action_options/lc_actionoptionsmanager.cpp \
     ui/components/textfileviewer.cpp \
     ui/components/toolbars/qg_pentoolbar.cpp \
     ui/components/toolbars/qg_snaptoolbar.cpp \
-    ui/dialogs/actions/modify/qg_dlgmirror.cpp \
-    ui/dialogs/actions/modify/qg_dlgmove.cpp \
-    ui/dialogs/actions/modify/qg_dlgmoverotate.cpp \
-    ui/dialogs/actions/modify/qg_dlgrotate.cpp \
-    ui/dialogs/actions/modify/qg_dlgrotate2.cpp \
-    ui/dialogs/actions/modify/qg_dlgscale.cpp \
+    ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp \    
     ui/dialogs/actions/qg_layerdialog.cpp \
     # ui/dialogs/entity/LC_DlgParabola.cpp \
     #ui/dialogs/entity/lc_dlgsplinepoints.cpp \
@@ -1690,6 +1719,12 @@ SOURCES +=ui/action_options/lc_actionoptionsmanager.cpp \
     # ui/not_used/qg_linepolygon2options.cpp \
     # ui/not_used/qg_dlgdimlinear.cpp \
     # ui/not_used/qg_dlgdimension.cpp \
+    # ui/dialogs/actions/modify/qg_dlgmirror.cpp \
+    # ui/dialogs/actions/modify/qg_dlgmove.cpp \
+    # ui/dialogs/actions/modify/qg_dlgmoverotate.cpp \
+    # ui/dialogs/actions/modify/qg_dlgrotate.cpp \
+    # ui/dialogs/actions/modify/qg_dlgrotate2.cpp \
+    # ui/dialogs/actions/modify/qg_dlgscale.cpp \
     ui/qg_actionhandler.cpp \
     ui/view/lc_centralwidget.cpp \
     ui/view/qg_graphicview.cpp
@@ -1760,8 +1795,7 @@ FORMS = ui/action_options/circle/lc_circlebyarcoptions.ui \
        ui/action_options/text/qg_textoptions.ui \
        ui/components/comboboxes/comboboxoption.ui \
        ui/components/containers/lc_optionswidgetsholder.ui \
-       ui/components/containers/lc_snapoptionswidgetsholder.ui \
-       ui/components/status_bar/lc_selectiontoolbar.ui \
+       ui/components/containers/lc_snapoptionswidgetsholder.ui \       
        ui/dialogs/creators/lc_dlgmenuassigner.ui \
        ui/dialogs/creators/lc_dlgwidgetcreator.ui \
        ui/components/pen/qg_widgetpen.ui \
@@ -1773,12 +1807,13 @@ FORMS = ui/action_options/circle/lc_circlebyarcoptions.ui \
        ui/components/status_bar/qg_mousewidget.ui \
        ui/components/status_bar/qg_selectionwidget.ui \
        ui/components/textfileviewer.ui \
-       ui/dialogs/actions/modify/qg_dlgmirror.ui \
-       ui/dialogs/actions/modify/qg_dlgmove.ui \
-       ui/dialogs/actions/modify/qg_dlgmoverotate.ui \
-       ui/dialogs/actions/modify/qg_dlgrotate.ui \
-       ui/dialogs/actions/modify/qg_dlgrotate2.ui \
-       ui/dialogs/actions/modify/qg_dlgscale.ui \
+       ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui \
+       # ui/dialogs/actions/modify/qg_dlgmirror.ui \
+       # ui/dialogs/actions/modify/qg_dlgmove.ui \
+       # ui/dialogs/actions/modify/qg_dlgmoverotate.ui \
+       # ui/dialogs/actions/modify/qg_dlgrotate.ui \
+       # ui/dialogs/actions/modify/qg_dlgrotate2.ui \
+       # ui/dialogs/actions/modify/qg_dlgscale.ui \
        ui/dialogs/actions/qg_layerdialog.ui \
        ui/dialogs/creators/lc_dlgnewwidget.ui \
        #ui/dialogs/entity/LC_DlgParabola.ui \
@@ -1840,8 +1875,7 @@ FORMS = ui/action_options/circle/lc_circlebyarcoptions.ui \
        ui/dock_widgets/pen_palette/lc_penpaletteoptionsdialog.ui \
        ui/dock_widgets/pen_palette/lc_penpalettewidget.ui \
        ui/dock_widgets/pen_wizard/colorwizard.ui \
-       ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui \
-       ui/dock_widgets/property_sheet/quick_selection/lc_dlgquickselection.ui \
+       # ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui \
        ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui \
        ui/dock_widgets/ucs_list/lc_dlgucsproperties.ui \
        ui/dock_widgets/ucs_list/lc_ucslistwidget.ui \

@@ -163,6 +163,7 @@ void LC_ActionPreSelectionAwareBase::onMouseLeftButtonRelease(int status, LC_Mou
             RS_Entity* entityToSelect = catchEntityByEvent(e, m_catchForSelectionEntityTypes);
             bool selectContour = e->isShift;
             if (selectEntity(entityToSelect, selectContour)) {
+                m_selectionCorner1.valid = false;
                 proceedSelectedEntity(e);
             }
             else if (e->isControl) { // completion of selection by click with CTRL

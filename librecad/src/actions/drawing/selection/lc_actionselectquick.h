@@ -23,15 +23,40 @@
 
 #ifndef LC_ACTIONSELECTQUICK_H
 #define LC_ACTIONSELECTQUICK_H
-#include "rs_actioninterface.h"
 
-class LC_ActionSelectQuick: public RS_ActionInterface {
+#include "lc_actionpreselectionawarebase.h"
+#include "lc_dlgquickselection.h"
+
+struct LC_QuickSearchSelectionDialogState;
+
+class LC_ActionSelectQuick: public LC_ActionPreSelectionAwareBase {
+    Q_OBJECT
 public:
-    LC_ActionSelectQuick(LC_ActionContext* actionContext)
-        : RS_ActionInterface("SelectQuick", actionContext,  RS2::ActionSelectQuick) {
+    explicit LC_ActionSelectQuick(LC_ActionContext* actionContext)
+        : LC_ActionPreSelectionAwareBase("SelectQuick", actionContext,  RS2::ActionSelectQuick) {
     }
 
+    ~LC_ActionSelectQuick() override;
+    void onLateRequestCompleted(bool shouldBeSkipped) override;
+    void trigger() override;
     void init(int status) override;
+    bool mayBeTerminatedExternally() override {return m_allowExternalTermination;};
+
+protected:
+    bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& ctx) override {return false;};
+    void updateMouseButtonHintsForSelection() override;
+    void onSelectionCompleted(bool singleEntity, bool fromInit) override;
+private:
+    enum Status {
+        SHOW_DIALOG,
+        EDITING
+    };
+    void showSelectionDialog();
+    void performSelection(LC_DlgQuickSelection* dlg);
+    void showDialog();
+
+    bool m_allowExternalTermination{true};
+    LC_QuickSearchSelectionDialogState* m_savedState {nullptr};
 };
 
-#endif // LC_ACTIONSELECTQUICK_H
+#endif

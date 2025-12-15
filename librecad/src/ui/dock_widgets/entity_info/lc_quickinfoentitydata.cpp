@@ -657,12 +657,14 @@ QString LC_QuickInfoEntityData::prepareArcDescription(RS_Arc *arc, RS2::EntityDe
         double startAngle = arc->getAngle1();
         double endAngle = arc->getAngle2();
         double chordLength = startPoint.distanceTo(endPoint);
+        double sagitta = arc->getSagitta();
 
         appendLinear(result, tr("Diameter"), diameter);
         appendLinear(result, tr("Circumference"), circumference);
         appendLinear(result, tr("Chord Length"), chordLength);
         appendWCSAngle(result, tr("Start Angle"), startAngle);
         appendWCSAngle(result, tr("End Angle"), endAngle);
+        appendLinear(result, tr("Sagitta"), sagitta);
         appendLinear(result, tr("Bulge"), arc->getBulge());
     };
 
@@ -807,7 +809,7 @@ void LC_QuickInfoEntityData::collectPolylineProperties(RS_Polyline *l){
         int rtti = entity->rtti();
         switch (rtti) {
             case RS2::EntityArc: {
-                RS_Arc* arc = dynamic_cast<RS_Arc*>(entity);
+                auto arc = dynamic_cast<RS_Arc*>(entity);
                 addLinearProperty(tr("Bulge"), arc->getBulge(), OTHER);
                 double len = arc->getLength();
                 if (m_options->displayPolylineDetailed){ // details of arc
@@ -823,7 +825,7 @@ void LC_QuickInfoEntityData::collectPolylineProperties(RS_Polyline *l){
                 break;
             }
             case RS2::EntityLine: {
-                RS_Line* line = dynamic_cast<RS_Line*>(entity);
+                auto line = dynamic_cast<RS_Line*>(entity);
                 double length = line->getLength();
                 totalLengh += length;
                 if (m_options->displayPolylineDetailed){ // details of line
@@ -1127,9 +1129,9 @@ QString LC_QuickInfoEntityData::prepareImageDescription(RS_Image *image, RS2::En
     const RS_ImageData &data = image->getData();
     appendValue(result, tr("File"), data.file);
     appendWCSAbsolute(result, tr("Insertion Point"), data.insertionPoint);
-    appendDouble(result, tr("Scale"), data.uVector.angle());
     double scale = data.uVector.magnitude();
-    appendWCSAngle(result, tr("Angle"), scale);
+    appendDouble(result, tr("Scale"), scale);
+    appendWCSAngle(result, tr("Angle"), data.uVector.angle());
    
     if (level != RS2::EntityDescriptionLevel::DescriptionCatched){
         appendLinear(result, tr("Size (X) px"), data.size.x);

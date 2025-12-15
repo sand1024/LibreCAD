@@ -21,16 +21,23 @@
  * ********************************************************************************
  */
 
-#ifndef LC_ACTIONMODIFYWITHSELECTIONBASE_H
-#define LC_ACTIONMODIFYWITHSELECTIONBASE_H
+#ifndef LC_ENTITYMETAUTILS_H
+#define LC_ENTITYMETAUTILS_H
 
-#include "lc_actionpreselectionawarebase.h"
+#include <QObject>
+#include <QSet>
+#include <rs.h>
 
-class LC_ActionModifyWithSelectionBase: public LC_ActionPreSelectionAwareBase{
-protected:
-    LC_ActionModifyWithSelectionBase(const char *name, LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone,
-        const QList<RS2::EntityType> &entityTypeList = {});
-    ~LC_ActionModifyWithSelectionBase() override;
+class QComboBox;
+
+class LC_EntityMetaUIUtils: public QObject{
+    Q_OBJECT
+public:
+    static void setupSelectionEntityTypesCombobox(QComboBox* entityTypeCombobox, const QMap<RS2::EntityType, int>& map, bool addAll = true);
+    static void setupSelectionEntityTypesCombobox(QComboBox* entityTypeCombobox, const QMap<RS2::EntityType, int>& map, const std::vector<QPair<QString, RS2::EntityType>>& entityTypes, bool addAll);
+    static void setupEntityTypesCombobox(QComboBox* entityTypeCombobox, const QSet<RS2::EntityType>& set, const std::vector<QPair<QString, RS2::EntityType>>& entityTypes);
+    static const std::vector<QPair<QString, RS2::EntityType>>& getEntityTypeNamesList();
+    static void setupEntitiesTypesList(QComboBox* entityTypeCombobox, const QSet<RS2::EntityType>& set);
 };
 
 #endif

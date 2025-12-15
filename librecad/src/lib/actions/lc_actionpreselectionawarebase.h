@@ -60,7 +60,7 @@ protected:
     virtual void updateMouseButtonHintsForSelection() = 0;
     virtual void updateMouseButtonHintsForSelected(int status);
     virtual bool isAllowTriggerOnEmptySelection(){return true;};
-    virtual void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {};
+    virtual void doTriggerSelectionUpdate([[maybe_unused]]bool keepSelected, [[maybe_unused]]const LC_DocumentModificationBatch& ctx) {};
     void doTriggerSelections(const LC_DocumentModificationBatch& ctx) override;
     virtual void finishMouseMoveOnSelection(LC_MouseEvent *event);
     virtual void proceedSelectedEntity(LC_MouseEvent* e);

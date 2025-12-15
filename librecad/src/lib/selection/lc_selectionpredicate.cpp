@@ -21,25 +21,23 @@
  * ********************************************************************************
  */
 
-#ifndef LC_SELECTIONPREDICATE_H
-#define LC_SELECTIONPREDICATE_H
+#include "lc_selectionpredicate.h"
 
-#include <functional>
+#include "rs_entity.h"
 
-#include "rs.h"
+LC_SelectionPredicate::LC_SelectionPredicate(RS2::EntityType entityType) {
+    if (entityType == RS2::EntityType::EntityUnknown) {
+        m_acceptEntityFunction = []([[maybe_unused]]RS_Entity* e)-> bool {return true;};
+    }
+    else {
+        m_acceptEntityFunction = [this](RS_Entity* e)-> bool {return e->rtti() == m_entityType;};
+    }
+}
 
-class RS_Entity;
+bool LC_SelectionPredicate::accept([[maybe_unused]]RS_Entity* entity) const {
+    return false;
+}
 
-class LC_SelectionPredicate {
-public:
-    using FunAcceptEntity = std::function<bool(RS_Entity*)>;
-    explicit LC_SelectionPredicate(RS2::EntityType entityType);
-    virtual bool accept(RS_Entity* entity) const;
-    bool acceptRtti(RS_Entity* entity) const;
-private:
-    RS2::EntityType m_entityType = RS2::EntityType::EntityUnknown;
-    FunAcceptEntity m_acceptRTTIFunction;
-    FunAcceptEntity m_acceptEntityFunction;
-};
-
-#endif // LC_SELECTIONPREDICATE_H
+bool LC_SelectionPredicate::acceptRtti(RS_Entity* entity) const {
+    return m_acceptEntityFunction(entity);
+}

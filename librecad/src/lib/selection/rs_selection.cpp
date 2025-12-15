@@ -1,28 +1,28 @@
-/****************************************************************************
-**
-** This file is part of the LibreCAD project, a 2D CAD program
-**
-** Copyright (C) 2010 R. van Twisk (librecad@rvt.dds.nl)
-** Copyright (C) 2001-2003 RibbonSoft. All rights reserved.
-**
-**
-** This file may be distributed and/or modified under the terms of the
-** GNU General Public License version 2 as published by the Free Software 
-** Foundation and appearing in the file gpl-2.0.txt included in the
-** packaging of this file.
-**
-** This program is distributed in the hope that it will be useful,
-** but WITHOUT ANY WARRANTY; without even the implied warranty of
-** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-** GNU General Public License for more details.
-** 
-** You should have received a copy of the GNU General Public License
-** along with this program; if not, write to the Free Software
-** Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-**
-** This copyright notice MUST APPEAR in all copies of the script!  
-**
-**********************************************************************/
+/*
+ * ********************************************************************************
+ * This file is part of the LibreCAD project, a 2D CAD program
+ *
+ * Copyright (C) 2010 R. van Twisk (librecad@rvt.dds.nl)
+ * Copyright (C) 2001-2003 RibbonSoft. All rights reserved.
+ * Copyright (C) 2025 LibreCAD.org
+ * Copyright (C) 2025 sand1024
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * This copyright notice MUST APPEAR in all copies of the script!
+ * ********************************************************************************
+ */
 #include "rs_selection.h"
 
 #include "dl_jww.h"
@@ -466,63 +466,94 @@ void RS_Selection::selectLayer(const RS_Layer* layer, bool select) {
 }
 
 // fixme - rework, use setSelected? At least, fix the selection state issue
-void RS_Selection::conditionalSelection(RS_Document* doc, const LC_SelectionOptions& options, const LC_SelectionPredicate& predicate, std::list<RS_Entity>& selectedEntities) {
-    // fixme - do as bulk selection, rework via document???
+void RS_Selection::conditionalSelection(const ConditionalSelectionOptions& options) {
+
     // doUnselectAllIfNeeded(container, doc);
-    QList<RS_Entity*> newEntitiesSet;
-    auto selectedSet             = doc->getSelection();
-    bool includeIntoSelectionSet = options.m_includeIntoSelectionSet;
-    bool excludeFromSelectionSet = !options.m_includeIntoSelectionSet;
-    if (options.m_applyArea == LC_SelectionOptions::Document) {
-        for (const auto e : *doc) {
-            if (predicate.acceptRtti(e)) {
-                bool matched = predicate.accept(e);
-                if (matched) {
-                    if (includeIntoSelectionSet) {
-                        newEntitiesSet.append(e);
+
+    performBulkSelection([this, options]([[maybe_unused]]RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
+            auto funRttiMatch = options.m_rttiMatcher;
+            auto funEntityMatch = options.m_entityMatcher;
+            QList<RS_Entity*> newEntitiesSet;
+            auto selectedSet = m_document->getSelection();
+            bool includeIntoSelectionSet = options.m_includeIntoSelectionSet;
+            bool excludeFromSelectionSet = !options.m_includeIntoSelectionSet;
+            if (options.m_applyArea == ConditionalSelectionOptions::Document) { // criteria applied to entire document
+                for (const auto e : *doc) {
+                    if (e->isDeleted()) {
+                        continue;
+                    }
+                    if (e->isInvisible()) {
+                        continue;
+                    }
+                    if (funRttiMatch(e)) {
+                        bool matched = funEntityMatch(e);
+                        if (matched) {
+                            if (includeIntoSelectionSet) {
+                                e->setSelectionFlag(true);
+                                newEntitiesSet.append(e);
+                            }
+                        }
+                        else {
+                            if (excludeFromSelectionSet) {
+                                e->setSelectionFlag(true);
+                                newEntitiesSet.append(e);
+                            }
+                        }
                     }
                 }
-                else {
-                    if (excludeFromSelectionSet) {
-                        newEntitiesSet.append(e);
-                    }
-                }
-            }
-        }
-        if (options.m_appendToSelectionSet) {
-            for (const auto e : *doc) {
-                selectedSet->add(e);
-            }
-        }
-        else {
-            selectedSet->replaceBy(newEntitiesSet);
-        }
-    }
-    else {
-        // refining existing selection
-        for (const auto e : *doc) {
-            if (predicate.acceptRtti(e)) {
-                bool matched = predicate.accept(e);
-                if (matched) {
-                    if (includeIntoSelectionSet) {
-                        newEntitiesSet.append(e);
-                    }
-                }
-                else {
-                    if (excludeFromSelectionSet) {
-                        newEntitiesSet.append(e);
-                    }
-                }
-            }
-            else {
                 if (options.m_appendToSelectionSet) {
-                    // entity with other rtti stays in the selection
-                    newEntitiesSet.append(e);
+                    for (const auto e : *m_document) {
+                        selectedSet->add(e);
+                    }
+                }
+                else { // just replace by matched entities
+                    selectedSet->replaceBy(newEntitiesSet);
                 }
             }
+            else { // criteria applied to current selection
+                QList<RS_Entity*> selectedEntities;
+                m_document->collectSelected(selectedEntities);
+                for (const auto e : selectedEntities) {
+                    if (e->isDeleted()) {
+                        continue;
+                    }
+                    if (e->isInvisible()) {
+                        continue;
+                    }
+                    if (funRttiMatch(e)) {
+                        bool matched = funEntityMatch(e);
+                        if (matched) {
+                            if (includeIntoSelectionSet) {
+                                newEntitiesSet.append(e);
+                            }
+                            else {
+                                e->setSelectionFlag(false);
+                            }
+                        }
+                        else {
+                            if (excludeFromSelectionSet) {
+                                newEntitiesSet.append(e);
+                            }
+                            else {
+                                e->setSelectionFlag(false);
+                            }
+                        }
+                    }
+                    else {
+                        if (options.m_appendToSelectionSet) {
+                            // entity with other rtti stays in the selection
+                            newEntitiesSet.append(e);
+                        }
+                        else {
+                            e->setSelectionFlag(false);
+                        }
+                    }
+                }
+                // replace existing selection by matched entities
+                selectedSet->replaceBy(newEntitiesSet);
+            }
         }
-        selectedSet->replaceBy(newEntitiesSet);
-    }
+    );
 }
 
 void RS_Selection::countSelectedEntities(QMap<RS2::EntityType, int>& entityTypeMaps) const {
@@ -544,12 +575,18 @@ void RS_Selection::countSelectedEntities(QMap<RS2::EntityType, int>& entityTypeM
 
 void RS_Selection::collectCurrentSelectionState(CurrentSelectionState& selectionState) const {
     if (m_viewPort != nullptr) {
-        for (auto e : *m_document) {
+        for (auto e : *m_document) { // iterating over all visible entities in the document
             if (e != nullptr && e->isVisible()) {
                 auto rtti = e->rtti();
-                selectionState.documentEntityTypes.insert(rtti);
+                int count = selectionState.documentEntityTypes[rtti];
+                count++;
+                selectionState.totalDocumentEntities++;
+                selectionState.documentEntityTypes[rtti] = count;
                 if (e->getFlag(RS2::FlagSelected)) {
-                    selectionState.selectedEntityTypes.insert(rtti);
+                    int selectedCount = selectionState.selectedEntityTypes[rtti];
+                    selectedCount++;
+                    selectionState.totalSelectedEntities++;
+                    selectionState.selectedEntityTypes[rtti] = selectedCount;
                 }
             }
         }

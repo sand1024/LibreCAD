@@ -21,36 +21,17 @@
  * ********************************************************************************
  */
 
-#ifndef LC_DLGQUICKSELECTION_H
-#define LC_DLGQUICKSELECTION_H
+#ifndef LC_ACTIONSELECTMODETOGGLE_H
+#define LC_ACTIONSELECTMODETOGGLE_H
+#include "rs_actioninterface.h"
 
-#include <qcombobox.h>
-
-#include "lc_dialog.h"
-#include "lc_graphicviewport.h"
-#include "rs_entitycontainer.h"
-#include "rs_selection.h"
-
-namespace Ui {
-    class LC_DlgQuickSelection;
-}
-
-class LC_DlgQuickSelection : public LC_Dialog {
+class LC_ActionSelectModeToggle : public RS_ActionInterface {
     Q_OBJECT
 public:
-    LC_DlgQuickSelection(QWidget *parent, RS_Document* doc, LC_GraphicViewport* viewport);
-    ~LC_DlgQuickSelection() override;
-protected slots:
-    void setupEntitiesTypesList(const QSet<RS2::EntityType>& set) const;
-    void onApplyToCurrentIndexChanged(int index) const;
-    void onEntityTypeIndexChanged(int index);
-    void onPropertyListRowChanged(int currentRow);
-    void onManualSelectionClicked(bool checked = false);
-private:
-    Ui::LC_DlgQuickSelection *ui;
-    RS_Document *m_document = nullptr;
-    LC_GraphicViewport* m_viewport = nullptr;
-    RS_Selection::CurrentSelectionState m_selectionState;
+    explicit LC_ActionSelectModeToggle(LC_ActionContext *actionContext);
+    void init(int status) override;
+    void trigger() override;
+    bool isSupportsPredecessorAction() override {return true;}
 };
 
-#endif // LC_DLGQUICKSELECTION_H
+#endif
