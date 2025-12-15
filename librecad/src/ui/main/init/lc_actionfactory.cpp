@@ -751,6 +751,14 @@ void LC_ActionFactory::setupCreatedActions(QMap<QString, QAction *> &map) {
     map["DimStyles"]->setProperty("_SetAsCurrentActionInView", false);
     map["LockRelativeZero"]->setProperty("_SetAsCurrentActionInView", false);
     map["SelectionModeToggle"]->setProperty("_SetAsCurrentActionInView", false);
+
+    connect(RS_SETTINGS, &RS_Settings::optionChanged, [map](const QString& groupName, const QString &propertyName, QVariant oldValue, QVariant newValue) -> void {
+        if (groupName == "Selection" && propertyName == "Additivity") {
+            auto action = map["SelectionModeToggle"];
+            action->setChecked(!action->isChecked());
+        }
+    });
+
 }
 
 void LC_ActionFactory::setDefaultShortcuts(QMap<QString, QAction*>& map, LC_ActionGroupManager* agm) {

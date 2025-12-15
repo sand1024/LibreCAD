@@ -437,177 +437,177 @@ first base, second base, first target, second target.</source>
 <context>
     <name>dibPunto</name>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="220"/>
+        <location filename="../asciifile/asciifile.cpp" line="219"/>
         <source>Read ascii points</source>
         <translation>Načíst body ASCII</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="226"/>
+        <location filename="../asciifile/asciifile.cpp" line="225"/>
         <source>File...</source>
         <translation>Soubor...</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="233"/>
+        <location filename="../asciifile/asciifile.cpp" line="232"/>
         <source>Format:</source>
         <translation>Formát:</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="235"/>
+        <location filename="../asciifile/asciifile.cpp" line="234"/>
         <source>Space Separator</source>
         <translation>Oddělovač mezera</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="235"/>
+        <location filename="../asciifile/asciifile.cpp" line="234"/>
         <source>Tab Separator</source>
         <translation>Oddělovač tabulátor</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="235"/>
+        <location filename="../asciifile/asciifile.cpp" line="234"/>
         <source>Comma Separator</source>
         <translation>Oddělovač čárka</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="235"/>
+        <location filename="../asciifile/asciifile.cpp" line="234"/>
         <source>Space in Columns</source>
         <translation>Mezery ve sloupcích</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="235"/>
+        <location filename="../asciifile/asciifile.cpp" line="234"/>
         <source>*.odb for Psion 2</source>
         <translation>*.odb pro Psion 2</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="237"/>
+        <location filename="../asciifile/asciifile.cpp" line="236"/>
         <source>Connect points</source>
         <translation>Spojit body</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="245"/>
+        <location filename="../asciifile/asciifile.cpp" line="244"/>
         <source>2D Point</source>
         <translation>2D bod</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="245"/>
+        <location filename="../asciifile/asciifile.cpp" line="244"/>
         <source>Draw 2D Point</source>
         <translation>Vykreslit 2D body</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="246"/>
+        <location filename="../asciifile/asciifile.cpp" line="245"/>
         <source>3D Point</source>
         <translation>3D bod</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="246"/>
+        <location filename="../asciifile/asciifile.cpp" line="245"/>
         <source>Draw 3D Point</source>
         <translation>Vykreslit 3D body</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="247"/>
+        <location filename="../asciifile/asciifile.cpp" line="246"/>
         <source>Point Number</source>
         <translation>Číslo bodu</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="247"/>
+        <location filename="../asciifile/asciifile.cpp" line="246"/>
         <source>Draw point number</source>
         <translation>Vykreslit čísla bodů</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="248"/>
+        <location filename="../asciifile/asciifile.cpp" line="247"/>
         <source>Point Elevation</source>
         <translation>Nadmořská výška bodu</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="248"/>
+        <location filename="../asciifile/asciifile.cpp" line="247"/>
         <source>Draw point elevation</source>
         <translation>Vykreslit nadmořské výšky bodů</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="249"/>
+        <location filename="../asciifile/asciifile.cpp" line="248"/>
         <source>Point Code</source>
         <translation>Kód bodu</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="249"/>
+        <location filename="../asciifile/asciifile.cpp" line="248"/>
         <source>Draw point code</source>
         <translation>Vykreslit kódy bodů</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="263"/>
+        <location filename="../asciifile/asciifile.cpp" line="262"/>
         <source>Accept</source>
         <translation>Přijmout</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="268"/>
+        <location filename="../asciifile/asciifile.cpp" line="267"/>
         <source>Cancel</source>
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="298"/>
+        <location filename="../asciifile/asciifile.cpp" line="297"/>
         <source>Select file</source>
         <translation>Vyberte soubor</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="305"/>
+        <location filename="../asciifile/asciifile.cpp" line="303"/>
         <source>Point 2D layer is empty</source>
         <translation>Hladina pro 2D body není zadána</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="308"/>
+        <location filename="../asciifile/asciifile.cpp" line="306"/>
         <source>Point 3D layer is empty</source>
         <translation>Hladina pro 3D body není zadána</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="311"/>
+        <location filename="../asciifile/asciifile.cpp" line="309"/>
         <source>Point elevation layer is empty</source>
         <translation>Hladina pro nadmořské výšky bodů není zadána</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="312"/>
+        <location filename="../asciifile/asciifile.cpp" line="310"/>
         <source>Point elevation height is empty</source>
         <translation>Šířka pro nadmořské výšky bodů není zadána</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="313"/>
+        <location filename="../asciifile/asciifile.cpp" line="311"/>
         <source>Point elevation separation is empty</source>
         <translation>Mezera pro nadmořské výšky bodů není zadána</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="316"/>
+        <location filename="../asciifile/asciifile.cpp" line="314"/>
         <source>Point number layer is empty</source>
         <translation>Hladina pro čísla bodů není zadána</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="317"/>
+        <location filename="../asciifile/asciifile.cpp" line="315"/>
         <source>Point number height is empty</source>
         <translation>Šířka pro čísla bodů není zadána</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="318"/>
+        <location filename="../asciifile/asciifile.cpp" line="316"/>
         <source>Point number separation is empty</source>
         <translation>Mezera pro čísla bodů není zadána</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="321"/>
+        <location filename="../asciifile/asciifile.cpp" line="319"/>
         <source>Point code layer is empty</source>
         <translation>Hladina pro kódy bodů není zadána</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="322"/>
+        <location filename="../asciifile/asciifile.cpp" line="320"/>
         <source>Point code height is empty</source>
         <translation>Šířka pro kódy bodů není zadána</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="323"/>
+        <location filename="../asciifile/asciifile.cpp" line="321"/>
         <source>Point code separation is empty</source>
         <translation>Mezera pro kódy bodů není zadána</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="359"/>
+        <location filename="../asciifile/asciifile.cpp" line="357"/>
         <source>The file %1 not exist</source>
         <translation>Soubor %1 neexistuje</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="364"/>
+        <location filename="../asciifile/asciifile.cpp" line="362"/>
         <source>Can&apos;t open the file %1</source>
         <translation>Nelze otevřít soubor %1</translation>
     </message>
@@ -636,151 +636,151 @@ first base, second base, first target, second target.</source>
         <translation type="unfinished">č.</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="440"/>
+        <location filename="../divide/divide.cpp" line="438"/>
         <source>Empty Entity</source>
         <translation type="unfinished">Prázdný prvek</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="448"/>
+        <location filename="../divide/divide.cpp" line="446"/>
         <source>X</source>
         <translation type="unfinished">X</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="448"/>
+        <location filename="../divide/divide.cpp" line="446"/>
         <source>Y</source>
         <translation type="unfinished">Y</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="456"/>
+        <location filename="../divide/divide.cpp" line="454"/>
         <source>Layer</source>
         <translation type="unfinished">Hladina</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="458"/>
+        <location filename="../divide/divide.cpp" line="456"/>
         <source>Color</source>
         <translation type="unfinished">Barva</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="459"/>
+        <location filename="../divide/divide.cpp" line="457"/>
         <source>Line type</source>
         <translation type="unfinished">Druh čáry</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="461"/>
+        <location filename="../divide/divide.cpp" line="459"/>
         <source>Line thickness</source>
         <translation type="unfinished">Tloušťka čáry</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="463"/>
+        <location filename="../divide/divide.cpp" line="461"/>
         <source>ID</source>
         <translation type="unfinished">ID</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="470"/>
+        <location filename="../divide/divide.cpp" line="468"/>
         <source>LINE</source>
         <translation type="unfinished">ÚSEČKA</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="475"/>
+        <location filename="../divide/divide.cpp" line="473"/>
         <source>from point</source>
         <translation type="unfinished">z bodu</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="478"/>
+        <location filename="../divide/divide.cpp" line="476"/>
         <source>to point</source>
         <translation type="unfinished">do bodu</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="483"/>
-        <location filename="../divide/divide.cpp" line="510"/>
+        <location filename="../divide/divide.cpp" line="481"/>
+        <location filename="../divide/divide.cpp" line="508"/>
         <source>length</source>
         <translation type="unfinished">délka</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="488"/>
+        <location filename="../divide/divide.cpp" line="486"/>
         <source>Angle in XY plane</source>
         <translation type="unfinished">Úhel v rovině XY</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="490"/>
+        <location filename="../divide/divide.cpp" line="488"/>
         <source>Inc.</source>
         <translation type="unfinished">Rozdíl</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="495"/>
+        <location filename="../divide/divide.cpp" line="493"/>
         <source>ARC</source>
         <translation type="unfinished">OBLOUK</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="496"/>
-        <location filename="../divide/divide.cpp" line="515"/>
+        <location filename="../divide/divide.cpp" line="494"/>
+        <location filename="../divide/divide.cpp" line="513"/>
         <source>center point</source>
         <translation type="unfinished">střed</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="502"/>
-        <location filename="../divide/divide.cpp" line="519"/>
-        <location filename="../divide/divide.cpp" line="541"/>
+        <location filename="../divide/divide.cpp" line="500"/>
+        <location filename="../divide/divide.cpp" line="517"/>
+        <location filename="../divide/divide.cpp" line="539"/>
         <source>radius</source>
         <translation type="unfinished">poloměr</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="503"/>
+        <location filename="../divide/divide.cpp" line="501"/>
         <source>initial angle</source>
         <translation type="unfinished">počáteční úhel</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="505"/>
+        <location filename="../divide/divide.cpp" line="503"/>
         <source>final angle</source>
         <translation type="unfinished">koncový úhel</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="514"/>
+        <location filename="../divide/divide.cpp" line="512"/>
         <source>CIRCLE</source>
         <translation type="unfinished">KRUŽNICE</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="520"/>
+        <location filename="../divide/divide.cpp" line="518"/>
         <source>circumference</source>
         <translation type="unfinished">obvod</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="522"/>
+        <location filename="../divide/divide.cpp" line="520"/>
         <source>area</source>
         <translation type="unfinished">obsah</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="526"/>
+        <location filename="../divide/divide.cpp" line="524"/>
         <source>POLYLINE</source>
         <translation type="unfinished">KŘIVKA</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="527"/>
+        <location filename="../divide/divide.cpp" line="525"/>
         <source>Closed</source>
         <translation type="unfinished">Uzavřená</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="529"/>
+        <location filename="../divide/divide.cpp" line="527"/>
         <source>No</source>
         <translation type="unfinished">Ne</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="529"/>
+        <location filename="../divide/divide.cpp" line="527"/>
         <source>Yes</source>
         <translation type="unfinished">Ano</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="530"/>
+        <location filename="../divide/divide.cpp" line="528"/>
         <source>Vertices</source>
         <translation type="unfinished">Uzly</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="535"/>
+        <location filename="../divide/divide.cpp" line="533"/>
         <source>in point</source>
         <translation type="unfinished">v bodě</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="551"/>
+        <location filename="../divide/divide.cpp" line="549"/>
         <source>MUST be a line, circle or arc</source>
         <translation type="unfinished"></translation>
     </message>
@@ -853,27 +853,27 @@ anti-clockwise.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../divide/dividedlg.cpp" line="251"/>
+        <location filename="../divide/dividedlg.cpp" line="250"/>
         <source>Ticks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../divide/dividedlg.cpp" line="257"/>
+        <location filename="../divide/dividedlg.cpp" line="256"/>
         <source>Above</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../divide/dividedlg.cpp" line="258"/>
+        <location filename="../divide/dividedlg.cpp" line="257"/>
         <source>Below</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../divide/dividedlg.cpp" line="262"/>
+        <location filename="../divide/dividedlg.cpp" line="261"/>
         <source>Outside</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../divide/dividedlg.cpp" line="263"/>
+        <location filename="../divide/dividedlg.cpp" line="262"/>
         <source>Inside</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1050,27 +1050,27 @@ anti-clockwise.</source>
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="105"/>
+        <location filename="../sample/sample.cpp" line="104"/>
         <source>Start X is empty</source>
         <translation>Počátek X není zadán</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="106"/>
+        <location filename="../sample/sample.cpp" line="105"/>
         <source>Start Y is empty</source>
         <translation>Počátek Y není zadán</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="107"/>
+        <location filename="../sample/sample.cpp" line="106"/>
         <source>End X is empty</source>
         <translation>Konec X není zadán</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="108"/>
+        <location filename="../sample/sample.cpp" line="107"/>
         <source>End Y is empty</source>
         <translation>Konec Y není zadán</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="129"/>
+        <location filename="../sample/sample.cpp" line="127"/>
         <source>Sample plugin</source>
         <translation>Ukázkový zásuvný modul</translation>
     </message>
@@ -1103,38 +1103,38 @@ anti-clockwise.</source>
         <translation type="unfinished">Vyberte soubor</translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="118"/>
+        <location filename="../picfile/picfile.cpp" line="117"/>
         <source>Scale Factor is empty or invalid</source>
         <translation>Měřítko není zadáno nebo je neplatné</translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="131"/>
+        <location filename="../picfile/picfile.cpp" line="130"/>
         <source>The file %1 not exist</source>
         <translation type="unfinished">Soubor %1 neexistuje</translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="136"/>
+        <location filename="../picfile/picfile.cpp" line="135"/>
         <source>Can&apos;t open the file %1</source>
         <translation type="unfinished">Nelze otevřít soubor %1</translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="143"/>
+        <location filename="../picfile/picfile.cpp" line="142"/>
         <source>%1 objects imported</source>
         <translation>importováno %1 objektů</translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="165"/>
+        <location filename="../picfile/picfile.cpp" line="163"/>
         <source>picPunto drawLine: first point is empty %1</source>
         <translation>picPunto drawLine: první bod nezadán %1</translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="178"/>
+        <location filename="../picfile/picfile.cpp" line="176"/>
         <source>picPunto drawLine: next point is empty %1</source>
         <translation>picPunto drawLine: následující bod nezadán %1</translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="261"/>
-        <location filename="../picfile/picfile.cpp" line="270"/>
+        <location filename="../picfile/picfile.cpp" line="259"/>
+        <location filename="../picfile/picfile.cpp" line="268"/>
         <source>format error in %1</source>
         <translation>chyba formátu u %1</translation>
     </message>
@@ -1233,17 +1233,17 @@ Jako proměnnou (parametr) rovnice použijte t nebo x.
 <context>
     <name>textBox</name>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="204"/>
+        <location filename="../asciifile/asciifile.cpp" line="203"/>
         <source>Style:</source>
         <translation>Styl:</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="205"/>
+        <location filename="../asciifile/asciifile.cpp" line="204"/>
         <source>Height:</source>
         <translation>Šířka:</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="206"/>
+        <location filename="../asciifile/asciifile.cpp" line="205"/>
         <source>Separation</source>
         <translation>Mezera:</translation>
     </message>

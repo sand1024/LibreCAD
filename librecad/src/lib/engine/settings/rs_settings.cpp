@@ -171,7 +171,7 @@ bool RS_Settings::writeEntrySingle(const QString& group, const QString &key, con
 
     // basically, that's a shortcut that we put value from cache as old value (instead of actual reading of it).
     // however, in most cases, properties will be read before modification, so that's fine
-    emit optionChanged(m_group, key, ret, value);
+    emit optionChanged(group, key, ret, value);
 
     return true;
 }

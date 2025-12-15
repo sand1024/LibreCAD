@@ -58,6 +58,7 @@ public:
     QList<QAction*> block_actions;
     QList<QAction*> pen_actions;
     QList<QAction*> entity_layer_actions;
+
 private:
     void initActionGroupManager(LC_ActionGroupManager* agm);
     void createEntityLayerActions(QMap<QString, QAction*>& map, LC_ActionGroup* group) const;

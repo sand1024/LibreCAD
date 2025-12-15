@@ -616,6 +616,17 @@ const LC_CommandItem g_commandList[] = {
             {{"is", QObject::tr("is", "invert select")}},
             RS2::ActionSelectInvert
         },
+     {
+                {{"selectquick", QObject::tr("selectquick", "select quick")}},
+                {{"sq", QObject::tr("sq", "select quick")}},
+                RS2::ActionSelectQuick
+        },
+      {
+             {{"smtoggle", QObject::tr("smtoggle", "select mode toggle")}},
+             {{"smt", QObject::tr("smt", "select mode toggle")}},
+            RS2::ActionSelectModeToggle
+            },
+
         /* Remaining select tools require the mouse - no point in adding commands. */
 
         /* DIMENSION COMMANDS */

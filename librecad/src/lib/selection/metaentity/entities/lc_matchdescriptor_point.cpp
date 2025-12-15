@@ -21,11 +21,21 @@
  * ********************************************************************************
  */
 
-#include "lc_actionmodifywithselectionbase.h"
+#include "lc_matchdescriptor_point.h"
 
-LC_ActionModifyWithSelectionBase::LC_ActionModifyWithSelectionBase(const char* name, LC_ActionContext* actionContext, RS2::ActionType actionType,
-    const QList<RS2::EntityType>& entityTypeList):
-      LC_ActionPreSelectionAwareBase(name, actionContext, actionType, entityTypeList){
+#include "rs_point.h"
+
+void LC_MatchDescriptorPoint::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
+    auto entity = new LC_TypedEntityMatchDescriptor<RS_Point>(tr("Point"), RS2::EntityPoint);
+    initCommonEntityAttributesProperties<RS_Point>(entity);
+
+    entity->addVector("x", [](RS_Point* e) {
+        return e->getPos();
+    }, tr("X"), tr("X coordinate of point"), LC_PropertyMatcherTypes::COORD_X);
+
+    entity->addVector("y", [](RS_Point* e) {
+        return e->getPos();
+    }, tr("Y"), tr("Y coordinate of point"), LC_PropertyMatcherTypes::COORD_Y);
+
+    map.insert(RS2::EntityPoint, entity);
 }
-
-LC_ActionModifyWithSelectionBase::~LC_ActionModifyWithSelectionBase() = default;

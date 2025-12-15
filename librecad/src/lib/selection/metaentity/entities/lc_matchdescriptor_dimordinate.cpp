@@ -1,0 +1,78 @@
+/*
+ * ********************************************************************************
+ * This file is part of the LibreCAD project, a 2D CAD program
+ *
+ * Copyright (C) 2025 LibreCAD.org
+ * Copyright (C) 2025 sand1024
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * ********************************************************************************
+ */
+
+#include "lc_matchdescriptor_dimordinate.h"
+
+#include "lc_dimordinate.h"
+
+void LC_MatchDescriptorDimOrdinate::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
+     auto entity = new LC_TypedEntityMatchDescriptor<LC_DimOrdinate>(tr("Dimension Ordinate"), RS2::EntityDimOrdinate);
+    initCommonEntityAttributesProperties<LC_DimOrdinate>(entity);
+    initCommonDimensionAttributes(entity);
+
+    entity->addVector("originX", [](LC_DimOrdinate* e) {
+        return e->getDefinitionPoint();
+    }, tr("Origin Point X"), tr("X coordinate for dimension origin point"), LC_PropertyMatcherTypes::COORD_X);
+
+    entity->addVector("originY", [](LC_DimOrdinate* e) {
+        return e->getDefinitionPoint();
+    }, tr("Origin Point Y"), tr("Y coordinate for dimension origin point"), LC_PropertyMatcherTypes::COORD_Y);
+
+    entity->add<int>("ordinate", [](LC_DimOrdinate* e) {
+        return e->isForXDirection();
+    }, tr("Ordinate"), tr("Direction of ordinate"), LC_PropertyMatcherTypes::INT_CHOICE,
+    {
+        {tr("X"), QVariant(1)},
+        {tr("Y"), QVariant(0)}
+    });
+
+    entity->addVector("featureX", [](LC_DimOrdinate* e) {
+           return e->getFeaturePoint();
+       }, tr("Feature Point X"), tr("X coordinate for dimension feature point"), LC_PropertyMatcherTypes::COORD_X);
+
+    entity->addVector("featureY", [](LC_DimOrdinate* e) {
+        return e->getFeaturePoint();
+    }, tr("Feature Point Y"), tr("Y coordinate for dimension feature point"), LC_PropertyMatcherTypes::COORD_Y);
+
+    entity->addVector("leaderEndX", [](LC_DimOrdinate* e) {
+          return e->getLeaderEndPoint();
+      }, tr("Leader End X"), tr("X coordinate for dimension leader end point"), LC_PropertyMatcherTypes::COORD_X);
+
+    entity->addVector("leaderEndY", [](LC_DimOrdinate* e) {
+        return e->getLeaderEndPoint();
+    }, tr("Leader End Y"), tr("Y coordinate for dimension leader end point"), LC_PropertyMatcherTypes::COORD_Y);
+
+    entity->addVector("textMiddleX", [](LC_DimOrdinate* e) {
+           return e->getMiddleOfText();
+       }, tr("Text middle point X"), tr("X coordinate for text middle point"), LC_PropertyMatcherTypes::COORD_X);
+
+    entity->addVector("textMiddleX", [](LC_DimOrdinate* e) {
+        return e->getMiddleOfText();
+    }, tr("Text middle point Y"), tr("Y coordinate for text middle point"), LC_PropertyMatcherTypes::COORD_Y);
+
+    entity->add<double>("hdir", [](LC_DimOrdinate* e) {
+        return e->getHDir();
+    }, tr("Horizontal"), tr("Andle of horizontal direction for this dimension"), LC_PropertyMatcherTypes::ANGLE);
+
+    map.insert(RS2::EntityDimOrdinate, entity);
+}

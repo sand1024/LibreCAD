@@ -437,177 +437,177 @@ first base, second base, first target, second target.</source>
 <context>
     <name>dibPunto</name>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="220"/>
+        <location filename="../asciifile/asciifile.cpp" line="219"/>
         <source>Read ascii points</source>
         <translation>Punkte aus ASCII-Datei</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="226"/>
+        <location filename="../asciifile/asciifile.cpp" line="225"/>
         <source>File...</source>
         <translation>Datei...</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="233"/>
+        <location filename="../asciifile/asciifile.cpp" line="232"/>
         <source>Format:</source>
         <translation>Format:</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="235"/>
+        <location filename="../asciifile/asciifile.cpp" line="234"/>
         <source>Space Separator</source>
         <translation>Leerzeichen getrennt</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="235"/>
+        <location filename="../asciifile/asciifile.cpp" line="234"/>
         <source>Tab Separator</source>
         <translation>Tabulator getrennt</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="235"/>
+        <location filename="../asciifile/asciifile.cpp" line="234"/>
         <source>Comma Separator</source>
         <translation>Komma getrennt</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="235"/>
+        <location filename="../asciifile/asciifile.cpp" line="234"/>
         <source>Space in Columns</source>
         <translation>Feste Spaltenbreite</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="235"/>
+        <location filename="../asciifile/asciifile.cpp" line="234"/>
         <source>*.odb for Psion 2</source>
         <translation>*.odb für Psion 2</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="237"/>
+        <location filename="../asciifile/asciifile.cpp" line="236"/>
         <source>Connect points</source>
         <translation>Punkte verbinden</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="245"/>
+        <location filename="../asciifile/asciifile.cpp" line="244"/>
         <source>2D Point</source>
         <translation>2D Punkt</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="245"/>
+        <location filename="../asciifile/asciifile.cpp" line="244"/>
         <source>Draw 2D Point</source>
         <translation>Zeichne 2D Punkt</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="246"/>
+        <location filename="../asciifile/asciifile.cpp" line="245"/>
         <source>3D Point</source>
         <translation>3D Punkt</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="246"/>
+        <location filename="../asciifile/asciifile.cpp" line="245"/>
         <source>Draw 3D Point</source>
         <translation>Zeichne 3D Punkt</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="247"/>
+        <location filename="../asciifile/asciifile.cpp" line="246"/>
         <source>Point Number</source>
         <translation>Punkt Nummer</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="247"/>
+        <location filename="../asciifile/asciifile.cpp" line="246"/>
         <source>Draw point number</source>
         <translation>Zeichne Punkt Nummer</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="248"/>
+        <location filename="../asciifile/asciifile.cpp" line="247"/>
         <source>Point Elevation</source>
         <translation>Höhenpunkt</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="248"/>
+        <location filename="../asciifile/asciifile.cpp" line="247"/>
         <source>Draw point elevation</source>
         <translation>Zeichne Höhenpunkt</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="249"/>
+        <location filename="../asciifile/asciifile.cpp" line="248"/>
         <source>Point Code</source>
         <translation>Punkt Code</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="249"/>
+        <location filename="../asciifile/asciifile.cpp" line="248"/>
         <source>Draw point code</source>
         <translation>Zeichne Punkt Code</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="263"/>
+        <location filename="../asciifile/asciifile.cpp" line="262"/>
         <source>Accept</source>
         <translation>Übernehmen</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="268"/>
+        <location filename="../asciifile/asciifile.cpp" line="267"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="298"/>
+        <location filename="../asciifile/asciifile.cpp" line="297"/>
         <source>Select file</source>
         <translation>Datei auswählen</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="305"/>
+        <location filename="../asciifile/asciifile.cpp" line="303"/>
         <source>Point 2D layer is empty</source>
         <translation>Layer 2D Punkt ist leer</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="308"/>
+        <location filename="../asciifile/asciifile.cpp" line="306"/>
         <source>Point 3D layer is empty</source>
         <translation>Layer 3D Punkt ist leer</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="311"/>
+        <location filename="../asciifile/asciifile.cpp" line="309"/>
         <source>Point elevation layer is empty</source>
         <translation>Layer Höhenpunkt ist leer</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="312"/>
+        <location filename="../asciifile/asciifile.cpp" line="310"/>
         <source>Point elevation height is empty</source>
         <translation>Höhe Höhenpunkt ist leer</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="313"/>
+        <location filename="../asciifile/asciifile.cpp" line="311"/>
         <source>Point elevation separation is empty</source>
         <translation>Abstand Höhenpunkt ist leer</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="316"/>
+        <location filename="../asciifile/asciifile.cpp" line="314"/>
         <source>Point number layer is empty</source>
         <translation>Layer Punkt Nummer ist leer</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="317"/>
+        <location filename="../asciifile/asciifile.cpp" line="315"/>
         <source>Point number height is empty</source>
         <translation>Höhe Punkt Nummer ist leer</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="318"/>
+        <location filename="../asciifile/asciifile.cpp" line="316"/>
         <source>Point number separation is empty</source>
         <translation>Abstand Punkt Nummer ist leer</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="321"/>
+        <location filename="../asciifile/asciifile.cpp" line="319"/>
         <source>Point code layer is empty</source>
         <translation>Layer Punkt Code ist leer</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="322"/>
+        <location filename="../asciifile/asciifile.cpp" line="320"/>
         <source>Point code height is empty</source>
         <translation>Höhe Punkt Code ist leer</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="323"/>
+        <location filename="../asciifile/asciifile.cpp" line="321"/>
         <source>Point code separation is empty</source>
         <translation>Abstand Punkt Code ist leer</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="359"/>
+        <location filename="../asciifile/asciifile.cpp" line="357"/>
         <source>The file %1 not exist</source>
         <translation>Die Datei %1 existiert nicht</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="364"/>
+        <location filename="../asciifile/asciifile.cpp" line="362"/>
         <source>Can&apos;t open the file %1</source>
         <translation>Kann Datei %1 nicht öffnen</translation>
     </message>
@@ -636,151 +636,151 @@ first base, second base, first target, second target.</source>
         <translation type="unfinished">n</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="440"/>
+        <location filename="../divide/divide.cpp" line="438"/>
         <source>Empty Entity</source>
         <translation type="unfinished">Leeres Objekt</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="448"/>
+        <location filename="../divide/divide.cpp" line="446"/>
         <source>X</source>
         <translation type="unfinished">X</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="448"/>
+        <location filename="../divide/divide.cpp" line="446"/>
         <source>Y</source>
         <translation type="unfinished">Y</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="456"/>
+        <location filename="../divide/divide.cpp" line="454"/>
         <source>Layer</source>
         <translation type="unfinished">Layer</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="458"/>
+        <location filename="../divide/divide.cpp" line="456"/>
         <source>Color</source>
         <translation type="unfinished">Farbe</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="459"/>
+        <location filename="../divide/divide.cpp" line="457"/>
         <source>Line type</source>
         <translation type="unfinished">Linientyp</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="461"/>
+        <location filename="../divide/divide.cpp" line="459"/>
         <source>Line thickness</source>
         <translation type="unfinished">Linienstärke</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="463"/>
+        <location filename="../divide/divide.cpp" line="461"/>
         <source>ID</source>
         <translation type="unfinished">ID</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="470"/>
+        <location filename="../divide/divide.cpp" line="468"/>
         <source>LINE</source>
         <translation type="unfinished">LINIE</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="475"/>
+        <location filename="../divide/divide.cpp" line="473"/>
         <source>from point</source>
         <translation type="unfinished">von Punkt</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="478"/>
+        <location filename="../divide/divide.cpp" line="476"/>
         <source>to point</source>
         <translation type="unfinished">zu Punkt</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="483"/>
-        <location filename="../divide/divide.cpp" line="510"/>
+        <location filename="../divide/divide.cpp" line="481"/>
+        <location filename="../divide/divide.cpp" line="508"/>
         <source>length</source>
         <translation type="unfinished">Länge</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="488"/>
+        <location filename="../divide/divide.cpp" line="486"/>
         <source>Angle in XY plane</source>
         <translation type="unfinished">Winkel in XY Ebene</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="490"/>
+        <location filename="../divide/divide.cpp" line="488"/>
         <source>Inc.</source>
         <translation type="unfinished">Ausdehnung</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="495"/>
+        <location filename="../divide/divide.cpp" line="493"/>
         <source>ARC</source>
         <translation type="unfinished">KREISBOGEN</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="496"/>
-        <location filename="../divide/divide.cpp" line="515"/>
+        <location filename="../divide/divide.cpp" line="494"/>
+        <location filename="../divide/divide.cpp" line="513"/>
         <source>center point</source>
         <translation type="unfinished">Mittelpunkt</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="502"/>
-        <location filename="../divide/divide.cpp" line="519"/>
-        <location filename="../divide/divide.cpp" line="541"/>
+        <location filename="../divide/divide.cpp" line="500"/>
+        <location filename="../divide/divide.cpp" line="517"/>
+        <location filename="../divide/divide.cpp" line="539"/>
         <source>radius</source>
         <translation type="unfinished">Radius</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="503"/>
+        <location filename="../divide/divide.cpp" line="501"/>
         <source>initial angle</source>
         <translation type="unfinished">Startwinkel</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="505"/>
+        <location filename="../divide/divide.cpp" line="503"/>
         <source>final angle</source>
         <translation type="unfinished">Endwinkel</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="514"/>
+        <location filename="../divide/divide.cpp" line="512"/>
         <source>CIRCLE</source>
         <translation type="unfinished">KREIS</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="520"/>
+        <location filename="../divide/divide.cpp" line="518"/>
         <source>circumference</source>
         <translation type="unfinished">Umfang</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="522"/>
+        <location filename="../divide/divide.cpp" line="520"/>
         <source>area</source>
         <translation type="unfinished">Fläche</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="526"/>
+        <location filename="../divide/divide.cpp" line="524"/>
         <source>POLYLINE</source>
         <translation type="unfinished">POLYLINIE</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="527"/>
+        <location filename="../divide/divide.cpp" line="525"/>
         <source>Closed</source>
         <translation type="unfinished">Geschlossen</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="529"/>
+        <location filename="../divide/divide.cpp" line="527"/>
         <source>No</source>
         <translation type="unfinished">Nein</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="529"/>
+        <location filename="../divide/divide.cpp" line="527"/>
         <source>Yes</source>
         <translation type="unfinished">Ja</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="530"/>
+        <location filename="../divide/divide.cpp" line="528"/>
         <source>Vertices</source>
         <translation type="unfinished">Eckpunkte</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="535"/>
+        <location filename="../divide/divide.cpp" line="533"/>
         <source>in point</source>
         <translation type="unfinished">im Punkt</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="551"/>
+        <location filename="../divide/divide.cpp" line="549"/>
         <source>MUST be a line, circle or arc</source>
         <translation type="unfinished"></translation>
     </message>
@@ -853,27 +853,27 @@ anti-clockwise.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../divide/dividedlg.cpp" line="251"/>
+        <location filename="../divide/dividedlg.cpp" line="250"/>
         <source>Ticks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../divide/dividedlg.cpp" line="257"/>
+        <location filename="../divide/dividedlg.cpp" line="256"/>
         <source>Above</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../divide/dividedlg.cpp" line="258"/>
+        <location filename="../divide/dividedlg.cpp" line="257"/>
         <source>Below</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../divide/dividedlg.cpp" line="262"/>
+        <location filename="../divide/dividedlg.cpp" line="261"/>
         <source>Outside</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../divide/dividedlg.cpp" line="263"/>
+        <location filename="../divide/dividedlg.cpp" line="262"/>
         <source>Inside</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1050,27 +1050,27 @@ anti-clockwise.</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="105"/>
+        <location filename="../sample/sample.cpp" line="104"/>
         <source>Start X is empty</source>
         <translation>Anfang X ist leer</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="106"/>
+        <location filename="../sample/sample.cpp" line="105"/>
         <source>Start Y is empty</source>
         <translation>Anfang Y ist leer</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="107"/>
+        <location filename="../sample/sample.cpp" line="106"/>
         <source>End X is empty</source>
         <translation>Ende X ist leer</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="108"/>
+        <location filename="../sample/sample.cpp" line="107"/>
         <source>End Y is empty</source>
         <translation>Ende Y ist leer</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="129"/>
+        <location filename="../sample/sample.cpp" line="127"/>
         <source>Sample plugin</source>
         <translation>Beispiel Plugin</translation>
     </message>
@@ -1103,38 +1103,38 @@ anti-clockwise.</source>
         <translation>Datei auswählen</translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="118"/>
+        <location filename="../picfile/picfile.cpp" line="117"/>
         <source>Scale Factor is empty or invalid</source>
         <translation>Skalierungsfaktor ist leer oder ungültig</translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="131"/>
+        <location filename="../picfile/picfile.cpp" line="130"/>
         <source>The file %1 not exist</source>
         <translation>Die Datei %1 existiert nicht</translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="136"/>
+        <location filename="../picfile/picfile.cpp" line="135"/>
         <source>Can&apos;t open the file %1</source>
         <translation>Kann Datei %1 nicht öffnen</translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="143"/>
+        <location filename="../picfile/picfile.cpp" line="142"/>
         <source>%1 objects imported</source>
         <translation>%1 Objekte importiert</translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="165"/>
+        <location filename="../picfile/picfile.cpp" line="163"/>
         <source>picPunto drawLine: first point is empty %1</source>
         <translation>PIC Import: Erster Punkt ist leer %1</translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="178"/>
+        <location filename="../picfile/picfile.cpp" line="176"/>
         <source>picPunto drawLine: next point is empty %1</source>
         <translation>PIC Import: Endpunkt ist leer %1</translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="261"/>
-        <location filename="../picfile/picfile.cpp" line="270"/>
+        <location filename="../picfile/picfile.cpp" line="259"/>
+        <location filename="../picfile/picfile.cpp" line="268"/>
         <source>format error in %1</source>
         <translation>Formatfehler in %1</translation>
     </message>
@@ -1233,17 +1233,17 @@ Als Variable/Parameter der Gleichung kann t oder x verwendet werden.
 <context>
     <name>textBox</name>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="204"/>
+        <location filename="../asciifile/asciifile.cpp" line="203"/>
         <source>Style:</source>
         <translation>Stil:</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="205"/>
+        <location filename="../asciifile/asciifile.cpp" line="204"/>
         <source>Height:</source>
         <translation>Höhe:</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="206"/>
+        <location filename="../asciifile/asciifile.cpp" line="205"/>
         <source>Separation</source>
         <translation>Teilung</translation>
     </message>

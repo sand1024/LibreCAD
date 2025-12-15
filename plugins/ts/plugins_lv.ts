@@ -438,177 +438,177 @@ first base, second base, first target, second target.</source>
 <context>
     <name>dibPunto</name>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="220"/>
+        <location filename="../asciifile/asciifile.cpp" line="219"/>
         <source>Read ascii points</source>
         <translation>Lasīt ascii punktus</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="226"/>
+        <location filename="../asciifile/asciifile.cpp" line="225"/>
         <source>File...</source>
         <translation>Datne...</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="233"/>
+        <location filename="../asciifile/asciifile.cpp" line="232"/>
         <source>Format:</source>
         <translation>Formāts:</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="235"/>
+        <location filename="../asciifile/asciifile.cpp" line="234"/>
         <source>Space Separator</source>
         <translation>Atstarpes atdalītājs</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="235"/>
+        <location filename="../asciifile/asciifile.cpp" line="234"/>
         <source>Tab Separator</source>
         <translation>Tabulācijas atdalītājs</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="235"/>
+        <location filename="../asciifile/asciifile.cpp" line="234"/>
         <source>Comma Separator</source>
         <translation>Komata atdalītājs</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="235"/>
+        <location filename="../asciifile/asciifile.cpp" line="234"/>
         <source>Space in Columns</source>
         <translation>Atstarpe kolonnās</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="235"/>
+        <location filename="../asciifile/asciifile.cpp" line="234"/>
         <source>*.odb for Psion 2</source>
         <translation>*.odb Psion 2</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="237"/>
+        <location filename="../asciifile/asciifile.cpp" line="236"/>
         <source>Connect points</source>
         <translation>Savienot punktus</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="245"/>
+        <location filename="../asciifile/asciifile.cpp" line="244"/>
         <source>2D Point</source>
         <translation>2D punkts</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="245"/>
+        <location filename="../asciifile/asciifile.cpp" line="244"/>
         <source>Draw 2D Point</source>
         <translation>Zīmēt 2D punktu</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="246"/>
+        <location filename="../asciifile/asciifile.cpp" line="245"/>
         <source>3D Point</source>
         <translation>3D punkts</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="246"/>
+        <location filename="../asciifile/asciifile.cpp" line="245"/>
         <source>Draw 3D Point</source>
         <translation>Zīmēt 3D punktu</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="247"/>
+        <location filename="../asciifile/asciifile.cpp" line="246"/>
         <source>Point Number</source>
         <translation>Punkta numurs</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="247"/>
+        <location filename="../asciifile/asciifile.cpp" line="246"/>
         <source>Draw point number</source>
         <translation>Zīmēt punkta numuru</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="248"/>
+        <location filename="../asciifile/asciifile.cpp" line="247"/>
         <source>Point Elevation</source>
         <translation>Punkta pacēlums</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="248"/>
+        <location filename="../asciifile/asciifile.cpp" line="247"/>
         <source>Draw point elevation</source>
         <translation>Zīmēt punkta pacēlumu</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="249"/>
+        <location filename="../asciifile/asciifile.cpp" line="248"/>
         <source>Point Code</source>
         <translation>Punkta kods</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="249"/>
+        <location filename="../asciifile/asciifile.cpp" line="248"/>
         <source>Draw point code</source>
         <translation>Zīmēt punkta kodu</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="263"/>
+        <location filename="../asciifile/asciifile.cpp" line="262"/>
         <source>Accept</source>
         <translation>Pieņemt</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="268"/>
+        <location filename="../asciifile/asciifile.cpp" line="267"/>
         <source>Cancel</source>
         <translation>Atcelt</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="298"/>
+        <location filename="../asciifile/asciifile.cpp" line="297"/>
         <source>Select file</source>
         <translation>Izvēlieties datni</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="305"/>
+        <location filename="../asciifile/asciifile.cpp" line="303"/>
         <source>Point 2D layer is empty</source>
         <translation>Punkta 2D slānis ir tukšs</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="308"/>
+        <location filename="../asciifile/asciifile.cpp" line="306"/>
         <source>Point 3D layer is empty</source>
         <translation>Punkta 3D slānis ir tukšs</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="311"/>
+        <location filename="../asciifile/asciifile.cpp" line="309"/>
         <source>Point elevation layer is empty</source>
         <translation>Punkta pacēluma slānis ir tukšs</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="312"/>
+        <location filename="../asciifile/asciifile.cpp" line="310"/>
         <source>Point elevation height is empty</source>
         <translation>Punkta pacēluma augstums ir tukšs</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="313"/>
+        <location filename="../asciifile/asciifile.cpp" line="311"/>
         <source>Point elevation separation is empty</source>
         <translation>Punkta pacēluma atdalīšana ir tukša</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="316"/>
+        <location filename="../asciifile/asciifile.cpp" line="314"/>
         <source>Point number layer is empty</source>
         <translation>Punkta numura slānis ir tukšs</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="317"/>
+        <location filename="../asciifile/asciifile.cpp" line="315"/>
         <source>Point number height is empty</source>
         <translation>Punkta numura augstums ir tukšs</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="318"/>
+        <location filename="../asciifile/asciifile.cpp" line="316"/>
         <source>Point number separation is empty</source>
         <translation>Punkta skaitļa atdalīšana ir tukša</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="321"/>
+        <location filename="../asciifile/asciifile.cpp" line="319"/>
         <source>Point code layer is empty</source>
         <translation>Punkta koda slānis ir tukšs</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="322"/>
+        <location filename="../asciifile/asciifile.cpp" line="320"/>
         <source>Point code height is empty</source>
         <translation>Punkta koda augstums ir tukšs</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="323"/>
+        <location filename="../asciifile/asciifile.cpp" line="321"/>
         <source>Point code separation is empty</source>
         <translation>Punkta koda atdalīšana ir tukša</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="359"/>
+        <location filename="../asciifile/asciifile.cpp" line="357"/>
         <source>The file %1 not exist</source>
         <translation>Datne %1 neeksistē</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="364"/>
+        <location filename="../asciifile/asciifile.cpp" line="362"/>
         <source>Can&apos;t open the file %1</source>
         <translation>Nevar atvērt datni %1</translation>
     </message>
@@ -637,152 +637,152 @@ first base, second base, first target, second target.</source>
         <translation type="unfinished">n</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="440"/>
+        <location filename="../divide/divide.cpp" line="438"/>
         <source>Empty Entity</source>
         <translation type="unfinished">Tukšs objekts</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="448"/>
+        <location filename="../divide/divide.cpp" line="446"/>
         <source>X</source>
         <translation type="unfinished">X</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="448"/>
+        <location filename="../divide/divide.cpp" line="446"/>
         <source>Y</source>
         <translation type="unfinished">
             </translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="456"/>
+        <location filename="../divide/divide.cpp" line="454"/>
         <source>Layer</source>
         <translation type="unfinished">Slānis</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="458"/>
+        <location filename="../divide/divide.cpp" line="456"/>
         <source>Color</source>
         <translation type="unfinished">Krāsa</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="459"/>
+        <location filename="../divide/divide.cpp" line="457"/>
         <source>Line type</source>
         <translation type="unfinished">Līnijas tips</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="461"/>
+        <location filename="../divide/divide.cpp" line="459"/>
         <source>Line thickness</source>
         <translation type="unfinished">Līnijas biezums</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="463"/>
+        <location filename="../divide/divide.cpp" line="461"/>
         <source>ID</source>
         <translation type="unfinished">ID</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="470"/>
+        <location filename="../divide/divide.cpp" line="468"/>
         <source>LINE</source>
         <translation type="unfinished">LĪNIJA</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="475"/>
+        <location filename="../divide/divide.cpp" line="473"/>
         <source>from point</source>
         <translation type="unfinished">no punkta</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="478"/>
+        <location filename="../divide/divide.cpp" line="476"/>
         <source>to point</source>
         <translation type="unfinished">uz punktu</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="483"/>
-        <location filename="../divide/divide.cpp" line="510"/>
+        <location filename="../divide/divide.cpp" line="481"/>
+        <location filename="../divide/divide.cpp" line="508"/>
         <source>length</source>
         <translation type="unfinished">garums</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="488"/>
+        <location filename="../divide/divide.cpp" line="486"/>
         <source>Angle in XY plane</source>
         <translation type="unfinished">Leņķis XY plaknē</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="490"/>
+        <location filename="../divide/divide.cpp" line="488"/>
         <source>Inc.</source>
         <translation type="unfinished">SIA</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="495"/>
+        <location filename="../divide/divide.cpp" line="493"/>
         <source>ARC</source>
         <translation type="unfinished">LOKS</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="496"/>
-        <location filename="../divide/divide.cpp" line="515"/>
+        <location filename="../divide/divide.cpp" line="494"/>
+        <location filename="../divide/divide.cpp" line="513"/>
         <source>center point</source>
         <translation type="unfinished">centra punkts</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="502"/>
-        <location filename="../divide/divide.cpp" line="519"/>
-        <location filename="../divide/divide.cpp" line="541"/>
+        <location filename="../divide/divide.cpp" line="500"/>
+        <location filename="../divide/divide.cpp" line="517"/>
+        <location filename="../divide/divide.cpp" line="539"/>
         <source>radius</source>
         <translation type="unfinished">rādiuss</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="503"/>
+        <location filename="../divide/divide.cpp" line="501"/>
         <source>initial angle</source>
         <translation type="unfinished">sākotnējais leņķis</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="505"/>
+        <location filename="../divide/divide.cpp" line="503"/>
         <source>final angle</source>
         <translation type="unfinished">beigu leņķis</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="514"/>
+        <location filename="../divide/divide.cpp" line="512"/>
         <source>CIRCLE</source>
         <translation type="unfinished">RIŅĶIS</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="520"/>
+        <location filename="../divide/divide.cpp" line="518"/>
         <source>circumference</source>
         <translation type="unfinished">perimetrs</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="522"/>
+        <location filename="../divide/divide.cpp" line="520"/>
         <source>area</source>
         <translation type="unfinished">laukums</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="526"/>
+        <location filename="../divide/divide.cpp" line="524"/>
         <source>POLYLINE</source>
         <translation type="unfinished">LAUZTALĪNIJA</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="527"/>
+        <location filename="../divide/divide.cpp" line="525"/>
         <source>Closed</source>
         <translation type="unfinished">Aizvērts</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="529"/>
+        <location filename="../divide/divide.cpp" line="527"/>
         <source>No</source>
         <translation type="unfinished">Nē</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="529"/>
+        <location filename="../divide/divide.cpp" line="527"/>
         <source>Yes</source>
         <translation type="unfinished">Jā</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="530"/>
+        <location filename="../divide/divide.cpp" line="528"/>
         <source>Vertices</source>
         <translation type="unfinished">Virsotnes</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="535"/>
+        <location filename="../divide/divide.cpp" line="533"/>
         <source>in point</source>
         <translation type="unfinished">punktā</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="551"/>
+        <location filename="../divide/divide.cpp" line="549"/>
         <source>MUST be a line, circle or arc</source>
         <translation type="unfinished"></translation>
     </message>
@@ -855,27 +855,27 @@ anti-clockwise.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../divide/dividedlg.cpp" line="251"/>
+        <location filename="../divide/dividedlg.cpp" line="250"/>
         <source>Ticks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../divide/dividedlg.cpp" line="257"/>
+        <location filename="../divide/dividedlg.cpp" line="256"/>
         <source>Above</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../divide/dividedlg.cpp" line="258"/>
+        <location filename="../divide/dividedlg.cpp" line="257"/>
         <source>Below</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../divide/dividedlg.cpp" line="262"/>
+        <location filename="../divide/dividedlg.cpp" line="261"/>
         <source>Outside</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../divide/dividedlg.cpp" line="263"/>
+        <location filename="../divide/dividedlg.cpp" line="262"/>
         <source>Inside</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1052,27 +1052,27 @@ anti-clockwise.</source>
         <translation>Atcelt</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="105"/>
+        <location filename="../sample/sample.cpp" line="104"/>
         <source>Start X is empty</source>
         <translation>Sākuma X ir tukšs</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="106"/>
+        <location filename="../sample/sample.cpp" line="105"/>
         <source>Start Y is empty</source>
         <translation>Sākuma Y ir tukšs</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="107"/>
+        <location filename="../sample/sample.cpp" line="106"/>
         <source>End X is empty</source>
         <translation>Beigu X ir tukšs</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="108"/>
+        <location filename="../sample/sample.cpp" line="107"/>
         <source>End Y is empty</source>
         <translation>Beigu Y ir tukšs</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="129"/>
+        <location filename="../sample/sample.cpp" line="127"/>
         <source>Sample plugin</source>
         <translation>Parauga spraudnis</translation>
     </message>
@@ -1105,38 +1105,38 @@ anti-clockwise.</source>
         <translation type="unfinished">Izvēlieties datni</translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="118"/>
+        <location filename="../picfile/picfile.cpp" line="117"/>
         <source>Scale Factor is empty or invalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="131"/>
+        <location filename="../picfile/picfile.cpp" line="130"/>
         <source>The file %1 not exist</source>
         <translation type="unfinished">Datne %1 neeksistē</translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="136"/>
+        <location filename="../picfile/picfile.cpp" line="135"/>
         <source>Can&apos;t open the file %1</source>
         <translation type="unfinished">Nevar atvērt datni %1</translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="143"/>
+        <location filename="../picfile/picfile.cpp" line="142"/>
         <source>%1 objects imported</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="165"/>
+        <location filename="../picfile/picfile.cpp" line="163"/>
         <source>picPunto drawLine: first point is empty %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="178"/>
+        <location filename="../picfile/picfile.cpp" line="176"/>
         <source>picPunto drawLine: next point is empty %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="261"/>
-        <location filename="../picfile/picfile.cpp" line="270"/>
+        <location filename="../picfile/picfile.cpp" line="259"/>
+        <location filename="../picfile/picfile.cpp" line="268"/>
         <source>format error in %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1235,17 +1235,17 @@ Izmantojiet savos vienādojums t vai x kā mainīgos/parametrus.
 <context>
     <name>textBox</name>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="204"/>
+        <location filename="../asciifile/asciifile.cpp" line="203"/>
         <source>Style:</source>
         <translation>Stils:</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="206"/>
+        <location filename="../asciifile/asciifile.cpp" line="205"/>
         <source>Separation</source>
         <translation>Atdalīšana</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="205"/>
+        <location filename="../asciifile/asciifile.cpp" line="204"/>
         <source>Height:</source>
         <translation>Augstums:</translation>
     </message>
