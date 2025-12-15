@@ -338,6 +338,7 @@ HEADERS += \
     actions/drawing/selection/lc_actionsingleentityselectbase.h \
     lib/actions/lc_actioninfomessagebuilder.h \
     lib/actions/lc_overlayboxaction.h \
+    lib/actions/lc_undoabledocumentmodificationaction.h \
     lib/engine/document/dimstyles/lc_dimstyle.h \
     lib/engine/document/dimstyles/lc_dimstyleslist.h \
     lib/engine/document/dimstyles/lc_dimarrowregistry.h \
@@ -474,13 +475,12 @@ HEADERS += \
     lib/gui/render/headless/lc_printviewportrenderer.h \
     lib/gui/render/lc_graphicviewportrenderer.h \
     lib/modification/lc_division.h \
-    lib/modification/lc_selectionoptions.h \
-    lib/modification/lc_selectionpredicate.h \
+    lib/modification/lc_copyutils.h \
     plugins/lc_plugininvoker.h \
     lib/actions/lc_actioncontext.h \
+    ui/components/utils/lc_entitymetauiutils.h \
     ui/components/creators/lc_creatorinvoker.h \
-    # ui/components/toolbars/lc_snapoptionsholdermanager.h \
-    ui/components/status_bar/lc_selectiontoolbar.h \
+    # ui/components/toolbars/lc_snapoptionsholdermanager.h \    
     ui/dialogs/creators/lc_dlgmenuassigner.h \
     ui/dialogs/creators/lc_dlgwidgetcreator.h \
     ui/components/creators/lc_menuactivator.h \
@@ -522,9 +522,8 @@ HEADERS += \
     ui/dock_widgets/lc_graphicviewawarewidget.h \
     ui/dock_widgets/lc_widgets_common.h \
     #ui/dock_widgets/library_widget/lc_librarywidget.h \
-    ui/dock_widgets/property_sheet/entity_info/lc_metainfoprovider.h \
-    ui/dock_widgets/property_sheet/lc_propertysheetwidget.h \
-    ui/dock_widgets/property_sheet/quick_selection/lc_dlgquickselection.h \
+    # ui/dock_widgets/property_sheet/entity_info/lc_metainfoprovider.h \
+    # ui/dock_widgets/property_sheet/lc_propertysheetwidget.h \
     ui/lc_actionhandlerfactory.h \
     ui/lc_graphicviewaware.h \
     ui/lc_snapmanager.h \
@@ -599,7 +598,43 @@ HEADERS += \
     lib/math/lc_convert.h \
     lib/math/lc_linemath.h \
     lib/modification/rs_modification.h \
-    lib/modification/rs_selection.h \
+    lib/selection/rs_selection.h \
+    lib/selection/lc_selectionpredicate.h \
+    lib/selection/metaentity/lc_entitymatchdescriptor.h \
+    lib/selection/metaentity/lc_entitymatchdescriptorsregistry.h \
+    lib/selection/metaentity/lc_entitymatcher.h \
+    lib/selection/metaentity/lc_propertymatcher.h \
+    lib/selection/metaentity/lc_propertymatchertypes.h \
+    lib/selection/metaentity/lc_propertymatchtypedescriptor.h \
+    lib/selection/metaentity/lc_typedentitymatcher.h \
+    lib/selection/metaentity/lc_vectorentitymatcher.h \
+    lib/selection/metaentity/lc_vectorlistentitymatcher.h \
+    lib/selection/metaentity/entities/lc_matchdescriptor_line.h          \
+    lib/selection/metaentity/entities/lc_matchdescriptor_base.h          \
+    lib/selection/metaentity/entities/lc_matchdescriptor_circle.h        \
+    lib/selection/metaentity/entities/lc_matchdescriptor_arc.h           \
+    lib/selection/metaentity/entities/lc_matchdescriptor_polyline.h      \
+    lib/selection/metaentity/entities/lc_matchdescriptor_spline.h        \
+    lib/selection/metaentity/entities/lc_matchdescriptor_hatch.h         \
+    lib/selection/metaentity/entities/lc_matchdescriptor_insert.h        \
+    lib/selection/metaentity/entities/lc_matchdescriptor_text.h          \
+    lib/selection/metaentity/entities/lc_matchdescriptor_mtext.h         \
+    lib/selection/metaentity/entities/lc_matchdescriptor_image.h         \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h       \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimlinear.h     \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimaligned.h    \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimradial.h     \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimdiametric.h  \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimangular.h    \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimarc.h        \
+    lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.h   \
+    lib/selection/metaentity/entities/lc_matchdescriptor_leader.h        \
+    lib/selection/metaentity/entities/lc_matchdescriptor_parabola.h      \
+    lib/selection/metaentity/entities/lc_matchdescriptor_tolerance.h     \
+    lib/selection/metaentity/entities/lc_matchdescriptor_multiple.h      \
+    lib/selection/metaentity/entities/lc_matchdescriptor_ellipse.h       \
+    lib/selection/metaentity/entities/lc_matchdescriptor_point.h         \
+    lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints. h \
     lib/math/rs_math.h \
     lib/math/lc_quadratic.h \
     main/console_dxf2png.h \
@@ -658,6 +693,7 @@ SOURCES += \
     actions/drawing/selection/lc_actionsingleentityselectbase.cpp \
     lib/actions/lc_actioninfomessagebuilder.cpp \
     lib/actions/lc_overlayboxaction.cpp \
+    lib/actions/lc_undoabledocumentmodificationaction.cpp \
     lib/engine/document/dimstyles/lc_dimstyle.cpp \
     lib/engine/document/dimstyles/lc_dimstyleslist.cpp \
     lib/engine/document/dimstyles/lc_dimarrowregistry.cpp \
@@ -680,8 +716,7 @@ SOURCES += \
     lib/engine/document/entities/support/lc_dimarrowblock.cpp \
     lib/engine/document/entities/support/lc_dimarrowblockpoly.cpp \
     lib/engine/document/lc_graphicvariables.cpp \
-    lib/engine/document/lc_selectedset.cpp \
-    lib/engine/document/selection/lc_selectedsetlistener.cpp \
+    lib/engine/document/selection/lc_selectedset.cpp \
     lib/engine/document/textstyles/lc_textstyle.cpp \
     lib/engine/document/textstyles/lc_textstylelist.cpp \
     lib/engine/document/ucs/lc_ucslist.cpp \
@@ -706,8 +741,7 @@ SOURCES += \
     lib/gui/lc_latecompletionrequestor.cpp \
     lib/gui/render/headless/lc_printviewportrenderer.cpp \
     lib/modification/lc_division.cpp \
-    lib/modification/lc_selectionoptions.cpp \
-    lib/modification/lc_selectionpredicate.cpp \
+    lib/modification/lc_copyutils.cpp \
     plugins/lc_plugininvoker.cpp \
     lib/actions/lc_actioncontext.cpp \
     ui/components/creators/lc_creatorinvoker.cpp \
