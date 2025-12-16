@@ -32,6 +32,7 @@
 #include "lc_splinepoints.h"
 #include "lc_undosection.h"
 #include "rs_arc.h"
+#include "rs_atomicentity.h"
 #include "rs_block.h"
 #include "rs_circle.h"
 #include "rs_clipboard.h"
@@ -67,6 +68,7 @@ namespace {
  * @param graphic - the target graphic
  * @return RS_Block - the block created
  */
+    // fixme - check how and where it's used
     RS_Block *addNewBlock(const QString &name, RS_Graphic &graphic){
         const auto db = RS_BlockData(name, {0.0, 0.0}, false);
         const auto b = new RS_Block(&graphic, db);
@@ -148,7 +150,7 @@ namespace {
         if (entity->rtti() != RS2::EntityEllipse) {
             return entity;
         }
-        const auto ellipse = dynamic_cast<RS_Ellipse *>(entity);
+        const auto* ellipse = static_cast<RS_Ellipse *>(entity);
         if (ellipse->isEllipticArc()) {
             return entity;
         }
@@ -180,7 +182,7 @@ namespace {
         const RS_Vector opposite = arcFillet.getCenter() + (arcFillet.getCenter() - middle).normalized() * entity->getRadius() * 0.01;
         const RS_Vector trimCoord = entity->getNearestPointOnEntity(opposite, true);
         const RS_VectorSolutions sol = RS_Information::getIntersection(entity, &line, false);
-        RS_Arc *arc = trimCircle(dynamic_cast<RS_Circle *>(entity), trimCoord, sol);
+        RS_Arc *arc = trimCircle(static_cast<RS_Circle *>(entity), trimCoord, sol);
         delete entity;
         return arc;
     }
@@ -709,7 +711,7 @@ RS_Polyline *RS_Modification::deletePolylineNodesBetween(RS_Polyline* polyline, 
         if (e->isAtomic()){
             const auto atomic = dynamic_cast<RS_AtomicEntity *>(e);
             if (atomic->rtti() == RS2::EntityArc){
-                const auto arc = dynamic_cast<RS_Arc *>(atomic);
+                const auto* arc = static_cast<RS_Arc *>(atomic);
                 bulge = arc->getBulge();
             } else {
                 bulge = 0.0;
@@ -1263,7 +1265,7 @@ LC_TrimResult RS_Modification::trim(const RS_Vector& trimCoord, RS_AtomicEntity*
 
     //if intersection are in start or end point can't trim/extend in this point, remove from solution. sf.net #3537053
     if (trimEntity->rtti() == RS2::EntityLine) {
-        const auto* line = dynamic_cast<RS_Line*>(trimEntity);
+        const auto* line = static_cast<RS_Line*>(trimEntity);
         for (unsigned int i = 0; i < sol.size(); i++) {
             RS_Vector v = sol.at(i);
             if (v == line->getStartpoint()) {
@@ -1290,7 +1292,7 @@ LC_TrimResult RS_Modification::trim(const RS_Vector& trimCoord, RS_AtomicEntity*
 
     if (trimEntity->rtti() == RS2::EntityCircle) {
         // convert a circle into a trimmable arc, need to start from intersections
-        trimmed1 = trimCircle(dynamic_cast<RS_Circle*>(trimEntity), trimCoord, sol);
+        trimmed1 = trimCircle(static_cast<RS_Circle*>(trimEntity), trimCoord, sol);
     }
     else {
         trimmed1 = static_cast<RS_AtomicEntity*>(trimEntity->clone());

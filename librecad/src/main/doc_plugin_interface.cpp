@@ -40,10 +40,13 @@
 #include "lc_undosection.h"
 #include "lc_graphicviewport.h"
 #include "rs_actioninterface.h"
+#include "rs_actionselectsingle.h"
 #include "rs_arc.h"
 #include "rs_block.h"
 #include "rs_circle.h"
 #include "rs_debug.h"
+#include "rs_dialogfactory.h"
+#include "rs_dialogfactoryinterface.h"
 #include "rs_ellipse.h"
 #include "rs_graphicview.h"
 #include "rs_image.h"
@@ -779,7 +782,7 @@ Doc_plugin_interface::Doc_plugin_interface(LC_ActionContext* actionContext, QWid
     ,m_graphicView(actionContext->getGraphicView())
     ,main_window(parent)
     ,m_actionContext{actionContext}{
-    
+
     Q_ASSERT(m_document != nullptr && m_graphicView != nullptr);
     m_viewport = m_graphicView->getViewPort();
 }
@@ -814,7 +817,7 @@ void Doc_plugin_interface::addLine(QPointF *start, QPointF *end){
     RS_Vector v2(end->x(), end->y());
     auto entity = new RS_Line{m_document, v1, v2};
     LC_UndoSection undo(m_document, m_viewport);
-    undo.undoableAdd(entity);    
+    undo.undoableAdd(entity);
 }
 
 void Doc_plugin_interface::addMText(QString txt, QString sty, QPointF *start,
@@ -830,7 +833,7 @@ void Doc_plugin_interface::addMText(QString txt, QString sty, QPointF *start,
         0.0, txt, sty, angle, RS2::Update);
     auto entity = new RS_MText(m_document, d);
     LC_UndoSection undo(m_document, m_viewport);
-    undo.undoableAdd(entity);   
+    undo.undoableAdd(entity);
 }
 
 void Doc_plugin_interface::addText(QString txt, QString sty, QPointF *start,
@@ -1164,70 +1167,64 @@ Plug_Entity *Doc_plugin_interface::getEnt(const QString& message){
     return e;
 }
 
-bool Doc_plugin_interface::getSelect(QList<Plug_Entity *> *sel, const QString& message){
-    bool status = false;
-    auto a = std::make_shared<QC_ActionGetSelect>(m_actionContext);
-    if (a != nullptr) {
-        if (!(message.isEmpty()) ) {
-            a->setMessage(message);
-        }
-        m_graphicView->killAllActions();
-        m_graphicView->setCurrentAction(a);
-        QEventLoop ev;
-        while (!a->isCompleted()) {
-            ev.processEvents ();
-            if (!m_graphicView->hasAction()) {
-                break;
-            }
-        }
-    }
-    //  check if a are cancelled by the user issue #349
-    if (m_graphicView->isCurrentActionRunning(a.get())) {
-        a->getSelected(sel, this);
-        status = true;
-    }
+bool  Doc_plugin_interface::performSelect(RS2::EntityType typeToSelect, const QString& message, QList<Plug_Entity *>* sel, bool clearSel) {
+  auto a =std::make_shared<QC_ActionGetSelect> (typeToSelect, m_actionContext);
+  if (a == nullptr || sel == nullptr || m_graphicView == nullptr)
+    return false;
+  if (clearSel)
+    sel->clear();  // Optional: Reset list before collection
+  if (!message.isEmpty()) {
+    a->setMessage(message);
+    RS_DIALOGFACTORY->commandMessage(message);
+  }
+  auto inner = (typeToSelect == RS2::EntityType::EntityUnknown)
+                   ? std::make_shared<RS_ActionSelectSingle>(m_actionContext, a.get())
+                   : std::make_shared<RS_ActionSelectSingle>(typeToSelect, m_actionContext, a.get());
+  if (inner == nullptr)
+    return false;  // Rare shared_ptr fail
+  m_graphicView->killAllActions();
+  m_graphicView->setCurrentAction(inner);
+  if (!m_graphicView->hasAction()) {  // Robustness: Verify set succeeded
     m_graphicView->killAllActions();
-    return status;
+    return false;
+  }
+  inner->init(0);
+  a->init(0);
+  QEventLoop ev;
+  while (!a->isCompleted()) {
+    ev.processEvents();
+    if (!m_graphicView->hasAction())
+      break;
+  }
+  bool completed = a->isCompleted();
+  m_graphicView->killAllActions();  // Always cleanup
+  if (completed) {
+    a->getSelected(sel, this);
+    return !sel->isEmpty();
+  }
+  return false;
+}
+
+bool Doc_plugin_interface::getSelect(QList<Plug_Entity *> *sel, const QString& message){
+  return performSelect(RS2::EntityType::EntityUnknown, message, sel, false);
 }
 
 bool Doc_plugin_interface::getSelectByType(QList<Plug_Entity *> *sel, enum DPI::ETYPE type, const QString& message){
-    bool status = false;
-    RS2::EntityType typeToSelect = RS2::EntityType::EntityUnknown;
-    if(type==DPI::LINE){
-        typeToSelect = RS2::EntityType::EntityLine;
-    } else if(type==DPI::POINT){
-        typeToSelect = RS2::EntityType::EntityPoint;
-    } else if (type==DPI::POLYLINE){
-        typeToSelect = RS2::EntityType::EntityPolyline;
-    } else {
-        //Unhandled case
-    }
+  RS2::EntityType typeToSelect = RS2::EntityType::EntityUnknown;
+  if(type==DPI::LINE){
+    typeToSelect = RS2::EntityType::EntityLine;
+  } else if(type==DPI::POINT){
+    typeToSelect = RS2::EntityType::EntityPoint;
+  } else if (type==DPI::POLYLINE){
+    typeToSelect = RS2::EntityType::EntityPolyline;
+  } else {
+    //Unhandled case
+  }
 
-    m_graphicView->setTypeToSelect(typeToSelect);
-    auto a =std::make_shared<QC_ActionGetSelect> (typeToSelect, m_actionContext);
-
-    if (a != nullptr) {
-        if (!(message.isEmpty())) {
-            a->setMessage(message);
-        }
-        m_graphicView->killAllActions();
-        m_graphicView->setCurrentAction(a);
-        QEventLoop ev;
-        while (!a->isCompleted()) {
-            ev.processEvents();
-            if (!m_graphicView->hasAction()) {
-                break;
-            }
-        }
-    }
-    //check if a are cancelled by the user issue #349
-    if (m_graphicView->isCurrentActionRunning(a.get()) ) {
-        a->getSelected(sel, this);
-        status = true;
-    }
-    m_graphicView->killAllActions();
-    m_graphicView->setTypeToSelect(RS2::EntityType::EntityUnknown);
-    return status;
+  m_graphicView->setTypeToSelect(typeToSelect);
+  bool status = performSelect(typeToSelect, message, sel, false);
+  m_graphicView->setTypeToSelect(RS2::EntityType::EntityUnknown);
+  return status;
 }
 
 bool Doc_plugin_interface::getAllEntities(QList<Plug_Entity *> *sel, bool visible){
