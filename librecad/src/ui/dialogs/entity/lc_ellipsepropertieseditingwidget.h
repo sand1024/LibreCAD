@@ -44,8 +44,8 @@ protected slots:
     void onMajorEditingFinished();
     void onMinorEditingFinished();
     void onRotationEditingFinished();
-    void onAngle1EditingFinished();
-    void onAngle2EditingFinished();
+    void onAngle1EditingFinished() const;
+    void onAngle2EditingFinished() const;
     void onReversedToggled(bool checked) const;
 public:
     void setupInteractiveInputWidgets() override;

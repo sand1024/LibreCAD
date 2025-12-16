@@ -24,7 +24,6 @@
 #include "lc_dlgquickselection.h"
 
 #include <QMessageBox>
-#include <boost/math/tools/toms748_solve.hpp>
 
 #include "lc_convert.h"
 #include "lc_entitymetauiutils.h"

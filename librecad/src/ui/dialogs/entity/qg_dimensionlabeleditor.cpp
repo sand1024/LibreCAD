@@ -61,7 +61,7 @@ void QG_DimensionLabelEditor::languageChange(){
     retranslateUi(this);
 }
 
-void QG_DimensionLabelEditor::updateRawLabelText() {
+void QG_DimensionLabelEditor::updateRawLabelText() const {
      QString label = getLabel();
      leRawText->setText(label);
 }

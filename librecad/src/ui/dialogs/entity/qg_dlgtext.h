@@ -40,21 +40,21 @@ public:
 public slots:
      void updateUniCharComboBox( int ) const;
      void updateEntity() override;
-     void setAlignmentTL();
-     void setAlignmentTC();
-     void setAlignmentTR();
-     void setAlignmentML();
-     void setAlignmentMC();
-     void setAlignmentMR();
-     void setAlignmentLL();
-     void setAlignmentLC();
-     void setAlignmentLR();
-     void setAlignmentBL();
-     void setAlignmentBC();
-     void setAlignmentBR();
-     void setAlignmentFit();
-     void setAlignmentAlign();
-     void setAlignmentMiddle();
+     void setAlignmentTL() const;
+     void setAlignmentTC() const;
+     void setAlignmentTR() const;
+     void setAlignmentML() const;
+     void setAlignmentMC() const;
+     void setAlignmentMR() const;
+     void setAlignmentLL() const;
+     void setAlignmentLC() const;
+     void setAlignmentLR() const;
+     void setAlignmentBL() const;
+     void setAlignmentBC() const;
+     void setAlignmentBR() const;
+     void setAlignmentFit() const;
+     void setAlignmentAlign() const;
+     void setAlignmentMiddle() const;
      void setAlignment( int a ) const;
      void setFont( const QString & f );
 //     void defaultChanged( bool );
@@ -77,7 +77,7 @@ protected:
 
     void setEntity(RS_Text* t, bool isNew );
     void init();
-    void destroy();
+    void destroy() const;
 };
 
 #endif // QG_DLGTEXT_H

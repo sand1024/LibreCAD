@@ -42,8 +42,8 @@ protected slots:
     void onCenterEditingFinished() const;
     void onRadiusEditingFinished();
     void onDiameterEditingFinished();
-    void onRadiusTextChanged(const QString &text);
-    void onDiameterTextChanged(const QString &text);
+    void onRadiusTextChanged(const QString &text) const;
+    void onDiameterTextChanged(const QString &text) const;
 public:
     void setupInteractiveInputWidgets() override;
 private:

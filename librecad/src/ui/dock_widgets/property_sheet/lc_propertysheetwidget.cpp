@@ -23,7 +23,6 @@
 
 #include "lc_propertysheetwidget.h"
 
-#include <ostream>
 
 #include "lc_entitymetauiutils.h"
 #include "lc_entitypropertyvaluedelegate.h"
@@ -54,7 +53,7 @@ LC_PropertySheetWidget::~LC_PropertySheetWidget(){
     delete ui;
 }
 
-void LC_PropertySheetWidget::onBeforePropertyEdited(LC_Property* property, LC_Property::PropertyValuePtr newValue, int typeId) {
+void LC_PropertySheetWidget::onBeforePropertyEdited(LC_Property* property, [[maybe_unused]]LC_Property::PropertyValuePtr newValue, [[maybe_unused]]int typeId) {
     LC_ERR << "On Before Edit " << property->getName() << " " << property->getRootProperty()->getName();
 }
 
@@ -105,7 +104,7 @@ void LC_PropertySheetWidget::selectionChanged() {
 void LC_PropertySheetWidget::updateFormats() {
 }
 
-void LC_PropertySheetWidget::onUcsChanged(LC_UCS* ucs) {
+void LC_PropertySheetWidget::onUcsChanged([[maybe_unused]]LC_UCS* ucs) {
 }
 
 void LC_PropertySheetWidget::onRelativeZeroChanged(const RS_Vector&) {
@@ -127,7 +126,7 @@ class ModificationContext: public LC_EntitiesModificationContext {
 public:
     ~ModificationContext() override = default;
 
-    void entityModified(RS_Entity* originalEntity, RS_Entity* entityClone) override {
+    void entityModified([[maybe_unused]]RS_Entity* originalEntity, [[maybe_unused]]RS_Entity* entityClone) override {
         LC_ERR << "entity Modified!";
     };
 };
@@ -163,7 +162,7 @@ void LC_PropertySheetWidget::updateWidgetSettings()  { // fixme- temporary test 
     startValueStorage->m_getValue = [](RS_Line* line) -> RS_Vector {
         return line->getStartpoint();
     };
-    startValueStorage->m_setValue = []( RS_Vector& v, LC_PropertyChangeReason reason, RS_Line* l) -> void {
+    startValueStorage->m_setValue = []( RS_Vector& v, [[maybe_unused]]LC_PropertyChangeReason reason, RS_Line* l) -> void {
          l->setStartpoint(v);
         LC_ERR << "Start point " << l->getStartpoint();
     };

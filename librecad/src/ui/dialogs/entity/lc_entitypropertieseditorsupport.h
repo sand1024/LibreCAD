@@ -57,13 +57,13 @@ protected:
     double toDoubleAngle(const QString &strValue, double notMeaningful = 0.0, double defValue = 0.0) const;
 
     double toWCSValue(const QString &val, double wcsDefault) const;
-    double toWCSValue(QLineEdit *ed, double wcsDefault);
+    double toWCSValue(QLineEdit *ed, double wcsDefault) const;
     void toUIValue(double val, QLineEdit *ed) const;
     void toUIAngleDeg(double wcsAngle, QLineEdit *ed) const;
     void toUIAngleDegRaw(double val, QLineEdit *ed) const;
     void toUIBool(bool val, QCheckBox *ed);
 
-    double toWCSAngle(QLineEdit *ed, double wcsDefault);
+    double toWCSAngle(QLineEdit *ed, double wcsDefault) const;
     double toWCSAngle(const QString &val, double wcsDefault) const;
     double toRawAngleValue(QLineEdit *ed, double ucsDefault) const;
     void toUIRaw(const RS_Vector &vect, QLineEdit *leX, QLineEdit *leY) const;

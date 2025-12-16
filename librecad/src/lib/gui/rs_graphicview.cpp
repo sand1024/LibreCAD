@@ -34,6 +34,7 @@
 #include "lc_shortcuts_manager.h"
 #include "lc_widgetviewportrenderer.h"
 #include "rs_actioninterface.h"
+#include "rs_debug.h"
 #include "rs_entitycontainer.h"
 #include "rs_graphic.h"
 #include "rs_grid.h"
@@ -73,7 +74,9 @@ void RS_GraphicView::loadSettings() {
     m_renderer->loadSettings();
 }
 
-RS_GraphicView::~RS_GraphicView() = default;
+RS_GraphicView::~RS_GraphicView() {
+  LC_ERR << "RS_GraphicView destructor";
+};
 
 /**
  * Must be called by any derived class in the destructor.

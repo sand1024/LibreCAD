@@ -150,7 +150,7 @@ namespace {
         if (entity->rtti() != RS2::EntityEllipse) {
             return entity;
         }
-        const auto* ellipse = static_cast<RS_Ellipse *>(entity);
+        auto* ellipse = static_cast<RS_Ellipse *>(entity);
         if (ellipse->isEllipticArc()) {
             return entity;
         }

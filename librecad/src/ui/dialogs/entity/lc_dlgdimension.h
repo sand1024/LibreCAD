@@ -48,7 +48,7 @@ public:
     void updateEntity() override;
 protected:
     void selectStyleItem(QModelIndex index) const;
-    void updateActiveStyleInfoLabel();
+    void updateActiveStyleInfoLabel() const;
     void updateEntityStyleInfoLabels(LC_DimStyleItem* item) const;
     void setEntity(RS_Dimension* dim);
     void expandStylesTree() const;
@@ -64,7 +64,7 @@ protected:
     void prepareDimStyleItems(QList<LC_DimStyleItem*>& items);
     void setupPreview();
     void showEvent(QShowEvent* event) override;
-    void saveDimensionTypeDependentProperties();
+    void saveDimensionTypeDependentProperties() const;
     void clearDimStylesModel(LC_DimStyleTreeModel* model);
     void saveDimensionStyles();
     void setupDimensionTypeDependentUI(RS_Dimension* dim);
@@ -78,14 +78,14 @@ protected slots:
     void onDimStyleOverrideRemove(bool val);
     void onDimStyleOverrideNew(bool val);
     void onDimStylesListMenuRequested(const QPoint& pos);
-    void onDimCurrentChanged(const QModelIndex& current, const QModelIndex& previous);
+    void onDimCurrentChanged(const QModelIndex& current, const QModelIndex& previous) const;
     void onDimStyleExport(bool val);
     void onDimStyleImport(bool val);
     void onDimStyleSet(bool val);
     void onDimStyleSetDefault(bool val);
     void onDimStyleEntitySelect(bool val);
-    void onPenChanged();
-    void onFlipArrowChanged(bool val);
+    void onPenChanged() const;
+    void onFlipArrowChanged(bool val) const;
 private:
     Ui::LC_DlgDimension* ui;
     RS_Dimension* m_entity = nullptr;

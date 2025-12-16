@@ -98,11 +98,11 @@ void LC_EllipsePropertiesEditingWidget::onRotationEditingFinished() {
     updateEllipseGeometry();
 }
 
-void LC_EllipsePropertiesEditingWidget::onAngle1EditingFinished() {
+void LC_EllipsePropertiesEditingWidget::onAngle1EditingFinished() const {
     toRawAngleValue(ui->leAngle1, m_entity->getAngle1());
 }
 
-void LC_EllipsePropertiesEditingWidget::onAngle2EditingFinished() {
+void LC_EllipsePropertiesEditingWidget::onAngle2EditingFinished() const {
     toRawAngleValue(ui->leAngle1, m_entity->getAngle1());
 }
 

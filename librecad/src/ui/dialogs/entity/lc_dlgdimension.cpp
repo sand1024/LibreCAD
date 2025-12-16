@@ -51,7 +51,7 @@ LC_DlgDimension::~LC_DlgDimension(){
     delete ui;
 }
 
-void LC_DlgDimension::saveDimensionTypeDependentProperties() {
+void LC_DlgDimension::saveDimensionTypeDependentProperties() const {
     RS2::EntityType dimType = m_entity->rtti();
     switch (dimType){
         case RS2::EntityDimOrdinate: {
@@ -214,12 +214,12 @@ void LC_DlgDimension::setupDimensionAttributesUI(RS_Dimension* dim) {
     // fixme - sand - should we add preview modification for label change?
 }
 
-void LC_DlgDimension::onPenChanged() {
+void LC_DlgDimension::onPenChanged() const {
     RS_Pen pen = ui->wPenEditor->getPen();
     updateDimStylePreview(pen);
 }
 
-void LC_DlgDimension::onFlipArrowChanged([[maybe_unused]]bool val) {
+void LC_DlgDimension::onFlipArrowChanged([[maybe_unused]]bool val) const {
     updateDimStylePreview(ui->cbFlipArrow1->isChecked(), ui->cbFlipArrow2->isChecked());
 }
 
@@ -345,7 +345,7 @@ void LC_DlgDimension::onDimStyleEntitySelect([[maybe_unused]]bool val) {
     ui->lvDimStyles->update();
 }
 
-void LC_DlgDimension::onDimStyleSet([[maybe_unused]]bool val) {
+void LC_DlgDimension::onDimStyleSet([[maybe_unused]]bool val){
     QModelIndex selectedItemIndex = getSelectedDimStyleIndex();
     if (selectedItemIndex.isValid()) {
         auto model = getDimStylesModel();
@@ -608,7 +608,7 @@ void LC_DlgDimension::onDimStylesListMenuRequested(const QPoint& pos) {
     delete contextMenu;
 }
 
-void LC_DlgDimension::onDimCurrentChanged(const QModelIndex &current, [[maybe_unused]]const QModelIndex &previous){
+void LC_DlgDimension::onDimCurrentChanged(const QModelIndex &current, [[maybe_unused]]const QModelIndex &previous) const {
     if (current.isValid()) {
         auto model = getDimStylesModel();
         LC_DimStyleItem* item = model->getItemForIndex(current);
@@ -638,7 +638,7 @@ void LC_DlgDimension::selectStyleItem(QModelIndex indexToSelect) const {
     }
 }
 
-void LC_DlgDimension::updateActiveStyleInfoLabel() {
+void LC_DlgDimension::updateActiveStyleInfoLabel() const {
     auto model = getDimStylesModel();
     auto defaultStyle = model->getActiveStyleItem();
     QString currentStyleName = "";

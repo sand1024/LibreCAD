@@ -310,7 +310,7 @@ void LC_ArcPropertiesEditingWidget::setupInteractiveInputWidgets() {
     pickAngleSetup(ui->tbPickEndAngle, "endAngle",  ui->leAngle2);
 }
 
-void LC_ArcPropertiesEditingWidget::updateDerivedFields(double radius, double theta) {
+void LC_ArcPropertiesEditingWidget::updateDerivedFields(double radius, double theta) const {
     QSignalBlocker al(ui->leArcLength);
     toUIValue(radius * theta, ui->leArcLength);
     QSignalBlocker sa(ui->leSweepAngle);

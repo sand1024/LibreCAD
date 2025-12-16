@@ -70,7 +70,7 @@ protected:
     std::vector<QToolButton*> m_alignmentButtons;
 
     void init();
-    void destroy();
+    void destroy() const;
     bool eventFilter(QObject *obj, QEvent *event) override;
     size_t alignmentButtonIdex(QToolButton* button) const;
     void setEntity(RS_MText *t, bool isNew );

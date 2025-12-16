@@ -60,13 +60,13 @@ private slots:
      * @brief Handles toggling of the spline's closed state.
      * @param checked True if the spline is closed, false otherwise.
      */
-    void onClosedToggled(bool checked) const;
+    void onClosedToggled(bool checked);
 
     /**
      * @brief Handles changes to the spline's degree.
      * @param index Combo box index (maps to degree = index + 1).
      */
-    void onDegreeIndexChanged(int index) const;
+    void onDegreeIndexChanged(int index) ;
 
     /**
      * @brief Handles changes to control point coordinates or weights.
@@ -110,7 +110,7 @@ private:
     /**
      * @brief Updates the UI based on the current spline entity.
      */
-    void updateUI();
+    void updateUI() const;
 
     std::unique_ptr<Ui::LC_SplinePropertiesEditingWidget> ui; // Manages UI elements
     RS_Spline* m_entity{nullptr}; // Non-owning pointer to the spline entity

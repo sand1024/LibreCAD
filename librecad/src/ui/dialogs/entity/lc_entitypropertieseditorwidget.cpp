@@ -34,7 +34,7 @@ LC_EntityPropertiesEditorWidget::LC_EntityPropertiesEditorWidget(QWidget* parent
 
 void LC_EntityPropertiesEditorWidget::interactiveInputUpdate(
     LC_ActionContext::InteractiveInputInfo::InputType inputType,
-    const QString &tag, double valueOne, double valueTwo) {
+    const QString &tag, double valueOne, double valueTwo) const {
     QList<QLineEdit*> list = findChildren<QLineEdit*>();
     QPair<QString, QString> vectorCoordinatesUI;
     if (inputType == LC_ActionContext::InteractiveInputInfo::POINT) {

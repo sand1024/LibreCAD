@@ -58,7 +58,7 @@ protected slots:
 public:
     void setupInteractiveInputWidgets() override;
 private:
-    void updateDerivedFields(double radius, double theta);
+    void updateDerivedFields(double radius, double theta) const;
     void updateUI();
     Ui::LC_ArcPropertiesEditingWidget* ui = nullptr;
     RS_Arc* m_entity = nullptr;

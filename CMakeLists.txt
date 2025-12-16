@@ -145,6 +145,7 @@ set(SHARED_INCLUDES
     librecad/src/lib/engine/document/entities/support
     librecad/src/lib/engine/document/fonts
     librecad/src/lib/engine/document/layers
+    librecad/src/lib/engine/document/selection
     librecad/src/lib/engine/document/patterns
     librecad/src/lib/engine/document/textstyles
     librecad/src/lib/engine/document/ucs
@@ -220,6 +221,7 @@ set(SHARED_INCLUDES
     librecad/src/ui/components/pen
     librecad/src/ui/components/status_bar
     librecad/src/ui/components/toolbars
+    librecad/src/ui/components/utils
     librecad/src/ui/dialogs
     librecad/src/ui/dialogs/actions
     librecad/src/ui/dialogs/actions/modify
@@ -257,26 +259,26 @@ set(SHARED_INCLUDES
     librecad/src/ui/dock_widgets/views_list
     librecad/src/ui/dock_widgets/workspaces
 
-    #librecad/src/ui/dock_widgets/property_sheet
-    #librecad/src/ui/dock_widgets/property_sheet/entity_info
-    #librecad/src/ui/dock_widgets/property_sheet/lib
-    #librecad/src/ui/dock_widgets/property_sheet/lib/properties
-#librecad/src/ui/dock_widgets/property_sheet/lib/view
-#librecad/src/ui/dock_widgets/property_sheet/lib/view/edit
-#librecad/src/ui/dock_widgets/property_sheet/lib/widgets
-#librecad/src/ui/dock_widgets/property_sheet/lib/widgets/sheet
-#librecad/src/ui/dock_widgets/property_sheet/properties
-#librecad/src/ui/dock_widgets/property_sheet/properties/bool
-#librecad/src/ui/dock_widgets/property_sheet/properties/color
-#librecad/src/ui/dock_widgets/property_sheet/properties/double
-#librecad/src/ui/dock_widgets/property_sheet/properties/enum
-#librecad/src/ui/dock_widgets/property_sheet/properties/int
-#librecad/src/ui/dock_widgets/property_sheet/properties/layer
-#librecad/src/ui/dock_widgets/property_sheet/properties/linetype
-#librecad/src/ui/dock_widgets/property_sheet/properties/linewidth
-#librecad/src/ui/dock_widgets/property_sheet/properties/rsvector
-#librecad/src/ui/dock_widgets/property_sheet/properties/rsvector/view
-#librecad/src/ui/dock_widgets/property_sheet/properties/string  
+    librecad/src/ui/dock_widgets/property_sheet
+    librecad/src/ui/dock_widgets/property_sheet/entity_info
+    librecad/src/ui/dock_widgets/property_sheet/lib
+    librecad/src/ui/dock_widgets/property_sheet/lib/properties
+    librecad/src/ui/dock_widgets/property_sheet/lib/view
+    librecad/src/ui/dock_widgets/property_sheet/lib/view/edit
+    librecad/src/ui/dock_widgets/property_sheet/lib/widgets
+    librecad/src/ui/dock_widgets/property_sheet/lib/widgets/sheet
+    librecad/src/ui/dock_widgets/property_sheet/properties
+    librecad/src/ui/dock_widgets/property_sheet/properties/bool
+    librecad/src/ui/dock_widgets/property_sheet/properties/color
+    librecad/src/ui/dock_widgets/property_sheet/properties/double
+    librecad/src/ui/dock_widgets/property_sheet/properties/enum
+    librecad/src/ui/dock_widgets/property_sheet/properties/int
+    librecad/src/ui/dock_widgets/property_sheet/properties/layer
+    librecad/src/ui/dock_widgets/property_sheet/properties/linetype
+    librecad/src/ui/dock_widgets/property_sheet/properties/linewidth
+    librecad/src/ui/dock_widgets/property_sheet/properties/rsvector
+    librecad/src/ui/dock_widgets/property_sheet/properties/rsvector/view
+    librecad/src/ui/dock_widgets/property_sheet/properties/string  
     
     librecad/src/ui/main
     librecad/src/ui/main/fontviewer
@@ -651,8 +653,6 @@ set(SHARED_SOURCES
     librecad/src/actions/drawing/modify/lc_actionmodifylinejoin.cpp
     librecad/src/actions/drawing/modify/lc_actionmodifymoveadjust.cpp
     librecad/src/actions/drawing/modify/lc_actionmodifymoveadjust.h
-    librecad/src/actions/drawing/modify/lc_actionmodifyselectionbase.cpp
-    librecad/src/actions/drawing/modify/lc_actionmodifyselectionbase.h
     librecad/src/actions/drawing/modify/rs_actionblocksexplode.cpp
     librecad/src/actions/drawing/modify/rs_actionblocksexplode.h
     librecad/src/actions/drawing/modify/rs_actionmodifyattributes.cpp
@@ -914,6 +914,9 @@ set(SHARED_SOURCES
     librecad/src/lib/engine/document/rs_document.h
     librecad/src/lib/engine/document/rs_graphic.cpp
     librecad/src/lib/engine/document/rs_graphic.h
+    librecad/src/lib/engine/document/selection/lc_selectedset.h
+    librecad/src/lib/engine/document/selection/lc_selectedset.cpp
+    librecad/src/lib/engine/document/selection/lc_selectedsetlistener.h
     librecad/src/lib/engine/document/textstyles/lc_textstyle.cpp
     librecad/src/lib/engine/document/textstyles/lc_textstyle.h
     librecad/src/lib/engine/document/textstyles/lc_textstylelist.cpp
@@ -1086,8 +1089,6 @@ set(SHARED_SOURCES
     librecad/src/lib/modification/lc_division.h
     librecad/src/lib/modification/rs_modification.cpp
     librecad/src/lib/modification/rs_modification.h
-    librecad/src/lib/modification/rs_selection.cpp
-    librecad/src/lib/modification/rs_selection.h
     librecad/src/lib/modification/lc_copyutils.h
     librecad/src/lib/modification/lc_copyutils.cpp
     librecad/src/lib/printing/lc_printing.cpp
@@ -1371,20 +1372,10 @@ set(SHARED_SOURCES
     librecad/src/ui/components/toolbars/qg_snaptoolbar.h
     librecad/src/ui/components/utils/lc_entitymetauiutils.h
     librecad/src/ui/components/utils/lc_entitymetauiutils.cpp
-    librecad/src/ui/dialogs/actions/modify/qg_dlgmirror.cpp
-    librecad/src/ui/dialogs/actions/modify/qg_dlgmirror.h
-    librecad/src/ui/dialogs/actions/modify/qg_dlgmove.cpp
-    librecad/src/ui/dialogs/actions/modify/qg_dlgmove.h
-    librecad/src/ui/dialogs/actions/modify/qg_dlgmoverotate.cpp
-    librecad/src/ui/dialogs/actions/modify/qg_dlgmoverotate.h
-    librecad/src/ui/dialogs/actions/modify/qg_dlgrotate.cpp
-    librecad/src/ui/dialogs/actions/modify/qg_dlgrotate.h
-    librecad/src/ui/dialogs/actions/modify/qg_dlgrotate2.cpp
-    librecad/src/ui/dialogs/actions/modify/qg_dlgrotate2.h
-    librecad/src/ui/dialogs/actions/modify/qg_dlgscale.cpp
-    librecad/src/ui/dialogs/actions/modify/qg_dlgscale.h
     librecad/src/ui/dialogs/actions/qg_layerdialog.cpp
     librecad/src/ui/dialogs/actions/qg_layerdialog.h
+    librecad/src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.h
+    librecad/src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp
     librecad/src/ui/dialogs/creators/lc_dlgmenuassigner.cpp
     librecad/src/ui/dialogs/creators/lc_dlgmenuassigner.h
     librecad/src/ui/dialogs/creators/lc_dlgnewwidget.cpp

@@ -134,7 +134,7 @@ void QG_DlgMText::reject() {
 }
 
 #include "rs_debug.h"
-void QG_DlgMText::destroy() {
+void QG_DlgMText::destroy() const {
     if (m_saveSettings) {
         LC_GROUP_GUARD("Draw");
         {

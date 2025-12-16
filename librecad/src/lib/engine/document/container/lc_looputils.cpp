@@ -225,7 +225,7 @@ PathBuilder::PathBuilder(RS_Painter* painter)
 }
 
 void PathBuilder::append(RS_Entity* entity) {
-  if (!entity || entity->isUndone()) return;
+  if (entity == nullptr || entity->isDeleted()) return;
 
   RS_Vector startp = entity->getStartpoint();
   const double tol = 1e-6;

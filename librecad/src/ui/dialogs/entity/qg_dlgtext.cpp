@@ -141,7 +141,7 @@ void QG_DlgText::reject() {
     QDialog::reject();
 }
 
-void QG_DlgText::destroy() {
+void QG_DlgText::destroy() const {
     if (m_isNew&&m_saveSettings) {
         LC_GROUP_GUARD("Draw");{
             LC_SET("TextHeight", leHeight->text());
@@ -252,63 +252,63 @@ void QG_DlgText::updateEntity() {
     lWidthRel->setText(rel);
 }*/
 
-void QG_DlgText::setAlignmentTL() {
+void QG_DlgText::setAlignmentTL() const {
     setAlignment(1);
 }
 
-void QG_DlgText::setAlignmentTC() {
+void QG_DlgText::setAlignmentTC() const {
     setAlignment(2);
 }
 
-void QG_DlgText::setAlignmentTR() {
+void QG_DlgText::setAlignmentTR() const {
     setAlignment(3);
 }
 
-void QG_DlgText::setAlignmentML() {
+void QG_DlgText::setAlignmentML() const {
     setAlignment(4);
 }
 
-void QG_DlgText::setAlignmentMC() {
+void QG_DlgText::setAlignmentMC() const {
     setAlignment(5);
 }
 
-void QG_DlgText::setAlignmentMR() {
+void QG_DlgText::setAlignmentMR() const {
     setAlignment(6);
 }
 
-void QG_DlgText::setAlignmentLL() {
+void QG_DlgText::setAlignmentLL() const {
     setAlignment(7);
 }
 
-void QG_DlgText::setAlignmentLC() {
+void QG_DlgText::setAlignmentLC() const {
     setAlignment(8);
 }
 
-void QG_DlgText::setAlignmentLR() {
+void QG_DlgText::setAlignmentLR() const {
     setAlignment(9);
 }
 
-void QG_DlgText::setAlignmentBL() {
+void QG_DlgText::setAlignmentBL() const {
     setAlignment(10);
 }
 
-void QG_DlgText::setAlignmentBC() {
+void QG_DlgText::setAlignmentBC() const {
     setAlignment(11);
 }
 
-void QG_DlgText::setAlignmentBR() {
+void QG_DlgText::setAlignmentBR() const {
     setAlignment(12);
 }
 
-void QG_DlgText::setAlignmentFit() {
+void QG_DlgText::setAlignmentFit() const {
     setAlignment(13);
 }
 
-void QG_DlgText::setAlignmentAlign() {
+void QG_DlgText::setAlignmentAlign() const {
     setAlignment(14);
 }
 
-void QG_DlgText::setAlignmentMiddle() {
+void QG_DlgText::setAlignmentMiddle() const {
     setAlignment(15);
 }
 

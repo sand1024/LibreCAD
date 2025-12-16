@@ -75,7 +75,7 @@ void LC_SplinePropertiesEditingWidget::setEntity(RS_Entity *entity) {
     }
 }
 
-void LC_SplinePropertiesEditingWidget::updateUI() {
+void LC_SplinePropertiesEditingWidget::updateUI() const {
     if (m_entity == nullptr) {
         ui->tableControlPoints->setRowCount(0);
         ui->tableKnots->setRowCount(0);
@@ -94,7 +94,7 @@ void LC_SplinePropertiesEditingWidget::updateUI() {
     ui->tableControlPoints->setRowCount(static_cast<int>(numCP));
     const auto& controlPoints = m_entity->getControlPoints();
     for (size_t i = 0; i < numCP; ++i) {
-        QTableWidgetItem *itemNum = new QTableWidgetItem(QString::number(i + 1));
+        auto *itemNum = new QTableWidgetItem(QString::number(i + 1));
         itemNum->setFlags(itemNum->flags() & ~Qt::ItemIsEditable);
         ui->tableControlPoints->setItem(static_cast<int>(i), 0, itemNum);
         ui->tableControlPoints->setItem(static_cast<int>(i), 1, new QTableWidgetItem(QString::number(controlPoints[i].x)));
@@ -106,14 +106,14 @@ void LC_SplinePropertiesEditingWidget::updateUI() {
     std::vector<double> knots = m_entity->getKnotVector();
     ui->tableKnots->setRowCount(static_cast<int>(numKnots));
     for (size_t i = 0; i < numKnots; ++i) {
-        QTableWidgetItem *itemNum = new QTableWidgetItem(QString::number(i + 1));
+        auto *itemNum = new QTableWidgetItem(QString::number(i + 1));
         itemNum->setFlags(itemNum->flags() & ~Qt::ItemIsEditable);
         ui->tableKnots->setItem(static_cast<int>(i), 0, itemNum);
         ui->tableKnots->setItem(static_cast<int>(i), 1, new QTableWidgetItem(QString::number(knots[i])));
     }
 }
 
-void LC_SplinePropertiesEditingWidget::onClosedToggled(bool checked) const{
+void LC_SplinePropertiesEditingWidget::onClosedToggled(bool checked){
     if (m_entity) {
         try {
             m_entity->setClosed(checked);
@@ -125,7 +125,7 @@ void LC_SplinePropertiesEditingWidget::onClosedToggled(bool checked) const{
     }
 }
 
-void LC_SplinePropertiesEditingWidget::onDegreeIndexChanged(int index) const {
+void LC_SplinePropertiesEditingWidget::onDegreeIndexChanged(int index) {
     if (m_entity != nullptr) {
         try {
             m_entity->setDegree(index + 1);

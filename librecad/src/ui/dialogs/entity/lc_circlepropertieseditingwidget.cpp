@@ -97,7 +97,7 @@ void LC_CirclePropertiesEditingWidget::onDiameterEditingFinished() {
     }
 }
 
-void LC_CirclePropertiesEditingWidget::onRadiusTextChanged(const QString &text) {
+void LC_CirclePropertiesEditingWidget::onRadiusTextChanged(const QString &text) const {
     int pos = 0;
     if (ui->leRadius->validator()->validate(const_cast<QString&>(text), pos) == QValidator::Acceptable) {
         bool ok;
@@ -110,7 +110,7 @@ void LC_CirclePropertiesEditingWidget::onRadiusTextChanged(const QString &text) 
     }
 }
 
-void LC_CirclePropertiesEditingWidget::onDiameterTextChanged(const QString &text) {
+void LC_CirclePropertiesEditingWidget::onDiameterTextChanged(const QString &text) const {
     int pos = 0;
     if (ui->leDiameter->validator()->validate(const_cast<QString&>(text), pos) == QValidator::Acceptable) {
         bool ok;

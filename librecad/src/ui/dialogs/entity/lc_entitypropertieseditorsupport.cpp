@@ -146,11 +146,11 @@ RS_Vector LC_EntityPropertiesEditorSupport::toWCSRaw(QLineEdit* leX, const QLine
     return RS_Vector(toDouble(leX->text(), 0, defs.x), toDouble(leY->text(), 0, defs.y));
 }
 
-double LC_EntityPropertiesEditorSupport::toWCSValue(QLineEdit* ed, double wcsDefault){
+double LC_EntityPropertiesEditorSupport::toWCSValue(QLineEdit* ed, double wcsDefault) const {
     return toWCSValue(ed->text(), wcsDefault);
 }
 
-double LC_EntityPropertiesEditorSupport::toWCSAngle(QLineEdit* ed, double wcsDefault){
+double LC_EntityPropertiesEditorSupport::toWCSAngle(QLineEdit* ed, double wcsDefault) const {
     return toWCSAngle(ed->text(), wcsDefault);
 }
 
