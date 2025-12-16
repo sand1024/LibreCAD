@@ -896,19 +896,33 @@ void RS_FilterDXFRW::addSpline(const DRW_Spline* data) {
                         "Accepted values are 1..3.", data->degree);
         return;
     }
-    assert(data->controllist.size() == data->weightlist.size());
-    if (data->controllist.size() != data->weightlist.size()) {
+    size_t controlListSize = data->controllist.size();
+    size_t weightListSize = data->weightlist.size();
+
+    // NOTE: that assert breaks compatibility - drawings that were created with older version of LC can't be open.
+    // assert(data->controllist.size() == data->weightlist.size());
+    bool hasWeight = true;
+    if (weightListSize == 0) {
+        weightListSize = controlListSize;
+        hasWeight = false;
+    }
+
+    if (controlListSize != weightListSize) {
         return;
     }
-    for (size_t i=0; i < data->controllist.size(); ++i) {
+    for (size_t i=0; i < controlListSize; ++i) {
         const std::shared_ptr<DRW_Coord>& vert = data->controllist[i];
-        const double weight = data->weightlist[i];
+        double weight = 1.0;
+        if (hasWeight) {
+            weight = data->weightlist[i];
+        }
         spline->addControlPointRaw({vert->x, vert->y}, weight);
     }
     if (data->ncontrol== 0 && data->degree != 2){
         std::vector<RS_Vector> fitPoints;
-        for (auto const& vert: data->fitlist)
+        for (auto const& vert: data->fitlist) {
             fitPoints.emplace_back(vert->x, vert->y);
+        }
         spline->setFitPoints(fitPoints);
     }
 
