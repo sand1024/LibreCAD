@@ -157,7 +157,6 @@ public slots:
         const QItemSelection& deselected) const;
     void slotUpdateLayerList();
     void activateLayer(int row) const;
-    void updateWidgetSettings() const;
 protected:
     void contextMenuEvent(QContextMenuEvent* e) override;
     void keyPressEvent(QKeyEvent* e) override;

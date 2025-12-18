@@ -1911,21 +1911,7 @@ void LC_LayerTreeWidget::invokeSettingsDialog(){
     }
 }
 
-void LC_LayerTreeWidget::updateWidgetSettings() const {
-    LC_GROUP("Widgets"); {
-        const bool flatIcons = LC_GET_BOOL("DockWidgetsFlatIcons", true);
-        const int iconSize = LC_GET_INT("DockWidgetsIconSize", 16);
 
-        const QSize size(iconSize, iconSize);
-
-        QList<QToolButton *> widgets = this->findChildren<QToolButton *>();
-        foreach(QToolButton *w, widgets) {
-            w->setAutoRaise(flatIcons);
-            w->setIconSize(size);
-        }
-    }
-    LC_GROUP_END();
-}
 
 
 void LC_LayerTreeWidget::setGraphicView(RS_GraphicView *gview){

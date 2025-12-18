@@ -573,22 +573,6 @@ void QG_LayerWidget::activateLayer(int row) const {
     }
 }
 
-void QG_LayerWidget::updateWidgetSettings() const {
-    LC_GROUP("Widgets"); {
-        bool flatIcons = LC_GET_BOOL("DockWidgetsFlatIcons", true);
-        int iconSize = LC_GET_INT("DockWidgetsIconSize", 16);
-
-        QSize size(iconSize, iconSize);
-
-        QList<QToolButton *> widgets = this->findChildren<QToolButton *>();
-        foreach(QToolButton *w, widgets) {
-            w->setAutoRaise(flatIcons);
-            w->setIconSize(size);
-        }
-    }
-    LC_GROUP_END();
-}
-
 void QG_LayerWidget::setGraphicView(RS_GraphicView *gview){
     if (gview == nullptr) {
         setLayerList(nullptr, false);

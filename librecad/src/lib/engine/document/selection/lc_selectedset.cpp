@@ -34,28 +34,42 @@ LC_SelectedSet::~LC_SelectedSet() {
 }
 
 void LC_SelectedSet::clear() {
+    for (const auto e: m_entitiesList) {
+        e->setSelectionFlag(false);
+    }
     m_entitiesList.clear();
     fireSelectionChanged();
 }
 
+#define DEBUG_UNIQUE_SELECTION
+
 void LC_SelectedSet::add(RS_Entity* entity) {
+#ifdef DEBUG_UNIQUE_SELECTION
     for (auto const e : m_entitiesList) {
-        if (e == entity) {
-            return;
-        }
+        Q_ASSERT_X(e != entity, "LC_SelectedSet::add()", "Entity not unique in selection");
     }
+#endif
     m_entitiesList.push_back(entity);
     fireSelectionChanged();
 }
 
 void LC_SelectedSet::remove(RS_Entity* entity) {
+    entity->setSelectionFlag(false);
     m_entitiesList.removeOne(entity);
     fireSelectionChanged();
 }
 
 void LC_SelectedSet::replaceBy(QList<RS_Entity*>& entities) {
+    for (const auto e: m_entitiesList) {
+        e->setSelectionFlag(false);
+    }
     m_entitiesList.clear();
     m_entitiesList.append(entities);
+    // need to update flag again, as the same entity might be in current selection list (so it will be un-selected) and
+    // be added in new list (so it should be selected).
+    for (const auto e: entities) {
+        e->setSelectionFlag(true);
+    }
     fireSelectionChanged();
 }
 

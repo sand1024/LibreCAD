@@ -14,7 +14,6 @@ protected slots:
     void setColorForSelected(QColor color) const;
     void selectByColor(QColor color) const;
     void setActivePenColor(QColor color) const;
-    void updateWidgetSettings() const;
 private:
     RS_GraphicView* m_graphicView = nullptr;
     ColorWizard* m_colorWizard = nullptr;

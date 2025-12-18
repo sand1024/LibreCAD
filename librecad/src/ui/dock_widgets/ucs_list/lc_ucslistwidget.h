@@ -62,7 +62,6 @@ public slots:
     void setWCS() const;
     void onViewUCSChanged(LC_UCS* ucs);
     void setStateWidget(LC_UCSStateWidget *stateWidget);
-    void updateWidgetSettings() const;
 protected slots:
     void invokeOptionsDialog();
     void saveCurrentUCS();

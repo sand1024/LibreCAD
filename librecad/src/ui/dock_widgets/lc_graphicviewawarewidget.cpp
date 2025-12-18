@@ -23,9 +23,30 @@
 
 #include "lc_graphicviewawarewidget.h"
 
+#include <QToolButton>
+
+#include "rs_settings.h"
+
 LC_GraphicViewAwareWidget::LC_GraphicViewAwareWidget(QWidget* parent, const char* name, Qt::WindowFlags f):
     QWidget(parent, f){
     setObjectName(name);
 }
 
 LC_GraphicViewAwareWidget::~LC_GraphicViewAwareWidget() = default;
+
+void LC_GraphicViewAwareWidget::updateWidgetSettings() const {
+    LC_GROUP("Widgets");
+    {
+        bool flatIcons = LC_GET_BOOL("DockWidgetsFlatIcons", true);
+        int iconSize = LC_GET_INT("DockWidgetsIconSize", 16);
+
+        QSize size(iconSize, iconSize);
+
+        QList<QToolButton*> widgets = this->findChildren<QToolButton*>();
+        foreach(QToolButton *w, widgets) {
+            w->setAutoRaise(flatIcons);
+            w->setIconSize(size);
+        }
+    }
+    LC_GROUP_END();
+}

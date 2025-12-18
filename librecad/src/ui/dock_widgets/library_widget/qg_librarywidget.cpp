@@ -485,19 +485,3 @@ QString QG_LibraryWidget::getPathToPixmap(const QString& dir,
     LC_LOG << "Writing to " << pngPath << " OK";
     return pngPath;
 }
-
-void QG_LibraryWidget::updateWidgetSettings() const {
-    LC_GROUP("Widgets"); {
-        bool flatIcons = LC_GET_BOOL("DockWidgetsFlatIcons", true);
-        int iconSize = LC_GET_INT("DockWidgetsIconSize", 16);
-
-        QSize size(iconSize, iconSize);
-
-        QList<QToolButton *> widgets = this->findChildren<QToolButton *>();
-        foreach(QToolButton *w, widgets) {
-            w->setAutoRaise(flatIcons);
-            w->setIconSize(size);
-        }
-    }
-    LC_GROUP_END();
-}

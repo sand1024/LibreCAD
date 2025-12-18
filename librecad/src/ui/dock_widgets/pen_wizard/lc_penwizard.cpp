@@ -94,20 +94,3 @@ void LC_PenWizard::setActivePenColor(QColor color) const {
 void LC_PenWizard::setGraphicView(RS_GraphicView* mdiWindow) {
     m_graphicView = mdiWindow;
 }
-
-void LC_PenWizard::updateWidgetSettings() const {
-    LC_GROUP("Widgets");
-    {
-        bool flatIcons = LC_GET_BOOL("DockWidgetsFlatIcons", true);
-        int iconSize = LC_GET_INT("DockWidgetsIconSize", 16);
-
-        QSize size(iconSize, iconSize);
-
-        QList<QToolButton*> widgets = this->findChildren<QToolButton*>();
-        foreach(QToolButton *w, widgets) {
-            w->setAutoRaise(flatIcons);
-            w->setIconSize(size);
-        }
-    }
-    LC_GROUP_END();
-}

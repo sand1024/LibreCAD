@@ -69,8 +69,6 @@ public:
     bool isAutoSelectEntitiesInDefaultAction() const;
     void onEntityPropertiesEdited(unsigned long originalId, unsigned long editedCloneId);
     void updateFormats() const;
-public slots:
-    void updateWidgetSettings() const;
 protected slots:
     void onSettings();
     void onClearAll() const;

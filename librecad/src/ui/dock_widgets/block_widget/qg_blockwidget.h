@@ -110,7 +110,6 @@ public slots:
     void slotActivated(const QModelIndex &blockIdx);
     void slotSelectionChanged(const QItemSelection &selected,const QItemSelection &deselected) const;
     void slotUpdateBlockList() const;
-    void updateWidgetSettings() const;
 protected:
     void contextMenuEvent(QContextMenuEvent *e) override;
     void addMenuItem(QMenu* contextMenu, RS2::ActionType actionType) const;

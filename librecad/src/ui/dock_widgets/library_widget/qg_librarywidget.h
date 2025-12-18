@@ -65,7 +65,6 @@ public slots:
     void updatePreview( QModelIndex idx );
     void expandView( QModelIndex idx ) const;
     void collapseView( QModelIndex idx ) const;
-    void updateWidgetSettings() const;
 signals:
     void escape();private:
     QG_ActionHandler* actionHandler = nullptr;

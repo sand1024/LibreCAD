@@ -60,7 +60,6 @@ signals:
 public slots:
     void addNewView();
     void onUcsListChanged() const;
-    void updateWidgetSettings() const;
 protected slots:
     void invokeOptionsDialog();
     void updateView();

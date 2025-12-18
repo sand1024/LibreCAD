@@ -659,19 +659,3 @@ LC_UCS *LC_UCSListWidget::getActiveUCS() const {
 void LC_UCSListWidget::setStateWidget(LC_UCSStateWidget *stateWidget) {
     m_ucsStateWidget = stateWidget;
 }
-
-void LC_UCSListWidget::updateWidgetSettings() const {
-    LC_GROUP("Widgets"); {
-        bool flatIcons = LC_GET_BOOL("DockWidgetsFlatIcons", true);
-        int iconSize = LC_GET_INT("DockWidgetsIconSize", 16);
-
-        QSize size(iconSize, iconSize);
-
-        QList<QToolButton *> widgets = this->findChildren<QToolButton *>();
-        foreach(QToolButton *w, widgets) {
-            w->setAutoRaise(flatIcons);
-            w->setIconSize(size);
-        }
-    }
-    LC_GROUP_END();
-}
