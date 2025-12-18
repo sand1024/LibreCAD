@@ -755,7 +755,8 @@ void LC_ActionFactory::setupCreatedActions(QMap<QString, QAction *> &map) {
     connect(RS_SETTINGS, &RS_Settings::optionChanged, [map](const QString& groupName, const QString &propertyName, QVariant oldValue, QVariant newValue) -> void {
         if (groupName == "Selection" && propertyName == "Additivity") {
             auto action = map["SelectionModeToggle"];
-            action->setChecked(!action->isChecked());
+            bool value = newValue.toBool();
+            action->setChecked(value);
         }
     });
 

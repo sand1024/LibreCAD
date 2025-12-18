@@ -33,6 +33,7 @@ public:
     virtual void previousZoomChanged([[maybe_unused]]bool value) {}
     virtual void onRelativeZeroChanged([[maybe_unused]]const RS_Vector& pos) {}
     virtual void onUCSChanged([[maybe_unused]]LC_UCS* ucs) {}
+    virtual ~LC_GraphicViewPortListener() = default;
 };
 
 

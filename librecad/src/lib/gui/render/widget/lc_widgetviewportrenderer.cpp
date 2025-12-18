@@ -24,6 +24,7 @@
 #include <QPixmap>
 
 #include "lc_graphicviewport.h"
+#include "rs_debug.h"
 #include "rs_entitycontainer.h"
 #include "rs_document.h"
 #include "rs_math.h"

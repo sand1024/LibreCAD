@@ -277,11 +277,17 @@ void QC_ApplicationWindow::doClose(QC_MDIWindow *w, bool activateNext) {
     if (graphic != nullptr) {
         auto view = w->getGraphicView();
         graphic->removeLayerListListener(view);
+        disconnect(view, &QG_GraphicView::gridStatusChanged, this, &QC_ApplicationWindow::updateGridStatus);
+        disconnect(view, &RS_GraphicView::currentActionChanged, this, &QC_ApplicationWindow::onViewCurrentActionChanged);
+        disconnect(view, &RS_GraphicView::previous_zoom_state, this, &QC_ApplicationWindow::setPreviousZoomEnable);
+
+        view->disconnect();
     }
 
     for (auto &&child : std::as_const(w->getChildWindows())) {// block editors and print previews; just force these closed
         doClose(child, false); // they belong to the document (changes already saved there)
     }
+
     w->getChildWindows().clear();
     // m_mdiAreaCAD->removeSubWindow(w);
     if (w->getSaveOnClosePolicy() == QC_MDIWindow::SaveOnClosePolicy::CANCEL) {
