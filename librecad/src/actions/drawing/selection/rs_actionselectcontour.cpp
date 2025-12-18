@@ -31,7 +31,7 @@
 #include "rs_selection.h"
 
 RS_ActionSelectContour::RS_ActionSelectContour(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("Select Contours", actionContext, RS2::ActionSelectContour)
+    :RS_ActionSelectBase("Select Contours", actionContext, RS2::ActionSelectContour)
 	,m_entity(nullptr){
 }
 
@@ -41,6 +41,10 @@ void RS_ActionSelectContour::doInitWithContextEntity(RS_Entity* contextEntity, [
         trigger();
         redrawDrawing();
     }
+}
+
+void RS_ActionSelectContour::selectionFinishedByKey(QKeyEvent* e, bool escape) {
+    finish(false);
 }
 
 void RS_ActionSelectContour::onMouseMoveEvent([[maybe_unused]]int status, LC_MouseEvent *event) {
@@ -68,6 +72,9 @@ void RS_ActionSelectContour::doTrigger() {
 void RS_ActionSelectContour::onMouseLeftButtonRelease([[maybe_unused]] int status, LC_MouseEvent *e) {
     m_entity = catchEntityByEvent(e);
     trigger();
+    if (e->isControl) {
+        finish();
+    }
 }
 
 void RS_ActionSelectContour::onMouseRightButtonRelease(int status, [[maybe_unused]] LC_MouseEvent *e) {
@@ -79,5 +86,5 @@ RS2::CursorType RS_ActionSelectContour::doGetMouseCursor([[maybe_unused]] int st
 }
 
 void RS_ActionSelectContour::updateMouseButtonHints() {
-     updateMouseWidgetTRCancel(tr("Specify entity to select"));
+     updateMouseWidgetTRCancel(tr("Specify entity to select") +  + " " + getSelectionCompletionHintMsg());
 }

@@ -44,13 +44,13 @@ struct RS_ActionSelectWindow::Points {
  * @param select true: select window. false: invertSelectionOperation window
  */
 RS_ActionSelectWindow::RS_ActionSelectWindow(LC_ActionContext *actionContext,bool select)
-    : LC_OverlayBoxAction("Select Window",actionContext, select ? RS2::ActionSelectWindow : RS2::ActionDeselectWindow)
+    : RS_ActionSelectBase("Select Window",actionContext, select ? RS2::ActionSelectWindow : RS2::ActionDeselectWindow)
     , m_actionData(std::make_unique<Points>())
     , m_select(select){
 }
 
 RS_ActionSelectWindow::RS_ActionSelectWindow(enum RS2::EntityType typeToSelect,LC_ActionContext *actionContext,bool select)
-    : LC_OverlayBoxAction("Select Window",actionContext, select ? RS2::ActionSelectWindow : RS2::ActionDeselectWindow)
+    : RS_ActionSelectBase("Select Window",actionContext, select ? RS2::ActionSelectWindow : RS2::ActionDeselectWindow)
     , m_actionData(std::make_unique<Points>())
     , m_select(select){
     if (typeToSelect == RS2::EntityUnknown){
@@ -123,24 +123,23 @@ void RS_ActionSelectWindow::onMouseMoveEvent([[maybe_unused]]int status, LC_Mous
     }
 }
 
-void RS_ActionSelectWindow::mousePressEvent(QMouseEvent* e) {
-    if (e->button()==Qt::LeftButton) {
-        switch (getStatus()) {
+void RS_ActionSelectWindow::onMouseLeftButtonPress(int status, LC_MouseEvent* e){
+    switch (status) {
         case SetCorner1:
-            m_actionData->v1 = toGraph(e);
-            setStatus(SetCorner2);
+            if (e->isControl) {
+                finish();
+            }
+            else {
+                m_actionData->v1 = e->graphPoint;
+                setStatus(SetCorner2);
+            }
             break;
         default:
             break;
-        }
     }
-
-    RS_DEBUG->print("RS_ActionSelectWindow::mousePressEvent(): %f %f",
-                    m_actionData->v1.x, m_actionData->v1.y);
 }
 
 void RS_ActionSelectWindow::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
-    RS_DEBUG->print("RS_ActionSelectWindow::mouseReleaseEvent()");
     if (status==SetCorner2) {
         m_actionData->v2 = e->graphPoint;
         m_selectIntersecting = e->isControl;
@@ -150,7 +149,6 @@ void RS_ActionSelectWindow::onMouseLeftButtonRelease(int status, LC_MouseEvent *
 }
 
 void RS_ActionSelectWindow::onMouseRightButtonRelease(int status, [[maybe_unused]] LC_MouseEvent *e) {
-    RS_DEBUG->print("RS_ActionSelectWindow::mouseReleaseEvent()");
     if (status==SetCorner2) {
         deletePreview();
     }
@@ -160,7 +158,7 @@ void RS_ActionSelectWindow::onMouseRightButtonRelease(int status, [[maybe_unused
 void RS_ActionSelectWindow::updateMouseButtonHints() {
     switch (getStatus()) {
         case SetCorner1:
-            updateMouseWidgetTRCancel(tr("Click and drag for the selection window"));
+            updateMouseWidgetTRCancel(tr("Click and drag for the selection window") + " " + getSelectionCompletionHintMsg());
             break;
         case SetCorner2:
             updateMouseWidgetTRBack(tr("Choose second edge"),
@@ -185,6 +183,10 @@ LC_ActionOptionsWidget *RS_ActionSelectWindow::createOptionsWidget() {
     return new LC_SelectWindowOptions();
 }
 
+void RS_ActionSelectWindow::selectionFinishedByKey(QKeyEvent* e, bool escape) {
+    finish();
+}
+
 bool RS_ActionSelectWindow::isSelectAllEntityTypes() const {
     return m_selectAllEntityTypes;
 }
@@ -193,6 +195,6 @@ void RS_ActionSelectWindow::setSelectAllEntityTypes(bool val){
     m_selectAllEntityTypes  = val;
 }
 
-void RS_ActionSelectWindow::setEntityTypesToSelect(QList<RS2::EntityType> types) {
+void RS_ActionSelectWindow::setEntityTypesToSelect(const QList<RS2::EntityType>& types) {
     m_entityTypesToSelect = types;
 }

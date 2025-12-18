@@ -27,6 +27,7 @@
 #ifndef RS_ACTIONSELECTINTERSECTED_H
 #define RS_ACTIONSELECTINTERSECTED_H
 
+#include "rs_actionselectbase.h"
 #include "rs_previewactioninterface.h"
 
 /**
@@ -34,7 +35,7 @@
  *
  * @author Andrew Mustun
  */
-class RS_ActionSelectIntersected:public RS_PreviewActionInterface {
+class RS_ActionSelectIntersected:public RS_ActionSelectBase {
     Q_OBJECT
 public:
     RS_ActionSelectIntersected(LC_ActionContext *actionContext,bool select);
@@ -62,5 +63,10 @@ protected:
     bool isValidEntityForSelection(RS_Entity* entity);
     void updateMouseButtonHints() override;
     void doTrigger() override;
+    bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& modificationData) override{return true;}
+    void selectionFinishedByKey(QKeyEvent* e, bool escape) override;
+    bool isAllowSelectionFinishByEnterForEmptySelection() override {return true;}
+private:
+    bool m_mouseIsPressed = false;
 };
 #endif

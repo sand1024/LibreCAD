@@ -29,10 +29,7 @@
 #include "lc_dlgquickselection.h"
 #include "qc_applicationwindow.h"
 
-
-LC_ActionSelectQuick::~LC_ActionSelectQuick() {
-    // LC_ERR << "SElectQuick-destruct";
-}
+LC_ActionSelectQuick::~LC_ActionSelectQuick() = default;
 
 void LC_ActionSelectQuick::onLateRequestCompleted(bool shouldBeSkipped) {
     if (shouldBeSkipped) {

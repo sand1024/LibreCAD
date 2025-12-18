@@ -28,25 +28,24 @@
 #define RS_ACTIONSELECTWINDOW_H
 
 #include "lc_overlayboxaction.h"
+#include "rs_actionselectbase.h"
 
 /**
  * This action class can handle user events to select all entities.
  *
  * @author Andrew Mustun
  */
-class RS_ActionSelectWindow:public LC_OverlayBoxAction {
+class RS_ActionSelectWindow:public RS_ActionSelectBase {
     Q_OBJECT
-
 public:
     RS_ActionSelectWindow(LC_ActionContext *actionContext,bool select);
     RS_ActionSelectWindow(RS2::EntityType typeToSelect, LC_ActionContext *actionContext,bool select);
     ~RS_ActionSelectWindow() override;
     void init(int status) override;
-    void mousePressEvent(QMouseEvent *e) override;
     bool isSelectAllEntityTypes() const;
     void setSelectAllEntityTypes(bool val);
     QList<RS2::EntityType> getEntityTypesToSelect();
-    void setEntityTypesToSelect(QList<RS2::EntityType> type);
+    void setEntityTypesToSelect(const QList<RS2::EntityType>& type);
 protected:
     /**
  * Action States.
@@ -65,14 +64,15 @@ protected:
     QList<RS2::EntityType> m_entityTypesToSelect;
 
     RS2::CursorType doGetMouseCursor(int status) override;
+    void onMouseLeftButtonPress(int status, LC_MouseEvent* e) override;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void updateMouseButtonHints() override;
     void doTrigger() override;
     LC_ActionOptionsWidget *createOptionsWidget() override;
-
-    // fixme - sand - complete!
-    bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& modificationData) override {return true;};
+    void selectionFinishedByKey(QKeyEvent* e, bool escape) override;
+    bool isAllowSelectionFinishByEnterForEmptySelection() override {return true;}
+    bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& modificationData) override {return true;}
 };
 #endif

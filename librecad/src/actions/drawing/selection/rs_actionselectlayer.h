@@ -27,6 +27,7 @@
 #ifndef RS_ACTIONSELECTLAYER_H
 #define RS_ACTIONSELECTLAYER_H
 
+#include "rs_actionselectbase.h"
 #include "rs_previewactioninterface.h"
 
 /**
@@ -34,10 +35,10 @@
  *
  * @author Andrew Mustun
  */
-class RS_ActionSelectLayer : public RS_PreviewActionInterface {
+class RS_ActionSelectLayer : public RS_ActionSelectBase {
     Q_OBJECT
 public:
-    RS_ActionSelectLayer(LC_ActionContext *actionContext);
+    explicit RS_ActionSelectLayer(LC_ActionContext *actionContext);
 protected:
     RS2::CursorType doGetMouseCursor(int status) override;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
@@ -45,6 +46,10 @@ protected:
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
     void updateMouseButtonHints() override;
     void doTrigger() override;
+    void selectionFinishedByKey(QKeyEvent* e, bool escape) override;
+    bool isAllowSelectionFinishByEnterForEmptySelection() override {return true;}
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override {return true;};
+
 private:
     RS_Entity* m_entity = nullptr;
 };

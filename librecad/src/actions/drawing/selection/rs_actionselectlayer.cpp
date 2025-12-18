@@ -30,7 +30,7 @@
 #include "rs_selection.h"
 
 RS_ActionSelectLayer::RS_ActionSelectLayer(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("Select Layers", actionContext,RS2::ActionSelectLayer)
+    :RS_ActionSelectBase("Select Layers", actionContext,RS2::ActionSelectLayer)
     , m_entity(nullptr){
 }
 
@@ -51,10 +51,17 @@ void RS_ActionSelectLayer::doTrigger() {
     }
 }
 
+void RS_ActionSelectLayer::selectionFinishedByKey(QKeyEvent* e, bool escape) {
+    finish();
+}
+
 void RS_ActionSelectLayer::onMouseLeftButtonRelease([[maybe_unused]] int status, LC_MouseEvent *e) {
     m_entity = catchEntityByEvent(e);
     trigger();
     invalidateSnapSpot();
+    if (e->isControl) {
+        finish();
+    }
 }
 
 void RS_ActionSelectLayer::onMouseRightButtonRelease(int status, [[maybe_unused]] LC_MouseEvent *e) {
@@ -66,5 +73,5 @@ RS2::CursorType RS_ActionSelectLayer::doGetMouseCursor([[maybe_unused]] int stat
 }
 
 void RS_ActionSelectLayer::updateMouseButtonHints() {
-   updateMouseWidgetTRCancel(tr("Specify entity with desired layer"));
+   updateMouseWidgetTRCancel(tr("Specify entity with desired layer") + " " + getSelectionCompletionHintMsg());
 }

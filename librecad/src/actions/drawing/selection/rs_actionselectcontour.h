@@ -23,17 +23,17 @@
 #ifndef RS_ACTIONSELECTCONTOURS_H
 #define RS_ACTIONSELECTCONTOURS_H
 
-#include "rs_previewactioninterface.h"
+#include "rs_actionselectbase.h"
 
 /**
  * This action class can handle user events to select contours.
  *
  * @author Andrew Mustun
  */
-class RS_ActionSelectContour:public RS_PreviewActionInterface {
+class RS_ActionSelectContour:public RS_ActionSelectBase {
     Q_OBJECT
 public:
-    RS_ActionSelectContour(LC_ActionContext *actionContext);
+    explicit RS_ActionSelectContour(LC_ActionContext *actionContext);
 protected:
     RS2::CursorType doGetMouseCursor(int status) override;
     void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
@@ -42,6 +42,10 @@ protected:
     void updateMouseButtonHints() override;
     void doTrigger() override;
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
+    bool isAllowSelectionFinishByEnterForEmptySelection() override {return true;}
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override {return true;}
+    void selectionFinishedByKey(QKeyEvent* e, bool escape) override;
+
 private:
     RS_Entity *m_entity = nullptr;
 };

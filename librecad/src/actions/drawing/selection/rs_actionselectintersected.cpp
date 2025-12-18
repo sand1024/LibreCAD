@@ -42,7 +42,7 @@ struct RS_ActionSelectIntersected::ActionData {
  * @param select true: select window. false: deselect window
  */
 RS_ActionSelectIntersected::RS_ActionSelectIntersected(LC_ActionContext *actionContext, bool select)
-    :RS_PreviewActionInterface("Select Intersected",actionContext, select ? RS2::ActionSelectIntersected : RS2::ActionDeselectIntersected),
+    :RS_ActionSelectBase("Select Intersected",actionContext, select ? RS2::ActionSelectIntersected : RS2::ActionDeselectIntersected),
     m_actionData(std::make_unique<ActionData>()), m_performSelect(select){
 }
 
@@ -85,6 +85,10 @@ void RS_ActionSelectIntersected::doTrigger() {
     }
 }
 
+void RS_ActionSelectIntersected::selectionFinishedByKey(QKeyEvent* e, bool escape) {
+     finish(false);
+}
+
 void RS_ActionSelectIntersected::onMouseMoveEvent(int status, LC_MouseEvent* e) {
     RS_Vector snap = e->snapPoint;
     if (status == SetPoint1) {
@@ -115,6 +119,7 @@ void RS_ActionSelectIntersected::onMouseMoveEvent(int status, LC_MouseEvent* e) 
 }
 
 void RS_ActionSelectIntersected::onMouseLeftButtonPress(int status, LC_MouseEvent *e) {
+    m_mouseIsPressed = true;
     switch (status) {
         case SetPoint1:
             if (!e->isShift) {
@@ -127,14 +132,9 @@ void RS_ActionSelectIntersected::onMouseLeftButtonPress(int status, LC_MouseEven
     }
 }
 
-bool RS_ActionSelectIntersected::isValidEntityForSelection(RS_Entity* entity) {
-    RS2::EntityType entityType =  entity->rtti();
-    bool entityTypeValidForSelection = !entity->isParentIgnoredOnModifications() && entityType != RS2::EntitySpline;
-    return entityTypeValidForSelection;
-}
-
 void RS_ActionSelectIntersected::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
     RS_DEBUG->print("RS_ActionSelectIntersected::mouseReleaseEvent()");
+
     if (status == SetPoint1) {
         if (e->isShift) {
             RS_Entity* entity;
@@ -151,12 +151,27 @@ void RS_ActionSelectIntersected::onMouseLeftButtonRelease(int status, LC_MouseEv
                     trigger();
                 }
             }
+            else {
+                if (e->isControl) {
+                    finish();
+                }
+            }
         }
     }
     else if (status == SetPoint2){
         m_actionData->v2 = e->snapPoint;
         trigger();
+        if (e->isControl) {
+            finish();
+        }
     }
+    m_mouseIsPressed = false;
+}
+
+bool RS_ActionSelectIntersected::isValidEntityForSelection(RS_Entity* entity) {
+    RS2::EntityType entityType =  entity->rtti();
+    bool entityTypeValidForSelection = !entity->isParentIgnoredOnModifications() && entityType != RS2::EntitySpline;
+    return entityTypeValidForSelection;
 }
 
 void RS_ActionSelectIntersected::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
@@ -170,7 +185,7 @@ void RS_ActionSelectIntersected::onMouseRightButtonRelease(int status, [[maybe_u
 void RS_ActionSelectIntersected::updateMouseButtonHints(){
     switch (getStatus()) {
         case SetPoint1:
-            updateMouseWidgetTRCancel(tr("Choose first point of intersection line"), MOD_SHIFT_AND_CTRL(tr("Select intersecting entity"), tr("Select child entities")));
+            updateMouseWidgetTRCancel(tr("Choose first point of intersection line") + " " + getSelectionCompletionHintMsg(), MOD_SHIFT_AND_CTRL(tr("Select intersecting entity"), tr("Select child entities")));
             break;
         case SetPoint2:
             updateMouseWidgetTRBack(tr("Choose second point of intersection line"));

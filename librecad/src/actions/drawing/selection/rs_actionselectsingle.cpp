@@ -68,9 +68,13 @@ void RS_ActionSelectSingle::selectionFinishedByKey(QKeyEvent *e, [[maybe_unused]
 
 void RS_ActionSelectSingle::onMouseLeftButtonRelease([[maybe_unused]] int status, LC_MouseEvent *e) {
     m_entityToSelect = catchEntityByEvent(e, m_catchForSelectionEntityTypes);
+    bool shouldFinish = e->isControl;
     if (m_entityToSelect != nullptr){
        m_selectContour = e->isShift;
        trigger();
+    }
+    if (shouldFinish) {
+        finish(false);
     }
 }
 
@@ -111,5 +115,5 @@ bool RS_ActionSelectSingle::isEntityAllowedToSelect(RS_Entity *ent) const {
 }
 
 void RS_ActionSelectSingle::updateMouseButtonHints() {
-    updateMouseWidgetTRCancel(tr("Specify entity to select"), MOD_SHIFT_LC(tr("Select contour")));
+    updateMouseWidgetTRCancel(tr("Specify entity to select") + " " + getSelectionCompletionHintMsg(), MOD_SHIFT_LC(tr("Select contour")));
 }

@@ -46,4 +46,4 @@ protected:
     void onMouseRightButtonRelease(int status, LC_MouseEvent* e) override;
 };
 
-#endif // LC_ACTIONSINGLEENTITYSELECTBASE_H
+#endif

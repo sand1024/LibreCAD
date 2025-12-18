@@ -51,7 +51,10 @@ void RS_ActionSelectBase::keyPressEvent(QKeyEvent *e){
             break;
         }
         case Qt::Key_Enter:{
-            if (m_document->hasSelection()){
+            if (m_document->hasSelection()) {
+                selectionFinishedByKey(e, false);
+            }
+            else if (isAllowSelectionFinishByEnterForEmptySelection()) {
                 selectionFinishedByKey(e, false);
             }
             break;

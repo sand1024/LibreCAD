@@ -73,7 +73,4 @@ protected:
     void doSelectEntity(RS_Entity *entityToSelect, bool selectContour) const override;
     void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
 };
-
-
-
-#endif // LC_ACTIONPRESELECTIONAWAREBASE_H
+#endif
