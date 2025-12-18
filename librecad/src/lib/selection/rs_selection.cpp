@@ -57,6 +57,7 @@ void RS_Selection::selectSingle(RS_Entity* e) const {
         const bool selected = e->isSelected();
         if (m_additiveSelection){
             m_document->select(e, !selected);
+
         }
         else {
            if (selected) {
@@ -489,20 +490,24 @@ void RS_Selection::conditionalSelection(const ConditionalSelectionOptions& optio
                         bool matched = funEntityMatch(e);
                         if (matched) {
                             if (includeIntoSelectionSet) {
-                                e->setSelectionFlag(true);
-                                newEntitiesSet.append(e);
+                                if (!e->isSelected() || !options.m_appendToSelectionSet ) {
+                                    e->setSelectionFlag(true);
+                                    newEntitiesSet.append(e);
+                                }
                             }
                         }
                         else {
                             if (excludeFromSelectionSet) {
-                                e->setSelectionFlag(true);
-                                newEntitiesSet.append(e);
+                                if (!e->isSelected() || !options.m_appendToSelectionSet ) {
+                                    e->setSelectionFlag(true);
+                                    newEntitiesSet.append(e);
+                                }
                             }
                         }
                     }
                 }
                 if (options.m_appendToSelectionSet) {
-                    for (const auto e : *m_document) {
+                    for (const auto e : newEntitiesSet) {
                         selectedSet->add(e);
                     }
                 }
@@ -525,6 +530,7 @@ void RS_Selection::conditionalSelection(const ConditionalSelectionOptions& optio
                         if (matched) {
                             if (includeIntoSelectionSet) {
                                 newEntitiesSet.append(e);
+                                e->setSelectionFlag(true);
                             }
                             else {
                                 e->setSelectionFlag(false);
@@ -533,6 +539,7 @@ void RS_Selection::conditionalSelection(const ConditionalSelectionOptions& optio
                         else {
                             if (excludeFromSelectionSet) {
                                 newEntitiesSet.append(e);
+                                e->setSelectionFlag(true);
                             }
                             else {
                                 e->setSelectionFlag(false);
@@ -543,6 +550,7 @@ void RS_Selection::conditionalSelection(const ConditionalSelectionOptions& optio
                         if (options.m_appendToSelectionSet) {
                             // entity with other rtti stays in the selection
                             newEntitiesSet.append(e);
+                            e->setSelectionFlag(true);
                         }
                         else {
                             e->setSelectionFlag(false);
