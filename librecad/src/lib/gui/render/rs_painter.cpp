@@ -1527,9 +1527,13 @@ void RS_Painter::drawRectUI(const RS_Vector& p1, const RS_Vector& p2) {
     drawPolygon(QRect(int(p1.x+0.5), int(p1.y+0.5), int(p2.x - p1.x+0.5), int(p2.y - p1.y+0.5)));
 }
 
-void RS_Painter::drawHandleWCS(const RS_Vector& wcsPos, const RS_Color& c, int size) {
+void RS_Painter::drawHandleWCS(const RS_Vector& wcsPos, const RS_Color& c, QPointF& previousUIPosition, int size) {
     QPointF uiPos = toGuiPointF(wcsPos);
-    fillRect(QRectF{uiPos - QPointF(size, size), QSize{size, size}*2}, c);
+    // here we try to optimize the drawing and don't drive handles if they are too close to each other
+    if ((uiPos - previousUIPosition).manhattanLength() > minLineDrawingLen * 2) {
+        fillRect(QRectF{uiPos - QPointF(size, size), QSize{size, size} * 2}, c);
+    }
+    previousUIPosition = uiPos;
 }
 
 void RS_Painter::setMinRenderableTextHeightInPx(int i) {

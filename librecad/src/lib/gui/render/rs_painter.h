@@ -138,7 +138,7 @@ public:
     void drawLineUIScaled(QPointF from, QPointF to, double lineWidthFactor);
     void drawLineWCSScaled(const RS_Vector& wcsP1, const RS_Vector& wcsP2, double lineWidthFactor);
     void drawPolylineWCS(const RS_Polyline *polyline);
-    void drawHandleWCS(const RS_Vector &wcsPosition, const RS_Color &c, int size = -1);
+    void drawHandleWCS(const RS_Vector &wcsPosition, const RS_Color &c, QPointF& previousUIPosition, int size = -1);
     void drawImgWCS(QImage &img, const RS_Vector &wcsInsertionPoint, const RS_Vector &uVector, const RS_Vector &vVector);
 
     // drawing in screen coordinates

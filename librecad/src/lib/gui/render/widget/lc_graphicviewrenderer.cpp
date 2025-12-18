@@ -313,6 +313,8 @@ void LC_GraphicViewRenderer::drawEntityReferencePoints(RS_Painter *painter, cons
     int sz = m_entityHandleHalfSize;
     size_t refsCount = s.getNumber();
     size_t lastRef = refsCount - 1;
+    qreal maxValue = std::numeric_limits<qreal>::max();
+    QPointF handleUiPos = QPointF(maxValue, maxValue); // artificial, for drawing first handle
     for (size_t i = 0; i < refsCount; ++i) {
         RS_Color col = m_colorHangle;
         if (i == 0) {
@@ -320,7 +322,7 @@ void LC_GraphicViewRenderer::drawEntityReferencePoints(RS_Painter *painter, cons
         } else if (i == lastRef) {
             col = m_colorEndHandleColor;
         }
-        painter->drawHandleWCS(s.get(i), col, sz);
+        painter->drawHandleWCS(s.get(i), col, handleUiPos, sz);
     }
 }
 
