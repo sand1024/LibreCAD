@@ -38,6 +38,10 @@ void LC_MatchDescriptorSpline::init(QMap<RS2::EntityType, LC_EntityMatchDescript
         return e->isClosed();
     }, tr("Closed"), tr("Determines whether spline is closed or not"), LC_PropertyMatcherTypes::BOOL);
 
+    entity->add<int>("points", [](RS_Spline* e) {
+       return (int)e->getControlPoints().size();
+    }, tr("Points"), tr("Number of spline's control points"), LC_PropertyMatcherTypes::INT);
+
     entity->addContains<std::vector<RS_Vector>>("controlPointX", [](RS_Spline* e) {
         return e->getControlPoints();
     }, tr("Vertex X"), tr("X coordinate for one of vertexes"), LC_PropertyMatcherTypes::COORD_X_IN_QLIST);
