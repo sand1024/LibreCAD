@@ -82,11 +82,6 @@ private:
     LC_NamedViewsListOptions *m_options {nullptr};
     LC_NamedViewsButton *m_namedViewsButton {nullptr};
     QAction* m_saveViewAction {nullptr};
-    RS2::LinearFormat m_linearFormat;
-    RS2::AngleFormat m_angleFormat;
-    int m_precision;
-    int m_anglePrecision;
-    RS2::Unit drawingUnit;
     RS_GraphicView *m_graphicView {nullptr};
     LC_GraphicViewport *m_viewport {nullptr};
 
@@ -107,7 +102,6 @@ private:
     void selectView(const LC_View *view) const;
     int getSingleSelectedRow() const;
     void restoreSingleSelectedRow(bool restoreSelectionIfPossible, int selectedRow) const;
-    void loadFormats(const RS_Graphic *graphic);
 };
 
 #endif // LC_NAMEDVIEWSLISTWIDGET_H

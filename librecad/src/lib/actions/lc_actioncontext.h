@@ -86,6 +86,8 @@ public:
 
         enum InputType {
             POINT,
+            POINT_X,
+            POINT_Y,
             DISTANCE,
             ANGLE,
             NOTNEEDED,

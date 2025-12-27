@@ -57,8 +57,8 @@ public:
     QIcon getColorIcon(const RS_Color &color, int iconSizeW, int iconSizeH) const;
     QString getColorName(const RS_Color &color, int type) const;
 
-    QString getInternalColorString(const RS_Color &color);
-    RS_Color getColorFromInternalString(QString &str);
+    static QString getInternalColorString(const RS_Color &color);
+    static RS_Color getColorFromInternalString(const QString &str);
 
     static bool isUnchangedColor(const RS_Color &color);
 

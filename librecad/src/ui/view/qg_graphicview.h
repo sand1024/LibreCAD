@@ -36,6 +36,7 @@
 #include "lc_ucslist.h"
 #include "rs.h"
 #include "rs_blocklistlistener.h"
+#include "rs_debug.h"
 #include "rs_graphicview.h"
 #include "rs_layerlistlistener.h"
 
@@ -177,9 +178,7 @@ private:
 
     //! Keep tracks of if we are currently doing a high-resolution scrolling
     bool m_isSmoothScrolling;
-
     std::unique_ptr<LC_UCSMarkOptions> m_ucsMarkOptions;
-
     bool m_scrollbars{false};
     bool m_cursor_hiding{false};
     bool m_selectCursor_hiding{false};
@@ -192,14 +191,12 @@ private:
     std::unique_ptr<AutoPanData> m_panData;
     struct UCSHighlightData;
     std::unique_ptr<UCSHighlightData> m_ucsHighlightData;
-
     LC_ActionContext* m_actionContext {nullptr};
 
     void showEntityPropertiesDialog(RS_Entity *entity) const;
     void editAction(RS_Entity &entity) const;
     // for scroll bar adjustment
     std::mutex m_scrollbarMutex;
-
 };
 
 #endif

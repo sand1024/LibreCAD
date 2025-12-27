@@ -31,4 +31,4 @@ class LC_AppWindowAware {
         QC_ApplicationWindow* m_appWin{nullptr};
 };
 
-#endif // LC_APPWINDOWAWARE_H
+#endif

@@ -41,15 +41,9 @@ LC_UCSListModel::~LC_UCSListModel() {
     m_ucss.clear();
 }
 
-void LC_UCSListModel::setUCSList(LC_UCSList *ucsList, RS2::LinearFormat format, RS2::AngleFormat af,
-                                 int precision,
-                                 int anglePrecision, RS2::Unit drawingUnit) {
-    m_linearFormat = format;
-    m_angleFormat = af;
-    m_prec = precision;
-    m_anglePrec = anglePrecision;
-    m_unit = drawingUnit;
+void LC_UCSListModel::setUCSList(LC_UCSList *ucsList, LC_Formatter* formatter) {
     this->m_ucsList = ucsList;
+    m_formatter = formatter;
     beginResetModel();
 
     m_ucss.clear();
@@ -296,9 +290,9 @@ int LC_UCSListModel::count() const {
 }
 
 QString LC_UCSListModel::getUCSInfo(LC_UCS *ucs) const {
-    QString originX = RS_Units::formatLinear(ucs->getOrigin().x, m_unit, m_linearFormat, m_prec);
-    QString originY = RS_Units::formatLinear(ucs->getOrigin().y, m_unit, m_linearFormat, m_prec);
-    QString angle = RS_Units::formatAngle(ucs->getXAxis().angle(), m_angleFormat, m_anglePrec);
+    QString originX = m_formatter->formatLinear(ucs->getOrigin().x);
+    QString originY = m_formatter->formatLinear(ucs->getOrigin().y);
+    QString angle = m_formatter->formatRawAngle(ucs->getXAxis().angle());
     QString origin = originX.append(", "). append(originY).append(" < ").append(angle);
     return origin;
 }
@@ -318,9 +312,9 @@ LC_UCSListModel::UCSItem *LC_UCSListModel::createUCSItem(LC_UCS *ucs) {
     result->displayName = name;
 
     double angleValue = RS_Math::correctAnglePlusMinusPi(ucs->getXAxis().angle());
-    QString originX = RS_Units::formatLinear(ucs->getOrigin().x, m_unit, m_linearFormat, m_prec);
-    QString originY = RS_Units::formatLinear(ucs->getOrigin().y, m_unit, m_linearFormat, m_prec);
-    QString angle = RS_Units::formatAngle(angleValue, m_angleFormat, m_anglePrec);
+    QString originX =  m_formatter->formatLinear(ucs->getOrigin().x);
+    QString originY =  m_formatter->formatLinear(ucs->getOrigin().y);
+    QString angle =  m_formatter->formatRawAngle(angleValue);
 
     QString ucsInfo;
     ucsInfo.append(originX).append(" , "). append(originY).append(" < ").append(angle);

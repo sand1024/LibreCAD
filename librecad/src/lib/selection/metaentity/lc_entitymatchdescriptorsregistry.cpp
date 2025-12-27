@@ -48,6 +48,10 @@
 #include "lc_matchdescriptor_text.h"
 #include "lc_matchdescriptor_tolerance.h"
 
+LC_EntityMatchDescriptorsRegistry::~LC_EntityMatchDescriptorsRegistry() {
+    qDeleteAll(m_entityMatchDescriptors);
+}
+
 LC_EntityMatchDescriptor* LC_EntityMatchDescriptorsRegistry::findEntityMatchDescriptor(RS2::EntityType entity) {
     if (m_entityMatchDescriptors.contains(entity)) {
         return m_entityMatchDescriptors[entity];

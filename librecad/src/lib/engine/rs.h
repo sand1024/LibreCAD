@@ -254,7 +254,7 @@ namespace RS2 {
         ActionSelectInvert,
         ActionSelectLayer,
         ActionSelectQuick,
-        ActionSelectDouble,
+        ActionSelectGeneric,
         ActionGetSelect,
         ActionGetEntity,
         ActionSelectModeToggle,

@@ -44,8 +44,7 @@ class RS_Document;
 class QMouseEvent;
 class RS_EntityContainer;
 class LC_GraphicViewport;
-
-
+class LC_Formatter;
 
 /**
   * This class holds information on how to snap the mouse.
@@ -242,24 +241,17 @@ protected:
     LC_InfoCursorOverlayPrefs* m_infoCursorOverlayPrefs = nullptr;
     std::unique_ptr<LC_InfoCursorData> m_infoCursorOverlayData;
 
-    // values cached for the efficiency
-    RS2::LinearFormat m_linearFormat{};
-    int m_linearPrecision= 0;
-    RS2::AngleFormat m_angleFormat{};
-    int m_anglePrecision = 0;
-    RS2::Unit m_unit{};
-    double m_anglesBase = 0.0;
-    bool m_anglesCounterClockWise = true;
+    LC_Formatter* m_formatter {nullptr};
     bool m_ignoreSnapToGridIfNoGrid = false;
 
     RS_Vector toGraph(const QMouseEvent *e) const;
-    void updateCoordinateWidget(const RS_Vector& abs, const RS_Vector& rel, bool updateFormat=false);
-    void updateCoordinateWidgetByRelZero(const RS_Vector& abs, bool updateFormat=false);
+    void updateCoordinateWidget(const RS_Vector& abs, const RS_Vector& rel);
+    void updateCoordinateWidgetByRelZero(const RS_Vector& abs);
     void updateCoordinateWidgetFormat() const;
     void invalidateSnapSpot() const;
     QString getSnapName(int snapType);
     QString getRestrictionName(int restriction);
-    void preparePositionsInfoCursorOverlay(bool updateFormat, const RS_Vector &abs, const RS_Vector &relative);
+    void preparePositionsInfoCursorOverlay(const RS_Vector &abs, const RS_Vector &relative);
     LC_OverlayInfoCursor* obtainInfoCursor() const;
     LC_InfoCursorOverlayPrefs* getInfoCursorOverlayPrefs() const;
 
@@ -293,8 +285,7 @@ protected:
     double getCatchDistance(double catchDistance, int catchEntityGuiRange) const;
     double toGuiDX(double wcsDX) const;
     double toGraphDX(int wcsDX) const;
-    void redraw(RS2::RedrawMethod method = RS2::RedrawMethod::RedrawAll) const
-    /* {graphicView->redraw(method);}*/;
+    void redraw(RS2::RedrawMethod method = RS2::RedrawMethod::RedrawAll) const;
     void redrawDrawing() const;
     void redrawAll() const;
     void enableCoordinateInput() const;
@@ -304,16 +295,9 @@ protected:
     virtual void initFromSettings();
     virtual void initFromGraphic(RS_Graphic* graphic);
 private:
-    /**
-     * @brief updateUnitFormat update format parameters (m_linearFormat etc.) from the current rs_graphic
-     */
-    void updateUnitFormat( RS_Graphic* graphic);
-
     struct ImpData;
     std::unique_ptr<ImpData> pImpData;
     struct Indicator;
     std::unique_ptr<Indicator> m_snapIndicator;
 };
-
 #endif
-//EOF

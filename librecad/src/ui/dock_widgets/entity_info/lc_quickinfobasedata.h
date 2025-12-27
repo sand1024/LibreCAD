@@ -31,6 +31,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class QString;
 class LC_GraphicViewport;
 class RS_Document;
+class LC_Formatter;
 
 class LC_QuickInfoBaseData{
     Q_DECLARE_TR_FUNCTIONS(LC_QuickInfoBaseData)
@@ -61,16 +62,8 @@ public:
 protected:
     RS_Document* m_document = nullptr;
     LC_GraphicViewport* m_viewport = nullptr;
+    LC_Formatter* m_formatter = nullptr;
     int m_coordinatesMode = COORD_ABSOLUTE;
-
-    RS2::Unit m_unit;
-    RS2::LinearFormat m_linearFormat;
-    int m_linearPrecision;
-    RS2::AngleFormat m_angleFormat;
-    int m_anglePrecision;
-
-    double m_anglesBase = 0;
-    bool m_anglesCounterClockWise = true;
 
     // fixme - sand - think about these formatting methods.. they are present there, and similar ones are in snapper...
     // fixme - what about moving them to RS_GraphicView which is shared anyway may be? And this will simplify updating cached formats...
@@ -96,6 +89,8 @@ protected:
     QString formatRawAngle(double angle) const;
 
     const RS_Vector& getRelativeZero() const;
+private:
+    RS_Vector m_absentRelZero{false};
 };
 
-#endif // LC_QUICKINFOBASEDATA_H
+#endif

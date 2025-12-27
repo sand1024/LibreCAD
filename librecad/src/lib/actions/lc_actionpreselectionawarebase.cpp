@@ -266,14 +266,7 @@ void LC_ActionPreSelectionAwareBase::onSelectionCompleted([[maybe_unused]]bool s
     }
 }
 
-void LC_ActionPreSelectionAwareBase::setSelectionComplete(bool allowEmptySelection, bool fromInit) {
-    unsigned int selectedCount;
-    if (fromInit) {
-       selectedCount = m_selectedEntities.size();
-    }
-    else{
-        selectedCount = collectSelectedEntities();
-    }
+void LC_ActionPreSelectionAwareBase::proceedSelectionComplete(bool allowEmptySelection, bool fromInit, [[maybe_unused]]unsigned int selectedCount) {
     bool proceed = selectedCount > 0 || allowEmptySelection;
     if (proceed) {
         m_selectionComplete = true;
@@ -282,6 +275,17 @@ void LC_ActionPreSelectionAwareBase::setSelectionComplete(bool allowEmptySelecti
     else{
         commandMessage(tr("No valid entities selected, select them first"));
     }
+}
+
+void LC_ActionPreSelectionAwareBase::setSelectionComplete(bool allowEmptySelection, bool fromInit) {
+    unsigned int selectedCount;
+    if (fromInit) {
+       selectedCount = m_selectedEntities.size();
+    }
+    else{
+        selectedCount = collectSelectedEntities();
+    }
+    proceedSelectionComplete(allowEmptySelection, fromInit, selectedCount);
 }
 
 void LC_ActionPreSelectionAwareBase::updateMouseButtonHintsForSelected([[maybe_unused]]int status) {

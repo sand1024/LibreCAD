@@ -357,7 +357,6 @@ void QG_GraphicView::createViewRenderer() {
 }
 
 void QG_GraphicView::layerToggled(RS_Layer *) {
-    // FIXME - UPDATE SELECTION IF LAYER IS LOCKED/INVISIBLE!
     redraw(RS2::RedrawDrawing);
 }
 
@@ -365,7 +364,13 @@ void QG_GraphicView::layerToggled(RS_Layer *) {
  * Destructor
  */
 QG_GraphicView::~QG_GraphicView() {
-	cleanUp();
+    try {
+        // LC_ERR << "QG_GraphicView destructor";
+        cleanUp();
+         LC_ERR << "QG_GraphicView destructor 1";
+    } catch (...) {
+        LC_ERR << __func__ << "(): received exception";
+    }
 }
 
 /**
@@ -1066,6 +1071,7 @@ void QG_GraphicView::keyPressEvent(QKeyEvent * e) {
     if (getDocument() == nullptr) {
         return;
     }
+    bool eventProcessed = false; // due to some weird reasons, even incoming event is already accepted (Win10)... so using own flag
     if (m_allowScrollAndMoveAdjustByKeys) {
         RS2::Direction direction = RS2::Up;
         bool scroll = e->modifiers() == Qt::NoModifier;
@@ -1095,6 +1101,7 @@ void QG_GraphicView::keyPressEvent(QKeyEvent * e) {
 
         if (scroll) {
             getViewPort()->zoomScroll(direction);
+            eventProcessed = true;
             e->accept();
         }
         else if (move) {
@@ -1113,10 +1120,11 @@ void QG_GraphicView::keyPressEvent(QKeyEvent * e) {
 
             LC_ActionModifyMoveAdjust::MovementInfo info(direction, step);
             switchToAction(RS2::ActionModifyMoveAdjust, &info);
+            eventProcessed = true;
             e->accept();
         }
     }
-    if (!e->isAccepted()){
+    if (!eventProcessed){
         getEventHandler()->keyPressEvent(e);
     }
 }

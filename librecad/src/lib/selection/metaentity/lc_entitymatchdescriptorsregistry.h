@@ -34,6 +34,7 @@ class LC_EntityMatchDescriptor;
 class LC_EntityMatchDescriptorsRegistry: public QObject {
     Q_OBJECT
 public:
+    ~LC_EntityMatchDescriptorsRegistry() override;
     LC_EntityMatchDescriptor* findEntityMatchDescriptor(RS2::EntityType entity);
     void collectProperties(RS2::EntityType, QList<QPair<QString, QString>> & list);
     static LC_EntityMatchDescriptorsRegistry* instance();
@@ -41,6 +42,5 @@ protected:
     QMap<RS2::EntityType, LC_EntityMatchDescriptor*> m_entityMatchDescriptors;
     void initEntityDescriptors();
 };
-
 
 #endif

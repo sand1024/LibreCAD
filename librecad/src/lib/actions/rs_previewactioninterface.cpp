@@ -443,9 +443,9 @@ void RS_PreviewActionInterface::previewSnapAngleMark(const RS_Vector &center, do
     double lineLength = toGraphDX(lineInPixels);
 
     angle = RS_Math::correctAnglePlusMinusPi(angle);
-    double angleZero = toWorldAngle(m_anglesBase);
+    double angleZero = toWorldAngle(m_formatter->getAnglesBase());
     if (LC_LineMath::isMeaningfulAngle(angle)){
-        previewRefArc(RS_ArcData(center, radius, angleZero, angle, !m_anglesCounterClockWise));
+        previewRefArc(RS_ArcData(center, radius, angleZero, angle, !m_formatter->isAnglesCounterClockWise()));
         previewRefLine(center, center + RS_Vector::polar(lineLength, angle));
     }
     previewRefLine(center, center.relative(lineLength, angleZero));
@@ -794,7 +794,7 @@ bool RS_PreviewActionInterface::parseToWCSAngle(const QString &c, double& wcsAng
     if (ok){
         ucsBasisAngleDeg = LC_LineMath::getMeaningfulAngle(ucsBasisAngleDeg);
         double ucsBasisAngleRad = RS_Math::deg2rad(ucsBasisAngleDeg);
-        double ucsAbsValueRad = m_viewport->toUCSAbsAngle(ucsBasisAngleRad, m_anglesBase, m_anglesCounterClockWise);
+        double ucsAbsValueRad = m_formatter->toUCSAbsAngleFromUCSBasis(ucsBasisAngleRad);
         wcsAngleRad = m_viewport->toWorldAngle(ucsAbsValueRad);
     }
     return ok;

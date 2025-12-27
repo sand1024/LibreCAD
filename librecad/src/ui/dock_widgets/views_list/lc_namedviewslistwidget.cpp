@@ -140,7 +140,6 @@ void LC_NamedViewsListWidget::setGraphicView(RS_GraphicView *gv) {
     LC_ViewList *viewsList = nullptr;
     if (gv != nullptr && gv->getGraphic() != nullptr) {
         RS_Graphic *graphic = gv->getGraphic();
-        loadFormats(graphic);
         viewsList = graphic->getViewList();
         m_viewport = gv->getViewPort();
     }
@@ -151,13 +150,6 @@ void LC_NamedViewsListWidget::setGraphicView(RS_GraphicView *gv) {
     setViewsList(viewsList);
 }
 
-void LC_NamedViewsListWidget::loadFormats(const RS_Graphic *graphic) {
-    m_linearFormat = graphic->getLinearFormat();
-    m_angleFormat = graphic->getAngleFormat();
-    m_precision = graphic->getLinearPrecision();
-    m_anglePrecision = graphic->getAnglePrecision();
-    drawingUnit = graphic->getUnit();
-}
 
 void LC_NamedViewsListWidget::setViewsList(LC_ViewList *viewsList) {
     m_currentViewList = viewsList;
@@ -168,10 +160,6 @@ void LC_NamedViewsListWidget::setViewsList(LC_ViewList *viewsList) {
 }
 
 void LC_NamedViewsListWidget::reload() {
-    if (m_graphicView != nullptr) {
-        RS_Graphic *graphic = m_graphicView->getGraphic();
-        loadFormats(graphic);
-    }
     updateData(true);
 }
 
@@ -181,7 +169,7 @@ void LC_NamedViewsListWidget::refresh() {
 
 void LC_NamedViewsListWidget::updateData(bool restoreSelectionIfPossible) {
     int selectedRow = getSingleSelectedRow();
-    m_viewsModel->setViewsList(m_currentViewList, m_linearFormat, m_angleFormat, m_precision, m_anglePrecision, drawingUnit);
+    m_viewsModel->setViewsList(m_currentViewList, m_viewport->getFormatter());
     restoreSingleSelectedRow(restoreSelectionIfPossible, selectedRow);
     updateButtonsState();
     if (m_options->showColumnIconType){

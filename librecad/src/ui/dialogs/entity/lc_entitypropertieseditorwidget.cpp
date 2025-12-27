@@ -37,7 +37,9 @@ void LC_EntityPropertiesEditorWidget::interactiveInputUpdate(
     const QString &tag, double valueOne, double valueTwo) const {
     QList<QLineEdit*> list = findChildren<QLineEdit*>();
     QPair<QString, QString> vectorCoordinatesUI;
-    if (inputType == LC_ActionContext::InteractiveInputInfo::POINT) {
+    if (inputType == LC_ActionContext::InteractiveInputInfo::POINT ||
+        inputType == LC_ActionContext::InteractiveInputInfo::POINT_X ||
+        inputType == LC_ActionContext::InteractiveInputInfo::POINT_Y) {
         RS_Vector point = RS_Vector(valueOne, valueTwo);
         vectorCoordinatesUI = toUIStr(point);
     }
@@ -64,9 +66,11 @@ void LC_EntityPropertiesEditorWidget::interactiveInputUpdate(
                         lineEditFound = true;
                         break;
                     }
-                    case LC_ActionContext::InteractiveInputInfo::POINT: {
+                    case LC_ActionContext::InteractiveInputInfo::POINT:
+                    case LC_ActionContext::InteractiveInputInfo::POINT_X:
+                    case LC_ActionContext::InteractiveInputInfo::POINT_Y:{
                         int component = lineEdit->property("_interactiveInputComponent").toInt();
-                        if (component == 1) {
+                        if (component == LC_ActionContext::InteractiveInputInfo::POINT_X) {
                             lineEdit->setText(vectorCoordinatesUI.first);
                             if (pointComponentSet) {
                                 lineEditFound = true;
@@ -76,7 +80,7 @@ void LC_EntityPropertiesEditorWidget::interactiveInputUpdate(
                             }
                             emit lineEdit->editingFinished();
                         }
-                        else if (component == 2) {
+                        else if (component == LC_ActionContext::InteractiveInputInfo::POINT_Y) {
                             lineEdit->setText(vectorCoordinatesUI.second);
                             if (pointComponentSet) {
                                 lineEditFound = true;
@@ -144,10 +148,10 @@ void LC_EntityPropertiesEditorWidget::setupInteractiveInputControls(QToolButton*
 
     lineEditOne->setProperty ("_interactiveInputEdit", inputType);
     lineEditOne->setProperty("_interactiveInputTag", tag);
-    lineEditOne->setProperty("_interactiveInputComponent",1);
+    lineEditOne->setProperty("_interactiveInputComponent",LC_ActionContext::InteractiveInputInfo::POINT_X);
     if (lineEditTwo != nullptr) {
         lineEditTwo->setProperty("_interactiveInputTag", tag);
         lineEditTwo->setProperty ("_interactiveInputEdit", inputType);
-        lineEditTwo->setProperty("_interactiveInputComponent",2);
+        lineEditTwo->setProperty("_interactiveInputComponent",LC_ActionContext::InteractiveInputInfo::POINT_Y);
     }
 };

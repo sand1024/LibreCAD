@@ -21,23 +21,21 @@
  * ********************************************************************************
  */
 
-#ifndef LC_POINTPICKBUTTON_H
-#define LC_POINTPICKBUTTON_H
 
-#include <QToolButton>
+#include "lc_actionselectgeneric.h"
 
-namespace Ui {
-    class LC_PointPickButton;
+LC_ActionSelectGeneric::~LC_ActionSelectGeneric() = default;
+
+void LC_ActionSelectGeneric::updateMouseButtonHintsForSelection() {
+    updateMouseWidgetTRCancel(tr("Select entities") + getSelectionCompletionHintMsg(),
+                         MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Complete selection")));
 }
 
-class LC_PointPickButton : public QWidget {
-    Q_OBJECT
-public:
-    explicit LC_PointPickButton(QWidget *parent = nullptr);
-    ~LC_PointPickButton() override;
-    QToolButton* getButton() const;
-private:
-    Ui::LC_PointPickButton *ui;
-};
-
-#endif
+void LC_ActionSelectGeneric::proceedSelectionComplete(bool allowEmptySelection, bool fromInit, unsigned int selectedCount) {
+    if (fromInit) {
+        // do nothing, we should continue selecting objects if there is pre-selection
+    }
+    else {
+        LC_ActionPreSelectionAwareBase::proceedSelectionComplete(allowEmptySelection, fromInit, selectedCount);
+    }
+}

@@ -33,6 +33,7 @@
 #include <QWidget>
 #include "lc_graphicviewportlistener.h"
 #include "rs.h"
+#include "rs_debug.h"
 
 class RS_Document;
 class LC_EventHandler;
@@ -64,11 +65,11 @@ class LC_WidgetViewPortRenderer;
  * Note that this is just an interface used as a slot to
  * communicate with the LibreCAD from a GUI level.
  */
-class RS_GraphicView:public QWidget, LC_GraphicViewPortListener {
+class RS_GraphicView:public QWidget, public LC_GraphicViewPortListener {
     Q_OBJECT
 public:
     RS_GraphicView(QWidget *parent = nullptr, Qt::WindowFlags f = {});
-    virtual ~RS_GraphicView();
+    ~RS_GraphicView() override;
     void cleanUp();
 /**
  * @return Pointer to the graphic entity if the entity container
@@ -178,18 +179,28 @@ public:
     void notifyCurrentActionChanged(RS2::ActionType actionType);
     bool hasAction() const;
     void notifyLastActionFinished() const;
+    void onSwitchToDefaultAction(bool defaultActionActivated, RS2::ActionType prevActionRtti);
 signals:
     void ucsChanged(LC_UCS* ucs);
     void relativeZeroChanged(const RS_Vector &);
     void previous_zoom_state(bool);
-
     void currentActionChanged(RS2::ActionType actionType);
+    void defaultActionActivated(bool value, RS2::ActionType prevActionRtti);
 protected:
     void setRenderer(std::unique_ptr<LC_WidgetViewPortRenderer> renderer);
     LC_WidgetViewPortRenderer* getRenderer() const;
     void resizeEvent(QResizeEvent *event) override;
     void onViewportRedrawNeeded() override;
     LC_EventHandler *getEventHandler() const;
+
+    class TEST_DESTRUCTOR {
+    public:
+        explicit TEST_DESTRUCTOR(int val):value{val}{};
+        ~TEST_DESTRUCTOR() {
+            LC_ERR << "Destructor TES called" << value;
+        }
+        int value;
+    };
 private:
     std::unique_ptr<LC_EventHandler> m_eventHandler;
     RS_Document *m_document = nullptr;
@@ -218,7 +229,6 @@ private:
     bool m_panOnZoom = false;
     bool m_skipFirstZoom = false;
     const RS_LineTypePattern *getPattern(RS2::LineType t);
-
     bool setEventHandlerAction(std::shared_ptr<RS_ActionInterface>) const;
 };
 #endif

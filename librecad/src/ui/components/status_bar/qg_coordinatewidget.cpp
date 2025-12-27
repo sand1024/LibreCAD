@@ -46,18 +46,12 @@ QG_CoordinateWidget::QG_CoordinateWidget(QWidget* parent, const char* name, Qt::
     lCoord2b->setText("");
 
     m_graphic = nullptr;
-    m_linearPrecision = 4;
-    m_linearFormat = RS2::Decimal;
-    m_anglePrecision = 2;
-    m_angleFormat = RS2::DegreesDecimal;
 }
 
 /*
  *  Destroys the object and frees any allocated resources
  */
-QG_CoordinateWidget::~QG_CoordinateWidget(){
-    // no need to delete child widgets, Qt does it all for us
-}
+QG_CoordinateWidget::~QG_CoordinateWidget()= default;
 
 /*
  *  Sets the strings of the subwidgets using the current
@@ -72,13 +66,13 @@ void QG_CoordinateWidget::setGraphicView(RS_GraphicView *gv) {
     if (gv != nullptr){
         m_viewport = gv->getViewPort();
         m_graphic = gv->getGraphic(true);
-        if (m_graphic != nullptr) {
-            setCoordinates(0.0, 0.0, 0.0, 0.0, true);
-        }
+        m_formatter = m_viewport->getFormatter();
+        setCoordinates(0.0, 0.0, 0.0, 0.0, true);
     }
     else {
         m_viewport = nullptr;
         m_graphic = nullptr;
+        m_formatter = nullptr;
     }
 }
 
@@ -106,13 +100,9 @@ void QG_CoordinateWidget::clearContent() const {
 
 void QG_CoordinateWidget::setCoordinates(double ucsX, double ucsY,
                                          double ucsDeltaX, double ucsDeltaY, bool updateFormat) {
-
     if (m_graphic != nullptr) {
         if (updateFormat) {
-            m_linearFormat = m_graphic->getLinearFormat();
-            m_linearPrecision = m_graphic->getLinearPrecision();
-            m_angleFormat = m_graphic->getAngleFormat();
-            m_anglePrecision = m_graphic->getAnglePrecision();
+            m_formatter = m_viewport->getFormatter(); // fixme- fmt - most probably it's not necessary
         }
 
         if (!LC_GET_ONE_BOOL("Appearance", "UnitlessGrid", true)){
@@ -123,39 +113,35 @@ void QG_CoordinateWidget::setCoordinates(double ucsX, double ucsY,
         }
 
         // abs / rel coordinates:
-        RS2::Unit unit = m_graphic->getUnit();
-        QString absX = RS_Units::formatLinear(ucsX, unit, m_linearFormat, m_linearPrecision);
-        QString absY = RS_Units::formatLinear(ucsY, unit, m_linearFormat, m_linearPrecision);
-        QString relX = RS_Units::formatLinear(ucsDeltaX, unit, m_linearFormat, m_linearPrecision);
-        QString relY = RS_Units::formatLinear(ucsDeltaY, unit, m_linearFormat, m_linearPrecision);
+        QString absX = m_formatter->formatLinear(ucsX);
+        QString absY = m_formatter->formatLinear(ucsY);
+        QString relX = m_formatter->formatLinear(ucsDeltaX);
+        QString relY = m_formatter->formatLinear(ucsDeltaY);
 
         lCoord1->setText(absX + " , " + absY);
         lCoord2->setText("@  " + relX + " , " + relY);
 
         // polar coordinates:
-        RS_Vector v;
-        v = RS_Vector(ucsX, ucsY);
-        QString str;
-        QString rStr = RS_Units::formatLinear(v.magnitude(),unit,m_linearFormat, m_linearPrecision);
-        double ucsAngle = v.angle();
+        auto polarCoordinate = RS_Vector(ucsX, ucsY);
+        QString polarMagnitude = m_formatter->formatLinear(polarCoordinate.magnitude());
+        double ucsAngle = polarCoordinate.angle();
         if (m_viewport != nullptr) {
             ucsAngle = m_viewport->toBasisUCSAngle(ucsAngle);
         }
+        QString angleStr = m_formatter->formatRawAngle(ucsAngle);
 
-        QString aStr = RS_Units::formatAngle(ucsAngle, m_angleFormat, m_anglePrecision);
+        lCoord1b->setText(polarMagnitude + " < " + angleStr);
 
-        str = rStr + " < " + aStr;
-        lCoord1b->setText(str);
-
-        v = RS_Vector(ucsDeltaX, ucsDeltaY);
-        rStr = RS_Units::formatLinear(v.magnitude(),unit,m_linearFormat, m_linearPrecision);
-        double relUcsAngle = v.angle();
+        // relative polar
+        auto polarRelativeCoordinate = RS_Vector(ucsDeltaX, ucsDeltaY);
+        QString relPolarMagnitude = m_formatter->formatLinear(polarRelativeCoordinate.magnitude());
+        double relUcsAngle = polarRelativeCoordinate.angle();
         if (m_viewport != nullptr) {
             relUcsAngle = m_viewport->toBasisUCSAngle(relUcsAngle);
         }
-        aStr = RS_Units::formatAngle(relUcsAngle, m_angleFormat, m_anglePrecision);
+        angleStr = m_formatter->formatRawAngle(relUcsAngle);
 
-        lCoord2b->setText("@  " + rStr + " < " + aStr);
+        lCoord2b->setText("@  " + relPolarMagnitude + " < " + angleStr);
 
         m_absoluteCoordinates = RS_Vector(ucsX, ucsY, 0.0);
         m_relativeCoordinates = RS_Vector(ucsDeltaX, ucsDeltaY, 0.0);

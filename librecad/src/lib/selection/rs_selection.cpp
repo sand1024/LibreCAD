@@ -468,9 +468,7 @@ void RS_Selection::selectLayer(const RS_Layer* layer, bool select) {
 
 // fixme - rework, use setSelected? At least, fix the selection state issue
 void RS_Selection::conditionalSelection(const ConditionalSelectionOptions& options) {
-
     // doUnselectAllIfNeeded(container, doc);
-
     performBulkSelection([this, options]([[maybe_unused]]RS_EntityContainer* container, LC_GraphicViewport*, RS_Document* doc)-> void {
             auto funRttiMatch = options.m_rttiMatcher;
             auto funEntityMatch = options.m_entityMatcher;
@@ -567,16 +565,13 @@ void RS_Selection::conditionalSelection(const ConditionalSelectionOptions& optio
 void RS_Selection::countSelectedEntities(QMap<RS2::EntityType, int>& entityTypeMaps) const {
     if (m_viewPort != nullptr) {
         auto doc         = m_document->getDocument();
-        auto selectedSet = doc->getSelection();
-        for (auto e : *selectedSet) {
-            if (e != nullptr && e->isVisible()) {
-                if (e->getFlag(RS2::FlagSelected)) {
-                    auto rtti = e->rtti();
-                    int count = entityTypeMaps[rtti];
-                    count++;
-                    entityTypeMaps[rtti] = count;
-                }
-            }
+        QList<RS_Entity*> selectedEntities;
+        doc->collectSelected(selectedEntities);
+        for (auto e : selectedEntities) {
+            auto rtti = e->rtti();
+            int count = entityTypeMaps[rtti];
+            count++;
+            entityTypeMaps[rtti] = count;
         }
     }
 }

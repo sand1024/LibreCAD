@@ -155,7 +155,7 @@ RS_Color LC_PenInfoRegistry::createUnchangedColor(){
  * @param str string to parse
  * @return created color (will be invalid if not parsed properly)
  */
-RS_Color LC_PenInfoRegistry::getColorFromInternalString(QString &str){
+RS_Color LC_PenInfoRegistry::getColorFromInternalString(const QString &str){
     bool conversionOk = false;
     int intColor = str.toInt(&conversionOk);
     RS_Color result;

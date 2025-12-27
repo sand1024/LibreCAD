@@ -25,6 +25,8 @@
 
 #include <QAbstractTableModel>
 #include <QIcon>
+
+#include "lc_formatter.h"
 #include "rs.h"
 
 class LC_View;
@@ -38,7 +40,7 @@ class LC_NamedViewsModel:public QAbstractTableModel {
 public:
     explicit LC_NamedViewsModel(LC_NamedViewsListOptions *modelOptions, QObject * parent = nullptr);
     ~LC_NamedViewsModel() override;
-    void setViewsList(LC_ViewList *viewsList,RS2::LinearFormat format, RS2::AngleFormat angleFormat,int precision, int anglePrec, RS2::Unit drawingUnit);
+    void setViewsList(LC_ViewList *viewsList,LC_Formatter* formatter);
     QModelIndex parent(const QModelIndex &child) const override;
     int rowCount(const QModelIndex &parent) const override;
     int columnCount(const QModelIndex &parent) const override;
@@ -83,11 +85,7 @@ protected:
         QString displayName;
     };
 
-    RS2::AngleFormat m_angleFormat;
-    RS2::LinearFormat m_linearFormat;
-    int m_prec;
-    int m_anglePrec;
-    RS2::Unit m_unit;
+    LC_Formatter* m_formatter {nullptr};
     LC_ViewList* m_viewsList {nullptr};
     QList<ViewItem*> m_views;
     QIcon m_iconViewPaperSpace;

@@ -2825,7 +2825,7 @@ or [%2]</source>
     <message>
         <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="610"/>
         <source>Right Dock Area</source>
-        <translation></translation>
+        <translation>Левая область стыкуемых инструментов</translation>
     </message>
     <message>
         <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="611"/>
@@ -4308,32 +4308,32 @@ End Edge Point: (%9 , %10)</source>
         <translation>Подсвечивать</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="149"/>
+        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="145"/>
         <source>Import shortcuts mapping</source>
         <translation>Импорт сочетания клавиш</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="149"/>
+        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="146"/>
         <source>Export shortcuts mapping</source>
         <translation>Экспорт сочетания клавиш</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="150"/>
+        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="146"/>
         <source>LibreCAD Shortcuts file (*.%1)</source>
         <translation>Файл сочетания клавиш LibreCAD (*.%1)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="188"/>
+        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="178"/>
         <source>Shortcuts mappings were loaded successfully.</source>
         <translation>Настройки сочетания клавиш былы загружены успешно.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="192"/>
+        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="182"/>
         <source>Can&apos;t read provided file - please check that it is exists and it is allowed to read from it.</source>
         <translation>Заданый файл не может быть прочитан - проверьте что он существует и чтение из него разрешено.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="196"/>
+        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="186"/>
         <source>Shortcuts mappings were not imported.
 
  Provided file does exists, however it does not contain LibreCAD shortcuts mapping.</source>
@@ -4342,7 +4342,7 @@ End Edge Point: (%9 , %10)</source>
 Указанный файл существует, но он не является файлом клавиш LibreCAD.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="201"/>
+        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="192"/>
         <source>Shortcuts mappings were not imported. 
 
 XML parsing error occurred during file processing.</source>
@@ -4351,17 +4351,17 @@ XML parsing error occurred during file processing.</source>
 Возникла ошибка чтения XML во время обработки файла.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="213"/>
+        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="203"/>
         <source>Shortcuts mappings were saved successfully.</source>
         <translation>Сочетания клавиш сохранены успешно.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="217"/>
+        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="207"/>
         <source>Can&apos;t write to provided file - please check that it is allowed to write to it.</source>
         <translation>Невозможно записать в указаный файл -проверьте что запись в него разрешена.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="221"/>
+        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="211"/>
         <source>Shortcuts mappings were not imported. 
 
 Some error occurred during XML generation.</source>
@@ -4370,32 +4370,36 @@ Some error occurred during XML generation.</source>
 Возникла ошибка генерации XML.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="276"/>
+        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="265"/>
         <source>Import Shortcuts Mapping</source>
         <translation>Импорт настроек сочетания клавиш</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="276"/>
+        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="265"/>
         <source>Export Shortcuts Mapping</source>
         <translation>Екпорт сочетаний клавиш</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="355"/>
+        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="340"/>
         <source>Invalid key sequence.</source>
         <translation>Неправильное сочетание клавишь</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="364"/>
+        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="349"/>
         <source>Resolve conflicts before saving.</source>
         <translation>Разрешите конфликты перед сохранением.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="368"/>
-        <source>Key sequence has potential conflicts. &lt;a href=&quot;#conflicts&quot;&gt;Show.&lt;/a&gt;</source>
-        <translation>Сочетание клавиш создает потенциальные конфликты. &lt;a href=\&quot;#conflicts\&quot;&gt;Посмотреть.&lt;/a&gt;</translation>
+        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="353"/>
+        <source>Key sequence has potential conflicts. &lt;a href=&quot;show&quot;&gt;Show.&lt;/a&gt;</source>
+        <translation>Сочетание клавиш создает потенциальные конфликты. &lt;a href=\&quot;show\&quot;&gt;Посмотреть.&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="422"/>
+        <source>Key sequence has potential conflicts. &lt;a href=&quot;#conflicts&quot;&gt;Show.&lt;/a&gt;</source>
+        <translation type="vanished">Сочетание клавиш создает потенциальные конфликты. &lt;a href=\&quot;#conflicts\&quot;&gt;Посмотреть.&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="405"/>
         <source>Some mappings are modified.
 Are you sure you are going to discard changes?</source>
         <translation>Настройки были изменены.\nВы уверены что хотите не сохранять изменения?</translation>
@@ -7881,170 +7885,183 @@ Are you sure you are going to discard changes?</source>
         <translation>Слой объекта для условия сравнения</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="108"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="154"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="177"/>
         <source>Type of line to match</source>
         <translation>Тип линии для проверки условия</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="131"/>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="154"/>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="193"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="246"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="269"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="308"/>
         <source>Value to match</source>
         <translation>Значение для условия сравнения</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="158"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="273"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="163"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="278"/>
         <source>No</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="200"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="315"/>
         <source>Pick angle from drawing</source>
         <translation>Измерить угол на чертеже</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="214"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="329"/>
         <source>Pick distance from drawing</source>
         <translation>Измерить расстояние на чертеже</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="228"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="343"/>
         <source>Pick coordinate component from drawing</source>
         <translation>Измерить компонент координаты на чертеже</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="242"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="357"/>
         <source>Tolerance:</source>
         <translation>Точность:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="255"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="370"/>
         <source>Tolearance range used for floating-point values comparison. Values considered equal, if the absolute unsigned difference between them is within this range. </source>
         <translation>Диапазон точности используемый при сравнения чисел с плавающей точкой. Значения считаются равными, если их абслолютная (беззнаковая) разность меньше заданного диапазона.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="262"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="377"/>
         <source>Update tolerance based on the document unit precision settings.</source>
         <translation>Обновить точность согласно настройкам точности единиц в документе.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="292"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="105"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="128"/>
         <source>Color of line to match</source>
         <translation>Цвет линии для проверки условия</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="315"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="200"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="223"/>
         <source>Width of line to match</source>
         <translation>Толщина линии для условия сравнения</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="326"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="395"/>
         <source>Operator:</source>
         <translation>Условие:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="333"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="402"/>
         <source>How to Apply</source>
         <translation>Как применять</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="339"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="408"/>
         <source>If checked, the object with matched value will be included into new selection set.</source>
         <translation>Если выбрано, то объекты которые СООТВЕТСТВУЮТ условию будут добавлены в новый набор выбраных объектов</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="342"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="411"/>
         <source>Include in new selection set</source>
         <translation>Включать в новый набор выбранных объектов</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="349"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="418"/>
         <source>If checked, object that does not match the condition will be included into selection set.</source>
         <translation>Если выбрано, то объекты которые НЕ соответствуют условию будут добавлены в новый набор выбраных объектов</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="352"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="421"/>
         <source>Exclude from new selection set</source>
         <translation>Исключать из нового набора выбранных объектов</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="362"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="431"/>
         <source>Manual selection of entities</source>
         <translation>Выбрать объекты вручную</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="376"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="445"/>
         <source>Defines to which objects selection conditions should be applied to</source>
         <translation>Определяет к каким объектам должно быть применено условие выбора</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="396"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="465"/>
         <source>Value:</source>
         <translation>Значение:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="426"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="495"/>
         <source>Type of the entity to match</source>
         <translation>Тип объектов для выбора по критерию</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="433"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="502"/>
         <source>Apply To:</source>
         <translation>Применять к:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="443"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="512"/>
         <source>TextLabel</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="47"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="49"/>
         <source>Entire Drawing</source>
         <translation>Всему документу</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="49"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="51"/>
         <source>Current Selection</source>
         <translation>Текущему выделению</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="259"/>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="263"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="319"/>
+        <source>Please provide non empty value to match</source>
+        <translation>Значение свойства объекта для сравнения не может быть пустым.</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="324"/>
+        <source>Please provide non empty value of precision</source>
+        <translation>Диапазона точности сравнения не может быть пустым.</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="345"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="349"/>
         <source>Multiple</source>
         <translation>Разные</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="315"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="401"/>
         <source>= Equals</source>
         <translation>= Равно</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="316"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="402"/>
         <source>&lt;&gt; Not Equals</source>
         <translation>&lt;&gt; Не равно</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="317"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="403"/>
         <source>&gt; Greater than</source>
         <translation>&gt; Больше чем</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="318"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="404"/>
         <source>&lt; Less than</source>
         <translation>&lt; Меньше чем</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="319"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="405"/>
         <source>* Wildcard match</source>
         <translation>* Маска</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="320"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="406"/>
         <source>Select All</source>
         <translation>Выбрать все</translation>
     </message>
@@ -12477,31 +12494,41 @@ Please specify a different value.</source>
     </message>
     <message>
         <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_spline.cpp" line="43"/>
+        <source>Points</source>
+        <translation>Точки</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_spline.cpp" line="43"/>
+        <source>Number of spline&apos;s control points</source>
+        <translation>Количество контрольных точек сплайна</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_spline.cpp" line="47"/>
         <source>Vertex X</source>
         <translation>Вершина X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_spline.cpp" line="43"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_spline.cpp" line="47"/>
         <source>X coordinate for one of vertexes</source>
         <translation>Координата одной из вершин сплайна по оси X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_spline.cpp" line="47"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_spline.cpp" line="51"/>
         <source>Vertex Y</source>
         <translation>Вершина Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_spline.cpp" line="47"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_spline.cpp" line="51"/>
         <source>Y coordinate  for one of vertexes</source>
         <translation>Координата одной из вершин сплайна по оси Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_spline.cpp" line="51"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_spline.cpp" line="55"/>
         <source>Length</source>
         <translation>Длина</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_spline.cpp" line="51"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_spline.cpp" line="55"/>
         <source>Length of spline</source>
         <translation>Длина сплайна</translation>
     </message>
@@ -15386,6 +15413,130 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
     </message>
 </context>
 <context>
+    <name>LC_PropertiesSheet</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_propertyview.cpp" line="141"/>
+        <source>Unlock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_propertyview.cpp" line="142"/>
+        <source>Lock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_propertyview.cpp" line="255"/>
+        <source>Click to expand</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_propertyview.cpp" line="256"/>
+        <source>Click to collapse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_propertyviewwithvalues.cpp" line="127"/>
+        <source>Reset to default value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_propertyviewwithvalues.cpp" line="131"/>
+        <source>R</source>
+        <comment>Reset button text</comment>
+        <translation type="unfinished">R</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertyBool</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/bool/lc_propertybool.cpp" line="62"/>
+        <source>False</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/bool/lc_propertybool.cpp" line="63"/>
+        <source>True</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertyMulti</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/lib/properties/lc_propertymulti.cpp" line="86"/>
+        <source>(Multiple Values)</source>
+        <translation>(Разные)</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertyQString</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/string/lc_propertyqstring.cpp" line="47"/>
+        <source>(Empty)</source>
+        <translation>(Пусто)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/string/lc_propertyqstring.cpp" line="52"/>
+        <source>(Multiline Text)</source>
+        <translation>(Строки...)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/string/lc_propertyqstring.cpp" line="63"/>
+        <source>%1 (Read only)</source>
+        <translation>%1 (Только чтение)</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertyRSVector</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/rsvector/lc_propertyrsvector.cpp" line="48"/>
+        <source>X</source>
+        <translation type="unfinished">X</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/rsvector/lc_propertyrsvector.cpp" line="52"/>
+        <source>X of the %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/rsvector/lc_propertyrsvector.cpp" line="56"/>
+        <source>Y</source>
+        <translation type="unfinished">Y</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/rsvector/lc_propertyrsvector.cpp" line="60"/>
+        <source>Y of the %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/rsvector/lc_propertyrsvector.cpp" line="64"/>
+        <source>[%1, %2]</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertySheetWidget</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished">Форма</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui" line="20"/>
+        <source>Select Objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui" line="34"/>
+        <source>Switch selection mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui" line="48"/>
+        <source>Quick selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>LC_QTStatusbarManager</name>
     <message>
         <location filename="../src/ui/components/status_bar/lc_qtstatusbarmanager.cpp" line="40"/>
@@ -17949,32 +18100,155 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LC_SplinePropertiesEditingWidget</name>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="14"/>
         <source>Form</source>
-        <translation>Форма</translation>
+        <translation type="vanished">Форма</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="41"/>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="14"/>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="17"/>
+        <source>Spline Properties Editor</source>
+        <translation>Свойства Сплайна</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="20"/>
+        <source>Edit properties of a spline entity, including degree, closed state, control points, and knot vector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="47"/>
         <source>Geometry</source>
         <translation>Геометрия</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="63"/>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="61"/>
         <source>Degree:</source>
         <translation>Степень:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="79"/>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="86"/>
+        <source>Spline Degree ComboBox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="89"/>
+        <source>Select the degree of the spline curve</source>
+        <translation>Выбор степени сплайна</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="119"/>
         <source>Defines whether spline defines closed contour</source>
         <translation>Определяет является ли кривая замкнутым контуром</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="82"/>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="122"/>
+        <source>Closed Spline CheckBox</source>
+        <translation>Если выбрано, то создается замкнутый контур сплайна</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="125"/>
+        <source>Toggle whether the spline forms a closed contour</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="128"/>
         <source>Closed</source>
         <translation>Замкнутая</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="95"/>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="141"/>
+        <source>Control Points:</source>
+        <translation>Контрольные точки:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="177"/>
+        <source>Control points with coordinates and weights</source>
+        <translation>Контрольные точки сплайна - координаты и вес</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="180"/>
+        <source>Control Points Table</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="183"/>
+        <source>Edit control points coordinates and weights for the spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="196"/>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="268"/>
+        <source>#</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="204"/>
+        <source>X</source>
+        <translation>X</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="212"/>
+        <source>Y</source>
+        <translation>Y</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="220"/>
+        <source>Weight</source>
+        <translation>Вес</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="255"/>
+        <source>Knot values control the spline’s curve shape (non-decreasing sequence)</source>
+        <translation>Значения узлов контролирующие форму сплайна (не-уменьшающаяся последовательность)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="258"/>
+        <source>Knot Vector Table</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="261"/>
+        <source>Edit knot values for the spline (must be non-decreasing)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="276"/>
+        <source>Value</source>
+        <translation>Значение</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="303"/>
+        <source>Add</source>
+        <translation>Добавить</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="306"/>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="312"/>
+        <source>Add a new control point to the spline</source>
+        <translation>Добавление контрольной точки сплайна</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="309"/>
+        <source>Add Control Point Button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="325"/>
+        <source>Remove</source>
+        <translation>Удалить</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="328"/>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="334"/>
+        <source>Remove the selected control point from the spline</source>
+        <translation>Удаление выбранной контрольной точки сплайна</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="331"/>
+        <source>Remove Control Point Button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="83"/>
         <source>Degree used to approximate spline</source>
         <translation>Степень уравнения аппроксимации кривой между точками</translation>
     </message>
@@ -18702,6 +18976,11 @@ Warning: this action can NOT be undone!</source>
         <translation>Дерево Слоев</translation>
     </message>
     <message>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="260"/>
+        <source>Properties</source>
+        <translation>Свойства Объекта</translation>
+    </message>
+    <message>
         <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="271"/>
         <source>Blocks</source>
         <translation>Блоки</translation>
@@ -18730,63 +19009,63 @@ Warning: this action can NOT be undone!</source>
         <translation>Панель</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="405"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="404"/>
         <source>Pen Wizard</source>
         <translation>Волшебное перо</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="405"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="404"/>
         <source>PenWiz</source>
         <translation>Перо</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="453"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="452"/>
         <source>Toolbar: %1</source>
         <translation>Панель инструментов: %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="470"/>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="518"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="469"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="517"/>
         <source>Grid Status</source>
         <translation>Сетка</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="513"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="512"/>
         <source>Coordinates</source>
         <translation>Координаты</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="514"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="513"/>
         <source>Relative Zero</source>
         <translation>Относительный ноль</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="515"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="514"/>
         <source>Mouse</source>
         <translation>Мышь</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="516"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="515"/>
         <source>Selection Info</source>
         <translation>О Выделенном</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="517"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="516"/>
         <source>Active Layer</source>
         <translation>Активный Слой</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="519"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="518"/>
         <source>UCS Status</source>
         <translation>Статус Системы Координат</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="520"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="519"/>
         <source>Angles Basis</source>
         <translation>Базис Углов</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="524"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="523"/>
         <source>Current size of Grid/MetaGrid. Click to change grid size.</source>
         <translation>Текущий размер сетки/дополнительной сетки. Щелкните мышью для изменения.</translation>
     </message>
@@ -19207,72 +19486,72 @@ Warning: this action can NOT be undone!</source>
 <context>
     <name>QC_ApplicationWindow</name>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="789"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="790"/>
         <source>Creating new file...</source>
         <translation>Создание нового файла...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="738"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="739"/>
         <source>unnamed document %1</source>
         <translation>безымянный документ %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1692"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1693"/>
         <source>Opening recent file...</source>
         <translation>Открытие последнего файла...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1032"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1033"/>
         <source>Loaded document: </source>
         <translation>Документ загружен: </translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="976"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="977"/>
         <source>Opening aborted</source>
         <translation>Открытие прервано</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1267"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1268"/>
         <source>Printing...</source>
         <translation>Печать...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1365"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1366"/>
         <source>Exiting application...</source>
         <translation>Выход из программы...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="197"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="198"/>
         <source>Print preview for %1</source>
         <translation>Предварительный просмотр %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="811"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="812"/>
         <source>New Drawing created.</source>
         <translation>Был создан новый чертёж.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="227"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="228"/>
         <source>Saving drawing...</source>
         <translation>Сохранение чертежа...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="238"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="239"/>
         <source>Saved drawing: %1</source>
         <translation>Чертёж сохранен: %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1271"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1272"/>
         <source>Printing complete</source>
         <translation>Печать завершена</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="735"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="736"/>
         <source>Block &apos;%1&apos;</source>
         <translation>Блок &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="854"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="855"/>
         <source>Cannot open the file
 %1
 Please check the permissions.</source>
@@ -19281,17 +19560,17 @@ Please check the permissions.</source>
 Пожалуйста, проверьте, права доступа.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1109"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1110"/>
         <source>Auto-saving drawing...</source>
         <translation>Автосохранение чертежа...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1115"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1116"/>
         <source>Auto-saved drawing</source>
         <translation>Чертёж автоматически сохранен</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1120"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1121"/>
         <source>Cannot auto-save the file
 %1
 Please check the permissions.
@@ -19302,42 +19581,42 @@ Auto-save disabled.</source>
 Автосохранение отключено.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="983"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="984"/>
         <source>Warning: File already opened : </source>
         <translation>Предупреждение: файл уже открыт: </translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="250"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="251"/>
         <source>Cannot save the file </source>
         <translation>Невозможно сохранить файл </translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="250"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="251"/>
         <source> , please check the filename and permissions.</source>
         <translation> , проверьте правильность имени файла и права доступа.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="807"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="808"/>
         <source>New document from template: </source>
         <translation>Новый документ из шаблона: </translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="839"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="840"/>
         <source>Select Template aborted</source>
         <translation>Выбор шаблона прерван</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1122"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1123"/>
         <source>Auto-saving failed</source>
         <translation>Ошибка при автосохранении</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="208"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="209"/>
         <source>Draft Mode</source>
         <translation>режим черновика</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="996"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="997"/>
         <source>Cannot open the file
 %1
 Please check its existence and permissions.</source>
@@ -19346,49 +19625,49 @@ Please check its existence and permissions.</source>
 Проверьте его наличие и права доступа.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="975"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="976"/>
         <source>File &apos;%1&apos; does not exist. Opening aborted</source>
         <translation>Файл &apos;%1&apos; не существует. Операция прервана</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="227"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="228"/>
         <source>Saving drawing: %1</source>
         <translation>Сохранение чертежа: % 1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="233"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="234"/>
         <source>Save cancelled</source>
         <translation>Сохранение отменено</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="363"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="364"/>
         <source>&amp;Save</source>
         <translation>&amp;Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="364"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="365"/>
         <source>Save &amp;as...</source>
         <translation>Сохранить &amp;как...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="367"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="368"/>
         <source>&amp;Save %1</source>
         <translation>&amp;Сохранить %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="368"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="369"/>
         <source>Save %1 &amp;as...</source>
         <translation>Сохраните %1 &amp;как...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1086"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1087"/>
         <source>Save All cancelled</source>
         <translation>Сохранить Все отменено</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1204"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1210"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1224"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1205"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1211"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1225"/>
         <source>Close All cancelled</source>
         <translation>Закрыть Все отменено</translation>
     </message>
@@ -25989,9 +26268,9 @@ p, li { white-space: pre-wrap; }
     <name>QMessageBox</name>
     <message>
         <location filename="../src/ui/dialogs/qg_dialogfactory.cpp" line="91"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="856"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="998"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1119"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="857"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="999"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1120"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
@@ -26520,7 +26799,7 @@ Do you want to replace it?</source>
         <translation>Парсек</translation>
     </message>
     <message>
-        <location filename="../src/main/main.cpp" line="510"/>
+        <location filename="../src/main/main.cpp" line="514"/>
         <source>Loading..</source>
         <translation>Загрузка..</translation>
     </message>
@@ -26530,44 +26809,45 @@ Do you want to replace it?</source>
         <translation>Загрузка файла %1..</translation>
     </message>
     <message>
-        <location filename="../src/main/main.cpp" line="402"/>
+        <location filename="../src/main/main.cpp" line="406"/>
         <source>Loading...</source>
         <translation>Загрузка...</translation>
     </message>
     <message>
-        <location filename="../src/main/main.cpp" line="479"/>
+        <location filename="../src/main/main.cpp" line="482"/>
         <source>Release Candidate</source>
         <translation>Release Candidate</translation>
     </message>
     <message>
-        <location filename="../src/main/main.cpp" line="480"/>
+        <location filename="../src/main/main.cpp" line="483"/>
         <source>BETA</source>
         <translation>BETA</translation>
     </message>
     <message>
-        <location filename="../src/main/main.cpp" line="481"/>
+        <location filename="../src/main/main.cpp" line="484"/>
+        <location filename="../src/main/main.cpp" line="493"/>
         <source>ALPHA</source>
         <translation>ALPHA</translation>
     </message>
     <message>
-        <location filename="../src/main/doc_plugin_interface.cpp" line="1287"/>
+        <location filename="../src/main/doc_plugin_interface.cpp" line="1284"/>
         <source>enter an integer number</source>
         <translation>введите целое число</translation>
     </message>
     <message>
-        <location filename="../src/main/doc_plugin_interface.cpp" line="1293"/>
-        <location filename="../src/main/doc_plugin_interface.cpp" line="1315"/>
-        <location filename="../src/main/doc_plugin_interface.cpp" line="1335"/>
+        <location filename="../src/main/doc_plugin_interface.cpp" line="1290"/>
+        <location filename="../src/main/doc_plugin_interface.cpp" line="1312"/>
+        <location filename="../src/main/doc_plugin_interface.cpp" line="1332"/>
         <source>LibreCAD query</source>
         <translation>Запрос LibreCAD</translation>
     </message>
     <message>
-        <location filename="../src/main/doc_plugin_interface.cpp" line="1309"/>
+        <location filename="../src/main/doc_plugin_interface.cpp" line="1306"/>
         <source>enter a number</source>
         <translation>введите число</translation>
     </message>
     <message>
-        <location filename="../src/main/doc_plugin_interface.cpp" line="1331"/>
+        <location filename="../src/main/doc_plugin_interface.cpp" line="1328"/>
         <source>enter text</source>
         <translation>введите текст</translation>
     </message>
@@ -26647,52 +26927,52 @@ Do you want to replace it?</source>
         <translation>Старый DXF %1</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="185"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="183"/>
         <source>Opened dwg file version %1.</source>
         <translation>Открыт файл DWG версии %1.</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5400"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5428"/>
         <source>unknown error opening dwg file</source>
         <translation>неизвестная ошибка при открытии файла DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5404"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5432"/>
         <source>can&apos;t open this dwg file</source>
         <translation>невозможно открыть данный файл DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5408"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5436"/>
         <source>unsupported dwg version</source>
         <translation>неподдерживаемая версия DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5416"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5444"/>
         <source>error reading file header in dwg file</source>
         <translation>ошибка чтения заголовка файла DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5420"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5448"/>
         <source>error reading header vars in dwg file</source>
         <translation>ошибка чтения заголовка переменных файла DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5424"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5452"/>
         <source>error reading classes in dwg file</source>
         <translation>ошибка чтения классов файла DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5428"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5456"/>
         <source>error reading offsets in dwg file</source>
         <translation>ошибка чтения смещений файла DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5432"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5460"/>
         <source>error reading tables in dwg file</source>
         <translation>ошибка чтения таблиц файла DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5440"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5468"/>
         <source>error reading entities in dwg file</source>
         <translation>ошибка чтения объектов файла DWG</translation>
     </message>
@@ -26717,12 +26997,12 @@ Do you want to replace it?</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5436"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5464"/>
         <source>error reading blocks in dwg file</source>
         <translation>Ошибка чтения блоков файла DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5444"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5472"/>
         <source>error reading objects in dwg file</source>
         <translation>Ошибка чтения объектов файла DWG</translation>
     </message>
@@ -27868,7 +28148,7 @@ Do you want to replace it?</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5412"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5440"/>
         <source>error reading file metadata in dwg file</source>
         <translation>ошибка чтения метаданных файла DWG</translation>
     </message>
@@ -27917,7 +28197,7 @@ Do you want to replace it?</source>
         <translation>Все</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="955"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="956"/>
         <source>Invalid objects removed:</source>
         <translation>Исключенные объекты:</translation>
     </message>
@@ -29941,85 +30221,85 @@ Do you want to replace it?</source>
         <translation>Игнорировать ошибку и открыть файл?</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="117"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="115"/>
         <source>no DXF/DWG error</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>нет ошибки DXF/DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="119"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="117"/>
         <source>error opening DXF/DWG file</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>ошибка открытия файла DXF/DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="121"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="119"/>
         <source>unsupported DXF/DWG file version</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>неподдерживаемая версия файла DXF/DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="123"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="121"/>
         <source>error reading DXF/DWG meta data</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>ошибка чтения метаданных DXF/DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="125"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="123"/>
         <source>error reading DXF/DWG file header</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>ошибка чтения заголовка файла DXF/DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="127"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="125"/>
         <source>error reading DXF/DWG header dara</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>ошибка чтения DXF/DWG заголовка dara</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="129"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="127"/>
         <source>error reading DXF/DWG object map</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>ошибка чтения карты объектов DXF/DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="131"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="129"/>
         <source>error reading DXF/DWG classes</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>ошибка чтения классов DXF/DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="133"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="131"/>
         <source>error reading DXF/DWG tables</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>ошибка чтения таблиц DXF/DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="135"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="133"/>
         <source>error reading DXF/DWG blocks</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>ошибка чтения блоков DXF/DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="137"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="135"/>
         <source>error reading DXF/DWG entities</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>ошибка чтения DXF/DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="139"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="137"/>
         <source>error reading DXF/DWG objects</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>ошибка чтения DXF/DWG объектов</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="141"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="139"/>
         <source>error reading DXF/DWG sections</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>ошибка чтения разделов DXF/DWG</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="143"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="141"/>
         <source>error reading DXF/DWG code</source>
         <comment>RS_FilterDXFRW</comment>
         <translation>ошибка чтения кода DXF/DWG</translation>

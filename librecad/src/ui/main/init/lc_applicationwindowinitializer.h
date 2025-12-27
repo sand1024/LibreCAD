@@ -53,6 +53,7 @@ private:
     void initPlugins();
     void initAutoSaveTimer() const;
     void initActionContext() const;
+    void setupActionContextWidgets() const;
 };
 
-#endif // LC_APPLICATIONWINDOWINITIALIZER_H
+#endif

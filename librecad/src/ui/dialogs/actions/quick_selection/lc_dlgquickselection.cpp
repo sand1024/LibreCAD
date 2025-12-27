@@ -60,7 +60,8 @@ LC_DlgQuickSelection::LC_DlgQuickSelection(QWidget* parent, RS_Document* contain
     connect(ui->cbOperator, &QComboBox::currentIndexChanged, this, &LC_DlgQuickSelection::onOperatorChanged);
 
     connect(ui->tbPickLength, &QToolButton::clicked, this, &LC_DlgQuickSelection::onPickLengthClicked);
-    connect(ui->tbPickCoord, &QToolButton::clicked, this, &LC_DlgQuickSelection::onPickCoord);
+    connect(ui->tbPickCoordX, &QToolButton::clicked, this, &LC_DlgQuickSelection::onPickCoord);
+    connect(ui->tbPickCoordY, &QToolButton::clicked, this, &LC_DlgQuickSelection::onPickCoord);
     connect(ui->tbPickAngle, &QToolButton::clicked, this, &LC_DlgQuickSelection::onPickAngle);
     connect(ui->tbManualSelect, &QToolButton::clicked, this, &LC_DlgQuickSelection::onManualSelection);
     connect(ui->tbPrecisionUpdateByDoc, &QToolButton::clicked, this, &LC_DlgQuickSelection::onUpdatePrecisionByDocumentSettings);
@@ -313,6 +314,8 @@ void LC_DlgQuickSelection::accept() {
             case ENTITY_PROPERTY_STRING:
                 checkValue = true;
                 break;
+            default:
+                break;
         }
         if (checkValue) {
             if (ui->leValue->text().isEmpty()) {
@@ -451,16 +454,22 @@ void LC_DlgQuickSelection::disablePrecision() {
 void LC_DlgQuickSelection::setPropertyValueInput(LC_PropertyMatchDescriptor* propertyDescriptor) {
     auto propertyType = propertyDescriptor->getPropertyType();
     ui->tbPickAngle->setVisible(false);
-    ui->tbPickCoord->setVisible(false);
+    ui->tbPickCoordX->setVisible(false);
+    ui->tbPickCoordY->setVisible(false);
     ui->tbPickLength->setVisible(false);
     disablePrecision();
     switch (propertyType) {
         case ENTITY_PROPERTY_COORD_X:
+        case ENTITY_PROPERTY_COORD_X_CONTAINS: {
+            ui->swValues->setCurrentIndex(PAGE_VALUE);
+            ui->tbPickCoordX->setVisible(true);
+            enablePrecisionLength();
+            break;
+        }
         case ENTITY_PROPERTY_COORD_Y:
-        case ENTITY_PROPERTY_COORD_X_CONTAINS:
         case ENTITY_PROPERTY_COORD_Y_CONTAINS: {
             ui->swValues->setCurrentIndex(PAGE_VALUE);
-            ui->tbPickCoord->setVisible(true);
+            ui->tbPickCoordY->setVisible(true);
             enablePrecisionLength();
             break;
         }
@@ -744,7 +753,9 @@ void LC_DlgQuickSelection::restoreFromSavedState(LC_QuickSearchSelectionDialogSt
             ui->leValue->setText(angleStrDegree);
             break;
         }
-        case LC_ActionContext::InteractiveInputInfo::POINT: {
+        case LC_ActionContext::InteractiveInputInfo::POINT:
+        case LC_ActionContext::InteractiveInputInfo::POINT_X:
+        case LC_ActionContext::InteractiveInputInfo::POINT_Y: {
             // here we may use only one component from picked coordinate, based on property type
             double xCoord = interactiveInputValue1;
             double yCoord = interactiveInputValue2;

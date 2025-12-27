@@ -73,7 +73,7 @@ void LC_ApplicationWindowInitializer::initApplication(){
     m_appWin->setAcceptDrops(true);
     initDockCorners();
     initIconSize();
-
+    initActionContext();
     initActionFactory();
     initWidgets();
     initToolbars();
@@ -83,7 +83,7 @@ void LC_ApplicationWindowInitializer::initApplication(){
     initMainMenu();
     initDockAndToolbarAreasActions();
     initActionOptionsManager();
-    initActionContext();
+    setupActionContextWidgets();
     initDialogFactory();
     initRecentFilesList();
     m_appWin->initSettings();
@@ -258,14 +258,13 @@ void LC_ApplicationWindowInitializer::initAutoSaveTimer() const {
 void LC_ApplicationWindowInitializer::initActionContext() const {
     auto actionHandler = m_appWin->m_actionHandler.get();
     auto action_context = new LC_DefaultActionContext(actionHandler);
-
-    action_context->setActionOptionsManager(m_appWin->m_actionOptionsManager);
-    action_context->setCommandWidget(m_appWin->m_commandWidget);
-    action_context->setCoordinateWidget(m_appWin->m_coordinateWidget);
-    action_context->setMouseWidget(m_appWin->m_mouseWidget);
-    action_context->setStatusBarManager(m_appWin->m_statusbarManager);
-
     m_appWin->m_actionContext = action_context;
-
     actionHandler->setActionContext(action_context);
+}
+void LC_ApplicationWindowInitializer::setupActionContextWidgets() const {
+    m_appWin->m_actionContext->setActionOptionsManager(m_appWin->m_actionOptionsManager);
+    m_appWin->m_actionContext->setCommandWidget(m_appWin->m_commandWidget);
+    m_appWin->m_actionContext->setCoordinateWidget(m_appWin->m_coordinateWidget);
+    m_appWin->m_actionContext->setMouseWidget(m_appWin->m_mouseWidget);
+    m_appWin->m_actionContext->setStatusBarManager(m_appWin->m_statusbarManager);
 }

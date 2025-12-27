@@ -35,6 +35,7 @@ class QG_ActionHandler;
 class LC_CADDockWidget;
 class QC_ApplicationWindow;
 class LC_ActionGroupManager;
+
 /**
  * creates the widgets and adds them to the main window;
  * it also "tags" a few widgets that the main window uses
@@ -75,4 +76,4 @@ private:
     void makeActionsInvisible(const std::vector<QString> &actionNames) const;
     static void setDockWidgetTitleType(QDockWidget *widget, bool verticalTitleBar);
 };
-#endif // LC_WIDGETFACTORY_H
+#endif

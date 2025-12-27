@@ -110,7 +110,6 @@ public:
     void selectLayer(RS_Entity* e);
     void selectLayer(const RS_Layer* layer, bool select);
     void conditionalSelection(const ConditionalSelectionOptions &options);
-    [[deprecated]]
     void countSelectedEntities(QMap<RS2::EntityType, int> &entityTypeMaps) const;
     void collectCurrentSelectionState(CurrentSelectionState& selectionState) const;
     void performBulkSelection(std::function<void(RS_EntityContainer*, LC_GraphicViewport*, RS_Document*)> fun) const;

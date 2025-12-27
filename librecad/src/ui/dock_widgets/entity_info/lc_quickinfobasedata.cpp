@@ -34,39 +34,24 @@ LC_QuickInfoBaseData::LC_QuickInfoBaseData()= default;
  * @return  formatted string
  */
 QString LC_QuickInfoBaseData::formatWCSVector(const RS_Vector &wcsPos) const{
-    if (m_viewport == nullptr) {
+    if (m_formatter == nullptr) {
         return "";
     }
-    double ucsX, ucsY;
-    m_viewport->toUCS(wcsPos, ucsX, ucsY);
-
-    QString x = RS_Units::formatLinear(ucsX, m_unit, m_linearFormat, m_linearPrecision);
-    QString y = RS_Units::formatLinear(ucsY, m_unit, m_linearFormat, m_linearPrecision);
-
-    QString result = x + ", " + y;
-    return result;
+    return m_formatter->formatWCSVector(wcsPos);
 }
 
 QString LC_QuickInfoBaseData::formatUCSVector(const RS_Vector &ucsPos) const{
-    QString x = RS_Units::formatLinear(ucsPos.x, m_unit, m_linearFormat, m_linearPrecision);
-    QString y = RS_Units::formatLinear(ucsPos.y, m_unit, m_linearFormat, m_linearPrecision);
-
-    QString result = x + ", " + y;
-    return result;
+    if (m_formatter == nullptr) {
+        return "";
+    }
+    return m_formatter->formatUCSVector(ucsPos);
 }
 
 QString LC_QuickInfoBaseData::formatWCSDeltaVector(const RS_Vector &wcsDelta) const{
-    if (m_viewport == nullptr) {
+    if (m_formatter == nullptr) {
         return "";
     }
-    double ucsX, ucsY;
-    m_viewport->toUCSDelta(wcsDelta, ucsX, ucsY);
-
-    QString x = RS_Units::formatLinear(ucsX, m_unit, m_linearFormat, m_linearPrecision);
-    QString y = RS_Units::formatLinear(ucsY, m_unit, m_linearFormat, m_linearPrecision);
-
-    QString result = x + ", " + y;
-    return result;
+    return m_formatter->formatWCSDeltaVector(wcsDelta);
 }
 
 /**
@@ -75,24 +60,48 @@ QString LC_QuickInfoBaseData::formatWCSDeltaVector(const RS_Vector &wcsDelta) co
  * @return
  */
 QString LC_QuickInfoBaseData::formatWCSAngle(double wcsAngle) const {
-    if (m_viewport == nullptr) {
+    if (m_formatter == nullptr) {
         return "";
     }
-    if (m_viewport->hasUCS()){
-        wcsAngle = m_viewport->toUCSAngle(wcsAngle);
-    }
-    double ucsRelAngle = m_viewport->toUCSBasisAngle(wcsAngle, m_anglesBase, m_anglesCounterClockWise);
-    return formatRawAngle(ucsRelAngle);
+    return m_formatter->formatWCSAngle(wcsAngle);
 }
 
 QString LC_QuickInfoBaseData::formatUCSAngle(double wcsAngle) const {
-    double ucsRelAngle = m_viewport->toUCSBasisAngle(wcsAngle, m_anglesBase, m_anglesCounterClockWise);
-    return formatRawAngle(ucsRelAngle);
+     if (m_formatter == nullptr) {
+        return "";
+    }
+    return m_formatter->formatUCSAngle(wcsAngle);
 }
 
 QString LC_QuickInfoBaseData::formatRawAngle(double angle) const {
-    QString result =  RS_Units::formatAngle(angle, m_angleFormat, m_anglePrecision);
-    return result;
+    if (m_formatter == nullptr) {
+        return "";
+    }
+    return m_formatter->formatRawAngle(angle);
+}
+
+/**
+ * Formatting double value
+ * @param x
+ * @return
+ */
+QString LC_QuickInfoBaseData::formatDouble(const double &x) const{
+    if (m_formatter == nullptr) {
+        return "";
+    }
+    return m_formatter->formatDouble(x);
+}
+
+/**
+ * formatting int value
+ * @param x
+ * @return
+ */
+QString LC_QuickInfoBaseData::formatInt(const int &x) const{
+    if (m_formatter == nullptr) {
+        return "";
+    }
+    return m_formatter->formatInt(x);
 }
 
 /**
@@ -101,8 +110,10 @@ QString LC_QuickInfoBaseData::formatRawAngle(double angle) const {
  * @return
  */
 QString LC_QuickInfoBaseData::formatLinear(double length) const {
-    QString result = RS_Units::formatLinear(length,  m_unit,  m_linearFormat,m_linearPrecision);
-    return result;
+    if (m_formatter == nullptr) {
+        return "";
+    }
+    return m_formatter->formatLinear(length);
 }
 
 /**
@@ -146,20 +157,14 @@ void LC_QuickInfoBaseData::setDocumentAndView(RS_Document *doc, LC_GraphicViewpo
     clear();
     m_document = doc;
     m_viewport = view;
+    m_formatter = view->getFormatter();
     updateFormats();
 }
 
 void LC_QuickInfoBaseData::updateFormats(){
     if (m_document != nullptr) {
         RS_Graphic *graphic = m_document->getGraphic();
-        m_unit = graphic->getUnit();
-        m_linearFormat = graphic->getLinearFormat();
-        m_linearPrecision = graphic->getLinearPrecision();
-        m_angleFormat = graphic->getAngleFormat();
-        m_anglePrecision = graphic->getAnglePrecision();
-
-        m_anglesBase = graphic->getAnglesBase();
-        m_anglesCounterClockWise = graphic->areAnglesCounterClockWise();
+        m_formatter->updateByGraphic(graphic); // fixme - fmt - most probably it's not necessary
     }
 }
 
@@ -243,30 +248,11 @@ void LC_QuickInfoBaseData::appendInt(QString &result, const QString &label, cons
     result.append(formatInt(value));
 }
 
-/**
- * Formatting double value
- * @param x
- * @return
- */
-QString LC_QuickInfoBaseData::formatDouble(const double &x) const{
-    QString result =  RS_Units::formatDecimal(x, RS2::Unit::None, m_linearPrecision, false);
-    return result;
-}
 
-/**
- * formatting int value
- * @param x
- * @return
- */
-QString LC_QuickInfoBaseData::formatInt(const int &x) const{
-    QString result;
-    result.setNum(x);
-    return result;
-}
 
 const RS_Vector &LC_QuickInfoBaseData::getRelativeZero() const {
     if (m_viewport == nullptr) {
-        return RS_Vector(false);
+        return m_absentRelZero;
     }
     return m_viewport->getRelativeZero();
 }

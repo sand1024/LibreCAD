@@ -39,7 +39,8 @@
 LC_GraphicViewport::LC_GraphicViewport():
     m_grid{std::make_unique<RS_Grid>(this)},
     m_savedViews(16),
-    m_previousViewTime{std::make_unique<QDateTime>(QDateTime::currentDateTime())} {
+    m_previousViewTime{std::make_unique<QDateTime>(QDateTime::currentDateTime())},
+    m_formatter{std::make_unique<LC_Formatter>(this)} {
 }
 
 LC_GraphicViewport::~LC_GraphicViewport() = default;
@@ -67,6 +68,8 @@ void LC_GraphicViewport::loadSettings() {
     if (m_grid != nullptr){
         m_grid->loadSettings();
     }
+
+    m_formatter->updateByGraphic(m_graphic);
 }
 
 void LC_GraphicViewport::setBorders(int left, int top, int right, int bottom) {
@@ -1060,8 +1063,9 @@ RS_Undoable *LC_GraphicViewport::getRelativeZeroUndoable() {
 }
 
 void LC_GraphicViewport::setGraphic(RS_Graphic *g) {
-     m_graphic = g;
-     m_overlaysManager.setGraphic(g);
+    m_graphic = g;
+    m_overlaysManager.setGraphic(g);
+    m_formatter->updateByGraphic(g);
 }
 
 /**

@@ -506,7 +506,9 @@ void RS_ActionInterface::onLateRequestCompleted(bool shouldBeSkipped) {
                 updated = doUpdateDistanceByInteractiveInput(requestorTag, inputInfo->m_distance);
                 break;
             }
-            case LC_ActionContext::InteractiveInputInfo::POINT: {
+            case LC_ActionContext::InteractiveInputInfo::POINT:
+            case LC_ActionContext::InteractiveInputInfo::POINT_X:
+            case LC_ActionContext::InteractiveInputInfo::POINT_Y: {
                 updated = doUpdatePointByInteractiveInput(requestorTag, inputInfo->m_wcsPoint);
                 break;
             }

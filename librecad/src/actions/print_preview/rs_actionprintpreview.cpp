@@ -72,6 +72,7 @@ void RS_ActionPrintPreview::invokeSettingsDialog(){
     if (m_graphic) {
         // fixme - sand - Actually, relevant settings there is just page setup and whole drawing options are ovekill.
         // fixme - sand - rework this with proper layouts support!!!
+        // fixme - change to LC_AppWindowDialogsInvoker::requestOptionsDrawingDialog
         RS_DIALOGFACTORY->requestOptionsDrawingDialog(*m_graphic);
         updateCoordinateWidgetFormat();
         updateOptionsUI(QG_PrintPreviewOptions::MODE_UPDATE_ORIENTATION);

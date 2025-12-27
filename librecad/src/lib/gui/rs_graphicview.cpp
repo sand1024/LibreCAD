@@ -34,7 +34,6 @@
 #include "lc_shortcuts_manager.h"
 #include "lc_widgetviewportrenderer.h"
 #include "rs_actioninterface.h"
-#include "rs_debug.h"
 #include "rs_entitycontainer.h"
 #include "rs_graphic.h"
 #include "rs_grid.h"
@@ -46,7 +45,6 @@
 #ifdef EMU_C99
 #include "emu_c99.h"
 #endif
-
 
 /**
  * Constructor.
@@ -75,7 +73,6 @@ void RS_GraphicView::loadSettings() {
 }
 
 RS_GraphicView::~RS_GraphicView() {
-  LC_ERR << "RS_GraphicView destructor";
 };
 
 /**
@@ -263,6 +260,10 @@ bool RS_GraphicView::hasAction() const {
 
 void RS_GraphicView::notifyLastActionFinished() const {
     return getEventHandler()->notifyLastActionFinished();
+}
+
+void RS_GraphicView::onSwitchToDefaultAction(bool actionIsDefault, RS2::ActionType prevActionRtti) {
+    emit defaultActionActivated(actionIsDefault, prevActionRtti);
 }
 
 void RS_GraphicView::onRelativeZeroChanged(const RS_Vector &pos) {

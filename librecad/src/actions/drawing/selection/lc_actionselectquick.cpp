@@ -102,7 +102,9 @@ void LC_ActionSelectQuick::showDialog() {
                 interactiveInputValueOne = interactiveInputInfo->m_angleRad;
                 break;
             }
-            case LC_ActionContext::InteractiveInputInfo::POINT: {
+            case LC_ActionContext::InteractiveInputInfo::POINT:
+            case LC_ActionContext::InteractiveInputInfo::POINT_X:
+            case LC_ActionContext::InteractiveInputInfo::POINT_Y: {
                 interactiveInputValueOne = interactiveInputInfo->m_wcsPoint.x;
                 interactiveInputValueTwo = interactiveInputInfo->m_wcsPoint.y;
                 break;

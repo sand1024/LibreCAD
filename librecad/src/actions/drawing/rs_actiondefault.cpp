@@ -31,6 +31,7 @@
 #include "lc_cursoroverlayinfo.h"
 #include "lc_graphicviewport.h"
 #include "lc_linemath.h"
+#include "lc_propertysheetwidget.h"
 #include "lc_quickinfowidget.h"
 #include "lc_undosection.h"
 #include "qc_applicationwindow.h"
@@ -768,11 +769,17 @@ void RS_ActionDefault::onMouseMovingRefCompleted(LC_MouseEvent* e) {
     }
 
     if (m_document) {
-        select(clone);
-        clone->setLayer(refMovingEntity->getLayer());
-        clone->setPen(refMovingEntity->getPen(false));
         // delete and add this into undo
-        undoCycleReplace(refMovingEntity, clone);
+        m_document->undoableModify(m_viewport, [this, refMovingEntity, clone](LC_DocumentModificationBatch& ctx)-> bool {
+                            ctx.dontSetActiveLayerAndPen();
+                            clone->setLayer(refMovingEntity->getLayer());
+                            clone->setPen(refMovingEntity->getPen(false));
+                            ctx += clone;
+                            ctx -= refMovingEntity;
+                            return true;
+                        }, [](LC_DocumentModificationBatch& ctx, RS_Document* doc)-> void {
+                            doc->select(ctx.entitiesToAdd);
+                        });
     }
     goToNeutralStatus();
     redraw();

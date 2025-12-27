@@ -312,6 +312,7 @@ public:
     void changeDrawingOptions(int tabIndex);
     void closeWindow(QC_MDIWindow* w) override;
     QG_LibraryWidget* getLibraryWidget() const {return m_libraryWidget;}
+    LC_PropertySheetWidget* getPropertySheetWidget() const {return m_propertySheetWidget;}
     LC_ActionGroup* getActionGroup(const QString &groupName) const;
     LC_ActionContext* getActionContext() const;
 protected:

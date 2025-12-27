@@ -21,23 +21,21 @@
  * ********************************************************************************
  */
 
-#ifndef LC_POINTPICKBUTTON_H
-#define LC_POINTPICKBUTTON_H
+#ifndef LC_ACTIONSELECTGENERIC_H
+#define LC_ACTIONSELECTGENERIC_H
+#include "lc_actionpreselectionawarebase.h"
 
-#include <QToolButton>
-
-namespace Ui {
-    class LC_PointPickButton;
-}
-
-class LC_PointPickButton : public QWidget {
-    Q_OBJECT
+class LC_ActionSelectGeneric: public LC_ActionPreSelectionAwareBase{
 public:
-    explicit LC_PointPickButton(QWidget *parent = nullptr);
-    ~LC_PointPickButton() override;
-    QToolButton* getButton() const;
-private:
-    Ui::LC_PointPickButton *ui;
+    explicit LC_ActionSelectGeneric(LC_ActionContext* actionContext)
+        : LC_ActionPreSelectionAwareBase("SelectQuick", actionContext,  RS2::ActionSelectGeneric) {
+    }
+
+    ~LC_ActionSelectGeneric() override;
+protected:
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override {return true;};
+    void updateMouseButtonHintsForSelection() override;
+    void proceedSelectionComplete(bool allowEmptySelection, bool fromInit, unsigned int selectedCount) override;
 };
 
 #endif

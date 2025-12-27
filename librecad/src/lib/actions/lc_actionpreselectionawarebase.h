@@ -54,6 +54,7 @@ protected:
     void onMouseLeftButtonPress(int status, LC_MouseEvent* e) override;
     virtual void applyBoxSelectionModeIfNeeded(RS_Vector mouse);
     virtual void onSelectionCompleted(bool singleEntity, bool fromInit);
+    virtual void proceedSelectionComplete(bool allowEmptySelection, bool fromInit, unsigned int selectedCount);
     virtual void onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent *pEvent);
     virtual void onMouseRightButtonReleaseSelected(int status, LC_MouseEvent *pEvent);
     virtual void onMouseMoveEventSelected(int status, LC_MouseEvent *e);

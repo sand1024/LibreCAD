@@ -215,6 +215,7 @@ RS_Snapper::RS_Snapper(LC_ActionContext *actionContext)
     Q_ASSERT(m_document != nullptr);
     Q_ASSERT(m_graphicView != nullptr);
     m_viewport = m_graphicView->getViewPort();
+    m_formatter = m_viewport->getFormatter();
     m_infoCursorOverlayPrefs = m_graphicView->getInfoCursorOverlayPreferences();
 }
 
@@ -287,13 +288,8 @@ void RS_Snapper::initFromSettings() {
 
 void RS_Snapper::initFromGraphic(RS_Graphic *graphic) {
     if (graphic != nullptr) {
-        updateUnitFormat(graphic);
-
         m_snapIndicator->pointType = graphic->getVariableInt("$PDMODE", LC_DEFAULTS_PDMode);
         m_snapIndicator->pointSize = graphic->getVariableInt("$PDSIZE", LC_DEFAULTS_PDSize);
-
-        m_anglesBase = graphic->getAnglesBase();
-        m_anglesCounterClockWise = graphic->areAnglesCounterClockWise();
     }
 }
 
@@ -310,11 +306,11 @@ void RS_Snapper::setSnapMode(const RS_SnapMode& snapMode) {
 }
 
 RS_SnapMode const* RS_Snapper::getSnapMode() const{
-    return &(this->m_snapMode);
+    return &(m_snapMode);
 }
 
 RS_SnapMode* RS_Snapper::getSnapMode() {
-    return &(this->m_snapMode);
+    return &(m_snapMode);
 }
 
 //get current mouse coordinates
@@ -970,8 +966,8 @@ void RS_Snapper::drawInfoCursor(){
             QString restrictionName;
             if (pImpData->snapType == ANGLE || pImpData->snapType == ANGLE_REL || pImpData->snapType == ANGLE_ON_ENTITY) {
                 double ucsAbsSnapAngle = pImpData->angle;
-                double ucsBasisAngle = m_viewport->toUCSBasisAngle(ucsAbsSnapAngle, m_anglesBase, m_anglesCounterClockWise);
-                restrictionName = RS_Units::formatAngle(ucsBasisAngle, m_angleFormat, m_anglePrecision);
+                double ucsBasisAngle = m_formatter->toUCSBasisAngleFromUCS(ucsAbsSnapAngle);
+                restrictionName = formatAngleRaw(ucsBasisAngle);
             } else {
                 restrictionName = getRestrictionName(pImpData->restriction);
             }
@@ -1078,28 +1074,31 @@ RS_Vector RS_Snapper::snapToAngle(const RS_Vector &currentCoord, const RS_Vector
 
 RS_Vector RS_Snapper::doSnapToAngle(const RS_Vector &currentCoord, const RS_Vector &referenceCoord, const double angularResolution) {
     double wcsAngleRaw = referenceCoord.angleTo(currentCoord);
-    double ucsAngleAbs = this->toUCSAngle(wcsAngleRaw);
+    double ucsAngleAbs = toUCSAngle(wcsAngleRaw);
 
-    double ucsAngle = ucsAngleAbs - this->m_anglesBase;
+    // double ucsAngle = ucsAngleAbs - this->m_anglesBase;
+    // fixme - fmt - review
+    double ucsAngle = m_formatter->toUCSBasisAngleFromUCS(ucsAngleAbs);
+
     double ucsAngleSnapped = ucsAngleAbs - remainder(ucsAngle, angularResolution);
 
 //    LC_ERR << "BASE " << RS_Math::rad2deg(m_anglesBase) << " UCSabs " << RS_Math::rad2deg(ucsAngleAbs) << " UCS " << RS_Math::rad2deg(ucsAngle) << " Snapped " << RS_Math::rad2deg(ucsAngleSnapped) << " UCSRel " << RS_Math::rad2deg(ucsAngleSnapped);
-    double wcsAngleSnapped = this->toWorldAngle(ucsAngleSnapped);
+    double wcsAngleSnapped = toWorldAngle(ucsAngleSnapped);
 
     RS_Vector res = RS_Vector::polar(referenceCoord.distanceTo(currentCoord), wcsAngleSnapped);
     res += referenceCoord;
 
-    if (this->m_snapMode.snapOnEntity) {
-        RS_Vector t = this->m_document->getNearestVirtualIntersection(res, wcsAngleSnapped, nullptr);
-        this->pImpData->snapSpot = t;
-        this->pImpData->snapType = (t == res) ? ANGLE : ANGLE_ON_ENTITY;
-        this->pImpData->angle = ucsAngleSnapped;
-        this->snapPoint(this->pImpData->snapSpot, true);
+    if (m_snapMode.snapOnEntity) {
+        RS_Vector t = m_document->getNearestVirtualIntersection(res, wcsAngleSnapped, nullptr);
+        pImpData->snapSpot = t;
+        pImpData->snapType = (t == res) ? ANGLE : ANGLE_ON_ENTITY;
+        pImpData->angle = ucsAngleSnapped;
+        snapPoint(pImpData->snapSpot, true);
         return t;
     } else {
-        this->pImpData->snapType = ANGLE;
-        this->pImpData->angle = ucsAngleSnapped;
-        this->snapPoint(res, true);
+        pImpData->snapType = ANGLE;
+        pImpData->angle = ucsAngleSnapped;
+        snapPoint(res, true);
         return res;
     }
 }
@@ -1126,19 +1125,19 @@ void RS_Snapper::updateCoordinateWidgetFormat() const {
     m_actionContext->updateCoordinateWidget(toWorld(RS_Vector(0.0,0.0)),toWorld(RS_Vector(0.0,0.0)), true);
 }
 
-void RS_Snapper::updateCoordinateWidget(const RS_Vector& abs, const RS_Vector& rel, bool updateFormat){
+void RS_Snapper::updateCoordinateWidget(const RS_Vector& abs, const RS_Vector& rel){
     if (m_infoCursorOverlayPrefs->enabled) {
-        preparePositionsInfoCursorOverlay(updateFormat, abs, rel);
+        preparePositionsInfoCursorOverlay(abs, rel);
     }
-    m_actionContext->updateCoordinateWidget(abs, rel, updateFormat);
+    m_actionContext->updateCoordinateWidget(abs, rel, false);
 }
 
-void RS_Snapper::updateCoordinateWidgetByRelZero(const RS_Vector& abs, bool updateFormat){
+void RS_Snapper::updateCoordinateWidgetByRelZero(const RS_Vector& abs){
     const RS_Vector &relative = abs - m_viewport->getRelativeZero();
     if (m_infoCursorOverlayPrefs->enabled) {
-        preparePositionsInfoCursorOverlay(updateFormat, abs, relative);
+        preparePositionsInfoCursorOverlay(abs, relative);
     }
-    m_actionContext->updateCoordinateWidget(abs, relative, updateFormat);
+    m_actionContext->updateCoordinateWidget(abs, relative, false);
 }
 
 LC_InfoCursorOverlayPrefs* RS_Snapper::getInfoCursorOverlayPrefs() const {
@@ -1149,7 +1148,7 @@ bool RS_Snapper::isInfoCursorForModificationEnabled() const {
     return m_infoCursorOverlayPrefs->enabled && m_infoCursorOverlayPrefs->showEntityInfoOnModification;
 }
 
-void RS_Snapper::preparePositionsInfoCursorOverlay(bool updateFormat, const RS_Vector &abs,  const RS_Vector &relative) {
+void RS_Snapper::preparePositionsInfoCursorOverlay(const RS_Vector &abs,  const RS_Vector &relative) {
     LC_InfoCursorOverlayPrefs* prefs = getInfoCursorOverlayPrefs();
 
     QString coordAbs = "";
@@ -1157,9 +1156,6 @@ void RS_Snapper::preparePositionsInfoCursorOverlay(bool updateFormat, const RS_V
     if (prefs != nullptr && (prefs->showAbsolutePosition || prefs->showRelativePositionDistAngle || prefs->showRelativePositionDeltas)){
         RS_Graphic* graphic = m_graphicView->getGraphic();
         if (graphic != nullptr) {
-            if (updateFormat) {
-                updateUnitFormat(graphic);
-            }
 
             bool showLabels = prefs->showLabels;
             if (prefs->showAbsolutePosition) {
@@ -1221,36 +1217,20 @@ void RS_Snapper::preparePositionsInfoCursorOverlay(bool updateFormat, const RS_V
     m_infoCursorOverlayData->setZone3(coordPolar);
 }
 
-void RS_Snapper::updateUnitFormat(RS_Graphic* graphic){
-    m_linearFormat = graphic->getLinearFormat();
-    m_linearPrecision = graphic->getLinearPrecision();
-    m_angleFormat = graphic->getAngleFormat();
-    m_anglePrecision = graphic->getAnglePrecision();
-    m_unit = graphic->getUnit();
-}
-
 void RS_Snapper::invalidateSnapSpot() const {
     pImpData->snapSpot.valid = false;
 }
 
 QString RS_Snapper::formatLinear(double value) const{
-    return RS_Units::formatLinear(value, m_unit, m_linearFormat, m_linearPrecision);
+    return m_formatter->formatLinear(value);
 }
 
 QString RS_Snapper::formatWCSAngle(double wcsAngle) const{
-    double ucsAbsAngle;
-    if (m_viewport->hasUCS()){
-        ucsAbsAngle = toUCSAngle(wcsAngle);
-    }
-    else{
-        ucsAbsAngle = wcsAngle;
-    }
-    double ucsBasisAngle = m_viewport->toUCSBasisAngle(ucsAbsAngle, m_anglesBase, m_anglesCounterClockWise);
-    return RS_Units::formatAngle(ucsBasisAngle, m_angleFormat, m_anglePrecision);
+    return m_formatter->formatWCSAngle(wcsAngle);
 }
 
 QString RS_Snapper::formatAngleRaw(double angle) const {
-    return RS_Units::formatAngle(angle, m_angleFormat, m_anglePrecision);
+    return m_formatter->formatRawAngle(angle);
 }
 // fixme - ucs-  move to coordinate mapper?
 QString RS_Snapper::formatVector(const RS_Vector &value) const{
@@ -1312,40 +1292,23 @@ double RS_Snapper::ucsBasisToAbsAngle(double ucsRelAngle) const{
 }
 
 double RS_Snapper::adjustRelativeAngleSignByBasis(double relativeAngle) const{
-    double result;
-    if (m_anglesCounterClockWise){
-        result = relativeAngle;
-    }
-    else{
-        result = -relativeAngle;
-    }
-    return result;
+   return m_formatter->adjustRelativeAngleSignByBasis(relativeAngle);
 }
 
 double RS_Snapper::toUCSBasisAngleDegrees(double wcsAngle) const{
-    double ucsAngle = m_viewport->toUCSAngle(wcsAngle);
-    double ucsBasisAngle = m_viewport->toUCSBasisAngle(ucsAngle, m_anglesBase, m_anglesCounterClockWise);
-    double result = RS_Math::rad2deg(ucsBasisAngle);
-    return result;
+    return m_formatter->toUCSBasisAngleDegrees(wcsAngle);
 }
 
-double RS_Snapper::toWorldAngleFromUCSBasisDegrees(double ucsBasisAngleDegrees) const{
-    double ucsBasisAngle = RS_Math::deg2rad(ucsBasisAngleDegrees);
-    double ucsAngle = m_viewport->toUCSAbsAngle(ucsBasisAngle, m_anglesBase, m_anglesCounterClockWise);
-    double wcsAngle = m_viewport->toWorldAngle(ucsAngle);
-    return wcsAngle;
+double RS_Snapper::toWorldAngleFromUCSBasisDegrees(double ucsBasisAngleDegrees) const {
+    return m_formatter->toWorldAngleFromUCSBasisDegrees(ucsBasisAngleDegrees);
 }
 
 double RS_Snapper::toWorldAngleFromUCSBasis(double ucsBasisAngle) const{
-    double ucsAngle = m_viewport->toUCSAbsAngle(ucsBasisAngle, m_anglesBase, m_anglesCounterClockWise);
-    double wcsAngle = m_viewport->toWorldAngle(ucsAngle);
-    return wcsAngle;
+    return m_formatter->toWorldAngleFromUCSBasis(ucsBasisAngle);
 }
 
 double RS_Snapper::toUCSBasisAngle(double wcsAngle) const{
-    double ucsAngle = m_viewport->toUCSAngle(wcsAngle);
-    double ucsBasisAngle = m_viewport->toUCSBasisAngle(ucsAngle, m_anglesBase, m_anglesCounterClockWise);
-    return ucsBasisAngle;
+    return m_formatter->toUCSBasisAngle(wcsAngle);
 }
 
 RS_Vector RS_Snapper::toWorld(const RS_Vector &ucsPos) const {
@@ -1375,7 +1338,7 @@ void RS_Snapper::calcRectCorners(const RS_Vector &worldCorner1, const RS_Vector 
 }
 
 bool RS_Snapper::hasNonDefaultAnglesBasis() const {
-    return  LC_LineMath::isMeaningfulAngle(m_anglesBase) || !m_anglesCounterClockWise;
+    return m_formatter->hasNonDefaultAnglesBasis();
 }
 
 // get catching entity distance in graph distance

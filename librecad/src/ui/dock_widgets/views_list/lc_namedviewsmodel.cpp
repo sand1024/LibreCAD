@@ -44,12 +44,8 @@ LC_NamedViewsModel::~LC_NamedViewsModel() {
     m_views.clear();
 }
 
-void LC_NamedViewsModel::setViewsList(LC_ViewList *viewsList,RS2::LinearFormat format,RS2::AngleFormat angFormat, int precision, int angleP, RS2::Unit drawingUnit) {
-    m_linearFormat = format;
-    m_angleFormat = angFormat;
-    m_prec = precision;
-    m_anglePrec = angleP;
-    m_unit = drawingUnit;
+void LC_NamedViewsModel::setViewsList(LC_ViewList *viewsList,LC_Formatter* formatter) {
+    m_formatter = formatter;
     this->m_viewsList = viewsList;
     beginResetModel();
 
@@ -121,9 +117,9 @@ int LC_NamedViewsModel::translateColumn(int column) const{
 }
 
 QString LC_NamedViewsModel::getUCSInfo(LC_UCS *ucs) const {
-    QString originX = RS_Units::formatLinear(ucs->getOrigin().x, m_unit, m_linearFormat, m_prec);
-    QString originY = RS_Units::formatLinear(ucs->getOrigin().y, m_unit, m_linearFormat, m_prec);
-    QString angle = RS_Units::formatAngle(ucs->getXAxis().angle(), m_angleFormat, m_anglePrec);
+    QString originX = m_formatter->formatLinear(ucs->getOrigin().x);
+    QString originY = m_formatter->formatLinear(ucs->getOrigin().y);
+    QString angle = m_formatter->formatRawAngle(ucs->getXAxis().angle());
     QString origin = originX.append(", "). append(originY).append(" < ").append(angle);
     return origin;
 }
@@ -344,10 +340,10 @@ void LC_NamedViewsModel::setupViewItem(LC_View *view, LC_NamedViewsModel::ViewIt
 
     result->displayName = name;
 
-    QString centerX = RS_Units::formatLinear(view->getCenter().x, m_unit, m_linearFormat, m_prec);
-    QString centerY = RS_Units::formatLinear(view->getCenter().y, m_unit, m_linearFormat, m_prec);
-    QString sizeX = RS_Units::formatLinear(view->getSize().x, m_unit, m_linearFormat, m_prec);
-    QString sizeY = RS_Units::formatLinear(view->getSize().y, m_unit, m_linearFormat, m_prec);
+    QString centerX = m_formatter->formatLinear(view->getCenter().x);
+    QString centerY = m_formatter->formatLinear(view->getCenter().y);
+    QString sizeX = m_formatter->formatLinear(view->getSize().x);
+    QString sizeY = m_formatter->formatLinear(view->getSize().y);
 
     QString viewInfo;
     viewInfo.append(centerX).append(", ").append(centerY).append(" | ").append(sizeX).append(" x ").append(sizeY);
@@ -401,9 +397,9 @@ void LC_NamedViewsModel::setupViewItem(LC_View *view, LC_NamedViewsModel::ViewIt
         toolTip.append(tr("UCS: ")).append("<b>").append(ucsType).append("</b><br>");
     }
     else {
-        QString ucsOriginX = RS_Units::formatLinear(ucs->getOrigin().x, m_unit, m_linearFormat, m_prec);
-        QString ucsOriginY = RS_Units::formatLinear(ucs->getOrigin().y, m_unit, m_linearFormat, m_prec);
-        QString ucsAngle = RS_Units::formatAngle(ucs->getXAxis().angle(), m_angleFormat, m_anglePrec);
+        QString ucsOriginX = m_formatter->formatLinear(ucs->getOrigin().x);
+        QString ucsOriginY = m_formatter->formatLinear(ucs->getOrigin().y);
+        QString ucsAngle = m_formatter->formatRawAngle(ucs->getXAxis().angle());
 
         toolTip.append(tr("UCS: ")).append("<b>").append(ucsType).append("</b><br>")
             .append(tr("UCS Name: ")).append("<b>").append(name).append("</b><br>")

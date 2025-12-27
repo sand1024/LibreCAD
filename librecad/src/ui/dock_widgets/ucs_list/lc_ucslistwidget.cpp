@@ -38,7 +38,6 @@
 #include "rs_graphic.h"
 #include "rs_graphicview.h"
 #include "rs_settings.h"
-#include "qc_applicationwindow.h"
 #include "ui_lc_ucslistwidget.h"
 
 LC_UCSListWidget::LC_UCSListWidget(const QString& title, QWidget *parent)
@@ -159,35 +158,22 @@ void LC_UCSListWidget::setGraphicView(RS_GraphicView *gv) {
     m_graphicView = gv;
     if (gv != nullptr && gv->getGraphic() != nullptr) {
         RS_Graphic *graphic = gv->getGraphic();
-        loadFormats(graphic);
         LC_UCSList *ucsList = graphic->getUCSList();
         m_viewport = gv->getViewPort();
         connect(gv, &RS_GraphicView::ucsChanged, this, &LC_UCSListWidget::onViewUCSChanged);
         setUCSList(ucsList);
 
         LC_UCS* currentUCS = gv->getGraphic()->getCurrentUCS();
-        QIcon typeIcon = getUCSTypeIcon(currentUCS);
-        QString name = currentUCS->getName();
-        if (name.isEmpty()){
-            name = tr("<No name>");
-        }
-        QString info = m_ucsListModel->getUCSInfo(currentUCS);
-        m_ucsStateWidget->update(typeIcon, name, info);
+        updateCurrentUCSWidget(currentUCS);
     }
     else{
         m_viewport = nullptr;
         setUCSList(nullptr);
         QIcon none;
-        m_ucsStateWidget->update(none, "", "");
+        if (m_ucsStateWidget != nullptr) {
+            m_ucsStateWidget->update(none, "", "");
+        }
     }
-}
-
-void LC_UCSListWidget::loadFormats(RS_Graphic *graphic) {
-    m_linearFormat = graphic->getLinearFormat();
-    m_angleFormat = graphic->getAngleFormat();
-    m_precision = graphic->getLinearPrecision();
-    m_anglePrecision = graphic->getAnglePrecision();
-    m_drawingUnit = graphic->getUnit();
 }
 
 void LC_UCSListWidget::setUCSList(LC_UCSList *viewsList) {
@@ -206,13 +192,7 @@ void LC_UCSListWidget::setUCSList(LC_UCSList *viewsList) {
     }
 }
 
-void LC_UCSListWidget::onViewUCSChanged(LC_UCS *ucs) {
-    if (ucs == nullptr){
-        return;
-    }
-    m_ucsListModel->markActive(ucs);
-    ui->tvTable->repaint();
-    selectUCS(ucs);
+void LC_UCSListWidget::updateCurrentUCSWidget(LC_UCS* ucs) {
     if (m_ucsStateWidget != nullptr){
         QIcon typeIcon = getUCSTypeIcon(ucs);
         QString name = ucs->getName();
@@ -222,6 +202,16 @@ void LC_UCSListWidget::onViewUCSChanged(LC_UCS *ucs) {
         QString info = m_ucsListModel->getUCSInfo(ucs);
         m_ucsStateWidget->update(typeIcon, name, info);
     }
+}
+
+void LC_UCSListWidget::onViewUCSChanged(LC_UCS *ucs) {
+    if (ucs == nullptr){
+        return;
+    }
+    m_ucsListModel->markActive(ucs);
+    ui->tvTable->repaint();
+    selectUCS(ucs);
+    updateCurrentUCSWidget(ucs);
     bool isometric = ucs->isIsometric();
     RS2::IsoGridViewType isoType = ucs->getIsoGridViewType();
     if (m_viewport->isGridIsometric() != isometric || m_viewport->getIsoViewType() != isoType) {
@@ -230,10 +220,6 @@ void LC_UCSListWidget::onViewUCSChanged(LC_UCS *ucs) {
 }
 
 void LC_UCSListWidget::reload() {
-    if (m_graphicView != nullptr) {
-        RS_Graphic *graphic = m_graphicView->getGraphic();
-        loadFormats(graphic);
-    }
     updateData(true);
 }
 
@@ -243,11 +229,15 @@ void LC_UCSListWidget::refresh() {
 
 void LC_UCSListWidget::updateData(bool restoreSelectionIfPossible) {
     int selectedRow = getSingleSelectedRow();
-    m_ucsListModel->setUCSList(m_currentUCSList, m_linearFormat, m_angleFormat, m_precision, m_anglePrecision, m_drawingUnit);
+    m_ucsListModel->setUCSList(m_currentUCSList, m_viewport != nullptr ? m_viewport->getFormatter() : nullptr);
     restoreSingleSelectedRow(restoreSelectionIfPossible, selectedRow);
     updateButtonsState();
     if (m_options->showColumnTypeIcon){
         ui->tvTable->setColumnWidth(m_ucsListModel->translateColumn(LC_UCSListModel::ICON_TYPE), ICON_WIDTH);
+    }
+    if (m_graphicView != nullptr) {
+        LC_UCS* currentUCS = m_graphicView->getGraphic()->getCurrentUCS();
+        updateCurrentUCSWidget(currentUCS);
     }
     emit ucsListChanged();
 }

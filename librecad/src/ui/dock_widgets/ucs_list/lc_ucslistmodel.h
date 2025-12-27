@@ -25,6 +25,8 @@
 
 #include <QAbstractTableModel>
 #include <QIcon>
+
+#include "lc_formatter.h"
 #include "rs.h"
 
 class LC_UCS;
@@ -37,7 +39,7 @@ public:
     explicit LC_UCSListModel(LC_UCSListOptions *modelOptions, QObject * parent = nullptr);
 
     ~LC_UCSListModel() override;
-    void setUCSList(LC_UCSList *ucsList, RS2::LinearFormat format, RS2::AngleFormat angleFormat, int precision, int anglePrecision, RS2::Unit drawingUnit);
+    void setUCSList(LC_UCSList *ucsList, LC_Formatter* formatter);
 
     QModelIndex parent(const QModelIndex &child) const override;
     int rowCount(const QModelIndex &parent) const override;
@@ -78,11 +80,6 @@ public:
     };
 
 protected:
-    RS2::LinearFormat m_linearFormat;
-    RS2::AngleFormat m_angleFormat;
-    int m_anglePrec;
-    int m_prec;
-    RS2::Unit m_unit;
     LC_UCSList* m_ucsList {nullptr};
     QList<UCSItem*> m_ucss;
     QIcon m_iconWCS;
@@ -92,8 +89,9 @@ protected:
     QIcon m_iconGridISOLeft;
     QIcon m_iconGridISORight;
     LC_UCSListOptions* m_options {nullptr};
+    LC_Formatter* m_formatter {nullptr};
     QString getGridViewType(int orthoType);
     UCSItem* createUCSItem(LC_UCS *view);
 };
 
-#endif // LC_UCSLISTMODEL_H
+#endif

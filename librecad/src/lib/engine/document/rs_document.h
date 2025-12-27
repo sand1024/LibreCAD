@@ -83,7 +83,7 @@ inline void operator -=(LC_DocumentModificationBatch &ctx, const QList<RS_Entity
 class RS_Document : public RS_EntityContainer, public RS_Undo {
 public:
     explicit RS_Document(RS_EntityContainer* parent=nullptr);
-    ~RS_Document() override = default;
+    ~RS_Document() override;
 
     struct LC_SelectionInfo{
         unsigned count = 0;
@@ -181,7 +181,9 @@ protected:
     void startUndoCycle() override;
 
     void select(RS_Entity* entity, bool select = true) {
-        entity->doSelectInDocument(select, this);
+        if (entity->getFlag(RS2::FlagSelected) != select) {
+            entity->doSelectInDocument(select, this);
+        }
     }
 
     void undoableAdd(RS_Entity* entity, bool undoable = true) {

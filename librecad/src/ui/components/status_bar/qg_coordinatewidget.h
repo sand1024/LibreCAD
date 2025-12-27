@@ -26,6 +26,7 @@
 #ifndef QG_COORDINATEWIDGET_H
 #define QG_COORDINATEWIDGET_H
 
+#include "lc_formatter.h"
 #include "lc_graphicviewaware.h"
 #include "rs.h"
 #include "rs_vector.h"
@@ -50,12 +51,9 @@ private:
     RS_Graphic* m_graphic = nullptr;
     RS_GraphicView *m_graphicView = nullptr;
     LC_GraphicViewport* m_viewport = nullptr;
-    int m_linearPrecision = 0;
-    RS2::LinearFormat m_linearFormat = RS2::Decimal;
-    int m_anglePrecision = 0;
-    RS2::AngleFormat m_angleFormat = RS2::DegreesDecimal;
+    LC_Formatter* m_formatter = nullptr;
     RS_Vector m_absoluteCoordinates;
     RS_Vector m_relativeCoordinates;
 };
 
-#endif // QG_COORDINATEWIDGET_H
+#endif

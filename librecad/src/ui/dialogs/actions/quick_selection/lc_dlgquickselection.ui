@@ -283,7 +283,7 @@
       </layout>
      </widget>
      <widget class="QWidget" name="pageValue">
-      <layout class="QHBoxLayout" name="horizontalLayout" stretch="5,0,0,0,0,2,0">
+      <layout class="QHBoxLayout" name="horizontalLayout" stretch="5,0,0,0,0,0,2,0">
        <property name="leftMargin">
         <number>0</number>
        </property>
@@ -338,16 +338,30 @@
         </widget>
        </item>
        <item>
-        <widget class="QToolButton" name="tbPickCoord">
+        <widget class="QToolButton" name="tbPickCoordX">
          <property name="toolTip">
-          <string>Pick coordinate component from drawing</string>
+          <string>Pick X coordinate of point  from drawing</string>
          </property>
          <property name="text">
           <string/>
          </property>
          <property name="icon">
           <iconset resource="../../../../../res/icons/icons.qrc">
-           <normaloff>:/icons/interactive_pick_point.lci</normaloff>:/icons/interactive_pick_point.lci</iconset>
+           <normaloff>:/icons/interactive_pick_point_x.lci</normaloff>:/icons/interactive_pick_point_x.lci</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="tbPickCoordY">
+         <property name="toolTip">
+          <string>Pick Y coordinate of point  from drawing</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../../../../../res/icons/icons.qrc">
+           <normaloff>:/icons/interactive_pick_point_y.lci</normaloff>:/icons/interactive_pick_point_y.lci</iconset>
          </property>
         </widget>
        </item>

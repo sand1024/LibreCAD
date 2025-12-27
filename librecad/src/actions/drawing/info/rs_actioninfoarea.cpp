@@ -27,6 +27,7 @@
 #include "rs_actioninfoarea.h"
 
 #include "lc_cursoroverlayinfo.h"
+#include "lc_formatter.h"
 #include "rs_debug.h"
 #include "rs_infoarea.h"
 #include "rs_units.h"
@@ -98,14 +99,14 @@ void RS_ActionInfoArea::display(bool forPreview) const {
                     QString msg = "\n";
                     msg.append(tr("Circumference: %1").arg(length));
                     msg.append("\n");
-                    msg.append(tr("Area: %1 %2^2").arg(area).arg(RS_Units::unitToString(m_unit)));
+                    msg.append(tr("Area: %1 %2^2").arg(area).arg(m_formatter->linearUnitAsString()));
                     appendInfoCursorZoneMessage(msg, 2, true);
                 }
             }
             else {
                 commandMessage("---");
                 commandMessage(tr("Circumference: %1").arg(length));
-                commandMessage(tr("Area: %1 %2^2").arg(area).arg(RS_Units::unitToString(m_unit)));
+                commandMessage(tr("Area: %1 %2^2").arg(area).arg(m_formatter->linearUnitAsString()));
                 commandMessage("");
             }
             break;

@@ -26,6 +26,7 @@
 #include <memory>
 
 #include "lc_coordinates_mapper.h"
+#include "lc_formatter.h"
 #include "lc_overlaysmanager.h"
 
 #include "rs.h"
@@ -93,7 +94,7 @@ public:
 *
 * @param lock true: lock, false: unlock
 */
-    void lockRelativeZero(bool lock) { m_relativeZeroLocked = lock;};
+    void lockRelativeZero(bool lock) { m_relativeZeroLocked = lock;}
     /**
   * @return true if the position of the relative zero point is
   * locked.
@@ -134,6 +135,8 @@ public:
     void toUI(RS_Vector wcsCoordinate, double &uiX, double &uiY) const;
     double toAbsUCSAngle(double ucsBasisAngle);
     double toBasisUCSAngle(double ucsAbsAngle);
+
+    LC_Formatter* getFormatter() {return m_formatter.get();};
 
 
 //    RS_Vector toUCS(const RS_Vector& v) const;
@@ -212,6 +215,8 @@ protected:
     bool m_hideRelativeZero = false; // fixme - should be dispatched from action
 
     QList<LC_GraphicViewPortListener*> m_viewportListeners;
+
+    std::unique_ptr<LC_Formatter> m_formatter;
 
     void doUpdateViewByGraphicView(LC_View *view) const;
 

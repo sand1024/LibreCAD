@@ -98,12 +98,8 @@ protected:
     bool isShowEntityDescriptionOnHighlight() const;
     void forceUpdateInfoCursor(const LC_MouseEvent *event) const;
     RS_Entity* getClone(RS_Entity* e);
-
-    // fixme - sand - complete!
     bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& modificationData) override {return true;};
-
 private:
-
     struct ActionData;
     std::unique_ptr<ActionData> m_actionData;
     RS2::SnapRestriction m_snapRestriction = RS2::RestrictNothing;

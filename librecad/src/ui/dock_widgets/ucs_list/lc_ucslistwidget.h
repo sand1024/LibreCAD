@@ -27,6 +27,7 @@
 #include "lc_graphicviewawarewidget.h"
 #include "lc_ucslist.h"
 
+class LC_Formatter;
 class RS_Graphic;
 class RS_GraphicView;
 class LC_UCSListOptions;
@@ -47,6 +48,7 @@ public:
     explicit LC_UCSListWidget(const QString& title, QWidget* parent);
     virtual ~LC_UCSListWidget();
     void setUCSList(LC_UCSList* viewsList);
+    void updateCurrentUCSWidget(LC_UCS* ucs);
     void setGraphicView(RS_GraphicView* gv) override;
     void reload();
     void fillUCSList(QList<LC_UCS *> &list) const;
@@ -85,11 +87,6 @@ protected:
     QAction* m_createUCSAction {nullptr};
     RS_GraphicView *m_graphicView {nullptr};
     LC_GraphicViewport *m_viewport {nullptr};
-    RS2::LinearFormat m_linearFormat;
-    RS2::AngleFormat m_angleFormat;
-    int m_precision;
-    int m_anglePrecision;
-    RS2::Unit m_drawingUnit;
     Ui::LC_UCSListWidget *ui;
 
     void initToolbar() const;
@@ -108,7 +105,6 @@ protected:
     void selectUCS(LC_UCS *ucs) const;
     int getSingleSelectedRow() const;
     void restoreSingleSelectedRow(bool restoreSelectionIfPossible, int selectedRow) const;
-    void loadFormats(RS_Graphic *graphic);
 };
 
 #endif // LC_UCSLISTWIDGET_H

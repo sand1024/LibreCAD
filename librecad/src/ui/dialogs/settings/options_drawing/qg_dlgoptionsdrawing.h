@@ -131,8 +131,6 @@ private:
     void validateUserTab() const;
     void validateUnitsTab() const;
     QModelIndex getSelectedDimStyleIndex() const;
-
-
 };
 
-#endif // QG_DLGOPTIONSDRAWING_H
+#endif

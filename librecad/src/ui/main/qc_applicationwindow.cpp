@@ -1052,6 +1052,9 @@ void QC_ApplicationWindow::changeDrawingOptions(int tabToShow){
         m_quickInfoWidget->updateFormats();
         m_propertySheetWidget->updateFormats();
         m_anglesBasisWidget->update(graphic);
+        m_relativeZeroCoordinatesWidget->updateFormats();
+        m_ucsListWidget->reload();
+        m_namedViewsWidget->reload();
         graphicView->loadSettings();
         graphic->update();
         graphicView->redraw();

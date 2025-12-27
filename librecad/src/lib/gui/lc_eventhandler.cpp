@@ -219,6 +219,7 @@ bool  LC_EventHandler::checkLastActionFinishedAndUncheckQAction() {
             RS2::ActionType actionType = predecessor->rtti();
             m_currentAction = predecessor;
             m_graphicView->notifyCurrentActionChanged(actionType);
+            m_graphicView->onSwitchToDefaultAction(m_currentAction == m_defaultAction, m_currentAction->rtti());
             resumeAction(m_currentAction);
         }
         else {
@@ -230,6 +231,7 @@ bool  LC_EventHandler::checkLastActionFinishedAndUncheckQAction() {
 }
 
 void LC_EventHandler::switchToDefaultAction() {
+    auto prevRtti = m_currentAction != nullptr ? m_currentAction->rtti() : RS2::ActionNone;
     m_currentAction.reset();
     if (m_QAction != nullptr){
         m_QAction->setChecked(false);
@@ -237,6 +239,7 @@ void LC_EventHandler::switchToDefaultAction() {
     }
     m_graphicView->notifyCurrentActionChanged(RS2::ActionNone);
     if (m_defaultAction != nullptr) {
+        m_graphicView->onSwitchToDefaultAction(true, prevRtti);
         resumeAction(m_defaultAction);
     }
 }
@@ -279,6 +282,7 @@ bool LC_EventHandler::setCurrentAction(std::shared_ptr<RS_ActionInterface> actio
             if (hasNonDefaultAction) {
                 actionType = m_currentAction->rtti();
                 m_graphicView->notifyCurrentActionChanged(actionType);
+                m_graphicView->onSwitchToDefaultAction(m_currentAction == m_defaultAction, actionType);
                 resumeAction(m_currentAction);
             }
             else {
@@ -296,6 +300,8 @@ bool LC_EventHandler::setCurrentAction(std::shared_ptr<RS_ActionInterface> actio
         // Set current action:
         m_currentAction = action;
         passedActionIsNotFinished = true;
+        auto actionRtti = m_currentAction != nullptr ? m_currentAction->rtti() : RS2::ActionNone;
+        m_graphicView->onSwitchToDefaultAction(m_currentAction == m_defaultAction, actionRtti);
         resumeAction(action);
     }
     return passedActionIsNotFinished;

@@ -84,6 +84,7 @@
 #include "lc_actionpolylinechangesegmenttype.h"
 #include "lc_actionremovesplinepoints.h"
 #include "lc_actionselectdimordinatesameorigin.h"
+#include "lc_actionselectgeneric.h"
 #include "lc_actionselectmodetoggle.h"
 #include "lc_actionselectpoints.h"
 #include "lc_actionselectquick.h"
@@ -326,6 +327,9 @@ namespace InnerFactory{
             }
             case RS2::ActionSelectQuick: {
                 return new LC_ActionSelectQuick(ctx);
+            }
+            case RS2::ActionSelectGeneric: {
+                return new LC_ActionSelectGeneric(ctx);
             }
             case RS2::ActionSelectModeToggle: {
                 return new LC_ActionSelectModeToggle(ctx);

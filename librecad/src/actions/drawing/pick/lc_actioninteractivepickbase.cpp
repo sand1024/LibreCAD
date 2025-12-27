@@ -54,7 +54,7 @@ void LC_ActionInteractivePickBase::skipInteractiveInput() const {
     auto interactiveInputInfo = m_actionContext->getInteractiveInputInfo();
     if (interactiveInputInfo->m_state == LC_ActionContext::InteractiveInputInfo::REQUESTED) {
         if (interactiveInputInfo->m_requestor != nullptr) {
-            interactiveInputInfo->m_requestor->onLateRequestCompleted(false);
+            interactiveInputInfo->m_requestor->onLateRequestCompleted(true);
         }
     }
 }

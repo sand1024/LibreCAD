@@ -39,6 +39,7 @@
 #include "qg_graphicview.h"
 #include "rs_ellipse.h"
 #include "rs_insert.h"
+#include "rs_selection.h"
 #include "rs_settings.h"
 
 class QToolBar;
@@ -914,13 +915,16 @@ QMenu* LC_MenuFactory::createGraphicViewPopupMenu(QG_GraphicView* graphicView,
     if (contextEntity != nullptr && contextMenu != nullptr && !contextMenu->isEmpty()) {
         const bool clearEntitySelection = !contextEntity->isSelected();
         if (clearEntitySelection) {
-            contextEntity->setSelectionFlag(true); // just temporarily highlight the entity until menu is visible. This is not actual selection
+            RS_Selection sel(graphicView->getDocument(), graphicView->getViewPort());
+            sel.justSelect(contextEntity); // just temporarily highlight the entity until menu is visible. This is not actual selection
+            // todo - think whether such temporary selection should invoke selectionChanged event...  It might be that it could be more correct do not rise it?
             graphicView->redraw(RS2::RedrawDrawing);
         }
 
         connect(contextMenu, &QMenu::aboutToHide, this, [graphicView, contextEntity, clearEntitySelection]() {
             if (clearEntitySelection) {
-                contextEntity->clearSelectionFlag(); // cleanup temporary highlight
+                RS_Selection sel(graphicView->getDocument(), graphicView->getViewPort());
+                sel.justSelect(contextEntity, false); // cleanup temporary highlight
                 graphicView->redraw();
             }
         });
