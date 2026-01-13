@@ -69,7 +69,7 @@ public:
     void resumeAction(const std::shared_ptr<RS_ActionInterface>& action);
     RS_ActionInterface* getCurrentAction() const;
     bool isValid(RS_ActionInterface* action) const;
-    void killAllActions();
+    bool killAllActions();
     bool hasAction() const;
     void setSnapMode(RS_SnapMode sm) const;
     void setSnapRestriction(RS2::SnapRestriction sr) const;

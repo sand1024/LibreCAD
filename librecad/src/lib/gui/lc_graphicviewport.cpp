@@ -22,10 +22,14 @@
 #include "lc_graphicviewport.h"
 
 #include <QDateTime>
+#include <boost/container/vector.hpp>
 
+#include "lc_defaults.h"
 #include "lc_graphicviewportlistener.h"
 #include "lc_linemath.h"
 #include "lc_overlayentitiescontainer.h"
+#include "lc_overlayentity.h"
+#include "lc_refpoint.h"
 #include "lc_undoablerelzero.h"
 #include "rs_debug.h"
 #include "rs_dialogfactory.h"
@@ -62,6 +66,14 @@ void LC_GraphicViewport::loadSettings() {
     {
         m_ucsApplyingPolicy = LC_GET_INT("UCSApplyPolicy",0);
         m_modifyOnZoom = LC_GET_BOOL("ModifyOnViewChange", true);
+        m_refPointMode = LC_GET_INT("RefPointType", DXF_FORMAT_PDMode_EncloseSquare(DXF_FORMAT_PDMode_CentreDot));
+        QString pdsizeStr = LC_GET_STR("RefPointSize", "2.0");
+
+        bool ok = false;
+        m_refPointSize = RS_Math::eval(pdsizeStr, &ok);
+        if (!ok) {
+            m_refPointSize = LC_DEFAULTS_PDSize;
+        }
     }
     LC_GROUP_END();
 
@@ -91,6 +103,17 @@ double LC_GraphicViewport::getAnglesBaseAngle() const {
         return m_graphic->getAnglesBase();
     }
     return 0.0;
+}
+
+void LC_GraphicViewport::highlightLocation(RS_Vector &vector) {
+    auto container = m_overlaysManager.getEntitiesContainer(RS2::OverlayGraphics::PermanentHighlights);
+    container->addEntity(new LC_RefPoint(container, vector,m_refPointSize, m_refPointMode));
+    notifyChanged();
+}
+
+void LC_GraphicViewport::clearLocationsHighlight()  {
+    auto container = m_overlaysManager.getEntitiesContainer(RS2::OverlayGraphics::PermanentHighlights);
+    container->clear();
 }
 
 /**
@@ -397,10 +420,10 @@ void LC_GraphicViewport::invalidateGrid() const {
     m_grid->invalidate(isGridOn());
 }
 
-void LC_GraphicViewport::fireRedrawNeeded() const {
+void LC_GraphicViewport::fireRedrawNeeded(RS2::RedrawMethod method) const {
     for (int i=0; i<m_viewportListeners.size(); ++i) {
         LC_GraphicViewPortListener* l = m_viewportListeners.at(i);
-        l->onViewportRedrawNeeded();
+        l->onViewportRedrawNeeded(method);
     }
 }
 
@@ -766,7 +789,7 @@ void LC_GraphicViewport::loadGridSettings() const {
     if (m_grid != nullptr){
         m_grid->loadSettings();
     }
-    fireRedrawNeeded();
+    fireRedrawNeeded(RS2::RedrawGrid);
 }
 
 void LC_GraphicViewport::setUCS(const RS_Vector &origin, double angle, bool isometric, RS2::IsoGridViewType isoType) {

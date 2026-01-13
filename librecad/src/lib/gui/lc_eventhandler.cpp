@@ -365,9 +365,11 @@ void LC_EventHandler::setDefaultAction(RS_ActionInterface* action) {
 /**
  * Kills all running actions. Called when a window is closed.
  */
-void LC_EventHandler::killAllActions(){
+bool LC_EventHandler::killAllActions(){
     bool mayTerminate = true;
+    RS2::ActionType actionType = RS2::ActionDefault;
     if (m_currentAction != nullptr) {
+        actionType = m_currentAction->rtti();
         if (!m_currentAction->isFinished()) {
             mayTerminate = m_currentAction->mayBeTerminatedExternally();
         }
@@ -388,7 +390,9 @@ void LC_EventHandler::killAllActions(){
             m_defaultAction->finish();
         }
         m_defaultAction->init(0);
+        m_graphicView->onSwitchToDefaultAction(true, RS2::ActionDefault);
     }
+    return mayTerminate;
 }
 
 /**

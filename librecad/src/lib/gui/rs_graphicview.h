@@ -119,7 +119,7 @@ public:
     RS_ActionInterface *getCurrentAction() const;
     QString getCurrentActionName() const;
     QIcon getCurrentActionIcon() const;
-    void killAllActions() const;
+    bool killAllActions() const;
     void back() const;
     void processEnterKey() const;
     void commandEvent(RS_CommandEvent *e) const;
@@ -190,7 +190,7 @@ protected:
     void setRenderer(std::unique_ptr<LC_WidgetViewPortRenderer> renderer);
     LC_WidgetViewPortRenderer* getRenderer() const;
     void resizeEvent(QResizeEvent *event) override;
-    void onViewportRedrawNeeded() override;
+    void onViewportRedrawNeeded(RS2::RedrawMethod method) override;
     LC_EventHandler *getEventHandler() const;
 
     class TEST_DESTRUCTOR {

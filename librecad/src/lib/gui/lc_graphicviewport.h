@@ -25,6 +25,7 @@
 #include <QList>
 #include <memory>
 
+#include "dxf_format.h"
 #include "lc_coordinates_mapper.h"
 #include "lc_formatter.h"
 #include "lc_overlaysmanager.h"
@@ -168,10 +169,13 @@ public:
     RS_Graphic* getGraphic() const {return m_graphic;}
     void addViewportListener(LC_GraphicViewPortListener* listener);
     void removeViewportListener(LC_GraphicViewPortListener* listener);
-    void notifyChanged() const { fireRedrawNeeded();}
+    void notifyChanged(RS2::RedrawMethod method = RS2::RedrawDrawing) const { fireRedrawNeeded(method);}
 
     bool areAnglesCounterClockwise() const;
     double getAnglesBaseAngle() const;
+
+    void highlightLocation(RS_Vector& vector);
+    void clearLocationsHighlight();
 
 protected:
     RS_Vector m_factor{1., 1.};
@@ -179,6 +183,9 @@ protected:
     int m_offsetY = 0;
 
     bool m_modifyOnZoom = true;
+
+    double m_refPointSize = 2.0;
+    int m_refPointMode = DXF_FORMAT_PDMode_EncloseSquare(DXF_FORMAT_PDMode_CentreDot);
 
     /** Grid */
     std::unique_ptr<RS_Grid> m_grid;
@@ -230,10 +237,9 @@ protected:
 
     void fireViewportChanged() const;
     void fireUcsChanged(LC_UCS* ucs) const;
-    void fireRedrawNeeded() const;
+    void fireRedrawNeeded(RS2::RedrawMethod method) const;
     void firePreviousZoomChanged(bool value);
     void fireRelativeZeroChanged(const RS_Vector &pos) const;
-
 
     void setOffset(int ox, int oy);
     void setFactor(double f);

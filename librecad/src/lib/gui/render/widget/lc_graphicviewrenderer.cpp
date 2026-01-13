@@ -269,6 +269,9 @@ void LC_GraphicViewRenderer::drawOverlay(RS_Painter *painter) {
     drawEntitiesInOverlay(overlaysManager, painter, RS2::OverlayGraphics::ActionPreviewEntity);
     drawOverlayEntitiesInOverlay(overlaysManager, painter, RS2::OverlayGraphics::ActionPreviewEntity);
 
+    drawEntitiesInOverlay(overlaysManager, painter, RS2::OverlayGraphics::PermanentHighlights);
+    drawOverlayEntitiesInOverlay(overlaysManager, painter, RS2::OverlayGraphics::PermanentHighlights);
+
     drawEntitiesInOverlay(overlaysManager, painter, RS2::OverlayGraphics::Snapper);
     drawOverlayEntitiesInOverlay(overlaysManager, painter, RS2::OverlayGraphics::Snapper);
     drawEntitiesInOverlay(overlaysManager, painter, RS2::OverlayGraphics::InfoCursor);

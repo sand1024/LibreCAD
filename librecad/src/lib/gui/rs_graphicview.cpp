@@ -73,6 +73,7 @@ void RS_GraphicView::loadSettings() {
 }
 
 RS_GraphicView::~RS_GraphicView() {
+    LC_ERR << "~RS_GraphicView";
 };
 
 /**
@@ -168,10 +169,11 @@ bool RS_GraphicView::setCurrentAction(std::shared_ptr<RS_ActionInterface> action
 /**
  * Kills all running actions.
  */
-void RS_GraphicView::killAllActions() const {
+bool RS_GraphicView::killAllActions() const {
     if (m_eventHandler != nullptr) {
-        m_eventHandler->killAllActions();
+        return m_eventHandler->killAllActions();
     }
+    return true;
 }
 
 /**
@@ -239,8 +241,8 @@ void RS_GraphicView::onViewportChanged() {
     redraw();
 }
 
-void RS_GraphicView::onViewportRedrawNeeded() {
-    redraw(RS2::RedrawDrawing);
+void RS_GraphicView::onViewportRedrawNeeded(RS2::RedrawMethod method) {
+    redraw(method);
 }
 
 void RS_GraphicView::onUCSChanged(LC_UCS* ucs) {
@@ -333,8 +335,9 @@ RS_Document *RS_GraphicView::getDocument() const {
 }
 
 void RS_GraphicView::switchToDefaultAction() {
-    killAllActions();
-    RS_Selection::unselectAllInDocument(m_document, m_viewport.get());
+   if (killAllActions()) {
+       RS_Selection::unselectAllInDocument(m_document, m_viewport.get());
+   }
     redraw(RS2::RedrawAll);
 }
 

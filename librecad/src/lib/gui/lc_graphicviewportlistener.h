@@ -22,6 +22,7 @@
 
 #ifndef LC_GRAPHICVIEWPORTLISTENER_H
 #define LC_GRAPHICVIEWPORTLISTENER_H
+#include "rs.h"
 
 class LC_UCS;
 class RS_Vector;
@@ -29,7 +30,7 @@ class RS_Vector;
 class LC_GraphicViewPortListener{
 public:
     virtual void onViewportChanged() {}
-    virtual void onViewportRedrawNeeded() {}
+    virtual void onViewportRedrawNeeded([[maybe_unused]]RS2::RedrawMethod redrawMethod = RS2::RedrawAll) {}
     virtual void previousZoomChanged([[maybe_unused]]bool value) {}
     virtual void onRelativeZeroChanged([[maybe_unused]]const RS_Vector& pos) {}
     virtual void onUCSChanged([[maybe_unused]]LC_UCS* ucs) {}
