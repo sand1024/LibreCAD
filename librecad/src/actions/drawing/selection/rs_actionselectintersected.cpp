@@ -85,7 +85,7 @@ void RS_ActionSelectIntersected::doTrigger() {
     }
 }
 
-void RS_ActionSelectIntersected::selectionFinishedByKey(QKeyEvent* e, bool escape) {
+void RS_ActionSelectIntersected::selectionFinishedByKey([[maybe_unused]]QKeyEvent* e, bool escape) {
      finish(false);
 }
 

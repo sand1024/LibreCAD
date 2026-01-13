@@ -32,6 +32,7 @@ public:
     void doTrigger() override;
     void keyPressEvent(QKeyEvent* e) override;
     bool isSupportsPredecessorAction() override {return true;}
+    void setPredecessor(std::shared_ptr<RS_ActionInterface> pre) override;
 protected:
     explicit LC_ActionInteractivePickBase(const char* name, LC_ActionContext* actionContext, RS2::ActionType actionType);
     ~LC_ActionInteractivePickBase() override = default;

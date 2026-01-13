@@ -43,7 +43,7 @@ protected:
     void doTrigger() override;
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     bool isAllowSelectionFinishByEnterForEmptySelection() override {return true;}
-    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override {return true;}
+    bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& ctx) override {return true;}
     void selectionFinishedByKey(QKeyEvent* e, bool escape) override;
 
 private:

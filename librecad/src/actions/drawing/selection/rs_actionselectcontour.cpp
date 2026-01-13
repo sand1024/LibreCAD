@@ -43,7 +43,7 @@ void RS_ActionSelectContour::doInitWithContextEntity(RS_Entity* contextEntity, [
     }
 }
 
-void RS_ActionSelectContour::selectionFinishedByKey(QKeyEvent* e, bool escape) {
+void RS_ActionSelectContour::selectionFinishedByKey([[maybe_unused]]QKeyEvent* e, [[maybe_unused]]bool escape) {
     finish(false);
 }
 

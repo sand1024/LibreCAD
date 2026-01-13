@@ -24,12 +24,16 @@
 #ifndef LC_ACTIONSELECTDIMORDINATESAMEORIGIN_H
 #define LC_ACTIONSELECTDIMORDINATESAMEORIGIN_H
 #include "lc_actionsingleentityselectbase.h"
+#include "lc_dimordinate.h"
 
 class LC_ActionSelectDimOrdinateSameOrigin:public LC_ActionSingleEntitySelectBase{
     Q_OBJECT
 public:
     explicit LC_ActionSelectDimOrdinateSameOrigin(LC_ActionContext* actionContext);
     ~LC_ActionSelectDimOrdinateSameOrigin() override;
+
+    static QList<RS_Entity*> collectOrdinateDimensionsWithSameBase(LC_DimOrdinate* dimOrdinate, RS_Document* document);
+
 protected:
     void selectOrdinatesWithTheSameBase() const;
     void doTrigger() override;

@@ -222,7 +222,7 @@ void RS_ActionPolylineDelBetween::updateMouseButtonHints() {
 void RS_ActionPolylineDelBetween::collectEntitiesToRemove(RS_Vector first, RS_Vector second, QList<RS_Entity *> &list) const {
     if (first.distanceTo(second) > RS_TOLERANCE){
         bool found = false;
-        bool polylineClosed = m_polylineToModify->isClosed();
+
         for (unsigned int i = 0; i < m_polylineToModify->count(); i++){
             auto* en = m_polylineToModify->entityAt(i);
             auto start = en->getStartpoint();

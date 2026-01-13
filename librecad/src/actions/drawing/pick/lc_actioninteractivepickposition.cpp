@@ -30,8 +30,8 @@
 
 class LC_ActionInteractivePickBase;
 
-LC_ActionInteractivePickPosition::LC_ActionInteractivePickPosition(LC_ActionContext *actionContext)
-    :LC_ActionInteractivePickBase("InteractivePickPosition", actionContext, RS2::ActionInteractivePickPoint){
+LC_ActionInteractivePickPosition::LC_ActionInteractivePickPosition(LC_ActionContext *actionContext, RS2::ActionType actionType)
+    :LC_ActionInteractivePickBase("InteractivePickPosition", actionContext, actionType){
 }
 
 LC_ActionInteractivePickPosition::~LC_ActionInteractivePickPosition() = default;
@@ -87,8 +87,8 @@ void LC_ActionInteractivePickPosition::onMouseLeftButtonRelease(int status, LC_M
     switch (status){
         case SetPoint:{
             m_coordinatesType = POS_ABSOLUTE;
-            if (e->isControl) {
-                m_coordinatesType = POS_RELATIVE;
+            if (e->isControl && !m_viewport->hasUCS()) {
+                m_coordinatesType = POS_RELATIVE;  // fixme - how to process relative coordinates if UCS applied??? It should be ucsDelta...
             }
             else if (e->isShift) {
                 m_coordinatesType = POS_RELATIVE_ZERO;
@@ -146,7 +146,7 @@ void LC_ActionInteractivePickPosition::updateMouseButtonHints(){
     switch (getStatus()) {
         case SetPoint:
             updateMouseWidgetTRBack(tr("Pick coordinates from the drawing"),
-                MOD_SHIFT_AND_CTRL(tr("Pick relative zero coordinates"), tr("Pick relative coordinates")));
+                MOD_SHIFT_AND_CTRL(tr("Pick relative zero coordinates"), m_viewport->hasUCS() ? "" : tr("Pick relative coordinates")));
             break;
         default:
             updateMouseWidget();

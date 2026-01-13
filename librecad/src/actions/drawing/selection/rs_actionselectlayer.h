@@ -48,7 +48,7 @@ protected:
     void doTrigger() override;
     void selectionFinishedByKey(QKeyEvent* e, bool escape) override;
     bool isAllowSelectionFinishByEnterForEmptySelection() override {return true;}
-    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override {return true;};
+    bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& ctx) override {return true;};
 
 private:
     RS_Entity* m_entity = nullptr;

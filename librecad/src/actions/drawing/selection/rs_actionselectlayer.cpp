@@ -51,7 +51,7 @@ void RS_ActionSelectLayer::doTrigger() {
     }
 }
 
-void RS_ActionSelectLayer::selectionFinishedByKey(QKeyEvent* e, bool escape) {
+void RS_ActionSelectLayer::selectionFinishedByKey([[maybe_unused]]QKeyEvent* e, bool escape) {
     finish();
 }
 

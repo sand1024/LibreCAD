@@ -183,7 +183,7 @@ LC_ActionOptionsWidget *RS_ActionSelectWindow::createOptionsWidget() {
     return new LC_SelectWindowOptions();
 }
 
-void RS_ActionSelectWindow::selectionFinishedByKey(QKeyEvent* e, bool escape) {
+void RS_ActionSelectWindow::selectionFinishedByKey([[maybe_unused]]QKeyEvent* e, [[maybe_unused]]bool escape) {
     finish();
 }
 

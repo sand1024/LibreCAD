@@ -31,7 +31,7 @@
 class LC_ActionInteractivePickPosition :public LC_ActionInteractivePickBase {
     Q_OBJECT
 public:
-    explicit  LC_ActionInteractivePickPosition(LC_ActionContext *actionContext);
+    explicit  LC_ActionInteractivePickPosition(LC_ActionContext *actionContext, RS2::ActionType type);
     ~LC_ActionInteractivePickPosition() override;
     void init(int status) override;
 protected:

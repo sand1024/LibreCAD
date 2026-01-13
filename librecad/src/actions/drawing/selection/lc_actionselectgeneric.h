@@ -26,6 +26,7 @@
 #include "lc_actionpreselectionawarebase.h"
 
 class LC_ActionSelectGeneric: public LC_ActionPreSelectionAwareBase{
+    Q_OBJECT
 public:
     explicit LC_ActionSelectGeneric(LC_ActionContext* actionContext)
         : LC_ActionPreSelectionAwareBase("SelectQuick", actionContext,  RS2::ActionSelectGeneric) {
@@ -33,7 +34,7 @@ public:
 
     ~LC_ActionSelectGeneric() override;
 protected:
-    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override {return true;};
+    bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& ctx) override {return true;};
     void updateMouseButtonHintsForSelection() override;
     void proceedSelectionComplete(bool allowEmptySelection, bool fromInit, unsigned int selectedCount) override;
 };

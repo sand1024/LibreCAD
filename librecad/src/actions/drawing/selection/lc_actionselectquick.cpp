@@ -118,7 +118,7 @@ void LC_ActionSelectQuick::showDialog() {
     }
 
     QWidget* parent = QC_ApplicationWindow::getAppWindow().get();
-    auto* dlg = new LC_DlgQuickSelection(parent,m_document, m_viewport,  inputType, m_savedState,
+    auto* dlg = new LC_DlgQuickSelection(parent,m_actionContext, inputType, m_savedState,
                                            interactiveInputValueOne, interactiveInputValueTwo);
     m_allowExternalTermination = false;
     int result = dlg->exec();

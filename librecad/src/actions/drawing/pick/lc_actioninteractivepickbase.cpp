@@ -30,6 +30,21 @@
 LC_ActionInteractivePickBase::LC_ActionInteractivePickBase(const char* name, LC_ActionContext* actionContext, RS2::ActionType actionType)
     :RS_PreviewActionInterface(name, actionContext, actionType) {}
 
+void LC_ActionInteractivePickBase::setPredecessor(std::shared_ptr<RS_ActionInterface> pre) {
+    if (pre != nullptr) {
+        RS2::ActionType rtti = pre->rtti();
+        if (!RS2::isInteractiveInputAction(rtti)) {
+            // we support predecessor only if previos action is not interactive picK.
+            // otherwise - we'll skip it, as with property sheet it is possible to
+            // invoke precessor twice...
+            RS_PreviewActionInterface::setPredecessor(pre);
+        }
+        else {
+            pre.reset();
+        }
+    }
+}
+
 void LC_ActionInteractivePickBase::doTrigger() {
     if (isInteractiveDataValid()){
         storeInteractiveInput();
