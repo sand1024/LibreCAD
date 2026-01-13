@@ -46,4 +46,4 @@ private:
     QIcon m_savedIcon;
 };
 
-#endif // LC_UCSSTATEWIDGET_H
+#endif

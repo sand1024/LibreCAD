@@ -54,13 +54,13 @@ void LC_RelZeroCoordinatesWidget::clearContent() const {
 }
 
 void LC_RelZeroCoordinatesWidget::setGraphicView(RS_GraphicView *gv) {
+    if (m_graphicView != nullptr) {
+        disconnect(m_graphicView, &RS_GraphicView::relativeZeroChanged, this, &LC_RelZeroCoordinatesWidget::relativeZeroChanged);
+    }
+    if (m_viewport != nullptr){
+        m_viewport->removeViewportListener(this);
+    }
     if (gv == nullptr){
-        if (m_graphicView != nullptr){
-            disconnect(m_graphicView, &RS_GraphicView::relativeZeroChanged, this, &LC_RelZeroCoordinatesWidget::relativeZeroChanged);
-            if (m_viewport != nullptr){
-                m_viewport->removeViewportListener(this);
-            }
-        }
         setRelativeZero(RS_Vector(0.0,0.0), true); // in which system? ucs? wcs?
         m_viewport = nullptr;
         m_graphicView  = nullptr;
@@ -68,12 +68,6 @@ void LC_RelZeroCoordinatesWidget::setGraphicView(RS_GraphicView *gv) {
         m_formatter = nullptr;
     }
     else {
-        if (m_graphicView != nullptr) {
-            disconnect(m_graphicView, &RS_GraphicView::relativeZeroChanged, this, &LC_RelZeroCoordinatesWidget::relativeZeroChanged);
-        }
-        if (m_viewport != nullptr){
-            m_viewport->removeViewportListener(this);
-        }
         m_graphicView = gv;
         m_graphic = m_graphicView->getGraphic();
         m_viewport = gv->getViewPort();
