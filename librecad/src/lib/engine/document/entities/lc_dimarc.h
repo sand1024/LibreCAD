@@ -88,6 +88,10 @@ public:
         return m_dimArcData.centre;
     }
 
+    void setCenter(RS_Vector v) {
+        m_dimArcData.centre = v;
+    }
+
     QString getMeasuredLabel() override;
 
     void update() override;

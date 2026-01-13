@@ -96,7 +96,7 @@ RS_VectorSolutions RS_DimAligned::getRefPoints() const {
  */
 QString RS_DimAligned::getMeasuredLabel() {
 	double distance = m_dimAlignedData.extensionPoint1.distanceTo(m_dimAlignedData.extensionPoint2);
-
+    m_dimMeasurement = distance;
     double dist = prepareLabelLinearDistance(distance);
     QString distanceLabel =  createLinearMeasuredLabel(dist);
     return distanceLabel;
@@ -112,6 +112,14 @@ RS_Vector const& RS_DimAligned::getExtensionPoint1() const {
 
 RS_Vector const& RS_DimAligned::getExtensionPoint2() const {
     return m_dimAlignedData.extensionPoint2;
+}
+
+void RS_DimAligned::setExtensionPoint1(const RS_Vector& extensionPoint1) {
+    m_dimAlignedData.extensionPoint1 = extensionPoint1;
+}
+
+void RS_DimAligned::setExtensionPoint2(const RS_Vector& extensionPoint2) {
+    m_dimAlignedData.extensionPoint2 = extensionPoint2;
 }
 
 /**

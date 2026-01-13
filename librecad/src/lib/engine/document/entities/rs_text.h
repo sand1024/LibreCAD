@@ -160,9 +160,19 @@ public:
     RS_Vector getInsertionPoint() const {
         return data.insertionPoint;
     }
+
+    void setInsertionPoint(RS_Vector v)  {
+        data.insertionPoint = v;
+    }
+
     RS_Vector getSecondPoint() const {
         return data.secondPoint;
     }
+
+    void setSecondPoint(RS_Vector & v) {
+        data.secondPoint = v;
+    }
+
     double getHeight() const {
         return data.height;
     }
@@ -194,6 +204,11 @@ public:
     RS_TextData::TextGeneration getTextGeneration() const {
         return data.textGeneration;
     }
+
+    void setTextGeneration(RS_TextData::TextGeneration v) {
+        data.textGeneration = v;
+    }
+
     void setText(const QString& t);
     QString getText() {
         return data.text;

@@ -49,7 +49,7 @@ struct RS_DimDiametricData {
     /** Definition point. */
     RS_Vector definitionPoint;
     /** Leader length. */
-    double leader = false;
+    double leader {0.0};
 };
 
 std::ostream& operator << (std::ostream& os, const RS_DimDiametricData& dd);
@@ -89,8 +89,25 @@ public:
     RS_Vector getDefinitionPoint() const {
         return m_dimDiametricData.definitionPoint;
     }
-    double getLeader() const {
+
+    void setDefinitionPoint(RS_Vector v) {
+        m_dimDiametricData.definitionPoint = v;
+    }
+
+    RS_Vector getCenterPoint() const {
+        return m_dimGenericData.definitionPoint;
+    }
+
+    void setCenterPoint(RS_Vector v) {
+        m_dimGenericData.definitionPoint = v;
+    }
+
+    double getLeaderLength() const {
         return m_dimDiametricData.leader;
+    }
+
+    void setLeaderLength(double len) {
+        m_dimDiametricData.leader = len;
     }
 	void move(const RS_Vector& offset) override;
 	void rotate(const RS_Vector& center, double angle) override;

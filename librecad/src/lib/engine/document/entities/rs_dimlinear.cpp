@@ -209,6 +209,7 @@ QString RS_DimLinear::getMeasuredLabel() {
 
     // Definitive dimension line:
     double distance = dimP1.distanceTo(dimP2);
+    m_dimMeasurement = distance; // fixme - or it should be converted value - dist?
 
     double dist = prepareLabelLinearDistance(distance);
     QString distanceLabel =  createLinearMeasuredLabel(dist);

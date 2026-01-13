@@ -79,7 +79,7 @@ RS_Entity* RS_DimRadial::clone() const {
 QString RS_DimRadial::getMeasuredLabel() {
     // Definitive dimension line:
     double distance = m_dimGenericData.definitionPoint.distanceTo(m_dimRadialData.definitionPoint);
-
+    m_dimMeasurement = distance;
     double dist = prepareLabelLinearDistance(distance);
     QString measuredLabel =  createLinearMeasuredLabel(dist);
     return measuredLabel;

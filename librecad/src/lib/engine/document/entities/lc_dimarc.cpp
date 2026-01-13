@@ -87,7 +87,7 @@ QString LC_DimArc::getMeasuredLabel() {
 
     QString measuredLabel;
 
-    if (currentGraphic) {
+    if (currentGraphic != nullptr) {
         const int dimlunit{getGraphicVariableInt(QStringLiteral("$DIMLUNIT"), 2)};
         const int dimdec{getGraphicVariableInt(QStringLiteral("$DIMDEC"), 4)};
         const int dimzin{getGraphicVariableInt(QStringLiteral("$DIMZIN"), 1)};
@@ -105,6 +105,8 @@ QString LC_DimArc::getMeasuredLabel() {
     else {
         measuredLabel = QString("%1").arg(m_dimArcData.arcLength);
     }
+
+    m_dimMeasurement = m_dimArcData.arcLength;
 
     return measuredLabel;
 }

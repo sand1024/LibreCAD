@@ -1246,6 +1246,36 @@ LC_DimStyle* RS_Dimension::getEffectiveDimStyle() const {
     return result;
 }
 
+// note:: copy should be deleted!
+LC_DimStyle* RS_Dimension::getEffectiveCachedDimStyle() {
+    if (m_dimStyleTransient == nullptr) {
+        auto dimStyleName = getStyle();
+        m_dimStyleTransient = getGraphic()->getEffectiveDimStyleForEdit(dimStyleName, rtti(), getDimStyleOverride()); // fixme - delete copy!
+    }
+    return m_dimStyleTransient;
+}
+
+// fixme - review how copies of dimstyle are created and removed
+LC_DimStyle* RS_Dimension::getEffectiveDimStyleOverride() {
+    auto dimStyleName = getStyle();
+    auto styleOverride = getDimStyleOverride();
+    bool hasStyleOverride = styleOverride != nullptr;
+    auto style  = getGraphic()->getEffectiveDimStyle(dimStyleName, rtti(), styleOverride);
+    setDimStyleOverride(style);
+    if (hasStyleOverride) {
+        delete style; // delete a copy of style that was created for override
+    }
+    styleOverride = getDimStyleOverride(); // can't reuse previous value, should get it again
+    return styleOverride;
+}
+
+void  RS_Dimension::clearCachedDimStyle() {
+    if (m_dimStyleTransient != nullptr) {
+        delete m_dimStyleTransient;
+    }
+    m_dimStyleTransient = nullptr;
+}
+
 void RS_Dimension::resolveEffectiveDimStyleAndUpdateDim() {
     m_dimStyleTransient = getEffectiveDimStyle();
     if (m_dimStyleTransient != nullptr) { // it might be null during reading of file of example
@@ -1254,6 +1284,7 @@ void RS_Dimension::resolveEffectiveDimStyleAndUpdateDim() {
             delete m_dimStyleTransient; // delete a copy of style that was created for override
         }
     }
+
     m_dimStyleTransient = nullptr;
 }
 

@@ -140,6 +140,8 @@ QString RS_DimAngular::getMeasuredLabel(){
     RS2::AngleFormat format {RS_Units::numberToAngleFormat( dimaunit)};
     QString strLabel( RS_Units::formatAngle( dimAngle, format, dimadec));
 
+    m_dimMeasurement = dimAngle;
+
     if (RS2::DegreesMinutesSeconds != format  && RS2::Surveyors != format) {
         strLabel = stripZerosAngle( strLabel, dimazin);
     }

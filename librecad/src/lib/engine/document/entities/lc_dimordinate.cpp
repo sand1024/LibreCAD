@@ -61,8 +61,16 @@ RS_Vector LC_DimOrdinate::getFeaturePoint() const {
     return m_dimOrdinateData.featurePoint;
 }
 
+void LC_DimOrdinate::setFeaturePoint(RS_Vector  v) {
+    m_dimOrdinateData.featurePoint = v;
+}
+
 RS_Vector LC_DimOrdinate::getLeaderEndPoint() const{
     return m_dimOrdinateData.leaderEndPoint;
+}
+
+void LC_DimOrdinate::setLeaderPoint(RS_Vector  v) {
+    m_dimOrdinateData.leaderEndPoint = v;
 }
 
 void LC_DimOrdinate::move(const RS_Vector& offset) {
@@ -330,6 +338,8 @@ QString LC_DimOrdinate::getMeasuredLabel() {
     else {
         distance = delta.y;
     }
+
+    m_dimMeasurement = distance;
 
     double dist = prepareLabelLinearDistance(distance);
     QString measuredLabel =  createLinearMeasuredLabel(dist);

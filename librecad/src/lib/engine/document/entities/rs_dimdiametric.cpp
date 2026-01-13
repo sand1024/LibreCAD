@@ -84,6 +84,7 @@ RS_Entity* RS_DimDiametric::clone() const {
 QString RS_DimDiametric::getMeasuredLabel() {
     // Definitive dimension line:
  	double distance = m_dimGenericData.definitionPoint.distanceTo(m_dimDiametricData.definitionPoint) * getGeneralFactor();
+    m_dimMeasurement = distance;
     double dist = prepareLabelLinearDistance(distance);
     QString measuredLabel =  createLinearMeasuredLabel(dist);
     return measuredLabel;
@@ -132,7 +133,7 @@ void RS_DimDiametric::scale(const RS_Vector& center, const RS_Vector& factor) {
     RS_Dimension::scale(center, factor);
 
     m_dimDiametricData.definitionPoint.scale(center, factor);
-        m_dimDiametricData.leader*=factor.x;
+    m_dimDiametricData.leader*=factor.x;
     update();
 }
 

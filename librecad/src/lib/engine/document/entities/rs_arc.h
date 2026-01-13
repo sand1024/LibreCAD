@@ -275,6 +275,10 @@ m0 x + m1 y + m2 =0
     double areaLineIntegral() const override;
 
     void updateMiddlePoint();
+
+    double getChord() {
+        return m_startPoint.distanceTo(m_endPoint);
+    }
 protected:
     RS_ArcData data{};
 private:

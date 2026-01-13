@@ -936,7 +936,7 @@ LC_DimStyle* RS_Graphic::getEffectiveDimStyle(const QString &styleName, RS2::Ent
     }
     else {
         // NOTE: If there is style override, the returned instance SHOULD BE DELETED by caller code!!!
-        // that's pretty ugly, yet avoid to eliminate additinal copy operation for most cases, as
+        // that's pretty ugly, yet avoid to eliminate additional copy operation for most cases, as
         // it's expected that style override is less commonly used feature comparing to just setting
         // existing styles to the dimension entity
         auto styleOverrideCopy = styleOverride->getCopy();
@@ -945,6 +945,21 @@ LC_DimStyle* RS_Graphic::getEffectiveDimStyle(const QString &styleName, RS2::Ent
     }
     return resolvedDimStyle;
 }
+
+LC_DimStyle* RS_Graphic::getEffectiveDimStyleForEdit(const QString &styleName, RS2::EntityType dimType, LC_DimStyle* styleOverride) const{
+    auto globalDimStyle = getResolvedDimStyle(styleName, dimType);
+    LC_DimStyle* resolvedDimStyle = nullptr;
+    if (styleOverride == nullptr) {
+        resolvedDimStyle = globalDimStyle->getCopy();
+    }
+    else {
+        auto styleOverrideCopy = styleOverride->getCopy();
+        styleOverrideCopy->mergeWith(globalDimStyle, LC_DimStyle::ModificationAware::UNSET, LC_DimStyle::ModificationAware::UNSET);
+        resolvedDimStyle = styleOverrideCopy;
+    }
+    return resolvedDimStyle;
+}
+
 
 LC_DimStyle* RS_Graphic::getResolvedDimStyle(const QString &dimStyleName, RS2::EntityType dimType) const {
     LC_DimStyle* result = nullptr;

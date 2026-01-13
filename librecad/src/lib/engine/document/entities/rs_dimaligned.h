@@ -86,6 +86,8 @@ public:
     QString getMeasuredLabel() override;
     RS_Vector const &getExtensionPoint1() const;
     RS_Vector const &getExtensionPoint2() const;
+    void setExtensionPoint1(const RS_Vector &extensionPoint1);
+    void setExtensionPoint2(const RS_Vector &extensionPoint2);
     /**
      * Recalculate the original Dimension Point to remove Dim oblique angle.
      * @author Rallaz

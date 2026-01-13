@@ -146,18 +146,24 @@ public:
     void update() override;
     LC_DimStyle* getGlobalDimStyle() const;
     LC_DimStyle* getEffectiveDimStyle() const;
+    LC_DimStyle* getEffectiveCachedDimStyle();
+    LC_DimStyle* getEffectiveDimStyleOverride();
+    LC_DimStyle* getEffectiveCachedDimStyle() const;
+    void clearCachedDimStyle();
     void resolveEffectiveDimStyleAndUpdateDim();
     void updateDim(bool autoText=false);
 
     RS_Vector getDefinitionPoint() const {return m_dimGenericData.definitionPoint;}
     RS_Vector getMiddleOfText() const {return m_dimGenericData.middleOfText;}
+    void setMiddleOfText(const RS_Vector& v)  {m_dimGenericData.middleOfText = v;}
     RS_MTextData::VAlign getVAlign() const {return m_dimGenericData.valign;}
     RS_MTextData::HAlign getHAlign() const {return m_dimGenericData.halign;}
     RS_MTextData::MTextLineSpacingStyle getLineSpacingStyle() const {return m_dimGenericData.lineSpacingStyle;}
     double getLineSpacingFactor() const {return m_dimGenericData.lineSpacingFactor;}
     QString getText() {return m_dimGenericData.text;}
     QString getStyle() const {return m_dimGenericData.style;}
-    double getAngle() const {return m_dimGenericData.angle;}
+    double getTextAngle() const {return m_dimGenericData.angle;}
+    void setTextAngle(double angle) {m_dimGenericData.angle = angle;}
     double getHDir() const{return m_dimGenericData.horizontalAxisDirection;}
     double hasUserDefinedTextLocation() const {return !m_dimGenericData.autoText;}
     void setHDir(double hdir) {m_dimGenericData.horizontalAxisDirection = hdir;}
@@ -181,6 +187,7 @@ public:
     bool getInsideHorizontalText() const;
     bool getFixedLengthOn() const;
     double getFixedLength() const;
+    double getMeasurement() const {return m_dimMeasurement;}
     RS2::LineWidth getExtensionLineWidth() const;
     RS2::LineType getExtensionLineTypeFirst() const;
     RS2::LineType getExtensionLineTypeSecond() const;
@@ -237,6 +244,8 @@ protected:
     RS_DimensionData m_dimGenericData;
     // dim style used during updateDim()
     LC_DimStyle* m_dimStyleTransient = nullptr;
+
+    double m_dimMeasurement = 0.0;
 
     virtual void doUpdateDim() = 0;
 

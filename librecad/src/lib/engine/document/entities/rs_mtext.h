@@ -158,9 +158,11 @@ public:
   int getNumberOfLines() const;
 
   RS_Vector getInsertionPoint() const { return data.insertionPoint; }
+  void setInsertionPoint(RS_Vector v) {data.insertionPoint = v;}
   double getHeight() const { return data.height; }
   void setHeight(double h) { data.height = h; }
   double getWidth() const { return data.width; }
+  void setWidth(double w) { data.width = w;}
   void setAlignment(int a);
   int getAlignment() const;
   RS_MTextData::VAlign getVAlign() const { return data.valign; }
@@ -175,6 +177,10 @@ public:
   }
   RS_MTextData::MTextLineSpacingStyle getLineSpacingStyle() const {
     return data.lineSpacingStyle;
+  }
+
+  void getLineSpacingStyle(RS_MTextData::MTextLineSpacingStyle v) {
+      data.lineSpacingStyle = v;
   }
   void setLineSpacingFactor(double f) { data.lineSpacingFactor = f; }
   double getLineSpacingFactor() const { return data.lineSpacingFactor; }

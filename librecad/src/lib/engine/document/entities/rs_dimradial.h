@@ -93,6 +93,18 @@ public:
         return m_dimRadialData.leader;
     }
 
+    void setLeaderLength(double v) {
+        m_dimRadialData.leader = v;
+    }
+
+    RS_Vector getCenterPoint() const {
+        return m_dimGenericData.definitionPoint;
+    }
+
+    void setCenterPoint(RS_Vector v) {
+        m_dimGenericData.definitionPoint = v;
+    }
+
 	void move(const RS_Vector& offset) override;
 	void rotate(const RS_Vector& center, double angle) override;
 	void rotate(const RS_Vector& center, const RS_Vector& angleVector) override;

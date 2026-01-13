@@ -99,8 +99,16 @@ public:
         return m_dimLinearData.extensionPoint1;
     }
 
+    void setExtensionPoint1(RS_Vector v) {
+        m_dimLinearData.extensionPoint1 = v;
+    }
+
     RS_Vector getExtensionPoint2() const{
         return m_dimLinearData.extensionPoint2;
+    }
+
+    void setExtensionPoint2(RS_Vector v) {
+        m_dimLinearData.extensionPoint2 = v;
     }
 
     double getAngle() const{
@@ -111,6 +119,10 @@ public:
 
     double getOblique() const{
         return m_dimLinearData.oblique;
+    }
+
+    void setOblique(double value) {
+        m_dimLinearData.oblique = value;
     }
 
     void move(const RS_Vector &offset) override;

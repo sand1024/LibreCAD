@@ -295,6 +295,7 @@ public:
     QString getDefaultDimStyleName() const;
     void setDefaultDimStyleName(QString name);
     LC_DimStyle* getEffectiveDimStyle(const QString &styleName, RS2::EntityType dimType, LC_DimStyle* styleOverride) const;
+    LC_DimStyle* getEffectiveDimStyleForEdit(const QString& styleName, RS2::EntityType dimType, LC_DimStyle* styleOverride) const;
     virtual LC_DimStyle* getResolvedDimStyle(const QString &dimStyleName, RS2::EntityType dimType = RS2::EntityUnknown) const;
     void updateFallbackDimStyle(LC_DimStyle* get_copy);
     void replaceDimStylesList(const QString& defaultStyleName, const QList<LC_DimStyle*>& styles);

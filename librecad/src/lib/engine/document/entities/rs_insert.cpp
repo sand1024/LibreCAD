@@ -251,7 +251,10 @@ void RS_Insert::update() {
  */
 RS_Block* RS_Insert::getBlockForInsert() const{
     if (m_block != nullptr) {
-        return m_block;
+        QString m_blockName = m_block->getName();
+        if (m_blockName == m_data.name) {
+            return m_block;
+        }
     }
 
     RS_BlockList* blkList = nullptr;

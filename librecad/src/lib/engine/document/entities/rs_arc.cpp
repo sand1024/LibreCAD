@@ -87,7 +87,15 @@ void RS_Arc::setAngle2(double a2) {
 void RS_Arc::setReversed(bool r) {
     if (data.reversed != r) {
         data.reversed = r;
-        std::swap(data.angle1, data.angle2);
+        // fixme - sand - SHOULD we actually swap angles? That completely changes previous behavior of arc.
+        // **********************************************************************************************************************
+        // fixme - if angles swap is performed, the shape of arc remains the same, just start and end point are changed.
+        // fixme - but! if there is no swap of angle - the SHAPE of arc changes (as it was before).
+        // fixme - Support of changing angles on swap leads to changing the generic way of how arcs are built and processed
+        // fixme - and that requires quite a big modifications. In addition, it breaks existing user's experience
+        // fixme - Plus, swap of angles breaks modification actions, such as mirror (probably other too..)
+        // **********************************************************************************************************************
+        // std::swap(data.angle1, data.angle2);
         std::swap(m_startPoint, m_endPoint);
     }
 }

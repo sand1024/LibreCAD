@@ -77,7 +77,9 @@ public:
     RS_VectorSolutions getRefPoints() const override;
 
     RS_Vector getFeaturePoint() const;
+    void setFeaturePoint(RS_Vector v);
     RS_Vector getLeaderEndPoint() const;
+    void setLeaderPoint(RS_Vector v);
 
     void move(const RS_Vector& offset) override;
     void rotate(const RS_Vector& center, double angle) override;

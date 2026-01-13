@@ -799,7 +799,21 @@ QList<RS_Vector> RS_Polyline::getVertexes() {
     for (const auto e: getEntityList()) {
         result.push_back(e->getStartpoint());
     }
+    result.push_back(getEntityList().last()->getEndpoint());
+
     return result;
+}
+
+// NOTE: It's intentional absense of index range validity check
+RS_Vector RS_Polyline::getVertex(int index) {
+    int idx = 0;
+    for (const auto e: getEntityList()) {
+        if (index == idx) {
+            return e->getStartpoint();
+        }
+        idx++;
+    }
+    return getEntityList().last()->getEndpoint();
 }
 
 RS_Arc* RS_Polyline::arcFromBulge(const RS_Vector& start, const RS_Vector& end, double bulge) {

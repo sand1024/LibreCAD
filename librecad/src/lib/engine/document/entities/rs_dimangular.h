@@ -143,18 +143,36 @@ public:
     RS_Vector getCenter() const override;
 
 
-
     RS_Vector getDefinitionPoint1() const {
         return m_dimAngularData.definitionPoint1;
     }
+
+    void setDefinitionPoint1(RS_Vector p) {
+        m_dimAngularData.definitionPoint1 = p;
+    }
+
     RS_Vector getDefinitionPoint2() const {
         return m_dimAngularData.definitionPoint2;
     }
+
+    void setDefinitionPoint2(RS_Vector p) {
+        m_dimAngularData.definitionPoint2 = p;
+    }
+
     RS_Vector getDefinitionPoint3() const {
         return m_dimAngularData.definitionPoint3;
     }
+
+    void setDefinitionPoint3(RS_Vector p) {
+        m_dimAngularData.definitionPoint3 = p;
+    }
+
     RS_Vector getDefinitionPoint4() const {
         return m_dimAngularData.definitionPoint4;
+    }
+
+    void setDefinitionPoint4(RS_Vector p) {
+        m_dimAngularData.definitionPoint4 = p;
     }
 
     void update() override;
