@@ -53,7 +53,9 @@ namespace LC_SVGIconEngineAPI {
 
     inline void setColorAppProperty(QString baseKey, IconMode mode, IconState state, QString value){
         QString key = getColorAppKeyName(baseKey, mode, state);
-        qApp->setProperty(key.toStdString().c_str(),   value);
+        auto basicString = key.toStdString();
+        auto name = basicString.c_str();
+        qApp->setProperty(name,   value);
     }
 
     inline QString getColorAppProperty(QString baseKey, IconMode mode, IconState state){
