@@ -146,6 +146,8 @@ class LC_DimStyle{
         VerticalPositionPolicy verticalPositioning() const {return DIMTAD;}
         TextOrientationPolicy orientationInside() const {return DIMTIH;}
         TextOrientationPolicy orientationOutside() const {return DIMTOH;}
+        bool isAlignedIfInside() const {return orientationInside() == ALIGN_WITH_DIM_LINE;}
+        bool isAlignedIfOutside() const {return orientationOutside() == ALIGN_WITH_DIM_LINE;}
         const QString &style() const {return DIMTXSTY;}
         RS_Color color() const {return DIMCLRT;}
         double   height() const {return DIMTXT;}
@@ -162,6 +164,8 @@ class LC_DimStyle{
         void setVerticalDistanceToDimLine(double dimtvp);
         void setOrientationInside(TextOrientationPolicy dimtih);
         void setOrientationOutside(TextOrientationPolicy dimtoh);
+        void setAlignedIfInside(bool v) {setOrientationInside(v? ALIGN_WITH_DIM_LINE : DRAW_HORIZONTALLY);}
+        void setAlignedIfOutside(bool v) {setOrientationOutside(v? ALIGN_WITH_DIM_LINE : DRAW_HORIZONTALLY);}
         void setStyle(const QString &dimtxsty);
         void setColor(const RS_Color& dimclrt);
         void setHeight(double dimtxt);
@@ -333,8 +337,12 @@ class LC_DimStyle{
         double distanceBeyondExtLinesForObliqueStroke() const {return DIMDLE;}
         double baseLineDimLinesSpacing() const {return DIMDLI;}
         DimLineAndArrowSuppressionPolicy suppressFirstLine() const {return DIMSD1;}
+        bool isSuppressFirst() const {return DIMSD1 == LC_DimStyle::DimensionLine::SUPPRESS;}
         DimLineAndArrowSuppressionPolicy suppressSecondLine() const {return DIMSD2;}
+        bool isSuppressSecond() const {return DIMSD2 == LC_DimStyle::DimensionLine::SUPPRESS;}
         DrawPolicyForOutsideText drawPolicyForOutsideText() const {return DIMTOFL;}
+        bool isDrawLineIfArrowsOutside() const {return DIMTOFL == DRAW_EVEN_IF_ARROWHEADS_ARE_OUTSIDE;}
+        void setDrawLineIfArrowsOutside(bool v) {setDrawPolicyForOutsideText(v ? DRAW_EVEN_IF_ARROWHEADS_ARE_OUTSIDE :DONT_DRAW_IF_ARROWHEADS_ARE_OUTSIDE);}
         const QString& lineTypeName() const {return DIMLTYPE;}
         RS2::LineType lineType() const {return DIMLTYPE_LineType;}
         void setLineType(RS2::LineType lineType);
@@ -343,8 +351,10 @@ class LC_DimStyle{
         void setLineWidth(RS2::LineWidth dimlwd);
         void setDistanceBeyondExtLinesForObliqueStroke(double dimdle);
         void setBaselineDimLinesSpacing(double dimdli);
+        void setSuppressFirst(bool v);
         void setSuppressFirstLine(DimLineAndArrowSuppressionPolicy dimsd1);
         void setSuppressSecondLine(DimLineAndArrowSuppressionPolicy dimsd2);
+        void setSuppressSecond(bool v);
         void setDrawPolicyForOutsideText(DrawPolicyForOutsideText dimtofl);
         void setLineType(QString dimltype);
         void fillByDefaults();
@@ -463,8 +473,9 @@ class LC_DimStyle{
         RS2::LineWidth lineWidth() const {return DIMLWE;}
         bool hasFixedLength() const {return DIMFXLON;}
         ExtensionLineAndArrowSuppressionPolicy suppressFirstLine() const{return DIMSE1;}
+        bool isSuppressFirst() const {return DIMSE1 == LC_DimStyle::ExtensionLine::ExtensionLineAndArrowSuppressionPolicy::SUPPRESS;}
         ExtensionLineAndArrowSuppressionPolicy suppressSecondLine() const{return DIMSE2;}
-
+        bool isSuppressSecond() const {return DIMSE2 == LC_DimStyle::ExtensionLine::ExtensionLineAndArrowSuppressionPolicy::SUPPRESS;}
         QString lineTypeFirstRaw() const {return DIMLTEX1;}
         QString lineTypeSecondRaw() const {return DIMLTEX2;}
         RS2::LineType lineTypeFirst() const {return DIMLTEX1_linetype;}
@@ -481,8 +492,10 @@ class LC_DimStyle{
         void setLineTypeSecond(const QString& dimltex2);
         void setLineTypeFirst(RS2::LineType lineType);
         void setLineTypeSecond(RS2::LineType lineType);
-        void setSuppressFirst(ExtensionLineAndArrowSuppressionPolicy dimse1);
-        void setSuppressSecond(ExtensionLineAndArrowSuppressionPolicy dimses);
+        void setSuppressFirstLine(ExtensionLineAndArrowSuppressionPolicy dimse1);
+        void setSuppressFirst(bool v);
+        void setSuppressSecondLine(ExtensionLineAndArrowSuppressionPolicy dimses);
+        void setSuppressSecond(bool v);
         void setSuppressFirstRaw(int dimse1);
         void setSuppressSecondRaw(int dimse2);
         void fillByDefaults();
@@ -580,6 +593,8 @@ class LC_DimStyle{
         Arrowhead() = default;
 
         ArrowHeadSuppressionPolicy suppression() const {return DIMSOXD;}
+        bool isSuppressArrows() const {return DIMSOXD == SUPPRESS;}
+        void setSuppressArrows(bool v) { setSuppressions(v ? SUPPRESS : DONT_SUPPRESS);}
         void copyTo(Arrowhead* arrowhead);
         QString obtainFirstArrowName() const;
         QString obtainSecondArrowName();
@@ -692,10 +707,16 @@ class LC_DimStyle{
         bool isAngularSuppress(int flag) const {return DIMAZIN &flag;}
         int linearRaw() const {return DIMZIN;}
         bool isLinearSuppress(int flag) const {return DIMZIN &flag;}
+
+
         int toleranceRaw() const {return DIMTZIN;}
         bool isToleranceSuppress(int flag) const {return DIMTZIN &flag;}
         int altLinearRaw() const {return DIMALTZ;}
+
         bool isAltLinearSuppress(int flag) const {return DIMALTZ &flag;}
+        bool isAltLinearSuppressLeading() const {return isAltLinearSuppress(LC_DimStyle::ZerosSuppression::LEADING_IN_DECIMAL);}
+        bool isAltLinearSuppressTrailing() const {return isAltLinearSuppress(LC_DimStyle::ZerosSuppression::TRAILING_IN_DECIMAL);}
+
         int altToleranceRaw() const  {return DIMALTTZ;}
         bool isAltToleranceSuppress(int flag) const {return DIMALTTZ &flag;}
 
@@ -963,6 +984,14 @@ class LC_DimStyle{
         void merge(const LinearFormat* parent);
         void setAltFormatRaw(int dimaltu);
         void copyTo(LinearFormat* linear_format);
+
+        bool isPrimaryMetric() {
+            return (DIMLUNIT == RS2::ArchitecturalMetric || DIMLUNIT == RS2::Decimal || DIMLUNIT == RS2::Scientific);
+        }
+
+        bool isAltMetric() {
+            return (DIMALTU == RS2::ArchitecturalMetric || DIMALTU == RS2::Decimal || DIMALTU == RS2::Scientific);
+        }
 
         static RS2::LinearFormat dxfInt2LinearFormat(int f);
         static int linearFormat2dxf(RS2::LinearFormat f);
@@ -1383,6 +1412,9 @@ class LC_DimStyle{
 
     bool isFromVars() const {return m_fromVars;}
     void setFromVars(bool v){m_fromVars = v;}
+
+    bool hasAltUnits() {return linearFormat()->alternateUnits() == LinearFormat::ENABLE;}
+    bool hasNoAltUnits() {return linearFormat()->alternateUnits() == LinearFormat::DISABLE;}
 
     /*
     int getDimunit() const;

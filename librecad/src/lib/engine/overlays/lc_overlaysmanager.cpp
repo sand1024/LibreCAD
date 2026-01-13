@@ -54,8 +54,8 @@ void LC_OverlaysManager::setGraphic(RS_Graphic *g) {
  */
 class OverlayEntityContainer:public RS_EntityContainer {
 public:
-    explicit OverlayEntityContainer(RS_Graphic *g):RS_EntityContainer(nullptr) {
-        graphic = g;
+    explicit OverlayEntityContainer(RS_Graphic *g):RS_EntityContainer(nullptr, true) {
+                graphic = g;
     }
 
     RS_Graphic *getGraphic() const override {

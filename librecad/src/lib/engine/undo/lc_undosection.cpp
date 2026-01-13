@@ -105,8 +105,9 @@ void LC_UndoSection::setupAndUndoableAdd(const QList<RS_Entity*>& entitiesToInse
             ent->setPen(activePen);
         }
         auto rtti = ent->rtti();
-        if (rtti == RS2::EntityInsert || RS2::isDimensionalEntity(rtti) || RS2::isTextEntity(rtti)) { // fixme - spline
-            static_cast<RS_Insert*>(ent)->update();
+        if (rtti == RS2::EntityInsert || RS2::isDimensionalEntity(rtti) ||
+            RS2::isTextEntity(rtti) || rtti == RS2::EntityHatch || rtti == RS2::EntityImage) { // fixme - spline
+            ent->update();
         }
     }
 }

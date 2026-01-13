@@ -501,6 +501,8 @@ namespace RS2 {
         ActionGTDFCFrame,
 
         ActionInteractivePickPoint,
+        ActionInteractivePickPoint_X,
+        ActionInteractivePickPoint_Y,
         ActionInteractivePickLength,
         ActionInteractivePickAngle,
         /** Needed to loop through all actions */
@@ -509,6 +511,8 @@ namespace RS2 {
 
     inline bool isInteractiveInputAction(ActionType type) {
         return type == ActionInteractivePickPoint ||
+               type == ActionInteractivePickPoint_X ||
+               type == ActionInteractivePickPoint_Y ||
                type == ActionInteractivePickLength ||
                type == ActionInteractivePickAngle;
     }
@@ -904,6 +908,7 @@ namespace RS2 {
                 ActionPreviewEntity = 1, // Action Entities
                 Snapper = 2,             // Snapper
                 InfoCursor = 3,          // Info Cursor
+                PermanentHighlights = 4,
                 LAST
         };
 

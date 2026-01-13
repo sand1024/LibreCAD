@@ -361,6 +361,10 @@ void LC_DimStyle::DimensionLine::setBaselineDimLinesSpacing(double dimdli) {
     DIMDLI = dimdli;
 }
 
+void LC_DimStyle::DimensionLine::setSuppressFirst(bool v) {
+    setSuppressFirstLine( v ? LC_DimStyle::DimensionLine::SUPPRESS : LC_DimStyle::DimensionLine::DONT_SUPPRESS);
+}
+
 void LC_DimStyle::DimensionLine::setSuppressFirstLine(DimLineAndArrowSuppressionPolicy dimsd1) {
     checkModified(dimsd1, DIMSD1, $DIMSD1);
     DIMSD1 = dimsd1;
@@ -369,6 +373,10 @@ void LC_DimStyle::DimensionLine::setSuppressFirstLine(DimLineAndArrowSuppression
 void LC_DimStyle::DimensionLine::setSuppressSecondLine(DimLineAndArrowSuppressionPolicy dimsd2) {
     checkModified(dimsd2, DIMSD2, $DIMSD2);
     DIMSD2 = dimsd2;
+}
+
+void LC_DimStyle::DimensionLine::setSuppressSecond(bool v) {
+    setSuppressSecondLine( v ? LC_DimStyle::DimensionLine::SUPPRESS : LC_DimStyle::DimensionLine::DONT_SUPPRESS);
 }
 
 void LC_DimStyle::DimensionLine::setDrawPolicyForOutsideText(DrawPolicyForOutsideText dimtofl) {
@@ -511,14 +519,22 @@ void LC_DimStyle::ExtensionLine::setLineTypeSecond(RS2::LineType lineType) {
     DIMLTEX2 = RS_FilterDXFRW::lineTypeToName(lineType);
 }
 
-void LC_DimStyle::ExtensionLine::setSuppressFirst(ExtensionLineAndArrowSuppressionPolicy dimse1) {
+void LC_DimStyle::ExtensionLine::setSuppressFirstLine(ExtensionLineAndArrowSuppressionPolicy dimse1) {
     checkModified(dimse1, DIMSE1, $DIMSE1);
     DIMSE1 = dimse1;
 }
 
-void LC_DimStyle::ExtensionLine::setSuppressSecond(ExtensionLineAndArrowSuppressionPolicy dimse2) {
+void LC_DimStyle::ExtensionLine::setSuppressFirst(bool v) {
+    setSuppressFirstLine(!v ? LC_DimStyle::ExtensionLine::SUPPRESS : LC_DimStyle::ExtensionLine::DONT_SUPPRESS);
+}
+
+void LC_DimStyle::ExtensionLine::setSuppressSecondLine(ExtensionLineAndArrowSuppressionPolicy dimse2) {
     checkModified(dimse2, DIMSE2, $DIMSE2);
     DIMSE2 = dimse2;
+}
+
+void LC_DimStyle::ExtensionLine::setSuppressSecond(bool v) {
+    setSuppressSecondLine(!v ? LC_DimStyle::ExtensionLine::SUPPRESS : LC_DimStyle::ExtensionLine::DONT_SUPPRESS);
 }
 
 void LC_DimStyle::Arrowhead::fillByDefaults() {
@@ -1204,12 +1220,12 @@ void LC_DimStyle::ExtensionLine::setLineWidthRaw(int dimlwe) {
 
 void LC_DimStyle::ExtensionLine::setSuppressFirstRaw(int dimse1) {
     auto policy = int2SuppressionPolicy(dimse1);
-    setSuppressFirst(policy);
+    setSuppressFirstLine(policy);
 }
 
 void LC_DimStyle::ExtensionLine::setSuppressSecondRaw(int dimse2) {
     auto policy = int2SuppressionPolicy(dimse2);
-    setSuppressSecond(policy);
+    setSuppressSecondLine(policy);
 }
 
 LC_DimStyle::ExtensionLine::ExtensionLineAndArrowSuppressionPolicy
