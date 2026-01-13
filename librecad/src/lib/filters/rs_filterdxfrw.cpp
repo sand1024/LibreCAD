@@ -4198,7 +4198,7 @@ void RS_FilterDXFRW::writeDimension(RS_Dimension* d) {
             dim = dd;
             dim->type = 3 + 32;
             dd->setDiameter1Point(DRW_Coord(dr->getDefinitionPoint().x, dr->getDefinitionPoint().y, 0.0));
-            dd->setLeaderLength(dr->getLeader());
+            dd->setLeaderLength(dr->getLeaderLength());
             break;
         }
         case RS2::EntityDimRadial: {

@@ -2112,7 +2112,7 @@ void RS_FilterJWW::writeDimension(DL_WriterA& dw, RS_Dimension* d,
                                                          (const char*)toDxfString(
                                                                  d->getText()).toLocal8Bit().data(),
                                                          (const char*)d->getStyle().toLocal8Bit().data(),
-                                                         d->getAngle());
+                                                         d->getTextAngle());
 
         if (d->rtti()==RS2::EntityDimAligned) {
                 RS_DimAligned* da = (RS_DimAligned*)d;
@@ -2153,7 +2153,7 @@ void RS_FilterJWW::writeDimension(DL_WriterA& dw, RS_Dimension* d,
                 DL_DimDiametricData dimDiametricData(dr->getDefinitionPoint().x,
                                                                                          dr->getDefinitionPoint().y,
                                                                                          0.0,
-                                                                                         dr->getLeader());
+                                                                                         dr->getLeaderLength());
 
                 jww.writeDimDiametric(dw, dimData, dimDiametricData, attrib);
         } else if (d->rtti()==RS2::EntityDimAngular) {
