@@ -704,7 +704,7 @@ RS_Polyline *RS_Modification::deletePolylineNodesBetween(RS_Polyline* polyline, 
     bool done = false;
     bool nextIsStraight = false;
     const RS_Entity *lastEntity = polyline->lastEntity();
-    int i = 0;
+
     double bulge = 0.0;
 
     for (const auto e: *polyline) {
@@ -1586,7 +1586,8 @@ LC_BevelResult RS_Modification::bevel(const RS_Vector& coord1, RS_AtomicEntity* 
         auto parent1               = entity1->getParent();
         auto parent2               = entity2->getParent();
 
-        if (parent1 != nullptr && parent1->rtti() == RS2::EntityPolyline || parent2 != nullptr && parent2->rtti() == RS2::EntityPolyline) {
+        if ((parent1 != nullptr && parent1->rtti() == RS2::EntityPolyline) ||
+            (parent2 != nullptr && parent2->rtti() == RS2::EntityPolyline)) {
             if (parent1 != parent2) {
                 // different polylines
                 data.trim = false; // just create bevel
@@ -1605,8 +1606,8 @@ LC_BevelResult RS_Modification::bevel(const RS_Vector& coord1, RS_AtomicEntity* 
                 bool polylineIsClosedOrEndpointsAreTheSame = samePolyline->isClosed() || LC_LineMath::isNotMeaningfulDistance(
                     samePolyline->getStartpoint(), samePolyline->getEndpoint());
 
-                int delta             = std::abs(entity1IndexInPolyline - entity2IndexInPolyline);
-                bool adjacentSegments = (delta == 1 || (polylineIsClosedOrEndpointsAreTheSame && delta == polylineSegmentsCount - 1));
+                unsigned int delta             = std::abs(entity1IndexInPolyline - entity2IndexInPolyline);
+                bool adjacentSegments = (delta == 1 || (polylineIsClosedOrEndpointsAreTheSame && (delta == polylineSegmentsCount - 1)));
 
                 if (adjacentSegments) {
                 }
