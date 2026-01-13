@@ -372,5 +372,7 @@
         <file alias="main_menu.lci">main_menu.svg</file>
         <file alias="select_conditional.lci">select_conditional.svg</file>
         <file alias="select_mode_add.lci">select_mode_add.svg</file>
+        <file alias="interactive_pick_point_x.lci">interactive_pick_point_x.svg</file>
+        <file alias="interactive_pick_point_y.lci">interactive_pick_point_y.svg</file>
     </qresource>
 </RCC>
