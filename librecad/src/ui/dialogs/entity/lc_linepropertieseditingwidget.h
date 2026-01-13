@@ -29,7 +29,7 @@ namespace Ui {
     class LC_LinePropertiesEditingWidget;
 }
 
-class LC_LinePropertiesEditingWidget : public LC_EntityPropertiesEditorWidget{
+class LC_LinePropertiesEditingWidget : public LC_EntityPropertiesEditorWidget {
     Q_OBJECT
 public:
     explicit LC_LinePropertiesEditingWidget(QWidget *parent = nullptr);

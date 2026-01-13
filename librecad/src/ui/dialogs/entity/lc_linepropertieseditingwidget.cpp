@@ -29,6 +29,7 @@
 LC_LinePropertiesEditingWidget::LC_LinePropertiesEditingWidget(QWidget *parent)
     : LC_EntityPropertiesEditorWidget(parent)
     , ui(new Ui::LC_LinePropertiesEditingWidget){
+
     ui->setupUi(this);
 
     connect(ui->leStartX, &QLineEdit::editingFinished, this, &LC_LinePropertiesEditingWidget::onStartEditingFinished);
