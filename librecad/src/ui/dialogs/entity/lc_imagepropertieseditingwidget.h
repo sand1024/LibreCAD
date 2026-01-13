@@ -53,8 +53,6 @@ private:
     Ui::LC_ImagePropertiesEditingWidget *ui;
     RS_Image* m_entity = nullptr;
     double m_scale = 1.;
-
-
 };
 
 #endif // LC_IMAGEPROPERTIESEDITINGWIDGET_H

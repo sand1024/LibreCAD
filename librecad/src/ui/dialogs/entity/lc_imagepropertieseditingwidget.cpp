@@ -25,6 +25,8 @@
 
 #include <QFileInfo>
 
+#include "lc_graphicviewport.h"
+#include "lcguardedsignalsblocker.h"
 #include "rs_dialogfactory.h"
 #include "rs_dialogfactoryinterface.h"
 #include "rs_image.h"
@@ -57,6 +59,22 @@ LC_ImagePropertiesEditingWidget::~LC_ImagePropertiesEditingWidget(){
 
 void LC_ImagePropertiesEditingWidget::setEntity(RS_Entity* entity) {
     m_entity = static_cast<RS_Image*>(entity);
+
+
+    LC_GuardedSignalsBlocker signalsBlocker({
+        ui->leInsertX, ui->leInsertX,  ui->leAngle, ui->leWidth, ui->leHeight, ui->leScale, ui->leDPI, ui->lePath
+    });
+
+    auto wcsInsertionPoint = m_entity->getInsertionPoint();
+    auto ucsInsertionPoint = m_viewport->toUCS(wcsInsertionPoint);
+    toUI(ucsInsertionPoint, ui->leInsertX, ui->leInsertY);
+    toUIAngleDeg(m_entity->getUVector().angle(), ui->leAngle);
+    toUIValue(m_entity->getImageWidth(), ui->leWidth);
+    toUIValue(m_entity->getImageHeight(), ui->leHeight);
+    toUIValue(m_entity->getUVector().magnitude(), ui->leScale);
+
+    toUIValue(RS_Units::scaleToDpi(m_scale, m_entity->getGraphicUnit()), ui->leDPI);
+    ui->lePath->setText(m_entity->getFile());
 }
 
 
