@@ -32,8 +32,7 @@
 
 class LC_PointPickButton;
 
-class LC_EntityPropertiesEditorWidget: public QWidget,
-                                       public LC_EntityPropertiesEditorSupport{
+class LC_EntityPropertiesEditorWidget: public LC_EntityPropertiesEditorSupport{
     Q_OBJECT
 public:
     explicit LC_EntityPropertiesEditorWidget(QWidget* parent);

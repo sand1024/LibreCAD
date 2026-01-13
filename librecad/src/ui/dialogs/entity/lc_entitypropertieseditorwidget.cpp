@@ -29,7 +29,7 @@
 #include "lc_pointpickbutton.h"
 
 LC_EntityPropertiesEditorWidget::LC_EntityPropertiesEditorWidget(QWidget* parent):
-   QWidget(parent), LC_EntityPropertiesEditorSupport(nullptr) {
+   LC_EntityPropertiesEditorSupport(parent) {
 }
 
 void LC_EntityPropertiesEditorWidget::interactiveInputUpdate(
