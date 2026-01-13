@@ -25,11 +25,13 @@
 
 #include "lc_dimarrowregistry.h"
 #include "lc_dimstyle.h"
+#include "lc_dimstyle.h"
 #include "lc_dimstylepreviewgraphicview.h"
 #include "lc_dimstylepreviewpanel.h"
 #include "lc_graphicviewport.h"
 #include "lc_inputtextdialog.h"
 #include "lc_linemath.h"
+#include "lc_propertiesprovider_dim_linear.h"
 #include "lc_tabproxywidget.h"
 #include "qg_dlgoptionsdrawing.h"
 #include "qg_graphicview.h"
@@ -358,12 +360,12 @@ void LC_DlgDimStyleManager::onExtLineFixedLengthChanged(double d) const {
 }
 
 void LC_DlgDimStyleManager::onExtLineSuppress1Toggled(bool val) const {
-    m_dimStyle->extensionLine()->setSuppressFirst(val? LC_DimStyle::ExtensionLine::SUPPRESS : LC_DimStyle::ExtensionLine::DONT_SUPPRESS);
+    m_dimStyle->extensionLine()->setSuppressFirstLine(val? LC_DimStyle::ExtensionLine::SUPPRESS : LC_DimStyle::ExtensionLine::DONT_SUPPRESS);
     refreshPreview();
 }
 
 void LC_DlgDimStyleManager::onExtLineSuppress2Toggled(bool val) const {
-    m_dimStyle->extensionLine()->setSuppressSecond(val? LC_DimStyle::ExtensionLine::SUPPRESS : LC_DimStyle::ExtensionLine::DONT_SUPPRESS);
+    m_dimStyle->extensionLine()->setSuppressSecondLine(val? LC_DimStyle::ExtensionLine::SUPPRESS : LC_DimStyle::ExtensionLine::DONT_SUPPRESS);
     refreshPreview();
 }
 
@@ -959,15 +961,7 @@ void LC_DlgDimStyleManager::uiUpdateToleranceControls(bool enable, bool showLowe
     ui->grpTolAltUnit->setEnabled(enable);
 }
 
-void LC_DlgDimStyleManager::onTolMethodChangedIndexChanged(int index) {
-    bool enable = true;
-    auto tol = m_dimStyle->latteralTolerance();
-    bool showLowerLimit = true;
-    bool showVerticalPosition = false;
-    bool additionallyHideToleranceAdjustment = false;
-
-    bool drawFrame = false;
-
+void LC_DlgDimStyleManager::applyToleranceMethod(LC_DimStyle::LatteralTolerance* tol, LC_DimStyle::DimensionLine* dimline, int index, bool& enable, bool& showLowerLimit, bool& showVerticalPosition, bool& additionallyHideToleranceAdjustment, bool& drawFrame) {
     switch (index) {
         case 0: { // none
             enable = false;
@@ -1001,7 +995,6 @@ void LC_DlgDimStyleManager::onTolMethodChangedIndexChanged(int index) {
             showLowerLimit = false;
             enable = false;
 
-            auto dimline = m_dimStyle->dimensionLine();
             auto lineGap = dimline->lineGap();
             if (!std::signbit(lineGap)) {
                 dimline->setLineGap(-lineGap);
@@ -1012,6 +1005,19 @@ void LC_DlgDimStyleManager::onTolMethodChangedIndexChanged(int index) {
         default:
             break;
     }
+}
+
+void LC_DlgDimStyleManager::onTolMethodChangedIndexChanged(int index) {
+    bool enable = true;
+    auto tol = m_dimStyle->latteralTolerance();
+    auto dimline = m_dimStyle->dimensionLine();
+    bool showLowerLimit = true;
+    bool showVerticalPosition = false;
+    bool additionallyHideToleranceAdjustment = false;
+
+    bool drawFrame = false;
+
+    applyToleranceMethod(tol, dimline, index, enable, showLowerLimit, showVerticalPosition, additionallyHideToleranceAdjustment, drawFrame);
 
     ui->cbTextDrawFrameAroundText->setChecked(drawFrame);
     uiUpdateToleranceControls(enable,showLowerLimit, showVerticalPosition);
@@ -1545,8 +1551,8 @@ void LC_DlgDimStyleManager::fillPrimaryUnitTab(LC_DimStyle* dimStyle) {
             feetSuppress = true;
     }
 
-    bool linearLeadingSuppress = zerosSuppression->isLinearSuppress(LC_DimStyle::ZerosSuppression::SUPPRESS_LEADING_ZEROS);
-    bool linearTrailingSuppress = zerosSuppression->isLinearSuppress(LC_DimStyle::ZerosSuppression::SUPPRESS_TRAILING_ZEROS);
+    bool linearLeadingSuppress = zerosSuppression->isLinearSuppress(LC_DimStyle::ZerosSuppression::LEADING_IN_DECIMAL);
+    bool linearTrailingSuppress = zerosSuppression->isLinearSuppress(LC_DimStyle::ZerosSuppression::TRAILING_IN_DECIMAL);
     ui->cbZerosLeading->setChecked(linearLeadingSuppress);
     ui->cbZerosTrailing->setChecked(linearTrailingSuppress);
     ui->cbZeros0Feet->setChecked(feetSuppress);
@@ -1637,20 +1643,18 @@ void LC_DlgDimStyleManager::fillAltUnitTab(LC_DimStyle* dimStyle) {
     enableAltUnitsControls(altUnitsEnabled);
 }
 
-void LC_DlgDimStyleManager::fillToleranceTab(LC_DimStyle* dimStyle) {
-    auto tolerance = dimStyle->latteralTolerance();
-
-    auto linear = dimStyle->linearFormat();
+int LC_DlgDimStyleManager::computeToleranceMethod(LC_DimStyle* dimStyle, LC_DimStyle::LatteralTolerance* tolerance, bool& enable, bool& showVerticalPosition, bool& showLowerLimit, bool& showUpperLimit) {
 
     bool dimTol = tolerance->isAppendTolerancesToDimText();
     bool dimLim = tolerance->isLimitsGeneratedAsDefaultText();
 
     int tolMethod = 0;
-    bool enable = true;
-    bool showVerticalPosition = false;
-    bool showLowerLimit = true;
+    enable = true;
+    showVerticalPosition = false;
+    showLowerLimit = true;
+    showUpperLimit = true;
 
-    auto dimLine = m_dimStyle->dimensionLine();
+    auto dimLine = dimStyle->dimensionLine();
     double lineGap = dimLine->lineGap();
     bool linegapNegative = std::signbit(lineGap);
 
@@ -1666,31 +1670,48 @@ void LC_DlgDimStyleManager::fillToleranceTab(LC_DimStyle* dimStyle) {
         if (LC_LineMath::isNotMeaningful(lowerLimit)) {
             tolMethod = 1; // symmetrical
             showLowerLimit = false;
+            showUpperLimit = true;
         }
         else {
             tolMethod = 2; // deviation
+            showUpperLimit = true;
         }
     }
     else {
         if (dimLim) {
             tolMethod = 3; // limits
             showVerticalPosition = false;
+            showUpperLimit = true;
         }
         else {
             enable = false;
             if (linegapNegative) {
                 tolMethod = 4; // basic
+                showUpperLimit = false;
+                showLowerLimit = false;
             }
             else {
                 tolMethod = 0; // None
+                showUpperLimit = false;
+                showLowerLimit = false;
             }
         }
     }
+    return tolMethod;
+}
+
+void LC_DlgDimStyleManager::fillToleranceTab(LC_DimStyle* dimStyle) {
+    auto tolerance = dimStyle->latteralTolerance();
+    auto dimline = dimStyle->dimensionLine();
+    bool enable;
+    bool showVerticalPosition;
+    bool showLowerLimit, showUpperLimit;
+    int tolMethod = computeToleranceMethod(dimStyle,  tolerance, enable, showVerticalPosition, showLowerLimit, showUpperLimit);
 
     uiUpdateToleranceControls(enable,showLowerLimit, showVerticalPosition);
 
     ui->cbTolMethod->setCurrentIndex(tolMethod); // basic
-
+    auto linear = dimStyle->linearFormat();
     QG_DlgOptionsDrawing::updateLengthPrecisionCombobox(linear->format(), ui->cbTolPrecision);
     ui->cbTolPrecision->setCurrentIndex(tolerance->decimalPlaces());
 

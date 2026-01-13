@@ -51,6 +51,12 @@ public:
     void refreshPreview() const;
     void resizeEvent(QResizeEvent*) override;
     void setReadOnly();
+
+    static int computeToleranceMethod(LC_DimStyle* dimStyle, LC_DimStyle::LatteralTolerance* tolerance,
+                                      bool& enable, bool& showVerticalPosition, bool& showLowerLimit, bool& showUpperLimit);
+
+    static void applyToleranceMethod(LC_DimStyle::LatteralTolerance* tol, LC_DimStyle::DimensionLine* dimLine,int index, bool& enable, bool& showLowerLimit,
+                              bool& showVerticalPosition, bool& additionallyHideToleranceAdjustment, bool& drawFrame);
 protected slots:
     // lines tab slots
     void onDimLineColorChanged(const RS_Color& color) const;
@@ -183,6 +189,7 @@ private:
     void fillFitTab(LC_DimStyle* dimStyle) const;
     void fillPrimaryUnitTab(LC_DimStyle* dimStyle);
     void fillAltUnitTab(LC_DimStyle* dimStyle);
+
     void fillToleranceTab(LC_DimStyle* dimStyle);
     void enableAltUnitsControls(bool enable) const;
     void uiUpdateToleranceControls(bool enable, bool showLowerLimit, bool showVerticalPosition) const;
