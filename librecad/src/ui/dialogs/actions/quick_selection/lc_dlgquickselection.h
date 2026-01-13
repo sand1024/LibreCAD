@@ -53,7 +53,7 @@ struct LC_QuickSearchSelectionDialogState;
 class LC_DlgQuickSelection : public LC_Dialog {
     Q_OBJECT
 public:
-    LC_DlgQuickSelection(QWidget* parent, RS_Document* doc, LC_GraphicViewport* viewport, LC_ActionContext::InteractiveInputInfo::InputType inputType,
+    LC_DlgQuickSelection(QWidget* parent, LC_ActionContext* actionContext, LC_ActionContext::InteractiveInputInfo::InputType inputType,
                          LC_QuickSearchSelectionDialogState* savedState, double interactiveInputValue1,
                          double interactiveInputValue2);
     ~LC_DlgQuickSelection() override;
@@ -76,6 +76,7 @@ protected slots:
     void onUpdatePrecisionByDocumentSettings();
 private:
     Ui::LC_DlgQuickSelection *ui;
+    LC_ActionContext* m_actionContext;
     RS_Document *m_document {nullptr};
     LC_GraphicViewport* m_viewport {nullptr};
     RS_Selection::CurrentSelectionState m_selectionState;

@@ -51,6 +51,12 @@
       <number>9</number>
      </property>
      <widget class="QWidget" name="pageLayer">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <layout class="QHBoxLayout" name="horizontalLayout_7">
        <property name="leftMargin">
         <number>0</number>
@@ -86,6 +92,12 @@
       </layout>
      </widget>
      <widget class="QWidget" name="pageColor">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <layout class="QHBoxLayout" name="horizontalLayout_5">
        <property name="leftMargin">
         <number>0</number>
@@ -109,6 +121,12 @@
       </layout>
      </widget>
      <widget class="QWidget" name="pageColorResolved">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <layout class="QHBoxLayout" name="horizontalLayout_8">
        <property name="leftMargin">
         <number>0</number>
@@ -132,6 +150,12 @@
       </layout>
      </widget>
      <widget class="QWidget" name="pageLineType">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <property name="spacing">
         <number>0</number>
@@ -158,6 +182,12 @@
       </layout>
      </widget>
      <widget class="QWidget" name="pageLineTypeResolved">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <layout class="QHBoxLayout" name="horizontalLayout_10">
        <property name="leftMargin">
         <number>0</number>
@@ -181,6 +211,12 @@
       </layout>
      </widget>
      <widget class="QWidget" name="pageLineWidth">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <layout class="QHBoxLayout" name="horizontalLayout_6">
        <property name="leftMargin">
         <number>0</number>
@@ -204,6 +240,12 @@
       </layout>
      </widget>
      <widget class="QWidget" name="pageLineWidthResolved">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <layout class="QHBoxLayout" name="horizontalLayout_9">
        <property name="leftMargin">
         <number>0</number>
@@ -227,6 +269,12 @@
       </layout>
      </widget>
      <widget class="QWidget" name="pageChoice">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <layout class="QHBoxLayout" name="horizontalLayout_4">
        <property name="leftMargin">
         <number>0</number>
@@ -283,6 +331,18 @@
       </layout>
      </widget>
      <widget class="QWidget" name="pageValue">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>22</height>
+       </size>
+      </property>
       <layout class="QHBoxLayout" name="horizontalLayout" stretch="5,0,0,0,0,0,2,0">
        <property name="leftMargin">
         <number>0</number>
@@ -304,6 +364,18 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>22</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>Value to match</string>
          </property>
@@ -311,6 +383,18 @@
        </item>
        <item>
         <widget class="QToolButton" name="tbPickAngle">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>22</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>Pick angle from drawing</string>
          </property>
@@ -325,6 +409,18 @@
        </item>
        <item>
         <widget class="QToolButton" name="tbPickLength">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>22</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>Pick distance from drawing</string>
          </property>
@@ -339,6 +435,18 @@
        </item>
        <item>
         <widget class="QToolButton" name="tbPickCoordX">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>22</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>Pick X coordinate of point  from drawing</string>
          </property>
@@ -353,6 +461,18 @@
        </item>
        <item>
         <widget class="QToolButton" name="tbPickCoordY">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>22</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>Pick Y coordinate of point  from drawing</string>
          </property>
@@ -367,6 +487,24 @@
        </item>
        <item>
         <widget class="QLabel" name="lblPrecision">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>22</height>
+          </size>
+         </property>
          <property name="text">
           <string>Tolerance:</string>
          </property>
@@ -380,6 +518,18 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>22</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>Tolearance range used for floating-point values comparison. Values considered equal, if the absolute unsigned difference between them is within this range. </string>
          </property>
@@ -387,6 +537,18 @@
        </item>
        <item>
         <widget class="QToolButton" name="tbPrecisionUpdateByDoc">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>22</height>
+          </size>
+         </property>
          <property name="toolTip">
           <string>Update tolerance based on the document unit precision settings.</string>
          </property>

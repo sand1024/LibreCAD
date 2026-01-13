@@ -35,10 +35,10 @@
 #include "lc_entitymatchdescriptorsregistry.h"
 #include "rs_graphic.h"
 
-LC_DlgQuickSelection::LC_DlgQuickSelection(QWidget* parent, RS_Document* container, LC_GraphicViewport* viewport,
+LC_DlgQuickSelection::LC_DlgQuickSelection(QWidget* parent, LC_ActionContext *actionContext,
                                            LC_ActionContext::InteractiveInputInfo::InputType interactiveInputType,
                                            LC_QuickSearchSelectionDialogState* savedState, double interactiveInputValue1, double interactiveInputValue2)
-    : LC_Dialog(parent, "QuickSelection"), ui(new Ui::LC_DlgQuickSelection), m_document{container}, m_viewport{viewport} {
+    : LC_Dialog(parent, "QuickSelection"), ui(new Ui::LC_DlgQuickSelection), m_actionContext{actionContext},m_document{actionContext->getDocument()}, m_viewport{actionContext->getViewport()} {
     ui->setupUi(this);
 
     const auto selection = RS_Selection(m_document, m_viewport);
@@ -67,7 +67,6 @@ LC_DlgQuickSelection::LC_DlgQuickSelection(QWidget* parent, RS_Document* contain
     connect(ui->tbPrecisionUpdateByDoc, &QToolButton::clicked, this, &LC_DlgQuickSelection::onUpdatePrecisionByDocumentSettings);
     connect(ui->lePrecision, &QLineEdit::editingFinished, this, &LC_DlgQuickSelection::onPrecisionTextEditingFinished);
 
-
     ui->cbValueColor->init(true, false);
     ui->cbLineWidth->init(true, false);
     ui->cbLineType->init(true, false);
@@ -76,7 +75,7 @@ LC_DlgQuickSelection::LC_DlgQuickSelection(QWidget* parent, RS_Document* contain
     ui->cbLineWidthResolved->init(false, false);
     ui->cbLineTypeResolved->init(false, false);
 
-    ui->cbValueLayer->init(*(container->getLayerList()), false, false);
+    ui->cbValueLayer->init(*(m_document->getGraphic()->getLayerList()), false, false);
 
     if (interactiveInputType != LC_ActionContext::InteractiveInputInfo::NOTNEEDED) {
         restoreFromSavedState(savedState, interactiveInputType, interactiveInputValue1, interactiveInputValue2);
@@ -374,22 +373,22 @@ void LC_DlgQuickSelection::onEntityTypeIndexChanged(int index) {
     const auto propertiesList = ui->lvProperties;
     m_entityType = obtainEntityType(index);
 
-    QList<QPair<QString, QString>> propertyInfo;
-    m_entityMatchDescriptor = LC_EntityMatchDescriptorsRegistry::instance()->findEntityMatchDescriptor(m_entityType);
+    m_entityMatchDescriptor = LC_EntityMatchDescriptorsRegistry::instance(m_actionContext)->findEntityMatchDescriptor(m_entityType);
 
     Q_ASSERT(m_entityMatchDescriptor != nullptr);
-
-    m_entityMatchDescriptor->collectPropertiesInfo(propertyInfo);
 
     propertiesList->blockSignals(true);
     propertiesList->clear();
 
-    for (const auto& p : propertyInfo) {
+    m_entityMatchDescriptor->fillPropertiesInfo([propertiesList](QString& name, QString& displayName, QString& description)->void {
         const auto newItem = new QListWidgetItem;
-        newItem->setText(p.second);
-        newItem->setData(Qt::UserRole, p.first);
-        propertiesList->addItem(newItem);
-    }
+       newItem->setText(displayName);
+       newItem->setData(Qt::UserRole, name);
+       newItem->setToolTip(description);
+       propertiesList->addItem(newItem);
+    });
+
+
     propertiesList->blockSignals(false);
     propertiesList->setCurrentRow(0);
 }
@@ -538,8 +537,9 @@ void LC_DlgQuickSelection::setPropertyValueInput(LC_PropertyMatchDescriptor* pro
                 ui->swValues->setCurrentIndex(PAGE_CHOICE);
                 ui->cbValue->blockSignals(true);
                 ui->cbValue->clear();
-                QList<QPair<QString, QVariant>>* choiceValues = propertyDescriptor->getChoiceValues();
-                for (const auto& p : *choiceValues) {
+                QList<QPair<QString, QVariant>> choiceValues;
+                propertyDescriptor->getChoiceValues(choiceValues);
+                for (const auto& p : choiceValues) {
                     ui->cbValue->addItem(p.first, p.second);
                 }
                 ui->cbValue->setCurrentIndex(0);
