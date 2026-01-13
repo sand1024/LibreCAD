@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <QString>
 #include "lc_latecompletionrequestor.h"
 #include "rs.h"
+#include "rs_graphicview.h"
 #include "rs_vector.h"
 
 class RS_Entity;
@@ -77,6 +78,7 @@ public:
     RS_Entity* getContextMenuActionContextEntity() const;
     RS_Vector getContextMenuActionClickPosition() const;
     bool hasSelection();
+    LC_GraphicViewport* getViewport() {return m_graphicView == nullptr ? nullptr : m_graphicView->getViewPort();}
 
     struct InteractiveInputInfo {
         enum State {

@@ -266,7 +266,7 @@ void LC_ActionPreSelectionAwareBase::onSelectionCompleted([[maybe_unused]]bool s
     }
 }
 
-void LC_ActionPreSelectionAwareBase::proceedSelectionComplete(bool allowEmptySelection, bool fromInit, [[maybe_unused]]unsigned int selectedCount) {
+void LC_ActionPreSelectionAwareBase::proceedSelectionComplete(bool allowEmptySelection, [[maybe_unused]]bool fromInit, [[maybe_unused]]unsigned int selectedCount) {
     bool proceed = selectedCount > 0 || allowEmptySelection;
     if (proceed) {
         m_selectionComplete = true;

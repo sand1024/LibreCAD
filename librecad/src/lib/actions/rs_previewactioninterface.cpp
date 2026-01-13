@@ -234,12 +234,39 @@ bool RS_PreviewActionInterface::trySnapToRelZeroCoordinateEvent(const LC_MouseEv
 RS_Vector RS_PreviewActionInterface::getSnapAngleAwarePoint(const LC_MouseEvent *e, const RS_Vector& basepoint, const RS_Vector& pos, bool drawMark, bool force){
     RS_Vector result = pos;
     if (force){
-        RS_Vector freePosition  = e->graphPoint; // fixme = test, review and decide whether free snap is actually needed there. May be use snapMode instead of free?
-        // todo -  if there are restrictions or snap to grid, snap to angle will not work in snapper... yet this is double calc!
-        if(!(m_snapMode.restriction != RS2::RestrictNothing || isSnapToGrid())){
-            result = doSnapToAngle(freePosition, basepoint, m_snapToAngleStep);
-            if (drawMark){
-                previewSnapAngleMark(basepoint, result);
+        RS_Vector freePosition  = e->graphPoint;
+        if(m_snapMode.restriction == RS2::RestrictNothing){
+            if (isSnapToGrid()) {
+                if (e->isShift) { // support of vertical/horizontal restriction if snap to grid is enabled.
+                    RS_Vector vpv, vph, delta;
+                    if (m_viewport->hasUCS()) {
+                        RS_Vector ucsBasePoint = m_viewport->toUCS(basepoint);
+                        RS_Vector ucsFreePosition = m_viewport->toUCS(freePosition);
+                        delta = ucsFreePosition - ucsBasePoint;
+                        vpv = m_viewport->toWorld(RS_Vector(ucsBasePoint.x, ucsFreePosition.y));
+                        vph = m_viewport->toWorld(RS_Vector(ucsFreePosition.x, ucsBasePoint.y));
+                    } else {
+                        delta = freePosition - basepoint;
+                        vpv = RS_Vector(basepoint.x, freePosition.y);
+                        vph = RS_Vector(freePosition.x, basepoint.y);
+                    }
+
+                    if (std::abs(delta.x) < std::abs(delta.y)) {
+                        result = vpv;
+                    }
+                    else {
+                        result = vph;
+                    }
+                    if (drawMark){
+                        previewSnapAngleMark(basepoint, result);
+                    }
+                }
+            }
+            else {
+                result = doSnapToAngle(freePosition, basepoint, m_snapToAngleStep);
+                if (drawMark){
+                    previewSnapAngleMark(basepoint, result);
+                }
             }
         }
     }
@@ -479,7 +506,7 @@ void RS_PreviewActionInterface::initRefEntitiesMetrics(){
         m_highlightEntitiesOnHover = LC_GET_BOOL("VisualizeHovering", true);
         m_highlightEntitiesRefPointsOnHover = LC_GET_BOOL("VisualizeHoveringRefPoints", true);
 
-        bool ok=false;
+        bool ok =false;
         m_refPointSize = RS_Math::eval(pdsizeStr, &ok);
         if (!ok) {
             m_refPointSize = LC_DEFAULTS_PDSize;

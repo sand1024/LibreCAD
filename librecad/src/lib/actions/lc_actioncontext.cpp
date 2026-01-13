@@ -90,10 +90,16 @@ void LC_ActionContext::interactiveInputInvoke(InteractiveInputInfo::InputType in
             setCurrentAction(RS2::ActionInteractivePickAngle, nullptr);
             break;
         }
-        case InteractiveInputInfo::POINT:
-        case InteractiveInputInfo::POINT_X:
-        case InteractiveInputInfo::POINT_Y: {
+        case InteractiveInputInfo::POINT: {
             setCurrentAction(RS2::ActionInteractivePickPoint, nullptr);
+            break;
+        }
+        case InteractiveInputInfo::POINT_X: {
+            setCurrentAction(RS2::ActionInteractivePickPoint_X, nullptr);
+            break;
+        }
+        case InteractiveInputInfo::POINT_Y: {
+            setCurrentAction(RS2::ActionInteractivePickPoint_Y, nullptr);
             break;
         }
         default:
