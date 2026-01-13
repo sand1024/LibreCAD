@@ -61,7 +61,13 @@ void LC_DlgDimension::saveDimensionTypeDependentProperties() const {
         }
         case RS2::EntityDimLinear: {
             auto dimLinear = static_cast<RS_DimLinear*>(m_entity);
-            dimLinear->setAngle(toWCSAngle(ui->leAngle, m_entity->getAngle()));
+            RS_DimLinear* original = dynamic_cast<RS_DimLinear*>(m_entity);
+            if (original != nullptr) {
+                dimLinear->setAngle(toWCSAngle(ui->leAngle, original->getAngle()));
+            }
+            else {
+                dimLinear->setAngle(toWCSAngle(ui->leAngle, 0.0));
+            }
         }
         default:
             break;
