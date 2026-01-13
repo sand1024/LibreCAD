@@ -35,7 +35,7 @@ RS_Vector LC_EntityPropertiesEditorSupport::toUCSVector(const RS_Vector &vect) c
     return result;
 }
 
-LC_EntityPropertiesEditorSupport::LC_EntityPropertiesEditorSupport(LC_GraphicViewport* viewport):m_viewport{viewport} {
+LC_EntityPropertiesEditorSupport::LC_EntityPropertiesEditorSupport(QWidget* parent):QWidget(parent), m_viewport{nullptr} {
 }
 
 void LC_EntityPropertiesEditorSupport::setGraphicViewport(LC_GraphicViewport* viewport) {
@@ -128,18 +128,40 @@ void LC_EntityPropertiesEditorSupport::toUIAngleDegRaw(double val, QLineEdit* ed
     ed->setText(sValue);
 }
 
-RS_Vector LC_EntityPropertiesEditorSupport::toWCSVector(const QString &sx, const QString &sy, const RS_Vector& defaults) const {
+RS_Vector LC_EntityPropertiesEditorSupport::toWCSVector(const QString &sx, const QString &sy, const RS_Vector& defaults, VectorModificationState state) const {
     RS_Vector ucsDefaults = toUCSVector(defaults);
-    double uix = toDouble(sx, 0.0, ucsDefaults.x);
-    double uiy = toDouble(sy, 0.0, ucsDefaults.y);
-
-    const RS_Vector &uiPos = RS_Vector(uix,uiy);
-    RS_Vector entityPos = toWCSVector(uiPos);
+    if (state == X) {
+        double uix = toDouble(sx, 0.0, ucsDefaults.x);
+        ucsDefaults.x = uix;
+    }
+    else if (state == Y){
+        double uiy = toDouble(sy, 0.0, ucsDefaults.y);
+        ucsDefaults.y = uiy;
+    }
+    else {
+        double uix = toDouble(sx, 0.0, ucsDefaults.x);
+        double uiy = toDouble(sy, 0.0, ucsDefaults.y);
+        ucsDefaults.x = uix;
+        ucsDefaults.y = uiy;
+    }
+    RS_Vector entityPos = toWCSVector(ucsDefaults);
     return entityPos;
 }
 
-RS_Vector LC_EntityPropertiesEditorSupport::toWCS(QLineEdit* leX, const QLineEdit* leY, const RS_Vector& defaults) const{
-    return toWCSVector(leX->text(), leY->text(), defaults);
+QLineEdit* LC_EntityPropertiesEditorSupport::getIfSender(QLineEdit* e, QObject* sender) {
+    return e == sender ? e: nullptr;
+}
+
+RS_Vector LC_EntityPropertiesEditorSupport::toWCS(QLineEdit* leX, const QLineEdit* leY, const RS_Vector& wcsDefaults) const{
+    VectorModificationState state = BOTH;
+    auto sndr = sender();
+    if (leX == sndr) {
+        state = X;
+    }
+    else if (leY == sndr) {
+        state = Y;
+    }
+    return toWCSVector(leX->text(), leY->text(), wcsDefaults, state);
 }
 
 RS_Vector LC_EntityPropertiesEditorSupport::toWCSRaw(QLineEdit* leX, const QLineEdit* leY, const RS_Vector& defs) const{

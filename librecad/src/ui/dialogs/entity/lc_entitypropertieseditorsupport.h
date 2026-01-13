@@ -23,7 +23,9 @@
 
 #ifndef LC_ENTITYPROPERTIESEDITORSUPPORT_H
 #define LC_ENTITYPROPERTIESEDITORSUPPORT_H
+#include <QObject>
 #include <QString>
+#include <QWidget>
 
 #include "rs_vector.h"
 
@@ -31,12 +33,16 @@ class QCheckBox;
 class QLineEdit;
 class LC_GraphicViewport;
 
-class LC_EntityPropertiesEditorSupport
-{
+class LC_EntityPropertiesEditorSupport: public QWidget{
+    Q_OBJECT
 public:
-    LC_EntityPropertiesEditorSupport(LC_GraphicViewport* m_viewport);
+    explicit LC_EntityPropertiesEditorSupport(QWidget* parent);
     void setGraphicViewport(LC_GraphicViewport* m_viewport);
 protected:
+    enum VectorModificationState {
+        X, Y, BOTH
+    };
+
     LC_GraphicViewport* m_viewport;
 
     double toUCSAngle(double angle) const;
@@ -45,7 +51,8 @@ protected:
     QPair<QString, QString> toUIStr(const RS_Vector &vect) const;
     void toUI(const RS_Vector &vect, QLineEdit* sx, QLineEdit *sy) const;
     RS_Vector toWCSVector(const RS_Vector& vect) const;
-    RS_Vector toWCSVector(const QString &sx, const QString &sy, const RS_Vector& wcsDefaults) const;
+    RS_Vector toWCSVector(const QString &sx, const QString &sy, const RS_Vector& wcsDefaults, VectorModificationState state) const;
+    QLineEdit* getIfSender(QLineEdit* e, QObject* sender);
     RS_Vector toWCS(QLineEdit* leX, const QLineEdit* leY, const RS_Vector& wcsDefaults) const;
 
     QString asString(double value) const;
