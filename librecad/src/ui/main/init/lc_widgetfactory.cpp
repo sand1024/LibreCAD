@@ -267,6 +267,7 @@ QDockWidget* LC_WidgetFactory::createPropertySheetWidget(){
     dock->setWidget(widget);
 
     connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, widget, &LC_PropertySheetWidget::updateWidgetSettings);
+    connect(dock, &QDockWidget::visibilityChanged, widget, &LC_PropertySheetWidget::onDockVisibilityChanged);
 
     m_appWin->m_propertySheetWidget = widget;
     return dock;
