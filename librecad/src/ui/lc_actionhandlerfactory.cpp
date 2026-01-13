@@ -239,9 +239,10 @@ namespace InnerFactory{
             case RS2::ActionEditKillAllActions: {
                 if (view != nullptr) {
                     // DO we need to call some form of a 'clean' function?
-                    view->killAllActions();
-                    auto document = ctx->getDocument();
-                    RS_Selection::unselectAllInDocument(document, view->getViewPort());
+                    if (view->killAllActions()) {
+                        auto document = ctx->getDocument();
+                        RS_Selection::unselectAllInDocument(document, view->getViewPort());
+                    }
                 }
                 return nullptr;
             }
@@ -968,7 +969,13 @@ namespace InnerFactory{
                 return new LC_ActionDimOrdinateRebase(ctx);
             }
             case RS2::ActionInteractivePickPoint: {
-                return new LC_ActionInteractivePickPosition(ctx);
+                return new LC_ActionInteractivePickPosition(ctx, RS2::ActionInteractivePickPoint);
+            }
+            case RS2::ActionInteractivePickPoint_X: {
+                return new LC_ActionInteractivePickPosition(ctx,RS2::ActionInteractivePickPoint_X);
+            }
+            case RS2::ActionInteractivePickPoint_Y: {
+                return new LC_ActionInteractivePickPosition(ctx,RS2::ActionInteractivePickPoint_Y);
             }
             case RS2::ActionInteractivePickLength: {
                 return new LC_ActionInteractivePickDistance(ctx);
