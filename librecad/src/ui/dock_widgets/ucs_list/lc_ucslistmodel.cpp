@@ -290,11 +290,14 @@ int LC_UCSListModel::count() const {
 }
 
 QString LC_UCSListModel::getUCSInfo(LC_UCS *ucs) const {
-    QString originX = m_formatter->formatLinear(ucs->getOrigin().x);
-    QString originY = m_formatter->formatLinear(ucs->getOrigin().y);
-    QString angle = m_formatter->formatRawAngle(ucs->getXAxis().angle());
-    QString origin = originX.append(", "). append(originY).append(" < ").append(angle);
-    return origin;
+    QString result = "";
+    if (m_formatter != nullptr) {
+        QString originX = m_formatter->formatLinear(ucs->getOrigin().x);
+        QString originY = m_formatter->formatLinear(ucs->getOrigin().y);
+        QString angle = m_formatter->formatRawAngle(ucs->getXAxis().angle());
+        result = originX.append(", "). append(originY).append(" < ").append(angle);
+    }
+    return result;
 }
 
 LC_UCSListModel::UCSItem *LC_UCSListModel::createUCSItem(LC_UCS *ucs) {

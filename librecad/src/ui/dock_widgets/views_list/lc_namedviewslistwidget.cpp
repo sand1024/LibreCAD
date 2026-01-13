@@ -169,7 +169,11 @@ void LC_NamedViewsListWidget::refresh() {
 
 void LC_NamedViewsListWidget::updateData(bool restoreSelectionIfPossible) {
     int selectedRow = getSingleSelectedRow();
-    m_viewsModel->setViewsList(m_currentViewList, m_viewport->getFormatter());
+    LC_Formatter* formatter = nullptr;
+    if (m_viewport != nullptr) {
+        formatter = m_viewport->getFormatter();
+    }
+    m_viewsModel->setViewsList(m_currentViewList, formatter);
     restoreSingleSelectedRow(restoreSelectionIfPossible, selectedRow);
     updateButtonsState();
     if (m_options->showColumnIconType){

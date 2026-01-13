@@ -153,12 +153,17 @@ QString LC_QuickInfoBaseData::getFormattedVectorForIndex(const int index) const{
  * @param doc
  * @param view
  */
-void LC_QuickInfoBaseData::setDocumentAndView(RS_Document *doc, LC_GraphicViewport *view){
+void LC_QuickInfoBaseData::setDocumentAndView(RS_Document *doc, LC_GraphicViewport *view) {
     clear();
     m_document = doc;
     m_viewport = view;
-    m_formatter = view->getFormatter();
-    updateFormats();
+    if (view != nullptr) {
+        m_formatter = view->getFormatter();
+        updateFormats();
+    }
+    else{
+        m_formatter = nullptr;
+    }
 }
 
 void LC_QuickInfoBaseData::updateFormats(){

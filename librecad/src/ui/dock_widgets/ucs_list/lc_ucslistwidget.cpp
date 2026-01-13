@@ -156,15 +156,25 @@ void LC_UCSListWidget::setGraphicView(RS_GraphicView *gv) {
         disconnect(m_graphicView, &RS_GraphicView::ucsChanged, this, &LC_UCSListWidget::onViewUCSChanged);
     }
     m_graphicView = gv;
-    if (gv != nullptr && gv->getGraphic() != nullptr) {
+    if (gv != nullptr) {
         RS_Graphic *graphic = gv->getGraphic();
-        LC_UCSList *ucsList = graphic->getUCSList();
-        m_viewport = gv->getViewPort();
-        connect(gv, &RS_GraphicView::ucsChanged, this, &LC_UCSListWidget::onViewUCSChanged);
-        setUCSList(ucsList);
+        if (graphic != nullptr) {
+            LC_UCSList *ucsList = graphic->getUCSList();
+            m_viewport = gv->getViewPort();
+            connect(gv, &RS_GraphicView::ucsChanged, this, &LC_UCSListWidget::onViewUCSChanged);
+            setUCSList(ucsList);
 
-        LC_UCS* currentUCS = gv->getGraphic()->getCurrentUCS();
-        updateCurrentUCSWidget(currentUCS);
+            LC_UCS* currentUCS = gv->getGraphic()->getCurrentUCS();
+            updateCurrentUCSWidget(currentUCS);
+        }
+        else { // fixme - do we need additional processing for blocks there???
+            m_viewport = nullptr;
+            setUCSList(nullptr);
+            QIcon none;
+            if (m_ucsStateWidget != nullptr) {
+                m_ucsStateWidget->update(none, "", "");
+            }
+        }
     }
     else{
         m_viewport = nullptr;
@@ -236,8 +246,16 @@ void LC_UCSListWidget::updateData(bool restoreSelectionIfPossible) {
         ui->tvTable->setColumnWidth(m_ucsListModel->translateColumn(LC_UCSListModel::ICON_TYPE), ICON_WIDTH);
     }
     if (m_graphicView != nullptr) {
-        LC_UCS* currentUCS = m_graphicView->getGraphic()->getCurrentUCS();
-        updateCurrentUCSWidget(currentUCS);
+        auto graphic = m_graphicView->getGraphic();
+        if (graphic != nullptr) {
+            LC_UCS* currentUCS = graphic->getCurrentUCS();
+            updateCurrentUCSWidget(currentUCS);
+        }
+        else {
+            // are we in block?
+            auto ucs =  LC_WCS::instance;
+            updateCurrentUCSWidget(&ucs);
+        }
     }
     emit ucsListChanged();
 }
