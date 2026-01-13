@@ -36,7 +36,8 @@ class RS_Vector;
 class LC_Formatter{
 public:
     explicit LC_Formatter(LC_GraphicViewport* viewport): m_viewport{viewport} {}
-    virtual ~LC_Formatter() = default;;
+    virtual ~LC_Formatter() = default;
+    RS2::Unit getUnit() {return m_unit;}
     QString formatWCSVector(const RS_Vector &wcsPos) const;
     QString formatUCSVector(const RS_Vector &ucsPos) const;
     QString formatWCSDeltaVector(const RS_Vector &wcsDelta) const;
@@ -44,6 +45,7 @@ public:
     QString formatWCSAngleDegrees(double wcsAngle) const;
     QString formatUCSAngle(double wcsAngle) const;
     QString formatRawAngle(double angle) const;
+    QString formatRawAngle(double angle, RS2::AngleFormat format) const;
     QString formatLinear(double length) const;
     QString formatDouble(const double &x) const;
     QString formatInt(const int &x) const;

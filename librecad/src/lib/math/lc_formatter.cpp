@@ -50,7 +50,6 @@ QString LC_Formatter::formatInt(const int &x) const{
     return result;
 }
 
-
 /**
  * Performs formatting of given vector according to units specified by drawing preferences
  * @param wcsPos vector
@@ -105,7 +104,7 @@ QString LC_Formatter::formatWCSAngle(double wcsAngle) const {
     if (m_viewport->hasUCS()){
         ucsAngle = m_viewport->toUCSAngle(wcsAngle);
     }
-    double ucsRelAngle = m_viewport->toUCSBasisAngle(wcsAngle, m_anglesBase, m_anglesCounterClockWise);
+    double ucsRelAngle = m_viewport->toUCSBasisAngle(ucsAngle, m_anglesBase, m_anglesCounterClockWise);
     return formatRawAngle(ucsRelAngle);
 }
 
@@ -128,6 +127,12 @@ QString LC_Formatter::formatRawAngle(double angle) const {
     return result;
 }
 
+QString LC_Formatter::formatRawAngle(double angle, RS2::AngleFormat format) const {
+    QString result =  RS_Units::formatAngle(angle, format, m_anglePrecision);
+    return result;
+}
+
+
 /**
  * formats linear value according to settings of drawing preferences
  * @param length
@@ -139,14 +144,16 @@ QString LC_Formatter::formatLinear(double length) const {
 }
 
 void LC_Formatter::updateByGraphic(RS_Graphic* graphic){
-    m_unit = graphic->getUnit();
-    m_linearFormat = graphic->getLinearFormat();
-    m_linearPrecision = graphic->getLinearPrecision();
-    m_angleFormat = graphic->getAngleFormat();
-    m_anglePrecision = graphic->getAnglePrecision();
+    if (graphic != nullptr) {
+        m_unit = graphic->getUnit();
+        m_linearFormat = graphic->getLinearFormat();
+        m_linearPrecision = graphic->getLinearPrecision();
+        m_angleFormat = graphic->getAngleFormat();
+        m_anglePrecision = graphic->getAnglePrecision();
 
-    m_anglesBase = graphic->getAnglesBase();
-    m_anglesCounterClockWise = graphic->areAnglesCounterClockWise();
+        m_anglesBase = graphic->getAnglesBase();
+        m_anglesCounterClockWise = graphic->areAnglesCounterClockWise();
+    }
 }
 
 
