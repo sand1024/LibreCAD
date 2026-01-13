@@ -26,69 +26,68 @@
 #include "rs_text.h"
 
 void LC_MatchDescriptorText::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
-        auto entity = new LC_TypedEntityMatchDescriptor<RS_Text>(tr("Text"), RS2::EntityText);
+    auto entity = new LC_TypedEntityMatchDescriptor<RS_Text>(tr("Text"), RS2::EntityText);
     initCommonEntityAttributesProperties<RS_Text>(entity);
 
-    entity->addVector("insertX", [](RS_Text* e) {
+    entity->addVectorX("insertX", [](RS_Text* e) {
         return e->getInsertionPoint();
-    }, tr("Insert X"), tr("X coordinate for text's insertion point"), LC_PropertyMatcherTypes::COORD_X);
+    }, tr("Insert X"), tr("X coordinate for text's insertion point"));
 
-    entity->addVector("insertY", [](RS_Text* e) {
+    entity->addVectorY("insertY", [](RS_Text* e) {
         return e->getInsertionPoint();
-    }, tr("Insert Y"), tr("Y coordinate for text's insertion point"), LC_PropertyMatcherTypes::COORD_Y);
+    }, tr("Insert Y"), tr("Y coordinate for text's insertion point"));
 
-    entity->addVector("secondX", [](RS_Text* e) {
+    entity->addVectorX("secondX", [](RS_Text* e) {
         return e->getInsertionPoint();
-    }, tr("Second Point X"), tr("X coordinate for text second point"), LC_PropertyMatcherTypes::COORD_X);
+    }, tr("Second Point X"), tr("X coordinate for text second point"));
 
-    entity->addVector("secondY", [](RS_Text* e) {
+    entity->addVectorY("secondY", [](RS_Text* e) {
         return e->getInsertionPoint();
-    }, tr("Second Point Y"), tr("Y coordinate for text second point"), LC_PropertyMatcherTypes::COORD_Y);
+    }, tr("Second Point Y"), tr("Y coordinate for text second point"));
 
-    entity->add<double>("angle", [](RS_Text* e) {
+    entity->addAngle("angle", [](RS_Text* e) {
         return e->getAngle();
-    }, tr("Angle"), tr("Text rotation angle"), LC_PropertyMatcherTypes::ANGLE);
+    }, tr("Angle"), tr("Text rotation angle"));
 
-    entity->add<double>("width", [](RS_Text* e) {
+    entity->addLength("width", [](RS_Text* e) {
         return e->getWidthRel();
-    }, tr("Width"), tr("Width of the text"), LC_PropertyMatcherTypes::LENGTH);
+    }, tr("Width"), tr("Width of the text"));
 
-    entity->add<double>("height", [](RS_Text* e) {
+    entity->addLength("height", [](RS_Text* e) {
         return e->getHeight();
-    }, tr("Height"), tr("Height of the text"), LC_PropertyMatcherTypes::LENGTH);
+    }, tr("Height"), tr("Height of the text"));
 
-    entity->add<QString>("style", [](RS_Text* e) {
+    entity->addFontStringList("style", [](RS_Text* e) -> QString {
         return e->getStyle();
-    }, tr("Style"), tr("Name of the text style"), LC_PropertyMatcherTypes::STRING); // fixme - choice combox for available text style names?
+    }, tr("Style"), tr("Name of the text style)"));
 
-    entity->add<int>("halign", [](RS_Text* e) {
+    entity->addIntChoice("halign", [](RS_Text* e) {
         return e->getHAlign();
-    }, tr("Horizontal Align"), tr("Horizontal align for text"), LC_PropertyMatcherTypes::INT_CHOICE, {
-        {tr("Left"), QVariant(RS_TextData::HAlign::HALeft)},
-        {tr("Center"), QVariant(RS_TextData::HAlign::HACenter)},
-        {tr("Right"), QVariant(RS_TextData::HAlign::HARight)},
-        {tr("Aligned"), QVariant(RS_TextData::HAlign::HAAligned)},
-        {tr("Middle"), QVariant(RS_TextData::HAlign::HAMiddle)},
-        {tr("Fit"), QVariant(RS_TextData::HAlign::HAFit)},
+    }, tr("Horizontal Align"), tr("Horizontal align for text"), {
+        {tr("Left"), RS_TextData::HAlign::HALeft},
+        {tr("Center"), RS_TextData::HAlign::HACenter},
+        {tr("Right"), RS_TextData::HAlign::HARight},
+        {tr("Aligned"), RS_TextData::HAlign::HAAligned},
+        {tr("Middle"), RS_TextData::HAlign::HAMiddle},
+        {tr("Fit"), RS_TextData::HAlign::HAFit},
     });
 
-    entity->add<int>("valign", [](RS_Text* e) {
+    entity->addIntChoice("valign", [](RS_Text* e) {
         return e->getVAlign();
-    }, tr("Vertical Align"), tr("Vertical align for text"), LC_PropertyMatcherTypes::INT_CHOICE, {
-        {tr("Baseline"), QVariant(RS_TextData::VAlign::VABaseline)},
-        {tr("Bottom"), QVariant(RS_TextData::VAlign::VABottom)},
-        {tr("Middle"), QVariant(RS_TextData::VAlign::VAMiddle)},
-        {tr("Top"), QVariant(RS_TextData::VAlign::VATop)}
+    }, tr("Vertical Align"), tr("Vertical align for text"), {
+        {tr("Baseline"), RS_TextData::VAlign::VABaseline},
+        {tr("Bottom"), RS_TextData::VAlign::VABottom},
+        {tr("Middle"), RS_TextData::VAlign::VAMiddle},
+        {tr("Top"), RS_TextData::VAlign::VATop}
     });
 
-    entity->add<int>("generation", [](RS_Text* e) {
+    entity->addIntChoice("generation", [](RS_Text* e) {
         return e->getTextGeneration();
-    }, tr("Generation"), tr("Text generation style"), LC_PropertyMatcherTypes::INT_CHOICE, {
-        {tr("None"), QVariant(RS_TextData::TextGeneration::None)},
-        {tr("Backward"), QVariant(RS_TextData::TextGeneration::Backward)},
-        {tr("Upside-down"), QVariant(RS_TextData::TextGeneration::UpsideDown)}
+    }, tr("Generation"), tr("Text generation style"), {
+        {tr("None"), RS_TextData::TextGeneration::None},
+        {tr("Backward"), RS_TextData::TextGeneration::Backward},
+        {tr("Upside-down"), RS_TextData::TextGeneration::UpsideDown}
     });
 
     map.insert(RS2::EntityText, entity);
-
 }

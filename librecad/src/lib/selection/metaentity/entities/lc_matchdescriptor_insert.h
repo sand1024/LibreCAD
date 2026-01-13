@@ -26,9 +26,11 @@
 
 #include "lc_matchdescriptor_base.h"
 
+class LC_ActionContext;
+
 class LC_MatchDescriptorInsert: public LC_MatchDescriptorBase {
     Q_OBJECT
 public:
-    static void init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*> &map);
+    static void init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*> &map, LC_ActionContext *actionContext);
 };
 #endif

@@ -25,42 +25,42 @@
 
 #include "rs_dimaligned.h"
 
-void LC_MatchDescriptorDimAligned::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
-    auto entity = new LC_TypedEntityMatchDescriptor<RS_DimAligned>(tr("Dimension Aligned"), RS2::EntityDimAligned);
+void LC_MatchDescriptorDimAligned::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map, LC_ActionContext *actionContext) {
+    auto entity = new LC_DimensionEntityMatchDescriptor<RS_DimAligned>(tr("Dimension Aligned"), RS2::EntityDimAligned);
     initCommonEntityAttributesProperties<RS_DimAligned>(entity);
-    initCommonDimensionAttributes(entity);
+    initCommonDimensionAttributes(entity, actionContext);
 
-    entity->addVector("defX", [](RS_DimAligned* e) {
+    entity->addVectorX("defX", [](RS_DimAligned* e) {
      return e->getDefinitionPoint();
- }, tr("Definition Point X"), tr("X coordinate for definition point"), LC_PropertyMatcherTypes::COORD_X);
+ }, tr("Definition Point X"), tr("X coordinate for definition point"));
 
-    entity->addVector("defY", [](RS_DimAligned* e) {
+    entity->addVectorY("defY", [](RS_DimAligned* e) {
         return e->getDefinitionPoint();
-    }, tr("Definition Point Y"), tr("Y coordinate for definition point"), LC_PropertyMatcherTypes::COORD_Y);
+    }, tr("Definition Point Y"), tr("Y coordinate for definition point"));
 
-    entity->addVector("ext1X", [](RS_DimAligned* e) {
+    entity->addVectorX("ext1X", [](RS_DimAligned* e) {
         return e->getExtensionPoint1();
-    }, tr("First Extension Point X"), tr("X coordinate for first extension point"), LC_PropertyMatcherTypes::COORD_X);
+    }, tr("First Extension Point X"), tr("X coordinate for first extension point"));
 
-    entity->addVector("ext1Y", [](RS_DimAligned* e) {
+    entity->addVectorY("ext1Y", [](RS_DimAligned* e) {
         return e->getExtensionPoint1();
-    }, tr("First Extension Point Y"), tr("Y coordinate for first extension point"), LC_PropertyMatcherTypes::COORD_Y);
+    }, tr("First Extension Point Y"), tr("Y coordinate for first extension point"));
 
-    entity->addVector("ext2X", [](RS_DimAligned* e) {
+    entity->addVectorX("ext2X", [](RS_DimAligned* e) {
         return e->getExtensionPoint2();
-    }, tr("Second Extension Point X"), tr("X coordinate for second extension point"), LC_PropertyMatcherTypes::COORD_X);
+    }, tr("Second Extension Point X"), tr("X coordinate for second extension point"));
 
-    entity->addVector("ext2Y", [](RS_DimAligned* e) {
+    entity->addVectorY("ext2Y", [](RS_DimAligned* e) {
         return e->getExtensionPoint2();
-    }, tr("Second Extension Point Y"), tr("Y coordinate for second extension point"), LC_PropertyMatcherTypes::COORD_Y);
+    }, tr("Second Extension Point Y"), tr("Y coordinate for second extension point"));
 
-    entity->addVector("textMiddleX", [](RS_DimAligned* e) {
+    entity->addVectorX("textMiddleX", [](RS_DimAligned* e) {
         return e->getMiddleOfText();
-    }, tr("Text middle point X"), tr("X coordinate for text middle point"), LC_PropertyMatcherTypes::COORD_X);
+    }, tr("Text middle point X"), tr("X coordinate for text middle point"));
 
-    entity->addVector("textMiddleX", [](RS_DimAligned* e) {
+    entity->addVectorY("textMiddleX", [](RS_DimAligned* e) {
         return e->getMiddleOfText();
-    }, tr("Text middle point Y"), tr("Y coordinate for text middle point"), LC_PropertyMatcherTypes::COORD_Y);
+    }, tr("Text middle point Y"), tr("Y coordinate for text middle point"));
 
     map.insert(RS2::EntityDimAligned, entity);
 

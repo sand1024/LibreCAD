@@ -22,51 +22,68 @@
  */
 
 #include "lc_matchdescriptor_insert.h"
+
+#include "lc_actioncontext.h"
+#include "rs_block.h"
+#include "rs_document.h"
+#include "rs_graphic.h"
 #include "rs_insert.h"
 
-void LC_MatchDescriptorInsert::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
+class LC_ActionContext;
+
+void LC_MatchDescriptorInsert::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map, LC_ActionContext* actionContext) {
     auto entity = new LC_TypedEntityMatchDescriptor<RS_Insert>(tr("Insert"), RS2::EntityInsert);
     initCommonEntityAttributesProperties<RS_Insert>(entity);
 
-    entity->add<QString>("name", [](RS_Insert* e) {
-        return e->getName();
-    }, tr("Name"), tr("Name of the inserted block"), LC_PropertyMatcherTypes::STRING); // fixme - choice combox for available block names?
+    entity->addStringList("name", [](RS_Insert* e) {
+                              return e->getName();
+                          }, tr("Block name"), tr("Name of the inserted block"),
+                          [actionContext](QList<std::pair<QString, QVariant>>& values)-> void {
+                              auto* graphic = actionContext->getDocument()->getGraphic();
+                              if (graphic != nullptr) {
+                                  auto blocksList = graphic->getBlockList();
+                                  for (auto b : *blocksList) {
+                                      QString name = b->getName();
+                                      values.push_back({name, QVariant(name)});
+                                  }
+                              }
+                          });
 
-    entity->addVector("insertX", [](RS_Insert* e) {
+    entity->addVectorX("insertX", [](RS_Insert* e) {
         return e->getInsertionPoint();
-    }, tr("Insert X"), tr("X coordinate for block's insertion point"), LC_PropertyMatcherTypes::COORD_X);
+    }, tr("Insert X"), tr("X coordinate for block's insertion point"));
 
-    entity->addVector("insertY", [](RS_Insert* e) {
+    entity->addVectorY("insertY", [](RS_Insert* e) {
         return e->getInsertionPoint();
-    }, tr("Insert Y"), tr("Y coordinate for block's insertion point"), LC_PropertyMatcherTypes::COORD_Y);
+    }, tr("Insert Y"), tr("Y coordinate for block's insertion point"));
 
-    entity->add<double>("angle", [](RS_Insert* e) {
+    entity->addAngle("angle", [](RS_Insert* e) {
         return e->getAngle();
-    }, tr("Angle"), tr("Block rotation angle"), LC_PropertyMatcherTypes::ANGLE);
+    }, tr("Angle"), tr("Block rotation angle"));
 
-    entity->add<double>("scaleX", [](RS_Insert* e) {
+    entity->addDouble("scaleX", [](RS_Insert* e) {
         return e->getScale().getX();
-    }, tr("Scale X"), tr("Block X scale"), LC_PropertyMatcherTypes::DOUBLE);
+    }, tr("Scale X"), tr("Block X scale"));
 
-    entity->add<double>("scaleY", [](RS_Insert* e) {
+    entity->addDouble("scaleY", [](RS_Insert* e) {
         return e->getScale().getY();
-    }, tr("Scale Y"), tr("Block Y scale"), LC_PropertyMatcherTypes::DOUBLE);
+    }, tr("Scale Y"), tr("Block Y scale"));
 
-    entity->add<int>("cols", [](RS_Insert* e) {
+    entity->addInt("cols", [](RS_Insert* e) {
         return e->getCols();
-    }, tr("Columns"), tr("Columns number"), LC_PropertyMatcherTypes::INT);
+    }, tr("Columns"), tr("Columns number"));
 
-    entity->add<double>("spacingX", [](RS_Insert* e) {
+    entity->addDouble("spacingX", [](RS_Insert* e) {
         return e->getSpacing().getX();
-    }, tr("Spacing X"), tr("Block columns spacing (by  X)"), LC_PropertyMatcherTypes::DOUBLE);
+    }, tr("Spacing X"), tr("Block columns spacing (by  X)"));
 
-    entity->add<int>("rows", [](RS_Insert* e) {
+    entity->addInt("rows", [](RS_Insert* e) {
         return e->getRows();
-    }, tr("Rows"), tr("Rows number"), LC_PropertyMatcherTypes::INT);
+    }, tr("Rows"), tr("Rows number"));
 
-    entity->add<double>("spacingY", [](RS_Insert* e) {
+    entity->addDouble("spacingY", [](RS_Insert* e) {
         return e->getSpacing().getY();
-    }, tr("Spacing Y"), tr("Block rows spacing (by  Y)"), LC_PropertyMatcherTypes::DOUBLE);
+    }, tr("Spacing Y"), tr("Block rows spacing (by  Y)"));
 
     map.insert(RS2::EntityInsert, entity);
 

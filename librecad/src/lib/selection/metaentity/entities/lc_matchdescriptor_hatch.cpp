@@ -29,21 +29,21 @@ void LC_MatchDescriptorHatch::init(QMap<RS2::EntityType, LC_EntityMatchDescripto
     auto entity = new LC_TypedEntityMatchDescriptor<RS_Hatch>(tr("Hatch"), RS2::EntityHatch);
     initCommonEntityAttributesProperties<RS_Hatch>(entity);
 
-    entity->add<bool>("solid", [](RS_Hatch* e) {
+    entity->addBoolean("solid", [](RS_Hatch* e) {
         return e->isSolid();
-    }, tr("Is Solid"), tr("Determines whether hatch is solid or not"), LC_PropertyMatcherTypes::BOOL);
+    }, tr("Is Solid"), tr("Determines whether hatch is solid or not"));
 
-    entity->add<QString>("pattern", [](RS_Hatch* e) {
+    entity->addString("pattern", [](RS_Hatch* e) {
         return e->getPattern();
-    }, tr("Pattern"), tr("Hatch pattern name"), LC_PropertyMatcherTypes::STRING); // fixme - choice combox for available patterns?
+    }, tr("Pattern"), tr("Hatch pattern name")); // fixme - choice combox for available patterns?
 
-    entity->add<double>("scale", [](RS_Hatch* e) {
+    entity->addDouble("scale", [](RS_Hatch* e) {
         return e->getScale();
-    }, tr("Scale"), tr("Hatch scale"), LC_PropertyMatcherTypes::DOUBLE);
+    }, tr("Scale"), tr("Hatch scale"));
 
-    entity->add<double>("angle", [](RS_Hatch* e) {
+    entity->addAngle("angle", [](RS_Hatch* e) {
         return e->getAngle();
-    }, tr("Angle"), tr("Hatch rotation angle"), LC_PropertyMatcherTypes::ANGLE);
+    }, tr("Angle"), tr("Hatch rotation angle"));
 
     map.insert(RS2::EntityHatch, entity);
 

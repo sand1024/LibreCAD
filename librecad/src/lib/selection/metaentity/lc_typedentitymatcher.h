@@ -69,7 +69,27 @@ public:
 
     ~LC_TypedPropertyMatchDescriptor() override = default;
     LC_EntityMatcher* getMatcher() override;
+};
 
+template <typename MatchValueType, typename EntityType>
+class LC_DynamicChoicePropertyMatchDescriptor : public LC_TypedPropertyMatchDescriptor<MatchValueType, EntityType> {
+public:
+    using FunValueAccessor = std::function<MatchValueType(EntityType*)>;
+    LC_DynamicChoicePropertyMatchDescriptor(const QString &name, const QString& displayName, const QString &description,
+         const LC_TypedPropertyMatchTypeDescriptor<MatchValueType>& propertyDescriptor, FunValueAccessor funAccess)
+    : LC_TypedPropertyMatchDescriptor<MatchValueType, EntityType>(name, displayName, description, propertyDescriptor, funAccess) {}
+
+    void getChoiceValues(QList<QPair<QString, QVariant>>&values)  override {
+        funListProvider(values);
+    }
+
+    void setFunListProvider(const std::function<void(QList<QPair<QString, QVariant>>&)>& funListValuesProvider) {
+        this->funListProvider = funListValuesProvider;
+        this->m_choice = true;
+    }
+
+protected:
+    std::function<void(QList<QPair<QString, QVariant>>&)> funListProvider;
 };
 
 template <typename MatchValueType, typename EntityType>

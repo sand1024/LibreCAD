@@ -28,30 +28,30 @@
 void LC_MatchDescriptorCircle::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
     auto entity = new LC_TypedEntityMatchDescriptor<RS_Circle>(tr("Circle"), RS2::EntityCircle);
     initCommonEntityAttributesProperties<RS_Circle>(entity);
-    entity->addVector("centerX", [](RS_Circle* e) {
+    entity->addVectorX("centerX", [](RS_Circle* e) {
         return e->getCenter();
-    }, tr("Center X"), tr("X coordinate for center point"), LC_PropertyMatcherTypes::COORD_X);
+    }, tr("Center X"), tr("X coordinate for center point"));
 
-    entity->addVector("centerY", [](RS_Circle* e) {
+    entity->addVectorY("centerY", [](RS_Circle* e) {
         return e->getCenter();
-    }, tr("Center Y"), tr("Y coordinate for center point"), LC_PropertyMatcherTypes::COORD_Y);
+    }, tr("Center Y"), tr("Y coordinate for center point"));
 
-    entity->add<double>("radius", [](RS_Circle* e) {
+    entity->addLength("radius", [](RS_Circle* e) {
         return e->getRadius();
-    }, tr("Radius"), tr("Radius of circle"), LC_PropertyMatcherTypes::LENGTH);
+    }, tr("Radius"), tr("Radius of circle"));
 
-    entity->add<double>("diameter", [](RS_Circle* e) {
+    entity->addLength("diameter", [](RS_Circle* e) {
         return e->getRadius() * 2.0;
-    }, tr("Diameter"), tr("Diameter of circle"), LC_PropertyMatcherTypes::LENGTH);
+    }, tr("Diameter"), tr("Diameter of circle"));
 
-    entity->add<double>("circumference", [](RS_Circle* e) {
+    entity->addLength("circumference", [](RS_Circle* e) {
         return e->getRadius() * 2.0 * M_PI;
-    }, tr("Circumference"), tr("Circumference of circle"), LC_PropertyMatcherTypes::LENGTH);
+    }, tr("Circumference"), tr("Circumference of circle"));
 
-    entity->add<double>("area", [](RS_Circle* e) {
+    entity->addLength("area", [](RS_Circle* e) {
         double radius = e->getRadius();
         return M_PI * radius * radius;
-    }, tr("Area"), tr("Area of circle"), LC_PropertyMatcherTypes::LENGTH);
+    }, tr("Area"), tr("Area of circle"));
 
     map.insert(RS2::EntityCircle, entity);
 }

@@ -25,31 +25,31 @@
 
 #include "lc_dimarc.h"
 
-void LC_MatchDescriptorDimArc::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
-    auto entity = new LC_TypedEntityMatchDescriptor<LC_DimArc>(tr("Dimension Arc"), RS2::EntityDimArc);
+void LC_MatchDescriptorDimArc::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map, LC_ActionContext *actionContext) {
+    auto entity = new LC_DimensionEntityMatchDescriptor<LC_DimArc>(tr("Dimension Arc"), RS2::EntityDimArc);
     initCommonEntityAttributesProperties<LC_DimArc>(entity);
-    initCommonDimensionAttributes(entity);
-    entity->add<double>("raidus", [](LC_DimArc* e) {
+    initCommonDimensionAttributes(entity, actionContext);
+    entity->addLength("raidus", [](LC_DimArc* e) {
         return e->getRadius();
-    }, tr("Radius"), tr("Dimension radius"), LC_PropertyMatcherTypes::LENGTH);
+    }, tr("Radius"), tr("Dimension radius"));
 
-    entity->addVector("centerX", [](LC_DimArc* e) {
+    entity->addVectorX("centerX", [](LC_DimArc* e) {
        return e->getCenter();
-   }, tr("Center Point X"), tr("X coordinate for dimension center"), LC_PropertyMatcherTypes::COORD_X);
+   }, tr("Center Point X"), tr("X coordinate for dimension center"));
 
-    entity->addVector("centerY", [](LC_DimArc* e) {
+    entity->addVectorY("centerY", [](LC_DimArc* e) {
       return e->getCenter();
-  }, tr("Center Point Y"), tr("Y coordinate for dimension center"), LC_PropertyMatcherTypes::COORD_Y);
+  }, tr("Center Point Y"), tr("Y coordinate for dimension center"));
 
     // addLinearProperty(tr("Arc Length"), data.arcLength);
 
-    entity->add<double>("angleStart", [](LC_DimArc* e) {
+    entity->addAngle("angleStart", [](LC_DimArc* e) {
           return e->getStartAngle();
-    }, tr("Start Angle"), tr("Dimension start angle"), LC_PropertyMatcherTypes::ANGLE);
+    }, tr("Start Angle"), tr("Dimension start angle"));
 
-    entity->add<double>("angleEnd", [](LC_DimArc* e) {
+    entity->addAngle("angleEnd", [](LC_DimArc* e) {
           return e->getEndAngle();
-    }, tr("End Angle"), tr("Dimension end angle"), LC_PropertyMatcherTypes::ANGLE);
+    }, tr("End Angle"), tr("Dimension end angle"));
 
     map.insert(RS2::EntityDimArc, entity);
 }

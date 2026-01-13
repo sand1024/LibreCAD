@@ -30,46 +30,46 @@ void LC_MatchDescriptorImage::init(QMap<RS2::EntityType, LC_EntityMatchDescripto
         auto entity = new LC_TypedEntityMatchDescriptor<RS_Image>(tr("Image"), RS2::EntityImage);
     initCommonEntityAttributesProperties<RS_Image>(entity);
 
-    entity->add<QString>("file", [](RS_Image* e) {
+    entity->addString("file", [](RS_Image* e) {
         return e->getFile();
-    }, tr("File"), tr("Name of the image file"), LC_PropertyMatcherTypes::STRING);
+    }, tr("File"), tr("Name of the image file"));
 
-    entity->addVector("insertX", [](RS_Image* e) {
+    entity->addVectorX("insertX", [](RS_Image* e) {
         return e->getInsertionPoint();
-    }, tr("Insert X"), tr("X coordinate for image insertion point"), LC_PropertyMatcherTypes::COORD_X);
+    }, tr("Insert X"), tr("X coordinate for image insertion point"));
 
-    entity->addVector("insertY", [](RS_Image* e) {
+    entity->addVectorY("insertY", [](RS_Image* e) {
         return e->getInsertionPoint();
-    }, tr("Insert Y"), tr("Y coordinate for image insertion point"), LC_PropertyMatcherTypes::COORD_Y);
+    }, tr("Insert Y"), tr("Y coordinate for image insertion point"));
 
-    entity->add<double>("scale", [](RS_Image* e) {
+    entity->addDouble("scale", [](RS_Image* e) {
         return e->getUVector().magnitude();
-    }, tr("Scale"), tr("Scale factor for image"), LC_PropertyMatcherTypes::DOUBLE);
+    }, tr("Scale"), tr("Scale factor for image"));
 
-    entity->add<double>("angle", [](RS_Image* e) {
+    entity->addAngle("angle", [](RS_Image* e) {
         return e->getUVector().angle();
-    }, tr("Angle"), tr("Image rotation angle"), LC_PropertyMatcherTypes::ANGLE);
+    }, tr("Angle"), tr("Image rotation angle"));
 
-    entity->add<double>("sizeX", [](RS_Image* e) {
+    entity->addDouble("sizeX", [](RS_Image* e) {
         return e->getData().size.getX();
-    }, tr("Width pixels"), tr("Width of image in pixels"), LC_PropertyMatcherTypes::DOUBLE);
+    }, tr("Width pixels"), tr("Width of image in pixels"));
 
-    entity->add<double>("sizeY", [](RS_Image* e) {
+    entity->addDouble("sizeY", [](RS_Image* e) {
         return e->getData().size.getY();
-    }, tr("Height pixels"), tr("Height of image in pixels"), LC_PropertyMatcherTypes::DOUBLE);
+    }, tr("Height pixels"), tr("Height of image in pixels"));
 
-    entity->add<double>("width", [](RS_Image* e) {
+    entity->addLength("width", [](RS_Image* e) {
         return e->getImageWidth();
-    }, tr("Width"), tr("Width of image"), LC_PropertyMatcherTypes::LENGTH);
+    }, tr("Width"), tr("Width of image"));
 
-    entity->add<double>("height", [](RS_Image* e) {
+    entity->addLength("height", [](RS_Image* e) {
         return e->getImageHeight();
-    }, tr("Height"), tr("Height of image"), LC_PropertyMatcherTypes::LENGTH);
+    }, tr("Height"), tr("Height of image"));
 
-    entity->add<double>("dpi", [](RS_Image* e) {
+    entity->addDouble("dpi", [](RS_Image* e) {
         double scale = e->getUVector().magnitude();
         return RS_Units::scaleToDpi(scale, e->getGraphicUnit());
-    }, tr("DPI"), tr("Dots per inch for the image"), LC_PropertyMatcherTypes::DOUBLE);
+    }, tr("DPI"), tr("Dots per inch for the image"));
 
     map.insert(RS2::EntityImage, entity);
 

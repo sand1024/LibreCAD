@@ -29,7 +29,7 @@
 class LC_MatchDescriptorDimAligned: public LC_MatchDescriptorDimBase {
     Q_OBJECT
 public:
-    static void init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*> &map);
+    static void init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*> &map, LC_ActionContext *actionContext);
 };
 
 #endif

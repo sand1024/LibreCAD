@@ -25,17 +25,17 @@
 
 #include "rs_dimdiametric.h"
 
-void LC_MatchDescriptorDimDiametric::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
-    auto entity = new LC_TypedEntityMatchDescriptor<RS_DimDiametric>(tr("Dimension Diametric"), RS2::EntityDimDiametric);
+void LC_MatchDescriptorDimDiametric::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map, LC_ActionContext *actionContext) {
+    auto entity = new LC_DimensionEntityMatchDescriptor<RS_DimDiametric>(tr("Dimension Diametric"), RS2::EntityDimDiametric);
     initCommonEntityAttributesProperties<RS_DimDiametric>(entity);
-    initCommonDimensionAttributes(entity);
-    entity->addVector("defX", [](RS_DimDiametric* e) {
+    initCommonDimensionAttributes(entity, actionContext);
+    entity->addVectorX("defX", [](RS_DimDiametric* e) {
         return e->getDefinitionPoint();
-    }, tr("Definition Point X"), tr("X coordinate for definition point"), LC_PropertyMatcherTypes::COORD_X);
+    }, tr("Definition Point X"), tr("X coordinate for definition point"));
 
-    entity->addVector("defY", [](RS_DimDiametric* e) {
+    entity->addVectorY("defY", [](RS_DimDiametric* e) {
         return e->getDefinitionPoint();
-    }, tr("Definition Point Y"), tr("Y coordinate for definition point"), LC_PropertyMatcherTypes::COORD_Y);
+    }, tr("Definition Point Y"), tr("Y coordinate for definition point"));
 
     map.insert(RS2::EntityDimDiametric, entity);
 }

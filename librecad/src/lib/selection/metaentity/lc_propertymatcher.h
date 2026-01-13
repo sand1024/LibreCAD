@@ -23,6 +23,7 @@
 
 #ifndef LC_PROPERTYMATCHER_H
 #define LC_PROPERTYMATCHER_H
+
 #include <functional>
 #include <QVariant>
 
@@ -45,7 +46,7 @@ public:
         m_choice = true;
         m_choiceValues = values;
     }
-    QList<QPair<QString, QVariant>>* getChoiceValues() {return &m_choiceValues;}
+    virtual void getChoiceValues(QList<QPair<QString, QVariant>>&values) {return values.append(m_choiceValues);}
     virtual LC_EntityMatcher* getMatcher() = 0;
 protected:
     QString m_name;
@@ -55,7 +56,6 @@ protected:
     QList<QPair<QString, QVariant>> m_choiceValues;
     LC_PropertyMatchTypeEnum m_propertyType {LC_PropertyMatchTypeEnum::ENTITY_PROPERTY_DOUBLE};
 };
-
 
 template <typename EntityPropertyValueType, typename ConvertedPropertValueType, typename MatchValueType, typename EntityType>
 class LC_GenericPropertyMatchDescriptor: public LC_PropertyMatchDescriptor {

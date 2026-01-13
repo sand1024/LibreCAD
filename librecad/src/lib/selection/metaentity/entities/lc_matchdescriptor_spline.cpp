@@ -30,29 +30,29 @@ void LC_MatchDescriptorSpline::init(QMap<RS2::EntityType, LC_EntityMatchDescript
     auto entity = new LC_TypedEntityMatchDescriptor<RS_Spline>(tr("Spline"), RS2::EntitySpline);
     initCommonEntityAttributesProperties<RS_Spline>(entity);
 
-    entity->add<int>("degree", [](RS_Spline* e) {
+    entity->addInt("degree", [](RS_Spline* e) {
         return e->getDegree();
-    }, tr("Degree"), tr("Spline degree"), LC_PropertyMatcherTypes::INT);
+    }, tr("Degree"), tr("Spline degree"));
 
-    entity->add<bool>("closed", [](RS_Spline* e) {
+    entity->addBoolean("closed", [](RS_Spline* e) {
         return e->isClosed();
-    }, tr("Closed"), tr("Determines whether spline is closed or not"), LC_PropertyMatcherTypes::BOOL);
+    }, tr("Closed"), tr("Determines whether spline is closed or not"));
 
-    entity->add<int>("points", [](RS_Spline* e) {
+    entity->addInt("points", [](RS_Spline* e) {
        return (int)e->getControlPoints().size();
-    }, tr("Points"), tr("Number of spline's control points"), LC_PropertyMatcherTypes::INT);
+    }, tr("Points"), tr("Number of spline's control points"));
 
-    entity->addContains<std::vector<RS_Vector>>("controlPointX", [](RS_Spline* e) {
+    entity->addContainsXInList<std::vector<RS_Vector>>("controlPointX", [](RS_Spline* e) {
         return e->getControlPoints();
-    }, tr("Vertex X"), tr("X coordinate for one of vertexes"), LC_PropertyMatcherTypes::COORD_X_IN_QLIST);
+    }, tr("Vertex X"), tr("X coordinate for one of vertexes"));
 
-    entity->addContains<std::vector<RS_Vector>>("vertexY", [](RS_Spline* e) {
+    entity->addContainsYInList<std::vector<RS_Vector>>("vertexY", [](RS_Spline* e) {
         return e->getControlPoints();
-    }, tr("Vertex Y"), tr("Y coordinate  for one of vertexes"), LC_PropertyMatcherTypes::COORD_Y_IN_QLIST);
+    }, tr("Vertex Y"), tr("Y coordinate  for one of vertexes"));
 
-    entity->add<bool>("length", [](RS_Spline* e) {
+    entity->addBoolean("length", [](RS_Spline* e) {
         return e->getLength();
-    }, tr("Length"), tr("Length of spline"), LC_PropertyMatcherTypes::BOOL);
+    }, tr("Length"), tr("Length of spline"));
 
     map.insert(RS2::EntitySpline, entity);
 }

@@ -26,50 +26,50 @@
 
 #include "rs_dimlinear.h"
 
-void LC_MatchDescriptorDimLinear::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
-        auto entity = new LC_TypedEntityMatchDescriptor<RS_DimLinear>(tr("Dimension Linear"), RS2::EntityDimLinear);
+void LC_MatchDescriptorDimLinear::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map, LC_ActionContext *actionContext) {
+        auto entity = new LC_DimensionEntityMatchDescriptor<RS_DimLinear>(tr("Dimension Linear"), RS2::EntityDimLinear);
     initCommonEntityAttributesProperties<RS_DimLinear>(entity);
-    initCommonDimensionAttributes(entity);
+    initCommonDimensionAttributes(entity, actionContext);
 
-    entity->addVector("defX", [](RS_DimLinear* e) {
+    entity->addVectorX("defX", [](RS_DimLinear* e) {
         return e->getDefinitionPoint();
-    }, tr("Definition Point X"), tr("X coordinate for definition point"), LC_PropertyMatcherTypes::COORD_X);
+    }, tr("Definition Point X"), tr("X coordinate for definition point"));
 
-    entity->addVector("defY", [](RS_DimLinear* e) {
+    entity->addVectorY("defY", [](RS_DimLinear* e) {
         return e->getDefinitionPoint();
-    }, tr("Definition Point Y"), tr("Y coordinate for definition point"), LC_PropertyMatcherTypes::COORD_Y);
+    }, tr("Definition Point Y"), tr("Y coordinate for definition point"));
 
-    entity->addVector("ext1X", [](RS_DimLinear* e) {
+    entity->addVectorX("ext1X", [](RS_DimLinear* e) {
         return e->getExtensionPoint1();
-    }, tr("First Extension Point X"), tr("X coordinate for first extension point"), LC_PropertyMatcherTypes::COORD_X);
+    }, tr("First Extension Point X"), tr("X coordinate for first extension point"));
 
-    entity->addVector("ext1Y", [](RS_DimLinear* e) {
+    entity->addVectorY("ext1Y", [](RS_DimLinear* e) {
         return e->getExtensionPoint1();
-    }, tr("First Extension Point Y"), tr("Y coordinate for first extension point"), LC_PropertyMatcherTypes::COORD_Y);
+    }, tr("First Extension Point Y"), tr("Y coordinate for first extension point"));
 
-    entity->addVector("ext2X", [](RS_DimLinear* e) {
+    entity->addVectorX("ext2X", [](RS_DimLinear* e) {
         return e->getExtensionPoint2();
-    }, tr("Second Extension Point X"), tr("X coordinate for second extension point"), LC_PropertyMatcherTypes::COORD_X);
+    }, tr("Second Extension Point X"), tr("X coordinate for second extension point"));
 
-    entity->addVector("ext2Y", [](RS_DimLinear* e) {
+    entity->addVectorY("ext2Y", [](RS_DimLinear* e) {
         return e->getExtensionPoint2();
-    }, tr("Second Extension Point Y"), tr("Y coordinate for second extension point"), LC_PropertyMatcherTypes::COORD_Y);
+    }, tr("Second Extension Point Y"), tr("Y coordinate for second extension point"));
 
-    entity->addVector("textMiddleX", [](RS_DimLinear* e) {
+    entity->addVectorX("textMiddleX", [](RS_DimLinear* e) {
         return e->getMiddleOfText();
-    }, tr("Text middle point X"), tr("X coordinate for text middle point"), LC_PropertyMatcherTypes::COORD_X);
+    }, tr("Text middle point X"), tr("X coordinate for text middle point"));
 
-    entity->addVector("textMiddleX", [](RS_DimLinear* e) {
+    entity->addVectorY("textMiddleY", [](RS_DimLinear* e) {
         return e->getMiddleOfText();
-    }, tr("Text middle point Y"), tr("Y coordinate for text middle point"), LC_PropertyMatcherTypes::COORD_Y);
+    }, tr("Text middle point Y"), tr("Y coordinate for text middle point"));
 
-    entity->add<double>("angle", [](RS_DimLinear* e) {
+    entity->addAngle("angle", [](RS_DimLinear* e) {
         return e->getAngle();
-    }, tr("Angle"), tr("Dimension rotation angle"), LC_PropertyMatcherTypes::ANGLE);
+    }, tr("Angle"), tr("Dimension rotation angle"));
 
-    entity->add<double>("obligue", [](RS_DimLinear* e) {
+    entity->addAngle("obligue", [](RS_DimLinear* e) {
         return e->getOblique();
-    }, tr("Obligue"), tr("Dimension obligue angle"), LC_PropertyMatcherTypes::ANGLE);
+    }, tr("Obligue"), tr("Dimension obligue angle"));
 
     map.insert(RS2::EntityDimLinear, entity);
 

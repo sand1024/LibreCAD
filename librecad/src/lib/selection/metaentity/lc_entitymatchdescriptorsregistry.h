@@ -29,6 +29,7 @@
 #include "rs.h"
 #include "lc_entitymatchdescriptor.h"
 
+class LC_ActionContext;
 class LC_EntityMatchDescriptor;
 
 class LC_EntityMatchDescriptorsRegistry: public QObject {
@@ -36,11 +37,10 @@ class LC_EntityMatchDescriptorsRegistry: public QObject {
 public:
     ~LC_EntityMatchDescriptorsRegistry() override;
     LC_EntityMatchDescriptor* findEntityMatchDescriptor(RS2::EntityType entity);
-    void collectProperties(RS2::EntityType, QList<QPair<QString, QString>> & list);
-    static LC_EntityMatchDescriptorsRegistry* instance();
+    static LC_EntityMatchDescriptorsRegistry* instance(LC_ActionContext *actionContext);
 protected:
     QMap<RS2::EntityType, LC_EntityMatchDescriptor*> m_entityMatchDescriptors;
-    void initEntityDescriptors();
+    void initEntityDescriptors(LC_ActionContext* actionContext);
 };
 
 #endif

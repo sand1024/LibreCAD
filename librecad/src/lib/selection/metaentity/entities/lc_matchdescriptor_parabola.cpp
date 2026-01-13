@@ -29,29 +29,29 @@ void LC_MatchDescriptorParabola::init(QMap<RS2::EntityType, LC_EntityMatchDescri
     auto entity = new LC_TypedEntityMatchDescriptor<LC_Parabola>(tr("Parabola"), RS2::EntityParabola);
     initCommonEntityAttributesProperties<LC_Parabola>(entity);
 
-    entity->addVector("focusX", [](LC_Parabola* e) {
+    entity->addVectorX("focusX", [](LC_Parabola* e) {
         return e->getFocus();
-    }, tr("Focus X"), tr("X coordinate for parabola focus point"), LC_PropertyMatcherTypes::COORD_X);
+    }, tr("Focus X"), tr("X coordinate for parabola focus point"));
 
-    entity->addVector("focusY", [](LC_Parabola* e) {
+    entity->addVectorY("focusY", [](LC_Parabola* e) {
         return e->getFocus();
-    }, tr("Focus Y"), tr("Y coordinate for parabola focus point"), LC_PropertyMatcherTypes::COORD_Y);
+    }, tr("Focus Y"), tr("Y coordinate for parabola focus point"));
 
-    entity->addVector("vertexX", [](LC_Parabola* e) {
+    entity->addVectorX("vertexX", [](LC_Parabola* e) {
         return e->getVertex();
-    }, tr("Vertex X"), tr("X coordinate for parabola vertex point"), LC_PropertyMatcherTypes::COORD_X);
+    }, tr("Vertex X"), tr("X coordinate for parabola vertex point"));
 
-    entity->addVector("vertexY", [](LC_Parabola* e) {
+    entity->addVectorY("vertexY", [](LC_Parabola* e) {
         return e->getVertex();
-    }, tr("Vertex Y"), tr("Y coordinate for parabola vertex point"), LC_PropertyMatcherTypes::COORD_Y);
+    }, tr("Vertex Y"), tr("Y coordinate for parabola vertex point"));
 
-    entity->add<double>("angle", [](LC_Parabola* e) {
+    entity->addAngle("angle", [](LC_Parabola* e) {
         return e->getData().axis.angle();
-    }, tr("Axis Angle"), tr("Angle of parabola axis"), LC_PropertyMatcherTypes::ANGLE);
+    }, tr("Axis Angle"), tr("Angle of parabola axis"));
 
-    entity->add<double>("length", [](LC_Parabola* e) {
+    entity->addLength("length", [](LC_Parabola* e) {
         return e->getLength();
-    }, tr("Length"), tr("Length of parabola"), LC_PropertyMatcherTypes::LENGTH);
+    }, tr("Length"), tr("Length of parabola"));
 
     map.insert(RS2::EntityParabola, entity);
 }

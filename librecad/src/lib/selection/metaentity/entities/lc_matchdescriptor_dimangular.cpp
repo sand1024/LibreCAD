@@ -25,9 +25,9 @@
 
 #include "rs_dimangular.h"
 
-void LC_MatchDescriptorDimAngular::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
-    auto entity = new LC_TypedEntityMatchDescriptor<RS_DimAngular>(tr("Dimension Angular"), RS2::EntityDimAngular);
+void LC_MatchDescriptorDimAngular::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map, LC_ActionContext *actionContext) {
+    auto entity = new LC_DimensionEntityMatchDescriptor<RS_DimAngular>(tr("Dimension Angular"), RS2::EntityDimAngular);
     initCommonEntityAttributesProperties<RS_DimAngular>(entity);
-    initCommonDimensionAttributes(entity);
+    initCommonDimensionAttributes(entity, actionContext);
     map.insert(RS2::EntityDimAngular, entity);
 }

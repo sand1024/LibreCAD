@@ -29,13 +29,13 @@ void LC_MatchDescriptorPoint::init(QMap<RS2::EntityType, LC_EntityMatchDescripto
     auto entity = new LC_TypedEntityMatchDescriptor<RS_Point>(tr("Point"), RS2::EntityPoint);
     initCommonEntityAttributesProperties<RS_Point>(entity);
 
-    entity->addVector("x", [](RS_Point* e) {
+    entity->addVectorX("x", [](RS_Point* e) {
         return e->getPos();
-    }, tr("X"), tr("X coordinate of point"), LC_PropertyMatcherTypes::COORD_X);
+    }, tr("X"), tr("X coordinate of point"));
 
-    entity->addVector("y", [](RS_Point* e) {
+    entity->addVectorY("y", [](RS_Point* e) {
         return e->getPos();
-    }, tr("Y"), tr("Y coordinate of point"), LC_PropertyMatcherTypes::COORD_Y);
+    }, tr("Y"), tr("Y coordinate of point"));
 
     map.insert(RS2::EntityPoint, entity);
 }

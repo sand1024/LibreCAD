@@ -26,72 +26,72 @@
 #include "rs_arc.h"
 
 void LC_MatchDescriptorArc::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
-        auto entity = new LC_TypedEntityMatchDescriptor<RS_Arc>(tr("Arc"), RS2::EntityArc);
+    auto entity = new LC_TypedEntityMatchDescriptor<RS_Arc>(tr("Arc"), RS2::EntityArc);
     initCommonEntityAttributesProperties<RS_Arc>(entity);
-    entity->addVector("centerX", [](RS_Arc* e) {
-        return e->getCenter();
-    }, tr("Center X"), tr("X coordinate for center point"), LC_PropertyMatcherTypes::COORD_X);
 
-    entity->addVector("centerY", [](RS_Arc* e) {
+    entity->addVectorX("centerX", [](RS_Arc* e) {
         return e->getCenter();
-    }, tr("Center Y"), tr("Y coordinate for center point"), LC_PropertyMatcherTypes::COORD_Y);
+    }, tr("Center X"), tr("X coordinate for center point"));
 
-    entity->add<double>("radius", [](RS_Arc* e) {
+    entity->addVectorY("centerY", [](RS_Arc* e) {
+        return e->getCenter();
+    }, tr("Center Y"), tr("Y coordinate for center point"));
+
+    entity->addLength("radius", [](RS_Arc* e) {
         return e->getRadius();
-    }, tr("Radius"), tr("Radius of arc"), LC_PropertyMatcherTypes::LENGTH);
+    }, tr("Radius"), tr("Radius of arc"));
 
-    entity->add<bool>("reversed", [](RS_Arc* e) {
+    entity->addBoolean("reversed", [](RS_Arc* e) {
         return e->isReversed();
-    }, tr("Is Reversed"), tr("Clockwise direction if reversed, counterclockwise otherwise"), LC_PropertyMatcherTypes::BOOL);
+    }, tr("Is Reversed"), tr("Clockwise direction if reversed, counterclockwise otherwise"));
 
-    entity->add<double>("diameter", [](RS_Arc* e) {
+    entity->addLength("diameter", [](RS_Arc* e) {
         return e->getRadius() * 2.0;
-    }, tr("Diameter"), tr("Diameter of arc"), LC_PropertyMatcherTypes::LENGTH);
+    }, tr("Diameter"), tr("Diameter of arc"));
 
-    entity->addVector("startX", [](RS_Arc* e) {
+    entity->addVectorX("startX", [](RS_Arc* e) {
         return e->getStartpoint();
-    }, tr("Start X"), tr("X coordinate for start point"), LC_PropertyMatcherTypes::COORD_X);
+    }, tr("Start X"), tr("X coordinate for start point"));
 
-    entity->addVector("startY", [](RS_Arc* e) {
+    entity->addVectorY("startY", [](RS_Arc* e) {
         return e->getStartpoint();
-    }, tr("Start Y"), tr("Y coordinate for start point"), LC_PropertyMatcherTypes::COORD_Y);
+    }, tr("Start Y"), tr("Y coordinate for start point"));
 
-    entity->addVector("endX", [](RS_Arc* e) {
+    entity->addVectorX("endX", [](RS_Arc* e) {
         return e->getEndpoint();
-    }, tr("End X"), tr("X coordinate for end point"), LC_PropertyMatcherTypes::COORD_X);
+    }, tr("End X"), tr("X coordinate for end point"));
 
-    entity->addVector("endY", [](RS_Arc* e) {
+    entity->addVectorY("endY", [](RS_Arc* e) {
         return e->getEndpoint();
-    }, tr("End Y"), tr("Y coordinate for end point"), LC_PropertyMatcherTypes::COORD_Y);
+    }, tr("End Y"), tr("Y coordinate for end point"));
 
-    entity->add<double>("angleLen", [](RS_Arc* e) {
+    entity->addAngle("angleLen", [](RS_Arc* e) {
         return e->getAngleLength();
-    }, tr("Angle Length"), tr("Angle length for arc"), LC_PropertyMatcherTypes::ANGLE);
+    }, tr("Angle Length"), tr("Angle length for arc"));
 
-    entity->add<double>("circumference", [](RS_Arc* e) {
+    entity->addLength("circumference", [](RS_Arc* e) {
         return e->getLength();
-    }, tr("Circumference"), tr("Circumference of arc"), LC_PropertyMatcherTypes::LENGTH);
+    }, tr("Circumference"), tr("Circumference of arc"));
 
-    entity->add<double>("chord", [](RS_Arc* e) {
+    entity->addLength("chord", [](RS_Arc* e) {
         return e->getStartpoint().distanceTo(e->getEndpoint());
-    }, tr("Chord"), tr("Chord length (distance from start to end point)"), LC_PropertyMatcherTypes::LENGTH);
+    }, tr("Chord"), tr("Chord length (distance from start to end point)"));
 
-    entity->add<double>("sagitta", [](RS_Arc* e) {
+    entity->addLength("sagitta", [](RS_Arc* e) {
         return e->getSagitta();
-    }, tr("Sagitta"), tr("Sagitta of the arc"), LC_PropertyMatcherTypes::LENGTH);
+    }, tr("Sagitta"), tr("Sagitta of the arc"));
 
-    entity->add<double>("angle1", [](RS_Arc* e) {
+    entity->addAngle("angle1", [](RS_Arc* e) {
         return e->getAngle1();
-    }, tr("Start Angle"), tr("Start angle of arc"), LC_PropertyMatcherTypes::ANGLE);
+    }, tr("Start Angle"), tr("Start angle of arc"));
 
-    entity->add<double>("angle2", [](RS_Arc* e) {
+    entity->addAngle("angle2", [](RS_Arc* e) {
         return e->getAngle2();
-    }, tr("End Angle"), tr("End angle of arc"), LC_PropertyMatcherTypes::ANGLE);
+    }, tr("End Angle"), tr("End angle of arc"));
 
-    entity->add<double>("bulge", [](RS_Arc* e) {
+    entity->addLength("bulge", [](RS_Arc* e) {
         return e->getBulge();
-    }, tr("Bulge"), tr("Bulge of arc "), LC_PropertyMatcherTypes::LENGTH);
+    }, tr("Bulge"), tr("Bulge of arc "));
 
     map.insert(RS2::EntityArc, entity);
-
 }

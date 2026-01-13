@@ -59,25 +59,18 @@ LC_EntityMatchDescriptor* LC_EntityMatchDescriptorsRegistry::findEntityMatchDesc
     return nullptr;
 }
 
-void LC_EntityMatchDescriptorsRegistry::collectProperties(RS2::EntityType entityType, QList<QPair<QString, QString>>& list) {
-    auto entityDescriptor = findEntityMatchDescriptor(entityType);
-    if (entityDescriptor != nullptr) {
-        entityDescriptor->collectPropertiesInfo(list);
-    }
-}
-
-LC_EntityMatchDescriptorsRegistry* LC_EntityMatchDescriptorsRegistry::instance() {
+LC_EntityMatchDescriptorsRegistry* LC_EntityMatchDescriptorsRegistry::instance(LC_ActionContext *actionContext) {
     static LC_EntityMatchDescriptorsRegistry* uniqueInstance;
     if (uniqueInstance == nullptr) {
         uniqueInstance = new LC_EntityMatchDescriptorsRegistry();
-        uniqueInstance->initEntityDescriptors();
+        uniqueInstance->initEntityDescriptors(actionContext);
     }
     return uniqueInstance;
 }
 
-void LC_EntityMatchDescriptorsRegistry::initEntityDescriptors() {
-    // NOTE: separate descriptor class per entity is use used Intentionally!!
-    // otherwise, if all descriptors are combine in the same class, due to
+void LC_EntityMatchDescriptorsRegistry::initEntityDescriptors(LC_ActionContext *actionContext) {
+    // NOTE: separate descriptor class per entity is used Intentionally!!
+    // otherwise, if all descriptors are combined in the same class, and due to
     // amount of templates the .obj for such class becomes very large to be compiled under Windows.
     // With special compiler options such a large file will be compiled
     // Flags are - add_compile_options(/bigobj) for MSVC or -Wa,-mbig-obj for GCC
@@ -92,17 +85,17 @@ void LC_EntityMatchDescriptorsRegistry::initEntityDescriptors() {
     LC_MatchDescriptorSpline::init(m_entityMatchDescriptors);
     LC_MatchDescriptorSplinePoints::init(m_entityMatchDescriptors);
     LC_MatchDescriptorHatch::init(m_entityMatchDescriptors);
-    LC_MatchDescriptorInsert::init(m_entityMatchDescriptors);
+    LC_MatchDescriptorInsert::init(m_entityMatchDescriptors, actionContext);
     LC_MatchDescriptorText::init(m_entityMatchDescriptors);
     LC_MatchDescriptorMText::init(m_entityMatchDescriptors);
     LC_MatchDescriptorImage::init(m_entityMatchDescriptors);
-    LC_MatchDescriptorDimAligned::init(m_entityMatchDescriptors);
-    LC_MatchDescriptorDimLinear::init(m_entityMatchDescriptors);
-    LC_MatchDescriptorDimRadial::init(m_entityMatchDescriptors);
-    LC_MatchDescriptorDimDiametric::init(m_entityMatchDescriptors);
-    LC_MatchDescriptorDimAngular::init(m_entityMatchDescriptors);
-    LC_MatchDescriptorDimArc::init(m_entityMatchDescriptors);
-    LC_MatchDescriptorDimOrdinate::init(m_entityMatchDescriptors);
+    LC_MatchDescriptorDimAligned::init(m_entityMatchDescriptors, actionContext);
+    LC_MatchDescriptorDimLinear::init(m_entityMatchDescriptors, actionContext);
+    LC_MatchDescriptorDimRadial::init(m_entityMatchDescriptors, actionContext);
+    LC_MatchDescriptorDimDiametric::init(m_entityMatchDescriptors, actionContext);
+    LC_MatchDescriptorDimAngular::init(m_entityMatchDescriptors, actionContext);
+    LC_MatchDescriptorDimArc::init(m_entityMatchDescriptors, actionContext);
+    LC_MatchDescriptorDimOrdinate::init(m_entityMatchDescriptors, actionContext);
     LC_MatchDescriptorLeader::init(m_entityMatchDescriptors);
     LC_MatchDescriptorTolerance::init(m_entityMatchDescriptors);
     LC_MatchDescriptorParabola::init(m_entityMatchDescriptors);

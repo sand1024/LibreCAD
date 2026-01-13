@@ -24,12 +24,14 @@
 #ifndef LC_MATCHDESCRIPTORDIMRADIAL_H
 #define LC_MATCHDESCRIPTORDIMRADIAL_H
 
+#include "lc_actionselectquick.h"
 #include "lc_matchdescriptor_dimbase.h"
+#include "rs_dimradial.h"
 
 class LC_MatchDescriptorDimRadial: public LC_MatchDescriptorDimBase {
     Q_OBJECT
 public:
-    static void init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*> &map);
+    static void init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*> &map, LC_ActionContext *actionContext);
 };
 
 #endif

@@ -28,45 +28,45 @@
 void LC_MatchDescriptorPolyline::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
         auto entity = new LC_TypedEntityMatchDescriptor<RS_Polyline>(tr("Polyline"), RS2::EntityPolyline);
     initCommonEntityAttributesProperties<RS_Polyline>(entity);
-    entity->addVector("startX", [](RS_Polyline* e) {
+    entity->addVectorX("startX", [](RS_Polyline* e) {
         return e->getStartpoint();
-    }, tr("Start X"), tr("X coordinate for start point"), LC_PropertyMatcherTypes::COORD_X);
+    }, tr("Start X"), tr("X coordinate for start point"));
 
-    entity->addVector("startY", [](RS_Polyline* e) {
+    entity->addVectorY("startY", [](RS_Polyline* e) {
         return e->getStartpoint();
-    }, tr("Start Y"), tr("Y coordinate for start point"), LC_PropertyMatcherTypes::COORD_Y);
+    }, tr("Start Y"), tr("Y coordinate for start point"));
 
-    entity->addVector("endX", [](RS_Polyline* e) {
+    entity->addVectorX("endX", [](RS_Polyline* e) {
         return e->getEndpoint();
-    }, tr("End X"), tr("X coordinate for end point"), LC_PropertyMatcherTypes::COORD_X);
+    }, tr("End X"), tr("X coordinate for end point"));
 
-    entity->addContains<QList<RS_Vector>>("vertexX", [](RS_Polyline* e) {
-        return e->getVertexes();
-    }, tr("Vertex X"), tr("X coordinate for one of vertexes"), LC_PropertyMatcherTypes::COORD_X_IN_QLIST);
-
-    entity->addContains<QList<RS_Vector>>("vertexY", [](RS_Polyline* e) {
-        return e->getVertexes();
-    }, tr("Vertex Y"), tr("Y coordinate  for one of vertexes"), LC_PropertyMatcherTypes::COORD_Y_IN_QLIST);
-
-    entity->addVector("endY", [](RS_Polyline* e) {
+    entity->addVectorY("endY", [](RS_Polyline* e) {
         return e->getEndpoint();
-    }, tr("End Y"), tr("Y coordinate for end point"), LC_PropertyMatcherTypes::COORD_Y);
+    }, tr("End Y"), tr("Y coordinate for end point"));
 
-    entity->add<double>("length", [](RS_Polyline* e) {
+    entity->addContainsXInList<QList<RS_Vector>>("vertexX", [](RS_Polyline* e) {
+        return e->getVertexes();
+    }, tr("Vertex X"), tr("X coordinate for one of vertexes"));
+
+    entity->addContainsYInList<QList<RS_Vector>>("vertexY", [](RS_Polyline* e) {
+        return e->getVertexes();
+    }, tr("Vertex Y"), tr("Y coordinate  for one of vertexes"));
+
+    entity->addLength("length", [](RS_Polyline* e) {
         return e->getLength();
-    }, tr("Length"), tr("Length of polyline"), LC_PropertyMatcherTypes::LENGTH);
+    }, tr("Length"), tr("Length of polyline"));
 
-    entity->add<bool>("closed", [](RS_Polyline* e) {
+    entity->addBoolean("closed", [](RS_Polyline* e) {
         return e->isClosed();
-    }, tr("Is Closed"), tr("Determines whether polyline is closed or not"), LC_PropertyMatcherTypes::BOOL);
+    }, tr("Is Closed"), tr("Determines whether polyline is closed or not"));
 
-    entity->add<int>("segmentsCount", [](RS_Polyline* e) {
+    entity->addInt("segmentsCount", [](RS_Polyline* e) {
         return e->count();
-    }, tr("Segments Count"), tr("Amount of polyline's segment"), LC_PropertyMatcherTypes::INT);
+    }, tr("Segments Count"), tr("Amount of polyline's segment"));
 
-    entity->add<bool>("hasArc", [](RS_Polyline* e) {
+    entity->addBoolean("hasArc", [](RS_Polyline* e) {
         return e->containsArc();
-    }, tr("Contains Arc"), tr("Defines whether polyline include arc"), LC_PropertyMatcherTypes::BOOL);
+    }, tr("Contains Arc"), tr("Defines whether polyline include arc"));
 
     map.insert(RS2::EntityPolyline, entity);
 }
