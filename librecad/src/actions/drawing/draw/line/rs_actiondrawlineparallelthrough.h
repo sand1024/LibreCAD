@@ -44,11 +44,11 @@ public:
     explicit RS_ActionDrawLineParallelThrough(LC_ActionContext *actionContext);
     ~RS_ActionDrawLineParallelThrough() override;
     QStringList getAvailableCommands() override;
-    void finish(bool updateTB) override;
+    void finish() override;
     int getNumber() const;
     void setNumber(int n);
-    bool isSymmetric() const {return m_symmetric;};
-    void setSymmetric(bool value){m_symmetric = value;};
+    bool isSymmetric() const {return m_symmetric;}
+    void setSymmetric(const bool value){m_symmetric = value;}
 protected:
     enum Status {
         SetEntity = InitialActionStatus,    /**< Choose original entity. */
@@ -70,13 +70,13 @@ protected:
 
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     bool doProcessCommand(int status, const QString &command) override;
     void updateMouseButtonHints() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector &coord) override;
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
     void doTriggerCompletion(bool success) override;
 };

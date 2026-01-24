@@ -22,8 +22,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <QApplication>
 
-#include "lc_documentsstorage.h"
 #include "lc_containertraverser.h"
+#include "lc_documentsstorage.h"
 #include "qc_applicationwindow.h"
 #include "qc_mdiwindow.h"
 #include "qg_blockwidget.h"
@@ -39,10 +39,10 @@ RS_ActionBlocksSave::RS_ActionBlocksSave(LC_ActionContext *actionContext)
         :RS_ActionInterface("Edit Block", actionContext, RS2::ActionBlocksSave) {}
 
 /*recursive add blocks in graphic*/
-void RS_ActionBlocksSave::addBlock(RS_Insert *in, RS_Graphic *g) {
+void RS_ActionBlocksSave::addBlock(const RS_Insert* in, RS_Graphic *g) {
     for (const auto e: *in) {
         if (e->rtti() == RS2::EntityInsert) {
-            auto *insert = static_cast<RS_Insert *>(e);
+            const auto *insert = static_cast<RS_Insert *>(e);
             addBlock(insert, g);
             g->addBlock(insert->getBlockForInsert());
         }
@@ -50,29 +50,27 @@ void RS_ActionBlocksSave::addBlock(RS_Insert *in, RS_Graphic *g) {
 }
 
 // fixme - sand - investigate why layers from this block are not added to graphic..
-RS_Graphic* RS_ActionBlocksSave::createGraphicForBlock(RS_Block *activeBlock){
+RS_Graphic* RS_ActionBlocksSave::createGraphicForBlock(const RS_Block *activeBlock){
     auto* result = new RS_Graphic();
     result->setOwner(false);
     result->getBlockList()->setOwner(false);
     result->clearLayers();
-    // g.addLayer(b->getLayer());
 
     for (RS_Entity* e : lc::LC_ContainerTraverser{*activeBlock, RS2::ResolveNone}.entities()) {
         result->addEntity(e);
         if (e->rtti() == RS2::EntityInsert) {
-            auto *insert = static_cast<RS_Insert *>(e);
+            const auto *insert = static_cast<RS_Insert *>(e);
             result->addBlock(insert->getBlockForInsert());
             addBlock(insert,result);
         }
-        // g.addLayer(e->getLayer());
     }
     return result;
 }
 
 void RS_ActionBlocksSave::trigger() {
     const auto& appWindow = QC_ApplicationWindow::getAppWindow();
-    if(!appWindow) {
-        finish(false);
+    if(appWindow == nullptr) {
+        finish();
         return;
     }
     const RS_BlockList* blockList = appWindow->getBlockWidget() -> getBlockList();
@@ -96,13 +94,14 @@ void RS_ActionBlocksSave::trigger() {
                 delete graphic;
                 QApplication::restoreOverrideCursor();
             }
-        } else
+        } else {
             commandMessage(tr("No block activated to save"));
+        }
     } else {
         RS_DEBUG->print(RS_Debug::D_WARNING,
                         "RS_ActionBlocksSave::trigger():  blockList is NULL");
     }
-    finish(false);
+    finish();
 }
 
 void RS_ActionBlocksSave::init(const int status) {

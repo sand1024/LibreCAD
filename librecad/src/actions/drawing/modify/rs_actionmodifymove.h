@@ -53,17 +53,17 @@ protected:
     struct MoveActionData;
     std::unique_ptr<MoveActionData> m_actionData;
     RS2::CursorType doGetMouseCursorSelected(int status) override;
-    void onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
-    void onMouseRightButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
+    void onMouseLeftButtonReleaseSelected(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonReleaseSelected(int status, const LC_MouseEvent* event) override;
     void updateMouseButtonHintsForSelection() override;
     void updateMouseButtonHintsForSelected(int status) override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
     LC_ModifyOperationFlags *getModifyOperationFlags() override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
-    void onMouseMoveEventSelected(int status, LC_MouseEvent *e) override;
+    void onMouseMoveEventSelected(int status, const LC_MouseEvent* e) override;
 
     void doTriggerCompletion(bool success) override;
     void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
-    bool doTriggerModifications(LC_DocumentModificationBatch& modificationData) override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
 };
 #endif

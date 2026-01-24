@@ -44,11 +44,11 @@ public:
     void init(int status) override;
     QStringList getAvailableCommands() override;
     double getDistance() const{return m_distance;}
-    void setDistance(double d){m_distance = d;}
+    void setDistance(const double d){m_distance = d;}
     bool isDistanceTotalLength() const{return m_distanceIsTotalLength;}
-    void setDistanceIsTotalLength(bool on){m_distanceIsTotalLength = on;}
-    void setSymmetricDistance(bool val){m_symmetricDistance = val;};
-    bool isSymmetricDistance() const {return m_symmetricDistance;};
+    void setDistanceIsTotalLength(const bool on){m_distanceIsTotalLength = on;}
+    void setSymmetricDistance(const bool val){m_symmetricDistance = val;}
+    bool isSymmetricDistance() const {return m_symmetricDistance;}
 protected:
     /**
  * Action States.
@@ -65,9 +65,9 @@ protected:
 
     double determineDistance(const RS_AtomicEntity *e) const;
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     bool doProcessCommand(int status, const QString &command) override;
     void updateMouseButtonHints() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;

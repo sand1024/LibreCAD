@@ -20,12 +20,10 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include<cmath>
-
-
 #include "rs_actionprintpreview.h"
 
 #include <QMouseEvent>
+#include<cmath>
 
 #include "lc_graphicviewport.h"
 #include "lc_printpreviewview.h"
@@ -53,7 +51,7 @@ RS_ActionPrintPreview::RS_ActionPrintPreview(LC_ActionContext *actionContext)
     :RS_ActionInterface("Print Preview", actionContext, RS2::ActionFilePrintPreview)
     , m_actionData(std::make_unique<ActionData>()){
 
-    bool fixed = LC_GET_ONE_BOOL("PrintPreview", "PrintScaleFixed");
+    const bool fixed = LC_GET_ONE_BOOL("PrintPreview", "PrintScaleFixed");
 
     if (!fixed) {
         fit();
@@ -64,11 +62,11 @@ RS_ActionPrintPreview::RS_ActionPrintPreview(LC_ActionContext *actionContext)
 
 RS_ActionPrintPreview::~RS_ActionPrintPreview()=default;
 
-void RS_ActionPrintPreview::init(int status) {
+void RS_ActionPrintPreview::init(const int status) {
     RS_ActionInterface::init(status);
 }
 
-void RS_ActionPrintPreview::invokeSettingsDialog(){
+void RS_ActionPrintPreview::invokeSettingsDialog() const {
     if (m_graphic) {
         // fixme - sand - Actually, relevant settings there is just page setup and whole drawing options are ovekill.
         // fixme - sand - rework this with proper layouts support!!!
@@ -86,9 +84,9 @@ bool RS_ActionPrintPreview::isPortrait() const {
     return !landscape;
 }
 
-void RS_ActionPrintPreview::setPaperOrientation(bool portrait) {
+void RS_ActionPrintPreview::setPaperOrientation(const bool portrait) const {
     bool landscape;
-    RS2::PaperFormat format = m_graphic->getPaperFormat(&landscape);
+    const RS2::PaperFormat format = m_graphic->getPaperFormat(&landscape);
     if (landscape != !portrait) {
         m_graphic->setPaperFormat(format, !portrait);
         zoomToPage();
@@ -108,8 +106,8 @@ void RS_ActionPrintPreview::mouseMoveEvent(QMouseEvent* e) {
                 m_actionData->v2.x = m_actionData->v1.x;
             }
             if (m_graphic) {
-                RS_Vector pinsbase = m_graphic->getPaperInsertionBase();
-                double scale = m_graphic->getPaperScale();
+                const RS_Vector pinsbase = m_graphic->getPaperInsertionBase();
+                const double scale = m_graphic->getPaperScale();
                 m_graphic->setPaperInsertionBase(pinsbase - m_actionData->v2 * scale + m_actionData->v1 * scale);
 
 #ifdef DEBUG_PAPER_INSERTION_BASE
@@ -153,15 +151,16 @@ void RS_ActionPrintPreview::mouseReleaseEvent(QMouseEvent* e) {
 }
 
 void RS_ActionPrintPreview::onCoordinateEvent( [[maybe_unused]]int status,  [[maybe_unused]]bool isZero, const RS_Vector &pos) {
-    RS_Vector pinsbase = m_graphic->getPaperInsertionBase();
+    const RS_Vector pinsbase = m_graphic->getPaperInsertionBase();
     RS_Vector mouse = pos;
     //    qDebug()<<"coordinateEvent= ("<<mouse.x<<", "<<mouse.y<<")";
 
     if(m_bPaperOffset) {
         commandMessage(tr("Printout offset in paper coordinates by (%1, %2)").arg(mouse.x).arg(mouse.y));
         mouse *= m_graphic->getPaperScale();
-    }else
+    }else {
         commandMessage(tr("Printout offset in graph coordinates by (%1, %2)").arg(mouse.x).arg(mouse.y));
+    }
 
     //    RS_DIALOGFACTORY->commandMessage(tr("old insertion base (%1, %2)").arg(pinsbase.x).arg(pinsbase.y));
     //    RS_DIALOGFACTORY->commandMessage(tr("new insertion base (%1, %2)").arg((pinsbase-mouse).x).arg((pinsbase-mouse).y));
@@ -170,31 +169,31 @@ void RS_ActionPrintPreview::onCoordinateEvent( [[maybe_unused]]int status,  [[ma
     m_graphicView->redraw(RS2::RedrawGrid); // DRAW Grid also draws paper, background items
 }
 
-bool RS_ActionPrintPreview::doProcessCommand( [[maybe_unused]]int status, const QString &c) {
+bool RS_ActionPrintPreview::doProcessCommand( [[maybe_unused]]int status, const QString &command) {
     bool accept = true;
     //    qDebug()<<"cmd="<<c;
-    if (checkCommand("blackwhite", c)) {
+    if (checkCommand("blackwhite", command)) {
         setBlackWhite(true);
         commandMessage(tr("Printout in Black/White"));
         updateOptions();
-    } else if (checkCommand("color", c)) {
+    } else if (checkCommand("color", command)) {
         setBlackWhite(false);
         commandMessage(tr("Printout in color"));
         updateOptions();
-    } else if (checkCommand("graphoffset", c)) {
+    } else if (checkCommand("graphoffset", command)) {
         m_bPaperOffset=false;
         commandMessage(tr("Printout offset in graph coordinates"));
         updateOptions();
-    } else if (checkCommand("paperoffset", c)) {
+    } else if (checkCommand("paperoffset", command)) {
         m_bPaperOffset=true;
         commandMessage(tr("Printout offset in paper coordinates"));
         updateOptions();
     }
     else{
         //coordinate event
-        if (c.contains(',')){
-            QString coord = c;
-            if(c.startsWith('@')) {
+        if (command.contains(',')){
+            QString coord = command;
+            if(command.startsWith('@')) {
                 commandMessage(tr("Printout offset ignores relative zero. Ignoring '@'"));
                 coord.remove(0, 1);
             }
@@ -202,8 +201,8 @@ bool RS_ActionPrintPreview::doProcessCommand( [[maybe_unused]]int status, const 
 
             const int commaPos = coord.indexOf(',');
             bool ok1 = false, ok2 = false;
-            double x = RS_Math::eval(coord.left(commaPos), &ok1);
-            double y = RS_Math::eval(coord.mid(commaPos+1), &ok2);
+            const double x = RS_Math::eval(coord.left(commaPos), &ok1);
+            const double y = RS_Math::eval(coord.mid(commaPos+1), &ok2);
             if (ok1 && ok2) {
                 RS_CoordinateEvent ce(RS_Vector(x,y));
                 coordinateEvent(&ce);
@@ -243,7 +242,7 @@ void RS_ActionPrintPreview::printWarning(const QString& s) const {
     commandMessage(s);
 }
 
-RS2::CursorType RS_ActionPrintPreview::doGetMouseCursor([[maybe_unused]] int status){
+RS2::CursorType RS_ActionPrintPreview::doGetMouseCursor([[maybe_unused]] const int status){
     switch (status) {
         case Moving:
             return RS2::ClosedHandCursor;
@@ -265,9 +264,9 @@ void RS_ActionPrintPreview::zoomToPage() const {
     }
 }
 
-void RS_ActionPrintPreview::fit() {
+void RS_ActionPrintPreview::fit() const {
     if (m_graphic) {
-        RS_Vector paperSize=RS_Units::convert(m_graphic->getPaperSize(), getUnit(), RS2::Millimeter);
+        const RS_Vector paperSize=RS_Units::convert(m_graphic->getPaperSize(), getUnit(), RS2::Millimeter);
 
         if(std::abs(paperSize.x) < 10.|| std::abs(paperSize.y) < 10.) {
             printWarning("Warning:: Paper size less than 10mm."
@@ -288,13 +287,14 @@ void RS_ActionPrintPreview::fit() {
     }
 }
 
-bool RS_ActionPrintPreview::setScale(double newScale, bool autoZoom) {
+bool RS_ActionPrintPreview::setScale(const double newScale, const bool autoZoom) const {
     if (m_graphic != nullptr) {
-        if(std::abs(newScale - m_graphic->getPaperScale()) < RS_TOLERANCE )
+        if(std::abs(newScale - m_graphic->getPaperScale()) < RS_TOLERANCE ) {
             return false;
+        }
 
         auto pinBase = m_graphic->getPaperInsertionBase();
-        double oldScale = m_graphic->getPaperScale();
+        const double oldScale = m_graphic->getPaperScale();
 
         m_graphic->setPaperScale(newScale);
 
@@ -314,11 +314,11 @@ bool RS_ActionPrintPreview::setScale(double newScale, bool autoZoom) {
     return false;
 }
 
-void RS_ActionPrintPreview::zoomPageExWithBorder(int borderSize) const {
-    int bBottom = m_viewport->getBorderBottom();
-    int bTop = m_viewport->getBorderTop();
-    int bLeft = m_viewport->getBorderLeft();
-    int bRight = m_viewport->getBorderRight();
+void RS_ActionPrintPreview::zoomPageExWithBorder(const int borderSize) const {
+    const int bBottom = m_viewport->getBorderBottom();
+    const int bTop = m_viewport->getBorderTop();
+    const int bLeft = m_viewport->getBorderLeft();
+    const int bRight = m_viewport->getBorderRight();
     // just a small usability improvement - we set additional borders on zoom to let the user
    // see that there might be drawing elements around paper
     m_viewport->setBorders(borderSize, borderSize, borderSize, borderSize);
@@ -338,21 +338,21 @@ bool RS_ActionPrintPreview::isLineWidthScaling() const {
     return m_graphicView->getLineWidthScaling();
 }
 
-void RS_ActionPrintPreview::setLineWidthScaling(bool state) const {
+void RS_ActionPrintPreview::setLineWidthScaling(const bool state) const {
     m_graphicView->setLineWidthScaling(state);
     redraw();
 }
 
 bool RS_ActionPrintPreview::isBlackWhite() const {
-    LC_PrintPreviewView* printPreview = dynamic_cast<LC_PrintPreviewView *>(m_graphicView);
+    const LC_PrintPreviewView* printPreview = dynamic_cast<LC_PrintPreviewView *>(m_graphicView);
     if (printPreview != nullptr) {
         return printPreview->getDrawingMode() == RS2::ModeBW;
     }
     return false;
 }
 
-void RS_ActionPrintPreview::setBlackWhite(bool bw) const {
-    auto* printPreview = dynamic_cast<LC_PrintPreviewView *>(m_graphicView);
+void RS_ActionPrintPreview::setBlackWhite(const bool bw) const {
+    const auto* printPreview = dynamic_cast<LC_PrintPreviewView *>(m_graphicView);
     if (printPreview != nullptr) {
         if (bw) {
             printPreview->setDrawingMode(RS2::ModeBW);
@@ -366,13 +366,11 @@ RS2::Unit RS_ActionPrintPreview::getUnit() const {
     if (m_graphic) {
         return m_graphic->getUnit();
     }
-    else {
-        return RS2::None;
-    }
+    return RS2::None;
 }
 
 /** set paperscale fixed */
-void RS_ActionPrintPreview::setPaperScaleFixed(bool fixed) const {
+void RS_ActionPrintPreview::setPaperScaleFixed(const bool fixed) const {
     m_graphic->setPaperScaleFixed(fixed);
 }
 
@@ -382,13 +380,13 @@ bool RS_ActionPrintPreview::isPaperScaleFixed() const {
 }
 
 /** calculate number of pages needed to contain a drawing */
-void RS_ActionPrintPreview::calcPagesNum(bool multiplePages) {
+void RS_ActionPrintPreview::calcPagesNum(const bool multiplePages) {
     if (m_graphic) {
         if (multiplePages) {
-            RS_Vector printArea = m_graphic->getPrintAreaSize(false);
-            RS_Vector graphicSize = m_graphic->getSize() * m_graphic->getPaperScale();
-            int pX = ceil(graphicSize.x / printArea.x);
-            int pY = ceil(graphicSize.y / printArea.y);
+            const RS_Vector printArea = m_graphic->getPrintAreaSize(false);
+            const RS_Vector graphicSize = m_graphic->getSize() * m_graphic->getPaperScale();
+            const int pX = ceil(graphicSize.x / printArea.x);
+            const int pY = ceil(graphicSize.y / printArea.y);
 
             if (pX > 99 || pY > 99) { // fixme - why such limit? Why hardcoded?
                 commandMessage(tr("Limit of pages has been exceeded."));
@@ -407,11 +405,11 @@ void RS_ActionPrintPreview::calcPagesNum(bool multiplePages) {
     }
 }
 // fixme - sand -  review and check why subtle rounding issues occur on some pages values
-void RS_ActionPrintPreview::setPagesNumHorizontal(int pagesCount) {
-    RS_Vector printArea = m_graphic->getPrintAreaSize(false);
-    RS_Vector graphicSize = m_graphic->getSize();
-    double paperScale = pagesCount * printArea.x / (graphicSize.x + 5);
-    int vertPagesCount = ceil(graphicSize.y * paperScale / printArea.y);
+void RS_ActionPrintPreview::setPagesNumHorizontal(const int pagesCount) {
+    const RS_Vector printArea = m_graphic->getPrintAreaSize(false);
+    const RS_Vector graphicSize = m_graphic->getSize();
+    const double paperScale = pagesCount * printArea.x / (graphicSize.x + 5);
+    const int vertPagesCount = ceil(graphicSize.y * paperScale / printArea.y);
     m_graphic->setPagesNum(pagesCount, vertPagesCount);
     m_graphic->setPaperScale(paperScale);
 
@@ -422,14 +420,14 @@ void RS_ActionPrintPreview::setPagesNumHorizontal(int pagesCount) {
     updateOptions();
 }
 
-void RS_ActionPrintPreview::setPagesNumVertical(int pagesCount) {
-    RS_Vector printArea = m_graphic->getPrintAreaSize(false);
-    RS_Vector graphicSize = m_graphic->getSize();
+void RS_ActionPrintPreview::setPagesNumVertical(const int pagesCount) {
+    const RS_Vector printArea = m_graphic->getPrintAreaSize(false);
+    const RS_Vector graphicSize = m_graphic->getSize();
     double paperScale = pagesCount * printArea.y / (graphicSize.y + 5);
 
-    int horPagesCount = ceil(graphicSize.x * paperScale / printArea.x);
+    const int horPagesCount = ceil(graphicSize.x * paperScale / printArea.x);
 
-    double paperScaleHor = horPagesCount * printArea.x / graphicSize.x;
+    const double paperScaleHor = horPagesCount * printArea.x / graphicSize.x;
 
     paperScale = std::min(paperScaleHor, paperScale);
 

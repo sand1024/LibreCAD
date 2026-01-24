@@ -23,16 +23,15 @@
 #ifndef LC_ACTIONDRAWARC2POINTSLENGTH_H
 #define LC_ACTIONDRAWARC2POINTSLENGTH_H
 
-#include <QObject>
 #include "lc_actiondrawarc2pointsbase.h"
 
 class LC_ActionDrawArc2PointsLength: public LC_ActionDrawArc2PointsBase{
     Q_OBJECT
 public:
-    LC_ActionDrawArc2PointsLength(LC_ActionContext *actionContext);
+    explicit LC_ActionDrawArc2PointsLength(LC_ActionContext *actionContext);
     ~LC_ActionDrawArc2PointsLength() override = default;
 protected:
-    bool createArcData(RS_ArcData &data, int status, RS_Vector pos, bool reverse, bool reportErrors) override;
+    bool createArcData(RS_ArcData &data, int status, RS_Vector pos, bool alternate, bool reportErrors) override;
     void doPreviewOnPoint2Custom(RS_Arc *pArc) override;
     QString getParameterCommand() override;
     QString getParameterPromptValue() const override;
@@ -40,4 +39,4 @@ protected:
     double determineArcAngleByLenAndChord(double arcLen, double chordLen);
 };
 
-#endif // LC_ACTIONDRAWARC2POINTSLENGTH_H
+#endif

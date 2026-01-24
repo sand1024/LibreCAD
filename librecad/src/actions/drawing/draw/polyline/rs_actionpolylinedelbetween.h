@@ -38,17 +38,17 @@ class RS_AtomicEntity;
 class RS_ActionPolylineDelBetween:public LC_ActionPolylineDeleteBase {
     Q_OBJECT
 public:
-    RS_ActionPolylineDelBetween(LC_ActionContext *actionContext);
+    explicit RS_ActionPolylineDelBetween(LC_ActionContext *actionContext);
     ~RS_ActionPolylineDelBetween() override;
     void drawSnapper() override;
 protected:
     RS_Vector m_vertexToDelete2 = RS_Vector(false);
     void doInitialInit() override;
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void setPolylineToModify(RS_Entity* en);
-    void collectEntitiesToRemove(RS_Vector vector, RS_Vector vector1, QList<RS_Entity *> &list) const;
+    void collectEntitiesToRemove(const RS_Vector& first, const RS_Vector& second, QList<RS_Entity *> &list) const;
     void updateMouseButtonHints() override;
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
     void doTriggerCompletion(bool success) override;

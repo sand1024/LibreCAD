@@ -49,10 +49,10 @@ bool LC_ActionInteractivePickDistance::isInteractiveDataValid() {
 
 void LC_ActionInteractivePickDistance::doSetInteractiveInputValue(
     LC_ActionContext::InteractiveInputInfo* interactiveInputInfo) {
-    interactiveInputInfo->m_distance = m_distance;
+    interactiveInputInfo->distance = m_distance;
 }
 
-void LC_ActionInteractivePickDistance::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void LC_ActionInteractivePickDistance::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     RS_Vector mouse = e->snapPoint;
     switch (status) {
         case SetPoint1: {
@@ -61,8 +61,8 @@ void LC_ActionInteractivePickDistance::onMouseMoveEvent(int status, LC_MouseEven
                 if (e->isShift) {
                     highlightHover(entity);
                     if (isLine(entity)) {
-                        auto startPoint = entity->getStartpoint();
-                        auto endPoint = entity->getEndpoint();
+                        const auto startPoint = entity->getStartpoint();
+                        const auto endPoint = entity->getEndpoint();
                         if (m_showRefEntitiesOnPreview) {
                             previewRefPoint(startPoint);
                             previewRefPoint(endPoint);
@@ -71,11 +71,11 @@ void LC_ActionInteractivePickDistance::onMouseMoveEvent(int status, LC_MouseEven
                         updateInfoCursorForPoint2(startPoint, endPoint);
                     }
                     if (isArc(entity)) {
-                        auto arc = static_cast<RS_Arc*>(entity);
-                        auto center = arc->getCenter();
-                        auto pointOnEntity = arc->getNearestPointOnEntity(e->graphPoint, true);
+                        const auto arc = static_cast<RS_Arc*>(entity);
+                        const auto center = arc->getCenter();
+                        const auto pointOnEntity = arc->getNearestPointOnEntity(e->graphPoint, true);
                         auto startPoint = center;
-                        auto endPoint = pointOnEntity;
+                        const auto endPoint = pointOnEntity;
                         if (m_showRefEntitiesOnPreview) {
                             previewRefPoint(center);
                             previewRefPoint(pointOnEntity);
@@ -93,11 +93,11 @@ void LC_ActionInteractivePickDistance::onMouseMoveEvent(int status, LC_MouseEven
                         updateInfoCursorForPoint2(startPoint, endPoint);
                     }
                     else if (isCircle(entity)) {
-                        auto circle = static_cast<RS_Arc*>(entity);
-                        auto center = circle->getCenter();
-                        auto pointOnEntity = circle->getNearestPointOnEntity(e->graphPoint, true);
+                        const auto circle = static_cast<RS_Arc*>(entity);
+                        const auto center = circle->getCenter();
+                        const auto pointOnEntity = circle->getNearestPointOnEntity(e->graphPoint, true);
                         auto startPoint = center;
-                        auto endPoint = pointOnEntity;
+                        const auto endPoint = pointOnEntity;
                         if (m_showRefEntitiesOnPreview) {
                             previewRefPoint(center);
                             previewRefPoint(pointOnEntity);
@@ -118,14 +118,14 @@ void LC_ActionInteractivePickDistance::onMouseMoveEvent(int status, LC_MouseEven
                 else if (e->isControl) {
                     if (isLine(entity)) {
                         highlightHover(entity);
-                        auto line = static_cast<RS_Line*>(entity);
+                        const auto line = static_cast<RS_Line*>(entity);
                         LC_Division division(m_document);
-                        LC_Division::LineSegmentData* data = division.findLineSegmentBetweenIntersections(
+                        const LC_Division::LineSegmentData* data = division.findLineSegmentBetweenIntersections(
                             line, e->graphPoint, true);
 
                         if (data != nullptr) {
-                            RS_Vector start = data->snapSegmentStart;
-                            RS_Vector end = data->snapSegmentEnd;
+                            const RS_Vector start = data->snapSegmentStart;
+                            const RS_Vector end = data->snapSegmentEnd;
                             if (m_showRefEntitiesOnPreview) {
                                 previewRefLine(start, end);
                                 previewRefPoint(start);
@@ -154,7 +154,7 @@ void LC_ActionInteractivePickDistance::onMouseMoveEvent(int status, LC_MouseEven
                     previewRefPoint(m_point1);
                     previewRefSelectablePoint(m_point2);
                 }
-                RS_Vector &startPoint = m_point1;
+                const RS_Vector &startPoint = m_point1;
                 updateInfoCursorForPoint2(mouse, startPoint);
             }
             break;
@@ -177,7 +177,7 @@ void LC_ActionInteractivePickDistance::updateInfoCursorForPoint1(const RS_Vector
 
 void LC_ActionInteractivePickDistance::updateInfoCursorForPoint2(const RS_Vector &mouse, const RS_Vector &startPoint) const {
     if (m_infoCursorOverlayPrefs->enabled) {
-        double distance = startPoint.distanceTo(mouse);
+        const double distance = startPoint.distanceTo(mouse);
         msg(tr("Pick Distance"))
             .linear(tr("Distance:"), distance)
             .wcsAngle(tr("Angle:"), startPoint.angleTo(mouse))
@@ -187,7 +187,7 @@ void LC_ActionInteractivePickDistance::updateInfoCursorForPoint2(const RS_Vector
     }
 }
 
-void LC_ActionInteractivePickDistance::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
+void LC_ActionInteractivePickDistance::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     RS_Vector snap = e->snapPoint;
     switch (status){
         case SetPoint1:{
@@ -198,14 +198,14 @@ void LC_ActionInteractivePickDistance::onMouseLeftButtonRelease(int status, LC_M
                         m_distance = entity->getLength();
                     }
                     else if (isCircle(entity)) {
-                        auto circle = static_cast<RS_Circle*>(entity);
+                        const auto circle = static_cast<RS_Circle*>(entity);
                         m_distance = circle->getRadius();
                         if (e->isControl) {
                             m_distance = m_distance*2; // diameter
                         }
                     }
                     else if (isArc(entity)) {
-                        auto arc = static_cast<RS_Arc*>(entity);
+                        const auto arc = static_cast<RS_Arc*>(entity);
                         m_distance = arc->getRadius();
                         if (e->isControl) {
                             m_distance = m_distance*2; // diameter
@@ -214,9 +214,9 @@ void LC_ActionInteractivePickDistance::onMouseLeftButtonRelease(int status, LC_M
                 }
                 else if (e->isControl) {
                     if (isLine(entity)) {
-                        auto line = static_cast<RS_Line*>(entity);
+                        const auto line = static_cast<RS_Line*>(entity);
                         LC_Division division(m_document);
-                        LC_Division::LineSegmentData *data = division.findLineSegmentBetweenIntersections(line, snap, true);
+                        const LC_Division::LineSegmentData *data = division.findLineSegmentBetweenIntersections(line, snap, true);
                         if (data != nullptr) {
                             m_distance = data->snapSegmentEnd.distanceTo(data->snapSegmentStart);
                             delete data;
@@ -233,7 +233,7 @@ void LC_ActionInteractivePickDistance::onMouseLeftButtonRelease(int status, LC_M
             }
             break;
         }
-        case (SetPoint2):{
+        case SetPoint2:{
             snap = getSnapAngleAwarePoint(e, m_point1,  snap);
             fireCoordinateEvent(snap);
             break;
@@ -243,7 +243,7 @@ void LC_ActionInteractivePickDistance::onMouseLeftButtonRelease(int status, LC_M
     }
 }
 
-void LC_ActionInteractivePickDistance::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void LC_ActionInteractivePickDistance::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     deletePreview();
     if (status == SetPoint2) {
         moveRelativeZero(m_savedRelativeZero);
@@ -252,18 +252,18 @@ void LC_ActionInteractivePickDistance::onMouseRightButtonRelease(int status, [[m
 }
 
 
-void LC_ActionInteractivePickDistance::onCoordinateEvent(int status, [[maybe_unused]]bool isZero, const RS_Vector &mouse) {
+void LC_ActionInteractivePickDistance::onCoordinateEvent(const int status, [[maybe_unused]]bool isZero, const RS_Vector &pos) {
     switch (status) {
         case SetPoint1: {
-            m_point1 = mouse;
+            m_point1 = pos;
             m_savedRelativeZero = m_viewport->getRelativeZero();
             setStatus(SetPoint2);
             break;
         }
         case SetPoint2: {
             if (m_point1.valid){
-                if (LC_LineMath::isMeaningfulDistance(m_point1, mouse)) {
-                    m_point2 = mouse;
+                if (LC_LineMath::isMeaningfulDistance(m_point1, pos)) {
+                    m_point2 = pos;
                     m_distance = m_point2.distanceTo(m_point1);
                     moveRelativeZero(m_savedRelativeZero);
                     deletePreview();

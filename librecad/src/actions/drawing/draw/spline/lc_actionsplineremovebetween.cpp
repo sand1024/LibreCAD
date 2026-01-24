@@ -42,7 +42,7 @@ void LC_ActionSplineRemoveBetween::doOnEntityNotCreated() {
     commandMessage(tr("Not enough points remains for the spline"));
 }
 
-void LC_ActionSplineRemoveBetween::onMouseMove(RS_Vector mouse, int status, LC_MouseEvent *e) {
+void LC_ActionSplineRemoveBetween::onMouseMove(const RS_Vector mouse, const int status, const LC_MouseEvent* e) {
     switch (status) {
         case SetEntity: {
             const auto entity = catchEntityByEvent(e, g_enTypeList);
@@ -67,7 +67,7 @@ void LC_ActionSplineRemoveBetween::onMouseMove(RS_Vector mouse, int status, LC_M
             if (nearestPoint.valid) {
                 previewRefPoint(m_selectedVertexPoint);
                 previewRefSelectablePoint(nearestPoint);
-                RS_Entity *previewUpdatedEntity = createModifiedSplineEntity(m_entityToModify, nearestPoint, e->isShift);
+                const RS_Entity *previewUpdatedEntity = createModifiedSplineEntity(m_entityToModify, nearestPoint, e->isShift);
                 if (previewUpdatedEntity != nullptr) {
                     previewEntity(previewUpdatedEntity);
                 }
@@ -84,12 +84,12 @@ void LC_ActionSplineRemoveBetween::setEntityToModify(RS_Entity* entity) {
     select(m_entityToModify);
     switch (m_entityToModify->rtti()){
         case RS2::EntitySplinePoints:{
-            const auto* sp = dynamic_cast<LC_SplinePoints *>(m_entityToModify);
+            const auto* sp = static_cast<LC_SplinePoints *>(m_entityToModify);
             m_splineIsClosed = sp->isClosed();
             break;
         }
         case RS2::EntitySpline:{
-            const auto* sp = dynamic_cast<RS_Spline*>(m_entityToModify);
+            const auto* sp = static_cast<RS_Spline*>(m_entityToModify);
             m_splineIsClosed = sp->isClosed();
             break;
         }
@@ -101,11 +101,11 @@ void LC_ActionSplineRemoveBetween::setEntityToModify(RS_Entity* entity) {
     setStatus(SetBeforeControlPoint);
 }
 
-bool LC_ActionSplineRemoveBetween::mayModifySplineEntity(RS_Entity* e) {
-    return e != nullptr && g_enTypeList.contains(e->rtti());
+bool LC_ActionSplineRemoveBetween::mayModifySplineEntity(RS_Entity* entity) {
+    return entity != nullptr && g_enTypeList.contains(entity->rtti());
 }
 
-void LC_ActionSplineRemoveBetween::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
+void LC_ActionSplineRemoveBetween::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     switch (status){
         case SetEntity:{
             const auto entity = catchEntityByEvent(e, g_enTypeList);
@@ -142,21 +142,21 @@ void LC_ActionSplineRemoveBetween::onMouseLeftButtonRelease(int status, LC_Mouse
     }
 }
 
-RS_Entity *LC_ActionSplineRemoveBetween::createModifiedSplineEntity(RS_Entity *e, RS_Vector controlPoint, bool startDirection) {
+RS_Entity *LC_ActionSplineRemoveBetween::createModifiedSplineEntity(RS_Entity *e, const RS_Vector controlPoint, const bool startDirection) {
     RS_Entity* result = nullptr;
     const bool deleteNotFoundPoints = startDirection && m_splineIsClosed;
     std::vector<RS_Vector> remainingPoints;
     switch (e->rtti()){
         case RS2::EntitySplinePoints:{
-            auto* clone = dynamic_cast<LC_SplinePoints *>(e->clone());
+            auto* clone = static_cast<LC_SplinePoints *>(e->clone());
             LC_SplinePointsData &data = clone->getData();
-            const unsigned int splinePointsCount = data.splinePoints.size();
+            const size_t splinePointsCount = data.splinePoints.size();
 
             if (splinePointsCount > 0){
                 collectPointsThatRemainsAfterDeletion(controlPoint, splinePointsCount, deleteNotFoundPoints, data.splinePoints, remainingPoints);
             }
             else {
-                const unsigned int controlPointsCount = data.controlPoints.size();
+                const size_t controlPointsCount = data.controlPoints.size();
                 collectPointsThatRemainsAfterDeletion(controlPoint, controlPointsCount, deleteNotFoundPoints, data.controlPoints, remainingPoints);
             }
 
@@ -170,9 +170,9 @@ RS_Entity *LC_ActionSplineRemoveBetween::createModifiedSplineEntity(RS_Entity *e
             break;
         }
         case RS2::EntitySpline:{
-            const auto* spline = dynamic_cast<RS_Spline *>(e);
+            const auto* spline = static_cast<RS_Spline *>(e);
             RS_SplineData data = spline->getData();
-            const unsigned int count = data.controlPoints.size();
+            const size_t count = data.controlPoints.size();
 
             collectPointsThatRemainsAfterDeletion(controlPoint, count, deleteNotFoundPoints, data.controlPoints, remainingPoints);
 
@@ -195,10 +195,10 @@ RS_Entity *LC_ActionSplineRemoveBetween::createModifiedSplineEntity(RS_Entity *e
 }
 
 void LC_ActionSplineRemoveBetween::collectPointsThatRemainsAfterDeletion(
-    const RS_Vector &controlPoint, unsigned int splinePointsCount, bool deleteNotFoundPoints, std::vector<RS_Vector> &pointsVector,
+    const RS_Vector &controlPoint, const size_t splinePointsCount, const bool deleteNotFoundPoints, const std::vector<RS_Vector> &pointsVector,
     std::vector<RS_Vector> &remainingPoints) const {
     bool found = false;
-    for (unsigned int i = 0; i < splinePointsCount; i++) {
+    for (size_t i = 0; i < splinePointsCount; i++) {
         RS_Vector cp = pointsVector.at(i);
         if (cp == m_selectedVertexPoint || cp == controlPoint){
             if (deleteNotFoundPoints){
@@ -241,29 +241,25 @@ void LC_ActionSplineRemoveBetween::updateMouseButtonHints() {
     }
 }
 
-bool LC_ActionSplineRemoveBetween::isValidSplinePointsData(unsigned long long int size, bool closed) {
+bool LC_ActionSplineRemoveBetween::isValidSplinePointsData(const size_t size, const bool closed) {
     if (closed){
         return size > 3;
     }
-    else {
-        return size > 2;
-    }
+    return size > 2;
 }
 
-bool LC_ActionSplineRemoveBetween::isValidSplineData(unsigned long long int size, bool closed, int degree) {
+bool LC_ActionSplineRemoveBetween::isValidSplineData(const size_t size, const bool closed, const int degree) {
     if (closed){
         return size > 3;
     }
-    else{
-        switch (degree){
-            case 1:
-                return size > 3;
-            case 2:
-                return size > 3;
-            case 3:
-                return size > 4;
-            default:
-                return false;
-        }
+    switch (degree){
+        case 1:
+            return size > 3;
+        case 2:
+            return size > 3;
+        case 3:
+            return size > 4;
+        default:
+            return false;
     }
 }

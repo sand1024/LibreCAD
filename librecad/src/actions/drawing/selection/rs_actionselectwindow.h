@@ -45,7 +45,7 @@ public:
     bool isSelectAllEntityTypes() const;
     void setSelectAllEntityTypes(bool val);
     QList<RS2::EntityType> getEntityTypesToSelect();
-    void setEntityTypesToSelect(const QList<RS2::EntityType>& type);
+    void setEntityTypesToSelect(const QList<RS2::EntityType>& types);
 protected:
     /**
  * Action States.
@@ -64,10 +64,10 @@ protected:
     QList<RS2::EntityType> m_entityTypesToSelect;
 
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonPress(int status, LC_MouseEvent* e) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonPress(int status, const LC_MouseEvent* e) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void updateMouseButtonHints() override;
     void doTrigger() override;
     LC_ActionOptionsWidget *createOptionsWidget() override;

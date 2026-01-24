@@ -35,33 +35,33 @@ public:
     explicit LC_ActionModifyDuplicate(LC_ActionContext *actionContext);
     ~LC_ActionModifyDuplicate() override;
 
-    double getOffsetX() const {return m_offsetX;};
-    double getOffsetY() const {return m_offsetY;};
+    double getOffsetX() const {return m_offsetX;}
+    double getOffsetY() const {return m_offsetY;}
 
-    void setOffsetX(double value) {m_offsetX = value;};
-    void setOffsetY(double value){m_offsetY = value;};
+    void setOffsetX(const double value) {m_offsetX = value;}
+    void setOffsetY(const double value){m_offsetY = value;}
 
-    bool isDuplicateInPlace() const{return m_duplicateInplace;};
-    void setDuplicateInPlace(bool value){m_duplicateInplace = value;};
-    int getPenMode() const {return m_penMode;};
-    void setPenMode(int value){m_penMode = value;};
-    int getLayerMode() const{return m_layerMode;};
-    void setLayerMode(int value){m_layerMode = value;};
+    bool isDuplicateInPlace() const{return m_duplicateInplace;}
+    void setDuplicateInPlace(const bool value){m_duplicateInplace = value;}
+    int getPenMode() const {return m_penMode;}
+    void setPenMode(const int value){m_penMode = value;}
+    int getLayerMode() const{return m_layerMode;}
+    void setLayerMode(const int value){m_layerMode = value;}
 protected:
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     RS2::CursorType doGetMouseCursor(int status) override;
-    RS_Vector doGetMouseSnapPoint(LC_MouseEvent *e) override;
-    void doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
+    RS_Vector doGetMouseSnapPoint(const LC_MouseEvent* e) override;
+    void doPreparePreviewEntities(const LC_MouseEvent* e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
     void doAfterTrigger() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    void doOnLeftMouseButtonRelease(LC_MouseEvent *e, int status, const RS_Vector &snapPoint) override;
+    void doOnLeftMouseButtonRelease(const LC_MouseEvent* e, int status, const RS_Vector &snapPoint) override;
     bool doCheckMayTrigger() override;
     bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx) override;
     bool isSetActivePenAndLayerOnTrigger() override;
     bool doCheckMayTriggerOnInit(int status) override;
     bool isAcceptSelectedEntityToTriggerOnInit(RS_Entity *pEntity) override;
-    bool doCheckMayDrawPreview(LC_MouseEvent *event, int status) override;
-    void doCreateEntitiesOnTrigger(RS_Entity *entity, QList<RS_Entity *> &list) override;
+    bool doCheckMayDrawPreview(const LC_MouseEvent* event, int status) override;
+    void doCreateEntitiesOnTrigger(RS_Entity *en, QList<RS_Entity *> &list) override;
     void updateMouseButtonHints() override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
 private:
@@ -95,8 +95,8 @@ private:
      */
     int m_layerMode = LAYER_ACTIVE;
 
-    RS_Vector determineOffset(RS_Vector& snap,const RS_Vector& center) const;
+    RS_Vector determineOffset(const RS_Vector& snapOfOffset,const RS_Vector& center) const;
     RS_Vector getEntityCenterPoint(const RS_Entity *en) const;
 };
 
-#endif // LC_ACTIONMODIFYDUPLICATE_H
+#endif

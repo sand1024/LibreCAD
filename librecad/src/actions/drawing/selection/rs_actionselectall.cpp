@@ -28,19 +28,18 @@
 
 #include "rs_selection.h"
 
-RS_ActionSelectAll::RS_ActionSelectAll(LC_ActionContext *actionContext, bool select)
-        :RS_ActionInterface("Select All Entities",actionContext, RS2::ActionSelectAll)
-		,m_select(select){
-	m_actionType=RS2::ActionSelectAll;
+RS_ActionSelectAll::RS_ActionSelectAll(LC_ActionContext* actionContext, const bool select)
+    : RS_ActionInterface("Select All Entities", actionContext, RS2::ActionSelectAll), m_select(select) {
+    m_actionType = RS2::ActionSelectAll;
 }
 
-void RS_ActionSelectAll::init(int status) {
+void RS_ActionSelectAll::init(const int status) {
     RS_ActionInterface::init(status);
     trigger();
-    finish(false);
+    finish();
 }
 
 void RS_ActionSelectAll::trigger() {
-    RS_Selection s(m_document, m_viewport);
+    const RS_Selection s(m_document, m_viewport);
     s.selectAll(m_select);
 }

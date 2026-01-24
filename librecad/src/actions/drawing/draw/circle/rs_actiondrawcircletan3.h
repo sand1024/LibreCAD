@@ -33,24 +33,25 @@ class RS_AtomicEntity;
  *
  * @author Dongxu Li
  */
-class RS_ActionDrawCircleTan3:public LC_ActionDrawCircleBase {
+class RS_ActionDrawCircleTan3 : public LC_ActionDrawCircleBase {
     Q_OBJECT
 public:
-    RS_ActionDrawCircleTan3(LC_ActionContext *actionContext);
+    explicit RS_ActionDrawCircleTan3(LC_ActionContext* actionContext);
     ~RS_ActionDrawCircleTan3() override;
     void init(int status) override;
-//    void coordinateEvent(RS_CoordinateEvent* e) override;
-//    void commandEvent(RS_CommandEvent* e) override;
-    void finish(bool updateTB) override;
+    //    void coordinateEvent(RS_CoordinateEvent* e) override;
+    //    void commandEvent(RS_CommandEvent* e) override;
+    void finish() override;
+
 protected:
     /**
      * Action States.
      */
     enum Status {
-        SetCircle1  = InitialActionStatus,   //  Setting the First Circle.  */
-        SetCircle2,                          //  Setting the Second Circle.  */
-        SetCircle3,                          //  Setting the Third Circle.  */
-        SetCenter                            //  select the closest tangential Circle.  */
+        SetCircle1 = InitialActionStatus, //  Setting the First Circle.  */
+        SetCircle2, //  Setting the Second Circle.  */
+        SetCircle3, //  Setting the Third Circle.  */
+        SetCenter //  select the closest tangential Circle.  */
     };
 
     struct ActionData;
@@ -61,14 +62,14 @@ protected:
 
     void drawSnapper() override;
     bool preparePreview() const;
-    RS_Entity *catchCircle(LC_MouseEvent *e, bool forPreview);
+    RS_Entity* catchCircle(const LC_MouseEvent* e, bool forPreview) const;
     void setCircle(RS_Entity* en, int status);
-    bool getData(RS_Entity *en = nullptr) const;
-    RS_Vector getTangentPoint(RS_Vector creatingCircleCenter, double creatingCircleRadius, RS_AtomicEntity *pEntity);
+    bool getData(RS_Entity* testThirdEntity = nullptr) const;
+    RS_Vector getTangentPoint(const RS_Vector& creatingCircleCenter, double creatingCircleRadius, const RS_AtomicEntity* circle);
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void updateMouseButtonHints() override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;

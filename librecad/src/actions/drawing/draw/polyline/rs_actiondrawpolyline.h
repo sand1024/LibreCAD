@@ -93,7 +93,7 @@ protected:
          * Line data defined so far.
          */
         RS_PolylineData data;
-        RS_ArcData arc_data;
+        RS_ArcData arcData;
         /**
       * Polyline entity we're working on.
       */
@@ -131,7 +131,7 @@ protected:
     double m_radius = 0.;
     double m_angleDegrees = 0.;
     SegmentMode m_mode{};
-    int m_alternateArc = false;
+    bool m_alternateArc = false;
     int m_reversed = 1;
     bool m_calculatedSegment = false;
     bool m_prepend = false;
@@ -150,9 +150,9 @@ protected:
     bool m_shiftY = false;
 
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     bool doProcessCommand(int status, const QString &command) override;
     QString prepareCommand(RS_CommandEvent *e) const override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
@@ -161,7 +161,7 @@ protected:
     void drawEquation(int numberOfPolylines);
     void setParserExpression(const QString& expression);
     bool getPlottingX(QString command, double& x);
-    bool doUpdateAngleByInteractiveInput(const QString& tag, double angle) override;
+    bool doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
     void doTriggerCompletion(bool success) override;
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;

@@ -33,11 +33,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * Structure that contains information about cross lines
  */
 struct LC_CrossData {
-    LC_CrossData() :
-        horizontal(),
-        vertical(),
-        centerPoint()
-    {}
+    LC_CrossData() {}
 
     LC_CrossData(const RS_Vector& horPoint1,
                  const RS_Vector& horPoint2,
@@ -62,11 +58,10 @@ struct LC_CrossData {
 /**
  * Simple action that draws a cross located in the center of selected circle, arc, ellipse or ellipse arc.
  * Size and angle of cross is controlled by options.
- * @param container
- * @param graphicView
+ * @param actionContext
  */
 LC_ActionDrawCross::LC_ActionDrawCross(LC_ActionContext *actionContext)
-    :LC_AbstractActionWithPreview("Draw Cross", actionContext,RS2::ActionDrawCross), m_entity(nullptr){
+    :LC_AbstractActionWithPreview("Draw Cross", actionContext,RS2::ActionDrawCross){
 }
 
 LC_ActionDrawCross::~LC_ActionDrawCross() = default;
@@ -87,18 +82,18 @@ void LC_ActionDrawCross::collectEntitiesForTriggerOnInit(QList<RS_Entity*> &enti
 }
 
 // support of creation cross for already selected entities on action invocation
-bool LC_ActionDrawCross::doCheckMayTriggerOnInit(int status){
+bool LC_ActionDrawCross::doCheckMayTriggerOnInit(const int status){
     return status == SetEntity;
 }
 
 bool LC_ActionDrawCross::isAcceptSelectedEntityToTriggerOnInit(RS_Entity *pEntity){
     // from all selected entities, we'll accept only ones that suits for the cross creation
-    int rtti = pEntity->rtti();
+    const int rtti = pEntity->rtti();
     return rtti == RS2::EntityCircle || rtti == RS2::EntityEllipse || rtti == RS2::EntityArc;
 }
 
 void LC_ActionDrawCross::doCreateEntitiesOnTrigger(RS_Entity *en, QList<RS_Entity *> &list){
-    LC_CrossData crossData = createCrossDataForEntity(en);
+    const LC_CrossData crossData = createCrossDataForEntity(en);
     addCrossDataEntities(list, crossData);
 }
 
@@ -108,7 +103,7 @@ bool LC_ActionDrawCross::isSetActivePenAndLayerOnTrigger() {
 
 void LC_ActionDrawCross::setupCrossLinePenAndLayer(RS_Line* line) const {
     line->setLayerToActive(); // fixme - sand - change to some annotation layer?
-    RS2::LineType lineType = getLineTypeForCenterLine();
+    const RS2::LineType lineType = getLineTypeForCenterLine();
     RS_Pen pen = m_document->getActivePen();
     if (lineType != RS2::LineTypeUnchanged) {
         pen.setLineType(lineType);
@@ -119,7 +114,6 @@ void LC_ActionDrawCross::setupCrossLinePenAndLayer(RS_Line* line) const {
 RS2::LineType LC_ActionDrawCross::getLineTypeForCenterLine() const{
     return RS2::CenterLine2; // fixme - retrieve from settings (CENTERLTYPE)
 }
-
 
 /**
  * Creates entities (2 lines) that will added as result of trigger to the drawing
@@ -142,14 +136,14 @@ void LC_ActionDrawCross::addCrossDataEntities(QList<RS_Entity *> &list, const LC
 
     // create horizontal and vertical lines
 
-    RS_LineData horizontalData = crossData.horizontal;
+    const RS_LineData horizontalData = crossData.horizontal;
     auto *horizontalLine = new RS_Line(m_document, horizontalData);
 
     setupCrossLinePenAndLayer(horizontalLine);
 
     list << horizontalLine;
 
-    RS_LineData verticalData = crossData.vertical;
+    const RS_LineData verticalData = crossData.vertical;
     auto *verticalLine = new RS_Line(m_document, verticalData);
 
     setupCrossLinePenAndLayer(verticalLine);
@@ -206,6 +200,7 @@ void LC_ActionDrawCross::doAfterTrigger(){
  * @return data for cross creation
  */
 LC_CrossData LC_ActionDrawCross::createCrossDataForEntity(RS_Entity* ent) const{
+    Q_ASSERT(ent != nullptr);
     RS_Vector cp = ent->getCenter();
     double lengthX=0., lengthY=0.;
     double ellipseAngle = 0.0;
@@ -218,7 +213,7 @@ LC_CrossData LC_ActionDrawCross::createCrossDataForEntity(RS_Entity* ent) const{
     // check whether we are in ellipse arc
     RS_Ellipse* ellipse = nullptr;
     if (isEllipse){
-        ellipse = dynamic_cast<RS_Ellipse *>(ent);
+        ellipse = static_cast<RS_Ellipse *>(ent);
         isEllipseArcShape = ellipse->isEllipticArc();
     }
 
@@ -278,9 +273,11 @@ LC_CrossData LC_ActionDrawCross::createCrossDataForEntity(RS_Entity* ent) const{
                 lengthY = -1;
             }
             break;
+        default:
+            break;
     }
 
-    RS_Vector v = RS_Vector();
+    auto v = RS_Vector();
 
     // points for lines
     RS_Vector horStart;
@@ -319,12 +316,12 @@ LC_CrossData LC_ActionDrawCross::createCrossDataForEntity(RS_Entity* ent) const{
         vertEnd = cp + v;
     }
     // return result
-    LC_CrossData result = LC_CrossData(horStart, horEnd, vertStart, vertEnd, cp);
+    auto result = LC_CrossData(horStart, horEnd, vertStart, vertEnd, cp);
     return result;
 }
 
 
-bool LC_ActionDrawCross::doCheckMayDrawPreview([[maybe_unused]]LC_MouseEvent *event, int status){
+bool LC_ActionDrawCross::doCheckMayDrawPreview([[maybe_unused]] const LC_MouseEvent* event, const int status){
     return status == SetEntity;
 }
 
@@ -335,7 +332,7 @@ bool LC_ActionDrawCross::doCheckMayDrawPreview([[maybe_unused]]LC_MouseEvent *ev
  * @param list
  * @param status
  */
-void LC_ActionDrawCross::doPreparePreviewEntities(LC_MouseEvent *e, [[maybe_unused]]RS_Vector &snap, QList<RS_Entity *> &list,[[maybe_unused]] int status){
+void LC_ActionDrawCross::doPreparePreviewEntities(const LC_MouseEvent* e, [[maybe_unused]]RS_Vector &snap, QList<RS_Entity *> &list, [[maybe_unused]] int status){
     deleteSnapper();
     RS_Entity *en = catchAndDescribe(e, m_circleType, RS2::ResolveAll);
     // check whether entity is ok for drawing cross
@@ -354,7 +351,7 @@ void LC_ActionDrawCross::doPreparePreviewEntities(LC_MouseEvent *e, [[maybe_unus
             highlightHover(en);
 
             // prepare data for preview
-            LC_CrossData crossData = createCrossDataForEntity(en);
+            const LC_CrossData crossData = createCrossDataForEntity(en);
             // create lines
             addCrossDataEntities(list, crossData);
             if (m_showRefEntitiesOnPreview) {
@@ -371,7 +368,7 @@ void LC_ActionDrawCross::doPreparePreviewEntities(LC_MouseEvent *e, [[maybe_unus
  * @param status
  * @param snapPoint
  */
-void LC_ActionDrawCross::doOnLeftMouseButtonRelease([[maybe_unused]]LC_MouseEvent *e, int status, [[maybe_unused]]const RS_Vector &snapPoint){
+void LC_ActionDrawCross::doOnLeftMouseButtonRelease([[maybe_unused]] const LC_MouseEvent* e, const int status, [[maybe_unused]]const RS_Vector &snapPoint){
     if (status == SetEntity){
         trigger(); // just draw cross on click
         invalidateSnapSpot();
@@ -389,7 +386,7 @@ void LC_ActionDrawCross::updateMouseButtonHints(){
     }
 }
 
-bool LC_ActionDrawCross::doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) {
+bool LC_ActionDrawCross::doUpdateAngleByInteractiveInput(const QString& tag, const double angleRad) {
     if (tag == "angle") {
         setCrossAngleDegrees(RS_Math::rad2deg(angleRad));
         return true;
@@ -397,7 +394,7 @@ bool LC_ActionDrawCross::doUpdateAngleByInteractiveInput(const QString& tag, dou
     return false;
 }
 
-bool LC_ActionDrawCross::doUpdateDistanceByInteractiveInput(const QString& tag, double distance) {
+bool LC_ActionDrawCross::doUpdateDistanceByInteractiveInput(const QString& tag, const double distance) {
     if (tag == "x") {
         setXLength(distance);
         return true;

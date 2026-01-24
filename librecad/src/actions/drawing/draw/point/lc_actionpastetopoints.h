@@ -28,7 +28,7 @@
 class LC_ActionPasteToPoints: public LC_ActionPreSelectionAwareBase{
     Q_OBJECT
 public:
-    LC_ActionPasteToPoints(LC_ActionContext *actionContext);
+    explicit LC_ActionPasteToPoints(LC_ActionContext *actionContext);
     double getAngle() const;
     void setAngle(double angle);
     double getScaleFactor() const;
@@ -46,9 +46,9 @@ protected:
     bool isEntityAllowedToSelect(RS_Entity *ent) const override;
     void updateMouseButtonHintsForSelection() override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angle) override;
-    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
     void doTriggerCompletion(bool success) override;
     void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
 };
 
-#endif // LC_ACTIONPASTETOPOINTS_H
+#endif

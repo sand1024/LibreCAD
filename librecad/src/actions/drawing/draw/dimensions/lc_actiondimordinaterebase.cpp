@@ -23,9 +23,9 @@
 
 #include "lc_actiondimordinaterebase.h"
 
+#include "lc_dimordinate.h"
 #include "lc_graphicviewport.h"
 #include "rs_entity.h"
-#include "lc_dimordinate.h"
 #include "rs_selection.h"
 
 class LC_DimOrdinate;
@@ -51,10 +51,10 @@ bool LC_ActionDimOrdinateRebase::doTriggerModifications(LC_DocumentModificationB
     RS_Vector origin{false};
     m_viewport->fillCurrentUCSInfo(origin, horizontalDirection);
 
-    for (auto e : m_selectedEntities) {
-        auto* dimOrdinate = dynamic_cast<LC_DimOrdinate*>(e);
+    for (const auto e : m_selectedEntities) {
+        const auto* dimOrdinate = dynamic_cast<LC_DimOrdinate*>(e);
         if (dimOrdinate != nullptr) {
-            auto clone = dynamic_cast<LC_DimOrdinate*>(dimOrdinate->clone());
+            const auto clone = static_cast<LC_DimOrdinate*>(dimOrdinate->clone());
             clone->setHDir(horizontalDirection);
             clone->setDefinitionPoint(origin);
             clone->clearSelectionFlag();
@@ -66,7 +66,7 @@ bool LC_ActionDimOrdinateRebase::doTriggerModifications(LC_DocumentModificationB
     return true;
 }
 
-void LC_ActionDimOrdinateRebase::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+void LC_ActionDimOrdinateRebase::doTriggerSelectionUpdate(const bool keepSelected, const LC_DocumentModificationBatch& ctx) {
     if (keepSelected) {
         RS_Selection::selectEntitiesList(m_document, m_viewport, ctx.entitiesToAdd, true);
     }

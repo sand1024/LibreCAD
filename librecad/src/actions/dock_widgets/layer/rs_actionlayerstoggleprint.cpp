@@ -61,10 +61,10 @@ void RS_ActionLayersTogglePrint::trigger() {
         }
     }
     redrawDrawing();
-    finish(false);
+    finish();
 }
 
-void RS_ActionLayersTogglePrint::init(int status) {
+void RS_ActionLayersTogglePrint::init(const int status) {
     RS_ActionInterface::init(status);
     trigger();
 }

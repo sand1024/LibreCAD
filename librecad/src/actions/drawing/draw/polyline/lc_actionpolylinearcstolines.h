@@ -42,13 +42,13 @@ protected:
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     RS2::CursorType doGetMouseCursor(int status) override;
     void updateMouseButtonHints() override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void setPolylineToModify(RS_Entity* entity);
-    RS_Polyline *createPolyline(RS_Polyline *pPolyline) const;
-    bool hasArcsSegments(RS_Polyline *p);
+    RS_Polyline *createPolyline(const RS_Polyline *original) const;
+    bool hasArcsSegments(const RS_Polyline *p);
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
     void doTriggerCompletion(bool success) override;
 };
-#endif // LC_ACTIONPOLYLINEARCSTOLINES_H
+#endif

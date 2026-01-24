@@ -32,16 +32,16 @@ class LC_ActionDrawLinePoints :public LC_AbstractActionDrawLine {
 public:
     LC_ActionDrawLinePoints(LC_ActionContext *actionContext, bool drawMiddle);
     ~LC_ActionDrawLinePoints() override;
-    int getPointsCount() const {return m_pointsCount;};
-    void setPointsCount(int count) {m_pointsCount = count;};
-    int getEdgePointsMode() const{return m_edgePointsMode;};
+    int getPointsCount() const {return m_pointsCount;}
+    void setPointsCount(const int count) {m_pointsCount = count;}
+    int getEdgePointsMode() const{return m_edgePointsMode;}
     void setEdgePointsMode(int value);
-    void setFixedDistanceMode(bool value) {m_fixedDistanceMode = value;};
-    bool isFixedDistanceMode() const{return m_fixedDistanceMode;};
-    void setWithinLineMode(bool value) {m_withinLineMode = value;};
-    bool isWithinLineMode() const{return m_withinLineMode;};
-    double getPointsDistance() const{return m_fixedDistance;};
-    void setPointsDistance(double val){m_fixedDistance = val;};
+    void setFixedDistanceMode(const bool value) {m_fixedDistanceMode = value;}
+    bool isFixedDistanceMode() const{return m_fixedDistanceMode;}
+    void setWithinLineMode(const bool value) {m_withinLineMode = value;}
+    bool isWithinLineMode() const{return m_withinLineMode;}
+    double getPointsDistance() const{return m_fixedDistance;}
+    void setPointsDistance(const double val){m_fixedDistance = val;}
     void init(int status) override;
     QStringList getAvailableCommands() override;
 protected:
@@ -105,30 +105,30 @@ protected:
     /**
      * Distance between points for fixed distance mode
      */
-    double m_fixedDistance = false;
+    double m_fixedDistance = 0.0;
 
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    bool doProceedCommand(int status, const QString &qString) override;
+    bool doProceedCommand(int status, const QString &command) override;
     bool doProcessCommandValue(int status, const QString &c) override;
     const RS_Vector& getStartPointForAngleSnap() const override;
-    void doBack(LC_MouseEvent *pEvent, int status) override;
+    void doBack(const LC_MouseEvent* e, int status) override;
     bool isStartPointValid() const override;
-    void doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
+    void doPreparePreviewEntities(const LC_MouseEvent* e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
     bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx)  override;
     bool doCheckMayTrigger() override;
     void doAfterTrigger() override;
     RS_Vector doGetRelativeZeroAfterTrigger() override;
-    void doSetStartPoint(RS_Vector vector) override;
+    void doSetStartPoint(const RS_Vector& vector) override;
     void updateMouseButtonHints() override;
-    void createPoints(RS_Vector &potentialEndPoint, QList<RS_Entity *> &entitiesList);
+    void createPoints(const RS_Vector &potentialEndPoint, QList<RS_Entity *> &entitiesList);
     void updatePointsCount(int count);
     void setMajorStatus();
     void updateEdgePointsMode(int mode);
     bool isNonZeroLine(const RS_Vector &possiblePoint) const;
     RS_Vector getPossibleEndPointForAngle(const RS_Vector &snap) const;
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector &coord) override;
     bool isAllowDirectionCommands() override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
 };
-#endif // LC_ACTIONDRAWLINEPOINTS_H
+#endif

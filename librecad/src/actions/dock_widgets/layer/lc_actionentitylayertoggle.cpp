@@ -26,7 +26,7 @@
 #include "rs_graphic.h"
 #include "rs_layer.h"
 
-LC_ActionLayerToggle::LC_ActionLayerToggle(LC_ActionContext* context, RS2::ActionType actionType):
+LC_ActionLayerToggle::LC_ActionLayerToggle(LC_ActionContext* context, const RS2::ActionType actionType):
     LC_ActionLayerBase{"Layer of Entity Toggle Action", context, actionType}{
 }
 
@@ -53,7 +53,7 @@ void LC_ActionLayerToggle::doWithLayer(RS_Graphic* graphic, RS_Layer* layer) {
             break;
         }
         case RS2::ActionLayerEntityHideOthers: {
-            auto layersList = graphic->getLayerList();
+            const auto layersList = graphic->getLayerList();
             for (RS_Layer* l: *layersList) {
                 if (l != layer) {
                     l->freeze(true);

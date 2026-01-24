@@ -35,14 +35,14 @@
  * @author Andrew Mustun
  */
 class RS_ActionEditUndo : public RS_ActionInterface {
-	Q_OBJECT
-public:
-    RS_ActionEditUndo(bool undo,LC_ActionContext *actionContext);
+    Q_OBJECT public:
+    RS_ActionEditUndo(bool undo, LC_ActionContext* actionContext);
     void init(int status) override;
     void trigger() override;
+
 protected:
     /** Undo (true) or redo (false) */
-    bool const m_performUndo = false;
+    const bool m_performUndo = false;
 };
 
 #endif

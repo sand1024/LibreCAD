@@ -20,10 +20,9 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_containertraverser.h"
-
 #include "rs_actiondrawhatch.h"
 
+#include "lc_containertraverser.h"
 #include "rs_debug.h"
 #include "rs_dialogfactory.h"
 #include "rs_dialogfactoryinterface.h"
@@ -32,9 +31,8 @@
 #include "rs_information.h"
 #include "rs_pen.h"
 
-
 namespace {
-    bool hatchAble(RS_Entity *entity) {
+    bool hatchAble(const RS_Entity *entity) {
         if (entity == nullptr) {
             return false;
         }
@@ -64,11 +62,11 @@ RS_ActionDrawHatch::RS_ActionDrawHatch(LC_ActionContext *actionContext)
 
 RS_ActionDrawHatch::~RS_ActionDrawHatch() = default;
 
-void RS_ActionDrawHatch::setShowArea(bool s){
+void RS_ActionDrawHatch::setShowArea(const bool s){
     m_bShowArea=s;
 }
 
-void RS_ActionDrawHatch::init(int status){
+void RS_ActionDrawHatch::init(const int status){
     LC_ActionPreSelectionAwareBase::init(status);
 }
 
@@ -86,7 +84,7 @@ bool RS_ActionDrawHatch::doTriggerModifications(LC_DocumentModificationBatch& ct
 
     QList<RS_Entity*> entitiesList;
     // deselect unhatchable entities:
-    for (auto e : selectedEntities) {
+    for (const auto e : selectedEntities) {
         if (!hatchAble(e)) {
             unselect(e);
         }
@@ -96,7 +94,7 @@ bool RS_ActionDrawHatch::doTriggerModifications(LC_DocumentModificationBatch& ct
     }
 
     // look for selected contours:
-    bool hasContour = !entitiesList.isEmpty();
+    const bool hasContour = !entitiesList.isEmpty();
     if (!hasContour) {
         LC_ERR << "RS_ActionDrawHatch:: " << __func__ << "(): line " << __LINE__ << ", no contour selected\n";
         return false;
@@ -114,7 +112,7 @@ bool RS_ActionDrawHatch::doTriggerModifications(LC_DocumentModificationBatch& ct
         loop->setPen(RS_Pen(RS2::FlagInvalid));
 
         // add selected contour:
-        for (RS_Entity* e : entitiesList) {
+        for (const RS_Entity* e : entitiesList) {
             RS_Entity* clone = e->clone();
             clone->setPen(RS_Pen(RS2::FlagInvalid));
             clone->reparent(loop);
@@ -171,7 +169,7 @@ void RS_ActionDrawHatch::doTriggerSelectionUpdate([[maybe_unused]]bool keepSelec
 
 void RS_ActionDrawHatch::doTriggerCompletion([[maybe_unused]]bool success) {
     unselectAll();
-    finish(false);
+    finish();
 }
 
 void RS_ActionDrawHatch::doSelectEntity(RS_Entity* entityToSelect, [[maybe_unused]] bool selectContour) const {

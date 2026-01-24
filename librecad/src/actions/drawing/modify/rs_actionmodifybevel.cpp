@@ -46,25 +46,24 @@ struct RS_ActionModifyBevel::BevelActionData {
 
 RS_ActionModifyBevel::RS_ActionModifyBevel(LC_ActionContext *actionContext)
     :LC_UndoableDocumentModificationAction("Bevel Entities",actionContext, RS2::ActionModifyBevel)
-    , m_actionData(std::make_unique<BevelActionData>())
-    ,m_lastStatus(SetEntity1){
+    , m_actionData(std::make_unique<BevelActionData>()) {
 }
 
 RS_ActionModifyBevel::~RS_ActionModifyBevel() = default;
 
 
-void RS_ActionModifyBevel::finish(bool updateTB){
-    RS_PreviewActionInterface::finish(updateTB);
+void RS_ActionModifyBevel::finish(){
+    RS_PreviewActionInterface::finish();
 }
 
-void RS_ActionModifyBevel::init(int status) {
+void RS_ActionModifyBevel::init(const int status) {
     RS_PreviewActionInterface::init(status);
     m_snapMode.restriction = RS2::RestrictNothing;
 }
 
 void RS_ActionModifyBevel::doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) {
     if (isLine(contextEntity)) { // can apply bevel to lines only...
-        m_entity1 = dynamic_cast<RS_AtomicEntity *>(contextEntity);
+        m_entity1 = static_cast<RS_AtomicEntity *>(contextEntity);
         m_actionData->coord1 = m_entity1->getNearestPointOnEntity(clickPos, true);
         setStatus(SetEntity2);
     }
@@ -96,7 +95,7 @@ void RS_ActionModifyBevel::doTriggerCompletion([[maybe_unused]]bool success) {
     setStatus(SetEntity1);
 }
 
-bool RS_ActionModifyBevel::doUpdateDistanceByInteractiveInput(const QString& tag, double distance) {
+bool RS_ActionModifyBevel::doUpdateDistanceByInteractiveInput(const QString& tag, const double distance) {
     if (tag == "length1") {
         setLength1(distance);
         return true;
@@ -112,7 +111,7 @@ void RS_ActionModifyBevel::drawSnapper() {
     // disable snapper
 }
 
-void RS_ActionModifyBevel::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void RS_ActionModifyBevel::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     const RS_Vector mouse = e->graphPoint;
     // it seems that bevel works properly with lines only... it relies on trimEndpoint/moveEndpoint methods, which
     // have some support for arc and ellipse, yet still...
@@ -183,7 +182,7 @@ void RS_ActionModifyBevel::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     }
 }
 
-void RS_ActionModifyBevel::previewLineModifications(const RS_Entity *original, const RS_Entity *trimmed, bool trimOnStart) const {
+void RS_ActionModifyBevel::previewLineModifications(const RS_Entity *original, const RS_Entity *trimmed, const bool trimOnStart) const {
     const bool originalIncreased = original->getLength() < trimmed->getLength();
     if (originalIncreased){
         if (trimOnStart){
@@ -205,13 +204,13 @@ void RS_ActionModifyBevel::previewLineModifications(const RS_Entity *original, c
     }
 }
 
-void RS_ActionModifyBevel::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
+void RS_ActionModifyBevel::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     RS_Entity *se = catchEntityByEvent(e,RS2::EntityLine, RS2::ResolveAll);
     switch (status) {
             case SetEntity1: {
                 if (isAtomic(se)){
                     if (RS_Information::isTrimmable(se)){
-                        m_entity1 = dynamic_cast<RS_AtomicEntity *>(se);
+                        m_entity1 = static_cast<RS_AtomicEntity *>(se);
                         m_actionData->coord1 = m_entity1->getNearestPointOnEntity(e->graphPoint, true);
                         setStatus(SetEntity2);
                     } else {
@@ -224,7 +223,7 @@ void RS_ActionModifyBevel::onMouseLeftButtonRelease(int status, LC_MouseEvent *e
             }
             case SetEntity2: {
                 if (isAtomic(se)){
-                    m_entity2 = dynamic_cast<RS_AtomicEntity *>(se);
+                    m_entity2 = static_cast<RS_AtomicEntity *>(se);
                     m_actionData->coord2 = e->graphPoint;
                     const LC_BevelResult bevelResult = RS_Modification::bevel(m_actionData->coord1, m_entity1, m_actionData->coord2, m_entity2,
                                             m_actionData->data, false, m_actionData->triggerContext);
@@ -250,6 +249,8 @@ void RS_ActionModifyBevel::onMouseLeftButtonRelease(int status, LC_MouseEvent *e
                             commandMessage(tr("Invalid entity selected (non-trimmable with first entity)."));
                             break;
                         }
+                        default:
+                            break;
                     }
                 } else {
                     commandMessage(tr("Invalid entity selected (non-atomic)."));
@@ -262,7 +263,7 @@ void RS_ActionModifyBevel::onMouseLeftButtonRelease(int status, LC_MouseEvent *e
 
 }
 
-void RS_ActionModifyBevel::onMouseRightButtonRelease(int status, [[maybe_unused]] LC_MouseEvent *e) {
+void RS_ActionModifyBevel::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     deletePreview();
     int newStatus = -1;
     switch (status){
@@ -281,30 +282,30 @@ void RS_ActionModifyBevel::onMouseRightButtonRelease(int status, [[maybe_unused]
     setStatus(newStatus);
 }
 
-bool RS_ActionModifyBevel::isEntityAccepted(RS_Entity *en) const{
+bool RS_ActionModifyBevel::isEntityAccepted(const RS_Entity *en) const{
     return isAtomic(en) && RS_Information::isTrimmable(en);
 }
 
-bool RS_ActionModifyBevel::areBothEntityAccepted(RS_Entity *en1, RS_Entity *en2) const{
+bool RS_ActionModifyBevel::areBothEntityAccepted(const RS_Entity *en1, const RS_Entity *en2) const{
     return isAtomic(en2) && en2 != en1 /* && RS_Information::isTrimmable(en1,en2)*/;
 }
 
-bool RS_ActionModifyBevel::doProcessCommand(int status, const QString &c) {
+bool RS_ActionModifyBevel::doProcessCommand(const int status, const QString &command) {
     bool accept = false;
     switch (status) {
         case SetEntity1:
         case SetEntity2: {
-            if (checkCommand("length1", c)){
+            if (checkCommand("length1", command)){
                 deletePreview();
-                m_lastStatus = (Status) getStatus();
+                m_lastStatus = static_cast<Status>(getStatus());
                 setStatus(SetLength1);
                 accept = true;
-            } else if (checkCommand("length2", c)){
+            } else if (checkCommand("length2", command)){
                 deletePreview();
-                m_lastStatus = (Status) getStatus();
+                m_lastStatus = static_cast<Status>(getStatus());
                 setStatus(SetLength2);
                 accept = true;
-            } else if (checkCommand("trim", c)){
+            } else if (checkCommand("trim", command)){
                 m_actionData->data.trim = !m_actionData->data.trim;
                 updateOptions();
                 accept = true;
@@ -313,7 +314,7 @@ bool RS_ActionModifyBevel::doProcessCommand(int status, const QString &c) {
         }
         case SetLength1: {
             bool ok;
-            const double l = RS_Math::eval(c, &ok);
+            const double l = RS_Math::eval(command, &ok);
             if (ok){
                 accept = true;
                 m_actionData->data.length1 = l;
@@ -326,7 +327,7 @@ bool RS_ActionModifyBevel::doProcessCommand(int status, const QString &c) {
         }
         case SetLength2: {
             bool ok;
-            const double l = RS_Math::eval(c, &ok);
+            const double l = RS_Math::eval(command, &ok);
             if (ok){
                 m_actionData->data.length2 = l;
                 accept = true;
@@ -343,7 +344,7 @@ bool RS_ActionModifyBevel::doProcessCommand(int status, const QString &c) {
     return accept;
 }
 
-void RS_ActionModifyBevel::setLength1(double l1) const {
+void RS_ActionModifyBevel::setLength1(const double l1) const {
     m_actionData->data.length1 = l1;
 }
 
@@ -351,7 +352,7 @@ double RS_ActionModifyBevel::getLength1() const{
     return m_actionData->data.length1;
 }
 
-void RS_ActionModifyBevel::setLength2(double l2) const {
+void RS_ActionModifyBevel::setLength2(const double l2) const {
     m_actionData->data.length2 = l2;
 }
 
@@ -359,7 +360,7 @@ double RS_ActionModifyBevel::getLength2() const{
     return m_actionData->data.length2;
 }
 
-void RS_ActionModifyBevel::setTrim(bool t) const {
+void RS_ActionModifyBevel::setTrim(const bool t) const {
     m_actionData->data.trim = t;
 }
 

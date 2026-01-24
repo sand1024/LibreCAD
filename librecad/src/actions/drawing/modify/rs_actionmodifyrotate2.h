@@ -40,7 +40,7 @@ struct RS_Rotate2Data;
 class RS_ActionModifyRotate2 : public LC_ActionModifyBase {
     Q_OBJECT
 public:
-    RS_ActionModifyRotate2(LC_ActionContext *actionContext);
+    explicit RS_ActionModifyRotate2(LC_ActionContext *actionContext);
     ~RS_ActionModifyRotate2() override;
     void init(int status) override;
     void setAngle1(double angleRad) const;
@@ -65,9 +65,9 @@ protected:
     void previewRefPointsForMultipleCopies(const RS_Vector& mouse) const;
     void doPerformTrigger();
     LC_ModifyOperationFlags *getModifyOperationFlags() override;
-    void onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
-    void onMouseRightButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
-    void onMouseMoveEventSelected(int status, LC_MouseEvent *e) override;
+    void onMouseLeftButtonReleaseSelected(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonReleaseSelected(int status, const LC_MouseEvent* event) override;
+    void onMouseMoveEventSelected(int status, const LC_MouseEvent* e) override;
     void updateMouseButtonHintsForSelection() override;
     void updateMouseButtonHintsForSelected(int status) override;
     RS2::CursorType doGetMouseCursorSelected(int status) override;

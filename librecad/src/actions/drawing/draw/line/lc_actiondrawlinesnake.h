@@ -43,18 +43,18 @@ public:
     QStringList getAvailableCommands() override;
 protected:
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    bool doProceedCommand(int status, const QString &qString) override;
+    bool doProceedCommand(int status, const QString &command) override;
     bool doProcessCommandValue(int status, const QString &c) override;
     const RS_Vector& getStartPointForAngleSnap() const override;
-    void doBack(LC_MouseEvent *pEvent, int status) override;
+    void doBack(const LC_MouseEvent* e, int status) override;
     bool isStartPointValid() const override;
-    void doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
+    void doPreparePreviewEntities(const LC_MouseEvent* e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
     bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx)  override;
     RS_Vector doGetRelativeZeroAfterTrigger() override;
-    void doSetStartPoint(RS_Vector vector) override;
-    bool doCheckMayDrawPreview(LC_MouseEvent *pEvent, int status) override;
+    void doSetStartPoint(const RS_Vector& start) override;
+    bool doCheckMayDrawPreview(const LC_MouseEvent* e, int status) override;
     void updateMouseButtonHints() override;
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector &coord) override;
 private:
     /// History Actions
     enum HistoryAction {
@@ -65,21 +65,20 @@ private:
         HA_Polyline,
     };
 
-    struct History
-    {
-        explicit History(HistoryAction a,
+    struct History{
+        explicit History(const HistoryAction a,
                          const RS_Vector& p,
                          const RS_Vector& c,
                          const int s) :
-            histAct( a),
             prevPt( p),
             currPt( c),
+            histAct( a),
             startOffset( s) {}
 
         explicit History(const History& h) :
-            histAct( h.histAct),
             prevPt( h.prevPt),
             currPt( h.currPt),
+            histAct( h.histAct),
             startOffset( h.startOffset) {}
 
         History& operator=(const History& rho) {
@@ -89,10 +88,9 @@ private:
             startOffset = rho.startOffset;
             return *this;
         }
-
-        HistoryAction    histAct;    // action to undo/redo
         RS_Vector       prevPt;     // previous coordinate
         RS_Vector       currPt;     // current coordinate
+        HistoryAction    histAct;    // action to undo/redo
         int             startOffset;// offset to start point for close method
     };
 
@@ -110,7 +108,7 @@ private:
 
         /// wrapper for historyIndex to avoid 'signedness' warnings where std::vector-methods expect size_t
         /// also, offset helps in close method to find starting point
-        size_t index(const int offset = 0) const;
+        size_t index(int offset = 0) const;
     };
 
     /**
@@ -118,15 +116,15 @@ private:
      */
     std::unique_ptr<ActionData> m_actionData;
     void resetPoints();
-    void addHistory(HistoryAction a, const RS_Vector& p, const RS_Vector& c, const int s) const;
+    void addHistory(HistoryAction a, const RS_Vector& p, const RS_Vector& c, int s) const;
     void completeLineSegment(bool close);
     void calculateAngleSegment(double distance) const;
     RS_Vector calculateAngleEndpoint(const RS_Vector &snap) const;
     double defineActualSegmentAngle(double relativeAngleRad) const;
     bool isNonZeroLine(const RS_Vector &possiblePoint) const;
-    void createEntities(RS_Vector &potentialEndPoint, QList<RS_Entity *> &entitiesList) const;
+    void createEntities(const RS_Vector &potentialEndPoint, QList<RS_Entity *> &entitiesList) const;
 protected:
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) override;
 };
 
-#endif // LC_ACTIONDRAWLINEREL_H
+#endif

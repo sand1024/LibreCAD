@@ -23,10 +23,9 @@
 #include "lc_actionsplinemodifybase.h"
 
 #include "rs_entity.h"
-#include "rs_entitycontainer.h"
 #include "rs_pen.h"
 
-LC_ActionSplineModifyBase::LC_ActionSplineModifyBase(const char* name, LC_ActionContext *actionContext, RS2::ActionType actionType)
+LC_ActionSplineModifyBase::LC_ActionSplineModifyBase(const char* name, LC_ActionContext *actionContext, const RS2::ActionType actionType)
     :LC_UndoableDocumentModificationAction(name, actionContext, actionType) {
 }
 
@@ -64,9 +63,9 @@ void LC_ActionSplineModifyBase::doTriggerSelections(const LC_DocumentModificatio
 
 void LC_ActionSplineModifyBase::doTriggerOther() {}
 
-void LC_ActionSplineModifyBase::finish(bool updateTB) {
+void LC_ActionSplineModifyBase::finish() {
     clean();
-    RS_PreviewActionInterface::finish(updateTB);
+    RS_PreviewActionInterface::finish();
 }
 
 void LC_ActionSplineModifyBase::clean() {
@@ -77,7 +76,7 @@ void LC_ActionSplineModifyBase::clean() {
     redraw();
 }
 
-void LC_ActionSplineModifyBase::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void LC_ActionSplineModifyBase::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     const RS_Vector mouse = e->snapPoint;
     onMouseMove(mouse, status, e);
 }
@@ -90,7 +89,7 @@ void LC_ActionSplineModifyBase::drawSnapper() {
     // completely disable snapper for action
 }
 
-void LC_ActionSplineModifyBase::onMouseRightButtonRelease(int status, [[maybe_unused]] QMouseEvent *e) {
+void LC_ActionSplineModifyBase::onMouseRightButtonRelease(const int status, [[maybe_unused]] QMouseEvent *e) {
     deleteSnapper();
     deletePreview();
     drawPreview();

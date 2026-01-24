@@ -23,17 +23,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "rs_modification.h"
 
-LC_ActionModifyBase::LC_ActionModifyBase(const char *name, LC_ActionContext *actionContext, RS2::ActionType actionType,
+LC_ActionModifyBase::LC_ActionModifyBase(const char *name, LC_ActionContext *actionContext, const RS2::ActionType actionType,
                                          const QList<RS2::EntityType> &entityTypeList)
     :LC_ActionPreSelectionAwareBase(name, actionContext, actionType, entityTypeList){}
 
-void LC_ActionModifyBase::onSelectionCompleted([[maybe_unused]] bool singleEntity, bool fromInit) {
+void LC_ActionModifyBase::onSelectionCompleted([[maybe_unused]] bool singleEntity, const bool fromInit) {
     setSelectionComplete(isAllowTriggerOnEmptySelection(), fromInit);
     updateMouseButtonHints();
 }
 
 
-void LC_ActionModifyBase::setUseCurrentLayer(bool b) {
+void LC_ActionModifyBase::setUseCurrentLayer(const bool b) {
     LC_ModifyOperationFlags* data = getModifyOperationFlags();
     data->useCurrentLayer = b;
 }
@@ -43,7 +43,7 @@ bool LC_ActionModifyBase::isUseCurrentLayer() {
     return data->useCurrentLayer;
 }
 
-void LC_ActionModifyBase::setUseCurrentAttributes(bool b) {
+void LC_ActionModifyBase::setUseCurrentAttributes(const bool b) {
     LC_ModifyOperationFlags* data = getModifyOperationFlags();
     data->useCurrentAttributes = b;
 }
@@ -58,17 +58,17 @@ int LC_ActionModifyBase::getCopiesNumber() {
     return data->number;
 }
 
-void LC_ActionModifyBase::setCopiesNumber(int value) {
+void LC_ActionModifyBase::setCopiesNumber(const int value) {
     LC_ModifyOperationFlags* data = getModifyOperationFlags();
     data->number = value;
 }
 
-void LC_ActionModifyBase::setKeepOriginals(bool b) {
+void LC_ActionModifyBase::setKeepOriginals(const bool b) {
     LC_ModifyOperationFlags* data = getModifyOperationFlags();
     data->keepOriginals = b;
 }
 
-void LC_ActionModifyBase::setUseMultipleCopies(bool val) {
+void LC_ActionModifyBase::setUseMultipleCopies(const bool val) {
     LC_ModifyOperationFlags* data = getModifyOperationFlags();
     data->multipleCopies = val;
 }

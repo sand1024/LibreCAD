@@ -43,8 +43,8 @@ struct RS_ActionLibraryInsert::RS_LibraryInsertData {
     QString file;
     RS_Vector insertionPoint;
     double factor = 0.;
-    double angle  = 0.;
-    RS_Graphic* graphic;
+    double angle = 0.;
+    RS_Graphic* graphic{nullptr};
 };
 
 struct RS_ActionLibraryInsert::ActionData {
@@ -57,22 +57,22 @@ struct RS_ActionLibraryInsert::ActionData {
 /**
  * Constructor.
  */
-RS_ActionLibraryInsert::RS_ActionLibraryInsert(LC_ActionContext *actionContext)
-        :LC_UndoableDocumentModificationAction("Library Insert", actionContext, RS2::ActionLibraryInsert)
-		, m_actionData(std::make_unique<ActionData>())
-		,m_lastStatus(SetTargetPoint){
+RS_ActionLibraryInsert::RS_ActionLibraryInsert(LC_ActionContext* actionContext)
+    : LC_UndoableDocumentModificationAction("Library Insert", actionContext, RS2::ActionLibraryInsert),
+      m_actionData(std::make_unique<ActionData>()) {
 }
 
 RS_ActionLibraryInsert::~RS_ActionLibraryInsert() = default;
 
-void RS_ActionLibraryInsert::init(int status) {
+void RS_ActionLibraryInsert::init(const int status) {
     RS_PreviewActionInterface::init(status);
     reset();
 }
+
 // fixme - blocks - review usage of this methods, why it's called from outside? Should it be part of the action or widget?
 void RS_ActionLibraryInsert::setFile(const QString& file) const {
     m_actionData->data.file = file;
-    LC_DocumentsStorage storage;
+    const LC_DocumentsStorage storage;
     delete m_actionData->prev;
     m_actionData->prev = new RS_Graphic();
     if (!storage.loadDocument(m_actionData->prev, file, RS2::FormatUnknown)) {
@@ -81,56 +81,55 @@ void RS_ActionLibraryInsert::setFile(const QString& file) const {
 }
 
 void RS_ActionLibraryInsert::reset() const {
-    m_actionData->data.insertionPoint = {};
-    m_actionData->data.factor = 1.0;
-    m_actionData->data.angle = 0.0;
+    auto& data = m_actionData->data;
+    data.insertionPoint = {};
+    data.factor = 1.0;
+    data.angle = 0.0;
     delete m_actionData->prev;
 }
 
 bool RS_ActionLibraryInsert::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
-    auto insertData           = m_actionData->data;
-    insertData.graphic        = m_actionData->prev;
-    insertData.angle          = toWorldAngleFromUCSBasis(m_actionData->data.angle);
+    auto insertData = m_actionData->data;
+    insertData.graphic = m_actionData->prev;
+    insertData.angle = toWorldAngleFromUCSBasis(m_actionData->data.angle);
     RS_Graphic* insertGraphic = insertData.graphic;
     if (insertGraphic != nullptr) {
         // unit conversion:
         if (m_graphic != nullptr) {
-            double uf = RS_Units::convert(1.0, insertGraphic->getUnit(), m_graphic->getUnit());
+            const double uf = RS_Units::convert(1.0, insertGraphic->getUnit(), m_graphic->getUnit());
             insertGraphic->scale(RS_Vector(0.0, 0.0), RS_Vector(uf, uf));
         }
-        QString insertFileName = QFileInfo(insertData.file).completeBaseName();
-        LC_LibraryInsertData pasteData(insertData.insertionPoint, insertData.factor, insertData.angle, insertFileName, insertGraphic);
+        const QString insertFileName = QFileInfo(insertData.file).completeBaseName();
+        const LC_LibraryInsertData pasteData(insertData.insertionPoint, insertData.factor, insertData.angle, insertFileName, insertGraphic);
         RS_Modification::libraryInsert(pasteData, m_graphic, ctx);
         // fixme- create separate method for library insert!
     }
     return true;
 }
 
-void RS_ActionLibraryInsert::doTriggerCompletion(bool success) {
+void RS_ActionLibraryInsert::doTriggerCompletion(const bool success) {
     LC_UndoableDocumentModificationAction::doTriggerCompletion(success);
 }
 
-void RS_ActionLibraryInsert::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void RS_ActionLibraryInsert::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     switch (status) {
         case SetTargetPoint: {
             m_actionData->data.insertionPoint = e->snapPoint;
+
+            const auto& data = m_actionData->data;
             //if (block) {
             m_preview->addAllFrom(*m_actionData->prev, m_viewport);
-            m_preview->move(m_actionData->data.insertionPoint);
-            m_preview->scale(m_actionData->data.insertionPoint,
-                           RS_Vector(m_actionData->data.factor, m_actionData->data.factor));
+            m_preview->move(data.insertionPoint);
+            m_preview->scale(data.insertionPoint, {data.factor, data.factor});
             // unit conversion:
             if (m_graphic) {
-                double const uf = RS_Units::convert(1.0, m_actionData->prev->getUnit(),
-                                                    m_graphic->getUnit());
-                m_preview->scale(m_actionData->data.insertionPoint,
-                               {uf, uf});
+                const double uf = RS_Units::convert(1.0, m_actionData->prev->getUnit(), m_graphic->getUnit());
+                m_preview->scale(data.insertionPoint, {uf, uf});
             }
-            m_preview->rotate(m_actionData->data.insertionPoint, toWorldAngleFromUCSBasis(m_actionData->data.angle));
+            m_preview->rotate(data.insertionPoint, toWorldAngleFromUCSBasis(data.angle));
             // too slow:
             //RS_Creation creation(preview, NULL, false);
             //creation.createInsert(data);
-
             //}
             break;
         }
@@ -139,31 +138,32 @@ void RS_ActionLibraryInsert::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     }
 }
 
-void RS_ActionLibraryInsert::onMouseLeftButtonRelease([[maybe_unused]]int status, LC_MouseEvent *e) {
+void RS_ActionLibraryInsert::onMouseLeftButtonRelease([[maybe_unused]] int status, const LC_MouseEvent* e) {
     fireCoordinateEvent(e->snapPoint);
 }
 
-void RS_ActionLibraryInsert::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionLibraryInsert::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     initPrevious(status);
 }
 
-void RS_ActionLibraryInsert::onCoordinateEvent([[maybe_unused]]int status, [[maybe_unused]]bool isZero, const RS_Vector &pos) {
+void RS_ActionLibraryInsert::onCoordinateEvent([[maybe_unused]] int status, [[maybe_unused]] bool isZero, const RS_Vector& pos) {
     m_actionData->data.insertionPoint = pos;
     trigger();
 }
 
-bool RS_ActionLibraryInsert::doProcessCommand(int status, const QString &c) {
+bool RS_ActionLibraryInsert::doProcessCommand(int status, const QString& command) {
     bool accept = true;
     switch (status) {
         case SetTargetPoint: {
-            if (checkCommand("angle", c)) {
+            if (checkCommand("angle", command)) {
                 deletePreview();
                 m_lastStatus = SetTargetPoint;
                 setStatus(SetAngle);
                 accept = true;
-            } else if (checkCommand("factor", c)) {
+            }
+            else if (checkCommand("factor", command)) {
                 deletePreview();
-                m_lastStatus = (Status) status;
+                m_lastStatus = static_cast<Status>(status);
                 setStatus(SetFactor);
                 accept = true;
             }
@@ -171,11 +171,12 @@ bool RS_ActionLibraryInsert::doProcessCommand(int status, const QString &c) {
         }
         case SetAngle: {
             bool ok;
-            double a = RS_Math::eval(c, &ok);
+            const double a = RS_Math::eval(command, &ok);
             if (ok) {
                 m_actionData->data.angle = RS_Math::deg2rad(a);
                 accept = true;
-            } else {
+            }
+            else {
                 commandMessage(tr("Not a valid expression"));
             }
             updateOptions();
@@ -184,11 +185,12 @@ bool RS_ActionLibraryInsert::doProcessCommand(int status, const QString &c) {
         }
         case SetFactor: {
             bool ok;
-            double f = RS_Math::eval(c, &ok);
+            const double f = RS_Math::eval(command, &ok);
             if (ok) {
                 setFactor(f);
                 accept = true;
-            } else {
+            }
+            else {
                 commandMessage(tr("Not a valid expression"));
             }
             updateOptions();
@@ -232,23 +234,23 @@ void RS_ActionLibraryInsert::updateMouseButtonHints() {
     }
 }
 
-double RS_ActionLibraryInsert::getAngle() const{
+double RS_ActionLibraryInsert::getAngle() const {
     return m_actionData->data.angle;
 }
 
-void RS_ActionLibraryInsert::setAngle(double a) const {
+void RS_ActionLibraryInsert::setAngle(const double a) const {
     m_actionData->data.angle = a;
 }
 
-double RS_ActionLibraryInsert::getFactor() const{
+double RS_ActionLibraryInsert::getFactor() const {
     return m_actionData->data.factor;
 }
 
-void RS_ActionLibraryInsert::setFactor(double f) const {
+void RS_ActionLibraryInsert::setFactor(const double f) const {
     m_actionData->data.factor = f;
 }
 
-RS2::CursorType RS_ActionLibraryInsert::doGetMouseCursor([[maybe_unused]] int status){
+RS2::CursorType RS_ActionLibraryInsert::doGetMouseCursor([[maybe_unused]] int status) {
     return RS2::CadCursor;
 }
 
@@ -256,7 +258,7 @@ LC_ActionOptionsWidget* RS_ActionLibraryInsert::createOptionsWidget() {
     return new QG_LibraryInsertOptions();
 }
 
-bool RS_ActionLibraryInsert::doUpdateAngleByInteractiveInput(const QString& tag, double angle) {
+bool RS_ActionLibraryInsert::doUpdateAngleByInteractiveInput(const QString& tag, const double angle) {
     if (tag == "angle") {
         setAngle(angle);
         return true;

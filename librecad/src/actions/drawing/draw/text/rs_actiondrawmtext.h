@@ -48,7 +48,7 @@ public:
     QStringList getAvailableCommands() override;
     void setText(const QString &t);
     QString getText() const;
-    void setUcsAngleDegrees(double a);
+    void setUcsAngleDegrees(double ucsRelAngleDegrees);
     double getUcsAngleDegrees() const;
 protected:
     /**
@@ -65,11 +65,11 @@ protected:
     bool m_textChanged = false;
 
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     bool doProcessCommand(int status, const QString &command) override;
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector &coord) override;
     void updateMouseButtonHints() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
     RS_Entity* doTriggerCreateEntity() override;

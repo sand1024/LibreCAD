@@ -28,8 +28,8 @@
 #define RS_ACTIONDIMENSION_H
 
 
-#include "rs.h"
 #include "lc_undoabledocumentmodificationaction.h"
+#include "rs.h"
 
 struct RS_DimensionData;
 

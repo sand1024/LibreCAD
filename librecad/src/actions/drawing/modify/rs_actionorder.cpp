@@ -30,15 +30,15 @@
 #include "rs_document.h"
 #include "rs_entity.h"
 
-RS_ActionOrder::RS_ActionOrder(LC_ActionContext *actionContext, RS2::ActionType type)
-    :LC_ActionPreSelectionAwareBase("Sort Entities", actionContext, type) ,targetEntity(nullptr){
+RS_ActionOrder::RS_ActionOrder(LC_ActionContext *actionContext, const RS2::ActionType type)
+    :LC_ActionPreSelectionAwareBase("Sort Entities", actionContext, type) {
 }
 
 void RS_ActionOrder::drawSnapper() {
     // delete snapper
 }
 
-void RS_ActionOrder::onSelectionCompleted([[maybe_unused]]bool singleEntity, bool fromInit) {
+void RS_ActionOrder::onSelectionCompleted([[maybe_unused]]bool singleEntity, const bool fromInit) {
     setSelectionComplete(isAllowTriggerOnEmptySelection(), fromInit);
     updateMouseButtonHints();
     if (m_actionType == RS2::ActionOrderBottom || m_actionType ==  RS2::ActionOrderTop){
@@ -58,23 +58,24 @@ void RS_ActionOrder::doTrigger() {
         entList.append(e);
     }
 
-    if (targetEntity != nullptr) {
-        int index = -1;
-        targetEntity->setHighlighted(false);
+    if (m_targetEntity != nullptr) {
+        m_targetEntity->setHighlighted(false);
 
         switch (m_actionType) {
-            case RS2::ActionOrderLower:
-                index = m_document->findEntity(targetEntity);
+            case RS2::ActionOrderLower: {
+                const int index = m_document->findEntity(m_targetEntity);
                 m_document->moveEntity(index, entList);
                 break;
-            case RS2::ActionOrderRaise:
-                index = m_document->findEntity(targetEntity) + 1;
+            }
+            case RS2::ActionOrderRaise: {
+                const int index = m_document->findEntity(m_targetEntity) + 1;
                 m_document->moveEntity(index, entList);
                 break;
+            }
             default:
                 break;
         }
-        targetEntity = nullptr;
+        m_targetEntity = nullptr;
     }
     else {
         switch (m_actionType) {
@@ -96,23 +97,23 @@ void RS_ActionOrder::doTrigger() {
     setStatus(getStatus() - 1);
 }
 
-void RS_ActionOrder::onMouseMoveEventSelected([[maybe_unused]]int status, LC_MouseEvent *e) {
-    targetEntity = catchEntityByEvent(e);
-    if (targetEntity != nullptr){
-        highlightHover(targetEntity);
+void RS_ActionOrder::onMouseMoveEventSelected([[maybe_unused]]int status, const LC_MouseEvent* e) {
+    m_targetEntity = catchEntityByEvent(e);
+    if (m_targetEntity != nullptr){
+        highlightHover(m_targetEntity);
     }
 }
 
-void RS_ActionOrder::onMouseLeftButtonReleaseSelected([[maybe_unused]]int status, LC_MouseEvent *e) {
-    targetEntity = catchEntityByEvent(e);
-    if (targetEntity == nullptr) {
+void RS_ActionOrder::onMouseLeftButtonReleaseSelected([[maybe_unused]]int status, const LC_MouseEvent* e) {
+    m_targetEntity = catchEntityByEvent(e);
+    if (m_targetEntity == nullptr) {
         commandMessage(tr("No Entity found."));
     } else {
         trigger();
     }
 }
 
-void RS_ActionOrder::onMouseRightButtonReleaseSelected(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionOrder::onMouseRightButtonReleaseSelected(const int status, [[maybe_unused]] const LC_MouseEvent* event) {
      deletePreview();
      if (m_selectionComplete) {
          m_selectionComplete = false;

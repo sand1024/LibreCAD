@@ -21,8 +21,8 @@
  ******************************************************************************/
 
 #include "lc_actionsplinefrompolyline.h"
-#include "lc_containertraverser.h"
 
+#include "lc_containertraverser.h"
 #include "lc_splinefrompolylineoptions.h"
 #include "lc_splinepoints.h"
 #include "rs_arc.h"
@@ -33,14 +33,14 @@
 #include "rs_polyline.h"
 #include "rs_spline.h"
 
-LC_ActionSplineFromPolyline::LC_ActionSplineFromPolyline(LC_ActionContext *actionContext)
-    :LC_UndoableDocumentModificationAction("ActionSplineFromPolyline", actionContext, RS2::ActionDrawSplineFromPolyline) {
+LC_ActionSplineFromPolyline::LC_ActionSplineFromPolyline(LC_ActionContext* actionContext)
+    : LC_UndoableDocumentModificationAction("ActionSplineFromPolyline", actionContext, RS2::ActionDrawSplineFromPolyline) {
 }
 
-void LC_ActionSplineFromPolyline::doInitWithContextEntity(RS_Entity* contextEntity, [[maybe_unused]]const RS_Vector& clickPos) {
-   if (isPolyline(contextEntity)) {
-       setEntityToModify(contextEntity);
-   }
+void LC_ActionSplineFromPolyline::doInitWithContextEntity(RS_Entity* contextEntity, [[maybe_unused]] const RS_Vector& clickPos) {
+    if (isPolyline(contextEntity)) {
+        setEntityToModify(contextEntity);
+    }
 }
 
 bool LC_ActionSplineFromPolyline::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
@@ -86,24 +86,24 @@ void LC_ActionSplineFromPolyline::doTriggerSelections(const LC_DocumentModificat
     }
 }
 
-void LC_ActionSplineFromPolyline::doTriggerCompletion(bool success) {
+void LC_ActionSplineFromPolyline::doTriggerCompletion(const bool success) {
     if (success) {
         m_polyline = nullptr;
     }
 }
 
-void LC_ActionSplineFromPolyline::finish(bool updateTB) {
-    RS_PreviewActionInterface::finish(updateTB);
+void LC_ActionSplineFromPolyline::finish() {
+    RS_PreviewActionInterface::finish();
 }
 
-void LC_ActionSplineFromPolyline::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void LC_ActionSplineFromPolyline::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     switch (status) {
         case SetEntity: {
             const auto polyline = catchAndDescribe(e, RS2::EntityPolyline);
             if (polyline != nullptr) {
                 highlightHoverWithRefPoints(polyline, true);
                 const auto splinePreview = createSplineForPolyline(polyline);
-                if (splinePreview != nullptr){
+                if (splinePreview != nullptr) {
                     previewEntity(splinePreview);
                 }
             }
@@ -115,11 +115,11 @@ void LC_ActionSplineFromPolyline::onMouseMoveEvent(int status, LC_MouseEvent *e)
 }
 
 void LC_ActionSplineFromPolyline::setEntityToModify(RS_Entity* polyline) {
-    m_polyline = dynamic_cast<RS_Polyline *>(polyline);
+    m_polyline = dynamic_cast<RS_Polyline*>(polyline);
     trigger();
 }
 
-void LC_ActionSplineFromPolyline::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
+void LC_ActionSplineFromPolyline::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     switch (status) {
         case SetEntity: {
             const auto polyline = catchEntityByEvent(e, RS2::EntityPolyline);
@@ -133,13 +133,13 @@ void LC_ActionSplineFromPolyline::onMouseLeftButtonRelease(int status, LC_MouseE
     }
 }
 
-void LC_ActionSplineFromPolyline::onMouseRightButtonRelease([[maybe_unused]]int status,[[maybe_unused]] LC_MouseEvent *e) {
+void LC_ActionSplineFromPolyline::onMouseRightButtonRelease([[maybe_unused]] int status, [[maybe_unused]] const LC_MouseEvent* e) {
     setStatus(-1);
 }
 
 void LC_ActionSplineFromPolyline::updateMouseButtonHints() {
-    switch (getStatus()){
-        case SetEntity:{
+    switch (getStatus()) {
+        case SetEntity: {
             updateMouseWidgetTRCancel(tr("Select polyline to create spline or spline points"));
             break;
         }
@@ -148,134 +148,139 @@ void LC_ActionSplineFromPolyline::updateMouseButtonHints() {
     }
 }
 
-RS2::CursorType LC_ActionSplineFromPolyline::doGetMouseCursor([[maybe_unused]]int status) {
+RS2::CursorType LC_ActionSplineFromPolyline::doGetMouseCursor([[maybe_unused]] int status) {
     return RS2::CadCursor;
 }
 
-LC_ActionOptionsWidget *LC_ActionSplineFromPolyline::createOptionsWidget() {
+LC_ActionOptionsWidget* LC_ActionSplineFromPolyline::createOptionsWidget() {
     return new LC_SplineFromPolylineOptions();
 }
 
-RS_Entity* LC_ActionSplineFromPolyline::createSplineForPolyline(RS_Entity *p) const {
-    const auto* polyline = static_cast<RS_Polyline *>(p);
+RS_Entity* LC_ActionSplineFromPolyline::createSplineForPolyline(RS_Entity* p) const {
+    const auto* polyline = static_cast<RS_Polyline*>(p);
     const bool closed = polyline->isClosed();
-    if (m_vertexesAreFitPoints && m_splineDegree == 2){
-        const LC_SplinePointsData data = LC_SplinePointsData(closed, false);
+    if (m_vertexesAreFitPoints && m_splineDegree == 2) {
+        const auto data = LC_SplinePointsData(closed, false);
         auto* result = new LC_SplinePoints(nullptr, data);
 
         std::vector<RS_Vector> controlPoints;
         fillControlPointsListFromPolyline(polyline, controlPoints);
-        int count = controlPoints.size();
-        if (closed){
+        size_t count = controlPoints.size();
+        if (closed) {
             count--;
         }
-        for (int i = 0; i < count; i++ ){
-           RS_Vector point = controlPoints.at(i);
-           result->addPoint(point);
+        for (size_t i = 0; i < count; i++) {
+            RS_Vector point = controlPoints.at(i);
+            result->addPoint(point);
         }
         result->update();
         return result;
     }
-    else{
-        std::vector<RS_Vector> controlPoints;
-        fillControlPointsListFromPolyline(polyline, controlPoints);
-        int count = controlPoints.size();
-        if (closed){
-            count--;
-        }
-        bool enoughPoints = false;
-        switch (m_splineDegree) {
-            case 1: {
-                enoughPoints = count > 2;
-                break;
-            }
-            case 2: {
-                enoughPoints = count > 3;
-                break;
-            }
-            case 3: {
-                enoughPoints = count > 3;
-                break;
-            }
-            default:
-                enoughPoints = true;
-        }
-
-        if (enoughPoints) {
-            const RS_SplineData data = RS_SplineData(m_splineDegree, closed);
-            auto* result = new RS_Spline(nullptr, data);
-            for (int i = 0; i < count; i++) {
-                RS_Vector point = controlPoints.at(i);
-                result->addControlPoint(point);
-            }
-            result->update();
-            return result;
-        }
-        else{
-            return nullptr;
-        }
+    std::vector<RS_Vector> controlPoints;
+    fillControlPointsListFromPolyline(polyline, controlPoints);
+    size_t count = controlPoints.size();
+    if (closed) {
+        count--;
     }
+    bool enoughPoints = false;
+    switch (m_splineDegree) {
+        case 1: {
+            enoughPoints = count > 2;
+            break;
+        }
+        case 2: {
+            enoughPoints = count > 3;
+            break;
+        }
+        case 3: {
+            enoughPoints = count > 3;
+            break;
+        }
+        default:
+            enoughPoints = true;
+            break;
+    }
+
+    if (enoughPoints) {
+        const auto data = RS_SplineData(m_splineDegree, closed);
+        auto* result = new RS_Spline(nullptr, data);
+        for (size_t i = 0; i < count; i++) {
+            RS_Vector point = controlPoints.at(i);
+            result->addControlPoint(point);
+        }
+        result->update();
+        return result;
+    }
+    return nullptr;
 }
 
-void LC_ActionSplineFromPolyline::fillControlPointsListFromPolyline(const RS_Polyline *polyline, std::vector<RS_Vector> &controlPoints) const {
+void LC_ActionSplineFromPolyline::fillControlPointsListFromPolyline(const RS_Polyline* polyline,
+                                                                    std::vector<RS_Vector>& controlPoints) const {
     controlPoints.reserve(polyline->count() * (m_segmentMiddlePoints + 1) + 1);
-    controlPoints.push_back(polyline->getStartpoint());
-    for(RS_Entity* entity: lc::LC_ContainerTraverser{*polyline, RS2::ResolveAll}.entities()) {
-        if (!isAtomic(entity)){
+    controlPoints.emplace_back(polyline->getStartpoint());
+    for (RS_Entity* entity : lc::LC_ContainerTraverser{*polyline, RS2::ResolveAll}.entities()) {
+        if (!isAtomic(entity)) {
             continue;
         }
         const int rtti = entity->rtti();
         switch (rtti) {
             case RS2::EntityArc: {
-                const auto *arc = dynamic_cast<RS_Arc *> (entity);
+                const auto* arc = static_cast<RS_Arc*>(entity);
 
                 // todo - determining middle point should be moved either to entity or to some utility
-                const double amin=arc->getAngle1();
-                const double amax=arc->getAngle2();
-               
+                const double amin = arc->getAngle1();
+                const double amax = arc->getAngle2();
+
                 double da;
 
                 const bool reversed = arc->isReversed();
-                if (reversed){
-                    da =fmod(amin-amax+2.*M_PI, 2.*M_PI);
+                if (reversed) {
+                    da = fmod(amin - amax + 2. * M_PI, 2. * M_PI);
                 }
-                else{
-                    da =fmod(amax-amin+2.*M_PI, 2.*M_PI);
+                else {
+                    da = fmod(amax - amin + 2. * M_PI, 2. * M_PI);
                 }
 
-                if ( da < RS_TOLERANCE ) {
-                    da= 2.*M_PI; // whole circle
+                if (da < RS_TOLERANCE) {
+                    da = 2. * M_PI; // whole circle
                 }
-                const int counts=m_segmentMiddlePoints+1;
+                const int counts = m_segmentMiddlePoints + 1;
 
                 RS_Vector center = arc->getCenter();
                 const double radius = arc->getRadius();
 
-                for (int i = 1; i < counts; i++){
+                const double doubleCounts = counts;
+
+                for (int i = 1; i < counts; i++) {
                     double angle;
+                    const double doubleI = i;
+
                     if (reversed) {
-                        angle = amin - da * (double(i) / double(counts));
+                        angle = amin - da * (doubleI / doubleCounts);
                     }
-                    else{
-                        angle = amin + da * (double(i) / double(counts));
+                    else {
+                        angle = amin + da * (doubleI / doubleCounts);
                     }
                     RS_Vector midPoint = center.relative(radius, angle);
                     controlPoints.push_back(midPoint);
                 }
 
-                controlPoints.push_back(arc->getEndpoint());
+                controlPoints.emplace_back(arc->getEndpoint());
                 break;
             }
             case RS2::EntityLine: {
-                const auto* line = dynamic_cast<RS_Line *>(entity);
-                const RS_Vector &startPoint = line->getStartpoint();
+                const auto* line = static_cast<RS_Line*>(entity);
+                const RS_Vector& startPoint = line->getStartpoint();
                 RS_Vector dvp(line->getEndpoint() - startPoint);
                 // todo - move collection of mid points (actually, points that divide the entity to specific values to common entity interface or util
-                for (int i = 1; i < m_segmentMiddlePoints+1; i++){
-                    RS_Vector midPoint =  startPoint + dvp*(double(i)/double(m_segmentMiddlePoints));
+
+                const double segmentMiddlePoints = m_segmentMiddlePoints;
+                for (int i = 1; i < m_segmentMiddlePoints + 1; i++) {
+                    const double doubleI = i;
+                    RS_Vector midPoint = startPoint + dvp * (doubleI / segmentMiddlePoints);
                     controlPoints.push_back(midPoint);
                 }
-                controlPoints.push_back(line->getEndpoint());
+                controlPoints.emplace_back(line->getEndpoint());
                 break;
             }
             default: // actually, only line and arc in polyline, yet still...

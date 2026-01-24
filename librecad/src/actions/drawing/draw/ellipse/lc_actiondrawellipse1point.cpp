@@ -28,15 +28,15 @@
 #include "rs_ellipse.h"
 
 struct LC_ActionDrawEllipse1Point::ActionData {
-/** Center of ellipse */
+    /** Center of ellipse */
     RS_Vector center = RS_Vector(false);
-    double  majorRadius = 1.0;
+    double majorRadius = 1.0;
     double minorRadius = 1.0;
-    bool hasAngle = false;
-    bool freeAngle = false;
     double ucsBasicMajorRadiusAngle = 0.0;
     double angle1 = 0.;
     double angle2 = 0.;
+    bool hasAngle = false;
+    bool freeAngle = false;
     bool isArc = false;
     bool reversed = false;
 
@@ -49,37 +49,38 @@ struct LC_ActionDrawEllipse1Point::ActionData {
     }
 };
 
-LC_ActionDrawEllipse1Point::LC_ActionDrawEllipse1Point(LC_ActionContext *actionContext,  bool isArc)
-    :LC_ActionDrawCircleBase("Draw ellipse by 1 point", actionContext, isArc ? RS2::ActionDrawEllipseArc1Point : RS2::ActionDrawEllipse1Point),
-    m_actionData(std::make_unique<ActionData>()){
+LC_ActionDrawEllipse1Point::LC_ActionDrawEllipse1Point(LC_ActionContext* actionContext, const bool isArc)
+    : LC_ActionDrawCircleBase("Draw ellipse by 1 point", actionContext,
+                              isArc ? RS2::ActionDrawEllipseArc1Point : RS2::ActionDrawEllipse1Point),
+      m_actionData(std::make_unique<ActionData>()) {
     m_actionData->isArc = isArc;
     m_actionData->angle2 = isArc ? 2. * M_PI : 0.;
 }
 
-void LC_ActionDrawEllipse1Point::init(int status) {
+void LC_ActionDrawEllipse1Point::init(const int status) {
     LC_ActionDrawCircleBase::init(status);
 }
 
 LC_ActionDrawEllipse1Point::~LC_ActionDrawEllipse1Point() = default;
 
 RS_Entity* LC_ActionDrawEllipse1Point::doTriggerCreateEntity() {
-    double ratio = m_actionData->getRatio();
-    auto *ellipse = new RS_Ellipse{m_document,
-                                   {m_actionData->center, getMajorP(), ratio,
-                                    m_actionData->angle1, m_actionData->angle2, m_actionData->reversed}
+    const double ratio = m_actionData->getRatio();
+    auto* ellipse = new RS_Ellipse{
+        m_document,
+        {m_actionData->center, getMajorP(), ratio, m_actionData->angle1, m_actionData->angle2, m_actionData->reversed}
     };
     // todo - code below is similar to DrawEllipseAxis action.. should we make it common for all ellipse actions?
-    if  (ratio > 1.){
+    if (ratio > 1.) {
         ellipse->switchMajorMinor();
     }
 
-    if (m_moveRelPointAtCenterAfterTrigger){
+    if (m_moveRelPointAtCenterAfterTrigger) {
         moveRelativeZero(ellipse->getCenter());
     }
     return ellipse;
 }
 
-void LC_ActionDrawEllipse1Point::doTriggerCompletion([[maybe_unused]]bool success) {
+void LC_ActionDrawEllipse1Point::doTriggerCompletion([[maybe_unused]] bool success) {
     setStatus(SetPoint);
 }
 
@@ -87,14 +88,20 @@ RS_Vector LC_ActionDrawEllipse1Point::getMajorP() const {
     return RS_Vector::polar(m_actionData->majorRadius, toWorldAngleFromUCSBasis(m_actionData->getMajorAngle()));
 }
 
-void LC_ActionDrawEllipse1Point::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void LC_ActionDrawEllipse1Point::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     RS_Vector mouse = e->snapPoint;
 
-    switch (status){
-        case SetPoint:{
-            if (!trySnapToRelZeroCoordinateEvent(e)){
-                auto *ellipse = previewToCreateEllipse({mouse, getMajorP(), m_actionData->getRatio(), 0.0,
-                                                      m_actionData->isArc ? 2. * M_PI : 0., false});
+    switch (status) {
+        case SetPoint: {
+            if (!trySnapToRelZeroCoordinateEvent(e)) {
+                const auto* ellipse = previewToCreateEllipse({
+                    mouse,
+                    getMajorP(),
+                    m_actionData->getRatio(),
+                    0.0,
+                    m_actionData->isArc ? 2. * M_PI : 0.,
+                    false
+                });
                 if (m_showRefEntitiesOnPreview) {
                     previewRefSelectablePoint(mouse);
                     previewEllipseReferencePoints(ellipse, true, true, mouse);
@@ -105,9 +112,15 @@ void LC_ActionDrawEllipse1Point::onMouseMoveEvent(int status, LC_MouseEvent *e) 
         case SetMajorAngle: {
             mouse = getSnapAngleAwarePoint(e, m_actionData->center, mouse, true);
             m_actionData->ucsBasicMajorRadiusAngle = toUCSBasisAngle(m_actionData->center.angleTo(mouse));
-            auto ellipse = previewToCreateEllipse({m_actionData->center, getMajorP(), m_actionData->getRatio(), 0.0,
-                            m_actionData->isArc ? 2. * M_PI : 0., false});
-            if (m_showRefEntitiesOnPreview){
+            const auto ellipse = previewToCreateEllipse({
+                m_actionData->center,
+                getMajorP(),
+                m_actionData->getRatio(),
+                0.0,
+                m_actionData->isArc ? 2. * M_PI : 0.,
+                false
+            });
+            if (m_showRefEntitiesOnPreview) {
                 previewRefSelectablePoint(mouse);
                 previewRefPoint(m_actionData->center);
                 previewRefLine(m_actionData->center, mouse);
@@ -124,13 +137,19 @@ void LC_ActionDrawEllipse1Point::onMouseMoveEvent(int status, LC_MouseEvent *e) 
             }
             RS_Vector v = m - m_actionData->center;
             v.y /= m_actionData->getRatio();
-            double angle = v.angle();
+            const double angle = v.angle();
             m_actionData->angle1 = angle;
 
             previewRefLine(m_actionData->center, mouse);
 
-            auto ellipse = previewToCreateEllipse({m_actionData->center, getMajorP(), m_actionData->getRatio(),
-                                           m_actionData->angle1, m_actionData->angle1 + 1.0, m_actionData->reversed});
+            const auto ellipse = previewToCreateEllipse({
+                m_actionData->center,
+                getMajorP(),
+                m_actionData->getRatio(),
+                m_actionData->angle1,
+                m_actionData->angle1 + 1.0,
+                m_actionData->reversed
+            });
 
             if (m_showRefEntitiesOnPreview) {
                 previewRefPoint(m_actionData->center);
@@ -150,18 +169,27 @@ void LC_ActionDrawEllipse1Point::onMouseMoveEvent(int status, LC_MouseEvent *e) 
             v.y /= m_actionData->getRatio();
             m_actionData->angle2 = v.angle();
 
-            auto ellipse = previewToCreateEllipse({m_actionData->center, getMajorP(), m_actionData->getRatio(),
-                                           m_actionData->angle1, m_actionData->angle2, m_actionData->reversed});
+            const auto ellipse = previewToCreateEllipse({
+                m_actionData->center,
+                getMajorP(),
+                m_actionData->getRatio(),
+                m_actionData->angle1,
+                m_actionData->angle2,
+                m_actionData->reversed
+            });
 
             if (m_showRefEntitiesOnPreview) {
                 previewRefLine(m_actionData->center, mouse);
                 previewRefPoint(m_actionData->center);
-                auto point = m_actionData->center + RS_Vector{m_actionData->angle1}.scale(
-                    {ellipse->getMajorRadius(), /*-*/ellipse->getMinorRadius()});
+                auto point = m_actionData->center + RS_Vector{m_actionData->angle1}.scale({
+                    ellipse->getMajorRadius(),
+                    /*-*/
+                    ellipse->getMinorRadius()
+                });
                 point.rotate(m_actionData->center, /*-*/ m_actionData->getMajorAngle());
                 previewRefPoint(point);
                 previewRefSelectablePoint(ellipse->getEndpoint());
-                previewEllipseReferencePoints(ellipse, false,true, mouse);
+                previewEllipseReferencePoints(ellipse, false, true, mouse);
             }
             break;
         }
@@ -170,12 +198,12 @@ void LC_ActionDrawEllipse1Point::onMouseMoveEvent(int status, LC_MouseEvent *e) 
     }
 }
 
-void LC_ActionDrawEllipse1Point::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
+void LC_ActionDrawEllipse1Point::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     RS_Vector snap = e->snapPoint;
-    switch (status){
+    switch (status) {
         case SetMajorAngle:
         case SetAngle1:
-        case SetAngle2:{
+        case SetAngle2: {
             snap = getSnapAngleAwarePoint(e, m_actionData->center, snap);
             break;
         }
@@ -185,21 +213,21 @@ void LC_ActionDrawEllipse1Point::onMouseLeftButtonRelease(int status, LC_MouseEv
     fireCoordinateEvent(snap);
 }
 
-void LC_ActionDrawEllipse1Point::onMouseRightButtonRelease(int status, [[maybe_unused]] LC_MouseEvent *e) {
+void LC_ActionDrawEllipse1Point::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     deletePreview();
     initPrevious(status);
 }
 
-void LC_ActionDrawEllipse1Point::onCoordinateEvent(int status, [[maybe_unused]]bool isZero, const RS_Vector &pos) {
-    switch (status){
-        case SetPoint:{
+void LC_ActionDrawEllipse1Point::onCoordinateEvent(const int status, [[maybe_unused]] const bool isZero, const RS_Vector& pos) {
+    switch (status) {
+        case SetPoint: {
             m_actionData->center = pos;
             moveRelativeZero(pos);
-            if (m_actionData->hasAngle && m_actionData->freeAngle){
+            if (m_actionData->hasAngle && m_actionData->freeAngle) {
                 setStatus(SetMajorAngle);
             }
-            else{
-                if (m_actionData->isArc){
+            else {
+                if (m_actionData->isArc) {
                     setStatus(SetAngle1);
                 }
                 else {
@@ -209,29 +237,29 @@ void LC_ActionDrawEllipse1Point::onCoordinateEvent(int status, [[maybe_unused]]b
             break;
         }
         case SetMajorAngle: {
-            if (isZero){
+            if (isZero) {
                 m_actionData->ucsBasicMajorRadiusAngle = toUCSBasisAngle(0);
                 if (m_actionData->isArc) {
                     setStatus(SetAngle1);
                 }
-                else{
+                else {
                     trigger();
                 }
             }
-            else if (LC_LineMath::isMeaningfulDistance(m_actionData->center, pos)){
-                double majorAngle = toUCSBasisAngle(m_actionData->center.angleTo(pos));
+            else if (LC_LineMath::isMeaningfulDistance(m_actionData->center, pos)) {
+                const double majorAngle = toUCSBasisAngle(m_actionData->center.angleTo(pos));
                 m_actionData->ucsBasicMajorRadiusAngle = majorAngle;
-                if (m_actionData->isArc){
+                if (m_actionData->isArc) {
                     setStatus(SetAngle1);
                 }
-                else{
+                else {
                     trigger();
                 }
             }
             break;
         }
         case SetAngle1: {
-            if (isZero){
+            if (isZero) {
                 m_actionData->angle1 = 0;
             }
             else {
@@ -245,7 +273,7 @@ void LC_ActionDrawEllipse1Point::onCoordinateEvent(int status, [[maybe_unused]]b
             break;
         }
         case SetAngle2: {
-            if (isZero){
+            if (isZero) {
                 m_actionData->angle2 = 0;
             }
             else {
@@ -264,9 +292,9 @@ void LC_ActionDrawEllipse1Point::onCoordinateEvent(int status, [[maybe_unused]]b
 }
 
 void LC_ActionDrawEllipse1Point::updateMouseButtonHints() {
-    int status = getStatus();
-    switch (status){
-        case SetPoint:{
+    const int status = getStatus();
+    switch (status) {
+        case SetPoint: {
             updateMouseWidgetTRCancel(tr("Specify ellipse center"), MOD_SHIFT_RELATIVE_ZERO);
             break;
         }
@@ -287,17 +315,17 @@ void LC_ActionDrawEllipse1Point::updateMouseButtonHints() {
     }
 }
 
-bool LC_ActionDrawEllipse1Point::doProcessCommand(int status, const QString &command) {
+bool LC_ActionDrawEllipse1Point::doProcessCommand(const int status, const QString& command) {
     bool accept = false;
-    if (checkCommand("angle", command)){
+    if (checkCommand("angle", command)) {
         accept = true;
         setStatus(SetMajorAngle);
     }
-    else if (checkCommand("angle1", command)){
+    else if (checkCommand("angle1", command)) {
         accept = true;
         setStatus(SetAngle1);
     }
-    else if (checkCommand("angle2", command)){
+    else if (checkCommand("angle2", command)) {
         accept = true;
         setStatus(SetAngle2);
     }
@@ -305,39 +333,46 @@ bool LC_ActionDrawEllipse1Point::doProcessCommand(int status, const QString &com
         switch (status) {
             case SetMajorAngle: {
                 double wcsAngle;
-                bool ok = parseToUCSBasisAngle(command, wcsAngle);
+                const bool ok = parseToUCSBasisAngle(command, wcsAngle);
                 if (ok) {
                     accept = true;
                     m_actionData->ucsBasicMajorRadiusAngle = wcsAngle;
                     if (m_actionData->isArc) {
                         setStatus(SetAngle2);
-                    } else {
+                    }
+                    else {
                         trigger();
                     }
-                } else
+                }
+                else {
                     commandMessage(tr("Not a valid expression"));
+                }
                 break;
             }
             case SetAngle1: {
                 bool ok;
-                double ucsAngleDegrees = RS_Math::eval(command, &ok);
+                const double ucsAngleDegrees = RS_Math::eval(command, &ok);
                 if (ok) {
                     accept = true;
                     m_actionData->angle1 = RS_Math::deg2rad(ucsAngleDegrees);
                     setStatus(SetAngle2);
-                } else
+                }
+                else {
                     commandMessage(tr("Not a valid expression"));
+                }
                 break;
             }
             case SetAngle2: {
                 bool ok;
-                double ucsAngleDegrees = RS_Math::eval(command, &ok);
+                const double ucsAngleDegrees = RS_Math::eval(command, &ok);
                 if (ok) {
                     accept = true;
                     m_actionData->angle2 = RS_Math::deg2rad(ucsAngleDegrees);
                     trigger();
-                } else
+                }
+                else {
                     commandMessage(tr("Not a valid expression"));
+                }
                 break;
             }
             default:
@@ -349,11 +384,9 @@ bool LC_ActionDrawEllipse1Point::doProcessCommand(int status, const QString &com
 
 QStringList LC_ActionDrawEllipse1Point::getAvailableCommands() {
     if (m_actionType == RS2::ActionDrawEllipseArc1Point) {
-        return {command("angle"), command("angle1"),command("angle2")};
+        return {command("angle"), command("angle1"), command("angle2")};
     }
-    else{
-        return {command("angle")};
-    }
+    return {command("angle")};
 }
 
 double LC_ActionDrawEllipse1Point::getMajorRadius() const {
@@ -368,11 +401,11 @@ bool LC_ActionDrawEllipse1Point::isAngleFree() const {
     return m_actionData->freeAngle;
 }
 
-void LC_ActionDrawEllipse1Point::setMajorRadius(double val) const {
+void LC_ActionDrawEllipse1Point::setMajorRadius(const double val) const {
     m_actionData->majorRadius = val;
 }
 
-void LC_ActionDrawEllipse1Point::setMinorRadius(double val) const {
+void LC_ActionDrawEllipse1Point::setMinorRadius(const double val) const {
     m_actionData->minorRadius = val;
 }
 
@@ -380,21 +413,20 @@ double LC_ActionDrawEllipse1Point::getUcsMajorAngleDegrees() const {
     return RS_Math::rad2deg(m_actionData->ucsBasicMajorRadiusAngle);
 }
 
-void LC_ActionDrawEllipse1Point::setUcsMajorAngleDegrees(double ucsBasisAngleDegrees) const {
+void LC_ActionDrawEllipse1Point::setUcsMajorAngleDegrees(const double ucsBasisAngleDegrees) const {
     m_actionData->ucsBasicMajorRadiusAngle = RS_Math::deg2rad(ucsBasisAngleDegrees);
 }
 
-void LC_ActionDrawEllipse1Point::setUcsMajorAngle(double ucsBasisAngleRad) const {
+void LC_ActionDrawEllipse1Point::setUcsMajorAngle(const double ucsBasisAngleRad) const {
     m_actionData->ucsBasicMajorRadiusAngle = ucsBasisAngleRad;
 }
 
-
-void LC_ActionDrawEllipse1Point::setHasAngle(bool val) {
+void LC_ActionDrawEllipse1Point::setHasAngle(const bool val) {
     m_actionData->hasAngle = val;
     toSetPointStatus();
 }
 
-void LC_ActionDrawEllipse1Point::setAngleFree(bool val) {
+void LC_ActionDrawEllipse1Point::setAngleFree(const bool val) {
     m_actionData->freeAngle = val;
     toSetPointStatus();
 }
@@ -404,13 +436,13 @@ bool LC_ActionDrawEllipse1Point::hasAngle() const {
 }
 
 void LC_ActionDrawEllipse1Point::toSetPointStatus() {
-    int status = this->getStatus();
-    if (status > SetPoint){
+    const int status = this->getStatus();
+    if (status > SetPoint) {
         this->setStatus(SetPoint);
     }
 }
 
-bool LC_ActionDrawEllipse1Point::doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) {
+bool LC_ActionDrawEllipse1Point::doUpdateAngleByInteractiveInput(const QString& tag, const double angleRad) {
     if (tag == "angle") {
         setUcsMajorAngle(angleRad);
         return true;
@@ -418,7 +450,7 @@ bool LC_ActionDrawEllipse1Point::doUpdateAngleByInteractiveInput(const QString& 
     return false;
 }
 
-bool LC_ActionDrawEllipse1Point::doUpdateDistanceByInteractiveInput(const QString& tag, double distance) {
+bool LC_ActionDrawEllipse1Point::doUpdateDistanceByInteractiveInput(const QString& tag, const double distance) {
     if (tag == "major") {
         setMajorRadius(distance);
         return true;
@@ -430,14 +462,14 @@ bool LC_ActionDrawEllipse1Point::doUpdateDistanceByInteractiveInput(const QStrin
     return false;
 }
 
-LC_ActionOptionsWidget *LC_ActionDrawEllipse1Point::createOptionsWidget() {
+LC_ActionOptionsWidget* LC_ActionDrawEllipse1Point::createOptionsWidget() {
     return new LC_Ellipse1PointOptions();
 }
 
-void LC_ActionDrawEllipse1Point::setReversed(bool b) const{
-   m_actionData->reversed = b;
+void LC_ActionDrawEllipse1Point::setReversed(const bool b) const {
+    m_actionData->reversed = b;
 }
 
-bool LC_ActionDrawEllipse1Point::isReversed() const{
+bool LC_ActionDrawEllipse1Point::isReversed() const {
     return m_actionData->reversed;
 }

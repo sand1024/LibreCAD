@@ -34,7 +34,7 @@ public:
             SUB_GRID,
             META_GRID
         };
-        MovementInfo(RS2::Direction direction, Step step)
+        MovementInfo(const RS2::Direction direction, const Step step)
             : m_direction{direction}, m_step(step){
 
         }
@@ -48,7 +48,7 @@ public:
 
     LC_ActionModifyMoveAdjust(LC_ActionContext *actionContext, MovementInfo info);
     ~LC_ActionModifyMoveAdjust() override = default;
-    bool isSupportsPredecessorAction() override {return true;};
+    bool isSupportsPredecessorAction() override {return true;}
 protected:
     enum Status {
         Move = InitialActionStatus
@@ -60,10 +60,10 @@ protected:
     RS2::CursorType doGetMouseCursorSelected(int status) override;
     LC_ModifyOperationFlags *getModifyOperationFlags() override;
     RS_Vector calculateOffset() const;
-    void updateMouseButtonHintsForSelection() override {};
+    void updateMouseButtonHintsForSelection() override {}
     void doTriggerCompletion(bool success) override;
     void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
 };
 
-#endif // LC_ACTIONMODIFYMOVEADJUST_H
+#endif

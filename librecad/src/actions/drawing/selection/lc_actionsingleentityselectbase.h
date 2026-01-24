@@ -41,9 +41,9 @@ protected:
     virtual QString doGetMouseButtonHint() = 0;
     virtual bool doCheckMaySelectEntity(RS_Entity* e) = 0;
     void updateMouseButtonHints() override;
-    void onMouseMoveEvent(int status, LC_MouseEvent* event) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent* e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
 };
 
 #endif

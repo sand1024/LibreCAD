@@ -35,7 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class LC_ActionDrawSplinePoints:public RS_ActionDrawSpline {
     Q_OBJECT
 public:
-    LC_ActionDrawSplinePoints(LC_ActionContext *actionContext);
+    explicit LC_ActionDrawSplinePoints(LC_ActionContext *actionContext);
     ~LC_ActionDrawSplinePoints() override;
     void reset();
     void init(int status) override;
@@ -50,11 +50,11 @@ protected:
     std::unique_ptr<ActionData> m_actionData;
 
     void redo();
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     bool doProcessCommand(int status, const QString &command) override;
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector &coord) override;
     void updateMouseButtonHints() override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;

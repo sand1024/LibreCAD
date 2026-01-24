@@ -34,13 +34,13 @@ protected:
     bool m_endpointIsSelected = false;
     RS_Entity *createModifiedSplineEntity(RS_Entity *e, RS_Vector controlPoint, bool adjustPosition) override;
     void updateMouseButtonHints() override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMove(RS_Vector mouse, int status, LC_MouseEvent *e) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMove(RS_Vector mouse, int status, const LC_MouseEvent* e) override;
     void setEntityToModify(RS_Entity* entity) override;
     void doTriggerOther() override;
     void doTriggerCompletion(bool success) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
-    bool mayModifySplineEntity(RS_Entity* pEntity) override;
+    bool mayModifySplineEntity(RS_Entity* entity) override;
 };
 
-#endif // LC_ACTIONSPLINEADDPOINTACTION_H
+#endif

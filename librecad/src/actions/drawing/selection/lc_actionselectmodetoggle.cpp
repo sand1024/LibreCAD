@@ -29,13 +29,13 @@ LC_ActionSelectModeToggle::LC_ActionSelectModeToggle(LC_ActionContext* actionCon
     : RS_ActionInterface("Selection Mode Toggle", actionContext, RS2::ActionSelectModeToggle) {
 }
 
-void LC_ActionSelectModeToggle::init(int status) {
+void LC_ActionSelectModeToggle::init(const int status) {
    RS_ActionInterface::init(status);
    trigger();
-   finish(false);
+   finish();
 }
 
 void LC_ActionSelectModeToggle::trigger() {
-    bool currentlySelected = LC_GET_ONE_BOOL("Selection", "Additivity", true);
+    const bool currentlySelected = LC_GET_ONE_BOOL("Selection", "Additivity", true);
     LC_SET_ONE("Selection", "Additivity", !currentlySelected);
 }

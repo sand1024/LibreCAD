@@ -32,51 +32,47 @@ QString LC_ActionDrawLinePolygon4::getPoint2Hint() const {
     if (m_useVertexVertexMode){
         return tr("Specify second corner");
     }
-    else{
-        return tr("Specify second tangent");
-    }
+    return tr("Specify second tangent");
 }
 
 QString LC_ActionDrawLinePolygon4::getPoint1Hint() const {
     if (m_useVertexVertexMode){
         return tr("Specify first corner");
     }
-    else{
-        return tr("Specify first tangent");
-    }
+    return tr("Specify first tangent");
 }
 
-void LC_ActionDrawLinePolygon4::preparePolygonInfo(LC_ActionDrawLinePolygonBase::PolygonInfo &polygonInfo, const RS_Vector &snap) {
-    double angle = M_PI/m_edgesNumber;
-    double pointsAngle = m_actionData->point1.angleTo(snap);
+void LC_ActionDrawLinePolygon4::preparePolygonInfo(PolygonInfo &polygonInfo, const RS_Vector &snap) {
+    const double angle = M_PI/m_edgesNumber;
+    const double pointsAngle = m_actionData->point1.angleTo(snap);
 
-    double dist = m_actionData->point1.distanceTo(snap) / 2.0;
+    const double dist = m_actionData->point1.distanceTo(snap) / 2.0;
 
-    double oppositeLap = tan(angle) * dist;
-    double hipotenuse = sqrt((dist * dist) + (oppositeLap * oppositeLap));
+    const double oppositeLap = std::tan(angle) * dist;
+    const double hypotenuse = std::sqrt(dist * dist + oppositeLap * oppositeLap);
 
     RS_Vector center = m_actionData->point1.relative(dist, pointsAngle);
     RS_Vector vertex;
     if (m_useVertexVertexMode) {
         vertex = snap;
     } else {
-        vertex = center.relative(hipotenuse, center.angleTo(m_actionData->point1) + angle);
+        vertex = center.relative(hypotenuse, center.angleTo(m_actionData->point1) + angle);
     }
 
     if ((m_edgesNumber % 2) == 1) {
         // odd no. of corners
-        double newdist = (dist / (dist + hipotenuse)) * (dist * 2);
-        double newopp = tan(angle) * newdist;
-        double newhyp = sqrt((newdist * newdist) + (newopp * newopp));
-        RS_Vector newcen = RS_Vector::polar(newdist, pointsAngle);
-        RS_Vector newcenter = m_actionData->point1 + newcen;
+        const double newDist = dist / (dist + hypotenuse) * (dist * 2);
+        const double newOpp = std::tan(angle) * newDist;
+        const double newHyp = std::sqrt(newDist * newDist + newOpp * newOpp);
+        const RS_Vector newCen = RS_Vector::polar(newDist, pointsAngle);
+        RS_Vector newCenter = m_actionData->point1 + newCen;
         if (m_useVertexVertexMode) {
-            newcenter = snap - newcen;
-            vertex = newcenter.relative(newhyp, newcenter.angleTo(m_actionData->point1));
+            newCenter = snap - newCen;
+            vertex = newCenter.relative(newHyp, newCenter.angleTo(m_actionData->point1));
         } else {
-            vertex = newcenter.relative(newhyp, newcenter.angleTo(m_actionData->point1) + angle);
+            vertex = newCenter.relative(newHyp, newCenter.angleTo(m_actionData->point1) + angle);
         }
-        center = newcenter;
+        center = newCenter;
     }
 
     polygonInfo.centerPoint = center;

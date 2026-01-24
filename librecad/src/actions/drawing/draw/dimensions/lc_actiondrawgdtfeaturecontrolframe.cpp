@@ -35,14 +35,14 @@ LC_ActionDrawGDTFeatureControlFrame::LC_ActionDrawGDTFeatureControlFrame(LC_Acti
     ,m_actionData{std::make_unique<ActionData>()}{
 }
 
-void LC_ActionDrawGDTFeatureControlFrame::init(int status) {
+void LC_ActionDrawGDTFeatureControlFrame::init(const int status) {
     RS_PreviewActionInterface::init(status);
     if (status == ShowDialog) {
         // fixme - sand - potentially, we may reuse values were entered previously via settings or so .... not sure whether it's necessary, yet still
-        auto entity  = new LC_Tolerance(m_document, LC_ToleranceData{{0,0}, {0,0}, "", ""});
+        const auto entity  = new LC_Tolerance(m_document, LC_ToleranceData{{0,0}, {0,0}, "", ""});
         LC_DlgTolerance dlg(QC_ApplicationWindow::getAppWindow().get(), m_viewport, entity, true);
         if (dlg.exec() == QDialog::Accepted) {
-            m_actionData->m_entity = entity;
+            m_actionData->entity = entity;
             setStatus(SetInsertionPoint);
         }
         else {
@@ -53,20 +53,20 @@ void LC_ActionDrawGDTFeatureControlFrame::init(int status) {
 }
 
 RS_Entity* LC_ActionDrawGDTFeatureControlFrame::doTriggerCreateEntity() {
-    auto e = m_actionData->m_entity;
+    const auto e = m_actionData->entity;
 
     auto entityData = e->getData();
 
-    entityData.m_insertionPoint = m_actionData->m_insertionPoint;
+    entityData.insertionPoint = m_actionData->insertionPoint;
     RS_Vector ucsOrigin;
     double xAxisDirection;
     m_viewport->fillCurrentUCSInfo(ucsOrigin, xAxisDirection);
-    entityData.m_directionVector = RS_Vector(xAxisDirection);
+    entityData.directionVector = RS_Vector(xAxisDirection);
 
     // create a copy that will be added into the document (and not deleted by the action)
-    auto controlFrame  = new LC_Tolerance(m_document, entityData);
+    const auto controlFrame  = new LC_Tolerance(m_document, entityData);
     controlFrame->update();
-    moveRelativeZero(m_actionData->m_insertionPoint);
+    moveRelativeZero(m_actionData->insertionPoint);
 
     return controlFrame;
 }
@@ -96,14 +96,14 @@ void LC_ActionDrawGDTFeatureControlFrame::updateMouseButtonHints() {
 }
 
 
-void LC_ActionDrawGDTFeatureControlFrame::onCoordinateEvent(int status, [[maybe_unused]]bool isZero, const RS_Vector& pos) {
+void LC_ActionDrawGDTFeatureControlFrame::onCoordinateEvent(const int status, [[maybe_unused]]bool isZero, const RS_Vector& pos) {
     if (status == SetInsertionPoint) {
-        m_actionData->m_insertionPoint = pos;
+        m_actionData->insertionPoint = pos;
         trigger();
     }
 }
 
-void LC_ActionDrawGDTFeatureControlFrame::onMouseMoveEvent(int status, LC_MouseEvent* event) {
+void LC_ActionDrawGDTFeatureControlFrame::onMouseMoveEvent(const int status, const LC_MouseEvent* event) {
     auto snap = event->snapPoint;
     if (status == SetInsertionPoint){
         // less restrictive snap
@@ -112,19 +112,19 @@ void LC_ActionDrawGDTFeatureControlFrame::onMouseMoveEvent(int status, LC_MouseE
     fireCoordinateEvent(snap);
 }
 
-void LC_ActionDrawGDTFeatureControlFrame::onMouseLeftButtonRelease(int status, LC_MouseEvent* e) {
+void LC_ActionDrawGDTFeatureControlFrame::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     RS_PreviewActionInterface::onMouseLeftButtonRelease(status, e);
 }
 
-void LC_ActionDrawGDTFeatureControlFrame::onMouseRightButtonRelease([[maybe_unused]]int status, [[maybe_unused]]LC_MouseEvent* e) {
+void LC_ActionDrawGDTFeatureControlFrame::onMouseRightButtonRelease([[maybe_unused]]int status, [[maybe_unused]] const LC_MouseEvent* e) {
     init(-1);
 }
 
-QStringList LC_ActionDrawGDTFeatureControlFrame::doGetAvailableCommands(int status) {
+QStringList LC_ActionDrawGDTFeatureControlFrame::doGetAvailableCommands(const int status) {
     return RS_PreviewActionInterface::doGetAvailableCommands(status);
 }
 
 
-bool LC_ActionDrawGDTFeatureControlFrame::doProcessCommand(int status, const QString& command) {
+bool LC_ActionDrawGDTFeatureControlFrame::doProcessCommand(const int status, const QString& command) {
     return RS_PreviewActionInterface::doProcessCommand(status, command);
 }

@@ -40,7 +40,7 @@ public:
     };
     LC_ActionPenApply(LC_ActionContext *actionContext, bool copy);
     void init(int status) override;
-    void finish(bool updateTB) override;
+    void finish() override;
 private:
     // entity that might be used as source for pen applying
     RS_Entity* m_srcEntity {nullptr};
@@ -53,12 +53,12 @@ protected:
     bool mayInitWithContextEntity(int status) override;
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void updateMouseButtonHints() override;
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
     void doTriggerCompletion(bool success) override;
 };
 
-#endif // LC_ACTIONPENAPPLY_H
+#endif

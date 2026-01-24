@@ -44,7 +44,7 @@ class RS_ActionPolylineSegment:public LC_UndoableDocumentModificationAction {
     Q_OBJECT
 public:
     explicit RS_ActionPolylineSegment(LC_ActionContext *actionContext);
-    RS_ActionPolylineSegment(LC_ActionContext *actionContext, RS_Entity *targetEntity);
+    RS_ActionPolylineSegment(LC_ActionContext *actionContext, RS_Entity *target);
     void init(int status) override;
     void drawSnapper() override;
 protected:
@@ -61,14 +61,16 @@ protected:
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
 
     //! create polyline from segments
+//! @param selectedEntity
 //! @param useSelected only create from selected entities
-    RS_Polyline* convertPolyline(RS_Entity *selectedEntity, bool useSelected, LC_DocumentModificationBatch& ctx);
-    RS_Vector appendPol(RS_Polyline *current, RS_Polyline *toAdd, bool reversed) const;
+//! @param ctx
+    void convertPolyline(RS_Entity* selectedEntity, bool useSelected, LC_DocumentModificationBatch& ctx) const;
+    RS_Vector appendPol(RS_Polyline *current, const RS_Polyline* toAdd, bool reversed) const;
 
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* event) override;
     void updateMouseButtonHints() override;
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
     void doTriggerCompletion(bool success) override;

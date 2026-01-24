@@ -25,19 +25,18 @@
 #include "lc_actioninfomessagebuilder.h"
 #include "lc_linejoinoptions.h"
 #include "lc_linemath.h"
-#include "rs_line.h"
 #include "rs_document.h"
+#include "rs_line.h"
 #include "rs_pen.h"
 #include "rs_polyline.h"
 
 LC_ActionModifyLineJoin::LC_ActionModifyLineJoin(LC_ActionContext *actionContext):
-    LC_AbstractActionWithPreview("ModifyLineJoin", actionContext, RS2::ActionModifyLineJoin),
-    m_line1(nullptr), m_line2(nullptr){
+    LC_AbstractActionWithPreview("ModifyLineJoin", actionContext, RS2::ActionModifyLineJoin){
 }
 
 LC_ActionModifyLineJoin::~LC_ActionModifyLineJoin() = default;
 
-void LC_ActionModifyLineJoin::init(int status){
+void LC_ActionModifyLineJoin::init(const int status){
     m_line1 = nullptr;
     m_line2 = nullptr;
     LC_AbstractActionWithPreview::init(status);
@@ -54,7 +53,7 @@ void LC_ActionModifyLineJoin::doInitWithContextEntity(RS_Entity* contextEntity, 
 /*
  * utility method that catches line based on mouse event
  */
-RS_Line *LC_ActionModifyLineJoin::catchLine(LC_MouseEvent *e, bool forPreview){
+RS_Line *LC_ActionModifyLineJoin::catchLine(const LC_MouseEvent *e, const bool forPreview) const {
     RS_Entity *en = forPreview ? catchModifiableAndDescribe(e, m_lineType) :catchModifiableEntity(e, m_lineType);
     RS_Line *snappedLine = nullptr;
     if (isLine(en)){
@@ -67,8 +66,8 @@ void LC_ActionModifyLineJoin::drawSnapper() {
     // disable snapper
 }
 
-void LC_ActionModifyLineJoin::doPreparePreviewEntities(LC_MouseEvent *e, [[maybe_unused]]RS_Vector &snap, QList<RS_Entity *> &list, int status){
-    RS_Line *snappedLine = catchLine(e, true);
+void LC_ActionModifyLineJoin::doPreparePreviewEntities(const LC_MouseEvent* e, [[maybe_unused]]RS_Vector &snap, QList<RS_Entity *> &list, const int status){
+    const RS_Line *snappedLine = catchLine(e, true);
     switch (status) {
         case SetLine1: {
             if (snappedLine != nullptr){ // can snap to line
@@ -84,8 +83,8 @@ void LC_ActionModifyLineJoin::doPreparePreviewEntities(LC_MouseEvent *e, [[maybe
             if (snappedLine != nullptr){
                 highlightHover(snappedLine);
                 // here we do not rely on snap point, simply get coordinates from event
-                RS_Vector coord = e->graphPoint;
-                LC_LineJoinData *lineJoinData = createLineJoinData(snappedLine, coord);
+                const RS_Vector coord = e->graphPoint;
+                const LC_LineJoinData *lineJoinData = createLineJoinData(snappedLine, coord);
                 if (lineJoinData != nullptr){
                     RS_Polyline *polyline = lineJoinData->polyline;
                     if (polyline != nullptr){
@@ -160,10 +159,10 @@ void LC_ActionModifyLineJoin::doPreparePreviewEntities(LC_MouseEvent *e, [[maybe
     }
 }
 
-void LC_ActionModifyLineJoin::doOnLeftMouseButtonRelease(LC_MouseEvent *e, int status, [[maybe_unused]]const RS_Vector &snapPoint){
+void LC_ActionModifyLineJoin::doOnLeftMouseButtonRelease(const LC_MouseEvent* e, const int status, [[maybe_unused]]const RS_Vector &snapPoint){
     RS_Line *snappedLine = catchLine(e, false);
     switch (status) {
-        case SetLine1:
+        case SetLine1: {
             if (snappedLine != nullptr){ // just store first line and proceed to selection of second line
                 m_line1 = snappedLine;
                 m_line1ClickPosition = snapPoint;
@@ -172,13 +171,14 @@ void LC_ActionModifyLineJoin::doOnLeftMouseButtonRelease(LC_MouseEvent *e, int s
                 commandMessage(tr("No line selected"));
             }
             break;
-        case SetLine2:
+        }
+        case SetLine2: {
             if (snappedLine == m_line1){ // don't let to snap to the same line again
                 snappedLine = nullptr;
             }
             if (snappedLine != nullptr){
                 m_line2 = snappedLine;
-                RS_Vector snap = e->graphPoint;
+                const RS_Vector snap = e->graphPoint;
                 LC_LineJoinData *joinData = createLineJoinData(snappedLine, snap);
                 if (joinData != nullptr){
                     // check whether parallel lines were selected
@@ -217,13 +217,14 @@ void LC_ActionModifyLineJoin::doOnLeftMouseButtonRelease(LC_MouseEvent *e, int s
                             }
                         }
                     }
+                    delete joinData;
                 } else {
                     commandMessage(tr("No line selected"));
                 }
             }
             break;
-
-        case ResolveFirstLineTrim:
+        }
+        case ResolveFirstLineTrim: {
             if (snappedLine == m_line1){ // we need trim hint on the first line
                 const RS_Vector snap = e->graphPoint;
                 // update trim data according to selected part of line 1
@@ -236,15 +237,15 @@ void LC_ActionModifyLineJoin::doOnLeftMouseButtonRelease(LC_MouseEvent *e, int s
             } else {
                 highlightEntity(m_line1);
             }
-
             break;
+        }
         default:
             break;
     }
 }
 
-void LC_ActionModifyLineJoin::doBack(LC_MouseEvent *pEvent, int status){
-    LC_AbstractActionWithPreview::doBack(pEvent, status);
+void LC_ActionModifyLineJoin::doBack(const LC_MouseEvent* e, const int status){
+    LC_AbstractActionWithPreview::doBack(e, status);
     switch (status) {
         case SetLine1:
             init(SetLine1 - 1);
@@ -259,6 +260,7 @@ void LC_ActionModifyLineJoin::doBack(LC_MouseEvent *pEvent, int status){
         }
         default:
             initPrevious(status);
+            break;
     }
 }
 
@@ -293,8 +295,6 @@ bool LC_ActionModifyLineJoin::doTriggerEntitiesPrepare(LC_DocumentModificationBa
         // therefore we rely on major points there and draw lines from them to intersection point
         const RS_Vector &major1 = m_linesJoinData->majorPointLine1;
         const RS_Vector &major2 = m_linesJoinData->majorPointLine2;
-        RS_Line *l1;
-        RS_Line *l2;
 
         if (m_createPolyline && major1.valid && major2.valid){ // handle polyline mode
             auto *poly = new RS_Polyline(m_document);
@@ -305,12 +305,14 @@ bool LC_ActionModifyLineJoin::doTriggerEntitiesPrepare(LC_DocumentModificationBa
             ctx += poly;
 
         } else { // handle individual lines
-            if (major1.valid){  // proceed line 1 (extend or segment)
-                l1 = createLine(major1, intersectionPoint, ctx.entitiesToAdd);
+            if (major1.valid){
+                // proceed line 1 (extend or segment)
+                RS_Line* l1 = createLine(major1, intersectionPoint, ctx.entitiesToAdd);
                 applyAttributes(l1, true);
             }
-            if (major2.valid){ // proceed line 2
-                l2 = createLine(intersectionPoint, major2, ctx.entitiesToAdd);
+            if (major2.valid){
+                // proceed line 2
+                RS_Line* l2 = createLine(intersectionPoint, major2, ctx.entitiesToAdd);
                 applyAttributes(l2, false);
             }
         }
@@ -367,6 +369,8 @@ void LC_ActionModifyLineJoin::applyAttributes(RS_Entity *e, bool forLine1){
         case ATTRIBUTES_ACTIVE_PEN_LAYER: // just set for active pen and layer
             setPenAndLayerToActive(e);
             break;
+        default:
+            break;
     }
 }
 
@@ -376,7 +380,7 @@ void LC_ActionModifyLineJoin::applyAttributes(RS_Entity *e, bool forLine1){
  * @param snapPoint snap point
  * @return created line join data
  */
-LC_ActionModifyLineJoin::LC_LineJoinData *LC_ActionModifyLineJoin::createLineJoinData(RS_Line *secondLine, RS_Vector &snapPoint){
+LC_ActionModifyLineJoin::LC_LineJoinData *LC_ActionModifyLineJoin::createLineJoinData(const RS_Line *secondLine, const RS_Vector &snapPoint) const {
     LC_LineJoinData *result = nullptr;
 
     if (m_line1 != nullptr && secondLine != nullptr){
@@ -402,16 +406,16 @@ LC_ActionModifyLineJoin::LC_LineJoinData *LC_ActionModifyLineJoin::createLineJoi
 
 /**
  * Determine line data for intersecting (non-parallel) lines
+ * @param line1ClickPoint
  * @param snapPoint snap point
- * @param sol solution for intersection
+ * @param intersectPoint
  * @param line1Start
  * @param line1End
  * @param line2Start
  * @param line2End
  * @return
  */
-LC_ActionModifyLineJoin::LC_LineJoinData *LC_ActionModifyLineJoin::proceedNonParallelLines(
-     RS_Vector& line1ClickPoint, RS_Vector &snapPoint,
+LC_ActionModifyLineJoin::LC_LineJoinData *LC_ActionModifyLineJoin::proceedNonParallelLines(const RS_Vector& line1ClickPoint, const RS_Vector &snapPoint,
     const RS_Vector &intersectPoint,
     const RS_Vector &line1Start, const RS_Vector &line1End,
     const RS_Vector &line2Start, const RS_Vector &line2End) const {
@@ -467,21 +471,21 @@ LC_ActionModifyLineJoin::LC_LineJoinData *LC_ActionModifyLineJoin::proceedNonPar
  * Snap point specified by the user indicates part of line 1 that should survive trim operation.
  * @param snap snap point
  */
-void LC_ActionModifyLineJoin::updateLine1TrimData(RS_Vector snap) const {
+void LC_ActionModifyLineJoin::updateLine1TrimData(const RS_Vector& snap) const {
 
     const RS_Vector &line1Start = m_line1->getStartpoint();
     const RS_Vector &line1End = m_line1->getEndpoint();
     RS_Polyline *polyline = m_linesJoinData->polyline;
-    if (polyline != nullptr){ // we'll rebuild polyline, so delete original one
-        delete polyline;
-    }
+
+    delete polyline;// we'll rebuild polyline, so delete original one
+
     polyline = new RS_Polyline(m_document);
     m_linesJoinData->polyline = polyline;
 
     const RS_Vector &intersection = m_linesJoinData->intersectPoint;
 
     // recalculate disposition of line 1 taking into consideration updated snap point
-    const LC_ActionModifyLineJoin::LC_PointsDisposition line1Disposition = determine3PointsDisposition(line1Start, line1End, intersection, snap);
+    const LC_PointsDisposition line1Disposition = determine3PointsDisposition(line1Start, line1End, intersection, snap);
 
     // update major point for line 1 based updated disposition
     const RS_Vector pointFromLine1 = getMajorPointFromLine(m_line1EdgeMode, line1Start, line1End, line1Disposition);
@@ -518,7 +522,7 @@ RS_Vector LC_ActionModifyLineJoin::getMajorPointFromLine(
     const int edgeMode,
     const RS_Vector &lineStart,
     const RS_Vector &lineEnd,
-    const LC_ActionModifyLineJoin::LC_PointsDisposition &lineDisposition) const{
+    const LC_PointsDisposition &lineDisposition) const{
     auto result = RS_Vector(false);
     switch (edgeMode) {
         case EDGE_EXTEND_TRIM:
@@ -544,6 +548,8 @@ RS_Vector LC_ActionModifyLineJoin::getMajorPointFromLine(
                     }
                     break;
                 }
+                default:
+                    break;
             }
             break;
         case EDGE_ADD_SEGMENT:
@@ -561,6 +567,8 @@ RS_Vector LC_ActionModifyLineJoin::getMajorPointFromLine(
                     // within line endpoints
                     break;
                 }
+                default:
+                    break;
             }
             break;
         case EDGE_NO_MODIFICATION:
@@ -726,9 +734,9 @@ LC_ActionModifyLineJoin::LC_LineJoinData *LC_ActionModifyLineJoin::proceedParall
  * @return points disposition
  */
 LC_ActionModifyLineJoin::LC_PointsDisposition LC_ActionModifyLineJoin::determine3PointsDisposition(
-    const RS_Vector start,
-    const RS_Vector end,
-    const RS_Vector intersection,
+    const RS_Vector& start,
+    const RS_Vector& end,
+    const RS_Vector& intersection,
     const RS_Vector &snapPoint) const{
 
     // align all 3 points horizontally for simplicity of calculations, rotate them as needed
@@ -822,22 +830,22 @@ RS2::CursorType LC_ActionModifyLineJoin::doGetMouseCursor([[maybe_unused]]int st
     return RS2::SelectCursor;
 }
 
-void LC_ActionModifyLineJoin::setAttributesSource(int value){
+void LC_ActionModifyLineJoin::setAttributesSource(const int value){
     m_attributesSource = value;
 }
 
-void LC_ActionModifyLineJoin::setCreatePolyline(bool value){
+void LC_ActionModifyLineJoin::setCreatePolyline(const bool value){
     m_createPolyline = value;
 }
 
-void LC_ActionModifyLineJoin::setRemoveOriginalLines(bool value){
+void LC_ActionModifyLineJoin::setRemoveOriginalLines(const bool value){
     m_removeOriginalLines = value;
 }
 
-void LC_ActionModifyLineJoin::setLine1EdgeMode(int value){
+void LC_ActionModifyLineJoin::setLine1EdgeMode(const int value){
     m_line1EdgeMode = value;
 }
 
-void LC_ActionModifyLineJoin::setLine2EdgeMode(int value){
+void LC_ActionModifyLineJoin::setLine2EdgeMode(const int value){
     m_line2EdgeMode = value;
 }

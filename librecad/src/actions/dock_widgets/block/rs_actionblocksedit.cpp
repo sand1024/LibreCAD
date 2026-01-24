@@ -52,7 +52,7 @@ void RS_ActionBlocksEdit::trigger() {
     const auto& appWindow = QC_ApplicationWindow::getAppWindow();
     appWindow->slotEditActiveBlock();
 
-    finish(false);
+    finish();
     RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_ActionBlocksEdit::trigger(): OK");
 }
 

@@ -27,7 +27,7 @@
 #include "rs_arc.h"
 #include "rs_document.h"
 
-LC_ActionDrawArc2PointsBase::LC_ActionDrawArc2PointsBase(const char* name, LC_ActionContext *actionContext, RS2::ActionType actionType)
+LC_ActionDrawArc2PointsBase::LC_ActionDrawArc2PointsBase(const char* name, LC_ActionContext *actionContext, const RS2::ActionType actionType)
     :LC_SingleEntityCreationAction(name, actionContext,actionType)  {
 }
 
@@ -46,17 +46,17 @@ void LC_ActionDrawArc2PointsBase::doTriggerCompletion([[maybe_unused]]bool succe
     m_alternated = false;
 }
 
-bool LC_ActionDrawArc2PointsBase::doUpdateAngleByInteractiveInput([[maybe_unused]]const QString& tag, double angle) {
+bool LC_ActionDrawArc2PointsBase::doUpdateAngleByInteractiveInput([[maybe_unused]]const QString& tag, const double angle) {
     setParameter(angle);
     return true;
 }
 
-bool LC_ActionDrawArc2PointsBase::doUpdateDistanceByInteractiveInput([[maybe_unused]]const QString& tag, double distance) {
+bool LC_ActionDrawArc2PointsBase::doUpdateDistanceByInteractiveInput([[maybe_unused]]const QString& tag, const double distance) {
     setParameter(distance);
     return true;
 }
 
-void LC_ActionDrawArc2PointsBase::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void LC_ActionDrawArc2PointsBase::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     RS_Vector mouse = e->snapPoint;
     switch (status){
         case SetPoint1:{
@@ -68,12 +68,12 @@ void LC_ActionDrawArc2PointsBase::onMouseMoveEvent(int status, LC_MouseEvent *e)
         }
         case SetPoint2:{
             mouse = getSnapAngleAwarePoint(e, m_startPoint, mouse, true);
-            bool alternate = e->isControl;
+            const bool alternate = e->isControl;
             RS_Arc* arc = createArc(status, mouse, alternate);
             if (arc != nullptr){
                 previewEntityToCreate(arc);
-                RS_Vector center = arc->getCenter();
                 if (m_showRefEntitiesOnPreview) {
+                    const RS_Vector center = arc->getCenter();
                     previewRefPoint(m_startPoint);
                     previewRefSelectablePoint(arc->getEndpoint());
                     previewRefPoint(center);
@@ -88,7 +88,7 @@ void LC_ActionDrawArc2PointsBase::onMouseMoveEvent(int status, LC_MouseEvent *e)
     }
 }
 
-void LC_ActionDrawArc2PointsBase::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
+void LC_ActionDrawArc2PointsBase::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     RS_Vector mouse = e->snapPoint;
     switch (status){
         case SetPoint1:{
@@ -114,13 +114,13 @@ void LC_ActionDrawArc2PointsBase::onMouseLeftButtonRelease(int status, LC_MouseE
     }
 }
 
-void LC_ActionDrawArc2PointsBase::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void LC_ActionDrawArc2PointsBase::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     initPrevious(status);
 }
 
-bool LC_ActionDrawArc2PointsBase::doProcessCommand(int status, const QString &command) {
+bool LC_ActionDrawArc2PointsBase::doProcessCommand(const int status, const QString &command) {
    bool accept = false;
-   QString parameterValueCommand = getParameterCommand();
+   const QString parameterValueCommand = getParameterCommand();
    if (checkCommand(parameterValueCommand, command)){
        m_savedState = status;
        setStatus(SetParameterValue);
@@ -133,7 +133,7 @@ bool LC_ActionDrawArc2PointsBase::doProcessCommand(int status, const QString &co
    }
    else {
        bool ok;
-       double r = RS_Math::eval(command, &ok);
+       const double r = RS_Math::eval(command, &ok);
        if (ok) {
            if (r > RS_TOLERANCE) {
                setParameterValue(r);
@@ -150,7 +150,7 @@ bool LC_ActionDrawArc2PointsBase::doProcessCommand(int status, const QString &co
    return accept;
 }
 
-void LC_ActionDrawArc2PointsBase::onCoordinateEvent(int status, [[maybe_unused]] bool isZero, const RS_Vector &pos) {
+void LC_ActionDrawArc2PointsBase::onCoordinateEvent(const int status, [[maybe_unused]] bool isZero, const RS_Vector &pos) {
     switch (status){
         case SetPoint1:{
             m_startPoint = pos;
@@ -178,7 +178,7 @@ QStringList LC_ActionDrawArc2PointsBase::getAvailableCommands() {
 }
 
 void LC_ActionDrawArc2PointsBase::updateMouseButtonHints() {
-    int status = getStatus();
+    const int status = getStatus();
     switch (status){
         case SetPoint1:{
             updateMouseWidgetTRCancel(tr("Specify first point of arc"), MOD_SHIFT_RELATIVE_ZERO);
@@ -209,7 +209,7 @@ bool LC_ActionDrawArc2PointsBase::isReversed() const {
     return m_reversed;
 }
 
-void LC_ActionDrawArc2PointsBase::setReversed(bool r) {
+void LC_ActionDrawArc2PointsBase::setReversed(const bool r) {
     m_reversed = r;
 }
 
@@ -217,25 +217,23 @@ double LC_ActionDrawArc2PointsBase::getParameter() const {
     return m_parameterLen;
 }
 
-void LC_ActionDrawArc2PointsBase::setParameter(double pL) {
-    m_parameterLen = pL;
+void LC_ActionDrawArc2PointsBase::setParameter(const double val) {
+    m_parameterLen = val;
 }
 
 LC_ActionOptionsWidget *LC_ActionDrawArc2PointsBase::createOptionsWidget() {
     return new LC_ActionDrawArc2POptions(m_actionType);
 }
 
-RS_Arc *LC_ActionDrawArc2PointsBase::createArc(int status, RS_Vector pos, bool reverse, bool reportErrors) {
-    RS_ArcData arcData = RS_ArcData();
+RS_Arc *LC_ActionDrawArc2PointsBase::createArc(const int status, const RS_Vector& pos, const bool reverse, const bool reportErrors) {
+    auto arcData = RS_ArcData();
     if (createArcData(arcData, status, pos, reverse, reportErrors)) {
         auto *result = new RS_Arc(nullptr, arcData);
         return result;
     }
-    else{
-        return nullptr;
-    }
+    return nullptr;
 }
 
-void LC_ActionDrawArc2PointsBase::setParameterValue(double r) {
+void LC_ActionDrawArc2PointsBase::setParameterValue(const double r) {
     m_parameterLen = r;
 }

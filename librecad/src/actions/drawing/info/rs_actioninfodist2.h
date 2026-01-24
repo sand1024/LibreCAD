@@ -38,12 +38,12 @@
 class RS_ActionInfoDist2:public RS_PreviewActionInterface {
     Q_OBJECT
 public:
-    RS_ActionInfoDist2(LC_ActionContext *actionContext,bool fromPointToEntity = false);
+    explicit RS_ActionInfoDist2(LC_ActionContext *actionContext,bool fromPointToEntity = false);
     ~RS_ActionInfoDist2() override;
     void init(int status) override;
-    bool isUseNearestPointOnEntity() const {return m_nearestPointShouldBeOnEntity;};
-    void setUseNearestPointOnEntity(bool value){m_nearestPointShouldBeOnEntity = value;}
-    void finish(bool updateTB) override;;
+    bool isUseNearestPointOnEntity() const {return m_nearestPointShouldBeOnEntity;}
+    void setUseNearestPointOnEntity(const bool value){m_nearestPointShouldBeOnEntity = value;}
+    void finish() override;
 protected:
     /**
    * Action States.
@@ -66,13 +66,13 @@ protected:
 
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
 
-    RS_Entity *doCatchEntity(LC_MouseEvent *e, bool preview);
+    RS_Entity *doCatchEntity(const LC_MouseEvent *e, bool preview) const;
     void restoreRelZero();
     RS_Vector obtainNearestPointOnEntity(const RS_Vector &snap) const;
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
     void updateMouseButtonHints() override;

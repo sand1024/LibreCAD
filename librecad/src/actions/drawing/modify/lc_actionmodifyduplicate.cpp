@@ -31,16 +31,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 // fixme - sand - cmd - add support of commands for entering offset(?) and setting direction (for interactive mode)!!
 LC_ActionModifyDuplicate::LC_ActionModifyDuplicate(LC_ActionContext *actionContext):
-    LC_AbstractActionWithPreview("ModifyDuplicate", actionContext, RS2::ActionModifyDuplicate),
-    m_selectedEntity(nullptr),
-    m_offsetX(0), m_offsetY(0){
+    LC_AbstractActionWithPreview("ModifyDuplicate", actionContext, RS2::ActionModifyDuplicate){
 }
 
 LC_ActionModifyDuplicate::~LC_ActionModifyDuplicate() = default;
 
 // support of duplicating already selected entities on action invocation
 
-bool LC_ActionModifyDuplicate::doCheckMayTriggerOnInit(int status){
+bool LC_ActionModifyDuplicate::doCheckMayTriggerOnInit(const int status){
     return status == SelectEntity;
 }
 
@@ -75,7 +73,7 @@ void LC_ActionModifyDuplicate::doCreateEntitiesOnTrigger(RS_Entity *en, QList<RS
     if (clone != nullptr) {
         clone->setHighlighted(false);
 
-        // move clone if needed to offset        
+        // move clone if needed to offset
         const RS_Vector offset = determineOffset(m_triggerPoint, getEntityCenterPoint(en));
         if (offset.valid){
             clone->move(offset);
@@ -91,24 +89,24 @@ void LC_ActionModifyDuplicate::doCreateEntitiesOnTrigger(RS_Entity *en, QList<RS
 }
 namespace {
 // todo - remove later
-//  offset transformation verctors for directions of offset - for each 45 degress. 
-    const std::vector<RS_Vector> offsetDirectionVectors{
+//  offset transformation vectors for directions of offset - for each 45 degrees.
+    const std::vector<RS_Vector> OFFSET_DIRECTION_VECTORS{
         RS_Vector(1, 0), // 0
         RS_Vector(1, 1), // 45
         RS_Vector(0, 1), // 90
-        RS_Vector(-1, 1), // 135    
+        RS_Vector(-1, 1), // 135
         RS_Vector(-1, 0), // 180
         RS_Vector(-1, -1), // 225
         RS_Vector(0, -1), // 270
-        RS_Vector(1, -1), // 315    
-    };
+        RS_Vector(1, -1), // 315
+};
 }
 
 /**
  * Calculate vector that will be used for moving entity duplicate
  * @return
  */
-RS_Vector LC_ActionModifyDuplicate::determineOffset(RS_Vector& snapOfOffset, const RS_Vector& center) const{
+RS_Vector LC_ActionModifyDuplicate::determineOffset(const RS_Vector& snapOfOffset, const RS_Vector& center) const{
     RS_Vector wcsOffset(false);
     if (!m_duplicateInplace){
         const bool moveX = LC_LineMath::isMeaningful(m_offsetX);
@@ -120,7 +118,7 @@ RS_Vector LC_ActionModifyDuplicate::determineOffset(RS_Vector& snapOfOffset, con
             const double ucsMoveY = LC_LineMath::getMeaningful(m_offsetY);
             const auto ucsOffset = RS_Vector(ucsMoveX, ucsMoveY);
             wcsOffset = toWorldDelta(ucsOffset);
-        }       
+        }
         if (snapOfOffset.valid){
             const double wcsAngle = center.angleTo(snapOfOffset);
             const double correctedAngle = RS_Math::correctAngle(wcsAngle);
@@ -149,7 +147,7 @@ void LC_ActionModifyDuplicate::doAfterTrigger(){
     }
 }
 
-void LC_ActionModifyDuplicate::doOnLeftMouseButtonRelease([[maybe_unused]]LC_MouseEvent *e, int status, [[maybe_unused]]const RS_Vector &snapPoint){
+void LC_ActionModifyDuplicate::doOnLeftMouseButtonRelease([[maybe_unused]] const LC_MouseEvent* e, const int status, [[maybe_unused]]const RS_Vector &snapPoint){
     switch (status) {
         case SelectEntity: {
             RS_Entity *en = catchEntityByEvent(e);
@@ -175,8 +173,8 @@ void LC_ActionModifyDuplicate::doOnLeftMouseButtonRelease([[maybe_unused]]LC_Mou
     }
 }
 
-bool LC_ActionModifyDuplicate::doCheckMayDrawPreview([[maybe_unused]]LC_MouseEvent *event, int status){
-    return status ==  SelectEntity || SetOffsetDirection;
+bool LC_ActionModifyDuplicate::doCheckMayDrawPreview([[maybe_unused]] const LC_MouseEvent* event, const int status){
+    return status ==  SelectEntity || status == SetOffsetDirection;
 }
 
 /**
@@ -186,7 +184,7 @@ bool LC_ActionModifyDuplicate::doCheckMayDrawPreview([[maybe_unused]]LC_MouseEve
  * @param list
  * @param status
  */
-void LC_ActionModifyDuplicate::doPreparePreviewEntities(LC_MouseEvent *e, [[maybe_unused]]RS_Vector &snap, QList<RS_Entity *> &list, [[maybe_unused]]int status){
+void LC_ActionModifyDuplicate::doPreparePreviewEntities(const LC_MouseEvent* e, [[maybe_unused]]RS_Vector &snap, QList<RS_Entity *> &list, [[maybe_unused]] const int status){
     switch (status){
         case SelectEntity:{
             const auto en = catchEntityByEvent(e);
@@ -195,7 +193,7 @@ void LC_ActionModifyDuplicate::doPreparePreviewEntities(LC_MouseEvent *e, [[mayb
                 highlightHover(en);
 
                 // handle offset - if it is present, create a clone of snapped entity and display it for preview
-                auto snapForOffset = RS_Vector(false);
+                const auto snapForOffset = RS_Vector(false);
                 const auto offset = determineOffset(snapForOffset, getEntityCenterPoint(en));
                 if (offset.valid){
                     const auto clone = en->clone();
@@ -270,10 +268,11 @@ void LC_ActionModifyDuplicate::updateMouseButtonHints(){
             break;
         default:
             LC_AbstractActionWithPreview::updateMouseButtonHints();
+            break;
     }
 }
 
-bool LC_ActionModifyDuplicate::doUpdateDistanceByInteractiveInput(const QString& tag, double distance) {
+bool LC_ActionModifyDuplicate::doUpdateDistanceByInteractiveInput(const QString& tag, const double distance) {
     if (tag == "offsetX") {
         setOffsetX(distance);
         return true;
@@ -293,7 +292,7 @@ RS2::CursorType LC_ActionModifyDuplicate::doGetMouseCursor([[maybe_unused]]int s
     return RS2::SelectCursor;
 }
 
-RS_Vector LC_ActionModifyDuplicate::doGetMouseSnapPoint(LC_MouseEvent *e){
+RS_Vector LC_ActionModifyDuplicate::doGetMouseSnapPoint(const LC_MouseEvent* e){
     RS_Vector snapped = e->snapPoint;
     if (getStatus() == SetOffsetDirection){
         snapped = getSnapAngleAwarePoint(e, getEntityCenterPoint(m_selectedEntity), snapped, isMouseMove(e));

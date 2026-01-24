@@ -44,7 +44,7 @@ bool RS_ActionModifyExplodeText::doTriggerModifications(LC_DocumentModificationB
     return true;
 }
 
-void RS_ActionModifyExplodeText::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+void RS_ActionModifyExplodeText::doTriggerSelectionUpdate(const bool keepSelected, const LC_DocumentModificationBatch& ctx) {
     if (keepSelected) {
         select(ctx.entitiesToAdd);
     }

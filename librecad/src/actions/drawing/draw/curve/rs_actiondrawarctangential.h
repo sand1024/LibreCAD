@@ -47,7 +47,7 @@ public:
     void preparePreview();
     void setRadius(double r) const;
     double getRadius() const;
-    void setAngle(double r);
+    void setAngle(double angle);
     double getAngle() const;
     void setByRadius(bool status = true);
     bool getByRadius() const;
@@ -84,14 +84,14 @@ protected:
     bool m_alternateArc = false;
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPosition) override;
     RS_Vector forecastArcCenter() const;
-    void setBaseEntity(RS_Entity* entity, RS_Vector coord);
+    void setBaseEntity(RS_Entity* entity, const RS_Vector& coord);
     void updateOptionsRadius(double radius) const;
     void updateOptionsAngle(double angle) const;
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector &coord) override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
     void updateMouseButtonHints() override;
     void doTriggerCompletion(bool success) override;

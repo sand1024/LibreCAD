@@ -27,11 +27,11 @@
 #include "rs_entity.h"
 #include "rs_graphicview.h"
 
-LC_ActionLayerBase::LC_ActionLayerBase(const char* name, LC_ActionContext* actionContext, RS2::ActionType actionType)
+LC_ActionLayerBase::LC_ActionLayerBase(const char* name, LC_ActionContext* actionContext, const RS2::ActionType actionType)
        : LC_ActionPreSelectionAwareBase{name, actionContext, actionType} {
 }
 
-void LC_ActionLayerBase::onSelectionCompleted([[maybe_unused]]bool singleEntity, bool fromInit) {
+void LC_ActionLayerBase::onSelectionCompleted([[maybe_unused]]bool singleEntity, const bool fromInit) {
     setSelectionComplete(isAllowTriggerOnEmptySelection(), fromInit);
     updateMouseButtonHints();
     if (m_selectionComplete) {
@@ -41,7 +41,7 @@ void LC_ActionLayerBase::onSelectionCompleted([[maybe_unused]]bool singleEntity,
 
 void LC_ActionLayerBase::doTrigger() {
     if (!m_selectedEntities.empty()) {
-        auto firstEntity = m_selectedEntities.front();
+        const auto firstEntity = m_selectedEntities.front();
         RS_Layer* layer = firstEntity->getLayer();
 
         if (layer != nullptr) {
@@ -59,13 +59,13 @@ void LC_ActionLayerBase::applyBoxSelectionModeIfNeeded([[maybe_unused]]RS_Vector
     m_inBoxSelectionMode = false;
 }
 
-void LC_ActionLayerBase::proceedSelectedEntity([[maybe_unused]]LC_MouseEvent* e) {
+void LC_ActionLayerBase::proceedSelectedEntity([[maybe_unused]] const LC_MouseEvent* e) {
     onSelectionCompleted(true, false);
 }
 
 void LC_ActionLayerBase::doProceedLayer(RS_Layer* layer) {
-    auto graphicView = m_actionContext->getGraphicView();
-    auto graphic = graphicView->getGraphic();
+    const auto graphicView = m_actionContext->getGraphicView();
+    const auto graphic = graphicView->getGraphic();
     if (graphic != nullptr) {
         doWithLayer(graphic, layer);
     }

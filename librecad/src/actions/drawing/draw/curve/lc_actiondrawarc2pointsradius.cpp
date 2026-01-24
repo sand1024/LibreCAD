@@ -28,16 +28,16 @@ LC_ActionDrawArc2PointsRadius::LC_ActionDrawArc2PointsRadius(LC_ActionContext *a
     :LC_ActionDrawArc2PointsBase("DrawArc2PRadius",actionContext, RS2::ActionDrawArc2PRadius) {
 }
 
-bool LC_ActionDrawArc2PointsRadius::createArcData(RS_ArcData &data, [[maybe_unused]]int status, RS_Vector pos, bool alternate, [[maybe_unused]]bool reportErrors) {
+bool LC_ActionDrawArc2PointsRadius::createArcData(RS_ArcData &data, [[maybe_unused]]int status, RS_Vector pos, const bool alternate, [[maybe_unused]]bool reportErrors) {
 
     double chordLen = m_startPoint.distanceTo(pos);
     double chordHalf = chordLen * 0.5;
-    
-    double chordAngle = m_startPoint.angleTo(pos);
+
+    const double chordAngle = m_startPoint.angleTo(pos);
 
     RS_Vector chordLenHalfPont = (m_startPoint + pos) * 0.5;
 
-    double radius = m_parameterLen;
+    const double radius = m_parameterLen;
 
     if (chordHalf >= radius) {
         chordLen = radius * 2;
@@ -48,23 +48,23 @@ bool LC_ActionDrawArc2PointsRadius::createArcData(RS_ArcData &data, [[maybe_unus
 
     double distanceFromChordCenterToCenter = 0.0;
     if ((radius - chordHalf) > RS_TOLERANCE) {
-        double triangleLegSquared = radius * radius - chordHalf * chordHalf;
+        const double triangleLegSquared = radius * radius - chordHalf * chordHalf;
         if (triangleLegSquared > 0) {
             distanceFromChordCenterToCenter = sqrt(triangleLegSquared);
         }
     }
 
-    
-    double chordAngleNormal = chordAngle + M_PI_2;
-    double chordAngleNormalAlt = chordAngle - M_PI_2;
+
+    const double chordAngleNormal = chordAngle + M_PI_2;
+    const double chordAngleNormalAlt = chordAngle - M_PI_2;
 
     bool reverseArc = m_reversed;
     if (alternate){
         reverseArc = !reverseArc;
     }
 
-    double angleToCenter = /*reverseArc*/ m_reversed ? chordAngleNormalAlt : chordAngleNormal;
-    RS_Vector center = chordLenHalfPont.relative(distanceFromChordCenterToCenter, angleToCenter);
+    const double angleToCenter = /*reverseArc*/ m_reversed ? chordAngleNormalAlt : chordAngleNormal;
+    const RS_Vector center = chordLenHalfPont.relative(distanceFromChordCenterToCenter, angleToCenter);
 
     data.center = center;
     data.reversed = reverseArc;
@@ -74,9 +74,8 @@ bool LC_ActionDrawArc2PointsRadius::createArcData(RS_ArcData &data, [[maybe_unus
     return true;
 }
 
-
 void LC_ActionDrawArc2PointsRadius::doPreviewOnPoint2Custom(RS_Arc *arc) {
-    RS_Vector arcMiddlePoint = arc->getMiddlePoint();
+    const RS_Vector arcMiddlePoint = arc->getMiddlePoint();
     const RS_Vector &center = arc->getCenter();
     const RS_Vector &startPoint = arc->getStartpoint();
     const RS_Vector &endPoint = arc->getEndpoint();

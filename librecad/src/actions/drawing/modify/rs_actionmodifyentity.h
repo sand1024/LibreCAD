@@ -46,7 +46,7 @@ public:
     ~RS_ActionModifyEntity() override;
     void init(int status) override;
     void notifyFinished() const;
-    bool mayBeTerminatedExternally() override {return m_allowExternalTermination;};
+    bool mayBeTerminatedExternally() override {return m_allowExternalTermination;}
 protected:
     enum State {
         ShowDialog = InitialActionStatus,
@@ -56,9 +56,9 @@ protected:
 
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void updateMouseButtonHints() override;
     void onLateRequestCompleted(bool shouldBeSkipped) override;
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;

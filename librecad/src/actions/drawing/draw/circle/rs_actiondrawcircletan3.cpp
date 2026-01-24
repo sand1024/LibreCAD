@@ -22,15 +22,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "rs_actiondrawcircletan3.h"
 
+#include <algorithm>
+
 #include "lc_quadratic.h"
 #include "rs_circle.h"
-#include "rs_debug.h"
 #include "rs_document.h"
 #include "rs_information.h"
 #include "rs_line.h"
 
 namespace {
-
     //list of entity types supported by current action
     const EntityTypeList g_enTypeList = {RS2::EntityArc, RS2::EntityCircle, RS2::EntityLine, RS2::EntityPoint};
 }
@@ -38,22 +38,22 @@ namespace {
 // fixme - cleanup
 
 struct RS_ActionDrawCircleTan3::ActionData {
-		std::vector<RS_AtomicEntity*> circles;
-		std::shared_ptr<RS_CircleData> cData{std::make_shared<RS_CircleData>()};
-		RS_Vector coord;
-		bool valid{false};
-		//keep a list of centers found
-		std::vector<std::shared_ptr<RS_CircleData> > candidates;
-		RS_VectorSolutions centers;
+    std::vector<RS_AtomicEntity*> circles;
+    std::shared_ptr<RS_CircleData> circleData{std::make_shared<RS_CircleData>()};
+    RS_Vector coord;
+    bool valid{false};
+    //keep a list of centers found
+    std::vector<std::shared_ptr<RS_CircleData>> candidates;
+    RS_VectorSolutions centers;
 };
 
 /**
  * Constructor.
  *
  */
-RS_ActionDrawCircleTan3::RS_ActionDrawCircleTan3(LC_ActionContext *actionContext)
-	:LC_ActionDrawCircleBase("Draw circle tan 3 circles", actionContext, RS2::ActionDrawCircleTan3)
-    , m_actionData(std::make_unique<ActionData>()){
+RS_ActionDrawCircleTan3::RS_ActionDrawCircleTan3(LC_ActionContext* actionContext)
+    : LC_ActionDrawCircleBase("Draw circle tan 3 circles", actionContext, RS2::ActionDrawCircleTan3),
+      m_actionData(std::make_unique<ActionData>()) {
 }
 
 RS_ActionDrawCircleTan3::~RS_ActionDrawCircleTan3() = default;
@@ -62,9 +62,9 @@ void RS_ActionDrawCircleTan3::drawSnapper() {
     // disable snapper
 }
 
-void RS_ActionDrawCircleTan3::init(int status){
+void RS_ActionDrawCircleTan3::init(const int status) {
     LC_ActionDrawCircleBase::init(status);
-    if (status >= 0){
+    if (status >= 0) {
         RS_Snapper::suspend();
     }
 }
@@ -73,51 +73,52 @@ void RS_ActionDrawCircleTan3::doInitialInit() {
     m_actionData->circles.clear();
 }
 
-void RS_ActionDrawCircleTan3::doInitWithContextEntity(RS_Entity* contextEntity, [[maybe_unused]]const RS_Vector& clickPos) {
+void RS_ActionDrawCircleTan3::doInitWithContextEntity(RS_Entity* contextEntity, [[maybe_unused]] const RS_Vector& clickPos) {
     if (g_enTypeList.contains(contextEntity->rtti())) {
         setCircle(contextEntity, SetCircle1);
     }
 }
 
-void RS_ActionDrawCircleTan3::finish(bool updateTB){
-    if (!m_actionData->circles.empty()){
+void RS_ActionDrawCircleTan3::finish() {
+    if (!m_actionData->circles.empty()) {
         redrawDrawing();
         m_actionData->circles.clear();
     }
-    RS_PreviewActionInterface::finish(updateTB);
+    RS_PreviewActionInterface::finish();
 }
 
 RS_Entity* RS_ActionDrawCircleTan3::doTriggerCreateEntity() {
-    auto circle = new RS_Circle(m_document, *m_actionData->cData);
-    if (m_moveRelPointAtCenterAfterTrigger){
+    const auto circle = new RS_Circle(m_document, *m_actionData->circleData);
+    if (m_moveRelPointAtCenterAfterTrigger) {
         moveRelativeZero(circle->getCenter());
     }
     return circle;
 }
 
-void RS_ActionDrawCircleTan3::doTriggerCompletion([[maybe_unused]]bool success) {
+void RS_ActionDrawCircleTan3::doTriggerCompletion([[maybe_unused]] bool success) {
     m_actionData->circles.clear();
     setStatus(SetCircle1);
 }
 
-void RS_ActionDrawCircleTan3::onMouseMoveEvent(int status, LC_MouseEvent *e) {
-    for(RS_AtomicEntity* const pc: m_actionData->circles) { // highlight already selected
+void RS_ActionDrawCircleTan3::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
+    for (RS_AtomicEntity* const pc : m_actionData->circles) {
+        // highlight already selected
         highlightSelected(pc);
     }
     switch (status) {
         case SetCircle1:
         case SetCircle2: {
-            auto *c = catchCircle(e, true); // fixme - sand - CHECK! Modifiable catch for preview?
-            if (c != nullptr){
+            const auto* c = catchCircle(e, true); // fixme - sand - CHECK! Modifiable catch for preview?
+            if (c != nullptr) {
                 highlightHover(c);
             }
             break;
         }
         case SetCircle3: {
-            auto *c = catchCircle(e, true);
-            if (c != nullptr){
-                bool canBuildCircle = getData(c);
-                if (canBuildCircle){
+            auto* c = catchCircle(e, true);
+            if (c != nullptr) {
+                const bool canBuildCircle = getData(c);
+                if (canBuildCircle) {
                     highlightHover(c);
                 }
             }
@@ -126,19 +127,22 @@ void RS_ActionDrawCircleTan3::onMouseMoveEvent(int status, LC_MouseEvent *e) {
         case SetCenter: {
             m_actionData->coord = e->graphPoint;
 
-            if (preparePreview()){
-                previewToCreateCircle(*m_actionData->cData);
-                for (auto &c: m_actionData->candidates) {
+            if (preparePreview()) {
+                previewToCreateCircle(*m_actionData->circleData);
+                for (const auto& c : m_actionData->candidates) {
                     previewRefSelectablePoint(c->center);
                 }
 
                 if (m_showRefEntitiesOnPreview) {
-                    for (RS_AtomicEntity *const pc: m_actionData->circles) { // highlight already selected
-                        RS_Vector candidateCircleCenter = m_actionData->cData->center;
-                        if (isLine(pc)) { // fixme - support of polyline
+                    for (const RS_AtomicEntity* const pc : m_actionData->circles) {
+                        // highlight already selected
+                        RS_Vector candidateCircleCenter = m_actionData->circleData->center;
+                        if (isLine(pc)) {
+                            // fixme - support of polyline
                             previewRefPoint(pc->getNearestPointOnEntity(candidateCircleCenter, false));
-                        } else {
-                            previewRefPoint(getTangentPoint(candidateCircleCenter, m_actionData->cData->radius, pc));
+                        }
+                        else {
+                            previewRefPoint(getTangentPoint(candidateCircleCenter, m_actionData->circleData->radius, pc));
                         }
                     }
                 }
@@ -163,19 +167,23 @@ bool RS_ActionDrawCircleTan3::getData(RS_Entity* testThirdEntity) const {
     }
     //find the nearest circle
     size_t i = 0;
-    size_t const countLines = std::count_if(circlesList.begin(), circlesList.end(), [](RS_AtomicEntity* e) -> bool {
+    const size_t countLines = std::count_if(circlesList.begin(), circlesList.end(), [](const RS_AtomicEntity* e) -> bool {
         return e->rtti() == RS2::EntityLine;
     });
 
     for (; i < circlesList.size(); ++i) {
-        if (isLine(circlesList[i])) { // fixme- support of polyline
+        if (isLine(circlesList[i])) {
+            // fixme- support of polyline
             break;
         }
     }
     m_actionData->candidates.clear();
-    size_t i1 = (i + 1) % 3;
-    size_t i2 = (i + 2) % 3;
-    if (i < circlesList.size() && isLine(circlesList[i])) { // fixme- support of polyline
+
+    if (i < circlesList.size() && isLine(circlesList[i])) {
+        // fixme- support of polyline
+        size_t i1 = (i + 1) % 3;
+        size_t i2 = (i + 2) % 3;
+
         //one or more lines
 
         LC_Quadratic lc0(circlesList[i], circlesList[i1], false);
@@ -183,37 +191,40 @@ bool RS_ActionDrawCircleTan3::getData(RS_Entity* testThirdEntity) const {
         RS_VectorSolutions sol;
         //detect degenerate case two circles with the same radius
         switch (countLines) {
-            default:
-            case 0:
+            default: case 0:
                 //this should not happen
                 assert(false);
-            case 1: { //1 line, two circles
+            case 1: {
+                //1 line, two circles
                 auto cc = LC_Quadratic(circlesList[i1], circlesList[i2]);
                 for (unsigned k = 0; k < 4; ++k) {
                     //loop through all mirroring cases
-                    lc1 = LC_Quadratic(circlesList[i], circlesList[i1], k & 1u);
-                    LC_Quadratic lc2 = LC_Quadratic(circlesList[i], circlesList[i2], k & 2u);
+                    lc1 = LC_Quadratic(circlesList[i], circlesList[i1], k & 1U);
+                    auto lc2 = LC_Quadratic(circlesList[i], circlesList[i2], k & 2U);
                     sol.push_back(LC_Quadratic::getIntersection(lc1, lc2));
                     sol.push_back(LC_Quadratic::getIntersection(cc, lc1));
                     sol.push_back(LC_Quadratic::getIntersection(cc, lc2));
                 }
                 break;
             }
-            case 2: { //2 lines, one circle
-                if (isLine(circlesList[i2])) { // fixme- support of polyline
+            case 2: {
+                //2 lines, one circle
+                if (isLine(circlesList[i2])) {
+                    // fixme- support of polyline
                     std::swap(i1, i2);
                 }
                 //i2 is circle
 
                 for (unsigned k = 0; k < 4; ++k) {
                     //loop through all mirroring cases
-                    lc1 = LC_Quadratic(circlesList[i2], circlesList[i], k & 1u);
-                    LC_Quadratic lc2 = LC_Quadratic(circlesList[i2], circlesList[i1], k & 2u);
+                    lc1 = LC_Quadratic(circlesList[i2], circlesList[i], k & 1U);
+                    auto lc2 = LC_Quadratic(circlesList[i2], circlesList[i1], k & 2U);
                     sol.push_back(LC_Quadratic::getIntersection(lc1, lc2));
                 }
                 break;
             }
-            case 3: { //3 lines
+            case 3: {
+                //3 lines
                 lc0 = circlesList[i]->getQuadratic();
                 lc1 = circlesList[i1]->getQuadratic();
                 auto lc2 = circlesList[i2]->getQuadratic();
@@ -229,9 +240,9 @@ bool RS_ActionDrawCircleTan3::getData(RS_Entity* testThirdEntity) const {
                     std::swap(i, i1);
                 }
 
-                auto line0 = dynamic_cast<RS_Line*>(circlesList[i]);
-                auto line1 = dynamic_cast<RS_Line*>(circlesList[i1]);
-                auto line2 = dynamic_cast<RS_Line*>(circlesList[i2]);
+                auto line0 = static_cast<RS_Line*>(circlesList[i]);
+                auto line1 = static_cast<RS_Line*>(circlesList[i1]);
+                auto line2 = static_cast<RS_Line*>(circlesList[i2]);
                 lc0 = line0->getQuadratic();
                 lc1 = line1->getQuadratic();
                 lc2 = line2->getQuadratic();
@@ -240,7 +251,7 @@ bool RS_ActionDrawCircleTan3::getData(RS_Entity* testThirdEntity) const {
                 if (sol1.empty()) {
                     return false;
                 }
-                RS_Vector const v1 = sol1.at(0);
+                const RS_Vector v1 = sol1.at(0);
                 double angle1 = 0.5 * (line0->getAngle1() + line1->getAngle1());
 
                 //intersection 0, 2
@@ -250,7 +261,7 @@ bool RS_ActionDrawCircleTan3::getData(RS_Entity* testThirdEntity) const {
                     return false;
                 }
                 angle2 = 0.5 * (line0->getAngle1() + line2->getAngle1());
-                RS_Vector const& v2 = sol1.at(0);
+                const RS_Vector& v2 = sol1.at(0);
                 //two bisector lines per intersection
                 for (unsigned j = 0; j < 2; ++j) {
                     RS_Line l1{v1, v1 + RS_Vector{angle1}};
@@ -261,6 +272,7 @@ bool RS_ActionDrawCircleTan3::getData(RS_Entity* testThirdEntity) const {
                     }
                     angle1 += M_PI_2;
                 }
+                break;
             }
         }
 
@@ -268,8 +280,7 @@ bool RS_ActionDrawCircleTan3::getData(RS_Entity* testThirdEntity) const {
         for (int j = 1; j <= 2; j++) {
             if (circlesList[(i + j) % 3]->rtti() == RS2::EntityCircle) {
                 double d = RS_MAXDOUBLE;
-                circlesList[i]->getNearestPointOnEntity(circlesList[(i + j) % 3]->getCenter(),
-                                                        false, &d);
+                circlesList[i]->getNearestPointOnEntity(circlesList[(i + j) % 3]->getCenter(), false, &d, nullptr);
                 if (d < 200. * RS_TOLERANCE) {
                     LC_Quadratic lc2(circlesList[i], circlesList[(i + j) % 3], true);
                     sol.push_back(LC_Quadratic::getIntersection(lc2, lc1));
@@ -289,9 +300,9 @@ bool RS_ActionDrawCircleTan3::getData(RS_Entity* testThirdEntity) const {
             sol1.push_back(vp);
         }
 
-        for (auto const& v : sol1) {
+        for (const auto& v : sol1) {
             double d = RS_MAXDOUBLE;
-            circlesList[i]->getNearestPointOnEntity(v, false, &d);
+            circlesList[i]->getNearestPointOnEntity(v, false, &d, nullptr);
             std::vector<std::shared_ptr<RS_CircleData>> data;
             data.push_back(std::make_shared<RS_CircleData>(v, d));
             if (circlesList[i]->rtti() == RS2::EntityCircle) {
@@ -301,15 +312,14 @@ bool RS_ActionDrawCircleTan3::getData(RS_Entity* testThirdEntity) const {
                 }
             }
             for (const auto& circleData : data) {
-                if (circlesList[(i + 1) % 3]->isTangent(*circleData)
-                    && circlesList[(i + 2) % 3]->isTangent(*circleData)) {
+                if (circlesList[(i + 1) % 3]->isTangent(*circleData) && circlesList[(i + 2) % 3]->isTangent(*circleData)) {
                     m_actionData->candidates.push_back(circleData);
                 }
             }
         }
     }
     else {
-        RS_Circle c{nullptr, *m_actionData->cData};
+        RS_Circle c{nullptr, *m_actionData->circleData};
         auto solutions = c.createTan3(circlesList);
         m_actionData->candidates.clear();
         for (const RS_Circle& s : solutions) {
@@ -321,40 +331,48 @@ bool RS_ActionDrawCircleTan3::getData(RS_Entity* testThirdEntity) const {
 }
 
 bool RS_ActionDrawCircleTan3::preparePreview() const {
-    if (getStatus() != SetCenter || m_actionData->valid == false){
+    if (getStatus() != SetCenter || m_actionData->valid == false) {
         m_actionData->valid = false;
         return false;
     }
-//find the nearest circle
-    size_t index = m_actionData->candidates.size();
+    const auto& candidates = m_actionData->candidates;
+    //find the nearest circle
+    size_t index = candidates.size();
     double dist = RS_MAXDOUBLE * RS_MAXDOUBLE;
-    for (size_t i = 0; i < m_actionData->candidates.size(); ++i) {
-//        previewRefSelectablePoint(pPoints->candidates.at(i)->center);
+    for (size_t i = 0; i < candidates.size(); ++i) {
+        //        previewRefSelectablePoint(pPoints->candidates.at(i)->center);
         double d = RS_MAXDOUBLE;
-        RS_Circle(nullptr, *m_actionData->candidates.at(i)).getNearestPointOnEntity(m_actionData->coord, false, &d);
-        double dCenter = m_actionData->coord.distanceTo(m_actionData->candidates.at(i)->center);
-        d = std::min(d, dCenter);
-        if (d < dist){
+        RS_Circle(nullptr, *candidates.at(i)).getNearestPointOnEntity(m_actionData->coord, false, &d);
+        double dCenter = m_actionData->coord.distanceTo(candidates.at(i)->center);
+        d = std::min<double>(d, dCenter);
+        if (d < dist) {
             dist = d;
             index = i;
         }
     }
-    if (index < m_actionData->candidates.size()){
-        m_actionData->cData = m_actionData->candidates.at(index);
+    if (index < candidates.size()) {
+        m_actionData->circleData = candidates.at(index);
         m_actionData->valid = true;
-    } else {
+    }
+    else {
         m_actionData->valid = false;
     }
     return m_actionData->valid;
 }
 
-RS_Entity *RS_ActionDrawCircleTan3::catchCircle(LC_MouseEvent *e, bool forPreview) {
-    RS_Entity *ret = nullptr;
-    RS_Entity *en;
-    if (forPreview){
+/**
+ *
+ * @param e
+ * @param forPreview
+ * @return
+ */
+RS_Entity* RS_ActionDrawCircleTan3::catchCircle(const LC_MouseEvent* e, const bool forPreview) const {
+    RS_Entity* ret = nullptr;
+    RS_Entity* en;
+    if (forPreview) {
         en = catchModifiableAndDescribe(e, g_enTypeList);
     }
-    else{
+    else {
         en = catchModifiableEntity(e, g_enTypeList);
     }
 
@@ -364,48 +382,49 @@ RS_Entity *RS_ActionDrawCircleTan3::catchCircle(LC_MouseEvent *e, bool forPrevie
     if (!en->isVisible()) {
         return ret;
     }
-    for (int i = 0; i < getStatus(); ++i) {
-        if (en->getId() == m_actionData->circles[i]->getId()){
+    const size_t status = getStatus();
+    for (size_t i = 0; i < status; ++i) {
+        if (en->getId() == m_actionData->circles[i]->getId()) {
             return ret; //do not pull in the same line again
         }
     }
     return en;
 }
 
-void RS_ActionDrawCircleTan3::setCircle(RS_Entity* en, int status) {
-    m_actionData->circles.resize(status);// todo - what for? Why not have fixes size
-    for (const RS_AtomicEntity *const pc: m_actionData->circles) {
+void RS_ActionDrawCircleTan3::setCircle(RS_Entity* en, const int status) {
+    m_actionData->circles.resize(status); // todo - what for? Why not have fixes size
+    /*for (const RS_AtomicEntity* const pc : m_actionData->circles) {
         if (pc == en) {
             continue;
         }
-    }
-    m_actionData->circles.push_back(dynamic_cast<RS_AtomicEntity *>(en));
+    }*/
+    m_actionData->circles.push_back(dynamic_cast<RS_AtomicEntity*>(en));
     setStatus(status + 1);
 }
 
-void RS_ActionDrawCircleTan3::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
+void RS_ActionDrawCircleTan3::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     switch (status) {
         case SetCircle1:
-        case SetCircle2:{
-            RS_Entity *en = catchCircle(e, false);
-            if (en != nullptr){
+        case SetCircle2: {
+            RS_Entity* en = catchCircle(e, false);
+            if (en != nullptr) {
                 setCircle(en, status);
             }
             break;
         }
         case SetCircle3: {
-            RS_Entity *en = catchCircle(e,false);
-            if (en != nullptr){
-                m_actionData->circles.resize(getStatus());// todo - what for? Why not have fixes size
-                for (const RS_AtomicEntity *const pc: m_actionData->circles) {
-                    if (pc == en){
+            RS_Entity* en = catchCircle(e, false);
+            if (en != nullptr) {
+                m_actionData->circles.resize(getStatus()); // todo - what for? Why not have fixes size
+                /*for (const RS_AtomicEntity* const pc : m_actionData->circles) {
+                    if (pc == en) { // fixme - sand - what for??
                         continue;
                     }
-                }
-                if (getData(en)){
-                    m_actionData->circles.push_back(dynamic_cast<RS_AtomicEntity *>(en));
+                }*/
+                if (getData(en)) {
+                    m_actionData->circles.push_back(dynamic_cast<RS_AtomicEntity*>(en));
                     setStatus(SetCenter);
-                    if (m_actionData->centers.size() == 1){
+                    if (m_actionData->centers.size() == 1) {
                         m_actionData->coord = m_actionData->centers.at(0);
                         if (preparePreview()) {
                             trigger();
@@ -420,18 +439,19 @@ void RS_ActionDrawCircleTan3::onMouseLeftButtonRelease(int status, LC_MouseEvent
         }
         case SetCenter:
             m_actionData->coord = e->graphPoint;
-            if (preparePreview()) trigger();
+            if (preparePreview()) {
+                trigger();
+            }
             break;
 
         default:
             break;
     }
-
 }
 
-void RS_ActionDrawCircleTan3::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionDrawCircleTan3::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     // Return to last status:
-    if (status > 0){
+    if (status > 0) {
         m_actionData->circles[status - 1]->setHighlighted(false);
         m_actionData->circles.pop_back();
         redrawDrawing();
@@ -442,55 +462,55 @@ void RS_ActionDrawCircleTan3::onMouseRightButtonRelease(int status, [[maybe_unus
 
 /*
 void RS_ActionDrawCircleTan3::commandEvent(RS_CommandEvent* e) {
-	QString c = e->getCommand().toLower();
+ QString c = e->getCommand().toLower();
 
-	if (checkCommand("help", c)) {
-			RS_DIALOGFACTORY->commandMessage(msgAvailableCommands()
-											 + getAvailableCommands().join(", "));
-		return;
-	}
+ if (checkCommand("help", c)) {
+   RS_DIALOGFACTORY->commandMessage(msgAvailableCommands()
+            + getAvailableCommands().join(", "));
+  return;
+ }
 
-	switch (getStatus()) {
-	case SetFocus1: {
-			bool ok;
-			double m = RS_Math::eval(c, &ok);
-			if (ok) {
-				ratio = m / major.magnitude();
-				if (!isArc) {
-					trigger();
-				} else {
-					setStatus(SetAngle1);
-				}
-			} else
-					RS_DIALOGFACTORY->commandMessage(tr("Not a valid expression"));
-		}
-		break;
+ switch (getStatus()) {
+ case SetFocus1: {
+   bool ok;
+   double m = RS_Math::eval(c, &ok);
+   if (ok) {
+    ratio = m / major.magnitude();
+    if (!isArc) {
+     trigger();
+    } else {
+     setStatus(SetAngle1);
+    }
+   } else
+     RS_DIALOGFACTORY->commandMessage(tr("Not a valid expression"));
+  }
+  break;
 
-	case SetAngle1: {
-			bool ok;
-			double a = RS_Math::eval(c, &ok);
-			if (ok) {
-				angle1 = RS_Math::deg2rad(a);
-				setStatus(SetAngle2);
-			} else
-					RS_DIALOGFACTORY->commandMessage(tr("Not a valid expression"));
-		}
-		break;
+ case SetAngle1: {
+   bool ok;
+   double a = RS_Math::eval(c, &ok);
+   if (ok) {
+    angle1 = RS_Math::deg2rad(a);
+    setStatus(SetAngle2);
+   } else
+     RS_DIALOGFACTORY->commandMessage(tr("Not a valid expression"));
+  }
+  break;
 
-	case SetAngle2: {
-			bool ok;
-			double a = RS_Math::eval(c, &ok);
-			if (ok) {
-				angle2 = RS_Math::deg2rad(a);
-				trigger();
-			} else
-					RS_DIALOGFACTORY->commandMessage(tr("Not a valid expression"));
-		}
-		break;
+ case SetAngle2: {
+   bool ok;
+   double a = RS_Math::eval(c, &ok);
+   if (ok) {
+    angle2 = RS_Math::deg2rad(a);
+    trigger();
+   } else
+     RS_DIALOGFACTORY->commandMessage(tr("Not a valid expression"));
+  }
+  break;
 
-	default:
-		break;
-	}
+ default:
+  break;
+ }
 }
 */
 
@@ -513,19 +533,19 @@ void RS_ActionDrawCircleTan3::updateMouseButtonHints() {
             break;
     }
 }
-RS2::CursorType RS_ActionDrawCircleTan3::doGetMouseCursor([[maybe_unused]] int status){
+
+RS2::CursorType RS_ActionDrawCircleTan3::doGetMouseCursor([[maybe_unused]] int status) {
     return RS2::SelectCursor;
 }
 
-RS_Vector RS_ActionDrawCircleTan3::getTangentPoint(RS_Vector creatingCircleCenter, double creatingCircleRadius, RS_AtomicEntity *const circle){
-    bool calcTangentFromOriginalCircle = (creatingCircleCenter.distanceTo(circle->getCenter()) < circle->getRadius()) &&
-                                         (creatingCircleRadius < circle->getRadius());
+RS_Vector RS_ActionDrawCircleTan3::getTangentPoint(const RS_Vector& creatingCircleCenter, const double creatingCircleRadius,
+                                                   const RS_AtomicEntity* const circle) {
+    const bool calcTangentFromOriginalCircle = (creatingCircleCenter.distanceTo(circle->getCenter()) < circle->getRadius()) && (
+        creatingCircleRadius < circle->getRadius());
 
-    const RS_Vector &circleCenter = circle->getCenter();
-    if (calcTangentFromOriginalCircle){
+    const RS_Vector& circleCenter = circle->getCenter();
+    if (calcTangentFromOriginalCircle) {
         return circleCenter + RS_Vector::polar(circle->getRadius(), circleCenter.angleTo(creatingCircleCenter));
     }
-    else{
-        return creatingCircleCenter + RS_Vector::polar(creatingCircleRadius, creatingCircleCenter.angleTo(circleCenter));
-    }
+    return creatingCircleCenter + RS_Vector::polar(creatingCircleRadius, creatingCircleCenter.angleTo(circleCenter));
 }

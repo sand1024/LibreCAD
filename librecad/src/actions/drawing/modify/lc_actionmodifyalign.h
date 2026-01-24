@@ -29,27 +29,27 @@
 class LC_ActionModifyAlignData {
 public:
     virtual ~LC_ActionModifyAlignData() = default;
-    int getHAlign() const {return hAlign;}
-    void setHAlign(int h) { hAlign = h;}
-    int getVAlign() const {return vAlign;}
-    void setVAlign(int v){vAlign = v;}
-    bool isAsGroup() const {return asGroup;}
-    void setAsGroup(bool a) {asGroup = a;}
-    int getAlignType() const {return alignType;}
-    virtual void setAlignType(int a) {alignType = a;}
+    int getHAlign() const {return m_hAlign;}
+    void setHAlign(const int h) { m_hAlign = h;}
+    int getVAlign() const {return m_vAlign;}
+    void setVAlign(const int v){m_vAlign = v;}
+    bool isAsGroup() const {return m_asGroup;}
+    void setAsGroup(const bool a) {m_asGroup = a;}
+    int getAlignType() const {return m_alignType;}
+    virtual void setAlignType(const int a) {m_alignType = a;}
 
 protected:
-    int hAlign = LC_Align::NONE;
-    int vAlign = LC_Align::NONE;
-    bool asGroup = false;
-    int alignType = LC_Align::ENTITY;
+    int m_hAlign = LC_Align::NONE;
+    int m_vAlign = LC_Align::NONE;
+    bool m_asGroup = false;
+    int m_alignType = LC_Align::ENTITY;
 };
 
 class LC_ActionModifyAlign:public LC_ActionPreSelectionAwareBase, public LC_ActionModifyAlignData {
     Q_OBJECT
 public:
     explicit LC_ActionModifyAlign(LC_ActionContext *actionContext);
-    void setAlignType(int a) override;
+    void setAlignType(int t) override;
     void init(int status) override;
 protected:
     RS_Vector m_alignMin = RS_Vector(false);
@@ -57,12 +57,12 @@ protected:
     LC_ActionOptionsWidget *createOptionsWidget() override;
     void updateMouseButtonHintsForSelection() override;
     void updateMouseButtonHintsForSelected(int status) override;
-    void onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
-    void onMouseRightButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
+    void onMouseLeftButtonReleaseSelected(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonReleaseSelected(int status, const LC_MouseEvent* event) override;
     RS2::CursorType doGetMouseCursorSelected(int status) override;
     bool isAllowTriggerOnEmptySelection() override;
-    void onMouseMoveEventSelected(int status, LC_MouseEvent *e) override;
-    RS_Vector createAlignedEntities(QList<RS_Entity *> &clonesList, RS_Vector min, RS_Vector max, bool previewOnly);
+    void onMouseMoveEventSelected(int status, const LC_MouseEvent* e) override;
+    RS_Vector createAlignedEntities(QList<RS_Entity *> &clonesList, const RS_Vector& min, const RS_Vector& max, bool previewOnly);
     RS_Vector getReferencePoint(const RS_Vector &min, const RS_Vector &max) const;
     void onSelectionCompleted(bool singleEntity, bool fromInit) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
@@ -72,4 +72,4 @@ protected:
     void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
 };
 
-#endif // LC_ACTIONMODIFYALIGN_H
+#endif

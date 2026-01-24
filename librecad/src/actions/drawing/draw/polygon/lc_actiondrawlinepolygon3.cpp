@@ -34,18 +34,19 @@ LC_ActionDrawLinePolygonCenTan::LC_ActionDrawLinePolygonCenTan(LC_ActionContext 
 
 LC_ActionDrawLinePolygonCenTan::~LC_ActionDrawLinePolygonCenTan() = default;
 
-void LC_ActionDrawLinePolygonCenTan::preparePolygonInfo(LC_ActionDrawLinePolygonBase::PolygonInfo &polygonInfo, const RS_Vector &snap) {
+void LC_ActionDrawLinePolygonCenTan::preparePolygonInfo(PolygonInfo &polygonInfo, const RS_Vector &snap) {
     //  creation.createPolygon3(pPoints->point1, mouse, number);
-    double angle = 2.*M_PI/m_edgesNumber/2.0;
-    double tangensAngle = tan(angle);
+    const double angle = 2.*M_PI/m_edgesNumber/2.0;
+    const double tangensAngle = tan(angle);
 
     RS_Vector vertex(0, 0);
-    vertex.x = snap.x + (m_actionData->point1.y - snap.y) * tangensAngle;
-    vertex.y = snap.y + (snap.x - m_actionData->point1.x) * tangensAngle;
+    const auto& data = m_actionData->point1;
+    vertex.x = snap.x + (data.y - snap.y) * tangensAngle;
+    vertex.y = snap.y + (snap.x - data.x) * tangensAngle;
 
-    polygonInfo.vertexRadius = m_actionData->point1.distanceTo(vertex);
-    polygonInfo.startingAngle = m_actionData->point1.angleTo(vertex);
-    polygonInfo.centerPoint = m_actionData->point1;
+    polygonInfo.vertexRadius = data.distanceTo(vertex);
+    polygonInfo.startingAngle = data.angleTo(vertex);
+    polygonInfo.centerPoint = data;
 }
 
 QString LC_ActionDrawLinePolygonCenTan::getPoint2Hint() const { return tr("Specify a tangent"); }

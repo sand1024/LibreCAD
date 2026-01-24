@@ -29,7 +29,6 @@
 
 #include "lc_undoabledocumentmodificationaction.h"
 
-
 /**
  * This action class can handle user events to draw 
  * simple lines at a given angle.
@@ -37,34 +36,41 @@
  * @author Andrew Mustun
  */
 class RS_ActionDrawLineAngle : public LC_SingleEntityCreationAction {
-	Q_OBJECT
+    Q_OBJECT
 public:
-    explicit RS_ActionDrawLineAngle(LC_ActionContext *actionContext, bool fixedAngle = false, RS2::ActionType actionType = RS2::ActionDrawLineAngle);
+    explicit RS_ActionDrawLineAngle(LC_ActionContext* actionContext, bool fixedAngle = false,
+                                    RS2::ActionType actionType = RS2::ActionDrawLineAngle);
     ~RS_ActionDrawLineAngle() override;
     void reset() const;
     void init(int status) override;
     QStringList getAvailableCommands() override;
     void setSnapPoint(int sp) const;
     int getSnapPoint() const;
-    void setUcsAngleDegrees(double ucsRelAngle) const;
+    void setUcsAngleDegrees(double ucsRelAngleDegrees) const;
     double getUcsAngleDegrees() const;
     void setLength(double l) const;
     double getLength() const;
     bool hasFixedAngle() const;
     void setInAngleBasis(bool b);
-    bool isInAngleBasis() const {return m_orthoToAnglesBasis;}
+
+    bool isInAngleBasis() const {
+        return m_orthoToAnglesBasis;
+    }
+
 protected:
     /**
  * Action States.
  */
     enum Status {
-        SetPos = InitialActionStatus,       /**< Setting the position.  */
-        SetAngle,     /**< Setting angle in the command line. */
-        SetLength     /**< Setting length in the command line. */
+        SetPos = InitialActionStatus, /**< Setting the position.  */
+        SetAngle, /**< Setting angle in the command line. */
+        SetLength /**< Setting length in the command line. */
     };
+
     enum SnapMode {
         SNAP_START, SNAP_MIDDLE, SNAP_END
     };
+
     struct Points;
     std::unique_ptr<Points> m_actionData;
     bool m_persistRelativeZero = false;
@@ -73,13 +79,13 @@ protected:
 
     void preparePreview() const;
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    bool doProcessCommand(int status, const QString &command) override;
+    bool doProcessCommand(int status, const QString& command) override;
     void updateMouseButtonHints() override;
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector& pos) override;
     void initFromSettings() override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;

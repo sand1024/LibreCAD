@@ -28,9 +28,6 @@
 
 #include "lc_actioninfomessagebuilder.h"
 #include "qg_moverotateoptions.h"
-#include "rs_debug.h"
-#include "rs_dialogfactory.h"
-#include "rs_dialogfactoryinterface.h"
 #include "rs_modification.h"
 #include "rs_preview.h"
 
@@ -39,21 +36,21 @@ struct RS_ActionModifyMoveRotate::MoveRotateActionData {
     RS_Vector targetPoint{false};
 };
 
-RS_ActionModifyMoveRotate::RS_ActionModifyMoveRotate(LC_ActionContext *actionContext)
-    :LC_ActionModifyBase("Move and Rotate Entities", actionContext, RS2::ActionModifyMoveRotate)
-    , m_actionData(std::make_unique<MoveRotateActionData>()){
+RS_ActionModifyMoveRotate::RS_ActionModifyMoveRotate(LC_ActionContext* actionContext)
+    : LC_ActionModifyBase("Move and Rotate Entities", actionContext, RS2::ActionModifyMoveRotate),
+      m_actionData(std::make_unique<MoveRotateActionData>()) {
 }
 
 RS_ActionModifyMoveRotate::~RS_ActionModifyMoveRotate() = default;
 
 bool RS_ActionModifyMoveRotate::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     ctx.setActiveLayerAndPen(m_actionData->data.useCurrentLayer, m_actionData->data.useCurrentAttributes);
-	RS_Modification::moveRotate(m_actionData->data, m_selectedEntities, false, ctx);
+    RS_Modification::moveRotate(m_actionData->data, m_selectedEntities, false, ctx);
     m_actionData->targetPoint = RS_Vector(false);
     return true;
 }
 
-void RS_ActionModifyMoveRotate::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+void RS_ActionModifyMoveRotate::doTriggerSelectionUpdate(const bool keepSelected, const LC_DocumentModificationBatch& ctx) {
     if (m_actionData->data.keepOriginals) {
         unselect(m_selectedEntities);
     }
@@ -62,11 +59,11 @@ void RS_ActionModifyMoveRotate::doTriggerSelectionUpdate(bool keepSelected, cons
     }
 }
 
-void RS_ActionModifyMoveRotate::doTriggerCompletion([[maybe_unused]]bool success) {
-    finish(false);
+void RS_ActionModifyMoveRotate::doTriggerCompletion([[maybe_unused]] bool success) {
+    finish();
 }
 
-void RS_ActionModifyMoveRotate::onMouseMoveEventSelected(int status, LC_MouseEvent *e){
+void RS_ActionModifyMoveRotate::onMouseMoveEventSelected(const int status, const LC_MouseEvent* e) {
     RS_Vector mouse = e->snapPoint;
     switch (status) {
         case SetReferencePoint: {
@@ -75,7 +72,7 @@ void RS_ActionModifyMoveRotate::onMouseMoveEventSelected(int status, LC_MouseEve
             break;
         }
         case SetTargetPoint: {
-            const RS_Vector &originalRefPoint = m_actionData->data.referencePoint;
+            const RS_Vector& originalRefPoint = m_actionData->data.referencePoint;
             if (originalRefPoint.valid) {
                 mouse = getSnapAngleAwarePoint(e, originalRefPoint, mouse, true);
                 m_actionData->data.offset = mouse - originalRefPoint;
@@ -88,21 +85,17 @@ void RS_ActionModifyMoveRotate::onMouseMoveEventSelected(int status, LC_MouseEve
                     previewRefLine(originalRefPoint, mouse);
                     previewRefPointsForMultipleCopies();
                 }
-                if (isInfoCursorForModificationEnabled()){
-                    msg(tr("Moving with rotation"))
-                        .vector(tr("Source:"), m_actionData->data.referencePoint)
-                        .vector(tr("Target:"), mouse)
-                        .string(tr("Offset:"))
-                        .relative(m_actionData->data.offset)
-                        .relativePolar(m_actionData->data.offset)
-                        .toInfoCursorZone2(false);
+                if (isInfoCursorForModificationEnabled()) {
+                    msg(tr("Moving with rotation")).vector(tr("Source:"), m_actionData->data.referencePoint).vector(tr("Target:"), mouse).
+                                                    string(tr("Offset:")).relative(m_actionData->data.offset).relativePolar(
+                                                        m_actionData->data.offset).toInfoCursorZone2(false);
                 }
             }
             break;
         }
-        case SetAngle:{
-            const RS_Vector &targetPoint = m_actionData->targetPoint;
-            const RS_Vector &originalRefPoint = m_actionData->data.referencePoint;
+        case SetAngle: {
+            const RS_Vector& targetPoint = m_actionData->targetPoint;
+            const RS_Vector& originalRefPoint = m_actionData->data.referencePoint;
             if (targetPoint.valid) {
                 mouse = getSnapAngleAwarePoint(e, targetPoint, mouse, true);
                 const double wcsAngle = targetPoint.angleTo(mouse);
@@ -121,15 +114,11 @@ void RS_ActionModifyMoveRotate::onMouseMoveEventSelected(int status, LC_MouseEve
                     previewRefLine(originalRefPoint, targetPoint);
                     previewRefPointsForMultipleCopies();
                 }
-                if (isInfoCursorForModificationEnabled()){
-                    msg(tr("Moving with rotation"))
-                        .vector(tr("Source:"), originalRefPoint)
-                        .vector(tr("Target:"), targetPoint)
-                        .string(tr("Offset:"))
-                        .relative(m_actionData->data.offset)
-                        .relativePolar(m_actionData->data.offset)
-                        .rawAngle(tr("Angle:"), rotationAngle)
-                        .toInfoCursorZone2(false);
+                if (isInfoCursorForModificationEnabled()) {
+                    msg(tr("Moving with rotation")).vector(tr("Source:"), originalRefPoint).vector(tr("Target:"), targetPoint).
+                                                    string(tr("Offset:")).relative(m_actionData->data.offset).relativePolar(
+                                                        m_actionData->data.offset).rawAngle(tr("Angle:"), rotationAngle).toInfoCursorZone2(
+                                                        false);
                 }
                 updateOptions();
             }
@@ -140,7 +129,7 @@ void RS_ActionModifyMoveRotate::onMouseMoveEventSelected(int status, LC_MouseEve
     }
 }
 
-bool RS_ActionModifyMoveRotate::doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) {
+bool RS_ActionModifyMoveRotate::doUpdateAngleByInteractiveInput(const QString& tag, const double angleRad) {
     if (tag == "angle") {
         setAngle(angleRad);
         return true;
@@ -149,20 +138,21 @@ bool RS_ActionModifyMoveRotate::doUpdateAngleByInteractiveInput(const QString& t
 }
 
 void RS_ActionModifyMoveRotate::previewRefPointsForMultipleCopies() const {
-    if (m_actionData->data.multipleCopies){
-        const int numPoints = m_actionData->data.number;
-        if (numPoints > 1){
-            for (int i = 1; i <= numPoints; i++){
-                RS_Vector offset = m_actionData->data.offset * i;
-                previewRefPoint(m_actionData->data.referencePoint + offset);
+    const auto& data = m_actionData->data;
+    if (data.multipleCopies) {
+        const int numPoints = data.number;
+        if (numPoints > 1) {
+            for (int i = 1; i <= numPoints; i++) {
+                RS_Vector offset = data.offset * i;
+                previewRefPoint(data.referencePoint + offset);
             }
         }
     }
 }
 
-void RS_ActionModifyMoveRotate::onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent *e) {
-    switch (status){
-        case SetReferencePoint:{
+void RS_ActionModifyMoveRotate::onMouseLeftButtonReleaseSelected(const int status, const LC_MouseEvent* e) {
+    switch (status) {
+        case SetReferencePoint: {
             fireCoordinateEventForSnap(e);
             break;
         }
@@ -185,13 +175,14 @@ void RS_ActionModifyMoveRotate::onMouseLeftButtonReleaseSelected(int status, LC_
     }
 }
 
-void RS_ActionModifyMoveRotate::onMouseRightButtonReleaseSelected(int status, [[maybe_unused]] LC_MouseEvent *e) {
+void RS_ActionModifyMoveRotate::onMouseRightButtonReleaseSelected(const int status, [[maybe_unused]] const LC_MouseEvent* event) {
     deletePreview();
     switch (status) {
         case SetReferencePoint: {
             if (m_selectionComplete) {
                 m_selectionComplete = false;
-            } else {
+            }
+            else {
                 initPrevious(status);
             }
             break;
@@ -211,7 +202,7 @@ void RS_ActionModifyMoveRotate::onMouseRightButtonReleaseSelected(int status, [[
     }
 }
 
-void RS_ActionModifyMoveRotate::onCoordinateEvent(int status, [[maybe_unused]]bool isZero, const RS_Vector &pos) {
+void RS_ActionModifyMoveRotate::onCoordinateEvent(const int status, [[maybe_unused]] bool isZero, const RS_Vector& pos) {
     switch (status) {
         case SetReferencePoint: {
             m_actionData->data.referencePoint = pos;
@@ -226,7 +217,7 @@ void RS_ActionModifyMoveRotate::onCoordinateEvent(int status, [[maybe_unused]]bo
             if (m_angleIsFixed) {
                 doPerformTrigger();
             }
-            else{
+            else {
                 moveRelativeZero(pos);
                 setStatus(SetAngle);
                 m_lastStatus = SetTargetPoint;
@@ -234,8 +225,8 @@ void RS_ActionModifyMoveRotate::onCoordinateEvent(int status, [[maybe_unused]]bo
             break;
         }
         case SetAngle: {
-            if (m_actionData->targetPoint.valid){
-//                double angle = pPoints->targetPoint.angleTo(pos);
+            if (m_actionData->targetPoint.valid) {
+                //                double angle = pPoints->targetPoint.angleTo(pos);
                 const double wcsAngle = m_actionData->targetPoint.angleTo(pos);
                 const double rotationAngle = RS_Math::correctAngle(toUCSBasisAngle(wcsAngle));
                 const double wcsRotationAngle = adjustRelativeAngleSignByBasis(rotationAngle);
@@ -250,17 +241,17 @@ void RS_ActionModifyMoveRotate::onCoordinateEvent(int status, [[maybe_unused]]bo
 }
 
 void RS_ActionModifyMoveRotate::doPerformTrigger() {
-   trigger();
+    trigger();
 }
 
-bool RS_ActionModifyMoveRotate::doProcessCommand(int status, const QString &c) {
+bool RS_ActionModifyMoveRotate::doProcessCommand(int status, const QString& command) {
     bool accept = false;
     switch (status) {
         case SetReferencePoint:
         case SetTargetPoint: {
-            if (checkCommand("angle", c)) {
+            if (checkCommand("angle", command)) {
                 deletePreview();
-                m_lastStatus = (Status) status;
+                m_lastStatus = static_cast<Status>(status);
                 setStatus(SetAngle);
                 accept = true;
             }
@@ -268,8 +259,8 @@ bool RS_ActionModifyMoveRotate::doProcessCommand(int status, const QString &c) {
         }
         case SetAngle: {
             bool ok;
-            const double a = RS_Math::eval(c, &ok);
-            if (ok){
+            const double a = RS_Math::eval(command, &ok);
+            if (ok) {
                 accept = true;
                 // relative angle is used, no need to translate
                 m_actionData->data.angle = adjustRelativeAngleSignByBasis(RS_Math::deg2rad(a));
@@ -277,15 +268,17 @@ bool RS_ActionModifyMoveRotate::doProcessCommand(int status, const QString &c) {
                     updateOptions();
                     setStatus(m_lastStatus);
                 }
-                else if (m_actionData->targetPoint.valid){
+                else if (m_actionData->targetPoint.valid) {
                     updateOptions();
                     doPerformTrigger();
-                } else {
+                }
+                else {
                     m_angleIsFixed = true;
                     updateOptions();
                     setStatus(m_lastStatus);
                 }
-            } else {
+            }
+            else {
                 commandMessage(tr("Not a valid expression"));
             }
             break;
@@ -296,7 +289,7 @@ bool RS_ActionModifyMoveRotate::doProcessCommand(int status, const QString &c) {
     return accept;
 }
 
-QStringList RS_ActionModifyMoveRotate::getAvailableCommands(){
+QStringList RS_ActionModifyMoveRotate::getAvailableCommands() {
     QStringList cmd;
 
     switch (getStatus()) {
@@ -311,15 +304,15 @@ QStringList RS_ActionModifyMoveRotate::getAvailableCommands(){
     return cmd;
 }
 
-void RS_ActionModifyMoveRotate::setAngle(double angleRad) const {
+void RS_ActionModifyMoveRotate::setAngle(const double angleRad) const {
     m_actionData->data.angle = adjustRelativeAngleSignByBasis(angleRad);
 }
 
-double RS_ActionModifyMoveRotate::getAngle() const{
+double RS_ActionModifyMoveRotate::getAngle() const {
     return adjustRelativeAngleSignByBasis(m_actionData->data.angle);
 }
 
-void RS_ActionModifyMoveRotate::updateMouseButtonHintsForSelected(int status) {
+void RS_ActionModifyMoveRotate::updateMouseButtonHintsForSelected(const int status) {
     switch (status) {
         case SetReferencePoint:
             updateMouseWidgetTRCancel(tr("Specify reference point"), MOD_SHIFT_RELATIVE_ZERO);
@@ -345,18 +338,18 @@ void RS_ActionModifyMoveRotate::updateMouseButtonHintsForSelection() {
                               MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Move and rotate immediately after selection")));
 }
 
-LC_ModifyOperationFlags *RS_ActionModifyMoveRotate::getModifyOperationFlags() {
+LC_ModifyOperationFlags* RS_ActionModifyMoveRotate::getModifyOperationFlags() {
     return &m_actionData->data;
 }
 
-void RS_ActionModifyMoveRotate::setAngleIsFree(bool b) {
+void RS_ActionModifyMoveRotate::setAngleIsFree(const bool b) {
     m_angleIsFixed = !b;
-    if (m_angleIsFixed && getStatus() == SetAngle){
+    if (m_angleIsFixed && getStatus() == SetAngle) {
         setStatus(SetTargetPoint);
     }
 }
 
-void RS_ActionModifyMoveRotate::setUseSameAngleForCopies(bool b) const {
+void RS_ActionModifyMoveRotate::setUseSameAngleForCopies(const bool b) const {
     m_actionData->data.sameAngleForCopies = b;
 }
 

@@ -38,17 +38,17 @@ class LC_ActionDrawLineFromPointToLine:public LC_AbstractActionWithPreview{
 public:
     explicit LC_ActionDrawLineFromPointToLine(LC_ActionContext *actionContext);
     ~LC_ActionDrawLineFromPointToLine() override = default;
-    void setLineSnapMode(int val) {m_lineSnapMode = val;};
-    int getLineSnapMode() const{return m_lineSnapMode;};
-    void setOrthogonal(bool value){m_orthogonalMode = value;};
-    bool getOrthogonal() const{return m_orthogonalMode;};
-    void setAngleDegrees(double ang){m_angleDegrees = ang;};
-    double getAngleDegrees() const{return m_angleDegrees;};
-    int getSizeMode() const{return m_sizeMode;};
-    void setSizeMode(int mode){m_sizeMode = mode;};
-    void setLength(double len){m_length = len;};
+    void setLineSnapMode(const int val) {m_lineSnapMode = val;}
+    int getLineSnapMode() const{return m_lineSnapMode;}
+    void setOrthogonal(const bool value){m_orthogonalMode = value;}
+    bool getOrthogonal() const{return m_orthogonalMode;}
+    void setAngleDegrees(const double ang){m_angleDegrees = ang;}
+    double getAngleDegrees() const{return m_angleDegrees;}
+    int getSizeMode() const{return m_sizeMode;}
+    void setSizeMode(const int mode){m_sizeMode = mode;}
+    void setLength(const double len){m_length = len;}
     double getLength() const{return m_length;}
-    void setEndOffset(double len){m_endOffset = len;};
+    void setEndOffset(const double len){m_endOffset = len;}
     double getEndOffset() const{return m_endOffset;}
 protected:
     // action state
@@ -77,9 +77,9 @@ protected:
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
 
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    void doOnLeftMouseButtonRelease(LC_MouseEvent *e, int status, const RS_Vector &snapPoint) override;
-    void doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
-    bool doCheckMayDrawPreview(LC_MouseEvent *event, int status) override;
+    void doOnLeftMouseButtonRelease(const LC_MouseEvent* e, int status, const RS_Vector &snapPoint) override;
+    void doPreparePreviewEntities(const LC_MouseEvent* e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
+    bool doCheckMayDrawPreview(const LC_MouseEvent* event, int status) override;
     RS2::CursorType doGetMouseCursor(int status) override;
     void updateMouseButtonHints() override;
 
@@ -121,16 +121,16 @@ protected:
 
     bool m_selectLineFirst = false;
 
-    RS_Line *createLineFromPointToTarget(RS_Line *line, const RS_Vector& point, RS_Vector& intersection) const;
+    RS_Line *createLineFromPointToTarget(const RS_Line* line, const RS_Vector& point, RS_Vector& intersection) const;
     int doGetStatusForInitialSnapToRelativeZero() override;
-    void doInitialSnapToRelativeZero(RS_Vector zero) override;
+    void doInitialSnapToRelativeZero(const RS_Vector& zero) override;
     bool doCheckMayTrigger() override;
     bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx) override;
     void doAfterTrigger() override;
-    void doBack(LC_MouseEvent *pEvent, int status) override;
-    void doFinish(bool updateTB) override;
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    void doBack(const LC_MouseEvent* e, int status) override;
+    void doFinish() override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector &coord) override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
 };
-#endif // LC_ACTIONDRAWLINEFROMPOINTTOLINE_H
+#endif

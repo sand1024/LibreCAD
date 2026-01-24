@@ -42,7 +42,7 @@ public:
     explicit RS_ActionPolylineAdd(LC_ActionContext *actionContext);
     ~RS_ActionPolylineAdd() override;
     void init(int status) override;
-    void finish(bool updateTB) override;
+    void finish() override;
 protected:
     /**
      * Action States.
@@ -55,12 +55,12 @@ protected:
     RS_Polyline *m_polylineToModify = nullptr;
     RS_Entity *m_addSegment = nullptr;
     std::unique_ptr<RS_Vector> m_addCoord;
-    void doInitWithContextEntity(RS_Entity* rs_entity, const RS_Vector& rs_vector) override;
+    void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& pos) override;
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
     void updateMouseButtonHints() override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void setPolylineToModify(RS_Entity* en);
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
     void doTriggerCompletion(bool success) override;

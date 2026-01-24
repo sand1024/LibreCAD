@@ -26,14 +26,11 @@
 
 #include "rs_actiondrawpolyline.h"
 
-#include <boost/function_types/property_tags.hpp>
-
 #include "lc_undosection.h"
 #include "muParser.h"
 #include "qg_polylineoptions.h"
 #include "rs_arc.h"
 #include "rs_commandevent.h"
-#include "rs_debug.h"
 #include "rs_document.h"
 #include "rs_line.h"
 #include "rs_polyline.h"
@@ -58,7 +55,7 @@ void RS_ActionDrawPolyline::reset() const {
     m_actionData->bHistory.clear();
 }
 
-void RS_ActionDrawPolyline::init(int status){
+void RS_ActionDrawPolyline::init(const int status){
     reset();
     RS_PreviewActionInterface::init(status);
 }
@@ -78,7 +75,7 @@ void RS_ActionDrawPolyline::doTriggerCompletion([[maybe_unused]]bool success) {
     m_actionData->polyline = nullptr;
 }
 
-void RS_ActionDrawPolyline::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void RS_ActionDrawPolyline::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     RS_Vector mouse = e->snapPoint;
     switch (status) {
         case SetStartpoint: {
@@ -90,10 +87,10 @@ void RS_ActionDrawPolyline::onMouseMoveEvent(int status, LC_MouseEvent *e) {
                 mouse = getSnapAngleAwarePoint(e, m_actionData->point, mouse, true);
             }
             if (m_actionData->point.valid){
-                bool alternateDirection = e->isControl;
+                const bool alternateDirection = e->isControl;
                 double bulge = 0.;
                 if (alternateDirection && m_mode == Ang){
-                    int originalReversed = m_reversed;
+                    const int originalReversed = m_reversed;
                     m_reversed = m_reversed == -1 ? 1: -1;
                     bulge = solveBulge(mouse);
                     m_reversed = originalReversed;
@@ -109,11 +106,11 @@ void RS_ActionDrawPolyline::onMouseMoveEvent(int status, LC_MouseEvent *e) {
                         previewRefSelectablePoint(mouse);
                     }
                 } else {
-                    RS_ArcData tmpArcData = m_actionData->arc_data;
+                    RS_ArcData tmpArcData = m_actionData->arcData;
                     if (alternateDirection && m_mode != Ang){
                         tmpArcData.reversed = !tmpArcData.reversed;
                     }
-                    auto arc = previewToCreateArc(tmpArcData);
+                    const auto arc = previewToCreateArc(tmpArcData);
                     if (m_showRefEntitiesOnPreview) {
                         const RS_Vector &center = arc->getCenter();
                         const RS_Vector &endpoint = arc->getEndpoint();
@@ -126,7 +123,7 @@ void RS_ActionDrawPolyline::onMouseMoveEvent(int status, LC_MouseEvent *e) {
 
                         if (m_mode == Ang || m_mode == TanAng){
                             auto refArcData = RS_ArcData(arc->getData());
-                            double radius = arc->getRadius() * 0.2;
+                            const double radius = arc->getRadius() * 0.2;
                             refArcData.radius = radius;
                             previewRefArc(refArcData);
                         }
@@ -140,7 +137,7 @@ void RS_ActionDrawPolyline::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     }
 }
 
-void RS_ActionDrawPolyline::onMouseLeftButtonRelease([[maybe_unused]]int status, LC_MouseEvent *e) {
+void RS_ActionDrawPolyline::onMouseLeftButtonRelease([[maybe_unused]] const int status, const LC_MouseEvent* e) {
     RS_Vector mouse = e->snapPoint;
     if (status == SetNextPoint) {
         if (m_mode == Line) {
@@ -154,7 +151,7 @@ void RS_ActionDrawPolyline::onMouseLeftButtonRelease([[maybe_unused]]int status,
     }
 
     if (m_startPointSettingOn || m_endPointSettingOn){
-        RS_Vector snap = e->snapPoint;
+        const RS_Vector snap = e->snapPoint;
         QString pointNumberString(QString::number(snap.x)); // fixme - review and check the logic
 
         if (e->isControl){
@@ -169,7 +166,7 @@ void RS_ActionDrawPolyline::onMouseLeftButtonRelease([[maybe_unused]]int status,
     fireCoordinateEvent(mouse);
 }
 
-void RS_ActionDrawPolyline::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionDrawPolyline::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     if (m_equationSettingOn || m_startPointSettingOn || m_endPointSettingOn || m_stepSizeSettingOn){
         m_equationSettingOn = false;
         m_startPointSettingOn = false;
@@ -212,15 +209,17 @@ double RS_ActionDrawPolyline::solveBulge(const RS_Vector &mouse){
 
                 line.setStartpoint(m_actionData->point);
                 line.setEndpoint(mouse);
-                double const direction2 = RS_Math::correctAngle(line.getDirection2() + M_PI);
-                double const delta = direction2 - direction;
+                const double direction2 = RS_Math::correctAngle(line.getDirection2() + M_PI);
+                const double delta = direction2 - direction;
                 if (std::abs(std::remainder(delta, M_PI)) > RS_TOLERANCE_ANGLE){
                     b = std::tan(delta / 2);
                     suc = arc.createFrom2PBulge(m_actionData->point, mouse, b);
-                    if (suc)
-                        m_actionData->arc_data = arc.getData();
-                    else
+                    if (suc) {
+                        m_actionData->arcData = arc.getData();
+                    }
+                    else {
                         b = 0;
+                    }
                 }
                 break;
 //            if(delta<RS_TOLERANCE_ANGLE ||
@@ -253,7 +252,7 @@ double RS_ActionDrawPolyline::solveBulge(const RS_Vector &mouse){
                 suc = arc.createFrom2PDirectionRadius(m_actionData->point, mouse,
                                                       direction, m_radius);
                 if (suc){
-                    m_actionData->arc_data = arc.getData();
+                    m_actionData->arcData = arc.getData();
                     b = arc.getBulge();
                     m_actionData->calculatedEndpoint = arc.getEndpoint();
                     m_calculatedSegment = true;
@@ -279,7 +278,7 @@ double RS_ActionDrawPolyline::solveBulge(const RS_Vector &mouse){
                 suc = arc.createFrom2PDirectionAngle(m_actionData->point, mouse,
                                                       direction, RS_Math::deg2rad(m_angleDegrees));
                 if (suc){
-                    m_actionData->arc_data = arc.getData();
+                    m_actionData->arcData = arc.getData();
                     b = arc.getBulge();
                     m_actionData->calculatedEndpoint = arc.getEndpoint();
                     m_calculatedSegment = true;
@@ -309,7 +308,7 @@ double RS_ActionDrawPolyline::solveBulge(const RS_Vector &mouse){
                suc = arc.createFrom2PBulge(m_actionData->point, mouse, b);
             }
             if (suc) {
-                m_actionData->arc_data = arc.getData();
+                m_actionData->arcData = arc.getData();
             }
             else {
                 b = 0;
@@ -327,7 +326,7 @@ double RS_ActionDrawPolyline::solveBulge(const RS_Vector &mouse){
     return b;
 }
 
-void RS_ActionDrawPolyline::onCoordinateEvent(int status, [[maybe_unused]]bool isZero, const RS_Vector &pos) {
+void RS_ActionDrawPolyline::onCoordinateEvent(const int status, [[maybe_unused]]bool isZero, const RS_Vector &pos) {
     RS_Vector mouse = pos;
 
     if (m_calculatedSegment) {
@@ -362,7 +361,7 @@ void RS_ActionDrawPolyline::onCoordinateEvent(int status, [[maybe_unused]]bool i
             if (!m_endPointSettingOn){
                 double bulge = 0.;
                 if (m_alternateArc && m_mode == Ang){
-                    int originalReversed = m_reversed;
+                    const int originalReversed = m_reversed;
                     m_reversed = m_reversed == -1 ? 1: -1;
                     bulge = solveBulge(mouse);
                     m_reversed = originalReversed;
@@ -372,7 +371,7 @@ void RS_ActionDrawPolyline::onCoordinateEvent(int status, [[maybe_unused]]bool i
                 }
 
                 if (m_alternateArc && m_mode != Ang && m_mode != Line){
-                    RS_ArcData tmpArcData = m_actionData->arc_data;
+                    RS_ArcData tmpArcData = m_actionData->arcData;
                     tmpArcData.reversed = !tmpArcData.reversed;
                     const auto arc = RS_Arc(nullptr, tmpArcData);
                     bulge = arc.getBulge();
@@ -399,7 +398,7 @@ void RS_ActionDrawPolyline::onCoordinateEvent(int status, [[maybe_unused]]bool i
                 polylineToUse->setEndpoint(mouse);
 
                 if (addPolylineToDocument) {
-                    LC_UndoSection undo(m_document, m_viewport);
+                    const LC_UndoSection undo(m_document, m_viewport);
                     undo.undoableExecute([this, polylineToUse](LC_DocumentModificationBatch& ctx)-> bool {
                         ctx += polylineToUse;
                         if (m_actionData->polyline != nullptr) {
@@ -432,7 +431,7 @@ void RS_ActionDrawPolyline::onCoordinateEvent(int status, [[maybe_unused]]bool i
     }
 }
 
-void RS_ActionDrawPolyline::setMode(SegmentMode m){
+void RS_ActionDrawPolyline::setMode(const SegmentMode m){
     m_mode = m;
     updateMouseButtonHints();
 }
@@ -441,7 +440,7 @@ int RS_ActionDrawPolyline::getMode() const{
     return m_mode;
 }
 
-void RS_ActionDrawPolyline::setRadius(double r){
+void RS_ActionDrawPolyline::setRadius(const double r){
     m_radius = r;
 }
 
@@ -449,7 +448,7 @@ double RS_ActionDrawPolyline::getRadius() const{
     return m_radius;
 }
 
-void RS_ActionDrawPolyline::setAngleDegrees(double a){
+void RS_ActionDrawPolyline::setAngleDegrees(const double a){
     m_angleDegrees = a;
 }
 
@@ -457,7 +456,7 @@ double RS_ActionDrawPolyline::getAngle() const{
     return m_angleDegrees;
 }
 
-void RS_ActionDrawPolyline::setReversed(bool c){
+void RS_ActionDrawPolyline::setReversed(const bool c){
     m_reversed = c ? -1 : 1;
 }
 
@@ -465,7 +464,7 @@ bool RS_ActionDrawPolyline::isReversed() const{
     return m_reversed == -1;
 }
 
-bool RS_ActionDrawPolyline::doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) {
+bool RS_ActionDrawPolyline::doUpdateAngleByInteractiveInput(const QString& tag, const double angleRad) {
     if (tag == "angle") {
         setAngleDegrees(RS_Math::rad2deg(angleRad));
         return true;
@@ -473,7 +472,7 @@ bool RS_ActionDrawPolyline::doUpdateAngleByInteractiveInput(const QString& tag, 
     return false;
 }
 
-bool RS_ActionDrawPolyline::doUpdateDistanceByInteractiveInput(const QString& tag, double distance) {
+bool RS_ActionDrawPolyline::doUpdateDistanceByInteractiveInput(const QString& tag, const double distance) {
     if (tag == "radius") {
         setRadius(distance);
         return true;
@@ -486,30 +485,30 @@ QString RS_ActionDrawPolyline::prepareCommand(RS_CommandEvent *e) const {
     return c;
 }
 
-bool RS_ActionDrawPolyline::doProcessCommand(int status, const QString &c) {
+bool RS_ActionDrawPolyline::doProcessCommand(const int status, const QString &command) {
     bool accept = false;
     // fixme - sand - register in commands
-    if (checkCommand("li", c)){
+    if (checkCommand("li", command)){
         m_mode = Line;
         updateOptions();
         accept = true;
     }
-    else if (checkCommand("tan",c)){
+    else if (checkCommand("tan",command)){
         m_mode = Tangential;
         updateOptions();
         accept = true;
     }
-    else if (checkCommand("tar", c)){
+    else if (checkCommand("tar", command)){
         m_mode = TanRad;
         updateOptions();
         accept = true;
     }
-    else if (checkCommand("taa", c)){
+    else if (checkCommand("taa", command)){
         m_mode = TanRad;
         updateOptions();
         accept = true;
     }
-    else if (checkCommand("aa", c)){
+    else if (checkCommand("aa", command)){
         m_mode = Ang;
         updateOptions();
         accept = true;
@@ -519,19 +518,19 @@ bool RS_ActionDrawPolyline::doProcessCommand(int status, const QString &c) {
     }
     switch (status) {
         case SetStartpoint: {
-            if (checkCommand("close", c)){
+            if (checkCommand("close", command)){
                 close();
                 accept = true;
             }
             break;
         }
         case SetNextPoint: {
-            if (checkCommand("undo", c)){
+            if (checkCommand("undo", command)){
                 undo();
                 updateMouseButtonHints();
                 accept = true;
             }
-            else if (checkCommand("close", c)){
+            else if (checkCommand("close", command)){
                 close();
                 accept = true;
             }
@@ -544,7 +543,7 @@ bool RS_ActionDrawPolyline::doProcessCommand(int status, const QString &c) {
         return accept;
     }
 
-    if ((m_mode == Line) && (checkCommand("equation", c))) {
+    if ((m_mode == Line) && checkCommand("equation", command)) {
         updateMouseWidgetTRBack(tr("Enter an equation, f(x)"));
         m_equationSettingOn = true;
         return true;
@@ -556,7 +555,7 @@ bool RS_ActionDrawPolyline::doProcessCommand(int status, const QString &c) {
         m_shiftX = false;
 
         try {
-            QString cRef = c;
+            QString cRef = command;
             const QString someRandomNumber = "123.456";
             cRef.replace(tr("x"), someRandomNumber);
             setParserExpression(cRef);
@@ -564,7 +563,7 @@ bool RS_ActionDrawPolyline::doProcessCommand(int status, const QString &c) {
             if (parseTestValue) { /* This is to counter the 'unused variable' warning. */ }
             updateMouseWidgetTRBack(tr("Enter the start point x"));
             m_startPointSettingOn = true;
-            m_actionData->equation = c;
+            m_actionData->equation = command;
         }
         catch (...) {
             commandMessage(tr("The entered x is invalid."));
@@ -574,7 +573,7 @@ bool RS_ActionDrawPolyline::doProcessCommand(int status, const QString &c) {
     }
 
     if (m_startPointSettingOn) {
-        if (getPlottingX(c, m_startPointX)) {
+        if (getPlottingX(command, m_startPointX)) {
             m_endPointSettingOn = true;
             m_startPointSettingOn = false;
             m_shiftY = false;
@@ -584,7 +583,7 @@ bool RS_ActionDrawPolyline::doProcessCommand(int status, const QString &c) {
     }
 
     if (m_endPointSettingOn){
-        if (getPlottingX(c, m_endPointX) && std::abs(m_endPointX - m_startPointX) > RS_TOLERANCE){
+        if (getPlottingX(command, m_endPointX) && std::abs(m_endPointX - m_startPointX) > RS_TOLERANCE){
             m_endPointSettingOn = false;
             m_stepSizeSettingOn = true;
             updateMouseWidgetTRBack(tr("Enter number of polylines"));
@@ -598,10 +597,12 @@ bool RS_ActionDrawPolyline::doProcessCommand(int status, const QString &c) {
         int numberOfPolylines = 0;
 
         try {
-            setParserExpression(c);
+            setParserExpression(command);
             numberOfPolylines = RS_Math::round(m_muParserObject->Eval());
 
-            if (numberOfPolylines <= 0) throw -1;
+            if (numberOfPolylines <= 0) {
+                throw -1;
+            }
         }
         catch (...) {
             commandMessage(tr("The step size entered is invalid."));
@@ -648,7 +649,7 @@ bool RS_ActionDrawPolyline::getPlottingX(QString command, double& x){
 }
 
 // fixme - review polyline equation functionality!!!!!
-void RS_ActionDrawPolyline::drawEquation(int numberOfPolylines) {
+void RS_ActionDrawPolyline::drawEquation(const int numberOfPolylines) {
     deleteSnapper();
     const double stepSize = (m_endPointX - m_startPointX) / numberOfPolylines;
 
@@ -769,7 +770,7 @@ void RS_ActionDrawPolyline::updateMouseButtonHintsForNextPoint() {
         modifiers = MOD_CTRL(tr("Alternative Arc"));
     }
 
-    qsizetype size = m_actionData->history.size();
+    const qsizetype size = m_actionData->history.size();
     if (size >= 3) {
         msg += command("close");
         msg += "/";

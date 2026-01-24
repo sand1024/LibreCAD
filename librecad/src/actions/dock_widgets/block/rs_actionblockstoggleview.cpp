@@ -49,12 +49,12 @@ void RS_ActionBlocksToggleView::trigger() {
             }
         }
         // if there wasn't selected blocks, toggle active block
-        if (!toggledBlocksCount) {
+        if (toggledBlocksCount == 0) {
             m_graphic->toggleBlock(m_graphic->getActiveBlock());
         }
     }
     redrawDrawing();
-    finish(false);
+    finish();
 }
 
 void RS_ActionBlocksToggleView::init(const int status) {

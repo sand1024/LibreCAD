@@ -26,11 +26,9 @@
 
 #include "rs_actionmodifyattributes.h"
 
-#include "rs_debug.h"
 #include "rs_dialogfactory.h"
 #include "rs_dialogfactoryinterface.h"
 #include "rs_graphic.h"
-#include "rs_graphicview.h"
 #include "rs_modification.h"
 
 RS_ActionModifyAttributes::RS_ActionModifyAttributes(LC_ActionContext *actionContext)
@@ -63,7 +61,7 @@ bool RS_ActionModifyAttributes::doTriggerModifications(LC_DocumentModificationBa
 void RS_ActionModifyAttributes::doTriggerCompletion([[maybe_unused]]bool success) {
 }
 
-void RS_ActionModifyAttributes::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {  // fixme - INCLUDE TO GENERIC FLOW?
+void RS_ActionModifyAttributes::doTriggerSelectionUpdate(const bool keepSelected, const LC_DocumentModificationBatch& ctx) {  // fixme - INCLUDE TO GENERIC FLOW?
     if (keepSelected) {
         select(ctx.entitiesToAdd);
     }

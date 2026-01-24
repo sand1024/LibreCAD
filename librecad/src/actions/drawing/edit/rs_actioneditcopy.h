@@ -54,11 +54,11 @@ protected:
     std::unique_ptr<RS_Vector> m_referencePoint;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void onSelectionCompleted(bool singleEntity, bool fromInit) override;
-    void onMouseMoveEventSelected(int status, LC_MouseEvent *e) override;
+    void onMouseMoveEventSelected(int status, const LC_MouseEvent* e) override;
     void updateMouseButtonHintsForSelection() override;
     void updateMouseButtonHintsForSelected(int status) override;
-    void onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
-    void onMouseRightButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
+    void onMouseLeftButtonReleaseSelected(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonReleaseSelected(int status, const LC_MouseEvent* event) override;
     RS2::CursorType doGetMouseCursorSelected(int status) override;
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
     void doTriggerCompletion(bool success) override;

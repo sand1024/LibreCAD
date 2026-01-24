@@ -27,8 +27,7 @@
 #include "lc_dimordinate.h"
 #include "rs_document.h"
 
-LC_ActionSingleEntitySelectBase::LC_ActionSingleEntitySelectBase(const char* name, LC_ActionContext* actionContext,
-                                                                 RS2::ActionType actionType) :
+LC_ActionSingleEntitySelectBase::LC_ActionSingleEntitySelectBase(const char* name, LC_ActionContext* actionContext, const RS2::ActionType actionType) :
     RS_PreviewActionInterface(name, actionContext, actionType)
     , m_entity{nullptr} {
 }
@@ -41,7 +40,7 @@ void LC_ActionSingleEntitySelectBase::updateMouseButtonHints() {
 
 
 void LC_ActionSingleEntitySelectBase::doInitialInit() {
-    auto contextEntity = m_actionContext->getContextMenuActionContextEntity();
+    const auto contextEntity = m_actionContext->getContextMenuActionContextEntity();
     if (contextEntity == nullptr) { // proceed selection if we have no context menu entity
         QList<RS_Entity*> selectedEntities;
         m_document->collectSelected(selectedEntities, false, {RS2::EntityDimOrdinate});
@@ -63,7 +62,7 @@ void LC_ActionSingleEntitySelectBase::doInitWithContextEntity(RS_Entity* context
 }
 
 
-void LC_ActionSingleEntitySelectBase::onMouseMoveEvent([[maybe_unused]]int status, LC_MouseEvent* event) {
+void LC_ActionSingleEntitySelectBase::onMouseMoveEvent([[maybe_unused]] const int status, const LC_MouseEvent* event) {
     RS_Entity* e = catchEntity(event->snapPoint, RS2::ResolveNone);
     if (e != nullptr) {
         if (doCheckMaySelectEntity(e)) {
@@ -72,11 +71,11 @@ void LC_ActionSingleEntitySelectBase::onMouseMoveEvent([[maybe_unused]]int statu
     }
 }
 
-void LC_ActionSingleEntitySelectBase::onMouseLeftButtonRelease([[maybe_unused]]int status, LC_MouseEvent* event) {
-    RS_Entity* e = catchEntity(event->snapPoint, RS2::ResolveNone);
-    if (e != nullptr) {
-        if (e->rtti() == RS2::EntityDimOrdinate) {
-            m_entity = dynamic_cast<LC_DimOrdinate*>(e);
+void LC_ActionSingleEntitySelectBase::onMouseLeftButtonRelease([[maybe_unused]]int status, const LC_MouseEvent* e) {
+    RS_Entity* entity = catchEntity(e->snapPoint, RS2::ResolveNone);
+    if (entity != nullptr) {
+        if (entity->rtti() == RS2::EntityDimOrdinate) {
+            m_entity = dynamic_cast<LC_DimOrdinate*>(entity);
             if (m_entity != nullptr) {
                 trigger();
             }
@@ -84,6 +83,6 @@ void LC_ActionSingleEntitySelectBase::onMouseLeftButtonRelease([[maybe_unused]]i
     }
 }
 
-void LC_ActionSingleEntitySelectBase::onMouseRightButtonRelease([[maybe_unused]]int status, [[maybe_unused]]LC_MouseEvent* e) {
+void LC_ActionSingleEntitySelectBase::onMouseRightButtonRelease([[maybe_unused]] const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     initPrevious(status);
 }

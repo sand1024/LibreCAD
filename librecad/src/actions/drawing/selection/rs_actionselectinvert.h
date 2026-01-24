@@ -29,18 +29,17 @@
 
 #include "rs_actioninterface.h"
 
-
 /**
  * This action class can handle user events to select all entities.
  *
  * @author Andrew Mustun
  */
 class RS_ActionSelectInvert : public RS_ActionInterface {
-	Q_OBJECT
+    Q_OBJECT
 public:
-    explicit RS_ActionSelectInvert(LC_ActionContext *actionContext);
-	void init(int status) override;
-	void trigger() override;
+    explicit RS_ActionSelectInvert(LC_ActionContext* actionContext);
+    void init(int status) override;
+    void trigger() override;
 };
 
 #endif

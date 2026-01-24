@@ -41,7 +41,7 @@ class QG_PrintPreviewOptions;
 class RS_ActionPrintPreview : public RS_ActionInterface {
     Q_OBJECT
 public:
-    RS_ActionPrintPreview(LC_ActionContext *actionContext);
+    explicit RS_ActionPrintPreview(LC_ActionContext *actionContext);
     ~RS_ActionPrintPreview() override;
 
     void init(int status) override;
@@ -55,8 +55,8 @@ public:
 
     void center() const;
     void zoomToPage() const;
-    void fit();
-    bool setScale(double f, bool autoZoom = true);
+    void fit() const;
+    bool setScale(double newScale, bool autoZoom = true) const;
     double getScale() const;
     void printWarning(const QString& s) const;
     void calcPagesNum(bool multiplePages);
@@ -74,9 +74,9 @@ public:
     int getPagesNumVertical() const;
     void setPagesNumVertical(int pagesCount);
 
-    void invokeSettingsDialog();
+    void invokeSettingsDialog() const;
     bool isPortrait() const;
-    void setPaperOrientation(bool portrait);
+    void setPaperOrientation(bool portrait) const;
 protected:
     /**
     * Action States.

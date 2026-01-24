@@ -28,14 +28,14 @@
 class LC_ActionDrawArc2PointsRadius:public LC_ActionDrawArc2PointsBase{
     Q_OBJECT
 public:
-    LC_ActionDrawArc2PointsRadius(LC_ActionContext *actionContext);
+    explicit LC_ActionDrawArc2PointsRadius(LC_ActionContext *actionContext);
     ~LC_ActionDrawArc2PointsRadius() override = default;
 protected:
-    bool createArcData(RS_ArcData &data, int status, RS_Vector pos, bool reverse, bool reportErrors) override;
-    void doPreviewOnPoint2Custom(RS_Arc *pArc) override;
+    bool createArcData(RS_ArcData &data, int status, RS_Vector pos, bool alternate, bool reportErrors) override;
+    void doPreviewOnPoint2Custom(RS_Arc *arc) override;
     QString getParameterCommand() override;
     QString getParameterPromptValue() const override;
     QString getAlternativePoint2Prompt() const override;
 };
 
-#endif // LC_ACTIONDRAWARC2POINTSRADIUS_H
+#endif

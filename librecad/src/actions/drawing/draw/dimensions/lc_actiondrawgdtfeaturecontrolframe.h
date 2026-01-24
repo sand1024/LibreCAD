@@ -24,10 +24,10 @@
 #ifndef LC_ACTIONDRAWGDTFEATURECONTROLFRAME_H
 #define LC_ACTIONDRAWGDTFEATURECONTROLFRAME_H
 
-#include "rs_previewactioninterface.h"
 #include <lc_tolerance.h>
 
 #include "lc_undoabledocumentmodificationaction.h"
+#include "rs_previewactioninterface.h"
 
 class LC_ActionDrawGDTFeatureControlFrame: public LC_SingleEntityCreationAction{
     Q_OBJECT
@@ -44,15 +44,15 @@ protected:
     struct ActionData {
         ~ActionData() {
             clear();
-        };
+        }
 
         void clear() {
-            m_insertionPoint.valid = false;
+            insertionPoint.valid = false;
             // delete m_entity;
         }
 
-        RS_Vector m_insertionPoint;
-        LC_Tolerance* m_entity {nullptr};
+        RS_Vector insertionPoint;
+        LC_Tolerance* entity {nullptr};
     };
 
     std::unique_ptr<ActionData> m_actionData;
@@ -61,10 +61,10 @@ protected:
     void onCoordinateEvent(int status, bool isZero, const RS_Vector& pos) override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;
-    void onMouseMoveEvent(int status, LC_MouseEvent* event) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent* e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
     QStringList doGetAvailableCommands(int status) override;
 };
 
-#endif // LC_ACTIONDRAWGDTFEATURECONTROLFRAME_H
+#endif

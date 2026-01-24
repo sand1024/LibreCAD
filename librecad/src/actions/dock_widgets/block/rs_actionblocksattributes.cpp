@@ -37,13 +37,14 @@
 class RS_BlockList;
 class RS_Block;
 
-RS_ActionBlocksAttributes::RS_ActionBlocksAttributes(LC_ActionContext *actionContext)
-        :RS_ActionInterface("Edit Block Attributes",actionContext, RS2::ActionBlocksAttributes) {}
+RS_ActionBlocksAttributes::RS_ActionBlocksAttributes(LC_ActionContext* actionContext)
+    : RS_ActionInterface("Edit Block Attributes", actionContext, RS2::ActionBlocksAttributes) {
+}
 
 void RS_ActionBlocksAttributes::trigger() {
     RS_DEBUG->print("editing block attributes");
 
-	if (m_graphic != nullptr) {
+    if (m_graphic != nullptr) {
         RS_Block* block = m_graphic->getActiveBlock();
         RS_BlockList* blockList = m_graphic->getBlockList();
         if (blockList != nullptr && block != nullptr) {
@@ -57,9 +58,7 @@ void RS_ActionBlocksAttributes::trigger() {
                 const auto& appWindow = QC_ApplicationWindow::getAppWindow();
                 if (QC_MDIWindow* blockWindow = appWindow->getWindowWithDoc(block)) {
                     QString title = blockWindow->windowTitle();
-                    title = title.replace(
-                            "'" + oldName + "'",
-                            "'" + newName + "'");
+                    title = title.replace("'" + oldName + "'", "'" + newName + "'");
                     blockWindow->setWindowTitle(title);
                 }
                 blockList->rename(block, newName);
@@ -69,7 +68,7 @@ void RS_ActionBlocksAttributes::trigger() {
             }
         }
     }
-    finish(false);
+    finish();
 }
 
 void RS_ActionBlocksAttributes::init(const int status) {

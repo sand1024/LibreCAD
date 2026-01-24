@@ -41,7 +41,7 @@ public:
     explicit RS_ActionDrawLineTangent2(LC_ActionContext *actionContext);
     ~RS_ActionDrawLineTangent2() override;
     void init(int status) override;
-    void finish(bool updateTB) override;
+    void finish() override;
 protected:
     enum Status {
         SetCircle1 = InitialActionStatus,     /**< Choose the startpoint. */
@@ -50,16 +50,16 @@ protected:
     };
 
     void cleanup() const;
-    void preparePreview(int status, LC_MouseEvent *e);
+    void preparePreview(int status, const LC_MouseEvent *e) const;
     struct ActionData;
     std::unique_ptr<ActionData> m_actionData;
 
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
 
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void updateMouseButtonHints() override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;

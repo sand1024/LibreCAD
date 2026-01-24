@@ -44,13 +44,12 @@ namespace {
 }
 
 RS_ActionModifyTrimAmount::RS_ActionModifyTrimAmount(LC_ActionContext *actionContext)
-    :LC_UndoableDocumentModificationAction("Trim Entity by a given amount",actionContext, RS2::ActionModifyTrimAmount)
-    , m_trimEntity(nullptr), m_trimCoord(new RS_Vector{}), m_distance(0.0), m_distanceIsTotalLength(false){
+    :LC_UndoableDocumentModificationAction("Trim Entity by a given amount",actionContext, RS2::ActionModifyTrimAmount), m_trimCoord(new RS_Vector{}){
 }
 
 RS_ActionModifyTrimAmount::~RS_ActionModifyTrimAmount() = default;
 
-void RS_ActionModifyTrimAmount::init(int status) {
+void RS_ActionModifyTrimAmount::init(const int status) {
     RS_PreviewActionInterface::init(status);
 
     m_snapMode.clear();
@@ -86,7 +85,7 @@ void RS_ActionModifyTrimAmount::doTriggerCompletion([[maybe_unused]]bool success
     setStatus(ChooseTrimEntity);
 }
 
-bool RS_ActionModifyTrimAmount::doUpdateDistanceByInteractiveInput(const QString& tag, double distance) {
+bool RS_ActionModifyTrimAmount::doUpdateDistanceByInteractiveInput(const QString& tag, const double distance) {
     if ("length" == tag) {
         setDistance(distance);
         return true;
@@ -105,8 +104,7 @@ double RS_ActionModifyTrimAmount::determineDistance(const RS_AtomicEntity *e) co
     return d;
 }
 
-void RS_ActionModifyTrimAmount::onMouseMoveEvent([[maybe_unused]]int status, LC_MouseEvent *e) {
-    const RS_Vector coord =  e->graphPoint;
+void RS_ActionModifyTrimAmount::onMouseMoveEvent([[maybe_unused]] const int status, const LC_MouseEvent* e) {
     const auto en = catchAndDescribe(e, g_enTypeList, RS2::ResolveNone);
     deleteSnapper();
     if (isAtomic(en)) {
@@ -117,6 +115,7 @@ void RS_ActionModifyTrimAmount::onMouseMoveEvent([[maybe_unused]]int status, LC_
         bool trimStart;
         bool trimEnd;
         LC_DocumentModificationBatch ctx;
+        const RS_Vector coord =  e->graphPoint;
         const auto trimmed = RS_Modification::trimAmount(coord, atomic, dist, trimBoth, trimStart, trimEnd, ctx);
         if (trimmed != nullptr) {
             const double originalLen = atomic->getLength();
@@ -131,8 +130,8 @@ void RS_ActionModifyTrimAmount::onMouseMoveEvent([[maybe_unused]]int status, LC_
                 const RS_Arc* trimmedArc = nullptr;
                 const bool entityIsArc = isArc(atomic);
                 if (entityIsArc) {
-                    atomicArc = dynamic_cast<RS_Arc*>(atomic);
-                    trimmedArc = dynamic_cast<RS_Arc*>(trimmed);
+                    atomicArc = static_cast<RS_Arc*>(atomic);
+                    trimmedArc = static_cast<RS_Arc*>(trimmed);
                 }
 
                 if (trimStart) {
@@ -145,7 +144,7 @@ void RS_ActionModifyTrimAmount::onMouseMoveEvent([[maybe_unused]]int status, LC_
                             previewRefLine(originalStart, trimmedStart);
                         }
                         else if (entityIsArc) {
-                            const RS_ArcData& arcData = RS_ArcData(atomicArc->getCenter(), atomicArc->getRadius(),
+                            const auto& arcData = RS_ArcData(atomicArc->getCenter(), atomicArc->getRadius(),
                                                                    atomicArc->getAngle1(),
                                                                    trimmedArc->getAngle1(),
                                                                    atomicArc->isReversed());
@@ -164,7 +163,7 @@ void RS_ActionModifyTrimAmount::onMouseMoveEvent([[maybe_unused]]int status, LC_
                             previewRefLine(originalEnd, trimmedEnd);
                         }
                         else if (entityIsArc) {
-                            const RS_ArcData& arcData = RS_ArcData(atomicArc->getCenter(), atomicArc->getRadius(),
+                            const auto& arcData = RS_ArcData(atomicArc->getCenter(), atomicArc->getRadius(),
                                                                    atomicArc->getAngle2(),
                                                                    trimmedArc->getAngle2(),
                                                                    atomicArc->isReversed());
@@ -177,7 +176,7 @@ void RS_ActionModifyTrimAmount::onMouseMoveEvent([[maybe_unused]]int status, LC_
     }
 }
 
-void RS_ActionModifyTrimAmount::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
+void RS_ActionModifyTrimAmount::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     switch (status) {
         case ChooseTrimEntity: {
             *m_trimCoord = e->graphPoint;
@@ -200,17 +199,17 @@ void RS_ActionModifyTrimAmount::onMouseLeftButtonRelease(int status, LC_MouseEve
     invalidateSnapSpot();
 }
 
-void RS_ActionModifyTrimAmount::onMouseRightButtonRelease(int status, [[maybe_unused]] LC_MouseEvent *e) {
+void RS_ActionModifyTrimAmount::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     initPrevious(status);
 }
 
 // fixme - support for other options via command line (currently only length may be set) (???)
-bool RS_ActionModifyTrimAmount::doProcessCommand(int status, const QString &c) {
+bool RS_ActionModifyTrimAmount::doProcessCommand(const int status, const QString &command) {
     bool accept = false;
     switch (status) {
         case ChooseTrimEntity: {
             bool ok;
-            const double d = RS_Math::eval(c, &ok);
+            const double d = RS_Math::eval(command, &ok);
             if (ok){
                 accept = true;
                 m_distance = d;

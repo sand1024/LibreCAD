@@ -60,10 +60,10 @@ void RS_ActionLayersToggleView::trigger() {
         m_graphic->updateInserts();
         m_document->calculateBorders();
     }
-    finish(false);
+    finish();
 }
 
-void RS_ActionLayersToggleView::init(int status) {
+void RS_ActionLayersToggleView::init(const int status) {
     RS_ActionInterface::init(status);
     trigger();
 }

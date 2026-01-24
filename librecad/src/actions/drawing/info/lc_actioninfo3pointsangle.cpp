@@ -33,11 +33,9 @@ LC_ActionInfo3PointsAngle::~LC_ActionInfo3PointsAngle() = default;
 
 void LC_ActionInfo3PointsAngle::doTrigger() {
     double angle = LC_LineMath::angleFor3Points(m_point1, m_point2, m_point3);
-    QString angleStr = formatAngleRaw(angle);
-
-    RS_Vector ucsPoint1 = toUCS(m_point1);
-    RS_Vector ucsPoint2 = toUCS(m_point2);
-    RS_Vector ucsPoint3 = toUCS(m_point3);
+    const RS_Vector ucsPoint1 = toUCS(m_point1);
+    const RS_Vector ucsPoint2 = toUCS(m_point2);
+    const RS_Vector ucsPoint3 = toUCS(m_point3);
 
     QString p1X = formatLinear(ucsPoint1.x);
     QString p1Y = formatLinear(ucsPoint1.y);
@@ -68,7 +66,7 @@ void LC_ActionInfo3PointsAngle::doTrigger() {
     }
 }
 
-void LC_ActionInfo3PointsAngle::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void LC_ActionInfo3PointsAngle::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     RS_Vector mouse = e->snapPoint;
     switch (status){
         case SetPoint1:{
@@ -95,8 +93,8 @@ void LC_ActionInfo3PointsAngle::onMouseMoveEvent(int status, LC_MouseEvent *e) {
                 previewRefLine(m_point1, m_point2);
                 previewRefLine(m_point2, mouse);
 
-                double distance1 = m_point2.distanceTo(m_point1);
-                double distance2 = m_point2.distanceTo(mouse);
+                const double distance1 = m_point2.distanceTo(m_point1);
+                const double distance2 = m_point2.distanceTo(mouse);
                 if (distance2 < distance1) {
                     previewRefArc(m_point2, mouse, m_point1, true);
                 }
@@ -112,7 +110,7 @@ void LC_ActionInfo3PointsAngle::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     }
 }
 
-void LC_ActionInfo3PointsAngle::onCoordinateEvent(int status, [[maybe_unused]] bool isZero, const RS_Vector &pos) {
+void LC_ActionInfo3PointsAngle::onCoordinateEvent(const int status, [[maybe_unused]] bool isZero, const RS_Vector &pos) {
     switch (status){
         case SetPoint1:{
             m_point1 = pos;
@@ -135,7 +133,7 @@ void LC_ActionInfo3PointsAngle::onCoordinateEvent(int status, [[maybe_unused]] b
 }
 
 void LC_ActionInfo3PointsAngle::updateMouseButtonHints() {
-    int status = getStatus();
+    const int status = getStatus();
     switch (status){
         case SetPoint1:{
             updateMouseWidgetTRCancel(tr("Select first edge point of angle"));
@@ -151,10 +149,11 @@ void LC_ActionInfo3PointsAngle::updateMouseButtonHints() {
         }
         default:
             updateMouseWidget();
+            break;
     }
 }
 
-void LC_ActionInfo3PointsAngle::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
+void LC_ActionInfo3PointsAngle::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     RS_Vector snapped = e->snapPoint;
     switch (status){
         case SetPoint1:{
@@ -175,7 +174,7 @@ void LC_ActionInfo3PointsAngle::onMouseLeftButtonRelease(int status, LC_MouseEve
     fireCoordinateEvent(snapped);
 }
 
-void LC_ActionInfo3PointsAngle::onMouseRightButtonRelease([[maybe_unused]]int status, [[maybe_unused]]LC_MouseEvent *e) {
+void LC_ActionInfo3PointsAngle::onMouseRightButtonRelease([[maybe_unused]]int status, [[maybe_unused]] const LC_MouseEvent* e) {
     setStatus(getStatus() - 1);
 }
 

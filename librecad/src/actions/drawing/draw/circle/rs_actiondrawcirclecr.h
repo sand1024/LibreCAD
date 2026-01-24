@@ -37,36 +37,38 @@ struct RS_CircleData;
  *
  * @author Andrew Mustun
  */
-class RS_ActionDrawCircleCR:public LC_ActionDrawCircleBase {
+class RS_ActionDrawCircleCR : public LC_ActionDrawCircleBase {
     Q_OBJECT
 public:
-    explicit RS_ActionDrawCircleCR(LC_ActionContext *actionContext);
+    explicit RS_ActionDrawCircleCR(LC_ActionContext* actionContext);
     ~RS_ActionDrawCircleCR() override;
     void reset() override;
     void init(int status) override;
     QStringList getAvailableCommands() override;
     double getRadius() const;
     void setRadius(double val) const;
+
 protected:
     /**
      * Action States.
      */
     enum Status {
-        SetCenter  = InitialActionStatus,         /**< Setting the center point. */
-        SetRadius          /**< Setting radius in command line. */
+        SetCenter = InitialActionStatus, /**< Setting the center point. */
+        SetRadius /**< Setting radius in command line. */
     };
+
     LC_ActionOptionsWidget* createOptionsWidget() override;
     /**
      * Circle data defined so far.
      */
     std::unique_ptr<RS_CircleData> m_circleData;
-    bool setRadiusStr(const QString &sr) const;
-    bool doProcessCommand(int status, const QString &command) override;
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    bool setRadiusStr(const QString& sr) const;
+    bool doProcessCommand(int status, const QString& command) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector& pos) override;
     void updateMouseButtonHints() override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
 };
 #endif

@@ -28,7 +28,6 @@
 
 #include "qg_lineparallelthroughoptions.h"
 #include "rs_creation.h"
-#include "rs_debug.h"
 #include "rs_document.h"
 #include "rs_polyline.h"
 #include "rs_preview.h"
@@ -37,33 +36,32 @@
 namespace {
     //this holds a list of entity types which supports tangent
     const auto g_supportedEntityTypes = EntityTypeList{
-                {RS2::EntityArc, RS2::EntityCircle, RS2::EntityLine/*, RS2::EntityParabola, RS2::EntitySplinePoints*/}
+        {RS2::EntityArc, RS2::EntityCircle, RS2::EntityLine/*, RS2::EntityParabola, RS2::EntitySplinePoints*/}
     };
 }
 
-RS_ActionDrawLineParallelThrough::RS_ActionDrawLineParallelThrough(LC_ActionContext *actionContext)
-		:LC_UndoableDocumentModificationAction("Draw Parallels", actionContext,RS2::ActionDrawLineParallelThrough)
-		, m_coord(new RS_Vector{}),m_lastStatus(SetEntity){
-    m_SnapDistance=1.;
+RS_ActionDrawLineParallelThrough::RS_ActionDrawLineParallelThrough(LC_ActionContext* actionContext)
+    : LC_UndoableDocumentModificationAction("Draw Parallels", actionContext, RS2::ActionDrawLineParallelThrough), m_coord(new RS_Vector{}) {
+    m_snapDistance = 1.;
 }
 
 RS_ActionDrawLineParallelThrough::~RS_ActionDrawLineParallelThrough() = default;
 
-void RS_ActionDrawLineParallelThrough::finish(bool updateTB){
-    if(m_entity){
+void RS_ActionDrawLineParallelThrough::finish() {
+    if (m_entity) {
         m_entity->setHighlighted(false);
-        m_entity=nullptr;
+        m_entity = nullptr;
     }
-    RS_PreviewActionInterface::finish(updateTB);
+    RS_PreviewActionInterface::finish();
 }
 
 void RS_ActionDrawLineParallelThrough::doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) {
     auto entity = contextEntity;
     if (isPolyline(contextEntity)) {
-        auto polyline = static_cast<RS_Polyline*>(contextEntity);
+        const auto polyline = static_cast<RS_Polyline*>(contextEntity);
         entity = polyline->getNearestEntity(clickPos);
     }
-    RS2::EntityType rtti = entity->rtti();
+    const RS2::EntityType rtti = entity->rtti();
     if (g_supportedEntityTypes.contains(rtti)) {
         m_entity = entity;
         setStatus(SetPos);
@@ -71,27 +69,26 @@ void RS_ActionDrawLineParallelThrough::doInitWithContextEntity(RS_Entity* contex
 }
 
 bool RS_ActionDrawLineParallelThrough::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
-    if (m_entity != nullptr){
-         std::list<RS_Entity*> parallels;
-         RS_Creation::createParallelThrough(*m_coord,m_numberToCreate,m_entity, m_symmetric,ctx.entitiesToAdd);
-         return true;
+    if (m_entity != nullptr) {
+        RS_Creation::createParallelThrough(*m_coord, m_numberToCreate, m_entity, m_symmetric, ctx.entitiesToAdd);
+        return true;
     }
     return false;
 }
 
-void RS_ActionDrawLineParallelThrough::doTriggerCompletion([[maybe_unused]]bool success) {
+void RS_ActionDrawLineParallelThrough::doTriggerCompletion([[maybe_unused]] bool success) {
 }
 
-void RS_ActionDrawLineParallelThrough::onMouseMoveEvent([[maybe_unused]]int status, LC_MouseEvent *e) {
-    const RS_Vector &snap = e->snapPoint;
+void RS_ActionDrawLineParallelThrough::onMouseMoveEvent([[maybe_unused]] const int status, const LC_MouseEvent* e) {
+    const RS_Vector& snap = e->snapPoint;
     switch (status) {
         case SetEntity: {
-            auto entity = catchAndDescribe(e, RS2::ResolveAll);
-            if (entity != nullptr && g_supportedEntityTypes.contains(entity->rtti())){
+            const auto entity = catchAndDescribe(e, RS2::ResolveAll);
+            if (entity != nullptr && g_supportedEntityTypes.contains(entity->rtti())) {
                 m_entity = entity;
                 highlightHover(m_entity);
                 if (m_showRefEntitiesOnPreview) {
-                    RS_Vector nearest = m_entity->getNearestPointOnEntity(*m_coord, false);
+                    const RS_Vector nearest = m_entity->getNearestPointOnEntity(*m_coord, false);
                     previewRefPoint(nearest);
                 }
             }
@@ -102,23 +99,24 @@ void RS_ActionDrawLineParallelThrough::onMouseMoveEvent([[maybe_unused]]int stat
             highlightSelected(m_entity);
             QList<RS_Entity*> parallels;
             RS_Creation::createParallelThrough(*m_coord, m_numberToCreate, m_entity, m_symmetric, parallels);
-            if (!parallels.empty()){
-                auto en = parallels.front();
+            if (!parallels.empty()) {
+                const auto en = parallels.front();
                 m_preview->addAllFromList(parallels);
-                RS_Vector nearest = m_entity->getNearestPointOnEntity(*m_coord, false);
+                const RS_Vector nearest = m_entity->getNearestPointOnEntity(*m_coord, false);
                 moveRelativeZero(nearest); // fixme - should we restore original relzero?
-                if (m_numberToCreate == 1 && !m_symmetric){
+                if (m_numberToCreate == 1 && !m_symmetric) {
                     prepareEntityDescription(en, RS2::EntityDescriptionLevel::DescriptionCreating);
                 }
-                else{
-                    int creatingNumber = m_numberToCreate * (m_symmetric ? 2 : 1);
+                else {
+                    const int creatingNumber = m_numberToCreate * (m_symmetric ? 2 : 1);
                     appendInfoCursorEntityCreationMessage(QString::number(creatingNumber) + tr(" entities will be created"));
                 }
                 if (m_showRefEntitiesOnPreview) {
                     previewRefPoint(nearest);
                     previewRefLine(nearest, *m_coord);
 
-                    if (m_symmetric && isLine(m_entity)){ // fixme - support of polyline
+                    if (m_symmetric&& isLine(m_entity)) {
+                        // fixme - support of polyline
                         RS_Vector otherPoint = *m_coord;
                         otherPoint.mirror(m_entity->getStartpoint(), m_entity->getEndpoint());
                         previewRefPoint(otherPoint);
@@ -133,11 +131,11 @@ void RS_ActionDrawLineParallelThrough::onMouseMoveEvent([[maybe_unused]]int stat
     }
 }
 
-void RS_ActionDrawLineParallelThrough::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
+void RS_ActionDrawLineParallelThrough::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     switch (status) {
         case SetEntity: {
-            auto entity = catchEntityByEvent(e, RS2::ResolveAll);
-            if (entity != nullptr && g_supportedEntityTypes.contains(entity->rtti())){
+            const auto entity = catchEntityByEvent(e, RS2::ResolveAll);
+            if (entity != nullptr && g_supportedEntityTypes.contains(entity->rtti())) {
                 m_entity = entity;
                 setStatus(SetPos);
             }
@@ -152,19 +150,18 @@ void RS_ActionDrawLineParallelThrough::onMouseLeftButtonRelease(int status, LC_M
     }
 }
 
-void RS_ActionDrawLineParallelThrough::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionDrawLineParallelThrough::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     deletePreview();
-    if (m_entity != nullptr){
+    if (m_entity != nullptr) {
         m_entity = nullptr;
     }
     initPrevious(status);
 }
 
-void RS_ActionDrawLineParallelThrough::onCoordinateEvent(int status,[[maybe_unused]] bool isZero, const RS_Vector &mouse) {
+void RS_ActionDrawLineParallelThrough::onCoordinateEvent(const int status, [[maybe_unused]] bool isZero, const RS_Vector& coord) {
     switch (status) {
         case SetPos: {
-            auto pos = mouse;
-            *m_coord = pos;
+            *m_coord = coord;
             trigger();
             break;
         }
@@ -173,7 +170,7 @@ void RS_ActionDrawLineParallelThrough::onCoordinateEvent(int status,[[maybe_unus
     }
 }
 
-void RS_ActionDrawLineParallelThrough::updateMouseButtonHints(){
+void RS_ActionDrawLineParallelThrough::updateMouseButtonHints() {
     switch (getStatus()) {
         case SetEntity:
             updateMouseWidgetTRCancel(tr("Select entity"));
@@ -190,15 +187,15 @@ void RS_ActionDrawLineParallelThrough::updateMouseButtonHints(){
     }
 }
 
-bool RS_ActionDrawLineParallelThrough::doProcessCommand(int status, const QString &c) {
+bool RS_ActionDrawLineParallelThrough::doProcessCommand(const int status, const QString& command) {
     bool accept = false;
 
     switch (status) {
         case SetEntity:
         case SetPos: {
-            if (checkCommand("number", c)){
+            if (checkCommand("number", command)) {
                 deletePreview();
-                m_lastStatus = (Status) getStatus();
+                m_lastStatus = static_cast<Status>(getStatus());
                 setStatus(SetNumber);
                 accept = true;
             }
@@ -206,15 +203,17 @@ bool RS_ActionDrawLineParallelThrough::doProcessCommand(int status, const QStrin
         }
         case SetNumber: {
             bool ok;
-            int n = c.toInt(&ok);
-            if (ok){
+            const int n = command.toInt(&ok);
+            if (ok) {
                 accept = true;
-                if (n > 0 && n < 100){
+                if (n > 0 && n < 100) {
                     m_numberToCreate = n;
-                } else {
+                }
+                else {
                     commandMessage(tr("Not a valid number. Try 1..99"));
                 }
-            } else {
+            }
+            else {
                 commandMessage(tr("Not a valid expression"));
             }
             updateOptions();
@@ -227,7 +226,7 @@ bool RS_ActionDrawLineParallelThrough::doProcessCommand(int status, const QStrin
     return accept;
 }
 
-QStringList RS_ActionDrawLineParallelThrough::getAvailableCommands(){
+QStringList RS_ActionDrawLineParallelThrough::getAvailableCommands() {
     QStringList cmd;
     switch (getStatus()) {
         case SetEntity:
@@ -238,7 +237,8 @@ QStringList RS_ActionDrawLineParallelThrough::getAvailableCommands(){
     }
     return cmd;
 }
-RS2::CursorType RS_ActionDrawLineParallelThrough::doGetMouseCursor([[maybe_unused]] int status){
+
+RS2::CursorType RS_ActionDrawLineParallelThrough::doGetMouseCursor([[maybe_unused]] const int status) {
     switch (status) {
         case SetEntity:
             return RS2::SelectCursor;
@@ -250,14 +250,14 @@ RS2::CursorType RS_ActionDrawLineParallelThrough::doGetMouseCursor([[maybe_unuse
     }
 }
 
-int RS_ActionDrawLineParallelThrough::getNumber() const{
+int RS_ActionDrawLineParallelThrough::getNumber() const {
     return m_numberToCreate;
 }
 
-void RS_ActionDrawLineParallelThrough::setNumber(int n) {
+void RS_ActionDrawLineParallelThrough::setNumber(const int n) {
     m_numberToCreate = n;
 }
 
-LC_ActionOptionsWidget* RS_ActionDrawLineParallelThrough::createOptionsWidget(){
+LC_ActionOptionsWidget* RS_ActionDrawLineParallelThrough::createOptionsWidget() {
     return new QG_LineParallelThroughOptions();
 }

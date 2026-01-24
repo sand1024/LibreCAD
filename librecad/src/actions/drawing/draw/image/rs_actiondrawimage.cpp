@@ -39,48 +39,38 @@
 #include "rs_units.h"
 
 struct RS_ActionDrawImage::ImageData {
-	RS_ImageData data;
-	QImage img;
+    RS_ImageData data;
+    QImage img;
 };
 
 /**
  * Constructor.
  */
-RS_ActionDrawImage::RS_ActionDrawImage(LC_ActionContext *actionContext)
-    :LC_SingleEntityCreationAction("Image", actionContext, RS2::ActionDrawImage)
-    , m_imageData(std::make_unique<ImageData>())
-	, m_lastStatus(ShowDialog){
+RS_ActionDrawImage::RS_ActionDrawImage(LC_ActionContext* actionContext)
+    : LC_SingleEntityCreationAction("Image", actionContext, RS2::ActionDrawImage), m_imageData(std::make_unique<ImageData>()) {
 }
 
 RS_ActionDrawImage::~RS_ActionDrawImage() = default;
 
-
-void RS_ActionDrawImage::init(int status){
+void RS_ActionDrawImage::init(const int status) {
     RS_PreviewActionInterface::init(status);
     reset();
     m_imageData->data.file = RS_DIALOGFACTORY->requestImageOpenDialog();
-    if (!m_imageData->data.file.isEmpty()){
+    if (!m_imageData->data.file.isEmpty()) {
         m_imageData->img = QImage(m_imageData->data.file);
         setStatus(SetTargetPoint);
-    } else {
+    }
+    else {
         setFinished();
     }
 }
 
 void RS_ActionDrawImage::reset() const {
-	m_imageData->data = {
-				   0,
-				   {0.0,0.0},
-				   {1.0,0.0},
-				   {0.0,1.0},
-				   {1.0,1.0},
-				   "",
-				   50, 50, 0
-			   };
+    m_imageData->data = {0, {0.0, 0.0}, {1.0, 0.0}, {0.0, 1.0}, {1.0, 1.0}, "", 50, 50, 0};
 }
 
 RS_Entity* RS_ActionDrawImage::doTriggerCreateEntity() {
-    if (!m_imageData->data.file.isEmpty()){
+    if (!m_imageData->data.file.isEmpty()) {
         auto* img = new RS_Image(m_document, m_imageData->data);
         img->update();
         return img;
@@ -88,12 +78,12 @@ RS_Entity* RS_ActionDrawImage::doTriggerCreateEntity() {
     return nullptr;
 }
 
-void RS_ActionDrawImage::doTriggerCompletion([[maybe_unused]]bool success) {
+void RS_ActionDrawImage::doTriggerCompletion([[maybe_unused]] bool success) {
     m_viewport->zoomAuto();
-    finish(false);
+    finish();
 }
 
-bool RS_ActionDrawImage::doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) {
+bool RS_ActionDrawImage::doUpdateAngleByInteractiveInput(const QString& tag, const double angleRad) {
     if (tag == "angle") {
         setUcsAngleDegrees(RS_Math::rad2deg(angleRad));
         return true;
@@ -101,59 +91,60 @@ bool RS_ActionDrawImage::doUpdateAngleByInteractiveInput(const QString& tag, dou
     return false;
 }
 
-void RS_ActionDrawImage::onMouseMoveEvent(int status, LC_MouseEvent *e) {
-    if (status == SetTargetPoint){
-        bool snappedToRelZero = trySnapToRelZeroCoordinateEvent(e);
-        if (!snappedToRelZero){
+void RS_ActionDrawImage::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
+    if (status == SetTargetPoint) {
+        const bool snappedToRelZero = trySnapToRelZeroCoordinateEvent(e);
+        if (!snappedToRelZero) {
             m_imageData->data.insertionPoint = e->snapPoint;
             // fixme - ucs - review this code
-//RS_Creation creation(preview, nullptr, false);
+            //RS_Creation creation(preview, nullptr, false);
             //creation.createInsert(data);
-            double const w = m_imageData->img.width();
-            double const h = m_imageData->img.height();
+            const double w = m_imageData->img.width();
+            const double h = m_imageData->img.height();
             previewLine({0., 0.}, {w, 0.});
             previewLine({w, 0.}, {w, h});
             previewLine({w, h}, {0., h});
             previewLine({0., h}, {0., 0.});
 
-            m_preview->scale({0., 0.},
-                           {m_imageData->data.uVector.magnitude(), m_imageData->data.uVector.magnitude()});
+            m_preview->scale({0., 0.}, {m_imageData->data.uVector.magnitude(), m_imageData->data.uVector.magnitude()});
             m_preview->rotate({0., 0.}, m_imageData->data.uVector.angle());
             m_preview->move(m_imageData->data.insertionPoint);
         }
     }
 }
 
-void RS_ActionDrawImage::onMouseLeftButtonRelease([[maybe_unused]]int status, LC_MouseEvent *e) {
+void RS_ActionDrawImage::onMouseLeftButtonRelease([[maybe_unused]] int status, const LC_MouseEvent* e) {
     fireCoordinateEventForSnap(e);
 }
 
-void RS_ActionDrawImage::onMouseRightButtonRelease([[maybe_unused]]int status, [[maybe_unused]]LC_MouseEvent *e) {
-    finish(false);
+void RS_ActionDrawImage::onMouseRightButtonRelease([[maybe_unused]] int status, [[maybe_unused]] const LC_MouseEvent* e) {
+    finish();
 }
 
-void RS_ActionDrawImage::onCoordinateEvent([[maybe_unused]]int status, [[maybe_unused]]bool isZero, const RS_Vector &pos) {
+void RS_ActionDrawImage::onCoordinateEvent([[maybe_unused]] int status, [[maybe_unused]] bool isZero, const RS_Vector& pos) {
     m_imageData->data.insertionPoint = pos;
     trigger();
 }
 
-bool RS_ActionDrawImage::doProcessCommand(int status, const QString &c) {
+bool RS_ActionDrawImage::doProcessCommand(int status, const QString& command) {
     bool accept = false;
     switch (status) {
         case SetTargetPoint: {
-            if (checkCommand("angle", c)){
+            if (checkCommand("angle", command)) {
                 deletePreview();
-                m_lastStatus = (Status) status;
+                m_lastStatus = static_cast<Status>(status);
                 setStatus(SetAngle);
                 accept = true;
-            } else if (checkCommand("factor", c)){
+            }
+            else if (checkCommand("factor", command)) {
                 deletePreview();
-                m_lastStatus = (Status) status;
+                m_lastStatus = static_cast<Status>(status);
                 setStatus(SetFactor);
                 accept = true;
-            } else if (checkCommand("dpi", c)){
+            }
+            else if (checkCommand("dpi", command)) {
                 deletePreview();
-                m_lastStatus = (Status) status;
+                m_lastStatus = static_cast<Status>(status);
                 setStatus(SetDPI);
                 accept = true;
             }
@@ -161,11 +152,12 @@ bool RS_ActionDrawImage::doProcessCommand(int status, const QString &c) {
         }
         case SetAngle: {
             double wcsAngle;
-            bool ok = parseToWCSAngle(c, wcsAngle);
-            if (ok){
+            const bool ok = parseToWCSAngle(command, wcsAngle);
+            if (ok) {
                 setAngle(wcsAngle);
                 accept = true;
-            } else {
+            }
+            else {
                 commandMessage(tr("Not a valid expression"));
             }
             updateOptions();
@@ -174,25 +166,27 @@ bool RS_ActionDrawImage::doProcessCommand(int status, const QString &c) {
         }
         case SetFactor: {
             bool ok;
-            double f = RS_Math::eval(c, &ok);
-            if (ok){
+            const double f = RS_Math::eval(command, &ok);
+            if (ok) {
                 setFactor(f);
                 accept = true;
-            } else {
+            }
+            else {
                 commandMessage(tr("Not a valid expression"));
             }
             updateOptions();
             setStatus(m_lastStatus);
             break;
         }
-        case SetDPI : {
+        case SetDPI: {
             bool ok;
-            double dpi = RS_Math::eval(c, &ok);
+            const double dpi = RS_Math::eval(command, &ok);
 
-            if (ok){
+            if (ok) {
                 setFactor(RS_Units::dpiToScale(dpi, m_document->getGraphicUnit()));
                 accept = true;
-            } else {
+            }
+            else {
                 commandMessage(tr("Not a valid expression"));
             }
             updateOptions();
@@ -205,44 +199,44 @@ bool RS_ActionDrawImage::doProcessCommand(int status, const QString &c) {
     return accept;
 }
 
-double RS_ActionDrawImage::getUcsAngleDegrees() const{
+double RS_ActionDrawImage::getUcsAngleDegrees() const {
     return toUCSBasisAngleDegrees(m_imageData->data.uVector.angle());
 }
 
-void RS_ActionDrawImage::setUcsAngleDegrees(double ucsRelAngleDegrees) const {
-    double wcsAngle = toWorldAngleFromUCSBasisDegrees(ucsRelAngleDegrees);
+void RS_ActionDrawImage::setUcsAngleDegrees(const double ucsRelAngleDegrees) const {
+    const double wcsAngle = toWorldAngleFromUCSBasisDegrees(ucsRelAngleDegrees);
     setAngle(wcsAngle);
 }
 
-void RS_ActionDrawImage::setAngle(double wcsAngle) const{
-    double l = m_imageData->data.uVector.magnitude();
+void RS_ActionDrawImage::setAngle(const double wcsAngle) const {
+    const double l = m_imageData->data.uVector.magnitude();
     m_imageData->data.uVector.setPolar(l, wcsAngle);
     m_imageData->data.vVector.setPolar(l, wcsAngle + M_PI_2);
 }
 
-double RS_ActionDrawImage::getFactor() const{
+double RS_ActionDrawImage::getFactor() const {
     return m_imageData->data.uVector.magnitude();
 }
 
-void RS_ActionDrawImage::setFactor(double f) const{
-    double a = m_imageData->data.uVector.angle();
+void RS_ActionDrawImage::setFactor(const double f) const {
+    const double a = m_imageData->data.uVector.angle();
     m_imageData->data.uVector.setPolar(f, a);
     m_imageData->data.vVector.setPolar(f, a + M_PI_2);
 }
 
-double RS_ActionDrawImage::dpiToScale(double dpi) const{
+double RS_ActionDrawImage::dpiToScale(const double dpi) const {
     return RS_Units::dpiToScale(dpi, m_document->getGraphicUnit());
 }
 
-double RS_ActionDrawImage::scaleToDpi(double scale) const{
+double RS_ActionDrawImage::scaleToDpi(const double scale) const {
     return RS_Units::scaleToDpi(scale, m_document->getGraphicUnit());
 }
 
-RS2::CursorType RS_ActionDrawImage::doGetMouseCursor([[maybe_unused]] int status){
+RS2::CursorType RS_ActionDrawImage::doGetMouseCursor([[maybe_unused]] int status) {
     return RS2::CadCursor;
 }
 
-QStringList RS_ActionDrawImage::getAvailableCommands(){
+QStringList RS_ActionDrawImage::getAvailableCommands() {
     QStringList cmd;
 
     switch (getStatus()) {
@@ -257,7 +251,7 @@ QStringList RS_ActionDrawImage::getAvailableCommands(){
     return cmd;
 }
 
-void RS_ActionDrawImage::updateMouseButtonHints(){
+void RS_ActionDrawImage::updateMouseButtonHints() {
     switch (getStatus()) {
         case SetTargetPoint:
             updateMouseWidgetTRCancel(tr("Specify reference point"), MOD_SHIFT_RELATIVE_ZERO);

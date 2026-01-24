@@ -42,9 +42,9 @@ public:
     explicit RS_ActionPolylineEquidistant(LC_ActionContext *actionContext);
     ~RS_ActionPolylineEquidistant() override;
     void init(int status) override;
-    void setDist(const double &d){m_dist = d;}
+    void setDist(const double d){m_dist = d;}
     double getDist() const{return m_dist;}
-    void setNumber(unsigned n){m_number = n;}
+    void setNumber(const unsigned n){m_number = n;}
     int getNumber() const{return m_number;}
 protected:
     /**
@@ -59,15 +59,15 @@ protected:
     int m_number = 0;
     bool m_bRightSide = false;
 
-    RS_Entity *calculateOffset(RS_Entity *newEntity, RS_Entity *orgEntity, double dist) const;
-    RS_Vector calculateIntersection(RS_Entity *first, RS_Entity *last);
-    void makeContour(RS_Polyline *originalPolyline, bool contourOnRightSide, QList<RS_Polyline *> &createdPolylines);
+    RS_Entity *calculateOffset(RS_Entity *newEntity, RS_Entity *orgEntity, double distance) const;
+    RS_Vector calculateIntersection(const RS_Entity *first, const RS_Entity *last);
+    void makeContour(const RS_Polyline* originalPolyline, bool contourOnRightSide, QList<RS_Polyline *> &createdPolylines);
     bool isPointOnRightSideOfPolyline(const RS_Polyline *polyline, const RS_Vector &snapPoint) const;
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
-    void setPolylineToModify(LC_MouseEvent* e, RS_Entity* en);
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
+    void setPolylineToModify(const LC_MouseEvent* e, RS_Entity* en);
     void updateMouseButtonHints() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;

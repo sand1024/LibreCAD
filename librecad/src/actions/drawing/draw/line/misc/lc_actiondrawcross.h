@@ -34,18 +34,18 @@ struct LC_CrossData;
 class LC_ActionDrawCross:public LC_AbstractActionWithPreview {
 Q_OBJECT
 public:
-    LC_ActionDrawCross(LC_ActionContext *actionContext);
+    explicit LC_ActionDrawCross(LC_ActionContext *actionContext);
     ~LC_ActionDrawCross() override;
 
-    double getLenX() const {return m_lenX;};
-    double getLenY() const {return m_lenY;};
-    double getCrossAngleDegrees() const{return m_ucsBasisAngleDegrees;};
-    int getCrossMode() const{return m_crossSizeMode;};
+    double getLenX() const {return m_lenX;}
+    double getLenY() const {return m_lenY;}
+    double getCrossAngleDegrees() const{return m_ucsBasisAngleDegrees;}
+    int getCrossMode() const{return m_crossSizeMode;}
 
-    void setXLength(double d) {m_lenX = d;};
-    void setYLength(double d) {m_lenY = d;};
-    void setCrossAngleDegrees(double d) { m_ucsBasisAngleDegrees = d;};
-    void setCrossMode(int i) {m_crossSizeMode = i;};
+    void setXLength(const double d) {m_lenX = d;}
+    void setYLength(const double d) {m_lenY = d;}
+    void setCrossAngleDegrees(const double d) { m_ucsBasisAngleDegrees = d;}
+    void setCrossMode(const int i) {m_crossSizeMode = i;}
 protected:
     enum Status {
         SetEntity = InitialActionStatus     /**< Choose the circle / arc. */
@@ -93,11 +93,11 @@ protected:
     bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx) override;
     bool doCheckMayTrigger() override;
     RS_Vector doGetRelativeZeroAfterTrigger() override;
-    void doOnLeftMouseButtonRelease(LC_MouseEvent *e, int status, const RS_Vector &snapPoint) override;
-    void doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
+    void doOnLeftMouseButtonRelease(const LC_MouseEvent* e, int status, const RS_Vector &snapPoint) override;
+    void doPreparePreviewEntities(const LC_MouseEvent* e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
     void doAfterTrigger() override;
     RS2::CursorType doGetMouseCursor(int status) override;
-    bool doCheckMayDrawPreview(LC_MouseEvent *event, int status) override;
+    bool doCheckMayDrawPreview(const LC_MouseEvent* event, int status) override;
     bool doCheckMayTriggerOnInit(int status) override;
     bool isAcceptSelectedEntityToTriggerOnInit(RS_Entity *pEntity) override;
     void doCreateEntitiesOnTrigger(RS_Entity *en, QList<RS_Entity *> &list) override;
@@ -110,4 +110,4 @@ protected:
 
 };
 
-#endif //LC_ACTIONDRAWCROSS_H
+#endif

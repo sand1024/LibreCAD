@@ -28,8 +28,8 @@
 #define RS_ACTIONDEFAULT_H
 
 #include <memory>
-#include "lc_overlayboxaction.h"
 
+#include "lc_overlayboxaction.h"
 
 /**
  * This action class can handle user events to select all entities.
@@ -39,14 +39,13 @@
 //todo - joint move of endpoint ref? So if moving ref will move refs for adjusent entities
 class RS_ActionDefault : public LC_OverlayBoxAction {
     Q_OBJECT
-
     using BASE_CLASS = RS_PreviewActionInterface;
 
 public:
     explicit RS_ActionDefault(LC_ActionContext *actionContext);
     ~RS_ActionDefault() override;
 
-    void finish(bool) override{}
+    void finish() override{}
 
     void init(int status) override;
     void resume() override;
@@ -58,7 +57,7 @@ public:
 
     // clear temporary entities for highlighting
     void clearHighLighting();
-    enum RS2::EntityType getTypeToSelect() const;
+    RS2::EntityType getTypeToSelect() const;
 protected:
     /**
     * Action States.
@@ -77,36 +76,36 @@ protected:
     void initFromSettings() override;
     void checkSupportOfQuickEntityInfo();
     void clearQuickInfoWidget();
-    void updateQuickInfoWidget(RS_Entity *pEntity);
+    void updateQuickInfoWidget(const RS_Entity *pEntity);
     void goToNeutralStatus();
     RS2::CursorType doGetMouseCursor(int status) override;
 
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
-    void onMouseLeftButtonPress(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonPress(int status, LC_MouseEvent *e) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
+    void onMouseLeftButtonPress(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonPress(int status, const LC_MouseEvent* e) override;
 
-    void highlightHoveredEntities(LC_MouseEvent* currentMousePosition);
-    void highlightEntity(RS_Entity* entity) const;
+    void highlightHoveredEntities(const LC_MouseEvent* event);
+    void highlightEntity(const RS_Entity* entity) const;
     void updateMouseButtonHints() override;
     void createEditedLineDescription(RS_Line* clone, bool ctrlPressed, bool shiftPressed) const;
-    void createEditedArcDescription(RS_Arc* clone, bool ctrlPressed, bool shiftPressed) const;
-    void createEditedCircleDescription(RS_Circle* clone, bool ctrlPressed, bool shiftPressed) const;
-    void onMouseMovingRefCompleted(LC_MouseEvent* e);
-    void onMouseMovingCompleted(LC_MouseEvent* e);
+    void createEditedArcDescription(const RS_Arc* clone, bool ctrlPressed, bool shiftPressed) const;
+    void createEditedCircleDescription(const RS_Circle* clone, bool ctrlPressed, bool shiftPressed) const;
+    void onMouseMovingRefCompleted(const LC_MouseEvent* e);
+    void onMouseMovingCompleted(const LC_MouseEvent* e);
     bool isShowEntityDescriptionOnHighlight() const;
     void forceUpdateInfoCursor(const LC_MouseEvent *event) const;
-    RS_Entity* getClone(RS_Entity* e);
-    bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& modificationData) override {return true;};
+    RS_Entity* getClone(const RS_Entity* e);
+    bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& modificationData) override {return true;}
 private:
     struct ActionData;
     std::unique_ptr<ActionData> m_actionData;
     RS2::SnapRestriction m_snapRestriction = RS2::RestrictNothing;
     RS2::EntityType m_typeToSelect = RS2::EntityType::EntityUnknown;
 
-    bool allowEntityQuickInfoForCTRL = false;
-    bool allowEntityQuickInfoAuto = false;
+    bool m_allowEntityQuickInfoForCtrl = false;
+    bool m_allowEntityQuickInfoAuto = false;
     bool m_completeMovingByMousePressed = false;
     bool m_movingJustCompleted = false;
 };

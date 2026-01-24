@@ -28,9 +28,6 @@
 
 #include "lc_actioninfomessagebuilder.h"
 #include "lc_rotate2options.h"
-#include "rs_debug.h"
-#include "rs_dialogfactory.h"
-#include "rs_dialogfactoryinterface.h"
 #include "rs_modification.h"
 #include "rs_preview.h"
 
@@ -46,7 +43,7 @@ RS_ActionModifyRotate2::RS_ActionModifyRotate2(LC_ActionContext *actionContext)
 
 RS_ActionModifyRotate2::~RS_ActionModifyRotate2() = default;
 
-void RS_ActionModifyRotate2::init(int status) {
+void RS_ActionModifyRotate2::init(const int status) {
     LC_ActionModifyBase::init(status);
 }
 
@@ -55,7 +52,7 @@ bool RS_ActionModifyRotate2::doTriggerModifications(LC_DocumentModificationBatch
     return RS_Modification::rotate2(*m_actionData, m_selectedEntities,false, ctx);
 }
 
-void RS_ActionModifyRotate2::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+void RS_ActionModifyRotate2::doTriggerSelectionUpdate(const bool keepSelected, const LC_DocumentModificationBatch& ctx) {
     if (m_actionData->keepOriginals) {
         unselect(m_selectedEntities);
     }
@@ -65,10 +62,10 @@ void RS_ActionModifyRotate2::doTriggerSelectionUpdate(bool keepSelected, const L
 }
 
 void RS_ActionModifyRotate2::doTriggerCompletion([[maybe_unused]]bool success) {
-    finish(false);
+    finish();
 }
 
-bool RS_ActionModifyRotate2::doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) {
+bool RS_ActionModifyRotate2::doUpdateAngleByInteractiveInput(const QString& tag, const double angleRad) {
     if (tag == "angle") {
         setAngle1(angleRad);
         return true;
@@ -80,7 +77,7 @@ bool RS_ActionModifyRotate2::doUpdateAngleByInteractiveInput(const QString& tag,
     return false;
 }
 
-void RS_ActionModifyRotate2::onMouseMoveEventSelected(int status, LC_MouseEvent *e) {
+void RS_ActionModifyRotate2::onMouseMoveEventSelected(const int status, const LC_MouseEvent* e) {
     RS_Vector mouse = e->snapPoint;
     switch (status) {
         case SetReferencePoint1: {
@@ -117,18 +114,20 @@ void RS_ActionModifyRotate2::onMouseMoveEventSelected(int status, LC_MouseEvent 
     }
 }
 
-void RS_ActionModifyRotate2::onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent *e) {
+void RS_ActionModifyRotate2::onMouseLeftButtonReleaseSelected(const int status, const LC_MouseEvent* e) {
     RS_Vector snap = e->snapPoint;
     switch (status){
         case SetReferencePoint2: {
             snap = getSnapAngleAwarePoint(e, m_actionData->center1, snap, false);
             break;
         }
+        default:
+            break;
     }
     fireCoordinateEvent(snap);
 }
 
-void RS_ActionModifyRotate2::onMouseRightButtonReleaseSelected(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionModifyRotate2::onMouseRightButtonReleaseSelected(const int status, [[maybe_unused]] const LC_MouseEvent* event) {
     deletePreview();
     switch (status) {
         case SetReferencePoint2: {
@@ -144,7 +143,7 @@ void RS_ActionModifyRotate2::onMouseRightButtonReleaseSelected(int status, [[may
     }
 }
 
-void RS_ActionModifyRotate2::onCoordinateEvent(int status, [[maybe_unused]]bool isZero, const RS_Vector &pos) {
+void RS_ActionModifyRotate2::onCoordinateEvent(const int status, [[maybe_unused]]bool isZero, const RS_Vector &pos) {
     switch (status) {
         case SetReferencePoint1: {
             m_actionData->center1 = pos;
@@ -171,7 +170,7 @@ void RS_ActionModifyRotate2::updateMouseButtonHintsForSelection() {
                               MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Rotate 2 Axis immediately after selection")));
 }
 
-void RS_ActionModifyRotate2::updateMouseButtonHintsForSelected(int status) {
+void RS_ActionModifyRotate2::updateMouseButtonHintsForSelected(const int status) {
     switch (status) {
         case SetReferencePoint1:
             updateMouseWidgetTRCancel(tr("Specify absolute reference point"), MOD_SHIFT_RELATIVE_ZERO);
@@ -212,11 +211,11 @@ LC_ActionOptionsWidget *RS_ActionModifyRotate2::createOptionsWidget() {
     return new LC_Rotate2Options();
 }
 
-void RS_ActionModifyRotate2::setAngle2(double angleRad) const {
+void RS_ActionModifyRotate2::setAngle2(const double angleRad) const {
     m_actionData->angle2 = toWorldAngleFromUCSBasis(angleRad);
 }
 
-void RS_ActionModifyRotate2::setAngle1(double angleRad) const {
+void RS_ActionModifyRotate2::setAngle1(const double angleRad) const {
     m_actionData->angle1 = toWorldAngleFromUCSBasis(angleRad);
 }
 
@@ -228,7 +227,7 @@ double RS_ActionModifyRotate2::getAngle2() const {
     return toUCSBasisAngle(m_actionData->angle2);
 }
 
-void RS_ActionModifyRotate2::setUseSameAngle2ForCopies(bool b) const {
+void RS_ActionModifyRotate2::setUseSameAngle2ForCopies(const bool b) const {
     m_actionData->sameAngle2ForCopies = b;
 }
 
@@ -236,7 +235,7 @@ bool RS_ActionModifyRotate2::isUseSameAngle2ForCopies() const {
     return m_actionData->sameAngle2ForCopies;
 }
 
-void RS_ActionModifyRotate2::setMirrorAngles(bool b) const {
+void RS_ActionModifyRotate2::setMirrorAngles(const bool b) const {
     m_actionData->mirrorAngles = b;
 }
 

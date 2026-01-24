@@ -32,8 +32,8 @@ public:
     explicit LC_ActionSplineAppendPoint(LC_ActionContext *actionContext);
     ~LC_ActionSplineAppendPoint() override = default;
 protected:
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMove(RS_Vector mouse, int status, LC_MouseEvent *e) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMove(RS_Vector mouse, int status, const LC_MouseEvent* e) override;
     void setEntityToModify(RS_Entity* entity) override;
     void updateMouseButtonHints() override;
     bool mayModifySplineEntity(RS_Entity *e) override;
@@ -42,4 +42,4 @@ protected:
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
 };
 
-#endif // LC_ACTIONSPLINEAPPENDPOINT_H
+#endif

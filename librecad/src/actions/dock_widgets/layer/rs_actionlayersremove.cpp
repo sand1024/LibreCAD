@@ -51,10 +51,10 @@ void RS_ActionLayersRemove::trigger() {
             // m_graphic->getLayerList()->getLayerWitget()->slotUpdateLayerList();
         }
     }
-    finish(false);
+    finish();
 }
 
-void RS_ActionLayersRemove::init(int status) {
+void RS_ActionLayersRemove::init(const int status) {
     RS_ActionInterface::init(status);
     trigger();
 }

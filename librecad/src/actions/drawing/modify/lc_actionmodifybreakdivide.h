@@ -50,9 +50,9 @@ public:
     explicit LC_ActionModifyBreakDivide(LC_ActionContext *actionContext);
 
     bool isRemoveSegment() const{return m_removeSegments;}
-    void setRemoveSegment(bool value){m_removeSegments = value;};
-    bool isRemoveSelected() const{return m_removeSelected;};
-    void setRemoveSelected(bool value){m_removeSelected = value;}
+    void setRemoveSegment(const bool value){m_removeSegments = value;}
+    bool isRemoveSelected() const{return m_removeSelected;}
+    void setRemoveSelected(const bool value){m_removeSelected = value;}
 protected:
     /**
      * Flag that defines whether we should remove segments of entity or just divide entity
@@ -66,13 +66,13 @@ protected:
 
     TriggerData* m_triggerData = nullptr;
 
-    bool doCheckMayDrawPreview(LC_MouseEvent *event, int status) override;
-    void doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
+    bool doCheckMayDrawPreview(const LC_MouseEvent* event, int status) override;
+    void doPreparePreviewEntities(const LC_MouseEvent* e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    void createEntitiesForLine(RS_Line *line, RS_Vector &snap, QList<RS_Entity *> &list, bool preview) const;
-    void createEntitiesForCircle(RS_Circle *circle, RS_Vector &vector, QList<RS_Entity *> &list, bool preview) const;
+    void createEntitiesForLine(const RS_Line *line, const RS_Vector &snap, QList<RS_Entity *> &list, bool preview) const;
+    void createEntitiesForCircle(const RS_Circle* circle, RS_Vector &snap, QList<RS_Entity *> &list, bool preview) const;
     void createEntitiesForArc(RS_Arc *arc, RS_Vector &snap, QList<RS_Entity *> &list, bool preview) const;
-    void doOnLeftMouseButtonRelease(LC_MouseEvent *e, int status, const RS_Vector &snapPoint) override;
+    void doOnLeftMouseButtonRelease(const LC_MouseEvent* e, int status, const RS_Vector &snapPoint) override;
     bool doCheckMayTrigger() override;
     bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx) override;
     RS2::CursorType doGetMouseCursor(int status) override;
@@ -80,9 +80,9 @@ protected:
     void createArcEntity(const RS_ArcData &arcData, bool preview, const RS_Pen &pen, RS_Layer *layer, QList<RS_Entity *> &list) const;
     void createLineEntity(bool preview, const RS_Vector &start, const RS_Vector &end, const RS_Pen &pen, RS_Layer *layer, QList<RS_Entity *> &list) const;
     void doAfterTrigger() override;
-    void doFinish(bool updateTB) override;
-    RS_Vector doGetMouseSnapPoint(LC_MouseEvent *e) override;
+    void doFinish() override;
+    RS_Vector doGetMouseSnapPoint(const LC_MouseEvent* e) override;
     void updateMouseButtonHints() override;
 };
 
-#endif // LC_ACTIONMODIFYBREAKOUTLINE_H
+#endif

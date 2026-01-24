@@ -31,7 +31,7 @@ class LC_ActionDrawLinePolygon4:public LC_ActionDrawLinePolygonBase {
 public:
     explicit LC_ActionDrawLinePolygon4(LC_ActionContext *actionContext);
     ~LC_ActionDrawLinePolygon4() override;
-    void setVertexVertexMode(bool val){m_useVertexVertexMode = val;}
+    void setVertexVertexMode(const bool val){m_useVertexVertexMode = val;}
     bool isVertexVertexMode() const {return m_useVertexVertexMode;}
 protected:
     bool m_useVertexVertexMode = false;

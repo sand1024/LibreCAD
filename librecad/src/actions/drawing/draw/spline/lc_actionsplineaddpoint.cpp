@@ -43,7 +43,7 @@ void LC_ActionSplineAddPoint::doTriggerCompletion([[maybe_unused]]bool success) 
     setStatus(SetBeforeControlPoint);
 }
 
-void LC_ActionSplineAddPoint::onMouseMove(RS_Vector mouse, int status, LC_MouseEvent *e) {
+void LC_ActionSplineAddPoint::onMouseMove(const RS_Vector mouse, const int status, const LC_MouseEvent* e) {
     switch (status) {
         case SetEntity: {
             const auto entity = catchEntityByEvent(e, g_enTypeList);
@@ -76,7 +76,7 @@ void LC_ActionSplineAddPoint::onMouseMove(RS_Vector mouse, int status, LC_MouseE
                     insertAfter = true;
                 }
             }
-            RS_Entity *previewUpdatedEntity = createModifiedSplineEntity(m_entityToModify, mouse, insertAfter);
+            const RS_Entity *previewUpdatedEntity = createModifiedSplineEntity(m_entityToModify, mouse, insertAfter);
             if (previewUpdatedEntity != nullptr) {
                 previewEntity(previewUpdatedEntity);
             }
@@ -94,11 +94,11 @@ void LC_ActionSplineAddPoint::setEntityToModify(RS_Entity* entity) {
     setStatus(SetBeforeControlPoint);
 }
 
-bool LC_ActionSplineAddPoint::mayModifySplineEntity(RS_Entity* e) {
-    return e != nullptr && g_enTypeList.contains(e->rtti());
+bool LC_ActionSplineAddPoint::mayModifySplineEntity(RS_Entity* entity) {
+    return entity != nullptr && g_enTypeList.contains(entity->rtti());
 }
 
-void LC_ActionSplineAddPoint::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
+void LC_ActionSplineAddPoint::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     switch (status){
         case SetEntity:{
             const auto entity = catchEntityByEvent(e, g_enTypeList);
@@ -125,24 +125,25 @@ void LC_ActionSplineAddPoint::onMouseLeftButtonRelease(int status, LC_MouseEvent
                 }
             }
             fireCoordinateEventForSnap(e);
+            break;
         }
         default:
             break;
     }
 }
 
-RS_Entity *LC_ActionSplineAddPoint::createModifiedSplineEntity(RS_Entity *e, RS_Vector controlPoint, bool adjustPosition) {
+RS_Entity *LC_ActionSplineAddPoint::createModifiedSplineEntity(RS_Entity *e, const RS_Vector controlPoint, const bool adjustPosition) {
     RS_Entity* result = nullptr;
     switch (e->rtti()){
         case RS2::EntitySplinePoints:{
-            auto* clone = dynamic_cast<LC_SplinePoints *>(e->clone());
+            auto* clone = static_cast<LC_SplinePoints *>(e->clone());
             LC_SplinePointsData &data = clone->getData();
-            const unsigned int controlPointsCount = data.controlPoints.size();
-            const unsigned int splinePointsCount = data.splinePoints.size();
+            const size_t controlPointsCount = data.controlPoints.size();
+            const size_t splinePointsCount = data.splinePoints.size();
             const int insertIndexAdjustment = adjustPosition ? 1 : 0;
             if (splinePointsCount > 0){
-                for (unsigned int i = 0; i < splinePointsCount; i++) {
-                    RS_Vector cp = data.splinePoints.at(i);
+                for (size_t i = 0; i < splinePointsCount; i++) {
+                    const RS_Vector cp = data.splinePoints.at(i);
                     if (cp == m_selectedVertexPoint) {
                         data.splinePoints.insert(data.splinePoints.begin()+ i + insertIndexAdjustment, controlPoint);
                         break;
@@ -150,8 +151,8 @@ RS_Entity *LC_ActionSplineAddPoint::createModifiedSplineEntity(RS_Entity *e, RS_
                 }
             }
             else{
-                for (unsigned int i = 0; i < controlPointsCount; i++) {
-                    RS_Vector cp = data.controlPoints.at(i);
+                for (size_t i = 0; i < controlPointsCount; i++) {
+                    const RS_Vector cp = data.controlPoints.at(i);
                     if (cp == m_selectedVertexPoint) {
                         data.controlPoints.insert(data.controlPoints.begin()+ i + insertIndexAdjustment, controlPoint);
                         break;
@@ -164,12 +165,12 @@ RS_Entity *LC_ActionSplineAddPoint::createModifiedSplineEntity(RS_Entity *e, RS_
             break;
         }
         case RS2::EntitySpline:{
-            const auto* spline = dynamic_cast<RS_Spline *>(e);
+            const auto* spline = static_cast<RS_Spline *>(e);
             RS_SplineData data = spline->getData();
-            const unsigned int controlPointsCount = data.controlPoints.size();
+            const size_t controlPointsCount = data.controlPoints.size();
             const int insertIndexAdjustment = adjustPosition ? 1 : 0;
-            for (unsigned int i = 0; i < controlPointsCount; i++) {
-                RS_Vector cp = data.controlPoints.at(i);
+            for (size_t i = 0; i < controlPointsCount; i++) {
+                const RS_Vector cp = data.controlPoints.at(i);
                 if (cp == m_selectedVertexPoint) {
                     data.controlPoints.insert(data.controlPoints.begin()+ i + insertIndexAdjustment, controlPoint);
                     break;
@@ -192,7 +193,7 @@ RS_Entity *LC_ActionSplineAddPoint::createModifiedSplineEntity(RS_Entity *e, RS_
     return result;
 }
 
-void LC_ActionSplineAddPoint::onCoordinateEvent(int status, [[maybe_unused]]bool isZero, const RS_Vector &pos) {
+void LC_ActionSplineAddPoint::onCoordinateEvent(const int status, [[maybe_unused]]bool isZero, const RS_Vector &pos) {
     if (status == SetControlPoint){
         m_vertexPoint = pos;
         trigger();

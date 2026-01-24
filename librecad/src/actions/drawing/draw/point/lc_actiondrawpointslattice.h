@@ -39,9 +39,9 @@ public:
     void setAdjustLastPointToFirst(bool adjustLastPointToFirst);
 protected:
     LC_ActionOptionsWidget *createOptionsWidget() override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     RS2::CursorType doGetMouseCursor(int status) override;
     void updateMouseButtonHints() override;
     bool doProcessCommand(int status, const QString &command) override;
@@ -65,11 +65,11 @@ protected:
 
     bool m_adjustLastPointToFirst = false;
     int m_majorStatus;
-    void createPointsLine(RS_Vector start, RS_Vector end, int count, QVector<RS_Vector> &points);
-    void createPointsLattice(RS_Vector vector, QVector<RS_Vector> &points);
-    RS_Vector getLastPointPosition(RS_Vector &pos, bool alternate) const;
+    void createPointsLine(const RS_Vector& start, const RS_Vector& end, int count, QVector<RS_Vector> &points);
+    void createPointsLattice(const RS_Vector& lastPoint, QVector<RS_Vector> &pointsToCreate);
+    RS_Vector getLastPointPosition(RS_Vector &pos, bool alternateLastPointAdjustment) const;
    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
    void doTriggerCompletion(bool success) override;
 };
 
-#endif // LC_ACTIONDRAWPOINTSLATTICE_H
+#endif

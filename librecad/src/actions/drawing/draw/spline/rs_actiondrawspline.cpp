@@ -27,7 +27,6 @@
 #include "rs_actiondrawspline.h"
 
 #include "qg_splineoptions.h"
-#include "rs_debug.h"
 #include "rs_document.h"
 #include "rs_spline.h"
 
@@ -52,7 +51,7 @@ struct RS_ActionDrawSpline::ActionData {
 //QList<double> bHistory;
 };
 
-RS_ActionDrawSpline::RS_ActionDrawSpline(LC_ActionContext *actionContext, RS2::ActionType actionType)
+RS_ActionDrawSpline::RS_ActionDrawSpline(LC_ActionContext *actionContext, const RS2::ActionType actionType)
     :LC_SingleEntityCreationAction("Draw splines",actionContext, actionType)
     , m_actionData(std::make_unique<ActionData>()){
     reset();
@@ -65,7 +64,7 @@ void RS_ActionDrawSpline::reset() const {
     m_actionData->history.clear();
 }
 
-void RS_ActionDrawSpline::init(int status){
+void RS_ActionDrawSpline::init(const int status){
     RS_PreviewActionInterface::init(status);
     reset();
 }
@@ -83,7 +82,7 @@ void RS_ActionDrawSpline::doTriggerCompletion([[maybe_unused]]bool success) {
     m_actionData->spline = nullptr;
 }
 
-void RS_ActionDrawSpline::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void RS_ActionDrawSpline::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     const RS_Vector mouse = e->snapPoint;
     switch (status) {
         case SetStartPoint: {
@@ -113,41 +112,43 @@ void RS_ActionDrawSpline::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     }
 }
 
-void RS_ActionDrawSpline::onMouseLeftButtonRelease([[maybe_unused]]int status, LC_MouseEvent *e) {
+void RS_ActionDrawSpline::onMouseLeftButtonRelease([[maybe_unused]]int status, const LC_MouseEvent* e) {
     fireCoordinateEventForSnap(e);
 }
 
-void RS_ActionDrawSpline::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
-    if (status == SetNextPoint && m_actionData->spline){
-        const size_t nPoints = m_actionData->spline->getNumberOfControlPoints();
-        const bool isClosed = m_actionData->spline->isClosed();
+void RS_ActionDrawSpline::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
+    const auto spline = m_actionData->spline;
+    if (status == SetNextPoint && spline != nullptr){
+        const size_t nPoints = spline->getNumberOfControlPoints();
+        const bool isClosed = spline->isClosed();
         // Issue #1689: allow closed splines by 3 control points
-        if (nPoints > size_t(m_actionData->spline->getDegree()) || (isClosed && nPoints == 3))
+        if (nPoints > static_cast<size_t>(spline->getDegree()) || (isClosed && nPoints == 3)) {
             trigger();
+        }
     }
     deletePreview();
     initPrevious(status);
 }
 
-void RS_ActionDrawSpline::onCoordinateEvent(int status,  [[maybe_unused]]bool isZero, const RS_Vector &mouse) {
+void RS_ActionDrawSpline::onCoordinateEvent(const int status,  [[maybe_unused]]bool isZero, const RS_Vector &coord) {
     switch (status) {
         case SetStartPoint: {
             m_actionData->history.clear();
-            m_actionData->history.append(mouse);
+            m_actionData->history.append(coord);
             if (!m_actionData->spline){
                 m_actionData->spline = new RS_Spline(m_document, m_actionData->data);
-                m_actionData->spline->addControlPoint(mouse);
+                m_actionData->spline->addControlPoint(coord);
             }
             setStatus(SetNextPoint);
-            moveRelativeZero(mouse);
+            moveRelativeZero(coord);
             updateMouseButtonHints();
             break;
         }
         case SetNextPoint: {
-            moveRelativeZero(mouse);
-            m_actionData->history.append(mouse);
+            moveRelativeZero(coord);
+            m_actionData->history.append(coord);
             if (m_actionData->spline){
-                m_actionData->spline->addControlPoint(mouse);
+                m_actionData->spline->addControlPoint(coord);
                 drawPreview();
                 drawSnapper();
             }
@@ -159,7 +160,7 @@ void RS_ActionDrawSpline::onCoordinateEvent(int status,  [[maybe_unused]]bool is
     }
 }
 
-bool RS_ActionDrawSpline::doProcessCommand(int status, const QString &c) {
+bool RS_ActionDrawSpline::doProcessCommand(const int status, const QString &command) {
     bool accept = false;
     switch (status) {
         case SetStartPoint: {
@@ -171,7 +172,7 @@ bool RS_ActionDrawSpline::doProcessCommand(int status, const QString &c) {
                 updateMouseButtonHints();
                 return;
             }*/
-            if (checkCommand("undo", c)){
+            if (checkCommand("undo", command)){
                 undo();
                 updateMouseButtonHints();
                 accept = true;
@@ -279,7 +280,7 @@ void RS_ActionDrawSpline::undo(){
     }
 }
 
-void RS_ActionDrawSpline::setDegree(int deg){
+void RS_ActionDrawSpline::setDegree(const int deg){
     m_actionData->data.degree = deg;
     if (m_actionData->spline){
         m_actionData->spline->setDegree(deg);
@@ -290,7 +291,7 @@ int RS_ActionDrawSpline::getDegree() const {
     return m_actionData->data.degree;
 }
 
-void RS_ActionDrawSpline::setClosed(bool c){
+void RS_ActionDrawSpline::setClosed(const bool c){
     m_actionData->data.setClosed(c);
     if (m_actionData->spline){
         m_actionData->spline->setClosed(c);

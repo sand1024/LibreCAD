@@ -33,14 +33,14 @@
 LC_ActionEditPasteTransform::LC_ActionEditPasteTransform(LC_ActionContext *actionContext)
     :LC_UndoableDocumentModificationAction("PasteTransform", actionContext,  RS2::ActionEditPasteTransform),
     m_referencePoint{new RS_Vector(false)},
-    m_pasteData{new PasteData()}{
+    m_pasteData{std::make_unique<PasteData>()}{
 }
 
-void LC_ActionEditPasteTransform::init(int status) {
+void LC_ActionEditPasteTransform::init(const int status) {
     RS_PreviewActionInterface::init(status);
     if (RS_CLIPBOARD->count() == 0){
         commandMessage(tr("Clipboard is empty"));
-        finish(false);
+        finish();
     }
 }
 
@@ -51,7 +51,7 @@ bool LC_ActionEditPasteTransform::doTriggerModifications(LC_DocumentModification
     RS_Vector xArrayVector;
     RS_Vector yArrayVector;
     if (m_pasteData->arrayCreated){
-        double arrayAngle = m_pasteData->arrayAngle;
+        const double arrayAngle = m_pasteData->arrayAngle;
         xArrayVector = RS_Vector::polar(m_pasteData->arraySpacing.x, arrayAngle);
         yArrayVector = RS_Vector::polar(m_pasteData->arraySpacing.y, arrayAngle + M_PI_2);
     }
@@ -61,7 +61,7 @@ bool LC_ActionEditPasteTransform::doTriggerModifications(LC_DocumentModification
     }
     for (int x = 0; x < numX; x++){
         for (int y = 0; y < numY; y++){
-            RS_Vector currentPoint  = *m_referencePoint + xArrayVector*x + yArrayVector * y;
+            const RS_Vector currentPoint  = *m_referencePoint + xArrayVector*x + yArrayVector * y;
             const auto pasteData = LC_CopyUtils::RS_PasteData(currentPoint, m_pasteData->factor , m_pasteData->angle);
             LC_CopyUtils::paste(pasteData, m_graphic, ctx);
             // fixme - some progress is needed there, ++++ speed improvement for paste operation!!
@@ -74,19 +74,19 @@ bool LC_ActionEditPasteTransform::doTriggerModifications(LC_DocumentModification
 
 void LC_ActionEditPasteTransform::doTriggerCompletion([[maybe_unused]]bool success) {
     if (!m_invokedWithControl) {
-        finish(false);
+        finish();
     }
 }
 
-void LC_ActionEditPasteTransform::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void LC_ActionEditPasteTransform::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     if (status==SetReferencePoint) {
         *m_referencePoint = e->snapPoint;
-        auto clipboardGraphics   = RS_CLIPBOARD->getGraphic();
+        const auto clipboardGraphics   = RS_CLIPBOARD->getGraphic();
         m_preview->addAllFrom(*clipboardGraphics,m_viewport);
         m_preview->move(*m_referencePoint);
 
         if (m_graphic) {
-            RS_Vector scaleFactor = LC_CopyUtils::getInterGraphicsScaleFactor(m_pasteData->factor, clipboardGraphics, m_graphic);
+            const RS_Vector scaleFactor = LC_CopyUtils::getInterGraphicsScaleFactor(m_pasteData->factor, clipboardGraphics, m_graphic);
             m_preview->scale(*m_referencePoint, scaleFactor);
             m_preview->rotate(*m_referencePoint, m_pasteData->angle);
 
@@ -100,12 +100,12 @@ void LC_ActionEditPasteTransform::onMouseMoveEvent(int status, LC_MouseEvent *e)
     }
 }
 
-void LC_ActionEditPasteTransform::onMouseLeftButtonRelease([[maybe_unused]]int status, LC_MouseEvent *e) {
+void LC_ActionEditPasteTransform::onMouseLeftButtonRelease([[maybe_unused]]int status, const LC_MouseEvent* e) {
     m_invokedWithControl = e->isControl;
     fireCoordinateEventForSnap(e);
 }
 
-void LC_ActionEditPasteTransform::onMouseRightButtonRelease(int status,[[maybe_unused]] LC_MouseEvent *e) {
+void LC_ActionEditPasteTransform::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     initPrevious(status);
 }
 
@@ -130,24 +130,24 @@ void LC_ActionEditPasteTransform::updateMouseButtonHints() {
     }
 }
 
-bool LC_ActionEditPasteTransform::doUpdateAngleByInteractiveInput(const QString& tag, double angle) {
+bool LC_ActionEditPasteTransform::doUpdateAngleByInteractiveInput(const QString& tag, const double angle) {
     if (tag == "angle") {
         setAngle(angle);
         return true;
     }
-    else if (tag == "arrayAngle") {
+    if (tag == "arrayAngle") {
         setArrayAngle(angle);
         return true;
     }
     return false;
 }
 
-bool LC_ActionEditPasteTransform::doUpdateDistanceByInteractiveInput(const QString& tag, double distance) {
+bool LC_ActionEditPasteTransform::doUpdateDistanceByInteractiveInput(const QString& tag, const double distance) {
     if (tag == "spacingX") {
         setArraySpacingX(distance);
         return true;
     }
-    else if (tag == "spacingY") {
+    if (tag == "spacingY") {
         setArraySpacingY(distance);
         return true;
     }
@@ -155,21 +155,21 @@ bool LC_ActionEditPasteTransform::doUpdateDistanceByInteractiveInput(const QStri
 }
 
 double LC_ActionEditPasteTransform::getAngle() const {return m_pasteData-> angle;}
-void LC_ActionEditPasteTransform::setAngle(double angle) const {m_pasteData->angle = angle;}
+void LC_ActionEditPasteTransform::setAngle(const double angle) const {m_pasteData->angle = angle;}
 double LC_ActionEditPasteTransform::getFactor() const {return m_pasteData->factor;}
-void LC_ActionEditPasteTransform::setFactor(double factor) const {m_pasteData->factor = factor;}
+void LC_ActionEditPasteTransform::setFactor(const double factor) const {m_pasteData->factor = factor;}
 bool LC_ActionEditPasteTransform::isArrayCreated() const {return m_pasteData->arrayCreated;}
-void LC_ActionEditPasteTransform::setArrayCreated(bool arrayCreated) const {m_pasteData->arrayCreated = arrayCreated;}
+void LC_ActionEditPasteTransform::setArrayCreated(const bool arrayCreated) const {m_pasteData->arrayCreated = arrayCreated;}
 int LC_ActionEditPasteTransform::getArrayXCount() const {return m_pasteData->arrayXCount;}
-void LC_ActionEditPasteTransform::setArrayXCount(int arrayXCount) const {m_pasteData->arrayXCount = arrayXCount;}
+void LC_ActionEditPasteTransform::setArrayXCount(const int arrayXCount) const {m_pasteData->arrayXCount = arrayXCount;}
 int LC_ActionEditPasteTransform::getArrayYCount() const {return m_pasteData->arrayYCount;}
-void LC_ActionEditPasteTransform::setArrayYCount(int arrayYCount) const {m_pasteData->arrayYCount = arrayYCount;}
+void LC_ActionEditPasteTransform::setArrayYCount(const int arrayYCount) const {m_pasteData->arrayYCount = arrayYCount;}
 double LC_ActionEditPasteTransform::getArraySpacingX() const {return m_pasteData->arraySpacing.x;}
-void LC_ActionEditPasteTransform::setArraySpacingX(double arraySpacing) const {m_pasteData->arraySpacing.x = arraySpacing;}
+void LC_ActionEditPasteTransform::setArraySpacingX(const double arraySpacing) const {m_pasteData->arraySpacing.x = arraySpacing;}
 double LC_ActionEditPasteTransform::getArraySpacingY() const {return m_pasteData->arraySpacing.y;}
-void LC_ActionEditPasteTransform::setArraySpacingY(double arraySpacing) const {m_pasteData->arraySpacing.y = arraySpacing;}
+void LC_ActionEditPasteTransform::setArraySpacingY(const double arraySpacing) const {m_pasteData->arraySpacing.y = arraySpacing;}
 double LC_ActionEditPasteTransform::getArrayAngle() const {return m_pasteData->arrayAngle;}
-void LC_ActionEditPasteTransform::setArrayAngle(double arrayAngle) const {m_pasteData->arrayAngle = arrayAngle;}
+void LC_ActionEditPasteTransform::setArrayAngle(const double arrayAngle) const {m_pasteData->arrayAngle = arrayAngle;}
 LC_ActionOptionsWidget *LC_ActionEditPasteTransform::createOptionsWidget() {return new LC_PasteTransformOptions();}
 
 void LC_ActionEditPasteTransform::previewMultipleReferencePoints() const {
@@ -179,7 +179,7 @@ void LC_ActionEditPasteTransform::previewMultipleReferencePoints() const {
     RS_Vector xArrayVector;
     RS_Vector yArrayVector;
     if (m_pasteData->arrayCreated) {
-        double arrayAngle = m_pasteData->arrayAngle;
+        const double arrayAngle = m_pasteData->arrayAngle;
         xArrayVector = RS_Vector::polar(m_pasteData->arraySpacing.x, arrayAngle);
         yArrayVector = RS_Vector::polar(m_pasteData->arraySpacing.y, arrayAngle + M_PI_2);
     }

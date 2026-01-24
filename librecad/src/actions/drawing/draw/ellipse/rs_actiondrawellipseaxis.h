@@ -34,32 +34,33 @@
 class RS_ActionDrawEllipseAxis : public LC_ActionDrawCircleBase {
     Q_OBJECT
 public:
-    RS_ActionDrawEllipseAxis(LC_ActionContext *actionContext, bool isArc);
+    RS_ActionDrawEllipseAxis(LC_ActionContext* actionContext, bool isArc);
     ~RS_ActionDrawEllipseAxis() override;
     void init(int status) override;
     bool isReversed() const override;
     void setReversed(bool b) const override;
+
 protected:
     /**
      * Action States.
      */
     enum Status {
-        SetCenter  = InitialActionStatus,   /**< Setting the center.  */
-        SetMajor,    /**< Setting endpoint of major axis. */
-        SetMinor,    /**< Setting minor/major ratio. */
-        SetAngle1,   /**< Setting start angle. */
-        SetAngle2    /**< Setting end angle. */
+        SetCenter = InitialActionStatus, /**< Setting the center.  */
+        SetMajor, /**< Setting endpoint of major axis. */
+        SetMinor, /**< Setting minor/major ratio. */
+        SetAngle1, /**< Setting start angle. */
+        SetAngle2 /**< Setting end angle. */
     };
 
     struct ActionData;
     std::unique_ptr<ActionData> m_actionData;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
-    bool doProcessCommand(int status, const QString &command) override;
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
+    bool doProcessCommand(int status, const QString& command) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector& coord) override;
     void updateMouseButtonHints() override;
-    LC_ActionOptionsWidget *createOptionsWidget() override;
+    LC_ActionOptionsWidget* createOptionsWidget() override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;
 };

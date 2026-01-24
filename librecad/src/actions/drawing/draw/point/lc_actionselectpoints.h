@@ -28,10 +28,10 @@
 class LC_ActionSelectPoints:public RS_ActionSelectWindow{
    Q_OBJECT
 public:
-    LC_ActionSelectPoints(LC_ActionContext *actionContext);
+   explicit LC_ActionSelectPoints(LC_ActionContext *actionContext);
     ~LC_ActionSelectPoints() override = default;
 protected:
     LC_ActionOptionsWidget *createOptionsWidget() override;
 };
 
-#endif // LC_ACTIONSELECTPOINTS_H
+#endif

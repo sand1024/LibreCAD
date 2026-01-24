@@ -28,19 +28,18 @@
 
 #include "lc_actioncontext.h"
 #include "rs_atomicentity.h"
-#include "rs_debug.h"
 #include "rs_document.h"
 #include "rs_modification.h"
 #include "rs_polyline.h"
-#include "rs_preview.h"
 
 RS_ActionPolylineTrim::RS_ActionPolylineTrim(LC_ActionContext *actionContext)
     :LC_UndoableDocumentModificationAction("Trim segments",actionContext, RS2::ActionPolylineTrim) {
 }
 
-void RS_ActionPolylineTrim::init(int status) {
+void RS_ActionPolylineTrim::init(const int status) {
     m_polylineToModify = nullptr;
-    m_segment1 = m_segment2 = nullptr;
+    m_segment1 = nullptr;
+    m_segment2 = nullptr;
     RS_PreviewActionInterface::init(status);
 }
 
@@ -49,7 +48,7 @@ void RS_ActionPolylineTrim::doInitWithContextEntity(RS_Entity* contextEntity, [[
 }
 
 bool RS_ActionPolylineTrim::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
-    auto newPolyline = RS_Modification::polylineTrim(m_polylineToModify, *m_segment1, *m_segment2, ctx);
+    const auto newPolyline = RS_Modification::polylineTrim(m_polylineToModify, *m_segment1, *m_segment2, ctx);
     if (newPolyline != nullptr){
         newPolyline->setLayer(m_polylineToModify->getLayer(false));
         newPolyline->setPen(m_polylineToModify->getPen(false));
@@ -61,22 +60,23 @@ bool RS_ActionPolylineTrim::doTriggerModifications(LC_DocumentModificationBatch&
 }
 
 void RS_ActionPolylineTrim::doTriggerCompletion([[maybe_unused]]bool success) {
-    m_segment1 = m_segment2 = nullptr;
+    m_segment1 = nullptr;
+    m_segment2 = nullptr;
     setStatus(SetSegment1);
 }
 
-void RS_ActionPolylineTrim::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void RS_ActionPolylineTrim::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     switch (status) {
         case ChooseEntity: {
             deleteSnapper();
-            RS_Entity *pl = catchAndDescribe(e, RS2::EntityPolyline);
+            const RS_Entity *pl = catchAndDescribe(e, RS2::EntityPolyline);
             if (pl != nullptr){
                 highlightHover(pl);
             }
             break;
         }
         case SetSegment1:{
-            RS_Entity* en = catchEntityByEvent(e, RS2::ResolveAll);
+            const RS_Entity* en = catchEntityByEvent(e, RS2::ResolveAll);
             if (en != nullptr){
                 if (en->getParent() == m_polylineToModify){
                     highlightHover(en);
@@ -90,13 +90,13 @@ void RS_ActionPolylineTrim::onMouseMoveEvent(int status, LC_MouseEvent *e) {
             highlightSelected(m_segment1);
             RS_Entity* en = catchEntityByEvent(e, RS2::ResolveAll);
             if (isAtomic(en) && en->getParent() == m_polylineToModify && en != m_segment1){
-                auto candidate = dynamic_cast<RS_AtomicEntity *>(en);
+                const auto candidate = static_cast<RS_AtomicEntity *>(en);
 
                 previewRefPoint(m_segment1->getStartpoint());
                 previewRefPoint(m_segment1->getEndpoint());
 
                 LC_DocumentModificationBatch ctx;
-                auto polyline = RS_Modification::polylineTrim(m_polylineToModify, *m_segment1, *candidate, ctx);
+                const auto polyline = RS_Modification::polylineTrim(m_polylineToModify, *m_segment1, *candidate, ctx);
                 if (polyline != nullptr){
                     highlightHover(en);
                     previewEntity(polyline);
@@ -125,10 +125,10 @@ void RS_ActionPolylineTrim::setPolylineToModify(RS_Entity* en) {
     }
 }
 
-void RS_ActionPolylineTrim::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
+void RS_ActionPolylineTrim::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     switch (status) {
         case ChooseEntity: {
-            auto en = catchEntityByEvent(e);
+            const auto en = catchEntityByEvent(e);
             setPolylineToModify(en);
             invalidateSnapSpot();
             break;
@@ -161,10 +161,10 @@ void RS_ActionPolylineTrim::onMouseLeftButtonRelease(int status, LC_MouseEvent *
     }
 }
 
-void RS_ActionPolylineTrim::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionPolylineTrim::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     deleteSnapper();
     deletePreview();
-    int newStatus = status - 1;
+    const int newStatus = status - 1;
     if (newStatus == ChooseEntity){
         if (m_polylineToModify != nullptr){
             unselect(m_polylineToModify);
@@ -174,12 +174,12 @@ void RS_ActionPolylineTrim::onMouseRightButtonRelease(int status, [[maybe_unused
     setStatus(newStatus);
 }
 
-void RS_ActionPolylineTrim::finish(bool updateTB){
+void RS_ActionPolylineTrim::finish(){
     if (m_polylineToModify != nullptr){
         unselect(m_polylineToModify);
         redraw();
     }
-    RS_PreviewActionInterface::finish(updateTB);
+    RS_PreviewActionInterface::finish();
 }
 
 void RS_ActionPolylineTrim::updateMouseButtonHints(){

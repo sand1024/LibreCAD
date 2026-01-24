@@ -33,38 +33,40 @@ struct RS_CircleData;
  *
  * @author Dongxu Li
  */
-class RS_ActionDrawCircleInscribe:public LC_ActionDrawCircleBase {
+class RS_ActionDrawCircleInscribe : public LC_ActionDrawCircleBase {
     Q_OBJECT
+
 public:
-    RS_ActionDrawCircleInscribe(LC_ActionContext *actionContext);
+    explicit RS_ActionDrawCircleInscribe(LC_ActionContext* actionContext);
     ~RS_ActionDrawCircleInscribe() override;
     void init(int status) override;
-    void finish(bool updateTB) override;
+    void finish() override;
     void drawSnapper() override;
+
 protected:
     /**
  * Action States.
  */
     enum Status {
-        SetLine1  = InitialActionStatus,   //  Setting the First Line.  */
-        SetLine2,   //  Setting the Second Line.  */
-        SetLine3   //  Setting the Third Line.  */
+        SetLine1 = InitialActionStatus, //  Setting the First Line.  */
+        SetLine2, //  Setting the Second Line.  */
+        SetLine3 //  Setting the Third Line.  */
     };
 
     struct ActionData;
     std::unique_ptr<ActionData> m_actionData;
     bool m_valid = false;
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
-    bool preparePreview(RS_Line *en);
+    bool preparePreview(RS_Line* en);
     /**
-	 * @brief clearLines unset highlighten lines, and clear the vector "lines"
-	 * @param checkStatus keep lines members according to getStatus()
-	 */
+  * @brief clearLines unset highlighten lines, and clear the vector "lines"
+  * @param checkStatus keep lines members according to getStatus()
+  */
     void clearLines(bool checkStatus = false) const;
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void setLine1(RS_Line* line);
     void updateMouseButtonHints() override;
     void doTriggerCompletion(bool success) override;

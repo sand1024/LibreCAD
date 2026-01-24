@@ -42,14 +42,14 @@ class RS_Vector;
 class RS_ActionDrawLineRelAngle:public LC_SingleEntityCreationAction {
     Q_OBJECT
 public:
-    RS_ActionDrawLineRelAngle(LC_ActionContext *actionContext,double angle = 0.0,bool fixedAngle = false);
+    explicit RS_ActionDrawLineRelAngle(LC_ActionContext *actionContext,double angle = 0.0,bool fixedAngle = false);
     ~RS_ActionDrawLineRelAngle() override;
     RS2::ActionType rtti() const override;
-    void finish(bool updateTB) override;
+    void finish() override;
     QStringList getAvailableCommands() override;
     void setAngle(double angleDeg);
     double getAngle() const;
-    void setLength(double l){m_length = l;}
+    void setLength(const double l){m_length = l;}
     double getLength() const{return m_length;}
     bool hasFixedAngle() const{return m_fixedAngle;}
 protected:
@@ -79,12 +79,12 @@ protected:
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void setEntity(RS_Entity* en);
     bool doProcessCommand(int status, const QString &command) override;
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector &coord) override;
     void updateMouseButtonHints() override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;

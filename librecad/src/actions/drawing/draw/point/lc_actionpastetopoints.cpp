@@ -33,10 +33,10 @@ LC_ActionPasteToPoints::LC_ActionPasteToPoints(LC_ActionContext *actionContext):
     LC_ActionPreSelectionAwareBase("PasteToPoints", actionContext, RS2::ActionPasteToPoints, {RS2::EntityPoint}){
 }
 
-void LC_ActionPasteToPoints::init(int status) {
+void LC_ActionPasteToPoints::init(const int status) {
     if (RS_CLIPBOARD->count() == 0){
         commandMessage(tr("Clipboard is empty"));
-        finish(false);
+        finish();
     }
     else{
         showOptions();
@@ -45,8 +45,8 @@ void LC_ActionPasteToPoints::init(int status) {
 }
 
 bool LC_ActionPasteToPoints::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
-    for (auto p: m_selectedEntities){
-        RS_Vector currentPoint = p->getCenter();
+    for (const auto p: m_selectedEntities){
+        const RS_Vector currentPoint = p->getCenter();
         const auto pasteData = LC_CopyUtils::RS_PasteData(currentPoint, m_scaleFactor , m_angleRad);
         LC_CopyUtils::paste(pasteData, m_graphic, ctx);
         ctx.dontSetActiveLayerAndPen();
@@ -59,17 +59,17 @@ bool LC_ActionPasteToPoints::doTriggerModifications(LC_DocumentModificationBatch
     return true;
 }
 
-void LC_ActionPasteToPoints::doTriggerSelectionUpdate(bool keepSelected, [[maybe_unused]] const LC_DocumentModificationBatch& ctx) {
+void LC_ActionPasteToPoints::doTriggerSelectionUpdate(const bool keepSelected, [[maybe_unused]] const LC_DocumentModificationBatch& ctx) {
     if (!m_removePointAfterPaste) {
         RS_Selection::selectEntitiesList(m_document, m_viewport, m_selectedEntities, keepSelected);
     }
 }
 
-void LC_ActionPasteToPoints::doTriggerCompletion(bool success) {
+void LC_ActionPasteToPoints::doTriggerCompletion(const bool success) {
     LC_ActionPreSelectionAwareBase::doTriggerCompletion(success);
 }
 
-bool LC_ActionPasteToPoints::doUpdateAngleByInteractiveInput(const QString& tag, double angle) {
+bool LC_ActionPasteToPoints::doUpdateAngleByInteractiveInput(const QString& tag, const double angle) {
     if (tag == "angle") {
         setAngle(angle);
         return true;
@@ -89,24 +89,24 @@ double LC_ActionPasteToPoints::getAngle() const {
     return m_angleRad;
 }
 
-void LC_ActionPasteToPoints::setAngle(double a) {
-    m_angleRad = a;
+void LC_ActionPasteToPoints::setAngle(const double angle) {
+    m_angleRad = angle;
 }
 
 double LC_ActionPasteToPoints::getScaleFactor() const {
     return m_scaleFactor;
 }
 
-void LC_ActionPasteToPoints::setScaleFactor(double f) {
-    m_scaleFactor = f;
+void LC_ActionPasteToPoints::setScaleFactor(const double scaleFactor) {
+    m_scaleFactor = scaleFactor;
 }
 
 bool LC_ActionPasteToPoints::isRemovePointAfterPaste() const {
     return m_removePointAfterPaste;
 }
 
-void LC_ActionPasteToPoints::setRemovePointAfterPaste(bool val) {
-    m_removePointAfterPaste = val;
+void LC_ActionPasteToPoints::setRemovePointAfterPaste(const bool removePointAfterPaste) {
+    m_removePointAfterPaste = removePointAfterPaste;
 }
 
 bool LC_ActionPasteToPoints::isEntityAllowedToSelect(RS_Entity *ent) const {

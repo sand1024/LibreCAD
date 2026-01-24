@@ -59,10 +59,10 @@ void LC_ActionLayersToggleConstruction::trigger() {
         }
         redrawDrawing();
     }
-    finish(false);
+    finish();
 }
 
-void LC_ActionLayersToggleConstruction::init(int status) {
+void LC_ActionLayersToggleConstruction::init(const int status) {
     RS_ActionInterface::init(status);
     trigger();
 }

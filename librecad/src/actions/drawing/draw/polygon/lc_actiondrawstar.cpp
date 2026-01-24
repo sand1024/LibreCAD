@@ -21,6 +21,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
 #include "lc_actiondrawstar.h"
+
 #include "lc_containertraverser.h"
 #include "lc_linemath.h"
 #include "lc_staroptions.h"
@@ -36,18 +37,18 @@ int LC_ActionDrawStar::doGetStatusForInitialSnapToRelativeZero(){
     return SetCenter; // we'll snap center to relative zero if center is not set
 }
 
-void LC_ActionDrawStar::doInitialSnapToRelativeZero(RS_Vector vector){
+void LC_ActionDrawStar::doInitialSnapToRelativeZero(const RS_Vector& vector){
     // snap center to relative zero and change status
     m_centerPoint = vector;
     setMainStatus(SetOuterPoint);
 }
 
-bool LC_ActionDrawStar::doCheckMayDrawPreview([[maybe_unused]]LC_MouseEvent *event, int status){
+bool LC_ActionDrawStar::doCheckMayDrawPreview([[maybe_unused]] const LC_MouseEvent* event, const int status){
     return status != SetCenter;
 }
 
-RS_Vector LC_ActionDrawStar::doGetMouseSnapPoint(LC_MouseEvent *e){
-    int status = getStatus();
+RS_Vector LC_ActionDrawStar::doGetMouseSnapPoint(const LC_MouseEvent* e){
+    const int status = getStatus();
     RS_Vector snap = LC_AbstractActionWithPreview::doGetMouseSnapPoint(e);
     if (status == SetOuterPoint || status == SetInnerPoint){
         snap = getSnapAngleAwarePoint(e, m_centerPoint, snap, isMouseMove(e));
@@ -62,22 +63,22 @@ RS_Vector LC_ActionDrawStar::doGetMouseSnapPoint(LC_MouseEvent *e){
  * @param list
  * @param status
  */
-void LC_ActionDrawStar::doPreparePreviewEntities([[maybe_unused]]LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status){
+void LC_ActionDrawStar::doPreparePreviewEntities([[maybe_unused]] const LC_MouseEvent* e, RS_Vector &snap, QList<RS_Entity *> &list, const int status){
     RS_Polyline* polyline = createShapePolyline(snap, list, status, true);
     // fixme - info about start to be created (center, inner/outer radiuses)
     addPolylineToEntitiesList(polyline,  list, true);
 }
 /**
  * back processing
- * @param pEvent
+ * @param e
  * @param status
  */
-void LC_ActionDrawStar::doBack(LC_MouseEvent *pEvent, int status){
+void LC_ActionDrawStar::doBack(const LC_MouseEvent* e, const int status){
     if (status >SetInnerPoint){
         restoreMainStatus();
     }
     else{
-        LC_AbstractActionWithPreview::doBack(pEvent, status);
+        LC_AbstractActionWithPreview::doBack(e, status);
     }
 }
 /**
@@ -86,11 +87,11 @@ void LC_ActionDrawStar::doBack(LC_MouseEvent *pEvent, int status){
  * @param status
  * @param snapPoint
  */
-void LC_ActionDrawStar::doOnLeftMouseButtonRelease([[maybe_unused]]LC_MouseEvent *e, int status, const RS_Vector &snapPoint){
+void LC_ActionDrawStar::doOnLeftMouseButtonRelease([[maybe_unused]] const LC_MouseEvent* e, const int status, const RS_Vector &snapPoint){
     onCoordinateEvent(status, false, snapPoint);
 }
 
-void LC_ActionDrawStar::onCoordinateEvent(int status, bool isZero, const RS_Vector &coord) {
+void LC_ActionDrawStar::onCoordinateEvent(const int status, const bool isZero, const RS_Vector &coord) {
     switch (status){
         case SetCenter: // setting center of star
            m_centerPoint = coord;
@@ -112,7 +113,7 @@ void LC_ActionDrawStar::onCoordinateEvent(int status, bool isZero, const RS_Vect
                 m_outerRadiusRounded = false;
             }
             else {
-                double innerR = coord.y;
+                const double innerR = coord.y;
                 if (LC_LineMath::isMeaningful(innerR)){
                     m_innerRadius = innerR;
                     m_innerRadiusRounded = true;
@@ -120,7 +121,7 @@ void LC_ActionDrawStar::onCoordinateEvent(int status, bool isZero, const RS_Vect
                 else{
                     m_innerRadiusRounded = false;
                 }
-                double outerR = coord.x;
+                const double outerR = coord.x;
                 if (LC_LineMath::isMeaningful(outerR)){
                     m_outerRadius = outerR;
                     m_outerRadiusRounded = true;
@@ -139,7 +140,7 @@ void LC_ActionDrawStar::onCoordinateEvent(int status, bool isZero, const RS_Vect
 
 /**
  * Commands processing
- * @param e
+ * @param status
  * @param c
  * @return
  */
@@ -170,7 +171,7 @@ bool LC_ActionDrawStar::doProcessCommand([[maybe_unused]]int status, const QStri
     else{
         // process entered value
         bool ok = false;
-        int value = RS_Math::eval(c, &ok);
+        const int value = RS_Math::eval(c, &ok);
         if (ok){
             switch (getStatus()) {
                 case SetRays:{ // handling number of rays
@@ -184,6 +185,8 @@ bool LC_ActionDrawStar::doProcessCommand([[maybe_unused]]int status, const QStri
                     }
                     break;
                 }
+                default:
+                    break;
             }
         }
         else {
@@ -216,7 +219,7 @@ bool LC_ActionDrawStar::doTriggerEntitiesPrepare(LC_DocumentModificationBatch& c
  * @param list
  * @param preview
  */
-void LC_ActionDrawStar::addPolylineToEntitiesList(RS_Polyline *polyline, QList<RS_Entity *> &list, bool preview) const {
+void LC_ActionDrawStar::addPolylineToEntitiesList(RS_Polyline *polyline, QList<RS_Entity *> &list, const bool preview) const {
     if (polyline != nullptr){
         if (preview){
             list << polyline;
@@ -226,7 +229,7 @@ void LC_ActionDrawStar::addPolylineToEntitiesList(RS_Polyline *polyline, QList<R
                 list << polyline;
             }
             else{
-                for(RS_Entity* entity: lc::LC_ContainerTraverser{*polyline, RS2::ResolveAll}.entities()) {
+                for(const RS_Entity* entity: lc::LC_ContainerTraverser{*polyline, RS2::ResolveAll}.entities()) {
                     if (entity != nullptr){
                         RS_Entity *clone = entity->clone(); // use clone for safe deletion of polyline
                         clone->reparent(m_document);
@@ -393,10 +396,12 @@ RS_Polyline *LC_ActionDrawStar::createShapePolyline(RS_Vector &snap, QList<RS_En
             // now we define angles from parallels intersection point to rounding join points
             double outerAng1 = outerIntersection.angleTo(outerJoint1);
             double outerAng2 = outerIntersection.angleTo(outerJoin2);
-            bool outerReversed = (RS_Math::getAngleDifference(outerAng2, outerAng1) > M_PI);
+            bool outerReversed = RS_Math::getAngleDifference(outerAng2, outerAng1) > M_PI;
 
             // define angle for arc that is used for rounding  - the angle between rounding points
-            if (outerReversed) std::swap(outerAng2, outerAng1);
+            if (outerReversed) {
+                std::swap(outerAng2, outerAng1);
+            }
             double arcAngleLength = RS_Math::correctAngle(outerAng1 - outerAng2);
             // full circle:
             if (std::abs(std::remainder(arcAngleLength, 2. * M_PI)) < RS_TOLERANCE_ANGLE){
@@ -405,7 +410,7 @@ RS_Polyline *LC_ActionDrawStar::createShapePolyline(RS_Vector &snap, QList<RS_En
 
             // define bulge for polyline that will be used for outer rounding
             double bulge = std::tan(std::abs(arcAngleLength) / 4.0);
-            outerBulge = (outerReversed ? -bulge : bulge);
+            outerBulge = outerReversed ? -bulge : bulge;
 
             if (outerAng1 > outerAng2){
                 outerBulge = -outerBulge;
@@ -490,8 +495,10 @@ RS_Polyline *LC_ActionDrawStar::createShapePolyline(RS_Vector &snap, QList<RS_En
         double innerAng2 = innerIntersection.angleTo(innerJoint2);
 
         // calculate angle of rounding arc
-        bool innerReversed = (RS_Math::getAngleDifference(innerAng2, innerAng1) > M_PI);
-        if (innerReversed) std::swap(innerAng2,innerAng1);
+        bool innerReversed = RS_Math::getAngleDifference(innerAng2, innerAng1) > M_PI;
+        if (innerReversed) {
+            std::swap(innerAng2,innerAng1);
+        }
         double arcAngleLength = RS_Math::correctAngle(innerAng1-innerAng2);
         // full circle:
         if (std::abs(std::remainder(arcAngleLength, 2.*M_PI))<RS_TOLERANCE_ANGLE) {
@@ -508,7 +515,7 @@ RS_Polyline *LC_ActionDrawStar::createShapePolyline(RS_Vector &snap, QList<RS_En
         if (mayDrawInnerRound){
             // determine bulde for rounding arc
             double bulge = std::tan(std::abs(arcAngleLength) / 4.0);
-            innerBulge = (innerReversed ? -bulge : bulge);
+            innerBulge = innerReversed ? -bulge : bulge;
 
             if (innerAng1 > innerAng2){
                 innerBulge = -innerBulge;
@@ -636,36 +643,36 @@ void LC_ActionDrawStar::updateMouseButtonHints(){
     }
 }
 
-void LC_ActionDrawStar::setRadiusOuter(double d){
+void LC_ActionDrawStar::setRadiusOuter(const double d){
    m_outerRadius = d;
    drawPreviewForLastPoint();
 }
 
-void LC_ActionDrawStar::setRadiusInner(double d){
+void LC_ActionDrawStar::setRadiusInner(const double d){
   m_innerRadius = d;
    drawPreviewForLastPoint();
 }
 
-void LC_ActionDrawStar::setRaysNumber(int i){
+void LC_ActionDrawStar::setRaysNumber(const int i){
     m_raysNumber = i;
     drawPreviewForLastPoint();
 }
 
-void LC_ActionDrawStar::setPolyline(bool value){
+void LC_ActionDrawStar::setPolyline(const bool value){
   m_createPolyline = value;
 }
 
-void LC_ActionDrawStar::setOuterRounded(bool value){
+void LC_ActionDrawStar::setOuterRounded(const bool value){
     m_outerRadiusRounded = value;
     drawPreviewForLastPoint();
 }
 
-void LC_ActionDrawStar::setInnerRounded(bool value){
+void LC_ActionDrawStar::setInnerRounded(const bool value){
     m_innerRadiusRounded = value;
     drawPreviewForLastPoint();
 }
 
-void LC_ActionDrawStar::setSymmetric(bool value){
+void LC_ActionDrawStar::setSymmetric(const bool value){
    m_symmetric = value;
    drawPreviewForLastPoint();
 }
@@ -674,7 +681,7 @@ LC_ActionOptionsWidget* LC_ActionDrawStar::createOptionsWidget(){
     return new LC_StarOptions();
 }
 
-bool LC_ActionDrawStar::doUpdateDistanceByInteractiveInput(const QString& tag, double distance) {
+bool LC_ActionDrawStar::doUpdateDistanceByInteractiveInput(const QString& tag, const double distance) {
     if (tag == "radiusInner") {
         setRadiusInner(distance);
         return true;

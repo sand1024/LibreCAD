@@ -49,7 +49,7 @@ RS_ActionModifyStretch::RS_ActionModifyStretch(LC_ActionContext *actionContext)
     m_actionData(std::make_unique<StretchActionData>()){
 }
 
-void RS_ActionModifyStretch::init(int status) {
+void RS_ActionModifyStretch::init(const int status) {
     RS_PreviewActionInterface::init(status);
 }
 
@@ -90,57 +90,48 @@ void RS_ActionModifyStretch::doTriggerCompletion([[maybe_unused]]bool success) {
     }
 }
 
-void RS_ActionModifyStretch::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void RS_ActionModifyStretch::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     RS_Vector mouse = e->snapPoint;
     switch (status) {
-        case SetFirstCorner:{
+        case SetFirstCorner: {
             break;
         }
         case SetSecondCorner: {
             if (m_actionData->firstCorner.valid) {
                 m_actionData->secondCorner = e->snapPoint;
-                previewStretchRect(false);                
-                if (isInfoCursorForModificationEnabled()){
-                    msg(tr("Stretch"))
-                        .vector(tr("Start Corner:"), m_actionData->firstCorner)
-                        .vector(tr("End Corner:"), m_actionData->secondCorner)
-                        .toInfoCursorZone2(false);
+                previewStretchRect(false);
+                if (isInfoCursorForModificationEnabled()) {
+                    msg(tr("Stretch")).vector(tr("Start Corner:"), m_actionData->firstCorner).vector(
+                        tr("End Corner:"), m_actionData->secondCorner).toInfoCursorZone2(false);
                 }
             }
             break;
         }
-        case SetReferencePoint: {            
+        case SetReferencePoint: {
             previewStretchRect(true);
-            trySnapToRelZeroCoordinateEvent(e);            
+            trySnapToRelZeroCoordinateEvent(e);
             if (isInfoCursorForModificationEnabled()) {
-                msg(tr("Stretch"))
-                    .vector(tr("Reference Point:"), mouse)
-                    .toInfoCursorZone2(false);
-            }    
+                msg(tr("Stretch")).vector(tr("Reference Point:"), mouse).toInfoCursorZone2(false);
+            }
             break;
         }
         case SetTargetPoint: {
-            if (m_actionData->referencePoint.valid) {                
-                mouse= getSnapAngleAwarePoint(e, m_actionData->referencePoint, mouse, true);
+            if (m_actionData->referencePoint.valid) {
+                mouse = getSnapAngleAwarePoint(e, m_actionData->referencePoint, mouse, true);
                 m_actionData->targetPoint = mouse;
                 // fixme - isn't it more reliable to rely on RS_Modification::stretch there?
                 m_preview->addStretchablesFrom(*m_document, m_viewport, m_actionData->firstCorner, m_actionData->secondCorner);
-                const RS_Vector &offset = m_actionData->targetPoint - m_actionData->referencePoint;
-                m_preview->stretch(m_actionData->firstCorner, m_actionData->secondCorner,offset);
+                const RS_Vector& offset = m_actionData->targetPoint - m_actionData->referencePoint;
+                m_preview->stretch(m_actionData->firstCorner, m_actionData->secondCorner, offset);
                 if (m_showRefEntitiesOnPreview) {
                     previewRefPoint(m_actionData->referencePoint);
                     previewRefSelectablePoint(m_actionData->targetPoint);
                     previewRefLine(m_actionData->referencePoint, m_actionData->targetPoint);
                 }
                 if (isInfoCursorForModificationEnabled()) {
-                    msg(tr("Stretch"))
-                        .vector(tr("Reference Point:"), m_actionData->referencePoint)
-                        .vector(tr("Target Point:"), mouse)
-                        .string(tr("Offset:"))
-                        .relative(mouse)
-                        .relativePolar(mouse)
-                        .toInfoCursorZone2(false);
-                }                
+                    msg(tr("Stretch")).vector(tr("Reference Point:"), m_actionData->referencePoint).vector(tr("Target Point:"), mouse).
+                                       string(tr("Offset:")).relative(mouse).relativePolar(mouse).toInfoCursorZone2(false);
+                }
             }
             break;
         }
@@ -149,7 +140,7 @@ void RS_ActionModifyStretch::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     }
 }
 
-void RS_ActionModifyStretch::previewStretchRect(bool selected) const {
+void RS_ActionModifyStretch::previewStretchRect(const bool selected) const {
     if (m_showRefEntitiesOnPreview){
         RS_Vector v0 = m_actionData->firstCorner;
         RS_Vector v1 = m_actionData->secondCorner;
@@ -170,7 +161,7 @@ void RS_ActionModifyStretch::previewStretchRect(bool selected) const {
     }
 }
 
-void RS_ActionModifyStretch::onMouseLeftButtonRelease([[maybe_unused]]int status, LC_MouseEvent *e) {
+void RS_ActionModifyStretch::onMouseLeftButtonRelease([[maybe_unused]] const int status, const LC_MouseEvent* e) {
     if (status == SetTargetPoint){
         const RS_Vector mouse= getSnapAngleAwarePoint(e, m_actionData->referencePoint, e->snapPoint);
         fireCoordinateEvent(mouse);
@@ -180,32 +171,32 @@ void RS_ActionModifyStretch::onMouseLeftButtonRelease([[maybe_unused]]int status
     }
 }
 // fixme - default back - remove as well as from other actions and rely to parent class
-void RS_ActionModifyStretch::onMouseRightButtonRelease(int status, [[maybe_unused]] LC_MouseEvent *e) {
+void RS_ActionModifyStretch::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     deletePreview();
     initPrevious(status);
 }
 
-void RS_ActionModifyStretch::onCoordinateEvent(int status,  [[maybe_unused]]bool isZero, const RS_Vector &mouse) {
+void RS_ActionModifyStretch::onCoordinateEvent(const int status,  [[maybe_unused]]bool isZero, const RS_Vector &coord) {
     switch (status) {
         case SetFirstCorner: {
-            m_actionData->firstCorner = mouse;
+            m_actionData->firstCorner = coord;
             setStatus(SetSecondCorner);
             break;
         }
         case SetSecondCorner: {
-            m_actionData->secondCorner = mouse;
+            m_actionData->secondCorner = coord;
             deletePreview();
             setStatus(SetReferencePoint);
             break;
         }
         case SetReferencePoint: {
-            m_actionData->referencePoint = mouse;
+            m_actionData->referencePoint = coord;
             moveRelativeZero(m_actionData->referencePoint);
             setStatus(SetTargetPoint);
             break;
         }
         case SetTargetPoint: {
-            m_actionData->targetPoint = mouse;
+            m_actionData->targetPoint = coord;
             moveRelativeZero(m_actionData->targetPoint);
             trigger();
             break;

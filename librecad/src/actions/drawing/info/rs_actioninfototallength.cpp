@@ -29,7 +29,6 @@
 #include "lc_actioninfomessagebuilder.h"
 #include "rs_debug.h"
 #include "rs_document.h"
-#include "rs_entitycontainer.h"
 
 RS_ActionInfoTotalLength::RS_ActionInfoTotalLength(LC_ActionContext *actionContext)
         :LC_ActionPreSelectionAwareBase("Info Total Length",actionContext, RS2::ActionInfoTotalLength){
@@ -45,26 +44,26 @@ bool RS_ActionInfoTotalLength::isAllowTriggerOnEmptySelection() {
 
 void RS_ActionInfoTotalLength::doTrigger() {
     RS_DEBUG->print("RS_ActionInfoTotalLength::trigger()");
-    auto selectionInfo = m_document->getSelectionInfo();
-    double length      = selectionInfo.length;
+    const auto selectionInfo = m_document->getSelectionInfo();
+    const double length      = selectionInfo.totalLength;
 
     if (length > 0.0) {
-        QString len = formatLinear(length);
+        const QString len = formatLinear(length);
         commandMessage(tr("Total Length of selected entities: %1").arg(len));
     }
     else {
         commandMessage(tr("At least one of the selected entities cannot be measured."));
     }
 
-    finish(false);
+    finish();
 }
 
-void RS_ActionInfoTotalLength::finishMouseMoveOnSelection([[maybe_unused]] LC_MouseEvent *event) {
+void RS_ActionInfoTotalLength::finishMouseMoveOnSelection([[maybe_unused]] const LC_MouseEvent* event) {
     const RS_Document::LC_SelectionInfo &selectionInfo = m_document->getSelectionInfo();
-    unsigned int selectedCount = selectionInfo.count;
+    const unsigned int selectedCount = selectionInfo.entitiesCount;
     auto builder = msgStart().string(tr("Selected:"), QString::number(selectedCount));
     if (selectedCount > 0) {
-        builder.linear(tr("Total Length:"),selectionInfo.length);
+        builder.linear(tr("Total Length:"),selectionInfo.totalLength);
     }
     builder.toInfoCursorZone2(true);
 }

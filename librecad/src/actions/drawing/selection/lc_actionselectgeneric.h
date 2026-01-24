@@ -34,7 +34,7 @@ public:
 
     ~LC_ActionSelectGeneric() override;
 protected:
-    bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& ctx) override {return true;};
+    bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& ctx) override {return true;}
     void updateMouseButtonHintsForSelection() override;
     void proceedSelectionComplete(bool allowEmptySelection, bool fromInit, unsigned int selectedCount) override;
 };

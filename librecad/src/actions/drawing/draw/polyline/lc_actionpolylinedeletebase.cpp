@@ -24,20 +24,20 @@
 
 #include "rs_polyline.h"
 
-LC_ActionPolylineDeleteBase::LC_ActionPolylineDeleteBase(const char *name, LC_ActionContext *actionContext, RS2::ActionType actionType)
+LC_ActionPolylineDeleteBase::LC_ActionPolylineDeleteBase(const char *name, LC_ActionContext *actionContext, const RS2::ActionType actionType)
    :LC_UndoableDocumentModificationAction(name, actionContext, actionType){
 }
 
-void LC_ActionPolylineDeleteBase::getSelectedPolylineVertex(LC_MouseEvent *e, RS_Vector &vertex, RS_Entity *&segment){
-    bool oldSnapOnEntity = m_snapMode.snapOnEntity;
+void LC_ActionPolylineDeleteBase::getSelectedPolylineVertex(const LC_MouseEvent *e, RS_Vector &vertex, RS_Entity *&segment){
+    const bool oldSnapOnEntity = m_snapMode.snapOnEntity;  // fixme - sand - what for? review
     m_snapMode.snapOnEntity = true;
-    RS_Vector snap = e->snapPoint;
     m_snapMode.snapOnEntity = oldSnapOnEntity;
     deletePreview();
-    auto polyline = dynamic_cast<RS_Polyline *>(catchEntityByEvent(e, RS2::EntityPolyline));
+    const auto polyline = static_cast<RS_Polyline *>(catchEntityByEvent(e, RS2::EntityPolyline));
     if (polyline == m_polylineToModify){
-        RS_Vector coordinate = polyline->getNearestPointOnEntity(snap, true);
-        segment = RS_Snapper::catchEntity(coordinate, RS2::ResolveAll);
+        const RS_Vector snap = e->snapPoint;
+        const RS_Vector coordinate = polyline->getNearestPointOnEntity(snap, true);
+        segment = catchEntity(coordinate, RS2::ResolveAll);
         vertex  = segment->getNearestEndpoint(coordinate);
     }
     else{
@@ -45,16 +45,16 @@ void LC_ActionPolylineDeleteBase::getSelectedPolylineVertex(LC_MouseEvent *e, RS
     }
 }
 
-void LC_ActionPolylineDeleteBase::onMouseLeftButtonRelease([[maybe_unused]]int status, [[maybe_unused]]LC_MouseEvent *e) {
+void LC_ActionPolylineDeleteBase::onMouseLeftButtonRelease([[maybe_unused]]int status, [[maybe_unused]] const LC_MouseEvent* e) {
 }
 
 RS2::CursorType LC_ActionPolylineDeleteBase::doGetMouseCursor([[maybe_unused]] int status){
     return RS2::SelectCursor;
 }
 
-void LC_ActionPolylineDeleteBase::finish(bool updateTB){
+void LC_ActionPolylineDeleteBase::finish(){
     clean();
-    RS_PreviewActionInterface::finish(updateTB);
+    RS_PreviewActionInterface::finish();
 }
 
 void LC_ActionPolylineDeleteBase::clean(){
@@ -65,11 +65,11 @@ void LC_ActionPolylineDeleteBase::clean(){
     redraw();
 }
 
-void LC_ActionPolylineDeleteBase::onMouseRightButtonRelease([[maybe_unused]]int status, [[maybe_unused]]LC_MouseEvent *e) {
+void LC_ActionPolylineDeleteBase::onMouseRightButtonRelease([[maybe_unused]]int status, [[maybe_unused]] const LC_MouseEvent* e) {
     deleteSnapper();
     deletePreview();
     drawPreview();
-    int newStatus = getStatus() - 1;
+    const int newStatus = getStatus() - 1;
     if (newStatus == SetPolyline){
         clean();
     }

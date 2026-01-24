@@ -79,14 +79,14 @@ bool RS_ActionBlocksCreate::doTriggerModifications(LC_DocumentModificationBatch&
 void RS_ActionBlocksCreate::doTriggerCompletion([[maybe_unused]]bool success) {
     setStatus(getStatus()+1); // clear mouse button hints
     updateMouseButtonHints();
-    finish(false);
+    finish();
 }
 
-void RS_ActionBlocksCreate::onMouseLeftButtonReleaseSelected([[maybe_unused]]int status, LC_MouseEvent* pEvent) {
-    fireCoordinateEventForSnap(pEvent);
+void RS_ActionBlocksCreate::onMouseLeftButtonReleaseSelected([[maybe_unused]]int status, const LC_MouseEvent* e) {
+    fireCoordinateEventForSnap(e);
 }
 
-void RS_ActionBlocksCreate::onMouseRightButtonReleaseSelected([[maybe_unused]]int status,[[maybe_unused]] LC_MouseEvent* pEvent) {
+void RS_ActionBlocksCreate::onMouseRightButtonReleaseSelected([[maybe_unused]]int status, [[maybe_unused]] const LC_MouseEvent* event) {
     init(getStatus()-1);
 }
 

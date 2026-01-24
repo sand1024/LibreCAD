@@ -68,15 +68,15 @@ public:
     LC_ActionDrawSliceDivide(LC_ActionContext *actionContext, bool forCircle);
     bool isTickAngleRelative() const{return m_tickAngleIsRelative;}
     bool isDivideEntity() const{return m_doDivideEntity;}
-    void setTickLength(double len){m_tickLength = len;}
-    void setDrawTickOnEdgeMode(int i){m_tickEdgeDrawMode = i;}
-    void setTickAngleDegrees(double a){ m_tickAngleDegrees = a;}
-    void setCircleStartTickAngleDegrees(double a){ m_circleStartTickAngleDegrees = a;}
-    void setTickAngleRelative(bool b){m_tickAngleIsRelative = b;}
-    void setDivideEntity(bool value){m_doDivideEntity = value;}
-    void setTickCount(int c){m_tickCount = c;}
-    void setTickSnapMode(int m){m_tickSnapMode = m;}
-    void setTickOffset(double offset){m_tickOffset = offset;}
+    void setTickLength(const double len){m_tickLength = len;}
+    void setDrawTickOnEdgeMode(const int i){m_tickEdgeDrawMode = i;}
+    void setTickAngleDegrees(const double a){ m_tickAngleDegrees = a;}
+    void setCircleStartTickAngleDegrees(const double a){ m_circleStartTickAngleDegrees = a;}
+    void setTickAngleRelative(const bool b){m_tickAngleIsRelative = b;}
+    void setDivideEntity(const bool value){m_doDivideEntity = value;}
+    void setTickCount(const int c){m_tickCount = c;}
+    void setTickSnapMode(const int m){m_tickSnapMode = m;}
+    void setTickOffset(const double offset){m_tickOffset = offset;}
     int getTickSnapMode() const{return m_tickSnapMode;}
     int getTickCount() const{return m_tickCount;}
     int getDrawTickOnEdgeMode() const{return m_tickEdgeDrawMode;}
@@ -84,10 +84,10 @@ public:
     double getTickLength() const{return m_tickLength;}
     double getTickOffset() const{return m_tickOffset;}
     double getCircleStartAngleDegrees() const{return m_circleStartTickAngleDegrees;}
-    void setDistance(double val){m_distance = val;};
-    double getDistance() const{return m_distance;};
-    void setFixedDistance(bool value){m_fixedDistance = value;};
-    bool isFixedDistance() const{return m_fixedDistance;};
+    void setDistance(const double val){m_distance = val;}
+    double getDistance() const{return m_distance;}
+    void setFixedDistance(const bool value){m_fixedDistance = value;}
+    bool isFixedDistance() const{return m_fixedDistance;}
 private:
     /**
      * amount of ticks to created
@@ -152,28 +152,28 @@ private:
      */
     bool m_doDivideEntity = false;
 
-    void prepareLineTicks(RS_Line *e);
-    void prepareArcTicks(RS_Arc *arc);
-    void prepareCircleTicks(RS_Circle *circle);
-    void prepareTickData(RS_Vector &tickSnapPosition, RS_Entity *entity, RS_LineData &tickLineData) const;
-    void addTick(RS_Vector &tickSnapPoint, RS_LineData &lineData, bool edge, bool visible, double angle);
-    void createTickData(RS_Entity *e, RS_Vector tickSnapPoint, double arcAngle, bool edge, bool visible = true);
-    void prepareStartTick(RS_Entity *entity, const RS_Vector &tickSnapPoint, double arcAngle);
-    void prepareEndTick(RS_Entity *entity, const RS_Vector &tickSnapPoint, double arcAngle);
-    void prepareArcSegments(RS_Entity *e, double radius, RS_Vector &center, double startPointAngle, double arcLength);
-    void createLineSegments(RS_Line *pLine, QList<RS_Entity *> &list) const;
-    void createArcSegments(RS_Arc *pArc, QList<RS_Entity *> &list) const;
-    void createCircleSegments(RS_Circle *pCircle, QList<RS_Entity *> &list) const;
-    void doCreateArcSegments(RS_Entity *pArc, const RS_Vector &center, double radius, bool reversed, QList<RS_Entity *> &list) const;
-    bool checkShouldDivideEntity(const RS_Entity *entity, const QString &entityName) const;
+    void prepareLineTicks(const RS_Line *line);
+    void prepareArcTicks(const RS_Arc* arc);
+    void prepareCircleTicks(const RS_Circle *circle);
+    void prepareTickData(const RS_Vector &tickSnapPosition, const RS_Entity *entity, RS_LineData &tickLineData) const;
+    void addTick(const RS_Vector &tickSnapPoint, const RS_LineData &lineData, bool edge, bool visible, double angle);
+    void createTickData(const RS_Entity *e, const RS_Vector& tickSnapPoint, double arcAngle, bool edge, bool visible = true);
+    void prepareStartTick(const RS_Entity *entity, const RS_Vector &tickSnapPoint, double arcAngle);
+    void prepareEndTick(const RS_Entity *entity, const RS_Vector &tickSnapPoint, double arcAngle);
+    void prepareArcSegments(const RS_Entity *e, double radius, const RS_Vector &center, double startPointAngle, double arcLength);
+    void createLineSegments(const RS_Line *line, QList<RS_Entity *> &list) const;
+    void createArcSegments(const RS_Arc *pArc, QList<RS_Entity *> &list) const;
+    void createCircleSegments(const RS_Circle *pCircle, QList<RS_Entity *> &list) const;
+    void doCreateArcSegments(const RS_Entity *pArc, const RS_Vector &center, double radius, bool reversed, QList<RS_Entity *> &list) const;
+    bool checkShouldDivideEntity(const RS_Entity *e, const QString &entityName) const;
 protected:
     LC_ActionOptionsWidget* createOptionsWidget() override;
     bool doCheckMayTrigger() override;
     bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx)  override;
     void doAfterTrigger() override;
-    void doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
-    void doOnLeftMouseButtonRelease(LC_MouseEvent *e, int status, const RS_Vector &snapPoint) override;
-    bool doCheckMayDrawPreview(LC_MouseEvent *event, int status) override;
+    void doPreparePreviewEntities(const LC_MouseEvent* e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
+    void doOnLeftMouseButtonRelease(const LC_MouseEvent* e, int status, const RS_Vector &snapPoint) override;
+    bool doCheckMayDrawPreview(const LC_MouseEvent* event, int status) override;
     bool isSetActivePenAndLayerOnTrigger() override;
     void clearTickData();
     RS2::CursorType doGetMouseCursor(int status) override;
@@ -183,4 +183,4 @@ protected:
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
 };
 
-#endif // LC_ACTIONDRAWSLICEDIVIDE_H
+#endif

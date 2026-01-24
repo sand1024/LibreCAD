@@ -33,18 +33,18 @@ public:
 protected:
     bool m_splineIsClosed = false;
     RS_Entity *createModifiedSplineEntity(RS_Entity *e, RS_Vector controlPoint, bool startDirection) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMove(RS_Vector mouse, int status, LC_MouseEvent *e) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMove(RS_Vector mouse, int status, const LC_MouseEvent* e) override;
     void setEntityToModify(RS_Entity* entity) override;
     void updateMouseButtonHints() override;
     void collectPointsThatRemainsAfterDeletion(
-        const RS_Vector &controlPoint, unsigned int splinePointsCount, bool deleteNotFoundPoints, std::vector<RS_Vector> &pointsVector,
+        const RS_Vector &controlPoint, size_t splinePointsCount, bool deleteNotFoundPoints, const std::vector<RS_Vector> &pointsVector,
         std::vector<RS_Vector> &remainingPoints) const;
-    bool isValidSplinePointsData(unsigned long long int size, bool closed);
-    bool isValidSplineData(unsigned long long int size, bool closed, int degree);
+    bool isValidSplinePointsData(size_t size, bool closed);
+    bool isValidSplineData(size_t size, bool closed, int degree);
     void doOnEntityNotCreated() override;
     void doTriggerOther() override;
-    bool mayModifySplineEntity(RS_Entity* pEntity) override;
+    bool mayModifySplineEntity(RS_Entity* entity) override;
 };
 
-#endif // LC_ACTIONSPLINEREMOVEBETWEEN_H
+#endif

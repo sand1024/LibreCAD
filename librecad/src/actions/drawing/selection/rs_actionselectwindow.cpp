@@ -30,7 +30,6 @@
 #include "lc_cursoroverlayinfo.h"
 #include "lc_graphicviewport.h"
 #include "lc_selectwindowoptions.h"
-#include "rs_debug.h"
 #include "rs_selection.h"
 
 struct RS_ActionSelectWindow::Points {
@@ -41,15 +40,16 @@ struct RS_ActionSelectWindow::Points {
 /**
  * Constructor.
  *
+ * @param actionContext
  * @param select true: select window. false: invertSelectionOperation window
  */
-RS_ActionSelectWindow::RS_ActionSelectWindow(LC_ActionContext *actionContext,bool select)
+RS_ActionSelectWindow::RS_ActionSelectWindow(LC_ActionContext *actionContext, const bool select)
     : RS_ActionSelectBase("Select Window",actionContext, select ? RS2::ActionSelectWindow : RS2::ActionDeselectWindow)
     , m_actionData(std::make_unique<Points>())
     , m_select(select){
 }
 
-RS_ActionSelectWindow::RS_ActionSelectWindow(enum RS2::EntityType typeToSelect,LC_ActionContext *actionContext,bool select)
+RS_ActionSelectWindow::RS_ActionSelectWindow(const RS2::EntityType typeToSelect,LC_ActionContext *actionContext, const bool select)
     : RS_ActionSelectBase("Select Window",actionContext, select ? RS2::ActionSelectWindow : RS2::ActionDeselectWindow)
     , m_actionData(std::make_unique<Points>())
     , m_select(select){
@@ -65,7 +65,7 @@ RS_ActionSelectWindow::RS_ActionSelectWindow(enum RS2::EntityType typeToSelect,L
 RS_ActionSelectWindow::~RS_ActionSelectWindow() = default;
 
 
-void RS_ActionSelectWindow::init(int status) {
+void RS_ActionSelectWindow::init(const int status) {
     RS_PreviewActionInterface::init(status);
     m_actionData = std::make_unique<Points>();
     m_selectIntersecting = false;
@@ -77,10 +77,10 @@ void RS_ActionSelectWindow::doTrigger() {
     if (m_actionData->v1.valid && m_actionData->v2.valid){
         if (toGuiDX(m_actionData->v1.distanceTo(m_actionData->v2)) > 10){
             // restore selection box to ucs
-            RS_Vector ucsP1 = toUCS(m_actionData->v1);
-            RS_Vector ucsP2 = toUCS(m_actionData->v2);
+            const RS_Vector ucsP1 = toUCS(m_actionData->v1);
+            const RS_Vector ucsP2 = toUCS(m_actionData->v2);
 
-            bool selectIntersecting = (ucsP1.x > ucsP2.x) || m_selectIntersecting;
+            const bool selectIntersecting = (ucsP1.x > ucsP2.x) || m_selectIntersecting;
             RS_Selection s(m_document, m_viewport);
             bool doSelect = m_select;
             if (m_invertSelectionOperation){
@@ -101,18 +101,18 @@ void RS_ActionSelectWindow::doTrigger() {
     }
 }
 
-void RS_ActionSelectWindow::onMouseMoveEvent([[maybe_unused]]int status, LC_MouseEvent *e) {
-    RS_Vector snapped = e->graphPoint;
+void RS_ActionSelectWindow::onMouseMoveEvent([[maybe_unused]] const int status, const LC_MouseEvent* e) {
+    const RS_Vector snapped = e->graphPoint;
     updateCoordinateWidgetByRelZero(snapped);
     if (getStatus()==SetCorner2 && m_actionData->v1.valid) {
         m_actionData->v2 = snapped;
         drawOverlayBox(m_actionData->v1, m_actionData->v2);
         if (isInfoCursorForModificationEnabled()) {
             // restore selection box to ucs
-            RS_Vector ucsP1 = toUCS(m_actionData->v1);
-            RS_Vector ucsP2 = toUCS(m_actionData->v2);
-            bool cross = (ucsP1.x > ucsP2.x) || e->isControl;
-            bool deselect = e->isShift ? m_select : !m_select;
+            const RS_Vector ucsP1 = toUCS(m_actionData->v1);
+            const RS_Vector ucsP2 = toUCS(m_actionData->v2);
+            const bool cross = (ucsP1.x > ucsP2.x) || e->isControl;
+            const bool deselect = e->isShift ? m_select : !m_select;
             QString msg = deselect ? tr("De-Selecting") : tr("Selecting");
             msg.append(tr(" entities "));
             msg.append(cross? tr("that intersect with box") : tr("that are within box"));
@@ -123,7 +123,7 @@ void RS_ActionSelectWindow::onMouseMoveEvent([[maybe_unused]]int status, LC_Mous
     }
 }
 
-void RS_ActionSelectWindow::onMouseLeftButtonPress(int status, LC_MouseEvent* e){
+void RS_ActionSelectWindow::onMouseLeftButtonPress(const int status, const LC_MouseEvent* e){
     switch (status) {
         case SetCorner1:
             if (e->isControl) {
@@ -139,7 +139,7 @@ void RS_ActionSelectWindow::onMouseLeftButtonPress(int status, LC_MouseEvent* e)
     }
 }
 
-void RS_ActionSelectWindow::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
+void RS_ActionSelectWindow::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     if (status==SetCorner2) {
         m_actionData->v2 = e->graphPoint;
         m_selectIntersecting = e->isControl;
@@ -148,7 +148,7 @@ void RS_ActionSelectWindow::onMouseLeftButtonRelease(int status, LC_MouseEvent *
     }
 }
 
-void RS_ActionSelectWindow::onMouseRightButtonRelease(int status, [[maybe_unused]] LC_MouseEvent *e) {
+void RS_ActionSelectWindow::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     if (status==SetCorner2) {
         deletePreview();
     }
@@ -191,7 +191,7 @@ bool RS_ActionSelectWindow::isSelectAllEntityTypes() const {
     return m_selectAllEntityTypes;
 }
 
-void RS_ActionSelectWindow::setSelectAllEntityTypes(bool val){
+void RS_ActionSelectWindow::setSelectAllEntityTypes(const bool val){
     m_selectAllEntityTypes  = val;
 }
 

@@ -31,7 +31,7 @@ RS_ActionDrawLinePolygonCenCor::RS_ActionDrawLinePolygonCenCor(LC_ActionContext 
 
 RS_ActionDrawLinePolygonCenCor::~RS_ActionDrawLinePolygonCenCor() = default;
 
-void RS_ActionDrawLinePolygonCenCor::preparePolygonInfo(LC_ActionDrawLinePolygonBase::PolygonInfo &polygonInfo, const RS_Vector &snap) {
+void RS_ActionDrawLinePolygonCenCor::preparePolygonInfo(PolygonInfo &polygonInfo, const RS_Vector &snap) {
     // creation.createPolygon(pPoints->point1, mouse, number);
     polygonInfo.centerPoint = m_actionData->point1;
     polygonInfo.vertexRadius = m_actionData->point1.distanceTo(snap);

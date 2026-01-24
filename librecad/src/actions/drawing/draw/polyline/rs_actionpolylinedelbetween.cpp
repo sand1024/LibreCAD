@@ -28,14 +28,12 @@
 
 #include "lc_actioncontext.h"
 #include "lc_linemath.h"
-#include "rs_debug.h"
 #include "rs_document.h"
 #include "rs_modification.h"
 #include "rs_polyline.h"
-#include "rs_preview.h"
 
-RS_ActionPolylineDelBetween::RS_ActionPolylineDelBetween(LC_ActionContext *actionContext)
-    :LC_ActionPolylineDeleteBase("Delete between two nodes", actionContext, RS2::ActionPolylineDelBetween){
+RS_ActionPolylineDelBetween::RS_ActionPolylineDelBetween(LC_ActionContext* actionContext)
+    : LC_ActionPolylineDeleteBase("Delete between two nodes", actionContext, RS2::ActionPolylineDelBetween) {
 }
 
 RS_ActionPolylineDelBetween::~RS_ActionPolylineDelBetween() = default;
@@ -44,7 +42,7 @@ void RS_ActionPolylineDelBetween::doInitialInit() {
     m_polylineToModify = nullptr;
 }
 
-void RS_ActionPolylineDelBetween::doInitWithContextEntity(RS_Entity* contextEntity, [[maybe_unused]]const RS_Vector& clickPos) {
+void RS_ActionPolylineDelBetween::doInitWithContextEntity(RS_Entity* contextEntity, [[maybe_unused]] const RS_Vector& clickPos) {
     setPolylineToModify(contextEntity);
 }
 
@@ -53,8 +51,9 @@ void RS_ActionPolylineDelBetween::drawSnapper() {
 }
 
 bool RS_ActionPolylineDelBetween::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
-    RS_Polyline *modifiedPolyline = RS_Modification::deletePolylineNodesBetween(m_polylineToModify, m_vertexToDelete, m_vertexToDelete2, ctx);
-    if (modifiedPolyline != nullptr){
+    RS_Polyline* modifiedPolyline = RS_Modification::deletePolylineNodesBetween(m_polylineToModify, m_vertexToDelete, m_vertexToDelete2,
+                                                                                ctx);
+    if (modifiedPolyline != nullptr) {
         modifiedPolyline->setLayer(m_polylineToModify->getLayer(false));
         modifiedPolyline->setPen(m_polylineToModify->getPen(false));
         m_polylineToModify = modifiedPolyline;
@@ -64,7 +63,7 @@ bool RS_ActionPolylineDelBetween::doTriggerModifications(LC_DocumentModification
     return false;
 }
 
-void RS_ActionPolylineDelBetween::doTriggerCompletion(bool success) {
+void RS_ActionPolylineDelBetween::doTriggerCompletion(const bool success) {
     if (success) {
         select(m_polylineToModify);
         setStatus(SetVertex1);
@@ -74,21 +73,21 @@ void RS_ActionPolylineDelBetween::doTriggerCompletion(bool success) {
     }
 }
 
-void RS_ActionPolylineDelBetween::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void RS_ActionPolylineDelBetween::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     switch (status) {
         case SetPolyline: {
-            auto polyline = dynamic_cast<RS_Polyline *>(catchAndDescribe(e));
-            if (polyline != nullptr){
+            const auto polyline = dynamic_cast<RS_Polyline*>(catchAndDescribe(e));
+            if (polyline != nullptr) {
                 highlightHover(polyline);
             }
             break;
         }
         case SetVertex1: {
             RS_Vector vertex;
-            RS_Entity *segment;
+            RS_Entity* segment;
             getSelectedPolylineVertex(e, vertex, segment);
             deleteSnapper();
-            if (vertex.valid){
+            if (vertex.valid) {
                 highlightHover(segment);
                 previewRefSelectablePoint(vertex);
             }
@@ -96,22 +95,22 @@ void RS_ActionPolylineDelBetween::onMouseMoveEvent(int status, LC_MouseEvent *e)
         }
         case SetVertex2: {
             RS_Vector vertex;
-            RS_Entity *segment;
+            RS_Entity* segment;
             getSelectedPolylineVertex(e, vertex, segment);
             deleteSnapper();
             previewRefSelectablePoint(m_vertexToDelete);
 
-            if (vertex.valid){
+            if (vertex.valid) {
                 // collect segments between points
-                QList<RS_Entity *> entitiesToRemove;
+                QList<RS_Entity*> entitiesToRemove;
                 collectEntitiesToRemove(m_vertexToDelete, vertex, entitiesToRemove);
-                if (!entitiesToRemove.isEmpty()){
-                    for (const auto er: entitiesToRemove) {
+                if (!entitiesToRemove.isEmpty()) {
+                    for (const auto er : entitiesToRemove) {
                         highlightHover(er);
                     }
                     previewRefSelectablePoint(vertex);
                     LC_DocumentModificationBatch ctx;
-                    auto polyline = RS_Modification::deletePolylineNodesBetween(m_polylineToModify, m_vertexToDelete, vertex, ctx);
+                    const auto polyline = RS_Modification::deletePolylineNodesBetween(m_polylineToModify, m_vertexToDelete, vertex, ctx);
                     if (polyline != nullptr) {
                         previewEntity(polyline);
                     }
@@ -125,73 +124,79 @@ void RS_ActionPolylineDelBetween::onMouseMoveEvent(int status, LC_MouseEvent *e)
 }
 
 void RS_ActionPolylineDelBetween::setPolylineToModify(RS_Entity* en) {
-    if (en == nullptr){
+    if (en == nullptr) {
         commandMessage(tr("No Entity found."));
-    } else if (!isPolyline(en)){
+    }
+    else if (!isPolyline(en)) {
         commandMessage(tr("Entity must be a polyline."));
-    } else {
-        m_polylineToModify = dynamic_cast<RS_Polyline *>(en);
+    }
+    else {
+        m_polylineToModify = dynamic_cast<RS_Polyline*>(en);
         select(m_polylineToModify);
         setStatus(SetVertex1);
         redraw();
     }
 }
 
-void RS_ActionPolylineDelBetween::onMouseLeftButtonRelease(int status, LC_MouseEvent *e){
+void RS_ActionPolylineDelBetween::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     switch (status) {
-        case SetPolyline:{
-            auto en = catchEntityByEvent(e);
+        case SetPolyline: {
+            const auto en = catchEntityByEvent(e);
             setPolylineToModify(en);
             break;
         }
-        case SetVertex1:{
-            if (m_polylineToModify == nullptr){
+        case SetVertex1: {
+            if (m_polylineToModify == nullptr) {
                 commandMessage(tr("No Entity found.")); // fixme - really? seems not needed check
-            } else {
+            }
+            else {
                 RS_Vector vertex;
-                RS_Entity * segment;
+                RS_Entity* segment;
                 getSelectedPolylineVertex(e, vertex, segment);
-                if (vertex.valid){
-                    if (!m_polylineToModify->isPointOnEntity(vertex)){ // fixme - is it really needed?
+                if (vertex.valid) {
+                    if (!m_polylineToModify->isPointOnEntity(vertex)) {
+                        // fixme - is it really needed?
                         commandMessage(tr("Deleting point is not on entity."));
                     }
-                    else{
+                    else {
                         m_vertexToDelete = vertex;
                         setStatus(SetVertex2);
                     }
                 }
-                else{
+                else {
                     commandMessage(tr("Deleting point is invalid."));
                 }
             }
             break;
         }
-        case SetVertex2:{
-            if (m_polylineToModify == nullptr){
+        case SetVertex2: {
+            if (m_polylineToModify == nullptr) {
                 commandMessage(tr("No polyline found.")); // fixme - really needed?
-            } else{
+            }
+            else {
                 RS_Vector vertex;
-                RS_Entity * segment;
+                RS_Entity* segment;
                 getSelectedPolylineVertex(e, vertex, segment);
 
-                if (vertex.valid){
-                    if (!m_polylineToModify->isPointOnEntity(vertex)){ // fixme - is it really needed?
+                if (vertex.valid) {
+                    if (!m_polylineToModify->isPointOnEntity(vertex)) {
+                        // fixme - is it really needed?
                         commandMessage(tr("Deleting point is not on entity."));
                     }
-                    else{
+                    else {
                         QList<RS_Entity*> entitiesToRemove;
                         collectEntitiesToRemove(m_vertexToDelete, vertex, entitiesToRemove);
-                        if (!entitiesToRemove.isEmpty()){
+                        if (!entitiesToRemove.isEmpty()) {
                             m_vertexToDelete2 = vertex;
                             deleteSnapper();
                             trigger();
                         }
-                        else{
+                        else {
                             commandMessage(tr("At least two segments of polyline should be between selected points."));
                         }
                     }
                 }
-                else{
+                else {
                     commandMessage(tr("Deleting point is invalid."));
                 }
             }
@@ -219,26 +224,27 @@ void RS_ActionPolylineDelBetween::updateMouseButtonHints() {
     }
 }
 
-void RS_ActionPolylineDelBetween::collectEntitiesToRemove(RS_Vector first, RS_Vector second, QList<RS_Entity *> &list) const {
-    if (first.distanceTo(second) > RS_TOLERANCE){
+void RS_ActionPolylineDelBetween::collectEntitiesToRemove(const RS_Vector& first, const RS_Vector& second, QList<RS_Entity*>& list) const {
+    if (first.distanceTo(second) > RS_TOLERANCE) {
         bool found = false;
 
-        for (unsigned int i = 0; i < m_polylineToModify->count(); i++){
+        for (unsigned int i = 0; i < m_polylineToModify->count(); i++) {
             auto* en = m_polylineToModify->entityAt(i);
             auto start = en->getStartpoint();
 
-            if (LC_LineMath::isMeaningfulDistance(start, first) || LC_LineMath::isMeaningfulDistance(start, second)){
+            if (LC_LineMath::isMeaningfulDistance(start, first) || LC_LineMath::isMeaningfulDistance(start, second)) {
                 found = !found;
-                if (!found){
+                if (!found) {
                     continue;
                 }
             }
-            if (found){
+            if (found) {
                 list << en;
             }
         }
 
-        if (list.size() == 1){ // same entity or single segment, minimum 2 should be found
+        if (list.size() == 1) {
+            // same entity or single segment, minimum 2 should be found
             list.clear();
         }
     }

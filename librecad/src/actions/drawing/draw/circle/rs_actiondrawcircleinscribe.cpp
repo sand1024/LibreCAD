@@ -23,7 +23,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "rs_actiondrawcircleinscribe.h"
 
 #include "rs_circle.h"
-#include "rs_debug.h"
 #include "rs_document.h"
 #include "rs_line.h"
 #include "rs_polyline.h"
@@ -32,9 +31,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class RS_Polyline;
 
 struct RS_ActionDrawCircleInscribe::ActionData {
-    RS_CircleData cData;
+    RS_CircleData circleData;
     RS_Vector coord;
-    std::vector<RS_Line *> lines;
+    std::vector<RS_Line*> lines;
 };
 
 // fixme - cleanup, optoins
@@ -43,15 +42,16 @@ struct RS_ActionDrawCircleInscribe::ActionData {
  * Constructor.
  *
  */
-RS_ActionDrawCircleInscribe::RS_ActionDrawCircleInscribe(LC_ActionContext *actionContext)
-    :LC_ActionDrawCircleBase("Draw circle inscribed",actionContext, RS2::ActionDrawCircleInscribe), m_actionData(std::make_unique<ActionData>()), m_valid(false){
+RS_ActionDrawCircleInscribe::RS_ActionDrawCircleInscribe(LC_ActionContext* actionContext)
+    : LC_ActionDrawCircleBase("Draw circle inscribed", actionContext, RS2::ActionDrawCircleInscribe),
+      m_actionData(std::make_unique<ActionData>()) {
 }
 
 RS_ActionDrawCircleInscribe::~RS_ActionDrawCircleInscribe() = default;
 
-void RS_ActionDrawCircleInscribe::clearLines(bool checkStatus) const {
+void RS_ActionDrawCircleInscribe::clearLines(const bool checkStatus) const {
     while (!m_actionData->lines.empty()) {
-        if (checkStatus && (int) m_actionData->lines.size() <= getStatus()) {
+        if (checkStatus && static_cast<int>(m_actionData->lines.size()) <= getStatus()) {
             break;
         }
         m_actionData->lines.pop_back();
@@ -65,67 +65,69 @@ void RS_ActionDrawCircleInscribe::drawSnapper() {
 void RS_ActionDrawCircleInscribe::doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) {
     auto entity = contextEntity;
     if (isPolyline(entity)) {
-        auto polyline = static_cast<RS_Polyline*>(contextEntity);
+        const auto polyline = static_cast<RS_Polyline*>(contextEntity);
         entity = polyline->getNearestEntity(clickPos);
     }
     if (isLine(entity)) {
-        setLine1(static_cast<RS_Line*> (entity));
+        setLine1(static_cast<RS_Line*>(entity));
     }
 }
 
-void RS_ActionDrawCircleInscribe::init(int status){
+void RS_ActionDrawCircleInscribe::init(const int status) {
     LC_ActionDrawCircleBase::init(status);
-    if (getStatus() >= 0){
+    if (getStatus() >= 0) {
         RS_PreviewActionInterface::suspend();
     }
     clearLines(true);
 }
 
-void RS_ActionDrawCircleInscribe::finish(bool updateTB){
+void RS_ActionDrawCircleInscribe::finish() {
     clearLines();
-    RS_PreviewActionInterface::finish(updateTB);
+    RS_PreviewActionInterface::finish();
 }
 
 RS_Entity* RS_ActionDrawCircleInscribe::doTriggerCreateEntity() {
-    auto *circle = new RS_Circle(m_document, m_actionData->cData);
-    if (m_moveRelPointAtCenterAfterTrigger){
+    auto* circle = new RS_Circle(m_document, m_actionData->circleData);
+    if (m_moveRelPointAtCenterAfterTrigger) {
         moveRelativeZero(circle->getCenter());
     }
     return circle;
 }
 
-void RS_ActionDrawCircleInscribe::doTriggerCompletion([[maybe_unused]]bool success) {
+void RS_ActionDrawCircleInscribe::doTriggerCompletion([[maybe_unused]] bool success) {
     clearLines(false);
     setStatus(SetLine1);
 }
 
-void RS_ActionDrawCircleInscribe::onMouseMoveEvent(int status, LC_MouseEvent *e) {
-    for(RS_AtomicEntity* const pc: m_actionData->lines) { // highlight already selected
+void RS_ActionDrawCircleInscribe::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
+    for (RS_AtomicEntity* const pc : m_actionData->lines) {
+        // highlight already selected
         highlightSelected(pc);
     }
-    auto en = catchModifiableAndDescribe(e, RS2::EntityLine);  // fixme - check whether snap is used for entity selection?  Ensure free snap?
+    const auto en = catchModifiableAndDescribe(e, RS2::EntityLine);
+    // fixme - check whether snap is used for entity selection?  Ensure free snap?
 
-    if (en != nullptr){
-        auto *line = dynamic_cast<RS_Line *>(en);
+    if (en != nullptr) {
+        auto* line = static_cast<RS_Line*>(en);
         switch (status) {
             case SetLine1: {
                 highlightHover(en);
                 break;
             }
             case SetLine2: {
-                if (en != m_actionData->lines[SetLine1]){
+                if (en != m_actionData->lines[SetLine1]) {
                     highlightHover(en);
                 }
                 break;
             }
             case SetLine3: {
-                if (m_actionData->lines[SetLine1] != line && m_actionData->lines[SetLine2] != line){
+                if (m_actionData->lines[SetLine1] != line && m_actionData->lines[SetLine2] != line) {
                     m_actionData->coord = e->graphPoint;
-                    if (preparePreview(line)){
+                    if (preparePreview(line)) {
                         highlightHover(en);
-                        previewToCreateCircle(m_actionData->cData);
+                        previewToCreateCircle(m_actionData->circleData);
                         if (m_showRefEntitiesOnPreview) {
-                            RS_Vector &center = m_actionData->cData.center;
+                            const RS_Vector& center = m_actionData->circleData.center;
                             previewRefPoint(m_actionData->lines[SetLine1]->getNearestPointOnEntity(center, false));
                             previewRefPoint(m_actionData->lines[SetLine2]->getNearestPointOnEntity(center, false));
                             previewRefPoint(line->getNearestPointOnEntity(center, false));
@@ -145,8 +147,8 @@ void RS_ActionDrawCircleInscribe::setLine1(RS_Line* line) {
     setStatus(SetLine2);
 }
 
-void RS_ActionDrawCircleInscribe::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
-    RS_Entity *en = catchModifiableEntity(e, RS2::EntityLine); // fixme - support of polyline
+void RS_ActionDrawCircleInscribe::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
+    RS_Entity* en = catchModifiableEntity(e, RS2::EntityLine); // fixme - support of polyline
     if (en == nullptr) {
         return;
     }
@@ -160,19 +162,19 @@ void RS_ActionDrawCircleInscribe::onMouseLeftButtonRelease(int status, LC_MouseE
     }
 
     m_actionData->coord = e->graphPoint;
-    auto *line = dynamic_cast<RS_Line *>(en);
+    auto* line = dynamic_cast<RS_Line*>(en);
 
     switch (status) {
-        case SetLine1:{
+        case SetLine1: {
             setLine1(line);
             break;
         }
         case SetLine2:
-                m_actionData->lines.push_back(line);
+            m_actionData->lines.push_back(line);
             setStatus(SetLine3);
             break;
         case SetLine3:
-            if (preparePreview(line)){
+            if (preparePreview(line)) {
                 trigger();
             }
             break;
@@ -181,34 +183,34 @@ void RS_ActionDrawCircleInscribe::onMouseLeftButtonRelease(int status, LC_MouseE
     }
 }
 
-void RS_ActionDrawCircleInscribe::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionDrawCircleInscribe::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     // Return to last status:
-    if (status > 0){
+    if (status > 0) {
         m_actionData->lines.pop_back();
         deletePreview();
     }
     initPrevious(status);
 }
 
-bool RS_ActionDrawCircleInscribe::preparePreview(RS_Line* en){
+bool RS_ActionDrawCircleInscribe::preparePreview(RS_Line* en) {
     m_valid = false;
-    if (getStatus() == SetLine3){
-        if (en != nullptr){
-          m_actionData->lines.push_back(en);
+    if (getStatus() == SetLine3) {
+        if (en != nullptr) {
+            m_actionData->lines.push_back(en);
         }
-        RS_Circle c(m_preview.get(), m_actionData->cData);
+        RS_Circle c(m_preview.get(), m_actionData->circleData);
         m_valid = c.createInscribe(m_actionData->coord, m_actionData->lines);
-        if (m_valid){
-            m_actionData->cData = c.getData();
+        if (m_valid) {
+            m_actionData->circleData = c.getData();
         }
     }
-    if (en != nullptr){
+    if (en != nullptr) {
         m_actionData->lines.pop_back();
     }
     return m_valid;
 }
 
-void RS_ActionDrawCircleInscribe::updateMouseButtonHints(){
+void RS_ActionDrawCircleInscribe::updateMouseButtonHints() {
     switch (getStatus()) {
         case SetLine1:
             updateMouseWidgetTRCancel(tr("Specify the first line"));
@@ -225,6 +227,6 @@ void RS_ActionDrawCircleInscribe::updateMouseButtonHints(){
     }
 }
 
-RS2::CursorType RS_ActionDrawCircleInscribe::doGetMouseCursor([[maybe_unused]] int status){
+RS2::CursorType RS_ActionDrawCircleInscribe::doGetMouseCursor([[maybe_unused]] int status) {
     return RS2::SelectCursor;
 }

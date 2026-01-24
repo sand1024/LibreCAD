@@ -37,25 +37,24 @@
 class RS_ActionSelectSingle:public RS_ActionSelectBase {
     Q_OBJECT
 public:
-    RS_ActionSelectSingle(LC_ActionContext *actionContext,
-        RS_ActionInterface *actionSelect = nullptr,
-        const QList<RS2::EntityType> &entityTypeList = {});
-    RS_ActionSelectSingle(
-        enum RS2::EntityType typeToSelect,LC_ActionContext *actionContext,
-        RS_ActionInterface *actionSelect = nullptr,
-        const QList<RS2::EntityType> &entityTypeList = {});
+    explicit RS_ActionSelectSingle(LC_ActionContext *actionContext,
+                                   RS_ActionInterface *actionSelect = nullptr,
+                                   const QList<RS2::EntityType> &entityTypeList = {});
+    RS_ActionSelectSingle(RS2::EntityType typeToSelect,LC_ActionContext *actionContext,
+                          RS_ActionInterface *actionSelect = nullptr,
+                          const QList<RS2::EntityType> &entityTypeList = {});
     void trigger() override;
-    enum RS2::EntityType getTypeToSelect() const;
+    RS2::EntityType getTypeToSelect() const;
 protected:
     bool m_selectContour = false;
     RS_Entity *m_entityToSelect = nullptr;
     RS_ActionInterface *m_actionSelect = nullptr;
-    enum RS2::EntityType m_typeToSelect = RS2::EntityType::EntityUnknown;
+    RS2::EntityType m_typeToSelect = RS2::EntityType::EntityUnknown;
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* event) override;
     bool isEntityAllowedToSelect(RS_Entity* ent) const override;
     void selectionFinishedByKey(QKeyEvent *e, bool escape) override;
     void doSelectEntity(RS_Entity *entityToSelect, bool selectContour) const override;

@@ -21,8 +21,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
 
-#include <cfloat>
 #include "lc_actionmodifybreakdivide.h"
+
+#include <cfloat>
 
 #include "lc_actioninfomessagebuilder.h"
 #include "lc_containertraverser.h"
@@ -47,7 +48,7 @@ LC_ActionModifyBreakDivide::LC_ActionModifyBreakDivide(LC_ActionContext *actionC
    :LC_AbstractActionWithPreview("Break Out",actionContext, RS2::ActionModifyBreakDivide){
 }
 
-bool LC_ActionModifyBreakDivide::doCheckMayDrawPreview([[maybe_unused]]LC_MouseEvent *event, int status){
+bool LC_ActionModifyBreakDivide::doCheckMayDrawPreview([[maybe_unused]] const LC_MouseEvent* event, const int status){
     return status == SetLine;
 }
 
@@ -58,7 +59,7 @@ bool LC_ActionModifyBreakDivide::doCheckMayDrawPreview([[maybe_unused]]LC_MouseE
  * @param list
  * @param status
  */
-void LC_ActionModifyBreakDivide::doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status){
+void LC_ActionModifyBreakDivide::doPreparePreviewEntities(const LC_MouseEvent* e, RS_Vector &snap, QList<RS_Entity *> &list, const int status){
     if (status == SetLine){
         deleteSnapper();
         RS_Entity *en = catchModifiableAndDescribe(e, g_enTypeList);
@@ -66,12 +67,12 @@ void LC_ActionModifyBreakDivide::doPreparePreviewEntities(LC_MouseEvent *e, RS_V
             const int rtti = en->rtti();
             switch (rtti) {
                 case RS2::EntityLine: { // process line
-                    auto *line = dynamic_cast<RS_Line *>(en);
+                    const auto *line = dynamic_cast<RS_Line *>(en);
                     createEntitiesForLine(line, snap, list, true);
                     break;
                 }
                 case RS2::EntityCircle: { //process circle
-                    auto *circle = dynamic_cast<RS_Circle *>(en);
+                    const auto *circle = dynamic_cast<RS_Circle *>(en);
                     createEntitiesForCircle(circle, snap, list, true);
                     break;
                 }
@@ -87,7 +88,7 @@ void LC_ActionModifyBreakDivide::doPreparePreviewEntities(LC_MouseEvent *e, RS_V
     }
 }
 
-void LC_ActionModifyBreakDivide::doOnLeftMouseButtonRelease(LC_MouseEvent *e, int status, const RS_Vector &snapPoint){
+void LC_ActionModifyBreakDivide::doOnLeftMouseButtonRelease(const LC_MouseEvent* e, const int status, const RS_Vector &snapPoint){
     if (status == SetLine){
         RS_Entity *en = catchModifiableEntity(e, g_enTypeList);
         if (en != nullptr){
@@ -120,12 +121,12 @@ bool LC_ActionModifyBreakDivide::doCheckMayTrigger(){
             // do processing of individual entity types
             switch (rtti) {
                 case RS2::EntityLine: {
-                    auto *line = dynamic_cast<RS_Line *>(en);
+                    const auto *line = dynamic_cast<RS_Line *>(en);
                     createEntitiesForLine(line, snap, m_triggerData->entitiesToCreate, false);
                     break;
                 }
                 case RS2::EntityCircle: {
-                    auto *circle = dynamic_cast<RS_Circle *>(en);
+                    const auto *circle = dynamic_cast<RS_Circle *>(en);
                     createEntitiesForCircle(circle, snap, m_triggerData->entitiesToCreate, false);
                     break;
                 }
@@ -165,7 +166,7 @@ void LC_ActionModifyBreakDivide::doAfterTrigger(){
     m_triggerData = nullptr;
 }
 
-void LC_ActionModifyBreakDivide::doFinish([[maybe_unused]]bool updateTB){
+void LC_ActionModifyBreakDivide::doFinish(){
     if (m_triggerData != nullptr){
         delete m_triggerData;
         m_triggerData = nullptr;
@@ -179,7 +180,7 @@ void LC_ActionModifyBreakDivide::doFinish([[maybe_unused]]bool updateTB){
  * @param list list to which entities should be added
  * @param preview true if entities for preview
  */
-void LC_ActionModifyBreakDivide::createEntitiesForLine(RS_Line *line, RS_Vector &snap, QList<RS_Entity*> &list, bool preview) const {
+void LC_ActionModifyBreakDivide::createEntitiesForLine(const RS_Line *line, const RS_Vector &snap, QList<RS_Entity*> &list, const bool preview) const {
     // check whether selection entity may be expanded
     if (checkMayExpandEntity(line, "")){
         // determine snap point projection on line
@@ -269,7 +270,7 @@ void LC_ActionModifyBreakDivide::createEntitiesForLine(RS_Line *line, RS_Vector 
  * @param layer
  * @param list
  */
-void LC_ActionModifyBreakDivide::createLineEntity(bool preview, const RS_Vector &start, const RS_Vector &end,
+void LC_ActionModifyBreakDivide::createLineEntity(const bool preview, const RS_Vector &start, const RS_Vector &end,
                                                   const RS_Pen &pen, RS_Layer *layer, QList<RS_Entity *> &list) const{
     if (preview){
         createRefLine(start, end, list);
@@ -289,7 +290,7 @@ void LC_ActionModifyBreakDivide::createLineEntity(bool preview, const RS_Vector 
  * @param list
  * @param preview
  */
-void LC_ActionModifyBreakDivide::createEntitiesForCircle(RS_Circle *circle, RS_Vector &snap, QList<RS_Entity *> &list, bool preview) const {
+void LC_ActionModifyBreakDivide::createEntitiesForCircle(const RS_Circle* circle, RS_Vector &snap, QList<RS_Entity *> &list, bool preview) const {
     // check that we may expand the circle
     if (checkMayExpandEntity(circle, "")){
         // determine snap point projection on entity
@@ -381,7 +382,7 @@ void LC_ActionModifyBreakDivide::createEntitiesForArc(RS_Arc *arc, RS_Vector &sn
     // check that arc is expandable
     if (checkMayExpandEntity(arc, "")){
         // determine snap point
-        RS_Vector nearestPoint = arc->getNearestPointOnEntity(snap, true);        
+        RS_Vector nearestPoint = arc->getNearestPointOnEntity(snap, true);
         RS_Vector start = arc->getStartpoint();
         RS_Vector end = arc->getEndpoint();
 
@@ -479,7 +480,7 @@ void LC_ActionModifyBreakDivide::createEntitiesForArc(RS_Arc *arc, RS_Vector &sn
  * @param layer layer
  * @param list list of entities to add created entity
  */
-void LC_ActionModifyBreakDivide::createArcEntity(const RS_ArcData &arcData, bool preview, const RS_Pen &pen, RS_Layer *layer, QList<RS_Entity *> &list) const{
+void LC_ActionModifyBreakDivide::createArcEntity(const RS_ArcData &arcData, const bool preview, const RS_Pen &pen, RS_Layer *layer, QList<RS_Entity *> &list) const{
     if (preview){
         createRefArc(arcData, list);
         const auto arc = new RS_Arc(m_document, arcData);
@@ -499,7 +500,7 @@ void LC_ActionModifyBreakDivide::createArcEntity(const RS_ArcData &arcData, bool
  * @param e
  * @return
  */
-RS_Vector LC_ActionModifyBreakDivide::doGetMouseSnapPoint(LC_MouseEvent *e){
+RS_Vector LC_ActionModifyBreakDivide::doGetMouseSnapPoint(const LC_MouseEvent* e){
     return e->graphPoint;
 }
 

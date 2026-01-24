@@ -37,22 +37,22 @@ class LC_ActionPenPick : public RS_PreviewActionInterface {
 
     LC_ActionPenPick(LC_ActionContext* actionContext, bool resolve);
     void init(int status) override;
-    void finish(bool updateTB) override;
+    void finish() override;
 
 private:
     /**
      * flag that indicates whether pen from entity should be resolved
      */
     bool m_resolveMode;
-    void applyPenToPenToolBar(RS_Entity* entity) const;
+    void applyPenToPenToolBar(const RS_Entity* entity) const;
 
 protected:
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent* e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent* e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent* event) override;
-    void pickPen(RS_Entity* en);
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
+    void pickPen(const RS_Entity* en);
     void updateMouseButtonHints() override;
 };
-#endif // LC_ACTIONPENPICK_H
+#endif

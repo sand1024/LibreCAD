@@ -41,7 +41,7 @@ void LC_ActionRemoveSplinePoints::doTriggerCompletion([[maybe_unused]]bool succe
     }
 }
 
-void LC_ActionRemoveSplinePoints::onMouseMove(RS_Vector mouse, int status, LC_MouseEvent *e) {
+void LC_ActionRemoveSplinePoints::onMouseMove(const RS_Vector mouse, const int status, const LC_MouseEvent* e) {
     switch (status) {
         case SetEntity: {
             const auto entity = catchEntityByEvent(e, g_enTypeList);
@@ -57,7 +57,7 @@ void LC_ActionRemoveSplinePoints::onMouseMove(RS_Vector mouse, int status, LC_Mo
             const RS_Vector nearestPoint = m_entityToModify->getNearestRef(mouse, &dist);
             if (nearestPoint.valid) {
                 previewRefSelectablePoint(nearestPoint);
-                RS_Entity *previewUpdatedEntity = createModifiedSplineEntity(m_entityToModify, nearestPoint, m_directionFromStart);
+                const RS_Entity *previewUpdatedEntity = createModifiedSplineEntity(m_entityToModify, nearestPoint, m_directionFromStart);
                 if (previewUpdatedEntity != nullptr) {
                     previewEntity(previewUpdatedEntity);
                 }
@@ -76,7 +76,7 @@ void LC_ActionRemoveSplinePoints::setEntityToModify(RS_Entity* entity) {
     setStatus(SetControlPoint);
 }
 
-void LC_ActionRemoveSplinePoints::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
+void LC_ActionRemoveSplinePoints::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     switch (status){
         case SetEntity:{
             const auto entity = catchEntityByEvent(e, g_enTypeList);
@@ -101,16 +101,16 @@ void LC_ActionRemoveSplinePoints::onMouseLeftButtonRelease(int status, LC_MouseE
 }
 
 
-RS_Entity *LC_ActionRemoveSplinePoints::createModifiedSplineEntity(RS_Entity *e, RS_Vector controlPoint, [[maybe_unused]] bool direction) {
+RS_Entity *LC_ActionRemoveSplinePoints::createModifiedSplineEntity(RS_Entity *e, const RS_Vector controlPoint, [[maybe_unused]] bool direction) {
     RS_Entity* result = nullptr;
     switch (e->rtti()){
         case RS2::EntitySplinePoints:{
-            auto* clone = dynamic_cast<LC_SplinePoints *>(e->clone());
+            auto* clone = static_cast<LC_SplinePoints *>(e->clone());
             LC_SplinePointsData &data = clone->getData();
-            const unsigned int controlPointsCount = data.controlPoints.size();
-            const unsigned int splinePointsCount = data.splinePoints.size();
+            const size_t controlPointsCount = data.controlPoints.size();
+            const size_t splinePointsCount = data.splinePoints.size();
             if (splinePointsCount > 0){
-                for (unsigned int i = 0; i < splinePointsCount; i++) {
+                for (size_t i = 0; i < splinePointsCount; i++) {
                     RS_Vector cp = data.splinePoints.at(i);
                     if (cp == controlPoint) {
                         data.splinePoints.erase(data.splinePoints.begin() + i);
@@ -121,7 +121,7 @@ RS_Entity *LC_ActionRemoveSplinePoints::createModifiedSplineEntity(RS_Entity *e,
                 }
             }
             else {
-                for (unsigned int i = 0; i < controlPointsCount; i++) {
+                for (size_t i = 0; i < controlPointsCount; i++) {
                     RS_Vector cp = data.controlPoints.at(i);
                     if (cp == controlPoint) {
                         data.controlPoints.erase(data.controlPoints.begin() + i);
@@ -134,11 +134,11 @@ RS_Entity *LC_ActionRemoveSplinePoints::createModifiedSplineEntity(RS_Entity *e,
             break;
         }
         case RS2::EntitySpline:{
-            const auto* spline = dynamic_cast<RS_Spline *>(e);
+            const auto* spline = static_cast<RS_Spline *>(e);
             RS_SplineData data = spline->getData();
-            const unsigned int count = data.controlPoints.size();
-            for (unsigned int i = 0; i < count; i++ ){
-                RS_Vector cp = data.controlPoints.at(i);
+            const size_t count = data.controlPoints.size();
+            for (size_t i = 0; i < count; i++ ){
+                const RS_Vector cp = data.controlPoints.at(i);
                 if (cp == controlPoint){
                     data.controlPoints.erase(data.controlPoints.begin() + i);
                     data.knotslist.clear();
@@ -161,33 +161,29 @@ RS_Entity *LC_ActionRemoveSplinePoints::createModifiedSplineEntity(RS_Entity *e,
 bool LC_ActionRemoveSplinePoints::mayModifySplineEntity(RS_Entity *e) {
     switch (e->rtti()){
         case RS2::EntitySplinePoints:{
-            auto* splinePoints = dynamic_cast<LC_SplinePoints *>(e);
-            const unsigned int size = splinePoints->getData().controlPoints.size();
+            auto* splinePoints = static_cast<LC_SplinePoints *>(e);
+            const size_t size = splinePoints->getData().controlPoints.size();
             if (splinePoints->isClosed()){
                 return size > 3;
             }
-            else {
-                return size > 2;
-            }
+            return size > 2;
         }
         case RS2::EntitySpline:{
-            const auto* spline = dynamic_cast<RS_Spline *>(e);
-            const unsigned int size = spline->getData().controlPoints.size();
+            const auto* spline = static_cast<RS_Spline *>(e);
+            const size_t size = spline->getData().controlPoints.size();
             if (spline->isClosed()){
                 return size > 3;
             }
-            else{
-                const int degree = spline->getDegree();
-                switch (degree){
-                    case 1:
-                        return size > 3;
-                    case 2:
-                        return size > 3;
-                    case 3:
-                        return size > 4;
-                    default:
-                        return false;
-                }
+            const int degree = spline->getDegree();
+            switch (degree){
+                case 1:
+                    return size > 3;
+                case 2:
+                    return size > 3;
+                case 3:
+                    return size > 4;
+                default:
+                    return false;
             }
         }
         default:

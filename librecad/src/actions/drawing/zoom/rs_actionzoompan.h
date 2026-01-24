@@ -38,9 +38,9 @@
 class RS_ActionZoomPan : public RS_ActionInterface {
     Q_OBJECT
 public:
-    RS_ActionZoomPan(LC_ActionContext *actionContext);
+    explicit RS_ActionZoomPan(LC_ActionContext *actionContext);
     void init(int status) override;
-    void finish(bool updateTB) override;
+    void finish() override;
     void trigger() override;
     void mouseMoveEvent(QMouseEvent* e) override;
     void mousePressEvent(QMouseEvent* e) override;

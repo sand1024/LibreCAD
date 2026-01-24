@@ -37,4 +37,4 @@ protected:
     void updateMouseButtonHintsForSelection() override;
 };
 
-#endif // LC_ACTIONLAYERTOGGLE_H
+#endif

@@ -43,8 +43,8 @@ public:
     ~RS_ActionModifyStretch() override;
 
     void init(int status) override;
-    bool isRemoveOriginals() const {return m_removeOriginals;};
-    void setRemoveOriginals(bool val){m_removeOriginals = val;};
+    bool isRemoveOriginals() const {return m_removeOriginals;}
+    void setRemoveOriginals(const bool val){m_removeOriginals = val;}
 protected:
     /**
      * Action States.
@@ -60,11 +60,11 @@ protected:
     QList<RS_Entity*> m_entitiesList;
     bool m_removeOriginals = true;
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void previewStretchRect(bool selected) const;
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector &coord) override;
     void updateMouseButtonHints() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;

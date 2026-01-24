@@ -15,4 +15,4 @@ protected:
     QString doGetMouseButtonHint() override;
 };
 
-#endif // LC_ACTIONUCSBYDIMORDINATE_H
+#endif

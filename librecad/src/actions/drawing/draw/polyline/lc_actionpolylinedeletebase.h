@@ -43,11 +43,11 @@ protected:
     RS_Polyline *m_polylineToModify = nullptr;
     RS_Vector m_vertexToDelete = RS_Vector(false);
 
-    void getSelectedPolylineVertex(LC_MouseEvent *e, RS_Vector &vertex, RS_Entity *&segment);
-    void finish(bool updateTB) override;
+    void getSelectedPolylineVertex(const LC_MouseEvent *e, RS_Vector &vertex, RS_Entity *&segment);
+    void finish() override;
     void clean();
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
 };
-#endif // LC_ACTIONPOLYLINEDELETEBASE_H
+#endif

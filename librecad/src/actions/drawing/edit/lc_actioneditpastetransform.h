@@ -31,7 +31,7 @@ Q_OBJECT
 public:
     explicit LC_ActionEditPasteTransform(LC_ActionContext *actionContext);
     void init(int status) override;
-    void setAngle(double value) const;
+    void setAngle(double angle) const;
     double getFactor() const;
     void setFactor(double factor) const;
     bool isArrayCreated() const;
@@ -47,7 +47,7 @@ public:
     double getArrayAngle() const;
     void setArrayAngle(double arrayAngle) const;
     bool isSameAngles() const {return m_sameAngles;}
-    void setSameAngles(bool val) {m_sameAngles = val;}
+    void setSameAngles(const bool val) {m_sameAngles = val;}
     double getAngle() const;
 protected:
     enum Status{
@@ -71,9 +71,9 @@ protected:
     std::unique_ptr<PasteData> m_pasteData;
 
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     LC_ActionOptionsWidget *createOptionsWidget() override;
     void previewMultipleReferencePoints() const;
     void updateMouseButtonHints() override;
@@ -83,4 +83,4 @@ protected:
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
     void doTriggerCompletion(bool success) override;
 };
-#endif // LC_ACTIONEDITPASTETRANSFORM_H
+#endif

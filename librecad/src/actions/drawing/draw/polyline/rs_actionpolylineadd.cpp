@@ -28,7 +28,6 @@
 
 #include "lc_actioncontext.h"
 #include "rs_atomicentity.h"
-#include "rs_debug.h"
 #include "rs_document.h"
 #include "rs_entity.h"
 #include "rs_modification.h"
@@ -42,7 +41,7 @@ RS_ActionPolylineAdd::RS_ActionPolylineAdd(LC_ActionContext *actionContext)
 RS_ActionPolylineAdd::~RS_ActionPolylineAdd() = default;
 
 
-void RS_ActionPolylineAdd::init(int status) {
+void RS_ActionPolylineAdd::init(const int status) {
     m_polylineToModify = nullptr;
     m_addSegment = nullptr;
     *m_addCoord = {};
@@ -56,7 +55,7 @@ void RS_ActionPolylineAdd::doInitWithContextEntity(RS_Entity* contextEntity,[[ma
 bool RS_ActionPolylineAdd::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     if (m_polylineToModify != nullptr && m_addSegment->isAtomic() && m_addCoord->valid &&
         m_addSegment->isPointOnEntity(*m_addCoord)) {
-        auto segment                 = static_cast<RS_AtomicEntity*>(m_addSegment);
+        const auto segment                 = static_cast<RS_AtomicEntity*>(m_addSegment);
         RS_Polyline* createdPolyline = RS_Modification::addPolylineNode(m_polylineToModify, *segment, *m_addCoord, ctx);
         if (createdPolyline != nullptr){
             createdPolyline->setLayer(m_polylineToModify->getLayer(false));
@@ -74,26 +73,26 @@ void RS_ActionPolylineAdd::doTriggerCompletion([[maybe_unused]]bool success) {
     select(m_polylineToModify);
 }
 
-void RS_ActionPolylineAdd::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void RS_ActionPolylineAdd::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     switch (status) {
         case ChooseSegment: {
             deleteSnapper();
-            auto polyline = dynamic_cast<RS_Polyline *>(catchAndDescribe(e, RS2::EntityPolyline));
+            const auto polyline = dynamic_cast<RS_Polyline *>(catchAndDescribe(e, RS2::EntityPolyline));
             if (polyline != nullptr){
                 highlightHover(polyline);
             }
             break;
         }
         case SetAddCoord: {
-            bool oldSnapOnEntity = m_snapMode.snapOnEntity;
+            const bool oldSnapOnEntity = m_snapMode.snapOnEntity; // fixme - sand - what for? review
             m_snapMode.snapOnEntity = true;
-            RS_Vector snap = e->snapPoint;
             m_snapMode.snapOnEntity = oldSnapOnEntity;
-            auto polyline = dynamic_cast<RS_Polyline *>(catchEntityByEvent(e, RS2::EntityPolyline));
+            const auto polyline = static_cast<RS_Polyline *>(catchEntityByEvent(e, RS2::EntityPolyline));
             if (polyline == m_polylineToModify){
-                RS_Vector coordinate = polyline->getNearestPointOnEntity(snap, true);
+                const RS_Vector snap = e->snapPoint;
+                const RS_Vector coordinate = polyline->getNearestPointOnEntity(snap, true);
                 previewRefSelectablePoint(coordinate);
-                RS_Entity * segment = catchAndDescribe(coordinate, RS2::ResolveAll);
+                const RS_Entity * segment = catchAndDescribe(coordinate, RS2::ResolveAll);
                 highlightHover(segment);
             }
             break;
@@ -116,34 +115,37 @@ void RS_ActionPolylineAdd::setPolylineToModify(RS_Entity* en) {
     }
 }
 
-void RS_ActionPolylineAdd::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
+void RS_ActionPolylineAdd::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     switch (status) {
         case ChooseSegment: {
-            auto en = catchEntityByEvent(e);
+            const auto en = catchEntityByEvent(e);
             setPolylineToModify(en);
             break;
         }
         case SetAddCoord: {
-            bool oldSnapOnEntity = m_snapMode.snapOnEntity;
+            const bool oldSnapOnEntity = m_snapMode.snapOnEntity; // fixme - sand - what for? review
             m_snapMode.snapOnEntity = true;
-            RS_Vector snap = e->snapPoint;
             m_snapMode.snapOnEntity = oldSnapOnEntity;
 
-            const RS_Vector newCoord = m_polylineToModify->getNearestPointOnEntity(snap, true);
-            *m_addCoord = newCoord;
             if (m_polylineToModify == nullptr){
                 commandMessage(tr("No Entity found."));
-            } else if (!m_addCoord->valid){
-                commandMessage(tr("Adding point is invalid."));
-            } else {
-                m_addSegment = nullptr;
-                m_addSegment = catchEntity(newCoord, RS2::ResolveAll);
-                if (!m_addSegment){
-                    commandMessage(tr("Adding point is not on entity."));
-                    break;
+            }
+            else {
+                const RS_Vector snap = e->snapPoint;
+                const RS_Vector newCoord = m_polylineToModify->getNearestPointOnEntity(snap, true);
+                *m_addCoord = newCoord;
+                if (!m_addCoord->valid){
+                    commandMessage(tr("Adding point is invalid."));
+                } else {
+                    m_addSegment = nullptr;
+                    m_addSegment = catchEntity(newCoord, RS2::ResolveAll);
+                    if (!m_addSegment){
+                        commandMessage(tr("Adding point is not on entity."));
+                        break;
+                    }
+                    deleteSnapper();
+                    trigger();
                 }
-                deleteSnapper();
-                trigger();
             }
             break;
         }
@@ -152,12 +154,12 @@ void RS_ActionPolylineAdd::onMouseLeftButtonRelease(int status, LC_MouseEvent *e
     }
 }
 
-void RS_ActionPolylineAdd::onMouseRightButtonRelease([[maybe_unused]] int status, [[maybe_unused]] LC_MouseEvent *e) {
+void RS_ActionPolylineAdd::onMouseRightButtonRelease([[maybe_unused]] int status, [[maybe_unused]] const LC_MouseEvent* e) {
     deleteSnapper();
-    finish(true);
+    finish();
 }
 
-void RS_ActionPolylineAdd::finish(bool updateTB){
+void RS_ActionPolylineAdd::finish(){
     if (m_polylineToModify != nullptr){
         unselect(m_polylineToModify);
         redraw();
@@ -165,7 +167,7 @@ void RS_ActionPolylineAdd::finish(bool updateTB){
         m_addSegment = nullptr;
         *m_addCoord = {};
     }
-    RS_PreviewActionInterface::finish(updateTB);
+    RS_PreviewActionInterface::finish();
 }
 
 void RS_ActionPolylineAdd::updateMouseButtonHints(){

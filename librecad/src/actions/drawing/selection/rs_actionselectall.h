@@ -29,20 +29,18 @@
 
 #include "rs_actioninterface.h"
 
-
 /**
  * This action class can handle user events to select all entities.
  *
  * @author Andrew Mustun
  */
 class RS_ActionSelectAll : public RS_ActionInterface {
-	Q_OBJECT
+    Q_OBJECT
 public:
-    RS_ActionSelectAll(LC_ActionContext *actionContext,
-                       bool select);
+    RS_ActionSelectAll(LC_ActionContext* actionContext, bool select);
 
-	void init(int status) override;
-	void trigger() override;
+    void init(int status) override;
+    void trigger() override;
 
 protected:
     bool m_select = false;

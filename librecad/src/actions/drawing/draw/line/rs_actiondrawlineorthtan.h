@@ -39,7 +39,7 @@ class RS_ActionDrawLineOrthTan : public LC_SingleEntityCreationAction {
 public:
     explicit RS_ActionDrawLineOrthTan(LC_ActionContext *actionContext);
     ~RS_ActionDrawLineOrthTan() override;
-    void finish(bool updateTB) override;
+    void finish() override;
 protected:
     enum Status {
         SetLine = InitialActionStatus,     /**< Choose the line orthogonal to the tangent line */
@@ -55,9 +55,9 @@ protected:
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     RS2::CursorType doGetMouseCursor(int status) override;
     void updateMouseButtonHints() override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;
 };

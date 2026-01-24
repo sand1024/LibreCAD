@@ -31,11 +31,11 @@
 
 LC_ActionSelectQuick::~LC_ActionSelectQuick() = default;
 
-void LC_ActionSelectQuick::onLateRequestCompleted(bool shouldBeSkipped) {
+void LC_ActionSelectQuick::onLateRequestCompleted(const bool shouldBeSkipped) {
     if (shouldBeSkipped) {
-        auto interactiveInput = m_actionContext->getInteractiveInputInfo();
-        interactiveInput->m_requestor = nullptr;
-        interactiveInput->m_state = LC_ActionContext::InteractiveInputInfo::NONE;
+        const auto interactiveInput = m_actionContext->getInteractiveInputInfo();
+        interactiveInput->requestor = nullptr;
+        interactiveInput->state = LC_ActionContext::InteractiveInputInfo::NONE;
     }
     else {
         QTimer::singleShot(100, this, &LC_ActionSelectQuick::showDialog);
@@ -56,7 +56,7 @@ void LC_ActionSelectQuick::trigger() {
     }
 }
 
-void LC_ActionSelectQuick::init(int status) {
+void LC_ActionSelectQuick::init(const int status) {
     if (status == SHOW_DIALOG) {
         m_selectionComplete = true;
         trigger();
@@ -79,34 +79,36 @@ void LC_ActionSelectQuick::showSelectionDialog() {
     QTimer::singleShot(20, this, &LC_ActionSelectQuick::showDialog);
 }
 
-void LC_ActionSelectQuick::performSelection(LC_DlgQuickSelection* dlg) {
-    auto conditionalSelectionOptions = dlg->getSelectionOptions();
-    RS_Selection sel(m_document, m_viewport);
+void LC_ActionSelectQuick::performSelection(LC_DlgQuickSelection* dlg) const {
+    RS_Selection::ConditionalSelectionOptions conditionalSelectionOptions;
+    dlg->getSelectionOptions(conditionalSelectionOptions);
+    const RS_Selection sel(m_document, m_viewport);
     sel.conditionalSelection(conditionalSelectionOptions);
+    conditionalSelectionOptions.funCleanup();
 }
 
 void LC_ActionSelectQuick::showDialog() {
-    auto interactiveInputInfo = m_actionContext->getInteractiveInputInfo();
-    bool updateInteractiveInputValues = interactiveInputInfo->m_state == LC_ActionContext::InteractiveInputInfo::REQUESTED;
+    const auto interactiveInputInfo = m_actionContext->getInteractiveInputInfo();
+    const bool updateInteractiveInputValues = interactiveInputInfo->state == LC_ActionContext::InteractiveInputInfo::REQUESTED;
     double interactiveInputValueOne {0.0};
     double  interactiveInputValueTwo {0.0};
 
-    auto inputType = interactiveInputInfo->m_inputType;
+    auto inputType = interactiveInputInfo->inputType;
     if (updateInteractiveInputValues) {
         switch (inputType) {
             case LC_ActionContext::InteractiveInputInfo::DISTANCE: {
-                interactiveInputValueOne = interactiveInputInfo->m_distance;
+                interactiveInputValueOne = interactiveInputInfo->distance;
                 break;
             }
             case LC_ActionContext::InteractiveInputInfo::ANGLE: {
-                interactiveInputValueOne = interactiveInputInfo->m_angleRad;
+                interactiveInputValueOne = interactiveInputInfo->angleRad;
                 break;
             }
             case LC_ActionContext::InteractiveInputInfo::POINT:
             case LC_ActionContext::InteractiveInputInfo::POINT_X:
             case LC_ActionContext::InteractiveInputInfo::POINT_Y: {
-                interactiveInputValueOne = interactiveInputInfo->m_wcsPoint.x;
-                interactiveInputValueTwo = interactiveInputInfo->m_wcsPoint.y;
+                interactiveInputValueOne = interactiveInputInfo->wcsPoint.x;
+                interactiveInputValueTwo = interactiveInputInfo->wcsPoint.y;
                 break;
             }
             default:
@@ -121,9 +123,9 @@ void LC_ActionSelectQuick::showDialog() {
     auto* dlg = new LC_DlgQuickSelection(parent,m_actionContext, inputType, m_savedState,
                                            interactiveInputValueOne, interactiveInputValueTwo);
     m_allowExternalTermination = false;
-    int result = dlg->exec();
+    const int result = dlg->exec();
     if (result == QDialog::Accepted) {
-        auto interactiveInputRequestType = dlg->isInteractiveInputRequested();
+        const auto interactiveInputRequestType = dlg->isInteractiveInputRequested();
         if (interactiveInputRequestType == LC_ActionContext::InteractiveInputInfo::NOTNEEDED) { // normal closing of the dialog or ask for additional selection
             if (dlg->isAdditionalSelectionRequested()) {
                 m_selectionComplete = false;

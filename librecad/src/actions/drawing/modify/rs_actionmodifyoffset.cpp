@@ -30,7 +30,6 @@
 #include "qg_modifyoffsetoptions.h"
 #include "rs_document.h"
 #include "rs_modification.h"
-#include "rs_preview.h"
 
 RS_ActionModifyOffset::RS_ActionModifyOffset(LC_ActionContext *actionContext)
     :LC_ActionModifyBase("Modify Offset", actionContext,RS2::ActionModifyOffset,
@@ -58,7 +57,7 @@ bool RS_ActionModifyOffset::doTriggerModifications(LC_DocumentModificationBatch&
     return RS_Modification::offset(*m_offsetData, m_selectedEntities, false, ctx);
 }
 
-void RS_ActionModifyOffset::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+void RS_ActionModifyOffset::doTriggerSelectionUpdate(const bool keepSelected, const LC_DocumentModificationBatch& ctx) {
     if (m_offsetData->keepOriginals) {
         unselect(m_selectedEntities);
     }
@@ -68,10 +67,10 @@ void RS_ActionModifyOffset::doTriggerSelectionUpdate(bool keepSelected, const LC
 }
 
 void RS_ActionModifyOffset::doTriggerCompletion([[maybe_unused]]bool success) {
-    finish(false);
+    finish();
 }
 
-void RS_ActionModifyOffset::onMouseMoveEventSelected(int status, LC_MouseEvent *e) {
+void RS_ActionModifyOffset::onMouseMoveEventSelected(const int status, const LC_MouseEvent* e) {
     const RS_Vector mouse = e->snapPoint;
     switch (status){
         case SetReferencePoint:{
@@ -108,7 +107,7 @@ void RS_ActionModifyOffset::onMouseMoveEventSelected(int status, LC_MouseEvent *
     }
 }
 
-bool RS_ActionModifyOffset::doUpdateDistanceByInteractiveInput(const QString& tag, double distance) {
+bool RS_ActionModifyOffset::doUpdateDistanceByInteractiveInput(const QString& tag, const double distance) {
     if (tag == "distance") {
         setDistance(distance);
         return true;
@@ -116,7 +115,7 @@ bool RS_ActionModifyOffset::doUpdateDistanceByInteractiveInput(const QString& ta
     return false;
 }
 
-void RS_ActionModifyOffset::onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent *e) {
+void RS_ActionModifyOffset::onMouseLeftButtonReleaseSelected(const int status, const LC_MouseEvent* e) {
     switch (status){
         case SetReferencePoint:{
             m_referencePoint = getRelZeroAwarePoint(e, e->snapPoint);
@@ -149,11 +148,11 @@ double RS_ActionModifyOffset::getDistance() const {
     return m_offsetData->distance;
 }
 
-void RS_ActionModifyOffset::setDistance(double distance) const {
+void RS_ActionModifyOffset::setDistance(const double distance) const {
     m_offsetData->distance = distance;
 }
 
-void RS_ActionModifyOffset::setDistanceFixed(bool value) {
+void RS_ActionModifyOffset::setDistanceFixed(const bool value) {
     m_distanceIsFixed = value;
     if (!value){
         if (getStatus() == SetPosition){
@@ -166,7 +165,7 @@ bool RS_ActionModifyOffset::isAllowTriggerOnEmptySelection() {
     return false;
 }
 
-void RS_ActionModifyOffset::onMouseRightButtonReleaseSelected(int status, [[maybe_unused]] LC_MouseEvent *e) {
+void RS_ActionModifyOffset::onMouseRightButtonReleaseSelected(const int status, [[maybe_unused]] const LC_MouseEvent* event) {
     deletePreview();
     if (status == SetReferencePoint){
         if (m_selectionComplete) {
@@ -181,7 +180,7 @@ void RS_ActionModifyOffset::onMouseRightButtonReleaseSelected(int status, [[mayb
     }
 }
 
-void RS_ActionModifyOffset::updateMouseButtonHintsForSelected(int status) {
+void RS_ActionModifyOffset::updateMouseButtonHintsForSelected(const int status) {
     switch (status) {
         case SetReferencePoint:
             if (m_distanceIsFixed){

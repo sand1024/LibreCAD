@@ -56,18 +56,18 @@ protected:
     bool isBaseline() const;
     RS_Entity *createDim(RS_EntityContainer* parent) override;
     RS_Vector getExtensionPoint1() override;
-    void setExtensionPoint1(RS_Vector p) override;
-    void setExtensionPoint2(RS_Vector p) override;
+    void setExtensionPoint1(const RS_Vector& p) override;
+    void setExtensionPoint2(const RS_Vector& p) override;
     RS_Vector getExtensionPoint2() override;
     void preparePreview(bool alternativeMode) override;
     double getDimAngle(bool alternateMode) override;
     bool doProcessCommand(int status, const QString &command) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
     void pickOriginalEntity(RS_Entity* dimCandidate, const RS_Vector& mouse);
     void updateMouseButtonHints() override;
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector &coord) override;
     RS_Entity* doTriggerCreateEntity() override;
 };
 
-#endif // LC_ACTIONDRAWDIMBASELINE_H
+#endif

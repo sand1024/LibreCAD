@@ -24,7 +24,6 @@
 **
 **********************************************************************/
 
-
 #include "rs_actiondrawlinebisector.h"
 
 #include "qg_linebisectoroptions.h"
@@ -35,45 +34,41 @@
 #include "rs_preview.h"
 
 namespace {
-
     //list of entity types supported by current action - only lines so far
     const auto g_enTypeList = EntityTypeList{RS2::EntityLine};
 }
 
-
 struct RS_ActionDrawLineBisector::ActionData {
-	/** Mouse pos when choosing the 1st line */
-	RS_Vector coord1;
-	/** Mouse pos when choosing the 2nd line */
-	RS_Vector coord2;
+    /** Mouse pos when choosing the 1st line */
+    RS_Vector coord1;
+    /** Mouse pos when choosing the 2nd line */
+    RS_Vector coord2;
 };
 
-RS_ActionDrawLineBisector::RS_ActionDrawLineBisector(LC_ActionContext *actionContext)
-    :LC_UndoableDocumentModificationAction("Draw Bisectors", actionContext, RS2::ActionDrawLineBisector),
-    m_bisector(nullptr), m_line1(nullptr), m_line2(nullptr), m_length(10.), m_numberToCreate(1),
-    m_actionData(std::make_unique<ActionData>()), m_lastStatus(SetLine1){
+RS_ActionDrawLineBisector::RS_ActionDrawLineBisector(LC_ActionContext* actionContext)
+    : LC_UndoableDocumentModificationAction("Draw Bisectors", actionContext, RS2::ActionDrawLineBisector), m_length(10.),
+      m_numberToCreate(1), m_actionData(std::make_unique<ActionData>()) {
 }
 
 RS_ActionDrawLineBisector::~RS_ActionDrawLineBisector() = default;
 
-
-void RS_ActionDrawLineBisector::setLength(double l){
+void RS_ActionDrawLineBisector::setLength(const double l) {
     m_length = l;
 }
 
-double RS_ActionDrawLineBisector::getLength() const{
+double RS_ActionDrawLineBisector::getLength() const {
     return m_length;
 }
 
-void RS_ActionDrawLineBisector::setNumber(int n){
+void RS_ActionDrawLineBisector::setNumber(const int n) {
     m_numberToCreate = n;
 }
 
-int RS_ActionDrawLineBisector::getNumber() const{
+int RS_ActionDrawLineBisector::getNumber() const {
     return m_numberToCreate;
 }
 
-bool RS_ActionDrawLineBisector::doUpdateDistanceByInteractiveInput(const QString& tag, double distance) {
+bool RS_ActionDrawLineBisector::doUpdateDistanceByInteractiveInput(const QString& tag, const double distance) {
     if (tag == "length") {
         setLength(distance);
         return true;
@@ -81,41 +76,40 @@ bool RS_ActionDrawLineBisector::doUpdateDistanceByInteractiveInput(const QString
     return false;
 }
 
-void RS_ActionDrawLineBisector::init(int status){
-    if (status >= 0){
+void RS_ActionDrawLineBisector::init(const int status) {
+    if (status >= 0) {
         invalidateSnapSpot();
     }
     RS_PreviewActionInterface::init(status);
 }
 
 void RS_ActionDrawLineBisector::doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) {
-   auto entity = contextEntity;
-   if (isPolyline(contextEntity)) {
-       auto polyline = static_cast<RS_Polyline*> (contextEntity);
-       entity = polyline->getNearestEntity(clickPos);
-   }
-   setFirstLine(entity);
+    auto entity = contextEntity;
+    if (isPolyline(contextEntity)) {
+        const auto polyline = static_cast<RS_Polyline*>(contextEntity);
+        entity = polyline->getNearestEntity(clickPos);
+    }
+    setFirstLine(entity);
 }
 
-void RS_ActionDrawLineBisector::setStatus(int status) {
+void RS_ActionDrawLineBisector::setStatus(const int status) {
     RS_ActionInterface::setStatus(status);
     invalidateSnapSpot();
 }
 
 bool RS_ActionDrawLineBisector::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
-    std::list<RS_Entity*> bisectorLines;
-    bool created = RS_Creation::createBisector(m_actionData->coord1, m_actionData->coord2, m_length,
-            m_numberToCreate, m_line1, m_line2, ctx.entitiesToAdd);
+    const bool created = RS_Creation::createBisector(m_actionData->coord1, m_actionData->coord2, m_length, m_numberToCreate, m_line1,
+                                                     m_line2, ctx.entitiesToAdd);
     return created;
 }
 
-void RS_ActionDrawLineBisector::onMouseMoveEvent(int status, LC_MouseEvent *e) {
-    RS_Vector mouse = e->graphPoint;
+void RS_ActionDrawLineBisector::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
+    const RS_Vector mouse = e->graphPoint;
     deleteSnapper();
     switch (status) {
         case SetLine1: {
-            RS_Entity *en = catchAndDescribe(e, g_enTypeList, RS2::ResolveAll);
-            if (en != nullptr){
+            const RS_Entity* en = catchAndDescribe(e, g_enTypeList, RS2::ResolveAll);
+            if (en != nullptr) {
                 highlightHover(en);
             }
             break;
@@ -123,28 +117,30 @@ void RS_ActionDrawLineBisector::onMouseMoveEvent(int status, LC_MouseEvent *e) {
         case SetLine2: {
             highlightSelected(m_line1);
             m_actionData->coord2 = mouse;
-            RS_Entity *en = catchAndDescribe(e, g_enTypeList, RS2::ResolveAll);
-            if (en == m_line1){
+            RS_Entity* en = catchAndDescribe(e, g_enTypeList, RS2::ResolveAll);
+            if (en == m_line1) {
                 m_line2 = nullptr;
-            } else if (en != nullptr){
-                m_line2 = dynamic_cast<RS_Line *>(en);
+            }
+            else if (en != nullptr) {
+                m_line2 = dynamic_cast<RS_Line*>(en);
 
                 QList<RS_Entity*> lines;
-                bool created = RS_Creation::createBisector(m_actionData->coord1, m_actionData->coord2, m_length, m_numberToCreate, m_line1, m_line2, lines);
-                if (created){
+                const bool created = RS_Creation::createBisector(m_actionData->coord1, m_actionData->coord2, m_length, m_numberToCreate,
+                                                                 m_line1, m_line2, lines);
+                if (created) {
                     highlightHover(m_line2);
                     m_preview->addAllFromList(lines);
-                    RS_Entity* ent = lines.front();
-                    if (m_numberToCreate == 1){
+                    const RS_Entity* ent = lines.front();
+                    if (m_numberToCreate == 1) {
                         prepareEntityDescription(ent, RS2::EntityDescriptionLevel::DescriptionCreating);
                     }
-                    else{
+                    else {
                         appendInfoCursorZoneMessage(QString::number(m_numberToCreate) + tr(" entities will be created"), 2, false);
                     }
                     if (m_showRefEntitiesOnPreview) {
                         previewRefPoint(m_line1->getNearestPointOnEntity(m_actionData->coord1));
                         previewRefPoint(ent->getStartpoint());
-                        RS_Vector nearest = m_line2->getNearestPointOnEntity(mouse, false);
+                        const RS_Vector nearest = m_line2->getNearestPointOnEntity(mouse, false);
                         previewRefSelectablePoint(nearest);
                     }
                 }
@@ -153,7 +149,7 @@ void RS_ActionDrawLineBisector::onMouseMoveEvent(int status, LC_MouseEvent *e) {
         }
         case SetLength:
         case SetNumber: {
-            if (m_line1 != nullptr){
+            if (m_line1 != nullptr) {
                 highlightSelected(m_line1);
             }
             break;
@@ -164,19 +160,20 @@ void RS_ActionDrawLineBisector::onMouseMoveEvent(int status, LC_MouseEvent *e) {
 }
 
 void RS_ActionDrawLineBisector::setFirstLine(RS_Entity* en) {
-    if (isLine(en)){ // fixme - support of polyline
-        m_line1 = dynamic_cast<RS_Line *>(en);
+    if (isLine(en)) {
+        // fixme - support of polyline
+        m_line1 = dynamic_cast<RS_Line*>(en);
         m_line2 = nullptr;
         setStatus(SetLine2);
     }
 }
 
-void RS_ActionDrawLineBisector::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
-    RS_Vector mouse = e->graphPoint;
+void RS_ActionDrawLineBisector::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
+    const RS_Vector mouse = e->graphPoint;
     switch (status) {
         case SetLine1: {
             m_actionData->coord1 = mouse;
-            RS_Entity *en = catchEntity(mouse,g_enTypeList,RS2::ResolveAll); // fixme - support of polyline
+            RS_Entity* en = catchEntity(mouse, g_enTypeList, RS2::ResolveAll); // fixme - support of polyline
             setFirstLine(en);
             break;
         }
@@ -190,22 +187,23 @@ void RS_ActionDrawLineBisector::onMouseLeftButtonRelease(int status, LC_MouseEve
     }
 }
 
-void RS_ActionDrawLineBisector::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionDrawLineBisector::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     deletePreview();
     initPrevious(status);
 }
 
-bool RS_ActionDrawLineBisector::doProcessCommand(int status, const QString &c) {
-   bool accept = false;
+bool RS_ActionDrawLineBisector::doProcessCommand(int status, const QString& command) {
+    bool accept = false;
     switch (status) {
         case SetLine1:
         case SetLine2: {
-            m_lastStatus = (Status) status;
-            if (checkCommand("length", c)){
+            m_lastStatus = static_cast<Status>(status);
+            if (checkCommand("length", command)) {
                 deletePreview();
                 setStatus(SetLength);
                 accept = true;
-            } else if (checkCommand("number", c)){
+            }
+            else if (checkCommand("number", command)) {
                 deletePreview();
                 setStatus(SetNumber);
                 accept = true;
@@ -214,11 +212,12 @@ bool RS_ActionDrawLineBisector::doProcessCommand(int status, const QString &c) {
         }
         case SetLength: {
             bool ok = false;
-            double l = RS_Math::eval(c, &ok);
-            if (ok){
+            const double l = RS_Math::eval(command, &ok);
+            if (ok) {
                 accept = true;
                 m_length = l;
-            } else {
+            }
+            else {
                 commandMessage(tr("Not a valid expression"));
             }
             updateOptions();
@@ -227,17 +226,18 @@ bool RS_ActionDrawLineBisector::doProcessCommand(int status, const QString &c) {
         }
         case SetNumber: {
             bool ok = false;
-            int n = std::lround(RS_Math::eval(c, &ok));
-            if (ok){
-                accept= true;
+            const int n = std::lround(RS_Math::eval(command, &ok));
+            if (ok) {
+                accept = true;
                 if (n > 0 && n <= 200) {
                     m_numberToCreate = n;
                 }
                 else {
                     commandMessage(
-                       tr("Number sector lines not in range: ", "number of bisector to create must be in [1, 200]") + QString::number(n));
+                        tr("Number sector lines not in range: ", "number of bisector to create must be in [1, 200]") + QString::number(n));
                 }
-            } else {
+            }
+            else {
                 commandMessage(tr("Not a valid expression"));
             }
             updateOptions();
@@ -250,7 +250,7 @@ bool RS_ActionDrawLineBisector::doProcessCommand(int status, const QString &c) {
     return accept;
 }
 
-QStringList RS_ActionDrawLineBisector::getAvailableCommands(){
+QStringList RS_ActionDrawLineBisector::getAvailableCommands() {
     QStringList cmd;
 
     switch (getStatus()) {
@@ -265,7 +265,7 @@ QStringList RS_ActionDrawLineBisector::getAvailableCommands(){
     return cmd;
 }
 
-void RS_ActionDrawLineBisector::updateMouseButtonHints(){
+void RS_ActionDrawLineBisector::updateMouseButtonHints() {
     switch (getStatus()) {
         case SetLine1:
             updateMouseWidgetTRCancel(tr("Select first line"));
@@ -285,10 +285,10 @@ void RS_ActionDrawLineBisector::updateMouseButtonHints(){
     }
 }
 
-LC_ActionOptionsWidget* RS_ActionDrawLineBisector::createOptionsWidget(){
+LC_ActionOptionsWidget* RS_ActionDrawLineBisector::createOptionsWidget() {
     return new QG_LineBisectorOptions();
 }
 
-RS2::CursorType RS_ActionDrawLineBisector::doGetMouseCursor([[maybe_unused]] int status){
+RS2::CursorType RS_ActionDrawLineBisector::doGetMouseCursor([[maybe_unused]] int status) {
     return RS2::SelectCursor;
 }

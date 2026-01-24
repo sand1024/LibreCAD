@@ -29,34 +29,35 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @author Dongxu Li
  */
-class LC_ActionDrawCircle2PR:public RS_ActionDrawCircleCR {
+class LC_ActionDrawCircle2PR : public RS_ActionDrawCircleCR {
     Q_OBJECT
 public:
-    explicit LC_ActionDrawCircle2PR(LC_ActionContext *actionContext);
+    explicit LC_ActionDrawCircle2PR(LC_ActionContext* actionContext);
     ~LC_ActionDrawCircle2PR() override;
     void init(int status) override;
     QStringList getAvailableCommands() override;
+
 protected:
     /**
  * Action States.
  */
     enum Status {
-        SetPoint1 = InitialActionStatus,       /**< Setting the 1st point. */
-        SetPoint2,       /**< Setting the 2nd point. */
-        SelectCenter        /**< select center out of two possibilities. */
+        SetPoint1 = InitialActionStatus, /**< Setting the 1st point. */
+        SetPoint2, /**< Setting the 2nd point. */
+        SelectCenter /**< select center out of two possibilities. */
     };
 
     struct Points;
     std::unique_ptr<Points> m_actionData;
-    bool preparePreview(const RS_Vector &mouse, RS_Vector& altCenter) const;
+    bool preparePreview(const RS_Vector& mouse, RS_Vector& altCenter) const;
     void reset() override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    bool doProcessCommand(int status, const QString &command)  override;
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    bool doProcessCommand(int status, const QString& c) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector& coord) override;
     void updateMouseButtonHints() override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
 };
 #endif

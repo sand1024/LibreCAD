@@ -38,7 +38,7 @@ struct RS_ScaleData;
 class RS_ActionModifyScale : public LC_ActionModifyBase {
     Q_OBJECT
 public:
-    RS_ActionModifyScale(LC_ActionContext *actionContext);
+    explicit RS_ActionModifyScale(LC_ActionContext *actionContext);
     ~RS_ActionModifyScale() override;
 
     void init(int status) override;
@@ -64,22 +64,22 @@ protected:
     struct ScaleActionData;
     std::unique_ptr<ScaleActionData> m_actionData;
     // set scaling target point to support isotropic or xy-scaling
-    RS_Vector getTargetPoint(LC_MouseEvent* e);
+    RS_Vector getTargetPoint(const LC_MouseEvent* e);
     void findFactor();
     void showPreview();
-    void showPreview(RS_ScaleData &previewData) const;
+    void showPreview(const RS_ScaleData &previewData) const;
     void determineScaleFactor(RS_ScaleData& data, const RS_Vector &reference, const RS_Vector &source, const RS_Vector &target);
     LC_ModifyOperationFlags *getModifyOperationFlags() override;
-    void onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
-    void onMouseRightButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
+    void onMouseLeftButtonReleaseSelected(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonReleaseSelected(int status, const LC_MouseEvent* event) override;
     void updateMouseButtonHintsForSelection() override;
     void updateMouseButtonHintsForSelected(int status) override;
     RS2::CursorType doGetMouseCursorSelected(int status) override;
     bool doProcessCommand(int status, const QString &command) override;
     void tryTrigger();
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector &coord) override;
     LC_ActionOptionsWidget *createOptionsWidget() override;
-    void onMouseMoveEventSelected(int status, LC_MouseEvent *e) override;
+    void onMouseMoveEventSelected(int status, const LC_MouseEvent* e) override;
     void doTriggerCompletion(bool success) override;
     void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;

@@ -33,29 +33,30 @@
 class RS_ActionDrawEllipseCenter3Points : public LC_ActionDrawCircleBase {
     Q_OBJECT
 public:
-    explicit RS_ActionDrawEllipseCenter3Points(LC_ActionContext *actionContext);
+    explicit RS_ActionDrawEllipseCenter3Points(LC_ActionContext* actionContext);
     ~RS_ActionDrawEllipseCenter3Points() override;
     void init(int status) override;
     bool preparePreview() const;
     QStringList getAvailableCommands() override;
+
 protected:
     /**
  * Action States.
  */
     enum Status {
-        SetCenter = InitialActionStatus,   //  Setting the Center.  */
-        SetPoint1 = 1,   //  Setting the First Point.  */
-        SetPoint2 = 2,   //  Setting the Second Point.  */
-        SetPoint3 = 3   //  Setting the Third Point.  */
+        SetCenter = InitialActionStatus, //  Setting the Center.  */
+        SetPoint1 = 1, //  Setting the First Point.  */
+        SetPoint2 = 2, //  Setting the Second Point.  */
+        SetPoint3 = 3 //  Setting the Third Point.  */
     };
 
     struct ActionData;
     std::unique_ptr<ActionData> m_actionData;
 
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector& coord) override;
     void updateMouseButtonHints() override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;

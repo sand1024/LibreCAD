@@ -26,7 +26,6 @@
 
 #include "rs_actionblocksremove.h"
 
-#include "rs_debug.h"
 #include "rs_dialogfactory.h"
 #include "rs_dialogfactoryinterface.h"
 #include "rs_graphic.h"
@@ -39,7 +38,7 @@ RS_ActionBlocksRemove::RS_ActionBlocksRemove(LC_ActionContext *actionContext)
 
 bool RS_ActionBlocksRemove::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     if (!(m_graphic && m_document)) { /// fixme - remove, should be checked on init
-        finish(false);
+        finish();
         return false;
     }
 
@@ -47,7 +46,7 @@ bool RS_ActionBlocksRemove::doTriggerModifications(LC_DocumentModificationBatch&
     QList<RS_Block *> blocks = RS_DIALOGFACTORY->requestSelectedBlocksRemovalDialog(blockList);
 
     if (blocks.isEmpty()) {
-        finish(false);
+        finish();
         return false;
     }
 
@@ -97,7 +96,7 @@ bool RS_ActionBlocksRemove::doTriggerModifications(LC_DocumentModificationBatch&
     m_graphic->updateInserts();
     blockList->activate(nullptr);
 
-    finish(false); // fixme - is it needed there?
+    finish(); // fixme - is it needed there?
 
     return true;
 }

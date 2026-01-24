@@ -20,7 +20,6 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-
 #include "rs_actiondrawcircle3p.h"
 
 #include "rs_circle.h"
@@ -28,38 +27,37 @@
 #include "rs_dialogfactoryinterface.h"
 
 struct RS_ActionDrawCircle3P::Points {
-	RS_CircleData data;
-	/**
-	 * 1st point.
-	 */
-	RS_Vector point1 = RS_Vector(false);
-	/**
-	 * 2nd point.
-	 */
-	RS_Vector point2 = RS_Vector(false);
-	/**
-	 * 3rd point.
-	 */
-	RS_Vector point3 = RS_Vector(false);
+    RS_CircleData circleData;
+    /**
+     * 1st point.
+     */
+    RS_Vector point1 = RS_Vector(false);
+    /**
+     * 2nd point.
+     */
+    RS_Vector point2 = RS_Vector(false);
+    /**
+     * 3rd point.
+     */
+    RS_Vector point3 = RS_Vector(false);
 };
 
-RS_ActionDrawCircle3P::RS_ActionDrawCircle3P(LC_ActionContext *actionContext)
-        :LC_ActionDrawCircleBase("Draw circles",actionContext,RS2::ActionDrawCircle3P)
-        , m_actionData(std::make_unique<Points>()){
+RS_ActionDrawCircle3P::RS_ActionDrawCircle3P(LC_ActionContext* actionContext)
+    : LC_ActionDrawCircleBase("Draw circles", actionContext, RS2::ActionDrawCircle3P), m_actionData(std::make_unique<Points>()) {
 }
 
 RS_ActionDrawCircle3P::~RS_ActionDrawCircle3P() = default;
 
-void RS_ActionDrawCircle3P::reset(){
+void RS_ActionDrawCircle3P::reset() {
     m_actionData.reset(new Points{});
 }
 
 RS_Entity* RS_ActionDrawCircle3P::doTriggerCreateEntity() {
     preparePreview();
-    if (m_actionData->data.isValid()){
-        auto *circle = new RS_Circle{m_document, m_actionData->data};
-        if (m_moveRelPointAtCenterAfterTrigger){
-            moveRelativeZero(m_actionData->data.center);
+    if (m_actionData->circleData.isValid()) {
+        auto* circle = new RS_Circle{m_document, m_actionData->circleData};
+        if (m_moveRelPointAtCenterAfterTrigger) {
+            moveRelativeZero(m_actionData->circleData.center);
         }
         return circle;
     }
@@ -67,25 +65,24 @@ RS_Entity* RS_ActionDrawCircle3P::doTriggerCreateEntity() {
     return nullptr;
 }
 
-void RS_ActionDrawCircle3P::doTriggerCompletion([[maybe_unused]]bool success) {
+void RS_ActionDrawCircle3P::doTriggerCompletion([[maybe_unused]] bool success) {
     setStatus(SetPoint1);
     reset();
 }
 
 void RS_ActionDrawCircle3P::preparePreview() const {
-    m_actionData->data = RS_CircleData{};
-    if (m_actionData->point1.valid && m_actionData->point2.valid && m_actionData->point3.valid){
-        RS_Circle circle{nullptr, m_actionData->data};
-        bool suc = circle.createFrom3P(m_actionData->point1,
-                                       m_actionData->point2,
-                                       m_actionData->point3);
-        if (suc){
-            m_actionData->data = circle.getData();
+    m_actionData->circleData = RS_CircleData{};
+    if (m_actionData->point1.valid && m_actionData->point2.valid && m_actionData->point3.valid) {
+        RS_Circle circle{nullptr, m_actionData->circleData};
+        const bool suc = circle.createFrom3P(m_actionData->point1, m_actionData->point2, m_actionData->point3);
+        if (suc) {
+            m_actionData->circleData = circle.getData();
         }
     }
 }
+
 // todo - think about preview improving to give it more geometric meaning
-void RS_ActionDrawCircle3P::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void RS_ActionDrawCircle3P::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     RS_Vector mouse = e->snapPoint;
     switch (status) {
         case SetPoint1:
@@ -96,8 +93,8 @@ void RS_ActionDrawCircle3P::onMouseMoveEvent(int status, LC_MouseEvent *e) {
         case SetPoint2: {
             mouse = getSnapAngleAwarePoint(e, m_actionData->point1, mouse, true);
             m_actionData->point2 = mouse;
-            RS_Vector center = (mouse + m_actionData->point1) / 2;
-            double radius = m_actionData->point1.distanceTo(center);
+            const RS_Vector center = (mouse + m_actionData->point1) / 2;
+            const double radius = m_actionData->point1.distanceTo(center);
             previewCircle(RS_CircleData(center, radius));
 
             if (m_showRefEntitiesOnPreview) {
@@ -110,52 +107,55 @@ void RS_ActionDrawCircle3P::onMouseMoveEvent(int status, LC_MouseEvent *e) {
         case SetPoint3: {
             m_actionData->point3 = mouse;
             preparePreview();
-            if (m_actionData->data.isValid()) {
-                previewToCreateCircle(m_actionData->data);
+            const auto& circleData = m_actionData->circleData;
+            if (circleData.isValid()) {
+                previewToCreateCircle(circleData);
                 if (m_showRefEntitiesOnPreview) {
-                    previewRefPoint(m_actionData->data.center);
+                    previewRefPoint(circleData.center);
                     previewRefPoint(m_actionData->point1);
                     previewRefPoint(m_actionData->point2);
                     previewRefSelectablePoint(mouse);
-                    previewRefLine(m_actionData->point1, m_actionData->data.center);
-                    previewRefLine(m_actionData->point2, m_actionData->data.center);
-                    previewRefLine(mouse, m_actionData->data.center);
+                    previewRefLine(m_actionData->point1, circleData.center);
+                    previewRefLine(m_actionData->point2, circleData.center);
+                    previewRefLine(mouse, circleData.center);
                 }
             }
             break;
         }
+        default:
+            break;
     }
 }
 
-void RS_ActionDrawCircle3P::onMouseLeftButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionDrawCircle3P::onMouseLeftButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     RS_Vector coord = e->snapPoint;
-    if (status == SetPoint2){
+    if (status == SetPoint2) {
         coord = getSnapAngleAwarePoint(e, m_actionData->point1, coord);
     }
     fireCoordinateEvent(coord);
 }
 
-void RS_ActionDrawCircle3P::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionDrawCircle3P::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     deletePreview();
     initPrevious(status);
 }
 
-void RS_ActionDrawCircle3P::onCoordinateEvent(int status, [[maybe_unused]] bool isZero, const RS_Vector &mouse) {
+void RS_ActionDrawCircle3P::onCoordinateEvent(const int status, [[maybe_unused]] bool isZero, const RS_Vector& coord) {
     switch (status) {
         case SetPoint1: {
-            m_actionData->point1 = mouse;
-            moveRelativeZero(mouse);
+            m_actionData->point1 = coord;
+            moveRelativeZero(coord);
             setStatus(SetPoint2);
             break;
         }
         case SetPoint2: {
-            m_actionData->point2 = mouse;
-            moveRelativeZero(mouse);
+            m_actionData->point2 = coord;
+            moveRelativeZero(coord);
             setStatus(SetPoint3);
             break;
         }
         case SetPoint3: {
-            m_actionData->point3 = mouse;
+            m_actionData->point3 = coord;
             trigger();
             break;
         }
@@ -164,10 +164,10 @@ void RS_ActionDrawCircle3P::onCoordinateEvent(int status, [[maybe_unused]] bool 
     }
 }
 
-void RS_ActionDrawCircle3P::updateMouseButtonHints(){
+void RS_ActionDrawCircle3P::updateMouseButtonHints() {
     switch (getStatus()) {
         case SetPoint1:
-            updateMouseWidgetTRCancel(tr("Specify first point"),MOD_SHIFT_RELATIVE_ZERO);
+            updateMouseWidgetTRCancel(tr("Specify first point"), MOD_SHIFT_RELATIVE_ZERO);
             break;
         case SetPoint2:
             updateMouseWidgetTRBack(tr("Specify second point"), MOD_SHIFT_ANGLE_SNAP);

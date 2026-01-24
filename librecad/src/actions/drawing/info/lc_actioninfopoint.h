@@ -46,13 +46,13 @@ protected:
     CoordinateType m_coordinatesType{POS_ABSOLUTE};
 
     void doTrigger() override;
-    void onMouseMoveEvent(int status, LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void updateInfoCursor(const RS_Vector& mouse, const RS_Vector& relZero) const;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent* e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent* e) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector& mouse) override;
     void updateMouseButtonHints() override;
     RS2::CursorType doGetMouseCursor(int status) override;
 };
 
-#endif // LC_ACTIONINFOPOINT_H
+#endif

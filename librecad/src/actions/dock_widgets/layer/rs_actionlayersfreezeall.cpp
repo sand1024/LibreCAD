@@ -25,13 +25,13 @@
 **********************************************************************/
 
 #include "rs_actionlayersfreezeall.h"
+
 #include "rs_debug.h"
 #include "rs_graphic.h"
 
-RS_ActionLayersFreezeAll::RS_ActionLayersFreezeAll(bool freeze,
-        LC_ActionContext *actionContext)
+RS_ActionLayersFreezeAll::RS_ActionLayersFreezeAll(const bool freeze,
+                                                   LC_ActionContext *actionContext)
         :RS_ActionInterface("Freeze all Layers",actionContext, RS2::ActionLayersFreezeAll) {
-
     this->m_freeze = freeze;
 }
 
@@ -41,10 +41,10 @@ void RS_ActionLayersFreezeAll::trigger() {
         //RS_Layer* layer = graphic->getActiveLayer();
         m_graphic->freezeAllLayers(m_freeze);
     }
-    finish(false);
+    finish();
 }
 
-void RS_ActionLayersFreezeAll::init(int status) {
+void RS_ActionLayersFreezeAll::init(const int status) {
     RS_ActionInterface::init(status);
     trigger();
 }

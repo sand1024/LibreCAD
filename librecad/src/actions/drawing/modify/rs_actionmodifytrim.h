@@ -41,7 +41,7 @@ public:
     explicit RS_ActionModifyTrim(LC_ActionContext *actionContext,bool both = false);
     ~RS_ActionModifyTrim() override;
     void init(int status) override;
-    void finish(bool updateTB) override;
+    void finish() override;
 protected:
     /**
      * Action States.
@@ -58,14 +58,13 @@ protected:
     bool m_both = false;
 
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
-    void previewRefTrimmedEntity(RS_Entity *trimmed, RS_Entity *original) const;
+    void previewRefTrimmedEntity(RS_Entity *trimmed, const RS_Entity *original) const;
     RS2::CursorType doGetMouseCursor(int status) override;
     void updateMouseButtonHints() override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
-    void previewTrim(RS_Entity* entityToTrimCandidate, RS_Entity* limitingEntity, RS_Vector trimCoordinates,
-                     RS_Vector limitCoordinates, bool& trimInvalid);
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
+    void previewTrim(RS_Entity* entityToTrimCandidate, RS_Entity* limitingEntity, const RS_Vector& trimCoordinates, const RS_Vector& limitCoordinates, bool& trimInvalid) const;
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
     void doTriggerCompletion(bool success) override;
 };

@@ -25,11 +25,11 @@
 **********************************************************************/
 
 
+#include "rs_actioninfoinside.h"
+
 #include <QMouseEvent>
 
 #include "lc_actioncontext.h"
-#include "rs_actioninfoinside.h"
-
 #include "rs_document.h"
 #include "rs_entitycontainer.h"
 #include "rs_information.h"
@@ -40,10 +40,10 @@ RS_ActionInfoInside::RS_ActionInfoInside(LC_ActionContext *actionContext)
     , m_point(std::make_unique<RS_Vector>())
     , m_contour(std::make_unique<RS_EntityContainer>())
 {
-    RS_Document* container = actionContext->getDocument();
+    const RS_Document* container = actionContext->getDocument();
     QList<RS_Entity*> selection;
     if (container->collectSelected(selection)) {
-        for(auto* e: selection){
+        for(const auto* e: selection){
            m_contour->addEntity(e);
         }
     }
@@ -58,7 +58,7 @@ void RS_ActionInfoInside::trigger() {
     } else {
         commandMessage(tr("Point is outside selected contour."));
     }
-    finish(false);
+    finish();
 }
 
 void RS_ActionInfoInside::mouseMoveEvent(QMouseEvent* e) {
@@ -75,7 +75,7 @@ void RS_ActionInfoInside::onMouseLeftButtonRelease([[maybe_unused]]int status, Q
     trigger();
 }
 
-void RS_ActionInfoInside::onMouseRightButtonRelease(int status, [[maybe_unused]]QMouseEvent *e) {
+void RS_ActionInfoInside::onMouseRightButtonRelease(const int status, [[maybe_unused]]QMouseEvent *e) {
     initPrevious(status);
 }
 

@@ -41,7 +41,7 @@ struct RS_MoveRotateData;
 class RS_ActionModifyMoveRotate : public LC_ActionModifyBase {
     Q_OBJECT
 public:
-    RS_ActionModifyMoveRotate(LC_ActionContext *actionContext);
+    explicit RS_ActionModifyMoveRotate(LC_ActionContext *actionContext);
     ~RS_ActionModifyMoveRotate() override;
     QStringList getAvailableCommands() override;
     void setAngle(double angleRad) const;
@@ -49,7 +49,7 @@ public:
     void setUseSameAngleForCopies(bool b) const;
     bool isUseSameAngleForCopies() const;
     void setAngleIsFree(bool b);
-    bool isAngleFree() const {return !m_angleIsFixed;};
+    bool isAngleFree() const {return !m_angleIsFixed;}
 protected:
     /**
  * Action States.
@@ -66,8 +66,8 @@ protected:
     Status m_lastStatus = SetReferencePoint;
     bool m_angleIsFixed = true;
     RS2::CursorType doGetMouseCursorSelected(int status) override;
-    void onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
-    void onMouseRightButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
+    void onMouseLeftButtonReleaseSelected(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonReleaseSelected(int status, const LC_MouseEvent* event) override;
     void updateMouseButtonHintsForSelection() override;
     void updateMouseButtonHintsForSelected(int status) override;
     LC_ModifyOperationFlags *getModifyOperationFlags() override;
@@ -76,7 +76,7 @@ protected:
     bool doProcessCommand(int status, const QString &command) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    void onMouseMoveEventSelected(int status, LC_MouseEvent *e) override;
+    void onMouseMoveEventSelected(int status, const LC_MouseEvent* e) override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) override;
     void doTriggerCompletion(bool success) override;
     void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;

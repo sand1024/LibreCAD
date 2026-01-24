@@ -26,7 +26,6 @@
 #include "lc_linemath.h"
 #include "lc_modifyalignrefoptions.h"
 #include "rs_document.h"
-#include "rs_preview.h"
 
 LC_ActionModifyAlignRef::LC_ActionModifyAlignRef(LC_ActionContext *actionContext)
   : LC_ActionModifyBase("ModifyAlignRef", actionContext, RS2::ActionModifyAlignRef) {
@@ -39,17 +38,17 @@ bool LC_ActionModifyAlignRef::doTriggerModifications(LC_DocumentModificationBatc
     return true;
 }
 
-void LC_ActionModifyAlignRef::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+void LC_ActionModifyAlignRef::doTriggerSelectionUpdate(const bool keepSelected, const LC_DocumentModificationBatch& ctx) {
     if (keepSelected) {
         select(ctx.entitiesToAdd);
     }
 }
 
 void LC_ActionModifyAlignRef::doTriggerCompletion([[maybe_unused]]bool success) {
-    finish(false);
+    finish();
 }
 
-void LC_ActionModifyAlignRef::onMouseMoveEventSelected(int status, LC_MouseEvent *e) {
+void LC_ActionModifyAlignRef::onMouseMoveEventSelected(const int status, const LC_MouseEvent* e) {
     RS_Vector snap = e->snapPoint;
     switch (status){
         case SetRefPoint1:{
@@ -69,6 +68,7 @@ void LC_ActionModifyAlignRef::onMouseMoveEventSelected(int status, LC_MouseEvent
             previewRefPoint(m_actionData.referencePoint1);
             previewRefSelectablePoint(m_actionData.targetPoint1);
             previewRefLine(m_actionData.referencePoint1, m_actionData.targetPoint1);
+            previewRefSelectablePoint(snap);
             break;
         }
         case SetTargetPoint2:{
@@ -126,7 +126,7 @@ void LC_ActionModifyAlignRef::prepareAlignRefData(const RS_Vector &snap) {
     m_actionData.data.scaleFactor = scaleFactor;
 }
 
-void LC_ActionModifyAlignRef::onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent *e) {
+void LC_ActionModifyAlignRef::onMouseLeftButtonReleaseSelected(const int status, const LC_MouseEvent* e) {
     RS_Vector snap = e->snapPoint;
     switch (status){
         case SetRefPoint1:{
@@ -150,7 +150,7 @@ void LC_ActionModifyAlignRef::onMouseLeftButtonReleaseSelected(int status, LC_Mo
     fireCoordinateEvent(snap);
 }
 
-void LC_ActionModifyAlignRef::onMouseRightButtonReleaseSelected(int status, [[maybe_unused]]LC_MouseEvent *pEvent) {
+void LC_ActionModifyAlignRef::onMouseRightButtonReleaseSelected(const int status, [[maybe_unused]] const LC_MouseEvent* event) {
     if (status == SetRefPoint1){
         if (m_selectionComplete){
             m_selectionComplete = false;
@@ -169,7 +169,7 @@ LC_ModifyOperationFlags *LC_ActionModifyAlignRef::getModifyOperationFlags() {
     return &m_actionData.data;
 }
 
-void LC_ActionModifyAlignRef::onCoordinateEvent(int status, [[maybe_unused]]bool isZero, const RS_Vector &pos) {
+void LC_ActionModifyAlignRef::onCoordinateEvent(const int status, [[maybe_unused]]bool isZero, const RS_Vector &pos) {
     switch (status){
         case SetRefPoint1:{
             m_actionData.referencePoint1 = pos;
@@ -209,7 +209,7 @@ void LC_ActionModifyAlignRef::onCoordinateEvent(int status, [[maybe_unused]]bool
     }
 }
 
-bool LC_ActionModifyAlignRef::doProcessCommand(int status, const QString &command) {
+bool LC_ActionModifyAlignRef::doProcessCommand(const int status, const QString &command) {
     return RS_ActionInterface::doProcessCommand(status, command);
 }
 
@@ -217,7 +217,7 @@ void LC_ActionModifyAlignRef::updateMouseButtonHintsForSelection() {
     updateMouseWidgetTRCancel(tr("Select to align")+getSelectionCompletionHintMsg(),  MOD_SHIFT_AND_CTRL(tr("Select contour"),tr("Align immediately after selection")));
 }
 
-void LC_ActionModifyAlignRef::updateMouseButtonHintsForSelected(int status) {
+void LC_ActionModifyAlignRef::updateMouseButtonHintsForSelected(const int status) {
     switch (status){
         case SetRefPoint1:{
             updateMouseWidgetTRCancel(tr("Select first reference point")/*, MOD_CTRL(tr("Align immediately after selection"))*/);
@@ -237,6 +237,7 @@ void LC_ActionModifyAlignRef::updateMouseButtonHintsForSelected(int status) {
         }
         default:
             updateMouseWidget();
+            break;
     }
 }
 
@@ -244,7 +245,7 @@ RS2::CursorType LC_ActionModifyAlignRef::doGetMouseCursorSelected([[maybe_unused
     return RS2::CadCursor;
 }
 
-void LC_ActionModifyAlignRef::setScale(bool val) {
+void LC_ActionModifyAlignRef::setScale(const bool val) {
    m_actionData.data.scale = val;
 }
 

@@ -49,7 +49,7 @@ struct RS_ActionDrawArc3P::ActionData {
 
 RS_ActionDrawArc3P::RS_ActionDrawArc3P(LC_ActionContext *actionContext)
     :LC_ActionDrawCircleBase("Draw arcs 3P", actionContext,  RS2::ActionDrawArc3P)
-    , m_actionData{std::make_unique<RS_ActionDrawArc3P::ActionData>()}{
+    , m_actionData{std::make_unique<ActionData>()}{
 }
 
 RS_ActionDrawArc3P::~RS_ActionDrawArc3P() = default;
@@ -57,7 +57,7 @@ RS_ActionDrawArc3P::~RS_ActionDrawArc3P() = default;
 void RS_ActionDrawArc3P::reset() {
 }
 
-void RS_ActionDrawArc3P::init(int status) {
+void RS_ActionDrawArc3P::init(const int status) {
     LC_ActionDrawCircleBase::init(status);
 }
 
@@ -84,12 +84,12 @@ void RS_ActionDrawArc3P::doTriggerCompletion([[maybe_unused]]bool success){
     reset();
 }
 
-void RS_ActionDrawArc3P::preparePreview(bool alternatePoints) const {
+void RS_ActionDrawArc3P::preparePreview(const bool alternatePoints) const {
     if (m_actionData->point1.valid && m_actionData->point2.valid && m_actionData->point3.valid){
         RS_Arc arc(nullptr, m_actionData->data);
-        RS_Vector &middlePoint = m_actionData->point2;
-        RS_Vector &startPoint = m_actionData->point1;
-        RS_Vector &endPoint = m_actionData->point3;
+        const RS_Vector &middlePoint = m_actionData->point2;
+        const RS_Vector &startPoint = m_actionData->point1;
+        const RS_Vector &endPoint = m_actionData->point3;
         bool suc;
         if (alternatePoints){
             suc = arc.createFrom3P(startPoint, endPoint, middlePoint);
@@ -103,7 +103,7 @@ void RS_ActionDrawArc3P::preparePreview(bool alternatePoints) const {
     }
 }
 
-void RS_ActionDrawArc3P::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void RS_ActionDrawArc3P::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     RS_Vector mouse = e->snapPoint;
 
     switch (status) {
@@ -128,7 +128,7 @@ void RS_ActionDrawArc3P::onMouseMoveEvent(int status, LC_MouseEvent *e) {
             // todo - which point (1 or 2) is more suitable there for snap?
             mouse = getSnapAngleAwarePoint(e,m_actionData->point1, mouse, true);
             m_actionData->point3 = mouse;
-            bool alternatePoints = e->isControl || m_alternatedPoints;
+            const bool alternatePoints = e->isControl || m_alternatedPoints;
             preparePreview(alternatePoints);
             if (m_actionData->data.isValid()){
                 previewToCreateArc(m_actionData->data);
@@ -151,7 +151,7 @@ void RS_ActionDrawArc3P::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     }
 }
 
-void RS_ActionDrawArc3P::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
+void RS_ActionDrawArc3P::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     RS_Vector snap = e->snapPoint;
     switch (status) {
         case SetPoint2:{
@@ -171,27 +171,27 @@ void RS_ActionDrawArc3P::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) 
     fireCoordinateEvent(snap);
 }
 
-void RS_ActionDrawArc3P::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionDrawArc3P::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     deletePreview();
     setStatus(status-1);
 }
 
-void RS_ActionDrawArc3P::onCoordinateEvent(int status, [[maybe_unused]] bool isZero, const RS_Vector &mouse) {
+void RS_ActionDrawArc3P::onCoordinateEvent(const int status, [[maybe_unused]] bool isZero, const RS_Vector &coord) {
     switch (status) {
         case SetPoint1: {
-            m_actionData->point1 = mouse;
-            moveRelativeZero(mouse);
+            m_actionData->point1 = coord;
+            moveRelativeZero(coord);
             setStatus(SetPoint2);
             break;
         }
         case SetPoint2: {
-            m_actionData->point2 = mouse;
-            moveRelativeZero(mouse);
+            m_actionData->point2 = coord;
+            moveRelativeZero(coord);
             setStatus(SetPoint3);
             break;
         }
         case SetPoint3: {
-            m_actionData->point3 = mouse;
+            m_actionData->point3 = coord;
             trigger();
             break;
         }
@@ -200,19 +200,19 @@ void RS_ActionDrawArc3P::onCoordinateEvent(int status, [[maybe_unused]] bool isZ
     }
 }
 
-bool RS_ActionDrawArc3P::doProcessCommand([[maybe_unused]]int status, const QString &c) {
+bool RS_ActionDrawArc3P::doProcessCommand([[maybe_unused]]int status, const QString &command) {
     bool accept = false;
-    if (checkCommand("center", c, rtti())) {
+    if (checkCommand("center", command, rtti())) {
         accept = true;
-        finish(false);
+        finish();
         switchToAction(RS2::ActionDrawArc);
     }
     // fixme - sand - add these to commands
-    else if (checkCommand("altpoint", c, rtti())){
+    else if (checkCommand("altpoint", command, rtti())){
         accept = true;
         m_alternatedPoints = true;
     }
-    else if (checkCommand("normpoint", c, rtti())){
+    else if (checkCommand("normpoint", command, rtti())){
         accept = true;
         m_alternatedPoints = false;
     }

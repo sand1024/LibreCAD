@@ -21,13 +21,9 @@
  ******************************************************************************/
 #include "lc_actiondrawpointslattice.h"
 
-#include <boost/geometry/algorithms/buffer.hpp>
-
 #include "lc_linemath.h"
 #include "lc_pointslatticeoptions.h"
 #include "rs_graphic.h"
-#include "rs_graphicview.h"
-#include "rs_pen.h"
 #include "rs_point.h"
 
 class RS_Layer;
@@ -54,7 +50,7 @@ void LC_ActionDrawPointsLattice::doTriggerCompletion([[maybe_unused]] bool succe
     setStatus(SetPoint1);
 }
 
-void LC_ActionDrawPointsLattice::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void LC_ActionDrawPointsLattice::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     const RS_Vector mouse = e->snapPoint;
     QVector<RS_Vector> pointsToCreate;
     switch (status){
@@ -104,7 +100,7 @@ void LC_ActionDrawPointsLattice::onMouseMoveEvent(int status, LC_MouseEvent *e) 
     }
 }
 
-void LC_ActionDrawPointsLattice::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
+void LC_ActionDrawPointsLattice::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     RS_Vector pos = e->snapPoint;
     switch (status){
         case SetPoint1:{
@@ -131,7 +127,7 @@ void LC_ActionDrawPointsLattice::onMouseLeftButtonRelease(int status, LC_MouseEv
     fireCoordinateEvent(pos);
 }
 
-RS_Vector LC_ActionDrawPointsLattice::getLastPointPosition(RS_Vector &pos, bool alternateLastPointAdjustment) const {
+RS_Vector LC_ActionDrawPointsLattice::getLastPointPosition(RS_Vector &pos, const bool alternateLastPointAdjustment) const {
     bool doAdjustPoint4 = m_adjustLastPointToFirst;
     if (alternateLastPointAdjustment){
         doAdjustPoint4 = !doAdjustPoint4;
@@ -143,7 +139,7 @@ RS_Vector LC_ActionDrawPointsLattice::getLastPointPosition(RS_Vector &pos, bool 
     return pos;
 }
 
-void LC_ActionDrawPointsLattice::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void LC_ActionDrawPointsLattice::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     switch (status){
         case SetPoint1:
         case SetPoint2:
@@ -162,7 +158,7 @@ void LC_ActionDrawPointsLattice::onMouseRightButtonRelease(int status, [[maybe_u
     }
 }
 
-void LC_ActionDrawPointsLattice::onCoordinateEvent(int status, [[maybe_unused]]bool isZero, const RS_Vector &pos) {
+void LC_ActionDrawPointsLattice::onCoordinateEvent(const int status, [[maybe_unused]]bool isZero, const RS_Vector &pos) {
     switch (status){
         case SetPoint1:{
             m_point1 = pos;
@@ -208,7 +204,7 @@ void LC_ActionDrawPointsLattice::onCoordinateEvent(int status, [[maybe_unused]]b
     }
 }
 
-bool LC_ActionDrawPointsLattice::doProcessCommand(int status, const QString &command) {
+bool LC_ActionDrawPointsLattice::doProcessCommand(const int status, const QString &command) {
     bool accept;
     if (checkCommand("cols", command)){
         m_majorStatus = status;
@@ -286,10 +282,11 @@ void LC_ActionDrawPointsLattice::updateMouseButtonHints() {
         }
         default:
             RS_ActionInterface::updateMouseButtonHints();
+            break;
     }
 }
 
-void LC_ActionDrawPointsLattice::createPointsLine(RS_Vector start, RS_Vector end, int count, QVector<RS_Vector> &points) {
+void LC_ActionDrawPointsLattice::createPointsLine(const RS_Vector& start, const RS_Vector& end, const int count, QVector<RS_Vector> &points) {
     const double segmentAngle = start.angleTo(end);
     const double distance = start.distanceTo(end);
     const double singleSegmentLen = distance/(count-1);
@@ -300,7 +297,7 @@ void LC_ActionDrawPointsLattice::createPointsLine(RS_Vector start, RS_Vector end
     }
 }
 
-void LC_ActionDrawPointsLattice::createPointsLattice(RS_Vector lastPoint, QVector<RS_Vector> &pointsToCreate) {
+void LC_ActionDrawPointsLattice::createPointsLattice(const RS_Vector& lastPoint, QVector<RS_Vector> &pointsToCreate) {
 
     createPointsLine(m_point1, m_point2, m_pointsAmountByX, pointsToCreate);
     const int numByY = m_pointsAmountByY - 1;
@@ -318,24 +315,24 @@ int LC_ActionDrawPointsLattice::getColumnPointsCount() const {
     return m_pointsAmountByX;
 }
 
-void LC_ActionDrawPointsLattice::setColumnPointsCount(int count) {
-    m_pointsAmountByX = count;
+void LC_ActionDrawPointsLattice::setColumnPointsCount(const int pointsByX) {
+    m_pointsAmountByX = pointsByX;
 }
 
 int LC_ActionDrawPointsLattice::getRowPointsCount() const {
     return m_pointsAmountByY;
 }
 
-void LC_ActionDrawPointsLattice::setRowPointsCount(int count) {
-    m_pointsAmountByY = count;
+void LC_ActionDrawPointsLattice::setRowPointsCount(const int pointsByY) {
+    m_pointsAmountByY = pointsByY;
 }
 
 bool LC_ActionDrawPointsLattice::isAdjustLastPointToFirst() const {
     return m_adjustLastPointToFirst;
 }
 
-void LC_ActionDrawPointsLattice::setAdjustLastPointToFirst(bool val) {
-    m_adjustLastPointToFirst = val;
+void LC_ActionDrawPointsLattice::setAdjustLastPointToFirst(const bool adjustLastPointToFirst) {
+    m_adjustLastPointToFirst = adjustLastPointToFirst;
 }
 
 RS2::CursorType LC_ActionDrawPointsLattice::doGetMouseCursor([[maybe_unused]]int status) {

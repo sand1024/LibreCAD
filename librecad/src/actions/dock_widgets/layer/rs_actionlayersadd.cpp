@@ -42,10 +42,10 @@ void RS_ActionLayersAdd::trigger() {
             m_graphic->addLayer(layer);
         }
     }
-    finish(false);
+    finish();
 }
 
-void RS_ActionLayersAdd::init(int status) {
+void RS_ActionLayersAdd::init(const int status) {
     RS_ActionInterface::init(status);
     trigger();
 }

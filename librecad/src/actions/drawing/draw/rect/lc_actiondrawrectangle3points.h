@@ -21,8 +21,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
 
-#ifndef LIBRECAD_MASTER_LC_ACTIONDRAWLINERECTANGLEREL_H
-#define LIBRECAD_MASTER_LC_ACTIONDRAWLINERECTANGLEREL_H
+#ifndef MASTER_LC_ACTIONDRAWLINERECTANGLEREL_H
+#define MASTER_LC_ACTIONDRAWLINERECTANGLEREL_H
 
 #include "lc_abstractactiondrawrectangle.h"
 
@@ -37,22 +37,22 @@ public:
         SNAP_CORNER4
     };
 
-    LC_ActionDrawRectangle3Points(LC_ActionContext *actionContext);
+    explicit LC_ActionDrawRectangle3Points(LC_ActionContext *actionContext);
     ~LC_ActionDrawRectangle3Points() override;
 
     void init(int status) override;
 
-    int getEndZeroPointCorner() const {return m_endRelativeZeroPointCorner;};
-    void setEndZeroPointCorner(int value){m_endRelativeZeroPointCorner = value;};
+    int getEndZeroPointCorner() const {return m_endRelativeZeroPointCorner;}
+    void setEndZeroPointCorner(const int value){m_endRelativeZeroPointCorner = value;}
 
-    void setCreateQuadrangle(bool value) {m_createQuadrangle = value;};
-    bool isCreateQuadrangle() const {return m_createQuadrangle;};
+    void setCreateQuadrangle(const bool value) {m_createQuadrangle = value;}
+    bool isCreateQuadrangle() const {return m_createQuadrangle;}
 
-    double getFixedInnerAngle() const {return m_innerAngleDegrees;};
-    void setFixedInnerAngle(double value){m_innerAngleDegrees = value;};
+    double getFixedInnerAngle() const {return m_innerAngleDegrees;}
+    void setFixedInnerAngle(const double value){m_innerAngleDegrees = value;}
 
-    bool isInnerAngleFixed() const{return m_innerAngleIsFixed;};
-    void setInnerAngleFixed(bool value){m_innerAngleIsFixed = value;};
+    bool isInnerAngleFixed() const{return m_innerAngleIsFixed;}
+    void setInnerAngleFixed(const bool value){m_innerAngleIsFixed = value;}
 
 protected:
     /**
@@ -76,31 +76,31 @@ protected:
      */
     bool m_createQuadrangle = false;
 
-    void resetPoints();
+    void resetPoints() const;
     void doResetPoints(const RS_Vector &zero) const;
-    RS_Vector calculatePossibleEndpointForAngle(const RS_Vector &snap, const RS_Vector lineStartPoint, double angle) const;
+    RS_Vector calculatePossibleEndpointForAngle(const RS_Vector &snap, const RS_Vector& lineStartPoint, double angle) const;
     void calculateCorner2(const RS_Vector &snapPoint, double angleRad, bool cornerSet) const;
     void calculateCorner4() const;
     ShapeData createPolyline(const RS_Vector &snapPoint) override;
     void processCommandValue(double value, bool &toMainStatus) override;
     bool processCustomCommand(int status, const QString &command, bool &toMainStatus) override;
-    bool doCheckMayDrawPreview(LC_MouseEvent *event, int status) override;
-    RS_Vector doGetMouseSnapPoint(LC_MouseEvent *e) override;
+    bool doCheckMayDrawPreview(const LC_MouseEvent* event, int status) override;
+    RS_Vector doGetMouseSnapPoint(const LC_MouseEvent* e) override;
     RS_Vector doGetRelativeZeroAfterTrigger() override;
     void doAfterTrigger() override;
-    void doBack(LC_MouseEvent *pEvent, int status) override;
-    void doProcessCoordinateEvent(const RS_Vector &vector, bool zero, int status) override;
-    void doOnLeftMouseButtonRelease(LC_MouseEvent *e, int status, const RS_Vector &snapPoint) override;
-    void doFinish(bool updateTB) override;
+    void doBack(const LC_MouseEvent* e, int status) override;
+    void doProcessCoordinateEvent(const RS_Vector &mouse, bool zero, int status) override;
+    void doOnLeftMouseButtonRelease(const LC_MouseEvent* e, int status, const RS_Vector &snapPoint) override;
+    void doFinish() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
     int doGetStatusForInitialSnapToRelativeZero() override;
-    void doInitialSnapToRelativeZero(RS_Vector vector) override;
+    void doInitialSnapToRelativeZero(const RS_Vector& zero) override;
     void doUpdateMouseButtonHints(int status) override;
-    void calculateCornersBySize(RS_Vector size) const;
+    void calculateCornersBySize(const RS_Vector& size) const;
     double getActualInnerAngle() const;
-    void doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
+    void doPreparePreviewEntities(const LC_MouseEvent* e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
 };
 
-#endif //LIBRECAD_MASTER_LC_ACTIONDRAWLINERECTANGLEREL_H
+#endif

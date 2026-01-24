@@ -38,9 +38,9 @@ class RS_ActionPolylineAppend:public RS_ActionDrawPolyline {
     explicit RS_ActionPolylineAppend(LC_ActionContext *actionContext);
     void undo() override;
 protected:
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     bool setPolylineToModify(RS_Entity *entity, const RS_Vector& mouse);
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void updateMouseButtonHints() override;

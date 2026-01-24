@@ -39,11 +39,11 @@ const auto g_enTypeList = EntityTypeList{RS2::EntityLine, RS2::EntityArc, RS2::E
 }
 
 // fixme - sand - add support of options for line snap point
-RS_ActionDrawLineRelAngle::RS_ActionDrawLineRelAngle(LC_ActionContext *actionContext,double ang,bool fixedAngle)
+RS_ActionDrawLineRelAngle::RS_ActionDrawLineRelAngle(LC_ActionContext *actionContext, const double angle, const bool fixedAngle)
     :LC_SingleEntityCreationAction("Draw Lines with relative angles",actionContext)
     , m_pos(std::make_unique<RS_Vector>())
     , m_fixedAngle(fixedAngle){
-    m_relativeAngleRad = /*RS_Math::rad2deg(ang)*/ ang;
+    m_relativeAngleRad = /*RS_Math::rad2deg(ang)*/ angle;
 }
 
 RS_ActionDrawLineRelAngle::~RS_ActionDrawLineRelAngle() = default;
@@ -51,16 +51,16 @@ RS_ActionDrawLineRelAngle::~RS_ActionDrawLineRelAngle() = default;
 void RS_ActionDrawLineRelAngle::doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) {
     auto entity = contextEntity;
     if (isPolyline(entity)) {
-        auto polyline = static_cast<RS_Polyline*> (contextEntity);
+        const auto polyline = static_cast<RS_Polyline*> (contextEntity);
         entity = polyline->getNearestEntity(clickPos);
     }
-    RS2::EntityType rtti = entity->rtti();
+    const RS2::EntityType rtti = entity->rtti();
     if (g_enTypeList.contains(rtti)) {
         setEntity(entity);
     }
 }
 
-void RS_ActionDrawLineRelAngle::setAngle(double angleDeg) {
+void RS_ActionDrawLineRelAngle::setAngle(const double angleDeg) {
     m_relativeAngleRad = adjustRelativeAngleSignByBasis(RS_Math::deg2rad(angleDeg));
 }
 
@@ -68,7 +68,7 @@ double RS_ActionDrawLineRelAngle::getAngle() const {
     return adjustRelativeAngleSignByBasis(RS_Math::rad2deg(m_relativeAngleRad));
 }
 
-bool RS_ActionDrawLineRelAngle::doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) {
+bool RS_ActionDrawLineRelAngle::doUpdateAngleByInteractiveInput(const QString& tag, const double angleRad) {
     if (tag == "angle") {
         m_relativeAngleRad = adjustRelativeAngleSignByBasis(angleRad);
         return true;
@@ -76,7 +76,7 @@ bool RS_ActionDrawLineRelAngle::doUpdateAngleByInteractiveInput(const QString& t
     return false;
 }
 
-bool RS_ActionDrawLineRelAngle::doUpdateDistanceByInteractiveInput(const QString& tag, double distance) {
+bool RS_ActionDrawLineRelAngle::doUpdateDistanceByInteractiveInput(const QString& tag, const double distance) {
     if (tag == "distance") {
         setLength(distance);
         return true;
@@ -88,26 +88,24 @@ RS2::ActionType RS_ActionDrawLineRelAngle::rtti() const{
     if( m_fixedAngle && RS_Math::getAngleDifference(m_relativeAngleRad, M_PI_2) < RS_TOLERANCE_ANGLE) {
         return RS2::ActionDrawLineOrthogonal;
     }
-    else {
-        return RS2::ActionDrawLineRelAngle;
-    }
+    return RS2::ActionDrawLineRelAngle;
 }
 
-void RS_ActionDrawLineRelAngle::finish(bool updateTB) {
-    RS_PreviewActionInterface::finish(updateTB);
+void RS_ActionDrawLineRelAngle::finish() {
+    RS_PreviewActionInterface::finish();
 }
 
 RS_Entity* RS_ActionDrawLineRelAngle::doTriggerCreateEntity() {
     moveRelativeZero(*m_pos);
-    auto line = RS_Creation::createLineRelAngle(*m_pos,m_entity,m_relativeAngleRad,m_length);
+    const auto line = RS_Creation::createLineRelAngle(*m_pos,m_entity,m_relativeAngleRad,m_length);
     return line;
 }
 
 void RS_ActionDrawLineRelAngle::doTriggerCompletion([[maybe_unused]]bool success) {
 }
 
-void RS_ActionDrawLineRelAngle::onMouseMoveEvent(int status, LC_MouseEvent *e) {
-    RS_Vector snap = e->snapPoint;
+void RS_ActionDrawLineRelAngle::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
+    const RS_Vector snap = e->snapPoint;
     switch (status) {
         case SetEntity: {
             m_entity = catchAndDescribe(e, g_enTypeList, RS2::ResolveAll);
@@ -119,11 +117,11 @@ void RS_ActionDrawLineRelAngle::onMouseMoveEvent(int status, LC_MouseEvent *e) {
         case SetPos: {
             highlightSelected(m_entity);
             *m_pos = getRelZeroAwarePoint(e, snap);
-            auto lineToCreate = RS_Creation::createLineRelAngle(*m_pos, m_entity, m_relativeAngleRad, m_length);
+            const auto lineToCreate = RS_Creation::createLineRelAngle(*m_pos, m_entity, m_relativeAngleRad, m_length);
             if (lineToCreate != nullptr){
                 previewEntityToCreate(lineToCreate, true);
                 if (m_showRefEntitiesOnPreview) {
-                    auto const vp = m_entity->getNearestPointOnEntity(*m_pos, false);
+                    const auto vp = m_entity->getNearestPointOnEntity(*m_pos, false);
                     previewRefPoint(vp);
                     previewRefPoint(lineToCreate->getEndpoint());
                 }
@@ -140,7 +138,7 @@ void RS_ActionDrawLineRelAngle::setEntity(RS_Entity* en) {
     setStatus(SetPos);
 }
 
-void RS_ActionDrawLineRelAngle::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
+void RS_ActionDrawLineRelAngle::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     switch (status) {
         case SetEntity: {
             RS_Entity *en = catchEntityByEvent(e, g_enTypeList, RS2::ResolveAll);
@@ -151,7 +149,7 @@ void RS_ActionDrawLineRelAngle::onMouseLeftButtonRelease(int status, LC_MouseEve
         }
         case SetPos: {
             const RS_Vector& snap = e->snapPoint;
-            RS_Vector position = getRelZeroAwarePoint(e, snap);
+            const RS_Vector position = getRelZeroAwarePoint(e, snap);
             fireCoordinateEvent(position);
             break;
         }
@@ -160,12 +158,12 @@ void RS_ActionDrawLineRelAngle::onMouseLeftButtonRelease(int status, LC_MouseEve
     }
 }
 
-void RS_ActionDrawLineRelAngle::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionDrawLineRelAngle::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     deletePreview();
     initPrevious(status);
 }
 
-void RS_ActionDrawLineRelAngle::onCoordinateEvent(int status, [[maybe_unused]]bool isZero, const RS_Vector &coord) {
+void RS_ActionDrawLineRelAngle::onCoordinateEvent(const int status, [[maybe_unused]]bool isZero, const RS_Vector &coord) {
     switch (status) {
         case SetPos: {
             *m_pos = coord;
@@ -177,17 +175,17 @@ void RS_ActionDrawLineRelAngle::onCoordinateEvent(int status, [[maybe_unused]]bo
     }
 }
 
-bool RS_ActionDrawLineRelAngle::doProcessCommand(int status, const QString &c) {
+bool RS_ActionDrawLineRelAngle::doProcessCommand(const int status, const QString &command) {
     bool accept = false;
 
     switch (status) {
         case SetEntity:
         case SetPos: {
-            if (!m_fixedAngle && checkCommand("angle", c)){
+            if (!m_fixedAngle && checkCommand("angle", command)){
                 deletePreview();
                 setStatus(SetAngle);
                 accept = true;
-            } else if (checkCommand("length", c)){
+            } else if (checkCommand("length", command)){
                 deletePreview();
                 setStatus(SetLength);
                 accept = true;
@@ -196,7 +194,7 @@ bool RS_ActionDrawLineRelAngle::doProcessCommand(int status, const QString &c) {
         }
         case SetAngle: {
             double angle;
-            bool ok = parseToRelativeAngle(c, angle);
+            const bool ok = parseToRelativeAngle(command, angle);
             if (ok){
                 accept = true;
                 m_relativeAngleRad = angle;
@@ -209,7 +207,7 @@ bool RS_ActionDrawLineRelAngle::doProcessCommand(int status, const QString &c) {
         }
         case SetLength: {
             bool ok = false;
-            double l = RS_Math::eval(c, &ok);
+            const double l = RS_Math::eval(command, &ok);
             if (ok){
                 m_length = l;
                 accept = true;
@@ -263,7 +261,7 @@ void RS_ActionDrawLineRelAngle::updateMouseButtonHints(){
     }
 }
 
-RS2::CursorType RS_ActionDrawLineRelAngle::doGetMouseCursor([[maybe_unused]] int status){
+RS2::CursorType RS_ActionDrawLineRelAngle::doGetMouseCursor([[maybe_unused]] const int status){
     switch (status) {
         case SetEntity:
             return RS2::SelectCursor;

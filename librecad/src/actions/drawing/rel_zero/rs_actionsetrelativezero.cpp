@@ -38,25 +38,25 @@ RS_ActionSetRelativeZero::RS_ActionSetRelativeZero(LC_ActionContext *actionConte
 RS_ActionSetRelativeZero::~RS_ActionSetRelativeZero() = default;
 
 void RS_ActionSetRelativeZero::trigger(){
-    bool wasLocked = m_viewport->isRelativeZeroLocked();
     if (m_position->valid) {
+        const bool wasLocked = m_viewport->isRelativeZeroLocked();
         m_viewport->lockRelativeZero(false);
         moveRelativeZero(*m_position);
         RS_Undoable *relativeZeroUndoable = m_viewport->getRelativeZeroUndoable();
         if (relativeZeroUndoable != nullptr) {
-            LC_UndoSection undo(m_document, m_viewport);
+            const LC_UndoSection undo(m_document, m_viewport);
             undo.addUndoable(relativeZeroUndoable);
         }
         m_viewport->lockRelativeZero(wasLocked);
     }
-    finish(false);
+    finish();
 }
 
-void RS_ActionSetRelativeZero::onMouseLeftButtonRelease([[maybe_unused]]int status, LC_MouseEvent *e) {
+void RS_ActionSetRelativeZero::onMouseLeftButtonRelease([[maybe_unused]]int status, const LC_MouseEvent* e) {
     fireCoordinateEventForSnap(e);
 }
 
-void RS_ActionSetRelativeZero::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionSetRelativeZero::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     initPrevious(status);
 }
 

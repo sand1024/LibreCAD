@@ -40,10 +40,10 @@ public:
     void onLateRequestCompleted(bool shouldBeSkipped) override;
     void trigger() override;
     void init(int status) override;
-    bool mayBeTerminatedExternally() override {return m_allowExternalTermination;};
+    bool mayBeTerminatedExternally() override {return m_allowExternalTermination;}
 
 protected:
-    bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& ctx) override {return false;};
+    bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& ctx) override {return false;}
     void updateMouseButtonHintsForSelection() override;
     void onSelectionCompleted(bool singleEntity, bool fromInit) override;
 private:
@@ -52,7 +52,7 @@ private:
         EDITING
     };
     void showSelectionDialog();
-    void performSelection(LC_DlgQuickSelection* dlg);
+    void performSelection(LC_DlgQuickSelection* dlg) const;
     void showDialog();
 
     bool m_allowExternalTermination{true};

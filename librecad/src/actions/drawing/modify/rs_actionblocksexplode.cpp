@@ -43,7 +43,7 @@ bool RS_ActionBlocksExplode::doTriggerModifications(LC_DocumentModificationBatch
     return true;
 }
 
-void RS_ActionBlocksExplode::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+void RS_ActionBlocksExplode::doTriggerSelectionUpdate(const bool keepSelected, const LC_DocumentModificationBatch& ctx) {
     unselect(m_selectedEntities); // deselect atomics, if any included into selection. They should not be included into selection, yet still...
     if (keepSelected) {
         select(ctx.entitiesToAdd);

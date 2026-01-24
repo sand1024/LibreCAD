@@ -36,7 +36,7 @@ struct RS_ArcData;
 class RS_ActionDrawArc3P:public LC_ActionDrawCircleBase {
     Q_OBJECT
 public:
-    RS_ActionDrawArc3P(LC_ActionContext *actionContext);
+    explicit RS_ActionDrawArc3P(LC_ActionContext *actionContext);
     ~RS_ActionDrawArc3P() override;
     void init(int status) override;
     QStringList getAvailableCommands() override;
@@ -55,11 +55,11 @@ protected:
     bool m_alternatedPoints = false;
     void reset() override;
     void preparePreview(bool alternatePoints) const;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     bool doProcessCommand(int status, const QString &command) override;
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector &coord) override;
     void updateMouseButtonHints() override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;

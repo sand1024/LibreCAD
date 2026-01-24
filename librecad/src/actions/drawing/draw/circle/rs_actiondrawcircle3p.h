@@ -37,19 +37,20 @@ struct RS_CircleData;
  *
  * @author Andrew Mustun
  */
-class RS_ActionDrawCircle3P:public LC_ActionDrawCircleBase {
-Q_OBJECT
+class RS_ActionDrawCircle3P : public LC_ActionDrawCircleBase {
+    Q_OBJECT
 public:
-    RS_ActionDrawCircle3P(LC_ActionContext *actionContext);
+    explicit RS_ActionDrawCircle3P(LC_ActionContext* actionContext);
     ~RS_ActionDrawCircle3P() override;
+
 protected:
     /**
  * Action States.
  */
     enum Status {
-        SetPoint1 = InitialActionStatus,       /**< Setting the 1st point. */
-        SetPoint2,       /**< Setting the 2nd point. */
-        SetPoint3        /**< Setting the 3rd point. */
+        SetPoint1 = InitialActionStatus, /**< Setting the 1st point. */
+        SetPoint2, /**< Setting the 2nd point. */
+        SetPoint3 /**< Setting the 3rd point. */
     };
 
     /**
@@ -60,10 +61,10 @@ protected:
 
     void reset() override;
     void preparePreview() const;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector& coord) override;
     void updateMouseButtonHints() override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;

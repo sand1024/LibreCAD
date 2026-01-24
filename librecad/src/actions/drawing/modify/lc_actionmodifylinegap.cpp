@@ -42,14 +42,14 @@ void LC_ActionModifyLineGap::doInitWithContextEntity(RS_Entity* contextEntity, [
    }
 }
 
-void LC_ActionModifyLineGap::doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status){
+void LC_ActionModifyLineGap::doPreparePreviewEntities(const LC_MouseEvent* e, RS_Vector &snap, QList<RS_Entity *> &list, const int status){
     switch (status){
-        case (SetEntity):{ // selecting the line
+        case SetEntity:{ // selecting the line
             // finding line entity
             deleteSnapper();
             RS_Entity* en = catchModifiableAndDescribe(e, g_enTypeList);
             if (en != nullptr){
-                auto *line = dynamic_cast<RS_Line *>(en);
+                auto *line = static_cast<RS_Line *>(en);
                 // check that line may be expanded
                 if (checkMayExpandEntity(line, "")){
 
@@ -62,7 +62,7 @@ void LC_ActionModifyLineGap::doPreparePreviewEntities(LC_MouseEvent *e, RS_Vecto
                     highlightHover(line);
 
                     // calculate gap temporary data
-                    GapData *data = prepareGapData(line, snap, gapStartPosition);
+                    const GapData *data = prepareGapData(line, snap, gapStartPosition);
                     createPreviewEntities(data, list, false);
 
                     if (isInfoCursorForModificationEnabled()){
@@ -110,7 +110,7 @@ void LC_ActionModifyLineGap::doPreparePreviewEntities(LC_MouseEvent *e, RS_Vecto
  * @param list list to add entities
  * @param startPointNoSelected - if true, first entity is not selected
  */
-void LC_ActionModifyLineGap::createPreviewEntities(LC_ActionModifyLineGap::GapData *data, QList<RS_Entity *> &list, bool startPointNoSelected) const{
+void LC_ActionModifyLineGap::createPreviewEntities(const GapData *data, QList<RS_Entity *> &list, const bool startPointNoSelected) const{
     const RS_Vector &startPoint = data->startPoint;
     const RS_Vector &endPoint = data->endPoint;
 
@@ -128,13 +128,13 @@ void LC_ActionModifyLineGap::createPreviewEntities(LC_ActionModifyLineGap::GapDa
     createRefSelectablePoint(endPoint, list);
 }
 
-void LC_ActionModifyLineGap::doOnLeftMouseButtonRelease(LC_MouseEvent *e, int status, const RS_Vector &snapPoint){
+void LC_ActionModifyLineGap::doOnLeftMouseButtonRelease(const LC_MouseEvent* e, const int status, const RS_Vector &snapPoint){
     switch (status){
         case SetEntity:{ // entity selection
             // catching the line
             RS_Entity* en = catchModifiableEntity(e, g_enTypeList);
             if (en != nullptr) {
-                auto* line = dynamic_cast<RS_Line *>(en);
+                auto* line = static_cast<RS_Line *>(en);
                 // check whether line is expandable
                 if (checkMayExpandEntity(line, "")){
                     // determine where gap should be positioned on original line
@@ -182,6 +182,10 @@ bool LC_ActionModifyLineGap::isSetActivePenAndLayerOnTrigger(){
 }
 
 bool LC_ActionModifyLineGap::doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx){
+    if (m_gapData == nullptr) {
+        return false;
+    }
+
      const RS_Line* originalLine = m_gapData->originalLine;
 
      const RS_Vector lineStart = originalLine->getStartpoint();
@@ -212,21 +216,22 @@ bool LC_ActionModifyLineGap::doTriggerEntitiesPrepare(LC_DocumentModificationBat
 
      if (LC_LineMath::isMeaningful(lineStart.x - rotatedGapStart.x)){
          // check that gap is not in the start of line
-         if (lineStart.x > rotatedGapStart.x){ // start of gap is outside of line
+         if (lineStart.x > rotatedGapStart.x) {
+             // start of gap is outside of line
              // here we create segment for the gap itself - IF gap is fully outside the line. So it
              // will add segment, actually.
-             if ((lineStart.x - rotatedGapEnd.x)>=0){
+             if (lineStart.x - rotatedGapEnd.x >= 0) {
                  gapOutsideTheLine = true;
-                 auto *segment1 = createLine(gapStart, gapEnd, ctx.entitiesToAdd);
+                 auto* segment1 = createLine(gapStart, gapEnd, ctx.entitiesToAdd);
                  // apply attributes from original line
                  applyPenAndLayerBySourceEntity(originalLine, segment1, PEN_ORIGINAL, LAYER_ORIGINAL);
                  // prevent deletion of original line
                  m_gapData->originalLine = nullptr;
              }
          }
-         else{
+         else {
              // gap is not on the edge, actual creation of line segment is needed
-             if (rotatedGapStart.x < rotatedLineEnd.x){
+             if (rotatedGapStart.x < rotatedLineEnd.x) {
                  // we'll create first segment only if gap start point is not outsider of line (after line endpoint)
                  const auto segment1 = createLine(lineStart, gapStart, ctx.entitiesToAdd);
                  // apply attributes from original line
@@ -240,7 +245,7 @@ bool LC_ActionModifyLineGap::doTriggerEntitiesPrepare(LC_DocumentModificationBat
          if (LC_LineMath::isMeaningfulDistance(lineEnd, gapEnd)){
              // gap is not on the edge
 
-             if ((rotatedGapStart.x - rotatedLineEnd.x)>=0){
+             if ((rotatedGapStart.x - rotatedLineEnd.x) >= 0) {
                  // gap is outside of line, so we'll extend the line
                  auto *segment1 = createLine(gapStart, gapEnd, ctx.entitiesToAdd);
                  // apply attributes from original line
@@ -256,13 +261,12 @@ bool LC_ActionModifyLineGap::doTriggerEntitiesPrepare(LC_DocumentModificationBat
          }
      }
 
-    if (m_gapData != nullptr){
-        // just deleting original entity as it is replaced by created segments
-        RS_Line* line = m_gapData->originalLine;
-        if (line != nullptr){
-            ctx -= line;
-        }
+    // just deleting original entity as it is replaced by created segments
+    RS_Line* line = m_gapData->originalLine;
+    if (line != nullptr) {
+        ctx -= line;
     }
+
    return true;
 }
 
@@ -280,11 +284,8 @@ void LC_ActionModifyLineGap::doAfterTrigger(){
 RS_Vector LC_ActionModifyLineGap::obtainLineSnapPointForMode(const RS_Line* targetLine, const RS_Vector& snap) const{
     RS_Vector snapPoint;
 
-    // angle of target line
-    const double angle = targetLine->getAngle1();
-
     // vector will use to move gap snap point along base original line, if needed
-    RS_Vector snapDistanceCorrectionVector = RS_Vector(0, 0, 0);
+    auto snapDistanceCorrectionVector = RS_Vector(0, 0, 0);
 
 
     int lineSnap = m_lineSnapMode;
@@ -311,6 +312,9 @@ RS_Vector LC_ActionModifyLineGap::obtainLineSnapPointForMode(const RS_Line* targ
     }
 
     if (LC_LineMath::isMeaningful(m_snapDistance)){
+        // angle of target line
+        const double angle = targetLine->getAngle1();
+
         // if some distance from snap is set, calculate shift for snap
         snapDistanceCorrectionVector = RS_Vector::polar(distanceForSnap, angle);
     }
@@ -336,7 +340,7 @@ RS_Vector LC_ActionModifyLineGap::obtainLineSnapPointForMode(const RS_Line* targ
             break;
     }
     return snapPoint;
-};
+}
 
 
 /**
@@ -347,17 +351,16 @@ RS_Vector LC_ActionModifyLineGap::obtainLineSnapPointForMode(const RS_Line* targ
  * @return gap data
  */
 LC_ActionModifyLineGap::GapData *LC_ActionModifyLineGap::prepareGapData(RS_Line *line, [[maybe_unused]]const RS_Vector &snap, const RS_Vector &startPoint) const{
-    // angle of target line
-    const double angle = line->getAngle1();
-
-    const RS_Vector lineStartPoint = line->getStartpoint();
-    const RS_Vector lineEndPoint = line->getEndpoint();
 
     RS_Vector gapStart;
     RS_Vector gapEnd;
 
-    const double size = m_gapSize;
     if (!m_freeGapSize){
+
+        const double size = m_gapSize;
+
+        // angle of target line
+        const double angle = line->getAngle1();
 
         // vector that describes gap (from zero point)
         const RS_Vector gapVector = RS_Vector::polar(size, angle);
@@ -397,6 +400,8 @@ LC_ActionModifyLineGap::GapData *LC_ActionModifyLineGap::prepareGapData(RS_Line 
 
         // check that start of gap is not outside the line
         if (m_lineSnapMode == LINE_SNAP_FREE){
+            const RS_Vector lineStartPoint = line->getStartpoint();
+            const RS_Vector lineEndPoint = line->getEndpoint();
 
             // check that we're not outside the line, if it so - limit gap by line edge points
             const double distanceToEnd = gapStart.distanceTo(lineEndPoint);
@@ -427,21 +432,22 @@ LC_ActionModifyLineGap::GapData *LC_ActionModifyLineGap::prepareGapData(RS_Line 
 }
 
  void LC_ActionModifyLineGap::updateMouseButtonHints(){
-    switch (getStatus()){
-        case SetEntity:{
-            updateMouseWidgetTRCancel(tr("Select line"), MOD_SHIFT_LC(tr("Use Alternative Line Endpoint")));
-            break;
-        }
-        case SetGapEndPoint:{
-            updateMouseWidgetTRBack(tr("Select endpoint of gap"));
-            break;
-        }
-    default:
-        LC_AbstractActionWithPreview::updateMouseButtonHints();
-    }
+     switch (getStatus()) {
+         case SetEntity: {
+             updateMouseWidgetTRCancel(tr("Select line"), MOD_SHIFT_LC(tr("Use Alternative Line Endpoint")));
+             break;
+         }
+         case SetGapEndPoint: {
+             updateMouseWidgetTRBack(tr("Select endpoint of gap"));
+             break;
+         }
+         default:
+             LC_AbstractActionWithPreview::updateMouseButtonHints();
+             break;
+     }
  }
 
-void LC_ActionModifyLineGap::doFinish([[maybe_unused]]bool updateTB){
+void LC_ActionModifyLineGap::doFinish(){
     if (m_gapData != nullptr){
         delete m_gapData;
         m_gapData = nullptr;
@@ -452,12 +458,12 @@ LC_ActionOptionsWidget* LC_ActionModifyLineGap::createOptionsWidget(){
     return new LC_ModifyGapOptions();
 }
 
-RS2::CursorType LC_ActionModifyLineGap::doGetMouseCursor(int status) {
-    switch (status){
-        case SetEntity:{
+RS2::CursorType LC_ActionModifyLineGap::doGetMouseCursor(const int status) {
+    switch (status) {
+        case SetEntity: {
             return RS2::SelectCursor;
         }
-        case SetGapEndPoint:{
+        case SetGapEndPoint: {
             return RS2::CadCursor;
         }
         default:
@@ -465,7 +471,7 @@ RS2::CursorType LC_ActionModifyLineGap::doGetMouseCursor(int status) {
     }
 }
 
-bool LC_ActionModifyLineGap::doUpdateDistanceByInteractiveInput(const QString& tag, double distance) {
+bool LC_ActionModifyLineGap::doUpdateDistanceByInteractiveInput(const QString& tag, const double distance) {
     if (tag == "size") {
         setGapSize(distance);
         return true;

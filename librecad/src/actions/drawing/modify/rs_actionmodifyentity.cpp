@@ -39,37 +39,37 @@
 #include "rs_graphicview.h"
 #include "rs_text.h"
 
-RS_ActionModifyEntity::RS_ActionModifyEntity(LC_ActionContext *actionContext)
-		:LC_UndoableDocumentModificationAction("Modify Entity", actionContext, RS2::ActionModifyEntity){
+RS_ActionModifyEntity::RS_ActionModifyEntity(LC_ActionContext* actionContext)
+    : LC_UndoableDocumentModificationAction("Modify Entity", actionContext, RS2::ActionModifyEntity) {
 }
 
 RS_ActionModifyEntity::~RS_ActionModifyEntity() {
     delete m_propertiesEditor;
 }
 
-void RS_ActionModifyEntity::doInitWithContextEntity(RS_Entity* contextEntity, [[maybe_unused]]const RS_Vector& clickPos) {
+void RS_ActionModifyEntity::doInitWithContextEntity(RS_Entity* contextEntity, [[maybe_unused]] const RS_Vector& clickPos) {
     m_entity = contextEntity;
     m_invokedForSingleEntity = true;
     m_modifyCursor = false;
 }
 
-void RS_ActionModifyEntity::init(int status) {
+void RS_ActionModifyEntity::init(const int status) {
     RS_PreviewActionInterface::init(status);
     if (m_entity != nullptr) {
         trigger();
     }
 }
 
-void  RS_ActionModifyEntity::notifyFinished() const {
+void RS_ActionModifyEntity::notifyFinished() const {
     m_graphicView->notifyLastActionFinished();
 }
 
-void RS_ActionModifyEntity::onLateRequestCompleted(bool shouldBeSkipped) {
+void RS_ActionModifyEntity::onLateRequestCompleted(const bool shouldBeSkipped) {
     if (shouldBeSkipped) {
         if (m_invokedForSingleEntity) {
             m_entity = nullptr;
             delete m_clonedEntity;
-            finish(false);
+            finish();
         }
         else {
             setStatus(ShowDialog);
@@ -78,7 +78,7 @@ void RS_ActionModifyEntity::onLateRequestCompleted(bool shouldBeSkipped) {
     else {
         trigger();
         if (m_invokedForSingleEntity) {
-            finish(false);
+            finish();
         }
         else {
             setStatus(ShowDialog);
@@ -95,7 +95,7 @@ bool RS_ActionModifyEntity::doTriggerModifications(LC_DocumentModificationBatch&
             const bool selected = m_entity->isSelected();
             select(m_entity);
             setStatus(InEditing);
-            LC_EntityPropertiesDlg* editDialog {nullptr};
+            LC_EntityPropertiesDlg* editDialog{nullptr};
             QWidget* parent = QC_ApplicationWindow::getAppWindow().get();
             m_clonedEntity = m_entity->clone();
             bool hasDialog = true;
@@ -181,8 +181,8 @@ bool RS_ActionModifyEntity::doTriggerModifications(LC_DocumentModificationBatch&
         ctx.replace(m_entity, m_clonedEntity);
 
         // hm... probably there is a better way to notify (signal, broadcasting etc) without direct dependency?
-        LC_QuickInfoWidget *entityInfoWidget = QC_ApplicationWindow::getAppWindow()->getEntityInfoWidget();
-        if (entityInfoWidget != nullptr){
+        LC_QuickInfoWidget* entityInfoWidget = QC_ApplicationWindow::getAppWindow()->getEntityInfoWidget();
+        if (entityInfoWidget != nullptr) {
             entityInfoWidget->onEntityPropertiesEdited(originalEntityId, cloneEntityId);
         }
         setStatus(EditComplete);
@@ -191,20 +191,20 @@ bool RS_ActionModifyEntity::doTriggerModifications(LC_DocumentModificationBatch&
     return true;
 }
 
-void RS_ActionModifyEntity::doTriggerCompletion(bool success) {
+void RS_ActionModifyEntity::doTriggerCompletion(const bool success) {
     LC_UndoableDocumentModificationAction::doTriggerCompletion(success);
 }
 
-void RS_ActionModifyEntity::onMouseMoveEvent([[maybe_unused]]int status, LC_MouseEvent *e) {
+void RS_ActionModifyEntity::onMouseMoveEvent([[maybe_unused]] const int status, const LC_MouseEvent* e) {
     if (status == ShowDialog) {
-        RS_Entity* entity = catchAndDescribe(e);
-        if (entity != nullptr){
+        const RS_Entity* entity = catchAndDescribe(e);
+        if (entity != nullptr) {
             highlightHoverWithRefPoints(entity, true);
         }
     }
 }
 
-void RS_ActionModifyEntity::onMouseLeftButtonRelease([[maybe_unused]]int status, LC_MouseEvent *e) {
+void RS_ActionModifyEntity::onMouseLeftButtonRelease([[maybe_unused]] const int status, const LC_MouseEvent* e) {
     if (status == ShowDialog) {
         m_entity = catchEntityByEvent(e);
         if (m_entity != nullptr) {
@@ -213,17 +213,15 @@ void RS_ActionModifyEntity::onMouseLeftButtonRelease([[maybe_unused]]int status,
     }
 }
 
-void RS_ActionModifyEntity::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionModifyEntity::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     initPrevious(status);
 }
 
-RS2::CursorType RS_ActionModifyEntity::doGetMouseCursor([[maybe_unused]] int status){
+RS2::CursorType RS_ActionModifyEntity::doGetMouseCursor([[maybe_unused]] int status) {
     if (m_modifyCursor) {
         return RS2::SelectCursor;
     }
-    else{
-        return RS2::NoCursorChange;
-    }
+    return RS2::NoCursorChange;
 }
 
 void RS_ActionModifyEntity::updateMouseButtonHints() {

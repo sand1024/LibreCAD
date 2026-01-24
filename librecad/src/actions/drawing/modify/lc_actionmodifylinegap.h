@@ -27,7 +27,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class LC_ActionModifyLineGap:public LC_AbstractActionWithPreview{
     Q_OBJECT
-
     /**
      * entity states
      */
@@ -37,22 +36,22 @@ class LC_ActionModifyLineGap:public LC_AbstractActionWithPreview{
     };
 
 public:
-    LC_ActionModifyLineGap(LC_ActionContext *actionContext);
+    explicit LC_ActionModifyLineGap(LC_ActionContext *actionContext);
 
-    double getGapSize()const{return m_gapSize;};
-    void setGapSize(double value){m_gapSize =value;};
+    double getGapSize()const{return m_gapSize;}
+    void setGapSize(const double value){m_gapSize =value;}
 
-    int getLineSnapMode() const{return m_lineSnapMode;};
-    void setLineSnapMode(int value){m_lineSnapMode = value;};
+    int getLineSnapMode() const{return m_lineSnapMode;}
+    void setLineSnapMode(const int value){m_lineSnapMode = value;}
 
-    double getSnapDistance() const{return m_snapDistance;};
-    void setSnapDistance(double value){m_snapDistance = value;};
+    double getSnapDistance() const{return m_snapDistance;}
+    void setSnapDistance(const double value){m_snapDistance = value;}
 
-    bool isFreeGapSize() const{return m_freeGapSize;};
-    void setFreeGapSize(bool value){m_freeGapSize = value;}
+    bool isFreeGapSize() const{return m_freeGapSize;}
+    void setFreeGapSize(const bool value){m_freeGapSize = value;}
 
-    bool getGapSnapMode() const {return m_gapSnapMode;};
-    void setGapSnapMode(int mode){m_gapSnapMode = mode;};
+    bool getGapSnapMode() const {return m_gapSnapMode;}
+    void setGapSnapMode(const int mode){m_gapSnapMode = mode;}
 protected:
 
     /**
@@ -104,19 +103,19 @@ protected:
 
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    void doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
+    void doPreparePreviewEntities(const LC_MouseEvent* e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
     RS_Vector obtainLineSnapPointForMode(const RS_Line *targetLine, const RS_Vector &snap) const;
     GapData *prepareGapData(RS_Line *line, const RS_Vector &snap, const RS_Vector &startPoint) const;
-    void doOnLeftMouseButtonRelease(LC_MouseEvent *e, int status, const RS_Vector &snapPoint) override;
+    void doOnLeftMouseButtonRelease(const LC_MouseEvent* e, int status, const RS_Vector &snapPoint) override;
     bool doCheckMayTrigger() override;
     void doAfterTrigger() override;
     bool isSetActivePenAndLayerOnTrigger() override;
     bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx)  override;
-    void doFinish(bool updateTB) override;
-    void createPreviewEntities(GapData *data, QList<RS_Entity *> &list, bool startPointNoSelected) const;
+    void doFinish() override;
+    void createPreviewEntities(const GapData *data, QList<RS_Entity *> &list, bool startPointNoSelected) const;
     void updateMouseButtonHints() override;
     RS2::CursorType doGetMouseCursor(int status) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
 };
 
-#endif // LC_ACTIONMODIFYLINEGAP_H
+#endif

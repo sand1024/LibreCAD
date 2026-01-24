@@ -26,11 +26,9 @@
 #include "rs_actionpolylinedel.h"
 
 #include "lc_actioncontext.h"
-#include "rs_debug.h"
 #include "rs_document.h"
 #include "rs_modification.h"
 #include "rs_polyline.h"
-#include "rs_preview.h"
 
 RS_ActionPolylineDel::RS_ActionPolylineDel(LC_ActionContext *actionContext)
     :LC_ActionPolylineDeleteBase("Delete node",actionContext, RS2::ActionPolylineDel){
@@ -51,7 +49,7 @@ void RS_ActionPolylineDel::drawSnapper() {
 }
 
 bool RS_ActionPolylineDel::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
-    auto createdPolyline = RS_Modification::deletePolylineNode(m_polylineToModify, m_vertexToDelete, ctx);
+    const auto createdPolyline = RS_Modification::deletePolylineNode(m_polylineToModify, m_vertexToDelete, ctx);
     if (createdPolyline != nullptr) {
         createdPolyline->setLayer(m_polylineToModify->getLayer());
         createdPolyline->setPen(m_polylineToModify->getPen(false));
@@ -72,10 +70,10 @@ void RS_ActionPolylineDel::doTriggerCompletion([[maybe_unused]]bool success) {
     }
 }
 
-void RS_ActionPolylineDel::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void RS_ActionPolylineDel::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     switch (status) {
         case SetPolyline: {
-            auto polyline = dynamic_cast<RS_Polyline *>(catchAndDescribe(e, RS2::ResolveNone));
+            const auto polyline = dynamic_cast<RS_Polyline *>(catchAndDescribe(e, RS2::ResolveNone));
             if (polyline != nullptr){
                 highlightHover(polyline);
             }
@@ -90,7 +88,7 @@ void RS_ActionPolylineDel::onMouseMoveEvent(int status, LC_MouseEvent *e) {
                 highlightHover(segment);
                 previewRefSelectablePoint(vertex);
                 LC_DocumentModificationBatch ctx;
-                auto modifiedPolyline = RS_Modification::deletePolylineNode(m_polylineToModify, vertex, ctx);
+                const auto modifiedPolyline = RS_Modification::deletePolylineNode(m_polylineToModify, vertex, ctx);
                 if (modifiedPolyline != nullptr) {
                     previewEntity(modifiedPolyline);
                 }
@@ -115,10 +113,10 @@ void RS_ActionPolylineDel::setPolylineToModify(RS_Entity* en) {
     }
 }
 
-void RS_ActionPolylineDel::onMouseLeftButtonRelease(int status, LC_MouseEvent *e){
+void RS_ActionPolylineDel::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e){
     switch (status) {
         case SetPolyline: {
-            auto en = catchEntityByEvent(e);
+            const auto en = catchEntityByEvent(e);
             setPolylineToModify(en);
             break;
         }

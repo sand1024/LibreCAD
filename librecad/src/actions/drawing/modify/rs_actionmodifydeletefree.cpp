@@ -34,82 +34,86 @@
 #include "rs_vector.h"
 
 struct RS_ActionModifyDeleteFree::ActionData {
-	RS_Vector v1;
-	RS_Vector v2;
+    RS_Vector v1;
+    RS_Vector v2;
 };
 
-RS_ActionModifyDeleteFree::RS_ActionModifyDeleteFree(LC_ActionContext *actionContext)
-        :RS_ActionInterface("Delete Entities Freehand", actionContext, RS2::ActionModifyDeleteFree)
-		, m_actionData(std::make_unique<ActionData>()){
-	init(0);
+RS_ActionModifyDeleteFree::RS_ActionModifyDeleteFree(LC_ActionContext* actionContext)
+    : RS_ActionInterface("Delete Entities Freehand", actionContext, RS2::ActionModifyDeleteFree),
+      m_actionData(std::make_unique<ActionData>()) {
+    RS_ActionModifyDeleteFree::init(0);
 }
 
 RS_ActionModifyDeleteFree::~RS_ActionModifyDeleteFree() = default;
 
-void RS_ActionModifyDeleteFree::init(int status) {
+void RS_ActionModifyDeleteFree::init(const int status) {
     RS_ActionInterface::init(status);
     m_polyline = nullptr;
-    m_entity1 = m_entity2 = nullptr;
+    m_entity1 = nullptr;
+    m_entity2 = nullptr;
     m_actionData.reset(new ActionData{});
-    RS_SnapMode *s = getSnapMode();
+    RS_SnapMode* s = getSnapMode();
     s->snapOnEntity = true;
 }
 
-void RS_ActionModifyDeleteFree::trigger(){
+void RS_ActionModifyDeleteFree::trigger() {
     if (m_entity1 != nullptr && m_entity2 != nullptr) {
-        const RS_EntityContainer *parent = m_entity2->getParent();
+        const RS_EntityContainer* parent = m_entity2->getParent();
         if (parent != nullptr) {
             if (parent->rtti() == RS2::EntityPolyline) {
                 if (parent->getId() == m_polyline->getId()) {
-
                     // splits up the polyline in the container:
-                    RS_Polyline *pl1 = nullptr;
-                    RS_Polyline *pl2 = nullptr;
+                    RS_Polyline* pl1 = nullptr;
+                    RS_Polyline* pl2 = nullptr;
 
                     // FIXME - TEMPORARAY TO COMPILE!!! Add property cut for polyline!
                     LC_DocumentModificationBatch ctx;
-                    RS_Modification::splitPolyline(m_polyline,
-                                    *m_entity1, m_actionData->v1,
-                                    *m_entity2, m_actionData->v2,
-                                    &pl1, &pl2, ctx);
+                    RS_Modification::splitPolyline(m_polyline, *m_entity1, m_actionData->v1, *m_entity2, m_actionData->v2, &pl1, &pl2, ctx);
 
                     // draws the new polylines on the screen:
                     redraw(RS2::RedrawDrawing);
 
                     init(0);
-                } else {
+                }
+                else {
                     commandMessage(tr("Entities not in the same polyline."));
                 }
-            } else {
+            }
+            else {
                 commandMessage(tr("Parent of second entity is not a polyline"));
             }
-        } else {
+        }
+        else {
             commandMessage(tr("Parent of second entity is nullptr"));
         }
-    } else {
+    }
+    else {
         commandMessage(tr("One of the chosen entities is nullptr"));
     }
 }
 
 // fixme - add constants for statuses
-void RS_ActionModifyDeleteFree::onMouseLeftButtonRelease(int status, QMouseEvent *e){
+void RS_ActionModifyDeleteFree::onMouseLeftButtonRelease(const int status, QMouseEvent* e) {
     switch (status) {
         case 0: {
             m_actionData->v1 = snapPoint(e);
             m_entity1 = getKeyEntity();
             if (m_entity1 != nullptr) {
-                RS_EntityContainer *parent = m_entity1->getParent();
+                RS_EntityContainer* parent = m_entity1->getParent();
                 if (parent != nullptr) {
                     if (parent->rtti() == RS2::EntityPolyline) {
-                        m_polyline = dynamic_cast<RS_Polyline *>(parent);
+                        m_polyline = dynamic_cast<RS_Polyline*>(parent);
                         setStatus(1);
-                    } else {
+                    }
+                    else {
                         commandMessage(tr("Parent of first entity is not a polyline"));
                     }
-                } else {
+                }
+                else {
                     commandMessage(tr("Parent of first entity is nullptr"));
                 }
-            } else {
+            }
+            else {
                 commandMessage(tr("First entity is nullptr"));
             }
             break;
@@ -120,7 +124,8 @@ void RS_ActionModifyDeleteFree::onMouseLeftButtonRelease(int status, QMouseEvent
 
             if (m_entity2 != nullptr) {
                 trigger();
-            } else {
+            }
+            else {
                 commandMessage(tr("Second entity is nullptr"));
             }
             break;
@@ -130,20 +135,20 @@ void RS_ActionModifyDeleteFree::onMouseLeftButtonRelease(int status, QMouseEvent
     }
 }
 
-void RS_ActionModifyDeleteFree::onMouseRightButtonRelease(int status, [[maybe_unused]] QMouseEvent *mouse_event){
+void RS_ActionModifyDeleteFree::onMouseRightButtonRelease(const int status, [[maybe_unused]] QMouseEvent* e) {
     initPrevious(status);
 }
 
 void RS_ActionModifyDeleteFree::updateMouseButtonHints() {
     switch (getStatus()) {
-    case 0:
-        updateMouseWidgetTRCancel(tr("Specify first break point on a polyline"));
-        break;
-    case 1:
-        updateMouseWidgetTRBack(tr("Specify second break point on the same polyline"));
-        break;
-    default:
-        updateMouseWidget();
-        break;
+        case 0:
+            updateMouseWidgetTRCancel(tr("Specify first break point on a polyline"));
+            break;
+        case 1:
+            updateMouseWidgetTRBack(tr("Specify second break point on the same polyline"));
+            break;
+        default:
+            updateMouseWidget();
+            break;
     }
 }

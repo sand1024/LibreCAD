@@ -25,10 +25,10 @@
 
 #include "lc_actiondrawcirclebase.h"
 
-class LC_ActionDrawEllipse1Point:public LC_ActionDrawCircleBase{
-Q_OBJECT
+class LC_ActionDrawEllipse1Point : public LC_ActionDrawCircleBase {
+    Q_OBJECT
 public:
-    LC_ActionDrawEllipse1Point(LC_ActionContext *actionContext, bool isArc);
+    LC_ActionDrawEllipse1Point(LC_ActionContext* actionContext, bool isArc);
     ~LC_ActionDrawEllipse1Point() override;
     void init(int status) override;
     double getMajorRadius() const;
@@ -45,8 +45,9 @@ public:
     bool isReversed() const override;
     void setReversed(bool b) const override;
     QStringList getAvailableCommands() override;
+
 protected:
-enum Status{
+    enum Status {
         SetPoint = InitialActionStatus,
         SetMajorAngle,
         SetAngle1,
@@ -56,13 +57,13 @@ enum Status{
     struct ActionData;
     std::unique_ptr<ActionData> m_actionData;
     void toSetPointStatus();
-    LC_ActionOptionsWidget *createOptionsWidget() override;
+    LC_ActionOptionsWidget* createOptionsWidget() override;
     void updateMouseButtonHints() override;
-    bool doProcessCommand(int status, const QString &command) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    bool doProcessCommand(int status, const QString& command) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector& pos) override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;
     RS_Vector getMajorP() const;
@@ -70,4 +71,4 @@ enum Status{
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
 };
 
-#endif // LC_ACTIONDRAWELLIPSE1POINT_H
+#endif

@@ -24,21 +24,22 @@
 
 #include "rs_ellipse.h"
 
-LC_ActionDrawCircleBase::LC_ActionDrawCircleBase(const char *name, LC_ActionContext *actionContext, RS2::ActionType type)
-    :LC_SingleEntityCreationAction(name,actionContext, type){}
+LC_ActionDrawCircleBase::LC_ActionDrawCircleBase(const char* name, LC_ActionContext* actionContext, const RS2::ActionType type)
+    : LC_SingleEntityCreationAction(name, actionContext, type) {
+}
 
 LC_ActionDrawCircleBase::~LC_ActionDrawCircleBase() = default;
 
-void LC_ActionDrawCircleBase::onMouseLeftButtonRelease([[maybe_unused]]int status, LC_MouseEvent *e) {
+void LC_ActionDrawCircleBase::onMouseLeftButtonRelease([[maybe_unused]] int status, const LC_MouseEvent* e) {
     fireCoordinateEventForSnap(e);
 }
 
-void LC_ActionDrawCircleBase::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void LC_ActionDrawCircleBase::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     deletePreview();
     initPrevious(status);
 }
 
-void LC_ActionDrawCircleBase::init(int status) {
+void LC_ActionDrawCircleBase::init(const int status) {
     reset(); // fixme - review implmentation in inherited actions
     m_moveRelPointAtCenterAfterTrigger = true; // todo - read from options?
     RS_PreviewActionInterface::init(status);
@@ -46,23 +47,23 @@ void LC_ActionDrawCircleBase::init(int status) {
 
 // fixme - resume method - re-read from options
 
- RS2::CursorType LC_ActionDrawCircleBase::doGetMouseCursor([[maybe_unused]] int status){
+RS2::CursorType LC_ActionDrawCircleBase::doGetMouseCursor([[maybe_unused]] int status) {
     return RS2::CadCursor;
 }
 
-void LC_ActionDrawCircleBase::reset(){
-
+void LC_ActionDrawCircleBase::reset() {
 }
 
-void LC_ActionDrawCircleBase::previewEllipseReferencePoints(const RS_Ellipse *ellipse, bool drawAxises, bool allPointsNotSelectable, RS_Vector mouse) const {
+void LC_ActionDrawCircleBase::previewEllipseReferencePoints(const RS_Ellipse* ellipse, const bool drawAxises,
+                                                            const bool allPointsNotSelectable, const RS_Vector& mouse) const {
     if (m_showRefEntitiesOnPreview) {
-        RS_Vector center = ellipse->getCenter();
-        RS_Vector majorP = ellipse->getMajorP();
-        const RS_Vector &major1 = center - majorP;
-        const RS_Vector &major2 = center + majorP;
-        const RS_Vector &minor1 = ellipse->getMinorPoint();
-        const RS_Vector &minor2 = center - RS_Vector(-majorP.y, majorP.x) * ellipse->getRatio();
-        if (allPointsNotSelectable){
+        const RS_Vector center = ellipse->getCenter();
+        const RS_Vector majorP = ellipse->getMajorP();
+        const RS_Vector& major1 = center - majorP;
+        const RS_Vector& major2 = center + majorP;
+        const RS_Vector& minor1 = ellipse->getMinorPoint();
+        const RS_Vector& minor2 = center - RS_Vector(-majorP.y, majorP.x) * ellipse->getRatio();
+        if (allPointsNotSelectable) {
             previewRefPoint(minor1);
             previewRefPoint(minor2);
         }
@@ -72,13 +73,13 @@ void LC_ActionDrawCircleBase::previewEllipseReferencePoints(const RS_Ellipse *el
         }
         previewRefPoint(center);
 
-
         if (drawAxises) {
             if (mouse.valid) {
                 RS_Vector minor;
                 if (minor1.distanceTo(mouse) < minor2.distanceTo(mouse)) {
                     minor = minor1;
-                } else {
+                }
+                else {
                     minor = minor2;
                 }
 
@@ -86,15 +87,16 @@ void LC_ActionDrawCircleBase::previewEllipseReferencePoints(const RS_Ellipse *el
                 previewRefPoint(major2);
 
                 previewRefLine(center, minor);
-            } else {
+            }
+            else {
                 previewRefLine(major1, major2);
                 previewRefLine(minor1, minor2);
                 previewRefSelectablePoint(major1);
                 previewRefSelectablePoint(major2);
             }
-
-        } else {
-            if (allPointsNotSelectable){
+        }
+        else {
+            if (allPointsNotSelectable) {
                 previewRefPoint(major1);
                 previewRefPoint(major2);
             }

@@ -25,9 +25,9 @@
 **********************************************************************/
 #include "rs_actiondrawlinerectangle.h"
 
-#include "rs_document.h"
 #include "lc_actioninfomessagebuilder.h"
 #include "lc_cursoroverlayinfo.h"
+#include "rs_document.h"
 #include "rs_polyline.h"
 #include "rs_preview.h"
 
@@ -53,8 +53,8 @@ RS_Entity* RS_ActionDrawLineRectangle::doTriggerCreateEntity() {
     auto *polyline = new RS_Polyline(m_document);
 
     // create and add rectangle:
-    RS_Vector worldCorner1 = m_actionData->corner1;
-    RS_Vector worldCorner3 = m_actionData->corner2;
+    const RS_Vector worldCorner1 = m_actionData->corner1;
+    const RS_Vector worldCorner3 = m_actionData->corner2;
 
     RS_Vector worldCorner2,worldCorner4;
     calcRectCorners(worldCorner1, worldCorner3, worldCorner2, worldCorner4);
@@ -74,8 +74,8 @@ RS_Entity* RS_ActionDrawLineRectangle::doTriggerCreateEntity() {
 void RS_ActionDrawLineRectangle::doTriggerCompletion([[maybe_unused]]bool success) {
 }
 
-void RS_ActionDrawLineRectangle::onMouseMoveEvent(int status, LC_MouseEvent *e) {
-    RS_Vector mouse = e->snapPoint;
+void RS_ActionDrawLineRectangle::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
+    const RS_Vector mouse = e->snapPoint;
     switch (status){
         case SetCorner1:{
             trySnapToRelZeroCoordinateEvent(e);
@@ -85,8 +85,8 @@ void RS_ActionDrawLineRectangle::onMouseMoveEvent(int status, LC_MouseEvent *e) 
             if (m_actionData->corner1.valid){
                 m_actionData->corner2 = mouse;
 
-                RS_Vector worldCorner1 = m_actionData->corner1;
-                RS_Vector worldCorner3 = m_actionData->corner2;
+                const RS_Vector worldCorner1 = m_actionData->corner1;
+                const RS_Vector worldCorner3 = m_actionData->corner2;
 
                 RS_Vector worldCorner2,worldCorner4;
                 calcRectCorners(worldCorner1, worldCorner3, worldCorner2, worldCorner4);
@@ -112,25 +112,25 @@ void RS_ActionDrawLineRectangle::onMouseMoveEvent(int status, LC_MouseEvent *e) 
     }
 }
 
-void RS_ActionDrawLineRectangle::onMouseLeftButtonRelease([[maybe_unused]]int status, LC_MouseEvent *e) {
+void RS_ActionDrawLineRectangle::onMouseLeftButtonRelease([[maybe_unused]]int status, const LC_MouseEvent* e) {
     fireCoordinateEventForSnap(e);
 }
 
-void RS_ActionDrawLineRectangle::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionDrawLineRectangle::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     deletePreview();
     initPrevious(status);
 }
 
-void RS_ActionDrawLineRectangle::onCoordinateEvent(int status, [[maybe_unused]] bool isZero, const RS_Vector &mouse) {
+void RS_ActionDrawLineRectangle::onCoordinateEvent(const int status, [[maybe_unused]] bool isZero, const RS_Vector &coord) {
     switch (status) {
         case SetCorner1: {
-            m_actionData->corner1 = mouse;
-            moveRelativeZero(mouse);
+            m_actionData->corner1 = coord;
+            moveRelativeZero(coord);
             setStatus(SetCorner2);
             break;
         }
         case SetCorner2: {
-            m_actionData->corner2 = mouse;
+            m_actionData->corner2 = coord;
             trigger();
             setStatus(SetCorner1);
             break;

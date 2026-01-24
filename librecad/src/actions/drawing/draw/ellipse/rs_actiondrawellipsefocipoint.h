@@ -30,31 +30,33 @@
  *
  * @author Dongxu Li
  */
-class RS_ActionDrawEllipseFociPoint:public LC_ActionDrawCircleBase {
+class RS_ActionDrawEllipseFociPoint : public LC_ActionDrawCircleBase {
     Q_OBJECT
 public:
-    RS_ActionDrawEllipseFociPoint(LC_ActionContext *actionContext);
+    explicit RS_ActionDrawEllipseFociPoint(LC_ActionContext* actionContext);
     ~RS_ActionDrawEllipseFociPoint() override;
     void init(int status) override;
     QStringList getAvailableCommands() override;
+
 protected:
     /**
  * Action States.
  */
     enum Status {
-        SetFocus1  = InitialActionStatus,   //  Setting the first focus.  */
-        SetFocus2,    //  Setting the second focus. */
-        SetPoint    //  Setting a point on ellipse
+        SetFocus1 = InitialActionStatus, //  Setting the first focus.  */
+        SetFocus2, //  Setting the second focus. */
+        SetPoint //  Setting a point on ellipse
     };
+
     struct ActionData;
     std::unique_ptr<ActionData> m_actionData;
     double findRatio() const;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
-    bool doProcessCommand(int status, const QString &command) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
+    bool doProcessCommand(int status, const QString& command) override;
     QString getAdditionalHelpMessage() override;
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector& coord) override;
     void updateMouseButtonHints() override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;

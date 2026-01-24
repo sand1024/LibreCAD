@@ -35,19 +35,19 @@ class LC_ActionSplineFromPolyline :public LC_UndoableDocumentModificationAction{
 public:
     explicit LC_ActionSplineFromPolyline(LC_ActionContext *actionContext);
     ~LC_ActionSplineFromPolyline() override = default;
-    bool isUseCurrentAttributes() const {return m_useCurrentAttributes;};
-    void setUseCurrentAttributes(bool b) {m_useCurrentAttributes  = b;};
-    bool isUseCurrentLayer() const {return m_useCurrentLayer;};
-    void setUseCurrentLayer(bool b) {m_useCurrentLayer = b;}
-    bool isKeepOriginals() const {return m_keepOriginals;};
-    void setKeepOriginals(bool b) {m_keepOriginals = b;}
-    void setSplineDegree(int degree){m_splineDegree = degree;};
+    bool isUseCurrentAttributes() const {return m_useCurrentAttributes;}
+    void setUseCurrentAttributes(const bool b) {m_useCurrentAttributes  = b;}
+    bool isUseCurrentLayer() const {return m_useCurrentLayer;}
+    void setUseCurrentLayer(const bool b) {m_useCurrentLayer = b;}
+    bool isKeepOriginals() const {return m_keepOriginals;}
+    void setKeepOriginals(const bool b) {m_keepOriginals = b;}
+    void setSplineDegree(const int degree){m_splineDegree = degree;}
     int getSplineDegree() const {return m_splineDegree;}
     int getSegmentPoints() const {return m_segmentMiddlePoints;}
-    void setSegmentPoints(int val){m_segmentMiddlePoints = val;}
-    void setUseFitPoints(bool val){m_vertexesAreFitPoints = val;}
+    void setSegmentPoints(const int val){m_segmentMiddlePoints = val;}
+    void setUseFitPoints(const bool val){m_vertexesAreFitPoints = val;}
     bool isUseFitPoints() const {return m_vertexesAreFitPoints;}
-    void finish(bool updateTB) override;
+    void finish() override;
 protected:
     enum State {
         SetEntity = InitialActionStatus
@@ -64,9 +64,9 @@ protected:
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     RS_Entity* createSplineForPolyline(RS_Entity *p) const;
     void fillControlPointsListFromPolyline(const RS_Polyline *polyline, std::vector<RS_Vector> &controlPoints) const;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void setEntityToModify(RS_Entity* polyline);
     RS2::CursorType doGetMouseCursor(int status) override;
     void updateMouseButtonHints() override;
@@ -76,4 +76,4 @@ protected:
     void doTriggerSelections(const LC_DocumentModificationBatch& ctx) override;
 };
 
-#endif // LC_ACTIONSPLINEFROMPOLYLINE_H
+#endif

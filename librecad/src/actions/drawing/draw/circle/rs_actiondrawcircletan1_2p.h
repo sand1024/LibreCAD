@@ -33,41 +33,43 @@ struct RS_CircleData;
  *
  * @author Dongxu Li
  */
-class RS_ActionDrawCircleTan1_2P:public LC_ActionDrawCircleBase {
+class RS_ActionDrawCircleTan1_2P : public LC_ActionDrawCircleBase {
     Q_OBJECT
 public:
-    RS_ActionDrawCircleTan1_2P(LC_ActionContext *actionContext);
+    explicit RS_ActionDrawCircleTan1_2P(LC_ActionContext* actionContext);
     ~RS_ActionDrawCircleTan1_2P() override;
     void init(int status) override;
     bool getCenters() const;
     bool preparePreview() const;
-    void finish(bool updateTB) override;
+    void finish() override;
     double getRadius() const;
+
 protected:
     /**
      * Action States.
      */
     enum Status {
         SetCircle1 = InitialActionStatus, //  Setting the First Circle.  */
-        SetPoint1 = 1, //  Setting the First Point.  */
-        SetPoint2 = 2, //  Setting the Second Point.  */
-        SetCenter //  Setting the internal or external tangent circle's center.  */
+        SetPoint1  = 1, //  Setting the First Point.  */
+        SetPoint2  = 2, //  Setting the Second Point.  */
+        SetCenter  = 3 //  Setting the internal or external tangent circle's center.  */
     };
+
     struct ActionData;
     std::unique_ptr<ActionData> m_actionData;
-    RS_AtomicEntity *m_baseEntity = nullptr;
+    RS_AtomicEntity* m_baseEntity = nullptr;
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     void doInitialInit() override;
-    RS_Entity *catchTangentEntity(LC_MouseEvent *e, bool forPreview);
+    RS_Entity* catchTangentEntity(const LC_MouseEvent* e, bool forPreview) const;
     void setCircleOne(RS_Entity* en);
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
-    RS_Vector getTangentPoint(RS_Vector &creatingCircleCenter, bool fromOriginalCircle) const;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector& coord) override;
+    RS_Vector getTangentPoint(const RS_Vector& creatingCircleCenter, bool fromOriginalCircle) const;
     void updateMouseButtonHints() override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
 };
 #endif

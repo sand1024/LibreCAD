@@ -38,9 +38,9 @@ protected:
     LC_ActionOptionsWidget *createOptionsWidget() override;
     RS2::CursorType doGetMouseCursor(int status) override;
     void updateMouseButtonHints() override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     bool doProcessCommand(int status, const QString &command) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
 
@@ -69,7 +69,7 @@ protected:
 
     int m_mainStatus = 0;
     void restoreMainStatus(){setStatus(m_mainStatus);}
-    void prepareLine(LineInfo &info, RS_Entity* ent, bool alternate) const;
+    void prepareLine(LineInfo &info, const RS_Entity* ent, bool alternate) const;
     RS2::LineType getLineTypeForCenterLine() const;
     void setupCenterlinePenLayer(RS_Line* line) const;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
@@ -78,4 +78,4 @@ protected:
     void doTriggerCompletion(bool success) override;
 };
 
-#endif // LC_ACTIONDRAWMIDLINE_H
+#endif

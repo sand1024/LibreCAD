@@ -57,7 +57,7 @@ protected:
     RS2::CursorType doGetMouseCursorSelected(int status) override;
     void doSelectEntity(RS_Entity* entityToSelect, bool selectContour) const override;
     bool isEntityAllowedToSelect(RS_Entity *ent) const override;
-    bool doTriggerModifications(LC_DocumentModificationBatch& modificationData) override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
     void doTriggerCompletion(bool success) override;
     void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
 };

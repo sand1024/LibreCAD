@@ -24,7 +24,6 @@
 **
 **********************************************************************/
 
-
 #include "rs_actiondrawcircle2p.h"
 
 #include "rs_circle.h"
@@ -42,11 +41,10 @@ struct RS_ActionDrawCircle2P::Points {
     RS_Vector point2;
 };
 
-RS_ActionDrawCircle2P::RS_ActionDrawCircle2P(LC_ActionContext *actionContext)
-    :LC_ActionDrawCircleBase("Draw circles",actionContext, RS2::ActionDrawCircle2P)
-    , m_circleData(new RS_CircleData())
-    , m_actionData(std::make_unique<Points>()){
-    reset();
+RS_ActionDrawCircle2P::RS_ActionDrawCircle2P(LC_ActionContext* actionContext)
+    : LC_ActionDrawCircleBase("Draw circles", actionContext, RS2::ActionDrawCircle2P), m_circleData{std::make_unique<RS_CircleData>()},
+      m_actionData{std::make_unique<Points>()} {
+    RS_ActionDrawCircle2P::reset();
 }
 
 RS_ActionDrawCircle2P::~RS_ActionDrawCircle2P() = default;
@@ -59,9 +57,9 @@ void RS_ActionDrawCircle2P::reset() {
 
 RS_Entity* RS_ActionDrawCircle2P::doTriggerCreateEntity() {
     preparePreview();
-    if (m_circleData->isValid()){
-        auto *circle = new RS_Circle(m_document,*m_circleData);
-        if (m_moveRelPointAtCenterAfterTrigger){
+    if (m_circleData->isValid()) {
+        auto* circle = new RS_Circle(m_document, *m_circleData);
+        if (m_moveRelPointAtCenterAfterTrigger) {
             moveRelativeZero(m_circleData->center);
         }
         return circle;
@@ -70,7 +68,7 @@ RS_Entity* RS_ActionDrawCircle2P::doTriggerCreateEntity() {
     return nullptr;
 }
 
-void RS_ActionDrawCircle2P::doTriggerCompletion([[maybe_unused]]bool success) {
+void RS_ActionDrawCircle2P::doTriggerCompletion([[maybe_unused]] bool success) {
     setStatus(SetPoint1);
     reset();
 }
@@ -79,14 +77,14 @@ void RS_ActionDrawCircle2P::preparePreview() {
     m_circleData.reset(new RS_CircleData{});
     if (m_actionData->point1.valid && m_actionData->point2.valid) {
         RS_Circle circle(nullptr, *m_circleData);
-        bool suc = circle.createFrom2P(m_actionData->point1, m_actionData->point2);
+        const bool suc = circle.createFrom2P(m_actionData->point1, m_actionData->point2);
         if (suc) {
             m_circleData.reset(new RS_CircleData(circle.getData()));
         }
     }
 }
 
-void RS_ActionDrawCircle2P::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void RS_ActionDrawCircle2P::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     RS_Vector mouse = e->snapPoint;
     switch (status) {
         case SetPoint1: {
@@ -98,7 +96,7 @@ void RS_ActionDrawCircle2P::onMouseMoveEvent(int status, LC_MouseEvent *e) {
             mouse = getSnapAngleAwarePoint(e, m_actionData->point1, mouse, true);
             m_actionData->point2 = mouse;
             preparePreview();
-            if (m_circleData->isValid()){
+            if (m_circleData->isValid()) {
                 previewToCreateCircle(*m_circleData);
                 if (m_showRefEntitiesOnPreview) {
                     previewRefPoint(m_circleData->center);
@@ -115,30 +113,30 @@ void RS_ActionDrawCircle2P::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     }
 }
 
-void RS_ActionDrawCircle2P::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
+void RS_ActionDrawCircle2P::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     RS_Vector coord = e->snapPoint;
-    if (status == SetPoint2){
+    if (status == SetPoint2) {
         coord = getSnapAngleAwarePoint(e, m_actionData->point1, coord);
     }
     fireCoordinateEvent(coord);
 }
 
-void RS_ActionDrawCircle2P::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionDrawCircle2P::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     deletePreview();
     initPrevious(status);
 }
 
-void RS_ActionDrawCircle2P::onCoordinateEvent(int status, [[maybe_unused]] bool isZero, const RS_Vector &mouse) {
+void RS_ActionDrawCircle2P::onCoordinateEvent(const int status, [[maybe_unused]] bool isZero, const RS_Vector& coord) {
     switch (status) {
         case SetPoint1: {
-            m_actionData->point1 = mouse;
-            moveRelativeZero(mouse);
+            m_actionData->point1 = coord;
+            moveRelativeZero(coord);
             setStatus(SetPoint2);
             break;
         }
         case SetPoint2: {
-            m_actionData->point2 = mouse;
-            moveRelativeZero(mouse);
+            m_actionData->point2 = coord;
+            moveRelativeZero(coord);
             trigger();
             break;
         }

@@ -29,8 +29,6 @@
 #include "lc_actioninfomessagebuilder.h"
 #include "lc_linemath.h"
 #include "rs_atomicentity.h"
-#include "rs_commandevent.h"
-#include "rs_debug.h"
 #include "rs_document.h"
 #include "rs_entity.h"
 #include "rs_modification.h"
@@ -41,7 +39,7 @@ RS_ActionModifyCut::RS_ActionModifyCut(LC_ActionContext *actionContext)
 
 RS_ActionModifyCut::~RS_ActionModifyCut() = default;
 
-void RS_ActionModifyCut::init(int status){
+void RS_ActionModifyCut::init(const int status){
     RS_PreviewActionInterface::init(status);
 }
 
@@ -68,7 +66,7 @@ bool RS_ActionModifyCut::doTriggerModifications(LC_DocumentModificationBatch& ct
     return false;
 }
 
-void RS_ActionModifyCut::doTriggerCompletion(bool success) {
+void RS_ActionModifyCut::doTriggerCompletion(const bool success) {
     if (success) {
         m_cutEntity = nullptr;
         *m_cutCoord = RS_Vector(false);
@@ -76,12 +74,12 @@ void RS_ActionModifyCut::doTriggerCompletion(bool success) {
     }
 }
 
-void RS_ActionModifyCut::finish(bool updateTB){
+void RS_ActionModifyCut::finish(){
     m_cutEntity = nullptr;
-    RS_PreviewActionInterface::finish(updateTB);
+    RS_PreviewActionInterface::finish();
 }
 
-void RS_ActionModifyCut::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void RS_ActionModifyCut::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     const RS_Vector snap = e->snapPoint;
     switch (status) {
         case ChooseCutEntity: {
@@ -111,7 +109,7 @@ void RS_ActionModifyCut::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     }
 }
 
-void RS_ActionModifyCut::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
+void RS_ActionModifyCut::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     switch (status) {
         case ChooseCutEntity: {
             m_cutEntity = catchEntityByEvent(e);
@@ -119,8 +117,9 @@ void RS_ActionModifyCut::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) 
                 commandMessage(tr("No Entity found."));
             } else if (m_cutEntity->trimmable()){
                 setStatus(SetCutCoord);
-            } else
+            } else {
                 commandMessage(tr("Entity must be a line, arc, circle, ellipse or interpolation spline."));
+            }
             break;
         }
         case SetCutCoord: {
@@ -140,7 +139,7 @@ void RS_ActionModifyCut::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) 
     }
 }
 
-void RS_ActionModifyCut::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionModifyCut::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     initPrevious(status);
 }
 
@@ -158,7 +157,7 @@ void RS_ActionModifyCut::updateMouseButtonHints(){
     }
 }
 
-RS2::CursorType RS_ActionModifyCut::doGetMouseCursor([[maybe_unused]] int status){
+RS2::CursorType RS_ActionModifyCut::doGetMouseCursor([[maybe_unused]] const int status){
     switch (status) {
         case ChooseCutEntity:
             return RS2::SelectCursor;

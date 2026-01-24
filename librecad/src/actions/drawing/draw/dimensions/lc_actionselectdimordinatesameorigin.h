@@ -32,7 +32,7 @@ public:
     explicit LC_ActionSelectDimOrdinateSameOrigin(LC_ActionContext* actionContext);
     ~LC_ActionSelectDimOrdinateSameOrigin() override;
 
-    static QList<RS_Entity*> collectOrdinateDimensionsWithSameBase(LC_DimOrdinate* dimOrdinate, RS_Document* document);
+    static QList<RS_Entity*> collectOrdinateDimensionsWithSameBase(const LC_DimOrdinate* dimOrdinate, const RS_Document* document);
 
 protected:
     void selectOrdinatesWithTheSameBase() const;
@@ -41,4 +41,4 @@ protected:
     QString doGetMouseButtonHint() override;
 };
 
-#endif // LC_ACTIONSELECTDIMORDINATESAMEORIGIN_H
+#endif

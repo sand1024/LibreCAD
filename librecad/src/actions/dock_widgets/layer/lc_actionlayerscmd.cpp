@@ -26,7 +26,7 @@
 #include "rs_graphic.h"
 #include "rs_layer.h"
 
-LC_ActionLayersCmd::LC_ActionLayersCmd(LC_ActionContext* actionContext, RS2::ActionType actionType)
+LC_ActionLayersCmd::LC_ActionLayersCmd(LC_ActionContext* actionContext, const RS2::ActionType actionType)
     :RS_ActionInterface("LayerCommand", actionContext, actionType){
 }
 
@@ -45,8 +45,8 @@ void LC_ActionLayersCmd::trigger() {
         default:
             break;
     }
-    m_layerName = "";
-    finish(true);
+    m_layerName.clear();
+    finish();
 }
 
 void LC_ActionLayersCmd::updateMouseButtonHints() {
@@ -71,7 +71,7 @@ void LC_ActionLayersCmd::activateLayer() const {
 
 void LC_ActionLayersCmd::createLayer() const {
     if (m_graphic != nullptr) {
-        auto layer = new RS_Layer(m_layerName);
+        const auto layer = new RS_Layer(m_layerName);
         m_graphic->addLayer(layer);
         m_graphic->activateLayer(m_layerName, true);
     }

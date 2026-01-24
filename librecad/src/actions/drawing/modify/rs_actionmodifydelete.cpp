@@ -25,8 +25,8 @@
 **********************************************************************/
 
 #include "rs_actionmodifydelete.h"
+
 #include "rs_document.h"
-#include "rs_modification.h"
 
 RS_ActionModifyDelete::RS_ActionModifyDelete(LC_ActionContext *actionContext)
     :LC_ActionPreSelectionAwareBase("Delete Entities", actionContext, RS2::ActionModifyDelete) {

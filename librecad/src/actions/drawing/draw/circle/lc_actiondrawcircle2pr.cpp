@@ -25,72 +25,71 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "rs_document.h"
 #include "rs_preview.h"
 
-struct LC_ActionDrawCircle2PR::Points{
-	RS_Vector point1;
-	RS_Vector point2;
+struct LC_ActionDrawCircle2PR::Points {
+    RS_Vector point1;
+    RS_Vector point2;
 };
 
-LC_ActionDrawCircle2PR::LC_ActionDrawCircle2PR(LC_ActionContext *actionContext)
-    :RS_ActionDrawCircleCR(actionContext)
-    , m_actionData(std::make_unique<Points>()){
-    m_actionType=RS2::ActionDrawCircle2PR;
-    reset();
+LC_ActionDrawCircle2PR::LC_ActionDrawCircle2PR(LC_ActionContext* actionContext)
+    : RS_ActionDrawCircleCR(actionContext), m_actionData(std::make_unique<Points>()) {
+    m_actionType = RS2::ActionDrawCircle2PR;
+    LC_ActionDrawCircle2PR::reset();
 }
 
 LC_ActionDrawCircle2PR::~LC_ActionDrawCircle2PR() = default;
 
-void LC_ActionDrawCircle2PR::reset(){
+void LC_ActionDrawCircle2PR::reset() {
     deletePreview();
-    double radius = m_circleData->radius;
+    const double radius = m_circleData->radius;
     *m_circleData = {};
     m_circleData->radius = radius;
     m_actionData->point1 = {};
     m_actionData->point2 = {};
 }
 
-void LC_ActionDrawCircle2PR::init(int status){
+void LC_ActionDrawCircle2PR::init(const int status) {
     RS_ActionDrawCircleCR::init(status);
-    if (status <= 0){
+    if (status <= 0) {
         reset();
     }
 }
 
 RS_Entity* LC_ActionDrawCircle2PR::doTriggerCreateEntity() {
-    auto *circle = new RS_Circle(m_document, *m_circleData);
-    if (m_moveRelPointAtCenterAfterTrigger){
+    auto* circle = new RS_Circle(m_document, *m_circleData);
+    if (m_moveRelPointAtCenterAfterTrigger) {
         moveRelativeZero(circle->getCenter());
     }
     return circle;
 }
 
-void LC_ActionDrawCircle2PR::doTriggerCompletion([[maybe_unused]]bool success) {
+void LC_ActionDrawCircle2PR::doTriggerCompletion([[maybe_unused]] bool success) {
     setStatus(SetPoint1);
     reset();
 }
 
-bool LC_ActionDrawCircle2PR::preparePreview(const RS_Vector &mouse, RS_Vector& altCenter) const {
+bool LC_ActionDrawCircle2PR::preparePreview(const RS_Vector& mouse, RS_Vector& altCenter) const {
     const RS_Vector vp = (m_actionData->point1 + m_actionData->point2) * 0.5;
-    double const angle = m_actionData->point1.angleTo(m_actionData->point2) + 0.5 * M_PI;
-    double const &r0 = m_circleData->radius;
-    double const r = sqrt(r0 * r0 - 0.25 * m_actionData->point1.squaredTo(m_actionData->point2));
+    const double angle = m_actionData->point1.angleTo(m_actionData->point2) + 0.5 * M_PI;
+    const double& r0 = m_circleData->radius;
+    const double r = sqrt(r0 * r0 - 0.25 * m_actionData->point1.squaredTo(m_actionData->point2));
     const RS_Vector dvp = RS_Vector(angle) * r;
-    const RS_Vector &center1 = vp + dvp;
-    const RS_Vector &center2 = vp - dvp;
+    const RS_Vector& center1 = vp + dvp;
+    const RS_Vector& center2 = vp - dvp;
 
-    if (center1.squaredTo(center2) < RS_TOLERANCE){
-//no need to select center, as only one solution possible
+    if (center1.squaredTo(center2) < RS_TOLERANCE) {
+        //no need to select center, as only one solution possible
         m_circleData->center = vp;
         return false;
     }
 
     const double ds = mouse.squaredTo(center1) - mouse.squaredTo(center2);
 
-    if (ds < 0.){
+    if (ds < 0.) {
         m_circleData->center = center1;
         altCenter = center2;
         return true;
     }
-    if (ds > 0.){
+    if (ds > 0.) {
         m_circleData->center = center2;
         altCenter = center1;
         return true;
@@ -99,8 +98,7 @@ bool LC_ActionDrawCircle2PR::preparePreview(const RS_Vector &mouse, RS_Vector& a
     return false;
 }
 
-
-void LC_ActionDrawCircle2PR::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void LC_ActionDrawCircle2PR::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     RS_Vector mouse = e->snapPoint;
     switch (status) {
         case SetPoint1:
@@ -121,8 +119,8 @@ void LC_ActionDrawCircle2PR::onMouseMoveEvent(int status, LC_MouseEvent *e) {
             }
 
             RS_Vector altCenter;
-            if (preparePreview(mouse, altCenter)){
-                if (m_circleData->center.valid){
+            if (preparePreview(mouse, altCenter)) {
+                if (m_circleData->center.valid) {
                     previewCircle(*m_circleData);
                     previewRefSelectablePoint(m_circleData->center);
                     previewRefSelectablePoint(altCenter);
@@ -133,17 +131,17 @@ void LC_ActionDrawCircle2PR::onMouseMoveEvent(int status, LC_MouseEvent *e) {
         case SelectCenter: {
             deleteSnapper();
             RS_Vector altCenter;
-            if (preparePreview(mouse, altCenter)){
+            if (preparePreview(mouse, altCenter)) {
                 // todo - review, what for we're checking for circle there?
                 bool existing = false;
-                for (auto p: *m_preview) {
-                    if (isCircle(p)){
-                        if (dynamic_cast<RS_Circle *>(p)->getData() == *m_circleData) {
+                for (const auto p : *m_preview) {
+                    if (isCircle(p)) {
+                        if (static_cast<RS_Circle*>(p)->getData() == *m_circleData) {
                             existing = true;
                         }
                     }
                 }
-                if (!existing){
+                if (!existing) {
                     previewToCreateCircle(*m_circleData);
                     previewRefSelectablePoint(m_circleData->center);
                     previewRefSelectablePoint(altCenter);
@@ -153,56 +151,60 @@ void LC_ActionDrawCircle2PR::onMouseMoveEvent(int status, LC_MouseEvent *e) {
                         previewRefLine(m_actionData->point1, m_actionData->point2);
                     }
                 }
-            } else {
-                if (m_circleData->isValid()){
+            }
+            else {
+                if (m_circleData->isValid()) {
                     trigger();
                 }
             }
+            break;
         }
         default:
-            break;;
+            break;
     }
 }
 
-void LC_ActionDrawCircle2PR::onMouseLeftButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void LC_ActionDrawCircle2PR::onMouseLeftButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     RS_Vector coord = e->snapPoint;
-    if (status == SetPoint2){
+    if (status == SetPoint2) {
         coord = getSnapAngleAwarePoint(e, m_actionData->point1, coord);
     }
-    else if (status == SelectCenter){
+    else if (status == SelectCenter) {
         invalidateSnapSpot();
     }
     fireCoordinateEvent(coord);
 }
 
-void LC_ActionDrawCircle2PR::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void LC_ActionDrawCircle2PR::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     deletePreview();
     initPrevious(status);
 }
 
-void LC_ActionDrawCircle2PR::onCoordinateEvent(int status, [[maybe_unused]] bool isZero, const RS_Vector &mouse) {
+void LC_ActionDrawCircle2PR::onCoordinateEvent(const int status, [[maybe_unused]] bool isZero, const RS_Vector& coord) {
     switch (status) {
         case SetPoint1: {
-            m_actionData->point1 = mouse;
-            moveRelativeZero(mouse);
+            m_actionData->point1 = coord;
+            moveRelativeZero(coord);
             setStatus(SetPoint2);
             break;
         }
         case SetPoint2: {
-            double distance = mouse.distanceTo(m_actionData->point1);
-            if (distance <= 2. * m_circleData->radius){
-                m_actionData->point2 = mouse;
-                moveRelativeZero(mouse);
+            const double distance = coord.distanceTo(m_actionData->point1);
+            if (distance <= 2. * m_circleData->radius) {
+                m_actionData->point2 = coord;
+                moveRelativeZero(coord);
                 setStatus(SelectCenter);
-            } else {
-                commandMessage(tr("radius=%1 is too small for points selected\ndistance between points=%2 is larger than diameter=%3").
+            }
+            else {
+                commandMessage(
+                    tr("radius=%1 is too small for points selected\ndistance between points=%2 is larger than diameter=%3").
                     arg(m_circleData->radius).arg(distance).arg(2. * m_circleData->radius));
             }
             break;
         }
         case SelectCenter: {
             RS_Vector altCenter;
-            bool showPreview = preparePreview(mouse, altCenter);
+            const bool showPreview = preparePreview(coord, altCenter);
             if (showPreview || m_circleData->isValid()) {
                 trigger();
             }
@@ -216,17 +218,17 @@ void LC_ActionDrawCircle2PR::onCoordinateEvent(int status, [[maybe_unused]] bool
     }
 }
 
-bool LC_ActionDrawCircle2PR::doProcessCommand([[maybe_unused]]int status, [[maybe_unused]] const QString& c){
+bool LC_ActionDrawCircle2PR::doProcessCommand([[maybe_unused]] int status, [[maybe_unused]] const QString& c) {
     // fixme - support commands
     return false;
 }
 
-QStringList LC_ActionDrawCircle2PR::getAvailableCommands(){
+QStringList LC_ActionDrawCircle2PR::getAvailableCommands() {
     QStringList cmd;
     return cmd;
 }
 
-void LC_ActionDrawCircle2PR::updateMouseButtonHints(){
+void LC_ActionDrawCircle2PR::updateMouseButtonHints() {
     switch (getStatus()) {
         case SetPoint1:
             updateMouseWidgetTRCancel(tr("Specify first point"), MOD_SHIFT_RELATIVE_ZERO);

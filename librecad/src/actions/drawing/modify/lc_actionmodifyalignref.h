@@ -30,7 +30,7 @@
 class LC_ActionModifyAlignRef: public LC_ActionModifyBase{
     Q_OBJECT
 public:
-    LC_ActionModifyAlignRef(LC_ActionContext *actionContext);
+    explicit LC_ActionModifyAlignRef(LC_ActionContext *actionContext);
     void setScale(bool val);
     bool isScale() const;
 protected:
@@ -54,9 +54,9 @@ protected:
     LC_ModifyOperationFlags *getModifyOperationFlags() override;
     void updateMouseButtonHintsForSelection() override;
     RS2::CursorType doGetMouseCursorSelected(int status) override;
-    void onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
-    void onMouseRightButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
-    void onMouseMoveEventSelected(int status, LC_MouseEvent *e) override;
+    void onMouseLeftButtonReleaseSelected(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonReleaseSelected(int status, const LC_MouseEvent* event) override;
+    void onMouseMoveEventSelected(int status, const LC_MouseEvent* e) override;
     void updateMouseButtonHintsForSelected(int status) override;
     bool doProcessCommand(int status, const QString &command) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
@@ -68,4 +68,4 @@ protected:
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
 };
 
-#endif // LC_ACTIONMODIFYALIGNREF_H
+#endif

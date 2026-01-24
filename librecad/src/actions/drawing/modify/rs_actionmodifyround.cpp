@@ -29,7 +29,6 @@
 #include "lc_actioninfomessagebuilder.h"
 #include "qg_roundoptions.h"
 #include "rs_arc.h"
-#include "rs_debug.h"
 #include "rs_document.h"
 #include "rs_entity.h"
 #include "rs_entitycontainer.h"
@@ -41,7 +40,7 @@
 
 namespace {
 // supported entity types for fillet
-    EntityTypeList eType = {{RS2::EntityLine,
+    const EntityTypeList SUPPORTED_ENTITY_TYPES = {{RS2::EntityLine,
 //                             RS2::EntityPolyline, // not atomic
                              RS2::EntityArc,
                              RS2::EntityCircle,
@@ -49,13 +48,13 @@ namespace {
                              RS2::EntitySpline}};
 
 // Whether the point is on an endPoint of the entity
-    bool atEndPoint(RS_Entity &entity, const RS_Vector &point){
+    bool atEndPoint(const RS_Entity &entity, const RS_Vector &point){
         double distance = 1.;
         const RS_Vector nearestPoint = entity.getNearestEndpoint(point, &distance);
         return nearestPoint.valid && distance < RS_TOLERANCE;
     }
 
-    bool atEndPoint(RS_Entity &entity1, RS_Entity &entity2, const RS_Vector &point){
+    bool atEndPoint(const RS_Entity &entity1, const RS_Entity &entity2, const RS_Vector &point){
         return atEndPoint(entity1, point) || atEndPoint(entity2, point);
     }
 }
@@ -73,13 +72,13 @@ struct RS_ActionModifyRound::RoundActionData {
 
 RS_ActionModifyRound::RS_ActionModifyRound(LC_ActionContext *actionContext)
     :LC_UndoableDocumentModificationAction("Round Entities", actionContext, RS2::ActionModifyRound),
-    m_actionData(std::make_unique<RoundActionData>()), m_lastStatus(SetEntity1){
+    m_actionData(std::make_unique<RoundActionData>()){
 }
 
 RS_ActionModifyRound::~RS_ActionModifyRound() = default;
 
 
-void RS_ActionModifyRound::init(int status){
+void RS_ActionModifyRound::init(const int status){
     m_snapMode.clear();
     m_snapMode.restriction = RS2::RestrictNothing;
     RS_PreviewActionInterface::init(status);
@@ -93,8 +92,8 @@ void RS_ActionModifyRound::doInitWithContextEntity(RS_Entity* contextEntity, con
      }
 }
 
-void RS_ActionModifyRound::finish(bool updateTB){
-    RS_PreviewActionInterface::finish(updateTB);
+void RS_ActionModifyRound::finish(){
+    RS_PreviewActionInterface::finish();
 }
 
 /*
@@ -102,7 +101,7 @@ void RS_ActionModifyRound::finish(bool updateTB){
 
     - by Melwyn Francis Carlo.
 */
-bool RS_ActionModifyRound::removeOldFillet(RS_Entity *e, const bool &isPolyline) const {
+bool RS_ActionModifyRound::removeOldFillet(RS_Entity *e, const bool isPolyline) const {
     if (!isArc(e) || m_entity1 == nullptr || m_entity2 == nullptr) {
         return false;
     }
@@ -124,7 +123,7 @@ bool RS_ActionModifyRound::removeOldFillet(RS_Entity *e, const bool &isPolyline)
 }
 
 void RS_ActionModifyRound::drawSnapper() {
-    // disable snapper for action   
+    // disable snapper for action
 }
 
 bool RS_ActionModifyRound::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
@@ -158,9 +157,9 @@ void RS_ActionModifyRound::doTriggerCompletion([[maybe_unused]]bool success) {
 }
 
 
-void RS_ActionModifyRound::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void RS_ActionModifyRound::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     const RS_Vector mouse = e->graphPoint;
-    RS_Entity *se = catchAndDescribe(e, eType, RS2::ResolveAll);
+    RS_Entity *se = catchAndDescribe(e, SUPPORTED_ENTITY_TYPES, RS2::ResolveAll);
     switch (status) {
         case SetEntity1: {
             if (se != nullptr){
@@ -179,7 +178,7 @@ void RS_ActionModifyRound::onMouseMoveEvent(int status, LC_MouseEvent *e) {
 
                     const bool trim = m_actionData->data.trim;
                     LC_DocumentModificationBatch ctx;
-                    LC_RoundResult roundResult = RS_Modification::round(mouse, m_actionData->coord1, static_cast<RS_AtomicEntity*>(m_entity1), coord2,
+                    const LC_RoundResult roundResult = RS_Modification::round(mouse, m_actionData->coord1, m_entity1, coord2,
                                                                         static_cast<RS_AtomicEntity*>(se), m_actionData->data, ctx);
 
                     if (roundResult.error == LC_RoundResult::OK){
@@ -201,16 +200,16 @@ void RS_ActionModifyRound::onMouseMoveEvent(int status, LC_MouseEvent *e) {
                             m_preview->removeEntity(roundResult.trimmed2);
                         }
 
-                        auto *arc = roundResult.round;
+                        const auto *arc = roundResult.round;
                         if (arc != nullptr){
-                            const RS_Vector arcStartPoint = arc->getStartpoint();
-                            const RS_Vector arcEndPoint = arc->getEndpoint();
                             if (m_showRefEntitiesOnPreview) {
                                 if (!roundResult.isPolyline) {
                                     previewEntity(arc);
                                 }
                             }
                             if (isInfoCursorForModificationEnabled()){
+                                const RS_Vector arcEndPoint = arc->getEndpoint();
+                                const RS_Vector arcStartPoint = arc->getStartpoint();
                                 msg(tr("Round"))
                                     .vector(tr("Point 1:"), arcStartPoint)
                                     .vector(tr("Point 2:"), arcEndPoint)
@@ -232,7 +231,7 @@ void RS_ActionModifyRound::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     }
 }
 
-bool RS_ActionModifyRound::doUpdateDistanceByInteractiveInput(const QString& tag, double distance) {
+bool RS_ActionModifyRound::doUpdateDistanceByInteractiveInput(const QString& tag, const double distance) {
     if (tag == "radius") {
         setRadius(distance);
         return true;
@@ -240,7 +239,7 @@ bool RS_ActionModifyRound::doUpdateDistanceByInteractiveInput(const QString& tag
     return false;
 }
 
-void RS_ActionModifyRound::previewEntityModifications(const RS_Entity *original, RS_Entity *modified, RS_Vector& roundPoint, int mode) const {
+void RS_ActionModifyRound::previewEntityModifications(const RS_Entity *original, RS_Entity *modified, const RS_Vector& roundPoint, const int mode) const {
     const bool decreased = modified->getLength() < original->getLength();
     if (isLine(modified)){ // fixme - support of polyline
         if (decreased){
@@ -265,16 +264,16 @@ void RS_ActionModifyRound::previewEntityModifications(const RS_Entity *original,
         }
     }
     else if (isArc(modified)){
-            auto* newArc = dynamic_cast<RS_Arc*>(modified);
+            auto* newArc = static_cast<RS_Arc*>(modified);
             RS_ArcData arcData = newArc->getData();
             std::swap(arcData.angle1, arcData.angle2);
             previewRefArc(arcData);
     }
 }
 
-void RS_ActionModifyRound::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
+void RS_ActionModifyRound::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     const RS_Vector mouse = e->graphPoint;
-    RS_Entity *se = catchEntityByEvent(e, eType, RS2::ResolveAll);
+    RS_Entity *se = catchEntityByEvent(e, SUPPORTED_ENTITY_TYPES, RS2::ResolveAll);
     switch (status) {
         case SetEntity1: {
             if (isAtomic(se) && RS_Information::isTrimmable(se)){
@@ -303,32 +302,32 @@ void RS_ActionModifyRound::onMouseLeftButtonRelease(int status, LC_MouseEvent *e
     }
 }
 
-void RS_ActionModifyRound::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionModifyRound::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     deletePreview();
     initPrevious(status);
 }
 
-bool RS_ActionModifyRound::doProcessCommand(int status, const QString &c) {
+bool RS_ActionModifyRound::doProcessCommand(int status, const QString &command) {
     bool accept = false;
 
     switch (status) {
         case SetEntity1:
         case SetEntity2: {
-            if (checkCommand("radius", c)){
+            if (checkCommand("radius", command)){
                 deletePreview();
-                m_lastStatus = (Status) status;
+                m_lastStatus = static_cast<Status>(status);
                 setStatus(SetRadius);
                 accept = true;
-            } else if (checkCommand("trim", c)){
+            } else if (checkCommand("trim", command)){
                 deletePreview();
-                m_lastStatus = (Status) status;
+                m_lastStatus = static_cast<Status>(status);
                 setStatus(SetTrim);
                 m_actionData->data.trim = !m_actionData->data.trim;
                 updateOptions();
                 accept = true;
             } else {
                 bool ok;
-                const double r = RS_Math::eval(c, &ok);
+                const double r = RS_Math::eval(command, &ok);
                 if (ok && r > 1.0e-10){
                     accept = true;
                     m_actionData->data.radius = r;
@@ -344,7 +343,7 @@ bool RS_ActionModifyRound::doProcessCommand(int status, const QString &c) {
         }
         case SetRadius: {
             bool ok;
-            const double r = RS_Math::eval(c, &ok);
+            const double r = RS_Math::eval(command, &ok);
             if (ok){
                 accept = true;
                 m_actionData->data.radius = r;
@@ -375,7 +374,7 @@ QStringList RS_ActionModifyRound::getAvailableCommands(){
     return cmd;
 }
 
-void RS_ActionModifyRound::setRadius(double r) const {
+void RS_ActionModifyRound::setRadius(const double r) const {
     m_actionData->data.radius = r;
 }
 
@@ -383,7 +382,7 @@ double RS_ActionModifyRound::getRadius() const{
     return m_actionData->data.radius;
 }
 
-void RS_ActionModifyRound::setTrim(bool t) const {
+void RS_ActionModifyRound::setTrim(const bool t) const {
     m_actionData->data.trim = t;
 }
 

@@ -31,8 +31,7 @@
 #include "rs_selection.h"
 
 RS_ActionSelectContour::RS_ActionSelectContour(LC_ActionContext *actionContext)
-    :RS_ActionSelectBase("Select Contours", actionContext, RS2::ActionSelectContour)
-	,m_entity(nullptr){
+    :RS_ActionSelectBase("Select Contours", actionContext, RS2::ActionSelectContour) {
 }
 
 void RS_ActionSelectContour::doInitWithContextEntity(RS_Entity* contextEntity, [[maybe_unused]]const RS_Vector& clickPos) {
@@ -44,11 +43,11 @@ void RS_ActionSelectContour::doInitWithContextEntity(RS_Entity* contextEntity, [
 }
 
 void RS_ActionSelectContour::selectionFinishedByKey([[maybe_unused]]QKeyEvent* e, [[maybe_unused]]bool escape) {
-    finish(false);
+    finish();
 }
 
-void RS_ActionSelectContour::onMouseMoveEvent([[maybe_unused]]int status, LC_MouseEvent *event) {
-    auto ent = catchAndDescribe(event);
+void RS_ActionSelectContour::onMouseMoveEvent([[maybe_unused]] const int status, const LC_MouseEvent* event) {
+    const auto ent = catchAndDescribe(event);
     if (ent != nullptr){
         // fixme - proper highlighting of planned selection - yet after fixing underlying logic!
 //        RS_Selection s(*container, graphicView);
@@ -61,15 +60,17 @@ void RS_ActionSelectContour::onMouseMoveEvent([[maybe_unused]]int status, LC_Mou
 void RS_ActionSelectContour::doTrigger() {
     if (m_entity != nullptr) {
         if (m_entity->isAtomic()){ // fixme - why it is so??? why it's not suitable to select, say, polyline here too?
-            RS_Selection s(m_document, m_viewport);
+            const RS_Selection s(m_document, m_viewport);
             s.selectContour(m_entity);
-        } else
-           commandMessage(tr("Entity must be an Atomic Entity."));
-    } else
+        } else {
+            commandMessage(tr("Entity must be an Atomic Entity."));
+        }
+    } else{
         RS_DEBUG->print("RS_ActionSelectContour::trigger: Entity is NULL\n");
+    }
 }
 
-void RS_ActionSelectContour::onMouseLeftButtonRelease([[maybe_unused]] int status, LC_MouseEvent *e) {
+void RS_ActionSelectContour::onMouseLeftButtonRelease([[maybe_unused]] int status, const LC_MouseEvent* e) {
     m_entity = catchEntityByEvent(e);
     trigger();
     if (e->isControl) {
@@ -77,7 +78,7 @@ void RS_ActionSelectContour::onMouseLeftButtonRelease([[maybe_unused]] int statu
     }
 }
 
-void RS_ActionSelectContour::onMouseRightButtonRelease(int status, [[maybe_unused]] LC_MouseEvent *e) {
+void RS_ActionSelectContour::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     initPrevious(status);
 }
 

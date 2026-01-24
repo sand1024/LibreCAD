@@ -34,39 +34,38 @@
 #include "rs_text.h"
 
 struct RS_ActionDrawText::ActionData {
-	RS_Vector pos;
-	RS_Vector secPos;
+    RS_Vector pos;
+    RS_Vector secPos;
 };
 
-RS_ActionDrawText::RS_ActionDrawText(LC_ActionContext *actionContext)
-    :LC_SingleEntityCreationAction("Draw Text",actionContext, RS2::ActionDrawText)
-	, m_actionData(std::make_unique<ActionData>())
-	,m_textChanged(true){
+RS_ActionDrawText::RS_ActionDrawText(LC_ActionContext* actionContext)
+    : LC_SingleEntityCreationAction("Draw Text", actionContext, RS2::ActionDrawText), m_actionData(std::make_unique<ActionData>()),
+      m_textChanged(true) {
 }
 
 RS_ActionDrawText::~RS_ActionDrawText() = default;
 
-
-void RS_ActionDrawText::init(int status){
+void RS_ActionDrawText::init(const int status) {
     RS_PreviewActionInterface::init(status);
     switch (status) {
         case ShowDialog: {
             reset();
             RS_Text tmp(nullptr, *m_textData);
-            
-            if (RS_DIALOGFACTORY->requestTextDialog(&tmp, m_viewport)){
-                const RS_TextData &editedData = tmp.getData();
+
+            if (RS_DIALOGFACTORY->requestTextDialog(&tmp, m_viewport)) {
+                const RS_TextData& editedData = tmp.getData();
                 m_textData.reset(new RS_TextData(editedData));
                 setStatus(SetPos);
                 updateOptions();
-            } else {
+            }
+            else {
                 hideOptions();
                 setStatus(-1);
-                finish(false);
+                finish();
             }
             break;
         }
-        case SetPos:{
+        case SetPos: {
             updateOptions();
             deletePreview();
             m_preview->setVisible(true);
@@ -75,41 +74,34 @@ void RS_ActionDrawText::init(int status){
         }
         default:
             if (status < 0) {
-                m_actionData.release();
-                m_textData.release();
+                m_actionData.reset();
+                m_textData.reset();
             }
             break;
     }
 }
 
-void RS_ActionDrawText::reset(){
+void RS_ActionDrawText::reset() {
     const QString text = m_textData.get() ? m_textData->text : "";
-    m_textData.reset(new RS_TextData(RS_Vector(0.0, 0.0), RS_Vector(0.0, 0.0),
-                               1.0, 1.0,
-                               RS_TextData::VABaseline,
-                               RS_TextData::HALeft,
-                               RS_TextData::None,
-                               text,
-                               "standard",
-                               0.0,
-                               RS2::Update));
+    m_textData.reset(new RS_TextData(RS_Vector(0.0, 0.0), RS_Vector(0.0, 0.0), 1.0, 1.0, RS_TextData::VABaseline, RS_TextData::HALeft,
+                                     RS_TextData::None, text, "standard", 0.0, RS2::Update));
 }
 
-RS_Entity* RS_ActionDrawText::doTriggerCreateEntity(){
+RS_Entity* RS_ActionDrawText::doTriggerCreateEntity() {
     if (m_actionData->pos.valid) {
         m_textData->angle = toWorldAngleFromUCSBasisDegrees(m_ucsBasicAngleDegrees);
-        auto* text        = new RS_Text(m_document, *m_textData);
+        auto* text = new RS_Text(m_document, *m_textData);
         text->update();
         return text;
     }
     return nullptr;
 }
 
-void RS_ActionDrawText::doTriggerCompletion(bool success) {
+void RS_ActionDrawText::doTriggerCompletion(const bool success) {
     if (success) {
         m_textChanged = true;
         m_actionData->secPos = {};
-        if (m_snappedToRelZero){
+        if (m_snappedToRelZero) {
             m_snappedToRelZero = false;
             setStatus(-1);
         }
@@ -119,34 +111,35 @@ void RS_ActionDrawText::doTriggerCompletion(bool success) {
     }
 }
 
-void RS_ActionDrawText::preparePreview(){
+void RS_ActionDrawText::preparePreview() {
     m_textData->angle = toWorldAngleFromUCSBasisDegrees(m_ucsBasicAngleDegrees);
-    if (m_textData->halign == RS_TextData::HAFit || m_textData->halign == RS_TextData::HAAligned){
-        if (m_actionData->secPos.valid){
-            auto *text = new RS_Line(m_textData->insertionPoint, m_actionData->secPos);
+    if (m_textData->halign == RS_TextData::HAFit || m_textData->halign == RS_TextData::HAAligned) {
+        if (m_actionData->secPos.valid) {
+            const auto* text = new RS_Line(m_textData->insertionPoint, m_actionData->secPos);
             previewEntity(text);
         }
-    } else {
-        m_textData  ->insertionPoint = m_actionData->pos;
-        auto *text = new RS_Text(m_preview.get(), *m_textData);
+    }
+    else {
+        m_textData->insertionPoint = m_actionData->pos;
+        auto* text = new RS_Text(m_preview.get(), *m_textData);
         text->update();
         previewEntity(text);
     }
     m_textChanged = false;
 }
 
-void RS_ActionDrawText::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void RS_ActionDrawText::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     RS_Vector mouse = e->snapPoint;
-    switch (status){
-        case SetPos:{
-            bool snapped = trySnapToRelZeroCoordinateEvent(e);
+    switch (status) {
+        case SetPos: {
+            const bool snapped = trySnapToRelZeroCoordinateEvent(e);
             if (!snapped) {
                 m_actionData->pos = mouse;
                 preparePreview();
             }
             break;
         }
-        case SetSecPos:{
+        case SetSecPos: {
             mouse = getSnapAngleAwarePoint(e, m_textData->insertionPoint, mouse, true);
             m_actionData->secPos = mouse;
             preparePreview();
@@ -158,14 +151,14 @@ void RS_ActionDrawText::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     appendInfoCursorZoneMessage(tr("Text: ")/*.append("\n")*/.append(m_textData->text), 2, false);
 }
 
-void RS_ActionDrawText::onMouseLeftButtonRelease([[maybe_unused]]int status, LC_MouseEvent *e) {
+void RS_ActionDrawText::onMouseLeftButtonRelease([[maybe_unused]] const int status, const LC_MouseEvent* e) {
     RS_Vector pos = e->snapPoint;
-    switch (status){
-        case SetPos:{
+    switch (status) {
+        case SetPos: {
             pos = getRelZeroAwarePoint(e, pos);
             break;
         }
-        case SetSecPos:{
+        case SetSecPos: {
             pos = getSnapAngleAwarePoint(e, m_textData->insertionPoint, pos, false);
             break;
         }
@@ -175,24 +168,26 @@ void RS_ActionDrawText::onMouseLeftButtonRelease([[maybe_unused]]int status, LC_
     fireCoordinateEvent(pos);
 }
 
-void RS_ActionDrawText::onMouseRightButtonRelease([[maybe_unused]]int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionDrawText::onMouseRightButtonRelease([[maybe_unused]] int status, [[maybe_unused]] const LC_MouseEvent* e) {
     setStatus(-1);
 }
 
-void RS_ActionDrawText::onCoordinateEvent(int status, [[maybe_unused]]bool isZero, const RS_Vector &mouse) {
+void RS_ActionDrawText::onCoordinateEvent(const int status, [[maybe_unused]] bool isZero, const RS_Vector& coord) {
     switch (status) {
         case ShowDialog:
             break;
         case SetPos: {
-            m_textData->insertionPoint = mouse;
-            if (m_textData->halign == RS_TextData::HAFit || m_textData->halign == RS_TextData::HAAligned)
+            m_textData->insertionPoint = coord;
+            if (m_textData->halign == RS_TextData::HAFit || m_textData->halign == RS_TextData::HAAligned) {
                 setStatus(SetSecPos);
-            else
+            }
+            else {
                 trigger();
+            }
             break;
         }
         case SetSecPos: {
-            m_textData->secondPoint = mouse;
+            m_textData->secondPoint = coord;
             trigger();
             break;
         }
@@ -202,11 +197,11 @@ void RS_ActionDrawText::onCoordinateEvent(int status, [[maybe_unused]]bool isZer
 }
 
 // fixme - sand - cmd - expand by other attributes (angle?, height?)
-bool RS_ActionDrawText::doProcessCommand(int status, const QString &c) {
+bool RS_ActionDrawText::doProcessCommand(const int status, const QString& command) {
     bool accept = true;
     switch (status) {
         case SetPos: {
-            if (checkCommand("text", c)){
+            if (checkCommand("text", command)) {
                 deletePreview();
                 disableCoordinateInput();
                 setStatus(SetText);
@@ -215,7 +210,7 @@ bool RS_ActionDrawText::doProcessCommand(int status, const QString &c) {
             break;
         }
         case SetText: {
-            setText(c);
+            setText(command);
             updateOptions();
             enableCoordinateInput();
             setStatus(SetPos);
@@ -228,15 +223,15 @@ bool RS_ActionDrawText::doProcessCommand(int status, const QString &c) {
     return accept;
 }
 
-QStringList RS_ActionDrawText::getAvailableCommands(){
+QStringList RS_ActionDrawText::getAvailableCommands() {
     QStringList cmd;
-    if (getStatus() == SetPos){
+    if (getStatus() == SetPos) {
         cmd += command("text");
     }
     return cmd;
 }
 
-void RS_ActionDrawText::updateMouseButtonHints(){
+void RS_ActionDrawText::updateMouseButtonHints() {
     switch (getStatus()) {
         case SetPos:
             updateMouseWidgetTRCancel(tr("Specify insertion point"), MOD_SHIFT_RELATIVE_ZERO);
@@ -253,30 +248,31 @@ void RS_ActionDrawText::updateMouseButtonHints(){
             break;
     }
 }
-RS2::CursorType RS_ActionDrawText::doGetMouseCursor([[maybe_unused]] int status){
+
+RS2::CursorType RS_ActionDrawText::doGetMouseCursor([[maybe_unused]] int status) {
     return RS2::CadCursor;
 }
 
-void RS_ActionDrawText::setText(const QString &t){
+void RS_ActionDrawText::setText(const QString& t) {
     m_textData->text = t;
     m_textChanged = true;
 }
 
-const QString &RS_ActionDrawText::getText() const{
+const QString& RS_ActionDrawText::getText() const {
     return m_textData->text;
 }
 
-void RS_ActionDrawText::setUcsAngleDegrees(double ucsRelAngleDegrees){
+void RS_ActionDrawText::setUcsAngleDegrees(const double ucsRelAngleDegrees) {
     m_ucsBasicAngleDegrees = ucsRelAngleDegrees;
     m_textData->angle = toWorldAngleFromUCSBasisDegrees(ucsRelAngleDegrees);
     m_textChanged = true;
 }
 
-double RS_ActionDrawText::getUcsAngleDegrees() const{
+double RS_ActionDrawText::getUcsAngleDegrees() const {
     return m_ucsBasicAngleDegrees;
 }
 
-bool RS_ActionDrawText::doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) {
+bool RS_ActionDrawText::doUpdateAngleByInteractiveInput(const QString& tag, const double angleRad) {
     if (tag == "angle") {
         setUcsAngleDegrees(RS_Math::rad2deg(angleRad));
         return true;

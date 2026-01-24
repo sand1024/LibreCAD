@@ -44,7 +44,7 @@ public:
     explicit RS_ActionModifyRound(LC_ActionContext *actionContext);
     ~RS_ActionModifyRound() override;
     void init(int status) override;
-    void finish(bool updateTB) override;
+    void finish() override;
     QStringList getAvailableCommands() override;
     void setRadius(double r) const;
     double getRadius() const;
@@ -70,15 +70,15 @@ protected:
     Status m_lastStatus = SetEntity1;
 
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
-    bool removeOldFillet(RS_Entity *e, const bool &isPolyline) const;
+    bool removeOldFillet(RS_Entity *e, bool isPolyline) const;
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    void previewEntityModifications(const RS_Entity *original, RS_Entity *modified, RS_Vector& roundPoint, int mode) const;
+    void previewEntityModifications(const RS_Entity *original, RS_Entity *modified, const RS_Vector& roundPoint, int mode) const;
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
     bool doProcessCommand(int status, const QString &command) override;
     void updateMouseButtonHints() override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
     void doTriggerCompletion(bool success) override;

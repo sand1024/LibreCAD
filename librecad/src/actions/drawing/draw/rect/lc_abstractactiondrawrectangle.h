@@ -40,26 +40,26 @@ public:
     LC_AbstractActionDrawRectangle(const char *name, LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone);
     ~LC_AbstractActionDrawRectangle() override;
 
-    bool isUsePolyline() const{return m_usePolyline;};
-    void setUsePolyline(bool value){m_usePolyline = value;};
+    bool isUsePolyline() const{return m_usePolyline;}
+    void setUsePolyline(const bool value){m_usePolyline = value;}
     void setRadius(double radius);
-    double getRadius() const{return m_radius;};
+    double getRadius() const{return m_radius;}
     void setLengthX(double value);
-    double getLengthX() const{return m_bevelX;};
+    double getLengthX() const{return m_bevelX;}
     void setLengthY(double value);
-    double getLengthY() const{return m_bevelY;};
+    double getLengthY() const{return m_bevelY;}
     void setUcsAngleDegrees(double angle);
     void setAngleRadians(double angleRad);
     double getUcsAngleDegrees() const;
     void setCornersMode(int value);
-    int getCornersMode() const{return m_cornersDrawMode;};
+    int getCornersMode() const{return m_cornersDrawMode;}
     void setInsertionPointSnapMode(int value);
-    int getInsertionPointSnapMode() const{return m_insertionPointSnapMode;};
-    void setSnapToCornerArcCenter(bool b);
-    bool isSnapToCornerArcCenter() const {return m_snapToCornerArcCenter;};
-    void setEdgesDrawMode(int mode){m_edgesDrawMode = mode;};
-    int getEdgesDrawMode() const{return m_edgesDrawMode;};
-    void setBaseAngleFixed(bool val) {m_baseAngleIsFixed = val;};
+    int getInsertionPointSnapMode() const{return m_insertionPointSnapMode;}
+    void setSnapToCornerArcCenter(bool value);
+    bool isSnapToCornerArcCenter() const {return m_snapToCornerArcCenter;}
+    void setEdgesDrawMode(const int mode){m_edgesDrawMode = mode;}
+    int getEdgesDrawMode() const{return m_edgesDrawMode;}
+    void setBaseAngleFixed(const bool val) {m_baseAngleIsFixed = val;}
     bool hasBaseAngle() const {return m_baseAngleIsFixed;}
 protected:
 
@@ -155,8 +155,7 @@ protected:
     ShapeData m_shapeData;
 
     void prepareCornersDrawMode(double &radiusX, double &radiusY, bool &drawComplex, bool &drawBulge) const;
-    RS_Polyline* createPolylineByVertexes( RS_Vector bottomLeftCorner, RS_Vector bottomRightCorner,
-                                           RS_Vector topRightCorner, RS_Vector topLeftCorner,
+    RS_Polyline* createPolylineByVertexes(const RS_Vector& bottomLeftCorner, const RS_Vector& bottomRightCorner, const RS_Vector& topRightCorner, const RS_Vector& topLeftCorner,
                                            bool drawBulge, bool drawComplex,
                                            double radiusX, double radiusY) const;
 
@@ -169,19 +168,19 @@ protected:
     virtual void doUpdateMouseButtonHints(int status);
     virtual void doAddPolylineToListOfEntities(RS_Polyline *polyline, QList<RS_Entity *> &list, bool preview);
     static void normalizeCorners(RS_Vector &bottomLeftCorner, RS_Vector &bottomRightCorner, RS_Vector &topRightCorner, RS_Vector &topLeftCorner);
-    bool doProcessCommand(int status, const QString &c) override;
-    void doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
+    bool doProcessCommand(int status, const QString &command) override;
+    void doPreparePreviewEntities(const LC_MouseEvent* e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
     void stateUpdated(bool toMainStatus);
     double getActualBaseAngle() const;
     bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx) override;
     bool doCheckMayTrigger() override;
     void doAfterTrigger() override;
     RS_Vector doGetRelativeZeroAfterTrigger() override;
-    void doBack(LC_MouseEvent *pEvent, int status) override;
+    void doBack(const LC_MouseEvent* e, int status) override;
     bool doCheckPolylineEntityAllowedInTrigger(int index) const;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void updateMouseButtonHints() override;
     void doSetAngle(double value);
 };
 
-#endif // LC_ABSTRACTACTIONDRAWRECTANGLE_H
+#endif

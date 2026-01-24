@@ -63,14 +63,14 @@ protected:
  * Action States.
  */
     enum Status {
-        SetUndefined = -1, /**< Setting undefined for initialisation. */
-        SetTargetPoint = 0, /**< Setting the reference point. */
-        SetAngle, /**< Setting angle in the command line. */
-        SetFactor, /**< Setting factor in the command line. */
-        SetColumns, /**< Setting columns in the command line. */
-        SetRows, /**< Setting rows in the command line. */
-        SetColumnSpacing, /**< Setting column spacing in the command line. */
-        SetRowSpacing /**< Setting row spacing in the command line. */
+        SetUndefined     = -1, /**< Setting undefined for initialisation. */
+        SetTargetPoint   = 0, /**< Setting the reference point. */
+        SetAngle         = 1, /**< Setting angle in the command line. */
+        SetFactor        = 2, /**< Setting factor in the command line. */
+        SetColumns       = 3, /**< Setting columns in the command line. */
+        SetRows          = 4, /**< Setting rows in the command line. */
+        SetColumnSpacing = 5, /**< Setting column spacing in the command line. */
+        SetRowSpacing    = 6 /**< Setting row spacing in the command line. */
     };
 
     RS_Block *m_block = nullptr;
@@ -78,13 +78,13 @@ protected:
     /** Last status before entering option. */
     Status m_lastStatus = SetUndefined;
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
     bool doProcessCommand(int status, const QString &command) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
     void updateMouseButtonHints() override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* event) override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angle) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
 

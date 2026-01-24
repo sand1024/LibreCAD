@@ -27,12 +27,12 @@
 #include "rs_document.h"
 #include "rs_grid.h"
 
-LC_ActionModifyMoveAdjust::LC_ActionModifyMoveAdjust(LC_ActionContext* actionContext, MovementInfo movement)
+LC_ActionModifyMoveAdjust::LC_ActionModifyMoveAdjust(LC_ActionContext* actionContext, const MovementInfo info)
     : LC_ActionModifyBase("MoveAdjust Entities", actionContext, RS2::ActionModifyMoveAdjust),
-      m_movementInfo{movement} {
+      m_movementInfo{info} {
 }
 
-void LC_ActionModifyMoveAdjust::onSelectionCompleted(bool singleEntity, bool fromInit) {
+void LC_ActionModifyMoveAdjust::onSelectionCompleted(const bool singleEntity, const bool fromInit) {
     LC_ActionPreSelectionAwareBase::onSelectionCompleted(singleEntity, fromInit);
 }
 
@@ -58,12 +58,12 @@ void LC_ActionModifyMoveAdjust::doTriggerSelectionUpdate([[maybe_unused]]bool ke
 }
 
 void LC_ActionModifyMoveAdjust::doTriggerCompletion([[maybe_unused]]bool success) {
-    finish(false);
+    finish();
 }
 
 RS_Vector LC_ActionModifyMoveAdjust::calculateOffset() const {
     const auto grid = m_viewport->getGrid();
-    const auto cellVector = grid->getCellVector();
+    const auto& cellVector = grid->getCellVector();
 
     const int metagridFactor = grid->getMetaGridEvery();
 

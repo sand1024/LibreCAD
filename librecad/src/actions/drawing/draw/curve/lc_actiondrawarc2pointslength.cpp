@@ -34,7 +34,7 @@ LC_ActionDrawArc2PointsLength::LC_ActionDrawArc2PointsLength(LC_ActionContext *a
 bool LC_ActionDrawArc2PointsLength::createArcData(RS_ArcData &data, [[maybe_unused]]int status, RS_Vector pos, bool alternate, [[maybe_unused]]bool reportErrors) {
 
     double chordLen = m_startPoint.distanceTo(pos);
-    double chordAngle = m_startPoint.angleTo(pos);
+
     double arcLen = m_parameterLen;
 
     if (chordLen >= arcLen) {
@@ -45,10 +45,10 @@ bool LC_ActionDrawArc2PointsLength::createArcData(RS_ArcData &data, [[maybe_unus
     }
 
     double angle = determineArcAngleByLenAndChord(arcLen, chordLen);
-    double radius = chordLen/(2.0 * (std::sin(angle/2.0)));
+    double radius = chordLen/(2.0 * std::sin(angle/2.0));
 
-    RS_Circle circle1 = RS_Circle(nullptr, RS_CircleData(m_startPoint, radius));
-    RS_Circle circle2 = RS_Circle(nullptr, RS_CircleData(pos, radius));
+    auto circle1 = RS_Circle(nullptr, RS_CircleData(m_startPoint, radius));
+    auto circle2 = RS_Circle(nullptr, RS_CircleData(pos, radius));
 
     const RS_VectorSolutions &intersections = RS_Information::getIntersection(&circle2, &circle1, false);
 
@@ -78,6 +78,7 @@ bool LC_ActionDrawArc2PointsLength::createArcData(RS_ArcData &data, [[maybe_unus
             center = angleLessPI ? ipLeft : ipRight;
         }
     } else {
+        double chordAngle = m_startPoint.angleTo(pos);
         const auto v = RS_Vector::polar(radius, chordAngle);
         center = m_startPoint + v;
         pos = m_startPoint + v*2.0;
@@ -108,12 +109,12 @@ QString LC_ActionDrawArc2PointsLength::getAlternativePoint2Prompt() const {
 }
 
 
-double LC_ActionDrawArc2PointsLength::determineArcAngleByLenAndChord(double arcLen, double chordLen) {
-    double k = chordLen / arcLen;
+double LC_ActionDrawArc2PointsLength::determineArcAngleByLenAndChord(const double arcLen, const double chordLen) {
+    const double k = chordLen / arcLen;
     double x = std::sqrt(6 - (6 * k));
 
     for (int i = 0; i < 6; i++) {
-        x = x - ((std::sin(x) - (k * x)) / (std::cos(x) - k));
+        x = x - (std::sin(x) - k * x) / (std::cos(x) - k);
     }
-    return (2 * x);
-};
+    return 2 * x;
+}

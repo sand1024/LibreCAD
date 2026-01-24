@@ -36,17 +36,18 @@
 /**
  * Constructor.
  *
- * @param undo true for undo and false for redo.
+ * @param actionContext
+ * @param actionType
  */
 
-RS_ActionEditCopyPaste::RS_ActionEditCopyPaste(LC_ActionContext *actionContext, RS2::ActionType actionType)
+RS_ActionEditCopyPaste::RS_ActionEditCopyPaste(LC_ActionContext *actionContext, const RS2::ActionType actionType)
     :LC_ActionPreSelectionAwareBase("Edit Copy", actionContext, actionType)
     , m_referencePoint{new RS_Vector{}}{
 }
 
 RS_ActionEditCopyPaste::~RS_ActionEditCopyPaste() = default;
 
-void RS_ActionEditCopyPaste::init(int status) {
+void RS_ActionEditCopyPaste::init(const int status) {
     LC_ActionPreSelectionAwareBase::init(status);
     *m_referencePoint = RS_Vector(false);
     if (m_actionType  == RS2::ActionEditPaste) {
@@ -57,7 +58,7 @@ void RS_ActionEditCopyPaste::init(int status) {
     }
 }
 
-void RS_ActionEditCopyPaste::onSelectionCompleted([[maybe_unused]] bool singleEntity, bool fromInit) {
+void RS_ActionEditCopyPaste::onSelectionCompleted([[maybe_unused]] const bool singleEntity, const bool fromInit) {
     switch (m_actionType) {
         case RS2::ActionEditCutQuick:
         case RS2::ActionEditCopyQuick: {
@@ -67,6 +68,7 @@ void RS_ActionEditCopyPaste::onSelectionCompleted([[maybe_unused]] bool singleEn
         default: {
             setSelectionComplete(isAllowTriggerOnEmptySelection(), fromInit);
             updateMouseButtonHints();
+            break;
         }
     }
 }
@@ -80,7 +82,7 @@ bool RS_ActionEditCopyPaste::doTriggerModifications(LC_DocumentModificationBatch
             QList<RS_Entity*> selection;
             m_document->getSelection()->collectSelectedEntities(selection);
             if (!selection.empty()) {
-                bool cut = m_actionType ==  RS2::ActionEditCut || m_actionType == RS2::ActionEditCutQuick;
+                const bool cut = m_actionType ==  RS2::ActionEditCut || m_actionType == RS2::ActionEditCutQuick;
                 LC_CopyUtils::copy(*m_referencePoint, selection, m_graphic);
                 unselectAll();
                 if (cut) {
@@ -92,17 +94,17 @@ bool RS_ActionEditCopyPaste::doTriggerModifications(LC_DocumentModificationBatch
                     m_invokedWithControl = false;
                 }
                 else{
-                    finish(false);
+                    finish();
                 }
             }
             break;
         }
         case RS2::ActionEditPaste: {
-            LC_CopyUtils::RS_PasteData pasteData(*m_referencePoint);
+            const LC_CopyUtils::RS_PasteData pasteData(*m_referencePoint);
             LC_CopyUtils::paste(pasteData, m_graphic, ctx);
             ctx.dontSetActiveLayerAndPen();
             if (!m_invokedWithControl) {
-                finish(false);
+                finish();
             }
             break;
         }
@@ -112,15 +114,15 @@ bool RS_ActionEditCopyPaste::doTriggerModifications(LC_DocumentModificationBatch
     return true;
 }
 
-void RS_ActionEditCopyPaste::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+void RS_ActionEditCopyPaste::doTriggerSelectionUpdate(const bool keepSelected, const LC_DocumentModificationBatch& ctx) {
     LC_ActionPreSelectionAwareBase::doTriggerSelectionUpdate(keepSelected, ctx); // fixme - complete!
 }
 
-void RS_ActionEditCopyPaste::doTriggerCompletion(bool success) {
+void RS_ActionEditCopyPaste::doTriggerCompletion(const bool success) {
     LC_ActionPreSelectionAwareBase::doTriggerCompletion(success); // fixme - complete!
 }
 
-void RS_ActionEditCopyPaste::onMouseMoveEventSelected(int status, LC_MouseEvent *e) {
+void RS_ActionEditCopyPaste::onMouseMoveEventSelected(const int status, const LC_MouseEvent* e) {
     if (status==SetReferencePoint) {
          switch (m_actionType) {
             case RS2::ActionEditCut:
@@ -133,9 +135,9 @@ void RS_ActionEditCopyPaste::onMouseMoveEventSelected(int status, LC_MouseEvent 
                 m_preview->move(*m_referencePoint);
 
                 if (m_graphic) {
-                    RS2::Unit sourceUnit = RS_CLIPBOARD->getGraphic()->getUnit();
-                    RS2::Unit targetUnit = m_graphic->getUnit();
-                    double const f = RS_Units::convert(1.0, sourceUnit, targetUnit);
+                    const RS2::Unit sourceUnit = RS_CLIPBOARD->getGraphic()->getUnit();
+                    const RS2::Unit targetUnit = m_graphic->getUnit();
+                    const double f = RS_Units::convert(1.0, sourceUnit, targetUnit);
                     m_preview->scale(*m_referencePoint, {f, f});
                 }
                 break;
@@ -149,12 +151,12 @@ void RS_ActionEditCopyPaste::onMouseMoveEventSelected(int status, LC_MouseEvent 
     }
 }
 
-void RS_ActionEditCopyPaste::onMouseLeftButtonReleaseSelected([[maybe_unused]]int status, LC_MouseEvent *e) {
+void RS_ActionEditCopyPaste::onMouseLeftButtonReleaseSelected([[maybe_unused]]int status, const LC_MouseEvent* e) {
     m_invokedWithControl = e->isControl;
     fireCoordinateEventForSnap(e);
 }
 
-void RS_ActionEditCopyPaste::onMouseRightButtonReleaseSelected(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionEditCopyPaste::onMouseRightButtonReleaseSelected(const int status, [[maybe_unused]] const LC_MouseEvent* event) {
     initPrevious(status);
 }
 
@@ -190,7 +192,7 @@ void RS_ActionEditCopyPaste::updateMouseButtonHintsForSelection() {
    }
 }
 
-void RS_ActionEditCopyPaste::updateMouseButtonHintsForSelected(int status) {
+void RS_ActionEditCopyPaste::updateMouseButtonHintsForSelected(const int status) {
     switch (status) {
         case SetReferencePoint: {
             switch (m_actionType) {
@@ -207,7 +209,8 @@ void RS_ActionEditCopyPaste::updateMouseButtonHintsForSelected(int status) {
                     break;
             }
             break;
-        default:
+        }
+        default:{
             updateMouseWidget();
             break;
         }

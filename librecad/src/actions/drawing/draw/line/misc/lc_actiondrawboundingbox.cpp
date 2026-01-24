@@ -28,7 +28,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "lc_graphicviewport.h"
 #include "lc_linemath.h"
 #include "rs_graphic.h"
-#include "rs_graphicview.h"
 #include "rs_line.h"
 #include "rs_point.h"
 #include "rs_polyline.h"
@@ -37,7 +36,7 @@ LC_ActionDrawBoundingBox::LC_ActionDrawBoundingBox(LC_ActionContext* actionConte
     : LC_ActionPreSelectionAwareBase("DrawBoundingBox", actionContext, RS2::ActionDrawBoundingBox) {
 }
 
-void LC_ActionDrawBoundingBox::init(int status) {
+void LC_ActionDrawBoundingBox::init(const int status) {
     showOptions();
     LC_ActionPreSelectionAwareBase::init(status);
 }
@@ -66,7 +65,7 @@ bool LC_ActionDrawBoundingBox::doTriggerModifications(LC_DocumentModificationBat
         }
     }
     else {
-        for (auto e : m_selectedEntities) {
+        for (const auto e : m_selectedEntities) {
             if (m_cornerPointsOnly) {
                 createCornerPoints(e->getMin() - m_offset, e->getMax() + m_offset, ctx.entitiesToAdd);
             }
@@ -94,17 +93,17 @@ bool LC_ActionDrawBoundingBox::doTriggerModifications(LC_DocumentModificationBat
 
 void LC_ActionDrawBoundingBox::doTriggerCompletion([[maybe_unused]]bool success) {
     m_selectedEntities.clear();
-    finish(false);
+    finish();
 }
 
-void LC_ActionDrawBoundingBox::doTriggerSelectionUpdate(bool keepSelected, [[maybe_unused]]const LC_DocumentModificationBatch& ctx) {
+void LC_ActionDrawBoundingBox::doTriggerSelectionUpdate(const bool keepSelected, [[maybe_unused]]const LC_DocumentModificationBatch& ctx) {
     if (!keepSelected) {
         unselect(m_selectedEntities);
     }
 }
 
 void LC_ActionDrawBoundingBox::createBoxPolyline(const RS_Vector& selectionMin, const RS_Vector& selectionMax, QList<RS_Entity*> &entitiesList) const {
-    auto e = new RS_Polyline(m_document);
+    const auto e = new RS_Polyline(m_document);
     e->addVertex({selectionMin.x, selectionMax.y});
     e->addVertex({selectionMin.x, selectionMin.y});
     e->addVertex({selectionMax.x, selectionMin.y});
@@ -128,12 +127,12 @@ void LC_ActionDrawBoundingBox::createCornerPoints(const RS_Vector& selectionMin,
 }
 
 void LC_ActionDrawBoundingBox::createPoint(double x, double y, QList<RS_Entity*> &entitiesList ) const {
-    auto e = new RS_Point(m_document, {{x, y}});
+    const auto e = new RS_Point(m_document, RS_PointData{{x, y}});
     entitiesList.append(e);
 }
 
 void LC_ActionDrawBoundingBox::createLine(double x1, double y1, double x2, double y2,QList<RS_Entity*> &entitiesList ) const {
-    auto e = new RS_Line(m_document, {{x1, y1}, {x2, y2}});
+    const auto e = new RS_Line(m_document, {{x1, y1}, {x2, y2}});
     entitiesList.append(e);
 }
 
@@ -141,7 +140,7 @@ bool LC_ActionDrawBoundingBox::isAllowTriggerOnEmptySelection() {
     return false;
 }
 
-bool LC_ActionDrawBoundingBox::doUpdateDistanceByInteractiveInput(const QString& tag, double distance) {
+bool LC_ActionDrawBoundingBox::doUpdateDistanceByInteractiveInput(const QString& tag, const double distance) {
     if (tag == "offset") {
         setOffset(distance);
         return true;

@@ -29,9 +29,8 @@
 #include "rs_circle.h"
 #include "rs_document.h"
 
-RS_ActionDrawCircle::RS_ActionDrawCircle(LC_ActionContext *actionContext)
-        :LC_ActionDrawCircleBase("Draw circles",actionContext, RS2::ActionDrawCircle)
-    , m_circleData(std::make_unique<RS_CircleData>()){
+RS_ActionDrawCircle::RS_ActionDrawCircle(LC_ActionContext* actionContext)
+    : LC_ActionDrawCircleBase("Draw circles", actionContext, RS2::ActionDrawCircle), m_circleData(std::make_unique<RS_CircleData>()) {
 }
 
 RS_ActionDrawCircle::~RS_ActionDrawCircle() = default;
@@ -41,20 +40,20 @@ void RS_ActionDrawCircle::reset() {
 }
 
 RS_Entity* RS_ActionDrawCircle::doTriggerCreateEntity() {
-    auto* circle = new RS_Circle(m_document,*m_circleData);
-    if (m_moveRelPointAtCenterAfterTrigger){
+    auto* circle = new RS_Circle(m_document, *m_circleData);
+    if (m_moveRelPointAtCenterAfterTrigger) {
         moveRelativeZero(circle->getCenter());
     }
     return circle;
 }
 
-void RS_ActionDrawCircle::doTriggerCompletion([[maybe_unused]]bool success) {
+void RS_ActionDrawCircle::doTriggerCompletion([[maybe_unused]] bool success) {
     setStatus(SetCenter);
     reset();
 }
 
-void RS_ActionDrawCircle::onMouseMoveEvent(int status, LC_MouseEvent *e) {
-    RS_Vector mouse = e->snapPoint;
+void RS_ActionDrawCircle::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
+    const RS_Vector mouse = e->snapPoint;
     switch (status) {
         case SetCenter: {
             m_circleData->center = mouse;
@@ -63,7 +62,7 @@ void RS_ActionDrawCircle::onMouseMoveEvent(int status, LC_MouseEvent *e) {
         }
         case SetRadius: {
             const auto& center = m_circleData->center;
-            if (center.valid){
+            if (center.valid) {
                 m_circleData->radius = center.distanceTo(mouse);
                 previewToCreateCircle(*m_circleData);
                 if (m_showRefEntitiesOnPreview) {
@@ -79,17 +78,17 @@ void RS_ActionDrawCircle::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     }
 }
 
-void RS_ActionDrawCircle::onCoordinateEvent(int status, [[maybe_unused]] bool isZero, const RS_Vector &mouse) {
+void RS_ActionDrawCircle::onCoordinateEvent(const int status, [[maybe_unused]] bool isZero, const RS_Vector& coord) {
     switch (status) {
         case SetCenter:
-            m_circleData->center = mouse;
-            moveRelativeZero(mouse);
+            m_circleData->center = coord;
+            moveRelativeZero(coord);
             setStatus(SetRadius);
             break;
         case SetRadius:
-            if (m_circleData->center.valid){
-                moveRelativeZero(mouse);
-                m_circleData->radius = m_circleData->center.distanceTo(mouse);
+            if (m_circleData->center.valid) {
+                moveRelativeZero(coord);
+                m_circleData->radius = m_circleData->center.distanceTo(coord);
                 trigger();
             }
             break;
@@ -98,18 +97,21 @@ void RS_ActionDrawCircle::onCoordinateEvent(int status, [[maybe_unused]] bool is
     }
 }
 
-bool RS_ActionDrawCircle::doProcessCommand(int status, const QString &c) {
+bool RS_ActionDrawCircle::doProcessCommand(const int status, const QString& command) {
     bool accept = false;
     switch (status) {
         case SetRadius: {
             bool ok = false;
-            double r = RS_Math::eval(c, &ok);
-            if (ok && r > RS_TOLERANCE){
+            const double r = RS_Math::eval(command, &ok);
+            if (ok && r > RS_TOLERANCE) {
                 m_circleData->radius = r;
                 accept = true;
                 trigger();
-            } else
+            }
+            else {
                 commandMessage(tr("Not a valid expression"));
+            }
+            break;
         }
         default:
             break;

@@ -30,13 +30,12 @@
 #include "rs_selection.h"
 
 RS_ActionSelectLayer::RS_ActionSelectLayer(LC_ActionContext *actionContext)
-    :RS_ActionSelectBase("Select Layers", actionContext,RS2::ActionSelectLayer)
-    , m_entity(nullptr){
+    :RS_ActionSelectBase("Select Layers", actionContext,RS2::ActionSelectLayer) {
 }
 
-void RS_ActionSelectLayer::onMouseMoveEvent([[maybe_unused]]int status, LC_MouseEvent *event) {
+void RS_ActionSelectLayer::onMouseMoveEvent([[maybe_unused]] const int status, const LC_MouseEvent* event) {
     deleteSnapper();
-    auto ent = catchAndDescribe(event);
+    const auto ent = catchAndDescribe(event);
     if (ent != nullptr){
         highlightHover(ent);
     }
@@ -44,18 +43,18 @@ void RS_ActionSelectLayer::onMouseMoveEvent([[maybe_unused]]int status, LC_Mouse
 
 void RS_ActionSelectLayer::doTrigger() {
     if (m_entity){
-        RS_Selection s(m_document, m_viewport);
+        const RS_Selection s(m_document, m_viewport);
         s.selectLayer(m_entity);
     } else {
         RS_DEBUG->print("RS_ActionSelectLayer::trigger: Entity is NULL\n");
     }
 }
 
-void RS_ActionSelectLayer::selectionFinishedByKey([[maybe_unused]]QKeyEvent* e, bool escape) {
+void RS_ActionSelectLayer::selectionFinishedByKey([[maybe_unused]]QKeyEvent* e, [[maybe_unused]]bool escape) {
     finish();
 }
 
-void RS_ActionSelectLayer::onMouseLeftButtonRelease([[maybe_unused]] int status, LC_MouseEvent *e) {
+void RS_ActionSelectLayer::onMouseLeftButtonRelease([[maybe_unused]] int status, const LC_MouseEvent* e) {
     m_entity = catchEntityByEvent(e);
     trigger();
     invalidateSnapSpot();
@@ -64,7 +63,7 @@ void RS_ActionSelectLayer::onMouseLeftButtonRelease([[maybe_unused]] int status,
     }
 }
 
-void RS_ActionSelectLayer::onMouseRightButtonRelease(int status, [[maybe_unused]] LC_MouseEvent *e) {
+void RS_ActionSelectLayer::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     initPrevious(status);
 }
 

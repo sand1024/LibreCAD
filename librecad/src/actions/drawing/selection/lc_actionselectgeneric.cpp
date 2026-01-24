@@ -31,7 +31,7 @@ void LC_ActionSelectGeneric::updateMouseButtonHintsForSelection() {
                          MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Complete selection")));
 }
 
-void LC_ActionSelectGeneric::proceedSelectionComplete(bool allowEmptySelection, bool fromInit, unsigned int selectedCount) {
+void LC_ActionSelectGeneric::proceedSelectionComplete(const bool allowEmptySelection, const bool fromInit, const unsigned int selectedCount) {
     if (fromInit) {
         // do nothing, we should continue selecting objects if there is pre-selection
     }

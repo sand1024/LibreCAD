@@ -29,28 +29,26 @@
 #include "qg_linepolygonoptions.h"
 #include "rs_document.h"
 #include "rs_graphic.h"
-#include "rs_graphicview.h"
 #include "rs_line.h"
-#include "rs_pen.h"
 #include "rs_polyline.h"
 
 class RS_Layer;
 
-LC_ActionDrawLinePolygonBase::LC_ActionDrawLinePolygonBase( const char *name, LC_ActionContext *actionContext, RS2::ActionType actionType)
-    :LC_UndoableDocumentModificationAction(name, actionContext, actionType),m_edgesNumber(3), m_actionData(std::make_unique<ActionData>()), m_lastStatus(SetPoint1){}
+LC_ActionDrawLinePolygonBase::LC_ActionDrawLinePolygonBase( const char *name, LC_ActionContext *actionContext, const RS2::ActionType actionType)
+    :LC_UndoableDocumentModificationAction(name, actionContext, actionType),m_edgesNumber(3), m_actionData(std::make_unique<ActionData>()){}
 
 LC_ActionDrawLinePolygonBase::~LC_ActionDrawLinePolygonBase() = default;
 
 bool LC_ActionDrawLinePolygonBase::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     PolygonInfo polygonInfo;
     preparePolygonInfo(polygonInfo, m_actionData->point2);
-    auto polyline = createShapePolyline(polygonInfo, false);
+    const auto polyline = createShapePolyline(polygonInfo, false);
     if (polyline != nullptr) {
         if (m_createPolyline) {
             ctx += polyline;
         }
         else {
-            for (RS_Entity* entity : *polyline) {
+            for (const RS_Entity* entity : *polyline) {
                 if (entity != nullptr) {
                     auto* clone = entity->clone(); // use clone for safe deletion of polyline
                     ctx += clone;
@@ -68,7 +66,7 @@ void LC_ActionDrawLinePolygonBase::doTriggerCompletion([[maybe_unused]]bool succ
     }
 }
 
-bool LC_ActionDrawLinePolygonBase::doUpdateDistanceByInteractiveInput(const QString& tag, double distance) {
+bool LC_ActionDrawLinePolygonBase::doUpdateDistanceByInteractiveInput(const QString& tag, const double distance) {
     if (tag == "radius") {
         setRoundingRadius(distance);
         return true;
@@ -76,7 +74,7 @@ bool LC_ActionDrawLinePolygonBase::doUpdateDistanceByInteractiveInput(const QStr
     return false;
 }
 
-void LC_ActionDrawLinePolygonBase::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void LC_ActionDrawLinePolygonBase::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     RS_Vector mouse = e->snapPoint;
     switch (status) {
         case SetPoint1: {
@@ -102,7 +100,7 @@ void LC_ActionDrawLinePolygonBase::onMouseMoveEvent(int status, LC_MouseEvent *e
     }
 }
 
-void LC_ActionDrawLinePolygonBase::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
+void LC_ActionDrawLinePolygonBase::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     RS_Vector coord = e->snapPoint;
     if (status == SetPoint2){
         coord = getSnapAngleAwarePoint(e, m_actionData->point1, coord);
@@ -111,21 +109,21 @@ void LC_ActionDrawLinePolygonBase::onMouseLeftButtonRelease(int status, LC_Mouse
     fireCoordinateEvent(coord);
 }
 
-void LC_ActionDrawLinePolygonBase::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void LC_ActionDrawLinePolygonBase::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     deletePreview();
     initPrevious(status);
 }
 
-void LC_ActionDrawLinePolygonBase::onCoordinateEvent(int status,  [[maybe_unused]]bool isZero, const RS_Vector &mouse) {
+void LC_ActionDrawLinePolygonBase::onCoordinateEvent(const int status,  [[maybe_unused]]bool isZero, const RS_Vector &coord) {
     switch (status) {
         case SetPoint1: {
-            m_actionData->point1 = mouse;
+            m_actionData->point1 = coord;
             setStatus(SetPoint2);
-            moveRelativeZero(mouse);
+            moveRelativeZero(coord);
             break;
         }
         case SetPoint2: {
-            m_actionData->point2 = mouse;
+            m_actionData->point2 = coord;
             trigger();
             break;
         }
@@ -134,32 +132,32 @@ void LC_ActionDrawLinePolygonBase::onCoordinateEvent(int status,  [[maybe_unused
     }
 }
 
-bool LC_ActionDrawLinePolygonBase::doProcessCommand(int status, const QString &c) {
+bool LC_ActionDrawLinePolygonBase::doProcessCommand(int status, const QString &command) {
     bool accept = false;
-    if (checkCommand("number", c)){
+    if (checkCommand("number", command)){
         deletePreview();
-        m_lastStatus = (Status) status;
+        m_lastStatus = static_cast<Status>(status);
         setStatus(SetNumber);
         accept = true;
     }
-    else if (checkCommand("radius", c)){
+    else if (checkCommand("radius", command)){
         deletePreview();
         m_roundedCorners = true;
-        m_lastStatus = (Status) status;
+        m_lastStatus = static_cast<Status>(status);
         setStatus(SetRadius);
         accept = true;
     }
-    else if (checkCommand("str", c)){
+    else if (checkCommand("str", command)){
         m_roundedCorners = false;
         updateOptions();
         accept = true;
     }
-    else if (checkCommand("usepoly", c)){
+    else if (checkCommand("usepoly", command)){
         m_createPolyline = true;
         updateOptions();
         accept = true;
     }
-    else if (checkCommand("nopoly", c)){
+    else if (checkCommand("nopoly", command)){
         m_createPolyline = false;
         updateOptions();
         accept = true;
@@ -167,7 +165,7 @@ bool LC_ActionDrawLinePolygonBase::doProcessCommand(int status, const QString &c
     else{
         // process entered value
         bool ok = false;
-        double value = RS_Math::eval(c, &ok);
+        const double value = RS_Math::eval(command, &ok);
         if (ok){
             switch (status) {
                 case SetNumber:{ // handling number of rays
@@ -259,7 +257,7 @@ LC_ActionOptionsWidget* LC_ActionDrawLinePolygonBase::createOptionsWidget(){
 void LC_ActionDrawLinePolygonBase::createPolygonPreview(const RS_Vector &mouse) {
     PolygonInfo polygonInfo;
     preparePolygonInfo(polygonInfo, mouse);
-    RS_Polyline* polyline = createShapePolyline(polygonInfo, true);
+    const RS_Polyline* polyline = createShapePolyline(polygonInfo, true);
     if (polyline != nullptr){
         previewEntity(polyline);
         if (m_infoCursorOverlayPrefs->enabled && m_infoCursorOverlayPrefs->showEntityInfoOnCreation) {
@@ -317,7 +315,7 @@ RS_Polyline *LC_ActionDrawLinePolygonBase::createShapePolyline(PolygonInfo &poly
         RS_Vector jointPoint1 = LC_LineMath::getNearestPointOnInfiniteLine(parallelsIntersection, plusVertex, horizontalVertex);
         RS_Vector joinPoint2 = LC_LineMath::getNearestPointOnInfiniteLine(parallelsIntersection, minusVertex, horizontalVertex);
 
-        bool doRoundedCornerCorrection = false;
+        bool doRoundedCornerCorrection = false; // todo - intentionally disabled for now
         if (doRoundedCornerCorrection) {
 
             // here we'll do a correction for making rightmost point of radius rounding to be at snap point - so we'll move everything to right as we're on x-axis
@@ -339,7 +337,6 @@ RS_Polyline *LC_ActionDrawLinePolygonBase::createShapePolyline(PolygonInfo &poly
             // we can correct x only since here outer point is on x-axis
             jointPoint1.x = jointPoint1.x + outerShift;
             joinPoint2.x = joinPoint2.x + outerShift;
-
         }
 
         // this is the distance from center point to rounding join point
@@ -355,10 +352,12 @@ RS_Polyline *LC_ActionDrawLinePolygonBase::createShapePolyline(PolygonInfo &poly
             // now we define angles from parallels intersection point to rounding join points
             double jointAngle1 = parallelsIntersection.angleTo(jointPoint1);
             double jointAngle2 = parallelsIntersection.angleTo(joinPoint2);
-            bool outerReversed = (RS_Math::getAngleDifference(jointAngle2, jointAngle1) > M_PI);
+            bool outerReversed = RS_Math::getAngleDifference(jointAngle2, jointAngle1) > M_PI;
 
             // define angle for arc that is used for rounding  - the angle between rounding points
-            if (outerReversed) std::swap(jointAngle2, jointAngle1);
+            if (outerReversed) {
+                std::swap(jointAngle2, jointAngle1);
+            }
             double arcAngleLength = RS_Math::correctAngle(jointAngle1 - jointAngle2);
             // full circle:
             if (std::abs(std::remainder(arcAngleLength, 2. * M_PI)) < RS_TOLERANCE_ANGLE) {
@@ -367,7 +366,7 @@ RS_Polyline *LC_ActionDrawLinePolygonBase::createShapePolyline(PolygonInfo &poly
 
             // define bulge for polyline that will be used for outer rounding
             bulge = std::tan(std::abs(arcAngleLength) / 4.0);
-            bulge = (outerReversed ? -bulge : bulge);
+            bulge = outerReversed ? -bulge : bulge;
 
             if (jointAngle1 > jointAngle2) {
                 bulge = -bulge;
@@ -432,7 +431,7 @@ RS_Polyline *LC_ActionDrawLinePolygonBase::createShapePolyline(PolygonInfo &poly
     }
     if (!drawRounded){
         for (int i = 0; i <= m_edgesNumber; ++i) {
-            RS_Vector const &vertex = centerPoint +
+            const RS_Vector&vertex = centerPoint +
                                       RS_Vector::polar(vertexDistance, vertexStartAngle + i * segmentAngle);
 
             result->addVertex(vertex, bulge, false);
@@ -440,8 +439,8 @@ RS_Polyline *LC_ActionDrawLinePolygonBase::createShapePolyline(PolygonInfo &poly
     }
 
     // update inner radius
-    RS_Vector const vertex0 = centerPoint.relative(vertexDistance, vertexStartAngle);
-    RS_Vector const vertex1 = centerPoint.relative(vertexDistance, vertexStartAngle + segmentAngle);
+    const RS_Vector vertex0 = centerPoint.relative(vertexDistance, vertexStartAngle);
+    const RS_Vector vertex1 = centerPoint.relative(vertexDistance, vertexStartAngle + segmentAngle);
 
     RS_Vector midPoint = (vertex0+vertex1)*0.5;
     double innerRadius = centerPoint.distanceTo(midPoint);

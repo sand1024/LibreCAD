@@ -25,11 +25,9 @@
 **********************************************************************/
 
 #include "rs_actionmodifyscale.h"
+
 #include "lc_actioninfomessagebuilder.h"
 #include "lc_modifyscaleoptions.h"
-#include "rs_debug.h"
-#include "rs_dialogfactory.h"
-#include "rs_dialogfactoryinterface.h"
 #include "rs_line.h"
 #include "rs_modification.h"
 #include "rs_preview.h"
@@ -50,7 +48,7 @@ namespace {
  * @param target - the target
  * @return double - factor
  */
-    double getFactor(double reference, double source, double target) {
+    double getFactor(const double reference, const double source, const double target) {
         const double dxOld = source - reference;
         const double dxNew = target - reference;
         return (std::abs(dxOld) > RS_TOLERANCE && std::abs(dxNew) > RS_TOLERANCE) ? dxNew/dxOld : 1.;
@@ -64,7 +62,7 @@ RS_ActionModifyScale::RS_ActionModifyScale(LC_ActionContext *actionContext)
 
 RS_ActionModifyScale::~RS_ActionModifyScale() = default;
 
-void RS_ActionModifyScale::init(int status) {
+void RS_ActionModifyScale::init(const int status) {
     LC_ActionPreSelectionAwareBase::init(status);
 }
 
@@ -79,7 +77,7 @@ bool RS_ActionModifyScale::doTriggerModifications(LC_DocumentModificationBatch& 
     return true;
 }
 
-void RS_ActionModifyScale::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+void RS_ActionModifyScale::doTriggerSelectionUpdate(const bool keepSelected, const LC_DocumentModificationBatch& ctx) {
     if (m_actionData->data.keepOriginals) {
         unselect(m_selectedEntities);
     }
@@ -93,7 +91,7 @@ void RS_ActionModifyScale::doTriggerCompletion([[maybe_unused]]bool success) {
 
 #define DRAW_TRIANGLES_ON_PREVIEW_NO
 
-void RS_ActionModifyScale::onMouseMoveEventSelected(int status, LC_MouseEvent *e) {
+void RS_ActionModifyScale::onMouseMoveEventSelected(const int status, const LC_MouseEvent* e) {
     RS_Vector mouse = e->snapPoint;
     switch (status) {
         case SetReferencePoint: {
@@ -197,7 +195,7 @@ void RS_ActionModifyScale::onMouseMoveEventSelected(int status, LC_MouseEvent *e
     }
 }
 
-RS_Vector RS_ActionModifyScale::getTargetPoint(LC_MouseEvent* e){
+RS_Vector RS_ActionModifyScale::getTargetPoint(const LC_MouseEvent* e){
     if (m_actionData->data.isotropicScaling) {
         RS_Vector mouse = e->snapPoint;
         if (e->isControl){
@@ -208,19 +206,18 @@ RS_Vector RS_ActionModifyScale::getTargetPoint(LC_MouseEvent* e){
         const RS_Vector projected = centerSourceLine.getNearestPointOnEntity(mouse, false);
         snapPoint(projected, true);
         return projected;
-    } else {
-        return e->snapPoint;
     }
+    return e->snapPoint;
 }
 
 void RS_ActionModifyScale::showPreview(){
     findFactor();
-    RS_ScaleData &previewData = m_actionData->data;
+    const RS_ScaleData &previewData = m_actionData->data;
     showPreview(previewData);
     updateOptionsUI(0);
 }
 
-void RS_ActionModifyScale::showPreview(RS_ScaleData &previewData) const {
+void RS_ActionModifyScale::showPreview(const RS_ScaleData &previewData) const {
     LC_DocumentModificationBatch ctx;
     RS_Modification::scale(previewData, m_selectedEntities, true, ctx);
     previewEntitiesToAdd(ctx);
@@ -235,10 +232,10 @@ void RS_ActionModifyScale::showPreview(RS_ScaleData &previewData) const {
                 previewRefPoint(scaledSource);
             }
         }
-    };
+    }
 }
 
-void RS_ActionModifyScale::onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent *e) {
+void RS_ActionModifyScale::onMouseLeftButtonReleaseSelected(const int status, const LC_MouseEvent* e) {
     RS_Vector snapped = e->snapPoint;
     switch (status){
         case SetReferencePoint: {
@@ -267,7 +264,7 @@ void RS_ActionModifyScale::onMouseLeftButtonReleaseSelected(int status, LC_Mouse
     fireCoordinateEvent(snapped);
 }
 
-void RS_ActionModifyScale::onMouseRightButtonReleaseSelected(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionModifyScale::onMouseRightButtonReleaseSelected(const int status, [[maybe_unused]] const LC_MouseEvent* event) {
     deletePreview();
     switch (status) {
         case SetReferencePoint: {
@@ -281,11 +278,11 @@ void RS_ActionModifyScale::onMouseRightButtonReleaseSelected(int status, [[maybe
     }
 }
 // fixme - is it necessary to add other commands support? Fixed, scale factors etc.
-bool RS_ActionModifyScale::doProcessCommand(int status, const QString &c) {
+bool RS_ActionModifyScale::doProcessCommand(const int status, const QString &command) {
     bool accepted = false;
     switch (status){
         case SetReferencePoint: {
-            if (checkCommand("center",c)) {
+            if (checkCommand("center",command)) {
                 const RS_BoundData boundingForSelected = RS_Modification::getBoundingRect(m_selectedEntities);
                 const RS_Vector centerPoint = boundingForSelected.getCenter();
                 fireCoordinateEvent(centerPoint);
@@ -315,25 +312,25 @@ void RS_ActionModifyScale::tryTrigger() {
     }
 }
 
-void RS_ActionModifyScale::onCoordinateEvent(int status, [[maybe_unused]]bool isZero, const RS_Vector &mouse) {
+void RS_ActionModifyScale::onCoordinateEvent(const int status, [[maybe_unused]]bool isZero, const RS_Vector &coord) {
     switch(status) {
         case SetReferencePoint: {
-            m_actionData->data.referencePoint = mouse;
-            moveRelativeZero(mouse);
+            m_actionData->data.referencePoint = coord;
+            moveRelativeZero(coord);
             tryTrigger();
             break;
         }
         case SetSourcePoint: {
             previewRefPoint(m_actionData->data.referencePoint);
-            if (mouse.squaredTo(m_actionData->data.referencePoint) > RS_TOLERANCE2) {
-                m_actionData->sourcePoint = mouse;
+            if (coord.squaredTo(m_actionData->data.referencePoint) > RS_TOLERANCE2) {
+                m_actionData->sourcePoint = coord;
                 setStatus(SetTargetPoint);
             }
             break;
         }
         case SetTargetPoint: {
-            if (mouse.squaredTo(m_actionData->data.referencePoint) > RS_TOLERANCE2) {
-                m_actionData->targetPoint = mouse;
+            if (coord.squaredTo(m_actionData->data.referencePoint) > RS_TOLERANCE2) {
+                m_actionData->targetPoint = coord;
                 trigger();
                 finish();
             }
@@ -363,7 +360,7 @@ void RS_ActionModifyScale::determineScaleFactor(RS_ScaleData& data,
     data.factor.valid = true;
 }
 
-void RS_ActionModifyScale::updateMouseButtonHintsForSelected(int status) {
+void RS_ActionModifyScale::updateMouseButtonHintsForSelected(const int status) {
     switch (status) {
         case SetReferencePoint:
             updateMouseWidgetTRCancel(tr( "Specify scale center"), MOD_SHIFT_AND_CTRL(MSG_REL_ZERO, tr("Snap to center of selection")));
@@ -398,7 +395,7 @@ bool RS_ActionModifyScale::isIsotropicScaling() const {
     return m_actionData->data.isotropicScaling;
 }
 
-void RS_ActionModifyScale::setIsotropicScaling(bool enable) const {
+void RS_ActionModifyScale::setIsotropicScaling(const bool enable) const {
     m_actionData->data.isotropicScaling = enable;
 }
 
@@ -406,7 +403,7 @@ double RS_ActionModifyScale::getFactorX() const {
     return m_actionData->data.factor.x;
 }
 
-void RS_ActionModifyScale::setFactorX(double val) const {
+void RS_ActionModifyScale::setFactorX(const double val) const {
     m_actionData->data.factor.x = val;
 }
 
@@ -414,7 +411,7 @@ double RS_ActionModifyScale::getFactorY() const {
     return m_actionData->data.factor.y;
 }
 
-void RS_ActionModifyScale::setFactorY(double val) const {
+void RS_ActionModifyScale::setFactorY(const double val) const {
     m_actionData->data.factor.y = val;
 }
 
@@ -422,7 +419,7 @@ bool RS_ActionModifyScale::isExplicitFactor() const {
     return m_actionData->data.toFindFactor;
 }
 
-void RS_ActionModifyScale::setExplicitFactor(bool val) {
+void RS_ActionModifyScale::setExplicitFactor(const bool val) {
     if (!val){
         const int status = getStatus();
         if (status == SetTargetPoint || status == SetSourcePoint){

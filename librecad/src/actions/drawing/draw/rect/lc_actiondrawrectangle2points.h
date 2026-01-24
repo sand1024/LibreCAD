@@ -36,11 +36,11 @@ public:
         SNAP_MIDDLE // middle of rectangle
     };
 
-    LC_ActionDrawRectangle2Points(LC_ActionContext *actionContext);
+    explicit LC_ActionDrawRectangle2Points(LC_ActionContext *actionContext);
     ~LC_ActionDrawRectangle2Points() override;
     QStringList getAvailableCommands() override;
     void init(int status) override;
-    int getSecondPointSnapMode() const{return m_secondPointSnapMode;};
+    int getSecondPointSnapMode() const{return m_secondPointSnapMode;}
     void setSecondPointSnapMode(int value);
 protected:
     /**
@@ -58,20 +58,20 @@ protected:
     int m_secondPointSnapMode = SNAP_CORNER;
 
     ShapeData createPolyline(const RS_Vector &snapPoint) override;
-    void doOnLeftMouseButtonRelease(LC_MouseEvent *e, int status, const RS_Vector &snapPoint) override;
+    void doOnLeftMouseButtonRelease(const LC_MouseEvent* e, int status, const RS_Vector &snapPoint) override;
     void processCommandValue(double value, bool &toMainStatus) override;
     bool processCustomCommand(int status, const QString &command, bool &toMainStatus) override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    bool doCheckMayDrawPreview(LC_MouseEvent *pEvent, int status) override;
+    bool doCheckMayDrawPreview(const LC_MouseEvent* e, int status) override;
     void doAfterTrigger() override;
     void doUpdateMouseButtonHints(int status) override;
-    RS_Vector createSecondCornerSnapForGivenRectSize(RS_Vector size) const;
-    void doProcessCoordinateEvent(const RS_Vector &vector, bool zero, int status) override;
+    RS_Vector createSecondCornerSnapForGivenRectSize(const RS_Vector& size) const;
+    void doProcessCoordinateEvent(const RS_Vector &coord, bool zero, int status) override;
     int doGetStatusForInitialSnapToRelativeZero() override;
-    void doInitialSnapToRelativeZero(RS_Vector vector) override;
-    void doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
+    void doInitialSnapToRelativeZero(const RS_Vector& zero) override;
+    void doPreparePreviewEntities(const LC_MouseEvent* e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
 };
 
-#endif // LC_ACTIONDRAWRECTANGLE2POINTS_H
+#endif

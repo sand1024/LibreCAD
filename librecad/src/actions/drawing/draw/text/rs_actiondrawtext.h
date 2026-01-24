@@ -47,7 +47,7 @@ public:
     QStringList getAvailableCommands() override;
     void setText(const QString &t);
     const QString &getText() const;
-    void setUcsAngleDegrees(double a);
+    void setUcsAngleDegrees(double ucsRelAngleDegrees);
     double getUcsAngleDegrees() const;
 protected:
     // fixme - sand - cmd -  add support of entering angle as part of command line
@@ -69,12 +69,12 @@ protected:
     bool m_snappedToRelZero = false;
 
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     bool doProcessCommand(int status, const QString &command) override;
     void updateMouseButtonHints() override;
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector &coord) override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;

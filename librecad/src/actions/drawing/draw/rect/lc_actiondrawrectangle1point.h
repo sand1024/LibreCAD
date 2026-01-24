@@ -45,17 +45,17 @@ public:
         SNAP_BOTTOM_RIGHT // bottom-right corner
     };
 
-    LC_ActionDrawRectangle1Point(LC_ActionContext *actionContext);
+    explicit LC_ActionDrawRectangle1Point(LC_ActionContext *actionContext);
     ~LC_ActionDrawRectangle1Point() override;
 
     QStringList getAvailableCommands() override;
     void setWidth(double value);
-    double getWidth()const {return m_width;};
+    double getWidth()const {return m_width;}
     void setHeight(double value);
-    double getHeight() const{return m_height;};
+    double getHeight() const{return m_height;}
     void setSizeInner(bool value);
-    bool isSizeInner() const{return m_sizeIsInner;};
-    bool isBaseAngleFree() const {return m_angleIsFree;};
+    bool isSizeInner() const{return m_sizeIsInner;}
+    bool isBaseAngleFree() const {return m_angleIsFree;}
     void setBaseAngleFree(bool val);
 protected:
     // width of rect
@@ -69,23 +69,23 @@ protected:
     // indicates that CTRL is pressed on trigger invocation by mouse
     bool m_controlPressedOnMouseRelease = false;
     RS_Vector m_insertionPoint = RS_Vector{false};
-    static const std::vector<RS_Vector> m_snapPoints;
+    static const std::vector<RS_Vector> SNAP_POINTS;
     LC_ActionOptionsWidget* createOptionsWidget() override;
     ShapeData createPolyline(const RS_Vector &snapPoint) override;
-    void doOnLeftMouseButtonRelease(LC_MouseEvent *e, int status, const RS_Vector &snapPoint) override;
+    void doOnLeftMouseButtonRelease(const LC_MouseEvent* e, int status, const RS_Vector &snap) override;
     void processCommandValue(double value, bool &toMainStatus) override;
     bool processCustomCommand(int status, const QString &command,bool &toMainStatus) override;
     void doUpdateMouseButtonHints(int status) override;
-    bool doCheckMayDrawPreview(LC_MouseEvent *event, int status) override;
-    void doProcessCoordinateEvent(const RS_Vector &vector, bool zero, int status) override;
+    bool doCheckMayDrawPreview(const LC_MouseEvent* event, int status) override;
+    void doProcessCoordinateEvent(const RS_Vector &coord, bool isRelativeZero, int status) override;
     int doGetStatusForInitialSnapToRelativeZero() override;
-    void doInitialSnapToRelativeZero(RS_Vector vector) override;
-    void doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
-    RS_Vector doGetMouseSnapPoint(LC_MouseEvent *e) override;
-    void doBack(LC_MouseEvent *pEvent, int status) override;
+    void doInitialSnapToRelativeZero(const RS_Vector& relZero) override;
+    void doPreparePreviewEntities(const LC_MouseEvent* e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
+    RS_Vector doGetMouseSnapPoint(const LC_MouseEvent* e) override;
+    void doBack(const LC_MouseEvent* e, int status) override;
     RS_Vector doGetRelativeZeroAfterTrigger() override;
     void doAfterTrigger() override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
 };
-#endif // LC_ACTIONDRAWRECTANGLE1POINT_H
+#endif

@@ -40,9 +40,7 @@
  */
 // fixme - sand - ucs - SUPPORT UCS, ANGLES FOR INSERTION!
 RS_ActionBlocksInsert::RS_ActionBlocksInsert(LC_ActionContext *actionContext)
-    : LC_SingleEntityCreationAction("Blocks Insert", actionContext, RS2::ActionBlocksInsert),
-      m_block(nullptr),
-      m_lastStatus(SetUndefined){
+    : LC_SingleEntityCreationAction("Blocks Insert", actionContext, RS2::ActionBlocksInsert){
     reset(); // init data Member
 }
 
@@ -61,7 +59,7 @@ void RS_ActionBlocksInsert::init(const int status){
                 const QString parentBlockName = static_cast<RS_Block*>(m_document)->getName();
                 if (parentBlockName == blockName) {
                     commandMessage(tr("Block cannot contain an insert of itself."));
-                    finish(false);
+                    finish();
                 } else {
                     const QStringList bnChain = m_block->findNestedInsert(parentBlockName);
                     if (!bnChain.empty()) {
@@ -70,12 +68,12 @@ void RS_ActionBlocksInsert::init(const int status){
                                        + tr(" has nested insert of current block in:\n")
                                        + bnChain.join("->")
                                        + tr("\nThis block cannot be inserted."));
-                        finish(false);
+                        finish();
                     }
                 }
             }
         } else {
-            finish(false);
+            finish();
         }
     }
 }
@@ -102,10 +100,10 @@ RS_Entity* RS_ActionBlocksInsert::doTriggerCreateEntity() {
 void RS_ActionBlocksInsert::doTriggerCompletion([[maybe_unused]]bool success) {
 }
 
-void RS_ActionBlocksInsert::onMouseMoveEvent(const int status, LC_MouseEvent *e){
+void RS_ActionBlocksInsert::onMouseMoveEvent(const int status, const LC_MouseEvent* event){
     switch (status) {
         case SetTargetPoint: {
-            m_data->insertionPoint = e->snapPoint;
+            m_data->insertionPoint = event->snapPoint;
             if (m_block != nullptr) {
                 m_data->updateMode = RS2::PreviewUpdate;
                 const auto insertData = m_data.get();
@@ -144,11 +142,11 @@ bool RS_ActionBlocksInsert::doUpdateDistanceByInteractiveInput(const QString& ta
     return false;
 }
 
-void RS_ActionBlocksInsert::onMouseLeftButtonRelease([[maybe_unused]] int status, LC_MouseEvent *e){
+void RS_ActionBlocksInsert::onMouseLeftButtonRelease([[maybe_unused]] int status, const LC_MouseEvent* e){
     fireCoordinateEvent(e->snapPoint);
 }
 
-void RS_ActionBlocksInsert::onMouseRightButtonRelease(const int status, [[maybe_unused]] LC_MouseEvent *e){
+void RS_ActionBlocksInsert::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e){
     initPrevious(status);
 }
 
@@ -157,36 +155,36 @@ void RS_ActionBlocksInsert::onCoordinateEvent([[maybe_unused]] int status, [[may
     trigger();
 }
 
-bool RS_ActionBlocksInsert::doProcessCommand(int status, const QString &c){
+bool RS_ActionBlocksInsert::doProcessCommand(int status, const QString &command){
     bool accept = false;
     switch (status) {
         case SetTargetPoint: {
-            if (checkCommand("angle", c)) {
+            if (checkCommand("angle", command)) {
                 deletePreview();
                 m_lastStatus = static_cast<Status>(status);
                 setStatus(SetAngle);
                 accept = true;
-            } else if (checkCommand("factor", c)) {
+            } else if (checkCommand("factor", command)) {
                 deletePreview();
                 m_lastStatus = static_cast<Status>(status);
                 setStatus(SetFactor);
                 accept = true;
-            } else if (checkCommand("columns", c)) {
+            } else if (checkCommand("columns", command)) {
                 deletePreview();
                 m_lastStatus = static_cast<Status>(status);
                 setStatus(SetColumns);
                 accept = true;
-            } else if (checkCommand("rows", c)) {
+            } else if (checkCommand("rows", command)) {
                 deletePreview();
                 m_lastStatus = static_cast<Status>(status);
                 setStatus(SetRows);
                 accept = true;
-            } else if (checkCommand("columnspacing", c)) {
+            } else if (checkCommand("columnspacing", command)) {
                 deletePreview();
                 m_lastStatus = static_cast<Status>(status);
                 accept       = true;
                 setStatus(SetColumnSpacing);
-            } else if (checkCommand("rowspacing", c)) {
+            } else if (checkCommand("rowspacing", command)) {
                 deletePreview();
                 m_lastStatus = static_cast<Status>(status);
                 setStatus(SetRowSpacing);
@@ -196,7 +194,7 @@ bool RS_ActionBlocksInsert::doProcessCommand(int status, const QString &c){
         }
         case SetAngle: {
             bool ok;
-            const double a = RS_Math::eval(c, &ok);
+            const double a = RS_Math::eval(command, &ok);
             if (ok) {
                 accept = true;
                 m_data->angle = RS_Math::deg2rad(a);
@@ -209,7 +207,7 @@ bool RS_ActionBlocksInsert::doProcessCommand(int status, const QString &c){
         }
         case SetFactor: {
             bool ok;
-            const double f = RS_Math::eval(c, &ok);
+            const double f = RS_Math::eval(command, &ok);
             if (ok) {
                 setFactor(f);
                 accept = true;
@@ -222,7 +220,7 @@ bool RS_ActionBlocksInsert::doProcessCommand(int status, const QString &c){
         }
         case SetColumns: {
             bool ok;
-            const int cols = static_cast<int>(RS_Math::eval(c, &ok));
+            const int cols = static_cast<int>(RS_Math::eval(command, &ok));
             if (ok) {
                 m_data->cols = cols;
                 accept = true;
@@ -235,7 +233,7 @@ bool RS_ActionBlocksInsert::doProcessCommand(int status, const QString &c){
         }
         case SetRows: {
             bool ok;
-            const int rows = static_cast<int>(RS_Math::eval(c, &ok));
+            const int rows = static_cast<int>(RS_Math::eval(command, &ok));
             if (ok) {
                 m_data->rows = rows;
                 accept = true;
@@ -248,7 +246,7 @@ bool RS_ActionBlocksInsert::doProcessCommand(int status, const QString &c){
         }
         case SetColumnSpacing: {
             bool ok;
-            const double cs = static_cast<int>(RS_Math::eval(c, &ok));
+            const double cs = static_cast<int>(RS_Math::eval(command, &ok));
             if (ok) {
                 m_data->spacing.x = cs;
                 accept = true;
@@ -261,7 +259,7 @@ bool RS_ActionBlocksInsert::doProcessCommand(int status, const QString &c){
         }
         case SetRowSpacing: {
             bool ok;
-            const int rs = static_cast<int>(RS_Math::eval(c, &ok));
+            const int rs = static_cast<int>(RS_Math::eval(command, &ok));
             if (ok) {
                 m_data->spacing.y = rs;
                 accept = true;

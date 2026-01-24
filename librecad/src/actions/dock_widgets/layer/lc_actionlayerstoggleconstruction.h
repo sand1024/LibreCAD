@@ -40,11 +40,13 @@ class RS_Layer;
 class LC_ActionLayersToggleConstruction : public RS_ActionInterface {
     Q_OBJECT
 public:
-    LC_ActionLayersToggleConstruction(LC_ActionContext *actionContext, RS_Layer* layer);
-	void init(int status) override;
-	void trigger() override;
+    LC_ActionLayersToggleConstruction(LC_ActionContext* actionContext, RS_Layer* layer);
+    void init(int status) override;
+    void trigger() override;
+
 protected:
     RS_Layer* m_layer = nullptr;
+
 private:
     void deselectEntities(RS_Layer* layer) const;
 };

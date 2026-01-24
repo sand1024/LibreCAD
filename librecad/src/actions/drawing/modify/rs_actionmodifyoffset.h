@@ -42,11 +42,11 @@ struct RS_OffsetData;
 class RS_ActionModifyOffset : public LC_ActionModifyBase {
     Q_OBJECT
 public:
-    RS_ActionModifyOffset(LC_ActionContext *actionContext);
+    explicit RS_ActionModifyOffset(LC_ActionContext *actionContext);
     ~RS_ActionModifyOffset() override;
     double getDistance() const;
     void setDistance(double distance) const;
-    bool isFixedDistance() const {return m_distanceIsFixed;};
+    bool isFixedDistance() const {return m_distanceIsFixed;}
     void setDistanceFixed(bool value);
 protected:
     /**
@@ -62,13 +62,13 @@ protected:
     std::unique_ptr<RS_OffsetData> m_offsetData;
 
     LC_ActionOptionsWidget* createOptionsWidget() override;
-    void onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
-    void onMouseRightButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
+    void onMouseLeftButtonReleaseSelected(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonReleaseSelected(int status, const LC_MouseEvent* event) override;
     void updateMouseButtonHintsForSelection() override;
     void updateMouseButtonHintsForSelected(int status) override;
     bool isAllowTriggerOnEmptySelection() override;
     LC_ModifyOperationFlags *getModifyOperationFlags() override;
-    void onMouseMoveEventSelected(int status, LC_MouseEvent *e) override;
+    void onMouseMoveEventSelected(int status, const LC_MouseEvent* e) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
     void doTriggerCompletion(bool success) override;
     void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;

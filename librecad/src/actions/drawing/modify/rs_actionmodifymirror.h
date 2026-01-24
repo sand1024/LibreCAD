@@ -39,9 +39,9 @@ struct RS_MirrorData;
 class RS_ActionModifyMirror:public LC_ActionModifyBase {
     Q_OBJECT
 public:
-    RS_ActionModifyMirror(LC_ActionContext *actionContext);
+    explicit RS_ActionModifyMirror(LC_ActionContext *actionContext);
     ~RS_ActionModifyMirror() override;
-    bool isMirrorToExistingLine() const {return m_mirrorToExistingLine;};
+    bool isMirrorToExistingLine() const {return m_mirrorToExistingLine;}
     void setMirrorToExistingLine(bool value);
 protected:
     /**
@@ -58,18 +58,17 @@ protected:
     void previewMirror(const RS_Vector &mirrorLinePoint1, const RS_Vector &mirrorLinePoint2) const;
     void showOptionsAndTrigger();
     RS2::CursorType doGetMouseCursorSelected(int status) override;
-    void onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
-    void onMouseRightButtonReleaseSelected(int status, LC_MouseEvent *pEvent) override;
+    void onMouseLeftButtonReleaseSelected(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonReleaseSelected(int status, const LC_MouseEvent* event) override;
     void updateMouseButtonHintsForSelection() override;
     void updateMouseButtonHintsForSelected(int status) override;
     LC_ModifyOperationFlags *getModifyOperationFlags() override;
     void doPerformTrigger();
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector &coord) override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
     void obtainFlipLineCoordinates(RS_Vector *start, RS_Vector *end, bool verticalLine) const;
-    void onMouseMoveEventSelected(int status, LC_MouseEvent *event) override;
+    void onMouseMoveEventSelected(int status, const LC_MouseEvent* e) override;
     void doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) override;
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
-
 };
 #endif

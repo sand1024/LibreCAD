@@ -25,19 +25,18 @@
 **
 **********************************************************************/
 
-
 #include "rs_actiondrawline.h"
 
+#include "qg_graphicview.h"
 #include "qg_lineoptions.h"
+#include "rs_actioneditundo.h"
 #include "rs_debug.h"
 #include "rs_line.h"
-#include "rs_actioneditundo.h"
-#include "qg_graphicview.h"
 
 struct RS_ActionDrawLine::History{
     History() = default;
 
-    explicit History(RS_ActionDrawLine::HistoryAction action,
+    explicit History(const HistoryAction action,
                      const RS_Vector& previous,
                      const RS_Vector& current,
                      const int start) :
@@ -46,7 +45,7 @@ struct RS_ActionDrawLine::History{
         currentPoint( current),
         startOffset( start) {}
 
-    RS_ActionDrawLine::HistoryAction    historicAction = HA_SetStartpoint;    ///< action to undo/redo
+    HistoryAction    historicAction = HA_SetStartpoint;    ///< action to undo/redo
     RS_Vector       previousPoint;     ///< previous coordinate
     RS_Vector       currentPoint;     ///< current coordinate
     int             startOffset = 0;///< offset to start point for close method
@@ -68,8 +67,8 @@ struct RS_ActionDrawLine::ActionData{
     size_t index(int offset = 0) const;
 };
 
-size_t RS_ActionDrawLine::ActionData::index(int offset /*= 0*/) const {
-    return static_cast<size_t>( std::max( 0, historyIndex + offset));
+size_t RS_ActionDrawLine::ActionData::index(const int offset /*= 0*/) const {
+    return static_cast<size_t>( std::max<int>( 0, historyIndex + offset));
 }
 
 RS_ActionDrawLine::RS_ActionDrawLine(LC_ActionContext *actionContext) :
@@ -84,7 +83,7 @@ void RS_ActionDrawLine::reset(){
     m_actionData = std::make_unique<ActionData>();
 }
 
-void RS_ActionDrawLine::init(int status){
+void RS_ActionDrawLine::init(const int status){
     RS_DEBUG->print("RS_ActionDrawLine::init");
     RS_PreviewActionInterface::init(status);
 
@@ -101,7 +100,7 @@ RS_Entity* RS_ActionDrawLine::doTriggerCreateEntity() {
 void RS_ActionDrawLine::doTriggerCompletion([[maybe_unused]]bool success) {
 }
 
-void RS_ActionDrawLine::onMouseMoveEvent(int status, LC_MouseEvent *e) {
+void RS_ActionDrawLine::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     RS_Vector mouse = e->snapPoint;
     switch (status){
         case SetStartpoint: {
@@ -109,7 +108,7 @@ void RS_ActionDrawLine::onMouseMoveEvent(int status, LC_MouseEvent *e) {
             break;
         }
         case SetEndpoint: {
-            RS_Vector &startPoint = m_actionData->data.startpoint;
+            const RS_Vector &startPoint = m_actionData->data.startpoint;
             if (startPoint.valid){
                 mouse = getSnapAngleAwarePoint(e, startPoint, mouse, true);
                 previewToCreateLine(startPoint, mouse);
@@ -125,7 +124,7 @@ void RS_ActionDrawLine::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     }
 }
 
-void RS_ActionDrawLine::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
+void RS_ActionDrawLine::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     RS_Vector snapped = e->snapPoint;
     // Snapping to angle(15*) if shift key is pressed
     if (status == SetEndpoint ) {
@@ -134,7 +133,7 @@ void RS_ActionDrawLine::onMouseLeftButtonRelease(int status, LC_MouseEvent *e) {
     fireCoordinateEvent(snapped);
 }
 
-void RS_ActionDrawLine::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionDrawLine::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     deletePreview();
     switch (status) {
         default:
@@ -147,7 +146,7 @@ void RS_ActionDrawLine::onMouseRightButtonRelease(int status, [[maybe_unused]]LC
     }
 }
 
-void RS_ActionDrawLine::onCoordinateEvent(int status, [[maybe_unused]] bool isZero, const RS_Vector &mouse) {
+void RS_ActionDrawLine::onCoordinateEvent(const int status, [[maybe_unused]] bool isZero, const RS_Vector &coord) {
     RS_DEBUG->print("RS_ActionDrawLine::coordinateEvent");
 
     if (m_actionData->data.startpoint.valid == false && status == SetEndpoint) {
@@ -156,21 +155,21 @@ void RS_ActionDrawLine::onCoordinateEvent(int status, [[maybe_unused]] bool isZe
     }
     switch (status) {
         case SetStartpoint: {
-            m_actionData->data.startpoint = mouse;
+            m_actionData->data.startpoint = coord;
             m_actionData->startOffset = 0;
-            addHistory( HA_SetStartpoint, getRelativeZero(), mouse, m_actionData->startOffset);
+            addHistory( HA_SetStartpoint, getRelativeZero(), coord, m_actionData->startOffset);
             setStatus(SetEndpoint);
-            moveRelativeZero(mouse);
+            moveRelativeZero(coord);
             updateMouseButtonHints();
             static_cast<QG_LineOptions*>(m_optionWidget.get())->enableButtons();
             break;
         }
         case SetEndpoint: {
-            if ((mouse-m_actionData->data.startpoint).squared() > RS_TOLERANCE2) {
+            if ((coord-m_actionData->data.startpoint).squared() > RS_TOLERANCE2) {
                 // refuse zero length lines
-                m_actionData->data.endpoint = mouse;
+                m_actionData->data.endpoint = coord;
                 ++m_actionData->startOffset;
-                addHistory( HA_SetEndpoint, m_actionData->data.startpoint, mouse, m_actionData->startOffset);
+                addHistory( HA_SetEndpoint, m_actionData->data.startpoint, coord, m_actionData->startOffset);
                 trigger();
                 m_actionData->data.startpoint = m_actionData->data.endpoint;
                 if (m_actionData->history.size() >= 2) {
@@ -187,12 +186,12 @@ void RS_ActionDrawLine::onCoordinateEvent(int status, [[maybe_unused]] bool isZe
     RS_DEBUG->print("RS_ActionDrawLine::coordinateEvent: OK");
 }
 
-bool RS_ActionDrawLine::doProcessCommand(int status, const QString &c) {
+bool RS_ActionDrawLine::doProcessCommand(const int status, const QString &command) {
     RS_DEBUG->print("RS_ActionDrawLine::commandEvent");
 
     bool accept = false;
 
-    if (checkCommand( "redo", c)) {
+    if (checkCommand( "redo", command)) {
         redo();
         accept = true;
         updateMouseButtonHints();
@@ -202,11 +201,11 @@ bool RS_ActionDrawLine::doProcessCommand(int status, const QString &c) {
             case SetStartpoint:
                 break;
             case SetEndpoint: {
-                if (checkCommand("close", c)) {
+                if (checkCommand("close", command)) {
                     close();
                     updateMouseButtonHints();
                     accept = true;
-                } else if (checkCommand("undo", c)) {
+                } else if (checkCommand("undo", command)) {
                     undo();
                     updateMouseButtonHints();
                     accept = true;
@@ -292,7 +291,7 @@ void RS_ActionDrawLine::close(){
         return;
     }
     if (1 < m_actionData->startOffset  && 0 <= m_actionData->historyIndex - m_actionData->startOffset) {
-        History h(m_actionData->history.at( m_actionData->index( -m_actionData->startOffset)));
+        const History h(m_actionData->history.at( m_actionData->index( -m_actionData->startOffset)));
         if ((m_actionData->data.startpoint - h.currentPoint).squared() > RS_TOLERANCE2) {
             m_actionData->data.endpoint = h.currentPoint;
             addHistory( HA_Close, m_actionData->data.startpoint, m_actionData->data.endpoint, m_actionData->startOffset);
@@ -311,17 +310,16 @@ void RS_ActionDrawLine::next(){
     setStatus(SetStartpoint);
 }
 
-void RS_ActionDrawLine::addHistory(RS_ActionDrawLine::HistoryAction action, const RS_Vector& previous, const RS_Vector& current, const int start) const {
-    m_actionData->historyIndex = std::max(m_actionData->historyIndex, -1);
+void RS_ActionDrawLine::addHistory(HistoryAction action, const RS_Vector& previous, const RS_Vector& current, const int start) const {
+    m_actionData->historyIndex = std::max<int>(m_actionData->historyIndex, -1);
 
-    size_t offset = m_actionData->historyIndex + 1;
+    const size_t offset = m_actionData->historyIndex + 1;
     assert(offset <= m_actionData->history.size());
     m_actionData->history.resize(offset);
 
     m_actionData->history.emplace_back(action, previous, current, start);
     m_actionData->historyIndex = static_cast<int>(m_actionData->history.size() - 1);
 }
-
 
 bool RS_ActionDrawLine::canUndo() const {
     return m_actionData != nullptr && 0 <= m_actionData->historyIndex;
@@ -372,7 +370,7 @@ void RS_ActionDrawLine::undo(){
 void RS_ActionDrawLine::redo(){
     if (m_actionData->history.size() > (m_actionData->index() + 1)) {
         ++m_actionData->historyIndex;
-        History h( m_actionData->history.at( m_actionData->index()));
+        const History h( m_actionData->history.at( m_actionData->index()));
         deletePreview();
         moveRelativeZero(h.currentPoint);
         m_actionData->data.startpoint = h.currentPoint;

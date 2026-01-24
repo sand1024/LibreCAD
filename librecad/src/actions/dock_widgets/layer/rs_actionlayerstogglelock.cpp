@@ -59,10 +59,10 @@ void RS_ActionLayersToggleLock::trigger() {
         }
     }
     redrawDrawing();
-    finish(false);
+    finish();
 }
 
-void RS_ActionLayersToggleLock::init(int status) {
+void RS_ActionLayersToggleLock::init(const int status) {
     RS_ActionInterface::init(status);
     trigger();
 }

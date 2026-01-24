@@ -34,18 +34,18 @@ public:
     explicit LC_ActionSplineExplode(LC_ActionContext *actionContext);
     ~LC_ActionSplineExplode() override = default;
     int getSegmentsCountFromDrawing() const;
-    bool isUseCurrentAttributes() const {return m_useCurrentAttributes;};
-    void setUseCurrentAttributes(bool b) {m_useCurrentAttributes  = b;};
-    bool isUseCurrentLayer() const {return m_useCurrentLayer;};
-    void setUseCurrentLayer(bool b) {m_useCurrentLayer = b;}
-    bool isKeepOriginals() const {return m_keepOriginals;};
-    void setKeepOriginals(bool b) {m_keepOriginals = b;};
-    bool isToPolyline() const {return m_createPolyline;};
-    void setUsePolyline(bool b) {m_createPolyline = b;};
-    int getCustomSegmentsCount() const {return m_customSegmentsCount;};
-    void setSegmentsCountValue(int i) {m_customSegmentsCount = i;};
-    bool isUseCustomSegmentsCount() const {return m_useCustomSegmentsCount;};
-    void setUseCustomSegmentsCount(bool b) {m_useCustomSegmentsCount = b;}
+    bool isUseCurrentAttributes() const {return m_useCurrentAttributes;}
+    void setUseCurrentAttributes(const bool b) {m_useCurrentAttributes  = b;}
+    bool isUseCurrentLayer() const {return m_useCurrentLayer;}
+    void setUseCurrentLayer(const bool b) {m_useCurrentLayer = b;}
+    bool isKeepOriginals() const {return m_keepOriginals;}
+    void setKeepOriginals(const bool b) {m_keepOriginals = b;}
+    bool isToPolyline() const {return m_createPolyline;}
+    void setUsePolyline(const bool b) {m_createPolyline = b;}
+    int getCustomSegmentsCount() const {return m_customSegmentsCount;}
+    void setSegmentsCountValue(const int i) {m_customSegmentsCount = i;}
+    bool isUseCustomSegmentsCount() const {return m_useCustomSegmentsCount;}
+    void setUseCustomSegmentsCount(const bool b) {m_useCustomSegmentsCount = b;}
 protected:
     bool m_createPolyline {false};
     bool m_keepOriginals {false};
@@ -53,11 +53,11 @@ protected:
     bool m_useCurrentAttributes {false};
     bool m_useCustomSegmentsCount {false};
     int m_customSegmentsCount = 8;
-    bool mayModifySplineEntity(RS_Entity* pEntity) override;
+    bool mayModifySplineEntity(RS_Entity* entity) override;
     RS_Entity *createPolylineByVertexes(const std::vector<RS_Vector> &strokePoints, bool closed) const;
     int obtainSegmentsCount() const;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMove(RS_Vector mouse, int status, LC_MouseEvent *e) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMove(RS_Vector mouse, int status, const LC_MouseEvent* e) override;
     void setEntityToModify(RS_Entity* entity) override;
     void fillStrokePoints(RS_Entity *e, int segmentsCount, std::vector<RS_Vector> &strokePoints, bool &closed) const;
     void updateMouseButtonHints() override;
@@ -68,4 +68,4 @@ protected:
     void doTriggerCompletion(bool success) override;
 };
 
-#endif // LC_ACTIONSPLINEEXPLODE_H
+#endif

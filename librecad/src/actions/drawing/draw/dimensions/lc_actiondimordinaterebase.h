@@ -39,4 +39,4 @@ protected:
      bool isAllowTriggerOnEmptySelection() override;
 };
 
-#endif // LC_ACTIONDIMORDINATEREBASE_H
+#endif

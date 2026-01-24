@@ -36,11 +36,11 @@ bool LC_ActionDrawArc2PointsHeight::createArcData(RS_ArcData &data, [[maybe_unus
     double chordLen = m_startPoint.distanceTo(pos);
     double arcHeight = m_parameterLen;
 
-    double radius = (arcHeight / 2) + ((chordLen * chordLen) / (8 * arcHeight));
+    double radius = arcHeight / 2 + (chordLen * chordLen) / (8 * arcHeight);
 
 
-    RS_Circle circle1 = RS_Circle(nullptr, RS_CircleData(m_startPoint, radius));
-    RS_Circle circle2 = RS_Circle(nullptr, RS_CircleData(pos, radius));
+    auto circle1 = RS_Circle(nullptr, RS_CircleData(m_startPoint, radius));
+    auto circle2 = RS_Circle(nullptr, RS_CircleData(pos, radius));
 
     const RS_VectorSolutions &intersections = RS_Information::getIntersection(&circle1, &circle2);
 
@@ -70,7 +70,7 @@ bool LC_ActionDrawArc2PointsHeight::createArcData(RS_ArcData &data, [[maybe_unus
             center = heightLargeThanHalfChord ? ipRight : ipLeft;
         }
     } else {
-        RS_Vector v = RS_Vector();
+        auto v = RS_Vector();
         v.setPolar(radius, m_startPoint.angleTo(pos));
         center = m_startPoint + v;
         pos = m_startPoint + v*2.0;
@@ -87,9 +87,9 @@ bool LC_ActionDrawArc2PointsHeight::createArcData(RS_ArcData &data, [[maybe_unus
 void LC_ActionDrawArc2PointsHeight::doPreviewOnPoint2Custom(RS_Arc *arc) {
     const RS_Vector &startPoint = arc->getStartpoint();
     const RS_Vector &endPoint = arc->getEndpoint();
-    RS_Vector arcChordMiddle = (startPoint + endPoint) * 0.5;
+    const RS_Vector arcChordMiddle = (startPoint + endPoint) * 0.5;
     previewRefPoint(arcChordMiddle);
-    RS_Vector arcMiddlePoint = arc->getMiddlePoint();
+    const RS_Vector arcMiddlePoint = arc->getMiddlePoint();
     previewRefPoint(arcMiddlePoint);
     previewRefLine(arcChordMiddle, arcMiddlePoint);
     previewRefLine(startPoint, endPoint);

@@ -30,9 +30,9 @@ class LC_ActionDrawArc2PointsBase:public LC_SingleEntityCreationAction{
     Q_OBJECT
 public:
     bool isReversed() const;
-    void setReversed(bool reversed);
+    void setReversed(bool r);
     double getParameter() const;
-    void setParameter(double parameter);
+    void setParameter(double val);
     QStringList getAvailableCommands() override;
 protected:
     enum State{
@@ -50,14 +50,14 @@ protected:
     LC_ActionDrawArc2PointsBase(const char* name, LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone);
     RS2::CursorType doGetMouseCursor(int status) override;
     void updateMouseButtonHints() override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
     bool doProcessCommand(int status, const QString &command) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
-    virtual void onMouseLeftButtonReleaseForNonPointsStatus([[maybe_unused]]int status, [[maybe_unused]]RS_Vector vector, [[maybe_unused]]LC_MouseEvent *pEvent) {};
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    virtual void onMouseLeftButtonReleaseForNonPointsStatus([[maybe_unused]]int status, [[maybe_unused]]RS_Vector vector, [[maybe_unused]] const LC_MouseEvent* e) {}
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     LC_ActionOptionsWidget *createOptionsWidget() override;
-    RS_Arc *createArc(int status, RS_Vector vector, bool reverse, bool reportErrors = false);
+    RS_Arc *createArc(int status, const RS_Vector& pos, bool reverse, bool reportErrors = false);
     virtual bool createArcData(RS_ArcData &data, int status, RS_Vector vector, bool alternate, bool reportErrors = false) = 0;
     virtual void doPreviewOnPoint2Custom(RS_Arc *pArc) = 0;
     void proceedFromSetPoint2();
@@ -71,4 +71,4 @@ protected:
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
 };
 
-#endif // LC_ACTIONDRAWARC2POINTSBASE_H
+#endif

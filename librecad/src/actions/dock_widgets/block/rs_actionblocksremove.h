@@ -36,10 +36,10 @@
  * @author Andrew Mustun
  */
 class RS_ActionBlocksRemove : public LC_UndoableDocumentModificationAction {
-	Q_OBJECT
-public:
-    RS_ActionBlocksRemove(LC_ActionContext *actionContext);
-	void init(int status) override;
+    Q_OBJECT public:
+    explicit RS_ActionBlocksRemove(LC_ActionContext* actionContext);
+    void init(int status) override;
+
 protected:
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
 };

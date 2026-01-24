@@ -26,15 +26,14 @@
 
 #include "rs_actionmodifyrevertdirection.h"
 
-#include "rs_debug.h"
 #include "rs_document.h"
 #include "rs_ellipse.h"
 #include "rs_entity.h"
 #include "rs_modification.h"
 #include "rs_selection.h"
 
-RS_ActionModifyRevertDirection::RS_ActionModifyRevertDirection(LC_ActionContext *actionContext)
-	:LC_ActionPreSelectionAwareBase("Revert direction", actionContext,RS2::ActionModifyRevertDirection,{}){
+RS_ActionModifyRevertDirection::RS_ActionModifyRevertDirection(LC_ActionContext* actionContext)
+    : LC_ActionPreSelectionAwareBase("Revert direction", actionContext, RS2::ActionModifyRevertDirection, {}) {
 }
 
 bool RS_ActionModifyRevertDirection::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
@@ -43,13 +42,15 @@ bool RS_ActionModifyRevertDirection::doTriggerModifications(LC_DocumentModificat
     return true;
 }
 
-void RS_ActionModifyRevertDirection::doTriggerSelectionUpdate(bool keepSelected, const LC_DocumentModificationBatch& ctx) { // fixme - INCLUDE TO GENERIC FLOW?
+void RS_ActionModifyRevertDirection::doTriggerSelectionUpdate(const bool keepSelected, const LC_DocumentModificationBatch& ctx) {
+    // fixme - INCLUDE TO GENERIC FLOW?
     if (keepSelected) {
         select(ctx.entitiesToAdd);
     }
 }
 
-void RS_ActionModifyRevertDirection::doTriggerCompletion([[maybe_unused]]bool success) { // fixme - remove?
+void RS_ActionModifyRevertDirection::doTriggerCompletion([[maybe_unused]] bool success) {
+    // fixme - remove?
 }
 
 bool RS_ActionModifyRevertDirection::isShowRefPointsOnHighlight() {
@@ -61,26 +62,25 @@ void RS_ActionModifyRevertDirection::updateMouseButtonHintsForSelection() {
                               MOD_SHIFT_AND_CTRL(tr("Select contour"), tr("Revert immediately after selection")));
 }
 
-bool RS_ActionModifyRevertDirection::isEntityAllowedToSelect(RS_Entity *ent) const {
-    if (ent->isContainer()){ // todo - check this, it seems not all containers are properly supported
+bool RS_ActionModifyRevertDirection::isEntityAllowedToSelect(RS_Entity* ent) const {
+    if (ent->isContainer()) {
+        // todo - check this, it seems not all containers are properly supported
         return true;
     }
-    else{
-        const int rtti = ent->rtti();
-        switch (rtti){
-            case RS2::EntityParabola:
-            case RS2::EntityPolyline:
-            case RS2::EntityLine:
-            case  RS2::EntityContainer:
-            case  RS2::EntityArc:
-            case  RS2::EntitySplinePoints:
-                return true;
-            case RS2::EntityEllipse: {
-                const auto ellipse = static_cast<RS_Ellipse*>(ent);
-                return ellipse->isEllipticArc();
-            }
-            default:
-                return false;
+    const int rtti = ent->rtti();
+    switch (rtti) {
+        case RS2::EntityParabola:
+        case RS2::EntityPolyline:
+        case RS2::EntityLine:
+        case RS2::EntityContainer:
+        case RS2::EntityArc:
+        case RS2::EntitySplinePoints:
+            return true;
+        case RS2::EntityEllipse: {
+            const auto ellipse = static_cast<RS_Ellipse*>(ent);
+            return ellipse->isEllipticArc();
         }
+        default:
+            return false;
     }
 }

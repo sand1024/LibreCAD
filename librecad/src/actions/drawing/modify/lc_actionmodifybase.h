@@ -45,4 +45,4 @@ protected:
     virtual LC_ModifyOperationFlags* getModifyOperationFlags()=0;
 };
 
-#endif // LC_ACTIONMODIFYBASE_H
+#endif

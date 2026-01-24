@@ -25,8 +25,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "lc_lineanglereloptions.h"
 #include "lc_linemath.h"
-#include "rs_line.h"
 #include "rs_document.h"
+#include "rs_line.h"
 #include "rs_pen.h"
 #include "rs_polyline.h"
 
@@ -35,19 +35,16 @@ namespace {
     const auto g_enTypeList = EntityTypeList{RS2::EntityLine/*, RS2::EntityArc, RS2::EntityCircle,RS2::EntityEllipse*/};
 }
 
-LC_ActionDrawLineAngleRel:: LC_ActionDrawLineAngleRel(LC_ActionContext *actionContext,double angle,bool fixedAngle)
-    :LC_AbstractActionWithPreview("Draw Line with angle", actionContext),
-     m_tickAngleDegrees(angle),
-     m_tickData{nullptr}{
-
+LC_ActionDrawLineAngleRel::LC_ActionDrawLineAngleRel(LC_ActionContext* actionContext, const double angle, const bool fixedAngle)
+    : LC_AbstractActionWithPreview("Draw Line with angle", actionContext), m_tickAngleDegrees(angle) {
     // the same action may be used for drawing orthogonal lines and lines with specified angles
-    if( fixedAngle &&
-        RS_Math::getAngleDifference(RS_Math::deg2rad(angle), M_PI_2) < RS_TOLERANCE_ANGLE){
+    if (fixedAngle && RS_Math::getAngleDifference(RS_Math::deg2rad(angle), M_PI_2) < RS_TOLERANCE_ANGLE) {
         m_actionType = RS2::ActionDrawLineOrthogonalRel;
         m_relativeAngle = true;
     }
-    else
-        m_actionType =  RS2::ActionDrawLineAngleRel;
+    else {
+        m_actionType = RS2::ActionDrawLineAngleRel;
+    }
 }
 
 LC_ActionDrawLineAngleRel::~LC_ActionDrawLineAngleRel() = default;
@@ -55,7 +52,7 @@ LC_ActionDrawLineAngleRel::~LC_ActionDrawLineAngleRel() = default;
 void LC_ActionDrawLineAngleRel::doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) {
     auto entity = contextEntity;
     if (isPolyline(contextEntity)) {
-        auto polyline = static_cast<RS_Polyline*>(contextEntity);
+        const auto polyline = static_cast<RS_Polyline*>(contextEntity);
         entity = polyline->getNearestEntity(clickPos);
     }
     if (isLine(entity)) {
@@ -64,34 +61,34 @@ void LC_ActionDrawLineAngleRel::doInitWithContextEntity(RS_Entity* contextEntity
     }
 }
 
-bool LC_ActionDrawLineAngleRel::doCheckMayTrigger(){
+bool LC_ActionDrawLineAngleRel::doCheckMayTrigger() {
     return m_tickData != nullptr;
 }
 
-bool LC_ActionDrawLineAngleRel::isSetActivePenAndLayerOnTrigger(){
+bool LC_ActionDrawLineAngleRel::isSetActivePenAndLayerOnTrigger() {
     return false; // we control this by action as there might be divide operation
 }
 
 /**
  * Create entities for trigger operations
- * @param list
+ * @param ctx
  */
-bool LC_ActionDrawLineAngleRel::doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx){
+bool LC_ActionDrawLineAngleRel::doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx) {
     auto* en = new RS_Line{m_document, m_tickData->tickLineData};
     setPenAndLayerToActive(en);
     ctx += en;
 
     // optionally, try to divide original line if needed
-    if (m_divideLine){
+    if (m_divideLine) {
         // divide requested, so first check whether original line may be expanded (not part of polyline)
-        bool mayDivide = checkMayExpandEntity(m_tickData->line, "Line");
-        if (mayDivide){
+        const bool mayDivide = checkMayExpandEntity(m_tickData->line, "Line");
+        if (mayDivide) {
             // do divide original line
             divideOriginalLine(m_tickData, ctx.entitiesToAdd);
         }
     }
 
-    if (m_tickData->deleteOriginalLine){
+    if (m_tickData->deleteOriginalLine) {
         // removing original line from drawing
         ctx -= m_tickData->line;
     }
@@ -103,20 +100,20 @@ bool LC_ActionDrawLineAngleRel::doTriggerEntitiesPrepare(LC_DocumentModification
  * @param data tick data
  * @param list list to which created line segments should be added
  */
-void LC_ActionDrawLineAngleRel::divideOriginalLine(LC_ActionDrawLineAngleRel::TickData* data, QList<RS_Entity *> &list) const {
-    RS_Line* line = data->line;
-    RS_Vector snap = data->tickSnapPosition;
+void LC_ActionDrawLineAngleRel::divideOriginalLine(TickData* data, QList<RS_Entity*>& list) const {
+    const RS_Line* line = data->line;
+    const RS_Vector snap = data->tickSnapPosition;
 
     // find nearest point on original line for snap point
-    RS_Vector nearestPoint = LC_LineMath::getNearestPointOnLine(line, snap, false);
+    const RS_Vector nearestPoint = LC_LineMath::getNearestPointOnLine(line, snap, false);
 
-    RS_Vector start = line->getStartpoint();
-    RS_Vector end = line->getEndpoint();
+    const RS_Vector start = line->getStartpoint();
+    const RS_Vector end = line->getEndpoint();
 
     // create segments only if tick snap point is between of original lines endpoints
-    if (nearestPoint != start && nearestPoint != end){
+    if (nearestPoint != start && nearestPoint != end) {
         // our snap point is not outside of line
-        RS_Pen pen = line->getPen(false);
+        const RS_Pen pen = line->getPen(false);
         RS_Layer* layer = line->getLayer();
 
         // create first segment
@@ -138,39 +135,39 @@ void LC_ActionDrawLineAngleRel::divideOriginalLine(LC_ActionDrawLineAngleRel::Ti
  * setting relative zero after trigger
  * @return
  */
-RS_Vector LC_ActionDrawLineAngleRel::doGetRelativeZeroAfterTrigger(){
+RS_Vector LC_ActionDrawLineAngleRel::doGetRelativeZeroAfterTrigger() {
     return m_tickData->tickLineData.endpoint; // just rely on endpoint of created tick
 }
 
-void LC_ActionDrawLineAngleRel::doAfterTrigger(){
+void LC_ActionDrawLineAngleRel::doAfterTrigger() {
     // just do cleanup
     unHighlightEntity();
     delete m_tickData;
     m_tickData = nullptr;
 }
 
-void LC_ActionDrawLineAngleRel::doFinish([[maybe_unused]]bool updateTB){
-    if (m_tickData != nullptr){
+void LC_ActionDrawLineAngleRel::doFinish() {
+    if (m_tickData != nullptr) {
         delete m_tickData;
         m_tickData = nullptr;
     }
 }
 
 void LC_ActionDrawLineAngleRel::setLine(RS_Entity* en, const RS_Vector& snapPoint) {
-    auto* line = dynamic_cast<RS_Line *>(en);
+    auto* line = dynamic_cast<RS_Line*>(en);
     // determine where tick line should be snapped on original line
-    RS_Vector nearestPoint = LC_LineMath::getNearestPointOnLine(line, snapPoint, true);
-    RS_Vector tickSnapPosition = obtainLineSnapPointForMode(line, nearestPoint);
+    const RS_Vector nearestPoint = LC_LineMath::getNearestPointOnLine(line, snapPoint, true);
+    const RS_Vector tickSnapPosition = obtainLineSnapPointForMode(line, nearestPoint);
 
     // prepare line data for the snap point
-    auto tickEnd = RS_Vector(false);
+    const auto tickEnd = RS_Vector(false);
     m_tickData = prepareLineData(line, tickSnapPosition, tickEnd, m_alternativeActionMode);
 
     // if length is not fixed, we need additional input from the user for the length
-    if (m_lengthIsFree){
+    if (m_lengthIsFree) {
         setStatus(SetTickLength);
     }
-    else{
+    else {
         // length of tick is fixed, triggering action
         trigger();
     }
@@ -182,9 +179,10 @@ void LC_ActionDrawLineAngleRel::setLine(RS_Entity* en, const RS_Vector& snapPoin
  * @param status
  * @param snapPoint
  */
-void LC_ActionDrawLineAngleRel::doOnLeftMouseButtonRelease(LC_MouseEvent *e, int status, const RS_Vector &snapPoint){
+void LC_ActionDrawLineAngleRel::doOnLeftMouseButtonRelease(const LC_MouseEvent* e, const int status, const RS_Vector& snapPoint) {
     switch (status) {
-        case SetLine:{ // line selection state
+        case SetLine: {
+            // line selection state
             RS_Entity* en = catchModifiableEntity(e, g_enTypeList);
             if (en != nullptr) {
                 setLine(en, snapPoint);
@@ -192,10 +190,11 @@ void LC_ActionDrawLineAngleRel::doOnLeftMouseButtonRelease(LC_MouseEvent *e, int
             invalidateSnapSpot();
             break;
         }
-        case SetTickLength:{ // tick length selection state
-            TickData* oldData = m_tickData;
+        case SetTickLength: {
+            // tick length selection state
+            const TickData* oldData = m_tickData;
             // update tick data based on last snap point that is used for calculation of tick length
-            m_tickData = prepareLineData( m_tickData->line, m_tickData->tickSnapPosition, snapPoint, m_alternativeActionMode);
+            m_tickData = prepareLineData(m_tickData->line, m_tickData->tickSnapPosition, snapPoint, m_alternativeActionMode);
             delete oldData;
             // we're set now, so triggering action
             trigger();
@@ -207,8 +206,9 @@ void LC_ActionDrawLineAngleRel::doOnLeftMouseButtonRelease(LC_MouseEvent *e, int
     }
 }
 
-bool LC_ActionDrawLineAngleRel::doCheckMayDrawPreview[[maybe_unused]]([[maybe_unused]]LC_MouseEvent *event, [[maybe_unused]]int status){
-    return true;  // can draw preview in any state
+bool LC_ActionDrawLineAngleRel::doCheckMayDrawPreview[[maybe_unused]]([[maybe_unused]] const LC_MouseEvent* event,
+                                                                      [[maybe_unused]] int status) {
+    return true; // can draw preview in any state
 }
 
 /**
@@ -220,33 +220,36 @@ bool LC_ActionDrawLineAngleRel::doCheckMayDrawPreview[[maybe_unused]]([[maybe_un
  */
 
 //fixme - divide & intersection points (as for line from point to entity)
-void LC_ActionDrawLineAngleRel::doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status){
+void LC_ActionDrawLineAngleRel::doPreparePreviewEntities(const LC_MouseEvent* e, RS_Vector& snap, QList<RS_Entity*>& list,
+                                                         const int status) {
     switch (status) {
-        case SetLine:{ // line select state
+        case SetLine: {
+            // line select state
             deleteSnapper();
             RS_Entity* en = catchModifiableAndDescribe(e, g_enTypeList);
-            if (en != nullptr){
-                auto* line = dynamic_cast<RS_Line *>(en);
+            if (en != nullptr) {
+                auto* line = dynamic_cast<RS_Line*>(en);
 
                 highlightHover(line);
 
                 // determine snap point
-                RS_Vector nearestPoint = LC_LineMath::getNearestPointOnLine(line, snap, true);
-                RS_Vector tickSnapPosition = obtainLineSnapPointForMode(line, nearestPoint);
-                auto tickEnd = RS_Vector(false);
+                const RS_Vector nearestPoint = LC_LineMath::getNearestPointOnLine(line, snap, true);
+                const RS_Vector tickSnapPosition = obtainLineSnapPointForMode(line, nearestPoint);
+                const auto tickEnd = RS_Vector(false);
 
                 // calculate tick temporary data
-                TickData* data = prepareLineData(line, tickSnapPosition, tickEnd, m_alternativeActionMode);
+                const TickData* data = prepareLineData(line, tickSnapPosition, tickEnd, m_alternativeActionMode);
 
                 // create line and add it to preview
-                auto * previewLine = createLine(data->tickLineData.startpoint, data->tickLineData.endpoint, list);
+                const auto* previewLine = createLine(data->tickLineData.startpoint, data->tickLineData.endpoint, list);
                 previewEntityToCreate(previewLine, false);
 
                 if (m_showRefEntitiesOnPreview) {
                     // add reference points
                     if (m_lineSnapMode == LINE_SNAP_FREE) {
                         createRefSelectablePoint(data->tickSnapPosition, list);
-                    } else {
+                    }
+                    else {
                         createRefPoint(data->tickSnapPosition, list);
                     }
                     createRefPoint(data->tickLineData.endpoint, list);
@@ -258,14 +261,15 @@ void LC_ActionDrawLineAngleRel::doPreparePreviewEntities(LC_MouseEvent *e, RS_Ve
             }
             break;
         }
-        case SetTickLength: { // tick length setting state
+        case SetTickLength: {
+            // tick length setting state
 
             highlightSelected(m_tickData->line);
             // create temporary preview tick data
-            TickData* data = prepareLineData( m_tickData->line, m_tickData->tickSnapPosition, snap, m_alternativeActionMode);
+            const TickData* data = prepareLineData(m_tickData->line, m_tickData->tickSnapPosition, snap, m_alternativeActionMode);
 
             // create preview line
-            auto * previewLine = createLine(data->tickLineData.startpoint, data->tickLineData.endpoint, list);
+            const auto* previewLine = createLine(data->tickLineData.startpoint, data->tickLineData.endpoint, list);
             previewEntityToCreate(previewLine, false);
 
             if (m_showRefEntitiesOnPreview) {
@@ -292,96 +296,99 @@ void LC_ActionDrawLineAngleRel::doPreparePreviewEntities(LC_MouseEvent *e, RS_Ve
  * @param useAlternateAngle  should we use original or alternative angle
  * @return tick data
  */
-LC_ActionDrawLineAngleRel::TickData* LC_ActionDrawLineAngleRel::prepareLineData(RS_Line* targetLine, const RS_Vector& tickSnapPosition, const RS_Vector& tickEndSnapPosition, bool useAlternateAngle) const {
+LC_ActionDrawLineAngleRel::TickData* LC_ActionDrawLineAngleRel::prepareLineData(RS_Line* targetLine, const RS_Vector& tickSnapPosition,
+                                                                                const RS_Vector& tickEndSnapPosition,
+                                                                                const bool useAlternateAngle) const {
     auto* result = new TickData();
 
     // store position for later use
     result->tickSnapPosition = tickSnapPosition;
 
-    auto const vp = targetLine->getNearestPointOnEntity(tickSnapPosition, false);
-
     // prepare angle
     double angleDegress = m_tickAngleDegrees;
-    if (useAlternateAngle){
+    if (useAlternateAngle) {
         angleDegress = 180 - m_tickAngleDegrees;
     }
 
-    double angleRad = RS_Math::deg2rad(angleDegress);
+    const double angleRad = RS_Math::deg2rad(angleDegress);
 
     // handle relative angle, if needed
     double wcsTickAngle;
-    if (m_relativeAngle){
-        double targetLineOwnAngle = targetLine->getTangentDirection(vp).angle();
+    if (m_relativeAngle) {
+        const auto vp = targetLine->getNearestPointOnEntity(tickSnapPosition, false);
+        const double targetLineOwnAngle = targetLine->getTangentDirection(vp).angle();
         wcsTickAngle = toWorldAngleFromUCSBasis(angleRad + toUCSBasisAngle(targetLineOwnAngle));
     }
-    else{
+    else {
         wcsTickAngle = toWorldAngleFromUCSBasis(angleRad);
     }
 
     // handle offset of tick line by preparing offset vector
-    RS_Vector vectorOffset(0,0,0);
-    if (LC_LineMath::isMeaningful(m_tickOffset)){
+    RS_Vector vectorOffset(0, 0, 0);
+    if (LC_LineMath::isMeaningful(m_tickOffset)) {
         vectorOffset = RS_Vector::polar(m_tickOffset, wcsTickAngle);
     }
 
     // handle tick length if length is free
     double actualTickLength = m_tickLength;
-    if (m_lengthIsFree){
-        if (tickEndSnapPosition.valid){
-
+    if (m_lengthIsFree) {
+        if (tickEndSnapPosition.valid) {
             /// just create vector of length 10 using angle of tick that is used to set direction
-            RS_Vector infiniteTickEndPoint = tickSnapPosition.relative(10.0, wcsTickAngle);
+            const RS_Vector infiniteTickEndPoint = tickSnapPosition.relative(10.0, wcsTickAngle);
 
             // determine end tick position for provided snap point - it will lay on direction vector
-            RS_Vector tickEndPosition = LC_LineMath::getNearestPointOnInfiniteLine(tickEndSnapPosition, tickSnapPosition, infiniteTickEndPoint);
+            const RS_Vector tickEndPosition = LC_LineMath::getNearestPointOnInfiniteLine(
+                tickEndSnapPosition, tickSnapPosition, infiniteTickEndPoint);
 
             // calculate resulting length of tick
-            RS_Vector tickVector = tickEndPosition - tickSnapPosition;
+            const RS_Vector tickVector = tickEndPosition - tickSnapPosition;
             actualTickLength = tickVector.magnitude();
 
             actualTickLength = LC_LineMath::getMeaningful(actualTickLength, 1.0);
 
             // determine sign of length
 
-            RS_Vector point1 = targetLine->getStartpoint();
-            RS_Vector point2 = targetLine->getEndpoint();
+            const RS_Vector point1 = targetLine->getStartpoint();
+            const RS_Vector point2 = targetLine->getEndpoint();
 
-            int pointPosition = LC_LineMath::getPointPosition(point1,point2, tickEndPosition);
-            if (pointPosition == LC_LineMath::RIGHT){
-                if (m_tickSnapMode != TICK_SNAP_END){
+            const int pointPosition = LC_LineMath::getPointPosition(point1, point2, tickEndPosition);
+            if (pointPosition == LC_LineMath::RIGHT) {
+                if (m_tickSnapMode != TICK_SNAP_END) {
                     actualTickLength = -actualTickLength;
                 }
             }
-            else if (pointPosition == LC_LineMath::LEFT){
-                if (m_tickSnapMode == TICK_SNAP_END){
+            else if (pointPosition == LC_LineMath::LEFT) {
+                if (m_tickSnapMode == TICK_SNAP_END) {
                     actualTickLength = -actualTickLength;
                 }
             }
-            if (m_tickSnapMode == TICK_SNAP_MIDDLE){
+            if (m_tickSnapMode == TICK_SNAP_MIDDLE) {
                 actualTickLength = actualTickLength * 2;
             }
         }
     }
 
     // prepare correction vector that takes into consideration specified tick snap mode
-    RS_Vector vectorOffsetCorrection(0,0,0);
-    switch (m_tickSnapMode){
+    RS_Vector vectorOffsetCorrection(0, 0, 0);
+    switch (m_tickSnapMode) {
         case TICK_SNAP_START:
             break;
         case TICK_SNAP_END:
-            vectorOffsetCorrection =  RS_Vector::polar(-actualTickLength, wcsTickAngle);
+            vectorOffsetCorrection = RS_Vector::polar(-actualTickLength, wcsTickAngle);
             break;
         case TICK_SNAP_MIDDLE:
-            vectorOffsetCorrection =  RS_Vector::polar(-actualTickLength/2, wcsTickAngle);
+            vectorOffsetCorrection = RS_Vector::polar(-actualTickLength / 2, wcsTickAngle);
+            break;
+        default:
             break;
     }
 
     // determine start point of tick
     const RS_Vector tickStartPoint = tickSnapPosition + vectorOffset + vectorOffsetCorrection;
-    result -> tickLineData.startpoint = tickStartPoint;
+    result->tickLineData.startpoint = tickStartPoint;
 
     // determine end point of tick
-    result -> tickLineData.endpoint = tickStartPoint.relative(actualTickLength, wcsTickAngle);
+    result->tickLineData.endpoint = tickStartPoint.relative(actualTickLength, wcsTickAngle);
     result->line = targetLine;
 
     return result;
@@ -394,16 +401,16 @@ LC_ActionDrawLineAngleRel::TickData* LC_ActionDrawLineAngleRel::prepareLineData(
  * @param snap  snap coordinates
  * @return  tick snap coordinate
  */
-RS_Vector LC_ActionDrawLineAngleRel::obtainLineSnapPointForMode(RS_Line* targetLine, RS_Vector& snap) const{
+RS_Vector LC_ActionDrawLineAngleRel::obtainLineSnapPointForMode(const RS_Line* targetLine, const RS_Vector& snap) const {
     RS_Vector snapPoint;
 
-    // angle of target line
-    double angle = targetLine->getAngle1();
-
     // vector will use to move snap point along base original line, if needed
-    RS_Vector snapDistanceCorrectionVector = RS_Vector(0, 0, 0);
+    auto snapDistanceCorrectionVector = RS_Vector(0, 0, 0);
 
-    if (LC_LineMath::isMeaningful(m_snapDistance)){
+    if (LC_LineMath::isMeaningful(m_snapDistance)) {
+        // angle of target line
+        const double angle = targetLine->getAngle1();
+
         // if some distance from snap is set, calculate shift for snap
         snapDistanceCorrectionVector = RS_Vector::polar(m_snapDistance, angle);
     }
@@ -425,12 +432,14 @@ RS_Vector LC_ActionDrawLineAngleRel::obtainLineSnapPointForMode(RS_Line* targetL
             // for this mode, just perform shift to specified distance from middle point of base line
             snapPoint = targetLine->getMiddlePoint() + snapDistanceCorrectionVector;
             break;
+        default:
+            break;
     }
     return snapPoint;
-};
+}
 
-RS2::CursorType LC_ActionDrawLineAngleRel::doGetMouseCursor(int status){
-    switch (status){
+RS2::CursorType LC_ActionDrawLineAngleRel::doGetMouseCursor(const int status) {
+    switch (status) {
         case SetLine:
             return RS2::SelectCursor;
         case SetTickLength:
@@ -441,10 +450,10 @@ RS2::CursorType LC_ActionDrawLineAngleRel::doGetMouseCursor(int status){
 }
 
 void LC_ActionDrawLineAngleRel::updateMouseButtonHints() {
-    bool hasModifiers = (m_actionType == RS2::ActionDrawLineAngleRel);
+    const bool hasModifiers = m_actionType == RS2::ActionDrawLineAngleRel;
     switch (getStatus()) {
         case SetLine:
-            // fixme - sand - support mirrorring of snap by CTRL? 
+            // fixme - sand - support mirrorring of snap by CTRL?
             updateMouseWidgetTRCancel(tr("Select base line"), hasModifiers ? MOD_SHIFT_MIRROR_ANGLE : MOD_NONE);
             break;
         case SetTickLength:
@@ -456,7 +465,7 @@ void LC_ActionDrawLineAngleRel::updateMouseButtonHints() {
     }
 }
 
-bool LC_ActionDrawLineAngleRel::doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) {
+bool LC_ActionDrawLineAngleRel::doUpdateAngleByInteractiveInput(const QString& tag, const double angleRad) {
     if (tag == "angle") {
         setTickAngleDegrees(RS_Math::rad2deg(angleRad));
         return true;
@@ -464,7 +473,7 @@ bool LC_ActionDrawLineAngleRel::doUpdateAngleByInteractiveInput(const QString& t
     return false;
 }
 
-bool LC_ActionDrawLineAngleRel::doUpdateDistanceByInteractiveInput(const QString& tag, double distance) {
+bool LC_ActionDrawLineAngleRel::doUpdateDistanceByInteractiveInput(const QString& tag, const double distance) {
     if (tag == "length") {
         setTickLength(distance);
         return true;
@@ -480,6 +489,6 @@ bool LC_ActionDrawLineAngleRel::doUpdateDistanceByInteractiveInput(const QString
     return false;
 }
 
-LC_ActionOptionsWidget* LC_ActionDrawLineAngleRel::createOptionsWidget(){
+LC_ActionOptionsWidget* LC_ActionDrawLineAngleRel::createOptionsWidget() {
     return new LC_LineAngleRelOptions();
 }

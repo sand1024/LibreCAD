@@ -30,7 +30,7 @@ class LC_ActionSplineModifyBase:public LC_UndoableDocumentModificationAction{
     Q_OBJECT
 public:
     void drawSnapper() override;
-    void finish(bool updateTB) override;
+    void finish() override;
 protected:
     enum State{
         SetEntity = InitialActionStatus,
@@ -49,16 +49,16 @@ protected:
     void clean();
     virtual void setEntityToModify(RS_Entity* entity) = 0;
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
-    virtual bool mayModifySplineEntity([[maybe_unused]]RS_Entity *pEntity) {return true;};
+    virtual bool mayModifySplineEntity([[maybe_unused]]RS_Entity *pEntity) {return true;}
     RS2::CursorType doGetMouseCursor(int status) override;
     void onMouseRightButtonRelease(int status, QMouseEvent *e) override;
     virtual void doTriggerOther();
     virtual RS_Entity *createModifiedSplineEntity(RS_Entity *e, RS_Vector controlPoint, bool startDirection)=0;
-    virtual void onMouseMove(RS_Vector mouse, int status, LC_MouseEvent *e) = 0;
+    virtual void onMouseMove(RS_Vector mouse, int status, const LC_MouseEvent* e) = 0;
     virtual void doOnEntityNotCreated();
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void doTriggerSelections(const LC_DocumentModificationBatch& ctx) override;
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
 };
 
-#endif // LC_ACTIONSPLINEMODIFYBASE_H
+#endif

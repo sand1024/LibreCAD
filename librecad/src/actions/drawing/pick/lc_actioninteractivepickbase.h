@@ -42,4 +42,4 @@ protected:
     virtual bool isInteractiveDataValid() = 0;
 };
 
-#endif // LC_ACTIONINTERACTIVEPICKBASE_H
+#endif

@@ -32,13 +32,13 @@ class LC_ActionLayerBase: public LC_ActionPreSelectionAwareBase{
 protected:
     LC_ActionLayerBase(const char* name, LC_ActionContext* actionContext, RS2::ActionType actionType);
     void onSelectionCompleted(bool singleEntity, bool fromInit) override;
-    bool isAllowTriggerOnEmptySelection() override {return false;};
+    bool isAllowTriggerOnEmptySelection() override {return false;}
     virtual void doProceedLayer(RS_Layer* layer);
     virtual void doWithLayer(RS_Graphic* graphic, RS_Layer* layer) = 0;
     void doTrigger() override;
     void applyBoxSelectionModeIfNeeded(RS_Vector mouse) override;
-    void proceedSelectedEntity(LC_MouseEvent* e) override;
+    void proceedSelectedEntity(const LC_MouseEvent* e) override;
     bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& ctx) override {return false;}
 };
 
-#endif // LC_ACTIONLAYERBASE_H
+#endif

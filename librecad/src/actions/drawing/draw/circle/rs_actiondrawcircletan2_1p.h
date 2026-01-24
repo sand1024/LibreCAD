@@ -36,33 +36,35 @@ struct RS_CircleData;
 class RS_ActionDrawCircleTan2_1P : public LC_ActionDrawCircleBase {
     Q_OBJECT
 public:
-    RS_ActionDrawCircleTan2_1P(LC_ActionContext *actionContext);
+    explicit RS_ActionDrawCircleTan2_1P(LC_ActionContext* actionContext);
     ~RS_ActionDrawCircleTan2_1P() override;
     void init(int status) override;
     bool getCenters() const;
     bool preparePreview() const;
-    void finish(bool updateTB) override;
+    void finish() override;
+
 protected:
     /**
      * Action States.
      */
     enum Status {
-        SetCircle1 = InitialActionStatus,   //  Setting the first circle.  */
-        SetCircle2,   //  Setting the second circle.  */
-        SetPoint,   //  Setting point on the desired circle.  */
+        SetCircle1 = InitialActionStatus, //  Setting the first circle.  */
+        SetCircle2, //  Setting the second circle.  */
+        SetPoint, //  Setting point on the desired circle.  */
         SetCenter
     };
+
     struct ActionData;
     std::unique_ptr<ActionData> m_actionData;
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     void doInitialInit() override;
-    RS_Entity* catchTangentEntity(LC_MouseEvent* e, bool forPreview);
+    RS_Entity* catchTangentEntity(const LC_MouseEvent* e, bool forPreview) const;
     void setCircle(RS_Entity* en, int status);
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector& coord) override;
     void updateMouseButtonHints() override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;

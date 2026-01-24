@@ -49,31 +49,31 @@ void RS_ActionDrawPoint::doTriggerCompletion([[maybe_unused]]bool success) {
 }
 
 RS_Vector RS_ActionDrawPoint::getFreeSnapAwarePointAlt(const LC_MouseEvent *e, const RS_Vector &pos) const{
-    RS_Vector mouse = (e->isControl) ?  e->graphPoint : pos;
+    const RS_Vector mouse = e->isControl ?  e->graphPoint : pos;
     return mouse;
 }
 
-void RS_ActionDrawPoint::onMouseMoveEvent([[maybe_unused]]int status, LC_MouseEvent *e) {
-    RS_Vector pos = e->snapPoint;
+void RS_ActionDrawPoint::onMouseMoveEvent([[maybe_unused]] const int status, const LC_MouseEvent* e) {
     if (!trySnapToRelZeroCoordinateEvent(e)){
+        RS_Vector pos = e->snapPoint;
         pos = getFreeSnapAwarePointAlt(e, pos);
         previewToCreatePoint(pos); // is it really necessary??
         previewRefSelectablePoint(pos);
-    };
+    }
 }
 
-void RS_ActionDrawPoint::onMouseLeftButtonRelease([[maybe_unused]]int status, LC_MouseEvent *e) {
+void RS_ActionDrawPoint::onMouseLeftButtonRelease([[maybe_unused]]int status, const LC_MouseEvent* e) {
     RS_Vector snap = e->snapPoint;
     snap = getFreeSnapAwarePointAlt(e, snap);
     fireCoordinateEvent(snap);
 }
 
-void RS_ActionDrawPoint::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionDrawPoint::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     initPrevious(status);
 }
 
-void RS_ActionDrawPoint::onCoordinateEvent( [[maybe_unused]]int status, [[maybe_unused]]bool isZero, const RS_Vector &mouse) {
-    *m_pointPosition = mouse;
+void RS_ActionDrawPoint::onCoordinateEvent( [[maybe_unused]]int status, [[maybe_unused]]bool isZero, const RS_Vector &coord) {
+    *m_pointPosition = coord;
     trigger();
 }
 

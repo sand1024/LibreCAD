@@ -33,13 +33,14 @@
  * Constructor.
  *
  * @param undo true for undo and false for redo.
+ * @param actionContext
  */
-RS_ActionEditUndo::RS_ActionEditUndo(bool undo,LC_ActionContext *actionContext)
+RS_ActionEditUndo::RS_ActionEditUndo(const bool undo,LC_ActionContext *actionContext)
   :RS_ActionInterface("Edit Undo", actionContext,undo? RS2::ActionEditUndo: RS2::ActionEditRedo)
  , m_performUndo(undo){
 }
 
-void RS_ActionEditUndo::init(int status) {
+void RS_ActionEditUndo::init(const int status) {
     RS_ActionInterface::init(status);
     trigger();
 }
@@ -51,16 +52,18 @@ void RS_ActionEditUndo::trigger(){
     }
 
     if (m_performUndo) {
-        if(!m_document->undo())
+        if(!m_document->undo()) {
             commandMessage(tr("Nothing to undo!"));
+        }
     } else {
-        if(!m_document->redo())
+        if(!m_document->redo()) {
             commandMessage(tr("Nothing to redo!"));
+        }
     }
 
     m_graphic->addBlockNotification();
     m_graphic->setModified(true);
     m_document->updateInserts();
     redrawDrawing();
-    finish(false);
+    finish();
 }

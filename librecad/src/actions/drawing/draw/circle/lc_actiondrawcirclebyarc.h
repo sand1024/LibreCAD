@@ -23,52 +23,73 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define LC_ACTIONDRAWCIRCLEBYARC_H
 
 #include "lc_abstractactionwithpreview.h"
-#include "lc_latecompletionrequestor.h"
 
 /**
  * Action draws circle with the same center and radius as selected arc.
  * Based on setting, original arc may remains in drawing (so both arc and circle will be present) or just be replaced by circle
  *
  */
-class LC_ActionDrawCircleByArc:public LC_AbstractActionWithPreview{
+class LC_ActionDrawCircleByArc : public LC_AbstractActionWithPreview {
     Q_OBJECT
 public:
-    LC_ActionDrawCircleByArc(LC_ActionContext *actionContext);
+    explicit LC_ActionDrawCircleByArc(LC_ActionContext* actionContext);
     ~LC_ActionDrawCircleByArc() override;
 
-    bool isReplaceArcByCircle() const{return m_replaceArcByCircle;};
+    bool isReplaceArcByCircle() const {
+        return m_replaceArcByCircle;
+    }
     void setReplaceArcByCircle(bool value);
-    void setPenMode(int i) {m_penMode = i;};
-    int getPenMode() const{return m_penMode;};
-    double getRadiusShift() const{return m_radiusShift;};
-    void setRadiusShift(double shift){m_radiusShift = shift;};
-    void setLayerMode(int mode){m_layerMode = mode;};
-    int getLayerMode() const{return m_layerMode;}
+
+    void setPenMode(const int i) {
+        m_penMode = i;
+    }
+
+    int getPenMode() const {
+        return m_penMode;
+    }
+
+    double getRadiusShift() const {
+        return m_radiusShift;
+    }
+
+    void setRadiusShift(const double shift) {
+        m_radiusShift = shift;
+    }
+
+    void setLayerMode(const int mode) {
+        m_layerMode = mode;
+    }
+
+    int getLayerMode() const {
+        return m_layerMode;
+    }
+
     void drawSnapper() override;
+
 protected:
-    enum{
+    enum {
         SetArc = InitialActionStatus
     };
+
     LC_ActionOptionsWidget* createOptionsWidget() override;
     bool doCheckMayTrigger() override;
     RS2::CursorType doGetMouseCursor(int status) override;
-    void doOnLeftMouseButtonRelease(LC_MouseEvent *e, int status, const RS_Vector &snapPoint) override;
-    void doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
+    void doOnLeftMouseButtonRelease(const LC_MouseEvent* e, int status, const RS_Vector& snapPoint) override;
+    void doPreparePreviewEntities(const LC_MouseEvent* e, RS_Vector& snap, QList<RS_Entity*>& list, int status) override;
     RS_Vector doGetRelativeZeroAfterTrigger() override;
     void doAfterTrigger() override;
-    bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx)  override;
-    bool doCheckMayDrawPreview(LC_MouseEvent *event, int status) override;
+    bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx) override;
+    bool doCheckMayDrawPreview(const LC_MouseEvent* event, int status) override;
     bool doCheckMayTriggerOnInit(int status) override;
-    bool isAcceptSelectedEntityToTriggerOnInit(RS_Entity *pEntity) override;
-    void doCreateEntitiesOnTrigger(RS_Entity *entity, QList<RS_Entity *> &list) override;
-    void doPerformOriginalEntitiesDeletionOnInitTrigger(QList<RS_Entity *> &list, LC_DocumentModificationBatch & ctx) override;
+    bool isAcceptSelectedEntityToTriggerOnInit(RS_Entity* pEntity) override;
+    void doCreateEntitiesOnTrigger(RS_Entity* en, QList<RS_Entity*>& list) override;
+    void doPerformOriginalEntitiesDeletionOnInitTrigger(QList<RS_Entity*>& list, LC_DocumentModificationBatch& ctx) override;
     bool isSetActivePenAndLayerOnTrigger() override;
     void updateMouseButtonHints() override;
-
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
 private:
     /** Chosen arc or ellipse arc entity */
-    RS_Entity *m_entity = nullptr;
+    RS_Entity* m_entity = nullptr;
 
     /**
      * controls whether original arc should be deleted or not
@@ -92,9 +113,9 @@ private:
      */
     double m_radiusShift = 0.0;
 
-    RS_CircleData createCircleData(RS_Arc* arc) const;
-    RS_EllipseData createEllipseData(RS_Ellipse *pEllipse) const;
-    void deleteOriginalArcOrEllipse(RS_Entity *en,LC_DocumentModificationBatch& ctx) const;
+    RS_CircleData createCircleData(const RS_Arc* arc) const;
+    RS_EllipseData createEllipseData(const RS_Ellipse* ellipseArc) const;
+    void deleteOriginalArcOrEllipse(RS_Entity* en, LC_DocumentModificationBatch& ctx) const;
 };
 
-#endif // LC_ACTIONDRAWCIRCLEBYARC_H
+#endif

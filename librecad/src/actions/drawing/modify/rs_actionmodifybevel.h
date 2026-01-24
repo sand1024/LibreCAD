@@ -41,10 +41,10 @@ class RS_Entity;
 class RS_ActionModifyBevel : public LC_UndoableDocumentModificationAction {
     Q_OBJECT
 public:
-    RS_ActionModifyBevel(LC_ActionContext *actionContext);
+    explicit RS_ActionModifyBevel(LC_ActionContext *actionContext);
     ~RS_ActionModifyBevel() override;
     void init(int status) override;
-    void finish(bool updateTB) override;
+    void finish() override;
     QStringList getAvailableCommands() override;
     void setLength1(double l1) const;
     double getLength1() const;
@@ -71,13 +71,13 @@ protected:
     Status m_lastStatus = SetEntity1;
 
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
-    bool isEntityAccepted(RS_Entity *en) const;
-    bool areBothEntityAccepted(RS_Entity *en1, RS_Entity *en2) const;
+    bool isEntityAccepted(const RS_Entity *en) const;
+    bool areBothEntityAccepted(const RS_Entity *en1, const RS_Entity *en2) const;
     void previewLineModifications(const RS_Entity *original, const RS_Entity *trimmed, bool trimOnStart) const;
     RS2::CursorType doGetMouseCursor(int status) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     bool doProcessCommand(int status, const QString &command) override;
     void updateMouseButtonHints() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;

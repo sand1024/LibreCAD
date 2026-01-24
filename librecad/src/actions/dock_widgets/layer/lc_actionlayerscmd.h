@@ -30,7 +30,7 @@ class LC_ActionLayersCmd: public RS_ActionInterface{
     Q_OBJECT
 public:
     LC_ActionLayersCmd(LC_ActionContext* actionContext, RS2::ActionType actionType);
-    ~LC_ActionLayersCmd();
+    ~LC_ActionLayersCmd() override;
 
     void trigger() override;
 protected:
@@ -45,4 +45,4 @@ protected:
     void createLayer() const;
 };
 
-#endif // LC_ACTIONLAYERSCMD_H
+#endif

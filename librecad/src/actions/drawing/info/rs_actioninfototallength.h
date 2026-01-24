@@ -37,7 +37,7 @@
 class RS_ActionInfoTotalLength : public LC_ActionPreSelectionAwareBase {
     Q_OBJECT
 public:
-    RS_ActionInfoTotalLength(LC_ActionContext *actionContext);
+    explicit RS_ActionInfoTotalLength(LC_ActionContext *actionContext);
     void drawSnapper() override;
 protected:
     /**
@@ -50,7 +50,7 @@ protected:
     void updateMouseButtonHintsForSelection() override;
     void doTrigger() override;
     bool isAllowTriggerOnEmptySelection() override;
-    void finishMouseMoveOnSelection(LC_MouseEvent *event) override;
+    void finishMouseMoveOnSelection(const LC_MouseEvent* event) override;
     bool doTriggerModifications([[maybe_unused]]LC_DocumentModificationBatch& ctx) override {return false;}
 };
 

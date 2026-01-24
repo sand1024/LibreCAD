@@ -28,18 +28,18 @@
 
 #include "rs_selection.h"
 
-RS_ActionSelectInvert::RS_ActionSelectInvert(LC_ActionContext *actionContext)
-        :RS_ActionInterface("Invert Selection",actionContext, RS2::ActionSelectInvert) {
-	m_actionType=RS2::ActionSelectInvert;
+RS_ActionSelectInvert::RS_ActionSelectInvert(LC_ActionContext* actionContext)
+    : RS_ActionInterface("Invert Selection", actionContext, RS2::ActionSelectInvert) {
+    m_actionType = RS2::ActionSelectInvert;
 }
 
-void RS_ActionSelectInvert::init(int status) {
+void RS_ActionSelectInvert::init(const int status) {
     RS_ActionInterface::init(status);
     trigger();
-    finish(false);
+    finish();
 }
 
 void RS_ActionSelectInvert::trigger() {
-    RS_Selection s(m_document, m_viewport);
+    const RS_Selection s(m_document, m_viewport);
     s.invertSelection();
 }

@@ -56,8 +56,8 @@ protected:
     void doTriggerCompletion(bool success) override;
 
     void onCoordinateEvent(int status, bool isZero, const RS_Vector& pos) override;
-    void onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent* pEvent) override;
-    void onMouseRightButtonReleaseSelected(int status, LC_MouseEvent* pEvent) override;
+    void onMouseLeftButtonReleaseSelected(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonReleaseSelected(int status, const LC_MouseEvent* event) override;
     void updateMouseButtonHintsForSelection() override;
     void updateMouseButtonHintsForSelected(int status) override;
     RS2::CursorType doGetMouseCursorSelected(int status) override;

@@ -31,21 +31,21 @@
 class LC_ActionDrawStar:public LC_AbstractActionWithPreview{
    Q_OBJECT
 public:
-    LC_ActionDrawStar(LC_ActionContext *actionContext);
+   explicit LC_ActionDrawStar(LC_ActionContext *actionContext);
     QStringList getAvailableCommands() override;
-    double getRadiusInner() const {return m_innerRadius;};
+    double getRadiusInner() const {return m_innerRadius;}
     void setRadiusInner(double d);
-    double getRadiusOuter() const {return m_outerRadius;};
+    double getRadiusOuter() const {return m_outerRadius;}
     void setRadiusOuter(double d);
-    int getRaysNumber() const {return m_raysNumber;};
+    int getRaysNumber() const {return m_raysNumber;}
     void setRaysNumber(int i);
-    bool isOuterRounded() const {return m_outerRadiusRounded;};
+    bool isOuterRounded() const {return m_outerRadiusRounded;}
     void setOuterRounded(bool value);
-    bool isInnerRounded() const {return m_innerRadiusRounded;};
+    bool isInnerRounded() const {return m_innerRadiusRounded;}
     void setInnerRounded(bool value);
-    bool isPolyline() const {return m_createPolyline;};
+    bool isPolyline() const {return m_createPolyline;}
     void setPolyline(bool value);
-    bool isSymmetric() const {return m_symmetric;};
+    bool isSymmetric() const {return m_symmetric;}
     void setSymmetric(bool value);
 protected:
     /**
@@ -99,21 +99,21 @@ protected:
      */
     int m_raysNumber = 5;
 
-    void addPolylineToEntitiesList(RS_Polyline *pPolyline, QList<RS_Entity *> &list, bool b) const;
+    void addPolylineToEntitiesList(RS_Polyline *polyline, QList<RS_Entity *> &list, bool preview) const;
     RS_Polyline *createShapePolyline(RS_Vector &snap, QList<RS_Entity *> &list, int status, bool preview);
-    void doOnLeftMouseButtonRelease(LC_MouseEvent *e, int status, const RS_Vector &snapPoint) override;
-    bool doCheckMayDrawPreview(LC_MouseEvent *event, int status) override;
-    void doPreparePreviewEntities(LC_MouseEvent *e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
+    void doOnLeftMouseButtonRelease(const LC_MouseEvent* e, int status, const RS_Vector &snapPoint) override;
+    bool doCheckMayDrawPreview(const LC_MouseEvent* event, int status) override;
+    void doPreparePreviewEntities(const LC_MouseEvent* e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
     bool doCheckMayTrigger() override;
     bool doTriggerEntitiesPrepare(LC_DocumentModificationBatch& ctx)  override;
     int doGetStatusForInitialSnapToRelativeZero() override;
-    void doInitialSnapToRelativeZero(RS_Vector vector) override;
+    void doInitialSnapToRelativeZero(const RS_Vector& vector) override;
     bool doProcessCommand(int status, const QString &c) override;
-    void doBack(LC_MouseEvent *pEvent, int status) override;
-    RS_Vector doGetMouseSnapPoint(LC_MouseEvent *e) override;
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    void doBack(const LC_MouseEvent* e, int status) override;
+    RS_Vector doGetMouseSnapPoint(const LC_MouseEvent* e) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector &coord) override;
     void updateMouseButtonHints() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
    bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
 };
-#endif // LC_ACTIONDRAWSTAR_H
+#endif

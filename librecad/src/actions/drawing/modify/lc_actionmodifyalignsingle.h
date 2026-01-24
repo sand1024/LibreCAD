@@ -46,18 +46,18 @@ protected:
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     RS2::CursorType doGetMouseCursor(int status) override;
     void updateMouseButtonHints() override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     LC_ActionOptionsWidget *createOptionsWidget() override;
     void previewAlignRefPoint(const RS_Vector &min, const RS_Vector &max) const;
     void previewRefLines(bool drawVertical, double verticalRef, bool drawHorizontal, double horizontalRef) const;
     QString prepareInfoCursorMessage(double verticalRef, bool drawVertical, double horizontalRef, bool drawHorizontal) const;
-    void previewAlign(RS_Entity* entity, double verticalRef, bool drawVertical, double horizontalRef,
-                      bool drawHorizontal, const RS_Vector& alignMin, const RS_Vector& m_alignMax) const;
+    void previewAlign(const RS_Entity* entity, double verticalRef, bool drawVertical, double horizontalRef,
+                      bool drawHorizontal, const RS_Vector& alignMin, const RS_Vector& alignMax) const;
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
     void doTriggerCompletion(bool success) override;
 };
 
-#endif // LC_ACTIONMODIFYALIGNSINGLE_H
+#endif

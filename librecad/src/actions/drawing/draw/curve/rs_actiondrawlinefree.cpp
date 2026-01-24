@@ -24,10 +24,10 @@
 **
 **********************************************************************/
 
+#include "rs_actiondrawlinefree.h"
+
 #include <QLineF>
 
-#include "rs_actiondrawlinefree.h"
-#include "rs_debug.h"
 #include "rs_document.h"
 #include "rs_polyline.h"
 #include "rs_preview.h"
@@ -43,7 +43,7 @@ RS_ActionDrawLineFree::~RS_ActionDrawLineFree() = default;
 RS_Entity* RS_ActionDrawLineFree::doTriggerCreateEntity() {
     if (m_polyline != nullptr){
         m_polyline->endPolyline();
-        RS_VectorSolutions sol = m_polyline->getRefPoints();
+        const RS_VectorSolutions sol = m_polyline->getRefPoints();
         if (sol.getNumber() > 2){
             m_polyline->calculateBorders();
             return m_polyline;
@@ -63,14 +63,16 @@ void RS_ActionDrawLineFree::doTriggerCompletion([[maybe_unused]]bool success) {
  * 11 Aug 2011, Dongxu Li
  */
 // todo - relative point snap?
-void RS_ActionDrawLineFree::onMouseMoveEvent(int status, LC_MouseEvent *e) {
-    RS_Vector v = e->snapPoint;
+void RS_ActionDrawLineFree::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     if (status==Dragging && m_polyline != nullptr)     {
         const QPointF mousePosition = e->uiPosition;
         if (QLineF(mousePosition,m_oldMousePosition).length() < 1) {
             //do not add the same mouse position
             return;
         }
+
+        const RS_Vector v = e->snapPoint;
+
         m_polyline->addVertex(v);
 
         if (!m_polyline->isEmpty()) {
@@ -82,11 +84,12 @@ void RS_ActionDrawLineFree::onMouseMoveEvent(int status, LC_MouseEvent *e) {
     }
 }
 
-void RS_ActionDrawLineFree::onMouseLeftButtonPress([[maybe_unused]]int status, LC_MouseEvent *e) {
+void RS_ActionDrawLineFree::onMouseLeftButtonPress([[maybe_unused]]int status, const LC_MouseEvent* e) {
     switch(getStatus()){
         case SetStartpoint:
             setStatus(Dragging);
             // fall-through
+            [[fallthrough]];
         case Dragging:
             m_vertex = e->snapPoint;
             m_polyline = new RS_Polyline(m_document, RS_PolylineData(m_vertex, m_vertex, false));
@@ -96,14 +99,14 @@ void RS_ActionDrawLineFree::onMouseLeftButtonPress([[maybe_unused]]int status, L
     }
 }
 
-void RS_ActionDrawLineFree::onMouseLeftButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionDrawLineFree::onMouseLeftButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     if(status == Dragging){
         m_vertex = {};
         trigger();
     }
 }
 
-void RS_ActionDrawLineFree::onMouseRightButtonRelease(int status, [[maybe_unused]]LC_MouseEvent *e) {
+void RS_ActionDrawLineFree::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     if (m_polyline != nullptr) {
         delete m_polyline;
         m_polyline = nullptr;

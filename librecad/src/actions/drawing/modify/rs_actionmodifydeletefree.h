@@ -37,9 +37,8 @@ class RS_Polyline;
  */
 class RS_ActionModifyDeleteFree:public RS_ActionInterface {
 Q_OBJECT
-
 public:
-    RS_ActionModifyDeleteFree(LC_ActionContext *actionContext);
+    explicit RS_ActionModifyDeleteFree(LC_ActionContext *actionContext);
     ~RS_ActionModifyDeleteFree() override;
     void init(int status) override;
     void trigger() override;

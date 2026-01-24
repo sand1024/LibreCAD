@@ -10,14 +10,14 @@ class RS_Layer;
 class LC_ActionDrawBoundingBox : public LC_ActionPreSelectionAwareBase{
     Q_OBJECT
 public:
-    LC_ActionDrawBoundingBox(LC_ActionContext *actionContext);
+    explicit LC_ActionDrawBoundingBox(LC_ActionContext *actionContext);
     bool isSelectionAsGroup() const{return m_selectionAsGroup;}
-    void setSelectionAsGroup(bool val){m_selectionAsGroup = val;}
+    void setSelectionAsGroup(const bool val){m_selectionAsGroup = val;}
     bool isCornerPointsOnly() const {return m_cornerPointsOnly;}
-    void setCornersOnly(bool val){m_cornerPointsOnly = val;}
+    void setCornersOnly(const bool val){m_cornerPointsOnly = val;}
     bool isCreatePolyline() const {return m_createPolyline;}
-    void setCreatePolyline(bool val){m_createPolyline = val;}
-    void setOffset(double o){m_offset = o;};
+    void setCreatePolyline(const bool val){m_createPolyline = val;}
+    void setOffset(const double o){m_offset = o;}
     double getOffset() const{return m_offset;}
     void init(int status) override;
 protected:
@@ -40,4 +40,4 @@ protected:
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
 };
 
-#endif // LC_ACTIONDRAWBOUNDINGBOX_H
+#endif

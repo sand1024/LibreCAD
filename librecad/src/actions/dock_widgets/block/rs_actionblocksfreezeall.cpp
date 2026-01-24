@@ -40,7 +40,7 @@ void RS_ActionBlocksFreezeAll::trigger() {
         m_graphic->freezeAllBlocks(m_freeze);
     }
     redrawDrawing();
-    finish(false);
+    finish();
 }
 
 void RS_ActionBlocksFreezeAll::init(const int status) {
