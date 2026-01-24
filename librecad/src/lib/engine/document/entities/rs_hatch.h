@@ -29,7 +29,6 @@
 
 #include <memory>
 #include <vector>
-#include <QString>
 
 #include "rs_entitycontainer.h"
 
@@ -55,7 +54,7 @@ struct RS_HatchData {
      * @param angle Pattern rotation angle.
      * @param pattern Pattern name (ignored for solid).
      */
-    RS_HatchData(bool solid, double scale, double angle, QString pattern)
+    RS_HatchData(const bool solid, const double scale, const double angle, QString pattern)
         : solid{solid}, scale{scale}, angle{angle}, pattern{std::move(pattern)} {}
 
     bool solid = false;
@@ -101,7 +100,7 @@ public:
     bool isContainer() const override { return !isSolid(); }
 
     /** @return Copy of data that defines the hatch. */
-    RS_HatchData getData() const { return data; }
+    RS_HatchData getData() const { return m_data; }
 
     /**
      * Validates and optimizes boundary loops into subcontainers.
@@ -115,17 +114,17 @@ public:
     int countLoops() const;
 
     /** @return true if solid hatch. */
-    bool isSolid() const { return data.solid; }
-    void setSolid(bool solid) { data.solid = solid; }
+    bool isSolid() const { return m_data.solid; }
+    void setSolid(const bool solid) { m_data.solid = solid; }
 
-    QString getPattern() const { return data.pattern; }
-    void setPattern(const QString& patternName) { data.pattern = patternName; }
+    QString getPattern() const { return m_data.pattern; }
+    void setPattern(const QString& patternName) { m_data.pattern = patternName; }
 
-    double getScale() const { return data.scale; }
-    void setScale(double scale) { data.scale = scale; }
+    double getScale() const { return m_data.scale; }
+    void setScale(const double scale) { m_data.scale = scale; }
 
-    double getAngle() const { return data.angle; }
-    void setAngle(double angle) { data.angle = angle; }
+    double getAngle() const { return m_data.angle; }
+    void setAngle(const double angle) { m_data.angle = angle; }
 
     /**
      * @return Total enclosed area of loops.
@@ -138,13 +137,13 @@ public:
     /**
      * @return Last update error code.
      */
-    RS_HatchError getUpdateError() const { return updateError; }
+    RS_HatchError getUpdateError() const { return m_updateError; }
 
     /**
      * Toggles visibility of boundary contours in subcontainers.
-     * @param on true to show boundaries.
+     * @param visible true to show boundaries.
      */
-    void activateContour(bool on) const;
+    void activateContour(bool visible) const;
 
     /**
      * @return Subcontainer for the boundary loop at index (0-based).
@@ -152,11 +151,6 @@ public:
     RS_EntityContainer* getBoundaryContainer(int loopIndex) const;
 
     void draw(RS_Painter* painter) override;
-
-    double getDistanceToPoint(const RS_Vector& coord, RS_Entity** entity = nullptr,
-                              RS2::ResolveLevel level = RS2::ResolveNone,
-                              double solidDist = RS_MAXDOUBLE) const override;
-
     void move(const RS_Vector& offset) override;
     void rotate(const RS_Vector& center, double angle) override;
     void rotate(const RS_Vector& center, const RS_Vector& angleVector) override;
@@ -165,13 +159,13 @@ public:
     void stretch(const RS_Vector& firstCorner, const RS_Vector& secondCorner,
                  const RS_Vector& offset) override;
 
-    friend std::ostream& operator<<(std::ostream& os, const RS_Hatch& p);
+    friend std::ostream& operator<<(std::ostream& os, const RS_Hatch& hatchEntity);
 
 protected:
-    RS_HatchData data{};
-
+    RS_HatchData m_data{};
+    double doGetDistanceToPoint(const RS_Vector& coord, RS_Entity** entity, RS2::ResolveLevel level, double solidDist) const override;
 private:
-    void debugOutPath(const QPainterPath& tmpPath) const;
+    void debugOutPath(const QPainterPath& path) const;
     void drawPatternLines(RS_Painter* painter) const;
     void drawSolidFill(RS_Painter* painter) const;
     void updatePatternHatch(RS_Layer* layer, const RS_Pen& pen);
@@ -179,8 +173,8 @@ private:
     void prepareUpdate();
 
     mutable double m_area = RS_MAXDOUBLE;
-    RS_HatchError updateError = HATCH_UNDEFINED;
-    bool updateRunning = false;
+    RS_HatchError m_updateError = HATCH_UNDEFINED;
+    bool m_updateRunning = false;
     bool m_needOptimization = true;
     bool m_updated = false;
     mutable std::shared_ptr<std::vector<LC_LoopUtils::LC_Loops>> m_orderedLoops;

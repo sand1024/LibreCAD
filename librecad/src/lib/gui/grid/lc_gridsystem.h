@@ -25,8 +25,8 @@
 
 #include <memory>
 
-#include "rs_vector.h"
 #include "rs_color.h"
+#include "rs_vector.h"
 
 class RS_Painter;
 class LC_Lattice;
@@ -35,39 +35,38 @@ class LC_GraphicViewport;
 class LC_GridSystem {
 public:
     struct LC_GridOptions{
-        bool simpleGridRendering = false;
-        bool drawLines = false;
-
-        bool drawGrid = true;
-        RS2::LineType gridLineType{};
-        int gridWidthPx = 1;
-
         RS_Color gridColorLine;
         RS_Color gridColorPoint;
-        bool drawMetaGrid = true;
         RS_Color metaGridColor;
-        int metaGridLineWidthPx = 1;
+        RS2::LineType gridLineType{};
         RS2::LineType metaGridLineType{};
+        int gridWidthPx = 1;
+        int metaGridLineWidthPx = 1;
+        bool drawMetaGrid = true;
         bool disableGridOnPanning = false;
         bool drawIsometricVerticalsAlways = true; // fixme - complete initialization
+        bool simpleGridRendering = false;
+        bool drawLines = false;
+        bool drawGrid = true;
     };
 
-    LC_GridSystem(LC_GridOptions* options);
+    explicit LC_GridSystem(LC_GridOptions* options);
     virtual ~LC_GridSystem() ;
 
     void setOptions(std::unique_ptr<LC_GridOptions> options);
     void invalidate();
-    RS_Vector const &getCellVector() const {
+
+    const RS_Vector&getCellVector() const {
         return m_cellVector;
     }
     virtual RS_Vector snapGrid(const RS_Vector &coord) const = 0;
-    void createGrid(LC_GraphicViewport* view, const RS_Vector &viewZero, const RS_Vector &viewSize, const RS_Vector &metaGridWidth, const RS_Vector &gridWidth);
+    void createGrid(const LC_GraphicViewport* view, const RS_Vector &viewZero, const RS_Vector &viewSize, const RS_Vector &metaGridWidth, const RS_Vector &gridWidth);
     void draw(RS_Painter *painter, LC_GraphicViewport* view);
     void clearGrid() const;
     void setGridInfiniteState(bool hasIndefiniteAxis, bool undefinedX);
-    bool isGridDisabledByPanning(LC_GraphicViewport *view) const;
+    bool isGridDisabledByPanning(const LC_GraphicViewport *view) const;
     bool isValid() const;
-    void calculateSnapInfo(RS_Vector& viewZero,RS_Vector& viewSize,RS_Vector& metaGridWidthToUse,RS_Vector& gridWidthToUse);
+    void calculateSnapInfo(const RS_Vector& viewZero, const RS_Vector& viewSize, const RS_Vector& metaGridWidthToUse, const RS_Vector& gridWidthToUse);
 
 protected:
     bool m_valid = false;
@@ -119,7 +118,7 @@ protected:
     bool m_hasAxisIndefinite = false;
     bool m_indefiniteX  = false;
 
-    void doCreateGrid(LC_GraphicViewport* view, const RS_Vector &viewZero, const RS_Vector &viewSize, const RS_Vector &metaGridWidth, const RS_Vector &gridWidth);
+    void doCreateGrid(const LC_GraphicViewport* view, const RS_Vector &viewZero, const RS_Vector &viewSize, const RS_Vector &metaGridWidth, const RS_Vector &gridWidth);
     virtual void createMetaGridLines(const RS_Vector& min, const RS_Vector &max)  = 0;
     void drawMetaGrid(RS_Painter *painter, LC_GraphicViewport *view);
     void drawGrid(RS_Painter *painter, LC_GraphicViewport *view);
@@ -135,10 +134,10 @@ protected:
     virtual void determineMetaGridBoundaries(const RS_Vector &viewZero, const RS_Vector &viewSize) = 0;
     virtual void prepareGridOther(const RS_Vector &viewZero, const RS_Vector &viewSize) = 0;
     double truncToStep(double value, double step);
-    void doDrawLines(RS_Painter *painter, LC_GraphicViewport *view, LC_Lattice *lattice);
+    void doDrawLines(RS_Painter *painter, LC_GraphicViewport *view, const LC_Lattice *linesLattice);
     bool isNumberOfPointsValid(int numberOfPoints);
     virtual void setCellSize(const RS_Vector &gridWidth, const RS_Vector &metaGridWidth);
-    void doCalculateSnapInfo(RS_Vector& viewZero,RS_Vector& viewSize,RS_Vector& metaGridWidthToUse,RS_Vector& gridWidthToUse);
+    void doCalculateSnapInfo(const RS_Vector& viewZero, const RS_Vector& viewSize, const RS_Vector& metaGridWidth, const RS_Vector& gridWidth);
 };
 
-#endif // LC_GRIDSYSTEM_H
+#endif

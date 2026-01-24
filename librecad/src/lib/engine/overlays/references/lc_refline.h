@@ -32,4 +32,4 @@ public:
     RS_Entity *clone() const override;
 };
 
-#endif // LC_REFLINE_H
+#endif

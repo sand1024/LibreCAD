@@ -24,11 +24,11 @@
 #ifndef LC_METAINFOPROVIDER_H
 #define LC_METAINFOPROVIDER_H
 
+#include "lc_propertymatchertypes.h"
 #include "lc_propertymatchtypedescriptor.h"
 #include "lc_typedentitymatcher.h"
 #include "lc_vectorentitymatcher.h"
 #include "lc_vectorlistentitymatcher.h"
-#include "lc_propertymatchertypes.h"
 #include "rs.h"
 #include "rs_font.h"
 #include "rs_fontlist.h"
@@ -37,20 +37,20 @@ class RS_Entity;
 
 class LC_EntityMatchDescriptor {
 public:
-    LC_EntityMatchDescriptor(const QString &name, RS2::EntityType entityType)
+    LC_EntityMatchDescriptor(const QString &name, const RS2::EntityType entityType)
        : m_name{name}, m_entityType{entityType} {
     }
     void collectPropertiesInfo(QList<QPair<QString, QString>> &propertyNames);
     LC_PropertyMatchDescriptor* findPropertyDescriptor(const QString& propertyName);
     RS2::EntityType getEntityType() const {return m_entityType;}
-    void fillPropertiesInfo(std::function<void(QString&, QString&, QString&)> fillFunction);
+    void fillPropertiesInfo(const std::function<void(QString&, QString&, QString&)>& fillFunction);
 protected:
     QString m_name;
     RS2::EntityType m_entityType;
     QList<LC_PropertyMatchDescriptor*> m_entityPropertyDescriptors;
 };
 
-inline void LC_EntityMatchDescriptor::fillPropertiesInfo(std::function<void(QString &, QString&, QString&)> fillFunction){
+inline void LC_EntityMatchDescriptor::fillPropertiesInfo(const std::function<void(QString &, QString&, QString&)>& fillFunction){
     for (const auto p: m_entityPropertyDescriptors) {
         QString name = p->getName();
         QString displayName = p->getDisplayName();
@@ -70,7 +70,7 @@ inline LC_PropertyMatchDescriptor* LC_EntityMatchDescriptor::findPropertyDescrip
 
 template <typename EntityType> class LC_TypedEntityMatchDescriptor: public LC_EntityMatchDescriptor {
 public:
-    LC_TypedEntityMatchDescriptor(QString name, RS2::EntityType entityType):LC_EntityMatchDescriptor(name, entityType) {};
+    LC_TypedEntityMatchDescriptor(const QString& name, const RS2::EntityType entityType):LC_EntityMatchDescriptor(name, entityType) {}
     template <typename ValueType>
     void add(const QString& name, std::function<ValueType(EntityType*)> funAccess, const QString& displayName, const QString& description,
              const LC_TypedPropertyMatchTypeDescriptor<ValueType>& type);
@@ -147,8 +147,8 @@ void LC_TypedEntityMatchDescriptor<EntityType>::addIntChoice(const QString &name
     const std::initializer_list<QPair<QString, int>> & choicesList) {
     auto propertyMatchDescriptor = new LC_TypedPropertyMatchDescriptor<int, EntityType>(name, displayName, description,  LC_PropertyMatcherTypes::INT_CHOICE, funAccess);
     QList<QPair<QString, QVariant>> choices;
-    for (const auto &p: choicesList) {
-        choices.push_back(QPair<QString, QVariant>(p.first, QVariant(p.second)));
+    for (const auto & [fst, snd]: choicesList) {
+        choices.push_back(QPair<QString, QVariant>(fst, QVariant(snd)));
     }
     propertyMatchDescriptor->setChoiceValues(choices);
     m_entityPropertyDescriptors.push_back(propertyMatchDescriptor);
@@ -169,7 +169,7 @@ void LC_TypedEntityMatchDescriptor<EntityType>::addFontStringList(const QString&
     const QString& displayName, const QString& description) {
     addStringList(name, funAccess, displayName, description, [](QList<std::pair<QString, QVariant>>& listValues) -> void {
         QStringList fonts;
-        for (auto const& f : *RS_FONTLIST) {
+        for (const auto& f : *RS_FONTLIST) {
             auto fontName = f->getFileName();
             if (fonts.contains(fontName)) {
                 continue;

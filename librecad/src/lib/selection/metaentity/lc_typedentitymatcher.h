@@ -68,7 +68,7 @@ public:
     }
 
     ~LC_TypedPropertyMatchDescriptor() override = default;
-    LC_EntityMatcher* getMatcher() override;
+    LC_EntityMatcher* createMatcher() override;
 };
 
 template <typename MatchValueType, typename EntityType>
@@ -80,20 +80,20 @@ public:
     : LC_TypedPropertyMatchDescriptor<MatchValueType, EntityType>(name, displayName, description, propertyDescriptor, funAccess) {}
 
     void getChoiceValues(QList<QPair<QString, QVariant>>&values)  override {
-        funListProvider(values);
+        m_funListProvider(values);
     }
 
     void setFunListProvider(const std::function<void(QList<QPair<QString, QVariant>>&)>& funListValuesProvider) {
-        this->funListProvider = funListValuesProvider;
+        this->m_funListProvider = funListValuesProvider;
         this->m_choice = true;
     }
 
 protected:
-    std::function<void(QList<QPair<QString, QVariant>>&)> funListProvider;
+    std::function<void(QList<QPair<QString, QVariant>>&)> m_funListProvider;
 };
 
 template <typename MatchValueType, typename EntityType>
-LC_EntityMatcher* LC_TypedPropertyMatchDescriptor<MatchValueType, EntityType>::getMatcher() {
+LC_EntityMatcher* LC_TypedPropertyMatchDescriptor<MatchValueType, EntityType>::createMatcher() {
     LC_TypedPropertyMatchTypeDescriptor<MatchValueType>* propertyType = (LC_TypedPropertyMatchTypeDescriptor<MatchValueType>*)(this->m_type);
     auto matcher = new LC_TypedEntityMatcher<MatchValueType, EntityType>(propertyType,this->m_funAccess);
     return matcher;

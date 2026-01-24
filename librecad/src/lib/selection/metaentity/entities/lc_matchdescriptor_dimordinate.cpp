@@ -26,47 +26,47 @@
 #include "lc_dimordinate.h"
 
 void LC_MatchDescriptorDimOrdinate::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map, LC_ActionContext *actionContext) {
-    auto entity = new LC_DimensionEntityMatchDescriptor<LC_DimOrdinate>(tr("Dimension Ordinate"), RS2::EntityDimOrdinate);
+    const auto entity = new LC_DimensionEntityMatchDescriptor<LC_DimOrdinate>(tr("Dimension Ordinate"), RS2::EntityDimOrdinate);
     initCommonEntityAttributesProperties<LC_DimOrdinate>(entity);
     initCommonDimensionAttributes(entity, actionContext);
 
-    entity->addVectorX("originX", [](LC_DimOrdinate* e) {
+    entity->addVectorX("originX", [](const LC_DimOrdinate* e) {
         return e->getDefinitionPoint();
     }, tr("Origin Point X"), tr("X coordinate for dimension origin point"));
 
-    entity->addVectorY("originY", [](LC_DimOrdinate* e) {
+    entity->addVectorY("originY", [](const LC_DimOrdinate* e) {
         return e->getDefinitionPoint();
     }, tr("Origin Point Y"), tr("Y coordinate for dimension origin point"));
 
-    entity->addIntChoice("ordinate", [](LC_DimOrdinate* e) -> int {
+    entity->addIntChoice("ordinate", [](const LC_DimOrdinate* e) -> int {
         return e->isForXDirection() ? 1 : 0;
     }, tr("Ordinate"), tr("Direction of ordinate"), {{tr("X"), 1}, {tr("Y"), 0}});
 
-    entity->addVectorX("featureX", [](LC_DimOrdinate* e) {
+    entity->addVectorX("featureX", [](const LC_DimOrdinate* e) {
         return e->getFeaturePoint();
     }, tr("Feature Point X"), tr("X coordinate for dimension feature point"));
 
-    entity->addVectorY("featureY", [](LC_DimOrdinate* e) {
+    entity->addVectorY("featureY", [](const LC_DimOrdinate* e) {
         return e->getFeaturePoint();
     }, tr("Feature Point Y"), tr("Y coordinate for dimension feature point"));
 
-    entity->addVectorX("leaderEndX", [](LC_DimOrdinate* e) {
+    entity->addVectorX("leaderEndX", [](const LC_DimOrdinate* e) {
         return e->getLeaderEndPoint();
     }, tr("Leader End X"), tr("X coordinate for dimension leader end point"));
 
-    entity->addVectorY("leaderEndY", [](LC_DimOrdinate* e) {
+    entity->addVectorY("leaderEndY", [](const LC_DimOrdinate* e) {
         return e->getLeaderEndPoint();
     }, tr("Leader End Y"), tr("Y coordinate for dimension leader end point"));
 
-    entity->addVectorX("textMiddleX", [](LC_DimOrdinate* e) {
+    entity->addVectorX("textMiddleX", [](const LC_DimOrdinate* e) {
         return e->getMiddleOfText();
     }, tr("Text middle point X"), tr("X coordinate for text middle point"));
 
-    entity->addVectorY("textMiddleY", [](LC_DimOrdinate* e) {
+    entity->addVectorY("textMiddleY", [](const LC_DimOrdinate* e) {
         return e->getMiddleOfText();
     }, tr("Text middle point Y"), tr("Y coordinate for text middle point"));
 
-    entity->addAngle("hdir", [](LC_DimOrdinate* e) {
+    entity->addAngle("hdir", [](const LC_DimOrdinate* e) {
         return e->getHDir();
     }, tr("Horizontal"), tr("Andle of horizontal direction for this dimension"));
 

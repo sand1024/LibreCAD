@@ -27,8 +27,6 @@
 #ifndef RS_PREVIEWACTIONINTERFACE_H
 #define RS_PREVIEWACTIONINTERFACE_H
 
-#include <QPointF>
-
 #include "dxf_format.h"
 #include "rs_actioninterface.h"
 #include "rs_entity.h"
@@ -69,7 +67,7 @@ struct LC_MouseEvent{
 class RS_PreviewActionInterface : public RS_ActionInterface {
 public:
     void init(int status) override;
-    void finish(bool updateTB = true) override;
+    void finish() override;
     void suspend() override;
     void resume() override;
     void trigger() override;
@@ -113,96 +111,98 @@ protected:
     RS_Vector getSnapAngleAwarePoint(const LC_MouseEvent *e, const RS_Vector &basepoint, const RS_Vector &pos, bool drawMark, bool force);
     RS_Vector getFreeSnapAwarePoint(const LC_MouseEvent *e, const RS_Vector &pos) const;
 
-    void addOverlay(LC_OverlayDrawable* en, RS2::OverlayGraphics position) const;
+    void addOverlay(LC_OverlayDrawable* drawable, RS2::OverlayGraphics position) const;
 
-    void previewEntity(RS_Entity *en) const;
+    void previewEntity(const RS_Entity *en) const;
     RS_Circle* previewCircle(const RS_CircleData& circleData) const;
     RS_Arc *previewArc(const RS_ArcData &arcData) const;
     RS_Ellipse *previewEllipse(const RS_EllipseData &ellipseData) const;
     RS_Point* previewPoint(const RS_Vector &coord) const;
     RS_Line* previewLine(const RS_Vector &start, const RS_Vector &end) const;
     RS_Line* previewLine(const RS_LineData &data) const;
-    RS_Line* previewRefLine(const RS_Vector &start, const RS_Vector &end) const;
+    void previewRefLine(const RS_Vector &start, const RS_Vector &end) const;
+    RS_Line* obtainPreviewRefLine(const RS_Vector &start, const RS_Vector &end) const;
     RS_ConstructionLine* previewRefConstructionLine(const RS_Vector &start, const RS_Vector &end) const;
     void previewRefLines(const std::vector<RS_LineData>& points) const;
     void previewRefSelectableLine(const RS_Vector &start, const RS_Vector &end) const;
     void previewRefPoint(const RS_Vector &coord) const;
     void previewRefSelectablePoint(const RS_Vector &coord) const;
     void previewRefPoints(const std::vector<RS_Vector>& points) const;
-    RS_Arc* previewRefArc(const RS_Vector &center, const RS_Vector &startPoint, const RS_Vector &mouse, bool determineReversal) const;
+    void previewRefArc(const RS_Vector &center, const RS_Vector &startPoint, const RS_Vector &mouse, bool determineReversal) const;
+    RS_Arc* obtainPreviewRefArc(const RS_Vector& center, const RS_Vector& startPoint, const RS_Vector& mouse, bool determineReversal) const;
     RS_Arc* previewRefArc(bool reversed, const RS_Vector &center, const RS_Vector &startPoint, const RS_Vector &mouse) const;
-    RS_Circle* previewRefCircle(const RS_Vector &center, const double radius) const;
+    RS_Circle* previewRefCircle(const RS_Vector &center, double radius) const;
     RS_Arc *previewRefArc(const RS_ArcData &arcData) const;
     LC_RefEllipse *previewRefEllipse(const RS_EllipseData &arcData) const;
 
     void initRefEntitiesMetrics();
 
-    void highlightHover(RS_Entity *e) const;
-    void highlightHoverWithRefPoints(RS_Entity* e, bool value) const;
+    void highlightHover(const RS_Entity* e) const;
+    void highlightHoverWithRefPoints(const RS_Entity* e, bool value) const;
     void highlightSelected(RS_Entity *e, bool enable=true) const;
 
     virtual void moveRelativeZero(const RS_Vector &zero);
     void markRelativeZero() const;
 
-    bool is(RS_Entity* e, RS2::EntityType type) const;
-    bool isLine(RS_Entity*  e) const{return is(e, RS2::EntityLine);}
-    bool isPolyline(RS_Entity*  e) const{return is(e, RS2::EntityPolyline);}
-    bool isCircle(RS_Entity*  e) const {return is(e, RS2::EntityCircle);}
-    bool isArc(RS_Entity*  e) const {return is(e, RS2::EntityArc);}
-    bool isInsert(RS_Entity*  e) const {return is(e, RS2::EntityInsert);}
-    bool isEllipse(RS_Entity*  e) const {return is(e, RS2::EntityEllipse);}
-    bool isAtomic(RS_Entity* e) const {return e != nullptr && e->isAtomic();}
+    bool is(const RS_Entity* e, RS2::EntityType type) const;
+    bool isLine(const RS_Entity*  e) const{return is(e, RS2::EntityLine);}
+    bool isPolyline(const RS_Entity*  e) const{return is(e, RS2::EntityPolyline);}
+    bool isCircle(const RS_Entity*  e) const {return is(e, RS2::EntityCircle);}
+    bool isArc(const RS_Entity*  e) const {return is(e, RS2::EntityArc);}
+    bool isInsert(const RS_Entity*  e) const {return is(e, RS2::EntityInsert);}
+    bool isEllipse(const RS_Entity*  e) const {return is(e, RS2::EntityEllipse);}
+    bool isAtomic(const RS_Entity* e) const {return e != nullptr && e->isAtomic();}
 
     void previewSnapAngleMark(const RS_Vector &center, double angle) const;
-    void previewSnapAngleMark(const RS_Vector &center, const RS_Vector &refPoint);
+    void previewSnapAngleMark(const RS_Vector &center, const RS_Vector &refPoint) const;
 
-    RS_Entity *catchModifiableEntity(LC_MouseEvent *e, const EntityTypeList &enTypeList);
-    RS_Entity *catchModifiableEntity(LC_MouseEvent *e, const RS2::EntityType &enType);
+    RS_Entity *catchModifiableEntity(const LC_MouseEvent *e, const EntityTypeList &enTypeList) const;
+    RS_Entity *catchModifiableEntity(const LC_MouseEvent *e, RS2::EntityType enType) const;
 
-    RS_Entity *catchModifiableEntity(RS_Vector &coord, const RS2::EntityType &enType) const;
+    RS_Entity *catchModifiableEntity(const RS_Vector &coord, RS2::EntityType enType) const;
 
-    RS_Entity *catchEntityByEvent(LC_MouseEvent *e, RS2::ResolveLevel level = RS2::ResolveNone) const;
-    RS_Entity *catchEntityByEvent(LC_MouseEvent *e, RS2::EntityType enType, RS2::ResolveLevel level = RS2::ResolveNone) const;
-    RS_Entity *catchEntityByEvent(LC_MouseEvent *e, const EntityTypeList &enTypeList, RS2::ResolveLevel level = RS2::ResolveNone);
+    RS_Entity *catchEntityByEvent(const LC_MouseEvent *e, RS2::ResolveLevel level = RS2::ResolveNone) const;
+    RS_Entity *catchEntityByEvent(const LC_MouseEvent *e, RS2::EntityType enType, RS2::ResolveLevel level = RS2::ResolveNone) const;
+    RS_Entity *catchEntityByEvent(const LC_MouseEvent *e, const EntityTypeList &enTypeList, RS2::ResolveLevel level = RS2::ResolveNone) const;
 
-    RS_Entity* catchAndDescribe(LC_MouseEvent *e, const EntityTypeList &enTypeList, RS2::ResolveLevel level);
-    RS_Entity* catchAndDescribe(LC_MouseEvent* e, RS2::ResolveLevel level  = RS2::ResolveNone);
-    RS_Entity* catchAndDescribe(LC_MouseEvent *e, RS2::EntityType enType, RS2::ResolveLevel level = RS2::ResolveNone);
+    RS_Entity* catchAndDescribe(const LC_MouseEvent *e, const EntityTypeList &enTypeList, RS2::ResolveLevel level) const;
+    RS_Entity* catchAndDescribe(const LC_MouseEvent* e, RS2::ResolveLevel level  = RS2::ResolveNone) const;
+    RS_Entity* catchAndDescribe(const LC_MouseEvent *e, RS2::EntityType enType, RS2::ResolveLevel level = RS2::ResolveNone) const;
 
-    RS_Entity* catchAndDescribe(const RS_Vector &pos, RS2::ResolveLevel level = RS2::ResolveNone);
+    RS_Entity* catchAndDescribe(const RS_Vector &pos, RS2::ResolveLevel level = RS2::ResolveNone) const;
 
-    RS_Entity* catchModifiableAndDescribe(LC_MouseEvent *e, const RS2::EntityType &enType);
-    RS_Entity* catchModifiableAndDescribe(LC_MouseEvent *e, const EntityTypeList &enTypeList);
+    RS_Entity* catchModifiableAndDescribe(const LC_MouseEvent *e, RS2::EntityType enType) const;
+    RS_Entity* catchModifiableAndDescribe(const LC_MouseEvent *e, const EntityTypeList &enTypeList) const;
 
     LC_ActionInfoMessageBuilder& msg(const QString& name, const QString& value) const;
     LC_ActionInfoMessageBuilder& msg(const QString& name) const;
     LC_ActionInfoMessageBuilder& msgStart() const;
 
-    QString obtainEntityDescriptionForInfoCursor(RS_Entity *e, RS2::EntityDescriptionLevel level) const;
-    void prepareEntityDescription(RS_Entity *entity, RS2::EntityDescriptionLevel level) const;
-    void appendInfoCursorZoneMessage(QString message, int zoneNumber, bool replaceContent) const;
-    void appendInfoCursorEntityCreationMessage(QString message) const;
+    QString obtainEntityDescriptionForInfoCursor(const RS_Entity* e, RS2::EntityDescriptionLevel level) const;
+    void prepareEntityDescription(const RS_Entity* entity, RS2::EntityDescriptionLevel level) const;
+    void appendInfoCursorZoneMessage(const QString& message, int zoneNumber, bool replaceContent) const;
+    void appendInfoCursorEntityCreationMessage(const QString& message) const;
 
-    RS_Circle *previewToCreateCircle(const RS_CircleData &circleData);
-    RS_Arc *previewToCreateArc(const RS_ArcData &arcData);
-    RS_Line *previewToCreateLine(const RS_LineData &lineData);
-    RS_Line *previewToCreateLine(const RS_Vector &start, const RS_Vector &end);
-    RS_Ellipse *previewToCreateEllipse(const RS_EllipseData &ellipseData);
-    RS_Point *previewToCreatePoint(const RS_Vector &coord);
-    void previewEntityToCreate(RS_Entity *en, bool addToPreview = true);
+    RS_Circle *previewToCreateCircle(const RS_CircleData &circleData) const;
+    RS_Arc *previewToCreateArc(const RS_ArcData &arcData) const;
+    RS_Line *previewToCreateLine(const RS_LineData &lineData) const;
+    RS_Line *previewToCreateLine(const RS_Vector &start, const RS_Vector &end) const;
+    RS_Ellipse *previewToCreateEllipse(const RS_EllipseData &ellipseData) const;
+    RS_Point *previewToCreatePoint(const RS_Vector &coord) const;
+    void previewEntityToCreate(const RS_Entity* en, bool addToPreview = true) const;
 
-    void fireCoordinateEventForSnap(LC_MouseEvent *e);
+    void fireCoordinateEventForSnap(const LC_MouseEvent *e);
 
     void onMouseLeftButtonRelease(int status, QMouseEvent *e) override;
     void onMouseRightButtonRelease(int status, QMouseEvent *e) override;
     void onMouseLeftButtonPress(int status, QMouseEvent *e) override;
     void onMouseRightButtonPress(int status, QMouseEvent *e) override;
 
-    virtual void onMouseMoveEvent(int status, LC_MouseEvent* event);
-    virtual void onMouseLeftButtonRelease(int status, LC_MouseEvent *e);
-    virtual void onMouseRightButtonRelease(int status, LC_MouseEvent *e);
-    virtual void onMouseLeftButtonPress(int status, LC_MouseEvent *e);
-    virtual void onMouseRightButtonPress(int status, LC_MouseEvent *e);
+    virtual void onMouseMoveEvent(int status, const LC_MouseEvent* event);
+    virtual void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e);
+    virtual void onMouseRightButtonRelease(int status, const LC_MouseEvent* e);
+    virtual void onMouseLeftButtonPress(int status, const LC_MouseEvent* e);
+    virtual void onMouseRightButtonPress(int status, const LC_MouseEvent* e);
     virtual QStringList doGetAvailableCommands(int status);
 
     bool parseToWCSAngle(const QString &c, double &wcsAngleRad) const;

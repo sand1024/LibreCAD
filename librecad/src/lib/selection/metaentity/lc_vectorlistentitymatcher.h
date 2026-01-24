@@ -37,7 +37,7 @@ public:
         : LC_ConvertingEntityMatcher<VectorsListType, QList<double>,double, EntityType>(propertyType, valueAccessor) {
     }
 
-    void updateWithMapper(double& valueToMatch, [[maybe_unused]] double& tolerance, LC_PropertyMatchOperation operation, LC_CoordinatesMapper* mapper) {
+    void updateWithMapper(double& valueToMatch, [[maybe_unused]] double& tolerance, LC_PropertyMatchOperation operation, LC_CoordinatesMapper* mapper) override {
         this->setupComparatorOperation(operation);
         // just to avoid additional check on selection - use different functions for matchAll and specific comparators
         if (operation == MATCH_OPERATION_ALL) {
@@ -46,7 +46,7 @@ public:
             };
         }
         else {
-            auto type = this->m_propertyType->getType();
+            auto type = this->propertyType->getType();
             auto coordX = type == LC_PropertyMatchTypeEnum::ENTITY_PROPERTY_COORD_X;
             this->m_funMath = [this, mapper, coordX, valueToMatch, tolerance](RS_Entity* e)-> bool {
                 EntityType* ent = static_cast<EntityType*>(e);
@@ -55,7 +55,7 @@ public:
 
                 for (const auto wcs : wcsCoordinates) {
                     RS_Vector ucsCoord = mapper->toUCS(wcs);
-                    double entityPropertyValue = coordX ? ucsCoord.getX() : ucsCoord.getY();
+                    const double entityPropertyValue = coordX ? ucsCoord.getX() : ucsCoord.getY();
                     ucsCoords.push_back(entityPropertyValue);
                 }
 
@@ -75,11 +75,11 @@ public:
             name, displayName, description, propertyDescriptor, funAccess) {
     }
 
-    LC_EntityMatcher* getMatcher() override;
+    LC_EntityMatcher* createMatcher() override;
 };
 
 template <typename EntityType, typename VectorListType>
-LC_EntityMatcher* LC_RS_VectorListPropertyMatchDescriptor<EntityType, VectorListType>::getMatcher() {
+LC_EntityMatcher* LC_RS_VectorListPropertyMatchDescriptor<EntityType, VectorListType>::createMatcher() {
     auto matcher = new LC_RS_VectorListEntityMatcher<EntityType,VectorListType>(this->m_type, this->m_funAccess);
     return matcher;
 }

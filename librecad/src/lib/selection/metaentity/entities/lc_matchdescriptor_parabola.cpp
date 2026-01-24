@@ -26,30 +26,30 @@
 #include "lc_parabola.h"
 
 void LC_MatchDescriptorParabola::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
-    auto entity = new LC_TypedEntityMatchDescriptor<LC_Parabola>(tr("Parabola"), RS2::EntityParabola);
+    const auto entity = new LC_TypedEntityMatchDescriptor<LC_Parabola>(tr("Parabola"), RS2::EntityParabola);
     initCommonEntityAttributesProperties<LC_Parabola>(entity);
 
-    entity->addVectorX("focusX", [](LC_Parabola* e) {
+    entity->addVectorX("focusX", [](const LC_Parabola* e) {
         return e->getFocus();
     }, tr("Focus X"), tr("X coordinate for parabola focus point"));
 
-    entity->addVectorY("focusY", [](LC_Parabola* e) {
+    entity->addVectorY("focusY", [](const LC_Parabola* e) {
         return e->getFocus();
     }, tr("Focus Y"), tr("Y coordinate for parabola focus point"));
 
-    entity->addVectorX("vertexX", [](LC_Parabola* e) {
+    entity->addVectorX("vertexX", [](const LC_Parabola* e) {
         return e->getVertex();
     }, tr("Vertex X"), tr("X coordinate for parabola vertex point"));
 
-    entity->addVectorY("vertexY", [](LC_Parabola* e) {
+    entity->addVectorY("vertexY", [](const LC_Parabola* e) {
         return e->getVertex();
     }, tr("Vertex Y"), tr("Y coordinate for parabola vertex point"));
 
     entity->addAngle("angle", [](LC_Parabola* e) {
-        return e->getData().axis.angle();
+        return e->getParabolaData().axis.angle();
     }, tr("Axis Angle"), tr("Angle of parabola axis"));
 
-    entity->addLength("length", [](LC_Parabola* e) {
+    entity->addLength("length", [](const LC_Parabola* e) {
         return e->getLength();
     }, tr("Length"), tr("Length of parabola"));
 

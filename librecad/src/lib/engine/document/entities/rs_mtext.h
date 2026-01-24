@@ -36,101 +36,98 @@ class RS_Font;
  * Holds the data that defines a text entity.
  */
 struct RS_MTextData {
-  /**
-   * Vertical alignments.
-   */
-  enum VAlign {
-    VATop,    /**< Top. */
-    VAMiddle, /**< Middle */
-    VABottom  /**< Bottom */
-  };
+    /**
+     * Vertical alignments.
+     */
+    enum VAlign {
+        VATop, /**< Top. */
+        VAMiddle, /**< Middle */
+        VABottom /**< Bottom */
+    };
 
-  /**
-   * Horizontal alignments.
-   */
-  enum HAlign {
-    HALeft,   /**< Left */
-    HACenter, /**< Centered */
-    HARight   /**< Right */
-  };
+    /**
+     * Horizontal alignments.
+     */
+    enum HAlign {
+        HALeft, /**< Left */
+        HACenter, /**< Centered */
+        HARight /**< Right */
+    };
 
-  /**
-   * MText drawing direction.
-   */
-  enum MTextDrawingDirection {
-    LeftToRight, /**< Left to right */
-    RightToLeft, /**< Right to left*/
-    TopToBottom, /**< Top to bottom */
-    ByStyle      /**< Inherited from associated text style */
-  };
+    /**
+     * MText drawing direction.
+     */
+    enum MTextDrawingDirection {
+        LeftToRight, /**< Left to right */
+        RightToLeft, /**< Right to left*/
+        TopToBottom, /**< Top to bottom */
+        ByStyle /**< Inherited from associated text style */
+    };
 
-  /**
-   * Line spacing style for MTexts.
-   */
-  enum MTextLineSpacingStyle {
-    AtLeast, /**< Taller characters will override */
-    Exact    /**< Taller characters will not override */
-  };
+    /**
+     * Line spacing style for MTexts.
+     */
+    enum MTextLineSpacingStyle {
+        AtLeast, /**< Taller characters will override */
+        Exact /**< Taller characters will not override */
+    };
 
-  /**
-   * Default constructor. Leaves the data object uninitialized.
-   */
-  RS_MTextData() = default;
+    /**
+     * Default constructor. Leaves the data object uninitialized.
+     */
+    RS_MTextData() = default;
 
-  /**
-   * Constructor with initialisation.
-   *
-   * @param insertionPoint Insertion point
-   * @param height Nominal (initial) text height
-   * @param width Reference rectangle width
-   * @param valign Vertical alignment
-   * @param halign Horizontal alignment
-   * @param drawingDirection Drawing direction
-   * @param lineSpacingStyle Line spacing style
-   * @param lineSpacingFactor Line spacing factor
-   * @param text Text string
-   * @param style Text style name
-   * @param angle Rotation angle
-   * @param updateMode RS2::Update will update the text entity instantly
-   *    RS2::NoUpdate will not update the entity. You can update
-   *    it later manually using the update() method. This is
-   *    often the case since you might want to adjust attributes
-   *    after creating a text entity.
-   */
-  RS_MTextData(const RS_Vector &insertionPoint, double height, double width,
-               VAlign valign, HAlign halign,
-               MTextDrawingDirection drawingDirection,
-               MTextLineSpacingStyle lineSpacingStyle, double lineSpacingFactor,
-               const QString &text, const QString &style, double angle,
-               RS2::UpdateMode updateMode = RS2::Update);
+    /**
+     * Constructor with initialisation.
+     *
+     * @param insertionPoint Insertion point
+     * @param height Nominal (initial) text height
+     * @param width Reference rectangle width
+     * @param valign Vertical alignment
+     * @param halign Horizontal alignment
+     * @param drawingDirection Drawing direction
+     * @param lineSpacingStyle Line spacing style
+     * @param lineSpacingFactor Line spacing factor
+     * @param text Text string
+     * @param style Text style name
+     * @param angle Rotation angle
+     * @param updateMode RS2::Update will update the text entity instantly
+     *    RS2::NoUpdate will not update the entity. You can update
+     *    it later manually using the update() method. This is
+     *    often the case since you might want to adjust attributes
+     *    after creating a text entity.
+     */
+    RS_MTextData(const RS_Vector& insertionPoint, double height, double width, VAlign valign, HAlign halign,
+                 MTextDrawingDirection drawingDirection, MTextLineSpacingStyle lineSpacingStyle, double lineSpacingFactor,
+                 const QString& text, const QString& style, double angle, RS2::UpdateMode updateMode = RS2::Update);
 
-  /** Insertion point */
-  RS_Vector insertionPoint;
-  /** Nominal (initial) text height */
-  double height = 0.;
-  /** Reference rectangle width */
-  double width = 0.;
-  /** Vertical alignment */
-  VAlign valign = VATop;
-  /** Horizontal alignment */
-  HAlign halign = HALeft;
-  /** Drawing direction */
-  MTextDrawingDirection drawingDirection = LeftToRight;
-  /** Line spacing style */
-  MTextLineSpacingStyle lineSpacingStyle = AtLeast;
-  /** Line spacing factor */
-  double lineSpacingFactor = 1.;
-  /** Text string */
-  QString text;
-  /** Text style name */
-  QString style;
-  /** Rotation angle */
-  double angle = 0.;
-  /** Update mode */
-  RS2::UpdateMode updateMode = RS2::NoUpdate;
+    /** Insertion point */
+    RS_Vector insertionPoint;
+    /** Nominal (initial) text height */
+    double height = 0.;
+    /** Reference rectangle width */
+    double width = 0.;
+    /** Vertical alignment */
+    VAlign valign = VATop;
+    /** Horizontal alignment */
+    HAlign halign = HALeft;
+    /** Drawing direction */
+    MTextDrawingDirection drawingDirection = LeftToRight;
+    /** Line spacing style */
+    MTextLineSpacingStyle lineSpacingStyle = AtLeast;
+    /** Line spacing factor */
+    double lineSpacingFactor = 1.;
+    /** Text string */
+    QString text;
+    /** Text style name */
+    QString style;
+    /** Rotation angle */
+    double angle = 0.;
+    /** Update mode */
+    RS2::UpdateMode updateMode = RS2::NoUpdate;
 };
 
-std::ostream &operator<<(std::ostream &os, const RS_MTextData &td);
+std::ostream& operator<<(std::ostream& os, const RS_MTextData& td);
 
 /**
  * Class for a text entity.
@@ -142,134 +139,195 @@ std::ostream &operator<<(std::ostream &os, const RS_MTextData &td);
  */
 class RS_MText : public RS_EntityContainer {
 public:
-  RS_MText(RS_EntityContainer *parent, const RS_MTextData &d);
-  virtual ~RS_MText() = default;
+    RS_MText(RS_EntityContainer* parent, const RS_MTextData& d);
+    ~RS_MText() override = default;
 
-   RS_Entity *clone() const override;
+    RS_Entity* clone() const override;
 
-  /**	@return RS2::EntityText */
-   RS2::EntityType rtti() const override { return RS2::EntityMText; }
+    /**	@return RS2::EntityText */
+    RS2::EntityType rtti() const override {
+        return RS2::EntityMText;
+    }
 
-  /** @return Copy of data that defines the text. */
-  RS_MTextData getData() const { return data; }
+    /** @return Copy of data that defines the text. */
+    RS_MTextData getData() const {
+        return m_data;
+    }
 
-  void update() override;
+    void update() override;
 
-  int getNumberOfLines() const;
+    int getNumberOfLines() const;
 
-  RS_Vector getInsertionPoint() const { return data.insertionPoint; }
-  void setInsertionPoint(RS_Vector v) {data.insertionPoint = v;}
-  double getHeight() const { return data.height; }
-  void setHeight(double h) { data.height = h; }
-  double getWidth() const { return data.width; }
-  void setWidth(double w) { data.width = w;}
-  void setAlignment(int a);
-  int getAlignment() const;
-  RS_MTextData::VAlign getVAlign() const { return data.valign; }
-  void setVAlign(RS_MTextData::VAlign va) { data.valign = va; }
-  RS_MTextData::HAlign getHAlign() const { return data.halign; }
-  void setHAlign(RS_MTextData::HAlign ha) { data.halign = ha; }
-  RS_MTextData::MTextDrawingDirection getDrawingDirection() const {
-    return data.drawingDirection;
-  }
-  void setDrawingDirection(RS_MTextData::MTextDrawingDirection direction) {
-    data.drawingDirection = direction;
-  }
-  RS_MTextData::MTextLineSpacingStyle getLineSpacingStyle() const {
-    return data.lineSpacingStyle;
-  }
+    RS_Vector getInsertionPoint() const {
+        return m_data.insertionPoint;
+    }
 
-  void getLineSpacingStyle(RS_MTextData::MTextLineSpacingStyle v) {
-      data.lineSpacingStyle = v;
-  }
-  void setLineSpacingFactor(double f) { data.lineSpacingFactor = f; }
-  double getLineSpacingFactor() const { return data.lineSpacingFactor; }
-  void setText(QString t);
-  QString getText() const { return data.text; }
-  void setStyle(const QString &s) { data.style = s; }
-  QString getStyle() const { return data.style; }
-  void setAngle(double a) { data.angle = a; }
-  double getAngle() const { return data.angle; }
-  double getUsedTextWidth() const { return usedTextWidth; }
-  double getUsedTextHeight() const { return usedTextHeight; }
+    void setInsertionPoint(const RS_Vector& v) {
+        m_data.insertionPoint = v;
+    }
 
-  //	virtual double getLength() const {
-  //		return -1.0;
-  //	}
+    double getHeight() const {
+        return m_data.height;
+    }
 
-  /**
-   * @return The insertion point as endpoint.
-   */
-  virtual RS_Vector getNearestEndpoint(const RS_Vector &coord,
-                                       double *dist = NULL) const override;
-   RS_VectorSolutions getRefPoints() const override;
+    void setHeight(const double h) {
+        m_data.height = h;
+    }
 
-   void move(const RS_Vector &offset) override;
-   void rotate(const RS_Vector &center, double angle) override;
-  virtual void rotate(const RS_Vector &center,
-                      const RS_Vector &angleVector) override;
-   void scale(const RS_Vector &center, const RS_Vector &factor) override;
-  virtual void mirror(const RS_Vector &axisPoint1,
-                      const RS_Vector &axisPoint2) override;
-  virtual bool hasEndpointsWithinWindow(const RS_Vector &v1,
-                                         const RS_Vector &v2) const override;
-   virtual void stretch(const RS_Vector &firstCorner,
-                       const RS_Vector &secondCorner,
-                       const RS_Vector &offset) override;
+    double getWidth() const {
+        return m_data.width;
+    }
 
-    friend std::ostream &operator<<(std::ostream &os, const RS_Text &p);
+    void setWidth(const double w) {
+        m_data.width = w;
+    }
 
-    void draw(RS_Painter *painter) override;
-    void drawDraft(RS_Painter *painter) override;
-    void moveRef(const RS_Vector &ref, const RS_Vector &offset) override;
-    RS_Vector getNearestRef(const RS_Vector &coord, double *dist) const override;
-    RS_Vector getNearestSelectedRef(const RS_Vector &coord, double *dist) const override;
-    void moveSelectedRef(const RS_Vector &ref, const RS_Vector &offset) override;
+    void setAlignment(int a);
+    int getAlignment() const;
+
+    RS_MTextData::VAlign getVAlign() const {
+        return m_data.valign;
+    }
+
+    void setVAlign(const RS_MTextData::VAlign va) {
+        m_data.valign = va;
+    }
+
+    RS_MTextData::HAlign getHAlign() const {
+        return m_data.halign;
+    }
+
+    void setHAlign(const RS_MTextData::HAlign ha) {
+        m_data.halign = ha;
+    }
+
+    RS_MTextData::MTextDrawingDirection getDrawingDirection() const {
+        return m_data.drawingDirection;
+    }
+
+    void setDrawingDirection(const RS_MTextData::MTextDrawingDirection direction) {
+        m_data.drawingDirection = direction;
+    }
+
+    RS_MTextData::MTextLineSpacingStyle getLineSpacingStyle() const {
+        return m_data.lineSpacingStyle;
+    }
+
+    void getLineSpacingStyle(const RS_MTextData::MTextLineSpacingStyle v) {
+        m_data.lineSpacingStyle = v;
+    }
+
+    void setLineSpacingFactor(const double f) {
+        m_data.lineSpacingFactor = f;
+    }
+
+    double getLineSpacingFactor() const {
+        return m_data.lineSpacingFactor;
+    }
+
+    void setText(QString t);
+
+    QString getText() const {
+        return m_data.text;
+    }
+
+    void setStyle(const QString& s) {
+        m_data.style = s;
+    }
+
+    QString getStyle() const {
+        return m_data.style;
+    }
+
+    void setAngle(const double a) {
+        m_data.angle = a;
+    }
+
+    double getAngle() const {
+        return m_data.angle;
+    }
+
+    double getUsedTextWidth() const {
+        return m_usedTextWidth;
+    }
+
+    double getUsedTextHeight() const {
+        return m_usedTextHeight;
+    }
+
+    //	virtual double getLength() const {
+    //		return -1.0;
+    //	}
+
+    RS_VectorSolutions getRefPoints() const override;
+
+    void move(const RS_Vector& offset) override;
+    void rotate(const RS_Vector& center, double angle) override;
+    void rotate(const RS_Vector& center, const RS_Vector& angleVector) override;
+    void scale(const RS_Vector& center, const RS_Vector& factor) override;
+    void mirror(const RS_Vector& axisPoint1, const RS_Vector& axisPoint2) override;
+    bool hasEndpointsWithinWindow(const RS_Vector& v1, const RS_Vector& v2) const override;
+    void stretch(const RS_Vector& firstCorner, const RS_Vector& secondCorner, const RS_Vector& offset) override;
+
+    friend std::ostream& operator<<(std::ostream& os, const RS_Text& p);
+
+    void draw(RS_Painter* painter) override;
+    void drawDraft(RS_Painter* painter) override;
+    void moveRef(const RS_Vector& ref, const RS_Vector& offset) override;
+    void moveSelectedRef(const RS_Vector& ref, const RS_Vector& offset) override;
 protected:
-    class LC_TextLine:public RS_EntityContainer{
+    class LC_TextLine : public RS_EntityContainer {
     public:
-        LC_TextLine(RS_EntityContainer* parent=nullptr, bool owner=true):RS_EntityContainer(parent, owner){}
+        explicit LC_TextLine(RS_EntityContainer* parent = nullptr, const bool owner = true) : RS_EntityContainer(parent, owner) {
+        }
+
         ~LC_TextLine() override = default;
 
         LC_TextLine* clone() const override;
-        const RS_Vector &getTextSize() const;
-        void setTextSize(const RS_Vector &textSize);
-        const RS_Vector &getLeftBottomCorner() const;
-        void setLeftBottomCorner(const RS_Vector leftBottomCorner);
-        const RS_Vector &getBaselineStart() const;
-        void setBaselineStart(const RS_Vector &baselineStart);
-        const RS_Vector &getBaselineEnd() const;
-        void setBaselineEnd(const RS_Vector &baselineEnd);
-        void moveBaseline(const RS_Vector &offset);
+        const RS_Vector& getTextSize() const;
+        void setTextSize(const RS_Vector& v);
+        const RS_Vector& getLeftBottomCorner() const;
+        void setLeftBottomCorner(const RS_Vector& v);
+        const RS_Vector& getBaselineStart() const;
+        void setBaselineStart(const RS_Vector& v);
+        const RS_Vector& getBaselineEnd() const;
+        void setBaselineEnd(const RS_Vector& v);
+        void moveBaseline(const RS_Vector& offset);
+
     protected:
-        RS_Vector textSize;
-        RS_Vector leftBottomCorner;
-        RS_Vector baselineStart;
-        RS_Vector baselineEnd;
+        RS_Vector m_textSize;
+        RS_Vector m_leftBottomCorner;
+        RS_Vector m_baselineStart;
+        RS_Vector m_baselineEnd;
     };
 
-    double updateAddLine(LC_TextLine *textLine, int lineCounter);
-    void addLetter(LC_TextLine &oneLine, QChar letter, RS_Font &font,
-                   const RS_Vector &letterSpace, RS_Vector &letterPosition);
+    /**
+     * @return The insertion point as endpoint.
+     */
+    RS_Vector doGetNearestEndpoint(const RS_Vector& coord, double* dist) const override;
+    RS_Vector doGetNearestRef(const RS_Vector& coord, double* dist) const override;
+    RS_Vector doGetNearestSelectedRef(const RS_Vector& coord, double* dist) const override;
+
+    double updateAddLine(LC_TextLine* textLine, int lineCounter);
+    void addLetter(LC_TextLine& oneLine, QChar letter, RS_Font& font, const RS_Vector& letterSpace, RS_Vector& letterPosition);
     void alignVertically();
-   static RS_MText *createUpperLower(QString text, const RS_MTextData &data,
-                                    const RS_Vector &position);
-    RS_MTextData data;
+    static RS_MText* createUpperLower(QString text, const RS_MTextData& data, const RS_Vector& position);
+    RS_MTextData m_data;
 
     /**
      * Text width used by the current contents of this text entity.
      * This property is updated by the update method.
      * @see update
      */
-    double usedTextWidth = 0.;
+    double m_usedTextWidth = 0.;
     /**
      * Text height used by the current contents of this text entity.
      * This property is updated by the update method.
      * @see update
      */
-    double usedTextHeight = 0.;
+    double m_usedTextHeight = 0.;
     void rotateLinesRefs() const;
-    RS_Entity *cloneProxy() const override;
+    RS_Entity* cloneProxy() const override;
 };
 
 #endif

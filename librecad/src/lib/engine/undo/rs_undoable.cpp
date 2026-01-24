@@ -26,26 +26,26 @@
 
 #include "rs_undoable.h"
 
-
 /**
  * The undoable thing gets activated if it was undone and 
  * deactivated otherwise.
  */
 void RS_Undoable::changeDeleteState() {
     toggleFlag(RS2::FlagDeleted);
-	deletedStateChanged(isDeleted());
+    deletedStateChanged(isDeleted());
 }
 
 /**
  * Undoes or redoes an undoable.
  */
-void RS_Undoable::mark(bool deleted) {
+void RS_Undoable::mark(const bool deleted) {
     if (deleted) {
         setFlag(RS2::FlagDeleted);
-    } else {
+    }
+    else {
         delFlag(RS2::FlagDeleted);
     }
-	deletedStateChanged(isDeleted());
+    deletedStateChanged(isDeleted());
 }
 
 void RS_Undoable::markDeleted() {

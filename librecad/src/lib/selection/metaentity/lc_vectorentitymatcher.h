@@ -35,7 +35,7 @@ public:
         : LC_ConvertingEntityMatcher<RS_Vector, double, double, EntityType>(propertyType, valueAccessor) {
     }
 
-    void updateWithMapper(double& valueToMatch, double& tolerance, LC_PropertyMatchOperation operation, LC_CoordinatesMapper* mapper) {
+    void updateWithMapper(double& valueToMatch, double& tolerance, LC_PropertyMatchOperation operation, LC_CoordinatesMapper* mapper) override {
         this->setupComparatorOperation(operation);
         // just to avoid additional check on selection - use different functions for matchAll and specific comparators
         if (operation == MATCH_OPERATION_ALL) {
@@ -44,12 +44,12 @@ public:
             };
         }
         else {
-            auto matchType = this->m_propertyType->getType();
-            auto coordX = matchType == LC_PropertyMatchTypeEnum::ENTITY_PROPERTY_COORD_X;            
+            auto matchType = this->propertyType->getType();
+            auto coordX = matchType == LC_PropertyMatchTypeEnum::ENTITY_PROPERTY_COORD_X;
             this->m_funMath = [this, mapper, coordX, valueToMatch, tolerance](RS_Entity* e)-> bool {
                 EntityType* ent = static_cast<EntityType*>(e);
-                RS_Vector wcsCoord = this->m_valueAccessor(ent);
-                RS_Vector ucsCoord = mapper->toUCS(wcsCoord);
+                const RS_Vector wcsCoord = this->m_valueAccessor(ent);
+                const RS_Vector ucsCoord = mapper->toUCS(wcsCoord);
                 double entityPropertyValue = coordX ? ucsCoord.getX() : ucsCoord.getY();
                 return this->m_valueComparator(entityPropertyValue, valueToMatch, tolerance);
             };
@@ -64,12 +64,12 @@ public:
         std::function<RS_Vector(EntityType*)> funAccess)
         : LC_GenericPropertyMatchDescriptor<RS_Vector, double,  double, EntityType>(name, displayName, description, propertyDescriptor, funAccess) {}
 
-    LC_EntityMatcher* getMatcher() override;
+    LC_EntityMatcher* createMatcher() override;
 };
 
 template <typename EntityType>
-LC_EntityMatcher* LC_RS_VectorPropertyMatchDescriptor<EntityType>::getMatcher() {
-    LC_TypedPropertyMatchTypeDescriptor<double>* propertyType = (LC_TypedPropertyMatchTypeDescriptor<double>*)(this->m_type);
+LC_EntityMatcher* LC_RS_VectorPropertyMatchDescriptor<EntityType>::createMatcher() {
+    auto propertyType = (LC_TypedPropertyMatchTypeDescriptor<double>*)(this->m_type);
     auto matcher = new LC_RS_VectorEntityMatcher<EntityType>(propertyType, this->m_funAccess);
     return matcher;
 }

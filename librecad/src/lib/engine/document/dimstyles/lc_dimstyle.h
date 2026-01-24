@@ -30,11 +30,11 @@
 class LC_DimStyle{
    public:
     LC_DimStyle();
+    explicit LC_DimStyle(const QString& name);
     void init();
-    LC_DimStyle(const QString &name);
 
-    static QString STANDARD_DIM_STYLE;
-    static QString NAME_SEPARATOR;
+    static constexpr auto STANDARD_DIM_STYLE = "Standard";
+    static constexpr auto NAME_SEPARATOR = "$";
 
     class ModificationAware: public RS_Flags {
     public:
@@ -45,7 +45,7 @@ class LC_DimStyle{
         };
         bool checkModifyState(unsigned f) const;
         CheckFlagMode getModifyCheckMode() const {return m_checkModificationMode;}
-        void setModifyCheckMode(CheckFlagMode mode) {m_checkModificationMode = mode;}
+        void setModifyCheckMode(const CheckFlagMode mode) {m_checkModificationMode = mode;}
     protected:
         void checkModified(int newValue, int currentValue, unsigned flag);
         void checkModified(short newValue, short currentValue, unsigned flag);
@@ -164,8 +164,8 @@ class LC_DimStyle{
         void setVerticalDistanceToDimLine(double dimtvp);
         void setOrientationInside(TextOrientationPolicy dimtih);
         void setOrientationOutside(TextOrientationPolicy dimtoh);
-        void setAlignedIfInside(bool v) {setOrientationInside(v? ALIGN_WITH_DIM_LINE : DRAW_HORIZONTALLY);}
-        void setAlignedIfOutside(bool v) {setOrientationOutside(v? ALIGN_WITH_DIM_LINE : DRAW_HORIZONTALLY);}
+        void setAlignedIfInside(const bool v) {setOrientationInside(v? ALIGN_WITH_DIM_LINE : DRAW_HORIZONTALLY);}
+        void setAlignedIfOutside(const bool v) {setOrientationOutside(v? ALIGN_WITH_DIM_LINE : DRAW_HORIZONTALLY);}
         void setStyle(const QString &dimtxsty);
         void setColor(const RS_Color& dimclrt);
         void setHeight(double dimtxt);
@@ -184,7 +184,7 @@ class LC_DimStyle{
         void setOrientationInsideRaw(int dimtih);
         void setOrientationOutsideRaw(int dimtoh);
         void setReadingDirectionRaw(int dimtxtdirection);
-        void copyTo(Text* text);
+        void copyTo(Text* c) const;
     private:
         /** Determines how dimension text and arrows are arranged when space is not sufficient to place both within the extension lines.
            Initial value:	3
@@ -337,17 +337,17 @@ class LC_DimStyle{
         double distanceBeyondExtLinesForObliqueStroke() const {return DIMDLE;}
         double baseLineDimLinesSpacing() const {return DIMDLI;}
         DimLineAndArrowSuppressionPolicy suppressFirstLine() const {return DIMSD1;}
-        bool isSuppressFirst() const {return DIMSD1 == LC_DimStyle::DimensionLine::SUPPRESS;}
+        bool isSuppressFirst() const {return DIMSD1 == DimensionLine::SUPPRESS;}
         DimLineAndArrowSuppressionPolicy suppressSecondLine() const {return DIMSD2;}
-        bool isSuppressSecond() const {return DIMSD2 == LC_DimStyle::DimensionLine::SUPPRESS;}
+        bool isSuppressSecond() const {return DIMSD2 == DimensionLine::SUPPRESS;}
         DrawPolicyForOutsideText drawPolicyForOutsideText() const {return DIMTOFL;}
         bool isDrawLineIfArrowsOutside() const {return DIMTOFL == DRAW_EVEN_IF_ARROWHEADS_ARE_OUTSIDE;}
-        void setDrawLineIfArrowsOutside(bool v) {setDrawPolicyForOutsideText(v ? DRAW_EVEN_IF_ARROWHEADS_ARE_OUTSIDE :DONT_DRAW_IF_ARROWHEADS_ARE_OUTSIDE);}
+        void setDrawLineIfArrowsOutside(const bool v) {setDrawPolicyForOutsideText(v ? DRAW_EVEN_IF_ARROWHEADS_ARE_OUTSIDE :DONT_DRAW_IF_ARROWHEADS_ARE_OUTSIDE);}
         const QString& lineTypeName() const {return DIMLTYPE;}
         RS2::LineType lineType() const {return DIMLTYPE_LineType;}
         void setLineType(RS2::LineType lineType);
         void setLineGap(double dimgap);
-        void setColor(RS_Color dimclrd);
+        void setColor(const RS_Color& dimclrd);
         void setLineWidth(RS2::LineWidth dimlwd);
         void setDistanceBeyondExtLinesForObliqueStroke(double dimdle);
         void setBaselineDimLinesSpacing(double dimdli);
@@ -356,14 +356,14 @@ class LC_DimStyle{
         void setSuppressSecondLine(DimLineAndArrowSuppressionPolicy dimsd2);
         void setSuppressSecond(bool v);
         void setDrawPolicyForOutsideText(DrawPolicyForOutsideText dimtofl);
-        void setLineType(QString dimltype);
+        void setLineType(const QString& dimltype);
         void fillByDefaults();
         void merge(const DimensionLine* parent);
         void setLineWidthRaw(int dimlwd);
         void setDrawPolicyForOutsideTextRaw(int dimtofl);
         void setSuppressSecondLineRaw(int dimsd2);
         void setSuppressFirstLineRaw(int dimsd1);
-        void copyTo(DimensionLine* dimension_line);
+        void copyTo(DimensionLine* c) const;
     private:
         /** Assigns colors to dimension lines, arrowheads, and dimension leader lines.
            Initial value:	0
@@ -473,15 +473,15 @@ class LC_DimStyle{
         RS2::LineWidth lineWidth() const {return DIMLWE;}
         bool hasFixedLength() const {return DIMFXLON;}
         ExtensionLineAndArrowSuppressionPolicy suppressFirstLine() const{return DIMSE1;}
-        bool isSuppressFirst() const {return DIMSE1 == LC_DimStyle::ExtensionLine::ExtensionLineAndArrowSuppressionPolicy::SUPPRESS;}
+        bool isSuppressFirst() const {return DIMSE1 == ExtensionLine::ExtensionLineAndArrowSuppressionPolicy::SUPPRESS;}
         ExtensionLineAndArrowSuppressionPolicy suppressSecondLine() const{return DIMSE2;}
-        bool isSuppressSecond() const {return DIMSE2 == LC_DimStyle::ExtensionLine::ExtensionLineAndArrowSuppressionPolicy::SUPPRESS;}
+        bool isSuppressSecond() const {return DIMSE2 == ExtensionLine::ExtensionLineAndArrowSuppressionPolicy::SUPPRESS;}
         QString lineTypeFirstRaw() const {return DIMLTEX1;}
         QString lineTypeSecondRaw() const {return DIMLTEX2;}
         RS2::LineType lineTypeFirst() const {return DIMLTEX1_linetype;}
         RS2::LineType lineTypeSecond() const {return DIMLTEX2_linetype;}
 
-        void setColor(RS_Color dimclre);
+        void setColor(const RS_Color &dimclre);
         void setDistanceBeyondDimLine(double dimexe);
         void setDistanceFromOriginPoint(double dimexo);
         void setFixedLength(double dimfxl);
@@ -494,13 +494,13 @@ class LC_DimStyle{
         void setLineTypeSecond(RS2::LineType lineType);
         void setSuppressFirstLine(ExtensionLineAndArrowSuppressionPolicy dimse1);
         void setSuppressFirst(bool v);
-        void setSuppressSecondLine(ExtensionLineAndArrowSuppressionPolicy dimses);
+        void setSuppressSecondLine(ExtensionLineAndArrowSuppressionPolicy dimse2);
         void setSuppressSecond(bool v);
         void setSuppressFirstRaw(int dimse1);
         void setSuppressSecondRaw(int dimse2);
         void fillByDefaults();
         void merge(const ExtensionLine* parent);
-        void copyTo(ExtensionLine* extension_line);
+        void copyTo(ExtensionLine* c) const;
     private:
         static ExtensionLineAndArrowSuppressionPolicy int2SuppressionPolicy(int value);
 
@@ -594,14 +594,14 @@ class LC_DimStyle{
 
         ArrowHeadSuppressionPolicy suppression() const {return DIMSOXD;}
         bool isSuppressArrows() const {return DIMSOXD == SUPPRESS;}
-        void setSuppressArrows(bool v) { setSuppressions(v ? SUPPRESS : DONT_SUPPRESS);}
-        void copyTo(Arrowhead* arrowhead);
+        void setSuppressArrows(const bool v) { setSuppressions(v ? SUPPRESS : DONT_SUPPRESS);}
+        void copyTo(Arrowhead* c) const;
         QString obtainFirstArrowName() const;
-        QString obtainSecondArrowName();
-        double size() const {return DIMASZ;};
+        QString obtainSecondArrowName() const;
+        double size() const {return DIMASZ;}
         const QString &sameBlockName() const {return DIMBLK;}
-        const QString &arrowHeadBlockNameFirst() const {return DIMBLK1;};
-        const QString &arrowHeadBlockNameSecond() const {return DIMBLK2;};
+        const QString &arrowHeadBlockNameFirst() const {return DIMBLK1;}
+        const QString &arrowHeadBlockNameSecond() const {return DIMBLK2;}
         bool isUseSeparateArrowHeads() const {return DIMSAH;}
         double tickSize() const {return DIMTSZ;}
 
@@ -704,21 +704,21 @@ class LC_DimStyle{
         ZerosSuppression() = default;
 
         int angularRaw() const {return DIMAZIN;}
-        bool isAngularSuppress(int flag) const {return DIMAZIN &flag;}
+        bool isAngularSuppress(const int flag) const {return DIMAZIN &flag;}
         int linearRaw() const {return DIMZIN;}
-        bool isLinearSuppress(int flag) const {return DIMZIN &flag;}
+        bool isLinearSuppress(const int flag) const {return DIMZIN &flag;}
 
 
         int toleranceRaw() const {return DIMTZIN;}
-        bool isToleranceSuppress(int flag) const {return DIMTZIN &flag;}
+        bool isToleranceSuppress(const int flag) const {return DIMTZIN &flag;}
         int altLinearRaw() const {return DIMALTZ;}
 
-        bool isAltLinearSuppress(int flag) const {return DIMALTZ &flag;}
-        bool isAltLinearSuppressLeading() const {return isAltLinearSuppress(LC_DimStyle::ZerosSuppression::LEADING_IN_DECIMAL);}
-        bool isAltLinearSuppressTrailing() const {return isAltLinearSuppress(LC_DimStyle::ZerosSuppression::TRAILING_IN_DECIMAL);}
+        bool isAltLinearSuppress(const int flag) const {return DIMALTZ &flag;}
+        bool isAltLinearSuppressLeading() const {return isAltLinearSuppress(LEADING_IN_DECIMAL);}
+        bool isAltLinearSuppressTrailing() const {return isAltLinearSuppress(TRAILING_IN_DECIMAL);}
 
         int altToleranceRaw() const  {return DIMALTTZ;}
-        bool isAltToleranceSuppress(int flag) const {return DIMALTTZ &flag;}
+        bool isAltToleranceSuppress(const int flag) const {return DIMALTTZ &flag;}
 
         void clearLinear(){DIMZIN = 0;}
         void setLinearRaw(int dimzin);
@@ -726,7 +726,7 @@ class LC_DimStyle{
 
         void clearAngular(){DIMAZIN = 0;}
         void setAngularRaw(int dimazin);
-        void setAngularFlag(AngularSuppressionPolicy dimzin, bool set);
+        void setAngularFlag(AngularSuppressionPolicy dimazin, bool set);
 
         void clearTolerance(){DIMTZIN = 0;}
         void setToleranceRaw(int dimtzin);
@@ -741,7 +741,7 @@ class LC_DimStyle{
         void setAltToleranceFlag(ToleranceSuppressionPolicy dimalttz, bool set);
         void fillByDefaults();
         void merge(const ZerosSuppression* parent);
-        void copyTo(ZerosSuppression* zeros_suppression);
+        void copyTo(ZerosSuppression* c) const;
     private:
         /** controls the suppression of zeros in the primary unit value.
            Initial value:	0 (imperial) or 8 (metric)
@@ -815,7 +815,7 @@ class LC_DimStyle{
 
         double linearFactor() const {return DIMLFAC;}
         double scale() const {return DIMSCALE;}
-        void copyTo(Scaling* scaling);
+        void copyTo(Scaling* c) const;
         void setLinearFactor(double dimlfac);
         void setScale(double dimscale);
         void fillByDefaults();
@@ -866,7 +866,7 @@ class LC_DimStyle{
         void setRoundToValue(double dimrnd);
         void fillByDefaults();
         void merge(const LinearRoundOff* parent);
-        void copyTo(LinearRoundOff* round_off);
+        void copyTo(LinearRoundOff* c) const;
     private:
         /** Rounds off the alternate dimension units.
             Initial value:	0.0000
@@ -901,7 +901,7 @@ class LC_DimStyle{
         void setStyleRaw(int dimfrac);
         void fillByDefaults();
         void merge(const Fractions* parent);
-        void copyTo(Fractions* fractions);
+        void copyTo(Fractions* c) const;
     private:
         /** Sets the fraction format when DIMLUNIT is set to 4 (Architectural) or 5 (Fractional).
            Initial value:	0
@@ -936,23 +936,23 @@ class LC_DimStyle{
 
         class TextPattern {
         public:
-            TextPattern(bool primary, const QString& text, LinearFormat* f);
+            TextPattern(bool primary, const QString& text, LinearFormat* linearFormat);
             QString update();
             void parse(const QString& val);
             QString getPrefix();
             QString getSuffix();
             bool isSuffixEndsWithLineFeed() const;
-            void setPrefix(const QString& prefix);
-            void setSuffix(const QString& suffix);
+            void setPrefix(const QString& p);
+            void setSuffix(const QString& s);
             void setSuffixEndsWithNewLineFeed(bool set);
         private:
-            QString prefix;
-            QString suffix;
-            QString separator;
-            QString completeString;
-            bool suffixEndsWithLineFeed{false};
-            LinearFormat* format;
-            bool forAltUnit{false};
+            QString m_prefix;
+            QString m_suffix;
+            QString m_separator;
+            QString m_completeString;
+            bool m_suffixEndsWithLineFeed{false};
+            LinearFormat* m_format;
+            bool m_forAltUnit{false};
         };
 
         AlternateUnitsPolicy alternateUnits() const {return DIMALT;}
@@ -983,14 +983,14 @@ class LC_DimStyle{
         void fillByDefaults();
         void merge(const LinearFormat* parent);
         void setAltFormatRaw(int dimaltu);
-        void copyTo(LinearFormat* linear_format);
+        void copyTo(LinearFormat* c) const;
 
-        bool isPrimaryMetric() {
-            return (DIMLUNIT == RS2::ArchitecturalMetric || DIMLUNIT == RS2::Decimal || DIMLUNIT == RS2::Scientific);
+        bool isPrimaryMetric() const {
+            return DIMLUNIT == RS2::ArchitecturalMetric || DIMLUNIT == RS2::Decimal || DIMLUNIT == RS2::Scientific;
         }
 
-        bool isAltMetric() {
-            return (DIMALTU == RS2::ArchitecturalMetric || DIMALTU == RS2::Decimal || DIMALTU == RS2::Scientific);
+        bool isAltMetric() const {
+            return DIMALTU == RS2::ArchitecturalMetric || DIMALTU == RS2::Decimal || DIMALTU == RS2::Scientific;
         }
 
         static RS2::LinearFormat dxfInt2LinearFormat(int f);
@@ -1029,7 +1029,7 @@ class LC_DimStyle{
            6  Microsoft Windows Desktop(decimal formatusing Control Panel settingsfor decimal separator
            and number grouping symbols)
          */
-        RS2::LinearFormat DIMALTU = RS2::Decimal;/*RS_Graphic::convertLinearFormatDXF2LC(2)*/;              /*!< code 273 R13+ */
+        RS2::LinearFormat DIMALTU = RS2::Decimal;/*RS_Graphic::convertLinearFormatDXF2LC(2)*/              /*!< code 273 R13+ */
 
         /** Specifies a text prefix or suffix (or both) to the alternate dimension measurement for
            all types of dimensions except angular.
@@ -1081,8 +1081,8 @@ class LC_DimStyle{
            */
         QString DIMPOST{""};       /*!< code 3 */
 
-        TextPattern* primaryPrefixSuffix {nullptr};
-        TextPattern* alternativePrefixSuffix {nullptr};
+        TextPattern* m_primaryPrefixSuffix {nullptr};
+        TextPattern* m_alternativePrefixSuffix {nullptr};
     };
 
     class AngularFormat: public ModificationAware {
@@ -1093,7 +1093,7 @@ class LC_DimStyle{
         };
 
         ~AngularFormat() override = default;
-        void copyTo(AngularFormat* angular_format);
+        void copyTo(AngularFormat* c) const;
 
         AngularFormat() = default;
 
@@ -1121,7 +1121,7 @@ class LC_DimStyle{
          3 Radians
          4 - LC Surveyors?? // fixme - sand - check this!!
          */
-        RS2::AngleFormat DIMAUNIT =  RS2::DegreesDecimal; /* RS_Units::numberToAngleFormat(0)*/;             /*!< code 275 R13+ */
+        RS2::AngleFormat DIMAUNIT =  RS2::DegreesDecimal; /* RS_Units::numberToAngleFormat(0)*/             /*!< code 275 R13+ */
     };
 
     class LatteralTolerance: public ModificationAware {
@@ -1173,7 +1173,7 @@ class LC_DimStyle{
         void setAdjustmentRaw(int dimtaln);
         void fillByDefaults();
         void merge(const LatteralTolerance* parent);
-        void copyTo(LatteralTolerance* latteral_tolerance);
+        void copyTo(LatteralTolerance* c) const;
     private:
         /**
          Sets the number of decimal places for the tolerance values in the alternate units of a dimension.
@@ -1257,7 +1257,7 @@ class LC_DimStyle{
         void setArrowBlockName(const QString &dimldrblk);
         void fillByDefaults();
         void merge(const Leader* parent);
-        void copyTo(Leader* leader);
+        void copyTo(Leader* c) const;
     private:
         /** Specifies the arrow type for leaders.
             Initial value:	""
@@ -1279,7 +1279,7 @@ class LC_DimStyle{
         void setScale(double mleaderscale);
         void fillByDefaults();
         void merge(const MLeader* parent);
-        void copyTo(MLeader* leader);
+        void copyTo(MLeader* c) const;
     private:
         /** Sets the overall scale factor applied to multileader objects.
          Initial value:	1.0000
@@ -1322,7 +1322,7 @@ class LC_DimStyle{
         double size() const {return std::abs(DIMCEN);}
         void fillByDefaults();
         void merge(const Radial* parent);
-        void copyTo(Radial* radial);
+        void copyTo(Radial* c) const;
     private:
         /** Controls drawing of circle or arc center marks and centerlines by the DIMCENTER, DIMDIAMETER, and DIMRADIUS commands.
         Initial value:	0.0900 (imperial) or 2.5000 (metric)
@@ -1365,7 +1365,7 @@ class LC_DimStyle{
         void setArcSymbolPositionRaw(int dimarcsym);
         void fillByDefaults();
         void merge(const Arc* parent);
-        void copyTo(Arc* arc);
+        void copyTo(Arc* c) const;
     private:
         /** Controls display of the arc symbol in an arc length dimension.
          Initial value:	0
@@ -1378,11 +1378,11 @@ class LC_DimStyle{
 
     void fillByDefaults() const;
     void merge(const LC_DimStyle* src) const;
-    void mergeWith(const LC_DimStyle* src, ModificationAware::CheckFlagMode mergeMode, ModificationAware::CheckFlagMode nextMode);
+    void mergeWith(const LC_DimStyle* src, ModificationAware::CheckFlagMode mergeMode, ModificationAware::CheckFlagMode nextMode) const;
     ModificationAware::CheckFlagMode getModifyCheckMode() const;
     void copyTo(LC_DimStyle* copy) const;
     void resetFlags(bool toUnset = true) const;
-    LC_DimStyle* getCopy();
+    LC_DimStyle* getCopy() const;
     const QString& getName() const;
     void setName(const QString& name);
     static QString getDimStyleNameSuffixForType(RS2::EntityType dimType);
@@ -1390,7 +1390,7 @@ class LC_DimStyle{
     static QString getStyleNameForBaseAndType(const QString& baseName, RS2::EntityType dimType);
     RS2::EntityType getDimensionType() const;
     QString getBaseName() const;
-    bool isBaseStyle();
+    bool isBaseStyle() const;
 
     AngularFormat* angularFormat() const {return m_angularUnitFormattingStyle.get();}
     Arrowhead* arrowhead() const {return m_arrowheadStyle.get();}
@@ -1411,10 +1411,10 @@ class LC_DimStyle{
     void setModifyCheckMode(ModificationAware::CheckFlagMode mode) const;
 
     bool isFromVars() const {return m_fromVars;}
-    void setFromVars(bool v){m_fromVars = v;}
+    void setFromVars(const bool v){m_fromVars = v;}
 
-    bool hasAltUnits() {return linearFormat()->alternateUnits() == LinearFormat::ENABLE;}
-    bool hasNoAltUnits() {return linearFormat()->alternateUnits() == LinearFormat::DISABLE;}
+    bool hasAltUnits() const {return linearFormat()->alternateUnits() == LinearFormat::ENABLE;}
+    bool hasNoAltUnits() const {return linearFormat()->alternateUnits() == LinearFormat::DISABLE;}
 
     /*
     int getDimunit() const;
@@ -1425,14 +1425,14 @@ class LC_DimStyle{
 
 protected:
         /* handle are code 105 */
-        int dimunit;              /*!< code 270 R13+ (obsolete 2000+, use dimlunit & dimfrac) */
-        int dimfit; /*!< code 287 R13+  (obsolete 2000+, use dimatfit & dimtmove)*/
+        int m_dimunit;              /*!< code 270 R13+ (obsolete 2000+, use dimlunit & dimfrac) */
+        int m_dimfit; /*!< code 287 R13+  (obsolete 2000+, use dimatfit & dimtmove)*/
 
         // Displays the unit type (imperial/standard or ISO-25/metric) used by dimensions in the drawing.
         // Initial value:	Standard (imperial) or ISO-25 (metric)
         // This system variable has the same name as a command. Use the SETVAR command to access this system variable.
         // The DIMSTYLE system variable is read-only; to change the current dimension style, use the DIMSTYLE command.
-        int dimstyle;
+        int m_dimstyle;
 
 private:
     QString m_name{""};
@@ -1454,4 +1454,4 @@ private:
     std::unique_ptr<ZerosSuppression> m_unitZeroSuppressionStyle;
 };
 
-#endif // LC_DIMSTYLE_H
+#endif

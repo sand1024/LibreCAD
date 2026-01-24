@@ -21,7 +21,6 @@
  * ********************************************************************************
  */
 
-
 #include "lc_copyutils.h"
 
 #include "lc_linemath.h"
@@ -36,30 +35,27 @@
 
 namespace LC_CopyUtils {
     void doCopyEntity(RS_Entity* e, const RS_Vector& ref, RS_Graphic* clipboardGraphic);
-    void doCopyEntityLayer(RS_Entity* entity, RS_Entity* clone, RS_Graphic* clipboardGraphic);
+    void doCopyEntityLayer(const RS_Entity* entity, RS_Entity* clone, RS_Graphic* clipboardGraphic);
     void doCopyBlock(RS_Block* block, RS_Graphic* graphic);
-    void doCopyInsert(RS_Insert* insert, RS_Graphic* clipboardGraphic);
+    void doCopyInsert(const RS_Insert* insert, RS_Graphic* clipboardGraphic);
     bool pasteLayers(RS_Graphic* source, RS_Graphic* destination);
-    bool pasteContainer(RS_Entity* entity, RS_EntityContainer* containerToPaste, QHash<QString, QString> blocksDict, RS_Vector insertionPoint, RS_Graphic* destination);
-    bool pasteEntity(RS_Entity* entity, RS_EntityContainer* containerToPaste, RS_Graphic* graphic);
+    bool pasteContainer(RS_Entity* entity, RS_EntityContainer* containerToPaste, QHash<QString, QString> blocksDict,
+                        const RS_Vector& insertionPoint, RS_Graphic* destination);
+    bool pasteEntity(const RS_Entity* entity, RS_EntityContainer* containerToPaste, RS_Graphic* graphic);
 
-    RS_PasteData::RS_PasteData(RS_Vector _insertionPoint,
-        double _factor,
-        double _angle):
-        insertionPoint(_insertionPoint)
-        ,factor(_factor)
-        ,angle(_angle){
+    RS_PasteData::RS_PasteData(const RS_Vector& insertionPoint, const double factor, const double angle) : insertionPoint{insertionPoint},
+        factor{factor}, angle{angle} {
     }
 }
 
 /**
  * @brief getPasteScale - find scaling factor for pasting
- * @param const double  data - user provided factor
- * @param RS_Graphic *& source - source graphic. If source is nullptr, the graphic on the clipboard is used instead
- * @param const RS_Graphic& destination - the target graphic
+ * @param userFactor user provided factor
+ * @param source - source graphic. If source is nullptr, the graphic on the clipboard is used instead
+ * @param destination the target graphic
  * @return
  */
-RS_Vector LC_CopyUtils::getInterGraphicsScaleFactor(const double userFactor, const RS_Graphic *source, const RS_Graphic* destination){
+RS_Vector LC_CopyUtils::getInterGraphicsScaleFactor(const double userFactor, const RS_Graphic* source, const RS_Graphic* destination) {
     Q_ASSERT(source != nullptr && destination != nullptr);
 
     // adjust scaling factor for units conversion in case of clipboard paste
@@ -80,31 +76,32 @@ RS_Vector LC_CopyUtils::getInterGraphicsScaleFactor(const double userFactor, con
  * Layers and blocks that are needed are also copied if the container is
  * or is part of an RS_Graphic.
  *
- * @param container The entity container.
  * @param ref Reference point. The entities will be moved by -ref.
- * @param cut true: cut instead of copying, false: copy
+ * @param entities
+ * @param graphic
  */
-void LC_CopyUtils::copy(const RS_Vector& ref, QList<RS_Entity*>& entities, RS_Graphic* graphic) {
+void LC_CopyUtils::copy(const RS_Vector& ref, QList<RS_Entity*>& entities, const RS_Graphic* graphic) {
     Q_ASSERT(!entities.empty());
 
-    auto clipboard = RS_Clipboard::instance();
+    const auto clipboard = RS_Clipboard::instance();
     clipboard->clear();
 
     RS_Graphic* clipboardGraphic = clipboard->getGraphic();
     if (graphic != nullptr) {
         clipboardGraphic->setUnit(graphic->getUnit());
-    } else {
+    }
+    else {
         clipboardGraphic->setUnit(RS2::None); // fixme - sand - why? For block we may use parent graphic....
     }
 
     RS_Vector refPoint;
-    if (ref.valid){
+    if (ref.valid) {
         refPoint = ref;
     }
     else {
         // no ref-point set, determine center of selection
-        RS_BoundData bound = RS_Modification::getBoundingRect(entities);
-        refPoint           = bound.getCenter();
+        const RS_BoundData bound = RS_Modification::getBoundingRect(entities);
+        refPoint = bound.getCenter();
     }
 
     clipboard->startCopy();
@@ -123,6 +120,7 @@ void LC_CopyUtils::copy(const RS_Vector& ref, QList<RS_Entity*>& entities, RS_Gr
  *
  * @param e The entity.
  * @param ref Reference point. The entities will be moved by -ref.
+ * @param clipboardGraphic
  */
 void LC_CopyUtils::doCopyEntity(RS_Entity* e, const RS_Vector& ref, RS_Graphic* clipboardGraphic) {
     if (!e->isSelected()) {
@@ -130,11 +128,12 @@ void LC_CopyUtils::doCopyEntity(RS_Entity* e, const RS_Vector& ref, RS_Graphic* 
         return;
     }
 
-    bool isInsert = e->rtti() == RS2::EntityInsert;
+    const bool isInsert = e->rtti() == RS2::EntityInsert;
     RS_Insert* insert = nullptr;
     // Ensure the insert is updated before copying to populate the container with transformed entities
-    if (isInsert) { // fixme - what about dimensions??
-        insert =  static_cast<RS_Insert*>(e);
+    if (isInsert) {
+        // fixme - what about dimensions??
+        insert = static_cast<RS_Insert*>(e);
         insert->update();
     }
 
@@ -150,7 +149,7 @@ void LC_CopyUtils::doCopyEntity(RS_Entity* e, const RS_Vector& ref, RS_Graphic* 
     const double angle = isInsert ? insert->getAngle() : 0.;
     // issue #1616: A quick fix: rotate back all block entities in the clipboard back by the
     // rotation angle before pasting
-    if (isInsert && std::abs(std::remainder(angle, 2. * M_PI)) > RS_TOLERANCE_ANGLE){
+    if (isInsert && std::abs(std::remainder(angle, 2. * M_PI)) > RS_TOLERANCE_ANGLE) {
         auto* insertClone = static_cast<RS_Insert*>(clone);
         //insert->rotate(insert->getData().insertionPoint, - angle);
         insertClone->setAngle(0.);
@@ -165,11 +164,11 @@ void LC_CopyUtils::doCopyEntity(RS_Entity* e, const RS_Vector& ref, RS_Graphic* 
     }
 }
 
-void LC_CopyUtils::doCopyEntityLayer(RS_Entity* entity, RS_Entity* clone, RS_Graphic* clipboardGraphic) {
+void LC_CopyUtils::doCopyEntityLayer(const RS_Entity* entity, RS_Entity* clone, RS_Graphic* clipboardGraphic) {
     const RS_Layer* originalLayer = entity->getLayer(false);
     if (originalLayer != nullptr) {
-        QString layerName = originalLayer->getName();
-        auto layerCopy    = clipboardGraphic->findLayer(layerName);
+        const QString layerName = originalLayer->getName();
+        auto layerCopy = clipboardGraphic->findLayer(layerName);
         if (layerCopy == nullptr) {
             layerCopy = originalLayer->clone();
             clipboardGraphic->addLayer(layerCopy);
@@ -189,27 +188,28 @@ void LC_CopyUtils::doCopyBlock(RS_Block* block, RS_Graphic* graphic) {
     // insert: add layer(s) of subentities:
 
     const QString blockName = block->getName();
-    auto existingBlock  = graphic->findBlock(blockName);
+    const auto existingBlock = graphic->findBlock(blockName);
     if (existingBlock == nullptr) {
-        auto blockClone = static_cast<RS_Block*>(block->clone());
+        const auto blockClone = static_cast<RS_Block*>(block->clone());
         graphic->addBlock(blockClone);
-        for (const auto clone: *blockClone) {
+        for (const auto clone : *blockClone) {
             doCopyEntityLayer(clone, clone, graphic);
         }
-        for(const auto e2: *block) {
-            bool entityIsInsert = e2->rtti() == RS2::EntityInsert;
+        for (const auto e2 : *block) {
+            const bool entityIsInsert = e2->rtti() == RS2::EntityInsert;
             if (entityIsInsert) {
-                auto insert = static_cast<RS_Insert*>(e2);
+                const auto insert = static_cast<RS_Insert*>(e2);
                 doCopyInsert(insert, graphic);
             }
         }
     }
 }
 
-void LC_CopyUtils::doCopyInsert(RS_Insert* insert, RS_Graphic* clipboardGraphic) {
+void LC_CopyUtils::doCopyInsert(const RS_Insert* insert, RS_Graphic* clipboardGraphic) {
     RS_Block* block = insert->getBlockForInsert();
     if (block == nullptr) {
-        RS_DEBUG->print(RS_Debug::D_ERROR, "RS_Modification::copyLayers: could not find block for insert entity "); // fixme - sand diagnostic?
+        RS_DEBUG->print(RS_Debug::D_ERROR, "RS_Modification::copyLayers: could not find block for insert entity ");
+        // fixme - sand diagnostic?
     }
     else {
         doCopyBlock(block, clipboardGraphic);
@@ -222,8 +222,8 @@ void LC_CopyUtils::doCopyInsert(RS_Insert* insert, RS_Graphic* clipboardGraphic)
  * or is part of an RS_Graphic.
  *
  * @param data Paste data.
- * @param source The source from where to paste. nullptr means the source
- *      is the clipboard.
+ * @param graphic
+ * @param ctx
  */
 void LC_CopyUtils::paste(const RS_PasteData& data, RS_Graphic* graphic, LC_DocumentModificationBatch& ctx) {
     RS_Graphic* src = RS_CLIPBOARD->getGraphic();
@@ -231,13 +231,14 @@ void LC_CopyUtils::paste(const RS_PasteData& data, RS_Graphic* graphic, LC_Docum
 
     // FIXME - SAND - COMPLETE PASTE FUNCTIONALITY
 
-    if (src == graphic) { // copy within the same graphics
+    if (src == graphic) {
+        // copy within the same graphics
         // Scale (units)
-        RS_Vector scaleV = RS_Vector(data.factor, data.factor);
+        const auto scaleV = RS_Vector(data.factor, data.factor);
 
-        RS_Vector zero(0,0);
+        const RS_Vector zero(0, 0);
         // here we iterate over direct children only, to ensure that containers (like polyline) are not exploded.
-        for (RS_Entity* e : *src) {
+        for (const RS_Entity* e : *src) {
             if (e == nullptr || e->isDeleted()) {
                 continue;
             }
@@ -255,13 +256,13 @@ void LC_CopyUtils::paste(const RS_PasteData& data, RS_Graphic* graphic, LC_Docum
         }
     }
     else {
-        RS_Vector scaleV = getInterGraphicsScaleFactor(data.factor, src, graphic);
+        const RS_Vector scaleV = getInterGraphicsScaleFactor(data.factor, src, graphic);
         src->calculateBorders();
-        RS_Vector center = (src->getMin() + src->getMax()) * 0.5;
-        RS_Vector offset = data.insertionPoint - center;
+        // const RS_Vector center = (src->getMin() + src->getMax()) * 0.5;
         // FIXME - JUST A TEMPORARY IMPLEMENTATION SO FAR!!! PASTE WITH LAYERS AND OTHER EXTERNALS!!!
-        RS_Vector zero(0,0);
-        for (RS_Entity* e : *src) { // we iterate over children only, to ensure that containers (like polyline) are not exploded.
+        const RS_Vector zero(0, 0);
+        for (const RS_Entity* e : *src) {
+            // we iterate over children only, to ensure that containers (like polyline) are not exploded.
             if (e == nullptr || e->isDeleted()) {
                 continue;
             }
@@ -281,7 +282,6 @@ void LC_CopyUtils::paste(const RS_PasteData& data, RS_Graphic* graphic, LC_Docum
     graphic->updateInserts();
 }
 
-
 /**
  * Create layers in destination graphic corresponding to entity to be copied
  *
@@ -292,10 +292,9 @@ bool LC_CopyUtils::pasteLayers(RS_Graphic* source, RS_Graphic* destination) {
         return false;
     }
 
-    RS_LayerList* lrs=source->getLayerList();
-    for(const RS_Layer* layer: *lrs) {
-
-        if(!layer) {
+    RS_LayerList* lrs = source->getLayerList();
+    for (const RS_Layer* layer : *lrs) {
+        if (!layer) {
             RS_DEBUG->print(RS_Debug::D_WARNING, "RS_Modification::pasteLayers: nullptr layer in source");
             continue;
         }
@@ -310,8 +309,7 @@ bool LC_CopyUtils::pasteLayers(RS_Graphic* source, RS_Graphic* destination) {
     return true;
 }
 
-
-   RS_Block *addNewBlock(const QString &name, RS_Graphic &graphic){
+RS_Block* addNewBlock(const QString& name, RS_Graphic& graphic) {
     const auto db = RS_BlockData(name, {0.0, 0.0}, false);
     const auto b = new RS_Block(&graphic, db);
     b->reparent(&graphic);
@@ -323,8 +321,9 @@ bool LC_CopyUtils::pasteLayers(RS_Graphic* source, RS_Graphic* destination) {
  * Create inserts and blocks in destination graphic corresponding to entity to be copied
  *
  **/
-bool LC_CopyUtils::pasteContainer(RS_Entity* entity, RS_EntityContainer* containerToPaste, QHash<QString, QString>blocksDict, RS_Vector insertionPoint, RS_Graphic* destination) {
-    auto* insert = dynamic_cast<RS_Insert*>(entity);
+bool LC_CopyUtils::pasteContainer(RS_Entity* entity, RS_EntityContainer* containerToPaste, QHash<QString, QString> blocksDict,
+                                  const RS_Vector& insertionPoint, RS_Graphic* destination) {
+    auto* insert = static_cast<RS_Insert*>(entity);
 
     // get block for this insert object
     const RS_Block* insertBlock = insert->getBlockForInsert();
@@ -346,16 +345,15 @@ bool LC_CopyUtils::pasteContainer(RS_Entity* entity, RS_EntityContainer* contain
             // If block is already in graphic, only paste a new insert
             pasteEntity(entity, destination, destination);
             return true;
-        } else {
-            name_new = destination->getBlockList()->newName(name_old);
-            RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::pasteInsert: new block name: %s", name_new.toLatin1().data());
         }
+        name_new = destination->getBlockList()->newName(name_old);
+        RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::pasteInsert: new block name: %s", name_new.toLatin1().data());
     }
     blocksDict[name_old] = name_new;
     // make new block in the destination
     RS_Block* blockClone = addNewBlock(name_new, *destination);
     // create insert for the new block
-    const auto di = RS_InsertData(name_new, insertionPoint, RS_Vector(1.0, 1.0), 0.0, 1, 1, RS_Vector(0.0,0.0));
+    const auto di = RS_InsertData(name_new, insertionPoint, RS_Vector(1.0, 1.0), 0.0, 1, 1, RS_Vector(0.0, 0.0));
     auto* insertClone = new RS_Insert(containerToPaste, di);
     insertClone->reparent(containerToPaste);
     containerToPaste->addEntity(insertClone);
@@ -364,7 +362,8 @@ bool LC_CopyUtils::pasteContainer(RS_Entity* entity, RS_EntityContainer* contain
     const QString layerName = entity->getLayer()->getName();
     RS_Layer* layer = destination->getLayerList()->find(layerName);
     if (!layer) {
-        RS_DEBUG->print(RS_Debug::D_ERROR, "RS_Modification::pasteInsert: unable to select layer to paste in: %s", layerName.toLatin1().data());
+        RS_DEBUG->print(RS_Debug::D_ERROR, "RS_Modification::pasteInsert: unable to select layer to paste in: %s",
+                        layerName.toLatin1().data());
         return false;
     }
     insertClone->setLayer(layer);
@@ -377,18 +376,20 @@ bool LC_CopyUtils::pasteContainer(RS_Entity* entity, RS_EntityContainer* contain
     }
 
     // copy content of block/insert to destination
-    for(auto* e: *insert) {
-        if(e == nullptr) {
+    for (auto* e : *insert) {
+        if (e == nullptr) {
             RS_DEBUG->print(RS_Debug::D_NOTICE, "RS_Modification::pasteInsert: nullptr entity in block");
             continue;
         }
         if (e->rtti() == RS2::EntityInsert) {
-            RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::pasteInsert: process sub-insert for %s", ((RS_Insert*)e)->getName().toLatin1().data());
+            RS_DEBUG->print(RS_Debug::D_DEBUGGING, "RS_Modification::pasteInsert: process sub-insert for %s",
+                            static_cast<RS_Insert*>(e)->getName().toLatin1().data());
             if (!pasteContainer(e, blockClone, blocksDict, ip, destination)) {
                 RS_DEBUG->print(RS_Debug::D_ERROR, "RS_Modification::pasteInsert: unable to paste entity to sub-insert");
                 return false;
             }
-        } else {
+        }
+        else {
             if (!pasteEntity(e, blockClone, destination)) {
                 RS_DEBUG->print(RS_Debug::D_ERROR, "RS_Modification::pasteInsert: unable to paste entity");
                 return false;
@@ -406,7 +407,7 @@ bool LC_CopyUtils::pasteContainer(RS_Entity* entity, RS_EntityContainer* contain
  * Paste entity in supplied container
  *
  **/
-bool LC_CopyUtils::pasteEntity(RS_Entity* entity, RS_EntityContainer* containerToPaste, RS_Graphic* graphic) {
+bool LC_CopyUtils::pasteEntity(const RS_Entity* entity, RS_EntityContainer* containerToPaste, RS_Graphic* graphic) {
     if (!entity) {
         return false;
     }
@@ -428,7 +429,6 @@ bool LC_CopyUtils::pasteEntity(RS_Entity* entity, RS_EntityContainer* containerT
     clone->reparent(containerToPaste);
     clone->clearSelectionFlag();
     containerToPaste->addEntity(clone);
-
 
     return true;
 }

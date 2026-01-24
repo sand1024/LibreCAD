@@ -26,7 +26,7 @@
 #include "lc_tolerance.h"
 
 void LC_MatchDescriptorTolerance::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
-    auto entity = new LC_TypedEntityMatchDescriptor<LC_Tolerance>(tr("Tolerance Frame"), RS2::EntityTolerance);
+    const auto entity = new LC_TypedEntityMatchDescriptor<LC_Tolerance>(tr("Tolerance Frame"), RS2::EntityTolerance);
     initCommonEntityAttributesProperties<LC_Tolerance>(entity);
     // fixme - sand - finalize entity matching - as tolerence will be fully supported!
     map.insert(RS2::EntityTolerance, entity);

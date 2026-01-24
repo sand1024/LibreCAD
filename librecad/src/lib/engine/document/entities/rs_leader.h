@@ -24,31 +24,27 @@
 **
 **********************************************************************/
 
-
 #ifndef RS_LEADER_H
 #define RS_LEADER_H
 
 #include "rs_dimension.h"
 #include "rs_entitycontainer.h"
 
-
 /**
  * Holds the data that defines a leader.
  */
 struct RS_LeaderData {
-	RS_LeaderData() = default;
-    RS_LeaderData(bool arrowHeadFlag, const QString& styleName) : arrowHead{arrowHeadFlag}, m_styleName{styleName} {
-	}
+    RS_LeaderData() = default;
 
-	friend std::ostream& operator << (std::ostream& os,
-									  const RS_LeaderData& /*ld*/);
+    RS_LeaderData(const bool arrowHeadFlag, const QString& styleName) : arrowHead{arrowHeadFlag}, styleName{styleName} {
+    }
 
-	/** true: leader has an arrow head. false: no arrow. */
+    friend std::ostream& operator <<(std::ostream& os, const RS_LeaderData& /*ld*/);
+
+    /** true: leader has an arrow head. false: no arrow. */
     bool arrowHead = false;
-    QString m_styleName;
+    QString styleName;
 };
-
-
 
 /**
  * Class for a leader entity (kind of a polyline arrow).
@@ -57,53 +53,52 @@ struct RS_LeaderData {
  */
 class RS_Leader : public /*RS_EntityContainer*/ RS_Dimension {
 public:
-    RS_Leader(RS_EntityContainer* parent=nullptr);
-	RS_Leader(RS_EntityContainer* parent,
-			  const RS_LeaderData& d);
+    explicit RS_Leader(RS_EntityContainer* parent = nullptr);
+    RS_Leader(RS_EntityContainer* parent, const RS_LeaderData& d);
 
-	RS_Entity* clone() const override;
+    RS_Entity* clone() const override;
 
-	/**	@return RS2::EntityDimLeader */
-	RS2::EntityType rtti() const override{
-		return RS2::EntityDimLeader;
-	}
+    /**	@return RS2::EntityDimLeader */
+    RS2::EntityType rtti() const override {
+        return RS2::EntityDimLeader;
+    }
 
-	void update() override;
+    void update() override;
 
-	/** @return Copy of data that defines the leader. */
-	RS_LeaderData getData() const {
-		return data;
-	}
+    /** @return Copy of data that defines the leader. */
+    RS_LeaderData getData() const {
+        return m_data;
+    }
 
-	/** @return true: if this leader has an arrow at the beginning. */
-	bool hasArrowHead() const {
-		return data.arrowHead;
-	}
+    /** @return true: if this leader has an arrow at the beginning. */
+    bool hasArrowHead() const {
+        return m_data.arrowHead;
+    }
 
-	RS_Entity* addVertex(const RS_Vector& v);
-	void addEntity(RS_Entity* entity) override;
+    RS_Entity* addVertex(const RS_Vector& v);
+    void addEntity(const RS_Entity* entity) override;
 
-	//	double getLength() const {
-	//		return -1.0;
-	//	}
+    //	double getLength() const {
+    //		return -1.0;
+    //	}
 
-    QString getMeasuredLabel() override {return "";} // fixme - sand - review
+    QString getMeasuredLabel() override {
+        return "";
+    } // fixme - sand - review
     void move(const RS_Vector& offset) override;
-	void rotate(const RS_Vector& center, double angle) override;
-	void rotate(const RS_Vector& center, const RS_Vector& angleVector) override;
-	void scale(const RS_Vector& center, const RS_Vector& factor) override;
-	void mirror(const RS_Vector& axisPoint1, const RS_Vector& axisPoint2) override;
-	void stretch(const RS_Vector& firstCorner,
-				 const RS_Vector& secondCorner,
-				 const RS_Vector& offset) override;
+    void rotate(const RS_Vector& center, double angle) override;
+    void rotate(const RS_Vector& center, const RS_Vector& angleVector) override;
+    void scale(const RS_Vector& center, const RS_Vector& factor) override;
+    void mirror(const RS_Vector& axisPoint1, const RS_Vector& axisPoint2) override;
+    void stretch(const RS_Vector& firstCorner, const RS_Vector& secondCorner, const RS_Vector& offset) override;
 
-	friend std::ostream& operator << (std::ostream& os, const RS_Leader& l);
+    friend std::ostream& operator <<(std::ostream& os, const RS_Leader& l);
 
     RS_VectorSolutions getRefPoints() const override;
 
 protected:
-    RS_LeaderData data;
-    bool empty = true;
+    RS_LeaderData m_data;
+    bool m_empty = true;
     void doUpdateDim() override;
 };
 

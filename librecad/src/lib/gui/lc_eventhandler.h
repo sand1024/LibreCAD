@@ -25,6 +25,7 @@
 #define LC_EVENTHANDLER_H
 
 #include <QObject>
+
 #include "rs.h"
 
 class LC_CoordinatesParser;
@@ -39,8 +40,7 @@ class RS_GraphicView;
 class LC_EventHandler : public QObject {
     Q_OBJECT
 public:
-    LC_EventHandler();
-    explicit LC_EventHandler(RS_GraphicView* parent = 0);
+    explicit LC_EventHandler(RS_GraphicView* parent = nullptr);
     ~LC_EventHandler() override;
     void uncheckQAction();
     void setQAction(QAction* action);
@@ -68,7 +68,7 @@ public:
     bool setCurrentAction(std::shared_ptr<RS_ActionInterface> action);
     void resumeAction(const std::shared_ptr<RS_ActionInterface>& action);
     RS_ActionInterface* getCurrentAction() const;
-    bool isValid(RS_ActionInterface* action) const;
+    bool isValid(const RS_ActionInterface* action) const;
     bool killAllActions();
     bool hasAction() const;
     void setSnapMode(RS_SnapMode sm) const;
@@ -86,4 +86,4 @@ private:
     void switchToDefaultAction();
 };
 
-#endif // LC_EVENTHANDLER_H
+#endif

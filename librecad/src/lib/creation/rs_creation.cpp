@@ -24,12 +24,13 @@
 **
 **********************************************************************/
 
+#include "rs_creation.h"
+
 #include "lc_quadratic.h"
 #include "lc_splinepoints.h"
 #include "rs_arc.h"
 #include "rs_block.h"
 #include "rs_circle.h"
-#include "rs_creation.h"
 #include "rs_constructionline.h"
 #include "rs_ellipse.h"
 #include "rs_entitycontainer.h"
@@ -65,12 +66,11 @@ namespace {
          * @return the same line in RS_LineData
          */
     RS_LineData fromLineCoordinate(const RS_Vector& line) {
-        RS_Vector start = RS_Vector{line}.rotate(-M_PI / 4.);
-        RS_Vector stop = RS_Vector{line}.rotate(M_PI / 4.);
+        const RS_Vector start = RS_Vector{line}.rotate(-M_PI / 4.);
+        const RS_Vector stop = RS_Vector{line}.rotate(M_PI / 4.);
         return {start / (-start.dotP(line)), stop / (-stop.dotP(line))};
     }
 }
-
 
 /**
  * Creates an entity parallel to the given entity e through the given
@@ -80,27 +80,27 @@ namespace {
  *              mouse coordinate).
  * @param number Number of parallels.
  * @param e Original entity.
+ * @param symmetric
+ * @param createdEntities
  *
  * @return Pointer to the first created parallel or nullptr if no
  *    parallel has been created.
  */
-void RS_Creation::createParallelThrough(const RS_Vector& coord,
-                                              int number,
-                                              RS_Entity* e,
-                                              bool symmetric,
-                                              QList<RS_Entity*> &createdEntities) {
+void RS_Creation::createParallelThrough(const RS_Vector& coord, const int number, RS_Entity* e, const bool symmetric,
+                                        QList<RS_Entity*>& createdEntities) {
     Q_ASSERT(e != nullptr);
 
     double dist = 0.;
-    if (e->rtti()==RS2::EntityLine) {
-        auto* l = static_cast<RS_Line*>(e);
-        RS_ConstructionLine cl(nullptr,RS_ConstructionLineData(l->getStartpoint(),l->getEndpoint()));
+    if (e->rtti() == RS2::EntityLine) {
+        const auto* l = static_cast<RS_Line*>(e);
+        const RS_ConstructionLine cl(nullptr, RS_ConstructionLineData(l->getStartpoint(), l->getEndpoint()));
         dist = cl.getDistanceToPoint(coord);
-    } else {
+    }
+    else {
         dist = e->getDistanceToPoint(coord);
     }
 
-    if (dist<RS_MAXDOUBLE) {
+    if (dist < RS_MAXDOUBLE) {
         return createParallel(coord, dist, number, e, symmetric, createdEntities);
     }
 }
@@ -116,12 +116,13 @@ void RS_Creation::createParallelThrough(const RS_Vector& coord,
  * @param distance Distance of the parallel.
  * @param number Number of parallels.
  * @param e Original entity.
+ * @param symmetric
+ * @param createdEntities
  *
  */
-void RS_Creation::createParallel(const RS_Vector& coord,
-                                       double distance, int number,
-                                       RS_Entity* e, bool symmetric,  QList<RS_Entity*> &createdEntities) {
-  Q_ASSERT(e != nullptr);
+void RS_Creation::createParallel(const RS_Vector& coord, const double distance, const int number, RS_Entity* e, const bool symmetric,
+                                 QList<RS_Entity*>& createdEntities) {
+    Q_ASSERT(e != nullptr);
 
     switch (e->rtti()) {
         case RS2::EntityLine:
@@ -152,15 +153,14 @@ void RS_Creation::createParallel(const RS_Vector& coord,
  * @param distance Distance of the parallel.
  * @param number Number of parallels.
  * @param e Original entity.
+ * @param symmetric
+ * @param createdEntities
  *
  * @return Pointer to the first created parallel or nullptr if no
  *    parallel has been created.
  */
-void RS_Creation::createParallelLine(const RS_Vector& coord,
-                                         double distance, int number,
-                                         RS_Line* e,
-                                         bool symmetric,
-                                         QList<RS_Entity*> &createdEntities) {
+void RS_Creation::createParallelLine(const RS_Vector& coord, double distance, int number, const RS_Line* e, bool symmetric,
+                                     QList<RS_Entity*>& createdEntities) {
     Q_ASSERT(e != nullptr);
 
     double ang = e->getAngle1() + M_PI_2;
@@ -168,16 +168,16 @@ void RS_Creation::createParallelLine(const RS_Vector& coord,
 
     for (int num = 1; num <= number; ++num) {
         // calculate 1st parallel:
-        RS_Vector p1 = RS_Vector::polar(distance*num, ang);
+        RS_Vector p1 = RS_Vector::polar(distance * num, ang);
         p1 += e->getStartpoint();
-        RS_Vector p2 = RS_Vector::polar(distance*num, ang);
+        RS_Vector p2 = RS_Vector::polar(distance * num, ang);
         p2 += e->getEndpoint();
         RS_Line parallel1{p1, p2};
 
         // calculate 2nd parallel:
-        p1.setPolar(distance*num, ang+M_PI);
+        p1.setPolar(distance * num, ang + M_PI);
         p1 += e->getStartpoint();
-        p2.setPolar(distance*num, ang+M_PI);
+        p2.setPolar(distance * num, ang + M_PI);
         p2 += e->getEndpoint();
         RS_Line parallel2{p1, p2};
 
@@ -185,12 +185,13 @@ void RS_Creation::createParallelLine(const RS_Vector& coord,
         double dist2 = parallel2.getDistanceToPoint(coord);
         double minDist = std::min(dist1, dist2);
 
-        if (minDist<RS_MAXDOUBLE) {
+        if (minDist < RS_MAXDOUBLE) {
             RS_LineData dataToSkip;
-            if (dist1 < dist2){
+            if (dist1 < dist2) {
                 parallelData = parallel1.getData();
                 dataToSkip = parallel2.getData();
-            } else {
+            }
+            else {
                 parallelData = parallel2.getData();
                 dataToSkip = parallel1.getData();
             }
@@ -216,16 +217,14 @@ void RS_Creation::createParallelLine(const RS_Vector& coord,
  * @param distance Distance of the parallel.
  * @param number Number of parallels.
  * @param e Original entity.
+ * @param createdEntities
  *
  */
-void RS_Creation::createParallelArc(const RS_Vector& coord,
-                                    double distance, int number,
-                                    RS_Arc* e,  QList<RS_Entity*> &createdEntities) {
-
+void RS_Creation::createParallelArc(const RS_Vector& coord, double distance, const int number, RS_Arc* e, QList<RS_Entity*>& createdEntities) {
     Q_ASSERT(e != nullptr);
 
     RS_ArcData parallelData{};
-    bool inside = (e->getCenter().distanceTo(coord) < e->getRadius());
+    const bool inside = e->getCenter().distanceTo(coord) < e->getRadius();
 
     if (inside) {
         distance *= -1;
@@ -235,8 +234,8 @@ void RS_Creation::createParallelArc(const RS_Vector& coord,
         // calculate parallel:
         bool ok = true;
         RS_Arc parallel1(nullptr, e->getData());
-        parallel1.setRadius(e->getRadius() + distance*num);
-        if (parallel1.getRadius()<0.0) {
+        parallel1.setRadius(e->getRadius() + distance * num);
+        if (parallel1.getRadius() < 0.0) {
             parallel1.setRadius(RS_MAXDOUBLE);
             ok = false;
         }
@@ -273,17 +272,16 @@ void RS_Creation::createParallelArc(const RS_Vector& coord,
  * @param distance Distance of the parallel.
  * @param number Number of parallels.
  * @param e Original entity.
+ * @param createdEntities
  *
  */
-void RS_Creation::createParallelCircle(const RS_Vector& coord,
-                                             double distance, int number,
-                                             RS_Circle* e,  QList<RS_Entity*> &createdEntities) {
+void RS_Creation::createParallelCircle(const RS_Vector& coord, double distance, const int number, const RS_Circle* e,
+                                       QList<RS_Entity*>& createdEntities) {
     Q_ASSERT(e != nullptr);
 
     RS_CircleData parallelData{};
 
-    bool inside = (e->getCenter().distanceTo(coord) < e->getRadius());
-
+    const bool inside = (e->getCenter().distanceTo(coord) < e->getRadius());
     if (inside) {
         distance *= -1;
     }
@@ -292,8 +290,8 @@ void RS_Creation::createParallelCircle(const RS_Vector& coord,
         // calculate parallel:
         bool ok = true;
         RS_Circle parallel1(nullptr, e->getData());
-        parallel1.setRadius(e->getRadius() + distance*num);
-        if (parallel1.getRadius()<0.0) {
+        parallel1.setRadius(e->getRadius() + distance * num);
+        if (parallel1.getRadius() < 0.0) {
             parallel1.setRadius(RS_MAXDOUBLE);
             ok = false;
         }
@@ -314,8 +312,7 @@ void RS_Creation::createParallelCircle(const RS_Vector& coord,
             //    parallelData = parallel2.getData();
             //}
 
-
-            auto newCircle = new RS_Circle(nullptr, parallelData);
+            const auto newCircle = new RS_Circle(nullptr, parallelData);
             createdEntities.push_back(newCircle);
         }
     }
@@ -331,18 +328,19 @@ void RS_Creation::createParallelCircle(const RS_Vector& coord,
  * @param distance Distance of the parallel.
  * @param number Number of parallels.
  * @param e Original entity.
+ * @param createdEntities
  *
  * @return Pointer to the first created parallel or nullptr if no
  *    parallel has been created.
  */
-void RS_Creation::createParallelSplinePoints(const RS_Vector& coord,
-                                             double distance, int number, LC_SplinePoints* e,  QList<RS_Entity*> &createdEntities)  {
+void RS_Creation::createParallelSplinePoints(const RS_Vector& coord, const double distance, const int number, const LC_SplinePoints* e,
+                                             QList<RS_Entity*>& createdEntities) {
     Q_ASSERT(e != nullptr);
 
-    LC_SplinePoints *psp = nullptr;
-    for(int i = 1; i <= number; ++i)    {
+    LC_SplinePoints* psp = nullptr;
+    for (int i = 1; i <= number; ++i) {
         psp = static_cast<LC_SplinePoints*>(e->clone());
-        psp->offset(coord, i*distance);
+        psp->offset(coord, i * distance);
         psp->setParent(nullptr);
 
         createdEntities.push_back(psp);
@@ -354,49 +352,43 @@ void RS_Creation::createParallelSplinePoints(const RS_Vector& coord,
  * e1 and e2. Out of the 4 possible bisectors, the one closest to
  * the given coordinate is returned.
  *
- * @param coord Coordinate to define which bisector we want (typically a
- *              mouse coordinate).
+ * @param coord1
+ * @param coord2
  * @param length Length of the bisecting line.
  * @param num Number of bisectors
  * @param l1 First line.
  * @param l2 Second line.
+ * @param createdLines
  *
  * @return Pointer to the first bisector created or nullptr if no bisectors
  *   were created.
  */
-bool RS_Creation::createBisector(const RS_Vector& coord1,
-                                     const RS_Vector& coord2,
-                                     double length,
-                                     int num,
-                                     RS_Line* l1,
-                                     RS_Line* l2,
-                                     QList<RS_Entity*> &createdLines) {
-
+bool RS_Creation::createBisector(const RS_Vector& coord1, const RS_Vector& coord2, const double length, const int num, const RS_Line* l1,
+                                 const RS_Line* l2, QList<RS_Entity*>& createdLines) {
     // check given entities:
     if (!(l1 != nullptr && l2 != nullptr)) {
         return false;
     }
-    if (!(l1->rtti()==RS2::EntityLine && l2->rtti()==RS2::EntityLine)) {
+    if (!(l1->rtti() == RS2::EntityLine && l2->rtti() == RS2::EntityLine)) {
         return false;
     }
 
     // intersection between entities:
-    RS_VectorSolutions const& sol =
-            RS_Information::getIntersection(l1, l2, false);
-    RS_Vector inters = sol.get(0);
+    const RS_VectorSolutions& sol = RS_Information::getIntersection(l1, l2, false);
+    const RS_Vector inters = sol.get(0);
     if (!inters.valid) {
         return false;
     }
 
-    double angle1 = inters.angleTo(l1->getNearestPointOnEntity(coord1));
-    double angle2 = inters.angleTo(l2->getNearestPointOnEntity(coord2));
+    const double angle1 = inters.angleTo(l1->getNearestPointOnEntity(coord1));
+    const double angle2 = inters.angleTo(l2->getNearestPointOnEntity(coord2));
     double angleDiff = RS_Math::getAngleDifference(angle1, angle2);
     if (angleDiff > M_PI) {
-        angleDiff = angleDiff - 2.*M_PI;
+        angleDiff = angleDiff - 2. * M_PI;
     }
     for (int n = 1; n <= num; ++n) {
-        double angle = angle1 + (angleDiff / (num + 1) * n);
-        RS_Vector const& v = RS_Vector::polar(length, angle);
+        const double angle = angle1 + angleDiff / (num + 1) * n;
+        const RS_Vector& v = RS_Vector::polar(length, angle);
         auto* newLine = new RS_Line{nullptr, inters, inters + v};
         createdLines.push_back(newLine);
     }
@@ -411,11 +403,8 @@ bool RS_Creation::createBisector(const RS_Vector& coord1,
  *
  * Author: Dongxu Li
  */
-std::unique_ptr<RS_Line> RS_Creation::createLineOrthTan(const RS_Vector& coord,
-                                        RS_Line* normal,
-                                        RS_Entity* circle,
-                                        RS_Vector& alternativeTangent){
-
+std::unique_ptr<RS_Line> RS_Creation::createLineOrthTan(const RS_Vector& coord, const RS_Line* normal, RS_Entity* circle,
+                                                        RS_Vector& alternativeTangent) {
     // check given entities:
     if (!(circle != nullptr && normal != nullptr)) {
         return {};
@@ -425,66 +414,67 @@ std::unique_ptr<RS_Line> RS_Creation::createLineOrthTan(const RS_Vector& coord,
         return {};
     }
 
-    RS_Vector  tangentPoint0;
-    RS_Vector  t1;
+    RS_Vector tangentPoint0;
+    RS_Vector t1;
     // todo - potentially, it's possible to move this fragment to appropriate implementations of  getNearestOrthTan - and expand it for returning all tangent points instead of nearest one
-    switch (rtti){
+    switch (rtti) {
         case RS2::EntityCircle: {
-            auto *cir = dynamic_cast<RS_Circle *>(circle);
-            const RS_Vector &center = cir->getCenter();
+            auto* cir = static_cast<RS_Circle*>(circle);
+            const RS_Vector& center = cir->getCenter();
             double radius = cir->getRadius();
             RS_Vector vp0(coord - center);
             RS_Vector vp1(normal->getAngle1());
             double d = RS_Vector::dotP(vp0, vp1);
-            const RS_Vector &ortVector = vp1 * radius;
-            if (d >= 0.){
+            const RS_Vector& ortVector = vp1 * radius;
+            if (d >= 0.) {
                 tangentPoint0 = center + ortVector;
                 t1 = center - ortVector;
-            } else {
+            }
+            else {
                 tangentPoint0 = center - ortVector;
                 t1 = center + ortVector;
             }
             break;
         }
         case RS2::EntityArc: {
-            auto *cir = dynamic_cast<RS_Arc *>(circle);
-            double angle=normal->getAngle1();
+            auto* cir = static_cast<RS_Arc*>(circle);
+            double angle = normal->getAngle1();
             double radius = cir->getRadius();
             RS_Vector vp = RS_Vector::polar(radius, angle);
             std::vector<RS_Vector> sol;
             bool onEntity = false;
             for (int i = 0; i <= 1; i++) {
-                if(!onEntity || RS_Math::isAngleBetween(angle,cir->getAngle1(),cir->getAngle2(),cir->isReversed())) {
+                if (!onEntity || RS_Math::isAngleBetween(angle, cir->getAngle1(), cir->getAngle2(), cir->isReversed())) {
                     if (i) {
-                        sol.push_back(- vp);
+                        sol.push_back(-vp);
                     }
                     else {
                         sol.push_back(vp);
                     }
                 }
-                angle=RS_Math::correctAngle(angle+M_PI);
+                angle = RS_Math::correctAngle(angle + M_PI);
             }
-            const RS_Vector &center = cir->getCenter();
-            switch(sol.size()) {
-            case 0:
-                tangentPoint0 = RS_Vector(false);
-                [[fallthrough]];
-            case 2:
-                if (RS_Vector::dotP(sol[1], coord - center) > 0.){
-                    tangentPoint0 = center + sol[1];
-                    t1 = center + sol[0];
+            const RS_Vector& center = cir->getCenter();
+            switch (sol.size()) {
+                case 0:
+                    // tangentPoint0 = RS_Vector(false);
+                    [[fallthrough]];
+                case 2:
+                    if (RS_Vector::dotP(sol[1], coord - center) > 0.) {
+                        tangentPoint0 = center + sol[1];
+                        t1 = center + sol[0];
+                        break;
+                    }
+                    [[fallthrough]];
+                default:
+                    tangentPoint0 = center + sol[0];
+                    t1 = center + sol[1];
                     break;
-                }
-                [[fallthrough]];
-            default:
-                tangentPoint0 = center + sol[0];
-                t1 = center + sol[1];
-                break;
             }
             break;
         }
         case RS2::EntityEllipse: {
-            auto *cir = dynamic_cast<RS_Ellipse *>(circle);            
+            auto* cir = static_cast<RS_Ellipse*>(circle);
             //scale to ellipse angle
             RS_Vector aV(-cir->getAngle());
             RS_Vector direction = normal->getEndpoint() - normal->getStartpoint();
@@ -492,15 +482,15 @@ std::unique_ptr<RS_Line> RS_Creation::createLineOrthTan(const RS_Vector& coord,
             double ratio = cir->getRatio();
             double angle = direction.scale(RS_Vector(1., ratio)).angle();
             double ra(cir->getMajorRadius());
-            direction.set(ra * cos(angle), ratio * ra * sin(angle));//relative to center
+            direction.set(ra * cos(angle), ratio * ra * sin(angle)); //relative to center
             std::vector<RS_Vector> sol;
-            bool onEntity = false;
+            bool onEntity = false; // fixme - always false? what for this flag?
             for (int i = 0; i < 2; i++) {
-                if (!onEntity ||
-                    RS_Math::isAngleBetween(angle, cir->getAngle1(), cir->getAngle2(), cir->isReversed())){
-                    if (i){
+                if (!onEntity || RS_Math::isAngleBetween(angle, cir->getAngle1(), cir->getAngle2(), cir->isReversed())) {
+                    if (i) {
                         sol.push_back(-direction);
-                    } else {
+                    }
+                    else {
                         sol.push_back(direction);
                     }
                 }
@@ -511,16 +501,16 @@ std::unique_ptr<RS_Line> RS_Creation::createLineOrthTan(const RS_Vector& coord,
             }
             else {
                 aV.y *= -1.;
-                for (auto &v: sol) {
+                for (auto& v : sol) {
                     v.rotate(aV);
-                }               
-                const RS_Vector &center = cir->getCenter();
+                }
+                const RS_Vector& center = cir->getCenter();
                 switch (sol.size()) {
                     case 0:
-                        tangentPoint0 = RS_Vector(false);
+                        // tangentPoint0 = RS_Vector(false);
                         [[fallthrough]];
                     case 2:
-                        if (RS_Vector::dotP(sol[1], coord - center) > 0.){
+                        if (RS_Vector::dotP(sol[1], coord - center) > 0.) {
                             tangentPoint0 = center + sol[1];
                             t1 = center + sol[0];
                             break;
@@ -540,10 +530,10 @@ std::unique_ptr<RS_Line> RS_Creation::createLineOrthTan(const RS_Vector& coord,
 
     alternativeTangent = t1;
 
-    if(!tangentPoint0.valid) {
+    if (!tangentPoint0.valid) {
         return {};
     }
-    RS_Vector const& vp=normal->getNearestPointOnEntity(tangentPoint0, false);
+    const RS_Vector& vp = normal->getNearestPointOnEntity(tangentPoint0, false);
     return std::make_unique<RS_Line>(nullptr, vp, tangentPoint0);
 }
 
@@ -556,12 +546,11 @@ std::unique_ptr<RS_Line> RS_Creation::createLineOrthTan(const RS_Vector& coord,
 *              mouse coordinate).
 * @param point Point.
 * @param circle Circle, arc or ellipse entity.
+* @param tangentPoint
+* @param altTangentPoint
 */
-RS_Line* RS_Creation::createTangent1(const RS_Vector& coord,
-                                     const RS_Vector& point,
-                                     RS_Entity* circle,
-                                     RS_Vector& tangentPoint,
-                                     RS_Vector& altTangentPoint){
+RS_Line* RS_Creation::createTangent1(const RS_Vector& coord, const RS_Vector& point, const RS_Entity* circle, RS_Vector& tangentPoint,
+                                     RS_Vector& altTangentPoint) {
     RS_Line* ret = nullptr;
     // check given entities:
     if (!(circle != nullptr && point.valid)) {
@@ -572,20 +561,22 @@ RS_Line* RS_Creation::createTangent1(const RS_Vector& coord,
     RS_VectorSolutions sol = circle->getTangentPoint(point);
 
     // second port of if condition means that there is no solution - yet some entities (like circle) put coordinate...
-    if (sol.isEmpty() || (sol.getNumber() == 1 && sol[0] == point)){
+    if (sol.isEmpty() || (sol.getNumber() == 1 && sol[0] == point)) {
         return nullptr;
     }
-    RS_Vector const vp2{sol.getClosest(coord)};
+    const RS_Vector vp2{sol.getClosest(coord)};
     RS_LineData d{};
     if ((vp2 - point).squared() > RS_TOLERANCE2) {
         d = {vp2, point};
     }
-    else { //the given point is a tangential point
+    else {
+        //the given point is a tangential point
         d = {point + circle->getTangentDirection(point), point};
     }
 
     tangentPoint = d.startpoint;
-    if (sol.getNumber() == 1) { // spline by points support...
+    if (sol.getNumber() == 1) {
+        // spline by points support...
         altTangentPoint = sol[0];
     }
     else {
@@ -600,32 +591,27 @@ RS_Line* RS_Creation::createTangent1(const RS_Vector& coord,
 * Out of the 4 possible tangents, the one closest to
 * the given coordinate is returned.
 *
-* @param coord Coordinate to define which tangent we want (typically a
-*              mouse coordinate).
 * @param circle1 1st circle or arc entity.
 * @param circle2 2nd circle or arc entity.
 */
-std::vector<std::unique_ptr<RS_Line>> RS_Creation::createTangent2(
-                                                     RS_Entity* circle1,
-                                                     RS_Entity* circle2) {
+std::vector<std::unique_ptr<RS_Line>> RS_Creation::createTangent2(const RS_Entity* circle1, const RS_Entity* circle2) {
     // check given entities:
-    if(! (circle1 != nullptr && circle2 != nullptr)) {
+    if (circle1 == nullptr || circle2 == nullptr) {
         return {};
     }
 
-    if( !(isArc(*circle1) && isArc(*circle2))) {
+    if (!(isArc(*circle1) && isArc(*circle2))) {
         return {};
     }
 
     // Find common tangent lines in line coordinates, i.e. using dual curves
     // A common tangent line is an intersection of the dual curves
-    auto sol = LC_Quadratic::getIntersection(circle1->getQuadratic().getDualCurve(),
-                                             circle2->getQuadratic().getDualCurve());
+    auto sol = LC_Quadratic::getIntersection(circle1->getQuadratic().getDualCurve(), circle2->getQuadratic().getDualCurve());
     if (sol.empty()) {
         return {};
     }
     RS_VectorSolutions sol1;
-    for (const auto& vp: sol) {
+    for (const auto& vp : sol) {
         if (!vp.valid) {
             continue;
         }
@@ -641,11 +627,11 @@ std::vector<std::unique_ptr<RS_Line>> RS_Creation::createTangent2(
     std::vector<std::unique_ptr<RS_Line>> tangents;
     std::transform(sol1.begin(), sol1.end(), std::back_inserter(tangents),
                    [circle1, circle2](const RS_Vector& line) -> std::unique_ptr<RS_Line> {
-        auto rsLine = std::make_unique<RS_Line>(nullptr, fromLineCoordinate(line));
-        rsLine->setStartpoint(circle1->dualLineTangentPoint(line));
-        rsLine->setEndpoint(circle2->dualLineTangentPoint(line));
-        return std::unique_ptr<RS_Line>(std::move(rsLine));
-    });
+                       auto rsLine = std::make_unique<RS_Line>(nullptr, fromLineCoordinate(line));
+                       rsLine->setStartpoint(circle1->dualLineTangentPoint(line));
+                       rsLine->setEndpoint(circle2->dualLineTangentPoint(line));
+                       return std::unique_ptr<RS_Line>(std::move(rsLine));
+                   });
     // cleanup invalid lines
     tangents.erase(remove_if(tangents.begin(), tangents.end(), [](const std::unique_ptr<RS_Line>& line) {
         return line == nullptr;
@@ -657,7 +643,6 @@ std::vector<std::unique_ptr<RS_Line>> RS_Creation::createTangent2(
     return tangents;
 }
 
-
 /**
      * Creates a line with a relative angle to the given entity.
      *
@@ -668,40 +653,35 @@ std::vector<std::unique_ptr<RS_Line>> RS_Creation::createTangent2(
      * @param angle Angle of the line relative to the angle of the basis entity.
      * @param length Length of the line we're creating.
      */
-RS_Line* RS_Creation::createLineRelAngle(const RS_Vector& coord,
-                                         RS_Entity* entity,
-                                         double angle,
-                                         double length) {
+RS_Line* RS_Creation::createLineRelAngle(const RS_Vector& coord, const RS_Entity* entity, const double angle, const double length) {
     // check given entity / coord:
     if (!(entity && coord)) {
         return {};
     }
 
     switch (entity->rtti()) {
-        default:
-            return {};
         case RS2::EntityArc:
         case RS2::EntityCircle:
         case RS2::EntityLine:
         case RS2::EntityEllipse:
             break;
+        default:
+            return {};
     }
 
     const RS_Vector vp = entity->getNearestPointOnEntity(coord, false);
-    double const a1 = angle + entity->getTangentDirection(vp).angle();
-    RS_Vector const v1 = RS_Vector::polar(length, a1);
-    auto ret = new RS_Line(nullptr, coord, coord+v1);
+    const double a1 = angle + entity->getTangentDirection(vp).angle();
+    const RS_Vector v1 = RS_Vector::polar(length, a1);
+    const auto ret = new RS_Line(nullptr, coord, coord + v1);
     return ret;
 }
 
-RS_Block* RS_Creation::createBlock(const RS_BlockData* data,
-                                   const RS_Vector& referencePoint, const QList<RS_Entity*>& selectedEntities) {
-
+RS_Block* RS_Creation::createBlock(const RS_BlockData* data, const RS_Vector& referencePoint, const QList<RS_Entity*>& selectedEntities) {
     // start undo cycle for the container if we're deleting the existing entities
-    auto* block  = new RS_Block(nullptr, RS_BlockData(*data));
+    auto* block = new RS_Block(nullptr, RS_BlockData(*data));
 
     // copy entities into a block
-    for(const auto e: selectedEntities){
+    for (const auto e : selectedEntities) {
         if (e != nullptr && e->isAlive()) {
             // add entity to block:
             RS_Entity* clone = e->clone();

@@ -26,7 +26,6 @@
 
 #include "lc_actionselectquick.h"
 #include "lc_matchdescriptor_dimbase.h"
-#include "rs_dimradial.h"
 
 class LC_MatchDescriptorDimRadial: public LC_MatchDescriptorDimBase {
     Q_OBJECT

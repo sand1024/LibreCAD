@@ -27,38 +27,38 @@
 #include "rs_mtext.h"
 
 void LC_MatchDescriptorMText::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
-        auto entity = new LC_TypedEntityMatchDescriptor<RS_MText>(tr("MText"), RS2::EntityMText);
+        const auto entity = new LC_TypedEntityMatchDescriptor<RS_MText>(tr("MText"), RS2::EntityMText);
     initCommonEntityAttributesProperties<RS_MText>(entity);
 
-    entity->addVectorX("insertX", [](RS_MText* e) {
+    entity->addVectorX("insertX", [](const RS_MText* e) {
         return e->getInsertionPoint();
     }, tr("Insert X"), tr("X coordinate for text's insertion point"));
 
-    entity->addVectorY("insertY", [](RS_MText* e) {
+    entity->addVectorY("insertY", [](const RS_MText* e) {
         return e->getInsertionPoint();
     }, tr("Insert Y"), tr("Y coordinate for text's insertion point"));
 
-    entity->addAngle("angle", [](RS_MText* e) {
+    entity->addAngle("angle", [](const RS_MText* e) {
         return e->getAngle();
     }, tr("Angle"), tr("Text rotation angle"));
 
-    entity->addFontStringList("style", [](RS_MText* e) -> QString {
+    entity->addFontStringList("style", [](const RS_MText* e) -> QString {
         return e->getStyle();
     }, tr("Style"), tr("Name of the text style)"));
 
-    entity->addLength("height", [](RS_MText* e) {
+    entity->addLength("height", [](const RS_MText* e) {
         return e->getHeight();
     }, tr("Height"), tr("Height of the text"));
 
-    entity->addLength("width", [](RS_MText* e) {
+    entity->addLength("width", [](const RS_MText* e) {
         return e->getWidth();
     }, tr("Width"), tr("Width of the text"));
 
-    entity->addInt("linesCount", [](RS_MText* e) {
+    entity->addInt("linesCount", [](const RS_MText* e) {
         return e->getNumberOfLines();
     }, tr("Lines Count"), tr("Number of lines in multiline text"));
 
-    entity->addIntChoice("halign", [](RS_MText* e) {
+    entity->addIntChoice("halign", [](const RS_MText* e) {
         return e->getHAlign();
     }, tr("Horizontal Align"), tr("Horizontal align for text"), {
         {tr("Left"), RS_MTextData::HAlign::HALeft},
@@ -66,7 +66,7 @@ void LC_MatchDescriptorMText::init(QMap<RS2::EntityType, LC_EntityMatchDescripto
         {tr("Right"),RS_MTextData::HAlign::HARight}
     });
 
-    entity->addIntChoice("valign", [](RS_MText* e) {
+    entity->addIntChoice("valign", [](const RS_MText* e) {
         return e->getVAlign();
     }, tr("Vertical Align"), tr("Vertical align for text"), {
         {tr("Bottom"), RS_MTextData::VAlign::VABottom},
@@ -74,7 +74,7 @@ void LC_MatchDescriptorMText::init(QMap<RS2::EntityType, LC_EntityMatchDescripto
         {tr("Top"), RS_MTextData::VAlign::VATop}
     });
 
-    entity->addIntChoice("drawDirection", [](RS_MText* e) {
+    entity->addIntChoice("drawDirection", [](const RS_MText* e) {
         return e->getVAlign();
     }, tr("Direction"), tr("Drawing direction for the text"),  {
         {tr("Left to right"), RS_MTextData::MTextDrawingDirection::LeftToRight},
@@ -83,14 +83,14 @@ void LC_MatchDescriptorMText::init(QMap<RS2::EntityType, LC_EntityMatchDescripto
         {tr("By Style"), RS_MTextData::MTextDrawingDirection::ByStyle},
     });
 
-    entity->addIntChoice("lspacingStyle", [](RS_MText* e) {
+    entity->addIntChoice("lspacingStyle", [](const RS_MText* e) {
         return e->getLineSpacingStyle();
     }, tr("Line spacing style"), tr("Style of linespacing"), {
         {tr("At Least"), RS_MTextData::MTextLineSpacingStyle::AtLeast},
         {tr("Exact"), RS_MTextData::MTextLineSpacingStyle::Exact}
     });
 
-    entity->addDouble("linespacingFactor", [](RS_MText* e) {
+    entity->addDouble("linespacingFactor", [](const RS_MText* e) {
         return e->getLineSpacingFactor();
     }, tr("Linespacing"), tr("Linespacing factor for the text"));
 

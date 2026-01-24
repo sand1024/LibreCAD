@@ -22,19 +22,20 @@
  */
 
 #include "lc_matchdescriptor_splinepoints.h"
+
 #include "lc_splinepoints.h"
 
 class LC_SplinePoints;
 
 void LC_MatchDescriptorSplinePoints::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
-    auto entity = new LC_TypedEntityMatchDescriptor<LC_SplinePoints>(tr("Spline By Points"), RS2::EntitySplinePoints);
+    const auto entity = new LC_TypedEntityMatchDescriptor<LC_SplinePoints>(tr("Spline By Points"), RS2::EntitySplinePoints);
     initCommonEntityAttributesProperties<LC_SplinePoints>(entity);
 
-    entity->addInt("numberOfPoints", [](LC_SplinePoints* e) {
-        return (int)e->getNumberOfControlPoints();
+    entity->addInt("numberOfPoints", [](const LC_SplinePoints* e) {
+        return static_cast<int>(e->getNumberOfControlPoints());
     }, tr("Points Amount"), tr("Amount of spline points"));
 
-    entity->addBoolean("closed", [](LC_SplinePoints* e) {
+    entity->addBoolean("closed", [](const LC_SplinePoints* e) {
         return e->isClosed();
     }, tr("Closed"), tr("Determines whether spline is closed or not"));
 
@@ -42,23 +43,23 @@ void LC_MatchDescriptorSplinePoints::init(QMap<RS2::EntityType, LC_EntityMatchDe
         return e->getData().useControlPoints;
     }, tr("By Control Points"), tr("Determines whether spline is controlled by control points or fit points"));
 
-    entity->addContainsXInList<std::vector<RS_Vector>>("pointX", [](LC_SplinePoints* e) {
+    entity->addContainsXInList<std::vector<RS_Vector>>("pointX", [](const LC_SplinePoints* e) {
         return e->getPoints();
     }, tr("Point X"), tr("X coordinate of spline point"));
 
-    entity->addContainsYInList<std::vector<RS_Vector>>("pointY", [](LC_SplinePoints* e) {
+    entity->addContainsYInList<std::vector<RS_Vector>>("pointY", [](const LC_SplinePoints* e) {
         return e->getPoints();
     }, tr("Point Y"), tr("Y coordinate of spline point"));
 
-    entity->addContainsXInList<std::vector<RS_Vector>>("controlPointX", [](LC_SplinePoints* e) {
+    entity->addContainsXInList<std::vector<RS_Vector>>("controlPointX", [](const LC_SplinePoints* e) {
         return e->getControlPoints();
     }, tr("Vertex X"), tr("X coordinate for one of vertexes"));
 
-    entity->addContainsYInList<std::vector<RS_Vector>>("vertexY", [](LC_SplinePoints* e) {
+    entity->addContainsYInList<std::vector<RS_Vector>>("vertexY", [](const LC_SplinePoints* e) {
         return e->getControlPoints();
     }, tr("Vertex Y"), tr("Y coordinate  for one of vertexes"));
 
-    entity->addBoolean("length", [](LC_SplinePoints* e) {
+    entity->addBoolean("length", [](const LC_SplinePoints* e) {
         return e->getLength();
     }, tr("Length"), tr("Length of spline"));
 

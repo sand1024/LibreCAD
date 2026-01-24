@@ -24,7 +24,6 @@
 **
 **********************************************************************/
 
-
 #ifndef RS_DIMRADIAL_H
 #define RS_DIMRADIAL_H
 
@@ -43,34 +42,32 @@ struct RS_DimRadialData {
      * Constructor with initialisation.
      *
      * @param definitionPoint Definition point of the radial dimension.
-     * @param leader Leader length.
+     * @param leaderLen Leader length.
      */
-    RS_DimRadialData(const RS_Vector &definitionPoint,double leader);
+    RS_DimRadialData(const RS_Vector& definitionPoint, double leaderLen);
     /** Definition point. */
     RS_Vector definitionPoint;
     /** Leader length. */
     double leader = 0.;
 };
 
-std::ostream& operator << (std::ostream& os,
-									  const RS_DimRadialData& dd);
+std::ostream& operator <<(std::ostream& os, const RS_DimRadialData& dd);
 
 /**
  * Class for radial dimension entities.
  *
  * @author Andrew Mustun
  */
+// fixme - sand - no copy assignment operator!
 class RS_DimRadial : public RS_Dimension {
 public:
-    RS_DimRadial(RS_EntityContainer* parent,
-                 const RS_DimensionData& d,
-                 const RS_DimRadialData& ed);
-        RS_DimRadial(const RS_DimRadial& other);
+    RS_DimRadial(RS_EntityContainer* parent, const RS_DimensionData& d, const RS_DimRadialData& ed);
+    RS_DimRadial(const RS_DimRadial& other);
 
     RS_Entity* clone() const override;
 
     /**	@return RS2::EntityDimRadial */
-	RS2::EntityType rtti() const override{
+    RS2::EntityType rtti() const override {
         return RS2::EntityDimRadial;
     }
 
@@ -82,18 +79,18 @@ public:
         return m_dimRadialData;
     }
 
-	RS_VectorSolutions getRefPoints() const override;
-	QString getMeasuredLabel() override;
+    RS_VectorSolutions getRefPoints() const override;
+    QString getMeasuredLabel() override;
 
-
-    RS_Vector getDefinitionPoint() const {
+    RS_Vector getRadialDefinitionPoint() const {
         return m_dimRadialData.definitionPoint;
     }
+
     double getLeader() const {
         return m_dimRadialData.leader;
     }
 
-    void setLeaderLength(double v) {
+    void setLeaderLength(const double v) {
         m_dimRadialData.leader = v;
     }
 
@@ -101,19 +98,19 @@ public:
         return m_dimGenericData.definitionPoint;
     }
 
-    void setCenterPoint(RS_Vector v) {
+    void setCenterPoint(const RS_Vector& v) {
         m_dimGenericData.definitionPoint = v;
     }
 
-	void move(const RS_Vector& offset) override;
-	void rotate(const RS_Vector& center, double angle) override;
-	void rotate(const RS_Vector& center, const RS_Vector& angleVector) override;
-	void scale(const RS_Vector& center, const RS_Vector& factor) override;
-	void mirror(const RS_Vector& axisPoint1, const RS_Vector& axisPoint2) override;
-	void moveRef(const RS_Vector& ref, const RS_Vector& offset) override;
+    void move(const RS_Vector& offset) override;
+    void rotate(const RS_Vector& center, double angle) override;
+    void rotate(const RS_Vector& center, const RS_Vector& angleVector) override;
+    void scale(const RS_Vector& center, const RS_Vector& factor) override;
+    void mirror(const RS_Vector& axisPoint1, const RS_Vector& axisPoint2) override;
+    void moveRef(const RS_Vector& ref, const RS_Vector& offset) override;
 
-    friend std::ostream& operator << (std::ostream& os,
-                                      const RS_DimRadial& d);
+    friend std::ostream& operator <<(std::ostream& os, const RS_DimRadial& d);
+
 protected:
     /** Extended data. */
     RS_DimRadialData m_dimRadialData;

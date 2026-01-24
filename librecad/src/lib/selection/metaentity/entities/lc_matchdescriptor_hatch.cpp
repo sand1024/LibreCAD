@@ -26,22 +26,22 @@
 #include "rs_hatch.h"
 
 void LC_MatchDescriptorHatch::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
-    auto entity = new LC_TypedEntityMatchDescriptor<RS_Hatch>(tr("Hatch"), RS2::EntityHatch);
+    const auto entity = new LC_TypedEntityMatchDescriptor<RS_Hatch>(tr("Hatch"), RS2::EntityHatch);
     initCommonEntityAttributesProperties<RS_Hatch>(entity);
 
-    entity->addBoolean("solid", [](RS_Hatch* e) {
+    entity->addBoolean("solid", [](const RS_Hatch* e) {
         return e->isSolid();
     }, tr("Is Solid"), tr("Determines whether hatch is solid or not"));
 
-    entity->addString("pattern", [](RS_Hatch* e) {
+    entity->addString("pattern", [](const RS_Hatch* e) {
         return e->getPattern();
     }, tr("Pattern"), tr("Hatch pattern name")); // fixme - choice combox for available patterns?
 
-    entity->addDouble("scale", [](RS_Hatch* e) {
+    entity->addDouble("scale", [](const RS_Hatch* e) {
         return e->getScale();
     }, tr("Scale"), tr("Hatch scale"));
 
-    entity->addAngle("angle", [](RS_Hatch* e) {
+    entity->addAngle("angle", [](const RS_Hatch* e) {
         return e->getAngle();
     }, tr("Angle"), tr("Hatch rotation angle"));
 

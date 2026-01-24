@@ -26,45 +26,45 @@
 #include "rs_polyline.h"
 
 void LC_MatchDescriptorPolyline::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
-        auto entity = new LC_TypedEntityMatchDescriptor<RS_Polyline>(tr("Polyline"), RS2::EntityPolyline);
+        const auto entity = new LC_TypedEntityMatchDescriptor<RS_Polyline>(tr("Polyline"), RS2::EntityPolyline);
     initCommonEntityAttributesProperties<RS_Polyline>(entity);
-    entity->addVectorX("startX", [](RS_Polyline* e) {
+    entity->addVectorX("startX", [](const RS_Polyline* e) {
         return e->getStartpoint();
     }, tr("Start X"), tr("X coordinate for start point"));
 
-    entity->addVectorY("startY", [](RS_Polyline* e) {
+    entity->addVectorY("startY", [](const RS_Polyline* e) {
         return e->getStartpoint();
     }, tr("Start Y"), tr("Y coordinate for start point"));
 
-    entity->addVectorX("endX", [](RS_Polyline* e) {
+    entity->addVectorX("endX", [](const RS_Polyline* e) {
         return e->getEndpoint();
     }, tr("End X"), tr("X coordinate for end point"));
 
-    entity->addVectorY("endY", [](RS_Polyline* e) {
+    entity->addVectorY("endY", [](const RS_Polyline* e) {
         return e->getEndpoint();
     }, tr("End Y"), tr("Y coordinate for end point"));
 
-    entity->addContainsXInList<QList<RS_Vector>>("vertexX", [](RS_Polyline* e) {
+    entity->addContainsXInList<QList<RS_Vector>>("vertexX", [](const RS_Polyline* e) {
         return e->getVertexes();
     }, tr("Vertex X"), tr("X coordinate for one of vertexes"));
 
-    entity->addContainsYInList<QList<RS_Vector>>("vertexY", [](RS_Polyline* e) {
+    entity->addContainsYInList<QList<RS_Vector>>("vertexY", [](const RS_Polyline* e) {
         return e->getVertexes();
     }, tr("Vertex Y"), tr("Y coordinate  for one of vertexes"));
 
-    entity->addLength("length", [](RS_Polyline* e) {
+    entity->addLength("length", [](const RS_Polyline* e) {
         return e->getLength();
     }, tr("Length"), tr("Length of polyline"));
 
-    entity->addBoolean("closed", [](RS_Polyline* e) {
+    entity->addBoolean("closed", [](const RS_Polyline* e) {
         return e->isClosed();
     }, tr("Is Closed"), tr("Determines whether polyline is closed or not"));
 
-    entity->addInt("segmentsCount", [](RS_Polyline* e) {
+    entity->addInt("segmentsCount", [](const RS_Polyline* e) {
         return e->count();
     }, tr("Segments Count"), tr("Amount of polyline's segment"));
 
-    entity->addBoolean("hasArc", [](RS_Polyline* e) {
+    entity->addBoolean("hasArc", [](const RS_Polyline* e) {
         return e->containsArc();
     }, tr("Contains Arc"), tr("Defines whether polyline include arc"));
 

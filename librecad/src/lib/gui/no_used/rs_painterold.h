@@ -28,8 +28,8 @@
 #ifndef RS_PAINTER_OLD_H
 #define RS_PAINTER_OLD_H
 
-#include "rs.h"
 #include "qnamespace.h"
+#include "rs.h"
 #include "rs_vector.h"
 
 class RS_Color;
@@ -68,12 +68,12 @@ public:
     /**
      * Sets the drawing mode.
      */
-    void setDrawingMode(RS2::DrawingMode m) {
+    void setDrawingMode(const RS2::DrawingMode m) {
         drawingMode = m;
     }
 
     // When set to true, only entities that are selected will be drawn
-    void setDrawSelectedOnly(bool dso) {
+    void setDrawSelectedOnly(const bool dso) {
         drawSelectedEntities=dso;
     }
 

@@ -23,7 +23,6 @@
 #include "lc_settingsexporter.h"
 
 #include <QFileDialog>
-#include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonParseError>
 #include <QMessageBox>
@@ -39,7 +38,7 @@ namespace{
     const QString G_KEY_FILE_TYPE = "_lc_file_type";
 }
 
-bool LC_SettingsExporter::obtainFileName(QWidget *parent, QString &fileName, bool forRead){
+bool LC_SettingsExporter::obtainFileName(QWidget *parent, QString &fileName, const bool forRead){
     return LC_FileNameSelectionService::doObtainFileName(parent, fileName, forRead, "lcs",
             "LCSettings", tr("Import settings"),  tr("Export Settings"),
             tr("LibreCAD settings file (*.%1)"));
@@ -67,7 +66,7 @@ bool LC_SettingsExporter::exportSettings(QWidget* parent){
     QJsonObject objSettings;
     objSettings.insert(G_KEY_FILE_TYPE, QJsonValue::fromVariant(G_SETTINGS_FILE_TYPE));
     objSettings.insert("groups", objGroups);
-    QJsonDocument doc(objSettings);
+    const QJsonDocument doc(objSettings);
     QFile jsonFile{fileName};
     if (!jsonFile.open(QFile::WriteOnly)) {
         QMessageBox::critical(parent, tr("Settings Export"), tr("Can't open provided file for writing - check that provided location is writable. Preferences were not exported."));
@@ -84,15 +83,16 @@ bool LC_SettingsExporter::exportSettings(QWidget* parent){
 
 bool LC_SettingsExporter::importSettings(QWidget *parent) {
     QString fileName;
-    if (!obtainFileName(parent, fileName, true))
+    if (!obtainFileName(parent, fileName, true)) {
         return false;
-    QFile jsonFile = QFile(fileName);
+    }
+    auto jsonFile = QFile(fileName);
     if (!jsonFile.open(QFile::ReadOnly)) {
         QMessageBox::critical(parent, tr("Settings Import Error"), tr("Can't open provided file for reading. Preferences were not imported."));
         return false;
     }
     QJsonParseError parseError;
-    auto doc = QJsonDocument::fromJson(jsonFile.readAll(), &parseError);
+    const auto doc = QJsonDocument::fromJson(jsonFile.readAll(), &parseError);
     if (parseError.error != QJsonParseError::NoError) {
         QMessageBox::critical(parent, tr("Settings Import Error"), tr("Unexpected error during preferences parsing. Message:") + parseError.errorString());
         return false;
@@ -108,13 +108,15 @@ bool LC_SettingsExporter::importSettings(QWidget *parent) {
     }
     for(const QString& groupName: groups.keys()) {
         const QJsonObject& groupObj = groups.value(groupName).toObject();
-        if (groupObj.empty())
+        if (groupObj.empty()) {
             continue;
+        }
 
         LC_GROUP(groupName);
         {
-            for(const QString& propertyName: groupObj.keys())
+            for(const QString& propertyName: groupObj.keys()) {
                 LC_SET(propertyName, groupObj.value(propertyName).toString());
+            }
         }
     }
 

@@ -22,7 +22,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef LC_ACTIONCONTEXT_H
 #define LC_ACTIONCONTEXT_H
 
-#include <QString>
 #include "lc_latecompletionrequestor.h"
 #include "rs.h"
 #include "rs_graphicview.h"
@@ -77,8 +76,8 @@ public:
     void clearContextMenuActionContext();
     RS_Entity* getContextMenuActionContextEntity() const;
     RS_Vector getContextMenuActionClickPosition() const;
-    bool hasSelection();
-    LC_GraphicViewport* getViewport() {return m_graphicView == nullptr ? nullptr : m_graphicView->getViewPort();}
+    bool hasSelection() const;
+    LC_GraphicViewport* getViewport() const {return m_graphicView == nullptr ? nullptr : m_graphicView->getViewPort();}
 
     struct InteractiveInputInfo {
         enum State {
@@ -95,16 +94,16 @@ public:
             NOTNEEDED,
         };
 
-        State m_state;
-        double m_distance {0};
-        double m_angleRad{0};
-        RS_Vector m_wcsPoint;
-        InputType m_inputType;
-        QString m_requestorTag;
-        LC_LateCompletionRequestor* m_requestor {nullptr};
+        State state {NONE};
+        double distance {0};
+        double angleRad{0};
+        RS_Vector wcsPoint;
+        InputType inputType {NOTNEEDED};
+        QString requestorTag;
+        LC_LateCompletionRequestor* requestor {nullptr};
     };
 
-    void interactiveInputStart(InteractiveInputInfo::InputType inputType, LC_LateCompletionRequestor* m_requestor, const QString &tag);
+    void interactiveInputStart(InteractiveInputInfo::InputType inputType, LC_LateCompletionRequestor* requestor, const QString &tag);
     void interactiveInputRequestCancel();
     InteractiveInputInfo* getInteractiveInputInfo(){return &m_interactiveInputInfo;}
 protected:
@@ -117,7 +116,7 @@ protected:
     bool m_unselectContextMenuActionEntity {false};
 
     void interactiveInputInvoke(InteractiveInputInfo::InputType inputType);
-    void interactiveInputRequest(InteractiveInputInfo::InputType inputType, LC_LateCompletionRequestor* m_requestor, const QString &tag);
+    void interactiveInputRequest(InteractiveInputInfo::InputType inputType, LC_LateCompletionRequestor* requestor, const QString &tag);
 };
 
-#endif // LC_ACTIONCONTEXT_H
+#endif

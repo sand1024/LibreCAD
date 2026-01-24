@@ -26,30 +26,30 @@
 #include "rs_circle.h"
 
 void LC_MatchDescriptorCircle::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
-    auto entity = new LC_TypedEntityMatchDescriptor<RS_Circle>(tr("Circle"), RS2::EntityCircle);
+    const auto entity = new LC_TypedEntityMatchDescriptor<RS_Circle>(tr("Circle"), RS2::EntityCircle);
     initCommonEntityAttributesProperties<RS_Circle>(entity);
-    entity->addVectorX("centerX", [](RS_Circle* e) {
+    entity->addVectorX("centerX", [](const RS_Circle* e) {
         return e->getCenter();
     }, tr("Center X"), tr("X coordinate for center point"));
 
-    entity->addVectorY("centerY", [](RS_Circle* e) {
+    entity->addVectorY("centerY", [](const RS_Circle* e) {
         return e->getCenter();
     }, tr("Center Y"), tr("Y coordinate for center point"));
 
-    entity->addLength("radius", [](RS_Circle* e) {
+    entity->addLength("radius", [](const RS_Circle* e) {
         return e->getRadius();
     }, tr("Radius"), tr("Radius of circle"));
 
-    entity->addLength("diameter", [](RS_Circle* e) {
+    entity->addLength("diameter", [](const RS_Circle* e) {
         return e->getRadius() * 2.0;
     }, tr("Diameter"), tr("Diameter of circle"));
 
-    entity->addLength("circumference", [](RS_Circle* e) {
+    entity->addLength("circumference", [](const RS_Circle* e) {
         return e->getRadius() * 2.0 * M_PI;
     }, tr("Circumference"), tr("Circumference of circle"));
 
-    entity->addLength("area", [](RS_Circle* e) {
-        double radius = e->getRadius();
+    entity->addLength("area", [](const RS_Circle* e) {
+        const double radius = e->getRadius();
         return M_PI * radius * radius;
     }, tr("Area"), tr("Area of circle"));
 

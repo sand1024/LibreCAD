@@ -35,7 +35,7 @@ protected:
         const QList<RS2::EntityType> &entityTypeList = {});
     ~LC_ActionPreSelectionAwareBase() override;
 
-    bool isKeepModifiedEntitiesSelected();
+    bool isKeepModifiedEntitiesSelected() const;
 
     bool m_selectionComplete = false;
     QList<RS_Entity*> m_selectedEntities;
@@ -49,29 +49,29 @@ protected:
     virtual bool isForceSelectContextEntity() {return true;}
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     void selectionFinishedByKey(QKeyEvent *e, bool escape) override;
-    void onMouseRightButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseLeftButtonRelease(int status, LC_MouseEvent *e) override;
-    void onMouseLeftButtonPress(int status, LC_MouseEvent* e) override;
+    void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
+    void onMouseLeftButtonPress(int status, const LC_MouseEvent* e) override;
     virtual void applyBoxSelectionModeIfNeeded(RS_Vector mouse);
     virtual void onSelectionCompleted(bool singleEntity, bool fromInit);
     virtual void proceedSelectionComplete(bool allowEmptySelection, bool fromInit, unsigned int selectedCount);
-    virtual void onMouseLeftButtonReleaseSelected(int status, LC_MouseEvent *pEvent);
-    virtual void onMouseRightButtonReleaseSelected(int status, LC_MouseEvent *pEvent);
-    virtual void onMouseMoveEventSelected(int status, LC_MouseEvent *e);
+    virtual void onMouseLeftButtonReleaseSelected(int status, const LC_MouseEvent* event);
+    virtual void onMouseRightButtonReleaseSelected(int status, const LC_MouseEvent* event);
+    virtual void onMouseMoveEventSelected(int status, const LC_MouseEvent* event);
     virtual void updateMouseButtonHintsForSelection() = 0;
     virtual void updateMouseButtonHintsForSelected(int status);
-    virtual bool isAllowTriggerOnEmptySelection(){return true;};
-    virtual void doTriggerSelectionUpdate([[maybe_unused]]bool keepSelected, [[maybe_unused]]const LC_DocumentModificationBatch& ctx) {};
+    virtual bool isAllowTriggerOnEmptySelection(){return true;}
+    virtual void doTriggerSelectionUpdate([[maybe_unused]]bool keepSelected, [[maybe_unused]]const LC_DocumentModificationBatch& ctx) {}
     void doTriggerSelections(const LC_DocumentModificationBatch& ctx) override;
-    virtual void finishMouseMoveOnSelection(LC_MouseEvent *event);
-    virtual void proceedSelectedEntity(LC_MouseEvent* e);
-    void endBoxSelectionMode(LC_MouseEvent* e);
+    virtual void finishMouseMoveOnSelection(const LC_MouseEvent* event);
+    virtual void proceedSelectedEntity(const LC_MouseEvent* e);
+    void endBoxSelectionMode(const LC_MouseEvent* e);
     RS2::CursorType doGetMouseCursor(int status) override;
     virtual RS2::CursorType doGetMouseCursorSelected(int status);
     unsigned int collectSelectedEntities();
     void setSelectionComplete(bool allowEmptySelection, bool fromInit);
     void updateMouseButtonHints() override;
     void doSelectEntity(RS_Entity *entityToSelect, bool selectContour) const override;
-    void onMouseMoveEvent(int status, LC_MouseEvent *event) override;
+    void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
 };
 #endif

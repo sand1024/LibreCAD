@@ -31,31 +31,42 @@ class RS_Layer;
 class LC_DimStyle;
 class RS_Color;
 
-
 struct LC_PropertyMatcherTypes {
-    static const LC_TypedPropertyMatchTypeDescriptor<RS_Color> COLOR;
-    static const LC_TypedPropertyMatchTypeDescriptor<RS_Color> COLOR_RESOLVED;
-    static const LC_TypedPropertyMatchTypeDescriptor<RS_Layer*> LAYER;
-    static const LC_TypedPropertyMatchTypeDescriptor<RS2::LineWidth> LINE_WIDTH;
-    static const LC_TypedPropertyMatchTypeDescriptor<RS2::LineWidth> LINE_WIDTH_RESOLVED;
-    static const LC_TypedPropertyMatchTypeDescriptor<RS2::LineType> LINE_TYPE;
-    static const LC_TypedPropertyMatchTypeDescriptor<RS2::LineType> LINE_TYPE_RESOLVED;
-    static const LC_TypedPropertyMatchTypeDescriptor<double>  COORD_X;
-    static const LC_ComparingPropertyMatchTypeDescriptor<QList<double>, double> COORD_X_IN_QLIST;
-    static const LC_TypedPropertyMatchTypeDescriptor<double>  COORD_Y;
-    static const LC_ComparingPropertyMatchTypeDescriptor<QList<double>, double>  COORD_Y_IN_QLIST;
-    static const LC_TypedPropertyMatchTypeDescriptor<double> DOUBLE;
-    static const LC_TypedPropertyMatchTypeDescriptor<double> LENGTH;
-    static const LC_TypedPropertyMatchTypeDescriptor<double> ANGLE;
-    static const LC_TypedPropertyMatchTypeDescriptor<double> INCLINATION;
-    static const LC_TypedPropertyMatchTypeDescriptor<int> INT;
-    static const LC_TypedPropertyMatchTypeDescriptor<int> INT_CHOICE;
-    static const LC_TypedPropertyMatchTypeDescriptor<bool> BOOL;
-    static const LC_TypedPropertyMatchTypeDescriptor<QString> STRING;
-    static const LC_TypedPropertyMatchTypeDescriptor<QString> STRING_CHOICE;
-    static const LC_TypedPropertyMatchTypeDescriptor<LC_DimStyle*> DIM_STYLE;
-    static const LC_ComparingPropertyMatchTypeDescriptor<std::vector<double>, double> COORD_X_IN_VECTOR;
-    static const LC_ComparingPropertyMatchTypeDescriptor<std::vector<double>, double> COORD_Y_IN_VECTOR;
+    using TCOLOR = typename LC_TypedPropertyMatchTypeDescriptor<RS_Color>;
+    using TLAYER = typename LC_TypedPropertyMatchTypeDescriptor<RS_Layer*>;
+    using TLINE_WIDTH = typename LC_TypedPropertyMatchTypeDescriptor<RS2::LineWidth>;
+    using TLINE_TYPE = typename LC_TypedPropertyMatchTypeDescriptor<RS2::LineType>;
+    using TDOUBLE = typename LC_TypedPropertyMatchTypeDescriptor<double>;
+    using TDOUBLE_QLIST = typename LC_ComparingPropertyMatchTypeDescriptor<QList<double>, double>;
+    using TDOUBLE_IN_VECT = typename LC_ComparingPropertyMatchTypeDescriptor<std::vector<double>, double>;
+    using TINT = typename  LC_TypedPropertyMatchTypeDescriptor<int>;
+    using TBOOL = typename LC_TypedPropertyMatchTypeDescriptor<bool>;
+    using TSTRING = typename  LC_TypedPropertyMatchTypeDescriptor<QString>;
+    using TDIMSTYLE = typename  LC_TypedPropertyMatchTypeDescriptor<LC_DimStyle*>;
+
+    static const TCOLOR COLOR;
+    static const TCOLOR COLOR_RESOLVED;
+    static const TLAYER LAYER;
+    static const TLINE_WIDTH LINE_WIDTH;
+    static const TLINE_WIDTH LINE_WIDTH_RESOLVED;
+    static const TLINE_TYPE LINE_TYPE;
+    static const TLINE_TYPE LINE_TYPE_RESOLVED;
+    static const TDOUBLE COORD_X;
+    static const TDOUBLE_QLIST COORD_X_IN_QLIST;
+    static const TDOUBLE  COORD_Y;
+    static const TDOUBLE_QLIST  COORD_Y_IN_QLIST;
+    static const TDOUBLE DOUBLE;
+    static const TDOUBLE LENGTH;
+    static const TDOUBLE ANGLE;
+    static const TDOUBLE INCLINATION;
+    static const TINT INT;
+    static const TINT INT_CHOICE;
+    static const TBOOL BOOL;
+    static const TSTRING STRING;
+    static const TSTRING STRING_CHOICE;
+    static const TDIMSTYLE DIM_STYLE;
+    static const TDOUBLE_IN_VECT COORD_X_IN_VECTOR;
+    static const TDOUBLE_IN_VECT COORD_Y_IN_VECTOR;
 };
 
 #endif

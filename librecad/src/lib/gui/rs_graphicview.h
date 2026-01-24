@@ -28,9 +28,9 @@
 #ifndef RS_GRAPHICVIEW_H
 #define RS_GRAPHICVIEW_H
 
+#include <QWidget>
 #include <memory>
 
-#include <QWidget>
 #include "lc_graphicviewportlistener.h"
 #include "rs.h"
 #include "rs_debug.h"
@@ -68,7 +68,7 @@ class LC_WidgetViewPortRenderer;
 class RS_GraphicView:public QWidget, public LC_GraphicViewPortListener {
     Q_OBJECT
 public:
-    RS_GraphicView(QWidget *parent = nullptr, Qt::WindowFlags f = {});
+    explicit RS_GraphicView(QWidget *parent = nullptr, Qt::WindowFlags f = {});
     ~RS_GraphicView() override;
     void cleanUp();
 /**
@@ -115,7 +115,7 @@ public:
     RS_ActionInterface *getDefaultAction() const;
     void hideOptions() const;
     // fixme - sand - complete changes in plugin and remove this function from the public interface!!!
-    bool setCurrentAction(std::shared_ptr<RS_ActionInterface> action) const;
+    bool setCurrentAction(const std::shared_ptr<RS_ActionInterface>& action) const;
     RS_ActionInterface *getCurrentAction() const;
     QString getCurrentActionName() const;
     QIcon getCurrentActionIcon() const;
@@ -127,15 +127,13 @@ public:
     void enableCoordinateInput() const;
     void disableCoordinateInput() const;
     void zoomAuto(bool axis=true) const;
-    void zoomPage();
-    void zoomPageEx();
 
     virtual void updateGridStatusWidget(QString) = 0;
     void setDefaultSnapMode(RS_SnapMode sm) const;
     RS_SnapMode getDefaultSnapMode() const;
     void setSnapRestriction(RS2::SnapRestriction sr);
     RS2::SnapRestriction getSnapRestriction() const;
-    bool isCurrentActionRunning(RS_ActionInterface* action) const;
+    bool isCurrentActionRunning(const RS_ActionInterface* action) const;
     /**
   * Enables or disables print preview.
   */
@@ -145,24 +143,15 @@ public:
   * @retval false Otherwise.
   */
     bool isPrintPreview() const;
-    /**
-  * Enables or disables printing.
-  */
-    void setPrinting(bool p);
-/**
-  * @retval true This is a graphic view for printing.
-  * @retval false setSnapOtherwise.
-  */
-    bool isPrinting() const;
 
-    bool isCleanUp(void) const;
+    bool isCleanUp() const;
 
     void setLineWidthScaling(bool state) const;
     bool getLineWidthScaling() const;
 
     RS2::EntityType getTypeToSelect() const;
     void setTypeToSelect(RS2::EntityType mType);
-    virtual QString obtainEntityDescription(RS_Entity *entity, RS2::EntityDescriptionLevel shortDescription);
+    virtual QString obtainEntityDescription(const RS_Entity* entity, RS2::EntityDescriptionLevel descriptionLevel);
     LC_InfoCursorOverlayPrefs* getInfoCursorOverlayPreferences() const;
 
     bool getPanOnZoom() const;
@@ -170,7 +159,7 @@ public:
 
     void setShowEntityDescriptionOnHover(bool show);
     bool isShowEntityDescriptionOnHover() const {
-        return showEntityDescriptionOnHover;
+        return m_showEntityDescriptionOnHover;
     }
     virtual void highlightUCSLocation([[maybe_unused]]LC_UCS *ucs) {}
     void onViewportChanged() override;
@@ -179,7 +168,7 @@ public:
     void notifyCurrentActionChanged(RS2::ActionType actionType);
     bool hasAction() const;
     void notifyLastActionFinished() const;
-    void onSwitchToDefaultAction(bool defaultActionActivated, RS2::ActionType prevActionRtti);
+    void onSwitchToDefaultAction(bool actionIsDefault, RS2::ActionType prevActionRtti);
 signals:
     void ucsChanged(LC_UCS* ucs);
     void relativeZeroChanged(const RS_Vector &);
@@ -193,9 +182,10 @@ protected:
     void onViewportRedrawNeeded(RS2::RedrawMethod method) override;
     LC_EventHandler *getEventHandler() const;
 
+    // fixme - sand - temporary object for testing, remove it!
     class TEST_DESTRUCTOR {
     public:
-        explicit TEST_DESTRUCTOR(int val):value{val}{};
+        explicit TEST_DESTRUCTOR(const int val):value{val}{}
         ~TEST_DESTRUCTOR() {
             LC_ERR << "Destructor TES called" << value;
         }
@@ -211,24 +201,24 @@ private:
      * Current default snap mode for this graphic view. Used for new
      * actions.
      */
-    std::unique_ptr<RS_SnapMode> defaultSnapMode;
+    std::unique_ptr<RS_SnapMode> m_defaultSnapMode;
  /**
   * Current default snap restriction for this graphic view. Used for new
   * actions.
   */
-    RS2::SnapRestriction defaultSnapRes{};
-    std::unique_ptr<LC_InfoCursorOverlayPrefs> infoCursorOverlayPreferences;
+    RS2::SnapRestriction m_defaultSnapRes{};
+    std::unique_ptr<LC_InfoCursorOverlayPrefs> m_infoCursorOverlayPreferences;
 
     /** if true, graphicView is under cleanup */
     bool m_bIsCleanUp = false;
-    bool printPreview = false;
+    bool m_printPreview = false;
 
-    RS2::EntityType typeToSelect = RS2::EntityType::EntityUnknown;
+    RS2::EntityType m_typeToSelect = RS2::EntityType::EntityUnknown;
 
-    bool showEntityDescriptionOnHover = false;
+    bool m_showEntityDescriptionOnHover = false;
     bool m_panOnZoom = false;
     bool m_skipFirstZoom = false;
     const RS_LineTypePattern *getPattern(RS2::LineType t);
-    bool setEventHandlerAction(std::shared_ptr<RS_ActionInterface>) const;
+    bool setEventHandlerAction(const std::shared_ptr<RS_ActionInterface>&) const;
 };
 #endif

@@ -24,8 +24,8 @@
 #ifndef LC_PROPERTYMATCHER_H
 #define LC_PROPERTYMATCHER_H
 
-#include <functional>
 #include <QVariant>
+#include <functional>
 
 #include "lc_propertymatchtypedescriptor.h"
 
@@ -40,14 +40,14 @@ public:
     QString getDisplayName() {return m_displayName;}
     QString getDescription() {return m_description;}
     virtual bool isSupportedOperation(LC_PropertyMatchOperation type) = 0;
-    LC_PropertyMatchTypeEnum getPropertyType() const {return m_propertyType;};
+    LC_PropertyMatchTypeEnum getPropertyType() const {return m_propertyType;}
     bool isChoice() const {return m_choice;}
     void setChoiceValues(const QList<QPair<QString, QVariant>>& values) {
         m_choice = true;
         m_choiceValues = values;
     }
     virtual void getChoiceValues(QList<QPair<QString, QVariant>>&values) {return values.append(m_choiceValues);}
-    virtual LC_EntityMatcher* getMatcher() = 0;
+    virtual LC_EntityMatcher* createMatcher() = 0;
 protected:
     QString m_name;
     QString m_displayName;
@@ -69,12 +69,10 @@ public:
         m_propertyType = m_type->getType();
     }
 
-    bool isSupportedOperation(LC_PropertyMatchOperation type) override {return m_type->m_supportedOperations.testFlag(type);}
+    bool isSupportedOperation(LC_PropertyMatchOperation type) override {return m_type->supportedOperations.testFlag(type);}
 
 protected:
     const LC_ComparingPropertyMatchTypeDescriptor<ConvertedPropertValueType, MatchValueType>* m_type;
     FunValueAccessor m_funAccess;
 };
-
-
 #endif

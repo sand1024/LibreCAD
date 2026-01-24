@@ -45,7 +45,7 @@ void LC_SelectedSet::clear() {
 
 void LC_SelectedSet::add(RS_Entity* entity) {
 #ifdef DEBUG_UNIQUE_SELECTION
-    for (auto const e : m_entitiesList) {
+    for (const auto e : m_entitiesList) {
         Q_ASSERT_X(e != entity, "LC_SelectedSet::add()", "Entity not unique in selection");
     }
 #endif
@@ -77,7 +77,7 @@ void LC_SelectedSet::addListener(LC_SelectedSetListener* listener) {
     if (listener == nullptr) {
         return;
     }
-    for (auto const l : m_listeners) {
+    for (const auto l : m_listeners) {
         if (l == listener) {
             return;
         }
@@ -91,7 +91,7 @@ void LC_SelectedSet::removeListener(LC_SelectedSetListener* listener) {
 
 void LC_SelectedSet::fireSelectionChanged() {
     if (m_silentMode == 0) {
-        for (auto l : m_listeners) {
+        for (const auto l : m_listeners) {
             l->selectionChanged();
         }
     }
@@ -108,7 +108,7 @@ void LC_SelectedSet::cleanup() {
     for (const auto e: m_entitiesList) {
         bool valid = false;
         if (e->isSet(RS2::FlagSelected) && e->isAlive()) {
-            RS_Layer* layer = e->getLayerResolved();
+            const RS_Layer* layer = e->getLayerResolved();
             if (!layer->isLocked() && !layer->isFrozen()) {  // also clear selection for locked and freezed layers
                 valid = true;
             }
@@ -120,8 +120,8 @@ void LC_SelectedSet::cleanup() {
             e->setSelectionFlag(false);
         }
     }
-    auto validEntitiesCount = validEntities.count();
-    auto currentEntitiesCount        = m_entitiesList.count();
+    const auto validEntitiesCount = validEntities.count();
+    const auto currentEntitiesCount        = m_entitiesList.count();
     if (validEntitiesCount != currentEntitiesCount) {
         m_entitiesList.clear();
         m_entitiesList.append(validEntities);
@@ -147,8 +147,8 @@ bool LC_SelectedSet::collectSelectedEntities(QList<RS_Entity*>& list) {
     return !list.isEmpty();
 }
 
-bool LC_SelectedSet::collectSelectedEntities(QList<RS_Entity*>& list, QList<RS2::EntityType> const &types) {
-    bool specificTypesNeeded = types.size() > 0;
+bool LC_SelectedSet::collectSelectedEntities(QList<RS_Entity*>& list, const QList<RS2::EntityType>&types) {
+    const bool specificTypesNeeded = types.size() > 0;
     bool cleanupNeeded = false;
     for (const auto e: m_entitiesList) {
         if (e != nullptr) {
@@ -183,9 +183,7 @@ bool LC_SelectedSet::hasSelection() {
                 hasSelection = true;
                 break;
             }
-            else {
-                cleanupNeeded = true;
-            }
+            cleanupNeeded = true;
         }
     }
     if (cleanupNeeded) {

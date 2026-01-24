@@ -28,23 +28,22 @@
 
 class LC_UndoableDocumentModificationAction: public RS_PreviewActionInterface {
 protected:
-    LC_UndoableDocumentModificationAction(const char *name,LC_ActionContext *actionContext,RS2::ActionType actionType = RS2::ActionNone):
-     RS_PreviewActionInterface(name, actionContext, actionType){};
+    LC_UndoableDocumentModificationAction(const char *name,LC_ActionContext *actionContext, const RS2::ActionType actionType = RS2::ActionNone):
+     RS_PreviewActionInterface(name, actionContext, actionType){}
     ~LC_UndoableDocumentModificationAction() override = default;
     void previewEntitiesToAdd(LC_DocumentModificationBatch& ctx) const;
     virtual bool doTriggerModifications(LC_DocumentModificationBatch& ctx)  = 0;
     virtual void doTriggerCompletion([[maybe_unused]]bool success) {}
-    virtual void doTriggerSelections([[maybe_unused]]const LC_DocumentModificationBatch& ctx){};
+    virtual void doTriggerSelections([[maybe_unused]]const LC_DocumentModificationBatch& ctx){}
     void doTrigger() override;
 };
 
-
 class LC_SingleEntityCreationAction: public LC_UndoableDocumentModificationAction {
 protected:
-    LC_SingleEntityCreationAction(const char *name,LC_ActionContext *actionContext,RS2::ActionType actionType = RS2::ActionNone):
-    LC_UndoableDocumentModificationAction(name, actionContext, actionType){};
+    LC_SingleEntityCreationAction(const char *name,LC_ActionContext *actionContext, const RS2::ActionType actionType = RS2::ActionNone):
+    LC_UndoableDocumentModificationAction(name, actionContext, actionType){}
     ~LC_SingleEntityCreationAction() override = default;
-    bool doTriggerModifications(LC_DocumentModificationBatch& modificationData) override;
+    bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;
     virtual RS_Entity* doTriggerCreateEntity() = 0;
 };
 #endif

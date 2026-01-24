@@ -26,70 +26,70 @@
 #include "rs_arc.h"
 
 void LC_MatchDescriptorArc::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
-    auto entity = new LC_TypedEntityMatchDescriptor<RS_Arc>(tr("Arc"), RS2::EntityArc);
+    const auto entity = new LC_TypedEntityMatchDescriptor<RS_Arc>(tr("Arc"), RS2::EntityArc);
     initCommonEntityAttributesProperties<RS_Arc>(entity);
 
-    entity->addVectorX("centerX", [](RS_Arc* e) {
+    entity->addVectorX("centerX", [](const RS_Arc* e) {
         return e->getCenter();
     }, tr("Center X"), tr("X coordinate for center point"));
 
-    entity->addVectorY("centerY", [](RS_Arc* e) {
+    entity->addVectorY("centerY", [](const RS_Arc* e) {
         return e->getCenter();
     }, tr("Center Y"), tr("Y coordinate for center point"));
 
-    entity->addLength("radius", [](RS_Arc* e) {
+    entity->addLength("radius", [](const RS_Arc* e) {
         return e->getRadius();
     }, tr("Radius"), tr("Radius of arc"));
 
-    entity->addBoolean("reversed", [](RS_Arc* e) {
+    entity->addBoolean("reversed", [](const RS_Arc* e) {
         return e->isReversed();
     }, tr("Is Reversed"), tr("Clockwise direction if reversed, counterclockwise otherwise"));
 
-    entity->addLength("diameter", [](RS_Arc* e) {
+    entity->addLength("diameter", [](const RS_Arc* e) {
         return e->getRadius() * 2.0;
     }, tr("Diameter"), tr("Diameter of arc"));
 
-    entity->addVectorX("startX", [](RS_Arc* e) {
+    entity->addVectorX("startX", [](const RS_Arc* e) {
         return e->getStartpoint();
     }, tr("Start X"), tr("X coordinate for start point"));
 
-    entity->addVectorY("startY", [](RS_Arc* e) {
+    entity->addVectorY("startY", [](const RS_Arc* e) {
         return e->getStartpoint();
     }, tr("Start Y"), tr("Y coordinate for start point"));
 
-    entity->addVectorX("endX", [](RS_Arc* e) {
+    entity->addVectorX("endX", [](const RS_Arc* e) {
         return e->getEndpoint();
     }, tr("End X"), tr("X coordinate for end point"));
 
-    entity->addVectorY("endY", [](RS_Arc* e) {
+    entity->addVectorY("endY", [](const RS_Arc* e) {
         return e->getEndpoint();
     }, tr("End Y"), tr("Y coordinate for end point"));
 
-    entity->addAngle("angleLen", [](RS_Arc* e) {
+    entity->addAngle("angleLen", [](const RS_Arc* e) {
         return e->getAngleLength();
     }, tr("Angle Length"), tr("Angle length for arc"));
 
-    entity->addLength("circumference", [](RS_Arc* e) {
+    entity->addLength("circumference", [](const RS_Arc* e) {
         return e->getLength();
     }, tr("Circumference"), tr("Circumference of arc"));
 
-    entity->addLength("chord", [](RS_Arc* e) {
+    entity->addLength("chord", [](const RS_Arc* e) {
         return e->getStartpoint().distanceTo(e->getEndpoint());
     }, tr("Chord"), tr("Chord length (distance from start to end point)"));
 
-    entity->addLength("sagitta", [](RS_Arc* e) {
+    entity->addLength("sagitta", [](const RS_Arc* e) {
         return e->getSagitta();
     }, tr("Sagitta"), tr("Sagitta of the arc"));
 
-    entity->addAngle("angle1", [](RS_Arc* e) {
+    entity->addAngle("angle1", [](const RS_Arc* e) {
         return e->getAngle1();
     }, tr("Start Angle"), tr("Start angle of arc"));
 
-    entity->addAngle("angle2", [](RS_Arc* e) {
+    entity->addAngle("angle2", [](const RS_Arc* e) {
         return e->getAngle2();
     }, tr("End Angle"), tr("End angle of arc"));
 
-    entity->addLength("bulge", [](RS_Arc* e) {
+    entity->addLength("bulge", [](const RS_Arc* e) {
         return e->getBulge();
     }, tr("Bulge"), tr("Bulge of arc "));
 

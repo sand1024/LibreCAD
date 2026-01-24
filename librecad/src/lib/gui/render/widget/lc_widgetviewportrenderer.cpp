@@ -21,21 +21,18 @@
  ******************************************************************************/
 #include "lc_widgetviewportrenderer.h"
 
-#include <QPixmap>
-
 #include "lc_graphicviewport.h"
-#include "rs_debug.h"
-#include "rs_entitycontainer.h"
 #include "rs_document.h"
+#include "rs_entitycontainer.h"
 #include "rs_math.h"
 #include "rs_painter.h"
 #include "rs_settings.h"
 
 LC_WidgetViewPortRenderer::LC_WidgetViewPortRenderer(LC_GraphicViewport *viewport, QPaintDevice* paintDevice):
     LC_GraphicViewportRenderer(viewport, paintDevice)
-    , pixmapLayerBackground{ std::make_unique<QPixmap>() }
-    , pixmapLayerDrawing{ std::make_unique<QPixmap>() }
-    , pixmapLayerOverlays{ std::make_unique<QPixmap>() }
+    , m_pixmapLayerBackground{ std::make_unique<QPixmap>() }
+    , m_pixmapLayerDrawing{ std::make_unique<QPixmap>() }
+    , m_pixmapLayerOverlays{ std::make_unique<QPixmap>() }
     , m_pixmapLayer1{ std::make_unique<QPixmap>(1,1) }
 {
 }
@@ -47,36 +44,36 @@ void LC_WidgetViewPortRenderer::loadSettings() {
     LC_GraphicViewportRenderer::loadSettings();
     LC_GROUP("Appearance");
     {
-        antialiasing  = LC_GET_BOOL("Antialiasing");
-        classicRenderer =  LC_GET_BOOL("ClassicRenderer", true);
+        m_antialiasing  = LC_GET_BOOL("Antialiasing");
+        m_classicRenderer =  LC_GET_BOOL("ClassicRenderer", true);
     }
 
     LC_GROUP("Render");
     {
         m_render_minRenderableTextHeightInPx = LC_GET_INT("MinRenderableTextHeightPx", 4);
-        int minArcRadius100 = LC_GET_INT("MinArcRadius", 80);
+        const int minArcRadius100 = LC_GET_INT("MinArcRadius", 80);
         m_render_minArcDrawingRadius = minArcRadius100 / 100.0;
 
-        int minCircleRadius100 = LC_GET_INT("MinCircleRadius", 200);
+        const int minCircleRadius100 = LC_GET_INT("MinCircleRadius", 200);
         m_render_minCircleDrawingRadius = minCircleRadius100 / 100.0;
 
-        int minLineLen100 = LC_GET_INT("MinLineLen", 200);
+        const int minLineLen100 = LC_GET_INT("MinLineLen", 200);
         m_render_minLineDrawingLen = minLineLen100 / 100.0;
 
-        int minEllipseMajor100 = LC_GET_INT("MinEllipseMajor", 200);
+        const int minEllipseMajor100 = LC_GET_INT("MinEllipseMajor", 200);
         m_render_minEllipseMajorRadius = minEllipseMajor100 / 100.0;
 
-        int minEllipseMinor100 = LC_GET_INT("MinEllipseMinor", 200);
+        const int minEllipseMinor100 = LC_GET_INT("MinEllipseMinor", 200);
         m_render_minEllipseMinorRadius = minEllipseMinor100 / 100.0;
 
         m_render_arcsInterpolate = LC_GET_BOOL("ArcRenderInterpolate", false);
 
         m_render_arcsInterpolateAngleFixed = LC_GET_BOOL("ArcRenderInterpolateSegmentFixed", true);
 
-        int angle100 = LC_GET_INT("ArcRenderInterpolateSegmentAngle", 500);
+        const int angle100 = LC_GET_INT("ArcRenderInterpolateSegmentAngle", 500);
         m_render_arcsInterpolateAngleValue = RS_Math::deg2rad(angle100 / 100.0);
 
-        int sagittaMax = LC_GET_INT("ArcRenderInterpolateSegmentSagitta",90);
+        const int sagittaMax = LC_GET_INT("ArcRenderInterpolateSegmentSagitta",90);
         m_render_arcsInterpolateMaxSagitta = sagittaMax / 100.0;
 
         m_render_circlesSameAsArcs = LC_GET_BOOL("CircleRenderAsArcs", false);
@@ -102,16 +99,16 @@ void LC_WidgetViewPortRenderer::doRender() {
     drawLayerEntitiesTime = 0;
     drawLayerOverlaysTime = 0;
 #endif
-    if (antialiasing){
-        if (classicRenderer) {
-            paintClassicalBuffered(pd);
+    if (m_antialiasing){
+        if (m_classicRenderer) {
+            paintClassicalBuffered(m_paintDevice);
         }
         else{
-            paintSequental(pd);
+            paintSequental(m_paintDevice);
         }
     }
     else{
-        paintClassicalBuffered(pd);
+        paintClassicalBuffered(m_paintDevice);
     }
 
 #ifdef DEBUG_RENDERING
@@ -121,43 +118,43 @@ void LC_WidgetViewPortRenderer::doRender() {
     << " setPen: " << setPenTime*1e-6 <<  " getPen: " << getPenTime*1e-6 << " painter setPen: " << painterSetPenTime*1e-6 << " Entities: " << drawEntityCount;
 #endif
 
-    redrawMethod=RS2::RedrawNone;
+    m_redrawMethod=RS2::RedrawNone;
 }
 
 void LC_WidgetViewPortRenderer::paintSequental(QPaintDevice* pd) {
-    int width = viewport->getWidth();
-    int height = viewport->getHeight();
+    int width = m_viewport->getWidth();
+    int height = m_viewport->getHeight();
 
-    QSize const s0(width, height);
-    if (pixmapLayerBackground->size() != s0){
-        pixmapLayerBackground = std::make_unique<QPixmap>(width, height);
-        redrawMethod=static_cast<RS2::RedrawMethod>(redrawMethod | RS2::RedrawGrid);
+    const QSize s0(width, height);
+    if (m_pixmapLayerBackground->size() != s0){
+        m_pixmapLayerBackground = std::make_unique<QPixmap>(width, height);
+        m_redrawMethod=static_cast<RS2::RedrawMethod>(m_redrawMethod | RS2::RedrawGrid);
     }
 
-    if (redrawMethod & RS2::RedrawGrid) {
-        pixmapLayerBackground->fill(m_colorBackground);
-        RS_Painter painterBackground(pixmapLayerBackground.get());
+    if (m_redrawMethod & RS2::RedrawGrid) {
+        m_pixmapLayerBackground->fill(m_colorBackground);
+        RS_Painter painterBackground(m_pixmapLayerBackground.get());
         setupPainter(&painterBackground);
         drawLayerBackground(&painterBackground);
         painterBackground.end();
-        redrawMethod=static_cast<RS2::RedrawMethod>(redrawMethod | RS2::RedrawDrawing);
+        m_redrawMethod=static_cast<RS2::RedrawMethod>(m_redrawMethod | RS2::RedrawDrawing);
     }
 
-    if (redrawMethod & RS2::RedrawDrawing) {
+    if (m_redrawMethod & RS2::RedrawDrawing) {
         // DRaw layer 2
-        *pixmapLayerDrawing = *pixmapLayerBackground;
-        RS_Painter painterLayerDrawing(pixmapLayerDrawing.get());
+        *m_pixmapLayerDrawing = *m_pixmapLayerBackground;
+        RS_Painter painterLayerDrawing(m_pixmapLayerDrawing.get());
         setupPainter(&painterLayerDrawing);
 
         drawLayerEntities(&painterLayerDrawing);
         drawLayerEntitiesOver(&painterLayerDrawing);
         painterLayerDrawing.end();
-        redrawMethod=static_cast<RS2::RedrawMethod>(redrawMethod | RS2::RedrawOverlay);
+        m_redrawMethod=static_cast<RS2::RedrawMethod>(m_redrawMethod | RS2::RedrawOverlay);
     }
 
-    if (redrawMethod & RS2::RedrawOverlay) {
-        *pixmapLayerOverlays = *pixmapLayerDrawing;
-        RS_Painter painterLayerOverlays(pixmapLayerOverlays.get());
+    if (m_redrawMethod & RS2::RedrawOverlay) {
+        *m_pixmapLayerOverlays = *m_pixmapLayerDrawing;
+        RS_Painter painterLayerOverlays(m_pixmapLayerOverlays.get());
         setupPainter(&painterLayerOverlays);
 
         painterLayerOverlays.setRenderHint(QPainter::Antialiasing);
@@ -165,31 +162,31 @@ void LC_WidgetViewPortRenderer::paintSequental(QPaintDevice* pd) {
     }
 
     RS_Painter wPainter(pd);
-    wPainter.drawPixmap(0, 0, *pixmapLayerOverlays);
+    wPainter.drawPixmap(0, 0, *m_pixmapLayerOverlays);
 }
 
 
 void LC_WidgetViewPortRenderer::paintClassicalBuffered(QPaintDevice* pd) {
-    int width = viewport->getWidth();
-    int height = viewport->getHeight();
-    QSize const s0(width, height);
-    bool sizeDifferent = m_pixmapLayer1->size() != s0;
+    int width = m_viewport->getWidth();
+    int height = m_viewport->getHeight();
+    const QSize s0(width, height);
+    const bool sizeDifferent = m_pixmapLayer1->size() != s0;
     if (sizeDifferent){
         m_pixmapLayer1 = std::make_unique<QPixmap>(width, height);
         m_pixmapLayer2 = std::make_unique<QPixmap>(width, height);
         m_pixmapLayer3 = std::make_unique<QPixmap>(width, height);
-        redrawMethod = RS2::RedrawAll;
+        m_redrawMethod = RS2::RedrawAll;
     }
 
     // Draw Layer 1
-    if (redrawMethod & RS2::RedrawGrid) {
+    if (m_redrawMethod & RS2::RedrawGrid) {
         m_pixmapLayer1->fill(m_colorBackground);
         RS_Painter painterBackground(m_pixmapLayer1.get());
         setupPainter(&painterBackground);
         drawLayerBackground(&painterBackground);
     }
 
-    if (redrawMethod & RS2::RedrawDrawing) {
+    if (m_redrawMethod & RS2::RedrawDrawing) {
         // DRaw layer 2
         m_pixmapLayer2->fill(Qt::transparent);
         RS_Painter painterLayerDrawing(m_pixmapLayer2.get());
@@ -198,7 +195,7 @@ void LC_WidgetViewPortRenderer::paintClassicalBuffered(QPaintDevice* pd) {
         drawLayerEntitiesOver(&painterLayerDrawing);
     }
 
-    if (redrawMethod & RS2::RedrawOverlay) {
+    if (m_redrawMethod & RS2::RedrawOverlay) {
         m_pixmapLayer3->fill(Qt::transparent);
         RS_Painter painter3(m_pixmapLayer3.get());
         setupPainter(&painter3);
@@ -219,8 +216,8 @@ void LC_WidgetViewPortRenderer::setupPainter(RS_Painter *painter) {
     painter->setMinLineDrawingLen(m_render_minLineDrawingLen);
     painter->setMinEllipseMajorRadius(m_render_minEllipseMajorRadius);
     painter->setMinEllipseMinorRadius(m_render_minEllipseMinorRadius);
-    painter->setPenCapStyle(penCapStyle);
-    painter->setPenJoinStyle(penJoinStyle);
+    painter->setPenCapStyle(m_penCapStyle);
+    painter->setPenJoinStyle(m_penJoinStyle);
     painter->setMinRenderableTextHeightInPx(m_render_minRenderableTextHeightInPx);
 
     painter->setRenderArcsInterpolate(m_render_arcsInterpolate);
@@ -229,7 +226,7 @@ void LC_WidgetViewPortRenderer::setupPainter(RS_Painter *painter) {
     painter->setRenderArcsInterpolationMaxSagitta(m_render_arcsInterpolateMaxSagitta);
     painter->setRenderCirclesSameAsArcs(m_render_circlesSameAsArcs);
 
-    if (antialiasing) {
+    if (m_antialiasing) {
         painter->setRenderHint(QPainter::Antialiasing);
     }
 }
@@ -253,7 +250,7 @@ void LC_WidgetViewPortRenderer::drawLayerEntities(RS_Painter* painter) {
     drawLayerEntitiesTimer.start();
 #endif
 
-    RS_Document *document = viewport->getDocument();
+    RS_Document *document = m_viewport->getDocument();
     painter->setDrawSelectedOnly(false);
     doSetupBeforeContainerDraw();
     justDrawEntity(painter, document);
@@ -273,8 +270,8 @@ void LC_WidgetViewPortRenderer::drawLayerEntities(RS_Painter* painter) {
 }
 
 void LC_WidgetViewPortRenderer::doSetupBeforeContainerDraw() {
-    lastPaintEntityPen = RS_Pen{};
-    lastPaintEntityPen.setFlags(RS2::FlagInvalid);
+    m_lastPaintEntityPen = RS_Pen{};
+    m_lastPaintEntityPen.setFlags(RS2::FlagInvalid);
 }
 
 

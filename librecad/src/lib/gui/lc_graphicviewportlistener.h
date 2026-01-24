@@ -37,5 +37,4 @@ public:
     virtual ~LC_GraphicViewPortListener() = default;
 };
 
-
-#endif // LC_GRAPHICVIEWPORTLISTENER_H
+#endif

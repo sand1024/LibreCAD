@@ -49,7 +49,7 @@ public:
         m_funMath = []([[maybe_unused]]RS_Entity* e)->bool {
             return true;
         };
-    };
+    }
 protected:
     FunMatch m_funMath;
 };
@@ -58,8 +58,14 @@ template<typename MatchValueType>
 class LC_GenericEntityMatcher : public LC_EntityMatcherBase{
 public:
     ~LC_GenericEntityMatcher() override = default;
-    virtual void update([[maybe_unused]]MatchValueType& valueToMatch,[[maybe_unused]] MatchValueType& tolerance, [[maybe_unused]]LC_PropertyMatchOperation operation) {};
-    virtual void updateWithMapper([[maybe_unused]]MatchValueType& valueToMatch, [[maybe_unused]] MatchValueType& tolerance, [[maybe_unused]]LC_PropertyMatchOperation operation, [[maybe_unused]]LC_CoordinatesMapper* mapper) {}
+
+    virtual void update([[maybe_unused]] MatchValueType& valueToMatch, [[maybe_unused]] MatchValueType& tolerance,
+                        [[maybe_unused]] LC_PropertyMatchOperation operation) {
+    }
+
+    virtual void updateWithMapper([[maybe_unused]] MatchValueType& valueToMatch, [[maybe_unused]] MatchValueType& tolerance,
+                                  [[maybe_unused]] LC_PropertyMatchOperation operation, [[maybe_unused]] LC_CoordinatesMapper* mapper) {
+    }
 };
 
 template <typename EntityPropertyValueType, typename ConvertedPropertyValueType, typename MatchValueType, typename EntityType>
@@ -70,39 +76,39 @@ public:
     using FunValueCompareOperation = std::function<bool(ConvertedPropertyValueType&, const MatchValueType&, const MatchValueType&)>;
 
     LC_ConvertingEntityMatcher(const LC_ComparingPropertyMatchTypeDescriptor<ConvertedPropertyValueType, MatchValueType>* propertyType, const FunValueAccessor& valueAccessor)
-        : m_propertyType{propertyType}, m_valueAccessor{valueAccessor} {
+        : propertyType{propertyType}, m_valueAccessor{valueAccessor} {
     }
 
-    void setupComparatorOperation(LC_PropertyMatchOperation operation) {
+    void setupComparatorOperation(const LC_PropertyMatchOperation operation) {
         switch (operation) {
             case MATCH_OPERATION_EQUALS: {
-                m_valueComparator = m_propertyType->m_equals;
+                m_valueComparator = propertyType->funEquals;
                 break;
             }
             case MATCH_OPERATION_NOT_EQUALS: {
-                m_valueComparator = m_propertyType->m_notEquals;
+                m_valueComparator = propertyType->funNotEquals;
                 break;
             }
             case MATCH_OPERATION_GREATER: {
-                m_valueComparator = m_propertyType->m_greater;
+                m_valueComparator = propertyType->funGreater;
                 break;
             }
             case MATCH_OPERATION_LESS: {
-                m_valueComparator = m_propertyType->m_less;
+                m_valueComparator = propertyType->funLess;
                 break;
             }
             case MATCH_OPERATION_PATTERN_MATCH: {
-                m_valueComparator = m_propertyType->m_patternMatch;
+                m_valueComparator = propertyType->funPatternMatch;
                 break;
             }
             case MATCH_OPERATION_ALL: {
-                m_valueComparator = m_propertyType->m_any;
+                m_valueComparator = propertyType->funAny;
                 break;
             }
         }
     }
 
-    const LC_ComparingPropertyMatchTypeDescriptor<ConvertedPropertyValueType, MatchValueType>* m_propertyType;
+    const LC_ComparingPropertyMatchTypeDescriptor<ConvertedPropertyValueType, MatchValueType>* propertyType;
     FunValueAccessor m_valueAccessor;
     FunValueCompareOperation m_valueComparator;
 };

@@ -26,9 +26,9 @@
 #include "rs_leader.h"
 
 void LC_MatchDescriptorLeader::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
-    auto entity = new LC_TypedEntityMatchDescriptor<RS_Leader>(tr("Leader"), RS2::EntityDimLeader);
+    const auto entity = new LC_TypedEntityMatchDescriptor<RS_Leader>(tr("Leader"), RS2::EntityDimLeader);
     initCommonEntityAttributesProperties<RS_Leader>(entity);
-    entity->addBoolean("arrowhead", [](RS_Leader* e) {
+    entity->addBoolean("arrowhead", [](const RS_Leader* e) {
        return e->getData().arrowHead;
    }, tr("Arrow Head"), tr("Whether leader includes arrowhead"));
 

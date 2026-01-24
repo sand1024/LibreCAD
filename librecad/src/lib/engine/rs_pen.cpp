@@ -1,6 +1,6 @@
-#include <iostream>
 #include "rs_pen.h"
 
+#include <iostream>
 
 RS_Pen::RS_Pen() :
     RS_Pen(RS_Color{Qt::black}, RS2::WidthByLayer, RS2::LineByLayer)

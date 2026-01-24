@@ -26,69 +26,69 @@
 #include "rs_ellipse.h"
 
 void LC_MatchDescriptorEllipse::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
-    auto entity = new LC_TypedEntityMatchDescriptor<RS_Ellipse>(tr("Ellipse"), RS2::EntityEllipse);
+    const auto entity = new LC_TypedEntityMatchDescriptor<RS_Ellipse>(tr("Ellipse"), RS2::EntityEllipse);
     initCommonEntityAttributesProperties<RS_Ellipse>(entity);
-    entity->addVectorX("centerX", [](RS_Ellipse* e) {
+    entity->addVectorX("centerX", [](const RS_Ellipse* e) {
         return e->getCenter();
     }, tr("Center X"), tr("X coordinate for center point"));
 
-    entity->addVectorY("centerY", [](RS_Ellipse* e) {
+    entity->addVectorY("centerY", [](const RS_Ellipse* e) {
         return e->getCenter();
     }, tr("Center Y"), tr("Y coordinate for center point"));
 
-    entity->addLength("radiusMajor", [](RS_Ellipse* e) {
+    entity->addLength("radiusMajor", [](const RS_Ellipse* e) {
         return e->getMajorRadius();
     }, tr("Major Radius"), tr("Major radius of ellipse"));
 
-    entity->addLength("radiusMinor", [](RS_Ellipse* e) {
+    entity->addLength("radiusMinor", [](const RS_Ellipse* e) {
         return e->getMinorRadius();
     }, tr("Minor Radius"), tr("Minor radius of ellipse"));
 
-    entity->addLength("ratio", [](RS_Ellipse* e) {
+    entity->addLength("ratio", [](const RS_Ellipse* e) {
         return e->getRatio();
     }, tr("Ratio"), tr("Ratio of ellipse axes"));
 
-    entity->addAngle("angle", [](RS_Ellipse* e) {
+    entity->addAngle("angle", [](const RS_Ellipse* e) {
         return e->getAngle();
     }, tr("Angle"), tr("Angle of the ellipse major axis"));
 
-    entity->addLength("circumference", [](RS_Ellipse* e) {
+    entity->addLength("circumference", [](const RS_Ellipse* e) {
         return e->getLength();
     }, tr("Circumference"), tr("Circumference of the ellipse"));
 
-    entity->addLength("area", [](RS_Ellipse* e) {
+    entity->addLength("area", [](const RS_Ellipse* e) {
         return e->areaLineIntegral();
     }, tr("Area"), tr("Area"));
 
-    entity->addBoolean("isArc", [](RS_Ellipse* e) {
+    entity->addBoolean("isArc", [](const RS_Ellipse* e) {
         return e->isEllipticArc();
     }, tr("Is Arc"), tr("Whether ellipse is elliptic arc"));
 
-    entity->addVectorX("startX", [](RS_Ellipse* e) {
+    entity->addVectorX("startX", [](const RS_Ellipse* e) {
         return e->getStartpoint();
     }, tr("Arc Start X"), tr("X coordinate for start point"));
 
-    entity->addVectorY("startY", [](RS_Ellipse* e) {
+    entity->addVectorY("startY", [](const RS_Ellipse* e) {
         return e->getStartpoint();
     }, tr("Arc Start Y"), tr("Y coordinate for start point"));
 
-    entity->addVectorX("endX", [](RS_Ellipse* e) {
+    entity->addVectorX("endX", [](const RS_Ellipse* e) {
         return e->getEndpoint();
     }, tr("Arc End X"), tr("X coordinate for end point"));
 
-    entity->addVectorY("endY", [](RS_Ellipse* e) {
+    entity->addVectorY("endY", [](const RS_Ellipse* e) {
         return e->getEndpoint();
     }, tr("Arc End Y"), tr("Y coordinate for end point"));
 
-    entity->addAngle("angleLen", [](RS_Ellipse* e) {
+    entity->addAngle("angleLen", [](const RS_Ellipse* e) {
         return e->getAngleLength();
     }, tr("Arc Angle Length"), tr("Angle length for arc"));
 
-    entity->addAngle("angle1", [](RS_Ellipse* e) {
+    entity->addAngle("angle1", [](const RS_Ellipse* e) {
         return e->getAngle1();
     }, tr("Arc Start Angle"), tr("Start angle of arc"));
 
-    entity->addAngle("angle2", [](RS_Ellipse* e) {
+    entity->addAngle("angle2", [](const RS_Ellipse* e) {
         return e->getAngle2();
     }, tr("Arc End Angle"), tr("End angle of arc"));
 

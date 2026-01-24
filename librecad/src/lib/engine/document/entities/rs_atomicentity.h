@@ -44,7 +44,7 @@ public:
     /**
      * Constructor.
      */
-    RS_AtomicEntity(RS_EntityContainer* parent=nullptr);
+    explicit RS_AtomicEntity(RS_EntityContainer* parent=nullptr);
 
     /**
      * @return false because entities made from subclasses are
@@ -92,18 +92,7 @@ public:
 
     RS_Vector getCenter() const override;
     double getRadius() const override;
-/**
-   * return the nearest center for snapping
-   * @param coord Coordinate (typically a mouse coordinate)
-   * @param dist Pointer to a value which will contain the measured
-   * distance between 'coord' and the closest center point. The passed
-   * pointer can also be NULL in which case the distance will be
-   * lost.
-   *
-   * @return The closest center point.
-   */
-    RS_Vector getNearestCenter(const RS_Vector& /*coord*/,
-                               double* /*dist*/) const override;
+
 
     /**
      * (De-)selects startpoint.
@@ -132,7 +121,7 @@ public:
      * Implementation must create offset of the entity to
      * the given direction and distance
      */
-    bool offset(const RS_Vector& /*position*/, const double& /*distance*/) override {return false;};
+    bool offset(const RS_Vector& /*position*/, double /*distance*/) override {return false;}
 
     /**
      * Implementation must move the startpoint of the entity to
@@ -183,6 +172,18 @@ public:
     {
         return *this;
     }
+protected:
+    /**
+   * return the nearest center for snapping
+   * @param coord Coordinate (typically a mouse coordinate)
+   * @param dist Pointer to a value which will contain the measured
+   * distance between 'coord' and the closest center point. The passed
+   * pointer can also be NULL in which case the distance will be
+   * lost.
+   *
+   * @return The closest center point.
+   */
+    RS_Vector doGetNearestCenter(const RS_Vector& coord, double* dist) const override;
 };
 
 #endif

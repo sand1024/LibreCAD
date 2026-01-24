@@ -40,9 +40,9 @@ protected:
 
     RS_ActionSelectBase(const char *name,LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone, QList<RS2::EntityType> entityTypeList = {});
     RS2::CursorType doGetMouseCursor(int status) override;
-    virtual bool isEntityAllowedToSelect([[maybe_unused]]RS_Entity *ent) const { return true; };
+    virtual bool isEntityAllowedToSelect([[maybe_unused]]RS_Entity *ent) const { return true; }
     bool selectEntity(RS_Entity* entityToSelect, bool selectContour) const;
-    RS_Entity *selectionMouseMove(LC_MouseEvent *event);
+    RS_Entity *selectionMouseMove(const LC_MouseEvent *event);
     virtual void selectionFinishedByKey(QKeyEvent *e, bool escape) = 0;
     virtual bool isShowRefPointsOnHighlight();
     void deselectAll() const;

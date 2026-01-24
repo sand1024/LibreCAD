@@ -47,18 +47,18 @@ public:
     LC_Crosshair(const RS_Vector &coord, int shapeType, int linesType, const RS_Pen& linesPen,int pointSize,
                  int pointType);
     void draw(RS_Painter *painter) override;
-    void setLinesPen(const RS_Pen &linesPen);
-    void setPointType(int pointType);
-    void setPointSize(int pointSize);
-    void setShapesPen(RS_Pen &p) {shapePen = p;}
+    void setLinesPen(const RS_Pen &pen);
+    void setPointType(int type);
+    void setPointSize(int size);
+    void setShapesPen(const RS_Pen &p) {m_shapePen = p;}
 protected:
-    int linesShape;
-    int indicatorShape;
-    RS_Pen linesPen;
-    RS_Pen shapePen;
-    int pointType;
-    int pointSize;
-    RS_Vector wcsPos;
+    int m_linesShape;
+    int m_indicatorShape;
+    RS_Pen m_linesPen;
+    RS_Pen m_shapePen;
+    int m_pointType;
+    int m_pointSize;
+    RS_Vector m_wcsPos;
 
     double drawIndicator(RS_Painter *painter, const RS_Vector& uiPos) const;
 
@@ -67,4 +67,4 @@ protected:
         const RS_Vector &p4) const;
 };
 
-#endif // LC_CROSSHAIR_H
+#endif

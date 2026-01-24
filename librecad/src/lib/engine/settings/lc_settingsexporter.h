@@ -33,4 +33,4 @@ protected:
    bool obtainFileName(QWidget *parent, QString &fileName, bool forRead);
 };
 
-#endif // LC_SETTINGSEXPORTER_H
+#endif

@@ -37,7 +37,7 @@ class LC_Formatter{
 public:
     explicit LC_Formatter(LC_GraphicViewport* viewport): m_viewport{viewport} {}
     virtual ~LC_Formatter() = default;
-    RS2::Unit getUnit() {return m_unit;}
+    RS2::Unit getUnit() const {return m_unit;}
     QString formatWCSVector(const RS_Vector &wcsPos) const;
     QString formatUCSVector(const RS_Vector &ucsPos) const;
     QString formatWCSDeltaVector(const RS_Vector &wcsDelta) const;
@@ -47,18 +47,18 @@ public:
     QString formatRawAngle(double angle) const;
     QString formatRawAngle(double angle, RS2::AngleFormat format) const;
     QString formatLinear(double length) const;
-    QString formatDouble(const double &x) const;
-    QString formatInt(const int &x) const;
-    void updateByGraphic(RS_Graphic* graphic);
+    QString formatDouble(double x) const;
+    QString formatInt(int x) const;
+    void updateByGraphic(const RS_Graphic* graphic);
     double toUCSBasisAngleDegrees(double wcsAngle) const;
     double toWorldAngleFromUCSBasisDegrees(double ucsBasisAngleDegrees) const;
     double toWorldAngleFromUCSBasis(double ucsBasisAngle) const;
     double toUCSBasisAngle(double wcsAngle) const;
-    double toUCSBasisAngleFromUCS(double ucsAbsAngle);
-    double toUCSAbsAngleFromUCSBasis(double ucsBasisAngle);
+    double toUCSBasisAngleFromUCS(double ucsAbsAngle) const;
+    double toUCSAbsAngleFromUCSBasis(double ucsBasisAngle) const;
     double adjustRelativeAngleSignByBasis(double relativeAngle) const;
     bool hasNonDefaultAnglesBasis() const;
-    QString linearUnitAsString();
+    QString linearUnitAsString() const;
     double getAnglesBase() const;
     bool isAnglesCounterClockWise() const;
 

@@ -23,8 +23,9 @@
 **
 **********************************************************************/
 
-#include "lc_graphicviewport.h"
 #include "lc_undosection.h"
+
+#include "lc_graphicviewport.h"
 #include "rs_document.h"
 #include "rs_graphic.h"
 #include "rs_insert.h"
@@ -33,7 +34,7 @@
 LC_UndoSection::LC_UndoSection(RS_Document *doc, LC_GraphicViewport* view) :
     m_document( doc),
     m_viewport(view){
-    Q_ASSERT(nullptr != doc && nullptr != view);
+    Q_ASSERT(doc != nullptr && view != nullptr);
     m_document->startUndoCycle();
 }
 
@@ -66,25 +67,25 @@ void LC_UndoSection::undoableReplace(RS_Entity* entityToDelete, RS_Entity* entit
      m_document->undoableAdd(entityToAdd);
 }
 
-bool LC_UndoSection::undoableExecute(RS_Document::FunUndoable doUndoable) {
+bool LC_UndoSection::undoableExecute(const RS_Document::FunUndoable& doUndoable) const {
     return undoableExecute(doUndoable, []([[maybe_unused]]LC_DocumentModificationBatch&ctx, [[maybe_unused]]RS_Document* doc){});
 }
 
-bool LC_UndoSection::undoableExecute(RS_Document::FunUndoable doUndoable, RS_Document::FunSelection doSelection) {
+bool LC_UndoSection::undoableExecute(const RS_Document::FunUndoable& doUndoable, const RS_Document::FunSelection& doSelection) const {
     LC_DocumentModificationBatch ctx;
-    bool success = doUndoable(ctx);
+    const bool success = doUndoable(ctx);
     ctx.success = success;
     if (success) {
         if (!ctx.entitiesToDelete.isEmpty()) {
             for (const auto e: ctx.entitiesToDelete) {
-                auto layer = e->getLayer(true);
+                const auto layer = e->getLayer(true);
                 if (!layer->isLocked()) {
                       m_document->undoableDelete(e);
                 }
             }
         }
         if (!ctx.entitiesToAdd.isEmpty()) {
-            setupAndUndoableAdd(ctx.entitiesToAdd, ctx.m_setActiveLayer, ctx.m_setActivePen);
+            setupAndUndoableAdd(ctx.entitiesToAdd, ctx.setActiveLayer, ctx.setActivePen);
         }
     }
     doSelection(ctx, m_document);
@@ -92,11 +93,11 @@ bool LC_UndoSection::undoableExecute(RS_Document::FunUndoable doUndoable, RS_Doc
     return success;
 }
 
-void LC_UndoSection::setupAndUndoableAdd(const QList<RS_Entity*>& entitiesToInsert, bool setActiveLayer, bool setActivePen) const {
-    auto graphic = m_document->getGraphic();
+void LC_UndoSection::setupAndUndoableAdd(const QList<RS_Entity*>& entitiesToInsert, const bool setActiveLayer, const bool setActivePen) const {
+    const auto graphic = m_document->getGraphic();
     RS_Layer *activeLayer = setActiveLayer ? graphic->getActiveLayer() : nullptr;
-    RS_Pen activePen      = setActivePen ? graphic->getActivePen() : RS_Pen();
-    for (auto ent: entitiesToInsert) {
+    const RS_Pen activePen      = setActivePen ? graphic->getActivePen() : RS_Pen();
+    for (const auto ent: entitiesToInsert) {
         undoableAdd(ent);
         if (setActiveLayer) {
             ent->setLayer(activeLayer);
@@ -104,7 +105,7 @@ void LC_UndoSection::setupAndUndoableAdd(const QList<RS_Entity*>& entitiesToInse
         if (setActivePen){
             ent->setPen(activePen);
         }
-        auto rtti = ent->rtti();
+        const auto rtti = ent->rtti();
         if (rtti == RS2::EntityInsert || RS2::isDimensionalEntity(rtti) ||
             RS2::isTextEntity(rtti) || rtti == RS2::EntityHatch || rtti == RS2::EntityImage) { // fixme - spline
             ent->update();

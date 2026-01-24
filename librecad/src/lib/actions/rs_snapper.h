@@ -29,6 +29,7 @@
 #define RS_SNAPPER_H
 
 #include <QObject>
+
 #include "rs.h"
 
 struct LC_InfoCursorData;
@@ -93,9 +94,9 @@ struct RS_SnapMode {
       *
       * @returns A reference to itself.
       */
-    RS_SnapMode const & clear(void);
-    bool operator == (RS_SnapMode const& rhs) const;
-    bool operator != (RS_SnapMode const& rhs) const;
+    const RS_SnapMode& clear();
+    bool operator == (const RS_SnapMode& rhs) const;
+    bool operator != (const RS_SnapMode& rhs) const;
 
     static unsigned toInt(const RS_SnapMode& s);    //< convert to int, to save settings
     static RS_SnapMode fromInt(unsigned int);   //< convert from int, to restore settings
@@ -116,13 +117,13 @@ using EntityTypeList = QList<RS2::EntityType>;
 class RS_Snapper: public QObject{
     Q_OBJECT
 public:
-    explicit RS_Snapper(LC_ActionContext *actionContext);
+    explicit RS_Snapper(LC_ActionContext *actionContext, QObject* parent = nullptr);
     ~RS_Snapper() override;
     void init();
 //!
 //! \brief finish stop using snapper
 //!
-    void finish();
+    virtual void finish();
 
     /**
      * @return Pointer to the entity which was the key entity for the
@@ -137,10 +138,11 @@ public:
 
     /** Sets a new snap mode. */
     void setSnapMode(const RS_SnapMode &snapMode);
-    RS_SnapMode const *getSnapMode() const;
+    const RS_SnapMode*getSnapMode() const;
     RS_SnapMode *getSnapMode();
 
     /** Sets a new snap restriction. */
+    [[deprecated]]
     void setSnapRestriction(RS2::SnapRestriction /*snapRes*/){
         //this->snapRes = snapRes;
     }
@@ -150,15 +152,15 @@ public:
      *
      * @see catchEntity()
      */
-    void setSnapRange(int r){
+    void setSnapRange(const int r){
         m_catchEntityGuiRange = r;
     }
 
     /**manually set snapPoint*/
     bool isSnapToGrid() const;
     RS_Vector snapPoint(const RS_Vector &coord, bool setSpot = false);
-    RS_Vector snapPoint(QMouseEvent *e);
-    RS_Vector snapFree(QMouseEvent *e) const;
+    RS_Vector snapPoint(const QMouseEvent *e);
+    RS_Vector snapFree(const QMouseEvent *e) const;
     RS_Vector snapFree(const RS_Vector &coord);
     RS_Vector snapGrid(const RS_Vector &coord) const;
     RS_Vector snapEndpoint(const RS_Vector &coord) const;
@@ -167,8 +169,8 @@ public:
     RS_Vector snapMiddle(const RS_Vector &coord) const;
     RS_Vector snapDist(const RS_Vector &coord) const;
     RS_Vector snapIntersection(const RS_Vector &coord) const;
-    RS_Vector snapToAngle(const RS_Vector &coord, const RS_Vector &ref_coord, const double ang_res = 15.);
-    RS_Vector snapToRelativeAngle(double baseAngle, const RS_Vector &currentCoord, const RS_Vector &referenceCoord, const double angularResolution = 15.);
+    RS_Vector snapToAngle(const RS_Vector &currentCoord, const RS_Vector &referenceCoord, double angularResolution = 15.);
+    RS_Vector snapToRelativeAngle(double baseAngle, const RS_Vector &currentCoord, const RS_Vector &referenceCoord, double angularResolution = 15.);
     RS_Vector restrictOrthogonal(const RS_Vector &coord) const;
     RS_Vector restrictHorizontal(const RS_Vector &coord) const;
     RS_Vector restrictVertical(const RS_Vector &coord) const;
@@ -178,22 +180,19 @@ public:
     RS_Entity *catchEntity(
         const RS_Vector &pos,
         RS2::ResolveLevel level = RS2::ResolveNone) const;
-    RS_Entity *catchEntity(
-        QMouseEvent *e,
-        RS2::ResolveLevel level = RS2::ResolveNone);
+    RS_Entity *catchEntity(const QMouseEvent *e,
+        RS2::ResolveLevel level = RS2::ResolveNone) const;
     // catch Entity closest to pos and of the given entity type of enType, only search for a particular entity type
     RS_Entity *catchEntity(
         const RS_Vector &pos, RS2::EntityType enType,
         RS2::ResolveLevel level = RS2::ResolveNone) const;
-    RS_Entity *catchEntity(
-        QMouseEvent *e, RS2::EntityType enType,
-        RS2::ResolveLevel level = RS2::ResolveNone);
-    RS_Entity *catchEntity(
-        QMouseEvent *e, const EntityTypeList &enTypeList,
-        RS2::ResolveLevel level = RS2::ResolveNone);
+    RS_Entity *catchEntity(const QMouseEvent *e, RS2::EntityType enType,
+        RS2::ResolveLevel level = RS2::ResolveNone) const;
+    RS_Entity *catchEntity(const QMouseEvent *e, const EntityTypeList &enTypeList,
+        RS2::ResolveLevel level = RS2::ResolveNone) const;
     RS_Entity * catchEntity(
         const RS_Vector &pos, const EntityTypeList &enTypeList,
-        RS2::ResolveLevel level = RS2::ResolveNone);
+        RS2::ResolveLevel level = RS2::ResolveNone) const;
     /**
      * Suspends this snapper while another action takes place.
      */
@@ -226,7 +225,7 @@ protected:
      * Snap distance for snapping to points with a
      * given distance from endpoints.
      */
-    double m_SnapDistance = 1.;
+    double m_snapDistance = 1.;
     /**
      * Snap to equidistant middle points
      * default to 1, i.e., equidistant to start/end points
@@ -245,17 +244,17 @@ protected:
     bool m_ignoreSnapToGridIfNoGrid = false;
 
     RS_Vector toGraph(const QMouseEvent *e) const;
-    void updateCoordinateWidget(const RS_Vector& abs, const RS_Vector& rel);
-    void updateCoordinateWidgetByRelZero(const RS_Vector& abs);
+    void updateCoordinateWidget(const RS_Vector& abs, const RS_Vector& rel) const;
+    void updateCoordinateWidgetByRelZero(const RS_Vector& abs) const;
     void updateCoordinateWidgetFormat() const;
     void invalidateSnapSpot() const;
     QString getSnapName(int snapType);
     QString getRestrictionName(int restriction);
-    void preparePositionsInfoCursorOverlay(const RS_Vector &abs, const RS_Vector &relative);
+    void preparePositionsInfoCursorOverlay(const RS_Vector &abs, const RS_Vector &relative) const;
     LC_OverlayInfoCursor* obtainInfoCursor() const;
     LC_InfoCursorOverlayPrefs* getInfoCursorOverlayPrefs() const;
 
-    RS_Vector doSnapToAngle(const RS_Vector &currentCoord, const RS_Vector &referenceCoord, const double angularResolution);
+    RS_Vector doSnapToAngle(const RS_Vector &currentCoord, const RS_Vector &referenceCoord, double angularResolution);
 
     QString formatLinear(double value) const;
     QString formatWCSAngle(double wcsAngle) const;
@@ -276,11 +275,11 @@ protected:
     double ucsBasisToAbsAngle(double ucsRelAngle) const;
     double adjustRelativeAngleSignByBasis(double relativeAngle) const;
     double toWorldAngleFromUCSBasisDegrees(double ucsBasisAngleDegrees) const;
-    double toWorldAngleFromUCSBasis(double ucBasisAngle) const;
+    double toWorldAngleFromUCSBasis(double ucsBasisAngle) const;
     RS_Vector toWorld(const RS_Vector& ucsPos) const;
     RS_Vector toWorldDelta(const RS_Vector &ucsDelta) const;
     RS_Vector toUCS(const RS_Vector& worldPos) const;
-    RS_Vector toUCSDelta(const RS_Vector& worldPos) const;
+    RS_Vector toUCSDelta(const RS_Vector& worldDelta) const;
     void calcRectCorners(const RS_Vector &worldCorner1, const RS_Vector &worldCorner3, RS_Vector &worldCorner2, RS_Vector &worldCorner4) const;
     double getCatchDistance(double catchDistance, int catchEntityGuiRange) const;
     double toGuiDX(double wcsDX) const;
@@ -290,13 +289,13 @@ protected:
     void redrawAll() const;
     void enableCoordinateInput() const;
     void disableCoordinateInput() const;
-    RS_Vector const &getRelativeZero() const;
+    const RS_Vector&getRelativeZero() const;
     void initSettings();
     virtual void initFromSettings();
     virtual void initFromGraphic(RS_Graphic* graphic);
 private:
     struct ImpData;
-    std::unique_ptr<ImpData> pImpData;
+    std::unique_ptr<ImpData> m_impData;
     struct Indicator;
     std::unique_ptr<Indicator> m_snapIndicator;
 };

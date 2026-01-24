@@ -27,13 +27,14 @@
 #ifndef RS_ACTIONINTERFACE_H
 #define RS_ACTIONINTERFACE_H
 
+#include <rs_math.h>
+
 #include "lc_actioncontext.h"
 #include "lc_latecompletionrequestor.h"
 #include "lc_modifiersinfo.h"
 #include "rs.h"
 #include "rs_document.h"
 #include "rs_entity.h"
-#include "rs_math.h"
 #include "rs_snapper.h"
 
 class RS_Undoable;
@@ -50,9 +51,6 @@ class QAction;
 class QString;
 class LC_ActionOptionsWidget; // todo - think about depencency - options in in ui, while this action in lib... quite artificial separation, actually
 
-namespace{
-   const double DEFAULT_SNAP_ANGLE_STEP =  RS_Math::deg2rad(15.0);
-}
 
 /**
  * This is the interface that must be implemented for all
@@ -74,7 +72,7 @@ public:
     };
     virtual RS2::ActionType rtti() const;
     virtual bool isSupportsPredecessorAction(){return false;}
-    void setName(const char* _name);
+    void setName(const char* name);
     QString getName();
     virtual void init(int status);
     virtual void mouseMoveEvent(QMouseEvent*);
@@ -90,7 +88,7 @@ public:
     virtual void trigger();
     virtual bool isFinished() const;
     virtual void setFinished();
-    virtual void finish(bool updateTB = true );
+    void finish() override;
     virtual void setPredecessor(std::shared_ptr<RS_ActionInterface> pre);
     std::shared_ptr<RS_ActionInterface> getPredecessor() const;
 
@@ -137,7 +135,7 @@ protected:
     std::shared_ptr<RS_ActionInterface> m_predecessor = nullptr; // fixme - sand - review!!!
     RS2::ActionType m_actionType = RS2::ActionNone;
     std::unique_ptr<LC_ActionOptionsWidget> m_optionWidget;
-    double m_snapToAngleStep = DEFAULT_SNAP_ANGLE_STEP;
+    double m_snapToAngleStep;
 
     virtual bool mayInitWithContextEntity(int status);
     virtual void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos);
@@ -155,7 +153,7 @@ protected:
 
     virtual RS2::CursorType doGetMouseCursor(int status);
     void updateMouseCursor();
-    void setMouseCursor(const RS2::CursorType &cursor) const;
+    void setMouseCursor(RS2::CursorType cursor) const;
 
     virtual void updateMouseButtonHints();
 
@@ -175,12 +173,13 @@ protected:
     virtual void onMouseRightButtonPress(int status, QMouseEvent * e);
 
     void updateSnapAngleStep();
+
     /**
- * Method should be overridden in inherited actions to process command. Should return true if command event should be accepted.
- * @param status status
- * @param c command
- * @return true if event should be accepted, false otherwise
- */
+    * Method should be overridden in inherited actions to process command. Should return true if command event should be accepted.
+    * @param status status
+    * @param command command
+    * @return true if event should be accepted, false otherwise
+    */
     virtual bool doProcessCommand([[maybe_unused]]int status, const QString &command);
 
     bool checkCommand(const QString& cmd, const QString& str,
@@ -202,14 +201,13 @@ protected:
 
     void setPenAndLayerToActive(RS_Entity* e);
     void select(RS_Entity* e) const;
-    void select(QList<RS_Entity*> e) const;
-    void unselect(QList<RS_Entity*> list) const;
+    void select(const QList<RS_Entity*>& entitiesList) const;
+    void unselect(const QList<RS_Entity*>& entitiesList) const;
     void unselectAll() const;
     void unselect(RS_Entity* e) const {m_document->unselect(e);}
 
     virtual bool doUpdateAngleByInteractiveInput([[maybe_unused]]const QString& tag,[[maybe_unused]] double angleRad) {return false;}
     virtual bool doUpdateDistanceByInteractiveInput([[maybe_unused]]const QString& tag, [[maybe_unused]]double distance) {return false;}
     virtual bool doUpdatePointByInteractiveInput([[maybe_unused]]const QString& tag, [[maybe_unused]]RS_Vector &point) {return false;}
-
 };
 #endif

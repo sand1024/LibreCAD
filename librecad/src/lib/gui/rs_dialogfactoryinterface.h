@@ -24,7 +24,6 @@
 **
 **********************************************************************/
 
-
 #ifndef RS_DIALOGFACTORYINTERFACE_H
 #define RS_DIALOGFACTORYINTERFACE_H
 #include "rs_block.h"
@@ -68,27 +67,27 @@ struct RS_RotateData;
 struct RS_RoundData;
 struct RS_ScaleData;
 
-
 /**
  * Interface for objects that can create and show dialogs.
  */
 class RS_DialogFactoryInterface {
 public:
-	virtual ~RS_DialogFactoryInterface() = default;
+    virtual ~RS_DialogFactoryInterface() = default;
 
     /**
      * This virtual method must be overwritten and must provide
      * a message dialog.
      */
-    virtual void requestWarningDialog([[maybe_unused]]const QString& warning) {};
+    virtual void requestWarningDialog([[maybe_unused]] const QString& warning) {
+    }
 
-        /**
-         * This virtual method must be overwritten and must create a new
-         * window for the given document or for a new document isf no document
-         * is given.
-         */
-//    virtual RS_GraphicView* requestNewDocument(const QString& fileName = QString(),
-//                        RS_Document* doc=NULL) = 0;
+    /**
+     * This virtual method must be overwritten and must create a new
+     * window for the given document or for a new document isf no document
+     * is given.
+     */
+    //    virtual RS_GraphicView* requestNewDocument(const QString& fileName = QString(),
+    //                        RS_Document* doc=NULL) = 0;
 
     /**
      * This virtual method must be overwritten and must provide
@@ -100,7 +99,9 @@ public:
      *         to the newly created layer or NULL if the user
      *         cancels the dialog.
      */
-    virtual RS_Layer* requestNewLayerDialog([[maybe_unused]]RS_LayerList* layerList = nullptr) {return nullptr;};
+    virtual RS_Layer* requestNewLayerDialog([[maybe_unused]] RS_LayerList* layerList = nullptr) {
+        return nullptr;
+    }
 
     /**
      * This virtual method must be overwritten and must provide
@@ -112,7 +113,9 @@ public:
      *         to the layer which can ne removed or NULL if the user
      *         cancels the dialog.
      */
-    virtual RS_Layer* requestLayerRemovalDialog([[maybe_unused]]RS_LayerList* layerList = nullptr) { return nullptr;};
+    virtual RS_Layer* requestLayerRemovalDialog([[maybe_unused]] RS_LayerList* layerList = nullptr) {
+        return nullptr;
+    }
 
     /**
      * This virtual method must be overwritten and must provide
@@ -124,7 +127,9 @@ public:
      *         of selected layers names to be removed, or empty
      *         list if the user cancels the dialog.
      */
-    virtual QStringList requestSelectedLayersRemovalDialog([[maybe_unused]]RS_LayerList* layerList = nullptr) {return QStringList();};
+    virtual QStringList requestSelectedLayersRemovalDialog([[maybe_unused]] RS_LayerList* layerList = nullptr) {
+        return QStringList();
+    }
 
     /**
      * This virtual method must be overwritten and must provide
@@ -135,7 +140,9 @@ public:
      *         to the modified layer or NULL if the user
      *         cancels the dialog.
      */
-    virtual RS_Layer* requestEditLayerDialog([[maybe_unused]]RS_LayerList* layerList = nullptr) { return nullptr;};
+    virtual RS_Layer* requestEditLayerDialog([[maybe_unused]] RS_LayerList* layerList = nullptr) {
+        return nullptr;
+    }
 
     /**
      * This virtual method must be overwritten and must provide
@@ -143,14 +150,15 @@ public:
      * created. The method must create the new block but not add
      * it to the block list. The latter is up to the caller.
     *
-    * @param block Pointer to the newly created block with default
-    *              attributes.
+    * @param blockList
      *
      * @return The implementation is expected to return a pointer
      *         to the newly created block or NULL if the user
      *         cancels the dialog.
      */
-    virtual RS_BlockData requestNewBlockDialog([[maybe_unused]]RS_BlockList* blockList) { return RS_BlockData();};
+    virtual RS_BlockData requestNewBlockDialog([[maybe_unused]] RS_BlockList* blockList) {
+        return RS_BlockData();
+    }
 
     /**
      * This virtual method must be overwritten and must provide
@@ -162,7 +170,9 @@ public:
      *         to the block which can be removed or NULL if the user
      *         cancels the dialog.
      */
-    virtual RS_Block* requestBlockRemovalDialog([[maybe_unused]]RS_BlockList* blockList) { return nullptr;};
+    virtual RS_Block* requestBlockRemovalDialog([[maybe_unused]] RS_BlockList* blockList) {
+        return nullptr;
+    }
 
     /**
      * This virtual method must be overwritten and must provide
@@ -174,7 +184,9 @@ public:
      *         of selected blocks to be removed, or empty
      *         list if the user cancels the dialog.
      */
-    virtual QList<RS_Block*> requestSelectedBlocksRemovalDialog([[maybe_unused]]RS_BlockList* blockList = nullptr) { return QList<RS_Block*>(); };
+    virtual QList<RS_Block*> requestSelectedBlocksRemovalDialog([[maybe_unused]] RS_BlockList* blockList = nullptr) {
+        return QList<RS_Block*>();
+    }
 
     /**
      * This virtual method must be overwritten and must provide
@@ -185,10 +197,12 @@ public:
      *         to the block which was changed or NULL if the user
      *         cancels the dialog.
      */
-    virtual RS_BlockData requestBlockAttributesDialog([[maybe_unused]]RS_BlockList* blockList) { return RS_BlockData();};
+    virtual RS_BlockData requestBlockAttributesDialog([[maybe_unused]] RS_BlockList* blockList) {
+        return RS_BlockData();
+    }
 
-
-    virtual void closeEditBlockWindow([[maybe_unused]]RS_Block* block) {};
+    virtual void closeEditBlockWindow([[maybe_unused]] RS_Block* block) {
+    }
 
     /**
      * This virtual method must be overwritten and must provide
@@ -221,77 +235,98 @@ public:
      *         which contains the file name or an empty string if
      *         the user cancels the dialog.
      */
-    virtual QString requestImageOpenDialog() { return "";};
+    virtual QString requestImageOpenDialog() {
+        return "";
+    }
 
-    
     /**
      * This virtual method must be overwritten and must present
      * a widget for entity attributes.
      *
      * @param data Attribute data which can be directly changed
      *             by the presented widget.
+     * @param layerList
      */
-    virtual bool requestAttributesDialog([[maybe_unused]]RS_AttributesData& data,[[maybe_unused]]RS_LayerList& layerList) {return false;};
+    virtual bool requestAttributesDialog([[maybe_unused]] RS_AttributesData& data, [[maybe_unused]] RS_LayerList& layerList) {
+        return false;
+    }
 
     /**
      * This virtual method must be overwritten and must present
      * a dialog to edit the given entity.
      *
      * @param entity Pointer to the entity.
+     * @param viewport
      */
-    virtual bool requestModifyEntityDialog([[maybe_unused]]RS_Entity *entity, [[maybe_unused]]LC_GraphicViewport *viewport) {return false;};
+    virtual bool requestModifyEntityDialog([[maybe_unused]] RS_Entity* entity, [[maybe_unused]] LC_GraphicViewport* viewport) {
+        return false;
+    }
 
     /**
      * This virtual method must be overwritten and must present
      * a dialog to edit multi-line text entity attributes.
      *
-     * @param entity Pointer to the mtext entity.
+     * @param text  Pointer to the mtext entity.
+     * @param viewport
      */
-    virtual bool requestMTextDialog([[maybe_unused]]RS_MText *text, [[maybe_unused]]LC_GraphicViewport *viewport) { return false;};
+    virtual bool requestMTextDialog([[maybe_unused]] RS_MText* text, [[maybe_unused]] LC_GraphicViewport* viewport) {
+        return false;
+    }
 
     /**
      * This virtual method must be overwritten and must present
      * a dialog to edit text entity attributes.
      *
-     * @param entity Pointer to the text entity.
+     * @param text Pointer to the text entity.
+     * @param viewport
      */
-    virtual bool requestTextDialog([[maybe_unused]]RS_Text *text, [[maybe_unused]]LC_GraphicViewport *viewport) { return false;};
+    virtual bool requestTextDialog([[maybe_unused]] RS_Text* text, [[maybe_unused]] LC_GraphicViewport* viewport) {
+        return false;
+    }
 
     /**
      * This virtual method must be overwritten and must present
      * a dialog to select pattern attributes.
      *
-     * @param entity Pointer to the hatch entity.
+     * @param hatch Pointer to the hatch entity.
+     * @param viewport
      */
-    virtual bool requestHatchDialog([[maybe_unused]]RS_Hatch *hatch, [[maybe_unused]]LC_GraphicViewport *viewport) { return false;};
-
+    virtual bool requestHatchDialog([[maybe_unused]] RS_Hatch* hatch, [[maybe_unused]] LC_GraphicViewport* viewport) {
+        return false;
+    }
 
     /**
      * This virtual method must be overwritten and must present
      * a dialog for drawing options.
          *
          * @param graphic Graphic document.
+         * @param tabIndex
      */
-    virtual int requestOptionsDrawingDialog([[maybe_unused]]RS_Graphic& graphic, [[maybe_unused]]int tabIndex = -1) { return 0;};
+    virtual int requestOptionsDrawingDialog([[maybe_unused]] RS_Graphic& graphic, [[maybe_unused]] int tabIndex = -1) {
+        return 0;
+    }
 
     /**
      * This virtual method must be overwritten and must present
      * a dialog for options how to export as MakeCAM SVG.
      */
-    virtual bool requestOptionsMakerCamDialog()  {return false;};
+    virtual bool requestOptionsMakerCamDialog() {
+        return false;
+    }
 
     /**
      * This virtual method must be overwritten and must present
      * a dialog for saving a file.
      */
-    virtual QString requestFileSaveAsDialog([[maybe_unused]]const QString& caption = QString(),
-                                            [[maybe_unused]]const QString& dir = QString(),
-                                            [[maybe_unused]]const QString& filter = QString(),
-                                            [[maybe_unused]]QString* selectedFilter = nullptr) { return "";};
+    virtual QString requestFileSaveAsDialog([[maybe_unused]] const QString& caption = QString(),
+                                            [[maybe_unused]] const QString& dir = QString(),
+                                            [[maybe_unused]] const QString& filter = QString(),
+                                            [[maybe_unused]] QString* selectedFilter = nullptr) {
+        return "";
+    }
 
-
-    [[deprecated]]
-    virtual void displayBlockName([[maybe_unused]]const QString& blockName, [[maybe_unused]]const bool& display){};
+    [[deprecated]] virtual void displayBlockName([[maybe_unused]] const QString& blockName, [[maybe_unused]] const bool display) {
+    }
 
     /**
      * This virtual method must be overwritten if the graphic view has
@@ -302,12 +337,14 @@ public:
      *
      * @param message The message for the user.
      */
-    virtual void commandMessage([[maybe_unused]]const QString& message) {};
-    virtual void command([[maybe_unused]]const QString& message) {};
-    virtual void commandPrompt([[maybe_unused]]const QString& message) {};
+    virtual void commandMessage([[maybe_unused]] const QString& message) {
+    }
 
+    virtual void command([[maybe_unused]] const QString& message) {
+    }
+
+    virtual void commandPrompt([[maybe_unused]] const QString& message) {
+    }
 };
-
-
 
 #endif

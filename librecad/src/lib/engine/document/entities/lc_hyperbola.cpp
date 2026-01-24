@@ -29,28 +29,14 @@
 #include "lc_quadratic.h"
 #include "rs_debug.h"
 
-LC_HyperbolaData::LC_HyperbolaData(const RS_Vector& _center,
-			   const RS_Vector& _majorP,
-			   double _ratio,
-			   double _angle1, double _angle2,
-			   bool _reversed):
-	center(_center)
-	,majorP(_majorP)
-	,ratio(_ratio)
-	,angle1(_angle1)
-	,angle2(_angle2)
-	,reversed(_reversed)
-{
+LC_HyperbolaData::LC_HyperbolaData(const RS_Vector& center, const RS_Vector& majorP, const double ratio, const double angle1,
+                                   const double angle2, const bool reversed) : center(center), majorP(majorP), ratio(ratio),
+                                                                                 angle1(angle1), angle2(angle2), reversed(reversed) {
 }
 
-std::ostream& operator << (std::ostream& os, const LC_HyperbolaData& ed) {
-	os << "(" << ed.center <<
-	   "/" << ed.majorP <<
-	   " " << ed.ratio <<
-	   " " << ed.angle1 <<
-	   "," << ed.angle2 <<
-	   ")";
-	return os;
+std::ostream& operator <<(std::ostream& os, const LC_HyperbolaData& ed) {
+    os << "(" << ed.center << "/" << ed.majorP << " " << ed.ratio << " " << ed.angle1 << "," << ed.angle2 << ")";
+    return os;
 }
 
 #ifdef EMU_C99
@@ -60,71 +46,71 @@ std::ostream& operator << (std::ostream& os, const LC_HyperbolaData& ed) {
 /**
  * Constructor.
  */
-LC_Hyperbola::LC_Hyperbola(RS_EntityContainer* parent,
-                       const LC_HyperbolaData& d)
-    :RS_AtomicEntity(parent)
-    ,data(d)
-    ,m_bValid(true)
-{
-    if(data.majorP.squared()<RS_TOLERANCE2) {
-        m_bValid=false;
+LC_Hyperbola::LC_Hyperbola(RS_EntityContainer* parent, const LC_HyperbolaData& d)
+    : RS_AtomicEntity(parent), data(d), m_bValid(true) {
+    if (data.majorP.squared() < RS_TOLERANCE2) {
+        m_bValid = false;
         return;
     }
     //calculateEndpoints();
-    calculateBorders();
+    LC_Hyperbola::calculateBorders();
 }
 
 /** create data based on foci and a point on hyperbola */
-LC_HyperbolaData::LC_HyperbolaData(const RS_Vector& focus0,
-                 const RS_Vector& focus1,
-                 const RS_Vector& point):
-    center((focus0+focus1)*0.5)
-{
-    double ds0=focus0.distanceTo(point);
+LC_HyperbolaData::LC_HyperbolaData(const RS_Vector& focus0, const RS_Vector& focus1, const RS_Vector& point) : center(
+    (focus0 + focus1) * 0.5) {
+    double ds0 = focus0.distanceTo(point);
     ds0 -= focus1.distanceTo(point);
 
-    majorP= (ds0>0.)?focus0-center:focus1-center;
-    double dc=focus0.distanceTo(focus1);
-    double dd=fabs(ds0);
+    majorP = (ds0 > 0.) ? focus0 - center : focus1 - center;
+    const double dc = focus0.distanceTo(focus1);
+    const double dd = fabs(ds0);
     //no hyperbola for middle equidistant
-    if(dc<RS_TOLERANCE||dd<RS_TOLERANCE) {
-        majorP.set(0.,0.);
+    if (dc < RS_TOLERANCE || dd < RS_TOLERANCE) {
+        majorP.set(0., 0.);
         return;
     }
-    ratio= dc/dd;
+    ratio = dc / dd;
     majorP /= ratio;
-    ratio=sqrt(ratio*ratio - 1.);
+    ratio = sqrt(ratio * ratio - 1.);
 }
 
 /**
  * @author {Dongxu Li}
  */
-bool LC_Hyperbola::createFromQuadratic(const LC_Quadratic& q)
-{
-    if (!q.isQuadratic()) return false;
-    auto  const& mQ=q.getQuad();
-    double const& a=mQ(0,0);
-    double const& c=2.*mQ(0,1);
-    double const& b=mQ(1,1);
-    auto  const& mL=q.getLinear();
-    double const& d=mL(0);
-    double const& e=mL(1);
-    double determinant=c*c-4.*a*b;
-    if(determinant <= RS_TOLERANCE2) return false;
+bool LC_Hyperbola::createFromQuadratic(const LC_Quadratic& q) {
+    if (!q.isQuadratic()) {
+        return false;
+    }
+    const auto& mQ = q.getQuad();
+    const double& a = mQ(0, 0);
+    const double& c = 2. * mQ(0, 1);
+    const double& b = mQ(1, 1);
+    const auto& mL = q.getLinear();
+    const double& d = mL(0);
+    const double& e = mL(1);
+    const double determinant = c * c - 4. * a * b;
+    if (determinant <= RS_TOLERANCE2) {
+        return false;
+    }
     // find center of quadratic
     // 2 A x + C y = D
     // C x   + 2 B y = E
     // x = (2BD - EC)/( 4AB - C^2)
     // y = (2AE - DC)/(4AB - C^2)
-    const RS_Vector eCenter=RS_Vector{2.*b*d - e*c, 2.*a*e - d*c}/determinant;
+    const RS_Vector eCenter = RS_Vector{2. * b * d - e * c, 2. * a * e - d * c} / determinant;
     //generate centered quadratic
-    LC_Quadratic qCentered=q;
+    LC_Quadratic qCentered = q;
     qCentered.move(-eCenter);
-    if(qCentered.constTerm() <= RS_TOLERANCE2) return false;
-    const auto& mq2=qCentered.getQuad();
-    const double factor=-1./qCentered.constTerm();
+    if (qCentered.constTerm() <= RS_TOLERANCE2) {
+        return false;
+    }
+    const auto& mq2 = qCentered.getQuad();
+    const double factor = -1. / qCentered.constTerm();
     //quadratic terms
-    if(!createFromQuadratic({mq2(0,0)*factor, 2.*mq2(0,1)*factor, mq2(1,1)*factor})) return false;
+    if (!createFromQuadratic({mq2(0, 0) * factor, 2. * mq2(0, 1) * factor, mq2(1, 1) * factor})) {
+        return false;
+    }
 
     //move back to center
     move(eCenter);
@@ -137,22 +123,23 @@ bool LC_Hyperbola::createFromQuadratic(const LC_Quadratic& q)
   *
   *@author: Dongxu Li
   */
-bool LC_Hyperbola::createFromQuadratic(const std::vector<double>& dn)
-{
+bool LC_Hyperbola::createFromQuadratic(const std::vector<double>& q) {
     using namespace std;
-    LC_LOG<<__func__<<"(): begin";
-    if(dn.size()!=3) return false;
+    LC_LOG << __func__ << "(): begin";
+    if (q.size() != 3) {
+        return false;
+    }
 
     //eigenvalues and eigenvectors of quadratic form
     // (dn[0] 0.5*dn[1])
     // (0.5*dn[1] dn[2])
-    double a=dn[0];
-    const double c=dn[1];
-    double b=dn[2];
+    const double a = q[0];
+    const double c = q[1];
+    const double b = q[2];
 
     //Eigen system
     const double d = a - b;
-    const double s=hypot(d,c);
+    const double s = hypot(d, c);
     // { a>b, d>0
     // eigenvalue: ( a+b - s)/2, eigenvector: ( -c, d + s)
     // eigenvalue: ( a+b + s)/2, eigenvector: ( d + s, c)
@@ -163,18 +150,21 @@ bool LC_Hyperbola::createFromQuadratic(const std::vector<double>& dn)
     // }
 
     // eigenvalues are required to be positive for ellipses
-    if(s <= a+b ) return false;
-    if(a>=b) {
-        setMajorP(RS_Vector(atan2(c, d+s))/sqrt(0.5*(a+b+s)));
-    }else{
-        setMajorP(RS_Vector(atan2(s-d, c))/sqrt(0.5*(a+b+s)));
+    if (s <= a + b) {
+        return false;
     }
-    setRatio(sqrt((s-a-b)/(s+a+b)));
+    if (a >= b) {
+        setMajorP(RS_Vector(atan2(c, d + s)) / sqrt(0.5 * (a + b + s)));
+    }
+    else {
+        setMajorP(RS_Vector(atan2(s - d, c)) / sqrt(0.5 * (a + b + s)));
+    }
+    setRatio(sqrt((s - a - b) / (s + a + b)));
 
     // start/end angle at 0. means a whole ellipse, instead of an elliptic arc
     setAngle1(0.);
     setAngle2(0.);
-    LC_LOG<<__func__<<"(): end";
+    LC_LOG << __func__ << "(): end";
 
     return true;
 }
@@ -205,17 +195,14 @@ void LC_Hyperbola::calculateEndpoints() {
 }
 */
 
-
 /**
  * Calculates the boundary box of this ellipse.
  */
 
-
 RS_Entity* LC_Hyperbola::clone() const {
-	LC_Hyperbola* e = new LC_Hyperbola(*this);
-	return e;
+    auto* e = new LC_Hyperbola(*this);
+    return e;
 }
-
 
 /**
   * return the foci of ellipse
@@ -224,47 +211,48 @@ RS_Entity* LC_Hyperbola::clone() const {
   */
 
 RS_VectorSolutions LC_Hyperbola::getFoci() const {
-    RS_Vector vp(getMajorP()*sqrt(1.-getRatio()*getRatio()));
-	return RS_VectorSolutions({getCenter()+vp, getCenter()-vp});
+    const RS_Vector vp(getMajorP() * sqrt(1. - getRatio() * getRatio()));
+    return RS_VectorSolutions({getCenter() + vp, getCenter() - vp});
 }
 
-RS_VectorSolutions LC_Hyperbola::getRefPoints() const{
-	RS_VectorSolutions ret({data.center});
+RS_VectorSolutions LC_Hyperbola::getRefPoints() const {
+    RS_VectorSolutions ret({data.center});
     ret.push_back(getFoci());
     return ret;
 }
 
-bool LC_Hyperbola::isPointOnEntity(const RS_Vector& coord,
-                             double tolerance) const
-{
-    double a=data.majorP.magnitude();
-    double b=a*data.ratio;
-    if(fabs(a)<tolerance || fabs(b)<tolerance) return false;
+bool LC_Hyperbola::doIsPointOnEntity(const RS_Vector& coord, const double tolerance) const {
+    const double a = data.majorP.magnitude();
+    const double b = a * data.ratio;
+    if (fabs(a) < tolerance || fabs(b) < tolerance) {
+        return false;
+    }
     RS_Vector vp(coord - data.center);
-    vp=vp.rotate(-data.majorP.angle());
-    return fabs( vp.x*vp.x/(a*a)- vp.y*vp.y/(b*b) -1.)<tolerance;
+    vp = vp.rotate(-data.majorP.angle());
+    return fabs(vp.x * vp.x / (a * a) - vp.y * vp.y / (b * b) - 1.) < tolerance;
 }
 
-RS_Entity& LC_Hyperbola::shear(double k)
-{
-    LC_Quadratic q = getQuadratic().shear(k);
-    bool success = createFromQuadratic(q);
+RS_Entity& LC_Hyperbola::shear(const double k) {
+    const LC_Quadratic q = getQuadratic().shear(k);
+    const bool success = createFromQuadratic(q);
     assert(success);
     return *this;
 }
 
-
-LC_Quadratic LC_Hyperbola::getQuadratic() const
-{
-    std::vector<double> ce(6,0.);
-    ce[0]=data.majorP.squared();
-    ce[2]=-data.ratio*data.ratio*ce[0];
-    if(ce[0]>RS_TOLERANCE2) ce[0]=1./ce[0];
-    if(fabs(ce[2])>RS_TOLERANCE2) ce[2]=1./ce[2];
-    ce[5]=-1.;
+LC_Quadratic LC_Hyperbola::getQuadratic() const {
+    std::vector<double> ce(6, 0.);
+    ce[0] = data.majorP.squared();
+    ce[2] = -data.ratio * data.ratio * ce[0];
+    if (ce[0] > RS_TOLERANCE2) {
+        ce[0] = 1. / ce[0];
+    }
+    if (fabs(ce[2]) > RS_TOLERANCE2) {
+        ce[2] = 1. / ce[2];
+    }
+    ce[5] = -1.;
     LC_Quadratic ret(ce);
-    if(ce[0]<RS_TOLERANCE2 || fabs(ce[2])<RS_TOLERANCE2) {
-		ret.setValid(false);
+    if (ce[0] < RS_TOLERANCE2 || fabs(ce[2]) < RS_TOLERANCE2) {
+        ret.setValid(false);
         return ret;
     }
     ret.rotate(data.majorP.angle());
@@ -280,7 +268,7 @@ LC_Quadratic LC_Hyperbola::getQuadratic() const
 /**
  * Dumps the point's data to stdout.
  */
-std::ostream& operator << (std::ostream& os, const LC_Hyperbola& a) {
+std::ostream& operator <<(std::ostream& os, const LC_Hyperbola& a) {
     os << " Hyperbola: " << a.data << "\n";
     return os;
 }

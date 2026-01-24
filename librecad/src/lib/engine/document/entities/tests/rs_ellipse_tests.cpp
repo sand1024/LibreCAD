@@ -30,8 +30,8 @@
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 
 #include "rs_ellipse.h"
-#include "rs_vector.h"
 #include "rs_math.h"  // For M_PI if needed
+#include "rs_vector.h"
 
 const double EPS = 1e-6;  // Tolerance for floating-point comparisons
 

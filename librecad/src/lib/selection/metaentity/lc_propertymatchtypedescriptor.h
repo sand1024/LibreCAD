@@ -24,8 +24,8 @@
 #ifndef LC_PROPERTYMATCHTYPEDESCRIPTOR_H
 #define LC_PROPERTYMATCHTYPEDESCRIPTOR_H
 
-#include <functional>
 #include <QString>
+#include <functional>
 
 class RS_Entity;
 
@@ -67,40 +67,40 @@ enum LC_PropertyMatchTypeEnum {
 };
 
 struct LC_PropertyMatchTypeDescriptor {
-    LC_PropertyMatchTypeDescriptor(LC_PropertyMatchTypeEnum type)
-        : m_type(type) {
+    explicit LC_PropertyMatchTypeDescriptor(const LC_PropertyMatchTypeEnum type)
+        : type(type) {
     }
-    LC_PropertyMatchTypeEnum getType() const {return m_type;}
+    LC_PropertyMatchTypeEnum getType() const {return type;}
 
     void hasAll() {
-        m_supportedOperations.setFlag(MATCH_OPERATION_EQUALS);
-        m_supportedOperations.setFlag(MATCH_OPERATION_NOT_EQUALS);
-        m_supportedOperations.setFlag(MATCH_OPERATION_GREATER);
-        m_supportedOperations.setFlag(MATCH_OPERATION_LESS);
-        m_supportedOperations.setFlag(MATCH_OPERATION_PATTERN_MATCH);
-        m_supportedOperations.setFlag(MATCH_OPERATION_ALL);
+        supportedOperations.setFlag(MATCH_OPERATION_EQUALS);
+        supportedOperations.setFlag(MATCH_OPERATION_NOT_EQUALS);
+        supportedOperations.setFlag(MATCH_OPERATION_GREATER);
+        supportedOperations.setFlag(MATCH_OPERATION_LESS);
+        supportedOperations.setFlag(MATCH_OPERATION_PATTERN_MATCH);
+        supportedOperations.setFlag(MATCH_OPERATION_ALL);
     }
 
     void hasAllExceptPattern() {
-        m_supportedOperations.setFlag(MATCH_OPERATION_EQUALS);
-        m_supportedOperations.setFlag(MATCH_OPERATION_NOT_EQUALS);
-        m_supportedOperations.setFlag(MATCH_OPERATION_GREATER);
-        m_supportedOperations.setFlag(MATCH_OPERATION_LESS);
-        m_supportedOperations.setFlag(MATCH_OPERATION_PATTERN_MATCH, false);
-        m_supportedOperations.setFlag(MATCH_OPERATION_ALL);
+        supportedOperations.setFlag(MATCH_OPERATION_EQUALS);
+        supportedOperations.setFlag(MATCH_OPERATION_NOT_EQUALS);
+        supportedOperations.setFlag(MATCH_OPERATION_GREATER);
+        supportedOperations.setFlag(MATCH_OPERATION_LESS);
+        supportedOperations.setFlag(MATCH_OPERATION_PATTERN_MATCH, false);
+        supportedOperations.setFlag(MATCH_OPERATION_ALL);
     }
 
     void hasBasic() {
-        m_supportedOperations.setFlag(MATCH_OPERATION_EQUALS);
-        m_supportedOperations.setFlag(MATCH_OPERATION_NOT_EQUALS);
-        m_supportedOperations.setFlag(MATCH_OPERATION_GREATER, false);
-        m_supportedOperations.setFlag(MATCH_OPERATION_LESS, false);
-        m_supportedOperations.setFlag(MATCH_OPERATION_PATTERN_MATCH, false);
-        m_supportedOperations.setFlag(MATCH_OPERATION_ALL);
+        supportedOperations.setFlag(MATCH_OPERATION_EQUALS);
+        supportedOperations.setFlag(MATCH_OPERATION_NOT_EQUALS);
+        supportedOperations.setFlag(MATCH_OPERATION_GREATER, false);
+        supportedOperations.setFlag(MATCH_OPERATION_LESS, false);
+        supportedOperations.setFlag(MATCH_OPERATION_PATTERN_MATCH, false);
+        supportedOperations.setFlag(MATCH_OPERATION_ALL);
     }
 
-    LC_PropertyComparingOperations m_supportedOperations;
-    LC_PropertyMatchTypeEnum m_type;
+    LC_PropertyComparingOperations supportedOperations;
+    LC_PropertyMatchTypeEnum type;
 };
 
 template <typename PropertyType, typename MatchValueType>
@@ -108,18 +108,18 @@ class LC_ComparingPropertyMatchTypeDescriptor: public LC_PropertyMatchTypeDescri
 public:
     using FunValueComparisonOperation = std::function<bool(PropertyType&,  const MatchValueType&,  const MatchValueType&)>;
 
-    explicit LC_ComparingPropertyMatchTypeDescriptor(LC_PropertyMatchTypeEnum type)
+    explicit LC_ComparingPropertyMatchTypeDescriptor(const LC_PropertyMatchTypeEnum type)
         : LC_PropertyMatchTypeDescriptor(type) {
     }
 
     LC_ComparingPropertyMatchTypeDescriptor() = default;
 
-    FunValueComparisonOperation m_equals;
-    FunValueComparisonOperation m_notEquals;
-    FunValueComparisonOperation m_greater;
-    FunValueComparisonOperation m_less;
-    FunValueComparisonOperation m_any;
-    FunValueComparisonOperation m_patternMatch;
+    FunValueComparisonOperation funEquals;
+    FunValueComparisonOperation funNotEquals;
+    FunValueComparisonOperation funGreater;
+    FunValueComparisonOperation funLess;
+    FunValueComparisonOperation funAny;
+    FunValueComparisonOperation funPatternMatch;
 };
 
 template <typename PropertyType>

@@ -32,7 +32,7 @@ class RS_GraphicView;
 
 class LC_CoordinatesParser{
 public:
-    LC_CoordinatesParser(RS_GraphicView* gview);
+    explicit LC_CoordinatesParser(RS_GraphicView* gview);
     RS_CoordinateEvent parseCoordinate(const QString& inputStr, bool &stringContainsCoordinate) const;
 private:
     RS_GraphicView* m_graphicView;
@@ -42,4 +42,4 @@ private:
     double toWCSAngle(double ucsAngle) const;
 };
 
-#endif // LC_COORDINATESPARSER_H
+#endif

@@ -25,10 +25,11 @@
 **
 **********************************************************************/
 
+#include "rs_layerlist.h"
+
 #include<iostream>
 
 #include "rs_debug.h"
-#include "rs_layerlist.h"
 #include "rs_layer.h"
 #include "rs_layerlistlistener.h"
 
@@ -67,9 +68,10 @@ QList<RS_Layer*>::const_iterator RS_LayerList::end() const {
 /**
  * Activates the given layer.
  *
+ * @param name
  * @param notify Notify listeners.
  */
-void RS_LayerList::activate(const QString& name, bool notify) {
+void RS_LayerList::activate(const QString& name, const bool notify) {
     RS_DEBUG->print("RS_LayerList::activate: %s, notify: %d begin",
                     name.toLatin1().data(), notify);
 
@@ -80,9 +82,10 @@ void RS_LayerList::activate(const QString& name, bool notify) {
 /**
  * Activates the given layer.
  *
+ * @param layer
  * @param notify Notify listeners.
  */
-void RS_LayerList::activate(RS_Layer* layer, bool notify) {
+void RS_LayerList::activate(RS_Layer* layer, const bool notify) {
     RS_DEBUG->print("RS_LayerList::activate notify: %d begin", notify);
     m_activeLayer = layer;
 
@@ -153,7 +156,6 @@ void RS_LayerList::add(RS_Layer* layerToAdd) {
         existingLayer->setPen(layerToAdd->getPen());
 
         delete layerToAdd;
-        layerToAdd = nullptr;
     }
 }
 
@@ -205,7 +207,7 @@ void RS_LayerList::edit(RS_Layer* layer, const RS_Layer& source) {
 }
 
 void RS_LayerList::fireLayerEdited(RS_Layer* layer) {
-    for (auto l : m_layerListListeners) {
+    for (const auto l : m_layerListListeners) {
         l->layerEdited(layer);
     }
     setModified(true);
@@ -217,7 +219,7 @@ void RS_LayerList::fireLayerEdited(RS_Layer* layer) {
  */
 RS_Layer* RS_LayerList::find(const QString& name) {
     RS_Layer* ret = nullptr;
-    for (auto l : m_layers) {
+    for (const auto l : m_layers) {
         if (l->getName() == name) {
             ret = l;
             break;
@@ -232,13 +234,11 @@ RS_Layer* RS_LayerList::find(const QString& name) {
  */
 int RS_LayerList::getIndex(const QString& name) {
     int ret = 0;
-    for (auto l : m_layers) {
+    for (const auto l : m_layers) {
         if (l->getName() == name) {
             return ret;
         }
-        else {
-            ret++;
-        }
+        ret++;
     }
     return -1;
 }
@@ -292,7 +292,7 @@ void RS_LayerList::toggleLock(RS_Layer* layer) {
     setModified(true);
 
     // Notify listeners:
-    for (auto l : m_layerListListeners) {
+    for (const auto l : m_layerListListeners) {
         l->layerToggledLock(layer);
     }
 }
@@ -310,7 +310,7 @@ void RS_LayerList::togglePrint(RS_Layer* layer) {
     setModified(true);
 
     // Notify listeners:
-    for (auto l : m_layerListListeners) {
+    for (const auto l : m_layerListListeners) {
         l->layerToggledPrint(layer);
     }
 }
@@ -328,14 +328,14 @@ void RS_LayerList::toggleConstruction(RS_Layer* layer) {
     setModified(true);
 
     // Notify listeners:
-    for (auto l : m_layerListListeners) {
+    for (const auto l : m_layerListListeners) {
         l->layerToggledConstruction(layer);
     }
 }
 
 void RS_LayerList::fireLayerToggled() {
     setModified(true);
-    for (auto l : m_layerListListeners) {
+    for (const auto l : m_layerListListeners) {
         l->layerToggled(nullptr);
     }
 }
@@ -345,7 +345,7 @@ void RS_LayerList::fireLayerToggled() {
  *
  * @param freeze true: freeze, false: defreeze
  */
-void RS_LayerList::freezeAll(bool freeze) {
+void RS_LayerList::freezeAll(const bool freeze) {
     for (unsigned l = 0; l < count(); l++) {
         if (at(l)->isVisibleInLayerList()) {
             at(l)->freeze(freeze);
@@ -355,7 +355,7 @@ void RS_LayerList::freezeAll(bool freeze) {
 }
 
 void RS_LayerList::fireLayerActivated() {
-    for (auto l : m_layerListListeners) {
+    for (const auto l : m_layerListListeners) {
         l->layerActivated(m_activeLayer);
     }
 }
@@ -365,7 +365,7 @@ void RS_LayerList::fireLayerActivated() {
  *
  * @param lock true: lock, false: unlock
  */
-void RS_LayerList::lockAll(bool lock) {
+void RS_LayerList::lockAll(const bool lock) {
     for (unsigned l = 0; l < count(); l++) {
         if (at(l)->isVisibleInLayerList()) {
             at(l)->lock(lock);
@@ -374,10 +374,10 @@ void RS_LayerList::lockAll(bool lock) {
     fireLayerToggled();
 }
 
-void RS_LayerList::toggleLockMulti(QList<RS_Layer*> toggleLayers) {
-    int count = toggleLayers.count();
+void RS_LayerList::toggleLockMulti(const QList<RS_Layer*>& layers) {
+    const int count = layers.count();
     for (int i = 0; i < count; i++) {
-        RS_Layer* layer = toggleLayers.at(i);
+        RS_Layer* layer = layers.at(i);
         if (layer != nullptr    ) {
             layer->toggleLock();
         }
@@ -386,10 +386,10 @@ void RS_LayerList::toggleLockMulti(QList<RS_Layer*> toggleLayers) {
     fireLayerToggled();
 }
 
-void RS_LayerList::togglePrintMulti(QList<RS_Layer*> toggleLayers) {
-    int count = toggleLayers.count();
+void RS_LayerList::togglePrintMulti(const QList<RS_Layer*>& layers) {
+    const int count = layers.count();
     for (int i = 0; i < count; i++) {
-        RS_Layer* layer = toggleLayers.at(i);
+        RS_Layer* layer = layers.at(i);
         if (layer != nullptr) {
             layer->togglePrint();
         }
@@ -397,10 +397,10 @@ void RS_LayerList::togglePrintMulti(QList<RS_Layer*> toggleLayers) {
     fireLayerToggled();
 }
 
-void RS_LayerList::toggleConstructionMulti(QList<RS_Layer*> toggleLayers) {
-    int count = toggleLayers.count();
+void RS_LayerList::toggleConstructionMulti(const QList<RS_Layer*>& layers) {
+    const int count = layers.count();
     for (int i = 0; i < count; i++) {
-        RS_Layer* layer = toggleLayers.at(i);
+        RS_Layer* layer = layers.at(i);
         if (layer != nullptr) {
             layer->toggleConstruction();
         }
@@ -408,15 +408,15 @@ void RS_LayerList::toggleConstructionMulti(QList<RS_Layer*> toggleLayers) {
     fireLayerToggled();
 }
 
-void RS_LayerList::setFreezeMulti(QList<RS_Layer*> layersEnable, QList<RS_Layer*> layersDisable) {
-    int countUnFreeze = layersEnable.count();
+void RS_LayerList::setFreezeMulti(const QList<RS_Layer*>& layersEnable, const QList<RS_Layer*>& layersDisable) {
+    const int countUnFreeze = layersEnable.count();
     for (int i = 0; i < countUnFreeze; i++) {
         RS_Layer* layer = layersEnable.at(i);
         if (layer != nullptr) {
             layer->freeze(false);
         }
     }
-    int countFreeze = layersDisable.count();
+    const int countFreeze = layersDisable.count();
     for (int i = 0; i < countFreeze; i++) {
         RS_Layer* layer = layersDisable.at(i);
         if (layer != nullptr) {
@@ -426,15 +426,15 @@ void RS_LayerList::setFreezeMulti(QList<RS_Layer*> layersEnable, QList<RS_Layer*
     fireLayerToggled();
 }
 
-void RS_LayerList::setLockMulti(QList<RS_Layer*> layersToUnlock, QList<RS_Layer*> layersToLock) {
-    int countUnFreeze = layersToUnlock.count();
+void RS_LayerList::setLockMulti(const QList<RS_Layer*>& layersToUnlock, const QList<RS_Layer*>& layersToLock) {
+    const int countUnFreeze = layersToUnlock.count();
     for (int i = 0; i < countUnFreeze; i++) {
         RS_Layer* layer = layersToUnlock.at(i);
         if (layer != nullptr) {
             layer->lock(false);
         }
     }
-    int countFreeze = layersToLock.count();
+    const int countFreeze = layersToLock.count();
     for (int i = 0; i < countFreeze; i++) {
         RS_Layer* layer = layersToLock.at(i);
         if (layer != nullptr) {
@@ -444,15 +444,15 @@ void RS_LayerList::setLockMulti(QList<RS_Layer*> layersToUnlock, QList<RS_Layer*
     fireLayerToggled();
 }
 
-void RS_LayerList::setPrintMulti(QList<RS_Layer*> layersNoPrint, QList<RS_Layer*> layersPrint) {
-    int countUnFreeze = layersNoPrint.count();
+void RS_LayerList::setPrintMulti(const QList<RS_Layer*>& layersNoPrint, const QList<RS_Layer*>& layersPrint) {
+    const int countUnFreeze = layersNoPrint.count();
     for (int i = 0; i < countUnFreeze; i++) {
         RS_Layer* layer = layersNoPrint.at(i);
         if (layer != nullptr) {
             layer->setPrint(false);
         }
     }
-    int countFreeze = layersPrint.count();
+    const int countFreeze = layersPrint.count();
     for (int i = 0; i < countFreeze; i++) {
         RS_Layer* layer = layersPrint.at(i);
         if (layer != nullptr) {
@@ -462,15 +462,15 @@ void RS_LayerList::setPrintMulti(QList<RS_Layer*> layersNoPrint, QList<RS_Layer*
     fireLayerToggled();
 }
 
-void RS_LayerList::setConstructionMulti(QList<RS_Layer*> layersNoConstruction, QList<RS_Layer*> layersConstruction) {
-    int countUnFreeze = layersNoConstruction.count();
+void RS_LayerList::setConstructionMulti(const QList<RS_Layer*>& layersNoConstruction, const QList<RS_Layer*>& layersConstruction) {
+    const int countUnFreeze = layersNoConstruction.count();
     for (int i = 0; i < countUnFreeze; i++) {
         RS_Layer* layer = layersNoConstruction.at(i);
         if (layer != nullptr) {
             layer->setConstruction(false);
         }
     }
-    int countFreeze = layersConstruction.count();
+    const int countFreeze = layersConstruction.count();
     for (int i = 0; i < countFreeze; i++) {
         RS_Layer* layer = layersConstruction.at(i);
         if (layer != nullptr) {
@@ -480,10 +480,10 @@ void RS_LayerList::setConstructionMulti(QList<RS_Layer*> layersNoConstruction, Q
     fireLayerToggled();
 }
 
-void RS_LayerList::toggleFreezeMulti(QList<RS_Layer*> toggleLayers) {
-    int count = toggleLayers.count();
+void RS_LayerList::toggleFreezeMulti(const QList<RS_Layer*>& layers) {
+    const int count = layers.count();
     for (int i = 0; i < count; i++) {
-        RS_Layer* layer = toggleLayers.at(i);
+        RS_Layer* layer = layers.at(i);
         if (layer != nullptr) {
             layer->toggle();
         }
@@ -502,7 +502,7 @@ void RS_LayerList::addListener(RS_LayerListListener* listener) {
     if (listener == nullptr) {
         return;
     }
-    for (auto const l : m_layerListListeners) {
+    for (const auto l : m_layerListListeners) {
         if (l == listener) {
             return;
         }
@@ -520,7 +520,7 @@ void RS_LayerList::removeListener(RS_LayerListListener* listener) {
 /**
  * Dumps the layers to stdout.
  */
-std::ostream& operator <<(std::ostream& os, RS_LayerList& l) {
+std::ostream& operator <<(std::ostream& os, const RS_LayerList& l) {
     os << "Layerlist: \n";
     for (unsigned i = 0; i < l.count(); i++) {
         os << *(l.at(i)) << "\n";
@@ -532,7 +532,7 @@ std::ostream& operator <<(std::ostream& os, RS_LayerList& l) {
  * Sets the layer lists modified status to 'm'.
  * Listeners are notified.
  */
-void RS_LayerList::setModified(bool m) {
+void RS_LayerList::setModified(const bool m) {
     m_modified = m;
 }
 

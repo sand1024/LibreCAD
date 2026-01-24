@@ -34,8 +34,8 @@ public:
     ~LC_WidgetViewPortRenderer() override;
     void loadSettings() override;
     void setupPainter(RS_Painter* painter) override;
-    void setAntialiasing(bool state) {antialiasing = state;}
-    void invalidate(RS2::RedrawMethod method) {redrawMethod = static_cast<RS2::RedrawMethod>(redrawMethod | method);}
+    void setAntialiasing(const bool state) {m_antialiasing = state;}
+    void invalidate(const RS2::RedrawMethod method) {m_redrawMethod = static_cast<RS2::RedrawMethod>(m_redrawMethod | method);}
 protected:
     void doRender() override;
 
@@ -64,14 +64,14 @@ protected:
 #endif
 
 private:
-    bool antialiasing = false;
-    bool classicRenderer = true;
+    bool m_antialiasing = false;
+    bool m_classicRenderer = true;
 
-    std::unique_ptr<QPixmap> pixmapLayerBackground;
-    std::unique_ptr<QPixmap> pixmapLayerDrawing;
-    std::unique_ptr<QPixmap> pixmapLayerOverlays;
+    std::unique_ptr<QPixmap> m_pixmapLayerBackground;
+    std::unique_ptr<QPixmap> m_pixmapLayerDrawing;
+    std::unique_ptr<QPixmap> m_pixmapLayerOverlays;
 
-    RS2::RedrawMethod redrawMethod = RS2::RedrawAll;
+    RS2::RedrawMethod m_redrawMethod = RS2::RedrawAll;
 
     int m_render_minRenderableTextHeightInPx = 4;
     double m_render_minCircleDrawingRadius = 2.0;
@@ -92,4 +92,4 @@ private:
     std::unique_ptr<QPixmap> m_pixmapLayer3;  // Used for crosshair and actionitems
 };
 
-#endif // LC_WIDGETVIEWPORTRENDERER_H
+#endif

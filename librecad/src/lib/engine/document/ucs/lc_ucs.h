@@ -37,29 +37,29 @@
 class LC_UCS {
 public:
     LC_UCS();
-    LC_UCS(QString name);
+    explicit LC_UCS(const QString& name);
     virtual ~LC_UCS();
     LC_UCS* clone() const;
-    void setOrigin(RS_Vector o);
+    void setOrigin(const RS_Vector& o);
     RS_Vector getOrigin() const {return m_ucsOrigin;}
     void setElevation(double d);
     double getElevation() const {return m_ucsElevation;}
-    void setXAxis(RS_Vector pos);
+    void setXAxis(const RS_Vector& pos);
     RS_Vector getXAxis() const {return m_ucsXAxis;}
-    void setYAxis(RS_Vector axis);
+    void setYAxis(const RS_Vector& axis);
     RS_Vector getYAxis() const {return m_ucsYAxis;}
     void setOrthoType(int type);
     int getOrthoType() const {return m_ucsOrthoType;}
     void setName(const QString &name);
-    const QString getName() const;
+    QString getName() const;
     long getNamedUcsId() const;
     long getBaseUcsId() const;
-    bool isSameTo(LC_UCS* other) const;
-    const RS_Vector getOrthoOrigin() const;
+    bool isSameTo(const LC_UCS* other) const;
+    RS_Vector getOrthoOrigin() const;
     void setOrthoOrigin(const RS_Vector &orthoOrigin);
     virtual bool isUCS() const {return true;}
     bool isTemporary() const {return m_temporary;}
-    void setTemporary(bool temp){m_temporary = temp;}
+    void setTemporary(const bool temp){m_temporary = temp;}
     double getXAxisDirection() const {
         return m_ucsXAxis.angle();
     }
@@ -85,8 +85,8 @@ private:
     RS_Vector m_orthoOrigin = RS_Vector(0,0,0);
     int m_ucsOrthoType = 0; // Orthographic type of UCS, 0 = UCS is not orthographic, 1 = Top; 2 = Bottom, 3 = Front; 4 = Back, 5 = Left; 6 = Right, code 79
     double m_ucsElevation = 0.0; // UCS elevation, code 146
-    long         namedUCS_ID;// ID/handle of AcDbUCSTableRecord if UCS is a named UCS. If not present, then UCS is unnamed, code 345
-    long         baseUCS_ID;// ID/handle of AcDbUCSTableRecord of base UCS if UCS is orthographic, If not present and 79 code is non-zero, then base UCS is taken to be WORLD, code 346
+    long         namedUCS_ID {0};// ID/handle of AcDbUCSTableRecord if UCS is a named UCS. If not present, then UCS is unnamed, code 345
+    long         baseUCS_ID {0};// ID/handle of AcDbUCSTableRecord of base UCS if UCS is orthographic, If not present and 79 code is non-zero, then base UCS is taken to be WORLD, code 346
 };
 
 class LC_WCS: public LC_UCS{
@@ -97,4 +97,4 @@ public:
     static LC_UCS instance;
 };
 
-#endif // LC_UCS_H
+#endif

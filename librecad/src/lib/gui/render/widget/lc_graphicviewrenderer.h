@@ -22,6 +22,8 @@
 
 #ifndef LC_GRAPHICVIEWRENDERER_H
 #define LC_GRAPHICVIEWRENDERER_H
+#include <QObject>
+
 #include "lc_overlayanglesbasemark.h"
 #include "lc_overlayrelativezero.h"
 #include "lc_overlayucszero.h"
@@ -31,8 +33,7 @@
 class RS_EntityContainer;
 class LC_OverlaysManager;
 
-class LC_GraphicViewRenderer:public LC_WidgetViewPortRenderer
-{
+class LC_GraphicViewRenderer:public LC_WidgetViewPortRenderer {
 public:
     LC_GraphicViewRenderer(LC_GraphicViewport *viewport, QPaintDevice* d);
 
@@ -42,10 +43,9 @@ public:
   * @retval false Otherwise.
   */
     bool isDraftMode() const {return m_draftMode;}
-    void setDraftMode(bool dm) { m_draftMode = dm;}
-    bool isTextLineNotRenderable(double uiLineHeight) const override
-    {
-        return uiLineHeight <getMinRenderableTextHeightInPx();
+    void setDraftMode(const bool dm) { m_draftMode = dm;}
+    bool isTextLineNotRenderable(const double uiLineHeight) const override {
+        return uiLineHeight < getMinRenderableTextHeightInPx();
     }
 
     LC_AnglesBaseMarkOptions* anglesBaseOptions() {return &m_anglesBaseOptions;}
@@ -112,14 +112,14 @@ protected:
     void drawOverlay(RS_Painter *painter);
     void drawDraftSign(RS_Painter *painter) const;
     void drawCoordinateSystems(RS_Painter *painter);
-    void drawEntitiesInOverlay(LC_OverlaysManager *overlaysManager, RS_Painter *painter, RS2::OverlayGraphics overlayType);
-    void drawOverlayEntitiesInOverlay(LC_OverlaysManager *overlaysManager, RS_Painter *painter, RS2::OverlayGraphics overlayType);
+    void drawEntitiesInOverlay(const LC_OverlaysManager *overlaysManager, RS_Painter *painter, RS2::OverlayGraphics overlayType);
+    void drawOverlayEntitiesInOverlay(const LC_OverlaysManager *overlaysManager, RS_Painter *painter, RS2::OverlayGraphics overlayType);
     void drawEntityReferencePoints(RS_Painter *painter, const RS_Entity *e) const;
-    void setPenForEntity(RS_Painter *painter, RS_Entity *e, bool inOverlay);
-    void setPenForDraftEntity(RS_Painter *painter, RS_Entity *e, bool inOverlay);
-    void setPenForOverlayEntity(RS_Painter *painter, RS_Entity *e);
+    void setPenForEntity(RS_Painter *painter, const RS_Entity *e, bool inOverlay);
+    void setPenForDraftEntity(RS_Painter *painter, const RS_Entity *e, bool inOverlay);
+    void setPenForOverlayEntity(RS_Painter *painter, const RS_Entity *e);
     void renderEntity(RS_Painter *painter, RS_Entity *e) override;
     void doSetupBeforeContainerDraw() override;
 };
 
-#endif // LC_GRAPHICVIEWRENDERER_H
+#endif

@@ -48,7 +48,7 @@ public:
     void setFontFamilyItalicBold(int fontFamilyItalicBold);
     void setName(const QString& name);
     QString getName() const {return m_name;}
-    void setFlags(unsigned flags) {m_flags.setFlags(flags);};
+    void setFlags(const unsigned flags) {m_flags.setFlags(flags);}
     unsigned getFlags() const {return m_flags.getFlags();}
 private:
     QString m_name;
@@ -63,4 +63,4 @@ private:
     int m_fontFamilyItalicBold {0};         /*!< ttf font family, italic and bold flags, code 1071 */
 };
 
-#endif // LC_TEXTSTYLE_H
+#endif

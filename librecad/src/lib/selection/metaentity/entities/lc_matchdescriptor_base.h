@@ -26,50 +26,50 @@
 
 #include "lc_entitymatchdescriptor.h"
 #include "lc_propertymatchertypes.h"
-#include "rs_pen.h"
 #include "rs_entity.h"
+#include "rs_pen.h"
 
 class LC_MatchDescriptorBase: public QObject {
     Q_OBJECT
 protected:
 template <typename EntityType>
 static void initCommonEntityAttributesProperties(LC_TypedEntityMatchDescriptor<EntityType>* entity) {
-    entity->template add<RS_Layer*>("layer", [](RS_Entity* e) {
+    entity->template add<RS_Layer*>("layer", [](const RS_Entity* e) {
         return e->getLayer();
     }, tr("Layer"), tr("Layer of the entity"), LC_PropertyMatcherTypes::LAYER);
 
-    entity->template add<RS_Color>("color", [](RS_Entity* e) {
-        RS_Pen pen = e->getPen(false);
+    entity->template add<RS_Color>("color", [](const RS_Entity* e) {
+        const RS_Pen pen = e->getPen(false);
         RS_Color color = pen.getColor();
         return color;
     }, tr("Color"), tr("Color attribute as it is stored in the entity"), LC_PropertyMatcherTypes::COLOR);
 
-    entity->template add<RS_Color>("colorR", [](RS_Entity* e) {
-        RS_Pen pen = e->getPen(true);
+    entity->template add<RS_Color>("colorR", [](const RS_Entity* e) {
+        const RS_Pen pen = e->getPen(true);
         RS_Color color = pen.getColor();
         return color;
     }, tr("Color (Resolved)"), tr("Resolved color that is used when entity is drawn"), LC_PropertyMatcherTypes::COLOR_RESOLVED);
 
-    entity->template add<RS2::LineWidth>("lineWidth", [](RS_Entity* e) {
-        RS_Pen pen = e->getPen(false);
+    entity->template add<RS2::LineWidth>("lineWidth", [](const RS_Entity* e) {
+        const RS_Pen pen = e->getPen(false);
         RS2::LineWidth linewidth = pen.getWidth();
         return linewidth;
     }, tr("Line Width"), tr("Width of line attribute that is stored in the entity"), LC_PropertyMatcherTypes::LINE_WIDTH);
 
-    entity->template add<RS2::LineWidth>("lineWidthR", [](RS_Entity* e) {
-        RS_Pen pen = e->getPen(true);
+    entity->template add<RS2::LineWidth>("lineWidthR", [](const RS_Entity* e) {
+        const RS_Pen pen = e->getPen(true);
         RS2::LineWidth linewidth = pen.getWidth();
         return linewidth;
     }, tr("Line Width (Resolved)"), tr("Resolved width of line that is used when entity is drawn"), LC_PropertyMatcherTypes::LINE_WIDTH_RESOLVED);
 
-    entity->template add<RS2::LineType>("lineType", [](RS_Entity* e) {
-        RS_Pen pen = e->getPen(false);
+    entity->template add<RS2::LineType>("lineType", [](const RS_Entity* e) {
+        const RS_Pen pen = e->getPen(false);
         RS2::LineType lineType = pen.getLineType();
         return lineType;
     }, tr("Line Type"), tr("Type of line attribute stored in the entity"), LC_PropertyMatcherTypes::LINE_TYPE);
 
-    entity->template add<RS2::LineType>("lineTypeR", [](RS_Entity* e) {
-        RS_Pen pen = e->getPen(true);
+    entity->template add<RS2::LineType>("lineTypeR", [](const RS_Entity* e) {
+        const RS_Pen pen = e->getPen(true);
         RS2::LineType lineType = pen.getLineType();
         return lineType;
     }, tr("Line Type (Resolved)"), tr("Resolved type of line that is used when entity is drawn"), LC_PropertyMatcherTypes::LINE_TYPE_RESOLVED);

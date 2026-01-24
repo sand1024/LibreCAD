@@ -30,20 +30,21 @@
 #include <memory>
 #include <vector>
 
+#include "rs_entitycontainer.h"
+
 class QPainterPath;
 class RS_AtomicEntity;
 class RS_Entity;
-class RS_EntityContainer;
+
 class RS_Painter;
 class RS_Pattern;
 class RS_Vector;
 class RS_VectorSolutions;
 
-namespace lc {
-namespace geo {
-class Area;
+namespace lc::geo {
+    class Area;
 }
-}
+
 using LC_Rect = lc::geo::Area;
 
 /**
@@ -78,7 +79,7 @@ public:
    * @brief Adds an entity to the outer loop.
    * @param entity Pointer to the entity to add.
    */
-  void addEntity(RS_Entity* entity) const;
+  void addEntity(const RS_Entity* entity) const;
   /**
    * @brief Checks if a point is inside this loop (considering odd-even rule for hierarchy).
    * @param point The point to test.
@@ -93,6 +94,7 @@ public:
   int getContainingDepth(const RS_Vector& point) const;
   /**
    * @brief Generates a QPainterPath for this loop and its children up to the specified level.
+   * @param painter
    * @param level Recursion level for path building (default: 0).
    * @return The combined QPainterPath with OddEvenFill rule.
    */
@@ -139,6 +141,7 @@ private:
   bool isInsideOuter(const RS_Vector& point) const;
   /**
    * @brief Builds a QPainterPath from the entities in a container.
+   * @param painter
    * @param cont The entity container.
    * @return The resulting path.
    */
@@ -371,18 +374,18 @@ public:
    * @brief Gets the optimized hierarchical results.
    * @return Shared pointer to vector of LC_Loops.
    */
-  std::shared_ptr<std::vector<LC_Loops>> GetResults() const;
+  std::shared_ptr<std::vector<LC_Loops>> getResults() const;
 
 private:
   /**
    * @brief Adds and processes a contour container.
    * @param contour The input contour.
    */
-  void AddContainer(const RS_EntityContainer& contour) const;
+  void addContainer(const RS_EntityContainer& contour) const;
 
   struct Data;
   std::shared_ptr<Data> m_data;  ///< Private data for optimization results
 };
 }
 
-#endif // LC_LOOPUTILS_H
+#endif

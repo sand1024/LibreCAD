@@ -37,8 +37,8 @@ namespace LC_CopyUtils {
     * Holds the data needed for pasting.
     */
     struct RS_PasteData {
-        RS_PasteData(RS_Vector insertionPoint, double factor, double angle);
-        explicit RS_PasteData(RS_Vector point):insertionPoint{point}, factor{1.0}, angle{0.0}{};
+        RS_PasteData(const RS_Vector& insertionPoint, double factor, double angle);
+        explicit RS_PasteData(const RS_Vector& point):insertionPoint{point}{}
         //! Insertion point.
         RS_Vector insertionPoint;
         //! Scale factor.
@@ -46,9 +46,9 @@ namespace LC_CopyUtils {
         //! Rotation angle.
         double angle = 0.;
     };
-    RS_Vector getInterGraphicsScaleFactor(const double userFactor, const RS_Graphic *source, const RS_Graphic* destination);
-    void copy(const RS_Vector& ref, QList<RS_Entity*>& entities, RS_Graphic* graphic);
+    RS_Vector getInterGraphicsScaleFactor(double userFactor, const RS_Graphic *source, const RS_Graphic* destination);
+    void copy(const RS_Vector& ref, QList<RS_Entity*>& entities, const RS_Graphic* graphic);
     void paste(const RS_PasteData& data, RS_Graphic* graphic, LC_DocumentModificationBatch& ctx);
-};
+}
 
 #endif

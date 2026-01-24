@@ -26,34 +26,34 @@
 #include "rs_text.h"
 
 void LC_MatchDescriptorText::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
-    auto entity = new LC_TypedEntityMatchDescriptor<RS_Text>(tr("Text"), RS2::EntityText);
+    const auto entity = new LC_TypedEntityMatchDescriptor<RS_Text>(tr("Text"), RS2::EntityText);
     initCommonEntityAttributesProperties<RS_Text>(entity);
 
-    entity->addVectorX("insertX", [](RS_Text* e) {
+    entity->addVectorX("insertX", [](const RS_Text* e) {
         return e->getInsertionPoint();
     }, tr("Insert X"), tr("X coordinate for text's insertion point"));
 
-    entity->addVectorY("insertY", [](RS_Text* e) {
+    entity->addVectorY("insertY", [](const RS_Text* e) {
         return e->getInsertionPoint();
     }, tr("Insert Y"), tr("Y coordinate for text's insertion point"));
 
-    entity->addVectorX("secondX", [](RS_Text* e) {
+    entity->addVectorX("secondX", [](const RS_Text* e) {
         return e->getInsertionPoint();
     }, tr("Second Point X"), tr("X coordinate for text second point"));
 
-    entity->addVectorY("secondY", [](RS_Text* e) {
+    entity->addVectorY("secondY", [](const RS_Text* e) {
         return e->getInsertionPoint();
     }, tr("Second Point Y"), tr("Y coordinate for text second point"));
 
-    entity->addAngle("angle", [](RS_Text* e) {
+    entity->addAngle("angle", [](const RS_Text* e) {
         return e->getAngle();
     }, tr("Angle"), tr("Text rotation angle"));
 
-    entity->addLength("width", [](RS_Text* e) {
+    entity->addLength("width", [](const RS_Text* e) {
         return e->getWidthRel();
     }, tr("Width"), tr("Width of the text"));
 
-    entity->addLength("height", [](RS_Text* e) {
+    entity->addLength("height", [](const RS_Text* e) {
         return e->getHeight();
     }, tr("Height"), tr("Height of the text"));
 
@@ -61,7 +61,7 @@ void LC_MatchDescriptorText::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor
         return e->getStyle();
     }, tr("Style"), tr("Name of the text style)"));
 
-    entity->addIntChoice("halign", [](RS_Text* e) {
+    entity->addIntChoice("halign", [](const RS_Text* e) {
         return e->getHAlign();
     }, tr("Horizontal Align"), tr("Horizontal align for text"), {
         {tr("Left"), RS_TextData::HAlign::HALeft},
@@ -72,7 +72,7 @@ void LC_MatchDescriptorText::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor
         {tr("Fit"), RS_TextData::HAlign::HAFit},
     });
 
-    entity->addIntChoice("valign", [](RS_Text* e) {
+    entity->addIntChoice("valign", [](const RS_Text* e) {
         return e->getVAlign();
     }, tr("Vertical Align"), tr("Vertical align for text"), {
         {tr("Baseline"), RS_TextData::VAlign::VABaseline},
@@ -81,7 +81,7 @@ void LC_MatchDescriptorText::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor
         {tr("Top"), RS_TextData::VAlign::VATop}
     });
 
-    entity->addIntChoice("generation", [](RS_Text* e) {
+    entity->addIntChoice("generation", [](const RS_Text* e) {
         return e->getTextGeneration();
     }, tr("Generation"), tr("Text generation style"), {
         {tr("None"), RS_TextData::TextGeneration::None},

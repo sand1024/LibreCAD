@@ -74,7 +74,7 @@ public:
 
     LC_ContainerTraverser(const RS_EntityContainer& container,
                           RS2::ResolveLevel level,
-                          LC_ContainerTraverser::Direction direction = Direction::Forward);
+                          Direction direction = Direction::Forward);
 
     ~LC_ContainerTraverser();
 
@@ -124,10 +124,8 @@ private:
     size_t currentIndex() const;
 
     struct Data;
-    std::unique_ptr<LC_ContainerTraverser::Data> m_pImp;
-    LC_ContainerTraverser::Direction m_direction = Direction::Forward;
+    std::unique_ptr<Data> m_pImp;
+    Direction m_direction = Direction::Forward;
 };
 }
-#endif // LC_ContainerTraverser_H
-
-
+#endif

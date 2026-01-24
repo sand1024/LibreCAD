@@ -22,58 +22,59 @@
  */
 
 #include "lc_matchdescriptor_line.h"
+
 #include "rs_line.h"
 
 void LC_MatchDescriptorLine::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
-    auto entity = new LC_TypedEntityMatchDescriptor<RS_Line>(tr("Line"), RS2::EntityLine);
+    const auto entity = new LC_TypedEntityMatchDescriptor<RS_Line>(tr("Line"), RS2::EntityLine);
     initCommonEntityAttributesProperties<RS_Line>(entity);
-    entity->addVectorX("startX", [](RS_Line* e) {
+    entity->addVectorX("startX", [](const RS_Line* e) {
         return e->getStartpoint();
     }, tr("Start X"), tr("X coordinate for start point"));
 
-    entity->addVectorY("startY", [](RS_Line* e) {
+    entity->addVectorY("startY", [](const RS_Line* e) {
         return e->getStartpoint();
     }, tr("Start Y"), tr("Y coordinate for start point"));
 
-    entity->addVectorX("endX", [](RS_Line* e) {
+    entity->addVectorX("endX", [](const RS_Line* e) {
         return e->getEndpoint();
     }, tr("End X"), tr("X coordinate for end point"));
 
-    entity->addVectorY("endY", [](RS_Line* e) {
+    entity->addVectorY("endY", [](const RS_Line* e) {
         return e->getEndpoint();
     }, tr("End Y"), tr("Y coordinate for end point"));
 
-    entity->addVectorX("middleX", [](RS_Line* e) {
+    entity->addVectorX("middleX", [](const RS_Line* e) {
         return e->getMiddlePoint();
     }, tr("Middle X"), tr("X coordinate for middle point"));
 
-    entity->addVectorY("middleY", [](RS_Line* e) {
+    entity->addVectorY("middleY", [](const RS_Line* e) {
         return e->getMiddlePoint();
     }, tr("Middle Y"), tr("Y coordinate for middle point"));
 
-    entity->addLength("length", [](RS_Line* e) {
+    entity->addLength("length", [](const RS_Line* e) {
         return e->getLength();
     }, tr("Length"), tr("Length of line"));
 
-    entity->addAngle("angle1", [](RS_Line* e) {
+    entity->addAngle("angle1", [](const RS_Line* e) {
         return e->getAngle1();
     }, tr("Angle 1"), tr("Angle from the 0.0 to start point"));
 
-    entity->addAngle("angle2", [](RS_Line* e) {
+    entity->addAngle("angle2", [](const RS_Line* e) {
         return e->getAngle2();
     }, tr("Angle 2"), tr("Angle from the 0.0 to end point"));
 
-    entity->add<double>("incline", [](RS_Line* e) {
+    entity->add<double>("incline", [](const RS_Line* e) {
         return e->getAngle1();
     }, tr("Incline Angle"), tr("Angle of the line inclination to x-axis"), LC_PropertyMatcherTypes::INCLINATION);
 
-    entity->addLength("deltaX", [](RS_Line* e) {
-        double dif = e->getEndpoint().getX() - e->getStartpoint().getX();
+    entity->addLength("deltaX", [](const RS_Line* e) {
+        const double dif = e->getEndpoint().getX() - e->getStartpoint().getX();
         return std::abs(dif);
     }, tr("Delta X"), tr("Horizontal distance between endpoints"));
 
-    entity->addLength("deltaY", [](RS_Line* e) {
-        double dif = e->getEndpoint().getY() - e->getStartpoint().getY();
+    entity->addLength("deltaY", [](const RS_Line* e) {
+        const double dif = e->getEndpoint().getY() - e->getStartpoint().getY();
         return std::abs(dif);
     }, tr("Delta Y"), tr("Vertical distance between endpoints"));
 

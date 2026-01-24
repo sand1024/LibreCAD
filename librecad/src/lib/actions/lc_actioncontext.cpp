@@ -22,6 +22,7 @@
  */
 
 #include "lc_actioncontext.h"
+
 #include "rs_document.h"
 #include "rs_graphicview.h"
 
@@ -38,7 +39,7 @@ void LC_ActionContext::setDocumentAndView(RS_Document *document, RS_GraphicView 
     m_document = document;
 }
 
-void LC_ActionContext::saveContextMenuActionContext(RS_Entity* entity, const RS_Vector& position, bool clearEntitySelection) {
+void LC_ActionContext::saveContextMenuActionContext(RS_Entity* entity, const RS_Vector& position, const bool clearEntitySelection) {
     m_contextMenuActionEntity = entity;
     m_contextMenuClickPosition = position;
     m_unselectContextMenuActionEntity = clearEntitySelection;
@@ -60,27 +61,27 @@ RS_Vector LC_ActionContext::getContextMenuActionClickPosition() const {
     return m_contextMenuClickPosition;
 }
 
-bool LC_ActionContext::hasSelection() {
+bool LC_ActionContext::hasSelection() const {
     if (m_document == nullptr) {
         return false;
     }
     return m_document->hasSelection();
 }
 
-void LC_ActionContext::interactiveInputStart(InteractiveInputInfo::InputType inputType,
+void LC_ActionContext::interactiveInputStart(const InteractiveInputInfo::InputType inputType,
                                              LC_LateCompletionRequestor* requestor, const QString& tag) {
     interactiveInputRequest(inputType, requestor, tag);
     interactiveInputInvoke(inputType);
 }
 
 void LC_ActionContext::interactiveInputRequestCancel() {
-    m_interactiveInputInfo.m_requestor = nullptr;
-    m_interactiveInputInfo.m_inputType = InteractiveInputInfo::NOTNEEDED;
-    m_interactiveInputInfo.m_requestorTag = "";
-    m_interactiveInputInfo.m_state = InteractiveInputInfo::NONE;
+    m_interactiveInputInfo.requestor = nullptr;
+    m_interactiveInputInfo.inputType = InteractiveInputInfo::NOTNEEDED;
+    m_interactiveInputInfo.requestorTag.clear();
+    m_interactiveInputInfo.state = InteractiveInputInfo::NONE;
 }
 
-void LC_ActionContext::interactiveInputInvoke(InteractiveInputInfo::InputType inputType) {
+void LC_ActionContext::interactiveInputInvoke(const InteractiveInputInfo::InputType inputType) {
     switch (inputType) {
         case InteractiveInputInfo::DISTANCE: {
             setCurrentAction(RS2::ActionInteractivePickLength, nullptr);
@@ -107,9 +108,9 @@ void LC_ActionContext::interactiveInputInvoke(InteractiveInputInfo::InputType in
     }
 }
 
-void LC_ActionContext::interactiveInputRequest(InteractiveInputInfo::InputType inputType, LC_LateCompletionRequestor* requestor, const QString &tag) {
-    m_interactiveInputInfo.m_requestor = requestor;
-    m_interactiveInputInfo.m_inputType = inputType;
-    m_interactiveInputInfo.m_requestorTag = tag;
-    m_interactiveInputInfo.m_state = InteractiveInputInfo::REQUESTED;
+void LC_ActionContext::interactiveInputRequest(const InteractiveInputInfo::InputType inputType, LC_LateCompletionRequestor* requestor, const QString &tag) {
+    m_interactiveInputInfo.requestor = requestor;
+    m_interactiveInputInfo.inputType = inputType;
+    m_interactiveInputInfo.requestorTag = tag;
+    m_interactiveInputInfo.state = InteractiveInputInfo::REQUESTED;
 }

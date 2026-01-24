@@ -27,30 +27,30 @@
 #include "rs_spline.h"
 
 void LC_MatchDescriptorSpline::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
-    auto entity = new LC_TypedEntityMatchDescriptor<RS_Spline>(tr("Spline"), RS2::EntitySpline);
+    const auto entity = new LC_TypedEntityMatchDescriptor<RS_Spline>(tr("Spline"), RS2::EntitySpline);
     initCommonEntityAttributesProperties<RS_Spline>(entity);
 
-    entity->addInt("degree", [](RS_Spline* e) {
+    entity->addInt("degree", [](const RS_Spline* e) {
         return e->getDegree();
     }, tr("Degree"), tr("Spline degree"));
 
-    entity->addBoolean("closed", [](RS_Spline* e) {
+    entity->addBoolean("closed", [](const RS_Spline* e) {
         return e->isClosed();
     }, tr("Closed"), tr("Determines whether spline is closed or not"));
 
-    entity->addInt("points", [](RS_Spline* e) {
-       return (int)e->getControlPoints().size();
+    entity->addInt("points", [](const RS_Spline* e) {
+       return static_cast<int>(e->getControlPoints().size());
     }, tr("Points"), tr("Number of spline's control points"));
 
-    entity->addContainsXInList<std::vector<RS_Vector>>("controlPointX", [](RS_Spline* e) {
+    entity->addContainsXInList<std::vector<RS_Vector>>("controlPointX", [](const RS_Spline* e) {
         return e->getControlPoints();
     }, tr("Vertex X"), tr("X coordinate for one of vertexes"));
 
-    entity->addContainsYInList<std::vector<RS_Vector>>("vertexY", [](RS_Spline* e) {
+    entity->addContainsYInList<std::vector<RS_Vector>>("vertexY", [](const RS_Spline* e) {
         return e->getControlPoints();
     }, tr("Vertex Y"), tr("Y coordinate  for one of vertexes"));
 
-    entity->addBoolean("length", [](RS_Spline* e) {
+    entity->addBoolean("length", [](const RS_Spline* e) {
         return e->getLength();
     }, tr("Length"), tr("Length of spline"));
 

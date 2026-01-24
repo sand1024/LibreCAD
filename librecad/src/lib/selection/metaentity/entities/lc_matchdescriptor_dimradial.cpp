@@ -26,15 +26,15 @@
 #include "rs_dimradial.h"
 
 void LC_MatchDescriptorDimRadial::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map, LC_ActionContext *actionContext) {
-    auto entity = new LC_DimensionEntityMatchDescriptor<RS_DimRadial>(tr("Dimension Radial"), RS2::EntityDimRadial);
+    const auto entity = new LC_DimensionEntityMatchDescriptor<RS_DimRadial>(tr("Dimension Radial"), RS2::EntityDimRadial);
     initCommonEntityAttributesProperties<RS_DimRadial>(entity);
     initCommonDimensionAttributes(entity, actionContext);
-    entity->addVectorX("defX", [](RS_DimRadial* e) {
-        return e->getDefinitionPoint();
+    entity->addVectorX("defX", [](const RS_DimRadial* e) {
+        return e->getRadialDefinitionPoint();
     }, tr("Definition Point X"), tr("X coordinate for definition point"));
 
-    entity->addVectorY("defY", [](RS_DimRadial* e) {
-        return e->getDefinitionPoint();
+    entity->addVectorY("defY", [](const RS_DimRadial* e) {
+        return e->getRadialDefinitionPoint();
     }, tr("Definition Point Y"), tr("Y coordinate for definition point"));
 
     map.insert(RS2::EntityDimRadial, entity);

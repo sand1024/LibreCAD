@@ -24,7 +24,6 @@
 **
 **********************************************************************/
 
-
 #ifndef RS_CLIPBOARD_H
 #define RS_CLIPBOARD_H
 #define RS_CLIPBOARD RS_Clipboard::instance()
@@ -46,29 +45,31 @@ class RS_Layer;
 class RS_Clipboard {
 protected:
     RS_Clipboard();
+
 public:
     /**
      * @return Instance to the unique clipboard object.
      */
     static RS_Clipboard* instance();
-    void startCopy();
-    void endCopy();
+    void startCopy() const;
+    void endCopy() const;
     void clear() const;
-	void addBlock(RS_Block* b) const;
+    void addBlock(RS_Block* b) const;
     bool hasBlock(const QString& name) const;
-    int  countBlocks() const;
+    int countBlocks() const;
     RS_Block* blockAt(int i) const;
-	void addLayer(RS_Layer* l) const;
+    void addLayer(RS_Layer* l) const;
     bool hasLayer(const QString& name) const;
-    int  countLayers() const;
+    int countLayers() const;
     RS_Layer* layerAt(int i) const;
-	void addEntity(RS_Entity* e) const;
+    void addEntity(RS_Entity* e) const;
     unsigned count() const;
     RS_Entity* entityAt(unsigned i) const;
     RS_Entity* firstEntity() const;
     RS_Entity* nextEntity() const;
     RS_Graphic* getGraphic() const;
-    friend std::ostream& operator << (std::ostream& os, RS_Clipboard& cb);
+    friend std::ostream& operator <<(std::ostream& os, const RS_Clipboard& cb);
+
 protected:
     std::unique_ptr<RS_Graphic> m_graphic;
 };

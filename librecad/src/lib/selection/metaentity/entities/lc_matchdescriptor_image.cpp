@@ -27,47 +27,47 @@
 #include "rs_units.h"
 
 void LC_MatchDescriptorImage::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
-        auto entity = new LC_TypedEntityMatchDescriptor<RS_Image>(tr("Image"), RS2::EntityImage);
+        const auto entity = new LC_TypedEntityMatchDescriptor<RS_Image>(tr("Image"), RS2::EntityImage);
     initCommonEntityAttributesProperties<RS_Image>(entity);
 
-    entity->addString("file", [](RS_Image* e) {
+    entity->addString("file", [](const RS_Image* e) {
         return e->getFile();
     }, tr("File"), tr("Name of the image file"));
 
-    entity->addVectorX("insertX", [](RS_Image* e) {
+    entity->addVectorX("insertX", [](const RS_Image* e) {
         return e->getInsertionPoint();
     }, tr("Insert X"), tr("X coordinate for image insertion point"));
 
-    entity->addVectorY("insertY", [](RS_Image* e) {
+    entity->addVectorY("insertY", [](const RS_Image* e) {
         return e->getInsertionPoint();
     }, tr("Insert Y"), tr("Y coordinate for image insertion point"));
 
-    entity->addDouble("scale", [](RS_Image* e) {
+    entity->addDouble("scale", [](const RS_Image* e) {
         return e->getUVector().magnitude();
     }, tr("Scale"), tr("Scale factor for image"));
 
-    entity->addAngle("angle", [](RS_Image* e) {
+    entity->addAngle("angle", [](const RS_Image* e) {
         return e->getUVector().angle();
     }, tr("Angle"), tr("Image rotation angle"));
 
-    entity->addDouble("sizeX", [](RS_Image* e) {
+    entity->addDouble("sizeX", [](const RS_Image* e) {
         return e->getData().size.getX();
     }, tr("Width pixels"), tr("Width of image in pixels"));
 
-    entity->addDouble("sizeY", [](RS_Image* e) {
+    entity->addDouble("sizeY", [](const RS_Image* e) {
         return e->getData().size.getY();
     }, tr("Height pixels"), tr("Height of image in pixels"));
 
-    entity->addLength("width", [](RS_Image* e) {
+    entity->addLength("width", [](const RS_Image* e) {
         return e->getImageWidth();
     }, tr("Width"), tr("Width of image"));
 
-    entity->addLength("height", [](RS_Image* e) {
+    entity->addLength("height", [](const RS_Image* e) {
         return e->getImageHeight();
     }, tr("Height"), tr("Height of image"));
 
-    entity->addDouble("dpi", [](RS_Image* e) {
-        double scale = e->getUVector().magnitude();
+    entity->addDouble("dpi", [](const RS_Image* e) {
+        const double scale = e->getUVector().magnitude();
         return RS_Units::scaleToDpi(scale, e->getGraphicUnit());
     }, tr("DPI"), tr("Dots per inch for the image"));
 

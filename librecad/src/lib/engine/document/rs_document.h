@@ -25,14 +25,13 @@
 **
 **********************************************************************/
 
-
 #ifndef RS_DOCUMENT_H
 #define RS_DOCUMENT_H
 
+#include "lc_selectedset.h"
 #include "rs_entitycontainer.h"
 #include "rs_pen.h"
 #include "rs_undo.h"
-#include "lc_selectedset.h"
 
 class LC_GraphicViewport;
 class LC_TextStyleList;
@@ -45,32 +44,71 @@ class RS_LayerList;
 class RS_ActionInterface;
 
 struct LC_DocumentModificationBatch {
-    bool success {false}; // generic result of applying the batch to document
+    bool success{false}; // generic result of applying the batch to document
     QList<RS_Entity*> entitiesToAdd; // list of entities that should be added to the document
     QList<RS_Entity*> entitiesToDelete; // list of entities that should be marked as deleted in the document
 
-    bool m_setActiveLayer{true}; // flag that indicates that for entities to be added currently active layer should be set
-    bool m_setActivePen{true};  // flag that indicates that for entities to be added currently active pen should be set
+    bool setActiveLayer{true}; // flag that indicates that for entities to be added currently active layer should be set
+    bool setActivePen{true}; // flag that indicates that for entities to be added currently active pen should be set
 
     ~LC_DocumentModificationBatch() = default;
 
-    void dontSetActiveLayerAndPen(){m_setActiveLayer = false; m_setActivePen = false;}
-    void setActiveLayerAndPen(bool setLayer, bool setPen){m_setActiveLayer = setLayer; m_setActivePen = setPen;}
+    void dontSetActiveLayerAndPen() {
+        setActiveLayer = false;
+        setActivePen = false;
+    }
 
-    void add(RS_Entity* entity) {entitiesToAdd.append(entity);}
-    void remove(QList<RS_Entity*>& list) {entitiesToDelete.append(list);}
-    void remove(RS_Entity* e) {entitiesToDelete.append(e);}
-    void replace(RS_Entity* original, RS_Entity* clone) {entitiesToDelete.append(original);entitiesToAdd.append(clone); }
-    void clear() {entitiesToAdd.clear(); entitiesToDelete.clear();};
+    void setActiveLayerAndPen(const bool setLayer, const bool setPen) {
+        setActiveLayer = setLayer;
+        setActivePen = setPen;
+    }
+
+    void add(RS_Entity* entity) {
+        entitiesToAdd.append(entity);
+    }
+
+    void remove(const QList<RS_Entity*>& list) {
+        entitiesToDelete.append(list);
+    }
+
+    void remove(RS_Entity* e) {
+        entitiesToDelete.append(e);
+    }
+
+    void replace(RS_Entity* original, RS_Entity* clone) {
+        entitiesToDelete.append(original);
+        entitiesToAdd.append(clone);
+    }
+
+    void clear() {
+        entitiesToAdd.clear();
+        entitiesToDelete.clear();
+    }
 };
 
-inline void operator +=(LC_DocumentModificationBatch &ctx, RS_Entity* e) {ctx.entitiesToAdd.append(e);}
-inline void operator +=(LC_DocumentModificationBatch &ctx, QList<RS_Entity*> &list) {ctx.entitiesToAdd.append(list);}
-inline void operator +=(LC_DocumentModificationBatch &ctx, const QList<RS_Entity*> &list) {ctx.entitiesToAdd.append(list);}
-inline void operator -=(LC_DocumentModificationBatch &ctx, RS_Entity* e) {ctx.entitiesToDelete.append(e);}
-inline void operator -=(LC_DocumentModificationBatch &ctx, QList<RS_Entity*> &list) {ctx.entitiesToDelete.append(list);}
-inline void operator -=(LC_DocumentModificationBatch &ctx, const QList<RS_Entity*> &list) {ctx.entitiesToDelete.append(list);};
+inline void operator +=(LC_DocumentModificationBatch& ctx, RS_Entity* e) {
+    ctx.entitiesToAdd.append(e);
+}
 
+inline void operator +=(LC_DocumentModificationBatch& ctx, QList<RS_Entity*>& list) {
+    ctx.entitiesToAdd.append(list);
+}
+
+inline void operator +=(LC_DocumentModificationBatch& ctx, const QList<RS_Entity*>& list) {
+    ctx.entitiesToAdd.append(list);
+}
+
+inline void operator -=(LC_DocumentModificationBatch& ctx, RS_Entity* e) {
+    ctx.entitiesToDelete.append(e);
+}
+
+inline void operator -=(LC_DocumentModificationBatch& ctx, QList<RS_Entity*>& list) {
+    ctx.entitiesToDelete.append(list);
+}
+
+inline void operator -=(LC_DocumentModificationBatch& ctx, const QList<RS_Entity*>& list) {
+    ctx.entitiesToDelete.append(list);
+}
 
 /**
  * Base class for documents. Documents can be either graphics or
@@ -82,22 +120,29 @@ inline void operator -=(LC_DocumentModificationBatch &ctx, const QList<RS_Entity
  */
 class RS_Document : public RS_EntityContainer, public RS_Undo {
 public:
-    explicit RS_Document(RS_EntityContainer* parent=nullptr);
+    explicit RS_Document(RS_EntityContainer* parent = nullptr);
     ~RS_Document() override;
 
-    struct LC_SelectionInfo{
-        unsigned count = 0;
-        double length = 0.0;
+    struct LC_SelectionInfo {
+        unsigned entitiesCount = 0;
+        double totalLength = 0.0;
     };
 
-    using FunUndoable  = std::function<bool(LC_DocumentModificationBatch& ctx)>;
-    using FunSelection  = std::function<void(LC_DocumentModificationBatch& ctx, RS_Document* doc)>;
+    using FunUndoable = std::function<bool(LC_DocumentModificationBatch& ctx)>;
+    using FunSelection = std::function<void(LC_DocumentModificationBatch& ctx, RS_Document* doc)>;
 
-    virtual RS_LayerList* getLayerList()= 0;
+    virtual RS_LayerList* getLayerList() = 0;
     virtual RS_BlockList* getBlockList() = 0;
     virtual LC_DimStylesList* getDimStyleList() = 0;
-    virtual LC_ViewList* getViewList() { return nullptr;}
-    virtual LC_UCSList* getUCSList() { return nullptr;}
+
+    virtual LC_ViewList* getViewList() {
+        return nullptr;
+    }
+
+    virtual LC_UCSList* getUCSList() {
+        return nullptr;
+    }
+
     virtual LC_TextStyleList* getTextStyleList() = 0;
 
     virtual void newDoc() = 0;
@@ -105,54 +150,69 @@ public:
     /**
      * @return true for all document entities (e.g. Graphics or Blocks).
      */
-    bool isDocument() const override {return true;}
+    bool isDocument() const override {
+        return true;
+    }
 
-    void addEntity(RS_Entity* entity) override;
+    void addEntity(const RS_Entity* entity) override;
 
-
-    void select(const QList<RS_Entity*>& list, bool select = true) {
-        for (auto e: list) {
+    void select(const QList<RS_Entity*>& list, const bool select = true) {
+        for (const auto e : list) {
             e->doSelectInDocument(select, this);
         }
     }
 
-    bool hasSelection();
+    bool hasSelection() const;
     bool isSingleEntitySelected() const;
 
     void unselect(RS_Entity* entity) {
         entity->doSelectInDocument(false, this);
     }
 
-    bool collectSelected(QList<RS_Entity*> &entitiesList) const;
-    LC_SelectionInfo getSelectionInfo(/*bool deep, */QList<RS2::EntityType> const& types = {}) const;
-    virtual bool collectSelected(QList<RS_Entity*> &collect, bool deep, QList<RS2::EntityType> const &types = {});
+    bool collectSelected(QList<RS_Entity*>& entitiesList) const;
+    LC_SelectionInfo getSelectionInfo(/*bool deep, */ const QList<RS2::EntityType>& types = {}) const;
+    virtual bool collectSelected(QList<RS_Entity*>& collect, bool deep, const QList<RS2::EntityType>& types = {});
 
     /**
      * @return Currently active drawing pen.
      */
-    RS_Pen getActivePen() const {return activePen;}
+    RS_Pen getActivePen() const {
+        return m_activePen;
+    }
 
     /**
      * Sets the currently active drawing pen to p.
      */
-    void setActivePen(const RS_Pen& p) {activePen = p;}
-/**
- * Sets the documents modified status to 'm'.
- */
-    virtual void setModified(bool m) {
-        modified = m;
+    void setActivePen(const RS_Pen& p) {
+        m_activePen = p;
     }
 
-	/**
-	 * @retval true The document has been modified since it was last saved.
-	 * @retval false The document has not been modified since it was last saved.
-	 */
-    virtual bool isModified() const {return modified;}
+    /**
+     * Sets the documents modified status to 'm'.
+     */
+    virtual void setModified(const bool m) {
+        m_modified = m;
+    }
 
-    void setGraphicView(RS_GraphicView * g) {gv = g;}
-    RS_GraphicView* getGraphicView() const {return gv;} // fixme - sand -- REALLY BAD DEPENDANCE TO UI here, REWORK!
+    /**
+     * @retval true The document has been modified since it was last saved.
+     * @retval false The document has not been modified since it was last saved.
+     */
+    virtual bool isModified() const {
+        return m_modified;
+    }
 
-    LC_SelectedSet* getSelection() const {return m_selectedSet.get();}
+    void setGraphicView(RS_GraphicView* g) {
+        m_gv = g;
+    }
+
+    RS_GraphicView* getGraphicView() const {
+        return m_gv;
+    } // fixme - sand -- REALLY BAD DEPENDANCE TO UI here, REWORK!
+
+    LC_SelectedSet* getSelection() const {
+        return m_selectedSet.get();
+    }
 
     RefInfo getNearestSelectedRefInfo(const RS_Vector& coord, double* dist) const override;
 
@@ -162,12 +222,12 @@ public:
 
 protected:
     /** Flag set if the document was modified and not yet saved. */
-    bool modified = false;
+    bool m_modified = false;
     /** Active pen. */
-    RS_Pen activePen;
+    RS_Pen m_activePen;
 
     //used to read/save current view
-    RS_GraphicView * gv = nullptr; // fixme - sand -- REALLY BAD DEPENDANCE TO UI here, REWORK!
+    RS_GraphicView* m_gv = nullptr; // fixme - sand -- REALLY BAD DEPENDANCE TO UI here, REWORK!
 
     std::unique_ptr<LC_SelectedSet> m_selectedSet;
 
@@ -180,13 +240,13 @@ protected:
     void endUndoCycle() override;
     void startUndoCycle() override;
 
-    void select(RS_Entity* entity, bool select = true) {
+    void select(RS_Entity* entity, const bool select = true) {
         if (entity->getFlag(RS2::FlagSelected) != select) {
             entity->doSelectInDocument(select, this);
         }
     }
 
-    void undoableAdd(RS_Entity* entity, bool undoable = true) {
+    void undoableAdd(RS_Entity* entity, const bool undoable = true) {
         addEntity(entity);
         if (undoable) {
             addUndoable(entity);
@@ -201,13 +261,12 @@ protected:
         addUndoable(e);
     }
 
-
     /**
      * Removes an entity from the entity container. Implementation
      * from RS_Undo.
      */
     void removeUndoable(RS_Undoable* u) override {
-        if (u != nullptr && u->undoRtti()==RS2::UndoableEntity && u->isDeleted()) {
+        if (u != nullptr && u->undoRtti() == RS2::UndoableEntity && u->isDeleted()) {
             removeEntity(static_cast<RS_Entity*>(u));
         }
     }

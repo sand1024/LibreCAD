@@ -35,9 +35,9 @@ public:
     void deletedStateChanged(bool undone) override;
 
 private:
-    LC_GraphicViewport* viewport = nullptr;
-    RS_Vector m_From = RS_Vector(0,0,0);
-    RS_Vector m_To = RS_Vector(0,0,0);
+    LC_GraphicViewport* m_viewport = nullptr;
+    RS_Vector m_from = RS_Vector(0,0,0);
+    RS_Vector m_to = RS_Vector(0,0,0);
 };
 
-#endif // LC_UNDOABLERELZERO_H
+#endif

@@ -26,15 +26,15 @@
 #include "rs_dimdiametric.h"
 
 void LC_MatchDescriptorDimDiametric::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map, LC_ActionContext *actionContext) {
-    auto entity = new LC_DimensionEntityMatchDescriptor<RS_DimDiametric>(tr("Dimension Diametric"), RS2::EntityDimDiametric);
+    const auto entity = new LC_DimensionEntityMatchDescriptor<RS_DimDiametric>(tr("Dimension Diametric"), RS2::EntityDimDiametric);
     initCommonEntityAttributesProperties<RS_DimDiametric>(entity);
     initCommonDimensionAttributes(entity, actionContext);
-    entity->addVectorX("defX", [](RS_DimDiametric* e) {
-        return e->getDefinitionPoint();
+    entity->addVectorX("defX", [](const RS_DimDiametric* e) {
+        return e->getDiametricDefinitionPoint();
     }, tr("Definition Point X"), tr("X coordinate for definition point"));
 
-    entity->addVectorY("defY", [](RS_DimDiametric* e) {
-        return e->getDefinitionPoint();
+    entity->addVectorY("defY", [](const RS_DimDiametric* e) {
+        return e->getDiametricDefinitionPoint();
     }, tr("Definition Point Y"), tr("Y coordinate for definition point"));
 
     map.insert(RS2::EntityDimDiametric, entity);

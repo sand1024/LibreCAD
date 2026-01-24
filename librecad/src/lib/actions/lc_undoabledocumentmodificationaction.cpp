@@ -21,7 +21,6 @@
  * ********************************************************************************
  */
 
-
 #include "lc_undoabledocumentmodificationaction.h"
 
 #include "lc_undosection.h"
@@ -29,12 +28,12 @@
 #include "rs_preview.h"
 
 void LC_UndoableDocumentModificationAction::doTrigger() {
-    bool result = m_document->undoableModify(m_viewport, [this](LC_DocumentModificationBatch& ctx)->bool {
-       bool success = doTriggerModifications(ctx);
+    const bool result = m_document->undoableModify(m_viewport, [this](LC_DocumentModificationBatch& ctx)->bool {
+       const bool success = doTriggerModifications(ctx);
        ctx.success = success;
        return success;
     },
-    [this](LC_DocumentModificationBatch& ctx, [[maybe_unused]]RS_Document* doc)->void {
+    [this](const LC_DocumentModificationBatch& ctx, [[maybe_unused]]RS_Document* doc)->void {
         doTriggerSelections(ctx);
     });
     doTriggerCompletion(result);
@@ -42,7 +41,7 @@ void LC_UndoableDocumentModificationAction::doTrigger() {
 
 void LC_UndoableDocumentModificationAction::previewEntitiesToAdd(LC_DocumentModificationBatch &ctx) const {
     for (const auto e: ctx.entitiesToAdd) {
-        RS2::EntityType rtti = e->rtti();
+        const RS2::EntityType rtti = e->rtti();
         if (rtti == RS2::EntityInsert || RS2::isDimensionalEntity(rtti)) {
             e->update();
         }

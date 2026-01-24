@@ -23,8 +23,9 @@
 #ifndef LC_DIMSTYLESLIST_H
 #define LC_DIMSTYLESLIST_H
 
-#include <memory>
 #include <QList>
+#include <memory>
+
 #include "rs.h"
 
 class LC_DimStyle;
@@ -45,7 +46,7 @@ public:
     const QList<LC_DimStyle*>* getStylesList() const {return &m_stylesList;}
     LC_DimStyle* getFallbackDimStyleFromVars() const {return m_fallbackDimStyleFromVars.get();}
     void replaceStyles(const QList<LC_DimStyle*>& list);
-    void setModified(bool m) {m_modified = m;}
+    void setModified(const bool m) {m_modified = m;}
     bool isEmpty() const {return m_stylesList.isEmpty();}
     virtual bool isModified() const { return m_modified;}
 protected:
@@ -55,4 +56,4 @@ protected:
     std::unique_ptr<LC_DimStyle> m_fallbackDimStyleFromVars;
 };
 
-#endif // LC_DIMSTYLESLIST_H
+#endif

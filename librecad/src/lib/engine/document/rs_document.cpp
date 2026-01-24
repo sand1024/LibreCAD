@@ -40,7 +40,7 @@
  */
 RS_Document::RS_Document(RS_EntityContainer* parent)
     : RS_EntityContainer{parent}
-    , activePen {RS_Color{RS2::FlagByLayer}, RS2::WidthByLayer, RS2::LineByLayer}
+    , m_activePen {RS_Color{RS2::FlagByLayer}, RS2::WidthByLayer, RS2::LineByLayer}
     , m_selectedSet{std::make_unique<LC_SelectedSet>()}{
     RS_DEBUG->print("RS_Document::RS_Document() ");
 }
@@ -48,8 +48,8 @@ RS_Document::RS_Document(RS_EntityContainer* parent)
 RS_Document::~RS_Document() {
 }
 
-void RS_Document::addEntity(RS_Entity* entity) {
-    entity->parent = this;
+void RS_Document::addEntity(const RS_Entity* entity) {
+    entity->m_parent = this;
     RS_EntityContainer::addEntity(entity);
 }
 
@@ -84,24 +84,24 @@ RS_EntityContainer::RefInfo RS_Document::getNearestSelectedRefInfo(const RS_Vect
     for (RS_Entity* en : selection) {
         if (en->isVisible() && !en->isParentSelected()) {
             double curDist  = 0.; // currently measured distance
-            RS_Vector point = en->getNearestSelectedRef(coord, &curDist);
+            const RS_Vector point = en->getNearestSelectedRef(coord, &curDist);
             if (point.valid && curDist < minDist) {
                 closestPoint       = point;
                 closestPointEntity = en;
                 minDist            = curDist;
-                if (dist) {
+                if (dist != nullptr) {
                     *dist = minDist;
                 }
             }
         }
     }
-    RefInfo result{closestPoint, closestPointEntity};
+    const RefInfo result{closestPoint, closestPointEntity};
     return result;
 }
 
 bool RS_Document::undoableModify(LC_GraphicViewport* viewport, const FunUndoable& funModification, const FunSelection& funSelection) {
-    LC_UndoSection undo(this, viewport);
-    bool result = undo.undoableExecute(funModification, funSelection);
+    const LC_UndoSection undo(this, viewport);
+    const bool result = undo.undoableExecute(funModification, funSelection);
     return result;
 }
 
@@ -119,7 +119,7 @@ void RS_Document::endBulkUndoablesCleanup() {
     calculateBorders();
 }
 
-bool RS_Document::hasSelection() {
+bool RS_Document::hasSelection() const {
     return m_selectedSet->hasSelection();
 }
 
@@ -130,7 +130,7 @@ bool RS_Document::isSingleEntitySelected() const {
 }
 
 bool RS_Document::collectSelected(QList<RS_Entity*>& entitiesList) const {
-    auto selection = getSelection();
+    const auto selection = getSelection();
     if (selection->isEmpty()) {
         return false;
     }
@@ -139,16 +139,16 @@ bool RS_Document::collectSelected(QList<RS_Entity*>& entitiesList) const {
 
 RS_Document::LC_SelectionInfo RS_Document::getSelectionInfo(const QList<RS2::EntityType> &types) const {
     LC_SelectionInfo result;
-    std::set<RS2::EntityType> type{types.cbegin(), types.cend()};
+    const std::set<RS2::EntityType> type{types.cbegin(), types.cend()};
     QList<RS_Entity*> selection;
 
     if (collectSelected(selection)) {
-        for (RS_Entity* e : selection) {
-            if (types.empty() || type.count(e->rtti())) {
-                result.count++;
-                double entityLength = e->getLength();
+        for (const auto e : selection) {
+            if (types.empty() || type.count(e->rtti()) != 0) {
+                result.entitiesCount++;
+                const double entityLength = e->getLength();
                 if (entityLength >= 0.) {
-                    result.length += entityLength;
+                    result.totalLength += entityLength;
                 }
             }
         }
@@ -156,8 +156,8 @@ RS_Document::LC_SelectionInfo RS_Document::getSelectionInfo(const QList<RS2::Ent
     return result;
 }
 
-bool RS_Document::collectSelected(QList<RS_Entity*> &collect, [[maybe_unused]] bool deep, QList<RS2::EntityType> const &types) {
-    auto selection = getSelection();
+bool RS_Document::collectSelected(QList<RS_Entity*> &collect, [[maybe_unused]] bool deep, const QList<RS2::EntityType>&types) {
+    const auto selection = getSelection();
     if (selection->isEmpty()) {
         return false;
     }

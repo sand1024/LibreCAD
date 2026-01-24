@@ -26,7 +26,6 @@
 **
 **********************************************************************/
 
-
 #ifndef RS_UNDO_H
 #define RS_UNDO_H
 
@@ -45,17 +44,18 @@ class RS_Undoable;
  */
 class RS_Undo {
 public:
-	virtual ~RS_Undo() = default;
+    virtual ~RS_Undo() = default;
 
     virtual bool undo();
     virtual bool redo();
     /**
-	  *\brief enable/disable redo/undo buttons in main application window
-	  *\author: Dongxu Li
+   *\brief enable/disable redo/undo buttons in main application window
+   *\author: Dongxu Li
       **/
-	void updateUndoState() const;
-    void collectUndoState(bool &undoAvailable, bool &redoAvailable) const;
-    friend std::ostream& operator << (std::ostream& os, RS_Undo& a);
+    void updateUndoState() const;
+    void collectUndoState(bool& undoAvailable, bool& redoAvailable) const;
+    friend std::ostream& operator <<(std::ostream& os, const RS_Undo& l);
+
 protected:
     virtual bool hasUndoable();
     virtual int countUndoCycles();
@@ -65,19 +65,22 @@ protected:
     virtual void endUndoCycle();
     virtual void addUndoable(RS_Undoable* u);
 
-    virtual void fireUndoStateChanged([[maybe_unused]]bool undoAvailable, [[maybe_unused]] bool redoAvailable) const {};
+    virtual void fireUndoStateChanged([[maybe_unused]] bool undoAvailable, [[maybe_unused]] bool redoAvailable) const {
+    }
+
     virtual void startBulkUndoablesCleanup() = 0;
-    virtual void endBulkUndoablesCleanup()  = 0;
+    virtual void endBulkUndoablesCleanup() = 0;
     /**
      * Must be overwritten by the implementing class and delete
      * the given Undoable (unrecoverable). This method is called
      * for Undoables that are no longer in the undo buffer.
      */
     virtual void removeUndoable(RS_Undoable* u) = 0;
+
 private:
     void addUndoCycle(std::shared_ptr<RS_UndoCycle> undoCycle);
     //! List of undo list items. every item is something that can be undone.
-	std::vector<std::shared_ptr<RS_UndoCycle>> m_undoList;
+    std::vector<std::shared_ptr<RS_UndoCycle>> m_undoList;
 
     /**
      * This is the iterator pointing to the first redoCycle, ready to be called for redo
@@ -90,9 +93,8 @@ private:
      */
     std::shared_ptr<RS_UndoCycle> m_currentCycle;
 
-    int m_refCount {0}; ///< reference counter for nested start/end calls
+    int m_refCount{0}; ///< reference counter for nested start/end calls
 };
-
 
 /**
  * Stub for testing the RS_Undo class.

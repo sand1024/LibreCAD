@@ -24,7 +24,7 @@
 #include "lc_matchdescriptor_multiple.h"
 
 void LC_MatchDescriptorMultiple::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
-    auto entity = new LC_TypedEntityMatchDescriptor<RS_Entity>(tr("Multiple"), RS2::EntityUnknown);
+    const auto entity = new LC_TypedEntityMatchDescriptor<RS_Entity>(tr("Multiple"), RS2::EntityUnknown);
     initCommonEntityAttributesProperties<RS_Entity>(entity);
     map.insert(RS2::EntityUnknown, entity);
 }

@@ -30,4 +30,4 @@ public:
     LC_MLeader();
 };
 
-#endif // LC_MLEADER_H
+#endif

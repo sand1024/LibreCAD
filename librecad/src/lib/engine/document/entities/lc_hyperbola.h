@@ -22,7 +22,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 **********************************************************************/
 
-
 #ifndef LC_HYPERBOLA_H
 #define LC_HYPERBOLA_H
 
@@ -38,33 +37,26 @@ class LC_Quadratic;
 
  */
 struct LC_HyperbolaData {
-	LC_HyperbolaData() = default;
-	LC_HyperbolaData(const RS_Vector& center,
-					 const RS_Vector& majorP,
-					 double ratio,
-					 double angle1, double angle2,
-                     bool reversed);
-	/** create data based on foci and a point on hyperbola */
-	LC_HyperbolaData(const RS_Vector& focus0,
-					 const RS_Vector& focus1,
-					 const RS_Vector& point);
+    LC_HyperbolaData() = default;
+    LC_HyperbolaData(const RS_Vector& center, const RS_Vector& majorP, double ratio, double angle1, double angle2, bool reversed);
+    /** create data based on foci and a point on hyperbola */
+    LC_HyperbolaData(const RS_Vector& focus0, const RS_Vector& focus1, const RS_Vector& point);
 
-	//! Hyperbola center
+    //! Hyperbola center
     RS_Vector center{};
-	//! Endpoint of major axis relative to center.
+    //! Endpoint of major axis relative to center.
     RS_Vector majorP{};
-	//! Ratio of minor axis to major axis.
+    //! Ratio of minor axis to major axis.
     double ratio = 0.;
-	//! Start angle
+    //! Start angle
     double angle1 = 0.;
-	//! End angle
+    //! End angle
     double angle2 = 0.;
-	//! Reversed (cw) flag
+    //! Reversed (cw) flag
     bool reversed = false;
 };
 
-std::ostream& operator << (std::ostream& os, const LC_HyperbolaData& ed);
-
+std::ostream& operator <<(std::ostream& os, const LC_HyperbolaData& ed);
 
 /**
  * Class for an hyperbola entity.
@@ -73,62 +65,58 @@ std::ostream& operator << (std::ostream& os, const LC_HyperbolaData& ed);
  */
 class LC_Hyperbola : public RS_AtomicEntity {
 public:
-	LC_Hyperbola() = default;
-    LC_Hyperbola(RS_EntityContainer* parent,
-               const LC_HyperbolaData& d);
+    LC_Hyperbola() = default;
+    LC_Hyperbola(RS_EntityContainer* parent, const LC_HyperbolaData& d);
 
     /** create data based on foci and a point on hyperbola */
-    LC_Hyperbola(const RS_Vector& focus0,
-                     const RS_Vector& focus1,
-                     const RS_Vector& point);
     bool createFromQuadratic(const LC_Quadratic& q);
     bool createFromQuadratic(const std::vector<double>& q);
 
-	RS_Entity* clone() const override;
+    RS_Entity* clone() const override;
 
     /**	@return RS2::EntityHyperbola */
-	RS2::EntityType rtti() const  override{
+    RS2::EntityType rtti() const override {
         return RS2::EntityHyperbola;
     }
-	bool isValid() const{
+
+    bool isValid() const {
         return m_bValid;
     }
 
+    //    double getLength() const;
 
-
-//    double getLength() const;
-
-//    /**
-//    //Hyperbola must have ratio<1, and not reversed
-//    *@ x1, hyperbola angle
-//    *@ x2, hyperbola angle
-//    //@return the arc length between hyperbola angle x1, x2
-//    **/
-//    double getHyperbolaLength(double a1, double a2) const;
-//    double getHyperbolaLength(double a2) const;
-
+    //    /**
+    //    //Hyperbola must have ratio<1, and not reversed
+    //    *@ x1, hyperbola angle
+    //    *@ x2, hyperbola angle
+    //    //@return the arc length between hyperbola angle x1, x2
+    //    **/
+    //    double getHyperbolaLength(double a1, double a2) const;
+    //    double getHyperbolaLength(double a2) const;
 
     /** @return Copy of data that defines the hyperbola. **/
     LC_HyperbolaData getData() const {
         return data;
     }
-	RS_VectorSolutions getFoci() const;
-	RS_VectorSolutions getRefPoints() const override;
+
+    RS_VectorSolutions getFoci() const;
+    RS_VectorSolutions getRefPoints() const override;
 
     /**
      * @retval true if the arc is reversed (clockwise),
      * @retval false otherwise
      */
-	bool isReversed() const{
+    bool isReversed() const {
         return data.reversed;
     }
+
     /** sets the reversed status. */
-	void setReversed(bool r){
+    void setReversed(const bool r) {
         data.reversed = r;
     }
 
     /** @return The rotation angle of this hyperbola */
-	double getAngle() const {
+    double getAngle() const {
         return data.majorP.angle();
     }
 
@@ -136,24 +124,27 @@ public:
     double getAngle1() const {
         return data.angle1;
     }
+
     /** Sets new start angle. */
-    void setAngle1(double a1) {
+    void setAngle1(const double a1) {
         data.angle1 = a1;
     }
+
     /** @return The end angle of this arc */
     double getAngle2() const {
         return data.angle2;
     }
+
     /** Sets new end angle. */
-    void setAngle2(double a2) {
+    void setAngle2(const double a2) {
         data.angle2 = a2;
     }
 
-
     /** @return The center point (x) of this arc */
-	RS_Vector getCenter() const override{
+    RS_Vector getCenter() const override {
         return data.center;
     }
+
     /** Sets new center. */
     void setCenter(const RS_Vector& c) {
         data.center = c;
@@ -163,6 +154,7 @@ public:
     RS_Vector getMajorP() const {
         return data.majorP;
     }
+
     /** Sets new major point (relative to center). */
     void setMajorP(const RS_Vector& p) {
         data.majorP = p;
@@ -172,11 +164,11 @@ public:
     double getRatio() const {
         return data.ratio;
     }
+
     /** Sets new ratio. */
-    void setRatio(double r) {
+    void setRatio(const double r) {
         data.ratio = r;
     }
-
 
     /** @return The major radius of this hyperbola. Same as getRadius() */
     double getMajorRadius() const {
@@ -185,63 +177,89 @@ public:
 
     /** @return The minor radius of this hyperbola */
     double getMinorRadius() const {
-        return data.majorP.magnitude()*data.ratio;
+        return data.majorP.magnitude() * data.ratio;
     }
 
-	void calculateBorders() override{}
+    void calculateBorders() override {
+    }
 
-	RS_Vector getMiddlePoint(void)const override{return RS_Vector(false);}
-	RS_Vector getNearestEndpoint(const RS_Vector& /*coord*/,
-										 double*/* dist = NULL*/) const override
-    {return RS_Vector(false);}
-	RS_Vector getNearestPointOnEntity(const RS_Vector& /*coord*/,
-			bool /*onEntity = true*/, double*/* dist = NULL*/, RS_Entity**/* entity=NULL*/) const override
-    {return RS_Vector(false);}
-	RS_Vector getNearestCenter(const RS_Vector& /*coord*/,
-									   double*/* dist = NULL*/) const override
-   {return RS_Vector(false);}
-	RS_Vector getNearestMiddle(const RS_Vector& /*coord*/,
-                                       double*/* dist = NULL*/,
-                                       int/* middlePoints = 1*/
-									   )const override
-   {return RS_Vector(false);}
-	RS_Vector getNearestDist(double /*distance*/,
-                                     const RS_Vector&/* coord*/,
-									 double*/* dist = NULL*/) const override
-    {return RS_Vector(false);}
-	RS_Vector getNearestOrthTan(const RS_Vector& /*coord*/,
-                                    const RS_Line& /*normal*/,
-									 bool /*onEntity = false*/) const override
-    {return RS_Vector(false);}
-	double getDistanceToPoint(const RS_Vector& /*coord*/,
-                                      RS_Entity** /*entity=NULL*/,
-                                      RS2::ResolveLevel/* level=RS2::ResolveNone*/,
-									  double /*solidDist = RS_MAXDOUBLE*/) const override
-    {return RS_MAXDOUBLE;}
-	bool isPointOnEntity(const RS_Vector& /*coord*/,
-								 double /*tolerance=RS_TOLERANCE*/) const override;
+    RS_Vector getMiddlePoint() const override {
+        return RS_Vector(false);
+    }
 
-	void move(const RS_Vector& /*offset*/) override{}
-    void rotate(double /*angle*/) {}
-	void rotate(const RS_Vector& /*angleVector*/){}
-    void rotate(const RS_Vector& /*center*/, double /*angle*/) override{}
-	void rotate(const RS_Vector& /*center*/, const RS_Vector& /*angle*/)override{}
-	void scale(const RS_Vector& /*center*/, const RS_Vector& /*factor*/)override{}
-	void mirror(const RS_Vector& /*axisPoint1*/, const RS_Vector& /*axisPoint2*/)override{}
+    RS_Vector doGetNearestEndpoint(const RS_Vector& /*coord*/, double*/* dist = NULL*/) const override {
+        return RS_Vector(false);
+    }
+
+    RS_Vector doGetNearestPointOnEntity(const RS_Vector& /*coord*/, bool /*onEntity = true*/, double*/* dist = NULL*/,
+                                      RS_Entity**/* entity=NULL*/) const override {
+        return RS_Vector(false);
+    }
+
+    RS_Vector doGetNearestCenter(const RS_Vector& /*coord*/, double*/* dist = NULL*/) const override {
+        return RS_Vector(false);
+    }
+
+    RS_Vector doGetNearestMiddle(const RS_Vector& /*coord*/, double*/* dist = NULL*/, int /* middlePoints = 1*/) const override {
+        return RS_Vector(false);
+    }
+
+    RS_Vector doGetNearestDist(double /*distance*/, const RS_Vector&/* coord*/, double*/* dist = NULL*/) const override {
+        return RS_Vector(false);
+    }
+
+    RS_Vector getNearestOrthTan(const RS_Vector& /*coord*/, const RS_Line& /*normal*/, bool /*onEntity = false*/) const override {
+        return RS_Vector(false);
+    }
+
+    double doGetDistanceToPoint(const RS_Vector& /*coord*/, RS_Entity** /*entity=NULL*/, RS2::ResolveLevel/* level=RS2::ResolveNone*/,
+                              double /*solidDist = RS_MAXDOUBLE*/) const override {
+        return RS_MAXDOUBLE;
+    }
+
+    void move(const RS_Vector& /*offset*/) override {
+    }
+
+    void rotate(double /*angle*/) {
+    }
+
+    void rotate(const RS_Vector& /*angleVector*/) {
+    }
+
+    void rotate(const RS_Vector& /*center*/, double /*angle*/) override {
+    }
+
+    void rotate(const RS_Vector& /*center*/, const RS_Vector& /*angle*/) override {
+    }
+
+    void scale(const RS_Vector& /*center*/, const RS_Vector& /*factor*/) override {
+    }
+
+    void mirror(const RS_Vector& /*axisPoint1*/, const RS_Vector& /*axisPoint2*/) override {
+    }
+
     RS_Entity& shear(double k) override;
 
-	void moveRef(const RS_Vector& /*ref*/, const RS_Vector& /*offset*/)override{}
+    void moveRef(const RS_Vector& /*ref*/, const RS_Vector& /*offset*/) override {
+    }
 
-	void draw(RS_Painter*)override{}
+    void draw(RS_Painter*) override {
+    }
 
-    friend std::ostream& operator << (std::ostream& os, const LC_Hyperbola& a);
+    friend std::ostream& operator <<(std::ostream& os, const LC_Hyperbola& a);
 
-	//void calculateEndpoints();
-//    void calculateBorders();
+    //void calculateEndpoints();
+    //    void calculateBorders();
 
     //direction of tangent at endpoints
-	double getDirection1() const override{return 0.;}
-	double getDirection2() const override{return 0.;}
+    double getDirection1() const override {
+        return 0.;
+    }
+
+    double getDirection2() const override {
+        return 0.;
+    }
+
     /** return the equation of the entity
     for quadratic,
 
@@ -251,15 +269,14 @@ public:
     for linear:
     m0 x + m1 y + m2 =0
     **/
-	LC_Quadratic getQuadratic() const override;
+    LC_Quadratic getQuadratic() const override;
+
+    bool doIsPointOnEntity(const RS_Vector& /*coord*/, double /*tolerance=RS_TOLERANCE*/) const override;
 
 protected:
     LC_HyperbolaData data;
     bool m_bValid = false;
-
 };
-
-
 
 #endif
 //EOF

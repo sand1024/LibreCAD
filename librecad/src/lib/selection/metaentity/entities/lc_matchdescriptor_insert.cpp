@@ -32,56 +32,56 @@
 class LC_ActionContext;
 
 void LC_MatchDescriptorInsert::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map, LC_ActionContext* actionContext) {
-    auto entity = new LC_TypedEntityMatchDescriptor<RS_Insert>(tr("Insert"), RS2::EntityInsert);
+    const auto entity = new LC_TypedEntityMatchDescriptor<RS_Insert>(tr("Insert"), RS2::EntityInsert);
     initCommonEntityAttributesProperties<RS_Insert>(entity);
 
-    entity->addStringList("name", [](RS_Insert* e) {
+    entity->addStringList("name", [](const RS_Insert* e) {
                               return e->getName();
                           }, tr("Block name"), tr("Name of the inserted block"),
                           [actionContext](QList<std::pair<QString, QVariant>>& values)-> void {
                               auto* graphic = actionContext->getDocument()->getGraphic();
                               if (graphic != nullptr) {
-                                  auto blocksList = graphic->getBlockList();
-                                  for (auto b : *blocksList) {
+                                  const auto blocksList = graphic->getBlockList();
+                                  for (const auto b : *blocksList) {
                                       QString name = b->getName();
                                       values.push_back({name, QVariant(name)});
                                   }
                               }
                           });
 
-    entity->addVectorX("insertX", [](RS_Insert* e) {
+    entity->addVectorX("insertX", [](const RS_Insert* e) {
         return e->getInsertionPoint();
     }, tr("Insert X"), tr("X coordinate for block's insertion point"));
 
-    entity->addVectorY("insertY", [](RS_Insert* e) {
+    entity->addVectorY("insertY", [](const RS_Insert* e) {
         return e->getInsertionPoint();
     }, tr("Insert Y"), tr("Y coordinate for block's insertion point"));
 
-    entity->addAngle("angle", [](RS_Insert* e) {
+    entity->addAngle("angle", [](const RS_Insert* e) {
         return e->getAngle();
     }, tr("Angle"), tr("Block rotation angle"));
 
-    entity->addDouble("scaleX", [](RS_Insert* e) {
+    entity->addDouble("scaleX", [](const RS_Insert* e) {
         return e->getScale().getX();
     }, tr("Scale X"), tr("Block X scale"));
 
-    entity->addDouble("scaleY", [](RS_Insert* e) {
+    entity->addDouble("scaleY", [](const RS_Insert* e) {
         return e->getScale().getY();
     }, tr("Scale Y"), tr("Block Y scale"));
 
-    entity->addInt("cols", [](RS_Insert* e) {
+    entity->addInt("cols", [](const RS_Insert* e) {
         return e->getCols();
     }, tr("Columns"), tr("Columns number"));
 
-    entity->addDouble("spacingX", [](RS_Insert* e) {
+    entity->addDouble("spacingX", [](const RS_Insert* e) {
         return e->getSpacing().getX();
     }, tr("Spacing X"), tr("Block columns spacing (by  X)"));
 
-    entity->addInt("rows", [](RS_Insert* e) {
+    entity->addInt("rows", [](const RS_Insert* e) {
         return e->getRows();
     }, tr("Rows"), tr("Rows number"));
 
-    entity->addDouble("spacingY", [](RS_Insert* e) {
+    entity->addDouble("spacingY", [](const RS_Insert* e) {
         return e->getSpacing().getY();
     }, tr("Spacing Y"), tr("Block rows spacing (by  Y)"));
 

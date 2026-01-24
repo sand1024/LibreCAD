@@ -21,12 +21,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
 
-
 #ifndef LC_QUADRATIC_H
 #define LC_QUADRATIC_H
 
 #include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/io.hpp>
 
 class RS_Vector;
 class RS_VectorSolutions;
@@ -42,16 +40,15 @@ class LC_Quadratic {
 public:
     LC_Quadratic();
     LC_Quadratic(const LC_Quadratic& lc0);
-    LC_Quadratic& operator = (const LC_Quadratic& lc0);
-	/** \brief construct a ellipse or hyperbola as the path of center of tangent circles
+    LC_Quadratic& operator =(const LC_Quadratic& lc0);
+    /** \brief construct a ellipse or hyperbola as the path of center of tangent circles
       passing the point */
     LC_Quadratic(const RS_AtomicEntity* circle, const RS_Vector& point);
-	/** \brief construct a ellipse or hyperbola as the path of center of common tangent circles
+    /** \brief construct a ellipse or hyperbola as the path of center of common tangent circles
       of this two given entities,
       mirror option allows to specify the mirror quadratic around the line
 */
-    LC_Quadratic(const RS_AtomicEntity* circle0,const RS_AtomicEntity* circle1,
-                 bool mirror = false);
+    LC_Quadratic(const RS_AtomicEntity* circle0, const RS_AtomicEntity* circle1, bool mirror = false);
     /**
      * @brief LC_Quadratic, construct a Perpendicular bisector line, which is the path of circles passing point0 and point1
      * @param point0
@@ -59,41 +56,41 @@ public:
      */
     LC_Quadratic(const RS_Vector& point0, const RS_Vector& point1);
 
-    LC_Quadratic(std::vector<double> ce);
+    LC_Quadratic(const std::vector<double>& ce);
     std::vector<double> getCoefficients() const;
     LC_Quadratic move(const RS_Vector& v);
-    LC_Quadratic rotate(double a);
-    LC_Quadratic rotate(const RS_Vector& center, double a);
+    LC_Quadratic rotate(double angle);
+    LC_Quadratic rotate(const RS_Vector& center, double angle);
     LC_Quadratic shear(double k) const;
-	/** \brief whether it's quadratic or linear
+    /** \brief whether it's quadratic or linear
       @return true, if quadratic;
       return false, if linear
  */
-	bool isQuadratic() const;
+    bool isQuadratic() const;
 
-	//!
-	//! \brief operator bool explicit and implicit conversion to bool
-	//!
-	explicit operator bool() const;
-	bool isValid() const;
-	void setValid(bool value);
-	//!
-	//! \brief operator == comparison of validity with bool
-	//! \param valid boolean parameter
-	//! \return true is the parameter valid is the same as validity
-	//!
-	bool operator == (bool valid) const;
-	bool operator != (bool valid) const;
+    //!
+    //! \brief operator bool explicit and implicit conversion to bool
+    //!
+    explicit operator bool() const;
+    bool isValid() const;
+    void setValid(bool value);
+    //!
+    //! \brief operator == comparison of validity with bool
+    //! \param valid boolean parameter
+    //! \return true is the parameter valid is the same as validity
+    //!
+    bool operator ==(bool valid) const;
+    bool operator !=(bool valid) const;
 
-	boost::numeric::ublas::vector<double>& getLinear();
-	 const boost::numeric::ublas::vector<double>& getLinear() const;
-	 boost::numeric::ublas::matrix<double>& getQuad();
-	 const boost::numeric::ublas::matrix<double>& getQuad() const;
-	 double const& constTerm()const;
-	 double& constTerm();
+    boost::numeric::ublas::vector<double>& getLinear();
+    const boost::numeric::ublas::vector<double>& getLinear() const;
+    boost::numeric::ublas::matrix<double>& getQuad();
+    const boost::numeric::ublas::matrix<double>& getQuad() const;
+    const double& constTerm() const;
+    double& constTerm();
 
     /** switch x,y coordinates */
-    LC_Quadratic flipXY(void) const;
+    LC_Quadratic flipXY() const;
 
     /**
      * @brief getDualCurve: the dual curve of the current conic section
@@ -105,11 +102,11 @@ public:
     LC_Quadratic getDualCurve() const;
 
     /** the matrix of rotation by angle **/
-    static boost::numeric::ublas::matrix<double> rotationMatrix(const double& angle);
+    static boost::numeric::ublas::matrix<double> rotationMatrix(double angle);
 
     static RS_VectorSolutions getIntersection(const LC_Quadratic& l1, const LC_Quadratic& l2);
 
-    friend std::ostream& operator << (std::ostream& os, const LC_Quadratic& l);
+    friend std::ostream& operator <<(std::ostream& os, const LC_Quadratic& q);
 
 private:
     // the equation form: {x, y}.m_mQuad.{{x},{y}} + m_vLinear.{{x},{y}}+m_dConst=0
@@ -120,8 +117,6 @@ private:
     /** whether this quadratic form is valid */
     bool m_bValid = false;
 };
-
-
 
 #endif
 //EOF

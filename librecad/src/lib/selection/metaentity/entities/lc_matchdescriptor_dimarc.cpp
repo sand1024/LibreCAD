@@ -26,28 +26,28 @@
 #include "lc_dimarc.h"
 
 void LC_MatchDescriptorDimArc::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map, LC_ActionContext *actionContext) {
-    auto entity = new LC_DimensionEntityMatchDescriptor<LC_DimArc>(tr("Dimension Arc"), RS2::EntityDimArc);
+    const auto entity = new LC_DimensionEntityMatchDescriptor<LC_DimArc>(tr("Dimension Arc"), RS2::EntityDimArc);
     initCommonEntityAttributesProperties<LC_DimArc>(entity);
     initCommonDimensionAttributes(entity, actionContext);
-    entity->addLength("raidus", [](LC_DimArc* e) {
+    entity->addLength("raidus", [](const LC_DimArc* e) {
         return e->getRadius();
     }, tr("Radius"), tr("Dimension radius"));
 
-    entity->addVectorX("centerX", [](LC_DimArc* e) {
+    entity->addVectorX("centerX", [](const LC_DimArc* e) {
        return e->getCenter();
    }, tr("Center Point X"), tr("X coordinate for dimension center"));
 
-    entity->addVectorY("centerY", [](LC_DimArc* e) {
+    entity->addVectorY("centerY", [](const LC_DimArc* e) {
       return e->getCenter();
   }, tr("Center Point Y"), tr("Y coordinate for dimension center"));
 
     // addLinearProperty(tr("Arc Length"), data.arcLength);
 
-    entity->addAngle("angleStart", [](LC_DimArc* e) {
+    entity->addAngle("angleStart", [](const LC_DimArc* e) {
           return e->getStartAngle();
     }, tr("Start Angle"), tr("Dimension start angle"));
 
-    entity->addAngle("angleEnd", [](LC_DimArc* e) {
+    entity->addAngle("angleEnd", [](const LC_DimArc* e) {
           return e->getEndAngle();
     }, tr("End Angle"), tr("Dimension end angle"));
 

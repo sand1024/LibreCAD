@@ -29,6 +29,7 @@
 
 
 #include<QList>
+
 #include "rs_script.h"
 
 #define RS_SCRIPTLIST RS_ScriptList::instance()
@@ -50,10 +51,10 @@ public:
      * @return Instance to the unique script list.
      */
     static RS_ScriptList* instance() {
-        if (uniqueInstance==NULL) {
-            uniqueInstance = new RS_ScriptList();
+        if (m_uniqueInstance== nullptr) {
+            m_uniqueInstance = new RS_ScriptList();
         }
-        return uniqueInstance;
+        return m_uniqueInstance;
     }
 
     virtual ~RS_ScriptList() {clearScripts();}
@@ -62,7 +63,7 @@ public:
 
     void clearScripts();
     int countScripts() const {
-        return scripts.count();
+        return m_scripts.count();
     }
     //void activateScript(const QString& name);
     //void activateScript(RS_Script* script);
@@ -76,7 +77,7 @@ public:
     //void toggleScript(const QString& name);
     //! @return a const iterator for the font list.
     QListIterator<RS_Script *> getIteretor() const {
-        return QListIterator<RS_Script *>(scripts);
+        return QListIterator<RS_Script *>(m_scripts);
     }
 
     //void addScriptListListener(RS_ScriptListListener* listener);
@@ -84,11 +85,11 @@ public:
     static bool test();
 
 protected:
-    static RS_ScriptList* uniqueInstance;
+    static RS_ScriptList* m_uniqueInstance;
 
 private:
     //! all scripts available
-    QList<RS_Script*> scripts;
+    QList<RS_Script*> m_scripts;
     //! List of registered ScriptListListeners
     //QList<RS_ScriptListListener> scriptListListeners;
     //! Currently active script

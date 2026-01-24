@@ -21,13 +21,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
 // File: lc_splinehelper_tests.cpp
 
-#include <catch2/catch_test_macros.hpp>
 #include <catch2/catch_approx.hpp>
+#include <catch2/catch_test_macros.hpp>
 
-#include "rs_spline.h"
 #include "lc_splinehelper.h"
-#include "rs_vector.h"
 #include "rs_math.h"
+#include "rs_spline.h"
+#include "rs_vector.h"
 
 using Catch::Approx;
 namespace {

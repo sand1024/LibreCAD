@@ -59,19 +59,19 @@ class LC_GraphicViewport;
 namespace RS_Creation {
     void createParallelThrough(const RS_Vector& coord, int number, RS_Entity* e, bool symmetric, QList<RS_Entity*>& createdEntities);
     void createParallel(const RS_Vector& coord, double distance, int number, RS_Entity* e, bool symmetric, QList<RS_Entity*>& createdEntities);
-    void createParallelLine(const RS_Vector& coord, double distance, int number, RS_Line* e, bool symmetric, QList<RS_Entity*>& createdEntities);
+    void createParallelLine(const RS_Vector& coord, double distance, int number, const RS_Line* e, bool symmetric, QList<RS_Entity*>& createdEntities);
     void createParallelArc(const RS_Vector& coord, double distance, int number, RS_Arc* e, QList<RS_Entity*>& createdEntities);
-    void createParallelCircle(const RS_Vector& coord, double distance, int number, RS_Circle* e, QList<RS_Entity*>& createdEntities);
-    void createParallelSplinePoints(const RS_Vector& coord, double distance, int number, LC_SplinePoints* e, QList<RS_Entity*>& createdEntities);
-    bool createBisector(const RS_Vector& coord1, const RS_Vector& coord2, double length, int num, RS_Line* l1, RS_Line* l2, QList<RS_Entity*>& createdLines);
-    RS_Line* createTangent1(const RS_Vector& coord, const RS_Vector& point, RS_Entity* circle, RS_Vector& tangentPoint, RS_Vector& altTangentPoint);
+    void createParallelCircle(const RS_Vector& coord, double distance, int number, const RS_Circle* e, QList<RS_Entity*>& createdEntities);
+    void createParallelSplinePoints(const RS_Vector& coord, double distance, int number, const LC_SplinePoints* e, QList<RS_Entity*>& createdEntities);
+    bool createBisector(const RS_Vector& coord1, const RS_Vector& coord2, double length, int num, const RS_Line* l1, const RS_Line* l2, QList<RS_Entity*>& createdLines);
+    RS_Line* createTangent1(const RS_Vector& coord, const RS_Vector& point, const RS_Entity* circle, RS_Vector& tangentPoint, RS_Vector& altTangentPoint);
     /**
      * create a tangent line which is orthogonal to the given RS_Line(normal)
      */
-    std::unique_ptr<RS_Line> createLineOrthTan(const RS_Vector& coord, RS_Line* normal, RS_Entity* circle, RS_Vector& alternativeTangent);
-    std::vector<std::unique_ptr<RS_Line>> createTangent2(RS_Entity* circle1, RS_Entity* circle2);
-    RS_Line* createLineRelAngle(const RS_Vector& coord, RS_Entity* entity, double angle, double length);
-    RS_Block* createBlock(const RS_BlockData* data, const RS_Vector& referencePoint, const QList<RS_Entity*>& m_selectedEntities);
-};
+    std::unique_ptr<RS_Line> createLineOrthTan(const RS_Vector& coord, const RS_Line* normal, RS_Entity* circle, RS_Vector& alternativeTangent);
+    std::vector<std::unique_ptr<RS_Line>> createTangent2(const RS_Entity* circle1, const RS_Entity* circle2);
+    RS_Line* createLineRelAngle(const RS_Vector& coord, const RS_Entity* entity, double angle, double length);
+    RS_Block* createBlock(const RS_BlockData* data, const RS_Vector& referencePoint, const QList<RS_Entity*>& selectedEntities);
+}
 
 #endif

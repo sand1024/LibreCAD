@@ -50,7 +50,7 @@ struct RS_SnapMode;
 class RS_EventHandler : public QObject {
     Q_OBJECT
 public:
-    explicit RS_EventHandler(RS_GraphicView* parent = 0);
+    explicit RS_EventHandler(RS_GraphicView* parent = nullptr);
     ~RS_EventHandler() override;
     void uncheckQAction();
     void setQAction(QAction* action, bool forceKillOtherActions);

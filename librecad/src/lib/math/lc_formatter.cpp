@@ -34,7 +34,7 @@
  * @param x
  * @return
  */
-QString LC_Formatter::formatDouble(const double &x) const{
+QString LC_Formatter::formatDouble(const double x) const{
     QString result =  RS_Units::formatDecimal(x, RS2::Unit::None, m_linearPrecision, false);
     return result;
 }
@@ -44,7 +44,7 @@ QString LC_Formatter::formatDouble(const double &x) const{
  * @param x
  * @return
  */
-QString LC_Formatter::formatInt(const int &x) const{
+QString LC_Formatter::formatInt(const int x) const{
     QString result;
     result.setNum(x);
     return result;
@@ -62,16 +62,16 @@ QString LC_Formatter::formatWCSVector(const RS_Vector &wcsPos) const{
     double ucsX, ucsY;
     m_viewport->toUCS(wcsPos, ucsX, ucsY);
 
-    QString x = RS_Units::formatLinear(ucsX, m_unit, m_linearFormat, m_linearPrecision);
-    QString y = RS_Units::formatLinear(ucsY, m_unit, m_linearFormat, m_linearPrecision);
+    const QString x = RS_Units::formatLinear(ucsX, m_unit, m_linearFormat, m_linearPrecision);
+    const QString y = RS_Units::formatLinear(ucsY, m_unit, m_linearFormat, m_linearPrecision);
 
     QString result = x + ", " + y;
     return result;
 }
 
 QString LC_Formatter::formatUCSVector(const RS_Vector &ucsPos) const{
-    QString x = RS_Units::formatLinear(ucsPos.x, m_unit, m_linearFormat, m_linearPrecision);
-    QString y = RS_Units::formatLinear(ucsPos.y, m_unit, m_linearFormat, m_linearPrecision);
+    const QString x = RS_Units::formatLinear(ucsPos.x, m_unit, m_linearFormat, m_linearPrecision);
+    const QString y = RS_Units::formatLinear(ucsPos.y, m_unit, m_linearFormat, m_linearPrecision);
 
     QString result = x + ", " + y;
     return result;
@@ -84,8 +84,8 @@ QString LC_Formatter::formatWCSDeltaVector(const RS_Vector &wcsDelta) const{
     double ucsX, ucsY;
     m_viewport->toUCSDelta(wcsDelta, ucsX, ucsY);
 
-    QString x = RS_Units::formatLinear(ucsX, m_unit, m_linearFormat, m_linearPrecision);
-    QString y = RS_Units::formatLinear(ucsY, m_unit, m_linearFormat, m_linearPrecision);
+    const QString x = RS_Units::formatLinear(ucsX, m_unit, m_linearFormat, m_linearPrecision);
+    const QString y = RS_Units::formatLinear(ucsY, m_unit, m_linearFormat, m_linearPrecision);
 
     QString result = x + ", " + y;
     return result;
@@ -96,7 +96,7 @@ QString LC_Formatter::formatWCSDeltaVector(const RS_Vector &wcsDelta) const{
  * @param wcsAngle
  * @return
  */
-QString LC_Formatter::formatWCSAngle(double wcsAngle) const {
+QString LC_Formatter::formatWCSAngle(const double wcsAngle) const {
     if (m_viewport == nullptr) {
         return "";
     }
@@ -104,7 +104,7 @@ QString LC_Formatter::formatWCSAngle(double wcsAngle) const {
     if (m_viewport->hasUCS()){
         ucsAngle = m_viewport->toUCSAngle(wcsAngle);
     }
-    double ucsRelAngle = m_viewport->toUCSBasisAngle(ucsAngle, m_anglesBase, m_anglesCounterClockWise);
+    const double ucsRelAngle = m_viewport->toUCSBasisAngle(ucsAngle, m_anglesBase, m_anglesCounterClockWise);
     return formatRawAngle(ucsRelAngle);
 }
 
@@ -112,38 +112,37 @@ QString LC_Formatter::formatWCSAngleDegrees(double wcsAngle) const {
     if (m_viewport->hasUCS()){
         wcsAngle = m_viewport->toUCSAngle(wcsAngle);
     }
-    double ucsRelAngle = m_viewport->toUCSBasisAngle(wcsAngle, m_anglesBase, m_anglesCounterClockWise);
+    const double ucsRelAngle = m_viewport->toUCSBasisAngle(wcsAngle, m_anglesBase, m_anglesCounterClockWise);
     QString result = RS_Units::formatAngle(ucsRelAngle, RS2::AngleFormat::DegreesDecimal, m_anglePrecision);
     return result;
 }
 
-QString LC_Formatter::formatUCSAngle(double wcsAngle) const {
-    double ucsRelAngle = m_viewport->toUCSBasisAngle(wcsAngle, m_anglesBase, m_anglesCounterClockWise);
+QString LC_Formatter::formatUCSAngle(const double wcsAngle) const {
+    const double ucsRelAngle = m_viewport->toUCSBasisAngle(wcsAngle, m_anglesBase, m_anglesCounterClockWise);
     return formatRawAngle(ucsRelAngle);
 }
 
-QString LC_Formatter::formatRawAngle(double angle) const {
+QString LC_Formatter::formatRawAngle(const double angle) const {
     QString result =  RS_Units::formatAngle(angle, m_angleFormat, m_anglePrecision);
     return result;
 }
 
-QString LC_Formatter::formatRawAngle(double angle, RS2::AngleFormat format) const {
+QString LC_Formatter::formatRawAngle(const double angle, const RS2::AngleFormat format) const {
     QString result =  RS_Units::formatAngle(angle, format, m_anglePrecision);
     return result;
 }
-
 
 /**
  * formats linear value according to settings of drawing preferences
  * @param length
  * @return
  */
-QString LC_Formatter::formatLinear(double length) const {
+QString LC_Formatter::formatLinear(const double length) const {
     QString result = RS_Units::formatLinear(length,  m_unit,  m_linearFormat,m_linearPrecision);
     return result;
 }
 
-void LC_Formatter::updateByGraphic(RS_Graphic* graphic){
+void LC_Formatter::updateByGraphic(const RS_Graphic* graphic){
     if (graphic != nullptr) {
         m_unit = graphic->getUnit();
         m_linearFormat = graphic->getLinearFormat();
@@ -156,44 +155,43 @@ void LC_Formatter::updateByGraphic(RS_Graphic* graphic){
     }
 }
 
-
-double LC_Formatter::toUCSBasisAngleDegrees(double wcsAngle) const{
-    double ucsAngle = m_viewport->toUCSAngle(wcsAngle);
-    double ucsBasisAngle = m_viewport->toUCSBasisAngle(ucsAngle, m_anglesBase, m_anglesCounterClockWise);
-    double result = RS_Math::rad2deg(ucsBasisAngle);
+double LC_Formatter::toUCSBasisAngleDegrees(const double wcsAngle) const{
+    const double ucsAngle = m_viewport->toUCSAngle(wcsAngle);
+    const double ucsBasisAngle = m_viewport->toUCSBasisAngle(ucsAngle, m_anglesBase, m_anglesCounterClockWise);
+    const double result = RS_Math::rad2deg(ucsBasisAngle);
     return result;
 }
 
-double LC_Formatter::toWorldAngleFromUCSBasisDegrees(double ucsBasisAngleDegrees) const{
-    double ucsBasisAngle = RS_Math::deg2rad(ucsBasisAngleDegrees);
-    double ucsAngle = m_viewport->toUCSAbsAngle(ucsBasisAngle, m_anglesBase, m_anglesCounterClockWise);
-    double wcsAngle = m_viewport->toWorldAngle(ucsAngle);
+double LC_Formatter::toWorldAngleFromUCSBasisDegrees(const double ucsBasisAngleDegrees) const{
+    const double ucsBasisAngle = RS_Math::deg2rad(ucsBasisAngleDegrees);
+    const double ucsAngle = m_viewport->toUCSAbsAngle(ucsBasisAngle, m_anglesBase, m_anglesCounterClockWise);
+    const double wcsAngle = m_viewport->toWorldAngle(ucsAngle);
     return wcsAngle;
 }
 
-double LC_Formatter::toWorldAngleFromUCSBasis(double ucsBasisAngle) const{
-    double ucsAngle = m_viewport->toUCSAbsAngle(ucsBasisAngle, m_anglesBase, m_anglesCounterClockWise);
-    double wcsAngle = m_viewport->toWorldAngle(ucsAngle);
+double LC_Formatter::toWorldAngleFromUCSBasis(const double ucsBasisAngle) const{
+    const double ucsAngle = m_viewport->toUCSAbsAngle(ucsBasisAngle, m_anglesBase, m_anglesCounterClockWise);
+    const double wcsAngle = m_viewport->toWorldAngle(ucsAngle);
     return wcsAngle;
 }
 
-double LC_Formatter::toUCSBasisAngle(double wcsAngle) const{
-    double ucsAngle = m_viewport->toUCSAngle(wcsAngle);
-    double ucsBasisAngle = m_viewport->toUCSBasisAngle(ucsAngle, m_anglesBase, m_anglesCounterClockWise);
+double LC_Formatter::toUCSBasisAngle(const double wcsAngle) const{
+    const double ucsAngle = m_viewport->toUCSAngle(wcsAngle);
+    const double ucsBasisAngle = m_viewport->toUCSBasisAngle(ucsAngle, m_anglesBase, m_anglesCounterClockWise);
     return ucsBasisAngle;
 }
 
-double LC_Formatter::toUCSBasisAngleFromUCS(double ucsAbsAngle) {
-    double ucsBasisAngle = m_viewport->toUCSBasisAngle(ucsAbsAngle, m_anglesBase, m_anglesCounterClockWise);
+double LC_Formatter::toUCSBasisAngleFromUCS(const double ucsAbsAngle) const {
+    const double ucsBasisAngle = m_viewport->toUCSBasisAngle(ucsAbsAngle, m_anglesBase, m_anglesCounterClockWise);
     return ucsBasisAngle;
 }
 
-double LC_Formatter::toUCSAbsAngleFromUCSBasis(double ucsBasisAngle) {
-    double ucsAbsAngle = m_viewport->toUCSAbsAngle(ucsBasisAngle, m_anglesBase, m_anglesCounterClockWise);
+double LC_Formatter::toUCSAbsAngleFromUCSBasis(const double ucsBasisAngle) const {
+    const double ucsAbsAngle = m_viewport->toUCSAbsAngle(ucsBasisAngle, m_anglesBase, m_anglesCounterClockWise);
     return ucsAbsAngle;
 }
 
-double LC_Formatter::adjustRelativeAngleSignByBasis(double relativeAngle) const{
+double LC_Formatter::adjustRelativeAngleSignByBasis(const double relativeAngle) const{
     double result;
     if (m_anglesCounterClockWise){
         result = relativeAngle;
@@ -208,7 +206,7 @@ bool LC_Formatter::hasNonDefaultAnglesBasis() const {
     return  LC_LineMath::isMeaningfulAngle(m_anglesBase) || !m_anglesCounterClockWise;
 }
 
-QString LC_Formatter::linearUnitAsString() {
+QString LC_Formatter::linearUnitAsString() const {
     return RS_Units::unitToString(m_unit);
 }
 

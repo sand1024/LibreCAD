@@ -49,8 +49,8 @@ public:
     ~LC_UndoSection();
 
     void addUndoable(RS_Undoable* u) const;
-    bool undoableExecute(RS_Document::FunUndoable doUndoable, RS_Document::FunSelection doSelection);
-    bool undoableExecute(RS_Document::FunUndoable doUndoable);
+    bool undoableExecute(const RS_Document::FunUndoable& doUndoable, const RS_Document::FunSelection& doSelection) const;
+    bool undoableExecute(const RS_Document::FunUndoable& doUndoable) const;
 protected:
     void setupAndUndoableAdd(const QList<RS_Entity*>& entitiesToInsert, bool setActiveLayer, bool setActivePen) const;
     void undoableReplace(RS_Entity* entityToDelete, RS_Entity* entityToAdd) const;

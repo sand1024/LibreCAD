@@ -42,7 +42,7 @@ class RS_Graphic;
 
 class LC_DimensionsBuilder{
 public:
-    explicit LC_DimensionsBuilder(RS_Graphic* graphic, RS_Dimension* dimension);
+    explicit LC_DimensionsBuilder(RS_Graphic* graphic, RS_Dimension* dim);
     ~LC_DimensionsBuilder() = default;
     void build();
 private:
@@ -64,4 +64,4 @@ private:
     LC_DimStyle *m_dimStyle;
 };
 
-#endif // LC_DIMENSIONSBUILDER_H
+#endif

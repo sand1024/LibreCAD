@@ -23,7 +23,6 @@
 
 #ifndef LC_ACTIONINFOMESSAGEBUILDER_H
 #define LC_ACTIONINFOMESSAGEBUILDER_H
-#include <QString>
 
 #include "lc_cursoroverlayinfo.h"
 
@@ -50,4 +49,4 @@ private:
     RS_PreviewActionInterface *m_action;
 };
 
-#endif // LC_ACTIONINFOMESSAGEBUILDER_H
+#endif

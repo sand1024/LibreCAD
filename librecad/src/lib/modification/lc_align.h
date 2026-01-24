@@ -45,6 +45,6 @@ namespace LC_Align
     void collectSelectionBounds(QList<RS_Entity*> selectedEntities, RS_Vector &boxMin, RS_Vector &boxMax);
     bool getVerticalRefCoordinate(const RS_Vector &min, const RS_Vector &max, int verticalAlign, double &refCoordinate);
     bool getHorizontalRefCoordinate(const RS_Vector &min, const RS_Vector &max, int horizontalAlign, double &refCoordinate);
-};
+}
 
-#endif // LC_ALIGN_H
+#endif

@@ -26,14 +26,14 @@
 #include "rs_point.h"
 
 void LC_MatchDescriptorPoint::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*>& map) {
-    auto entity = new LC_TypedEntityMatchDescriptor<RS_Point>(tr("Point"), RS2::EntityPoint);
+    const auto entity = new LC_TypedEntityMatchDescriptor<RS_Point>(tr("Point"), RS2::EntityPoint);
     initCommonEntityAttributesProperties<RS_Point>(entity);
 
-    entity->addVectorX("x", [](RS_Point* e) {
+    entity->addVectorX("x", [](const RS_Point* e) {
         return e->getPos();
     }, tr("X"), tr("X coordinate of point"));
 
-    entity->addVectorY("y", [](RS_Point* e) {
+    entity->addVectorY("y", [](const RS_Point* e) {
         return e->getPos();
     }, tr("Y"), tr("Y coordinate of point"));
 

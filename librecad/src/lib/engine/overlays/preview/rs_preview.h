@@ -36,13 +36,13 @@ class LC_GraphicViewport;
 
 class LC_PreviewDocument: public RS_Document {
 public:
-    explicit LC_PreviewDocument(RS_EntityContainer *parent):RS_Document(parent){};
+    explicit LC_PreviewDocument(RS_EntityContainer *parent):RS_Document(parent){}
     ~LC_PreviewDocument() override = default;
     RS_LayerList* getLayerList() override {return nullptr;}
     RS_BlockList* getBlockList() override {return nullptr;}
     LC_DimStylesList* getDimStyleList() override {return nullptr;}
     LC_TextStyleList* getTextStyleList() override {return nullptr;}
-    void newDoc() override {};
+    void newDoc() override {}
 };
 
 /**
@@ -58,7 +58,7 @@ public:
     RS2::EntityType rtti() const override{
         return RS2::EntityPreview;
     }
-    void addEntity(RS_Entity* entity) override;
+    void addEntity(const RS_Entity* entity) override;
     void calcRectCorners(const RS_Vector& worldCorner1, const RS_Vector& worldCorner3, RS_Vector& worldCorner2,
                          RS_Vector& worldCorner4) const;
     void addAllFrom(RS_EntityContainer& container, LC_GraphicViewport* view);

@@ -34,6 +34,7 @@ class LC_SelectionPredicate {
 public:
     using FunAcceptEntity = std::function<bool(RS_Entity*)>;
     explicit LC_SelectionPredicate(RS2::EntityType entityType);
+    virtual ~LC_SelectionPredicate() = default;
     virtual bool accept(RS_Entity* entity) const;
     bool acceptRtti(RS_Entity* entity) const;
 private:

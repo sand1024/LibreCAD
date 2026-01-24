@@ -41,7 +41,7 @@ RS_Preview::RS_Preview(RS_EntityContainer* parent, LC_GraphicViewport* viewport)
 // fixme - sand - ucs - check when preview is created and whether this may be delegated to actio init?
 
     m_maxEntities = LC_GET_ONE_INT("Appearance", "MaxPreview", 100);
-    RS_Color highLight = QColor(LC_GET_ONE_STR("Colors", "highlight", RS_Settings::highlight));
+    const RS_Color highLight = RS_Color(LC_GET_ONE_STR("Colors", "highlight", RS_Settings::HIGHLIGHT));
     setPen(RS_Pen(highLight, RS2::Width00, RS2::SolidLine));
 }
 
@@ -49,14 +49,14 @@ RS_Preview::RS_Preview(RS_EntityContainer* parent, LC_GraphicViewport* viewport)
  * Adds an entity to this preview and removes any attributes / layer
  * connections before that.
  */
-void RS_Preview::addEntity(RS_Entity* entity) {
+void RS_Preview::addEntity(const RS_Entity* entity) {
     if (entity == nullptr || entity->isDeleted()) {
         return;
     }
 
     // only border preview for complex entities:
 
-    int rtti = entity->rtti();
+    const int rtti = entity->rtti();
 
     bool addBorder = false;
     bool refEntity = false;
@@ -128,12 +128,13 @@ void RS_Preview::addEntity(RS_Entity* entity) {
         delete entity;
     }
     else {
-        entity->setLayer(nullptr);
-        entity->clearSelectionFlag();
-        entity->reparent(this);
+        const auto ent = const_cast<RS_Entity*>(entity);
+        ent->setLayer(nullptr);
+        ent->clearSelectionFlag();
+        ent->reparent(this);
         // Don't set this pen, let drawing routines decide entity->setPenToActive();
         if (refEntity) {
-            m_referenceEntities.append(entity);
+            m_referenceEntities.append(ent);
             if (getAutoUpdateBorders()) {
                 adjustBorders(entity);
             }
@@ -145,10 +146,10 @@ void RS_Preview::addEntity(RS_Entity* entity) {
 }
 
 void RS_Preview::calcRectCorners(const RS_Vector &worldCorner1, const RS_Vector &worldCorner3, RS_Vector &worldCorner2, RS_Vector &worldCorner4) const {
-    RS_Vector ucsCorner1 = m_viewport->toUCS(worldCorner1);
-    RS_Vector ucsCorner3 = m_viewport->toUCS(worldCorner3);
-    RS_Vector ucsCorner2 = RS_Vector(ucsCorner1.x, ucsCorner3.y);
-    RS_Vector ucsCorner4 = RS_Vector(ucsCorner3.x, ucsCorner1.y);
+    const RS_Vector ucsCorner1 = m_viewport->toUCS(worldCorner1);
+    const RS_Vector ucsCorner3 = m_viewport->toUCS(worldCorner3);
+    const auto ucsCorner2 = RS_Vector(ucsCorner1.x, ucsCorner3.y);
+    const auto ucsCorner4 = RS_Vector(ucsCorner3.x, ucsCorner1.y);
     worldCorner2 =  m_viewport->toWorld(ucsCorner2);
     worldCorner4 =  m_viewport->toWorld(ucsCorner4);
 }
@@ -170,7 +171,7 @@ void RS_Preview::clear() {
  */
 void RS_Preview::addAllFrom(RS_EntityContainer& container, [[maybe_unused]]LC_GraphicViewport* view) {
     unsigned int c=0;
-    for(auto e: container){
+    for(const auto e: container){
         if (c > m_maxEntities) {
             break;
         }
@@ -191,7 +192,7 @@ void RS_Preview::addClonesFromList(const QList<RS_Entity*>& list) {
             break;
         }
         if (e != nullptr) {
-            RS_Entity* clone = e->cloneProxy();
+            const RS_Entity* clone = e->cloneProxy();
             c += clone->countDeep();
             addEntity(clone);
         }
@@ -232,9 +233,9 @@ void RS_Preview::addStretchablesFrom(RS_EntityContainer& container, [[maybe_unus
                                      const RS_Vector& v1, const RS_Vector& v2) {
     unsigned int c=0;
 
-    for (auto e: container) {
+    for (const auto e: container) {
         if (e->isVisible() && e->rtti() != RS2::EntityHatch &&
-            ((e->isInWindow(v1, v2)) || e->hasEndpointsWithinWindow(v1, v2)) &&
+            (e->isInWindow(v1, v2) || e->hasEndpointsWithinWindow(v1, v2)) &&
             c < m_maxEntities) {
 
             RS_Entity *clone = e->cloneProxy();
@@ -251,19 +252,17 @@ void RS_Preview::addStretchablesFrom(RS_EntityContainer& container, [[maybe_unus
 void RS_Preview::draw(RS_Painter* painter) {
 //    bool drawTextsAsDraftsForPreview = view->isDrawTextsAsDraftForPreview();
 // fixme - ucs - achieve view - store as field? This temporary for compilation...
-    bool drawTextsAsDraftsForPreview = false;
+    const bool drawTextsAsDraftsForPreview = false;
 
-    for (auto e: std::as_const(*this)) {
-        int type = e->rtti();
+    for (const auto e: std::as_const(*this)) {
+        const int type = e->rtti();
         switch (type) {
             case RS2::EntityMText:
             case RS2::EntityText: {
                 if (drawTextsAsDraftsForPreview){
                     e->drawDraft(painter);
                 }
-                else {
-                    e->draw(painter);
-                }
+                e->draw(painter);
                 break;
             }
             case RS2::EntityImage: {
@@ -277,7 +276,7 @@ void RS_Preview::draw(RS_Painter* painter) {
 }
 
 void RS_Preview::addReferenceEntitiesToContainer(RS_EntityContainer *container){
-    for (auto en: std::as_const(m_referenceEntities)){
+    for (const auto en: std::as_const(m_referenceEntities)){
         container->addEntity(en);
     }
 }

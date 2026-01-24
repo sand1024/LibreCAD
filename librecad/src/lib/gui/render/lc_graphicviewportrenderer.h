@@ -43,7 +43,7 @@ class QPaintDevice;
 
 class LC_GraphicViewportRenderer{
   public:
-    explicit LC_GraphicViewportRenderer(LC_GraphicViewport* viewport, QPaintDevice* painterDevice);
+    explicit LC_GraphicViewportRenderer(LC_GraphicViewport* v, QPaintDevice* painterDevice);
     virtual ~LC_GraphicViewportRenderer() = default;
     virtual void loadSettings();
     void render();
@@ -51,11 +51,11 @@ class LC_GraphicViewportRenderer{
     void renderEntityAsChild(RS_Painter *painter, RS_Entity *e);
     void justDrawEntity(RS_Painter *painter, RS_Entity *e);
     void setBackground(const RS_Color &bg);
-    const LC_Rect &getBoundingClipRect() const {return renderBoundingClipRect;}
+    const LC_Rect &getBoundingClipRect() const {return m_renderBoundingClipRect;}
 
     virtual bool isTextLineNotRenderable(double uiLineHeight) const = 0;
 
-    void setLineWidthScaling(bool state){
+    void setLineWidthScaling(const bool state){
         m_scaleLineWidth = state;
     }
 
@@ -63,35 +63,35 @@ class LC_GraphicViewportRenderer{
         return m_scaleLineWidth;
     }
 protected:
-    QPaintDevice* pd = nullptr;
-    LC_GraphicViewport* viewport = nullptr;
-    RS_Graphic* graphic = nullptr;
+    QPaintDevice* m_paintDevice = nullptr;
+    LC_GraphicViewport* m_viewport = nullptr;
+    RS_Graphic* m_graphic = nullptr;
 
-    LC_Rect renderBoundingClipRect;
+    LC_Rect m_renderBoundingClipRect;
 
     /** background color (any color) */
     RS_Color m_colorBackground;
     /** foreground color (black or white) */
     RS_Color m_colorForeground;
 
-    RS_Pen lastPaintEntityPen = {};
+    RS_Pen m_lastPaintEntityPen = {};
 
     LC_Rect prepareBoundingClipRect() const;
     virtual void doRender() = 0;
 
     // painting cached values
-    double unitFactor = 1.0;
-    double unitFactor100 = 0.01;
-    double defaultWidthFactor = 1.0;
+    double m_unitFactor = 1.0;
+    double m_unitFactor100 = 0.01;
+    double m_defaultWidthFactor = 1.0;
 
     bool m_scaleLineWidth = true;
 
-    Qt::PenJoinStyle penJoinStyle = Qt::RoundJoin;
-    Qt::PenCapStyle penCapStyle = Qt::RoundCap;
+    Qt::PenJoinStyle m_penJoinStyle = Qt::RoundJoin;
+    Qt::PenCapStyle m_penCapStyle = Qt::RoundCap;
 
     // points rendering settings
-    int pdmode = 1;
-    double pdsize = 1;
+    int m_pdmode = 1;
+    double m_pdsize = 1;
 
     double m_angleBasisBaseAngle = 0.0;
     bool m_angleBasisCounterClockwise = false;
@@ -100,11 +100,11 @@ protected:
     virtual void updateGraphicRelatedSettings(RS_Graphic *g);
     void updateEndCapsStyle(const RS_Graphic *graphic);
     void updateJoinStyle(const RS_Graphic *graphic);
-    void updatePointEntitiesStyle(RS_Graphic *graphic);
+    void updatePointEntitiesStyle(const RS_Graphic *graphic);
     void updateUnitAndDefaultWidthFactors(const RS_Graphic *g);
-    bool isOutsideOfBoundingClipRect(RS_Entity *e, bool constructionEntity) const;
+    bool isOutsideOfBoundingClipRect(const RS_Entity *e, bool constructionEntity) const;
 
-    RS_Graphic* getGraphic() const {return graphic;}
+    RS_Graphic* getGraphic() const {return m_graphic;}
 
 #ifdef DEBUG_RENDERING
     QElapsedTimer drawTimer;
@@ -125,7 +125,7 @@ protected:
 #endif
 
 
-    void updateAnglesBasis(RS_Graphic *g);
+    void updateAnglesBasis(const RS_Graphic *g);
 };
 
-#endif // LC_GRAPHICVIEWPORTRENDERER_H
+#endif

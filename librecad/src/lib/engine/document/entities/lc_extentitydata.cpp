@@ -23,29 +23,30 @@
 
 #include "lc_extentitydata.h"
 
-LC_ExtDataTag::LC_ExtDataTag() {
-}
+#include <qalgorithms.h>
 
-LC_ExtDataTag::LC_ExtDataTag(int code, const RS_Vector &value) {
-    RS_Variable* v = new RS_Variable(value, code);
+LC_ExtDataTag::LC_ExtDataTag() = default;
+
+LC_ExtDataTag::LC_ExtDataTag(const int code, const RS_Vector &value) {
+    const auto v = new RS_Variable(value, code);
     add(v);
 }
 
-LC_ExtDataTag::LC_ExtDataTag(int code, int value) {
-    RS_Variable* v = new RS_Variable(value, code);
+LC_ExtDataTag::LC_ExtDataTag(const int code, const int value) {
+    const auto v = new RS_Variable(value, code);
     add(v);
 }
 
-LC_ExtDataTag::LC_ExtDataTag(int code, double value) {
-    RS_Variable* v = new RS_Variable(value, code);
+LC_ExtDataTag::LC_ExtDataTag(const int code, const double value) {
+    const auto v = new RS_Variable(value, code);
     add(v);
 }
 
-LC_ExtDataTag::LC_ExtDataTag(int code, const QString& value, bool asReference) {
-    RS_Variable* v = new RS_Variable(value, code);
+LC_ExtDataTag::LC_ExtDataTag(const int code, const QString& value, const bool asReference) {
+    const auto v = new RS_Variable(value, code);
     add(v);
     if (asReference){
-      type = REF;
+      m_type = REF;
     }
 }
 
@@ -57,31 +58,31 @@ LC_ExtDataTag::~LC_ExtDataTag() {
     clear();
 }
 
-void LC_ExtDataTag::clear() {
-    if (type == VAR) {
+void LC_ExtDataTag::clear() const {
+    if (m_type == VAR) {
         delete m_var;
     }
     else {
-        m_list.clear();
+        qDeleteAll(m_list);
     }
 }
 
 void LC_ExtDataTag::add(RS_Variable* v) {
     m_var = v;
-    type = VAR;
+    m_type = VAR;
 }
 
 void LC_ExtDataTag::add(LC_ExtDataTag* tag) {
     m_list.push_back(tag);
-    type = LIST;
+    m_type = LIST;
 }
 
 bool LC_ExtDataTag::isAtomic() const {
-    return type != LIST;
+    return m_type != LIST;
 }
 
 bool LC_ExtDataTag::isRef() const {
-    return type == REF;
+    return m_type == REF;
 }
 
 RS_Variable* LC_ExtDataTag::var() const {
@@ -95,28 +96,28 @@ std::vector<LC_ExtDataTag*>* LC_ExtDataTag::list() {
 LC_ExtDataGroup::LC_ExtDataGroup(const QString& groupName):m_name{groupName} {
 }
 
-void LC_ExtDataGroup::add(int code, int value) {
-    auto tagData = new LC_ExtDataTag(code, value);
+void LC_ExtDataGroup::add(const int code, const int value) {
+    const auto tagData = new LC_ExtDataTag(code, value);
     m_tagData.add(tagData);
 }
 
-void LC_ExtDataGroup::add(int code, double value) {
-    auto tagData = new LC_ExtDataTag(code, value);
+void LC_ExtDataGroup::add(const int code, const double value) {
+    const auto tagData = new LC_ExtDataTag(code, value);
     m_tagData.add(tagData);
 }
 
-void LC_ExtDataGroup::add(int code, const QString& value) {
-    auto tagData = new LC_ExtDataTag(code, value);
+void LC_ExtDataGroup::add(const int code, const QString& value) {
+    const auto tagData = new LC_ExtDataTag(code, value);
     m_tagData.add(tagData);
 }
 
-void LC_ExtDataGroup::addRef(int code, const QString& value) {
-    auto tagData = new LC_ExtDataTag(code, value, true);
+void LC_ExtDataGroup::addRef(const int code, const QString& value) {
+    const auto tagData = new LC_ExtDataTag(code, value, true);
     m_tagData.add(tagData);
 }
 
-void LC_ExtDataGroup::add(int code, const RS_Vector& value) {
-    auto tagData = new LC_ExtDataTag(code, value);
+void LC_ExtDataGroup::add(const int code, const RS_Vector& value) {
+    const auto tagData = new LC_ExtDataTag(code, value);
     m_tagData.add(tagData);
 }
 
@@ -136,7 +137,7 @@ std::vector<LC_ExtDataTag*>* LC_ExtDataGroup::getTagsList() {
     return m_tagData.list();
 }
 
-LC_ExtDataAppData::LC_ExtDataAppData(const QString& appName):m_applicationName{appName} {
+LC_ExtDataAppData::LC_ExtDataAppData(const QString& applicationName):m_applicationName{applicationName} {
 }
 
 LC_ExtDataAppData::~LC_ExtDataAppData() {
@@ -153,7 +154,7 @@ LC_ExtDataGroup* LC_ExtDataAppData::getGroupByName(const QString& groupName) con
     if (groupName.isEmpty()) {
         return nullptr;
     }
-    size_t count = m_groups.size();
+    const size_t count = m_groups.size();
     for (size_t i = 0; i < count; i++) {
         LC_ExtDataGroup* group = m_groups[i];
         if (group->getName() == groupName) {
@@ -191,7 +192,7 @@ LC_ExtDataAppData* LC_ExtEntityData::getAppDataByName(const QString& groupName) 
     if (groupName.isEmpty()) {
         return nullptr;
     }
-    size_t count = m_appData.size();
+    const size_t count = m_appData.size();
     for (size_t i = 0; i < count; i++) {
         LC_ExtDataAppData* group = m_appData[i];
         if (group->getName() == groupName) {
@@ -201,8 +202,8 @@ LC_ExtDataAppData* LC_ExtEntityData::getAppDataByName(const QString& groupName) 
     return nullptr;
 }
 
-LC_ExtDataGroup* LC_ExtEntityData::getGroupByName(const QString& appName, const QString& groupName) {
-    auto appData = getAppDataByName(appName);
+LC_ExtDataGroup* LC_ExtEntityData::getGroupByName(const QString& appName, const QString& groupName) const {
+    const auto appData = getAppDataByName(appName);
     if (appData != nullptr) {
         return appData->getGroupByName(groupName);
     }

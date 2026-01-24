@@ -25,7 +25,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef LC_Parabola_H
 #define LC_Parabola_H
 #include <vector>
-#include <boost/geometry/algorithms/buffer.hpp>
 
 #include "lc_quadratic.h"
 #include "lc_splinepoints.h"
@@ -38,8 +37,7 @@ struct RS_LineData;
  * Holds the data that defines a parabola.
  * @author Dongxu Li
  */
-struct LC_ParabolaData
-{
+struct LC_ParabolaData{
     /**
     * Default constructor. Leaves the data object uninitialized.
     */
@@ -49,9 +47,9 @@ struct LC_ParabolaData
             const std::array<RS_Vector, 2>& endTangents);
     LC_ParabolaData() = default;
     LC_ParabolaData(std::array<RS_Vector, 3> controlPoints);
-    RS_LineData GetAxis() const;
-    RS_LineData GetDirectrix() const;
-    RS_Vector GetFocus() const;
+    RS_LineData getAxis() const;
+    RS_LineData getDirectrix() const;
+    RS_Vector getFocus() const;
 
 
     /** \brief return the equation of the entity
@@ -59,18 +57,18 @@ struct LC_ParabolaData
     m0 x^2 + m1 xy + m2 y^2 + m3 x + m4 y + m5 =0
     **/
     LC_Quadratic getQuadratic() const;
-    double FindX(const RS_Vector& point) const;
-    RS_Vector FromX(double x) const;
+    double findX(const RS_Vector& point) const;
+    RS_Vector fromX(double x) const;
     /**
      * @brief FromXWithTangent find point on curve and tangent at the given x
      * @param x - the coordinate along the x-direction
      * @return std::array<RS_Vector, 2> - point and tangent
      */
-    std::array<RS_Vector, 2> FromXWithTangent(double x) const;
+    std::array<RS_Vector, 2> fromXWithTangent(double x) const;
 
     // The three control points, and all other properties are calculated from control points
     std::array<RS_Vector, 3> controlPoints;
-    void CalculatePrimitives();
+    void calculatePrimitives();
     // properties should be calculated from control points
     RS_Vector focus;
     // a vector from the vertex to focus
@@ -87,11 +85,7 @@ std::ostream& operator << (std::ostream& os, const LC_ParabolaData& ld);
  *
  * @author Dongxu Li
  */
-class LC_Parabola : public LC_SplinePoints // RS_EntityContainer
-{
-private:
-    LC_ParabolaData data;
-
+class LC_Parabola : public LC_SplinePoints {// RS_EntityContainer
 public:
     LC_Parabola(RS_EntityContainer* parent, const LC_ParabolaData& d);
 
@@ -101,19 +95,17 @@ public:
     RS2::EntityType rtti() const override;
 
     /** @return false */
-    bool isEdge() const override
-    {
+    bool isEdge() const override {
         return true;
     }
 
     /** @return Copy of data that defines the spline. */
-    LC_ParabolaData const& getData() const
-    {
-        return data;
+    const LC_ParabolaData& getParabolaData() const {
+        return m_data;
     }
-    LC_ParabolaData& getData()
-    {
-        return data;
+
+    LC_ParabolaData& getParabolaData() {
+        return m_data;
     }
 
     /** \brief return the equation of the entity
@@ -184,13 +176,14 @@ public:
      */
     std::unique_ptr<LC_Parabola> approximateOffset(double dist) const;
 
-    RS_Vector getFocus() {return data.focus;}
-    RS_Vector getVertex() {return data.vertex;}
+    RS_Vector getFocus() const {return m_data.focus;}
+    RS_Vector getVertex() const {return m_data.vertex;}
 
 private:
     // rotate a point around the parabola vertex so, the parabola is y= ax^2 + bx + c, with a > 0 after the
     // same rotation
     RS_Vector rotateToQuadratic(RS_Vector vp) const;
+    LC_ParabolaData m_data;
 };
 
 #endif

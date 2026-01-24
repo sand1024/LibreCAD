@@ -26,8 +26,9 @@
 
 #include <QMap>
 #include <QObject>
-#include "rs.h"
+
 #include "lc_entitymatchdescriptor.h"
+#include "rs.h"
 
 class LC_ActionContext;
 class LC_EntityMatchDescriptor;

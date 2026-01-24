@@ -47,10 +47,10 @@ public:
     RS_Variable* var() const;
     std::vector<LC_ExtDataTag*>* list();
 private:
-    void clear();
+    void clear() const;
     RS_Variable* m_var{nullptr};
     std::vector<LC_ExtDataTag*> m_list;
-    TYPE type {VAR};
+    TYPE m_type {VAR};
 };
 
 class LC_ExtDataGroup {
@@ -73,10 +73,10 @@ private:
 
 class LC_ExtDataAppData {
 public:
-    LC_ExtDataAppData(const QString& applicationName);
+    explicit LC_ExtDataAppData(const QString& applicationName);
     ~LC_ExtDataAppData();
-    LC_ExtDataGroup* addGroup(const QString& applicationName);
-    LC_ExtDataGroup* getGroupByName(const QString& applicationName) const;
+    LC_ExtDataGroup* addGroup(const QString& groupName);
+    LC_ExtDataGroup* getGroupByName(const QString& groupName) const;
     QString getName();
     std::vector<LC_ExtDataGroup*>* getGroups();
 private:
@@ -90,10 +90,10 @@ public:
     ~LC_ExtEntityData();
     LC_ExtDataAppData* addAppData(const QString& appName);
     LC_ExtDataAppData* getAppDataByName(const QString& groupName) const;
-    LC_ExtDataGroup* getGroupByName(const QString& appName, const QString& groupName);
+    LC_ExtDataGroup* getGroupByName(const QString& appName, const QString& groupName) const;
     std::vector<LC_ExtDataAppData*>* getAppData();
 private:
     std::vector<LC_ExtDataAppData*> m_appData;
 };
 
-#endif // LC_EXTENTITYDATA_H
+#endif

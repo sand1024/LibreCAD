@@ -21,11 +21,11 @@
  * ********************************************************************************
  */
 
+#include "lc_eventhandler.h"
 
 #include <QMouseEvent>
 
 #include "lc_coordinates_parser.h"
-#include "lc_eventhandler.h"
 #include "rs_actioninterface.h"
 #include "rs_commandevent.h"
 #include "rs_dialogfactory.h"
@@ -41,9 +41,11 @@ namespace {
 /**
  * Constructor.
  */
-LC_EventHandler::LC_EventHandler(RS_GraphicView *parent):QObject(parent), m_coordinatesParser{std::make_unique<LC_CoordinatesParser>(parent)},
-    m_graphicView{parent}{
+LC_EventHandler::LC_EventHandler(RS_GraphicView* parent) : QObject(parent),
+                                                           m_coordinatesParser{std::make_unique<LC_CoordinatesParser>(parent)},
+                                                           m_graphicView{parent} {
 }
+
 /**
  * Destructor.
  */
@@ -56,8 +58,7 @@ LC_EventHandler::~LC_EventHandler() {
  * Go back in current action.
  */
 void LC_EventHandler::back() {
-    QMouseEvent e(QEvent::MouseButtonRelease, QPoint(0,0), QPoint{0, 0},
-                  Qt::RightButton, Qt::RightButton, Qt::NoModifier);
+    QMouseEvent e(QEvent::MouseButtonRelease, QPoint(0, 0), QPoint{0, 0}, Qt::RightButton, Qt::RightButton, Qt::NoModifier);
     mouseReleaseEvent(&e);
     uncheckQAction();
 }
@@ -103,8 +104,8 @@ void LC_EventHandler::mouseReleaseEvent(QMouseEvent* e) {
     }
 }
 
-void LC_EventHandler::mouseMoveEvent(QMouseEvent* e){
-    if(hasAction()) {
+void LC_EventHandler::mouseMoveEvent(QMouseEvent* e) {
+    if (hasAction()) {
         m_currentAction->mouseMoveEvent(e);
         checkLastActionFinishedAndUncheckQAction();
         e->accept();
@@ -115,9 +116,10 @@ void LC_EventHandler::mouseMoveEvent(QMouseEvent* e){
 }
 
 void LC_EventHandler::mouseLeaveEvent() const {
-    if(hasAction()){
+    if (hasAction()) {
         m_currentAction->suspend();
-    } else {
+    }
+    else {
         if (m_defaultAction) {
             m_defaultAction->suspend();
         }
@@ -125,9 +127,10 @@ void LC_EventHandler::mouseLeaveEvent() const {
 }
 
 void LC_EventHandler::mouseEnterEvent() const {
-    if(hasAction()){
+    if (hasAction()) {
         m_currentAction->resume();
-    } else {
+    }
+    else {
         if (m_defaultAction) {
             m_defaultAction->resume();
         }
@@ -135,10 +138,11 @@ void LC_EventHandler::mouseEnterEvent() const {
 }
 
 void LC_EventHandler::keyPressEvent(QKeyEvent* e) {
-    if(hasAction()){
+    if (hasAction()) {
         m_currentAction->keyPressEvent(e);
         checkLastActionFinishedAndUncheckQAction();
-    } else {
+    }
+    else {
         if (m_defaultAction) {
             m_defaultAction->keyPressEvent(e);
         }
@@ -149,10 +153,11 @@ void LC_EventHandler::keyPressEvent(QKeyEvent* e) {
 }
 
 void LC_EventHandler::keyReleaseEvent(QKeyEvent* e) {
-    if(hasAction()){
+    if (hasAction()) {
         m_currentAction->keyReleaseEvent(e);
         checkLastActionFinishedAndUncheckQAction();
-    } else {
+    }
+    else {
         if (m_defaultAction) {
             m_defaultAction->keyReleaseEvent(e);
         }
@@ -170,7 +175,7 @@ void LC_EventHandler::commandEvent(RS_CommandEvent* e) {
         if (!e->isAccepted()) {
             if (hasAction()) {
                 bool commandContainsCoordinate = false;
-                QString command = e->getCommand();
+                const QString command = e->getCommand();
                 auto coordinateEvent = m_coordinatesParser->parseCoordinate(command, commandContainsCoordinate);
                 if (commandContainsCoordinate) {
                     if (coordinateEvent.isValid()) {
@@ -201,22 +206,21 @@ void LC_EventHandler::commandEvent(RS_CommandEvent* e) {
     }
 }
 
-
-bool  LC_EventHandler::checkLastActionFinishedAndUncheckQAction() {
+bool LC_EventHandler::checkLastActionFinishedAndUncheckQAction() {
     if (m_currentAction == nullptr) {
         // action may be null due to switch to default action.
         return true;
     }
-    int lastActionStatus = m_currentAction->getStatus();
+    const int lastActionStatus = m_currentAction->getStatus();
     bool result = false;
-    if (lastActionStatus < 0 || m_currentAction->isFinished()){
+    if (lastActionStatus < 0 || m_currentAction->isFinished()) {
         if (m_QAction != nullptr) {
             m_QAction->setChecked(false);
             m_QAction = nullptr;
         }
-        auto predecessor = m_currentAction->getPredecessor();
+        const auto predecessor = m_currentAction->getPredecessor();
         if (predecessor != nullptr) {
-            RS2::ActionType actionType = predecessor->rtti();
+            const RS2::ActionType actionType = predecessor->rtti();
             m_currentAction = predecessor;
             m_graphicView->notifyCurrentActionChanged(actionType);
             m_graphicView->onSwitchToDefaultAction(m_currentAction == m_defaultAction, m_currentAction->rtti());
@@ -231,9 +235,9 @@ bool  LC_EventHandler::checkLastActionFinishedAndUncheckQAction() {
 }
 
 void LC_EventHandler::switchToDefaultAction() {
-    auto prevRtti = m_currentAction != nullptr ? m_currentAction->rtti() : RS2::ActionNone;
+    const auto prevRtti = m_currentAction != nullptr ? m_currentAction->rtti() : RS2::ActionNone;
     m_currentAction.reset();
-    if (m_QAction != nullptr){
+    if (m_QAction != nullptr) {
         m_QAction->setChecked(false);
         m_QAction = nullptr;
     }
@@ -248,7 +252,7 @@ void LC_EventHandler::switchToDefaultAction() {
  * Sets the current action.
  */
 bool LC_EventHandler::setCurrentAction(std::shared_ptr<RS_ActionInterface> action) {
-    if (action==nullptr) {
+    if (action == nullptr) {
         return false;
     }
     // Do not initialize action if it's already the last one.
@@ -257,9 +261,9 @@ bool LC_EventHandler::setCurrentAction(std::shared_ptr<RS_ActionInterface> actio
         return false;
     }
 
-    bool hasNonDefaultAction = hasAction();
+    const bool hasNonDefaultAction = hasAction();
     // Predecessor of the new action or NULL:
-    auto predecessor = hasNonDefaultAction ? m_currentAction : m_defaultAction;
+    const auto predecessor = hasNonDefaultAction ? m_currentAction : m_defaultAction;
     // Suspend current action:
     if (predecessor != nullptr) {
         predecessor->suspend();
@@ -278,7 +282,8 @@ bool LC_EventHandler::setCurrentAction(std::shared_ptr<RS_ActionInterface> actio
     if (action->isFinished()) {
         // For some actions: action->init() may call finish() within init()
         // If so, the q_action shouldn't be checked
-        if (action->isSupportsPredecessorAction()) { // we'll not change current action for one-shoot call
+        if (action->isSupportsPredecessorAction()) {
+            // we'll not change current action for one-shoot call
             if (hasNonDefaultAction) {
                 actionType = m_currentAction->rtti();
                 m_graphicView->notifyCurrentActionChanged(actionType);
@@ -289,18 +294,20 @@ bool LC_EventHandler::setCurrentAction(std::shared_ptr<RS_ActionInterface> actio
                 switchToDefaultAction();
             }
         }
-        else { // one-shoot finished action, return to default
+        else {
+            // one-shoot finished action, return to default
             switchToDefaultAction();
         }
     }
-    else{ // this is multi-state action, so switch to it
+    else {
+        // this is multi-state action, so switch to it
         if (hasNonDefaultAction && action->isSupportsPredecessorAction()) {
             action->setPredecessor(predecessor);
         }
         // Set current action:
         m_currentAction = action;
         passedActionIsNotFinished = true;
-        auto actionRtti = m_currentAction != nullptr ? m_currentAction->rtti() : RS2::ActionNone;
+        const auto actionRtti = m_currentAction != nullptr ? m_currentAction->rtti() : RS2::ActionNone;
         m_graphicView->onSwitchToDefaultAction(m_currentAction == m_defaultAction, actionRtti);
         resumeAction(action);
     }
@@ -314,8 +321,8 @@ void LC_EventHandler::resumeAction(const std::shared_ptr<RS_ActionInterface>& ac
 
 void LC_EventHandler::notifyLastActionFinished() {
     // fixme - sand check that action is not null!!!
-    int lastActionStatus = m_currentAction->getStatus();
-    if (lastActionStatus < 0 || m_currentAction->isFinished()){
+    const int lastActionStatus = m_currentAction->getStatus();
+    if (lastActionStatus < 0 || m_currentAction->isFinished()) {
         uncheckQAction();
     }
 }
@@ -338,17 +345,16 @@ void LC_EventHandler::disableCoordinateInput() {
  * @return Current action.
  */
 RS_ActionInterface* LC_EventHandler::getCurrentAction() const {
-    if(hasAction()){
+    if (hasAction()) {
         return m_currentAction.get();
-    } else {
-        return m_defaultAction.get();
     }
+    return m_defaultAction.get();
 }
 
 /**
  * @return The current default action.
  */
-RS_ActionInterface* LC_EventHandler::getDefaultAction() const{
+RS_ActionInterface* LC_EventHandler::getDefaultAction() const {
     return m_defaultAction.get();
 }
 
@@ -365,22 +371,22 @@ void LC_EventHandler::setDefaultAction(RS_ActionInterface* action) {
 /**
  * Kills all running actions. Called when a window is closed.
  */
-bool LC_EventHandler::killAllActions(){
+bool LC_EventHandler::killAllActions() {
     bool mayTerminate = true;
-    RS2::ActionType actionType = RS2::ActionDefault;
     if (m_currentAction != nullptr) {
-        actionType = m_currentAction->rtti();
         if (!m_currentAction->isFinished()) {
             mayTerminate = m_currentAction->mayBeTerminatedExternally();
         }
     }
     if (mayTerminate) {
-        if (isActive(m_currentAction)){
-            m_currentAction->finish();
-            m_currentAction.reset();
+        if (m_currentAction != nullptr) {
+            if (isActive(m_currentAction)) {
+                m_currentAction->finish();
+                m_currentAction.reset();
+            }
         }
 
-        if (m_QAction)  {
+        if (m_QAction) {
             m_QAction->setChecked(false);
             m_QAction = nullptr;
             m_graphicView->notifyCurrentActionChanged(RS2::ActionNone);
@@ -398,7 +404,7 @@ bool LC_EventHandler::killAllActions(){
 /**
  * @return true if the action is within currentActions
  */
-bool LC_EventHandler::isValid(RS_ActionInterface* action) const{
+bool LC_EventHandler::isValid(const RS_ActionInterface* action) const {
     return m_currentAction != nullptr && m_currentAction.get() == action;
 }
 
@@ -412,12 +418,12 @@ bool LC_EventHandler::hasAction() const {
 /**
  * Sets the snap mode for all currently active actions.
  */
-void LC_EventHandler::setSnapMode(RS_SnapMode sm) const {
+void LC_EventHandler::setSnapMode(const RS_SnapMode sm) const {
     if (isActive(m_currentAction)) {
         m_currentAction->setSnapMode(sm);
     }
 
-	if (m_defaultAction) {
+    if (m_defaultAction) {
         m_defaultAction->setSnapMode(sm);
     }
 }
@@ -425,7 +431,7 @@ void LC_EventHandler::setSnapMode(RS_SnapMode sm) const {
 /**
  * Sets the snap restriction for all currently active actions.
  */
-void LC_EventHandler::setSnapRestriction(RS2::SnapRestriction sr) const {
+void LC_EventHandler::setSnapRestriction(const RS2::SnapRestriction sr) const {
     if (isActive(m_currentAction)) {
         m_currentAction->setSnapRestriction(sr);
     }
@@ -436,7 +442,7 @@ void LC_EventHandler::setSnapRestriction(RS2::SnapRestriction sr) const {
 }
 
 QAction* LC_EventHandler::getQAction() const {
-  return m_QAction;
+    return m_QAction;
 }
 
 void LC_EventHandler::setQAction(QAction* action) {
@@ -448,7 +454,7 @@ void LC_EventHandler::setQAction(QAction* action) {
     m_QAction = action;
 }
 
-void LC_EventHandler::uncheckQAction(){
+void LC_EventHandler::uncheckQAction() {
     if (m_QAction != nullptr) {
         m_QAction->setChecked(false);
         m_QAction = nullptr;

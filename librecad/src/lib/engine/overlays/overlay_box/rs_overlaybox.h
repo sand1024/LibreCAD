@@ -38,12 +38,12 @@
 struct LC_OverlayBoxOptions{
     LC_OverlayBoxOptions() = default;
     ~LC_OverlayBoxOptions() = default;
-    RS_Color m_colorBoxLine;
-    RS_Color m_colorBoxFill;
-    RS_Color m_colorLineInverted;
-    RS_Color m_colorBoxFillInverted;
-    RS2::LineType m_lineType = RS2::SolidLine;
-    RS2::LineType m_invertedLineType = RS2::DashLine;
+    RS_Color colorBoxLine;
+    RS_Color colorBoxFill;
+    RS_Color colorLineInverted;
+    RS_Color colorBoxFillInverted;
+    RS2::LineType lineType = RS2::SolidLine;
+    RS2::LineType invertedLineType = RS2::DashLine;
 
     void loadSettings();
 };
@@ -58,8 +58,8 @@ public:
     RS_OverlayBox(const RS_Vector &corner1, const RS_Vector &corner2, LC_OverlayBoxOptions *options);
     void draw(RS_Painter* painter) override;
 protected:
-    RS_Vector corner1;
-    RS_Vector corner2;
-    LC_OverlayBoxOptions* options;
+    RS_Vector m_corner1;
+    RS_Vector m_corner2;
+    LC_OverlayBoxOptions* m_options;
 };
 #endif

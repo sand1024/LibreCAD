@@ -7,4 +7,4 @@ public:
     LC_ArrowHeadClosed2();
 };
 
-#endif // LC_ARROWHEAD2ARROW_H
+#endif

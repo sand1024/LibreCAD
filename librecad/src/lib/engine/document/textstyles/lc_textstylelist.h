@@ -38,15 +38,15 @@ public:
     void remove(LC_TextStyle* style);
     void remove(const QString& name);
     LC_TextStyle* find(const QString& name);
-    void replace(QList<LC_TextStyle*> newStylesList);
+    void replace(const QList<LC_TextStyle*>& newStylesList);
     const QList<LC_TextStyle*>* getStyles() const {return &m_styles;}
     LC_TextStyle* getActiveStyle() const {return m_activeStyle;}
     bool isModified() const {return m_modified;}
-    void setModified(bool modified) {m_modified = modified;}
+    void setModified(const bool modified) {m_modified = modified;}
 private:
     QList<LC_TextStyle*> m_styles;
     LC_TextStyle *m_activeStyle = nullptr;
     bool m_modified = false;
 };
 
-#endif // LC_TEXTSTYLELIST_H
+#endif
