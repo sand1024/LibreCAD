@@ -301,10 +301,9 @@ RS_Circle* RS_PreviewActionInterface::previewCircle(const RS_CircleData& circleD
     return circle;
 }
 
-RS_Circle* RS_PreviewActionInterface::previewToCreateCircle(const RS_CircleData& circleData) const {
+void RS_PreviewActionInterface::previewToCreateCircle(const RS_CircleData& circleData) const {
     auto* result = previewCircle(circleData);
     prepareEntityDescription(result, RS2::EntityDescriptionLevel::DescriptionCreating);
-    return result;
 }
 
 RS_Arc* RS_PreviewActionInterface::previewToCreateArc(const RS_ArcData& arcData) const {
@@ -320,7 +319,7 @@ RS_Line* RS_PreviewActionInterface::previewToCreateLine(const RS_LineData& lineD
 }
 
 RS_Line* RS_PreviewActionInterface::previewToCreateLine(const RS_Vector& start, const RS_Vector& end) const {
-    auto* result = previewLine(start, end);
+    auto* result = obtainPreviewLine(start, end);
     prepareEntityDescription(result, RS2::EntityDescriptionLevel::DescriptionCreating);
     return result;
 }
@@ -350,13 +349,23 @@ RS_Arc* RS_PreviewActionInterface::previewArc(const RS_ArcData& arcData) const {
     return arc;
 }
 
-RS_Arc* RS_PreviewActionInterface::previewRefArc(const RS_ArcData& arcData) const {
+void RS_PreviewActionInterface::previewRefArc(const RS_ArcData& arcData) const {
+    auto* arc = new LC_RefArc(m_preview.get(), arcData);
+    m_preview->addEntity(arc);
+}
+
+RS_Arc* RS_PreviewActionInterface::obtainPreviewRefArc(const RS_ArcData& arcData) const {
     auto* arc = new LC_RefArc(m_preview.get(), arcData);
     m_preview->addEntity(arc);
     return arc;
 }
 
-LC_RefEllipse* RS_PreviewActionInterface::previewRefEllipse(const RS_EllipseData& arcData) const {
+void RS_PreviewActionInterface::previewRefEllipse(const RS_EllipseData& arcData) const {
+    auto* ellipse = new LC_RefEllipse(m_preview.get(), arcData);
+    m_preview->addEntity(ellipse);
+}
+
+LC_RefEllipse* RS_PreviewActionInterface::obtainPreviewRefEllipse(const RS_EllipseData& arcData) const {
     auto* arc = new LC_RefEllipse(m_preview.get(), arcData);
     m_preview->addEntity(arc);
     return arc;
@@ -368,7 +377,12 @@ RS_Line* RS_PreviewActionInterface::previewLine(const RS_LineData& data) const {
     return line;
 }
 
-RS_Line* RS_PreviewActionInterface::previewLine(const RS_Vector& start, const RS_Vector& end) const {
+void RS_PreviewActionInterface::previewLine(const RS_Vector& start, const RS_Vector& end) const {
+    auto* line = new RS_Line(this->m_preview.get(), start, end);
+    m_preview->addEntity(line);
+}
+
+RS_Line* RS_PreviewActionInterface::obtainPreviewLine(const RS_Vector& start, const RS_Vector& end) const {
     auto* line = new RS_Line(this->m_preview.get(), start, end);
     m_preview->addEntity(line);
     return line;
@@ -429,7 +443,12 @@ RS_Line* RS_PreviewActionInterface::obtainPreviewRefLine(const RS_Vector& start,
     return line;
 }
 
-RS_ConstructionLine* RS_PreviewActionInterface::previewRefConstructionLine(const RS_Vector& start, const RS_Vector& end) const {
+void RS_PreviewActionInterface::previewRefConstructionLine(const RS_Vector& start, const RS_Vector& end) const {
+    auto* line = new LC_RefConstructionLine(this->m_preview.get(), start, end);
+    m_preview->addEntity(line);
+}
+
+RS_ConstructionLine* RS_PreviewActionInterface::obtainPreviewRefConstructionLine(const RS_Vector& start, const RS_Vector& end) const {
     auto* line = new LC_RefConstructionLine(this->m_preview.get(), start, end);
     m_preview->addEntity(line);
     return line;

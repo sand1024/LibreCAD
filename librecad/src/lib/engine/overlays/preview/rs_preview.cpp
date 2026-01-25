@@ -41,7 +41,7 @@ RS_Preview::RS_Preview(RS_EntityContainer* parent, LC_GraphicViewport* viewport)
 // fixme - sand - ucs - check when preview is created and whether this may be delegated to actio init?
 
     m_maxEntities = LC_GET_ONE_INT("Appearance", "MaxPreview", 100);
-    const RS_Color highLight = RS_Color(LC_GET_ONE_STR("Colors", "highlight", RS_Settings::HIGHLIGHT));
+    const auto highLight = RS_Color(LC_GET_ONE_STR("Colors", "highlight", RS_Settings::HIGHLIGHT));
     setPen(RS_Pen(highLight, RS2::Width00, RS2::SolidLine));
 }
 

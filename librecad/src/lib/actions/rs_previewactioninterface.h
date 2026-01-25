@@ -118,11 +118,13 @@ protected:
     RS_Arc *previewArc(const RS_ArcData &arcData) const;
     RS_Ellipse *previewEllipse(const RS_EllipseData &ellipseData) const;
     RS_Point* previewPoint(const RS_Vector &coord) const;
-    RS_Line* previewLine(const RS_Vector &start, const RS_Vector &end) const;
+    void previewLine(const RS_Vector &start, const RS_Vector &end) const;
+    RS_Line* obtainPreviewLine(const RS_Vector& start, const RS_Vector& end) const;
     RS_Line* previewLine(const RS_LineData &data) const;
     void previewRefLine(const RS_Vector &start, const RS_Vector &end) const;
     RS_Line* obtainPreviewRefLine(const RS_Vector &start, const RS_Vector &end) const;
-    RS_ConstructionLine* previewRefConstructionLine(const RS_Vector &start, const RS_Vector &end) const;
+    void previewRefConstructionLine(const RS_Vector &start, const RS_Vector &end) const;
+    RS_ConstructionLine* obtainPreviewRefConstructionLine(const RS_Vector& start, const RS_Vector& end) const;
     void previewRefLines(const std::vector<RS_LineData>& points) const;
     void previewRefSelectableLine(const RS_Vector &start, const RS_Vector &end) const;
     void previewRefPoint(const RS_Vector &coord) const;
@@ -132,8 +134,10 @@ protected:
     RS_Arc* obtainPreviewRefArc(const RS_Vector& center, const RS_Vector& startPoint, const RS_Vector& mouse, bool determineReversal) const;
     RS_Arc* previewRefArc(bool reversed, const RS_Vector &center, const RS_Vector &startPoint, const RS_Vector &mouse) const;
     RS_Circle* previewRefCircle(const RS_Vector &center, double radius) const;
-    RS_Arc *previewRefArc(const RS_ArcData &arcData) const;
-    LC_RefEllipse *previewRefEllipse(const RS_EllipseData &arcData) const;
+    void previewRefArc(const RS_ArcData &arcData) const;
+    RS_Arc* obtainPreviewRefArc(const RS_ArcData& arcData) const;
+    void previewRefEllipse(const RS_EllipseData &arcData) const;
+    LC_RefEllipse* obtainPreviewRefEllipse(const RS_EllipseData& arcData) const;
 
     void initRefEntitiesMetrics();
 
@@ -183,7 +187,7 @@ protected:
     void appendInfoCursorZoneMessage(const QString& message, int zoneNumber, bool replaceContent) const;
     void appendInfoCursorEntityCreationMessage(const QString& message) const;
 
-    RS_Circle *previewToCreateCircle(const RS_CircleData &circleData) const;
+    void previewToCreateCircle(const RS_CircleData &circleData) const;
     RS_Arc *previewToCreateArc(const RS_ArcData &arcData) const;
     RS_Line *previewToCreateLine(const RS_LineData &lineData) const;
     RS_Line *previewToCreateLine(const RS_Vector &start, const RS_Vector &end) const;
