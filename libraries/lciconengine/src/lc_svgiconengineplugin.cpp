@@ -19,20 +19,19 @@
  along with this program; if not, write to the Free Software
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
-#include "lc_svgiconengine.h"
-
 #include <QIconEnginePlugin>
+
+#include "lc_svgiconengine.h"
 
 class LC_SVGIconPlugin : public QIconEnginePlugin{
    Q_OBJECT
    Q_PLUGIN_METADATA(IID QIconEngineFactoryInterface_iid FILE "lc_svgicons.json")
-
 public:
     QIconEngine *create(const QString &filename = QString()) override;
 };
 
 QIconEngine *LC_SVGIconPlugin::create(const QString &file){
-    auto engine = new LC_SVGIconEngine;
+    const auto engine = new LC_SVGIconEngine;
     if (!file.isNull()) {
         engine->addFile(file, QSize(), QIcon::Normal, QIcon::Off);
     }
