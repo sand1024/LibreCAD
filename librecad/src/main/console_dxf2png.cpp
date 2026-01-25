@@ -22,23 +22,21 @@
 **
 ******************************************************************************/
 
-#include <memory>
-#include <set>
-
 #include <QApplication>
 #include <QCoreApplication>
 #include <QImageWriter>
 #include <QtCore>
 #include <QtSvg>
-
-#include "main.h"
-
-#include "qc_applicationwindow.h"
-#include "qg_dialogfactory.h"
+#include <memory>
+#include <set>
 
 #include "lc_actionfileexportmakercam.h"
 #include "lc_documentsstorage.h"
 #include "lc_graphicviewport.h"
+#include "lc_printviewportrenderer.h"
+#include "main.h"
+#include "qc_applicationwindow.h"
+#include "qg_dialogfactory.h"
 #include "rs.h"
 #include "rs_debug.h"
 #include "rs_document.h"
@@ -49,19 +47,17 @@
 #include "rs_patternlist.h"
 #include "rs_settings.h"
 #include "rs_system.h"
-#include "lc_printviewportrenderer.h"
-
 
 ///////////////////////////////////////////////////////////////////////
 /// \brief openDocAndSetGraphic opens a DXF file and prepares all its graphics content
 /// for further manipulations
 /// \return
 //////////////////////////////////////////////////////////////////////
-static std::unique_ptr<RS_Document> openDocAndSetGraphic(QString);
+static std::unique_ptr<RS_Document> openDocAndSetGraphic(const QString&);
 
 static void touchGraphic(RS_Graphic*);
 
-static QSize parsePngSizeArg(QString);
+static QSize parsePngSizeArg(const QString&);
 
 bool slotFileExport(RS_Graphic* graphic,
                     const QString& name,
@@ -72,19 +68,19 @@ bool slotFileExport(RS_Graphic* graphic,
                     bool bw=true);
 
 namespace {
-// find the image format from the file extension; default to png
-QString getFormatFromFile(const QString& fileName)
-{
-    QList<QByteArray> supportedImageFormats = QImageWriter::supportedImageFormats();
-    supportedImageFormats.push_back("svg"); // add svg
+    // find the image format from the file extension; default to png
+    QString getFormatFromFile(const QString& fileName) {
+        QList<QByteArray> supportedImageFormats = QImageWriter::supportedImageFormats();
+        supportedImageFormats.push_back("svg"); // add svg
 
-    for (QString format: supportedImageFormats) {
-        format = format.toLower();
-        if (fileName.endsWith(format, Qt::CaseInsensitive))
-            return format;
+        for (QString format : supportedImageFormats) {
+            format = format.toLower();
+            if (fileName.endsWith(format, Qt::CaseInsensitive)) {
+                return format;
+            }
+        }
+        return "png";
     }
-    return "png";
-}
 }
 
 /////////
@@ -94,8 +90,7 @@ QString getFormatFromFile(const QString& fileName)
 /// \param argv
 /// \return
 ///
-int console_dxf2png(int argc, char* argv[])
-{
+int console_dxf2png(int argc, char* argv[]) {
     RS_DEBUG->setLevel(RS_Debug::D_NOTHING);
 
     QApplication app(argc, argv);
@@ -106,8 +101,7 @@ int console_dxf2png(int argc, char* argv[])
     QFileInfo prgInfo(QFile::decodeName(argv[0]));
     QString prgDir(prgInfo.absolutePath());
     RS_Settings::init(app.organizationName(), app.applicationName());
-    RS_SYSTEM->init(app.applicationName(), app.applicationVersion(),
-        XSTR(QC_APPDIR), prgDir.toLatin1().data());
+    RS_SYSTEM->init(app.applicationName(), app.applicationVersion(), XSTR(QC_APPDIR), prgDir.toLatin1().data());
 
     QCommandLineParser parser;
 
@@ -116,9 +110,9 @@ int console_dxf2png(int argc, char* argv[])
     std::set<QString> allowed = {"dxf2png", "dxf2svg"};
     if (allowed.count(prgInfo.baseName()) == 0) {
         librecad = prgInfo.filePath();
-        for (const auto& prog: allowed)
-            appDesc += "\n" + prog + " usage: " + prgInfo.filePath()
-            + " " + prog +" [options] <dxf_files>\n";
+        for (const auto& prog : allowed) {
+            appDesc += "\n" + prog + " usage: " + prgInfo.filePath() + " " + prog + " [options] <dxf_files>\n";
+        }
     }
     appDesc += "\nPrint a DXF file to a PNG/SVG file.";
     appDesc += "\n\n";
@@ -130,12 +124,10 @@ int console_dxf2png(int argc, char* argv[])
     parser.addHelpOption();
     parser.addVersionOption();
 
-    QCommandLineOption outFileOpt(QStringList() << "o" << "outfile",
-        "Output PNG file.", "file");
+    QCommandLineOption outFileOpt(QStringList() << "o" << "outfile", "Output PNG file.", "file");
     parser.addOption(outFileOpt);
 
-    QCommandLineOption pngSizeOpt(QStringList() << "r" << "resolution",
-        "Output PNG size (Width x Height) in pixels.", "WxH");
+    QCommandLineOption pngSizeOpt(QStringList() << "r" << "resolution", "Output PNG size (Width x Height) in pixels.", "WxH");
     parser.addOption(pngSizeOpt);
 
     parser.addPositionalArgument("<dxf_files>", "Input DXF file");
@@ -144,8 +136,9 @@ int console_dxf2png(int argc, char* argv[])
 
     const QStringList args = parser.positionalArguments();
 
-    if (args.isEmpty() || (args.size() == 1 && (args[0] == "dxf2png" || args[0] == "dxf2svg")))
+    if (args.isEmpty() || (args.size() == 1 && (args[0] == "dxf2png" || args[0] == "dxf2svg"))) {
         parser.showHelp(EXIT_FAILURE);
+    }
     // Set PNG size from user input
     QSize pngSize = parsePngSizeArg(parser.value(pngSizeOpt)); // If nothing, use default values.
 
@@ -153,13 +146,15 @@ int console_dxf2png(int argc, char* argv[])
 
     for (auto arg : args) {
         QFileInfo dxfFileInfo(arg);
-        if (dxfFileInfo.suffix().toLower() != "dxf")
+        if (dxfFileInfo.suffix().toLower() != "dxf") {
             continue; // Skip files without .dxf extension
+        }
         dxfFiles.append(arg);
     }
 
-    if (dxfFiles.isEmpty())
+    if (dxfFiles.isEmpty()) {
         parser.showHelp(EXIT_FAILURE);
+    }
 
     // Output setup
 
@@ -167,14 +162,16 @@ int console_dxf2png(int argc, char* argv[])
 
     QFileInfo dxfFileInfo(dxfFile);
     QString fn = dxfFileInfo.completeBaseName(); // original DXF file name
-    if(fn.isEmpty())
+    if (fn.isEmpty()) {
         fn = "unnamed";
+    }
 
     // Set output filename from user input if present
     QString outFile = parser.value(outFileOpt);
     if (outFile.isEmpty()) {
-        outFile = dxfFileInfo.path() + "/" + fn + "." + args[0].mid(args[0].size()-3);
-    } else {
+        outFile = dxfFileInfo.path() + "/" + fn + "." + args[0].mid(args[0].size() - 3);
+    }
+    else {
         outFile = dxfFileInfo.path() + "/" + outFile;
     }
 
@@ -182,9 +179,10 @@ int console_dxf2png(int argc, char* argv[])
 
     std::unique_ptr<RS_Document> doc = openDocAndSetGraphic(dxfFile);
 
-    if (doc == nullptr || doc->getGraphic() == nullptr)
+    if (doc == nullptr || doc->getGraphic() == nullptr) {
         return 1;
-    RS_Graphic *graphic = doc->getGraphic();
+    }
+    RS_Graphic* graphic = doc->getGraphic();
 
     LC_LOG << "Printing" << dxfFile << "to" << outFile << ">>>>";
 
@@ -192,11 +190,11 @@ int console_dxf2png(int argc, char* argv[])
 
     // Start of the actual conversion
 
-    LC_LOG<< "QC_ApplicationWindow::slotFileExport()";
+    LC_LOG << "QC_ApplicationWindow::slotFileExport()";
 
     // read default settings:
     LC_GROUP_GUARD("Export"); // fixme settings
-    QString defDir = dxfFileInfo.path();
+    // QString defDir = dxfFileInfo.path();
 
     // find out extension:
     QString format = getFormatFromFile(outFile).toUpper();
@@ -209,22 +207,21 @@ int console_dxf2png(int argc, char* argv[])
     bool ret = false;
     if (format.compare("SVG", Qt::CaseInsensitive) == 0) {
         ret = LC_ActionFileExportMakerCam::writeSvg(outFile, *graphic);
-    } else {
-        QSize borders = QSize(5, 5);
+    }
+    else {
+        auto borders = QSize(5, 5);
         bool black = false;
         bool bw = false;
-        ret = slotFileExport(graphic, outFile, format, pngSize, borders,
-                       black, bw);
+        ret = slotFileExport(graphic, outFile, format, pngSize, borders, black, bw);
     }
 
     qDebug() << "Printing" << dxfFile << "to" << outFile << (ret ? "Done" : "Failed");
     return 0;
 }
 
-
-static std::unique_ptr<RS_Document> openDocAndSetGraphic(QString dxfFile){
+static std::unique_ptr<RS_Document> openDocAndSetGraphic(const QString& dxfFile){
     auto doc = std::make_unique<RS_Graphic>();
-    LC_DocumentsStorage storage;
+    const LC_DocumentsStorage storage;
     if (!storage.loadDocument(doc.get(), dxfFile, RS2::FormatUnknown)) {
     // if (!doc->open(dxfFile, RS2::FormatUnknown)) {
         qDebug() << "ERROR: Failed to open document" << dxfFile;
@@ -232,7 +229,7 @@ static std::unique_ptr<RS_Document> openDocAndSetGraphic(QString dxfFile){
         return {};
     }
 
-    RS_Graphic* graphic = doc->getGraphic();
+    const RS_Graphic* graphic = doc->getGraphic();
     if (graphic == nullptr) {
         qDebug() << "ERROR: No graphic in" << dxfFile;
         return {};
@@ -241,16 +238,15 @@ static std::unique_ptr<RS_Document> openDocAndSetGraphic(QString dxfFile){
     return doc;
 }
 
-static void touchGraphic(RS_Graphic* graphic)
-{
+static void touchGraphic(RS_Graphic* graphic){
     // If margin < 0.0, values from dxf file are used.
-    double marginLeft = -1.0;
-    double marginTop = -1.0;
-    double marginRight = -1.0;
-    double marginBottom = -1.0;
+    constexpr double marginLeft = -1.0;
+    constexpr double marginTop = -1.0;
+    constexpr double marginRight = -1.0;
+    constexpr double marginBottom = -1.0;
 
-    int pagesH = 0;      // If number of pages < 1,
-    int pagesV = 0;      // use value from dxf file.
+    constexpr int pagesH = 0;      // If number of pages < 1,
+    constexpr int pagesV = 0;      // use value from dxf file.
 
     graphic->calculateBorders();
     graphic->setMargins(marginLeft, marginTop,
@@ -264,7 +260,7 @@ static void touchGraphic(RS_Graphic* graphic)
 }
 
 bool slotFileExport(RS_Graphic* graphic, const QString& name,
-        const QString& format, QSize size, QSize borders, bool black, bool bw) {
+        const QString& format, const QSize size, const QSize borders, const bool black, const bool bw) {
 
     if (graphic==nullptr) {
         RS_DEBUG->print(RS_Debug::D_WARNING,
@@ -277,9 +273,9 @@ bool slotFileExport(RS_Graphic* graphic, const QString& name,
 
     bool ret = false;
     // set vars for normal pictures and vectors (svg)
-    QPixmap* picture = new QPixmap(size);
+    const auto picture = new QPixmap(size);
 
-    QSvgGenerator* vector = new QSvgGenerator();
+    const auto vector = new QSvgGenerator();
 
     // set buffer var
     QPaintDevice* buffer;
@@ -332,11 +328,10 @@ bool slotFileExport(RS_Graphic* graphic, const QString& name,
     renderer.render();
 
     // end the picture output
-    if(format.toLower() != "svg")
-    {
+    if(format.toLower() != "svg")  {
         // RVT_PORT QImageIO iio;
         QImageWriter iio;
-        QImage img = picture->toImage();
+        const QImage img = picture->toImage();
         // RVT_PORT iio.setImage(img);
         iio.setFileName(name);
         iio.setFormat(format.toLatin1());
@@ -363,19 +358,19 @@ bool slotFileExport(RS_Graphic* graphic, const QString& name,
 /// \param arg - input string
 /// \return
 ///
-static QSize parsePngSizeArg(QString arg)
-{
+static QSize parsePngSizeArg(const QString& arg) {
     QSize v(2000, 1000); // default resolution
 
-    if (arg.isEmpty())
+    if (arg.isEmpty()) {
         return v;
+    }
 
-    QRegularExpression re("^(?<width>\\d+)[x|X]{1}(?<height>\\d+)$");
-    QRegularExpressionMatch match = re.match(arg);
+    const QRegularExpression re("^(?<width>\\d+)[x|X]{1}(?<height>\\d+)$");
+    const QRegularExpressionMatch match = re.match(arg);
 
     if (match.hasMatch()) {
-        QString width = match.captured("width");
-        QString height = match.captured("height");
+        const QString width = match.captured("width");
+        const QString height = match.captured("height");
         v.setWidth(width.toDouble());
         v.setHeight(height.toDouble());
     } else {
