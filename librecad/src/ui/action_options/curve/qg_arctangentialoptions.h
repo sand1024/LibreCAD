@@ -27,6 +27,7 @@
 #define QG_ARCTANGENTIALOPTIONS_H
 
 #include<memory>
+
 #include "lc_actionoptionswidgetbase.h"
 
 class RS_ActionInterface;
@@ -49,15 +50,15 @@ public slots:
     void languageChange() override;
 public:
     void updateRadius(double d);
-    void updateAngle(double a);
+    void updateAngle(double angle);
 protected:
     RS_ActionDrawArcTangential* m_action = nullptr;
     void doSaveSettings() override;
     void doSetAction(RS_ActionInterface *a, bool update) override;
-    void setRadiusToActionAndView(const QString& s  );
-    void setAngleToActionAndView(const QString& s  );
-    void setByRadiusToActionAndView(const bool byRadius) const;
+    void setRadiusToActionAndView(const QString& s);
+    void setAngleToActionAndView(const QString& s);
+    void setByRadiusToActionAndView(bool byRadius) const;
     std::unique_ptr<Ui::Ui_ArcTangentialOptions> ui;
 };
 
-#endif // QG_ARCTANGENTIALOPTIONS_H
+#endif

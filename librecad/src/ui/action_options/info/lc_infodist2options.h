@@ -38,7 +38,7 @@ public:
     ~LC_InfoDist2Options() override;
 protected slots:
     void languageChange() override;
-    void onOnEntityClicked(bool value);
+    void onOnEntityClicked(bool value) const;
 protected:
     void doSaveSettings() override;
     void doSetAction( RS_ActionInterface * a, bool update) override;
@@ -50,4 +50,4 @@ private:
     void setOnEntitySnapToActionAndView(bool value) const;
 };
 
-#endif // LC_INFODIST2OPTIONS_H
+#endif

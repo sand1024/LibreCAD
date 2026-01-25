@@ -37,4 +37,4 @@ public slots:
     void updateWidgetSettings() const;
 };
 
-#endif // LC_GRAPHICAWAREWIDGET_H
+#endif

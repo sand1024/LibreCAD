@@ -21,6 +21,7 @@
  ******************************************************************************/
 
 #include "lc_midlineoptions.h"
+
 #include "lc_actiondrawmidline.h"
 #include "ui_lc_midlineoptions.h"
 
@@ -44,8 +45,8 @@ void LC_MidLineOptions::languageChange() {
     ui->retranslateUi(this);
 }
 
-void LC_MidLineOptions::doSetAction(RS_ActionInterface* a, bool update) {
-    m_action = dynamic_cast<LC_ActionDrawMidLine*>(a);
+void LC_MidLineOptions::doSetAction(RS_ActionInterface* a, const bool update) {
+    m_action = static_cast<LC_ActionDrawMidLine*>(a);
     QString offset;
     if (update) {
         offset = fromDouble(m_action->getOffset());

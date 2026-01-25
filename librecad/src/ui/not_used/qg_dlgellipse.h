@@ -44,4 +44,4 @@ protected:
     void setEntity(RS_Ellipse *e);
 };
 
-#endif // QG_DLGELLIPSE_H
+#endif

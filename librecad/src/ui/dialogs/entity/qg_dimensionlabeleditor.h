@@ -22,20 +22,22 @@
 #ifndef QG_DIMENSIONLABELEDITOR_H
 #define QG_DIMENSIONLABELEDITOR_H
 
+#include <qtmetamacros.h>
+
 #include "ui_qg_dimensionlabeleditor.h"
 class RS_Dimension;
 
 class QG_DimensionLabelEditor : public QWidget, public Ui::QG_DimensionLabelEditor{
     Q_OBJECT
 public:
-    QG_DimensionLabelEditor(QWidget* parent = nullptr, Qt::WindowFlags fl = {});
+    explicit QG_DimensionLabelEditor(QWidget* parent = nullptr, Qt::WindowFlags fl = {});
     ~QG_DimensionLabelEditor() override;
     void setRadialType(const RS_Dimension&);
     QString getLabel() const;
 public slots:
     void setLabel( const QString & l ) const;
-    void insertSign( const QString & s );
-    void updatePrefix(bool isChecked);
+    void insertSign( const QString & s ) const;
+    void updatePrefix(bool isChecked) const;
 protected slots:
     void languageChange();
     void updateRawLabelText() const;
@@ -43,4 +45,4 @@ private:
     bool m_hasDiameter = false;
 };
 
-#endif // QG_DIMENSIONLABELEDITOR_H
+#endif

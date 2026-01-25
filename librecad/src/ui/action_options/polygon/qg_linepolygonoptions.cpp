@@ -55,7 +55,7 @@ void QG_LinePolygonOptions::languageChange(){
     ui->retranslateUi(this);
 }
 
-bool QG_LinePolygonOptions::checkActionRttiValid(RS2::ActionType actionType){
+bool QG_LinePolygonOptions::checkActionRttiValid(const RS2::ActionType actionType){
     m_sideSideAction = actionType == RS2::ActionDrawLinePolygonSideSide;
     return actionType == RS2::ActionDrawLinePolygonCenCor ||
            actionType == RS2::ActionDrawLinePolygonCenTan ||
@@ -88,12 +88,8 @@ QString QG_LinePolygonOptions::getSettingsOptionNamePrefix(){
     }
 }
 
-void QG_LinePolygonOptions::doSetAction(RS_ActionInterface *a, bool update){
-    m_action = dynamic_cast<LC_ActionDrawLinePolygonBase*>(a);
-    assert(m_action != nullptr);
-    if (m_action == nullptr)
-        return;
-
+void QG_LinePolygonOptions::doSetAction(RS_ActionInterface *a, const bool update){
+    m_action = static_cast<LC_ActionDrawLinePolygonBase*>(a);
     int number = 0;
     bool polyline = false;
     bool rounded = false;
@@ -105,7 +101,7 @@ void QG_LinePolygonOptions::doSetAction(RS_ActionInterface *a, bool update){
         rounded = m_action->isCornersRounded();
         radius = fromDouble(m_action->getRoundingRadius());
         if (m_sideSideAction){
-            auto* specificAction = dynamic_cast<LC_ActionDrawLinePolygon4 *>(a);
+            const auto* specificAction = static_cast<LC_ActionDrawLinePolygon4 *>(a);
             vertextVertex = specificAction->isVertexVertexMode();
         }
     } else {
@@ -128,24 +124,23 @@ void QG_LinePolygonOptions::doSetAction(RS_ActionInterface *a, bool update){
     }
 }
 
-void QG_LinePolygonOptions::setPolylineToActionAndView(bool val) const {
+void QG_LinePolygonOptions::setPolylineToActionAndView(const bool val) const {
     m_action->setPolyline(val);
     ui->cbPolyline->setChecked(val);
 }
 
-void QG_LinePolygonOptions::setRoundedToActionAndView(bool val) const {
+void QG_LinePolygonOptions::setRoundedToActionAndView(const bool val) const {
     m_action->setCornersRounded(val);
     ui->cbRadius->setChecked(val);
     ui->leRadius->setEnabled(!val);
     ui->tbPickRadius->setEnabled(!val);
 }
 
-void QG_LinePolygonOptions::setVertexVertexToActionAndView(bool val) const {
+void QG_LinePolygonOptions::setVertexVertexToActionAndView(const bool val) const {
     if (m_sideSideAction){
-        auto* specificAction = dynamic_cast<LC_ActionDrawLinePolygon4 *>(m_action);
-        assert(m_action != nullptr);
-        if (m_action != nullptr)
-            specificAction->setVertexVertexMode(val);
+        auto* specificAction = static_cast<LC_ActionDrawLinePolygon4 *>(m_action);
+        Q_ASSERT(specificAction != nullptr);
+        specificAction->setVertexVertexMode(val);
     }
     ui->cbVertexToVertex->setChecked(val);
 }
@@ -158,7 +153,7 @@ void QG_LinePolygonOptions::setRadiusToActionAndView(const QString &val) {
     }
 }
 
-void QG_LinePolygonOptions::setNumberToActionAndView(int number) const {
+void QG_LinePolygonOptions::setNumberToActionAndView(const int number) const {
     m_action->setNumber(number);
     ui->sbNumber->setValue(number);
 }

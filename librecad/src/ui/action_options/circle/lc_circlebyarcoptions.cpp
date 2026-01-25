@@ -20,8 +20,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
 #include "lc_circlebyarcoptions.h"
-#include "ui_lc_circlebyarcoptions.h"
+
 #include "lc_actiondrawcirclebyarc.h"
+#include "ui_lc_circlebyarcoptions.h"
 
 LC_CircleByArcOptions::LC_CircleByArcOptions() :
     LC_ActionOptionsWidgetBase(RS2::ActionDrawCircleByArc, "Draw","CircleByArc"),
@@ -41,8 +42,8 @@ LC_CircleByArcOptions::~LC_CircleByArcOptions(){
     m_action = nullptr;
 }
 
-void LC_CircleByArcOptions::doSetAction(RS_ActionInterface *a, bool update){
-    m_action = dynamic_cast<LC_ActionDrawCircleByArc *>(a);
+void LC_CircleByArcOptions::doSetAction(RS_ActionInterface *a, const bool update){
+    m_action = static_cast<LC_ActionDrawCircleByArc *>(a);
     bool replace;
     int penMode;
     int layerMode;
@@ -72,13 +73,13 @@ void LC_CircleByArcOptions::doSaveSettings(){
     save("RadiusShift", ui->leRadiusShift->text());
 }
 
-void LC_CircleByArcOptions::onPenModeIndexChanged(int mode){
+void LC_CircleByArcOptions::onPenModeIndexChanged(const int mode) const {
     if (m_action != nullptr){
         setPenModeToActionAndView(mode);
     }
 }
 
-void LC_CircleByArcOptions::onLayerModeIndexChanged(int mode){
+void LC_CircleByArcOptions::onLayerModeIndexChanged(const int mode) const {
     if (m_action != nullptr){
         setLayerModeToActionAndeView(mode);
     }
@@ -88,13 +89,13 @@ void LC_CircleByArcOptions::languageChange(){
     ui->retranslateUi(this);
 }
 
-void LC_CircleByArcOptions::onReplaceClicked(bool value){
+void LC_CircleByArcOptions::onReplaceClicked(const bool value) const {
     if (m_action != nullptr){
         setReplaceArcToActionAndView(value);
     }
 }
 
-void LC_CircleByArcOptions::setReplaceArcToActionAndView(bool value) const {
+void LC_CircleByArcOptions::setReplaceArcToActionAndView(const bool value) const {
     m_action->setReplaceArcByCircle(value);
     ui->cbReplace->setChecked(value);
 
@@ -103,12 +104,12 @@ void LC_CircleByArcOptions::setReplaceArcToActionAndView(bool value) const {
     ui->tbPickRadius->setEnabled(!value);
 }
 
-void LC_CircleByArcOptions::setPenModeToActionAndView(int mode) const {
+void LC_CircleByArcOptions::setPenModeToActionAndView(const int mode) const {
     m_action->setPenMode(mode);
     ui->cbPen->setCurrentIndex(mode);
 }
 
-void LC_CircleByArcOptions::setLayerModeToActionAndeView(int mode) const {
+void LC_CircleByArcOptions::setLayerModeToActionAndeView(const int mode) const {
     m_action->setLayerMode(mode);
     ui->cbLayer->setCurrentIndex(mode);
 }
@@ -119,7 +120,7 @@ void LC_CircleByArcOptions::onRadiusShiftEditingFinished(){
   }
 }
 
-void LC_CircleByArcOptions::setRadiusShiftToModelAndView(QString val){
+void LC_CircleByArcOptions::setRadiusShiftToModelAndView(const QString& val){
     double len;
     if (toDouble(val, len, 0.0, false)){
         m_action->setRadiusShift(len);

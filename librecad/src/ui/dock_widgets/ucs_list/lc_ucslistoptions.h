@@ -49,4 +49,4 @@ public:
     };
 };
 
-#endif // LC_UCSLISTOPTIONS_H
+#endif

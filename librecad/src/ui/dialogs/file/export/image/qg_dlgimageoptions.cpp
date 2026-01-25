@@ -21,6 +21,7 @@
  * *********************************************************************
  */
 #include "qg_dlgimageoptions.h"
+
 #include "rs_math.h"
 #include "rs_settings.h"
 
@@ -143,8 +144,8 @@ void  QG_ImageOptionsDialog::resolutionChanged() {
         if (!ok) {
             res = 1.0;
         }
-        int w = RS_Math::round(res * m_graphicSize.x);
-        int h = RS_Math::round(res * m_graphicSize.y);
+        const int w = RS_Math::round(res * m_graphicSize.x);
+        const int h = RS_Math::round(res * m_graphicSize.y);
         m_useResolution = true;
         leWidth->setText(QString("%1").arg(w));
         leHeight->setText(QString("%1").arg(h));

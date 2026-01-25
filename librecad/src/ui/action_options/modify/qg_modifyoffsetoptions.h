@@ -46,7 +46,7 @@ public:
 protected:
     void doSetAction(RS_ActionInterface *a, bool update) override;
     void doSaveSettings() override;
-    void setDistanceToActionAndView(QString qString);
+    void setDistanceToActionAndView(const QString& val);
     void setDistanceFixedToActionAndView(bool val) const;
 protected slots:
     void languageChange() override;

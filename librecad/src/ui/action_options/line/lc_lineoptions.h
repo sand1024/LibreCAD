@@ -33,7 +33,6 @@ namespace Ui {
 
 class LC_LineOptions : public LC_ActionOptionsWidgetBase{
     Q_OBJECT
-
 public:
     LC_LineOptions();
     ~LC_LineOptions() override;
@@ -68,4 +67,4 @@ private:
     void setupAngleRelatedUI(bool value) const;
 };
 
-#endif // LC_LINEOPTIONS_H
+#endif

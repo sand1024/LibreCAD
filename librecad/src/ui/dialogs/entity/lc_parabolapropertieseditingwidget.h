@@ -45,4 +45,4 @@ private:
     void updatePoints();
 };
 
-#endif // LC_PARABOLAPROPERTIESEDITINGWIDGET_H
+#endif

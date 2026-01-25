@@ -24,6 +24,7 @@
 **
 **********************************************************************/
 #include "qg_trimamountoptions.h"
+
 #include "rs_actionmodifytrimamount.h"
 #include "ui_qg_trimamountoptions.h"
 
@@ -46,7 +47,7 @@ QG_TrimAmountOptions::QG_TrimAmountOptions()
  */
 QG_TrimAmountOptions::~QG_TrimAmountOptions() {
     m_action = nullptr;
-};
+}
 
 /*
  *  Sets the strings of the subwidgets using the current
@@ -62,7 +63,7 @@ void QG_TrimAmountOptions::doSaveSettings() {
     save("AmountSymmetric", ui->cbSymmetric->isChecked());
 }
 
-void QG_TrimAmountOptions::doSetAction(RS_ActionInterface* a, bool update) {
+void QG_TrimAmountOptions::doSetAction(RS_ActionInterface* a, const bool update) {
     m_action = dynamic_cast<RS_ActionModifyTrimAmount*>(a);
 
     QString distance;
@@ -89,11 +90,11 @@ void QG_TrimAmountOptions::onDistEditingFinished(){
     setDistanceToActionAndView(ui->leDist->text());
 }
 
-void QG_TrimAmountOptions::onTotalLengthToggled(bool checked){
+void QG_TrimAmountOptions::onTotalLengthToggled(const bool checked){
     setByTotalToActionAndView(checked);
 }
 
-void QG_TrimAmountOptions::onSymmetricToggled(bool checked) {
+void QG_TrimAmountOptions::onSymmetricToggled(const bool checked) {
     setDistanceSymmetricToActionAndView(checked);
 }
 
@@ -105,13 +106,13 @@ void QG_TrimAmountOptions::setDistanceToActionAndView(const QString& strValue) {
     }
 }
 
-void QG_TrimAmountOptions::setByTotalToActionAndView(bool val) const {
+void QG_TrimAmountOptions::setByTotalToActionAndView(const bool val) const {
     m_action->setDistanceIsTotalLength(val);
     ui->cbTotalLength->setChecked(val);
     ui->cbSymmetric->setEnabled(!val);
 }
 
-void QG_TrimAmountOptions::setDistanceSymmetricToActionAndView(bool val) const {
+void QG_TrimAmountOptions::setDistanceSymmetricToActionAndView(const bool val) const {
     m_action->setSymmetricDistance(val);
     ui->cbSymmetric->setChecked(val);
 }

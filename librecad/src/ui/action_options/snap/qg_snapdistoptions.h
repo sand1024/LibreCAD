@@ -37,8 +37,8 @@ namespace Ui {
 class QG_SnapDistOptions : public QWidget, public LC_LateCompletionRequestor{
     Q_OBJECT
 public:
-    QG_SnapDistOptions(QWidget* parent = nullptr);
-    ~QG_SnapDistOptions();
+    explicit QG_SnapDistOptions(QWidget* parent = nullptr);
+    ~QG_SnapDistOptions() override;
     void useSnapDistanceValue( double* d);
     void doShow();
     double *getDistanceValue() const;
@@ -53,4 +53,4 @@ private:
     void saveSettings() const;
     std::unique_ptr<Ui::Ui_SnapDistOptions> ui;
 };
-#endif // QG_SNAPDISTOPTIONS_H
+#endif

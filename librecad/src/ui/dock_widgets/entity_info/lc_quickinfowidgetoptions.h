@@ -62,4 +62,4 @@ public:
     void save() const;
 };
 
-#endif // LC_QUICKINFOWIDGETOPTIONS_H
+#endif

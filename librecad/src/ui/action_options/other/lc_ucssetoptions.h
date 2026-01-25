@@ -43,10 +43,10 @@ public slots:
 protected:
     void doSetAction(RS_ActionInterface *a, bool update) override;
     void doSaveSettings() override;
-    void setAngleToActionAndView(QString val);
+    void setAngleToActionAndView(const QString& val);
     void setAngleIsFreeToActionAndView(bool val) const;
 private:
     Ui::LC_UCSSetOptions *ui;
     LC_ActionUCSCreate* m_action = nullptr;
 };
-#endif // LC_UCSSETOPTIONS_H
+#endif

@@ -44,4 +44,4 @@ protected:
     void setEntity(RS_Line * l);
 };
 
-#endif // QG_DLGLINE_H
+#endif

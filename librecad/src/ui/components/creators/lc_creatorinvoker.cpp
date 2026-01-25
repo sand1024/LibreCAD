@@ -34,7 +34,6 @@
 #include "lc_dlgmenuassigner.h"
 #include "lc_dlgwidgetcreator.h"
 #include "qc_applicationwindow.h"
-#include "qc_mdiwindow.h"
 #include "qg_graphicview.h"
 #include "rs_settings.h"
 
@@ -44,25 +43,26 @@ LC_CreatorInvoker::LC_CreatorInvoker(QC_ApplicationWindow *appWin, LC_ActionGrou
 }
 
 void createCustomMenuForFirstRunIfNeeded() {
-    bool firstLoad = LC_GET_BOOL("FirstLoad", true);
+    const bool firstLoad = LC_GET_BOOL("FirstLoad", true);
     if (firstLoad) {
         QStringList list;
         list << "ZoomAuto";
         QSettings settings;
-        auto menuName = "AutoZoom";
-        auto key = QString("CustomMenus/%1").arg(menuName);
+        const auto menuName = "AutoZoom";
+        const auto key = QString("CustomMenus/%1").arg(menuName);
         settings.setValue(key, list);
 
-        LC_MenuActivator zoomActivator("",false, false, false, LC_MenuActivator::MIDDLE, LC_MenuActivator::DOUBLE_CLICK, false, RS2::EntityUnknown);
+        LC_MenuActivator zoomActivator("", false, false, false, LC_MenuActivator::MIDDLE, LC_MenuActivator::DBL_CLICK, false,
+                                       RS2::EntityUnknown);
         zoomActivator.update();
-        auto shortcut = zoomActivator.getShortcut();
-        auto activatorKey = QString("Activators/%1").arg(shortcut);
+        const auto shortcut = zoomActivator.getShortcut();
+        const auto activatorKey = QString("Activators/%1").arg(shortcut);
 
         settings.setValue(activatorKey, menuName);
     }
 }
 
-void LC_CreatorInvoker::createCustomToolbars(bool showToolTips) {
+void LC_CreatorInvoker::createCustomToolbars(const bool showToolTips) {
     m_showToolbarTooltips = showToolTips;
     QSettings settings;
     settings.beginGroup("CustomToolbars");
@@ -77,7 +77,7 @@ void LC_CreatorInvoker::createCustomToolbars(bool showToolTips) {
                 actionsList.push_back(nullptr);
             }
             else{
-                QAction* action = getAction(actionName);
+                const QAction* action = getAction(actionName);
                 if (action != nullptr){
                     actionsList.push_back(getAction(actionName));
                     hasActions = true;
@@ -90,7 +90,7 @@ void LC_CreatorInvoker::createCustomToolbars(bool showToolTips) {
             if (m_showToolbarTooltips) {
                 toolbar->setToolTip(tr("Toolbar: %1 (Custom)").arg(key));
             }
-            for (auto action: actionsList){
+            for (const auto action: actionsList){
                 if (action == nullptr){
                     toolbar->addSeparator();
                 }
@@ -117,17 +117,17 @@ void LC_CreatorInvoker::invokeToolbarCreator() {
     dlg.deleteLater();
 }
 
-void LC_CreatorInvoker::createToolbar(const QString &toolbar_name, const QStringList& actionNames, int areaIndex) {
-    auto toolbar = m_appWindow->findChild<QToolBar *>(toolbar_name);
+void LC_CreatorInvoker::createToolbar(const QString &toolbarName, const QStringList& actionNames, const int areaIndex) const {
+    auto toolbar = m_appWindow->findChild<QToolBar *>(toolbarName);
 
     if (toolbar) {
         toolbar->clear();
     }
     else {
-        toolbar = new QToolBar(toolbar_name, m_appWindow);
-        toolbar->setObjectName(toolbar_name);
+        toolbar = new QToolBar(toolbarName, m_appWindow);
+        toolbar->setObjectName(toolbarName);
         if (m_showToolbarTooltips) {
-            toolbar->setToolTip(tr("Toolbar: %1 (Custom)").arg(toolbar_name));
+            toolbar->setToolTip(tr("Toolbar: %1 (Custom)").arg(toolbarName));
         }
         Qt::ToolBarArea area;
         switch (areaIndex) {
@@ -160,8 +160,8 @@ void LC_CreatorInvoker::createToolbar(const QString &toolbar_name, const QString
     }
 }
 
-void LC_CreatorInvoker::destroyToolbar(const QString &toolbar_name) const {
-    auto toolbar = m_appWindow->findChild<QToolBar *>(toolbar_name);
+void LC_CreatorInvoker::destroyToolbar(const QString &toolbarName) const {
+    const auto toolbar = m_appWindow->findChild<QToolBar *>(toolbarName);
     delete toolbar;
 }
 
@@ -171,21 +171,21 @@ void LC_CreatorInvoker::invokeMenuCreator() {
     loadMenuActivators();
 }
 
-bool LC_CreatorInvoker::getMenuActionsForMouseEvent(QMouseEvent* event, RS_Entity* entity, QStringList& actions) {
-    LC_MenuActivator* activatorForEntityType {nullptr};
-    LC_MenuActivator* activatorForAnyEntity{nullptr};
-    LC_MenuActivator* activatorForEitherEntity{nullptr};
-    LC_MenuActivator* activatorForNoEntity{nullptr};
-    bool hasEntity = entity != nullptr;
+bool LC_CreatorInvoker::getMenuActionsForMouseEvent(const QMouseEvent* event, const RS_Entity* entity, QStringList& actions) {
+    const LC_MenuActivator* activatorForEntityType {nullptr};
+    const LC_MenuActivator* activatorForAnyEntity{nullptr};
+    const LC_MenuActivator* activatorForEitherEntity{nullptr};
+    const LC_MenuActivator* activatorForNoEntity{nullptr};
+    const bool hasEntity = entity != nullptr;
 
     RS2::EntityType entityType = RS2::EntityUnknown;
     if (hasEntity) {
         entityType = entity->rtti();
     }
 
-    for (auto a: m_menuActivators) {
+    for (const auto a: m_menuActivators) {
         if (a->isEventApplicable(event)) {
-            RS2::EntityType activatorEntityType = a->getEntityType();
+            const RS2::EntityType activatorEntityType = a->getEntityType();
             if (a->isEntityRequired()) {
                 if (hasEntity) {
                     if (activatorEntityType == RS2::EntityUnknown) {
@@ -208,14 +208,12 @@ bool LC_CreatorInvoker::getMenuActionsForMouseEvent(QMouseEvent* event, RS_Entit
                 if (hasEntity) {
                     continue;
                 }
-                else {
-                    activatorForNoEntity = a;
-                }
+                activatorForNoEntity = a;
             }
         }
     }
 
-    LC_MenuActivator*  activatorToUse {nullptr};
+    const LC_MenuActivator*  activatorToUse {nullptr};
 
     if (hasEntity) {
         if (activatorForEntityType != nullptr) {
@@ -245,21 +243,21 @@ bool LC_CreatorInvoker::getMenuActionsForMouseEvent(QMouseEvent* event, RS_Entit
         }
     }
     else {
-        QString menuName = activatorToUse->getMenuName();
+        const QString menuName = activatorToUse->getMenuName();
 
-        QSettings settings;
-        auto widget = QString("CustomMenus/%1").arg(menuName);
-        auto value = settings.value(widget);
+        const QSettings settings;
+        const auto widget = QString("CustomMenus/%1").arg(menuName);
+        const auto value = settings.value(widget);
         if (value.isValid()) {
-            QStringList s_list = value.toStringList();
+            const QStringList sList = value.toStringList();
             actions.clear();
-            actions.append(s_list);
+            actions.append(sList);
         }
     }
     return mayInvokeDefaultMenu;
 }
 
-bool LC_CreatorInvoker::isDefaultMenuInvokerEvent(QMouseEvent* event) {
+bool LC_CreatorInvoker::isDefaultMenuInvokerEvent(const QMouseEvent* event) {
     return event->modifiers() == Qt::NoModifier && event->button() == Qt::RightButton && event->type() == QEvent::MouseButtonRelease;
 }
 

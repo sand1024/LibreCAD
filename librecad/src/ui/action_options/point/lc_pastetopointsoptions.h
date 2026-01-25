@@ -46,9 +46,9 @@ protected:
 private:
     Ui::LC_PasteToPointsOptions *ui;
     LC_ActionPasteToPoints* m_action = nullptr;
-    void setAngleToActionAndView(QString val);
-    void setFactorToActionAndView(QString val);
+    void setAngleToActionAndView(const QString& val);
+    void setFactorToActionAndView(const QString& val);
     void setRemovePointsToActionAndView(bool val) const;
 };
 
-#endif // LC_PASTETOPOINTSACTION_H
+#endif

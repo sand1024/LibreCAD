@@ -54,4 +54,4 @@ private:
     void setOffsetToActionAndView(const QString& val);
 };
 
-#endif // LC_DRAWBOUNDINGBOXOPTIONS_H
+#endif

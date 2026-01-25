@@ -38,19 +38,18 @@ class TextFileViewer;
 class TextFileViewer : public QFrame
 {
     Q_OBJECT
-
 public:
-    explicit TextFileViewer(QWidget* parent = 0);
-    ~TextFileViewer();
+    explicit TextFileViewer(QWidget* parent = nullptr);
+    ~TextFileViewer() override;
 
-    bool addFile(QString name, QString path) const;
-    void setFile(QString name);
+    bool addFile(const QString& name, const QString& path) const;
+    void setFile(const QString& name) const;
 
 public slots:
-    void loadFile(QListWidgetItem* item) const;
+    void loadFile(const QListWidgetItem* item) const;
 
 private:
     Ui::TextFileViewer* ui = nullptr;
 };
 
-#endif // TEXTFILEVIEWER_H
+#endif

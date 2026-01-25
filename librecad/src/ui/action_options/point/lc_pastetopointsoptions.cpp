@@ -21,6 +21,7 @@
  ******************************************************************************/
 
 #include "lc_pastetopointsoptions.h"
+
 #include "lc_actionpastetopoints.h"
 #include "ui_lc_pastetopointsoptions.h"
 
@@ -44,8 +45,8 @@ void LC_PasteToPointsOptions::doSaveSettings() {
     save("RemovePoints", ui->cbRemovePoint->isChecked());
 }
 
-void LC_PasteToPointsOptions::doSetAction(RS_ActionInterface *a, bool update) {
-    m_action = dynamic_cast<LC_ActionPasteToPoints *>(a);
+void LC_PasteToPointsOptions::doSetAction(RS_ActionInterface *a, const bool update) {
+    m_action = static_cast<LC_ActionPasteToPoints *>(a);
     QString angle;
     QString factor;
     bool removePoints;
@@ -72,16 +73,16 @@ void LC_PasteToPointsOptions::onFactorEditingFinished(){
     setFactorToActionAndView(ui->leFactor->text());
 }
 
-void LC_PasteToPointsOptions::onRemovePointsClicked(bool clicked){
+void LC_PasteToPointsOptions::onRemovePointsClicked(const bool clicked){
     setRemovePointsToActionAndView(clicked);
 }
 
-void LC_PasteToPointsOptions::setRemovePointsToActionAndView(bool val) const {
+void LC_PasteToPointsOptions::setRemovePointsToActionAndView(const bool val) const {
     ui->cbRemovePoint->setChecked(val);
     m_action->setRemovePointAfterPaste(val);
 }
 
-void LC_PasteToPointsOptions::setFactorToActionAndView(QString val) {
+void LC_PasteToPointsOptions::setFactorToActionAndView(const QString& val) {
     double y;
     if (toDouble(val, y, 1.0, true)){
         m_action->setScaleFactor(y);
@@ -89,7 +90,7 @@ void LC_PasteToPointsOptions::setFactorToActionAndView(QString val) {
     }
 }
 
-void LC_PasteToPointsOptions::setAngleToActionAndView(QString val) {
+void LC_PasteToPointsOptions::setAngleToActionAndView(const QString& val) {
     double angle;
     if (toDoubleAngleDegrees(val, angle, 0.0, false)){
         m_action->setAngle(RS_Math::deg2rad(angle));

@@ -54,4 +54,4 @@ private:
     void setGapSnapToActionAndView(int val) const;
 };
 
-#endif // LC_MODIFYGAPOPTIONS_H
+#endif

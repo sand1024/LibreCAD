@@ -56,4 +56,4 @@ private:
 
 };
 
-#endif // LC_MOVEOPTIONS_H
+#endif

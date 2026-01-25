@@ -48,4 +48,4 @@ private:
     LC_ActionDrawMidLine* m_action = nullptr;
 };
 
-#endif // LC_MIDLINEOPTIONS_H
+#endif

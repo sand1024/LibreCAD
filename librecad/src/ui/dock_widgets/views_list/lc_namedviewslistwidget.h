@@ -25,7 +25,6 @@
 
 #include <QItemSelection>
 
-#include "rs.h"
 #include "lc_graphicviewaware.h"
 #include "lc_graphicviewawarewidget.h"
 
@@ -53,7 +52,7 @@ public:
     void restoreView(const QString &name);
     void restoreSelectedView();
     void fillViewsList(QList<LC_View *> &list) const;
-    QIcon getViewTypeIcon(LC_View *view) const;
+    QIcon getViewTypeIcon(const LC_View *view) const;
     QWidget* createSelectionWidget(QAction* saveViewAction, QAction* defaultAction);
 signals:
     void viewListChanged(int itemsCount);
@@ -67,8 +66,8 @@ protected slots:
     void removeView();
     void removeAllViews();
     void renameView();
-    void onCustomContextMenu(const QPoint &point);
-    void slotTableClicked(const QModelIndex& layerIdx);
+    void onCustomContextMenu(const QPoint &pos);
+    void slotTableClicked(const QModelIndex& modelIndex);
     void onTableSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected) const;
     void onTableDoubleClicked();
 protected:
@@ -89,8 +88,8 @@ private:
     void updateData(bool restoreSelectionIfPossible);
     void loadOptions();
     void createModel();
-    void restoreView(LC_View* view);
-    void updateExistingView(LC_View *pView);
+    void restoreView(const LC_View* view);
+    void updateExistingView(LC_View *view);
     LC_View *getSelectedView() const;
     void removeExistingView(LC_View *view) const;
     QModelIndex getSelectedItemIndex() const;
@@ -104,4 +103,4 @@ private:
     void restoreSingleSelectedRow(bool restoreSelectionIfPossible, int selectedRow) const;
 };
 
-#endif // LC_NAMEDVIEWSLISTWIDGET_H
+#endif

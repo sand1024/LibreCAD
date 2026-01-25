@@ -47,21 +47,21 @@ protected slots:
     void onBulgeEditingFinished();
     void onAngle1EditingFinished();
     void onAngle2EditingFinished();
-    void onRadiusTextChanged(const QString &text);
-    void onDiameterTextChanged(const QString &text);
-    void onArcLengthTextChanged(const QString &text);
-    void onSweepAngleTextChanged(const QString &text);
-    void onBulgeTextChanged(const QString &text);
-    void onAngle1TextChanged(const QString &text);
-    void onAngle2TextChanged(const QString &text);
+    void onRadiusTextChanged(const QString &text) const;
+    void onDiameterTextChanged(const QString &text) const;
+    void onArcLengthTextChanged(const QString &text) const;
+    void onSweepAngleTextChanged(const QString &text) const;
+    void onBulgeTextChanged(const QString &text) const;
+    void onAngle1TextChanged(const QString &text) const;
+    void onAngle2TextChanged(const QString &text) const;
     void onReversedToggled(bool checked) const;
 public:
     void setupInteractiveInputWidgets() override;
 private:
     void updateDerivedFields(double radius, double theta) const;
-    void updateUI();
+    void updateUI() const;
     Ui::LC_ArcPropertiesEditingWidget* ui = nullptr;
     RS_Arc* m_entity = nullptr;
 };
 
-#endif // LC_ARCPROPERTIESEDITINGWIDGET_H
+#endif

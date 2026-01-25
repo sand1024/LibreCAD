@@ -11,10 +11,10 @@ class QMdiArea;
 class LC_CentralWidget : public QFrame{
     Q_OBJECT
 public:
-    LC_CentralWidget(QWidget* parent);
+    explicit LC_CentralWidget(QWidget* parent);
     QMdiArea* getMdiArea() const;
 protected:
     QMdiArea* m_mdiArea = nullptr;
 };
 
-#endif // LC_CENTRALWIDGET_H
+#endif

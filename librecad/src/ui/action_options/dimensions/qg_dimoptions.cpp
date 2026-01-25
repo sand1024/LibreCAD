@@ -78,7 +78,7 @@ void QG_DimOptions::languageChange(){
     ui->retranslateUi(this);
 }
 
-bool QG_DimOptions::checkActionRttiValid(RS2::ActionType actionType){
+bool QG_DimOptions::checkActionRttiValid(const RS2::ActionType actionType){
     return RS_ActionDimension::isDimensionAction(actionType);
 }
 
@@ -87,7 +87,7 @@ void QG_DimOptions::doSaveSettings() {
     save("Tol1", ui->leTol1->text());
     save("Tol2", ui->leTol2->text());
 
-    RS2::ActionType rtti = m_action->rtti();
+    const RS2::ActionType rtti = m_action->rtti();
     if (rtti == RS2::ActionDimRadial) {
         save("Radial", ui->bDiameter->isChecked());
         save("RadialAngle", ui->leAngleCircle->text());
@@ -106,18 +106,18 @@ void QG_DimOptions::doSaveSettings() {
     }
 }
 
-void QG_DimOptions::doSetAction(RS_ActionInterface *a, bool update){
-    m_action = dynamic_cast<RS_ActionDimension *>(a);
+void QG_DimOptions::doSetAction(RS_ActionInterface *a, const bool update){
+    m_action = static_cast<RS_ActionDimension *>(a);
     QString st;
     QString stol1;
     QString stol2;
     QString sa;
     bool diam = false;
     bool radial = false;
-    RS2::ActionType type = m_action->rtti();
-    bool isDimLinear = type == RS2::ActionDimLinear;
-    bool baseline = type == RS2::ActionDimBaseline;
-    bool circleDim = type == RS2::ActionDimDiametric || type == RS2::ActionDimRadial;
+    const RS2::ActionType type = m_action->rtti();
+    const bool isDimLinear = type == RS2::ActionDimLinear;
+    const bool baseline = type == RS2::ActionDimBaseline;
+    const bool circleDim = type == RS2::ActionDimDiametric || type == RS2::ActionDimRadial;
     bool freeBaseLineDistance = false;
     bool circleAngleFree = false;
     QString circleAngle;
@@ -129,16 +129,16 @@ void QG_DimOptions::doSetAction(RS_ActionInterface *a, bool update){
         diam = m_action->getDiameter();
         ui->bDiameter->setChecked(m_action->getDiameter());
         if (isDimLinear){
-            auto dimLinearAction = dynamic_cast<RS_ActionDimLinear *>(m_action);
+            const auto dimLinearAction = static_cast<RS_ActionDimLinear *>(m_action);
             sa = fromDouble(RS_Math::rad2deg(dimLinearAction->getUcsAngleDegrees()));
         }
         else if (baseline){
-            auto dimBaselineAction = dynamic_cast<LC_ActionDrawDimBaseline *>(m_action);
-            baselineDistance = fromDouble((dimBaselineAction->getBaselineDistance()));
+            const auto dimBaselineAction = static_cast<LC_ActionDrawDimBaseline *>(m_action);
+            baselineDistance = fromDouble(dimBaselineAction->getBaselineDistance());
             freeBaseLineDistance = dimBaselineAction->isFreeBaselineDistance();
         }
         else if (circleDim){
-            auto dimAction = dynamic_cast<LC_ActionCircleDimBase *>(m_action);
+            const auto dimAction = static_cast<LC_ActionCircleDimBase *>(m_action);
             circleAngle = fromDouble(dimAction->getUcsAngleDegrees());
             circleAngleFree  = dimAction->isAngleIsFree();
         }
@@ -197,7 +197,7 @@ void QG_DimOptions::doSetAction(RS_ActionInterface *a, bool update){
     if (isDimLinear){
         ui->leAngle->setText(sa);
     }
-    
+
     ui->lblBaselineDistance->setVisible(baseline);
     ui->leBaselineDistance->setVisible(baseline);
     ui->cbFreeBaselineDistance->setVisible(baseline);
@@ -221,18 +221,18 @@ void QG_DimOptions::insertSign(const QString &c) const {
 }
 
 void QG_DimOptions::updateAngle(const QString & a) {
-    auto dimLinearAction = dynamic_cast<RS_ActionDimLinear *>(m_action);
+    const auto dimLinearAction = static_cast<RS_ActionDimLinear *>(m_action);
 
     double ucsBasisAngleDegrees = 0.;
     if (toDoubleAngleDegrees(a, ucsBasisAngleDegrees, 0.0, false)){
         dimLinearAction->setUcsAngleDegrees(ucsBasisAngleDegrees);
 
-        bool checkVert = !LC_LineMath::isMeaningfulAngle(90-ucsBasisAngleDegrees);
+        const bool checkVert = !LC_LineMath::isMeaningfulAngle(90-ucsBasisAngleDegrees);
         ui->bVer->blockSignals(true);
         ui->bVer->setChecked(checkVert);
         ui->bVer->blockSignals(false);
 
-        bool checkHor = !LC_LineMath::isMeaningfulAngle(ucsBasisAngleDegrees);
+        const bool checkHor = !LC_LineMath::isMeaningfulAngle(ucsBasisAngleDegrees);
         ui->bHor->blockSignals(true);
         ui->bHor->setChecked(checkHor);
         ui->bHor->blockSignals(false);
@@ -254,55 +254,57 @@ void QG_DimOptions::onAngleEditingFinished(){
 }
 
 void QG_DimOptions::onBaselineDistanceFreeClicked() const {
-    bool freeDistance = ui->cbFreeBaselineDistance->isChecked();
+    const bool freeDistance = ui->cbFreeBaselineDistance->isChecked();
     ui->leBaselineDistance->setEnabled(!freeDistance);
-    auto dimBaselineAction = dynamic_cast<LC_ActionDrawDimBaseline *>(m_action);
+    const auto dimBaselineAction = static_cast<LC_ActionDrawDimBaseline *>(m_action);
     dimBaselineAction->setFreeBaselineDistance(freeDistance);
 }
 
 void QG_DimOptions::onAngleCircleFreeClicked() const {
-    bool freeAngle = ui->cbAngleCircleFree->isChecked();
+    const bool freeAngle = ui->cbAngleCircleFree->isChecked();
     ui->leAngleCircle->setEnabled(!freeAngle);
-    auto dimAction = dynamic_cast<LC_ActionCircleDimBase *>(m_action);
+    const auto dimAction = static_cast<LC_ActionCircleDimBase *>(m_action);
     dimAction->setAngleIsFree(freeAngle);
 }
 
 void QG_DimOptions::onBaselineDistanceTextChanged() {
-    QString distance = ui->leBaselineDistance->text();
+    const auto leBaselineDistance = ui->leBaselineDistance;
+    const QString distance = leBaselineDistance->text();
     double len;
     if (toDouble(distance, len, 0.0, true)){
-        auto dimBaselineAction = dynamic_cast<LC_ActionDrawDimBaseline *>(m_action);
+        const auto dimBaselineAction = static_cast<LC_ActionDrawDimBaseline *>(m_action);
         dimBaselineAction->setBaselineDistance(len);
-        ui->leBaselineDistance->blockSignals(true);
-        ui->leBaselineDistance->setText(fromDouble(len));
-        ui->leBaselineDistance->blockSignals(false);
+        leBaselineDistance->blockSignals(true);
+        leBaselineDistance->setText(fromDouble(len));
+        leBaselineDistance->blockSignals(false);
     }
 }
 
 void QG_DimOptions::onAngleCircleTextChanged() {
-    QString val = ui->leAngleCircle->text();
+    const auto leAngleCircle = ui->leAngleCircle;
+    const QString val = leAngleCircle->text();
     double angle;
     if (toDoubleAngleDegrees(val, angle, 45, false)){
-        auto dimAction = dynamic_cast<LC_ActionCircleDimBase *>(m_action);
+        const auto dimAction = static_cast<LC_ActionCircleDimBase *>(m_action);
         dimAction->setUcsAngleDegrees(RS_Math::deg2rad(angle)   );
-        ui->leAngleCircle->blockSignals(true);
-        ui->leAngleCircle->setText(fromDouble(angle));
-        ui->leAngleCircle->blockSignals(false);
+        leAngleCircle->blockSignals(true);
+        leAngleCircle->setText(fromDouble(angle));
+        leAngleCircle->blockSignals(false);
     }
 }
 
-void QG_DimOptions::updateUI(int mode) {
+void QG_DimOptions::updateUI(const int mode) {
     switch (mode){
         case UI_UPDATE_BASELINE_DISTANCE:{
-            auto dimBaselineAction = dynamic_cast<LC_ActionDrawDimBaseline *>(m_action);
-            double value = dimBaselineAction->getCurrentBaselineDistance();
+            const auto dimBaselineAction = static_cast<LC_ActionDrawDimBaseline *>(m_action);
+            const double value = dimBaselineAction->getCurrentBaselineDistance();
             const QString &strValue = fromDouble(value);
             ui->leBaselineDistance->setText(strValue);
             break;
         }
         case UI_UPDATE_CIRCLE_ANGLE:{
-            auto dimAction = dynamic_cast<LC_ActionCircleDimBase *>(m_action);
-            double value = dimAction->getCurrentAngle();
+            const auto dimAction = static_cast<LC_ActionCircleDimBase *>(m_action);
+            const double value = dimAction->getCurrentAngle();
             const QString &strValue = fromDouble(value);
             ui->leAngleCircle->blockSignals(true);
             ui->leAngleCircle->setText(strValue);
@@ -314,9 +316,9 @@ void QG_DimOptions::updateUI(int mode) {
     }
 }
 
-void QG_DimOptions::onDimStyleChanged(int index) const {
+void QG_DimOptions::onDimStyleChanged(const int index) const {
     if (m_action != nullptr) {
-        auto styleItem = m_dimItemsListModel->getItemAtRow(index);
+        const auto styleItem = m_dimItemsListModel->getItemAtRow(index);
         if (styleItem != nullptr) {
             m_action->setDimStyleName(styleItem->dimStyle()->getName());
         }
@@ -324,12 +326,12 @@ void QG_DimOptions::onDimStyleChanged(int index) const {
 }
 
 void QG_DimOptions::initStylesCombobox(RS_Graphic *g) {
-    RS2::EntityType dimType = RS2::EntityUnknown; // fixme - sand - SET TYPE PROPERLY!!
+    const RS2::EntityType dimType = RS2::EntityUnknown; // fixme - sand - SET TYPE PROPERLY!!
     m_dimItemsListModel = new LC_StylesListModel(this,g, dimType);
     m_dimItemsListModel->sort(0, Qt::SortOrder::AscendingOrder);
 
-    auto combobox = ui->cbStyle;
+    const auto combobox = ui->cbStyle;
     combobox->setModel(m_dimItemsListModel);
-    int initialIndex = m_dimItemsListModel->getActiveStyleItemIndex();
+    const int initialIndex = m_dimItemsListModel->getActiveStyleItemIndex();
     combobox->setCurrentIndex(initialIndex);
 }

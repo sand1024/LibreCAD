@@ -54,10 +54,10 @@ public slots:
 private:
     std::unique_ptr<Ui::Ui_LineAngleOptions> ui;
     RS_ActionDrawLineAngle *m_action = nullptr;
-    void setAngleToActionAndView(QString val);
+    void setAngleToActionAndView(const QString& val);
     void setSnapPointToActionAndView(int val) const;
-    void setLengthToActionAndView(QString val);
+    void setLengthToActionAndView(const QString& val);
     void setToAngleBasis(bool val) const;
 };
 
-#endif // QG_LINEANGLEOPTIONS_H
+#endif

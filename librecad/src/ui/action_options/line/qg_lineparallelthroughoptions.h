@@ -54,4 +54,4 @@ private:
     void setSymmetricToActionAndView(bool symmetric) const;
 };
 
-#endif // QG_LINEPARALLELTHROUGHOPTIONS_H
+#endif

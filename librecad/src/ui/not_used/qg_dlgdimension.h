@@ -45,4 +45,4 @@ protected:
     void setEntity(RS_Dimension *d);
 };
 
-#endif // QG_DLGDIMENSION_H
+#endif

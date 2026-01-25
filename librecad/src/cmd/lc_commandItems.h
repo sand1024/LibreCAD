@@ -27,8 +27,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class QString;
 
 struct LC_CommandItem {
-    std::vector<std::pair<QString, QString>> const fullCmdList;
-    std::vector<std::pair<QString, QString>> const shortCmdList;
+    const std::vector<std::pair<QString, QString>> fullCmdList;
+    const std::vector<std::pair<QString, QString>> shortCmdList;
     RS2::ActionType actionType;
 };
 
@@ -954,9 +954,9 @@ const LC_CommandItem g_commandList[] = {
         /* Snap Middle Manual */
         {
             //list all <full command, translation> pairs
-            {{"snapmiddlemanual", QObject::tr("snapmiddlemanual", "snap middle manual")}}, 
-            {{"snapmanual", QObject::tr("snapmanual", "snap middle manual")}, 
-             {"smm", QObject::tr("smm", "snap middle manual")}}, 
+            {{"snapmiddlemanual", QObject::tr("snapmiddlemanual", "snap middle manual")}},
+            {{"snapmanual", QObject::tr("snapmanual", "snap middle manual")},
+             {"smm", QObject::tr("smm", "snap middle manual")}},
 
             RS2::ActionSnapMiddleManual
         },
@@ -1072,7 +1072,7 @@ const LC_CommandItem g_commandList[] = {
     };
 
     // translations
-std::vector<std::pair<QString, QString>> g_transList={
+inline std::vector<std::pair<QString, QString>> g_transList={
         {"angle",QObject::tr("angle")},
         {"angle1",QObject::tr("angle1")},
         {"angle2",QObject::tr("angle2")},

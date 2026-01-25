@@ -2,27 +2,31 @@
 #define COMBOBOXOPTION_H
 #include <QFrame>
 
-namespace Ui{
+namespace Ui {
     class ComboBoxOption;
 }
 
-class ComboBoxOption : public QFrame{
+class ComboBoxOption : public QFrame {
     Q_OBJECT
 public:
     explicit ComboBoxOption(QWidget* parent);
-    ~ComboBoxOption();
+    ~ComboBoxOption() override;
     void setTitle(const QString& title) const;
     void setOptionsList(const QStringList& options) const;
     void setCurrentOption(const QString& option);
+
 protected:
     int m_lastSavedIndex;
-signals:
+    signals :
     void optionToSave(QString);
-private slots:
+
+private
+    slots :
     void saveIndexAndEmitOption();
     void setButtonState(int) const;
+
 private:
     Ui::ComboBoxOption* ui;
 };
 
-#endif // COMBOBOXOPTION_H
+#endif

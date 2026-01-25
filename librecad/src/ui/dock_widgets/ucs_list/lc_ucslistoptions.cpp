@@ -21,9 +21,10 @@
  ******************************************************************************/
 
 #include "lc_ucslistoptions.h"
+
 #include "rs_settings.h"
 
-LC_UCSListOptions::LC_UCSListOptions() {}
+LC_UCSListOptions::LC_UCSListOptions() = default;
 
 void LC_UCSListOptions::load() {
     LC_GROUP("Appearance");

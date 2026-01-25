@@ -32,7 +32,6 @@
  */
 
 struct LC_LayerTreeModelOptions{
-public:
     // naming convention settings
     QString layerLevelSeparator{"-"};
     QString informationalLayerNameSuffix{"_meta"};
@@ -55,12 +54,12 @@ public:
     QColor activeLayerBgColor {QColor( "white")};
     // default pens
     RS_Pen defaultPenNormal = RS_Pen(Qt::black, RS2::Width00,RS2::SolidLine);
-    RS_Pen defaultPenDimensional = RS_Pen(Qt::blue, RS2::Width02,RS2::SolidLine);;
-    RS_Pen defaultPenInformational = RS_Pen(Qt::magenta, RS2::Width02,RS2::SolidLine);;
-    RS_Pen defaultPenAlternatePosition =  RS_Pen(Qt::cyan, RS2::Width00,RS2::SolidLine);;
+    RS_Pen defaultPenDimensional = RS_Pen(Qt::blue, RS2::Width02,RS2::SolidLine);
+    RS_Pen defaultPenInformational = RS_Pen(Qt::magenta, RS2::Width02,RS2::SolidLine);
+    RS_Pen defaultPenAlternatePosition =  RS_Pen(Qt::cyan, RS2::Width00,RS2::SolidLine);
 
     RS_Pen getDefaultPen(int layerType) const;
     void load();
     void save() const;
 };
-#endif //QG_LAYERTREEMODEL_OPTIONS_H
+#endif

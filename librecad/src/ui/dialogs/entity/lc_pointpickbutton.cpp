@@ -22,6 +22,7 @@
  */
 
 #include "lc_pointpickbutton.h"
+
 #include "ui_lc_pointpickbutton.h"
 
 LC_PointPickButton::LC_PointPickButton(QWidget *parent)

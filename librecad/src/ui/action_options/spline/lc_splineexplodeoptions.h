@@ -56,4 +56,4 @@ protected:
     void setPolylineToActionAndView(bool val) const;
     void setSegmentsCountValueToActionAndView(int value) const;
 };
-#endif // LC_SPLINEEXPLODEOPTIONS_H
+#endif

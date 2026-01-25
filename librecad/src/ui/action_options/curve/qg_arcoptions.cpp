@@ -24,6 +24,7 @@
 **
 **********************************************************************/
 #include "qg_arcoptions.h"
+
 #include "rs_actiondrawarc.h"
 #include "ui_qg_arcoptions.h"
 
@@ -32,11 +33,10 @@
  *  name 'name' and widget flags set to 'f'.
  */
 QG_ArcOptions::QG_ArcOptions()
-    : LC_ActionOptionsWidgetBase(RS2::ActionDrawArc, "Draw","Arc")
-    , ui(std::make_unique<Ui::Ui_ArcOptions>()){
+    : LC_ActionOptionsWidgetBase(RS2::ActionDrawArc, "Draw", "Arc"), ui(std::make_unique<Ui::Ui_ArcOptions>()) {
     ui->setupUi(this);
     connect(ui->rbPos, &QRadioButton::toggled, this, &QG_ArcOptions::onDirectionChanged);
-    connect(ui->rbNeg,  &QRadioButton::toggled, this, &QG_ArcOptions::onDirectionChanged);
+    connect(ui->rbNeg, &QRadioButton::toggled, this, &QG_ArcOptions::onDirectionChanged);
 }
 
 /*
@@ -48,33 +48,33 @@ QG_ArcOptions::~QG_ArcOptions() = default;
  *  Sets the strings of the subwidgets using the current
  *  language.
  */
-void QG_ArcOptions::languageChange(){
-	ui->retranslateUi(this);
+void QG_ArcOptions::languageChange() {
+    ui->retranslateUi(this);
 }
 
-void QG_ArcOptions::doSaveSettings(){
-    save("Reversed",  ui->rbNeg->isChecked());
+void QG_ArcOptions::doSaveSettings() {
+    save("Reversed", ui->rbNeg->isChecked());
 }
 
-void QG_ArcOptions::doSetAction(RS_ActionInterface *a, bool update){
-
-    m_action = dynamic_cast<RS_ActionDrawArc *>(a);
+void QG_ArcOptions::doSetAction(RS_ActionInterface* a, const bool update) {
+    m_action = static_cast<RS_ActionDrawArc*>(a);
 
     bool reversed;
-    if (update){
+    if (update) {
         reversed = m_action->isReversed();
-    } else {
+    }
+    else {
         reversed = loadBool("Reversed", false);
         m_action->setReversed(reversed);
     }
     setReversedToActionAndView(reversed);
 }
 
-bool QG_ArcOptions::checkActionRttiValid(RS2::ActionType actionType) {
+bool QG_ArcOptions::checkActionRttiValid(const RS2::ActionType actionType) {
     return actionType == RS2::ActionDrawArc || actionType == RS2::ActionDrawArcAngleLen || actionType == RS2::ActionDrawArcChord;
 }
 
-void QG_ArcOptions::setReversedToActionAndView(bool reversed) const {
+void QG_ArcOptions::setReversedToActionAndView(const bool reversed) const {
     ui->rbNeg->setChecked(reversed);
     m_action->setReversed(reversed);
 }
@@ -83,6 +83,6 @@ void QG_ArcOptions::setReversedToActionAndView(bool reversed) const {
     data = d;
     updateDirection(false);
 }*/
-void QG_ArcOptions::onDirectionChanged(bool /*pos*/){
-    setReversedToActionAndView( ui->rbNeg->isChecked());
+void QG_ArcOptions::onDirectionChanged(bool /*pos*/) {
+    setReversedToActionAndView(ui->rbNeg->isChecked());
 }

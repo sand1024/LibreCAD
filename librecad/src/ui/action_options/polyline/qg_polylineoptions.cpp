@@ -24,6 +24,7 @@
 **
 **********************************************************************/
 #include "qg_polylineoptions.h"
+
 #include "rs_actiondrawpolyline.h"
 #include "ui_qg_polylineoptions.h"
 
@@ -76,12 +77,12 @@ void QG_PolylineOptions::doSaveSettings(){
     save("Reversed", ui->rbNeg->isChecked());
 }
 
-bool QG_PolylineOptions::checkActionRttiValid(RS2::ActionType actionType) {
+bool QG_PolylineOptions::checkActionRttiValid(const RS2::ActionType actionType) {
     return actionType == RS2::ActionDrawPolyline || actionType == RS2::ActionPolylineAppend;
 }
 
-void QG_PolylineOptions::doSetAction(RS_ActionInterface *a, bool update){
-    m_action = dynamic_cast<RS_ActionDrawPolyline *>(a);
+void QG_PolylineOptions::doSetAction(RS_ActionInterface *a, const bool update){
+    m_action = static_cast<RS_ActionDrawPolyline *>(a);
     QString radius, angle;
     int mode;
     bool reversed;
@@ -99,7 +100,7 @@ void QG_PolylineOptions::doSetAction(RS_ActionInterface *a, bool update){
 
         m_action->setRadius(radius.toDouble());
         m_action->setAngleDegrees(angle.toDouble());
-        m_action->setMode((RS_ActionDrawPolyline::SegmentMode) mode);
+        m_action->setMode(static_cast<RS_ActionDrawPolyline::SegmentMode>(mode));
         m_action->setReversed(reversed);
     }
     ui->leRadius->setText(radius);
@@ -119,7 +120,7 @@ void QG_PolylineOptions::undo() const {
     m_action->undo();
 }
 
-void QG_PolylineOptions::setReversedToActionAndView(bool reversed) const {
+void QG_PolylineOptions::setReversedToActionAndView(const bool reversed) const {
     ui->rbNeg->setChecked(reversed);
     m_action->setReversed(reversed);
 }
@@ -161,7 +162,7 @@ void QG_PolylineOptions::setModeToActionAndView(int m) const {
     ui->tbLine->setChecked(false);
     ui->tbArcAngle->setChecked(false);
 
-    auto segmentMode = (RS_ActionDrawPolyline::SegmentMode) m;
+    const auto segmentMode = static_cast<RS_ActionDrawPolyline::SegmentMode>(m);
 
     m_action->setMode(segmentMode);
     ui->cbMode->setCurrentIndex(m);
@@ -284,7 +285,7 @@ void QG_PolylineOptions::onRadiusEditingFinished(){
 }
 
 void QG_PolylineOptions::onNegToggled([[maybe_unused]]bool checked){
-    bool enable = ui->rbNeg->isChecked();
+    const bool enable = ui->rbNeg->isChecked();
     setReversedToActionAndView(enable);
 }
 

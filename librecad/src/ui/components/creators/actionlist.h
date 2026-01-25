@@ -6,14 +6,14 @@
 class ActionList : public QListWidget{
     Q_OBJECT
 public:
-    ActionList(QWidget* parent);
-    void addActionItem(QAction* action);
-    void fromActionList(const QList<QAction*>& a_list);
-    void fromActionMap(QMap<QString, QAction*>& a_map);
+    explicit ActionList(QWidget* parent);
+    void addActionItem(const QAction* action);
+    void fromActionList(const QList<QAction*>& actionList);
+    void fromActionMap(QMap<QString, QAction*>& actionMap);
 public slots:
-    void activateAction(QListWidgetItem*);
+    void activateAction(const QListWidgetItem*);
 protected:
     QList<QAction*> m_actionList;
 };
 
-#endif // ACTIONLIST_H
+#endif

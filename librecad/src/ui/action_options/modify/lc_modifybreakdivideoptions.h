@@ -36,8 +36,8 @@ class LC_ModifyBreakDivideOptions :public LC_ActionOptionsWidgetBase{
 public:
     explicit LC_ModifyBreakDivideOptions();
 protected slots:
-    void onRemoveSegmentsClicked(bool value);
-    void onRemoveSelectedClicked(bool value);
+    void onRemoveSegmentsClicked(bool clicked) const;
+    void onRemoveSelectedClicked(bool clicked) const;
     void languageChange() override;
 protected:
     void doSetAction(RS_ActionInterface *a, bool update) override;
@@ -49,4 +49,4 @@ private:
     void setRemoveSelectedToActionAndView(bool val) const;
 };
 
-#endif // LC_MODIFYBREAKOUTOPTIONS_H
+#endif

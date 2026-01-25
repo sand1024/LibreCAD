@@ -21,12 +21,12 @@
  ******************************************************************************/
 
 #include "lc_modifyalignoptions.h"
+
 #include "lc_actionmodifyalign.h"
 #include "ui_lc_modifyalignoptions.h"
 
 LC_ModifyAlignOptions::LC_ModifyAlignOptions()
-    : LC_ActionOptionsWidget()
-    , ui(new Ui::LC_ModifyAlignOptions){
+    : ui(new Ui::LC_ModifyAlignOptions){
     ui->setupUi(this);
 
     connect(ui->cbAsGroup, &QCheckBox::toggled, this, &LC_ModifyAlignOptions::onAsGroupChanged);
@@ -45,7 +45,7 @@ LC_ModifyAlignOptions::~LC_ModifyAlignOptions(){
     delete ui;
 }
 
-bool LC_ModifyAlignOptions::checkActionRttiValid(RS2::ActionType actionType) {
+bool LC_ModifyAlignOptions::checkActionRttiValid(const RS2::ActionType actionType) {
     m_forAlignAction = actionType == RS2::ActionModifyAlign;
     return m_forAlignAction || (actionType == RS2::ActionModifyAlignOne);
 }
@@ -55,12 +55,12 @@ QString LC_ModifyAlignOptions::getSettingsGroupName() {
 }
 
 QString LC_ModifyAlignOptions::getSettingsOptionNamePrefix() {
-    return (m_forAlignAction ? "Align":"AlignOne");
+    return m_forAlignAction ? "Align":"AlignOne";
 }
 
 void LC_ModifyAlignOptions::doSaveSettings() {
-    int halign = getHAlignFromUI();
-    int valign = getVAlignFromUI();
+    const int halign = getHAlignFromUI();
+    const int valign = getVAlignFromUI();
     save("HAlign", halign);
     save("VAlign", valign);
     save("AlignTo", ui->cbAlignTo->currentIndex());
@@ -69,8 +69,8 @@ void LC_ModifyAlignOptions::doSaveSettings() {
     }
 }
 
-void LC_ModifyAlignOptions::doSetAction(RS_ActionInterface *a, bool update) {
-    m_action = dynamic_cast<LC_ActionModifyAlignData *>(a);
+void LC_ModifyAlignOptions::doSetAction(RS_ActionInterface *a, const bool update) {
+    m_action = static_cast<LC_ActionModifyAlign *>(a);
     int valign;
     int halign;
     int alignType;
@@ -96,21 +96,21 @@ void LC_ModifyAlignOptions::doSetAction(RS_ActionInterface *a, bool update) {
     setAlignTypeToActionAndView(alignType);
 }
 
-void LC_ModifyAlignOptions::onAsGroupChanged([[maybe_unused]]bool val) {
+void LC_ModifyAlignOptions::onAsGroupChanged([[maybe_unused]]bool val) const {
     setAsGroupToActionAndView(ui->cbAsGroup->isChecked());
 }
 
-void LC_ModifyAlignOptions::onVAlignChanged([[maybe_unused]]bool val) {
-    int valign = getVAlignFromUI();
+void LC_ModifyAlignOptions::onVAlignChanged([[maybe_unused]]bool val) const {
+    const int valign = getVAlignFromUI();
     setVAlignToActionAndView(valign);
 }
 
-void LC_ModifyAlignOptions::onHAlignChanged([[maybe_unused]]bool val) {
-    int halign = getHAlignFromUI();
+void LC_ModifyAlignOptions::onHAlignChanged([[maybe_unused]]bool val) const {
+    const int halign = getHAlignFromUI();
     setHAlignToActionAndView(halign);
 }
 
-void LC_ModifyAlignOptions::onAlignToIndexChanged([[maybe_unused]]int idx) {
+void LC_ModifyAlignOptions::onAlignToIndexChanged([[maybe_unused]]int idx) const {
     setAlignTypeToActionAndView(ui->cbAlignTo->currentIndex());
 }
 
@@ -118,12 +118,12 @@ void LC_ModifyAlignOptions::languageChange() {
     ui->retranslateUi(this);
 }
 
-void LC_ModifyAlignOptions::setAlignTypeToActionAndView(int type) const {
+void LC_ModifyAlignOptions::setAlignTypeToActionAndView(const int type) const {
     m_action->setAlignType(type);
     ui->cbAlignTo->setCurrentIndex(type);
 }
 
-void LC_ModifyAlignOptions::setVAlignToActionAndView(int valign) const {
+void LC_ModifyAlignOptions::setVAlignToActionAndView(const int valign) const {
     switch (valign){
       case LC_Align::Align::LEFT_TOP:{
             ui->tbVAlignTop->setChecked(true);
@@ -143,7 +143,7 @@ void LC_ModifyAlignOptions::setVAlignToActionAndView(int valign) const {
     m_action->setVAlign(valign);
 }
 
-void LC_ModifyAlignOptions::setHAlignToActionAndView(int halign) const {
+void LC_ModifyAlignOptions::setHAlignToActionAndView(const int halign) const {
     switch (halign){
         case LC_Align::Align::LEFT_TOP:{
             ui->tbHAlignLeft->setChecked(true);
@@ -189,7 +189,7 @@ int LC_ModifyAlignOptions::getVAlignFromUI() const {
     return LC_Align::Align::NONE;
 }
 
-void LC_ModifyAlignOptions::setAsGroupToActionAndView(bool group) const {
+void LC_ModifyAlignOptions::setAsGroupToActionAndView(const bool group) const {
     m_action->setAsGroup(group);
     ui->cbAsGroup->setChecked(group);
 }

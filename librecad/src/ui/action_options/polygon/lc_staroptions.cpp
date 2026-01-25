@@ -20,13 +20,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
 #include "lc_staroptions.h"
+
 #include "lc_actiondrawstar.h"
 #include "ui_lc_staroptions.h"
 
 LC_StarOptions::LC_StarOptions() :
     LC_ActionOptionsWidgetBase(RS2::ActionDrawStar, "Draw","Star"),
-    ui(new Ui::LC_StarOptions),
-    m_action(nullptr){
+    ui(new Ui::LC_StarOptions){
     ui->setupUi(this);
 
     ui->sbNumber->setMaximum(STAR_MIN_RAYS);
@@ -52,9 +52,8 @@ void LC_StarOptions::languageChange() {
     ui->retranslateUi(this);
 }
 
-void LC_StarOptions::doSetAction(RS_ActionInterface *a, bool update){
-    m_action = dynamic_cast<LC_ActionDrawStar *>(a);
-
+void LC_StarOptions::doSetAction(RS_ActionInterface *a, const bool update){
+    m_action = static_cast<LC_ActionDrawStar *>(a);
     bool polyline;
     bool innerEnabled;
     bool outerEnabled;
@@ -71,7 +70,7 @@ void LC_StarOptions::doSetAction(RS_ActionInterface *a, bool update){
         innerRadius = fromDouble(m_action->getRadiusInner());
         outerRadius = fromDouble(m_action->getRadiusOuter());
     }
-    else{     
+    else{
         number = loadInt("Number", 5);
         innerEnabled = loadBool("InnerRound", false);
         innerRadius = load("InnerRadius", "1");
@@ -90,7 +89,7 @@ void LC_StarOptions::doSetAction(RS_ActionInterface *a, bool update){
     setUsePolylineToActionAndView(polyline);
 }
 
-void LC_StarOptions::doSaveSettings(){    
+void LC_StarOptions::doSaveSettings(){
     save("Number", ui->sbNumber->value());
     save("InnerRound", ui->cbRadiusInner->isChecked());
     save("InnerRadius", ui->leRadiusInner->text());
@@ -100,7 +99,7 @@ void LC_StarOptions::doSaveSettings(){
     save("Polyline", ui->cbPolyline->isChecked());
 }
 
-void LC_StarOptions::onSymmetricClicked(bool value){
+void LC_StarOptions::onSymmetricClicked(const bool value){
     if (m_action != nullptr){
         setSymmetricToModelAndView(value);
     }
@@ -118,19 +117,19 @@ void LC_StarOptions::onRadiusInnerEditingFinished(){
     }
 }
 
-void LC_StarOptions::onRadiusInnerClicked(bool value){
+void LC_StarOptions::onRadiusInnerClicked(const bool value){
     if (m_action != nullptr){
         setRadiusInnerEnabledToModelAndView(value);
     }
 }
 
-void LC_StarOptions::onRadiusOuterClicked(bool value){
+void LC_StarOptions::onRadiusOuterClicked(const bool value){
     if (m_action != nullptr){
         setRadiusOuterEnabledToModelAndView(value);
     }
 }
 
-void LC_StarOptions::onNumberChanged(int value){
+void LC_StarOptions::onNumberChanged(const int value){
     if (m_action != nullptr){
         setNumberToModelAndView(value);
     }
@@ -152,37 +151,37 @@ void LC_StarOptions::setRadiusInnerToModelAndView(const QString& value){
     }
 }
 
-void LC_StarOptions::setRadiusInnerEnabledToModelAndView(bool value) const {
+void LC_StarOptions::setRadiusInnerEnabledToModelAndView(const bool value) const {
     m_action->setInnerRounded(value);
     ui->cbRadiusInner ->setChecked(value);
     ui->leRadiusInner->setEnabled(value);
     ui->tbPickRadiusInner->setEnabled(value);
 }
 
-void LC_StarOptions::setSymmetricToModelAndView(bool value) const {
+void LC_StarOptions::setSymmetricToModelAndView(const bool value) const {
     m_action->setSymmetric(value);
     ui->cbSymmertix->setChecked(value);
 }
 
-void LC_StarOptions::onPolylineClicked(bool value){
+void LC_StarOptions::onPolylineClicked(const bool value){
     if (m_action != nullptr){
         setUsePolylineToActionAndView(value);
     }
 }
 
-void LC_StarOptions::setRadiusOuterEnabledToModelAndView(bool value) const {
+void LC_StarOptions::setRadiusOuterEnabledToModelAndView(const bool value) const {
     m_action->setOuterRounded(value);
     ui->cbRadiusOuter->setChecked(value);
     ui->leRadusOuter->setEnabled(value);
     ui->tbPickRadiusOuter->setEnabled(value);
 }
 
-void LC_StarOptions::setNumberToModelAndView(int value) const {
+void LC_StarOptions::setNumberToModelAndView(const int value) const {
     m_action->setRaysNumber(value);
     ui->sbNumber->setValue(value);
 }
 
-void LC_StarOptions::setUsePolylineToActionAndView(bool value) const {
+void LC_StarOptions::setUsePolylineToActionAndView(const bool value) const {
     m_action->setPolyline(value);
     ui->cbPolyline->setChecked(value);
 }

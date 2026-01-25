@@ -25,15 +25,15 @@
 **********************************************************************/
 
 
+#include "qg_dlgmtext.h"
+
 #include <QFileDialog>
 
-#include "qg_dlgmtext.h"
-#include "rs_dialogfactory.h"
+#include "lc_linemath.h"
 #include "rs_font.h"
 #include "rs_fontlist.h"
 #include "rs_graphic.h"
 #include "rs_settings.h"
-#include "rs_system.h"
 
 /*
  *  Constructs a QG_DlgMText as a child of 'parent', with the
@@ -42,12 +42,12 @@
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
  */
-QG_DlgMText::QG_DlgMText(QWidget *parent, LC_GraphicViewport *pViewport, RS_MText* text, bool forNew)
-    :LC_EntityPropertiesDlg(parent, "MTextProperties", pViewport){
+QG_DlgMText::QG_DlgMText(QWidget *parent, LC_GraphicViewport *viewport, RS_MText* mtext, bool forNew)
+    :LC_EntityPropertiesDlg(parent, "MTextProperties", viewport){
     setupUi(this);
     m_alignmentButtons = {{bTL, bTC, bTR, bML, bMC, bMR, bBL, bBC, bBR}};
     init();
-    setEntity(text, forNew);
+    setEntity(mtext, forNew);
 }
 
 QG_DlgMText::~QG_DlgMText()
@@ -83,7 +83,7 @@ void QG_DlgMText::init() {
      * out of the order once more. Seems that the only reliable way of ensuring
      * the order is correct is to set it programmatically.
      */
-    std::vector<QWidget*> buttons{{cbLayer,       wPen,      cbFont,
+    std::array<QWidget*,31> buttons{cbLayer,       wPen,      cbFont,
                           leHeight,      cbDefault, leLineSpacingFactor,
                           teText,        bTL,       bTC,
                           bTR,           bML,       bMC,
@@ -92,11 +92,12 @@ void QG_DlgMText::init() {
                           rbRightToLeft, cbSymbol,  cbUniPage,
                           cbUniChar,     bUnicode,  buttonBox,
                           bClear,        bLoad,     bSave,
-                          bCut,          bCopy,     bPaste}};
+                          bCut,          bCopy,     bPaste};
     // the order is cyclic
-    buttons.push_back(buttons.front());
-    for (auto it = std::next(buttons.cbegin()); it != buttons.cend(); ++it)
-        QWidget::setTabOrder(*std::prev(it), *it);
+    buttons[30] = buttons.front();
+    for (auto it = std::next(buttons.cbegin()); it != buttons.cend(); ++it) {
+        setTabOrder(*std::prev(it), *it);
+    }
 
     /*
      * We are using the frame colour of the teText QTextEdit widget to indicate when
@@ -104,9 +105,9 @@ void QG_DlgMText::init() {
      * class on selection. Ensure that known state of frame on start, and install Qt
      * Event filter in order to get callback on focus in/out of the widget.
      */
-    teText->QFrame::setLineWidth(2);
-    teText->QFrame::setMidLineWidth(0);
-    teText->QFrame::setFrameStyle(QFrame::Box|QFrame::Plain);
+    teText->setLineWidth(2);
+    teText->setMidLineWidth(0);
+    teText->setFrameStyle(QFrame::Box|QFrame::Plain);
     teText->installEventFilter(this);
 
     // events
@@ -115,11 +116,11 @@ void QG_DlgMText::init() {
 
 
 void QG_DlgMText::updateUniCharComboBox(int) const {
-    QString t = cbUniPage->currentText();
-    int i1 = t.indexOf('-');
-    int i2 = t.indexOf(']');
-    int min = t.mid(1, i1-1).toInt(nullptr, 16);
-    int max = t.mid(i1+1, i2-i1-1).toInt(nullptr, 16);
+    const QString t = cbUniPage->currentText();
+    const int i1 = t.indexOf('-');
+    const int i2 = t.indexOf(']');
+    const int min = t.mid(1, i1-1).toInt(nullptr, 16);
+    const int max = t.mid(i1+1, i2-i1-1).toInt(nullptr, 16);
 
     cbUniChar->clear();
     for (int c=min; c<=max; c++) {
@@ -133,14 +134,13 @@ void QG_DlgMText::reject() {
     QDialog::reject();
 }
 
-#include "rs_debug.h"
 void QG_DlgMText::destroy() const {
     if (m_saveSettings) {
         LC_GROUP_GUARD("Draw");
         {
             LC_SET("TextHeight", leHeight->text());
             LC_SET("TextFont", cbFont->currentText());
-            LC_SET("TextDefault", (int) cbDefault->isChecked());
+            LC_SET("TextDefault", cbDefault->isChecked());
             LC_SET("TextAlignment", getAlignment());
             //RS_SETTINGS->writeEntry("/TextLetterSpacing", leLetterSpacing->text());
             //RS_SETTINGS->writeEntry("/TextWordSpacing", leWordSpacing->text());
@@ -157,7 +157,7 @@ void QG_DlgMText::destroy() const {
 /**
  * Sets the text m_entity represented by this dialog.
  */
-void QG_DlgMText::setEntity(RS_MText* t, bool isNew) {
+void QG_DlgMText::setEntity(RS_MText* t, const bool isNew) {
     m_entity = t;
     m_isNew = isNew;
 
@@ -181,7 +181,7 @@ void QG_DlgMText::setEntity(RS_MText* t, bool isNew) {
         {
             //default font depending on locale
             //default font depending on locale (RLZ-> check this: QLocale::system().name() returns "fr_FR")
-            QByteArray iso = RS_System::localeToISO(QLocale::system().name().toLocal8Bit());
+            // QByteArray iso = RS_System::localeToISO(QLocale::system().name().toLocal8Bit());
             font = LC_GET_STR("TextFont", RS_FontList::getDefaultFont());
             height = LC_GET_STR("TextHeight", "1.0");
             def = LC_GET_STR("TextDefault", "1");
@@ -199,8 +199,8 @@ void QG_DlgMText::setEntity(RS_MText* t, bool isNew) {
         font = m_entity->getStyle();
         setFont(font);
         height = QString::number(m_entity->getHeight());
-        if (m_font) {
-            if (m_font->getLineSpacingFactor() == m_entity->getLineSpacingFactor()) {
+        if (m_font != nullptr) {
+            if (LC_LineMath::isSameLength(m_font->getLineSpacingFactor(),m_entity->getLineSpacingFactor())) {
                 def = "1";
             } else {
                 def = "0";
@@ -225,16 +225,17 @@ void QG_DlgMText::setEntity(RS_MText* t, bool isNew) {
 //#endif
         //QString shape = RS_SETTINGS->readEntry("/TextShape", "0");
 
-        double wcsAngle = m_entity->getAngle();
+        const double wcsAngle = m_entity->getAngle();
         angle = toUIAngleDeg(wcsAngle);
 
         RS_Graphic* graphic = m_entity->getGraphic();
-        if (graphic) {
-            cbLayer->init(*(graphic->getLayerList()), false, false);
+        if (graphic != nullptr) {
+            const auto layerList = graphic->getLayerList();
+            cbLayer->init(*layerList, false, false);
         }
 
         RS_Layer* layer = m_entity->getLayer(false);
-        if (layer) {
+        if (layer != nullptr) {
             cbLayer->setLayer(*layer);
         }
 
@@ -245,7 +246,7 @@ void QG_DlgMText::setEntity(RS_MText* t, bool isNew) {
     cbDefault->setChecked(def=="1");
     setFont(font);
     leHeight->setText(height);
-    unsigned index = alignment.toUInt() - 1;
+    const unsigned index = alignment.toUInt() - 1;
     setAlignment(*m_alignmentButtons[index%m_alignmentButtons.size()]);
     if (def!="1" || m_font==nullptr) {
         //leLetterSpacing->setText(letterSpacing);
@@ -268,9 +269,9 @@ void QG_DlgMText::setEntity(RS_MText* t, bool isNew) {
 }
 
 void QG_DlgMText::layoutDirectionChanged() const {
-    bool leftToRight = rbLeftToRight->isChecked();
+    const bool leftToRight = rbLeftToRight->isChecked();
     rbRightToLeft->setChecked(!leftToRight);
-    Qt::LayoutDirection direction =  leftToRight ? Qt::LeftToRight : Qt::RightToLeft;
+    const Qt::LayoutDirection direction =  leftToRight ? Qt::LeftToRight : Qt::RightToLeft;
     teText->setLayoutDirection(direction);
     m_entity->setDrawingDirection(leftToRight ? RS_MTextData::LeftToRight : RS_MTextData::RightToLeft);
     QTextDocument* doc = teText->document();
@@ -286,8 +287,9 @@ void QG_DlgMText::layoutDirectionChanged() const {
  * Updates the text m_entity represented by the dialog to fit the choices of the user.
  */
 void QG_DlgMText::updateEntity() {
-    if (m_entity == nullptr)
+    if (m_entity == nullptr) {
         return;
+    }
 
     m_entity->setStyle(cbFont->currentText());
     m_entity->setHeight(leHeight->text().toDouble());
@@ -307,7 +309,7 @@ void QG_DlgMText::updateEntity() {
     m_entity->setLineSpacingFactor(leLineSpacingFactor->text().toDouble());
     m_entity->setAlignment(getAlignment());
 
-    double wcsAngle = toWCSAngle(leAngle, m_entity->getAngle());
+    const double wcsAngle = toWCSAngle(leAngle, m_entity->getAngle());
     m_entity->setAngle(wcsAngle);
 
     m_entity->setDrawingDirection(rbLeftToRight->isChecked() ? RS_MTextData::LeftToRight : RS_MTextData::RightToLeft);
@@ -318,9 +320,9 @@ void QG_DlgMText::updateEntity() {
     m_entity->update();
 }
 
-size_t QG_DlgMText::alignmentButtonIdex(QToolButton* button) const
+size_t QG_DlgMText::alignmentButtonIdex(const QToolButton* button) const
 {
-    auto it = std::find(m_alignmentButtons.cbegin(), m_alignmentButtons.cend(), button);
+    const auto it = std::find(m_alignmentButtons.cbegin(), m_alignmentButtons.cend(), button);
     return it == m_alignmentButtons.cend() ? 0 : std::distance(m_alignmentButtons.cbegin(), it);
 }
 
@@ -366,9 +368,9 @@ void QG_DlgMText::setAlignment(QToolButton& button) {
 
 int QG_DlgMText::getAlignment() const {
 
-    auto it = std::find_if(m_alignmentButtons.cbegin(), m_alignmentButtons.cend(), [](QToolButton* button){
+    const auto it = std::find_if(m_alignmentButtons.cbegin(), m_alignmentButtons.cend(), [](const QToolButton* button){
             return button->isChecked();});
-    int index = (it == m_alignmentButtons.cend()) ? 0 : std::distance(m_alignmentButtons.cbegin(), it);
+    const int index = (it == m_alignmentButtons.cend()) ? 0 : std::distance(m_alignmentButtons.cbegin(), it);
     return index + 1;
 }
 
@@ -376,8 +378,9 @@ void QG_DlgMText::setFont(const QString& f) {
     int index = cbFont->findText(f);
 
     // Issue #2069: default to the last font, likely unicode fonts
-    if (index == -1)
+    if (index == -1) {
         index = cbFont->findText("unicode");
+    }
     if (index >= 0) {
         cbFont->setCurrentIndex(index);
         m_font = cbFont->getFont();
@@ -393,7 +396,7 @@ void QG_DlgMText::defaultChanged(bool) const {
 }
 
 void QG_DlgMText::loadText() {
-    QString fn = QFileDialog::getOpenFileName(this);
+    const QString fn = QFileDialog::getOpenFileName(this);
     if (!fn.isEmpty()) {
         load(fn);
     }
@@ -410,16 +413,16 @@ void QG_DlgMText::load(const QString& fn) const {
 }
 
 void QG_DlgMText::saveText() {
-    QString fn = QFileDialog::getSaveFileName(this);
+    const QString fn = QFileDialog::getSaveFileName(this);
     if (!fn.isEmpty()) {
         save(fn);
     }
 }
 
 void QG_DlgMText::save(const QString& fn) const {
-    QString text = teText->toPlainText();
     QFile f(fn);
     if (f.open(QIODevice::WriteOnly)) {
+        const QString text = teText->toPlainText();
         QTextStream t(&f);
         t << text;
         f.close();
@@ -427,24 +430,24 @@ void QG_DlgMText::save(const QString& fn) const {
 }
 
 void QG_DlgMText::insertSymbol(int) const {
-    QString str = cbSymbol->currentText();
-    int i=str.indexOf('(');
+    const QString str = cbSymbol->currentText();
+    const int i=str.indexOf('(');
     if (i!=-1) {
         teText->textCursor().insertText(str.mid(i+1, 1));
     }
 }
 
 void QG_DlgMText::updateUniCharButton(int) const {
-    QString t = cbUniChar->currentText();
-    int i1 = t.indexOf(']');
-    int c = t.mid(1, i1-1).toInt(nullptr, 16);
+    const QString t = cbUniChar->currentText();
+    const int i1 = t.indexOf(']');
+    const int c = t.mid(1, i1-1).toInt(nullptr, 16);
     bUnicode->setText(QString{QChar{c}});
 }
 
 void QG_DlgMText::insertChar() const {
-    QString t = cbUniChar->currentText();
-    int i1 = t.indexOf(']');
-    int c = t.mid(1, i1-1).toInt(nullptr, 16);
+    const QString t = cbUniChar->currentText();
+    const int i1 = t.indexOf(']');
+    const int c = t.mid(1, i1-1).toInt(nullptr, 16);
     teText->textCursor().insertText( QString{QChar{c}} );
 }
 
@@ -453,20 +456,20 @@ void QG_DlgMText::insertChar() const {
  * On focus in set the widget frame highlighted, on focus out revert to normal.
  */
 bool QG_DlgMText::eventFilter(QObject *obj, QEvent *event) {
-    int type = event->type();
+    const int type = event->type();
     if (type == QEvent::FocusIn) {
         if (obj == teText) {
-            QPalette palette = teText->QFrame::QWidget::palette();
-            QColor color = palette.color(QPalette::Highlight);
+            QPalette palette = teText->palette();
+            const QColor color = palette.color(QPalette::Highlight);
             palette.setColor(QPalette::WindowText, color);
-            teText->QFrame::QWidget::setPalette(palette);
+            teText->setPalette(palette);
         }
     } else if (type == QEvent::FocusOut) {
         if (obj == teText) {
-            QPalette palette = teText->QFrame::QWidget::palette();
-            QColor color = palette.color(QPalette::Dark);
+            QPalette palette = teText->palette();
+            const QColor color = palette.color(QPalette::Dark);
             palette.setColor(QPalette::WindowText, color);
-            teText->QFrame::QWidget::setPalette(palette);
+            teText->setPalette(palette);
         }
     }
     return false;

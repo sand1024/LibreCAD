@@ -55,9 +55,9 @@ public:
     }
     void mergeWith(QList<LC_DimStyle*>& list);
     LC_StylesListModel* getFlatItemsListModel();
-    int getItemIndex(LC_DimStyleItem* initial_style);
+    int getItemIndex(const LC_DimStyleItem* itemToFind);
     void collectItemsForBaseStyleName(const QString& baseName, QList<LC_DimStyleItem*>* list);
-    void collectItemsForStyle(LC_DimStyle* dim_style, QList<LC_DimStyleItem*>* list);
+    void collectItemsForStyle(const LC_DimStyle* dimStyle, QList<LC_DimStyleItem*>* list);
     void sort(int column, Qt::SortOrder order) override;
     void cleanup() const;
 private:
@@ -66,4 +66,4 @@ private:
     void createModel(RS_Graphic* g,RS2::EntityType dimensionType);
 };
 
-#endif // LC_DIMSTYLESLISTMODEL_H
+#endif

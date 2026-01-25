@@ -21,13 +21,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
 
 #include "lc_linefrompointtolineoptions.h"
+
 #include "lc_actiondrawlinefrompointtoline.h"
 #include "ui_lc_linefrompointtolineoptions.h"
 
-
 LC_LineFromPointToLineOptions::LC_LineFromPointToLineOptions() :
     LC_ActionOptionsWidgetBase(RS2::ActionDrawLineFromPointToLine, "Draw", "LinePointToLine"),
-    m_action(nullptr),
     ui(new Ui::LC_LineFromPointToLineOptions){
     ui->setupUi(this);
 
@@ -61,8 +60,8 @@ void LC_LineFromPointToLineOptions::doSaveSettings(){
     save("EndOffset", ui->leOffset->text());
 }
 
-void LC_LineFromPointToLineOptions::doSetAction(RS_ActionInterface *a, bool update){
-    m_action = dynamic_cast<LC_ActionDrawLineFromPointToLine *>(a);
+void LC_LineFromPointToLineOptions::doSetAction(RS_ActionInterface *a, const bool update){
+    m_action = static_cast<LC_ActionDrawLineFromPointToLine *>(a);
     bool orthogonal;
     QString angle;
     int sizeMode;
@@ -94,19 +93,19 @@ void LC_LineFromPointToLineOptions::doSetAction(RS_ActionInterface *a, bool upda
     setEndOffsetToActionAndView(offset);
 }
 
-void LC_LineFromPointToLineOptions::onSnapModeIndexChanged(int index){
+void LC_LineFromPointToLineOptions::onSnapModeIndexChanged(const int index) const {
     if (m_action != nullptr){
         setSnapModeToActionAndView(index);
     }
 }
 
-void LC_LineFromPointToLineOptions::onSizeModeIndexChanged(int index){
+void LC_LineFromPointToLineOptions::onSizeModeIndexChanged(const int index) const {
     if (m_action != nullptr){
         setSizeModelIndexToActionAndView(index);
     }
 }
 
-void LC_LineFromPointToLineOptions::onOrthogonalClicked(bool value){
+void LC_LineFromPointToLineOptions::onOrthogonalClicked(const bool value) const {
     if (m_action != nullptr){
         setOrthogonalToActionAndView(value);
     }
@@ -129,15 +128,15 @@ void LC_LineFromPointToLineOptions::onEndOffsetEditingFinished(){
     }
 }
 
-void LC_LineFromPointToLineOptions::setSnapModeToActionAndView(int index) const {
+void LC_LineFromPointToLineOptions::setSnapModeToActionAndView(const int index) const {
     m_action->setLineSnapMode(index);
     ui->cbSnap->setCurrentIndex(index);
 }
 
-void LC_LineFromPointToLineOptions::setSizeModelIndexToActionAndView(int index) const {
+void LC_LineFromPointToLineOptions::setSizeModelIndexToActionAndView(const int index) const {
     m_action->setSizeMode(index);
     ui->cbSizeMode->setCurrentIndex(index);
-    bool intersectionMode = index == 0;
+    const bool intersectionMode = index == 0;
     ui->frmLength->setVisible(!intersectionMode);
     ui->tbPickLength->setVisible(!intersectionMode && m_interactiveInputControlsVisible);
     ui->frmOffset->setVisible(intersectionMode);
@@ -148,8 +147,8 @@ void LC_LineFromPointToLineOptions::setAngleToActionAndView(const QString& value
     double angle;
     if (toDoubleAngleDegrees(value, angle, 1.0, false)){
         // ensure angle in 0..180
-        double angleRad = RS_Math::deg2rad(angle);
-        double correctedAngle = std::remainder(angleRad, M_PI);
+        const double angleRad = RS_Math::deg2rad(angle);
+        const double correctedAngle = std::remainder(angleRad, M_PI);
         angle = RS_Math::rad2deg(std::abs(correctedAngle));
 
         m_action->setAngleDegrees(angle);
@@ -173,7 +172,7 @@ void LC_LineFromPointToLineOptions::setEndOffsetToActionAndView(const QString& v
     }
 }
 
-void LC_LineFromPointToLineOptions::setOrthogonalToActionAndView(bool value) const {
+void LC_LineFromPointToLineOptions::setOrthogonalToActionAndView(const bool value) const {
     m_action->setOrthogonal(value);
     ui->cbOrthogonal->setChecked(value);
 

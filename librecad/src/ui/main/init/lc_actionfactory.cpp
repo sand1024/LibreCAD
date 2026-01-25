@@ -27,22 +27,23 @@
 // qg_actionfactory contributors:
 // Andrew Mustun, Claude Sylvain, R. van Twisk, Dongxu Li, Rallaz, Armin Stebich, ravas, korhadris
 
+#include "lc_actionfactory.h"
+
 #include <QAction>
 #include <QKeySequence>
-#include "lc_actionfactory.h"
 
 #include "lc_actiongroup.h"
 #include "lc_actiongroupmanager.h"
 #include "lc_infocursorsettingsmanager.h"
+#include "lc_shortcutinfo.h"
 #include "qc_applicationwindow.h"
 #include "rs_settings.h"
-#include "lc_shortcutinfo.h"
 
-LC_ActionFactory::LC_ActionFactory(QC_ApplicationWindow* parent, QG_ActionHandler* a_handler)
-    : LC_ActionFactoryBase(parent, a_handler){
+LC_ActionFactory::LC_ActionFactory(QC_ApplicationWindow* parent, QG_ActionHandler* actionHandler)
+    : LC_ActionFactoryBase(parent, actionHandler){
 }
 
-void LC_ActionFactory::initActions(LC_ActionGroupManager* agm, bool useTheme) {
+void LC_ActionFactory::initActions(LC_ActionGroupManager* agm, const bool useTheme) {
    initActionGroupManager(agm);
    fillActionContainer(agm, useTheme);
 }
@@ -83,10 +84,10 @@ void LC_ActionFactory::initActionGroupManager(LC_ActionGroupManager* agm) {
         {"interactive_pick", tr("Interactive"), tr("Interactive Pick"), ":/icons/interactive_pick_point.lci", true}
     },agm);
 
-    auto fileGroup = agm->getGroupByName("file");
-    auto optionsGroup = agm->getGroupByName("options");
+    const auto fileGroup = agm->getGroupByName("file");
+    const auto optionsGroup = agm->getGroupByName("options");
 
-    for (auto const& actionGroup : agm->findChildren<LC_ActionGroup*>()) {
+    for (const auto& actionGroup : agm->findChildren<LC_ActionGroup*>()) {
         actionGroup->setExclusive(false);
         if (fileGroup != actionGroup && optionsGroup != actionGroup) {
             connect(m_appWin, &QC_ApplicationWindow::windowsChanged, actionGroup, &LC_ActionGroup::setEnabled);
@@ -112,73 +113,73 @@ void LC_ActionFactory::createEntityLayerActions(QMap<QString, QAction*>& map, LC
 
 // todo - add explanations for commands for actions (probably mix with commandItems) as it was mentioned in issue #570
 
-void LC_ActionFactory::fillActionContainer(LC_ActionGroupManager* agm, bool useTheme){
+void LC_ActionFactory::fillActionContainer(LC_ActionGroupManager* agm, const bool useTheme){
     m_usingTheme = useTheme;
-    QMap<QString, QAction *> &a_map = agm->getActionsMap();
-    createSelectActions(a_map, agm->getGroupByName("select"));
-    createDrawLineActions(a_map, agm->getGroupByName("line"));
-    createDrawPointsActions(a_map, agm->getGroupByName("point"));
-    createDrawShapeActions(a_map, agm->getGroupByName("shape"));
-    createDrawCircleActions(a_map, agm->getGroupByName("circle"));
-    createDrawCurveActions(a_map, agm->getGroupByName("curve"));
-    createDrawSplineActions(a_map, agm->getGroupByName("spline"));
-    createDrawEllipseActions(a_map, agm->getGroupByName("ellipse"));
-    createDrawPolylineActions(a_map, agm->getGroupByName("polyline"));
-    createDrawOtherActions(a_map, agm->getGroupByName("other"));
-    createDrawDimensionsActions(a_map, agm->getGroupByName("dimension"));
-    createModifyActions(a_map, agm->getGroupByName("modify"));
-    createPenActions(a_map, agm->getGroupByName("pen"));
-    createInfoActions(a_map, agm->getGroupByName("info"));
-    createViewActions(a_map, agm->getGroupByName("view"));
-    createWidgetActions(a_map, agm->getGroupByName("widgets"));
-    createFileActions(a_map, agm->getGroupByName("file"));
+    QMap<QString, QAction *> &actionMap = agm->getActionsMap();
+    createSelectActions(actionMap, agm->getGroupByName("select"));
+    createDrawLineActions(actionMap, agm->getGroupByName("line"));
+    createDrawPointsActions(actionMap, agm->getGroupByName("point"));
+    createDrawShapeActions(actionMap, agm->getGroupByName("shape"));
+    createDrawCircleActions(actionMap, agm->getGroupByName("circle"));
+    createDrawCurveActions(actionMap, agm->getGroupByName("curve"));
+    createDrawSplineActions(actionMap, agm->getGroupByName("spline"));
+    createDrawEllipseActions(actionMap, agm->getGroupByName("ellipse"));
+    createDrawPolylineActions(actionMap, agm->getGroupByName("polyline"));
+    createDrawOtherActions(actionMap, agm->getGroupByName("other"));
+    createDrawDimensionsActions(actionMap, agm->getGroupByName("dimension"));
+    createModifyActions(actionMap, agm->getGroupByName("modify"));
+    createPenActions(actionMap, agm->getGroupByName("pen"));
+    createInfoActions(actionMap, agm->getGroupByName("info"));
+    createViewActions(actionMap, agm->getGroupByName("view"));
+    createWidgetActions(actionMap, agm->getGroupByName("widgets"));
+    createFileActions(actionMap, agm->getGroupByName("file"));
 
-    createSnapActions(a_map, agm->getGroupByName("snap"));
-    createInfoCursorActions(a_map, agm->getGroupByName("infoCursor"));
-    createSnapExtraActions(a_map, agm->getGroupByName("snap_extras"));
-    createRestrictActions(a_map, agm->getGroupByName("restriction"));
-    createRelZeroActions(a_map, agm->getGroupByName("other"));
-    createUCSActions(a_map, agm->getGroupByName("ucs"));
-    createEditActions(a_map, agm->getGroupByName("edit"));
+    createSnapActions(actionMap, agm->getGroupByName("snap"));
+    createInfoCursorActions(actionMap, agm->getGroupByName("infoCursor"));
+    createSnapExtraActions(actionMap, agm->getGroupByName("snap_extras"));
+    createRestrictActions(actionMap, agm->getGroupByName("restriction"));
+    createRelZeroActions(actionMap, agm->getGroupByName("other"));
+    createUCSActions(actionMap, agm->getGroupByName("ucs"));
+    createEditActions(actionMap, agm->getGroupByName("edit"));
 
-    createEntityLayerActions(a_map, agm->getGroupByName("entity_layer"));
-    createInteractivePickActions(a_map, agm->getGroupByName("interactive_pick"));
+    createEntityLayerActions(actionMap, agm->getGroupByName("entity_layer"));
+    createInteractivePickActions(actionMap, agm->getGroupByName("interactive_pick"));
 
-    for (QAction* value: std::as_const(a_map)){
+    for (QAction* value: std::as_const(actionMap)){
         if (value != nullptr) {
             value->setCheckable(true);
         }
     }
 
     // not checkable actions
-    createPenActionsUncheckable(a_map, agm->getGroupByName("pen"));
-    createOrderActionsUncheckable(a_map, agm->getGroupByName("modify"));
-    createLayerActionsUncheckable(a_map, agm->getGroupByName("layer"));
-    createBlockActionsUncheckable(a_map, agm->getGroupByName("block"));
-    createOptionsActionsUncheckable(a_map, agm->getGroupByName("options"));
-    createSelectActionsUncheckable(a_map, agm->getGroupByName("select"));
-    createFileActionsUncheckable(a_map, agm->getGroupByName("file"));
-    createViewActionsUncheckable(a_map, agm->getGroupByName("view"));
-    createNamedViewActionsUncheckable(a_map, agm->getGroupByName("namedViews"));
-    createWorkspacesActionsUncheckable(a_map, agm->getGroupByName("workspaces"));
-    createWidgetActionsUncheckable(a_map, agm->getGroupByName("widgets"));
-    createEditActionsUncheckable(a_map, agm->getGroupByName("edit"));
-    createDrawDimensionsUncheckable(a_map, agm->getGroupByName("dimension"));
+    createPenActionsUncheckable(actionMap, agm->getGroupByName("pen"));
+    createOrderActionsUncheckable(actionMap, agm->getGroupByName("modify"));
+    createLayerActionsUncheckable(actionMap, agm->getGroupByName("layer"));
+    createBlockActionsUncheckable(actionMap, agm->getGroupByName("block"));
+    createOptionsActionsUncheckable(actionMap, agm->getGroupByName("options"));
+    createSelectActionsUncheckable(actionMap, agm->getGroupByName("select"));
+    createFileActionsUncheckable(actionMap, agm->getGroupByName("file"));
+    createViewActionsUncheckable(actionMap, agm->getGroupByName("view"));
+    createNamedViewActionsUncheckable(actionMap, agm->getGroupByName("namedViews"));
+    createWorkspacesActionsUncheckable(actionMap, agm->getGroupByName("workspaces"));
+    createWidgetActionsUncheckable(actionMap, agm->getGroupByName("widgets"));
+    createEditActionsUncheckable(actionMap, agm->getGroupByName("edit"));
+    createDrawDimensionsUncheckable(actionMap, agm->getGroupByName("dimension"));
 
-    setupCreatedActions(a_map);
-    setDefaultShortcuts(a_map, agm);
+    setupCreatedActions(actionMap);
+    setDefaultShortcuts(actionMap, agm);
 
-    agm->loadShortcuts(a_map);
+    agm->loadShortcuts(actionMap);
 
     // todo - may we report errors somehow there?
-    markNotEditableActionsShortcuts(a_map);
+    markNotEditableActionsShortcuts(actionMap);
 
     agm->completeInit();
 
-    fillActionLists(a_map);
-    addActionsToMainWindow(a_map);
+    fillActionLists(actionMap);
+    addActionsToMainWindow(actionMap);
 
-    prepareActionsToDisableInPrintPreview(m_appWin->m_actionsToDisableInPrintPreviewList, a_map);
+    prepareActionsToDisableInPrintPreview(m_appWin->m_actionsToDisableInPrintPreviewList, actionMap);
 }
 
 void LC_ActionFactory::createDrawShapeActions(QMap<QString, QAction*>& map, QActionGroup* group) const {
@@ -665,10 +666,10 @@ void LC_ActionFactory::createSelectActionsUncheckable(QMap<QString, QAction *> &
 
 void LC_ActionFactory::createEditActionsUncheckable(QMap<QString, QAction *> &map, QActionGroup *group) const {
     createActionHandlerActions(map, group, {
-        {"EditUndo",           RS2::ActionEditUndo,           tr("&Undo"),              ":/icons/undo.lci",            "edit-undo"},
-        {"EditRedo",           RS2::ActionEditRedo,           tr("&Redo"),              ":/icons/redo.lci",            "edit-redo"},
+        {"EditUndo",           RS2::ActionEditUndo,           tr("&Undo"),              ":/icons/undo.lci",   "edit-undo"},
+        {"EditRedo",           RS2::ActionEditRedo,           tr("&Redo"),              ":/icons/redo.lci",   "edit-redo"},
         {"ModifyDeleteQuick",  RS2::ActionModifyDeleteQuick,  tr("&Delete Selected"),   ":/icons/delete.lci"},
-        {"EditKillAllActions", RS2::ActionEditKillAllActions, tr("&Selection Pointer"), ":/icons/cursor.lci",          "go-previous-view"}
+        {"EditKillAllActions", RS2::ActionEditKillAllActions, tr("&Selection Pointer"), ":/icons/cursor.lci", "go-previous-view"}
     });
 }
 void LC_ActionFactory::createDrawDimensionsUncheckable(QMap<QString, QAction *> &map, QActionGroup *group) const {
@@ -676,7 +677,7 @@ void LC_ActionFactory::createDrawDimensionsUncheckable(QMap<QString, QAction *> 
        {"DimRegenerate",     RS2::ActionDimRegenerate,tr("Regenerate Dimensions"),  ":/icons/dim_regenerate.lci"}
     });
 
-    auto dimSettingsAction = justCreateAction(map,"DimStyles",tr( "&Dimension Styles"),
+    const auto dimSettingsAction = justCreateAction(map,"DimStyles",tr( "&Dimension Styles"),
        ":/icons/dim_style_manager.lci", "", group);
 
     connect(dimSettingsAction, &QAction::triggered, this, [this](bool){
@@ -687,8 +688,8 @@ void LC_ActionFactory::createDrawDimensionsUncheckable(QMap<QString, QAction *> 
 void LC_ActionFactory::createInteractivePickActions(QMap<QString, QAction *> &map, QActionGroup *group) const {
     createActionHandlerActions(map, group, {
         {"PickPoint",    RS2::ActionInteractivePickPoint,  tr("Pick Point"),   ":/icons/interactive_pick_point.lci"},
-        {"PickPointX",    RS2::ActionInteractivePickPoint_X,  tr("Pick Point X"),   ":/icons/interactive_pick_point_x.lci"},
-        {"PickPointY",    RS2::ActionInteractivePickPoint_Y,  tr("Pick Point Y"),   ":/icons/interactive_pick_point_y.lci"},
+        {"PickPointX",   RS2::ActionInteractivePickPoint_X,  tr("Pick Point X"),   ":/icons/interactive_pick_point_x.lci"},
+        {"PickPointY",   RS2::ActionInteractivePickPoint_Y,  tr("Pick Point Y"),   ":/icons/interactive_pick_point_y.lci"},
         {"PickDistance", RS2::ActionInteractivePickLength, tr("Pick Distance"),":/icons/interactive_pick_distance.lci"},
         {"PickAngle",    RS2::ActionInteractivePickAngle,  tr("Pick Angle"),   ":/icons/interactive_pick_angle.lci"}
     });
@@ -708,17 +709,17 @@ void LC_ActionFactory::createEditActions(QMap<QString, QAction*>& map, QActionGr
 void LC_ActionFactory::setupCreatedActions(QMap<QString, QAction *> &map) {
     map["ZoomPrevious"]->setEnabled(false);
     map["RightDockAreaToggle"]->setChecked(true);
-    LC_GROUP("Appearance"); {
-        bool statusBarVisible = LC_GET_BOOL("StatusBarVisible", false);
-        bool mainMenuVisible = LC_GET_BOOL("MainMenuVisible", true);
-        bool fullScreenMode = LC_GET_BOOL("FullscreenMode", false);
+    LC_GROUP_GUARD("Appearance"); {
+        const bool statusBarVisible = LC_GET_BOOL("StatusBarVisible", false);
+        const bool mainMenuVisible = LC_GET_BOOL("MainMenuVisible", true);
+        const bool fullScreenMode = LC_GET_BOOL("FullscreenMode", false);
         map["ViewStatusBar"]->setChecked(statusBarVisible);
         map["MainMenu"]->setChecked(mainMenuVisible);
         map["Fullscreen"]->setChecked(fullScreenMode);
         map["OptionsGeneral"]->setMenuRole(QAction::NoRole);
     }
 
-    bool additiveSelection = LC_GET_ONE_BOOL("Selection", "Additivity", true);
+    const bool additiveSelection = LC_GET_ONE_BOOL("Selection", "Additivity", true);
     map["SelectionModeToggle"]->setChecked(additiveSelection);
 
     connect(m_appWin, &QC_ApplicationWindow::printPreviewChanged, map["FilePrint"], &QAction::setChecked);
@@ -732,7 +733,7 @@ void LC_ActionFactory::setupCreatedActions(QMap<QString, QAction *> &map) {
     QAction *&entityInfoAction = map["EntityDescriptionInfo"];
     connect(m_appWin, &QC_ApplicationWindow::showEntityDescriptionOnHoverChanged, entityInfoAction, &QAction::setChecked);
 
-    auto infoCursorSettingsManager = m_appWin->m_infoCursorSettingsManager.get();
+    const auto infoCursorSettingsManager = m_appWin->m_infoCursorSettingsManager.get();
     connect(infoCursorSettingsManager, &LC_InfoCursorSettingsManager::showInfoCursorSettingChanged, entityInfoAction, &QAction::setVisible);
 
     connect(map["InfoCursorAbs"], &QAction::triggered, infoCursorSettingsManager, &LC_InfoCursorSettingsManager::slotInfoCursorSetting);
@@ -755,21 +756,22 @@ void LC_ActionFactory::setupCreatedActions(QMap<QString, QAction *> &map) {
     map["LockRelativeZero"]->setProperty("_SetAsCurrentActionInView", false);
     map["SelectionModeToggle"]->setProperty("_SetAsCurrentActionInView", false);
 
-    connect(RS_SETTINGS, &RS_Settings::optionChanged, [map](const QString& groupName, const QString &propertyName, QVariant oldValue, QVariant newValue) -> void {
+    connect(RS_SETTINGS, &RS_Settings::optionChanged, [map](const QString& groupName, const QString &propertyName, [[maybe_unused]]QVariant oldValue, const QVariant& newValue) -> void {
         if (groupName == "Selection" && propertyName == "Additivity") {
-            auto action = map["SelectionModeToggle"];
-            bool value = newValue.toBool();
+            const auto action = map["SelectionModeToggle"];
+            const bool value = newValue.toBool();
             action->setChecked(value);
         }
     });
 
 }
 
-void LC_ActionFactory::setDefaultShortcuts(QMap<QString, QAction*>& map, LC_ActionGroupManager* agm) {
+void LC_ActionFactory::setDefaultShortcuts(QMap<QString, QAction*>& map, const LC_ActionGroupManager* agm) {
     QList<QKeySequence> commandLineShortcuts;
     commandLineShortcuts << QKeySequence(Qt::CTRL | Qt::Key_M) << QKeySequence(Qt::Key_Colon);
-    if (LC_GET_BOOL("Keyboard/ToggleFreeSnapOnSpace"))
+    if (LC_GET_BOOL("Keyboard/ToggleFreeSnapOnSpace")) {
         commandLineShortcuts << QKeySequence(Qt::Key_Space);
+    }
 
     std::vector<LC_ShortcutInfo> shortcutsList = {
         {"ModifyRevertDirection", QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_R)},
@@ -822,7 +824,7 @@ void LC_ActionFactory::setDefaultShortcuts(QMap<QString, QAction*>& map, LC_Acti
     QKeySequence shortcut = QKeySequence::SaveAs; //(Qt::CTRL + Qt::SHIFT + Qt::Key_S);
     // only define this shortcut for platforms not already using it for save as
     if (shortcut != QKeySequence::SaveAs){
-        shortcutsList.push_back({"FileSaveAll", shortcut});
+        shortcutsList.emplace_back("FileSaveAll", shortcut);
     }
 
     agm->assignShortcutsToActions(map, shortcutsList);
@@ -840,8 +842,8 @@ void LC_ActionFactory::markNotEditableActionsShortcuts(const QMap<QString, QActi
     });
 }
 
-void LC_ActionFactory::fillActionLists(QMap<QString, QAction *> &map){
-    fillActionsList(file_actions,
+void LC_ActionFactory::fillActionLists(const QMap<QString, QAction *> &map){
+    fillActionsList(file_Actions,
                     {
                         "FileNew",
                         "FileNewTemplate",
@@ -851,7 +853,7 @@ void LC_ActionFactory::fillActionLists(QMap<QString, QAction *> &map){
                         "FileSaveAll"
                     }, map);
 
-    fillActionsList(shape_actions,
+    fillActionsList(shapeActions,
                     {
                         "DrawLineRectangle",
                         "DrawLineRectangle1Point",
@@ -864,7 +866,7 @@ void LC_ActionFactory::fillActionLists(QMap<QString, QAction *> &map){
                         "DrawStar"
                     }, map);
 
-    fillActionsList(line_actions,
+    fillActionsList(lineActions,
                     {
                         "DrawLine",
                         "DrawLineAngle",
@@ -890,7 +892,7 @@ void LC_ActionFactory::fillActionLists(QMap<QString, QAction *> &map){
                         "DrawLineMiddle"
                     }, map);
 
-    fillActionsList(point_actions, {
+    fillActionsList(pointActions, {
                         "DrawPoint",
                         "DrawLinePoints",
                         "DrawPointsMiddle",
@@ -899,7 +901,7 @@ void LC_ActionFactory::fillActionLists(QMap<QString, QAction *> &map){
                         "PasteToPoints"
                     }, map);
 
-    fillActionsList(circle_actions, {
+    fillActionsList(circleActions, {
                         "DrawCircle",
                         "DrawCircle2P",
                         "DrawCircle2PR",
@@ -914,7 +916,7 @@ void LC_ActionFactory::fillActionLists(QMap<QString, QAction *> &map){
                         "DrawCircleByArc"
                     }, map);
 
-    fillActionsList(curve_actions, {
+    fillActionsList(curveActions, {
                         "DrawArc",
                         "DrawArcChord",
                         "DrawArcAngleLen",
@@ -928,7 +930,7 @@ void LC_ActionFactory::fillActionLists(QMap<QString, QAction *> &map){
                         "DrawEllipseArc1Point"
                     }, map);
 
-    fillActionsList(spline_actions, {
+    fillActionsList(splineActions, {
                         "DrawSpline",
                         "DrawSplinePoints",
                         "DrawSplineFromPolyline",
@@ -942,7 +944,7 @@ void LC_ActionFactory::fillActionLists(QMap<QString, QAction *> &map){
                         "DrawParabolaFD",
                     }, map);
 
-    fillActionsList(ellipse_actions, {
+    fillActionsList(ellipseActions, {
                         "DrawEllipse1Point",
                         "DrawEllipseAxis",
                         "DrawEllipseFociPoint",
@@ -951,7 +953,7 @@ void LC_ActionFactory::fillActionLists(QMap<QString, QAction *> &map){
                         "DrawEllipseInscribe"
                     }, map);
 
-    fillActionsList(polyline_actions, {
+    fillActionsList(polylineActions, {
                         "DrawPolyline",
                         "PolylineAdd",
                         "PolylineAppend",
@@ -964,7 +966,7 @@ void LC_ActionFactory::fillActionLists(QMap<QString, QAction *> &map){
                         "PolylineSegmentType"
                     }, map);
 
-    fillActionsList(select_actions, {
+    fillActionsList(selectActions, {
                         "DeselectAll",
                         "SelectAll",
                         "SelectSingle",
@@ -978,7 +980,7 @@ void LC_ActionFactory::fillActionLists(QMap<QString, QAction *> &map){
                         "SelectQuick"
                     }, map);
 
-    fillActionsList(dimension_actions, {
+    fillActionsList(dimension_Actions, {
                         "DimAligned",
                         "DimLinear",
                         "DimLinearHor",
@@ -1001,7 +1003,7 @@ void LC_ActionFactory::fillActionLists(QMap<QString, QAction *> &map){
                         "DimStyles"
                     }, map);
 
-    fillActionsList(other_drawing_actions, {
+    fillActionsList(otherDrawingActions, {
                         "DrawText",
                         "DrawMText",
                         "DrawHatch",
@@ -1009,7 +1011,7 @@ void LC_ActionFactory::fillActionLists(QMap<QString, QAction *> &map){
                         "DrawBoundingBox"
                     }, map);
 
-    fillActionsList(modify_actions, {
+    fillActionsList(modifyActions, {
                         "ModifyMove",
                         "ModifyDuplicate",
                         "ModifyAlign",
@@ -1039,14 +1041,14 @@ void LC_ActionFactory::fillActionLists(QMap<QString, QAction *> &map){
                         "ModifyDelete"
                     }, map);
 
-    fillActionsList(order_actions, {
+    fillActionsList(orderActions, {
                         "OrderTop",
                         "OrderBottom",
                         "OrderRaise",
                         "OrderLower"
                     }, map);
 
-    fillActionsList(info_actions, {
+    fillActionsList(infoActions, {
                         "InfoPoint",
                         "InfoDist",
                         "InfoDist2",
@@ -1058,7 +1060,7 @@ void LC_ActionFactory::fillActionLists(QMap<QString, QAction *> &map){
                         "EntityInfo"
                     }, map);
 
-    fillActionsList(layer_actions, {
+    fillActionsList(layerActions, {
                         "LayersDefreezeAll",
                         "LayersFreezeAll",
                         "LayersUnlockAll",
@@ -1074,7 +1076,7 @@ void LC_ActionFactory::fillActionLists(QMap<QString, QAction *> &map){
                         "LayersExportVisible"
                     }, map);
 
-    fillActionsList(block_actions, {
+    fillActionsList(blockActions, {
                         "BlocksDefreezeAll",
                         "BlocksFreezeAll",
                         "BlocksToggleView",
@@ -1088,7 +1090,7 @@ void LC_ActionFactory::fillActionLists(QMap<QString, QAction *> &map){
                         "BlocksExplode"
                     }, map);
 
-    fillActionsList(pen_actions, {
+    fillActionsList(penActions, {
                         "PenSyncFromLayer",
                         "PenPick",
                         "PenPickResolved",
@@ -1096,7 +1098,7 @@ void LC_ActionFactory::fillActionLists(QMap<QString, QAction *> &map){
                         "PenCopy"
                     }, map);
 
-    fillActionsList(entity_layer_actions,{
+    fillActionsList(entityLayerActions,{
                         "EntityLayerActivate",
                         "EntityLayerView",
                         "EntityLayerHideOthers",
@@ -1106,7 +1108,7 @@ void LC_ActionFactory::fillActionLists(QMap<QString, QAction *> &map){
                     }, map);
 }
 
-void LC_ActionFactory::prepareActionsToDisableInPrintPreview(QList<QAction*>& actionsList, QMap<QString, QAction *> &map) const {
+void LC_ActionFactory::prepareActionsToDisableInPrintPreview(QList<QAction*>& actionsList, const QMap<QString, QAction *> &map) const {
     fillActionsList(actionsList, {
         "EditCut",
         "EditCutQuick",
@@ -1136,22 +1138,22 @@ void LC_ActionFactory::prepareActionsToDisableInPrintPreview(QList<QAction*>& ac
         "UCSSetByDimOrdinate",
     }, map);
 
-    actionsList.append(line_actions);
-    actionsList.append(point_actions);
-    actionsList.append(shape_actions);
-    actionsList.append(circle_actions);
-    actionsList.append(curve_actions);
-    actionsList.append(spline_actions);
-    actionsList.append(ellipse_actions);
-    actionsList.append(polyline_actions);
-    actionsList.append(select_actions);
-    actionsList.append(dimension_actions);
-    actionsList.append(other_drawing_actions);
-    actionsList.append(modify_actions);
-    actionsList.append(order_actions);
-    actionsList.append(info_actions);
-    actionsList.append(block_actions);
-    actionsList.append(pen_actions);
-    actionsList.append(layer_actions);
-    actionsList.append(entity_layer_actions);
+    actionsList.append(lineActions);
+    actionsList.append(pointActions);
+    actionsList.append(shapeActions);
+    actionsList.append(circleActions);
+    actionsList.append(curveActions);
+    actionsList.append(splineActions);
+    actionsList.append(ellipseActions);
+    actionsList.append(polylineActions);
+    actionsList.append(selectActions);
+    actionsList.append(dimension_Actions);
+    actionsList.append(otherDrawingActions);
+    actionsList.append(modifyActions);
+    actionsList.append(orderActions);
+    actionsList.append(infoActions);
+    actionsList.append(blockActions);
+    actionsList.append(penActions);
+    actionsList.append(layerActions);
+    actionsList.append(entityLayerActions);
 }

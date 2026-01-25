@@ -21,6 +21,7 @@
  ******************************************************************************/
 
 #include "lc_moveoptions.h"
+
 #include "rs_actionmodifymove.h"
 #include "ui_lc_moveoptions.h"
 
@@ -42,13 +43,13 @@ void LC_MoveOptions::doSaveSettings() {
     save("Copies", ui->sbNumberOfCopies->value());
 }
 
-void LC_MoveOptions::doSetAction(RS_ActionInterface *a, bool update) {
+void LC_MoveOptions::doSetAction(RS_ActionInterface *a, const bool update) {
     m_action = static_cast<RS_ActionModifyMove *>(a);
     bool useMultipleCopies = false;
     bool keepOriginals = false;
     bool useCurrentLayer = false;
     bool useCurrentAttributes = false;
-    int copiesNumber = 1;
+    int copiesNumber;
     if (update){
         useCurrentLayer = m_action->isUseCurrentLayer();
         useCurrentAttributes  = m_action->isUseCurrentAttributes();
@@ -80,43 +81,43 @@ void LC_MoveOptions::setCopiesNumberToActionAndView(int number) const {
     ui->sbNumberOfCopies->setValue(number);
 }
 
-void LC_MoveOptions::setUseMultipleCopiesToActionAndView(bool copies) const {
+void LC_MoveOptions::setUseMultipleCopiesToActionAndView(const bool copies) const {
    m_action->setUseMultipleCopies(copies);
    ui->cbMultipleCopies->setChecked(copies);
    ui->sbNumberOfCopies->setEnabled(copies);
 }
 
-void LC_MoveOptions::setUseCurrentLayerToActionAndView(bool val) const {
+void LC_MoveOptions::setUseCurrentLayerToActionAndView(const bool val) const {
     m_action->setUseCurrentLayer(val);
     ui->cbCurrentLayer->setChecked(val);
 }
 
-void LC_MoveOptions::setUseCurrentAttributesToActionAndView(bool val) const {
+void LC_MoveOptions::setUseCurrentAttributesToActionAndView(const bool val) const {
     m_action->setUseCurrentAttributes(val);
     ui->cbCurrentAttr->setChecked(val);
 }
 
-void LC_MoveOptions::setKeepOriginalsToActionAndView(bool val) const {
+void LC_MoveOptions::setKeepOriginalsToActionAndView(const bool val) const {
     m_action->setKeepOriginals(val);
     ui->cbKeepOriginals->setChecked(val);
 }
 
-void LC_MoveOptions::cbKeepOriginalsClicked(bool val) {
+void LC_MoveOptions::cbKeepOriginalsClicked(const bool val) {
     setKeepOriginalsToActionAndView(val);
 }
 
-void LC_MoveOptions::cbMultipleCopiesClicked(bool val) {
+void LC_MoveOptions::cbMultipleCopiesClicked(const bool val) {
     setUseMultipleCopiesToActionAndView(val);
 }
 
-void LC_MoveOptions::cbUseCurrentAttributesClicked(bool val) {
+void LC_MoveOptions::cbUseCurrentAttributesClicked(const bool val) {
     setUseCurrentAttributesToActionAndView(val);
 }
 
-void LC_MoveOptions::cbUseCurrentLayerClicked(bool val) {
+void LC_MoveOptions::cbUseCurrentLayerClicked(const bool val) {
     setUseCurrentLayerToActionAndView(val);
 }
 
-void LC_MoveOptions::on_sbNumberOfCopies_valueChanged(int number) {
+void LC_MoveOptions::on_sbNumberOfCopies_valueChanged(const int number) {
     setCopiesNumberToActionAndView(number);
 }

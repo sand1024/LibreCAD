@@ -23,7 +23,10 @@
 
 #ifndef LC_LINEPROPERTIESEDITINGWIDGET_H
 #define LC_LINEPROPERTIESEDITINGWIDGET_H
+
 #include "lc_entitypropertieseditorwidget.h"
+
+class RS_Line;
 
 namespace Ui {
     class LC_LinePropertiesEditingWidget;
@@ -44,4 +47,4 @@ private:
     RS_Line* m_entity{nullptr};
 };
 
-#endif // LC_LINEPROPERTIESEDITINGWIDGET_H
+#endif

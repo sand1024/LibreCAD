@@ -27,6 +27,7 @@
 #define QG_SNAPTOOLBAR_H
 
 #include <QToolBar>
+
 #include "rs_snapper.h"
 
 class LC_SnapOptionsWidgetsHolder;
@@ -34,57 +35,56 @@ class QG_ActionHandler;
 
 class LC_ActionGroupManager;
 
-class QG_SnapToolBar : public QToolBar{
+class QG_SnapToolBar : public QToolBar {
     Q_OBJECT
 public:
-    QG_SnapToolBar(QWidget* parent
-                 , QG_ActionHandler* ah
-                 , LC_ActionGroupManager* agm,
-                 const QMap<QString, QAction*> &actionMap);
-	~QG_SnapToolBar() override = default;
+    QG_SnapToolBar(QWidget* parent, QG_ActionHandler* ah, const LC_ActionGroupManager* agm, const QMap<QString, QAction*>& actionsMap);
+    ~QG_SnapToolBar() override = default;
 
-    RS_SnapMode getSnaps () const;
+    RS_SnapMode getSnaps() const;
     void saveSnapMode() const;
     bool lockedRelativeZero() const;
     void setLockedRelativeZero(bool on) const;
     void setUCSActive(bool on) const;
-    LC_SnapOptionsWidgetsHolder *getSnapOptionsHolder();
+    LC_SnapOptionsWidgetsHolder* getSnapOptionsHolder();
 
-public slots:
-    void setSnaps(RS_SnapMode const & s) const;
-    void slotEnableRelativeZeroSnaps(const bool) const;
+public
+    slots :
+    void setSnaps(const RS_SnapMode& s) const;
+    void slotEnableRelativeZeroSnaps(bool) const;
     void slotUnsetSnapMiddleManual() const;
 
-private slots:
-    void actionTriggered(void) const;
-    void slotRestrictOrthogonal(bool checked);
-    void slotRestrictNothing(bool checked);
+private
+    slots :
+    void actionTriggered() const;
+    void slotRestrictOrthogonal(bool checked) const;
+    void slotRestrictNothing(bool checked) const;
 
 private:
-    QAction* addOwnAction(QString name, const QMap<QString, QAction*> &actionsMap);
-    QAction* justAddAction(QString name, const QMap<QString, QAction*> &actionsMap);
+    QAction* addOwnAction(const QString& name, const QMap<QString, QAction*>& actionsMap);
+    QAction* justAddAction(const QString& name, const QMap<QString, QAction*>& actionsMap);
 
     QG_ActionHandler* m_actionHandler;
 
-    QAction *m_actionSnapFree;
-    QAction *m_actionSnapGrid;
-    QAction *m_actionSnapEnd;
-    QAction *m_actionSnapOnEntity;
-    QAction *m_actionSnapCenter;
-    QAction *m_actionSnapMiddle;
-    QAction *m_actionSnapDistance;
-    QAction *m_actionSnapIntersection;
-    QAction *m_actionSnapMiddleManual;
+    QAction* m_actionSnapFree;
+    QAction* m_actionSnapGrid;
+    QAction* m_actionSnapEnd;
+    QAction* m_actionSnapOnEntity;
+    QAction* m_actionSnapCenter;
+    QAction* m_actionSnapMiddle;
+    QAction* m_actionSnapDistance;
+    QAction* m_actionSnapIntersection;
+    QAction* m_actionSnapMiddleManual;
 
-    QAction *m_actionRestrictHorizontal;
-    QAction *m_actionRestrictVertical;
-    QAction *m_actionRestrictOrthogonal;
-    QAction *m_actionRestrictNothing;
-    QAction *m_actionRelZero;
-    QAction *m_actionLockRelZero;
+    QAction* m_actionRestrictHorizontal;
+    QAction* m_actionRestrictVertical;
+    QAction* m_actionRestrictOrthogonal;
+    QAction* m_actionRestrictNothing;
+    QAction* m_actionRelZero;
+    QAction* m_actionLockRelZero;
 
-    QAction *ucsMode;
+    QAction* m_ucsMode{nullptr};
     RS_SnapMode m_snapMode;
 };
 
-#endif // QG_SNAPTOOLBAR_H
+#endif

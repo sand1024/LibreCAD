@@ -35,7 +35,7 @@ class LC_Rotate2Options : public LC_ActionOptionsWidgetBase{
     Q_OBJECT
 public:
     explicit LC_Rotate2Options();
-    ~LC_Rotate2Options();
+    ~LC_Rotate2Options() override;
 public slots:
     void languageChange() override;
     void cbKeepOriginalsClicked(bool val);
@@ -43,7 +43,7 @@ public slots:
     void cbUseCurrentAttributesClicked(bool val);
     void cbUseCurrentLayerClicked(bool val);
     void cbSameAngleForCopiesClicked(bool val);
-    void cbAnglesMirroredClicked(bool val);
+    void cbAnglesMirroredClicked(bool checked);
     void on_sbNumberOfCopies_valueChanged(int number);
     void onAngle1EditingFinished();
     void onAngle2EditingFinished();
@@ -60,8 +60,8 @@ private:
     void setCopiesNumberToActionAndView(int number) const;
     void setAnglesMirroredToModelAndView(bool checked);
     void setSameAngleForCopiesToActionAndView(bool val) const;
-    void setAngle1ToActionAndView(QString val);
-    void setAngle2ToActionAndView(QString val);
+    void setAngle1ToActionAndView(const QString& val);
+    void setAngle2ToActionAndView(const QString& val);
 };
 
-#endif // LC_ROTATE2OPTIONS_H
+#endif

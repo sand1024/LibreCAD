@@ -24,12 +24,11 @@
 #ifndef LC_DLGENTITYPROPERTIES_H
 #define LC_DLGENTITYPROPERTIES_H
 
-#include <QDialog>
-
 #include "lc_dialog.h"
 #include "lc_dimstyleslistmodel.h"
 #include "lc_entitypropertieseditorwidget.h"
 
+class RS_Layer;
 class RS_Entity;
 
 namespace Ui {
@@ -46,9 +45,9 @@ public:
     LC_ActionContext::InteractiveInputInfo::InputType isInteractiveInputRequested() const {return m_interactiveInputRequested;}
     QString getInteractiveInputTag(){return m_inputTag;}
 protected slots:
-    void onLayerChanged(RS_Layer* layer) const;
+    void onLayerChanged(RS_Layer* layer);
     void onPenChanged() const;
-    void onInteractiveInputRequested(LC_ActionContext::InteractiveInputInfo::InputType inputType, QString tag);
+    void onInteractiveInputRequested(LC_ActionContext::InteractiveInputInfo::InputType inputType, const QString& tag);
 private:
     Ui::LC_DlgEntityProperties *ui;
     RS_Entity* m_entity{nullptr};
@@ -61,4 +60,4 @@ private:
     void setupEntityLayerAndAttributesUI(RS_Entity* entity);
 };
 
-#endif // LC_DLGENTITYPROPERTIES_H
+#endif

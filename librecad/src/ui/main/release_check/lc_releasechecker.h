@@ -57,7 +57,7 @@ class LC_ReleaseInfo{
  public:
     LC_ReleaseInfo() = default;
 
-    LC_ReleaseInfo(const QString &published, bool isDraft, bool isPreRelease, const QString &url, const QString &body):
+    LC_ReleaseInfo(const QString &published, const bool isDraft, const bool isPreRelease, const QString &url, const QString &body):
         m_isDraft{isDraft}
       , m_isPrerelease{isPreRelease}
       , m_publishedDate{!published.isEmpty() ? QDateTime::fromString(published, Qt::ISODate).toUTC() : QDateTime{}}
@@ -67,7 +67,7 @@ class LC_ReleaseInfo{
     {
     }
 
-   bool isAfter(LC_ReleaseInfo other) const {
+   bool isAfter(const LC_ReleaseInfo& other) const {
         return m_publishedDate > other.m_publishedDate;
     }
     const LC_TagInfo &getTagInfo() const {
@@ -109,7 +109,7 @@ signals:
     void updatesAvailable() const;
 protected:
     bool m_emitSignalIfNoNewVersion;
-    QNetworkAccessManager m_WebCtrl;
+    QNetworkAccessManager m_webCtrl;
     LC_ReleaseInfo getOwnReleaseInfo(const QString& tagName, bool preRelease) const;
     LC_TagInfo parseTagInfo(const QString &tagName) const;
 
@@ -117,9 +117,9 @@ protected:
     LC_ReleaseInfo m_latestRelease;
     LC_ReleaseInfo m_latestPreRelease;
 protected slots:
-    void infoReceived(QNetworkReply* pReply);
+    void infoReceived(QNetworkReply* reply);
     void processReleasesJSON(const QByteArray &responseContent);
     void sortReleasesInfo(QVector<LC_ReleaseInfo> &list) const;
 };
 
-#endif // LC_RELEASECHECKER_H
+#endif

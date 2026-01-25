@@ -27,7 +27,7 @@
 
 #include "ui_lc_dlgnewwidget.h"
 
-LC_DlgNewWidget::LC_DlgNewWidget(QWidget *parent, bool forMenu, QStringList* existingWidgetsList)
+LC_DlgNewWidget::LC_DlgNewWidget(QWidget *parent, const bool forMenu, QStringList* existingWidgetsList)
     : LC_Dialog(parent, forMenu ? "DlgNewMenu" : "DlgNewToolbar")
     , ui(new Ui::LC_DlgNewWidget)
     , m_existingWidgetsList{existingWidgetsList}
@@ -48,10 +48,10 @@ LC_DlgNewWidget::LC_DlgNewWidget(QWidget *parent, bool forMenu, QStringList* exi
     }
 }
 
-QString LC_DlgNewWidget::askForNewWidgetName(QWidget* parent, bool forMenu, QStringList* existingWidgetsList, bool& clearActionsList) {
-    auto dlg = new LC_DlgNewWidget(parent, forMenu, existingWidgetsList);
+QString LC_DlgNewWidget::askForNewWidgetName(QWidget* parent, const bool forMenu, QStringList* existingWidgetsList, bool& clearActionsList) {
+    const auto dlg = new LC_DlgNewWidget(parent, forMenu, existingWidgetsList);
     QString result;
-    if (dlg->exec() == QDialog::Accepted) {
+    if (dlg->exec() == Accepted) {
         clearActionsList = dlg->ui->cbClearActions->isChecked();
         result = dlg->ui->leWidgetName->text().trimmed();
         result = result.replace("/", "-");

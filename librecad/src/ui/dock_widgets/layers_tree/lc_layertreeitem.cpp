@@ -23,16 +23,17 @@
 **********************************************************************/
 
 #include "lc_layertreeitem.h"
+
 #include "rs_layer.h"
 
 LC_LayerTreeItem::LC_LayerTreeItem(LC_LayerTreeItem *parent):
     m_parentItem { parent}{
 }
 
-LC_LayerTreeItem::LC_LayerTreeItem(const QString &itemName, RS_Layer *actualLayer, LC_LayerTreeItem *parent){
+LC_LayerTreeItem::LC_LayerTreeItem(const QString &name, RS_Layer *actualLayer, LC_LayerTreeItem *parent){
     m_parentItem = parent;
     m_layer = actualLayer;
-    name = itemName;
+    m_name = name;
     m_indent = parent->getIndent() + 1;
 }
 
@@ -40,11 +41,11 @@ LC_LayerTreeItem::~LC_LayerTreeItem(){
     qDeleteAll(m_childItems);
 }
 
-void LC_LayerTreeItem::appendChild(LC_LayerTreeItem *item){
-    m_childItems.append(item);
+void LC_LayerTreeItem::appendChild(LC_LayerTreeItem *child){
+    m_childItems.append(child);
 }
 
-LC_LayerTreeItem *LC_LayerTreeItem::child(int row) const {
+LC_LayerTreeItem *LC_LayerTreeItem::child(const int row) const {
     return m_childItems.value(row);
 }
 
@@ -58,7 +59,7 @@ int LC_LayerTreeItem::childCountAll() const{
         const int count = m_childItems.length();
         for (int i = 0; i < count; i++) {
             const LC_LayerTreeItem *child = m_childItems.at(i);
-            result = result + (child->childCountAll());
+            result = result + child->childCountAll();
         }
     }
     return result;
@@ -125,10 +126,10 @@ void LC_LayerTreeItem::updateCalculatedFlagsForDescendentVirtualLayers(){
  * @param acceptor condition for acceptance
  * @param includeSelf defines whether this item should be also checked for the condition, if false - only child items will be processed
  */
-void LC_LayerTreeItem::collectLayers(QList<RS_Layer *> &result, LC_LayerTreeItemAcceptor *acceptor, bool includeSelf){
+void LC_LayerTreeItem::collectLayers(QList<RS_Layer *> &result, const LC_LayerTreeItemAcceptor &acceptor, const bool includeSelf){
     if (includeSelf){
         if (m_layer){
-            if (acceptor->acceptLayerTreeItem(this)){
+            if (acceptor.acceptLayerTreeItem(this)){
                 result << m_layer;
             }
         }
@@ -140,7 +141,7 @@ void LC_LayerTreeItem::collectLayers(QList<RS_Layer *> &result, LC_LayerTreeItem
         if (child->isVirtual()){
             child->collectLayers(result, acceptor);
         } else {
-            if (acceptor->acceptLayerTreeItem(child)){
+            if (acceptor.acceptLayerTreeItem(child)){
                 result << child->getLayer();
                 child->collectLayers(result, acceptor);
             }
@@ -154,7 +155,7 @@ void LC_LayerTreeItem::collectLayers(QList<RS_Layer *> &result, LC_LayerTreeItem
  * @param acceptor condition to check
  * @param includeSelf flag whether this item should be included or not.
  */
-void LC_LayerTreeItem::collectDescendantChildren(QList<LC_LayerTreeItem *> &result, LC_LayerTreeItemAcceptor *acceptor, bool includeSelf){
+void LC_LayerTreeItem::collectDescendantChildren(QList<LC_LayerTreeItem *> &result, const LC_LayerTreeItemAcceptor &acceptor, const bool includeSelf){
     if (includeSelf){
         result << this;
     }
@@ -162,7 +163,7 @@ void LC_LayerTreeItem::collectDescendantChildren(QList<LC_LayerTreeItem *> &resu
     const int count = m_childItems.length();
     for (int i = 0; i < count; i++) {
         LC_LayerTreeItem *child = m_childItems.at(i);
-        if (acceptor->acceptLayerTreeItem(child)){
+        if (acceptor.acceptLayerTreeItem(child)){
             result << child;
         }
         if (child->childCount() > 0){
@@ -196,7 +197,7 @@ LC_LayerTreeItem *LC_LayerTreeItem::findItemWithLayer(RS_Layer *source){
  * @param result resulting path
  * @param includeSelf should this item be part of the path or not
  */
-void LC_LayerTreeItem::collectPathToParent(QList<LC_LayerTreeItem *> &result, bool includeSelf){
+void LC_LayerTreeItem::collectPathToParent(QList<LC_LayerTreeItem *> &result, const bool includeSelf){
     if (includeSelf){
         result << this;
     }
@@ -231,7 +232,7 @@ bool LC_LayerTreeItem::isDescendantOf(const LC_LayerTreeItem *item) const {
  * @param layerTypeToFind layer type to check
  * @return true if child is present, false otherwise
  */
-bool LC_LayerTreeItem::hasChildWithName(const QString &nameToFind, int layerTypeToFind) const {
+bool LC_LayerTreeItem::hasChildWithName(const QString &nameToFind, const int layerTypeToFind) const {
     bool result = false;
     const int count = m_childItems.length();
     for (int i = 0; i < count; i++) {
@@ -251,7 +252,7 @@ bool LC_LayerTreeItem::hasChildWithName(const QString &nameToFind, int layerType
  * @param type layer type
  * @return  true if direct child with given type exist
  */
-bool LC_LayerTreeItem::hasChildOfType(int type) const {
+bool LC_LayerTreeItem::hasChildOfType(const int type) const {
     bool result = false;
     const int count = m_childItems.length();
     for (int i = 0; i < count; i++) {
@@ -264,7 +265,7 @@ bool LC_LayerTreeItem::hasChildOfType(int type) const {
     return result;
 }
 
-void LC_LayerTreeItem::setLayerType(int value){
+void LC_LayerTreeItem::setLayerType(const int value){
     m_layerType = value;
 }
 
@@ -395,40 +396,36 @@ LC_LayerTreeItem *LC_LayerTreeItem::getOrCreateVirtualChild(const QString &targe
 bool LC_LayerTreeItem::isVisible() const {
     if (isVirtual()){
         return m_virtualVisible;
-    } else {
-        return !m_layer->isFrozen();
     }
+    return !m_layer->isFrozen();
 }
 
 bool LC_LayerTreeItem::isLocked() const {
     if (isVirtual()){
         return m_virtualLocked;
-    } else {
-        return m_layer->isLocked();
     }
+    return m_layer->isLocked();
 }
 
 bool LC_LayerTreeItem::isPrint() const {
     if (isVirtual()){
         return m_virtualPrint;
-    } else {
-        return m_layer->isPrint();
     }
+    return m_layer->isPrint();
 }
 
 bool LC_LayerTreeItem::isConstruction() const {
     if (isVirtual()){
         return m_virtualConstruction;
-    } else {
-        return m_layer->isConstruction();
     }
+    return m_layer->isConstruction();
 }
 
 bool LC_LayerTreeItem::isNotFrozen() const {
     return !m_layer->isFrozen();
 }
 
-QString LC_LayerTreeItem::getName() {return name;}
+QString LC_LayerTreeItem::getName() {return m_name;}
 
 RS_Layer *LC_LayerTreeItem::getLayer() const {return this->m_layer;}
 

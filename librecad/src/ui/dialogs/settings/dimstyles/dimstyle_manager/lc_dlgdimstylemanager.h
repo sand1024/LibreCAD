@@ -44,7 +44,7 @@ class LC_DlgDimStyleManager : public LC_Dialog{
     Q_OBJECT
 public:
     LC_DlgDimStyleManager(QWidget *parent, LC_DimStyle* dimStyle, RS_Graphic* originalGraphic, RS2::EntityType dimensionType);
-    LC_DlgDimStyleManager(QWidget *parent, LC_DimStyle* dimStyle, RS_Graphic* originalGraphic, RS_Dimension* entity, const QString& baseStyleName);
+    LC_DlgDimStyleManager(QWidget *parent, LC_DimStyle* dimStyle, RS_Graphic* originalGraphic, const RS_Dimension* entity, const QString& baseStyleName);
     ~LC_DlgDimStyleManager() override;
     LC_DimStyle*  getDimStyle() const {return m_dimStyle;}
     void addDimStyle(LC_DimStyle* dimStyle) const;
@@ -52,7 +52,7 @@ public:
     void resizeEvent(QResizeEvent*) override;
     void setReadOnly();
 
-    static int computeToleranceMethod(LC_DimStyle* dimStyle, LC_DimStyle::LatteralTolerance* tolerance,
+    static int computeToleranceMethod(const LC_DimStyle* dimStyle, LC_DimStyle::LatteralTolerance* tolerance,
                                       bool& enable, bool& showVerticalPosition, bool& showLowerLimit, bool& showUpperLimit);
 
     static void applyToleranceMethod(LC_DimStyle::LatteralTolerance* tol, LC_DimStyle::DimensionLine* dimLine,int index, bool& enable, bool& showLowerLimit,
@@ -78,14 +78,14 @@ protected slots:
     void onExtLineSuppress2Toggled(bool val) const;
     // arrows tab slots
     void onArrowheadTheSameToggled(bool val) const;
-    void setCustomArrowBlockName(QComboBox* arrowComboBox, QString dimblk1, int customBlockIndex, QString extData);
+    void setCustomArrowBlockName(QComboBox* arrowComboBox, const QString& dimblk1, int customBlockIndex, const QString& extData);
     bool processArrowComboboxChange(QComboBox* arrowComboBox, QString& dimblk1);
     void onArrowheadFirstChanged(int index);
     void onArrowheadSecondChanged(int index);
     void onArrowheadLeaderChanged(int index);
     void onArrowheadArrowSizeChanged(double d) const;
     void onDimBreakChanged(double d) const;
-    void onArrowheadTickSizeChanged(double d);
+    void onArrowheadTickSizeChanged(double d) const;
     void onTextLineGapChanged(double d) const;
     void onCenterMarkTypeToggled(bool val) const;
     void setCentermarkSize(double d) const;
@@ -94,14 +94,14 @@ protected slots:
     void onJogHeightFactorChanged(double d) const;
     void onJogAngleChanged(double d) const;
     // text tab slots
-    void onTextStyleChanged(RS_Font* font) const;
+    void onTextStyleChanged(const RS_Font* font) const;
     void onTextColorChanged(const RS_Color& color) const;
     void onTextFillByBackgroundToggled(bool b) const;
     void onTextFillColorChanged(const RS_Color& color) const;
     void onTextHeightChanged(double d) const;
     void onTextFractionHeightChanged(double d) const;
     void onTextDrawFrameAround(bool checked) const;
-    void onTextPlacementVerticalChanged(int d);
+    void onTextPlacementVerticalChanged(int d) const;
     void onTextPlacementHorizontalChanged(int d) const;
     void onTextReadingDirectionChanged(int d) const;
     void onTextOffsetFromDimLine(double d) const;
@@ -115,7 +115,7 @@ protected slots:
     void onFitFineManuallyToggled(bool d) const;
     void onFitFineDrawDimlineBetweenToggled(bool d) const;
     // primaryUnit tab slots
-    void onLinearDimUnitFormatIndexChanged(int index);
+    void onLinearDimUnitFormatIndexChanged(int index) const;
     void onLinearDimPrecisionIndexChanged(int index) const;
     void onLinearDimFractionIndexChanged(int index) const;
     void onLinearDimUnitDecimalSeparatorIndexChanged(int index) const;
@@ -124,26 +124,26 @@ protected slots:
     void onLinearDimSuffixEditingFinished() const;
     void onLinearScaleFactorChanged(double d) const;
     void onLinearScaleApplyToLayoutDimsOnlyToggled(bool val) const;
-    void onLinearZerosSuppressionToggled(bool val);
+    void onLinearZerosSuppressionToggled(bool val) const;
     void onLinearUnitFactorChanged(double d) const;
     void onLinearUnitPrefixEditingFinished() const;
     void onAngularFormatIndexChanged(int index) const;
     void onAngularPrecisionIndexChanged(int index) const;
     void onAngularZerosSuppressionToggled(bool d) const;
     // Alt Unit tab slots
-    void onAlternateUnitsDisplayToggled(bool val);
-    void onAlternateLinearFormatIndexChanged(int index);
+    void onAlternateUnitsDisplayToggled(bool val) const;
+    void onAlternateLinearFormatIndexChanged(int index) const;
     void onAlternateLinearPrecisionIndexChanged(int index) const;
     void onAltMutliplierChanged(double d) const;
     void onAlternateRoundToChanged(double d) const;
     void onAlternatePrefixEditingFinished() const;
     void onAlternateSuffixEditingFinished() const;
-    void cbAltZerosSuppressionToggled(bool val);
+    void cbAltZerosSuppressionToggled(bool val) const;
     void onAlternateSubUnitFactorChanged(double d) const;
     void onAlternateSubUnitPrefixEditingFinished() const;
     void cbAlternatePlacementToggled(bool val) const;
     // Tolerance tab slots
-    void onTolMethodChangedIndexChanged(int index);
+    void onTolMethodChangedIndexChanged(int index) const;
     void onTolPrecisionIndexChanged(int index) const;
     void onTolUpperLimitChanged(double d) const;
     void onTolLowerLimitChangedChanged(double d) const;
@@ -153,15 +153,15 @@ protected slots:
     void onTolLinearZerosSuppressionToggled(bool val) const;
     void onTolAltPrecisionIndexChanged(int index) const;
     void cbTolAlternateZerosSuppressionToggled(bool val) const;
-    void disableContainer(QWidget* tab);
+    void disableContainer(const QWidget* tab);
 private:
     void setDimStyle(LC_DimStyle *dimStyle);
     void createPreviewGraphicView(RS2::EntityType dimensionType);
-    void createPreviewGraphicView(RS_Dimension* entity);
+    void createPreviewGraphicView(const RS_Dimension* entity);
     void initPreview(RS2::EntityType dimensionType);
-    void initPreview(RS_Dimension* entity);
+    void initPreview(const RS_Dimension* entity);
     void hideFieldsReservedForTheFuture() const;
-    void adjustUIForDimensionType(RS2::EntityType entity);
+    void adjustUIForDimensionType(RS2::EntityType dimensionType);
     void init(RS2::EntityType dimensionType);
     void initConnections();
     void initBlocksList();
@@ -175,10 +175,10 @@ private:
     void connectPrimaryUnitTab();
     void connectAltUnitTab();
     void connectToleranceTab();
-    void fillLinesTab(LC_DimStyle* dimStyle, const LC_DimStyle::DimensionLine* dimLine) const;
+    void fillLinesTab(const LC_DimStyle* dimStyle, const LC_DimStyle::DimensionLine* dimLine) const;
     void setDimGap(LC_DimStyle::DimensionLine* dimLine, double lineGap) const;
-    void fillArrowsTab(LC_DimStyle* dimStyle, LC_DimStyle::DimensionLine* dimLine);
-    void fillTextTab(LC_DimStyle* dimStyle);
+    void fillArrowsTab(const LC_DimStyle* dimStyle, LC_DimStyle::DimensionLine* dimLine) const;
+    void fillTextTab(const LC_DimStyle* dimStyle) const;
     void setArrowComboboxValue(QComboBox* arrowComboBox, const QString& arrowBlockName) const;
     void uiUpdateArrowsControlsByTickSize(double tickSize) const;
     void uiUpdateLinearFormat(RS2::LinearFormat format) const;
@@ -186,11 +186,11 @@ private:
     void uiUpdateAltLinearFormat(RS2::LinearFormat format) const;
     void uiUpdateZerosLeading(bool suppressLeading) const;
     void uiUpdateAltZerosLeading(bool suppressLeading) const;
-    void fillFitTab(LC_DimStyle* dimStyle) const;
-    void fillPrimaryUnitTab(LC_DimStyle* dimStyle);
-    void fillAltUnitTab(LC_DimStyle* dimStyle);
+    void fillFitTab(const LC_DimStyle* dimStyle) const;
+    void fillPrimaryUnitTab(const LC_DimStyle* dimStyle) const;
+    void fillAltUnitTab(const LC_DimStyle* dimStyle) const;
 
-    void fillToleranceTab(LC_DimStyle* dimStyle);
+    void fillToleranceTab(const LC_DimStyle* dimStyle) const;
     void enableAltUnitsControls(bool enable) const;
     void uiUpdateToleranceControls(bool enable, bool showLowerLimit, bool showVerticalPosition) const;
     LC_DimStyle* m_dimStyle {nullptr};
@@ -209,4 +209,4 @@ private:
     QString m_baseStyleName = "";
 };
 
-#endif // LC_DLGDIMSTYLEMANAGER_H
+#endif

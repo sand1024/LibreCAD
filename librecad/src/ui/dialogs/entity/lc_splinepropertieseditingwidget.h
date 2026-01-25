@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define LC_SPLINEPROPERTIESEDITINGWIDGET_H
 
 #include <memory>
-#include <QWidget>
+
 #include "lc_entitypropertieseditorwidget.h"
 
 class RS_Spline;
@@ -116,4 +116,4 @@ private:
     RS_Spline* m_entity{nullptr}; // Non-owning pointer to the spline entity
 };
 
-#endif // LC_SPLINEPROPERTIESEDITINGWIDGET_H
+#endif

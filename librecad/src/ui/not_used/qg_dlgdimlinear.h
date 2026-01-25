@@ -45,4 +45,4 @@ protected:
     void setEntity(RS_DimLinear *d);
 };
 
-#endif // QG_DLGDIMLINEAR_H
+#endif

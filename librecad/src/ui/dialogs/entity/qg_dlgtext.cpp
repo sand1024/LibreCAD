@@ -24,13 +24,13 @@
 **
 **********************************************************************/
 
-#include <QTextStream>
-#include <QFileDialog>
-
 #include "qg_dlgtext.h"
+
+#include <QFileDialog>
+#include <QTextStream>
+
 #include "rs_fontlist.h"
 #include "rs_graphic.h"
-#include "rs_math.h"
 #include "rs_settings.h"
 #include "rs_system.h"
 #include "rs_text.h"
@@ -68,7 +68,7 @@ void QG_DlgText::languageChange(){
 void QG_DlgText::init() {
     cbFont->init();
     m_font=nullptr;
-    entity = nullptr;
+    m_entity = nullptr;
     m_isNew = false;
     leOblique->setDisabled(true);
     updateUniCharComboBox(0);
@@ -83,49 +83,49 @@ void QG_DlgText::init() {
      * more. Seems that the only reliable way of ensuring the order is correct is
      * to set it programmatically.
      */
-    QWidget::setTabOrder(cbLayer, wPen); // Layer -> Pen compound widget
-    QWidget::setTabOrder(wPen, cbFont); // Pen compound widget -> Font widget
-    QWidget::setTabOrder(cbFont, leHeight); // etc
-    QWidget::setTabOrder(leHeight, leAngle);
-    QWidget::setTabOrder(leAngle, leOblique);
-    QWidget::setTabOrder(leOblique, leWidthRel);
-    QWidget::setTabOrder(leWidthRel, bTL);
-    QWidget::setTabOrder(bTL, bTC);
-    QWidget::setTabOrder(bTC, bTR);
-    QWidget::setTabOrder(bTR, bML);
-    QWidget::setTabOrder(bML, bMC);
-    QWidget::setTabOrder(bMC, bMR);
-    QWidget::setTabOrder(bMR, bLL);
-    QWidget::setTabOrder(bLL, bLC);
-    QWidget::setTabOrder(bLC, bLR);
-    QWidget::setTabOrder(bLR, bBL);
-    QWidget::setTabOrder(bBL, bBC);
-    QWidget::setTabOrder(bBC, bBR);
-    QWidget::setTabOrder(bBR, rbFit);
-    QWidget::setTabOrder(rbFit, rbAligned);
-    QWidget::setTabOrder(rbAligned, rbMiddle);
-    QWidget::setTabOrder(rbMiddle, cbSymbol);
-    QWidget::setTabOrder(cbSymbol, cbUniPage);
-    QWidget::setTabOrder(cbUniPage, cbUniChar);
-    QWidget::setTabOrder(cbUniChar, bUnicode);
-    QWidget::setTabOrder(bUnicode, buttonBox);
-    QWidget::setTabOrder(buttonBox, bClear);
-    QWidget::setTabOrder(bClear, bLoad);
-    QWidget::setTabOrder(bLoad, bSave);
-    QWidget::setTabOrder(bSave, bCut);
-    QWidget::setTabOrder(bCut, bCopy);
-    QWidget::setTabOrder(bCopy, bPaste);
-    QWidget::setTabOrder(bPaste, teText); // Paste loops back to Text
-    QWidget::setTabOrder(teText, cbLayer); // Text widget -> Layer widget
+    setTabOrder(cbLayer, wPen); // Layer -> Pen compound widget
+    setTabOrder(wPen, cbFont); // Pen compound widget -> Font widget
+    setTabOrder(cbFont, leHeight); // etc
+    setTabOrder(leHeight, leAngle);
+    setTabOrder(leAngle, leOblique);
+    setTabOrder(leOblique, leWidthRel);
+    setTabOrder(leWidthRel, bTL);
+    setTabOrder(bTL, bTC);
+    setTabOrder(bTC, bTR);
+    setTabOrder(bTR, bML);
+    setTabOrder(bML, bMC);
+    setTabOrder(bMC, bMR);
+    setTabOrder(bMR, bLL);
+    setTabOrder(bLL, bLC);
+    setTabOrder(bLC, bLR);
+    setTabOrder(bLR, bBL);
+    setTabOrder(bBL, bBC);
+    setTabOrder(bBC, bBR);
+    setTabOrder(bBR, rbFit);
+    setTabOrder(rbFit, rbAligned);
+    setTabOrder(rbAligned, rbMiddle);
+    setTabOrder(rbMiddle, cbSymbol);
+    setTabOrder(cbSymbol, cbUniPage);
+    setTabOrder(cbUniPage, cbUniChar);
+    setTabOrder(cbUniChar, bUnicode);
+    setTabOrder(bUnicode, buttonBox);
+    setTabOrder(buttonBox, bClear);
+    setTabOrder(bClear, bLoad);
+    setTabOrder(bLoad, bSave);
+    setTabOrder(bSave, bCut);
+    setTabOrder(bCut, bCopy);
+    setTabOrder(bCopy, bPaste);
+    setTabOrder(bPaste, teText); // Paste loops back to Text
+    setTabOrder(teText, cbLayer); // Text widget -> Layer widget
 }
 
 
 void QG_DlgText::updateUniCharComboBox(int) const {
-    QString t = cbUniPage->currentText();
-    int i1 = t.indexOf('-');
-    int i2 = t.indexOf(']');
-    int min = t.mid(1, i1-1).toInt(NULL, 16);
-    int max = t.mid(i1+1, i2-i1-1).toInt(NULL, 16);
+    const QString t = cbUniPage->currentText();
+    const int i1 = t.indexOf('-');
+    const int i2 = t.indexOf(']');
+    const int min = t.mid(1, i1-1).toInt(nullptr, 16);
+    const int max = t.mid(i1+1, i2-i1-1).toInt(nullptr, 16);
 
     cbUniChar->clear();
     for (int c=min; c<=max; c++) {
@@ -157,8 +157,8 @@ void QG_DlgText::destroy() const {
 /**
  * Sets the text entity represented by this dialog.
  */
-void QG_DlgText::setEntity(RS_Text* t, bool isNew) {
-    entity = t;
+void QG_DlgText::setEntity(RS_Text* t, const bool isNew) {
+    m_entity = t;
     this->m_isNew = isNew;
 
     QString font;
@@ -189,27 +189,27 @@ void QG_DlgText::setEntity(RS_Text* t, bool isNew) {
             angle = LC_GET_STR("TextAngle", "0");
         }
     } else {
-        font = entity->getStyle();
+        font = m_entity->getStyle();
         setFont(font);
-        height = QString("%1").arg(entity->getHeight());
-        widthRelation = QString("%1").arg(entity->getWidthRel());
-        alignment = QString("%1").arg(entity->getAlignment());
-        str = entity->getText();
+        height = QString("%1").arg(m_entity->getHeight());
+        widthRelation = QString("%1").arg(m_entity->getWidthRel());
+        alignment = QString("%1").arg(m_entity->getAlignment());
+        str = m_entity->getText();
 
 
-        double wcsAngle = entity->getAngle();
+        const double wcsAngle = m_entity->getAngle();
         angle = toUIAngleDeg(wcsAngle);
 
-        RS_Graphic* graphic = entity->getGraphic();
-        if (graphic) {
+        RS_Graphic* graphic = m_entity->getGraphic();
+        if (graphic != nullptr) {
             cbLayer->init(*(graphic->getLayerList()), false, false);
         }
-        RS_Layer* lay = entity->getLayer(false);
-        if (lay) {
+        RS_Layer* lay = m_entity->getLayer(false);
+        if (lay != nullptr) {
             cbLayer->setLayer(*lay);
         }
 
-        wPen->setPen(entity, lay, tr("Pen"));
+        wPen->setPen(m_entity, lay, tr("Pen"));
     }
 
     setFont(font);
@@ -228,23 +228,21 @@ void QG_DlgText::setEntity(RS_Text* t, bool isNew) {
  * Updates the text entity represented by the dialog to fit the choices of the user.
  */
 void QG_DlgText::updateEntity() {
-    if (entity) {
-        entity->setStyle(cbFont->currentText());
-        entity->setHeight(leHeight->text().toDouble());
-        entity->setWidthRel(leWidthRel->text().toDouble());
+    if (m_entity != nullptr) {
+        m_entity->setStyle(cbFont->currentText());
+        m_entity->setHeight(leHeight->text().toDouble());
+        m_entity->setWidthRel(leWidthRel->text().toDouble());
 
-        entity->setText(teText->text());
-        entity->setAlignment(getAlignment());
-        double wcsAngle = toWCSAngle(leAngle, entity->getAngle());
-        entity->setAngle(wcsAngle);
+        m_entity->setText(teText->text());
+        m_entity->setAlignment(getAlignment());
+        const double wcsAngle = toWCSAngle(leAngle, m_entity->getAngle());
+        m_entity->setAngle(wcsAngle);
+        if (!m_isNew) {
+            m_entity->setPen(wPen->getPen());
+            m_entity->setLayer(cbLayer->getLayer());
+        }
+        m_entity->update();
     }
-    if (entity && !m_isNew) {
-        entity->setPen(wPen->getPen());
-        entity->setLayer(cbLayer->getLayer());
-        entity->update();
-    }
-
-    entity->update();
 }
 
 
@@ -312,7 +310,7 @@ void QG_DlgText::setAlignmentMiddle() const {
     setAlignment(15);
 }
 
-void QG_DlgText::setAlignment(int a) const {
+void QG_DlgText::setAlignment(const int a) const {
     bTL->setChecked(false);
     bTC->setChecked(false);
     bTR->setChecked(false);
@@ -383,33 +381,47 @@ void QG_DlgText::setAlignment(int a) const {
 int QG_DlgText::getAlignment() const {
     if (bTL->isChecked()) {
         return 1;
-    } else if (bTC->isChecked()) {
+    }
+    if (bTC->isChecked()) {
         return 2;
-    } else if (bTR->isChecked()) {
+    }
+    if (bTR->isChecked()) {
         return 3;
-    } else if (bML->isChecked()) {
+    }
+    if (bML->isChecked()) {
         return 4;
-    } else if (bMC->isChecked()) {
+    }
+    if (bMC->isChecked()) {
         return 5;
-    } else if (bMR->isChecked()) {
+    }
+    if (bMR->isChecked()) {
         return 6;
-    } else if (bLL->isChecked()) {
+    }
+    if (bLL->isChecked()) {
         return 7;
-    } else if (bLC->isChecked()) {
+    }
+    if (bLC->isChecked()) {
         return 8;
-    } else if (bLR->isChecked()) {
+    }
+    if (bLR->isChecked()) {
         return 9;
-    } else if (bBL->isChecked()) {
+    }
+    if (bBL->isChecked()) {
         return 10;
-    } else if (bBC->isChecked()) {
+    }
+    if (bBC->isChecked()) {
         return 11;
-    } else if (bBR->isChecked()) {
+    }
+    if (bBR->isChecked()) {
         return 12;
-    } else if (rbFit->isChecked()) {
+    }
+    if (rbFit->isChecked()) {
         return 13;
-    } else if (rbAligned->isChecked()) {
+    }
+    if (rbAligned->isChecked()) {
         return 14;
-    } else if (rbMiddle->isChecked()) {
+    }
+    if (rbMiddle->isChecked()) {
         return 15;
     }
 
@@ -420,8 +432,9 @@ void QG_DlgText::setFont(const QString& f) {
     int index = cbFont->findText(f);
 
     // Issue #2069: default to unicode fonts
-    if (index == -1)
+    if (index == -1) {
         index = cbFont->findText("unicode");
+    }
     if (index >= 0) {
         cbFont->setCurrentIndex(index);
         m_font = cbFont->getFont();
@@ -437,7 +450,7 @@ void QG_DlgText::setFont(const QString& f) {
 }*/
 
 void QG_DlgText::loadText() {
-    QString fn = QFileDialog::getOpenFileName( this, QString(), QString());
+    const QString fn = QFileDialog::getOpenFileName( this, QString(), QString());
     if (!fn.isEmpty()) {
         load(fn);
     }
@@ -454,16 +467,16 @@ void QG_DlgText::load(const QString& fn) const {
 }
 
 void QG_DlgText::saveText() {
-    QString fn = QFileDialog::getSaveFileName(this, QString(), QString());
+    const QString fn = QFileDialog::getSaveFileName(this, QString(), QString());
     if (!fn.isEmpty()) {
         save(fn);
     }
 }
 
 void QG_DlgText::save(const QString& fn) const {
-    QString text = teText->text();
     QFile f(fn);
     if (f.open(QIODevice::WriteOnly)) {
+        const QString text = teText->text();
         QTextStream t(&f);
         t << text;
         f.close();
@@ -471,8 +484,8 @@ void QG_DlgText::save(const QString& fn) const {
 }
 
 void QG_DlgText::insertSymbol(int) const {
-    QString str = cbSymbol->currentText();
-    int i=str.indexOf('(');
+    const QString str = cbSymbol->currentText();
+    const int i=str.indexOf('(');
     if (i!=-1) {
 //        teText->textCursor().insertText(QString("%1").arg(str.at(i+1)));
         teText->insert(QString("%1").arg(str.at(i+1)));
@@ -480,16 +493,16 @@ void QG_DlgText::insertSymbol(int) const {
 }
 
 void QG_DlgText::updateUniCharButton(int) const {
-    QString t = cbUniChar->currentText();
-    int i1 = t.indexOf(']');
-    int c = t.mid(1, i1-1).toInt(NULL, 16);
+    const QString t = cbUniChar->currentText();
+    const int i1 = t.indexOf(']');
+    const int c = t.mid(1, i1-1).toInt(nullptr, 16);
     bUnicode->setText(QString("%1").arg(QChar(c)));
 }
 
 void QG_DlgText::insertChar() const {
-    QString t = cbUniChar->currentText();
-    int i1 = t.indexOf(']');
-    int c = t.mid(1, i1-1).toInt(NULL, 16);
+    const QString t = cbUniChar->currentText();
+    const int i1 = t.indexOf(']');
+    const int c = t.mid(1, i1-1).toInt(nullptr, 16);
 //    teText->textCursor().insertText( QString("%1").arg(QChar(c)) );
     teText->insert( QString("%1").arg(QChar(c)) );
 }

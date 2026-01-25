@@ -132,7 +132,7 @@ void QG_DlgScale::updateData() const {
     bool okX = false;
     double sx = RS_Math::eval(leFactorX->text(), &okX);
     bool okY = false;
-    double sy = RS_Math::eval(leFactorY->text(), &okY);
+    const double sy = RS_Math::eval(leFactorY->text(), &okY);
     if (okX && okY) {
         data->factor = RS_Vector(sx, sy);
     } else {

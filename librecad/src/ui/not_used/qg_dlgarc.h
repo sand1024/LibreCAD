@@ -45,4 +45,4 @@ protected:
     void setEntity(RS_Arc* a);
 };
 
-#endif // QG_DLGARC_H
+#endif

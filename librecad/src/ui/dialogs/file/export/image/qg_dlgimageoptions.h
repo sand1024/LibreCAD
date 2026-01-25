@@ -24,14 +24,14 @@
 #ifndef QG_IMAGEOPTIONSDIALOG_H
 #define QG_IMAGEOPTIONSDIALOG_H
 
-#include "ui_qg_dlgimageoptions.h"
-#include "rs_vector.h"
 #include "lc_dialog.h"
+#include "rs_vector.h"
+#include "ui_qg_dlgimageoptions.h"
 
 class QG_ImageOptionsDialog : public LC_Dialog, public Ui::QG_ImageOptionsDialog{
     Q_OBJECT
 public:
-    QG_ImageOptionsDialog(QWidget* parent = nullptr);
+    explicit QG_ImageOptionsDialog(QWidget* parent = nullptr);
     ~QG_ImageOptionsDialog() override = default;
     QSize getSize() const;
     QSize getBorders() const;
@@ -51,7 +51,6 @@ private:
     bool m_updateEnabled;
     bool m_useResolution;
     void init();
-
 };
 
-#endif // QG_IMAGEOPTIONSDIALOG_H
+#endif

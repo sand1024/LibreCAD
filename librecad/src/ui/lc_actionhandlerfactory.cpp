@@ -96,7 +96,6 @@
 #include "lc_actionsplineremovebetween.h"
 #include "lc_actionucsbydimordinate.h"
 #include "lc_actionucscreate.h"
-#include "pick/lc_actioninteractivepickposition.h"
 #include "rs_actionblocksadd.h"
 #include "rs_actionblocksattributes.h"
 #include "rs_actionblockscreate.h"
@@ -214,33 +213,32 @@
 #include "rs_actionzoomredraw.h"
 #include "rs_actionzoomwindow.h"
 #include "rs_debug.h"
-#include "rs_dialogfactory.h"
 #include "rs_dialogfactoryinterface.h"
 #include "rs_graphicview.h"
 #include "rs_layerlist.h"
 #include "rs_selection.h"
 
-RS_Layer* obtainLayer(LC_ActionContext* m_actionContext, void* data) {
+RS_Layer* obtainLayer(LC_ActionContext* actionContext, void* data) {
     RS_Layer* layer{nullptr};
     if (data != nullptr) {
         layer = static_cast<RS_Layer*>(data);
     }
     else {
-        RS_Document* document = m_actionContext->getDocument()->getDocument();
+        RS_Document* document = actionContext->getDocument()->getDocument();
         layer = (document->getLayerList() != nullptr) ? document->getLayerList()->getActive() : nullptr;
     }
     return layer;
 }
 
 namespace InnerFactory{
-    RS_ActionInterface* doCreateActionInstance(RS2::ActionType actionType, LC_ActionContext* ctx, void* data) {
-        auto view = ctx->getGraphicView();
+    RS_ActionInterface* doCreateActionInstance(const RS2::ActionType actionType, LC_ActionContext* ctx, void* data) {
+        const auto view = ctx->getGraphicView();
         switch (actionType) {
             case RS2::ActionEditKillAllActions: {
                 if (view != nullptr) {
                     // DO we need to call some form of a 'clean' function?
-                    if (view->killAllActions()) {
-                        auto document = ctx->getDocument();
+                    if (view->killAllActionsWithResult()) {
+                        const auto document = ctx->getDocument();
                         RS_Selection::unselectAllInDocument(document, view->getViewPort());
                     }
                 }
@@ -492,9 +490,7 @@ namespace InnerFactory{
                 if (data == nullptr) {
                     return new RS_ActionPolylineSegment(ctx);
                 }
-                else {
-                    return new RS_ActionPolylineSegment(ctx, static_cast<RS_Entity*>(data));
-                }
+                return new RS_ActionPolylineSegment(ctx, static_cast<RS_Entity*>(data));
             }
             case RS2::ActionPolylineArcsToLines: {
                 return new LC_ActionPolylineArcsToLines(ctx);
@@ -506,7 +502,6 @@ namespace InnerFactory{
                 return new RS_ActionDrawLinePolygonCenCor(ctx);
             }
             case RS2::ActionDrawLinePolygonCenTan: {
-                //20161223 added by txmy
                 return new LC_ActionDrawLinePolygonCenTan(ctx);
             }
             case RS2::ActionDrawLinePolygonSideSide: {
@@ -851,28 +846,28 @@ namespace InnerFactory{
                 return new RS_ActionLayersEdit(ctx);
             }
             case RS2::ActionLayersToggleView: {
-                auto a_layer = obtainLayer(ctx, data);
+                const auto a_layer = obtainLayer(ctx, data);
                 if (a_layer != nullptr) {
                     return new RS_ActionLayersToggleView(ctx, a_layer);
                 }
                 break;
             }
             case RS2::ActionLayersToggleLock: {
-                auto a_layer = obtainLayer(ctx, data);
+                const auto a_layer = obtainLayer(ctx, data);
                 if (a_layer != nullptr) {
                     return new RS_ActionLayersToggleLock(ctx, a_layer);
                 }
                 break;
             }
             case RS2::ActionLayersTogglePrint: {
-                auto a_layer = obtainLayer(ctx, data);
+                const auto a_layer = obtainLayer(ctx, data);
                 if (a_layer != nullptr) {
                     return new RS_ActionLayersTogglePrint(ctx, a_layer);
                 }
                 break;
             }
             case RS2::ActionLayersToggleConstruction: {
-                auto a_layer = obtainLayer(ctx, data);
+                const auto a_layer = obtainLayer(ctx, data);
                 if (a_layer != nullptr) {
                     return new LC_ActionLayersToggleConstruction(ctx, a_layer);
                 }
@@ -939,7 +934,7 @@ namespace InnerFactory{
                 return new LC_ActionFileExportMakerCam(ctx);
             }
             case RS2::ActionSnapMiddleManual: {
-                auto currentAction = ctx->getCurrentAction();
+                const auto currentAction = ctx->getCurrentAction();
                 if (currentAction != nullptr) {
                     if (currentAction->rtti() == RS2::ActionSnapMiddleManual) {
                         currentAction->init(-1);
@@ -985,7 +980,7 @@ namespace InnerFactory{
             }
             case RS2::ActionModifyMoveAdjust: {
                 if (data != nullptr) {
-                    LC_ActionModifyMoveAdjust::MovementInfo* movementInfo = static_cast<LC_ActionModifyMoveAdjust::MovementInfo*>(data);
+                    const auto* movementInfo = static_cast<LC_ActionModifyMoveAdjust::MovementInfo*>(data);
                     return new LC_ActionModifyMoveAdjust(ctx, *movementInfo);
                 }
                 break;
@@ -1021,8 +1016,7 @@ mingw32-make[3]: *** [Makefile.Debug:88797: ../../generated/librecad/obj/lc_acti
 *  The later case is also fine, and shared_ptr to base type is returned and all actions has virtual destructors
 *
 */
-std::shared_ptr<RS_ActionInterface> LC_ActionsHandlerFactory::createActionInstance(
-    RS2::ActionType actionType, LC_ActionContext* ctx, void* data) {
+std::shared_ptr<RS_ActionInterface> LC_ActionsHandlerFactory::createActionInstance(const RS2::ActionType actionType, LC_ActionContext* ctx, void* data) {
     RS_ActionInterface* actionInstance = InnerFactory::doCreateActionInstance(actionType, ctx, data);
     std::shared_ptr<RS_ActionInterface> result{actionInstance};
     return result;

@@ -49,4 +49,4 @@ protected:
     void doSetAction(RS_ActionInterface *a, bool update) override;
     std::unique_ptr<Ui::Ui_TextOptions> ui;
 };
-#endif // QG_TEXTOPTIONS_H
+#endif

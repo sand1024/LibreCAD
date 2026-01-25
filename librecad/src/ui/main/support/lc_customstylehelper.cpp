@@ -30,13 +30,13 @@
 void LC_CustomStyleHelper::loadFromSettings() {
     LC_GROUP("Widgets");
     {
-        bool allow_style = LC_GET_BOOL("AllowStyle", false);
-        if (allow_style) {
-            QString style = LC_GET_STR("Style", "");
+        const bool allowStyle = LC_GET_BOOL("AllowStyle", false);
+        if (allowStyle) {
+            const QString style = LC_GET_STR("Style", "");
             QApplication::setStyle(QStyleFactory::create(style));
         }
 
-        QString sheet_path = LC_GET_STR("StyleSheet", "");
+        const QString sheet_path = LC_GET_STR("StyleSheet", "");
         if (loadStyleSheet(sheet_path)) {
             m_styleSheetPath = sheet_path;
         }

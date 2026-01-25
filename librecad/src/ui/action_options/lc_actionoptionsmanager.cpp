@@ -57,20 +57,20 @@ void LC_ActionOptionsManager::hideSnapOptions(){
 /**
  * Shows a widget for 'snap to equidistant middle points ' options.
  */
-void LC_ActionOptionsManager::requestSnapMiddleOptions(int* middlePoints, bool on) {
+void LC_ActionOptionsManager::requestSnapMiddleOptions(int* middlePoints, const bool on) {
     getSnapOptionsHolder()->showSnapMiddleOptions(middlePoints, on);
 }
 
 /**
  * Shows a widget for 'snap to a point with a given distance' options.
  */
-void LC_ActionOptionsManager::requestSnapDistOptions(double* dist, bool on) {
+void LC_ActionOptionsManager::requestSnapDistOptions(double* dist, const bool on) {
     getSnapOptionsHolder()->showSnapDistOptions(dist, on);
 }
 
 LC_SnapOptionsWidgetsHolder* LC_ActionOptionsManager::getSnapOptionsHolder(){
     LC_SnapOptionsWidgetsHolder* result = nullptr;
-    bool useSnapToolbar = LC_GET_ONE_BOOL("Appearance", "showSnapOptionsInSnapToolbar", false);
+    const bool useSnapToolbar = LC_GET_ONE_BOOL("Appearance", "showSnapOptionsInSnapToolbar", false);
     if (useSnapToolbar){
         result = m_snapOptionsWidgetHolderSnapToolbar;
         m_snapOptionsWidgetHolderOptionsToolbar->setVisible(false);

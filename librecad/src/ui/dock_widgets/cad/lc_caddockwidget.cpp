@@ -36,7 +36,7 @@
 
 #include "rs_settings.h"
 
-LC_CADDockWidget::LC_CADDockWidget(QWidget *parent, bool allTools)
+LC_CADDockWidget::LC_CADDockWidget(QWidget *parent, const bool allTools)
     : QDockWidget(parent), m_frame(new QFrame(this)),
       m_gridLayout(new QGridLayout), m_allTools{allTools} {
   m_frame->setContentsMargins(0, 0, 0, 0);
@@ -46,10 +46,10 @@ LC_CADDockWidget::LC_CADDockWidget(QWidget *parent, bool allTools)
   m_frame->setLayout(m_gridLayout);
 }
 
-void LC_CADDockWidget::addSpacers(QGridLayout *layout, int columns) {
-  auto verticalSpacer = new QSpacerItem(0, 0, QSizePolicy::Policy::Minimum,
+void LC_CADDockWidget::addSpacers(QGridLayout *layout, const int columns) {
+  const auto verticalSpacer = new QSpacerItem(0, 0, QSizePolicy::Policy::Minimum,
                                         QSizePolicy::Policy::Expanding);
-  int filledRows = (layout->count() / columns);
+  const int filledRows = layout->count() / columns;
   layout->addItem(verticalSpacer, filledRows + 1, 0, 1, 1);
 
   // auto hSpacer = new QSpacerItem(0, 0, QSizePolicy::Policy::Expanding,
@@ -57,18 +57,17 @@ void LC_CADDockWidget::addSpacers(QGridLayout *layout, int columns) {
   // filledRows + 1, 1);
 }
 
-void LC_CADDockWidget::addActions(const QList<QAction *> &list, int columns,
-                                  int icon_size, bool flatButton) {
-  for (auto const &item : list) {
-    auto *toolbutton = new QToolButton(this);
-    toolbutton->setDefaultAction(item);
-    toolbutton->setAutoRaise(flatButton);
-    toolbutton->setIconSize(QSize(icon_size, icon_size));
-    int const count = m_gridLayout->count();
+void LC_CADDockWidget::addActions(const QList<QAction *> &list, int columns, const int iconSize, const bool flatButton) {
+  for (const auto&item : list) {
+    auto *toolButton = new QToolButton(this);
+    toolButton->setDefaultAction(item);
+    toolButton->setAutoRaise(flatButton);
+    toolButton->setIconSize(QSize(iconSize, iconSize));
+    const int count = m_gridLayout->count();
     if (columns == 0) {
        columns = 5;
     }
-    m_gridLayout->addWidget(toolbutton, count / columns, count % columns);
+    m_gridLayout->addWidget(toolButton, count / columns, count % columns);
   }
 
   addSpacers(m_gridLayout, columns);
@@ -77,10 +76,8 @@ void LC_CADDockWidget::addActions(const QList<QAction *> &list, int columns,
   m_frame->setLineWidth(2);
 }
 
-void LC_CADDockWidget::doUpdateWidgetSettings(int leftToolbarColumnsCount,
-                                              int leftToolbarIconSize,
-                                              bool leftToolbarFlatIcons) {
-  QSize size(leftToolbarIconSize, leftToolbarIconSize);
+void LC_CADDockWidget::doUpdateWidgetSettings(int leftToolbarColumnsCount, const int leftToolbarIconSize, const bool leftToolbarFlatIcons) {
+  const QSize size(leftToolbarIconSize, leftToolbarIconSize);
 
   QList<QToolButton *> widgets = m_frame->findChildren<QToolButton *>();
 
@@ -96,7 +93,7 @@ void LC_CADDockWidget::doUpdateWidgetSettings(int leftToolbarColumnsCount,
     w->setAutoRaise(leftToolbarFlatIcons);
     w->setIconSize(size);
     m_gridLayout->removeWidget(w);
-    int const count = newGridLayout->count();
+    const int count = newGridLayout->count();
     newGridLayout->addWidget(w, count / leftToolbarColumnsCount,
                              count % leftToolbarColumnsCount);
   }

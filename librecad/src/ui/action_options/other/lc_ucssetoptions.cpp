@@ -21,6 +21,7 @@
  ******************************************************************************/
 
 #include "lc_ucssetoptions.h"
+
 #include "lc_actionucscreate.h"
 #include "ui_lc_ucssetoptions.h"
 
@@ -37,8 +38,8 @@ LC_UCSSetOptions::~LC_UCSSetOptions(){
     delete ui;
 }
 
-void LC_UCSSetOptions::doSetAction(RS_ActionInterface *a, bool update) {
-    m_action = dynamic_cast<LC_ActionUCSCreate *>(a);
+void LC_UCSSetOptions::doSetAction(RS_ActionInterface *a, const bool update) {
+    m_action = static_cast<LC_ActionUCSCreate *>(a);
     QString angle;
     bool freeAngle = false;
     if (update){
@@ -58,9 +59,9 @@ void LC_UCSSetOptions::doSaveSettings() {
     save("AngleIsFree", ui->cbFreeAngle->isChecked());
 }
 
-void LC_UCSSetOptions::updateUI(int mode) {
+void LC_UCSSetOptions::updateUI(const int mode) {
    if (mode == 1){
-       QString angle = fromDouble(RS_Math::rad2deg(m_action->getCurrentAngle()));
+       const QString angle = fromDouble(RS_Math::rad2deg(m_action->getCurrentAngle()));
 
        ui->leAngle->blockSignals(true);
        ui->leAngle->setText(angle);
@@ -74,7 +75,7 @@ void LC_UCSSetOptions::languageChange() {
     ui->retranslateUi(this);
 }
 
-void LC_UCSSetOptions::setAngleToActionAndView(QString val) {
+void LC_UCSSetOptions::setAngleToActionAndView(const QString& val) {
     double angle;
     if (toDoubleAngleDegrees(val, angle, 0.0, false)) {
         const QString &factorStr = fromDouble(angle);
@@ -83,10 +84,10 @@ void LC_UCSSetOptions::setAngleToActionAndView(QString val) {
     }
 }
 
-void LC_UCSSetOptions::setAngleIsFreeToActionAndView(bool val) const {
+void LC_UCSSetOptions::setAngleIsFreeToActionAndView(const bool val) const {
     ui->cbFreeAngle->setChecked(val);
     m_action->setFixedAngle(!val);
-    bool showAngle = !val;
+    const bool showAngle = !val;
     ui->leAngle->setEnabled(showAngle);
     ui->tbPickAngle->setEnabled(showAngle);
 }
@@ -95,6 +96,6 @@ void LC_UCSSetOptions::onAngleEditingFinished() {
     setAngleToActionAndView(ui->leAngle->text());
 }
 
-void LC_UCSSetOptions::cbFreeAngleClicked(bool val) {
+void LC_UCSSetOptions::cbFreeAngleClicked(const bool val) {
     setAngleIsFreeToActionAndView(val);
 }

@@ -23,6 +23,7 @@
 #define LC_INFOCURSORSETTINGSMANAGER_H
 
 #include <QObject>
+
 #include "lc_appwindowaware.h"
 
 class LC_InfoCursorSettingsManager: public QObject, public LC_AppWindowAware{
@@ -38,4 +39,4 @@ signals:
      void showInfoCursorSettingChanged(bool enabled);
 };
 
-#endif // LC_INFOCURSORSETTINGSMANAGER_H
+#endif

@@ -52,4 +52,4 @@ private:
     void setRowsToActionAndView(int value) const;
     void setAdjustLastPointToActionAndView(bool value) const;
 };
-#endif // LC_POINTSLATTICEOPTIONS_H
+#endif

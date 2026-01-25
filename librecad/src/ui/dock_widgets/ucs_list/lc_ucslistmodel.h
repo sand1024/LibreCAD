@@ -27,7 +27,6 @@
 #include <QIcon>
 
 #include "lc_formatter.h"
-#include "rs.h"
 
 class LC_UCS;
 class LC_UCSList;
@@ -49,10 +48,10 @@ public:
     LC_UCS *getItemForIndex(const QModelIndex &index) const;
     int translateColumn(int column) const;
     void fillUCSsList(QList<LC_UCS *> &list) const;
-    QIcon getTypeIcon(LC_UCS *ucs) const;
-    QIcon getOrthoTypeIcon(LC_UCS *ucs) const;
-    QModelIndex getIndexForUCS(LC_UCS* ucs) const;
-    void markActive(LC_UCS *ucs);
+    QIcon getTypeIcon(const LC_UCS *ucs) const;
+    QIcon getOrthoTypeIcon(const LC_UCS *ucs) const;
+    QModelIndex getIndexForUCS(const LC_UCS* ucs) const;
+    void markActive(const LC_UCS *ucs);
     LC_UCS* getActiveUCS() const;
     int count() const;
     LC_UCS *getWCS() const;
@@ -68,7 +67,7 @@ public:
         LAST
     };
 
-    QString getUCSInfo(LC_UCS *ucs) const;
+    QString getUCSInfo(const LC_UCS *ucs) const;
 
     struct UCSItem{
         LC_UCS* ucs;
@@ -91,7 +90,7 @@ protected:
     LC_UCSListOptions* m_options {nullptr};
     LC_Formatter* m_formatter {nullptr};
     QString getGridViewType(int orthoType);
-    UCSItem* createUCSItem(LC_UCS *view);
+    UCSItem* createUCSItem(LC_UCS *ucs);
 };
 
 #endif

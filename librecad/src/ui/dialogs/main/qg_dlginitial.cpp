@@ -36,7 +36,7 @@
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
  */
-QG_DlgInitial::QG_DlgInitial(QWidget* parent, bool modal, Qt::WindowFlags fl)
+QG_DlgInitial::QG_DlgInitial(QWidget* parent, const bool modal, const Qt::WindowFlags fl)
     : QDialog(parent, fl) {
     setModal(modal);
     setupUi(this);
@@ -58,7 +58,7 @@ void QG_DlgInitial::languageChange(){
 void QG_DlgInitial::init() const {
     // Fill combobox with languages:
     QStringList languageList = RS_SYSTEM->getLanguageList();
-    QString defaultLanguage=RS_SYSTEM->symbolToLanguage(QString("en"));
+    const QString defaultLanguage=RS_SYSTEM->symbolToLanguage(QString("en"));
     for (QString language: languageList) {
         QString l = RS_SYSTEM->symbolToLanguage(language);
         cbLanguage->addItem(l, language);
@@ -68,7 +68,7 @@ void QG_DlgInitial::init() const {
 
     // units:
     for (int i=RS2::None; i<RS2::LastUnit; i++) {
-        cbUnit->addItem(RS_Units::unitToString((RS2::Unit)i));
+        cbUnit->addItem(RS_Units::unitToString(static_cast<RS2::Unit>(i)));
     }
 
     cbUnit->setCurrentIndex( cbUnit->findText("Millimeter") );

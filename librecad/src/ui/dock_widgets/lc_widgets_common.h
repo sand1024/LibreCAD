@@ -25,4 +25,4 @@
 
 #define DONT_FORCE_WIDGETS_CSS
 
-#endif // LC_WIDGETS_COMMON_H
+#endif

@@ -39,7 +39,7 @@ public slots:
     void onXEditingFinished();
     void onYEditingFinished();
     void onAngleEditingFinished();
-    void onModeIndexChanged(int index);
+    void onModeIndexChanged(int index) const;
     void languageChange() override;
 protected:
     void doSaveSettings() override;
@@ -53,4 +53,4 @@ private:
     void setModeToActionAndView(int mode) const;
 };
 
-#endif // LC_CROSSOPTIONS_H
+#endif

@@ -66,4 +66,4 @@ protected:
     void setEdgesModeToActionAndView(int index) const;
 };
 
-#endif // LC_RECTANGLE2POINTSOPTIONS_H
+#endif

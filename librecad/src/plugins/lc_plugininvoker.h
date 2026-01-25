@@ -44,4 +44,4 @@ private:
     LC_ActionContext* m_actionContext = nullptr;
 };
 
-#endif // LC_PLUGININVOKER_H
+#endif

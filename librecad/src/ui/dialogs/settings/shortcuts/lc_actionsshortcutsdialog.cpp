@@ -16,17 +16,19 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  ******************************************************************************/
 #include "lc_actionsshortcutsdialog.h"
+
 #include <QMessageBox>
 #include <QScrollBar>
 #include <QShortcut>
+
 #include "lc_actiongroupmanager.h"
 #include "lc_filenameselectionservice.h"
 #include "lc_shortcutsstorage.h"
 #include "lc_shortcutstreemodel.h"
 #include "lc_shortcuttreeitem.h"
-#include "ui_lc_actionsshortcutsdialog.h"
 #include "lc_widgets_common.h"
 #include "rs_settings.h"
+#include "ui_lc_actionsshortcutsdialog.h"
 
 LC_ActionsShortcutsDialog::LC_ActionsShortcutsDialog(QWidget* parent, LC_ActionGroupManager* pManager)
     : LC_Dialog(parent, "Shortcuts"), ui(new Ui::LC_ActionsShortcutsDialog), m_actionGroupManager(pManager) {
@@ -58,7 +60,7 @@ LC_ActionsShortcutsDialog::LC_ActionsShortcutsDialog(QWidget* parent, LC_ActionG
     connect(ui->lblMessage, &QLabel::linkActivated, this, &LC_ActionsShortcutsDialog::showConflicts);
 
     // Ctrl+F → filter box (Issue #2333)
-    auto* findShortcut = new QShortcut(QKeySequence::Find, this);
+    const auto* findShortcut = new QShortcut(QKeySequence::Find, this);
     connect(findShortcut, &QShortcut::activated, ui->leFilter, qOverload<>(&QWidget::setFocus));
 
     ui->leFilter->setFocus();
@@ -67,6 +69,7 @@ LC_ActionsShortcutsDialog::LC_ActionsShortcutsDialog(QWidget* parent, LC_ActionG
 
 LC_ActionsShortcutsDialog::~LC_ActionsShortcutsDialog() {
     delete ui;
+    delete m_mappingTreeModel;
 }
 
 void LC_ActionsShortcutsDialog::initTreeView() const {
@@ -138,11 +141,11 @@ void LC_ActionsShortcutsDialog::onClearClicked() {
     }
 }
 
-bool LC_ActionsShortcutsDialog::obtainFileName(QString& fileName, bool forRead) {
+bool LC_ActionsShortcutsDialog::obtainFileName(QString& fileName, const bool forRead) {
     const QString& dir = m_actionGroupManager->getShortcutsMappingsFolder();
-    QString defFileName = dir + "/shortcuts.lcs";
+    const QString defFileName = dir + "/shortcuts.lcs";
     return LC_FileNameSelectionService::doObtainFileName(this, fileName, forRead, "lcs",
-        "shortcuts", tr("Import shortcuts mapping"),
+        defFileName, tr("Import shortcuts mapping"),
         tr("Export shortcuts mapping"), tr("LibreCAD Shortcuts file (*.%1)"));
 }
 
@@ -152,7 +155,7 @@ void LC_ActionsShortcutsDialog::onImportClicked() {
         return;
     }
     QMap<QString, QKeySequence> shortcutsMap;
-    int loadResult = m_actionGroupManager->loadShortcuts(fileName, &shortcutsMap);
+    const int loadResult = m_actionGroupManager->loadShortcuts(fileName, &shortcutsMap);
     reportLoadResult(loadResult);
     if (loadResult == LC_ShortcutsStorage::OK) {
         m_mappingTreeModel->applyShortcuts(shortcutsMap, false);
@@ -168,11 +171,11 @@ void LC_ActionsShortcutsDialog::onExportClicked() {
     }
     QList<LC_ShortcutInfo*> shortcutsList;
     m_mappingTreeModel->collectShortcuts(shortcutsList);
-    int saveResult = m_actionGroupManager->saveShortcuts(shortcutsList, fileName);
+    const int saveResult = m_actionGroupManager->saveShortcuts(shortcutsList, fileName);
     reportSaveResult(saveResult);
 }
 
-void LC_ActionsShortcutsDialog::reportLoadResult(int loadResult) const {
+void LC_ActionsShortcutsDialog::reportLoadResult(const int loadResult) const {
     switch (loadResult) {
         case LC_ShortcutsStorage::OK: {
             showIOInfoDialog(true, true, tr("Shortcuts mappings were loaded successfully."));
@@ -197,7 +200,7 @@ void LC_ActionsShortcutsDialog::reportLoadResult(int loadResult) const {
     }
 }
 
-void LC_ActionsShortcutsDialog::reportSaveResult(int saveResult) const {
+void LC_ActionsShortcutsDialog::reportSaveResult(const int saveResult) const {
     switch (saveResult) {
         case LC_ShortcutsStorage::OK: {
             showIOInfoDialog(true, true, tr("Shortcuts mappings were saved successfully."));
@@ -222,7 +225,7 @@ void LC_ActionsShortcutsDialog::onResetAllClicked() {
     rebuildModel(false);
 }
 
-void LC_ActionsShortcutsDialog::onTreeDoubleClicked(QModelIndex index) {
+void LC_ActionsShortcutsDialog::onTreeDoubleClicked(const QModelIndex& index) {
     if (index.isValid()) {
         LC_ShortcutTreeItem* item = m_mappingTreeModel->getItemForIndex(index);
         const QModelIndex& parentIndex = m_mappingTreeModel->parent(index);
@@ -236,7 +239,7 @@ void LC_ActionsShortcutsDialog::onTreeDoubleClicked(QModelIndex index) {
     }
 }
 
-void LC_ActionsShortcutsDialog::onTreeClicked(QModelIndex itemIndex) {
+void LC_ActionsShortcutsDialog::onTreeClicked(const QModelIndex& itemIndex) {
     if (itemIndex.isValid()) {
         doSelectItem(itemIndex);
     }
@@ -249,25 +252,25 @@ void LC_ActionsShortcutsDialog::doSelectItem(const QModelIndex& itemIndex) {
 }
 
 void LC_ActionsShortcutsDialog::onFilteringMaskChanged() {
-    QString mask = ui->leFilter->text();
-    bool highlightMode = ui->cbMatchHighlight->isChecked();
+    const QString mask = ui->leFilter->text();
+    const bool highlightMode = ui->cbMatchHighlight->isChecked();
     m_mappingTreeModel->setFilteringRegexp(mask, highlightMode);
     rebuildModel(false);
 }
 
-void LC_ActionsShortcutsDialog::onRecordButtonToggled(bool on) {
+void LC_ActionsShortcutsDialog::onRecordButtonToggled(const bool on) {
     if (!on) {
         applyRecordedKeySequence();
     }
 }
 
-void LC_ActionsShortcutsDialog::showIOInfoDialog(bool forImport, bool ok, const QString& message) {
-    QString title = forImport ? tr("Import Shortcuts Mapping") : tr("Export Shortcuts Mapping");
+void LC_ActionsShortcutsDialog::showIOInfoDialog(const bool forImport, const bool ok, const QString& message) {
+    const QString title = forImport ? tr("Import Shortcuts Mapping") : tr("Export Shortcuts Mapping");
     QMessageBox msgBox(ok ? QMessageBox::Information : QMessageBox::Warning, title, message, QMessageBox::Ok);
     msgBox.exec();
 }
 
-void LC_ActionsShortcutsDialog::selectItem(LC_ShortcutTreeItem* item, int row, int parentRow) {
+void LC_ActionsShortcutsDialog::selectItem(LC_ShortcutTreeItem* item, const int row, const int parentRow) {
     if (item == nullptr || item->isGroup()) {
         ui->gbShortcut->setVisible(false);
         m_currentItem = nullptr;
@@ -279,7 +282,7 @@ void LC_ActionsShortcutsDialog::selectItem(LC_ShortcutTreeItem* item, int row, i
         ui->lblActionName->setText(item->getName());
         ui->lblGroupName->setText(item->parent()->getName());
         ui->lblActionIcon->setText("");
-        int height = ui->lblActionName->height();
+        const int height = ui->lblActionName->height();
         ui->lblActionIcon->setPixmap(item->getIcon().pixmap(height, height));
         ui->leKeySequence->setText(item->getShortcutViewString());
         m_currentItem = item;
@@ -293,10 +296,10 @@ void LC_ActionsShortcutsDialog::editItem([[maybe_unused]] LC_ShortcutTreeItem* i
     ui->btnRecord->setFocus();
 }
 
-void LC_ActionsShortcutsDialog::rebuildModel(bool restoreSelection) {
+void LC_ActionsShortcutsDialog::rebuildModel(const bool restoreSelection) {
     LC_ShortcutsTreeView* treeView = ui->tvMappingsTree;
     QScrollBar* verticalScrollBar = treeView->verticalScrollBar();
-    int yPos = verticalScrollBar->value();
+    const int yPos = verticalScrollBar->value();
 
     m_mappingTreeModel->rebuildModel(m_actionGroupManager);
 
@@ -342,7 +345,7 @@ void LC_ActionsShortcutsDialog::onKeySequenceChanged(const QKeySequence& key) {
 }
 
 bool LC_ActionsShortcutsDialog::checkHasCollisions(LC_ShortcutInfo* shortcutInfo) const {
-    bool hasCollisions = m_mappingTreeModel->checkForCollisions(shortcutInfo);
+    const bool hasCollisions = m_mappingTreeModel->checkForCollisions(shortcutInfo);
     if (hasCollisions) {
         QString msg;
         if (shortcutInfo == nullptr) {
@@ -372,8 +375,9 @@ bool LC_ActionsShortcutsDialog::keySequenceIsValid(const QKeySequence& sequence)
     }
     for (int i = 0; i < sequence.count(); ++i) {
         QKeyCombination keyCombination = sequence[i];
-        if (keyCombination.toCombined() == Qt::Key_unknown)
+        if (keyCombination.toCombined() == Qt::Key_unknown) {
             return false;
+        }
     }
     return true;
 }
@@ -388,8 +392,8 @@ void LC_ActionsShortcutsDialog::accept() {
     }
     else {
         if (m_mappingTreeModel->isModified()) {
-            QMap<QString, LC_ShortcutInfo*> shortcuts = m_mappingTreeModel->getShortcuts();
-            int saveResult = m_actionGroupManager->saveShortcuts(shortcuts);
+            const QMap<QString, LC_ShortcutInfo*> shortcuts = m_mappingTreeModel->getShortcuts();
+            const int saveResult = m_actionGroupManager->saveShortcuts(shortcuts);
             if (saveResult != LC_ShortcutsStorage::OK) {
                 reportSaveResult(saveResult);
             }

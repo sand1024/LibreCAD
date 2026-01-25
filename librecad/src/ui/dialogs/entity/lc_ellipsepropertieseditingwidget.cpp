@@ -51,13 +51,13 @@ void LC_EllipsePropertiesEditingWidget::setEntity(RS_Entity* entity) {
 
     toUI(m_entity->getCenter(), ui->leCenterX, ui->leCenterY);
 
-    double majorAxisLen = m_entity->getMajorRadius();
-    double minorAxisLen = m_entity->getMinorRadius();
+    const double majorAxisLen = m_entity->getMajorRadius();
+    const double minorAxisLen = m_entity->getMinorRadius();
 
     toUIValue(majorAxisLen, ui->leMajor);
     toUIValue(minorAxisLen, ui->leMinor);
 
-    double wcsMajorAngle = m_entity->getMajorP().angle();
+    const double wcsMajorAngle = m_entity->getMajorP().angle();
 
     toUIAngleDeg(wcsMajorAngle, ui->leRotation);
 
@@ -72,29 +72,29 @@ void LC_EllipsePropertiesEditingWidget::onCenterEditingFinished() const {
     m_entity->setCenter(toWCS(ui->leCenterX, ui->leCenterY, m_entity->getCenter()));
 }
 
-bool LC_EllipsePropertiesEditingWidget::updateEllipseGeometry() {
-    double major = toWCSValue(ui->leMajor, m_entity->getMajorRadius());
+bool LC_EllipsePropertiesEditingWidget::updateEllipseGeometry() const {
+    const double major = toWCSValue(ui->leMajor, m_entity->getMajorRadius());
     if (major < RS_TOLERANCE) {
         LC_ERR << __func__<<"(): invalid ellipse major radius: "<< major<<", ellipse not modified";
         return true;
     }
-    double minor = toWCSValue(ui->leMinor, m_entity->getMinorRadius());
-    double rotation = toWCSAngle(ui->leRotation, m_entity->getMajorP().angle());
+    const double minor = toWCSValue(ui->leMinor, m_entity->getMinorRadius());
+    const double rotation = toWCSAngle(ui->leRotation, m_entity->getMajorP().angle());
 
     m_entity->setMajorP(RS_Vector::polar(major, rotation));
     m_entity->setRatio(minor/major);
     return false;
 }
 
-void LC_EllipsePropertiesEditingWidget::onMajorEditingFinished() {
+void LC_EllipsePropertiesEditingWidget::onMajorEditingFinished() const {
     updateEllipseGeometry();
 }
 
-void LC_EllipsePropertiesEditingWidget::onMinorEditingFinished() {
+void LC_EllipsePropertiesEditingWidget::onMinorEditingFinished() const {
     updateEllipseGeometry();
 }
 
-void LC_EllipsePropertiesEditingWidget::onRotationEditingFinished() {
+void LC_EllipsePropertiesEditingWidget::onRotationEditingFinished() const {
     updateEllipseGeometry();
 }
 

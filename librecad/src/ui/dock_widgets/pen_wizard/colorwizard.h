@@ -1,8 +1,8 @@
 #ifndef COLORWIZARD_H
 #define COLORWIZARD_H
 
-#include <memory>
 #include <QFrame>
+#include <memory>
 
 class QListWidgetItem;
 
@@ -15,9 +15,9 @@ class ColorWizard : public QFrame{
     Q_OBJECT
 public:
     explicit ColorWizard(QWidget* parent = nullptr);
-    ~ColorWizard();
+    ~ColorWizard() override;
     QStringList getFavList() const;
-    void addFavorite(QString color) const;
+    void addFavorite(const QString& color) const;
 private:
     std::unique_ptr<Ui::ColorWizard> ui;
 signals:
@@ -28,9 +28,9 @@ protected slots:
     void requestColorChange();
     void requestSelection();
     void invokeColorDialog();
-    void addOrRemove();
+    void addOrRemove() const;
     void removeFavorite() const;
-    void handleDoubleClick(QListWidgetItem* item);
+    void handleDoubleClick(const QListWidgetItem* item);
 };
 
-#endif // COLORWIZARD_H
+#endif

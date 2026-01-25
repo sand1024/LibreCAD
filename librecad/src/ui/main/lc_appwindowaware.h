@@ -25,10 +25,10 @@
 class QC_ApplicationWindow;
 
 class LC_AppWindowAware {
-    public:
-        LC_AppWindowAware(QC_ApplicationWindow* mainWin);
-    protected:
-        QC_ApplicationWindow* m_appWin{nullptr};
+public:
+    explicit LC_AppWindowAware(QC_ApplicationWindow* mainWin);
+protected:
+    QC_ApplicationWindow* m_appWin{nullptr};
 };
 
 #endif

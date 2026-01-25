@@ -24,17 +24,16 @@
 **
 **********************************************************************/
 #include "qg_roundoptions.h"
+
 #include "rs_actionmodifyround.h"
 #include "ui_qg_roundoptions.h"
-
 
 /*
  *  Constructs a QG_RoundOptions as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
 QG_RoundOptions::QG_RoundOptions()
-    : LC_ActionOptionsWidgetBase(RS2::ActionModifyRound, "Modify", "Round")
-      , ui(new Ui::Ui_RoundOptions{}) {
+    : LC_ActionOptionsWidgetBase(RS2::ActionModifyRound, "Modify", "Round"), ui(new Ui::Ui_RoundOptions{}) {
     ui->setupUi(this);
     connect(ui->leRadius, &QLineEdit::editingFinished, this, &QG_RoundOptions::onRadiusEditingFinished);
     connect(ui->cbTrim, &QCheckBox::toggled, this, &QG_RoundOptions::onTrimToggled);
@@ -50,24 +49,25 @@ QG_RoundOptions::~QG_RoundOptions() = default;
  *  Sets the strings of the subwidgets using the current
  *  language.
  */
-void QG_RoundOptions::languageChange(){
-	ui->retranslateUi(this);
+void QG_RoundOptions::languageChange() {
+    ui->retranslateUi(this);
 }
 
-void QG_RoundOptions::doSaveSettings(){
+void QG_RoundOptions::doSaveSettings() {
     save("Radius", ui->leRadius->text());
     save("Trim", ui->cbTrim->isChecked());
 }
 
-void QG_RoundOptions::doSetAction(RS_ActionInterface *a, bool update) {
-    m_action = dynamic_cast<RS_ActionModifyRound *>(a);
+void QG_RoundOptions::doSetAction(RS_ActionInterface* a, const bool update) {
+    m_action = static_cast<RS_ActionModifyRound*>(a);
 
     QString radius;
     bool trim;
-    if (update){
+    if (update) {
         radius = fromDouble(m_action->getRadius());
         trim = m_action->isTrimOn();
-    } else {
+    }
+    else {
         radius = load("Radius", "1.0");
         trim = loadBool("Trim", true);
     }
@@ -75,22 +75,22 @@ void QG_RoundOptions::doSetAction(RS_ActionInterface *a, bool update) {
     setRadiusToActionAndView(radius);
 }
 
-void QG_RoundOptions::onRadiusEditingFinished(){
+void QG_RoundOptions::onRadiusEditingFinished() {
     setRadiusToActionAndView(ui->leRadius->text());
 }
 
-void QG_RoundOptions::onTrimToggled(bool checked){
+void QG_RoundOptions::onTrimToggled(const bool checked) {
     setTrimToActionAndView(checked);
 }
 
-void QG_RoundOptions::setTrimToActionAndView(bool checked) const {
+void QG_RoundOptions::setTrimToActionAndView(const bool checked) const {
     ui->cbTrim->setChecked(checked);
     m_action->setTrim(checked);
 }
 
-void QG_RoundOptions::setRadiusToActionAndView(const QString &strValue){
+void QG_RoundOptions::setRadiusToActionAndView(const QString& val) {
     double radius;
-    if (toDouble(strValue, radius, 0.0, false)){
+    if (toDouble(val, radius, 0.0, false)) {
         m_action->setRadius(radius);
         ui->leRadius->setText(fromDouble(radius));
     }

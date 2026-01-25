@@ -52,9 +52,9 @@ private:
 
     bool eventFilter(QObject *object, QEvent *event) override;
 
-    void updateShortcutView();
+    void updateShortcutView() const;
     QString findMenuForActivator() const;
-    bool validateShortcut();
+    bool validateShortcut() const;
 };
 
-#endif // LC_DLGMENUASSIGNER_H
+#endif

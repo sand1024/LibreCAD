@@ -40,10 +40,12 @@ QC_ActionGetEnt::QC_ActionGetEnt(LC_ActionContext* actionContext)
 }
 
 void QC_ActionGetEnt::updateMouseButtonHints() {
-    if (!m_completed)
+    if (!m_completed) {
         updateMouseWidget(m_message, tr("Cancel"));
-    else
+    }
+    else {
         updateMouseWidget();
+    }
 }
 
 
@@ -51,13 +53,13 @@ RS2::CursorType QC_ActionGetEnt::doGetMouseCursor([[maybe_unused]] int status){
     return RS2::SelectCursor;
 }
 
-void QC_ActionGetEnt::setMessage(QString msg){
+void QC_ActionGetEnt::setMessage(const QString& msg){
     m_message = msg;
 }
 
 void QC_ActionGetEnt::trigger() {
     if (m_entity) {
-        RS_Selection s(m_document, m_viewport);
+        const RS_Selection s(m_document, m_viewport);
         s.selectSingle(m_entity);
         m_completed = true;
         updateMouseButtonHints();

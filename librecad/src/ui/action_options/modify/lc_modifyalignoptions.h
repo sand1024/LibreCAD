@@ -32,17 +32,16 @@ namespace Ui {
 
 class LC_ModifyAlignOptions : public LC_ActionOptionsWidget{
     Q_OBJECT
-
 public:
     explicit LC_ModifyAlignOptions();
-    ~LC_ModifyAlignOptions();
+    ~LC_ModifyAlignOptions() override;
 
 protected slots:
     void languageChange() override;
-    void onAsGroupChanged(bool val);
-    void onVAlignChanged(bool val);
-    void onHAlignChanged(bool val);
-    void onAlignToIndexChanged(int idx);
+    void onAsGroupChanged(bool val) const;
+    void onVAlignChanged(bool val) const;
+    void onHAlignChanged(bool val) const;
+    void onAlignToIndexChanged(int idx) const;
 protected:
     void doSaveSettings() override;
     void doSetAction(RS_ActionInterface *a, bool update) override;
@@ -61,4 +60,4 @@ private:
     void setAsGroupToActionAndView(bool group) const;
 };
 
-#endif // LC_MODIFYALIGNOPTIONS_H
+#endif

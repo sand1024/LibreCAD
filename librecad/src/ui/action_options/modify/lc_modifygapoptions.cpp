@@ -20,6 +20,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
 #include "lc_modifygapoptions.h"
+
 #include "lc_actionmodifylinegap.h"
 #include "ui_lc_modifygapoptions.h"
 
@@ -42,8 +43,8 @@ LC_ModifyGapOptions::~LC_ModifyGapOptions(){
     delete ui;
 }
 
-void LC_ModifyGapOptions::doSetAction(RS_ActionInterface *a, bool update){
-    m_action = dynamic_cast<LC_ActionModifyLineGap *>(a);
+void LC_ModifyGapOptions::doSetAction(RS_ActionInterface *a, const bool update){
+    m_action = static_cast<LC_ActionModifyLineGap *>(a);
     QString gapSize;
     bool gapFree;
     int lineSnap;
@@ -84,7 +85,7 @@ void LC_ModifyGapOptions::languageChange(){
     ui->retranslateUi(this);
 }
 
-void LC_ModifyGapOptions::onFreeGapClicked(bool val){
+void LC_ModifyGapOptions::onFreeGapClicked(const bool val){
     if (m_action != nullptr){
         setGapIsFreeToActionAndView(val);
     }
@@ -102,13 +103,13 @@ void LC_ModifyGapOptions::onDistanceEditingFinished(){
     }
 }
 
-void LC_ModifyGapOptions::onLineSnapModeIndexChanged(int index){
+void LC_ModifyGapOptions::onLineSnapModeIndexChanged(const int index){
   if (m_action != nullptr){
       setLineSnapToActionAndView(index);
   }
 }
 
-void LC_ModifyGapOptions::onGapSnapModeIndexChanged(int index){
+void LC_ModifyGapOptions::onGapSnapModeIndexChanged(const int index){
     if (m_action != nullptr){
         setGapSnapToActionAndView(index);
     }
@@ -122,7 +123,7 @@ void LC_ModifyGapOptions::setGapSizeToActionAndView(const QString &val){
     }
 }
 
-void LC_ModifyGapOptions::setGapIsFreeToActionAndView(bool val) const {
+void LC_ModifyGapOptions::setGapIsFreeToActionAndView(const bool val) const {
     m_action->setFreeGapSize(val);
     ui->cbFree->setChecked(val);
 
@@ -131,13 +132,13 @@ void LC_ModifyGapOptions::setGapIsFreeToActionAndView(bool val) const {
     ui->cbGapSnap->setEnabled(!val);
 }
 
-void LC_ModifyGapOptions::setLineSnapToActionAndView(int val) const {
+void LC_ModifyGapOptions::setLineSnapToActionAndView(const int val) const {
     m_action->setLineSnapMode(val);
     ui->cbLineSnap->setCurrentIndex(val);
     ui->leDistance->setEnabled(val > 0);
 }
 
-void LC_ModifyGapOptions::setGapSnapToActionAndView(int val) const {
+void LC_ModifyGapOptions::setGapSnapToActionAndView(const int val) const {
     m_action->setGapSnapMode(val);
     ui->cbGapSnap->setCurrentIndex(val);
 }

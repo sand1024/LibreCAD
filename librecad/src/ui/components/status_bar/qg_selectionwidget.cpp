@@ -29,14 +29,13 @@
 #include <QTimer>
 
 #include "rs_document.h"
-#include "rs_entitycontainer.h"
 #include "rs_graphicview.h"
 
 /*
  *  Constructs a QG_SelectionWidget as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-QG_SelectionWidget::QG_SelectionWidget(QWidget* parent, const char* name, Qt::WindowFlags fl)
+QG_SelectionWidget::QG_SelectionWidget(QWidget* parent, const char* name, const Qt::WindowFlags fl)
     : QWidget(parent, fl){
     setObjectName(name);
     setupUi(this);
@@ -66,7 +65,7 @@ void QG_SelectionWidget::languageChange(){
     retranslateUi(this);
 }
 
-void QG_SelectionWidget::setNumber(int n) const {
+void QG_SelectionWidget::setNumber(const int n) const {
     if (m_auxDataMode)    {
         QSettings settings("QGDialogFactory", "QGSelectionWidget");
         settings.setValue("lEntities_text", n);
@@ -78,23 +77,18 @@ void QG_SelectionWidget::setNumber(int n) const {
     }
 }
 
-void QG_SelectionWidget::setTotalLength(double l) const {
+void QG_SelectionWidget::setTotalLength(const double l) const {
     QString str;
     str.setNum(l, 'g', 6);
     lTotalLength->setText(str);
 }
 
 
-void QG_SelectionWidget::flashAuxData( const QString& header, 
-                                       const QString& data, 
-                                       const unsigned int& timeout, 
-                                       const bool& flash){
+void QG_SelectionWidget::flashAuxData(const QString& header, const QString& data, const unsigned int timeout, const bool flash){
     if (flash){
-        QSettings settings("QGDialogFactory", "QGSelectionWidget");
-
-        if (!m_auxDataMode)
-        {
+        if (!m_auxDataMode){
             m_auxDataMode = true;
+            QSettings settings("QGDialogFactory", "QGSelectionWidget");
 
             settings.setValue("lLabelLength_minWidth",  lLabelLength->minimumWidth());
             settings.setValue("lLabelLength_minHeight", lLabelLength->minimumHeight());
@@ -137,18 +131,18 @@ void QG_SelectionWidget::flashAuxData( const QString& header,
 void QG_SelectionWidget::removeAuxData(){
     m_auxDataMode = false;
 
-    QSettings settings("QGDialogFactory", "QGSelectionWidget");
+    const QSettings settings("QGDialogFactory", "QGSelectionWidget");
 
-    lLabelLength->setMinimumSize( settings.value("lLabelLength_minWidth").toInt(), 
+    lLabelLength->setMinimumSize( settings.value("lLabelLength_minWidth").toInt(),
                                   settings.value("lLabelLength_minHeight").toInt());
 
-    lLabelLength->setMaximumSize( settings.value("lLabelLength_maxWidth").toInt(), 
+    lLabelLength->setMaximumSize( settings.value("lLabelLength_maxWidth").toInt(),
                                   settings.value("lLabelLength_maxHeight").toInt());
 
-    lTotalLength->setMinimumSize( settings.value("lTotalLength_minWidth").toInt(), 
+    lTotalLength->setMinimumSize( settings.value("lTotalLength_minWidth").toInt(),
                                   settings.value("lTotalLength_minHeight").toInt());
 
-    lTotalLength->setMaximumSize( settings.value("lTotalLength_maxWidth").toInt(), 
+    lTotalLength->setMaximumSize( settings.value("lTotalLength_maxWidth").toInt(),
                                   settings.value("lTotalLength_maxHeight").toInt());
 
     lLabel->setMinimumWidth(settings.value("lLabel_w").toInt());
@@ -182,8 +176,8 @@ void QG_SelectionWidget::selectionChanged() {
     double length = 0.0;
     if (m_document != nullptr) {
         const RS_Document::LC_SelectionInfo &info = m_document->getSelectionInfo();
-        number = info.count;
-        length = info.length;
+        number = info.entitiesCount;
+        length = info.totalLength;
     }
     setNumber(number);
     setTotalLength(length);

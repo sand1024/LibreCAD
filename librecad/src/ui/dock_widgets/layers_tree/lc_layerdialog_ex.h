@@ -46,10 +46,10 @@ public:
         MODE_ADD_CHILD_LAYER,
         MODE_ADD_SECONDARY_LAYER
     };
-    LC_LayerDialogEx(QWidget* parent, const QString& name, LC_LayerTreeModel* model, LC_LayerTreeItem *editedTreeItem, RS_LayerList* layerList);
+    LC_LayerDialogEx(QWidget* parent, const QString& name, LC_LayerTreeModel* model, LC_LayerTreeItem *treeItem, RS_LayerList* layerList);
     ~LC_LayerDialogEx() override = default;
 
-    void setMode(int mode);
+    void setMode(int viewMode);
     void setLayerName(const QString& name) const;
     void setParentPath(const QString& name) const;
     void setLayerType(int type) const;
@@ -58,8 +58,8 @@ public:
     void setLayer(const RS_Layer *layer) const;
     void allowChangingLayerType(bool value);
     RS_Pen getPen() const;
-    bool isConstruction() const {return cbConstructionLayer->isChecked();};
-    void setConstruction(bool enable) const {cbConstructionLayer->setChecked(enable);};
+    bool isConstruction() const {return cbConstructionLayer->isChecked();}
+    void setConstruction(const bool enable) const {cbConstructionLayer->setChecked(enable);}
     QString getLayerName() const;
 public slots:
     void validate();
@@ -77,4 +77,4 @@ private:
     bool checkForDuplicatedNames(const QStringList &newLayerNamesList) const;
 };
 
-#endif // LC_LAYERDIALOG_EX_H
+#endif

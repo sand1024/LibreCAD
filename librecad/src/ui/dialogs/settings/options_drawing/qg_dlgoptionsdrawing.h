@@ -26,31 +26,31 @@
 #ifndef QG_DLGOPTIONSDRAWING_H
 #define QG_DLGOPTIONSDRAWING_H
 
-#include "ui_qg_dlgoptionsdrawing.h"
 #include "lc_dialog.h"
 #include "lc_dimstylepreviewgraphicview.h"
-#include "lc_dimstyleslistmodel.h"
+#include "ui_qg_dlgoptionsdrawing.h"
 
 class LC_DimStyleTreeModel;
 class RS_Graphic;
 class RS_Vector;
 
-class QG_DlgOptionsDrawing : public LC_Dialog, public Ui::QG_DlgOptionsDrawing{
+class QG_DlgOptionsDrawing : public LC_Dialog, public Ui::QG_DlgOptionsDrawing {
     Q_OBJECT
 public:
     void connectPointsTab();
     void _to_remove_ConnectLegacyDimsTab();
     explicit QG_DlgOptionsDrawing(QWidget* parent = nullptr);
-	~QG_DlgOptionsDrawing() override;
+    ~QG_DlgOptionsDrawing() override;
     void showInitialTab(int tabIndex) const;
-    void setGraphic( RS_Graphic * g );
+    void setGraphic(RS_Graphic* g);
     static void fillLinearUnitsCombobox(QComboBox* combobox);
     static void fillAngleUnitsCombobox(QComboBox* combobox);
     static void updateLengthPrecisionCombobox(RS2::LinearFormat unit, QComboBox* p);
     static void updateAnglePrecisionCombobox(RS2::AngleFormat format, QComboBox* p);
-    static RS2::AngleFormat angleFormatFromUI(int current_index);
+    static RS2::AngleFormat angleFormatFromUI(int currentIndex);
     static RS2::LinearFormat linearFormatFromUI(int currentIndex);
-protected slots:
+protected
+    slots :
     void languageChange();
     void validate();
     void updateLengthPrecision() const;
@@ -63,7 +63,7 @@ protected slots:
     void updatePaperPreview() const;
     void onTabCurrentChanged(int index) const;
     void on_cbGridOn_toggled(bool checked) const;
-	void onLandscapeToggled(bool checked);
+    void onLandscapeToggled(bool checked);
     void onDimFxLonToggled(bool checked) const;
     void onRelSizeToggled(bool checked);
     void disableXSpacing(bool checked) const;
@@ -71,22 +71,21 @@ protected slots:
 
     void onDimStyleNew(bool checked);
     void expandStylesTree() const;
-    void onDimStyleEdit(bool checked=false);
+    void onDimStyleEdit(bool checked = false);
     void onDimStyleRename(bool checked);
     void onDimStyleRemove(bool checked);
     void onDimStyleExport(bool checked);
     void onDimStyleImport(bool checked);
-    void updateActiveStyleLabel(LC_DimStyleTreeModel* model) const;
+    void updateActiveStyleLabel(const LC_DimStyleTreeModel* model) const;
     void onDimStyleSetDefault(bool checked);
-    void updateActionButtons(LC_DimStyleItem* item);
-    void onDimCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
+    void updateActionButtons(const LC_DimStyleItem* item);
+    void onDimCurrentChanged(const QModelIndex& current, const QModelIndex& previous);
 
-    void onDimStylesListMenuRequested(const QPoint &pos);
+    void onDimStylesListMenuRequested(const QPoint& pos);
     void onDimStyleDoubleClick();
 
     void onCustomVariableAdd(bool checked);
     void onCustomVariableDelete(bool checked);
-
     void reject() override;
 protected:
     void setupPointsTab();
@@ -94,11 +93,12 @@ protected:
     void setupGridTab() const;
     void setupPaperTab();
     void setupMetaTab() const;
-    void setupUserREditor(QLineEdit* edit, const QString &key) const;
+    void setupUserREditor(QLineEdit* edit, const QString& key) const;
     void setupUserTab();
     void _toRemoveSetupLegacyDimsTab(RS2::LinearFormat& linearFormat, int lunits, int luprec, int aunits, int auprec) const;
     LC_DimStyleTreeModel* getDimStylesModel() const;
-    void doCreateDimStyle(const QString &newStyleName, LC_DimStyleTreeModel* model, LC_DimStyleItem* styleItemBasedOn, RS2::EntityType newDimType);
+    void doCreateDimStyle(const QString& newStyleName, LC_DimStyleTreeModel* model, const LC_DimStyleItem* styleItemBasedOn,
+                          RS2::EntityType newDimType);
     void connectPaperTab();
     void connectUnitTab();
     void connectGridTab();
@@ -106,18 +106,19 @@ protected:
     void resizeEvent(QResizeEvent* event) override;
     void showEvent(QShowEvent* event) override;
     void updateLPtSzUnits() const;
-    QString askForUniqueDimStyleName(const QString &caption, const QString& prompt, const QString &defaultText);
+    QString askForUniqueDimStyleName(const QString& caption, const QString& prompt, const QString& defaultText);
     void updateDimStylePreview(LC_DimStyle* dimStyle, LC_DimStyleTreeModel* model) const;
+
 private:
     std::unique_ptr<QStringList> m_listPrec1;
-    RS_Graphic* m_graphic {nullptr};
-    QGraphicsScene* m_paperScene {nullptr};
+    RS_Graphic* m_graphic{nullptr};
+    QGraphicsScene* m_paperScene{nullptr};
     std::unique_ptr<RS_Vector> m_spacing;
-    LC_DimStylePreviewGraphicView* m_previewView {nullptr};
+    LC_DimStylePreviewGraphicView* m_previewView{nullptr};
     bool m_hasImportantModificationsToAskOnCancel = false;
 
     void init();
-    void prepareDimStyleItems(QList<LC_DimStyleItem*> &items);
+    void prepareDimStyleItems(QList<LC_DimStyleItem*>& items) const;
     void collectStylesUsage(QMap<QString, int>& map) const;
     void setupDimStylesTab();
     void setupVariablesTab() const;

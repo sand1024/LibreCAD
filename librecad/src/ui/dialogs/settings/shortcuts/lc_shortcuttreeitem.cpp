@@ -22,7 +22,7 @@
 
 #include "lc_shortcuttreeitem.h"
 
-LC_ShortcutTreeItem::LC_ShortcutTreeItem(LC_ShortcutTreeItem *parent, QAction *action, LC_ShortcutInfo *shortcutInfo) {
+LC_ShortcutTreeItem::LC_ShortcutTreeItem(LC_ShortcutTreeItem *parent, const QAction *action, LC_ShortcutInfo *shortcutInfo) {
     m_parentItem  = parent;
     m_text = action->text().remove("&");
     m_icon = action->icon();
@@ -31,12 +31,8 @@ LC_ShortcutTreeItem::LC_ShortcutTreeItem(LC_ShortcutTreeItem *parent, QAction *a
     m_group = false;
 }
 
-LC_ShortcutTreeItem::LC_ShortcutTreeItem(LC_ShortcutTreeItem *parent, QIcon ic, const QString &name, const QString &desc) {
-    m_group = true;
-    m_parentItem = parent;
-    m_text = name;
-    this->m_description = desc;
-    this->m_icon = ic;
+LC_ShortcutTreeItem::LC_ShortcutTreeItem(LC_ShortcutTreeItem *parent, const QIcon  &ic, const QString &name, const QString &desc) :
+   m_parentItem{parent}, m_shortcutInfo{nullptr}, m_icon{ic}, m_text{name}, m_description{desc}, m_group{true}{
 }
 
 LC_ShortcutTreeItem::~LC_ShortcutTreeItem() {
@@ -90,13 +86,13 @@ const QList<LC_ShortcutTreeItem *> &LC_ShortcutTreeItem::getChildItems() const {
     return m_childItems;
 }
 
-LC_ShortcutTreeItem* LC_ShortcutTreeItem::addChild(QAction *act, LC_ShortcutInfo *scInfo) {
-    auto* child = new LC_ShortcutTreeItem(this, act, scInfo);
+LC_ShortcutTreeItem* LC_ShortcutTreeItem::addChild(const QAction *action, LC_ShortcutInfo *shortcutInfo) {
+    auto* child = new LC_ShortcutTreeItem(this, action, shortcutInfo);
     m_childItems<<child;
     return child;
 }
 
-LC_ShortcutTreeItem *LC_ShortcutTreeItem::child(int row) const {
+LC_ShortcutTreeItem *LC_ShortcutTreeItem::child(const int row) const {
     return m_childItems.value(row);
 }
 

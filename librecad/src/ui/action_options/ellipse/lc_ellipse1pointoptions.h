@@ -41,20 +41,20 @@ protected slots:
     void onAngleEditingFinished();
     void onMajorRadiusEditingFinished();
     void onMinorRadiusEditingFinished();
-    void onUseAngleClicked(bool val);
-    void onFreeAngleClicked(bool val);
+    void onUseAngleClicked(bool val) const;
+    void onFreeAngleClicked(bool val) const;
     void onDirectionChanged(bool val) const;
 protected:
     LC_ActionDrawEllipse1Point* m_action = nullptr;
     Ui::LC_Ellipse1PointOptions *ui;
     void doSaveSettings() override;
     void doSetAction(RS_ActionInterface *a, bool update) override;
-    void setMajorRadiusToActionAndView(QString val);
-    void setMinorRadiusToActionAndView(QString val);
-    void setAngleToActionAndView(QString val);
+    void setMajorRadiusToActionAndView(const QString& val);
+    void setMinorRadiusToActionAndView(const QString& val);
+    void setAngleToActionAndView(const QString& val);
     void setAngleIsFreeToActionAndView(bool val) const;
     void setUseAngleAngleToActionAndView(bool val) const;
     bool checkActionRttiValid(RS2::ActionType actionType) override;
 };
 
-#endif // LC_ELLIPSE1POINTOPTIONS_H
+#endif

@@ -42,4 +42,4 @@ protected slots:
     void menuTriggered(bool checked = false) const;
 };
 
-#endif // LC_UCSLISTBUTTON_H
+#endif

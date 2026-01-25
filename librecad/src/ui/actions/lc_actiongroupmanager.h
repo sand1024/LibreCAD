@@ -1,9 +1,8 @@
 #ifndef LC_ACTIONGROUPMANAGER_H
 #define LC_ACTIONGROUPMANAGER_H
 
-#include <QObject>
 #include <QMap>
-#include <QList>
+#include <QObject>
 
 #include "rs.h"
 
@@ -24,12 +23,12 @@ public:
     QMap<QString, LC_ActionGroup*> allGroups();
     QList<LC_ActionGroup *> allGroupsList();
     void sortGroupsByName(QList<LC_ActionGroup*>& list);
-    void assignShortcutsToActions(QMap<QString, QAction *> &map,  std::vector<LC_ShortcutInfo> &shortcutsList) const;
+    void assignShortcutsToActions(const QMap<QString, QAction *> &map, const std::vector<LC_ShortcutInfo> &shortcutsList) const;
     int loadShortcuts(const QMap<QString, QAction *> &map);
     int loadShortcuts(const QString &fileName, QMap<QString, QKeySequence> *result) const;
-    int saveShortcuts(QMap<QString, LC_ShortcutInfo *> map);
+    int saveShortcuts(QMap<QString, LC_ShortcutInfo *> shortcutsMap);
     int saveShortcuts(const QList<LC_ShortcutInfo *> &shortcutsList, const QString &fileName) const;
-    const QString getShortcutsMappingsFolder() const;
+    QString getShortcutsMappingsFolder() const;
     QMap<QString, QAction *> &getActionsMap();
     QAction *getActionByName(const QString &name) const;
     bool hasActionGroup(const QString& categoryName) const;
@@ -51,7 +50,7 @@ private:
     QMap<QString, QAction*> m_actionsMap; // should be initialized by action factory by call of loadShortcuts()
     QMap<int, QAction*> m_actionsByTypes;
     std::unique_ptr<LC_ShortcutsManager> m_shortcutsManager;
-    QList<bool> snap_memory;
+    QList<bool> m_snapState;
 };
 
-#endif // LC_ACTIONGROUPMANAGER_H
+#endif

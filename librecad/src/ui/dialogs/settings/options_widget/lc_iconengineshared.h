@@ -44,23 +44,23 @@ namespace LC_SVGIconEngineAPI {
         Background
     };
 
-    [[maybe_unused]] static const char* KEY_ICONS_OVERRIDES_DIR = "LCI_BaseDir";
-    [[maybe_unused]] static const char* KEY_COLOR_MAIN = "LCI_ColorMain";
-    [[maybe_unused]] static const char* KEY_COLOR_ACCENT = "LCI_ColorAccent";
-    [[maybe_unused]] static const char* KEY_COLOR_BG = "LCI_ColorBack";
+    [[maybe_unused]] static constexpr auto KEY_ICONS_OVERRIDES_DIR = "LCI_BaseDir";
+    [[maybe_unused]] static constexpr auto KEY_COLOR_MAIN = "LCI_ColorMain";
+    [[maybe_unused]] static constexpr auto KEY_COLOR_ACCENT = "LCI_ColorAccent";
+    [[maybe_unused]] static constexpr auto KEY_COLOR_BG = "LCI_ColorBack";
 
-    QString getColorAppKeyName(QString baseName, int mode, int state);
+    QString getColorAppKeyName(const QString& baseName, int mode, int state);
 
-    inline void setColorAppProperty(QString baseKey, IconMode mode, IconState state, QString value){
-        QString key = getColorAppKeyName(baseKey, mode, state);
-        auto basicString = key.toStdString();
-        auto name = basicString.c_str();
+    inline void setColorAppProperty(const QString& baseKey, const IconMode mode, const IconState state, const QString& value){
+        const QString key = getColorAppKeyName(baseKey, mode, state);
+        const auto basicString = key.toStdString();
+        const auto name = basicString.c_str();
         qApp->setProperty(name,   value);
     }
 
-    inline QString getColorAppProperty(QString baseKey, IconMode mode, IconState state){
-        QString key = getColorAppKeyName(baseKey, mode, state);
-        QVariant vProperty = qApp->property(key.toStdString().c_str());
+    inline QString getColorAppProperty(const QString& baseKey, const IconMode mode, const IconState state){
+        const QString key = getColorAppKeyName(baseKey, mode, state);
+        const QVariant vProperty = qApp->property(key.toStdString().c_str());
         if (vProperty.isValid()) {
             return vProperty.value<QString>();
         }
@@ -68,4 +68,4 @@ namespace LC_SVGIconEngineAPI {
     }
 }
 
-#endif // LC_ICONENGINESHARED_H
+#endif

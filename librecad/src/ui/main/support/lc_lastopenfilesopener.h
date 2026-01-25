@@ -32,10 +32,10 @@ class QC_MDIWindow;
 
 class LC_LastOpenFilesOpener{
 public:
-    LC_LastOpenFilesOpener(QC_ApplicationWindow* m_appWin);
+    explicit LC_LastOpenFilesOpener(QC_ApplicationWindow* appWin);
     ~LC_LastOpenFilesOpener();
-    void openLastOpenFiles(QStringList& fileList,  QSplashScreen* spash) const;
-    void collectFilesList(const QList<QC_MDIWindow*> &m_windowList,  const QMdiSubWindow* activWindow);
+    void openLastOpenFiles(QStringList& fileList,  QSplashScreen* splash) const;
+    void collectFilesList(const QList<QC_MDIWindow*> &windowList,  const QMdiSubWindow* activWindow);
     void saveSettings() const;
 private:
     QString m_openedFiles;
@@ -43,5 +43,4 @@ private:
     QC_ApplicationWindow* m_appWindow;
 };
 
-
-#endif // LC_LASTOPENFILESOPENER_H
+#endif

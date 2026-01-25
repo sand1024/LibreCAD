@@ -27,7 +27,6 @@
 #include <QIcon>
 
 #include "lc_formatter.h"
-#include "rs.h"
 
 class LC_View;
 class LC_ViewList;
@@ -49,7 +48,7 @@ public:
     LC_View *getItemForIndex(const QModelIndex &index) const;
     int translateColumn(int column) const;
     void fillViewsList(QList<LC_View *> &list) const;
-    QIcon getTypeIcon(LC_View *view) const;
+    QIcon getTypeIcon(const LC_View *view) const;
     QIcon getUCSTypeIcon(const LC_View *view) const;
     QIcon getGridTypeIcon(const LC_View *view) const;
     QModelIndex getIndexForView(const LC_View* view) const;
@@ -97,10 +96,10 @@ protected:
     QIcon m_iconGridISOLeft;
     QIcon m_iconGridISORight;
     LC_NamedViewsListOptions* m_options {nullptr};
-    QString getUCSInfo(LC_UCS *ucs) const;
+    QString getUCSInfo(const LC_UCS *ucs) const;
     QString getGridViewType(int orthoType);
     ViewItem* createViewItem(LC_View *view);
-    void setupViewItem(LC_View *view, LC_NamedViewsModel::ViewItem *result);
+    void setupViewItem(LC_View *view, ViewItem *result);
 };
 
-#endif // LC_NAMEDVIEWSMODEL_H
+#endif

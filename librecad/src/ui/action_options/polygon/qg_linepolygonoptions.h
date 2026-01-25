@@ -35,32 +35,36 @@ namespace Ui {
     class Ui_LinePolygonOptions;
 }
 
-class QG_LinePolygonOptions : public LC_ActionOptionsWidgetBase{
+class QG_LinePolygonOptions : public LC_ActionOptionsWidgetBase {
     Q_OBJECT
 public:
     QG_LinePolygonOptions();
     ~QG_LinePolygonOptions() override;
-public slots:
+
+public
+    slots :
     void onNumberValueChanged(int number);
     void onPolylineToggled(bool value);
     void onRadiusToggled(bool val);
     void onVertexToggled(bool val);
     void onRadiusEditingFinished();
     void languageChange() override;
+
 protected:
     bool m_sideSideAction = false;
     void doSaveSettings() override;
-    void doSetAction(RS_ActionInterface *a, bool update) override;
+    void doSetAction(RS_ActionInterface* a, bool update) override;
     bool checkActionRttiValid(RS2::ActionType actionType) override;
     QString getSettingsOptionNamePrefix() override;
+
 private:
     LC_ActionDrawLinePolygonBase* m_action = nullptr;
-	   std::unique_ptr<Ui::Ui_LinePolygonOptions> ui;
+    std::unique_ptr<Ui::Ui_LinePolygonOptions> ui;
     void setNumberToActionAndView(int number) const;
     void setPolylineToActionAndView(bool val) const;
     void setRoundedToActionAndView(bool val) const;
     void setVertexVertexToActionAndView(bool val) const;
-    void setRadiusToActionAndView(const QString &val);
+    void setRadiusToActionAndView(const QString& val);
 };
 
-#endif // QG_LINEPOLYGONOPTIONS_H
+#endif

@@ -44,10 +44,10 @@ void QG_ActiveLayerName::setGraphicView(RS_GraphicView* gview) {
         lActiveLayerName->setText("");
     }
     else {
-        RS_Graphic* graphic = gview->getGraphic();
+        const RS_Graphic* graphic = gview->getGraphic();
         if (graphic != nullptr) {
-            auto activeLayer = graphic->getActiveLayer();
-            QString activeLayerName = (activeLayer != nullptr) ? activeLayer->getName() : "";
+            const auto activeLayer = graphic->getActiveLayer();
+            const QString activeLayerName = (activeLayer != nullptr) ? activeLayer->getName() : "";
             lActiveLayerName->setText(activeLayerName);
         }
     }

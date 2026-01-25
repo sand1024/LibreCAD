@@ -25,6 +25,7 @@
 #define LC_DLGWIDGETCREATOR_H
 
 #include <QListWidget>
+
 #include "lc_dialog.h"
 #include "lc_menuactivator.h"
 
@@ -43,11 +44,11 @@ public:
 protected slots:
     void addChosenAction() const;
     void addSeparator() const;
-    void addChosenActionForItem(QListWidgetItem* item) const;
-    void removeChosenAction();
-    void removeAllChosenActions();
+    void addChosenActionForItem(const QListWidgetItem* item) const;
+    void removeChosenAction() const;
+    void removeAllChosenActions() const;
     void removeChosenActionForItem(QListWidgetItem* item) const;
-    void onCategoryActivated(int index);
+    void onCategoryActivated(int index) const;
     void onAssignMenu(bool checked);
     void onUnAssignMenu(bool checked);
     void onWidgetNameIndexChanged(int index);
@@ -62,16 +63,16 @@ private:
     bool m_forMenu;
     LC_ActionGroupManager* m_actionGroupManager;
     QList<LC_MenuActivator*> m_menuActivators;
-    void setCategoryAll();
+    void setCategoryAll() const;
     void loadCustomWidgets();
     LC_MenuActivator* findMenuActivator(const QString& menuName);
     void removeMenuActivator(const QString& menuName);
     QString getSettingsGroupName() const;
-    QString createMenuItemDisplayName(QString key, LC_MenuActivator* activator);
-    QString createMenuItemDisplayName(QString key);
+    QString createMenuItemDisplayName(const QString& key, const LC_MenuActivator* activator);
+    QString createMenuItemDisplayName(const QString& key);
     QStringList getChosenActionNames() const;
     void loadWidgetActions(int index);
     void onToolbarPlacementIndexChanged(int index);
 };
 
-#endif // LC_DLGWIDGETCREATOR_H
+#endif

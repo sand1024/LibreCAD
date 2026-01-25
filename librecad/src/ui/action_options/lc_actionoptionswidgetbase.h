@@ -23,7 +23,6 @@
 #ifndef LC_ACTIONOPTIONSWIDGETBASE_H
 #define LC_ACTIONOPTIONSWIDGETBASE_H
 
-#include "lc_actioncontext.h"
 #include "lc_actionoptionswidget.h"
 
 class RS_PreviewActionInterface;
@@ -42,4 +41,4 @@ private:
     QString m_settingsOptionNamePrefix;
 };
 
-#endif // LC_ACTIONOPTIONSWIDGETBASE_H
+#endif

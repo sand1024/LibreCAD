@@ -24,6 +24,7 @@
 **
 **********************************************************************/
 #include "qg_linerelangleoptions.h"
+
 #include "rs_actiondrawlinerelangle.h"
 #include "rs_dimension.h"
 #include "ui_qg_linerelangleoptions.h"
@@ -31,7 +32,7 @@
 namespace
 {
     // format a number with specified digits after point
-    [[maybe_unused]] QString formatNumber(double value, int precision = 8) {
+    [[maybe_unused]] QString formatNumber(const double value, int precision = 8) {
         precision = std::max(precision, 0);
         precision = std::min(precision, 16);
         //        LC_ERR<<"value: "<<value;
@@ -78,14 +79,14 @@ void QG_LineRelAngleOptions::doSaveSettings() {
     save("Length", ui->leLength->text());
 }
 
-bool QG_LineRelAngleOptions::checkActionRttiValid(RS2::ActionType actionType) {
+bool QG_LineRelAngleOptions::checkActionRttiValid(const RS2::ActionType actionType) {
     return actionType == RS2::ActionDrawLineRelAngle ||
         actionType == RS2::ActionDrawLineOrthogonal;
 }
 
-void QG_LineRelAngleOptions::doSetAction(RS_ActionInterface* a, bool update) {
-    m_action = dynamic_cast<RS_ActionDrawLineRelAngle*>(a);
-    bool fixedAngle = m_action->hasFixedAngle();
+void QG_LineRelAngleOptions::doSetAction(RS_ActionInterface* a, const bool update) {
+    m_action = static_cast<RS_ActionDrawLineRelAngle*>(a);
+    const bool fixedAngle = m_action->hasFixedAngle();
 
     ui->lAngle->setVisible(!fixedAngle);
     ui->leAngle->setVisible(!fixedAngle);
@@ -121,7 +122,7 @@ void QG_LineRelAngleOptions::onAngleEditingFinished() {
     setAngleToActionAndView(ui->leAngle->text());
 }
 
-void QG_LineRelAngleOptions::setLengthToActionAndView(QString val) {
+void QG_LineRelAngleOptions::setLengthToActionAndView(const QString& val) {
     double length;
     if (toDouble(val, length, 1.0, false)) {
         m_action->setLength(length);
@@ -129,7 +130,7 @@ void QG_LineRelAngleOptions::setLengthToActionAndView(QString val) {
     }
 }
 
-void QG_LineRelAngleOptions::setAngleToActionAndView(QString val) {
+void QG_LineRelAngleOptions::setAngleToActionAndView(const QString& val) {
     double angle;
     if (toDoubleAngleDegrees(val, angle, 1.0, false)) {
         m_action->setAngle(angle);

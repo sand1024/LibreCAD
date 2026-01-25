@@ -26,7 +26,6 @@
 
 #include "lc_penwizard.h"
 
-#include <QToolButton>
 #include <QVBoxLayout>
 #include <qnetworkreply.h>
 
@@ -41,7 +40,7 @@ LC_PenWizard::LC_PenWizard(QWidget* parent)
     : LC_GraphicViewAwareWidget(parent)
       , m_colorWizard(new ColorWizard(this)) {
     // auto frame = new QFrame(this);
-    auto layout = new QVBoxLayout;
+    const auto layout = new QVBoxLayout;
     this->setLayout(layout);
 
     layout->setContentsMargins(QMargins{});
@@ -54,43 +53,43 @@ LC_PenWizard::LC_PenWizard(QWidget* parent)
     updateWidgetSettings();
 }
 
-void LC_PenWizard::setColorForSelected(QColor color) const {
-    auto graphic = m_graphicView->getGraphic();
+void LC_PenWizard::setColorForSelected(const QColor color) const {
+    const auto graphic = m_graphicView->getGraphic();
     auto pen = graphic->getActivePen();
     pen.setColor(RS_Color(color));
 
     QList<RS_Entity*> selection;
     if (graphic->collectSelected(selection)) {
-        graphic->undoableModify(m_graphicView->getViewPort(), [this, selection, pen](LC_DocumentModificationBatch& ctx)-> bool {
-                                    for (auto e : selection) {
+        graphic->undoableModify(m_graphicView->getViewPort(), [selection, pen](LC_DocumentModificationBatch& ctx)-> bool {
+                                    for (const auto e : selection) {
                                         RS_Entity* clone = e->clone();
                                         clone->setPen(pen);
                                         ctx += clone;
                                         ctx -= e;
                                     }
                                     return true;
-                                }, [this, selection, pen](LC_DocumentModificationBatch& ctx, RS_Document* doc)-> void {
+                                }, [](const LC_DocumentModificationBatch& ctx, RS_Document* doc)-> void {
                                     doc->select(ctx.entitiesToAdd);
                                 });
     }
 }
 
-void LC_PenWizard::selectByColor(QColor color) const {
-    auto graphic = m_graphicView->getGraphic();
+void LC_PenWizard::selectByColor(const QColor color) const {
+    const auto graphic = m_graphicView->getGraphic();
     QString colorName = color.name();
-    RS_Selection sel(m_graphicView);
-    sel.selectIfMatched(graphic->getEntityList(), true, [colorName](RS_Entity* e)->bool {
+    const RS_Selection sel(m_graphicView);
+    sel.selectIfMatched(graphic->getEntityList(), true, [colorName](const RS_Entity* e)->bool {
         return e->getPen().getColor().name() == colorName;
     });
 }
 
-void LC_PenWizard::setActivePenColor(QColor color) const {
-    auto graphic = m_graphicView->getGraphic();
+void LC_PenWizard::setActivePenColor(const QColor color) const {
+    const auto graphic = m_graphicView->getGraphic();
     auto pen = graphic->getActivePen();
     pen.setColor(RS_Color(color));
     graphic->setActivePen(pen);
 }
 
-void LC_PenWizard::setGraphicView(RS_GraphicView* mdiWindow) {
-    m_graphicView = mdiWindow;
+void LC_PenWizard::setGraphicView(RS_GraphicView* gview) {
+    m_graphicView = gview;
 }

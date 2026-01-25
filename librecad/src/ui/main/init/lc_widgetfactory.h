@@ -23,7 +23,7 @@
 #ifndef LC_WIDGETFACTORY_H
 #define LC_WIDGETFACTORY_H
 
-#include <QObject>
+
 #include <lc_appwindowaware.h>
 
 #include "lc_actionfactory.h"
@@ -43,7 +43,7 @@ class LC_ActionGroupManager;
 class LC_WidgetFactory:public QObject, public LC_AppWindowAware {
     Q_OBJECT
 public:
-    LC_WidgetFactory(QC_ApplicationWindow *main_win);
+    explicit LC_WidgetFactory(QC_ApplicationWindow *mainWin);
     ~LC_WidgetFactory() override = default;
     void initWidgets();
     static void updateDockWidgetsTitleBarType(const QC_ApplicationWindow* mainWin, bool verticalTitle);
@@ -51,27 +51,27 @@ public:
 private:
     LC_ActionGroupManager *m_agm {nullptr};
     LC_ActionFactory *m_actionFactory {nullptr};
-    QDockWidget *createDockWidget(const QString &title, const char *name, const QString& verticalTitle = "") const;
+    QDockWidget *createDockWidget(const QString &horizontalTitle, const char *name, const QString& verticalTitle = "") const;
     QDockWidget *createPenPalletteWidget();
-    QDockWidget *createLayerWidget(QG_ActionHandler *action_handler);
+    QDockWidget* createLayerWidget(const QG_ActionHandler* actionHandler);
     QDockWidget *createNamedViewsWidget();
     QDockWidget *createUCSListWidget();
-    QDockWidget *createLayerTreeWidget(QG_ActionHandler *action_handler);
+    QDockWidget *createLayerTreeWidget(const QG_ActionHandler* actionHandler);
     QDockWidget *createEntityInfoWidget();
     QDockWidget* createPropertySheetWidget();
-    QDockWidget *createBlockListWidget(QG_ActionHandler *actionHandler);
-    QDockWidget *createLibraryWidget(QG_ActionHandler *action_handler);
-    QDockWidget *createCmdWidget(QG_ActionHandler *action_handler);
+    QDockWidget *createBlockListWidget(const QG_ActionHandler* actionHandler);
+    QDockWidget* createLibraryWidget(const QG_ActionHandler* actionHandler);
+    QDockWidget *createCmdWidget(QG_ActionHandler *actionHandler);
     void modifyCommandTitleBar(Qt::DockWidgetArea area) const;
     QDockWidget* createPenWizardWidget();
     void initLeftCADSidebar();
     void createCADMegaSidebar(int columns, int iconSize, bool flatButtons);
-    void createRightSidebar(QG_ActionHandler *action_handler);
+    void createRightSidebar(QG_ActionHandler *actionHandler);
     void initStatusBar();
-    void createCADSidebar(int columns, int icon_size, bool flatButtons);
+    void createCADSidebar(int columns, int iconSize, bool flatButtons);
     LC_CADDockWidget *cadDockWidget(const QString &title, const char *name, const QList<QAction *> &actions, int columns, int iconSize, bool flatButtons);
     void addToBottom(QToolBar *toolbar) const;
-    QToolBar *createStatusBarToolbar(QSizePolicy tbPolicy, QWidget* widget, const QString& title, const char* name, bool showToolTip) const;
+    QToolBar *createStatusBarToolbar(const QSizePolicy &tbPolicy, QWidget* widget, const QString& title, const char* name, bool showToolTip) const;
     void addAction(QToolBar *toolbar, const char *actionName) const;
     void makeActionsInvisible(const std::vector<QString> &actionNames) const;
     static void setDockWidgetTitleType(QDockWidget *widget, bool verticalTitleBar);

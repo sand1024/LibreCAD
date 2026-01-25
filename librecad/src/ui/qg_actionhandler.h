@@ -27,8 +27,9 @@
 
 #ifndef QG_ACTIONHANDLER_H
 #define QG_ACTIONHANDLER_H
-#include "rs.h"
 #include <QObject>
+
+#include "rs.h"
 
 struct RS_SnapMode;
 class RS_GraphicView;
@@ -57,18 +58,18 @@ public:
     bool keycode(const QString &code) const;
     bool command(const QString &cmd) const;
     QStringList getAvailableCommands() const;
-    void setDocumentAndView(RS_Document* document, RS_GraphicView* graphicView);
-    void setActionContext(LC_DefaultActionContext* actionContext) {m_actionContext = actionContext;};
+    void setDocumentAndView(RS_Document* doc, RS_GraphicView* graphicView);
+    void setActionContext(LC_DefaultActionContext* actionContext) {m_actionContext = actionContext;}
     void setSnapManager(LC_SnapManager* snapManager);
     std::shared_ptr<RS_ActionInterface> createActionInstance(RS2::ActionType id, void* data) const;
 public slots:
-    void setSnaps(RS_SnapMode const &s) const;
+    void setSnaps(const RS_SnapMode&s) const;
     void slotSnapMiddleManual() const;
     void slotSetRelativeZero() const;
     void slotLockRelativeZero(bool on) const;
 private:
-    RS_GraphicView *view {nullptr};
-    RS_Document* document {nullptr};
+    RS_GraphicView* m_view {nullptr};
+    RS_Document* m_document {nullptr};
     LC_DefaultActionContext* m_actionContext{nullptr};
     LC_SnapManager* m_snapManager {nullptr};
 };

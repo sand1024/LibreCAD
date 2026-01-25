@@ -22,12 +22,12 @@
  */
 
 #include "lc_actiondrawarc2poptions.h"
+
 #include "lc_actiondrawarc2pointsbase.h"
 #include "ui_lc_actiondrawarc2poptions.h"
 
-LC_ActionDrawArc2POptions::LC_ActionDrawArc2POptions(int actionType)
-    : LC_ActionOptionsWidget()
-    , ui(new Ui::LC_ActionDrawArc2POptions){
+LC_ActionDrawArc2POptions::LC_ActionDrawArc2POptions(const int actionType)
+    : ui(new Ui::LC_ActionDrawArc2POptions){
     ui->setupUi(this);
     connect(ui->rbPos, &QRadioButton::toggled, this, &LC_ActionDrawArc2POptions::onDirectionChanged);
     connect(ui->rbNeg,  &QRadioButton::toggled, this, &LC_ActionDrawArc2POptions::onDirectionChanged);
@@ -68,7 +68,7 @@ LC_ActionDrawArc2POptions::LC_ActionDrawArc2POptions(int actionType)
             m_optionNamePrefix = "Arc2PAngle";
             ui->tbPickDist->setToolTip(tr("Pick angle from drawing"));
             ui->tbPickDist->setVisible(false);
-            ui->tbPickAngle->setVisible(true && m_interactiveInputControlsVisible);
+            ui->tbPickAngle->setVisible(m_interactiveInputControlsVisible);
             pickAngleSetup("angle", ui->tbPickAngle, ui->leValue);
             break;
         }
@@ -79,8 +79,7 @@ LC_ActionDrawArc2POptions::LC_ActionDrawArc2POptions(int actionType)
 }
 
 void LC_ActionDrawArc2POptions::updateTooltip( QLabel *label) const {
-    QString toolTip;
-    toolTip = label->toolTip();
+    const QString toolTip = label->toolTip();
     label->setToolTip("");
     ui->leValue->setToolTip(toolTip);
     label->setVisible(true);
@@ -99,11 +98,11 @@ void LC_ActionDrawArc2POptions::doSaveSettings(){
     save("Parameter", ui->leValue->text());
 }
 
-bool LC_ActionDrawArc2POptions::checkActionRttiValid(RS2::ActionType actionType) {
+bool LC_ActionDrawArc2POptions::checkActionRttiValid(const RS2::ActionType actionType) {
     return actionType == m_supportedActionType;
 }
 
-void LC_ActionDrawArc2POptions::setReversedToActionAndView(bool reversed) const {
+void LC_ActionDrawArc2POptions::setReversedToActionAndView(const bool reversed) const {
     ui->rbNeg->setChecked(reversed);
     m_action->setReversed(reversed);
 }
@@ -115,8 +114,8 @@ void LC_ActionDrawArc2POptions::setReversedToActionAndView(bool reversed) const 
 void LC_ActionDrawArc2POptions::onDirectionChanged(bool /*pos*/){
     setReversedToActionAndView( ui->rbNeg->isChecked());
 }
-void LC_ActionDrawArc2POptions::doSetAction(RS_ActionInterface *a, bool update) {
-    m_action = dynamic_cast<LC_ActionDrawArc2PointsBase *>(a);
+void LC_ActionDrawArc2POptions::doSetAction(RS_ActionInterface *a, const bool update) {
+    m_action = static_cast<LC_ActionDrawArc2PointsBase *>(a);
     bool reversed;
     QString parameter;
     if (update){
@@ -143,7 +142,7 @@ void LC_ActionDrawArc2POptions::onValueChanged() {
     setParameterToActionAndView(ui->leValue->text());
 }
 
-void LC_ActionDrawArc2POptions::setParameterToActionAndView(QString val) {
+void LC_ActionDrawArc2POptions::setParameterToActionAndView(const QString& val) {
     double param;
     if (m_supportedActionType == RS2::ActionDrawArc2PAngle){
         if (toDoubleAngleDegrees(val, param, 1.0, true)){

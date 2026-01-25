@@ -33,7 +33,6 @@ struct RS_RotateData;
 class QG_DlgRotate : public QDialog, public Ui::QG_DlgRotate
 {
     Q_OBJECT
-
 public:
     QG_DlgRotate(QWidget* parent = nullptr, bool modal = false, Qt::WindowFlags fl = {});
     ~QG_DlgRotate();
@@ -58,4 +57,4 @@ private:
 
 };
 
-#endif // QG_DLGROTATE_H
+#endif

@@ -20,13 +20,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
 #include "lc_slicedivideoptions.h"
+
 #include "lc_actiondrawslicedivide.h"
 #include "ui_lc_slicedivideoptions.h"
 
 LC_SliceDivideOptions::LC_SliceDivideOptions() :
     LC_ActionOptionsWidget(nullptr),
-    ui(new Ui::LC_SliceDivideOptions),
-    m_action(nullptr){
+    ui(new Ui::LC_SliceDivideOptions){
     ui->setupUi(this);
 
     connect(ui->sbCount, &QSpinBox::valueChanged, this, &LC_SliceDivideOptions::onCountChanged);
@@ -53,7 +53,7 @@ LC_SliceDivideOptions::~LC_SliceDivideOptions(){
     delete ui;
 }
 
-bool LC_SliceDivideOptions::checkActionRttiValid(RS2::ActionType actionType){
+bool LC_SliceDivideOptions::checkActionRttiValid(const RS2::ActionType actionType){
     return actionType == RS2::ActionDrawSliceDivideLine || actionType == RS2::ActionDrawSliceDivideCircle;
 }
 
@@ -61,13 +61,11 @@ QString LC_SliceDivideOptions::getSettingsOptionNamePrefix(){
     if (m_forCircle){
       return "SliceDivideCircle";
     }
-    else{
-        return "SliceDivideLine";
-    }
+    return "SliceDivideLine";
 }
 
 // just provide indication to the user that some options are not applicable for selected entity
-void LC_SliceDivideOptions::updateUI(int mode){
+void LC_SliceDivideOptions::updateUI(const int mode){
     switch (mode){
         case LC_ActionDrawSliceDivide::SELECTION_NONE:
             ui->frmCircle->setEnabled(true);
@@ -86,8 +84,8 @@ void LC_SliceDivideOptions::updateUI(int mode){
     }
 }
 
-void LC_SliceDivideOptions::doSetAction(RS_ActionInterface *a, bool update){
-        m_action = dynamic_cast<LC_ActionDrawSliceDivide *>(a);
+void LC_SliceDivideOptions::doSetAction(RS_ActionInterface *a, const bool update){
+        m_action = static_cast<LC_ActionDrawSliceDivide *>(a);
 
         m_forCircle = a->rtti() == RS2::ActionDrawSliceDivideCircle;
 
@@ -115,7 +113,7 @@ void LC_SliceDivideOptions::doSetAction(RS_ActionInterface *a, bool update){
             tickAngleRelative = m_action->isTickAngleRelative();
             divide = m_action->isDivideEntity();
             fixedDistance = m_action->isFixedDistance();
-        } else {            
+        } else {
             count = loadInt("Count", 1);
             tickLen = load("Length", "1.0");
             tickOffset = load("Offset", "0.0");
@@ -147,7 +145,7 @@ void LC_SliceDivideOptions::doSetAction(RS_ActionInterface *a, bool update){
         }
 }
 
-void LC_SliceDivideOptions::doSaveSettings(){    
+void LC_SliceDivideOptions::doSaveSettings(){
     save("Count", ui->sbCount->value());
     save("Length", ui->leTickLengh->text());
     save("Offset", ui->leTickOffset->text());
@@ -161,7 +159,7 @@ void LC_SliceDivideOptions::doSaveSettings(){
     save("FixedDistance", ui->cbMode->isChecked());
 }
 
-void LC_SliceDivideOptions::onCountChanged(int value){
+void LC_SliceDivideOptions::onCountChanged(const int value){
     if (m_action != nullptr){
         setCountToActionAndView(value);
     }
@@ -192,53 +190,53 @@ void LC_SliceDivideOptions::onCircleStartAngleEditingFinished(){
     setCircleStartAngleToActionAndView(expr);
 }
 
-void LC_SliceDivideOptions::onDrawTickOnEdgesIndexChanged(int index){
+void LC_SliceDivideOptions::onDrawTickOnEdgesIndexChanged(const int index){
     setDrawEdgesTicksModeToActionAndView(index);
 }
 
-void LC_SliceDivideOptions::onRelAngleClicked(bool checked){
+void LC_SliceDivideOptions::onRelAngleClicked(const bool checked){
     setTickAngleRelativeToActionAndView(checked);
 }
 
-void LC_SliceDivideOptions::onDivideClicked(bool checked){
+void LC_SliceDivideOptions::onDivideClicked(const bool checked){
     setDivideFlagToActionAndView(checked);
 }
-void LC_SliceDivideOptions::onModeClicked(bool checked){
+void LC_SliceDivideOptions::onModeClicked(const bool checked){
     setFixedDistanceFlagToActionAndView (checked);
 }
 
-void LC_SliceDivideOptions::onTickSnapIndexChanged(int index){
+void LC_SliceDivideOptions::onTickSnapIndexChanged(const int index){
     setTicksSnapModeToActionAndView(index);
 }
 
-void LC_SliceDivideOptions::setDrawEdgesTicksModeToActionAndView(int index) const {
+void LC_SliceDivideOptions::setDrawEdgesTicksModeToActionAndView(const int index) const {
     m_action->setDrawTickOnEdgeMode(index);
     ui->cbEdgeTick->setCurrentIndex(index);
 }
 
-void LC_SliceDivideOptions::setTicksSnapModeToActionAndView(int index) const {
+void LC_SliceDivideOptions::setTicksSnapModeToActionAndView(const int index) const {
     m_action->setTickSnapMode(index);
     ui->cbTickSnap->setCurrentIndex(index);
 }
 
-void LC_SliceDivideOptions::setTickAngleRelativeToActionAndView(bool relative) const {
+void LC_SliceDivideOptions::setTickAngleRelativeToActionAndView(const bool relative) const {
     m_action->setTickAngleRelative(relative);
     ui->cbRelAngle->setChecked(relative);
 }
 
-void LC_SliceDivideOptions::setDivideFlagToActionAndView(bool value) const {
+void LC_SliceDivideOptions::setDivideFlagToActionAndView(const bool value) const {
     m_action->setDivideEntity(value);
     ui->cbDivide->setChecked(value);
 }
 
-void LC_SliceDivideOptions::setFixedDistanceFlagToActionAndView(bool value) const {
+void LC_SliceDivideOptions::setFixedDistanceFlagToActionAndView(const bool value) const {
     m_action->setFixedDistance(value);
     ui->cbMode->setChecked(value);
     ui->frmCount->setVisible(!value);
     ui->frmDistance->setVisible(value);
 }
 
-void LC_SliceDivideOptions::setCountToActionAndView(int val) const {
+void LC_SliceDivideOptions::setCountToActionAndView(const int val) const {
   m_action->setTickCount(val);
   ui->sbCount->setValue(val);
 }

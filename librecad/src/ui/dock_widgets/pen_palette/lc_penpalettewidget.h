@@ -40,12 +40,12 @@ class LC_PenPaletteWidget :public LC_GraphicViewAwareWidget, public Ui::LC_PenPa
 public:
     explicit LC_PenPaletteWidget(const QString& title, QWidget* parent);
     ~LC_PenPaletteWidget() override = default ;
-    void setGraphicView(RS_GraphicView *gview) override;
+    void setGraphicView(RS_GraphicView *gv) override;
     void persist() const;
 signals:
     void escape();
 public slots:
-    void onTableClicked(QModelIndex modelIndex);
+    void onTableClicked(const QModelIndex& modelIndex);
     void onTableSelectionChanged(const QItemSelection &selected,const QItemSelection &deselected) const;
     void onPenEditorChanged();
     void keyPressEvent(QKeyEvent* e) override;
@@ -94,21 +94,20 @@ protected:
     void markEditingPenChanged(bool changed);
     void updateModel() const;
     void initPenEditor();
-    void doUpdatePenEditorByPenAttributes(const RS_Color &color, RS2::LineWidth &width, RS2::LineType &lineType);
+    void doUpdatePenEditorByPenAttributes(const RS_Color &color, RS2::LineWidth width, RS2::LineType lineType);
     void doFillPenEditorByPen(const RS_Pen& pen);
     RS_Pen createPenByEditor(const RS_Pen &originalPen) const;
-    int invokeItemRemovalDialog(QString &penName);
-    void doSelectEntitiesThatMatchToPenAttributes(
-        const RS2::LineType &lineType, const RS2::LineWidth &width, const RS_Color &color, bool colorCheck, bool resolvePens, bool resolveLayers) const;
+    int invokeItemRemovalDialog(const QString &penName);
+    void doSelectEntitiesThatMatchToPenAttributes(RS2::LineType lineType, RS2::LineWidth width, const RS_Color &color, bool colorCheck, bool resolvePens, bool resolveLayers) const;
     void redrawDrawing() const;
     void doApplyPenAttributesToSelection(RS2::LineType lineType, RS2::LineWidth width, RS_Color color, bool modifyColor) const;
     void showEntitySelectionInfoDialog();
     QModelIndex getSelectedItemIndex() const;
     LC_PenItem *getSelectedPenItem() const;
-    RS_Pen createPenByPenItem(RS_Pen &pen, LC_PenItem *pItem);
+    RS_Pen createPenByPenItem(RS_Pen &originalPen, LC_PenItem *item);
     void doRemovePenItem(LC_PenItem *penItem);
-    void doRemovePenItems(QList<LC_PenItem *> &penItems);
-    int invokeItemMultiRemovalDialog(QList<LC_PenItem *> &penItems);
+    void doRemovePenItems(const QList<LC_PenItem *> &penItems);
+    int invokeItemMultiRemovalDialog(const QList<LC_PenItem *> &penItems);
     QList<LC_PenItem *> getSelectedPenItems() const;
     void doFillPenEditorBySelectedEntity(bool resolvePenOnEntitySelect);
     void doSelectEntitiesByPenEditor(bool resolvePens, bool resolveLayers) const;
@@ -120,4 +119,4 @@ protected:
     bool invokeUnableToSavePenDataDialog();
     void setLayerList(RS_LayerList *ll);
 };
-#endif // LC_PENPALETTEWIDGET_H
+#endif

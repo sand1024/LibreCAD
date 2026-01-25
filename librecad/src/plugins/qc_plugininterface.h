@@ -37,7 +37,7 @@ class Document_Interface;
 class PluginMenuLocation
 {
     public:
-        PluginMenuLocation(QString menuEntryPoint, QString menuEntryActionName) {
+        PluginMenuLocation(const QString& menuEntryPoint, const QString& menuEntryActionName) {
             this->menuEntryActionName=menuEntryActionName;
             this->menuEntryPoint=menuEntryPoint;
         }
@@ -76,4 +76,3 @@ Q_DECLARE_INTERFACE(QC_PluginInterface, LC_DocumentInterface_iid)
 
 
 #endif
-

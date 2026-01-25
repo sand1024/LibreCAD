@@ -33,7 +33,6 @@ struct RS_ScaleData;
 
 class QG_DlgScale : public QDialog, public Ui::QG_DlgScale{
     Q_OBJECT
-
 public:
     QG_DlgScale(QWidget* parent = nullptr, bool modal = false, Qt::WindowFlags fl = {});
 
@@ -52,4 +51,4 @@ private:
     void init();
 };
 
-#endif // QG_DLGSCALE_H
+#endif

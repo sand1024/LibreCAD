@@ -86,7 +86,7 @@
   <customwidget>
    <class>LC_PropertiesSheetWidget</class>
    <extends>QWidget</extends>
-   <header>lc_propertiessheetwidget.h</header>
+   <header>lc_properties_sheet_widget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

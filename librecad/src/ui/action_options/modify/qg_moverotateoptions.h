@@ -48,7 +48,7 @@ protected:
     void setUseCurrentLayerToActionAndView(bool val) const;
     void setUseCurrentAttributesToActionAndView(bool val) const;
     void setKeepOriginalsToActionAndView(bool val) const;
-    void setAngleToActionAndView(QString val);
+    void setAngleToActionAndView(const QString& val);
     void setFreeAngleToModelAndView(bool val) const;
     void setSameAngleForCopiesToActionAndView(bool val) const;
 protected slots:
@@ -65,4 +65,4 @@ private:
     std::unique_ptr<Ui::Ui_MoveRotateOptions> ui;
     RS_ActionModifyMoveRotate* m_action = nullptr;
 };
-#endif // QG_MOVEROTATEOPTIONS_H
+#endif

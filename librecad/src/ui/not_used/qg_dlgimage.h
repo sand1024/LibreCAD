@@ -50,4 +50,4 @@ private:
     double m_scale = 1.;
 };
 
-#endif // QG_DLGIMAGE_H
+#endif

@@ -32,9 +32,9 @@ class QGridLayout;
 class LC_CADDockWidget : public QDockWidget{
     Q_OBJECT
 public:
-    LC_CADDockWidget(QWidget* parent, bool allTools = false);
+    explicit LC_CADDockWidget(QWidget* parent, bool allTools = false);
     void addSpacers(QGridLayout* layout, int columns);
-    void addActions(const QList<QAction*>& list, int columns, int icon_size, bool flatButton);
+    void addActions(const QList<QAction*>& list, int columns, int iconSize, bool flatButton);
     void doUpdateWidgetSettings(int leftToolbarColumnsCount,
                                 int leftToolbarIconSize,
                                 bool leftToolbarFlatIcons);
@@ -46,4 +46,4 @@ public slots:
     void updateWidgetSettings();
 };
 
-#endif // LC_CADDOCKWIDGET_H
+#endif

@@ -30,7 +30,6 @@
 
 #include "lc_actiongroup.h"
 #include "lc_actiongroupmanager.h"
-#include "lc_creatorinvoker.h"
 #include "lc_dlgmenuassigner.h"
 #include "lc_dlgnewwidget.h"
 #include "lc_menuactivator.h"
@@ -41,7 +40,7 @@ namespace {
     const QString g_menuNameSeparator = " | ";
 }
 
-LC_DlgWidgetCreator::LC_DlgWidgetCreator(QWidget *parent, bool forMenu, LC_ActionGroupManager* actionGroupManager)
+LC_DlgWidgetCreator::LC_DlgWidgetCreator(QWidget *parent, const bool forMenu, LC_ActionGroupManager* actionGroupManager)
     : LC_Dialog(parent, forMenu ? "MenuCreator" : "ToolbarCreator")
     , ui(new Ui::LC_DlgWidgetCreator), m_forMenu{forMenu}, m_actionGroupManager{actionGroupManager}{
     ui->setupUi(this);
@@ -49,7 +48,7 @@ LC_DlgWidgetCreator::LC_DlgWidgetCreator(QWidget *parent, bool forMenu, LC_Actio
     ui->gbMenuAssignment->setVisible(forMenu);
     ui->gbToolbarPlacement->setVisible(!forMenu);
 
-    bool autoRaiseButtons = LC_GET_ONE_BOOL("Widgets", "DockWidgetsFlatIcons", true);
+    const bool autoRaiseButtons = LC_GET_ONE_BOOL("Widgets", "DockWidgetsFlatIcons", true);
     ui->btnDelete->setAutoRaise(autoRaiseButtons);
     ui->btnSave->setAutoRaise(autoRaiseButtons);
     ui->btnNew->setAutoRaise(autoRaiseButtons);
@@ -117,8 +116,8 @@ LC_DlgWidgetCreator::LC_DlgWidgetCreator(QWidget *parent, bool forMenu, LC_Actio
 }
 
 void LC_DlgWidgetCreator::updateSaveAndDeleteButtons() const {
-    int widgetsCount = ui->cbWidgetName->count();
-    auto hasItems = widgetsCount > 0;
+    const int widgetsCount = ui->cbWidgetName->count();
+    const auto hasItems = widgetsCount > 0;
     ui->btnDelete->setEnabled(hasItems);
     ui->btnSave->setEnabled(hasItems);
 }
@@ -127,14 +126,14 @@ LC_DlgWidgetCreator::~LC_DlgWidgetCreator(){
     delete ui;
 }
 
-void LC_DlgWidgetCreator::setCategoryAll() {
+void LC_DlgWidgetCreator::setCategoryAll() const {
     ui->cbCategories->setCurrentIndex(0);
     onCategoryActivated(0);
 }
 
 
 void LC_DlgWidgetCreator::addChosenAction() const {
-    QListWidgetItem *item = ui->alOfferredActions->currentItem();
+    const QListWidgetItem *item = ui->alOfferredActions->currentItem();
     if (item != nullptr) {
         ui->alChosenActions->addItem(item->clone());
         delete item;
@@ -142,25 +141,25 @@ void LC_DlgWidgetCreator::addChosenAction() const {
 }
 
 void LC_DlgWidgetCreator::addSeparator() const {
-    auto item = new QListWidgetItem("----------", nullptr);
+    const auto item = new QListWidgetItem("----------", nullptr);
     item->setWhatsThis("");
     ui->alChosenActions->addItem(item);
 }
 
-void LC_DlgWidgetCreator::addChosenActionForItem(QListWidgetItem *item) const {
+void LC_DlgWidgetCreator::addChosenActionForItem(const QListWidgetItem *item) const {
     ui->alChosenActions->addItem(item->clone());
     delete item;
 }
 
-void LC_DlgWidgetCreator::removeAllChosenActions() {
-    int count = ui->alChosenActions->count();
+void LC_DlgWidgetCreator::removeAllChosenActions() const {
+    const int count = ui->alChosenActions->count();
     for (int i = count - 1; i >= 0; i--) {
-        auto item = ui->alChosenActions->item(i);
+        const auto item = ui->alChosenActions->item(i);
         removeChosenActionForItem(item);
     }
 }
 
-void LC_DlgWidgetCreator::removeChosenAction() {
+void LC_DlgWidgetCreator::removeChosenAction() const {
     QListWidgetItem *item = ui->alChosenActions->currentItem();
     if (item != nullptr) {
         removeChosenActionForItem(item);
@@ -168,16 +167,16 @@ void LC_DlgWidgetCreator::removeChosenAction() {
 }
 
 void LC_DlgWidgetCreator::removeChosenActionForItem(QListWidgetItem *item) const {
-    if (item->whatsThis() != ""){
-        auto categoryData = ui->cbCategories->currentData(Qt::UserRole);
-        QString category = categoryData.toString();
+    if (!item->whatsThis().isEmpty()){
+        const auto categoryData = ui->cbCategories->currentData(Qt::UserRole);
+        const QString category = categoryData.toString();
         bool mayAddToOfferedActions = false;
         if (category == "_all") {
             mayAddToOfferedActions = true;
         }
         else {
-            auto itemCategoryData = item->data(Qt::UserRole);
-            auto itemCategory = itemCategoryData.toString();
+            const auto itemCategoryData = item->data(Qt::UserRole);
+            const auto itemCategory = itemCategoryData.toString();
             if (category == itemCategory) {
                 mayAddToOfferedActions = true;
             }
@@ -186,14 +185,14 @@ void LC_DlgWidgetCreator::removeChosenActionForItem(QListWidgetItem *item) const
             // here we try to check that there is no such item in the list of offered actions - so we avoid duplication
             // that may occur after reloading list of offered actions and chosen actions.
             // NOTE:: this means that unique text (action names) is expected!!!
-            auto existingItems = ui->alOfferredActions->findItems(item->text(), Qt::MatchExactly);
+            const auto existingItems = ui->alOfferredActions->findItems(item->text(), Qt::MatchExactly);
             if (existingItems.isEmpty()) {
                 ui->alOfferredActions->addItem(item->clone());
             }
         }
     }
 
-    int row =  ui->alChosenActions->row(item);
+    const int row =  ui->alChosenActions->row(item);
     if (row > 0) {
         ui->alChosenActions->removeItemWidget(item);
     }
@@ -201,14 +200,14 @@ void LC_DlgWidgetCreator::removeChosenActionForItem(QListWidgetItem *item) const
 }
 
 void LC_DlgWidgetCreator::onUnAssignMenu([[maybe_unused]]bool checked) {
-    int menuIndex = ui->cbWidgetName->currentIndex();
+    const int menuIndex = ui->cbWidgetName->currentIndex();
     if (menuIndex == -1) {
         return;
     }
-    QString menuName = ui->cbWidgetName->currentData().toString();
-    LC_MenuActivator* activator = findMenuActivator(menuName);
+    const QString menuName = ui->cbWidgetName->currentData().toString();
+    const LC_MenuActivator* activator = findMenuActivator(menuName);
     if (activator != nullptr) {
-        auto questionResult = QMessageBox::question(this, tr("Unassign menu"),
+        const auto questionResult = QMessageBox::question(this, tr("Unassign menu"),
                                                     tr(
                                                         "Are you sure you'd like to unassign \"%1\" menu? Note: Just an invocation shortcut will be "
                                                         "removed and menu will not be deleted.").arg(menuName),
@@ -218,7 +217,7 @@ void LC_DlgWidgetCreator::onUnAssignMenu([[maybe_unused]]bool checked) {
             LC_REMOVE(activator->getShortcut());
             LC_GROUP_END();
 
-            QString newDisplayName = createMenuItemDisplayName(menuName, nullptr);
+            const QString newDisplayName = createMenuItemDisplayName(menuName, nullptr);
             ui->cbWidgetName->setItemText(menuIndex, newDisplayName);
             removeMenuActivator(menuName);
 
@@ -229,9 +228,9 @@ void LC_DlgWidgetCreator::onUnAssignMenu([[maybe_unused]]bool checked) {
 }
 
 void LC_DlgWidgetCreator::onAssignMenu([[maybe_unused]]bool checked) {
-    int menuIndex = ui->cbWidgetName->currentIndex();
+    const int menuIndex = ui->cbWidgetName->currentIndex();
     if (menuIndex != -1) {
-        QString menuName = ui->cbWidgetName->currentData().toString();
+        const QString menuName = ui->cbWidgetName->currentData().toString();
         if (menuName.isEmpty()) {
             return;
         }
@@ -246,17 +245,17 @@ void LC_DlgWidgetCreator::onAssignMenu([[maybe_unused]]bool checked) {
         copyToEdit->setMenuName(menuName);
 
         auto* dlgMenuAssigner = new LC_DlgMenuAssigner(this, copyToEdit, &m_menuActivators);
-        if (dlgMenuAssigner->exec() == QDialog::Accepted) {
+        if (dlgMenuAssigner->exec() == Accepted) {
             copyToEdit->update();
-            QString shortcutView = copyToEdit->getShortcutView();
+            const QString shortcutView = copyToEdit->getShortcutView();
             ui->lblMenuShortcut->setText(shortcutView);
 
-            QString newDisplayName = createMenuItemDisplayName(menuName, copyToEdit);
+            const QString newDisplayName = createMenuItemDisplayName(menuName, copyToEdit);
 
             LC_GROUP("Activators");
-            auto shortcut = copyToEdit->getShortcut();
+            const auto shortcut = copyToEdit->getShortcut();
             if (activator != nullptr) {
-                auto originalShortcut = activator->getShortcut();
+                const auto originalShortcut = activator->getShortcut();
                 LC_REMOVE(originalShortcut);
                 LC_SET(shortcut, menuName);
                 copyToEdit->copyTo(*activator);
@@ -272,7 +271,7 @@ void LC_DlgWidgetCreator::onAssignMenu([[maybe_unused]]bool checked) {
             auto it = m_menuActivators.begin();
             // unassign other menu if there is shortcut override, so ensure that only one is valid
             while (it != m_menuActivators.end()) {
-                auto value = *it;
+                const auto value = *it;
                 auto oldMenuName = value->getMenuName();
                 if (value->getShortcut() == shortcut && oldMenuName != menuName) {
                     m_menuActivators.erase(it);
@@ -282,9 +281,9 @@ void LC_DlgWidgetCreator::onAssignMenu([[maybe_unused]]bool checked) {
                 ++it;
             }
             // update display names for menus in combobox
-            int count = ui->cbWidgetName->count();
+            const int count = ui->cbWidgetName->count();
             for (int i = 0; i < count; ++i) {
-                QString  itemMenuName = ui->cbWidgetName->itemData(i).toString();
+                const QString  itemMenuName = ui->cbWidgetName->itemData(i).toString();
                 QString displayName = createMenuItemDisplayName(itemMenuName);
                 ui->cbWidgetName->setItemText(i, displayName);
             }
@@ -294,17 +293,17 @@ void LC_DlgWidgetCreator::onAssignMenu([[maybe_unused]]bool checked) {
         }
         else {
             delete copyToEdit;
-        };
+        }
     }
 }
 
-void LC_DlgWidgetCreator::onCategoryActivated(int index) {
-    auto categoryData = ui->cbCategories->itemData(index, Qt::UserRole);
-    QString category = categoryData.toString();
+void LC_DlgWidgetCreator::onCategoryActivated(const int index) const {
+    const auto categoryData = ui->cbCategories->itemData(index, Qt::UserRole);
+    const QString category = categoryData.toString();
     if (category == "_all") {
-        auto a_map = m_actionGroupManager->getActionsMap();
+        auto actionMap = m_actionGroupManager->getActionsMap();
         ui->alOfferredActions->clear();
-        ui->alOfferredActions->fromActionMap(a_map);
+        ui->alOfferredActions->fromActionMap(actionMap);
         return;
     }
 
@@ -313,29 +312,30 @@ void LC_DlgWidgetCreator::onCategoryActivated(int index) {
     }
 
     ui->alOfferredActions->clear();
-    auto chosen_actions = getChosenActionNames();
-    auto action_group = m_actionGroupManager->getActionGroup(category);
-    if (action_group != nullptr)
-        for (auto action: action_group->actions()) {
-            if (!chosen_actions.contains(action->objectName())) {
+    const auto chosenActions = getChosenActionNames();
+    const auto actionGroup = m_actionGroupManager->getActionGroup(category);
+    if (actionGroup != nullptr) {
+        for (const auto action: actionGroup->actions()) {
+            if (!chosenActions.contains(action->objectName())) {
                 ui->alOfferredActions->addActionItem(action);
             }
         }
+    }
 }
 
-void LC_DlgWidgetCreator::onWidgetNameIndexChanged(int index) {
+void LC_DlgWidgetCreator::onWidgetNameIndexChanged(const int index) {
     loadWidgetActions(index);
 }
 
-void LC_DlgWidgetCreator::onToolbarPlacementIndexChanged(int index) {
+void LC_DlgWidgetCreator::onToolbarPlacementIndexChanged(const int index) {
     LC_SET_ONE("Defaults", "NewToolBarArea", index);
 }
 
-void LC_DlgWidgetCreator::loadWidgetActions(int index) {
-    QString key = ui->cbWidgetName->itemData(index).toString();
+void LC_DlgWidgetCreator::loadWidgetActions(const int index) {
+    const QString key = ui->cbWidgetName->itemData(index).toString();
     // w_key = key;
-    QSettings settings;
-    auto widget = QString("%1/%2").arg(getSettingsGroupName()).arg(key);
+    const QSettings settings;
+    const auto widget = QString("%1/%2").arg(getSettingsGroupName()).arg(key);
     QStringList actionNamesList = settings.value(widget).toStringList();
 
     if (actionNamesList.isEmpty()) {
@@ -356,7 +356,7 @@ void LC_DlgWidgetCreator::loadWidgetActions(int index) {
             addSeparator();
         }
         else{
-            QAction* action = m_actionGroupManager->getActionByName(str);
+            const QAction* action = m_actionGroupManager->getActionByName(str);
             if (action != nullptr) {
                 ui->alChosenActions->addActionItem(action);
             }
@@ -365,13 +365,13 @@ void LC_DlgWidgetCreator::loadWidgetActions(int index) {
     setCategoryAll();
 
     if (m_forMenu) {
-        auto activator = findMenuActivator(key);
+        const auto activator = findMenuActivator(key);
         if (activator == nullptr) {
             ui->lblMenuShortcut->setText(tr("NOT ASSIGNED"));
             ui->pbMenuUnassign->setEnabled(false);
         }
         else {
-            QString shortCut = activator->getShortcutView();
+            const QString shortCut = activator->getShortcutView();
             ui->lblMenuShortcut->setText(shortCut);
             ui->pbMenuUnassign->setEnabled(true);
         }
@@ -380,12 +380,12 @@ void LC_DlgWidgetCreator::loadWidgetActions(int index) {
 void LC_DlgWidgetCreator::newWidget() {
     bool clearActionsList = false;
     QStringList  widgetsList;
-    int count = ui->cbWidgetName->count();
+    const int count = ui->cbWidgetName->count();
     for (int i= 0; i < count;i++) {
         QString name = ui->cbWidgetName->itemData(i).toString();
         widgetsList.push_back(name);
     }
-    QString newName = LC_DlgNewWidget::askForNewWidgetName(this, m_forMenu, &widgetsList, clearActionsList);
+    const QString newName = LC_DlgNewWidget::askForNewWidgetName(this, m_forMenu, &widgetsList, clearActionsList);
     if (!newName.isEmpty()) {
          if (clearActionsList) {
              ui->alChosenActions->clear();
@@ -396,7 +396,7 @@ void LC_DlgWidgetCreator::newWidget() {
             displayName = createMenuItemDisplayName(newName, nullptr);
         }
         ui->cbWidgetName->addItem(displayName, newName);
-        int idx = ui->cbWidgetName->count() - 1;
+        const int idx = ui->cbWidgetName->count() - 1;
         ui->cbWidgetName->setCurrentIndex(idx);
         ui->lblMenuShortcut->setText(tr("NOT ASSIGNED"));
         ui->pbMenuUnassign->setEnabled(false);
@@ -405,7 +405,7 @@ void LC_DlgWidgetCreator::newWidget() {
 }
 
 void LC_DlgWidgetCreator::saveWidget() {
-    int index = ui->cbWidgetName->currentIndex();
+    const int index = ui->cbWidgetName->currentIndex();
     if (index == -1) {
         return;
     }
@@ -414,18 +414,18 @@ void LC_DlgWidgetCreator::saveWidget() {
         widgetName = ui->cbWidgetName->currentData().toString();
     }
 
-    QStringList chosenActionNamesList = getChosenActionNames();
+    const QStringList chosenActionNamesList = getChosenActionNames();
     if (!chosenActionNamesList.isEmpty() && !widgetName.isEmpty()) {
         QSettings settings;
-        auto widget = QString("%1/%2").arg(getSettingsGroupName()).arg(widgetName);
+        const auto widget = QString("%1/%2").arg(getSettingsGroupName()).arg(widgetName);
         settings.setValue(widget, chosenActionNamesList);
-        int areaIndex = ui->cbTBPlacementArea->currentIndex();
+        const int areaIndex = ui->cbTBPlacementArea->currentIndex();
         emit widgetCreationRequest(widgetName, chosenActionNamesList, areaIndex);
     }
 }
 
 void LC_DlgWidgetCreator::destroyWidget() {
-    int index = ui->cbWidgetName->currentIndex();
+    const int index = ui->cbWidgetName->currentIndex();
     if (index == -1) {
         return;
     }
@@ -456,19 +456,19 @@ void LC_DlgWidgetCreator::destroyWidget() {
 }
 
 QStringList LC_DlgWidgetCreator::getChosenActionNames() const {
-    QStringList s_list;
+    QStringList sList;
     for (int i = 0; i < ui->alChosenActions->count(); ++i) {
-        auto listWidgetItem = ui->alChosenActions->item(i);
-        s_list << listWidgetItem->whatsThis();
+        const auto listWidgetItem = ui->alChosenActions->item(i);
+        sList << listWidgetItem->whatsThis();
     }
-    return s_list;
+    return sList;
 }
 
 QString LC_DlgWidgetCreator::getSettingsGroupName() const {
     return m_forMenu ? "CustomMenus" : "CustomToolbars";
 }
 
-QString LC_DlgWidgetCreator::createMenuItemDisplayName(QString key, LC_MenuActivator* activator) {
+QString LC_DlgWidgetCreator::createMenuItemDisplayName(const QString& key, const LC_MenuActivator* activator) {
     QString message = key;
     if (activator == nullptr) {
         message.append(g_menuNameSeparator).append(tr("NOT ASSIGNED"));
@@ -479,8 +479,8 @@ QString LC_DlgWidgetCreator::createMenuItemDisplayName(QString key, LC_MenuActiv
     return message;
 }
 
-QString LC_DlgWidgetCreator::createMenuItemDisplayName(QString key) {
-    auto activator = findMenuActivator(key);
+QString LC_DlgWidgetCreator::createMenuItemDisplayName(const QString& key) {
+    const auto activator = findMenuActivator(key);
     return createMenuItemDisplayName(key, activator);
 }
 
@@ -512,42 +512,32 @@ void LC_DlgWidgetCreator::loadCustomWidgets() {
         // sort by event, so activators for different entities yet for the same event will be located
         // together in the list
         std::sort(activatorsList.begin(), activatorsList.end(),
-              [](std::pair<QString, LC_MenuActivator*>& a, std::pair<QString, LC_MenuActivator*>& b) {
-                  LC_MenuActivator* a1 = a.second;
-                  LC_MenuActivator* a2 = b.second;
+              [](const std::pair<QString, LC_MenuActivator*>& a, const std::pair<QString, LC_MenuActivator*>& b) {
+                  const LC_MenuActivator* a1 = a.second;
+                  const LC_MenuActivator* a2 = b.second;
                   if (a1 == nullptr) {
                       if (a2 != nullptr) {
                           return true;
                       }
-                      else {
-                          return false;
-                      }
-                  }
-                  else if (a2 == nullptr) {
                       return false;
                   }
-                  else {
-                      auto event1 = a1->getEventView();
-                      auto event2 = a2->getEventView();
-                      if (event1 == event2) {
-                          bool ent1 = a1->isEntityRequired();
-                          bool ent2 = a2->isEntityRequired();
-                          if (ent1 != ent2) {
-                              return ent1;
-                          }
-                          else {
-                              return a1->getEntityType() < a2->getEntityType();
-                          }
-                      }
-                      else {
-                          return event1 < event2;
-                      }
+                  if (a2 == nullptr) {
+                      return false;
                   }
+                  const auto event1 = a1->getEventView();
+                  const auto event2 = a2->getEventView();
+                  if (event1 == event2) {
+                      const bool ent1 = a1->isEntityRequired();
+                      const bool ent2 = a2->isEntityRequired();
+                      if (ent1 != ent2) {
+                          return ent1;
+                      }
+                      return a1->getEntityType() < a2->getEntityType();
+                  }
+                  return event1 < event2;
               });
 
-        for (const auto &p: activatorsList) {
-            auto key = p.first;
-            auto activator = p.second;
+        for (const auto & [key, activator]: activatorsList) {
             QString message = createMenuItemDisplayName(key, activator);
             ui->cbWidgetName->addItem(message, key);
 
@@ -566,7 +556,7 @@ void LC_DlgWidgetCreator::loadCustomWidgets() {
 }
 
 LC_MenuActivator* LC_DlgWidgetCreator::findMenuActivator(const QString& menuName) {
-    for (auto a: m_menuActivators) {
+    for (const auto a: m_menuActivators) {
         if (a->getMenuName() == menuName) {
             return a;
         }
@@ -575,7 +565,7 @@ LC_MenuActivator* LC_DlgWidgetCreator::findMenuActivator(const QString& menuName
 }
 
 void LC_DlgWidgetCreator::removeMenuActivator(const QString& menuName) {
-    auto activator = findMenuActivator(menuName);
+    const auto activator = findMenuActivator(menuName);
     if (activator != nullptr) {
         m_menuActivators.removeOne(activator);
         LC_GROUP("Activators");

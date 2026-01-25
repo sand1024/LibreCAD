@@ -38,11 +38,11 @@ public:
 protected slots:
     void languageChange() override;
     void doSetAction( RS_ActionInterface * a, bool update) override;
-    void onUsePolylineClicked(bool value);
-    void onAttributesSourceIndexChanged(int index);
-    void onEdgeModelLine1IndexChanged(int index);
-    void onEdgeModelLine2IndexChanged(int index);
-    void onRemoveOriginalsClicked(bool value);
+    void onUsePolylineClicked(bool value) const;
+    void onAttributesSourceIndexChanged(int index) const;
+    void onEdgeModelLine1IndexChanged(int index) const;
+    void onEdgeModelLine2IndexChanged(int index) const;
+    void onRemoveOriginalsClicked(bool value) const;
 protected:
     void doSaveSettings() override;
 private:
@@ -55,4 +55,4 @@ private:
     void setRemoveOriginalsToActionAndView(bool value) const;
 };
 
-#endif // LC_LINEJOINOPTIONS_H
+#endif

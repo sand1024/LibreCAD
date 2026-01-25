@@ -39,7 +39,6 @@ namespace Ui {
 
 class LC_ActionsShortcutsDialog : public LC_Dialog{
     Q_OBJECT
-
 public:
     explicit LC_ActionsShortcutsDialog(QWidget *parent, LC_ActionGroupManager *pManager);
     ~LC_ActionsShortcutsDialog() override;
@@ -68,9 +67,9 @@ protected:
     QString keySequenceToEditString(const QKeySequence &sequence) const;
     void initTreeView() const;
     void createMappingModel();
-    void onTreeDoubleClicked(QModelIndex index);
-    void onTreeClicked(QModelIndex itemIndex);
-    void selectItem(LC_ShortcutTreeItem *item, int selectedRow, int parentRow);
+    void onTreeDoubleClicked(const QModelIndex& index);
+    void onTreeClicked(const QModelIndex& itemIndex);
+    void selectItem(LC_ShortcutTreeItem *item, int row, int parentRow);
     void editItem(LC_ShortcutTreeItem *item) const;
     bool keySequenceIsValid(const QKeySequence &sequence) const;
     void rebuildModel(bool restoreSelection);
@@ -82,4 +81,4 @@ protected:
     void doSelectItem(const QModelIndex &itemIndex);
 };
 
-#endif // LC_ACTIONSSHORTCUTSDIALOG_H
+#endif

@@ -19,4 +19,4 @@ private:
     LC_AppWindowDialogsInvoker* m_dlgHelpr;
 };
 
-#endif // LC_EXPORTTOIMAGESERVICE_H
+#endif

@@ -49,4 +49,4 @@ protected:
     void doSaveSettings() override;
     void doSetAction(RS_ActionInterface *a, bool update) override;
 };
-#endif // QG_TEXTOPTIONS_H
+#endif

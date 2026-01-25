@@ -25,9 +25,9 @@
 #include "lc_ucslistoptions.h"
 #include "ui_lc_dlgucslistoptions.h"
 
-LC_DlgUCSListOptions::LC_DlgUCSListOptions(LC_UCSListOptions* opts, QWidget *parent)
+LC_DlgUCSListOptions::LC_DlgUCSListOptions(LC_UCSListOptions* options, QWidget *parent)
     : LC_Dialog(parent, "UCSListOptions")
-    , ui(new Ui::LC_DlgUCSListOptions), m_options{opts}{
+    , ui(new Ui::LC_DlgUCSListOptions), m_options{options}{
     ui->setupUi(this);
 
 
@@ -48,7 +48,7 @@ LC_DlgUCSListOptions::LC_DlgUCSListOptions(LC_UCSListOptions* opts, QWidget *par
 
     ui->cbSilentUpdate->setVisible(false); // hide for now, reserve for future extension
 
-    QObject::connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &LC_DlgUCSListOptions::validate);
+    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &LC_DlgUCSListOptions::validate);
 }
 
 LC_DlgUCSListOptions::~LC_DlgUCSListOptions(){

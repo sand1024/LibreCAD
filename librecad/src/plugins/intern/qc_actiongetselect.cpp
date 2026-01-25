@@ -35,15 +35,11 @@
 class Plugin_Entity;
 
 QC_ActionGetSelect::QC_ActionGetSelect(LC_ActionContext* actionContext)
-    :RS_ActionInterface("Get Select", actionContext, RS2::ActionGetSelect)
-    , m_completed(false)
-    , m_message(std::make_unique<QString>(tr("Select objects:"))){
+    :RS_ActionInterface("Get Select", actionContext, RS2::ActionGetSelect), m_message(std::make_unique<QString>(tr("Select objects:"))){
 }
 
-QC_ActionGetSelect::QC_ActionGetSelect(RS2::EntityType typeToSelect, LC_ActionContext* actionContext)
-    :RS_ActionInterface("Get Select", actionContext, RS2::ActionGetSelect)
-    , m_completed(false)
-    , m_message(std::make_unique<QString>(tr("Select objects:"))),
+QC_ActionGetSelect::QC_ActionGetSelect(const RS2::EntityType typeToSelect, LC_ActionContext* actionContext)
+    :RS_ActionInterface("Get Select", actionContext, RS2::ActionGetSelect), m_message(std::make_unique<QString>(tr("Select objects:"))),
      m_entityTypeToSelect(typeToSelect){
 }
 
@@ -68,7 +64,7 @@ void QC_ActionGetSelect::setMessage(QString msg) const {
     *m_message = std::move(msg);
 }
 
-void QC_ActionGetSelect::init(int status) {
+void QC_ActionGetSelect::init(const int status) {
         RS_ActionInterface::init(status);
         m_graphicView->setCurrentAction(
                 std::make_shared<RS_ActionSelectSingle>(m_entityTypeToSelect,  m_actionContext, this));
@@ -97,7 +93,7 @@ void QC_ActionGetSelect::getSelected(QList<Plug_Entity *> *se, Doc_plugin_interf
     QList<RS_Entity*> selection;
     m_document->collectSelected(selection);
     for (const auto e: selection) {
-        Plugin_Entity* pe = new Plugin_Entity(e, d);
+        const auto pe = new Plugin_Entity(e, d);
         se->append(reinterpret_cast<Plug_Entity*>(pe));
     }
 }

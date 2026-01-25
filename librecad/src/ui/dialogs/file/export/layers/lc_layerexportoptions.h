@@ -36,7 +36,7 @@ class LC_LayerExportOptionsWidget : public QWidget{
 public:
     explicit LC_LayerExportOptionsWidget(QWidget *parent = nullptr);
     ~LC_LayerExportOptionsWidget() override;
-    void fillLayerExportOptions(LC_LayersExportOptions *options);
+    void fillLayerExportOptions(LC_LayersExportOptions *options) const;
 protected:
     void loadFromOptions() const;
     void saveToOptions() const;
@@ -46,4 +46,4 @@ private:
     Ui::LC_LayerExportOptionsWidget *ui;
 };
 
-#endif // LC_LAYEREXPORTOPTIONS_H
+#endif

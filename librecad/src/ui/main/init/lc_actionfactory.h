@@ -36,28 +36,28 @@ class QG_ActionHandler;
 class LC_ActionFactory : public LC_ActionFactoryBase{
     Q_OBJECT
 public:
-    LC_ActionFactory(QC_ApplicationWindow* parent, QG_ActionHandler* a_handler);
+    LC_ActionFactory(QC_ApplicationWindow* parent, QG_ActionHandler* actionHandler);
     void initActions(LC_ActionGroupManager* agm, bool useTheme);
 
-    QList<QAction*> file_actions;
-    QList<QAction*> line_actions;
-    QList<QAction*> point_actions;
-    QList<QAction*> shape_actions;
-    QList<QAction*> circle_actions;
-    QList<QAction*> curve_actions;
-    QList<QAction*> spline_actions;
-    QList<QAction*> ellipse_actions;
-    QList<QAction*> polyline_actions;
-    QList<QAction*> select_actions;
-    QList<QAction*> dimension_actions;
-    QList<QAction*> other_drawing_actions;
-    QList<QAction*> modify_actions;
-    QList<QAction*> order_actions;
-    QList<QAction*> info_actions;
-    QList<QAction*> layer_actions;
-    QList<QAction*> block_actions;
-    QList<QAction*> pen_actions;
-    QList<QAction*> entity_layer_actions;
+    QList<QAction*> file_Actions;
+    QList<QAction*> lineActions;
+    QList<QAction*> pointActions;
+    QList<QAction*> shapeActions;
+    QList<QAction*> circleActions;
+    QList<QAction*> curveActions;
+    QList<QAction*> splineActions;
+    QList<QAction*> ellipseActions;
+    QList<QAction*> polylineActions;
+    QList<QAction*> selectActions;
+    QList<QAction*> dimension_Actions;
+    QList<QAction*> otherDrawingActions;
+    QList<QAction*> modifyActions;
+    QList<QAction*> orderActions;
+    QList<QAction*> infoActions;
+    QList<QAction*> layerActions;
+    QList<QAction*> blockActions;
+    QList<QAction*> penActions;
+    QList<QAction*> entityLayerActions;
 
 private:
     void initActionGroupManager(LC_ActionGroupManager* agm);
@@ -76,7 +76,7 @@ private:
     void createDrawPolylineActions(QMap<QString, QAction *> &map, QActionGroup *group) const;
     void createDrawOtherActions(QMap<QString, QAction *> &map, QActionGroup *group) const;
     void createDrawDimensionsActions(QMap<QString, QAction *> &map, QActionGroup *group) const;
-    void createModifyActions(QMap<QString, QAction *> &map, QActionGroup *pGroup) const;
+    void createModifyActions(QMap<QString, QAction *> &map, QActionGroup *group) const;
     void createPenActions(QMap<QString, QAction *> &map, QActionGroup *group) const;
     void createFileActions(QMap<QString, QAction *> &map, QActionGroup *group);
     void createPenActionsUncheckable(QMap<QString, QAction *> &map, QActionGroup *group) const;
@@ -99,15 +99,14 @@ private:
     void createSnapActions(QMap<QString, QAction *> &map, QActionGroup *group) const;
     void createInfoCursorActions(QMap<QString, QAction *> &map, QActionGroup *group);
     void createSnapExtraActions(QMap<QString, QAction *> &map, QActionGroup *group) const;
-    void setDefaultShortcuts(QMap<QString, QAction *> &map, LC_ActionGroupManager* agm);
+    void setDefaultShortcuts(QMap<QString, QAction *> &map, const LC_ActionGroupManager* agm);
     void setupCreatedActions(QMap<QString, QAction *> &map);
     void markNotEditableActionsShortcuts(const QMap<QString, QAction *> &map);
-    void fillActionLists(QMap<QString, QAction *> &map);
-    void prepareActionsToDisableInPrintPreview(QList<QAction *> &actionsList,QMap<QString, QAction *> &map) const;
+    void fillActionLists(const QMap<QString, QAction *> &map);
+    void prepareActionsToDisableInPrintPreview(QList<QAction *> &actionsList, const QMap<QString, QAction *> &map) const;
     void createRestrictActions(QMap<QString, QAction *> &map, QActionGroup *group) const;
     void createRelZeroActions(QMap<QString, QAction *> &map, QActionGroup *group) const;
     void createUCSActions(QMap<QString, QAction *> &map, QActionGroup *group) const;
-
 };
 
 #endif

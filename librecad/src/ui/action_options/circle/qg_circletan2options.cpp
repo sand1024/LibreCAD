@@ -20,6 +20,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
 #include "qg_circletan2options.h"
+
 #include "rs_actiondrawcircletan2.h"
 #include "ui_qg_circletan2options.h"
 /*
@@ -27,8 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *  name 'name' and widget flags set to 'f'.
  */
 QG_CircleTan2Options::QG_CircleTan2Options()
-    : LC_ActionOptionsWidgetBase(RS2::ActionDrawCircleTan2,"Draw", "CircleTan2")
-     , m_action{nullptr}, ui(new Ui::Ui_CircleTan2Options{}){
+    : LC_ActionOptionsWidgetBase(RS2::ActionDrawCircleTan2, "Draw", "CircleTan2"), m_action{nullptr}, ui(new Ui::Ui_CircleTan2Options{}) {
     ui->setupUi(this);
     connect(ui->leRadius, &QLineEdit::editingFinished, this, &QG_CircleTan2Options::onRadiusEditingFinished);
     pickDistanceSetup("radius", ui->tbPickRadius, ui->leRadius);
@@ -43,33 +43,34 @@ QG_CircleTan2Options::~QG_CircleTan2Options() = default;
  *  Sets the strings of the subwidgets using the current
  *  language.
  */
-void QG_CircleTan2Options::languageChange(){
-	ui->retranslateUi(this);
+void QG_CircleTan2Options::languageChange() {
+    ui->retranslateUi(this);
 }
 
-void QG_CircleTan2Options::doSaveSettings(){
-	save("Radius", ui->leRadius->text());
+void QG_CircleTan2Options::doSaveSettings() {
+    save("Radius", ui->leRadius->text());
 }
 
-void QG_CircleTan2Options::doSetAction(RS_ActionInterface *a, bool update){
-    m_action = dynamic_cast<RS_ActionDrawCircleTan2 *>(a);
+void QG_CircleTan2Options::doSetAction(RS_ActionInterface* a, const bool update) {
+    m_action = static_cast<RS_ActionDrawCircleTan2*>(a);
     QString radius;
-    if (update){
+    if (update) {
         radius = fromDouble(m_action->getRadius());
-    } else {
+    }
+    else {
         radius = load("Radius", "1.0");
     }
     setRadiusToActionAndView(radius);
 }
 
-void QG_CircleTan2Options::setRadiusToActionAndView(QString val){
+void QG_CircleTan2Options::setRadiusToActionAndView(const QString& val) {
     double radius;
-    if (toDouble(val, radius, 1.0, true)){
+    if (toDouble(val, radius, 1.0, true)) {
         m_action->setRadius(radius);
         ui->leRadius->setText(fromDouble(radius));
     }
 }
 
-void QG_CircleTan2Options::onRadiusEditingFinished(){
+void QG_CircleTan2Options::onRadiusEditingFinished() {
     setRadiusToActionAndView(ui->leRadius->text());
 }

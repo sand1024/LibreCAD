@@ -40,8 +40,8 @@ public:
     void setEntity(RS_Entity* entity) override;
 protected slots:
     void onCenterEditingFinished() const;
-    void onRadiusEditingFinished();
-    void onDiameterEditingFinished();
+    void onRadiusEditingFinished() const;
+    void onDiameterEditingFinished() const;
     void onRadiusTextChanged(const QString &text) const;
     void onDiameterTextChanged(const QString &text) const;
 public:
@@ -51,4 +51,4 @@ private:
     RS_Circle* m_entity{nullptr};
 };
 
-#endif // LC_CIRCLEPROPERTIESEDITINGWIDGET_H
+#endif

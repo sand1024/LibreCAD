@@ -21,6 +21,7 @@
  ******************************************************************************/
 
 #include "lc_modifyalignrefoptions.h"
+
 #include "lc_actionmodifyalignref.h"
 #include "ui_lc_modifyalignrefoptions.h"
 
@@ -46,8 +47,8 @@ void LC_ModifyAlignRefOptions::doSaveSettings() {
     save("KeepOriginals", ui->cbKeepOriginals->isChecked());
 }
 
-void LC_ModifyAlignRefOptions::doSetAction(RS_ActionInterface *a, bool update) {
-    m_action = dynamic_cast<LC_ActionModifyAlignRef *>(a);
+void LC_ModifyAlignRefOptions::doSetAction(RS_ActionInterface *a, const bool update) {
+    m_action = static_cast<LC_ActionModifyAlignRef *>(a);
     bool keepOriginals;
     bool useCurrentLayer;
     bool useCurrentAttributes;
@@ -76,38 +77,38 @@ void LC_ModifyAlignRefOptions::languageChange() {
     ui->retranslateUi(this);
 }
 
-void LC_ModifyAlignRefOptions::onScaleClicked([[maybe_unused]]bool clicked) {
+void LC_ModifyAlignRefOptions::onScaleClicked([[maybe_unused]]bool clicked) const {
     setScaleToActionAndView(ui->cbScale->isChecked());
 }
 
-void LC_ModifyAlignRefOptions::cbKeepOriginalsClicked(bool val) {
+void LC_ModifyAlignRefOptions::cbKeepOriginalsClicked(const bool val) const {
     setKeepOriginalsToActionAndView(val);
 }
 
-void LC_ModifyAlignRefOptions::cbUseCurrentAttributesClicked(bool val) {
+void LC_ModifyAlignRefOptions::cbUseCurrentAttributesClicked(const bool val) const {
     setUseCurrentAttributesToActionAndView(val);
 }
 
-void LC_ModifyAlignRefOptions::cbUseCurrentLayerClicked(bool val) {
+void LC_ModifyAlignRefOptions::cbUseCurrentLayerClicked(const bool val) const {
     setUseCurrentLayerToActionAndView(val);
 }
 
-void LC_ModifyAlignRefOptions::setScaleToActionAndView(bool val) const {
+void LC_ModifyAlignRefOptions::setScaleToActionAndView(const bool val) const {
     m_action->setScale(val);
     ui->cbScale->setChecked(val);
 }
 
-void LC_ModifyAlignRefOptions::setUseCurrentLayerToActionAndView(bool val) const {
+void LC_ModifyAlignRefOptions::setUseCurrentLayerToActionAndView(const bool val) const {
     m_action->setUseCurrentLayer(val);
     ui->cbLayer->setChecked(val);
 }
 
-void LC_ModifyAlignRefOptions::setUseCurrentAttributesToActionAndView(bool val) const {
+void LC_ModifyAlignRefOptions::setUseCurrentAttributesToActionAndView(const bool val) const {
     m_action->setUseCurrentAttributes(val);
     ui->cbCurrentAttr->setChecked(val);
 }
 
-void LC_ModifyAlignRefOptions::setKeepOriginalsToActionAndView(bool val) const {
+void LC_ModifyAlignRefOptions::setKeepOriginalsToActionAndView(const bool val) const {
     m_action->setKeepOriginals(val);
     ui->cbKeepOriginals->setChecked(val);
 }

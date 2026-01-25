@@ -26,8 +26,8 @@
 #ifndef QG_DLGATTRIBUTES_H
 #define QG_DLGATTRIBUTES_H
 
-#include "ui_qg_dlgattributes.h"
 #include "lc_dialog.h"
+#include "ui_qg_dlgattributes.h"
 
 struct RS_AttributesData;
 class RS_LayerList;
@@ -35,7 +35,7 @@ class RS_LayerList;
 class QG_DlgAttributes : public LC_Dialog, public Ui::QG_DlgAttributes{
     Q_OBJECT
 public:
-    QG_DlgAttributes(QWidget* parent = nullptr);
+    explicit QG_DlgAttributes(QWidget* parent = nullptr);
     ~QG_DlgAttributes() override;
 public slots:
     void setData( RS_AttributesData * data, RS_LayerList & layerList );
@@ -47,4 +47,4 @@ private:
     RS_AttributesData* m_attributesData = nullptr;
 };
 
-#endif // QG_DLGATTRIBUTES_H
+#endif

@@ -45,12 +45,12 @@ protected slots:
     void languageChange();
 protected:
     void setEntity(LC_Parabola* b);
-    LC_DlgParabola(LC_DlgParabola const&) = delete;
-    LC_DlgParabola& operator =(LC_DlgParabola const&) = delete;
+    LC_DlgParabola(const LC_DlgParabola&) = delete;
+    LC_DlgParabola& operator =(const LC_DlgParabola&) = delete;
     LC_DlgParabola(LC_DlgParabola&&) = delete;
     LC_DlgParabola& operator =(LC_DlgParabola&&) = delete;
     LC_Parabola* m_entity = nullptr;
     std::unique_ptr<Ui::DlgParabola> ui;
 };
 
-#endif // LC_DlgParabola_H
+#endif

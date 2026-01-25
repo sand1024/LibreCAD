@@ -50,4 +50,4 @@ protected:
     void enableEntityTypes(bool enable) const;
 
 };
-#endif // LC_SELECTWINDOWOPTIONS_H
+#endif

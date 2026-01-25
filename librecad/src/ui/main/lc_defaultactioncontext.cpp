@@ -28,7 +28,6 @@
 #include "qg_commandwidget.h"
 #include "qg_coordinatewidget.h"
 #include "qg_mousewidget.h"
-#include "qg_selectionwidget.h"
 
 LC_DefaultActionContext::LC_DefaultActionContext(QG_ActionHandler* actionHandler):m_actionHandler{actionHandler} {
 }
@@ -41,18 +40,18 @@ void LC_DefaultActionContext::removeOptionsWidget(LC_ActionOptionsWidget *widget
     m_actionOptionsManager->removeOptionsWidget(widget);
 }
 
-void LC_DefaultActionContext::requestSnapDistOptions(double *dist, bool on){
+void LC_DefaultActionContext::requestSnapDistOptions(double *dist, const bool on){
     m_actionOptionsManager->requestSnapDistOptions(dist, on);
 }
 
-void LC_DefaultActionContext::requestSnapMiddleOptions(int *middlePoints, bool on){
+void LC_DefaultActionContext::requestSnapMiddleOptions(int *middlePoints, const bool on){
     m_actionOptionsManager->requestSnapMiddleOptions(middlePoints, on);
 }
 
 void LC_DefaultActionContext::hideSnapOptions(){
     m_actionOptionsManager->hideSnapOptions();
 }
-
+[[deprecated]]
 void LC_DefaultActionContext::updateMouseWidget(const QString &left, const QString &right, const LC_ModifiersInfo &modifiers){
     if (m_mouseWidget != nullptr) {
         m_mouseWidget->setHelp(left, right, modifiers);
@@ -79,7 +78,7 @@ void LC_DefaultActionContext::commandPrompt(const QString &message){
     }
 }
 
-void LC_DefaultActionContext::updateCoordinateWidget(const RS_Vector &abs, const RS_Vector &rel, bool updateFormat){
+void LC_DefaultActionContext::updateCoordinateWidget(const RS_Vector &abs, const RS_Vector &rel, const bool updateFormat){
     if (m_coordinateWidget != nullptr) {
         m_coordinateWidget->setCoordinates(abs, rel, updateFormat);
     }
@@ -96,7 +95,7 @@ void LC_DefaultActionContext::setSnapMode(const RS_SnapMode& mode) {
     m_actionHandler->setSnaps(mode);
 }
 
-void LC_DefaultActionContext::setCurrentAction(RS2::ActionType action, void* data) {
+void LC_DefaultActionContext::setCurrentAction(const RS2::ActionType action, void* data) {
     m_actionHandler->setCurrentAction(action, data);
 }
 

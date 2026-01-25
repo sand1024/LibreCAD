@@ -13,7 +13,7 @@ namespace Ui {
 class LC_DlgTolerance : public LC_EntityPropertiesDlg{
     Q_OBJECT
 public:
-    explicit LC_DlgTolerance(QWidget *parent, LC_GraphicViewport *pViewport, LC_Tolerance* hatch, bool isNew);
+    explicit LC_DlgTolerance(QWidget *parent, LC_GraphicViewport *viewport, LC_Tolerance* tol, bool isNew);
     ~LC_DlgTolerance() override;
 public slots:
     QString generateDataString();
@@ -22,14 +22,14 @@ public slots:
 protected slots:
     void languageChange();
     void parseAndSetFields(const QString& string);
-    void setEntity(LC_Tolerance* e);
+    void setEntity(const LC_Tolerance* e);
 private:
     Ui::LC_DlgTolerance *ui;
     void initModifiersComboBox(QComboBox* comboBox) const;
-    void initGeometricCharacterCombobox(QComboBox* comboBox);
+    static void initGeometricCharacterCombobox(QComboBox* comboBox);
     LC_Tolerance* m_entity;
     bool m_isNew = false;
     bool m_showExtendedModifiers = false;
 };
 
-#endif // LC_DLGTOLERANCE_H
+#endif

@@ -24,6 +24,7 @@
 **
 **********************************************************************/
 #include "qg_lineoptions.h"
+
 #include "rs_actiondrawline.h"
 #include "ui_qg_lineoptions.h"
 
@@ -32,10 +33,8 @@
  *  name 'name' and widget flags set to 'f'.
  */
 QG_LineOptions::QG_LineOptions()
-    : LC_ActionOptionsWidgetBase(RS2::ActionDrawLine, "","")
-	, ui(new Ui::Ui_LineOptions{})
-{
-	ui->setupUi(this);
+    : LC_ActionOptionsWidgetBase(RS2::ActionDrawLine, "", ""), ui(new Ui::Ui_LineOptions{}) {
+    ui->setupUi(this);
 }
 
 /*
@@ -47,14 +46,14 @@ QG_LineOptions::~QG_LineOptions() = default;
  *  Sets the strings of the subwidgets using the current
  *  language.
  */
-void QG_LineOptions::languageChange(){
-	ui->retranslateUi(this);
+void QG_LineOptions::languageChange() {
+    ui->retranslateUi(this);
 }
 
-void QG_LineOptions::doSaveSettings(){
+void QG_LineOptions::doSaveSettings() {
 }
 
-void QG_LineOptions::doSetAction(RS_ActionInterface *a, [[maybe_unused]]bool update){
+void QG_LineOptions::doSetAction(RS_ActionInterface* a, [[maybe_unused]] bool update) {
     m_action = dynamic_cast<RS_ActionDrawLine*>(a);
     enableButtons();
 }
@@ -72,7 +71,6 @@ void QG_LineOptions::undo() {
     }
 }
 
-
 void QG_LineOptions::redo() {
     if (m_action) {
         m_action->redo();
@@ -81,7 +79,6 @@ void QG_LineOptions::redo() {
 }
 
 void QG_LineOptions::enableButtons() const {
-
     if (m_action) {
         ui->bUndo->setEnabled(m_action->canUndo());
         ui->bRedo->setEnabled(m_action->canRedo());

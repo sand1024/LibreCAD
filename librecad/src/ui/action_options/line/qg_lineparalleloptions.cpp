@@ -25,7 +25,6 @@
 **********************************************************************/
 #include "qg_lineparalleloptions.h"
 
-#include "lc_actioncontext.h"
 #include "rs_actiondrawlineparallel.h"
 #include "rs_graphicview.h"
 #include "ui_qg_lineparalleloptions.h"
@@ -34,7 +33,7 @@
  *  Constructs a QG_LineParallelOptions as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-QG_LineParallelOptions::QG_LineParallelOptions(RS2::ActionType actionType)
+QG_LineParallelOptions::QG_LineParallelOptions(const RS2::ActionType actionType)
     :LC_ActionOptionsWidgetBase(actionType, "Draw", "LineParallel"),
      ui(new Ui::Ui_LineParallelOptions{}) {
     ui->setupUi(this);
@@ -58,7 +57,7 @@ void QG_LineParallelOptions::languageChange() {
     ui->retranslateUi(this);
 }
 
-bool QG_LineParallelOptions::checkActionRttiValid(RS2::ActionType actionType) {
+bool QG_LineParallelOptions::checkActionRttiValid(const RS2::ActionType actionType) {
     return actionType == RS2::ActionDrawLineParallel ||
            actionType == RS2::ActionDrawCircleParallel ||
            actionType == RS2::ActionDrawArcParallel;
@@ -69,8 +68,8 @@ void QG_LineParallelOptions::doSaveSettings() {
     save("Number", ui->sbNumber->text());
 }
 
-void QG_LineParallelOptions::doSetAction(RS_ActionInterface *a, bool update) {
-    m_action = dynamic_cast<RS_ActionDrawLineParallel *>(a);
+void QG_LineParallelOptions::doSetAction(RS_ActionInterface *a, const bool update) {
+    m_action = static_cast<RS_ActionDrawLineParallel *>(a);
     QString distance;
     int copiesNumber;
     if (update) {
@@ -85,7 +84,7 @@ void QG_LineParallelOptions::doSetAction(RS_ActionInterface *a, bool update) {
     setNumberToActionAndView(copiesNumber);
 }
 
-void QG_LineParallelOptions::onNumberValueChanged(int number) {
+void QG_LineParallelOptions::onNumberValueChanged(const int number) {
     setNumberToActionAndView(number);
 }
 
@@ -93,7 +92,7 @@ void QG_LineParallelOptions::onDistEditingFinished() {
     setDistanceToActionAndView(ui->leDist->text());
 }
 
-void QG_LineParallelOptions::setDistanceToActionAndView(QString val) {
+void QG_LineParallelOptions::setDistanceToActionAndView(const QString& val) {
     double distance;
     if (toDouble(val, distance, 1.0, false)) {
         m_action->setDistance(distance);
@@ -101,7 +100,7 @@ void QG_LineParallelOptions::setDistanceToActionAndView(QString val) {
     }
 }
 
-void QG_LineParallelOptions::setNumberToActionAndView(int number) const {
+void QG_LineParallelOptions::setNumberToActionAndView(const int number) const {
     m_action->setNumber(number);
     ui->sbNumber->setValue(number);
 }

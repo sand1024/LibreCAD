@@ -52,15 +52,15 @@ protected:
 private:
     Ui::LC_PasteTransformOptions *ui;
     LC_ActionEditPasteTransform* m_action = nullptr;
-    void setAngleToActionAndView(QString val);
-    void setFactorToActionAndView(QString val);
+    void setAngleToActionAndView(const QString& val);
+    void setFactorToActionAndView(const QString& val);
     void setIsArrayToActionAndView(bool val) const;
     void setSameAnglesToActionAndView(bool val) const;
     void setArrayXCountToActionAndView(int count) const;
     void setArrayYCountToActionAndView(int count) const;
-    void setArrayXSpacingToActionAndView(QString val);
-    void setArrayYSpacingToActionAndView(QString val);
-    void setArrayAngleToActionAndView(QString val);
+    void setArrayXSpacingToActionAndView(const QString& val);
+    void setArrayYSpacingToActionAndView(const QString& val);
+    void setArrayAngleToActionAndView(const QString& val);
 };
 
-#endif // LC_PASTETRANSFORMOPTIONS_H
+#endif

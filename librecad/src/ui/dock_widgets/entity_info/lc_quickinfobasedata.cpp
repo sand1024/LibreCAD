@@ -20,11 +20,10 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
-#include "rs_units.h"
-#include "rs_graphic.h"
-#include "rs_graphicview.h"
-#include "lc_graphicviewport.h"
 #include "lc_quickinfobasedata.h"
+
+#include "lc_graphicviewport.h"
+#include "rs_graphic.h"
 
 LC_QuickInfoBaseData::LC_QuickInfoBaseData()= default;
 
@@ -59,21 +58,21 @@ QString LC_QuickInfoBaseData::formatWCSDeltaVector(const RS_Vector &wcsDelta) co
  * @param wcsAngle
  * @return
  */
-QString LC_QuickInfoBaseData::formatWCSAngle(double wcsAngle) const {
+QString LC_QuickInfoBaseData::formatWCSAngle(const double wcsAngle) const {
     if (m_formatter == nullptr) {
         return "";
     }
     return m_formatter->formatWCSAngle(wcsAngle);
 }
 
-QString LC_QuickInfoBaseData::formatUCSAngle(double wcsAngle) const {
+QString LC_QuickInfoBaseData::formatUCSAngle(const double wcsAngle) const {
      if (m_formatter == nullptr) {
         return "";
     }
     return m_formatter->formatUCSAngle(wcsAngle);
 }
 
-QString LC_QuickInfoBaseData::formatRawAngle(double angle) const {
+QString LC_QuickInfoBaseData::formatRawAngle(const double angle) const {
     if (m_formatter == nullptr) {
         return "";
     }
@@ -85,7 +84,7 @@ QString LC_QuickInfoBaseData::formatRawAngle(double angle) const {
  * @param x
  * @return
  */
-QString LC_QuickInfoBaseData::formatDouble(const double &x) const{
+QString LC_QuickInfoBaseData::formatDouble(const double x) const{
     if (m_formatter == nullptr) {
         return "";
     }
@@ -97,7 +96,7 @@ QString LC_QuickInfoBaseData::formatDouble(const double &x) const{
  * @param x
  * @return
  */
-QString LC_QuickInfoBaseData::formatInt(const int &x) const{
+QString LC_QuickInfoBaseData::formatInt(const int x) const{
     if (m_formatter == nullptr) {
         return "";
     }
@@ -109,7 +108,7 @@ QString LC_QuickInfoBaseData::formatInt(const int &x) const{
  * @param length
  * @return
  */
-QString LC_QuickInfoBaseData::formatLinear(double length) const {
+QString LC_QuickInfoBaseData::formatLinear(const double length) const {
     if (m_formatter == nullptr) {
         return "";
     }
@@ -125,7 +124,7 @@ QString LC_QuickInfoBaseData::formatLinear(double length) const {
  * @param value value for the link
  * @return original string to append
  */
-QString LC_QuickInfoBaseData::createLink(QString & data, const QString &path, int index, const QString& title, const QString & value){
+QString LC_QuickInfoBaseData::createLink(QString & data, const QString &path, const int index, const QString& title, const QString & value){
     QString idx;
     idx.setNum(index);
     data.append("<a href='").append("/").append(path).append("?").append(idx).append("' title='").append(title).append("'").append(">");
@@ -140,8 +139,8 @@ QString LC_QuickInfoBaseData::createLink(QString & data, const QString &path, in
  * @return
  */
 QString LC_QuickInfoBaseData::getFormattedVectorForIndex(const int index) const{
-    RS_Vector coord = getVectorForIndex(index);
-    QString result = "";
+    const RS_Vector coord = getVectorForIndex(index);
+    QString result;
     if (coord.valid){
         result = formatWCSVector(coord);
     }
@@ -168,92 +167,71 @@ void LC_QuickInfoBaseData::setDocumentAndView(RS_Document *doc, LC_GraphicViewpo
 
 void LC_QuickInfoBaseData::updateFormats(){
     if (m_document != nullptr) {
-        RS_Graphic *graphic = m_document->getGraphic();
+        const RS_Graphic *graphic = m_document->getGraphic();
         m_formatter->updateByGraphic(graphic); // fixme - fmt - most probably it's not necessary
     }
 }
 
-void LC_QuickInfoBaseData::appendLinear(QString &result, const QString &label, double value) const {
-    result.append("\n");
-    result.append(label);
-    result.append(": ");
-    result.append(formatLinear(value));
+void LC_QuickInfoBaseData::appendLinear(QString &result, const QString &label, const double value) const {
+    createLabelValueString(result, label,formatLinear(value));
 }
 
-void LC_QuickInfoBaseData::appendDouble(QString &result, const QString &label, double value) const {
-    result.append("\n");
-    result.append(label);
-    result.append(": ");
-    result.append(formatDouble(value));
-}
-
-void LC_QuickInfoBaseData::appendArea(QString &result, const QString &label, double value) const {
-    result.append("\n");
-    result.append(label);
-    result.append(": ");
-    result.append(formatLinear(value));
-}
-
-void LC_QuickInfoBaseData::appendWCSAngle(QString &result, const QString &label, double value) const {
-    result.append("\n");
-    result.append(label);
-    result.append(": ");
-    result.append(formatWCSAngle(value));
-}
-
-void LC_QuickInfoBaseData::appendRawAngle(QString &result, const QString &label, double value) const {
-    result.append("\n");
-    result.append(label);
-    result.append(": ");
-    result.append(formatRawAngle(value));
-}
-
-void LC_QuickInfoBaseData::appendValue(QString &result, const QString &label, const QString& value){
+void LC_QuickInfoBaseData::createLabelValueString(QString& result, const QString& label, const QString & value) const {
     result.append("\n");
     result.append(label);
     result.append(": ");
     result.append(value);
 }
 
+void LC_QuickInfoBaseData::appendDouble(QString &result, const QString &label, const double value) const {
+    createLabelValueString(result, label, formatDouble(value));
+}
+
+void LC_QuickInfoBaseData::appendArea(QString &result, const QString &label, const double value) const {
+    createLabelValueString(result, label,formatLinear(value));
+}
+
+void LC_QuickInfoBaseData::appendWCSAngle(QString &result, const QString &label, const double value) const {
+    createLabelValueString(result, label,formatWCSAngle(value));
+}
+
+void LC_QuickInfoBaseData::appendRawAngle(QString &result, const QString &label, const double value) const {
+    createLabelValueString(result, label,formatRawAngle(value));
+}
+
+void LC_QuickInfoBaseData::appendValue(QString &result, const QString &label, const QString& value){
+    createLabelValueString(result, label, value);
+}
+
 void LC_QuickInfoBaseData::appendWCSAbsolute(QString &result, const QString &label, const RS_Vector &value) const {
     if (m_viewport == nullptr) {
         return;
     }
-    result.append("\n");
-    result.append(label);
-    result.append(": ");
     double ucsX, ucsY;
     m_viewport->toUCS(value, ucsX, ucsY);
-    result.append(formatLinear(ucsX)).append(",").append(formatLinear(ucsY));
+    createLabelValueString(result, label, formatLinear(ucsX));
+    result.append(",").append(formatLinear(ucsY));
 }
 
 void LC_QuickInfoBaseData::appendWCSAbsoluteDelta(QString &result, const QString &label, const RS_Vector &value) const {
     if (m_viewport == nullptr) {
         return;
     }
-    result.append("\n");
-    result.append(label);
-    result.append(": ");
+
     double ucsX, ucsY;
     m_viewport->toUCSDelta(value, ucsX, ucsY);
-    result.append(formatLinear(ucsX)).append(",").append(formatLinear(ucsY));
+    createLabelValueString(result, label, formatLinear(ucsX));
+    result.append(",").append(formatLinear(ucsY));
 }
 
 void LC_QuickInfoBaseData::appendRelativePolar(QString &result, const QString &label, const RS_Vector &value) const {
-    result.append("\n");
-    result.append(label);
-    result.append(": @");
+    createLabelValueString(result, label,"@");
     result.append(formatLinear(value.x)).append(" < ").append(formatWCSAngle(value.y));
 }
 
-void LC_QuickInfoBaseData::appendInt(QString &result, const QString &label, const int &value) const {
-    result.append("\n");
-    result.append(label);
-    result.append(": ");
-    result.append(formatInt(value));
+void LC_QuickInfoBaseData::appendInt(QString &result, const QString &label, const int value) const {
+    createLabelValueString(result, label,formatInt(value));
 }
-
-
 
 const RS_Vector &LC_QuickInfoBaseData::getRelativeZero() const {
     if (m_viewport == nullptr) {

@@ -22,23 +22,24 @@
 **
 **********************************************************************/
 
+#include "lc_layerdialog_ex.h"
+
 #include <QMessageBox>
 
-#include "lc_layerdialog_ex.h"
 #include "lc_layertreeitem.h"
 #include "lc_layertreemodel.h"
 #include "lc_layertreemodel_options.h"
 #include "rs_layer.h"
 #include "rs_layerlist.h"
 
-LC_LayerDialogEx::LC_LayerDialogEx(QWidget* parent, const QString& name, LC_LayerTreeModel* model, LC_LayerTreeItem *treeItem, RS_LayerList* ll)
-      : LC_Dialog(parent, "LayersTreeLayerDialog"){
+LC_LayerDialogEx::LC_LayerDialogEx(QWidget* parent, const QString& name, LC_LayerTreeModel* model, LC_LayerTreeItem *treeItem, RS_LayerList* layerList)
+      : LC_Dialog(parent, "LayersTreeLayerDialog"), m_mode{-1}{
     setupUi(this);
     setModal(true);
     setObjectName(name);
 
     m_layerTreeModel = model;
-    m_layerList = ll;
+    m_layerList = layerList;
     m_editedTreeItem = treeItem;
 }
 
@@ -46,12 +47,12 @@ void LC_LayerDialogEx::languageChange(){
     retranslateUi(this);
 }
 
-void LC_LayerDialogEx::setMode(int viewMode){
+void LC_LayerDialogEx::setMode(const int viewMode){
     const int mode = viewMode;
     this->setProperty("mode", mode);
     leParentPath->setEnabled(false);
     switch (mode){
-        case LC_LayerDialogEx::MODE_RENAME_VIRTUAL:{
+        case MODE_RENAME_VIRTUAL:{
             leName->setFocus();
             wPen->setVisible(false);
             cbConstructionLayer ->setVisible(false);
@@ -60,26 +61,26 @@ void LC_LayerDialogEx::setMode(int viewMode){
             setWindowTitle(tr("Rename Virtual Layer"));
             break;
         }
-        case LC_LayerDialogEx::MODE_ADD_SECONDARY_LAYER:{
+        case MODE_ADD_SECONDARY_LAYER:{
             setWindowTitle(tr("Add Secondary Layer"));
             leName->setFocus();
             allowChangingLayerType(false);
           break;
         }
-        case LC_LayerDialogEx::MODE_ADD_CHILD_LAYER:{
+        case MODE_ADD_CHILD_LAYER:{
             setWindowTitle(tr("Add Layer"));
             leParentPath->setEnabled(false);
             leName->setFocus();
             allowChangingLayerType(true);
             break;
         }
-        case LC_LayerDialogEx::MODE_ADD_LAYER:{
+        case MODE_ADD_LAYER:{
             setWindowTitle(tr("Add Layer"));
             leName->setFocus();
             allowChangingLayerType(true);
             break;
         }
-        case LC_LayerDialogEx::MODE_EDIT_LAYER:{
+        case MODE_EDIT_LAYER:{
             setWindowTitle(tr("Edit Layer"));
             if (m_editedTreeItem->isZero()){
                 allowChangingLayerType(false);
@@ -96,7 +97,7 @@ void LC_LayerDialogEx::setMode(int viewMode){
     }
 }
 
-void LC_LayerDialogEx::allowChangingLayerType(bool value){
+void LC_LayerDialogEx::allowChangingLayerType(const bool value){
     gbLayerType->setEnabled(value);
     if (value){
         connect(rbNormal, &QRadioButton::clicked, this, &LC_LayerDialogEx::layerTypeChanged);
@@ -106,7 +107,7 @@ void LC_LayerDialogEx::allowChangingLayerType(bool value){
     }
 }
 
-void LC_LayerDialogEx::setLayerType(int type) const {
+void LC_LayerDialogEx::setLayerType(const int type) const {
     switch (type){
         case LC_LayerTreeItem::VIRTUAL: {
             gbLayerType->setVisible(false);
@@ -209,7 +210,7 @@ void LC_LayerDialogEx::layerTypeChanged() const {
 
     if (layerType > 0){
         RS_Pen defaultPen = m_layerTreeModel ->getOptions()->getDefaultPen(layerType);
-        const RS_Pen penCopy  = RS_Pen(defaultPen);
+        const auto penCopy  = RS_Pen(defaultPen);
         wPen->setPen(penCopy, false, false, tr("Default Pen"));
     }
 }
@@ -269,7 +270,7 @@ void LC_LayerDialogEx::validate() {
         }
         else{
             const bool duplicateNameFound = checkForDuplicatedNames(newLayerNamesList);
-            if (!duplicateNameFound){                
+            if (!duplicateNameFound){
                 accept();
             }
         }

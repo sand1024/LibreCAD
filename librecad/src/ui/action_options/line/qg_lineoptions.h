@@ -54,4 +54,4 @@ private:
     std::unique_ptr<Ui::Ui_LineOptions> ui;
 };
 
-#endif // QG_LINEOPTIONS_H
+#endif

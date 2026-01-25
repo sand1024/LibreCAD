@@ -9,7 +9,7 @@ namespace
 
 }
 
-LC_DlgTolerance::LC_DlgTolerance(QWidget* parent, LC_GraphicViewport* viewport, LC_Tolerance* tol, bool isNew)
+LC_DlgTolerance::LC_DlgTolerance(QWidget* parent, LC_GraphicViewport* viewport, LC_Tolerance* tol, const bool isNew)
     : LC_EntityPropertiesDlg(parent, QString("DlgTolerance") + (isNew ? "New" : "Edit"), viewport)
       , ui(new Ui::LC_DlgTolerance), m_entity{tol}, m_isNew{isNew}{
     ui->setupUi(this);
@@ -38,15 +38,16 @@ LC_DlgTolerance::~LC_DlgTolerance(){
     delete ui;
 }
 
-void LC_DlgTolerance::setEntity(LC_Tolerance* e) {
-    QString toleranceString = e->getTextCode();
+void LC_DlgTolerance::setEntity(const LC_Tolerance* e) {
+    const QString toleranceString = e->getTextCode();
     parseAndSetFields(toleranceString);
     RS_Graphic* graphic = e->getGraphic();
-    if (graphic) {
-        ui->cbLayer->init(*(graphic->getLayerList()), false, false);
+    if (graphic != nullptr) {
+        const auto layerList = graphic->getLayerList();
+        ui->cbLayer->init(*layerList, false, false);
     }
     RS_Layer* lay = e->getLayer(false);
-    if (lay) {
+    if (lay != nullptr) {
         ui->cbLayer->setLayer(*lay);
     }
     ui->wPen->setPen(e, lay, tr("Pen"));
@@ -88,7 +89,7 @@ void LC_DlgTolerance::initGeometricCharacterCombobox(QComboBox* comboBox) {
 }
 
 void LC_DlgTolerance::updateEntity() {
-    QString textCode = generateDataString();
+    const QString textCode = generateDataString();
     m_entity->setTextCode(textCode);
     m_entity->setPen(ui->wPen->getPen());
     m_entity->setLayer(ui->cbLayer->getLayer());

@@ -20,12 +20,12 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include <QFont>
 #include "lc_ucslistmodel.h"
+
+#include <QFont>
 
 #include "lc_ucslist.h"
 #include "lc_ucslistoptions.h"
-#include "rs_units.h"
 #include "rs_math.h"
 
 LC_UCSListModel::LC_UCSListModel(LC_UCSListOptions *modelOptions, QObject *parent):QAbstractTableModel(parent), m_options(modelOptions) {
@@ -80,7 +80,7 @@ int LC_UCSListModel::columnCount([[maybe_unused]]const QModelIndex &parent) cons
     return result;
 }
 
-int LC_UCSListModel::translateColumn(int column) const{
+int LC_UCSListModel::translateColumn(const int column) const{
     int result = column;
     if (!m_options->showColumnTypeIcon){
         if (result >= COLUMNS::ICON_TYPE){
@@ -100,12 +100,13 @@ int LC_UCSListModel::translateColumn(int column) const{
     return result;
 }
 
-QVariant LC_UCSListModel::data(const QModelIndex &index, int role) const {
-    if (!index.isValid() || index.row() >= m_ucss.size())
+QVariant LC_UCSListModel::data(const QModelIndex &index, const int role) const {
+    if (!index.isValid() || index.row() >= m_ucss.size()) {
         return QVariant();
+    }
 
     UCSItem* ucs {m_ucss.at(index.row())};
-    int col = translateColumn(index.column());
+    const int col = translateColumn(index.column());
     switch (role) {
         case Qt::DecorationRole: {
             switch (col) {
@@ -123,7 +124,7 @@ QVariant LC_UCSListModel::data(const QModelIndex &index, int role) const {
         }
         case Qt::DisplayRole: {
             switch (col){
-                case (NAME):{
+                case NAME:{
                     QString displayName = ucs->displayName;
                     return displayName;
                 }
@@ -142,8 +143,8 @@ QVariant LC_UCSListModel::data(const QModelIndex &index, int role) const {
             if (NAME == col) {
                 QFont font;
                 bool customFont = false;
-                LC_UCS* activeUCS = m_ucsList->getActive();
-                LC_UCS* currentUCS = ucs->ucs;
+                const LC_UCS* activeUCS = m_ucsList->getActive();
+                const LC_UCS* currentUCS = ucs->ucs;
                 if (activeUCS != nullptr && activeUCS == currentUCS) {
                     font.setBold(true);
                     customFont = true;
@@ -182,7 +183,7 @@ Qt::ItemFlags LC_UCSListModel::flags(const QModelIndex &index) const {
 LC_UCS *LC_UCSListModel::getItemForIndex(const QModelIndex &index) const{
     LC_UCS* result = nullptr;
     if (index.isValid()){
-        int row = index.row();
+        const int row = index.row();
         if (row < m_ucss.size()){
             result = m_ucss.at(row)->ucs;
         }
@@ -191,23 +192,22 @@ LC_UCS *LC_UCSListModel::getItemForIndex(const QModelIndex &index) const{
 }
 
 void LC_UCSListModel::fillUCSsList(QList<LC_UCS *> &list) const {
-    for (auto v: m_ucss){
+    for (const auto v: m_ucss){
         list << v->ucs;
     }
     list.removeAt(0); // remove WCS
 }
 
-QIcon LC_UCSListModel::getTypeIcon(LC_UCS *ucs) const {
+QIcon LC_UCSListModel::getTypeIcon(const LC_UCS *ucs) const {
     if (ucs->isUCS()){
         return m_iconUCS;
-    } else {
-        return m_iconWCS;
     }
+    return m_iconWCS;
 }
 
-QIcon LC_UCSListModel::getOrthoTypeIcon(LC_UCS *ucs) const {
+QIcon LC_UCSListModel::getOrthoTypeIcon(const LC_UCS *ucs) const {
     if (ucs->isUCS()){
-        int orthoType = ucs->getOrthoType();
+        const int orthoType = ucs->getOrthoType();
         switch (orthoType){
             case LC_UCS::NON_ORTHO:{
                 return m_iconGridOrtho;
@@ -230,12 +230,11 @@ QIcon LC_UCSListModel::getOrthoTypeIcon(LC_UCS *ucs) const {
             default:
                 return m_iconGridOrtho;
         }
-    } else {
-        return m_iconGridOrtho;
     }
+    return m_iconGridOrtho;
 }
 
-QString LC_UCSListModel::getGridViewType(int orthoType){
+QString LC_UCSListModel::getGridViewType(const int orthoType){
     switch (orthoType) {
         case LC_UCS::FRONT:
         case LC_UCS::BACK:
@@ -255,10 +254,10 @@ QString LC_UCSListModel::getGridViewType(int orthoType){
     }
 }
 
-QModelIndex LC_UCSListModel::getIndexForUCS(LC_UCS *ucs) const {
+QModelIndex LC_UCSListModel::getIndexForUCS(const LC_UCS *ucs) const {
     if (ucs != nullptr){
         for (unsigned int i = 0; i < m_ucsList->count(); i++){
-            auto v = m_ucsList->at(i);
+            const auto v = m_ucsList->at(i);
             if (v == ucs){
                 return createIndex(i, 0, ucs);
             }
@@ -267,10 +266,10 @@ QModelIndex LC_UCSListModel::getIndexForUCS(LC_UCS *ucs) const {
     return QModelIndex();
 }
 
-void LC_UCSListModel::markActive(LC_UCS *ucs) {
+void LC_UCSListModel::markActive(const LC_UCS *ucs) {
     m_ucsList->tryToSetActive(ucs);
-    QModelIndex topLeft = createIndex(0,0);
-    QModelIndex bottomRight = createIndex( m_ucsList->count(), columnCount(topLeft));
+    const QModelIndex topLeft = createIndex(0,0);
+    const QModelIndex bottomRight = createIndex( m_ucsList->count(), columnCount(topLeft));
     emit dataChanged(topLeft, bottomRight);
 }
 
@@ -289,12 +288,12 @@ int LC_UCSListModel::count() const {
     return m_ucss.count();
 }
 
-QString LC_UCSListModel::getUCSInfo(LC_UCS *ucs) const {
-    QString result = "";
+QString LC_UCSListModel::getUCSInfo(const LC_UCS *ucs) const {
+    QString result;
     if (m_formatter != nullptr) {
         QString originX = m_formatter->formatLinear(ucs->getOrigin().x);
-        QString originY = m_formatter->formatLinear(ucs->getOrigin().y);
-        QString angle = m_formatter->formatRawAngle(ucs->getXAxis().angle());
+        const QString originY = m_formatter->formatLinear(ucs->getOrigin().y);
+        const QString angle = m_formatter->formatRawAngle(ucs->getXAxis().angle());
         result = originX.append(", "). append(originY).append(" < ").append(angle);
     }
     return result;
@@ -314,19 +313,19 @@ LC_UCSListModel::UCSItem *LC_UCSListModel::createUCSItem(LC_UCS *ucs) {
 
     result->displayName = name;
 
-    double angleValue = RS_Math::correctAnglePlusMinusPi(ucs->getXAxis().angle());
-    QString originX =  m_formatter->formatLinear(ucs->getOrigin().x);
-    QString originY =  m_formatter->formatLinear(ucs->getOrigin().y);
-    QString angle =  m_formatter->formatRawAngle(angleValue);
+    const double angleValue = RS_Math::correctAnglePlusMinusPi(ucs->getXAxis().angle());
+    const QString originX =  m_formatter->formatLinear(ucs->getOrigin().x);
+    const QString originY =  m_formatter->formatLinear(ucs->getOrigin().y);
+    const QString angle =  m_formatter->formatRawAngle(angleValue);
 
     QString ucsInfo;
     ucsInfo.append(originX).append(" , "). append(originY).append(" < ").append(angle);
 
     result->ucsInfo = ucsInfo;
 
-    QString orthoType = getGridViewType(ucs->getOrthoType());
+    const QString orthoType = getGridViewType(ucs->getOrthoType());
 
-    QString toolTip = QString(tr("Name: ")).append("<b>").append(name).append("</b><br>")
+    const QString toolTip = QString(tr("Name: ")).append("<b>").append(name).append("</b><br>")
         .append(tr("Origin X: ")).append("<b>").append(originX).append("</b><br>")
         .append(tr("Origin Y: ")).append("<b>").append(originY).append("</b><br>")
         .append(tr("Angle: ")).append("<b>").append(angle).append("</b><br>")

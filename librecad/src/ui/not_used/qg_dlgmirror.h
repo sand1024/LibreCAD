@@ -35,7 +35,6 @@ struct RS_MirrorData;
 class QG_DlgMirror : public QDialog, public Ui::QG_DlgMirror
 {
     Q_OBJECT
-
 public:
     QG_DlgMirror(QWidget* parent = nullptr, bool modal = false, Qt::WindowFlags fl = {});
     ~QG_DlgMirror() override;
@@ -57,4 +56,4 @@ private:
     void init() const;
 };
 
-#endif // QG_DLGMIRROR_H
+#endif

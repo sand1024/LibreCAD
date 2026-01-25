@@ -55,4 +55,4 @@ private:
     double m_scale = 1.;
 };
 
-#endif // LC_IMAGEPROPERTIESEDITINGWIDGET_H
+#endif

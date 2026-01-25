@@ -27,9 +27,10 @@
 
 #if defined(_MSC_VER) && _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+#endif
 
 #include <QString>
+
 #include "rs.h"
 
 struct LC_LayersExportOptions;
@@ -51,6 +52,6 @@ namespace LC_FileDialogService {
         RS2::FormatType fileType = RS2::FormatUnknown;
         int checkState = 0;
     };
-    FileDialogResult getFileDetails(FileDialogMode const &fileDialogMode);
+    FileDialogResult getFileDetails(FileDialogMode fileDialogMode);
 }
-#endif // LC_FILEDIALOGSERVICE_H
+#endif

@@ -45,4 +45,4 @@ protected:
     void setEntity(RS_Circle *c);
 };
 
-#endif // QG_DLGCIRCLE_H
+#endif

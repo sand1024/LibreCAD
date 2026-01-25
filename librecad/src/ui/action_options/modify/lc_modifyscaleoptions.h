@@ -60,8 +60,8 @@ private:
     void setCopiesNumberToActionAndView(int number) const;
     void setExplicitFactorToActionAndView(bool val) const;
     void setIsotropicScalingFactorToActionAndView(bool val) const;
-    void setFactorXToActionAndView(QString val);
-    void setFactorYToActionAndView(QString val);
+    void setFactorXToActionAndView(const QString& val);
+    void setFactorYToActionAndView(const QString& val);
 };
 
-#endif // LC_MODIFYSCALEOPTIONS_H
+#endif

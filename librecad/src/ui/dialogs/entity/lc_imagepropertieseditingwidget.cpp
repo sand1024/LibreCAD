@@ -60,13 +60,12 @@ LC_ImagePropertiesEditingWidget::~LC_ImagePropertiesEditingWidget(){
 void LC_ImagePropertiesEditingWidget::setEntity(RS_Entity* entity) {
     m_entity = static_cast<RS_Image*>(entity);
 
-
     LC_GuardedSignalsBlocker signalsBlocker({
         ui->leInsertX, ui->leInsertX,  ui->leAngle, ui->leWidth, ui->leHeight, ui->leScale, ui->leDPI, ui->lePath
     });
 
-    auto wcsInsertionPoint = m_entity->getInsertionPoint();
-    auto ucsInsertionPoint = m_viewport->toUCS(wcsInsertionPoint);
+    const auto wcsInsertionPoint = m_entity->getInsertionPoint();
+    const auto ucsInsertionPoint = m_viewport->toUCS(wcsInsertionPoint);
     toUI(ucsInsertionPoint, ui->leInsertX, ui->leInsertY);
     toUIAngleDeg(m_entity->getUVector().angle(), ui->leAngle);
     toUIValue(m_entity->getImageWidth(), ui->leWidth);
@@ -79,7 +78,7 @@ void LC_ImagePropertiesEditingWidget::setEntity(RS_Entity* entity) {
 
 
 void LC_ImagePropertiesEditingWidget::onWidthChanged() {
-    double width = toWCSValue(ui->leWidth, m_entity->getWidth());
+    const double width = toWCSValue(ui->leWidth, m_entity->getWidth());
     m_scale = width / m_entity->getWidth();
 
     toUIValue(m_entity->getHeight()*m_scale, ui->leHeight);
@@ -87,7 +86,7 @@ void LC_ImagePropertiesEditingWidget::onWidthChanged() {
 }
 
 void LC_ImagePropertiesEditingWidget::onHeightChanged() {
-    double height = toWCSValue(ui->leHeight, m_entity->getHeight());
+    const double height = toWCSValue(ui->leHeight, m_entity->getHeight());
     m_scale = height / m_entity->getHeight();
 
     toUIValue(m_entity->getWidth()*m_scale, ui->leWidth);
@@ -102,8 +101,8 @@ void LC_ImagePropertiesEditingWidget::onScaleChanged() {
 }
 
 void LC_ImagePropertiesEditingWidget::onDPIChanged(){
-    double oldDpi = RS_Units::scaleToDpi(m_scale, m_entity->getGraphicUnit()); // todo - what if scale was changed? Save dpi in dlg?
-    double dpi = toWCSValue(ui->leDPI, oldDpi);
+    const double oldDpi = RS_Units::scaleToDpi(m_scale, m_entity->getGraphicUnit()); // todo - what if scale was changed? Save dpi in dlg?
+    const double dpi = toWCSValue(ui->leDPI, oldDpi);
     m_scale = RS_Units::dpiToScale(dpi, m_entity->getGraphicUnit());
     toUIValue(m_scale, ui->leScale);
     toUIValue(m_entity->getWidth()*m_scale, ui->leWidth);
@@ -115,10 +114,10 @@ void LC_ImagePropertiesEditingWidget::onInsertionPointEditingFinished() const {
 }
 
 void LC_ImagePropertiesEditingWidget::onAngleEditingFinished() {
-    double orgScale = m_entity->getUVector().magnitude();
+    const double orgScale = m_entity->getUVector().magnitude();
     m_scale /= orgScale;
-    double orgAngle = m_entity->getUVector().angle();
-    double angle = toWCSAngle(ui->leAngle, orgAngle);
+    const double orgAngle = m_entity->getUVector().angle();
+    const double angle = toWCSAngle(ui->leAngle, orgAngle);
     m_entity->scale(m_entity->getInsertionPoint(), RS_Vector(m_scale, m_scale));
     m_entity->rotate(m_entity->getInsertionPoint(), angle - orgAngle);
 }
@@ -128,7 +127,7 @@ void LC_ImagePropertiesEditingWidget::onImageFileClick() const {
 }
 
 void LC_ImagePropertiesEditingWidget::onPathChanged(const QString&) const {
-    auto text = ui->lePath->text().trimmed();
+    const auto text = ui->lePath->text().trimmed();
     if (QFileInfo(text).isFile()) {
         m_entity->setFile(text);
     }

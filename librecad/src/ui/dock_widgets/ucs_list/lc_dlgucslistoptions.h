@@ -46,4 +46,4 @@ private:
     LC_UCSListOptions* m_options;
 };
 
-#endif // LC_DLGUCSLISTOPTIONS_H
+#endif

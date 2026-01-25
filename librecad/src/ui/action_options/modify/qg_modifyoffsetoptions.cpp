@@ -27,8 +27,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
 
 #include "qg_modifyoffsetoptions.h"
-#include "ui_qg_modifyoffsetoptions.h"
+
 #include "rs_actionmodifyoffset.h"
+#include "ui_qg_modifyoffsetoptions.h"
 
 /*
  *  Constructs a QG_ModifyOffsetOptions
@@ -71,8 +72,8 @@ void QG_ModifyOffsetOptions::doSaveSettings() {
     save("Copies", ui->sbNumberOfCopies->value());
 }
 
-void QG_ModifyOffsetOptions::doSetAction(RS_ActionInterface *a, bool update) {
-    m_action = dynamic_cast<RS_ActionModifyOffset *>(a);
+void QG_ModifyOffsetOptions::doSetAction(RS_ActionInterface *a, const bool update) {
+    m_action = static_cast<RS_ActionModifyOffset *>(a);
 
     QString dist;
     bool distanceFixed;
@@ -113,18 +114,18 @@ void QG_ModifyOffsetOptions::onDistEditingFinished() {
     setDistanceToActionAndView(ui->leDist->text());
 }
 
-void QG_ModifyOffsetOptions::onFixedDistanceClicked(bool val) {
+void QG_ModifyOffsetOptions::onFixedDistanceClicked(const bool val) {
     setDistanceFixedToActionAndView(val);
 }
 
-void QG_ModifyOffsetOptions::setDistanceFixedToActionAndView(bool val) const {
+void QG_ModifyOffsetOptions::setDistanceFixedToActionAndView(const bool val) const {
     m_action->setDistanceFixed(val);
     ui->leDist->setEnabled(val);
     ui->tbPickDistance->setEnabled(val);
     ui->cbFixedDistance->setChecked(val);
 }
 
-void QG_ModifyOffsetOptions::setDistanceToActionAndView(QString val) {
+void QG_ModifyOffsetOptions::setDistanceToActionAndView(const QString& val) {
     double distance;
     if (toDouble(val, distance, 1.0, false)) {
         m_action->setDistance(distance);
@@ -140,43 +141,43 @@ void QG_ModifyOffsetOptions::setCopiesNumberToActionAndView(int number) const {
     ui->sbNumberOfCopies->setValue(number);
 }
 
-void QG_ModifyOffsetOptions::setUseMultipleCopiesToActionAndView(bool copies) const {
+void QG_ModifyOffsetOptions::setUseMultipleCopiesToActionAndView(const bool copies) const {
     m_action->setUseMultipleCopies(copies);
     ui->cbMultipleCopies->setChecked(copies);
     ui->sbNumberOfCopies->setEnabled(copies);
 }
 
-void QG_ModifyOffsetOptions::setUseCurrentLayerToActionAndView(bool val) const {
+void QG_ModifyOffsetOptions::setUseCurrentLayerToActionAndView(const bool val) const {
     m_action->setUseCurrentLayer(val);
     ui->cbCurrentLayer->setChecked(val);
 }
 
-void QG_ModifyOffsetOptions::setUseCurrentAttributesToActionAndView(bool val) const {
+void QG_ModifyOffsetOptions::setUseCurrentAttributesToActionAndView(const bool val) const {
     m_action->setUseCurrentAttributes(val);
     ui->cbCurrentAttr->setChecked(val);
 }
 
-void QG_ModifyOffsetOptions::setKeepOriginalsToActionAndView(bool val) const {
+void QG_ModifyOffsetOptions::setKeepOriginalsToActionAndView(const bool val) const {
     m_action->setKeepOriginals(val);
     ui->cbKeepOriginals->setChecked(val);
 }
 
-void QG_ModifyOffsetOptions::cbKeepOriginalsClicked(bool val) {
+void QG_ModifyOffsetOptions::cbKeepOriginalsClicked(const bool val) {
     setKeepOriginalsToActionAndView(val);
 }
 
-void QG_ModifyOffsetOptions::cbMultipleCopiesClicked(bool val) {
+void QG_ModifyOffsetOptions::cbMultipleCopiesClicked(const bool val) {
     setUseMultipleCopiesToActionAndView(val);
 }
 
-void QG_ModifyOffsetOptions::cbUseCurrentAttributesClicked(bool val) {
+void QG_ModifyOffsetOptions::cbUseCurrentAttributesClicked(const bool val) {
     setUseCurrentAttributesToActionAndView(val);
 }
 
-void QG_ModifyOffsetOptions::cbUseCurrentLayerClicked(bool val) {
+void QG_ModifyOffsetOptions::cbUseCurrentLayerClicked(const bool val) {
     setUseCurrentLayerToActionAndView(val);
 }
 
-void QG_ModifyOffsetOptions::onNumberOfCopiesValueChanged(int number) {
+void QG_ModifyOffsetOptions::onNumberOfCopiesValueChanged(const int number) {
     setCopiesNumberToActionAndView(number);
 }

@@ -19,4 +19,4 @@ private:
     ColorWizard* m_colorWizard = nullptr;
 };
 
-#endif // LC_PENWIZARD_H
+#endif

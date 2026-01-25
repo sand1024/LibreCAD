@@ -23,9 +23,10 @@
 ** This copyright notice MUST APPEAR in all copies of the script!
 **
 **********************************************************************/
+#include "qg_arctangentialoptions.h"
+
 #include<cmath>
 
-#include "qg_arctangentialoptions.h"
 #include "rs_actiondrawarctangential.h"
 #include "ui_qg_arctangentialoptions.h"
 
@@ -61,7 +62,7 @@ void QG_ArcTangentialOptions::languageChange(){
 }
 
 void QG_ArcTangentialOptions::doSaveSettings(){
-    bool byRadius = ui->rbRadius->isChecked();
+    const bool byRadius = ui->rbRadius->isChecked();
     save("ByRadius", byRadius);
     if (byRadius){
         save("Radius", ui->leRadius->text());
@@ -71,8 +72,8 @@ void QG_ArcTangentialOptions::doSaveSettings(){
     }
 }
 
-void QG_ArcTangentialOptions::doSetAction(RS_ActionInterface *a, bool update){
-    m_action = dynamic_cast<RS_ActionDrawArcTangential *>(a);
+void QG_ArcTangentialOptions::doSetAction(RS_ActionInterface *a, const bool update){
+    m_action = static_cast<RS_ActionDrawArcTangential *>(a);
     QString radius;
     QString angle;
     bool byRadius;
@@ -112,7 +113,7 @@ void QG_ArcTangentialOptions::setAngleToActionAndView(const QString& s) {
     }
 }
 
-void QG_ArcTangentialOptions::setByRadiusToActionAndView(bool byRadius) const {
+void QG_ArcTangentialOptions::setByRadiusToActionAndView(const bool byRadius) const {
     m_action->setByRadius(byRadius);
     ui->rbRadius->setChecked(byRadius);
     ui->rbAngle->setChecked(!byRadius);
@@ -140,10 +141,10 @@ void QG_ArcTangentialOptions::onAngleClicked(bool /*checked*/){
 
 // fixme - add label that will show current arc radius or angle (on preview)
 
-void QG_ArcTangentialOptions::updateRadius(double d){
+void QG_ArcTangentialOptions::updateRadius(const double d){
     ui->leRadius->setText(fromDouble(d));
 }
 
-void QG_ArcTangentialOptions::updateAngle(double d){
-    ui->leAngle->setText(fromDouble(d));
+void QG_ArcTangentialOptions::updateAngle(const double angle){
+    ui->leAngle->setText(fromDouble(angle));
 }

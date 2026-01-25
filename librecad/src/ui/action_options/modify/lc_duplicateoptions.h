@@ -38,9 +38,9 @@ public:
 protected slots:
     void onOffsetXEditingFinished();
     void onOffsetYEditingFinished();
-    void onInPlaceClicked(bool value);
-    void onPenModeIndexChanged(int mode);
-    void onLayerModeIndexChanged(int mode);
+    void onInPlaceClicked(bool value) const;
+    void onPenModeIndexChanged(int mode) const;
+    void onLayerModeIndexChanged(int mode) const;
     void languageChange() override;
 protected:
     void doSetAction(RS_ActionInterface *a, bool update) override;
@@ -55,4 +55,4 @@ private:
     void setLayerModeToActionAndeView(int mode) const;
 };
 
-#endif // LC_DUPLICATEOPTIONS_H
+#endif

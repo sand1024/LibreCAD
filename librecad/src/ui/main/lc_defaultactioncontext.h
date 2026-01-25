@@ -34,8 +34,8 @@ class LC_ActionOptionsManager;
 
 class LC_DefaultActionContext: public LC_ActionContext{
 public:
-    LC_DefaultActionContext(QG_ActionHandler* actionHandler);
-    virtual ~LC_DefaultActionContext() = default;
+    explicit LC_DefaultActionContext(QG_ActionHandler* actionHandler);
+    ~LC_DefaultActionContext() override = default;
     void addOptionsWidget(LC_ActionOptionsWidget *widget) override;
     void removeOptionsWidget(LC_ActionOptionsWidget *widget) override;
     void requestSnapDistOptions(double *dist, bool on) override;
@@ -46,24 +46,24 @@ public:
     void commandPrompt(const QString &message) override;
     void updateCoordinateWidget(const RS_Vector &abs, const RS_Vector &rel, bool updateFormat) override;
 
-    void setActionOptionsManager(LC_ActionOptionsManager *m_action_options_manager){
-        m_actionOptionsManager = m_action_options_manager;
+    void setActionOptionsManager(LC_ActionOptionsManager *actionOptionsManager){
+        m_actionOptionsManager = actionOptionsManager;
     }
 
-    void setCoordinateWidget(QG_CoordinateWidget *coordinate_widget){
-        m_coordinateWidget = coordinate_widget;
+    void setCoordinateWidget(QG_CoordinateWidget *coordinateWidget){
+        m_coordinateWidget = coordinateWidget;
     }
 
-    void setCommandWidget(QG_CommandWidget *command_widget){
-        m_commandWidget = command_widget;
+    void setCommandWidget(QG_CommandWidget *commandWidget){
+        m_commandWidget = commandWidget;
     }
 
-    void setMouseWidget(QG_MouseWidget *mouse_widget){
-        m_mouseWidget = mouse_widget;
+    void setMouseWidget(QG_MouseWidget *mouseWidget){
+        m_mouseWidget = mouseWidget;
     }
 
-    void setStatusBarManager(LC_QTStatusbarManager *status_bar_manager){
-        m_statusBarManager = status_bar_manager;
+    void setStatusBarManager(LC_QTStatusbarManager *statusBarManager){
+        m_statusBarManager = statusBarManager;
     }
     void setDocumentAndView(RS_Document *document, RS_GraphicView *view) override;
     void setSnapMode(const RS_SnapMode& mode) override;
@@ -80,4 +80,4 @@ private:
     QG_ActionHandler* m_actionHandler{nullptr};
 };
 
-#endif // LC_DEFAULTACTIONCONTEXT_H
+#endif

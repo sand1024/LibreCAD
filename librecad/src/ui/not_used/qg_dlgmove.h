@@ -34,7 +34,6 @@ struct RS_MoveData;
 class QG_DlgMove : public QDialog, public Ui::QG_DlgMove
 {
     Q_OBJECT
-
 public:
     QG_DlgMove(QWidget* parent = nullptr, bool modal = false, Qt::WindowFlags fl = {});
     ~QG_DlgMove();
@@ -52,4 +51,4 @@ private:
 
 };
 
-#endif // QG_DLGMOVE_H
+#endif

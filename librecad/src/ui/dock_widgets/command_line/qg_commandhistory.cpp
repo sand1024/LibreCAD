@@ -41,7 +41,7 @@ QG_CommandHistory::QG_CommandHistory(QWidget* parent) :
     addAction(m_pSelectAll);
     connect(this, &QG_CommandHistory::textChanged, this, &QG_CommandHistory::slotTextChanged);
 
-    QAction* clear = new QAction(tr("Clear"), this);
+    const auto clear = new QAction(tr("Clear"), this);
     connect(clear, &QAction::triggered, this, &QG_CommandHistory::clear);
     addAction(clear);
 

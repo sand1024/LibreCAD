@@ -41,7 +41,7 @@ void LC_ActionGroup::setName(const QString &name) {
     m_name = name;
 }
 
-const QString LC_ActionGroup::getTitle() const {
+QString LC_ActionGroup::getTitle() const {
     return m_title;
 }
 
@@ -50,7 +50,7 @@ const QString &LC_ActionGroup::getDescription() const {
 }
 
 void LC_ActionGroup::setDescription(const QString &description) {
-    LC_ActionGroup::m_description = description;
+    m_description = description;
 }
 
 const QIcon &LC_ActionGroup::getIcon() const {
@@ -58,13 +58,13 @@ const QIcon &LC_ActionGroup::getIcon() const {
 }
 
 void LC_ActionGroup::setIcon(const QIcon &icon) {
-    LC_ActionGroup::m_icon = icon;
+    m_icon = icon;
 }
 
 bool LC_ActionGroup::isActionMappingsMayBeConfigured() const {
     return m_actionMappingsMayBeConfigured;
 }
 
-void LC_ActionGroup::setActionMappingsMayBeConfigured(bool actionMappingsMayBeConfigured) {
-    LC_ActionGroup::m_actionMappingsMayBeConfigured = actionMappingsMayBeConfigured;
+void LC_ActionGroup::setActionMappingsMayBeConfigured(const bool actionMappingsMayBeConfigured) {
+    m_actionMappingsMayBeConfigured = actionMappingsMayBeConfigured;
 }

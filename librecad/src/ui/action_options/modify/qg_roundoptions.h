@@ -55,4 +55,4 @@ private:
     void setRadiusToActionAndView(const QString &val);
 };
 
-#endif // QG_ROUNDOPTIONS_H
+#endif

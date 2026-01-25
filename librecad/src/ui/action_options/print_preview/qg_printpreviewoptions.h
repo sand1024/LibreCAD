@@ -85,4 +85,4 @@ private:
     void fitPage();
     void updatePageNumbers() const;
 };
-#endif // QG_PRINTPREVIEWOPTIONS_H
+#endif

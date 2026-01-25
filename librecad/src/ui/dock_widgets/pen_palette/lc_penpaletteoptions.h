@@ -49,7 +49,7 @@ public:
     /**
      * mode for displaying color name
      */
-    int colorNameDisplayMode {LC_PenInfoRegistry::RGB};
+    LC_PenInfoRegistry::ColorNameDisplayMode colorNameDisplayMode {LC_PenInfoRegistry::RGB};
     /**
      * should we show all fields for active pen in the table or only for name
      */
@@ -101,4 +101,4 @@ public:
 
 };
 
-#endif // LC_PENPALETTEOPTIONS_H
+#endif

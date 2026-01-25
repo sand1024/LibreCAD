@@ -39,11 +39,11 @@ protected:
     void doSetAction(RS_ActionInterface *a, bool update) override;
 protected slots:
     void languageChange() override;
-    void onPointsCountValueChanged(int value);
-    void onEdgePointsModeIndexChanged(int index);
-    void onFixedDistanceClicked(bool value);
-    void onAngleClicked(bool value);
-    void onWithinLineClicked(bool value);
+    void onPointsCountValueChanged(int value) const;
+    void onEdgePointsModeIndexChanged(int index) const;
+    void onFixedDistanceClicked(bool value) const;
+    void onAngleClicked(bool value) const;
+    void onWithinLineClicked(bool value) const;
     void onDistanceEditingFinished();
     void onAngleEditingFinished();
     bool checkActionRttiValid(RS2::ActionType actionType) override;
@@ -57,8 +57,8 @@ private:
     void setEdgePointsModeToActionAndView(int index) const;
     void setFixedDistanceModeToActionAndView(bool value) const;
     void setWithinLineModeToActionAndView(bool value) const;
-    void setDistanceToActionAndView(QString val);
+    void setDistanceToActionAndView(const QString& val);
     void setAngleModeToActionAndView(bool value) const;
-    void setAngleToActionAndView(QString val, bool affectState);
+    void setAngleToActionAndView(const QString& val, bool affectState);
 };
-#endif // LC_LINEPOINTSOPTIONS_H
+#endif

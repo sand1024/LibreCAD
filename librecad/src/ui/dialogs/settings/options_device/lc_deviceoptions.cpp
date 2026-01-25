@@ -23,6 +23,7 @@
 */
 
 #include "lc_deviceoptions.h"
+
 #include "rs_settings.h"
 #include "ui_lc_deviceoptions.h"
 
@@ -32,7 +33,7 @@ LC_DeviceOptions::LC_DeviceOptions(QWidget* parent) :
     ui->setupUi(this);
 
     const QString device = LC_GET_ONE_STR("Hardware","Device", "Mouse");
-    int index = ui->device_combobox->findText(device);
+    const int index = ui->device_combobox->findText(device);
     ui->device_combobox->setCurrentIndex(index);
 
     connect(ui->save_button,  &QPushButton::pressed, this, &LC_DeviceOptions::save);
@@ -44,7 +45,7 @@ LC_DeviceOptions::~LC_DeviceOptions(){
 }
 
 void LC_DeviceOptions::save() const {
-    int index = ui->device_combobox->currentIndex();
-    QString device = ui->device_combobox->itemText(index);
+    const int index = ui->device_combobox->currentIndex();
+    const QString device = ui->device_combobox->itemText(index);
     LC_SET_ONE("Hardware","Device", device);
 }

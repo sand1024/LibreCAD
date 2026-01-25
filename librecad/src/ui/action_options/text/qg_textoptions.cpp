@@ -24,6 +24,7 @@
 **
 **********************************************************************/
 #include "qg_textoptions.h"
+
 #include "rs_actiondrawtext.h"
 #include "ui_qg_textoptions.h"
 
@@ -32,7 +33,7 @@
  *  name 'name' and widget flags set to 'f'.
  */
 QG_TextOptions::QG_TextOptions()
-    :LC_ActionOptionsWidgetBase(RS2::ActionDrawText, "", ""), ui(new Ui::Ui_TextOptions{}) {
+    : LC_ActionOptionsWidgetBase(RS2::ActionDrawText, "", ""), ui(new Ui::Ui_TextOptions{}) {
     ui->setupUi(this);
     connect(ui->leAngle, &QLineEdit::textChanged, this, &QG_TextOptions::onAngleChanged);
     connect(ui->leText, &QLineEdit::textChanged, this, &QG_TextOptions::onTextChanged);
@@ -52,20 +53,21 @@ void QG_TextOptions::languageChange() {
     ui->retranslateUi(this);
 }
 
-void QG_TextOptions::doSetAction(RS_ActionInterface *a, bool update) {
-    m_action = dynamic_cast<RS_ActionDrawText *>(a);
+void QG_TextOptions::doSetAction(RS_ActionInterface* a, const bool update) {
+    m_action = static_cast<RS_ActionDrawText*>(a);
     QString text;
     QString angle;
     if (update) {
         text = m_action->getText();
         angle = fromDouble(m_action->getUcsAngleDegrees());
-    } else {
-        text = "";
+    }
+    else {
+        text.clear();
         angle = "0.0";
     }
 
-//    LC_ERR << " Options: --- " << text << " Angle: " << angle;
-/*#if defined(OOPL_VERSION) && defined(Q_WS_WIN)
+    //    LC_ERR << " Options: --- " << text << " Angle: " << angle;
+    /*#if defined(OOPL_VERSION) && defined(Q_WS_WIN)
         QCString iso = RS_System::localeToISO( QTextCodec::locale() );
         QTextCodec *codec = QTextCodec::codecForName(iso);
         if (codec) {
@@ -75,29 +77,29 @@ void QG_TextOptions::doSetAction(RS_ActionInterface *a, bool update) {
         }
 //#else*/
     ui->leText->setText(text);
-//#endif
+    //#endif
     ui->leAngle->setText(angle);
 }
 
 void QG_TextOptions::onTextChanged() const {
     if (m_action) {
-/*#if defined(OOPL_VERSION) && defined(Q_WS_WIN)
+        /*#if defined(OOPL_VERSION) && defined(Q_WS_WIN)
         QCString iso = RS_System::localeToISO( QTextCodec::locale() );
         action->setText(
             RS_FilterDXF::toNativeString( 
-			 QString::fromLocal8Bit( QTextCodec::codecForName( iso )->fromUnicode( ui->teText->text() ) )
+    QString::fromLocal8Bit( QTextCodec::codecForName( iso )->fromUnicode( ui->teText->text() ) )
             )
         );
 //#else*/
-        const QString &plainText = ui->leText->text();
+        const QString& plainText = ui->leText->text();
         m_action->setText(plainText);
-//#endif
+        //#endif
     }
 }
 
 void QG_TextOptions::onAngleChanged() {
     double angle;
-    QString val = ui->leAngle->text();
+    const QString val = ui->leAngle->text();
     if (toDoubleAngleDegrees(val, angle, 0.0, false)) {
         m_action->setUcsAngleDegrees(angle);
     }

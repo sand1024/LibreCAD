@@ -9,4 +9,4 @@ public:
     explicit ColorComboBox(QWidget* parent);
 };
 
-#endif // COLORCOMBOBOX_H
+#endif

@@ -26,6 +26,8 @@
 #ifndef QG_COMMANDWIDGET_H
 #define QG_COMMANDWIDGET_H
 
+#include <QWidget>
+
 #include "ui_qg_commandwidget.h"
 
 class QG_ActionHandler;
@@ -34,8 +36,8 @@ class QAction;
 class QG_CommandWidget : public QWidget, public Ui::QG_CommandWidget{
     Q_OBJECT
 public:
-    QG_CommandWidget(QG_ActionHandler *action_handler, QWidget *parent = nullptr, const char *name = nullptr, Qt::WindowFlags fl = {});
-    ~QG_CommandWidget();
+    explicit QG_CommandWidget(QG_ActionHandler *actionHandler, QWidget *parent = nullptr, const char *name = nullptr, Qt::WindowFlags fl = {});
+    ~QG_CommandWidget() override;
 
     bool eventFilter(QObject *obj, QEvent *event) override;
     QAction* getDockingAction() const {
@@ -43,13 +45,13 @@ public:
     }
     void setInput(const QString &cmd) const;
 public slots:
-    virtual void setFocus();
+    virtual void focusWidget();
     void setCommand( const QString & cmd ) const;
     void appendHistory( const QString & msg ) const;
-    void handleCommand(QString cmd);
-    void handleKeycode(QString code) const;
+    void handleCommand(QString cmd) const;
+    void handleKeycode(const QString& code) const;
     void spacePressed() const;
-    void tabPressed();
+    void tabPressed() const;
     void escape() const;
     void setActionHandler( QG_ActionHandler * ah );
     void setCommandMode() const;
@@ -66,4 +68,4 @@ private:
     QAction* m_docking = nullptr;
 };
 
-#endif // QG_COMMANDWIDGET_H
+#endif

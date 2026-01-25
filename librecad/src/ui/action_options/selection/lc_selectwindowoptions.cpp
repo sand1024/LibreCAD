@@ -21,6 +21,7 @@
  ******************************************************************************/
 
 #include "lc_selectwindowoptions.h"
+
 #include "rs_actionselectwindow.h"
 #include "ui_lc_selectwindowoptions.h"
 
@@ -53,7 +54,7 @@ void LC_SelectWindowOptions::languageChange(){
     ui->retranslateUi(this);
 }
 
-bool LC_SelectWindowOptions::checkActionRttiValid(RS2::ActionType actionType) {
+bool LC_SelectWindowOptions::checkActionRttiValid(const RS2::ActionType actionType) {
     return RS2::ActionDeselectWindow == actionType || RS2::ActionSelectWindow == actionType;
 }
 
@@ -75,29 +76,31 @@ void LC_SelectWindowOptions::doSaveSettings() {
     save("Insert", ui->cbInsert->isChecked());
 }
 
-void LC_SelectWindowOptions::doSetAction(RS_ActionInterface *a, bool update) {
-    m_action = dynamic_cast<RS_ActionSelectWindow *>(a);
+void LC_SelectWindowOptions::doSetAction(RS_ActionInterface *a, const bool update) {
+    m_action = static_cast<RS_ActionSelectWindow *>(a);
     bool all;
-    bool line = false;
-    bool arc  = false;
-    bool point = false;
-    bool polyline  = false;
-    bool ellipse  = false;
-    bool circle = false;
-    bool spline = false;
-    bool hatch  = false;
-    bool image  = false;
-    bool text = false;
-    bool mtext = false;
-    bool wipeout = false;
-    bool dimension = false;
-    bool insert = false;
+
     QList<RS2::EntityType> entityTypes;
     if (update){
         all = m_action->isSelectAllEntityTypes();
         entityTypes = m_action->getEntityTypesToSelect();
     }
     else{
+        bool line = false;
+        bool arc  = false;
+        bool point = false;
+        bool polyline  = false;
+        bool ellipse  = false;
+        bool circle = false;
+        bool spline = false;
+        bool hatch  = false;
+        bool image  = false;
+        bool text = false;
+        bool mtext = false;
+        bool wipeout = false;
+        bool dimension = false;
+        bool insert = false;
+
         all = loadBool("All", true);
         line = loadBool("Line",false);
         arc = loadBool("Arc", false);
@@ -251,7 +254,7 @@ void LC_SelectWindowOptions::setEntityTypesToActinAndView(QList<RS2::EntityType>
     ui->cbInsert->setChecked(false);
     ui->cbDimension->setChecked(false);
     ui->cbWipeout->setChecked(false);
-    for (auto t: entityTypes){
+    for (const auto t: entityTypes){
         switch (t){
             case RS2::EntityLine:
                 ui->cbLine->setChecked(true);
@@ -303,17 +306,17 @@ void LC_SelectWindowOptions::setEntityTypesToActinAndView(QList<RS2::EntityType>
 }
 
 
-void LC_SelectWindowOptions::setSelectAllToActionAndView(bool value) {
+void LC_SelectWindowOptions::setSelectAllToActionAndView(const bool value) {
     ui->cbAll->setChecked(value);
     m_action->setSelectAllEntityTypes(value);
-    bool enable = !value;
+    const bool enable = !value;
     enableEntityTypes(enable);
     if (!value){
         onTypeToggled(value);
     }
 }
 
-void LC_SelectWindowOptions::enableEntityTypes(bool enable) const {
+void LC_SelectWindowOptions::enableEntityTypes(const bool enable) const {
     ui->cbLine->setEnabled(enable);
     ui->cbArc->setEnabled(enable);
     ui->cbCircle->setEnabled(enable);

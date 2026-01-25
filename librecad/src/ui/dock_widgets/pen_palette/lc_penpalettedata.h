@@ -23,8 +23,10 @@
 **********************************************************************/
 #ifndef LC_PENPALETTEDATA_H
 #define LC_PENPALETTEDATA_H
-#include "rs.h"
+
 #include <QObject>
+
+#include "rs.h"
 
 class LC_PenInfoRegistry;
 class RS_Color;
@@ -79,8 +81,8 @@ public:
      * @param name name of pen
      * @return item if it is found or nullptr
      */
-    LC_PenItem* findItemWithName(QString &name) const;
-    LC_PenItem *createNewPenItem(QString name);
+    LC_PenItem* findItemWithName(const QString &name) const;
+    LC_PenItem *createNewPenItem(const QString& penName);
 
 signals:
     void modelDataChange();
@@ -95,7 +97,7 @@ private:
      * @param str
      * @return
      */
-    LC_PenItem *fromStringRepresentation(QString &str);
+    LC_PenItem *fromStringRepresentation(const QString &str) const;
     /**
      * Converts pen into string
      * @param item
@@ -111,8 +113,8 @@ private:
      */
     LC_PenPaletteOptions *m_options = nullptr;
     void createDefaultPens();
-    LC_PenItem *doCreateNewDefaultPenItem(QString penName, RS2::LineType lineType, RS2::LineWidth lineWidth, RS_Color color);
+    LC_PenItem *doCreateNewDefaultPenItem(const QString& penName, RS2::LineType lineType, RS2::LineWidth lineWidth, const RS_Color& color);
     void emitDataChange();
 };
 
-#endif // LC_PENPALETTEDATA_H
+#endif

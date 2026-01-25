@@ -32,8 +32,8 @@ class QMouseEvent;
 class LC_MenuActivator {
 public:
     enum Type: unsigned {
-        CLICK_RELEASE = 1 << 0,
-        DOUBLE_CLICK  = 1 << 1
+        CLICK_RELEASE = (1 << 0),
+        DBL_CLICK  = (1 << 1)
     };
 
     enum Button: unsigned {
@@ -54,24 +54,24 @@ public:
 
     LC_MenuActivator(const QString& shortcutString, bool ctrl, bool alt, bool shift, Button button, Type type,
                      bool entityRequired, RS2::EntityType entityType);
-    LC_MenuActivator(LC_MenuActivator& other);
+    LC_MenuActivator(const LC_MenuActivator& other);
     LC_MenuActivator();
-    LC_MenuActivator* getCopy();
+    LC_MenuActivator* getCopy() const;
     void copyTo(LC_MenuActivator& other) const;
     void setKeys(bool ctrl, bool alt, bool shift);
-    bool isEventApplicable(QMouseEvent* event) const;
-    bool isSameAs(LC_MenuActivator* other) const;
-    static void parseEntityType(QString entityTypeStr, bool& requiresEntity, RS2::EntityType& entityType);
+    bool isEventApplicable(const QMouseEvent* event) const;
+    bool isSameAs(const LC_MenuActivator* other) const;
+    static void parseEntityType(const QString& entityTypeStr, bool& requiresEntity, RS2::EntityType& entityType);
     QString getShortcut() const;
     QString getEventView() const;
-    QString getShortcutView();
+    QString getShortcutView() const;
     void setButtonType(Button type);
     void setEventType(Type event);
     Type getEventType() const;
     void getKeysState(bool& ctrl, bool& alt, bool& shift) const;
     Button getButtonType() const;
     bool hasKeys() const;
-    static LC_MenuActivator* fromShortcut(QString& shortcut);
+    static LC_MenuActivator* fromShortcut(const QString& shortcut);
     QString getEntityTypeStr() const;
     void update();
     void setMenuName(const QString& menuName);
@@ -80,6 +80,7 @@ public:
     void setEntityRequired(bool value);
     RS2::EntityType getEntityType()const;
     void setEntityType(RS2::EntityType entityType);
+    LC_MenuActivator &operator =(const LC_MenuActivator &src);
 private:
     unsigned m_keyModifiers {NONE};
     Type m_eventType {CLICK_RELEASE};
@@ -89,7 +90,4 @@ private:
     QString m_shortcutString;
     QString m_menuName;
 };
-
-class QMouseEvent;
-
-#endif // LC_MENUACTIVATOR_H
+#endif

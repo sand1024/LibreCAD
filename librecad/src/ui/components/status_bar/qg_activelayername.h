@@ -12,4 +12,4 @@ public:
     void setGraphicView(RS_GraphicView* gview) override;
 };
 
-#endif // QG_ACTIVELAYERNAME_H
+#endif

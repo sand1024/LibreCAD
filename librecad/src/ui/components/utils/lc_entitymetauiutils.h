@@ -39,5 +39,4 @@ public:
     static const std::vector<QPair<QString, RS2::EntityType>>& getEntityTypeNamesList();
     static void setupEntitiesTypesList(QComboBox* entityTypeCombobox, const QSet<RS2::EntityType>& set);
 };
-
 #endif

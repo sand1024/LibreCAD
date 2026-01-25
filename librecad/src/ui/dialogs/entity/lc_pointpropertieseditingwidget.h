@@ -48,4 +48,4 @@ private:
     RS_Point* m_entity {nullptr};
 };
 
-#endif // LC_POINTPROPERTIESEDITINGWIDGET_H
+#endif

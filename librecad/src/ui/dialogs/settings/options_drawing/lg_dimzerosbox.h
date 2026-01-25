@@ -55,10 +55,10 @@ public:
     void setData(int i) const;
     int getData() const;
 private:
-    QStandardItemModel *model = nullptr;
-    QListView *view = nullptr;
-    bool dimLine =false;
+    QStandardItemModel *m_model = nullptr;
+    QListView *m_view = nullptr;
+    bool m_dimLine =false;
     int convertDimZin(int v, bool toIdx);
 };
 
-#endif // LG_DIMZEROSBOX_H
+#endif

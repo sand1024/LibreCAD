@@ -37,7 +37,7 @@ class LC_UCSStateWidget : public QWidget{
 public:
     explicit LC_UCSStateWidget(QWidget *parent,const char* name);
     ~LC_UCSStateWidget() override;
-    void update(QIcon icon, QString ucsName, QString ucsInfo);
+    void update(const QIcon& icon, const QString& ucsName, const QString& ucsInfo);
 public slots:
     void onIconsRefreshed() const;
 private:

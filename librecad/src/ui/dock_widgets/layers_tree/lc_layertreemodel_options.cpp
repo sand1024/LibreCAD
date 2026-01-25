@@ -32,7 +32,7 @@
  * @param layerType type of layer
  * @return default pen based on settings for the layer type
  */
-RS_Pen LC_LayerTreeModelOptions::getDefaultPen(int layerType) const{
+RS_Pen LC_LayerTreeModelOptions::getDefaultPen(const int layerType) const{
     RS_Pen result;
     switch (layerType){
         case LC_LayerTreeItem::NORMAL:
@@ -83,7 +83,7 @@ void LC_LayerTreeModelOptions::save() const{
 void LC_LayerTreeModelOptions::load(){
     LC_GROUP_GUARD("Widget.LayerTree");
     {
-        LC_LayerTreeModelOptions defaults;
+        const LC_LayerTreeModelOptions defaults;
         activeLayerBgColor = QColor(LC_GET_STR("activeLayerBgColor", defaults.activeLayerBgColor.name()));
         selectedItemBgColor = QColor(LC_GET_STR("selectedItemBgColor", defaults.selectedItemBgColor.name()));
         virtualLayerBgColor = QColor(LC_GET_STR("virtualLayerBgColor", defaults.virtualLayerBgColor.name()));

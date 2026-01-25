@@ -23,6 +23,7 @@
 #define LC_CUSTOMSTYLEHELPER_H
 
 #include <QString>
+
 #include "lc_appwindowaware.h"
 
 class LC_CustomStyleHelper : public LC_AppWindowAware {
@@ -38,4 +39,4 @@ private:
     QString m_styleSheetPath;
 };
 
-#endif // LC_CUSTOMSTYLEHELPER_H
+#endif

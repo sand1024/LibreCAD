@@ -41,7 +41,7 @@ LC_DlgMenuAssigner::LC_DlgMenuAssigner(QWidget *parent, LC_MenuActivator* activa
     ui->cbKeyALt->setChecked(alt);
     ui->cbKeyShift->setChecked(shift);
 
-    auto button = m_activator->getButtonType();
+    const auto button = m_activator->getButtonType();
     switch (button) {
         case LC_MenuActivator::LEFT:
             ui->rbBtnLeft->setChecked(true);
@@ -65,8 +65,8 @@ LC_DlgMenuAssigner::LC_DlgMenuAssigner(QWidget *parent, LC_MenuActivator* activa
             break;
     }
 
-    auto eventType = m_activator->getEventType();
-    if (eventType == LC_MenuActivator::DOUBLE_CLICK) {
+    const auto eventType = m_activator->getEventType();
+    if (eventType == LC_MenuActivator::DBL_CLICK) {
         ui->rbEvtDblClick->setChecked(true);
     }
     else {
@@ -75,8 +75,8 @@ LC_DlgMenuAssigner::LC_DlgMenuAssigner(QWidget *parent, LC_MenuActivator* activa
 
     initEntityContextCombobox();
 
-    QString entityTypeSuffix = m_activator->getEntityTypeStr();
-    int currentIndex = ui->cbEntityContext->findData(entityTypeSuffix);
+    const QString entityTypeSuffix = m_activator->getEntityTypeStr();
+    const int currentIndex = ui->cbEntityContext->findData(entityTypeSuffix);
     ui->cbEntityContext->setCurrentIndex(currentIndex);
 
     connect(ui->cbKeyALt, &QCheckBox::toggled, this, &LC_DlgMenuAssigner::onKeyModifierToggled);
@@ -133,10 +133,10 @@ LC_DlgMenuAssigner::~LC_DlgMenuAssigner(){
 
 bool LC_DlgMenuAssigner::eventFilter(QObject* object, QEvent* event) {
     if ( object == ui->lblResult || object == ui->gbInvocationShortcut) {
-        QMouseEvent* mouseEvent {nullptr};
+        const QMouseEvent* mouseEvent {nullptr};
         if (event->type() == QEvent::MouseButtonRelease) {
             // eliminate second click event on double click
-            bool processClick = !m_doubleClickTimer.isValid() ? true : m_doubleClickTimer.elapsed() > 100;
+            const bool processClick = !m_doubleClickTimer.isValid() ? true : m_doubleClickTimer.elapsed() > 100;
             if (processClick) { // for win, double click interval is 100-900 ms, default 500ms
                 mouseEvent = dynamic_cast<QMouseEvent*>(event);
                 ui->rbEvtClickRelease->setChecked(true);
@@ -148,7 +148,7 @@ bool LC_DlgMenuAssigner::eventFilter(QObject* object, QEvent* event) {
             m_doubleClickTimer.start();
         }
         if (mouseEvent != nullptr) {
-            auto button = mouseEvent->button();
+            const auto button = mouseEvent->button();
             // LC_ERR << "Button " << button;
             switch (button) {
                 case Qt::LeftButton: {
@@ -179,7 +179,7 @@ bool LC_DlgMenuAssigner::eventFilter(QObject* object, QEvent* event) {
                     break;
             }
 
-            auto modifiers = mouseEvent->modifiers();
+            const auto modifiers = mouseEvent->modifiers();
 
             ui->cbKeyShift->setChecked(modifiers & Qt::ShiftModifier);
             ui->cbKeyCtrl->setChecked(modifiers & Qt::ControlModifier);
@@ -190,17 +190,17 @@ bool LC_DlgMenuAssigner::eventFilter(QObject* object, QEvent* event) {
     return false;
 }
 
-void LC_DlgMenuAssigner::updateShortcutView() {
+void LC_DlgMenuAssigner::updateShortcutView() const {
     m_activator->update();
-    auto shortcutView = m_activator->getShortcutView();
+    const auto shortcutView = m_activator->getShortcutView();
     ui->lblResult->setText(shortcutView);
     validateShortcut();
 }
 
 QString LC_DlgMenuAssigner::findMenuForActivator() const {
-    qsizetype size = m_activators->size();
+    const qsizetype size = m_activators->size();
     for (int i = 0; i< size; i++) {
-        auto a = m_activators->at(i);
+        const auto a = m_activators->at(i);
         auto otherMenuName = a->getMenuName();
         if (a->isSameAs(m_activator) && (otherMenuName != m_activator->getMenuName())) {
             return otherMenuName;
@@ -209,19 +209,19 @@ QString LC_DlgMenuAssigner::findMenuForActivator() const {
     return "";
 }
 
-bool LC_DlgMenuAssigner::validateShortcut() {
+bool LC_DlgMenuAssigner::validateShortcut() const {
     bool result = false;
     bool ctrl{false}, alt{false}, shift{false};
     m_activator->getKeysState(ctrl, alt, shift);
-    bool noKeys = !m_activator->hasKeys();
-    bool dblClick = m_activator->getEventType() == LC_MenuActivator::DOUBLE_CLICK;
-    bool click = m_activator->getEventType() == LC_MenuActivator::CLICK_RELEASE;
-    bool entityRequired = m_activator->isEntityRequired();
-    auto button_type = m_activator->getButtonType();
+    const bool noKeys = !m_activator->hasKeys();
+    const bool dblClick = m_activator->getEventType() == LC_MenuActivator::DBL_CLICK;
+    const bool click = m_activator->getEventType() == LC_MenuActivator::CLICK_RELEASE;
+    const bool entityRequired = m_activator->isEntityRequired();
+    const auto buttonType = m_activator->getButtonType();
 
-    bool leftButton = button_type == LC_MenuActivator::LEFT;
-    bool rightButton = button_type == LC_MenuActivator::RIGHT;
-    bool middleButton = button_type == LC_MenuActivator::MIDDLE;
+    const bool leftButton = buttonType == LC_MenuActivator::LEFT;
+    const bool rightButton = buttonType == LC_MenuActivator::RIGHT;
+    const bool middleButton = buttonType == LC_MenuActivator::MIDDLE;
 
     QString noteMsg;
 
@@ -245,7 +245,7 @@ bool LC_DlgMenuAssigner::validateShortcut() {
         ui->lblNotes->setText(tr("NOTE: This combination is reserved for Pan! Menu assignment will be ignored"));
     }
     else {
-        QString existingMenuName = findMenuForActivator();
+        const QString existingMenuName = findMenuForActivator();
         if (!existingMenuName.isEmpty()) {
             noteMsg = tr( "NOTE: This shortcut is already assigned to \"%1\" menu and that menu will be unassigned on save!").arg(
                 existingMenuName);
@@ -254,7 +254,7 @@ bool LC_DlgMenuAssigner::validateShortcut() {
             noteMsg = tr("Shortcut is valid to use.");
             result = true;
         }
-        if (button_type == LC_MenuActivator::FORWARD || button_type == LC_MenuActivator::BACK || button_type ==
+        if (buttonType == LC_MenuActivator::FORWARD || buttonType == LC_MenuActivator::BACK || buttonType ==
             LC_MenuActivator::TASK) {
             noteMsg.append("\n\n").append(tr("Note: make sure that selected button is supported by your mouse device."));
         }
@@ -268,10 +268,10 @@ void LC_DlgMenuAssigner::onKeyModifierToggled([[maybe_unused]]bool checked) {
     updateShortcutView();
 }
 
-void LC_DlgMenuAssigner::onContextEntityCurrentIndexChanged([[maybe_unused]]int currentIndex) {
-    auto data = ui->cbEntityContext->itemData(currentIndex);
+void LC_DlgMenuAssigner::onContextEntityCurrentIndexChanged([[maybe_unused]] const int currentIndex) {
+    const auto data = ui->cbEntityContext->itemData(currentIndex);
     if (!data.isNull()) {
-        QString entityTypeStr = data.toString();
+        const QString entityTypeStr = data.toString();
         RS2::EntityType entityType {RS2::EntityUnknown};
         bool requiresEntity = false;
         m_activator->parseEntityType(entityTypeStr, requiresEntity, entityType);
@@ -282,7 +282,7 @@ void LC_DlgMenuAssigner::onContextEntityCurrentIndexChanged([[maybe_unused]]int 
 }
 
 void LC_DlgMenuAssigner::onEventTypeToggled([[maybe_unused]]bool checked) {
-    m_activator->setEventType(ui->rbEvtDblClick->isChecked() ? LC_MenuActivator::DOUBLE_CLICK : LC_MenuActivator::CLICK_RELEASE);
+    m_activator->setEventType(ui->rbEvtDblClick->isChecked() ? LC_MenuActivator::DBL_CLICK : LC_MenuActivator::CLICK_RELEASE);
     updateShortcutView();
 }
 

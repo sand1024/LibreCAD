@@ -1,14 +1,14 @@
 #ifndef LC_WIDGETOPTIONSDIALOG_H
 #define LC_WIDGETOPTIONSDIALOG_H
 
-#include "ui_lc_widgetoptionsdialog.h"
 #include "lc_dialog.h"
 #include "lc_iconcolorsoptions.h"
+#include "ui_lc_widgetoptionsdialog.h"
 
 class LC_WidgetOptionsDialog: public LC_Dialog, public Ui::LC_WidgetOptionsDialog{
     Q_OBJECT
 public:
-    QString selectFolder(QString title);
+    QString selectFolder(const QString& title);
     void updateUIByOptions() const;
     explicit LC_WidgetOptionsDialog(QWidget* parent = nullptr);
     void reject() override;
@@ -30,10 +30,10 @@ public slots:
 protected:
     QString m_currentIconsStyleName;
     LC_IconColorsOptions m_iconColorsOptions;
-    QString set_color(QComboBox *combo);
+    QString setComboBoxColor(const QComboBox *combo);
 
-    bool setupStylesCombobox();
-    void updateStylesCombobox(QStringList options);
+    bool setupStylesCombobox() const;
+    void updateStylesCombobox(QStringList options) const;
  };
 
-#endif // LC_WIDGETOPTIONSDIALOG_H
+#endif

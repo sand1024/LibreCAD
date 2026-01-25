@@ -52,7 +52,7 @@ LC_DlgDimension::~LC_DlgDimension(){
 }
 
 void LC_DlgDimension::saveDimensionTypeDependentProperties() const {
-    RS2::EntityType dimType = m_entity->rtti();
+    const RS2::EntityType dimType = m_entity->rtti();
     switch (dimType){
         case RS2::EntityDimOrdinate: {
             auto* dimOrdinate = static_cast<LC_DimOrdinate*>(m_entity);
@@ -60,8 +60,8 @@ void LC_DlgDimension::saveDimensionTypeDependentProperties() const {
             break;
         }
         case RS2::EntityDimLinear: {
-            auto dimLinear = static_cast<RS_DimLinear*>(m_entity);
-            RS_DimLinear* original = dynamic_cast<RS_DimLinear*>(m_entity);
+            const auto dimLinear = static_cast<RS_DimLinear*>(m_entity);
+            const RS_DimLinear* original = dynamic_cast<RS_DimLinear*>(m_entity);
             if (original != nullptr) {
                 dimLinear->setAngle(toWCSAngle(ui->leAngle, original->getAngle()));
             }
@@ -88,28 +88,28 @@ void LC_DlgDimension::updateEntity() {
 }
 
 void LC_DlgDimension::saveDimensionStyles() {
-    auto model = getDimStylesModel();
+    const auto model = getDimStylesModel();
 
     // setup dimension style of entity
-    auto entityStyleItem = model->getEntityStyleItem();
+    const auto entityStyleItem = model->getEntityStyleItem();
     if (entityStyleItem->isOverrideItem()) {
         // handle style override. Make a copy of style to simplify deletion of model.
         m_entity->setDimStyleOverride(entityStyleItem->dimStyle());
-        auto parentItem = entityStyleItem->parentItem();
-        auto parentStyle = parentItem->dimStyle();
-        QString styleName = parentStyle->getName();
+        const auto parentItem = entityStyleItem->parentItem();
+        const auto parentStyle = parentItem->dimStyle();
+        const QString styleName = parentStyle->getName();
         m_entity->setStyle(styleName);
     }
     else {
         // just set name of entity
-        QString styleName = entityStyleItem->dimStyle()->getName();
+        const QString styleName = entityStyleItem->dimStyle()->getName();
         m_entity->setStyle(styleName);
         m_entity->setDimStyleOverride(nullptr);
     }
 
     // process active dim style, if any
-    auto defaultStyleItem = model->getActiveStyleItem();
-    auto defaultStyleName = defaultStyleItem->baseName();
+    const auto defaultStyleItem = model->getActiveStyleItem();
+    const auto defaultStyleName = defaultStyleItem->baseName();
     m_graphic->setDefaultDimStyleName(defaultStyleName);
 
     // add created styles (overrides saved as new styles) to the graphic
@@ -117,9 +117,9 @@ void LC_DlgDimension::saveDimensionStyles() {
     QList<LC_DimStyleItem*> unsavedItems;
     model->collectUnsavedItems(unsavedItems);
 
-    for (auto dsi: unsavedItems) {
-       auto createdStyle = dsi->dimStyle();
-       auto createdStyleToAdd = createdStyle->getCopy();
+    for (const auto dsi: unsavedItems) {
+       const auto createdStyle = dsi->dimStyle();
+       const auto createdStyleToAdd = createdStyle->getCopy();
        m_graphic->addDimStyle(createdStyleToAdd);
     }
 
@@ -133,13 +133,13 @@ void LC_DlgDimension::clearDimStylesModel(LC_DimStyleTreeModel* model) {
 }
 
 void LC_DlgDimension::setupDimensionTypeDependentUI(RS_Dimension* dim) {
-    RS2::EntityType dimType = dim->rtti();
+    const RS2::EntityType dimType = dim->rtti();
     switch (dimType) {
         case RS2::EntityDimOrdinate: {
             setWindowTitle(tr("Ordinate Dimension"));
 
-            auto* dimOrdinate = static_cast<LC_DimOrdinate*>(dim);
-            bool ordinateX = dimOrdinate->isForXDirection();
+            const auto* dimOrdinate = static_cast<LC_DimOrdinate*>(dim);
+            const bool ordinateX = dimOrdinate->isForXDirection();
             ui->bgOrdinateGeometry->setVisible(true);
 
             ui->rbOrdinateX->setChecked(ordinateX);
@@ -151,7 +151,7 @@ void LC_DlgDimension::setupDimensionTypeDependentUI(RS_Dimension* dim) {
         case RS2::EntityDimLinear: {
             setWindowTitle(tr("Linear Dimension"));
 
-            auto dimLinear = static_cast<RS_DimLinear*>(dim);
+            const auto dimLinear = static_cast<RS_DimLinear*>(dim);
             toUIAngleDeg(dimLinear->getAngle(), ui->leAngle);
             ui->bgLinearGeometry->setVisible(true);
 
@@ -197,10 +197,10 @@ void LC_DlgDimension::setupDimensionTypeDependentUI(RS_Dimension* dim) {
     connect(ui->cbFlipArrow2, &QCheckBox::toggled, this,&LC_DlgDimension::onFlipArrowChanged);
 }
 
-void LC_DlgDimension::setupDimensionAttributesUI(RS_Dimension* dim) {
+void LC_DlgDimension::setupDimensionAttributesUI(const RS_Dimension* dim) {
     m_graphic = m_entity->getGraphic();
     if (m_graphic) {
-        ui->cbLayer->init(*(m_graphic->getLayerList()), false, false);
+        ui->cbLayer->init(*m_graphic->getLayerList(), false, false);
     }
     RS_Layer* lay = m_entity->getLayer(false);
     if (lay != nullptr) {
@@ -221,7 +221,7 @@ void LC_DlgDimension::setupDimensionAttributesUI(RS_Dimension* dim) {
 }
 
 void LC_DlgDimension::onPenChanged() const {
-    RS_Pen pen = ui->wPenEditor->getPen();
+    const RS_Pen pen = ui->wPenEditor->getPen();
     updateDimStylePreview(pen);
 }
 
@@ -233,7 +233,7 @@ void LC_DlgDimension::setEntity(RS_Dimension* dim) {
     m_entity = dim;
     setupDimensionAttributesUI(dim);
     setupDimensionTypeDependentUI(dim);
-    QModelIndex dimensionStyleItemIndex = setupStylesList();
+    const QModelIndex dimensionStyleItemIndex = setupStylesList();
     setupPreview();
     selectStyleItem(dimensionStyleItemIndex);
 }
@@ -248,30 +248,31 @@ QModelIndex LC_DlgDimension::setupStylesList() {
     if (entityStyleItem == nullptr) {
         // try to handle the case, when base style name is set of the entity (on creation or editing). However, later, the type-specific style was added.
         // so even if such case, the item for the type-specific style should be returned.
-        RS2::EntityType entityType = adjustDimentityTypeForStyleName(m_entity->rtti());
+        const RS2::EntityType entityType = adjustDimentityTypeForStyleName(m_entity->rtti());
         styleName = LC_DimStyle::getStyleNameForBaseAndType(styleName, entityType);
         entityStyleItem = model->findByName(styleName);
         if (entityStyleItem == nullptr) {
+            ui->lvDimStyles->setModel(model);
             return QModelIndex();
         }
     }
-    int itemStyleRow = entityStyleItem->row();
+    const int itemStyleRow = entityStyleItem->row();
     QModelIndex selectedItemIndex;
 
     LC_DimStyleItem* actualEntityStyleItem;
 
-    auto overrideStyle = m_entity->getDimStyleOverride();
+    const auto overrideStyle = m_entity->getDimStyleOverride();
     if (overrideStyle != nullptr) {
         // merge with initial style, so override item contains properties that were explicitly overriden,
         // and properties that are not included into override comes from the style that was overriden.
-        auto overrideCopy = overrideStyle->getCopy();
+        const auto overrideCopy = overrideStyle->getCopy();
         overrideCopy->mergeWith(entityStyleItem->dimStyle(), LC_DimStyle::ModificationAware::UNSET, LC_DimStyle::ModificationAware::SET);
 
         auto* overrideItem = new LC_DimStyleItem(overrideCopy, 0, false);
         overrideItem->setOverrideItem(true);
         entityStyleItem->appendChild(overrideItem);
         overrideItem->setEntityStyleItem(true);
-        auto parentIndex = model->index(itemStyleRow, 0, QModelIndex());
+        const auto parentIndex = model->index(itemStyleRow, 0, QModelIndex());
         selectedItemIndex = model->index(0, 0, parentIndex);
         actualEntityStyleItem = overrideItem;
     }
@@ -299,7 +300,7 @@ QModelIndex LC_DlgDimension::setupStylesList() {
     connect(ui->tbDimDefault, &QToolButton::clicked, this, &LC_DlgDimension::onDimStyleSetDefault);
     connect(ui->tbSelectEntityStyle, &QToolButton::clicked, this, &LC_DlgDimension::onDimStyleEntitySelect);
 
-    bool autoRaiseButtons = LC_GET_ONE_BOOL("Widgets", "DockWidgetsFlatIcons", true);
+    const bool autoRaiseButtons = LC_GET_ONE_BOOL("Widgets", "DockWidgetsFlatIcons", true);
     ui->tbSetStyle->setAutoRaise(autoRaiseButtons);
     ui->tbDimNew->setAutoRaise(autoRaiseButtons);
     ui->tbDimRemove->setAutoRaise(autoRaiseButtons);
@@ -330,16 +331,16 @@ QModelIndex LC_DlgDimension::setupStylesList() {
     return selectedItemIndex;
 }
 
-void LC_DlgDimension::getOverrideItemIndex(LC_DimStyleTreeModel* model, LC_DimStyleItem* entityStyleItem, QModelIndex& itemIndex) {
-    auto parentItem = entityStyleItem->parentItem();
-    int parentRow = parentItem->row();
-    auto parentIndex = model->index(parentRow, 0, QModelIndex());
+void LC_DlgDimension::getOverrideItemIndex(const LC_DimStyleTreeModel* model, const LC_DimStyleItem* entityStyleItem, QModelIndex& itemIndex) {
+    const auto parentItem = entityStyleItem->parentItem();
+    const int parentRow = parentItem->row();
+    const auto parentIndex = model->index(parentRow, 0, QModelIndex());
     itemIndex = model->index(0, 0, parentIndex);
 }
 
 void LC_DlgDimension::onDimStyleEntitySelect([[maybe_unused]]bool val) {
-    auto model = getDimStylesModel();
-    auto entityStyleItem = model->getEntityStyleItem();
+    const auto model = getDimStylesModel();
+    const auto entityStyleItem = model->getEntityStyleItem();
     QModelIndex itemIndex;
     if (entityStyleItem->isOverrideItem()) {
         getOverrideItemIndex(model, entityStyleItem, itemIndex);
@@ -351,31 +352,31 @@ void LC_DlgDimension::onDimStyleEntitySelect([[maybe_unused]]bool val) {
     ui->lvDimStyles->update();
 }
 
-void LC_DlgDimension::onDimStyleSet([[maybe_unused]]bool val){
-    QModelIndex selectedItemIndex = getSelectedDimStyleIndex();
+void LC_DlgDimension::onDimStyleSet([[maybe_unused]]bool val) {
+    const QModelIndex selectedItemIndex = getSelectedDimStyleIndex();
     if (selectedItemIndex.isValid()) {
-        auto model = getDimStylesModel();
+        const auto model = getDimStylesModel();
         model->setEntityItem(selectedItemIndex);
-        LC_DimStyleItem* itemToSet = model->getItemForIndex(selectedItemIndex);
+        const LC_DimStyleItem* itemToSet = model->getItemForIndex(selectedItemIndex);
         updateEntityStyleInfoLabels(itemToSet);
     }
     expandStylesTree();
 }
 
 void LC_DlgDimension::onDimStyleSetDefault([[maybe_unused]]bool val) {
-    QModelIndex selectedItemIndex = getSelectedDimStyleIndex();
+    const QModelIndex selectedItemIndex = getSelectedDimStyleIndex();
     if (selectedItemIndex.isValid()) {
-        auto model = getDimStylesModel();
+        const auto model = getDimStylesModel();
         model->setActiveStyleItem(selectedItemIndex);
     }
     expandStylesTree();
     updateActiveStyleInfoLabel();
 }
 
-void LC_DlgDimension::onDimStyleOverrideRemove([[maybe_unused]]bool val) {
-    QModelIndex selectedItemIndex = getSelectedDimStyleIndex();
+void LC_DlgDimension::onDimStyleOverrideRemove([[maybe_unused]]bool val)  {
+    const QModelIndex selectedItemIndex = getSelectedDimStyleIndex();
     if (selectedItemIndex.isValid()) {
-        auto model = getDimStylesModel();
+        const auto model = getDimStylesModel();
         LC_DimStyleItem* itemToRemove = model->getItemForIndex(selectedItemIndex);
         if (itemToRemove->isOverrideItem()) {
             LC_DimStyleItem* parentItem = itemToRemove->parentItem();
@@ -383,11 +384,11 @@ void LC_DlgDimension::onDimStyleOverrideRemove([[maybe_unused]]bool val) {
                 parentItem->setEntityStyleItem(true);
             }
             parentItem->removeChild(itemToRemove);
-            auto dimStyle = itemToRemove->dimStyle();
+            const auto dimStyle = itemToRemove->dimStyle();
             delete dimStyle; // this is a copy of actual override, so delete it too
             delete itemToRemove;
 
-            LC_DimStyleItem* entityItem = model->getEntityStyleItem();
+            const LC_DimStyleItem* entityItem = model->getEntityStyleItem();
             updateDimStylePreview(entityItem->dimStyle(), model, entityItem->isOverrideItem(), entityItem->baseName());
             updateActionButtons(entityItem);
             updateEntityStyleInfoLabels(entityItem);
@@ -398,19 +399,19 @@ void LC_DlgDimension::onDimStyleOverrideRemove([[maybe_unused]]bool val) {
 }
 
 void LC_DlgDimension::onDimStyleOverrideSave([[maybe_unused]]bool val) {
-    QModelIndex selectedItemIndex = getSelectedDimStyleIndex();
+    const QModelIndex selectedItemIndex = getSelectedDimStyleIndex();
     if (selectedItemIndex.isValid()) {
-        auto model = getDimStylesModel();
+        const auto model = getDimStylesModel();
         LC_DimStyleItem* itemToSave = model->getItemForIndex(selectedItemIndex);
         if (itemToSave->isOverrideItem()) {
-            bool ok;
             QString nameCandidate;
             bool styleNameNotUnique {true};
             do {
+                bool ok;
                 nameCandidate = LC_InputTextDialog::getText(this, tr("Saving Style Override"), tr("New Style Name"), {}, true, "", &ok);
                 nameCandidate = nameCandidate.trimmed();
                 if (ok) {
-                    auto foundStyle = model->findByName(nameCandidate);
+                    const auto foundStyle = model->findByName(nameCandidate);
                     styleNameNotUnique = foundStyle != nullptr;
                     if (styleNameNotUnique) {
                         QMessageBox::critical ( this, tr("Saving Style Override"), tr("Style with such name already exists, please enter another unique one.") );
@@ -437,7 +438,7 @@ void LC_DlgDimension::onDimStyleOverrideSave([[maybe_unused]]bool val) {
             model->emitDataChanged();
             updateEntityStyleInfoLabels(itemToSave);
 
-            auto parentIndex = model->index(itemToSave->row(), 0, QModelIndex());
+            const auto parentIndex = model->index(itemToSave->row(), 0, QModelIndex());
             selectStyleItem(parentIndex);
 
             itemToSave->setUnsaved(true);
@@ -447,24 +448,24 @@ void LC_DlgDimension::onDimStyleOverrideSave([[maybe_unused]]bool val) {
 }
 
 void LC_DlgDimension::onDimStyleOverrideNew([[maybe_unused]]bool val) {
-    QModelIndex selectedItemIndex = getSelectedDimStyleIndex();
+    const QModelIndex selectedItemIndex = getSelectedDimStyleIndex();
     if (selectedItemIndex.isValid()) {
-        auto model = getDimStylesModel();
+        const auto model = getDimStylesModel();
         LC_DimStyleItem* itemToOverride = model->getItemForIndex(selectedItemIndex);
         if (!itemToOverride->isOverrideItem()) {
-            auto styleToOverride = itemToOverride->dimStyle();
+            const auto styleToOverride = itemToOverride->dimStyle();
             LC_DimStyle *newOverrideStyle = styleToOverride->getCopy();
             newOverrideStyle->resetFlags(true);
 
-            QString styleName = styleToOverride->getName();
+            const QString styleName = styleToOverride->getName();
 
             QApplication::setOverrideCursor(Qt::WaitCursor);
             LC_DlgDimStyleManager dimStyleManager(this, newOverrideStyle, m_graphic, m_entity, styleName);
             dimStyleManager.refreshPreview();
             dimStyleManager.setWindowTitle(tr("New Dimension Style Override - ") + itemToOverride->displayName());
             QApplication::restoreOverrideCursor();
-            if (dimStyleManager.exec() == QDialog::Accepted) {
-                auto item = new LC_DimStyleItem(newOverrideStyle, 0, false);
+            if (dimStyleManager.exec() == Accepted) {
+                const auto item = new LC_DimStyleItem(newOverrideStyle, 0, false);
                 item->setOverrideItem(true);
                 item->setUnsaved(true);
                 itemToOverride->appendChild(item);
@@ -514,10 +515,10 @@ void LC_DlgDimension::onDimStyleOverrideEdit([[maybe_unused]]bool checked) {
             dimStyleManager.setWindowTitle(tr("Edit Dimension Style Override - ") +
                     LC_DimStyleItem::getDisplayDimStyleName(originalStyleToEdit));
             QApplication::restoreOverrideCursor();
-            if (dimStyleManager.exec() == QDialog::Accepted) {
+            if (dimStyleManager.exec() == Accepted) {
                 styleCopyToEdit->copyTo(originalStyleToEdit);
                 updateDimStylePreview(originalStyleToEdit, model, true, baseStyleName);
-            };
+            }
             delete styleCopyToEdit;
         }
         else { // just display style setting in read only mode
@@ -563,7 +564,7 @@ void LC_DlgDimension::onDimStylesListMenuRequested(const QPoint& pos) {
     caption->setPalette(palette);
     caption->setAlignment(Qt::AlignCenter);*/
 
-    QModelIndex index = ui->lvDimStyles->indexAt(pos);
+    const QModelIndex index = ui->lvDimStyles->indexAt(pos);
     using ActionMemberFunc = void (LC_DlgDimension::*)(bool);
     const auto addActionFunc = [this, &contextMenu](const QString& iconName, const QString& name, ActionMemberFunc func)
     {
@@ -571,9 +572,9 @@ void LC_DlgDimension::onDimStylesListMenuRequested(const QPoint& pos) {
     };
 
     if (index.isValid()) {
-        auto* model = getDimStylesModel();
-        LC_DimStyleItem* item = model->getItemForIndex(index);
-        bool normalStyle = !item->isOverrideItem();
+        const auto* model = getDimStylesModel();
+        const LC_DimStyleItem* item = model->getItemForIndex(index);
+        const bool normalStyle = !item->isOverrideItem();
 
         if (!item->isEntityStyleItem()) {
             addActionFunc("dim_apply_style", tr("&Apply Style"), &LC_DlgDimension::onDimStyleSet);
@@ -616,13 +617,13 @@ void LC_DlgDimension::onDimStylesListMenuRequested(const QPoint& pos) {
 
 void LC_DlgDimension::onDimCurrentChanged(const QModelIndex &current, [[maybe_unused]]const QModelIndex &previous) const {
     if (current.isValid()) {
-        auto model = getDimStylesModel();
-        LC_DimStyleItem* item = model->getItemForIndex(current);
+        const auto model = getDimStylesModel();
+        const LC_DimStyleItem* item = model->getItemForIndex(current);
         updateActionButtons(item);
-        bool override = item->isOverrideItem();
-        auto dimStyle = item->dimStyle();
+        const bool override = item->isOverrideItem();
+        const auto dimStyle = item->dimStyle();
         if (override) {
-            auto parentItem = item->parentItem();
+            const auto parentItem = item->parentItem();
             if (parentItem != nullptr) {
                 updateDimStylePreview(dimStyle, model, override, parentItem->dimStyle()->getName());
             }
@@ -637,7 +638,7 @@ void LC_DlgDimension::onDimCurrentChanged(const QModelIndex &current, [[maybe_un
     }
 }
 
-void LC_DlgDimension::selectStyleItem(QModelIndex indexToSelect) const {
+void LC_DlgDimension::selectStyleItem(const QModelIndex& indexToSelect) const {
     if (indexToSelect.isValid()) {
         ui->lvDimStyles->selectionModel()->setCurrentIndex(indexToSelect, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
         ui->lvDimStyles->scrollTo(indexToSelect); // Ensure visibility
@@ -645,8 +646,8 @@ void LC_DlgDimension::selectStyleItem(QModelIndex indexToSelect) const {
 }
 
 void LC_DlgDimension::updateActiveStyleInfoLabel() const {
-    auto model = getDimStylesModel();
-    auto defaultStyle = model->getActiveStyleItem();
+    const auto model = getDimStylesModel();
+    const auto defaultStyle = model->getActiveStyleItem();
     QString currentStyleName = "";
     if (defaultStyle != nullptr) {
         currentStyleName = defaultStyle->baseName();
@@ -654,7 +655,7 @@ void LC_DlgDimension::updateActiveStyleInfoLabel() const {
     ui->lblDefaultStyle->setText(currentStyleName);
 }
 
-void LC_DlgDimension::updateEntityStyleInfoLabels(LC_DimStyleItem* item) const {
+void LC_DlgDimension::updateEntityStyleInfoLabels(const LC_DimStyleItem* item) const {
     QString styleName;
     if (item->isOverrideItem()) {
         QFont font = ui->lblStyleOverrideState->font();
@@ -673,15 +674,15 @@ void LC_DlgDimension::updateEntityStyleInfoLabels(LC_DimStyleItem* item) const {
     ui->lblEntityStyle->setText(styleName);
 }
 
-void LC_DlgDimension::updateActionButtons(LC_DimStyleItem* item) const {
-    bool overrideItem = item->isOverrideItem();
-    bool is_active = item->isActive();
+void LC_DlgDimension::updateActionButtons(const LC_DimStyleItem* item) const {
+    const bool overrideItem = item->isOverrideItem();
+    const bool is_active = item->isActive();
     ui->tbDimDefault->setEnabled(!is_active && !overrideItem);
     ui->tbDimSaveAsStyle->setEnabled(overrideItem);
     ui->tbDimEdit->setEnabled(overrideItem);
     ui->tbDimRemove->setEnabled(overrideItem);
     ui->tbDimNew->setEnabled(!overrideItem && item->childCount() == 0);
-    bool notEntityStyleItems = !item->isEntityStyleItem();
+    const bool notEntityStyleItems = !item->isEntityStyleItem();
     ui->tbSetStyle->setEnabled(notEntityStyleItems);
     ui->tbSelectEntityStyle->setEnabled(notEntityStyleItems);
 }
@@ -690,7 +691,7 @@ QModelIndex LC_DlgDimension::getSelectedDimStyleIndex() const {
     return ui->lvDimStyles->selectionModel()->currentIndex();
 }
 
-void LC_DlgDimension::updateDimStylePreview(LC_DimStyle* dimStyle,[[maybe_unused]] LC_DimStyleTreeModel* model, bool override, const QString& baseName) const {
+void LC_DlgDimension::updateDimStylePreview(LC_DimStyle* dimStyle,[[maybe_unused]] LC_DimStyleTreeModel* model, const bool override, const QString& baseName) const {
     m_previewView->setEntityDimStyle(dimStyle, override, baseName);
     m_previewView->updateDims();
     m_previewView->zoomAuto();
@@ -704,7 +705,7 @@ void LC_DlgDimension::updateDimStylePreview(const RS_Pen& pen) const {
     m_previewView->refresh();
 }
 
-void LC_DlgDimension::updateDimStylePreview(bool flipArrow1, bool flipArrow2) const {
+void LC_DlgDimension::updateDimStylePreview(const bool flipArrow1, const bool flipArrow2) const {
     m_previewView->setEntityArrowsFlipMode(flipArrow1, flipArrow2);
     m_previewView->updateDims();
     m_previewView->zoomAuto();
@@ -715,7 +716,7 @@ LC_DimStyleTreeModel* LC_DlgDimension::getDimStylesModel() const {
     return dynamic_cast<LC_DimStyleTreeModel*>(ui->lvDimStyles->model());
 }
 
-bool LC_DlgDimension::isDimensionTypeMatchedToStyleType(RS2::EntityType styleType, RS2::EntityType dimensionType) {
+bool LC_DlgDimension::isDimensionTypeMatchedToStyleType(const RS2::EntityType styleType, const RS2::EntityType dimensionType) {
     bool accept = false;
     switch (styleType) {
         case RS2::EntityDimLinear:
@@ -750,7 +751,7 @@ bool LC_DlgDimension::isDimensionTypeMatchedToStyleType(RS2::EntityType styleTyp
     return accept;
 }
 
-RS2::EntityType LC_DlgDimension::adjustDimentityTypeForStyleName(RS2::EntityType entityType) {
+RS2::EntityType LC_DlgDimension::adjustDimentityTypeForStyleName(const RS2::EntityType entityType) {
     switch (entityType) {
         case RS2::EntityDimAngular: {
             return RS2::EntityDimLinear;
@@ -764,13 +765,13 @@ RS2::EntityType LC_DlgDimension::adjustDimentityTypeForStyleName(RS2::EntityType
 }
 
 void LC_DlgDimension::prepareDimStyleItems(QList<LC_DimStyleItem*> &items) {
-    QString defaultDimStyleName = m_graphic->getDefaultDimStyleName();
-    LC_DimStyle* styleThatIsDefault = m_graphic->getDimStyleByName(defaultDimStyleName);
+    const QString defaultDimStyleName = m_graphic->getDefaultDimStyleName();
+    const LC_DimStyle* styleThatIsDefault = m_graphic->getDimStyleByName(defaultDimStyleName);
 
-    auto dimStylesList = m_graphic->getDimStyleList();
-    auto dimStyles = dimStylesList->getStylesList();
+    const auto dimStylesList = m_graphic->getDimStyleList();
+    const auto dimStyles = dimStylesList->getStylesList();
 
-    RS2::EntityType entityType = adjustDimentityTypeForStyleName(m_entity->rtti());
+    const RS2::EntityType entityType = adjustDimentityTypeForStyleName(m_entity->rtti());
 
     // here we filter styles - and show only styles that are specific for particular entity type or generic ones
 
@@ -795,13 +796,13 @@ void LC_DlgDimension::prepareDimStyleItems(QList<LC_DimStyleItem*> &items) {
             // so add that style only if there is no such type-specific style
             if (!typeSpecificStyles.contains(baseName)) {
                 LC_DimStyle* ds = dimStyle->getCopy();
-                auto item = new LC_DimStyleItem(ds, 0, styleThatIsDefault == dimStyle);
+                const auto item = new LC_DimStyleItem(ds, 0, styleThatIsDefault == dimStyle);
                 items << item;
             }
         } // this is type-specific style. Check that it matched to entity type and add if it is so
         else if (isDimensionTypeMatchedToStyleType(styleType, entityType)){
             LC_DimStyle* ds = dimStyle->getCopy();
-            auto item = new LC_DimStyleItem(ds, 0, styleThatIsDefault == dimStyle || baseName == defaultDimStyleName);
+            const auto item = new LC_DimStyleItem(ds, 0, styleThatIsDefault == dimStyle || baseName == defaultDimStyleName);
             items << item;
         }
     }
@@ -821,7 +822,7 @@ void LC_DlgDimension::setupPreview() {
     layout->setContentsMargins(0,0,0,0);
     ui->gbDimStylesPreview->setLayout(layout);
 
-    auto previewToolbar = new LC_DimStylePreviewPanel(this);
+    const auto previewToolbar = new LC_DimStylePreviewPanel(this);
     previewToolbar->setGraphicView(m_previewView);
 
     layout->addWidget(previewToolbar);

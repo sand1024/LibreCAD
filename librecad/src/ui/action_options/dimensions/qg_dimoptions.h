@@ -42,7 +42,7 @@ namespace Ui {
 class QG_DimOptions : public LC_ActionOptionsWidgetBase{
     Q_OBJECT
 public:
-    QG_DimOptions(RS_Graphic *graphic);
+    explicit QG_DimOptions(RS_Graphic *graphic);
     ~QG_DimOptions() override;
 
     enum UIUpdateMode{
@@ -67,11 +67,11 @@ protected:
     RS_ActionDimension* m_action = nullptr;
     std::unique_ptr<Ui::Ui_DimOptions> ui;
     LC_StylesListModel* m_dimItemsListModel = nullptr;
-    void initStylesCombobox(RS_Graphic *graphic);
+    void initStylesCombobox(RS_Graphic *g);
     void updateAngle( const QString& a );
     void doSaveSettings() override;
     void doSetAction(RS_ActionInterface *a, bool update) override;
     bool checkActionRttiValid(RS2::ActionType actionType) override;
 };
 
-#endif // QG_DIMOPTIONS_H
+#endif

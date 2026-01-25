@@ -55,7 +55,7 @@ public:
     QString getLineTypeText(RS2::LineType lineType) const;
     QString getLineWidthText(RS2::LineWidth lineWidth) const;
     QIcon getColorIcon(const RS_Color &color, int iconSizeW, int iconSizeH) const;
-    QString getColorName(const RS_Color &color, int type) const;
+    QString getColorName(const RS_Color &color, ColorNameDisplayMode colorNameMode) const;
 
     static QString getInternalColorString(const RS_Color &color);
     static RS_Color getColorFromInternalString(const QString &str);
@@ -81,10 +81,10 @@ private:
 
     void registerLineTypes();
     void registerLineWidths();
-    void doRegisterLineType(const char* iconName, QString labelKey, RS2::LineType lineType);
-    void doRegisterLineWidth(const char* iconName, QString labelKey, RS2::LineWidth lineWidth);
+    void doRegisterLineType(const char* iconName, const QString& labelKey, RS2::LineType lineType);
+    void doRegisterLineWidth(const char* iconName, const QString& labelKey, RS2::LineWidth lineWidth);
     void registerColorNames();
-    void registerLCColor(QColor color, QString name);
+    void registerLCColor(const QColor& color, const QString& colorName);
 };
 
-#endif // LC_PENINFOREGISTRY_H
+#endif

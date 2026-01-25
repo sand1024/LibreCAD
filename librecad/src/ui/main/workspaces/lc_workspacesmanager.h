@@ -24,7 +24,6 @@
 #define LC_WORKSPACESMANAGER_H
 
 #include <QObject>
-#include <QList>
 
 class QC_ApplicationWindow;
 
@@ -44,13 +43,13 @@ public:
     bool hasWorkspaces() const;
 protected:
     struct LC_Workspace {
-        int id;
+        int id{0};
         QString name;
         QString geometry;
-        int windowWidth;
-        int windowHeight;
-        int windowX;
-        int windowY;
+        int windowWidth {0};
+        int windowHeight{0};
+        int windowX{0};
+        int windowY{0};
         QString widgetsState;
 
         bool dockAreaLeftActive = false;
@@ -95,7 +94,7 @@ protected:
     void loadWorkspaces();
     void saveWorkspaces(QWidget* parent = nullptr);
     void restoreGeometryAndState(const LC_Workspace &workspace, QC_ApplicationWindow &appWin) const;
-    void fillIconsAndMenuState(LC_WorkspacesManager::LC_Workspace &workspace);
+    static void fillIconsAndMenuState(LC_Workspace &workspace);
 };
 
-#endif // LC_PERSPECTIVESMANAGER_H
+#endif

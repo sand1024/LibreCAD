@@ -23,7 +23,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef LC_ACTIONOPTIONSWIDGET_H
 #define LC_ACTIONOPTIONSWIDGET_H
 
-#include <QWidget>
 #include <QToolButton>
 
 #include "lc_actioncontext.h"
@@ -53,7 +52,7 @@ public:
      * Mode value is action-specific and should be processed by related option widget.
      * @param mode
      */
-    virtual void updateUI([[maybe_unused]]int mode){};
+    virtual void updateUI([[maybe_unused]]int mode){}
 protected:
     LC_ActionContext* m_actionContext{nullptr};
     LC_LateCompletionRequestor* m_laterCompletionRequestor{nullptr};
@@ -68,7 +67,7 @@ protected:
     /**
      * Extension point for actuall saving of settings
      */
-    virtual void doSaveSettings(){};
+    virtual void doSaveSettings(){}
     /**
      * Setter for corresponding action
      * @param a action
@@ -86,7 +85,7 @@ protected:
      * Default name for settings group name
      * @return name of group
      */
-    virtual QString getSettingsGroupName(){return "Draw";};
+    virtual QString getSettingsGroupName(){return "Draw";}
     /**
      * Default name for prefix for settings. It assumes that all settings for the action starts with the same prefix.
      * @return  prefix to use.
@@ -94,26 +93,25 @@ protected:
     virtual QString getSettingsOptionNamePrefix(){ return "";}
 
     // saving settings shortcut methods
-    void save(QString name, QString value);
-    void save(QString name, int value);
-    void save(QString name, bool value);
+    void save(const QString& name, const QString& value);
+    void save(const QString& name, int value);
+    void save(const QString& name, bool value);
 
     // loading settings shortcut methods
-    QString load(QString name, QString defaultValue);
-    int loadInt(QString name, int defaultValue);
-    bool loadBool(QString name, bool defaultValue);
+    QString load(const QString& name, const QString& defaultValue);
+    int loadInt(const QString& name, int defaultValue);
+    bool loadBool(const QString& name, bool defaultValue);
 
     // conversion utilities
     QString fromDouble(double value);
     bool toDouble(const QString &strValue, double &res, double notMeaningful, bool positiveOnly);
     bool toDoubleAngleDegrees(const QString &strValue, double &res, double notMeaningful, bool positiveOnly);
 
-    void connectInteractiveInputButton(QToolButton* button, LC_ActionContext::InteractiveInputInfo::InputType inputType,
-                                     QString tag);
-    void pickDistanceSetup(QString tag, QToolButton* button, QLineEdit* lineedit);
-    void pickAngleSetup(QString tag, QToolButton* button, QLineEdit* editor);
+    void connectInteractiveInputButton(QToolButton* button, LC_ActionContext::InteractiveInputInfo::InputType inputType, const QString& tag);
+    void pickDistanceSetup(const QString& tag, QToolButton* button, QLineEdit* lineedit);
+    void pickAngleSetup(const QString& tag, QToolButton* button, QLineEdit* editor);
     void onInteractiveInputButtonClicked(bool checked) const;
 protected slots:
     virtual void languageChange() {}
 };
-#endif // LC_ACTIONOPTIONSWIDGET_H
+#endif

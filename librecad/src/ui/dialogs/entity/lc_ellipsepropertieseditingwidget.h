@@ -40,10 +40,10 @@ public:
     void setEntity(RS_Entity* entity) override;
 protected slots:
     void onCenterEditingFinished() const;
-    bool updateEllipseGeometry();
-    void onMajorEditingFinished();
-    void onMinorEditingFinished();
-    void onRotationEditingFinished();
+    bool updateEllipseGeometry() const;
+    void onMajorEditingFinished() const;
+    void onMinorEditingFinished() const;
+    void onRotationEditingFinished() const;
     void onAngle1EditingFinished() const;
     void onAngle2EditingFinished() const;
     void onReversedToggled(bool checked) const;
@@ -54,4 +54,4 @@ private:
     RS_Ellipse* m_entity{nullptr};
 };
 
-#endif // LC_ELLIPSEPROPERTIESEDITINGWIDGET_H
+#endif

@@ -46,7 +46,7 @@ public:
     void removeWidgetsListeners() const;
     ~QC_MDIWindow() override;
 public slots:
-    void slotPenChanged(const RS_Pen &p) const;
+    void slotPenChanged(const RS_Pen &pen) const;
     void slotFileNew() const;
     bool loadDocumentFromTemplate(const QString &fileName, RS2::FormatType type) const;
     bool loadDocument(const QString &fileName, RS2::FormatType type);
@@ -84,8 +84,8 @@ public:
      * @return The MDI window id.
      */
     unsigned getId() const;
-    friend std::ostream &operator <<(std::ostream &os, QC_MDIWindow &w);
-    bool has_children() const;
+    friend std::ostream &operator <<(std::ostream &os, const QC_MDIWindow &w);
+    bool hasChildren() const;
 
     void graphicModified(const RS_Graphic *g, bool modified) override;
     void undoStateChanged(const RS_Graphic* g, bool undoAvailable, bool redoAvailable) override;
@@ -96,14 +96,14 @@ public:
         return m_saveOnClosePolicy;
     }
 
-    void setSaveOnClosePolicy(SaveOnClosePolicy val){
+    void setSaveOnClosePolicy(const SaveOnClosePolicy val){
         m_saveOnClosePolicy = val;
     }
 
 protected:
     LC_DocumentsStorage *m_documentsStorage;
     // window ID
-    unsigned id = 0;
+    unsigned m_id = 0;
     // Graphic view
     QG_GraphicView *m_graphicView = nullptr;
     // Document
@@ -120,6 +120,6 @@ protected:
     void drawChars() const; // fime - sand - files - refactor and remove from there!
     void closeEvent(QCloseEvent *) override;
     void addWidgetsListeners();
-    void setupGraphicView(QWidget *parent, bool printPreview, LC_ActionContext* actionContext);
+    void setupGraphicView(const QWidget *parent, bool printPreview, LC_ActionContext* actionContext);
 };
 #endif

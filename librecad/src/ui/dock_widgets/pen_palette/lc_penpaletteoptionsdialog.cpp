@@ -57,8 +57,7 @@ LC_PenPaletteOptionsDialog::LC_PenPaletteOptionsDialog(QWidget *parent, LC_PenPa
     cbShowTooltip->setChecked(m_options->showToolTip);
     cbAllRowBold->setChecked(m_options->showEntireRowBold);
 
-    int colorMode = m_options->colorNameDisplayMode;
-    switch (colorMode){
+    switch (m_options->colorNameDisplayMode){
         case LC_PenInfoRegistry::ColorNameDisplayMode::RGB:
             rbRGB->setChecked(true);
             break;
@@ -80,7 +79,7 @@ LC_PenPaletteOptionsDialog::LC_PenPaletteOptionsDialog(QWidget *parent, LC_PenPa
     initComboBox(cbColorGrid, m_options->itemsGridColor);
     initComboBox(cbColorMatchedItem, m_options->matchedItemColor);
 
-    QObject::connect(buttonBox, &QDialogButtonBox::accepted, this, &LC_PenPaletteOptionsDialog::validate);
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &LC_PenPaletteOptionsDialog::validate);
 }
 
 LC_PenPaletteOptionsDialog::~LC_PenPaletteOptionsDialog()= default;
@@ -95,7 +94,7 @@ void LC_PenPaletteOptionsDialog::languageChange(){
  * @param color
  */
 void LC_PenPaletteOptionsDialog::initComboBox(QComboBox* cb, const QColor &color){
-    QString text = color.name();
+    const QString text = color.name();
     int idx = cb->findText(text);
     if (idx < 0){
         idx = 0;
@@ -105,15 +104,15 @@ void LC_PenPaletteOptionsDialog::initComboBox(QComboBox* cb, const QColor &color
 }
 
 void LC_PenPaletteOptionsDialog::selectActivePenBGColor(){
-    set_color(cbColorActiveBg, m_options->activeItemBGColor);
+    setComboBoxColor(cbColorActiveBg, m_options->activeItemBGColor);
 }
 
 void LC_PenPaletteOptionsDialog::selectGridColor(){
-    set_color(cbColorGrid, m_options->itemsGridColor);
+    setComboBoxColor(cbColorGrid, m_options->itemsGridColor);
 }
 
 void LC_PenPaletteOptionsDialog::selectMatchedItemColor(){
-    set_color(cbColorMatchedItem, m_options->matchedItemColor);
+    setComboBoxColor(cbColorMatchedItem, m_options->matchedItemColor);
 }
 
 /**
@@ -121,13 +120,13 @@ void LC_PenPaletteOptionsDialog::selectMatchedItemColor(){
  * @param combo
  * @param custom
  */
-void LC_PenPaletteOptionsDialog::set_color(QComboBox* combo, QColor &custom)
+void LC_PenPaletteOptionsDialog::setComboBoxColor(const QComboBox* combo, const QColor &custom)
 {
-    auto current = QColor::fromString(combo->lineEdit()->text());
+    const auto current = QColor::fromString(combo->lineEdit()->text());
 
     QColorDialog::setCustomColor(0, custom.rgb());
 
-    QColor color = QColorDialog::getColor(current, this, "Select Color", QColorDialog::DontUseNativeDialog);
+    const QColor color = QColorDialog::getColor(current, this, "Select Color", QColorDialog::DontUseNativeDialog);
     if (color.isValid()){
         combo->lineEdit()->setText(color.name());
     }
@@ -138,19 +137,7 @@ void LC_PenPaletteOptionsDialog::set_color(QComboBox* combo, QColor &custom)
  */
 void LC_PenPaletteOptionsDialog::validate(){
     bool doAccept = true;
-    
-    bool showToolTip = cbShowTooltip->isChecked();
-    bool showColorIcon = chkShowColorIcon->isChecked();
-    bool showColorName = chkShowColorName->isChecked();
-    bool showLineTypeIcon = chkShowLineTypeIcon->isChecked();
-    bool showLineTypeName = chkShowLineTypeName->isChecked();
-    bool showLineWidthIcon = chkShowWidthIcon->isChecked();
-    bool showLineWidthName = chkShowWidthName->isChecked();
-    bool allRowBold = cbAllRowBold->isChecked();
-    bool showNoSelectionMessage = cbShowMessageForNoSelection->isChecked();
-    bool ignoreCaseOnMatch = cbFilterCaseInsensitive->isChecked();
-
-    int colorMode = 0;
+    LC_PenInfoRegistry::ColorNameDisplayMode colorMode;
 
     if (rbRGB->isChecked()){
         colorMode = LC_PenInfoRegistry::ColorNameDisplayMode::RGB;
@@ -160,10 +147,8 @@ void LC_PenPaletteOptionsDialog::validate(){
       colorMode = LC_PenInfoRegistry::ColorNameDisplayMode::NATURAL;
     }
 
-    int doubleClickMode = cbDoubleClickMode->currentIndex();
-
     QString activeBgColorName = cbColorActiveBg->currentText();
-    QColor activeBgColor = QColor(activeBgColorName);
+    auto activeBgColor = QColor(activeBgColorName);
     if (!activeBgColor.isValid()){
         showInvalidColorMessage("active row background");
         cbColorActiveBg ->setFocus();
@@ -171,7 +156,7 @@ void LC_PenPaletteOptionsDialog::validate(){
     }
 
     QString gridColorName = cbColorGrid->currentText();
-    QColor gridColor = QColor(gridColorName);
+    auto gridColor = QColor(gridColorName);
     if (!gridColor.isValid()){
         showInvalidColorMessage("grid");
         cbColorGrid ->setFocus();
@@ -179,8 +164,8 @@ void LC_PenPaletteOptionsDialog::validate(){
     }
 
     QString matchedColorName = cbColorMatchedItem->currentText();
-    QColor matchedItemColor = QColor(matchedColorName);
-    if (!gridColor.isValid()){
+    auto matchedItemColor = QColor(matchedColorName);
+    if (!matchedItemColor.isValid()){
         showInvalidColorMessage("filter matched item");
         cbColorMatchedItem ->setFocus();
         doAccept = false;
@@ -192,6 +177,17 @@ void LC_PenPaletteOptionsDialog::validate(){
         m_options->itemsGridColor =  gridColor;
         m_options->activeItemBGColor = activeBgColor;
 
+        bool showToolTip = cbShowTooltip->isChecked();
+        bool showColorIcon = chkShowColorIcon->isChecked();
+        bool showColorName = chkShowColorName->isChecked();
+        bool showLineTypeIcon = chkShowLineTypeIcon->isChecked();
+        bool showLineTypeName = chkShowLineTypeName->isChecked();
+        bool showLineWidthIcon = chkShowWidthIcon->isChecked();
+        bool showLineWidthName = chkShowWidthName->isChecked();
+        bool showNoSelectionMessage = cbShowMessageForNoSelection->isChecked();
+        bool ignoreCaseOnMatch = cbFilterCaseInsensitive->isChecked();
+
+        bool allRowBold = cbAllRowBold->isChecked();
         m_options->showEntireRowBold = allRowBold;
         m_options->showToolTip = showToolTip;
         m_options->showWidthIcon = showLineWidthIcon;
@@ -204,6 +200,8 @@ void LC_PenPaletteOptionsDialog::validate(){
         m_options->showNoSelectionMessage = showNoSelectionMessage;
 
         m_options->colorNameDisplayMode = colorMode;
+
+        int doubleClickMode = cbDoubleClickMode->currentIndex();
         m_options->doubleClickOnTableMode = doubleClickMode;
         accept();
     }

@@ -24,6 +24,7 @@
 **
 **********************************************************************/
 #include "qg_moverotateoptions.h"
+
 #include "rs_actionmodifymoverotate.h"
 #include "ui_qg_moverotateoptions.h"
 
@@ -59,7 +60,7 @@ void QG_MoveRotateOptions::languageChange() {
 }
 
 void QG_MoveRotateOptions::doSaveSettings() {
-    bool angleIsFree = ui->cbFreeAngle->isChecked();
+    const bool angleIsFree = ui->cbFreeAngle->isChecked();
     save("Angle", ui->leAngle->text());
     save("UseCurrentLayer", ui->cbCurrentLayer->isChecked());
     save("UseCurrentAttributes", ui->cbCurrentAttr->isChecked());
@@ -70,8 +71,8 @@ void QG_MoveRotateOptions::doSaveSettings() {
     save("SameAngleForCopies", ui->cbSameAngleForCopies->isChecked());
 }
 
-void QG_MoveRotateOptions::doSetAction(RS_ActionInterface* a, bool update) {
-    m_action = dynamic_cast<RS_ActionModifyMoveRotate*>(a);
+void QG_MoveRotateOptions::doSetAction(RS_ActionInterface* a, const bool update) {
+    m_action = static_cast<RS_ActionModifyMoveRotate*>(a);
 
     QString angle;
 
@@ -112,7 +113,7 @@ void QG_MoveRotateOptions::doSetAction(RS_ActionInterface* a, bool update) {
     setAngleToActionAndView(angle);
 }
 
-void QG_MoveRotateOptions::setAngleToActionAndView(QString val) {
+void QG_MoveRotateOptions::setAngleToActionAndView(const QString& val) {
     double angle;
     if (toDoubleAngleDegrees(val, angle, 0.0, false)){
         ui->leAngle->setText(fromDouble(angle));
@@ -128,36 +129,36 @@ void QG_MoveRotateOptions::setCopiesNumberToActionAndView(int number) const {
     ui->sbNumberOfCopies->setValue(number);
 }
 
-void QG_MoveRotateOptions::setUseMultipleCopiesToActionAndView(bool copies) const {
+void QG_MoveRotateOptions::setUseMultipleCopiesToActionAndView(const bool copies) const {
     m_action->setUseMultipleCopies(copies);
     ui->cbMultipleCopies->setChecked(copies);
     ui->sbNumberOfCopies->setEnabled(copies);
     ui->cbSameAngleForCopies->setEnabled(copies);
 }
 
-void QG_MoveRotateOptions::setUseCurrentLayerToActionAndView(bool val) const {
+void QG_MoveRotateOptions::setUseCurrentLayerToActionAndView(const bool val) const {
     m_action->setUseCurrentLayer(val);
     ui->cbCurrentLayer->setChecked(val);
 }
 
-void QG_MoveRotateOptions::setUseCurrentAttributesToActionAndView(bool val) const {
+void QG_MoveRotateOptions::setUseCurrentAttributesToActionAndView(const bool val) const {
     m_action->setUseCurrentAttributes(val);
     ui->cbCurrentAttr->setChecked(val);
 }
 
-void QG_MoveRotateOptions::setKeepOriginalsToActionAndView(bool val) const {
+void QG_MoveRotateOptions::setKeepOriginalsToActionAndView(const bool val) const {
     m_action->setKeepOriginals(val);
     ui->cbKeepOriginals->setChecked(val);
 }
 
-void QG_MoveRotateOptions::setFreeAngleToModelAndView(bool val) const {
+void QG_MoveRotateOptions::setFreeAngleToModelAndView(const bool val) const {
     ui->leAngle->setEnabled(!val);
     ui->tbPickAngle->setEnabled(!val);
     ui->cbFreeAngle->setChecked(val);
     m_action->setAngleIsFree(val);
 }
 
-void QG_MoveRotateOptions::setSameAngleForCopiesToActionAndView(bool val) const {
+void QG_MoveRotateOptions::setSameAngleForCopiesToActionAndView(const bool val) const {
    m_action->setUseSameAngleForCopies(val);
    ui->cbSameAngleForCopies->setChecked(val);
 }
@@ -167,30 +168,30 @@ void QG_MoveRotateOptions::onAngleEditingFinished(){
     setAngleToActionAndView(expr);
 }
 
-void QG_MoveRotateOptions::cbKeepOriginalsClicked(bool val) {
+void QG_MoveRotateOptions::cbKeepOriginalsClicked(const bool val) {
     setKeepOriginalsToActionAndView(val);
 }
 
-void QG_MoveRotateOptions::cbMultipleCopiesClicked(bool val) {
+void QG_MoveRotateOptions::cbMultipleCopiesClicked(const bool val) {
     setUseMultipleCopiesToActionAndView(val);
 }
 
-void QG_MoveRotateOptions::cbUseCurrentAttributesClicked(bool val) {
+void QG_MoveRotateOptions::cbUseCurrentAttributesClicked(const bool val) {
     setUseCurrentAttributesToActionAndView(val);
 }
 
-void QG_MoveRotateOptions::cbUseCurrentLayerClicked(bool val) {
+void QG_MoveRotateOptions::cbUseCurrentLayerClicked(const bool val) {
     setUseCurrentLayerToActionAndView(val);
 }
 
-void QG_MoveRotateOptions::cbSameAngleForCopiesClicked(bool val) {
+void QG_MoveRotateOptions::cbSameAngleForCopiesClicked(const bool val) {
     setSameAngleForCopiesToActionAndView(val);
 }
 
-void QG_MoveRotateOptions::cbFreeAngleForClicked(bool val) {
+void QG_MoveRotateOptions::cbFreeAngleForClicked(const bool val) {
     setFreeAngleToModelAndView(val);
 }
 
-void QG_MoveRotateOptions::on_sbNumberOfCopies_valueChanged(int number) {
+void QG_MoveRotateOptions::on_sbNumberOfCopies_valueChanged(const int number) {
     setCopiesNumberToActionAndView(number);
 }

@@ -55,4 +55,4 @@ protected:
     void setMidPointsToActionAndView(int value) const;
     void setDegreeToActionAndView(int value) const;
 };
-#endif // LC_SPLINEFROMPOLYLINEOPTIONS_H
+#endif

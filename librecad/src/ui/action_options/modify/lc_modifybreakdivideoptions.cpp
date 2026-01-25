@@ -20,8 +20,9 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
-#include "lc_actionmodifybreakdivide.h"
 #include "lc_modifybreakdivideoptions.h"
+
+#include "lc_actionmodifybreakdivide.h"
 #include "ui_lc_modifybreakdivideoptions.h"
 
 LC_ModifyBreakDivideOptions::LC_ModifyBreakDivideOptions() :
@@ -32,8 +33,8 @@ LC_ModifyBreakDivideOptions::LC_ModifyBreakDivideOptions() :
     connect(ui->cbRemoveSelected, &QCheckBox::clicked, this, &LC_ModifyBreakDivideOptions::onRemoveSelectedClicked);
 }
 
-void LC_ModifyBreakDivideOptions::doSetAction(RS_ActionInterface *a, bool update){
-    m_action = dynamic_cast<LC_ActionModifyBreakDivide *>(a);
+void LC_ModifyBreakDivideOptions::doSetAction(RS_ActionInterface *a, const bool update){
+    m_action = static_cast<LC_ActionModifyBreakDivide *>(a);
     bool removeSegments;
     bool removeSelected;
 
@@ -54,25 +55,25 @@ void LC_ModifyBreakDivideOptions::doSaveSettings() {
     save("RemoveSelected", ui->cbRemoveSelected->isChecked());
 }
 
-void LC_ModifyBreakDivideOptions::onRemoveSegmentsClicked(bool clicked) {
+void LC_ModifyBreakDivideOptions::onRemoveSegmentsClicked(const bool clicked) const {
     if (m_action != nullptr) {
         setRemoveSegmentsToActionAndView(clicked);
     }
 }
 
-void LC_ModifyBreakDivideOptions::onRemoveSelectedClicked(bool clicked) {
+void LC_ModifyBreakDivideOptions::onRemoveSelectedClicked(const bool clicked) const {
     if (m_action != nullptr) {
         setRemoveSelectedToActionAndView(clicked);
     }
 }
 
-void LC_ModifyBreakDivideOptions::setRemoveSegmentsToActionAndView(bool val) const {
+void LC_ModifyBreakDivideOptions::setRemoveSegmentsToActionAndView(const bool val) const {
     m_action->setRemoveSegment(val);
     ui->cbRemoveSegments->setChecked(val);
     ui->cbRemoveSelected->setEnabled(val);
 }
 
-void LC_ModifyBreakDivideOptions::setRemoveSelectedToActionAndView(bool val) const {
+void LC_ModifyBreakDivideOptions::setRemoveSelectedToActionAndView(const bool val) const {
     m_action->setRemoveSelected(val);
     ui->cbRemoveSelected->setChecked(val);
 }

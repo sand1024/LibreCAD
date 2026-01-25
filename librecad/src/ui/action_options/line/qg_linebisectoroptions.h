@@ -50,8 +50,8 @@ protected:
 private:
     RS_ActionDrawLineBisector* m_action;
     std::unique_ptr<Ui::Ui_LineBisectorOptions> ui;
-    void setLengthToActionAndView(QString val);
+    void setLengthToActionAndView(const QString& val);
     void setNumberToActionAndView(int number) const;
 };
 
-#endif // QG_LINEBISECTOROPTIONS_H
+#endif

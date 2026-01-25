@@ -84,46 +84,49 @@ void LC_RelZeroCoordinatesWidget::relativeZeroChanged(const RS_Vector &pos) {
     setRelativeZero(pos, true);
 }
 
-void LC_RelZeroCoordinatesWidget::showRelZero(const RS_Vector& rel) {
-    RS_Vector ucsRelZero = m_viewport->toUCS(rel);
+void LC_RelZeroCoordinatesWidget::showRelZero(const RS_Vector& rel) const {
+    if (m_viewport != nullptr) {
+        const RS_Vector ucsRelZero = m_viewport->toUCS(rel);
 
-    double x = ucsRelZero.x;
-    double y = ucsRelZero.y;
+        double x = ucsRelZero.x;
+        double y = ucsRelZero.y;
 
-    double magnitude = ucsRelZero.magnitude();
-    double len = magnitude;
-    double angle = ucsRelZero.angle();
-    if (LC_LineMath::isNotMeaningful(magnitude)){
-        len = 0;
-        angle = 0;
-    }
+        const double magnitude = ucsRelZero.magnitude();
+        double len = magnitude;
+        double angle = ucsRelZero.angle();
+        if (LC_LineMath::isNotMeaningful(magnitude)) {
+            len = 0;
+            angle = 0;
+        }
 
-    if (m_viewport != nullptr){
         angle = m_viewport->toBasisUCSAngle(angle);
+
+        if (!LC_GET_ONE_BOOL("Appearance", "UnitlessGrid", true)) {
+            x = RS_Units::convert(x);
+            y = RS_Units::convert(y);
+            len = RS_Units::convert(magnitude);
+        }
+
+        // cartesian coordinates
+        const QString relX = m_formatter->formatLinear(x);
+        const QString relY = m_formatter->formatLinear(y);
+
+        ui->lCartesianCoordinates->setText(relX + " , " + relY);
+
+        // polar coordinates:
+
+        const QString rStr = m_formatter->formatLinear(len);
+        const QString aStr = m_formatter->formatRawAngle(angle);
+        const QString str = rStr + " < " + aStr;
+        ui->lPolarCoordinates->setText(str);
     }
-
-    if (!LC_GET_ONE_BOOL("Appearance", "UnitlessGrid", true)){
-        x  = RS_Units::convert(x);
-        y  = RS_Units::convert(y);
-        len = RS_Units::convert(magnitude);
+    else {
+        ui->lPolarCoordinates->setText("");
+        ui->lCartesianCoordinates->setText("");
     }
-
-    // cartesian coordinates
-    QString relX = m_formatter->formatLinear(x);
-    QString relY = m_formatter->formatLinear(y);
-
-    ui->lCartesianCoordinates->setText(relX + " , " + relY);
-
-    // polar coordinates:
-    QString str;
-
-    QString rStr = m_formatter->formatLinear(len);
-    QString aStr = m_formatter->formatRawAngle(angle);
-    str = rStr + " < " + aStr;
-    ui->lPolarCoordinates->setText(str);
 }
 
-void LC_RelZeroCoordinatesWidget::setRelativeZero(const RS_Vector &rel, bool updateFormat) {
+void LC_RelZeroCoordinatesWidget::setRelativeZero(const RS_Vector &rel, const bool updateFormat) {
     if (m_graphic != nullptr) {
         if (updateFormat) {
             m_formatter = m_viewport->getFormatter();  // fixme - fmt - most probably it should be removed

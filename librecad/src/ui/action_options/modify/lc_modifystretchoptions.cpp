@@ -21,6 +21,7 @@
  ******************************************************************************/
 
 #include "lc_modifystretchoptions.h"
+
 #include "rs_actionmodifystretch.h"
 #include "ui_lc_modifystretchoptions.h"
 
@@ -41,8 +42,8 @@ void LC_ModifyStretchOptions::doSaveSettings() {
     save("KeepOriginals", ui->cbKeepOriginals->isChecked());
 }
 
-void LC_ModifyStretchOptions::doSetAction(RS_ActionInterface *a, bool update) {
-    m_action = dynamic_cast<RS_ActionModifyStretch *>(a);
+void LC_ModifyStretchOptions::doSetAction(RS_ActionInterface *a, const bool update) {
+    m_action = static_cast<RS_ActionModifyStretch *>(a);
     bool keepOriginals;
     if (update){
         keepOriginals = !m_action->isRemoveOriginals();
@@ -57,11 +58,11 @@ void LC_ModifyStretchOptions::languageChange() {
     ui->retranslateUi(this);
 }
 
-void LC_ModifyStretchOptions::onKeepOriginalsClicked(bool val) {
+void LC_ModifyStretchOptions::onKeepOriginalsClicked(const bool val) {
     setKeepOriginalsToActionAndView(val);
 }
 
-void LC_ModifyStretchOptions::setKeepOriginalsToActionAndView(bool val) const {
+void LC_ModifyStretchOptions::setKeepOriginalsToActionAndView(const bool val) const {
     ui->cbKeepOriginals->setChecked(val);
     m_action->setRemoveOriginals(!val);
 }

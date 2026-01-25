@@ -44,4 +44,4 @@ protected:
     void setEntity(RS_Polyline *e);
 };
 
-#endif // QG_DLGPOLYLINE_H
+#endif

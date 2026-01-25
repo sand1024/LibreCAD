@@ -20,8 +20,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
 #include "qg_polylineequidistantoptions.h"
-#include "ui_qg_polylineequidistantoptions.h"
+
 #include "rs_actionpolylineequidistant.h"
+#include "ui_qg_polylineequidistantoptions.h"
 
 /*
   * Create option widget used to draw equidistant polylines
@@ -50,9 +51,8 @@ void QG_PolylineEquidistantOptions::languageChange(){
     ui->retranslateUi(this);
 }
 
-void QG_PolylineEquidistantOptions::doSetAction(RS_ActionInterface *a, bool update){
-
-    m_action = dynamic_cast<RS_ActionPolylineEquidistant *>(a);
+void QG_PolylineEquidistantOptions::doSetAction(RS_ActionInterface *a, const bool update){
+    m_action = static_cast<RS_ActionPolylineEquidistant *>(a);
 
     QString distance;
     int number;
@@ -76,7 +76,7 @@ void QG_PolylineEquidistantOptions::doSaveSettings(){
     save("Copies", ui->sbNumber->value());
 }
 
-void QG_PolylineEquidistantOptions::onNumberValueChanged(int number){
+void QG_PolylineEquidistantOptions::onNumberValueChanged(const int number){
     setNumberToActionAndView(number);
 }
 
@@ -84,12 +84,12 @@ void QG_PolylineEquidistantOptions::onDistEditingFinished(){
     setDistanceToActionAndView(ui->leDist->text());
 }
 
-void QG_PolylineEquidistantOptions::setNumberToActionAndView(int number) const {
+void QG_PolylineEquidistantOptions::setNumberToActionAndView(const int number) const {
     m_action->setNumber(number);
     ui->sbNumber->setValue(number);
 }
 
-void QG_PolylineEquidistantOptions::setDistanceToActionAndView(QString strVal){
+void QG_PolylineEquidistantOptions::setDistanceToActionAndView(const QString& strVal){
     double val;
     if (toDouble(strVal, val, 10.0, false)){
         m_action->setDist(val);

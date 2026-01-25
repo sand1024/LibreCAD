@@ -47,4 +47,4 @@ private:
     void setKeepOriginalsToActionAndView(bool val) const;
 };
 
-#endif // LC_MODIFYSTRETCHOPTIONS_H
+#endif

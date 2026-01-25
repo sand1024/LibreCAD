@@ -21,8 +21,9 @@
  ******************************************************************************/
 
 #include "lc_infodist2options.h"
-#include "ui_lc_infodist2options.h"
+
 #include "rs_actioninfodist2.h"
+#include "ui_lc_infodist2options.h"
 
 LC_InfoDist2Options::LC_InfoDist2Options()
     : LC_ActionOptionsWidgetBase(RS2::ActionNone, "Info", "InfoDist2")
@@ -36,8 +37,8 @@ LC_InfoDist2Options::~LC_InfoDist2Options(){
     m_action = nullptr;
 }
 
-void LC_InfoDist2Options::doSetAction(RS_ActionInterface *a, bool update){
-    m_action = dynamic_cast<RS_ActionInfoDist2 *>(a);
+void LC_InfoDist2Options::doSetAction(RS_ActionInterface *a, const bool update){
+    m_action = static_cast<RS_ActionInfoDist2 *>(a);
 
     bool onEntity;
     if (update){
@@ -57,13 +58,13 @@ void LC_InfoDist2Options::doSaveSettings(){
     save("NearestIsOnEntity", ui->cbOnEntity->isChecked());
 }
 
-void LC_InfoDist2Options::onOnEntityClicked([[maybe_unused]]bool value){
+void LC_InfoDist2Options::onOnEntityClicked([[maybe_unused]]bool value) const {
     if (m_action != nullptr){
         setOnEntitySnapToActionAndView(ui->cbOnEntity->isChecked());
     }
 }
 
-void LC_InfoDist2Options::setOnEntitySnapToActionAndView(bool value) const {
+void LC_InfoDist2Options::setOnEntitySnapToActionAndView(const bool value) const {
     m_action->setUseNearestPointOnEntity(value);
     ui->cbOnEntity->setChecked(value);
 }
@@ -72,6 +73,6 @@ void LC_InfoDist2Options::languageChange(){
     ui->retranslateUi(this);
 }
 
-bool LC_InfoDist2Options::checkActionRttiValid(RS2::ActionType actionType) {
+bool LC_InfoDist2Options::checkActionRttiValid(const RS2::ActionType actionType) {
     return actionType == RS2::ActionInfoDistEntity2Point || actionType == RS2::ActionInfoDistPoint2Entity;
 }

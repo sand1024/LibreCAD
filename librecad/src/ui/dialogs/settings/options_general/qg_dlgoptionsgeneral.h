@@ -26,8 +26,8 @@
 #ifndef QG_DLGOPTIONSGENERAL_H
 #define QG_DLGOPTIONSGENERAL_H
 
-#include "ui_qg_dlgoptionsgeneral.h"
 #include "lc_dialog.h"
+#include "ui_qg_dlgoptionsgeneral.h"
 
 class QColor;
 class QComboBox;
@@ -36,7 +36,7 @@ class QString;
 class QG_DlgOptionsGeneral : public LC_Dialog, public Ui::QG_DlgOptionsGeneral{
     Q_OBJECT
 public:
-    QG_DlgOptionsGeneral(QWidget* parent = nullptr);
+    explicit QG_DlgOptionsGeneral(QWidget* parent = nullptr);
     ~QG_DlgOptionsGeneral() override = default;
     static int m_currentTab;
 protected slots:
@@ -104,20 +104,15 @@ protected slots:
     void importSettings();
 private:
     bool m_restartNeeded=false;
-
     QString m_originalLibraryPath;
-    bool m_originalExpandedToolsMenuTillEntity;
-
-
+    bool m_originalExpandedToolsMenuTillEntity {false};
     int m_initialLanguageGUIIdx{0};
-
     void init();
     void initComboBox(QComboBox* cb, const QString& text);
-    void destroy();
     void initReferencePoints();
     void updateLPtSzUnits() const;
     void saveReferencePoints() const;
     QString selectFolder(const QString& title);
 };
 
-#endif // QG_DLGOPTIONSGENERAL_H
+#endif

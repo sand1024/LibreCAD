@@ -44,4 +44,4 @@ private:
     bool m_forMenu;
 };
 
-#endif // LC_DLGNEWWIDGET_H
+#endif

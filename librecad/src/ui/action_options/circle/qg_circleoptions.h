@@ -46,9 +46,8 @@ protected:
     void doSaveSettings() override;
     void doSetAction(RS_ActionInterface *a, bool update) override;
     bool checkActionRttiValid(RS2::ActionType actionType) override;
-protected:
     RS_ActionDrawCircleCR* m_action = nullptr;
     std::unique_ptr<Ui::Ui_CircleOptions> ui;
-    void setRadiusToActionAndVIew(QString val);
+    void setRadiusToActionAndVIew(const QString& val);
 };
-#endif // QG_CIRCLEOPTIONS_H
+#endif

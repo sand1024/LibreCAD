@@ -10,7 +10,7 @@ class TwoStackedLabels : public QFrame{
 protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
 public:
-    TwoStackedLabels(QWidget* parent);
+    explicit TwoStackedLabels(QWidget* parent);
     void setTopLabel(const QString& status) const;
     void setTopLabelToolTip(const QString& tooltip) const;
     void setBottomLabel(const QString& status) const;
@@ -22,4 +22,4 @@ private:
     QLabel* m_bottomLabel = nullptr;
 };
 
-#endif // TWOSTACKEDLABELS_H
+#endif

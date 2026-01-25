@@ -167,7 +167,13 @@ bool RS_GraphicView::setCurrentAction(const std::shared_ptr<RS_ActionInterface>&
 /**
  * Kills all running actions.
  */
-bool RS_GraphicView::killAllActions() const {
+void RS_GraphicView::killAllActions() const {
+    if (m_eventHandler != nullptr) {
+        m_eventHandler->killAllActions();
+    }
+}
+
+bool RS_GraphicView::killAllActionsWithResult() const {
     if (m_eventHandler != nullptr) {
         return m_eventHandler->killAllActions();
     }
@@ -333,7 +339,7 @@ RS_Document *RS_GraphicView::getDocument() const {
 }
 
 void RS_GraphicView::switchToDefaultAction() {
-   if (killAllActions()) {
+   if (killAllActionsWithResult()) {
        RS_Selection::unselectAllInDocument(m_document, m_viewport.get());
    }
     redraw(RS2::RedrawAll);

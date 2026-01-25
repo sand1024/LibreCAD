@@ -53,4 +53,4 @@ protected:
     LC_SnapOptionsWidgetsHolder *getSnapOptionsHolder();
 };
 
-#endif // LC_SNAPOPTIONSHOLDERMANAGER_H
+#endif

@@ -44,4 +44,4 @@ protected:
     void setEntity(RS_Spline *e);
 };
 
-#endif // QG_DLGSPLINE_H
+#endif

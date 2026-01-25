@@ -25,6 +25,7 @@
 **********************************************************************/
 
 #include "qg_splineoptions.h"
+
 #include "rs_actiondrawspline.h"
 #include "ui_qg_splineoptions.h"
 
@@ -33,8 +34,7 @@
  *  name 'name' and widget flags set to 'f'.
  */
 QG_SplineOptions::QG_SplineOptions()
-    :LC_ActionOptionsWidgetBase(RS2::ActionNone, "Draw", "Spline"),
-    m_action(nullptr), ui(new Ui::Ui_SplineOptions{}){
+    :LC_ActionOptionsWidgetBase(RS2::ActionNone, "Draw", "Spline"), ui(new Ui::Ui_SplineOptions{}){
     ui->setupUi(this);
 
     connect(ui->cbDegree, &QComboBox::currentIndexChanged, this, &QG_SplineOptions::onDegreeIndexChanged);
@@ -47,24 +47,24 @@ QG_SplineOptions::QG_SplineOptions()
  */
 QG_SplineOptions::~QG_SplineOptions() = default;
 
-bool QG_SplineOptions::checkActionRttiValid(RS2::ActionType actionType){
+bool QG_SplineOptions::checkActionRttiValid(const RS2::ActionType actionType){
     return actionType == RS2::ActionDrawSpline || actionType == RS2::ActionDrawSplinePoints;
 }
 
 void QG_SplineOptions::doSaveSettings(){
-    bool drawSplineAction = m_action->rtti() == RS2::ActionDrawSpline;
+    const bool drawSplineAction = m_action->rtti() == RS2::ActionDrawSpline;
     if (drawSplineAction){
         save("Degree", ui->cbDegree->currentText().toInt());
     }
-    save("Closed", (int) ui->cbClosed->isChecked());
+    save("Closed", ui->cbClosed->isChecked());
 }
 
-void QG_SplineOptions::doSetAction(RS_ActionInterface *a, bool update){
-    m_action = dynamic_cast<RS_ActionDrawSpline *>(a);
-    int degree = 3;
+void QG_SplineOptions::doSetAction(RS_ActionInterface *a, const bool update){
+    m_action = static_cast<RS_ActionDrawSpline *>(a);
+    int degree;
     bool closed;
 
-    bool drawSplineAction = a->rtti() == RS2::ActionDrawSpline;
+    const bool drawSplineAction = a->rtti() == RS2::ActionDrawSpline;
 
     if (update){
         degree = m_action->getDegree();
@@ -81,24 +81,26 @@ void QG_SplineOptions::doSetAction(RS_ActionInterface *a, bool update){
     setClosedToActionAndView(closed);
 }
 
-void QG_SplineOptions::onClosedClicked(bool value){
+void QG_SplineOptions::onClosedClicked(const bool value){
     setClosedToActionAndView(value);
 }
 
 void QG_SplineOptions::undo() const {
-    if (m_action) m_action->undo();
+    if (m_action) {
+        m_action->undo();
+    }
 }
 
-void QG_SplineOptions::onDegreeIndexChanged(int index){
+void QG_SplineOptions::onDegreeIndexChanged(const int index){
     setDegreeToActionAndView(index+1);
 }
 
-void QG_SplineOptions::setClosedToActionAndView(bool closed) const {
+void QG_SplineOptions::setClosedToActionAndView(const bool closed) const {
     ui->cbClosed->setChecked(closed);
     m_action->setClosed(closed);
 }
 
-void QG_SplineOptions::setDegreeToActionAndView(int degree) const {
+void QG_SplineOptions::setDegreeToActionAndView(const int degree) const {
     ui->cbDegree->setCurrentIndex(degree-1);
     m_action->setDegree(degree);
 }

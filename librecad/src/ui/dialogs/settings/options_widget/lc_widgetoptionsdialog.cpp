@@ -25,8 +25,6 @@
 #include "lc_widgetoptionsdialog.h"
 
 #include <QColorDialog>
-#include <QDir>
-#include <QFile>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QPixmapCache>
@@ -63,8 +61,9 @@ LC_WidgetOptionsDialog::LC_WidgetOptionsDialog(QWidget* parent)
         }
 
         QString sheet_path = LC_GET_STR("StyleSheet", "");
-        if (!sheet_path.isEmpty() && QFile::exists(sheet_path))
+        if (!sheet_path.isEmpty() && QFile::exists(sheet_path)) {
             stylesheet_field->setText(sheet_path);
+        }
 
         // bool allow_theme = LC_GET_BOOL("AllowTheme", false);
         // theme_checkbox->setChecked(allow_theme);
@@ -190,7 +189,7 @@ LC_WidgetOptionsDialog::LC_WidgetOptionsDialog(QWidget* parent)
 }
 
 void LC_WidgetOptionsDialog::onStyleChanged(const QString & /*val*/){
-    QString style = cbIconsStyle->currentText();
+    const QString style = cbIconsStyle->currentText();
     if (!style.isEmpty()) {
         if (m_iconColorsOptions.loadFromFile(style)) {
             m_currentIconsStyleName = style;
@@ -200,7 +199,7 @@ void LC_WidgetOptionsDialog::onStyleChanged(const QString & /*val*/){
     }
 }
 
-bool LC_WidgetOptionsDialog::setupStylesCombobox() {
+bool LC_WidgetOptionsDialog::setupStylesCombobox() const {
     QStringList existingStyles;
     m_iconColorsOptions.getAvailableStyles(existingStyles);
     if (!existingStyles.isEmpty()) {
@@ -212,7 +211,7 @@ bool LC_WidgetOptionsDialog::setupStylesCombobox() {
     return false;
 }
 
-void LC_WidgetOptionsDialog::updateStylesCombobox(QStringList options){
+void LC_WidgetOptionsDialog::updateStylesCombobox(QStringList options) const {
     options.clear();
     m_iconColorsOptions.getAvailableStyles(options);
     pbRemoveStyle->setEnabled(!options.isEmpty());
@@ -226,7 +225,7 @@ void LC_WidgetOptionsDialog::onSaveStylePressed(){
     bool ok;
     QStringList options;
     m_iconColorsOptions.getAvailableStyles(options);
-    auto styleName = LC_InputTextDialog::getText(this, tr("Save Icons Style"), tr("Enter name of icons style:"), options, true, m_currentIconsStyleName, &ok);
+    const auto styleName = LC_InputTextDialog::getText(this, tr("Save Icons Style"), tr("Enter name of icons style:"), options, true, m_currentIconsStyleName, &ok);
     if (ok){
         m_iconColorsOptions.saveToFile(styleName);
         updateStylesCombobox(options);
@@ -237,7 +236,7 @@ void LC_WidgetOptionsDialog::onRemoveStylePressed(){
     bool ok;
     QStringList options;
     m_iconColorsOptions.getAvailableStyles(options);
-    auto styleName = LC_InputTextDialog::getText(this, tr("Remove Icons Style"), tr("Select style to remove:"), options, false, m_currentIconsStyleName, &ok);
+    const auto styleName = LC_InputTextDialog::getText(this, tr("Remove Icons Style"), tr("Select style to remove:"), options, false, m_currentIconsStyleName, &ok);
     if (ok) {
         if (m_iconColorsOptions.removeStyle(styleName)) {
             updateStylesCombobox(options);
@@ -246,17 +245,17 @@ void LC_WidgetOptionsDialog::onRemoveStylePressed(){
 }
 
 void LC_WidgetOptionsDialog::setIconsOverrideFoler() {
-    QString folder = selectFolder(tr("Select External Icons Folder"));
+    const QString folder = selectFolder(tr("Select External Icons Folder"));
     if (folder != nullptr) {
         leIconsOverrideDir->setText(QDir::toNativeSeparators(folder));
     }
 }
 
-QString LC_WidgetOptionsDialog::selectFolder(QString title) {
+QString LC_WidgetOptionsDialog::selectFolder(const QString& title) {
     QString folder = nullptr;
     QFileDialog dlg(this);
     if (title != nullptr) {
-        QString dlgTitle = title;
+        const QString dlgTitle = title;
         dlg.setWindowTitle(dlgTitle);
     }
     dlg.setFileMode(QFileDialog::Directory);
@@ -269,9 +268,9 @@ QString LC_WidgetOptionsDialog::selectFolder(QString title) {
 }
 
 void LC_WidgetOptionsDialog::updateUIByOptions() const {
-    QString colorMain = m_iconColorsOptions.getColor(LC_SVGIconEngineAPI::AnyMode, LC_SVGIconEngineAPI::AnyState, LC_SVGIconEngineAPI::Main);
-    QString colorAccent = m_iconColorsOptions.getColor(LC_SVGIconEngineAPI::AnyMode, LC_SVGIconEngineAPI::AnyState, LC_SVGIconEngineAPI::Accent);
-    QString colorBack = m_iconColorsOptions.getColor(LC_SVGIconEngineAPI::AnyMode, LC_SVGIconEngineAPI::AnyState, LC_SVGIconEngineAPI::Background);
+    const QString colorMain = m_iconColorsOptions.getColor(LC_SVGIconEngineAPI::AnyMode, LC_SVGIconEngineAPI::AnyState, LC_SVGIconEngineAPI::Main);
+    const QString colorAccent = m_iconColorsOptions.getColor(LC_SVGIconEngineAPI::AnyMode, LC_SVGIconEngineAPI::AnyState, LC_SVGIconEngineAPI::Accent);
+    const QString colorBack = m_iconColorsOptions.getColor(LC_SVGIconEngineAPI::AnyMode, LC_SVGIconEngineAPI::AnyState, LC_SVGIconEngineAPI::Background);
 
     cbIconColorMain->setCurrentText(colorMain);
     cbIconColorAccent->setCurrentText(colorAccent);
@@ -279,21 +278,21 @@ void LC_WidgetOptionsDialog::updateUIByOptions() const {
 }
 
 void LC_WidgetOptionsDialog::onpbMainClicked() {
-    QString colorName = set_color(cbIconColorMain);
+    const QString colorName = setComboBoxColor(cbIconColorMain);
     if (!colorName.isEmpty()) {
         onMainIconColorChanged(colorName);
     }
 }
 
 void LC_WidgetOptionsDialog::onpbAccentClicked() {
-    QString colorName = set_color(cbIconColorAccent);
+    const QString colorName = setComboBoxColor(cbIconColorAccent);
     if (!colorName.isEmpty()) {
         onAccentIconColorChanged(colorName);
     }
 }
 
 void LC_WidgetOptionsDialog::onpbBackClicked() {
-    QString colorName = set_color(cbIconColorBack);
+    const QString colorName = setComboBoxColor(cbIconColorBack);
     if (!colorName.isEmpty()) {
         onBackIconColorChanged(colorName);
     }
@@ -314,13 +313,13 @@ void LC_WidgetOptionsDialog::onBackIconColorChanged(const QString &value){
     applyIconColors();
 }
 
-QString LC_WidgetOptionsDialog::set_color(QComboBox *combo) {
-    QColor current = QColor::fromString(combo->lineEdit()->text());
+QString LC_WidgetOptionsDialog::setComboBoxColor(const QComboBox *combo) {
+    const QColor current = QColor::fromString(combo->lineEdit()->text());
 
     QColorDialog dlg;
     // dlg.setCustomColor(0, custom.rgb());
 
-    QColor color = dlg.getColor(current, this, tr("Select Color"), QColorDialog::DontUseNativeDialog);
+    const QColor color = dlg.getColor(current, this, tr("Select Color"), QColorDialog::DontUseNativeDialog);
     if (color.isValid()) {
         auto colorName = color.name();
         combo->lineEdit()->setText(colorName);
@@ -332,57 +331,57 @@ QString LC_WidgetOptionsDialog::set_color(QComboBox *combo) {
 void LC_WidgetOptionsDialog::accept() {
     LC_GROUP_GUARD("Widgets");
     {
-        bool allow_style = style_checkbox->isChecked();
+        const bool allow_style = style_checkbox->isChecked();
         LC_SET("AllowStyle", allow_style);
         if (allow_style) {
-            QString style = style_combobox->currentText();
+            const QString style = style_combobox->currentText();
             LC_SET("Style", style);
             QApplication::setStyle(QStyleFactory::create(style)); // fixme - sand - move to style helper?
         }
 
-        auto& appWindow = QC_ApplicationWindow::getAppWindow(); // fixme - avoid static?
+        const auto& appWindow = QC_ApplicationWindow::getAppWindow(); // fixme - avoid static?
 
-        QString sheet_path = stylesheet_field->text();
+        const QString sheet_path = stylesheet_field->text();
         LC_SET("StyleSheet", sheet_path);
         if (appWindow->loadStyleSheet(sheet_path)) {
            // nothing to do
         }
 
-        bool pickValuesButtonsFlatIcons = cbFlatPickValuesButtons->isChecked();
+        const bool pickValuesButtonsFlatIcons = cbFlatPickValuesButtons->isChecked();
         LC_SET("PickValueButtonsFlatIcons", pickValuesButtonsFlatIcons);
 
-        bool allow_theme = false; //theme_checkbox->isChecked();
+        const bool allow_theme = false; //theme_checkbox->isChecked();
         LC_SET("AllowTheme", allow_theme);
-        int allow_toolbar_icon_size = toolbar_icon_size_checkbox->isChecked();
+        const int allow_toolbar_icon_size = toolbar_icon_size_checkbox->isChecked();
         LC_SET("AllowToolbarIconSize", allow_toolbar_icon_size);
         if (allow_toolbar_icon_size) {
-            int toolbar_icon_size = toolbar_icon_size_spinbox->value();
+            const int toolbar_icon_size = toolbar_icon_size_spinbox->value();
             LC_SET("ToolbarIconSize", toolbar_icon_size);
             appWindow->setIconSize(QSize(toolbar_icon_size, toolbar_icon_size));
         }
 
-        int allow_statusbar_fontsize = statusbar_fontsize_checkbox->isChecked();
+        const int allow_statusbar_fontsize = statusbar_fontsize_checkbox->isChecked();
         LC_SET("AllowStatusbarFontSize", allow_statusbar_fontsize);
         if (allow_statusbar_fontsize) {
-            int statusbar_fontsize = statusbar_fontsize_spinbox->value();
+            const int statusbar_fontsize = statusbar_fontsize_spinbox->value();
             LC_SET("StatusbarFontSize", statusbar_fontsize);
             QFont font;
             font.setPointSize(statusbar_fontsize);
             appWindow->statusBar()->setFont(font);
         }
 
-        int allow_statusbar_height = statusbar_height_checkbox->isChecked();
+        const int allow_statusbar_height = statusbar_height_checkbox->isChecked();
         LC_SET("AllowStatusbarHeight", allow_statusbar_height);
         if (allow_statusbar_height) {
-            int statusbar_height = statusbar_height_spinbox->value();
+            const int statusbar_height = statusbar_height_spinbox->value();
             LC_SET("StatusbarHeight", statusbar_height);
             appWindow->statusBar()->setMinimumHeight(statusbar_height);
         }
 
-        int columnCount = sbLeftTBColumnCount->value();
+        const int columnCount = sbLeftTBColumnCount->value();
         LC_SET("LeftToolbarColumnsCount", columnCount);
 
-        int columnCountAll = sbLeftTBAllColumnCount->value();
+        const int columnCountAll = sbLeftTBAllColumnCount->value();
         LC_SET("LeftToolbarAllColumnsCount", columnCountAll);
 
 
@@ -396,13 +395,13 @@ void LC_WidgetOptionsDialog::accept() {
         LC_SET("DockWidgetsIconSize", sbDocWidgtetIconSize->value());
 
 
-        bool allowDockNesting =cbDockingAllowNested->isChecked();
+        const bool allowDockNesting =cbDockingAllowNested->isChecked();
         LC_SET("DockAllowNested", allowDockNesting);
 
-        bool titleBarVertical = cbDockingVerticalTitleBar->isChecked();
+        const bool titleBarVertical = cbDockingVerticalTitleBar->isChecked();
         LC_SET("DockTitleBarVertical", titleBarVertical);
 
-        bool verticalTabs = cbDockingVerticalTabs->isChecked();
+        const bool verticalTabs = cbDockingVerticalTabs->isChecked();
         LC_SET("DockVerticalTabs", verticalTabs);
 
         LC_WidgetFactory::updateDockOptions(appWindow.get(), allowDockNesting, verticalTabs);
@@ -413,7 +412,7 @@ void LC_WidgetOptionsDialog::accept() {
     m_iconColorsOptions.setColor(LC_SVGIconEngineAPI::AnyMode, LC_SVGIconEngineAPI::AnyState, LC_SVGIconEngineAPI::Accent, cbIconColorAccent->currentText());
     m_iconColorsOptions.setColor(LC_SVGIconEngineAPI::AnyMode, LC_SVGIconEngineAPI::AnyState, LC_SVGIconEngineAPI::Background, cbIconColorBack->currentText());
 
-    QString iconsOverrideDir = leIconsOverrideDir->text();
+    const QString iconsOverrideDir = leIconsOverrideDir->text();
     m_iconColorsOptions.setIconsOverridesDir(iconsOverrideDir);
 
     applyIconColors();
@@ -435,9 +434,9 @@ void LC_WidgetOptionsDialog::reject(){
 
 void LC_WidgetOptionsDialog::showAdvancedSetup(){
     LC_DlgIconsSetup dlg(this);
-    LC_IconColorsOptions copy = LC_IconColorsOptions(m_iconColorsOptions);
+    auto copy = LC_IconColorsOptions(m_iconColorsOptions);
     dlg.setIconsOptions(&copy);
-    if (dlg.exec() == QDialog::Accepted){
+    if (dlg.exec() == Accepted){
         m_iconColorsOptions.apply(copy);
         updateUIByOptions();
         applyIconColors();
@@ -452,7 +451,7 @@ void LC_WidgetOptionsDialog::showAdvancedSetup(){
 void LC_WidgetOptionsDialog::applyIconColors(){
     m_iconColorsOptions.applyOptions();
     QPixmapCache::clear();
-    auto& appWindow = QC_ApplicationWindow::getAppWindow();
+    const auto& appWindow = QC_ApplicationWindow::getAppWindow();
     if (appWindow != nullptr) {
         appWindow->fireIconsRefresh();
     }
@@ -462,7 +461,7 @@ void LC_WidgetOptionsDialog::applyIconColors(){
 }
 
 void LC_WidgetOptionsDialog::chooseStyleSheet(){
-    QString path = QFileDialog::getOpenFileName(this);
+    const QString path = QFileDialog::getOpenFileName(this);
     if (!path.isEmpty()){
         stylesheet_field->setText(QDir::toNativeSeparators(path));
     }

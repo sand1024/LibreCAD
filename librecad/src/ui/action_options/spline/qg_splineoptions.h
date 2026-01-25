@@ -54,4 +54,4 @@ protected:
     void setClosedToActionAndView(bool closed) const;
     void setDegreeToActionAndView(int degree) const;
 };
-#endif // QG_SPLINEOPTIONS_H
+#endif

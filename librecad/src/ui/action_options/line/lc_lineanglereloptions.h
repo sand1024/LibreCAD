@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define LC_LINEANGLERELOPTIONS_H
 
 #include <memory>
+
 #include "lc_actionoptionswidget.h"
 
 class LC_ActionDrawLineAngleRel;
@@ -68,4 +69,4 @@ private:
     void setDivideToActionAndView(bool divide) const;
 };
 
-#endif // LC_LINEANGLERELOPTIONS_H
+#endif

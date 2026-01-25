@@ -40,7 +40,7 @@ class LayerTreeGridDelegate:public QStyledItemDelegate {
 public:
     explicit LayerTreeGridDelegate(LC_LayerTreeView *parent = nullptr, LC_LayerTreeModel* tm = nullptr):QStyledItemDelegate(parent){
         if (parent){
-            treeModel = tm;
+            m_treeModel = tm;
         }
     }
 
@@ -50,14 +50,14 @@ public:
 
         if (col > 0){
             bool draw = true;
-            if (col == LC_LayerTreeModel::NAME){
-                const LC_LayerTreeItem *layerItem = treeModel->getItemForIndex(index);
-                if (layerItem && (!layerItem->isVirtual())){
+            if (col == LC_LayerTreeModel::COLUMN_NAME){
+                const LC_LayerTreeItem *layerItem = m_treeModel->getItemForIndex(index);
+                if (layerItem && !layerItem->isVirtual()){
                     draw = false;
                 }
             }
             if (draw){
-                const LC_LayerTreeModelOptions* options = treeModel->getOptions();
+                const LC_LayerTreeModelOptions* options = m_treeModel->getOptions();
                 const QColor color = options->itemsGridColor;
                 painter->save();
                 painter->setPen(color);
@@ -68,7 +68,7 @@ public:
     }
 
 private:
-    LC_LayerTreeModel* treeModel{nullptr};
+    LC_LayerTreeModel* m_treeModel{nullptr};
 };
 
 
@@ -84,7 +84,7 @@ void LC_LayerTreeView::setup(LC_LayerTreeModel *treeModel){
 void LC_LayerTreeView::dragLeaveEvent(QDragLeaveEvent *event) {
      RS_DEBUG->print(RS_Debug::D_WARNING, "dragLeaveEvent");
      event->accept();
-     const QModelIndex dropIndex = QModelIndex();
+     constexpr auto dropIndex = QModelIndex();
      const auto* widget = static_cast<LC_LayerTreeWidget*>(parentWidget());
      widget->onDropEvent(dropIndex , LC_LayerTreeWidget::InvalidDrop);
 }
@@ -100,7 +100,7 @@ void LC_LayerTreeView::dragEnterEvent(QDragEnterEvent *event) {
     }
 
     const QModelIndex dropIndex = indexAt(event->position().toPoint());
-    const auto* layerTree = dynamic_cast<LC_LayerTreeWidget*>(parentWidget());
+    const auto* layerTree = static_cast<LC_LayerTreeWidget*>(parentWidget());
     if( !dropIndex.isValid()) {
         return;
     }
@@ -191,7 +191,7 @@ void LC_LayerTreeView::restoreTreeExpansionState(QStringList treeExpansionState)
 }
 
 LC_LayerTreeModel *LC_LayerTreeView::getTreeModel() const{
-    auto* layerTreeModel = dynamic_cast<LC_LayerTreeModel *>(model());
+    auto* layerTreeModel = static_cast<LC_LayerTreeModel *>(model());
     return layerTreeModel;
 }
 

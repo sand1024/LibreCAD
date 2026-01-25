@@ -20,13 +20,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
 #include "lc_duplicateoptions.h"
+
 #include "lc_actionmodifyduplicate.h"
 #include "ui_lc_duplicateoptions.h"
 
 LC_DuplicateOptions::LC_DuplicateOptions():
     LC_ActionOptionsWidgetBase(RS2::ActionModifyDuplicate, "Modify","Duplicate"),
-    ui(new Ui::LC_DuplicateOptions),
-    m_action(nullptr){
+    ui(new Ui::LC_DuplicateOptions){
     ui->setupUi(this);
     connect(ui->leOffsetX, &QLineEdit::editingFinished, this, &LC_DuplicateOptions::onOffsetXEditingFinished);
     connect(ui->leOffsetY, &QLineEdit::editingFinished, this, &LC_DuplicateOptions::onOffsetYEditingFinished);
@@ -55,8 +55,8 @@ void LC_DuplicateOptions::doSaveSettings(){
     save("LayerMode", ui->cbLayer->currentIndex());
 }
 
-void LC_DuplicateOptions::doSetAction(RS_ActionInterface *a, bool update){
-    m_action = dynamic_cast<LC_ActionModifyDuplicate *>(a);
+void LC_DuplicateOptions::doSetAction(RS_ActionInterface *a, const bool update){
+    m_action = static_cast<LC_ActionModifyDuplicate *>(a);
     QString ofX;
     QString ofY;
     bool inplace;
@@ -89,7 +89,7 @@ void LC_DuplicateOptions::onOffsetXEditingFinished(){
     setOffsetXToActionAndView(expr);
 }
 
-void LC_DuplicateOptions::onInPlaceClicked(bool value){
+void LC_DuplicateOptions::onInPlaceClicked(const bool value) const {
     setInPlaceDuplicateToActionAndView(value);
 }
 
@@ -98,13 +98,13 @@ void LC_DuplicateOptions::onOffsetYEditingFinished(){
     setOffsetYToActionAndView(expr);
 }
 
-void LC_DuplicateOptions::onPenModeIndexChanged(int mode){
+void LC_DuplicateOptions::onPenModeIndexChanged(const int mode) const {
     if (m_action != nullptr){
         setPenModeToActionAndView(mode);
     }
 }
 
-void LC_DuplicateOptions::onLayerModeIndexChanged(int mode){
+void LC_DuplicateOptions::onLayerModeIndexChanged(const int mode) const {
     if (m_action != nullptr){
         setLayerModeToActionAndeView(mode);
     }
@@ -126,7 +126,7 @@ void LC_DuplicateOptions::setOffsetYToActionAndView(const QString &val){
     }
 }
 
-void LC_DuplicateOptions::setInPlaceDuplicateToActionAndView(bool inplace) const {
+void LC_DuplicateOptions::setInPlaceDuplicateToActionAndView(const bool inplace) const {
     ui->leOffsetX->setEnabled(!inplace);
     ui->leOffsetY->setEnabled(!inplace);
     ui->tbPickOffsetX->setEnabled(!inplace);
@@ -137,12 +137,12 @@ void LC_DuplicateOptions::setInPlaceDuplicateToActionAndView(bool inplace) const
     ui->cbInPlace->setChecked(inplace);
 }
 
-void LC_DuplicateOptions::setPenModeToActionAndView(int mode) const {
+void LC_DuplicateOptions::setPenModeToActionAndView(const int mode) const {
     m_action->setPenMode(mode);
     ui->cbPen->setCurrentIndex(mode);
 }
 
-void LC_DuplicateOptions::setLayerModeToActionAndeView(int mode) const {
+void LC_DuplicateOptions::setLayerModeToActionAndeView(const int mode) const {
     m_action->setLayerMode(mode);
     ui->cbLayer->setCurrentIndex(mode);
 }

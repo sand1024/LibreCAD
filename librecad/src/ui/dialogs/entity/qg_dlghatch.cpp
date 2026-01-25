@@ -25,8 +25,8 @@
 **********************************************************************/
 #include "qg_dlghatch.h"
 
-#include "rs_document.h"
 #include "lc_graphicviewport.h"
+#include "rs_document.h"
 #include "rs_hatch.h"
 #include "rs_line.h"
 #include "rs_math.h"
@@ -41,8 +41,8 @@
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
  */
-QG_DlgHatch::QG_DlgHatch(QWidget *parent, LC_GraphicViewport *pViewport, RS_Hatch* hatch, bool forNew)
-    :LC_EntityPropertiesDlg(parent, "HatchProperties", pViewport) {
+QG_DlgHatch::QG_DlgHatch(QWidget *parent, LC_GraphicViewport *viewport, RS_Hatch* hatch, const bool forNew)
+    :LC_EntityPropertiesDlg(parent, "HatchProperties", viewport) {
     setupUi(this);
     init();
     setEntity(hatch, forNew);
@@ -71,7 +71,7 @@ void QG_DlgHatch::init() {
 }
 
 void QG_DlgHatch::polish() const {
-    LC_Dialog::ensurePolished();
+    ensurePolished();
     gvPreview->zoomAuto();
 }
 
@@ -80,10 +80,10 @@ void QG_DlgHatch::showEvent ( QShowEvent * e) {
     gvPreview->zoomAuto();
 }
 
-void QG_DlgHatch::setEntity(RS_Hatch* h, bool isNew) {
+void QG_DlgHatch::setEntity(RS_Hatch* h, const bool isNew) {
     m_entity = h;
     this->m_isNew = isNew;
-    bool enablePrev = LC_GET_ONE_BOOL("Draw","HatchPreview", false);
+    const bool enablePrev = LC_GET_ONE_BOOL("Draw","HatchPreview", false);
 
     cbEnablePreview->setChecked(enablePrev);
 
@@ -91,10 +91,10 @@ void QG_DlgHatch::setEntity(RS_Hatch* h, bool isNew) {
     if (isNew) {
         LC_GROUP_GUARD("Draw");
         {
-            bool solid = LC_GET_BOOL("HatchSolid", false);
-            QString pat = LC_GET_STR("HatchPattern", "ANSI31");
-            QString scale = LC_GET_STR("HatchScale", "1.0");
-            QString angle = LC_GET_STR("HatchAngle", "0.0");
+            const bool solid = LC_GET_BOOL("HatchSolid", false);
+            const QString pat = LC_GET_STR("HatchPattern", "ANSI31");
+            const QString scale = LC_GET_STR("HatchScale", "1.0");
+            const QString angle = LC_GET_STR("HatchAngle", "0.0");
             cbSolid->setChecked(solid);
             setPattern(pat);
             leScale->setText(scale);
@@ -134,9 +134,9 @@ void QG_DlgHatch::updateEntity() {
 }
 
 void QG_DlgHatch::showArea() const {
-    double area = m_entity->getTotalArea();
+    const double area = m_entity->getTotalArea();
     if (RS_Math::notEqual(area, RS_MAXDOUBLE)) {
-        QString number = QString::number(m_entity->getTotalArea(), 'g', 10);
+        const QString number = QString::number(m_entity->getTotalArea(), 'g', 10);
         leHatchArea->setText(number);
     } else {
         leHatchArea->setText({});
@@ -165,13 +165,14 @@ void QG_DlgHatch::updatePreview() {
         return;
     }
     m_pattern = cbPattern->getPattern();
-    if (m_pattern->countDeep()==0)
+    if (m_pattern->countDeep()==0) {
         return;
+    }
 
-    QString patName = cbPattern->currentText();
-    bool isSolid = cbSolid->isChecked();
-    double scale = toWCSValue(leScale, 1.0);
-    double angle = toWCSAngle(leAngle, 0.0);
+    const QString patName = cbPattern->currentText();
+    const bool isSolid = cbSolid->isChecked();
+    const double scale = toWCSValue(leScale, 1.0);
+    const double angle = toWCSAngle(leAngle, 0.0);
     double prevSize = 100.0;
     if (m_pattern) {
         m_pattern->calculateBorders();
@@ -186,7 +187,7 @@ void QG_DlgHatch::updatePreview() {
 
     auto* loop = new RS_EntityContainer(prevHatch);
 //    loop->setPen(RS_Pen(RS2::FlagInvalid));
-    const RS_Pen &pen = RS_Pen(RS_Color(RS2::FlagByLayer), RS2::WidthByLayer, RS2::LineByLayer);
+    const auto& pen = RS_Pen(RS_Color(RS2::FlagByLayer), RS2::WidthByLayer, RS2::LineByLayer);
     loop->setPen(pen);
     addRectangle(pen, {0., 0.}, {prevSize,prevSize}, loop);
     prevHatch->addEntity(loop);
@@ -198,12 +199,12 @@ void QG_DlgHatch::updatePreview() {
     gvPreview->zoomAuto();
 }
 
-void QG_DlgHatch::addRectangle(RS_Pen pen, RS_Vector const &v0, RS_Vector const &v1, RS_EntityContainer* container){
+void QG_DlgHatch::addRectangle(const RS_Pen& pen, const RS_Vector&v0, const RS_Vector&v1, RS_EntityContainer* container){
     container->addEntity(new RS_Line{container, v0, {v1.x, v0.y}});
     container->addEntity(new RS_Line{container, {v1.x, v0.y}, v1});
     container->addEntity(new RS_Line{container, v1, {v0.x, v1.y}});
     container->addEntity(new RS_Line{container, {v0.x, v1.y}, v0});
-    for (auto e: container->getEntityList()){
+    for (const auto e: container->getEntityList()){
         e->setPen(pen);
     }
 }

@@ -61,8 +61,8 @@ void QG_ImageOptions::doSaveSettings() {
     save("Factor", ui->leFactor->text());
 }
 
-void QG_ImageOptions::doSetAction(RS_ActionInterface *a, bool update) {
-    m_action = dynamic_cast<RS_ActionDrawImage*>(a);
+void QG_ImageOptions::doSetAction(RS_ActionInterface *a, const bool update) {
+    m_action = static_cast<RS_ActionDrawImage*>(a);
 
     QString sAngle;
     QString sFactor;
@@ -92,9 +92,9 @@ void QG_ImageOptions::onFactorEditingFinished() {
 void QG_ImageOptions::setDPIToActionAndView(const QString& val) {
 //    double dpi = RS_Math::eval(val);
     double dpi;
-    bool ok = toDouble(val, dpi, 72, true);
+    const bool ok = toDouble(val, dpi, 72, true);
     if (ok) {
-        double factor = m_action->dpiToScale(dpi);
+        const double factor = m_action->dpiToScale(dpi);
         ui->leFactor->blockSignals(true);
         ui->leFactor->setText(QString::number(factor));
         ui->leFactor->blockSignals(false);
@@ -116,9 +116,9 @@ void QG_ImageOptions::setAngleToActionAndView(const QString& val) {
 void QG_ImageOptions::setFactorToActionAndView(const QString& val) {
 //    double factor = RS_Math::eval(val);
     double factor;
-    bool ok = toDouble(val, factor, 1.0, true);
+    const bool ok = toDouble(val, factor, 1.0, true);
     if (ok) {
-        double dpi = m_action->scaleToDpi(factor);
+        const double dpi = m_action->scaleToDpi(factor);
         ui->leDPI->blockSignals(true);
         ui->leDPI->setText(QString::number(dpi));
         ui->leDPI->blockSignals(false);

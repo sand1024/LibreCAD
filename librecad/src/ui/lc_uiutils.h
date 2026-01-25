@@ -36,6 +36,6 @@ namespace LC_UI{
         }
         return nullptr;
     }
-};
+}
 
-#endif // LC_UIUTILS_H
+#endif

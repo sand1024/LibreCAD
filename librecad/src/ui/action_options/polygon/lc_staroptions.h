@@ -49,12 +49,12 @@ protected:
 private:
     Ui::LC_StarOptions *ui;
     LC_ActionDrawStar* m_action = nullptr;
-    void setRadiusOuterToModelAndView(const QString& val);
-    void setRadiusInnerToModelAndView(const QString& val);
+    void setRadiusOuterToModelAndView(const QString& value);
+    void setRadiusInnerToModelAndView(const QString& value);
     void setRadiusInnerEnabledToModelAndView(bool value) const;
     void setSymmetricToModelAndView(bool value) const;
     void setRadiusOuterEnabledToModelAndView(bool value) const;
     void setNumberToModelAndView(int value) const;
     void setUsePolylineToActionAndView(bool value) const;
 };
-#endif // LC_STAROPTIONS_H
+#endif

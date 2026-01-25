@@ -31,9 +31,8 @@
 TwoStackedLabels::TwoStackedLabels(QWidget* parent)
     : QFrame(parent)
     , m_topLabel(new QLabel(this))
-    , m_bottomLabel(new QLabel(this))
-{
-    QVBoxLayout* layout = new QVBoxLayout;
+    , m_bottomLabel(new QLabel(this)){
+    const auto layout = new QVBoxLayout;
     layout->addWidget(m_topLabel);
     layout->addWidget(m_bottomLabel);
     layout->setContentsMargins(4,0,4,0);
@@ -49,11 +48,11 @@ void TwoStackedLabels::setBottomLabel(const QString& status) const {
     m_bottomLabel->setText(status);
 }
 
-void TwoStackedLabels::mouseReleaseEvent(QMouseEvent *e) {
-    if(e->button()==Qt::LeftButton){
+void TwoStackedLabels::mouseReleaseEvent(QMouseEvent *event) {
+    if(event->button()==Qt::LeftButton){
         emit clicked();
     }
-    QWidget::mouseReleaseEvent(e);
+    QWidget::mouseReleaseEvent(event);
 }
 
 void TwoStackedLabels::setTopLabelToolTip(const QString &tooltip) const {

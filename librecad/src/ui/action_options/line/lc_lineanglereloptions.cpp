@@ -21,8 +21,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
 
 #include "lc_lineanglereloptions.h"
-#include "ui_lc_lineanglereloptions.h"
+
 #include "lc_actiondrawlineanglerel.h"
+#include "ui_lc_lineanglereloptions.h"
 
 LC_LineAngleRelOptions::LC_LineAngleRelOptions() :
     LC_ActionOptionsWidget(nullptr),
@@ -49,12 +50,12 @@ LC_LineAngleRelOptions::~LC_LineAngleRelOptions(){
     m_action = nullptr;
 }
 
-bool LC_LineAngleRelOptions::checkActionRttiValid(RS2::ActionType actionType){
+bool LC_LineAngleRelOptions::checkActionRttiValid(const RS2::ActionType actionType){
     return actionType == RS2::ActionDrawLineAngleRel || actionType == RS2::ActionDrawLineOrthogonalRel;
 }
 
-void LC_LineAngleRelOptions::doSetAction(RS_ActionInterface *a, bool update){
-    m_action = dynamic_cast<LC_ActionDrawLineAngleRel*>(a);
+void LC_LineAngleRelOptions::doSetAction(RS_ActionInterface *a, const bool update){
+    m_action = static_cast<LC_ActionDrawLineAngleRel*>(a);
     m_fixedAngle = a->rtti()==RS2::ActionDrawLineOrthogonalRel;
     QString length;
     QString offset;
@@ -161,30 +162,30 @@ void LC_LineAngleRelOptions::setOffsetToActionAndView(const QString& val){
     }
 }
 
-void LC_LineAngleRelOptions::setAngleIsRelativeToActionAndView(bool relative) const {
+void LC_LineAngleRelOptions::setAngleIsRelativeToActionAndView(const bool relative) const {
     m_action->setAngleIsRelative(relative);
     ui->cbRelativeAngle->setChecked(relative);
 }
 
-void LC_LineAngleRelOptions::setDivideToActionAndView(bool divide) const {
+void LC_LineAngleRelOptions::setDivideToActionAndView(const bool divide) const {
     m_action->setDivideLine(divide);
     ui->cbDivide->setChecked(divide);
 }
 
-void LC_LineAngleRelOptions::setLengthIsFreeToActionAndView(bool free) const {
+void LC_LineAngleRelOptions::setLengthIsFreeToActionAndView(const bool free) const {
     m_action->setLengthIsFree(free);
     ui->cbFree->setChecked(free);
 }
 
-void LC_LineAngleRelOptions::setTickSnapModeToActionAndView(int mode) const {
+void LC_LineAngleRelOptions::setTickSnapModeToActionAndView(const int mode) const {
     m_action->setTickSnapMode(mode);
     ui->cbTickSnapMode->setCurrentIndex(mode);
 }
 
-void LC_LineAngleRelOptions::setLineSnapModeToActionAndView(int mode) const {
+void LC_LineAngleRelOptions::setLineSnapModeToActionAndView(const int mode) const {
     m_action->setLineSnapMode(mode);
     ui->cbLineSnapMode->setCurrentIndex(mode);
-    bool notFreeSnap = mode != 0;
+    const bool notFreeSnap = mode != 0;
     ui->lblDistance->setVisible(notFreeSnap);
     ui->leDistance->setVisible(notFreeSnap);
     ui->tbPickSnapDistance->setVisible(notFreeSnap && m_interactiveInputControlsVisible);
@@ -218,31 +219,31 @@ void LC_LineAngleRelOptions::onAngleEditingFinished(){
     }
 }
 
-void LC_LineAngleRelOptions::onLineSnapModeIndexChanged(int index){
+void LC_LineAngleRelOptions::onLineSnapModeIndexChanged(const int index){
     if (m_action != nullptr){
         setLineSnapModeToActionAndView(index);
     }
 }
 
-void LC_LineAngleRelOptions::onTickSnapModeIndexChanged(int index){
+void LC_LineAngleRelOptions::onTickSnapModeIndexChanged(const int index){
     if (m_action != nullptr){
         setTickSnapModeToActionAndView(index);
     }
 }
 
-void LC_LineAngleRelOptions::onFreeLengthClicked(bool clicked){
+void LC_LineAngleRelOptions::onFreeLengthClicked(const bool clicked){
     if (m_action != nullptr){
         setLengthIsFreeToActionAndView(clicked);
     }
 }
 
-void LC_LineAngleRelOptions::onAngleRelatedClicked(bool clicked){
+void LC_LineAngleRelOptions::onAngleRelatedClicked(const bool clicked){
     if (m_action != nullptr){
         setAngleIsRelativeToActionAndView(clicked);
     }
 }
 
-void LC_LineAngleRelOptions::onDivideClicked(bool clicked){
+void LC_LineAngleRelOptions::onDivideClicked(const bool clicked){
     if (m_action != nullptr){
         setDivideToActionAndView(clicked);
     }

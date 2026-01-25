@@ -32,7 +32,7 @@
 LC_SnapManager::LC_SnapManager(QG_SnapToolBar* snapToolbar):m_snapToolbar{snapToolbar} {
 }
 
-void LC_SnapManager::setSnaps(RS_SnapMode const& s)  { // some flag set except free{
+void LC_SnapManager::setSnaps(const RS_SnapMode& s)  { // some flag set except free{
     if (m_snapToolbar) {
         m_snapToolbar->setSnaps(s);
     }
@@ -49,11 +49,10 @@ void LC_SnapManager::setSnaps(RS_SnapMode const& s)  { // some flag set except f
         }
     }
 
-
     RS_DEBUG->print("QG_ActionHandler::slotSetSnaps(): ok");
 }
 
-bool LC_SnapManager::tryToProcessSnapActions(RS2::ActionType type)  {
+bool LC_SnapManager::tryToProcessSnapActions(const RS2::ActionType type)  {
     switch (type) {
         case RS2::ActionSnapCenter:
             toggleSnapCenter();
@@ -166,7 +165,7 @@ void LC_SnapManager::disableSnaps()  {
     setSnaps(RS_SnapMode());
 }
 
-void LC_SnapManager::setSnapRestriction(RS2::SnapRestriction restriction)  {
+void LC_SnapManager::setSnapRestriction(const RS2::SnapRestriction restriction)  {
     RS_SnapMode s = getSnaps();
     s.restriction = restriction;
     setSnaps(s);
@@ -197,7 +196,7 @@ void LC_SnapManager::setGraphicView(RS_GraphicView* gview) {
     m_view = gview;
 }
 
-void LC_SnapManager::setRelativeZeroLock(bool on) const {
+void LC_SnapManager::setRelativeZeroLock(const bool on) const {
     if (m_snapToolbar) {
         m_snapToolbar->setLockedRelativeZero(on);
     }

@@ -26,8 +26,8 @@
 #ifndef QG_DLGTEXT_H
 #define QG_DLGTEXT_H
 
-#include "ui_qg_dlgtext.h"
 #include "lc_entitypropertiesdlg.h"
+#include "ui_qg_dlgtext.h"
 
 class RS_Text;
 
@@ -72,7 +72,7 @@ protected slots:
 protected:
     bool m_isNew;
     bool m_saveSettings;
-    RS_Text* entity;
+    RS_Text* m_entity;
     RS_Font* m_font;
 
     void setEntity(RS_Text* t, bool isNew );
@@ -80,4 +80,4 @@ protected:
     void destroy() const;
 };
 
-#endif // QG_DLGTEXT_H
+#endif

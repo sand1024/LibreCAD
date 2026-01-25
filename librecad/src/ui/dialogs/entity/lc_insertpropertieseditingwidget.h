@@ -26,6 +26,8 @@
 
 #include "lc_entitypropertieseditorwidget.h"
 
+class RS_Insert;
+
 namespace Ui {
     class LC_InsertPropertiesEditingWidget;
 }
@@ -39,7 +41,7 @@ public:
 protected slots:
     void onInsertionPointEditingFinished() const;
     void onScaleEditingFinishedChanged() const;
-    void onAngleEditingFinished();
+    void onAngleEditingFinished() const;
     void onRowsEditingFinished() const;
     void onColsEditingFinished() const;
     void onSpacingEditingFinished() const;
@@ -50,5 +52,4 @@ private:
     RS_Insert* m_entity{nullptr};
 };
 
-
-#endif // LC_INSERTPROPERTIESEDITINGWIDGET_H
+#endif

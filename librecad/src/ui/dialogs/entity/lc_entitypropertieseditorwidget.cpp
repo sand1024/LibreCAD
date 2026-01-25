@@ -21,9 +21,9 @@
  * ********************************************************************************
  */
 
-#include <QLineEdit>
 #include "lc_entitypropertieseditorwidget.h"
 
+#include <QLineEdit>
 #include <QToolButton>
 
 #include "lc_pointpickbutton.h"
@@ -32,24 +32,23 @@ LC_EntityPropertiesEditorWidget::LC_EntityPropertiesEditorWidget(QWidget* parent
    LC_EntityPropertiesEditorSupport(parent) {
 }
 
-void LC_EntityPropertiesEditorWidget::interactiveInputUpdate(
-    LC_ActionContext::InteractiveInputInfo::InputType inputType,
-    const QString &tag, double valueOne, double valueTwo) const {
+void LC_EntityPropertiesEditorWidget::interactiveInputUpdate(const LC_ActionContext::InteractiveInputInfo::InputType inputType,
+    const QString &tag, const double valueOne, const double valueTwo) const {
     QList<QLineEdit*> list = findChildren<QLineEdit*>();
     QPair<QString, QString> vectorCoordinatesUI;
     if (inputType == LC_ActionContext::InteractiveInputInfo::POINT ||
         inputType == LC_ActionContext::InteractiveInputInfo::POINT_X ||
         inputType == LC_ActionContext::InteractiveInputInfo::POINT_Y) {
-        RS_Vector point = RS_Vector(valueOne, valueTwo);
+        const auto point = RS_Vector(valueOne, valueTwo);
         vectorCoordinatesUI = toUIStr(point);
     }
 
     bool pointComponentSet = false;
     bool lineEditFound = false;
-    for (auto lineEdit : list) {
+    for (const auto lineEdit : list) {
         auto propertyInputType = lineEdit->property("_interactiveInputEdit");
-        auto propertyTag = lineEdit->property("_interactiveInputTag");
         if (propertyInputType.isValid() && !propertyInputType.isNull()) {
+            auto propertyTag = lineEdit->property("_interactiveInputTag");
             QString tagValue = propertyTag.toString();
             if (tag == tagValue) {
                 switch (inputType) {
@@ -69,7 +68,7 @@ void LC_EntityPropertiesEditorWidget::interactiveInputUpdate(
                     case LC_ActionContext::InteractiveInputInfo::POINT:
                     case LC_ActionContext::InteractiveInputInfo::POINT_X:
                     case LC_ActionContext::InteractiveInputInfo::POINT_Y:{
-                        int component = lineEdit->property("_interactiveInputComponent").toInt();
+                        const int component = lineEdit->property("_interactiveInputComponent").toInt();
                         if (component == LC_ActionContext::InteractiveInputInfo::POINT_X) {
                             lineEdit->setText(vectorCoordinatesUI.first);
                             if (pointComponentSet) {
@@ -106,13 +105,13 @@ void LC_EntityPropertiesEditorWidget::interactiveInputUpdate(
 }
 
 void LC_EntityPropertiesEditorWidget::onInteractiveInputButtonClicked([[maybe_unused]]bool checked) {
-    auto senderButton = dynamic_cast<QToolButton*>(sender());
+    const auto senderButton = dynamic_cast<QToolButton*>(sender());
     if (senderButton != nullptr) {
-        auto property = senderButton->property ("_interactiveInputButton");
+        const auto property = senderButton->property ("_interactiveInputButton");
         if (property.isValid()) {
-            auto inputType = static_cast<LC_ActionContext::InteractiveInputInfo::InputType>(property.toInt());
-            auto tagProperty = senderButton->property ("_interactiveInputTag");
-            QString tag = tagProperty.toString();
+            const auto inputType = static_cast<LC_ActionContext::InteractiveInputInfo::InputType>(property.toInt());
+            const auto tagProperty = senderButton->property ("_interactiveInputTag");
+            const QString tag = tagProperty.toString();
             emit interactiveInputRequested(inputType, tag);
         }
     }
@@ -130,7 +129,7 @@ void LC_EntityPropertiesEditorWidget::pickAngleSetup(QToolButton* button,
     setupInteractiveInputControls(button, LC_ActionContext::InteractiveInputInfo::ANGLE, tag, lineEditOne, lineEditTwo);
 }
 
-void LC_EntityPropertiesEditorWidget::pickPointSetup(LC_PointPickButton* button,
+void LC_EntityPropertiesEditorWidget::pickPointSetup(const LC_PointPickButton* button,
                                                                  const QString &tag, QLineEdit* lineEditOne,
                                                                  QLineEdit* lineEditTwo) {
     setupInteractiveInputControls(button->getButton(), LC_ActionContext::InteractiveInputInfo::POINT, tag, lineEditOne, lineEditTwo);
@@ -138,8 +137,7 @@ void LC_EntityPropertiesEditorWidget::pickPointSetup(LC_PointPickButton* button,
 
 
 
-void LC_EntityPropertiesEditorWidget::setupInteractiveInputControls(QToolButton* button,
-                                                                 LC_ActionContext::InteractiveInputInfo::InputType inputType, const QString &tag, QLineEdit* lineEditOne,
+void LC_EntityPropertiesEditorWidget::setupInteractiveInputControls(QToolButton* button, const LC_ActionContext::InteractiveInputInfo::InputType inputType, const QString &tag, QLineEdit* lineEditOne,
                                                                  QLineEdit* lineEditTwo) {
 
     button->setProperty ("_interactiveInputButton", inputType);
@@ -154,4 +152,4 @@ void LC_EntityPropertiesEditorWidget::setupInteractiveInputControls(QToolButton*
         lineEditTwo->setProperty ("_interactiveInputEdit", inputType);
         lineEditTwo->setProperty("_interactiveInputComponent",LC_ActionContext::InteractiveInputInfo::POINT_Y);
     }
-};
+}

@@ -14,14 +14,13 @@
 #include "rs_graphicview.h"
 #include "rs_settings.h"
 
-LC_MDIApplicationWindow::LC_MDIApplicationWindow():
-    m_currentSubWindow(nullptr){}
+LC_MDIApplicationWindow::LC_MDIApplicationWindow(){}
 
 /**
  * Goes back to the previous menu or one step in the current action.
  */
 void LC_MDIApplicationWindow::slotBack() {
-    RS_GraphicView* graphicView = getCurrentGraphicView();
+    const RS_GraphicView* graphicView = getCurrentGraphicView();
     if (graphicView != nullptr) {
         graphicView->back();
     }
@@ -31,14 +30,14 @@ void LC_MDIApplicationWindow::slotBack() {
  * Goes one step further in the current action.
  */
 void LC_MDIApplicationWindow::onEnterKey() {
-    RS_GraphicView *graphicView = getCurrentGraphicView();
+    const RS_GraphicView *graphicView = getCurrentGraphicView();
     if (graphicView != nullptr) {
         graphicView->processEnterKey();
     }
 }
 
-RS_GraphicView const *LC_MDIApplicationWindow::getCurrentGraphicView() const {
-    QC_MDIWindow const *win = getCurrentMDIWindow();
+const RS_GraphicView*LC_MDIApplicationWindow::getCurrentGraphicView() const {
+    const QC_MDIWindow*win = getCurrentMDIWindow();
     if (win != nullptr) {
         return win->getGraphicView();
     }
@@ -46,15 +45,15 @@ RS_GraphicView const *LC_MDIApplicationWindow::getCurrentGraphicView() const {
 }
 
 RS_GraphicView *LC_MDIApplicationWindow::getCurrentGraphicView() {
-    QC_MDIWindow *win = getCurrentMDIWindow();
+    const QC_MDIWindow *win = getCurrentMDIWindow();
     if (win != nullptr) {
         return win->getGraphicView();
     }
     return nullptr;
 }
 
-RS_Document const *LC_MDIApplicationWindow::getCurrentDocument() const {
-    QC_MDIWindow const *win = getCurrentMDIWindow();
+const RS_Document*LC_MDIApplicationWindow::getCurrentDocument() const {
+    const QC_MDIWindow*win = getCurrentMDIWindow();
     if (win != nullptr) {
         return win->getDocument();
     }
@@ -62,7 +61,7 @@ RS_Document const *LC_MDIApplicationWindow::getCurrentDocument() const {
 }
 
 RS_Document *LC_MDIApplicationWindow::getCurrentDocument() {
-    QC_MDIWindow *win = getCurrentMDIWindow();
+    const QC_MDIWindow *win = getCurrentMDIWindow();
     if (win != nullptr) {
         return win->getDocument();
     }
@@ -74,16 +73,14 @@ QString LC_MDIApplicationWindow::getCurrentDocumentFileName() const{
     if (doc == nullptr) {
         return "";
     }
-    else {
-        return doc->getGraphic()->getFilename();
-    }
+    return doc->getGraphic()->getFilename();
 }
 
 /**
  * @return Pointer to the currently active MDI Window or nullptr if no
  * MDI Window is active.
  */
-QC_MDIWindow const* LC_MDIApplicationWindow::getCurrentMDIWindow() const{
+const QC_MDIWindow* LC_MDIApplicationWindow::getCurrentMDIWindow() const{
     QMdiSubWindow *win = m_mdiAreaCAD->currentSubWindow();
     if (win != nullptr) {
         return qobject_cast<QC_MDIWindow *>(win);
@@ -99,7 +96,7 @@ QC_MDIWindow *LC_MDIApplicationWindow::getCurrentMDIWindow(){
     return nullptr;
 }
 
-QMdiArea const *LC_MDIApplicationWindow::getMdiArea() const {
+const QMdiArea*LC_MDIApplicationWindow::getMdiArea() const {
     return m_mdiAreaCAD;
 }
 
@@ -122,7 +119,7 @@ QMenu *LC_MDIApplicationWindow::findMenu(const QString &searchMenu, const QObjec
     QList<QObject*>::const_iterator i=thisMenuList.begin();
     while (i != thisMenuList.end()) {
         if ((*i)->inherits ("QMenu")) {
-            auto *ii=static_cast<QMenu*>(*i);
+            const auto *ii=static_cast<QMenu*>(*i);
             if (QMenu *foundMenu=findMenu(searchMenu, ii->children(), currentEntry+"/"+ii->objectName().replace("&", ""))) {
                 return foundMenu;
             }
@@ -173,17 +170,18 @@ void LC_MDIApplicationWindow::activateWindowWithFile(const QString &fileName) {
 /**
  * Arrange the sub-windows as specified, and set the setting.
  * Note: Tab mode always uses (and sets) the RS2::Maximized mode.
- * @param m the layout mode; if set to RS2::CurrentMode, read the current setting
+ * @param subwindowMode the layout mode; if set to RS2::CurrentMode, read the current setting
  * @param actuallyDont just set the setting, don't actually do the arrangement
  */
-void LC_MDIApplicationWindow::doArrangeWindows(RS2::SubWindowMode m, bool actuallyDont) {
-    int mode = m != RS2::CurrentMode ? m : LC_GET_ONE_INT("WindowOptions", "SubWindowMode", RS2::Maximized);
+void LC_MDIApplicationWindow::doArrangeWindows(const RS2::SubWindowMode subwindowMode, const bool actuallyDont) {
+    const int mode = subwindowMode != RS2::CurrentMode ? subwindowMode : LC_GET_ONE_INT("WindowOptions", "SubWindowMode", RS2::Maximized);
 
     if (!actuallyDont) {
         switch (mode) {
             case RS2::Maximized:
-                if (m_mdiAreaCAD->currentSubWindow())
+                if (m_mdiAreaCAD->currentSubWindow()) {
                     m_mdiAreaCAD->currentSubWindow()->showMaximized();
+                }
                 break;
             case RS2::Cascade:
                 slotCascade();
@@ -211,7 +209,7 @@ void LC_MDIApplicationWindow::doArrangeWindows(RS2::SubWindowMode m, bool actual
  * @param s the tab shape; if RS2::AnyShape read the current setting
  * @param p the tab bar position; if RS2::AnyPosition read the current setting
  */
-void LC_MDIApplicationWindow::setTabLayout(RS2::TabShape s, RS2::TabPosition p) {
+void LC_MDIApplicationWindow::setTabLayout(const RS2::TabShape s, const RS2::TabPosition p) {
     LC_GROUP("WindowOptions");
     int shape = (s == RS2::AnyShape) ? LC_GET_INT("TabShape", RS2::Triangular) : s;
     int position = (p == RS2::AnyPosition) ? LC_GET_INT("TabPosition", RS2::West) : p;
@@ -245,31 +243,37 @@ void LC_MDIApplicationWindow::slotCascade() {
             }
             m_mdiAreaCAD->cascadeSubWindows();
             //find displacement by linear-regression
-            double mi = 0., mi2 = 0., mw = 0., miw = 0., mh = 0., mih = 0.;
+            double mi = 0.0;
+            double mi2 = 0.0;
+            double mw = 0.0;
+            double miw = 0.0;
+            double mh = 0.0;
+            double mih = 0.0;
             for (int i = 0; i < windows.size(); ++i) {
+                const double di = i;
                 mi += i;
-                mi2 += i * i;
-                double w = windows.at(i)->pos().x();
+                mi2 += di * di;
+                const double w = windows.at(i)->pos().x();
                 mw += w;
                 miw += i * w;
-                double h = windows.at(i)->pos().y();
+                const double h = windows.at(i)->pos().y();
                 mh += h;
                 mih += i * h;
             }
             mi2 *= windows.size();
             miw *= windows.size();
             mih *= windows.size();
-            double d = 1. / (mi2 - mi * mi);
-            double disX = (miw - mi * mw) * d;
-            double disY = (mih - mi * mh) * d;
+            const double d = 1. / (mi2 - mi * mi);
+            const double disX = (miw - mi * mw) * d;
+            const double disY = (mih - mi * mh) * d;
             //End of Linear Regression
             //
             QMdiSubWindow *window = windows.first();
             QRect geo = window->geometry();
-            QRect frame = window->frameGeometry();
+            const QRect frame = window->frameGeometry();
 //        std::cout<<"Frame=:"<<( frame.height() - geo.height())<<std::endl;
-            int width = m_mdiAreaCAD->width() - (frame.width() - geo.width()) - disX * (windows.size() - 1);
-            int height = m_mdiAreaCAD->height() - (frame.width() - geo.width()) - disY * (windows.size() - 1);
+            const int width = m_mdiAreaCAD->width() - (frame.width() - geo.width()) - disX * (windows.size() - 1);
+            const int height = m_mdiAreaCAD->height() - (frame.width() - geo.width()) - disY * (windows.size() - 1);
             if (width <= 0 || height <= 0) {
                 return;
             }
@@ -293,7 +297,7 @@ void LC_MDIApplicationWindow::slotTileHorizontal() {
     doArrangeWindows(RS2::TileHorizontal, true);
 
     // primitive horizontal tiling
-    QList<QMdiSubWindow *> windows = m_mdiAreaCAD->subWindowList();
+    const QList<QMdiSubWindow *> windows = m_mdiAreaCAD->subWindowList();
     if (windows.count() <= 1) {
         slotTile();
         return;
@@ -303,13 +307,13 @@ void LC_MDIApplicationWindow::slotTileHorizontal() {
         window->lower();
         window->showNormal();
     }
-    int heightForEach = m_mdiAreaCAD->height() / windows.count();
+    const int heightForEach = m_mdiAreaCAD->height() / windows.count();
     int y = 0;
     for (int i = 0; i < windows.count(); ++i) {
         QMdiSubWindow *window = windows.at(i);
         int preferredHeight = window->minimumHeight()
                               + window->parentWidget()->baseSize().height();
-        int actHeight = qMax(heightForEach, preferredHeight);
+        const int actHeight = qMax(heightForEach, preferredHeight);
 
         window->setGeometry(0, y, m_mdiAreaCAD->width(), actHeight);
         qobject_cast<QC_MDIWindow *>(window)->zoomAuto();
@@ -328,7 +332,7 @@ void LC_MDIApplicationWindow::slotTileVertical() {
     doArrangeWindows(RS2::TileVertical, true);
 
     // primitive horizontal tiling
-    QList<QMdiSubWindow *> windows = m_mdiAreaCAD->subWindowList();
+    const QList<QMdiSubWindow *> windows = m_mdiAreaCAD->subWindowList();
     if (windows.count() <= 1) {
         slotTile();
         return;
@@ -338,13 +342,13 @@ void LC_MDIApplicationWindow::slotTileVertical() {
         window->lower();
         window->showNormal();
     }
-    int widthForEach = m_mdiAreaCAD->width() / windows.count();
+    const int widthForEach = m_mdiAreaCAD->width() / windows.count();
     int x = 0;
     for (int i = 0; i < windows.count(); ++i) {
         QMdiSubWindow *window = windows.at(i);
         int preferredWidth = window->minimumWidth()
                              + window->parentWidget()->baseSize().width();
-        int actWidth = qMax(widthForEach, preferredWidth);
+        const int actWidth = qMax(widthForEach, preferredWidth);
 
         window->setGeometry(x, 0, actWidth, m_mdiAreaCAD->height());
         qobject_cast<QC_MDIWindow *>(window)->zoomAuto();
@@ -364,7 +368,7 @@ void LC_MDIApplicationWindow::slotTile() {
 
 //auto zoom the graphicView of sub-windows
 void LC_MDIApplicationWindow::slotZoomAuto() const {
-    doForEachSubWindowGraphicView([]([[maybe_unused]]QG_GraphicView *gv, QC_MDIWindow* win){
+    doForEachSubWindowGraphicView([]([[maybe_unused]]QG_GraphicView *gv, const QC_MDIWindow* win){
         win->zoomAuto();
     });
 }
@@ -429,7 +433,7 @@ void LC_MDIApplicationWindow::doForEachWindow(const std::function<void(QC_MDIWin
 }
 void LC_MDIApplicationWindow::setupCADAreaTabbar() {
     m_mdiAreaCAD->setViewMode(QMdiArea::TabbedView);
-    QList<QTabBar *> tabBarList = m_mdiAreaCAD->findChildren<QTabBar *>();
+    const QList<QTabBar *> tabBarList = m_mdiAreaCAD->findChildren<QTabBar *>();
     QTabBar *tabBar = tabBarList.at(0);
     if (tabBar != nullptr) {
         tabBar->setExpanding(false);
@@ -440,16 +444,16 @@ void LC_MDIApplicationWindow::setupCADAreaTabbar() {
 void LC_MDIApplicationWindow::onCADTabBarIndexChanged([[maybe_unused]]int index) const {
     LC_GROUP("Appearance");
     {
-        QList<QTabBar *> tabBarList = m_mdiAreaCAD->findChildren<QTabBar *>();
+        const QList<QTabBar *> tabBarList = m_mdiAreaCAD->findChildren<QTabBar *>();
         if (tabBarList.isEmpty()){
             return;
         }
-        bool showCloseButtons = LC_GET_BOOL("ShowCloseButton", true);
-        bool showActive = LC_GET_BOOL("ShowCloseButtonActiveOnly", true);
+        const bool showCloseButtons = LC_GET_BOOL("ShowCloseButton", true);
+        const bool showActive = LC_GET_BOOL("ShowCloseButtonActiveOnly", true);
         // setup close button in window tab for tabbed mode
         QTabBar *tabBar = tabBarList.at(0);
         if (tabBar != nullptr) {
-            auto closeSide = static_cast<QTabBar::ButtonPosition>(style()->styleHint(QStyle::SH_TabBar_CloseButtonPosition, nullptr, this));
+            const auto closeSide = static_cast<QTabBar::ButtonPosition>(style()->styleHint(QStyle::SH_TabBar_CloseButtonPosition, nullptr, this));
 
             for (int i = 0; i < tabBar->count(); ++i) {
                 QWidget *closeButtonWidget = tabBar->tabButton(i, closeSide);
@@ -492,13 +496,13 @@ void LC_MDIApplicationWindow::redrawAll(){
     }
 }
 
-void LC_MDIApplicationWindow::enableWidgetList(bool enable, const std::vector<QWidget*> &widgeList){
+void LC_MDIApplicationWindow::enableWidgetList(const bool enable, const std::vector<QWidget*> &widgeList){
     for (const auto w: widgeList){
         enableWidget(w, enable);
     }
 }
 
-void LC_MDIApplicationWindow::enableWidget(QWidget *win, bool enable) {
+void LC_MDIApplicationWindow::enableWidget(QWidget *win, const bool enable) {
     if (win != nullptr) {
         if (win->isEnabled() != enable) {
             win->setEnabled(enable);
@@ -510,7 +514,7 @@ void LC_MDIApplicationWindow::enableWidget(QWidget *win, bool enable) {
  * Force-Activate this sub window.
  */
 void LC_MDIApplicationWindow::doActivate(QMdiSubWindow *win) {
-    bool maximized = LC_GET_ONE_BOOL("WindowOptions","Maximized");
+    const bool maximized = LC_GET_ONE_BOOL("WindowOptions","Maximized");
     if (win != nullptr) {
         doWindowActivated(win, true);
         win->activateWindow();
@@ -527,16 +531,16 @@ void LC_MDIApplicationWindow::doActivate(QMdiSubWindow *win) {
     }
 }
 
-void LC_MDIApplicationWindow::slotWindowActivatedByIndex(int index){
+void LC_MDIApplicationWindow::slotWindowActivatedByIndex(const int index){
     if (index < 0 || index >= m_mdiAreaCAD->subWindowList().size()) {
         return;
     }
     slotWindowActivated(m_mdiAreaCAD->subWindowList().at(index));
 }
 
-void LC_MDIApplicationWindow::slotRedockWidgets() {
-    const QList<QDockWidget *> dockwidgets = findChildren<QDockWidget *>();
-    for (auto *dockwidget: dockwidgets) {
+void LC_MDIApplicationWindow::slotRedockWidgets()  {
+    const QList<QDockWidget *> dockWidgets = findChildren<QDockWidget *>();
+    for (auto *dockwidget: dockWidgets) {
         dockwidget->setFloating(false);
     }
 }
@@ -565,7 +569,7 @@ void LC_MDIApplicationWindow::doForEachWindowGraphicView(const std::function<voi
 }
 
 void LC_MDIApplicationWindow::doForEachSubWindowGraphicView(const std::function<void(QG_GraphicView *, QC_MDIWindow *)>& callback) const{
-    QList<QMdiSubWindow *> windows = m_mdiAreaCAD->subWindowList();
+    const QList<QMdiSubWindow *> windows = m_mdiAreaCAD->subWindowList();
     for (int i = 0; i < windows.size(); ++i) {
         auto *win = qobject_cast<QC_MDIWindow *>(windows.at(i));
         if (win != nullptr) {
@@ -577,7 +581,14 @@ void LC_MDIApplicationWindow::doForEachSubWindowGraphicView(const std::function<
     }
 }
 
-QAction* LC_MDIApplicationWindow::enableAction(const QString& name, bool enable) const{
+void LC_MDIApplicationWindow::enableAction(const QString& name, const bool enable) const{
+    QAction* action = getAction(name);
+    if (action != nullptr) {
+        action->setEnabled(enable);
+    }
+}
+
+QAction* LC_MDIApplicationWindow::obtainEnableAction(const QString& name, const bool enable) const{
     QAction* action = getAction(name);
     if (action != nullptr) {
         action->setEnabled(enable);
@@ -585,7 +596,7 @@ QAction* LC_MDIApplicationWindow::enableAction(const QString& name, bool enable)
     return action;
 }
 
-QAction* LC_MDIApplicationWindow::checkAction(const QString& name, bool enable) const{
+QAction* LC_MDIApplicationWindow::checkAction(const QString& name, const bool enable) const{
     QAction* action = getAction(name);
     if (action != nullptr) {
         action->setChecked(enable);
@@ -593,13 +604,13 @@ QAction* LC_MDIApplicationWindow::checkAction(const QString& name, bool enable) 
     return action;
 }
 
-void LC_MDIApplicationWindow::checkActions(const std::vector<QString> &actionList, bool enable) const {
+void LC_MDIApplicationWindow::checkActions(const std::vector<QString> &actionList, const bool enable) const {
     for (const QString &a: actionList){
         checkAction(a, enable);
     }
 }
 
-void LC_MDIApplicationWindow::enableActions(const std::vector<QString> &actionList, bool enable) const {
+void LC_MDIApplicationWindow::enableActions(const std::vector<QString> &actionList, const bool enable) const {
     for (const QString &a: actionList){
         enableAction(a, enable);
     }

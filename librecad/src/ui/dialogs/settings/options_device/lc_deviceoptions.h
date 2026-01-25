@@ -18,4 +18,4 @@ private:
     Ui::LC_DeviceOptions* ui = nullptr;
 };
 
-#endif // LC_DEVICEOPTIONS_H
+#endif

@@ -21,6 +21,7 @@
  ******************************************************************************/
 
 #include "lc_drawboundingboxoptions.h"
+
 #include "lc_actiondrawboundingbox.h"
 #include "ui_lc_drawboundingboxoptions.h"
 
@@ -47,8 +48,8 @@ void LC_DrawBoundingBoxOptions::doSaveSettings() {
     save("Offset", ui->leOffset->text());
 }
 
-void LC_DrawBoundingBoxOptions::doSetAction(RS_ActionInterface* a, bool update) {
-    m_action = dynamic_cast<LC_ActionDrawBoundingBox*>(a);
+void LC_DrawBoundingBoxOptions::doSetAction(RS_ActionInterface* a, const bool update) {
+    m_action = static_cast<LC_ActionDrawBoundingBox*>(a);
     bool asGroup;
     bool cornerPoints;
     bool polyline;
@@ -87,18 +88,18 @@ void LC_DrawBoundingBoxOptions::onPolylineToggled([[maybe_unused]] bool val) {
     setPolylineToActionAndView(ui->cbPolyline->isChecked());
 }
 
-void LC_DrawBoundingBoxOptions::setAsGroupToActionAndView(bool group) const {
+void LC_DrawBoundingBoxOptions::setAsGroupToActionAndView(const bool group) const {
     m_action->setSelectionAsGroup(group);
     ui->cbAsGroup->setChecked(group);
 }
 
-void LC_DrawBoundingBoxOptions::setCornerPointsOnlyToActionAndView(bool val) const {
+void LC_DrawBoundingBoxOptions::setCornerPointsOnlyToActionAndView(const bool val) const {
     m_action->setCornersOnly(val);
     ui->cbCornerPointsOnly->setChecked(val);
     ui->cbPolyline->setEnabled(!val);
 }
 
-void LC_DrawBoundingBoxOptions::setPolylineToActionAndView(bool p) const {
+void LC_DrawBoundingBoxOptions::setPolylineToActionAndView(const bool p) const {
     m_action->setCreatePolyline(p);
     ui->cbPolyline->setChecked(p);
 }

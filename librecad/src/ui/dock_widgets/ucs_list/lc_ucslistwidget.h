@@ -24,6 +24,7 @@
 #define LC_UCSLISTWIDGET_H
 
 #include <QModelIndex>
+
 #include "lc_graphicviewawarewidget.h"
 #include "lc_ucslist.h"
 
@@ -46,23 +47,23 @@ class LC_UCSListWidget : public LC_GraphicViewAwareWidget, LC_UCSListListener{
     Q_OBJECT
 public:
     explicit LC_UCSListWidget(const QString& title, QWidget* parent);
-    virtual ~LC_UCSListWidget();
+    ~LC_UCSListWidget() override;
     void setUCSList(LC_UCSList* viewsList);
-    void updateCurrentUCSWidget(LC_UCS* ucs);
+    void updateCurrentUCSWidget(const LC_UCS* ucs) const;
     void setGraphicView(RS_GraphicView* gv) override;
     void reload();
     void fillUCSList(QList<LC_UCS *> &list) const;
-    QIcon getUCSTypeIcon(LC_UCS *view) const;
-    QWidget* createSelectionWidget(QAction* saveViewAction, QAction* defaultAction);
+    QIcon getUCSTypeIcon(const LC_UCS *view) const;
+    QWidget* createSelectionWidget(QAction* createAction, QAction* defaultAction);
     void ucsListModified([[maybe_unused]]bool changed) override{refresh();}
-    QModelIndex getIndexForUCS(LC_UCS *u) const;
-    void applyUCSByIndex(QModelIndex index);
+    QModelIndex getIndexForUCS(const LC_UCS *u) const;
+    void applyUCSByIndex(const QModelIndex& index) const;
     LC_UCS* getActiveUCS() const;
 signals:
     void ucsListChanged();
 public slots:
     void setWCS() const;
-    void onViewUCSChanged(LC_UCS* ucs);
+    void onViewUCSChanged(const LC_UCS* ucs);
     void setStateWidget(LC_UCSStateWidget *stateWidget);
 protected slots:
     void invokeOptionsDialog();
@@ -73,8 +74,8 @@ protected slots:
     void removeAllUCSs();
     void editUCS();
     void setUCSByDimOrdinate() const;
-    void onCustomContextMenu(const QPoint &point);
-    void slotTableClicked(QModelIndex layerIdx);
+    void onCustomContextMenu(const QPoint &pos);
+    void slotTableClicked(const QModelIndex& modelIndex);
     void onTableSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected) const;
     void onTableDoubleClicked();
 protected:
@@ -99,12 +100,12 @@ protected:
     LC_UCS *getSelectedUCS();
     void removeExistingUCS(LC_UCS *ucs) const;
     QModelIndex getSelectedItemIndex() const;
-    void renameExistingUCS(QString newName, LC_UCS *ucs);
+    void renameExistingUCS(const QString& newName, LC_UCS *ucs);
     void renameExistingUCS(LC_UCS *selectedUCS);
     void updateButtonsState() const;
-    void selectUCS(LC_UCS *ucs) const;
+    void selectUCS(const LC_UCS *ucs) const;
     int getSingleSelectedRow() const;
     void restoreSingleSelectedRow(bool restoreSelectionIfPossible, int selectedRow) const;
 };
 
-#endif // LC_UCSLISTWIDGET_H
+#endif

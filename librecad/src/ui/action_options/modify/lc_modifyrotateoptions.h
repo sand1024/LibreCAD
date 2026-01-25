@@ -68,11 +68,11 @@ private:
     void setKeepOriginalsToActionAndView(bool val) const;
     void setCopiesNumberToActionAndView(int number) const;
     void setFreeAngleToActionAndView(bool val) const;
-    void setFreeRefAngleToActionAndView(bool val) const;
-    void setAbsoluteRefAngleToActionAndView(bool val) const;
+    void setFreeRefAngleToActionAndView(bool checked) const;
+    void setAbsoluteRefAngleToActionAndView(bool checked) const;
     void setTwoRotationsToActionAndView(bool val);
-    void setAngleToActionAndView(QString val);
-    void setRefPointAngleToActionAndView(QString val);
+    void setAngleToActionAndView(const QString& val);
+    void setRefPointAngleToActionAndView(const QString& val);
     void allowSecondRotationUI(bool enable) const;
 };
-#endif // LC_MODIFYROTATEOPTIONS_H
+#endif

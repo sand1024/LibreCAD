@@ -37,14 +37,13 @@ public:
     LC_EllipseArcOptions();
     ~LC_EllipseArcOptions() override;
 public slots:
-    void onDirectionChanged(bool);
+    void onDirectionChanged(bool) const;
     void languageChange() override;
 protected:
     void doSaveSettings() override;
     void doSetAction(RS_ActionInterface *a, bool update) override;
-protected:
     RS_ActionDrawEllipseAxis* m_action = nullptr;
     std::unique_ptr<Ui::LC_EllipseArcOptions> ui;
     void setReversedToActionAndView(bool reversed) const;
 };
-#endif // LC_ELLIPSEARCOPTIONS_H
+#endif

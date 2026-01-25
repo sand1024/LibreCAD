@@ -21,9 +21,10 @@
  ******************************************************************************/
 
 #include "lc_namedviewslistoptions.h"
+
 #include "rs_settings.h"
 
-LC_NamedViewsListOptions::LC_NamedViewsListOptions() {}
+LC_NamedViewsListOptions::LC_NamedViewsListOptions() = default;
 
 void LC_NamedViewsListOptions::load() {
     LC_GROUP_GUARD("Widget.ViewsList");

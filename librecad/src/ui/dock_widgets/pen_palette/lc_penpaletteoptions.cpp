@@ -22,6 +22,7 @@
 **
 **********************************************************************/
 #include "lc_penpaletteoptions.h"
+
 #include "rs_settings.h"
 #include "rs_system.h"
 /**
@@ -30,7 +31,7 @@
 void LC_PenPaletteOptions:: loadFromSettings(){
     LC_GROUP_GUARD("Widget.PenPalette");
     {
-        LC_PenPaletteOptions defaults;
+        const LC_PenPaletteOptions defaults;
         activeItemBGColor = QColor(LC_GET_STR("activeItemBgColor", defaults.activeItemBGColor.name()));
         matchedItemColor = QColor(LC_GET_STR("matchedItemBgColor", defaults.matchedItemColor.name()));
         itemsGridColor = QColor(LC_GET_STR("gridColor", defaults.itemsGridColor.name()));
@@ -51,10 +52,10 @@ void LC_PenPaletteOptions:: loadFromSettings(){
         ignoreCaseOnMatch = LC_GET_BOOL("ignoreCaseOnMatch", defaults.ignoreCaseOnMatch);
         showNoSelectionMessage = LC_GET_BOOL("showNoSelectionMessage", defaults.showNoSelectionMessage);
 
-        colorNameDisplayMode = LC_GET_INT("colorDisplayMode", defaults.colorNameDisplayMode);
+        colorNameDisplayMode = static_cast<LC_PenInfoRegistry::ColorNameDisplayMode>(LC_GET_INT("colorDisplayMode", defaults.colorNameDisplayMode));
         doubleClickOnTableMode = LC_GET_INT("doubleClickOnTableMode", defaults.doubleClickOnTableMode);
 
-        QString settingsDir = LC_GET_ONE_STR("Paths", "OtherSettingsDir", RS_System::instance()->getAppDataDir()).trimmed();
+        const QString settingsDir = LC_GET_ONE_STR("Paths", "OtherSettingsDir", RS_System::instance()->getAppDataDir()).trimmed();
         pensFileName = settingsDir + "/penpalette.lcpp";
     }
 }

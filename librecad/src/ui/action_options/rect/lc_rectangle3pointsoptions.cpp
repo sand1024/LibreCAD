@@ -20,12 +20,12 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
 #include "lc_rectangle3pointsoptions.h"
+
 #include "lc_actiondrawrectangle3points.h"
 #include "ui_lc_rectangle3pointsoptions.h"
 
 LC_Rectangle3PointsOptions::LC_Rectangle3PointsOptions() :
     LC_ActionOptionsWidgetBase(RS2::ActionDrawRectangle3Points, "Draw", "Rectangle3Points"),
-    m_action(nullptr),
     ui(new Ui::LC_Rectangle3PointsOptions){
     ui->setupUi(this);
 
@@ -58,8 +58,8 @@ void LC_Rectangle3PointsOptions::languageChange(){
     ui->retranslateUi(this);
 }
 
-void LC_Rectangle3PointsOptions::doSetAction(RS_ActionInterface *a, bool update){
-    m_action = dynamic_cast<LC_ActionDrawRectangle3Points *>(a);
+void LC_Rectangle3PointsOptions::doSetAction(RS_ActionInterface *a, const bool update){
+    m_action = static_cast<LC_ActionDrawRectangle3Points *>(a);
 
     QString angle;
     QString radius;
@@ -79,10 +79,10 @@ void LC_Rectangle3PointsOptions::doSetAction(RS_ActionInterface *a, bool update)
         cornersMode = m_action->getCornersMode();
         usePolyline = m_action->isUsePolyline();
 
-        double an = m_action->getUcsAngleDegrees();
-        double r  = m_action->getRadius();
-        double lX = m_action->getLengthX();
-        double lY = m_action->getLengthY();
+        const double an = m_action->getUcsAngleDegrees();
+        const double r  = m_action->getRadius();
+        const double lX = m_action->getLengthX();
+        const double lY = m_action->getLengthY();
 
         edges = m_action->getEdgesDrawMode();
         angle = fromDouble(an);
@@ -96,7 +96,6 @@ void LC_Rectangle3PointsOptions::doSetAction(RS_ActionInterface *a, bool update)
         fixedBaseAngle = m_action->hasBaseAngle();
     }
     else{
-  
         angle =load("Angle", "0");
         cornersMode = loadInt("Corners", 0);
         radius =load("Radius", "0.0");
@@ -109,7 +108,7 @@ void LC_Rectangle3PointsOptions::doSetAction(RS_ActionInterface *a, bool update)
         fixedInnerAngle = loadBool("QuadrangleAngleIsFixed", false);
         fixedBaseAngle = loadBool("BaseAngleIsFixed", false);
         innerAngle =load("QuadrangleFixedAngle", "90");
-        edges = loadInt("Edges", 0);        
+        edges = loadInt("Edges", 0);
     }
 
     setAngleToActionAndView(angle);
@@ -126,7 +125,7 @@ void LC_Rectangle3PointsOptions::doSetAction(RS_ActionInterface *a, bool update)
     setBaseAngleFixedToActionAndView(fixedBaseAngle);
 }
 
-void LC_Rectangle3PointsOptions::doSaveSettings(){    
+void LC_Rectangle3PointsOptions::doSaveSettings(){
     save("Angle", ui->leAngle->text());
     save("Corners", ui->cbCorners->currentIndex());
     save("Radius", ui->leRadius->text());
@@ -141,16 +140,16 @@ void LC_Rectangle3PointsOptions::doSaveSettings(){
     save("Edges", ui->cbEdges->currentIndex());
 }
 
-void LC_Rectangle3PointsOptions::onCornersIndexChanged(int index){
+void LC_Rectangle3PointsOptions::onCornersIndexChanged(const int index){
     if (m_action != nullptr){
         setCornersModeToActionAndView(index);
     }
 }
 
-void LC_Rectangle3PointsOptions::setCornersModeToActionAndView(int index) const {
+void LC_Rectangle3PointsOptions::setCornersModeToActionAndView(const int index) const {
     m_action->setCornersMode(index);
-    bool round = index == LC_AbstractActionDrawRectangle::CORNER_RADIUS;
-    bool bevel = index == LC_AbstractActionDrawRectangle::CORNER_BEVEL;
+    const bool round = index == LC_AbstractActionDrawRectangle::CORNER_RADIUS;
+    const bool bevel = index == LC_AbstractActionDrawRectangle::CORNER_BEVEL;
 
     ui->lblRadius->setVisible(round);
     ui->leRadius->setVisible(round);
@@ -164,7 +163,7 @@ void LC_Rectangle3PointsOptions::setCornersModeToActionAndView(int index) const 
     ui->leX->setVisible(bevel);
     ui->tbPickLengthX->setVisible(bevel);
 
-    bool straight = index == LC_AbstractActionDrawRectangle::CORNER_STRAIGHT || ui->cbQuadrangle->isChecked();
+    const bool straight = index == LC_AbstractActionDrawRectangle::CORNER_STRAIGHT || ui->cbQuadrangle->isChecked();
     ui->lblEdges->setVisible(straight);
     ui->cbEdges->setVisible(straight);
 
@@ -173,28 +172,28 @@ void LC_Rectangle3PointsOptions::setCornersModeToActionAndView(int index) const 
 
 void LC_Rectangle3PointsOptions::onLenYEditingFinished(){
     if (m_action != nullptr){
-        QString value = ui->leLenY->text();
+        const QString value = ui->leLenY->text();
         setLenYToActionAnView(value);
     }
 }
 
 void LC_Rectangle3PointsOptions::onLenXEditingFinished(){
     if (m_action != nullptr){
-        QString value = ui->leX->text();
+        const QString value = ui->leX->text();
         setLenXToActionAnView(value);
     }
 }
 
 void LC_Rectangle3PointsOptions::onInnerAngleEditingFinished(){
     if (m_action != nullptr){
-        QString value = ui->leInnerAngle->text();
+        const QString value = ui->leInnerAngle->text();
         setInnerAngleToActionAndView(value);
     }
 }
 
 void LC_Rectangle3PointsOptions::onRadiusEditingFinished(){
     if (m_action != nullptr){
-        QString value = ui->leRadius->text();
+        const QString value = ui->leRadius->text();
         setRadiusToActionAnView(value);
     }
 }
@@ -236,46 +235,46 @@ void LC_Rectangle3PointsOptions::setRadiusToActionAnView(const QString& value){
     }
 }
 
-void LC_Rectangle3PointsOptions::onUsePolylineClicked(bool value){
+void LC_Rectangle3PointsOptions::onUsePolylineClicked(const bool value){
     if (m_action != nullptr){
         setUsePolylineToActionAndView(value);
     }
 }
 
-void LC_Rectangle3PointsOptions::onSnapToCornerArcCenterClicked(bool value){
+void LC_Rectangle3PointsOptions::onSnapToCornerArcCenterClicked(const bool value){
     if (m_action != nullptr){
         setSnapToCornerArcCenter(value);
     }
 }
-void LC_Rectangle3PointsOptions::onQuadrangleClicked(bool value){
+void LC_Rectangle3PointsOptions::onQuadrangleClicked(const bool value){
     if (m_action != nullptr){
         setQuadrangleToActionAndView(value);
     }
 }
 
-void LC_Rectangle3PointsOptions::onInnerAngleFixedClicked(bool value){
+void LC_Rectangle3PointsOptions::onInnerAngleFixedClicked(const bool value){
     if (m_action != nullptr){
         setInnerAngleFixedToActionAndView(value);
     }
 }
 
-void LC_Rectangle3PointsOptions::onBaseAngleFixedClicked(bool value){
+void LC_Rectangle3PointsOptions::onBaseAngleFixedClicked(const bool value){
     if (m_action != nullptr){
         setBaseAngleFixedToActionAndView(value);
     }
 }
 
-void LC_Rectangle3PointsOptions::setUsePolylineToActionAndView(bool value) const {
+void LC_Rectangle3PointsOptions::setUsePolylineToActionAndView(const bool value) const {
     m_action->setUsePolyline(value);
     ui->cbPolyline->setChecked(value);
 }
 
-void LC_Rectangle3PointsOptions::setSnapToCornerArcCenter(bool value) const {
+void LC_Rectangle3PointsOptions::setSnapToCornerArcCenter(const bool value) const {
     m_action->setSnapToCornerArcCenter(value);
     ui->cbSnapRadiusCenter->setChecked(value);
 }
 
-void LC_Rectangle3PointsOptions::setQuadrangleToActionAndView(bool value){
+void LC_Rectangle3PointsOptions::setQuadrangleToActionAndView(const bool value){
     m_action->setCreateQuadrangle(value);
     ui->cbQuadrangle->setChecked(value);
     ui->frmQuad->setVisible(value);
@@ -283,14 +282,14 @@ void LC_Rectangle3PointsOptions::setQuadrangleToActionAndView(bool value){
     setCornersModeToActionAndView(ui->cbCorners->currentIndex());
 }
 
-void LC_Rectangle3PointsOptions::setInnerAngleFixedToActionAndView(bool value) const {
+void LC_Rectangle3PointsOptions::setInnerAngleFixedToActionAndView(const bool value) const {
     ui->cbFixedInnerAngle->setChecked(value);
     m_action->setInnerAngleFixed(value);
     ui->leInnerAngle->setEnabled(value);
     ui->tbPickAngleInner->setEnabled(value);
 }
 
-void LC_Rectangle3PointsOptions::setBaseAngleFixedToActionAndView(bool value) const {
+void LC_Rectangle3PointsOptions::setBaseAngleFixedToActionAndView(const bool value) const {
     ui->chkFixedBaseAngle->setChecked(value);
     m_action->setBaseAngleFixed(value);
     ui->leAngle->setEnabled(value);
@@ -305,13 +304,13 @@ void LC_Rectangle3PointsOptions::setInnerAngleToActionAndView(const QString& val
     }
 }
 
-void LC_Rectangle3PointsOptions::onEdgesIndexChanged(int index){
+void LC_Rectangle3PointsOptions::onEdgesIndexChanged(const int index){
     if (m_action != nullptr){
         setEdgesModeToActionAndView(index);
     }
 }
 
-void LC_Rectangle3PointsOptions::setEdgesModeToActionAndView(int index) const {
+void LC_Rectangle3PointsOptions::setEdgesModeToActionAndView(const int index) const {
     m_action->setEdgesDrawMode(index);
     ui->cbEdges->setCurrentIndex(index);
 }

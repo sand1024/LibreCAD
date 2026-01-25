@@ -80,18 +80,18 @@ void LC_OptionsWidgetsHolder::removeOptionsWidget(QWidget *optionsWidget) {
 }
 
 void LC_OptionsWidgetsHolder::clearActionIcon() {
-   auto i  = QIcon();
+   const auto i  = QIcon();
    m_hasActionIcon = false;
    doSetIcon(i,"");
 }
 
-void LC_OptionsWidgetsHolder::setCurrentQAction(QAction *a) {
+void LC_OptionsWidgetsHolder::setCurrentQAction(const QAction *a) {
     QIcon icon;
     QString text="";
     bool showIcon = a != nullptr && LC_GET_ONE_BOOL("Appearance", "ShowActionIconInOptions", true);
     if (showIcon) {
         // check for actions those icons should not be shown
-        auto property = a->property("_SetAsCurrentActionInView");
+        const auto property = a->property("_SetAsCurrentActionInView");
         if (property.isValid()) {
             showIcon = property.toBool();
         }
@@ -112,6 +112,6 @@ void LC_OptionsWidgetsHolder::setCurrentQAction(QAction *a) {
 }
 
 void LC_OptionsWidgetsHolder::doSetIcon(const QIcon &icon, const QString& text) const {
-    ui->lCurrentAction->setPixmap(icon.pixmap(iconSize));
+    ui->lCurrentAction->setPixmap(icon.pixmap(m_iconSize));
     ui->lCurrentAction->setToolTip(tr("Current Action:")+ " " + text);
 }

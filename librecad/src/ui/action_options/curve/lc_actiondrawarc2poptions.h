@@ -2,6 +2,7 @@
 #define LC_ACTIONDRAWARC2POPTIONS_H
 
 #include <QLabel>
+
 #include "lc_actionoptionswidget.h"
 
 namespace Ui {
@@ -32,7 +33,7 @@ private:
     int m_supportedActionType;
     QString m_optionNamePrefix;
     void updateTooltip( QLabel *label) const;
-    void setParameterToActionAndView(QString val);
+    void setParameterToActionAndView(const QString& val);
 };
 
-#endif // LC_ACTIONDRAWARC2POPTIONS_H
+#endif

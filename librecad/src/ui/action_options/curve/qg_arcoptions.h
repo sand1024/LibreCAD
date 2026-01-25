@@ -27,30 +27,33 @@
 #define QG_ARCOPTIONS_H
 
 #include<memory>
+
 #include "lc_actionoptionswidgetbase.h"
 
 class RS_ActionDrawArc;
 class RS_ActionInterface;
+
 namespace Ui {
     class Ui_ArcOptions;
 }
 
 // fixme - extend to support mode and other options (chord length and angle length)
-class QG_ArcOptions : public LC_ActionOptionsWidgetBase{
-    Q_OBJECT
-public:
+class QG_ArcOptions : public LC_ActionOptionsWidgetBase {
+    Q_OBJECT public:
     QG_ArcOptions();
     ~QG_ArcOptions() override;
+
 public slots:
     void onDirectionChanged(bool);
     void languageChange() override;
+
 protected:
     RS_ActionDrawArc* m_action = nullptr;
-	std::unique_ptr<Ui::Ui_ArcOptions> ui;
+    std::unique_ptr<Ui::Ui_ArcOptions> ui;
     void setReversedToActionAndView(bool reversed) const;
     bool checkActionRttiValid(RS2::ActionType actionType) override;
     void doSaveSettings() override;
-    void doSetAction(RS_ActionInterface *a, bool update) override;
+    void doSetAction(RS_ActionInterface* a, bool update) override;
 };
 
-#endif // QG_ARCOPTIONS_H
+#endif

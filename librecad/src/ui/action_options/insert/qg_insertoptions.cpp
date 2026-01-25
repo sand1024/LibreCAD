@@ -24,6 +24,7 @@
 **
 **********************************************************************/
 #include "qg_insertoptions.h"
+
 #include "rs_actionblocksinsert.h"
 #include "ui_qg_insertoptions.h"
 
@@ -32,8 +33,7 @@
  *  name 'name' and widget flags set to 'f'.
  */
 QG_InsertOptions::QG_InsertOptions()
-    : LC_ActionOptionsWidgetBase(RS2::ActionBlocksInsert, "Insert", "Insert")
-	, ui(new Ui::Ui_InsertOptions{}){
+    : LC_ActionOptionsWidgetBase(RS2::ActionBlocksInsert, "Insert", "Insert"), ui(new Ui::Ui_InsertOptions{}) {
     ui->setupUi(this);
     connect(ui->leAngle, &QLineEdit::editingFinished, this, &QG_InsertOptions::onAngleEditingFinished);
     connect(ui->leFactor, &QLineEdit::editingFinished, this, &QG_InsertOptions::onFactorEditingFinished);
@@ -56,8 +56,8 @@ QG_InsertOptions::~QG_InsertOptions() = default;
  *  Sets the strings of the subwidgets using the current
  *  language.
  */
-void QG_InsertOptions::languageChange(){
-	ui->retranslateUi(this);
+void QG_InsertOptions::languageChange() {
+    ui->retranslateUi(this);
 }
 
 void QG_InsertOptions::doSaveSettings() {
@@ -69,8 +69,8 @@ void QG_InsertOptions::doSaveSettings() {
     save("RowSpacing", ui->leRowSpacing->text());
 }
 
-void QG_InsertOptions::doSetAction(RS_ActionInterface *a, bool update) {
-    m_action = dynamic_cast<RS_ActionBlocksInsert*>(a);
+void QG_InsertOptions::doSetAction(RS_ActionInterface* a, const bool update) {
+    m_action = static_cast<RS_ActionBlocksInsert*>(a);
 
     QString angle;
     QString factor;
@@ -85,7 +85,8 @@ void QG_InsertOptions::doSetAction(RS_ActionInterface *a, bool update) {
         rows = m_action->getRows();
         columnSpacing = fromDouble(m_action->getColumnSpacing());
         rowSpacing = fromDouble(m_action->getRowSpacing());
-    } else {
+    }
+    else {
         angle = load("Angle", "0.0");
         factor = load("Factor", "1.0");
         columns = loadInt("Columns", 1);
@@ -103,34 +104,34 @@ void QG_InsertOptions::doSetAction(RS_ActionInterface *a, bool update) {
 
 // fixme - use proper string to double conversions
 
-void QG_InsertOptions::setRowSpacingToActionAndView(QString val) const {
+void QG_InsertOptions::setRowSpacingToActionAndView(const QString& val) const {
     ui->leRowSpacing->setText(val);
     m_action->setRowSpacing(RS_Math::eval(val));
 }
 
-void QG_InsertOptions::setColumnSpacingActionAndView(QString val) const {
+void QG_InsertOptions::setColumnSpacingActionAndView(const QString& val) const {
     ui->leColumnSpacing->setText(val);
     m_action->setColumnSpacing(RS_Math::eval(val));
 }
 
-void QG_InsertOptions::setColumnsToActionAndView(int columns) const {
+void QG_InsertOptions::setColumnsToActionAndView(const int columns) const {
     m_action->setColumns(columns);
     ui->sbColumns->setValue(columns);
 }
 
-void QG_InsertOptions::setRowsToActionAndView(int rows) const {
+void QG_InsertOptions::setRowsToActionAndView(const int rows) const {
     ui->sbRows->setValue(rows);
     m_action->setRows(rows);
 }
 
-void QG_InsertOptions::setFactorToActionAndView(QString val) {
+void QG_InsertOptions::setFactorToActionAndView(const QString& val) {
     double param;
     toDouble(val, param, 0.000001, true);
     ui->leFactor->setText(fromDouble(param));
     m_action->setFactor(param);
 }
 
-void QG_InsertOptions::setAngleToActionAndView(QString val) {
+void QG_InsertOptions::setAngleToActionAndView(const QString& val) {
     ui->leAngle->setText(val);
     double angle;
     if (toDoubleAngleDegrees(val, angle, 0, false)) {
@@ -138,11 +139,11 @@ void QG_InsertOptions::setAngleToActionAndView(QString val) {
     }
 }
 
-void QG_InsertOptions::onAngleEditingFinished(){
+void QG_InsertOptions::onAngleEditingFinished() {
     setAngleToActionAndView(ui->leAngle->text());
 }
 
-void QG_InsertOptions::onFactorEditingFinished(){
+void QG_InsertOptions::onFactorEditingFinished() {
     setFactorToActionAndView(ui->leFactor->text());
 }
 
@@ -154,10 +155,10 @@ void QG_InsertOptions::onRowSpacingEditingFinished() {
     setRowSpacingToActionAndView(ui->leRowSpacing->text());
 }
 
-void QG_InsertOptions::onRowsValueChanged([[maybe_unused]]int number) {
+void QG_InsertOptions::onRowsValueChanged([[maybe_unused]] int number) {
     setRowsToActionAndView(ui->sbRows->value());
 }
 
-void QG_InsertOptions::onColumnsValueChanged([[maybe_unused]]int number) {
+void QG_InsertOptions::onColumnsValueChanged([[maybe_unused]] int number) {
     setColumnsToActionAndView(ui->sbColumns->value());
 }

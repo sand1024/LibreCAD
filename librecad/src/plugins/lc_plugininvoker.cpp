@@ -45,7 +45,7 @@ LC_PluginInvoker::~LC_PluginInvoker() = default;
 
 void LC_PluginInvoker::loadPlugins(){
     m_loadedPluginList.clear();
-    QStringList lst = RS_SYSTEM->getDirectoryList("plugins");
+    const QStringList lst = RS_SYSTEM->getDirectoryList("plugins");
     // Keep track of plugin filenames loaded to skip duplicate plugins.
     QStringList loadedPluginFileNames;
 
@@ -59,8 +59,9 @@ void LC_PluginInvoker::loadPlugins(){
                 continue;
 #endif
 #if (defined (_WIN32) || defined (_WIN32) || defined (_WIN64))
-            if (!fileName.contains(".dll"))
+            if (!fileName.contains(".dll")) {
                 continue;
+            }
 #endif
 
             if (loadedPluginFileNames.contains(fileName)) {
@@ -68,9 +69,9 @@ void LC_PluginInvoker::loadPlugins(){
             }
             QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(fileName));
             QObject *plugin = pluginLoader.instance();
-            if (plugin) {
-                QC_PluginInterface *pluginInterface = qobject_cast<QC_PluginInterface *>(plugin);
-                if (pluginInterface) {
+            if (plugin != nullptr) {
+                auto pluginInterface = qobject_cast<QC_PluginInterface *>(plugin);
+                if (pluginInterface != nullptr) {
                     m_loadedPluginList.push_back(pluginInterface);
                     loadedPluginFileNames.push_back(fileName);
                     PluginCapabilities pluginCapabilities = pluginInterface->getCapabilities();
@@ -79,21 +80,21 @@ void LC_PluginInvoker::loadPlugins(){
                         actpl->setData(loc.menuEntryActionName);
                         connect(actpl, &QAction::triggered, this, &LC_PluginInvoker::execPlug);
                         connect(m_appWindow, &QC_ApplicationWindow::windowsChanged, actpl, &QAction::setEnabled);
-                        auto menuBar = m_appWindow -> menuBar();
+                        const auto menuBar = m_appWindow -> menuBar();
                         QMenu *atMenu = m_appWindow->findMenu("/" + loc.menuEntryPoint, menuBar->children(), "");
-                        if (atMenu) {
+                        if (atMenu != nullptr) {
                             atMenu->addAction(actpl);
                         } else {
                             QStringList treemenu = loc.menuEntryPoint.split('/', Qt::SkipEmptyParts);
                             QString currentLevel = "";
-                            QMenu *parentMenu = 0;
+                            QMenu *parentMenu = nullptr;
                             do {
                                 QString menuName = treemenu.at(0);
                                 treemenu.removeFirst();
                                 currentLevel = currentLevel + "/" + menuName;
                                 atMenu = m_appWindow->findMenu(currentLevel, menuBar->children(), "");
-                                if (atMenu == 0) {
-                                    if (parentMenu == 0) {
+                                if (atMenu == nullptr) {
+                                    if (parentMenu == nullptr) {
                                         parentMenu = menuBar->addMenu(menuName);
                                     } else {
                                         parentMenu = parentMenu->addMenu(menuName);
@@ -101,7 +102,9 @@ void LC_PluginInvoker::loadPlugins(){
                                     parentMenu->setObjectName(menuName);
                                 }
                             } while (treemenu.size() > 0);
-                            if (parentMenu) parentMenu->addAction(actpl);
+                            if (parentMenu) {
+                                parentMenu->addAction(actpl);
+                            }
                         }
                     }
                 }
@@ -117,10 +120,10 @@ void LC_PluginInvoker::loadPlugins(){
  * Execute the plugin.
  */
 void LC_PluginInvoker::execPlug() const {
-    auto *action = qobject_cast<QAction *>(sender());
-    QC_PluginInterface *plugin = qobject_cast<QC_PluginInterface *>(action->parent());
+    const auto *action = qobject_cast<QAction *>(sender());
+    auto plugin = qobject_cast<QC_PluginInterface *>(action->parent());
     //get actual drawing
-    QC_MDIWindow *w = m_appWindow->getCurrentMDIWindow();
+    const QC_MDIWindow *w = m_appWindow->getCurrentMDIWindow();
     if (w != nullptr) {
         RS_Document *currdoc = w->getDocument();
         //create document interface instance

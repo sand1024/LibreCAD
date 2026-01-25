@@ -37,7 +37,6 @@ namespace Ui {
 
 class QG_InsertOptions : public LC_ActionOptionsWidgetBase{
     Q_OBJECT
-
 public:
     QG_InsertOptions();
     ~QG_InsertOptions() override;
@@ -55,12 +54,12 @@ protected:
     void doSetAction(RS_ActionInterface *a, bool update) override;
 private:
     std::unique_ptr<Ui::Ui_InsertOptions> ui;
-    void setAngleToActionAndView(QString val);
-    void setFactorToActionAndView(QString val);
-    void setColumnSpacingActionAndView(QString val) const;
-    void setRowSpacingToActionAndView(QString val) const;
+    void setAngleToActionAndView(const QString& val);
+    void setFactorToActionAndView(const QString& val);
+    void setColumnSpacingActionAndView(const QString& val) const;
+    void setRowSpacingToActionAndView(const QString& val) const;
     void setColumnsToActionAndView(int columns) const;
     void setRowsToActionAndView(int rows) const;
 };
 
-#endif // QG_INSERTOPTIONS_H
+#endif

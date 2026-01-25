@@ -54,4 +54,4 @@ private:
     void setByTotalToActionAndView(bool val) const;
     void setDistanceSymmetricToActionAndView(bool val) const;
 };
-#endif // QG_TRIMAMOUNTOPTIONS_H
+#endif

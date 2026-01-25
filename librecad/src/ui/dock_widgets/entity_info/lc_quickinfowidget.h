@@ -41,7 +41,6 @@ namespace Ui
 class LC_QuickInfoWidget : public LC_GraphicViewAwareWidget
 {
     Q_OBJECT
-
 public:
     /**
      * current mode of widget
@@ -54,8 +53,8 @@ public:
     LC_QuickInfoWidget(QWidget *parent, QMap<QString, QAction *> map);
     ~LC_QuickInfoWidget() override;
     void setGraphicView(RS_GraphicView* view) override;
-    void processEntity(RS_Entity *en);
-    QString getEntityDescription(RS_Entity* en, RS2::EntityDescriptionLevel shortDescription) const ;
+    void processEntity(const RS_Entity* en);
+    QString getEntityDescription(const RS_Entity* en, RS2::EntityDescriptionLevel shortDescription) const ;
     void processCoordinate(const RS_Vector& point);
     void endAddingCoordinates() const;
     void updateCollectedPointsView(bool forceUpdate = false) const;
@@ -130,4 +129,4 @@ private:
     void invokeOptionsDialog();
 };
 
-#endif // LC_QUICKINFOWIDGET_H
+#endif

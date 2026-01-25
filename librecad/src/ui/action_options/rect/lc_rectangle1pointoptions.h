@@ -65,8 +65,8 @@ private:
     void setLenYToActionAnView(const QString& value);
     void setLenXToActionAnView(const QString& value);
     void setRadiusToActionAnView(const QString& value);
-    void setHeightToActionAnView(const QString& height);
-    void setWidthToActionAnView(const QString& width);
+    void setHeightToActionAnView(const QString& value);
+    void setWidthToActionAnView(const QString& value);
     void setCornersModeToActionAndView(int index) const;
     void setSnapPointModeToActionAndView(int index) const;
     void setUsePolylineToActionAndView(bool value) const;
@@ -78,4 +78,4 @@ private:
 };
 
 
-#endif // LC_RECTANGLE1POINTOPTIONS_H
+#endif

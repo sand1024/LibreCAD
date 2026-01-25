@@ -20,13 +20,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
 #include "lc_crossoptions.h"
+
 #include "lc_actiondrawcross.h"
 #include "ui_lc_crossoptions.h"
 
 LC_CrossOptions::LC_CrossOptions() :
     LC_ActionOptionsWidgetBase(RS2::ActionDrawCross, "Draw", "Cross"),
-    ui(new Ui::LC_CrossOptions),
-    m_action(nullptr) {
+    ui(new Ui::LC_CrossOptions) {
     ui->setupUi(this);
 
     connect(ui->leX, &QLineEdit::editingFinished, this, &LC_CrossOptions::onXEditingFinished);
@@ -44,8 +44,8 @@ LC_CrossOptions::~LC_CrossOptions() {
     m_action = nullptr;
 }
 
-void LC_CrossOptions::doSetAction(RS_ActionInterface* a, bool update) {
-    m_action = dynamic_cast<LC_ActionDrawCross*>(a);
+void LC_CrossOptions::doSetAction(RS_ActionInterface* a, const bool update) {
+    m_action = static_cast<LC_ActionDrawCross*>(a);
 
     QString x;
     QString y;
@@ -91,7 +91,7 @@ void LC_CrossOptions::onAngleEditingFinished() {
     setAngleToActionAndView(expr);
 }
 
-void LC_CrossOptions::onModeIndexChanged(int index) {
+void LC_CrossOptions::onModeIndexChanged(const int index) const {
     setModeToActionAndView(index);
 }
 
@@ -119,7 +119,7 @@ void LC_CrossOptions::setAngleToActionAndView(const QString& expr) {
     }
 }
 
-void LC_CrossOptions::setModeToActionAndView(int mode) const {
+void LC_CrossOptions::setModeToActionAndView(const int mode) const {
     m_action->setCrossMode(mode);
     ui->cbMode->setCurrentIndex(mode);
 }

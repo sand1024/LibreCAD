@@ -21,8 +21,9 @@
  ******************************************************************************/
 
 #include "lc_lineoptions.h"
-#include "ui_lc_lineoptions.h"
+
 #include "lc_actiondrawlinesnake.h"
+#include "ui_lc_lineoptions.h"
 
 /*
  *  Constructs a QG_LineOptions as a child of 'parent', with the
@@ -43,7 +44,7 @@ LC_LineOptions::LC_LineOptions()
     pickAngleSetup("angle", ui->tbPickAngle, ui->leAngle);
 }
 
-bool LC_LineOptions::checkActionRttiValid(RS2::ActionType actionType) {
+bool LC_LineOptions::checkActionRttiValid(const RS2::ActionType actionType) {
     return actionType == RS2::ActionDrawSnakeLine || actionType == RS2::ActionDrawSnakeLineX || actionType == RS2::ActionDrawSnakeLineY;
 }
 
@@ -53,7 +54,7 @@ bool LC_LineOptions::checkActionRttiValid(RS2::ActionType actionType) {
 LC_LineOptions::~LC_LineOptions(){
     m_action = nullptr;
     delete ui;
-};
+}
 
 /*
  *  Sets the strings of the subwidgets using the current
@@ -68,8 +69,8 @@ void LC_LineOptions::doSaveSettings(){
     save("AngleRelative", ui->cbRelAngle->isChecked());
 }
 
-void LC_LineOptions::doSetAction(RS_ActionInterface* a, bool update) {
-    m_action = dynamic_cast<LC_ActionDrawLineSnake *>(a);
+void LC_LineOptions::doSetAction(RS_ActionInterface* a, const bool update) {
+    m_action = static_cast<LC_ActionDrawLineSnake *>(a);
 
     // prevent cycle invocation
     if (m_inUpdateCycle){
@@ -85,12 +86,12 @@ void LC_LineOptions::doSetAction(RS_ActionInterface* a, bool update) {
     ui->bRedo->setEnabled(m_action->mayRedo());
     ui->bPolyline->setEnabled(m_action->mayClose());
 
-    int direction = m_action->getDirection();
+    const int direction = m_action->getDirection();
 
     ui->rbPoint->setChecked(direction == LC_AbstractActionDrawLine::DIRECTION_POINT);
     ui->rbX->setChecked(direction == LC_AbstractActionDrawLine::DIRECTION_X);
     ui->rbY->setChecked(direction == LC_AbstractActionDrawLine::DIRECTION_Y);
-    bool angleDirection = direction == LC_AbstractActionDrawLine::DIRECTION_ANGLE;
+    const bool angleDirection = direction == LC_AbstractActionDrawLine::DIRECTION_ANGLE;
 
     setupAngleRelatedUI(angleDirection);
 
@@ -107,25 +108,25 @@ void LC_LineOptions::doSetAction(RS_ActionInterface* a, bool update) {
     m_inUpdateCycle = false;
 }
 
-void LC_LineOptions::onXClicked(bool value) const {
+void LC_LineOptions::onXClicked(const bool value) const {
     if (m_action != nullptr){
         setXDirectionToActionAndView(value);
     }
 }
 
-void LC_LineOptions::onYClicked(bool value) const {
+void LC_LineOptions::onYClicked(const bool value) const {
     if (m_action != nullptr){
         setYDirectionToActionAndView(value);
     }
 }
 
-void LC_LineOptions::onPointClicked(bool value) const {
+void LC_LineOptions::onPointClicked(const bool value) const {
     if (m_action != nullptr){
         setPointDirectionToActionAndView(value);
     }
 }
 
-void LC_LineOptions::onAngleClicked(bool value) const {
+void LC_LineOptions::onAngleClicked(const bool value) const {
     if (m_action != nullptr){
         setAngleDirectionToActionAndView(value);
     }
@@ -155,7 +156,7 @@ void LC_LineOptions::polyline() const {
     }
 }
 
-void LC_LineOptions::onAngleRelativeClicked(bool value) const {
+void LC_LineOptions::onAngleRelativeClicked(const bool value) const {
     if (m_action != nullptr) {
         setAngleRelativeToActionAndView(value);
     }
@@ -173,42 +174,42 @@ void LC_LineOptions::start() const {
     }
 }
 
-void LC_LineOptions::setXDirectionToActionAndView(bool value) const {
+void LC_LineOptions::setXDirectionToActionAndView(const bool value) const {
     if (value){
         m_action->setSetXDirectionState();
     }
     ui->rbX->setChecked(value);
 }
 
-void LC_LineOptions::setYDirectionToActionAndView(bool value) const {
+void LC_LineOptions::setYDirectionToActionAndView(const bool value) const {
     if (value){
         m_action->setSetYDirectionState();
     }
     ui->rbY->setChecked(value);
 }
 
-void LC_LineOptions::setAngleDirectionToActionAndView(bool value) const {
+void LC_LineOptions::setAngleDirectionToActionAndView(const bool value) const {
     if (value){
         m_action->setSetAngleDirectionState();
     }
     setupAngleRelatedUI(value);
 }
 
-void LC_LineOptions::setupAngleRelatedUI(bool value) const {
+void LC_LineOptions::setupAngleRelatedUI(const bool value) const {
     ui->rbAngle->setChecked(value);
     ui->leAngle->setEnabled(value);
     ui->tbPickAngle->setEnabled(value);
     ui->cbRelAngle->setEnabled(value);
 }
 
-void LC_LineOptions::setPointDirectionToActionAndView(bool value) const {
+void LC_LineOptions::setPointDirectionToActionAndView(const bool value) const {
     if (value){
         m_action->setSetPointDirectionState();
     }
     ui->rbPoint->setChecked(value);
 }
 
-void LC_LineOptions::setAngleToActionAndView(const QString& val, bool affectState){
+void LC_LineOptions::setAngleToActionAndView(const QString& val, const bool affectState){
     double angle;
     if (toDoubleAngleDegrees(val, angle, 0.0, false)){
         if (affectState){
@@ -221,7 +222,7 @@ void LC_LineOptions::setAngleToActionAndView(const QString& val, bool affectStat
     }
 }
 
-void LC_LineOptions::setAngleRelativeToActionAndView(bool relative) const {
+void LC_LineOptions::setAngleRelativeToActionAndView(const bool relative) const {
     m_action->setAngleIsRelative(relative);
     ui->cbRelAngle->setChecked(relative);
 }

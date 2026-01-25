@@ -41,10 +41,10 @@ class LC_ActionGroupManager;
 class LC_MenuFactory: public QObject, public LC_AppWindowAware{
     Q_OBJECT
 public:
-    explicit LC_MenuFactory(QC_ApplicationWindow* main_win);
+    explicit LC_MenuFactory(QC_ApplicationWindow* mainWin);
     void recreateMainMenuIfNeeded(QMenuBar *menuBar);
-    void createMainMenu(QMenuBar* menu_bar);
-    void onWorkspaceMenuAboutToShow(const QList<QC_MDIWindow *> &window_list);
+    void createMainMenu(QMenuBar* menuBar);
+    void onWorkspaceMenuAboutToShow(const QList<QC_MDIWindow *> &windowList);
     QMenu* createMainWindowPopupMenu() const;
     QMenu* createGraphicViewPopupMenu(QG_GraphicView* graphicView, RS_Entity* contextEntity,
                                       const RS_Vector& contextPosition, QStringList& actionNames, bool mayInvokeDefaultMenu);
@@ -60,14 +60,14 @@ protected:
         bool expandToolsMenu = false;
         bool expandToolsTillEntity = false;
 
-        bool isDifferent(MenuOptions& other) const {
+        bool isDifferent(const MenuOptions& other) const {
             return expandToolsMenu != other.expandToolsMenu || expandToolsTillEntity != other.expandToolsTillEntity;
         }
 
-        void apply(MenuOptions &other){
+        void apply(const MenuOptions &other){
             expandToolsMenu = other.expandToolsMenu;
             expandToolsTillEntity = other.expandToolsTillEntity;
-        };
+        }
     };
 
     MenuOptions m_menuOptions;
@@ -95,17 +95,17 @@ protected:
 
     void prepareWorkspaceMenuComponents();
     void createWorkspacesListSubMenu(QMenu* parentMenu);
-    void createToolsMenu(QMenuBar *menu_bar, QList<QMenu *> &topMenuMenus);
-    void createHelpMenu(QMenuBar *menu_bar, QList<QMenu *> &topMenuMenus);
-    void createFileMenu(QMenuBar *menu_bar, QList<QMenu *> &topMenuMenus);
-    void createSettingsMenu(QMenuBar *menu_bar, QList<QMenu *> &topMenuMenus);
-    void createEditMenu(QMenuBar *menu_bar, QList<QMenu *> &topMenuMenus);
-    void createViewMenu(QMenuBar *menu_bar, QList<QMenu *> &topMenuMenus);
-    void createPluginsMenu(QMenuBar *menu_bar, QList<QMenu *> &topMenuMenus);
-    void createWorkspaceMenu(QMenuBar *menu_bar, QList<QMenu *> &topMenuMenus);
-    void findViewAndUCSToggleActions(QList<QDockWidget*> dockwidgetsList, QAction*& namedViewsToggleViewAction,
+    void createToolsMenu(QMenuBar *menuBar, QList<QMenu *> &topMenuMenus);
+    void createHelpMenu(QMenuBar *menuBar, QList<QMenu *> &topMenuMenus);
+    void createFileMenu(QMenuBar *menuBar, QList<QMenu *> &topMenuMenus);
+    void createSettingsMenu(QMenuBar *menuBar, QList<QMenu *> &topMenuMenus);
+    void createEditMenu(QMenuBar *menuBar, QList<QMenu *> &topMenuMenus);
+    void createViewMenu(QMenuBar *menuBar, QList<QMenu *> &topMenuMenus);
+    void createPluginsMenu(QMenuBar *menuBar, QList<QMenu *> &topMenuMenus);
+    void createWorkspaceMenu(QMenuBar *menuBar, QList<QMenu *> &topMenuMenus);
+    void findViewAndUCSToggleActions(QList<QDockWidget*> dockWidgetsList, QAction*& namedViewsToggleViewAction,
                                      QAction*& ucsToggleViewAction) const;
-    void doCreateMenus(QMenuBar *menu_bar, bool firstCreation);
+    void doCreateMenus(QMenuBar *menuBar, bool firstCreation);
 
     void addProxyActions(QMenu* menu, RS_Entity* entity, const RS_Vector& pos, LC_ActionContext* actionContext,
                          const std::vector<QString>& actionNames) const;
@@ -122,17 +122,17 @@ protected:
     QMenu *menu(const QString& title, const QString& name,  QMenuBar *parent, const std::vector<QString> &actionNames) const;
     QMenu *doCreateSubMenu(QMenu *parent, const QString& title, const QString& name, const char *icon, bool supportTearOff = true) const;
     QMenu *subMenu(QMenu *parent, const QString& title, const QString& name, const char *icon, const std::vector<QString> &actionNames, bool supportTearOff = true) const;
-    void createToolsMenuCombined(QMenuBar *menu_bar, QList<QMenu *> &topMenuMenus);
-    void createToolsMenuExpanded(QMenuBar *menu_bar, QList<QMenu *> &topMenuMenus) const;
-    void createGVMenuView(QMenu* ctxMenu);
-    void createGVMenuFiles(QMenu* menu) const;
+    void createToolsMenuCombined(QMenuBar *menuBar, QList<QMenu *> &topMenuMenus);
+    void createToolsMenuExpanded(QMenuBar *menuBar, QList<QMenu *> &topMenuMenus) const;
+    void createGVMenuView(QMenu* ctxMenu) const;
+    void createGVMenuFiles(QMenu* ctxMenu) const;
     void createGVMenuEntitySpecific(QMenu* contextMenu, QG_GraphicView* graphicView, RS_Entity* entity, const RS_Vector& pos);
     void createGVEditPropertiesAction(QMenu* menu, QG_GraphicView* graphicView, RS_Entity* entity);
     void createGVEditPropertiesAction(QMenu* menu, QG_GraphicView* graphicView, RS_Entity* entity, const QString &actionText);
     void createGVMenuModifyGeneral(QMenu* contextMenu, QG_GraphicView* graphicView, RS_Entity* entity, const RS_Vector& pos,
                                    LC_ActionContext* actionContext);
     void createGVMenuSelect(QMenu* ctxMenu, RS_Entity* contextEntity, const RS_Vector& contextPosition, LC_ActionContext* actionContext, bool hasSelection) const;
-    void createGVMenuRecent(QG_GraphicView* graphicView, QMenu* ctxMenu, LC_ActionContext* actionContext,
+    void createGVMenuRecent(const QG_GraphicView* graphicView, QMenu* ctxMenu, LC_ActionContext* actionContext,
                             RS_Entity* contextEntity, const RS_Vector &contextPosition, bool hasEntity) const;
 
     void createGVMenuEdit(QMenu* ctxMenu, LC_ActionContext* actionContext,RS_Entity* contextEntity, const RS_Vector &contextPosition) const;
@@ -147,4 +147,4 @@ protected:
                                             QStringList& actionNames) const;
 };
 
-#endif // LC_MENUFACTORY_H
+#endif

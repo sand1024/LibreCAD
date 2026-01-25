@@ -21,9 +21,11 @@
  * ********************************************************************************
  */
 
+#include "lc_splinepointspropertieseditingwidget.h"
+
 #include <QStandardItemModel>
 #include <lc_splinepoints.h>
-#include "lc_splinepointspropertieseditingwidget.h"
+
 #include "ui_lc_splinepointspropertieseditingwidget.h"
 
 LC_SplinePointsPropertiesEditingWidget::LC_SplinePointsPropertiesEditingWidget(QWidget *parent)
@@ -43,8 +45,8 @@ void LC_SplinePointsPropertiesEditingWidget::setEntity(RS_Entity* entity) {
     ui->cbClosed->setChecked(m_entity->isClosed());
 
     //number of control points
-    auto const& bData = m_entity->getData();
-    auto const n = bData.splinePoints.size();
+    const auto& bData = m_entity->getData();
+    const auto n = bData.splinePoints.size();
     if (n <= 2) {
         ui->rbControlPoints->setChecked(true);
         ui->rbSplinePoints->setEnabled(false);
@@ -56,21 +58,22 @@ void LC_SplinePointsPropertiesEditingWidget::setEntity(RS_Entity* entity) {
 
 void LC_SplinePointsPropertiesEditingWidget::updateEntityData() {
     //update Spline Points
-    auto model = static_cast<QStandardItemModel *>(ui->tvPoints->model());
-    size_t const n = model->rowCount();
+    const auto model = static_cast<QStandardItemModel *>(ui->tvPoints->model());
+    const size_t n = model->rowCount();
     auto &d = m_entity->getData();
 
     //update points
-    bool const useSpline = ui->rbSplinePoints->isChecked();
+    const bool useSpline = ui->rbSplinePoints->isChecked();
     auto &vps = useSpline ? d.splinePoints : d.controlPoints;
-    size_t const n0 = vps.size();
+    const size_t n0 = vps.size();
     //update points
     for (size_t i = 0; i < n; ++i) {
         auto &vp = vps.at(i < n0 ? i : n0 - 1);
-        auto const &vpx = model->item(i, 0)->text();
-        auto const &vpy = model->item(i, 1)->text();
+        const auto&vpx = model->item(i, 0)->text();
+        const auto&vpy = model->item(i, 1)->text();
 
-        RS_Vector wcsPoint = toWCSVector(vpx, vpy, vp);
+        // fixme - this will affect precision of the existing data!!! UPDATE to store only modified ones...
+        const RS_Vector wcsPoint = toWCSVector(vpx, vpy, vp, VectorModificationState::BOTH);
 
         vp.x = wcsPoint.x;
         vp.y = wcsPoint.y;
@@ -79,20 +82,20 @@ void LC_SplinePointsPropertiesEditingWidget::updateEntityData() {
 }
 
 void LC_SplinePointsPropertiesEditingWidget::updatePoints() {
-    bool const useSpline = ui->rbSplinePoints->isChecked();
+    const bool useSpline = ui->rbSplinePoints->isChecked();
 
-    auto const &bData = m_entity->getData();
-    auto const &pts = useSpline ? bData.splinePoints : bData.controlPoints;
-    auto model = new QStandardItemModel(pts.size(), 2, this);
+    const auto&bData = m_entity->getData();
+    const auto&pts = useSpline ? bData.splinePoints : bData.controlPoints;
+    const auto model = new QStandardItemModel(pts.size(), 2, this);
     model->setHorizontalHeaderLabels({"x", "y"});
 
     //set spline data
     for (size_t row = 0; row < pts.size(); ++row) {
-        auto const &vp = pts.at(row);
-        QPair<QString, QString> pair = toUIStr(vp);
+        const auto&vp = pts.at(row);
+        auto [fst, snd] = toUIStr(vp);
 
-        auto *x = new QStandardItem(pair.first);
-        auto *y = new QStandardItem(pair.second);
+        auto *x = new QStandardItem(fst);
+        auto *y = new QStandardItem(snd);
 
         model->setItem(row, 0, x);
         model->setItem(row, 1, y);

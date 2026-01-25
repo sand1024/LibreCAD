@@ -268,15 +268,31 @@ INCLUDEPATH += \
     ui/dock_widgets/property_sheet/lib/view/edit \
     ui/dock_widgets/property_sheet/lib/widgets \
     ui/dock_widgets/property_sheet/lib/widgets/sheet \
+    ui/dock_widgets/property_sheet/metaentity \
+    ui/dock_widgets/property_sheet/metaentity/entities \
     ui/dock_widgets/property_sheet/properties \
+    ui/dock_widgets/property_sheet/properties/action \
+    ui/dock_widgets/property_sheet/properties/action/view \
     ui/dock_widgets/property_sheet/properties/bool \
+    ui/dock_widgets/property_sheet/properties/bool/view \
+    ui/dock_widgets/property_sheet/properties/color \
+    ui/dock_widgets/property_sheet/properties/color/view \
     ui/dock_widgets/property_sheet/properties/double \
     ui/dock_widgets/property_sheet/properties/double/view \
     ui/dock_widgets/property_sheet/properties/enum \
+    ui/dock_widgets/property_sheet/properties/enum/view \
     ui/dock_widgets/property_sheet/properties/int \
+    ui/dock_widgets/property_sheet/properties/int/view \
+    ui/dock_widgets/property_sheet/properties/layer \
+    ui/dock_widgets/property_sheet/properties/layer/view \
+    ui/dock_widgets/property_sheet/properties/linetype \
+    ui/dock_widgets/property_sheet/properties/linetype/view \
+    ui/dock_widgets/property_sheet/properties/linewidth \
+    ui/dock_widgets/property_sheet/properties/linewidth/view \
     ui/dock_widgets/property_sheet/properties/rsvector \
     ui/dock_widgets/property_sheet/properties/rsvector/view \
     ui/dock_widgets/property_sheet/properties/string \
+    ui/dock_widgets/property_sheet/properties/string/view \
     ui/dock_widgets/views_list \
     ui/dock_widgets/ucs_list \
     ui/dock_widgets/workspaces \
@@ -289,8 +305,6 @@ INCLUDEPATH += \
     ui/main/fontviewer \
     ui/main/workspaces \
     ui/view \
-    # ui/not_used \
-    # actions/not_used \
     main \
     main/console_dxf2pdf \
     test \
@@ -360,6 +374,7 @@ HEADERS += \
     actions/drawing/pick/lc_actioninteractivepickposition.h \
     actions/drawing/selection/lc_actionselectquick.h \
     actions/drawing/selection/lc_actionsingleentityselectbase.h \
+    actions/drawing/selection/lc_actionselectgeneric.h \
     lib/actions/lc_actioninfomessagebuilder.h \
     lib/actions/lc_overlayboxaction.h \
     lib/actions/lc_undoabledocumentmodificationaction.h \
@@ -617,6 +632,7 @@ HEADERS += \
     lib/information/rs_infoarea.h \
     lib/math/lc_convert.h \
     lib/math/lc_linemath.h \
+    lib/math/lc_formatter.h \
     lib/modification/rs_modification.h \
     lib/selection/rs_selection.h \
     lib/selection/lc_selectionpredicate.h \
@@ -671,7 +687,128 @@ HEADERS += \
     ui/action_options/ellipse/lc_ellipse1pointoptions.h \
     ui/components/status_bar/lc_relzerocoordinateswidget.h \
     ui/dialogs/lc_dialog.h \
-    ui/main/lc_mdiapplicationwindow.h
+    ui/main/lc_mdiapplicationwindow.h \
+    ui/dock_widgets/property_sheet/lib/properties/lc_property.h \
+    ui/dock_widgets/property_sheet/lib/properties/lc_property_atomic.h \
+    ui/dock_widgets/property_sheet/lib/properties/lc_property_container.h \
+    ui/dock_widgets/property_sheet/lib/properties/lc_property_multi.h \
+    ui/dock_widgets/property_sheet/lib/properties/lc_property_numeric.h \
+    ui/dock_widgets/property_sheet/lib/properties/lc_property_single.h \
+    ui/dock_widgets/property_sheet/lib/properties/lc_property_structbase.h \
+    ui/dock_widgets/property_sheet/lib/properties/lc_property_utils.h \
+    ui/dock_widgets/property_sheet/lib/properties/lc_property_valuestorage.h \
+    ui/dock_widgets/property_sheet/lib/properties/lc_property_view_descriptor.h \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_event_context.h \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_edit_context.h \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view.h \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view_editable.h \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view_error.h \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view_factory.h \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view_multiple.h \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view_part.h \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view_typed.h \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view_typed_compound.h \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view_with_values.h \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view_with_value.h \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view_utils.h \
+    ui/dock_widgets/property_sheet/lib/view/lc_guardedconnectionslist.h \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_container_view.h \
+    ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_handler_base.h \
+    ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_handler.h \
+    ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_handler_value_typed.h \
+    ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_button_handler.h \
+    ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_utils.h \
+    ui/dock_widgets/property_sheet/lib/view/edit/lc_inplace_property_editing_stopper.h \
+    ui/dock_widgets/property_sheet/lib/view/edit/lc_inplace_property_editing_controller.h \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_simple_combobox_view.h \
+    ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet_model.h \
+    ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet.h \
+    ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet_widget.h \
+    ui/dock_widgets/property_sheet/lib/widgets/lc_property_double_spinbox.h \
+    ui/dock_widgets/property_sheet/lib/widgets/lc_property_lineedit_with_button.h \
+    ui/dock_widgets/property_sheet/lib/widgets/lc_multilinetexteditdialog.h \
+    ui/dock_widgets/property_sheet/lib/widgets/lc_property_label_with_button.h \
+    ui/dock_widgets/property_sheet/lib/widgets/lc_property_combobox.h \
+    ui/dock_widgets/property_sheet/properties/lc_property_view_registrator.h \
+    ui/dock_widgets/property_sheet/properties/lc_entitypropertyvaluedelegate.h \
+    ui/dock_widgets/property_sheet/properties/action/lc_property_action.h \
+    ui/dock_widgets/property_sheet/properties/action/view/lc_property_action_button_view.h \
+    ui/dock_widgets/property_sheet/properties/action/view/lc_property_action_link_view.h \
+    ui/dock_widgets/property_sheet/properties/bool/lc_property_bool.h \
+    ui/dock_widgets/property_sheet/properties/bool/view/lc_property_bool_checkbox_view.h \
+    ui/dock_widgets/property_sheet/properties/bool/view/lc_property_bool_combobox_view.h \
+    ui/dock_widgets/property_sheet/properties/bool/view/lc_property_bool_combobox_view_handler.h \
+    ui/dock_widgets/property_sheet/properties/color/lc_property_rscolor.h \
+    ui/dock_widgets/property_sheet/properties/color/view/lc_property_rscolor_combobox.h \
+    ui/dock_widgets/property_sheet/properties/color/view/lc_property_rscolor_combobox_view.h \
+    ui/dock_widgets/property_sheet/properties/double/lc_property_double.h \
+    ui/dock_widgets/property_sheet/properties/double/view/lc_property_double_spinbox_view.h \
+    ui/dock_widgets/property_sheet/properties/double/view/lc_property_double_spinbox_view_handler.h \
+    ui/dock_widgets/property_sheet/properties/double/view/lc_property_double_interactivepick_view.h \
+    ui/dock_widgets/property_sheet/properties/double/view/lc_property_double_interactivepick_view_handler.h \
+    ui/dock_widgets/property_sheet/properties/enum/lc_property_enum.h \
+    ui/dock_widgets/property_sheet/properties/enum/lc_enum_descriptor.h \
+    ui/dock_widgets/property_sheet/properties/enum/lc_enum_value_descriptor.h \
+    ui/dock_widgets/property_sheet/properties/enum/view/lc_property_enum_combobox_view.h \
+    ui/dock_widgets/property_sheet/properties/enum/view/lc_property_enum_combobox_view_handler.h \
+    ui/dock_widgets/property_sheet/properties/int/lc_property_int.h \
+    ui/dock_widgets/property_sheet/properties/int/view/lc_property_int_list_combobox_view.h \
+    ui/dock_widgets/property_sheet/properties/int/view/lc_property_int_list_combobox_view_handler.h \
+    ui/dock_widgets/property_sheet/properties/int/view/lc_property_int_spinbox_view.h \
+    ui/dock_widgets/property_sheet/properties/int/view/lc_property_int_spinbox_view_handler.h \
+    ui/dock_widgets/property_sheet/properties/layer/lc_property_layer.h \
+    ui/dock_widgets/property_sheet/properties/layer/view/lc_property_layer_combobox.h \
+    ui/dock_widgets/property_sheet/properties/layer/view/lc_property_layer_combobox_view.h \
+    ui/dock_widgets/property_sheet/properties/linetype/lc_property_linetype.h \
+    ui/dock_widgets/property_sheet/properties/linetype/view/lc_property_linetype_combobox.h \
+    ui/dock_widgets/property_sheet/properties/linetype/view/lc_property_linetype_combobox_view.h \
+    ui/dock_widgets/property_sheet/properties/linewidth/lc_property_linewidth.h \
+    ui/dock_widgets/property_sheet/properties/linewidth/view/lc_property_linewidth_combobox.h \
+    ui/dock_widgets/property_sheet/properties/linewidth/view/lc_property_linewidth_combobox_view.h \
+    ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector.h \
+    ui/dock_widgets/property_sheet/properties/rsvector/view/lc_property_rsvector_view.h \
+    ui/dock_widgets/property_sheet/properties/string/lc_property_qstring.h \
+    ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_invalid_view_base.h \
+    ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_file_view.h \
+    ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_file_view_lineedit_button_handler.h \
+    ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_font_combobox.h \
+    ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_font_combobox_view.h \
+    ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_list_combobox_view.h \
+    ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_list_combobox_view_handler.h \
+    ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_lineedit_view.h \
+    ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_lineedit_view_handler.h \
+    ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_multiline_edit_bttn_handler.h \
+    ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_list_arrows_combobox_view.h \
+    ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_list_arrows_combobox_view_handler.h \
+    ui/dock_widgets/property_sheet/lc_propertysheetwidget.h \
+    ui/dock_widgets/property_sheet/metaentity/lc_entity_property_containerprovider.h \
+    ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_indexed_propertiesprovider_base.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_multiple.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_radial.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_diametric.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_arc.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_angular.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_tolerance.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_leader.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.h
 
 SOURCES += \
     actions/dock_widgets/layer/lc_actionentitylayerbase.cpp \
@@ -711,6 +848,7 @@ SOURCES += \
     actions/drawing/pick/lc_actioninteractivepickposition.cpp \
     actions/drawing/selection/lc_actionselectquick.cpp \
     actions/drawing/selection/lc_actionsingleentityselectbase.cpp \
+    actions/drawing/selection/lc_actionselectgeneric.cpp \
     lib/actions/lc_actioninfomessagebuilder.cpp \
     lib/actions/lc_overlayboxaction.cpp \
     lib/actions/lc_undoabledocumentmodificationaction.cpp \
@@ -961,6 +1099,7 @@ SOURCES += \
     lib/math/lc_linemath.cpp \
     lib/math/rs_math.cpp \
     lib/math/lc_quadratic.cpp \
+    lib/math/lc_formatter.cpp \
     lib/modification/rs_modification.cpp \
     lib/selection/rs_selection.cpp \
     lib/selection/lc_selectionpredicate.cpp \
@@ -1161,8 +1300,7 @@ HEADERS += actions/dock_widgets/block/rs_actionblocksadd.h \
     actions/drawing/pen/lc_actionpensyncactivebylayer.h \
     actions/drawing/rel_zero/rs_actionlockrelativezero.h \
     actions/drawing/rel_zero/rs_actionsetrelativezero.h \
-    actions/drawing/rs_actiondefault.h \
-    # actions/drawing/selection/rs_actionselect.h \
+    actions/drawing/rs_actiondefault.h \    
     actions/drawing/selection/rs_actionselectall.h \
     lib/actions/rs_actionselectbase.h \
     actions/drawing/selection/rs_actionselectcontour.h \
@@ -1181,12 +1319,7 @@ HEADERS += actions/dock_widgets/block/rs_actionblocksadd.h \
     actions/drawing/zoom/rs_actionzoomredraw.h \
     actions/drawing/zoom/rs_actionzoomscroll.h \
     actions/drawing/zoom/rs_actionzoomwindow.h \
-    actions/file/lc_actionfileexportmakercam.h \
-    # actions/not_used/rs_actioneditpaste.h \
-    # actions/not_used/rs_actionmodifydeletequick.h \
-    # actions/not_used/rs_actionsetsnapmode.h \
-    # actions/not_used/rs_actionsetsnaprestriction.h \
-    # actions/not_used/rs_actionzoomautoy.h \
+    actions/file/lc_actionfileexportmakercam.h \    
     actions/options/rs_actionoptionsdrawing.h \
     actions/print_preview/rs_actionprintpreview.h
 
@@ -1331,8 +1464,7 @@ SOURCES += actions/dock_widgets/block/rs_actionblocksadd.cpp \
     actions/drawing/pen/lc_actionpensyncactivebylayer.cpp \
     actions/drawing/rel_zero/rs_actionlockrelativezero.cpp \
     actions/drawing/rel_zero/rs_actionsetrelativezero.cpp \
-    actions/drawing/rs_actiondefault.cpp \
-    # actions/drawing/selection/rs_actionselect.cpp \
+    actions/drawing/rs_actiondefault.cpp \    
     actions/drawing/selection/rs_actionselectall.cpp \
     lib/actions/rs_actionselectbase.cpp \
     actions/drawing/selection/rs_actionselectcontour.cpp \
@@ -1495,64 +1627,7 @@ HEADERS += ui/action_options/lc_actionoptionsmanager.h \
     ui/dock_widgets/pen_palette/lc_penpalettewidget.h \
     ui/dock_widgets/pen_wizard/colorcombobox.h \
     ui/dock_widgets/pen_wizard/colorwizard.h \
-    ui/dock_widgets/pen_wizard/lc_penwizard.h \
-    ui/dock_widgets/property_sheet/lib/properties/lc_property.h \
-    ui/dock_widgets/property_sheet/lib/properties/lc_propertyatomic.h \
-    ui/dock_widgets/property_sheet/lib/properties/lc_propertycontainer.h \
-    ui/dock_widgets/property_sheet/lib/properties/lc_propertymulti.h \    
-    ui/dock_widgets/property_sheet/lib/properties/lc_propertynumeric.h \
-    ui/dock_widgets/property_sheet/lib/properties/lc_propertysingle.h \
-    ui/dock_widgets/property_sheet/lib/properties/lc_propertystructbase.h \
-    ui/dock_widgets/property_sheet/lib/properties/lc_propertyutils.h \
-    ui/dock_widgets/property_sheet/lib/properties/lc_propertyvaluestorage.h \
-    ui/dock_widgets/property_sheet/lib/properties/lc_propertyviewdescriptor.h \
-    ui/dock_widgets/property_sheet/lib/view/lc_propertyeventcontext.h \
-    ui/dock_widgets/property_sheet/lib/view/lc_property_editcontext.h \
-    ui/dock_widgets/property_sheet/lib/view/lc_propertyview.h \
-    ui/dock_widgets/property_sheet/lib/view/lc_propertyvieweditable.h \
-    ui/dock_widgets/property_sheet/lib/view/lc_propertyviewerror.h \
-    ui/dock_widgets/property_sheet/lib/view/lc_propertyviewfactory.h \
-    ui/dock_widgets/property_sheet/lib/view/lc_propertyviewmultiple.h \
-    ui/dock_widgets/property_sheet/lib/view/lc_propertyviewpart.h \
-    ui/dock_widgets/property_sheet/lib/view/lc_propertyviewtyped.h \
-    ui/dock_widgets/property_sheet/lib/view/lc_propertyviewtypedcompound.h \
-    ui/dock_widgets/property_sheet/lib/view/lc_propertyviewwithvalues.h \
-    ui/dock_widgets/property_sheet/lib/view/lc_propertyviewwithvalue.h \
-    ui/dock_widgets/property_sheet/lib/view/lc_propertyviewutils.h \
-    ui/dock_widgets/property_sheet/lib/view/lc_guardedconnectionslist.h \
-    ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_propertiessheetmodel.h \
-    ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_propertiessheet.h \
-    ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_propertiessheetwidget.h \
-    ui/dock_widgets/property_sheet/lib/view/edit/lc_propertyeditorhandlerbase.h \
-    ui/dock_widgets/property_sheet/lib/view/edit/lc_propertyeditorhandler.h \
-    ui/dock_widgets/property_sheet/lib/view/edit/lc_propertyeditorhandlervaluetyped.h \
-    ui/dock_widgets/property_sheet/lib/view/edit/lc_propertyeditorbuttonhandler.h \
-    ui/dock_widgets/property_sheet/lib/view/edit/lc_propertyeditorutils.h \
-    ui/dock_widgets/property_sheet/lib/view/edit/lc_inplacepropertyeditingstopper.h \
-    ui/dock_widgets/property_sheet/lib/view/edit/lc_inplacepropertyeditingcontroller.h \
-    ui/dock_widgets/property_sheet/properties/bool/lc_propertybool.h \
-    #     ui/dock_widgets/property_sheet/properties/color/lc_propertybool.h \
-    ui/dock_widgets/property_sheet/properties/double/lc_propertydouble.h \
-    ui/dock_widgets/property_sheet/properties/enum/lc_propertyenum.h \
-    ui/dock_widgets/property_sheet/properties/enum/lc_enumdescriptor.h \
-    ui/dock_widgets/property_sheet/properties/enum/lc_enumvaluedescriptor.h \
-    ui/dock_widgets/property_sheet/properties/int/lc_propertyint.h \
-    #     ui/dock_widgets/property_sheet/properties/layer/lc_propertyint.h \
-    #     ui/dock_widgets/property_sheet/properties/linetype/lc_propertyint.h \
-    #     ui/dock_widgets/property_sheet/properties/linetype/lc_propertyint.h \
-    #     ui/dock_widgets/property_sheet/properties/linewidth/lc_propertyint.h \
-    #     ui/dock_widgets/property_sheet/properties/linewidth/lc_propertyint.h \
-    ui/dock_widgets/property_sheet/properties/string/lc_propertyqstring.h \
-    ui/dock_widgets/property_sheet/properties/lc_propertyviewregistrator.h \
-    ui/dock_widgets/property_sheet/properties/lc_entitypropertyvaluedelegate.h \
-    ui/dock_widgets/property_sheet/properties/rsvector/lc_propertyrsvector.h \
-    ui/dock_widgets/property_sheet/properties/rsvector/view/lc_propertyrsvectorview.h \
-    ui/dock_widgets/property_sheet/properties/double/lc_propertydouble.h \
-    ui/dock_widgets/property_sheet/properties/double/view/lc_propertydoublespinboxview.h \
-    ui/dock_widgets/property_sheet/properties/double/view/lc_propertydoublespinboxviewhandler.h \
-    ui/dock_widgets/property_sheet/lc_propertysheetwidget.h \
-    ui/dock_widgets/property_sheet/lib/view/lc_propertycontainerview.h \
-    ui/dock_widgets/property_sheet/lib/widgets/lc_propertydoublespinbox.h \
+    ui/dock_widgets/pen_wizard/lc_penwizard.h \    
     ui/main/init/lc_actionfactory.h \
     ui/main/init/lc_widgetfactory.h \
     ui/main/init/lc_menufactory.h \
@@ -1701,48 +1776,115 @@ SOURCES +=ui/action_options/lc_actionoptionsmanager.cpp \
     ui/dock_widgets/pen_wizard/colorwizard.cpp \
     ui/dock_widgets/pen_wizard/lc_penwizard.cpp \    
     ui/dock_widgets/property_sheet/lib/properties/lc_property.cpp \
-    ui/dock_widgets/property_sheet/lib/properties/lc_propertyatomic.cpp \
-   ui/dock_widgets/property_sheet/lib/properties/lc_propertycontainer.cpp \
-  ui/dock_widgets/property_sheet/lib/properties/lc_propertymulti.cpp \
-  ui/dock_widgets/property_sheet/lib/properties/lc_propertyutils.cpp \
-  ui/dock_widgets/property_sheet/lib/properties/lc_propertyviewdescriptor.cpp \
-  ui/dock_widgets/property_sheet/lib/view/lc_propertyeventcontext.cpp \
-  ui/dock_widgets/property_sheet/lib/view/lc_property_editcontext.cpp \
-  ui/dock_widgets/property_sheet/lib/view/lc_propertypaintcontext.cpp \
-  ui/dock_widgets/property_sheet/lib/view/lc_propertyview.cpp \
-  ui/dock_widgets/property_sheet/lib/view/lc_propertyvieweditable.cpp \
-  ui/dock_widgets/property_sheet/lib/view/lc_propertyviewerror.cpp \
-  ui/dock_widgets/property_sheet/lib/view/lc_propertyviewfactory.cpp \
-  ui/dock_widgets/property_sheet/lib/view/lc_propertyviewmultiple.cpp \
-  ui/dock_widgets/property_sheet/lib/view/lc_propertyviewpart.cpp \
-  ui/dock_widgets/property_sheet/lib/view/lc_propertyviewwithvalues.cpp \
-  ui/dock_widgets/property_sheet/lib/view/lc_propertyviewwithvalue.cpp \
-  ui/dock_widgets/property_sheet/lib/view/lc_propertyviewutils.cpp \
-  ui/dock_widgets/property_sheet/lib/view/lc_guardedconnectionslist.cpp \
-  ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_propertiessheetmodel.cpp \
-  ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_propertiessheet.cpp \
-  ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_propertiessheetwidget.cpp \
-  ui/dock_widgets/property_sheet/lib/view/edit/lc_propertyeditorhandlerbase.cpp \
-  ui/dock_widgets/property_sheet/lib/view/edit/lc_propertyeditorutils.cpp \
-  ui/dock_widgets/property_sheet/lib/view/edit/lc_inplacepropertyeditingcontroller.cpp \
-  ui/dock_widgets/property_sheet/properties/bool/lc_propertybool.cpp \
-  #  ui/dock_widgets/property_sheet/properties/color/lc_propertybool.cpp \  
-  ui/dock_widgets/property_sheet/properties/enum/lc_propertyenum.cpp \
-  ui/dock_widgets/property_sheet/properties/enum/lc_enumdescriptor.cpp \
-  ui/dock_widgets/property_sheet/properties/enum/lc_enumvaluedescriptor.cpp \
-  ui/dock_widgets/property_sheet/properties/int/lc_propertyint.cpp \
-  #  ui/dock_widgets/property_sheet/properties/layer/lc_propertyint.cpp \
-  ui/dock_widgets/property_sheet/properties/string/lc_propertyqstring.cpp \
-  ui/dock_widgets/property_sheet/properties/lc_propertyviewregistrator.cpp \  
-  ui/dock_widgets/property_sheet/properties/lc_entitypropertyvaluedelegate.cpp \
-  ui/dock_widgets/property_sheet/properties/rsvector/lc_propertyrsvector.cpp \
-  ui/dock_widgets/property_sheet/properties/rsvector/view/lc_propertyrsvectorview.cpp \
-  ui/dock_widgets/property_sheet/properties/double/lc_propertydouble.cpp \
-  ui/dock_widgets/property_sheet/properties/double/view/lc_propertydoublespinboxview.cpp \
-  ui/dock_widgets/property_sheet/properties/double/view/lc_propertydoublespinboxviewhandler.cpp \
-  ui/dock_widgets/property_sheet/lc_propertysheetwidget.cpp \
-  ui/dock_widgets/property_sheet/lib/view/lc_propertycontainerview.cpp \
-  ui/dock_widgets/property_sheet/lib/widgets/lc_propertydoublespinbox.cpp \
+    ui/dock_widgets/property_sheet/lib/properties/lc_property_atomic.cpp \
+    ui/dock_widgets/property_sheet/lib/properties/lc_property_container.cpp \
+    ui/dock_widgets/property_sheet/lib/properties/lc_property_multi.cpp \
+    ui/dock_widgets/property_sheet/lib/properties/lc_property_utils.cpp \
+    ui/dock_widgets/property_sheet/lib/properties/lc_property_view_descriptor.cpp \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_event_context.cpp \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_edit_context.cpp \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_paint_context.cpp \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view.cpp \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view_editable.cpp \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view_error.cpp \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view_factory.cpp \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view_multiple.cpp \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view_part.cpp \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view_typed_compound.h \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view_with_values.cpp \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view_with_value.cpp \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_view_utils.cpp \
+    ui/dock_widgets/property_sheet/lib/view/lc_guardedconnectionslist.cpp \
+    ui/dock_widgets/property_sheet/lib/view/lc_property_container_view.cpp \
+    ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_handler_base.cpp \
+    ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_utils.cpp \
+    ui/dock_widgets/property_sheet/lib/view/edit/lc_inplace_property_editing_controller.cpp \
+    ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet_model.cpp \
+    ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet.cpp \
+    ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet_widget.cpp \
+    ui/dock_widgets/property_sheet/lib/widgets/lc_property_double_spinbox.cpp \
+    ui/dock_widgets/property_sheet/lib/widgets/lc_property_lineedit_with_button.cpp \
+    ui/dock_widgets/property_sheet/lib/widgets/lc_multilinetexteditdialog.cpp \
+    ui/dock_widgets/property_sheet/lib/widgets/lc_property_label_with_button.cpp \
+    ui/dock_widgets/property_sheet/lib/widgets/lc_property_combobox.cpp \
+    ui/dock_widgets/property_sheet/properties/lc_property_view_registrator.cpp \
+    ui/dock_widgets/property_sheet/properties/action/lc_property_action.cpp \
+    ui/dock_widgets/property_sheet/properties/action/view/lc_property_action_button_view.cpp \
+    ui/dock_widgets/property_sheet/properties/action/view/lc_property_action_link_view.cpp \
+    ui/dock_widgets/property_sheet/properties/bool/lc_property_bool.cpp \
+    ui/dock_widgets/property_sheet/properties/bool/view/lc_property_bool_checkbox_view.cpp \
+    ui/dock_widgets/property_sheet/properties/bool/view/lc_property_bool_combobox_view.cpp \
+    ui/dock_widgets/property_sheet/properties/bool/view/lc_property_bool_combobox_view_handler.cpp \
+    ui/dock_widgets/property_sheet/properties/color/lc_property_rscolor.cpp \
+    ui/dock_widgets/property_sheet/properties/color/view/lc_property_rscolor_combobox.cpp \
+    ui/dock_widgets/property_sheet/properties/color/view/lc_property_rscolor_combobox_view.cpp \
+    ui/dock_widgets/property_sheet/properties/double/lc_property_double.cpp \
+    ui/dock_widgets/property_sheet/properties/double/view/lc_property_double_spinbox_view.cpp \
+    ui/dock_widgets/property_sheet/properties/double/view/lc_property_double_spinbox_view_handler.cpp \
+    ui/dock_widgets/property_sheet/properties/double/view/lc_property_double_interactivepick_view.cpp \
+    ui/dock_widgets/property_sheet/properties/double/view/lc_property_double_interactivepick_view_handler.cpp \
+    ui/dock_widgets/property_sheet/properties/enum/lc_property_enum.cpp \
+    ui/dock_widgets/property_sheet/properties/enum/lc_enum_descriptor.cpp \
+    ui/dock_widgets/property_sheet/properties/enum/lc_enum_value_descriptor.cpp \
+    ui/dock_widgets/property_sheet/properties/enum/view/lc_property_enum_combobox_view.cpp \
+    ui/dock_widgets/property_sheet/properties/enum/view/lc_property_enum_combobox_view_handler.cpp \
+    ui/dock_widgets/property_sheet/properties/int/lc_property_int.cpp \
+    ui/dock_widgets/property_sheet/properties/int/view/lc_property_int_list_combobox_view.cpp \
+    ui/dock_widgets/property_sheet/properties/int/view/lc_property_int_list_combobox_view_handler.cpp \
+    ui/dock_widgets/property_sheet/properties/int/view/lc_property_int_spinbox_view.cpp \
+    ui/dock_widgets/property_sheet/properties/int/view/lc_property_int_spinbox_view_handler.cpp \
+    ui/dock_widgets/property_sheet/properties/layer/lc_property_layer.cpp \
+    ui/dock_widgets/property_sheet/properties/layer/view/lc_property_layer_combobox.cpp \
+    ui/dock_widgets/property_sheet/properties/layer/view/lc_property_layer_combobox_view.cpp \
+    ui/dock_widgets/property_sheet/properties/linetype/lc_property_linetype.cpp \
+    ui/dock_widgets/property_sheet/properties/linetype/view/lc_property_linetype_combobox.cpp \
+    ui/dock_widgets/property_sheet/properties/linetype/view/lc_property_linetype_combobox_view.cpp \
+    ui/dock_widgets/property_sheet/properties/linewidth/lc_property_linewidth.cpp \
+    ui/dock_widgets/property_sheet/properties/linewidth/view/lc_property_linewidth_combobox.cpp \
+    ui/dock_widgets/property_sheet/properties/linewidth/view/lc_property_linewidth_combobox_view.cpp \
+    ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector.cpp \
+    ui/dock_widgets/property_sheet/properties/rsvector/view/lc_property_rsvector_view.cpp \
+    ui/dock_widgets/property_sheet/properties/string/lc_property_qstring.cpp \
+    ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_invalid_view_base.cpp \
+    ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_file_view.cpp \
+    ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_file_view_lineedit_button_handler.cpp \
+    ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_font_combobox.cpp \
+    ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_font_combobox_view.cpp \
+    ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_list_combobox_view.cpp \
+    ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_list_combobox_view_handler.cpp \
+    ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_lineedit_view.cpp \
+    ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_lineedit_view_handler.cpp \
+    ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_multiline_edit_bttn_handler.cpp \
+    ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_list_arrows_combobox_view.cpp \
+    ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_list_arrows_combobox_view_handler.cpp \
+    ui/dock_widgets/property_sheet/lc_propertysheetwidget.cpp \
+    ui/dock_widgets/property_sheet/metaentity/lc_entity_property_containerprovider.cpp \
+    ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_multiple.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_radial.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_diametric.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_arc.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_angular.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_tolerance.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_leader.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp \
     ui/main/init/lc_actionfactory.cpp \
     ui/main/init/lc_widgetfactory.cpp \
     ui/main/init/lc_menufactory.cpp \
@@ -1884,6 +2026,7 @@ FORMS = ui/action_options/circle/lc_circlebyarcoptions.ui \
        ui/dock_widgets/pen_palette/lc_penpalettewidget.ui \
        ui/dock_widgets/pen_wizard/colorwizard.ui \
        ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui \
+       ui/dock_widgets/property_sheet/lib/widgets/lc_multilinetexteditdialog.ui \
        ui/dock_widgets/ucs_list/lc_dlgucslistoptions.ui \
        ui/dock_widgets/ucs_list/lc_dlgucsproperties.ui \
        ui/dock_widgets/ucs_list/lc_ucslistwidget.ui \

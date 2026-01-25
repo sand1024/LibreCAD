@@ -33,12 +33,12 @@ class LC_SnapOptionsWidgetsHolder : public QWidget{
     Q_OBJECT
 public:
     explicit LC_SnapOptionsWidgetsHolder(QWidget *parent = nullptr);
-    ~LC_SnapOptionsWidgetsHolder();
-    void showSnapMiddleOptions(int* middlePoints, bool on);
-    void showSnapDistOptions(double* dist, bool on);
-    void hideSnapOptions();
-    void setLocatedOnLeft(bool value){m_widgetOnLeftWithinContainer = value;};
-    void updateBy(LC_SnapOptionsWidgetsHolder *pHolder);
+    ~LC_SnapOptionsWidgetsHolder() override;
+    void showSnapMiddleOptions(int* middlePoints, bool on) const;
+    void showSnapDistOptions(double* dist, bool on) const;
+    void hideSnapOptions() const;
+    void setLocatedOnLeft(const bool value){m_widgetOnLeftWithinContainer = value;}
+    void updateBy(const LC_SnapOptionsWidgetsHolder *other) const;
 public slots:
     void languageChange();
 private:
@@ -49,4 +49,4 @@ private:
     void updateParent() const;
 };
 
-#endif // LC_SNAPOPTIONSWIDGETSHOLDER_H
+#endif

@@ -51,7 +51,7 @@ protected:
     void doSaveSettings() override;
     void doSetAction(RS_ActionInterface *a, bool update) override;
     void setAngleToActionAndView(const QString& val);
-    void setFactorToActionAndView(const QString& qString);
+    void setFactorToActionAndView(const QString& val);
     void setDPIToActionAndView(const QString& val);
 };
-#endif // QG_IMAGEOPTIONS_H
+#endif

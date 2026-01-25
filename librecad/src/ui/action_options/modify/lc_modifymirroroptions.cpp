@@ -21,12 +21,13 @@
  ******************************************************************************/
 
 #include "lc_modifymirroroptions.h"
+
 #include "rs_actionmodifymirror.h"
 #include "ui_lc_modifymirroroptions.h"
 
 LC_ModifyMirrorOptions::LC_ModifyMirrorOptions()
     : LC_ActionOptionsWidgetBase(RS2::ActionModifyMirror,"Modify", "Mirror")
-    , ui(new Ui::LC_ModifyMirrorOptions), m_action(nullptr){
+    , ui(new Ui::LC_ModifyMirrorOptions){
     ui->setupUi(this);
 
     connect(ui->cbMirrorToLine, &QCheckBox::toggled, this, &LC_ModifyMirrorOptions::onMirrorToLineClicked);
@@ -47,12 +48,12 @@ void LC_ModifyMirrorOptions::doSaveSettings() {
     save("KeepOriginals", ui->cbKeepOriginals->isChecked());
 }
 
-void LC_ModifyMirrorOptions::onMirrorToLineClicked(bool clicked){
+void LC_ModifyMirrorOptions::onMirrorToLineClicked(const bool clicked){
     setMirrorToLineLineToActionAndView(clicked);
 }
 
-void LC_ModifyMirrorOptions::doSetAction(RS_ActionInterface *a, bool update) {
-    m_action = dynamic_cast<RS_ActionModifyMirror *>(a);
+void LC_ModifyMirrorOptions::doSetAction(RS_ActionInterface *a, const bool update) {
+    m_action = static_cast<RS_ActionModifyMirror *>(a);
     bool keepOriginals;
     bool useCurrentLayer;
     bool useCurrentAttributes;
@@ -77,7 +78,7 @@ void LC_ModifyMirrorOptions::doSetAction(RS_ActionInterface *a, bool update) {
     setMirrorToLineLineToActionAndView(useLine);
 }
 
-void LC_ModifyMirrorOptions::setMirrorToLineLineToActionAndView(bool value) const {
+void LC_ModifyMirrorOptions::setMirrorToLineLineToActionAndView(const bool value) const {
     m_action->setMirrorToExistingLine(value);
     ui->cbMirrorToLine->setChecked(value);
 }
@@ -86,29 +87,29 @@ void LC_ModifyMirrorOptions::languageChange() {
     ui->retranslateUi(this);
 }
 
-void LC_ModifyMirrorOptions::setUseCurrentLayerToActionAndView(bool val) const {
+void LC_ModifyMirrorOptions::setUseCurrentLayerToActionAndView(const bool val) const {
     m_action->setUseCurrentLayer(val);
     ui->cbLayer->setChecked(val);
 }
 
-void LC_ModifyMirrorOptions::setUseCurrentAttributesToActionAndView(bool val) const {
+void LC_ModifyMirrorOptions::setUseCurrentAttributesToActionAndView(const bool val) const {
     m_action->setUseCurrentAttributes(val);
     ui->cbCurrentAttr->setChecked(val);
 }
 
-void LC_ModifyMirrorOptions::setKeepOriginalsToActionAndView(bool val) const {
+void LC_ModifyMirrorOptions::setKeepOriginalsToActionAndView(const bool val) const {
     m_action->setKeepOriginals(val);
     ui->cbKeepOriginals->setChecked(val);
 }
 
-void LC_ModifyMirrorOptions::cbKeepOriginalsClicked(bool val) {
+void LC_ModifyMirrorOptions::cbKeepOriginalsClicked(const bool val) {
     setKeepOriginalsToActionAndView(val);
 }
 
-void LC_ModifyMirrorOptions::cbUseCurrentAttributesClicked(bool val) {
+void LC_ModifyMirrorOptions::cbUseCurrentAttributesClicked(const bool val) {
     setUseCurrentAttributesToActionAndView(val);
 }
 
-void LC_ModifyMirrorOptions::cbUseCurrentLayerClicked(bool val) {
+void LC_ModifyMirrorOptions::cbUseCurrentLayerClicked(const bool val) {
     setUseCurrentLayerToActionAndView(val);
 }

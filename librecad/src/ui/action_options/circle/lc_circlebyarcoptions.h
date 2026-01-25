@@ -43,9 +43,9 @@ protected:
     void languageChange() override;
     void doSetAction(RS_ActionInterface *a, bool update) override;
 protected slots:
-    void onReplaceClicked(bool value);
-    void onPenModeIndexChanged(int mode);
-    void onLayerModeIndexChanged(int mode);
+    void onReplaceClicked(bool value) const;
+    void onPenModeIndexChanged(int mode) const;
+    void onLayerModeIndexChanged(int mode) const;
     void onRadiusShiftEditingFinished();
 private:
     Ui::LC_CircleByArcOptions *ui = nullptr;
@@ -53,7 +53,7 @@ private:
     void setReplaceArcToActionAndView(bool value) const;
     void setPenModeToActionAndView(int mode) const;
     void setLayerModeToActionAndeView(int mode) const;
-    void setRadiusShiftToModelAndView(QString val);
+    void setRadiusShiftToModelAndView(const QString& val);
 };
 
-#endif // LC_CIRCLEBYARCOPTIONS_H
+#endif

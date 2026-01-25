@@ -58,7 +58,7 @@ protected:
     void doSaveSettings() override;
     void setCountToActionAndView(int val) const;
     void setDistanceToActionAndView(const QString &val);
-    void setTickLengthToActionAndView(const QString &qString);
+    void setTickLengthToActionAndView(const QString &val);
     void setTickAngleToActionAndView(const QString &val);
     void setTickOffsetToActionAndView(const QString &val);
     void setDrawEdgesTicksModeToActionAndView(int index) const;
@@ -69,4 +69,4 @@ protected:
     void setFixedDistanceFlagToActionAndView(bool value) const;
 };
 
-#endif // LC_SLICEDIVIDEOPTIONS_H
+#endif

@@ -21,6 +21,7 @@
  ******************************************************************************/
 
 #include "lc_pointslatticeoptions.h"
+
 #include "lc_actiondrawpointslattice.h"
 #include "ui_lc_pointslatticeoptions.h"
 
@@ -43,8 +44,8 @@ void LC_PointsLatticeOptions::doSaveSettings() {
     save("AdjustLastPoint", ui->cbAdjustLastPoint->isChecked());
 }
 
-void LC_PointsLatticeOptions::doSetAction(RS_ActionInterface *a, bool update) {
-    m_action = dynamic_cast<LC_ActionDrawPointsLattice *>(a);
+void LC_PointsLatticeOptions::doSetAction(RS_ActionInterface *a, const bool update) {
+    m_action = static_cast<LC_ActionDrawPointsLattice *>(a);
     int rows;
     int columns;
     bool adjustLastPoint;
@@ -75,17 +76,17 @@ void LC_PointsLatticeOptions::onAdjustLastPointToggled([[maybe_unused]]bool valu
     setAdjustLastPointToActionAndView(ui->cbAdjustLastPoint->isChecked());
 }
 
-void LC_PointsLatticeOptions::setAdjustLastPointToActionAndView(bool value) const {
+void LC_PointsLatticeOptions::setAdjustLastPointToActionAndView(const bool value) const {
    ui->cbAdjustLastPoint->setChecked(value);
    m_action->setAdjustLastPointToFirst(value);
 }
 
-void LC_PointsLatticeOptions::setColumnsToActionAndView(int value) const {
+void LC_PointsLatticeOptions::setColumnsToActionAndView(const int value) const {
     ui->sbNumX->setValue(value);
     m_action->setColumnPointsCount(value);
 }
 
-void LC_PointsLatticeOptions::setRowsToActionAndView(int value) const {
+void LC_PointsLatticeOptions::setRowsToActionAndView(const int value) const {
     ui->sbNumY->setValue(value);
     m_action->setRowPointsCount(value);
 }

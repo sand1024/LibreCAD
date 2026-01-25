@@ -50,9 +50,9 @@ protected:
     void doSetAction(RS_ActionInterface *a, bool update) override;
     RS_ActionModifyBevel *m_action = nullptr;
     std::unique_ptr<Ui::Ui_BevelOptions> ui;
-    void setLength1ToActionAndView(QString val);
-    void setLength2ToActionAndView(QString val);
+    void setLength1ToActionAndView(const QString& val);
+    void setLength2ToActionAndView(const QString& val);
     void setTrimToActionAndView(bool val) const;
 };
 
-#endif // QG_BEVELOPTIONS_H
+#endif

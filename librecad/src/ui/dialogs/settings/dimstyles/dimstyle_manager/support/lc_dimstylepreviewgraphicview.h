@@ -34,14 +34,14 @@ class LC_DimStylePreviewGraphicView: public QG_GraphicView{
 public:
     void updateDims();
     void refresh();
-    void setDimStyle(LC_DimStyle *dimStyle);
-    void setEntityDimStyle(LC_DimStyle* dimStyle, bool override, const QString& baseName) const;
+    void setDimStyle(LC_DimStyle *dimStyle) const;
+    void setEntityDimStyle(const LC_DimStyle* dimStyle, bool override, const QString& baseName) const;
     void setEntityPen(const RS_Pen& pen) const;
     void zoomPan() const;
-    void addDimStyle(LC_DimStyle* dim_style) const;
-    void setEntityArrowsFlipMode(bool flip_arrow1, bool flip_arrow2) const;
+    void addDimStyle(LC_DimStyle* dimStyle) const;
+    void setEntityArrowsFlipMode(bool flipArrow1, bool flipArrow2) const;
     static LC_DimStylePreviewGraphicView* init(QWidget* parent,RS_Graphic* originalGraphic, RS2::EntityType dimensionType);
-    static LC_DimStylePreviewGraphicView* init(QWidget* parent,RS_Graphic* originalGraphic, RS_Dimension* dimension);
+    static LC_DimStylePreviewGraphicView* init(QWidget* parent,RS_Graphic* originalGraphic, const RS_Dimension* dimension);
 protected:
     LC_DimStylePreviewGraphicView(QWidget* parent,LC_ActionContext* actionContext);
     ~LC_DimStylePreviewGraphicView() override;
@@ -51,7 +51,7 @@ protected:
     void mouseReleaseEvent(QMouseEvent* event) override;
     void hideNonRelevantLayers(RS2::EntityType dimType) const;
     static LC_DimStylePreviewGraphicView* createAndSetupView(QWidget* parent,
-            LC_PreviewGraphic* graphic, RS_Graphic* originalGraphic, bool showInWCS);
+            LC_PreviewGraphic* graphic, const RS_Graphic* originalGraphic, bool showInWCS);
     static void copyBlocks(RS_Graphic* originalGraphic, LC_PreviewGraphic* graphic);
 };
-#endif // LC_DIMSTYLEPREVIEWGRAPHICVIEW_H
+#endif

@@ -21,6 +21,7 @@
  ******************************************************************************/
 
 #include "lc_ellipsearcoptions.h"
+
 #include "rs_actiondrawellipseaxis.h"
 #include "ui_lc_ellipsearcoptions.h"
 
@@ -53,8 +54,8 @@ void LC_EllipseArcOptions::doSaveSettings(){
     save("Reversed",  ui->rbNeg->isChecked());
 }
 
-void LC_EllipseArcOptions::doSetAction(RS_ActionInterface *a, bool update){
-    m_action = dynamic_cast<RS_ActionDrawEllipseAxis *>(a);
+void LC_EllipseArcOptions::doSetAction(RS_ActionInterface *a, const bool update){
+    m_action = static_cast<RS_ActionDrawEllipseAxis *>(a);
     bool reversed;
     if (update){
         reversed = m_action->isReversed();
@@ -65,7 +66,7 @@ void LC_EllipseArcOptions::doSetAction(RS_ActionInterface *a, bool update){
     setReversedToActionAndView(reversed);
 }
 
-void LC_EllipseArcOptions::setReversedToActionAndView(bool reversed) const {
+void LC_EllipseArcOptions::setReversedToActionAndView(const bool reversed) const {
     ui->rbNeg->setChecked(reversed);
     m_action->setReversed(reversed);
 }
@@ -74,6 +75,6 @@ void LC_EllipseArcOptions::setReversedToActionAndView(bool reversed) const {
     data = d;
     updateDirection(false);
 }*/
-void LC_EllipseArcOptions::onDirectionChanged(bool /*pos*/){
+void LC_EllipseArcOptions::onDirectionChanged(bool /*pos*/) const {
     setReversedToActionAndView( ui->rbNeg->isChecked());
 }

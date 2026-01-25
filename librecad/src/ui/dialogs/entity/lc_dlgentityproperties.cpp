@@ -21,9 +21,10 @@
  * ********************************************************************************
  */
 
+#include "lc_dlgentityproperties.h"
+
 #include <QToolButton>
 
-#include "lc_dlgentityproperties.h"
 #include "lc_arcpropertieseditingwidget.h"
 #include "lc_circlepropertieseditingwidget.h"
 #include "lc_dlgdimension.h"
@@ -43,9 +44,10 @@
 
 class LC_Dialog;
 
-LC_DlgEntityProperties::LC_DlgEntityProperties(QWidget *parent, LC_GraphicViewport *viewport, RS_Entity* entity,
-    LC_ActionContext::InteractiveInputInfo::InputType inputType, const QString &tag, double valueOne, double valueTwo)
-    : LC_Dialog(parent, ""), ui(new Ui::LC_DlgEntityProperties){
+LC_DlgEntityProperties::LC_DlgEntityProperties(QWidget* parent, LC_GraphicViewport* viewport, RS_Entity* entity,
+                                               const LC_ActionContext::InteractiveInputInfo::InputType inputType, const QString& tag,
+                                               const double valueOne, const double valueTwo)
+    : LC_Dialog(parent, ""), ui(new Ui::LC_DlgEntityProperties) {
     ui->setupUi(this);
 
     LC_EntityPropertiesEditorWidget* primaryEditingWidget{nullptr};
@@ -53,21 +55,21 @@ LC_DlgEntityProperties::LC_DlgEntityProperties(QWidget *parent, LC_GraphicViewpo
 
     QString dlgName;
     QString windowTitle;
-    RS2::EntityType entityType = entity->rtti();
+    const RS2::EntityType entityType = entity->rtti();
 
-    prepareTypeSpecificUI(primaryEditingWidget,  secondaryEditingWidget, dlgName, windowTitle, entityType);
+    prepareTypeSpecificUI(primaryEditingWidget, secondaryEditingWidget, dlgName, windowTitle, entityType);
 
     if (primaryEditingWidget != nullptr) {
         primaryEditingWidget->setGraphicViewport(viewport);
         primaryEditingWidget->setEntity(entity);
 
-        auto placeholder = ui->frmGeomertry->parentWidget()->layout()->replaceWidget(ui->frmGeomertry, primaryEditingWidget);
+        const auto placeholder = ui->frmGeomertry->parentWidget()->layout()->replaceWidget(ui->frmGeomertry, primaryEditingWidget);
         delete placeholder;
 
         primaryEditingWidget->setupInteractiveInputWidgets();
 
-
-        connect(primaryEditingWidget, &LC_EllipsePropertiesEditingWidget::interactiveInputRequested, this, &LC_DlgEntityProperties::onInteractiveInputRequested);
+        connect(primaryEditingWidget, &LC_EllipsePropertiesEditingWidget::interactiveInputRequested, this,
+                &LC_DlgEntityProperties::onInteractiveInputRequested);
     }
     else {
         ui->frmGeomertry->setVisible(false);
@@ -76,14 +78,17 @@ LC_DlgEntityProperties::LC_DlgEntityProperties(QWidget *parent, LC_GraphicViewpo
     if (secondaryEditingWidget != nullptr) {
         secondaryEditingWidget->setGraphicViewport(viewport);
         secondaryEditingWidget->setEntity(entity);
-        auto placeholder = ui->frmBottom->parentWidget()->layout()->replaceWidget(ui->frmBottom, secondaryEditingWidget);
+        const auto placeholder = ui->frmBottom->parentWidget()->layout()->replaceWidget(ui->frmBottom, secondaryEditingWidget);
         delete placeholder;
 
         secondaryEditingWidget->setupInteractiveInputWidgets();
         if (inputType != LC_ActionContext::InteractiveInputInfo::NOTNEEDED) {
-            primaryEditingWidget->interactiveInputUpdate(inputType, tag, valueOne, valueTwo);
+            if (primaryEditingWidget != nullptr) {
+                primaryEditingWidget->interactiveInputUpdate(inputType, tag, valueOne, valueTwo);
+            }
         }
-        connect(secondaryEditingWidget, &LC_EllipsePropertiesEditingWidget::interactiveInputRequested, this, &LC_DlgEntityProperties::onInteractiveInputRequested);
+        connect(secondaryEditingWidget, &LC_EllipsePropertiesEditingWidget::interactiveInputRequested, this,
+                &LC_DlgEntityProperties::onInteractiveInputRequested);
     }
     else {
         ui->frmBottom->setVisible(false);
@@ -107,35 +112,32 @@ LC_DlgEntityProperties::LC_DlgEntityProperties(QWidget *parent, LC_GraphicViewpo
     setWindowTitle(windowTitle);
     setDialogName(dlgName);
 
-
-    bool autoRaiseButtons = LC_GET_ONE_BOOL("Widgets", "DockWidgetsFlatIcons", true);
-    QList<QToolButton *> list = findChildren<QToolButton *> ();
-    for (auto button : list) {
+    const bool autoRaiseButtons = LC_GET_ONE_BOOL("Widgets", "DockWidgetsFlatIcons", true);
+    QList<QToolButton*> list = findChildren<QToolButton*>();
+    for (const auto button : list) {
         button->setAutoRaise(autoRaiseButtons);
     }
 }
 
-LC_DlgEntityProperties::~LC_DlgEntityProperties(){
+LC_DlgEntityProperties::~LC_DlgEntityProperties() {
     delete ui;
 }
 
-
-void LC_DlgEntityProperties::onInteractiveInputRequested(LC_ActionContext::InteractiveInputInfo::InputType inputType,
-    QString tag) {
+void LC_DlgEntityProperties::onInteractiveInputRequested(const LC_ActionContext::InteractiveInputInfo::InputType inputType,
+                                                         const QString& tag) {
     m_interactiveInputRequested = inputType;
     m_inputTag = tag;
     accept();
 }
 
-
 void LC_DlgEntityProperties::setupEntityLayerAndAttributesUI(RS_Entity* entity) {
     m_entity = entity;
     RS_Graphic* graphic = m_entity->getGraphic();
-    if (graphic) {
-        ui->cbLayer->init(*(graphic->getLayerList()), false, false);
+    if (graphic != nullptr) {
+        ui->cbLayer->init(*graphic->getLayerList(), false, false);
     }
     RS_Layer* lay = m_entity->getLayer(false);
-    if (lay) {
+    if (lay != nullptr) {
         ui->cbLayer->setLayer(*lay);
     }
 
@@ -144,16 +146,15 @@ void LC_DlgEntityProperties::setupEntityLayerAndAttributesUI(RS_Entity* entity) 
     connect(ui->cbLayer, &QG_LayerBox::layerChanged, this, &LC_DlgEntityProperties::onLayerChanged);
     connect(ui->wPen, &QG_WidgetPen::penChanged, this, &LC_DlgEntityProperties::onPenChanged);
 
-    if (LC_GET_ONE_BOOL("Appearance","ShowEntityIDs", false)){
+    if (LC_GET_ONE_BOOL("Appearance", "ShowEntityIDs", false)) {
         ui->lId->setText(QString("ID: %1").arg(entity->getId()));
     }
-    else{
+    else {
         ui->lId->setVisible(false);
     }
 }
 
-
-void LC_DlgEntityProperties::onLayerChanged(RS_Layer* layer) const {
+void LC_DlgEntityProperties::onLayerChanged(RS_Layer* layer)  {
     m_entity->setLayer(layer);
 }
 
@@ -162,8 +163,8 @@ void LC_DlgEntityProperties::onPenChanged() const {
 }
 
 void LC_DlgEntityProperties::prepareTypeSpecificUI(LC_EntityPropertiesEditorWidget*& primaryWidget,
-                                                   [[maybe_unused]]LC_EntityPropertiesEditorWidget*& secondaryWidget,
-                                                   QString& dlgName, QString& windowTitle, RS2::EntityType entityType) {
+                                                   [[maybe_unused]] LC_EntityPropertiesEditorWidget*& secondaryWidget, QString& dlgName,
+                                                   QString& windowTitle, const RS2::EntityType entityType) {
     switch (entityType) {
         case RS2::EntityPoint: {
             primaryWidget = new LC_PointPropertiesEditingWidget(this);

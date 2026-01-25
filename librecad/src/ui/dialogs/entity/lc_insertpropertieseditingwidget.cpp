@@ -60,7 +60,7 @@ void LC_InsertPropertiesEditingWidget::onScaleEditingFinishedChanged() const {
     m_entity->setScale(toWCSRaw(ui->leScaleX,ui->leScaleY, m_entity->getScale()));
 }
 
-void LC_InsertPropertiesEditingWidget::onAngleEditingFinished() {
+void LC_InsertPropertiesEditingWidget::onAngleEditingFinished() const {
     m_entity->setAngle(toWCSAngle(ui->leAngle, m_entity->getAngle()));
 }
 

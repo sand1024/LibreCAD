@@ -21,12 +21,13 @@
  ******************************************************************************/
 
 #include "lc_splineexplodeoptions.h"
+
 #include "lc_actionsplineexplode.h"
 #include "ui_lc_splineexplodeoptions.h"
 
 LC_SplineExplodeOptions::LC_SplineExplodeOptions()
     : LC_ActionOptionsWidgetBase(RS2::ActionDrawSplineExplode, "Draw", "SplineExplode")
-    , ui(new Ui::LC_SplineExplodeOptions), m_action{nullptr}{
+    , ui(new Ui::LC_SplineExplodeOptions), m_segmentsCountFromDrawing{0}{
     ui->setupUi(this);
 
     connect(ui->cbKeepOriginals, &QCheckBox::toggled, this, &LC_SplineExplodeOptions::cbKeepOriginalsClicked);
@@ -50,8 +51,8 @@ void LC_SplineExplodeOptions::doSaveSettings() {
     save("KeepOriginals", ui->cbKeepOriginals->isChecked());
 }
 
-void LC_SplineExplodeOptions::doSetAction(RS_ActionInterface *a, bool update) {
-    m_action = dynamic_cast<LC_ActionSplineExplode *>(a);
+void LC_SplineExplodeOptions::doSetAction(RS_ActionInterface *a, const bool update) {
+    m_action = static_cast<LC_ActionSplineExplode *>(a);
     bool toPolyline;
     bool useCurrentLayer;
     bool useCurrentAttributes;
@@ -83,27 +84,27 @@ void LC_SplineExplodeOptions::doSetAction(RS_ActionInterface *a, bool update) {
     setUseCurrentAttributesToActionAndView(useCurrentAttributes);
 }
 
-void LC_SplineExplodeOptions::cbKeepOriginalsClicked(bool val) {
+void LC_SplineExplodeOptions::cbKeepOriginalsClicked(const bool val) {
     setKeepOriginalsToActionAndView(val);
 }
 
-void LC_SplineExplodeOptions::cbUseCurrentAttributesClicked(bool val) {
+void LC_SplineExplodeOptions::cbUseCurrentAttributesClicked(const bool val) {
     setUseCurrentAttributesToActionAndView(val);
 }
 
-void LC_SplineExplodeOptions::cbUseCurrentLayerClicked(bool val) {
+void LC_SplineExplodeOptions::cbUseCurrentLayerClicked(const bool val) {
     setUseCurrentLayerToActionAndView(val);
 }
 
-void LC_SplineExplodeOptions::cbPolylineClicked(bool val) {
+void LC_SplineExplodeOptions::cbPolylineClicked(const bool val) {
     setPolylineToActionAndView(val);
 }
 
-void LC_SplineExplodeOptions::sbSegmentsCountValueChanged(int value) {
+void LC_SplineExplodeOptions::sbSegmentsCountValueChanged(const int value) {
     setSegmentsCountValueToActionAndView(value);
 }
 
-void LC_SplineExplodeOptions::cbCustomSegmentCountClicked(bool val) {
+void LC_SplineExplodeOptions::cbCustomSegmentCountClicked(const bool val) {
     setUseCustomSegmentCount(val);
 }
 
@@ -112,22 +113,22 @@ void LC_SplineExplodeOptions::languageChange() {
     ui->retranslateUi(this);
 }
 
-void LC_SplineExplodeOptions::setKeepOriginalsToActionAndView(bool val) const {
+void LC_SplineExplodeOptions::setKeepOriginalsToActionAndView(const bool val) const {
     m_action->setKeepOriginals(val);
     ui->cbKeepOriginals->setChecked(val);
 }
 
-void LC_SplineExplodeOptions::setUseCurrentAttributesToActionAndView(bool val) const {
+void LC_SplineExplodeOptions::setUseCurrentAttributesToActionAndView(const bool val) const {
     m_action->setUseCurrentAttributes(val);
     ui->cbCurrentAttr->setChecked(val);
 }
 
-void LC_SplineExplodeOptions::setUseCurrentLayerToActionAndView(bool val) const {
+void LC_SplineExplodeOptions::setUseCurrentLayerToActionAndView(const bool val) const {
     m_action->setUseCurrentLayer(val);
     ui->cbLayer->setChecked(val);
 }
 
-void LC_SplineExplodeOptions::setUseCustomSegmentCount(bool val) const {
+void LC_SplineExplodeOptions::setUseCustomSegmentCount(const bool val) const {
     m_action->setUseCustomSegmentsCount(val);
     ui->cbCustomSegmentsCount->setChecked(val);
     ui->sbSegmentsCount->setEnabled(val);
@@ -136,12 +137,12 @@ void LC_SplineExplodeOptions::setUseCustomSegmentCount(bool val) const {
     }
 }
 
-void LC_SplineExplodeOptions::setPolylineToActionAndView(bool val) const {
+void LC_SplineExplodeOptions::setPolylineToActionAndView(const bool val) const {
     m_action->setUsePolyline(val);
     ui->cbPolyline->setChecked(val);
 }
 
-void LC_SplineExplodeOptions::setSegmentsCountValueToActionAndView(int value) const {
+void LC_SplineExplodeOptions::setSegmentsCountValueToActionAndView(const int value) const {
     m_action->setSegmentsCountValue(value);
     ui->sbSegmentsCount->setValue(value);
 }

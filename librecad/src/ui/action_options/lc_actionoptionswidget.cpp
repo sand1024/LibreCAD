@@ -35,7 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class LC_LateCompletionRequestor;
 
-LC_ActionOptionsWidget::LC_ActionOptionsWidget(QWidget *parent, Qt::WindowFlags fl) :
+LC_ActionOptionsWidget::LC_ActionOptionsWidget(QWidget *parent, const Qt::WindowFlags fl) :
     QWidget(parent, fl) {
     m_interactiveInputControlsAutoRaise = LC_GET_ONE_BOOL("Widgets", "PickValueButtonsFlatIcons", true);
     m_interactiveInputControlsVisible = LC_GET_ONE_BOOL("Defaults", "InteractiveInputEnabled", true);
@@ -59,9 +59,9 @@ void LC_ActionOptionsWidget::hideOptions(){
  * @param a action
  * @param update true if option values should be updated by the action, false - if they should be read from settings
  */
-void LC_ActionOptionsWidget::setAction(RS_ActionInterface *a, bool update){
+void LC_ActionOptionsWidget::setAction(RS_ActionInterface *a, const bool update){
     if (a != nullptr){
-        RS2::ActionType actionType = a->rtti();
+        const RS2::ActionType actionType = a->rtti();
         if (checkActionRttiValid(actionType)){
             // that should be ok for the most of the actions as most probably they will rely on the same group
             LC_GROUP(getSettingsGroupName());
@@ -107,9 +107,9 @@ void LC_ActionOptionsWidget::saveSettings(){
  * @param positiveOnly if true, positive value (via std::abs()) will be always returned, false - otherwise.
  * @return true if string was converted without errors
  */
-bool LC_ActionOptionsWidget::toDouble(const QString& strValue, double &res, double notMeaningful, bool positiveOnly){
+bool LC_ActionOptionsWidget::toDouble(const QString& strValue, double &res, const double notMeaningful, const bool positiveOnly){
     bool ok = false;
-    double x = RS_Math::eval(strValue, &ok);
+    const double x = RS_Math::eval(strValue, &ok);
     if(ok){
         res = LC_LineMath::getMeaningful(x, notMeaningful);
         if (positiveOnly){
@@ -127,8 +127,8 @@ bool LC_ActionOptionsWidget::toDouble(const QString& strValue, double &res, doub
  * @param positiveOnly if true, positive value (via std::abs()) will be always returned, false - otherwise.
  * @return true if string was converted without errors
  */
-bool LC_ActionOptionsWidget::toDoubleAngleDegrees(const QString& strValue, double &res, double notMeaningful, bool positiveOnly){
-    bool ok = LC_Convert::parseToToDoubleAngleDegrees(strValue, res, notMeaningful, positiveOnly);
+bool LC_ActionOptionsWidget::toDoubleAngleDegrees(const QString& strValue, double &res, const double notMeaningful, const bool positiveOnly){
+    const bool ok = LC_Convert::parseToToDoubleAngleDegrees(strValue, res, notMeaningful, positiveOnly);
     return ok;
 }
 
@@ -152,8 +152,8 @@ QString LC_ActionOptionsWidget::fromDouble(double value){
  * @param defaultValue default value that should be used
  * @return setting value
  */
-QString LC_ActionOptionsWidget::load(QString name, QString defaultValue){
-    QString key = getSettingsOptionNamePrefix() + name;
+QString LC_ActionOptionsWidget::load(const QString& name, const QString& defaultValue){
+    const QString key = getSettingsOptionNamePrefix() + name;
     return LC_GET_STR(key, defaultValue);
 }
 
@@ -163,34 +163,33 @@ QString LC_ActionOptionsWidget::load(QString name, QString defaultValue){
  * @param defaultValue
  * @return
  */
-int LC_ActionOptionsWidget::loadInt(QString name, int defaultValue){
-    QString key = getSettingsOptionNamePrefix() + name;
+int LC_ActionOptionsWidget::loadInt(const QString& name, const int defaultValue){
+    const QString key = getSettingsOptionNamePrefix() + name;
     return LC_GET_INT(key, defaultValue);
 }
 
-bool LC_ActionOptionsWidget::loadBool(QString name, bool defaultValue){
-    QString key = getSettingsOptionNamePrefix() + name;
+bool LC_ActionOptionsWidget::loadBool(const QString& name, const bool defaultValue){
+    const QString key = getSettingsOptionNamePrefix() + name;
     return LC_GET_INT(key, defaultValue ? 1 : 0) == 1;
 }
 
-void LC_ActionOptionsWidget::save(QString name, QString value){
-    QString key = getSettingsOptionNamePrefix() + name;
+void LC_ActionOptionsWidget::save(const QString& name, const QString& value){
+    const QString key = getSettingsOptionNamePrefix() + name;
     LC_SET(key, value);
 }
 
-void LC_ActionOptionsWidget::save(QString name, int value){
-    QString key = getSettingsOptionNamePrefix() + name;
+void LC_ActionOptionsWidget::save(const QString& name, const int value){
+    const QString key = getSettingsOptionNamePrefix() + name;
     LC_SET(key, value);
 }
 
-void LC_ActionOptionsWidget::save(QString name, bool value){
-    QString key = getSettingsOptionNamePrefix() + name;
+void LC_ActionOptionsWidget::save(const QString& name, const bool value){
+    const QString key = getSettingsOptionNamePrefix() + name;
     LC_SET(key, value ? 1 : 0);
 }
 
-void LC_ActionOptionsWidget::connectInteractiveInputButton(QToolButton* button,
-                                                           LC_ActionContext::InteractiveInputInfo::InputType
-                                                           inputType, QString tag) {
+void LC_ActionOptionsWidget::connectInteractiveInputButton(QToolButton* button, const LC_ActionContext::InteractiveInputInfo::InputType
+                                                           inputType, const QString& tag) {
     if (m_interactiveInputControlsVisible) {
         button->setVisible(true);
         button->setProperty("_interactiveInputButton", inputType);
@@ -205,7 +204,7 @@ void LC_ActionOptionsWidget::connectInteractiveInputButton(QToolButton* button,
 
 void LC_ActionOptionsWidget::requestFocusForTag(const QString& tag) const {
     auto widgets = findChildren<QWidget*>();
-    for (auto le:widgets) {
+    for (const auto le:widgets) {
         auto tagProperty = le->property("_tagHolder");
         if (tagProperty.isValid() && !tagProperty.isNull()) {
             QString editTag = tagProperty.toString();
@@ -217,24 +216,24 @@ void LC_ActionOptionsWidget::requestFocusForTag(const QString& tag) const {
     }
 }
 
-void LC_ActionOptionsWidget::pickDistanceSetup(QString tag, QToolButton* button, QLineEdit* lineedit) {
+void LC_ActionOptionsWidget::pickDistanceSetup(const QString& tag, QToolButton* button, QLineEdit* lineedit) {
     connectInteractiveInputButton(button, LC_ActionContext::InteractiveInputInfo::DISTANCE, tag);
     lineedit->setProperty("_tagHolder", tag);
 }
 
-void LC_ActionOptionsWidget::pickAngleSetup(QString tag, QToolButton* button, QLineEdit* lineedit) {
+void LC_ActionOptionsWidget::pickAngleSetup(const QString& tag, QToolButton* button, QLineEdit* editor) {
     connectInteractiveInputButton(button, LC_ActionContext::InteractiveInputInfo::ANGLE, tag);
-    lineedit->setProperty("_tagHolder", tag);
+    editor->setProperty("_tagHolder", tag);
 }
 
 void LC_ActionOptionsWidget::onInteractiveInputButtonClicked([[maybe_unused]]bool checked) const {
-    auto senderButton = dynamic_cast<QToolButton*>(sender());
+    const auto senderButton = dynamic_cast<QToolButton*>(sender());
     if (senderButton != nullptr) {
-        auto property = senderButton->property ("_interactiveInputButton");
+        const auto property = senderButton->property ("_interactiveInputButton");
         if (property.isValid()) {
-            auto inputType = static_cast<LC_ActionContext::InteractiveInputInfo::InputType>(property.toInt());
-            auto tagProperty = senderButton->property ("_interactiveInputTag");
-            QString tag = tagProperty.toString();
+            const auto inputType = static_cast<LC_ActionContext::InteractiveInputInfo::InputType>(property.toInt());
+            const auto tagProperty = senderButton->property ("_interactiveInputTag");
+            const QString tag = tagProperty.toString();
             switch (inputType) {
                 case LC_ActionContext::InteractiveInputInfo::DISTANCE:
                 case LC_ActionContext::InteractiveInputInfo::ANGLE: {

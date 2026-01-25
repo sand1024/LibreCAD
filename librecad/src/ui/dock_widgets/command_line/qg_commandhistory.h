@@ -32,18 +32,19 @@ class QAction;
  * It's a read only textedit widget.
  * \author ravas
  */
-class QG_CommandHistory : public QTextEdit{
-    Q_OBJECT
-public:
+class QG_CommandHistory : public QTextEdit {
+    Q_OBJECT public:
     explicit QG_CommandHistory(QWidget* parent);
+
 private slots:
     void mouseReleaseEvent(QMouseEvent* event) override;
-	void slotTextChanged() const;
+    void slotTextChanged() const;
+
 private:
-	/*menu item for Copy*/
+    /*menu item for Copy*/
     QAction* m_pCopy = nullptr;
-	/*menu item for Select All*/
+    /*menu item for Select All*/
     QAction* m_pSelectAll = nullptr;
 };
 
-#endif // QG_COMMANDHISTORY_H
+#endif

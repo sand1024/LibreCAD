@@ -51,4 +51,4 @@ protected:
     void updateAttributes();
 };
 
-#endif // QG_DLGPOINT_H
+#endif

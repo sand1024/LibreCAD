@@ -33,4 +33,4 @@ public slots:
     void toggleBottomToolbarArea(bool state);
 };
 
-#endif // MAINWINDOWX_H
+#endif

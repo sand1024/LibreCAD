@@ -65,7 +65,7 @@ QG_DlgOptionsGeneral::QG_DlgOptionsGeneral(QWidget *parent)
 
     // starting Qt-6.7.0, use QCheckBox::checkStateChanged
 #if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
-    auto stateChangedSignal = &QCheckBox::checkStateChanged;
+    const auto stateChangedSignal = &QCheckBox::checkStateChanged;
 #else
     auto stateChangedSignal = &QCheckBox::stateChanged;
 #endif
@@ -122,7 +122,7 @@ void QG_DlgOptionsGeneral::init(){
     QStringList languageList = RS_SYSTEM->getLanguageList();
     languageList.sort();
     languageList.prepend("en");
-    for (auto const &lang: languageList) {
+    for (const auto&lang: languageList) {
         RS_DEBUG->print("QG_DlgOptionsGeneral::init: adding %s to combobox",
                         lang.toLatin1().data());
 
@@ -161,15 +161,15 @@ void QG_DlgOptionsGeneral::init(){
         indicator_shape_combobox->setCurrentIndex(indicator_shape_type);
 
         wSnapLinesLineType->init(false, false, false);
-        RS2::LineType snapIndicatorLineType = static_cast<RS2::LineType>(LC_GET_INT("indicator_lines_line_type", RS2::DashLine2));
+        auto snapIndicatorLineType = static_cast<RS2::LineType>(LC_GET_INT("indicator_lines_line_type", RS2::DashLine2));
         wSnapLinesLineType->setLineType(snapIndicatorLineType);
 
         wOverlaySelectionLineType->init(false, false, false);
-        RS2::LineType selectionOverlayLineType = static_cast<RS2::LineType>(LC_GET_INT("selection_overlay_line_type", RS2::SolidLine));
+        auto selectionOverlayLineType = static_cast<RS2::LineType>(LC_GET_INT("selection_overlay_line_type", RS2::SolidLine));
         wOverlaySelectionLineType->setLineType(selectionOverlayLineType);
 
         wOverlaySelectionInvertedLineType->init(false, false, false);
-        RS2::LineType selectionOverlayInvertedLineType = static_cast<RS2::LineType>(LC_GET_INT("selection_overlay_inverted_line_type", RS2::SolidLine));
+        auto selectionOverlayInvertedLineType = static_cast<RS2::LineType>(LC_GET_INT("selection_overlay_inverted_line_type", RS2::SolidLine));
         wOverlaySelectionInvertedLineType->setLineType(selectionOverlayInvertedLineType);
 
         int snapIndicatorLineWidth = static_cast<RS2::LineType>(LC_GET_INT("indicator_lines_line_width", 1));
@@ -195,7 +195,7 @@ void QG_DlgOptionsGeneral::init(){
         cbDisplayRefPoints->setChecked(visualizePreviewRefPoints);
 
         bool persistDialogs = LC_GET_BOOL("PersistDialogPositions", false);
-        cbPersistentDialogs->setChecked((persistDialogs));
+        cbPersistentDialogs->setChecked(persistDialogs);
         cbPersistentDialogSizeOnly->setEnabled(persistDialogs);
 
         bool persistSizeOnly = LC_GET_BOOL("PersistDialogRestoreSizeOnly", false);
@@ -265,13 +265,13 @@ void QG_DlgOptionsGeneral::init(){
 
         wGridLinesLineType->init(false, false, false);
 
-        RS2::LineType metaGridPointsLineType = static_cast<RS2::LineType>(LC_GET_INT("metaGridPointsLineType", RS2::DotLineTiny));
+        auto metaGridPointsLineType = static_cast<RS2::LineType>(LC_GET_INT("metaGridPointsLineType", RS2::DotLineTiny));
         wMetaGridPointsLineType->setLineType(metaGridPointsLineType);
 
-        RS2::LineType metaGridLinesLineType = static_cast<RS2::LineType>(LC_GET_INT("metaGridLinesLineType", RS2::SolidLine));
+        auto metaGridLinesLineType = static_cast<RS2::LineType>(LC_GET_INT("metaGridLinesLineType", RS2::SolidLine));
         wMetaGridLinesLineType->setLineType(metaGridLinesLineType);
 
-        RS2::LineType gridLinesLineType = static_cast<RS2::LineType>(LC_GET_INT("GridLinesLineType", RS2::DotLine));
+        auto gridLinesLineType = static_cast<RS2::LineType>(LC_GET_INT("GridLinesLineType", RS2::DotLine));
         wGridLinesLineType->setLineType(gridLinesLineType);
 
         int metagridPointsWidthPx = LC_GET_INT("metaGridPointsLineWidth", 1);
@@ -483,38 +483,38 @@ void QG_DlgOptionsGeneral::init(){
     LC_GROUP_END();
 
     LC_GROUP("Colors"); {
-        initComboBox(cbBackgroundColor, LC_GET_STR("background", RS_Settings::background));
-        initComboBox(cbGridPointsColor, LC_GET_STR("grid", RS_Settings::color_meta_grid_points));
-        initComboBox(cbGridLinesColor, LC_GET_STR("gridLines", RS_Settings::color_meta_grid_lines));
-        initComboBox(cbMetaGridPointsColor, LC_GET_STR("meta_grid", RS_Settings::color_meta_grid_points));
-        initComboBox(cbMetaGridLinesColor, LC_GET_STR("meta_grid_lines", RS_Settings::color_meta_grid_lines));
-        initComboBox(cbSelectedColor, LC_GET_STR("select", RS_Settings::select));
-        initComboBox(cbHighlightedColor, LC_GET_STR("highlight", RS_Settings::select));
-        initComboBox(cbStartHandleColor, LC_GET_STR("start_handle", RS_Settings::start_handle));
-        initComboBox(cbHandleColor, LC_GET_STR("handle", RS_Settings::handle));
-        initComboBox(cbEndHandleColor, LC_GET_STR("end_handle", RS_Settings::end_handle));
-        initComboBox(cbRelativeZeroColor, LC_GET_STR("relativeZeroColor", RS_Settings::relativeZeroColor));
-        initComboBox(cbPreviewRefColor, LC_GET_STR("previewReferencesColor", RS_Settings::previewRefColor));
-        initComboBox(cbPreviewRefHighlightColor,LC_GET_STR("previewReferencesHighlightColor", RS_Settings::previewRefHighlightColor));
-        initComboBox(cb_snap_color, LC_GET_STR("snap_indicator", RS_Settings::snap_indicator));
-        initComboBox(cb_snap_lines_color, LC_GET_STR("snap_indicator_lines", RS_Settings::snap_indicator_lines));
-        initComboBox(cbAxisXColor, LC_GET_STR("grid_x_axisColor", RS_Settings::xAxisColor));
-        initComboBox(cbAxisYColor, LC_GET_STR("grid_y_axisColor", RS_Settings::yAxisColor));
+        initComboBox(cbBackgroundColor, LC_GET_STR("background", RS_Settings::BACKGROUND));
+        initComboBox(cbGridPointsColor, LC_GET_STR("grid", RS_Settings::COLOR_META_GRID_POINTS));
+        initComboBox(cbGridLinesColor, LC_GET_STR("gridLines", RS_Settings::COLOR_META_GRID_LINES));
+        initComboBox(cbMetaGridPointsColor, LC_GET_STR("meta_grid", RS_Settings::COLOR_META_GRID_POINTS));
+        initComboBox(cbMetaGridLinesColor, LC_GET_STR("meta_grid_lines", RS_Settings::COLOR_META_GRID_LINES));
+        initComboBox(cbSelectedColor, LC_GET_STR("select", RS_Settings::SELECT));
+        initComboBox(cbHighlightedColor, LC_GET_STR("highlight", RS_Settings::SELECT));
+        initComboBox(cbStartHandleColor, LC_GET_STR("start_handle", RS_Settings::START_HANDLE));
+        initComboBox(cbHandleColor, LC_GET_STR("handle", RS_Settings::HANDLE));
+        initComboBox(cbEndHandleColor, LC_GET_STR("end_handle", RS_Settings::END_HANDLE));
+        initComboBox(cbRelativeZeroColor, LC_GET_STR("relativeZeroColor", RS_Settings::RELATIVE_ZERO_COLOR));
+        initComboBox(cbPreviewRefColor, LC_GET_STR("previewReferencesColor", RS_Settings::PREVIEW_REF_COLOR));
+        initComboBox(cbPreviewRefHighlightColor,LC_GET_STR("previewReferencesHighlightColor", RS_Settings::PREVIEW_REF_HIGHLIGHT_COLOR));
+        initComboBox(cb_snap_color, LC_GET_STR("snap_indicator", RS_Settings::SNAP_INDICATOR));
+        initComboBox(cb_snap_lines_color, LC_GET_STR("snap_indicator_lines", RS_Settings::SNAP_INDICATOR_LINES));
+        initComboBox(cbAxisXColor, LC_GET_STR("grid_x_axisColor", RS_Settings::X_AXIS_COLOR));
+        initComboBox(cbAxisYColor, LC_GET_STR("grid_y_axisColor", RS_Settings::Y_AXIS_COLOR));
 
-        initComboBox(cbOverlayBoxLine, LC_GET_STR("overlay_box_line", RS_Settings::overlayBoxLine));
-        initComboBox(cbOverlayBoxFill, LC_GET_STR("overlay_box_fill", RS_Settings::overlayBoxFill));
-        initComboBox(cbOverlayBoxLineInverted, LC_GET_STR("overlay_box_line_inv", RS_Settings::overlayBoxLineInverted));
-        initComboBox(cbOverlayBoxFillInverted, LC_GET_STR("overlay_box_fill_inv", RS_Settings::overlayBoxFillInverted));
+        initComboBox(cbOverlayBoxLine, LC_GET_STR("overlay_box_line", RS_Settings::OVERLAY_BOX_LINE));
+        initComboBox(cbOverlayBoxFill, LC_GET_STR("overlay_box_fill", RS_Settings::OVERLAY_BOX_FILL));
+        initComboBox(cbOverlayBoxLineInverted, LC_GET_STR("overlay_box_line_inv", RS_Settings::OVERLAY_BOX_LINE_INVERTED));
+        initComboBox(cbOverlayBoxFillInverted, LC_GET_STR("overlay_box_fill_inv", RS_Settings::OVERLAY_BOX_FILL_INVERTED));
 
-        initComboBox(cbInfoOverlayAbsolutePositionColor, LC_GET_STR("info_overlay_absolute", RS_Settings::overlayInfoCursorAbsolutePos));
-        initComboBox(cbInfoOverlaySnapColor, LC_GET_STR("info_overlay_snap", RS_Settings::overlayInfoCursorSnap));
-        initComboBox(cbInfoOverlayCommandPromptColor, LC_GET_STR("info_overlay_prompt", RS_Settings::overlayInfoCursorCommandPrompt));
-        initComboBox(cbInfoOverlayRelativeColor, LC_GET_STR("info_overlay_relative", RS_Settings::overlayInfoCursorRelativePos));
+        initComboBox(cbInfoOverlayAbsolutePositionColor, LC_GET_STR("info_overlay_absolute", RS_Settings::OVERLAY_INFO_CURSOR_ABSOLUTE_POS));
+        initComboBox(cbInfoOverlaySnapColor, LC_GET_STR("info_overlay_snap", RS_Settings::OVERLAY_INFO_CURSOR_SNAP));
+        initComboBox(cbInfoOverlayCommandPromptColor, LC_GET_STR("info_overlay_prompt", RS_Settings::OVERLAY_INFO_CURSOR_COMMAND_PROMPT));
+        initComboBox(cbInfoOverlayRelativeColor, LC_GET_STR("info_overlay_relative", RS_Settings::OVERLAY_INFO_CURSOR_RELATIVE_POS));
 
-        initComboBox(cbDraftModeMarkerColor, LC_GET_STR("draft_mode_marker", RS_Settings::select));
+        initComboBox(cbDraftModeMarkerColor, LC_GET_STR("draft_mode_marker", RS_Settings::SELECT));
 
-        initComboBox(cbAnglesMarkColorDirection, LC_GET_STR("angles_basis_direction", RS_Settings::anglesBasisDirection));
-        initComboBox(cbAnglesMarkColorAngleRay, LC_GET_STR("angles_basis_angleray", RS_Settings::anglesBasisAngleRay));
+        initComboBox(cbAnglesMarkColorDirection, LC_GET_STR("angles_basis_direction", RS_Settings::ANGLES_BASIS_DIRECTION));
+        initComboBox(cbAnglesMarkColorAngleRay, LC_GET_STR("angles_basis_angleray", RS_Settings::ANGLES_BASIS_ANGLE_RAY));
 
         int overlayTransparency = LC_GET_INT("overlay_box_transparency", 90);
         sbOverlayBoxTransparency->setValue(overlayTransparency);
@@ -535,8 +535,9 @@ void QG_DlgOptionsGeneral::init(){
 
     // units:
     for (int i = RS2::None; i < RS2::LastUnit; i++) {
-        if (i != (int) RS2::None)
-            cbUnit->addItem(RS_Units::unitToString((RS2::Unit) i));
+        if (i != static_cast<int>(RS2::None)) {
+            cbUnit->addItem(RS_Units::unitToString(static_cast<RS2::Unit>(i)));
+        }
     }
     // RVT_PORT cbUnit->listBox()->sort();
     cbUnit->insertItem(0, RS_Units::unitToString(RS2::None));
@@ -683,12 +684,12 @@ void QG_DlgOptionsGeneral::setRestartNeeded(){
 void QG_DlgOptionsGeneral::setTemplateFile(){
     RS2::FormatType type = RS2::FormatDXFRW;
     QG_FileDialog dlg(this);
-    QString fileName = dlg.getOpenFile(&type);
+    const QString fileName = dlg.getOpenFile(&type);
     leTemplate->setText(fileName);
 }
 
 void QG_DlgOptionsGeneral::ok(){
-    if (RS_Settings::save_is_allowed) {
+    if (RS_Settings::saveIsAllowed) {
         //RS_SYSTEM->loadTranslation(cbLanguage->currentText());
         LC_GROUP("Appearance"); {
             LC_SET("ScaleGrid", cbScaleGrid->isChecked());
@@ -698,7 +699,7 @@ void QG_DlgOptionsGeneral::ok(){
             LC_SET("VisualizePreviewRefPoints", cbDisplayRefPoints->isChecked());
             LC_SET("MinGridSpacing", cbMinGridSpacing->currentText());
             LC_SET("MaxPreview", cbMaxPreview->currentText());
-            int langGuiIdx = cbLanguage->currentIndex();
+            const int langGuiIdx = cbLanguage->currentIndex();
             if (langGuiIdx != m_initialLanguageGUIIdx) {
                 setRestartNeeded();
             }
@@ -731,7 +732,7 @@ void QG_DlgOptionsGeneral::ok(){
             LC_SET("ZeroShortAxisMarkSize", sbAxisSize->value());
             if (LC_SET("AllowMenusTearOff", cbAllowMenusDetaching->isChecked())){
                 setRestartNeeded();
-            };
+            }
 
             LC_SET("metaGridDraw", cbDrawMetaGrid->isChecked());
             LC_SET("GridDraw", cbDrawGrid->isChecked());
@@ -746,8 +747,8 @@ void QG_DlgOptionsGeneral::ok(){
             LC_SET("GridDisableWithinPan", cbDisableGridOnPanning->isChecked());
             LC_SET("GridDrawIsoVerticalForTop", cbDrawVerticalForIsoTop->isChecked());
 
-            double zoomFactor = sbDefaultZoomFactor->value();
-            int zoomFactor1000 = (int) (zoomFactor * 1000.0);
+            const double zoomFactor = sbDefaultZoomFactor->value();
+            const int zoomFactor1000 = static_cast<int>(zoomFactor * 1000.0);
             LC_SET("ScrollZoomFactor", zoomFactor1000);
             LC_SET("IgnoreDraftForHighlight", cbHighlightWIthLinewidthInDraft->isChecked());
 
@@ -779,9 +780,9 @@ void QG_DlgOptionsGeneral::ok(){
         LC_GROUP_END();
 
         LC_GROUP("Snap"); {
-            LC_SET("AdvSnapOnEntitySwitchToFreeDistance", (int) (sbFreeSnapSwitchDistance->value() * 100));
+            LC_SET("AdvSnapOnEntitySwitchToFreeDistance", static_cast<int>(sbFreeSnapSwitchDistance->value() * 100));
             LC_SET("AdvSnapEntityCatchRange", sbCatchEntitySnapDistance->value());
-            LC_SET("AdvSnapGridCellSnapFactor", (int) (sbMinGridCellSnapFactor->value() * 100));
+            LC_SET("AdvSnapGridCellSnapFactor", static_cast<int>(sbMinGridCellSnapFactor->value() * 100));
         }
         LC_GROUP_END();
 
@@ -806,11 +807,11 @@ void QG_DlgOptionsGeneral::ok(){
 
         LC_GROUP("Render"); {
             LC_SET("MinRenderableTextHeightPx", sbTextMinHeight->value());
-            LC_SET("MinArcRadius", (int) (sbRenderMinArcRadius->value() * 100));
-            LC_SET("MinCircleRadius", (int) (sbRenderMinCircleRadius->value() * 100));
-            LC_SET("MinLineLen", (int) (sbRenderMinLineLen->value() * 100));
-            LC_SET("MinEllipseMajor", (int) (sbRenderMinEllipseMajor->value() * 100));
-            LC_SET("MinEllipseMinor", (int) (sbRenderMinEllipseMinor->value() * 100));
+            LC_SET("MinArcRadius", static_cast<int>(sbRenderMinArcRadius->value() * 100));
+            LC_SET("MinCircleRadius", static_cast<int>(sbRenderMinCircleRadius->value() * 100));
+            LC_SET("MinLineLen", static_cast<int>(sbRenderMinLineLen->value() * 100));
+            LC_SET("MinEllipseMajor", static_cast<int>(sbRenderMinEllipseMajor->value() * 100));
+            LC_SET("MinEllipseMinor", static_cast<int>(sbRenderMinEllipseMinor->value() * 100));
             LC_SET("DrawTextsAsDraftInPanning", cbTextDraftOnPanning->isChecked());
             LC_SET("DrawTextsAsDraftInPreview", cbTextDraftInPreview->isChecked());
 
@@ -877,10 +878,10 @@ void QG_DlgOptionsGeneral::ok(){
             LC_SET("AutoSaveTime", cbAutoSaveTime->value());
             LC_SET("AutoBackupDocument", cbAutoBackup->isChecked());
 
-            QString autosaveFileNamePrefix = cbAutoSaveFileNamePrefix->currentText();
+            const QString autosaveFileNamePrefix = cbAutoSaveFileNamePrefix->currentText();
             LC_SET("AutosaveFilePrefix", autosaveFileNamePrefix);
 
-            QString backupFileNameSuffix = cbBackupFileSuffix->currentText();
+            const QString backupFileNameSuffix = cbBackupFileSuffix->currentText();
             LC_SET("BackupFileSuffix", backupFileNameSuffix);
 
             LC_SET("UseQtFileOpenDialog", cbUseQtFileOpenDialog->isChecked());
@@ -890,7 +891,7 @@ void QG_DlgOptionsGeneral::ok(){
             LC_SET("AngleSnapStep", cbAngleSnapStep->currentIndex());
             LC_SET("GridOffForNewDrawing", cbNewDrawingGridOff->isChecked());
 
-            bool defaultIsometricGrid = !rbGridOrtho->isChecked();
+            const bool defaultIsometricGrid = !rbGridOrtho->isChecked();
             LC_SET("IsometricGrid", defaultIsometricGrid);
             if (defaultIsometricGrid) {
                 int defaultIsoView;
@@ -977,12 +978,12 @@ void QG_DlgOptionsGeneral::ok(){
 }
 
 bool QG_DlgOptionsGeneral::checkRestartNeeded() const {
-    bool result = m_originalLibraryPath != lePathLibrary->text().trimmed() ||
+    const bool result = m_originalLibraryPath != lePathLibrary->text().trimmed() ||
                   m_restartNeeded;
     return result;
 }
 
-void QG_DlgOptionsGeneral::on_tabWidget_currentChanged(int index){
+void QG_DlgOptionsGeneral::on_tabWidget_currentChanged(const int index){
     m_currentTab = index;
 }
 
@@ -999,135 +1000,134 @@ void QG_DlgOptionsGeneral::set_color(QComboBox *combo, QColor custom){
 }
 
 void QG_DlgOptionsGeneral::on_pb_background_clicked(){
-    set_color(cbBackgroundColor, QColor(RS_Settings::background));
+    set_color(cbBackgroundColor, QColor(RS_Settings::BACKGROUND));
 }
 
 void QG_DlgOptionsGeneral::on_pb_gridPoints_clicked(){
-    set_color(cbGridPointsColor, QColor(RS_Settings::color_meta_grid_points));
+    set_color(cbGridPointsColor, QColor(RS_Settings::COLOR_META_GRID_POINTS));
 }
 
 void QG_DlgOptionsGeneral::on_pb_gridLines_clicked(){
-    set_color(cbGridLinesColor, QColor(RS_Settings::color_meta_grid_lines));
+    set_color(cbGridLinesColor, QColor(RS_Settings::COLOR_META_GRID_LINES));
 }
 
 void QG_DlgOptionsGeneral::on_pb_metaPoints_clicked(){
-    set_color(cbMetaGridPointsColor, QColor(RS_Settings::color_meta_grid_points));
+    set_color(cbMetaGridPointsColor, QColor(RS_Settings::COLOR_META_GRID_POINTS));
 }
 
 void QG_DlgOptionsGeneral::on_pb_metaLines_clicked(){
-    set_color(cbMetaGridLinesColor, QColor(RS_Settings::color_meta_grid_lines));
+    set_color(cbMetaGridLinesColor, QColor(RS_Settings::COLOR_META_GRID_LINES));
 }
 
 void QG_DlgOptionsGeneral::on_pb_selected_clicked(){
-    set_color(cbSelectedColor, QColor(RS_Settings::select));
+    set_color(cbSelectedColor, QColor(RS_Settings::SELECT));
 }
 
 void QG_DlgOptionsGeneral::on_pb_highlighted_clicked(){
-    set_color(cbHighlightedColor, QColor(RS_Settings::highlight));
+    set_color(cbHighlightedColor, QColor(RS_Settings::HIGHLIGHT));
 }
 
 void QG_DlgOptionsGeneral::on_pb_start_clicked(){
-    set_color(cbStartHandleColor, QColor(RS_Settings::start_handle));
+    set_color(cbStartHandleColor, QColor(RS_Settings::START_HANDLE));
 }
 
 void QG_DlgOptionsGeneral::on_pb_handle_clicked(){
-    set_color(cbHandleColor, QColor(RS_Settings::handle));
+    set_color(cbHandleColor, QColor(RS_Settings::HANDLE));
 }
 
 void QG_DlgOptionsGeneral::on_pb_end_clicked(){
-    set_color(cbEndHandleColor, QColor(RS_Settings::end_handle));
+    set_color(cbEndHandleColor, QColor(RS_Settings::END_HANDLE));
 }
 
 void QG_DlgOptionsGeneral::on_pb_snap_color_clicked(){
-    set_color(cb_snap_color, QColor(RS_Settings::snap_indicator));
+    set_color(cb_snap_color, QColor(RS_Settings::SNAP_INDICATOR));
 }
 
 void QG_DlgOptionsGeneral::on_pb_snap_lines_color_clicked(){
-    set_color(cb_snap_lines_color, QColor(RS_Settings::snap_indicator_lines));
+    set_color(cb_snap_lines_color, QColor(RS_Settings::SNAP_INDICATOR_LINES));
 }
 
 void QG_DlgOptionsGeneral::on_pb_relativeZeroColor_clicked(){
-    set_color(cbRelativeZeroColor, QColor(RS_Settings::relativeZeroColor));
+    set_color(cbRelativeZeroColor, QColor(RS_Settings::RELATIVE_ZERO_COLOR));
 }
 
 void QG_DlgOptionsGeneral::on_pb_previewRefColor_clicked(){
-    set_color(cbPreviewRefColor, QColor(RS_Settings::previewRefColor));
+    set_color(cbPreviewRefColor, QColor(RS_Settings::PREVIEW_REF_COLOR));
 }
 
 void QG_DlgOptionsGeneral::on_pb_previewRefHighlightColor_clicked(){
-    set_color(cbPreviewRefHighlightColor, QColor(RS_Settings::previewRefHighlightColor));
+    set_color(cbPreviewRefHighlightColor, QColor(RS_Settings::PREVIEW_REF_HIGHLIGHT_COLOR));
 }
 
 void QG_DlgOptionsGeneral::on_pb_axis_X_clicked(){
-    set_color(cbAxisXColor, QColor(RS_Settings::xAxisColor));
+    set_color(cbAxisXColor, QColor(RS_Settings::X_AXIS_COLOR));
 }
 
 void QG_DlgOptionsGeneral::on_pb_axis_Y_clicked(){
-    set_color(cbAxisYColor, QColor(RS_Settings::yAxisColor));
+    set_color(cbAxisYColor, QColor(RS_Settings::Y_AXIS_COLOR));
 }
 
 void QG_DlgOptionsGeneral::on_pbOverlayBoxLine_clicked(){
-    set_color(cbOverlayBoxLine, QColor(RS_Settings::overlayBoxLine));
+    set_color(cbOverlayBoxLine, QColor(RS_Settings::OVERLAY_BOX_LINE));
 }
 
 void QG_DlgOptionsGeneral::on_pbOverlayBoxFill_clicked(){
-    set_color(cbOverlayBoxFill, QColor(RS_Settings::overlayBoxFill));
+    set_color(cbOverlayBoxFill, QColor(RS_Settings::OVERLAY_BOX_FILL));
 }
 
 void QG_DlgOptionsGeneral::on_pbOverlayBoxLineInverted_clicked(){
-    set_color(cbOverlayBoxLineInverted, QColor(RS_Settings::overlayBoxLineInverted));
+    set_color(cbOverlayBoxLineInverted, QColor(RS_Settings::OVERLAY_BOX_LINE_INVERTED));
 }
 
 void QG_DlgOptionsGeneral::on_pbOverlayBoxFillInverted_clicked(){
-    set_color(cbOverlayBoxFillInverted, QColor(RS_Settings::overlayBoxFillInverted));
+    set_color(cbOverlayBoxFillInverted, QColor(RS_Settings::OVERLAY_BOX_FILL_INVERTED));
 }
 
 void QG_DlgOptionsGeneral::on_pbDraftModeColor_clicked(){
-    set_color(cbDraftModeMarkerColor, QColor(RS_Settings::select));
+    set_color(cbDraftModeMarkerColor, QColor(RS_Settings::SELECT));
 }
 
 void QG_DlgOptionsGeneral::on_pbcbInfoOverlayAbsolutePositionColor_clicked(){
-    set_color(cbInfoOverlayAbsolutePositionColor, QColor(RS_Settings::overlayInfoCursorAbsolutePos));
+    set_color(cbInfoOverlayAbsolutePositionColor, QColor(RS_Settings::OVERLAY_INFO_CURSOR_ABSOLUTE_POS));
 }
 
 void QG_DlgOptionsGeneral::on_pbInfoOverlaySnapColor_clicked(){
-    set_color(cbInfoOverlayAbsolutePositionColor, QColor(RS_Settings::overlayInfoCursorSnap));
+    set_color(cbInfoOverlayAbsolutePositionColor, QColor(RS_Settings::OVERLAY_INFO_CURSOR_SNAP));
 }
 
 void QG_DlgOptionsGeneral::on_pbInfoOverlayRelativeColor_clicked(){
-    set_color(cbInfoOverlayAbsolutePositionColor, QColor(RS_Settings::overlayInfoCursorRelativePos));
+    set_color(cbInfoOverlayAbsolutePositionColor, QColor(RS_Settings::OVERLAY_INFO_CURSOR_RELATIVE_POS));
 }
 
 void QG_DlgOptionsGeneral::on_pbInfoOverlayCommandPromptColor_clicked(){
-    set_color(cbInfoOverlayAbsolutePositionColor, QColor(RS_Settings::overlayInfoCursorCommandPrompt));
+    set_color(cbInfoOverlayAbsolutePositionColor, QColor(RS_Settings::OVERLAY_INFO_CURSOR_COMMAND_PROMPT));
 }
 
 void QG_DlgOptionsGeneral::on_pbAnglesMarkDirection_clicked(){
-    set_color(cbAnglesMarkColorDirection, QColor(RS_Settings::anglesBasisDirection));
+    set_color(cbAnglesMarkColorDirection, QColor(RS_Settings::ANGLES_BASIS_DIRECTION));
 }
 
 void QG_DlgOptionsGeneral::on_pbAnglesMarkAngleRay_clicked(){
-    set_color(cbAnglesMarkColorAngleRay, QColor(RS_Settings::anglesBasisAngleRay));
+    set_color(cbAnglesMarkColorAngleRay, QColor(RS_Settings::ANGLES_BASIS_ANGLE_RAY));
 }
 
 void QG_DlgOptionsGeneral::on_pb_clear_all_clicked(){
-    QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, tr("Clear settings"),
-                                  tr("This will also include custom menus and toolbars. Continue?"),
-                                  QMessageBox::Yes | QMessageBox::No);
+    const QMessageBox::StandardButton reply = QMessageBox::question(this, tr("Clear settings"),
+                                                              tr("This will also include custom menus and toolbars. Continue?"),
+                                                              QMessageBox::Yes | QMessageBox::No);
     if (reply == QMessageBox::Yes) {
-        RS_SETTINGS->clear_all();
+        RS_SETTINGS->clearAll();
         QMessageBox::information(this, "info", tr("You must restart LibreCAD to see the changes."));
     }
 }
 
 void QG_DlgOptionsGeneral::on_pb_clear_geometry_clicked(){
-    RS_SETTINGS->clear_geometry();
+    RS_SETTINGS->clearGeometry();
     QMessageBox::information(this, "info", tr("You must restart LibreCAD to see the changes."));
 }
 
 void QG_DlgOptionsGeneral::setVariableFile(){
-    QString path = QFileDialog::getOpenFileName(this);
+    const QString path = QFileDialog::getOpenFileName(this);
     if (!path.isEmpty()) {
         variablefile_field->setText(QDir::toNativeSeparators(path));
     }
@@ -1139,28 +1139,28 @@ void QG_DlgOptionsGeneral::setVariableFile(){
  * \date 2016-286
  */
 void QG_DlgOptionsGeneral::setFontsFolder(){
-    QString folder = selectFolder(tr("Select Fonts Folder"));
+    const QString folder = selectFolder(tr("Select Fonts Folder"));
     if (folder != nullptr) {
         lePathFonts->setText(QDir::toNativeSeparators(folder));
     }
 }
 
 void QG_DlgOptionsGeneral::setTranslationsFolder(){
-    QString folder = selectFolder(tr("Select Translations Folder"));
+    const QString folder = selectFolder(tr("Select Translations Folder"));
     if (folder != nullptr) {
         lePathTranslations->setText(QDir::toNativeSeparators(folder));
     }
 }
 
 void QG_DlgOptionsGeneral::setHatchPatternsFolder(){
-    QString folder = selectFolder(tr("Select Hatch Patterns Folder"));
+    const QString folder = selectFolder(tr("Select Hatch Patterns Folder"));
     if (folder != nullptr) {
         lePathHatch->setText(QDir::toNativeSeparators(folder));
     }
 }
 
 void QG_DlgOptionsGeneral::setOtherSettingsFolder(){
-    QString folder = selectFolder(tr("Select Other Settings Folder"));
+    const QString folder = selectFolder(tr("Select Other Settings Folder"));
     if (folder != nullptr) {
         leOtherSettingsDirectory->setText(QDir::toNativeSeparators(folder));
     }
@@ -1170,7 +1170,7 @@ QString QG_DlgOptionsGeneral::selectFolder(const QString &title){
     QString folder = nullptr;
     QFileDialog dlg(this);
     if (title != nullptr) {
-        QString dlgTitle = title;
+        const QString dlgTitle = title;
         dlg.setWindowTitle(dlgTitle);
     }
     dlg.setFileMode(QFileDialog::Directory);
@@ -1188,7 +1188,7 @@ void QG_DlgOptionsGeneral::setLibraryPath(){
     dlg.setFileMode(QFileDialog::Directory);
 
     if (dlg.exec()) {
-        auto dir = dlg.selectedFiles()[0];
+        const auto dir = dlg.selectedFiles()[0];
         lePathLibrary->setText(QDir::toNativeSeparators(dir));
         setRestartNeeded();
     }
@@ -1227,7 +1227,7 @@ void QG_DlgOptionsGeneral::onInfoCursorSnapChanged(){
 }
 
 void QG_DlgOptionsGeneral::on_cbGridExtendAxisLinesToggled() const {
-    bool extend = cbGridExtendAxisLines->isChecked();
+    const bool extend = cbGridExtendAxisLines->isChecked();
     sbAxisSize->setEnabled(!extend);
     cbXAxisAreas->setEnabled(extend);
     cbYAxisAreas->setEnabled(extend);
@@ -1242,9 +1242,9 @@ void QG_DlgOptionsGeneral::onCheckNewVersionChanged() const {
 }
 
 void QG_DlgOptionsGeneral::onAutoBackupChanged([[maybe_unused]] int state) const {
-    bool allowBackup = cbAutoBackup->isChecked();
+    const bool allowBackup = cbAutoBackup->isChecked();
     cbAutoSaveTime->setEnabled(allowBackup);
-    auto &appWindow = QC_ApplicationWindow::getAppWindow(); // fixme - sand - files - remove static
+    const auto &appWindow = QC_ApplicationWindow::getAppWindow(); // fixme - sand - files - remove static
     appWindow->startAutoSaveTimer(allowBackup);
 }
 
@@ -1350,10 +1350,12 @@ void QG_DlgOptionsGeneral::initReferencePoints(){
 
 void QG_DlgOptionsGeneral::updateLPtSzUnits() const {
     //	RS_DEBUG->print(RS_Debug::D_ERROR,"QG_DlgOptionsDrawing::updateLPtSzUnits, rbRelSize->isChecked() = %d",rbRelSize->isChecked());
-    if (rbRelSize->isChecked())
+    if (rbRelSize->isChecked()) {
         lPtSzUnits->setText(QApplication::translate("QG_DlgOptionsDrawing", "Screen %", nullptr));
-    else
+    }
+    else {
         lPtSzUnits->setText(QApplication::translate("QG_DlgOptionsDrawing", "Dwg Units", nullptr));
+    }
 }
 
 void QG_DlgOptionsGeneral::saveReferencePoints() const {
@@ -1361,61 +1363,80 @@ void QG_DlgOptionsGeneral::saveReferencePoints() const {
     // Get currently selected point style from which button is checked
     int pdmode = LC_DEFAULTS_PDMode;
 
-    if (bDot->isChecked())
+    if (bDot->isChecked()) {
         pdmode = DXF_FORMAT_PDMode_CentreDot;
-    else if (bBlank->isChecked())
+    }
+    else if (bBlank->isChecked()) {
         pdmode = DXF_FORMAT_PDMode_CentreBlank;
-    else if (bPlus->isChecked())
+    }
+    else if (bPlus->isChecked()) {
         pdmode = DXF_FORMAT_PDMode_CentrePlus;
-    else if (bCross->isChecked())
+    }
+    else if (bCross->isChecked()) {
         pdmode = DXF_FORMAT_PDMode_CentreCross;
-    else if (bTick->isChecked())
+    }
+    else if (bTick->isChecked()) {
         pdmode = DXF_FORMAT_PDMode_CentreTick;
-
-    else if (bDotCircle->isChecked())
+    }
+    else if (bDotCircle->isChecked()) {
         pdmode = DXF_FORMAT_PDMode_EncloseCircle(DXF_FORMAT_PDMode_CentreDot);
-    else if (bBlankCircle->isChecked())
+    }
+    else if (bBlankCircle->isChecked()) {
         pdmode = DXF_FORMAT_PDMode_EncloseCircle(DXF_FORMAT_PDMode_CentreBlank);
-    else if (bPlusCircle->isChecked())
+    }
+    else if (bPlusCircle->isChecked()) {
         pdmode = DXF_FORMAT_PDMode_EncloseCircle(DXF_FORMAT_PDMode_CentrePlus);
-    else if (bCrossCircle->isChecked())
+    }
+    else if (bCrossCircle->isChecked()) {
         pdmode = DXF_FORMAT_PDMode_EncloseCircle(DXF_FORMAT_PDMode_CentreCross);
-    else if (bTickCircle->isChecked())
+    }
+    else if (bTickCircle->isChecked()) {
         pdmode = DXF_FORMAT_PDMode_EncloseCircle(DXF_FORMAT_PDMode_CentreTick);
-
-    else if (bDotSquare->isChecked())
+    }
+    else if (bDotSquare->isChecked()) {
         pdmode = DXF_FORMAT_PDMode_EncloseSquare(DXF_FORMAT_PDMode_CentreDot);
-    else if (bBlankSquare->isChecked())
+    }
+    else if (bBlankSquare->isChecked()) {
         pdmode = DXF_FORMAT_PDMode_EncloseSquare(DXF_FORMAT_PDMode_CentreBlank);
-    else if (bPlusSquare->isChecked())
+    }
+    else if (bPlusSquare->isChecked()) {
         pdmode = DXF_FORMAT_PDMode_EncloseSquare(DXF_FORMAT_PDMode_CentrePlus);
-    else if (bCrossSquare->isChecked())
+    }
+    else if (bCrossSquare->isChecked()) {
         pdmode = DXF_FORMAT_PDMode_EncloseSquare(DXF_FORMAT_PDMode_CentreCross);
-    else if (bTickSquare->isChecked())
+    }
+    else if (bTickSquare->isChecked()) {
         pdmode = DXF_FORMAT_PDMode_EncloseSquare(DXF_FORMAT_PDMode_CentreTick);
-
-    else if (bDotCircleSquare->isChecked())
+    }
+    else if (bDotCircleSquare->isChecked()) {
         pdmode = DXF_FORMAT_PDMode_EncloseCircleSquare(DXF_FORMAT_PDMode_CentreDot);
-    else if (bBlankCircleSquare->isChecked())
+    }
+    else if (bBlankCircleSquare->isChecked()) {
         pdmode = DXF_FORMAT_PDMode_EncloseCircleSquare(DXF_FORMAT_PDMode_CentreBlank);
-    else if (bPlusCircleSquare->isChecked())
+    }
+    else if (bPlusCircleSquare->isChecked()) {
         pdmode = DXF_FORMAT_PDMode_EncloseCircleSquare(DXF_FORMAT_PDMode_CentrePlus);
-    else if (bCrossCircleSquare->isChecked())
+    }
+    else if (bCrossCircleSquare->isChecked()) {
         pdmode = DXF_FORMAT_PDMode_EncloseCircleSquare(DXF_FORMAT_PDMode_CentreCross);
-    else if (bTickCircleSquare->isChecked())
+    }
+    else if (bTickCircleSquare->isChecked()) {
         pdmode = DXF_FORMAT_PDMode_EncloseCircleSquare(DXF_FORMAT_PDMode_CentreTick);
+    }
 
     // Get points display size from the value string and the relative vs. absolute
     // size radio buttons state
     bool ok;
     double pdsize = RS_Math::eval(lePointSize->text(), &ok);
-    if (!ok)
+    if (!ok) {
         pdsize = LC_DEFAULTS_PDSize;
+    }
 
-    if (pdsize > 0.0 && rbRelSize->isChecked())
+    if (pdsize > 0.0 && rbRelSize->isChecked()) {
         pdsize = -pdsize;
+    }
 
-    QString pdsizeStr = QString::number(pdsize);
+    const QString pdsizeStr = QString::number(pdsize);
 
     LC_GROUP_GUARD("Appearance"); {
         // Points drawing style:

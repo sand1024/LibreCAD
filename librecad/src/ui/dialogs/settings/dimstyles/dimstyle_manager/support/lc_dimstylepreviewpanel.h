@@ -51,4 +51,4 @@ private:
     LC_DimStylePreviewGraphicView* m_graphicView{nullptr};
 };
 
-#endif // LC_DIMSTYLEPREVIEWPANEL_H
+#endif

@@ -28,7 +28,6 @@
 
 #include "lc_formatter.h"
 #include "lc_graphicviewaware.h"
-#include "rs.h"
 #include "rs_vector.h"
 #include "ui_qg_coordinatewidget.h"
 
@@ -38,7 +37,7 @@ class RS_Graphic;
 class QG_CoordinateWidget : public QWidget, public LC_GraphicViewAware,  public Ui::QG_CoordinateWidget{
     Q_OBJECT
 public:
-    QG_CoordinateWidget(QWidget *parent = nullptr, const char *name = nullptr, Qt::WindowFlags fl = {});
+    explicit QG_CoordinateWidget(QWidget *parent = nullptr, const char *name = nullptr, Qt::WindowFlags fl = {});
     ~QG_CoordinateWidget() override;
     void clearContent() const;
     void setGraphicView(RS_GraphicView* gv) override;

@@ -24,30 +24,30 @@
 #include "lc_entitymetauiutils.h"
 
 #include <QComboBox>
-#include "rs.h"
 #include <QSet>
 
-void LC_EntityMetaUIUtils::setupSelectionEntityTypesCombobox(QComboBox* entityTypeCombobox, const QMap<RS2::EntityType, int>& map, bool addAll) {
+#include "rs.h"
+
+void LC_EntityMetaUIUtils::setupSelectionEntityTypesCombobox(QComboBox* entityTypeCombobox, const QMap<RS2::EntityType, int>& map, const bool addAll) {
     setupSelectionEntityTypesCombobox(entityTypeCombobox, map, getEntityTypeNamesList(), addAll);
 }
 
-void LC_EntityMetaUIUtils::setupSelectionEntityTypesCombobox(QComboBox* entityTypeCombobox, const QMap<RS2::EntityType, int>& map, const std::vector<QPair<QString, RS2::EntityType>>& entityTypes, bool addAll) {
+void LC_EntityMetaUIUtils::setupSelectionEntityTypesCombobox(QComboBox* entityTypeCombobox, const QMap<RS2::EntityType, int>& map,
+                                                             const std::vector<QPair<QString, RS2::EntityType>>& entityTypes, const bool addAll) {
     int itemIndexToSelect = 0;
     if (map.empty()) {
         if (addAll) {
-            entityTypeCombobox->addItem(tr("No Selection"),RS2::EntityType::EntityUnknown);
+            entityTypeCombobox->addItem(tr("No Selection"), RS2::EntityType::EntityUnknown);
         }
     }
     else {
         int totalCount = 0;
-        for (const auto& p: entityTypes) {
-            auto type     = p.second;
-            bool contains = map.contains(type);
+        for (const auto& [name, type] : entityTypes) {
+            const bool contains = map.contains(type);
             if (contains) {
-                int count = map[type];
+                const int count = map[type];
                 totalCount += count;
-                QString name = p.first;
-                QString label = name  + " (" + QString::number(count) + ")";
+                QString label = name + " (" + QString::number(count) + ")";
                 entityTypeCombobox->addItem(label, type);
             }
         }
@@ -61,20 +61,21 @@ void LC_EntityMetaUIUtils::setupSelectionEntityTypesCombobox(QComboBox* entityTy
     if (addAll) {
         entityTypeCombobox->setCurrentIndex(itemIndexToSelect);
     }
- }
+}
 
-void LC_EntityMetaUIUtils::setupEntityTypesCombobox(QComboBox* entityTypeCombobox, const QSet<RS2::EntityType>& set, const std::vector<QPair<QString, RS2::EntityType>>& entityTypes) {
-    for (const auto& p: entityTypes) {
-        QString name = p.first;
-        auto type    = p.second;
+void LC_EntityMetaUIUtils::setupEntityTypesCombobox(QComboBox* entityTypeCombobox, const QSet<RS2::EntityType>& set,
+                                                    const std::vector<QPair<QString, RS2::EntityType>>& entityTypes) {
+    for (const auto& p : entityTypes) {
+        auto type = p.second;
         if (set.contains(type)) {
+            QString name = p.first;
             entityTypeCombobox->addItem(name, type);
         }
     }
 }
 
 const std::vector<QPair<QString, RS2::EntityType>>& LC_EntityMetaUIUtils::getEntityTypeNamesList() {
-    static const std::vector<QPair<QString, RS2::EntityType>>& entityTypes =  {
+    static const std::vector<QPair<QString, RS2::EntityType>>& ENTITY_TYPES = {
         {tr("Line"), RS2::EntityType::EntityLine},
         {tr("Circle"), RS2::EntityType::EntityCircle},
         {tr("Arc"), RS2::EntityType::EntityArc},
@@ -99,7 +100,7 @@ const std::vector<QPair<QString, RS2::EntityType>>& LC_EntityMetaUIUtils::getEnt
         {tr("Image"), RS2::EntityType::EntityImage},
         {tr("Insert"), RS2::EntityType::EntityInsert},
     };
-    return entityTypes;
+    return ENTITY_TYPES;
 }
 
 void LC_EntityMetaUIUtils::setupEntitiesTypesList(QComboBox* entityTypeCombobox, const QSet<RS2::EntityType>& set) {

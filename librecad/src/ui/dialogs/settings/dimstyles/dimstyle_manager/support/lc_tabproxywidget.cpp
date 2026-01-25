@@ -23,39 +23,36 @@
 
 #include "lc_tabproxywidget.h"
 
-#include "rs_debug.h"
+
+#include <QApplication>
+#include <QLabel>
+#include <QSet>
+#include <QStackedLayout>
+#include <QWidget>
 
 LC_TabProxyWidget::LC_TabProxyWidget() {
 }
 
-#include <QApplication>
-#include <QLabel>
-#include <QMap>
-#include <QSet>
-#include <QStackedLayout>
-#include <QTabWidget>
-#include <QWidget>
-
-static QMap<QWidget*, QSet<LC_TabProxyWidget*>> m_targetWidgetToProxies;
+static QHash<QWidget*, QSet<LC_TabProxyWidget*>> g_targetWidgetToProxies;
 
 void LC_TabProxyWidget::setTargetWidget(QWidget* targetWidget) {
     if (targetWidget != m_targetWidget) {
         if (m_targetWidget) {
             m_targetWidget->removeEventFilter(this);
 
-            QSet<LC_TabProxyWidget*>* proxiesForTargetWidget = m_targetWidgetToProxies.contains(m_targetWidget)
-                                                                   ? &m_targetWidgetToProxies[m_targetWidget]
+            QSet<LC_TabProxyWidget*>* proxiesForTargetWidget = g_targetWidgetToProxies.contains(m_targetWidget)
+                                                                   ? &g_targetWidgetToProxies[m_targetWidget]
                                                                    : nullptr;
             if ((proxiesForTargetWidget == nullptr) || (proxiesForTargetWidget->isEmpty())) {
                 // fixme - sand - well, that's ugly enought... yet if we are here - this a severe developer's bug, so let it be for now...
                 printf("LC_TabProxyWidget::setTargetWidget(NULL):  can't proxies-table for target widget %p is %s!\n",
                        targetWidget, proxiesForTargetWidget ? "empty" : "missing");
-                exit(10);
             }
+            Q_ASSERT(proxiesForTargetWidget != nullptr && !proxiesForTargetWidget->isEmpty());
 
             proxiesForTargetWidget->remove(this);
             if (proxiesForTargetWidget->isEmpty()) {
-                m_targetWidgetToProxies.remove(m_targetWidget);
+                g_targetWidgetToProxies.remove(m_targetWidget);
                 delete m_targetWidget;
             }
             else if (dynamic_cast<LC_TabProxyWidget*>(m_targetWidget->parentWidget()) == this) {
@@ -67,10 +64,10 @@ void LC_TabProxyWidget::setTargetWidget(QWidget* targetWidget) {
         m_targetWidget = targetWidget;
 
         if (m_targetWidget != nullptr) {
-            if (m_targetWidgetToProxies.contains(m_targetWidget) == false) {
-                m_targetWidgetToProxies[m_targetWidget] = QSet<LC_TabProxyWidget*>();
+            if (g_targetWidgetToProxies.contains(m_targetWidget) == false) {
+                g_targetWidgetToProxies[m_targetWidget] = QSet<LC_TabProxyWidget*>();
             }
-            m_targetWidgetToProxies[m_targetWidget].insert(this);
+            g_targetWidgetToProxies[m_targetWidget].insert(this);
 
             if ((isHidden() == false) || (m_targetWidget->parentWidget() == nullptr) || (dynamic_cast<LC_TabProxyWidget*>(
                 m_targetWidget->parentWidget()) == nullptr)) {
@@ -133,7 +130,7 @@ void LC_TabProxyWidget::adoptTargetWidget() {
         }
 
         m_targetWidget->setParent(this);
-        _layout->addWidget(m_targetWidget);
+        m_layout->addWidget(m_targetWidget);
     }
 }
 

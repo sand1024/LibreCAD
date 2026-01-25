@@ -43,9 +43,9 @@ protected slots:
     void onAngleEditingFinished();
     void onLengthEditingFinished();
     void onEndOffsetEditingFinished();
-    void onSnapModeIndexChanged(int index);
-    void onSizeModeIndexChanged(int index);
-    void onOrthogonalClicked(bool value);
+    void onSnapModeIndexChanged(int index) const;
+    void onSizeModeIndexChanged(int index) const;
+    void onOrthogonalClicked(bool value) const;
 protected:
     void doSetAction(RS_ActionInterface *a, bool update) override;
     void doSaveSettings() override;
@@ -60,4 +60,4 @@ private:
     void setEndOffsetToActionAndView(const QString& value);
 };
 
-#endif // LC_LINEFROMPOINTTOLINEOPTIONS_H
+#endif

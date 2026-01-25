@@ -48,4 +48,4 @@ public:
     bool restoreViewBySingleClick{true};
 };
 
-#endif // LC_NAMEDVIEWSLISTOPTIONS_H
+#endif

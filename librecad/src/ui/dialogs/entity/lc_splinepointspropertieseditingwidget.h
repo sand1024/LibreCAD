@@ -47,4 +47,4 @@ private:
     void updatePoints();
 };
 
-#endif // LC_SPLINEPOINTSPROPERTIESEDITINGWIDGET_H
+#endif

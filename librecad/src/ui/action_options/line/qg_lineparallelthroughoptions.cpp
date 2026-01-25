@@ -24,6 +24,7 @@
 **
 **********************************************************************/
 #include "qg_lineparallelthroughoptions.h"
+
 #include "rs_actiondrawlineparallelthrough.h"
 #include "ui_qg_lineparallelthroughoptions.h"
 
@@ -32,9 +33,8 @@
  *  name 'name' and widget flags set to 'f'.
  */
 QG_LineParallelThroughOptions::QG_LineParallelThroughOptions()
-    : LC_ActionOptionsWidgetBase(RS2::ActionDrawLineParallelThrough, "Draw", "LineParallel")
-	, ui(new Ui::Ui_LineParallelThroughOptions{}){
-	ui->setupUi(this);
+    : LC_ActionOptionsWidgetBase(RS2::ActionDrawLineParallelThrough, "Draw", "LineParallel"), ui(new Ui::Ui_LineParallelThroughOptions{}) {
+    ui->setupUi(this);
 }
 
 /*
@@ -46,9 +46,8 @@ QG_LineParallelThroughOptions::~QG_LineParallelThroughOptions() = default;
  *  Sets the strings of the subwidgets using the current
  *  language.
  */
-void QG_LineParallelThroughOptions::languageChange()
-{
-	ui->retranslateUi(this);
+void QG_LineParallelThroughOptions::languageChange() {
+    ui->retranslateUi(this);
 }
 
 void QG_LineParallelThroughOptions::doSaveSettings() {
@@ -56,8 +55,8 @@ void QG_LineParallelThroughOptions::doSaveSettings() {
     save("Symmetric", ui->cbSymmetric->isChecked());
 }
 
-void QG_LineParallelThroughOptions::doSetAction(RS_ActionInterface* a, bool update) {
-    m_action = (RS_ActionDrawLineParallelThrough*)a;
+void QG_LineParallelThroughOptions::doSetAction(RS_ActionInterface* a, const bool update) {
+    m_action = static_cast<RS_ActionDrawLineParallelThrough*>(a);
 
     int copyNumber;
     bool symmetric;
@@ -73,20 +72,20 @@ void QG_LineParallelThroughOptions::doSetAction(RS_ActionInterface* a, bool upda
     setCopyNumberToActionAndView(copyNumber);
 }
 
-void QG_LineParallelThroughOptions::on_cbSymmetric_toggled(bool checked) {
+void QG_LineParallelThroughOptions::on_cbSymmetric_toggled(const bool checked) {
     setSymmetricToActionAndView(checked);
 }
 
-void QG_LineParallelThroughOptions::on_sbNumber_valueChanged(int number) {
+void QG_LineParallelThroughOptions::on_sbNumber_valueChanged(const int number) {
     setCopyNumberToActionAndView(number);
 }
 
-void QG_LineParallelThroughOptions::setCopyNumberToActionAndView(int number) const {
+void QG_LineParallelThroughOptions::setCopyNumberToActionAndView(const int number) const {
     m_action->setNumber(number);
     ui->sbNumber->setValue(number);
 }
 
-void QG_LineParallelThroughOptions::setSymmetricToActionAndView(bool symmetric) const {
+void QG_LineParallelThroughOptions::setSymmetricToActionAndView(const bool symmetric) const {
     m_action->setSymmetric(symmetric);
     ui->cbSymmetric->setChecked(symmetric);
 }

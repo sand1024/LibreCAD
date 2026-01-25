@@ -33,7 +33,7 @@
 class QG_DlgMText : public LC_EntityPropertiesDlg, public Ui::QG_DlgMText{
     Q_OBJECT
 public:
-    QG_DlgMText(QWidget *parent, LC_GraphicViewport *pViewport, RS_MText* mtext, bool forNew);
+    QG_DlgMText(QWidget *parent, LC_GraphicViewport *viewport, RS_MText* mtext, bool forNew);
     ~QG_DlgMText() override;
     int getAlignment() const;
 public slots:
@@ -72,8 +72,8 @@ protected:
     void init();
     void destroy() const;
     bool eventFilter(QObject *obj, QEvent *event) override;
-    size_t alignmentButtonIdex(QToolButton* button) const;
+    size_t alignmentButtonIdex(const QToolButton* button) const;
     void setEntity(RS_MText *t, bool isNew );
 };
 
-#endif // QG_DLGMTEXT_H
+#endif

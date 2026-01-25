@@ -45,4 +45,4 @@ private:
     RS_Polyline* m_entity{nullptr};
 };
 
-#endif // LC_POLYLINEPROPERTIESEDITINGWIDGET_H
+#endif

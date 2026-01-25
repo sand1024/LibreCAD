@@ -23,15 +23,10 @@
 #include "lc_actionoptionswidgetbase.h"
 
 #include <QSettings>
-#include <QToolButton>
 
-#include "lc_actioncontext.h"
 #include "rs_actioninterface.h"
-#include "rs_debug.h"
-#include "rs_graphicview.h"
 
-LC_ActionOptionsWidgetBase::LC_ActionOptionsWidgetBase(
-    RS2::ActionType actionType, const QString &optionsGroupName, const QString &optionNamePrefix):
+LC_ActionOptionsWidgetBase::LC_ActionOptionsWidgetBase(const RS2::ActionType actionType, const QString &optionsGroupName, const QString &optionNamePrefix):
     LC_ActionOptionsWidget(nullptr){
     m_supportedActionType  = actionType;
     m_settingsGroupName = optionsGroupName;
@@ -40,7 +35,7 @@ LC_ActionOptionsWidgetBase::LC_ActionOptionsWidgetBase(
 
 LC_ActionOptionsWidgetBase::~LC_ActionOptionsWidgetBase()= default;
 
-bool LC_ActionOptionsWidgetBase::checkActionRttiValid(RS2::ActionType actionType){
+bool LC_ActionOptionsWidgetBase::checkActionRttiValid(const RS2::ActionType actionType){
     return actionType == m_supportedActionType;
 }
 

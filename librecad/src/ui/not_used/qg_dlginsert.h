@@ -45,4 +45,4 @@ protected:
     void setEntity(RS_Insert *i);
 };
 
-#endif // QG_DLGINSERT_H
+#endif

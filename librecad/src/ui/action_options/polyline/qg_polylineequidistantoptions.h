@@ -54,6 +54,6 @@ private:
     RS_ActionPolylineEquidistant *m_action = nullptr;
     std::unique_ptr<Ui::PolylineEquidistantOptions> ui;
     void setNumberToActionAndView(int number) const;
-    void setDistanceToActionAndView(QString strVal);
+    void setDistanceToActionAndView(const QString& strVal);
 };
-#endif // QG_POLYLINEEQUIDISTANTOPTIONS_H
+#endif

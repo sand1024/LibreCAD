@@ -26,8 +26,8 @@
 #ifndef QG_DLGHATCH_H
 #define QG_DLGHATCH_H
 
-#include "ui_qg_dlghatch.h"
 #include "lc_entitypropertiesdlg.h"
+#include "ui_qg_dlghatch.h"
 
 class LC_PreviewDocument;
 class RS_Hatch;
@@ -35,7 +35,7 @@ class RS_Hatch;
 class QG_DlgHatch : public LC_EntityPropertiesDlg, public Ui::QG_DlgHatch{
     Q_OBJECT
 public:
-    QG_DlgHatch(QWidget *parent, LC_GraphicViewport *pViewport, RS_Hatch* hatch, bool isNew);
+    QG_DlgHatch(QWidget *parent, LC_GraphicViewport *viewport, RS_Hatch* hatch, bool forNew);
     ~QG_DlgHatch() override;
     void saveSettings() const;
 public slots:
@@ -52,10 +52,10 @@ protected:
     std::shared_ptr<RS_Pattern> m_pattern;
     RS_Hatch* m_entity = nullptr;
     bool m_isNew = false;
-    void addRectangle(RS_Pen pen, const RS_Vector &v0, const RS_Vector &v1, RS_EntityContainer *container);
+    void addRectangle(const RS_Pen& pen, const RS_Vector &v0, const RS_Vector &v1, RS_EntityContainer *container);
     void init();
     void showArea() const;
     void setEntity(RS_Hatch *h, bool isNew);
 };
 
-#endif // QG_DLGHATCH_H
+#endif

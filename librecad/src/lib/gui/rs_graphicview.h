@@ -119,7 +119,8 @@ public:
     RS_ActionInterface *getCurrentAction() const;
     QString getCurrentActionName() const;
     QIcon getCurrentActionIcon() const;
-    bool killAllActions() const;
+    void killAllActions() const;
+    bool killAllActionsWithResult() const;
     void back() const;
     void processEnterKey() const;
     void commandEvent(RS_CommandEvent *e) const;

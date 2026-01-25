@@ -20,13 +20,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
 #include "lc_linepointsoptions.h"
+
 #include "lc_actiondrawlinepoints.h"
 #include "ui_lc_linepointsoptions.h"
 
 LC_LinePointsOptions::LC_LinePointsOptions() :
     LC_ActionOptionsWidget(nullptr),
-    ui(new Ui::LC_LinePointsOptions),
-    m_action(nullptr) {
+    ui(new Ui::LC_LinePointsOptions) {
     ui->setupUi(this);
     connect(ui->sbPointsCount, &QSpinBox::valueChanged, this, &LC_LinePointsOptions::onPointsCountValueChanged);
     connect(ui->cbEdgePoints, &QComboBox::currentIndexChanged, this,
@@ -47,7 +47,7 @@ LC_LinePointsOptions::~LC_LinePointsOptions(){
     m_action = nullptr;
 }
 
-bool LC_LinePointsOptions::checkActionRttiValid(RS2::ActionType actionType) {
+bool LC_LinePointsOptions::checkActionRttiValid(const RS2::ActionType actionType) {
     return actionType ==  RS2::ActionDrawLinePoints || actionType == RS2::ActionDrawPointsMiddle;
 }
 
@@ -66,23 +66,22 @@ QString LC_LinePointsOptions::getSettingsOptionNamePrefix() {
     }
 }
 
-void LC_LinePointsOptions::doSetAction(RS_ActionInterface *a, bool update){
+void LC_LinePointsOptions::doSetAction(RS_ActionInterface *a, const bool update){
     if (m_inUpdateCycle){
         return;
     }
     m_inUpdateCycle = true;
-    m_action = dynamic_cast<LC_ActionDrawLinePoints *>(a);
-    int pointsCount = 1;
-    int edgePointMode = 0; /*LC_ActionDrawLinePoints::DRAW_EDGE_NONE*/;
+    m_action = static_cast<LC_ActionDrawLinePoints *>(a);
+    int pointsCount;
+    int edgePointMode = 0; /*LC_ActionDrawLinePoints::DRAW_EDGE_NONE*/
     bool fixedDistanceMode = false;
     bool withinLine = false;
     QString distance;
     QString angle;
-    bool angleMode;
-    bool showAllControls =  m_action->rtti() == RS2::ActionDrawLinePoints;
+    const bool showAllControls =  m_action->rtti() == RS2::ActionDrawLinePoints;
 
-    int direction = m_action->getDirection();
-    angleMode = direction == LC_AbstractActionDrawLine::DIRECTION_ANGLE;
+    const int direction = m_action->getDirection();
+    bool angleMode = direction == LC_AbstractActionDrawLine::DIRECTION_ANGLE;
 
     if (!showAllControls){
         angleMode = false;
@@ -141,7 +140,7 @@ void LC_LinePointsOptions::doSaveSettings(){
     }
 }
 
-void LC_LinePointsOptions::onPointsCountValueChanged(int value){
+void LC_LinePointsOptions::onPointsCountValueChanged(const int value) const {
     if (m_action != nullptr){
         setPointsCountActionAndView(value);
     }
@@ -151,35 +150,35 @@ void LC_LinePointsOptions::languageChange(){
     ui->retranslateUi(this);
 }
 
-void LC_LinePointsOptions::setPointsCountActionAndView(int val) const {
-    m_action->setPointsCount(val);
-    ui->sbPointsCount->setValue(val);
+void LC_LinePointsOptions::setPointsCountActionAndView(const int value) const {
+    m_action->setPointsCount(value);
+    ui->sbPointsCount->setValue(value);
 }
 
-void LC_LinePointsOptions::onEdgePointsModeIndexChanged(int index){
+void LC_LinePointsOptions::onEdgePointsModeIndexChanged(const int index) const {
     if (m_action != nullptr){
         setEdgePointsModeToActionAndView(index);
     }
 }
 
-void LC_LinePointsOptions::setEdgePointsModeToActionAndView(int index) const {
+void LC_LinePointsOptions::setEdgePointsModeToActionAndView(const int index) const {
     m_action->setEdgePointsMode(index);
     ui->cbEdgePoints->setCurrentIndex(index);
 }
 
-void LC_LinePointsOptions::onFixedDistanceClicked(bool value){
+void LC_LinePointsOptions::onFixedDistanceClicked(const bool value) const {
     if (m_action != nullptr){
         setFixedDistanceModeToActionAndView(value);
     }
 }
 
-void LC_LinePointsOptions::onAngleClicked(bool value){
+void LC_LinePointsOptions::onAngleClicked(const bool value) const {
     if (m_action != nullptr){
         setAngleModeToActionAndView(value);
     }
 }
 
-void LC_LinePointsOptions::setFixedDistanceModeToActionAndView(bool value) const {
+void LC_LinePointsOptions::setFixedDistanceModeToActionAndView(const bool value) const {
     ui->cbFixedDistance->setChecked(value);
     m_action->setFixedDistanceMode(value);
     ui->frmFixed->setVisible(value && m_action->rtti()==RS2::ActionDrawLinePoints);
@@ -189,14 +188,14 @@ void LC_LinePointsOptions::setFixedDistanceModeToActionAndView(bool value) const
     }
 }
 
-void LC_LinePointsOptions::setWithinLineModeToActionAndView(bool value) const {
+void LC_LinePointsOptions::setWithinLineModeToActionAndView(const bool value) const {
     ui->cbWithinLine->setChecked(value);
     m_action->setWithinLineMode(value);
 
     ui->sbPointsCount->setEnabled(!value);
 }
 
-void LC_LinePointsOptions::onWithinLineClicked(bool value){
+void LC_LinePointsOptions::onWithinLineClicked(const bool value) const {
     if (m_action != nullptr){
         setWithinLineModeToActionAndView(value);
     }
@@ -213,7 +212,7 @@ void LC_LinePointsOptions::onAngleEditingFinished(){
     }
 }
 
-void LC_LinePointsOptions::setDistanceToActionAndView(QString val){
+void LC_LinePointsOptions::setDistanceToActionAndView(const QString& val){
     double distance;
     if (toDouble(val, distance, 1.0, true)){
         m_action->setPointsDistance(distance);
@@ -221,7 +220,7 @@ void LC_LinePointsOptions::setDistanceToActionAndView(QString val){
     }
 }
 
-void LC_LinePointsOptions::setAngleModeToActionAndView(bool value) const {
+void LC_LinePointsOptions::setAngleModeToActionAndView(const bool value) const {
     if (value){
         m_action->setSetAngleDirectionState();
     }
@@ -234,7 +233,7 @@ void LC_LinePointsOptions::setAngleModeToActionAndView(bool value) const {
     ui->leAngle->setEnabled(value);
 }
 
-void LC_LinePointsOptions::setAngleToActionAndView(QString val, bool affectState){
+void LC_LinePointsOptions::setAngleToActionAndView(const QString& val, const bool affectState){
     double angle;
     if (toDouble(val, angle, 0.0, false)){
         if (affectState){

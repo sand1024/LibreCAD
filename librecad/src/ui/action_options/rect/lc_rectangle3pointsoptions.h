@@ -63,10 +63,10 @@ protected:
     void setAngleToActionAndView(const QString &val);
     void setCornersModeToActionAndView(int index) const;
     void setQuadrangleToActionAndView(bool value);
-    void setBaseAngleFixedToActionAndView(bool angle) const;
-    void setInnerAngleFixedToActionAndView(bool angle) const;
+    void setBaseAngleFixedToActionAndView(bool value) const;
+    void setInnerAngleFixedToActionAndView(bool value) const;
     void setInnerAngleToActionAndView(const QString& value);
     void setEdgesModeToActionAndView(int index) const;
 };
 
-#endif // LC_RECTANGLE3POINTSOPTIONS_H
+#endif

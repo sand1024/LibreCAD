@@ -78,37 +78,37 @@ public:
     bool isConstruction() const;
     bool isNotFrozen() const;
     QString getName();
-    QString getDisplayName() const {return m_displayName;};
-    void setDisplayName(QString &newName){m_displayName = newName;};
+    QString getDisplayName() const {return m_displayName;}
+    void setDisplayName(const QString &newName){m_displayName = newName;}
     RS_Layer* getLayer() const;
     void updateCalculatedFlagsForDescendentVirtualLayers();
     LC_LayerTreeItem* createLayerChild(const QString &childName, RS_Layer* childLayer);
     LC_LayerTreeItem* getOrCreateVirtualChild(const QString &targetChildName);
-    int getIndent() const { return m_indent;};
-    void collectLayers(QList<RS_Layer*> &result, LC_LayerTreeItemAcceptor* acceptor, bool acceptSelf=false);
-    void collectDescendantChildren(QList<LC_LayerTreeItem*> &result, LC_LayerTreeItemAcceptor* acceptor, bool includeSelf = false);
+    int getIndent() const { return m_indent;}
+    void collectLayers(QList<RS_Layer*> &result, const LC_LayerTreeItemAcceptor& acceptor, bool includeSelf=false);
+    void collectDescendantChildren(QList<LC_LayerTreeItem*> &result, const LC_LayerTreeItemAcceptor& acceptor, bool includeSelf = false);
     void markAsActivePath();
     void rebuildActivePath(RS_Layer* layerToBeActive);
     bool isPartOfActivePath() const;
-    int getLayerType() const {return m_layerType;};
+    int getLayerType() const {return m_layerType;}
     void setLayerType(int value);
     LC_LayerTreeItem* getPrimaryItem() const;
     void setPrimaryItem(LC_LayerTreeItem* item);
     LC_LayerTreeItem* findPrimaryLayerChild(const QString &childNameToFind) const;
-    void setMatched(bool enabled) {m_matched = enabled;};
-    bool isMatched() const {return m_matched;};
-    bool isActiveLayer() const {return m_activeLayer;};
-    void setActiveLayer(bool value){m_activeLayer = value;};
+    void setMatched(const bool enabled) {m_matched = enabled;}
+    bool isMatched() const {return m_matched;}
+    bool isActiveLayer() const {return m_activeLayer;}
+    void setActiveLayer(const bool value){m_activeLayer = value;}
     void invalidate();
     bool isInValid() const;
     bool hasChildOfType(int type) const;
     bool hasChildWithName(const QString& nameToFind, int layerTypeToFind) const;
     void collectPathToParent(QList<LC_LayerTreeItem*> &result, bool includeSelf);
     bool isDescendantOf(const LC_LayerTreeItem* item) const;
-    bool isZero() const {return m_zero_layer;}
-    void markAsZero(){m_zero_layer = true;}
-    QString getFullName(){return m_fullName;};
-    void setFullName(QString &name){m_fullName = name;};
+    bool isZero() const {return m_zeroLayer;}
+    void markAsZero(){m_zeroLayer = true;}
+    QString getFullName(){return m_fullName;}
+    void setFullName(const QString &name){m_fullName = name;}
 private:
 
     LC_LayerTreeItem* findItemWithLayer(RS_Layer* source);
@@ -121,13 +121,13 @@ private:
     // actual layer, if any
     RS_Layer* m_layer {nullptr};
     // part of raw parsed name
-    QString name;
+    QString m_name;
     // name used to display in UI
     QString m_displayName;
     // full path to the item
     QString m_fullName;
     // flat that containing layer is "0"
-    bool m_zero_layer {false};
+    bool m_zeroLayer {false};
     // several calculated fields used for virtual layers
     bool m_virtualVisible {false};
     bool m_virtualLocked {false};
@@ -148,17 +148,17 @@ private:
 
 class QG_LayerTreeItemAcceptorByType: public virtual LC_LayerTreeItemAcceptor{
 public:
-    explicit QG_LayerTreeItemAcceptorByType(int ltype){
-        layerType = ltype;
+    explicit QG_LayerTreeItemAcceptorByType(const int ltype){
+        m_layerType = ltype;
     }
 
     bool acceptLayerTreeItem(LC_LayerTreeItem* item) const override{
         const int ltype = item -> getLayerType();
-        const bool result = ltype == layerType;
+        const bool result = ltype == m_layerType;
         return result;
     }
 private:
-    int layerType = 0;
+    int m_layerType = 0;
 };
 
 class QG_LayerTreeItemAcceptorVisible: public virtual LC_LayerTreeItemAcceptor{
@@ -173,38 +173,38 @@ class QG_LayerTreeItemAcceptorSameLayerAs: public virtual LC_LayerTreeItemAccept
 public:
 
     explicit QG_LayerTreeItemAcceptorSameLayerAs(RS_Layer* l){
-        layer = l;
+        m_layer = l;
     }
 
-    explicit QG_LayerTreeItemAcceptorSameLayerAs(RS_Layer* l, bool notEqualsMode){
-        layer = l;
-        notOperation = notEqualsMode;
+    explicit QG_LayerTreeItemAcceptorSameLayerAs(RS_Layer* l, const bool notEqualsMode){
+        m_layer = l;
+        m_notOperation = notEqualsMode;
     }
 
     bool acceptLayerTreeItem(LC_LayerTreeItem* item) const override{
-        bool result = item->getLayer() == layer;
-        if (notOperation){
+        bool result = item->getLayer() == m_layer;
+        if (m_notOperation){
             result = !result;
         }
         return result;
     }
 private:
-    RS_Layer* layer = nullptr;
-    bool notOperation {false};
+    RS_Layer* m_layer = nullptr;
+    bool m_notOperation {false};
 };
 
 class QG_LayerTreeItemAcceptorSecondary: public virtual LC_LayerTreeItemAcceptor{
 public:
     QG_LayerTreeItemAcceptorSecondary() = default;
-    explicit QG_LayerTreeItemAcceptorSecondary(bool includeItems){
-        includeMode = includeItems;
+    explicit QG_LayerTreeItemAcceptorSecondary(const bool includeItems){
+        m_includeMode = includeItems;
     }
 
     bool acceptLayerTreeItem(LC_LayerTreeItem* item) const override{
         const int ltype = item -> getLayerType();
         bool result = true;
 
-        if (includeMode){
+        if (m_includeMode){
             result = (ltype == LC_LayerTreeItem::DIMENSIONAL) || (ltype == LC_LayerTreeItem::ALTERNATE_POSITION) || (ltype == LC_LayerTreeItem::INFORMATIONAL);
         }
         else{
@@ -215,7 +215,7 @@ public:
         return result;
     }
 private:
-    bool includeMode {true};
+    bool m_includeMode {true};
 };
 
-#endif // QG_LAYERTREEITEM_H
+#endif

@@ -43,18 +43,18 @@ namespace Ui{
 class LC_DlgDimension : public LC_EntityPropertiesDlg {
     Q_OBJECT
 public:
-    explicit LC_DlgDimension(QWidget* parent, LC_GraphicViewport* pViewport, RS_Dimension* dim);
+    explicit LC_DlgDimension(QWidget* parent, LC_GraphicViewport* viewport, RS_Dimension* dim);
     ~LC_DlgDimension() override;
     void updateEntity() override;
 protected:
-    void selectStyleItem(QModelIndex index) const;
+    void selectStyleItem(const QModelIndex& indexToSelect) const;
     void updateActiveStyleInfoLabel() const;
-    void updateEntityStyleInfoLabels(LC_DimStyleItem* item) const;
+    void updateEntityStyleInfoLabels(const LC_DimStyleItem* item) const;
     void setEntity(RS_Dimension* dim);
     void expandStylesTree() const;
     QModelIndex setupStylesList();
-    void getOverrideItemIndex(LC_DimStyleTreeModel* model, LC_DimStyleItem* entityStyleItem, QModelIndex& itemIndex);
-    void updateActionButtons(LC_DimStyleItem* item) const;
+    void getOverrideItemIndex(const LC_DimStyleTreeModel* model, const LC_DimStyleItem* entityStyleItem, QModelIndex& itemIndex);
+    void updateActionButtons(const LC_DimStyleItem* item) const;
     void updateDimStylePreview(LC_DimStyle* dimStyle, LC_DimStyleTreeModel* model, bool override, const QString& baseName) const;
     void updateDimStylePreview(const RS_Pen& pen) const;
     void updateDimStylePreview(bool flipArrow1, bool flipArrow2) const;
@@ -68,7 +68,7 @@ protected:
     void clearDimStylesModel(LC_DimStyleTreeModel* model);
     void saveDimensionStyles();
     void setupDimensionTypeDependentUI(RS_Dimension* dim);
-    void setupDimensionAttributesUI(RS_Dimension* dim);
+    void setupDimensionAttributesUI(const RS_Dimension* dim);
 protected slots:
     void languageChange();
     void onDimStyleDoubleClick();
@@ -82,7 +82,7 @@ protected slots:
     void onDimStyleExport(bool val);
     void onDimStyleImport(bool val);
     void onDimStyleSet(bool val);
-    void onDimStyleSetDefault(bool val);
+    void onDimStyleSetDefault(bool val) ;
     void onDimStyleEntitySelect(bool val);
     void onPenChanged() const;
     void onFlipArrowChanged(bool val) const;
@@ -95,4 +95,4 @@ private:
     bool m_structuredChanged = false;
 };
 
-#endif // LC_DLGDIMENSION_H
+#endif

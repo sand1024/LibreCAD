@@ -32,4 +32,4 @@ public:
     virtual ~LC_GraphicViewAware() = default;
 };
 
-#endif // LC_DOCUMENTANDVIEWAWARE_H
+#endif

@@ -20,13 +20,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
 #include "lc_linejoinoptions.h"
+
 #include "lc_actionmodifylinejoin.h"
 #include "ui_lc_linejoinoptions.h"
 
 LC_LineJoinOptions::LC_LineJoinOptions() :
     LC_ActionOptionsWidgetBase(RS2::ActionModifyLineJoin, "Modify", "LineJoin"),
-    ui(new Ui::LC_LineJoinOptions),
-    m_action(nullptr){
+    ui(new Ui::LC_LineJoinOptions){
     ui->setupUi(this);
 
     connect(ui->cbLine1EdgeMode, &QComboBox::currentIndexChanged,this, &LC_LineJoinOptions::onEdgeModelLine1IndexChanged);
@@ -37,17 +37,17 @@ LC_LineJoinOptions::LC_LineJoinOptions() :
     connect(ui->cbRemoveOriginals, &QCheckBox::clicked, this, &LC_LineJoinOptions::onRemoveOriginalsClicked);
 }
 
-LC_LineJoinOptions::~LC_LineJoinOptions(){    
+LC_LineJoinOptions::~LC_LineJoinOptions(){
     delete ui;
-    m_action = nullptr; 
+    m_action = nullptr;
 }
 
 void LC_LineJoinOptions::languageChange(){
     ui->retranslateUi(this);
 }
 
-void LC_LineJoinOptions::doSetAction(RS_ActionInterface *a, bool update){
-    m_action = dynamic_cast<LC_ActionModifyLineJoin *>(a);
+void LC_LineJoinOptions::doSetAction(RS_ActionInterface *a, const bool update){
+    m_action = static_cast<LC_ActionModifyLineJoin *>(a);
 
     int line1EdgeMode;
     int line2EdgeMode;
@@ -62,7 +62,7 @@ void LC_LineJoinOptions::doSetAction(RS_ActionInterface *a, bool update){
         removeOriginals = m_action->isRemoveOriginalLines();
         attributesSource = m_action->getAttributesSource();
     }
-    else{        
+    else{
         usePolyline = loadBool("Polyline", false);
         removeOriginals = loadBool("RemoveOriginals", false);
         attributesSource= loadInt("AttributesSource", 0);
@@ -77,7 +77,7 @@ void LC_LineJoinOptions::doSetAction(RS_ActionInterface *a, bool update){
     setEdgeModeLine2ToActionAndView(line2EdgeMode);
 }
 
-void LC_LineJoinOptions::doSaveSettings(){    
+void LC_LineJoinOptions::doSaveSettings(){
     save("Polyline", ui->cbPolyline->isChecked());
     save("RemoveOriginals", ui->cbRemoveOriginals->isChecked());
     save("AttributesSource", ui->cbAttributesSource->currentIndex());
@@ -85,13 +85,13 @@ void LC_LineJoinOptions::doSaveSettings(){
     save("Line2EdgeMode", ui->cbLine2EdgeMode->currentIndex());
 }
 
-void LC_LineJoinOptions::onUsePolylineClicked(bool value){
+void LC_LineJoinOptions::onUsePolylineClicked(const bool value) const {
     if (m_action != nullptr){
         setUsePolylineToActionAndView(value);
     }
 }
 
-void LC_LineJoinOptions::onRemoveOriginalsClicked(bool value){
+void LC_LineJoinOptions::onRemoveOriginalsClicked(const bool value) const {
     if (m_action != nullptr){
         setRemoveOriginalsToActionAndView(value);
     }
@@ -100,7 +100,7 @@ void LC_LineJoinOptions::onRemoveOriginalsClicked(bool value){
 #define NO_CHANGE_INDEX 2
 #define EXTEND_TRIM_INDEX 0
 
-void LC_LineJoinOptions::onEdgeModelLine1IndexChanged(int index){
+void LC_LineJoinOptions::onEdgeModelLine1IndexChanged(const int index) const {
     if (m_action != nullptr){
         setEdgeModeLine1ToActionAndView(index);
         if (index == NO_CHANGE_INDEX){
@@ -110,11 +110,11 @@ void LC_LineJoinOptions::onEdgeModelLine1IndexChanged(int index){
             ui->cbPolyline->setEnabled(ui->cbLine2EdgeMode->currentIndex() != NO_CHANGE_INDEX);
         }
     }
-    bool allowRemoval = index == EXTEND_TRIM_INDEX || ui->cbLine2EdgeMode->currentIndex() == EXTEND_TRIM_INDEX;
+    const bool allowRemoval = index == EXTEND_TRIM_INDEX || ui->cbLine2EdgeMode->currentIndex() == EXTEND_TRIM_INDEX;
     ui->cbRemoveOriginals->setEnabled(allowRemoval);
 }
 
-void LC_LineJoinOptions::onEdgeModelLine2IndexChanged(int index){
+void LC_LineJoinOptions::onEdgeModelLine2IndexChanged(const int index) const {
     if (m_action != nullptr){
         setEdgeModeLine2ToActionAndView(index);
         if (index == NO_CHANGE_INDEX){
@@ -124,37 +124,37 @@ void LC_LineJoinOptions::onEdgeModelLine2IndexChanged(int index){
             ui->cbPolyline->setEnabled(ui->cbLine1EdgeMode->currentIndex() != NO_CHANGE_INDEX);
         }
     }
-    bool allowRemoval = index == EXTEND_TRIM_INDEX || ui->cbLine1EdgeMode->currentIndex() == EXTEND_TRIM_INDEX;
+    const bool allowRemoval = index == EXTEND_TRIM_INDEX || ui->cbLine1EdgeMode->currentIndex() == EXTEND_TRIM_INDEX;
     ui->cbRemoveOriginals->setEnabled(allowRemoval);
 }
 
-void LC_LineJoinOptions::onAttributesSourceIndexChanged(int index){
+void LC_LineJoinOptions::onAttributesSourceIndexChanged(const int index) const {
     if (m_action != nullptr){
         setAttributesSourceToActionAndView(index);
     }
 }
 
-void LC_LineJoinOptions::setEdgeModeLine1ToActionAndView(int index) const {
+void LC_LineJoinOptions::setEdgeModeLine1ToActionAndView(const int index) const {
     m_action->setLine1EdgeMode(index);
     ui->cbLine1EdgeMode->setCurrentIndex(index);
 }
 
-void LC_LineJoinOptions::setAttributesSourceToActionAndView(int index) const {
+void LC_LineJoinOptions::setAttributesSourceToActionAndView(const int index) const {
     m_action->setAttributesSource(index);
     ui->cbAttributesSource->setCurrentIndex(index);
 }
 
-void LC_LineJoinOptions::setEdgeModeLine2ToActionAndView(int index) const {
+void LC_LineJoinOptions::setEdgeModeLine2ToActionAndView(const int index) const {
     m_action->setLine2EdgeMode(index);
     ui->cbLine2EdgeMode->setCurrentIndex(index);
 }
 
-void LC_LineJoinOptions::setUsePolylineToActionAndView(bool value) const {
+void LC_LineJoinOptions::setUsePolylineToActionAndView(const bool value) const {
     m_action->setCreatePolyline(value);
     ui->cbPolyline->setChecked(value);
 }
 
-void LC_LineJoinOptions::setRemoveOriginalsToActionAndView(bool value) const {
+void LC_LineJoinOptions::setRemoveOriginalsToActionAndView(const bool value) const {
    m_action->setRemoveOriginalLines(value);
    ui->cbRemoveOriginals->setChecked(value);
 }

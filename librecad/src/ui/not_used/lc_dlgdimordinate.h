@@ -48,4 +48,4 @@ private:
     Ui::LC_DlgDimOrdinate *ui;
 };
 
-#endif // LC_DLDDIMORDINATE_H
+#endif

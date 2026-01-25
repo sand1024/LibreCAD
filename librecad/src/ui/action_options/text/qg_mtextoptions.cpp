@@ -24,6 +24,7 @@
 **
 **********************************************************************/
 #include "qg_mtextoptions.h"
+
 #include "rs_actiondrawmtext.h"
 #include "ui_qg_mtextoptions.h"
 
@@ -32,9 +33,8 @@
  *  name 'name' and widget flags set to 'f'.
  */
 QG_MTextOptions::QG_MTextOptions()
-    : LC_ActionOptionsWidgetBase(RS2::ActionDrawMText, "", "")
-    , ui{std::make_unique<Ui::Ui_MTextOptions>()}{
-	ui->setupUi(this);
+    : LC_ActionOptionsWidgetBase(RS2::ActionDrawMText, "", ""), ui{std::make_unique<Ui::Ui_MTextOptions>()} {
+    ui->setupUi(this);
     connect(ui->leAngle, &QLineEdit::textEdited, this, &QG_MTextOptions::updateAngle);
     pickAngleSetup("angle", ui->tbPickAngle, ui->leAngle);
 }
@@ -48,24 +48,24 @@ QG_MTextOptions::~QG_MTextOptions() = default;
  *  Sets the strings of the subwidgets using the current
  *  language.
  */
-void QG_MTextOptions::languageChange(){
-	ui->retranslateUi(this);
+void QG_MTextOptions::languageChange() {
+    ui->retranslateUi(this);
 }
 
-void QG_MTextOptions::doSaveSettings(){
+void QG_MTextOptions::doSaveSettings() {
 }
 
-
-void QG_MTextOptions::doSetAction(RS_ActionInterface *a, bool update){
-    m_action = dynamic_cast<RS_ActionDrawMText *>(a);
+void QG_MTextOptions::doSetAction(RS_ActionInterface* a, const bool update) {
+    m_action = static_cast<RS_ActionDrawMText*>(a);
 
     QString text;
     QString angle;
-    if (update){
+    if (update) {
         text = m_action->getText();
         angle = fromDouble(m_action->getUcsAngleDegrees());
-    } else {
-        text = "";
+    }
+    else {
+        text.clear();
         angle = "0.0";
     }
     ui->teText->setText(text);
@@ -89,7 +89,7 @@ void QG_MTextOptions::updateText() const {
 
 void QG_MTextOptions::updateAngle() {
     double angle = 0.;
-    QString val = ui->leAngle->text();
+    const QString val = ui->leAngle->text();
     if (toDoubleAngleDegrees(val, angle, 0.0, false)) {
         m_action->setUcsAngleDegrees(angle);
     }

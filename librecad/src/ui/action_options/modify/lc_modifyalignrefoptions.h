@@ -36,11 +36,11 @@ public:
     explicit LC_ModifyAlignRefOptions();
     ~LC_ModifyAlignRefOptions() override;
 protected slots:
-    void onScaleClicked(bool clicked);
+    void onScaleClicked(bool clicked) const;
     void languageChange() override;
-    void cbKeepOriginalsClicked(bool val);
-    void cbUseCurrentAttributesClicked(bool val);
-    void cbUseCurrentLayerClicked(bool val);
+    void cbKeepOriginalsClicked(bool val) const;
+    void cbUseCurrentAttributesClicked(bool val) const;
+    void cbUseCurrentLayerClicked(bool val) const;
 protected:
     void doSaveSettings() override;
     void doSetAction(RS_ActionInterface *a, bool update) override;
@@ -53,4 +53,4 @@ private:
     LC_ActionModifyAlignRef* m_action = nullptr;
 };
 
-#endif // LC_MODIFYALIGNREFOPTIONS_H
+#endif
