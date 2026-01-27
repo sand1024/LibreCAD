@@ -26,8 +26,9 @@ bool dwgReader21::readMetaData() {
     decoder.setVersion(version, false);
     DRW_DBG("dwgReader21::readFileHeader()\n");
     DRW_DBG("dwgReader21::parsing metadata\n");
-    if (! fileBuf->setPosition(11))
+    if (! fileBuf->setPosition(11)) {
         return false;
+    }
     maintenanceVersion = fileBuf->getRawChar8();
     DRW_DBG("maintenance version= "); DRW_DBGH(maintenanceVersion);
     DRW_DBG("\nbyte at 0x0C= "); DRW_DBG(fileBuf->getRawChar8());
@@ -37,8 +38,9 @@ bool dwgReader21::readMetaData() {
     DRW_DBG("\napp writer maintenance version= "); DRW_DBGH(fileBuf->getRawChar8());
     duint16 cp = fileBuf->getRawShort16();
     DRW_DBG("\ncodepage= "); DRW_DBG(cp);
-    if (cp == 30)
+    if (cp == 30) {
         decoder.setCodePage("ANSI_1252", false);
+    }
     /* UNKNOUWN SECTION 2 bytes*/
     DRW_DBG("\nUNKNOWN SECTION= "); DRW_DBG(fileBuf->getRawShort16());
     DRW_DBG("\nUNKNOUWN SECTION 3b= "); DRW_DBG(fileBuf->getRawChar8());
@@ -63,8 +65,9 @@ bool dwgReader21::parseSysPage(duint64 sizeCompressed, duint64 sizeUncompressed,
     duint32 chunks = (((alsize * correctionFactor)+238)/239);
     duint64 fpsize = chunks * 255;
 
-    if (! fileBuf->setPosition(offset))
+    if (! fileBuf->setPosition(offset)) {
         return false;
+    }
     std::vector<duint8> tmpDataRaw(fpsize);
     fileBuf->getBytes(&tmpDataRaw.front(), fpsize);
     std::vector<duint8> tmpDataRS(fpsize);
@@ -77,8 +80,9 @@ bool dwgReader21::parseDataPage(const dwgSectionInfo &si, duint8 *dData){
     DRW_DBG("parseDataPage, section size: "); DRW_DBG(si.size);
     for (auto it=si.pages.begin(); it!=si.pages.end(); ++it){
         dwgPageInfo pi = it->second;
-        if (!fileBuf->setPosition(pi.address))
+        if (!fileBuf->setPosition(pi.address)) {
             return false;
+        }
 
         std::vector<duint8> tmpPageRaw(pi.size);
         fileBuf->getBytes(&tmpPageRaw.front(), pi.size);
@@ -128,8 +132,9 @@ bool dwgReader21::parseDataPage(const dwgSectionInfo &si, duint8 *dData){
 bool dwgReader21::readFileHeader() {
 
     DRW_DBG("\n\ndwgReader21::parsing file header\n");
-    if (! fileBuf->setPosition(0x80))
+    if (! fileBuf->setPosition(0x80)) {
         return false;
+    }
     duint8 fileHdrRaw[0x2FD];//0x3D8
     fileBuf->getBytes(fileHdrRaw, 0x2FD);
     duint8 fileHdrdRS[0x2CD];
@@ -319,8 +324,9 @@ bool dwgReader21::readFileHeader() {
         }
     }
 
-    if (! fileBuf->isGood())
+    if (! fileBuf->isGood()) {
         return false;
+    }
 
     DRW_DBG("\ndwgReader21::readFileHeader END\n");
     return true;
@@ -352,7 +358,9 @@ bool dwgReader21::readDwgClasses(){
     DRW_DBG("\ndwgReader21::readDwgClasses");
     dwgSectionInfo si = sections[secEnum::CLASSES];
     if (si.Id<0)//not found, ends
+    {
         return false;
+    }
 
     DRW_DBG("\nprepare section of size "); DRW_DBG(si.size);DRW_DBG("\n");
     std::vector<duint8> tmpClassesData( si.size);
@@ -416,7 +424,7 @@ bool dwgReader21::readDwgClasses(){
     duint32 endDataPos = maxClassNum-499;
     DRW_DBG("\nbuff.getPosition: "); DRW_DBG(buff.getPosition());
     for (duint32 i= 0; i<endDataPos;i++) {
-        DRW_Class *cl = new DRW_Class();
+        auto cl = new DRW_Class();
         cl->parseDwg(version, &buff, &strBuff);
         classesmap[cl->classNum] = cl;
         DRW_DBG("\nbuff.getPosition: "); DRW_DBG(buff.getPosition());
@@ -436,13 +444,16 @@ bool dwgReader21::readDwgHandles(){
     DRW_DBG("\ndwgReader21::readDwgHandles");
     dwgSectionInfo si = sections[secEnum::HANDLES];
     if (si.Id<0)//not found, ends
+    {
         return false;
+    }
 
     DRW_DBG("\nprepare section of size "); DRW_DBG(si.size);DRW_DBG("\n");
     std::vector<duint8> tmpHandlesData(si.size);
     bool ret = dwgReader21::parseDataPage(si, tmpHandlesData.data());
-    if (!ret)
+    if (!ret) {
         return ret;
+    }
 
     dwgBuffer dataBuf(tmpHandlesData.data(), si.size, &decoder);
 
@@ -459,14 +470,17 @@ bool dwgReader21::readDwgTables(DRW_Header& hdr) {
     DRW_DBG("\ndwgReader21::readDwgTables\n");
     dwgSectionInfo si = sections[secEnum::OBJECTS];
     if (si.Id<0)//not found, ends
+    {
         return false;
+    }
 
     DRW_DBG("\nprepare section of size "); DRW_DBG(si.size);DRW_DBG("\n");
     dataSize = si.size;
     objData.reset( new duint8 [dataSize] );
     bool ret = dwgReader21::parseDataPage(si, objData.get());
-    if (!ret)
+    if (!ret) {
         return ret;
+    }
 
     DRW_DBG("readDwgTables total data size= "); DRW_DBG(dataSize); DRW_DBG("\n");
     dwgBuffer dataBuf(objData.get(), dataSize, &decoder);

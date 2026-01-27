@@ -85,8 +85,7 @@ private:
     bool parseDataPage(const dwgSectionInfo &si/*, duint8 *dData*/); //called ???: Section map: 0x4163003b
     duint32 checksum(duint32 seed, duint8* data, duint64 sz);
 
-private:
-    duint32 securityFlags;
+duint32 securityFlags;
 };
 
-#endif // DWGREADER18_H
+#endif

@@ -64,8 +64,8 @@ public:
 
     DRW_TableEntry() {}
 
-    virtual~DRW_TableEntry() {
-        for (std::vector<DRW_Variant*>::iterator it = extData.begin(); it != extData.end(); ++it) {
+    ~DRW_TableEntry() override {
+        for (auto it = extData.begin(); it != extData.end(); ++it) {
             delete *it;
         }
 
@@ -79,11 +79,10 @@ public:
         name {e.name},
         flags {e.flags},
         xDictFlag {e.xDictFlag},
-        numReactors {e.numReactors},
-        curr {nullptr}    {
-        for (std::vector<DRW_Variant *>::const_iterator it = e.extData.begin(); it != e.extData.end(); ++it) {
+        numReactors {e.numReactors}    {
+        for (auto it = e.extData.begin(); it != e.extData.end(); ++it) {
             DRW_Variant *src = *it;
-            DRW_Variant *dst = new DRW_Variant( *src);
+            auto dst = new DRW_Variant( *src);
             extData.push_back( dst);
             if (src == e.curr) {
                 curr = dst;
@@ -94,7 +93,7 @@ public:
 
     void reset() {
         flags = 0;
-        for (std::vector<DRW_Variant*>::iterator it = extData.begin(); it != extData.end(); ++it) {
+        for (auto it = extData.begin(); it != extData.end(); ++it) {
             delete *it;
         }
         extData.clear();
@@ -109,7 +108,7 @@ protected:
     bool parseDwg(DRW::Version version, dwgBuffer *buf, dwgBuffer* strBuf, duint32 bs=0);
 
 public:
-    enum DRW::TTYPE tType {DRW::UNKNOWNT};  /*!< enum: entity type, code 0 */
+    DRW::TTYPE tType {DRW::UNKNOWNT};  /*!< enum: entity type, code 0 */
     duint32         handle {0};             /*!< entity identifier, code 5 */
     int             parentHandle {0};       /*!< Soft-pointer ID/handle to owner object, code 330 */
     UTF8STRING      name;                   /*!< entry name, code 2 */
@@ -374,7 +373,7 @@ public:
     int color;                      /*!< layer color, code 62 */
     int color24;                    /*!< 24-bit color, code 420 */
     bool plotF;                     /*!< Plot flag, code 290 */
-    enum DRW_LW_Conv::lineWidth lWeight; /*!< layer lineweight, code 370 */
+    DRW_LW_Conv::lineWidth lWeight; /*!< layer lineweight, code 370 */
     std::string handlePlotS;        /*!< Hard-pointer ID/handle of plotstyle, code 390 */
     std::string handleMaterialS;        /*!< Hard-pointer ID/handle of materialstyle, code 347 */
 /*only used for read dwg*/
@@ -408,7 +407,6 @@ public:
 //Note:    int DRW_TableEntry::flags; contains code 70 of block
     int insUnits;             /*!< block insertion units, code 70 of block_record*/
     DRW_Coord basePoint;      /*!<  block insertion base point dwg only */
-protected:
     //dwg parser
 private:
     duint32 block;   //handle for block entity

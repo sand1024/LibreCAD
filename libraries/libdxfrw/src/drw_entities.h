@@ -132,7 +132,7 @@ protected:
     bool parseDxfGroups(int code, dxfReader *reader);
 
 public:
-	enum DRW::ETYPE eType = DRW::UNKNOWN;     /*!< enum: entity type, code 0 */
+    DRW::ETYPE eType = DRW::UNKNOWN;     /*!< enum: entity type, code 0 */
 	duint32 handle = DRW::NoHandle;            /*!< entity identifier, code 5 */
     std::list<std::list<DRW_Variant> > appData; /*!< list of application data, code 102 */
 	duint32 parentHandle = DRW::NoHandle;      /*!< Soft-pointer ID/handle to owner BLOCK_RECORD object, code 330 */
@@ -141,7 +141,7 @@ public:
 	UTF8STRING lineType = "BYLAYER";       /*!< line type, code 6 */
 	duint32 material = DRW::MaterialByLayer;          /*!< hard pointer id to material object, code 347 */
 	int color = DRW::ColorByLayer;                 /*!< entity color, code 62 */
-	enum DRW_LW_Conv::lineWidth lWeight = DRW_LW_Conv::widthByLayer; /*!< entity lineweight, code 370 */
+    DRW_LW_Conv::lineWidth lWeight = DRW_LW_Conv::widthByLayer; /*!< entity lineweight, code 370 */
 	double ltypeScale = 1.0;         /*!< linetype scale, code 48 */
 	bool visible = true;              /*!< entity visibility, code 60 */
 	int numProxyGraph = 0;         /*!< Number of bytes in proxy graphics, code 92 */
@@ -515,7 +515,7 @@ public:
     int rowcount;            /*!< row count, code 71 */
     double colspace;         /*!< column space, code 44 */
     double rowspace;         /*!< row space, code 45 */
-public: //only for read dwg
+ //only for read dwg
     dwgHandle blockRecH;
     dwgHandle seqendH; //RLZ: on implement attrib remove this handle from obj list (see pline/vertex code)
 };
@@ -664,8 +664,8 @@ public:
     double oblique;            /*!< oblique angle, code 51 */
     UTF8STRING style;          /*!< style name, code 7 */
     int textgen;               /*!< text generation, code 71 */
-    enum HAlign alignH;        /*!< horizontal align, code 72 */
-    enum VAlign alignV;        /*!< vertical align, code 73 */
+    HAlign alignH;        /*!< horizontal align, code 72 */
+    VAlign alignV;        /*!< vertical align, code 73 */
     dwgHandle styleH;          /*!< handle for text style */
 };
 
@@ -868,8 +868,7 @@ public:
         numedges = objlist.size();
     }
 
-public:
-    int type;               /*!< boundary path type, code 92, polyline=2, default=0 */
+int type;               /*!< boundary path type, code 92, polyline=2, default=0 */
     int numedges;           /*!< number of edges (if not a polyline), code 93 */
 //TODO: store lwpolylines as entities
 //    std::vector<DRW_LWPolyline *> pollist;  /*!< polyline list */
@@ -1149,7 +1148,6 @@ class   DRW_ArcDimension: public DRW_Dimension {
     SETENTFRIENDS
 public:
     ~DRW_ArcDimension() override = default;
-private:
     // DRW_Coord def3;            /*!< Definition point 3, code 14, 24 & 34 (WCS) */
     // DRW_Coord def4;            /*!< Definition point 3, code 14, 24 & 34 (WCS) */
 

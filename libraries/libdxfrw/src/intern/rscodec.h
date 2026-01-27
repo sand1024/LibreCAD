@@ -64,4 +64,4 @@ private:
     int *alpha_to;
 };
 
-#endif // RSCODEC_H
+#endif

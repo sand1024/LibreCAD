@@ -55,4 +55,4 @@ private:
 
 };
 
-#endif // DWGREADER21_H
+#endif

@@ -41,4 +41,4 @@ public:
 };
 
 
-#endif // DWGREADER15_H
+#endif

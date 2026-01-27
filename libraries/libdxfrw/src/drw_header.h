@@ -107,7 +107,7 @@ public:
     bool parseCode(int code, dxfReader *reader) override;
     std::unordered_map<std::string,DRW_Variant*> vars;
     std::unordered_map<std::string,DRW_Variant*> customVars;
-    static int measurement(const int unit);
+    static int measurement(int unit);
 protected:
     void writeVar(dxfWriter* writer, std::string name, double defaultValue, int varCode = 40);
     void writeVar(dxfWriter* writer, std::string name, int defaultValue, int varCode = 70);
@@ -144,13 +144,15 @@ private:
     bool getCoord(std::string key, DRW_Coord *varStr);
 
     void clearVars(){
-        for (auto it=vars.begin(); it!=vars.end(); ++it)
+        for (auto it=vars.begin(); it!=vars.end(); ++it) {
             delete it->second;
+        }
 
         vars.clear();
 
-        for (auto it=customVars.begin(); it!=customVars.end(); ++it)
+        for (auto it=customVars.begin(); it!=customVars.end(); ++it) {
             delete it->second;
+        }
 
         customVars.clear();
     }

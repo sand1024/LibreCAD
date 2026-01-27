@@ -167,7 +167,7 @@ private:
     bool writeExtData(const std::vector<DRW_Variant*> &ed);
     bool writeAppData(const std::list<std::list<DRW_Variant>> &appData);
     bool writeLineTypeGenerics(DRW_LType* ent, int handle);
-    bool setError(const DRW::error lastError);
+    bool setError(DRW::error lastError);
 
     inline bool writeString(int code, const std::string &text) const;
     inline bool writeDouble(int code, double d) const;
@@ -244,4 +244,4 @@ private:
 
 
 
-#endif // LIBDXFRW_H
+#endif

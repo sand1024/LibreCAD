@@ -292,7 +292,7 @@ bool DL_Jww::readDxfGroups(std::stringstream& stream,
 bool DL_Jww::getChoppedLine(char *s, unsigned int size, FILE *fp) {
     if (!feof(fp)) {
         // The whole line in the file.  Includes space for NULL.
-        char* wholeLine = new char[size];
+        auto wholeLine = new char[size];
         // Only the useful part of the line
         char* line;
 
@@ -314,10 +314,9 @@ bool DL_Jww::getChoppedLine(char *s, unsigned int size, FILE *fp) {
         delete[] wholeLine; // Done with wholeLine
 
         return true;
-    } else {
-        s[0] = '\0';
-        return false;
     }
+    s[0] = '\0';
+    return false;
 }
 
 
@@ -335,10 +334,9 @@ bool DL_Jww::getChoppedLine(char *s, unsigned int size,
         stripWhiteSpace(&s);
         assert(size > strlen(s));
         return true;
-    } else {
-        s[0] = '\0';
-        return false;
     }
+    s[0] = '\0';
+    return false;
 }
 #endif
 
@@ -1145,8 +1143,8 @@ bool DL_Jww::handleLWPolylineData(DL_CreationInterface* /*creationInterface*/) {
     }
 
     // Compute LWPolylines vertices (group codes 10/20/30/42):
-    else if (groupCode==10 || groupCode==20 ||
-             groupCode==30 || groupCode==42) {
+    if (groupCode==10 || groupCode==20 ||
+        groupCode==30 || groupCode==42) {
 
         if (vertexIndex<maxVertices-1 && groupCode==10) {
             vertexIndex++;
@@ -1155,7 +1153,7 @@ bool DL_Jww::handleLWPolylineData(DL_CreationInterface* /*creationInterface*/) {
         if (groupCode<=30) {
             if (vertexIndex>=0 && vertexIndex<maxVertices) {
                 vertices[4*vertexIndex + (groupCode/10-1)]
-                = toReal(groupValue);
+                    = toReal(groupValue);
             }
         } else if (groupCode==42 && vertexIndex<maxVertices) {
             vertices[4*vertexIndex + 3] = toReal(groupValue);
@@ -1188,7 +1186,7 @@ bool DL_Jww::handleSplineData(DL_CreationInterface* /*creationInterface*/) {
     }
 
     // Allocate Spline control points (group code 73):
-    else if (groupCode==73) {
+    if (groupCode==73) {
         maxControlPoints = toInt(groupValue);
         if (maxControlPoints>0) {
             if (controlPoints!=NULL) {
@@ -1206,7 +1204,7 @@ bool DL_Jww::handleSplineData(DL_CreationInterface* /*creationInterface*/) {
     }
 
     // Compute spline knot vertices (group code 40):
-    else if (groupCode==40) {
+    if (groupCode==40) {
         if (knotIndex<maxKnots-1) {
             knotIndex++;
             knots[knotIndex] = toReal(groupValue);
@@ -1215,8 +1213,8 @@ bool DL_Jww::handleSplineData(DL_CreationInterface* /*creationInterface*/) {
     }
 
     // Compute spline control points (group codes 10/20/30):
-    else if (groupCode==10 || groupCode==20 ||
-             groupCode==30) {
+    if (groupCode==10 || groupCode==20 ||
+        groupCode==30) {
 
         if (controlPointIndex<maxControlPoints-1 && groupCode==10) {
             controlPointIndex++;
@@ -1224,7 +1222,7 @@ bool DL_Jww::handleSplineData(DL_CreationInterface* /*creationInterface*/) {
 
         if (controlPointIndex>=0 && controlPointIndex<maxControlPoints) {
             controlPoints[3*controlPointIndex + (groupCode/10-1)]
-            = toReal(groupValue);
+                = toReal(groupValue);
         }
         return true;
     }
@@ -1256,7 +1254,7 @@ bool DL_Jww::handleLeaderData(DL_CreationInterface* /*creationInterface*/) {
     }
 
     // Compute Leader vertices (group codes 10/20/30):
-    else if (groupCode==10 || groupCode==20 || groupCode==30) {
+    if (groupCode==10 || groupCode==20 || groupCode==30) {
 
         if (leaderVertexIndex<maxLeaderVertices-1 && groupCode==10) {
             leaderVertexIndex++;
@@ -1264,9 +1262,9 @@ bool DL_Jww::handleLeaderData(DL_CreationInterface* /*creationInterface*/) {
 
         if (groupCode<=30) {
             if (leaderVertexIndex>=0 &&
-                    leaderVertexIndex<maxLeaderVertices) {
+                leaderVertexIndex<maxLeaderVertices) {
                 leaderVertices[3*leaderVertexIndex + (groupCode/10-1)]
-                = toReal(groupValue);
+                    = toReal(groupValue);
             }
         }
         return true;
@@ -2023,7 +2021,8 @@ int DL_Jww::stringToInt(const char* s, bool* ok) {
         do {
             if (s[i]=='\0') {
                 break;
-            } else if (s[i]=='.') {
+            }
+            if (s[i]=='.') {
                 if (dot==true) {
                     //std::cerr << "two dots\n";
                     *ok = false;
@@ -2052,17 +2051,16 @@ int DL_Jww::stringToInt(const char* s, bool* ok) {
  * @return Pointer to an ascii dxf writer object.
  */
 DL_WriterA* DL_Jww::out(const char* file, DL_Codes::version version) {
-    char* f = new char[strlen(file)+1];
+    auto f = new char[strlen(file)+1];
     strcpy(f, file);
     this->version = version;
 
-    DL_WriterA* dw = new DL_WriterA(f, version);
+    auto dw = new DL_WriterA(f, version);
     if (dw->openFailed()) {
         delete dw;
         return NULL;
-    } else {
-        return dw;
     }
+    return dw;
 }
 
 
@@ -4401,7 +4399,8 @@ void DL_Jww::writeObjectsEnd(DL_WriterA& dw) {
 bool DL_Jww::checkVariable(const char* var, DL_Codes::version version) {
     if (version>=VER_2000) {
         return true;
-    } else if (version==VER_R12) {
+    }
+    if (version==VER_R12) {
         // these are all the variables recognized by dxf r12:
         if (!strcmp(var, "$ACADVER")) {
             return true;
@@ -4876,10 +4875,9 @@ int DL_Jww::getLibVersion(const char* str) {
               (atoi(v[3])<<(0*8));
 
         return ret;
-    } else {
-        std::cerr << "DL_Jww::getLibVersion: invalid version number: " << str << "\n";
-        return 0;
     }
+    std::cerr << "DL_Jww::getLibVersion: invalid version number: " << str << "\n";
+    return 0;
 }
 
 

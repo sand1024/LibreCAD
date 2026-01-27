@@ -102,7 +102,7 @@ public:
             DL_CreationInterface* creationInterface);
     bool readJwwGroups(FILE* fp,
                        DL_CreationInterface* creationInterface,
-					   int* errorCounter = NULL);
+					   int* errorCounter = nullptr);
 
     bool processJwwGroup(DL_CreationInterface* creationInterface,
                          int groupCode, const char* groupValue);
@@ -155,7 +155,7 @@ public:
 
     void endSequence(DL_CreationInterface* creationInterface);
 
-	int  stringToInt(const char* s, bool* ok=NULL) ;
+	int  stringToInt(const char* s, bool* ok= nullptr) ;
 
     DL_WriterA* out(const char* file,
                     DL_Codes::version version=VER_2000);
@@ -280,8 +280,8 @@ public:
     static double toReal(const char* value, double def=0.0) {
        if (value && value[0] != '\0') {
             double ret;
-            if (strchr(value, ',') != NULL) {
-               char* tmp = new char[strnlen(value, 20)+1];
+            if (strchr(value, ',') != nullptr) {
+               auto tmp = new char[strnlen(value, 20)+1];
                strncpy(tmp, value, 20);
                DL_WriterA::strReplace(tmp, ',', '.');
                ret = atof(tmp);
@@ -291,9 +291,8 @@ public:
                ret = atof(value);
             }
 			return ret;
-        } else {
-            return def;
         }
+       return def;
     }
     /**
      * Converts the given string into an int or returns the given
@@ -302,9 +301,8 @@ public:
     static int toInt(const char* value, int def=0) {
         if (value && value[0] != '\0') {
             return atoi(value);
-        } else {
-            return def;
         }
+        return def;
     }
     /**
      * Converts the given string into a string or returns the given
@@ -313,9 +311,8 @@ public:
     static const char* toString(const char* value, const char* def="") {
         if (value && value[0] != '\0') {
             return value;
-        } else {
-            return def;
         }
+        return def;
     }
 
 	static bool checkVariable(const char* var, DL_Codes::version version);

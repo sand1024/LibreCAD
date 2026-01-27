@@ -59,4 +59,4 @@ public:
     bool writeBool(int code, bool data) override;
 };
 
-#endif // DXFWRITER_H
+#endif

@@ -670,7 +670,7 @@ void DL_Jww::CreateBlock(DL_CreationInterface* /*creationInterface*/, CDataBlock
 bool DL_Jww::in(const string& file, DL_CreationInterface* creationInterface) {
 	//JWWファイル読み取り
 	string ofile("");
-	JWWDocument* jwdoc = new JWWDocument((std::string&)file, ofile);
+	auto jwdoc = new JWWDocument((std::string&)file, ofile);
 	if(!jwdoc->Read())
 		return false;
 	//DXF変数設定
@@ -1037,6 +1037,9 @@ void DL_Jww::endEntity(DL_CreationInterface* /*creationInterface*/) {
 void DL_Jww::endSequence(DL_CreationInterface* /*creationInterface*/) {
 }
 
+int DL_Jww::stringToInt(const char* s, bool* ok) {
+    return 0;
+}
 
 /**
  * @brief Opens the given file for writing and returns a pointer

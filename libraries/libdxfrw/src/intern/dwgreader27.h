@@ -49,4 +49,4 @@ public:
 //        return false;}
 };
 
-#endif // DWGREADER27_H
+#endif

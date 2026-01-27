@@ -50,4 +50,4 @@ public:
 //        return false;}
 };
 
-#endif // DWGREADER24_H
+#endif

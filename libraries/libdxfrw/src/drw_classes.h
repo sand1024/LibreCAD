@@ -47,7 +47,7 @@ public:
     int instanceCount;       /*!< number of instances for a custom class, code 91*/
     int wasaProxyFlag;       /*!< proxy flag (app loaded on save), code 280 */
     int entityFlag;          /*!< entity flag, code 281 (0 object, 1 entity)*/
-public: //only for read dwg
+     //only for read dwg
     duint16 classNum;
     int dwgType;
 };

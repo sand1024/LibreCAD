@@ -150,7 +150,7 @@ protected:
     bool readDwgHeader(DRW_Header& hdr, dwgBuffer *buf, dwgBuffer *hBuf) const;
     bool readDwgHandles(dwgBuffer *dbuf, duint64 offset, duint64 size);
     bool readDwgTables(DRW_Header& hdr, dwgBuffer *dbuf);
-    bool checkSentinel(dwgBuffer *buf, enum secEnum::DWGSection, bool start);
+    bool checkSentinel(dwgBuffer *buf, secEnum::DWGSection, bool start);
 
     bool readDwgBlocks(DRW_Interface& intfa, dwgBuffer *dbuf);
     bool readDwgEntities(DRW_Interface& intfa, dwgBuffer *dbuf);
@@ -186,10 +186,8 @@ protected:
     std::unordered_map<int, dwgSectionInfo >sections;
     std::unordered_map<duint32, DRW_Class*> classesmap;
 
-protected:
-    DRW_TextCodec decoder;
+DRW_TextCodec decoder;
 
-protected:
 //    duint32 blockCtrl;
     duint32 nextEntLink{0};
     duint32 prevEntLink{0};
@@ -211,4 +209,4 @@ private:
 
 
 
-#endif // DWGREADER_H
+#endif

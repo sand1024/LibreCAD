@@ -2916,7 +2916,7 @@ bool dxfRW::processPolyline() {
             }
             if (!processVertex(&pl)) {
                 return false;
-            };
+            }
         }
 
         if (!pl.parseCode(code, reader)) { //parseCode just initialize the members of pl

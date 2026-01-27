@@ -23,8 +23,7 @@ public:
 private:
     std::string correctCodePage(const std::string& s);
 
-private:
-    DRW::Version version{DRW::UNKNOWNV};
+DRW::Version version{DRW::UNKNOWNV};
     std::string cp;
     std::unique_ptr< DRW_Converter> conv;
 };
@@ -85,4 +84,4 @@ public:
 
 };
 
-#endif // DRW_TEXTCODEC_H
+#endif

@@ -530,9 +530,11 @@ cout << "MojiData1:" << m_strFontName << endl;
 
 				ifstr.read(buf,wd);
 
-				if (skip != 0) ifstr.ignore(skip);
+				if (skip != 0) {
+                    ifstr.ignore(skip);
+                }
 
-				buf[wd] = '\0';
+                buf[wd] = '\0';
 				m_strFontName = buf;
 #ifdef	DATA_DUMP
 cout << "MojiData2:" << m_strFontName << endl;
@@ -558,9 +560,11 @@ cout << "MojiData3:"  << m_string << endl;
 
 				ifstr.read(buf,wd);
 
-				if (skip != 0) ifstr.ignore(skip);
+				if (skip != 0) {
+                    ifstr.ignore(skip);
+                }
 
-				buf[wd] = '\0';
+                buf[wd] = '\0';
 				m_string = buf;
 #ifdef	DATA_DUMP
 cout << "MojiData4:"  << m_string << endl;
@@ -822,9 +826,11 @@ cout << "MojiData1:"  << m_strName << endl;
 
 			ifstr.read(buf,wd);
 
-			if (skip != 0) ifstr.ignore(skip);
+			if (skip != 0) {
+                ifstr.ignore(skip);
+            }
 
-			buf[wd] = '\0';
+            buf[wd] = '\0';
 			m_strName = buf;
 #ifdef	DATA_DUMP
 cout << "MojiData1:"  << m_strName << endl;
@@ -862,11 +868,9 @@ typedef	CDataType* PCDataType;
 //
 class	JWWBlockList
 {
-private:
 	vector<PCDataBlock> FBlockList;
 	vector<PCDataList> FDataList;
 	vector<CDataType> FDataType;
-protected:
 public:
 	JWWBlockList();
 	~JWWBlockList();
@@ -906,7 +910,6 @@ typedef	NoList*	PNoList;
 //データ格納リスト
 class	JWWList
 {
-private:
 	vector<PNoList> FList;
 
 public:
@@ -921,22 +924,25 @@ public:
 //JWWファイル入出力クラス
 class	JWWDocument
 {
-private:
 	string	InputFName,
 			OutputFName;
 public:
 	JWWDocument(string& iFName, string& oFName){
 		InputFName = iFName;
-		if(iFName.length()>0)
-			ifs = new ifstream(iFName.c_str(),ios::binary);
-		else
-			ifs = NULL;
-		OutputFName = oFName;
-		if(oFName.length()>0)
-			ofs = new ofstream(oFName.c_str(),ios::binary|ios::trunc);
-		else
-			ofs = NULL;
-		pList = new JWWList();
+		if(iFName.length()>0) {
+            ifs = new ifstream(iFName.c_str(),ios::binary);
+        }
+        else {
+            ifs = nullptr;
+        }
+        OutputFName = oFName;
+		if(oFName.length()>0) {
+            ofs = new ofstream(oFName.c_str(),ios::binary|ios::trunc);
+        }
+        else {
+            ofs = nullptr;
+        }
+        pList = new JWWList();
 		pBlockList = new JWWBlockList();
 	}
 	~JWWDocument(){
@@ -1010,4 +1016,4 @@ public:
 	jwBOOL SaveDataList(CDataList const& DList);
 };
 
-#endif //JWWDOC_H
+#endif

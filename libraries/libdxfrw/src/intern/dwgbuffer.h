@@ -150,4 +150,4 @@ private:
     UTF8STRING get16bitStr(duint16 textSize, bool nullTerm = true);
 };
 
-#endif // DWGBUFFER_H
+#endif

@@ -29,7 +29,7 @@
 
 #if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+#endif
 
 #if defined(__OS2__)||defined(__EMX__)||defined(_WIN32)
 # ifndef strcasecmp
@@ -68,7 +68,6 @@ public:
     }
 
     virtual ~DL_Writer() {}
-    ;
 
     /** Generic section for section 'name'.
      *
@@ -610,7 +609,6 @@ protected:
      * DXF version to be created.
      */
     DL_Codes::version version;
-private:
 };
 
 #endif

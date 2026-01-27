@@ -25,8 +25,8 @@ public:
         BOOL,
         INVALID
     };
-    enum TYPE type;
-public:
+
+    TYPE type;
     dxfReader(std::istream *stream){
         filestr = stream;
         type = INVALID;
@@ -59,8 +59,7 @@ protected:
     virtual bool readDouble() = 0;
     virtual bool readBool() = 0;
 
-protected:
-    std::istream *filestr;
+std::istream *filestr;
     std::string strData;
     double doubleData;
     signed int intData; //32 bits integer
@@ -99,4 +98,4 @@ public:
     bool readBool() override;
 };
 
-#endif // DXFREADER_H
+#endif

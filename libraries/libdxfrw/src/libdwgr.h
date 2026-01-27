@@ -41,8 +41,7 @@ private:
     bool processDwg();
     static std::unique_ptr< dwgReader > createReaderForVersion(DRW::Version version, std::ifstream *stream, dwgR *p);
 
-private:
-    DRW::Version version { DRW::UNKNOWNV };
+DRW::Version version { DRW::UNKNOWNV };
     DRW::error error { DRW::BAD_NONE };
     std::string fileName;
     bool applyExt { false }; /*apply extrusion in entities to conv in 2D?*/
@@ -52,4 +51,4 @@ private:
 
 };
 
-#endif // LIBDWGR_H
+#endif
