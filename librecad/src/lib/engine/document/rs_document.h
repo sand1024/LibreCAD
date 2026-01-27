@@ -144,7 +144,7 @@ public:
     }
 
     virtual LC_TextStyleList* getTextStyleList() = 0;
-
+    [[deprecated]]
     virtual void newDoc() = 0;
 
     /**
