@@ -120,7 +120,7 @@ QMenu *LC_MDIApplicationWindow::findMenu(const QString &searchMenu, const QObjec
     while (i != thisMenuList.end()) {
         if ((*i)->inherits ("QMenu")) {
             const auto *ii=static_cast<QMenu*>(*i);
-            if (QMenu *foundMenu=findMenu(searchMenu, ii->children(), currentEntry+"/"+ii->objectName().replace("&", ""))) {
+            if (QMenu *foundMenu=findMenu(searchMenu, ii->children(), currentEntry % "/" % ii->objectName().replace("&", ""))) {
                 return foundMenu;
             }
         }

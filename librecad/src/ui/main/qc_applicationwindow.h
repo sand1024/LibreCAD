@@ -128,11 +128,14 @@ class QC_ApplicationWindow : public LC_MDIApplicationWindow {
     void showStatusMessage(const QString& msg, int timeout = 0) const;
     void notificationMessage(const QString& msg, int timeout) const;
     void initCompleted();
-
-public slots:
-    void relayAction(QAction* q_action);
-    void slotFocus();
+    void openFilesOnStartup(QStringList& fileList, QSplashScreen* splash) const;
+    QMenu* createGraphicViewContentMenu(const QMouseEvent* event, QG_GraphicView* view, RS_Entity* entity, const RS_Vector& pos) const;
     void disableUIForAbsentDrawing();
+    void relayAction(QAction* q_action);
+    /** generates a new document for a graphic. */
+    QC_MDIWindow* createNewDrawingWindow(RS_Document* doc, const QString& expectedFileName);
+public slots:
+    void slotFocus();
     void slotKillAllActions();
     void slotFocusCommandLine();
     void slotFocusOptionsWidget();
@@ -140,15 +143,10 @@ public slots:
     void slotShowDrawingOptions() const;
     void slotShowDrawingOptionsUnits() const;
     void slotWorkspacesMenuAboutToShow() const;
-    QMenu* createGraphicViewContentMenu(const QMouseEvent* event, QG_GraphicView* view, RS_Entity* entity, const RS_Vector& pos) const;
-
     void slotWindowsMenuActivated(bool);
     void slotPenChanged(const RS_Pen& pen);
-
     //void slotSnapsChanged(RS_SnapMode s);
     void slotEnableActions(bool enable) const;
-    /** generates a new document for a graphic. */
-    QC_MDIWindow* createNewDrawingWindow(RS_Document* doc, const QString& expectedFileName);
     /** generates a new document based in predefined template */
     void slotFileNewFromDefaultTemplate();
     /** generates a new document based in selected template */
@@ -156,27 +154,21 @@ public slots:
     /** opens a document */
     void slotFileOpen();
     void slotEditActiveBlock();
-
     void slotFileOpenRecent(const QAction* action);
     /** saves a document */
     void slotFileSave();
     /** saves a document under a different filename*/
     void slotFileSaveAs();
-    bool doSaveAllFiles();
     /** saves all open documents; return false == operation cancelled **/
     void slotFileSaveAll();
     /** auto-save document */
     void autoSaveCurrentDrawing();
     /** exports the document as bitmap */
     void slotFileExport();
-
-    bool doCloseAllFiles();
     /** close all files; return false == operation cancelled */
     void slotFileCloseAll();
     /** prints the current file */
     void slotFilePrint(bool printPDF = false);
-    bool closePrintPreview(QC_MDIWindow* parent);
-    void openPrintPreview(QC_MDIWindow* parent);
     void slotFilePrintPDF();
     /** shows print preview of the current file */
     void slotFilePrintPreview(bool on);
@@ -191,7 +183,6 @@ public slots:
     /** toggle the statusbar */
     void slotViewStatusBar(bool toggle);
     void slotViewAntialiasing(bool toggle);
-
     void slotViewGridOrtho(bool toggle);
     void slotViewGridIsoLeft(bool toggle);
     void slotViewGridIsoRight(bool toggle);
@@ -201,8 +192,6 @@ public slots:
     void slotImportBlock();
     /** shows an about dlg*/
     void showAboutWindow() const;
-    void openFilesOnStartup(QStringList& fileList, QSplashScreen* splash) const;
-
     /**
      * @brief slotUpdateActiveLayer
      * update layer name when active layer changed
@@ -332,6 +321,10 @@ public:
     LC_ActionContext* getActionContext() const;
 
 protected:
+    bool closePrintPreview(QC_MDIWindow* parent);
+    void openPrintPreview(QC_MDIWindow* parent);
+    bool doSaveAllFiles();
+    bool doCloseAllFiles();
     void closeEvent(QCloseEvent*) override;
     bool isAcceptableDragNDropFileName(const QString& fileName);
     //! \{ accept drop files to open

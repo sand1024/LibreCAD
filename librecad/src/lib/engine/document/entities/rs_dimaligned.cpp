@@ -186,7 +186,7 @@ void RS_DimAligned::getDimPoints(RS_Vector& dimP1, RS_Vector& dimP2) const {
 
 double RS_DimAligned::doGetDistanceToPoint(const RS_Vector& coord, RS_Entity** entity, const RS2::ResolveLevel level,
                                            const double solidDist) const {
-    return RS_EntityContainer::getDistanceToPoint(coord, entity, level, solidDist);
+    return RS_EntityContainer::doGetDistanceToPoint(coord, entity, level, solidDist);
 }
 
 void RS_DimAligned::updateDimPoint() {

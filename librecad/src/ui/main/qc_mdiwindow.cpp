@@ -105,11 +105,6 @@ void QC_MDIWindow::setupGraphicView(const QWidget* parent, const bool printPrevi
     m_graphicView->setPrintPreview(printPreview);
     m_graphicView->setObjectName("graphicview");
 
-    const auto receiver = dynamic_cast<QC_ApplicationWindow*>(parent->window());
-    if (receiver != nullptr) {
-        connect(m_graphicView, &RS_GraphicView::previous_zoom_state, receiver, &QC_ApplicationWindow::setPreviousZoomEnable);
-    }
-
     setWidget(m_graphicView);
 }
 

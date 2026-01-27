@@ -129,7 +129,7 @@ inline QString RS_Variable::toString() {
         case RS2::VariableDouble:
             return QString::number(m_contents.d);
         case RS2::VariableVector:
-            return QString::number(m_contents.v.x) + " " + QString::number(m_contents.v.y);
+            return QString::number(m_contents.v.x) % " " % QString::number(m_contents.v.y);
         default:
             return "";
     }

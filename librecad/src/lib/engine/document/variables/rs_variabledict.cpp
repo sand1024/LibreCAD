@@ -128,12 +128,14 @@ void RS_VariableDict::add(const QString& key, const QString& value, const int co
             ok = false;
     }
     if (ok) {
-        m_variables.insert(key, result);
+        insert(key, result);
     }
     else {
         RS_DEBUG->print(QString("RS_VariableDict::addVariable(): Cant convert var from string. Name: %1, value: %2.").arg(key).arg(value));
     }
 }
+
+
 
 /**
  * Adds a variable to the variable dictionary. If a variable with the
@@ -147,7 +149,7 @@ void RS_VariableDict::add(const QString& key, const int value, const int code) {
         return;
     }
 
-    m_variables.insert(key, RS_Variable(value, code));
+    insert(key, RS_Variable(value, code));
 }
 
 void RS_VariableDict::add(const QString& key, const bool value, const int code) {
@@ -157,7 +159,7 @@ void RS_VariableDict::add(const QString& key, const bool value, const int code) 
         RS_DEBUG->print(RS_Debug::D_WARNING, "RS_VariableDict::addVariable(): No empty keys allowed.");
         return;
     }
-    m_variables.insert(key, RS_Variable(value ? 1 : 0, code));
+    insert(key, RS_Variable(value ? 1 : 0, code));
 }
 
 /**
@@ -171,7 +173,7 @@ void RS_VariableDict::add(const QString& key, const double value, const int code
         RS_DEBUG->print(RS_Debug::D_WARNING, "RS_VariableDict::addVariable(): No empty keys allowed.");
         return;
     }
-    m_variables.insert(key, RS_Variable(value, code));
+    insert(key, RS_Variable(value, code));
 }
 
 /**
@@ -186,7 +188,7 @@ void RS_VariableDict::add(const QString& key, const RS_Vector& value, const int 
         return;
     }
 
-    m_variables.insert(key, RS_Variable(value, code));
+    insert(key, RS_Variable(value, code));
 }
 
 /**

@@ -203,11 +203,14 @@ void QC_ApplicationWindow::setupMDIWindowTitleByFile(QC_MDIWindow* w, const QStr
 }
 
 void QC_ApplicationWindow::setupMDIWindowTitleByName(QC_MDIWindow* w, const QString& baseTitleString, const bool draftMode) {
-    auto title = baseTitleString + "[*]";
     if (draftMode) {
-        title = title + " [" + tr("Draft Mode") + "]";
+        const auto title = baseTitleString + "[*]" + " [" + tr("Draft Mode") + "]";
+        w->setWindowTitle(title);
     }
-    w->setWindowTitle(title);
+    else {
+        const auto title = baseTitleString + "[*]";
+        w->setWindowTitle(title);
+    }
 }
 
 /**
@@ -277,14 +280,6 @@ void QC_ApplicationWindow::doClose(QC_MDIWindow* w, const bool activateNext) {
     if (graphic != nullptr) {
         const auto view = w->getGraphicView();
         graphic->removeLayerListListener(view);
-        disconnect(view, &QG_GraphicView::gridStatusChanged, this, &QC_ApplicationWindow::updateGridStatus);
-        disconnect(view, &RS_GraphicView::currentActionChanged, this, &QC_ApplicationWindow::onViewCurrentActionChanged);
-        disconnect(view, &RS_GraphicView::previous_zoom_state, this, &QC_ApplicationWindow::setPreviousZoomEnable);
-
-        // fixme -----------------------------------------------------------------------------------------------------
-        // fixme heap corruption occurs there, or, if commented - it will occur later, in destructor of RS_GraphicView
-        // fixme -----------------------------------------------------------------------------------------------------
-        // view->disconnect();
     }
 
     for (auto&& child : std::as_const(w->getChildWindows())) {
@@ -781,9 +776,19 @@ QG_GraphicView* QC_ApplicationWindow::setupNewGraphicView(const QC_MDIWindow* w)
     if (showScrollbars) {
         view->addScrollbars();
     }
-
-    connect(view, &QG_GraphicView::gridStatusChanged, this, &QC_ApplicationWindow::updateGridStatus);
-    connect(view, &RS_GraphicView::currentActionChanged, this, &QC_ApplicationWindow::onViewCurrentActionChanged);
+     connect(view, &QG_GraphicView::gridStatusChanged, this, &QC_ApplicationWindow::updateGridStatus);
+     connect(view, &RS_GraphicView::currentActionChanged, this, &QC_ApplicationWindow::onViewCurrentActionChanged);
+    // ==========================================================================================================================
+    // NOTE: this connect leads to quite a mystical HEAP CORRUPTION in destructor in RS_GraphicView desctructor (or, of view->disconnedAll()
+    // is called. Dr.Memory dies earlier than it access this connect, so the reason is not too obvious.
+    // However, such heap corruption is observed only under MSVC compiler (Win 10), and only if functions inlining is
+    // enabled by compiler options (i.e with complier options used by default).
+    // I'm still not sure what is the reason for heap corruption there, however, it's seems that actually that slot is not actually needed
+    // as so far it seems it is not called.
+    // Thus let this commented call be there for now, and most probably it should be removed later (or some other slot will be used).
+    // ==========================================================================================================================
+    // connect(view, &RS_GraphicView::previousZoomAvailable, this, &QC_ApplicationWindow::setPreviousZoomEnable);
+    // ==========================================================================================================================
 
     return view;
 }
@@ -1332,7 +1337,8 @@ void QC_ApplicationWindow::openPrintPreview(QC_MDIWindow* parent) {
             //                gv->setBackground(RS_Color(255, 255, 255));
             view->setDefaultAction(new RS_ActionPrintPreview(m_actionContext)); // fixme - sand - is it correct for preview?
 
-            connect(view, &RS_GraphicView::currentActionChanged, this, &QC_ApplicationWindow::onViewCurrentActionChanged);
+            // fixme - view_connect_ok
+             connect(view, &RS_GraphicView::currentActionChanged, this, &QC_ApplicationWindow::onViewCurrentActionChanged);
 
             // only graphics offer block lists, blocks don't
             /*RS_DEBUG->print("  adding listeners");*/

@@ -86,6 +86,10 @@ public:
 
 private:
     //! Variables for the graphic
+    void insert(const QString& key, const RS_Variable& value) {
+        const QString actualKey = key;
+        m_variables.insert(actualKey, value);
+    }
     QHash<QString, RS_Variable> m_variables;
 };
 
