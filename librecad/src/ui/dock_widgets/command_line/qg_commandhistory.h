@@ -42,9 +42,9 @@ private slots:
 
 private:
     /*menu item for Copy*/
-    QAction* m_pCopy = nullptr;
+    QAction* m_actionCopy = nullptr;
     /*menu item for Select All*/
-    QAction* m_pSelectAll = nullptr;
+    QAction* m_actionSelectAll = nullptr;
 };
 
 #endif
