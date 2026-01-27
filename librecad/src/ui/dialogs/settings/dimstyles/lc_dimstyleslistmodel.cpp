@@ -50,7 +50,7 @@ QVariant LC_StylesListModel::data(const QModelIndex& index, const int role) cons
     switch (role) {
         case Qt::DisplayRole: {
             if (m_showUsagesCount) {
-                return item->displayName() + " (" + QString::number(item->usageCount()) + ")";
+                return QVariant(item->displayName() + " (" + QString::number(item->usageCount()) + ")");
             }
             return item->displayName();
         }

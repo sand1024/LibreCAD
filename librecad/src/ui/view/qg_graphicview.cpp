@@ -1501,7 +1501,7 @@ bool QG_GraphicView::isAutoPan(const QMouseEvent* event) const {
 }
 
 void QG_GraphicView::deleteActionContext() const {
-    delete m_actionContext;
+     delete m_actionContext;
 }
 
 /*

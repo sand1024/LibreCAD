@@ -53,7 +53,7 @@ QVariant LC_DimStyleTreeModel::data(const QModelIndex& index, const int role) co
                 displayName = "[A] " + displayName;
             }
             if (usageCount > 0) {
-                return displayName + " (" + QString::number(item->usageCount()) + ")";
+                return QVariant(displayName + " (" + QString::number(item->usageCount()) + ")");
             }
             return displayName;
         }

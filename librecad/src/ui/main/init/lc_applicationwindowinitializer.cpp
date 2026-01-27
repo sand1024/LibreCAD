@@ -56,8 +56,8 @@
 #include "rs_settings.h"
 
 LC_ApplicationWindowInitializer::LC_ApplicationWindowInitializer(QC_ApplicationWindow *appWindow)
-    : LC_AppWindowAware{appWindow}
-{}
+    : LC_AppWindowAware{appWindow} {
+}
 
 void LC_ApplicationWindowInitializer::initApplication(){
     m_appWin->m_actionHandler = std::make_unique<QG_ActionHandler>(m_appWin);
