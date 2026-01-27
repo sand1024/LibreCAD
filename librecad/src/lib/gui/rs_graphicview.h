@@ -173,7 +173,7 @@ public:
 signals:
     void ucsChanged(LC_UCS* ucs);
     void relativeZeroChanged(const RS_Vector &);
-    void previous_zoom_state(bool);
+    void previousZoomAvailable(bool available);
     void currentActionChanged(RS2::ActionType actionType);
     void defaultActionActivated(bool value, RS2::ActionType prevActionRtti);
 protected:

@@ -65,7 +65,7 @@ QString LC_Formatter::formatWCSVector(const RS_Vector &wcsPos) const{
     const QString x = RS_Units::formatLinear(ucsX, m_unit, m_linearFormat, m_linearPrecision);
     const QString y = RS_Units::formatLinear(ucsY, m_unit, m_linearFormat, m_linearPrecision);
 
-    QString result = x + ", " + y;
+    QString result = x % ", " % y;
     return result;
 }
 
@@ -73,7 +73,7 @@ QString LC_Formatter::formatUCSVector(const RS_Vector &ucsPos) const{
     const QString x = RS_Units::formatLinear(ucsPos.x, m_unit, m_linearFormat, m_linearPrecision);
     const QString y = RS_Units::formatLinear(ucsPos.y, m_unit, m_linearFormat, m_linearPrecision);
 
-    QString result = x + ", " + y;
+    QString result = x % ", " % y;
     return result;
 }
 
@@ -87,7 +87,7 @@ QString LC_Formatter::formatWCSDeltaVector(const RS_Vector &wcsDelta) const{
     const QString x = RS_Units::formatLinear(ucsX, m_unit, m_linearFormat, m_linearPrecision);
     const QString y = RS_Units::formatLinear(ucsY, m_unit, m_linearFormat, m_linearPrecision);
 
-    QString result = x + ", " + y;
+    QString result = x % ", " % y;
     return result;
 }
 

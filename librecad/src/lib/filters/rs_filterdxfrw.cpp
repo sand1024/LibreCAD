@@ -2866,7 +2866,8 @@ void RS_FilterDXFRW::writeHeader(DRW_Header& data) {
     while (it != vars.end()) {
         auto value = it.value();
         const int code = value.getCode();
-        const auto key = it.key().toStdString();
+        // const auto key = it.key().toStdString();
+        const auto key = it.key().toUtf8().constData();
         switch (value.getType()) {
             case RS2::VariableInt: {
                 data.addInt(key, value.getInt(), code);

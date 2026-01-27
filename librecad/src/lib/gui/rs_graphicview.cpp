@@ -58,6 +58,10 @@ RS_GraphicView::RS_GraphicView(QWidget *parent, const Qt::WindowFlags f)
     m_viewport->addViewportListener(this);
 }
 
+RS_GraphicView::~RS_GraphicView() {
+    LC_ERR << "~RS_GraphicView";
+}
+
 void RS_GraphicView::loadSettings() {
     LC_GROUP("Appearance");
     {
@@ -70,10 +74,6 @@ void RS_GraphicView::loadSettings() {
     m_infoCursorOverlayPreferences->loadSettings();
     m_viewport->loadSettings();
     m_renderer->loadSettings();
-}
-
-RS_GraphicView::~RS_GraphicView() {
-    LC_ERR << "~RS_GraphicView";
 }
 
 /**

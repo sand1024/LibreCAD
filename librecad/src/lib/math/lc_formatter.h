@@ -62,6 +62,12 @@ public:
     double getAnglesBase() const;
     bool isAnglesCounterClockWise() const;
 
+    static std::string toStdStr(const QString& str) {
+        QByteArray utf8ByteArray = str.toUtf8();
+        const auto result = std::string(utf8ByteArray.constData(), utf8ByteArray.size());
+        return result;
+    }
+
 protected:
     RS2::Unit m_unit {RS2::Millimeter};
     RS2::LinearFormat m_linearFormat {RS2::Decimal};
