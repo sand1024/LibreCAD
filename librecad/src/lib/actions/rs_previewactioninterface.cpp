@@ -230,39 +230,38 @@ RS_Vector RS_PreviewActionInterface::getSnapAngleAwarePoint(const LC_MouseEvent*
                                                             const bool drawMark, const bool force) {
     RS_Vector result = pos;
     if (force) {
-        const RS_Vector freePosition = e->graphPoint;
         if (m_snapMode.restriction == RS2::RestrictNothing) {
             if (isSnapToGrid()) {
-                if (e->isShift) {
-                    // support of vertical/horizontal restriction if snap to grid is enabled.
-                    RS_Vector vpv;
-                    RS_Vector vph;
-                    RS_Vector delta;
-                    if (m_viewport->hasUCS()) {
-                        const RS_Vector ucsBasePoint = m_viewport->toUCS(basepoint);
-                        const RS_Vector ucsFreePosition = m_viewport->toUCS(freePosition);
-                        delta = ucsFreePosition - ucsBasePoint;
-                        vpv = m_viewport->toWorld(RS_Vector(ucsBasePoint.x, ucsFreePosition.y));
-                        vph = m_viewport->toWorld(RS_Vector(ucsFreePosition.x, ucsBasePoint.y));
-                    }
-                    else {
-                        delta = freePosition - basepoint;
-                        vpv = RS_Vector(basepoint.x, freePosition.y);
-                        vph = RS_Vector(freePosition.x, basepoint.y);
-                    }
+                // support of vertical/horizontal restriction if snap to grid is enabled.
+                RS_Vector gridPosition = /*snapGrid(e->graphPoint)*/pos;
+                RS_Vector vpv;
+                RS_Vector vph;
+                RS_Vector delta;
+                if (m_viewport->hasUCS()) {
+                    const RS_Vector ucsBasePoint = m_viewport->toUCS(basepoint);
+                    const RS_Vector ucsFreePosition = m_viewport->toUCS(gridPosition);
+                    delta = ucsFreePosition - ucsBasePoint;
+                    vpv = m_viewport->toWorld(RS_Vector(ucsBasePoint.x, ucsFreePosition.y));
+                    vph = m_viewport->toWorld(RS_Vector(ucsFreePosition.x, ucsBasePoint.y));
+                }
+                else {
+                    delta = gridPosition - basepoint;
+                    vpv = RS_Vector(basepoint.x, gridPosition.y);
+                    vph = RS_Vector(gridPosition.x, basepoint.y);
+                }
 
-                    if (std::abs(delta.x) < std::abs(delta.y)) {
-                        result = vpv;
-                    }
-                    else {
-                        result = vph;
-                    }
-                    if (drawMark) {
-                        previewSnapAngleMark(basepoint, result);
-                    }
+                if (std::abs(delta.x) < std::abs(delta.y)) {
+                    result = vpv;
+                }
+                else {
+                    result = vph;
+                }
+                if (drawMark) {
+                    previewSnapAngleMark(basepoint, result);
                 }
             }
             else {
+                const RS_Vector freePosition = e->graphPoint;
                 result = doSnapToAngle(freePosition, basepoint, m_snapToAngleStep);
                 if (drawMark) {
                     previewSnapAngleMark(basepoint, result);
@@ -455,7 +454,7 @@ RS_ConstructionLine* RS_PreviewActionInterface::obtainPreviewRefConstructionLine
 }
 
 void RS_PreviewActionInterface::previewRefArc(const RS_Vector& center, const RS_Vector& startPoint, const RS_Vector& mouse,
-                                                 const bool determineReversal) const {
+                                              const bool determineReversal) const {
     const double radius = center.distanceTo(startPoint);
     const double angle1 = center.angleTo(mouse);
     const double angle2 = center.angleTo(startPoint);
@@ -465,7 +464,7 @@ void RS_PreviewActionInterface::previewRefArc(const RS_Vector& center, const RS_
 }
 
 RS_Arc* RS_PreviewActionInterface::obtainPreviewRefArc(const RS_Vector& center, const RS_Vector& startPoint, const RS_Vector& mouse,
-                                                 const bool determineReversal) const {
+                                                       const bool determineReversal) const {
     const double radius = center.distanceTo(startPoint);
     const double angle1 = center.angleTo(mouse);
     const double angle2 = center.angleTo(startPoint);
