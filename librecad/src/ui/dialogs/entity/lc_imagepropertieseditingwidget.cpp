@@ -26,7 +26,7 @@
 #include <QFileInfo>
 
 #include "lc_graphicviewport.h"
-#include "lcguardedsignalsblocker.h"
+#include "lc_guarded_signals_blocker.h"
 #include "rs_dialogfactory.h"
 #include "rs_dialogfactoryinterface.h"
 #include "rs_image.h"
