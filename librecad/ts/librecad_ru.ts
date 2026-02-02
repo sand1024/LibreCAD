@@ -1213,12 +1213,12 @@ or [%2]</source>
 <context>
     <name>LC_ActionFactory</name>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="514"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="515"/>
         <source>&amp;Window Zoom</source>
         <translation>&amp;Увеличение окна</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="328"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="329"/>
         <source>Zoom &amp;Panning</source>
         <translation>Масштабирование &amp;Панорамирование</translation>
     </message>
@@ -1274,7 +1274,7 @@ or [%2]</source>
     </message>
     <message>
         <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="202"/>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="341"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="342"/>
         <source>&amp;Horizontal</source>
         <translation>&amp;Горизонтально</translation>
     </message>
@@ -1409,223 +1409,223 @@ or [%2]</source>
         <translation>Прямая Точек</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="253"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="254"/>
         <source>Center, &amp;Point</source>
         <translation>Центр, &amp;Точка</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="254"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="255"/>
         <source>By Arc</source>
         <translation>Из Дуги</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="255"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="256"/>
         <source>Center, &amp;Radius</source>
         <translation>Центр, &amp;Радиус</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="256"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="257"/>
         <source>2 Points</source>
         <translation>По 2 точкам</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="257"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="258"/>
         <source>2 Points, Radius</source>
         <translation>По 2 точкам и радиусу</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="258"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="259"/>
         <source>3 Points</source>
         <translation>По 3 точкам</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="259"/>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="278"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="260"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="279"/>
         <source>&amp;Concentric</source>
         <translation>&amp;Концентрический</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="260"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="261"/>
         <source>Circle &amp;Inscribed</source>
         <translation>Вписанный &amp;круг</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="264"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="265"/>
         <source>Tangential, 2 P&amp;oints</source>
         <translation>Касательная, 2 &amp;точки</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="270"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="271"/>
         <source>&amp;Center, Point, Angles</source>
         <translation>&amp;Центр, точка, углы</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="273"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="274"/>
         <source>&amp;3 Points</source>
         <translation>По &amp;3 точкам</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="279"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="280"/>
         <source>Arc &amp;Tangential</source>
         <translation>Касательная к &amp;дуге</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="302"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="303"/>
         <source>&amp;Ellipse (Axis)</source>
         <translation>&amp;Эллипс (по осям)</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="303"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="304"/>
         <source>Ellipse &amp;Arc (Axis)</source>
         <translation>Эллиптическая &amp;дуга (по осям)</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="304"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="305"/>
         <source>Ellipse &amp;Foci Point</source>
         <translation>Точка &amp;фокуса эллипса</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="305"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="306"/>
         <source>Ellipse &amp;4 Point</source>
         <translation>Эллипс по &amp;4 точкам</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="306"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="307"/>
         <source>Ellipse Center and &amp;3 Points</source>
         <translation>Эллипс по центру и &amp;3 точкам</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="307"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="308"/>
         <source>Ellipse &amp;Inscribed</source>
         <translation>&amp;Вписанный эллипс</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="287"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="286"/>
         <source>&amp;Spline</source>
         <translation>&amp;Сплайн</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="288"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="287"/>
         <source>&amp;Spline through points</source>
         <translation>Сплайн по &amp;точкам</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="313"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="314"/>
         <source>&amp;Polyline</source>
         <translation>&amp;Ломаная</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="314"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="315"/>
         <source>&amp;Add node</source>
         <translation>&amp;Добавить вершину</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="315"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="316"/>
         <source>A&amp;ppend node</source>
         <translation>&amp;Присоединить вершину</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="316"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="317"/>
         <source>&amp;Delete node</source>
         <translation>&amp;Удалить вершину</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="317"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="318"/>
         <source>Delete &amp;between two nodes</source>
         <translation>Удалить отрезок &amp;между вершинами</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="318"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="319"/>
         <source>&amp;Trim segments</source>
         <translation>&amp;Подогнать отрезки</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="319"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="320"/>
         <source>Create &amp;Equidistant Polylines</source>
         <translation>Создать &amp;равноудаленные ломаные</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="329"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="330"/>
         <source>&amp;MText</source>
         <translation>&amp;Текст по строкам</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="330"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="331"/>
         <source>&amp;Text</source>
         <translation>&amp;Текст</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="331"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="332"/>
         <source>&amp;Hatch</source>
         <translation>&amp;Штриховка</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="332"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="333"/>
         <source>Insert &amp;Image</source>
         <translation>Вставить &amp;изображение</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="339"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="340"/>
         <source>&amp;Aligned</source>
         <translation>Вы&amp;ровненный</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="340"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="341"/>
         <source>&amp;Linear</source>
         <translation>&amp;Линейный</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="342"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="343"/>
         <source>&amp;Vertical</source>
         <translation>&amp;Вертикальный</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="343"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="344"/>
         <source>&amp;Radial</source>
         <translation>&amp;Радиальный</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="344"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="345"/>
         <source>&amp;Diametric</source>
         <translation>&amp;Диаметральный</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="345"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="346"/>
         <source>&amp;Angular</source>
         <translation>&amp;Угловой</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="347"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="348"/>
         <source>&amp;Leader</source>
         <translation>П&amp;олка-выноска</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="368"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="369"/>
         <source>&amp;Attributes</source>
         <translation>&amp;Атрибуты</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="369"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="370"/>
         <source>&amp;Delete</source>
         <translation>&amp;Удалить</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="370"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="371"/>
         <source>&amp;Move / Copy</source>
         <translation>&amp;Переместить / копировать</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="371"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="372"/>
         <source>Re&amp;vert direction</source>
         <translation>Изм&amp;енить направление</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="372"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="373"/>
         <source>&amp;Rotate</source>
         <translation>&amp;Поворот</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="276"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="277"/>
         <source>&amp;2 Points, Length</source>
         <translation>Дуга 2 Tочки, Длина дуги</translation>
     </message>
@@ -1640,675 +1640,675 @@ or [%2]</source>
         <translation>Центральная Метка</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="277"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="278"/>
         <source>&amp;2 Points, Height</source>
         <translation>Дуга 2 Tочки, Высота</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="321"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="322"/>
         <source>Polyline Arcs to Chords</source>
         <translation>Заменить дуги хордами</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="373"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="374"/>
         <source>&amp;Scale</source>
         <translation>&amp;Масштабировать</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="374"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="375"/>
         <source>&amp;Mirror</source>
         <translation>Отр&amp;азить</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="376"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="377"/>
         <source>Rotate T&amp;wo</source>
         <translation>Вращени&amp;е по двум</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="377"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="378"/>
         <source>&amp;Properties</source>
         <translation>&amp;Характеристики</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="378"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="379"/>
         <source>&amp;Trim</source>
         <translation>Подо&amp;гнать</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="380"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="381"/>
         <source>&amp;Lengthen</source>
         <translation>&amp;Удлинить</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="382"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="383"/>
         <source>&amp;Divide</source>
         <translation>Разде&amp;лить</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="383"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="384"/>
         <source>&amp;Stretch</source>
         <translation>&amp;Вытянуть</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="384"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="385"/>
         <source>&amp;Bevel</source>
         <translation>&amp;Фаска</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="385"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="386"/>
         <source>&amp;Fillet</source>
         <translation>С&amp;кругление</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="386"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="387"/>
         <source>&amp;Explode Text into Letters</source>
         <translation>&amp;Разрушить текст на буквы</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="500"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="501"/>
         <source>&amp;Distance Point to Point</source>
         <translation>&amp;Расстояние от точки до точки</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="503"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="504"/>
         <source>An&amp;gle between two lines</source>
         <translation>&amp;Угол между двумя прямыми</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="505"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="506"/>
         <source>Polygonal &amp;Area</source>
         <translation>&amp;Площадь многоугольника</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="667"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="668"/>
         <source>&amp;Undo</source>
         <translation>&amp;Отменить</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="668"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="669"/>
         <source>&amp;Redo</source>
         <translation>&amp;Повторить</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="696"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="699"/>
         <source>Cu&amp;t</source>
         <translation>Вы&amp;резать</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="698"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="701"/>
         <source>&amp;Copy</source>
         <translation>&amp;Копировать</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="700"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="703"/>
         <source>&amp;Paste</source>
         <translation>&amp;Вставить</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="271"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="272"/>
         <source>&amp;Center, Point, Chord</source>
         <translation>Дуга Центр, Точка, Хорда</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="272"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="273"/>
         <source>&amp;Center, Point, Arc Angle</source>
         <translation>Дуга Центр,Точка, Угол дуги</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="274"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="275"/>
         <source>&amp;2 Points, Angle</source>
         <translation>Дуга 2 Tочки, Угол</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="275"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="276"/>
         <source>&amp;2 Points, Radius</source>
         <translation>Дуга 2 Точки, Радиус</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="285"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="294"/>
         <source>Para&amp;bola 4 points</source>
         <translation>Парабола, 4 точки</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="286"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="295"/>
         <source>Parabola &amp;Focus Directrix</source>
         <translation>Парабола по фокусу и директриссе</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="290"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="289"/>
         <source>&amp;Remove spline points</source>
         <translation>Удалить точку сплайна</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="300"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="301"/>
         <source>&amp;Ellipse (1 Point)</source>
         <translation>Эллипс (1 Точка)</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="301"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="302"/>
         <source>&amp;Ellipse Arc (1 Point)</source>
         <translation>Эллиптическая дуга (1 Точка)</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="320"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="321"/>
         <source>Polyline from Existing &amp;Segments</source>
         <translation>Ломаная из сегментов</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="322"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="323"/>
         <source>Polyline Change Segment Type</source>
         <translation>Изменить тип сегмента</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="333"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="334"/>
         <source>Bounding &amp;Box</source>
         <translation>Рамка вокруг</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="348"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="349"/>
         <source>&amp;Baseline</source>
         <translation>Размер от базовой линии</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="349"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="350"/>
         <source>&amp;Continue</source>
         <translation>Продолжить размер</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="388"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="389"/>
         <source>Break/Divide</source>
         <translation>Разделить по пересечениям</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="389"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="390"/>
         <source>Line Gap</source>
         <translation>Разрыв</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="390"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="391"/>
         <source>Line Join</source>
         <translation>Объединить прямые</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="391"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="392"/>
         <source>Duplicate</source>
         <translation>Дубликат</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="392"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="393"/>
         <source>Align</source>
         <translation>Выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="393"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="394"/>
         <source>Align One</source>
         <translation>Выравнивание по одному</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="394"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="395"/>
         <source>Align Reference Points</source>
         <translation>Выравнивание по точкам</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="400"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="401"/>
         <source>Update Current Pen by Active Layer&apos; Pen</source>
         <translation>Обновить текущее перо по перу из активного слоя</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="406"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="407"/>
         <source>&amp;Pick Pen From Entity</source>
         <translation>Выбрать Перо из Oбъекта</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="407"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="408"/>
         <source>&amp;Pick Pen From Entity (Resolved)</source>
         <translation>Выбрать Перо из Объекта (Результирующее)</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="408"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="409"/>
         <source>Apply Pen to Entity</source>
         <translation>Применить Перо к Объекту</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="409"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="410"/>
         <source>Copy Pen</source>
         <translation>Скопировать Перо</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="415"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="416"/>
         <source>Show Entity Description</source>
         <translation>Показать свойства объекта</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="418"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="419"/>
         <source>Enable Info Cursor</source>
         <translation>Включить ИнфоКурсор</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="419"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="420"/>
         <source>Absolute Pos</source>
         <translation>Абсолютные координаты</translation>
     </message>
     <message>
         <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="74"/>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="420"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="421"/>
         <source>Snap</source>
         <translation>Привязка</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="421"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="422"/>
         <source>Relative</source>
         <translation>Относительные координаты</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="422"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="423"/>
         <source>Prompt</source>
         <translation>Подсказка команды</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="429"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="430"/>
         <source>Snap on grid</source>
         <translation>К сетке</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="430"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="431"/>
         <source>Snap Middle Manual</source>
         <translation>К середине вручную</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="431"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="432"/>
         <source>Snap on Endpoints</source>
         <translation>К конечным точками</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="432"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="433"/>
         <source>Snap on Entity</source>
         <translation>К объекту</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="433"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="434"/>
         <source>Snap Center</source>
         <translation>К точкам центра</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="434"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="435"/>
         <source>Snap Middle</source>
         <translation>К середине</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="435"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="436"/>
         <source>Snap Distance</source>
         <translation>На заданном расстоянии</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="436"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="437"/>
         <source>Snap Intersection</source>
         <translation>К точкам пересечения</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="442"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="443"/>
         <source>Restrict Horizontal</source>
         <translation>Ограничить горизонтально</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="443"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="444"/>
         <source>Restrict Vertical</source>
         <translation>Ограничить вертикально</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="444"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="445"/>
         <source>Restrict Orthogonal</source>
         <translation>Ограничить ортогонально</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="445"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="446"/>
         <source>Restrict Nothing</source>
         <translation>Без ограничений</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="471"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="472"/>
         <source>Set relative zero position</source>
         <translation>Задать положение относительного нуля</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="474"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="475"/>
         <source>Lock relative zero position</source>
         <translation>Заблокировать положение относительного нуля</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="482"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="483"/>
         <source>Exclusive Snap Mode</source>
         <translation>Режим единственной привязки</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="483"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="484"/>
         <source>Free Snap</source>
         <translation>Без привязки</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="501"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="502"/>
         <source>Distance &amp;Entity to Point</source>
         <translation>Расстояние от Объекта до Точки</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="502"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="503"/>
         <source>Distance &amp;Point to Entity</source>
         <translation>Расстояние от Точки до Объекта</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="504"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="505"/>
         <source>Total &amp;length of selected entities</source>
         <translation>Общая длина выбраных объектов</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="506"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="507"/>
         <source>Entity Pro&amp;perties</source>
         <translation>Свойства Объекта</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="507"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="508"/>
         <source>Collect &amp;Coordinates</source>
         <translation>Собрать Координаты</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="508"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="509"/>
         <source>Ang&amp;le between 3 points</source>
         <translation>Угол между 3-мя Tочками</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="521"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="522"/>
         <source>&amp;Draft Lines</source>
         <translation>Черновая толщина линий</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="522"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="523"/>
         <source>&amp;Antialiasing</source>
         <translation>Сглаживание при отрисовке</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="524"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="525"/>
         <source>&amp;Orthogonal Grid</source>
         <translation>Ортогональная Сетка</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="525"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="526"/>
         <source>&amp;Isometric Left Grid</source>
         <translation>Изметрическая сетка (Левая)</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="526"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="527"/>
         <source>&amp;Isometric Top Grid</source>
         <translation>Изметрическая сетка (Сверху)</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="527"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="528"/>
         <source>&amp;Isometric Right Grid</source>
         <translation>Изметрическая сетка (Правая)</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="537"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="538"/>
         <source>&amp;Add Layer</source>
         <translation>&amp;Добавить слой</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="538"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="539"/>
         <source>&amp;Remove Layer</source>
         <translation>&amp;Удалить слой</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="539"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="540"/>
         <source>&amp;Edit Layer</source>
         <translation>&amp;Редактировать слой</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="540"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="541"/>
         <source>Toggle Layer Loc&amp;k</source>
         <translation>Защита &amp;слоя</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="541"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="542"/>
         <source>&amp;Toggle Layer Visibility</source>
         <translation>&amp;Видимость слоя</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="542"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="543"/>
         <source>Toggle Layer &amp;Print</source>
         <translation>Пе&amp;чать слоя</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="543"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="544"/>
         <source>Toggle &amp;Construction Layer</source>
         <translation>&amp;Вспомогательный</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="553"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="554"/>
         <source>&amp;Add Block</source>
         <translation>&amp;Добавить блок</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="554"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="555"/>
         <source>&amp;Remove Block</source>
         <translation>&amp;Удалить блок</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="555"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="556"/>
         <source>&amp;Rename Block</source>
         <translation>&amp;Переименовать блок</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="556"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="557"/>
         <source>&amp;Edit Block</source>
         <translation>&amp;Редактировать блок</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="557"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="558"/>
         <source>&amp;Save Block</source>
         <translation>&amp;Сохранить блок</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="558"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="559"/>
         <source>&amp;Insert Block</source>
         <translation>&amp;Вставить блок</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="559"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="560"/>
         <source>Toggle Block &amp;Visibility</source>
         <translation>&amp;Видимость блока</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="560"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="561"/>
         <source>&amp;Create Block</source>
         <translation>&amp;Создать блок</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="387"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="388"/>
         <source>Ex&amp;plode</source>
         <translation>&amp;Разрушить</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="570"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="571"/>
         <source>&amp;Application Preferences</source>
         <translation>&amp;Настройки</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="566"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="567"/>
         <source>Current &amp;Drawing Preferences</source>
         <translation>Текущие настройки &amp;чертежа</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="659"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="660"/>
         <source>Select &amp;All</source>
         <translation>&amp;Выделить все</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="660"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="661"/>
         <source>Deselect &amp;all</source>
         <translation>Отменить &amp;выделение</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="779"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="783"/>
         <source>Ctrl+K</source>
         <translation>Ctrl+K</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="661"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="662"/>
         <source>Invert Selection</source>
         <translation>Инвертировать выделение</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="624"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="625"/>
         <source>Custom Menu Creator</source>
         <translation>Редактор Пользовательских Меню</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="625"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="626"/>
         <source>Custom Toolbar Creator</source>
         <translation>Редактор Пользовательских Панелей </translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="632"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="633"/>
         <source>Focus on &amp;Options Widget</source>
         <translation>Фокус на опциях</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="636"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="637"/>
         <source>Zoom &amp;In</source>
         <translation>&amp;Приблизить</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="637"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="638"/>
         <source>Zoom &amp;Out</source>
         <translation>&amp;Отдалить</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="638"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="639"/>
         <source>&amp;Auto Zoom</source>
         <translation>П&amp;оказать всё</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="639"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="640"/>
         <source>Previous &amp;View</source>
         <translation>Предыдущий &amp;вид</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="640"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="641"/>
         <source>&amp;Redraw</source>
         <translation>&amp;Обновить изображение</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="594"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="595"/>
         <source>&amp;New</source>
         <translation>&amp;Новый</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="595"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="596"/>
         <source>New From &amp;Template</source>
         <translation>Новый из &amp;шаблона</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="596"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="597"/>
         <source>&amp;Open...</source>
         <translation>&amp;Открыть...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="597"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="598"/>
         <source>&amp;Save</source>
         <translation>&amp;Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="598"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="599"/>
         <source>Save &amp;as...</source>
         <translation>Сохранить &amp;как...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="590"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="591"/>
         <source>&amp;Export as image</source>
         <translation>Экспорт в &amp;изображение</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="586"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="587"/>
         <source>&amp;Close</source>
         <translation>&amp;Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="600"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="601"/>
         <source>&amp;Print...</source>
         <translation>&amp;Печать...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="592"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="593"/>
         <source>Export as PDF</source>
         <translation>Экспортировать в PDF</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="580"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="581"/>
         <source>Print Pre&amp;view</source>
         <translation>Предпрос&amp;мотр печати</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="601"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="602"/>
         <source>&amp;Quit</source>
         <translation>&amp;Выход</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="593"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="594"/>
         <source>&amp;Block</source>
         <translation>&amp;Блок</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="518"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="519"/>
         <source>&amp;Fullscreen</source>
         <translation>Полный &amp;экран</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="519"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="520"/>
         <source>&amp;Grid</source>
         <translation>&amp;Сетка</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="796"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="800"/>
         <source>Ctrl+G</source>
         <comment>Toggle Grid</comment>
         <translation>Ctrl+G</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="520"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="521"/>
         <source>&amp;Draft</source>
         <translation>&amp;Черновик</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="523"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="524"/>
         <source>&amp;Statusbar</source>
         <translation>С&amp;трока состояния</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="799"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="803"/>
         <source>Ctrl+I</source>
         <comment>Hide Statusbar</comment>
         <translation>Ctrl+I</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="631"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="632"/>
         <source>Focus on &amp;Command Line</source>
         <translation>Перейти к &amp;командной строке</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="571"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="572"/>
         <source>Widget Options</source>
         <translation>Параметры интерфейса</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="574"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="575"/>
         <source>Reload Style Sheet</source>
         <translation>Перезагрузить таблицу стилей</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="573"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="574"/>
         <source>Device Options</source>
         <translation>Параметры устройства</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="375"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="376"/>
         <source>Mo&amp;ve and Rotate</source>
         <translation>Сдвиг и п&amp;оворот</translation>
     </message>
@@ -2678,277 +2678,292 @@ or [%2]</source>
         <translation>Дополняющий\Исключающий режим выделения </translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="261"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="248"/>
+        <source>Select Entities</source>
+        <translation>Выбор объектов</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="262"/>
         <source>Tangential 2 Entities, Radius</source>
         <translation>Касательная к 2 объектам и Радиус</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="262"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="263"/>
         <source>Tangential 2 Entities, 1 Point</source>
         <translation>Касательная к 2 объектам, и 1 Точка</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="263"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="264"/>
         <source>Tangential &amp;3 Entities</source>
         <translation>Касательная к &amp;3 объектам</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="289"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="288"/>
         <source>&amp;Append spline point</source>
         <translation>Присоединить контрольную точку</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="291"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="290"/>
         <source>&amp;Insert spline points</source>
         <translation>Добавить контрольную точку</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="292"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="291"/>
         <source>&amp;Explode spline to lines</source>
         <translation>Прямые из сплайна</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="293"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="292"/>
         <source>&amp;Spline from polyline</source>
         <translation>Сплайн из ломаной</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="294"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="293"/>
         <source>&amp;Remove between two points</source>
         <translation>Удалить между 2 точками сплайна</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="350"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="351"/>
         <source>&amp;Ordinate</source>
         <translation>Ординатный</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="351"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="352"/>
         <source>Select Ordinates by base</source>
         <translation>Выделить Ординатные с базой</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="352"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="353"/>
         <source>Ordinates Re-base</source>
         <translation>Перебазировать Ординатные</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="353"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="354"/>
         <source>Feature Control Frame</source>
         <translation>Рамка Контроля Характеристик</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="354"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="355"/>
         <source>Copy Style</source>
         <translation>Копировать Стиль</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="355"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="356"/>
         <source>Modify Style</source>
         <translation>Изменить стиль</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="379"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="380"/>
         <source>Tr&amp;im Two</source>
         <translation>&amp;Подогнать по двум</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="381"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="382"/>
         <source>O&amp;ffset</source>
         <translation>&amp;Смещение</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="423"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="424"/>
         <source>Caught Entity</source>
         <translation>Захваченный Объект</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="451"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="452"/>
         <source>To WCS</source>
         <translation>К Мировой Системе Координат</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="456"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="457"/>
         <source>Create UCS</source>
         <translation>Создать Пользовательскую Систему Координат</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="457"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="458"/>
         <source>Set UCS By Ordinate Dimension</source>
         <translation>Система координат по Ординатному размеру</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="463"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="464"/>
         <source>Save Workspace</source>
         <translation>Сохранить Рабочее Пространство</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="464"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="465"/>
         <source>Remove Workspace</source>
         <translation>Удалить Рабочее Пространстов</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="465"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="466"/>
         <source>Restore Workspace</source>
         <translation>Восстановить Рабочее Пространство</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="489"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="490"/>
         <source>Move to Bottom</source>
         <translation>На Задний план</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="490"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="491"/>
         <source>Lower After Entity</source>
         <translation>За объектом</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="491"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="492"/>
         <source>Raise Over Entity</source>
         <translation>Перед объектом</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="492"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="493"/>
         <source>Move to Top</source>
         <translation>На передний план</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="517"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="518"/>
         <source>&amp;Main Menu</source>
         <translation>Главное меню</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="609"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="610"/>
         <source>Left Dock Area</source>
         <translation>Левая область стыкуемых инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="610"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="611"/>
         <source>Right Dock Area</source>
         <translation>Левая область стыкуемых инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="611"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="612"/>
         <source>Top Dock Area</source>
         <translation>Верхняя область стыкуемых инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="612"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="613"/>
         <source>Bottom Dock Area</source>
         <translation>Нижняя область стыкуемых инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="613"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="614"/>
         <source>Floating Widgets</source>
         <translation>Плавающие инструменты</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="614"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="615"/>
         <source>Left Toolbar Area</source>
         <translation>Левая область панелей инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="615"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="616"/>
         <source>Right Toolbar Area</source>
         <translation>Правая область панелей инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="616"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="617"/>
         <source>Top Toolbar Area</source>
         <translation>Верхняя область панелей инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="617"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="618"/>
         <source>Bottom Toolbar Area</source>
         <translation>Нижняя область панелей инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="646"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="647"/>
         <source>&amp;Save View</source>
         <translation>Сохранить Вид</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="648"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="649"/>
         <source>Restore Current View</source>
         <translation>Восстановить выбранный Вид</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="649"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="650"/>
         <source>Restore View 1</source>
         <translation>Восстановить Вид 1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="650"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="651"/>
         <source>Restore View 2</source>
         <translation>Восстановить Вид 2</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="651"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="652"/>
         <source>Restore View 3</source>
         <translation>Восстановить Вид 3</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="652"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="653"/>
         <source>Restore View 4</source>
         <translation>Восстановить Вид 4</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="653"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="654"/>
         <source>Restore View 5</source>
         <translation>Восстановить Вид 5</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="675"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="676"/>
         <source>Regenerate Dimensions</source>
         <translation>Пересоздать Размеры</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="678"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="679"/>
         <source>&amp;Dimension Styles</source>
         <translation>Стили Размеров</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="688"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="689"/>
         <source>Pick Point</source>
         <translation>Выбрать точку</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="689"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="690"/>
+        <source>Pick Point X</source>
+        <translation>Выбрать X координату</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="691"/>
+        <source>Pick Point Y</source>
+        <translation>Выбрать Y координату</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="692"/>
         <source>Pick Distance</source>
         <translation>Выбрать длину</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="690"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="693"/>
         <source>Pick Angle</source>
         <translation>Выбрать угол</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="697"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="700"/>
         <source>Cut Quic&amp;k</source>
         <translation>Вырезать быстро</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="699"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="702"/>
         <source>Copy &amp;Quick</source>
         <translation>Копировать быстро</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="701"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="704"/>
         <source>Paste &amp;Transform</source>
         <translation>Вставить с Трансформацией</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="669"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="670"/>
         <source>&amp;Delete Selected</source>
         <translation>&amp;Удалить выбранное</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="670"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="671"/>
         <source>&amp;Selection Pointer</source>
         <translation>&amp;Указатель</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="798"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="802"/>
         <source>Ctrl+D</source>
         <comment>Toggle Draft Mode</comment>
         <translation>Ctrl+D</translation>
@@ -2959,77 +2974,77 @@ or [%2]</source>
         <translation>&amp;Многоугольник (Центр,Касат)</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="346"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="347"/>
         <source>&amp;Arc</source>
         <translation>&amp;Дуга</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="499"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="500"/>
         <source>&amp;Point Coordinates</source>
         <translation>Координаты точки</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="533"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="534"/>
         <source>&amp;Show all layers</source>
         <translation>&amp;Показать все слои</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="534"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="535"/>
         <source>&amp;Hide all layers</source>
         <translation>&amp;Скрыть все слои</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="535"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="536"/>
         <source>&amp;Unlock all</source>
         <translation>&amp;Разблокировать все</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="536"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="537"/>
         <source>&amp;Lock all</source>
         <translation>&amp;Заблокировать все</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="544"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="545"/>
         <source>&amp;Export Selected Layer(s)</source>
         <translation>&amp;Экспорт Выбранных Слоев(s)</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="545"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="546"/>
         <source>Export &amp;Visible Layer(s)</source>
         <translation>Экспортировать &amp;Видимые Слои(s)</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="551"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="552"/>
         <source>&amp;Show all blocks</source>
         <translation>&amp;Показать все блоки</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="552"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="553"/>
         <source>&amp;Hide all blocks</source>
         <translation>&amp;Скрыть все блоки</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="572"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="573"/>
         <source>Keyboard Shortcuts</source>
         <translation>Настройки клавиатуры</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="604"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="605"/>
         <source>Export as CA&amp;M/plain SVG...</source>
         <translation>Экспортировать в CA&amp;M/обычный SVG...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="591"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="592"/>
         <source>Close All</source>
         <translation>Закрыть все</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="623"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="624"/>
         <source>Re-dock Widgets</source>
         <translation>Повторно закрепить виджеты</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="599"/>
+        <location filename="../src/ui/main/init/lc_actionfactory.cpp" line="600"/>
         <source>Save A&amp;ll...</source>
         <translation>Сохранить &amp;Все...</translation>
     </message>
@@ -4018,7 +4033,7 @@ End Edge Point: (%9 , %10)</source>
         <translation>Выбрать пересекаемые</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/lc_actionpreselectionawarebase.cpp" line="283"/>
+        <location filename="../src/lib/actions/lc_actionpreselectionawarebase.cpp" line="276"/>
         <source>No valid entities selected, select them first</source>
         <translation>Подходящие объекты не выбраны, выберите их для продолжения</translation>
     </message>
@@ -4039,25 +4054,43 @@ End Edge Point: (%9 , %10)</source>
 <context>
     <name>LC_ActionSelectDimOrdinateSameOrigin</name>
     <message>
-        <location filename="../src/actions/drawing/draw/dimensions/lc_actionselectdimordinatesameorigin.cpp" line="75"/>
+        <location filename="../src/actions/drawing/draw/dimensions/lc_actionselectdimordinatesameorigin.cpp" line="80"/>
         <source>Select reference ordinate dimension</source>
         <translation>Укажите базовый ординатный размер</translation>
     </message>
 </context>
 <context>
-    <name>LC_ActionSelectQuick</name>
+    <name>LC_ActionSelectGeneric</name>
     <message>
-        <location filename="../src/actions/drawing/selection/lc_actionselectquick.cpp" line="73"/>
-        <source>Choose entities</source>
-        <translation>Выберите объекты</translation>
+        <location filename="../src/actions/drawing/selection/lc_actionselectgeneric.cpp" line="30"/>
+        <source>Select entities</source>
+        <translation>Выделение объекто</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/selection/lc_actionselectquick.cpp" line="74"/>
+        <location filename="../src/actions/drawing/selection/lc_actionselectgeneric.cpp" line="31"/>
         <source>Select contour</source>
         <translation>Выбрать контур</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/selection/lc_actionselectquick.cpp" line="74"/>
+        <location filename="../src/actions/drawing/selection/lc_actionselectgeneric.cpp" line="31"/>
+        <source>Complete selection</source>
+        <translation>Окончить выделение</translation>
+    </message>
+</context>
+<context>
+    <name>LC_ActionSelectQuick</name>
+    <message>
+        <location filename="../src/actions/drawing/selection/lc_actionselectquick.cpp" line="70"/>
+        <source>Choose entities</source>
+        <translation>Выберите объекты</translation>
+    </message>
+    <message>
+        <location filename="../src/actions/drawing/selection/lc_actionselectquick.cpp" line="71"/>
+        <source>Select contour</source>
+        <translation>Выбрать контур</translation>
+    </message>
+    <message>
+        <location filename="../src/actions/drawing/selection/lc_actionselectquick.cpp" line="71"/>
         <source>Return to dialog immediately after selection</source>
         <translation>Вернуться в диалог сразу после выбора</translation>
     </message>
@@ -6530,14 +6563,14 @@ Are you sure you are going to discard changes?</source>
         <translation>Подавляет вывод значения дюймов в размере формата футы-дюймы, если расстояние равно целому числу футов. Например, 1&apos;-0&quot; представляется как 1&apos; (переменная DIMALTTZ).</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp" line="398"/>
+        <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp" line="400"/>
         <source>Select Block for arrow</source>
         <translation>Выбор Блока для Стрелки</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp" line="1797"/>
-        <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp" line="1798"/>
-        <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp" line="1799"/>
+        <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp" line="1818"/>
+        <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp" line="1819"/>
+        <location filename="../src/ui/dialogs/settings/dimstyles/dimstyle_manager/lc_dlgdimstylemanager.cpp" line="1820"/>
         <source>User Block...</source>
         <translation>Пользовательская...</translation>
     </message>
@@ -6708,135 +6741,135 @@ Are you sure you are going to discard changes?</source>
         <translation>Y</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="133"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="139"/>
         <source>Ordinate Dimension</source>
         <translation>Ординатный Размер</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="146"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="152"/>
         <source>Linear Dimension</source>
         <translation>Линейный размер</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="157"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="163"/>
         <source>Aligned Dimension</source>
         <translation>Выравненный размер</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="163"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="169"/>
         <source>Angular Dimension</source>
         <translation>Угловой размер</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="169"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="175"/>
         <source>Arc Dimension</source>
         <translation>Дуговой размер</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="175"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="181"/>
         <source>Diametric Dimension</source>
         <translation>Диаметральный размер</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="181"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="187"/>
         <source>Radial Dimension</source>
         <translation>Радиальный размер</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="204"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="210"/>
         <source>Pen</source>
         <translation>Перо</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="404"/>
         <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="410"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="416"/>
         <source>Saving Style Override</source>
         <translation>Удалить Переопределение Стиля</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="404"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="410"/>
         <source>New Style Name</source>
         <translation>Имя нового стиля:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="410"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="416"/>
         <source>Style with such name already exists, please enter another unique one.</source>
         <translation>Стиль с таким именем существует, укажите другое уникальное имя.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="458"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="464"/>
         <source>New Dimension Style Override - </source>
         <translation>Создание Переопределенного Стиля Размера - </translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="508"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="514"/>
         <source>Edit Dimension Style Override - </source>
         <translation>Редактирование Переопределенного Стиля Размера - </translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="520"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="526"/>
         <source>View Dimension Style - </source>
         <translation>Просмотр Стиля Размера - </translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="573"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="579"/>
         <source>&amp;Apply Style</source>
         <translation>Применить Стиль</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="574"/>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="601"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="580"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="607"/>
         <source>&amp;Select Style</source>
         <translation>Выделить текущий стиль размера</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="579"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="585"/>
         <source>&amp;Set as Active</source>
         <translation>Установить Активным</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="583"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="589"/>
         <source>&amp;Create override</source>
         <translation>Переопределить</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="587"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="593"/>
         <source>&amp;View Style</source>
         <translation>Просмотр Стиля</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="590"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="596"/>
         <source>&amp;Edit override</source>
         <translation>Редактировать Переопределение Стиля</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="591"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="597"/>
         <source>&amp;Save As Style</source>
         <translation>Сохранить как Стиль</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="592"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="598"/>
         <source>&amp;Remove Override</source>
         <translation>Удалить Переопределение</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="596"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="602"/>
         <source>E&amp;xport Styles</source>
         <translation>Экспорт Стилей</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="597"/>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="604"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="603"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="610"/>
         <source>&amp;Import Styles</source>
         <translation>Импортировать Стили</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="657"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="663"/>
         <source>YES</source>
         <translation>ДА</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="664"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="670"/>
         <source>No</source>
         <translation>Нет</translation>
     </message>
@@ -7880,132 +7913,141 @@ Are you sure you are going to discard changes?</source>
         <translation>Тип объекта:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="82"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="88"/>
         <source>Layer of entity to match</source>
         <translation>Слой объекта для условия сравнения</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="154"/>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="177"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="178"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="207"/>
         <source>Type of line to match</source>
         <translation>Тип линии для проверки условия</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="246"/>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="269"/>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="308"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="294"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="317"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="380"/>
         <source>Value to match</source>
         <translation>Значение для условия сравнения</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="273"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="321"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="278"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="326"/>
         <source>No</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="315"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="399"/>
         <source>Pick angle from drawing</source>
         <translation>Измерить угол на чертеже</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="329"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="425"/>
         <source>Pick distance from drawing</source>
         <translation>Измерить расстояние на чертеже</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="343"/>
         <source>Pick coordinate component from drawing</source>
-        <translation>Измерить компонент координаты на чертеже</translation>
+        <translation type="vanished">Измерить компонент координаты на чертеже</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="357"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="509"/>
         <source>Tolerance:</source>
         <translation>Точность:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="370"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="534"/>
         <source>Tolearance range used for floating-point values comparison. Values considered equal, if the absolute unsigned difference between them is within this range. </source>
         <translation>Диапазон точности используемый при сравнения чисел с плавающей точкой. Значения считаются равными, если их абслолютная (беззнаковая) разность меньше заданного диапазона.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="377"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="553"/>
         <source>Update tolerance based on the document unit precision settings.</source>
         <translation>Обновить точность согласно настройкам точности единиц в документе.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="105"/>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="128"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="117"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="146"/>
         <source>Color of line to match</source>
         <translation>Цвет линии для проверки условия</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="200"/>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="223"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="236"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="265"/>
         <source>Width of line to match</source>
         <translation>Толщина линии для условия сравнения</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="395"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="451"/>
+        <source>Pick X coordinate of point  from drawing</source>
+        <translation>Измерить координату X на чертеже</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="477"/>
+        <source>Pick Y coordinate of point  from drawing</source>
+        <translation>Измерить координату Y на чертеже</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="571"/>
         <source>Operator:</source>
         <translation>Условие:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="402"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="578"/>
         <source>How to Apply</source>
         <translation>Как применять</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="408"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="584"/>
         <source>If checked, the object with matched value will be included into new selection set.</source>
         <translation>Если выбрано, то объекты которые СООТВЕТСТВУЮТ условию будут добавлены в новый набор выбраных объектов</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="411"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="587"/>
         <source>Include in new selection set</source>
         <translation>Включать в новый набор выбранных объектов</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="418"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="594"/>
         <source>If checked, object that does not match the condition will be included into selection set.</source>
         <translation>Если выбрано, то объекты которые НЕ соответствуют условию будут добавлены в новый набор выбраных объектов</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="421"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="597"/>
         <source>Exclude from new selection set</source>
         <translation>Исключать из нового набора выбранных объектов</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="431"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="607"/>
         <source>Manual selection of entities</source>
         <translation>Выбрать объекты вручную</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="445"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="621"/>
         <source>Defines to which objects selection conditions should be applied to</source>
         <translation>Определяет к каким объектам должно быть применено условие выбора</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="465"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="641"/>
         <source>Value:</source>
         <translation>Значение:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="495"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="671"/>
         <source>Type of the entity to match</source>
         <translation>Тип объектов для выбора по критерию</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="502"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="678"/>
         <source>Apply To:</source>
         <translation>Применять к:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="512"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui" line="688"/>
         <source>TextLabel</source>
         <translation></translation>
     </message>
@@ -8020,48 +8062,48 @@ Are you sure you are going to discard changes?</source>
         <translation>Текущему выделению</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="319"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="321"/>
         <source>Please provide non empty value to match</source>
         <translation>Значение свойства объекта для сравнения не может быть пустым.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="324"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="326"/>
         <source>Please provide non empty value of precision</source>
         <translation>Диапазона точности сравнения не может быть пустым.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="345"/>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="349"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="347"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="351"/>
         <source>Multiple</source>
         <translation>Разные</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="401"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="403"/>
         <source>= Equals</source>
         <translation>= Равно</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="402"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="404"/>
         <source>&lt;&gt; Not Equals</source>
         <translation>&lt;&gt; Не равно</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="403"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="405"/>
         <source>&gt; Greater than</source>
         <translation>&gt; Больше чем</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="404"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="406"/>
         <source>&lt; Less than</source>
         <translation>&lt; Меньше чем</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="405"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="407"/>
         <source>* Wildcard match</source>
         <translation>* Маска</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="406"/>
+        <location filename="../src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp" line="408"/>
         <source>Select All</source>
         <translation>Выбрать все</translation>
     </message>
@@ -9166,6 +9208,103 @@ Are you sure you are going to discard changes?</source>
     </message>
 </context>
 <context>
+    <name>LC_EntityTypePropertiesProvider</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="53"/>
+        <source>X</source>
+        <translation>X</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="53"/>
+        <source>Y</source>
+        <translation>Y</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="131"/>
+        <source>Geometry</source>
+        <translation>Геометрия</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="136"/>
+        <source>Text</source>
+        <translation>Текст</translation>
+    </message>
+    <message>
+        <source>Text attributes</source>
+        <translation type="vanished">Свойства текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="143"/>
+        <source>Other</source>
+        <translation>Прочее</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="131"/>
+        <source>Geometrical properties</source>
+        <translation>Геометрические свойства</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="136"/>
+        <source>Text properties</source>
+        <translation>Свойства текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="143"/>
+        <source>Other properties</source>
+        <translation>Другие свойства</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="210"/>
+        <source>General</source>
+        <translation>Общие</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="210"/>
+        <source>General properties</source>
+        <translation>Общие свойства</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="217"/>
+        <source>Layer</source>
+        <translation>Слой</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="217"/>
+        <source>Layer of entity</source>
+        <translation>Слой объекта</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="235"/>
+        <source>Color</source>
+        <translation>Цвет</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="235"/>
+        <source>Color of entity</source>
+        <translation>Цвет объекта</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="252"/>
+        <source>Line Type</source>
+        <translation>Тип линии</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="252"/>
+        <source>Type of entity pen line</source>
+        <translation>Тип линии объекта</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="269"/>
+        <source>Line Width</source>
+        <translation>Толщина линии</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="269"/>
+        <source>Width of entity pen line</source>
+        <translation>Ширина линии объекта</translation>
+    </message>
+</context>
+<context>
     <name>LC_ExportLayersService</name>
     <message>
         <location filename="../src/ui/dialogs/file/export/layers/lc_exportlayersdialogservice.cpp" line="138"/>
@@ -9328,6 +9467,19 @@ Are you sure you are going to discard changes?</source>
         <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="310"/>
         <source>Resolution (dots per inch)</source>
         <translation>Разрешение (количество точек на дюйм)</translation>
+    </message>
+</context>
+<context>
+    <name>LC_IndexedPropertiesProviderBase</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_indexed_propertiesprovider_base.h" line="104"/>
+        <source>X</source>
+        <translation>X</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_indexed_propertiesprovider_base.h" line="104"/>
+        <source>Y</source>
+        <translation>Y</translation>
     </message>
 </context>
 <context>
@@ -10742,162 +10894,162 @@ Please specify a different value.</source>
         <translation>Дуга</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="33"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="34"/>
         <source>Center X</source>
         <translation>Центра X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="33"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="34"/>
         <source>X coordinate for center point</source>
         <translation>Координата точки центра по оси X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="37"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="38"/>
         <source>Center Y</source>
         <translation>Центр Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="37"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="38"/>
         <source>Y coordinate for center point</source>
         <translation>Координата точки центра по оси Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="41"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="42"/>
         <source>Radius</source>
         <translation>Радиус</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="41"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="42"/>
         <source>Radius of arc</source>
         <translation>Радиус дуги</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="45"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="46"/>
         <source>Is Reversed</source>
         <translation>Обратное направление</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="45"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="46"/>
         <source>Clockwise direction if reversed, counterclockwise otherwise</source>
         <translation>При обратном направлении, дуга направлена по часовой стрелке. Иначе -дуга расположена против часовой стрелки.</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="49"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="50"/>
         <source>Diameter</source>
         <translation>Диаметр</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="49"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="50"/>
         <source>Diameter of arc</source>
         <translation>Диаметр дуги</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="53"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="54"/>
         <source>Start X</source>
         <translation>Начальная X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="53"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="54"/>
         <source>X coordinate for start point</source>
         <translation>X-координата начальной точки</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="57"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="58"/>
         <source>Start Y</source>
         <translation>Начальная Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="57"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="58"/>
         <source>Y coordinate for start point</source>
         <translation>Координата начальной точки по оси Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="61"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="62"/>
         <source>End X</source>
         <translation>Конечная X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="61"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="62"/>
         <source>X coordinate for end point</source>
         <translation>Координата конечной точки по оси X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="65"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="66"/>
         <source>End Y</source>
         <translation>Конечная Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="65"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="66"/>
         <source>Y coordinate for end point</source>
         <translation>Координата конечной точки по оси Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="69"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="70"/>
         <source>Angle Length</source>
         <translation>Угловая длина</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="69"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="70"/>
         <source>Angle length for arc</source>
         <translation>Угловая длина дуги</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="73"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="74"/>
         <source>Circumference</source>
         <translation>Длина окружности</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="73"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="74"/>
         <source>Circumference of arc</source>
         <translation>Длина окружности дуги</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="77"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="78"/>
         <source>Chord</source>
         <translation>Хорда</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="77"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="78"/>
         <source>Chord length (distance from start to end point)</source>
         <translation>Длина хорды дуги (расстояние менду начальной и конечной точкой дуги)</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="81"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="82"/>
         <source>Sagitta</source>
         <translation>Высота дуги</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="81"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="82"/>
         <source>Sagitta of the arc</source>
         <translation>Высота дуги (расстояние перпендикуляра от хорды до верхней точки дуги)</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="85"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="86"/>
         <source>Start Angle</source>
         <translation>Начальный угол</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="85"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="86"/>
         <source>Start angle of arc</source>
         <translation>Начальный угол дуги</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="89"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="90"/>
         <source>End Angle</source>
         <translation>Конечный угол</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="89"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="90"/>
         <source>End angle of arc</source>
         <translation>Конечный угол дуги</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="93"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="94"/>
         <source>Bulge</source>
         <translation>Выпуклость</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="93"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp" line="94"/>
         <source>Bulge of arc </source>
         <translation>Выпуклость дуги</translation>
     </message>
@@ -11200,14 +11352,1223 @@ Please specify a different value.</source>
 <context>
     <name>LC_MatchDescriptorDimBase</name>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="36"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="120"/>
         <source>Style</source>
         <translation>Стиль</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="36"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="120"/>
         <source>Style of dimension</source>
         <translation>Стиль размера</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="141"/>
+        <source>Has style override</source>
+        <translation>Есть переопределение</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="141"/>
+        <source>Whether dimension has dimension style override or not</source>
+        <translation>Определяте, был ли преопределен стиль размера в конкретном размере</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="196"/>
+        <source>Flip Arrow 1</source>
+        <translation>Стрелка 1 зеркально</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="196"/>
+        <source>Indicates whether first arrow of the dimension is flipped</source>
+        <translation>Определяет, развернута ли зеркально первая стрелка</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="201"/>
+        <source>Flip Arrow 2</source>
+        <translation>Стрелка 2 зеркально</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="201"/>
+        <source>Indicates whether second arrow of the dimension is flipped</source>
+        <translation>Определяет, развернута ли зеркально вторая стрелка</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="206"/>
+        <source>Arrow size</source>
+        <translation>Размер стрелки</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="206"/>
+        <source>Specifies size of the dimension arrowhead (DIMASZ variable)</source>
+        <translation>Задает размер стрелок размерной линии (переменная DIMASZ)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="213"/>
+        <source>Center mark</source>
+        <translation>Центральная метка</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="213"/>
+        <source>Specified type of center mark on dimension (DIMCEN variable)</source>
+        <translation>Задает тип центрального маркера (переменная DIMCEN)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="214"/>
+        <source>Mark</source>
+        <translation>Маркер</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="215"/>
+        <source>Line</source>
+        <translation>Линия</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="216"/>
+        <source>Right to left</source>
+        <translation>Справа налево</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="221"/>
+        <source>Center mark size</source>
+        <translation>Размер центральной метки</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="221"/>
+        <source>Specifies size of the center mark on the dimension (DIMCEN variable)</source>
+        <translation>Задает размер центрального маркера (переменная DIMCEN)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="227"/>
+        <source>Dim line lineweight</source>
+        <translation>Толщина размерной линии</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="227"/>
+        <source>Specifies lineweight for dimension lines (DIMLWD variable)</source>
+        <translation>Задает толщину размерной линии (переменная DIMLWD)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="232"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="266"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="293"/>
+        <source>Ext line lineweight</source>
+        <translation>Толщина выносной линии</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="232"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="266"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="293"/>
+        <source>Specifies lineweight for extension line (DIMLWE variable)</source>
+        <translation>Определяет толщину выносных линий (переменная DIMLWE)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="237"/>
+        <source>Dim line 1</source>
+        <translation>Есть размерная 1</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="237"/>
+        <source>Sets suppression of first dimension line (DIMSD1 variable)</source>
+        <translation>Определяет, выводить ли первую размерную линию (если размерная линия не сплошная) и ее стрелки (переменная DIMSD1)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="241"/>
+        <source>Dim line 2</source>
+        <translation>Есть размерная 2</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="241"/>
+        <source>Sets suppression of second dimension line (DIMSD2 variable)</source>
+        <translation>Определяет, выводить ли вторую размерную линию (если размерная линия не сплошная) и ее стрелки (переменная DIMSD1)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="246"/>
+        <source>Dim line color</source>
+        <translation>Цвет размерной линии</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="246"/>
+        <source>Specifies color of the dimension line (DIMCLRD variable)</source>
+        <translation>Задает цвет размерных линий (переменная DIMCLRD)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="250"/>
+        <source>Dim line linetype</source>
+        <translation>Тип размерной линии</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="250"/>
+        <source>Specifies the linetype of the dimension line (DIMLTYPE variable)</source>
+        <translation>Задает тип размерных линий (переменная DIMLTYPE)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="256"/>
+        <source>Dim line ext</source>
+        <translation>Удлинение за размерные</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="256"/>
+        <source>Specifies amount to extend dimension lines beyond the extension lines (DIMDLE variable)</source>
+        <translation>Задает расстояние, на которое размерные линии должны выступать за выносные (переменная DIMDLE)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="262"/>
+        <source>Ext line</source>
+        <translation>Есть выносная линия</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="262"/>
+        <source>Sets suppression of extension line (DIMSE1 variable)</source>
+        <translation>Определяет, выводить ли первую выносную линию (переменная DIMSE1)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="270"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="297"/>
+        <source>Ext line linetype</source>
+        <translation>Тип выносной линии</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="270"/>
+        <source>Specifies the linetype of the extension line (DIMLTEX1 variable)</source>
+        <translation>Задает тип линии для выносной линии (переменная DIMLTEX1)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="275"/>
+        <source>Ext line 1 linetype</source>
+        <translation>Тип выносной линии 1</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="275"/>
+        <source>Specifies the linetype of the first extension line (DIMLTEX1 variable)</source>
+        <translation>Задает тип линии для первой выносной линии (переменная DIMLTEX1)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="279"/>
+        <source>Ext line 2 linetype</source>
+        <translation>Тип выносной линии 2</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="279"/>
+        <source>Specifies the linetype of the second extension line (DIMLTEX2 variable)</source>
+        <translation>Задает тип линии для второй выносной линии ( переменная DIMLTEX2)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="283"/>
+        <source>Ext line 1</source>
+        <translation>Есть выносная 1</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="283"/>
+        <source>Sets suppression of first extension line (DIMSE1 variable)</source>
+        <translation>Подавляет вывод первой выносной линии (переменная DIMSE1)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="287"/>
+        <source>Ext line 2</source>
+        <translation>Есть выносная 2</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="287"/>
+        <source>Sets suppression of second extension line (DIMSE2 variable)</source>
+        <translation>Определяет, выводить ли вторую выносную линию (переменная DIMSE2)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="297"/>
+        <source>Specifies the linetype for the extension line (DIMLTEX1 variable)</source>
+        <translation>Задает тип выносной линии ( переменная DIMLTEX1)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="302"/>
+        <source>Ext line fixed</source>
+        <translation>Выносная фиксированная</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="302"/>
+        <source>Sets suppression of extension line fixed length (DIMFXLON variable)</source>
+        <translation>Активизирует функцию выносных линий фиксированной длины (переменная DIMFXLON)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="306"/>
+        <source>Ext line fixed length</source>
+        <translation>Длина фиксированной выносной</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="306"/>
+        <source>Sets extension line fixed length (DIMFXL variable)</source>
+        <translation>Задает фиксированную длину выносных линий (переменная DIMFXL)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="312"/>
+        <source>Ext line color</source>
+        <translation>Цвет выносной линии</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="312"/>
+        <source>Specifies color of the extension line (DIMCLRE variable)</source>
+        <translation>Задает цвет выносных линий (переменная DIMCLRE)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="317"/>
+        <source>Ext line ext</source>
+        <translation>Удлинение за размерные</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="317"/>
+        <source>Specifies amount to extend extension line beyond the dimension line  (DIMEXE variable)</source>
+        <translation>Задает расстояние, на которое выносные линии должны выступать за размерную (переменная DIMEXE)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="322"/>
+        <source>Ext line offset</source>
+        <translation>Смещение выносной линии</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="322"/>
+        <source>Specifies offset of extension lines from the origin points (DIMEXO variable)</source>
+        <translation>Задает расстояние, на которое выносные линии отступают от точек объекта (переменная DIMEXO)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="330"/>
+        <source>Fill color</source>
+        <translation>Цвет фона</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="330"/>
+        <source>Specifies the background color of the dimension (DIMTFILL variable)</source>
+        <translation>Определяет цвет фона текста размера (переменная DIMTFILL)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="335"/>
+        <source>Text color</source>
+        <translation>Цвет текста</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="335"/>
+        <source>Specifies the color of the dimension of the text (DIMCLRT variable)</source>
+        <translation>Задает цвет текста размера (переменная DIMCLRT)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="339"/>
+        <source>Text height</source>
+        <translation>Высота текста</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="339"/>
+        <source>Specifies text height of dimension (DIMTXT variable)</source>
+        <translation>Задает высоту размерного текста (переменная DIMTXT)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="343"/>
+        <source>Text offset</source>
+        <translation>Отступ текста</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="344"/>
+        <source>Specifies the distance around dimension text when dimension line breaks for dimension text (DIMGAP variable)</source>
+        <translation>Задает расстояние вокруг текста размера, когда размерная линия содержит разыв для текста (переменная DIMGAP)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="350"/>
+        <source>Text outside align</source>
+        <translation>Текст размера за выносными</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="350"/>
+        <source>Sets positioning of dimension text outside of extension lines (DIMTOH variable)</source>
+        <translation>Задает размещение текста за выносными линиями (переменная DIMTOH)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="356"/>
+        <source>Text pos hor</source>
+        <translation>Текст размера горизонтально</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="356"/>
+        <source>Specified horizontal dimension text position (DIMJUST variable)</source>
+        <translation>Задает горизонтальную позицию текста размера (переменная DIMJUST)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="357"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="368"/>
+        <source>Centered</source>
+        <translation>По центру</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="358"/>
+        <source>First ext line</source>
+        <translation>У первой выносной</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="359"/>
+        <source>Second ext line</source>
+        <translation>У второй выносной</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="360"/>
+        <source>Over first ext line</source>
+        <translation>Над первой выносной</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="361"/>
+        <source>Over second ext line</source>
+        <translation>Над второй выносной</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="367"/>
+        <source>Text pos vert</source>
+        <translation>Текст размера вертикально</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="367"/>
+        <source>Specified vertical dimension text position (DIMTAD variable)</source>
+        <translation>Задает вертикальную позицию текста размера (переменная DIMTAD)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="369"/>
+        <source>Above</source>
+        <translation>Над линией</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="370"/>
+        <source>Outside</source>
+        <translation>Снаружи</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="371"/>
+        <source>JIS</source>
+        <translation>JIS</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="372"/>
+        <source>Below</source>
+        <translation>Под линией</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="381"/>
+        <source>Text style</source>
+        <translation>Стиль текста</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="381"/>
+        <source>Specifies style of text for dimension (DIMTXSTY variable)</source>
+        <translation>Задает стиль текста размера (переменная DIMTXSTY)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="386"/>
+        <source>Text inside align</source>
+        <translation>Текст размера между выносными</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="386"/>
+        <source>Sets positioning of dimension text inside of extension lines (DIMTIH variable)</source>
+        <translation>Задает позиционирование текста размера между выносными линиями (переменная DIMTIH)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="391"/>
+        <source>Text position X</source>
+        <translation>Точка текста X</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="391"/>
+        <source>X coordinate for dimension text position</source>
+        <translation>X координата точки вставки текста размера</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="395"/>
+        <source>Text position Y</source>
+        <translation>Точка текста Y</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="395"/>
+        <source>Y coordinate for dimension text position</source>
+        <translation>Y координата точки вставки текста размера</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="400"/>
+        <source>Arc length symbol</source>
+        <translation>Символ длины дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="400"/>
+        <source>Specifies placement of the arch length dimension symbol (DIMARCSYM variable)</source>
+        <translation>Задает как обозначать длину дуги над текстом размера (переменная DIMARCSYM)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="401"/>
+        <source>Preceeding dimension text</source>
+        <translation>Перед текстом размера</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="402"/>
+        <source>Above dimension text</source>
+        <translation>Над текстом размера</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="403"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="787"/>
+        <source>None</source>
+        <translation>Отсутствует </translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="411"/>
+        <source>Angle</source>
+        <translation>Угол</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="411"/>
+        <source>Text rotation angle</source>
+        <translation>Угол поворота текста</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="416"/>
+        <source>Text view direction</source>
+        <translation>Направление текста</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="416"/>
+        <source>Specifies the text direction (DIMTXTDIRECTION variable)</source>
+        <translation>Задает направление текста (переменная DIMTXTDIRECTION)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="417"/>
+        <source>Left-to-right</source>
+        <translation>Справа налево</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="418"/>
+        <source>Right-to-left</source>
+        <translation>Справа налево</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="436"/>
+        <source>Text override</source>
+        <translation>Текст размера</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="436"/>
+        <source>Specified the text string of dimension (overrides Measurement string)</source>
+        <translation>Пользовательский текст размера (может переопределять измеренное значение)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="445"/>
+        <source>Dim line forced</source>
+        <translation>Размерная всегда</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="446"/>
+        <source>Force drawing dimension line between extension lines, even if text placed outside of extension lines (DIMTOFL variable)</source>
+        <translation>Определяет, отрисовывать ли размерную линию между выносных, даже если текст размещается зы выносными линиями (переменная DIMTOFL).</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="452"/>
+        <source>Dim line inside</source>
+        <translation>Размерная внутри</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="452"/>
+        <source>Force displaying dimension line outside extension lines (DIMSOXD variable)</source>
+        <translation>Задает вывод размерной линии снаружи выносных линий (переменная DIMSOXD)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="458"/>
+        <source>Dim scale overall</source>
+        <translation>Масштаб размеров</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="459"/>
+        <source>Specifies the overall scale factor applied to properties, that specify sizes, distances or offsets (DIMSCALE variable)</source>
+        <translation>Задает общий коэффициент масштабирования, применяемый к свойствам которые задают размеры, дистанции или смещения размеров (переменная DIMSCALE)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="498"/>
+        <source>Fit</source>
+        <translation>Размещение размера</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="498"/>
+        <source>Determines what elements are moved to fit text and arrowheads in space between extension lines (DIMATFIT variable)</source>
+        <translation>Определяет какие элементы перемещать для размещения  для текста и стрелок между выносными если места недостаточно (переменная DIMATFIT).</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="500"/>
+        <source>Best Fit</source>
+        <translation>Наилучшее</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="501"/>
+        <source>Arrows</source>
+        <translation>Стрелки</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="502"/>
+        <source>Text</source>
+        <translation>Текст</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="503"/>
+        <source>Both</source>
+        <translation>Все</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="504"/>
+        <source>Always fit</source>
+        <translation>Всегда вписать</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="509"/>
+        <source>Text inside</source>
+        <translation>Текст между выносными</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="509"/>
+        <source>Sets position of dimension text inside extension lines (DIMTIX variable)</source>
+        <translation>Задает позицию текста размера между выносными линиями (переменная DIMTIX)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="510"/>
+        <source>Place bettween if has room</source>
+        <translation>Внутри если есть место</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="511"/>
+        <source>Always inside</source>
+        <translation>Всегда внутри</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="519"/>
+        <source>Text movement</source>
+        <translation>Перемещение текста</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="520"/>
+        <source>Specifies position of the text when it is moved, either manually or automatically (DIMTMOVE variable)</source>
+        <translation>Задает позицию текста размера при его перемещении (переменная DIMTMOVE)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="522"/>
+        <source>Keep dim line with text</source>
+        <translation>Перемещать размерную линию</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="523"/>
+        <source>Move text, add leader</source>
+        <translation>Двигать текст и строить выноску</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="524"/>
+        <source>Move text, no leader</source>
+        <translation>Двигать текст, без выноски</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="536"/>
+        <source>Decimal separator</source>
+        <translation>Десятичный разделитель</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="536"/>
+        <source>Specifies the decimal separator for metric dimensions (DIMDSEP variable)</source>
+        <translation>Задает разделитель для размеров, выраженных в десятичных единицах (переменная DIMDSEP)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="537"/>
+        <source>.</source>
+        <translation>.</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="537"/>
+        <source>,</source>
+        <translation>,</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="543"/>
+        <source>Dim prefix</source>
+        <translation>Префикс размера</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="543"/>
+        <source>Specifies the text prefix for the dimensions (DIMPOST variable)</source>
+        <translation>Задает текстовый префикс размеров (переменная DIMPOST).</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="549"/>
+        <source>Dim suffix</source>
+        <translation>Суффикс размера</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="549"/>
+        <source>Specifies the text suffix for the dimensions (DIMPOST variable)</source>
+        <translation>Задает текстовый суффикс размеров (переменная DIMPOST).</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="555"/>
+        <source>Dim roundoff</source>
+        <translation>Округлять размер до</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="555"/>
+        <source>Specifies the distance rounding value (DIMRND variable)</source>
+        <translation>Задает величину округления расстояния (переменная DIMRND)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="560"/>
+        <source>Dim scale linear</source>
+        <translation>Коэффициент масштаба размера</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="560"/>
+        <source>Specifies global scale factor for linear dimensions (DIMLFAC variable)</source>
+        <translation>Задает коэффициент масштабирования линейных размеров (переменная DIMLFAC)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="576"/>
+        <source>Dim units</source>
+        <translation>Линейные единицы размера</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="576"/>
+        <source>Specifies units format for linear dimensions (DIMLUNIT variable)</source>
+        <translation>Задает формат единиц для линейных размеров (переменная DIMLUNIT)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="577"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="676"/>
+        <source>Scientific</source>
+        <translation>Научный</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="578"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="677"/>
+        <source>Decimal</source>
+        <translation>Десятичный</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="579"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="678"/>
+        <source>Engineering</source>
+        <translation>Инженерный</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="580"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="679"/>
+        <source>Architectural</source>
+        <translation>Архитектурный</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="581"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="680"/>
+        <source>Fractional</source>
+        <translation>Дробный</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="582"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="681"/>
+        <source>Architectural (metric)</source>
+        <translation>Архитектурный (метрический)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="588"/>
+        <source>Suppress leading zeros</source>
+        <translation>Без ведущих 0</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="588"/>
+        <source>Sets suppression of leading zeros for dimensions (DIMZIN variable)</source>
+        <translation>Задает подавление ведущих 0 размеров (переменная DIMTZIN)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="592"/>
+        <source>Suppress trailing zeros</source>
+        <translation>Без замыкающих 0</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="592"/>
+        <source>Sets suppression of trailing zeros for dimensions (DIMZIN variable)</source>
+        <translation>Задает подавление замыкающих 0 размеров (переменная DIMTZIN)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="607"/>
+        <source>Suppress zero feet</source>
+        <translation>Без нулевых футов</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="607"/>
+        <source>Sets suppression of zero feet in dimension (DIMZIN variable)</source>
+        <translation>Задает подавление нулевых футов размеров (переменная DIMTZIN)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="614"/>
+        <source>Suppress zero inches</source>
+        <translation>Без нулевых дюймов</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="614"/>
+        <source>Sets suppression of zero inches for dimension (DIMZIN variable)</source>
+        <translation>Задает подавление нулевых дюймов размеров (переменная DIMZIN)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="620"/>
+        <source>Precision</source>
+        <translation>Точность</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="620"/>
+        <source>Specifies precision for primary units dimensions (DIMDEC variable)</source>
+        <translation>Задает число десятичных знаков в размерном тексте (переменная DIMDEC)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="621"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="640"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="689"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="825"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="842"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="910"/>
+        <source>1.00</source>
+        <translation>1.00</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="622"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="690"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="826"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="843"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="911"/>
+        <source>0.1</source>
+        <translation>0.1</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="623"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="642"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="691"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="827"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="844"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="912"/>
+        <source>0.01</source>
+        <translation>0.01</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="624"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="643"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="692"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="828"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="845"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="913"/>
+        <source>0.001</source>
+        <translation>0.001</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="625"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="644"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="693"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="829"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="846"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="914"/>
+        <source>0.0001</source>
+        <translation>0.0001</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="626"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="645"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="694"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="830"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="847"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="915"/>
+        <source>0.00001</source>
+        <translation>0.00001</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="627"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="646"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="695"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="831"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="848"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="916"/>
+        <source>0.000001</source>
+        <translation>0.000001</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="628"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="647"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="696"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="832"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="849"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="917"/>
+        <source>0.0000001</source>
+        <translation>0.0000001</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="629"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="648"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="697"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="833"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="850"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="918"/>
+        <source>0.00000001</source>
+        <translation>0.00000001</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="637"/>
+        <source>Angle precision</source>
+        <translation>Угловая точность</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="638"/>
+        <source>Specifies number of precision decimal places displayed for angular dimension text (DIMADEC variable)</source>
+        <translation>Задает число десятичных знаков в угловых размерах (переменная DIMADEC)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="641"/>
+        <source>0.10</source>
+        <translation>0.10</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="655"/>
+        <source>Angle format</source>
+        <translation>Формат углов</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="655"/>
+        <source>Specifies the angle format (DIMAUNIT variable)</source>
+        <translation>Задает единицы измерения для угловых размеров (переменная DIMAUNIT)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="656"/>
+        <source>Decimal Degrees</source>
+        <translation>Десятичные градусы</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="657"/>
+        <source>Deg/min/sec</source>
+        <translation>Град/мин/сек</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="658"/>
+        <source>Gradians</source>
+        <translation>Градианы</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="659"/>
+        <source>Radians</source>
+        <translation>Радианы</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="660"/>
+        <source>Surveyor&apos;s units</source>
+        <translation>Геодезические единицы</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="669"/>
+        <source>Alt enabled</source>
+        <translation>Альтернативные единицы</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="669"/>
+        <source>Sets units format for alternate units dimensions On or Off except angular (DIMALT variable)</source>
+        <translation>Задает формат альтернативных единиц для линейных размеров (переменная DIMALT)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="675"/>
+        <source>Alt format</source>
+        <translation>Альт.формат единиц</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="675"/>
+        <source>Specifies units format for alternate units dimensions except angular (DIMALTU variable)</source>
+        <translation>Задает формат альтернативных единиц для линейных размеров (переменная DIMALTU)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="688"/>
+        <source>Alt precision</source>
+        <translation>Альт. количество знаков</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="688"/>
+        <source>Specifies precision for alternate units dimensions (DIMALTD variable)</source>
+        <translation>Задает число знаков после запятой для альтернативных единиц размеров (переменная DIMALTD)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="703"/>
+        <source>Alt round</source>
+        <translation>Альт. округлять до</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="703"/>
+        <source>Specifies distances rounding value for alternate units (DIMALTRND variable)</source>
+        <translation>Задает величину округления альтернативных единиц размеров (переменная DIMALTRND)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="708"/>
+        <source>Alt scale factor</source>
+        <translation>Альт. коэффициент размера</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="708"/>
+        <source>Specifies scale factor for alternative units (DIMALTF variable)</source>
+        <translation>Задает коэффициент масштаба для альтернативных единиц размера (переменная DIMALTF)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="712"/>
+        <source>Alt suppress leading zeros</source>
+        <translation>Альт. без ведущих 0</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="712"/>
+        <source>Sets suppression of leading zeros for alternate units in dimension (DIMALTZ variable)</source>
+        <translation>Задает подавление ведущих нулей в альтернативных десятичных единицах размера (переменная DIMALTZ)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="716"/>
+        <source>Alt suppress trailing zeros</source>
+        <translation>Альт. без замыкающих 0</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="716"/>
+        <source>Sets suppression of trailing zeros for alternate units in dimension (DIMALTZ variable)</source>
+        <translation>Задает подавление замыкающих нулей в альтернативных десятичных единицах размера (переменная DIMALTZ)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="730"/>
+        <source>Alt suppress zero feet</source>
+        <translation>Альт. без 0 футов</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="730"/>
+        <source>Sets suppression of zero feet for alternate units in dimension (DIMALTZ variable)</source>
+        <translation>Задает подавление нулевых футов в альтернативных единицах размера (переменная DIMALTZ)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="737"/>
+        <source>Alt suppress zero inches</source>
+        <translation>Альт. без 0 дюймов</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="737"/>
+        <source>Sets suppression of zero inches for alternate units in dimension (DIMALTZ variable)</source>
+        <translation>Задает подавление нулей в дюймах в альтернативных единицах размера (переменная DIMALTZ)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="743"/>
+        <source>Alt prefix</source>
+        <translation>Альт. префикс</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="743"/>
+        <source>Specifies text prefix to alternate dimensions except angular (DIMAPOST variable)</source>
+        <translation>Задает текстовый префикс в альтернативных единицах размеров, за исключением уловых (переменная DIMAPOST)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="749"/>
+        <source>Alt suffix</source>
+        <translation>Альт. суффикс</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="749"/>
+        <source>Specifies text suffix to alternate dimensions except angular (DIMAPOST variable)</source>
+        <translation>Задает текстовый суффикс в альтернативных единицах размеров, за исключением уловых (переменная DIMAPOST)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="775"/>
+        <source>Tolerance alignment</source>
+        <translation>Выравнивание допусков</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="775"/>
+        <source>Specifies alignment for stacked numbers (DIMTALN variable)</source>
+        <translation>Задает выравнивание дробных значений (переменная DIMTALN)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="776"/>
+        <source>Operational symbols</source>
+        <translation>По рабочим обозначениям</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="777"/>
+        <source>Decimal separators</source>
+        <translation>Десятичный разделитель</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="786"/>
+        <source>Tolerance display</source>
+        <translation>Показать допуски</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="786"/>
+        <source>Specifies display mode of dimension tolerances to dimension text (DIMTOL variable)</source>
+        <translation>Задает режим показа допусков в тексте размера (переменная DIMTOL)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="788"/>
+        <source>Symmetrical</source>
+        <translation>Симметрично</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="789"/>
+        <source>Deviation</source>
+        <translation>Отклонения</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="790"/>
+        <source>Limits</source>
+        <translation>Предельные размеры</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="791"/>
+        <source>Basic</source>
+        <translation>Номинальный</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="796"/>
+        <source>Tolerance limit lower</source>
+        <translation>Допуск - нижний предел</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="797"/>
+        <source>Specifies the minimal (or lower) tolerance limit for dimension text when DIMTOL or DIMLIM is on (DIMTM variable)</source>
+        <translation>Задает минимальный (или нижний) предел допуска для текста размера когда DIMTOL или DIMLIM включены (переменная DIMTM)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="802"/>
+        <source>Tolerance limit upper</source>
+        <translation>Допуск - верхний предел</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="803"/>
+        <source>Specifies the maximum (or upper) tolerance limit for dimension text when DIMTOL or DIMLIM is on (DIMTP variable)</source>
+        <translation>Задает максимальный (или верхний) предел допуска для текста размера когда DIMTOL или DIMLIM включены (переменная DIMTM)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="809"/>
+        <source>Tolerance pos vert</source>
+        <translation>Допуск по вертикали</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="810"/>
+        <source>Specifies vertical justification for tolerance values relative to nominal dimension text (DIMTOLJ variable)</source>
+        <translation>Задает вертикальное размещение текста допуска по отношению к тексту номинального размера (переменная DIMTOLJ)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="813"/>
+        <source>Bottom</source>
+        <translation>Внизу</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="814"/>
+        <source>Middle</source>
+        <translation>Посередине</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="815"/>
+        <source>Top</source>
+        <translation>Вверху</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="824"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="841"/>
+        <source>Tolerance precision</source>
+        <translation>Знаков в допусках</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="824"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="841"/>
+        <source>Specifies number of decimal places for tolerance values of a dimension (DIMTDEC variable)</source>
+        <translation>Установка числа знаков после запятой для единиц допусков размера (переменная DIMTDEC)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="857"/>
+        <source>Tolerance suppress leading zeros</source>
+        <translation>Без ведущих 0 в допусках</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="858"/>
+        <source>Sets suppression of leading zeros for tolerance values in dimension (DIMTZIN value)</source>
+        <translation>Задает подавление ведущих 0 в значениях допусков размеров (переменная DIMTZIN)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="863"/>
+        <source>Tolerance suppress trailing zeros</source>
+        <translation>Без замыкающих 0 в допусках</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="864"/>
+        <source>Sets suppression of trailing zeros for tolerance values in dimension (DIMTZIN value)</source>
+        <translation>Задает подавление замыкающих 0 в значениях допусков размеров (переменная DIMTZIN)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="882"/>
+        <source>Tolerance suppress zero feet</source>
+        <translation>Без 0 футов в допусках</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="883"/>
+        <source>Sets suppression of zero feet for tolerance values in dimension (DIMTZIN variable)</source>
+        <translation>Задает подавление нулевых футов в значениях допусков размеров (переменная DIMTZIN)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="892"/>
+        <source>Tolerance suppress zero inches</source>
+        <translation>Без 0 дюймов в допусках</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="893"/>
+        <source>Sets suppression of zero inches for tolerance values in dimension (DIMTZIN variable)</source>
+        <translation>Задает подавление нулевых дюймов в значениях допусков размеров (переменная DIMTZIN)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="898"/>
+        <source>Tolerance text height</source>
+        <translation>Высота текста допуска</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="899"/>
+        <source>Specifies scale factor for text height of tolerance values relative to dimension text height as set by DIMTXT (DIMTFAC variable)</source>
+        <translation>Задает коэффициент масштабирования высоты текста допусков относительно текста размера (переменная DIMTFAC)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="907"/>
+        <source>Alt tolerance precision</source>
+        <translation>Альт. допуск. число знаков</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="908"/>
+        <source>Specifies number of decimal places for tolerance values of an alternate units dimension (DIMALTTD variable)</source>
+        <translation>Задает число десятичных знаков после запятой в допусках размеров (переменная DIMALTTD)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="924"/>
+        <source>Alt tolerance suppress leading zeros</source>
+        <translation>Альт. допуск без ведущиx 0</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="925"/>
+        <source>Sets suppression of leading zeros for alternate units tolerance values in dimension (DIMALTTZ value)</source>
+        <translation>Задает подавление ведующих 0 в альтернативных десятичных единицах допусков размера (переменная DIMALTZ)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="931"/>
+        <source>Alt tolerance suppress trailing zeros</source>
+        <translation>Альт. допуск без замыкающих 0</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="932"/>
+        <source>Sets suppression of trailing zeros for alternate units tolerance values in dimension (DIMALTTZ value)</source>
+        <translation>Задает подавление нулевых дюймов в альтернативных десятичных единицах допусков размера (переменная DIMALTZ)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="950"/>
+        <source>Alt tolerance suppress zero feet</source>
+        <translation>Альт. допуск. без 0 футов</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="951"/>
+        <source>Sets suppression of zero feet for alternate units tolerance values in dimension (DIMALTTZ variable)</source>
+        <translation>Задает подавление нулевых футов в альтернативных десятичных единицах допусков размера (переменная DIMALTZ)</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="960"/>
+        <source>Alt tolerance suppress zero inches</source>
+        <translation>Альт. допуск без 0 дюймов</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h" line="961"/>
+        <source>Sets suppression of zero inches for alterate units tolerance values in dimension (DIMALTTZ variable)</source>
+        <translation>Задает подавление нулевых дюймов в альтернативных десятичных единицах допуска размера (переменная DIMALTZ)</translation>
     </message>
 </context>
 <context>
@@ -11384,82 +12745,82 @@ Please specify a different value.</source>
         <translation>Используемая ось ординат</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="45"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="43"/>
         <source>X</source>
         <translation>X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="46"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="43"/>
         <source>Y</source>
         <translation>Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="51"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="47"/>
         <source>Feature Point X</source>
         <translation>Характерная точка X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="51"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="47"/>
         <source>X coordinate for dimension feature point</source>
         <translation>Координата характерной точки по оси X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="55"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="51"/>
         <source>Feature Point Y</source>
         <translation>Характерная точка Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="55"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="51"/>
         <source>Y coordinate for dimension feature point</source>
         <translation>Координата характерной точки по оси Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="59"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="55"/>
         <source>Leader End X</source>
         <translation>Конец выноски X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="59"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="55"/>
         <source>X coordinate for dimension leader end point</source>
         <translation>Координата точки конца выноски по оси X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="63"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="59"/>
         <source>Leader End Y</source>
         <translation>Конец выноски Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="63"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="59"/>
         <source>Y coordinate for dimension leader end point</source>
         <translation>Координата точки конца выноски по оси Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="67"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="63"/>
         <source>Text middle point X</source>
         <translation>Середина текста X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="67"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="63"/>
         <source>X coordinate for text middle point</source>
         <translation>Координата точки середины текста по оси X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="71"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="67"/>
         <source>Text middle point Y</source>
         <translation>Середина текста Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="71"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="67"/>
         <source>Y coordinate for text middle point</source>
         <translation>Координата точки середины текста по оси Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="75"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="71"/>
         <source>Horizontal</source>
         <translation>Горизонталь</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="75"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp" line="71"/>
         <source>Andle of horizontal direction for this dimension</source>
         <translation>Угол направления горизонтали  для этого размера</translation>
     </message>
@@ -11814,107 +13175,107 @@ Please specify a different value.</source>
 <context>
     <name>LC_MatchDescriptorInsert</name>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="28"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="35"/>
         <source>Insert</source>
         <translation>Вставка</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="33"/>
-        <source>Name</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="33"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="40"/>
         <source>Name of the inserted block</source>
         <translation>Имя вставленного блока</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="37"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="40"/>
+        <source>Block name</source>
+        <translation>Имя блока</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="54"/>
         <source>Insert X</source>
         <translation>Точка вставки X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="37"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="54"/>
         <source>X coordinate for block&apos;s insertion point</source>
         <translation>Координата точки вставки блока по оси X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="41"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="58"/>
         <source>Insert Y</source>
         <translation>Точка вставки Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="41"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="58"/>
         <source>Y coordinate for block&apos;s insertion point</source>
         <translation>Координата точки вставки блока по оси Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="45"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="62"/>
         <source>Angle</source>
         <translation>Угол</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="45"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="62"/>
         <source>Block rotation angle</source>
         <translation>Угол поворота блока</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="49"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="66"/>
         <source>Scale X</source>
         <translation>Масштаб по X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="49"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="66"/>
         <source>Block X scale</source>
         <translation>Масштаб блока по X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="53"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="70"/>
         <source>Scale Y</source>
         <translation>Масштаб по Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="53"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="70"/>
         <source>Block Y scale</source>
         <translation>Масштаб блока по Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="57"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="74"/>
         <source>Columns</source>
         <translation>Столбцы</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="57"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="74"/>
         <source>Columns number</source>
         <translation>Количество столбцов вставки</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="61"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="78"/>
         <source>Spacing X</source>
         <translation>Промежуток по X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="61"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="78"/>
         <source>Block columns spacing (by  X)</source>
         <translation>Горизонтальное расстояние между столбцами</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="65"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="82"/>
         <source>Rows</source>
         <translation>Строки</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="65"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="82"/>
         <source>Rows number</source>
         <translation>Число строк вставки</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="69"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="86"/>
         <source>Spacing Y</source>
         <translation>Промежуток по Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="69"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp" line="86"/>
         <source>Block rows spacing (by  Y)</source>
         <translation>Вертикальное расстояние между строками</translation>
     </message>
@@ -12108,8 +13469,12 @@ Please specify a different value.</source>
         <translation>Стиль</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_mtext.cpp" line="47"/>
         <source>Name of the text style</source>
+        <translation type="vanished">Название текстового стиля</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_mtext.cpp" line="47"/>
+        <source>Name of the text style)</source>
         <translation>Название текстового стиля</translation>
     </message>
     <message>
@@ -12395,32 +13760,32 @@ Please specify a different value.</source>
         <translation>Координата конечной точки по оси X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_polyline.cpp" line="45"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_polyline.cpp" line="49"/>
         <source>Vertex X</source>
         <translation>Вершина X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_polyline.cpp" line="45"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_polyline.cpp" line="49"/>
         <source>X coordinate for one of vertexes</source>
         <translation>Координата одной из вершин ломаной по оси X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_polyline.cpp" line="49"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_polyline.cpp" line="53"/>
         <source>Vertex Y</source>
         <translation>Вершина Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_polyline.cpp" line="49"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_polyline.cpp" line="53"/>
         <source>Y coordinate  for one of vertexes</source>
         <translation>Координата одной из вершин ломаной по оси Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_polyline.cpp" line="53"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_polyline.cpp" line="45"/>
         <source>End Y</source>
         <translation>Конечная Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_polyline.cpp" line="53"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_polyline.cpp" line="45"/>
         <source>Y coordinate for end point</source>
         <translation>Координата конечной точки по оси Y</translation>
     </message>
@@ -12536,87 +13901,87 @@ Please specify a different value.</source>
 <context>
     <name>LC_MatchDescriptorSplinePoints</name>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="31"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="30"/>
         <source>Spline By Points</source>
         <translation>Сплайн по точкам</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="36"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="35"/>
         <source>Points Amount</source>
         <translation>Точек</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="36"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="35"/>
         <source>Amount of spline points</source>
         <translation>Количество точек сплайна</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="40"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="39"/>
         <source>Closed</source>
         <translation>Замкнутый</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="40"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="39"/>
         <source>Determines whether spline is closed or not</source>
         <translation>Определяет замкнут ли сплайн</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="44"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="43"/>
         <source>By Control Points</source>
         <translation>По Контрольным точкам</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="44"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="43"/>
         <source>Determines whether spline is controlled by control points or fit points</source>
         <translation>Свойство определяет строится ли сплайн по контрольным точкам или по точкам аппроксимации</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="48"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="47"/>
         <source>Point X</source>
         <translation>Точка X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="48"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="47"/>
         <source>X coordinate of spline point</source>
         <translation>Координата точки сплайна по оси X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="52"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="51"/>
         <source>Point Y</source>
         <translation>Точка Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="52"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="51"/>
         <source>Y coordinate of spline point</source>
         <translation>Координата точки сплайна по оси Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="56"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="55"/>
         <source>Vertex X</source>
         <translation>Вершина X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="56"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="55"/>
         <source>X coordinate for one of vertexes</source>
         <translation>Координата одной из вершин сплайна по оси X</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="60"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="59"/>
         <source>Vertex Y</source>
         <translation>Вершина Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="60"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="59"/>
         <source>Y coordinate  for one of vertexes</source>
         <translation>Координата одной из вершин сплайна по оси Y</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="64"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="63"/>
         <source>Length</source>
         <translation>Длина</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="64"/>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp" line="63"/>
         <source>Length of spline</source>
         <translation>Длина сплайна</translation>
     </message>
@@ -12704,8 +14069,12 @@ Please specify a different value.</source>
         <translation>Стиль</translation>
     </message>
     <message>
-        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_text.cpp" line="62"/>
         <source>Name of the text style</source>
+        <translation type="vanished">Название текстового стиля</translation>
+    </message>
+    <message>
+        <location filename="../src/lib/selection/metaentity/entities/lc_matchdescriptor_text.cpp" line="62"/>
+        <source>Name of the text style)</source>
         <translation>Название текстового стиля</translation>
     </message>
     <message>
@@ -12811,592 +14180,592 @@ Please specify a different value.</source>
 <context>
     <name>LC_MenuFactory</name>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="142"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="143"/>
         <source>&amp;Help</source>
         <translation>&amp;Помощь</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="144"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="145"/>
         <source>On&amp;line Docs</source>
         <translation>Онлайн документация</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="145"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="146"/>
         <source>&amp;Wiki</source>
         <translation>&amp;Вики</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="146"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="147"/>
         <source>User&apos;s &amp;Manual</source>
         <translation>Руководство &amp;пользователя</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="147"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="148"/>
         <source>&amp;Commands</source>
         <translation>&amp;Команды</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="148"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="149"/>
         <source>&amp;Style Sheets</source>
         <translation>&amp;Таблица стилей</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="150"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="458"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="151"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="459"/>
         <source>Wid&amp;gets</source>
         <translation>&amp;Инструменты</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="154"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="155"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="161"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="162"/>
         <source>&amp;Forum</source>
         <translation>&amp;Форум</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="162"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="163"/>
         <source>Zulip &amp;Chat</source>
         <translation>Zulip &amp;Чат</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="164"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="165"/>
         <source>&amp;Submit Error</source>
         <translation>Сообщить об ошибке</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="165"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="166"/>
         <source>&amp;Request Feature</source>
         <translation>Запросить функционал</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="166"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="167"/>
         <source>&amp;Releases Page</source>
         <translation>Страница релизов</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="177"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="178"/>
         <source>&amp;Donate</source>
         <translation>&amp;Пожертвовать</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="193"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="231"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="264"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="194"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="232"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="265"/>
         <source>&amp;Line</source>
         <translation>&amp;Прямая</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="197"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="232"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="265"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="198"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="233"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="266"/>
         <source>Poin&amp;t</source>
         <translation>&amp;Точки</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="201"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="233"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="266"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="202"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="234"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="267"/>
         <source>&amp;Circle</source>
         <translation>&amp;Окружность</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="205"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="234"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="268"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="206"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="235"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="269"/>
         <source>&amp;Arc</source>
         <translation>&amp;Дуга</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="209"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="236"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="270"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="210"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="237"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="271"/>
         <source>Poly&amp;gon</source>
         <translation>Много&amp;угольник</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="213"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="238"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="272"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="214"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="239"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="273"/>
         <source>Splin&amp;e</source>
         <translation>Спл&amp;айн</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="217"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="218"/>
         <source>Ellip&amp;se</source>
         <translation>Эллипс</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="221"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="240"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="276"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="222"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="241"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="277"/>
         <source>&amp;Polyline</source>
         <translation>&amp;Ломаная</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="225"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="226"/>
         <source>&amp;Other</source>
         <translation>Прочее</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="230"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="231"/>
         <source>&amp;Draw</source>
         <translation>Рисовать</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="239"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="274"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="240"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="275"/>
         <source>&amp;Ellipse</source>
         <translation>&amp;Эллипс</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="242"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="283"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="243"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="284"/>
         <source>Ot&amp;her</source>
         <translation>Прочее</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="247"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="285"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="248"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="286"/>
         <source>&amp;Modify</source>
         <translation>Из&amp;менить</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="249"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="288"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="250"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="289"/>
         <source>&amp;Order</source>
         <translation>&amp;Порядок</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="253"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="254"/>
         <source>&amp;Dimensions</source>
         <translation>&amp;Размеры</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="257"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="287"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="258"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="288"/>
         <source>&amp;Info</source>
         <translation>&amp;Информация</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="263"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="264"/>
         <source>&amp;Tools</source>
         <translation>&amp;Инструменты</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="95"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="114"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="278"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="96"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="115"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="279"/>
         <source>&amp;Select</source>
         <translation>&amp;Выбор</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="171"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="172"/>
         <source>&amp;Dev Snapshot Release</source>
         <translation>Версия в разработке</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="281"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="282"/>
         <source>Dime&amp;nsion</source>
         <translation>&amp;Размеры</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="294"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1222"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="295"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1226"/>
         <source>&amp;File</source>
         <translation>&amp;Файл</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="305"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="306"/>
         <source>Recent Files</source>
         <translation>Недавние файлы</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="309"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1237"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="310"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1241"/>
         <source>Import</source>
         <translation>Импорт</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="314"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1242"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="315"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1246"/>
         <source>Export</source>
         <translation>Экспорт</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="335"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="336"/>
         <source>&amp;Options</source>
         <translation>&amp;Настройки</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="349"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="350"/>
         <source>&amp;Edit</source>
         <translation>&amp;Правка</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="370"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1261"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="371"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1265"/>
         <source>&amp;View</source>
         <translation>&amp;Вид</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="399"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="400"/>
         <source>&amp;Views Restore</source>
         <translation>Восстановить Вид</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="412"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="413"/>
         <source>Pl&amp;ugins</source>
         <translation>&amp;Дополнения</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="417"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="418"/>
         <source>&amp;Workspace</source>
         <translation>Рабочее Пространство</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="443"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="444"/>
         <source>Dock Areas</source>
         <translation>Области стыковки</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="451"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="452"/>
         <source>Toolbar Areas</source>
         <translation>Области панелей инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="484"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="485"/>
         <source>CAD Wid&amp;gets</source>
         <translation>Компоненты СА&amp;ПР</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="624"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="625"/>
         <source>&amp;Drawings</source>
         <translation>&amp;Чертежи</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="789"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="790"/>
         <source>Context</source>
         <translation>Контекстное меню</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="806"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="807"/>
         <source>Toolbars</source>
         <translation>Панели</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="810"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="811"/>
         <source>Widgets</source>
         <translation>Компоненты</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="818"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="819"/>
         <source>CAD Widgets</source>
         <translation>Компоненты САПР</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="824"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="825"/>
         <source>CAD Toolbars</source>
         <translation>Панели САПР</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="838"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="839"/>
         <source>Select</source>
         <translation>Выбор объектов</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="889"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="890"/>
         <source>Recent</source>
         <translation>Недавние</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="993"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1070"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="997"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1074"/>
         <source>Modify</source>
         <translation>Изменить</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1010"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1014"/>
         <source>Modify More</source>
         <translation>Изменить еще</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1026"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1030"/>
         <source>Draw</source>
         <translation>Рисовать</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1029"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1033"/>
         <source>Line</source>
         <translation>Прямая</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1033"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1037"/>
         <source>Polyline</source>
         <translation>Ломаная</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1037"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1041"/>
         <source>Point</source>
         <translation>Точка</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1041"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1045"/>
         <source>Circle</source>
         <translation>Окружность</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1045"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1049"/>
         <source>Arc</source>
         <translation>Дуга</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1049"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1053"/>
         <source>Polygon</source>
         <translation>Многоугольник</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1052"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1056"/>
         <source>Polyline/Spline</source>
         <translation>Рисовать Ломаную/Кривую</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1062"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1066"/>
         <source>Ellipse</source>
         <translation>Эллипс</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1066"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1070"/>
         <source>Other</source>
         <translation>Прочее</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1099"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1426"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1481"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1539"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1589"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1103"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1430"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1485"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1543"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1593"/>
         <source>Add Dimensions</source>
         <translation>Добавить Размеры</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1102"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1866"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1106"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1870"/>
         <source>Align</source>
         <translation>Выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1109"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1113"/>
         <source>Draw Order</source>
         <translation>Порядок</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1117"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1883"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1121"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1887"/>
         <source>Layers</source>
         <translation>Слои</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1122"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1903"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1126"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1907"/>
         <source>Info</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1131"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1135"/>
         <source>Workspaces</source>
         <translation>Рабочие Пространства</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1162"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1166"/>
         <source>Edit</source>
         <translation>Правка</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1213"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1217"/>
         <source>Options</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1290"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1294"/>
         <source>&amp;Named Views</source>
         <translation>Именованные Виды</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1320"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1324"/>
         <source>Edit Properties</source>
         <translation>Свойства Объекта</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1333"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1337"/>
         <source>Modify Generic</source>
         <translation>Изменить </translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1373"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1377"/>
         <source>Modify Line</source>
         <translation>Изменить Прямую</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1393"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1466"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1520"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1571"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1675"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1397"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1470"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1524"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1575"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1679"/>
         <source>Draw Line</source>
         <translation>Рисовать Прямую</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1409"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1456"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1511"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1413"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1460"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1515"/>
         <source>Draw Circle</source>
         <translation>Рисовать Окружность</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1418"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1475"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1529"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1581"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1634"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1684"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1422"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1479"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1533"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1585"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1638"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1688"/>
         <source>Draw Other</source>
         <translation>Рисовать прочее</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1441"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1445"/>
         <source>Modify Circle</source>
         <translation>Изменить Окружность</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1494"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1498"/>
         <source>Modify Arc</source>
         <translation>Исменить Дугу</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1552"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1556"/>
         <source>Modify Polyline</source>
         <translation>Изменить Ломаную</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1604"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1608"/>
         <source>Modify Spline</source>
         <translation>Изменить Сплайн</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1620"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1624"/>
         <source>Modify Spline Points</source>
         <translation>Изменить Сплайн По Точкам</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1643"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1647"/>
         <source>Modify Text</source>
         <translation>Изменить Текст</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1656"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1660"/>
         <source>Modify MText</source>
         <translation>Изменить МТекст</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1809"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1813"/>
         <source>Edit Block</source>
         <translation>Редактировать Блок</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1874"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1878"/>
         <source>Order</source>
         <translation>Порядок</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="508"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="509"/>
         <source>&amp;Toolbars</source>
         <translation>&amp;Панели</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="528"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="529"/>
         <source>&amp;CAD Toolbars</source>
         <translation>&amp;Панели САПР</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="556"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="557"/>
         <source>&amp;Workspaces</source>
         <translation>Рабочие Пространства</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="632"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="633"/>
         <source>Ta&amp;b mode</source>
         <translation>&amp;Режим вкладок</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="636"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="637"/>
         <source>&amp;Window mode</source>
         <translation>&amp;Оконный режим</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="641"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="642"/>
         <source>&amp;Layout</source>
         <translation>&amp;Расположение</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="645"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="646"/>
         <source>Rounded</source>
         <translation>Скругленное</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="651"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="652"/>
         <source>Triangular</source>
         <translation>Треугольное</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="658"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="659"/>
         <source>North</source>
         <translation>Север</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="662"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="663"/>
         <source>South</source>
         <translation>Юг</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="666"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="667"/>
         <source>East</source>
         <translation>Восток</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="670"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="671"/>
         <source>West</source>
         <translation>Запад</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="675"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="676"/>
         <source>&amp;Arrange</source>
         <translation>&amp;Упорядоченный</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="679"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="680"/>
         <source>&amp;Maximized</source>
         <translation>&amp;Увеличенный</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="683"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="684"/>
         <source>&amp;Cascade</source>
         <translation>&amp;Стопкой</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="684"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="685"/>
         <source>&amp;Tile</source>
         <translation>&amp;Мозаика</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="685"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="686"/>
         <source>Tile &amp;Vertically</source>
         <translation>Мозаика по &amp;вертикали</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="686"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="687"/>
         <source>Tile &amp;Horizontally</source>
         <translation>Мозаика по &amp;горизонтали</translation>
     </message>
@@ -14099,20 +15468,20 @@ Please specify a different value.</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="247"/>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="271"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="239"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="263"/>
         <source>Delete View</source>
         <translation>Удаление Вида</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="302"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="294"/>
         <source>Are you sure to delete views %1?
 Warning: this action can NOT be undone!</source>
         <translation>Вы уверены что хотите удалить виды %1?
 Предупреждение: эта операция не может быть отменена!</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="272"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="264"/>
         <source>Are you sure to delete view
  &quot;%1&quot;?
  Warning: this action can NOT be undone!</source>
@@ -14121,106 +15490,106 @@ Warning: this action can NOT be undone!</source>
 Предупреждение: Эта операция не может быть отменена!</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="248"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="240"/>
         <source>Are you sure to delete ALL views?
  Warning: this action can NOT be undone!</source>
         <translation>Вы уверены что хотите удалить все Виды?
 Предупреждение: Это действие не может быть отменено позже.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="302"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="294"/>
         <source>Delete Views</source>
         <translation>Удаление Видов</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="332"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="324"/>
         <source>New View</source>
         <translation>Новый Вид</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="333"/>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="366"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="325"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="358"/>
         <source>View name:</source>
         <translation>Имя Вида:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="338"/>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="349"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="330"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="341"/>
         <source>View Creation</source>
         <translation>Создание Вида</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="338"/>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="371"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="330"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="363"/>
         <source>Empty name of View is not allowed</source>
         <translation>Пустое имя Вида недопустимо</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="349"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="341"/>
         <source>View with provided name already exists</source>
         <translation>Вид с заданным именем уже существует</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="365"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="357"/>
         <source>Rename View</source>
         <translation>Переименование Вида</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="371"/>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="378"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="363"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="370"/>
         <source>View Rename</source>
         <translation>Переименование Вида</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="378"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="370"/>
         <source>View with provided name already exists, select another one</source>
         <translation>Вид с заданным именем уже существует. Пожалуйста, выберите другое имя.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="455"/>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="462"/>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="476"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="447"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="454"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="468"/>
         <source>&amp;Add View</source>
         <translation>Coхранить Вид</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="458"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="450"/>
         <source>R&amp;emove Selected Views</source>
         <translation>Удалить выбранные Виды</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="465"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="457"/>
         <source>&amp;Restore View</source>
         <translation>Восстановить Вид</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="466"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="458"/>
         <source>Re&amp;name View</source>
         <translation>Переименовать Вид</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="595"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="587"/>
         <source>Paper space view is not fully supported yet.</source>
         <translation>Именные виды в пространстве бумаги пока не поддерживаются в полной мере. </translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="467"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="459"/>
         <source>&amp;Update View</source>
         <translation>Обновить Вид (положение)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="468"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="460"/>
         <source>R&amp;emove View</source>
         <translation>Удалить Вид</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="470"/>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="482"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="462"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="474"/>
         <source>Remove A&amp;ll Views</source>
         <translation>Удалить Все Виды</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="595"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewslistwidget.cpp" line="587"/>
         <source>Restore View</source>
         <translation>Выбор Вида</translation>
     </message>
@@ -14228,112 +15597,112 @@ Warning: this action can NOT be undone!</source>
 <context>
     <name>LC_NamedViewsModel</name>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="394"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="390"/>
         <source>Name: </source>
         <translation>Имя: </translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="293"/>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="342"/>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="367"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="289"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="338"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="363"/>
         <source>&lt;No name&gt;</source>
         <translation>*БЕЗЫМЯННАЯ*</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="311"/>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="323"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="307"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="319"/>
         <source>Ortho</source>
         <translation>Ортогональная</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="313"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="309"/>
         <source>Left</source>
         <translation>Левая</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="316"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="312"/>
         <source>Right</source>
         <translation>Правая</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="320"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="316"/>
         <source>Top</source>
         <translation>Верх</translation>
     </message>
     <message>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="376"/>
         <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="380"/>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="384"/>
         <source>WCS</source>
         <translation>Мировая</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="388"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="384"/>
         <source>UCS</source>
         <translation>Пользовательская</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="395"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="391"/>
         <source>Center X: </source>
         <translation>Центр X: </translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="396"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="392"/>
         <source>Center Y: </source>
         <translation>Центр Y:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="397"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="393"/>
         <source>Width: </source>
         <translation>Ширина: </translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="398"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="394"/>
         <source>Height: </source>
         <translation>Высота: </translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="401"/>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="408"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="397"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="404"/>
         <source>UCS: </source>
         <translation>Пользовательская: </translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="409"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="405"/>
         <source>UCS Name: </source>
         <translation>Имя ПСК:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="410"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="406"/>
         <source>Grid View: </source>
         <translation>Тип Сетки: </translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="411"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="407"/>
         <source>UCS Origin X: </source>
         <translation>Базовый X: </translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="412"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="408"/>
         <source>UCS Origin Y: </source>
         <translation>Базовый Y: </translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="413"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="409"/>
         <source>UCS Angle: </source>
         <translation>Угол оси: </translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="416"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="412"/>
         <source>In Paperspace: </source>
         <translation>В пространстве бумаги: </translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="416"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="412"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="416"/>
+        <location filename="../src/ui/dock_widgets/views_list/lc_namedviewsmodel.cpp" line="412"/>
         <source>No</source>
         <translation>Нет</translation>
     </message>
@@ -14382,7 +15751,7 @@ Warning: this action can NOT be undone!</source>
         <translation>Контрольные точки</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_parabolapropertieseditingwidget.cpp" line="89"/>
+        <location filename="../src/ui/dialogs/entity/lc_parabolapropertieseditingwidget.cpp" line="90"/>
         <source>Parabola control points cannot be collinear</source>
         <translation>Контрольные точки параболы не могут быть коллинеарными</translation>
     </message>
@@ -15413,104 +16782,3249 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
     </message>
 </context>
 <context>
+    <name>LC_PropertiesProviderArc</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="35"/>
+        <source>Center</source>
+        <translation>Центр</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="35"/>
+        <source>Center point of arc</source>
+        <translation>Центральная точка дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="41"/>
+        <source>Radius</source>
+        <translation>Радиус</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="41"/>
+        <source>Radius of arc</source>
+        <translation>Радиус дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="47"/>
+        <source>Diameter</source>
+        <translation>Диаметр</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="47"/>
+        <source>Diameter of arc</source>
+        <translation>Диаметр дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="53"/>
+        <source>Is Reversed</source>
+        <translation>Обратное направление</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="53"/>
+        <source>Clockwise direction if reversed, counterclockwise otherwise</source>
+        <translation>При обратном направлении, дуга направлена по часовой стрелке. Иначе -дуга расположена против часовой стрелки.</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="60"/>
+        <source>Start Angle</source>
+        <translation>Начальный угол</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="60"/>
+        <source>Start angle of arc</source>
+        <translation>Начальный угол дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="66"/>
+        <source>End Angle</source>
+        <translation>Конечный угол</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="66"/>
+        <source>End angle of arc</source>
+        <translation>Конечный угол дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="77"/>
+        <source>Start Point</source>
+        <translation>Начальная точка</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="77"/>
+        <source>Start point of arc</source>
+        <translation>Начальная точка дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="82"/>
+        <source>End Point</source>
+        <translation>Конечная точка</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="82"/>
+        <source>End point of arc</source>
+        <translation>Конечная точка дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="87"/>
+        <source>Arc Length</source>
+        <translation>Угол дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="87"/>
+        <source>Total angle of arc</source>
+        <translation>Центральный уго дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="94"/>
+        <source>Circumference</source>
+        <translation>Длина дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="94"/>
+        <source>Total linear length of arc</source>
+        <translation>Линейная длина дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="101"/>
+        <source>Chord Length</source>
+        <translation>Длина хорды</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="101"/>
+        <source>Distance between end points of arc</source>
+        <translation>Длина хорды, расстояние между конечными точками дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="108"/>
+        <source>Sagitta</source>
+        <translation>Высота дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="108"/>
+        <source>Height of arc</source>
+        <translation>Высота дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="115"/>
+        <source>Bulge</source>
+        <translation>Выпуклость</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="115"/>
+        <source>Bulge of arc</source>
+        <translation>Выпуклость дуги</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertiesProviderCircle</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="31"/>
+        <source>Center</source>
+        <translation>Центр</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="31"/>
+        <source>Center point of circle</source>
+        <translation>Центральная точка окружности</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="37"/>
+        <source>Radius</source>
+        <translation>Радиус</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="37"/>
+        <source>Radius of circle</source>
+        <translation>Радиус окружности</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="43"/>
+        <source>Diameter</source>
+        <translation>Диаметр</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="43"/>
+        <source>Diameter of circle</source>
+        <translation>Диаметр окружности</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="49"/>
+        <source>Circumference</source>
+        <translation>Длина окружности</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="49"/>
+        <source>Circumference of circle</source>
+        <translation>Длина окружности</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="55"/>
+        <source>Area</source>
+        <translation>Площадь</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="55"/>
+        <source>Area of circle</source>
+        <translation>Площадь окружности</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertiesProviderDimAligned</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.cpp" line="30"/>
+        <source>Ext point 1</source>
+        <translation>Первая точка выноски</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.cpp" line="30"/>
+        <source>Position of first extension point</source>
+        <translation>Координаты первой точки выноски</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.cpp" line="36"/>
+        <source>Ext point 2</source>
+        <translation>Вторая точка выноски</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.cpp" line="36"/>
+        <source>Position of second extension point</source>
+        <translation>Координаты второй точки выноски</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.cpp" line="43"/>
+        <source>Definition point </source>
+        <translation>Точка определения</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.cpp" line="43"/>
+        <source>Position of definition point</source>
+        <translation>Координаты точки определения размера</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertiesProviderDimAngular</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_angular.cpp" line="29"/>
+        <source>Line 1 start point</source>
+        <translation>Начало первой прямой</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_angular.cpp" line="29"/>
+        <source>Start point of first line</source>
+        <translation>Начальная точка первой прямой построения размера</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_angular.cpp" line="35"/>
+        <source>Line 1 end point</source>
+        <translation>Конец первой прямой</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_angular.cpp" line="35"/>
+        <source>End point of first line</source>
+        <translation>Конечная точка первой прямой построения размера</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_angular.cpp" line="41"/>
+        <source>Line 2 start point</source>
+        <translation>Начало второй прямой</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_angular.cpp" line="41"/>
+        <source>Start point of second line</source>
+        <translation>Начальная точка второй прямой построения размера</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_angular.cpp" line="47"/>
+        <source>Line 2 end point</source>
+        <translation>Конец второй прямой</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_angular.cpp" line="47"/>
+        <source>End point of second line</source>
+        <translation>Конечная точка второй прямой построения размера</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_angular.cpp" line="53"/>
+        <source>Dim arc radius point</source>
+        <translation>Точка радиуса</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_angular.cpp" line="53"/>
+        <source>Point that defines dimension arc</source>
+        <translation>Точка задания дуги размера</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertiesProviderDimArc</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_arc.cpp" line="29"/>
+        <source>Center point</source>
+        <translation>Центр</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_arc.cpp" line="29"/>
+        <source>Center point of arc dimension</source>
+        <translation>Центр дугового размера</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertiesProviderDimBase</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="52"/>
+        <source>Flip Arrow 1</source>
+        <translation>Перевернуть зеркально стрелку 1</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="52"/>
+        <source>Flips direction of arrows 1, if any</source>
+        <translation>Отразит стрелку 1 в зеркальном направлении</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="74"/>
+        <source>Flip Arrow 2</source>
+        <translation>Перевернуть зеркально стрелку 2</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="74"/>
+        <source>Flips direction of arrows 2, if any</source>
+        <translation>Отразит стрелку 2 в зеркальном направлении</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="98"/>
+        <source>Misc</source>
+        <translation>Разное</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="98"/>
+        <source>Misc dimension data</source>
+        <translation>Прочие свойства размеров</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="99"/>
+        <source>Style</source>
+        <translation>Стиль</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="99"/>
+        <source>Specifies current dimension style by name</source>
+        <translation>Задает имя используемого стиля размеров</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="134"/>
+        <source>Clear dim style override</source>
+        <translation>Очистить переопределение стиля</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="135"/>
+        <source>Clears dimension style override, if one is present for dimension</source>
+        <translation>Очищает переопределение стиля размера, если оно есть</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="194"/>
+        <source>User Block...</source>
+        <translation>Пользовательская...</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="207"/>
+        <source>Lines and Arrows</source>
+        <translation>Символы и Стрелки</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="207"/>
+        <source>Dimensions lines and arrows setup</source>
+        <translation>Настройки линий и стрелок размеров</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="235"/>
+        <source>Arrow 1</source>
+        <translation>Стрелкa 1</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="235"/>
+        <source>Specifies type of the first dimension arrowhead (DIMBLK1 variable)</source>
+        <translation>Задает тип первой стрелки размерной линии (переменная DIMBLK1)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="257"/>
+        <source>Arrow 2</source>
+        <translation>Стрелкa 2</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="257"/>
+        <source>Specifies type of the second dimension arrowhead (DIMBLK2 variable)</source>
+        <translation>Задает тип второй стрелки размерной линии (переменная DIMBLK2)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="287"/>
+        <source>Arrow size</source>
+        <translation>Размер стрелки</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="287"/>
+        <source>Specifies size of the dimension arrowhead (DIMASZ variable)</source>
+        <translation>Задает размер стрелок размерной линии (переменная DIMASZ)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="299"/>
+        <source>Mark</source>
+        <translation>Маркер</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="300"/>
+        <source>Line</source>
+        <translation>Линия</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="301"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="673"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1609"/>
+        <source>None</source>
+        <translation>Нет</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="304"/>
+        <source>Center mark</source>
+        <translation>Центральная метка</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="304"/>
+        <source>Specified type of center mark on dimension (DIMCEN variable)</source>
+        <translation>Задает тип центрального маркера (переменная DIMCEN)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="330"/>
+        <source>Center mark size</source>
+        <translation>Размер центральной метки</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="331"/>
+        <source>Specifies size of the center mark on the dimension (DIMCEN variable)</source>
+        <translation>Задает размер центрального маркера (переменная DIMCEN)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="358"/>
+        <source>Dim line lineweight</source>
+        <translation>Толщина размерной линии</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="358"/>
+        <source>Specifies lineweight for dimension lines (DIMLWD variable)</source>
+        <translation>Задает толщину размерной линии (переменная DIMLWD)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="366"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="426"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="484"/>
+        <source>Ext line lineweight</source>
+        <translation>Толщина выносной линии</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="366"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="426"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="484"/>
+        <source>Specifies lineweight for extension line (DIMLWE variable)</source>
+        <translation>Определяет толщину выносных линий (переменная DIMLWE)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="374"/>
+        <source>Dim line 1</source>
+        <translation>Есть размерная 1</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="374"/>
+        <source>Sets suppression of first dimension line (DIMSD1 variable)</source>
+        <translation>Определяет, выводить ли первую размерную линию (если размерная линия не сплошная) и ее стрелки (переменная DIMSD1)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="381"/>
+        <source>Dim line 2</source>
+        <translation>Есть размерная 2</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="381"/>
+        <source>Sets suppression of second dimension line (DIMSD2 variable)</source>
+        <translation>Определяет, выводить ли вторую размерную линию (если размерная линия не сплошная) и ее стрелки (переменная DIMSD2)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="388"/>
+        <source>Dim line color</source>
+        <translation>Цвет размерной линии</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="388"/>
+        <source>Specifies color of the dimension line (DIMCLRD variable)</source>
+        <translation>Задает цвет размерных линий (переменная DIMCLRD)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="397"/>
+        <source>Dim line linetype</source>
+        <translation>Тип размерной линии</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="397"/>
+        <source>Specifies the linetype of the dimension line (DIMLTYPE variable)</source>
+        <translation>Задает тип размерных линий (переменная DIMLTYPE)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="409"/>
+        <source>Dim line ext</source>
+        <translation>Удлинение за размерные</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="410"/>
+        <source>Specifies amount to extend dimension lines beyond the extension lines (DIMDLE variable)</source>
+        <translation>Задает расстояние, на которое размерные линии должны выступать за выносные (переменная DIMDLE)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="419"/>
+        <source>Ext line</source>
+        <translation>Есть выносная линия</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="419"/>
+        <source>Sets suppression of extension line (DIMSE1 variable)</source>
+        <translation>Определяет, выводить ли первую выносную линию (переменная DIMSE1)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="435"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="490"/>
+        <source>Ext line linetype</source>
+        <translation>Тип выносной линии</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="436"/>
+        <source>Specifies the linetype of the extension line (DIMLTEX1 variable)</source>
+        <translation>Задает тип линии для выносной линии (переменная DIMLTEX1)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="447"/>
+        <source>Ext line 1 linetype</source>
+        <translation>Тип выносной линии 1</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="448"/>
+        <source>Specifies the linetype of the first extension line (DIMLTEX1 variable)</source>
+        <translation>Задает тип линии для первой выносной линии (переменная DIMLTEX1)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="458"/>
+        <source>Ext line 2 linetype</source>
+        <translation>Тип выносной линии 2</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="459"/>
+        <source>Specifies the linetype of the second extension line (DIMLTEX2 variable)</source>
+        <translation>Задает тип линии для второй выносной линии ( переменная DIMLTEX2)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="468"/>
+        <source>Ext line 1</source>
+        <translation>Есть выносная 1</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="468"/>
+        <source>Sets suppression of first extension line (DIMSE1 variable)</source>
+        <translation>Подавляет вывод первой выносной линии (переменная DIMSE1)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="475"/>
+        <source>Ext line 2</source>
+        <translation>Есть выносная 2</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="475"/>
+        <source>Sets suppression of second extension line (DIMSE2 variable)</source>
+        <translation>Определяет, выводить ли вторую выносную линию (переменная DIMSE2)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="490"/>
+        <source>Specifies the linetype for the extension line (DIMLTEX1 variable)</source>
+        <translation>Задает тип выносной линии ( переменная DIMLTEX1)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="499"/>
+        <source>Ext line fixed</source>
+        <translation>Выносная фиксированная</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="499"/>
+        <source>Sets suppression of extension line fixed length (DIMFXLON variable)</source>
+        <translation>Активизирует функцию выносных линий фиксированной длины (переменная DIMFXLON)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="506"/>
+        <source>Ext line fixed length</source>
+        <translation>Длина фиксированной выносной</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="506"/>
+        <source>Sets extension line fixed length (DIMFXL variable)</source>
+        <translation>Задает фиксированную длину выносных линий (переменная DIMFXL)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="514"/>
+        <source>Ext line color</source>
+        <translation>Цвет выносной линии</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="514"/>
+        <source>Specifies color of the extension line (DIMCLRE variable)</source>
+        <translation>Задает цвет выносных линий (переменная DIMCLRE)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="526"/>
+        <source>Ext line ext</source>
+        <translation>Удлинение за размерные</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="527"/>
+        <source>Specifies amount to extend extension line beyond the dimension line  (DIMEXE variable)</source>
+        <translation>Задает расстояние, на которое выносные линии должны выступать за размерную (переменная DIMEXE)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="536"/>
+        <source>Ext line offset</source>
+        <translation>Смещение выносной линии</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="536"/>
+        <source>Specifies offset of extension lines from the origin points (DIMEXO variable)</source>
+        <translation>Задает расстояние, на которое выносные линии отступают от точек объекта (переменная DIMEXO)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="545"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="783"/>
+        <source>Text</source>
+        <translation>Текст</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="545"/>
+        <source>Text settings for dimensions</source>
+        <translation>Настройки текста в размерах</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="547"/>
+        <source>Fill color</source>
+        <translation>Цвет заливки фона</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="547"/>
+        <source>Specifies the background color of the dimension (DIMTFILL variable)</source>
+        <translation>Определяет цвет фона текста размера (переменная DIMTFILL)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="556"/>
+        <source>Text color</source>
+        <translation>Цвет текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="556"/>
+        <source>Specifies the color of the dimension of the text (DIMCLRT variable)</source>
+        <translation>Задает цвет текста размера (переменная DIMCLRT)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="571"/>
+        <source>Text height</source>
+        <translation>Высота текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="571"/>
+        <source>Specifies text height of dimension (DIMTXT variable)</source>
+        <translation>Задает высоту размерного текста (переменная DIMTXT)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="580"/>
+        <source>Text offset</source>
+        <translation>Отступ текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="581"/>
+        <source>Specifies the distance around dimension text when dimension line breaks for dimension text (DIMGAP variable)</source>
+        <translation>Задает расстояние вокруг текста размера, когда размерная линия содержит разыв для текста (переменная DIMGAP)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="591"/>
+        <source>Text outside align</source>
+        <translation>Текст размера за выносными</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="592"/>
+        <source>Sets positioning of dimension text outside of extension lines (DIMTOH variable)</source>
+        <translation>Задает размещение текста за выносными линиями (переменная DIMTOH)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="605"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="622"/>
+        <source>Centered</source>
+        <translation>По центру</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="606"/>
+        <source>First ext line</source>
+        <translation>У первой выносной</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="607"/>
+        <source>Second ext line</source>
+        <translation>У второй выносной</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="608"/>
+        <source>Over first ext line</source>
+        <translation>Над первой выносной</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="609"/>
+        <source>Over second ext line</source>
+        <translation>Над второй выносной</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="612"/>
+        <source>Text pos hor</source>
+        <translation>Текст размера горизонтально</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="612"/>
+        <source>Specified horizontal dimension text position (DIMJUST variable)</source>
+        <translation>Задает горизонтальную позицию текста размера (переменная DIMJUST)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="623"/>
+        <source>Above</source>
+        <translation>Над линией</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="624"/>
+        <source>Outside</source>
+        <translation>Снаружи</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="625"/>
+        <source>JIS</source>
+        <translation>JIS</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="626"/>
+        <source>Below</source>
+        <translation>Под линией</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="630"/>
+        <source>Text pos vert</source>
+        <translation>Текст размера вертикально</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="630"/>
+        <source>Specified vertical dimension text position (DIMTAD variable)</source>
+        <translation>Задает вертикальную позицию текста размера (переменная DIMTAD)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="639"/>
+        <source>Text style</source>
+        <translation>Стиль текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="639"/>
+        <source>Specifies style of text for dimension (DIMTXSTY variable)</source>
+        <translation>Задает стиль текста размера (переменная DIMTXSTY)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="651"/>
+        <source>Text inside align</source>
+        <translation>Текст размера между выносными</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="652"/>
+        <source>Sets positioning of dimension text inside of extension lines (DIMTIH variable)</source>
+        <translation>Задает позиционирование текста размера между выносными линиями (переменная DIMTIH)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="660"/>
+        <source>Specifies dimension text position</source>
+        <translation>Содержит координты точки вставки текста размера</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="660"/>
+        <source>Text position</source>
+        <translation>Точка текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="671"/>
+        <source>Preceeding dimension text</source>
+        <translation>Перед текстом размера</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="672"/>
+        <source>Above dimension text</source>
+        <translation>Над текстом размера</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="679"/>
+        <source>Arc length symbol</source>
+        <translation>Символ длины дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="680"/>
+        <source>Specifies placement of the arch length dimension symbol (DIMARCSYM variable)</source>
+        <translation>Задает как обозначать длину дуги над текстом размера (переменная DIMARCSYM)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="691"/>
+        <source>Text rotation</source>
+        <translation>Угол поворота текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="691"/>
+        <source>Specifies the rotation angle for dimension text</source>
+        <translation>Задает угол поворота текста размера</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="701"/>
+        <source>Left-to-right</source>
+        <translation>Слева-Направо</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="701"/>
+        <source>Right-to-left</source>
+        <translation>Справа-Налево</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="704"/>
+        <source>Text view direction</source>
+        <translation>Направление текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="704"/>
+        <source>Specifies the text direction (DIMTXTDIRECTION variable)</source>
+        <translation>Задает направление текста (переменная DIMTXTDIRECTION)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="711"/>
+        <source>Text measurement</source>
+        <translation>Значение измерения</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="711"/>
+        <source>Specified dimension measurement value</source>
+        <translation>Содержит измеренное значение размера</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="726"/>
+        <source>Text override</source>
+        <translation>Текст размера</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="727"/>
+        <source>Specified the text string of dimension (overrides Measurement string)</source>
+        <translation>Пользовательский текст размера (может переопределять измеренное значение)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="736"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="788"/>
+        <source>Fit</source>
+        <translation>Размещение</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="736"/>
+        <source>Fit settings</source>
+        <translation>Настройки размещения текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="741"/>
+        <source>Dim line forced</source>
+        <translation>Размерная всегда</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="742"/>
+        <source>Force drawing dimension line between extension lines, even if text placed outside of extension lines (DIMTOFL variable)</source>
+        <translation>Определяет, отрисовывать ли размерную линию между выносных, даже если текст размещается зы выносными линиями (переменная DIMTOFL)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="753"/>
+        <source>Dim line inside</source>
+        <translation>Размерная внутри</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="754"/>
+        <source>Force displaying dimension line outside extension lines (DIMSOXD variable)</source>
+        <translation>Задает вывод размерной линии снаружи выносных линий (переменная DIMSOXD)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="771"/>
+        <source>Dim scale overall</source>
+        <translation>Масштаб размеров</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="772"/>
+        <source>Specifies the overall scale factor applied to properties, that specify sizes, distances or offsets (DIMSCALE variable)</source>
+        <translation>Задает общий коэффициент масштабирования, применяемый к свойствам которые задают размеры, дистанции или смещения размеров (переменная DIMSCALE)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="783"/>
+        <source>Best Fit</source>
+        <translation>Наилучшее</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="783"/>
+        <source>Arrows</source>
+        <translation>Стрелки</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="783"/>
+        <source>Both</source>
+        <translation>Все</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="783"/>
+        <source>Always fit</source>
+        <translation>Всегда вписать</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="789"/>
+        <source>Determines what elements are moved to fit text and arrowheads in space between extension lines (DIMATFIT variable)</source>
+        <translation>Определяет какие элементы перемещать для размещения  для текста и стрелок между выносными если места недостаточно (переменная DIMATFIT)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="853"/>
+        <source>Place bettween if has room</source>
+        <translation>Внутри если есть место</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="854"/>
+        <source>Always inside</source>
+        <translation>Всегда внутри</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="858"/>
+        <source>Text inside</source>
+        <translation>Текст между выносными</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="858"/>
+        <source>Sets position of dimension text inside extension lines (DIMTIX variable)</source>
+        <translation>Задает позицию текста размера между выносными линиями (переменная DIMTIX)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="869"/>
+        <source>Keep dim line with text</source>
+        <translation>Перемещать размерную линию</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="870"/>
+        <source>Move text, add leader</source>
+        <translation>Двигать текст и строить выноску</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="871"/>
+        <source>Move text, no leader</source>
+        <translation>Двигать текст, без выноски</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="877"/>
+        <source>Text movement</source>
+        <translation>Перемещение текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="878"/>
+        <source>Specifies position of the text when it is moved, either manually or automatically (DIMTMOVE variable)</source>
+        <translation>Задает позицию текста размера при его перемещении (переменная DIMTMOVE)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="902"/>
+        <source>1E+01</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="903"/>
+        <source>1E-1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="904"/>
+        <source>1E-2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="905"/>
+        <source>1E-3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="906"/>
+        <source>1E-4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="907"/>
+        <source>1E-5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="908"/>
+        <source>1E-6</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="909"/>
+        <source>1E-7</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="910"/>
+        <source>1E-8</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="917"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1031"/>
+        <source>1.00</source>
+        <translation>1.00</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="918"/>
+        <source>0.1</source>
+        <translation>0.1</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="919"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1033"/>
+        <source>0.01</source>
+        <translation>0.01</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="920"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1034"/>
+        <source>0.001</source>
+        <translation>0.001</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="921"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1035"/>
+        <source>0.0001</source>
+        <translation>0.0001</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="922"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1036"/>
+        <source>0.00001</source>
+        <translation>0.00001</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="923"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1037"/>
+        <source>0.000001</source>
+        <translation>0.000001</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="924"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1038"/>
+        <source>0.0000001</source>
+        <translation>0.0000001</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="925"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1039"/>
+        <source>0.00000001</source>
+        <translation>0.00000001</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="932"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="947"/>
+        <source>0&apos;-0&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="933"/>
+        <source>0&apos;-0 1/2&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="934"/>
+        <source>0&apos;-0 1/4&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="935"/>
+        <source>0&apos;-0 1/8&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="936"/>
+        <source>0&apos;-0 1/16&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="937"/>
+        <source>0&apos;-0 1/32&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="938"/>
+        <source>0&apos;-0 1/64&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="939"/>
+        <source>0&apos;-0 1/128&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="940"/>
+        <source>0&apos;-0 1/256&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="948"/>
+        <source>0&apos;-0.0&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="949"/>
+        <source>0&apos;-0.00&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="950"/>
+        <source>0&apos;-0.000&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="951"/>
+        <source>0&apos;-0.0000&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="952"/>
+        <source>0&apos;-0.00000&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="953"/>
+        <source>0&apos;-0.000000&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="954"/>
+        <source>0&apos;-0.0000000&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="955"/>
+        <source>0&apos;-0.00000000&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="962"/>
+        <source>1</source>
+        <translation>1</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="963"/>
+        <source>0 1/2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="964"/>
+        <source>0 1/4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="965"/>
+        <source>0 1/8</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="966"/>
+        <source>0 1/16</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="967"/>
+        <source>0 1/32</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="968"/>
+        <source>0 1/64</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="969"/>
+        <source>0 1/128</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="970"/>
+        <source>0 1/256</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1009"/>
+        <source>Scientific</source>
+        <translation>Научный</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1010"/>
+        <source>Decimal</source>
+        <translation>Десятичный</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1011"/>
+        <source>Engineering</source>
+        <translation>Инженерный</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1012"/>
+        <source>Architectural</source>
+        <translation>Архитектурный</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1013"/>
+        <source>Fractional</source>
+        <translation>Дробный</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1014"/>
+        <source>Architectural (metric)</source>
+        <translation>Архитектурный (метрический)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1032"/>
+        <source>0.10</source>
+        <translation>0.10</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1061"/>
+        <source>1g</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1062"/>
+        <source>0.1g</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1063"/>
+        <source>0.01g</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1064"/>
+        <source>0.001g</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1065"/>
+        <source>0.0001g</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1066"/>
+        <source>0.00001g</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1067"/>
+        <source>0.000001g</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1068"/>
+        <source>0.0000001g</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1069"/>
+        <source>0.00000001g</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1076"/>
+        <source>1r</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1077"/>
+        <source>0.1r</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1078"/>
+        <source>0.01r</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1079"/>
+        <source>0.001r</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1080"/>
+        <source>0.0001r</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1081"/>
+        <source>0.00001r</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1082"/>
+        <source>0.000001r</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1083"/>
+        <source>0.0000001r</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1084"/>
+        <source>0.00000001r</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1091"/>
+        <source>N 1d E</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1092"/>
+        <source>N 0d01&apos; E</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1093"/>
+        <source>N 0d00&apos;01&quot; E</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1094"/>
+        <source>N 0d00&apos;00.1&quot; E</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1095"/>
+        <source>N 0d00&apos;00.01&quot; E</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1096"/>
+        <source>N 0d00&apos;00.001&quot; E</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1097"/>
+        <source>N 0d00&apos;00.0001&quot; E</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1098"/>
+        <source>N 0d00&apos;00.00001&quot; E</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1099"/>
+        <source>N 0d00&apos;00.000001&quot; E</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1134"/>
+        <source>Decimal Degrees</source>
+        <translation>Десятичные градусы</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1135"/>
+        <source>Deg/min/sec</source>
+        <translation>Град/мин/сек</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1136"/>
+        <source>Gradians</source>
+        <translation>Градианы</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1137"/>
+        <source>Radians</source>
+        <translation>Радианы</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1138"/>
+        <source>Surveyor&apos;s units</source>
+        <translation>Геодезические единицы</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1146"/>
+        <source>Primary Units</source>
+        <translation>Основные единицы</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1146"/>
+        <source>Primary units for dimensions</source>
+        <translation>Основные единицы измерения размеров</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1149"/>
+        <source>.</source>
+        <translation>.</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1149"/>
+        <source>,</source>
+        <translation>,</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1151"/>
+        <source>Decimal separator</source>
+        <translation>Десятичный разделитель</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1151"/>
+        <source>Specifies the decimal separator for metric dimensions (DIMDSEP variable)</source>
+        <translation>Задает разделитель для размеров, выраженных в десятичных единицах (переменная DIMDSEP)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1166"/>
+        <source>Dim prefix</source>
+        <translation>Префикс размера</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1166"/>
+        <source>Specifies the text prefix for the dimensions (DIMPOST variable)</source>
+        <translation>Задает текстовый префикс размеров (переменная DIMPOST).</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1177"/>
+        <source>Dim suffix</source>
+        <translation>Суффикс размера</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1177"/>
+        <source>Specifies the text suffix for the dimensions (DIMPOST variable)</source>
+        <translation>Задает текстовый суффикс размеров (переменная DIMPOST).</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1211"/>
+        <source>Dim roundoff</source>
+        <translation>Округление до</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1211"/>
+        <source>Specifies the distance rounding value (DIMRND variable)</source>
+        <translation>Задает величину округления расстояния (переменная DIMRND)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1222"/>
+        <source>Dim scale linear</source>
+        <translation>Коэффициент масштаба размера</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1223"/>
+        <source>Specifies global scale factor for linear dimensions (DIMLFAC variable)</source>
+        <translation>Задает коэффициент масштабирования линейных размеров (переменная DIMLFAC)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1235"/>
+        <source>Dim sub-units scale</source>
+        <translation>Масштаб вспомогательных единиц</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1236"/>
+        <source>Specifies sub-units scale factor for all applicable linear dimensions</source>
+        <translation>Задает коэффициент масштабирования вспомогательных единиц, применимый к линейным размерам</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1249"/>
+        <source>Dim units</source>
+        <translation>Линейные единицы размера</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1249"/>
+        <source>Specifies units format for linear dimensions (DIMLUNIT variable)</source>
+        <translation>Задает формат единиц для линейных размеров (переменная DIMLUNIT)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1275"/>
+        <source>Suppress leading zeros</source>
+        <translation>Без ведущих 0</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1276"/>
+        <source>Sets suppression of leading zeros for dimensions (DIMZIN variable)</source>
+        <translation>Задает подавление ведущих 0 размеров (переменная DIMTZIN)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1285"/>
+        <source>Suppress trailing zeros</source>
+        <translation>Без замыкающих 0</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1286"/>
+        <source>Sets suppression of trailing zeros for dimensions (DIMZIN variable)</source>
+        <translation>Задает подавление замыкающих 0 размеров (переменная DIMTZIN)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1296"/>
+        <source>Suppress zero feet</source>
+        <translation>Без нулевых футов</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1297"/>
+        <source>Sets suppression of zero feet in dimension (DIMZIN variable)</source>
+        <translation>Задает подавление нулевых футов размеров (переменная DIMZIN)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1328"/>
+        <source>Suppress zero inches</source>
+        <translation>Без нулевых дюймов</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1329"/>
+        <source>Sets suppression of zero inches for dimension (DIMZIN variable)</source>
+        <translation>Задает подавление нулевых дюймов размеров (переменная DIMZIN)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1346"/>
+        <source>Precision</source>
+        <translation>Точность</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1346"/>
+        <source>Specifies precision for primary units dimensions (DIMDEC variable)</source>
+        <translation>Задает число десятичных знаков в размерном тексте (переменная DIMDEC)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1359"/>
+        <source>Angle precision</source>
+        <translation>Угловая точность</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1360"/>
+        <source>Specifies number of precision decimal places displayed for angular dimension text (DIMADEC variable)</source>
+        <translation>Задает число десятичных знаков в угловых размерах (переменная DIMADEC)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1372"/>
+        <source>Angle format</source>
+        <translation>Формат углов</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1372"/>
+        <source>Specifies the angle format (DIMAUNIT variable)</source>
+        <translation>Задает единицы измерения для угловых размеров (переменная DIMAUNIT)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1386"/>
+        <source>Alternate Units</source>
+        <translation>Альтернативные единицы</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1386"/>
+        <source>Alternate units for dimensions</source>
+        <translation>Настройки альтернативныx единиц размеров</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1392"/>
+        <source>Alt enabled</source>
+        <translation>Альтернативные единицы</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1393"/>
+        <source>Sets units format for alternate units dimensions On or Off except angular (DIMALT variable)</source>
+        <translation>Задает формат альтернативных единиц для линейных размеров (переменная DIMALTU)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1408"/>
+        <source>Alt format</source>
+        <translation>Альт.формат единиц</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1409"/>
+        <source>Specifies units format for alternate units dimensions except angular (DIMALTU variable)</source>
+        <translation>Задает формат альтернативных единиц для линейных размеров (переменная DIMALTU)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1422"/>
+        <source>Alt precision</source>
+        <translation>Альт. количество знаков</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1423"/>
+        <source>Specifies precision for alternate units dimensions (DIMALTD variable)</source>
+        <translation>Задает число знаков после запятой для альтернативных единиц размеров (переменная DIMALTD)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1433"/>
+        <source>Alt round</source>
+        <translation>Альт. округлять до</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1433"/>
+        <source>Specifies distances rounding value for alternate units (DIMALTRND variable)</source>
+        <translation>Задает величину округления альтернативных единиц размеров (переменная DIMALTRND)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1449"/>
+        <source>Alt scale factor</source>
+        <translation>Альт. коэффициент размера</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1449"/>
+        <source>Specifies scale factor for alternative units (DIMALTF variable)</source>
+        <translation>Задает коэффициент масштаба для альтернативных единиц размера (переменная DIMALTF)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1476"/>
+        <source>Alt suppress leading zeros</source>
+        <translation>Альт. без ведущих 0</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1477"/>
+        <source>Sets suppression of leading zeros for alternate units in dimension (DIMALTZ variable)</source>
+        <translation>Задает подавление ведущих нулей в альтернативных десятичных единицах размера (переменная DIMALTZ)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1487"/>
+        <source>Alt suppress trailing zeros</source>
+        <translation>Альт. без замыкающих 0</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1488"/>
+        <source>Sets suppression of trailing zeros for alternate units in dimension (DIMALTZ variable)</source>
+        <translation>Задает подавление замыкающих нулей в альтернативных десятичных единицах размера (переменная DIMALTZ)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1498"/>
+        <source>Alt suppress zero feet</source>
+        <translation>Альт. без 0 футов</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1499"/>
+        <source>Sets suppression of zero feet for alternate units in dimension (DIMALTZ variable)</source>
+        <translation>Задает подавление нулевых футов в альтернативных единицах размера (переменная DIMALTZ)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1530"/>
+        <source>Alt suppress zero inches</source>
+        <translation>Альт. без 0 дюймов</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1531"/>
+        <source>Sets suppression of zero inches for alternate units in dimension (DIMALTZ variable)</source>
+        <translation>Задает подавление нулей в дюймах в альтернативных единицах размера (переменная DIMALTZ)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1547"/>
+        <source>Alt prefix</source>
+        <translation>Альт. префикс</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1547"/>
+        <source>Specifies text prefix to alternate dimensions except angular (DIMAPOST variable)</source>
+        <translation>Задает текстовый префикс в альтернативных единицах размеров, за исключением уловых (переменная DIMAPOST)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1558"/>
+        <source>Alt suffix</source>
+        <translation>Альт. суффикс</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1558"/>
+        <source>Specifies text suffix to alternate dimensions except angular (DIMAPOST variable)</source>
+        <translation>Задает текстовый суффикс в альтернативных единицах размеров, за исключением уловых (переменная DIMAPOST)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1590"/>
+        <source>Tolerances</source>
+        <translation>Допуски</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1590"/>
+        <source>Tolerance settings for dimensions</source>
+        <translation>Настройки допусков в размерах</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1595"/>
+        <source>Operational symbols</source>
+        <translation>По рабочим обозначениям</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1596"/>
+        <source>Decimal separators</source>
+        <translation>Десятичный разделитель</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1600"/>
+        <source>Tolerance alignment</source>
+        <translation>Выравнивание допусков</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1600"/>
+        <source>Specifies alignment for stacked numbers (DIMTALN variable)</source>
+        <translation>Задает выравнивание дробных значений (переменная DIMTALN)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1609"/>
+        <source>Symmetrical</source>
+        <translation>Симметрично</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1609"/>
+        <source>Deviation</source>
+        <translation>Отклонения</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1609"/>
+        <source>Limits</source>
+        <translation>Предельные размеры</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1609"/>
+        <source>Basic</source>
+        <translation>Номинальный</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1614"/>
+        <source>Tolerance display</source>
+        <translation>Показать допуски</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1615"/>
+        <source>Specifies display mode of dimension tolerances to dimension text (DIMTOL variable)</source>
+        <translation>Задает режим показа допусков в тексте размера (переменная DIMTOL)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1636"/>
+        <source>Tolerance limit lower</source>
+        <translation>Допуск - нижний предел</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1637"/>
+        <source>Specifies the minimal (or lower) tolerance limit for dimension text when DIMTOL or DIMLIM is on (DIMTM variable)</source>
+        <translation>Задает минимальный (или нижний) предел допуска для текста размера когда DIMTOL или DIMLIM включены (переменная DIMTM)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1655"/>
+        <source>Tolerance limit upper</source>
+        <translation>Допуск - верхний предел</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1656"/>
+        <source>Specifies the maximum (or upper) tolerance limit for dimension text when DIMTOL or DIMLIM is on (DIMTP variable)</source>
+        <translation>Задает максимальный (или верхний) предел допуска для текста размера когда DIMTOL или DIMLIM включены (переменная DIMTM)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1675"/>
+        <source>Bottom</source>
+        <translation>Внизу</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1676"/>
+        <source>Middle</source>
+        <translation>Посередине</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1677"/>
+        <source>Top</source>
+        <translation>Вверху</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1683"/>
+        <source>Tolerance pos vert</source>
+        <translation>Допуск по вертикали</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1684"/>
+        <source>Specifies vertical justification for tolerance values relative to nominal dimension text (DIMTOLJ variable)</source>
+        <translation>Задает вертикальное размещение текста допуска по отношению к тексту номинального размера (переменная DIMTOLJ)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1697"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1713"/>
+        <source>Tolerance precision</source>
+        <translation>Знаков в допусках</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1698"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1714"/>
+        <source>Specifies number of decimal places for tolerance values of a dimension (DIMTDEC variable)</source>
+        <translation>Установка числа знаков после запятой для единиц допусков размера (переменная DIMTDEC)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1739"/>
+        <source>Tolerance suppress leading zeros</source>
+        <translation>Без ведущих 0 в допусках</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1740"/>
+        <source>Sets suppression of leading zeros for tolerance values in dimension (DIMTZIN value)</source>
+        <translation>Задает подавление ведущих 0 в значениях допусков размеров (переменная DIMTZIN)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1751"/>
+        <source>Tolerance suppress trailing zeros</source>
+        <translation>Без замыкающих 0 в допусках</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1752"/>
+        <source>Sets suppression of trailing zeros for tolerance values in dimension (DIMTZIN value)</source>
+        <translation>Задает подавление замыкающих 0 в значениях допусков размеров (переменная DIMTZIN)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1764"/>
+        <source>Tolerance suppress zero feet</source>
+        <translation>Без 0 футов в допусках</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1765"/>
+        <source>Sets suppression of zero feet for tolerance values in dimension (DIMTZIN variable)</source>
+        <translation>Задает подавление нулевых футов в значениях допусков размеров (переменная DIMTZIN)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1797"/>
+        <source>Tolerance suppress zero inches</source>
+        <translation>Без 0 дюймов в допусках</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1798"/>
+        <source>Sets suppression of zero inches for tolerance values in dimension (DIMTZIN variable)</source>
+        <translation>Задает подавление нулевых дюймов в значениях допусков размеров (переменная DIMTZIN)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1822"/>
+        <source>Tolerance text height</source>
+        <translation>Высота текста допуска</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1823"/>
+        <source>Specifies scale factor for text height of tolerance values relative to dimension text height as set by DIMTXT (DIMTFAC variable)</source>
+        <translation>Задает коэффициент масштабирования высоты текста допусков относительно текста размера (переменная DIMTFAC)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1850"/>
+        <source>Alt tolerance precision</source>
+        <translation>Альт. допуск. число знаков</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1851"/>
+        <source>Specifies number of decimal places for tolerance values of an alternate units dimension (DIMALTTD variable)</source>
+        <translation>Задает число десятичных знаков после запятой в допусках размеров (переменная DIMALTTD)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1869"/>
+        <source>Alt tolerance suppress leading zeros</source>
+        <translation>Альт. допуск без ведущиx 0</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1870"/>
+        <source>Sets suppression of leading zeros for alternate units tolerance values in dimension (DIMALTTZ value)</source>
+        <translation>Задает подавление ведующих 0 в альтернативных десятичных единицах допусков размера (переменная DIMALTZ)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1881"/>
+        <source>Alt tolerance suppress trailing zeros</source>
+        <translation>Альт. допуск без замыкающих 0</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1882"/>
+        <source>Sets suppression of trailing zeros for alternate units tolerance values in dimension (DIMALTTZ value)</source>
+        <translation>Задает подавление нулевых дюймов в альтернативных десятичных единицах допусков размера (переменная DIMALTZ)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1893"/>
+        <source>Alt tolerance suppress zero feet</source>
+        <translation>Альт. допуск. без 0 футов</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1894"/>
+        <source>Sets suppression of zero feet for alternate units tolerance values in dimension (DIMALTTZ variable)</source>
+        <translation>Задает подавление нулевых футов в альтернативных десятичных единицах допусков размера (переменная DIMALTZ)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1926"/>
+        <source>Alt tolerance suppress zero inches</source>
+        <translation>Альт. допуск без 0 дюймов</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1927"/>
+        <source>Sets suppression of zero inches for alterate units tolerance values in dimension (DIMALTTZ variable)</source>
+        <translation>Задает подавление нулевых дюймов в альтернативных десятичных единицах допуска размера (переменная DIMALTZ)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="2128"/>
+        <source>Dim geometry</source>
+        <translation>Геометрия размера</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="2128"/>
+        <source>Dimension&apos;s geometry properties</source>
+        <translation>Геометрические характеристики размера</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertiesProviderDimDiametric</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_diametric.cpp" line="29"/>
+        <source>Center Point</source>
+        <translation>Центр</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_diametric.cpp" line="29"/>
+        <source>Center point of dimension</source>
+        <translation>Центральная точка дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_diametric.cpp" line="36"/>
+        <source>Definition Point</source>
+        <translation>Точка определения</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_diametric.cpp" line="36"/>
+        <source>Definition point of dimension</source>
+        <translation>Точка определения размера</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_diametric.cpp" line="43"/>
+        <source>Leader Length</source>
+        <translation>Длина выноски</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_diametric.cpp" line="43"/>
+        <source>Length of leader</source>
+        <translation>Длина выноски</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertiesProviderDimLinear</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.cpp" line="30"/>
+        <source>Ext point 1</source>
+        <translation>Первая точка выноски</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.cpp" line="30"/>
+        <source>Position of first extension point</source>
+        <translation>Координаты точки определения</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.cpp" line="36"/>
+        <source>Ext point 2</source>
+        <translation>Вторая точка выноски</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.cpp" line="36"/>
+        <source>Position of second extension point</source>
+        <translation>Координаты второй точки выноски</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.cpp" line="43"/>
+        <source>Definition point </source>
+        <translation>Точка определения</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.cpp" line="43"/>
+        <source>Position of definition point</source>
+        <translation>Координаты точки определения размера</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.cpp" line="49"/>
+        <source>Angle</source>
+        <translation>Угол</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.cpp" line="49"/>
+        <source>Rotation angle</source>
+        <translation>Угол поворота размера</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.cpp" line="55"/>
+        <source>Oblique angle</source>
+        <translation>Угол наклона</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertiesProviderDimOrdinate</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="51"/>
+        <source>Feature point</source>
+        <translation>Тоачка определения</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="51"/>
+        <source>Position of feature point</source>
+        <translation>Координаты точки определения размера</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="57"/>
+        <source>Leader end point</source>
+        <translation>Конец выноски</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="57"/>
+        <source>Position of leader end point</source>
+        <translation>Координаты точки конца выноски</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="63"/>
+        <source>Is for X axis</source>
+        <translation>Для оси X</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="63"/>
+        <source>Defines whether ordinate dimension is for X axis</source>
+        <translation>Определяет, задан ли размер для оси X</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="76"/>
+        <source>Select with similar base</source>
+        <translation>Выбрать с такой же базой</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="77"/>
+        <source>Selects all ordinate dimensions with the same base</source>
+        <translation>Выбирает все ординатные размеры с такой же базой</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="115"/>
+        <source>&lt;No name&gt;</source>
+        <translation>*БЕЗЫМЯННАЯ*</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="121"/>
+        <source>Re-Base to current UCS</source>
+        <translation>Перебазировать к текущей ПСК</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="122"/>
+        <source>Rebase selected ordinate dimensions to current UCS - </source>
+        <translation>Изменить базу ординатного размера по текуще ПСК -</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertiesProviderDimRadial</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_radial.cpp" line="29"/>
+        <source>Center Point</source>
+        <translation>Центр</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_radial.cpp" line="29"/>
+        <source>Center point of dimension</source>
+        <translation>Центральная точка размера</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_radial.cpp" line="36"/>
+        <source>Definition Point</source>
+        <translation>Точка определения</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_radial.cpp" line="36"/>
+        <source>Definition point of dimension</source>
+        <translation>Точка определения размера</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_radial.cpp" line="43"/>
+        <source>Leader Length</source>
+        <translation>Длина выноски</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_radial.cpp" line="43"/>
+        <source>Length of leader</source>
+        <translation>Длина выноски</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertiesProviderEllipse</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="33"/>
+        <source>Center</source>
+        <translation>Центр</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="33"/>
+        <source>Center point of ellipse</source>
+        <translation>Центральная точка эллипса</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="39"/>
+        <source>Angle</source>
+        <translation>Угол</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="39"/>
+        <source>Angle of the ellipse major axis</source>
+        <translation>Угол поворота главной оси эллипса, в градусах</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="46"/>
+        <source>Radius Major</source>
+        <translation>Радиус главной оси</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="46"/>
+        <source>Major radius of ellipse</source>
+        <translation>Радиус главной оси эллипса</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="54"/>
+        <source>Radius Minor</source>
+        <translation>Радиус младшей оси</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="54"/>
+        <source>Minor radius of ellipse</source>
+        <translation>Радиус малой оси эллипса</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="61"/>
+        <source>Radius Ratio</source>
+        <translation>Отношение радиусов</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="61"/>
+        <source>Radius ratio of ellipse</source>
+        <translation>Отношение радиусов элипса</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="67"/>
+        <source>Start Angle</source>
+        <translation>Начальный угол</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="67"/>
+        <source>Start angle of elliptic arc</source>
+        <translation>Начальный угол эллиптической дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="73"/>
+        <source>End Angle</source>
+        <translation>Конечный угол</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="73"/>
+        <source>End angle of elliptic arc</source>
+        <translation>Конечный угол эллиптической дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="85"/>
+        <source>Circumference</source>
+        <translation>Длина</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="85"/>
+        <source>Circumference of ellipse</source>
+        <translation>Длина окружности эллипса/дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="92"/>
+        <source>Area of ellipse</source>
+        <translation>Площадь эллипса</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="98"/>
+        <source>Start point of elliptic arc</source>
+        <translation>Начальная точка эллиптической дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="103"/>
+        <source>End point of elliptic arc</source>
+        <translation>Конечная точка эллиптической дуги</translation>
+    </message>
+    <message>
+        <source>Circumference of circle</source>
+        <translation type="obsolete">Длина окружности</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="92"/>
+        <source>Area</source>
+        <translation>Площадь</translation>
+    </message>
+    <message>
+        <source>Area of circle</source>
+        <translation type="obsolete">Площадь окружности</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="98"/>
+        <source>Start</source>
+        <translation>Начальная точка</translation>
+    </message>
+    <message>
+        <source>Start point of arc</source>
+        <translation type="vanished">Конечная точка дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="103"/>
+        <source>End</source>
+        <translation>Конечная точка</translation>
+    </message>
+    <message>
+        <source>End point of arc</source>
+        <translation type="vanished">Конечная точка дуги</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertiesProviderHatch</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.cpp" line="33"/>
+        <source>Is Solid</source>
+        <translation>Сплошная заливка</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.cpp" line="33"/>
+        <source>Determines whether hatch is solid or not</source>
+        <translation>Определяет является ли штриховка сплошной</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.cpp" line="40"/>
+        <source>Pattern</source>
+        <translation>Шаблон</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.cpp" line="40"/>
+        <source>Hatch pattern name</source>
+        <translation>Имя шаблона штриховки</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.cpp" line="54"/>
+        <source>Scale</source>
+        <translation>Масштаб</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.cpp" line="54"/>
+        <source>Hatch scale</source>
+        <translation>Коэффициент масштабирования шаблона штриховки</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.cpp" line="61"/>
+        <source>Angle</source>
+        <translation>Угол</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.cpp" line="61"/>
+        <source>Hatch rotation angle</source>
+        <translation>Угол поворота шаблона штриховки</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertiesProviderImage</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="38"/>
+        <source>File</source>
+        <translation>Файл</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="38"/>
+        <source>Name of image file</source>
+        <translation>Имя файла изображения</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="64"/>
+        <source>Insertion Point</source>
+        <translation>Точка вставки</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="64"/>
+        <source>Point of image insertion</source>
+        <translation>Точка вставки изображения</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="71"/>
+        <source>Scale</source>
+        <translation>Масштаб</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="71"/>
+        <source>Scale factor for image</source>
+        <translation>Коэффициент масштабирования изображения</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="78"/>
+        <source>Angle</source>
+        <translation>Угол</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="78"/>
+        <source>Image rotation angle</source>
+        <translation>Угол поворота изображения</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="86"/>
+        <source>Width pixels</source>
+        <translation>Ширина, px</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="86"/>
+        <source>Width of image in pixels</source>
+        <translation>Ширина изображения в пикселах</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="93"/>
+        <source>Height pixels</source>
+        <translation>Высота, px</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="93"/>
+        <source>Height of image in pixels</source>
+        <translation>Высота изображения в пикселах</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="100"/>
+        <source>Width</source>
+        <translation>Ширина</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="100"/>
+        <source>Width of image</source>
+        <translation>Ширина изображения</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="107"/>
+        <source>Height</source>
+        <translation>Высота</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="107"/>
+        <source>Height of image</source>
+        <translation>Высота изображения</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="114"/>
+        <source>DPI</source>
+        <translation>DPI</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="114"/>
+        <source>Dots per inch for the image</source>
+        <translation>Количество точек на дюйм</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertiesProviderInsert</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp" line="36"/>
+        <source>Block</source>
+        <translation>Блок</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp" line="36"/>
+        <source>Block name</source>
+        <translation>Имя блока</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp" line="56"/>
+        <source>Insertion Point</source>
+        <translation>Точка вставки</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp" line="56"/>
+        <source>Point of block insertion</source>
+        <translation>Точка вставки блока</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp" line="64"/>
+        <source>Scale X</source>
+        <translation>Масштаб по X</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp" line="64"/>
+        <source>Scale factor of block by X</source>
+        <translation>Коэффициент масштабирования блока по оси Х</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp" line="75"/>
+        <source>Scale Y</source>
+        <translation>Масштаб по Y</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp" line="75"/>
+        <source>Scale factor of block by Y</source>
+        <translation>Коэффициент масштабирования блока по оси Y</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp" line="86"/>
+        <source>Angle</source>
+        <translation>Угол</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp" line="86"/>
+        <source>Block rotation angle</source>
+        <translation>Угол поворота блока</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp" line="92"/>
+        <source>Columns</source>
+        <translation>Столбцы</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp" line="92"/>
+        <source>Amount of array columns</source>
+        <translation>Количество колонок решетки</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp" line="100"/>
+        <source>Rows</source>
+        <translation>Строки</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp" line="100"/>
+        <source>Amount of array rows</source>
+        <translation>Количество строк решетки</translation>
+    </message>
+    <message>
+        <source>Amount of array rols</source>
+        <translation type="obsolete">Количество колонок решетки</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp" line="108"/>
+        <source>Spacing X</source>
+        <translation>Промежуток по X</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp" line="108"/>
+        <source>Spacing between columns of array (by X)</source>
+        <translation>Горизонтальное расстояние между столбцами (по X)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp" line="117"/>
+        <source>Spacing Y</source>
+        <translation>Промежуток по Y</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp" line="117"/>
+        <source>Spacing between rows of array (by Y)</source>
+        <translation>Вертикальное расстояние между строками (по Y)</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertiesProviderLine</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="40"/>
+        <source>Start</source>
+        <translation>Начало</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="40"/>
+        <source>Start point of line</source>
+        <translation>Начальная точка прямой</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="46"/>
+        <source>End</source>
+        <translation>Конец</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="46"/>
+        <source>End point of line</source>
+        <translation>Конечная точка прямой</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="52"/>
+        <source>Reverse line direction</source>
+        <translation>Изменить направление</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="52"/>
+        <source>Swaps start and end point of line</source>
+        <translation>Меняет местами начальную и конечную точки примой</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="92"/>
+        <source>Length</source>
+        <translation>Длина</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="92"/>
+        <source>Length of line</source>
+        <translation>Длина прямой</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="99"/>
+        <source>Angle 1</source>
+        <translation>Угол 1</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="99"/>
+        <source>Angle from 0.0 to first point of line</source>
+        <translation>Угол прямой в начальной точке</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="106"/>
+        <source>Angle 2</source>
+        <translation>Угол 2</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="106"/>
+        <source>Angle from 0.0 to second point of line</source>
+        <translation>Угол прямой в конечной точке</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="113"/>
+        <source>Inclination</source>
+        <translation>Угол наклона</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="113"/>
+        <source>Angle of the line inclination to x-axis</source>
+        <translation>Угол наклона прямой к оси X</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="120"/>
+        <source>Delta</source>
+        <translation>Разница</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="120"/>
+        <source>Distance between start and end point</source>
+        <translation>Расстояния по осям между начальной и конечной точкой</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="127"/>
+        <source>Middle Point</source>
+        <translation>Средняя точка</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="127"/>
+        <source>Middle point of line</source>
+        <translation>Средняя точка прямой</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertiesProviderMText</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="32"/>
+        <source>Insertion Point</source>
+        <translation>Точка вставки</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="32"/>
+        <source>Point of text insertion</source>
+        <translation>Точка вставки текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="39"/>
+        <source>Angle</source>
+        <translation>Угол</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="39"/>
+        <source>Text rotation angle</source>
+        <translation>Угол поворота текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="48"/>
+        <source>Content</source>
+        <translation>Содержимое</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="48"/>
+        <source>Content text of MText</source>
+        <translation>Содержимое MText </translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="56"/>
+        <source>Font</source>
+        <translation>Шрифт</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="56"/>
+        <source>Font of the text</source>
+        <translation>Шрифт текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="62"/>
+        <source>Width</source>
+        <translation>Ширина</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="62"/>
+        <source>Width of the text</source>
+        <translation>Ширина текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="69"/>
+        <source>Height</source>
+        <translation>Высота</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="69"/>
+        <source>Height of the text</source>
+        <translation>Высота текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="77"/>
+        <source>Left</source>
+        <translation>Влево</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="78"/>
+        <source>Center</source>
+        <translation>По центру</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="79"/>
+        <source>Right</source>
+        <translation>Вправо</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="82"/>
+        <source>Horizontal Align</source>
+        <translation>Горизонтальное выравнивание</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="82"/>
+        <source>Horizontal align for text</source>
+        <translation>Горизонтальное выравнивание текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="91"/>
+        <source>Bottom</source>
+        <translation>Внизу</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="92"/>
+        <source>Middle</source>
+        <translation>Середина</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="93"/>
+        <source>Top</source>
+        <translation>Вверх</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="97"/>
+        <source>Vertical Align</source>
+        <translation>Вертикальное выравнивание</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="97"/>
+        <source>Vertical align for text</source>
+        <translation>Вертикальное выравнивание текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="106"/>
+        <source>Left to right</source>
+        <translation>Слева направо</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="107"/>
+        <source>Right to left</source>
+        <translation>Справа налево</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="108"/>
+        <source>Top to bottom</source>
+        <translation>Сверху вниз</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="109"/>
+        <source>By Style</source>
+        <translation>Из Стиля</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="113"/>
+        <source>Direction</source>
+        <translation>Направление</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="113"/>
+        <source>Drawing direction for the text</source>
+        <translation>Направление размещения текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="123"/>
+        <source>At Least</source>
+        <translation>Хотя бы</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="124"/>
+        <source>Exact</source>
+        <translation>Точно</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="127"/>
+        <source>Line spacing style</source>
+        <translation>Стиль межстрочный</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="127"/>
+        <source>Style of linespacing</source>
+        <translation>Cтиль применения межстрочного интервала</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="135"/>
+        <source>Linespacing</source>
+        <translation>Межстрочный интервал</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="135"/>
+        <source>Linespacing factor for the text</source>
+        <translation>Коэффициент межстрочного интервала</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertiesProviderParabola</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="33"/>
+        <source>Focus</source>
+        <translation>Фокус</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="33"/>
+        <source>Focus of parabola</source>
+        <translation>Точка фокуса параболы</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="39"/>
+        <source>Vertex</source>
+        <translation>Вершина</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="45"/>
+        <source>Angle</source>
+        <translation>Угол</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="45"/>
+        <source>Angle of parabola axis</source>
+        <translation>Угол оси параболы</translation>
+    </message>
+    <message>
+        <source>vertex</source>
+        <translation type="vanished">Вершина</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="39"/>
+        <source>Vertex of parabola</source>
+        <translation>Точка вершины параболы</translation>
+    </message>
+    <message>
+        <source>Start Angle</source>
+        <translation type="vanished">Начальный угол</translation>
+    </message>
+    <message>
+        <source>Start angle of arc</source>
+        <translation type="obsolete">Начальный угол дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="51"/>
+        <source>Length</source>
+        <translation>Длина</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="51"/>
+        <source>Length of parabola</source>
+        <translation>Длина параболы</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertiesProviderPoint</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.cpp" line="31"/>
+        <source>Position</source>
+        <translation>Позиция</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.cpp" line="31"/>
+        <source>Position of point</source>
+        <translation>Координаты точки</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertiesProviderPolyline</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="32"/>
+        <source>Is Closed</source>
+        <translation>Замкнутая</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="32"/>
+        <source>Determines whether polyline is closed</source>
+        <translation>Определяет, является ли ломаная замкнутой</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="39"/>
+        <source>Segments Count</source>
+        <translation>Количество сегментов</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="39"/>
+        <source>Amount of polyline segments</source>
+        <translation>Количество сегментов ломаной</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="61"/>
+        <source>Vertex Index</source>
+        <translation>Индекс вершины</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="61"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="62"/>
+        <source>Index of current vertex of polyline</source>
+        <translation>Индекс текущей вершины ломаной</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="62"/>
+        <source>Vertex</source>
+        <translation>Вершина</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="76"/>
+        <source>Length</source>
+        <translation>Длина</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="76"/>
+        <source>Length of polyline</source>
+        <translation>Длина ломаной</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="83"/>
+        <source>Has Arcs</source>
+        <translation>Содержит дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="83"/>
+        <source>Determines whether polyline includes arc segments</source>
+        <translation>Определяет, содержит ли ломаная дуги</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="86"/>
+        <source>Yes</source>
+        <translation>Да</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="86"/>
+        <source>No</source>
+        <translation>Нет</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="91"/>
+        <source>Start</source>
+        <translation>Начальная точка</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="91"/>
+        <source>Start point of polyline</source>
+        <translation>Координаты начальной точки ломаной</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="95"/>
+        <source>End</source>
+        <translation>Конечная точка</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="95"/>
+        <source>End point of polyline</source>
+        <translation>Координаты конечной точки ломаной</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertiesProviderSplinePoints</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="32"/>
+        <source>Closed</source>
+        <translation>Замкнут</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="32"/>
+        <source>Determines whether spline is closed or not</source>
+        <translation>Определяет замкнут ли сплайн</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="39"/>
+        <source>Points Count</source>
+        <translation>Количество Строк</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="39"/>
+        <source>Amount of spline points</source>
+        <translation>Количество точек сплайна</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="64"/>
+        <source>Control Point Index</source>
+        <translation>Индекс контрольной точки</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="64"/>
+        <source>Fit Point Index</source>
+        <translation>Индекс точки аппроксимации</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="64"/>
+        <source>Index of current point of spline</source>
+        <translation>Индекс текуще точки сплайна</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="65"/>
+        <source>Control Point</source>
+        <translation>Контрольная точка</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="65"/>
+        <source>Control point of spline with given index</source>
+        <translation>Контрольная точка сплайна с текущим интдексом</translation>
+    </message>
+    <message>
+        <source>Vertex</source>
+        <translation type="obsolete">Вершина</translation>
+    </message>
+    <message>
+        <source>Index of current vertex of polyline</source>
+        <translation type="obsolete">Индекс текущей вершины ломаной</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="80"/>
+        <source>Length</source>
+        <translation>Длина</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="80"/>
+        <source>Length of spline</source>
+        <translation>Длина сплайна</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="88"/>
+        <source>Start</source>
+        <translation>Начало</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="88"/>
+        <source>Start point of spline</source>
+        <translation>Начальная точка сплайна</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="92"/>
+        <source>End</source>
+        <translation>Конец</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="92"/>
+        <source>End point of spline</source>
+        <translation>Конечная точка сплайна</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertiesProviderText</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="38"/>
+        <source>Insertion Point</source>
+        <translation>Точка вставки</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="38"/>
+        <source>Point of text insertion</source>
+        <translation>Точка вставки текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="46"/>
+        <source>Second Point</source>
+        <translation>Вторая точка</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="46"/>
+        <source>Second point of text</source>
+        <translation>Вторая точка текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="53"/>
+        <source>Angle</source>
+        <translation>Угол</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="53"/>
+        <source>Text rotation angle</source>
+        <translation>Угол поворота текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="61"/>
+        <source>Left</source>
+        <translation>Влево</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="62"/>
+        <source>Center</source>
+        <translation>По центру</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="63"/>
+        <source>Right</source>
+        <translation>Вправо</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="64"/>
+        <source>Aligned</source>
+        <translation>Выровненный</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="65"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="72"/>
+        <source>Middle</source>
+        <translation>Посередине</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="66"/>
+        <source>Fit</source>
+        <translation>Подогнать</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="70"/>
+        <source>Baseline</source>
+        <translation>Базовая линия</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="71"/>
+        <source>Bottom</source>
+        <translation>Вниз</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="73"/>
+        <source>Top</source>
+        <translation>Верх</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="78"/>
+        <source>None</source>
+        <translation>Нет</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="79"/>
+        <source>Backward</source>
+        <translation>Сзади наперед</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="80"/>
+        <source>Upside-down</source>
+        <translation>Сверху вниз</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="87"/>
+        <source>Content</source>
+        <translation>Содержимое</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="87"/>
+        <source>Content text of MText</source>
+        <translation>Содержимое MText </translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="94"/>
+        <source>Horizontal Align</source>
+        <translation>Горизонтально</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="94"/>
+        <source>Horizontal align for text</source>
+        <translation>Горизонтальное выравнивание текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="102"/>
+        <source>Vertical Align</source>
+        <translation>Вертикально</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="102"/>
+        <source>Vertical align for text</source>
+        <translation>Вертикальное выравнивание текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="111"/>
+        <source>Font</source>
+        <translation>Шрифт</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="111"/>
+        <source>Font of the text</source>
+        <translation>Шрифт текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="117"/>
+        <source>Width Factor</source>
+        <translation>Коэффициент ширины</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="117"/>
+        <source>Width factor of the text</source>
+        <translation>Коэффициент ширины текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="126"/>
+        <source>Height</source>
+        <translation>Высота</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="126"/>
+        <source>Height of the text</source>
+        <translation>Высота текста</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="133"/>
+        <source>Generation</source>
+        <translation>Генерация</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="133"/>
+        <source>Text generation method</source>
+        <translation>Стиль показа текста</translation>
+    </message>
+</context>
+<context>
     <name>LC_PropertiesSheet</name>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_propertyview.cpp" line="141"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_property_view.cpp" line="151"/>
         <source>Unlock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_propertyview.cpp" line="142"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_property_view.cpp" line="152"/>
         <source>Lock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_propertyview.cpp" line="255"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_property_view.cpp" line="274"/>
         <source>Click to expand</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_propertyview.cpp" line="256"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_property_view.cpp" line="275"/>
         <source>Click to collapse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_propertyviewwithvalues.cpp" line="127"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_with_values.cpp" line="127"/>
         <source>Reset to default value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_propertyviewwithvalues.cpp" line="131"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_with_values.cpp" line="131"/>
         <source>R</source>
         <comment>Reset button text</comment>
         <translation type="unfinished">R</translation>
     </message>
 </context>
 <context>
+    <name>LC_Property</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/lib/properties/lc_property.h" line="167"/>
+        <source>(VARIES)</source>
+        <translation>(РАЗНЫЕ)</translation>
+    </message>
+</context>
+<context>
     <name>LC_PropertyBool</name>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/properties/bool/lc_propertybool.cpp" line="62"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/bool/lc_property_bool.cpp" line="62"/>
         <source>False</source>
-        <translation type="unfinished"></translation>
+        <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/properties/bool/lc_propertybool.cpp" line="63"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/bool/lc_property_bool.cpp" line="63"/>
         <source>True</source>
-        <translation type="unfinished"></translation>
+        <translation>Да</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertyDoubleInteractivePickView</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/double/view/lc_property_double_interactivepick_view.cpp" line="103"/>
+        <source>Pick X component of position from drawing</source>
+        <translation>Измерить X координатy точки на чертеже</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/double/view/lc_property_double_interactivepick_view.cpp" line="105"/>
+        <source>Pick Y component of position from drawing</source>
+        <translation>Измерить Y координатy точки на чертеже</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/double/view/lc_property_double_interactivepick_view.cpp" line="107"/>
+        <source>Pick coordinates of point from drawing</source>
+        <translation>Измерить координаты точки на чертеже</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/double/view/lc_property_double_interactivepick_view.cpp" line="109"/>
+        <source>Pick angle value from drawing</source>
+        <translation>Измерить значение угла на чертеже</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/double/view/lc_property_double_interactivepick_view.cpp" line="111"/>
+        <source>Pick value as distance from drawing</source>
+        <translation>Измерить значение как расстояние на чертеже</translation>
     </message>
 </context>
 <context>
     <name>LC_PropertyMulti</name>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lib/properties/lc_propertymulti.cpp" line="86"/>
         <source>(Multiple Values)</source>
-        <translation>(Разные)</translation>
+        <translation type="vanished">(Разные)</translation>
     </message>
 </context>
 <context>
     <name>LC_PropertyQString</name>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/properties/string/lc_propertyqstring.cpp" line="47"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring.cpp" line="47"/>
         <source>(Empty)</source>
         <translation>(Пусто)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/properties/string/lc_propertyqstring.cpp" line="52"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring.cpp" line="52"/>
         <source>(Multiline Text)</source>
         <translation>(Строки...)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/properties/string/lc_propertyqstring.cpp" line="63"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring.cpp" line="63"/>
         <source>%1 (Read only)</source>
         <translation>%1 (Только чтение)</translation>
     </message>
 </context>
 <context>
+    <name>LC_PropertyQStringFileViewLineEditButtonHandler</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_file_view_lineedit_button_handler.cpp" line="42"/>
+        <source>Select file</source>
+        <translation>Выбор файла</translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertyQStringListArrowsComboboxViewHandler</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/string/view/lc_property_qstring_list_arrows_combobox_view_handler.cpp" line="44"/>
+        <source>Select Block for arrow</source>
+        <translation>Выбор Блока для Стрелки</translation>
+    </message>
+</context>
+<context>
     <name>LC_PropertyRSVector</name>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/properties/rsvector/lc_propertyrsvector.cpp" line="48"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector.cpp" line="54"/>
         <source>X</source>
-        <translation type="unfinished">X</translation>
+        <translation>X</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/properties/rsvector/lc_propertyrsvector.cpp" line="52"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector.cpp" line="58"/>
         <source>X of the %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 - X координата</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/properties/rsvector/lc_propertyrsvector.cpp" line="56"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector.cpp" line="62"/>
         <source>Y</source>
-        <translation type="unfinished">Y</translation>
+        <translation>Y</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/properties/rsvector/lc_propertyrsvector.cpp" line="60"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector.cpp" line="66"/>
         <source>Y of the %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 - Y координата</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/properties/rsvector/lc_propertyrsvector.cpp" line="64"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector.cpp" line="70"/>
         <source>[%1, %2]</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertyRSVectorView</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/rsvector/view/lc_property_rsvector_view.cpp" line="150"/>
+        <source>Pick coordinate from drawing</source>
+        <translation>Измерить координаты на чертеже</translation>
     </message>
 </context>
 <context>
@@ -15518,22 +20032,22 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
     <message>
         <location filename="../src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished">Форма</translation>
+        <translation>Форма</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui" line="20"/>
         <source>Select Objects</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбор объектов</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui" line="34"/>
         <source>Switch selection mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Изменить режим выделения</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui" line="48"/>
         <source>Quick selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Быстрое выделение</translation>
     </message>
 </context>
 <context>
@@ -18167,7 +22681,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="180"/>
         <source>Control Points Table</source>
-        <translation type="unfinished"></translation>
+        <translation>Таблица контрольных точек</translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="183"/>
@@ -18178,7 +22692,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="196"/>
         <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="268"/>
         <source>#</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="204"/>
@@ -18547,68 +23061,68 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LC_UCSListModel</name>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="248"/>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="260"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="242"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="254"/>
         <source>Ortho</source>
         <translation>Ортогональная</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="250"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="244"/>
         <source>Left</source>
         <translation>Левая</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="253"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="247"/>
         <source>Right</source>
         <translation>Правая</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="257"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="251"/>
         <source>Top</source>
         <translation>Верх</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="315"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="312"/>
         <source>&lt;No name&gt;</source>
         <translation>*БЕЗЫМЯННАЯ*</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="332"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="329"/>
         <source>Name: </source>
         <translation>Имя: </translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="333"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="330"/>
         <source>Origin X: </source>
         <translation>Базовый X: </translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="334"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="331"/>
         <source>Origin Y: </source>
         <translation>Базовый Y: </translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="335"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="332"/>
         <source>Angle: </source>
         <translation>Угол: </translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="336"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="333"/>
         <source>Grid: </source>
         <translation>Сетка: </translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="337"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="334"/>
         <source>UCS: </source>
         <translation>Пользовательская: </translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="337"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="334"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="337"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistmodel.cpp" line="334"/>
         <source>No</source>
         <translation>Нет</translation>
     </message>
@@ -18676,30 +23190,29 @@ p, li { white-space: pre-wrap; }
         <translation>Фильтр...</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="172"/>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="220"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="210"/>
         <source>&lt;No name&gt;</source>
         <translation>*БЕЗЫМЯННАЯ*</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="318"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="326"/>
         <source>Delete All UCS</source>
         <translation>Удаление Всех Систем Координат</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="319"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="327"/>
         <source>Are you sure to delete ALL UCS?
  Warning: this action can NOT be undone!</source>
         <translation>Вы уверены в удалении ВСЕХ систем координат?
 Предупреждение: Это действие не может быть отменено!</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="343"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="351"/>
         <source>Delete UCS</source>
         <translation>Удалить систему координат</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="344"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="352"/>
         <source>Are you sure to delete UCS
  &quot;%1&quot;?
  Warning: this action can NOT be undone!</source>
@@ -18708,73 +23221,73 @@ p, li { white-space: pre-wrap; }
 Предупреждение: Эта операция не может быть отменена!</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="377"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="385"/>
         <source>Delete UCSs</source>
         <translation>Удалить системы координат</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="378"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="386"/>
         <source>Are you sure to delete UCS %1?
 Warning: this action can NOT be undone!</source>
         <translation>Вы уверены что хотите удалить Систему Координат -  %1?
 Предупреждение: эта операция не может быть отменена!</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="430"/>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="443"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="438"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="451"/>
         <source>Rename UCS</source>
         <translation>Переименование Системы Координат</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="431"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="439"/>
         <source>UCS name:</source>
         <translation>Имя системы координат: </translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="444"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="452"/>
         <source>UCS with provided name already exists, select another one</source>
         <translation>Система Координат с таким именем уже существуюет, укажите другое имя.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="491"/>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="501"/>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="527"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="499"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="509"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="535"/>
         <source>&amp;Save UCS</source>
         <translation>&amp;Сохранить систему координат</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="494"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="502"/>
         <source>&amp;Update UCS</source>
         <translation>Редактировать</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="495"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="503"/>
         <source>R&amp;emove Selected UCSs</source>
         <translation>Удалить Выбранные</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="508"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="516"/>
         <source>&amp;Apply UCS</source>
         <translation>&amp;Применить Систему Координат</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="509"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="517"/>
         <source>&amp;Preview UCS</source>
         <translation>Показать &amp;где</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="512"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="520"/>
         <source>&amp;Rename UCS</source>
         <translation>Переименовать</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="513"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="521"/>
         <source>R&amp;emove UCS</source>
         <translation>Удалить </translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="518"/>
-        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="534"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="526"/>
+        <location filename="../src/ui/dock_widgets/ucs_list/lc_ucslistwidget.cpp" line="542"/>
         <source>Remove A&amp;ll UCSs</source>
         <translation>Удалить Все </translation>
     </message>
@@ -18844,18 +23357,18 @@ Warning: this action can NOT be undone!</source>
 <context>
     <name>LC_WidgetFactory</name>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="285"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="291"/>
         <source>Library Browser</source>
         <translation>Обзор</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="307"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="313"/>
         <source>Dock</source>
         <translation>Панель</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="307"/>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="331"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="313"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="337"/>
         <source>Float</source>
         <translation>Плавающее</translation>
     </message>
@@ -18981,91 +23494,91 @@ Warning: this action can NOT be undone!</source>
         <translation>Свойства Объекта</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="271"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="277"/>
         <source>Blocks</source>
         <translation>Блоки</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="285"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="291"/>
         <source>Library</source>
         <translation>Библиотека</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="301"/>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="330"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="307"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="336"/>
         <source>Cmd</source>
         <translation>Cmd</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="301"/>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="330"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="307"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="336"/>
         <source>Command Line</source>
         <translation>Командная строка</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="331"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="337"/>
         <source>Dock</source>
         <comment>Dock the command widget to the main window</comment>
         <translation>Панель</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="404"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="410"/>
         <source>Pen Wizard</source>
         <translation>Волшебное перо</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="404"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="410"/>
         <source>PenWiz</source>
         <translation>Перо</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="452"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="458"/>
         <source>Toolbar: %1</source>
         <translation>Панель инструментов: %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="469"/>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="517"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="475"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="523"/>
         <source>Grid Status</source>
         <translation>Сетка</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="512"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="518"/>
         <source>Coordinates</source>
         <translation>Координаты</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="513"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="519"/>
         <source>Relative Zero</source>
         <translation>Относительный ноль</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="514"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="520"/>
         <source>Mouse</source>
         <translation>Мышь</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="515"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="521"/>
         <source>Selection Info</source>
         <translation>О Выделенном</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="516"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="522"/>
         <source>Active Layer</source>
         <translation>Активный Слой</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="518"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="524"/>
         <source>UCS Status</source>
         <translation>Статус Системы Координат</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="519"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="525"/>
         <source>Angles Basis</source>
         <translation>Базис Углов</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="523"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="529"/>
         <source>Current size of Grid/MetaGrid. Click to change grid size.</source>
         <translation>Текущий размер сетки/дополнительной сетки. Щелкните мышью для изменения.</translation>
     </message>
@@ -19486,37 +23999,37 @@ Warning: this action can NOT be undone!</source>
 <context>
     <name>QC_ApplicationWindow</name>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="790"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="796"/>
         <source>Creating new file...</source>
         <translation>Создание нового файла...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="739"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="745"/>
         <source>unnamed document %1</source>
         <translation>безымянный документ %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1693"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1702"/>
         <source>Opening recent file...</source>
         <translation>Открытие последнего файла...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1033"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1039"/>
         <source>Loaded document: </source>
         <translation>Документ загружен: </translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="977"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="983"/>
         <source>Opening aborted</source>
         <translation>Открытие прервано</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1268"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1277"/>
         <source>Printing...</source>
         <translation>Печать...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1366"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1375"/>
         <source>Exiting application...</source>
         <translation>Выход из программы...</translation>
     </message>
@@ -19526,7 +24039,7 @@ Warning: this action can NOT be undone!</source>
         <translation>Предварительный просмотр %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="812"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="818"/>
         <source>New Drawing created.</source>
         <translation>Был создан новый чертёж.</translation>
     </message>
@@ -19541,17 +24054,17 @@ Warning: this action can NOT be undone!</source>
         <translation>Чертёж сохранен: %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1272"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1281"/>
         <source>Printing complete</source>
         <translation>Печать завершена</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="736"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="742"/>
         <source>Block &apos;%1&apos;</source>
         <translation>Блок &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="855"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="861"/>
         <source>Cannot open the file
 %1
 Please check the permissions.</source>
@@ -19560,17 +24073,17 @@ Please check the permissions.</source>
 Пожалуйста, проверьте, права доступа.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1110"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1119"/>
         <source>Auto-saving drawing...</source>
         <translation>Автосохранение чертежа...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1116"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1125"/>
         <source>Auto-saved drawing</source>
         <translation>Чертёж автоматически сохранен</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1121"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1130"/>
         <source>Cannot auto-save the file
 %1
 Please check the permissions.
@@ -19581,7 +24094,7 @@ Auto-save disabled.</source>
 Автосохранение отключено.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="984"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="990"/>
         <source>Warning: File already opened : </source>
         <translation>Предупреждение: файл уже открыт: </translation>
     </message>
@@ -19596,17 +24109,17 @@ Auto-save disabled.</source>
         <translation> , проверьте правильность имени файла и права доступа.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="808"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="814"/>
         <source>New document from template: </source>
         <translation>Новый документ из шаблона: </translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="840"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="846"/>
         <source>Select Template aborted</source>
         <translation>Выбор шаблона прерван</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1123"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1132"/>
         <source>Auto-saving failed</source>
         <translation>Ошибка при автосохранении</translation>
     </message>
@@ -19616,7 +24129,7 @@ Auto-save disabled.</source>
         <translation>режим черновика</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="997"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1003"/>
         <source>Cannot open the file
 %1
 Please check its existence and permissions.</source>
@@ -19625,7 +24138,7 @@ Please check its existence and permissions.</source>
 Проверьте его наличие и права доступа.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="976"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="982"/>
         <source>File &apos;%1&apos; does not exist. Opening aborted</source>
         <translation>Файл &apos;%1&apos; не существует. Операция прервана</translation>
     </message>
@@ -19640,34 +24153,34 @@ Please check its existence and permissions.</source>
         <translation>Сохранение отменено</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="364"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="370"/>
         <source>&amp;Save</source>
         <translation>&amp;Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="365"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="371"/>
         <source>Save &amp;as...</source>
         <translation>Сохранить &amp;как...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="368"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="374"/>
         <source>&amp;Save %1</source>
         <translation>&amp;Сохранить %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="369"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="375"/>
         <source>Save %1 &amp;as...</source>
         <translation>Сохраните %1 &amp;как...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1087"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1096"/>
         <source>Save All cancelled</source>
         <translation>Сохранить Все отменено</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1205"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1211"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1225"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1214"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1220"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1234"/>
         <source>Close All cancelled</source>
         <translation>Закрыть Все отменено</translation>
     </message>
@@ -22502,7 +27015,7 @@ and your preferred language for Ui and Command.&lt;br&gt;
     <message>
         <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5064"/>
         <source>Open last opened files</source>
-        <translation>Открывать последние редактировавшиеся чертеже</translation>
+        <translation>Открывать последние редактировавшиеся чертежи</translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5110"/>
@@ -26268,9 +30781,9 @@ p, li { white-space: pre-wrap; }
     <name>QMessageBox</name>
     <message>
         <location filename="../src/ui/dialogs/qg_dialogfactory.cpp" line="91"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="857"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="999"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1120"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="863"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1005"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1129"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
@@ -26799,7 +31312,7 @@ Do you want to replace it?</source>
         <translation>Парсек</translation>
     </message>
     <message>
-        <location filename="../src/main/main.cpp" line="514"/>
+        <location filename="../src/main/main.cpp" line="519"/>
         <source>Loading..</source>
         <translation>Загрузка..</translation>
     </message>
@@ -26809,23 +31322,23 @@ Do you want to replace it?</source>
         <translation>Загрузка файла %1..</translation>
     </message>
     <message>
-        <location filename="../src/main/main.cpp" line="406"/>
+        <location filename="../src/main/main.cpp" line="411"/>
         <source>Loading...</source>
         <translation>Загрузка...</translation>
     </message>
     <message>
-        <location filename="../src/main/main.cpp" line="482"/>
+        <location filename="../src/main/main.cpp" line="487"/>
         <source>Release Candidate</source>
         <translation>Release Candidate</translation>
     </message>
     <message>
-        <location filename="../src/main/main.cpp" line="483"/>
+        <location filename="../src/main/main.cpp" line="488"/>
         <source>BETA</source>
         <translation>BETA</translation>
     </message>
     <message>
-        <location filename="../src/main/main.cpp" line="484"/>
-        <location filename="../src/main/main.cpp" line="493"/>
+        <location filename="../src/main/main.cpp" line="489"/>
+        <location filename="../src/main/main.cpp" line="498"/>
         <source>ALPHA</source>
         <translation>ALPHA</translation>
     </message>
@@ -28197,7 +32710,7 @@ Do you want to replace it?</source>
         <translation>Все</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="956"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="962"/>
         <source>Invalid objects removed:</source>
         <translation>Исключенные объекты:</translation>
     </message>
@@ -28254,7 +32767,7 @@ Do you want to replace it?</source>
         <translation>Режим расчета: выключен</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="157"/>
+        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="158"/>
         <source>License</source>
         <translation>Лицензия</translation>
     </message>
@@ -30924,169 +35437,169 @@ This block cannot be inserted.</source>
 <context>
     <name>RS_ActionDefault</name>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="983"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="990"/>
         <source>Set new position</source>
         <translation>Укажите новую позицию</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="983"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="990"/>
         <source>Create a copy</source>
         <translation>Создать копию</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="991"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="998"/>
         <source>Lengthen Line</source>
         <translation>Увеличить прямую</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="570"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="571"/>
         <source>Selecting</source>
         <translation>Выделение</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="570"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="571"/>
         <source>De-Selecting</source>
         <translation>Снятие выделения</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="571"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="572"/>
         <source> entities </source>
         <translation> объектов </translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="572"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="573"/>
         <source>that intersect with box</source>
         <translation>которых пересекает рамка</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="572"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="573"/>
         <source>that are within box</source>
         <translation>которые внутри рамки</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="615"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="616"/>
         <source>Line</source>
         <translation>Прямая</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="616"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="617"/>
         <source>Length: </source>
         <translation>Длина: </translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="617"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="618"/>
         <source>Angle: </source>
         <translation>Угол: </translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="626"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="627"/>
         <source>Arc</source>
         <translation>ДУГА</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="498"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="499"/>
         <source>Offset</source>
         <translation>Смещение</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="501"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="502"/>
         <source>New Position</source>
         <translation>Новая позиция:</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="542"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="543"/>
         <source>Copy Offset</source>
         <translation>Смещение копии</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="544"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="545"/>
         <source>Move Offset</source>
         <translation>Смещение перемещения</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="627"/>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="638"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="628"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="639"/>
         <source>Radius:</source>
         <translation>Радиус:</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="628"/>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="639"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="629"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="640"/>
         <source>Center:</source>
         <translation>Центр:</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="629"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="630"/>
         <source>Angle Length:</source>
         <translation>Угловая длина:</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="630"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="631"/>
         <source>Chord Length:</source>
         <translation>Длина хорды:</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="631"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="632"/>
         <source>Height:</source>
         <translation>Высота:</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="637"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="638"/>
         <source>Circle</source>
         <translation>ОКРУЖНОСТЬ</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="994"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="1001"/>
         <source>Lengthen/Scale</source>
         <translation>Изменить угол или Масштабировать</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="994"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="1001"/>
         <source>Lengthen Chord</source>
         <translation>Изменить хорду</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="997"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="1004"/>
         <source>Move in Previous segment direction</source>
         <translation>Перемещать в направлении предыдущего сегмента</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="997"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="1004"/>
         <source>Move in Next segment direction</source>
         <translation>Перемещать в направлении следующего сегмента</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="1002"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="1009"/>
         <source>Set new ref position</source>
         <translation>Укажите новую позицию контрольной точки</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="1006"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="1013"/>
         <source>Zoom, pan or select entity</source>
         <translation>Увеличте или позиционируйте чертеж или выберите объект</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="1006"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="1013"/>
         <source>Scroll Horizontally / Select Contour</source>
         <translation>Пролистывать Горизонтально / Выделять контур</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="1006"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="1013"/>
         <source>Pan / Scroll Vertically / Select Child entities</source>
         <translation>Панорамировать /Пролистывать Вертикально / Выделять дочерние объекты</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="1011"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="1018"/>
         <source>Select/Deselect entities</source>
         <translation>Добавить\Отменить выделение объектов</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="1011"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="1018"/>
         <source>Select Intersecting</source>
         <translation>Выбрать пересекаемые</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="1011"/>
+        <location filename="../src/actions/drawing/rs_actiondefault.cpp" line="1018"/>
         <source>Choose second edge</source>
         <translation>Выберите вторую грань</translation>
     </message>
@@ -32385,39 +36898,39 @@ Intersection :@(%7, %8)</source>
 <context>
     <name>RS_ActionInfoArea</name>
     <message>
-        <location filename="../src/actions/drawing/info/rs_actioninfoarea.cpp" line="99"/>
-        <location filename="../src/actions/drawing/info/rs_actioninfoarea.cpp" line="107"/>
+        <location filename="../src/actions/drawing/info/rs_actioninfoarea.cpp" line="100"/>
+        <location filename="../src/actions/drawing/info/rs_actioninfoarea.cpp" line="108"/>
         <source>Circumference: %1</source>
         <translation>Периметр: %1</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/info/rs_actioninfoarea.cpp" line="153"/>
+        <location filename="../src/actions/drawing/info/rs_actioninfoarea.cpp" line="154"/>
         <source>Closing Point: %1</source>
         <translation>Завершающая точка: %1</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/info/rs_actioninfoarea.cpp" line="160"/>
+        <location filename="../src/actions/drawing/info/rs_actioninfoarea.cpp" line="161"/>
         <source>Point: %1</source>
         <translation>Точка: %1</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/info/rs_actioninfoarea.cpp" line="182"/>
+        <location filename="../src/actions/drawing/info/rs_actioninfoarea.cpp" line="183"/>
         <source>Specify point and complete</source>
         <translation>Указать конечную точку и завершить</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/info/rs_actioninfoarea.cpp" line="178"/>
+        <location filename="../src/actions/drawing/info/rs_actioninfoarea.cpp" line="179"/>
         <source>Specify first point of polygon</source>
         <translation>Укажите первую точку многоугольника</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/info/rs_actioninfoarea.cpp" line="182"/>
+        <location filename="../src/actions/drawing/info/rs_actioninfoarea.cpp" line="183"/>
         <source>Specify next point of polygon</source>
         <translation>Укажите следующую точку многоугольника</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/info/rs_actioninfoarea.cpp" line="101"/>
-        <location filename="../src/actions/drawing/info/rs_actioninfoarea.cpp" line="108"/>
+        <location filename="../src/actions/drawing/info/rs_actioninfoarea.cpp" line="102"/>
+        <location filename="../src/actions/drawing/info/rs_actioninfoarea.cpp" line="109"/>
         <source>Area: %1 %2^2</source>
         <translation>Площадь: %1 %2^2</translation>
     </message>
@@ -32591,22 +37104,22 @@ Point: (%8 , %9)</source>
 <context>
     <name>RS_ActionInterface</name>
     <message>
-        <location filename="../src/lib/actions/rs_actioninterface.cpp" line="581"/>
+        <location filename="../src/lib/actions/rs_actioninterface.cpp" line="583"/>
         <source>Back</source>
         <translation>Назад</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_actioninterface.cpp" line="603"/>
+        <location filename="../src/lib/actions/rs_actioninterface.cpp" line="605"/>
         <source>SHIFT:</source>
         <translation>SHIFT:</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_actioninterface.cpp" line="610"/>
+        <location filename="../src/lib/actions/rs_actioninterface.cpp" line="612"/>
         <source>CTRL:</source>
         <translation>CTRL:</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_actioninterface.cpp" line="629"/>
+        <location filename="../src/lib/actions/rs_actioninterface.cpp" line="631"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -33754,72 +38267,72 @@ Point: (%8 , %9)</source>
 <context>
     <name>RS_ActionPrintPreview</name>
     <message>
-        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="278"/>
+        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="279"/>
         <source>RS_ActionPrintPreview::fit(): Invalid paper size</source>
         <translation>RS_ActionPrintPreview::fit(): некорректный размер бумаги</translation>
     </message>
     <message>
-        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="160"/>
+        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="161"/>
         <source>Printout offset in paper coordinates by (%1, %2)</source>
         <translation>Смещение вывода на печать в координатах бумаги (%1, %2)</translation>
     </message>
     <message>
-        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="163"/>
+        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="164"/>
         <source>Printout offset in graph coordinates by (%1, %2)</source>
         <translation>Смещение вывода на печать в графических координатах (%1, %2)</translation>
     </message>
     <message>
-        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="185"/>
+        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="186"/>
         <source>Printout offset in graph coordinates</source>
         <translation>Смещение вывода на печать в графических координатах</translation>
     </message>
     <message>
-        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="189"/>
+        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="190"/>
         <source>Printout offset in paper coordinates</source>
         <translation>Смещение вывода на печать в координатах бумаг</translation>
     </message>
     <message>
-        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="222"/>
+        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="223"/>
         <source>: select printout offset coordinates</source>
         <translation>: выберите координаты смещения вывода на печать</translation>
     </message>
     <message>
-        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="223"/>
+        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="224"/>
         <source>type in offset from command line to offset printout</source>
         <translation>введите отступы при печати из командной строки</translation>
     </message>
     <message>
-        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="393"/>
+        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="394"/>
         <source>Limit of pages has been exceeded.</source>
         <translation>Достигнут предел числа страниц.</translation>
     </message>
     <message>
-        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="453"/>
+        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="454"/>
         <source>Drag with Left Button to Position Paper or with Middle Button to Pan</source>
         <translation>Зажмите Левую Кнопку мыши для перемещения бумаги, или Среднюю для перемещения чертежа</translation>
     </message>
     <message>
-        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="453"/>
+        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="454"/>
         <source>Move Horizontally</source>
         <translation>Перемещать только по вертикали</translation>
     </message>
     <message>
-        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="453"/>
+        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="454"/>
         <source>Move Vertically</source>
         <translation>Перемещать только по горизонтали</translation>
     </message>
     <message>
-        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="197"/>
+        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="198"/>
         <source>Printout offset ignores relative zero. Ignoring &apos;@&apos;</source>
         <translation>Игнорирование относительного нуля в смещении вывода на печать. Игнорирование &apos;@&apos;</translation>
     </message>
     <message>
-        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="177"/>
+        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="178"/>
         <source>Printout in Black/White</source>
         <translation>Печать в чёрно-белом</translation>
     </message>
     <message>
-        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="181"/>
+        <location filename="../src/actions/print_preview/rs_actionprintpreview.cpp" line="182"/>
         <source>Printout in color</source>
         <translation>Печать в цвете</translation>
     </message>
@@ -33827,7 +38340,7 @@ Point: (%8 , %9)</source>
 <context>
     <name>RS_ActionSelectBase</name>
     <message>
-        <location filename="../src/lib/actions/rs_actionselectbase.h" line="51"/>
+        <location filename="../src/lib/actions/rs_actionselectbase.h" line="50"/>
         <source> (Enter or CTRL+LMB click to complete)</source>
         <translation>(Enter или CTRL+LKM клик для завершения)</translation>
     </message>
@@ -33835,12 +38348,12 @@ Point: (%8 , %9)</source>
 <context>
     <name>RS_ActionSelectContour</name>
     <message>
-        <location filename="../src/actions/drawing/selection/rs_actionselectcontour.cpp" line="63"/>
+        <location filename="../src/actions/drawing/selection/rs_actionselectcontour.cpp" line="67"/>
         <source>Entity must be an Atomic Entity.</source>
         <translation>Объект должен быть элементарным.</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/selection/rs_actionselectcontour.cpp" line="82"/>
+        <location filename="../src/actions/drawing/selection/rs_actionselectcontour.cpp" line="89"/>
         <source>Specify entity to select</source>
         <translation>Укажите объект для выделения</translation>
     </message>
@@ -33848,22 +38361,22 @@ Point: (%8 , %9)</source>
 <context>
     <name>RS_ActionSelectIntersected</name>
     <message>
-        <location filename="../src/actions/drawing/selection/rs_actionselectintersected.cpp" line="173"/>
+        <location filename="../src/actions/drawing/selection/rs_actionselectintersected.cpp" line="188"/>
         <source>Choose first point of intersection line</source>
         <translation>Укажите первую точку линии пересечения</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/selection/rs_actionselectintersected.cpp" line="173"/>
+        <location filename="../src/actions/drawing/selection/rs_actionselectintersected.cpp" line="188"/>
         <source>Select intersecting entity</source>
         <translation>Выбрать пересекающий объект</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/selection/rs_actionselectintersected.cpp" line="173"/>
+        <location filename="../src/actions/drawing/selection/rs_actionselectintersected.cpp" line="188"/>
         <source>Select child entities</source>
         <translation>Выбирать дочерние объекты</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/selection/rs_actionselectintersected.cpp" line="176"/>
+        <location filename="../src/actions/drawing/selection/rs_actionselectintersected.cpp" line="191"/>
         <source>Choose second point of intersection line</source>
         <translation>Укажите вторую точку линии пересечения</translation>
     </message>
@@ -33871,7 +38384,7 @@ Point: (%8 , %9)</source>
 <context>
     <name>RS_ActionSelectLayer</name>
     <message>
-        <location filename="../src/actions/drawing/selection/rs_actionselectlayer.cpp" line="69"/>
+        <location filename="../src/actions/drawing/selection/rs_actionselectlayer.cpp" line="76"/>
         <source>Specify entity with desired layer</source>
         <translation>Укажите объект с желаемым слоем для выделения</translation>
     </message>
@@ -33879,12 +38392,12 @@ Point: (%8 , %9)</source>
 <context>
     <name>RS_ActionSelectSingle</name>
     <message>
-        <location filename="../src/actions/drawing/selection/rs_actionselectsingle.cpp" line="114"/>
+        <location filename="../src/actions/drawing/selection/rs_actionselectsingle.cpp" line="118"/>
         <source>Specify entity to select</source>
         <translation>Укажите объект для выделения</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/selection/rs_actionselectsingle.cpp" line="114"/>
+        <location filename="../src/actions/drawing/selection/rs_actionselectsingle.cpp" line="118"/>
         <source>Select contour</source>
         <translation>Выбрать контур</translation>
     </message>
@@ -33917,32 +38430,32 @@ Point: (%8 , %9)</source>
         <translation>которые внутри рамки</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/selection/rs_actionselectwindow.cpp" line="166"/>
+        <location filename="../src/actions/drawing/selection/rs_actionselectwindow.cpp" line="164"/>
         <source>Choose second edge</source>
         <translation>Выберите вторую грань</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/selection/rs_actionselectwindow.cpp" line="168"/>
+        <location filename="../src/actions/drawing/selection/rs_actionselectwindow.cpp" line="166"/>
         <source>Select Intersecting</source>
         <translation>Выбрать пересекающиеся</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/selection/rs_actionselectwindow.cpp" line="167"/>
+        <location filename="../src/actions/drawing/selection/rs_actionselectwindow.cpp" line="165"/>
         <source>De-select entities</source>
         <translation>Снять выделение</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/selection/rs_actionselectwindow.cpp" line="167"/>
+        <location filename="../src/actions/drawing/selection/rs_actionselectwindow.cpp" line="165"/>
         <source>Select entities</source>
         <translation>Выделение объекто</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/selection/rs_actionselectwindow.cpp" line="168"/>
+        <location filename="../src/actions/drawing/selection/rs_actionselectwindow.cpp" line="166"/>
         <source>De-select intersecting</source>
         <translation>Снять выделение пересекающихся</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/selection/rs_actionselectwindow.cpp" line="163"/>
+        <location filename="../src/actions/drawing/selection/rs_actionselectwindow.cpp" line="161"/>
         <source>Click and drag for the selection window</source>
         <translation>Нажмите и растяните рамку для выбора</translation>
     </message>
@@ -34010,87 +38523,87 @@ Point: (%8 , %9)</source>
 <context>
     <name>RS_Snapper</name>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="993"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="989"/>
         <source>Vertical</source>
         <translation>Только Вертикально</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="995"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="991"/>
         <source>Horizontal</source>
         <translation>Только Горизонтально</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="997"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="993"/>
         <source>Orthogonal</source>
         <translation>Только Ортогонально</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1006"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1002"/>
         <source>Grid</source>
         <translation>К Сетке</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1008"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1004"/>
         <source>Entity</source>
         <translation>К Объекту</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1010"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1006"/>
         <source>Endpoint</source>
         <translation>К Конечной Точке</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1012"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1008"/>
         <source>Intersection</source>
         <translation>К Пересечению</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1014"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1010"/>
         <source>Middle</source>
         <translation>К Середине</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1016"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1012"/>
         <source>Distance</source>
         <translation>К Дистанции</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1018"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1014"/>
         <source>Center</source>
         <translation>К Центру</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1020"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1016"/>
         <source>Angle</source>
         <translation>По Углу</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1022"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1018"/>
         <source>Angle Relative</source>
         <translation>По Относительному Углу</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1024"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1020"/>
         <source>Angle (on Entity)</source>
         <translation>К Объекту (по Углу)</translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1196"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1192"/>
         <source>Dist: </source>
         <translation>Расстояние: </translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1201"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1197"/>
         <source>Angle: </source>
         <translation>Угол: </translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1206"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1202"/>
         <source>dX: </source>
         <translation>dX: </translation>
     </message>
     <message>
-        <location filename="../src/lib/actions/rs_snapper.cpp" line="1207"/>
+        <location filename="../src/lib/actions/rs_snapper.cpp" line="1203"/>
         <source>dY: </source>
         <translation>dY: </translation>
     </message>
@@ -35368,7 +39881,7 @@ Point: (%8 , %9)</source>
     <message>
         <location filename="../src/ui/action_options/print_preview/qg_printpreviewoptions.ui" line="310"/>
         <source>If enabled, paper space will include specified amount of pages organized in columns and rows</source>
-        <translation>Если выбрано, чертеж будет напечатан на наскольких страницах пликтой.
+        <translation>Если выбрано, чертеж будет напечатан на наскольких страницах плиткой.
 Пространство бумаги будет включать в себя несколько страниц с заданными чистом колонок и столбцов.</translation>
     </message>
     <message>

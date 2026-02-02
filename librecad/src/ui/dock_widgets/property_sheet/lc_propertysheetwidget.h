@@ -41,13 +41,13 @@ namespace Ui {
     class LC_PropertySheetWidget;
 }
 
-class LC_PropertySheetWidget : public LC_GraphicViewAwareWidget,
-                               public LC_SelectedSetListener,
-                               public LC_EntitiesModificationContext,
-                               public LC_LateCompletionRequestor{
+class LC_PropertySheetWidget : public LC_GraphicViewAwareWidget, public LC_SelectedSetListener, public LC_EntitiesModificationContext,
+                               public LC_LateCompletionRequestor {
     Q_OBJECT
+
 public:
-    explicit LC_PropertySheetWidget(QWidget *parent, LC_ActionContext* actionContext, QAction* selectQuick, QAction* toggleSelectModeAction, QAction* selectEntitiesAction);
+    explicit LC_PropertySheetWidget(QWidget* parent, LC_ActionContext* actionContext, QAction* selectQuick, QAction* toggleSelectModeAction,
+                                    QAction* selectEntitiesAction);
     ~LC_PropertySheetWidget() override;
     void setGraphicView(RS_GraphicView* gv) override;
     void selectionChanged() override;
@@ -58,10 +58,11 @@ public:
     void markContainerCollapsed(const QString& name, bool collapse);
     void checkSectionCollapsed(LC_PropertyContainer* result);
     void entityModified(RS_Entity* originalEntity, RS_Entity* entityClone) override;
-public slots:
+
+public slots :
     void onUcsChanged(LC_UCS* ucs);
     void onViewDefaultActionActivated(bool defaultActionActivated, RS2::ActionType prevActionRtti);
-    void onRelativeZeroChanged(const RS_Vector &);
+    void onRelativeZeroChanged(const RS_Vector&);
     void onBeforePropertyEdited(LC_Property* property, LC_Property::PropertyValuePtr newValue, int typeId);
     void onPropertyEdited(LC_Property* property);
     void onSelectionIndexChanged(int index);
@@ -71,30 +72,31 @@ public slots:
     void checkIfVectorAndGetLocation(LC_Property* property);
     void invalidateCached() const;
     void onDockVisibilityChanged(bool visible);
+
 protected:
-    void setupSelectionTypeCombobox(RS2::EntityType entityTypeTryToSet,  QString propertyTryToSet);
+    void setupSelectionTypeCombobox(RS2::EntityType entityTypeTryToSet, QString propertyTryToSet);
     void clearContextEntities();
-    void collectEntitiesToModify(RS2::EntityType entityType, QList<RS_Entity*> &entitiesToModify) const;
-    LC_PropertyContainer* createPropertiesContainer(RS2::EntityType entityType, const QList<RS_Entity*>& list) ;
-    LC_PropertyContainer* preparePropertiesContainer(RS2::EntityType entityType) ;
+    void collectEntitiesToModify(RS2::EntityType entityType, QList<RS_Entity*>& entitiesToModify) const;
+    LC_PropertyContainer* createPropertiesContainer(RS2::EntityType entityType, const QList<RS_Entity*>& list);
+    LC_PropertyContainer* preparePropertiesContainer(RS2::EntityType entityType);
     void destroyContainer(LC_PropertyContainer* previousContainer) const;
     void setPickedPointPropertyValue(const QString& propertyName, const RS_Vector& ucsVector) const;
-    void setPickedPropertyValue(const QString& propertyName, double interactiveInputValue, LC_ActionContext::InteractiveInputInfo::InputType input) const;
+    void setPickedPropertyValue(const QString& propertyName, double interactiveInputValue,
+                                LC_ActionContext::InteractiveInputInfo::InputType input) const;
     void setPickedPropertyCoordinateValue(const QString& propertyName, double interactiveInputValue, bool forX) const;
     bool isVirtualProperty(const LC_Property* property);
     int getCurrentlySelectedEntityType(int index) const;
+
 private:
-    Ui::LC_PropertySheetWidget *ui;
+    Ui::LC_PropertySheetWidget* ui;
     void initPropertySheet();
     RS_GraphicView* m_graphicView = nullptr; // fixme - sand - review dependency
     RS_Document* m_document = nullptr;
     LC_GraphicViewport* m_viewport = nullptr;
     bool m_handleSelectionChange = true;
-    LC_ActionContext* m_actionContext {nullptr};
+    LC_ActionContext* m_actionContext{nullptr};
     std::unique_ptr<LC_EntityPropertyContainerProvider> m_entityContainerProvider;
-
     QSet<QString> m_collapsedContainerNames;
-
     QList<RS_Entity*> m_orginalEntities;
     QList<RS_Entity*> m_modifiedEntities;
 };

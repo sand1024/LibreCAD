@@ -35,6 +35,7 @@
 #include "lc_property_layer.h"
 #include "lc_property_multi.h"
 #include "lc_property_rsvector.h"
+#include "lc_property_view_registrator.h"
 #include "lc_rectregion.h"
 #include "rs_debug.h"
 #include "rs_document.h"
@@ -42,15 +43,25 @@
 #include "rs_selection.h"
 #include "ui_lc_propertysheetwidget.h"
 
-LC_PropertySheetWidget::LC_PropertySheetWidget(QWidget* parent,LC_ActionContext* actionContext, QAction* selectQuick,
+LC_PropertySheetWidget::LC_PropertySheetWidget(QWidget* parent, LC_ActionContext* actionContext, QAction* selectQuick,
                                                QAction* toggleSelectModeAction, QAction* selectEntitiesAction)
     : LC_GraphicViewAwareWidget(parent), ui(new Ui::LC_PropertySheetWidget), m_actionContext{actionContext} {
+
+    const auto viewFactory = LC_PropertyViewFactory::staticInstance();
+    LC_PropertyViewRegistrator registrator(*viewFactory);
+    registrator.registerViews();
+
     ui->setupUi(this);
 
-    connect(ui->propertySheet->propertiesSheet(), &LC_PropertiesSheet::propertyEdited, this, &LC_PropertySheetWidget::onPropertyEdited);
-    connect(ui->propertySheet->propertiesSheet(), &LC_PropertiesSheet::beforePropertyEdited, this, &LC_PropertySheetWidget::onBeforePropertyEdited);
-    connect(ui->propertySheet->propertiesSheet(), &LC_PropertiesSheet::activePropertyChanged, this, &LC_PropertySheetWidget::onActivePropertyChanged);
+    auto propertiesSheet = ui->propertySheet->propertiesSheet();
+    connect(propertiesSheet, &LC_PropertiesSheet::propertyEdited, this, &LC_PropertySheetWidget::onPropertyEdited);
+    connect(propertiesSheet, &LC_PropertiesSheet::beforePropertyEdited, this,
+            &LC_PropertySheetWidget::onBeforePropertyEdited);
+    connect(propertiesSheet, &LC_PropertiesSheet::activePropertyChanged, this,
+            &LC_PropertySheetWidget::onActivePropertyChanged);
     connect(ui->cbSelection, &QComboBox::currentIndexChanged, this, &LC_PropertySheetWidget::onSelectionIndexChanged);
+
+    ui->propertySheet->setParts(PROPERTY_WIDGET_AREA_INFO);
 
     ui->tbSelectQuick->setDefaultAction(selectQuick);
     ui->tbPickAddSwitch->setDefaultAction(toggleSelectModeAction);
@@ -67,8 +78,6 @@ LC_PropertySheetWidget::~LC_PropertySheetWidget() {
 }
 
 void LC_PropertySheetWidget::setGraphicView(RS_GraphicView* gv) {
-    RS_Document* doc = nullptr;
-    LC_GraphicViewport* viewport = nullptr;
     // remove tracking of relative point from old view
     if (m_graphicView != nullptr) {
         disconnect(m_graphicView, &RS_GraphicView::relativeZeroChanged, this, &LC_PropertySheetWidget::onRelativeZeroChanged);
@@ -83,21 +92,40 @@ void LC_PropertySheetWidget::setGraphicView(RS_GraphicView* gv) {
 
     // add tracking of relative point for new view
     if (gv != nullptr) {
+        RS_Document* doc = nullptr;
+        LC_GraphicViewport* viewport = nullptr;
         connect(m_graphicView, &RS_GraphicView::relativeZeroChanged, this, &LC_PropertySheetWidget::onRelativeZeroChanged);
         connect(m_graphicView, &RS_GraphicView::ucsChanged, this, &LC_PropertySheetWidget::onUcsChanged);
         connect(m_graphicView, &RS_GraphicView::defaultActionActivated, this, &LC_PropertySheetWidget::onViewDefaultActionActivated);
         viewport = gv->getViewPort();
         doc = gv->getDocument();
         doc->getSelection()->addListener(this);
+        m_document = doc;
+        m_viewport = viewport;
+
+        m_entityContainerProvider->setGraphicView(gv);
+
+        initPropertySheet();
+        setupSelectionTypeCombobox(RS2::EntityContainer, "");
+        setEnabled(true);
     }
-
-    m_document = doc;
-    m_viewport = viewport;
-
-    m_entityContainerProvider->setGraphicView(gv);
-
-    initPropertySheet();
-    setupSelectionTypeCombobox(RS2::EntityContainer,"");
+    else {
+        m_viewport = nullptr;
+        m_document = nullptr;
+        ui->cbSelection->blockSignals(true);
+        ui->propertySheet->blockSignals(true);
+        ui->cbSelection->clear();
+        const auto previousContainer = ui->propertySheet->propertyContainer();
+        if (previousContainer != nullptr) {
+            m_entityContainerProvider->clearEntities();
+            previousContainer->clearChildProperties();
+            previousContainer->deleteLater();
+            ui->propertySheet->setPropertyContainer(nullptr);
+        }
+        ui->cbSelection->blockSignals(false);
+        ui->propertySheet->blockSignals(false);
+        setEnabled(false);
+    }
 }
 
 void LC_PropertySheetWidget::selectionChanged() {
@@ -110,7 +138,7 @@ void LC_PropertySheetWidget::selectionChanged() {
             int itemEntityType = getCurrentlySelectedEntityType(selectionIndex);
             const auto entityType = static_cast<RS2::EntityType>(itemEntityType);
             const auto activeProperty = ui->propertySheet->propertiesSheet()->activeProperty();
-            const QString propertyName = activeProperty  != nullptr ? activeProperty->getName() : "";
+            const QString propertyName = activeProperty != nullptr ? activeProperty->getName() : "";
 
             setupSelectionTypeCombobox(entityType, propertyName);
         }
@@ -171,7 +199,7 @@ void LC_PropertySheetWidget::onLateRequestCompleted(const bool shouldBeSkipped) 
             }
         }
         else {
-           inputType = LC_ActionContext::InteractiveInputInfo::NOTNEEDED;
+            inputType = LC_ActionContext::InteractiveInputInfo::NOTNEEDED;
         }
     }
 }
@@ -195,7 +223,8 @@ void LC_PropertySheetWidget::onViewDefaultActionActivated(const bool defaultActi
 void LC_PropertySheetWidget::onRelativeZeroChanged(const RS_Vector&) {
 }
 
-void LC_PropertySheetWidget::setupSelectionTypeCombobox(const RS2::EntityType entityTypeTryToSet,  [[maybe_unused]]QString propertyTryToSet)  {
+void LC_PropertySheetWidget::setupSelectionTypeCombobox(const RS2::EntityType entityTypeTryToSet,
+                                                        [[maybe_unused]] QString propertyTryToSet) {
     ui->cbSelection->blockSignals(true);
     ui->cbSelection->clear();
     int entityTypesCount = 0;
@@ -232,21 +261,21 @@ void LC_PropertySheetWidget::setupSelectionTypeCombobox(const RS2::EntityType en
 }
 
 void LC_PropertySheetWidget::entityModified([[maybe_unused]] RS_Entity* originalEntity, [[maybe_unused]] RS_Entity* entityClone) {
-    LC_ERR << "entity Modified!";
+    // LC_ERR << "entity Modified!";
     m_orginalEntities.push_back(originalEntity);
     m_modifiedEntities.push_back(entityClone);
 }
 
 void LC_PropertySheetWidget::clearContextEntities() {
-    for (const auto e: m_orginalEntities) {
+    for (const auto e : m_orginalEntities) {
         if (RS2::isDimensionalEntity(e->rtti())) {
-            auto *d  = static_cast<RS_Dimension*>(e);
+            auto* d = static_cast<RS_Dimension*>(e);
             d->clearCachedDimStyle();
         }
     }
-    for (const auto e: m_modifiedEntities) {
+    for (const auto e : m_modifiedEntities) {
         if (RS2::isDimensionalEntity(e->rtti())) {
-            const auto d  = static_cast<RS_Dimension*>(e);
+            const auto d = static_cast<RS_Dimension*>(e);
             d->clearCachedDimStyle();
         }
     }
@@ -257,8 +286,8 @@ void LC_PropertySheetWidget::clearContextEntities() {
 void LC_PropertySheetWidget::initPropertySheet() {
 }
 
-void LC_PropertySheetWidget::onBeforePropertyEdited([[maybe_unused]]LC_Property* property, [[maybe_unused]] LC_Property::PropertyValuePtr newValue,
-                                                    [[maybe_unused]] int typeId) {
+void LC_PropertySheetWidget::onBeforePropertyEdited([[maybe_unused]] LC_Property* property,
+                                                    [[maybe_unused]] LC_Property::PropertyValuePtr newValue, [[maybe_unused]] int typeId) {
     // LC_ERR << "On Before Edit " << property->getName() << " " << property->getRootProperty()->getName();
 }
 
@@ -286,8 +315,8 @@ void LC_PropertySheetWidget::onPropertyEdited(LC_Property* property) {
     }
 
     // fixme - add delayed modification method
-    QTimer::singleShot(30,  [this, propertyName, layerHidden]()-> void {
-        LC_ERR << "On Edited - " << propertyName;
+    QTimer::singleShot(30, [this, propertyName, layerHidden]()-> void {
+        // LC_ERR << "On Edited - " << propertyName;
         m_document->undoableModify(m_viewport, [this](LC_DocumentModificationBatch& ctx)-> bool {
                                        ctx.entitiesToAdd.append(m_modifiedEntities);
                                        ctx.entitiesToDelete.append(m_orginalEntities);
@@ -295,7 +324,7 @@ void LC_PropertySheetWidget::onPropertyEdited(LC_Property* property) {
                                        clearContextEntities();
                                        return true;
                                    }, [layerHidden](const LC_DocumentModificationBatch& ctx, RS_Document* doc)-> void {
-                                       if (!layerHidden){
+                                       if (!layerHidden) {
                                            doc->select(ctx.entitiesToAdd);
                                        }
                                    });
@@ -318,14 +347,14 @@ void LC_PropertySheetWidget::onSelectionIndexChanged(const int index) {
     }
 }
 
-LC_PropertyContainer* LC_PropertySheetWidget::preparePropertiesContainer(const RS2::EntityType entityType)  {
+LC_PropertyContainer* LC_PropertySheetWidget::preparePropertiesContainer(const RS2::EntityType entityType) {
     QList<RS_Entity*> entitiesToModify;
     collectEntitiesToModify(entityType, entitiesToModify);
     LC_PropertyContainer* result = createPropertiesContainer(entityType, entitiesToModify);
     return result;
 }
 
-void LC_PropertySheetWidget::collectEntitiesToModify(RS2::EntityType entityType, QList<RS_Entity*>& entitiesToModify) const{
+void LC_PropertySheetWidget::collectEntitiesToModify(RS2::EntityType entityType, QList<RS_Entity*>& entitiesToModify) const {
     if (entityType == RS2::EntityUnknown || entityType == RS2::EntityContainer) {
         m_document->collectSelected(entitiesToModify);
     }
@@ -355,7 +384,7 @@ void LC_PropertySheetWidget::destroyContainer(LC_PropertyContainer* previousCont
 }
 
 void LC_PropertySheetWidget::setPickedPropertyValue(const QString& propertyName, const double interactiveInputValue,
-    [[maybe_unused]] LC_ActionContext::InteractiveInputInfo::InputType input) const {
+                                                    [[maybe_unused]] LC_ActionContext::InteractiveInputInfo::InputType input) const {
     const auto propertyContainer = ui->propertySheet->propertyContainer();
     auto propertiesByName = propertyContainer->findChildProperties(propertyName);
     const auto propertiesSheet = ui->propertySheet->propertiesSheet();
@@ -374,7 +403,7 @@ void LC_PropertySheetWidget::setPickedPropertyValue(const QString& propertyName,
                     const auto coordinatePropertyView = propertyItem->view.get();
                     valueMultiProperty->markEdited(true);
                     propertiesSheet->connectOnPropertyChange(valueMultiProperty, true);
-                    valuePropertyDouble->setValue(interactiveInputValue, coordinatePropertyView->editReason());
+                    valuePropertyDouble->setValue(interactiveInputValue, coordinatePropertyView->changeReasonDueToEdit());
                     propertiesSheet->connectOnPropertyChange(valueMultiProperty, false);
                 }
             }
@@ -382,7 +411,8 @@ void LC_PropertySheetWidget::setPickedPropertyValue(const QString& propertyName,
     }
 }
 
-void LC_PropertySheetWidget::setPickedPropertyCoordinateValue(const QString& propertyName, const double interactiveInputValue, const bool forX) const {
+void LC_PropertySheetWidget::setPickedPropertyCoordinateValue(const QString& propertyName, const double interactiveInputValue,
+                                                              const bool forX) const {
     const auto propertyContainer = ui->propertySheet->propertyContainer();
     auto propertiesByName = propertyContainer->findChildProperties(propertyName);
     const auto propertiesSheet = ui->propertySheet->propertiesSheet();
@@ -396,7 +426,8 @@ void LC_PropertySheetWidget::setPickedPropertyCoordinateValue(const QString& pro
             const auto* vectorMultiProperty = dynamic_cast<LC_PropertyMulti*>(p);
             if (vectorMultiProperty == nullptr) {
                 const auto vectorProperty = dynamic_cast<LC_PropertyRSVector*>(p);
-                if (vectorProperty != nullptr) { // this is vertext of polyline, spline etc.
+                if (vectorProperty != nullptr) {
+                    // this is vertext of polyline, spline etc.
                     const int subPropertyIdx = forX ? 0 : 1; // x should be first component, y - second one
                     const auto propertyItem = sheetModel->findItem(sheetModel->getRootItem(), vectorProperty);
                     const auto coordinatePropertyItem = propertyItem->children.at(subPropertyIdx).get();
@@ -405,11 +436,12 @@ void LC_PropertySheetWidget::setPickedPropertyCoordinateValue(const QString& pro
                     const auto coordinateProperty = static_cast<LC_PropertyDouble*>(coordinatePropertyView->getProperty());
 
                     propertiesSheet->connectOnPropertyChange(vectorProperty, true);
-                    coordinateProperty->setValue(interactiveInputValue, propertyItem->view->editReason());
+                    coordinateProperty->setValue(interactiveInputValue, propertyItem->view->changeReasonDueToEdit());
                     propertiesSheet->connectOnPropertyChange(vectorProperty, false);
                 }
             }
-            else {  // this is normal case - we're in multi property
+            else {
+                // this is normal case - we're in multi property
                 const auto propertyItem = sheetModel->findItem(sheetModel->getRootItem(), vectorMultiProperty);
                 if (propertyItem != nullptr) {
                     const auto vectorMultiPropertyView = propertyItem->view.get();
@@ -424,7 +456,7 @@ void LC_PropertySheetWidget::setPickedPropertyCoordinateValue(const QString& pro
                             const auto coordinatePropertyView = coordinatePropertyItem->view.get();
                             coordinateMultiProperty->markEdited(true);
                             propertiesSheet->connectOnPropertyChange(vectorMultiProperty, true);
-                            coordinateDoubleProperty->setValue(interactiveInputValue, coordinatePropertyView->editReason());
+                            coordinateDoubleProperty->setValue(interactiveInputValue, coordinatePropertyView->changeReasonDueToEdit());
                             propertiesSheet->connectOnPropertyChange(vectorMultiProperty, false);
                         }
                     }
@@ -434,7 +466,7 @@ void LC_PropertySheetWidget::setPickedPropertyCoordinateValue(const QString& pro
     }
 }
 
-void LC_PropertySheetWidget::setPickedPointPropertyValue(const QString& propertyName, const RS_Vector &ucsVector) const {
+void LC_PropertySheetWidget::setPickedPointPropertyValue(const QString& propertyName, const RS_Vector& ucsVector) const {
     const auto propertyContainer = ui->propertySheet->propertyContainer();
 
     auto lcProperties = propertyContainer->findChildProperties(propertyName);
@@ -448,14 +480,16 @@ void LC_PropertySheetWidget::setPickedPointPropertyValue(const QString& property
             const auto vectorPropertyMulti = dynamic_cast<LC_PropertyMulti*>(p);
             if (vectorPropertyMulti == nullptr) {
                 const auto vectorProperty = dynamic_cast<LC_PropertyRSVector*>(p);
-                if (vectorProperty != nullptr) { // this is vertex of polyline, spline etc.
+                if (vectorProperty != nullptr) {
+                    // this is vertex of polyline, spline etc.
                     propertiesSheet->connectOnPropertyChange(vectorProperty, true);
                     const auto propertyItem = sheetModel->findItem(sheetModel->getRootItem(), vectorProperty);
-                    vectorProperty->setValue(ucsVector, propertyItem->view->editReason());
+                    vectorProperty->setValue(ucsVector, propertyItem->view->changeReasonDueToEdit());
                     propertiesSheet->connectOnPropertyChange(vectorProperty, false);
                 }
             }
-            else { // normal multi property
+            else {
+                // normal multi property
                 const auto propertyItem = sheetModel->findItem(sheetModel->getRootItem(), vectorPropertyMulti);
                 if (propertyItem != nullptr) {
                     const auto vectorAtomic = vectorPropertyMulti->getFirstProperty();
@@ -463,7 +497,7 @@ void LC_PropertySheetWidget::setPickedPointPropertyValue(const QString& property
                     if (vectorProperty != nullptr) {
                         vectorPropertyMulti->markEdited(true);
                         propertiesSheet->connectOnPropertyChange(vectorPropertyMulti, true);
-                        vectorProperty->setValue(ucsVector, propertyItem->view->editReason());
+                        vectorProperty->setValue(ucsVector, propertyItem->view->changeReasonDueToEdit());
                         propertiesSheet->connectOnPropertyChange(vectorPropertyMulti, false);
                     }
                 }
@@ -505,7 +539,7 @@ void LC_PropertySheetWidget::checkSectionCollapsed(LC_PropertyContainer* result)
 
 void LC_PropertySheetWidget::onSectionPropertyChanged(const LC_PropertyChangeReason reason) {
     if (reason.testFlag(PropertyChangeReasonStateLocal)) {
-        const auto property = qobject_cast<LC_Property *>(sender());
+        const auto property = qobject_cast<LC_Property*>(sender());
         const QString name = property->getName();
         const bool collapsed = property->isCollapsed();
         markContainerCollapsed(name, collapsed);
@@ -513,11 +547,14 @@ void LC_PropertySheetWidget::onSectionPropertyChanged(const LC_PropertyChangeRea
 }
 
 void LC_PropertySheetWidget::onActivePropertyChanged(LC_Property* activeProperty) {
+    if (m_viewport == nullptr) {
+        return;
+    }
     m_viewport->clearLocationsHighlight();
     if (activeProperty == nullptr) {
         return;
     }
-    const auto masterProperty = activeProperty->getMasterProperty();
+    const auto masterProperty = activeProperty->getPrimaryProperty();
     if (masterProperty != nullptr) {
         checkIfVectorAndGetLocation(masterProperty);
     }
@@ -527,7 +564,6 @@ void LC_PropertySheetWidget::onActivePropertyChanged(LC_Property* activeProperty
 }
 
 void LC_PropertySheetWidget::highlightVectorPropertyPosition(const LC_PropertyRSVector* vectorProperty) const {
-    LC_ERR << "is vector";
     if (!vectorProperty->isMultiValue()) {
         const RS_Vector ucsPosition = vectorProperty->value();
         const auto wcsPosition = m_viewport->toWorld(ucsPosition);
@@ -561,7 +597,7 @@ void LC_PropertySheetWidget::invalidateCached() const {
 }
 
 void LC_PropertySheetWidget::onDockVisibilityChanged(const bool visible) {
-    LC_ERR << "Dock visibility changed - " << visible;
+    // LC_ERR << "Dock visibility changed - " << visible;
     if (visible) {
         m_handleSelectionChange = true;
         selectionChanged();
