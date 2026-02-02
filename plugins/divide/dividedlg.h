@@ -24,7 +24,6 @@
 class dividedlg : public QDialog
 {
     Q_OBJECT
-
 public:
     dividedlg( Document_Interface *doc, QString,
                QWidget *parent = nullptr );
@@ -66,4 +65,4 @@ private:
     int activeLayer;
 };
 
-#endif // end DIVIDEDLG_H
+#endif

@@ -33,7 +33,6 @@ class LC_Sample : public QObject, QC_PluginInterface
 class lc_Sampledlg : public QDialog
 {
     Q_OBJECT
-
 public:
     explicit lc_Sampledlg(QWidget *parent = 0);
     ~lc_Sampledlg() override;
@@ -59,4 +58,4 @@ private:
     QLineEdit *endyedit;
 };
 
-#endif // SAMPLE_H
+#endif

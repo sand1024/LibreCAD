@@ -146,7 +146,7 @@ dividedlg::dividedlg( Document_Interface *doc, QString passedData,
         RB->setFont( font4 );
         num = QString::number( i );
         RB->setObjectName( num );
-        RB->setText( num + " - " + layerList.at( i ) );
+        RB->setText( num % " - " % layerList.at( i ) );
 
         QObject::connect( RB, SIGNAL( toggled( bool ) ), this,
                           SLOT( onWhichButtonSlot( bool ) ) );

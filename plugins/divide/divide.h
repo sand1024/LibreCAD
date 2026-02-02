@@ -48,4 +48,4 @@ private:
     void segment( QPointF *, double, double, double, QString) const;
 };
 
-#endif //end DIVIDE_H
+#endif

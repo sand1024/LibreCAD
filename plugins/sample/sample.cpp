@@ -144,7 +144,6 @@ void lc_Sampledlg::closeEvent(QCloseEvent *event)
 
 void lc_Sampledlg::readSettings()
  {
-    QString str;
     QSettings settings(QSettings::IniFormat, QSettings::UserScope, "LibreCAD", "sample_plugin");
     QPoint pos = settings.value("pos", QPoint(200, 200)).toPoint();
     QSize size = settings.value("size", QSize(430,140)).toSize();

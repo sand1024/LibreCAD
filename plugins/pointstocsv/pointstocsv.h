@@ -50,8 +50,7 @@ class ExpTo_Csv : public QObject, QC_PluginInterface
 class lc_Exptocsvdlg : public QDialog
 {
     Q_OBJECT
-
-    public:    
+    public:
         explicit lc_Exptocsvdlg(QWidget *parent = nullptr, Document_Interface *doc = nullptr);
         ~lc_Exptocsvdlg() override;
         void setSelectedType(QString typeAsString);
@@ -77,4 +76,4 @@ class lc_Exptocsvdlg : public QDialog
 
 };
 
-#endif //LIST_H
+#endif

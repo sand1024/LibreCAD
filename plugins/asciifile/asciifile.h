@@ -49,7 +49,6 @@ namespace DPT {
 class dibPunto : public QDialog
 {
     Q_OBJECT
-
 public:
     explicit dibPunto(QWidget *parent = nullptr);
     ~dibPunto();
@@ -99,7 +98,6 @@ private:
 class imgLabel : public QLabel
 {
     Q_OBJECT
-
 public:
     imgLabel(QWidget * parent = nullptr, Qt::WindowFlags f = {} );
 
@@ -122,7 +120,6 @@ private:
 class pointBox : public QGroupBox
 {
     Q_OBJECT
-
 public:
     pointBox(const QString & title, const QString & label, QWidget * parent = nullptr );
     void setInLayout(QLayout *lo) const;
@@ -140,7 +137,6 @@ private:
 class textBox : public pointBox
 {
     Q_OBJECT
-
 public:
     textBox(const QString & title, const QString & label, QWidget * parent = nullptr );
     void setPos(DPT::txtposition p) const { img->setPos(p); }
@@ -173,4 +169,4 @@ struct PointData
     QString code;
 };
 /***********/
-#endif // ECHOPLUG_H
+#endif

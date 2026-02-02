@@ -135,7 +135,7 @@ void picPunto::processFile(Document_Interface *doc)
         QMessageBox::critical ( this, "picPunto", QString(tr("Can't open the file %1")).arg(fileedit->text()) );
          return;
     }
-    QString currlay = currDoc->getCurrentLayer();
+    // QString currlay = currDoc->getCurrentLayer();
     processFilePic(&infile);
     infile.close ();
 

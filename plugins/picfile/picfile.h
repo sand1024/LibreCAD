@@ -48,7 +48,6 @@ class PicFile : public QObject, QC_PluginInterface
 class picPunto : public QDialog
 {
     Q_OBJECT
-
     public:
         explicit picPunto(QWidget *parent = 0);
         ~picPunto();
@@ -88,4 +87,4 @@ public:
     QString y;
 };
 
-#endif // PICFILE_H
+#endif
