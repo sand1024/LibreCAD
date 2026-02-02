@@ -59,7 +59,7 @@ RS_GraphicView::RS_GraphicView(QWidget *parent, const Qt::WindowFlags f)
 }
 
 RS_GraphicView::~RS_GraphicView() {
-    LC_ERR << "~RS_GraphicView";
+    // LC_ERR << "~RS_GraphicView";
 }
 
 void RS_GraphicView::loadSettings() {

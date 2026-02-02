@@ -24,7 +24,7 @@
 #include "rs_actionselect.h"
 
 #include "lc_actioncontext.h"
-#include "../drawing/selection/rs_actionselectsingle.h"
+#include "rs_actionselectsingle.h"
 #include "rs_dialogfactoryinterface.h"
 #include "rs_entitycontainer.h"
 #include "rs_graphicview.h"

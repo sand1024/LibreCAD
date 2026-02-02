@@ -1746,7 +1746,7 @@ bool RS_EntityContainer::ignoredSnap() const {
 
 void RS_EntityContainer::debugEntityAlreadyPresentExists(const RS_Entity* entity) const {
 #ifdef DEBUG_CONTAINER_DUPLICATE
-    const qint64 countOfEntities = m_entities.count(entity);
+    const qsizetype countOfEntities = m_entities.count(entity);
     Q_ASSERT(countOfEntities == 0);
 #endif
 }

@@ -27,7 +27,7 @@
 #define QG_DLGARC_H
 
 #include "ui_qg_dlgarc.h"
-#include "../dialogs/entity/lc_entitypropertiesdlg.h"
+#include "lc_entitypropertiesdlg.h"
 
 class RS_Arc;
 

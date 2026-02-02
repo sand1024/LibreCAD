@@ -23,7 +23,7 @@
 ** This copyright notice MUST APPEAR in all copies of the script!  
 **
 **********************************************************************/
-#include "../dialogs/actions/modify/qg_dlgmoverotate.h"
+#include "qg_dlgmoverotate.h"
 
 #include "rs_settings.h"
 #include "rs_math.h"

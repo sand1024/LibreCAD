@@ -1214,21 +1214,32 @@ void RS_Dimension::update() {
 
 LC_DimStyle* RS_Dimension::getGlobalDimStyle() const {
     const auto dimStyleName = getStyle();
-    const auto globalDimStyle = getGraphic()->getResolvedDimStyle(dimStyleName, rtti());
-    return globalDimStyle;
+    auto graphic = getGraphic();
+    if (graphic != nullptr) {
+        const auto globalDimStyle = graphic->getResolvedDimStyle(dimStyleName, rtti());
+        return globalDimStyle;
+    }
+    return nullptr;
 }
 
 LC_DimStyle* RS_Dimension::getEffectiveDimStyle() const {
     const auto dimStyleName = getStyle();
-    LC_DimStyle* result = getGraphic()->getEffectiveDimStyle(dimStyleName, rtti(), getDimStyleOverride());
-    return result;
+    auto graphic = getGraphic();
+    if (graphic != nullptr) {
+        auto styleOverride = getDimStyleOverride();
+        LC_DimStyle* result = graphic->getEffectiveDimStyle(dimStyleName, rtti(), styleOverride);
+        return result;
+    }
+    return nullptr;
 }
 
 // note:: copy should be deleted!
 LC_DimStyle* RS_Dimension::getEffectiveCachedDimStyle() {
     if (m_dimStyleTransient == nullptr) {
         const auto dimStyleName = getStyle();
-        m_dimStyleTransient = getGraphic()->getEffectiveDimStyleForEdit(dimStyleName, rtti(), getDimStyleOverride());
+        auto styleOverride = getDimStyleOverride();
+        auto graphic = getGraphic();
+        m_dimStyleTransient = graphic->getEffectiveDimStyleForEdit(dimStyleName, rtti(), styleOverride);
         // fixme - delete copy!
     }
     return m_dimStyleTransient;
@@ -1242,9 +1253,9 @@ LC_DimStyle* RS_Dimension::getEffectiveDimStyleOverride() {
     const auto style = getGraphic()->getEffectiveDimStyle(dimStyleName, rtti(), styleOverride);
     setDimStyleOverride(style);
     if (hasStyleOverride) {
-        delete style; // delete a copy of style that was created for override
+        delete style; // delete a copy of style that was created for override, as another copy is created and set in setDimStyleOverride
     }
-    styleOverride = getDimStyleOverride(); // can't reuse previous value, should get it again
+    styleOverride = getDimStyleOverride(); // can't reuse previous value as not it's merged with global style, should get it again
     return styleOverride;
 }
 
@@ -1262,7 +1273,9 @@ void RS_Dimension::resolveEffectiveDimStyleAndUpdateDim() {
             delete m_dimStyleTransient; // delete a copy of style that was created for override
         }
     }
-
+    // fixme - sand - review possiblity of more effective caching of resolved dim styles!
+    // todo - potentially, m_dimStyleTransient may be cached for a longer period of time - until style override will be edited or if
+    // editing of styles will be occured. However, it will be necessary to clear it properly on such editing events!
     m_dimStyleTransient = nullptr;
 }
 

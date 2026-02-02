@@ -116,11 +116,9 @@ QList<QStringList> LC_Tolerance::getFields() const {
     QList<QStringList> ret;
 
     QStringList lines = m_toleranceData.textCode.split("^J");
-    const qint64 qsizetype = lines.length();
-    for (qint64 k = 0; k < qsizetype; k++) {
+    const qsizetype len = lines.length();
+    for (qsizetype k = 0; k < len; k++) {
         QString line = lines[k];
-        //qDebug() << "line:" << line;
-
         QStringList lineFields = line.split("%%v");
         ret.append(lineFields);
     }

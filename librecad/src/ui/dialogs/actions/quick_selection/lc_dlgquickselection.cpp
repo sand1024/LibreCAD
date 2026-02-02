@@ -742,20 +742,21 @@ void LC_DlgQuickSelection::restoreFromSavedState(const LC_QuickSearchSelectionDi
         case LC_ActionContext::InteractiveInputInfo::POINT:
         case LC_ActionContext::InteractiveInputInfo::POINT_X:
         case LC_ActionContext::InteractiveInputInfo::POINT_Y: {
-            // here we may use only one component from picked coordinate, based on property type
-            const double xCoord = interactiveInputValue1;
-            const double yCoord = interactiveInputValue2;
+            if (m_propertyDescriptor != nullptr) { // we may got null if there is no saved state
+                // here we may use only one component from picked coordinate, based on property type
+                const double xCoord = interactiveInputValue1;
+                const double yCoord = interactiveInputValue2;
 
-            const auto wcs = RS_Vector(xCoord, yCoord);
-            const auto ucs = m_viewport->toUCS(wcs);
-
-            const auto lcPropertyMatchTypeEnum = m_propertyDescriptor->getPropertyType();
-            double coordToUse = ucs.getX();
-            if (lcPropertyMatchTypeEnum == ENTITY_PROPERTY_COORD_Y) {
-                coordToUse = ucs.getY();
+                const auto wcs = RS_Vector(xCoord, yCoord);
+                const auto ucs = m_viewport->toUCS(wcs);
+                const auto lcPropertyMatchTypeEnum = m_propertyDescriptor->getPropertyType();
+                double coordToUse = ucs.getX();
+                if (lcPropertyMatchTypeEnum == ENTITY_PROPERTY_COORD_Y) {
+                    coordToUse = ucs.getY();
+                }
+                const QString coordinateComponentString = LC_Convert::asString(coordToUse);
+                ui->leValue->setText(coordinateComponentString);
             }
-            const QString coordinateComponentString = LC_Convert::asString(coordToUse);
-            ui->leValue->setText(coordinateComponentString);
             break;
         }
         case LC_ActionContext::InteractiveInputInfo::NOTNEEDED:

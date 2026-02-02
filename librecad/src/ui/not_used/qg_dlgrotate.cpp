@@ -24,7 +24,7 @@
 **
 **********************************************************************/
 #include<cmath>
-#include "../dialogs/actions/modify/qg_dlgrotate.h"
+#include "qg_dlgrotate.h"
 
 #include "rs_settings.h"
 #include "rs_math.h"

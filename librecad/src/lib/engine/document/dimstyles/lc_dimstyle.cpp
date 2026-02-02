@@ -122,23 +122,28 @@ void LC_DimStyle::setModifyCheckMode(const ModificationAware::CheckFlagMode mode
 }
 
 void LC_DimStyle::ZerosSuppression::setLinearFlag(const LinearSuppressionPolicy dimzin, const bool set) {
-    set ? DIMZIN |= dimzin : DIMZIN &= ~dimzin;
+    const int newValue = set ? DIMZIN | dimzin : DIMZIN & ~dimzin;
+    setLinearRaw(newValue);
 }
 
 void LC_DimStyle::ZerosSuppression::setAngularFlag(const AngularSuppressionPolicy dimazin, const bool set) {
-    set ? DIMAZIN |= dimazin : DIMAZIN &= ~dimazin;
+    const int newValue = set ? DIMAZIN | dimazin : DIMAZIN & ~dimazin;
+    setAngularRaw(newValue);
 }
 
 void LC_DimStyle::ZerosSuppression::setToleranceFlag(const ToleranceSuppressionPolicy dimtzin, const bool set) {
-    set ? DIMTZIN |= dimtzin : DIMTZIN &= ~dimtzin;
+    const int newValue = set ? DIMTZIN | dimtzin : DIMTZIN & ~dimtzin;
+    setToleranceRaw(newValue);
 }
 
 void LC_DimStyle::ZerosSuppression::setAltLinearFlag(const LinearSuppressionPolicy dimaltz, const bool set) {
-    set ? DIMALTZ |= dimaltz : DIMALTZ &= ~dimaltz;
+    const int newValue = set ? DIMALTZ | dimaltz : DIMALTZ & ~dimaltz;
+    setAltLinearRaw(newValue);
 }
 
 void LC_DimStyle::ZerosSuppression::setAltToleranceFlag(const ToleranceSuppressionPolicy dimalttz, const bool set) {
-    set ? DIMALTTZ |= dimalttz : DIMALTTZ &= ~dimalttz;
+    int newValue = set ? DIMALTTZ | dimalttz : DIMALTTZ & ~dimalttz;
+    setAltToleranceRaw(newValue);
 }
 
 void LC_DimStyle::copyTo(LC_DimStyle* copy) const {
@@ -524,7 +529,7 @@ void LC_DimStyle::ExtensionLine::setSuppressFirstLine(const ExtensionLineAndArro
 }
 
 void LC_DimStyle::ExtensionLine::setSuppressFirst(const bool v) {
-    setSuppressFirstLine(!v ? SUPPRESS : DONT_SUPPRESS);
+    setSuppressFirstLine(v ? SUPPRESS : DONT_SUPPRESS);
 }
 
 void LC_DimStyle::ExtensionLine::setSuppressSecondLine(const ExtensionLineAndArrowSuppressionPolicy dimse2) {
@@ -533,7 +538,7 @@ void LC_DimStyle::ExtensionLine::setSuppressSecondLine(const ExtensionLineAndArr
 }
 
 void LC_DimStyle::ExtensionLine::setSuppressSecond(const bool v) {
-    setSuppressSecondLine(!v ? SUPPRESS : DONT_SUPPRESS);
+    setSuppressSecondLine(v ? SUPPRESS : DONT_SUPPRESS);
 }
 
 void LC_DimStyle::Arrowhead::fillByDefaults() {
@@ -1899,6 +1904,6 @@ void LC_DimStyle::ModificationAware::checkModified(const QString& newValue, cons
     }
 }
 
-void    LC_DimStyle::ModificationAware::copyFlags(ModificationAware* c) const {
+void LC_DimStyle::ModificationAware::copyFlags(ModificationAware* c) const {
     c->setFlags(getFlags());
 }

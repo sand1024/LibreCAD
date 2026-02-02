@@ -1941,13 +1941,13 @@ void LC_DlgDimStyleManager::fillToleranceTab(const LC_DimStyle* dimStyle) const 
     QG_DlgOptionsDrawing::updateLengthPrecisionCombobox(static_cast<RS2::LinearFormat>(ui->cbAlternateLinearFormat->currentIndex()), ui->cbTolAltPrecision); // fixme - connect for update
     ui->cbTolAltPrecision->setCurrentIndex(tolerance->decimalPlacesAltDim());
 
-    if (zerosSuppression->isAltToleranceSuppress(LC_DimStyle::ZerosSuppression::INCLUDE_ZERO_FEET_AND_ZERO_INCHES)) {
-        if (zerosSuppression->isAltToleranceSuppress(LC_DimStyle::ZerosSuppression::INCLUDE_ZERO_FEET_AND_SUPPRESS_ZERO_INCHES)) {
+    if (zerosSuppression->isAltToleranceSuppress(LC_DimStyle::ZerosSuppression::TOL_INCLUDE_ZERO_FEET_AND_ZERO_INCHES)) {
+        if (zerosSuppression->isAltToleranceSuppress(LC_DimStyle::ZerosSuppression::TOL_INCLUDE_ZERO_FEET_AND_SUPPRESS_ZERO_INCHES)) {
             feetSuppress = true;
         }
     } else {
         inchesSuppress = true;
-        if (!zerosSuppression->isAltToleranceSuppress(LC_DimStyle::ZerosSuppression::INCLUDE_ZERO_FEET_AND_SUPPRESS_ZERO_INCHES)) {
+        if (!zerosSuppression->isAltToleranceSuppress(LC_DimStyle::ZerosSuppression::TOL_INCLUDE_ZERO_FEET_AND_SUPPRESS_ZERO_INCHES)) {
             feetSuppress = true;
         }
     }
