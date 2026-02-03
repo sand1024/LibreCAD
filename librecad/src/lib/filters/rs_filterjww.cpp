@@ -101,7 +101,7 @@ bool RS_FilterJWW::fileImport(RS_Graphic& g, const QString& file, RS2::FormatTyp
     RS_DEBUG->print("RS_FilterJWW::fileImport");
     //RS_DEBUG->timestamp();
 
-    RS_DEBUG->print("JWW Filter: importing file '%s'...", QFile::encodeName(file));
+    RS_DEBUG->print("JWW Filter: importing file '%s'...", (const char*)QFile::encodeName(file));
 
     graphic = &g;
     currentContainer = graphic;
