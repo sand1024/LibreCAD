@@ -284,9 +284,9 @@ void QG_DimOptions::onAngleCircleTextChanged() {
     const auto leAngleCircle = ui->leAngleCircle;
     const QString val = leAngleCircle->text();
     double angle;
-    if (toDoubleAngleDegrees(val, angle, 45, false)){
+    if (toDoubleAngleDegrees(val, angle, 0, false)){
         const auto dimAction = static_cast<LC_ActionCircleDimBase *>(m_action);
-        dimAction->setUcsAngleDegrees(RS_Math::deg2rad(angle)   );
+        dimAction->setUcsAngleDegrees(angle);
         leAngleCircle->blockSignals(true);
         leAngleCircle->setText(fromDouble(angle));
         leAngleCircle->blockSignals(false);
