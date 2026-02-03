@@ -22,7 +22,7 @@
 #include <QCoreApplication>
 #include <QIODevice>
 
-#include "LC_Property.h"
+#include "lc_property.h"
 #include "lc_property_utils.h"
 
 class ViewAttributesProvider {
