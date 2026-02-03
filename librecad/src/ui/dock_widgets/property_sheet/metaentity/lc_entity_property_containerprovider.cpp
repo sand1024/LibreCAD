@@ -192,7 +192,7 @@ void LC_EntityPropertyContainerProvider::refillPropertyContainer([[maybe_unused]
     }
 }
 
-void LC_EntityPropertyContainerProvider::setGraphicView(RS_GraphicView* gview) {
+void LC_EntityPropertyContainerProvider::setGraphicView([[maybe_unused]]RS_GraphicView* gview) {
 }
 
 void LC_EntityPropertyContainerProvider::clearCachedDimStyles() {
