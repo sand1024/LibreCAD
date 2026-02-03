@@ -25,9 +25,17 @@
 
 #include <QLineEdit>
 
-#include "lc_iteminfo.h"
-#include "lc_property_qstring_lineedit_view.h"
 #include "lc_property_qstring_list_combobox_view.h"
+
+namespace{
+// fixme - to namespace or class
+static QString toSingleLine(const QString& str) {
+    const int n = str.indexOf('\n');
+    const int r = str.indexOf('\r');
+    const int len = n < 0 ? r : (r < 0 ? n : qMin(n, r));
+    return QString(str.data(), len);
+}
+}
 
 void LC_PropertyQStringListComboBoxViewHandler::connectCombobox(QComboBox& editor) {
     connect(&editor, &QComboBox::currentTextChanged, this, &LC_PropertyQStringListComboBoxViewHandler::onValueChanged);

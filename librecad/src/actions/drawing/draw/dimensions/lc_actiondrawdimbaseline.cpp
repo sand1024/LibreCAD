@@ -25,10 +25,10 @@
 #include "qg_dimoptions.h"
 #include "rs_constructionline.h"
 #include "rs_dimaligned.h"
-#include "rs_polyline.h"
+
 #include "rs_preview.h"
 
-class RS_Polyline;
+
 // some functions are duplicated with DimLiner action, however, that's intentional as later we can support angular dimensions in additional to linear ones
 LC_ActionDrawDimBaseline::LC_ActionDrawDimBaseline(LC_ActionContext *actionContext, const RS2::ActionType type)
        :LC_ActionDimLinearBase(type == RS2::ActionDimBaseline? "Draw Dim Baseline": "Draw Dim Continue", actionContext, RS2::EntityUnknown, type),

@@ -72,7 +72,7 @@ namespace LC_PropertyViewUtils {
 
     template <typename T, typename std::enable_if<std::is_integral<T>::value>::type * = nullptr>
     void fixMinMaxVariant(QVariant& minv, QVariant& maxv) {
-        if (minv.type() == QVariant::ULongLong) {
+        if (minv.typeId() == QMetaType::Type::ULongLong) {
             quint64 min = minv.toULongLong();
             if (min > std::numeric_limits<T>::max()) {
                 minv = QVariant();
@@ -92,7 +92,7 @@ namespace LC_PropertyViewUtils {
             }
         }
 
-        if (maxv.type() == QVariant::ULongLong) {
+        if (maxv.typeId() == QMetaType::Type::ULongLong) {
             quint64 max = maxv.toULongLong();
             if (max > std::numeric_limits<T>::max()) {
                 maxv = QVariant();

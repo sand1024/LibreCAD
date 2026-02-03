@@ -377,7 +377,7 @@ bool RS_Entity::doIsPointOnEntity(const RS_Vector& coord, const double tolerance
     return dist <= std::abs(tolerance);
 }
 
-double RS_Entity::doGetDistanceToPoint(const RS_Vector& coord, RS_Entity** entity, RS2::ResolveLevel level, double solidDist) const {
+double RS_Entity::doGetDistanceToPoint(const RS_Vector& coord, RS_Entity** entity, [[maybe_unused]]RS2::ResolveLevel level, [[maybe_unused]]double solidDist) const {
     if (entity != nullptr) {
         *entity = const_cast<RS_Entity*>(this);
     }

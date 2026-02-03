@@ -429,8 +429,8 @@ void RS_Dimension::createHorizontalTextDimensionLine(const RS_Vector& p1, const 
     double dimtsz = getTickSize() * dimscale;
     LC_DimArrowRegistry dimArrowRegistry;
     auto arrowStyle = m_dimStyleTransient->arrowhead();
-    bool firstArrowIsObliqueOrArch = false;
-    bool secondArrowIsObliqueOrArch = false;
+    [[maybe_unused]]bool firstArrowIsObliqueOrArch = false;
+    [[maybe_unused]]bool secondArrowIsObliqueOrArch = false;
 
     if (dimtsz < 0.01) {
         //display arrow

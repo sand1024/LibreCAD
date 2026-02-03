@@ -34,13 +34,22 @@ namespace Ui {
     class LC_MultilineTextEditDialog;
 }
 
+namespace{
+    // fixme - to namespace or class
+    static QString toSingleLine(const QString& str) {
+        const int n = str.indexOf('\n');
+        const int r = str.indexOf('\r');
+        const int len = n < 0 ? r : (r < 0 ? n : qMin(n, r));
+        return QString(str.data(), len);
+    }
+}
+
 const QByteArray LC_PropertyQStringLineEditView::VIEW_NAME = LC_PropertyViewUtils::getViewNameLineEdit();
 const QByteArray LC_PropertyQStringLineEditView::ATTR_MULTILINE_EDIT = QByteArrayLiteral("multilineEdit");
 const QByteArray LC_PropertyQStringLineEditView::ATTR_MAX_LENGTH = QByteArrayLiteral("maxLength");
 const QByteArray LC_PropertyQStringLineEditView::ATTR_PLACEHOLDER = QByteArrayLiteral("placeholder");
 
-class
-    LC_PropertyQStringMultilineEditBttnHandler : public LC_PropertyEditorButtonHandler<LC_PropertyQString, LC_PropertyLineEditWithButton> {
+class LC_PropertyQStringMultilineEditBttnHandler : public LC_PropertyEditorButtonHandler<LC_PropertyQString, LC_PropertyLineEditWithButton> {
 public:
     LC_PropertyQStringMultilineEditBttnHandler(LC_PropertyViewEditable* view, LC_PropertyLineEditWithButton& editor,
                                                const QString& placeholder)

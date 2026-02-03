@@ -38,7 +38,7 @@ public:
     virtual ~LC_XMLWriterInterface() = default;
 };
 
-inline void LC_XMLWriterInterface::addElement(const std::string& name, const std::string& namespaceUri) {
+inline void LC_XMLWriterInterface::addElement([[maybe_unused]]const std::string& name, [[maybe_unused]]const std::string& namespaceUri) {
 }
 
 #endif

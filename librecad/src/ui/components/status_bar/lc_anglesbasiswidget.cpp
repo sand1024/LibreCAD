@@ -60,12 +60,12 @@ void LC_AnglesBasisWidget::update(const RS_Graphic *graphic) {
 }
 
 void LC_AnglesBasisWidget::setGraphicView(RS_GraphicView* gv) {
-    /*if (gv != nullptr) {
-        RS_Graphic *graphic = gv->getGraphic();
+    if (gv != nullptr) {
+        const RS_Graphic *graphic = gv->getGraphic();
         if (graphic != nullptr) {
             update(graphic);
         }
-    }*/
+    }
 }
 
 void LC_AnglesBasisWidget::update(const QString& angle, const bool counterclockwise) {

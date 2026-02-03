@@ -26,23 +26,24 @@
 
 #include "lc_propertymatchtypedescriptor.h"
 #include "rs.h"
+#include "rs_color.h"
 
 class RS_Layer;
 class LC_DimStyle;
 class RS_Color;
 
 struct LC_PropertyMatcherTypes {
-    using TCOLOR = typename LC_TypedPropertyMatchTypeDescriptor<RS_Color>;
-    using TLAYER = typename LC_TypedPropertyMatchTypeDescriptor<RS_Layer*>;
-    using TLINE_WIDTH = typename LC_TypedPropertyMatchTypeDescriptor<RS2::LineWidth>;
-    using TLINE_TYPE = typename LC_TypedPropertyMatchTypeDescriptor<RS2::LineType>;
-    using TDOUBLE = typename LC_TypedPropertyMatchTypeDescriptor<double>;
-    using TDOUBLE_QLIST = typename LC_ComparingPropertyMatchTypeDescriptor<QList<double>, double>;
-    using TDOUBLE_IN_VECT = typename LC_ComparingPropertyMatchTypeDescriptor<std::vector<double>, double>;
-    using TINT = typename  LC_TypedPropertyMatchTypeDescriptor<int>;
-    using TBOOL = typename LC_TypedPropertyMatchTypeDescriptor<bool>;
-    using TSTRING = typename  LC_TypedPropertyMatchTypeDescriptor<QString>;
-    using TDIMSTYLE = typename  LC_TypedPropertyMatchTypeDescriptor<LC_DimStyle*>;
+    using TCOLOR = LC_TypedPropertyMatchTypeDescriptor<RS_Color>;
+    using TLAYER = LC_TypedPropertyMatchTypeDescriptor<RS_Layer*>;
+    using TLINE_WIDTH = LC_TypedPropertyMatchTypeDescriptor<RS2::LineWidth>;
+    using TLINE_TYPE = LC_TypedPropertyMatchTypeDescriptor<RS2::LineType>;
+    using TDOUBLE = LC_TypedPropertyMatchTypeDescriptor<double>;
+    using TDOUBLE_QLIST = LC_ComparingPropertyMatchTypeDescriptor<QList<double>, double>;
+    using TDOUBLE_IN_VECT =  LC_ComparingPropertyMatchTypeDescriptor<std::vector<double>, double>;
+    using TINT =   LC_TypedPropertyMatchTypeDescriptor<int>;
+    using TBOOL =  LC_TypedPropertyMatchTypeDescriptor<bool>;
+    using TSTRING =   LC_TypedPropertyMatchTypeDescriptor<QString>;
+    using TDIMSTYLE =   LC_TypedPropertyMatchTypeDescriptor<LC_DimStyle*>;
 
     static const TCOLOR COLOR;
     static const TCOLOR COLOR_RESOLVED;

@@ -45,7 +45,7 @@ QWidget* LC_PropertyQStringListArrowsComboboxView::doCreateValueEditor(QWidget* 
     return editor;
 }
 
-void LC_PropertyQStringListArrowsComboboxView::doDrawValue(LC_PropertyPaintContext& ctx, QStylePainter& painter, const QRect& rect) {
+void LC_PropertyQStringListArrowsComboboxView::doDrawValue([[maybe_unused]]LC_PropertyPaintContext& ctx, QStylePainter& painter, const QRect& rect) {
     if (this->isMultiValue()) {
         LC_PropertyViewUtils::drawElidedText(painter, LC_Property::getMultiValuePlaceholder(), rect, painter.style());
         return;

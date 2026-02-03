@@ -1240,6 +1240,7 @@ RS_Vector RS_Ellipse::getNearestOrthTan(const RS_Vector& coord, const RS_Line& n
                 break;
             }
             // fall-through
+            [[fallthrough]];
         }
         default: {
             vp = sol[0];

@@ -75,7 +75,7 @@ LC_PropertyInt* LC_IndexedPropertiesProviderBase::createIndexAndPointProperties(
             return m_index;
         }
 
-        void doSetValue(int newValue, LC_PropertyChangeReason reason) override {
+        void doSetValue(int newValue, [[maybe_unused]]LC_PropertyChangeReason reason) override {
             if (newValue > m_maxValue) {
                 newValue = 1;
             }

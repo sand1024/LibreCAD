@@ -23,6 +23,7 @@
 #define LC_PROPERTYEVENTCONTEXT_H
 
 #include <QEvent>
+#include <QPoint>
 
 class LC_PropertiesSheet;
 struct LC_PropertyViewPart;

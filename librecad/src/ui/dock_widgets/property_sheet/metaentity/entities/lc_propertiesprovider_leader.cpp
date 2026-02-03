@@ -23,7 +23,7 @@
 
 #include "lc_propertiesprovider_leader.h"
 
-void LC_PropertiesProviderLeader::doFillEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
+void LC_PropertiesProviderLeader::doFillEntitySpecificProperties([[maybe_unused]]LC_PropertyContainer* container,[[maybe_unused]] const QList<RS_Entity*>& list) {
     auto contGeometry = createGeometrySection(container);
 
     // fixme - prop - COMPLETE!

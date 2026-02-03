@@ -23,6 +23,6 @@
 
 #include "lc_propertiesprovider_tolerance.h"
 
-void LC_PropertiesProviderTolerance::doFillEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
+void LC_PropertiesProviderTolerance::doFillEntitySpecificProperties([[maybe_unused]]LC_PropertyContainer* container, [[maybe_unused]]const QList<RS_Entity*>& list) {
     // fixme - complete as tolerance will be ready
 }

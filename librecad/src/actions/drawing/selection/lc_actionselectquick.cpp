@@ -24,7 +24,6 @@
 #include "lc_actionselectquick.h"
 
 #include <QTimer>
-#include <filesystem>
 
 #include "lc_dlgquickselection.h"
 #include "qc_applicationwindow.h"

@@ -48,8 +48,8 @@ public:
         return m_entity;
     }
 
-    bool isValueEqualTo(LC_PropertyAtomic* prop) override {return false;}
-    void setValueFrom(LC_PropertyAtomic* prop, LC_PropertyChangeReason reason) override {}
+    bool isValueEqualTo([[maybe_unused]]LC_PropertyAtomic* prop) override {return false;}
+    void setValueFrom([[maybe_unused]]LC_PropertyAtomic* prop, [[maybe_unused]]LC_PropertyChangeReason reason) override {}
 
 signals:
     void click(const LC_PropertyAction* property);

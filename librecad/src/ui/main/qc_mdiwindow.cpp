@@ -93,7 +93,7 @@ QC_MDIWindow::~QC_MDIWindow() {
     }
 }
 
-void QC_MDIWindow::setupGraphicView(const QWidget* parent, const bool printPreview, LC_ActionContext* actionContext) {
+void QC_MDIWindow::setupGraphicView([[maybe_unused]]const QWidget* parent, const bool printPreview, LC_ActionContext* actionContext) {
     if (printPreview) {
         m_graphicView = new LC_PrintPreviewView(this, m_document, actionContext);
         m_graphicView->initView();

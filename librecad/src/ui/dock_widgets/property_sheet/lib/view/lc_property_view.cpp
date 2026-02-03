@@ -95,7 +95,7 @@ void LC_PropertyView::applySubPropertyInfo(const LC_PropertyViewDescriptor& attr
 }
 
 void LC_PropertyView::applySubPropertyInfos(const LC_PropertyViewDescriptor& info, const std::vector<SubPropertyInfo>& subInfos) {
-    for (const auto subInfo : subInfos) {
+    for (const auto &subInfo : subInfos) {
         applySubPropertyInfo(info, subInfo);
     }
 }

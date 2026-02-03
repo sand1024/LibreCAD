@@ -41,7 +41,7 @@ struct RS_LineTypePattern {
 
     std::vector<double> pattern;
     double totalLength = 0.;
-    size_t num = 0;
+    std::size_t num = 0;
 
     // line type to line pattern conversion
     static const RS_LineTypePattern* getPattern(RS2::LineType lineType);

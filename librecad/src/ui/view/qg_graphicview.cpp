@@ -366,7 +366,7 @@ QG_GraphicView::~QG_GraphicView() {
     try {
         // LC_ERR << "QG_GraphicView destructor";
         cleanUp();
-        LC_ERR << "QG_GraphicView destructor 1";
+        // LC_ERR << "QG_GraphicView destructor 1";
     }
     catch (...) {
         LC_ERR << __func__ << "(): received exception";

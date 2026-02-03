@@ -1732,7 +1732,6 @@ set(SHARED_SOURCES
         librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.h
         librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp
         librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_multiple.h
-        librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_multiple.cpp
         librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.h
         librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp
         librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.h

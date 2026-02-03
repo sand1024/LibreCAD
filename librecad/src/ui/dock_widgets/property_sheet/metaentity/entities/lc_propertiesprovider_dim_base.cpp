@@ -24,7 +24,6 @@
 #include "lc_propertiesprovider_dim_base.h"
 
 #include "lc_dlgdimstylemanager.h"
-#include "lc_iteminfo.h"
 #include "lc_property_action.h"
 #include "lc_property_double_spinbox_view.h"
 #include "lc_property_linetype.h"

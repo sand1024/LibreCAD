@@ -539,7 +539,7 @@ public:
     virtual QString realToStr(qreal num, int units = 0, int prec = 0) = 0;
 };
 
-inline void Document_Interface::addArc(QPointF* start, qreal radius, qreal a1, qreal a2) {
+inline void Document_Interface::addArc([[maybe_unused]]QPointF* start, [[maybe_unused]]qreal radius,[[maybe_unused]]qreal a1, [[maybe_unused]]qreal a2) {
 }
 
 #endif

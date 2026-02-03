@@ -26,8 +26,6 @@
 
 #include "rs_math.h"
 
-#define NOMINMAX
-
 #include <QDebug>
 #include <QRegularExpressionMatch>
 #include <QString>
