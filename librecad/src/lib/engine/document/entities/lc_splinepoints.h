@@ -69,8 +69,7 @@ std::ostream& operator <<(std::ostream& os, const LC_SplinePointsData& ld);
  *
  * @author Pavel Krejcir
  */
-class LC_SplinePoints : public LC_CachedLengthEntity // RS_EntityContainer
-{
+class LC_SplinePoints : public LC_CachedLengthEntity{
 
 public:
     LC_SplinePoints(RS_EntityContainer* parent, LC_SplinePointsData d);

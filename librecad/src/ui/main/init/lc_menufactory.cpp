@@ -28,6 +28,7 @@
 #include <QMenuBar>
 #include <QMouseEvent>
 #include <QToolBar>
+#include <QToolTip>
 #include <QUrl>
 
 #include "lc_actiongroupmanager.h"
@@ -293,17 +294,20 @@ void LC_MenuFactory::createFileMenu(QMenuBar* menuBar, QList<QMenu*>& topMenuMen
     m_menuFile = menu(tr("&File"), "file", menuBar, {
                           "FileNew",
                           "FileNewTemplate",
-                          "FileOpen",
+                          "FileOpen"
+                      });
+
+    m_menuRecentFiles = new QMenu(tr("Recent Files"), m_menuFile);
+
+    m_menuFile->addMenu(m_menuRecentFiles);
+
+    addActions(m_menuFile, {
                           "",
                           "FileSave",
                           "FileSaveAs",
                           "FileSaveAll",
                           ""
                       });
-
-    m_menuRecentFiles = new QMenu(tr("Recent Files"), m_menuFile);
-
-    m_menuFile->addMenu(m_menuRecentFiles);
 
     subMenu(m_menuFile, tr("Import"), "import", ":/icons/import.lci", {
                 "DrawImage",
@@ -409,6 +413,7 @@ void LC_MenuFactory::createViewMenu(QMenuBar* menuBar, QList<QMenu*>& topMenuMen
 
 void LC_MenuFactory::createPluginsMenu(QMenuBar* menuBar, QList<QMenu*>& topMenuMenus) {
     m_menuPlugins = menu(tr("Pl&ugins"), "plugins", menuBar);
+    m_menuPlugins ->setToolTipsVisible(true);
     topMenuMenus << m_menuPlugins;
 }
 
@@ -1054,7 +1059,8 @@ QMenu* LC_MenuFactory::createGraphicViewDefaultPopupMenu(QG_GraphicView* graphic
                        "DrawSpline",
                        "DrawSplinePoints",
                        "DrawParabola4Points",
-                       "DrawParabolaFD"
+                       "DrawParabolaFD",
+                       "DrawHyperbolaFP"
                    });
 
         const auto ellipseGroup = m_actionGroupManager->getActionGroup("ellipse");
@@ -1839,12 +1845,10 @@ void LC_MenuFactory::createGVMenuEntitySpecific(QMenu* contextMenu, QG_GraphicVi
                 break;
             }
             case RS2::EntityHyperbola: {
-                // addAction(contextMenu, "DrawArcTangential");
                 createGVMenuModifyGeneral(contextMenu, graphicView, entity, pos, actionContext);
                 break;
             }
             case RS2::EntityConstructionLine: {
-                // addAction(contextMenu, "DrawArcTangential");
                 createGVMenuModifyGeneral(contextMenu, graphicView, entity, pos, actionContext);
                 break;
             }

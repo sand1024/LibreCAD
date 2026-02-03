@@ -1,282 +1,310 @@
-/****************************************************************************
-**
-** This file is part of the LibreCAD project, a 2D CAD program
-**
-** Copyright (C) 2011-2012 Dongxu Li (dongxuli2011@gmail.com)
+// File: lc_hyperbola.h
 
-Copyright (C) 2012 Dongxu Li (dongxuli2011@gmail.com)
-
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-
-**********************************************************************/
+/*
+ * ********************************************************************************
+ * This file is part of the LibreCAD project, a 2D CAD program
+ *
+ * Copyright (C) 2025 LibreCAD.org
+ * Copyright (C) 2025 Dongxu Li (github.com/dxli)
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
+ * USA.
+ * ********************************************************************************
+ */
 
 #ifndef LC_HYPERBOLA_H
 #define LC_HYPERBOLA_H
 
-#include "rs_atomicentity.h"
+#include "lc_cachedlengthentity.h"
 
-class RS_Circle;
 class LC_Quadratic;
 
-/**
- * Holds the data that defines one branch of a hyperbola.
- * majorP is the vector from center to the vertex
- * ratio is the ratio between semi-major and semi-minor axis
+namespace lc {
+namespace geo {
+class Area;
+}
+}
 
+using LC_Rect = lc::geo::Area;
+
+/**
+ * Data structure for hyperbola (one or both branches)
  */
 struct LC_HyperbolaData {
-    LC_HyperbolaData() = default;
-    LC_HyperbolaData(const RS_Vector& center, const RS_Vector& majorP, double ratio, double angle1, double angle2, bool reversed);
-    /** create data based on foci and a point on hyperbola */
-    LC_HyperbolaData(const RS_Vector& focus0, const RS_Vector& focus1, const RS_Vector& point);
+  LC_HyperbolaData() = default;
+  LC_HyperbolaData(const RS_Vector &center, const RS_Vector &majorP,
+                   double ratio, double angle1 = 0.0, double angle2 = 0.0,
+                   bool reversed = false);
 
-    //! Hyperbola center
-    RS_Vector center{};
-    //! Endpoint of major axis relative to center.
-    RS_Vector majorP{};
-    //! Ratio of minor axis to major axis.
-    double ratio = 0.;
-    //! Start angle
-    double angle1 = 0.;
-    //! End angle
-    double angle2 = 0.;
-    //! Reversed (cw) flag
-    bool reversed = false;
+  LC_HyperbolaData(const RS_Vector &focus0, const RS_Vector &focus1,
+                   const RS_Vector &point);
+
+  RS_Vector getFocus1() const;
+  RS_Vector getFocus2() const;
+  bool isValid() const;
+
+  RS_Vector center{};
+  RS_Vector majorP{};
+  double ratio = 0.0; // b/a
+  double angle1 = 0.0;
+  double angle2 = 0.0;
+  bool reversed = false; // true = left branch
 };
 
-std::ostream& operator <<(std::ostream& os, const LC_HyperbolaData& ed);
+std::ostream &operator<<(std::ostream &os, const LC_HyperbolaData &d);
 
 /**
- * Class for an hyperbola entity.
+ * @brief Hyperbola entity – full analytical support
  *
+ * Represents a hyperbola (single branch or limited arc) with exact mathematical
+ * operations. Supports:
+ * - Construction from center/major axis/ratio or foci + point
+ * - Conversion from general quadratic form (via LC_Quadratic)
+ * - Exact point/tangent evaluation using hyperbolic functions (cosh/sinh)
+ * - Precise intersection, offset, and geometric queries
+ * - Export as standard rational quadratic SPLINE (exact, no approximation)
+ *
+ * Stored as a single branch aligned with positive major axis direction.
  * @author Dongxu Li
  */
-class LC_Hyperbola : public RS_AtomicEntity {
+class LC_Hyperbola : public LC_CachedLengthEntity {
 public:
-    LC_Hyperbola() = default;
-    LC_Hyperbola(RS_EntityContainer* parent, const LC_HyperbolaData& d);
+  LC_Hyperbola() = default;
+  LC_Hyperbola(RS_EntityContainer *parent, const LC_HyperbolaData &d);
+  LC_Hyperbola(const RS_Vector &focus0, const RS_Vector &focus1,
+               const RS_Vector &point);
+  LC_Hyperbola(RS_EntityContainer *parent, const std::vector<double> &coeffs);
+  LC_Hyperbola(RS_EntityContainer *parent, const LC_Quadratic &q);
 
-    /** create data based on foci and a point on hyperbola */
-    bool createFromQuadratic(const LC_Quadratic& q);
-    bool createFromQuadratic(const std::vector<double>& q);
+  bool createFromQuadratic(const LC_Quadratic &q);
+  bool createFromQuadratic(const std::vector<double> &coeffs);
 
-    RS_Entity* clone() const override;
+  RS_Entity *clone() const override;
 
-    /**	@return RS2::EntityHyperbola */
-    RS2::EntityType rtti() const override {
-        return RS2::EntityHyperbola;
-    }
+  RS2::EntityType rtti() const override { return RS2::EntityHyperbola; }
+  bool isValid() const { return m_bValid; }
 
-    bool isValid() const {
-        return m_bValid;
-    }
+  LC_HyperbolaData &getData() { return data; }
+  const LC_HyperbolaData &getData() const { return data; }
 
-    //    double getLength() const;
+  // Core geometric accessors
+  RS_VectorSolutions getFoci() const;
+  RS_Vector getFocus1() const { return data.getFocus1(); }
+  RS_Vector getFocus2() const { return data.getFocus2(); }
 
-    //    /**
-    //    //Hyperbola must have ratio<1, and not reversed
-    //    *@ x1, hyperbola angle
-    //    *@ x2, hyperbola angle
-    //    //@return the arc length between hyperbola angle x1, x2
-    //    **/
-    //    double getHyperbolaLength(double a1, double a2) const;
-    //    double getHyperbolaLength(double a2) const;
+  double getMajorRadius() const { return data.majorP.magnitude(); }
+  double getMinorRadius() const { return getMajorRadius() * data.ratio; }
+  double getRatio() const { return data.ratio; }
+  double getEccentricity() const {
+    return std::sqrt(1.0 + data.ratio * data.ratio);
+  }
 
-    /** @return Copy of data that defines the hyperbola. **/
-    LC_HyperbolaData getData() const {
-        return data;
-    }
+  RS_Vector getPrimaryVertex() const;
 
-    RS_VectorSolutions getFoci() const;
-    RS_VectorSolutions getRefPoints() const override;
+  double getAngle1() const { return data.angle1; }
+  double getAngle2() const { return data.angle2; }
 
-    /**
-     * @retval true if the arc is reversed (clockwise),
-     * @retval false otherwise
-     */
-    bool isReversed() const {
-        return data.reversed;
-    }
+  // Property editing support
+  void setFocus1(const RS_Vector &f1);
+  void setFocus2(const RS_Vector &f2);
+  void setPointOnCurve(const RS_Vector &p);
+  void setRatio(double r);
+  void setMinorRadius(double b);
+  void setAngle1(double a1) { data.angle1 = a1; }
+  void setAngle2(double a2) { data.angle2 = a2; }
 
-    /** sets the reversed status. */
-    void setReversed(const bool r) {
-        data.reversed = r;
-    }
+  RS_VectorSolutions getRefPoints() const override;
 
-    /** @return The rotation angle of this hyperbola */
-    double getAngle() const {
-        return data.majorP.angle();
-    }
+  RS_Vector getStartpoint() const override;
+  RS_Vector getEndpoint() const override;
+  RS_Vector getMiddlePoint() const override;
 
-    /** @return The start angle of this arc */
-    double getAngle1() const {
-        return data.angle1;
-    }
+  double getLength() const override;
+  void updateLength() override;
 
-    /** Sets new start angle. */
-    void setAngle1(const double a1) {
-        data.angle1 = a1;
-    }
+  bool isEdge() const override {
+    return true;
+  }
 
-    /** @return The end angle of this arc */
-    double getAngle2() const {
-        return data.angle2;
-    }
 
-    /** Sets new end angle. */
-    void setAngle2(const double a2) {
-        data.angle2 = a2;
-    }
+  double getDirection1() const override;
+  double getDirection2() const override;
+  /**
+   * @brief getTrimPoint
+   * Determines which end of the hyperbola arc (start or end) is closer to the
+   * given trim point. Used during trim/extend operations to decide which
+   * endpoint should be moved.
+   *    * @param trimCoord  Current mouse/coordinate position (selection point)
+   * @param trimPoint  The point on the entity closest to trimCoord
+   * (intersection or projection)
+   * @return RS2::EndingStart if closer to start point, RS2::EndingEnd if closer
+   * to end point
+   */
+  RS2::Ending getTrimPoint(const RS_Vector &trimCoord,
+                           const RS_Vector &trimPoint) override;
 
-    /** @return The center point (x) of this arc */
-    RS_Vector getCenter() const override {
-        return data.center;
-    }
+  /**
+   * @brief prepareTrim
+   * After a trim operation finds intersection points (trimSol), this selects
+   * the appropriate new endpoint for the hyperbola arc.
+   *    * Behavior:
+   * - If multiple solutions exist, chooses the one closest to the original
+   * trimPoint.
+   * - If only one solution, uses it.
+   * - Preserves the other endpoint and updates only the trimmed side.
+   *    * @param trimCoord  Mouse position during trim
+   * @param trimSol    Solution points from intersection calculation
+   * @return The new position for the trimmed endpoint
+   */
+  RS_Vector prepareTrim(const RS_Vector &trimCoord,
+                        const RS_VectorSolutions &trimSol) override;
 
-    /** Sets new center. */
-    void setCenter(const RS_Vector& c) {
-        data.center = c;
-    }
+  RS_Vector getTangentDirectionParam(double parameter) const;
+  RS_Vector getTangentDirection(const RS_Vector &point) const override;
+  RS_VectorSolutions getTangentPoint(const RS_Vector &point) const override;
 
-    /** @return The endpoint of the major axis (relative to center). */
-    RS_Vector getMajorP() const {
-        return data.majorP;
-    }
+  RS_Vector getNearestOrthTan(const RS_Vector &coord, const RS_Line &normal,
+                              bool onEntity = false) const override;
 
-    /** Sets new major point (relative to center). */
-    void setMajorP(const RS_Vector& p) {
-        data.majorP = p;
-    }
+  bool isReversed() const { return data.reversed; }
+  void setReversed(bool r) { data.reversed = r; }
 
-    /** @return The ratio of minor to major axis */
-    double getRatio() const {
-        return data.ratio;
-    }
+  double getAngle() const { return data.majorP.angle(); }
 
-    /** Sets new ratio. */
-    void setRatio(const double r) {
-        data.ratio = r;
-    }
+  RS_Vector getCenter() const override { return data.center; }
+  void setCenter(const RS_Vector &c) { data.center = c; }
 
-    /** @return The major radius of this hyperbola. Same as getRadius() */
-    double getMajorRadius() const {
-        return data.majorP.magnitude();
-    }
+  RS_Vector getMajorP() const { return data.majorP; }
+  void setMajorP(const RS_Vector &p) { data.majorP = p; }
 
-    /** @return The minor radius of this hyperbola */
-    double getMinorRadius() const {
-        return data.majorP.magnitude() * data.ratio;
-    }
+  void calculateBorders() override;
 
-    void calculateBorders() override {
-    }
+  void moveRef(const RS_Vector &ref, const RS_Vector &offset) override;
+  void move(const RS_Vector &offset) override;
+  void rotate(const RS_Vector &center, double angle) override;
+  void rotate(const RS_Vector &center, const RS_Vector &angleVector) override;
+  void scale(const RS_Vector &center, const RS_Vector &factor) override;
+  void mirror(const RS_Vector &axisPoint1,
+              const RS_Vector &axisPoint2) override;
 
-    RS_Vector getMiddlePoint() const override {
-        return RS_Vector(false);
-    }
+  void draw(RS_Painter *painter) override;
 
-    RS_Vector doGetNearestEndpoint(const RS_Vector& /*coord*/, double*/* dist = NULL*/) const override {
-        return RS_Vector(false);
-    }
+  LC_Quadratic getQuadratic() const override;
 
-    RS_Vector doGetNearestPointOnEntity(const RS_Vector& /*coord*/, bool /*onEntity = true*/, double*/* dist = NULL*/,
-                                      RS_Entity**/* entity=NULL*/) const override {
-        return RS_Vector(false);
-    }
+  double getParamFromPoint(const RS_Vector &p,
+                           bool branchReversed = false) const;
+  RS_Vector getPoint(double phi, bool useReversed) const;
+  void setPrimaryVertex(const RS_Vector &v);
 
-    RS_Vector doGetNearestCenter(const RS_Vector& /*coord*/, double*/* dist = NULL*/) const override {
-        return RS_Vector(false);
-    }
+  /**
+   * @brief dualLineTangentPoint
+   * Returns the point of tangency on the hyperbola for the tangent line
+   * that is orthogonal to the line defined by the given point (pole-polar
+   * duality).
+   *    * This implements the dual conic correspondence:
+   * For a point (line) outside the hyperbola, there exists a unique polar line
+   * that is tangent to the hyperbola at this returned point.
+   *    * Used primarily for orth-tangent snapping (getNearestOrthTan) when a
+   * normal line is provided.
+   *    * @param line  A point defining the direction of the normal line
+   * (through origin or arbitrary)
+   * @return The point of tangency on the hyperbola, or invalid vector if no
+   * real tangent exists
+   */
+  RS_Vector dualLineTangentPoint(const RS_Vector &line) const override;
 
-    RS_Vector doGetNearestMiddle(const RS_Vector& /*coord*/, double*/* dist = NULL*/, int /* middlePoints = 1*/) const override {
-        return RS_Vector(false);
-    }
+  /**
+   * @brief moveStartpoint
+   * Moves the start point of the hyperbola arc to a new position.
+   * The new position is projected onto the hyperbola curve to ensure it lies
+   * exactly on the entity. The angular span (arc extent) is preserved, so the
+   * endpoint moves accordingly to maintain the same parametric length.
+   *
+   * For unbounded (full-branch) hyperbolas, the operation is ignored because no
+   * defined start point exists.
+   *
+   * @param pos Desired new position for the start point
+   */
+  void moveStartpoint(const RS_Vector &pos) override;
 
-    RS_Vector doGetNearestDist(double /*distance*/, const RS_Vector&/* coord*/, double*/* dist = NULL*/) const override {
-        return RS_Vector(false);
-    }
+  /**
+   * @brief moveEndpoint
+   * Moves the end point of the hyperbola arc to a new position.
+   * The new position is projected onto the hyperbola curve.
+   * The original start point is kept fixed, and only the end angle is updated.
+   *
+   * For unbounded hyperbolas, the operation is ignored.
+   *
+   * @param pos Desired new position for the end point
+   */
+  void moveEndpoint(const RS_Vector &pos) override;
 
-    RS_Vector getNearestOrthTan(const RS_Vector& /*coord*/, const RS_Line& /*normal*/, bool /*onEntity = false*/) const override {
-        return RS_Vector(false);
-    }
+  /**
+   * @brief areaLineIntegral
+   * Computes the line integral ∮ x dy along the hyperbola arc.
+   *
+   * This is used for closed contour area calculation via Green's theorem:
+   *     Area = ½ (∮ x dy - ∮ y dx)
+   *
+   * The integral is evaluated analytically using the hyperbolic
+   * parametrization. Returns 0 for unbounded hyperbolas (where the integral
+   * diverges) or invalid entities.
+   *
+   * @return The value of ∮ x dy along the arc (twice the signed area
+   * contribution)
+   */
+  double areaLineIntegral() const override;
+  double getArcLength(double phi1, double phi2) const;
 
-    double doGetDistanceToPoint(const RS_Vector& /*coord*/, RS_Entity** /*entity=NULL*/, RS2::ResolveLevel/* level=RS2::ResolveNone*/,
-                              double /*solidDist = RS_MAXDOUBLE*/) const override {
-        return RS_MAXDOUBLE;
-    }
-
-    void move(const RS_Vector& /*offset*/) override {
-    }
-
-    void rotate(double /*angle*/) {
-    }
-
-    void rotate(const RS_Vector& /*angleVector*/) {
-    }
-
-    void rotate(const RS_Vector& /*center*/, double /*angle*/) override {
-    }
-
-    void rotate(const RS_Vector& /*center*/, const RS_Vector& /*angle*/) override {
-    }
-
-    void scale(const RS_Vector& /*center*/, const RS_Vector& /*factor*/) override {
-    }
-
-    void mirror(const RS_Vector& /*axisPoint1*/, const RS_Vector& /*axisPoint2*/) override {
-    }
-
-    RS_Entity& shear(double k) override;
-
-    void moveRef(const RS_Vector& /*ref*/, const RS_Vector& /*offset*/) override {
-    }
-
-    void draw(RS_Painter*) override {
-    }
-
-    friend std::ostream& operator <<(std::ostream& os, const LC_Hyperbola& a);
-
-    //void calculateEndpoints();
-    //    void calculateBorders();
-
-    //direction of tangent at endpoints
-    double getDirection1() const override {
-        return 0.;
-    }
-
-    double getDirection2() const override {
-        return 0.;
-    }
-
-    /** return the equation of the entity
-    for quadratic,
-
-    return a vector contains:
-    m0 x^2 + m1 xy + m2 y^2 + m3 x + m4 y + m5 =0
-
-    for linear:
-    m0 x + m1 y + m2 =0
-    **/
-    LC_Quadratic getQuadratic() const override;
-
-    bool doIsPointOnEntity(const RS_Vector& /*coord*/, double /*tolerance=RS_TOLERANCE*/) const override;
+  // both angle1 and angle2 at 0, assumed to be infinite
+  bool isInfinite() const;
+  /**
+   * @brief worldToLocal convert from world coordinates to the local coordinates
+   *        the hyperbola is centered in local coordinates, and with majorP along
+   *        the local x-axis direction
+   * @param world world coordinates
+   * @return local coordinates
+   */
+  RS_Vector worldToLocal(const RS_Vector& world) const;
+  RS_Vector localToWorld(const RS_Vector& local) const;
 
 protected:
-    LC_HyperbolaData data;
-    bool m_bValid = false;
+    RS_Vector doGetNearestMiddle(const RS_Vector &coord, double *dist,
+                             int middlePoints) const override;
+
+    RS_Vector doGetNearestDist(double distance, const RS_Vector &coord,
+                             double *dist) const override;
+    RS_Vector doGetNearestEndpoint(const RS_Vector &coord,
+                               double *dist) const override;
+    RS_Vector doGetNearestPointOnEntity(const RS_Vector &coord, bool onEntity,
+                            double *dist,
+                            RS_Entity **entity) const override;
+    double doGetDistanceToPoint(const RS_Vector &coord,
+                              RS_Entity **entity,
+                              RS2::ResolveLevel level,
+                              double solidDist) const override;
+    bool doIsPointOnEntity(const RS_Vector &coord, double tolerance) const override;
+
+
+private:
+  bool isInClipRect(const RS_Vector &p, const LC_Rect& rect) const;
+
+  void adaptiveSample(std::vector<RS_Vector> &out, double phiStart,
+                      double phiEnd, bool rev, double maxError) const;
+  LC_HyperbolaData data;
+  bool m_bValid = false;
 };
 
-#endif
-//EOF
+#endif // LC_HYPERBOLA_H

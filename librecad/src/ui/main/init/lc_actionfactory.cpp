@@ -284,6 +284,9 @@ void LC_ActionFactory::createDrawCurveActions(QMap<QString, QAction*>& map, QAct
 
 void LC_ActionFactory::createDrawSplineActions(QMap<QString, QAction*>& map, QActionGroup* group) const {
     createActionHandlerActions(map, group, {
+        {"DrawParabola4Points",    RS2::ActionDrawParabola4Points,   tr("Para&bola 4 points"),        ":/icons/parabola_4_points.lci"},
+        {"DrawParabolaFD",         RS2::ActionDrawParabolaFD,        tr("Parabola &Focus Directrix"), ":/icons/parabola_focus_directrix.lci"},
+        {"DrawHyperbolaFP",        RS2::ActionDrawHyperbolaFP,       tr("&Hyperbola &Foci Point"),    ":/icons/hyperbola_foci_point.lci"},
         {"DrawSpline",             RS2::ActionDrawSpline,            tr("&Spline"),                   ":/icons/spline.lci"},
         {"DrawSplinePoints",       RS2::ActionDrawSplinePoints,      tr("&Spline through points"),    ":/icons/spline_points.lci"},
         {"DrawSplinePointsAppend", RS2::ActionDrawSplinePointAppend, tr("&Append spline point"),      ":/icons/spline_points_add.lci"},
@@ -291,9 +294,7 @@ void LC_ActionFactory::createDrawSplineActions(QMap<QString, QAction*>& map, QAc
         {"DrawSplinePointsAdd",    RS2::ActionDrawSplinePointAdd,    tr("&Insert spline points"),     ":/icons/spline_points_insert.lci"},
         {"DrawSplineExplode",      RS2::ActionDrawSplineExplode,     tr("&Explode spline to lines"),  ":/icons/spline_explode.lci"},
         {"DrawSplineFromPolyline", RS2::ActionDrawSplineFromPolyline,tr("&Spline from polyline"),     ":/icons/spline_from_polyline.lci"},
-        {"DrawSplinePointsDelTwo", RS2::ActionDrawSplinePointDelTwo, tr("&Remove between two points"),":/icons/spline_points_remove_two.lci"},
-        {"DrawParabola4Points",    RS2::ActionDrawParabola4Points,   tr("Para&bola 4 points"),        ":/icons/parabola_4_points.lci"},
-        {"DrawParabolaFD",         RS2::ActionDrawParabolaFD,        tr("Parabola &Focus Directrix"), ":/icons/parabola_focus_directrix.lci"},
+        {"DrawSplinePointsDelTwo", RS2::ActionDrawSplinePointDelTwo, tr("&Remove between two points"),":/icons/spline_points_remove_two.lci"}
     });
 }
 
@@ -942,6 +943,7 @@ void LC_ActionFactory::fillActionLists(const QMap<QString, QAction *> &map){
                         "DrawLineFree",
                         "DrawParabola4Points",
                         "DrawParabolaFD",
+                        "DrawHyperbolaFP",
                     }, map);
 
     fillActionsList(ellipseActions, {

@@ -34,6 +34,7 @@
 #include "rs_filterinterface.h"
 
 class LC_DimStyle;
+class LC_Hyperbola;
 class RS_Point;
 class RS_Line;
 class RS_Circle;
@@ -185,6 +186,7 @@ public:
     void writeCircle(const RS_Circle* c);
     void writeArc(const RS_Arc* a);
     void writeEllipse(const RS_Ellipse* s);
+    void writeHyperbola(LC_Hyperbola* h);
     void writeSolid(const RS_Solid* s);
     void writeLWPolyline(const RS_Polyline* l);
     void writeSpline(const RS_Spline* s);
@@ -288,6 +290,11 @@ private:
     LC_DimStyle* createDimStyle(const DRW_Dimstyle& s);
     void addPolylineSegment(RS_Polyline& polyline, const RS_Vector& previousPosition, const RS_Vector& currentPosition, double bulge,
                             const std::vector<std::shared_ptr<DRW_Variant>>& extData, bool isClosedSegment);
+    /**
+     * Handle degree-2 SPLINE with exactly 3 control points (rational quadratic conic).
+     * @return true if a conic entity (hyperbola or parabola) was created and handled
+     */
+    bool handleQuadraticConicSpline(const DRW_Spline* data);
 };
 
 #endif

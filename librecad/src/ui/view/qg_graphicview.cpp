@@ -106,10 +106,6 @@ namespace {
         return withinValidRange(vpMin) && withinValidRange(vpMax) && vpMin.x < vpMax.x && vpMin.y < vpMax.y && vpMin.x + 1e6 >= vpMax.x &&
             vpMin.y + 1e6 >= vpMax.y;
     }
-
-    LC_Rect getGuiRect([[maybe_unused]] const LC_Rect& modelRect, [[maybe_unused]] const RS_Vector& model2GuiFactor) {
-        return {};
-    }
 }
 
 /**
@@ -1259,7 +1255,7 @@ void QG_GraphicView::layerActivated(RS_Layer* layer) {
                 selection->collectSelectedEntities(selected);
                 if (!selected.isEmpty()) {
                     doc->undoableModify(getViewPort(), [selected, layer](LC_DocumentModificationBatch& ctx)-> bool {
-                                            for (const auto en : selected) {
+                                            for (const auto en : std::as_const(selected)) {
                                                 if (en != nullptr && en->isAlive()) {
                                                     RS_Entity* clone = en->clone();
                                                     clone->setLayer(layer);

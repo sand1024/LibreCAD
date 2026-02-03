@@ -68,7 +68,6 @@
 #include "lc_ucsstatewidget.h"
 #include "lc_workspacesinvoker.h"
 
-// #include "lc_propertysheetwidget.h"
 #include "lc_propertysheetwidget.h"
 #include "qc_dialogfactory.h"
 #include "qc_mdiwindow.h"
@@ -282,7 +281,7 @@ void QC_ApplicationWindow::doClose(QC_MDIWindow* w, const bool activateNext) {
         graphic->removeLayerListListener(view);
     }
 
-    for (auto&& child : std::as_const(w->getChildWindows())) {
+    for (auto && child : std::as_const(w->getChildWindows())) {
         // block editors and print previews; just force these closed
         doClose(child, false); // they belong to the document (changes already saved there)
     }

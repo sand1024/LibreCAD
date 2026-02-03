@@ -120,6 +120,10 @@ double LC_Rect::height() const {
     return m_maxP.y - m_minP.y;
 }
 
+bool LC_Rect::isEmpty(double tolerance) const {
+          return std::min(width(), height()) < tolerance;
+        }
+
 /**
   * @brief Test of a specific point lies within an area
   * @param point Point to test against

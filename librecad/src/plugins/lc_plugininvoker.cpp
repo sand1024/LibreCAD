@@ -26,6 +26,7 @@
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QPluginLoader>
+#include <QToolTip>
 
 #include "doc_plugin_interface.h"
 #include "lc_undosection.h"
@@ -76,8 +77,11 @@ void LC_PluginInvoker::loadPlugins(){
                     loadedPluginFileNames.push_back(fileName);
                     PluginCapabilities pluginCapabilities = pluginInterface->getCapabilities();
                     for (const PluginMenuLocation &loc: pluginCapabilities.menuEntryPoints) {
+                        // Load from plugin's main .cpp file info:
+                        // menu name, plugin name, tooltip for plugin (short manual for user)
                         auto *actpl = new QAction(loc.menuEntryActionName, plugin);
                         actpl->setData(loc.menuEntryActionName);
+                        actpl->setToolTip(loc.menuEntryAction_Tip);
                         connect(actpl, &QAction::triggered, this, &LC_PluginInvoker::execPlug);
                         connect(m_appWindow, &QC_ApplicationWindow::windowsChanged, actpl, &QAction::setEnabled);
                         const auto menuBar = m_appWindow -> menuBar();

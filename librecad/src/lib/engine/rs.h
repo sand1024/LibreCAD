@@ -293,6 +293,8 @@ namespace RS2 {
         ActionDrawEllipse1Point,
         ActionDrawEllipseArc1Point,
 
+        ActionDrawHyperbolaFP,
+
         ActionDrawParabola4Points,
         ActionDrawParabolaFD,
 

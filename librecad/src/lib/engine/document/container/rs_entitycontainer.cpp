@@ -1444,7 +1444,7 @@ bool RS_EntityContainer::optimizeContours() {
     }
 
     /** remove unsupported entities */
-    for (RS_Entity* it : enList) {
+    for (RS_Entity* it : std::as_const(enList)) {
         removeEntity(it);
     }
 
@@ -1839,40 +1839,37 @@ std::vector<std::unique_ptr<RS_EntityContainer>> RS_EntityContainer::getLoops() 
     }
     std::vector<std::unique_ptr<RS_EntityContainer>> loops;
     RS_EntityContainer edges(nullptr, false);
-    for (RS_Entity* e1 : *this) {
-        if (e1 != nullptr && e1->isContainer()) {
-            if (e1->isContainer()) {
-                // fixme - duplicated redundant check? Why???
-                auto subLoops = static_cast<RS_EntityContainer*>(e1)->getLoops();
-                for (auto& subLoop : subLoops) {
+    for(RS_Entity* en: *this){
+        if (en != nullptr && en->isContainer()){
+            if (en->isContainer()){
+                auto subLoops = static_cast<RS_EntityContainer*>(en)->getLoops();
+                for (auto& subLoop: subLoops) {
                     loops.push_back(std::move(subLoop));
                 }
             }
             continue;
         }
 
-        if (e1 != nullptr) {
-            if (!e1->isEdge()) {
-                continue;
-            }
+        if (en == nullptr || !en->isEdge()) {
+            continue;
+        }
 
-            //detect circles and whole ellipses
-            switch (e1->rtti()) {
-                case RS2::EntityEllipse:
-                    if (static_cast<RS_Ellipse*>(e1)->isEllipticArc()) {
-                        edges.addEntity(e1);
-                        break;
-                    }
-                    [[fallthrough]];
-                case RS2::EntityCircle: {
-                    auto ec = std::make_unique<RS_EntityContainer>(nullptr, false);
-                    ec->addEntity(e1);
-                    loops.push_back(std::move(ec));
+        //detect circles and whole ellipses
+        switch (en->rtti()) {
+            case RS2::EntityEllipse:
+                if (static_cast<RS_Ellipse*>(en)->isEllipticArc()) {
+                    edges.addEntity(en);
                     break;
                 }
-                default:
-                    edges.addEntity(e1);
+                [[fallthrough]];
+            case RS2::EntityCircle: {
+                auto ec = std::make_unique<RS_EntityContainer>(nullptr, false);
+                ec->addEntity(en);
+                loops.push_back(std::move(ec));
+                break;
             }
+            default:
+                edges.addEntity(en);
         }
     }
     //find loops

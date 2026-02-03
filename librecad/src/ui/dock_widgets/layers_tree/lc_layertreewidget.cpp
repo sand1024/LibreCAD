@@ -1599,6 +1599,7 @@ void LC_LayerTreeWidget::duplicateLayerEntities(const RS_Layer *sourceLayer, RS_
         }
     }
 }
+
 /**
  * Utility method that copies attributes of source layer to its copy
  * @param copyLayer layer to which attributes should be copied

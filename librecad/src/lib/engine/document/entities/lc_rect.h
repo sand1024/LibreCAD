@@ -56,7 +56,13 @@ namespace lc::geo {
         explicit Area(const Coordinate& coord, double width, double height);
 
         /**
-                  * Return the smallest corner (closest to (0,0,0) )
+         * @brief empty(): whether the area is empty
+         * @return true, if at least one of the min-x/y coordinates is larger or equal the corresponding x/y coordinates.
+         */
+        bool isEmpty(double tolerance) const;
+
+	/**
+                  * Return the smallest corner
                   */
         const Coordinate& minP() const;
 

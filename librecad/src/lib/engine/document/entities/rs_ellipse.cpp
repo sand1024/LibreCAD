@@ -526,7 +526,7 @@ RS_Vector RS_Ellipse::getEllipsePoint(const double a) const {
 * @author Dongxu Li <dongxuli2011@gmail.com>
 */
 RS_Vector RS_Ellipse::doGetNearestPointOnEntity(const RS_Vector& coord, const bool onEntity, double* dist, RS_Entity** entity) const {
-    RS_DEBUG->print("RS_Ellipse::getNearestPointOnEntity");
+    // RS_DEBUG->print("RS_Ellipse::getNearestPointOnEntity");
     RS_Vector ret(false);
 
     if (!coord.valid) {
@@ -573,7 +573,7 @@ RS_Vector RS_Ellipse::doGetNearestPointOnEntity(const RS_Vector& coord, const bo
     }
     if (roots.empty()) {
         //this should not happen
-        std::cout << "(a= " << a << " b= " << b << " x= " << x << " y= " << y << " )\n";
+        // std::cout << "(a= " << a << " b= " << b << " x= " << x << " y= " << y << " )\n";
         std::cout << "finding minimum for (" << x << "-" << a << "*cos(t))^2+(" << y << "-" << b << "*sin(t))^2\n";
         std::cout << "2::find cosine, variable c, solve(c^4 +(" << ce[0] << ")*c^3+(" << ce[1] << ")*c^2+(" << ce[2] << ")*c+(" << ce[3] <<
             ")=0,c)\n";
