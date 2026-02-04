@@ -46,7 +46,7 @@ void LC_MatchDescriptorCircle::init(QMap<RS2::EntityType, LC_EntityMatchDescript
 
     entity->addLength("circumference", [](const RS_Circle* e) {
         return e->getRadius() * 2.0 * M_PI;
-    }, tr("Circumference"), tr("Circumference of circle"));
+    }, tr("Circumference", "circle"), tr("Circumference of circle"));
 
     entity->addLength("area", [](const RS_Circle* e) {
         const double radius = e->getRadius();

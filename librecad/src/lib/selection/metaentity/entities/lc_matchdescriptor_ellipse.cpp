@@ -54,7 +54,7 @@ void LC_MatchDescriptorEllipse::init(QMap<RS2::EntityType, LC_EntityMatchDescrip
 
     entity->addLength("circumference", [](const RS_Ellipse* e) {
         return e->getLength();
-    }, tr("Circumference"), tr("Circumference of the ellipse"));
+    }, tr("Circumference", "ellipse_or_arc"), tr("Circumference of the ellipse"));
 
     entity->addLength("area", [](const RS_Ellipse* e) {
         return e->areaLineIntegral();

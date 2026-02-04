@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <QString>
 
+#include "lc_hyperbola.h"
 #include "lc_quickinfobasedata.h"
 #include "rs_dimension.h"
 #include "rs_mtext.h" // fixme - sand - files - extract enums to rs.h
@@ -142,6 +143,7 @@ protected:
     void collectGenericProperties(const RS_Entity* e);
     void collectArcProperties(const RS_Arc *arc);
     void collectEllipseProperties(const RS_Ellipse *ellipse);
+    void collectHyperbolaProperties(const LC_Hyperbola* hyperbola);
     void collectPointProperties(const RS_Point *point);
     void collectPolylineProperties(const RS_Polyline *polyline);
     void collectInsertProperties(const RS_Insert *insert);
@@ -185,6 +187,7 @@ protected:
     QString prepareCircleDescription(const RS_Circle *circle, RS2::EntityDescriptionLevel level);
     QString prepareArcDescription(const RS_Arc *arc, RS2::EntityDescriptionLevel level);
     QString prepareEllipseDescription(const RS_Ellipse *ellipse, RS2::EntityDescriptionLevel level);
+    QString prepareHyperbolaDescription(const LC_Hyperbola* hyperbola, RS2::EntityDescriptionLevel level);
     QString preparePointDescription(const RS_Point *point, RS2::EntityDescriptionLevel level);
     QString preparePolylineDescription(const RS_Polyline *polyline, RS2::EntityDescriptionLevel level);
     QString prepareInsertDescription(const RS_Insert *insert, RS2::EntityDescriptionLevel level);

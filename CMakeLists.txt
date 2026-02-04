@@ -3,19 +3,15 @@ project (LibreCAD VERSION 2.2.2)
 
 set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
+set (Boost_DEBUG OFF)
 #LOCAL -----
 #set (CMAKE_VERBOSE_MAKEFILE ON)
 #set (MIN_GW_PATH_PREFIX "d:\\Qt\\QT6\\6.9.0\\msvc2022_64")
-#
-#set (Boost_DEBUG OFF)
-#
 #set (BOOST_DIR "c:\\Local\\boost_1_84_0")
 #set (BOOST_ROOT "c:\\Local\\boost_1_84_0")
 #set (Boost_DIR "c:\\Local\\boost_1_84_0")
 #set (Boost_INCLUDE_DIR "c:\\Local\\boost_1_84_0")
-#
 #set (CMAKE_PREFIX_PATH "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6")
-#
 #set (Qt6_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6")
 #set (Qt6Core_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6Core")
 #set (Qt6Svg_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6Svg")
@@ -1135,6 +1131,8 @@ set (SHARED_SOURCES
      librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_spline.h
      librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_hatch.cpp
      librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_hatch.h
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_hyperbola.cpp
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_hyperbola.h
      librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp
      librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.h
      librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_text.cpp
@@ -1735,6 +1733,8 @@ set (SHARED_SOURCES
      librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp
      librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.h
      librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.h
      librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.h
      librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp
      librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.h

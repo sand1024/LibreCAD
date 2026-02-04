@@ -644,7 +644,8 @@ HEADERS += \
     lib/selection/metaentity/entities/lc_matchdescriptor_arc.h           \
     lib/selection/metaentity/entities/lc_matchdescriptor_polyline.h      \
     lib/selection/metaentity/entities/lc_matchdescriptor_spline.h        \
-    lib/selection/metaentity/entities/lc_matchdescriptor_hatch.h         \
+    lib/selection/metaentity/entities/lc_matchdescriptor_hatch.h         \        
+    lib/selection/metaentity/entities/lc_matchdescriptor_hyperbola.h     \
     lib/selection/metaentity/entities/lc_matchdescriptor_insert.h        \
     lib/selection/metaentity/entities/lc_matchdescriptor_text.h          \
     lib/selection/metaentity/entities/lc_matchdescriptor_mtext.h         \
@@ -777,7 +778,8 @@ HEADERS += \
     ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.h \
     ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.h \
     ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.h \    
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.h \
     ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.h \
     ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.h \
     ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.h \
@@ -1096,6 +1098,7 @@ SOURCES += \
     lib/selection/metaentity/entities/lc_matchdescriptor_polyline.cpp \
     lib/selection/metaentity/entities/lc_matchdescriptor_spline.cpp \
     lib/selection/metaentity/entities/lc_matchdescriptor_hatch.cpp \
+    lib/selection/metaentity/entities/lc_matchdescriptor_hyperbola.cpp \
     lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp \
     lib/selection/metaentity/entities/lc_matchdescriptor_text.cpp \
     lib/selection/metaentity/entities/lc_matchdescriptor_mtext.cpp \
@@ -1839,6 +1842,7 @@ SOURCES +=ui/action_options/lc_actionoptionsmanager.cpp \
     ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp \
     ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp \
     ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp \
     ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp \
     ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp \
     ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp \

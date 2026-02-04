@@ -87,7 +87,7 @@ void LC_PropertiesProviderArc::doFillEntitySpecificProperties(LC_PropertyContain
         return value;
     }, list, contOther);
 
-    addReadOnlyString<RS_Arc>({"circumference", tr("Circumference"), tr("Total linear length of arc")}, [this](const RS_Arc* e)-> QString {
+    addReadOnlyString<RS_Arc>({"circumference", tr("Circumference", "arc"), tr("Total linear length of arc")}, [this](const RS_Arc* e)-> QString {
         const double len = e->getLength();
         QString value = formatLinear(len);
         return value;

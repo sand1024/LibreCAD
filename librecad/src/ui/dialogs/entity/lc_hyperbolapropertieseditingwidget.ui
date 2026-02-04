@@ -14,6 +14,15 @@
    <string>Hyperbola Properties</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QGroupBox" name="groupParams">
      <property name="title">
@@ -21,109 +30,130 @@
      </property>
      <layout class="QGridLayout" name="gridParams">
       <item row="0" column="0">
-       <widget class="QLabel">
-        <property name="text"><string>Center X:</string></property>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Center X:</string>
+        </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QLineEdit" name="leCenterX"/>
       </item>
       <item row="0" column="2">
-       <widget class="QLabel">
-        <property name="text"><string>Y:</string></property>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Y:</string>
+        </property>
        </widget>
       </item>
       <item row="0" column="3">
        <widget class="QLineEdit" name="leCenterY"/>
       </item>
-
       <item row="1" column="0">
-       <widget class="QLabel">
-        <property name="text"><string>Major Radius (a):</string></property>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Major Radius (a):</string>
+        </property>
        </widget>
       </item>
       <item row="1" column="1">
        <widget class="QLineEdit" name="leMajorRadius"/>
       </item>
       <item row="1" column="2">
-       <widget class="QLabel">
-        <property name="text"><string>Minor Radius (b):</string></property>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Minor Radius (b):</string>
+        </property>
        </widget>
       </item>
       <item row="1" column="3">
        <widget class="QLineEdit" name="leMinorRadius"/>
       </item>
-
       <item row="2" column="0">
-       <widget class="QLabel">
-        <property name="text"><string>Ratio (b/a):</string></property>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Ratio (b/a):</string>
+        </property>
        </widget>
       </item>
       <item row="2" column="1">
        <widget class="QLineEdit" name="leRatio"/>
       </item>
-
       <item row="3" column="0">
-       <widget class="QLabel">
-        <property name="text"><string>Rotation (deg):</string></property>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Rotation (deg):</string>
+        </property>
        </widget>
       </item>
       <item row="3" column="1" colspan="3">
        <widget class="QLineEdit" name="leAngle"/>
       </item>
-
       <item row="4" column="0">
-       <widget class="QLabel">
-        <property name="text"><string>Vertex X:</string></property>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Vertex X:</string>
+        </property>
        </widget>
       </item>
       <item row="4" column="1">
        <widget class="QLineEdit" name="leVertexX">
-        <property name="readOnly"><bool>true</bool></property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item row="4" column="2">
-       <widget class="QLabel">
-        <property name="text"><string>Y:</string></property>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Y:</string>
+        </property>
        </widget>
       </item>
       <item row="4" column="3">
        <widget class="QLineEdit" name="leVertexY">
-        <property name="readOnly"><bool>true</bool></property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
-
       <item row="5" column="0">
-       <widget class="QLabel">
-        <property name="text"><string>Start φ:</string></property>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Start φ:</string>
+        </property>
        </widget>
       </item>
       <item row="5" column="1">
        <widget class="QLineEdit" name="leAngle1"/>
       </item>
       <item row="5" column="2">
-       <widget class="QLabel">
-        <property name="text"><string>End φ:</string></property>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>End φ:</string>
+        </property>
        </widget>
       </item>
       <item row="5" column="3">
        <widget class="QLineEdit" name="leAngle2"/>
       </item>
       <item row="5" column="4">
-       <widget class="QLabel">
-        <property name="text"><string>(0,0 = full branch)</string></property>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>(0,0 = full branch)</string>
+        </property>
        </widget>
       </item>
-
       <item row="6" column="0" colspan="4">
        <widget class="QCheckBox" name="cbReversed">
-        <property name="text"><string>Left Branch</string></property>
+        <property name="text">
+         <string>Left Branch</string>
+        </property>
        </widget>
       </item>
      </layout>
     </widget>
    </item>
-
    <item>
     <widget class="QGroupBox" name="groupFoci">
      <property name="title">
@@ -131,50 +161,60 @@
      </property>
      <layout class="QGridLayout" name="gridFoci">
       <item row="0" column="0">
-       <widget class="QLabel">
-        <property name="text"><string>Focus 1 X:</string></property>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Focus 1 X:</string>
+        </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QLineEdit" name="leFocus1X"/>
       </item>
       <item row="0" column="2">
-       <widget class="QLabel">
-        <property name="text"><string>Y:</string></property>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Y:</string>
+        </property>
        </widget>
       </item>
       <item row="0" column="3">
        <widget class="QLineEdit" name="leFocus1Y"/>
       </item>
-
       <item row="1" column="0">
-       <widget class="QLabel">
-        <property name="text"><string>Focus 2 X:</string></property>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Focus 2 X:</string>
+        </property>
        </widget>
       </item>
       <item row="1" column="1">
        <widget class="QLineEdit" name="leFocus2X"/>
       </item>
       <item row="1" column="2">
-       <widget class="QLabel">
-        <property name="text"><string>Y:</string></property>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Y:</string>
+        </property>
        </widget>
       </item>
       <item row="1" column="3">
        <widget class="QLineEdit" name="leFocus2Y"/>
       </item>
-
       <item row="2" column="0">
-       <widget class="QLabel">
-        <property name="text"><string>Point on Curve X:</string></property>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Point on Curve X:</string>
+        </property>
        </widget>
       </item>
       <item row="2" column="1">
        <widget class="QLineEdit" name="leStartX"/>
       </item>
       <item row="2" column="2">
-       <widget class="QLabel">
-        <property name="text"><string>Y:</string></property>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Y:</string>
+        </property>
        </widget>
       </item>
       <item row="2" column="3">
@@ -183,7 +223,6 @@
      </layout>
     </widget>
    </item>
-
    <item>
     <widget class="QGroupBox" name="groupDerived">
      <property name="title">
@@ -191,19 +230,22 @@
      </property>
      <layout class="QGridLayout" name="gridDerived">
       <item row="0" column="0">
-       <widget class="QLabel">
-        <property name="text"><string>Eccentricity:</string></property>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Eccentricity:</string>
+        </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QLineEdit" name="leEccentricity">
-        <property name="readOnly"><bool>true</bool></property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
      </layout>
     </widget>
    </item>
-
    <item>
     <spacer name="verticalSpacer">
      <property name="orientation">

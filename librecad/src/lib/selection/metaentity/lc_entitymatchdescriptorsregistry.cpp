@@ -34,6 +34,7 @@
 #include "lc_matchdescriptor_dimradial.h"
 #include "lc_matchdescriptor_ellipse.h"
 #include "lc_matchdescriptor_hatch.h"
+#include "lc_matchdescriptor_hyperbola.h"
 #include "lc_matchdescriptor_image.h"
 #include "lc_matchdescriptor_insert.h"
 #include "lc_matchdescriptor_leader.h"
@@ -80,6 +81,7 @@ void LC_EntityMatchDescriptorsRegistry::initEntityDescriptors(LC_ActionContext *
     LC_MatchDescriptorCircle::init(m_entityMatchDescriptors);
     LC_MatchDescriptorArc::init(m_entityMatchDescriptors);
     LC_MatchDescriptorEllipse::init(m_entityMatchDescriptors);
+    LC_MatchDescriptorHyperbola::init(m_entityMatchDescriptors);
     LC_MatchDescriptorPolyline::init(m_entityMatchDescriptors);
     LC_MatchDescriptorPoint::init(m_entityMatchDescriptors);
     LC_MatchDescriptorSpline::init(m_entityMatchDescriptors);

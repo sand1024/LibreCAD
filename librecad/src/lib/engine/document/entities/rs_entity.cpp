@@ -32,6 +32,7 @@
 #include <map>
 #include <utility>
 
+#include "lc_hyperbola.h"
 #include "lc_quadratic.h"
 #include "rs_arc.h"
 #include "rs_block.h"
@@ -1082,6 +1083,7 @@ RS_Vector RS_Entity::doGetNearestSelectedRef(const RS_Vector& coord, double* dis
     return RS_Vector(false);
 }
 
+// fixme - sand - is it proper location of the operator? It adds references to child entities
 /**
  * Dumps the elements data to stdout.
  */
@@ -1141,6 +1143,9 @@ std::ostream& operator <<(std::ostream& os, RS_Entity& e) {
 
         case RS2::EntityEllipse:
             os << static_cast<RS_Ellipse&>(e);
+            break;
+        case RS2::EntityHyperbola:
+            os << static_cast<LC_Hyperbola&>(e);
             break;
 
         case RS2::EntityInsert:

@@ -71,7 +71,7 @@ void LC_MatchDescriptorArc::init(QMap<RS2::EntityType, LC_EntityMatchDescriptor*
 
     entity->addLength("circumference", [](const RS_Arc* e) {
         return e->getLength();
-    }, tr("Circumference"), tr("Circumference of arc"));
+    }, tr("Circumference", "arc"), tr("Circumference of arc"));
 
     entity->addLength("chord", [](const RS_Arc* e) {
         return e->getStartpoint().distanceTo(e->getEndpoint());

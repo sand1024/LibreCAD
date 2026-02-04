@@ -1699,6 +1699,11 @@ void LC_MenuFactory::createGVMenuEntitySpecific(QMenu* contextMenu, QG_GraphicVi
                 }
                 break;
             }
+            case RS2::EntityHyperbola: {
+                // fixme - sand - which context actions should be also shown for hyperbola?
+                createGVMenuModifyGeneral(contextMenu, graphicView, entity, pos, actionContext);
+                break;
+            }
             case RS2::EntityParabola: {
                 addProxyActions(contextMenu, entity, pos, actionContext, {
                                     "DrawLineOrthTan",
@@ -1841,10 +1846,6 @@ void LC_MenuFactory::createGVMenuEntitySpecific(QMenu* contextMenu, QG_GraphicVi
                 break;
             }
             case RS2::EntityHatch: {
-                createGVMenuModifyGeneral(contextMenu, graphicView, entity, pos, actionContext);
-                break;
-            }
-            case RS2::EntityHyperbola: {
                 createGVMenuModifyGeneral(contextMenu, graphicView, entity, pos, actionContext);
                 break;
             }

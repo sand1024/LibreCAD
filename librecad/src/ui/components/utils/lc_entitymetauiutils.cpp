@@ -85,6 +85,7 @@ const std::vector<QPair<QString, RS2::EntityType>>& LC_EntityMetaUIUtils::getEnt
         {tr("Spline"), RS2::EntityType::EntitySpline},
         {tr("Spline By Points"), RS2::EntityType::EntitySplinePoints},
         {tr("Ellipse"), RS2::EntityType::EntityEllipse},
+        {tr("Hyperbola"), RS2::EntityType::EntityHyperbola},
         {tr("Text"), RS2::EntityType::EntityText},
         {tr("MText"), RS2::EntityType::EntityMText},
         {tr("Dimension Aligned"), RS2::EntityType::EntityDimAligned},

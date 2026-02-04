@@ -5,7 +5,16 @@
     <name>AsciiFile</name>
     <message>
         <location filename="../asciifile/asciifile.cpp" line="35"/>
-        <location filename="../asciifile/asciifile.cpp" line="41"/>
+        <source>Read ASCII points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../asciifile/asciifile.cpp" line="36"/>
+        <source>Read ASCII test tip...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../asciifile/asciifile.cpp" line="42"/>
         <source>Read ascii points</source>
         <translation>Preberi ascii točke</translation>
     </message>
@@ -17,18 +26,27 @@
         <source>Export points to csv</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../pointstocsv/pointstocsv.cpp" line="41"/>
+        <source>Export to csv test tip...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LC_Align</name>
     <message>
         <location filename="../align/align.cpp" line="24"/>
-        <location filename="../align/align.cpp" line="31"/>
         <source>Align</source>
         <translation>Poravnava</translation>
     </message>
     <message>
-        <location filename="../align/align.cpp" line="32"/>
+        <location filename="../align/align.cpp" line="31"/>
         <source>Align settings...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../align/align.cpp" line="32"/>
+        <source>Align test tip...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -92,8 +110,14 @@ first base, second base, first target, second target.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gear/gear.cpp" line="40"/>
+        <location filename="../gear/gear.cpp" line="41"/>
         <source>Gear plugin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gear/gear.cpp" line="42"/>
+        <source>Select point for center of gear and press left mouse button.
+Then fill in the fields and press &apos;Accept&apos; button.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -106,289 +130,294 @@ first base, second base, first target, second target.</source>
         <translation>Seznam entitet</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="43"/>
+        <location filename="../list/list.cpp" line="30"/>
+        <source>List test tip...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../list/list.cpp" line="44"/>
         <source>n</source>
         <translation>n</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="57"/>
+        <location filename="../list/list.cpp" line="58"/>
         <source>Empty Entity</source>
         <translation>Prazna entiteta</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="64"/>
+        <location filename="../list/list.cpp" line="65"/>
         <source>X</source>
         <translation>X</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="64"/>
+        <location filename="../list/list.cpp" line="65"/>
         <source>Y</source>
         <translation>Y</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="74"/>
+        <location filename="../list/list.cpp" line="75"/>
         <source>Layer</source>
         <translation>Plast</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="76"/>
+        <location filename="../list/list.cpp" line="77"/>
         <source>Color</source>
         <translation>Barva</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="77"/>
+        <location filename="../list/list.cpp" line="78"/>
         <source>Line type</source>
         <translation>Vrsta črte</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="78"/>
+        <location filename="../list/list.cpp" line="79"/>
         <source>Line thickness</source>
         <translation>Debelina črte</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="79"/>
+        <location filename="../list/list.cpp" line="80"/>
         <source>ID</source>
         <translation>ID</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="85"/>
+        <location filename="../list/list.cpp" line="86"/>
         <source>POINT</source>
         <translation>TOČKA</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="86"/>
-        <location filename="../list/list.cpp" line="177"/>
-        <location filename="../list/list.cpp" line="219"/>
+        <location filename="../list/list.cpp" line="87"/>
+        <location filename="../list/list.cpp" line="178"/>
+        <location filename="../list/list.cpp" line="220"/>
         <source>in point</source>
         <translation>v točka</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="91"/>
+        <location filename="../list/list.cpp" line="92"/>
         <source>LINE</source>
         <translation>ČRTA</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="96"/>
+        <location filename="../list/list.cpp" line="97"/>
         <source>from point</source>
         <translation>od točke</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="99"/>
+        <location filename="../list/list.cpp" line="100"/>
         <source>to point</source>
         <translation>k točki</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="104"/>
-        <location filename="../list/list.cpp" line="128"/>
+        <location filename="../list/list.cpp" line="105"/>
+        <location filename="../list/list.cpp" line="129"/>
         <source>length</source>
         <translation>dolžina</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="109"/>
+        <location filename="../list/list.cpp" line="110"/>
         <source>Angle in XY plane</source>
         <translation>Kot v XY ravnini</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="110"/>
+        <location filename="../list/list.cpp" line="111"/>
         <source>Inc.</source>
         <translation>lnc.</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="115"/>
+        <location filename="../list/list.cpp" line="116"/>
         <source>ARC</source>
         <translation>LOK</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="116"/>
-        <location filename="../list/list.cpp" line="132"/>
-        <location filename="../list/list.cpp" line="142"/>
+        <location filename="../list/list.cpp" line="117"/>
+        <location filename="../list/list.cpp" line="133"/>
+        <location filename="../list/list.cpp" line="143"/>
         <source>center point</source>
         <translation>središčna točka</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="122"/>
-        <location filename="../list/list.cpp" line="136"/>
-        <location filename="../list/list.cpp" line="223"/>
+        <location filename="../list/list.cpp" line="123"/>
+        <location filename="../list/list.cpp" line="137"/>
+        <location filename="../list/list.cpp" line="224"/>
         <source>radius</source>
         <translation>polmer</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="123"/>
+        <location filename="../list/list.cpp" line="124"/>
         <source>initial angle</source>
         <translation>začetni kot</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="124"/>
+        <location filename="../list/list.cpp" line="125"/>
         <source>final angle</source>
         <translation>končni kot</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="131"/>
+        <location filename="../list/list.cpp" line="132"/>
         <source>CIRCLE</source>
         <translation>KROŽNICA</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="137"/>
+        <location filename="../list/list.cpp" line="138"/>
         <source>circumference</source>
         <translation>obseg</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="138"/>
+        <location filename="../list/list.cpp" line="139"/>
         <source>area</source>
         <translation>ploščina</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="141"/>
+        <location filename="../list/list.cpp" line="142"/>
         <source>ELLIPSE</source>
         <translation>ELIPSA</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="145"/>
+        <location filename="../list/list.cpp" line="146"/>
         <source>major axis</source>
         <translation>glavna os</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="163"/>
+        <location filename="../list/list.cpp" line="164"/>
         <source>CONSTRUCTIONLINE</source>
         <translation>KONSTRUKCIJSKA ČRTA</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="166"/>
+        <location filename="../list/list.cpp" line="167"/>
         <source>OVERLAYBOX</source>
         <translation>PREKRIVNO OKENCE</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="169"/>
+        <location filename="../list/list.cpp" line="170"/>
         <source>SOLID</source>
         <translation>TELO</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="173"/>
+        <location filename="../list/list.cpp" line="174"/>
         <source>MTEXT</source>
         <translation>MTEXT</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="176"/>
+        <location filename="../list/list.cpp" line="177"/>
         <source>TEXT</source>
         <translation>TEKST</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="180"/>
+        <location filename="../list/list.cpp" line="181"/>
         <source>TEXTCONTENT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="183"/>
+        <location filename="../list/list.cpp" line="184"/>
         <source>INSERT</source>
         <translation>VSTAVI</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="186"/>
+        <location filename="../list/list.cpp" line="187"/>
         <source>Name</source>
         <translation>Ime</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="188"/>
+        <location filename="../list/list.cpp" line="189"/>
         <source>Insertion point</source>
         <translation>Točka vstavljanja</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="191"/>
+        <location filename="../list/list.cpp" line="192"/>
         <source>Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="194"/>
+        <location filename="../list/list.cpp" line="195"/>
         <source>Rotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="200"/>
+        <location filename="../list/list.cpp" line="201"/>
         <source>Columns/Rows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="204"/>
+        <location filename="../list/list.cpp" line="205"/>
         <source>Column/Row Spacing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="211"/>
+        <location filename="../list/list.cpp" line="212"/>
         <source>POLYLINE</source>
         <translation>LOMLJENKA</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="212"/>
+        <location filename="../list/list.cpp" line="213"/>
         <source>Closed</source>
         <translation>Zaključeno</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="213"/>
+        <location filename="../list/list.cpp" line="214"/>
         <source>No</source>
         <translation>Ne</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="213"/>
+        <location filename="../list/list.cpp" line="214"/>
         <source>Yes</source>
         <translation>Da</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="214"/>
+        <location filename="../list/list.cpp" line="215"/>
         <source>Vertices</source>
         <translation>Točke</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="228"/>
+        <location filename="../list/list.cpp" line="229"/>
         <source>IMAGE</source>
         <translation>SLIKA</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="231"/>
+        <location filename="../list/list.cpp" line="232"/>
         <source>SPLINE</source>
         <translation>KRIVULJA</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="234"/>
+        <location filename="../list/list.cpp" line="235"/>
         <source>SPLINEPOINTS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="237"/>
+        <location filename="../list/list.cpp" line="238"/>
         <source>HATCH</source>
         <translation>LOPUTA</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="240"/>
+        <location filename="../list/list.cpp" line="241"/>
         <source>DIMLEADER</source>
         <translation>PREHOD</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="243"/>
+        <location filename="../list/list.cpp" line="244"/>
         <source>DIMALIGNED</source>
         <translation>Vodilo prehoda</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="246"/>
+        <location filename="../list/list.cpp" line="247"/>
         <source>DIMLINEAR</source>
         <translation>Linearni prehod</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="249"/>
+        <location filename="../list/list.cpp" line="250"/>
         <source>DIMRADIAL</source>
         <translation>Radialni prehod</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="252"/>
+        <location filename="../list/list.cpp" line="253"/>
         <source>DIMDIAMETRIC</source>
         <translation>Prehod v smeri premera</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="255"/>
+        <location filename="../list/list.cpp" line="256"/>
         <source>DIMANGULAR</source>
         <translation>Kotni prehod</translation>
     </message>
     <message>
-        <location filename="../list/list.cpp" line="258"/>
+        <location filename="../list/list.cpp" line="259"/>
         <source>UNKNOWN</source>
         <translation>NEZNANO</translation>
     </message>
@@ -402,12 +431,17 @@ first base, second base, first target, second target.</source>
         <translation>Enake lastnosti</translation>
     </message>
     <message>
-        <location filename="../sameprop/sameprop.cpp" line="39"/>
+        <location filename="../sameprop/sameprop.cpp" line="29"/>
+        <source>Same properties test tip...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../sameprop/sameprop.cpp" line="40"/>
         <source>select original entity:</source>
         <translation>izberi začetno entiteto:</translation>
     </message>
     <message>
-        <location filename="../sameprop/sameprop.cpp" line="41"/>
+        <location filename="../sameprop/sameprop.cpp" line="42"/>
         <source>select entities to change</source>
         <translation>izberi entitete za spreminjanje</translation>
     </message>
@@ -420,6 +454,11 @@ first base, second base, first target, second target.</source>
         <source>Sample plugin</source>
         <translation>Vzorčni vtičnik</translation>
     </message>
+    <message>
+        <location filename="../sample/sample.cpp" line="34"/>
+        <source>Sample test tip...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PicFile</name>
@@ -429,7 +468,12 @@ first base, second base, first target, second target.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="42"/>
+        <location filename="../picfile/picfile.cpp" line="37"/>
+        <source>PIC test tip...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../picfile/picfile.cpp" line="43"/>
         <source>import PIC file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -437,177 +481,177 @@ first base, second base, first target, second target.</source>
 <context>
     <name>dibPunto</name>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="219"/>
+        <location filename="../asciifile/asciifile.cpp" line="220"/>
         <source>Read ascii points</source>
         <translation>Preberi ascii točke</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="225"/>
+        <location filename="../asciifile/asciifile.cpp" line="226"/>
         <source>File...</source>
         <translation>Datoteka...</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="232"/>
+        <location filename="../asciifile/asciifile.cpp" line="233"/>
         <source>Format:</source>
         <translation>Format:</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="234"/>
+        <location filename="../asciifile/asciifile.cpp" line="235"/>
         <source>Space Separator</source>
         <translation>Oznaka razmika</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="234"/>
+        <location filename="../asciifile/asciifile.cpp" line="235"/>
         <source>Tab Separator</source>
         <translation>Oznaka tabulatorja</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="234"/>
+        <location filename="../asciifile/asciifile.cpp" line="235"/>
         <source>Comma Separator</source>
         <translation>Oznaka vejice</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="234"/>
+        <location filename="../asciifile/asciifile.cpp" line="235"/>
         <source>Space in Columns</source>
         <translation>Razmik v stolpcih</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="234"/>
+        <location filename="../asciifile/asciifile.cpp" line="235"/>
         <source>*.odb for Psion 2</source>
         <translation>*.odb za Psion 2</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="236"/>
+        <location filename="../asciifile/asciifile.cpp" line="237"/>
         <source>Connect points</source>
         <translation>Poveži točke</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="244"/>
+        <location filename="../asciifile/asciifile.cpp" line="245"/>
         <source>2D Point</source>
         <translation>2D točke</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="244"/>
+        <location filename="../asciifile/asciifile.cpp" line="245"/>
         <source>Draw 2D Point</source>
         <translation>Nariši 2D točko</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="245"/>
+        <location filename="../asciifile/asciifile.cpp" line="246"/>
         <source>3D Point</source>
         <translation>3D točka</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="245"/>
+        <location filename="../asciifile/asciifile.cpp" line="246"/>
         <source>Draw 3D Point</source>
         <translation>Nariši 3D točko</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="246"/>
+        <location filename="../asciifile/asciifile.cpp" line="247"/>
         <source>Point Number</source>
         <translation>Številka točke</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="246"/>
+        <location filename="../asciifile/asciifile.cpp" line="247"/>
         <source>Draw point number</source>
         <translation>Nariši številko točke</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="247"/>
+        <location filename="../asciifile/asciifile.cpp" line="248"/>
         <source>Point Elevation</source>
         <translation>Višina točke</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="247"/>
+        <location filename="../asciifile/asciifile.cpp" line="248"/>
         <source>Draw point elevation</source>
         <translation>Nariši višino točke</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="248"/>
+        <location filename="../asciifile/asciifile.cpp" line="249"/>
         <source>Point Code</source>
         <translation>Koda točke</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="248"/>
+        <location filename="../asciifile/asciifile.cpp" line="249"/>
         <source>Draw point code</source>
         <translation>Nariši kodo točke</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="262"/>
+        <location filename="../asciifile/asciifile.cpp" line="263"/>
         <source>Accept</source>
         <translation>Sprejmi</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="267"/>
+        <location filename="../asciifile/asciifile.cpp" line="268"/>
         <source>Cancel</source>
         <translation>Prekliči</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="297"/>
+        <location filename="../asciifile/asciifile.cpp" line="298"/>
         <source>Select file</source>
         <translation>Izberi datoteko</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="303"/>
+        <location filename="../asciifile/asciifile.cpp" line="304"/>
         <source>Point 2D layer is empty</source>
         <translation>Točkina 2D plast je prazna</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="306"/>
+        <location filename="../asciifile/asciifile.cpp" line="307"/>
         <source>Point 3D layer is empty</source>
         <translation>Točkina 3D plast je prazna</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="309"/>
+        <location filename="../asciifile/asciifile.cpp" line="310"/>
         <source>Point elevation layer is empty</source>
         <translation>Plast višine točke je prazna</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="310"/>
+        <location filename="../asciifile/asciifile.cpp" line="311"/>
         <source>Point elevation height is empty</source>
         <translation>Višina točke je prazna</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="311"/>
+        <location filename="../asciifile/asciifile.cpp" line="312"/>
         <source>Point elevation separation is empty</source>
         <translation>Odmik točkine višine je prazen</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="314"/>
+        <location filename="../asciifile/asciifile.cpp" line="315"/>
         <source>Point number layer is empty</source>
         <translation>Plast številke točke je prazna</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="315"/>
+        <location filename="../asciifile/asciifile.cpp" line="316"/>
         <source>Point number height is empty</source>
         <translation>Višina točkine številke je prazna</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="316"/>
+        <location filename="../asciifile/asciifile.cpp" line="317"/>
         <source>Point number separation is empty</source>
         <translation>Odmik številke točke je prazen</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="319"/>
+        <location filename="../asciifile/asciifile.cpp" line="320"/>
         <source>Point code layer is empty</source>
         <translation>Plast kode točke je prazna</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="320"/>
+        <location filename="../asciifile/asciifile.cpp" line="321"/>
         <source>Point code height is empty</source>
         <translation>Višina kode točke je prazna</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="321"/>
+        <location filename="../asciifile/asciifile.cpp" line="322"/>
         <source>Point code separation is empty</source>
         <translation>Odmik kode točke je prazen</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="357"/>
+        <location filename="../asciifile/asciifile.cpp" line="358"/>
         <source>The file %1 not exist</source>
         <translation>Datoteka %1 ne obstaja</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="362"/>
+        <location filename="../asciifile/asciifile.cpp" line="363"/>
         <source>Can&apos;t open the file %1</source>
         <translation>Ne morem odpreti datoteke %1</translation>
     </message>
@@ -621,166 +665,171 @@ first base, second base, first target, second target.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="52"/>
+        <location filename="../divide/divide.cpp" line="42"/>
+        <source>Divide test tip...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../divide/divide.cpp" line="53"/>
         <source>Select a line, circle or arc and press return</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="63"/>
+        <location filename="../divide/divide.cpp" line="64"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="100"/>
+        <location filename="../divide/divide.cpp" line="101"/>
         <source>n</source>
         <translation type="unfinished">n</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="438"/>
+        <location filename="../divide/divide.cpp" line="439"/>
         <source>Empty Entity</source>
         <translation type="unfinished">Prazna entiteta</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="446"/>
+        <location filename="../divide/divide.cpp" line="447"/>
         <source>X</source>
         <translation type="unfinished">X</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="446"/>
+        <location filename="../divide/divide.cpp" line="447"/>
         <source>Y</source>
         <translation type="unfinished">Y</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="454"/>
+        <location filename="../divide/divide.cpp" line="455"/>
         <source>Layer</source>
         <translation type="unfinished">Plast</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="456"/>
+        <location filename="../divide/divide.cpp" line="457"/>
         <source>Color</source>
         <translation type="unfinished">Barva</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="457"/>
+        <location filename="../divide/divide.cpp" line="458"/>
         <source>Line type</source>
         <translation type="unfinished">Vrsta črte</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="459"/>
+        <location filename="../divide/divide.cpp" line="460"/>
         <source>Line thickness</source>
         <translation type="unfinished">Debelina črte</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="461"/>
+        <location filename="../divide/divide.cpp" line="462"/>
         <source>ID</source>
         <translation type="unfinished">ID</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="468"/>
+        <location filename="../divide/divide.cpp" line="469"/>
         <source>LINE</source>
         <translation type="unfinished">ČRTA</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="473"/>
+        <location filename="../divide/divide.cpp" line="474"/>
         <source>from point</source>
         <translation type="unfinished">od točke</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="476"/>
+        <location filename="../divide/divide.cpp" line="477"/>
         <source>to point</source>
         <translation type="unfinished">k točki</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="481"/>
-        <location filename="../divide/divide.cpp" line="508"/>
+        <location filename="../divide/divide.cpp" line="482"/>
+        <location filename="../divide/divide.cpp" line="509"/>
         <source>length</source>
         <translation type="unfinished">dolžina</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="486"/>
+        <location filename="../divide/divide.cpp" line="487"/>
         <source>Angle in XY plane</source>
         <translation type="unfinished">Kot v XY ravnini</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="488"/>
+        <location filename="../divide/divide.cpp" line="489"/>
         <source>Inc.</source>
         <translation type="unfinished">lnc.</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="493"/>
+        <location filename="../divide/divide.cpp" line="494"/>
         <source>ARC</source>
         <translation type="unfinished">LOK</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="494"/>
-        <location filename="../divide/divide.cpp" line="513"/>
+        <location filename="../divide/divide.cpp" line="495"/>
+        <location filename="../divide/divide.cpp" line="514"/>
         <source>center point</source>
         <translation type="unfinished">središčna točka</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="500"/>
-        <location filename="../divide/divide.cpp" line="517"/>
-        <location filename="../divide/divide.cpp" line="539"/>
+        <location filename="../divide/divide.cpp" line="501"/>
+        <location filename="../divide/divide.cpp" line="518"/>
+        <location filename="../divide/divide.cpp" line="540"/>
         <source>radius</source>
         <translation type="unfinished">polmer</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="501"/>
+        <location filename="../divide/divide.cpp" line="502"/>
         <source>initial angle</source>
         <translation type="unfinished">začetni kot</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="503"/>
+        <location filename="../divide/divide.cpp" line="504"/>
         <source>final angle</source>
         <translation type="unfinished">končni kot</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="512"/>
+        <location filename="../divide/divide.cpp" line="513"/>
         <source>CIRCLE</source>
         <translation type="unfinished">KROŽNICA</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="518"/>
+        <location filename="../divide/divide.cpp" line="519"/>
         <source>circumference</source>
         <translation type="unfinished">obseg</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="520"/>
+        <location filename="../divide/divide.cpp" line="521"/>
         <source>area</source>
         <translation type="unfinished">ploščina</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="524"/>
+        <location filename="../divide/divide.cpp" line="525"/>
         <source>POLYLINE</source>
         <translation type="unfinished">LOMLJENKA</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="525"/>
+        <location filename="../divide/divide.cpp" line="526"/>
         <source>Closed</source>
         <translation type="unfinished">Zaključeno</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="527"/>
+        <location filename="../divide/divide.cpp" line="528"/>
         <source>No</source>
         <translation type="unfinished">Ne</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="527"/>
+        <location filename="../divide/divide.cpp" line="528"/>
         <source>Yes</source>
         <translation type="unfinished">Da</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="528"/>
+        <location filename="../divide/divide.cpp" line="529"/>
         <source>Vertices</source>
         <translation type="unfinished">Točke</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="533"/>
+        <location filename="../divide/divide.cpp" line="534"/>
         <source>in point</source>
         <translation type="unfinished">v točka</translation>
     </message>
     <message>
-        <location filename="../divide/divide.cpp" line="549"/>
+        <location filename="../divide/divide.cpp" line="550"/>
         <source>MUST be a line, circle or arc</source>
         <translation type="unfinished"></translation>
     </message>
@@ -899,107 +948,107 @@ anti-clockwise.</source>
 <context>
     <name>lc_Geardlg</name>
     <message>
-        <location filename="../gear/gear.cpp" line="111"/>
+        <location filename="../gear/gear.cpp" line="113"/>
         <source>Number of teeth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gear/gear.cpp" line="113"/>
+        <location filename="../gear/gear.cpp" line="115"/>
         <source>Pressure angle (deg)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gear/gear.cpp" line="110"/>
+        <location filename="../gear/gear.cpp" line="112"/>
         <source>Rotation angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gear/gear.cpp" line="112"/>
+        <location filename="../gear/gear.cpp" line="114"/>
         <source>Modulus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gear/gear.cpp" line="114"/>
+        <location filename="../gear/gear.cpp" line="116"/>
         <source>Addendum (rel. to modulus)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gear/gear.cpp" line="115"/>
+        <location filename="../gear/gear.cpp" line="117"/>
         <source>Dedendum (rel. to modulus)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gear/gear.cpp" line="116"/>
+        <location filename="../gear/gear.cpp" line="118"/>
         <source>Number of segments to draw (dedendum)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gear/gear.cpp" line="117"/>
+        <location filename="../gear/gear.cpp" line="119"/>
         <source>Number of segments to draw (addendum)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gear/gear.cpp" line="118"/>
+        <location filename="../gear/gear.cpp" line="120"/>
         <source>Draw all teeth?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gear/gear.cpp" line="119"/>
+        <location filename="../gear/gear.cpp" line="121"/>
         <source>Draw symmetric face?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gear/gear.cpp" line="121"/>
+        <location filename="../gear/gear.cpp" line="123"/>
         <source>Use layers?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gear/gear.cpp" line="122"/>
+        <location filename="../gear/gear.cpp" line="124"/>
         <source>Draw addendum circle?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gear/gear.cpp" line="123"/>
+        <location filename="../gear/gear.cpp" line="125"/>
         <source>Draw pitch circle?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gear/gear.cpp" line="124"/>
+        <location filename="../gear/gear.cpp" line="126"/>
         <source>Draw base circle?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gear/gear.cpp" line="125"/>
+        <location filename="../gear/gear.cpp" line="127"/>
         <source>Draw root circle?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gear/gear.cpp" line="126"/>
+        <location filename="../gear/gear.cpp" line="128"/>
         <source>Draw pressure line?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gear/gear.cpp" line="127"/>
+        <location filename="../gear/gear.cpp" line="129"/>
         <source>Draw pressure limits?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gear/gear.cpp" line="129"/>
+        <location filename="../gear/gear.cpp" line="131"/>
         <source>Calculate interference?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gear/gear.cpp" line="130"/>
+        <location filename="../gear/gear.cpp" line="132"/>
         <source>Number of segments to draw (interference)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gear/gear.cpp" line="132"/>
+        <location filename="../gear/gear.cpp" line="134"/>
         <source>Accept</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gear/gear.cpp" line="133"/>
+        <location filename="../gear/gear.cpp" line="135"/>
         <source>Cancel</source>
         <translation type="unfinished">Prekliči</translation>
     </message>
@@ -1007,7 +1056,7 @@ anti-clockwise.</source>
 <context>
     <name>lc_Listdlg</name>
     <message>
-        <location filename="../list/list.cpp" line="275"/>
+        <location filename="../list/list.cpp" line="276"/>
         <source>List entities</source>
         <translation>Naštej entitete</translation>
     </message>
@@ -1015,62 +1064,62 @@ anti-clockwise.</source>
 <context>
     <name>lc_Sampledlg</name>
     <message>
-        <location filename="../sample/sample.cpp" line="52"/>
+        <location filename="../sample/sample.cpp" line="53"/>
         <source>Draw line</source>
         <translation>Nariši črto</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="58"/>
+        <location filename="../sample/sample.cpp" line="59"/>
         <source>Start X:</source>
         <translation>Začetni X:</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="64"/>
+        <location filename="../sample/sample.cpp" line="65"/>
         <source>Start Y:</source>
         <translation>Začetni Y:</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="70"/>
+        <location filename="../sample/sample.cpp" line="71"/>
         <source>End X:</source>
         <translation>Končni X:</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="76"/>
+        <location filename="../sample/sample.cpp" line="77"/>
         <source>End Y:</source>
         <translation>Končni Y:</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="84"/>
+        <location filename="../sample/sample.cpp" line="85"/>
         <source>Accept</source>
         <translation>Sprejmem</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="89"/>
+        <location filename="../sample/sample.cpp" line="90"/>
         <source>Cancel</source>
         <translation>Prekliči</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="104"/>
+        <location filename="../sample/sample.cpp" line="105"/>
         <source>Start X is empty</source>
         <translation>Začetni X je prazen</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="105"/>
+        <location filename="../sample/sample.cpp" line="106"/>
         <source>Start Y is empty</source>
         <translation>Začetni Y je prazen</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="106"/>
+        <location filename="../sample/sample.cpp" line="107"/>
         <source>End X is empty</source>
         <translation>Končni X je prazen</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="107"/>
+        <location filename="../sample/sample.cpp" line="108"/>
         <source>End Y is empty</source>
         <translation>Končni Y je prazen</translation>
     </message>
     <message>
-        <location filename="../sample/sample.cpp" line="127"/>
+        <location filename="../sample/sample.cpp" line="128"/>
         <source>Sample plugin</source>
         <translation>vzorčni vtičnik</translation>
     </message>
@@ -1078,63 +1127,63 @@ anti-clockwise.</source>
 <context>
     <name>picPunto</name>
     <message>
-        <location filename="../picfile/picfile.cpp" line="64"/>
+        <location filename="../picfile/picfile.cpp" line="65"/>
         <source>File...</source>
         <translation type="unfinished">Datoteka...</translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="74"/>
+        <location filename="../picfile/picfile.cpp" line="75"/>
         <source>Scale:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="78"/>
+        <location filename="../picfile/picfile.cpp" line="79"/>
         <source>Accept</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="82"/>
+        <location filename="../picfile/picfile.cpp" line="83"/>
         <source>Cancel</source>
         <translation type="unfinished">Prekliči</translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="110"/>
+        <location filename="../picfile/picfile.cpp" line="111"/>
         <source>Select file</source>
         <translation type="unfinished">Izberi datoteko</translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="117"/>
+        <location filename="../picfile/picfile.cpp" line="118"/>
         <source>Scale Factor is empty or invalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="130"/>
+        <location filename="../picfile/picfile.cpp" line="131"/>
         <source>The file %1 not exist</source>
         <translation type="unfinished">Datoteka %1 ne obstaja</translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="135"/>
+        <location filename="../picfile/picfile.cpp" line="136"/>
         <source>Can&apos;t open the file %1</source>
         <translation type="unfinished">Ne morem odpreti datoteke %1</translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="142"/>
+        <location filename="../picfile/picfile.cpp" line="143"/>
         <source>%1 objects imported</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="163"/>
+        <location filename="../picfile/picfile.cpp" line="164"/>
         <source>picPunto drawLine: first point is empty %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="176"/>
+        <location filename="../picfile/picfile.cpp" line="177"/>
         <source>picPunto drawLine: next point is empty %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../picfile/picfile.cpp" line="259"/>
-        <location filename="../picfile/picfile.cpp" line="268"/>
+        <location filename="../picfile/picfile.cpp" line="260"/>
+        <location filename="../picfile/picfile.cpp" line="269"/>
         <source>format error in %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1145,6 +1194,11 @@ anti-clockwise.</source>
         <location filename="../plotequation/plot.cpp" line="30"/>
         <location filename="../plotequation/plot.cpp" line="37"/>
         <source>Plot plugin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../plotequation/plot.cpp" line="38"/>
+        <source>Plot test tip...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1221,7 +1275,7 @@ Use t or x in your equation as a variable/parameter.
 <context>
     <name>pointBox</name>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="175"/>
+        <location filename="../asciifile/asciifile.cpp" line="176"/>
         <source>Layer:</source>
         <translation>Plast:</translation>
     </message>
@@ -1229,17 +1283,17 @@ Use t or x in your equation as a variable/parameter.
 <context>
     <name>textBox</name>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="203"/>
+        <location filename="../asciifile/asciifile.cpp" line="204"/>
         <source>Style:</source>
         <translation>Slog:</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="204"/>
+        <location filename="../asciifile/asciifile.cpp" line="205"/>
         <source>Height:</source>
         <translation>Višina:</translation>
     </message>
     <message>
-        <location filename="../asciifile/asciifile.cpp" line="205"/>
+        <location filename="../asciifile/asciifile.cpp" line="206"/>
         <source>Separation</source>
         <translation>Razmik</translation>
     </message>

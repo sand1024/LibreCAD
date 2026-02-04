@@ -46,7 +46,7 @@ void LC_PropertiesProviderCircle::doFillEntitySpecificProperties(LC_PropertyCont
                                      l->setRadius(v / 2.0);
                                  }, list, contGeometry);
 
-    addLinearDistance<RS_Circle>({"circumference", tr("Circumference"), tr("Circumference of circle")}, [](const RS_Circle* e) -> double {
+    addLinearDistance<RS_Circle>({"circumference", tr("Circumference", "circle"), tr("Circumference of circle")}, [](const RS_Circle* e) -> double {
                                      return e->getRadius() * 2.0 * M_PI;
                                  }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Circle* l) -> void {
                                      l->setRadius(v / 2.0 / M_PI);

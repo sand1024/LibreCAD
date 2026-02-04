@@ -55,6 +55,7 @@ void LC_EntityPropertyContainerProvider::init(LC_PropertySheetWidget* widget, LC
     m_circle = std::make_unique<LC_PropertiesProviderCircle>(context, widget);
     m_arc = std::make_unique<LC_PropertiesProviderArc>(context, widget);
     m_ellipse = std::make_unique<LC_PropertiesProviderEllipse>(context, widget);
+    m_hyperbola = std::make_unique<LC_PropertiesProviderHyperbola>(context, widget);
     m_polyline = std::make_unique<LC_PropertiesProviderPolyline>(context, widget);
     m_point = std::make_unique<LC_PropertiesProviderPoint>(context, widget);
     m_spline = std::make_unique<LC_PropertiesProviderSpline>(context, widget);
@@ -108,6 +109,10 @@ void LC_EntityPropertyContainerProvider::refillPropertyContainer([[maybe_unused]
         }
         case RS2::EntityEllipse: {
             m_ellipse->fillEntityProperties(container, m_entitiesList);
+            break;
+        }
+        case RS2::EntityHyperbola: {
+            m_hyperbola->fillEntityProperties(container, m_entitiesList);
             break;
         }
         case RS2::EntityPolyline: {

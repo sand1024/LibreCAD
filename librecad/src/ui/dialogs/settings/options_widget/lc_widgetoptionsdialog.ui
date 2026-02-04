@@ -643,7 +643,7 @@
          <number>3</number>
         </property>
         <property name="maximum">
-         <number>12</number>
+         <number>60</number>
         </property>
         <property name="value">
          <number>5</number>
@@ -785,8 +785,8 @@
   <include location="../../../../../res/images/images.qrc"/>
   <include location="../../../../../res/controls/controls.qrc"/>
   <include location="../../../../../res/images/images.qrc"/>
-  <include location="../../../../../res/controls/controls.qrc"/>
   <include location="../../../../../res/icons/icons.qrc"/>
+  <include location="../../../../../res/controls/controls.qrc"/>
  </resources>
  <connections>
   <connection>

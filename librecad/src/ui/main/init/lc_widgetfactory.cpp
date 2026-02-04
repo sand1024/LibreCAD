@@ -101,7 +101,7 @@ void LC_WidgetFactory::initLeftCADSidebar(){
 
 void LC_WidgetFactory::createCADMegaSidebar(const int columns, const int iconSize, const bool flatButtons) {
     auto* mega = new LC_CADDockWidget(m_appWin, true);
-    mega->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    mega->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
     mega->setObjectName("dock_cad_mega");
     mega->setWindowTitle(tr("All"));
     auto actions = QList<QAction*>();

@@ -80,7 +80,7 @@ void LC_PropertiesProviderEllipse::doFillEntitySpecificProperties(LC_PropertyCon
         return;
     }
 
-    addReadOnlyString<RS_Ellipse>({"circumference", tr("Circumference"), tr("Circumference of ellipse")},
+    addReadOnlyString<RS_Ellipse>({"circumference", tr("Circumference", "ellipse"), tr("Circumference of ellipse")},
                                   [this](const RS_Ellipse* e) -> QString {
                                       const double len = e->getLength();
                                       QString value = formatLinear(len);
