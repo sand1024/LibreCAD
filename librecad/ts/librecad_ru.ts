@@ -124,7 +124,7 @@
         <location filename="../src/actions/drawing/draw/rect/lc_abstractactiondrawrectangle.cpp" line="434"/>
         <source>Specify edges mode
 [both|hor|vert]</source>
-        <translation>Укажите режим граней \n[both|hor|vert]</translation>
+        <translation>Укажите режим граней [both|hor|vert]</translation>
     </message>
 </context>
 <context>
@@ -655,7 +655,8 @@ distance between points=%2 is larger than diameter=%3</source>
         <location filename="../src/actions/drawing/draw/point/lc_actiondrawlinepoints.cpp" line="510"/>
         <source>Specify Second Point
 or [number|x|y|angle|p|edges|distance]</source>
-        <translation>Укажите конечную точку или \n [number|x|y|angle|p|edges|distance]</translation>
+        <translation>Укажите конечную точку или 
+[number|x|y|angle|p|edges|distance]</translation>
     </message>
     <message>
         <location filename="../src/actions/drawing/draw/point/lc_actiondrawlinepoints.cpp" line="513"/>
@@ -692,7 +693,8 @@ or[x|y|p|number|edges]</source>
         <location filename="../src/actions/drawing/draw/point/lc_actiondrawlinepoints.cpp" line="540"/>
         <source>Specify distance (%1)
 or [%2]</source>
-        <translation>Укажите расстояние (%1)\nили [%2]&quot;)</translation>
+        <translation>Укажите расстояние (%1)
+или [%2]&quot;)</translation>
     </message>
     <message>
         <location filename="../src/actions/drawing/draw/point/lc_actiondrawlinepoints.cpp" line="537"/>
@@ -4485,7 +4487,8 @@ Some error occurred during XML generation.</source>
         <location filename="../src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp" line="409"/>
         <source>Some mappings are modified.
 Are you sure you are going to discard changes?</source>
-        <translation>Настройки были изменены.\nВы уверены что хотите не сохранять изменения?</translation>
+        <translation>Настройки были изменены.
+Вы уверены что хотите не сохранять изменения?</translation>
     </message>
 </context>
 <context>
@@ -8521,7 +8524,7 @@ Are you sure you are going to discard changes?</source>
     <message>
         <location filename="../src/ui/dialogs/creators/lc_dlgwidgetcreator.ui" line="343"/>
         <source>Define a custom menu by specifing the set of included actions. Menu will be shown as a popup in the drawing area as soon as menu invocation shortcut is invoked. </source>
-        <translation></translation>
+        <translation>Задайте пользовательское меню, указав команды которые должны использоваться в меню и команду его вызова. Меню будет показано в области чертежа.</translation>
     </message>
     <message>
         <location filename="../src/ui/dialogs/creators/lc_dlgwidgetcreator.ui" line="129"/>
@@ -32065,7 +32068,9 @@ Please specify a different value.</source>
         <source>Layer(s) without entities found, yet they are filtered and not visible.
 
 Clear filtering mask and repeat.</source>
-        <translation>Слои без сущностей найдены, но они отфильтрованы и не видны.\n\nОчистите маску фильтрации и повторите.</translation>
+        <translation>Слои без сущностей найдены, но они отфильтрованы и не видны.
+
+Очистите маску фильтрации и повторите.</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/layers_tree/lc_layertreewidget.cpp" line="965"/>
@@ -38077,7 +38082,11 @@ Cartesian: (%2 , %3)
 Polar: (%4 &lt; %5)
 Start: (%6 , %7)
 End: (%8 , %9)</source>
-        <translation>Расстояние: %1\nКартезианские: (%2 , %3)\nПолярные: (%4 &lt; %5)\nНачало: (%6 , %7)\nКонец: (%8 , %9)</translation>
+        <translation>Расстояние: %1
+Картезианские: (%2 , %3)
+Полярные: (%4 &lt; %5)
+Начало: (%6 , %7)
+Конец: (%8 , %9)</translation>
     </message>
     <message>
         <location filename="../src/actions/drawing/info/rs_actioninfodist.cpp" line="98"/>
@@ -38129,7 +38138,11 @@ Cartesian: (%2 , %3)
 Polar: (%4 &lt; %5)
 Point On Entity: (%6 , %7)
 Point: (%8 , %9)</source>
-        <translation>Расстояние: %1\nКартезианские: (%2 , %3)\nПолярные: (%4 &lt; %5)\nТочка в объекте: (%6 , %7)\nТочка: (%8 , %9)&quot;</translation>
+        <translation>Расстояние: %1
+Картезианские: (%2 , %3)
+Полярные: (%4 &lt; %5)
+Точка в объекте: (%6 , %7)
+Точка: (%8 , %9)&quot;</translation>
     </message>
     <message>
         <location filename="../src/actions/drawing/info/rs_actioninfodist2.cpp" line="279"/>
