@@ -34,7 +34,7 @@ LC_ActionDrawHyperbolaFP::LC_ActionDrawHyperbolaFP(LC_ActionContext* actionConte
     LC_ActionDrawHyperbolaFP::reset();
 }
 
-void LC_ActionDrawHyperbolaFP::init(int status) {
+void LC_ActionDrawHyperbolaFP::init(const int status) {
     RS_PreviewActionInterface::init(status);
     reset();
 }
@@ -44,7 +44,7 @@ void LC_ActionDrawHyperbolaFP::reset() {
     setStatus(SetFocus1);
 }
 
-void LC_ActionDrawHyperbolaFP::preparePreview() {
+void LC_ActionDrawHyperbolaFP::preparePreview() const {
     if (!focus1.valid || !focus2.valid || !startPoint.valid) {
         return;
     }
@@ -54,9 +54,9 @@ void LC_ActionDrawHyperbolaFP::preparePreview() {
         return;
     }
 
-    bool rev = (startPoint.distanceTo(focus1) - startPoint.distanceTo(focus2) < 0.0);
+    const bool rev = (startPoint.distanceTo(focus1) - startPoint.distanceTo(focus2) < 0.0);
 
-    double phiStart = hyperbola->getParamFromPoint(startPoint, rev);
+    const double phiStart = hyperbola->getParamFromPoint(startPoint, rev);
     if (std::isnan(phiStart)) {
         return;
     }
@@ -69,7 +69,7 @@ void LC_ActionDrawHyperbolaFP::preparePreview() {
         phi2 = std::abs(phiStart);
     }
     else if (getStatus() == SetEndPoint && endPoint.valid) {
-        double phiEnd = hyperbola->getParamFromPoint(endPoint, rev);
+        const double phiEnd = hyperbola->getParamFromPoint(endPoint, rev);
         if (!std::isnan(phiEnd)) {
             phi1 = std::min(phiStart, phiEnd);
             phi2 = std::max(phiStart, phiEnd);
@@ -111,10 +111,10 @@ RS_Entity* LC_ActionDrawHyperbolaFP::doTriggerCreateEntity() {
     }
 
     //bool rev = (startPoint.distanceTo(focus1) - startPoint.distanceTo(focus2) < 0.0);
-    bool rev = false;
+    const bool rev = false;
 
-    double phiStart = temp.getParamFromPoint(startPoint, rev);
-    double phiEnd = temp.getParamFromPoint(endPoint, rev);
+    const double phiStart = temp.getParamFromPoint(startPoint, rev);
+    const double phiEnd = temp.getParamFromPoint(endPoint, rev);
 
     if (std::isnan(phiStart) || std::isnan(phiEnd)) {
         commandMessage(tr("Points not on hyperbola"));
@@ -128,7 +128,7 @@ RS_Entity* LC_ActionDrawHyperbolaFP::doTriggerCreateEntity() {
     data.angle2 = std::max(phiStart, phiEnd);
     data.reversed = rev;
 
-    auto hyperbola = new LC_Hyperbola(nullptr, data);
+    const auto hyperbola = new LC_Hyperbola(nullptr, data);
     if (hyperbola->isValid()) {
         moveRelativeZero(hyperbola->getCenter());
         hyperbola->calculateBorders();
@@ -140,31 +140,44 @@ RS_Entity* LC_ActionDrawHyperbolaFP::doTriggerCreateEntity() {
     return hyperbola;
 }
 
-void LC_ActionDrawHyperbolaFP::doTriggerCompletion(bool success) {
+void LC_ActionDrawHyperbolaFP::doTriggerCompletion(const bool success) {
     LC_SingleEntityCreationAction::doTriggerCompletion(success);
     setStatus(SetFocus1);
 }
 
-void LC_ActionDrawHyperbolaFP::onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) {
-    const RS_Vector snapped = e->snapPoint;
+void LC_ActionDrawHyperbolaFP::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
+    RS_Vector snapped = e->snapPoint;
     if (!snapped.valid) { // fixme - sand - may it really be invalid? check when..
         return;
+    }
+
+    switch (status) {
+        case SetFocus1: {
+            snapped = getRelZeroAwarePoint(e, snapped);
+            break;
+        }
+        case SetFocus2: {
+            snapped = getSnapAngleAwarePoint(e, focus1, snapped, false);
+            break;
+        }
+        default:
+            break;
     }
 
     onCoordinateEvent(status, false, snapped);
 }
 
-void LC_ActionDrawHyperbolaFP::onMouseMoveEvent(int status, const LC_MouseEvent* event) {
-    const RS_Vector mouse = event->snapPoint;
-
+void LC_ActionDrawHyperbolaFP::onMouseMoveEvent(const int status, const LC_MouseEvent* event) {
     switch (status) {
         case SetFocus1: {
+            const RS_Vector mouse = getRelZeroAwarePoint(event, event->snapPoint);
             if (m_showRefEntitiesOnPreview) {
                 previewRefSelectablePoint(mouse);
             }
             break;
         }
         case SetFocus2: {
+            const RS_Vector mouse = getSnapAngleAwarePoint(event, focus1,  event->snapPoint, true);
             if (m_showRefEntitiesOnPreview) {
                 previewRefPoint(focus1);
                 previewRefSelectablePoint(mouse);
@@ -173,6 +186,7 @@ void LC_ActionDrawHyperbolaFP::onMouseMoveEvent(int status, const LC_MouseEvent*
             break;
         }
         case SetStartPoint: {
+            const RS_Vector mouse = event->snapPoint;
             if (m_showRefEntitiesOnPreview) {
                 previewRefPoint(focus1);
                 previewRefPoint(focus2);
@@ -182,7 +196,8 @@ void LC_ActionDrawHyperbolaFP::onMouseMoveEvent(int status, const LC_MouseEvent*
             endPoint.valid = false;
             break;
         }
-        case SetEndPoint:
+        case SetEndPoint: {
+            const RS_Vector mouse = event->snapPoint;
             if (m_showRefEntitiesOnPreview) {
                 previewRefPoint(focus1);
                 previewRefPoint(focus2);
@@ -191,18 +206,19 @@ void LC_ActionDrawHyperbolaFP::onMouseMoveEvent(int status, const LC_MouseEvent*
             }
             endPoint = mouse;
             break;
+        }
         default:
             break;
     }
     preparePreview();
 }
 
-void LC_ActionDrawHyperbolaFP::onMouseRightButtonRelease(int status, const LC_MouseEvent*) {
+void LC_ActionDrawHyperbolaFP::onMouseRightButtonRelease(const int status, const LC_MouseEvent*) {
     deletePreview();
     initPrevious(status);
 }
 
-void LC_ActionDrawHyperbolaFP::onCoordinateEvent(int status, [[maybe_unused]] bool isZero, const RS_Vector& pos) {
+void LC_ActionDrawHyperbolaFP::onCoordinateEvent(const int status, [[maybe_unused]] bool isZero, const RS_Vector& pos) {
     if (!pos.valid) {
         return;
     }
@@ -249,10 +265,10 @@ void LC_ActionDrawHyperbolaFP::onCoordinateEvent(int status, [[maybe_unused]] bo
 void LC_ActionDrawHyperbolaFP::updateMouseButtonHints() {
     switch (getStatus()) {
         case SetFocus1:
-            updateMouseWidgetTRCancel(tr("Specify first focus"));
+            updateMouseWidgetTRCancel(tr("Specify first focus"), MOD_SHIFT_RELATIVE_ZERO);
             break;
         case SetFocus2:
-            updateMouseWidgetTRCancel(tr("Specify second focus"));
+            updateMouseWidgetTRCancel(tr("Specify second focus"), MOD_SHIFT_ANGLE_SNAP);
             break;
         case SetStartPoint:
             updateMouseWidgetTRCancel(tr("Specify start point on branch"));

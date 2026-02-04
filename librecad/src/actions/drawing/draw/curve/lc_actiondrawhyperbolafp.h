@@ -66,7 +66,7 @@ private:
   RS_Vector focus1{}, focus2{};
   RS_Vector startPoint{}, endPoint{};
 
-  void preparePreview();
+  void preparePreview() const;
 };
 
 #endif
