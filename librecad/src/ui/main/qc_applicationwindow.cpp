@@ -30,6 +30,7 @@
 #include "qc_applicationwindow.h"
 
 #include <QCloseEvent>
+#include <QDockWidget>
 #include <QMdiArea>
 #include <QMenuBar>
 #include <QMessageBox>

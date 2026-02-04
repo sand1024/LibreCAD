@@ -32,9 +32,9 @@
 #include "lc_actioncontext.h"
 #include "lc_mdiapplicationwindow.h"
 #include "lc_plugininvoker.h"
+#include "lc_actionfactory.h"
 
 class LC_PropertySheetWidget;
-class LC_ActionFactory;
 class LC_ActionGroupManager;
 class LC_ActionGroup;
 class LC_ActionOptionsManager;

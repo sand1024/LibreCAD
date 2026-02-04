@@ -576,13 +576,13 @@ distance between points=%2 is larger than diameter=%3</source>
     <name>LC_ActionDrawHyperbolaFP</name>
     <message>
         <location filename="../src/actions/drawing/draw/curve/lc_actiondrawhyperbolafp.cpp" line="94"/>
-        <location filename="../src/actions/drawing/draw/curve/lc_actiondrawhyperbolafp.cpp" line="220"/>
+        <location filename="../src/actions/drawing/draw/curve/lc_actiondrawhyperbolafp.cpp" line="236"/>
         <source>Foci cannot be coincident</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/actions/drawing/draw/curve/lc_actiondrawhyperbolafp.cpp" line="100"/>
-        <location filename="../src/actions/drawing/draw/curve/lc_actiondrawhyperbolafp.cpp" line="234"/>
+        <location filename="../src/actions/drawing/draw/curve/lc_actiondrawhyperbolafp.cpp" line="250"/>
         <source>Start and end points cannot be the same</source>
         <translation type="unfinished"></translation>
     </message>
@@ -597,22 +597,22 @@ distance between points=%2 is larger than diameter=%3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/curve/lc_actiondrawhyperbolafp.cpp" line="252"/>
+        <location filename="../src/actions/drawing/draw/curve/lc_actiondrawhyperbolafp.cpp" line="268"/>
         <source>Specify first focus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/curve/lc_actiondrawhyperbolafp.cpp" line="255"/>
+        <location filename="../src/actions/drawing/draw/curve/lc_actiondrawhyperbolafp.cpp" line="271"/>
         <source>Specify second focus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/curve/lc_actiondrawhyperbolafp.cpp" line="258"/>
+        <location filename="../src/actions/drawing/draw/curve/lc_actiondrawhyperbolafp.cpp" line="274"/>
         <source>Specify start point on branch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/curve/lc_actiondrawhyperbolafp.cpp" line="261"/>
+        <location filename="../src/actions/drawing/draw/curve/lc_actiondrawhyperbolafp.cpp" line="277"/>
         <source>Specify end point on branch</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9368,96 +9368,96 @@ Are you sure you are going to discard changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="20"/>
+        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="29"/>
         <source>Standard Parameters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="25"/>
+        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="35"/>
         <source>Center X:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="33"/>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="87"/>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="143"/>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="160"/>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="177"/>
+        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="45"/>
+        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="109"/>
+        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="176"/>
+        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="196"/>
+        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="216"/>
         <source>Y:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="42"/>
+        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="55"/>
         <source>Major Radius (a):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="50"/>
+        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="65"/>
         <source>Minor Radius (b):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="59"/>
+        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="75"/>
         <source>Ratio (b/a):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="68"/>
+        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="85"/>
         <source>Rotation (deg):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="77"/>
+        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="95"/>
         <source>Vertex X:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="98"/>
+        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="123"/>
         <source>Start φ:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="106"/>
+        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="133"/>
         <source>End φ:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="114"/>
+        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="143"/>
         <source>(0,0 = full branch)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="120"/>
+        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="150"/>
         <source>Left Branch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="130"/>
+        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="160"/>
         <source>Foci &amp; Point on Curve (Alternative Editing)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="135"/>
+        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="166"/>
         <source>Focus 1 X:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="152"/>
+        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="186"/>
         <source>Focus 2 X:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="169"/>
+        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="206"/>
         <source>Point on Curve X:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="190"/>
+        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="229"/>
         <source>Derived Properties (Read-only)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="195"/>
+        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="235"/>
         <source>Eccentricity:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14517,594 +14517,775 @@ Please specify a different value.</source>
 <context>
     <name>LC_MenuFactory</name>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="142"/>
         <source>&amp;Help</source>
-        <translation type="unfinished">&amp;Βοήθεια</translation>
+        <translation type="obsolete">&amp;Βοήθεια</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="144"/>
-        <source>On&amp;line Docs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="145"/>
-        <source>&amp;Wiki</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="146"/>
-        <source>User&apos;s &amp;Manual</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="147"/>
-        <source>&amp;Commands</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="148"/>
-        <source>&amp;Style Sheets</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="150"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="462"/>
-        <source>Wid&amp;gets</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="154"/>
         <source>About</source>
-        <translation type="unfinished">Περί</translation>
+        <translation type="obsolete">Περί</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="161"/>
-        <source>&amp;Forum</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="162"/>
-        <source>Zulip &amp;Chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="164"/>
-        <source>&amp;Submit Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="165"/>
-        <source>&amp;Request Feature</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="166"/>
-        <source>&amp;Releases Page</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="177"/>
-        <source>&amp;Donate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="193"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="231"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="264"/>
         <source>&amp;Line</source>
-        <translation type="unfinished">&amp;Γραμμή</translation>
+        <translation type="obsolete">&amp;Γραμμή</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="197"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="232"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="265"/>
-        <source>Poin&amp;t</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="201"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="233"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="266"/>
         <source>&amp;Circle</source>
-        <translation type="unfinished">&amp;Κύκλος</translation>
+        <translation type="obsolete">&amp;Κύκλος</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="205"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="234"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="268"/>
         <source>&amp;Arc</source>
-        <translation type="unfinished">Τό&amp;ξο</translation>
+        <translation type="obsolete">Τό&amp;ξο</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="209"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="236"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="270"/>
-        <source>Poly&amp;gon</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="213"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="238"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="272"/>
-        <source>Splin&amp;e</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="217"/>
-        <source>Ellip&amp;se</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="221"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="240"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="276"/>
         <source>&amp;Polyline</source>
-        <translation type="unfinished">&amp;Πολυγραμμή</translation>
+        <translation type="obsolete">&amp;Πολυγραμμή</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="225"/>
-        <source>&amp;Other</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="230"/>
-        <source>&amp;Draw</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="239"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="274"/>
         <source>&amp;Ellipse</source>
-        <translation type="unfinished">Έ&amp;λλειψη</translation>
+        <translation type="obsolete">Έ&amp;λλειψη</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="242"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="283"/>
-        <source>Ot&amp;her</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="247"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="285"/>
         <source>&amp;Modify</source>
-        <translation type="unfinished">&amp;Τροποποίηση</translation>
+        <translation type="obsolete">&amp;Τροποποίηση</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="249"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="288"/>
-        <source>&amp;Order</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="253"/>
         <source>&amp;Dimensions</source>
-        <translation type="unfinished">&amp;Διαστάσεις</translation>
+        <translation type="obsolete">&amp;Διαστάσεις</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="257"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="287"/>
         <source>&amp;Info</source>
-        <translation type="unfinished">&amp;Πληροφορίες</translation>
+        <translation type="obsolete">&amp;Πληροφορίες</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="263"/>
         <source>&amp;Tools</source>
-        <translation type="unfinished">Εργαλεία</translation>
+        <translation type="obsolete">Εργαλεία</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="95"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="114"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="278"/>
         <source>&amp;Select</source>
-        <translation type="unfinished">Ε&amp;πιλογή</translation>
+        <translation type="obsolete">Ε&amp;πιλογή</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="171"/>
-        <source>&amp;Dev Snapshot Release</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="281"/>
         <source>Dime&amp;nsion</source>
-        <translation type="unfinished">Διάσταση</translation>
+        <translation type="obsolete">Διάσταση</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="294"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1227"/>
         <source>&amp;File</source>
-        <translation type="unfinished">&amp;Αρχείο</translation>
+        <translation type="obsolete">&amp;Αρχείο</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="300"/>
         <source>Recent Files</source>
-        <translation type="unfinished">Πρόσφατα αρχεία</translation>
+        <translation type="obsolete">Πρόσφατα αρχεία</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="312"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1242"/>
         <source>Import</source>
-        <translation type="unfinished">Εισαγωγή</translation>
+        <translation type="obsolete">Εισαγωγή</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="317"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1247"/>
         <source>Export</source>
-        <translation type="unfinished">Εξαγωγή</translation>
+        <translation type="obsolete">Εξαγωγή</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="338"/>
-        <source>&amp;Options</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="352"/>
         <source>&amp;Edit</source>
-        <translation type="unfinished">&amp;Επεξεργασία</translation>
+        <translation type="obsolete">&amp;Επεξεργασία</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="373"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1266"/>
         <source>&amp;View</source>
-        <translation type="unfinished">Ε&amp;μφάνιση</translation>
+        <translation type="obsolete">Ε&amp;μφάνιση</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="402"/>
-        <source>&amp;Views Restore</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="415"/>
         <source>Pl&amp;ugins</source>
-        <translation type="unfinished">Πρόσθετα</translation>
+        <translation type="obsolete">Πρόσθετα</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="421"/>
-        <source>&amp;Workspace</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="447"/>
-        <source>Dock Areas</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="455"/>
-        <source>Toolbar Areas</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="488"/>
-        <source>CAD Wid&amp;gets</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="625"/>
         <source>&amp;Drawings</source>
-        <translation type="unfinished">Σχεδιαγράμματα</translation>
+        <translation type="obsolete">Σχεδιαγράμματα</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="790"/>
-        <source>Context</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="807"/>
-        <source>Toolbars</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="811"/>
-        <source>Widgets</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="819"/>
-        <source>CAD Widgets</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="825"/>
-        <source>CAD Toolbars</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="839"/>
         <source>Select</source>
-        <translation type="unfinished">Επιλογή</translation>
+        <translation type="obsolete">Επιλογή</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="890"/>
-        <source>Recent</source>
+        <source>Modify</source>
+        <translation type="obsolete">Τροποποίηση</translation>
+    </message>
+    <message>
+        <source>Line</source>
+        <translation type="obsolete">Γραμμή</translation>
+    </message>
+    <message>
+        <source>Polyline</source>
+        <translation type="obsolete">Πολυγραμμή</translation>
+    </message>
+    <message>
+        <source>Point</source>
+        <translation type="obsolete">Σημείο</translation>
+    </message>
+    <message>
+        <source>Circle</source>
+        <translation type="obsolete">Κύκλος</translation>
+    </message>
+    <message>
+        <source>Arc</source>
+        <translation type="obsolete">Τόξο</translation>
+    </message>
+    <message>
+        <source>Ellipse</source>
+        <translation type="obsolete">Έλλειψη</translation>
+    </message>
+    <message>
+        <source>Layers</source>
+        <translation type="obsolete">Στρώσεις</translation>
+    </message>
+    <message>
+        <source>Info</source>
+        <translation type="obsolete">Πληροφορίες</translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="obsolete">Επεξεργασία</translation>
+    </message>
+    <message>
+        <source>Options</source>
+        <translation type="obsolete">Επιλογές</translation>
+    </message>
+    <message>
+        <source>&amp;Toolbars</source>
+        <translation type="obsolete">Γραμμές &amp;εργαλείων</translation>
+    </message>
+    <message>
+        <source>Ta&amp;b mode</source>
+        <translation type="obsolete">Οργάνωση &amp;καρτελών</translation>
+    </message>
+    <message>
+        <source>&amp;Cascade</source>
+        <translation type="obsolete">&amp;Καταρράκτης</translation>
+    </message>
+    <message>
+        <source>&amp;Tile</source>
+        <translation type="obsolete">&amp;Πλακίδια</translation>
+    </message>
+    <message>
+        <source>Tile &amp;Vertically</source>
+        <translation type="obsolete">Πλακίδια &amp;κατακόρυφα</translation>
+    </message>
+    <message>
+        <source>Tile &amp;Horizontally</source>
+        <translation type="obsolete">Πλακίδια &amp;οριζόντια</translation>
+    </message>
+</context>
+<context>
+    <name>LC_MenuFactoryBase</name>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_base.cpp" line="55"/>
+        <source>&amp;Workspaces</source>
         <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>LC_MenuFactoryGraphicView</name>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="997"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1075"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="102"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="180"/>
         <source>Modify</source>
         <translation type="unfinished">Τροποποίηση</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1014"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="119"/>
         <source>Modify More</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1030"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="135"/>
         <source>Draw</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1033"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="138"/>
         <source>Line</source>
         <translation type="unfinished">Γραμμή</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1037"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="142"/>
         <source>Polyline</source>
         <translation type="unfinished">Πολυγραμμή</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1041"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="146"/>
         <source>Point</source>
         <translation type="unfinished">Σημείο</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1045"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="150"/>
         <source>Circle</source>
         <translation type="unfinished">Κύκλος</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1049"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="154"/>
         <source>Arc</source>
         <translation type="unfinished">Τόξο</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1053"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="158"/>
         <source>Polygon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1056"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="161"/>
         <source>Polyline/Spline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1067"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="172"/>
         <source>Ellipse</source>
         <translation type="unfinished">Έλλειψη</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1071"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="176"/>
         <source>Other</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1104"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1431"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1486"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1544"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1594"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="209"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="638"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="693"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="751"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="801"/>
         <source>Add Dimensions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1107"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1870"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="212"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="1077"/>
         <source>Align</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1114"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="219"/>
         <source>Draw Order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1122"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1887"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="227"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="1094"/>
         <source>Layers</source>
         <translation type="unfinished">Στρώσεις</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1127"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1907"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="232"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="1114"/>
         <source>Info</source>
         <translation type="unfinished">Πληροφορίες</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1136"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="241"/>
         <source>Workspaces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1167"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="308"/>
+        <source>Select</source>
+        <translation type="unfinished">Επιλογή</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="351"/>
         <source>Edit</source>
         <translation type="unfinished">Επεξεργασία</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1218"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="402"/>
         <source>Options</source>
         <translation type="unfinished">Επιλογές</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1295"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="411"/>
+        <source>&amp;File</source>
+        <translation type="unfinished">&amp;Αρχείο</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="426"/>
+        <source>Import</source>
+        <translation type="unfinished">Εισαγωγή</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="431"/>
+        <source>Export</source>
+        <translation type="unfinished">Εξαγωγή</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="450"/>
+        <source>&amp;View</source>
+        <translation type="unfinished">Ε&amp;μφάνιση</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="479"/>
         <source>&amp;Named Views</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1325"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="509"/>
         <source>Edit Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1338"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="530"/>
+        <source>Recent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="545"/>
         <source>Modify Generic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1378"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="585"/>
         <source>Modify Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1398"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1471"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1525"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1576"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1680"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="605"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="678"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="732"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="783"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="887"/>
         <source>Draw Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1414"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1461"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1516"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="621"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="668"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="723"/>
         <source>Draw Circle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1423"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1480"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1534"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1586"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1639"/>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1689"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="630"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="687"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="741"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="793"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="846"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="896"/>
         <source>Draw Other</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1446"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="653"/>
         <source>Modify Circle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1499"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="706"/>
         <source>Modify Arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1557"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="764"/>
         <source>Modify Polyline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1609"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="816"/>
         <source>Modify Spline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1625"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="832"/>
         <source>Modify Spline Points</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1648"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="855"/>
         <source>Modify Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1661"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="868"/>
         <source>Modify MText</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1819"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="1026"/>
         <source>Edit Block</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="1878"/>
+        <location filename="../src/ui/main/init/lc_menufactory_graphicview.cpp" line="1085"/>
         <source>Order</source>
         <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>LC_MenuFactoryMain</name>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="512"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="74"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="93"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="259"/>
+        <source>&amp;Select</source>
+        <translation type="unfinished">Ε&amp;πιλογή</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="121"/>
+        <source>&amp;Help</source>
+        <translation type="unfinished">&amp;Βοήθεια</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="124"/>
+        <source>On&amp;line Docs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="125"/>
+        <source>&amp;Wiki</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="126"/>
+        <source>User&apos;s &amp;Manual</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="127"/>
+        <source>&amp;Commands</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="128"/>
+        <source>&amp;Style Sheets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="130"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="429"/>
+        <source>Wid&amp;gets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="134"/>
+        <source>About</source>
+        <translation type="unfinished">Περί</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="141"/>
+        <source>&amp;Forum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="142"/>
+        <source>Zulip &amp;Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="144"/>
+        <source>&amp;Submit Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="145"/>
+        <source>&amp;Request Feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="146"/>
+        <source>&amp;Releases Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="151"/>
+        <source>&amp;Dev Snapshot Release</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="157"/>
+        <source>&amp;Donate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="173"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="211"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="245"/>
+        <source>&amp;Line</source>
+        <translation type="unfinished">&amp;Γραμμή</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="177"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="212"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="246"/>
+        <source>Poin&amp;t</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="181"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="213"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="247"/>
+        <source>&amp;Circle</source>
+        <translation type="unfinished">&amp;Κύκλος</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="185"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="214"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="249"/>
+        <source>&amp;Arc</source>
+        <translation type="unfinished">Τό&amp;ξο</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="189"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="216"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="251"/>
+        <source>Poly&amp;gon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="193"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="218"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="253"/>
+        <source>Splin&amp;e</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="197"/>
+        <source>Ellip&amp;se</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="201"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="220"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="257"/>
+        <source>&amp;Polyline</source>
+        <translation type="unfinished">&amp;Πολυγραμμή</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="205"/>
+        <source>&amp;Other</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="210"/>
+        <source>&amp;Draw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="219"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="255"/>
+        <source>&amp;Ellipse</source>
+        <translation type="unfinished">Έ&amp;λλειψη</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="222"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="264"/>
+        <source>Ot&amp;her</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="227"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="266"/>
+        <source>&amp;Modify</source>
+        <translation type="unfinished">&amp;Τροποποίηση</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="229"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="269"/>
+        <source>&amp;Order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="233"/>
+        <source>&amp;Dimensions</source>
+        <translation type="unfinished">&amp;Διαστάσεις</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="237"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="268"/>
+        <source>&amp;Info</source>
+        <translation type="unfinished">&amp;Πληροφορίες</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="243"/>
+        <source>&amp;Tools</source>
+        <translation type="unfinished">Εργαλεία</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="262"/>
+        <source>Dime&amp;nsion</source>
+        <translation type="unfinished">Διάσταση</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="275"/>
+        <source>&amp;File</source>
+        <translation type="unfinished">&amp;Αρχείο</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="283"/>
+        <source>Recent Files</source>
+        <translation type="unfinished">Πρόσφατα αρχεία</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="295"/>
+        <source>Import</source>
+        <translation type="unfinished">Εισαγωγή</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="300"/>
+        <source>Export</source>
+        <translation type="unfinished">Εξαγωγή</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="321"/>
+        <source>&amp;Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="335"/>
+        <source>&amp;Edit</source>
+        <translation type="unfinished">&amp;Επεξεργασία</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="356"/>
+        <source>&amp;View</source>
+        <translation type="unfinished">Ε&amp;μφάνιση</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="385"/>
+        <source>&amp;Views Restore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="398"/>
+        <source>Pl&amp;ugins</source>
+        <translation type="unfinished">Πρόσθετα</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="404"/>
+        <source>&amp;Workspace</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="414"/>
+        <source>Dock Areas</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="422"/>
+        <source>Toolbar Areas</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="457"/>
+        <source>CAD Wid&amp;gets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="482"/>
         <source>&amp;Toolbars</source>
         <translation type="unfinished">Γραμμές &amp;εργαλείων</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="532"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="503"/>
         <source>&amp;CAD Toolbars</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="560"/>
-        <source>&amp;Workspaces</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="574"/>
+        <source>&amp;Drawings</source>
+        <translation type="unfinished">Σχεδιαγράμματα</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="633"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="582"/>
         <source>Ta&amp;b mode</source>
         <translation type="unfinished">Οργάνωση &amp;καρτελών</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="637"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="586"/>
         <source>&amp;Window mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="642"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="591"/>
         <source>&amp;Layout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="646"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="595"/>
         <source>Rounded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="652"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="601"/>
         <source>Triangular</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="659"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="608"/>
         <source>North</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="663"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="612"/>
         <source>South</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="667"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="616"/>
         <source>East</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="671"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="620"/>
         <source>West</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="676"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="625"/>
         <source>&amp;Arrange</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="680"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="629"/>
         <source>&amp;Maximized</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="684"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="633"/>
         <source>&amp;Cascade</source>
         <translation type="unfinished">&amp;Καταρράκτης</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="685"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="634"/>
         <source>&amp;Tile</source>
         <translation type="unfinished">&amp;Πλακίδια</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="686"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="635"/>
         <source>Tile &amp;Vertically</source>
         <translation type="unfinished">Πλακίδια &amp;κατακόρυφα</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="687"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="636"/>
         <source>Tile &amp;Horizontally</source>
         <translation type="unfinished">Πλακίδια &amp;οριζόντια</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="670"/>
+        <source>Context</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="687"/>
+        <source>Toolbars</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="691"/>
+        <source>Widgets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="699"/>
+        <source>CAD Widgets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="705"/>
+        <source>CAD Toolbars</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -24425,72 +24606,72 @@ Warning: this action can NOT be undone!</source>
 <context>
     <name>QC_ApplicationWindow</name>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="800"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="801"/>
         <source>Creating new file...</source>
         <translation>Δημιουργία νέου αρχείου...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="740"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="741"/>
         <source>unnamed document %1</source>
         <translation>ανώνυμο έγγραφο %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1725"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1726"/>
         <source>Opening recent file...</source>
         <translation>Άνοιγμα πρόσφατου αρχείου...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1053"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1054"/>
         <source>Loaded document: </source>
         <translation>Το έγγραφο φορτώθηκε: </translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="995"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="996"/>
         <source>Opening aborted</source>
         <translation>Το άνοιγμα ματαιώθηκε</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1294"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1295"/>
         <source>Printing...</source>
         <translation>Εκτύπωση...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1395"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1396"/>
         <source>Exiting application...</source>
         <translation>Έξοδος από την εφαρμογή...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="196"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="197"/>
         <source>Print preview for %1</source>
         <translation>Προεπισκόπηση εκτύπωσης για το %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="823"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="824"/>
         <source>New Drawing created.</source>
         <translation>Το νέο σχέδιο δημιουργήθηκε.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="229"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="230"/>
         <source>Saving drawing...</source>
         <translation>Αποθήκευση σχεδίου...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="240"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="241"/>
         <source>Saved drawing: %1</source>
         <translation>Το σχέδιο αποθηκεύτηκε: %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1298"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1299"/>
         <source>Printing complete</source>
         <translation>Η εκτύπωση ολοκληρώθηκε</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="736"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="737"/>
         <source>Block &apos;%1&apos;</source>
         <translation>Μπλοκ &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="867"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="868"/>
         <source>Cannot open the file
 %1
 Please check the permissions.</source>
@@ -24499,17 +24680,17 @@ Please check the permissions.</source>
 Παρακαλούμε να ελέγξετε τα δικαιώματα.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1134"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1135"/>
         <source>Auto-saving drawing...</source>
         <translation>Αυτόματη αποθήκευση σχεδίου...</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1140"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1141"/>
         <source>Auto-saved drawing</source>
         <translation>Το σχέδιο αποθηκεύτηκε αυτόματα</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1146"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1147"/>
         <source>Cannot auto-save the file
 %1
 Please check the permissions.
@@ -24520,42 +24701,42 @@ Auto-save disabled.</source>
 Η αυτόματη αποθήκευση απενεργοποιήθηκε.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1002"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1003"/>
         <source>Warning: File already opened : </source>
         <translation>Προειδοποίηση: Το αρχείο έχει ήδη ανοιχτεί : </translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="253"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="254"/>
         <source>Cannot save the file </source>
         <translation>Δεν είναι δυνατή η αποθήκευση του αρχείου </translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="253"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="254"/>
         <source> , please check the filename and permissions.</source>
         <translation> , παρακαλούμε να ελέγξετε το όνομα αρχείου και τα δικαιώματα.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="819"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="820"/>
         <source>New document from template: </source>
         <translation>Νέο έγγραφο από πρότυπο: </translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="851"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="852"/>
         <source>Select Template aborted</source>
         <translation>Η επιλογή προτύπου ματαιώθηκε</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1148"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1149"/>
         <source>Auto-saving failed</source>
         <translation>Η αυτόματη αποθήκευση απέτυχε</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="206"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="207"/>
         <source>Draft Mode</source>
         <translation>Κατάσταση λειτουργίας προσχεδίου</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1016"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1017"/>
         <source>Cannot open the file
 %1
 Please check its existence and permissions.</source>
@@ -24564,49 +24745,49 @@ Please check its existence and permissions.</source>
 Παρακαλούμε να ελέγξετε την ύπαρξη και τα δικαιώματά του.</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="994"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="995"/>
         <source>File &apos;%1&apos; does not exist. Opening aborted</source>
         <translation>Το αρχείο &apos;%1&apos; δεν υπάρχει. Το άνοιγμα ματαιώθηκε</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="229"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="230"/>
         <source>Saving drawing: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="235"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="236"/>
         <source>Save cancelled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="370"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="371"/>
         <source>&amp;Save</source>
         <translation type="unfinished">Αποθήκευση</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="371"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="372"/>
         <source>Save &amp;as...</source>
         <translation type="unfinished">Αποθήκευση ως</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="375"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="376"/>
         <source>&amp;Save %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="376"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="377"/>
         <source>Save %1 &amp;as...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1111"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1112"/>
         <source>Save All cancelled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1231"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1237"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1251"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1232"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1238"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1252"/>
         <source>Close All cancelled</source>
         <translation type="unfinished"></translation>
     </message>
@@ -31188,9 +31369,9 @@ p, li { white-space: pre-wrap; }
     <name>QMessageBox</name>
     <message>
         <location filename="../src/ui/dialogs/qg_dialogfactory.cpp" line="88"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="869"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1018"/>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1145"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="870"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1019"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="1146"/>
         <source>Warning</source>
         <translation>Προειδοποίηση</translation>
     </message>
@@ -33223,7 +33404,7 @@ Do you want to replace it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="974"/>
+        <location filename="../src/ui/main/qc_applicationwindow.cpp" line="975"/>
         <source>Invalid objects removed:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -33280,7 +33461,7 @@ Do you want to replace it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_menufactory.cpp" line="157"/>
+        <location filename="../src/ui/main/init/lc_menufactory_main.cpp" line="137"/>
         <source>License</source>
         <translation type="unfinished">Άδεια</translation>
     </message>

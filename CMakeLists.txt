@@ -1802,6 +1802,12 @@ set (SHARED_SOURCES
      librecad/src/ui/main/init/lc_applicationwindowinitializer.h
      librecad/src/ui/main/init/lc_menufactory.cpp
      librecad/src/ui/main/init/lc_menufactory.h
+     librecad/src/ui/main/init/lc_menufactory_graphicview.cpp
+     librecad/src/ui/main/init/lc_menufactory_graphicview.h
+     librecad/src/ui/main/init/lc_menufactory_base.cpp
+     librecad/src/ui/main/init/lc_menufactory_base.h
+     librecad/src/ui/main/init/lc_menufactory_main.cpp
+     librecad/src/ui/main/init/lc_menufactory_main.h
      librecad/src/ui/main/init/lc_toolbarfactory.cpp
      librecad/src/ui/main/init/lc_toolbarfactory.h
      librecad/src/ui/main/init/lc_widgetfactory.cpp

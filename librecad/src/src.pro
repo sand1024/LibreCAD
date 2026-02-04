@@ -1619,6 +1619,9 @@ HEADERS += ui/action_options/lc_actionoptionsmanager.h \
     ui/main/init/lc_actionfactory.h \
     ui/main/init/lc_widgetfactory.h \
     ui/main/init/lc_menufactory.h \
+    ui/main/init/lc_menufactory_base.h \
+    ui/main/init/lc_menufactory_main.h \
+    ui/main/init/lc_menufactory_graphicview.h \
     ui/main/init/lc_toolbarfactory.h \
     ui/main/mainwindowx.h \
     ui/main/qc_applicationwindow.h \
@@ -1861,6 +1864,9 @@ SOURCES +=ui/action_options/lc_actionoptionsmanager.cpp \
     ui/main/init/lc_actionfactory.cpp \
     ui/main/init/lc_widgetfactory.cpp \
     ui/main/init/lc_menufactory.cpp \
+    ui/main/init/lc_menufactory_base.cpp \
+    ui/main/init/lc_menufactory_main.cpp \
+    ui/main/init/lc_menufactory_graphicview.cpp \
     ui/main/init/lc_toolbarfactory.cpp \
     ui/main/mainwindowx.cpp \
     ui/main/qc_applicationwindow.cpp \
