@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <algorithm>
 
+#include "lc_creation_circle.h"
 #include "lc_quadratic.h"
 #include "rs_circle.h"
 #include "rs_document.h"
@@ -319,8 +320,7 @@ bool RS_ActionDrawCircleTan3::getData(RS_Entity* testThirdEntity) const {
         }
     }
     else {
-        RS_Circle c{nullptr, *m_actionData->circleData};
-        auto solutions = c.createTan3(circlesList);
+        auto solutions = LC_CreationCircle::createCircleTan3(circlesList);
         m_actionData->candidates.clear();
         for (const RS_Circle& s : solutions) {
             m_actionData->candidates.push_back(std::make_shared<RS_CircleData>(s.getData()));

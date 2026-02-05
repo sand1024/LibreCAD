@@ -776,6 +776,12 @@ set (SHARED_SOURCES
      librecad/src/lib/actions/lc_undoabledocumentmodificationaction.h
      librecad/src/lib/creation/rs_creation.cpp
      librecad/src/lib/creation/rs_creation.h
+     librecad/src/lib/creation/lc_creation_circle.cpp
+     librecad/src/lib/creation/lc_creation_circle.h
+     librecad/src/lib/creation/lc_creation_ellipse.cpp
+     librecad/src/lib/creation/lc_creation_ellipse.h
+     librecad/src/lib/creation/lc_creation_arc.cpp
+     librecad/src/lib/creation/lc_creation_arc.h
      librecad/src/lib/debug/rs_debug.cpp
      librecad/src/lib/debug/rs_debug.h
      librecad/src/lib/engine/clipboard/rs_clipboard.cpp

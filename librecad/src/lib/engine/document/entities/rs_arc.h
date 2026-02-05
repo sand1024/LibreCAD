@@ -28,6 +28,7 @@
 #define RS_ARC_H
 
 #include "lc_cachedlengthentity.h"
+#include "rs_math.h"
 
 class LC_Quadratic;
 
@@ -53,6 +54,52 @@ struct RS_ArcData {
     double startAngleDegrees = 0.;
     double otherAngleDegrees = 0.;
     double angularLength = 0.;
+
+    double getDirection1() const {
+        if (!reversed) {
+            return RS_Math::correctAngle(angle1 + M_PI_2);
+        }
+        return RS_Math::correctAngle(angle1 - M_PI_2);
+    }
+
+    /**
+     * @return Direction 2. The angle at which the arc starts at
+     * the endpoint.
+     */
+    double getDirection2() const {
+        if (!reversed) {
+            return RS_Math::correctAngle(angle2 - M_PI_2);
+        }
+        return RS_Math::correctAngle(angle2 + M_PI_2);
+    }
+
+    /**
+    * @return Angle length in rad.
+    */
+    double getAngleLength() const {
+        double a = angle1;
+        double b = angle2;
+
+        if (reversed) {
+            std::swap(a, b);
+        }
+        double ret = RS_Math::correctAngle(b - a);
+        // full circle:
+        if (std::abs(std::remainder(ret, 2. * M_PI)) < RS_TOLERANCE_ANGLE) {
+            ret = 2 * M_PI;
+        }
+
+        return ret;
+    }
+
+    double getBulge() const {
+        const double bulge = std::tan(std::abs(getAngleLength()) / 4.0);
+        return reversed ? -bulge : bulge;
+    }
+
+    RS_Vector getEndpoint() const {
+        return center.relative(radius, angle2);
+    }
 };
 
 std::ostream& operator <<(std::ostream& os, const RS_ArcData& ad);
@@ -185,13 +232,10 @@ public:
     RS_Vector prepareTrim(const RS_Vector& trimCoord, const RS_VectorSolutions& trimSol) override;
     void reverse() override;
     RS_Vector getMiddlePoint() const override;
-    double getAngleLength() const;
+    double getAngleLength() const {return m_data.getAngleLength();}
     double getBulge() const;
     double getSagitta() const;
-    bool createFrom3P(const RS_Vector& p1, const RS_Vector& p2, const RS_Vector& p3);
-    bool createFrom2PDirectionRadius(const RS_Vector& startPoint, const RS_Vector& endPoint, double direction1, double radius);
-    bool createFrom2PDirectionAngle(const RS_Vector& startPoint, const RS_Vector& endPoint, double direction1, double angleLength);
-    bool createFrom2PBulge(const RS_Vector& startPoint, const RS_Vector& endPoint, double bulge);
+
     RS_Vector getNearestDistToEndpoint(double distance, bool startp) const override;
     RS_Vector getNearestOrthTan(const RS_Vector& coord, const RS_Line& normal, bool onEntity = false) const override;
     RS_Vector dualLineTangentPoint(const RS_Vector& line) const override;

@@ -26,6 +26,7 @@
 
 #include "rs_actiondrawpolyline.h"
 
+#include "lc_creation_arc.h"
 #include "lc_undosection.h"
 #include "muParser.h"
 #include "qg_polylineoptions.h"
@@ -185,11 +186,10 @@ void RS_ActionDrawPolyline::onMouseRightButtonRelease(const int status, [[maybe_
 
 double RS_ActionDrawPolyline::solveBulge(const RS_Vector &mouse){
     double b(0.);
-    bool suc = false;
-    RS_Arc arc{};
+    bool success = false;
     RS_Line line{};
     double direction;
-    RS_AtomicEntity *lastentity = nullptr;
+    RS_AtomicEntity *lastEntity = nullptr;
     m_calculatedSegment = false;
 
     switch (m_mode) {
@@ -199,12 +199,12 @@ double RS_ActionDrawPolyline::solveBulge(const RS_Vector &mouse){
         case Tangential:
             if (m_actionData->polyline){
                 if (m_prepend) {
-                    lastentity = dynamic_cast<RS_AtomicEntity *>(m_actionData->polyline->firstEntity());
-                    direction = RS_Math::correctAngle(lastentity->getDirection1() + M_PI);
+                    lastEntity = dynamic_cast<RS_AtomicEntity *>(m_actionData->polyline->firstEntity());
+                    direction = RS_Math::correctAngle(lastEntity->getDirection1() + M_PI);
                 }
                 else{
-                    lastentity = dynamic_cast<RS_AtomicEntity *>(m_actionData->polyline->lastEntity());
-                    direction = RS_Math::correctAngle(lastentity->getDirection2() + M_PI);
+                    lastEntity = dynamic_cast<RS_AtomicEntity *>(m_actionData->polyline->lastEntity());
+                    direction = RS_Math::correctAngle(lastEntity->getDirection2() + M_PI);
                 }
 
                 line.setStartpoint(m_actionData->point);
@@ -213,11 +213,9 @@ double RS_ActionDrawPolyline::solveBulge(const RS_Vector &mouse){
                 const double delta = direction2 - direction;
                 if (std::abs(std::remainder(delta, M_PI)) > RS_TOLERANCE_ANGLE){
                     b = std::tan(delta / 2);
-                    suc = arc.createFrom2PBulge(m_actionData->point, mouse, b);
-                    if (suc) {
-                        m_actionData->arcData = arc.getData();
-                    }
-                    else {
+                    success = LC_CreationArc::createFrom2PBulge(m_actionData->point, mouse, b, m_actionData->arcData);
+                    if (!success) {
+                        m_actionData->arcData = RS_ArcData{};
                         b = 0;
                     }
                 }
@@ -242,52 +240,45 @@ double RS_ActionDrawPolyline::solveBulge(const RS_Vector &mouse){
         case TanRad: {
             if (m_actionData->polyline){
                 if (m_prepend){
-                    lastentity = dynamic_cast<RS_AtomicEntity *>(m_actionData->polyline->firstEntity());
-                    direction = RS_Math::correctAngle(lastentity->getDirection1() + M_PI);
+                    lastEntity = dynamic_cast<RS_AtomicEntity *>(m_actionData->polyline->firstEntity());
+                    direction = RS_Math::correctAngle(lastEntity->getDirection1() + M_PI);
                 }
                 else{
-                    lastentity = dynamic_cast<RS_AtomicEntity *>(m_actionData->polyline->lastEntity());
-                    direction = RS_Math::correctAngle(lastentity->getDirection2() + M_PI);
+                    lastEntity = dynamic_cast<RS_AtomicEntity *>(m_actionData->polyline->lastEntity());
+                    direction = RS_Math::correctAngle(lastEntity->getDirection2() + M_PI);
                 }
-                suc = arc.createFrom2PDirectionRadius(m_actionData->point, mouse,
-                                                      direction, m_radius);
-                if (suc){
-                    m_actionData->arcData = arc.getData();
-                    b = arc.getBulge();
-                    m_actionData->calculatedEndpoint = arc.getEndpoint();
+                success = LC_CreationArc::createFrom2PDirectionRadius(m_actionData->point, mouse,
+                                                      direction, m_radius, m_actionData->arcData);
+                if (success){
+                    b = m_actionData->arcData.getBulge();
+                    m_actionData->calculatedEndpoint = m_actionData->arcData.getEndpoint();
                     m_calculatedSegment = true;
 
                 }
-//            else
-//                b=0;
             }
-//        else
-//          b=0;
             break;
         }
         case TanAng: {
             if (m_actionData->polyline){
                 if (m_prepend){
-                    lastentity = dynamic_cast<RS_AtomicEntity *>(m_actionData->polyline->firstEntity());
-                    direction = RS_Math::correctAngle(lastentity->getDirection1() + M_PI);
+                    lastEntity = dynamic_cast<RS_AtomicEntity *>(m_actionData->polyline->firstEntity());
+                    direction = RS_Math::correctAngle(lastEntity->getDirection1() + M_PI);
                 }
                 else{
-                    lastentity = dynamic_cast<RS_AtomicEntity *>(m_actionData->polyline->lastEntity());
-                    direction = RS_Math::correctAngle(lastentity->getDirection2() + M_PI);
+                    lastEntity = dynamic_cast<RS_AtomicEntity *>(m_actionData->polyline->lastEntity());
+                    direction = RS_Math::correctAngle(lastEntity->getDirection2() + M_PI);
                 }
-                suc = arc.createFrom2PDirectionAngle(m_actionData->point, mouse,
-                                                      direction, RS_Math::deg2rad(m_angleDegrees));
-                if (suc){
-                    m_actionData->arcData = arc.getData();
-                    b = arc.getBulge();
-                    m_actionData->calculatedEndpoint = arc.getEndpoint();
+                success = LC_CreationArc::createFrom2PDirectionAngle(m_actionData->point, mouse,
+                                                      direction, RS_Math::deg2rad(m_angleDegrees),m_actionData->arcData);
+                if (success){
+                    b = m_actionData->arcData.getBulge();
+                    m_actionData->calculatedEndpoint = m_actionData->arcData.getEndpoint();
                     m_calculatedSegment = true;
                 }
-//            else
-//                b=0;
+                else {
+                    m_actionData->arcData = RS_ArcData{};
+                }
             }
-//        else
-//          b=0;
             break;
         }
 /*     case TanAng:
@@ -300,18 +291,16 @@ double RS_ActionDrawPolyline::solveBulge(const RS_Vector &mouse){
             if (m_prepend){
                 b = std::tan(m_reversed * m_angleDegrees * M_PI / 720.0);
 //                b = std::tan(m_reversed * -1 * m_angle * M_PI / 720.0);
-                suc = arc.createFrom2PBulge( mouse, m_actionData->point,b);
+                success = LC_CreationArc::createFrom2PBulge( mouse, m_actionData->point,b, m_actionData->arcData);
 //                suc = arc.createFrom2PBulge(pPoints->point, mouse, b);
             }
             else{
                b = std::tan(m_reversed * m_angleDegrees * M_PI / 720.0);
-               suc = arc.createFrom2PBulge(m_actionData->point, mouse, b);
+               success = LC_CreationArc::createFrom2PBulge(m_actionData->point, mouse, b,m_actionData->arcData);
             }
-            if (suc) {
-                m_actionData->arcData = arc.getData();
-            }
-            else {
+            if (!success) {
                 b = 0;
+                m_actionData->arcData = RS_ArcData{};
             }
             break;
         }

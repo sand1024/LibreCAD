@@ -27,10 +27,10 @@
 
 #include "rs_ellipse.h"
 
+#include "lc_creation_ellipse.h"
 #include "lc_quadratic.h"
 #include "lc_rect.h"
 #include "rs_circle.h"
-#include "rs_creation.h"
 #include "rs_debug.h"
 #include "rs_entitycontainer.h"
 #include "rs_information.h"
@@ -1132,7 +1132,7 @@ void RS_Ellipse::scale(const RS_Vector& center, const RS_Vector& factor) {
 RS_Entity& RS_Ellipse::shear(const double k) {
     RS_Ellipse e1 = *this;
     auto quadratic = e1.getQuadratic().shear(k);
-    RS_Creation::createEllipseFromQuadratic(quadratic, e1.m_data);
+    LC_CreationEllipse::createEllipseFromQuadratic(quadratic, e1.m_data);
     if (isArc()) {
         e1.moveStartpoint(getStartpoint().shear(k));
         e1.moveEndpoint(getEndpoint().shear(k));

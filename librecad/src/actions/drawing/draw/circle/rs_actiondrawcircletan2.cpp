@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "rs_actiondrawcircletan2.h"
 
+#include "lc_creation_circle.h"
 #include "qg_circletan2options.h"
 #include "rs_atomicentity.h"
 #include "rs_circle.h"
@@ -182,7 +183,7 @@ bool RS_ActionDrawCircleTan2::getCenters(RS_Entity* secondEntityCandidate) const
         circlesList = m_actionData->circles;
     }
 
-    m_actionData->centers = RS_Circle::createTan2(circlesList, m_actionData->circleData.radius);
+    m_actionData->centers = LC_CreationCircle::createTan2(circlesList, m_actionData->circleData.radius);
     m_actionData->valid = !m_actionData->centers.empty();
     return m_actionData->valid;
 }

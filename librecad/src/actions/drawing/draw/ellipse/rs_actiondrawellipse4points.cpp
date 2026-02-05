@@ -22,8 +22,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "rs_actiondrawellipse4points.h"
 
+#include "lc_creation_circle.h"
+#include "lc_creation_ellipse.h"
 #include "rs_circle.h"
-#include "rs_creation.h"
 #include "rs_document.h"
 #include "rs_ellipse.h"
 #include "rs_preview.h"
@@ -139,24 +140,22 @@ bool RS_ActionDrawEllipse4Points::preparePreview() const {
     switch (getStatus()) {
         case SetPoint2:
         case SetPoint3: {
-            RS_Circle c(m_preview.get(), m_actionData->circleData);
-            m_actionData->valid = c.createFrom3P(m_actionData->points);
-            if (m_actionData->valid) {
-                m_actionData->circleData = c.getData();
+            m_actionData->valid = LC_CreationCircle::createCircleFrom3P(m_actionData->points, m_actionData->circleData);
+            if (!m_actionData->valid) {
+                m_actionData->circleData = RS_CircleData{};
             }
             break;
         }
         case SetPoint4: {
             m_actionData->evalid = false;
             if ((m_actionData->points.get(SetPoint4) - m_actionData->points.get(SetPoint3)).squared() < RS_TOLERANCE15) {
-                RS_Circle c(m_preview.get(), m_actionData->circleData);
-                m_actionData->valid = c.createFrom3P(m_actionData->points);
-                if (m_actionData->valid) {
-                    m_actionData->circleData = c.getData();
+                m_actionData->valid = LC_CreationCircle::createCircleFrom3P(m_actionData->points,m_actionData->circleData);
+                if (!m_actionData->valid) {
+                    m_actionData->circleData = RS_CircleData{};
                 }
             }
             else {
-                m_actionData->valid = RS_Creation::createEllipseFrom4P(m_actionData->points, m_actionData->ellipseData);
+                m_actionData->valid = LC_CreationEllipse::createEllipseFrom4P(m_actionData->points, m_actionData->ellipseData);
                 if (m_actionData->valid) {
                     m_actionData->evalid = m_actionData->valid;
                     m_actionData->bUniqueEllipse = false;

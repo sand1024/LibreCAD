@@ -58,15 +58,6 @@ class LC_GraphicViewport;
  * @author Andrew Mustun
  */
 namespace RS_Creation {
-    bool createEllipseFromCenter3Points(const RS_VectorSolutions& sol, RS_EllipseData &data);
-    bool createEllipseFrom4P(const RS_VectorSolutions& sol, RS_EllipseData &data);
-    //! \{ \brief from quadratic form
-    /** : dn[0] x^2 + dn[1] xy + dn[2] y^2 =1 */
-    bool createEllipseFromQuadratic(const std::vector<double>& dn, RS_EllipseData &data);
-    /** : generic quadratic: A x^2 + C xy + B y^2 + D x + E y + F =0 */
-    bool createEllipseFromQuadratic(const LC_Quadratic& q, RS_EllipseData &data);
-    //! \}
-    bool createEllipseInscribeQuadrilateral(const std::vector<RS_Line*>& lines,std::vector<RS_Vector> &tangent, RS_EllipseData &data);
     void createParallelThrough(const RS_Vector& coord, int number, RS_Entity* e, bool symmetric, QList<RS_Entity*>& createdEntities);
     void createParallel(const RS_Vector& coord, double distance, int number, RS_Entity* e, bool symmetric, QList<RS_Entity*>& createdEntities);
     void createParallelLine(const RS_Vector& coord, double distance, int number, const RS_Line* e, bool symmetric, QList<RS_Entity*>& createdEntities);

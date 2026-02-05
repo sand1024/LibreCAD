@@ -24,6 +24,7 @@
 
 #include "lc_actioncontext.h"
 #include "lc_containertraverser.h"
+#include "lc_creation_arc.h"
 #include "rs_arc.h"
 #include "rs_document.h"
 #include "rs_pen.h"
@@ -109,15 +110,15 @@ void LC_ActionPolylineChangeSegmentType::onMouseMoveEvent(const int status, cons
             break;
         }
         case SetArcPoint:{
-            auto arc = RS_Arc(nullptr, RS_ArcData());
-            const bool suc = arc.createFrom3P(m_polylineSegment->getStartpoint(), mouse,m_polylineSegment->getEndpoint());
+            RS_ArcData arcData;
+            const bool success = LC_CreationArc::createFrom3P(m_polylineSegment->getStartpoint(), mouse,m_polylineSegment->getEndpoint(),arcData);
             previewRefLine(m_polylineSegment->getStartpoint(), m_polylineSegment->getEndpoint());
-            if (suc){
+            if (success){
                 previewRefSelectablePoint(mouse);
-                previewRefPoint(arc.getCenter());
+                previewRefPoint(arcData.center);
                 previewRefPoint(m_polylineSegment->getStartpoint());
                 previewRefPoint(m_polylineSegment->getEndpoint());
-                previewArc(arc.getData());
+                previewArc(arcData);
             }
             break;
         }
@@ -138,10 +139,10 @@ RS_Polyline* LC_ActionPolylineChangeSegmentType::createModifiedPolyline() const 
                     break;
                 }
                 case SetArcPoint: { // line to arc
-                    auto arc = RS_Arc(nullptr, RS_ArcData());
-                    const bool suc = arc.createFrom3P(m_polylineSegment->getStartpoint(), m_arcPoint,m_polylineSegment->getEndpoint());
-                    if (suc){
-                        const double bulge = arc.getBulge();
+                    RS_ArcData arcData;
+                    const bool success = LC_CreationArc::createFrom3P(m_polylineSegment->getStartpoint(), m_arcPoint,m_polylineSegment->getEndpoint(), arcData);
+                    if (success){
+                        const double bulge = arcData.getBulge();
                         result->addVertex(entity->getStartpoint(), bulge);
                     }
                     else{ // can't create arc

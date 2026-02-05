@@ -25,6 +25,7 @@
 **********************************************************************/
 #include "rs_actiondrawarc3p.h"
 
+#include "lc_creation_arc.h"
 #include "rs_arc.h"
 #include "rs_document.h"
 
@@ -86,19 +87,18 @@ void RS_ActionDrawArc3P::doTriggerCompletion([[maybe_unused]]bool success){
 
 void RS_ActionDrawArc3P::preparePreview(const bool alternatePoints) const {
     if (m_actionData->point1.valid && m_actionData->point2.valid && m_actionData->point3.valid){
-        RS_Arc arc(nullptr, m_actionData->data);
         const RS_Vector &middlePoint = m_actionData->point2;
         const RS_Vector &startPoint = m_actionData->point1;
         const RS_Vector &endPoint = m_actionData->point3;
-        bool suc;
+        bool success;
         if (alternatePoints){
-            suc = arc.createFrom3P(startPoint, endPoint, middlePoint);
+            success = LC_CreationArc::createFrom3P(startPoint, endPoint, middlePoint, m_actionData->data);
         }
         else {
-            suc = arc.createFrom3P(startPoint, middlePoint, endPoint);
+            success = LC_CreationArc::createFrom3P(startPoint, middlePoint, endPoint,m_actionData->data);
         }
-        if (suc){
-            m_actionData->data = arc.getData();
+        if (!success){
+            m_actionData->data = RS_ArcData{};
         }
     }
 }

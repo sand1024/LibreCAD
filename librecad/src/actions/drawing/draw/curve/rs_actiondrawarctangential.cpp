@@ -26,6 +26,7 @@
 #include "rs_actiondrawarctangential.h"
 
 #include "lc_actioncontext.h"
+#include "lc_creation_arc.h"
 #include "qg_arctangentialoptions.h"
 #include "rs_arc.h"
 #include "rs_debug.h"
@@ -104,21 +105,22 @@ void RS_ActionDrawArcTangential::preparePreview() {
             direction = RS_Math::correctAngle(m_baseEntity->getDirection2()+M_PI);
         }
 
-        RS_Arc arc(nullptr, RS_ArcData());
-        bool suc;
+        bool success;
         if (m_byRadius) {
-            suc = arc.createFrom2PDirectionRadius(startPoint, m_point, direction, m_arcData->radius);
+            success = LC_CreationArc::createFrom2PDirectionRadius(startPoint, m_point, direction, m_arcData->radius, *m_arcData);
         } else {
-            suc = arc.createFrom2PDirectionAngle(startPoint, m_point, direction, m_angleLength);
+            success = LC_CreationArc::createFrom2PDirectionAngle(startPoint, m_point, direction, m_angleLength, *m_arcData);
         }
-        if (suc) {
-            m_arcData.reset(new RS_ArcData(arc.getData()));
+        if (success) {
             if (!m_byRadius){
-                updateOptionsRadius(arc.getRadius());
+                updateOptionsRadius(m_arcData->radius);
             }
             else {
-                updateOptionsAngle(RS_Math::rad2deg(arc.getAngleLength()));
+                updateOptionsAngle(RS_Math::rad2deg(m_arcData->getAngleLength()));
             }
+        }
+        else {
+            m_arcData.reset(new RS_ArcData());
         }
     }
 }

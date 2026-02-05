@@ -26,6 +26,7 @@
 
 #include "rs_arc.h"
 
+#include "lc_creation_arc.h"
 #include "lc_quadratic.h"
 #include "lc_rect.h"
 #include "rs_debug.h"
@@ -120,149 +121,6 @@ RS_Entity* RS_Arc::clone() const {
     return a;
 }
 
-/**
- * Creates this arc from 3 given points which define the arc line.
- *
- * @param p1 1st point.
- * @param p2 2nd point.
- * @param p3 3rd point.
- */
-bool RS_Arc::createFrom3P(const RS_Vector& p1, const RS_Vector& p2, const RS_Vector& p3) {
-    const RS_Vector vra = p2 - p1;
-    const RS_Vector vrb = p3 - p1;
-    const double ra2 = vra.squared() * 0.5;
-    const double rb2 = vrb.squared() * 0.5;
-    double crossp = vra.x * vrb.y - vra.y * vrb.x;
-    if (fabs(crossp) < RS_TOLERANCE2) {
-        RS_DEBUG->print(RS_Debug::D_WARNING, "RS_Arc::createFrom3P(): " "Cannot create a arc with radius 0.0.");
-        return false;
-    }
-    crossp = 1. / crossp;
-    m_data.center.set((ra2 * vrb.y - rb2 * vra.y) * crossp, (rb2 * vra.x - ra2 * vrb.x) * crossp);
-    m_data.radius = m_data.center.magnitude();
-    m_data.center += p1;
-    m_data.angle1 = m_data.center.angleTo(p1);
-    m_data.angle2 = m_data.center.angleTo(p3);
-    m_data.reversed = RS_Math::isAngleBetween(m_data.center.angleTo(p2), m_data.angle1, m_data.angle2, true);
-    return true;
-}
-
-/**
- * Creates an arc from its startpoint, endpoint, start direction (angle)
- * and radius.
- *
- * @retval true Successfully created arc
- * @retval false Cannot create arc (radius to small or endpoint to far away)
- */
-bool RS_Arc::createFrom2PDirectionRadius(const RS_Vector& startPoint, const RS_Vector& endPoint, const double direction1,
-                                         const double radius) {
-    const RS_Vector ortho = RS_Vector::polar(radius, direction1 + M_PI_2);
-    const RS_Vector center1 = startPoint + ortho;
-    const RS_Vector center2 = startPoint - ortho;
-
-    if (center1.distanceTo(endPoint) < center2.distanceTo(endPoint)) {
-        m_data.center = center1;
-    }
-    else {
-        m_data.center = center2;
-    }
-
-    m_data.radius = radius;
-    m_data.angle1 = m_data.center.angleTo(startPoint);
-    m_data.angle2 = m_data.center.angleTo(endPoint);
-    m_data.reversed = false;
-
-    const double diff = RS_Math::correctAngle(getDirection1() - direction1);
-    if (fabs(diff - M_PI) < 1.0e-1) {
-        m_data.reversed = true;
-    }
-    calculateBorders();
-
-    return true;
-}
-
-/**
- * Creates an arc from its startpoint, endpoint, start direction (angle)
- * and angle length.
- *
- * @retval true Successfully created arc
- * @retval false Cannot create arc (radius to small or endpoint to far away)
- */
-bool RS_Arc::createFrom2PDirectionAngle(const RS_Vector& startPoint, const RS_Vector& endPoint, double direction1, double angleLength) {
-    if (angleLength <= RS_TOLERANCE_ANGLE || angleLength > 2. * M_PI - RS_TOLERANCE_ANGLE) {
-        return false;
-    }
-    RS_Line l0{nullptr, startPoint, startPoint - RS_Vector{direction1}};
-    const double halfA = 0.5 * angleLength;
-    l0.rotate(startPoint, halfA);
-
-    double d0;
-    RS_Vector vEnd0 = l0.getNearestPointOnEntity(endPoint, false, &d0);
-    RS_Line l1 = l0;
-    l1.rotate(startPoint, -angleLength);
-    double d1;
-    RS_Vector vEnd1 = l1.getNearestPointOnEntity(endPoint, false, &d1);
-    if (d1 < d0) {
-        vEnd0 = vEnd1;
-        l0 = l1;
-    }
-
-    l0.rotate((startPoint + vEnd0) * 0.5, M_PI_2);
-
-    l1 = RS_Line{nullptr, startPoint, startPoint + RS_Vector{direction1 + M_PI_2}};
-
-    const auto sol = RS_Information::getIntersection(&l0, &l1, false);
-    if (sol.size() == 0) {
-        return false;
-    }
-
-    m_data.center = sol.at(0);
-
-    m_data.radius = m_data.center.distanceTo(startPoint);
-    m_data.angle1 = m_data.center.angleTo(startPoint);
-    m_data.reversed = false;
-
-    double diff = RS_Math::correctAngle(getDirection1() - direction1);
-    if (fabs(diff - M_PI) < 1.0e-1) {
-        m_data.angle2 = RS_Math::correctAngle(m_data.angle1 - angleLength);
-        m_data.reversed = true;
-    }
-    else {
-        m_data.angle2 = RS_Math::correctAngle(m_data.angle1 + angleLength);
-    }
-    calculateBorders();
-    return true;
-}
-
-/**
- * Creates an arc from its startpoint, endpoint and bulge.
- */
-bool RS_Arc::createFrom2PBulge(const RS_Vector& startPoint, const RS_Vector& endPoint, const double bulge) {
-    m_data.reversed = bulge < 0.0;
-    const double alpha = std::atan(bulge) * 4.0;
-
-    const RS_Vector middle = (startPoint + endPoint) / 2.0;
-    const double dist = startPoint.distanceTo(endPoint) / 2.0;
-
-    // alpha can't be 0.0 at this point
-    m_data.radius = std::abs(dist / std::sin(alpha / 2.0));
-
-    const double wu = std::abs(m_data.radius * m_data.radius - dist * dist);
-    double angle = startPoint.angleTo(endPoint);
-    const bool reversed = std::signbit(bulge);
-    angle = reversed ? angle - M_PI_2 : angle + M_PI_2;
-
-    const double h = (std::abs(alpha) > M_PI) ? -std::sqrt(wu) : std::sqrt(wu);
-
-    m_data.center.setPolar(h, angle);
-    m_data.center += middle;
-    m_data.angle1 = m_data.center.angleTo(startPoint);
-    m_data.angle2 = m_data.center.angleTo(endPoint);
-
-    calculateBorders();
-
-    return true;
-}
 
 void RS_Arc::calculateBorders() {
     m_startPoint = m_data.center.relative(m_data.radius, m_data.angle1);
@@ -332,10 +190,7 @@ RS_VectorSolutions RS_Arc::getRefPoints() const {
 }
 
 double RS_Arc::getDirection1() const {
-    if (!m_data.reversed) {
-        return RS_Math::correctAngle(m_data.angle1 + M_PI_2);
-    }
-    return RS_Math::correctAngle(m_data.angle1 - M_PI_2);
+    return m_data.getDirection1();
 }
 
 /**
@@ -343,10 +198,7 @@ double RS_Arc::getDirection1() const {
  * the endpoint.
  */
 double RS_Arc::getDirection2() const {
-    if (!m_data.reversed) {
-        return RS_Math::correctAngle(m_data.angle2 - M_PI_2);
-    }
-    return RS_Math::correctAngle(m_data.angle2 + M_PI_2);
+    return m_data.getDirection2();
 }
 
 RS_Vector RS_Arc::doGetNearestEndpoint(const RS_Vector& coord, double* dist) const {
@@ -598,7 +450,8 @@ void RS_Arc::moveStartpoint(const RS_Vector& pos) {
     if (fabs(bulge - M_PI_2) < RS_TOLERANCE_ANGLE) {
         return;
     }
-    createFrom2PBulge(pos, getEndpoint(), bulge);
+    LC_CreationArc::createFrom2PBulge(pos, getEndpoint(), bulge, m_data);
+    calculateBorders();
     correctAngles(); // make sure angleLength is no more than 2*M_PI
     //}
 }
@@ -607,7 +460,8 @@ void RS_Arc::moveEndpoint(const RS_Vector& pos) {
     // polyline arcs: move point not angle:
     //if (parent && parent->rtti()==RS2::EntityPolyline) {
     const double bulge = getBulge();
-    createFrom2PBulge(getStartpoint(), pos, bulge);
+    LC_CreationArc::createFrom2PBulge(getStartpoint(), pos, bulge, m_data);
+    calculateBorders();
     correctAngles(); // make sure angleLength is no more than 2*M_PI
     //}
 }
@@ -970,25 +824,6 @@ RS_Vector RS_Arc::getMiddlePoint() const {
 }
 
 /**
- * @return Angle length in rad.
- */
-double RS_Arc::getAngleLength() const {
-    double a = getAngle1();
-    double b = getAngle2();
-
-    if (isReversed()) {
-        std::swap(a, b);
-    }
-    double ret = RS_Math::correctAngle(b - a);
-    // full circle:
-    if (std::abs(std::remainder(ret, 2. * M_PI)) < RS_TOLERANCE_ANGLE) {
-        ret = 2 * M_PI;
-    }
-
-    return ret;
-}
-
-/**
  * @return Length of the arc.
  */
 void RS_Arc::updateLength() {
@@ -999,8 +834,7 @@ void RS_Arc::updateLength() {
  * Gets the arc's bulge (tangens of angle length divided by 4).
  */
 double RS_Arc::getBulge() const {
-    const double bulge = std::tan(std::abs(getAngleLength()) / 4.0);
-    return isReversed() ? -bulge : bulge;
+    return m_data.getBulge();
 }
 
 double RS_Arc::getSagitta() const {
@@ -1070,10 +904,9 @@ void RS_Arc::updateMiddlePoint() {
 }
 
 void RS_Arc::moveMiddlePoint(const RS_Vector& vector) {
-    auto arc = RS_Arc(nullptr, RS_ArcData());
-    const bool suc = arc.createFrom3P(m_startPoint, vector, m_endPoint);
-    if (suc) {
-        const RS_ArcData& arcData = arc.m_data;
+    RS_ArcData arcData;
+    const bool success = LC_CreationArc::createFrom3P(m_startPoint, vector, m_endPoint, arcData);
+    if (success) {
         m_data.center = arcData.center;
         m_data.radius = arcData.radius;
         m_data.angle1 = arcData.angle1;

@@ -408,6 +408,9 @@ HEADERS += \
     lib/actions/rs_previewactioninterface.h \
     lib/actions/rs_snapper.h \
     lib/creation/rs_creation.h \
+    lib/creation/lc_creation_arc.h \
+    lib/creation/lc_creation_circle.h \
+    lib/creation/lc_creation_ellipse.h \
     lib/debug/rs_debug.h \
     lib/engine/document/ucs/lc_ucs.h \
     lib/engine/document/views/lc_view.h \
@@ -968,6 +971,9 @@ SOURCES += \
     lib/actions/rs_previewactioninterface.cpp \
     lib/actions/rs_snapper.cpp \
     lib/creation/rs_creation.cpp \
+    lib/creation/lc_creation_arc.cpp \
+    lib/creation/lc_creation_circle.cpp \
+    lib/creation/lc_creation_ellipse.cpp \
     lib/debug/rs_debug.cpp \
     lib/engine/document/ucs/lc_ucs.cpp \
     lib/engine/document/views/lc_view.cpp \

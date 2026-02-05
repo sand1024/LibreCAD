@@ -27,6 +27,7 @@
 #include "rs_actiondrawcircle2p.h"
 
 #include "rs_circle.h"
+#include "lc_creation_circle.h"
 #include "rs_dialogfactory.h"
 #include "rs_dialogfactoryinterface.h"
 
@@ -74,12 +75,11 @@ void RS_ActionDrawCircle2P::doTriggerCompletion([[maybe_unused]] bool success) {
 }
 
 void RS_ActionDrawCircle2P::preparePreview() {
-    m_circleData.reset(new RS_CircleData{});
+    // m_circleData.reset(new RS_CircleData{});
     if (m_actionData->point1.valid && m_actionData->point2.valid) {
-        RS_Circle circle(nullptr, *m_circleData);
-        const bool suc = circle.createFrom2P(m_actionData->point1, m_actionData->point2);
-        if (suc) {
-            m_circleData.reset(new RS_CircleData(circle.getData()));
+        const bool success = LC_CreationCircle::createCircleFrom2P(m_actionData->point1, m_actionData->point2,*m_circleData);
+        if (!success) {
+            m_circleData.reset(new RS_CircleData());
         }
     }
 }

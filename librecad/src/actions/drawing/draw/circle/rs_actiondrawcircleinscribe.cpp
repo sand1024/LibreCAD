@@ -22,11 +22,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "rs_actiondrawcircleinscribe.h"
 
+#include "lc_creation_circle.h"
 #include "rs_circle.h"
 #include "rs_document.h"
 #include "rs_line.h"
 #include "rs_polyline.h"
-#include "rs_preview.h"
 
 class RS_Polyline;
 
@@ -198,10 +198,9 @@ bool RS_ActionDrawCircleInscribe::preparePreview(RS_Line* en) {
         if (en != nullptr) {
             m_actionData->lines.push_back(en);
         }
-        RS_Circle c(m_preview.get(), m_actionData->circleData);
-        m_valid = c.createInscribe(m_actionData->coord, m_actionData->lines);
-        if (m_valid) {
-            m_actionData->circleData = c.getData();
+        m_valid = LC_CreationCircle::createCircleInscribe(m_actionData->coord, m_actionData->lines, m_actionData->circleData);
+        if (!m_valid) {
+            m_actionData->circleData = RS_CircleData();
         }
     }
     if (en != nullptr) {

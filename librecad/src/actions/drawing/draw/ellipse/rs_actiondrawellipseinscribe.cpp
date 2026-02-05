@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <vector>
 
-#include "rs_creation.h"
+#include "lc_creation_ellipse.h"
 #include "rs_document.h"
 #include "rs_ellipse.h"
 #include "rs_line.h"
@@ -181,7 +181,7 @@ bool RS_ActionDrawEllipseInscribe::preparePreview(RS_Line* fourthLineCandidate, 
     m_actionData->valid = false;
     m_actionData->lines.push_back(fourthLineCandidate);
     RS_EllipseData data;
-    m_actionData->valid = RS_Creation::createEllipseInscribeQuadrilateral(m_actionData->lines, tangent, data);
+    m_actionData->valid = LC_CreationEllipse::createEllipseInscribeQuadrilateral(m_actionData->lines, tangent, data);
     if (m_actionData->valid) {
         m_actionData->ellipseData = data;
         //    } else if (RS_DIALOGFACTORY){

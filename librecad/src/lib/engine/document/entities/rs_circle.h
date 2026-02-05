@@ -107,30 +107,8 @@ public:
     double getAngleLength() const;
     bool isTangent(const RS_CircleData& circleData) const override;
 
-    bool createFromCR(const RS_Vector& c, double r);
-    bool createFrom2P(const RS_Vector& p1, const RS_Vector& p2);
-    bool createFrom3P(const RS_Vector& p1, const RS_Vector& p2, const RS_Vector& p3);
-    bool createFrom3P(const RS_VectorSolutions& sol);
-    bool createInscribe(const RS_Vector& coord, const std::vector<RS_Line*>& lines);
     std::vector<RS_Entity*> offsetTwoSides(double distance) const override;
-    RS_VectorSolutions createTan1_2P(const RS_AtomicEntity* circle, const std::vector<RS_Vector>& points);
-    static RS_VectorSolutions createTan2(const std::vector<RS_AtomicEntity*>& circles, double r);
-    /** solve one of the eight Appollonius Equations
-| Cx - Ci|^2=(Rx+Ri)^2
-with Cx the center of the common tangent circle, Rx the radius. Ci and Ri are the Center and radius of the i-th existing circle
-**/
-    static std::vector<RS_Circle> solveAolloniusSingle(const std::vector<RS_Circle>& circles);
-    /**
-     * @brief solveApolloniusHyperbola a more generic solution based on hyperbola intersections.
-     *        this algorithm is likely worse in precision compared with solveAolloniusSingle().
-     *        Provided as a backup when solveAolloniusSingle() fails.
-     * @param circles - the three input circles
-     * @return candidates circles
-     */
-    static std::vector<RS_Circle> solveApolloniusHyperbola(const std::vector<RS_Circle>& circles);
 
-    std::vector<RS_Circle> createTan3(const std::vector<RS_AtomicEntity*>& circles);
-    bool testTan3(const std::vector<RS_AtomicEntity*>& circles) const;
     RS_Vector getMiddlePoint() const override;
     RS_Vector getNearestDistToEndpoint(double distance, bool startp) const override;
     RS_Vector getNearestOrthTan(const RS_Vector& coord, const RS_Line& normal, bool onEntity = false) const override;
