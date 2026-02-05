@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <vector>
 
+#include "rs_creation.h"
 #include "rs_document.h"
 #include "rs_ellipse.h"
 #include "rs_line.h"
@@ -179,10 +180,10 @@ void RS_ActionDrawEllipseInscribe::onMouseMoveEvent(const int status, const LC_M
 bool RS_ActionDrawEllipseInscribe::preparePreview(RS_Line* fourthLineCandidate, std::vector<RS_Vector>& tangent) const {
     m_actionData->valid = false;
     m_actionData->lines.push_back(fourthLineCandidate);
-    RS_Ellipse e{m_preview.get(), RS_EllipseData()};
-    m_actionData->valid = e.createInscribeQuadrilateral(m_actionData->lines, tangent);
+    RS_EllipseData data;
+    m_actionData->valid = RS_Creation::createEllipseInscribeQuadrilateral(m_actionData->lines, tangent, data);
     if (m_actionData->valid) {
-        m_actionData->ellipseData = e.getData();
+        m_actionData->ellipseData = data;
         //    } else if (RS_DIALOGFACTORY){
         //        RS_DIALOGFACTORY->commandMessage(tr("Can not determine uniquely an ellipse"));
     }

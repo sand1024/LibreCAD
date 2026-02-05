@@ -64,6 +64,36 @@ struct RS_EllipseData {
     double startAngleDegrees = 0.;
     double otherAngleDegrees = 0.;
     double angularLength = 0.;
+
+    void setAngle1(double a1) {
+        angle1 = a1;
+        isArc = std::isnormal(angle1) || std::isnormal(angle2);
+    }
+
+    void setAngle2(double a2) {
+        angle2 = a2;
+        isArc = std::isnormal(angle1) || std::isnormal(angle2);
+    }
+
+    void rotate(const RS_Vector& centr, double angle) {
+        const RS_Vector angleVector(angle);
+        rotate(centr, angleVector);
+    }
+
+    void rotate(double angle) {
+        const RS_Vector aV(angle);
+        center.rotate(aV);
+        majorP.rotate(aV);
+    }
+
+    void rotate(const RS_Vector& centr, const RS_Vector& angleVector) {
+        center.rotate(centr, angleVector);
+        majorP.rotate(angleVector);
+    }
+
+    void move(const RS_Vector& offset) {
+        center.move(offset);
+    }
 };
 
 std::ostream& operator << (std::ostream& os, const RS_EllipseData& ed);
@@ -182,15 +212,7 @@ public:
     bool isEdge() const override{
         return true;
     }
-    bool createFrom4P(const RS_VectorSolutions& sol);
-    bool createFromCenter3Points(const RS_VectorSolutions& sol);
-//! \{ \brief from quadratic form
-/** : dn[0] x^2 + dn[1] xy + dn[2] y^2 =1 */
-    bool createFromQuadratic(const std::vector<double>& dn);
-/** : generic quadratic: A x^2 + C xy + B y^2 + D x + E y + F =0 */
-    bool createFromQuadratic(const LC_Quadratic& q);
-//! \}
-    bool createInscribeQuadrilateral(const std::vector<RS_Line*>& lines,std::vector<RS_Vector> &tangent);
+
     RS_Vector getMiddlePoint()const override;
     RS_Vector getNearestOrthTan(const RS_Vector& coord,
                                 const RS_Line& normal,

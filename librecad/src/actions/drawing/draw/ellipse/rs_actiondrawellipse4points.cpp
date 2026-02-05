@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "rs_actiondrawellipse4points.h"
 
 #include "rs_circle.h"
+#include "rs_creation.h"
 #include "rs_document.h"
 #include "rs_ellipse.h"
 #include "rs_preview.h"
@@ -155,11 +156,9 @@ bool RS_ActionDrawEllipse4Points::preparePreview() const {
                 }
             }
             else {
-                RS_Ellipse e{m_preview.get(), m_actionData->ellipseData};
-                m_actionData->valid = e.createFrom4P(m_actionData->points);
+                m_actionData->valid = RS_Creation::createEllipseFrom4P(m_actionData->points, m_actionData->ellipseData);
                 if (m_actionData->valid) {
                     m_actionData->evalid = m_actionData->valid;
-                    m_actionData->ellipseData = e.getData();
                     m_actionData->bUniqueEllipse = false;
                 }
                 else {

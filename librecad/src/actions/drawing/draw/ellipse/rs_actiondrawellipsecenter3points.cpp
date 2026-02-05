@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "rs_actiondrawellipsecenter3points.h"
 
 #include "rs_circle.h"
+#include "rs_creation.h"
 #include "rs_document.h"
 #include "rs_ellipse.h"
 #include "rs_preview.h"
@@ -118,11 +119,7 @@ bool RS_ActionDrawEllipseCenter3Points::preparePreview() const {
         }
         case SetPoint2:
         case SetPoint3: {
-            RS_Ellipse e(m_preview.get(), m_actionData->ellipseData);
-            m_actionData->valid = e.createFromCenter3Points(m_actionData->points);
-            if (m_actionData->valid) {
-                m_actionData->ellipseData = e.getData();
-            }
+            m_actionData->valid = RS_Creation::createEllipseFromCenter3Points(m_actionData->points, m_actionData->ellipseData);
             break;
         }
         default:
