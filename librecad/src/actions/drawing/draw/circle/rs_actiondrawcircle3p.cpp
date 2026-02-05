@@ -74,7 +74,7 @@ void RS_ActionDrawCircle3P::doTriggerCompletion([[maybe_unused]] bool success) {
 void RS_ActionDrawCircle3P::preparePreview() const {
     m_actionData->circleData = RS_CircleData{};
     if (m_actionData->point1.valid && m_actionData->point2.valid && m_actionData->point3.valid) {
-        const bool success = LC_CreationCircle::createCircleFrom3P(m_actionData->point1, m_actionData->point2, m_actionData->point3,m_actionData->circleData);
+        const bool success = LC_CreationCircle::createFrom3P(m_actionData->point1, m_actionData->point2, m_actionData->point3,m_actionData->circleData);
         if (!success) {
             m_actionData->circleData = RS_CircleData{};
         }

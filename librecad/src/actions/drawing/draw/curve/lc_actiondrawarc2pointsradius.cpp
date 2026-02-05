@@ -22,6 +22,7 @@
 
 #include "lc_actiondrawarc2pointsradius.h"
 
+#include "lc_creation_arc.h"
 #include "rs_arc.h"
 
 LC_ActionDrawArc2PointsRadius::LC_ActionDrawArc2PointsRadius(LC_ActionContext *actionContext)
@@ -29,49 +30,7 @@ LC_ActionDrawArc2PointsRadius::LC_ActionDrawArc2PointsRadius(LC_ActionContext *a
 }
 
 bool LC_ActionDrawArc2PointsRadius::createArcData(RS_ArcData &data, [[maybe_unused]]int status, RS_Vector pos, const bool alternate, [[maybe_unused]]bool reportErrors) {
-
-    double chordLen = m_startPoint.distanceTo(pos);
-    double chordHalf = chordLen * 0.5;
-
-    const double chordAngle = m_startPoint.angleTo(pos);
-
-    RS_Vector chordLenHalfPont = (m_startPoint + pos) * 0.5;
-
-    const double radius = m_parameterLen;
-
-    if (chordHalf >= radius) {
-        chordLen = radius * 2;
-        chordHalf = radius;
-        pos = m_startPoint.relative(chordLen, chordAngle);
-        chordLenHalfPont = (m_startPoint + pos) * 0.5;
-    }
-
-    double distanceFromChordCenterToCenter = 0.0;
-    if ((radius - chordHalf) > RS_TOLERANCE) {
-        const double triangleLegSquared = radius * radius - chordHalf * chordHalf;
-        if (triangleLegSquared > 0) {
-            distanceFromChordCenterToCenter = sqrt(triangleLegSquared);
-        }
-    }
-
-
-    const double chordAngleNormal = chordAngle + M_PI_2;
-    const double chordAngleNormalAlt = chordAngle - M_PI_2;
-
-    bool reverseArc = m_reversed;
-    if (alternate){
-        reverseArc = !reverseArc;
-    }
-
-    const double angleToCenter = /*reverseArc*/ m_reversed ? chordAngleNormalAlt : chordAngleNormal;
-    const RS_Vector center = chordLenHalfPont.relative(distanceFromChordCenterToCenter, angleToCenter);
-
-    data.center = center;
-    data.reversed = reverseArc;
-    data.radius = radius;
-    data.angle1 = data.center.angleTo(m_startPoint);
-    data.angle2 = data.center.angleTo(pos);
-    return true;
+    return LC_CreationArc::createFrom2PRadius(m_startPoint, pos, m_parameterLen, m_reversed, alternate, data);
 }
 
 void LC_ActionDrawArc2PointsRadius::doPreviewOnPoint2Custom(RS_Arc *arc) {

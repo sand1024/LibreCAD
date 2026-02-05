@@ -140,7 +140,7 @@ bool RS_ActionDrawEllipse4Points::preparePreview() const {
     switch (getStatus()) {
         case SetPoint2:
         case SetPoint3: {
-            m_actionData->valid = LC_CreationCircle::createCircleFrom3P(m_actionData->points, m_actionData->circleData);
+            m_actionData->valid = LC_CreationCircle::createFrom3P(m_actionData->points, m_actionData->circleData);
             if (!m_actionData->valid) {
                 m_actionData->circleData = RS_CircleData{};
             }
@@ -149,7 +149,7 @@ bool RS_ActionDrawEllipse4Points::preparePreview() const {
         case SetPoint4: {
             m_actionData->evalid = false;
             if ((m_actionData->points.get(SetPoint4) - m_actionData->points.get(SetPoint3)).squared() < RS_TOLERANCE15) {
-                m_actionData->valid = LC_CreationCircle::createCircleFrom3P(m_actionData->points,m_actionData->circleData);
+                m_actionData->valid = LC_CreationCircle::createFrom3P(m_actionData->points,m_actionData->circleData);
                 if (!m_actionData->valid) {
                     m_actionData->circleData = RS_CircleData{};
                 }

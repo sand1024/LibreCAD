@@ -198,7 +198,7 @@ bool RS_ActionDrawCircleInscribe::preparePreview(RS_Line* en) {
         if (en != nullptr) {
             m_actionData->lines.push_back(en);
         }
-        m_valid = LC_CreationCircle::createCircleInscribe(m_actionData->coord, m_actionData->lines, m_actionData->circleData);
+        m_valid = LC_CreationCircle::createInscribe(m_actionData->coord, m_actionData->lines, m_actionData->circleData);
         if (!m_valid) {
             m_actionData->circleData = RS_CircleData();
         }

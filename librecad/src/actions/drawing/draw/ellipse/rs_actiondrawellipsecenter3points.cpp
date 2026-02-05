@@ -109,7 +109,7 @@ bool RS_ActionDrawEllipseCenter3Points::preparePreview() const {
     m_actionData->valid = false;
     switch (getStatus()) {
         case SetPoint1: {
-            m_actionData->valid = LC_CreationCircle::createCircleFromCR(m_actionData->points.at(0),
+            m_actionData->valid = LC_CreationCircle::createFromCR(m_actionData->points.at(0),
                                                  m_actionData->points.get(0).distanceTo(m_actionData->points.get(1)), m_actionData->circleData);
 
             if (!m_actionData->valid) {

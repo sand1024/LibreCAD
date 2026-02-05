@@ -29,7 +29,6 @@
 #include "rs_line.h"
 
 namespace {
-
     /**
      * @brief isCollinearXY whether the 2x3 matrix has degenerate columns
      * @param mat - a 2x3 linear equation to solve an Appollonius
@@ -58,6 +57,126 @@ namespace {
         return true;
     }
 
+    /** solve one of the eight Appollonius Equations
+    | Cx - Ci|^2=(Rx+Ri)^2
+    with Cx the center of the common tangent circle, Rx the radius. Ci and Ri are the Center and radius of the i-th existing circle
+    **/
+    std::vector<RS_Circle> solveCircleApolloniusSingle(const std::vector<RS_Circle>& circles) {
+        //          std::cout<<__FILE__<<" : "<<__func__<<" : line "<<__LINE__<<std::endl;
+        //          for(int i=0;i<circles.size();i++){
+        //std::cout<<"i="<<i<<"\t center="<<circles[i].getCenter()<<"\tr="<<circles[i].getRadius()<<std::endl;
+        //          }
+
+        std::vector<RS_Vector> centers;
+        std::vector<double> radii;
+
+        for (const RS_Circle& c : circles) {
+            if (!c.getCenter().valid) {
+                return {};
+            }
+            centers.push_back(c.getCenter());
+            radii.push_back(c.getRadius());
+        }
+        //              for(int i=0;i<circles.size();i++){
+        //    std::cout<<"i="<<i<<"\t center="<<circles[i].getCenter()<<"\tr="<<radii.at(i)<<std::endl;
+        //              }
+        /** form the linear equation to solve center in radius **/
+        std::vector<std::vector<double>> mat(2, std::vector<double>(3, 0.));
+        mat[0][0] = centers[2].x - centers[0].x;
+        mat[0][1] = centers[2].y - centers[0].y;
+        mat[1][0] = centers[2].x - centers[1].x;
+        mat[1][1] = centers[2].y - centers[1].y;
+
+        // Issue #2160: this algebraic algorithm fails when input circle centers are identical in
+        // x-coordinates or y-coordinates
+        LC_LOG << __func__ << "(): identicalXOrY=" << identicalXOrY(mat);
+        if (identicalXOrY(mat) || std::abs(mat[0][0] * mat[1][1] - mat[0][1] * mat[1][0]) < RS_TOLERANCE15) {
+            return {};
+        }
+        // r^0 term
+        mat[0][2] = 0.5 * (centers[2].squared() - centers[0].squared() + radii[0] * radii[0] - radii[2] * radii[2]);
+        mat[1][2] = 0.5 * (centers[2].squared() - centers[1].squared() + radii[1] * radii[1] - radii[2] * radii[2]);
+        //    std::cout<<__FILE__<<" : "<<__func__<<" : line "<<__LINE__<<std::endl;
+        //    for(unsigned short i=0;i<=1;i++){
+        //        std::cout<<"eqs P:"<<i<<" : "<<mat[i][0]<<"*x + "<<mat[i][1]<<"*y = "<<mat[i][2]<<std::endl;
+        //    }
+        //    std::vector<std::vector<double> > sm(2,std::vector<double>(2,0.));
+        std::vector<double> sm(2, 0.);
+        if (RS_Math::linearSolver(mat, sm) == false) {
+            return {};
+        }
+
+        const RS_Vector vp(sm[0], sm[1]);
+        //      std::cout<<__FILE__<<" : "<<__func__<<" : line "<<__LINE__<<std::endl;
+        //      std::cout<<"vp="<<vp<<std::endl;
+
+        // r term
+        mat[0][2] = radii[0] - radii[2];
+        mat[1][2] = radii[1] - radii[2];
+        //    for(unsigned short i=0;i<=1;i++){
+        //        std::cout<<"eqs Q:"<<i<<" : "<<mat[i][0]<<"*x + "<<mat[i][1]<<"*y = "<<mat[i][2]<<std::endl;
+        //    }
+        if (RS_Math::linearSolver(mat, sm) == false) {
+            return {};
+        }
+        const RS_Vector vq(sm[0], sm[1]);
+        //      std::cout<<"vq="<<vq<<std::endl;
+        //form quadratic equation for r
+        const RS_Vector dcp = vp - centers[0];
+        const double a = vq.squared() - 1.;
+        if (std::abs(a) < RS_TOLERANCE * 1e-4) {
+            return {};
+        }
+        std::vector<double> ce(0, 0.);
+        ce.push_back(2. * (dcp.dotP(vq) - radii[0]) / a);
+        ce.push_back((dcp.squared() - radii[0] * radii[0]) / a);
+        const std::vector<double> vr = RS_Math::quadraticSolver(ce);
+        std::vector<RS_Circle> ret;
+        for (const double dist : vr) {
+            if (dist >= RS_TOLERANCE) {
+                ret.emplace_back(RS_Circle(nullptr, {vp + vq * dist, std::abs(dist)}));
+            }
+        }
+        //    std::cout<<__FILE__<<" : "<<__func__<<" : line "<<__LINE__<<std::endl;
+        //    std::cout<<"Found "<<ret.size()<<" solutions"<<std::endl;
+
+        return ret;
+    }
+
+    /**
+    * @brief solveApolloniusHyperbola a more generic solution based on hyperbola intersections.
+    *        this algorithm is likely worse in precision compared with solveAolloniusSingle().
+    *        Provided as a backup when solveAolloniusSingle() fails.
+    * @param circles - the three input circles
+    * @return candidates circles
+    */
+    std::vector<RS_Circle> solveCircleApolloniusHyperbola(const std::vector<RS_Circle>& circles) {
+        assert(circles.size() == 3);
+        std::vector<RS_Vector> centers;
+        std::vector<double> radii;
+
+        for (const RS_Circle& c : circles) {
+            if (!c.getCenter().valid) {
+                return {};
+            }
+            centers.push_back(c.getCenter());
+            radii.push_back(c.getRadius());
+        }
+        const size_t i0 = (centers[0] == centers[1] || centers[0] == centers[2]) ? 1 : 0;
+
+        std::vector<RS_Circle> ret;
+        const LC_Quadratic lc0(&(circles[i0]), &(circles[(i0 + 1) % 3]));
+        const LC_Quadratic lc1(&(circles[i0]), &(circles[(i0 + 2) % 3]));
+        RS_VectorSolutions c0 = LC_Quadratic::getIntersection(lc0, lc1);
+        for (size_t i = 0; i < c0.size(); i++) {
+            const double dc = c0[i].distanceTo(centers[i0]);
+            ret.push_back(RS_Circle(nullptr, {c0[i], std::abs(dc - radii[i0])}));
+            if (dc > radii[i0]) {
+                ret.push_back(RS_Circle(nullptr, {c0[i], dc + radii[i0]}));
+            }
+        }
+        return ret;
+    }
 }
 
 /**
@@ -66,7 +185,7 @@ namespace {
  * @param c Center.
  * @param r Radius
  */
-bool LC_CreationCircle::createCircleFromCR(const RS_Vector& c, const double r, RS_CircleData& data) {
+bool LC_CreationCircle::createFromCR(const RS_Vector& c, const double r, RS_CircleData& data) {
     if (std::abs(r) > RS_TOLERANCE && c.valid) {
         data.radius = std::abs(r);
         data.center = c;
@@ -82,7 +201,7 @@ bool LC_CreationCircle::createCircleFromCR(const RS_Vector& c, const double r, R
  * @param p1 1st point.
  * @param p2 2nd point.
  */
-bool LC_CreationCircle::createCircleFrom2P(const RS_Vector& p1, const RS_Vector& p2, RS_CircleData& data) {
+bool LC_CreationCircle::createFrom2P(const RS_Vector& p1, const RS_Vector& p2, RS_CircleData& data) {
     const double r = 0.5 * p1.distanceTo(p2);
     if (r > RS_TOLERANCE) {
         data.radius = r;
@@ -101,7 +220,7 @@ bool LC_CreationCircle::createCircleFrom2P(const RS_Vector& p1, const RS_Vector&
  * @param p2 2nd point.
  * @param p3 3rd point.
  */
-bool LC_CreationCircle::createCircleFrom3P(const RS_Vector& p1, const RS_Vector& p2, const RS_Vector& p3, RS_CircleData& data) {
+bool LC_CreationCircle::createFrom3P(const RS_Vector& p1, const RS_Vector& p2, const RS_Vector& p3, RS_CircleData& data) {
     const RS_Vector vra = p2 - p1;
     const RS_Vector vrb = p3 - p1;
     const double ra2 = vra.squared() * 0.5;
@@ -120,15 +239,15 @@ bool LC_CreationCircle::createCircleFrom3P(const RS_Vector& p1, const RS_Vector&
 
 //*create Circle from 3 points
 //Author: Dongxu Li
-bool LC_CreationCircle::createCircleFrom3P(const RS_VectorSolutions& sol, RS_CircleData& data) {
+bool LC_CreationCircle::createFrom3P(const RS_VectorSolutions& sol, RS_CircleData& data) {
     if (sol.getNumber() < 2) {
         return false;
     }
     if (sol.getNumber() == 2) {
-        return createCircleFrom2P(sol.get(0), sol.get(1), data);
+        return createFrom2P(sol.get(0), sol.get(1), data);
     }
     if ((sol.get(1) - sol.get(2)).squared() < RS_TOLERANCE2) {
-        return createCircleFrom2P(sol.get(0), sol.get(1), data);
+        return createFrom2P(sol.get(0), sol.get(1), data);
     }
     const RS_Vector vra(sol.get(1) - sol.get(0));
     const RS_Vector vrb(sol.get(2) - sol.get(0));
@@ -151,7 +270,7 @@ bool LC_CreationCircle::createCircleFrom3P(const RS_VectorSolutions& sol, RS_Cir
   *
   *Author: Dongxu Li
   */
-bool LC_CreationCircle::createCircleInscribe(const RS_Vector& coord, const std::vector<RS_Line*>& lines, RS_CircleData& data) {
+bool LC_CreationCircle::createInscribe(const RS_Vector& coord, const std::vector<RS_Line*>& lines, RS_CircleData& data) {
     if (lines.size() < 3) {
         return false;
     }
@@ -196,7 +315,7 @@ bool LC_CreationCircle::createCircleInscribe(const RS_Vector& coord, const std::
     if (sol.isEmpty()) {
         return false;
     }
-    bool ret = createCircleFromCR(sol.get(0), tri[1]->getDistanceToPoint(sol.get(0)), data);
+    bool ret = createFromCR(sol.get(0), tri[1]->getDistanceToPoint(sol.get(0)), data);
     if (!ret) {
         return false;
     }
@@ -208,7 +327,7 @@ bool LC_CreationCircle::createCircleInscribe(const RS_Vector& coord, const std::
     return true;
 }
 
-std::vector<RS_Circle> LC_CreationCircle::createCircleTan3(const std::vector<RS_AtomicEntity*>& circles) {
+std::vector<RS_Circle> LC_CreationCircle::createTan3(const std::vector<RS_AtomicEntity*>& circles) {
     std::vector<RS_Circle> ret;
     if (circles.size() != 3) {
         return ret;
@@ -228,7 +347,7 @@ std::vector<RS_Circle> LC_CreationCircle::createCircleTan3(const std::vector<RS_
             }
         }
         //        RS_DEBUG->print(RS_Debug::D_ERROR, "flags=%d\n",flags);
-        std::vector<RS_Circle> list = solveCircleAolloniusSingle(cs);
+        std::vector<RS_Circle> list = solveCircleApolloniusSingle(cs);
         if (list.empty()) {
             list = solveCircleApolloniusHyperbola(cs);
         }
@@ -240,7 +359,7 @@ std::vector<RS_Circle> LC_CreationCircle::createCircleTan3(const std::vector<RS_
                         RS_TOLERANCE) {
                         addNew = false;
                         break;
-                        }
+                    }
                 }
                 if (addNew) {
                     ret.push_back(c0);
@@ -257,120 +376,6 @@ std::vector<RS_Circle> LC_CreationCircle::createCircleTan3(const std::vector<RS_
     ret.erase(it, ret.end());
     //        DEBUG_HEADER
     //    std::cout<<"after testing, ret.size()="<<ret.size()<<std::endl;
-    return ret;
-}
-
-/** solve one of the eight Appollonius Equations
-| Cx - Ci|^2=(Rx+Ri)^2
-with Cx the center of the common tangent circle, Rx the radius. Ci and Ri are the Center and radius of the i-th existing circle
-**/
-std::vector<RS_Circle> LC_CreationCircle::solveCircleAolloniusSingle(const std::vector<RS_Circle>& circles) {
-    //          std::cout<<__FILE__<<" : "<<__func__<<" : line "<<__LINE__<<std::endl;
-    //          for(int i=0;i<circles.size();i++){
-    //std::cout<<"i="<<i<<"\t center="<<circles[i].getCenter()<<"\tr="<<circles[i].getRadius()<<std::endl;
-    //          }
-
-    std::vector<RS_Vector> centers;
-    std::vector<double> radii;
-
-    for (const RS_Circle& c : circles) {
-        if (!c.getCenter().valid) {
-            return {};
-        }
-        centers.push_back(c.getCenter());
-        radii.push_back(c.getRadius());
-    }
-    //              for(int i=0;i<circles.size();i++){
-    //    std::cout<<"i="<<i<<"\t center="<<circles[i].getCenter()<<"\tr="<<radii.at(i)<<std::endl;
-    //              }
-    /** form the linear equation to solve center in radius **/
-    std::vector<std::vector<double>> mat(2, std::vector<double>(3, 0.));
-    mat[0][0] = centers[2].x - centers[0].x;
-    mat[0][1] = centers[2].y - centers[0].y;
-    mat[1][0] = centers[2].x - centers[1].x;
-    mat[1][1] = centers[2].y - centers[1].y;
-
-    // Issue #2160: this algebraic algorithm fails when input circle centers are identical in
-    // x-coordinates or y-coordinates
-    LC_LOG << __func__ << "(): identicalXOrY=" << identicalXOrY(mat);
-    if (identicalXOrY(mat) || std::abs(mat[0][0] * mat[1][1] - mat[0][1] * mat[1][0]) < RS_TOLERANCE15) {
-        return {};
-    }
-    // r^0 term
-    mat[0][2] = 0.5 * (centers[2].squared() - centers[0].squared() + radii[0] * radii[0] - radii[2] * radii[2]);
-    mat[1][2] = 0.5 * (centers[2].squared() - centers[1].squared() + radii[1] * radii[1] - radii[2] * radii[2]);
-    //    std::cout<<__FILE__<<" : "<<__func__<<" : line "<<__LINE__<<std::endl;
-    //    for(unsigned short i=0;i<=1;i++){
-    //        std::cout<<"eqs P:"<<i<<" : "<<mat[i][0]<<"*x + "<<mat[i][1]<<"*y = "<<mat[i][2]<<std::endl;
-    //    }
-    //    std::vector<std::vector<double> > sm(2,std::vector<double>(2,0.));
-    std::vector<double> sm(2, 0.);
-    if (RS_Math::linearSolver(mat, sm) == false) {
-        return {};
-    }
-
-    const RS_Vector vp(sm[0], sm[1]);
-    //      std::cout<<__FILE__<<" : "<<__func__<<" : line "<<__LINE__<<std::endl;
-    //      std::cout<<"vp="<<vp<<std::endl;
-
-    // r term
-    mat[0][2] = radii[0] - radii[2];
-    mat[1][2] = radii[1] - radii[2];
-    //    for(unsigned short i=0;i<=1;i++){
-    //        std::cout<<"eqs Q:"<<i<<" : "<<mat[i][0]<<"*x + "<<mat[i][1]<<"*y = "<<mat[i][2]<<std::endl;
-    //    }
-    if (RS_Math::linearSolver(mat, sm) == false) {
-        return {};
-    }
-    const RS_Vector vq(sm[0], sm[1]);
-    //      std::cout<<"vq="<<vq<<std::endl;
-    //form quadratic equation for r
-    const RS_Vector dcp = vp - centers[0];
-    const double a = vq.squared() - 1.;
-    if (std::abs(a) < RS_TOLERANCE * 1e-4) {
-        return {};
-    }
-    std::vector<double> ce(0, 0.);
-    ce.push_back(2. * (dcp.dotP(vq) - radii[0]) / a);
-    ce.push_back((dcp.squared() - radii[0] * radii[0]) / a);
-    const std::vector<double> vr = RS_Math::quadraticSolver(ce);
-    std::vector<RS_Circle> ret;
-    for (const double dist : vr) {
-        if (dist >= RS_TOLERANCE) {
-            ret.emplace_back(RS_Circle(nullptr, {vp + vq * dist, std::abs(dist)}));
-        }
-    }
-    //    std::cout<<__FILE__<<" : "<<__func__<<" : line "<<__LINE__<<std::endl;
-    //    std::cout<<"Found "<<ret.size()<<" solutions"<<std::endl;
-
-    return ret;
-}
-
-std::vector<RS_Circle> LC_CreationCircle::solveCircleApolloniusHyperbola(const std::vector<RS_Circle>& circles) {
-    assert(circles.size() == 3);
-    std::vector<RS_Vector> centers;
-    std::vector<double> radii;
-
-    for (const RS_Circle& c : circles) {
-        if (!c.getCenter().valid) {
-            return {};
-        }
-        centers.push_back(c.getCenter());
-        radii.push_back(c.getRadius());
-    }
-    const size_t i0 = (centers[0] == centers[1] || centers[0] == centers[2]) ? 1 : 0;
-
-    std::vector<RS_Circle> ret;
-    const LC_Quadratic lc0(&(circles[i0]), &(circles[(i0 + 1) % 3]));
-    const LC_Quadratic lc1(&(circles[i0]), &(circles[(i0 + 2) % 3]));
-    RS_VectorSolutions c0 = LC_Quadratic::getIntersection(lc0, lc1);
-    for (size_t i = 0; i < c0.size(); i++) {
-        const double dc = c0[i].distanceTo(centers[i0]);
-        ret.push_back(RS_Circle(nullptr, {c0[i], std::abs(dc - radii[i0])}));
-        if (dc > radii[i0]) {
-            ret.push_back(RS_Circle(nullptr, {c0[i], dc + radii[i0]}));
-        }
-    }
     return ret;
 }
 
@@ -405,4 +410,28 @@ RS_VectorSolutions LC_CreationCircle::createTan2(const std::vector<RS_AtomicEnti
         delete *it0;
     }
     return centers;
+}
+
+bool LC_CreationCircle::create2PRadius(const RS_Vector& point1, const RS_Vector& point2, double radius, RS_Vector& altCenter, RS_CircleData& m_circleData){
+    const double chordLenght = point2.distanceTo(point1);
+    if (chordLenght <= 2. * radius) {
+        const RS_Vector chordMiddlePoint = (point1 + point2) * 0.5;
+        const double angle = point1.angleTo(point2) + 0.5 * M_PI;
+        m_circleData.radius = radius;
+        const double distanceFromChordToCenter = sqrt(radius * radius - 0.25 * point1.squaredTo(point2));
+        const RS_Vector ortoVector = RS_Vector(angle) * distanceFromChordToCenter;
+        const RS_Vector& center1 = chordMiddlePoint + ortoVector;
+        const RS_Vector& center2 = chordMiddlePoint - ortoVector;
+
+        if (center1.squaredTo(center2) < RS_TOLERANCE) {
+            //no need to select center, as only one solution possible
+            m_circleData.center = chordMiddlePoint;
+            return false;
+        }
+        m_circleData.center = center1;
+        altCenter = center2;
+        return true;
+    }
+    m_circleData.center.valid = false;
+    return false;
 }

@@ -77,7 +77,7 @@ void RS_ActionDrawCircle2P::doTriggerCompletion([[maybe_unused]] bool success) {
 void RS_ActionDrawCircle2P::preparePreview() {
     // m_circleData.reset(new RS_CircleData{});
     if (m_actionData->point1.valid && m_actionData->point2.valid) {
-        const bool success = LC_CreationCircle::createCircleFrom2P(m_actionData->point1, m_actionData->point2,*m_circleData);
+        const bool success = LC_CreationCircle::createFrom2P(m_actionData->point1, m_actionData->point2,*m_circleData);
         if (!success) {
             m_circleData.reset(new RS_CircleData());
         }

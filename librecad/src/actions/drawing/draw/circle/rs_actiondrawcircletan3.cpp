@@ -320,7 +320,7 @@ bool RS_ActionDrawCircleTan3::getData(RS_Entity* testThirdEntity) const {
         }
     }
     else {
-        auto solutions = LC_CreationCircle::createCircleTan3(circlesList);
+        auto solutions = LC_CreationCircle::createTan3(circlesList);
         m_actionData->candidates.clear();
         for (const RS_Circle& s : solutions) {
             m_actionData->candidates.push_back(std::make_shared<RS_CircleData>(s.getData()));

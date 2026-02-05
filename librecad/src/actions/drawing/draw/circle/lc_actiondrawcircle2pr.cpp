@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "lc_actiondrawcircle2pr.h"
 
+#include "lc_creation_circle.h"
 #include "rs_circle.h"
 #include "rs_document.h"
 #include "rs_preview.h"
@@ -68,34 +69,16 @@ void LC_ActionDrawCircle2PR::doTriggerCompletion([[maybe_unused]] bool success) 
 }
 
 bool LC_ActionDrawCircle2PR::preparePreview(const RS_Vector& mouse, RS_Vector& altCenter) const {
-    const RS_Vector vp = (m_actionData->point1 + m_actionData->point2) * 0.5;
-    const double angle = m_actionData->point1.angleTo(m_actionData->point2) + 0.5 * M_PI;
-    const double& r0 = m_circleData->radius;
-    const double r = sqrt(r0 * r0 - 0.25 * m_actionData->point1.squaredTo(m_actionData->point2));
-    const RS_Vector dvp = RS_Vector(angle) * r;
-    const RS_Vector& center1 = vp + dvp;
-    const RS_Vector& center2 = vp - dvp;
-
-    if (center1.squaredTo(center2) < RS_TOLERANCE) {
-        //no need to select center, as only one solution possible
-        m_circleData->center = vp;
-        return false;
+    const bool result = LC_CreationCircle::create2PRadius(m_actionData->point1, m_actionData->point2, m_circleData->radius, altCenter, *m_circleData);
+    if (result) {
+        const double ds = mouse.squaredTo(m_circleData->center) - mouse.squaredTo(altCenter);
+        if (ds > 0.) {
+            const RS_Vector center = m_circleData->center;
+            m_circleData->center = altCenter;
+            altCenter = center;
+        }
     }
-
-    const double ds = mouse.squaredTo(center1) - mouse.squaredTo(center2);
-
-    if (ds < 0.) {
-        m_circleData->center = center1;
-        altCenter = center2;
-        return true;
-    }
-    if (ds > 0.) {
-        m_circleData->center = center2;
-        altCenter = center1;
-        return true;
-    }
-    m_circleData->center.valid = false;
-    return false;
+    return result;
 }
 
 void LC_ActionDrawCircle2PR::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {

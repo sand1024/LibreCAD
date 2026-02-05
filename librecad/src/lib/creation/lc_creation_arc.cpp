@@ -23,10 +23,24 @@
 
 #include "lc_creation_arc.h"
 
+#include "rs_circle.h"
 #include "rs_debug.h"
 #include "rs_information.h"
 #include "rs_line.h"
 #include "rs_math.h"
+
+namespace {
+    double determineArcAngleByLenAndChord(const double arcLen, const double chordLen) {
+        const double k = chordLen / arcLen;
+        double x = std::sqrt(6 - (6 * k));
+
+        for (int i = 0; i < 6; i++) {
+            x = x - (std::sin(x) - k * x) / (std::cos(x) - k);
+        }
+        return 2 * x;
+    }
+
+}
 
 /**
  * Creates this arc from 3 given points which define the arc line.
@@ -166,5 +180,197 @@ bool LC_CreationArc::createFrom2PBulge(const RS_Vector& startPoint, const RS_Vec
     data.center += middle;
     data.angle1 = data.center.angleTo(startPoint);
     data.angle2 = data.center.angleTo(endPoint);
+    return true;
+}
+
+bool LC_CreationArc::createFrom2PAngle(const RS_Vector& firstPoint, const RS_Vector& secondPoint, double angle, const bool reversed,
+                                       const bool alternate, RS_ArcData& data) {
+    const double chordAngle = firstPoint.angleTo(secondPoint);
+    const double chordAngleNormal = chordAngle + M_PI_2;
+    const double chordAngleNormalAlt = chordAngle - M_PI_2;
+
+    const double chordLen = secondPoint.distanceTo(firstPoint);
+    const double chordLenHalf = chordLen * 0.5;
+
+    const double angleHalf = angle*0.5;
+
+    const double distanceFromChordCenterToCenter = chordLenHalf / tan(angleHalf);
+
+    const RS_Vector chordLenHalfPont = (firstPoint + secondPoint) * 0.5;
+
+    bool reverseArc = reversed;
+    if (alternate){
+        reverseArc = !reverseArc;
+    }
+
+    const double angleToCenter = /*reverseArc*/ reversed ? chordAngleNormalAlt : chordAngleNormal;
+    const RS_Vector center = chordLenHalfPont.relative(distanceFromChordCenterToCenter, angleToCenter);
+
+    const double radius = center.distanceTo(firstPoint);
+    const double angle1 = center.angleTo(firstPoint);
+    const double angle2 = center.angleTo(secondPoint);
+
+    data.angle1 = angle1;
+    data.angle2 = angle2;
+    data.reversed = reverseArc;
+    data.radius = radius;
+    data.center = center;
+    return true;
+}
+
+bool LC_CreationArc::createFrom2PHeight(const RS_Vector& firstPoint, const RS_Vector& secondPoint, double height, const bool reversed,
+                                       const bool alternate, RS_ArcData& data) {
+
+    double chordLen = firstPoint.distanceTo(secondPoint);
+    double arcHeight = height;
+
+    double radius = arcHeight / 2 + (chordLen * chordLen) / (8 * arcHeight);
+
+
+    auto circle1 = RS_Circle(nullptr, RS_CircleData(firstPoint, radius));
+    auto circle2 = RS_Circle(nullptr, RS_CircleData(secondPoint, radius));
+
+    const RS_VectorSolutions &intersections = RS_Information::getIntersection(&circle1, &circle2);
+
+    RS_Vector center;
+
+    bool reverseArc = reversed;
+    if (alternate){
+        reverseArc = !reverseArc;
+    }
+
+    RS_Vector pointForAngle2 = secondPoint;
+    if (intersections.size() == 2) {
+        RS_Vector ipRight, ipLeft;
+        int pointPosition = LC_LineMath::getPointPosition(firstPoint, secondPoint, intersections[0]);
+        if (pointPosition == LC_LineMath::PointToLinePosition::RIGHT) {
+            ipRight = intersections[0];
+            ipLeft = intersections[1];
+        }
+        else {
+            ipLeft = intersections[0];
+            ipRight = intersections[1];
+        }
+        bool heightLargeThanHalfChord = arcHeight > (chordLen / 2);
+
+        if (reversed) {
+            center = heightLargeThanHalfChord ? ipLeft : ipRight;
+        } else {
+            center = heightLargeThanHalfChord ? ipRight : ipLeft;
+        }
+    } else {
+        auto v = RS_Vector();
+        v.setPolar(radius, firstPoint.angleTo(secondPoint));
+        center = firstPoint + v;
+        pointForAngle2 = firstPoint + v*2.0;
+    }
+
+    data.center = center;
+    data.reversed = reverseArc;
+    data.radius = radius;
+    data.angle1 = data.center.angleTo(firstPoint);
+    data.angle2 = data.center.angleTo(pointForAngle2);
+    return true;
+}
+
+bool LC_CreationArc::createFrom2PArcLength(const RS_Vector& firstPoint, const RS_Vector& secondPoint, double arcLen, const bool reversed,
+                                       const bool alternate, RS_ArcData& data) {
+
+    double chordLen = firstPoint.distanceTo(secondPoint);
+
+    if (chordLen >= arcLen) {
+        return false;
+    }
+
+    double angle = determineArcAngleByLenAndChord(arcLen, chordLen);
+    double radius = chordLen/(2.0 * std::sin(angle/2.0));
+
+    auto circle1 = RS_Circle(nullptr, RS_CircleData(firstPoint, radius));
+    auto circle2 = RS_Circle(nullptr, RS_CircleData(secondPoint, radius));
+
+    const RS_VectorSolutions &intersections = RS_Information::getIntersection(&circle2, &circle1, false);
+
+    RS_Vector center;
+
+    bool reverseArc = reversed;
+    if (alternate){
+        reverseArc = !reverseArc;
+    }
+
+    RS_Vector pointForAngle2 = secondPoint;
+    if (intersections.size() == 2) {
+        RS_Vector ipRight, ipLeft;
+        int pointPosition = LC_LineMath::getPointPosition(firstPoint, secondPoint, intersections[0]);
+        if (pointPosition == LC_LineMath::PointToLinePosition::RIGHT) {
+            ipRight = intersections[0];
+            ipLeft = intersections[1];
+        }
+        else {
+            ipLeft = intersections[0];
+            ipRight = intersections[1];
+        }
+        bool angleLessPI = angle < M_PI;
+
+        if (reversed) {
+            center = angleLessPI ? ipRight : ipLeft;
+        } else {
+            center = angleLessPI ? ipLeft : ipRight;
+        }
+    } else {
+        double chordAngle = firstPoint.angleTo(secondPoint);
+        const auto v = RS_Vector::polar(radius, chordAngle);
+        center = firstPoint + v;
+        pointForAngle2 = firstPoint + v*2.0;
+    }
+
+    data.center = center;
+    data.reversed = reverseArc;
+    data.radius = radius;
+    data.angle1 = data.center.angleTo(firstPoint);
+    data.angle2 = data.center.angleTo(pointForAngle2);
+    return true;
+}
+
+bool LC_CreationArc::createFrom2PRadius(const RS_Vector& firstPoint, const RS_Vector& secondPoint, const double radius, const bool reversed,
+                                       const bool alternate, RS_ArcData& data) {
+    double chordLen = firstPoint.distanceTo(secondPoint);
+    double chordHalf = chordLen * 0.5;
+
+    const double chordAngle = firstPoint.angleTo(secondPoint);
+
+    RS_Vector chordLenHalfPont = (firstPoint + secondPoint) * 0.5;
+
+    RS_Vector pointForAngle2 = secondPoint;
+    if (chordHalf >= radius) {
+        chordLen = radius * 2;
+        chordHalf = radius;
+        pointForAngle2 = firstPoint.relative(chordLen, chordAngle);
+        chordLenHalfPont = (firstPoint + pointForAngle2) * 0.5;
+    }
+
+    double distanceFromChordCenterToCenter = 0.0;
+    if ((radius - chordHalf) > RS_TOLERANCE) {
+        const double triangleLegSquared = radius * radius - chordHalf * chordHalf;
+        if (triangleLegSquared > 0) {
+            distanceFromChordCenterToCenter = sqrt(triangleLegSquared);
+        }
+    }
+
+    const double chordAngleNormal = chordAngle + M_PI_2;
+    const double chordAngleNormalAlt = chordAngle - M_PI_2;
+
+    bool reverseArc = reversed;
+    if (alternate){
+        reverseArc = !reverseArc;
+    }
+
+    const double angleToCenter = /*reverseArc*/ reversed ? chordAngleNormalAlt : chordAngleNormal;
+    const RS_Vector center = chordLenHalfPont.relative(distanceFromChordCenterToCenter, angleToCenter);
+
+    data.center = center;
+    data.reversed = reverseArc;
+    data.radius = radius;
+    data.angle1 = data.center.angleTo(firstPoint);
+    data.angle2 = data.center.angleTo(pointForAngle2);
     return true;
 }

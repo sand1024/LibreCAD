@@ -216,15 +216,6 @@ RS_Vector RS_ActionDrawCircleTan1_2P::getTangentPoint(const RS_Vector& creatingC
     return creatingCircleCenter + RS_Vector::polar(m_actionData->circleData.radius, creatingCircleCenter.angleTo(circleCenter));
 }
 
-//void RS_ActionDrawCircleTan1_2P::setRadius(const double& r)
-//{
-//    cData.radius=r;
-//    if(getStatus() == SetPoint2){
-//        RS_Circle c(nullptr,cData);
-//        centers=c.createTan1_2P(circle,cData.radius);
-//    }
-//}
-
 bool RS_ActionDrawCircleTan1_2P::getCenters() const {
     m_actionData->centers.clear();
     if (getStatus() < SetPoint2) {
