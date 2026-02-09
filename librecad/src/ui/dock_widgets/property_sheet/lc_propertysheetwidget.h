@@ -49,6 +49,8 @@ public:
     explicit LC_PropertySheetWidget(QWidget* parent, LC_ActionContext* actionContext, QAction* selectQuick, QAction* toggleSelectModeAction,
                                     QAction* selectEntitiesAction);
     ~LC_PropertySheetWidget() override;
+    void loadCollapsedSections();
+    void saveCollapsedSections();
     void setGraphicView(RS_GraphicView* gv) override;
     void selectionChanged() override;
     void setShouldHandleSelectionChange(bool value);
@@ -86,7 +88,7 @@ protected:
     void setPickedPropertyCoordinateValue(const QString& propertyName, double interactiveInputValue, bool forX) const;
     bool isVirtualProperty(const LC_Property* property);
     int getCurrentlySelectedEntityType(int index) const;
-
+    QLayout* getTopLevelLayout() const override;
 private:
     Ui::LC_PropertySheetWidget* ui;
     void initPropertySheet();

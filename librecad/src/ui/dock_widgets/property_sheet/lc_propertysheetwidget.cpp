@@ -41,6 +41,7 @@
 #include "rs_document.h"
 #include "rs_graphicview.h"
 #include "rs_selection.h"
+#include "rs_settings.h"
 #include "ui_lc_propertysheetwidget.h"
 
 LC_PropertySheetWidget::LC_PropertySheetWidget(QWidget* parent, LC_ActionContext* actionContext, QAction* selectQuick,
@@ -70,11 +71,30 @@ LC_PropertySheetWidget::LC_PropertySheetWidget(QWidget* parent, LC_ActionContext
     m_entityContainerProvider = std::make_unique<LC_EntityPropertyContainerProvider>();
     m_entityContainerProvider->init(this, actionContext);
 
+    loadCollapsedSections();
     updateWidgetSettings();
 }
 
 LC_PropertySheetWidget::~LC_PropertySheetWidget() {
     delete ui;
+}
+
+void LC_PropertySheetWidget::loadCollapsedSections() {
+    QString sectionsList = LC_GET_ONE_STR("PropertySheet", "CollapsedSections", "");
+    if (!sectionsList.isEmpty()) {
+        QStringList parts = sectionsList.split(",", Qt::SkipEmptyParts);
+        for (const auto &sectionName: parts) {
+            m_collapsedContainerNames << sectionName;
+        }
+    }
+}
+
+void LC_PropertySheetWidget::saveCollapsedSections() {
+    QString settingsValue;
+    for (const auto &sectionName: m_collapsedContainerNames) {
+        settingsValue = settingsValue + "," +sectionName;
+    }
+    LC_SET_ONE("PropertySheet", "CollapsedSections", settingsValue);
 }
 
 void LC_PropertySheetWidget::setGraphicView(RS_GraphicView* gv) {
@@ -154,6 +174,7 @@ void LC_PropertySheetWidget::setShouldHandleSelectionChange(const bool value) {
 }
 
 void LC_PropertySheetWidget::updateFormats() {
+    selectionChanged();
 }
 
 void LC_PropertySheetWidget::onLateRequestCompleted(const bool shouldBeSkipped) {
@@ -336,6 +357,10 @@ int LC_PropertySheetWidget::getCurrentlySelectedEntityType(const int index) cons
     return itemEntityType;
 }
 
+QLayout* LC_PropertySheetWidget::getTopLevelLayout() const {
+    return ui->gridLayout;
+}
+
 void LC_PropertySheetWidget::onSelectionIndexChanged(const int index) {
     int itemEntityType = getCurrentlySelectedEntityType(index);
     const auto entityType = static_cast<RS2::EntityType>(itemEntityType);
@@ -365,14 +390,14 @@ void LC_PropertySheetWidget::collectEntitiesToModify(RS2::EntityType entityType,
 
 LC_PropertyContainer* LC_PropertySheetWidget::createPropertiesContainer(const RS2::EntityType entityType, const QList<RS_Entity*>& list) {
     LC_PropertyContainer* result = nullptr;
-    if (!list.isEmpty()) {
-        if (isVisible()) {
-            result = new LC_PropertyContainer(this);
-        }
-        m_entityContainerProvider->fillPropertyContainer(m_document, result, entityType, list);
+    if (isVisible()) {
+        result = new LC_PropertyContainer(this);
+    }
+    if (list.isEmpty()) {
+        m_entityContainerProvider->fillPropertyContainerForNoSelection(m_document, result);
     }
     else {
-        result = new LC_PropertyContainer(this);
+        m_entityContainerProvider->fillPropertyContainerForSelection(m_document, result, entityType, list);
     }
     return result;
 }
@@ -526,6 +551,7 @@ void LC_PropertySheetWidget::markContainerCollapsed(const QString& name, const b
     else {
         m_collapsedContainerNames.remove(name);
     }
+    saveCollapsedSections();
 }
 
 void LC_PropertySheetWidget::checkSectionCollapsed(LC_PropertyContainer* result) {
