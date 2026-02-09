@@ -52,6 +52,50 @@ public:
     virtual void undoStateChanged(const RS_Graphic* g, bool undoAvailable, bool redoAvailable) = 0;
 };
 
+struct LC_MarginsRect {
+    double left {0.0};
+    double top {0.0};
+    double bottom {0.0};
+    double right {0.0};
+
+    bool operator == (const LC_MarginsRect& v) const {
+        return left == v.left && top == v.top && bottom == v.bottom;
+    }
+
+    [[nodiscard]] double getLeft() const {
+        return left;
+    }
+
+    void setLeft(const double left) {
+        this->left = left;
+    }
+
+    [[nodiscard]] double getTop() const {
+        return top;
+    }
+
+    void setTop(const double top) {
+        this->top = top;
+    }
+
+    [[nodiscard]] double getBottom() const {
+        return bottom;
+    }
+
+    void setBottom(const double bottom) {
+        this->bottom = bottom;
+    }
+
+    [[nodiscard]] double getRight() const {
+        return right;
+    }
+
+    void setRight(const double right) {
+        this->right = right;
+    }
+};
+
+
 /**
  * A graphic document which can contain entities layers and blocks.
  *
@@ -167,13 +211,17 @@ public:
     }
 
     RS2::LinearFormat getLinearFormat() const;
+    void setLinearFormat(RS2::LinearFormat linearFormat);
     void replaceCustomVars(const QHash<QString, QString>& vars);
     virtual void prepareForSave();
 
     static RS2::LinearFormat convertLinearFormatDXF2LC(int f);
     int getLinearPrecision() const;
+    void setLinearPrecision(int value);
     RS2::AngleFormat getAngleFormat() const;
+    void setAngleFormat(RS2::AngleFormat angleFormat);
     int getAnglePrecision() const;
+    void addAnglePrecision(int value);
 
     RS_Vector getPaperSize() const;
     void setPaperSize(const RS_Vector& s);
@@ -238,6 +286,10 @@ public:
         }
     }
 
+    void setMargins(const LC_MarginsRect& margins) {
+        setMargins(margins.left, margins.top, margins.right, margins.bottom);
+    }
+
     double getMarginLeft() const{return m_marginLeft;}
     double getMarginTop() const{return m_marginTop;}
     double getMarginRight() const{ return m_marginRight;}
@@ -247,6 +299,8 @@ public:
      * Paper margins in graphic units
      */
     void setMarginsInUnits(double left, double top, double right, double bottom);
+    void setMarginsInUnits(const LC_MarginsRect& margins);
+    LC_MarginsRect getMarginsInUnits() const;
     double getMarginLeftInUnits() const;
     double getMarginTopInUnits() const;
     double getMarginRightInUnits() const;
@@ -269,6 +323,8 @@ public:
     void setAnglesBase(double baseAngle);
     bool areAnglesCounterClockWise() const;
     void setAnglesCounterClockwise(bool on);
+    RS_Vector getUserGridSpacing() const;
+    void setUserGridSpacing(const RS_Vector& spacing);
     QString formatAngle(double angle) const;
     QString formatLinear(double linear) const;
 
@@ -346,5 +402,6 @@ private:
     QString m_autosaveFilename;
 
     LC_GraphicModificationListener* m_modificationListener = nullptr;
+    bool m_anglesCounterClockWize;
 };
 #endif

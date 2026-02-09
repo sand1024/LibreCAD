@@ -47,6 +47,7 @@ LC_PenPaletteOptionsDialog::LC_PenPaletteOptionsDialog(QWidget *parent, LC_PenPa
     chkShowWidthName->setChecked(m_options->showWidthName);
     cbShowMessageForNoSelection->setChecked(m_options->showNoSelectionMessage);
     cbFilterCaseInsensitive->setChecked(m_options->ignoreCaseOnMatch);
+    cbShowGrid->setChecked(m_options->showGrid);
 
     cbDoubleClickMode->addItem(tr("Do nothing"));
     cbDoubleClickMode->addItem(tr("Select entities by attributes pen"));
@@ -72,11 +73,8 @@ LC_PenPaletteOptionsDialog::LC_PenPaletteOptionsDialog(QWidget *parent, LC_PenPa
     }
 
     connect(tbActiveColorSelect, &QToolButton::clicked, this, &LC_PenPaletteOptionsDialog::selectActivePenBGColor);
-    connect(tbGridColorSelect, &QToolButton::clicked, this, &LC_PenPaletteOptionsDialog::selectGridColor);
     connect(tbMatchedItemColorSelect, &QToolButton::clicked, this, &LC_PenPaletteOptionsDialog::selectMatchedItemColor);
-
     initComboBox(cbColorActiveBg, m_options->activeItemBGColor);
-    initComboBox(cbColorGrid, m_options->itemsGridColor);
     initComboBox(cbColorMatchedItem, m_options->matchedItemColor);
 
     connect(buttonBox, &QDialogButtonBox::accepted, this, &LC_PenPaletteOptionsDialog::validate);
@@ -105,10 +103,6 @@ void LC_PenPaletteOptionsDialog::initComboBox(QComboBox* cb, const QColor &color
 
 void LC_PenPaletteOptionsDialog::selectActivePenBGColor(){
     setComboBoxColor(cbColorActiveBg, m_options->activeItemBGColor);
-}
-
-void LC_PenPaletteOptionsDialog::selectGridColor(){
-    setComboBoxColor(cbColorGrid, m_options->itemsGridColor);
 }
 
 void LC_PenPaletteOptionsDialog::selectMatchedItemColor(){
@@ -155,14 +149,6 @@ void LC_PenPaletteOptionsDialog::validate(){
         doAccept = false;
     }
 
-    QString gridColorName = cbColorGrid->currentText();
-    auto gridColor = QColor(gridColorName);
-    if (!gridColor.isValid()){
-        showInvalidColorMessage("grid");
-        cbColorGrid ->setFocus();
-        doAccept = false;
-    }
-
     QString matchedColorName = cbColorMatchedItem->currentText();
     auto matchedItemColor = QColor(matchedColorName);
     if (!matchedItemColor.isValid()){
@@ -174,7 +160,7 @@ void LC_PenPaletteOptionsDialog::validate(){
     // all fine, store user's input to options
     if (doAccept){
         m_options->matchedItemColor = matchedItemColor;
-        m_options->itemsGridColor =  gridColor;
+        m_options->showGrid =  cbShowGrid->isChecked();
         m_options->activeItemBGColor = activeBgColor;
 
         bool showToolTip = cbShowTooltip->isChecked();

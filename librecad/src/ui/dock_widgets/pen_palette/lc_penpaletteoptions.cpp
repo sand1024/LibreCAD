@@ -34,7 +34,7 @@ void LC_PenPaletteOptions:: loadFromSettings(){
         const LC_PenPaletteOptions defaults;
         activeItemBGColor = QColor(LC_GET_STR("activeItemBgColor", defaults.activeItemBGColor.name()));
         matchedItemColor = QColor(LC_GET_STR("matchedItemBgColor", defaults.matchedItemColor.name()));
-        itemsGridColor = QColor(LC_GET_STR("gridColor", defaults.itemsGridColor.name()));
+        showGrid = LC_GET_BOOL("showGrid", true);
 
         showToolTip = LC_GET_BOOL("showToolTip", defaults.showToolTip);
 
@@ -68,7 +68,7 @@ void LC_PenPaletteOptions::saveToSettings() const {
     {
         LC_SET("activeItemBgColor", activeItemBGColor.name());
         LC_SET("matchedItemBgColor", matchedItemColor.name());
-        LC_SET("gridColor", itemsGridColor.name());
+        LC_SET("showGrid", showGrid);
 
         LC_SET("showToolTip", showToolTip);
 

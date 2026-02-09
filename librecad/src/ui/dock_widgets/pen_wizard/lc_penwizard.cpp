@@ -41,12 +41,11 @@ LC_PenWizard::LC_PenWizard(QWidget* parent)
       , m_colorWizard(new ColorWizard(this)) {
     // auto frame = new QFrame(this);
     const auto layout = new QVBoxLayout;
-    this->setLayout(layout);
-
-    layout->setContentsMargins(QMargins{});
+    setLayout(layout);
+    layout->setContentsMargins(1,0, 1, 2);
+    layout->setSpacing(1);
     layout->addWidget(m_colorWizard);
-    layout->addItem(new QSpacerItem(0, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum));
-
+    layout->addItem(new QSpacerItem(0, 0, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum));
     connect(m_colorWizard, &ColorWizard::requestingColorChange, this, &LC_PenWizard::setColorForSelected);
     connect(m_colorWizard, &ColorWizard::requestingSelection, this, &LC_PenWizard::selectByColor);
     connect(m_colorWizard, &ColorWizard::colorDoubleClicked, this, &LC_PenWizard::setActivePenColor);
@@ -88,6 +87,10 @@ void LC_PenWizard::setActivePenColor(const QColor color) const {
     auto pen = graphic->getActivePen();
     pen.setColor(RS_Color(color));
     graphic->setActivePen(pen);
+}
+
+QLayout* LC_PenWizard::getTopLevelLayout() const {
+    return layout();
 }
 
 void LC_PenWizard::setGraphicView(RS_GraphicView* gview) {

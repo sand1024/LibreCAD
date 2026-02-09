@@ -5,20 +5,20 @@ set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 set (Boost_DEBUG OFF)
 #LOCAL -----
-set (CMAKE_VERBOSE_MAKEFILE ON)
-set (MIN_GW_PATH_PREFIX "d:\\Qt\\QT6\\6.9.0\\msvc2022_64")
-set (BOOST_DIR "c:\\Local\\boost_1_84_0")
-set (BOOST_ROOT "c:\\Local\\boost_1_84_0")
-set (Boost_DIR "c:\\Local\\boost_1_84_0")
-set (Boost_INCLUDE_DIR "c:\\Local\\boost_1_84_0")
-set (CMAKE_PREFIX_PATH "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6")
-set (Qt6_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6")
-set (Qt6Core_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6Core")
-set (Qt6Svg_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6Svg")
-set (Qt6CoreTools_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6CoreTools")
-set (Qt6Gui_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\QtGui")
-set (QtNetwork_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\QtNetwork")
-set (CMAKE_INSTALL_PREFIX "Z:/LC_BUILD_PROD")
+#set (CMAKE_VERBOSE_MAKEFILE ON)
+#set (MIN_GW_PATH_PREFIX "d:\\Qt\\QT6\\6.9.0\\msvc2022_64")
+#set (BOOST_DIR "c:\\Local\\boost_1_84_0")
+#set (BOOST_ROOT "c:\\Local\\boost_1_84_0")
+#set (Boost_DIR "c:\\Local\\boost_1_84_0")
+#set (Boost_INCLUDE_DIR "c:\\Local\\boost_1_84_0")
+#set (CMAKE_PREFIX_PATH "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6")
+#set (Qt6_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6")
+#set (Qt6Core_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6Core")
+#set (Qt6Svg_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6Svg")
+#set (Qt6CoreTools_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6CoreTools")
+#set (Qt6Gui_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\QtGui")
+#set (QtNetwork_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\QtNetwork")
+#set (CMAKE_INSTALL_PREFIX "Z:/LC_BUILD_PROD")
 #local end ------
 
 set (CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -271,6 +271,7 @@ set (SHARED_INCLUDES
      librecad/src/ui/dock_widgets/property_sheet/properties/linetype
      librecad/src/ui/dock_widgets/property_sheet/properties/linewidth
      librecad/src/ui/dock_widgets/property_sheet/properties/rsvector
+     librecad/src/ui/dock_widgets/property_sheet/properties/rect
      librecad/src/ui/dock_widgets/property_sheet/properties/string
      librecad/src/ui/dock_widgets/property_sheet/metaentity
      librecad/src/ui/dock_widgets/property_sheet/metaentity/entities
@@ -1687,6 +1688,10 @@ set (SHARED_SOURCES
      librecad/src/ui/dock_widgets/property_sheet/properties/linewidth/lc_property_linewidth_combobox.cpp
      librecad/src/ui/dock_widgets/property_sheet/properties/linewidth/lc_property_linewidth_combobox_view.h
      librecad/src/ui/dock_widgets/property_sheet/properties/linewidth/lc_property_linewidth_combobox_view.cpp
+     librecad/src/ui/dock_widgets/property_sheet/properties/rect/lc_property_rect.cpp
+     librecad/src/ui/dock_widgets/property_sheet/properties/rect/lc_property_rect.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/rect/lc_property_rect_view.cpp
+     librecad/src/ui/dock_widgets/property_sheet/properties/rect/lc_property_rect_view.h
      librecad/src/ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector.h
      librecad/src/ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector.cpp
      librecad/src/ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector_view.h
@@ -1765,12 +1770,16 @@ set (SHARED_SOURCES
      librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_angular.cpp
      librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.h
      librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_document.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_document.h
      librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_tolerance.h
      librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_tolerance.cpp
      librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_leader.h
      librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_leader.cpp
      librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.h
      librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertyprovider_utils.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertyprovider_utils.h
      librecad/src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.cpp
      librecad/src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.h
      librecad/src/ui/dock_widgets/ucs_list/lc_dlgucsproperties.cpp
@@ -1863,6 +1872,10 @@ set (SHARED_SOURCES
      librecad/src/actions/drawing/selection/lc_actionselectgeneric.h
      librecad/src/ui/components/utils/lc_guarded_signals_blocker.h
      librecad/src/ui/components/utils/lc_item_info.h
+     librecad/src/ui/components/utils/lc_tableitem_delegate_base.cpp
+     librecad/src/ui/components/utils/lc_tableitem_delegate_base.h
+     librecad/src/ui/components/utils/lc_mouse_tracking_table_view.cpp
+     librecad/src/ui/components/utils/lc_mouse_tracking_table_view.h
 )
 
 set (MUPARSER_SOURCES
@@ -1886,6 +1899,10 @@ set (MUPARSER_SOURCES
      libraries/muparser/src/muParserError.cpp
      libraries/muparser/src/muParserInt.cpp
      libraries/muparser/src/muParserTokenReader.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_document.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_document.h
+     librecad/src/ui/components/utils/lc_mouse_tracking_table_view.cpp
+     librecad/src/ui/components/utils/lc_mouse_tracking_table_view.h
 )
 
 # Static library from shared sources

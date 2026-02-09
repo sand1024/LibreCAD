@@ -280,14 +280,14 @@ void LC_LayerTreeModel::rebuildModel(const QList<RS_Layer*> &layersList, const R
 
         // check whether it's helper layer (dimensions, info, alternate position) so we try to find primary layer for this (without _pos)
 
-        int type = LC_LayerTreeItem::NORMAL;
+        int type = RS_Layer::LayerType::NORMAL;
 
         // determining level item type, name and position based on naming.
         // TODO - actually, a more flexible and generic policy may be used there, and so it will allow to
         // support additional types of layers... however, not sure that it is necessary at the moment
 
         if (layerName.endsWith(m_options->alternatePositionLayerNameSuffix)){
-            type = LC_LayerTreeItem::ALTERNATE_POSITION;
+            type = RS_Layer::LayerType::ALTERNATE_POSITION;
             const QString mainName =  layerName.left(layerName.length() - alternatePositionLayerNameSuffixLen);
             primaryLayerName = mainName;
             if (!m_flatMode){
@@ -295,7 +295,7 @@ void LC_LayerTreeModel::rebuildModel(const QList<RS_Layer*> &layersList, const R
             }
         }
         else if (layerName.endsWith(m_options->informationalLayerNameSuffix)){
-            type = LC_LayerTreeItem::INFORMATIONAL;
+            type = RS_Layer::LayerType::INFORMATIONAL;
             const QString mainName = layerName.left(layerName.length() - informationLayerNameSuffixLen);
             primaryLayerName = mainName;
             if (!m_flatMode){
@@ -303,7 +303,7 @@ void LC_LayerTreeModel::rebuildModel(const QList<RS_Layer*> &layersList, const R
             }
         }
         else if (layerName.endsWith(m_options->dimensionalLayerNameSuffix)){
-            type = LC_LayerTreeItem::DIMENSIONAL;
+            type = RS_Layer::LayerType::DIMENSIONAL;
             const QString mainName = layerName.left(layerName.length() - dimensionalLayerNameSuffixLen);
             primaryLayerName = mainName;
             if (!m_flatMode){
@@ -472,14 +472,14 @@ QString LC_LayerTreeModel::cleanupLayerName(const QString &layerName) const{
  */
 QString LC_LayerTreeModel::restoreNamePart(QString name, const int layerType) const {
     switch (layerType){
-    case LC_LayerTreeItem::VIRTUAL:
-    case LC_LayerTreeItem::NORMAL:
+    case RS_Layer::LayerType::VIRTUAL:
+    case RS_Layer::LayerType::NORMAL:
         return name;
-    case LC_LayerTreeItem::ALTERNATE_POSITION:
+    case RS_Layer::LayerType::ALTERNATE_POSITION:
         return name.append(m_options->alternatePositionLayerNameSuffix);
-    case LC_LayerTreeItem::DIMENSIONAL:
+    case RS_Layer::LayerType::DIMENSIONAL:
         return name.append(m_options->dimensionalLayerNameSuffix);
-    case LC_LayerTreeItem::INFORMATIONAL:
+    case RS_Layer::LayerType::INFORMATIONAL:
         return name.append(m_options->informationalLayerNameSuffix);
     default:
         return name; // tmp - or empty string?
@@ -711,9 +711,9 @@ bool LC_LayerTreeModel::isValidRestructure(const LC_LayerTreeItem*  source, cons
     // tbd- the alternative position layer potentially hold dimensions too... ?
 
     const int destinationLayerType = destination->getLayerType();
-    if (destinationLayerType == LC_LayerTreeItem::DIMENSIONAL ||
-        destinationLayerType == LC_LayerTreeItem::INFORMATIONAL ||
-        destinationLayerType == LC_LayerTreeItem::ALTERNATE_POSITION){
+    if (destinationLayerType == RS_Layer::LayerType::DIMENSIONAL ||
+        destinationLayerType == RS_Layer::LayerType::INFORMATIONAL ||
+        destinationLayerType == RS_Layer::LayerType::ALTERNATE_POSITION){
         return false;
     }
 
@@ -739,7 +739,7 @@ bool LC_LayerTreeModel::isValidRestructure(const LC_LayerTreeItem*  source, cons
          return destinationVirtual; // virtual layer may be dropped on virtual only
      }
     const int sourceItemType = source-> getLayerType();
-    if (sourceItemType == LC_LayerTreeItem::NORMAL){
+    if (sourceItemType == RS_Layer::LayerType::NORMAL){
         // check that we'll drop it to virtual only
         return destinationVirtual;
     }
@@ -817,13 +817,13 @@ QVariant LC_LayerTreeModel::data ( const QModelIndex & index, const int role ) c
                     }
                     const int layerType = layerItem->getLayerType();
                     switch (layerType) {
-                        case LC_LayerTreeItem::NORMAL:
+                        case RS_Layer::LayerType::NORMAL:
                             return m_iconLayerActual;
-                        case LC_LayerTreeItem::DIMENSIONAL:
+                        case RS_Layer::LayerType::DIMENSIONAL:
                             return m_iconLayerDimensional;
-                        case LC_LayerTreeItem::INFORMATIONAL:
+                        case RS_Layer::LayerType::INFORMATIONAL:
                             return m_iconLayerInformationalNotes;
-                        case LC_LayerTreeItem::ALTERNATE_POSITION:
+                        case RS_Layer::LayerType::ALTERNATE_POSITION:
                             return m_iconLayerAlternatePosition;
                         default: {
                             // we should not be there, it means invalid/unsupported layer type
@@ -882,14 +882,7 @@ QVariant LC_LayerTreeModel::data ( const QModelIndex & index, const int role ) c
                 // background for virtual layer
                 return m_options->virtualLayerBgColor;
             }
-            if (COLUMN_COLOR_SAMPLE == col) {
-                // layer of color pen
-                const RS_Layer* layer = layerItem->getLayer();
-                if (layer != nullptr) {
-                    return layer->getPen().getColor().toQColor();
-                }
-            }
-            else if (layerItem->isActiveLayer()) {
+            if (layerItem->isActiveLayer()) {
                 return m_options->activeLayerBgColor;
             }
             break;
@@ -1081,7 +1074,7 @@ QHash<RS_Layer*, RS_Layer*> LC_LayerTreeModel::doCreateLayersCopy(LC_LayerTreeIt
    }
    else { // just create copy of layer
        createFirstLayerCopy(result, source, newLayerType); // copy single non-virtual layer
-       if (newLayerType == LC_LayerTreeItem::NORMAL){ // if normal layer - we may have secondary ones
+       if (newLayerType == RS_Layer::LayerType::NORMAL){ // if normal layer - we may have secondary ones
            copyChildrenLayers(source, newLayerType, result);
        }
    }

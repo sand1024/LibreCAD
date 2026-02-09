@@ -109,27 +109,27 @@ void LC_LayerDialogEx::allowChangingLayerType(const bool value){
 
 void LC_LayerDialogEx::setLayerType(const int type) const {
     switch (type){
-        case LC_LayerTreeItem::VIRTUAL: {
+        case RS_Layer::LayerType::VIRTUAL: {
             gbLayerType->setVisible(false);
             break;
         }
-        case LC_LayerTreeItem::NOT_DEFINED_LAYER_TYPE:
-        case LC_LayerTreeItem::NORMAL: {
+        case RS_Layer::NOT_DEFINED_LAYER_TYPE:
+        case RS_Layer::LayerType::NORMAL: {
             gbLayerType->setVisible(true);
             rbNormal->setChecked(true);
             break;
         }
-        case LC_LayerTreeItem::DIMENSIONAL: {
+        case RS_Layer::LayerType::DIMENSIONAL: {
             gbLayerType->setVisible(true);
             rbDimensions->setChecked(true);
             break;
         }
-        case LC_LayerTreeItem::ALTERNATE_POSITION: {
+        case RS_Layer::LayerType::ALTERNATE_POSITION: {
             gbLayerType->setVisible(true);
             rbAlternativePosition->setChecked(true);
             break;
         }
-        case LC_LayerTreeItem::INFORMATIONAL: {
+        case RS_Layer::LayerType::INFORMATIONAL: {
             gbLayerType->setVisible(true);
             rbInformational->setChecked(true);
             break;
@@ -140,18 +140,18 @@ void LC_LayerDialogEx::setLayerType(const int type) const {
 }
 
 int LC_LayerDialogEx::getEditedLayerType() const {
-    int result = LC_LayerTreeItem::NOT_DEFINED_LAYER_TYPE;
+    int result = RS_Layer::NOT_DEFINED_LAYER_TYPE;
     if (rbNormal->isChecked()){
-        result = LC_LayerTreeItem::NORMAL;
+        result = RS_Layer::LayerType::NORMAL;
     }
     else if (rbDimensions->isChecked()){
-        result = LC_LayerTreeItem::DIMENSIONAL;
+        result = RS_Layer::LayerType::DIMENSIONAL;
     }
     else if (rbAlternativePosition->isChecked()){
-        result = LC_LayerTreeItem::ALTERNATE_POSITION;
+        result = RS_Layer::LayerType::ALTERNATE_POSITION;
     }
     else if (rbInformational->isChecked()){
-        result = LC_LayerTreeItem::INFORMATIONAL;
+        result = RS_Layer::LayerType::INFORMATIONAL;
     }
     return result;
 }
@@ -196,16 +196,16 @@ void LC_LayerDialogEx::init(){
 void LC_LayerDialogEx::layerTypeChanged() const {
     int layerType = -1;
     if (rbNormal->isChecked()){
-        layerType = LC_LayerTreeItem::NORMAL;
+        layerType = RS_Layer::LayerType::NORMAL;
     }
     else if (rbDimensions ->isChecked()){
-        layerType = LC_LayerTreeItem::DIMENSIONAL;
+        layerType = RS_Layer::LayerType::DIMENSIONAL;
     }
     else if (rbAlternativePosition -> isChecked()){
-        layerType = LC_LayerTreeItem::ALTERNATE_POSITION;
+        layerType = RS_Layer::LayerType::ALTERNATE_POSITION;
     }
     else if (rbInformational->isChecked()){
-        layerType = LC_LayerTreeItem::INFORMATIONAL;
+        layerType = RS_Layer::LayerType::INFORMATIONAL;
     }
 
     if (layerType > 0){

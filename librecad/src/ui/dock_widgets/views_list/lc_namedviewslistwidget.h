@@ -74,6 +74,7 @@ protected:
     void doCreateNewView(const QString& name);
     void updateViewsUCSNames() const;
     void refresh();
+    QLayout* getTopLevelLayout() const override;
 private:
     Ui::LC_NamedViewsListWidget *ui;
     LC_ViewList* m_currentViewList{nullptr};
@@ -83,6 +84,7 @@ private:
     QAction* m_saveViewAction {nullptr};
     RS_GraphicView *m_graphicView {nullptr};
     LC_GraphicViewport *m_viewport {nullptr};
+    int m_itemHeight = 21;
 
     void initToolbar() const;
     void updateData(bool restoreSelectionIfPossible);

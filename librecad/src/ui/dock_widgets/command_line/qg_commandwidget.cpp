@@ -39,7 +39,7 @@
  *  name 'name' and widget flags set to 'f'.
  */
 QG_CommandWidget::QG_CommandWidget(QG_ActionHandler* actionHandler, QWidget* parent, const char* name, const Qt::WindowFlags fl)
-    : QWidget(parent, fl)
+    : LC_GraphicViewAwareWidget(parent, name, fl)
       , m_actionHandler(actionHandler) {
     setObjectName(name);
     setupUi(this);

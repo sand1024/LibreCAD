@@ -35,6 +35,7 @@ LC_DlgUCSListOptions::LC_DlgUCSListOptions(LC_UCSListOptions* options, QWidget *
     ui->cbShowPositionAndAngle->setChecked(m_options->showColumnPositionAndAngle);
     ui->cbShowGridType->setChecked(m_options->showColumnGridType);
     ui->cbShowTooltip->setChecked(m_options->showViewInfoToolTip);
+    ui->cbShowGrid->setChecked(m_options->showGrid);
 
     ui->cbSilentUpdate->setChecked(m_options->duplicatedNameReplacesSilently);
     ui->cbShowPositionAndAngle->setChecked(m_options->showColumnPositionAndAngle);
@@ -64,6 +65,7 @@ void LC_DlgUCSListOptions::validate() const {
     m_options->showColumnPositionAndAngle = ui->cbShowPositionAndAngle->isChecked();
     m_options->showColumnGridType= ui->cbShowGridType->isChecked();
     m_options->showViewInfoToolTip = ui->cbShowTooltip->isChecked();
+    m_options->showGrid = ui->cbShowGrid->isChecked();
     m_options->restoreViewBySingleClick = ui->cbSingleClickRestore->isChecked();
     m_options->duplicatedNameReplacesSilently = ui->cbSilentUpdate->isChecked();
     m_options->askForDeletionConfirmation = ui->cbRemovalConfirmation->isChecked();

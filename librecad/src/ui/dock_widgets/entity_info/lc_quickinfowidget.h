@@ -33,13 +33,11 @@ class LC_QuickInfoOptions;
 class RS_Vector;
 class RS_Entity;
 
-namespace Ui
-{
+namespace Ui{
     class LC_QuickInfoWidget;
 }
 
-class LC_QuickInfoWidget : public LC_GraphicViewAwareWidget
-{
+class LC_QuickInfoWidget : public LC_GraphicViewAwareWidget{
     Q_OBJECT
 public:
     /**
@@ -87,6 +85,8 @@ protected slots:
     void onRemoveCoordinate(int index) const;
     void onInsertCoordinates(int index) const;
     void onRelativeZeroChanged(const RS_Vector& relZero) const;
+protected:
+    QLayout* getTopLevelLayout() const override;
 private:
     Ui::LC_QuickInfoWidget *ui = nullptr;
     RS_GraphicView* m_graphicView = nullptr; // fixme - sand - review dependency

@@ -393,6 +393,7 @@ void LC_PenPaletteModel::setupItemForDisplay(LC_PenItem *penItem) const {
     const QString lineWidthName = m_registry->getLineWidthText(lineWidth);
     penItem -> setLineWidthName(lineWidthName);
 
+    // fixme - sand - review, do we really need cached icon now with styled delegate?
     // handling color
     const RS_Color color = penItem->getColor();
     const QIcon iconColor = m_registry->getColorIcon(color, COLOR_ICON_SIZE, COLOR_ICON_SIZE);

@@ -901,7 +901,7 @@ void QG_DlgOptionsDrawing::setupGridTab() const {
         rbOrthogonalGrid->setChecked(true);
     }
 
-    *m_spacing = m_graphic->getVariableVector("$GRIDUNIT", {0.0, 0.0});
+    *m_spacing = m_graphic->getUserGridSpacing();
 
     cbXSpacing->setEditText(QString("%1").arg(m_spacing->x));
     cbYSpacing->setEditText(QString("%1").arg(m_spacing->y));
@@ -1440,7 +1440,7 @@ void QG_DlgOptionsDrawing::validateGridTab() const {
     else {
         m_spacing->y = cbYSpacing->currentText().toDouble();
     }
-    m_graphic->addVariable("$GRIDUNIT", *m_spacing, 10);
+    m_graphic->setUserGridSpacing(*m_spacing);
 
     const bool isometricGrid = !rbOrthogonalGrid->isChecked();
 

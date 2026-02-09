@@ -267,6 +267,10 @@ void QG_LibraryWidget::collapseView(const QModelIndex& idx) const {
     }
 }
 
+QLayout* QG_LibraryWidget::getTopLevelLayout() const {
+    return layout();
+}
+
 /**
  * Updates the icon preview.
  *

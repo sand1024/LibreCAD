@@ -89,6 +89,7 @@ protected:
     RS_GraphicView *m_graphicView {nullptr};
     LC_GraphicViewport *m_viewport {nullptr};
     Ui::LC_UCSListWidget *ui;
+    int m_itemHeight = 21;
 
     void initToolbar() const;
     void refresh();
@@ -106,6 +107,7 @@ protected:
     void selectUCS(const LC_UCS *ucs) const;
     int getSingleSelectedRow() const;
     void restoreSingleSelectedRow(bool restoreSelectionIfPossible, int selectedRow) const;
+    QLayout* getTopLevelLayout() const override;
 };
 
 #endif

@@ -36,12 +36,14 @@
 #include "rs.h"
 #include "rs_layerlistlistener.h"
 
+class QListView;
+class QTreeView;
+class LC_MouseTrackingTableView;
 class RS_Graphic;
 class QItemSelection;
 class RS_LayerList;
 class RS_Layer;
 class QG_ActionHandler;
-class QTableView;
 class QLineEdit;
 class RS_Document;
 class RS_GraphicView;
@@ -50,7 +52,7 @@ class LC_ActionGroupManager;
 /**
  * Implementation of a model to use in QG_LayerWidget
  */
-class QG_LayerModel : public QAbstractTableModel {
+class QG_LayerModel : public QAbstractItemModel {
 public:
     enum Columns {
         COLUMN_VISIBLE,
@@ -63,7 +65,7 @@ public:
     };
 
     // the default icon size
-    constexpr static int ICONWIDTH = 24;
+    constexpr static int ICONWIDTH = 21;
 
     explicit QG_LayerModel(QObject* parent = nullptr);
     ~QG_LayerModel() override = default;
@@ -94,6 +96,7 @@ public:
     void setActiveLayer(RS_Layer* l) {
         m_activeLayer = l;
     }
+
 
 private:
     QList<RS_Layer*> m_listLayer;
@@ -173,13 +176,13 @@ protected:
     void updateFiltering();
     void addToolbarButton(LC_FlexLayout* layButtons, RS2::ActionType actionType);
     void addMenuItem(QMenu* contextMenu, RS2::ActionType actionType) const;
-
+    QLayout* getTopLevelLayout() const override;
 private:
     RS_Graphic* m_graphic{nullptr};
     RS_LayerList* m_layerList = nullptr;
     bool m_showByBlock = false;
     QLineEdit* m_matchLayerName = nullptr;
-    QTableView* m_layerView = nullptr;
+    LC_MouseTrackingTableView* m_layerView = nullptr;
     QG_LayerModel* m_layerModel = nullptr;
     RS_Layer* m_lastLayer = nullptr;
     const QG_ActionHandler* m_actionHandler = nullptr;

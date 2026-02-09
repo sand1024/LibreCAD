@@ -32,11 +32,13 @@
 #include <QTimer>
 
 #include "lc_flexlayout.h"
+#include "lc_mouse_tracking_table_view.h"
 #include "lc_penitem.h"
 #include "lc_penpalettedata.h"
 #include "lc_penpalettemodel.h"
 #include "lc_penpaletteoptions.h"
 #include "lc_penpaletteoptionsdialog.h"
+#include "lc_tableitem_delegate_base.h"
 #include "lc_undosection.h"
 #include "qc_applicationwindow.h"
 #include "qg_pentoolbar.h"
@@ -53,27 +55,52 @@ class QTableView;
 /**
  * Delegate used to paint underline lines for table grid
  */
-class LC_PenPaletteGridDelegate : public QStyledItemDelegate {
+class LC_PenPaletteGridDelegate : public LC_TableItemDelegateBase {
 public:
-    explicit LC_PenPaletteGridDelegate(QTableView* parent = nullptr,
-                                       LC_PenPaletteOptions* options = nullptr) : QStyledItemDelegate(parent) {
-        this->m_options = options;
+    explicit LC_PenPaletteGridDelegate(LC_MouseTrackingTableView * parent,
+                                       LC_PenPaletteOptions* options,
+                                       LC_PenPaletteModel* model) : LC_TableItemDelegateBase(parent) {
+        m_options = options;
+        m_model = model;
+        auto palette = parent->palette();
+        m_gridColor = palette.color(QPalette::Button);
+        m_hoverRowBackgroundColor = palette.color(QPalette::AlternateBase);
     }
 
-    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override {
-        QStyledItemDelegate::paint(painter, option, index);
-        const bool draw = m_options != nullptr;
-        if (draw) {
-            const QColor color = m_options->itemsGridColor;
-            painter->save();
-            painter->setPen(color);
-            painter->drawLine(option.rect.bottomLeft(), option.rect.bottomRight());
-            painter->restore();
+    void doPaint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override {
+        const int col = index.column();
+        const int actualColor = m_model->translateColumn(col);
+        if (actualColor  == LC_PenPaletteModel::COLUMNS::COLOR_ICON) {
+            const auto pen = m_model->getPen(index.row());
+            if (pen != nullptr){
+                QRect colorRect = option.rect;
+                const int originalWidth = colorRect.width();
+                const int newWidth = colorRect.height() - 8;
+                // center color box in cell
+                const int widthDelta = originalWidth - newWidth;
+                const int leftDelta = widthDelta / 2;
+                const int rightDelta = widthDelta - leftDelta;
+
+                colorRect.adjust(leftDelta+1, 6, -rightDelta-1, -6);
+
+                painter->fillRect(colorRect, Qt::black);
+                colorRect.adjust(1, 1, -1, -1);
+                const auto color = pen->getColor();
+                painter->fillRect(colorRect, color);
+            }
+        }
+        else {
+            QStyledItemDelegate::paint(painter, option, index);
+        }
+        const bool drawGrid = m_options != nullptr && m_options->showGrid;
+        if (drawGrid) {
+            drawHorizontalGridLine(painter, option);
         }
     }
 
 private:
     LC_PenPaletteOptions* m_options{nullptr};
+    LC_PenPaletteModel* m_model {nullptr};
 };
 
 /**
@@ -86,7 +113,7 @@ LC_PenPaletteWidget::LC_PenPaletteWidget(const QString& title, QWidget* parent) 
     setupUi(this);
 
     // make buttons flexible
-    auto* layButtonsFlex = new LC_FlexLayout(0, 5, 5);
+    auto* layButtonsFlex = new LC_FlexLayout(0, 3, 3);
     layButtonsFlex->fillFromLayout(layButtons);
     int buttonsPosition = gridLayout->indexOf(layButtons);
     QLayoutItem* pItem = gridLayout->takeAt(buttonsPosition);
@@ -102,7 +129,7 @@ LC_PenPaletteWidget::LC_PenPaletteWidget(const QString& title, QWidget* parent) 
 
     // make controls flexible
 
-    auto* layPenColorFlex = new LC_FlexLayout(0, 5, 5, 45);
+    auto* layPenColorFlex = new LC_FlexLayout(0, 3, 3, 45);
     layPenColorFlex->fillFromLayout(layPenColor);
     layPenColorFlex->fillFromLayout(layTypeWidth);
     layPenColorFlex->setSoftBreakItems({2, 4, 6});
@@ -167,7 +194,7 @@ void LC_PenPaletteWidget::initTableView() {
     tableView->setModel(m_penPaletteModel);
 
     QHeaderView* horizontalHeader = tableView->horizontalHeader();
-    horizontalHeader->setMinimumSectionSize(24);
+    horizontalHeader->setMinimumSectionSize(21);
     horizontalHeader->setSectionResizeMode(QHeaderView::ResizeMode::ResizeToContents);
     horizontalHeader->setStretchLastSection(true);
     horizontalHeader->hide();
@@ -178,15 +205,19 @@ void LC_PenPaletteWidget::initTableView() {
     tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     tableView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    tableView->setShowGrid(false);
 
     QHeaderView* verticalHeader = tableView->verticalHeader();
+    const QFontMetrics fm(font());
+    const int itemHeight = fm.height() + 5;
+    verticalHeader->setDefaultSectionSize(itemHeight);
     verticalHeader->setOffset(2);
     verticalHeader->hide();
 
-    tableView->setColumnWidth(m_penPaletteModel->translateColumn(LC_PenPaletteModel::COLOR_ICON), LC_PenPaletteModel::ICON_WIDTH);
-    tableView->setColumnWidth(m_penPaletteModel->translateColumn(LC_PenPaletteModel::COLOR_NAME), LC_PenPaletteModel::ICON_WIDTH * 5);
-    tableView->setColumnWidth(m_penPaletteModel->translateColumn(LC_PenPaletteModel::TYPE_ICON), LC_PenPaletteModel::ICON_WIDTH);
-    tableView->setColumnWidth(m_penPaletteModel->translateColumn(LC_PenPaletteModel::WIDTH_ICON), LC_PenPaletteModel::ICON_WIDTH);
+    tableView->setColumnWidth(m_penPaletteModel->translateColumn(LC_PenPaletteModel::COLOR_ICON), itemHeight);
+    tableView->setColumnWidth(m_penPaletteModel->translateColumn(LC_PenPaletteModel::COLOR_NAME), itemHeight * 5);
+    tableView->setColumnWidth(m_penPaletteModel->translateColumn(LC_PenPaletteModel::TYPE_ICON), itemHeight);
+    tableView->setColumnWidth(m_penPaletteModel->translateColumn(LC_PenPaletteModel::WIDTH_ICON), itemHeight);
 #ifndef DONT_FORCE_WIDGETS_CSS
     tableView->setStyleSheet("QWidget {background-color: white;}  QScrollBar{ background-color: none }");
 #endif
@@ -199,7 +230,7 @@ void LC_PenPaletteWidget::initTableView() {
     connect(m_penPaletteData, &LC_PenPaletteData::modelDataChange, this, &LC_PenPaletteWidget::onPersistentItemsChanged);
 
     tableView->setContextMenuPolicy(Qt::CustomContextMenu);
-    tableView->setItemDelegate(new LC_PenPaletteGridDelegate(tableView, m_penPaletteModel->getOptions()));
+    tableView->setTrackingItemDelegate(new LC_PenPaletteGridDelegate(tableView, m_penPaletteModel->getOptions(), m_penPaletteModel));
 }
 
 /**
@@ -785,6 +816,10 @@ void LC_PenPaletteWidget::updatePenToolbarByActiveLayer() const {
             }
         }
     }
+}
+
+QLayout* LC_PenPaletteWidget::getTopLevelLayout() const {
+    return layout();
 }
 
 /**

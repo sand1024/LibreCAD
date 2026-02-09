@@ -2,8 +2,8 @@
  * ********************************************************************************
  * This file is part of the LibreCAD project, a 2D CAD program
  *
- * Copyright (C) 2025 LibreCAD.org
- * Copyright (C) 2025 sand1024
+ * Copyright (C) 2026 LibreCAD.org
+ * Copyright (C) 2026 sand1024
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,23 +21,23 @@
  * ********************************************************************************
  */
 
-#ifndef LC_GRAPHICAWAREWIDGET_H
-#define LC_GRAPHICAWAREWIDGET_H
-#include <QWidget>
+#ifndef LC_MOUSETRACKINGTABLEVIEW_H
+#define LC_MOUSETRACKINGTABLEVIEW_H
+#include <QTableView>
 
-#include "lc_graphicviewaware.h"
-// do not remove this import!
-#include "lc_widgets_common.h"
+#include "lc_tableitem_delegate_base.h"
 
-class LC_GraphicViewAwareWidget: public QWidget, public LC_GraphicViewAware {
+class LC_MouseTrackingTableView: public QTableView {
+    Q_OBJECT
 public:
-    explicit LC_GraphicViewAwareWidget(QWidget* parent,const char* name=nullptr, Qt::WindowFlags f = {});
-    ~LC_GraphicViewAwareWidget() override;
-public slots:
-    void updateWidgetSettings() const;
-    void onDockLocationChanged(Qt::DockWidgetArea area);
+    explicit LC_MouseTrackingTableView(QWidget* parent);
+    void setTrackingItemDelegate(LC_TableItemDelegateBase* delegate);
+signals:
+    void hoverIndexChanged(const QModelIndex&);
 protected:
-    virtual QLayout* getTopLevelLayout() const = 0;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void leaveEvent(QEvent* event) override;
+    void enterEvent(QEnterEvent* event) override;
 };
 
 #endif

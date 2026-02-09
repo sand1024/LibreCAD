@@ -47,6 +47,10 @@ public:
         return m_namedViews.count();
     }
 
+    bool isEmpty() const {
+        return m_namedViews.isEmpty();
+    }
+
 /**
  * @return View at given position or NULL if i is out of range.
  */

@@ -2,8 +2,8 @@
  * ********************************************************************************
  * This file is part of the LibreCAD project, a 2D CAD program
  *
- * Copyright (C) 2025 LibreCAD.org
- * Copyright (C) 2025 sand1024
+ * Copyright (C) 2026 LibreCAD.org
+ * Copyright (C) 2026 sand1024
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,23 +21,27 @@
  * ********************************************************************************
  */
 
-#ifndef LC_GRAPHICAWAREWIDGET_H
-#define LC_GRAPHICAWAREWIDGET_H
-#include <QWidget>
+#ifndef LC_TABLEITEMDELEGATEBASE_H
+#define LC_TABLEITEMDELEGATEBASE_H
+#include <QStyledItemDelegate>
 
-#include "lc_graphicviewaware.h"
-// do not remove this import!
-#include "lc_widgets_common.h"
+class QTableView;
 
-class LC_GraphicViewAwareWidget: public QWidget, public LC_GraphicViewAware {
+class LC_TableItemDelegateBase : public QStyledItemDelegate {
+    Q_OBJECT
 public:
-    explicit LC_GraphicViewAwareWidget(QWidget* parent,const char* name=nullptr, Qt::WindowFlags f = {});
-    ~LC_GraphicViewAwareWidget() override;
+    explicit LC_TableItemDelegateBase(QTableView* parent);
 public slots:
-    void updateWidgetSettings() const;
-    void onDockLocationChanged(Qt::DockWidgetArea area);
+    void onHoverIndexChanged(const QModelIndex& index);
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 protected:
-    virtual QLayout* getTopLevelLayout() const = 0;
+    int m_hoverRow = -1;
+    QColor m_hoverRowBackgroundColor = Qt::red;
+    QColor m_gridColor;
+    QTableView* m_tableView {nullptr};
+    void paintBackground(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const;
+    void drawHorizontalGridLine(QPainter* painter, const QStyleOptionViewItem& option) const;
+    virtual void doPaint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const;
 };
 
 #endif

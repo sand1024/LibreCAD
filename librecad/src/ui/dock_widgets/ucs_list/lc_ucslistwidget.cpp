@@ -28,6 +28,7 @@
 
 #include "lc_dlgucslistoptions.h"
 #include "lc_graphicviewport.h"
+#include "lc_mouse_tracking_table_view.h"
 #include "lc_ucs.h"
 #include "lc_ucslistbutton.h"
 #include "lc_ucslistmodel.h"
@@ -45,9 +46,6 @@ LC_UCSListWidget::LC_UCSListWidget(const QString& title, QWidget *parent)
     , ui(new Ui::LC_UCSListWidget){
     ui->setupUi(this);
     setWindowTitle(title);
-
-    ui->leFilterMask->setVisible(false);
-
     initToolbar();
     loadOptions();
     createModel();
@@ -110,32 +108,52 @@ void LC_UCSListWidget::updateButtonsState() const {
     }
 }
 
-namespace {
-// the default icon size
-    constexpr int ICON_WIDTH = 24;
-}
+class LC_UCSTableItemDelegate : public LC_TableItemDelegateBase {
+public:
+    explicit LC_UCSTableItemDelegate(LC_MouseTrackingTableView* parent, LC_UCSListModel* model, LC_UCSListOptions* options) : LC_TableItemDelegateBase(parent) {
+        m_model = model;
+        m_options = options;
+        auto palette = parent->palette();
+        m_gridColor = palette.color(QPalette::Button);
+        m_hoverRowBackgroundColor = palette.color(QPalette::AlternateBase);
+    }
+
+    void doPaint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override {
+        QStyledItemDelegate::paint(painter, option, index);
+        const bool drawGrid = m_options != nullptr && m_options->showGrid;
+        if (drawGrid) {
+            drawHorizontalGridLine(painter, option);
+        }
+    }
+private:
+    LC_UCSListModel* m_model;
+    LC_UCSListOptions* m_options;
+};
 
 void LC_UCSListWidget::createModel() {
     m_ucsListModel  = new LC_UCSListModel(m_options, this);
 
-    QTableView *tableView = ui->tvTable;
+    LC_MouseTrackingTableView *tableView = ui->tvTable;
     tableView->setModel(m_ucsListModel);
-    tableView->setShowGrid(true);
+    tableView->setShowGrid(false);
     tableView->setSelectionMode(QAbstractItemView::ExtendedSelection);
     tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     tableView->setFocusPolicy(Qt::NoFocus);
     tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     tableView->setMinimumHeight(60);
 
+    QHeaderView* verticalHeader = tableView->verticalHeader();
+    const QFontMetrics fm(font());
+    m_itemHeight = fm.height() + 6;
+    verticalHeader->setDefaultSectionSize(m_itemHeight);
+    verticalHeader->setOffset(2);
+    verticalHeader->hide();
+
     QHeaderView *horizontalHeader {tableView->horizontalHeader()};
-    horizontalHeader->setMinimumSectionSize(ICON_WIDTH + 4);
+    horizontalHeader->setMinimumSectionSize(m_itemHeight);
     horizontalHeader->setSectionResizeMode(QHeaderView::ResizeToContents);
     horizontalHeader->setStretchLastSection(true);
     horizontalHeader->hide();
-
-    QHeaderView *verticalHeader = tableView->verticalHeader();
-    verticalHeader->setOffset(2);
-    verticalHeader->hide();
 
 #ifndef DONT_FORCE_WIDGETS_CSS
     tableView->setStyleSheet("QWidget {background-color: white;}  QScrollBar{ background-color: none }");
@@ -149,6 +167,7 @@ void LC_UCSListWidget::createModel() {
              this, &LC_UCSListWidget::onTableSelectionChanged);
 
     tableView->setContextMenuPolicy(Qt::CustomContextMenu);
+    tableView->setTrackingItemDelegate(new LC_UCSTableItemDelegate(tableView, m_ucsListModel, m_options));
 }
 
 void LC_UCSListWidget::setGraphicView(RS_GraphicView *gv) {
@@ -243,7 +262,7 @@ void LC_UCSListWidget::updateData(const bool restoreSelectionIfPossible) {
     restoreSingleSelectedRow(restoreSelectionIfPossible, selectedRow);
     updateButtonsState();
     if (m_options->showColumnTypeIcon){
-        ui->tvTable->setColumnWidth(m_ucsListModel->translateColumn(LC_UCSListModel::ICON_TYPE), ICON_WIDTH);
+        ui->tvTable->setColumnWidth(m_ucsListModel->translateColumn(LC_UCSListModel::ICON_TYPE), m_itemHeight);
     }
     if (m_graphicView != nullptr) {
         const auto graphic = m_graphicView->getGraphic();
@@ -271,6 +290,10 @@ void LC_UCSListWidget::restoreSingleSelectedRow(const bool restoreSelectionIfPos
             ui->tvTable->selectRow(selectedRow);
         }
     }
+}
+
+QLayout* LC_UCSListWidget::getTopLevelLayout() const {
+    return ui->gridLayout;
 }
 
 int LC_UCSListWidget::getSingleSelectedRow() const {

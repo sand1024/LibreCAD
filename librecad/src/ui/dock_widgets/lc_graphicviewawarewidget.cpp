@@ -23,6 +23,7 @@
 
 #include "lc_graphicviewawarewidget.h"
 
+#include <QLayout>
 #include <QToolButton>
 
 #include "rs_settings.h"
@@ -49,4 +50,24 @@ void LC_GraphicViewAwareWidget::updateWidgetSettings() const {
         }
     }
     LC_GROUP_END();
+}
+
+void LC_GraphicViewAwareWidget::onDockLocationChanged(Qt::DockWidgetArea area) {
+    switch (area) {
+        case Qt::DockWidgetArea::LeftDockWidgetArea:{
+            getTopLevelLayout()->setContentsMargins(2, 1, 0, 2);
+            break;
+        }
+        case Qt::DockWidgetArea::RightDockWidgetArea:{
+            getTopLevelLayout()->setContentsMargins(0, 1, 2, 2);
+            break;
+        }
+        case Qt::DockWidgetArea::NoDockWidgetArea:{
+            getTopLevelLayout()->setContentsMargins(2, 1, 2, 2);
+            break;
+        }
+        default:
+            getTopLevelLayout()->setContentsMargins(0, 1, 2, 0);
+            break;
+    }
 }

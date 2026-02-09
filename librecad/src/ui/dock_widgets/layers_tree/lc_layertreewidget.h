@@ -115,7 +115,7 @@ protected:
     void exportLayersList(QList<RS_Layer*> layersToExport) const;
     void exportLayerSubTree();
     void exportVisibleLayers();
-
+    QLayout* getTopLevelLayout() const override;
 private:
     RS_LayerList* m_layerList{nullptr};
     QLineEdit* m_matchLayerName{nullptr};

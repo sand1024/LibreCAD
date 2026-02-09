@@ -40,35 +40,123 @@ class LayerTreeGridDelegate:public QStyledItemDelegate {
 public:
     explicit LayerTreeGridDelegate(LC_LayerTreeView *parent = nullptr, LC_LayerTreeModel* tm = nullptr):QStyledItemDelegate(parent){
         if (parent){
+            m_treeView = parent;
             m_treeModel = tm;
+            m_options = tm->getOptions();
+            auto palette = parent->palette();
+            m_gridColor = palette.color(QPalette::Button);
+            m_customHoverTextColor = palette.color(QPalette::WindowText);
+            m_hoverBackgrounColor = palette.color(QPalette::Button);
         }
     }
 
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override{
-        QStyledItemDelegate::paint(painter, option, index);
-        const int col = index.column();
+    enum TextColorMode {
+        AutoContrast,    // Auto-calculate for readability
+        CustomColor,     // Use specified color
+        UsePalette       // Use from widget palette
+    };
+    QColor getTextColor(TextColorMode textColorMode, QColor hoverBackground, const QStyleOptionViewItem &opt) const{
+        QColor textColor;
+        switch (textColorMode) {
+            case AutoContrast:
+                textColor = calculateTextColor(hoverBackground);
+                break;
+            case CustomColor:
+                textColor = m_customHoverTextColor;
+                break;
+            case UsePalette:
+            default:
+                // Use the palette's text color (default behavior)
+                textColor = opt.palette.color(QPalette::Text);
+                break;
+        }
+        return textColor;
+    }
 
-        if (col > 0){
-            bool draw = true;
-            if (col == LC_LayerTreeModel::COLUMN_NAME){
-                const LC_LayerTreeItem *layerItem = m_treeModel->getItemForIndex(index);
-                if (layerItem && !layerItem->isVirtual()){
-                    draw = false;
-                }
+    QColor calculateTextColor(const QColor &background) const
+    {
+        // Calculate perceived brightness
+        double brightness = (0.299 * background.red() +
+                            0.587 * background.green() +
+                            0.114 * background.blue()) / 255.0;
+
+        return (brightness > 0.5) ? Qt::black : Qt::white;
+    }
+
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override{
+        const int col = index.column();
+        const int actualCol = m_treeModel->translateColumn(col);
+        // NOTE - Here we setup the color for howevered item highligting. Under Win10 - it works for all styles (Fusion, Windows, windows11)
+        // EXCEPT! windowsvista - there it seems native highligh color is used that IGNORES such setup :(
+        QStyleOptionViewItem opt = option;
+        initStyleOption(&opt, index);
+
+        bool isHovered = (opt.state & QStyle::State_MouseOver) &&
+                      (opt.state & QStyle::State_Enabled);
+        bool isSelected = opt.state & QStyle::State_Selected;
+
+        if (isHovered && !isSelected) {
+            opt.backgroundBrush = m_hoverBackgrounColor;
+
+            QColor textColor = getTextColor(AutoContrast, m_hoverBackgrounColor, opt);
+
+            QPalette palette = opt.palette;
+            palette.setColor(QPalette::Text, textColor);
+            palette.setColor(QPalette::WindowText, textColor);
+            palette.setColor(QPalette::HighlightedText, textColor);
+            palette.setColor(QPalette::Highlight, m_hoverBackgrounColor);
+            palette.setColor(QPalette::AlternateBase, m_hoverBackgrounColor);
+
+            opt.palette = palette;
+            opt.state |= QStyle::State_Selected; // Enable highlight text rendering
+            opt.backgroundBrush = QBrush(m_hoverBackgrounColor);
+        }
+        QStyledItemDelegate::paint(painter, opt, index);
+        if (col >= 0){
+            const LC_LayerTreeItem *layerItem = m_treeModel->getItemForIndex(index);
+            const bool nonVirtualItem = layerItem != nullptr && !layerItem->isVirtual();
+            if (actualCol == LC_LayerTreeModel::COLUMN_COLOR_SAMPLE && nonVirtualItem) {
+                m_treeView->style()->drawPrimitive(QStyle::PE_PanelItemViewRow, &option, painter, m_treeView);
+                QRect colorRect = option.rect;
+                const int originalWidth = colorRect.width();
+                const int newWidth = colorRect.height() - 8;
+                // center color box in cell
+                const int widthDelta = originalWidth - newWidth;
+                const int leftDelta = widthDelta / 2;
+                const int rightDelta = widthDelta - leftDelta;
+
+                colorRect.adjust(leftDelta, 4, -rightDelta, -4);
+
+                painter->fillRect(colorRect, Qt::black);
+                colorRect.adjust(1, 1, -1, -1);
+                const auto color = layerItem->getLayer()->getPen().getColor();
+                painter->fillRect(colorRect, color);
             }
-            if (draw){
-                const LC_LayerTreeModelOptions* options = m_treeModel->getOptions();
-                const QColor color = options->itemsGridColor;
-                painter->save();
-                painter->setPen(color);
-                painter->drawRect(option.rect);
-                painter->restore();
+            bool drawGrid = m_options->showGrid;
+            if (drawGrid) {
+                if (actualCol == LC_LayerTreeModel::COLUMN_NAME){
+                    if (nonVirtualItem){
+                        drawGrid =  m_treeModel->isFlatMode();
+                    }
+                }
+                if (drawGrid){
+                    const QColor color = m_gridColor;
+                    painter->save();
+                    painter->setPen(color);
+                    painter->drawRect(option.rect);
+                    painter->restore();
+                }
             }
         }
     }
 
 private:
+    LC_LayerTreeView* m_treeView;
     LC_LayerTreeModel* m_treeModel{nullptr};
+    QColor m_gridColor;
+    QColor m_hoverBackgrounColor;
+    QColor m_customHoverTextColor;
+    LC_LayerTreeModelOptions* m_options;
 };
 
 
@@ -77,6 +165,7 @@ LC_LayerTreeView::LC_LayerTreeView(QWidget *parent):QTreeView(parent){
 
 void LC_LayerTreeView::setup(LC_LayerTreeModel *treeModel){
     setModel(treeModel);
+    setMouseTracking(true);
     auto* delegate = new LayerTreeGridDelegate(this, treeModel);
     setItemDelegate(delegate);
 }

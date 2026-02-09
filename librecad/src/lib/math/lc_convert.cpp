@@ -86,7 +86,8 @@ bool LC_Convert::toDoubleAngleRad(const QString& strValue, double &res, const do
     double radValue;
     const bool result = parseToToDoubleAngleDegrees(strValue, radValue, notMeaningful, positiveOnly);
     if (result){
-        res = RS_Math::deg2rad(radValue);
+        const double resRad = RS_Math::deg2rad(radValue);
+        res = RS_Math::correctAngle(resRad);
     }
     return result;
 }

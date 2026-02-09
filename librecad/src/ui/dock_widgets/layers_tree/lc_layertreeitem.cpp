@@ -357,7 +357,7 @@ LC_LayerTreeItem *LC_LayerTreeItem::findPrimaryLayerChild(const QString &childNa
     for (int i = 0; i < count; i++) {
         LC_LayerTreeItem *child = m_childItems.at(i);
         const int type = child->getLayerType();
-        if (type == NORMAL){ // virtual is supported there to handle not proper layer names convention, actually
+        if (type == RS_Layer::LayerType::NORMAL){ // virtual is supported there to handle not proper layer names convention, actually
             QString childName = child->getName();
             if (childNameToFind == childName){
                 result = child;
@@ -387,7 +387,7 @@ LC_LayerTreeItem *LC_LayerTreeItem::getOrCreateVirtualChild(const QString &targe
     }
     if (result == nullptr){
         result = new LC_LayerTreeItem(targetChildName, nullptr, this);
-        result->setLayerType(VIRTUAL);
+        result->setLayerType(RS_Layer::LayerType::VIRTUAL);
         appendChild(result);
     }
     return result;

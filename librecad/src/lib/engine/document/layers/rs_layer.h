@@ -66,6 +66,17 @@ struct RS_LayerData {
  */
 class RS_Layer {
 public:
+
+    static constexpr int NOT_DEFINED_LAYER_TYPE = -1;
+    // Layer types
+    enum LayerType{
+        VIRTUAL,
+        NORMAL,
+        DIMENSIONAL,
+        INFORMATIONAL,
+        ALTERNATE_POSITION
+    };
+
     explicit RS_Layer(const QString& name);
     //RS_Layer(const char* name);
 

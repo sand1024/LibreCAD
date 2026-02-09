@@ -62,7 +62,7 @@ LC_QuickInfoWidget::LC_QuickInfoWidget(QWidget *parent, QMap<QString, QAction *>
     ui->setupUi(this);
 
     // support flexible layout for buttons and small size displays
-    auto *layButtonsFlex = new LC_FlexLayout(0, 5, 5);
+    auto *layButtonsFlex = new LC_FlexLayout(0, 3, 3);
     layButtonsFlex->fillFromLayout(ui->layToFlexible);
     const int buttonsPosition = ui->horizontalLayout->indexOf(ui->layToFlexible);
     const QLayoutItem *pItem = ui->horizontalLayout->takeAt(buttonsPosition);
@@ -773,6 +773,10 @@ void LC_QuickInfoWidget::onRelativeZeroChanged([[maybe_unused]]const RS_Vector &
             updateCollectedPointsView(true);
         }
     }
+}
+
+QLayout* LC_QuickInfoWidget::getTopLevelLayout() const {
+    return ui->gridLayout;
 }
 
 /**

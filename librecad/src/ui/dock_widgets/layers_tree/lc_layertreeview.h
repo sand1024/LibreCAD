@@ -37,6 +37,7 @@ public:
     QStringList saveTreeExpansionState() const;
     void restoreTreeExpansionState(QStringList treeExpansionState);
     void expandChildren(const QModelIndex &index);
+
 protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dragLeaveEvent(QDragLeaveEvent *event) override;

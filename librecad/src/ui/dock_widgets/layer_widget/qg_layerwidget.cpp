@@ -34,12 +34,14 @@
 #include <QLineEdit>
 #include <QMenu>
 #include <QObject>
+#include <QPainter>
 #include <QScrollBar>
-#include <QTableView>
 #include <QToolButton>
 
 #include "lc_actiongroupmanager.h"
 #include "lc_flexlayout.h"
+#include "lc_mouse_tracking_table_view.h"
+#include "lc_tableitem_delegate_base.h"
 #include "qc_applicationwindow.h"
 #include "qg_actionhandler.h"
 #include "rs_debug.h"
@@ -49,7 +51,7 @@
 #include "rs_layer.h"
 #include "rs_layerlist.h"
 
-QG_LayerModel::QG_LayerModel(QObject * parent) : QAbstractTableModel(parent) {
+QG_LayerModel::QG_LayerModel(QObject * parent) : QAbstractItemModel(parent) {
     m_iconLayerVisible = QIcon(":/icons/visible.lci");
     m_iconLayerHidden = QIcon(":/icons/not_visible.lci");
     m_iconLayerDefreeze = QIcon(":/icons/unlocked.lci");
@@ -60,8 +62,11 @@ QG_LayerModel::QG_LayerModel(QObject * parent) : QAbstractTableModel(parent) {
     m_iconLayerNoConstruction = QIcon(":/icons/noconstruction.lci");
 }
 
-int QG_LayerModel::rowCount ( const QModelIndex & /*parent*/ ) const {
-    return m_listLayer.size();
+int QG_LayerModel::rowCount ( const QModelIndex & parent) const {
+    if (!parent.isValid()) {
+        return m_listLayer.size();
+    }
+    return 0;
 }
 
 QModelIndex QG_LayerModel::parent ( const QModelIndex & /*index*/ ) const {
@@ -108,7 +113,7 @@ QModelIndex QG_LayerModel::getIndex (RS_Layer * lay) const {
     }
     return createIndex (row, COLUMN_NAME);
 }
-QVariant QG_LayerModel::data ( const QModelIndex & index, const int role ) const{
+QVariant QG_LayerModel::data( const QModelIndex & index, const int role ) const{
     if (!index.isValid() || index.row() >= m_listLayer.size()) {
         return QVariant();
     }
@@ -153,17 +158,11 @@ QVariant QG_LayerModel::data ( const QModelIndex & index, const int role ) const
                 return layer->getName();
             }
             break;
-
-#if QT_VERSION > QT_VERSION_CHECK(6, 0, 0)
         case Qt::BackgroundRole:
-#else
-    case Qt::BackgroundColorRole:
-#endif
             if (COLUMN_COLOR_SAMPLE == col) {
                 return layer->getPen().getColor().toQColor();
             }
             break;
-
         case Qt::FontRole:
             if (COLUMN_NAME == col) {
                 if (m_activeLayer && m_activeLayer == layer) {
@@ -179,6 +178,48 @@ QVariant QG_LayerModel::data ( const QModelIndex & index, const int role ) const
 
     return QVariant();
 }
+
+class LC_LayerTableItemDelegate : public LC_TableItemDelegateBase {
+public:
+    explicit LC_LayerTableItemDelegate(QTableView* parent, QG_LayerModel* model) : LC_TableItemDelegateBase(parent) {
+        m_model = model;
+        auto palette = parent->palette();
+        m_gridColor = palette.color(QPalette::Button);
+        m_hoverRowBackgroundColor = palette.color(QPalette::AlternateBase);
+    }
+
+    void doPaint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override {
+        const int col = index.column();
+        if (col  == QG_LayerModel::Columns::COLUMN_COLOR_SAMPLE) {
+            const auto layer = m_model->getLayer(index.row());
+            if (layer != nullptr){
+                QRect colorRect = option.rect;
+                const int originalWidth = colorRect.width();
+                const int newWidth = colorRect.height() - 8;
+                // center color box in cell
+                const int widthDelta = originalWidth - newWidth;
+                const int leftDelta = widthDelta / 2;
+                const int rightDelta = widthDelta - leftDelta;
+
+                colorRect.adjust(leftDelta+1, 6, -rightDelta-1, -6);
+
+                painter->fillRect(colorRect, Qt::black);
+                colorRect.adjust(1, 1, -1, -1);
+                auto color = layer->getPen().getColor();
+                painter->fillRect(colorRect, color);
+            }
+        }
+        else {
+            QStyledItemDelegate::paint(painter, option, index);
+        }
+        const bool drawGrid = true;
+        if (drawGrid) {
+           drawHorizontalGridLine(painter, option);
+        }
+    }
+private:
+    QG_LayerModel* m_model;
+};
 
 void QG_LayerWidget::addToolbarButton(LC_FlexLayout* layButtons, const RS2::ActionType actionType) {
     QAction* action = m_actionGroupManager->getActionByType(actionType);
@@ -201,34 +242,46 @@ QG_LayerWidget::QG_LayerWidget(LC_ActionGroupManager* actionGroupManager, const 
     m_lastLayer = nullptr;
 
     m_layerModel = new QG_LayerModel(this);
-    m_layerView = new QTableView(this);
+    m_layerView = new LC_MouseTrackingTableView(this);
     m_layerView->setModel(m_layerModel);
-    m_layerView->setShowGrid(true);
+
     m_layerView->setSelectionMode(QAbstractItemView::ExtendedSelection);
     m_layerView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     m_layerView->setFocusPolicy(Qt::NoFocus);
-    // layerView->setMinimumHeight(140);
     m_layerView->setMinimumHeight(60);
-    QHeaderView *pHeader {m_layerView->horizontalHeader()};
-    pHeader->setMinimumSectionSize( QG_LayerModel::ICONWIDTH + 4);
-    pHeader->setStretchLastSection(true);
-    pHeader->hide();
-    m_layerView->setColumnWidth(QG_LayerModel::COLUMN_VISIBLE, QG_LayerModel::ICONWIDTH);
-    m_layerView->setColumnWidth(QG_LayerModel::COLUMN_VISIBLE, QG_LayerModel::ICONWIDTH);
-    m_layerView->setColumnWidth(QG_LayerModel::COLUMN_LOCKED, QG_LayerModel::ICONWIDTH);
-    m_layerView->setColumnWidth(QG_LayerModel::COLUMN_PRINT, QG_LayerModel::ICONWIDTH);
-    m_layerView->setColumnWidth(QG_LayerModel::COLUMN_CONSTRUCTION, QG_LayerModel::ICONWIDTH);
-    m_layerView->setColumnWidth(QG_LayerModel::COLUMN_COLOR_SAMPLE, QG_LayerModel::ICONWIDTH);
+
+    QHeaderView* verticalHeader = m_layerView->verticalHeader();
+    const QFontMetrics fm(font());
+    int itemHeight = fm.height() + 6;
+    verticalHeader->setDefaultSectionSize(itemHeight);
+
+    QHeaderView *horizontalHeader = m_layerView->horizontalHeader();
+    horizontalHeader->setMinimumSectionSize(itemHeight);
+    horizontalHeader->setStretchLastSection(true);
+    horizontalHeader->hide();
+
+    m_layerView->setColumnWidth(QG_LayerModel::COLUMN_VISIBLE, itemHeight);
+    m_layerView->setColumnWidth(QG_LayerModel::COLUMN_VISIBLE, itemHeight);
+    m_layerView->setColumnWidth(QG_LayerModel::COLUMN_LOCKED, itemHeight);
+    m_layerView->setColumnWidth(QG_LayerModel::COLUMN_PRINT, itemHeight);
+    m_layerView->setColumnWidth(QG_LayerModel::COLUMN_CONSTRUCTION, itemHeight);
+    m_layerView->setColumnWidth(QG_LayerModel::COLUMN_COLOR_SAMPLE, itemHeight);
     m_layerView->verticalHeader()->hide();
+
+    m_layerView->setTrackingItemDelegate(new LC_LayerTableItemDelegate(m_layerView, m_layerModel));
+
+    m_layerView->setShowGrid(false); // fixme - sand - add to options!*/
 
 #ifndef DONT_FORCE_WIDGETS_CSS
     m_layerView->setStyleSheet("QWidget {background-color: white;}  QScrollBar{ background-color: none }");
 #endif
 
     auto* lay = new QVBoxLayout(this);
-    lay->setContentsMargins(2, 2, 2, 2);
+    lay->setContentsMargins(2, 1, 2, 2);
+    lay->setSpacing(1);
 
-    auto *layButtons = new LC_FlexLayout(0,5,5);
+    auto *layButtons = new LC_FlexLayout(0,3,3);
+    layButtons->setContentsMargins(0, 0, 0, 0);
 
     addToolbarButton(layButtons, RS2::ActionLayersDefreezeAll);
     addToolbarButton(layButtons, RS2::ActionLayersFreezeAll);
@@ -455,15 +508,12 @@ void QG_LayerWidget::slotActivated(const QModelIndex& layerIdx /*const QString& 
             break;
         case QG_LayerModel::COLUMN_LOCKED:
             m_actionHandler->setCurrentAction(RS2::ActionLayersToggleLock, lay);
-            // m_actionHandler->toggleLock(lay);
             break;
         case QG_LayerModel::COLUMN_PRINT:
             m_actionHandler->setCurrentAction(RS2::ActionLayersTogglePrint, lay);
-            // m_actionHandler->togglePrint(lay);
             break;
         case QG_LayerModel::COLUMN_CONSTRUCTION:
             m_actionHandler->setCurrentAction(RS2::ActionLayersToggleConstruction, lay);
-            // m_actionHandler->toggleConstruction(lay);
             break;
         default:
             break;
@@ -524,6 +574,10 @@ void QG_LayerWidget::addMenuItem(QMenu* contextMenu, const RS2::ActionType actio
     if (action != nullptr) {
         contextMenu->QWidget::addAction(action);
     }
+}
+
+QLayout* QG_LayerWidget::getTopLevelLayout() const {
+    return layout();
 }
 
 /**

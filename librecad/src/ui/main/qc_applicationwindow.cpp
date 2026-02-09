@@ -1057,23 +1057,29 @@ void QC_ApplicationWindow::openFile(const QString& fileName, const RS2::FormatTy
     QApplication::restoreOverrideCursor();
 }
 
+void QC_ApplicationWindow::notifyCurrentDrawingOptionsChanged() {
+    const auto graphicView = getCurrentGraphicView();
+    RS_Graphic* graphic = graphicView->getGraphic(true);
+    updateCoordinateWidgetFormat();
+    m_quickInfoWidget->updateFormats();
+    m_propertySheetWidget->updateFormats();
+    m_anglesBasisWidget->update(graphic);
+    m_relativeZeroCoordinatesWidget->updateFormats();
+    m_ucsListWidget->reload();
+    m_namedViewsWidget->reload();
+    graphicView->loadSettings();
+    graphic->update();
+    graphicView->redraw();
+    graphicView->repaint();
+}
+
 void QC_ApplicationWindow::changeDrawingOptions(const int tabToShowIndex) {
     const auto graphicView = getCurrentGraphicView();
     RS_Graphic* graphic = graphicView->getGraphic(true);
 
     const int dialogResult = m_dlgHelpr->requestOptionsDrawingDialog(*graphic, tabToShowIndex);
     if (dialogResult == QDialog::Accepted) {
-        updateCoordinateWidgetFormat();
-        m_quickInfoWidget->updateFormats();
-        m_propertySheetWidget->updateFormats();
-        m_anglesBasisWidget->update(graphic);
-        m_relativeZeroCoordinatesWidget->updateFormats();
-        m_ucsListWidget->reload();
-        m_namedViewsWidget->reload();
-        graphicView->loadSettings();
-        graphic->update();
-        graphicView->redraw();
-        graphicView->repaint();
+        notifyCurrentDrawingOptionsChanged();
         // fixme - sand - emit signal?
     }
     else {

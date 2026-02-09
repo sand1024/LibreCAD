@@ -121,6 +121,7 @@ void LC_WidgetFactory::createCADMegaSidebar(const int columns, const int iconSiz
     actions.append(m_actionFactory->orderActions);
     mega->addActions(actions, columns, iconSize, flatButtons);
     mega->hide();
+    mega->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, mega, &LC_CADDockWidget::updateWidgetSettings);
     m_appWin->addDockWidget(Qt::LeftDockWidgetArea, mega);
 }
@@ -163,7 +164,7 @@ void LC_WidgetFactory::createCADSidebar(const int columns, const int iconSize, c
 QDockWidget* LC_WidgetFactory::createDockWidget(const QString& horizontalTitle, const char *name, const QString& verticalTitle) const {
     const auto result = new LC_DockWidget(m_appWin, horizontalTitle, verticalTitle);
     // auto result = new QDockWidget(horizontalTitle, m_appWin);
-    result->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    result->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     result->setWindowTitle(horizontalTitle);
     result->setObjectName(name);
     result->setProperty("_lc_doc_widget", true);
@@ -178,6 +179,7 @@ QDockWidget* LC_WidgetFactory::createPenPalletteWidget(){
 
     connect(widget, &LC_PenPaletteWidget::escape, m_appWin, &QC_ApplicationWindow::slotFocus);
     connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, widget, &LC_PenPaletteWidget::updateWidgetSettings);
+    connect(dock, &QDockWidget::dockLocationChanged, widget, &LC_GraphicViewAwareWidget::onDockLocationChanged);
 
     m_appWin->m_penPaletteWidget = widget;
     return dock;
@@ -191,7 +193,7 @@ QDockWidget* LC_WidgetFactory::createLayerWidget(const QG_ActionHandler* actionH
 
     connect(widget, &QG_LayerWidget::escape, m_appWin, &QC_ApplicationWindow::slotFocus);
     connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, widget, &QG_LayerWidget::updateWidgetSettings);
-
+    connect(dock, &QDockWidget::dockLocationChanged, widget, &LC_GraphicViewAwareWidget::onDockLocationChanged);
     m_appWin->m_layerWidget  = widget;
     return dock;
 }
@@ -204,7 +206,7 @@ QDockWidget* LC_WidgetFactory::createNamedViewsWidget(){
 
     connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, widget, &LC_NamedViewsListWidget::updateWidgetSettings);
     connect(m_appWin->m_ucsListWidget, &LC_UCSListWidget::ucsListChanged, widget, &LC_NamedViewsListWidget::onUcsListChanged);
-
+    connect(dock, &QDockWidget::dockLocationChanged, widget, &LC_GraphicViewAwareWidget::onDockLocationChanged);
     m_appWin->m_namedViewsWidget = widget;
 
     QC_ApplicationWindow *win = m_appWin;
@@ -226,7 +228,7 @@ QDockWidget*  LC_WidgetFactory::createUCSListWidget(){
     dock->setWidget(widget);
 
     connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, widget, &LC_UCSListWidget::updateWidgetSettings);
-
+    connect(dock, &QDockWidget::dockLocationChanged, widget, &LC_GraphicViewAwareWidget::onDockLocationChanged);
     m_appWin->m_ucsListWidget = widget;
     return dock;
 }
@@ -239,7 +241,7 @@ QDockWidget* LC_WidgetFactory::createLayerTreeWidget(const QG_ActionHandler* act
 
     connect(widget, &LC_LayerTreeWidget::escape, m_appWin, &QC_ApplicationWindow::slotFocus);
     connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, widget, &LC_LayerTreeWidget::updateWidgetSettings);
-
+    connect(dock, &QDockWidget::dockLocationChanged, widget, &LC_GraphicViewAwareWidget::onDockLocationChanged);
     m_appWin->m_layerTreeWidget = widget;
     return dock;
 }
@@ -251,7 +253,7 @@ QDockWidget* LC_WidgetFactory::createEntityInfoWidget(){
     dock->setWidget(widget);
 
     connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, widget, &LC_QuickInfoWidget::updateWidgetSettings);
-
+    connect(dock, &QDockWidget::dockLocationChanged, widget, &LC_GraphicViewAwareWidget::onDockLocationChanged);
     m_appWin->m_quickInfoWidget = widget;
     return dock;
 }
@@ -268,7 +270,7 @@ QDockWidget* LC_WidgetFactory::createPropertySheetWidget(){
 
     connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, widget, &LC_PropertySheetWidget::updateWidgetSettings);
     connect(dock, &QDockWidget::visibilityChanged, widget, &LC_PropertySheetWidget::onDockVisibilityChanged);
-
+    connect(dock, &QDockWidget::dockLocationChanged, widget, &LC_GraphicViewAwareWidget::onDockLocationChanged);
     m_appWin->m_propertySheetWidget = widget;
     return dock;
 }
@@ -282,6 +284,7 @@ QDockWidget*  LC_WidgetFactory::createBlockListWidget(const QG_ActionHandler* ac
 
     connect(widget, &QG_BlockWidget::escape, m_appWin, &QC_ApplicationWindow::slotFocus);
     connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, widget, &QG_BlockWidget::updateWidgetSettings);
+    connect(dock, &QDockWidget::dockLocationChanged, widget, &LC_GraphicViewAwareWidget::onDockLocationChanged);
 
     m_appWin->m_blockWidget = widget;
     return dock;
@@ -298,7 +301,7 @@ QDockWidget* LC_WidgetFactory::createLibraryWidget(const QG_ActionHandler* actio
 
     connect(widget, &QG_LibraryWidget::escape, m_appWin, &QC_ApplicationWindow::slotFocus);
     connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, widget, &QG_LibraryWidget::updateWidgetSettings);
-
+    connect(dock, &QDockWidget::dockLocationChanged, widget, &LC_GraphicViewAwareWidget::onDockLocationChanged);
     m_appWin->m_libraryWidget = widget;
     return dock;
 }
@@ -317,7 +320,7 @@ QDockWidget * LC_WidgetFactory::createCmdWidget(QG_ActionHandler *actionHandler)
     // setttings.
     // fixme - sand - remove this call and the slot later, if there will no request from the users to recover this
     // connect(dock, &QDockWidget::dockLocationChanged,m_appWin, &QC_ApplicationWindow::modifyCommandTitleBar);
-
+    connect(dock, &QDockWidget::dockLocationChanged, widget, &LC_GraphicViewAwareWidget::onDockLocationChanged);
     m_appWin->m_commandWidget = widget;
     return dock;
 }
@@ -415,7 +418,7 @@ QDockWidget* LC_WidgetFactory::createPenWizardWidget(){
     // connect(widget, &LC_PenPaletteWidget::escape, m_appWin, &QC_ApplicationWindow::slotFocus);
     // connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, widget, &LC_PenPaletteWidget::updateWidgetSettings);
     connect(m_appWin, &QC_ApplicationWindow::windowsChanged,widget, &LC_PenWizard::setEnabled);
-
+    connect(dock, &QDockWidget::dockLocationChanged, widget, &LC_GraphicViewAwareWidget::onDockLocationChanged);
     m_appWin->m_penWizard = widget;
     return dock;
 }

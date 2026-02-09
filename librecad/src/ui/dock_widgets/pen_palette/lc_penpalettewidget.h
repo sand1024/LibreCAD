@@ -79,6 +79,7 @@ public slots:
     void onModelChanged() const;
     void doDoubleClick();
     void updatePenToolbarByActiveLayer() const;
+    QLayout* getTopLevelLayout() const override;
 protected:
     // mouse click counter used for handling both single click and double-click on table view
     int m_clicksCount {0};

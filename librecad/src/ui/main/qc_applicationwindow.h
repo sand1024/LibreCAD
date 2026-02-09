@@ -306,6 +306,7 @@ public:
  * opens the given file.
  */
     void openFile(const QString& fileName, RS2::FormatType type);
+    void notifyCurrentDrawingOptionsChanged();
     void changeDrawingOptions(int tabToShowIndex);
     void closeWindow(QC_MDIWindow* win) override;
 

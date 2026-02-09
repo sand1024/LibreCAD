@@ -62,7 +62,8 @@ LC_LayerTreeWidget::LC_LayerTreeWidget(const QG_ActionHandler* ah, QWidget* pare
 
     QLayout *layButtons = initButtonsBar();
     auto *lay = new QVBoxLayout(this);
-    lay->setContentsMargins(2, 2, 2, 2);
+    lay->setContentsMargins(2, 0, 2, 2);
+    lay->setSpacing(0);
     lay->addLayout(layFiltering);
     lay->addLayout(layButtons);
     QSizePolicy policy = m_layerTreeView->sizePolicy();
@@ -90,18 +91,21 @@ LC_LayerTreeView *LC_LayerTreeWidget::initTreeView(){
     auto *treeView = new LC_LayerTreeView(this);
     treeView->setup(m_layerTreeModel);
 
-    QHeaderView *pTreeHeader{treeView->header()};
-    pTreeHeader->setMinimumSectionSize(LC_LayerTreeModel::ICONWIDTH + 4);
-    pTreeHeader->setSectionResizeMode(QHeaderView::ResizeMode::ResizeToContents);
-    pTreeHeader->setStretchLastSection(true);
-    pTreeHeader->hide();
+    const QFontMetrics fm(font());
+    const int itemHeight = fm.height() + 6;
 
-    treeView->setColumnWidth(LC_LayerTreeModel::COLUMN_VISIBLE, LC_LayerTreeModel::ICONWIDTH);
-    treeView->setColumnWidth(LC_LayerTreeModel::COLUMN_VISIBLE, LC_LayerTreeModel::ICONWIDTH);
-    treeView->setColumnWidth(LC_LayerTreeModel::COLUMN_LOCKED, LC_LayerTreeModel::ICONWIDTH);
-    treeView->setColumnWidth(LC_LayerTreeModel::COLUMN_PRINT, LC_LayerTreeModel::ICONWIDTH);
-    treeView->setColumnWidth(LC_LayerTreeModel::COLUMN_CONSTRUCTION, LC_LayerTreeModel::ICONWIDTH);
-    treeView->setColumnWidth(LC_LayerTreeModel::COLUMN_COLOR_SAMPLE, LC_LayerTreeModel::ICONWIDTH);
+    QHeaderView *headerView{treeView->header()};
+    headerView->setMinimumSectionSize(itemHeight);
+    headerView->setSectionResizeMode(QHeaderView::ResizeMode::ResizeToContents);
+    headerView->setStretchLastSection(true);
+    headerView->hide();
+
+    treeView->setColumnWidth(LC_LayerTreeModel::COLUMN_VISIBLE, itemHeight);
+    treeView->setColumnWidth(LC_LayerTreeModel::COLUMN_VISIBLE, itemHeight);
+    treeView->setColumnWidth(LC_LayerTreeModel::COLUMN_LOCKED, itemHeight);
+    treeView->setColumnWidth(LC_LayerTreeModel::COLUMN_PRINT, itemHeight);
+    treeView->setColumnWidth(LC_LayerTreeModel::COLUMN_CONSTRUCTION, itemHeight);
+    treeView->setColumnWidth(LC_LayerTreeModel::COLUMN_COLOR_SAMPLE, itemHeight);
 
     treeView->setUniformRowHeights(true);
     treeView->setAlternatingRowColors(false);
@@ -118,6 +122,7 @@ LC_LayerTreeView *LC_LayerTreeWidget::initTreeView(){
     treeView->setExpandsOnDoubleClick(false);
 
     treeView->setContextMenuPolicy(Qt::CustomContextMenu);
+
 #ifndef DONT_FORCE_WIDGETS_CSS
     treeView->setStyleSheet("QWidget {background-color: white;}  QScrollBar{ background-color: none }");
 #endif
@@ -136,6 +141,8 @@ LC_LayerTreeView *LC_LayerTreeWidget::initTreeView(){
  */
 QLayout *LC_LayerTreeWidget::initFilterAndSettingsSection(){
     auto *layFiltering = new QHBoxLayout;
+    layFiltering->setContentsMargins(0, 0, 0, 0);
+    layFiltering->setSpacing(2);
 
     // lineEdit to filter layer list with RegEx
     m_matchLayerName = new QLineEdit(this);
@@ -170,7 +177,8 @@ QLayout *LC_LayerTreeWidget::initFilterAndSettingsSection(){
  * Lets eave it for now as it is in order to minify affecting codebase, probably will refactor later
  */
 QLayout *LC_LayerTreeWidget::initButtonsBar(){
-    auto *layButtons = new LC_FlexLayout(0,5,5);
+    auto *layButtons = new LC_FlexLayout(0,3,3);
+    layButtons->setContentsMargins(0,0,0,1);
     // show all layer:
     auto but = new QToolButton(this);
     // but->setIcon(QIcon(":/icons/visible.lci"));
@@ -393,7 +401,7 @@ void LC_LayerTreeWidget::collapseSecondaryLayers() const {
             if (m_layerTreeView->isExpanded(index)){
                 const LC_LayerTreeItem *childItem = m_layerTreeModel->getItemForIndex(index);
                 const int type = childItem->getLayerType();
-                if (type == LC_LayerTreeItem::NORMAL){
+                if (type == RS_Layer::LayerType::NORMAL){
                     m_layerTreeView->collapse(index);
                 }
             }
@@ -533,7 +541,7 @@ void LC_LayerTreeWidget::slotTreeClicked(const QModelIndex &layerIdx /*const QSt
 
         // handling clicks on flags
         const int layerType = layerItem->getLayerType();
-        const bool normalLayerWithChildren = layerType == LC_LayerTreeItem::NORMAL && layerItem->childCount() > 0;
+        const bool normalLayerWithChildren = layerType == RS_Layer::LayerType::NORMAL && layerItem->childCount() > 0;
 
         switch (column) {
             case LC_LayerTreeModel::COLUMN_VISIBLE: {
@@ -663,19 +671,19 @@ void LC_LayerTreeWidget::onCustomContextMenu(const QPoint &point){
                 }
                 contextMenu->addSeparator();
 
-                if (layerType == LC_LayerTreeItem::NORMAL){
+                if (layerType == RS_Layer::LayerType::NORMAL){
                     if (nonZeroLayer){
                         bool hasItems = false;
 
-                        if (!layerItem->hasChildOfType(LC_LayerTreeItem::DIMENSIONAL)){
+                        if (!layerItem->hasChildOfType(RS_Layer::LayerType::DIMENSIONAL)){
                             addActionFunc("dim_horizontal", tr("&Add Dimensions Sub-Layer"), &LC_LayerTreeWidget::addDimensionalLayerForSelectedItem);
                             hasItems = true;
                         }
-                        if (!layerItem->hasChildOfType(LC_LayerTreeItem::INFORMATIONAL)){
+                        if (!layerItem->hasChildOfType(RS_Layer::LayerType::INFORMATIONAL)){
                             addActionFunc("mtext", tr("&Add Info Sub-Layer"), &LC_LayerTreeWidget::addInformationalLayerForSelectedItem);
                             hasItems = true;
                         }
-                        if (!layerItem->hasChildOfType(LC_LayerTreeItem::ALTERNATE_POSITION)){
+                        if (!layerItem->hasChildOfType(RS_Layer::LayerType::ALTERNATE_POSITION)){
                              addActionFunc("rotate", tr("&Add Alternative View Sub-Layer"),
                                                    &LC_LayerTreeWidget::addAddAlternativePositionLayerForSelectedItem);
                             hasItems = true;
@@ -699,13 +707,13 @@ void LC_LayerTreeWidget::onCustomContextMenu(const QPoint &point){
                     }
                 } else {
                     contextMenu->addAction(tr("Convert to Normal Layer"), this, &LC_LayerTreeWidget::convertLayerTypeToNormal);
-                    if (layerType != LC_LayerTreeItem::DIMENSIONAL){
+                    if (layerType != RS_Layer::LayerType::DIMENSIONAL){
                         contextMenu->addAction(tr("Convert to Dimensional Layer"), this, &LC_LayerTreeWidget::convertLayerTypeToDimensional);
                     }
-                    if (layerType != LC_LayerTreeItem::INFORMATIONAL){
+                    if (layerType != RS_Layer::LayerType::INFORMATIONAL){
                         contextMenu->addAction(tr("Convert to Info Layer"), this, &LC_LayerTreeWidget::convertLayerTypeToInformational);
                     }
-                    if (layerType != LC_LayerTreeItem::ALTERNATE_POSITION){
+                    if (layerType != RS_Layer::LayerType::ALTERNATE_POSITION){
                         contextMenu->addAction(tr("Convert to Alternative Position Layer"), this, &LC_LayerTreeWidget::convertLayerTypeToAlternativePosition);
                     }
                     contextMenu->addSeparator();
@@ -1073,21 +1081,21 @@ void LC_LayerTreeWidget::onDropEvent(const QModelIndex &dropIndex, const DropInd
  * Creates new information layer for selected item
  */
 void LC_LayerTreeWidget::addInformationalLayerForSelectedItem(){
-    doAddSecondaryLevelForSelectedItem(LC_LayerTreeItem::INFORMATIONAL);
+    doAddSecondaryLevelForSelectedItem(RS_Layer::LayerType::INFORMATIONAL);
 }
 
 /**
  * Creates new alternative position layer for selected item
  */
 void LC_LayerTreeWidget::addAddAlternativePositionLayerForSelectedItem(){
-    doAddSecondaryLevelForSelectedItem(LC_LayerTreeItem::ALTERNATE_POSITION);
+    doAddSecondaryLevelForSelectedItem(RS_Layer::LayerType::ALTERNATE_POSITION);
 }
 
 /**
  * creates nwe dimensional layer for selected item
  */
 void LC_LayerTreeWidget::addDimensionalLayerForSelectedItem(){
-    doAddSecondaryLevelForSelectedItem(LC_LayerTreeItem::DIMENSIONAL);
+    doAddSecondaryLevelForSelectedItem(RS_Layer::LayerType::DIMENSIONAL);
 }
 
 /**
@@ -1123,7 +1131,7 @@ void LC_LayerTreeWidget::addChildLayerForSelectedItem(){
     const QModelIndex selectedItemIndex = getSelectedItemIndex();
     if (selectedItemIndex.isValid()){
         LC_LayerTreeItem *currentItem = m_layerTreeModel->getItemForIndex(selectedItemIndex);
-        invokeLayerAddDialog(currentItem, LC_LayerTreeItem::NOT_DEFINED_LAYER_TYPE);
+        invokeLayerAddDialog(currentItem, RS_Layer::NOT_DEFINED_LAYER_TYPE);
     }
 }
 
@@ -1131,7 +1139,7 @@ void LC_LayerTreeWidget::addChildLayerForSelectedItem(){
  * Adds new layer
  */
 void LC_LayerTreeWidget::addLayer(){
-    invokeLayerAddDialog(nullptr, LC_LayerTreeItem::NOT_DEFINED_LAYER_TYPE);
+    invokeLayerAddDialog(nullptr, RS_Layer::NOT_DEFINED_LAYER_TYPE);
 }
 /**
  * Adds dimensional layer for currently active layer, if that layer is normal.
@@ -1143,8 +1151,8 @@ void LC_LayerTreeWidget::addDimensionalLayerForActiveLayer(){
         if (activeLayer != nullptr){
             LC_LayerTreeItem *currentItem = m_layerTreeModel->getItemForLayer(activeLayer);
             if (currentItem != nullptr){
-                if (currentItem->getLayerType() == LC_LayerTreeItem::NORMAL){
-                    constexpr int newLayerType = LC_LayerTreeItem::DIMENSIONAL;
+                if (currentItem->getLayerType() == RS_Layer::LayerType::NORMAL){
+                    constexpr int newLayerType = RS_Layer::LayerType::DIMENSIONAL;
                     if (!currentItem->hasChildOfType(newLayerType)){
                         invokeLayerAddDialog(currentItem, newLayerType);
                     }
@@ -1262,28 +1270,28 @@ void LC_LayerTreeWidget::moveOrDuplicateSelectionToSelectedItemLayer(const bool 
  * Converts selected layer to dimensional layer type
  */
 void LC_LayerTreeWidget::convertLayerTypeToDimensional(){
-    doConvertSelectedItemLayerToNewType(LC_LayerTreeItem::DIMENSIONAL);
+    doConvertSelectedItemLayerToNewType(RS_Layer::LayerType::DIMENSIONAL);
 }
 
 /**
  * Converts selected layer to informational layer type
  */
 void LC_LayerTreeWidget::convertLayerTypeToInformational(){
-    doConvertSelectedItemLayerToNewType(LC_LayerTreeItem::INFORMATIONAL);
+    doConvertSelectedItemLayerToNewType(RS_Layer::LayerType::INFORMATIONAL);
 }
 
 /**
 * Converts selected layer to alternative position layer type
 */
 void LC_LayerTreeWidget::convertLayerTypeToAlternativePosition(){
-    doConvertSelectedItemLayerToNewType(LC_LayerTreeItem::ALTERNATE_POSITION);
+    doConvertSelectedItemLayerToNewType(RS_Layer::LayerType::ALTERNATE_POSITION);
 }
 
 /**
  * Converts secondary layer to normal type
  */
 void LC_LayerTreeWidget::convertLayerTypeToNormal(){
-    doConvertSelectedItemLayerToNewType(LC_LayerTreeItem::NORMAL);
+    doConvertSelectedItemLayerToNewType(RS_Layer::LayerType::NORMAL);
 }
 
 /**
@@ -1833,7 +1841,7 @@ void LC_LayerTreeWidget::invokeLayerAddDialog(LC_LayerTreeItem *parentItem, int 
     // setup dialog first
     int dialogMode = LC_LayerDialogEx::MODE_ADD_CHILD_LAYER;
     switch (layerType){
-        case LC_LayerTreeItem::NOT_DEFINED_LAYER_TYPE:{
+        case RS_Layer::NOT_DEFINED_LAYER_TYPE:{
             if (parentItem == nullptr){
                 dialogMode = LC_LayerDialogEx::MODE_ADD_LAYER;
             }
@@ -1842,9 +1850,9 @@ void LC_LayerTreeWidget::invokeLayerAddDialog(LC_LayerTreeItem *parentItem, int 
             }
             break;
         }
-        case LC_LayerTreeItem::DIMENSIONAL:
-        case LC_LayerTreeItem::INFORMATIONAL:
-        case LC_LayerTreeItem::ALTERNATE_POSITION:{
+        case RS_Layer::LayerType::DIMENSIONAL:
+        case RS_Layer::LayerType::INFORMATIONAL:
+        case RS_Layer::LayerType::ALTERNATE_POSITION:{
             dialogMode = LC_LayerDialogEx::MODE_ADD_SECONDARY_LAYER;
             break;
         }
@@ -1870,7 +1878,7 @@ void LC_LayerTreeWidget::invokeLayerAddDialog(LC_LayerTreeItem *parentItem, int 
     auto* tmpLayer = new RS_Layer("");
 
     // if layer type is provided - we'll use default pen for it
-    RS_Pen defaultPen = m_layerTreeModel->getOptions() ->getDefaultPen(layerType == LC_LayerTreeItem::NOT_DEFINED_LAYER_TYPE ? LC_LayerTreeItem::NORMAL : layerType);
+    RS_Pen defaultPen = m_layerTreeModel->getOptions() ->getDefaultPen(layerType == RS_Layer::NOT_DEFINED_LAYER_TYPE ? RS_Layer::LayerType::NORMAL : layerType);
     auto penCopy = RS_Pen(defaultPen);
 
     tmpLayer->setPen(penCopy);
@@ -1967,4 +1975,8 @@ void LC_LayerTreeWidget::exportVisibleLayers()  {
     QList<RS_Layer*> layersToExport;
     layerItem->collectLayers(layersToExport, acceptVisible, false);
     exportLayersList(layersToExport);
+}
+
+QLayout* LC_LayerTreeWidget::getTopLevelLayout() const {
+    return layout();
 }

@@ -42,6 +42,7 @@ class RS_Block;
 class RS_BlockList;
 class QG_BlockModel;
 class LC_FlexLayout;
+class LC_MouseTrackingTableView;
 
 /**
  * Implementation of a model to use in QG_BlockWidget
@@ -114,11 +115,12 @@ protected:
     void keyPressEvent(QKeyEvent* e) override;
     void setBlockList(RS_BlockList* blockList);
     void addToolbarButton(LC_FlexLayout* layButtons, RS2::ActionType actionType);
+    QLayout* getTopLevelLayout() const override;
 private:
     void restoreSelections() const;
     RS_BlockList* m_blockList = nullptr;
     QLineEdit* m_matchBlockName = nullptr;
-    QTableView* m_blockView = nullptr;
+    LC_MouseTrackingTableView* m_blockView = nullptr;
     QG_BlockModel *m_blockModel = nullptr;
     QSortFilterProxyModel* m_proxyModel = nullptr;
     RS_Block* m_lastBlock = nullptr;

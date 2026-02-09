@@ -40,6 +40,7 @@ LC_DlgNamedViewsListOptions::LC_DlgNamedViewsListOptions(LC_NamedViewsListOption
     ui->cbColumnUCSType->setChecked(m_options->showColumnUCSType);
     ui->cbColumnUCSDetails->setChecked(m_options->showColumnUCSDetails);
     ui->cbShowColumnVIewDetails->setChecked(m_options->showColumnViewDetails);
+    ui->cbShowGrid->setChecked(m_options->showGrid);
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &LC_DlgNamedViewsListOptions::validate);
 }
@@ -63,4 +64,5 @@ void LC_DlgNamedViewsListOptions::validate() const {
     m_options->showColumnUCSType = ui->cbColumnUCSType->isChecked();
     m_options->showColumnUCSDetails = ui->cbColumnUCSDetails->isChecked();
     m_options->showColumnViewDetails = ui->cbShowColumnVIewDetails->isChecked();
+    m_options->showGrid = ui->cbShowGrid->isChecked();
 }

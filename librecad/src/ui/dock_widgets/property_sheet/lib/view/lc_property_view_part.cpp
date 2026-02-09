@@ -62,7 +62,7 @@ void LC_PropertyViewPart::setPropertyNameAsTooltip(const LC_Property& property) 
     };
 }
 
-void LC_PropertyViewPart::  setPropertyDescriptionAsTooltip(const LC_Property& property) {
+void LC_PropertyViewPart::setPropertyDescriptionAsTooltip(const LC_Property& property) {
     funGetTooltip = [&property](LC_PropertyEventContext&, const LC_PropertyViewPart&) -> QString {
         auto descr = property.getDescription();
         if (descr.isEmpty()) {

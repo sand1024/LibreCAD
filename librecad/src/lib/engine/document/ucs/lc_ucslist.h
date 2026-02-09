@@ -48,6 +48,10 @@ public:
         return m_ucsList.count();
     }
 
+    bool isEmpty() const {
+        return m_ucsList.isEmpty();
+    }
+
 /**
  * @return ucs at given position or NULL if it is out of range.
  */

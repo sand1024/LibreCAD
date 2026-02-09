@@ -25,6 +25,8 @@
 
 #include <QVariant>
 
+#include "rs_layer.h"
+
 class RS_Layer;
 class LC_LayerTreeItem;
 
@@ -46,17 +48,6 @@ public:
  */
 class LC_LayerTreeItem{
 public:
-
-    static constexpr int NOT_DEFINED_LAYER_TYPE = -1;
-    // Layer types
-    enum {
-        VIRTUAL,
-        NORMAL,
-        DIMENSIONAL,
-        INFORMATIONAL,
-        ALTERNATE_POSITION
-    };
-
 
     explicit LC_LayerTreeItem(LC_LayerTreeItem *parent = nullptr);
 
@@ -138,7 +129,7 @@ private:
     // flag that this item is part of the path from root to active layer
     bool m_partOfActivePath {false};
     // type of layer
-    int m_layerType {NORMAL};
+    int m_layerType {RS_Layer::LayerType::NORMAL};
     // flag that indicates that item matched filtering condition
     bool m_matched {false};
     // flag that indicates that this is active layer
@@ -205,11 +196,11 @@ public:
         bool result = true;
 
         if (m_includeMode){
-            result = (ltype == LC_LayerTreeItem::DIMENSIONAL) || (ltype == LC_LayerTreeItem::ALTERNATE_POSITION) || (ltype == LC_LayerTreeItem::INFORMATIONAL);
+            result = (ltype == RS_Layer::LayerType::DIMENSIONAL) || (ltype == RS_Layer::LayerType::ALTERNATE_POSITION) || (ltype == RS_Layer::LayerType::INFORMATIONAL);
         }
         else{
             if (item -> getPrimaryItem() != nullptr){
-                result = (ltype != LC_LayerTreeItem::DIMENSIONAL) && (ltype != LC_LayerTreeItem::ALTERNATE_POSITION) && (ltype != LC_LayerTreeItem::INFORMATIONAL);
+                result = (ltype != RS_Layer::LayerType::DIMENSIONAL) && (ltype != RS_Layer::LayerType::ALTERNATE_POSITION) && (ltype != RS_Layer::LayerType::INFORMATIONAL);
             }
         }
         return result;

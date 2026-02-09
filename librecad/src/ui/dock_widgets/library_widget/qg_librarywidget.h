@@ -61,6 +61,8 @@ public slots:
     void collapseView(const QModelIndex& idx ) const;
 signals:
     void escape();
+protected:
+    QLayout* getTopLevelLayout() const override;
 private:
     QPushButton *m_bInsert=nullptr;
     QString getItemDir(const QStandardItem * item );

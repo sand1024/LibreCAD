@@ -46,7 +46,7 @@ public:
         COLUMN_EMPTY, COLUMN_VISIBLE, COLUMN_LOCKED, COLUMN_PRINT, COLUMN_CONSTRUCTION, COLUMN_COLOR_SAMPLE, COLUMN_NAME, COLUMN_LAST
     };
     // the default icon size
-    static constexpr int ICONWIDTH = 24;
+    static constexpr int ICONWIDTH = 21;
     explicit LC_LayerTreeModel(QObject *parent, LC_LayerTreeModelOptions *options);
     Qt::ItemFlags flags(const QModelIndex &index) const override;
     int columnCount(const QModelIndex &parent) const override;
@@ -64,6 +64,7 @@ public:
     void setCurrentlyDraggingItem(LC_LayerTreeItem *item);
     LC_LayerTreeItem *getCurrentlyDraggingItem() const;
     void setFlatMode(bool mode);
+    bool isFlatMode() const {return m_flatMode;}
     bool performReStructure(LC_LayerTreeItem *source, LC_LayerTreeItem *destination);
     bool convertToType(const QModelIndex &index, int toLayerType);
     QHash<RS_Layer *, RS_Layer *> createLayersCopy(const QModelIndex &selectedIndex);

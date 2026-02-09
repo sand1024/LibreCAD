@@ -46,9 +46,9 @@ struct LC_LayerTreeModelOptions{
     bool renameSecondaryLayersOnPrimaryRename {true};
     bool hideLayerTypeIcons{false};
     bool dragDropEnabled {true};
+    bool showGrid {true};
     // colors
     QColor matchedItemColor {QColor("blue")};
-    QColor itemsGridColor {QColor(Qt::lightGray)};
     QColor virtualLayerBgColor {QColor( 245,245,245)};
     QColor selectedItemBgColor {QColor( 245,245,245)};
     QColor activeLayerBgColor {QColor( "white")};

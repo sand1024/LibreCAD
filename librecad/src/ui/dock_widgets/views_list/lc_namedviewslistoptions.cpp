@@ -39,6 +39,7 @@ void LC_NamedViewsListOptions::load() {
        duplicatedNameReplacesSilently = LC_GET_BOOL("ReplaceDuplicateSilently", false);
        doubleClickPolicy = LC_GET_INT("DoubleClickPolicy", RENAME);
        restoreViewBySingleClick = LC_GET_BOOL("RestoreViewBySingleClick", true);
+       showGrid = LC_GET_BOOL("ShowGrid", true);
     }
 }
 
@@ -55,5 +56,6 @@ void LC_NamedViewsListOptions::save() const {
         LC_SET("ShowColumnIconUCSType", showColumnUCSType);
         LC_SET("ShowColumnViewDetails", showColumnViewDetails);
         LC_SET("ShowColumnUCSDetails", showColumnUCSDetails);
+        LC_SET("ShowGrid", showGrid);
     }
 }

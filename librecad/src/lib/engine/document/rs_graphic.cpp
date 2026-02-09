@@ -146,6 +146,8 @@ void RS_Graphic::onLoadingCompleted() {
     LC_DimStyleToVariablesMapper dimStyleToVariablesMapper;
     dimStyleToVariablesMapper.fromDictionary(fallBackDimStyleFromVars, getVariableDictObjectRef(), getUnit());
 
+    m_anglesCounterClockWize = getVariableBool("$ANGDIR", 0);
+
     if (m_dimstyleList.isEmpty()) {
         // add content of vars to dimstyle list, to ensure that we have at least one style there
         m_dimstyleList.addDimStyle(fallBackDimStyleFromVars->getCopy());
@@ -375,12 +377,20 @@ void RS_Graphic::setAnglesBase(const double baseAngle) {
 }
 
 bool RS_Graphic::areAnglesCounterClockWise() const {
-    const int angDir = getVariableInt("$ANGDIR", 0);
-    return angDir == 0;
+    return m_anglesCounterClockWize;
 }
 
 void RS_Graphic::setAnglesCounterClockwise(const bool on) {
     addVariable("$ANGDIR", on, 70);
+    m_anglesCounterClockWize = on;
+}
+
+RS_Vector RS_Graphic::getUserGridSpacing() const {
+    return getVariableVector("$GRIDUNIT", {0.0, 0.0});
+}
+
+void RS_Graphic::setUserGridSpacing(const RS_Vector &spacing) {
+    addVariable("$GRIDUNIT", spacing, 10);
 }
 
 void RS_Graphic::setCurrentUCS(const LC_UCS* ucs) {
@@ -471,6 +481,10 @@ RS2::LinearFormat RS_Graphic::getLinearFormat() const {
     return convertLinearFormatDXF2LC(lunits);
 }
 
+void RS_Graphic::setLinearFormat(RS2::LinearFormat linearFormat) {
+    addVariable("$LUNITS", linearFormat + 1, 70);
+}
+
 void RS_Graphic::replaceCustomVars(const QHash<QString, QString>& vars) {
     m_customVariablesDict.clear();
     QHashIterator<QString, QString> customVar(vars);
@@ -513,6 +527,11 @@ int RS_Graphic::getLinearPrecision() const {
     return getVariableInt("$LUPREC", 4);
 }
 
+void RS_Graphic::setLinearPrecision(int value)  {
+    // fixme - sand - add caching
+    addVariable("$LUPREC", value, 70);
+}
+
 /**
  * @return The angle format type for this document.
  * This is determined by the variable "$AUNITS".
@@ -537,6 +556,10 @@ RS2::AngleFormat RS_Graphic::getAngleFormat() const {
     }
 }
 
+void RS_Graphic::setAngleFormat(RS2::AngleFormat angleFormat) {
+    addVariable("$AUNITS", angleFormat, 70);
+}
+
 /**
  * @return The linear precision for this document.
  * This is determined by the variable "$LUPREC".
@@ -544,6 +567,10 @@ RS2::AngleFormat RS_Graphic::getAngleFormat() const {
 int RS_Graphic::getAnglePrecision() const {
     // fixme - sand - add caching
     return getVariableInt("$AUPREC", 4);
+}
+
+void RS_Graphic::addAnglePrecision(int value) {
+    addVariable("$AUPREC", value, 70);
 }
 
 /**
@@ -789,6 +816,20 @@ void RS_Graphic::setMarginsInUnits(const double left, const double top, const do
     const RS2::Unit src = getUnit();
     setMargins(RS_Units::convert(left, src, RS2::Millimeter), RS_Units::convert(top, src, RS2::Millimeter),
                RS_Units::convert(right, src, RS2::Millimeter), RS_Units::convert(bottom, src, RS2::Millimeter));
+}
+
+void RS_Graphic::setMarginsInUnits(const LC_MarginsRect& margins) {
+    setMarginsInUnits(margins.left, margins.top, margins.right, margins.bottom);
+}
+
+LC_MarginsRect RS_Graphic::getMarginsInUnits() const {
+    LC_MarginsRect res;
+    const RS2::Unit unit = getUnit();
+    res.left = RS_Units::convert(m_marginLeft, RS2::Millimeter, unit);
+    res.right = RS_Units::convert(m_marginRight, RS2::Millimeter, unit);
+    res.top = RS_Units::convert(m_marginTop, RS2::Millimeter, unit);
+    res.bottom = RS_Units::convert(m_marginBottom, RS2::Millimeter, unit);
+    return res;
 }
 
 double RS_Graphic::getMarginLeftInUnits() const {

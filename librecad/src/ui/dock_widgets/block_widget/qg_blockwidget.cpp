@@ -39,6 +39,7 @@
 
 #include "lc_actiongroupmanager.h"
 #include "lc_flexlayout.h"
+#include "lc_mouse_tracking_table_view.h"
 #include "lc_widgets_common.h"
 #include "qg_actionhandler.h"
 #include "rs_blocklist.h"
@@ -136,6 +137,26 @@ QVariant QG_BlockModel::data ( const QModelIndex & index, const int role ) const
     return QVariant();
 }
 
+class LC_BlockTableItemDelegate : public LC_TableItemDelegateBase {
+public:
+    explicit LC_BlockTableItemDelegate(LC_MouseTrackingTableView* parent) : LC_TableItemDelegateBase(parent) {
+        auto palette = parent->palette();
+        m_gridColor = palette.color(QPalette::Button);
+        m_hoverRowBackgroundColor = palette.color(QPalette::AlternateBase);
+    }
+
+    void doPaint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override {
+        QStyledItemDelegate::paint(painter, option, index);
+        const bool drawGrid = true; // fixme - add options as part of rework
+        if (drawGrid) {
+            drawHorizontalGridLine(painter, option);
+        }
+    }
+private:
+
+};
+
+
 /**
  * Constructor.
  */
@@ -154,7 +175,7 @@ QG_BlockWidget::QG_BlockWidget(LC_ActionGroupManager* agm, const QG_ActionHandle
     m_proxyModel->setFilterKeyColumn(QG_BlockModel::NAME);  // Filter only on the NAME column
     m_proxyModel->setDynamicSortFilter(false);  // Disable automatic sorting (source model is already sorted)
 
-    m_blockView = new QTableView(this);
+    m_blockView = new LC_MouseTrackingTableView(this);
     m_blockView->setModel (m_proxyModel);
     m_blockView->setShowGrid (false);
     m_blockView->setSelectionMode(QAbstractItemView::ExtendedSelection);
@@ -169,10 +190,10 @@ QG_BlockWidget::QG_BlockWidget(LC_ActionGroupManager* agm, const QG_ActionHandle
     blockView->setStyleSheet("QWidget {background-color: white;}  QScrollBar{ background-color: none }");
 #endif
     auto* lay = new QVBoxLayout(this);
-    lay->setSpacing ( 2 );
-    lay->setContentsMargins(2, 2, 2, 2);
+    lay->setSpacing(1);
+    lay->setContentsMargins(0, 1, 2, 2);
 
-    const auto layButtons = new LC_FlexLayout(0,5,5);
+    const auto layButtons = new LC_FlexLayout(0,3,3);
 
     addToolbarButton(layButtons, RS2::ActionBlocksDefreezeAll);
     addToolbarButton(layButtons, RS2::ActionBlocksFreezeAll);
@@ -200,7 +221,7 @@ QG_BlockWidget::QG_BlockWidget(LC_ActionGroupManager* agm, const QG_ActionHandle
     connect(m_blockView, &QTableView::clicked, this, &QG_BlockWidget::slotActivated);
     connect(m_blockView->selectionModel(), &QItemSelectionModel::selectionChanged,
             this, &QG_BlockWidget::slotSelectionChanged);
-
+    m_blockView->setTrackingItemDelegate(new LC_BlockTableItemDelegate(m_blockView));
     updateWidgetSettings();
 }
 
@@ -213,6 +234,9 @@ void QG_BlockWidget::addToolbarButton(LC_FlexLayout* layButtons, const RS2::Acti
     }
 }
 
+QLayout* QG_BlockWidget::getTopLevelLayout() const {
+    return layout();
+}
 
 /**
  * Updates the block box from the blocks in the graphic.
@@ -448,6 +472,7 @@ void QG_BlockWidget::slotUpdateBlockList() const {
 
     restoreSelections();  // Restore after filter change
 }
+
 
 void QG_BlockWidget::setGraphicView(RS_GraphicView* gv){
     if (gv == nullptr) {

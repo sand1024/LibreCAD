@@ -47,20 +47,18 @@ void LC_LayerTreeOptionsDialog::init() {
     cbShowIdented->setChecked(m_options->showIndentedName);
     cbShowToolTip->setChecked(m_options->showToolTips);
     cbRenameWithPrimary->setChecked(m_options->renameSecondaryLayersOnPrimaryRename);
-
+    cbShowGrid->setChecked(m_options->showGrid);
     cbShowTypeIcons->setChecked(!m_options->hideLayerTypeIcons);
 
     leDuplicatedPrefix->setText(m_options->copiedNamePathPrefix);
     leDuplicatedSuffix->setText(m_options->copiedNamePathSuffix);
 
-    QColor itemsGrid = m_options->itemsGridColor;
     QColor virtualLayerBgColor = m_options->virtualLayerBgColor;
     QColor matchHighlightColor = m_options->matchedItemColor;
     QColor selectedItemBgColor = m_options->selectedItemBgColor;
     QColor activeLayerBgColor = m_options->activeLayerBgColor;
 
     initComboBox(cbHighlightedColor, matchHighlightColor);
-    initComboBox(cbGridColor, itemsGrid);
     initComboBox(cbVirtualLayerBackgroundColor, virtualLayerBgColor);
     initComboBox(cbSelectedItemBgColor, selectedItemBgColor);
     initComboBox(cbActiveLayerBgColor, activeLayerBgColor);
@@ -72,6 +70,8 @@ void LC_LayerTreeOptionsDialog::init() {
     wPenInfo->setPen(m_options->defaultPenInformational, false, false, tr("Informational Layer"));
     wPenAltPos->setPen(m_options->defaultPenAlternatePosition, false, false, tr("Alternative Position Layer"));
 
+    connect(lvLayerTypes, &QListWidget::currentRowChanged, this, &LC_LayerTreeOptionsDialog::onLayerTypesRowChanged);
+    lvLayerTypes->setCurrentRow(0);
     tabWidget->setCurrentIndex(0);
 }
 
@@ -96,14 +96,6 @@ void LC_LayerTreeOptionsDialog::validate() {
 
     int indentSize = sbIndentSize->value();
 
-    QString itemsGridColorName = cbGridColor->currentText();
-
-    auto itemsGridColor = QColor(itemsGridColorName);
-    if (!itemsGridColor.isValid()) {
-        showInvalidColorMessage(tr("grid"));
-        cbGridColor->setFocus();
-        doAccept = false;
-    }
     QString higlightedColorName = cbHighlightedColor->currentText();
 
     auto highlightedColor = QColor(higlightedColorName);
@@ -164,7 +156,7 @@ void LC_LayerTreeOptionsDialog::validate() {
     m_options->dragDropEnabled = allowDragDrop;
     m_options->renameSecondaryLayersOnPrimaryRename = renameWitPrimary;
     m_options->hideLayerTypeIcons = !showTypeIcons;
-    m_options->itemsGridColor = itemsGridColor;
+    m_options->showGrid = cbShowGrid->isChecked();
     m_options->matchedItemColor = highlightedColor;
     m_options->virtualLayerBgColor = virtualLayerBgColor;
     m_options->activeLayerBgColor = activeLayerBgColor;
@@ -184,6 +176,31 @@ void LC_LayerTreeOptionsDialog::validate() {
     }
 }
 
+void LC_LayerTreeOptionsDialog::onLayerTypesRowChanged(int currentRow) {
+    switch (currentRow) {
+        case 0: {
+            swPens->setCurrentWidget(pageNormal);
+            break;
+        }
+        case 1: {
+            swPens->setCurrentWidget(pageDimensional);
+            break;
+        }
+        case 2: {
+            swPens->setCurrentWidget(pageAlt);
+            break;
+        }
+        case 3: {
+            swPens->setCurrentWidget(pageInfo);
+            break;
+        }
+        default: {
+            swPens->setCurrentWidget(pageNormal);
+            break;
+        }
+    }
+}
+
 void LC_LayerTreeOptionsDialog::showInvalidColorMessage(const QString& name) {
     QMessageBox::warning(this, tr("Error"), tr("Invalid value provide for %1 color.\n" "Please specify a different value.").arg(name),
                          QMessageBox::Ok);
@@ -193,12 +210,8 @@ void LC_LayerTreeOptionsDialog::pb_highlightedColorClicked() {
     setComboBoxColor(cbHighlightedColor, m_options->matchedItemColor);
 }
 
-void LC_LayerTreeOptionsDialog::pb_gridColorClicked() {
-    setComboBoxColor(cbGridColor, m_options->itemsGridColor);
-}
-
 void LC_LayerTreeOptionsDialog::pb_selectedItemColorClicked() {
-    setComboBoxColor(cbVirtualLayerBackgroundColor, m_options->itemsGridColor);
+    setComboBoxColor(cbVirtualLayerBackgroundColor, m_options->virtualLayerBgColor);
 }
 
 void LC_LayerTreeOptionsDialog::pbSelectedItemsBgColorClicked() {

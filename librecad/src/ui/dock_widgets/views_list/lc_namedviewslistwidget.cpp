@@ -44,9 +44,6 @@ LC_NamedViewsListWidget::LC_NamedViewsListWidget(const QString& title, QWidget* 
     : LC_GraphicViewAwareWidget(parent), ui(new Ui::LC_NamedViewsListWidget) {
     ui->setupUi(this);
     setWindowTitle(title);
-
-    ui->leFilterMask->setVisible(false);
-
     initToolbar();
     loadOptions();
     createModel();
@@ -92,34 +89,56 @@ void LC_NamedViewsListWidget::updateButtonsState() const {
     }
 }
 
-namespace {
-    // the default icon size
-    constexpr int ICON_WIDTH = 24;
-}
+class LC_ViewsTableItemDelegate : public LC_TableItemDelegateBase {
+public:
+    explicit LC_ViewsTableItemDelegate(LC_MouseTrackingTableView* parent, LC_NamedViewsModel* model, LC_NamedViewsListOptions* options) : LC_TableItemDelegateBase(parent) {
+        m_model = model;
+        m_options = options;
+        auto palette = parent->palette();
+        m_gridColor = palette.color(QPalette::Button);
+        m_hoverRowBackgroundColor = palette.color(QPalette::AlternateBase);
+    }
+
+    void doPaint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override {
+        QStyledItemDelegate::paint(painter, option, index);
+        const bool drawGrid = m_options != nullptr && m_options->showGrid;
+        if (drawGrid) {
+            drawHorizontalGridLine(painter, option);
+        }
+    }
+private:
+    LC_NamedViewsModel* m_model;
+    LC_NamedViewsListOptions* m_options;
+};
+
 
 void LC_NamedViewsListWidget::createModel() {
     m_viewsModel = new LC_NamedViewsModel(m_options, this);
 
-    QTableView* tableView = ui->tvTable;
+    const auto tableView = ui->tvTable;
     tableView->setModel(m_viewsModel);
-    tableView->setShowGrid(true);
+    tableView->setShowGrid(false);
     tableView->setSelectionMode(QAbstractItemView::ExtendedSelection);
     tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     tableView->setFocusPolicy(Qt::NoFocus);
     tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     tableView->setMinimumHeight(60);
 
-    QHeaderView* horizontalHeader{tableView->horizontalHeader()};
-    horizontalHeader->setMinimumSectionSize(ICON_WIDTH + 4);
-    horizontalHeader->setSectionResizeMode(QHeaderView::ResizeToContents);
-    horizontalHeader->setStretchLastSection(true);
-    horizontalHeader->hide();
-
     QHeaderView* verticalHeader = tableView->verticalHeader();
+    const QFontMetrics fm(font());
+    m_itemHeight = fm.height() + 6;
+    verticalHeader->setDefaultSectionSize(m_itemHeight);
     verticalHeader->setOffset(2);
     verticalHeader->hide();
 
-    tableView->setColumnWidth(m_viewsModel->translateColumn(LC_NamedViewsModel::ICON_TYPE), ICON_WIDTH);
+    QHeaderView* horizontalHeader{tableView->horizontalHeader()};
+    horizontalHeader->setMinimumSectionSize(m_itemHeight);
+    horizontalHeader->setSectionResizeMode(QHeaderView::ResizeToContents);
+    horizontalHeader->setStretchLastSection(true);
+    horizontalHeader->hide();
+    tableView->setColumnWidth(m_viewsModel->translateColumn(LC_NamedViewsModel::ICON_TYPE), m_itemHeight);
+
+    // tableView->setShowGrid(true); // fixme - sand - add to options!
 #ifndef DONT_FORCE_WIDGETS_CSS
     tableView->setStyleSheet("QWidget {background-color: white;}  QScrollBar{ background-color: none }");
 #endif
@@ -131,6 +150,7 @@ void LC_NamedViewsListWidget::createModel() {
     connect(tableView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &LC_NamedViewsListWidget::onTableSelectionChanged);
 
     tableView->setContextMenuPolicy(Qt::CustomContextMenu);
+    tableView->setTrackingItemDelegate(new LC_ViewsTableItemDelegate(tableView, m_viewsModel, m_options));
 }
 
 void LC_NamedViewsListWidget::setGraphicView(RS_GraphicView* gv) {
@@ -163,6 +183,10 @@ void LC_NamedViewsListWidget::refresh() {
     updateData(true);
 }
 
+QLayout* LC_NamedViewsListWidget::getTopLevelLayout() const {
+    return ui->gridLayout;
+}
+
 void LC_NamedViewsListWidget::updateData(const bool restoreSelectionIfPossible) {
     const int selectedRow = getSingleSelectedRow();
     LC_Formatter* formatter = nullptr;
@@ -173,7 +197,7 @@ void LC_NamedViewsListWidget::updateData(const bool restoreSelectionIfPossible) 
     restoreSingleSelectedRow(restoreSelectionIfPossible, selectedRow);
     updateButtonsState();
     if (m_options->showColumnIconType) {
-        ui->tvTable->setColumnWidth(m_viewsModel->translateColumn(LC_NamedViewsModel::ICON_TYPE), ICON_WIDTH);
+        ui->tvTable->setColumnWidth(m_viewsModel->translateColumn(LC_NamedViewsModel::ICON_TYPE), m_itemHeight);
     }
     emit viewListChanged(m_viewsModel->count());
 }
