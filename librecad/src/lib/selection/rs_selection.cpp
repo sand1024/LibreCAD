@@ -52,7 +52,7 @@ RS_Selection::RS_Selection(const RS_GraphicView* graphicView) : m_document{graph
  * Selects or deselects the given entity.
  */
 void RS_Selection::selectSingle(RS_Entity* e) const {
-    if (e != nullptr && !(e->getLayer() && e->getLayer()->isLocked())) {
+    if (e != nullptr && (e->getLayer() != nullptr && !e->getLayer()->isLocked())) {
         const bool selected = e->isSelected();
         if (m_additiveSelection) {
             m_document->select(e, !selected);
