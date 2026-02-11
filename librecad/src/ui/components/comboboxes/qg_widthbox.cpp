@@ -37,25 +37,29 @@ namespace {
         // using lazy initialization to ensure that properly translated strings are used, with default init tr() is not aplied
         if (g_boxItems.empty()) {
             g_boxItems.push_back({
-                ":linetypes/width00.lci",
+                // ":linetypes/width00.lci",
+                ":/icons/point_cross.lci",
                 QObject::tr("-Unchanged-"),
-                RS2::WidthUnchanged /*utilitytypefornotchangedlinewidthduringediting*/
+                RS2::WidthUnchanged
             });
 
+
             g_boxItems.push_back({
-                ":linetypes/width00.lci",
+                // ":linetypes/width00.lci",
+                ":/icons/item_by_layer.lci",
                 QObject::tr("By Layer"),
-                RS2::WidthByLayer /**<Linewidthdefinedbylayernotentity.*/
+                RS2::WidthByLayer
             });
             g_boxItems.push_back({
-                ":linetypes/width00.lci",
+                ":/icons/point_plus_square.lci",
+                // ":linetypes/width00.lci",
                 QObject::tr("By Block"),
-                RS2::WidthByBlock /**<Linewidthdefinedbyblocknotentity.*/
+                RS2::WidthByBlock
             });
             g_boxItems.push_back({
                 ":linetypes/width01.lci",
                 QObject::tr("Default"),
-                RS2::WidthDefault /**<Linewidthdefaultstothepredefinedlinewidth.*/
+                RS2::WidthDefault
             });
             g_boxItems.push_back({":linetypes/width01.lci", QObject::tr("0.00mm"), RS2::Width00 /**<Width1.(0.00mm)*/});
             g_boxItems.push_back({":linetypes/width01.lci", QObject::tr("0.05mm"), RS2::Width01 /**<Width2.(0.05mm)*/});
@@ -247,15 +251,10 @@ void QG_WidthBox::setLayerWidth(const RS2::LineWidth w) {
  */
 void QG_WidthBox::slotWidthChanged(const int index) {
     RS_DEBUG->print("QG_WidthBox::slotWidthChanged %d\n", index);
-    if (m_showUnchanged&& index
-    ==
-    0
-    )
-    {
+    if (m_showUnchanged && index == 0) {
         m_unchanged = true;
     }
-    else
-    {
+    else {
         m_unchanged = false;
         m_currentWidth = static_cast<RS2::LineWidth>(itemData(index).toInt());
     }

@@ -259,11 +259,9 @@ bool LC_PenInfoRegistry::hasLineWidth(int widthCandidate) const {
  */
 void LC_PenInfoRegistry::registerLineWidths(){
     doRegisterLineWidth(":/icons/point_cross.lci", tr("- Unchanged -"), RS2::LineWidth::WidthUnchanged);
-//    registerLineWidth(":linetypes/width00.png", "- Unchanged -", RS2::LineWidth::WidthUnchanged);
-    doRegisterLineWidth(":/icons/point_blank_square.lci", tr("By Layer"), RS2::LineWidth::WidthByLayer);
-//    registerLineWidth(":linetypes/width00.png", "By Layer", RS2::LineWidth::WidthByLayer);
+    // doRegisterLineWidth(":/icons/point_blank_square.lci", tr("By Layer"), RS2::LineWidth::WidthByLayer);
+    doRegisterLineWidth(":/icons/item_by_layer.lci", tr("By Layer"), RS2::LineWidth::WidthByLayer);
     doRegisterLineWidth(":/icons/point_plus_square.lci", tr("By Block"), RS2::LineWidth::WidthByBlock);
-//    registerLineWidth(":linetypes/width00.png", "By Block", RS2::LineWidth::WidthByBlock);
 
     doRegisterLineWidth(":linetypes/width01.lci", tr("Default"), RS2::WidthDefault);
     doRegisterLineWidth(":linetypes/width01.lci", tr("0.00mm"), RS2::Width00);
@@ -297,11 +295,8 @@ void LC_PenInfoRegistry::registerLineWidths(){
  */
 void LC_PenInfoRegistry::registerLineTypes(){
     doRegisterLineType(":/icons/point_cross.lci", tr("- Unchanged -"), RS2::LineTypeUnchanged);
-//    registerLineType(":ui/linetype00.png", "- Unchanged -", RS2::LineTypeUnchanged);
-    doRegisterLineType(":/icons/point_blank_square.lci", tr("By Layer"), RS2::LineByLayer);
-//    registerLineType(":ui/linetype00.png", "By Layer", RS2::LineByLayer);
+    doRegisterLineType(":/icons/item_by_layer.lci", tr("By Layer"), RS2::LineByLayer);
     doRegisterLineType(":/icons/point_plus_square.lci", tr("By Block"), RS2::LineByBlock);
-//    registerLineType(":ui/linetype00.png", "By Block", RS2::LineByBlock);
     doRegisterLineType(":linetypes/linetype00.lci", tr("No Pen"), RS2::NoPen);
     doRegisterLineType(":linetypes/linetype01.lci", tr("Continuous"), RS2::SolidLine);
     doRegisterLineType(":linetypes/linetype02.lci", tr("Dot"), RS2::DotLine);

@@ -75,8 +75,8 @@ private:
     QMap<QRgba64, QString> m_colorNamesMap;
     QMap<QRgba64, QString> m_standardLCColorNamesMap;
 
-    QIcon m_iconByLayer = QIcon(":/icons/point_blank_square.lci");
-    QIcon m_iconByBlock = QIcon(":/icons/point_plus_square.lci");
+    QIcon m_iconByLayer = QIcon(":/icons/item_by_layer.lci");
+    QIcon m_iconByBlock = QIcon(":/icons/point_plus_square.lci"); // fixme - create custom icon for this?
     QIcon m_iconUnchanged = QIcon(":/icons/point_cross.lci");
 
     void registerLineTypes();

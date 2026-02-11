@@ -95,8 +95,10 @@ void QG_ColorBox::init(const bool showByLayer, const bool showUnchanged) {
         addItem(QIcon(":/colors/color00.png"), tr("Unchanged"));
     }
     if (showByLayer) {
-        addItem(QIcon(":/colors/color00.png"), tr("By Layer"));
-        addItem(QIcon(":/colors/color00.png"), tr("By Block"));
+        // addItem(QIcon(":/colors/color00.png"), tr("By Layer"));
+        // addItem(QIcon(":/colors/color00.png"), tr("By Block"));
+        addItem(QIcon(":/icons/item_by_layer.lci"), tr("By Layer"));
+        addItem(QIcon(":/icons/point_plus_square.lci"), tr("By Block"));
     }
 
     // a special "Custom" color

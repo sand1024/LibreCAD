@@ -78,8 +78,10 @@ void QG_LineTypeBox::init(const bool showByLayer, const bool showUnchanged, cons
     }
 
     if (showByLayer) {
-        addItem(QIcon(":linetypes/linetype00.lci"), tr("By Layer"), RS2::LineByLayer);
-        addItem(QIcon(":linetypes/linetype00.lci"), tr("By Block"), RS2::LineByBlock);
+        // addItem(QIcon(":linetypes/linetype00.lci"), tr("By Layer"), RS2::LineByLayer);
+        // addItem(QIcon(":linetypes/linetype00.lci"), tr("By Block"), RS2::LineByBlock);
+        addItem(QIcon(":/icons/item_by_layer.lci"), tr("By Layer"), RS2::LineByLayer);
+        addItem(QIcon(":/icons/point_plus_square.lci"), tr("By Block"),RS2::LineByBlock);
     }
     if (showNoPen) {
         addItem(QIcon(":linetypes/linetype00.lci"), tr("No Pen"), RS2::NoPen);
