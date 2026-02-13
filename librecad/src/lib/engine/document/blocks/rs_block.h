@@ -194,6 +194,8 @@ public:
     void addByBlockLine(const RS_Vector& start, const RS_Vector& end);
 
     void addByBlockEntity(const RS_Entity* entity);
+
+
 protected:
     RS_BlockData m_data;
 };
