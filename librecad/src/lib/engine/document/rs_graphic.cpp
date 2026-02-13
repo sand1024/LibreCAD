@@ -275,27 +275,38 @@ int RS_Graphic::countVariables() const {
 }
 
 void RS_Graphic::addVariable(const QString& key, const RS_Vector& value, const int code) {
-    m_variableDict.add(key, value, code);
+    if (m_variableDict.add(key, value, code)) {
+        setModified(true);
+    }
 }
 
 void RS_Graphic::addVariable(const QString& key, const QString& value, const int code) {
-    m_variableDict.add(key, value, code);
+    if (m_variableDict.add(key, value, code)) {
+        setModified(true);
+    }
 }
 
 void RS_Graphic::addVariable(const QString& key, const int value, const int code) {
-    m_variableDict.add(key, value, code);
+    if (m_variableDict.add(key, value, code)) {
+        setModified(true);
+    }
 }
 
 void RS_Graphic::addVariable(const QString& key, const bool value, const int code) {
-    m_variableDict.add(key, value, code);
+    if (m_variableDict.add(key, value, code)) {
+        setModified(true);
+    }
 }
 
 void RS_Graphic::addVariable(const QString& key, const double value, const int code) {
-    m_variableDict.add(key, value, code);
+    if (m_variableDict.add(key, value, code)) {
+        setModified(true);
+    }
 }
 
 void RS_Graphic::removeVariable(const QString& key) {
     m_variableDict.remove(key);
+    setModified(true); // fixme - should we check for existence of such key?
 }
 
 RS_Vector RS_Graphic::getVariableVector(const QString& key, const RS_Vector& def) const {
@@ -481,7 +492,7 @@ RS2::LinearFormat RS_Graphic::getLinearFormat() const {
     return convertLinearFormatDXF2LC(lunits);
 }
 
-void RS_Graphic::setLinearFormat(RS2::LinearFormat linearFormat) {
+void RS_Graphic::setLinearFormat(const RS2::LinearFormat linearFormat) {
     addVariable("$LUNITS", linearFormat + 1, 70);
 }
 
@@ -527,7 +538,7 @@ int RS_Graphic::getLinearPrecision() const {
     return getVariableInt("$LUPREC", 4);
 }
 
-void RS_Graphic::setLinearPrecision(int value)  {
+void RS_Graphic::setLinearPrecision(const int value)  {
     // fixme - sand - add caching
     addVariable("$LUPREC", value, 70);
 }
@@ -556,20 +567,20 @@ RS2::AngleFormat RS_Graphic::getAngleFormat() const {
     }
 }
 
-void RS_Graphic::setAngleFormat(RS2::AngleFormat angleFormat) {
+void RS_Graphic::setAngleFormat(const RS2::AngleFormat angleFormat) {
     addVariable("$AUNITS", angleFormat, 70);
 }
 
 /**
- * @return The linear precision for this document.
- * This is determined by the variable "$LUPREC".
+ * @return The angle precision for this document.
+ * This is determined by the variable "$AUPREC".
  */
 int RS_Graphic::getAnglePrecision() const {
     // fixme - sand - add caching
     return getVariableInt("$AUPREC", 4);
 }
 
-void RS_Graphic::addAnglePrecision(int value) {
+void RS_Graphic::addAnglePrecision(const int value) {
     addVariable("$AUPREC", value, 70);
 }
 
@@ -675,7 +686,10 @@ void RS_Graphic::setPaperFormat(const RS2::PaperFormat f, const bool landscape) 
  * @return Paper space scaling (DXF: $PSVPSCALE).
  */
 double RS_Graphic::getPaperScale() const {
-    const double paperScale = getVariableDouble("$PSVPSCALE", 1.0);
+    double paperScale = getVariableDouble("$PSVPSCALE", 1.0);
+    if (std::abs(paperScale) < 1e-6) {
+        paperScale = 1.0;
+    }
     return paperScale;
 }
 
@@ -884,7 +898,7 @@ QString RS_Graphic::formatLinear(const double linear) const {
   */
 bool RS_Graphic::isModified() const {
     return m_modified || m_layerList.isModified() || m_blockList.isModified() || m_namedViewsList.isModified() || m_ucsList.isModified() ||
-        m_dimstyleList.isModified();
+        m_dimstyleList.isModified() || m_variableDict.isModified();
 }
 
 /**
@@ -898,6 +912,7 @@ void RS_Graphic::setModified(const bool m) {
         m_namedViewsList.setModified(m);
         m_ucsList.setModified(m);
         m_dimstyleList.setModified(m);
+        m_variableDict.setModified(m);
     }
     if (m_modificationListener != nullptr) {
         m_modificationListener->graphicModified(this, m);
@@ -923,12 +938,6 @@ const QString& RS_Graphic::getAutosaveFilename() const {
 
 void RS_Graphic::setAutosaveFileName(const QString& fileName) {
     m_autosaveFilename = fileName;
-}
-
-void RS_Graphic::fireUndoStateChanged(const bool undoAvailable, const bool redoAvailable) const {
-    if (m_modificationListener != nullptr) {
-        m_modificationListener->undoStateChanged(this, undoAvailable, redoAvailable);
-    }
 }
 
 LC_DimStyle* RS_Graphic::getDimStyleByName(const QString& name, const RS2::EntityType dimType) const {

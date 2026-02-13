@@ -640,6 +640,7 @@ void QC_ApplicationWindow::doWindowActivated(QMdiSubWindow* w, const bool forced
         const RS_Graphic* activatedGraphic = windowActivated->getGraphic();
         RS_Units::setCurrentDrawingUnits(activatedDocument->getGraphic()->getUnit());
 
+        m_actionHandler->setDocumentAndView(activatedDocument, activatedGraphicView);
         setupWidgetsByWindow(windowActivated);
 
         // Update all inserts in this graphic (blocks might have changed):
@@ -662,8 +663,6 @@ void QC_ApplicationWindow::doWindowActivated(QMdiSubWindow* w, const bool forced
             // update toggle button status:
             emit gridChanged(activatedGraphic->isGridOn());
         }
-
-        m_actionHandler->setDocumentAndView(activatedDocument, activatedGraphicView);
 
         RS_ActionInterface* currentAction = activatedGraphicView->getCurrentAction();
         if (currentAction != nullptr) {
@@ -1051,6 +1050,11 @@ void QC_ApplicationWindow::openFile(const QString& fileName, const RS2::FormatTy
     const auto graphicView = w->getGraphicView();
     autoZoomAfterLoad(graphicView);
 
+    const auto graphic = graphicView->getGraphic(true);
+    if (graphic != nullptr) {
+        graphic->setModified(false);
+    }
+
     const QString message = tr("Loaded document: ") + fileName;
     notificationMessage(message, 2000);
 
@@ -1414,6 +1418,7 @@ void QC_ApplicationWindow::slotViewGrid(const bool toggle) {
         RS_Graphic* g = m->getGraphic();
         if (g != nullptr) {
             g->setGridOn(toggle);
+            g->getSelection()->fireSelectionChanged();
         }
     }
     updateGrids();
@@ -1490,7 +1495,7 @@ void QC_ApplicationWindow::slotViewStatusBar(const bool toggle) {
 }
 
 void QC_ApplicationWindow::slotViewGridOrtho(const bool toggle) {
-    m_gridViewInvoker->setGridView(toggle, false, RS2::IsoGridViewType::IsoLeft);
+    m_gridViewInvoker->setGridView(toggle, false, RS2::IsoGridViewType::Ortho);
 }
 
 void QC_ApplicationWindow::slotViewGridIsoLeft(const bool toggle) {

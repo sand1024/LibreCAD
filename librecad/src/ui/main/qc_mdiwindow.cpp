@@ -110,19 +110,13 @@ void QC_MDIWindow::setupGraphicView([[maybe_unused]]const QWidget* parent, const
 
 void QC_MDIWindow::addWidgetsListeners() {
     if (m_document != nullptr) {
-        RS_Graphic* graphic = m_document->getGraphic();
-        if (graphic != nullptr) {
-            graphic->setModificationListener(this);
-        }
+       m_document->setModificationListener(this);
     }
 }
 
 void QC_MDIWindow::removeWidgetsListeners() const {
     if (m_document != nullptr) {
-        RS_Graphic* graphic = m_document->getGraphic();
-        if (graphic != nullptr) {
-            graphic->setModificationListener(nullptr);
-        }
+        m_document->setModificationListener(nullptr);
     }
 }
 
@@ -277,7 +271,6 @@ bool QC_MDIWindow::loadDocumentFromTemplate(const QString& fileName, const RS2::
 bool QC_MDIWindow::loadDocument(const QString& fileName, const RS2::FormatType type) {
     removeWidgetsListeners();
     const bool loaded = m_documentsStorage->loadDocument(m_document, fileName, type);
-    addWidgetsListeners();
     if (loaded) {
         const RS_Graphic* graphic = m_document->getGraphic();
         if (graphic != nullptr) {
@@ -302,9 +295,11 @@ bool QC_MDIWindow::loadDocument(const QString& fileName, const RS2::FormatType t
         else {
             m_graphicView->redraw();
         }
+
     }
     else {
     }
+    addWidgetsListeners();
     return loaded;
 }
 
@@ -417,7 +412,7 @@ void QC_MDIWindow::graphicModified([[maybe_unused]] const RS_Graphic* g, const b
     }
 }
 
-void QC_MDIWindow::undoStateChanged([[maybe_unused]] const RS_Graphic* g, const bool undoAvailable, const bool redoAvailable) {
+void QC_MDIWindow::undoStateChanged([[maybe_unused]] const RS_Document* g, const bool undoAvailable, const bool redoAvailable) {
     const auto& appWin = QC_ApplicationWindow::getAppWindow();
     if (appWin != nullptr) {
         appWin->setRedoEnable(redoAvailable);

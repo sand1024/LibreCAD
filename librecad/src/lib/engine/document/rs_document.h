@@ -110,6 +110,13 @@ inline void operator -=(LC_DocumentModificationBatch& ctx, const QList<RS_Entity
     ctx.entitiesToDelete.append(list);
 }
 
+class LC_DocumentModificationListener {
+public:
+    virtual ~LC_DocumentModificationListener() = default;
+    virtual void graphicModified(const RS_Graphic* g, bool modified) = 0;
+    virtual void undoStateChanged(const RS_Document* g, bool undoAvailable, bool redoAvailable) = 0;
+};
+
 /**
  * Base class for documents. Documents can be either graphics or
  * blocks and are typically shown in graphic views. Documents hold
@@ -220,6 +227,8 @@ public:
     bool undoableModify(LC_GraphicViewport* viewport, const FunUndoable& funModification, const FunSelection& funSelection);
     bool undoableModify(LC_GraphicViewport* viewport, const FunUndoable& funModification);
 
+    void setModificationListener(LC_DocumentModificationListener * listener) {m_modificationListener = listener;}
+
 protected:
     /** Flag set if the document was modified and not yet saved. */
     bool m_modified = false;
@@ -271,8 +280,12 @@ protected:
         }
     }
 
+    void fireUndoStateChanged(bool undoAvailable, bool redoAvailable) const override;
+
     bool m_inBulkUndoableCleanup = false;
     bool m_savedAutoUpdateBorders = false;
+
+    LC_DocumentModificationListener* m_modificationListener = nullptr;
 
     friend class LC_UndoSection;
     friend class RS_Selection;

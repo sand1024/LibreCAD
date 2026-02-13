@@ -39,7 +39,7 @@ class RS_EventHandler;
  * @author Andrew Mustun
  */
 class QC_MDIWindow:public QMdiSubWindow,
-                   public LC_GraphicModificationListener {
+                   public LC_DocumentModificationListener {
     Q_OBJECT
 public:
     QC_MDIWindow(RS_Document *doc,QWidget *parent,bool printPreview, LC_ActionContext* actionContext);
@@ -88,7 +88,7 @@ public:
     bool hasChildren() const;
 
     void graphicModified(const RS_Graphic *g, bool modified) override;
-    void undoStateChanged(const RS_Graphic* g, bool undoAvailable, bool redoAvailable) override;
+    void undoStateChanged(const RS_Document* g, bool undoAvailable, bool redoAvailable) override;
     void zoomAuto() const;
     bool isModified() const;
 

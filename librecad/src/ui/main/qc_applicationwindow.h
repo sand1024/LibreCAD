@@ -310,6 +310,7 @@ public:
     void changeDrawingOptions(int tabToShowIndex);
     void closeWindow(QC_MDIWindow* win) override;
 
+    // todo - think about more generic way of obtainin widgets!
     QG_LibraryWidget* getLibraryWidget() const {
         return m_libraryWidget;
     }
@@ -318,6 +319,17 @@ public:
         return m_propertySheetWidget;
     }
 
+    LC_UCSListWidget* getUCSListWidget() const {
+        return m_ucsListWidget;
+    }
+
+    LC_LayerTreeWidget* getLayerTreeWidget() const{
+        return m_layerTreeWidget;
+    }
+
+    LC_NamedViewsListWidget* getNamedViewsListWidget() const{
+        return m_namedViewsWidget;
+    }
     LC_ActionGroup* getActionGroup(const QString& groupName) const;
     LC_ActionContext* getActionContext() const;
 

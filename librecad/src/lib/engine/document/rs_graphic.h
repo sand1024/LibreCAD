@@ -45,13 +45,6 @@ class QString;
 class LC_View;
 class QG_LayerWidget;
 
-class LC_GraphicModificationListener {
-public:
-    virtual ~LC_GraphicModificationListener() = default;
-    virtual void graphicModified(const RS_Graphic* g, bool modified) = 0;
-    virtual void undoStateChanged(const RS_Graphic* g, bool undoAvailable, bool redoAvailable) = 0;
-};
-
 struct LC_MarginsRect {
     double left {0.0};
     double top {0.0};
@@ -59,39 +52,39 @@ struct LC_MarginsRect {
     double right {0.0};
 
     bool operator == (const LC_MarginsRect& v) const {
-        return left == v.left && top == v.top && bottom == v.bottom;
+        return left == v.left && top == v.top && bottom == v.bottom & right == v.right;
     }
 
-    [[nodiscard]] double getLeft() const {
+    double getLeft() const {
         return left;
     }
 
-    void setLeft(const double left) {
-        this->left = left;
+    void setLeft(const double v) {
+        left = v;
     }
 
-    [[nodiscard]] double getTop() const {
+    double getTop() const {
         return top;
     }
 
-    void setTop(const double top) {
-        this->top = top;
+    void setTop(const double v) {
+        top = v;
     }
 
-    [[nodiscard]] double getBottom() const {
+    double getBottom() const {
         return bottom;
     }
 
-    void setBottom(const double bottom) {
-        this->bottom = bottom;
+    void setBottom(const double v) {
+        bottom = v;
     }
 
-    [[nodiscard]] double getRight() const {
+    double getRight() const {
         return right;
     }
 
-    void setRight(const double right) {
-        this->right = right;
+    void setRight(const double v) {
+        right = v;
     }
 };
 
@@ -352,7 +345,7 @@ public:
 
     void setAutosaveFileName(const QString &fileName);
 
-    void setModificationListener(LC_GraphicModificationListener * listener) {m_modificationListener = listener;}
+
 
     LC_DimStyle* getFallBackDimStyleFromVars() const;
     LC_DimStyle* getDimStyleByName(const QString &name, RS2::EntityType dimType = RS2::EntityUnknown) const;
@@ -364,8 +357,6 @@ public:
     void updateFallbackDimStyle(const LC_DimStyle* fromStyle);
     void replaceDimStylesList(const QString& defaultStyleName, const QList<LC_DimStyle*>& styles);
     void validateSelection() const {m_selectedSet->cleanup();}
-protected:
-    void fireUndoStateChanged(bool undoAvailable, bool redoAvailable) const override;
 private:
     QDateTime m_lastSaveTime;
     QString m_currentFileName; //keep a copy of filename for the modifiedTime
@@ -401,7 +392,7 @@ private:
     /** Auto-save file name of document. */
     QString m_autosaveFilename;
 
-    LC_GraphicModificationListener* m_modificationListener = nullptr;
+
     bool m_anglesCounterClockWize;
 };
 #endif
