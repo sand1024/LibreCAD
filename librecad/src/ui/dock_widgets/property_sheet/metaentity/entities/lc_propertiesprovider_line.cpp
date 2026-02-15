@@ -47,42 +47,44 @@ void LC_PropertiesProviderLine::doFillEntitySpecificProperties(LC_PropertyContai
                            l->setEndpoint(v);
                        }, list, contGeometry);
 
-    add<RS_Line>({"reverse", tr("Reverse line direction"), tr("Swaps start and end point of line")},
-                 [this](const LC_Property::Names& names, RS_Line* e, LC_PropertyContainer* container,
-                        QList<LC_PropertyAtomic*>* props) -> void {
-                     auto* property = new LC_PropertyAction(container, true);
-                     property->setNames(names);
-                     LC_PropertyViewDescriptor viewDescriptor("Link");
-                     viewDescriptor[LC_PropertyActionLinkView::ATTR_TITLE] = names.displayName;
-                     property->setEntity(e);
-                     property->setClickHandler([this, container]([[maybe_unused]] const LC_PropertyAction* action, [[maybe_unused]] int linkIndex) {
-                         auto multiPropertyList = container->findChildProperties("reverse");
-                         for (const auto mp : multiPropertyList) {
-                             // actually, it should be only one
-                             const auto multiProperty = dynamic_cast<LC_PropertyMulti*>(mp);
-                             if (multiProperty != nullptr) {
-                                 for (const auto p : multiProperty->getProperties()) {
-                                     const auto actionProperty = dynamic_cast<LC_PropertyAction*>(p);
-                                     if (actionProperty != nullptr) {
-                                         RS_Entity* ent = actionProperty->getEntity();
-                                         if (ent != nullptr) {
-                                             if (ent->rtti() == RS2::EntityLine) {
-                                                 auto* entity = static_cast<RS_Line*>(ent);
-                                                 const auto clone = static_cast<RS_Line*>(entity->clone());
-                                                 clone->revertDirection();
-                                                 m_widget->entityModified(entity, clone);
+    if (m_widget->getOptions()->showLinks) {
+        add<RS_Line>({"reverse", tr("Reverse line direction"), tr("Swaps start and end point of line")},
+                     [this](const LC_Property::Names& names, RS_Line* e, LC_PropertyContainer* container,
+                            QList<LC_PropertyAtomic*>* props) -> void {
+                         auto* property = new LC_PropertyAction(container, true);
+                         property->setNames(names);
+                         LC_PropertyViewDescriptor viewDescriptor("Link");
+                         viewDescriptor[LC_PropertyActionLinkView::ATTR_TITLE] = names.displayName;
+                         property->setEntity(e);
+                         property->setClickHandler([this, container]([[maybe_unused]] const LC_PropertyAction* action, [[maybe_unused]] int linkIndex) {
+                             auto multiPropertyList = container->findChildProperties("reverse");
+                             for (const auto mp : multiPropertyList) {
+                                 // actually, it should be only one
+                                 const auto multiProperty = dynamic_cast<LC_PropertyMulti*>(mp);
+                                 if (multiProperty != nullptr) {
+                                     for (const auto p : multiProperty->getProperties()) {
+                                         const auto actionProperty = dynamic_cast<LC_PropertyAction*>(p);
+                                         if (actionProperty != nullptr) {
+                                             RS_Entity* ent = actionProperty->getEntity();
+                                             if (ent != nullptr) {
+                                                 if (ent->rtti() == RS2::EntityLine) {
+                                                     auto* entity = static_cast<RS_Line*>(ent);
+                                                     const auto clone = static_cast<RS_Line*>(entity->clone());
+                                                     clone->revertDirection();
+                                                     m_widget->entityModified(entity, clone);
+                                                 }
                                              }
                                          }
                                      }
                                  }
+                                 m_widget->onPropertyEdited(multiProperty);
                              }
-                             m_widget->onPropertyEdited(multiProperty);
-                         }
-                     });
+                         });
 
-                     property->setViewDescriptor(viewDescriptor);
-                     props->push_back(property);
-                 }, list, contGeometry);
+                         property->setViewDescriptor(viewDescriptor);
+                         props->push_back(property);
+                     }, list, contGeometry);
+    }
 
     const auto contOther = createCalculatedInfoSection(cont);
     if (contOther == nullptr) {

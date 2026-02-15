@@ -37,6 +37,9 @@ void LC_PropertySheetWidgetOptions::save() {
         LC_SET("noSelectionPrintPaper", noSelectionPrintPaper);
         LC_SET("noSelectionWorkspace", noSelectionWorkspace);
         LC_SET("noSelectionGraphicView", noSelectionGraphicView);
+        LC_SET("showLinks", showLinks);
+        LC_SET("showComputed", showComputed);
+        LC_SET("duplicateSelectionAction", duplicateSelectionAction);
     }
 }
 
@@ -52,5 +55,8 @@ void LC_PropertySheetWidgetOptions::load() {
         noSelectionPrintPaper = LC_GET_BOOL("noSelectionPrintPaper", true);
         noSelectionWorkspace = LC_GET_BOOL("noSelectionWorkspace", true);
         noSelectionGraphicView = LC_GET_BOOL("noSelectionGraphicView", true);
+        showLinks = LC_GET_BOOL("showLinks", true);
+        showComputed = LC_GET_BOOL("showComputed", true);
+        duplicateSelectionAction = LC_GET_BOOL("duplicateSelectionAction", true);
     }
 }

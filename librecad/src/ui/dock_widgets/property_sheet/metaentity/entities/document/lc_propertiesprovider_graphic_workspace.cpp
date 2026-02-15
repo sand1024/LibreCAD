@@ -37,7 +37,9 @@ void LC_PropertiesProviderGraphicWorkspace::fillDocumentProperties(LC_PropertyCo
         createShowMainMenu(cont);
         createShowStatusBar(cont);
         createWorkspaceSelector(cont);
-        createWorkspaceCommands(cont);
+        if (m_widget->getOptions()->showLinks) {
+            createWorkspaceCommands(cont);
+        }
     }
 }
 

@@ -39,7 +39,7 @@
 #include "rs_layerlistlistener.h"
 #include "rs_pen.h"
 
-
+class LC_ActionGroupManager;
 class LC_ActionContext;
 class LC_EntityPropertyContainerProvider;
 
@@ -53,8 +53,7 @@ class LC_PropertySheetWidget : public LC_GraphicViewAwareWidget, public LC_Selec
     Q_OBJECT
 
 public:
-    explicit LC_PropertySheetWidget(QWidget* parent, LC_ActionContext* actionContext, QAction* selectQuick, QAction* toggleSelectModeAction,
-                                    QAction* selectEntitiesAction);
+    explicit LC_PropertySheetWidget(QWidget* parent, LC_ActionContext* actionContext, LC_ActionGroupManager* actionGroupManager);
     ~LC_PropertySheetWidget() override;
     void loadCollapsedSections();
     void saveCollapsedSections();

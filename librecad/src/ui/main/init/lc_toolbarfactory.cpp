@@ -299,6 +299,7 @@ QToolBar* LC_ToolbarFactory::createInfoCursorToolbar(const QSizePolicy &tbPolicy
                 addInfoCursorOptionAction(menu, "InfoCursorRel", 3);
                 addInfoCursorOptionAction(menu, "InfoCursorPrompt", 4);
                 addInfoCursorOptionAction(menu, "InfoCursorCatchedEntity", 5);
+                addInfoCursorOptionAction(menu, "EntityDescriptionInfo",6);
 
                 btn->setMenu(menu);
             }

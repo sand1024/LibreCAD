@@ -13,6 +13,9 @@ LC_DlgPropertySheetWidgetOptions::LC_DlgPropertySheetWidgetOptions(QWidget* pare
     ui->cbPrintPaper->setChecked(options->noSelectionPrintPaper);
     ui->cbWorkspace->setChecked(options->noSelectionWorkspace);
     ui->cbGraphicView->setChecked(options->noSelectionGraphicView);
+    ui->cbShowLinks->setChecked(options->showLinks);
+    ui->cbShowComputed->setChecked(options->showComputed);
+    ui->cbDuplicateSelectionAction->setChecked(options->duplicateSelectionAction);
 }
 
 LC_DlgPropertySheetWidgetOptions::~LC_DlgPropertySheetWidgetOptions() {
@@ -30,5 +33,8 @@ void LC_DlgPropertySheetWidgetOptions::accept() {
     m_options->noSelectionPrintPaper = ui->cbPrintPaper->isChecked();
     m_options->noSelectionWorkspace = ui->cbWorkspace->isChecked();
     m_options->noSelectionGraphicView = ui->cbGraphicView->isChecked();
+    m_options->showLinks = ui->cbShowLinks->isChecked();
+    m_options->showComputed = ui->cbShowComputed->isChecked();
+    m_options->duplicateSelectionAction = ui->cbDuplicateSelectionAction->isChecked();
     m_options->save();
 }

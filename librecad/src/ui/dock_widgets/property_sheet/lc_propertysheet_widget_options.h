@@ -24,17 +24,19 @@
 #ifndef LC_PROPERTYSHEETWIDGETOPTIONS_H
 #define LC_PROPERTYSHEETWIDGETOPTIONS_H
 
-
 struct LC_PropertySheetWidgetOptions {
-     bool noSelectionActivePen = true;
-     bool noSelectionActiveLayer = true;
-     bool noSelectionNamedView = true;
-     bool noSelectionUCS = true;
-     bool noSelectionGrid = true;
-     bool noSelectionDrawingUnits = true;
-     bool noSelectionPrintPaper = true;
-     bool noSelectionWorkspace = true;
-     bool noSelectionGraphicView = true;
+    bool noSelectionActivePen = true;
+    bool noSelectionActiveLayer = true;
+    bool noSelectionNamedView = true;
+    bool noSelectionUCS = true;
+    bool noSelectionGrid = true;
+    bool noSelectionDrawingUnits = true;
+    bool noSelectionPrintPaper = true;
+    bool noSelectionWorkspace = true;
+    bool noSelectionGraphicView = true;
+    bool showLinks = true;
+    bool showComputed = true;
+    bool duplicateSelectionAction = true;
 
     void save();
     void load();

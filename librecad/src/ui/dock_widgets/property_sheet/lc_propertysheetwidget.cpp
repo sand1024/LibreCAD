@@ -23,9 +23,11 @@
 
 #include "lc_propertysheetwidget.h"
 
+#include <QMenu>
 #include <QTimer>
 
 #include "lc_actioncontext.h"
+#include "lc_actiongroupmanager.h"
 #include "lc_dlg_propertysheet_widget_options.h"
 #include "lc_entity_property_containerprovider.h"
 #include "lc_entitymetauiutils.h"
@@ -45,11 +47,9 @@
 #include "rs_settings.h"
 #include "ui_lc_propertysheetwidget.h"
 
-LC_PropertySheetWidget::LC_PropertySheetWidget(QWidget* parent, LC_ActionContext* actionContext, QAction* selectQuick,
-                                               QAction* toggleSelectModeAction, QAction* selectEntitiesAction)
+LC_PropertySheetWidget::LC_PropertySheetWidget(QWidget* parent, LC_ActionContext* actionContext, LC_ActionGroupManager* actionGroupManager)
     : LC_GraphicViewAwareWidget(parent), ui(new Ui::LC_PropertySheetWidget), m_actionContext{actionContext},
-        m_propertySheetOptions{std::make_unique<LC_PropertySheetWidgetOptions>()} {
-
+      m_propertySheetOptions{std::make_unique<LC_PropertySheetWidgetOptions>()} {
     const auto viewFactory = LC_PropertyViewFactory::staticInstance();
     LC_PropertyViewRegistrator registrator(*viewFactory);
     registrator.registerViews();
@@ -58,24 +58,44 @@ LC_PropertySheetWidget::LC_PropertySheetWidget(QWidget* parent, LC_ActionContext
 
     auto propertiesSheet = ui->propertySheet->propertiesSheet();
     connect(propertiesSheet, &LC_PropertiesSheet::propertyEdited, this, &LC_PropertySheetWidget::onPropertyEdited);
-    connect(propertiesSheet, &LC_PropertiesSheet::beforePropertyEdited, this,
-            &LC_PropertySheetWidget::onBeforePropertyEdited);
-    connect(propertiesSheet, &LC_PropertiesSheet::activePropertyChanged, this,
-            &LC_PropertySheetWidget::onActivePropertyChanged);
+    connect(propertiesSheet, &LC_PropertiesSheet::beforePropertyEdited, this, &LC_PropertySheetWidget::onBeforePropertyEdited);
+    connect(propertiesSheet, &LC_PropertiesSheet::activePropertyChanged, this, &LC_PropertySheetWidget::onActivePropertyChanged);
     connect(ui->cbSelection, &QComboBox::currentIndexChanged, this, &LC_PropertySheetWidget::onSelectionIndexChanged);
 
     connect(ui->tbSettings, &QToolButton::clicked, this, &LC_PropertySheetWidget::onSettingsClicked);
 
     ui->propertySheet->setParts(PROPERTY_WIDGET_AREA_INFO);
 
-    ui->tbSelectQuick->setDefaultAction(selectQuick);
+    QAction* quickSelectAction = actionGroupManager->getActionByName("SelectQuick");
+    QAction* toggleSelectModeAction = actionGroupManager->getActionByName("SelectionModeToggle");
+    QAction* selectEntitiesAction = actionGroupManager->getActionByName("SelectionGeneric");
+    QAction* selectionPointerAction = actionGroupManager->getActionByName("EditKillAllActions");
+
+    ui->tbSelectQuick->setDefaultAction(quickSelectAction);
     ui->tbPickAddSwitch->setDefaultAction(toggleSelectModeAction);
     ui->tbSelectObjects->setDefaultAction(selectEntitiesAction);
+
+    ui->tbSelectionGeneral->setDefaultAction(selectionPointerAction);
+    ui->tbSelectionGeneral->setPopupMode(QToolButton::MenuButtonPopup);
+    auto* menu      = new QMenu();
+    QList<QAction*> actions;
+    actions.push_back(actionGroupManager->getActionByName("SelectAll"));
+    actions.push_back(actionGroupManager->getActionByName("SelectSingle"));
+    actions.push_back(actionGroupManager->getActionByName("SelectContour"));
+    actions.push_back(actionGroupManager->getActionByName("SelectWindow"));
+    actions.push_back(actionGroupManager->getActionByName("DeselectWindow"));
+    actions.push_back(actionGroupManager->getActionByName("SelectIntersected"));
+    actions.push_back(actionGroupManager->getActionByName("DeselectIntersected"));
+    actions.push_back(actionGroupManager->getActionByName("SelectLayer"));
+    actions.push_back(actionGroupManager->getActionByName("SelectInvert"));
+    menu->addActions(actions);
+    ui->tbSelectionGeneral->setMenu(menu);
 
     m_entityContainerProvider = std::make_unique<LC_EntityPropertyContainerProvider>();
     m_entityContainerProvider->init(this, actionContext);
 
     loadCollapsedSections();
+    ui->tbSelectionGeneral->setVisible(m_propertySheetOptions->duplicateSelectionAction);
     updateWidgetSettings();
 }
 
@@ -87,7 +107,7 @@ void LC_PropertySheetWidget::loadCollapsedSections() {
     QString sectionsList = LC_GET_ONE_STR("PropertySheet", "CollapsedSections", "");
     if (!sectionsList.isEmpty()) {
         QStringList parts = sectionsList.split(",", Qt::SkipEmptyParts);
-        for (const auto &sectionName: parts) {
+        for (const auto& sectionName : parts) {
             m_collapsedContainerNames << sectionName;
         }
     }
@@ -96,8 +116,8 @@ void LC_PropertySheetWidget::loadCollapsedSections() {
 
 void LC_PropertySheetWidget::saveCollapsedSections() {
     QString settingsValue;
-    for (const auto &sectionName: m_collapsedContainerNames) {
-        settingsValue = settingsValue + "," +sectionName;
+    for (const auto& sectionName : m_collapsedContainerNames) {
+        settingsValue = settingsValue + "," + sectionName;
     }
     LC_SET_ONE("PropertySheet", "CollapsedSections", settingsValue);
 }
@@ -668,6 +688,7 @@ void LC_PropertySheetWidget::onActivePenChanged(RS_Pen) {
 void LC_PropertySheetWidget::onSettingsClicked() {
     LC_DlgPropertySheetWidgetOptions dlg(this, m_propertySheetOptions.get());
     if (dlg.exec() == QDialog::Accepted) {
-       selectionChanged();
+        ui->tbSelectionGeneral->setVisible(m_propertySheetOptions->duplicateSelectionAction);
+        selectionChanged();
     };
 }

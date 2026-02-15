@@ -28,7 +28,7 @@
 #include "rs_settings.h"
 
 void LC_InfoCursorSettingsManager::slotInfoCursorSetting(const bool toggle) {
-    const auto* action = qobject_cast<QAction*>(sender());
+    auto* action = qobject_cast<QAction*>(sender());
     if (action != nullptr) {
         const QVariant tag = action->property("InfoCursorActionTag");
         if (tag.isValid()) {
@@ -60,6 +60,10 @@ void LC_InfoCursorSettingsManager::slotInfoCursorSetting(const bool toggle) {
                     }
                     case 5: {
                         LC_SET_ONE("InfoOverlayCursor", "ShowPropertiesCatched", toggle);
+                        break;
+                    }
+                    case 6: {
+                        action->trigger();
                         break;
                     }
                     default:

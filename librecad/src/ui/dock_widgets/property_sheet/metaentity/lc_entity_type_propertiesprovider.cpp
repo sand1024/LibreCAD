@@ -154,7 +154,7 @@ LC_PropertyContainer* LC_EntityTypePropertiesProvider::createTextContainer(LC_Pr
 }
 
 LC_PropertyContainer* LC_EntityTypePropertiesProvider::createCalculatedInfoSection(LC_PropertyContainer* container) const {
-    const bool createCalculatedSection = LC_GET_ONE_BOOL("PropertySheet", "ShowCalculatedSection", true); // fixme - cache setting check!
+    const bool createCalculatedSection = m_widget->getOptions()->showComputed;
     if (createCalculatedSection) {
         const auto result = createSection(container, {SECTION_CALCULATED_INFO, tr("Other"), tr("Other properties")});
         return result;

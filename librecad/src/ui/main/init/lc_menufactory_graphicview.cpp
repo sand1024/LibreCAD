@@ -412,17 +412,14 @@ void LC_MenuFactoryGraphicView::createGVMenuFiles(QMenu* ctxMenu) const {
     const auto menuFile = subMenu(ctxMenu, tr("&File"), "file", ":/icons/save.lci", {
                                 "FileNew",
                                 "FileNewTemplate",
-                                "FileOpen",
-                                "",
-                                "FileSave",
-                                "FileSaveAs",
-                                "FileSaveAll",
-                                ""
-                            }, false);
+                                "FileOpen"}, false);
+    auto menuRecentFiles = m_menusHolder->m_menuRecentFiles;
+    if (menuRecentFiles != nullptr) {
+        menuFile->addMenu(menuRecentFiles);
+    }
 
-    // m_menuRecentFiles = new QMenu(tr("Recent Files"), m_menuFile);
+    addActions(menuFile, {"", "FileSave", "FileSaveAs", "FileSaveAll", ""});
 
-    // menuFile->addMenu(m_menuRecentFiles);
 
     subMenu(menuFile, tr("Import"), "import", ":/icons/import.lci", {
                 "DrawImage",

@@ -260,11 +260,9 @@ QDockWidget* LC_WidgetFactory::createEntityInfoWidget(){
 
 QDockWidget* LC_WidgetFactory::createPropertySheetWidget(){
     QDockWidget* dock = createDockWidget(tr("Properties"), "property_sheet", tr("Properties"));
-    QAction* quickSelectAction = m_agm->getActionByName("SelectQuick");
-    QAction* toggleSelectModeAction = m_agm->getActionByName("SelectionModeToggle");
-    QAction* selectEntitiesAction = m_agm->getActionByName("SelectionGeneric");
 
-    const auto widget = new LC_PropertySheetWidget(dock, m_appWin->getActionContext(), quickSelectAction, toggleSelectModeAction, selectEntitiesAction);
+
+    const auto widget = new LC_PropertySheetWidget(dock, m_appWin->getActionContext(), m_agm);
     widget->setFocusPolicy(Qt::NoFocus);
     dock->setWidget(widget);
 

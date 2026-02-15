@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>209</width>
     <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QGridLayout" name="gridLayout" columnstretch="1,0,0,0,0,0,0,0,1">
    <property name="leftMargin">
     <number>2</number>
    </property>
@@ -32,52 +32,7 @@
    <property name="verticalSpacing">
     <number>0</number>
    </property>
-   <item row="0" column="3">
-    <widget class="QToolButton" name="tbSelectObjects">
-     <property name="toolTip">
-      <string>Select Objects</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../../../../res/icons/icons.qrc">
-       <normaloff>:/icons/select_entity.lci</normaloff>:/icons/select_entity.lci</iconset>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="4">
-    <widget class="QToolButton" name="tbSelectQuick">
-     <property name="toolTip">
-      <string>Quick selection</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../../../../res/icons/icons.qrc">
-       <normaloff>:/icons/select_conditional.lci</normaloff>:/icons/select_conditional.lci</iconset>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="2">
-    <widget class="QToolButton" name="tbPickAddSwitch">
-     <property name="toolTip">
-      <string>Switch selection mode</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../../../../res/icons/icons.qrc">
-       <normaloff>:/icons/select_mode_add.lci</normaloff>:/icons/select_mode_add.lci</iconset>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0" colspan="2">
-    <widget class="QComboBox" name="cbSelection"/>
-   </item>
-   <item row="0" column="5">
+   <item row="0" column="8">
     <widget class="QToolButton" name="tbSettings">
      <property name="toolTip">
       <string>Settings</string>
@@ -91,7 +46,72 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="6">
+   <item row="0" column="0" colspan="2" alignment="Qt::AlignmentFlag::AlignVCenter">
+    <widget class="QComboBox" name="cbSelection"/>
+   </item>
+   <item row="0" column="6">
+    <widget class="QToolButton" name="tbSelectQuick">
+     <property name="toolTip">
+      <string>Quick selection</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../../res/icons/icons.qrc">
+       <normaloff>:/icons/select_conditional.lci</normaloff>:/icons/select_conditional.lci</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="4">
+    <widget class="QToolButton" name="tbPickAddSwitch">
+     <property name="toolTip">
+      <string>Switch selection mode</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../../res/icons/icons.qrc">
+       <normaloff>:/icons/select_mode_add.lci</normaloff>:/icons/select_mode_add.lci</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>5</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="5">
+    <widget class="QToolButton" name="tbSelectObjects">
+     <property name="toolTip">
+      <string>Select Objects</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../../res/icons/icons.qrc">
+       <normaloff>:/icons/select_entity.lci</normaloff>:/icons/select_entity.lci</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3">
+    <widget class="QToolButton" name="tbSelectionGeneral">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="9">
     <widget class="LC_PropertiesSheetPanel" name="propertySheet" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -111,6 +131,19 @@
       </font>
      </property>
     </widget>
+   </item>
+   <item row="0" column="7">
+    <spacer name="horizontalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>3</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

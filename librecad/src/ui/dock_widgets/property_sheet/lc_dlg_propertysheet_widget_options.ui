@@ -6,15 +6,25 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>258</width>
-    <height>366</height>
+    <width>316</width>
+    <height>464</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Property Sheet Properties</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="0">
+   <item row="3" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>No Selection View</string>
@@ -123,14 +133,43 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>General</string>
      </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="cbShowComputed">
+        <property name="toolTip">
+         <string>If enabled, computed properties for entities will be also shown (if any exists)</string>
+        </property>
+        <property name="text">
+         <string>Show computed properties</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="cbShowLinks">
+        <property name="toolTip">
+         <string>If enabled, property sheet will include links to command actions, that are relevant to specific properties or sections</string>
+        </property>
+        <property name="text">
+         <string>Include command links</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="cbDuplicateSelectionAction">
+        <property name="toolTip">
+         <string>If enabled, generic selection-related actions will be included into the widget toolbar</string>
+        </property>
+        <property name="text">
+         <string>Show generic selection actions button in toolbar</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>
