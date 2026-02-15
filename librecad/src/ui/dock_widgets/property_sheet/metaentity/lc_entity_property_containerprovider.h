@@ -35,6 +35,7 @@
 #include "lc_propertiesprovider_dim_linear.h"
 #include "lc_propertiesprovider_dim_ordinate.h"
 #include "lc_propertiesprovider_dim_radial.h"
+#include "entities/document/lc_propertiesprovider_document.h"
 #include "lc_propertiesprovider_ellipse.h"
 #include "lc_propertiesprovider_hatch.h"
 #include "lc_propertiesprovider_hyperbola.h"
@@ -57,18 +58,22 @@ class LC_PropertySheetWidget;
 
 class LC_EntityPropertyContainerProvider : public QObject, public LC_GraphicViewAware {
     Q_OBJECT
-
 public:
+    enum TAG {
+        TAG_CONTAINER_NO_SELECTION,
+        TAG_CONTAINER_SELECTION_MANY,
+        TAG_CONTAINER_SELECTION_ONE
+    };
     void init(LC_PropertySheetWidget* widget, LC_ActionContext* context);
-    void fillPropertyContainer(RS_Document* doc, LC_PropertyContainer* container, RS2::EntityType entityType,
+    void fillPropertyContainerForSelection(RS_Document* doc, LC_PropertyContainer* container, RS2::EntityType entityType,
                                const QList<RS_Entity*>& entitiesList);
-    void refillPropertyContainer(RS_Document* doc, LC_PropertyContainer* container) const;
+    void fillPropertyContainerForNoSelection(RS_Document* doc, LC_PropertyContainer* container);
     void setGraphicView(RS_GraphicView* gview) override;
-    void clearCachedDimStyles();
     void cleanup();
     void clearEntities();
-
 private:
+    void refillPropertyContainer(RS_Document* doc, LC_PropertyContainer* container) const;
+    void clearCachedDimStyles();
     std::unique_ptr<LC_PropertiesProviderMultiple> m_multiple{nullptr};
     std::unique_ptr<LC_PropertiesProviderLine> m_line{nullptr};
     std::unique_ptr<LC_PropertiesProviderCircle> m_circle{nullptr};
@@ -94,9 +99,11 @@ private:
     std::unique_ptr<LC_PropertiesProviderLeader> m_leader{nullptr};
     std::unique_ptr<LC_PropertiesProviderTolerance> m_tolerance{nullptr};
     std::unique_ptr<LC_PropertiesProviderParabola> m_parabola{nullptr};
+    std::unique_ptr<LC_PropertiesProviderDocument> m_document{nullptr};
 
     RS2::EntityType m_entityType = RS2::EntityUnknown;
     QList<RS_Entity*> m_entitiesList;
+    bool m_lastContainerForNoSelection = false;
 };
 
 #endif

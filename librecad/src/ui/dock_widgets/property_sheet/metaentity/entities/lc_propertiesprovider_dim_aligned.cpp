@@ -29,21 +29,21 @@ void LC_PropertiesProviderDimAligned::doCreateDimGeometrySection(LC_PropertyCont
     addVector<RS_DimAligned>({"dimExtPoint1", tr("Ext point 1"), tr("Position of first extension point")},
                              [](const RS_DimAligned* e) -> RS_Vector {
                                  return e->getExtensionPoint1();
-                             }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_DimAligned* e) -> void {
+                             }, [](const RS_Vector& v, RS_DimAligned* e) -> void {
                                  e->setExtensionPoint1(v);
                              }, list, cont);
 
     addVector<RS_DimAligned>({"dimExtPoint2", tr("Ext point 2"), tr("Position of second extension point")},
                              [](const RS_DimAligned* e) -> RS_Vector {
                                  return e->getExtensionPoint2();
-                             }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_DimAligned* e) -> void {
+                             }, [](const RS_Vector& v, RS_DimAligned* e) -> void {
                                  e->setExtensionPoint2(v);
                              }, list, cont);
 
     addVector<RS_DimAligned>({"dimDefPoint", tr("Definition point "), tr("Position of definition point")},
                              [](const RS_DimAligned* e) -> RS_Vector {
                                  return e->getDefinitionPoint();
-                             }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_DimAligned* e) -> void {
+                             }, [](const RS_Vector& v, RS_DimAligned* e) -> void {
                                  e->setDefinitionPoint(v);
                              }, list, cont);
 }

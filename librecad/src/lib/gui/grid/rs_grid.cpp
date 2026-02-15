@@ -258,8 +258,7 @@ void RS_Grid::prepareGridCalculations(RS_Vector& viewZero,RS_Vector& viewSize,RS
     m_gridSystem->setGridInfiniteState(hasInfiniteAxis, undefinedXSize);
 }
 
-RS_Vector RS_Grid::prepareGridWidth() {// find out unit:
-
+bool RS_Grid::isGridMetric() const {
     const RS_Graphic* graphic = m_viewport->getGraphic();
 
     RS2::Unit unit = RS2::None;
@@ -272,10 +271,21 @@ RS_Vector RS_Grid::prepareGridWidth() {// find out unit:
         format = RS2::Decimal;
     }
 
-    RS_Vector gridWidth;
+    const bool gridIsMetric = RS_Units::isMetric(unit) || unit == RS2::None || format == RS2::Decimal || format == RS2::Engineering;
+    return gridIsMetric;
+}
+
+bool RS_Grid::isDrawMetaGrid() const {
+    return m_gridSystem->isDrawMetaGrid();
+}
+
+RS_Vector RS_Grid::prepareGridWidth() {// find out unit:
+    bool gridIsMetric = isGridMetric();
+
     // init grid spacing:
     // metric grid:
-    if (RS_Units::isMetric(unit) || unit == RS2::None || format == RS2::Decimal || format == RS2::Engineering) {
+    RS_Vector gridWidth;
+    if (gridIsMetric) {
         //metric grid
         gridWidth = getMetricGridWidth(m_userGrid, m_scaleGrid, m_minGridSpacing);
     }

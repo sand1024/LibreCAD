@@ -28,7 +28,7 @@
 void LC_PropertiesProviderDimArc::doCreateDimGeometrySection(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
     addVector<LC_DimArc>({"dimCenter", tr("Center point"), tr("Center point of arc dimension")}, [](const LC_DimArc* e) -> RS_Vector {
                              return e->getCenter();
-                         }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, LC_DimArc* e) -> void {
+                         }, [](const RS_Vector& v, LC_DimArc* e) -> void {
                              e->setCenter(v);
                          }, list, container);
 

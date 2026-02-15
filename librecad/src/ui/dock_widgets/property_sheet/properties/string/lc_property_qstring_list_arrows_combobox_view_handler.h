@@ -28,13 +28,15 @@
 #include "lc_property_qstring.h"
 #include "lc_property_qstring_list_combobox_view_handler.h"
 
+class LC_PropertyComboBox;
+
 class LC_PropertyQStringListArrowsComboboxViewHandler : LC_PropertyQStringListComboBoxViewHandler {
     Q_OBJECT
 
 public:
-    LC_PropertyQStringListArrowsComboboxViewHandler(LC_PropertyViewEditable* view, QComboBox& editor,
+    LC_PropertyQStringListArrowsComboboxViewHandler(LC_PropertyViewEditable* view, LC_PropertyComboBox& editor,
                                                     const LC_PropertyViewDescriptor& descriptor);
-    void connectCombobox(QComboBox& editor) override;
+    void connectCombobox(LC_PropertyComboBox& editor) override;
     void doUpdateEditor() override;
 
 private:

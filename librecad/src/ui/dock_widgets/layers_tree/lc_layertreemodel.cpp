@@ -280,7 +280,7 @@ void LC_LayerTreeModel::rebuildModel(const QList<RS_Layer*> &layersList, const R
 
         // check whether it's helper layer (dimensions, info, alternate position) so we try to find primary layer for this (without _pos)
 
-        int type = RS_Layer::LayerType::NORMAL;
+        RS_Layer::LayerType type = RS_Layer::LayerType::NORMAL;
 
         // determining level item type, name and position based on naming.
         // TODO - actually, a more flexible and generic policy may be used there, and so it will allow to
@@ -310,6 +310,7 @@ void LC_LayerTreeModel::rebuildModel(const QList<RS_Layer*> &layersList, const R
                 layerName = mainName;
             }
         }
+        layer->setLayerType(type);
 
         LC_LayerTreeItem* primaryLayerItem = nullptr;
         if (primaryLayerName.length() > 0){

@@ -65,20 +65,20 @@ void LC_PropertiesProviderImage::doFillEntitySpecificProperties(LC_PropertyConta
 
     addVector<RS_Image>({"insert", tr("Insertion Point"), tr("Point of image insertion")}, [](const RS_Image* e) -> RS_Vector {
                             return e->getInsertionPoint();
-                        }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Image* e) -> void {
+                        }, [](const RS_Vector& v, RS_Image* e) -> void {
                             e->setInsertionPoint(v);
                         }, list, contGeometry);
 
     addLinearDistance<RS_Image>({"scale", tr("Scale"), tr("Scale factor for image")}, [](const RS_Image* e) -> double {
                                     return e->getUVector().magnitude();
-                                }, [](double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Image* l) -> void {
+                                }, [](double& v, RS_Image* l) -> void {
                                     // fixme - prop- update geometry
                                     // l->setRadius(v);
                                 }, list, contGeometry);
 
     addWCSAngle<RS_Image>({"angle", tr("Angle"), tr("Image rotation angle")}, [](const RS_Image* e) -> double {
                               return e->getUVector().angle();
-                          }, [](double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Image* l) -> void {
+                          }, [](double& v, RS_Image* l) -> void {
                               // fixme - update geometry
                               // l->setAngle1(v);
                           }, list, contGeometry);
@@ -97,14 +97,14 @@ void LC_PropertiesProviderImage::doFillEntitySpecificProperties(LC_PropertyConta
 
     addLinearDistance<RS_Image>({"width", tr("Width"), tr("Width of image")}, [](const RS_Image* e) -> double {
                                     return e->getImageWidth();
-                                }, [](double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Image* l) -> void {
+                                }, [](double& v, RS_Image* l) -> void {
                                     // fixme - prop- update geometry
                                     // l->setRadius(v);
                                 }, list, contGeometry);
 
     addLinearDistance<RS_Image>({"height", tr("Height"), tr("Height of image")}, [](const RS_Image* e) -> double {
                                     return e->getImageHeight();
-                                }, [](double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Image* l) -> void {
+                                }, [](double& v, RS_Image* l) -> void {
                                     // fixme - prop- update geometry
                                     // l->setRadius(v);
                                 }, list, contGeometry);

@@ -34,7 +34,7 @@ void LC_PropertiesProviderInsert::doFillEntitySpecificProperties(LC_PropertyCont
 
     addStringList<RS_Insert>({"name", tr("Block"), tr("Block name")}, [](const RS_Insert* e) -> QString {
                                  return e->getName();
-                             }, [](const QString& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Insert* l) -> void {
+                             }, [](const QString& v, RS_Insert* l) -> void {
                                  l->setName(v);
                              }, [this]([[maybe_unused]] RS_Insert* h, LC_PropertyViewDescriptor& descriptor)-> bool {
                                  const auto graphic = this->m_actionContext->getDocument()->getGraphic();
@@ -53,13 +53,13 @@ void LC_PropertiesProviderInsert::doFillEntitySpecificProperties(LC_PropertyCont
 
     addVector<RS_Insert>({"insert", tr("Insertion Point"), tr("Point of block insertion")}, [](const RS_Insert* e) -> RS_Vector {
                              return e->getInsertionPoint();
-                         }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Insert* e) -> void {
+                         }, [](const RS_Vector& v, RS_Insert* e) -> void {
                              e->setInsertionPoint(v);
                          }, list, contGeometry);
 
     addLinearDistance<RS_Insert>({"scaleX", tr("Scale X"), tr("Scale factor of block by X")}, [](const RS_Insert* e) -> double {
                                      return e->getScale().x;
-                                 }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Insert* l) -> void {
+                                 }, [](const double& v, RS_Insert* l) -> void {
                                      RS_Vector scale = l->getScale();
                                      scale.setX(v);
                                      l->setScale(scale);
@@ -70,7 +70,7 @@ void LC_PropertiesProviderInsert::doFillEntitySpecificProperties(LC_PropertyCont
 
     addLinearDistance<RS_Insert>({"scaleY", tr("Scale Y"), tr("Scale factor of block by Y")}, [](const RS_Insert* e) -> double {
                                      return e->getScale().y;
-                                 }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Insert* l) -> void {
+                                 }, [](const double& v, RS_Insert* l) -> void {
                                      RS_Vector scale = l->getScale();
                                      scale.setY(v);
                                      l->setScale(scale);
@@ -81,28 +81,28 @@ void LC_PropertiesProviderInsert::doFillEntitySpecificProperties(LC_PropertyCont
 
     addWCSAngle<RS_Insert>({"angle", tr("Angle"), tr("Block rotation angle")}, [](const RS_Insert* e) -> double {
                                return e->getAngle();
-                           }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Insert* l) -> void {
+                           }, [](const double& v, RS_Insert* l) -> void {
                                l->setAngle(v);
                            }, list, contGeometry);
 
     addIntSpinbox<RS_Insert>({"cols", tr("Columns"), tr("Amount of array columns")}, [](const RS_Insert* e) -> int {
                                  const int value = e->getCols();
                                  return value;
-                             }, [](const int& value, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Insert* e) -> void {
+                             }, [](const int& value, RS_Insert* e) -> void {
                                  e->setCols(value);
                              }, list, contGeometry);
 
     addIntSpinbox<RS_Insert>({"cols", tr("Rows"), tr("Amount of array rows")}, [](const RS_Insert* e) -> int {
                                  const int value = e->getRows();
                                  return value;
-                             }, [](const int& value, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Insert* e) -> void {
+                             }, [](const int& value, RS_Insert* e) -> void {
                                  e->setRows(value);
                              }, list, contGeometry);
 
     addLinearDistance<RS_Insert>({"spacingX", tr("Spacing X"), tr("Spacing between columns of array (by X)")},
                                  [](const RS_Insert* e) -> double {
                                      return e->getSpacing().x;
-                                 }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Insert* l) -> void {
+                                 }, [](const double& v, RS_Insert* l) -> void {
                                      RS_Vector spacing = l->getSpacing();
                                      spacing.setX(v);
                                      l->setSpacing(spacing);
@@ -111,7 +111,7 @@ void LC_PropertiesProviderInsert::doFillEntitySpecificProperties(LC_PropertyCont
     addLinearDistance<RS_Insert>({"spacingY", tr("Spacing Y"), tr("Spacing between rows of array (by Y)")},
                                  [](const RS_Insert* e) -> double {
                                      return e->getSpacing().y;
-                                 }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Insert* l) -> void {
+                                 }, [](const double& v, RS_Insert* l) -> void {
                                      RS_Vector spacing = l->getSpacing();
                                      spacing.setY(v);
                                      l->setSpacing(spacing);

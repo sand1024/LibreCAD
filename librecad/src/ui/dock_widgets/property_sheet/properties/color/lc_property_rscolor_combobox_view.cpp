@@ -65,7 +65,13 @@ namespace {
     }
 }
 
+
 const QByteArray LC_PropertyRSColorComboBoxView::VIEW_NAME = QByteArrayLiteral("ColorCombobox");
+const QByteArray LC_PropertyRSColorComboBoxView::ATTR_SHOW_BY_LAYER = QByteArrayLiteral("showByLayer");
+
+void LC_PropertyRSColorComboBoxView::doApplyAttributes(const LC_PropertyViewDescriptor& info) {
+    info.load(ATTR_SHOW_BY_LAYER, m_showByLayerItem);
+}
 
 void LC_PropertyRSColorComboBoxView::doDrawValue([[maybe_unused]] LC_PropertyPaintContext& ctx, QStylePainter& painter, const QRect& rect) {
     if (isMultiValue()) {
@@ -77,7 +83,7 @@ void LC_PropertyRSColorComboBoxView::doDrawValue([[maybe_unused]] LC_PropertyPai
 }
 
 QWidget* LC_PropertyRSColorComboBoxView::doCreateValueEditor(QWidget* parent, const QRect& rect, const EditActivationContext* ctx) {
-    const auto combo = new LC_PropertyRSColorComboBox(this, parent, true, false);
+    const auto combo = new LC_PropertyRSColorComboBox(this, parent, m_showByLayerItem, false);
     combo->setGeometry(rect);
     if (isInplaceEditAllowed(ctx)) {
         combo->showPopup();

@@ -34,13 +34,16 @@ class LC_PropertyLineWidthComboboxView : public LC_PropertySimpleComboboxView<LC
 
 public:
     static const QByteArray VIEW_NAME;
+    static const QByteArray ATTR_SHOW_BY_LAYER;
 
     explicit LC_PropertyLineWidthComboboxView(LC_PropertyLineWidth& property) : LC_PropertySimpleComboboxView(property) {
     }
 
 protected:
+    void doApplyAttributes(const LC_PropertyViewDescriptor& info) override;
     QComboBox* doCreateEditCombobox(QWidget* parent) override;
     void doDrawValueDetails(const QStyle* style, const RS2::LineWidth& value, QPainter& painter, const QRect& rect) const override;
+    bool m_showByLayer = true;
 };
 
 #endif

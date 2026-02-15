@@ -64,23 +64,23 @@ void RS_VariableDict::clear() {
  * Adds a variable to the variable dictionary. If a variable with the
  * same name already exists, is will be overwritten.
  */
-void RS_VariableDict::add(const QString& key, const QString& value, const int code) {
+bool RS_VariableDict::add(const QString& key, const QString& value, const int code) {
     RS_DEBUG->print("RS_VariableDict::addVariable()");
 
     if (key.isEmpty()) {
         RS_DEBUG->print(RS_Debug::D_WARNING, "RS_VariableDict::addVariable(): No empty keys allowed.");
-        return;
+        return false;
     }
 
-    m_variables.insert(key, RS_Variable(value, code));
+    return insert(key, RS_Variable(value, code));
 }
 
-void RS_VariableDict::add(const QString& key, const QString& value, const int code, const int type) {
+bool RS_VariableDict::add(const QString& key, const QString& value, const int code, const int type) {
     RS_DEBUG->print("RS_VariableDict::addVariable()");
 
     if (key.isEmpty()) {
         RS_DEBUG->print(RS_Debug::D_WARNING, "RS_VariableDict::addVariable(): No empty keys allowed.");
-        return;
+        return false;
     }
 
     RS_Variable result;
@@ -128,11 +128,12 @@ void RS_VariableDict::add(const QString& key, const QString& value, const int co
             ok = false;
     }
     if (ok) {
-        insert(key, result);
+        return insert(key, result);
     }
     else {
         RS_DEBUG->print(QString("RS_VariableDict::addVariable(): Cant convert var from string. Name: %1, value: %2.").arg(key).arg(value));
     }
+    return false;
 }
 
 
@@ -141,54 +142,54 @@ void RS_VariableDict::add(const QString& key, const QString& value, const int co
  * Adds a variable to the variable dictionary. If a variable with the
  * same name already exists, is will be overwritten.
  */
-void RS_VariableDict::add(const QString& key, const int value, const int code) {
+bool RS_VariableDict::add(const QString& key, const int value, const int code) {
     RS_DEBUG->print("RS_VariableDict::addVariable()");
 
     if (key.isEmpty()) {
         RS_DEBUG->print(RS_Debug::D_WARNING, "RS_VariableDict::addVariable(): No empty keys allowed.");
-        return;
+        return false;
     }
 
-    insert(key, RS_Variable(value, code));
+    return insert(key, RS_Variable(value, code));
 }
 
-void RS_VariableDict::add(const QString& key, const bool value, const int code) {
+bool RS_VariableDict::add(const QString& key, const bool value, const int code) {
     RS_DEBUG->print("RS_VariableDict::addVariable()");
 
     if (key.isEmpty()) {
         RS_DEBUG->print(RS_Debug::D_WARNING, "RS_VariableDict::addVariable(): No empty keys allowed.");
-        return;
+        return false;
     }
-    insert(key, RS_Variable(value ? 1 : 0, code));
-}
-
-/**
- * Adds a variable to the variable dictionary. If a variable with the
- * same name already exists, is will be overwritten.
- */
-void RS_VariableDict::add(const QString& key, const double value, const int code) {
-    RS_DEBUG->print("RS_VariableDict::addVariable()");
-
-    if (key.isEmpty()) {
-        RS_DEBUG->print(RS_Debug::D_WARNING, "RS_VariableDict::addVariable(): No empty keys allowed.");
-        return;
-    }
-    insert(key, RS_Variable(value, code));
+    return insert(key, RS_Variable(value ? 1 : 0, code));
 }
 
 /**
  * Adds a variable to the variable dictionary. If a variable with the
  * same name already exists, is will be overwritten.
  */
-void RS_VariableDict::add(const QString& key, const RS_Vector& value, const int code) {
+bool RS_VariableDict::add(const QString& key, const double value, const int code) {
     RS_DEBUG->print("RS_VariableDict::addVariable()");
 
     if (key.isEmpty()) {
         RS_DEBUG->print(RS_Debug::D_WARNING, "RS_VariableDict::addVariable(): No empty keys allowed.");
-        return;
+        return false;
+    }
+    return insert(key, RS_Variable(value, code));
+}
+
+/**
+ * Adds a variable to the variable dictionary. If a variable with the
+ * same name already exists, is will be overwritten.
+ */
+bool RS_VariableDict::add(const QString& key, const RS_Vector& value, const int code) {
+    RS_DEBUG->print("RS_VariableDict::addVariable()");
+
+    if (key.isEmpty()) {
+        RS_DEBUG->print(RS_Debug::D_WARNING, "RS_VariableDict::addVariable(): No empty keys allowed.");
+        return false;
     }
 
-    insert(key, RS_Variable(value, code));
+    return insert(key, RS_Variable(value, code));
 }
 
 /**
@@ -313,6 +314,7 @@ void RS_VariableDict::remove(const QString& key) {
     RS_DEBUG->print("RS_VariableDict::removeVariable()");
 
     // here the block is removed from the list but not deleted
+    m_modified = true;
     m_variables.remove(key);
 }
 

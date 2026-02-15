@@ -28,9 +28,9 @@
 
 const QByteArray LC_PropertyIntListComboBoxView::VIEW_NAME = QByteArrayLiteral("IntList");
 
-class LC_PropertyIntListComboBoxViewHandler : public LC_PropertyEditorHandlerValueTyped<LC_PropertyInt, QComboBox> {
+class LC_PropertyIntListComboBoxViewHandler : public LC_PropertyEditorHandlerValueTyped<LC_PropertyInt, LC_PropertyComboBox> {
 public:
-    LC_PropertyIntListComboBoxViewHandler(LC_PropertyIntListComboBoxView* view, QComboBox& editor)
+    LC_PropertyIntListComboBoxViewHandler(LC_PropertyIntListComboBoxView* view, LC_PropertyComboBox& editor)
     : LC_PropertyEditorHandlerValueTyped(view, editor) {
         LC_PropertyIntListComboBoxViewHandler::doUpdateEditor();
         connect(&editor, &QComboBox::currentIndexChanged, this, &LC_PropertyIntListComboBoxViewHandler::onCurrentIndexChanged);
@@ -52,8 +52,10 @@ private:
     }
     void onCurrentIndexChanged(int index){
         if (index >= 0) {
-            const QVariant data = getEditor()->itemData(index);
+            const auto propertyComboBox = getEditor();
+            const QVariant data = propertyComboBox->itemData(index);
             if (data.canConvert<int>()) {
+                propertyComboBox->disablePaint(true);
                 onValueChanged(data.toInt());
             }
         }

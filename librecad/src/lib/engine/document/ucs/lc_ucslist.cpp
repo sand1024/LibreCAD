@@ -58,10 +58,11 @@ void LC_UCSList::addNew(LC_UCS *ucs) {
     }
 }
 
+// note - if this method is called, list should be marked as modified externally!
 void LC_UCSList::remove(LC_UCS *ucs) {
     if (ucs->isUCS()) {
         m_ucsList.removeOne(ucs);
-        setModified(true);
+        // setModified(true);
         delete ucs;
     }
 }

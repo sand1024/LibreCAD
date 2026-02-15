@@ -28,6 +28,7 @@
 #include "lc_property_view_utils.h"
 
 const QByteArray LC_PropertyLineTypeComboboxView::VIEW_NAME = QByteArrayLiteral("LinetypeCombobox");
+const QByteArray LC_PropertyLineTypeComboboxView::ATTR_SHOW_BY_LAYER = QByteArrayLiteral("showByLayer");
 
 void LC_PropertyLineTypeComboboxView::doDrawValueDetails(const QStyle* style, const RS2::LineType& linetype, QPainter& painter,
                                                          const QRect& rect) const {
@@ -50,6 +51,10 @@ void LC_PropertyLineTypeComboboxView::doDrawValueDetails(const QStyle* style, co
     }
 }
 
+void LC_PropertyLineTypeComboboxView::doApplyAttributes(const LC_PropertyViewDescriptor& info) {
+    info.load(ATTR_SHOW_BY_LAYER, m_showByLayer);
+}
+
 QComboBox* LC_PropertyLineTypeComboboxView::doCreateEditCombobox(QWidget* parent) {
-    return new LC_PropertyLineTypeCombobox(this, parent, true, false);
+    return new LC_PropertyLineTypeCombobox(this, parent, m_showByLayer, false);
 }

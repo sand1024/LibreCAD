@@ -26,6 +26,7 @@
 #include <QTimer>
 
 #include "lc_actioncontext.h"
+#include "lc_dlg_propertysheet_widget_options.h"
 #include "lc_entity_property_containerprovider.h"
 #include "lc_entitymetauiutils.h"
 #include "lc_graphicviewport.h"
@@ -36,7 +37,7 @@
 #include "lc_property_multi.h"
 #include "lc_property_rsvector.h"
 #include "lc_property_view_registrator.h"
-#include "lc_rectregion.h"
+#include "lc_propertysheet_widget_options.h"
 #include "rs_debug.h"
 #include "rs_document.h"
 #include "rs_graphicview.h"
@@ -46,7 +47,8 @@
 
 LC_PropertySheetWidget::LC_PropertySheetWidget(QWidget* parent, LC_ActionContext* actionContext, QAction* selectQuick,
                                                QAction* toggleSelectModeAction, QAction* selectEntitiesAction)
-    : LC_GraphicViewAwareWidget(parent), ui(new Ui::LC_PropertySheetWidget), m_actionContext{actionContext} {
+    : LC_GraphicViewAwareWidget(parent), ui(new Ui::LC_PropertySheetWidget), m_actionContext{actionContext},
+        m_propertySheetOptions{std::make_unique<LC_PropertySheetWidgetOptions>()} {
 
     const auto viewFactory = LC_PropertyViewFactory::staticInstance();
     LC_PropertyViewRegistrator registrator(*viewFactory);
@@ -61,6 +63,8 @@ LC_PropertySheetWidget::LC_PropertySheetWidget(QWidget* parent, LC_ActionContext
     connect(propertiesSheet, &LC_PropertiesSheet::activePropertyChanged, this,
             &LC_PropertySheetWidget::onActivePropertyChanged);
     connect(ui->cbSelection, &QComboBox::currentIndexChanged, this, &LC_PropertySheetWidget::onSelectionIndexChanged);
+
+    connect(ui->tbSettings, &QToolButton::clicked, this, &LC_PropertySheetWidget::onSettingsClicked);
 
     ui->propertySheet->setParts(PROPERTY_WIDGET_AREA_INFO);
 
@@ -87,6 +91,7 @@ void LC_PropertySheetWidget::loadCollapsedSections() {
             m_collapsedContainerNames << sectionName;
         }
     }
+    m_propertySheetOptions->load();
 }
 
 void LC_PropertySheetWidget::saveCollapsedSections() {
@@ -105,6 +110,11 @@ void LC_PropertySheetWidget::setGraphicView(RS_GraphicView* gv) {
         disconnect(m_graphicView, &RS_GraphicView::defaultActionActivated, this, &LC_PropertySheetWidget::onViewDefaultActionActivated);
         if (m_document != nullptr) {
             m_document->getSelection()->removeListener(this);
+            if (!m_document->is(RS2::EntityBlock)) {
+                m_document->getUCSList()->removeListener(this);
+                m_document->getLayerList()->removeListener(this);
+                m_document->getViewList()->removeListener(this);
+            }
         }
     }
 
@@ -119,8 +129,16 @@ void LC_PropertySheetWidget::setGraphicView(RS_GraphicView* gv) {
         connect(m_graphicView, &RS_GraphicView::defaultActionActivated, this, &LC_PropertySheetWidget::onViewDefaultActionActivated);
         viewport = gv->getViewPort();
         doc = gv->getDocument();
-        doc->getSelection()->addListener(this);
         m_document = doc;
+        if (doc != nullptr) {
+            m_document->getSelection()->addListener(this);
+            if (!m_document->is(RS2::EntityBlock)) {
+                m_document->getUCSList()->addListener(this);
+                m_document->getLayerList()->addListener(this);
+                m_document->getViewList()->addListener(this);
+            }
+        }
+
         m_viewport = viewport;
 
         m_entityContainerProvider->setGraphicView(gv);
@@ -148,9 +166,13 @@ void LC_PropertySheetWidget::setGraphicView(RS_GraphicView* gv) {
     }
 }
 
+void LC_PropertySheetWidget::stopInplaceEdit() const {
+    ui->propertySheet->stopInplaceEdit();
+}
+
 void LC_PropertySheetWidget::selectionChanged() {
     // LC_ERR << "On Selection Changed!";
-
+    stopInplaceEdit();
     if (m_handleSelectionChange) {
         const int selectionIndex = ui->cbSelection->currentIndex();
         if (selectionIndex >= 0) {
@@ -631,4 +653,21 @@ void LC_PropertySheetWidget::onDockVisibilityChanged(const bool visible) {
     else {
         m_handleSelectionChange = false;
     }
+}
+
+void LC_PropertySheetWidget::onActivePenChanged(RS_Pen) {
+    auto container = ui->propertySheet->propertyContainer();
+    if (container != nullptr) {
+        int tag = container->getTag();
+        if (tag == LC_EntityPropertyContainerProvider::TAG_CONTAINER_NO_SELECTION) {
+            selectionChanged();
+        }
+    }
+}
+
+void LC_PropertySheetWidget::onSettingsClicked() {
+    LC_DlgPropertySheetWidgetOptions dlg(this, m_propertySheetOptions.get());
+    if (dlg.exec() == QDialog::Accepted) {
+       selectionChanged();
+    };
 }

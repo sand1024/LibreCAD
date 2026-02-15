@@ -33,9 +33,9 @@ class LC_PropertyAction : public LC_PropertyAtomic {
     Q_OBJECT
 
 public:
-    using FunClickHandler = std::function<void(const LC_PropertyAction*)>;
+    using FunClickHandler = std::function<void(const LC_PropertyAction*, int linkIndex)>;
     explicit LC_PropertyAction(QObject* parent = nullptr, bool holdForTemplateFunction = true);
-    void invokeClick();
+    void invokeClick(int linkIdx);
     void setClickHandler(const FunClickHandler& clickHandler) const;
     inline LC_PropertyAction& operator=(const LC_PropertyAction&);
     void invokePreDrawButton(QStyleOptionButton* option);
@@ -52,7 +52,7 @@ public:
     void setValueFrom([[maybe_unused]]LC_PropertyAtomic* prop, [[maybe_unused]]LC_PropertyChangeReason reason) override {}
 
 signals:
-    void click(const LC_PropertyAction* property);
+    void click(const LC_PropertyAction* property, int linkIdx);
     void preDrawButton(const LC_PropertyAction* property, QStyleOptionButton* option);
 
 protected:

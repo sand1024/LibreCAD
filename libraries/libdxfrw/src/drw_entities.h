@@ -172,7 +172,7 @@ protected: //only for read dwg
     dint16 oType = 0;
 
 private:
-	void init(DRW_Entity const& rhs);
+	void init(const DRW_Entity& rhs);
 	DRW_Coord extAxisX;
     DRW_Coord extAxisY;
 	std::shared_ptr<DRW_Variant> curr;
@@ -569,7 +569,7 @@ public:
         extPoint.x = extPoint.y = 0;
 		extPoint.z = 1;
     }
-    
+
     DRW_LWPolyline(const DRW_LWPolyline& p):DRW_Entity(p){
         this->eType = DRW::LWPOLYLINE;
         this->elevation = p.elevation;
@@ -763,7 +763,7 @@ public:
         smoothM = smoothN = curvetype = 0;
     }
     void addVertex (DRW_Vertex v) {
-        std::shared_ptr<DRW_Vertex> vert = std::make_shared<DRW_Vertex>();
+        auto vert = std::make_shared<DRW_Vertex>();
         vert->basePoint.x = v.basePoint.x;
         vert->basePoint.y = v.basePoint.y;
         vert->basePoint.z = v.basePoint.z;
@@ -772,7 +772,7 @@ public:
         vert->bulge = v.bulge;
         vertlist.push_back(vert);
     }
-    void appendVertex (std::shared_ptr<DRW_Vertex> const& v) {
+    void appendVertex (const std::shared_ptr<DRW_Vertex>& v) {
         vertlist.push_back(v);
     }
 
@@ -893,7 +893,7 @@ public:
         clearEntities();
     }
 
-    void appendLoop (std::shared_ptr<DRW_HatchLoop> const& v) {
+    void appendLoop (const std::shared_ptr<DRW_HatchLoop>& v) {
         looplist.push_back(v);
     }
 

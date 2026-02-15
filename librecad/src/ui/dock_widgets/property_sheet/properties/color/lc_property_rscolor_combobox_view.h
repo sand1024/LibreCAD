@@ -22,6 +22,7 @@
 #ifndef LC_PROPERTYRSCOLORCOMBOBOXVIEW_H
 #define LC_PROPERTYRSCOLORCOMBOBOXVIEW_H
 
+
 #include "lc_property_rscolor.h"
 #include "lc_property_view_typed.h"
 
@@ -30,12 +31,17 @@ class LC_PropertyRSColorComboBoxView : public LC_PropertyViewTyped<LC_PropertyRS
     Q_OBJECT
 public:
     static const QByteArray VIEW_NAME;
+    static const QByteArray ATTR_SHOW_BY_LAYER;
 
     explicit LC_PropertyRSColorComboBoxView(LC_PropertyRSColor& property) : LC_PropertyViewTyped(property) {
     }
+
 protected:
+    void doApplyAttributes(const LC_PropertyViewDescriptor& info) override;
+
     void doDrawValue(LC_PropertyPaintContext& ctx, QStylePainter& painter, const QRect& rect) override;
     QWidget* doCreateValueEditor(QWidget* parent, const QRect& rect, const EditActivationContext* ctx) override;
+    bool m_showByLayerItem = true;
 };
 
 #endif

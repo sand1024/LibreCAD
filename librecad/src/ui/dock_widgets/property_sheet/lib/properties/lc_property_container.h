@@ -22,6 +22,8 @@
 #ifndef LC_PROPERTYCONTAINER_H
 #define LC_PROPERTYCONTAINER_H
 
+#include <boost/geometry/algorithms/buffer.hpp>
+
 #include "lc_property_atomic.h"
 
 class QJsonObject;
@@ -48,6 +50,9 @@ public:
         return true;
     }
 
+    int getTag() const {return m_tag;}
+    void setTag(int value){m_tag = value;}
+
 protected:
     void updateStateInherited(bool force) override;
 private:
@@ -56,6 +61,7 @@ private:
 
     QList<LC_Property*> m_childProperties;
 
+    int m_tag = -1;
 };
 
 bool LC_PropertyContainer::hasChildProperties() const {

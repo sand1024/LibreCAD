@@ -29,35 +29,35 @@ void LC_PropertiesProviderDimAngular::doCreateDimGeometrySection(LC_PropertyCont
     addVector<RS_DimAngular>({"dimDefPoint1", tr("Line 1 start point"), tr("Start point of first line")},
                              [](const RS_DimAngular* e) -> RS_Vector {
                                  return e->getDefinitionPoint1();
-                             }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_DimAngular* e) -> void {
+                             }, [](const RS_Vector& v, RS_DimAngular* e) -> void {
                                  e->setDefinitionPoint1(v);
                              }, list, container);
 
     addVector<RS_DimAngular>({"dimDefPoint2", tr("Line 1 end point"), tr("End point of first line")},
                              [](const RS_DimAngular* e) -> RS_Vector {
                                  return e->getDefinitionPoint2();
-                             }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_DimAngular* e) -> void {
+                             }, [](const RS_Vector& v, RS_DimAngular* e) -> void {
                                  e->setDefinitionPoint2(v);
                              }, list, container);
 
     addVector<RS_DimAngular>({"dimDefPoint3", tr("Line 2 start point"), tr("Start point of second line")},
                              [](const RS_DimAngular* e) -> RS_Vector {
                                  return e->getDefinitionPoint3();
-                             }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_DimAngular* e) -> void {
+                             }, [](const RS_Vector& v, RS_DimAngular* e) -> void {
                                  e->setDefinitionPoint3(v);
                              }, list, container);
 
     addVector<RS_DimAngular>({"dimDefPoint", tr("Line 2 end point"), tr("End point of second line")},
                              [](const RS_DimAngular* e) -> RS_Vector {
                                  return e->getDefinitionPoint();
-                             }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_DimAngular* e) -> void {
+                             }, [](const RS_Vector& v, RS_DimAngular* e) -> void {
                                  e->setDefinitionPoint(v);
                              }, list, container);
 
     addVector<RS_DimAngular>({"dimDefPoint4", tr("Dim arc radius point"), tr("Point that defines dimension arc")},
                              [](const RS_DimAngular* e) -> RS_Vector {
                                  return e->getDefinitionPoint4();
-                             }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_DimAngular* e) -> void {
+                             }, [](const RS_Vector& v, RS_DimAngular* e) -> void {
                                  e->setDefinitionPoint4(v);
                              }, list, container);
 }

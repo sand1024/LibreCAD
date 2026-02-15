@@ -30,9 +30,9 @@
 
 const QByteArray LC_PropertyEnumComboBoxView::VIEW_NAME = LC_PropertyViewUtils::getViewNameComboBox();
 
-class LC_PropertyEnumComboBoxViewHandler : public LC_PropertyEditorHandlerValueTyped<LC_PropertyEnum, QComboBox> {
+class LC_PropertyEnumComboBoxViewHandler : public LC_PropertyEditorHandlerValueTyped<LC_PropertyEnum, LC_PropertyComboBox> {
 public:
-    LC_PropertyEnumComboBoxViewHandler(LC_PropertyViewEditable* view, QComboBox& editor)
+    LC_PropertyEnumComboBoxViewHandler(LC_PropertyViewEditable* view, LC_PropertyComboBox& editor)
         : LC_PropertyEditorHandlerValueTyped(view, editor) {
         LC_PropertyEnumComboBoxViewHandler::doUpdateEditor();
         connect(&editor, &QComboBox::currentIndexChanged, this, &LC_PropertyEnumComboBoxViewHandler::onCurrentIndexChanged);
@@ -58,8 +58,10 @@ protected:
 private:
     void onCurrentIndexChanged(int index) {
         if (index >= 0) {
-            const QVariant data = getEditor()->itemData(index);
+            const auto propertyComboBox = getEditor();
+            const QVariant data = propertyComboBox->itemData(index);
             if (data.canConvert<int>()) {
+                propertyComboBox->disablePaint(true);
                 onValueChanged(data.toInt());
             }
         }
@@ -72,7 +74,7 @@ LC_PropertyEnumComboBoxView::LC_PropertyEnumComboBoxView(LC_PropertyEnum& proper
 
 bool LC_PropertyEnumComboBoxView::doPropertyValueToStr(QString& strValue) const {
     const LC_EnumDescriptor* descriptor = typedProperty().getEnumDescriptor();
-    const LC_EnumValueDescriptor* valueDescriptor = descriptor ? descriptor->findByValue(propertyValue()) : nullptr;
+    const LC_EnumValueDescriptor* valueDescriptor = descriptor != nullptr ? descriptor->findByValue(propertyValue()) : nullptr;
     if (valueDescriptor == nullptr) {
         return false;
     }

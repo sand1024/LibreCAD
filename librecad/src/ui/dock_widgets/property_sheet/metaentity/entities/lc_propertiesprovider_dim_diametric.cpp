@@ -29,20 +29,20 @@ void LC_PropertiesProviderDimDiametric::doCreateDimGeometrySection(LC_PropertyCo
     addVector<RS_DimDiametric>({"dimCenterPoint", tr("Center Point"), tr("Center point of dimension")},
                                [](const RS_DimDiametric* e) -> RS_Vector {
                                    return e->getCenterPoint();
-                               }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_DimDiametric* e) -> void {
+                               }, [](const RS_Vector& v, RS_DimDiametric* e) -> void {
                                    e->setCenterPoint(v);
                                }, list, container);
 
     addVector<RS_DimDiametric>({"definitionPoint", tr("Definition Point"), tr("Definition point of dimension")},
                                [](const RS_DimDiametric* e) -> RS_Vector {
                                    return e->getDiametricDefinitionPoint();
-                               }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_DimDiametric* e) -> void {
+                               }, [](const RS_Vector& v, RS_DimDiametric* e) -> void {
                                    e->setDiametricDefinitionPoint(v);
                                }, list, container);
 
     addLinearDistance<RS_DimDiametric>({"leaderLen", tr("Leader Length"), tr("Length of leader")}, [](const RS_DimDiametric* e) -> double {
                                            return e->getLeaderLength();
-                                       }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_DimDiametric* l) -> void {
+                                       }, [](const double& v, RS_DimDiametric* l) -> void {
                                            l->setLeaderLength(v);
                                        }, list, container);
 }

@@ -67,6 +67,7 @@ public:
     bool isGridDisabledByPanning(const LC_GraphicViewport *view) const;
     bool isValid() const;
     void calculateSnapInfo(const RS_Vector& viewZero, const RS_Vector& viewSize, const RS_Vector& metaGridWidthToUse, const RS_Vector& gridWidthToUse);
+    bool isDrawMetaGrid() const {return m_gridOptions->drawMetaGrid;}
 
 protected:
     bool m_valid = false;

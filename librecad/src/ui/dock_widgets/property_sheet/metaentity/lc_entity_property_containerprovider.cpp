@@ -72,12 +72,13 @@ void LC_EntityPropertyContainerProvider::init(LC_PropertySheetWidget* widget, LC
     m_dimAngular = std::make_unique<LC_PropertiesProviderDimAngular>(context, widget);
     m_dimArc = std::make_unique<LC_PropertiesProviderDimArc>(context, widget);
     m_dimOrdinate = std::make_unique<LC_PropertiesProviderDimOrdinate>(context, widget);
+    m_document = std::make_unique<LC_PropertiesProviderDocument>(context, widget);
     m_leader = std::make_unique<LC_PropertiesProviderLeader>(context, widget);
     m_tolerance = std::make_unique<LC_PropertiesProviderTolerance>(context, widget);
     m_parabola = std::make_unique<LC_PropertiesProviderParabola>(context, widget);
 }
 
-void LC_EntityPropertyContainerProvider::fillPropertyContainer(RS_Document* doc, LC_PropertyContainer* container,
+void LC_EntityPropertyContainerProvider::fillPropertyContainerForSelection(RS_Document* doc, LC_PropertyContainer* container,
                                                                const RS2::EntityType entityType, const QList<RS_Entity*>& entitiesList) {
     m_entityType = entityType;
     if (!m_entitiesList.empty()) {
@@ -86,7 +87,16 @@ void LC_EntityPropertyContainerProvider::fillPropertyContainer(RS_Document* doc,
     m_entitiesList = entitiesList;
     if (container != nullptr) {
         refillPropertyContainer(doc, container);
+        container->setTag((m_entitiesList.size() > 1) ? TAG_CONTAINER_SELECTION_MANY : TAG_CONTAINER_SELECTION_ONE);
     }
+}
+
+void LC_EntityPropertyContainerProvider::fillPropertyContainerForNoSelection([[maybe_unused]] RS_Document* doc, LC_PropertyContainer* container) {
+    if (!m_entitiesList.empty()) {
+        m_entitiesList.clear();
+    }
+    m_document->fillDocumentProperties(container);
+    container->setTag(TAG_CONTAINER_NO_SELECTION);
 }
 
 void LC_EntityPropertyContainerProvider::refillPropertyContainer([[maybe_unused]] RS_Document* doc, LC_PropertyContainer* container) const {

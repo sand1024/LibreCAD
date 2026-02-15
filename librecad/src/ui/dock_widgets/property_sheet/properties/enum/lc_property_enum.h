@@ -31,12 +31,19 @@ public:
     explicit LC_PropertyEnum(QObject* parent, bool holdValue = true);
     LC_PropertyEnum(const LC_PropertyEnum& other) = delete;
 
+    ~LC_PropertyEnum() override {
+        if (m_ownDescriptor) {
+            delete m_enumInfo;
+        }
+    }
+
     const LC_EnumDescriptor* getEnumDescriptor() const {
         return m_enumInfo;
     }
 
-    void setEnumInfo(const LC_EnumDescriptor* enumInfo) {
+    void setEnumInfo(const LC_EnumDescriptor* enumInfo, const bool ownDescriptor = false) {
         m_enumInfo = enumInfo;
+        m_ownDescriptor = ownDescriptor;
     }
 
 protected:
@@ -44,6 +51,7 @@ protected:
 
 private:
     const LC_EnumDescriptor* m_enumInfo;
+    bool m_ownDescriptor = false;
 };
 
 #endif

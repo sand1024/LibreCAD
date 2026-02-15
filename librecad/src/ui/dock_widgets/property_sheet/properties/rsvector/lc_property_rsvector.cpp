@@ -74,7 +74,7 @@ QString LC_PropertyRSVector::getToStrValueFormat() {
 void LC_PropertyRSVector::setActionContextAndLaterRequestor(LC_ActionContext* actionContext, LC_LateCompletionRequestor* requestor) {
     m_actionContext = actionContext;
     m_lateCompletionRequestor = requestor;
-    m_formatter = actionContext->getGraphicView()->getViewPort()->getFormatter();
+    m_formatter = actionContext->getFormatter();
 }
 
 void LC_PropertyRSVector::requestInteractiveInput() const {

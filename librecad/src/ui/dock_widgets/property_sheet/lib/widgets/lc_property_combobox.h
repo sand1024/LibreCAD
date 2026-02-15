@@ -32,13 +32,14 @@ public:
     inline LC_PropertyView* getPropertyView() const;
     inline LC_Property* getProperty() const;
     inline LC_Property* getStateProperty() const;
-
+    void disablePaint(bool v) {m_paintDisabled = v;}
 protected:
     virtual void doCustomPaint(QPainter& painter, const QRect& rect);
 
 private:
     void paintEvent(QPaintEvent* event) override;
     LC_PropertyView* m_view;
+    bool m_paintDisabled = false;
 };
 
 #endif

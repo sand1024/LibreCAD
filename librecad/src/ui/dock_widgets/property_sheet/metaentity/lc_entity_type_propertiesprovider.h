@@ -47,11 +47,9 @@ class LC_ActionContext;
 class RS_Document;
 
 class LC_EntityTypePropertiesProvider : public QObject {
-    Q_OBJECT
-
-public:
-    using FunCreateGenericProperty = typename std::function<void(const LC_Property::Names & names, RS_Entity * entity,
-                                                                 LC_PropertyContainer * container, QList<LC_PropertyAtomic*> *)>;
+    Q_OBJECT public:
+    using FunCreateGenericProperty = typename std::function<void(const LC_Property::Names& names, RS_Entity* entity,
+                                                                 LC_PropertyContainer* container, QList<LC_PropertyAtomic*>*)>;
 
     LC_EntityTypePropertiesProvider(const RS2::EntityType entityType, LC_ActionContext* actionContext, LC_PropertySheetWidget* widget)
         : m_actionContext{actionContext}, m_widget{widget}, m_entityType{entityType} {
@@ -74,12 +72,12 @@ protected:
 
     template <typename EntityType>
     void add(const LC_Property::Names& names,
-             std::function<void(const LC_Property::Names & names, EntityType * entity, LC_PropertyContainer * container,
-                                QList<LC_PropertyAtomic*> *)> propertyInit, const QList<RS_Entity*>& list, LC_PropertyContainer* cont);
+             std::function<void(const LC_Property::Names& names, EntityType* entity, LC_PropertyContainer* container,
+                                QList<LC_PropertyAtomic*>*)> propertyInit, const QList<RS_Entity*>& list, LC_PropertyContainer* cont);
 
     template <class ValueType, class EntityClass>
     void createDelegatedStorage(typename LC_EntityPropertyValueDelegate<ValueType, EntityClass>::FunValueGet funGet,
-                                typename LC_EntityPropertyValueDelegate<ValueType, EntityClass>::FunValueSet funSet,
+                                typename LC_EntityPropertyValueDelegate<ValueType, EntityClass>::FunValueSetShort funSet,
                                 typename LC_EntityPropertyValueDelegate<ValueType, EntityClass>::FunValueEqual funEqual,
                                 EntityClass* entity, LC_PropertySingle<ValueType>* property);
 
@@ -91,7 +89,7 @@ protected:
     template <class EntityClass>
     void doCreateDelegatedVector(const LC_Property::Names& names,
                                  typename LC_EntityPropertyValueDelegate<RS_Vector, EntityClass>::FunValueGet funGet,
-                                 typename LC_EntityPropertyValueDelegate<RS_Vector, EntityClass>::FunValueSet funSet,
+                                 typename LC_EntityPropertyValueDelegate<RS_Vector, EntityClass>::FunValueSetShort funSet,
                                  RS2::EntityType entityType, const QList<RS_Entity*>& list, LC_PropertyContainer* cont);
 
     void addCommon(const LC_Property::Names& names, const FunCreateGenericProperty& propertyInit, const QList<RS_Entity*>& list,
@@ -103,7 +101,7 @@ protected:
 
     template <typename EntityClass>
     void addVector(const LC_Property::Names& names, typename LC_EntityPropertyValueDelegate<RS_Vector, EntityClass>::FunValueGet funGet,
-                   typename LC_EntityPropertyValueDelegate<RS_Vector, EntityClass>::FunValueSet funSet, const QList<RS_Entity*>& list,
+                   typename LC_EntityPropertyValueDelegate<RS_Vector, EntityClass>::FunValueSetShort funSet, const QList<RS_Entity*>& list,
                    LC_PropertyContainer* cont) {
         doCreateDelegatedVector<EntityClass>(names, funGet, funSet, m_entityType, list, cont);
     }
@@ -116,69 +114,70 @@ protected:
     template <typename EntityClass>
     void addLinearDistance(const LC_Property::Names& names,
                            typename LC_EntityPropertyValueDelegate<double, EntityClass>::FunValueGet funGet,
-                           typename LC_EntityPropertyValueDelegate<double, EntityClass>::FunValueSet funSet, const QList<RS_Entity*>& list,
-                           LC_PropertyContainer* cont, std::function<void(LC_PropertyViewDescriptor *)> funFillViewAttrs = nullptr);
+                           typename LC_EntityPropertyValueDelegate<double, EntityClass>::FunValueSetShort funSet,
+                           const QList<RS_Entity*>& list, LC_PropertyContainer* cont,
+                           std::function<void(LC_PropertyViewDescriptor*)> funFillViewAttrs = nullptr);
 
     template <typename EntityClass>
     void addDouble(const LC_Property::Names& names, typename LC_EntityPropertyValueDelegate<double, EntityClass>::FunValueGet funGet,
-                   typename LC_EntityPropertyValueDelegate<double, EntityClass>::FunValueSet funSet, const QList<RS_Entity*>& list,
-                   LC_PropertyContainer* cont, std::function<bool(EntityClass *, LC_PropertyViewDescriptor &)> funFillViewAttrs = nullptr);
+                   typename LC_EntityPropertyValueDelegate<double, EntityClass>::FunValueSetShort funSet, const QList<RS_Entity*>& list,
+                   LC_PropertyContainer* cont, std::function<bool(EntityClass*, LC_PropertyViewDescriptor&)> funFillViewAttrs = nullptr);
 
     template <typename EntityClass>
     void addWCSAngle(const LC_Property::Names& names, typename LC_EntityPropertyValueDelegate<double, EntityClass>::FunValueGet funGet,
-                     typename LC_EntityPropertyValueDelegate<double, EntityClass>::FunValueSet funSet, const QList<RS_Entity*>& list,
+                     typename LC_EntityPropertyValueDelegate<double, EntityClass>::FunValueSetShort funSet, const QList<RS_Entity*>& list,
                      LC_PropertyContainer* cont);
 
     template <typename EntityClass>
     void addRawAngle(const LC_Property::Names& names, typename LC_EntityPropertyValueDelegate<double, EntityClass>::FunValueGet funGet,
-                     typename LC_EntityPropertyValueDelegate<double, EntityClass>::FunValueSet funSet, const QList<RS_Entity*>& list,
+                     typename LC_EntityPropertyValueDelegate<double, EntityClass>::FunValueSetShort funSet, const QList<RS_Entity*>& list,
                      LC_PropertyContainer* cont);
 
     template <typename EntityClass>
     void addBoolean(const LC_Property::Names& names, typename LC_EntityPropertyValueDelegate<bool, EntityClass>::FunValueGet funGet,
-                    typename LC_EntityPropertyValueDelegate<bool, EntityClass>::FunValueSet funSet, const QList<RS_Entity*>& list,
+                    typename LC_EntityPropertyValueDelegate<bool, EntityClass>::FunValueSetShort funSet, const QList<RS_Entity*>& list,
                     LC_PropertyContainer* cont, const QString& viewName = LC_PropertyBoolCheckBoxView::VIEW_NAME,
-                    std::function<bool(EntityClass *, LC_PropertyViewDescriptor & descriptor)> funPrepareDescriptor = nullptr);
+                    std::function<bool(EntityClass*, LC_PropertyViewDescriptor& descriptor)> funPrepareDescriptor = nullptr);
 
     template <typename EntityClass>
     void addStringList(const LC_Property::Names& names, typename LC_EntityPropertyValueDelegate<QString, EntityClass>::FunValueGet funGet,
-                       typename LC_EntityPropertyValueDelegate<QString, EntityClass>::FunValueSet funSet,
-                       std::function<bool(EntityClass *, LC_PropertyViewDescriptor & descriptor)> funFillList,
+                       typename LC_EntityPropertyValueDelegate<QString, EntityClass>::FunValueSetShort funSet,
+                       std::function<bool(EntityClass*, LC_PropertyViewDescriptor& descriptor)> funFillList,
                        // fixme - expand to support icon, display name and data + change in View
                        const QList<RS_Entity*>& list, LC_PropertyContainer* cont);
 
     template <class EntityClass>
     void addStringFont(const LC_Property::Names& names, typename LC_EntityPropertyValueDelegate<QString, EntityClass>::FunValueGet funGet,
-                       typename LC_EntityPropertyValueDelegate<QString, EntityClass>::FunValueSet funSet, const QList<RS_Entity*>& list,
-                       LC_PropertyContainer* cont);
+                       typename LC_EntityPropertyValueDelegate<QString, EntityClass>::FunValueSetShort funSet,
+                       const QList<RS_Entity*>& list, LC_PropertyContainer* cont);
 
     template <class EntityClass>
     void addString(const LC_Property::Names& names, typename LC_EntityPropertyValueDelegate<QString, EntityClass>::FunValueGet funGet,
-                   typename LC_EntityPropertyValueDelegate<QString, EntityClass>::FunValueSet funSet, const QList<RS_Entity*>& list,
+                   typename LC_EntityPropertyValueDelegate<QString, EntityClass>::FunValueSetShort funSet, const QList<RS_Entity*>& list,
                    LC_PropertyContainer* cont, bool multiLine,
-                   std::function<bool(EntityClass *, LC_PropertyViewDescriptor & descriptor)> funPrepareDescriptor = nullptr);
+                   std::function<bool(EntityClass*, LC_PropertyViewDescriptor& descriptor)> funPrepareDescriptor = nullptr);
 
     template <typename EntityClass>
     void addIntSpinbox(const LC_Property::Names& names, typename LC_EntityPropertyValueDelegate<int, EntityClass>::FunValueGet funGet,
-                       typename LC_EntityPropertyValueDelegate<int, EntityClass>::FunValueSet funSet, const QList<RS_Entity*>& list,
+                       typename LC_EntityPropertyValueDelegate<int, EntityClass>::FunValueSetShort funSet, const QList<RS_Entity*>& list,
                        LC_PropertyContainer* cont);
 
     template <typename EntityClass>
     void addEnum(const LC_Property::Names& names, const LC_EnumDescriptor* enumDescriptor,
                  typename LC_EntityPropertyValueDelegate<LC_PropertyEnumValueType, EntityClass>::FunValueGet funGetValue,
-                 typename LC_EntityPropertyValueDelegate<LC_PropertyEnumValueType, EntityClass>::FunValueSet funSetValue,
+                 typename LC_EntityPropertyValueDelegate<LC_PropertyEnumValueType, EntityClass>::FunValueSetShort funSetValue,
                  const QList<RS_Entity*>& list, LC_PropertyContainer* cont,
-                 std::function<bool(EntityClass *, LC_PropertyViewDescriptor & descriptor)> funPrepareDescriptor = nullptr);
+                 std::function<bool(EntityClass*, LC_PropertyViewDescriptor& descriptor)> funPrepareDescriptor = nullptr);
 
     template <typename EntityClass>
     void addVarEnum(const LC_Property::Names& names, std::function<LC_EnumDescriptor*(EntityClass*)> funEnumDescriptorProvider,
                     typename LC_EntityPropertyValueDelegate<LC_PropertyEnumValueType, EntityClass>::FunValueGet funGetValue,
-                    typename LC_EntityPropertyValueDelegate<LC_PropertyEnumValueType, EntityClass>::FunValueSet funSetValue,
+                    typename LC_EntityPropertyValueDelegate<LC_PropertyEnumValueType, EntityClass>::FunValueSetShort funSetValue,
                     const QList<RS_Entity*>& list, LC_PropertyContainer* cont,
-                    std::function<bool(EntityClass *, LC_PropertyViewDescriptor &)> funPrepareDescriptor = nullptr);
+                    std::function<bool(EntityClass*, LC_PropertyViewDescriptor&)> funPrepareDescriptor = nullptr);
 
     template <typename EntityClass>
-    void addReadOnlyString(const LC_Property::Names& names, std::function<QString(EntityClass *)> funValue, const QList<RS_Entity*>& list,
+    void addReadOnlyString(const LC_Property::Names& names, std::function<QString(EntityClass*)> funValue, const QList<RS_Entity*>& list,
                            LC_PropertyContainer* cont);
 
     LC_PropertyRSVector* createVectorProperty(const LC_Property::Names& names, QList<LC_PropertyAtomic*>* props, LC_PropertyContainer* cont,
@@ -208,8 +207,8 @@ protected:
 
 template <typename EntityType>
 void LC_EntityTypePropertiesProvider::add(const LC_Property::Names& names,
-                                          std::function<void(const LC_Property::Names & names, EntityType * entity,
-                                                             LC_PropertyContainer * container, QList<LC_PropertyAtomic*> *)> propertyInit,
+                                          std::function<void(const LC_Property::Names& names, EntityType* entity,
+                                                             LC_PropertyContainer* container, QList<LC_PropertyAtomic*>*)> propertyInit,
                                           const QList<RS_Entity*>& list, LC_PropertyContainer* cont) {
     QList<LC_PropertyAtomic*> props;
     props.reserve(list.size());
@@ -226,9 +225,9 @@ void LC_EntityTypePropertiesProvider::add(const LC_Property::Names& names,
 template <typename EntityClass>
 void LC_EntityTypePropertiesProvider::addLinearDistance(const LC_Property::Names& names,
                                                         typename LC_EntityPropertyValueDelegate<double, EntityClass>::FunValueGet funGet,
-                                                        typename LC_EntityPropertyValueDelegate<double, EntityClass>::FunValueSet funSet,
-                                                        const QList<RS_Entity*>& list, LC_PropertyContainer* cont,
-                                                        std::function<void(LC_PropertyViewDescriptor *)> funFillViewAttrs) {
+                                                        typename LC_EntityPropertyValueDelegate<double, EntityClass>::FunValueSetShort
+                                                        funSet, const QList<RS_Entity*>& list, LC_PropertyContainer* cont,
+                                                        std::function<void(LC_PropertyViewDescriptor*)> funFillViewAttrs) {
     add<EntityClass>(names, [this, funGet, funSet,funFillViewAttrs](const LC_Property::Names& n, EntityClass* entity,
                                                                     LC_PropertyContainer* container,
                                                                     QList<LC_PropertyAtomic*>* props) -> void {
@@ -251,9 +250,9 @@ void LC_EntityTypePropertiesProvider::addLinearDistance(const LC_Property::Names
 template <typename EntityClass>
 void LC_EntityTypePropertiesProvider::addDouble(const LC_Property::Names& names,
                                                 typename LC_EntityPropertyValueDelegate<double, EntityClass>::FunValueGet funGet,
-                                                typename LC_EntityPropertyValueDelegate<double, EntityClass>::FunValueSet funSet,
+                                                typename LC_EntityPropertyValueDelegate<double, EntityClass>::FunValueSetShort funSet,
                                                 const QList<RS_Entity*>& list, LC_PropertyContainer* cont,
-                                                std::function<bool(EntityClass *, LC_PropertyViewDescriptor &)> funFillViewAttrs) {
+                                                std::function<bool(EntityClass*, LC_PropertyViewDescriptor&)> funFillViewAttrs) {
     add<EntityClass>(names, [this, funGet, funSet,funFillViewAttrs](const LC_Property::Names& n, EntityClass* entity,
                                                                     LC_PropertyContainer* container,
                                                                     QList<LC_PropertyAtomic*>* props) -> void {
@@ -280,9 +279,9 @@ void LC_EntityTypePropertiesProvider::addDouble(const LC_Property::Names& names,
 template <typename EntityClass>
 void LC_EntityTypePropertiesProvider::addBoolean(const LC_Property::Names& names,
                                                  typename LC_EntityPropertyValueDelegate<bool, EntityClass>::FunValueGet funGet,
-                                                 typename LC_EntityPropertyValueDelegate<bool, EntityClass>::FunValueSet funSet,
+                                                 typename LC_EntityPropertyValueDelegate<bool, EntityClass>::FunValueSetShort funSet,
                                                  const QList<RS_Entity*>& list, LC_PropertyContainer* cont, const QString& viewName,
-                                                 std::function<bool(EntityClass *, LC_PropertyViewDescriptor & descriptor)>
+                                                 std::function<bool(EntityClass*, LC_PropertyViewDescriptor& descriptor)>
                                                  funPrepareDescriptor) {
     add<EntityClass>(names, [this, funGet, funSet, viewName,funPrepareDescriptor](const LC_Property::Names& n, EntityClass* entity,
                                                                                   LC_PropertyContainer* container,
@@ -306,7 +305,7 @@ void LC_EntityTypePropertiesProvider::addBoolean(const LC_Property::Names& names
 }
 
 template <typename EntityClass>
-void LC_EntityTypePropertiesProvider::addReadOnlyString(const LC_Property::Names& names, std::function<QString(EntityClass *)> funValue,
+void LC_EntityTypePropertiesProvider::addReadOnlyString(const LC_Property::Names& names, std::function<QString(EntityClass*)> funValue,
                                                         const QList<RS_Entity*>& list, LC_PropertyContainer* cont) {
     add<EntityClass>(names, [this, funValue](const LC_Property::Names& n, EntityClass* e, LC_PropertyContainer* container,
                                              QList<LC_PropertyAtomic*>* props) -> void {
@@ -318,8 +317,8 @@ void LC_EntityTypePropertiesProvider::addReadOnlyString(const LC_Property::Names
 template <typename EntityClass>
 void LC_EntityTypePropertiesProvider::addStringList(const LC_Property::Names& names,
                                                     typename LC_EntityPropertyValueDelegate<QString, EntityClass>::FunValueGet funGet,
-                                                    typename LC_EntityPropertyValueDelegate<QString, EntityClass>::FunValueSet funSet,
-                                                    std::function<bool(EntityClass *, LC_PropertyViewDescriptor &)> funFillList,
+                                                    typename LC_EntityPropertyValueDelegate<QString, EntityClass>::FunValueSetShort funSet,
+                                                    std::function<bool(EntityClass*, LC_PropertyViewDescriptor&)> funFillList,
                                                     const QList<RS_Entity*>& list, LC_PropertyContainer* cont) {
     add<EntityClass>(names, [this, funFillList, funGet, funSet](const LC_Property::Names& n, EntityClass* entity,
                                                                 LC_PropertyContainer* container, QList<LC_PropertyAtomic*>* props) -> void {
@@ -341,7 +340,7 @@ void LC_EntityTypePropertiesProvider::addStringList(const LC_Property::Names& na
 template <typename EntityClass>
 void LC_EntityTypePropertiesProvider::addStringFont(const LC_Property::Names& names,
                                                     typename LC_EntityPropertyValueDelegate<QString, EntityClass>::FunValueGet funGet,
-                                                    typename LC_EntityPropertyValueDelegate<QString, EntityClass>::FunValueSet funSet,
+                                                    typename LC_EntityPropertyValueDelegate<QString, EntityClass>::FunValueSetShort funSet,
                                                     const QList<RS_Entity*>& list, LC_PropertyContainer* cont) {
     add<EntityClass>(names, [this, funGet, funSet](const LC_Property::Names& n, EntityClass* entity, LC_PropertyContainer* container,
                                                    QList<LC_PropertyAtomic*>* props) -> void {
@@ -363,9 +362,9 @@ void LC_EntityTypePropertiesProvider::addStringFont(const LC_Property::Names& na
 template <typename EntityClass>
 void LC_EntityTypePropertiesProvider::addString(const LC_Property::Names& names,
                                                 typename LC_EntityPropertyValueDelegate<QString, EntityClass>::FunValueGet funGet,
-                                                typename LC_EntityPropertyValueDelegate<QString, EntityClass>::FunValueSet funSet,
+                                                typename LC_EntityPropertyValueDelegate<QString, EntityClass>::FunValueSetShort funSet,
                                                 const QList<RS_Entity*>& list, LC_PropertyContainer* cont, bool multiLine,
-                                                std::function<bool(EntityClass *, LC_PropertyViewDescriptor &)> funPrepareDescriptor) {
+                                                std::function<bool(EntityClass*, LC_PropertyViewDescriptor&)> funPrepareDescriptor) {
     add<EntityClass>(names, [this, funGet, funSet, multiLine, funPrepareDescriptor](const LC_Property::Names& n, EntityClass* entity,
                                                                                     LC_PropertyContainer* container,
                                                                                     QList<LC_PropertyAtomic*>* props) -> void {
@@ -396,7 +395,7 @@ void LC_EntityTypePropertiesProvider::addString(const LC_Property::Names& names,
 template <typename EntityClass>
 void LC_EntityTypePropertiesProvider::addWCSAngle(const LC_Property::Names& names,
                                                   typename LC_EntityPropertyValueDelegate<double, EntityClass>::FunValueGet funGet,
-                                                  typename LC_EntityPropertyValueDelegate<double, EntityClass>::FunValueSet funSet,
+                                                  typename LC_EntityPropertyValueDelegate<double, EntityClass>::FunValueSetShort funSet,
                                                   const QList<RS_Entity*>& list, LC_PropertyContainer* cont) {
     add<EntityClass>(names, [this, funGet, funSet](const LC_Property::Names& n, EntityClass* entity, LC_PropertyContainer* container,
                                                    QList<LC_PropertyAtomic*>* props) -> void {
@@ -408,12 +407,12 @@ void LC_EntityTypePropertiesProvider::addWCSAngle(const LC_Property::Names& name
                                 const double ucsAngle = toUCSBasisAngle(wcsAngle); // here we return in UCS for editing*/
                                 return ucsAngle;
                             }, (funSet != nullptr)
-                                   ? [this, funSet](const double& value, [[maybe_unused]] LC_PropertyChangeReason reason,
+                                   ? [this, funSet](const double& value,
                                                     EntityClass* e) -> void {
                                        // here we expect value in radians and in ucs
                                        const double ucsBasisAngle = value;
                                        double wcsAngle = toWCSAngle(ucsBasisAngle);
-                                       funSet(wcsAngle, reason, e);
+                                       funSet(wcsAngle,  e);
                                    }
                                    : funSet, [funGet](const double& v, EntityClass* e) -> bool {
                                 return LC_LineMath::isSameAngle(v, funGet(e));
@@ -428,7 +427,7 @@ void LC_EntityTypePropertiesProvider::addWCSAngle(const LC_Property::Names& name
 template <typename EntityClass>
 void LC_EntityTypePropertiesProvider::addRawAngle(const LC_Property::Names& names,
                                                   typename LC_EntityPropertyValueDelegate<double, EntityClass>::FunValueGet funGet,
-                                                  typename LC_EntityPropertyValueDelegate<double, EntityClass>::FunValueSet funSet,
+                                                  typename LC_EntityPropertyValueDelegate<double, EntityClass>::FunValueSetShort funSet,
                                                   const QList<RS_Entity*>& list, LC_PropertyContainer* cont) {
     add<EntityClass>(names, [this, funGet, funSet](const LC_Property::Names& n, EntityClass* entity, LC_PropertyContainer* container,
                                                    QList<LC_PropertyAtomic*>* props) -> void {
@@ -460,9 +459,10 @@ template <typename EntityClass>
 void LC_EntityTypePropertiesProvider::doCreateDelegatedVector(const LC_Property::Names& names,
                                                               typename LC_EntityPropertyValueDelegate<RS_Vector, EntityClass>::FunValueGet
                                                               funGet,
-                                                              typename LC_EntityPropertyValueDelegate<RS_Vector, EntityClass>::FunValueSet
-                                                              funSet, [[maybe_unused]] RS2::EntityType entityType,
-                                                              const QList<RS_Entity*>& list, LC_PropertyContainer* cont) {
+                                                              typename LC_EntityPropertyValueDelegate<
+                                                                  RS_Vector, EntityClass>::FunValueSetShort funSet,
+                                                              [[maybe_unused]] RS2::EntityType entityType, const QList<RS_Entity*>& list,
+                                                              LC_PropertyContainer* cont) {
     add<EntityClass>(names, [this, funGet, funSet](const LC_Property::Names& n, EntityClass* entity, LC_PropertyContainer* container,
                                                    QList<LC_PropertyAtomic*>* props) -> void {
         auto property = createVectorProperty(n, props, container, m_actionContext, m_widget);
@@ -471,10 +471,9 @@ void LC_EntityTypePropertiesProvider::doCreateDelegatedVector(const LC_Property:
                                    const RS_Vector ucsVector = toUCS(wcsVector); // here we return in UCS for editing
                                    return ucsVector;
                                }, (funSet != nullptr)
-                                      ? [this, funSet](const RS_Vector& userUCS, [[maybe_unused]] LC_PropertyChangeReason reason,
-                                                       EntityClass* e) -> void {
+                                      ? [this, funSet](const RS_Vector& userUCS, EntityClass* e) -> void {
                                           RS_Vector ucsVector = toWCS(userUCS);
-                                          funSet(ucsVector, reason, e);
+                                          funSet(ucsVector, e);
                                       }
                                       : funSet, [this, funGet](RS_Vector& userUCS, EntityClass* e) -> bool {
                                    auto originalWCS = funGet(e);
@@ -491,9 +490,10 @@ template <typename EntityClass>
 void LC_EntityTypePropertiesProvider::addEnum(const LC_Property::Names& names, const LC_EnumDescriptor* enumDescriptor,
                                               typename LC_EntityPropertyValueDelegate<LC_PropertyEnumValueType, EntityClass>::FunValueGet
                                               funGetValue,
-                                              typename LC_EntityPropertyValueDelegate<LC_PropertyEnumValueType, EntityClass>::FunValueSet
-                                              funSetValue, const QList<RS_Entity*>& list, LC_PropertyContainer* cont,
-                                              std::function<bool(EntityClass *, LC_PropertyViewDescriptor & descriptor)>
+                                              typename LC_EntityPropertyValueDelegate<
+                                                  LC_PropertyEnumValueType, EntityClass>::FunValueSetShort funSetValue,
+                                              const QList<RS_Entity*>& list, LC_PropertyContainer* cont,
+                                              std::function<bool(EntityClass*, LC_PropertyViewDescriptor& descriptor)>
                                               funPrepareDescriptor) {
     add<EntityClass>(names, [this, funGetValue, funSetValue, funPrepareDescriptor, enumDescriptor](
                      const LC_Property::Names& n, EntityClass* entity, LC_PropertyContainer* container,
@@ -526,9 +526,10 @@ void LC_EntityTypePropertiesProvider::addVarEnum(const LC_Property::Names& names
                                                  std::function<LC_EnumDescriptor*(EntityClass*)> funEnumDescriptorProvider,
                                                  typename LC_EntityPropertyValueDelegate<LC_PropertyEnumValueType, EntityClass>::FunValueGet
                                                  funGetValue,
-                                                 typename LC_EntityPropertyValueDelegate<LC_PropertyEnumValueType, EntityClass>::FunValueSet
-                                                 funSetValue, const QList<RS_Entity*>& list, LC_PropertyContainer* cont,
-                                                 std::function<bool(EntityClass *, LC_PropertyViewDescriptor &)> funPrepareDescriptor) {
+                                                 typename LC_EntityPropertyValueDelegate<
+                                                     LC_PropertyEnumValueType, EntityClass>::FunValueSetShort funSetValue,
+                                                 const QList<RS_Entity*>& list, LC_PropertyContainer* cont,
+                                                 std::function<bool(EntityClass*, LC_PropertyViewDescriptor&)> funPrepareDescriptor) {
     add<EntityClass>(names, [this, funGetValue, funSetValue, funEnumDescriptorProvider, funPrepareDescriptor](
                      const LC_Property::Names& n, EntityClass* entity, LC_PropertyContainer* container,
                      QList<LC_PropertyAtomic*>* props) -> void {
@@ -560,7 +561,7 @@ void LC_EntityTypePropertiesProvider::addVarEnum(const LC_Property::Names& names
 template <typename EntityClass>
 void LC_EntityTypePropertiesProvider::addIntSpinbox(const LC_Property::Names& names,
                                                     typename LC_EntityPropertyValueDelegate<int, EntityClass>::FunValueGet funGet,
-                                                    typename LC_EntityPropertyValueDelegate<int, EntityClass>::FunValueSet funSet,
+                                                    typename LC_EntityPropertyValueDelegate<int, EntityClass>::FunValueSetShort funSet,
                                                     const QList<RS_Entity*>& list, LC_PropertyContainer* cont) {
     add<EntityClass>(names, [this, funGet, funSet](const LC_Property::Names& n, EntityClass* entity, LC_PropertyContainer* container,
                                                    QList<LC_PropertyAtomic*>* props) -> void {
@@ -584,7 +585,7 @@ void LC_EntityTypePropertiesProvider::addIntSpinbox(const LC_Property::Names& na
 template <typename ValueType, typename EntityClass>
 void LC_EntityTypePropertiesProvider::createDelegatedStorage(
     typename LC_EntityPropertyValueDelegate<ValueType, EntityClass>::FunValueGet funGet,
-    typename LC_EntityPropertyValueDelegate<ValueType, EntityClass>::FunValueSet funSet,
+    typename LC_EntityPropertyValueDelegate<ValueType, EntityClass>::FunValueSetShort funSet,
     typename LC_EntityPropertyValueDelegate<ValueType, EntityClass>::FunValueEqual funEqual, EntityClass* entity,
     LC_PropertySingle<ValueType>* property) {
     auto valueStorage = new LC_EntityPropertyValueDelegate<ValueType, EntityClass>();

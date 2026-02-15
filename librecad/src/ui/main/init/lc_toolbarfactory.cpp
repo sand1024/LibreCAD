@@ -29,6 +29,7 @@
 #include "lc_creatorinvoker.h"
 #include "lc_infocursorsettingsmanager.h"
 #include "lc_namedviewslistwidget.h"
+#include "lc_propertysheetwidget.h"
 #include "lc_ucslistwidget.h"
 #include "lc_workspacelistbutton.h"
 #include "qc_applicationwindow.h"
@@ -60,6 +61,7 @@ QToolBar* LC_ToolbarFactory::createPenToolbar(const QSizePolicy &tbPolicy) const
     m_appWin->m_penToolBar = result;
 
     connect(m_appWin->m_penToolBar, &QG_PenToolBar::penChanged, m_appWin, &QC_ApplicationWindow::slotPenChanged);
+    connect(m_appWin->m_penToolBar, &QG_PenToolBar::penChanged, m_appWin->getPropertySheetWidget(), &LC_PropertySheetWidget::onActivePenChanged);
     return result;
 }
 

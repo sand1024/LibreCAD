@@ -30,6 +30,7 @@
 #include "lc_property_bool_combobox_view.h"
 #include "lc_property_container_view.h"
 #include "lc_property_double_interactivepick_view.h"
+#include "lc_property_double_line_edit_view.h"
 #include "lc_property_double_spinbox_view.h"
 #include "lc_property_enum_combobox_view.h"
 #include "lc_property_int_list_combobox_view.h"
@@ -43,6 +44,8 @@
 #include "lc_property_rscolor_combobox_view.h"
 #include "lc_property_rsvector_view.h"
 #include "lc_property_view_multiple.h"
+#include "lc_property_rect.h"
+#include "lc_property_rect_view.h"
 
 class LC_PropertyQStringListArrowsComboboxView;
 class LC_PropertyQStringLineEditView;
@@ -65,6 +68,7 @@ void LC_PropertyViewRegistrator::registerViews() {
     defaultView<LC_PropertyInt, LC_PropertyIntSpinBoxView>(LC_PropertyIntSpinBoxView::VIEW_NAME);
     defaultView<LC_PropertyDouble, LC_PropertyDoubleSpinBoxView>(LC_PropertyDoubleSpinBoxView::VIEW_NAME);
     anotherView<LC_PropertyDouble, LC_PropertyDoubleInteractivePickView>(LC_PropertyDoubleInteractivePickView::VIEW_NAME);
+    anotherView<LC_PropertyDouble, LC_PropertyDoubleLineEditView>(LC_PropertyDoubleLineEditView::VIEW_NAME);
     defaultView<LC_PropertyMulti, LC_PropertyViewMultiple>(LC_PropertyViewMultiple::VIEW_NAME);
     defaultView<LC_PropertyLayer, LC_PropertyLayerComboBoxView>(LC_PropertyLayerComboBoxView::VIEW_NAME);
     defaultView<LC_PropertyQString, LC_PropertyQStringLineEditView>(LC_PropertyQStringLineEditView::VIEW_NAME);
@@ -79,4 +83,5 @@ void LC_PropertyViewRegistrator::registerViews() {
     anotherView<LC_PropertyBool, LC_PropertyBoolComboBoxView>(LC_PropertyBoolComboBoxView::VIEW_NAME);
     defaultView<LC_PropertyAction, LC_PropertyActionLinkView>(LC_PropertyActionLinkView::VIEW_NAME);
     defaultView<LC_PropertyEnum, LC_PropertyEnumComboBoxView>(LC_PropertyEnumComboBoxView::VIEW_NAME);
+    defaultView<LC_PropertyRect, LC_PropertyRectView>(LC_PropertyRectView::VIEW_NAME);
 }

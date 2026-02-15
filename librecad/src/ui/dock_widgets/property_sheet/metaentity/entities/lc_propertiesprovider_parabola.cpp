@@ -31,19 +31,19 @@ void LC_PropertiesProviderParabola::doFillEntitySpecificProperties(LC_PropertyCo
 
     addVector<LC_Parabola>({"focus", tr("Focus"), tr("Focus of parabola")}, [](LC_Parabola* e) -> RS_Vector {
                                return e->getFocus();
-                           }, nullptr, /*[](RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, LC_Parabola* l) -> void {
+                           }, nullptr, /*[](RS_Vector& v, LC_Parabola* l) -> void {
                  l->setFocus(v);
              }, */list, contGeometry);
 
     addVector<LC_Parabola>({"vertex", tr("Vertex"), tr("Vertex of parabola")}, [](LC_Parabola* e) -> RS_Vector {
                                return e->getVertex();
-                           }, nullptr, /*[](RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, LC_Parabola* l) -> void {
+                           }, nullptr, /*[](RS_Vector& v, LC_Parabola* l) -> void {
                   l->setEndpoint(v);
               }, */list, contGeometry);
 
     addWCSAngle<LC_Parabola>({"angle", tr("Angle"), tr("Angle of parabola axis")}, [](LC_Parabola* e) -> double {
                                  return e->getParabolaData().axis.angle();
-                             }, nullptr, /*[](double& v, [[maybe_unused]] LC_PropertyChangeReason reason, LC_Parabola* l) -> void {
+                             }, nullptr, /*[](double& v, LC_Parabola* l) -> void {
                                  l->setAngle1(v);
                              }, */list, contGeometry);
 

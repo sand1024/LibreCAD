@@ -33,38 +33,38 @@ void LC_PropertiesProviderArc::doFillEntitySpecificProperties(LC_PropertyContain
 
     addVector<RS_Arc>({"center", tr("Center"), tr("Center point of arc")}, [](const RS_Arc* e) -> RS_Vector {
                           return e->getCenter();
-                      }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Arc* e) -> void {
+                      }, [](const RS_Vector& v, RS_Arc* e) -> void {
                           e->setCenter(v);
                       }, list, contGeometry);
 
     addLinearDistance<RS_Arc>({"radius", tr("Radius"), tr("Radius of arc")}, [](const RS_Arc* e) -> double {
                                   return e->getRadius();
-                              }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Arc* l) -> void {
+                              }, [](const double& v, RS_Arc* l) -> void {
                                   l->setRadius(v);
                               }, list, contGeometry);
 
     addLinearDistance<RS_Arc>({"diameter", tr("Diameter"), tr("Diameter of arc")}, [](const RS_Arc* e) -> double {
                                   return e->getRadius() * 2.0;
-                              }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Arc* l) -> void {
+                              }, [](const double& v, RS_Arc* l) -> void {
                                   l->setRadius(v / 2.0);
                               }, list, contGeometry);
 
     addBoolean<RS_Arc>({"reversed", tr("Is Reversed"), tr("Clockwise direction if reversed, counterclockwise otherwise")},
                        [](const RS_Arc* e) -> bool {
                            return e->isReversed();
-                       }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Arc* e) -> void {
+                       }, [](const bool& v, RS_Arc* e) -> void {
                            e->setReversed(v);
                        }, list, contGeometry);
 
     addWCSAngle<RS_Arc>({"angle1", tr("Start Angle"), tr("Start angle of arc")}, [](const RS_Arc* e) -> double {
                             return e->getAngle1();
-                        }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Arc* l) -> void {
+                        }, [](const double& v, RS_Arc* l) -> void {
                             l->setAngle1(v);
                         }, list, contGeometry);
 
     addWCSAngle<RS_Arc>({"angle2", tr("End Angle"), tr("End angle of arc")}, [](const RS_Arc* e) -> double {
                             return e->getAngle2();
-                        }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Arc* l) -> void {
+                        }, [](const double& v, RS_Arc* l) -> void {
                             l->setAngle2(v);
                         }, list, contGeometry);
 

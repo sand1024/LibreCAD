@@ -34,7 +34,7 @@ const QByteArray LC_PropertyQStringListArrowsComboboxView::ATTR_CURRENT_INDEX = 
 
 QWidget* LC_PropertyQStringListArrowsComboboxView::doCreateValueEditor(QWidget* parent, const QRect& rect,
                                                                        const EditActivationContext* ctx) {
-    QComboBox* editor = new LC_PropertyComboBox(this, parent);
+    auto editor = new LC_PropertyComboBox(this, parent);
     editor->setGeometry(rect);
     const auto handler = new LC_PropertyQStringListArrowsComboboxViewHandler(this, *editor, m_viewDescriptor);
     handler->connectCombobox(*editor);

@@ -59,6 +59,10 @@ public:
     QModelIndex getIndexForUCS(const LC_UCS *u) const;
     void applyUCSByIndex(const QModelIndex& index) const;
     LC_UCS* getActiveUCS() const;
+    void removeExistingUCS(LC_UCS* selectedUCS);
+    void removeExistingUCS(const QString& name);
+    void renameExistingUCS(const QString& name);
+    void renameExistingUCS(LC_UCS *selectedUCS);
 signals:
     void ucsListChanged();
 public slots:
@@ -90,7 +94,7 @@ protected:
     LC_GraphicViewport *m_viewport {nullptr};
     Ui::LC_UCSListWidget *ui;
     int m_itemHeight = 21;
-
+    void doRemoveExistingUCS(LC_UCS *ucs) const;
     void initToolbar() const;
     void refresh();
     void updateData(bool restoreSelectionIfPossible);
@@ -99,10 +103,8 @@ protected:
     void applyUCS(LC_UCS* ucs) const;
     void previewExistingUCS(LC_UCS* ucs) const;
     LC_UCS *getSelectedUCS();
-    void removeExistingUCS(LC_UCS *ucs) const;
     QModelIndex getSelectedItemIndex() const;
     void renameExistingUCS(const QString& newName, LC_UCS *ucs);
-    void renameExistingUCS(LC_UCS *selectedUCS);
     void updateButtonsState() const;
     void selectUCS(const LC_UCS *ucs) const;
     int getSingleSelectedRow() const;

@@ -1345,6 +1345,25 @@ void LC_LayerTreeWidget::removeActiveLayers(){
     }
 }
 
+void LC_LayerTreeWidget::removeActiveLayer(bool removeWithChildren){
+    if (nullptr != m_layerList){
+        const auto activeLayer = m_graphic->getActiveLayer();
+        if (activeLayer){
+            LC_LayerTreeItem *currentItem = m_layerTreeModel->getItemForLayer(activeLayer);
+            if (currentItem != nullptr){
+                if (removeWithChildren) {
+                    doRemoveLayersFromSource(currentItem, false);
+                }
+                else {
+                    QList<LC_LayerTreeItem*> layersToRemove;
+                    layersToRemove.push_back(currentItem);
+                    doRemoveLayerItems(layersToRemove);
+                }
+            }
+        }
+    }
+}
+
 //---------------- Layer Copy and Duplicate --------------
 /**
  * Creates copy of selected layer as it descendants. Copy of layers (with name rename, if needed) as well as
@@ -1771,7 +1790,7 @@ int LC_LayerTreeWidget::invokeLayersRemovalDialog(const QStringList &layerNames)
     QStringList detail_lines = {QMessageBox::tr("Layers for removal:"), "",};
     detail_lines << layerNames;
 
-    QMessageBox msgBox(QMessageBox::Warning, title, text_lines.join("\n"), QMessageBox::Ok | QMessageBox::Cancel);
+    QMessageBox msgBox(QMessageBox::Warning, title, text_lines.join("\n"), QMessageBox::Ok | QMessageBox::Cancel, this);
     msgBox.setDetailedText(detail_lines.join("\n"));
 
     const int result = msgBox.exec();

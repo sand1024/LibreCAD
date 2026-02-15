@@ -45,6 +45,19 @@ class RS_Variable {
         int i = 0;
         double d = 0.;
         RS_Vector v{false};
+
+        friend bool operator==(const RS_VariableContents& lhs, const RS_VariableContents& rhs) {
+            const bool bothVectorsInvalid = !(lhs.v.valid || rhs.v.valid);
+            if (bothVectorsInvalid) {
+                const bool contentValid = lhs.s == rhs.s && lhs.i == rhs.i && lhs.d == rhs.d;
+                return contentValid;
+            }
+            return lhs.s == rhs.s && lhs.i == rhs.i && lhs.d == rhs.d && lhs.v == rhs.v;
+        }
+
+        friend bool operator!=(const RS_VariableContents& lhs, const RS_VariableContents& rhs) {
+            return !(lhs == rhs);
+        }
     };
 
 public:
@@ -113,6 +126,14 @@ public:
     QString toString();
 
     //friend std::ostream& operator << (std::ostream& os, RS_Variable& v);
+
+    friend bool operator==(const RS_Variable& lhs, const RS_Variable& rhs) {
+        return lhs.m_contents == rhs.m_contents && lhs.m_type == rhs.m_type && lhs.m_code == rhs.m_code;
+    }
+
+    friend bool operator!=(const RS_Variable& lhs, const RS_Variable& rhs) {
+        return !(lhs == rhs);
+    }
 
 private:
     RS_VariableContents m_contents;

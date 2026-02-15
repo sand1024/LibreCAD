@@ -1336,6 +1336,10 @@ void QG_GraphicView::setAntialiasing(const bool state) const {
     getRenderer()->setAntialiasing(state);
 }
 
+bool QG_GraphicView::isAntialiasing() const {
+    return getRenderer()->isAntialiasing();
+}
+
 bool QG_GraphicView::isDraftMode() const {
     const auto* viewRenderer = dynamic_cast<LC_GraphicViewRenderer*>(getRenderer());
     return (viewRenderer != nullptr) ? viewRenderer->isDraftMode() : false;
@@ -1352,8 +1356,16 @@ void QG_GraphicView::setDraftMode(const bool dm) {
 void QG_GraphicView::setDraftLinesMode(const bool mode) const {
     auto* viewRenderer = dynamic_cast<LC_GraphicViewRenderer*>(getRenderer());
     if (viewRenderer != nullptr) {
-        viewRenderer->setLineWidthScaling(!mode);
+        viewRenderer->setLineWidthScaling(mode);
     }
+}
+
+bool QG_GraphicView::isDraftLinesMode() const {
+    auto* viewRenderer = dynamic_cast<LC_GraphicViewRenderer*>(getRenderer());
+    if (viewRenderer != nullptr) {
+        return viewRenderer->getLineWidthScaling();
+    }
+    return false;
 }
 
 void QG_GraphicView::addScrollbars() {

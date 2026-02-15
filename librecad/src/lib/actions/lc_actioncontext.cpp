@@ -23,6 +23,7 @@
 
 #include "lc_actioncontext.h"
 
+#include "lc_graphicviewport.h"
 #include "rs_document.h"
 #include "rs_graphicview.h"
 
@@ -66,6 +67,15 @@ bool LC_ActionContext::hasSelection() const {
         return false;
     }
     return m_document->hasSelection();
+}
+
+LC_Formatter* LC_ActionContext::getFormatter() const {
+    LC_Formatter* result = nullptr;
+    auto viewport = getViewport();
+    if (viewport != nullptr) {
+        result = viewport->getFormatter();
+    }
+    return result;
 }
 
 void LC_ActionContext::interactiveInputStart(const InteractiveInputInfo::InputType inputType,

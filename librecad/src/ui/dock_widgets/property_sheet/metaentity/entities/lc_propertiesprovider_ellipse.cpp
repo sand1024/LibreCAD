@@ -32,46 +32,46 @@ void LC_PropertiesProviderEllipse::doFillEntitySpecificProperties(LC_PropertyCon
 
     addVector<RS_Ellipse>({"center", tr("Center"), tr("Center point of ellipse")}, [](const RS_Ellipse* e) -> RS_Vector {
                               return e->getCenter();
-                          }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Ellipse* e) -> void {
+                          }, [](const RS_Vector& v, RS_Ellipse* e) -> void {
                               e->setCenter(v);
                           }, list, contGeometry);
 
     addWCSAngle<RS_Ellipse>({"angle", tr("Angle"), tr("Angle of the ellipse major axis")}, [](const RS_Ellipse* e) -> double {
                                 return e->getAngle();
-                            }, [](double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Ellipse* l) -> void {
+                            }, [](double& v, RS_Ellipse* l) -> void {
                                 //fixme = update geometry
                                 // l->setAngle(v);
                             }, list, contGeometry);
 
     addLinearDistance<RS_Ellipse>({"radiusMajor", tr("Radius Major"), tr("Major radius of ellipse")}, [](const RS_Ellipse* e) -> double {
                                       return e->getMajorRadius();
-                                  }, [](double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Ellipse* l) -> void {
+                                  }, [](double& v, RS_Ellipse* l) -> void {
                                       // fixme = update geometry
                                       // l->setRadius(v);
                                   }, list, contGeometry);
 
     addLinearDistance<RS_Ellipse>({"radiusMinor", tr("Radius Minor"), tr("Minor radius of ellipse")}, [](const RS_Ellipse* e) -> double {
                                       return e->getMinorRadius();
-                                  }, [](double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Ellipse* l) -> void {
+                                  }, [](double& v, RS_Ellipse* l) -> void {
                                       // fixme = update geometry
                                       // l->setRadius(v);
                                   }, list, contGeometry);
 
     addLinearDistance<RS_Ellipse>({"radiusRatio", tr("Radius Ratio"), tr("Radius ratio of ellipse")}, [](const RS_Ellipse* e) -> double {
                                       return e->getRatio();
-                                  }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Ellipse* l) -> void {
+                                  }, [](const double& v, RS_Ellipse* l) -> void {
                                       l->setRatio(v);
                                   }, list, contGeometry);
 
     addWCSAngle<RS_Ellipse>({"angle1", tr("Start Angle"), tr("Start angle of elliptic arc")}, [](const RS_Ellipse* e) -> double {
                                 return e->getAngle1();
-                            }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Ellipse* l) -> void {
+                            }, [](const double& v, RS_Ellipse* l) -> void {
                                 l->setAngle1(v);
                             }, list, contGeometry);
 
     addWCSAngle<RS_Ellipse>({"angle2", tr("End Angle"), tr("End angle of elliptic arc")}, [](const RS_Ellipse* e) -> double {
                                 return e->getAngle2();
-                            }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Ellipse* l) -> void {
+                            }, [](const double& v, RS_Ellipse* l) -> void {
                                 l->setAngle2(v);
                             }, list, contGeometry);
 

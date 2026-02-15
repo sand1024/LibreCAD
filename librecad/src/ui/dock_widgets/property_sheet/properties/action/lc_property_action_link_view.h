@@ -30,21 +30,41 @@ class LC_PropertyActionLinkView : public LC_PropertyView {
 public:
     static const QByteArray VIEW_NAME;
     static const QByteArray ATTR_TITLE;
-    explicit LC_PropertyActionLinkView(LC_PropertyAction& property);
-    void buildPartBackground(const LC_PropertyPaintContext& ctx, QList<LC_PropertyViewPart>& parts);
+    static const QByteArray ATTR_TITLE_RIGHT;
+    static const QByteArray ATTR_TOOLTIP_LEFT;
+    static const QByteArray ATTR_TOOLTIP_RIGHT;
 
+    explicit LC_PropertyActionLinkView(LC_PropertyAction& property);
     bool isSplittable() const override {
         return false;
     }
 
+    bool isLocked() {
+         return m_clickedLink != -1;
+    };
+
+    void lock(const int index) {
+        m_clickedLink = index;
+    }
+
+    bool isClicked(int linkIndex) const {
+        return m_clickedLink == linkIndex;
+    }
+
 protected:
+    void buildPartBackground(const LC_PropertyPaintContext& ctx, QList<LC_PropertyViewPart>& parts);
+    void builSingleLinkPart(const QRect& valuesRect, const QString &title, const QString& tooltip, bool linkIndex, QList<LC_PropertyViewPart>& parts);
     void doApplyAttributes(const LC_PropertyViewDescriptor& info) override;
     void doBuildViewParts(LC_PropertyPaintContext& ctx, QList<LC_PropertyViewPart>& parts) override;
     LC_PropertyAction& typedProperty() const;
 private:
     QCursor m_widgetCursor;
     bool m_cursorSet = false;
-    QString m_title;
+    QString m_titleLeft;
+    QString m_titleRight;
+    QString m_tooltipLeft;
+    QString m_tooltipRight;
+    int m_clickedLink = -1;
 };
 
 #endif

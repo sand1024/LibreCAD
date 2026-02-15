@@ -31,8 +31,14 @@
 #include "lc_latecompletionrequestor.h"
 #include "lc_property.h"
 #include "lc_property_rsvector.h"
+#include "lc_propertysheet_widget_options.h"
 #include "lc_selectedsetlistener.h"
+#include "lc_ucslist.h"
+#include "lc_viewslist.h"
 #include "rs_entity.h"
+#include "rs_layerlistlistener.h"
+#include "rs_pen.h"
+
 
 class LC_ActionContext;
 class LC_EntityPropertyContainerProvider;
@@ -41,7 +47,8 @@ namespace Ui {
     class LC_PropertySheetWidget;
 }
 
-class LC_PropertySheetWidget : public LC_GraphicViewAwareWidget, public LC_SelectedSetListener, public LC_EntitiesModificationContext,
+class LC_PropertySheetWidget : public LC_GraphicViewAwareWidget, public LC_SelectedSetListener, public LC_UCSListListener,
+                               public RS_LayerListListener, public LC_ViewListListener, public LC_EntitiesModificationContext,
                                public LC_LateCompletionRequestor {
     Q_OBJECT
 
@@ -52,6 +59,7 @@ public:
     void loadCollapsedSections();
     void saveCollapsedSections();
     void setGraphicView(RS_GraphicView* gv) override;
+    void stopInplaceEdit() const;
     void selectionChanged() override;
     void setShouldHandleSelectionChange(bool value);
     void updateFormats();
@@ -60,7 +68,10 @@ public:
     void markContainerCollapsed(const QString& name, bool collapse);
     void checkSectionCollapsed(LC_PropertyContainer* result);
     void entityModified(RS_Entity* originalEntity, RS_Entity* entityClone) override;
-
+    void ucsListModified([[maybe_unused]]bool changed) override {selectionChanged();}
+    void layerListModified(bool) override {selectionChanged();}
+    void viewsListModified([[maybe_unused]]bool changed) override {selectionChanged();}
+    LC_PropertySheetWidgetOptions* getOptions() const {return m_propertySheetOptions.get();}
 public slots :
     void onUcsChanged(LC_UCS* ucs);
     void onViewDefaultActionActivated(bool defaultActionActivated, RS2::ActionType prevActionRtti);
@@ -74,7 +85,8 @@ public slots :
     void checkIfVectorAndGetLocation(LC_Property* property);
     void invalidateCached() const;
     void onDockVisibilityChanged(bool visible);
-
+    void onActivePenChanged(RS_Pen pen);
+    void onSettingsClicked();
 protected:
     void setupSelectionTypeCombobox(RS2::EntityType entityTypeTryToSet, QString propertyTryToSet);
     void clearContextEntities();
@@ -98,6 +110,7 @@ private:
     bool m_handleSelectionChange = true;
     LC_ActionContext* m_actionContext{nullptr};
     std::unique_ptr<LC_EntityPropertyContainerProvider> m_entityContainerProvider;
+    std::unique_ptr<LC_PropertySheetWidgetOptions> m_propertySheetOptions;
     QSet<QString> m_collapsedContainerNames;
     QList<RS_Entity*> m_orginalEntities;
     QList<RS_Entity*> m_modifiedEntities;

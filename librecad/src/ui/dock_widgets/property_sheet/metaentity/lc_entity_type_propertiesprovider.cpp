@@ -239,8 +239,7 @@ void LC_EntityTypePropertiesProvider::fillGenericAttributes(LC_PropertyContainer
                   property->setAllowByBlockValues(allowByBlock);
                   createDelegatedStorage<RS_Layer*, RS_Entity>([](const RS_Entity* e) -> RS_Layer* {
                                                                    return e->getLayer();
-                                                               }, [](RS_Layer* l, [[maybe_unused]] LC_PropertyChangeReason reason,
-                                                                     RS_Entity* e) -> void {
+                                                               }, [](RS_Layer* l, RS_Entity* e) -> void {
                                                                    e->setLayer(l);
                                                                }, [](const RS_Layer* l, const RS_Entity* e) -> bool {
                                                                    return l == e->getLayer();
@@ -254,8 +253,7 @@ void LC_EntityTypePropertiesProvider::fillGenericAttributes(LC_PropertyContainer
         property->setNames(names);
         createDelegatedStorage<RS_Color, RS_Entity>([](const RS_Entity* e) -> RS_Color {
                                                         return e->getPen(false).getColor();
-                                                    }, [](const RS_Color& color, [[maybe_unused]] LC_PropertyChangeReason reason,
-                                                          const RS_Entity* e) -> void {
+                                                    }, [](const RS_Color& color,  const RS_Entity* e) -> void {
                                                         RS_Pen pen = e->getPen(false);
                                                         pen.setColor(color);
                                                         e->setPen(pen);
@@ -273,8 +271,7 @@ void LC_EntityTypePropertiesProvider::fillGenericAttributes(LC_PropertyContainer
                   property->setNames(names);
                   createDelegatedStorage([](const RS_Entity* e) -> RS2::LineType {
                                              return e->getPen(false).getLineType();
-                                         }, [](const RS2::LineType& linetype, [[maybe_unused]] LC_PropertyChangeReason reason,
-                                               const RS_Entity* e) -> void {
+                                         }, [](const RS2::LineType& linetype, const RS_Entity* e) -> void {
                                              RS_Pen pen = e->getPen(false);
                                              pen.setLineType(linetype);
                                              e->setPen(pen);
@@ -292,8 +289,7 @@ void LC_EntityTypePropertiesProvider::fillGenericAttributes(LC_PropertyContainer
                   property->setNames(names);
                   createDelegatedStorage([](const RS_Entity* e) -> RS2::LineWidth {
                                              return e->getPen(false).getWidth();
-                                         }, [](const RS2::LineWidth& width, [[maybe_unused]] LC_PropertyChangeReason reason,
-                                               const RS_Entity* e) -> void {
+                                         }, [](const RS2::LineWidth& width, const RS_Entity* e) -> void {
                                              RS_Pen pen = e->getPen(false);
                                              pen.setWidth(width);
                                              e->setPen(pen);

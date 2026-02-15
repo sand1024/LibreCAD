@@ -41,9 +41,9 @@ namespace {
     }
 }
 
-class LC_PropertyBoolComboBoxViewHandler : public LC_PropertyEditorHandlerValueTyped<LC_PropertyBool, QComboBox> {
+class LC_PropertyBoolComboBoxViewHandler : public LC_PropertyEditorHandlerValueTyped<LC_PropertyBool, LC_PropertyComboBox> {
 public:
-    LC_PropertyBoolComboBoxViewHandler(LC_PropertyViewEditable* view, QComboBox& editor)
+    LC_PropertyBoolComboBoxViewHandler(LC_PropertyViewEditable* view, LC_PropertyComboBox& editor)
     : LC_PropertyEditorHandlerValueTyped(view, editor) {
         LC_PropertyBoolComboBoxViewHandler::doUpdateEditor();
         connect(&editor, &QComboBox::currentIndexChanged, this, &LC_PropertyBoolComboBoxViewHandler::onCurrentIndexChanged);
@@ -66,8 +66,10 @@ protected:
 private:
     void onCurrentIndexChanged(int index) {
         if (index >= 0) {
-            const auto data = getEditor()->itemData(index);
+            auto propertyComboBox = getEditor();
+            const auto data = propertyComboBox->itemData(index);
             if (data.canConvert<bool>()) {
+                propertyComboBox->disablePaint(true);
                 onValueChanged(data.toBool());
             }
         }

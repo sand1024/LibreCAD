@@ -25,11 +25,13 @@
 
 #include "lc_dlgdimstylemanager.h"
 #include "lc_property_action.h"
+#include "lc_property_action_link_view.h"
 #include "lc_property_double_spinbox_view.h"
 #include "lc_property_linetype.h"
 #include "lc_property_linewidth.h"
 #include "lc_property_qstring_list_arrows_combobox_view.h"
 #include "lc_property_rscolor.h"
+#include "lc_propertyprovider_utils.h"
 #include "rs_block.h"
 #include "rs_dimension.h"
 
@@ -44,25 +46,26 @@ const QString LC_PropertiesProviderDimBase::SECTION_DIM_GEOMETRY = "_secDimToler
 
 void LC_PropertiesProviderDimBase::addArrowsFlipLinks(const QList<RS_Entity*>& list, LC_PropertyContainer* cont) const {
     const bool flipArrowEnabled = m_entityType != RS2::EntityDimOrdinate;
-
+    // fixme - use two columns for flipArrow commands?
     if (flipArrowEnabled) {
         auto* flipArrow1 = new LC_PropertyAction(cont, true);
         const LC_Property::Names names1 = {"dimFlipArrow1", tr("Flip Arrow 1"), tr("Flips direction of arrows 1, if any")};
         flipArrow1->setNames(names1);
         LC_PropertyViewDescriptor viewDescriptor1("Link");
         viewDescriptor1["title"] = names1.displayName;
-        flipArrow1->setClickHandler([this, flipArrow1, list]([[maybe_unused]] const LC_PropertyAction* action) {
-            for (const auto e : list) {
-                const auto d = dynamic_cast<RS_Dimension*>(e);
-                if (d != nullptr) {
-                    const auto clone = static_cast<RS_Dimension*>(d->clone());
-                    const bool flip = clone->isFlipArrow1();
-                    clone->setFlipArrow1(!flip);
-                    m_widget->entityModified(d, clone);
+        flipArrow1->setClickHandler(
+            [this, flipArrow1, list]([[maybe_unused]] const LC_PropertyAction* action, [[maybe_unused]] int linkIndex) {
+                for (const auto e : list) {
+                    const auto d = dynamic_cast<RS_Dimension*>(e);
+                    if (d != nullptr) {
+                        const auto clone = static_cast<RS_Dimension*>(d->clone());
+                        const bool flip = clone->isFlipArrow1();
+                        clone->setFlipArrow1(!flip);
+                        m_widget->entityModified(d, clone);
+                    }
                 }
-            }
-            m_widget->onPropertyEdited(flipArrow1);
-        });
+                m_widget->onPropertyEdited(flipArrow1);
+            });
 
         flipArrow1->setViewDescriptor(viewDescriptor1);
         cont->addChildProperty(flipArrow1);
@@ -73,18 +76,19 @@ void LC_PropertiesProviderDimBase::addArrowsFlipLinks(const QList<RS_Entity*>& l
             flipArrow2->setNames(names2);
             LC_PropertyViewDescriptor viewDescriptor2("Link");
             viewDescriptor2["title"] = names2.displayName;
-            flipArrow2->setClickHandler([this, flipArrow2, list]([[maybe_unused]] const LC_PropertyAction* action) {
-                for (const auto e : list) {
-                    const auto d = dynamic_cast<RS_Dimension*>(e);
-                    if (d != nullptr) {
-                        const auto clone = static_cast<RS_Dimension*>(d->clone());
-                        const bool flip = clone->isFlipArrow2();
-                        clone->setFlipArrow2(!flip);
-                        m_widget->entityModified(d, clone);
+            flipArrow2->setClickHandler(
+                [this, flipArrow2, list]([[maybe_unused]] const LC_PropertyAction* action, [[maybe_unused]] int linkIndex) {
+                    for (const auto e : list) {
+                        const auto d = dynamic_cast<RS_Dimension*>(e);
+                        if (d != nullptr) {
+                            const auto clone = static_cast<RS_Dimension*>(d->clone());
+                            const bool flip = clone->isFlipArrow2();
+                            clone->setFlipArrow2(!flip);
+                            m_widget->entityModified(d, clone);
+                        }
                     }
-                }
-                m_widget->onPropertyEdited(flipArrow2);
-            });
+                    m_widget->onPropertyEdited(flipArrow2);
+                });
 
             flipArrow2->setViewDescriptor(viewDescriptor2);
             cont->addChildProperty(flipArrow2);
@@ -97,7 +101,7 @@ void LC_PropertiesProviderDimBase::createMiscSection(LC_PropertyContainer* conta
     addStringList<RS_Dimension>({"dimStyle", tr("Style"), tr("Specifies current dimension style by name")},
                                 [](const RS_Dimension* e) -> QString {
                                     return e->getStyle();
-                                }, [](const QString& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Dimension* l) -> void {
+                                }, [](const QString& v, RS_Dimension* l) -> void {
                                     l->setStyle(v);
                                 }, [this]([[maybe_unused]] RS_Dimension* h, LC_PropertyViewDescriptor& descriptor)-> bool {
                                     const auto graphic = this->m_actionContext->getDocument()->getGraphic();
@@ -135,8 +139,8 @@ void LC_PropertiesProviderDimBase::createMiscSection(LC_PropertyContainer* conta
         };
         property->setNames(names);
         LC_PropertyViewDescriptor viewDescriptor("Link");
-        viewDescriptor["title"] = names.displayName;
-        property->setClickHandler([this, property, list]([[maybe_unused]] const LC_PropertyAction* action) {
+        viewDescriptor[LC_PropertyActionLinkView::ATTR_TITLE] = names.displayName;
+        property->setClickHandler([this, property, list]([[maybe_unused]] const LC_PropertyAction* action, [[maybe_unused]] int linkIndex) {
             for (const auto e : list) {
                 const auto d = dynamic_cast<RS_Dimension*>(e);
                 if (d != nullptr) {
@@ -240,7 +244,7 @@ void LC_PropertiesProviderDimBase::createLinesAndArrowsSection(LC_PropertyContai
                                         const auto arrowhead = ds->arrowhead();
                                         auto chars = arrowhead->obtainFirstArrowName();
                                         return chars;
-                                    }, [](const QString& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Dimension* e) -> void {
+                                    }, [](const QString& v, RS_Dimension* e) -> void {
                                         const LC_DimStyle* ds = e->getEffectiveDimStyleOverride();
                                         const auto arrowhead = ds->arrowhead();
                                         arrowhead->setArrowHeadBlockNameFirst(v);
@@ -262,7 +266,7 @@ void LC_PropertiesProviderDimBase::createLinesAndArrowsSection(LC_PropertyContai
                                         const auto arrowhead = ds->arrowhead();
                                         auto chars = arrowhead->obtainSecondArrowName();
                                         return chars;
-                                    }, [](const QString& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Dimension* e) -> void {
+                                    }, [](const QString& v, RS_Dimension* e) -> void {
                                         const LC_DimStyle* ds = e->getEffectiveDimStyleOverride();
                                         const auto arrowhead = ds->arrowhead();
                                         if (arrowhead->isUseSeparateArrowHeads()) {
@@ -289,7 +293,7 @@ void LC_PropertiesProviderDimBase::createLinesAndArrowsSection(LC_PropertyContai
     addDouble_DS({"dimArrowSize", tr("Arrow size"), tr("Specifies size of the dimension arrowhead (DIMASZ variable)")},
                  [](const LC_DimStyle* ds) -> double {
                      return ds->arrowhead()->size();
-                 }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                 }, [](const double& v, const LC_DimStyle* ds) -> void {
                      ds->arrowhead()->setSize(v);
                  }, list, cont, funPositiveDoubleSpin);
 
@@ -306,8 +310,7 @@ void LC_PropertiesProviderDimBase::createLinesAndArrowsSection(LC_PropertyContai
         addEnum_DS({"dimCenterMark", tr("Center mark"), tr("Specified type of center mark on dimension (DIMCEN variable)")},
                    &dimjustPolicyDescriptor, [](const LC_DimStyle* ds) -> LC_PropertyEnumValueType {
                        return ds->radial()->drawingMode();
-                   }, [](const LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason,
-                         const LC_DimStyle* ds) -> void {
+                   }, [](const LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
                        double size = ds->radial()->size();
 
                        switch (v) {
@@ -334,7 +337,7 @@ void LC_PropertiesProviderDimBase::createLinesAndArrowsSection(LC_PropertyContai
                          tr("Specifies size of the center mark on the dimension (DIMCEN variable)")
                      }, [](const LC_DimStyle* ds) -> double {
                          return ds->radial()->size();
-                     }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                     }, [](const double& v, const LC_DimStyle* ds) -> void {
                          const auto centerMarkDrawingMode = ds->radial()->drawingMode();
                          double size = v;
                          switch (centerMarkDrawingMode) {
@@ -360,7 +363,7 @@ void LC_PropertiesProviderDimBase::createLinesAndArrowsSection(LC_PropertyContai
         addLineWidth_DS({"dimLineWeight", tr("Dim line lineweight"), tr("Specifies lineweight for dimension lines (DIMLWD variable)")},
                         [](const LC_DimStyle* ds) -> RS2::LineWidth {
                             return ds->dimensionLine()->lineWidth();
-                        }, [](const RS2::LineWidth& l, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                        }, [](const RS2::LineWidth& l, const LC_DimStyle* ds) -> void {
                             ds->dimensionLine()->setLineWidth(l);
                         }, list, cont);
 
@@ -369,7 +372,7 @@ void LC_PropertiesProviderDimBase::createLinesAndArrowsSection(LC_PropertyContai
                 {"dimExtLineWeight", tr("Ext line lineweight"), tr("Specifies lineweight for extension line (DIMLWE variable)")},
                 [](const LC_DimStyle* ds) -> RS2::LineWidth {
                     return ds->extensionLine()->lineWidth();
-                }, [](const RS2::LineWidth& l, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                }, [](const RS2::LineWidth& l, const LC_DimStyle* ds) -> void {
                     ds->extensionLine()->setLineWidth(l);
                 }, list, cont);
         }
@@ -377,14 +380,14 @@ void LC_PropertiesProviderDimBase::createLinesAndArrowsSection(LC_PropertyContai
         addBoolean_DS({"dimShowDim1", tr("Dim line 1"), tr("Sets suppression of first dimension line (DIMSD1 variable)")},
                       [](const LC_DimStyle* ds) -> bool {
                           return !ds->dimensionLine()->isSuppressFirst();
-                      }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                      }, [](const bool& v, const LC_DimStyle* ds) -> void {
                           ds->dimensionLine()->setSuppressFirst(!v);
                       }, list, cont);
 
         addBoolean_DS({"dimShowDim2", tr("Dim line 2"), tr("Sets suppression of second dimension line (DIMSD2 variable)")},
                       [](const LC_DimStyle* ds) -> bool {
                           return !ds->dimensionLine()->isSuppressSecond();
-                      }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                      }, [](const bool& v, const LC_DimStyle* ds) -> void {
                           ds->dimensionLine()->setSuppressSecond(!v);
                       }, list, cont);
 
@@ -392,7 +395,7 @@ void LC_PropertiesProviderDimBase::createLinesAndArrowsSection(LC_PropertyContai
                     [](const LC_DimStyle* ds) -> RS_Color {
                         const auto text = ds->dimensionLine();
                         return text->color();
-                    }, [](const RS_Color& color, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                    }, [](const RS_Color& color, const LC_DimStyle* ds) -> void {
                         const auto text = ds->dimensionLine();
                         text->setColor(color);
                     }, list, cont);
@@ -400,8 +403,7 @@ void LC_PropertiesProviderDimBase::createLinesAndArrowsSection(LC_PropertyContai
         addLineType_DS({"dimLineLineType", tr("Dim line linetype"), tr("Specifies the linetype of the dimension line (DIMLTYPE variable)")},
                        [](const LC_DimStyle* ds) -> RS2::LineType {
                            return ds->dimensionLine()->lineType();
-                       }, [](const RS2::LineType& linetype, [[maybe_unused]] LC_PropertyChangeReason reason,
-                             const LC_DimStyle* ds) -> void {
+                       }, [](const RS2::LineType& linetype, const LC_DimStyle* ds) -> void {
                            const auto line = ds->dimensionLine();
                            line->setLineType(linetype);
                        }, list, cont);
@@ -414,7 +416,7 @@ void LC_PropertiesProviderDimBase::createLinesAndArrowsSection(LC_PropertyContai
                                  tr("Specifies amount to extend dimension lines beyond the extension lines (DIMDLE variable)")
                              }, [](const LC_DimStyle* ds) -> double {
                                  return ds->text()->height();
-                             }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                             }, [](const double& v, const LC_DimStyle* ds) -> void {
                                  ds->text()->setHeight(v);
                              }, list, cont, funPositiveDoubleSpin);
             }
@@ -423,7 +425,7 @@ void LC_PropertiesProviderDimBase::createLinesAndArrowsSection(LC_PropertyContai
             addBoolean_DS({"dimExt1Show", tr("Ext line"), tr("Sets suppression of extension line (DIMSE1 variable)")},
                           [](const LC_DimStyle* ds) -> bool {
                               return !ds->extensionLine()->isSuppressFirst();
-                          }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                          }, [](const bool& v, const LC_DimStyle* ds) -> void {
                               ds->extensionLine()->setSuppressFirst(!v);
                           }, list, cont);
 
@@ -431,7 +433,7 @@ void LC_PropertiesProviderDimBase::createLinesAndArrowsSection(LC_PropertyContai
                 {"dimExtLineWeight", tr("Ext line lineweight"), tr("Specifies lineweight for extension line (DIMLWE variable)")},
                 [](const LC_DimStyle* ds) -> RS2::LineWidth {
                     return ds->extensionLine()->lineWidth();
-                }, [](const RS2::LineWidth& l, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                }, [](const RS2::LineWidth& l, const LC_DimStyle* ds) -> void {
                     ds->extensionLine()->setLineWidth(l);
                 }, list, cont);
 
@@ -441,8 +443,7 @@ void LC_PropertiesProviderDimBase::createLinesAndArrowsSection(LC_PropertyContai
                                tr("Specifies the linetype of the extension line (DIMLTEX1 variable)")
                            }, [](const LC_DimStyle* ds) -> RS2::LineType {
                                return ds->extensionLine()->lineTypeFirst();
-                           }, [](const RS2::LineType& linetype, [[maybe_unused]] LC_PropertyChangeReason reason,
-                                 const LC_DimStyle* ds) -> void {
+                           }, [](const RS2::LineType& linetype, const LC_DimStyle* ds) -> void {
                                const auto line = ds->extensionLine();
                                line->setLineTypeFirst(linetype);
                            }, list, cont);
@@ -454,8 +455,7 @@ void LC_PropertiesProviderDimBase::createLinesAndArrowsSection(LC_PropertyContai
                                tr("Specifies the linetype of the first extension line (DIMLTEX1 variable)")
                            }, [](const LC_DimStyle* ds) -> RS2::LineType {
                                return ds->extensionLine()->lineTypeFirst();
-                           }, [](const RS2::LineType& linetype, [[maybe_unused]] LC_PropertyChangeReason reason,
-                                 const LC_DimStyle* ds) -> void {
+                           }, [](const RS2::LineType& linetype, const LC_DimStyle* ds) -> void {
                                const auto line = ds->extensionLine();
                                line->setLineTypeFirst(linetype);
                            }, list, cont);
@@ -466,8 +466,7 @@ void LC_PropertiesProviderDimBase::createLinesAndArrowsSection(LC_PropertyContai
                                tr("Specifies the linetype of the second extension line (DIMLTEX2 variable)")
                            }, [](const LC_DimStyle* ds) -> RS2::LineType {
                                return ds->extensionLine()->lineTypeSecond();
-                           }, [](const RS2::LineType& linetype, [[maybe_unused]] LC_PropertyChangeReason reason,
-                                 const LC_DimStyle* ds) -> void {
+                           }, [](const RS2::LineType& linetype, const LC_DimStyle* ds) -> void {
                                const auto line = ds->extensionLine();
                                line->setLineTypeSecond(linetype);
                            }, list, cont);
@@ -475,14 +474,14 @@ void LC_PropertiesProviderDimBase::createLinesAndArrowsSection(LC_PropertyContai
             addBoolean_DS({"dimExt1Show", tr("Ext line 1"), tr("Sets suppression of first extension line (DIMSE1 variable)")},
                           [](const LC_DimStyle* ds) -> bool {
                               return !ds->extensionLine()->isSuppressFirst();
-                          }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                          }, [](const bool& v, const LC_DimStyle* ds) -> void {
                               ds->extensionLine()->setSuppressFirst(!v);
                           }, list, cont);
 
             addBoolean_DS({"dimExt2Show", tr("Ext line 2"), tr("Sets suppression of second extension line (DIMSE2 variable)")},
                           [](const LC_DimStyle* ds) -> bool {
                               return !ds->extensionLine()->isSuppressSecond();
-                          }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                          }, [](const bool& v, const LC_DimStyle* ds) -> void {
                               ds->extensionLine()->setSuppressSecond(!v);
                           }, list, cont);
         }
@@ -491,14 +490,13 @@ void LC_PropertiesProviderDimBase::createLinesAndArrowsSection(LC_PropertyContai
         addLineWidth_DS({"dimExtLineWeight", tr("Ext line lineweight"), tr("Specifies lineweight for extension line (DIMLWE variable)")},
                         [](const LC_DimStyle* ds) -> RS2::LineWidth {
                             return ds->extensionLine()->lineWidth();
-                        }, [](const RS2::LineWidth& l, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                        }, [](const RS2::LineWidth& l, const LC_DimStyle* ds) -> void {
                             ds->extensionLine()->setLineWidth(l);
                         }, list, cont);
         addLineType_DS({"dimExtLineType", tr("Ext line linetype"), tr("Specifies the linetype for the extension line (DIMLTEX1 variable)")},
                        [](const LC_DimStyle* ds) -> RS2::LineType {
                            return ds->extensionLine()->lineTypeFirst();
-                       }, [](const RS2::LineType& linetype, [[maybe_unused]] LC_PropertyChangeReason reason,
-                             const LC_DimStyle* ds) -> void {
+                       }, [](const RS2::LineType& linetype, const LC_DimStyle* ds) -> void {
                            const auto line = ds->extensionLine();
                            line->setLineTypeFirst(linetype);
                        }, list, cont);
@@ -507,14 +505,14 @@ void LC_PropertiesProviderDimBase::createLinesAndArrowsSection(LC_PropertyContai
         addBoolean_DS({"dimExtFixed", tr("Ext line fixed"), tr("Sets suppression of extension line fixed length (DIMFXLON variable)")},
                       [](const LC_DimStyle* ds) -> bool {
                           return ds->extensionLine()->hasFixedLength();
-                      }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                      }, [](const bool& v, const LC_DimStyle* ds) -> void {
                           ds->extensionLine()->setHasFixedLength(v);
                       }, list, cont);
 
         addDouble_DS({"dimExtFixedLen", tr("Ext line fixed length"), tr("Sets extension line fixed length (DIMFXL variable)")},
                      [](const LC_DimStyle* ds) -> double {
                          return ds->extensionLine()->fixedLength();
-                     }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                     }, [](const double& v, const LC_DimStyle* ds) -> void {
                          ds->extensionLine()->setFixedLength(v);
                      }, list, cont);
     }
@@ -523,7 +521,7 @@ void LC_PropertiesProviderDimBase::createLinesAndArrowsSection(LC_PropertyContai
                 [](const LC_DimStyle* ds) -> RS_Color {
                     const auto line = ds->extensionLine();
                     return line->color();
-                }, [](const RS_Color& color, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                }, [](const RS_Color& color, const LC_DimStyle* ds) -> void {
                     const auto line = ds->extensionLine();
                     line->setColor(color);
                 }, list, cont);
@@ -535,7 +533,7 @@ void LC_PropertiesProviderDimBase::createLinesAndArrowsSection(LC_PropertyContai
                          tr("Specifies amount to extend extension line beyond the dimension line  (DIMEXE variable)")
                      }, [](const LC_DimStyle* ds) -> double {
                          return ds->extensionLine()->distanceBeyondDimLine();
-                     }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                     }, [](const double& v, const LC_DimStyle* ds) -> void {
                          ds->extensionLine()->setDistanceBeyondDimLine(v);
                      }, list, cont, funPositiveDoubleSpin);
     }
@@ -544,7 +542,7 @@ void LC_PropertiesProviderDimBase::createLinesAndArrowsSection(LC_PropertyContai
         {"dimExtOffset", tr("Ext line offset"), tr("Specifies offset of extension lines from the origin points (DIMEXO variable)")},
         [](const LC_DimStyle* ds) -> double {
             return ds->extensionLine()->distanceFromOriginPoint();
-        }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+        }, [](const double& v, const LC_DimStyle* ds) -> void {
             ds->extensionLine()->setDistanceFromOriginPoint(v);
         }, list, cont, funPositiveDoubleSpin);
 }
@@ -556,7 +554,7 @@ void LC_PropertiesProviderDimBase::createTextSection(LC_PropertyContainer* conta
                 [](const LC_DimStyle* ds) -> RS_Color {
                     const auto text = ds->text();
                     return text->explicitBackgroundFillColor();
-                }, [](const RS_Color& color, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                }, [](const RS_Color& color, const LC_DimStyle* ds) -> void {
                     const auto text = ds->text();
                     text->setExplicitBackgroundFillColor(color);
                 }, list, cont);
@@ -565,7 +563,7 @@ void LC_PropertiesProviderDimBase::createTextSection(LC_PropertyContainer* conta
                 [](const LC_DimStyle* ds) -> RS_Color {
                     const auto text = ds->text();
                     return text->color();
-                }, [](const RS_Color& color, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                }, [](const RS_Color& color, const LC_DimStyle* ds) -> void {
                     const auto text = ds->text();
                     text->setColor(color);
                 }, list, cont);
@@ -579,7 +577,7 @@ void LC_PropertiesProviderDimBase::createTextSection(LC_PropertyContainer* conta
     addDouble_DS({"dimTextHeight", tr("Text height"), tr("Specifies text height of dimension (DIMTXT variable)")},
                  [](const LC_DimStyle* ds) -> double {
                      return ds->text()->height();
-                 }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                 }, [](const double& v, const LC_DimStyle* ds) -> void {
                      ds->text()->setHeight(v);
                  }, list, cont, funPositiveDoubleSpin);
 
@@ -589,7 +587,7 @@ void LC_PropertiesProviderDimBase::createTextSection(LC_PropertyContainer* conta
                      tr("Specifies the distance around dimension text when dimension line breaks for dimension text (DIMGAP variable)")
                  }, [](const LC_DimStyle* ds) -> double {
                      return ds->dimensionLine()->lineGap();
-                 }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                 }, [](const double& v, const LC_DimStyle* ds) -> void {
                      ds->dimensionLine()->setLineGap(v);
                  }, list, cont, funPositiveDoubleSpin);
 
@@ -600,7 +598,7 @@ void LC_PropertiesProviderDimBase::createTextSection(LC_PropertyContainer* conta
                           tr("Sets positioning of dimension text outside of extension lines (DIMTOH variable)")
                       }, [](const LC_DimStyle* ds) -> bool {
                           return ds->text()->isAlignedIfOutside();
-                      }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                      }, [](const bool& v, const LC_DimStyle* ds) -> void {
                           ds->text()->setAlignedIfOutside(v);
                       }, list, cont);
     }
@@ -619,8 +617,7 @@ void LC_PropertiesProviderDimBase::createTextSection(LC_PropertyContainer* conta
         addEnum_DS({"dimTextHor", tr("Text pos hor"), tr("Specified horizontal dimension text position (DIMJUST variable)")},
                    &dimjustPolicyDescriptor, [](const LC_DimStyle* ds) -> LC_PropertyEnumValueType {
                        return ds->text()->horizontalPositioning();
-                   }, [](const LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason,
-                         const LC_DimStyle* ds) -> void {
+                   }, [](const LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
                        ds->text()->setHorizontalPositioningRaw(v);
                    }, list, cont);
     }
@@ -638,7 +635,7 @@ void LC_PropertiesProviderDimBase::createTextSection(LC_PropertyContainer* conta
     addEnum_DS({"dimTextVert", tr("Text pos vert"), tr("Specified vertical dimension text position (DIMTAD variable)")},
                &dimtadPolicyDescriptor, [](const LC_DimStyle* ds) -> LC_PropertyEnumValueType {
                    return ds->text()->verticalPositioning();
-               }, [](const LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+               }, [](const LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
                    ds->text()->setVerticalPositioningRaw(v);
                }, list, cont);
 
@@ -647,7 +644,7 @@ void LC_PropertiesProviderDimBase::createTextSection(LC_PropertyContainer* conta
                                 [](RS_Dimension* e) -> QString {
                                     const LC_DimStyle* dimStyle = e->getEffectiveCachedDimStyle();
                                     return dimStyle->text()->style();
-                                }, [](const QString& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Dimension* e) -> void {
+                                }, [](const QString& v, RS_Dimension* e) -> void {
                                     const LC_DimStyle* dimStyle = e->getEffectiveDimStyleOverride();
                                     dimStyle->text()->setStyle(v);
                                 }, list, cont);
@@ -659,7 +656,7 @@ void LC_PropertiesProviderDimBase::createTextSection(LC_PropertyContainer* conta
                           tr("Sets positioning of dimension text inside of extension lines (DIMTIH variable)")
                       }, [](const LC_DimStyle* ds) -> bool {
                           return ds->text()->isAlignedIfInside();
-                      }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                      }, [](const bool& v, const LC_DimStyle* ds) -> void {
                           ds->text()->setAlignedIfInside(v);
                       }, list, cont);
     }
@@ -667,7 +664,7 @@ void LC_PropertiesProviderDimBase::createTextSection(LC_PropertyContainer* conta
     addVector<RS_Dimension>({"textPosition", tr("Text position"), tr("Specifies dimension text position")},
                             [](const RS_Dimension* e) -> RS_Vector {
                                 return e->getMiddleOfText();
-                            }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Dimension* e) -> void {
+                            }, [](const RS_Vector& v, RS_Dimension* e) -> void {
                                 e->setMiddleOfText(v);
                             }, list, cont);
 
@@ -687,8 +684,7 @@ void LC_PropertiesProviderDimBase::createTextSection(LC_PropertyContainer* conta
                        tr("Specifies placement of the arch length dimension symbol (DIMARCSYM variable)")
                    }, &dimarcsymPolicyDescriptor, [](const LC_DimStyle* ds) -> LC_PropertyEnumValueType {
                        return ds->arc()->arcSymbolPosition();
-                   }, [](const LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason,
-                         const LC_DimStyle* ds) -> void {
+                   }, [](const LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
                        ds->arc()->setArcSymbolPositionRaw(v);
                    }, list, cont);
     }
@@ -699,7 +695,7 @@ void LC_PropertiesProviderDimBase::createTextSection(LC_PropertyContainer* conta
         addWCSAngle<RS_Dimension>({"textRotation", tr("Text rotation"), tr("Specifies the rotation angle for dimension text")},
                                   [](const RS_Dimension* e) -> double {
                                       return e->getTextAngle();
-                                  }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Dimension* l) -> void {
+                                  }, [](const double& v, RS_Dimension* l) -> void {
                                       l->setTextAngle(v);
                                   }, list, cont);
     }
@@ -712,7 +708,7 @@ void LC_PropertiesProviderDimBase::createTextSection(LC_PropertyContainer* conta
     addEnum_DS({"dimTextDir", tr("Text view direction"), tr("Specifies the text direction (DIMTXTDIRECTION variable)")},
                &dimtxtdirectionPolicyDescriptor, [](const LC_DimStyle* ds) -> LC_PropertyEnumValueType {
                    return ds->text()->readingDirection();
-               }, [](const LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+               }, [](const LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
                    ds->text()->setReadingDirectionRaw(v);
                }, list, cont);
 
@@ -735,7 +731,7 @@ void LC_PropertiesProviderDimBase::createTextSection(LC_PropertyContainer* conta
                                 tr("Specified the text string of dimension (overrides Measurement string)")
                             }, [](const RS_Dimension* e) -> QString {
                                 return e->getText();
-                            }, [](const QString& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Dimension* e) -> void {
+                            }, [](const QString& v, RS_Dimension* e) -> void {
                                 e->setLabel(v);
                             }, list, cont, false);
 }
@@ -751,7 +747,7 @@ void LC_PropertiesProviderDimBase::createFitSection(LC_PropertyContainer* contai
                               " even if text placed outside of extension lines (DIMTOFL variable)")
                       }, [](const LC_DimStyle* ds) -> bool {
                           return ds->dimensionLine()->isDrawLineIfArrowsOutside();
-                      }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                      }, [](const bool& v, const LC_DimStyle* ds) -> void {
                           ds->dimensionLine()->setDrawLineIfArrowsOutside(v);
                       }, list, cont);
 
@@ -762,7 +758,7 @@ void LC_PropertiesProviderDimBase::createFitSection(LC_PropertyContainer* contai
                               tr("Force displaying dimension line outside extension lines (DIMSOXD variable)")
                           }, [](const LC_DimStyle* ds) -> bool {
                               return !ds->arrowhead()->isSuppressArrows();
-                          }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                          }, [](const bool& v, const LC_DimStyle* ds) -> void {
                               ds->arrowhead()->setSuppressArrows(!v);
                           }, list, cont);
         }
@@ -781,7 +777,7 @@ void LC_PropertiesProviderDimBase::createFitSection(LC_PropertyContainer* contai
                          "specify sizes, distances or offsets (DIMSCALE variable)")
                  }, [](const LC_DimStyle* ds) -> double {
                      return ds->scaling()->scale();
-                 }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                 }, [](const double& v, const LC_DimStyle* ds) -> void {
                      ds->scaling()->setScale(v);
                  }, list, cont, funPositiveDoubleSpin);
 
@@ -831,8 +827,7 @@ void LC_PropertiesProviderDimBase::createFitSection(LC_PropertyContainer* contai
                            }
                        }
                        return value;
-                   }, [](const LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason,
-                         const LC_DimStyle* ds) -> void {
+                   }, [](const LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
                        LC_DimStyle::Text* text = ds->text();
 
                        if (v == 0) {
@@ -867,8 +862,7 @@ void LC_PropertiesProviderDimBase::createFitSection(LC_PropertyContainer* contai
         addEnum_DS({"textInside", tr("Text inside"), tr("Sets position of dimension text inside extension lines (DIMTIX variable)")},
                    &dimtixDescriptor, [](const LC_DimStyle* ds) -> LC_PropertyEnumValueType {
                        return ds->text()->extLinesRelativePlacement();
-                   }, [](const LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason,
-                         const LC_DimStyle* ds) -> void {
+                   }, [](const LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
                        ds->text()->setExtLinesRelativePlacementRaw(v);
                    }, list, cont);
     }
@@ -890,7 +884,7 @@ void LC_PropertiesProviderDimBase::createFitSection(LC_PropertyContainer* contai
                    const LC_DimStyle::Text* text = ds->text();
                    const auto policy = text->positionMovementPolicy();
                    return policy;
-               }, [](LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+               }, [](LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
                    LC_DimStyle::Text* text = ds->text();
                    const auto policy = static_cast<LC_DimStyle::Text::TextMovementPolicy>(v);
                    text->setPositionMovementPolicy(policy);
@@ -898,255 +892,52 @@ void LC_PropertiesProviderDimBase::createFitSection(LC_PropertyContainer* contai
 }
 
 void LC_PropertiesProviderDimBase::addDecimalPlacesField_DS(const LC_Property::Names& precisionNames,
-                                                            const std::function<LC_PropertyEnumValueType(LC_DimStyle * ds)>& funGetValue,
-                                                            const std::function<
-                                                                void(LC_PropertyEnumValueType & v, LC_PropertyChangeReason reason,
-                                                                     LC_DimStyle * ds)>& funSetValue, const QList<RS_Entity*>& list,
-                                                            LC_PropertyContainer* cont,
-                                                            const std::function<bool(RS_Dimension *, LC_PropertyViewDescriptor &)>&
+                                                            const std::function<LC_PropertyEnumValueType(LC_DimStyle* ds)>& funGetValue,
+                                                            const std::function<void (LC_PropertyEnumValueType& v, LC_DimStyle* ds)>&
+                                                            funSetValue, const QList<RS_Entity*>& list, LC_PropertyContainer* cont,
+                                                            const std::function<bool(RS_Dimension*, LC_PropertyViewDescriptor&)>&
                                                             funPrepareDescriptor) {
-    static LC_EnumDescriptor decimalPlacesScientific = {
-        "decimalPlacesScientific",
-        {
-            {1, tr("1E+01")},
-            {2, tr("1E-1")},
-            {3, tr("1E-2")},
-            {4, tr("1E-3")},
-            {5, tr("1E-4")},
-            {6, tr("1E-5")},
-            {7, tr("1E-6")},
-            {8, tr("1E-7")},
-            {9, tr("1E-8")}
-        }
-    };
-
-    static LC_EnumDescriptor decimalPlacesDecimal = {
-        "decimalPlacesDecimal",
-        {
-            {1, tr("1.00")},
-            {2, tr("0.1")},
-            {3, tr("0.01")},
-            {4, tr("0.001")},
-            {5, tr("0.0001")},
-            {6, tr("0.00001")},
-            {7, tr("0.000001")},
-            {8, tr("0.0000001")},
-            {9, tr("0.00000001")}
-        }
-    };
-
-    static LC_EnumDescriptor decimalPlacesArchitectural = {
-        "decimalPlacesArchitectural",
-        {
-            {1, tr("0'-0\"")},
-            {2, tr("0'-0 1/2\"")},
-            {3, tr("0'-0 1/4\"")},
-            {4, tr("0'-0 1/8\"")},
-            {5, tr("0'-0 1/16\"")},
-            {6, tr("0'-0 1/32\"")},
-            {7, tr("0'-0 1/64\"")},
-            {8, tr("0'-0 1/128\"")},
-            {9, tr("0'-0 1/256\"")}
-        }
-    };
-
-    static LC_EnumDescriptor decimalPlacesEngineering = {
-        "decimalPlacesEngineering",
-        {
-            {1, tr("0'-0\"")},
-            {2, tr("0'-0.0\"")},
-            {3, tr("0'-0.00\"")},
-            {4, tr("0'-0.000\"")},
-            {5, tr("0'-0.0000\"")},
-            {6, tr("0'-0.00000\"")},
-            {7, tr("0'-0.000000\"")},
-            {8, tr("0'-0.0000000\"")},
-            {9, tr("0'-0.00000000\"")}
-        }
-    };
-
-    static LC_EnumDescriptor decimalPlacesFractional = {
-        "decimalPlacesFractional",
-        {
-            {1, tr("1")},
-            {2, tr("0 1/2")},
-            {3, tr("0 1/4")},
-            {4, tr("0 1/8")},
-            {5, tr("0 1/16")},
-            {6, tr("0 1/32")},
-            {7, tr("0 1/64")},
-            {8, tr("0 1/128")},
-            {9, tr("0 1/256")}
-        }
-    };
-
     auto funPrecisionProvider = [](RS_Dimension* dim) -> LC_EnumDescriptor* {
         const auto dimStyle = dim->getEffectiveCachedDimStyle();
         const auto linearFormat = dimStyle->linearFormat();
-        const int format = linearFormat->format();
-        switch (format) {
-            case RS2::Scientific:
-                return &decimalPlacesScientific;
-            case RS2::ArchitecturalMetric:
-            case RS2::Decimal:
-                return &decimalPlacesDecimal;
-            case RS2::Engineering:
-                return &decimalPlacesEngineering;
-            case RS2::Fractional:
-                return &decimalPlacesFractional;
-            case RS2::Architectural:
-                return &decimalPlacesArchitectural;
-            default:
-                return &decimalPlacesDecimal;
-        }
+        const auto format = linearFormat->format();
+        return LC_PropertyProviderUtils::getLinearUnitsEnumDescriptor(format);
     };
 
     addVarEnum_DS(precisionNames, funPrecisionProvider, funGetValue, funSetValue, list, cont, funPrepareDescriptor);
 }
 
 void LC_PropertiesProviderDimBase::addLinearUnitFormat_DS(const LC_Property::Names& names,
-                                                          const std::function<LC_PropertyEnumValueType(LC_DimStyle * ds)>& funGetValue,
-                                                          const std::function<
-                                                              void(LC_PropertyEnumValueType & v, LC_PropertyChangeReason reason,
-                                                                   LC_DimStyle * ds)>& funSetValue, const QList<RS_Entity*>& list,
-                                                          LC_PropertyContainer* cont,
-                                                          const std::function<bool(RS_Dimension *, LC_PropertyViewDescriptor &)>&
+                                                          const std::function<LC_PropertyEnumValueType(LC_DimStyle* ds)>& funGetValue,
+                                                          const std::function<void (LC_PropertyEnumValueType& v, LC_DimStyle* ds)>&
+                                                          funSetValue, const QList<RS_Entity*>& list, LC_PropertyContainer* cont,
+                                                          const std::function<bool(RS_Dimension*, LC_PropertyViewDescriptor&)>&
                                                           funPrepareDescriptor) {
-    static LC_EnumDescriptor decimalLinearUnitsDescriptor = {
-        "decimalLinearUnits",
-        {
-            {RS2::LinearFormat::Scientific, tr("Scientific")},
-            {RS2::LinearFormat::Decimal, tr("Decimal")},
-            {RS2::LinearFormat::Engineering, tr("Engineering")},
-            {RS2::LinearFormat::Architectural, tr("Architectural")},
-            {RS2::LinearFormat::Fractional, tr("Fractional")},
-            {RS2::LinearFormat::ArchitecturalMetric, tr("Architectural (metric)")}
-        }
-    };
-
-    addEnum_DS(names, &decimalLinearUnitsDescriptor, funGetValue, funSetValue, list, cont, funPrepareDescriptor);
+    auto decimalLinearUnitsDescriptor = LC_PropertyProviderUtils::getLinearUnitFormatEnumDescriptor();
+    addEnum_DS(names, decimalLinearUnitsDescriptor, funGetValue, funSetValue, list, cont, funPrepareDescriptor);
 }
 
 void LC_PropertiesProviderDimBase::addAngleDecimalPlacesField_DS(const LC_Property::Names& precisionNames,
-                                                                 const std::function<LC_PropertyEnumValueType(LC_DimStyle * ds)>&
+                                                                 const std::function<LC_PropertyEnumValueType(LC_DimStyle* ds)>&
                                                                  funGetValue,
-                                                                 const std::function<void(LC_PropertyEnumValueType & v,
- LC_PropertyChangeReason reason, LC_DimStyle * ds)>& funSetValue, const QList<RS_Entity*>& list, LC_PropertyContainer* cont) {
-    static LC_EnumDescriptor decimalPlacesDecimal = {
-        "decimalPlacesDecimal",
-        {
-            {1, tr("1.00")},
-            {2, tr("0.10")},
-            {3, tr("0.01")},
-            {4, tr("0.001")},
-            {5, tr("0.0001")},
-            {6, tr("0.00001")},
-            {7, tr("0.000001")},
-            {8, tr("0.0000001")},
-            {9, tr("0.00000001")}
-        }
-    };
-
-    static LC_EnumDescriptor decimalPlacesDegMinSec = {
-        "decimalPlacesDegMinSec",
-        {
-            {1, QString("0%1").arg(QChar(0xB0))},
-            {2, QString("0%100'").arg(QChar(0xB0))},
-            {3, QString("0%100'00\"").arg(QChar(0xB0))},
-            {4, QString("0%100'00.0\"").arg(QChar(0xB0))},
-            {5, QString("0%100'00.00\"").arg(QChar(0xB0))},
-            {6, QString("0%100'00.000\"").arg(QChar(0xB0))},
-            {7, QString("0%100'00.0000\"").arg(QChar(0xB0))},
-            {8, QString("0%100'00.00000\"").arg(QChar(0xB0))},
-            {9, QString("0%100'00.000000\"").arg(QChar(0xB0))}
-        }
-    };
-
-    static LC_EnumDescriptor decimalPlacesGradians = {
-        "decimalPlacesGradians",
-        {
-            {1, tr("1g")},
-            {2, tr("0.1g")},
-            {3, tr("0.01g")},
-            {4, tr("0.001g")},
-            {5, tr("0.0001g")},
-            {6, tr("0.00001g")},
-            {7, tr("0.000001g")},
-            {8, tr("0.0000001g")},
-            {9, tr("0.00000001g")}
-        }
-    };
-
-    static LC_EnumDescriptor decimalPlacesRadians = {
-        "decimalPlacesRadians",
-        {
-            {1, tr("1r")},
-            {2, tr("0.1r")},
-            {3, tr("0.01r")},
-            {4, tr("0.001r")},
-            {5, tr("0.0001r")},
-            {6, tr("0.00001r")},
-            {7, tr("0.000001r")},
-            {8, tr("0.0000001r")},
-            {9, tr("0.00000001r")}
-        }
-    };
-
-    static LC_EnumDescriptor decimalPlacesSurveyors = {
-        "decimalPlacesSurveyors",
-        {
-            {1, tr("N 1d E")},
-            {2, tr("N 0d01' E")},
-            {3, tr("N 0d00'01\" E")},
-            {4, tr("N 0d00'00.1\" E")},
-            {5, tr("N 0d00'00.01\" E")},
-            {6, tr("N 0d00'00.001\" E")},
-            {7, tr("N 0d00'00.0001\" E")},
-            {8, tr("N 0d00'00.00001\" E")},
-            {9, tr("N 0d00'00.000001\" E")}
-        }
-    };
-
+                                                                 const std::function<void(LC_PropertyEnumValueType& v, LC_DimStyle* ds)>&
+                                                                 funSetValue, const QList<RS_Entity*>& list, LC_PropertyContainer* cont) {
     auto funPrecisionProvider = [](RS_Dimension* dim) -> LC_EnumDescriptor* {
         const auto dimStyle = dim->getEffectiveCachedDimStyle();
         const auto angularFormat = dimStyle->angularFormat();
         const auto format = angularFormat->format();
-        switch (format) {
-            case RS2::DegreesDecimal:
-                return &decimalPlacesDecimal;
-            case RS2::DegreesMinutesSeconds:
-                return &decimalPlacesDegMinSec;
-            case RS2::Gradians:
-                return &decimalPlacesGradians;
-            case RS2::Radians:
-                return &decimalPlacesRadians;
-            case RS2::Surveyors:
-                return &decimalPlacesSurveyors;
-            default:
-                return &decimalPlacesDegMinSec;
-        }
+        return LC_PropertyProviderUtils::getAngleUnitsEnumDescriptor(format);
     };
 
     addVarEnum_DS(precisionNames, funPrecisionProvider, funGetValue, funSetValue, list, cont);
 }
 
 void LC_PropertiesProviderDimBase::addAngleUnitFormat(const LC_Property::Names& names,
-                                                      const std::function<LC_PropertyEnumValueType(LC_DimStyle * ds)>& funGetValue,
-                                                      const std::function<void(LC_PropertyEnumValueType & v, LC_PropertyChangeReason reason,
-                                                                               LC_DimStyle * ds)>& funSetValue,
+                                                      const std::function<LC_PropertyEnumValueType(LC_DimStyle* ds)>& funGetValue,
+                                                      const std::function<void(LC_PropertyEnumValueType& v, LC_DimStyle* ds)>& funSetValue,
                                                       const QList<RS_Entity*>& list, LC_PropertyContainer* cont) {
-    static LC_EnumDescriptor angleFormatDescriptor = {
-        "decimalLinearUnits",
-        {
-            {RS2::AngleFormat::DegreesDecimal, tr("Decimal Degrees")},
-            {RS2::AngleFormat::DegreesMinutesSeconds, tr("Deg/min/sec")},
-            {RS2::AngleFormat::Gradians, tr("Gradians")},
-            {RS2::AngleFormat::Radians, tr("Radians")},
-            {RS2::AngleFormat::Surveyors, tr("Surveyor's units")}
-        }
-    };
-
-    addEnum_DS(names, &angleFormatDescriptor, funGetValue, funSetValue, list, cont);
+    auto angleFormatDescriptor = LC_PropertyProviderUtils::getAngleUnitFormatEnumDescriptor();
+    addEnum_DS(names, angleFormatDescriptor, funGetValue, funSetValue, list, cont);
 }
 
 void LC_PropertiesProviderDimBase::createPrimaryUnitsSection(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
@@ -1160,7 +951,7 @@ void LC_PropertiesProviderDimBase::createPrimaryUnitsSection(LC_PropertyContaine
             const auto linearFormat = ds->linearFormat();
             const auto separator = linearFormat->decimalFormatSeparatorChar();
             return separator;
-        }, [](const LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+        }, [](const LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
             const auto linearFormat = ds->linearFormat();
             if (v == 44) {
                 linearFormat->setDecimalFormatSeparatorChar(',');
@@ -1175,7 +966,7 @@ void LC_PropertiesProviderDimBase::createPrimaryUnitsSection(LC_PropertyContaine
                      const auto linearFormat = ds->linearFormat();
                      LC_DimStyle::LinearFormat::TextPattern* pattern = linearFormat->getPrimaryPrefixOrSuffix();
                      return pattern->getPrefix();
-                 }, [](const QString& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                 }, [](const QString& v, const LC_DimStyle* ds) -> void {
                      const auto linearFormat = ds->linearFormat();
                      LC_DimStyle::LinearFormat::TextPattern* pattern = linearFormat->getPrimaryPrefixOrSuffix();
                      pattern->setPrefix(v);
@@ -1186,7 +977,7 @@ void LC_PropertiesProviderDimBase::createPrimaryUnitsSection(LC_PropertyContaine
                      const auto linearFormat = ds->linearFormat();
                      LC_DimStyle::LinearFormat::TextPattern* pattern = linearFormat->getPrimaryPrefixOrSuffix();
                      return pattern->getSuffix();
-                 }, [](const QString& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                 }, [](const QString& v, const LC_DimStyle* ds) -> void {
                      const auto linearFormat = ds->linearFormat();
                      LC_DimStyle::LinearFormat::TextPattern* pattern = linearFormat->getPrimaryPrefixOrSuffix();
                      pattern->setSuffix(v);
@@ -1219,7 +1010,7 @@ void LC_PropertiesProviderDimBase::createPrimaryUnitsSection(LC_PropertyContaine
                      [](const LC_DimStyle* ds) -> double {
                          const auto roundoff = ds->roundOff();
                          return roundoff->roundTo();
-                     }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                     }, [](const double& v, const LC_DimStyle* ds) -> void {
                          const auto roundoff = ds->roundOff();
                          roundoff->setRoundToValue(v);
                      }, list, cont, funPositiveDoubleSpin);
@@ -1231,7 +1022,7 @@ void LC_PropertiesProviderDimBase::createPrimaryUnitsSection(LC_PropertyContaine
                      }, [](const LC_DimStyle* ds) -> double {
                          const auto scaling = ds->scaling();
                          return scaling->linearFactor();
-                     }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                     }, [](const double& v, const LC_DimStyle* ds) -> void {
                          const auto scaling = ds->scaling();
                          scaling->setLinearFactor(v);
                      }, list, cont, funPositiveDoubleSpin);
@@ -1244,7 +1035,7 @@ void LC_PropertiesProviderDimBase::createPrimaryUnitsSection(LC_PropertyContaine
                          }, [](const LC_DimStyle* ds) -> double {
                              auto suppression = ds->zerosSuppression();
                              return /*suppression->roundTo();*/ 0.0; // fixme - dims - where from it's obtained?
-                         }, [](double& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                         }, [](double& v, const LC_DimStyle* ds) -> void {
                              // fixme - dims - where from it's obtained?
                          }, list, cont, funPositiveDoubleSpin);
         }
@@ -1255,7 +1046,7 @@ void LC_PropertiesProviderDimBase::createPrimaryUnitsSection(LC_PropertyContaine
                 const auto linearFormat = ds->linearFormat();
                 const auto format = linearFormat->format();
                 return format;
-            }, [](LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+            }, [](LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
                 const auto linearFormat = ds->linearFormat();
                 const auto format = static_cast<RS2::LinearFormat>(v);
                 linearFormat->setFormat(format);
@@ -1280,7 +1071,7 @@ void LC_PropertiesProviderDimBase::createPrimaryUnitsSection(LC_PropertyContaine
                       tr("Sets suppression of leading zeros for dimensions (DIMZIN variable)")
                   }, [](const LC_DimStyle* ds) -> bool {
                       return ds->zerosSuppression()->isSuppressLeading();
-                  }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                  }, [](const bool& v, const LC_DimStyle* ds) -> void {
                       ds->zerosSuppression()->setSuppressLeading(v);
                   }, list, cont, LC_PropertyBoolCheckBoxView::VIEW_NAME, funIsNonMetricLinearFormat);
 
@@ -1290,7 +1081,7 @@ void LC_PropertiesProviderDimBase::createPrimaryUnitsSection(LC_PropertyContaine
                       tr("Sets suppression of trailing zeros for dimensions (DIMZIN variable)")
                   }, [](const LC_DimStyle* ds) -> bool {
                       return ds->zerosSuppression()->isSuppressTrailing();
-                  }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                  }, [](const bool& v, const LC_DimStyle* ds) -> void {
                       ds->zerosSuppression()->setSuppressTrailing(v);
                   }, list, cont, LC_PropertyBoolCheckBoxView::VIEW_NAME, funIsNonMetricLinearFormat);
 
@@ -1302,7 +1093,7 @@ void LC_PropertiesProviderDimBase::createPrimaryUnitsSection(LC_PropertyContaine
                       }, [](const LC_DimStyle* ds) -> bool {
                           const auto zerosSuppression = ds->zerosSuppression();
                           return zerosSuppression->isSuppressZeroFeets();
-                      },[](const LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                      }, [](const LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
                           auto zerosSuppression = ds->zerosSuppression();
                           zerosSuppression->setSuppressZeroFeets(v);
                       }, list, cont, LC_PropertyBoolCheckBoxView::VIEW_NAME, funIsMetricLinearFormat);
@@ -1314,8 +1105,7 @@ void LC_PropertiesProviderDimBase::createPrimaryUnitsSection(LC_PropertyContaine
                       }, [](const LC_DimStyle* ds) -> bool {
                           const auto zerosSuppression = ds->zerosSuppression();
                           return zerosSuppression->isSuppressZeroInches();
-                      }, [](const LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason,
-                            const LC_DimStyle* ds) -> void {
+                      }, [](const LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
                           auto zerosSuppression = ds->zerosSuppression();
                           zerosSuppression->setSuppressZeroInches(v);
                       }, list, cont, LC_PropertyBoolCheckBoxView::VIEW_NAME, funIsMetricLinearFormat);
@@ -1326,7 +1116,7 @@ void LC_PropertiesProviderDimBase::createPrimaryUnitsSection(LC_PropertyContaine
                 const auto linearFormat = ds->linearFormat();
                 const auto format = linearFormat->decimalPlaces();
                 return format;
-            }, [](const LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+            }, [](const LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
                 const auto linearFormat = ds->linearFormat();
                 linearFormat->setDecimalPlaces(v);
             }, list, cont);
@@ -1341,8 +1131,7 @@ void LC_PropertiesProviderDimBase::createPrimaryUnitsSection(LC_PropertyContaine
                                           const auto linearFormat = ds->angularFormat();
                                           const auto format = linearFormat->decimalPlaces();
                                           return format;
-                                      }, [](const LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason,
-                                            const LC_DimStyle* ds) -> void {
+                                      }, [](const LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
                                           const auto linearFormat = ds->angularFormat();
                                           linearFormat->setDecimalPlaces(v);
                                       }, list, cont);
@@ -1352,8 +1141,7 @@ void LC_PropertiesProviderDimBase::createPrimaryUnitsSection(LC_PropertyContaine
                                const auto angularFormat = ds->angularFormat();
                                const auto format = angularFormat->format();
                                return format;
-                           }, [](LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason,
-                                 const LC_DimStyle* ds) -> void {
+                           }, [](LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
                                const auto angularFormat = ds->angularFormat();
                                const auto format = static_cast<RS2::AngleFormat>(v);
                                angularFormat->setFormat(format);
@@ -1370,7 +1158,7 @@ void LC_PropertiesProviderDimBase::createAlternateUnitsSection(LC_PropertyContai
                       tr("Sets units format for alternate units dimensions On or Off except angular (DIMALT variable)")
                   }, [](LC_DimStyle* ds) -> bool {
                       return ds->hasAltUnits();
-                  }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                  }, [](const bool& v, const LC_DimStyle* ds) -> void {
                       ds->linearFormat()->setAlternateUnits(v ? LC_DimStyle::LinearFormat::ENABLE : LC_DimStyle::LinearFormat::DISABLE);
                   }, list, cont);
 
@@ -1388,8 +1176,7 @@ void LC_PropertiesProviderDimBase::createAlternateUnitsSection(LC_PropertyContai
                                const auto linearFormat = ds->linearFormat();
                                const auto format = linearFormat->altFormat();
                                return format;
-                           }, [](LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason,
-                                 const LC_DimStyle* ds) -> void {
+                           }, [](LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
                                const auto linearFormat = ds->linearFormat();
                                const auto format = static_cast<RS2::LinearFormat>(v);
                                linearFormat->setAltFormat(format);
@@ -1403,8 +1190,7 @@ void LC_PropertiesProviderDimBase::createAlternateUnitsSection(LC_PropertyContai
                                  const auto linearFormat = ds->linearFormat();
                                  const auto format = linearFormat->altDecimalPlaces();
                                  return format;
-                             }, [](const LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason,
-                                   const LC_DimStyle* ds) -> void {
+                             }, [](const LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
                                  const auto linearFormat = ds->linearFormat();
                                  linearFormat->setAltDecimalPlaces(v);
                              }, list, cont, funAltUnitsDisabled);
@@ -1413,7 +1199,7 @@ void LC_PropertiesProviderDimBase::createAlternateUnitsSection(LC_PropertyContai
                  [](const LC_DimStyle* ds) -> double {
                      const auto roundoff = ds->roundOff();
                      return roundoff->altRoundTo();
-                 }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                 }, [](const double& v, const LC_DimStyle* ds) -> void {
                      const auto roundoff = ds->roundOff();
                      roundoff->setAltRoundToValue(v);
                  }, list, cont, funAltUnitsDisabled);
@@ -1429,7 +1215,7 @@ void LC_PropertiesProviderDimBase::createAlternateUnitsSection(LC_PropertyContai
                  [](const LC_DimStyle* ds) -> double {
                      const auto linearFormat = ds->linearFormat();
                      return linearFormat->altUnitsMultiplier();
-                 }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                 }, [](const double& v, const LC_DimStyle* ds) -> void {
                      const auto linearFormat = ds->linearFormat();
                      linearFormat->setAltUnitsMultiplier(v);
                  }, list, cont, funPositiveDoubleSpin);
@@ -1456,7 +1242,7 @@ void LC_PropertiesProviderDimBase::createAlternateUnitsSection(LC_PropertyContai
                       tr("Sets suppression of leading zeros for alternate units in dimension (DIMALTZ variable)")
                   }, [](const LC_DimStyle* ds) -> bool {
                       return ds->zerosSuppression()->isAltSuppressLeading();
-                  }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                  }, [](const bool& v, const LC_DimStyle* ds) -> void {
                       ds->zerosSuppression()->setAltSuppressLeading(v);
                   }, list, cont, LC_PropertyBoolCheckBoxView::VIEW_NAME, funIsNonMetricLinearFormat);
 
@@ -1466,7 +1252,7 @@ void LC_PropertiesProviderDimBase::createAlternateUnitsSection(LC_PropertyContai
                       tr("Sets suppression of trailing zeros for alternate units in dimension (DIMALTZ variable)")
                   }, [](const LC_DimStyle* ds) -> bool {
                       return ds->zerosSuppression()->isAltSuppressTrailing();
-                  }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                  }, [](const bool& v, const LC_DimStyle* ds) -> void {
                       ds->zerosSuppression()->setAltSuppressTrailing(v);
                   }, list, cont, LC_PropertyBoolCheckBoxView::VIEW_NAME, funIsNonMetricLinearFormat);
 
@@ -1477,8 +1263,7 @@ void LC_PropertiesProviderDimBase::createAlternateUnitsSection(LC_PropertyContai
                   }, [](const LC_DimStyle* ds) -> bool {
                       const auto zerosSuppression = ds->zerosSuppression();
                       return zerosSuppression->isAltSuppressZeroFeets();
-                  },
-                  [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                  }, [](const bool& v, const LC_DimStyle* ds) -> void {
                       ds->zerosSuppression()->setAltSuppressZeroFeets(v);
                   }, list, cont, LC_PropertyBoolCheckBoxView::VIEW_NAME, funIsMetricLinearFormat);
 
@@ -1489,7 +1274,7 @@ void LC_PropertiesProviderDimBase::createAlternateUnitsSection(LC_PropertyContai
                   }, [](const LC_DimStyle* ds) -> bool {
                       const auto zerosSuppression = ds->zerosSuppression();
                       return zerosSuppression->isAltSuppressZeroInches();
-                  }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                  }, [](const bool& v, const LC_DimStyle* ds) -> void {
                       ds->zerosSuppression()->setAltSuppressZeroInches(v);
                   }, list, cont, LC_PropertyBoolCheckBoxView::VIEW_NAME, funIsMetricLinearFormat);
 
@@ -1498,7 +1283,7 @@ void LC_PropertiesProviderDimBase::createAlternateUnitsSection(LC_PropertyContai
                      const auto linearFormat = ds->linearFormat();
                      LC_DimStyle::LinearFormat::TextPattern* pattern = linearFormat->getAlternativePrefixOrSuffix();
                      return pattern->getPrefix();
-                 }, [](const QString& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                 }, [](const QString& v, const LC_DimStyle* ds) -> void {
                      const auto linearFormat = ds->linearFormat();
                      LC_DimStyle::LinearFormat::TextPattern* pattern = linearFormat->getAlternativePrefixOrSuffix();
                      pattern->setPrefix(v);
@@ -1509,7 +1294,7 @@ void LC_PropertiesProviderDimBase::createAlternateUnitsSection(LC_PropertyContai
                      const auto linearFormat = ds->linearFormat();
                      LC_DimStyle::LinearFormat::TextPattern* pattern = linearFormat->getAlternativePrefixOrSuffix();
                      return pattern->getSuffix();
-                 }, [](const QString& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                 }, [](const QString& v, const LC_DimStyle* ds) -> void {
                      const auto linearFormat = ds->linearFormat();
                      LC_DimStyle::LinearFormat::TextPattern* pattern = linearFormat->getAlternativePrefixOrSuffix();
                      pattern->setSuffix(v);
@@ -1526,7 +1311,7 @@ void LC_PropertiesProviderDimBase::createAlternateUnitsSection(LC_PropertyContai
         //                             LC_DimStyle* dimStyle = e->getEffectiveCachedDimStyle();
         //                             auto suppression = dimStyle->zerosSuppression();
         //                             return /*suppression->roundTo();*/ 0.0; // fixme - dims - where from it's obtained?
-        //                         }, nullptr/*[](double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Dimension* e) -> void {
+        //                         }, nullptr/*[](double& v, RS_Dimension* e) -> void {
         //                         LC_DimStyle* dimStyle = e->getEffectiveCachedDimStyle();
         //                         auto roundoff = dimStyle->roundOff();
         //                         roundoff->setRoundToValue(v);
@@ -1549,7 +1334,7 @@ void LC_PropertiesProviderDimBase::createTolerancesSection(LC_PropertyContainer*
     addEnum_DS({"dimTolAlign", tr("Tolerance alignment"), tr("Specifies alignment for stacked numbers (DIMTALN variable)")},
                &dimtalntPolicyDescriptor, [](const LC_DimStyle* ds) -> LC_PropertyEnumValueType {
                    return ds->latteralTolerance()->adjustment();
-               }, [](const LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+               }, [](const LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
                    ds->latteralTolerance()->setAdjustmentRaw(v);
                }, list, cont);
 
@@ -1568,7 +1353,7 @@ void LC_PropertiesProviderDimBase::createTolerancesSection(LC_PropertyContainer*
                    const int tolMethod = LC_DlgDimStyleManager::computeToleranceMethod(ds, tolerance, enable, showVerticalPosition,
                                                                                        showLowerLimit, showUpperLimit);
                    return tolMethod;
-               }, [](const LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+               }, [](const LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
                    bool enable = true;
                    const auto tol = ds->latteralTolerance();
                    const auto dimline = ds->dimensionLine();
@@ -1586,7 +1371,7 @@ void LC_PropertiesProviderDimBase::createTolerancesSection(LC_PropertyContainer*
                      tr("Specifies the minimal (or lower) tolerance limit for dimension text when DIMTOL or DIMLIM is on (DIMTM variable)")
                  }, [](const LC_DimStyle* ds) -> double {
                      return ds->latteralTolerance()->lowerToleranceLimit();
-                 }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                 }, [](const double& v, const LC_DimStyle* ds) -> void {
                      ds->latteralTolerance()->setLowerToleranceLimit(v);
                  }, list, cont, [](RS_Dimension* dimension, LC_PropertyViewDescriptor& descriptor)-> bool {
                      descriptor.attributes[LC_PropertyDoubleSpinBoxView::ATTR_MIN] = 0.0;
@@ -1605,7 +1390,7 @@ void LC_PropertiesProviderDimBase::createTolerancesSection(LC_PropertyContainer*
                      tr("Specifies the maximum (or upper) tolerance limit for dimension text when DIMTOL or DIMLIM is on (DIMTP variable)")
                  }, [](const LC_DimStyle* ds) -> double {
                      return ds->latteralTolerance()->upperToleranceLimit();
-                 }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                 }, [](const double& v, const LC_DimStyle* ds) -> void {
                      ds->latteralTolerance()->setUpperToleranceLimit(v);
                  }, list, cont, [](RS_Dimension* dimension, LC_PropertyViewDescriptor& descriptor)-> bool {
                      descriptor.attributes[LC_PropertyDoubleSpinBoxView::ATTR_MIN] = 0.0;
@@ -1634,7 +1419,7 @@ void LC_PropertiesProviderDimBase::createTolerancesSection(LC_PropertyContainer*
                }, &dimtoljPolicyDescriptor, [](const LC_DimStyle* ds) -> LC_PropertyEnumValueType {
                    const auto tolerance = ds->latteralTolerance();
                    return tolerance->verticalJustification();
-               }, [](const LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+               }, [](const LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
                    const auto tol = ds->latteralTolerance();
                    tol->setVerticalJustificationRaw(v);
                }, list, cont);
@@ -1649,8 +1434,7 @@ void LC_PropertiesProviderDimBase::createTolerancesSection(LC_PropertyContainer*
                                      const auto tol = ds->latteralTolerance();
                                      const auto places = tol->decimalPlaces();
                                      return places;
-                                 }, [](const LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason,
-                                       const LC_DimStyle* ds) -> void {
+                                 }, [](const LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
                                      const auto tol = ds->latteralTolerance();
                                      tol->setDecimalPlaces(v);
                                  }, list, cont);
@@ -1665,7 +1449,7 @@ void LC_PropertiesProviderDimBase::createTolerancesSection(LC_PropertyContainer*
                 const auto tol = ds->latteralTolerance();
                 const auto format = tol->decimalPlaces();
                 return format;
-            }, [](const LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+            }, [](const LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
                 const auto tol = ds->latteralTolerance();
                 tol->setDecimalPlaces(v);
             }, list, cont);
@@ -1689,7 +1473,7 @@ void LC_PropertiesProviderDimBase::createTolerancesSection(LC_PropertyContainer*
                       tr("Sets suppression of leading zeros for tolerance values in dimension (DIMTZIN value)")
                   }, [](const LC_DimStyle* ds) -> bool {
                       return ds->zerosSuppression()->isTolSuppressLeading();
-                  }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                  }, [](const bool& v, const LC_DimStyle* ds) -> void {
                       ds->zerosSuppression()->setTolSuppressLeading(v);
                   }, list, cont, LC_PropertyBoolCheckBoxView::VIEW_NAME, funIsNonMetricLinearFormat);
 
@@ -1699,7 +1483,7 @@ void LC_PropertiesProviderDimBase::createTolerancesSection(LC_PropertyContainer*
                       tr("Sets suppression of trailing zeros for tolerance values in dimension (DIMTZIN value)")
                   }, [](const LC_DimStyle* ds) -> bool {
                       return ds->zerosSuppression()->isTolSuppressTrailing();
-                  }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                  }, [](const bool& v, const LC_DimStyle* ds) -> void {
                       ds->zerosSuppression()->setTolSuppressTrailing(v);
                   }, list, cont, LC_PropertyBoolCheckBoxView::VIEW_NAME, funIsNonMetricLinearFormat);
 
@@ -1711,7 +1495,7 @@ void LC_PropertiesProviderDimBase::createTolerancesSection(LC_PropertyContainer*
                       }, [](const LC_DimStyle* ds) -> bool {
                           const auto zerosSuppression = ds->zerosSuppression();
                           return zerosSuppression->isTolSuppressZeroFeets();
-                      }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                      }, [](const bool& v, const LC_DimStyle* ds) -> void {
                           ds->zerosSuppression()->setTolSuppressZeroFeets(v);
                       }, list, cont, LC_PropertyBoolCheckBoxView::VIEW_NAME, funIsMetricLinearFormat);
 
@@ -1722,7 +1506,7 @@ void LC_PropertiesProviderDimBase::createTolerancesSection(LC_PropertyContainer*
                       }, [](const LC_DimStyle* ds) -> bool {
                           const auto zerosSuppression = ds->zerosSuppression();
                           return zerosSuppression->isTolSuppressZeroInches();
-                      }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                      }, [](const bool& v, const LC_DimStyle* ds) -> void {
                           ds->zerosSuppression()->setTolSuppressZeroInches(v);
                       }, list, cont, LC_PropertyBoolCheckBoxView::VIEW_NAME, funIsMetricLinearFormat);
     }
@@ -1734,7 +1518,7 @@ void LC_PropertiesProviderDimBase::createTolerancesSection(LC_PropertyContainer*
                          "Specifies scale factor for text height of tolerance values relative to dimension text height as set by DIMTXT (DIMTFAC variable)")
                  }, [](const LC_DimStyle* ds) -> double {
                      return ds->latteralTolerance()->heightScaleFactorToDimText();
-                 }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                 }, [](const double& v, const LC_DimStyle* ds) -> void {
                      ds->latteralTolerance()->setHeightScaleFactorToDimText(v);
                  }, list, cont, []([[maybe_unused]] RS_Dimension* dimension, LC_PropertyViewDescriptor& descriptor)-> bool {
                      descriptor.attributes[LC_PropertyDoubleSpinBoxView::ATTR_MIN] = 0.0;
@@ -1764,8 +1548,7 @@ void LC_PropertiesProviderDimBase::createTolerancesSection(LC_PropertyContainer*
                                      const auto tol = ds->latteralTolerance();
                                      const auto places = tol->decimalPlacesAltDim();
                                      return places;
-                                 }, [](const LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason,
-                                       const LC_DimStyle* ds) -> void {
+                                 }, [](const LC_PropertyEnumValueType& v, const LC_DimStyle* ds) -> void {
                                      const auto tol = ds->latteralTolerance();
                                      tol->setDecimalPlacesAltDim(v);
                                  }, list, cont, [](RS_Dimension* dim, [[maybe_unused]] LC_PropertyViewDescriptor& descriptor)-> bool {
@@ -1780,7 +1563,7 @@ void LC_PropertiesProviderDimBase::createTolerancesSection(LC_PropertyContainer*
                           tr("Sets suppression of leading zeros for alternate units tolerance values in dimension (DIMALTTZ value)")
                       }, [](const LC_DimStyle* ds) -> bool {
                           return ds->zerosSuppression()->isAltTolSuppressLeading();
-                      }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                      }, [](const bool& v, const LC_DimStyle* ds) -> void {
                           ds->zerosSuppression()->setAltTolSuppressLeading(v);
                       }, list, cont, LC_PropertyBoolCheckBoxView::VIEW_NAME, funIsAltNonMetricLinearFormat);
 
@@ -1790,7 +1573,7 @@ void LC_PropertiesProviderDimBase::createTolerancesSection(LC_PropertyContainer*
                           tr("Sets suppression of trailing zeros for alternate units tolerance values in dimension (DIMALTTZ value)")
                       }, [](const LC_DimStyle* ds) -> bool {
                           return ds->zerosSuppression()->isAltTolSuppressTrailing();
-                      }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                      }, [](const bool& v, const LC_DimStyle* ds) -> void {
                           ds->zerosSuppression()->setAltTolSuppressTrailing(v);
                       }, list, cont, LC_PropertyBoolCheckBoxView::VIEW_NAME, funIsAltNonMetricLinearFormat);
 
@@ -1801,7 +1584,7 @@ void LC_PropertiesProviderDimBase::createTolerancesSection(LC_PropertyContainer*
                       }, [](const LC_DimStyle* ds) -> bool {
                           const auto zerosSuppression = ds->zerosSuppression();
                           return zerosSuppression->isAltTolSuppressZeroFeets();
-                      }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                      }, [](const bool& v, const LC_DimStyle* ds) -> void {
                           ds->zerosSuppression()->setAltTolSuppressZeroFeets(v);
                       }, list, cont, LC_PropertyBoolCheckBoxView::VIEW_NAME, funIsAltMetricLinearFormat);
 
@@ -1812,7 +1595,7 @@ void LC_PropertiesProviderDimBase::createTolerancesSection(LC_PropertyContainer*
                       }, [](const LC_DimStyle* ds) -> bool {
                           const auto zerosSuppression = ds->zerosSuppression();
                           return zerosSuppression->isAltTolSuppressZeroInches();
-                      }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, const LC_DimStyle* ds) -> void {
+                      }, [](const bool& v, const LC_DimStyle* ds) -> void {
                           ds->zerosSuppression()->setAltTolSuppressZeroInches(v);
                       }, list, cont, LC_PropertyBoolCheckBoxView::VIEW_NAME, funIsAltMetricLinearFormat);
     }
@@ -1831,10 +1614,9 @@ void LC_PropertiesProviderDimBase::doFillEntitySpecificProperties(LC_PropertyCon
     createTolerancesSection(container, list);
 }
 
-void LC_PropertiesProviderDimBase::addColor_DS(const LC_Property::Names& names,
-                                               const std::function<RS_Color(LC_DimStyle * ds)>& funGetValue,
-                                               const std::function<void(RS_Color & v, LC_PropertyChangeReason reason, LC_DimStyle * ds)>&
-                                               funSetValue, const QList<RS_Entity*>& list, LC_PropertyContainer* cont) {
+void LC_PropertiesProviderDimBase::addColor_DS(const LC_Property::Names& names, const std::function<RS_Color(LC_DimStyle* ds)>& funGetValue,
+                                               const std::function<void(RS_Color& v, LC_DimStyle* ds)>& funSetValue,
+                                               const QList<RS_Entity*>& list, LC_PropertyContainer* cont) {
     add<RS_Dimension>(names, [this, funGetValue, funSetValue](const LC_Property::Names& n, RS_Dimension* entity,
                                                               LC_PropertyContainer* container, QList<LC_PropertyAtomic*>* props) -> void {
         auto* property = new LC_PropertyRSColor(container, false);
@@ -1842,10 +1624,9 @@ void LC_PropertiesProviderDimBase::addColor_DS(const LC_Property::Names& names,
         createDelegatedStorage<RS_Color, RS_Dimension>([funGetValue](RS_Dimension* e) -> RS_Color {
                                                            LC_DimStyle* dimStyle = e->getEffectiveCachedDimStyle();
                                                            return funGetValue(dimStyle);
-                                                       }, [funSetValue](RS_Color& v, const LC_PropertyChangeReason reason,
-                                                                        RS_Dimension* e)-> void {
+                                                       }, [funSetValue](RS_Color& v, RS_Dimension* e)-> void {
                                                            LC_DimStyle* dimStyle = e->getEffectiveDimStyleOverride();
-                                                           funSetValue(v, reason, dimStyle);
+                                                           funSetValue(v, dimStyle);
                                                        }, [funGetValue](const RS_Color& l, RS_Dimension* e) -> bool {
                                                            LC_DimStyle* dimStyle = e->getEffectiveCachedDimStyle();
                                                            const bool equals = l == funGetValue(dimStyle);
@@ -1859,10 +1640,9 @@ void LC_PropertiesProviderDimBase::addColor_DS(const LC_Property::Names& names,
 }
 
 void LC_PropertiesProviderDimBase::addLineType_DS(const LC_Property::Names& names,
-                                                  const std::function<RS2::LineType(LC_DimStyle * ds)>& funGetValue,
-                                                  const std::function<void(RS2::LineType & v, LC_PropertyChangeReason reason,
-                                                                           LC_DimStyle * ds)>& funSetValue, const QList<RS_Entity*>& list,
-                                                  LC_PropertyContainer* cont) {
+                                                  const std::function<RS2::LineType(LC_DimStyle* ds)>& funGetValue,
+                                                  const std::function<void(RS2::LineType& v, LC_DimStyle* ds)>& funSetValue,
+                                                  const QList<RS_Entity*>& list, LC_PropertyContainer* cont) {
     add<RS_Dimension>(names, [this, funGetValue, funSetValue](const LC_Property::Names& n, RS_Dimension* entity,
                                                               LC_PropertyContainer* container, QList<LC_PropertyAtomic*>* props) -> void {
         auto* property = new LC_PropertyLineType(container, false);
@@ -1870,11 +1650,9 @@ void LC_PropertiesProviderDimBase::addLineType_DS(const LC_Property::Names& name
         createDelegatedStorage<RS2::LineType, RS_Dimension>([funGetValue](RS_Dimension* e)-> RS2::LineType {
                                                                 LC_DimStyle* dimStyle = e->getEffectiveCachedDimStyle();
                                                                 return funGetValue(dimStyle);
-                                                            }, [funSetValue](RS2::LineType& l,
-                                                                             [[maybe_unused]] const LC_PropertyChangeReason reason,
-                                                                             RS_Dimension* e) -> void {
+                                                            }, [funSetValue](RS2::LineType& l, RS_Dimension* e) -> void {
                                                                 LC_DimStyle* dimStyle = e->getEffectiveDimStyleOverride();
-                                                                funSetValue(l, reason, dimStyle);
+                                                                funSetValue(l, dimStyle);
                                                             }, [funGetValue](const RS2::LineType& l, RS_Dimension* e) -> bool {
                                                                 LC_DimStyle* ds = e->getEffectiveCachedDimStyle();
                                                                 const bool equals = l == funGetValue(ds);
@@ -1888,10 +1666,9 @@ void LC_PropertiesProviderDimBase::addLineType_DS(const LC_Property::Names& name
 }
 
 void LC_PropertiesProviderDimBase::addLineWidth_DS(const LC_Property::Names& names,
-                                                   const std::function<RS2::LineWidth(LC_DimStyle * e)>& funGetValue,
-                                                   const std::function<void(RS2::LineWidth & v, LC_PropertyChangeReason reason,
-                                                                            LC_DimStyle * e)>& funSetValue, const QList<RS_Entity*>& list,
-                                                   LC_PropertyContainer* cont) {
+                                                   const std::function<RS2::LineWidth(LC_DimStyle* e)>& funGetValue,
+                                                   const std::function<void(RS2::LineWidth& v, LC_DimStyle* e)>& funSetValue,
+                                                   const QList<RS_Entity*>& list, LC_PropertyContainer* cont) {
     add<RS_Dimension>(names, [this, funGetValue, funSetValue](const LC_Property::Names& n, RS_Dimension* entity,
                                                               LC_PropertyContainer* container, QList<LC_PropertyAtomic*>* props) -> void {
         auto* property = new LC_PropertyLineWidth(container, false);
@@ -1899,11 +1676,9 @@ void LC_PropertiesProviderDimBase::addLineWidth_DS(const LC_Property::Names& nam
         createDelegatedStorage<RS2::LineWidth, RS_Dimension>([funGetValue](RS_Dimension* e) -> RS2::LineWidth {
                                                                  LC_DimStyle* dimStyle = e->getEffectiveCachedDimStyle();
                                                                  return funGetValue(dimStyle);
-                                                             }, [funSetValue](RS2::LineWidth& l,
-                                                                              [[maybe_unused]] const LC_PropertyChangeReason reason,
-                                                                              RS_Dimension* e) -> void {
+                                                             }, [funSetValue](RS2::LineWidth& l, RS_Dimension* e) -> void {
                                                                  LC_DimStyle* dimStyle = e->getEffectiveDimStyleOverride();
-                                                                 funSetValue(l, reason, dimStyle);
+                                                                 funSetValue(l, dimStyle);
                                                              }, [funGetValue](const RS2::LineWidth& l, RS_Dimension* e) -> bool {
                                                                  LC_DimStyle* dimStyle = e->getEffectiveCachedDimStyle();
                                                                  const bool equals = l == funGetValue(dimStyle);
@@ -1916,82 +1691,76 @@ void LC_PropertiesProviderDimBase::addLineWidth_DS(const LC_Property::Names& nam
     }, list, cont);
 }
 
-void LC_PropertiesProviderDimBase::addBoolean_DS(const LC_Property::Names& names, const std::function<bool(LC_DimStyle * e)>& funGetValue,
-                                                 const std::function<void(bool&v, LC_PropertyChangeReason reason, LC_DimStyle * e)>&
-                                                 funSetValue, const QList<RS_Entity*>& list, LC_PropertyContainer* container,
-                                                 const QString& viewName,
-                                                 const std::function<bool(RS_Dimension *, LC_PropertyViewDescriptor & descriptor)>&
+void LC_PropertiesProviderDimBase::addBoolean_DS(const LC_Property::Names& names, const std::function<bool(LC_DimStyle* e)>& funGetValue,
+                                                 const std::function<void(bool& v, LC_DimStyle* e)>& funSetValue,
+                                                 const QList<RS_Entity*>& list, LC_PropertyContainer* container, const QString& viewName,
+                                                 const std::function<bool(RS_Dimension*, LC_PropertyViewDescriptor& descriptor)>&
                                                  funPrepareDescriptor) {
     addBoolean<RS_Dimension>(names, [funGetValue](RS_Dimension* e) -> bool {
                                  LC_DimStyle* dimStyle = e->getEffectiveCachedDimStyle();
                                  return funGetValue(dimStyle);
-                             }, [funSetValue](bool& v, [[maybe_unused]] const LC_PropertyChangeReason reason, RS_Dimension* e) -> void {
+                             }, [funSetValue](bool& v, RS_Dimension* e) -> void {
                                  LC_DimStyle* dimStyle = e->getEffectiveDimStyleOverride();
-                                 funSetValue(v, reason, dimStyle);
+                                 funSetValue(v, dimStyle);
                              }, list, container, viewName, funPrepareDescriptor);
 }
 
-void LC_PropertiesProviderDimBase::addString_DS(const LC_Property::Names& names, const std::function<QString(LC_DimStyle * e)>& funGetValue,
-                                                const std::function<void(QString & v, LC_PropertyChangeReason reason, LC_DimStyle * e)>&
-                                                funSetValue, const QList<RS_Entity*>& list, LC_PropertyContainer* container,
-                                                const bool multiLine,
-                                                const std::function<bool(RS_Dimension *, LC_PropertyViewDescriptor & descriptor)>&
+void LC_PropertiesProviderDimBase::addString_DS(const LC_Property::Names& names, const std::function<QString(LC_DimStyle* e)>& funGetValue,
+                                                const std::function<void(QString& v, LC_DimStyle* e)>& funSetValue,
+                                                const QList<RS_Entity*>& list, LC_PropertyContainer* container, const bool multiLine,
+                                                const std::function<bool(RS_Dimension*, LC_PropertyViewDescriptor& descriptor)>&
                                                 funPrepareDescriptor) {
     addString<RS_Dimension>(names, [funGetValue](RS_Dimension* e) -> QString {
                                 LC_DimStyle* dimStyle = e->getEffectiveCachedDimStyle();
                                 return funGetValue(dimStyle);
-                            }, [funSetValue](QString& v, [[maybe_unused]] const LC_PropertyChangeReason reason, RS_Dimension* e) -> void {
+                            }, [funSetValue](QString& v, RS_Dimension* e) -> void {
                                 LC_DimStyle* dimStyle = e->getEffectiveDimStyleOverride();
-                                funSetValue(v, reason, dimStyle);
+                                funSetValue(v, dimStyle);
                             }, list, container, multiLine, funPrepareDescriptor);
 }
 
-void LC_PropertiesProviderDimBase::addDouble_DS(const LC_Property::Names& names, const std::function<double(LC_DimStyle * e)>& funGetValue,
-                                                const std::function<void(double&v, LC_PropertyChangeReason reason, LC_DimStyle * e)>&
-                                                funSetValue, const QList<RS_Entity*>& list, LC_PropertyContainer* container,
-                                                const std::function<bool(RS_Dimension *, LC_PropertyViewDescriptor & descriptor)>&
+void LC_PropertiesProviderDimBase::addDouble_DS(const LC_Property::Names& names, const std::function<double(LC_DimStyle* e)>& funGetValue,
+                                                const std::function<void(double& v, LC_DimStyle* e)>& funSetValue,
+                                                const QList<RS_Entity*>& list, LC_PropertyContainer* container,
+                                                const std::function<bool(RS_Dimension*, LC_PropertyViewDescriptor& descriptor)>&
                                                 funPrepareDescriptor) {
     addDouble<RS_Dimension>(names, [funGetValue](RS_Dimension* e) -> double {
                                 LC_DimStyle* dimStyle = e->getEffectiveCachedDimStyle();
                                 return funGetValue(dimStyle);
-                            }, [funSetValue](double& v, [[maybe_unused]] const LC_PropertyChangeReason reason, RS_Dimension* e) -> void {
+                            }, [funSetValue](double& v, RS_Dimension* e) -> void {
                                 LC_DimStyle* dimStyle = e->getEffectiveDimStyleOverride();
-                                funSetValue(v, reason, dimStyle);
+                                funSetValue(v, dimStyle);
                             }, list, container, funPrepareDescriptor);
 }
 
 void LC_PropertiesProviderDimBase::addEnum_DS(const LC_Property::Names& names, const LC_EnumDescriptor* enumDescriptor,
-                                              const std::function<LC_PropertyEnumValueType(LC_DimStyle * e)>& funGetValue,
-                                              const std::function<
-                                                  void(LC_PropertyEnumValueType & v, LC_PropertyChangeReason reason, LC_DimStyle * e)>&
-                                              funSetValue, const QList<RS_Entity*>& list, LC_PropertyContainer* container,
-                                              const std::function<bool(RS_Dimension *, LC_PropertyViewDescriptor & descriptor)>&
+                                              const std::function<LC_PropertyEnumValueType(LC_DimStyle* e)>& funGetValue,
+                                              const std::function<void (LC_PropertyEnumValueType& v, LC_DimStyle* e)>& funSetValue,
+                                              const QList<RS_Entity*>& list, LC_PropertyContainer* container,
+                                              const std::function<bool(RS_Dimension*, LC_PropertyViewDescriptor& descriptor)>&
                                               funPrepareDescriptor) {
     addEnum<RS_Dimension>(names, enumDescriptor, [funGetValue](RS_Dimension* e) -> LC_PropertyEnumValueType {
                               LC_DimStyle* dimStyle = e->getEffectiveCachedDimStyle();
                               return funGetValue(dimStyle);
-                          }, [funSetValue](LC_PropertyEnumValueType& v, [[maybe_unused]] const LC_PropertyChangeReason reason,
-                                           RS_Dimension* e) -> void {
+                          }, [funSetValue](LC_PropertyEnumValueType& v, RS_Dimension* e) -> void {
                               LC_DimStyle* dimStyle = e->getEffectiveDimStyleOverride();
-                              funSetValue(v, reason, dimStyle);
+                              funSetValue(v, dimStyle);
                           }, list, container, funPrepareDescriptor);
 }
 
 void LC_PropertiesProviderDimBase::addVarEnum_DS(const LC_Property::Names& names,
-                                                 const std::function<LC_EnumDescriptor * (RS_Dimension * dim)>& enumDescriptorProvider,
-                                                 const std::function<LC_PropertyEnumValueType(LC_DimStyle * e)>& funGetValue,
-                                                 const std::function<
-                                                     void(LC_PropertyEnumValueType & v, LC_PropertyChangeReason reason, LC_DimStyle * e)>&
-                                                 funSetValue, const QList<RS_Entity*>& list, LC_PropertyContainer* container,
-                                                 const std::function<bool(RS_Dimension *, LC_PropertyViewDescriptor & descriptor)>&
+                                                 const std::function<LC_EnumDescriptor *(RS_Dimension* dim)>& enumDescriptorProvider,
+                                                 const std::function<LC_PropertyEnumValueType(LC_DimStyle* e)>& funGetValue,
+                                                 const std::function<void (LC_PropertyEnumValueType& v, LC_DimStyle* e)>& funSetValue,
+                                                 const QList<RS_Entity*>& list, LC_PropertyContainer* container,
+                                                 const std::function<bool(RS_Dimension*, LC_PropertyViewDescriptor& descriptor)>&
                                                  funPrepareDescriptor) {
     addVarEnum<RS_Dimension>(names, enumDescriptorProvider, [funGetValue](RS_Dimension* e) -> LC_PropertyEnumValueType {
                                  LC_DimStyle* dimStyle = e->getEffectiveCachedDimStyle();
                                  return funGetValue(dimStyle);
-                             }, [funSetValue](LC_PropertyEnumValueType& v, [[maybe_unused]] const LC_PropertyChangeReason reason,
-                                              RS_Dimension* e) -> void {
+                             }, [funSetValue](LC_PropertyEnumValueType& v, RS_Dimension* e) -> void {
                                  LC_DimStyle* dimStyle = e->getEffectiveDimStyleOverride();
-                                 funSetValue(v, reason, dimStyle);
+                                 funSetValue(v, dimStyle);
                              }, list, container, funPrepareDescriptor);
 }
 

@@ -28,6 +28,7 @@
 #include "lc_actionselectdimordinatesameorigin.h"
 #include "lc_dimordinate.h"
 #include "lc_property_action.h"
+#include "lc_property_action_link_view.h"
 #include "rs_selection.h"
 
 void LC_PropertiesProviderDimOrdinate::rebaseDimensions(const LC_GraphicViewport* viewport, const double horizontalDirection,
@@ -51,21 +52,21 @@ void LC_PropertiesProviderDimOrdinate::doCreateDimGeometrySection(LC_PropertyCon
     addVector<LC_DimOrdinate>({"dimFeaturePoint", tr("Feature point"), tr("Position of feature point")},
                               [](const LC_DimOrdinate* e) -> RS_Vector {
                                   return e->getFeaturePoint();
-                              }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, LC_DimOrdinate* e) -> void {
+                              }, [](const RS_Vector& v, LC_DimOrdinate* e) -> void {
                                   e->setFeaturePoint(v);
                               }, list, container);
 
     addVector<LC_DimOrdinate>({"dimLeaderEndPoint", tr("Leader end point"), tr("Position of leader end point")},
                               [](const LC_DimOrdinate* e) -> RS_Vector {
                                   return e->getLeaderEndPoint();
-                              }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, LC_DimOrdinate* e) -> void {
+                              }, [](const RS_Vector& v, LC_DimOrdinate* e) -> void {
                                   e->setLeaderPoint(v);
                               }, list, container);
 
     addBoolean<LC_DimOrdinate>({"dimForX", tr("Is for X axis"), tr("Defines whether ordinate dimension is for X axis")},
                                [](const LC_DimOrdinate* e) -> bool {
                                    return e->isForXDirection();
-                               }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, LC_DimOrdinate* e) -> void {
+                               }, [](const bool& v, LC_DimOrdinate* e) -> void {
                                    e->setForXDirection(v);
                                }, list, container);
 
@@ -81,8 +82,8 @@ void LC_PropertiesProviderDimOrdinate::doCreateDimGeometrySection(LC_PropertyCon
             };
             selectSameBaseProperty->setNames(names);
             LC_PropertyViewDescriptor viewDescriptor("Link");
-            viewDescriptor["title"] = names.displayName;
-            selectSameBaseProperty->setClickHandler([viewport, doc, list]([[maybe_unused]] const LC_PropertyAction* action) {
+            viewDescriptor[LC_PropertyActionLinkView::ATTR_TITLE] = names.displayName;
+            selectSameBaseProperty->setClickHandler([viewport, doc, list]([[maybe_unused]] const LC_PropertyAction* action,[[maybe_unused]] int linkIndex) {
                 QTimer::singleShot(20, [list, viewport, doc]()-> void {
                     for (const auto e : list) {
                         const auto d = dynamic_cast<LC_DimOrdinate*>(e);
@@ -126,9 +127,9 @@ void LC_PropertiesProviderDimOrdinate::doCreateDimGeometrySection(LC_PropertyCon
             };
             rebaseProperty->setNames(names);
             LC_PropertyViewDescriptor viewDescriptor("Link");
-            viewDescriptor["title"] = names.displayName;
+            viewDescriptor[LC_PropertyActionLinkView::ATTR_TITLE] = names.displayName;
             rebaseProperty->setClickHandler(
-                [this, viewport, origin, list,horizontalDirection, rebaseProperty]([[maybe_unused]] const LC_PropertyAction* action) {
+                [this, viewport, origin, list,horizontalDirection, rebaseProperty]([[maybe_unused]] const LC_PropertyAction* action, [[maybe_unused]]int linkIndex) {
                     QTimer::singleShot(20, [this, viewport,list, origin, horizontalDirection, rebaseProperty]()-> void {
                         rebaseDimensions(viewport, horizontalDirection, origin, list);
                         m_widget->onPropertyEdited(rebaseProperty);

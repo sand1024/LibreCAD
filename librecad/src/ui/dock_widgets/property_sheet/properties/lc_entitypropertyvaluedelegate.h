@@ -25,6 +25,7 @@
 #define LC_ENTITYPROPERTYVALUEDELEGATE_H
 
 #include "lc_property_valuestorage.h"
+#include "muParserDef.h"
 
 class RS_Entity;
 
@@ -42,6 +43,7 @@ public:
 
     using FunValueGet = typename std::function<ValueTypeStore(EntityClass*)>;
     using FunValueSet = typename std::function<void(ValueType &, LC_PropertyChangeReason, EntityClass *)>;
+    using FunValueSetShort = typename std::function<void(ValueType &, EntityClass *)>;
     using FunValueAccepted = typename std::function<bool(ValueType)>;
     using FunValueEqual = typename std::function<bool(ValueType&, EntityClass*)>;
 
@@ -68,6 +70,13 @@ public:
         return LC_PropertyValueStorage<ValueType>::doCheckValueEqualToCurrent(valueToCompare);
     }
 
+    void setup(EntityClass* entity, LC_EntitiesModificationContext* ctx, const FunValueGet& funGetValue, const FunValueSetShort& funSetValue,
+               const FunValueEqual& funValueEqual) {
+        setup(entity, ctx, funGetValue, [funSetValue](ValueType &v, [[maybe_unused]] LC_PropertyChangeReason, EntityClass *ent) {
+            funSetValue(v,ent);
+        }, funValueEqual);
+    }
+
     void setup(EntityClass* entity, LC_EntitiesModificationContext* ctx, const FunValueGet& funGetValue, const FunValueSet& funSetValue,
                const FunValueEqual& funValueEqual) {
         m_entity = entity;
@@ -76,6 +85,7 @@ public:
         m_funSetValue = funSetValue;
         m_funIsValueEqual = funValueEqual;
     }
+
 
 protected:
     EntityClass* m_entity{nullptr};

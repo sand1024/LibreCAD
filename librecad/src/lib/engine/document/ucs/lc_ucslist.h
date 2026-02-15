@@ -59,6 +59,7 @@ public:
         return m_ucsList.at(i);
     }
 
+    const QList<LC_UCS*>* getItems() const {return &m_ucsList;}
     void add(LC_UCS *ucs);
     void addNew(LC_UCS *ucs);
     void remove(LC_UCS *ucs);

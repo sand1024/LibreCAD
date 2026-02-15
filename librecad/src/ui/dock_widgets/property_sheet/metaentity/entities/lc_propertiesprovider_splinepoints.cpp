@@ -31,7 +31,7 @@ void LC_PropertiesProviderSplinePoints::doFillEntitySpecificProperties(LC_Proper
     addBoolean<LC_SplinePoints>({"closed", tr("Closed"), tr("Determines whether spline is closed or not")},
                                 [](const LC_SplinePoints* e) -> bool {
                                     return e->isClosed();
-                                }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, LC_SplinePoints* e) -> void {
+                                }, [](const bool& v, LC_SplinePoints* e) -> void {
                                     e->setClosed(v);
                                 }, list, contGeometry);
 

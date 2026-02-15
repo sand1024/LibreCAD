@@ -53,12 +53,12 @@ public:
         return m_variables.count();
     }
 
-    void add(const QString& key, const QString& value, int code, int type);
-    void add(const QString& key, const RS_Vector& value, int code);
-    void add(const QString& key, const QString& value, int code);
-    void add(const QString& key, int value, int code);
-    void add(const QString& key, double value, int code);
-    void add(const QString& key, bool value, int code);
+    bool add(const QString& key, const QString& value, int code, int type);
+    bool add(const QString& key, const RS_Vector& value, int code);
+    bool add(const QString& key, const QString& value, int code);
+    bool add(const QString& key, int value, int code);
+    bool add(const QString& key, double value, int code);
+    bool add(const QString& key, bool value, int code);
 
     RS_Vector getVector(const QString& key, const RS_Vector& def) const;
     QString getString(const QString& key, const QString& def) const;
@@ -80,17 +80,38 @@ public:
         return m_variables;
     }
 
+    bool isModified() const {return m_modified;}
+
+    void setModified(const bool val) {m_modified = val;}
+
     //void addVariableDictListener(RS_VariableDictListener* listener);
 
     friend std::ostream& operator <<(std::ostream& os, RS_VariableDict& v);
 
 private:
     //! Variables for the graphic
-    void insert(const QString& key, const RS_Variable& value) {
+    bool insert(const QString& key, const RS_Variable& value) {
         const QString actualKey = key;
-        m_variables.insert(actualKey, value);
+        const auto it = m_variables.find(actualKey);
+        bool modified = false;
+        if (it != m_variables.end()) {
+            RS_Variable oldVar = it.value();
+            if (oldVar != value) {
+                modified = true;
+                m_variables.insert(actualKey, value);
+            }
+        }
+        else {
+            m_variables.insert(actualKey, value);
+            modified = true;
+        }
+        if (modified) {
+            m_modified = true;
+        }
+        return modified;
     }
     QHash<QString, RS_Variable> m_variables;
+    bool m_modified = false;
 };
 
 #endif

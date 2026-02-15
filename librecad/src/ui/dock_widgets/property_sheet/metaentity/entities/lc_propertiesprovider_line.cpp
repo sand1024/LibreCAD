@@ -27,6 +27,7 @@
 
 #include "lc_convert.h"
 #include "lc_property_action.h"
+#include "lc_property_action_link_view.h"
 #include "lc_property_multi.h"
 #include "rs_line.h"
 #include "rs_math.h"
@@ -36,13 +37,13 @@ void LC_PropertiesProviderLine::doFillEntitySpecificProperties(LC_PropertyContai
 
     addVector<RS_Line>({"start", tr("Start"), tr("Start point of line")}, [](const RS_Line* e) -> RS_Vector {
                            return e->getStartpoint();
-                       }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Line* l) -> void {
+                       }, [](const RS_Vector& v, RS_Line* l) -> void {
                            l->setStartpoint(v);
                        }, list, contGeometry);
 
     addVector<RS_Line>({"end", tr("End"), tr("End point of line")}, [](const RS_Line* line) -> RS_Vector {
                            return line->getEndpoint();
-                       }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Line* l) -> void {
+                       }, [](const RS_Vector& v, RS_Line* l) -> void {
                            l->setEndpoint(v);
                        }, list, contGeometry);
 
@@ -52,9 +53,9 @@ void LC_PropertiesProviderLine::doFillEntitySpecificProperties(LC_PropertyContai
                      auto* property = new LC_PropertyAction(container, true);
                      property->setNames(names);
                      LC_PropertyViewDescriptor viewDescriptor("Link");
-                     viewDescriptor["title"] = names.displayName;
+                     viewDescriptor[LC_PropertyActionLinkView::ATTR_TITLE] = names.displayName;
                      property->setEntity(e);
-                     property->setClickHandler([this, container]([[maybe_unused]] const LC_PropertyAction* action) {
+                     property->setClickHandler([this, container]([[maybe_unused]] const LC_PropertyAction* action, [[maybe_unused]] int linkIndex) {
                          auto multiPropertyList = container->findChildProperties("reverse");
                          for (const auto mp : multiPropertyList) {
                              // actually, it should be only one

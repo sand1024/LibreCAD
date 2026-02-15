@@ -32,19 +32,19 @@ void LC_PropertiesProviderText::doFillEntitySpecificProperties(LC_PropertyContai
 
     addVector<RS_Text>({"insert", tr("Insertion Point"), tr("Point of text insertion")}, [](const RS_Text* e) -> RS_Vector {
                            return e->getInsertionPoint();
-                       }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Text* e) -> void {
+                       }, [](const RS_Vector& v, RS_Text* e) -> void {
                            e->setInsertionPoint(v);
                        }, list, contGeometry);
 
     addVector<RS_Text>({"secondPoint", tr("Second Point"), tr("Second point of text")}, [](const RS_Text* e) -> RS_Vector {
                            return e->getSecondPoint();
-                       },/* [](RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Text* e) -> void {
+                       },/* [](RS_Vector& v, RS_Text* e) -> void {
                        e->setSecondPoint(v);
                    }*/ nullptr, list, contGeometry);
 
     addWCSAngle<RS_Text>({"angle", tr("Angle"), tr("Text rotation angle")}, [](const RS_Text* e) -> double {
                              return e->getAngle();
-                         }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Text* l) -> void {
+                         }, [](const double& v, RS_Text* l) -> void {
                              l->setAngle(v);
                          }, list, contGeometry);
 
@@ -83,14 +83,14 @@ void LC_PropertiesProviderText::doFillEntitySpecificProperties(LC_PropertyContai
 
     addString<RS_Text>({"content", tr("Content"), tr("Content text of MText")}, [](RS_Text* e) -> QString {
                            return e->getText();
-                       }, [](const QString& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Text* e) -> void {
+                       }, [](const QString& v, RS_Text* e) -> void {
                            e->setText(v);
                        }, list, contText, false);
 
     addEnum<RS_Text>({"halign", tr("Horizontal Align"), tr("Horizontal align for text")}, &halignEnumDescriptor,
                      [](const RS_Text* e) -> LC_PropertyEnumValueType {
                          return e->getHAlign();
-                     }, [](LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Text* e) -> void {
+                     }, [](LC_PropertyEnumValueType& v, RS_Text* e) -> void {
                          const auto halign = static_cast<RS_TextData::HAlign>(v);
                          e->setHAlign(halign);
                      }, list, contText);
@@ -98,7 +98,7 @@ void LC_PropertiesProviderText::doFillEntitySpecificProperties(LC_PropertyContai
     addEnum<RS_Text>({"valign", tr("Vertical Align"), tr("Vertical align for text")}, &valignEnumDescriptor,
                      [](const RS_Text* e) -> LC_PropertyEnumValueType {
                          return e->getVAlign();
-                     }, [](LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Text* e) -> void {
+                     }, [](LC_PropertyEnumValueType& v, RS_Text* e) -> void {
                          const auto valign = static_cast<RS_TextData::VAlign>(v);
                          e->setVAlign(valign);
                      }, list, contText);
@@ -106,13 +106,13 @@ void LC_PropertiesProviderText::doFillEntitySpecificProperties(LC_PropertyContai
     // fixme - add support of text style instead of font name
     addStringFont<RS_Text>({"font", tr("Font"), tr("Font of the text")}, [](RS_Text* e) -> QString {
                                return e->getStyle();
-                           }, [](const QString& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Text* e) -> void {
+                           }, [](const QString& v, RS_Text* e) -> void {
                                return e->setStyle(v);
                            }, list, contText);
 
     addLinearDistance<RS_Text>({"width", tr("Width Factor"), tr("Width factor of the text")}, [](const RS_Text* e) -> double {
                                    return e->getWidthRel();
-                               }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Text* l) -> void {
+                               }, [](const double& v, RS_Text* l) -> void {
                                    l->setWidthRel(v);
                                }, list, contText, [](LC_PropertyViewDescriptor* desc)-> void {
                                    desc->attributes[LC_PropertyDoubleInteractivePickView::ATTR_POSITIVIE_VALUES_ONLY] = true;
@@ -120,14 +120,14 @@ void LC_PropertiesProviderText::doFillEntitySpecificProperties(LC_PropertyContai
 
     addLinearDistance<RS_Text>({"height", tr("Height"), tr("Height of the text")}, [](const RS_Text* e) -> double {
                                    return e->getHeight();
-                               }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Text* l) -> void {
+                               }, [](const double& v, RS_Text* l) -> void {
                                    l->setHeight(v);
                                }, list, contText);
 
     addEnum<RS_Text>({"generation", tr("Generation"), tr("Text generation method")}, &generationDescriptor,
                      [](const RS_Text* e) -> LC_PropertyEnumValueType {
                          return e->getTextGeneration();
-                     }, [](LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Text* e) -> void {
+                     }, [](LC_PropertyEnumValueType& v, RS_Text* e) -> void {
                          const auto textgen = static_cast<RS_TextData::TextGeneration>(v);
                          e->setTextGeneration(textgen);
                      }, list, contText);

@@ -28,9 +28,14 @@
 #include "lc_property_view_utils.h"
 
 const QByteArray LC_PropertyLineWidthComboboxView::VIEW_NAME = QByteArrayLiteral("LinewidthCombobox");
+const QByteArray LC_PropertyLineWidthComboboxView::ATTR_SHOW_BY_LAYER = QByteArrayLiteral("showByLayer");
 
 QComboBox* LC_PropertyLineWidthComboboxView::doCreateEditCombobox(QWidget* parent) {
-    return new LC_PropertyLineWidthCombobox(this, parent, true, false);
+    return new LC_PropertyLineWidthCombobox(this, parent, m_showByLayer, false);
+}
+
+void LC_PropertyLineWidthComboboxView::doApplyAttributes(const LC_PropertyViewDescriptor& info) {
+    info.load(ATTR_SHOW_BY_LAYER, m_showByLayer);
 }
 
 void LC_PropertyLineWidthComboboxView::doDrawValueDetails(const QStyle* style, const RS2::LineWidth& value, QPainter& painter,

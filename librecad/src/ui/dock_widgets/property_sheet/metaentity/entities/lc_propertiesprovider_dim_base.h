@@ -61,53 +61,53 @@ protected:
 
     void addDecimalPlacesField_DS(const LC_Property::Names& precisionNames,
                                   const std::function<LC_PropertyEnumValueType(LC_DimStyle * ds)>& funGetValue,
-                                  const std::function<void(LC_PropertyEnumValueType & v, LC_PropertyChangeReason reason, LC_DimStyle * ds)>&
+                                  const std::function<void(LC_PropertyEnumValueType & v, LC_DimStyle * ds)>&
                                   funSetValue, const QList<RS_Entity*>& list, LC_PropertyContainer* cont,
                                   const std::function<bool(RS_Dimension *, LC_PropertyViewDescriptor &)>& funPrepareDescriptor = nullptr);
     void addAngleDecimalPlacesField_DS(const LC_Property::Names& precisionNames,
                                        const std::function<LC_PropertyEnumValueType(LC_DimStyle * ds)>& funGetValue,
-                                       const std::function<void(LC_PropertyEnumValueType & v, LC_PropertyChangeReason reason,
+                                       const std::function<void(LC_PropertyEnumValueType & v,
                                                                 LC_DimStyle * ds)>& funSetValue, const QList<RS_Entity*>& list,
                                        LC_PropertyContainer* cont);
     void addAngleUnitFormat(const LC_Property::Names& names, const std::function<LC_PropertyEnumValueType(LC_DimStyle * ds)>& funGetValue,
-                            const std::function<void(LC_PropertyEnumValueType & v, LC_PropertyChangeReason reason, LC_DimStyle * ds)>&
+                            const std::function<void(LC_PropertyEnumValueType & v, LC_DimStyle * ds)>&
                             funSetValue, const QList<RS_Entity*>& list, LC_PropertyContainer* cont);
     void addLinearUnitFormat_DS(const LC_Property::Names& names,
                                 const std::function<LC_PropertyEnumValueType(LC_DimStyle * ds)>& funGetValue,
-                                const std::function<void(LC_PropertyEnumValueType & v, LC_PropertyChangeReason reason, LC_DimStyle * ds)>&
+                                const std::function<void(LC_PropertyEnumValueType & v, LC_DimStyle * ds)>&
                                 funSetValue, const QList<RS_Entity*>& list, LC_PropertyContainer* cont,
                                 const std::function<bool(RS_Dimension *, LC_PropertyViewDescriptor &)>& funPrepareDescriptor = nullptr);
     void addColor_DS(const LC_Property::Names& names, const std::function<RS_Color(LC_DimStyle * ds)>& funGetValue,
-                     const std::function<void(RS_Color & v, LC_PropertyChangeReason reason, LC_DimStyle * ds)>& funSetValue,
+                     const std::function<void(RS_Color & v,  LC_DimStyle * ds)>& funSetValue,
                      const QList<RS_Entity*>& list, LC_PropertyContainer* cont);
     void addLineType_DS(const LC_Property::Names& names, const std::function<RS2::LineType(LC_DimStyle * ds)>& funGetValue,
-                        const std::function<void(RS2::LineType & v, LC_PropertyChangeReason reason, LC_DimStyle * ds)>& funSetValue,
+                        const std::function<void(RS2::LineType & v, LC_DimStyle * ds)>& funSetValue,
                         const QList<RS_Entity*>& list, LC_PropertyContainer* cont);
     void addLineWidth_DS(const LC_Property::Names& names, const std::function<RS2::LineWidth(LC_DimStyle * e)>& funGetValue,
-                         const std::function<void(RS2::LineWidth & v, LC_PropertyChangeReason reason, LC_DimStyle * e)>& funSetValue,
+                         const std::function<void(RS2::LineWidth & v, LC_DimStyle * e)>& funSetValue,
                          const QList<RS_Entity*>& list, LC_PropertyContainer* cont);
     void addBoolean_DS(const LC_Property::Names& names, const std::function<bool(LC_DimStyle * e)>& funGetValue,
-                       const std::function<void(bool&v, LC_PropertyChangeReason reason, LC_DimStyle * e)>& funSetValue,
+                       const std::function<void(bool&v,LC_DimStyle * e)>& funSetValue,
                        const QList<RS_Entity*>& list, LC_PropertyContainer* container,
                        const QString& viewName = LC_PropertyBoolCheckBoxView::VIEW_NAME,
                        const std::function<bool(RS_Dimension *, LC_PropertyViewDescriptor & descriptor)>& funPrepareDescriptor = nullptr);
     void addString_DS(const LC_Property::Names& names, const std::function<QString(LC_DimStyle * e)>& funGetValue,
-                      const std::function<void(QString & v, LC_PropertyChangeReason reason, LC_DimStyle * e)>& funSetValue,
+                      const std::function<void(QString & v, LC_DimStyle * e)>& funSetValue,
                       const QList<RS_Entity*>& list, LC_PropertyContainer* container, bool multiLine,
                       const std::function<bool(RS_Dimension *, LC_PropertyViewDescriptor & descriptor)>& funPrepareDescriptor = nullptr);
     void addDouble_DS(const LC_Property::Names& names, const std::function<double(LC_DimStyle * e)>& funGetValue,
-                      const std::function<void(double&v, LC_PropertyChangeReason reason, LC_DimStyle * e)>& funSetValue,
+                      const std::function<void(double&v, LC_DimStyle * e)>& funSetValue,
                       const QList<RS_Entity*>& list, LC_PropertyContainer* container,
                       const std::function<bool(RS_Dimension *, LC_PropertyViewDescriptor & descriptor)>& funPrepareDescriptor = nullptr);
     void addEnum_DS(const LC_Property::Names& names, const LC_EnumDescriptor* enumDescriptor,
                     const std::function<LC_PropertyEnumValueType(LC_DimStyle * e)>& funGetValue,
-                    const std::function<void(LC_PropertyEnumValueType & v, LC_PropertyChangeReason reason, LC_DimStyle * e)>& funSetValue,
+                    const std::function<void(LC_PropertyEnumValueType & v, LC_DimStyle * e)>& funSetValue,
                     const QList<RS_Entity*>& list, LC_PropertyContainer* container,
                     const std::function<bool(RS_Dimension *, LC_PropertyViewDescriptor & descriptor)>& funPrepareDescriptor = nullptr);
     void addVarEnum_DS(const LC_Property::Names& names,
                        const std::function<LC_EnumDescriptor * (RS_Dimension * dim)>& enumDescriptorProvider,
                        const std::function<LC_PropertyEnumValueType(LC_DimStyle * e)>& funGetValue,
-                       const std::function<void(LC_PropertyEnumValueType & v, LC_PropertyChangeReason reason, LC_DimStyle * e)>&
+                       const std::function<void(LC_PropertyEnumValueType & v,  LC_DimStyle * e)>&
                        funSetValue, const QList<RS_Entity*>& list, LC_PropertyContainer* container,
                        const std::function<bool(RS_Dimension *, LC_PropertyViewDescriptor & descriptor)>& funPrepareDescriptor = nullptr);
 

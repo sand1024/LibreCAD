@@ -30,25 +30,25 @@ void LC_PropertiesProviderHyperbola::doFillEntitySpecificProperties(LC_PropertyC
 
     addVector<LC_Hyperbola>({"center", tr("Center"), tr("Center point of hyperbola")}, [](const LC_Hyperbola* e) -> RS_Vector {
                               return e->getCenter();
-                          }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, LC_Hyperbola* e) -> void {
+                          }, [](const RS_Vector& v, LC_Hyperbola* e) -> void {
                               e->setCenter(v);
                           }, list, contGeometry);
 
     addVector<LC_Hyperbola>({"focus1", tr("Focus 1"), tr("First focus point of hyperbola")}, [](const LC_Hyperbola* e) -> RS_Vector {
                           return e->getFocus1();
-                      }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, LC_Hyperbola* e) -> void {
+                      }, [](const RS_Vector& v, LC_Hyperbola* e) -> void {
                           e->setFocus1(v);
                       }, list, contGeometry);
 
     addVector<LC_Hyperbola>({"focus2", tr("Focus 2"), tr("Second focus point of hyperbola")}, [](const LC_Hyperbola* e) -> RS_Vector {
                       return e->getFocus2();
-                  }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, LC_Hyperbola* e) -> void {
+                  }, [](const RS_Vector& v, LC_Hyperbola* e) -> void {
                       e->setFocus2(v);
                   }, list, contGeometry);
 
     addWCSAngle<LC_Hyperbola>({"angle", tr("Angle"), tr("Angle of the hyperbola major axis")}, [](const LC_Hyperbola* e) -> double {
                                 return e->getAngle();
-                            }, [](double& v, [[maybe_unused]] LC_PropertyChangeReason reason, LC_Hyperbola* l) -> void {
+                            }, [](double& v, LC_Hyperbola* l) -> void {
                                 // fixme - sand - move this to hyperbola entity?
                                 // recalculate the majorP - by rotation old majorP point to delta between old and new angle
                                 double oldAngle = l->getAngle();
@@ -60,7 +60,7 @@ void LC_PropertiesProviderHyperbola::doFillEntitySpecificProperties(LC_PropertyC
 
     addLinearDistance<LC_Hyperbola>({"radiusMajor", tr("Radius Major"), tr("Major radius of hyperbola")}, [](const LC_Hyperbola* e) -> double {
                                       return e->getMajorRadius();
-                                  }, [](double& v, [[maybe_unused]] LC_PropertyChangeReason reason, LC_Hyperbola* l) -> void {
+                                  }, [](double& v, LC_Hyperbola* l) -> void {
                                       // fixme - sand - move this to hyperbola entity?
                                       // recalculate the majorP - by changing length of the vector to new radius, but with staying on the direction
                                       double angle = l->getAngle();
@@ -70,32 +70,32 @@ void LC_PropertiesProviderHyperbola::doFillEntitySpecificProperties(LC_PropertyC
 
     addLinearDistance<LC_Hyperbola>({"radiusMinor", tr("Radius Minor"), tr("Minor radius of hyperbola")}, [](const LC_Hyperbola* e) -> double {
                                       return e->getMinorRadius();
-                                  }, [](double& v, [[maybe_unused]] LC_PropertyChangeReason reason, LC_Hyperbola* l) -> void {
+                                  }, [](double& v, LC_Hyperbola* l) -> void {
                                        l->setMinorRadius(v);
                                   }, list, contGeometry);
 
     addLinearDistance<LC_Hyperbola>({"radiusRatio", tr("Radius Ratio"), tr("Radius ratio of hyperbola")}, [](const LC_Hyperbola* e) -> double {
                                       return e->getRatio();
-                                  }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, LC_Hyperbola* l) -> void {
+                                  }, [](const double& v, LC_Hyperbola* l) -> void {
                                       l->setRatio(v);
                                   }, list, contGeometry);
 
     addWCSAngle<LC_Hyperbola>({"angle1", tr("Start Angle"), tr("Start angle of hyperbola")}, [](const LC_Hyperbola* e) -> double {
                                 return e->getAngle1();
-                            }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, LC_Hyperbola* l) -> void {
+                            }, [](const double& v, LC_Hyperbola* l) -> void {
                                 l->setAngle1(v);
                             }, list, contGeometry);
 
     addWCSAngle<LC_Hyperbola>({"angle2", tr("End Angle"), tr("End angle of hyperbola")}, [](const LC_Hyperbola* e) -> double {
                                 return e->getAngle2();
-                            }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, LC_Hyperbola* l) -> void {
+                            }, [](const double& v, LC_Hyperbola* l) -> void {
                                 l->setAngle2(v);
                             }, list, contGeometry);
 
     addBoolean<LC_Hyperbola>({"reversed", tr("Is Reversed"), tr("Determines which focus is within hyperbola")},
                        [](const LC_Hyperbola* e) -> bool {
                            return e->isReversed();
-                       }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, LC_Hyperbola* e) -> void {
+                       }, [](const bool& v, LC_Hyperbola* e) -> void {
                            e->setReversed(v);
                        }, list, contGeometry);
 

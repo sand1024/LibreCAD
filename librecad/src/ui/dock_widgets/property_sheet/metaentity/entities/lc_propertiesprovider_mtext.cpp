@@ -30,13 +30,13 @@ void LC_PropertiesProviderMText::doFillEntitySpecificProperties(LC_PropertyConta
 
     addVector<RS_MText>({"insert", tr("Insertion Point"), tr("Point of text insertion")}, [](const RS_MText* e) -> RS_Vector {
                             return e->getInsertionPoint();
-                        }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_MText* e) -> void {
+                        }, [](const RS_Vector& v, RS_MText* e) -> void {
                             e->setInsertionPoint(v);
                         }, list, contGeometry);
 
     addWCSAngle<RS_MText>({"angle", tr("Angle"), tr("Text rotation angle")}, [](const RS_MText* e) -> double {
                               return e->getAngle();
-                          }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_MText* l) -> void {
+                          }, [](const double& v, RS_MText* l) -> void {
                               l->setAngle(v);
                           }, list, contGeometry);
 
@@ -44,26 +44,26 @@ void LC_PropertiesProviderMText::doFillEntitySpecificProperties(LC_PropertyConta
 
     addString<RS_MText>({"content", tr("Content"), tr("Content text of MText")}, [](const RS_MText* e) -> QString {
                             return e->getText();
-                        }, [](const QString& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_MText* e) -> void {
+                        }, [](const QString& v, RS_MText* e) -> void {
                             e->setText(v);
                         }, list, contText, true);
 
     // fixme - add support of text style instead of font name
     addStringFont<RS_MText>({"font", tr("Font"), tr("Font of the text")}, [](const RS_MText* e) -> QString {
                                 return e->getStyle();
-                            }, [](const QString& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_MText* e) -> void {
+                            }, [](const QString& v, RS_MText* e) -> void {
                                 return e->setStyle(v);
                             }, list, contText);
 
     addLinearDistance<RS_MText>({"width", tr("Width"), tr("Width of the text")}, [](const RS_MText* e) -> double {
                                     return e->getWidth();
-                                }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_MText* l) -> void {
+                                }, [](const double& v, RS_MText* l) -> void {
                                     l->setWidth(v);
                                 }, list, contText);
 
     addLinearDistance<RS_MText>({"height", tr("Height"), tr("Height of the text")}, [](const RS_MText* e) -> double {
                                     return e->getHeight();
-                                }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_MText* l) -> void {
+                                }, [](const double& v, RS_MText* l) -> void {
                                     l->setHeight(v);
                                 }, list, contText);
 
@@ -79,7 +79,7 @@ void LC_PropertiesProviderMText::doFillEntitySpecificProperties(LC_PropertyConta
     addEnum<RS_MText>({"halign", tr("Horizontal Align"), tr("Horizontal align for text")}, &halignEnumDescriptor,
                       [](const RS_MText* e) -> LC_PropertyEnumValueType {
                           return e->getHAlign();
-                      }, [](LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_MText* e) -> void {
+                      }, [](LC_PropertyEnumValueType& v, RS_MText* e) -> void {
                           const auto halign = static_cast<RS_MTextData::HAlign>(v);
                           e->setHAlign(halign);
                       }, list, contText);
@@ -96,7 +96,7 @@ void LC_PropertiesProviderMText::doFillEntitySpecificProperties(LC_PropertyConta
     addEnum<RS_MText>({"valign", tr("Vertical Align"), tr("Vertical align for text")}, &valignEnumDescriptor,
                       [](const RS_MText* e) -> LC_PropertyEnumValueType {
                           return e->getVAlign();
-                      }, [](LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_MText* e) -> void {
+                      }, [](LC_PropertyEnumValueType& v, RS_MText* e) -> void {
                           const auto valign = static_cast<RS_MTextData::VAlign>(v);
                           e->setVAlign(valign);
                       }, list, contText);
@@ -114,7 +114,7 @@ void LC_PropertiesProviderMText::doFillEntitySpecificProperties(LC_PropertyConta
     addEnum<RS_MText>({"drawDirection", tr("Direction"), tr("Drawing direction for the text")}, &drawDirectionEnumDescriptor,
                       [](const RS_MText* e) -> LC_PropertyEnumValueType {
                           return e->getDrawingDirection();
-                      }, [](LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_MText* e) -> void {
+                      }, [](LC_PropertyEnumValueType& v, RS_MText* e) -> void {
                           const auto valign = static_cast<RS_MTextData::MTextDrawingDirection>(v);
                           e->setDrawingDirection(valign);
                       }, list, contText);
@@ -127,7 +127,7 @@ void LC_PropertiesProviderMText::doFillEntitySpecificProperties(LC_PropertyConta
     addEnum<RS_MText>({"linespacingStyle", tr("Line spacing style"), tr("Style of linespacing")}, &linespaceingEnumDescriptor,
                       [](const RS_MText* e) -> LC_PropertyEnumValueType {
                           return e->getLineSpacingStyle();
-                      }, [](LC_PropertyEnumValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_MText* e) -> void {
+                      }, [](LC_PropertyEnumValueType& v, RS_MText* e) -> void {
                           const auto valign = static_cast<RS_MTextData::MTextLineSpacingStyle>(v);
                           e->setLineSpacingFactor(valign);
                       }, list, contText);
@@ -135,7 +135,7 @@ void LC_PropertiesProviderMText::doFillEntitySpecificProperties(LC_PropertyConta
     addLinearDistance<RS_MText>({"linespacingFactor", tr("Linespacing"), tr("Linespacing factor for the text")},
                                 [](const RS_MText* e) -> double {
                                     return e->getLineSpacingFactor();
-                                }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_MText* l) -> void {
+                                }, [](const double& v, RS_MText* l) -> void {
                                     l->setLineSpacingFactor(v);
                                 }, list, contText);
 }

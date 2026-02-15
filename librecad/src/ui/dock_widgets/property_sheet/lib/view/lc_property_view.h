@@ -103,7 +103,6 @@ public:
 
 protected:
     explicit LC_PropertyView(LC_Property& property);
-    void drawButton(const LC_PropertyPaintContext& ctx, const LC_PropertyViewPart& part, const QIcon& icon, const QString& text) const;
     virtual int doGetSubPropertyCount() const;
     virtual LC_Property* doGetSubProperty(int index);
     virtual void doApplyAttributes(const LC_PropertyViewDescriptor& info);

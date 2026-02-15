@@ -25,6 +25,7 @@
 
 #include <QLineEdit>
 
+#include "lc_property_combobox.h"
 #include "lc_property_qstring_list_combobox_view.h"
 
 namespace{
@@ -37,12 +38,15 @@ static QString toSingleLine(const QString& str) {
 }
 }
 
-void LC_PropertyQStringListComboBoxViewHandler::connectCombobox(QComboBox& editor) {
-    connect(&editor, &QComboBox::currentTextChanged, this, &LC_PropertyQStringListComboBoxViewHandler::onValueChanged);
+void LC_PropertyQStringListComboBoxViewHandler::connectCombobox(LC_PropertyComboBox& editor) {
+    connect(&editor, &QComboBox::currentTextChanged, [this](const QString &val)-> void {
+        getEditor()->disablePaint(true);
+        LC_PropertyQStringListComboBoxViewHandler::onValueChanged(val);
+    });
 }
 
 LC_PropertyQStringListComboBoxViewHandler::LC_PropertyQStringListComboBoxViewHandler(
-    LC_PropertyViewEditable* view, QComboBox& editor, const LC_PropertyViewDescriptor& descriptor)
+    LC_PropertyViewEditable* view, LC_PropertyComboBox& editor, const LC_PropertyViewDescriptor& descriptor)
     : LC_PropertyEditorHandlerValueTyped(view, editor) {
     bool editable = false;
     descriptor.load(LC_PropertyQStringListComboBoxView::ATTR_EDITABLE, editable);

@@ -24,19 +24,27 @@
 #include "lc_property_action_link_view.h"
 
 #include <QKeyEvent>
+#include <qnetworkreply.h>
 
 #include "lc_properties_sheet.h"
 #include "lc_property_view_part.h"
+#include "rs_debug.h"
 
 const QByteArray LC_PropertyActionLinkView::VIEW_NAME = QByteArrayLiteral("Link");
 const QByteArray LC_PropertyActionLinkView::ATTR_TITLE = QByteArrayLiteral("title");
+const QByteArray LC_PropertyActionLinkView::ATTR_TITLE_RIGHT = QByteArrayLiteral("titleRight");
+const QByteArray LC_PropertyActionLinkView::ATTR_TOOLTIP_LEFT = QByteArrayLiteral("tooltipLeft");
+const QByteArray LC_PropertyActionLinkView::ATTR_TOOLTIP_RIGHT = QByteArrayLiteral("tooltipRight");
 
 LC_PropertyActionLinkView::LC_PropertyActionLinkView(LC_PropertyAction& property)
     : LC_PropertyView(property) {
 }
 
 void LC_PropertyActionLinkView::doApplyAttributes(const LC_PropertyViewDescriptor& info) {
-    info.load(ATTR_TITLE, m_title);
+    info.load(ATTR_TITLE, m_titleLeft);
+    info.load(ATTR_TITLE_RIGHT, m_titleRight);
+    info.load(ATTR_TOOLTIP_LEFT, m_tooltipLeft);
+    info.load(ATTR_TOOLTIP_RIGHT, m_tooltipRight);
 }
 
 LC_PropertyAction& LC_PropertyActionLinkView::typedProperty() const {
@@ -51,7 +59,9 @@ void LC_PropertyActionLinkView::buildPartBackground(const LC_PropertyPaintContex
     part.funPaint = [](const LC_PropertyPaintContext& paintContext, const LC_PropertyViewPart& p) {
         auto& painter = *paintContext.painter;
         const auto& rect = p.rect;
-
+        if (paintContext.isActive) {
+            painter.fillRect(p.rect, paintContext.getPalette().color(QPalette::Highlight));
+        }
         const QPen oldPen = painter.pen();
         const QPen linesPen(paintContext.getPalette().color(QPalette::Button));
         painter.setPen(linesPen);
@@ -64,21 +74,39 @@ void LC_PropertyActionLinkView::buildPartBackground(const LC_PropertyPaintContex
     parts.append(part);
 }
 
-void LC_PropertyActionLinkView::doBuildViewParts(LC_PropertyPaintContext& ctx, QList<LC_PropertyViewPart>& parts) {
-    buildPartBackground(ctx, parts);
-
-    LC_PropertyViewPart part(ctx.rect.marginsRemoved(ctx.margins));
+void LC_PropertyActionLinkView::builSingleLinkPart(const QRect& valuesRect, const QString &title, const QString& tooltip, bool linkIndex, QList<LC_PropertyViewPart>& parts) {
+    LC_PropertyViewPart part(valuesRect);
     // part.m_rect.setWidth(ctx.painter->fontMetrics().boundingRect(m_title).width() + 5);
-    part.setPropertyDescriptionAsTooltip(typedProperty());
+    if (tooltip.isEmpty()) {
+        part.setPropertyDescriptionAsTooltip(typedProperty());
+    }
+    else {
+        part.funGetTooltip = [tooltip](LC_PropertyEventContext&, const LC_PropertyViewPart&) -> QString {
+           return tooltip;
+        };
+    }
     part.trackState();
 
-    part.funPaint = [this](const LC_PropertyPaintContext& paintContext, const LC_PropertyViewPart& p) {
+    part.funPaint = [title, this,linkIndex](const LC_PropertyPaintContext& paintContext, const LC_PropertyViewPart& p) {
+        bool drawPressed = false;
+        if (isLocked()) {
+            if (isClicked(linkIndex)) {
+                drawPressed = true;
+            }
+            else {
+                return;
+            }
+        }
         const auto painter = paintContext.painter;
         painter->save();
         const QColor linkColor = paintContext.getPalette().color(paintContext.getCurrentColorGroup(),
                                                                  paintContext.isActive ? QPalette::HighlightedText : QPalette::Link);
-
-        if (p.isUnderCursor()) {
+        if (drawPressed) {
+            auto font = painter->font();
+            font.setUnderline(true);
+            painter->setFont(font);
+        }
+        else if (p.isUnderCursor()) {
             auto font = painter->font();
             font.setUnderline(true);
             painter->setFont(font);
@@ -88,17 +116,17 @@ void LC_PropertyActionLinkView::doBuildViewParts(LC_PropertyPaintContext& ctx, Q
             font.setUnderline(true);
             painter->setFont(font);
         }
-        if (paintContext.isActive) {
-            painter->fillRect(paintContext.rect, paintContext.getPalette().color(QPalette::Highlight));
-        }
 
         painter->setPen(linkColor);
-        painter->drawText(p.rect, Qt::AlignLeading | Qt::AlignVCenter, m_title);
+        painter->drawText(p.rect, Qt::AlignLeading | Qt::AlignVCenter, title);
         painter->restore();
     };
 
-    part.funHandleEvent = [this](LC_PropertyEventContext& eventContext, const LC_PropertyViewPart&, LC_PropertyEditContext*) -> bool {
+    part.funHandleEvent = [this, linkIndex](LC_PropertyEventContext& eventContext, const LC_PropertyViewPart&, LC_PropertyEditContext*) -> bool {
         bool doClick = false;
+        if (isLocked()) {
+            return false;
+        }
         switch (eventContext.eventType()) {
             case QEvent::KeyPress: {
                 const int key = eventContext.typedEvent<QKeyEvent>()->key();
@@ -129,10 +157,32 @@ void LC_PropertyActionLinkView::doBuildViewParts(LC_PropertyPaintContext& ctx, Q
         }
         if (doClick) {
             // ctx.m_sheet->setSkipNextMouseReleaseEvent();
-            typedProperty().invokeClick();
+            lock(linkIndex);
+            typedProperty().invokeClick(linkIndex);
             return false;
         }
         return false;
     };
     parts.append(part);
+}
+
+void LC_PropertyActionLinkView::doBuildViewParts(LC_PropertyPaintContext& ctx, QList<LC_PropertyViewPart>& parts) {
+    buildPartBackground(ctx, parts);
+    const auto valuesRect = ctx.rect.marginsRemoved(ctx.margins);
+    const bool hasNoRightPart = m_titleRight.isEmpty();
+
+    if (hasNoRightPart) {
+        builSingleLinkPart(valuesRect, m_titleLeft, m_tooltipLeft, 0, parts);
+    }
+    else {
+        int splitPos = ctx.splitPos;
+        QRect leftRect = valuesRect;
+        leftRect.setRight(splitPos);
+
+        builSingleLinkPart(leftRect, m_titleLeft, m_tooltipLeft, 0, parts);
+
+        QRect rightRect = valuesRect;
+        rightRect.setLeft(splitPos);
+        builSingleLinkPart(rightRect, m_titleRight, m_tooltipRight, 1, parts);
+    }
 }

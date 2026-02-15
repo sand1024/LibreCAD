@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_DlgPropertySheetWidgetOptions</class>
+ <widget class="QDialog" name="LC_DlgPropertySheetWidgetOptions">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>258</width>
+    <height>366</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Property Sheet Properties</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>No Selection View</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Select sections that in should be shown properties sheet if there are no entities are selected</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QCheckBox" name="cbGrid">
+        <property name="toolTip">
+         <string>Grid settings for drawing view</string>
+        </property>
+        <property name="text">
+         <string>Grid</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QCheckBox" name="cbDrawingUnits">
+        <property name="toolTip">
+         <string>Linear and angular units settings for the drawing</string>
+        </property>
+        <property name="text">
+         <string>Drawing Units</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="cbNamedViews">
+        <property name="toolTip">
+         <string>Named view selection and operations</string>
+        </property>
+        <property name="text">
+         <string>Named Views</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="cbActiveLayer">
+        <property name="toolTip">
+         <string>Active layer selection, properties and commands</string>
+        </property>
+        <property name="text">
+         <string>Active Layer</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="cbActivePen">
+        <property name="toolTip">
+         <string>Active pen settings section</string>
+        </property>
+        <property name="text">
+         <string>Active Pen</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QCheckBox" name="cbPrintPaper">
+        <property name="toolTip">
+         <string>Paper format and margins for printing</string>
+        </property>
+        <property name="text">
+         <string>Print Paper</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QCheckBox" name="cbUCS">
+        <property name="toolTip">
+         <string>User coordinates system sleection and related operations</string>
+        </property>
+        <property name="text">
+         <string>User Coordinate system (UCS)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QCheckBox" name="cbWorkspace">
+        <property name="toolTip">
+         <string>Workspace selection and saving section</string>
+        </property>
+        <property name="text">
+         <string>Workspace</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0">
+       <widget class="QCheckBox" name="cbGraphicView">
+        <property name="toolTip">
+         <string>Settings for generic rendering of drawing</string>
+        </property>
+        <property name="text">
+         <string>Graphic View</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>LC_DlgPropertySheetWidgetOptions</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>LC_DlgPropertySheetWidgetOptions</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

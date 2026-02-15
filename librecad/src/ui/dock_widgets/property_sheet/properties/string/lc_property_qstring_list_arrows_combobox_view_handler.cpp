@@ -26,22 +26,24 @@
 #include <QComboBox>
 
 #include "lc_inputtextdialog.h"
+#include "lc_property_combobox.h"
 #include "lc_property_qstring_list_arrows_combobox_view.h"
 
 LC_PropertyQStringListArrowsComboboxViewHandler::LC_PropertyQStringListArrowsComboboxViewHandler(LC_PropertyViewEditable* view,
-    QComboBox& editor, const LC_PropertyViewDescriptor& descriptor)
+    LC_PropertyComboBox& editor, const LC_PropertyViewDescriptor& descriptor)
     : LC_PropertyQStringListComboBoxViewHandler(view, editor, descriptor) {
     descriptor.load(LC_PropertyQStringListArrowsComboboxView::ATTR_BLOCK_NAMES, m_blocksList);
 }
 
-void LC_PropertyQStringListArrowsComboboxViewHandler::connectCombobox(QComboBox& editor) {
+void LC_PropertyQStringListArrowsComboboxViewHandler::connectCombobox(LC_PropertyComboBox& editor) {
     connect(&editor, &QComboBox::currentIndexChanged, [this](const int index)-> void {
-        const auto itemData = getEditor()->itemData(index);
+        const auto propertyComboBox = getEditor();
+        const auto itemData = propertyComboBox->itemData(index);
         const QString data = itemData.toString();
         bool hasValue = false;
         QString value;
         if (data == "_CUSTOM_SELECT") {
-            const QString blockName = LC_InputTextDialog::getText(getEditor(), tr("Select Block for arrow"),
+            const QString blockName = LC_InputTextDialog::getText(propertyComboBox, tr("Select Block for arrow"),
                                                                   "Enter the name of existing block that will be used as arrow",
                                                                   m_blocksList, false, "", &hasValue);
             value = blockName;
@@ -51,6 +53,7 @@ void LC_PropertyQStringListArrowsComboboxViewHandler::connectCombobox(QComboBox&
             hasValue = true;
         }
         if (hasValue) {
+            propertyComboBox->disablePaint(true);
             onValueChanged(value);
         }
     });

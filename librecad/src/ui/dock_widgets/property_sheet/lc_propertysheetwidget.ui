@@ -46,20 +46,6 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="2">
-    <widget class="QToolButton" name="tbPickAddSwitch">
-     <property name="toolTip">
-      <string>Switch selection mode</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../../../../res/icons/icons.qrc">
-       <normaloff>:/icons/select_mode_add.lci</normaloff>:/icons/select_mode_add.lci</iconset>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="4">
     <widget class="QToolButton" name="tbSelectQuick">
      <property name="toolTip">
@@ -74,7 +60,38 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="5">
+   <item row="0" column="2">
+    <widget class="QToolButton" name="tbPickAddSwitch">
+     <property name="toolTip">
+      <string>Switch selection mode</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../../res/icons/icons.qrc">
+       <normaloff>:/icons/select_mode_add.lci</normaloff>:/icons/select_mode_add.lci</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="2">
+    <widget class="QComboBox" name="cbSelection"/>
+   </item>
+   <item row="0" column="5">
+    <widget class="QToolButton" name="tbSettings">
+     <property name="toolTip">
+      <string>Settings</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../../res/icons/icons.qrc">
+       <normaloff>:/icons/settings.lci</normaloff>:/icons/settings.lci</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="6">
     <widget class="LC_PropertiesSheetPanel" name="propertySheet" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -94,9 +111,6 @@
       </font>
      </property>
     </widget>
-   </item>
-   <item row="0" column="0" colspan="2">
-    <widget class="QComboBox" name="cbSelection"/>
    </item>
   </layout>
  </widget>

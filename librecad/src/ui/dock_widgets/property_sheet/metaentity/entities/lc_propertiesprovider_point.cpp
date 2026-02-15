@@ -30,7 +30,7 @@ void LC_PropertiesProviderPoint::doFillEntitySpecificProperties(LC_PropertyConta
 
     addVector<RS_Point>({"pos", tr("Position"), tr("Position of point")}, [](const RS_Point* e) -> RS_Vector {
                             return e->getPos();
-                        }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Point* e) -> void {
+                        }, [](const RS_Vector& v, RS_Point* e) -> void {
                             e->setPos(v);
                         }, list, contGeometry);
 }

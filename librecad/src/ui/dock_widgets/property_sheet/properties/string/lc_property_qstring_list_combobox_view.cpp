@@ -43,7 +43,7 @@ void LC_PropertyQStringListComboBoxView::doApplyAttributes(const LC_PropertyView
 }
 
 QWidget* LC_PropertyQStringListComboBoxView::doCreateValueEditor(QWidget* parent, const QRect& rect, const EditActivationContext* ctx) {
-    QComboBox* editor = new LC_PropertyComboBox(this, parent);
+    auto* editor = new LC_PropertyComboBox(this, parent);
     editor->setGeometry(rect);
     const auto handler = new LC_PropertyQStringListComboBoxViewHandler(this, *editor, m_viewDescriptor);
     handler->connectCombobox(*editor);

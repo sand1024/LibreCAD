@@ -32,7 +32,6 @@ QStyle* LC_PropertyPaintContext::style() const {
 
 void LC_PropertyPaintContext::initStyleOption(QStyleOption& option) const {
     option.initFrom(sheet);
-    option.state &= ~QStyle::State_MouseOver; // explicit state set
 }
 
 const QPalette& LC_PropertyPaintContext::getPalette() const {

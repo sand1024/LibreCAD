@@ -30,11 +30,15 @@ LC_PropertyComboBox::LC_PropertyComboBox(LC_PropertyView* view, QWidget* parent)
 }
 
 void LC_PropertyComboBox::paintEvent(QPaintEvent* event) {
+    if (m_view == nullptr || m_paintDisabled) {
+        return;
+    }
     const auto rect = event->rect();
     QComboBox::paintEvent(event);
 
     QPainter painter(this);
-    if (getStateProperty()->isMultiValue()) {
+    const auto stateProperty = getStateProperty();
+    if (stateProperty != nullptr && stateProperty->isMultiValue()) {
         if (isEnabled()) {
             const auto color = palette().color(QPalette::Active, QPalette::PlaceholderText);
             painter.setPen(color);

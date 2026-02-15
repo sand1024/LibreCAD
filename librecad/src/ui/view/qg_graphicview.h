@@ -92,9 +92,11 @@ public:
     void setOffset(int ox, int oy);
 
     void setAntialiasing(bool state) const;
+    bool isAntialiasing() const;
     bool isDraftMode() const;
     void setDraftMode(bool dm);
     void setDraftLinesMode(bool mode) const;
+    bool isDraftLinesMode() const;
 
     void setCursorHiding(bool state);
     void addScrollbars();

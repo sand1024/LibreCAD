@@ -27,6 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "rs_graphicview.h"
 #include "rs_vector.h"
 
+class LC_Formatter;
 class RS_Entity;
 class QString;
 
@@ -78,6 +79,7 @@ public:
     RS_Vector getContextMenuActionClickPosition() const;
     bool hasSelection() const;
     LC_GraphicViewport* getViewport() const {return m_graphicView == nullptr ? nullptr : m_graphicView->getViewPort();}
+    LC_Formatter * getFormatter() const;
 
     struct InteractiveInputInfo {
         enum State {

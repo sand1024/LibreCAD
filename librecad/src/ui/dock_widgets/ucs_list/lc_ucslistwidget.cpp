@@ -185,6 +185,7 @@ void LC_UCSListWidget::setGraphicView(RS_GraphicView *gv) {
 
             const LC_UCS* currentUCS = gv->getGraphic()->getCurrentUCS();
             updateCurrentUCSWidget(currentUCS);
+            delete currentUCS;
         }
         else { // fixme - do we need additional processing for blocks there???
             m_viewport = nullptr;
@@ -269,6 +270,7 @@ void LC_UCSListWidget::updateData(const bool restoreSelectionIfPossible) {
         if (graphic != nullptr) {
             const LC_UCS* currentUCS = graphic->getCurrentUCS();
             updateCurrentUCSWidget(currentUCS);
+            delete currentUCS;
         }
         else {
             // are we in block?
@@ -356,6 +358,28 @@ void LC_UCSListWidget::removeAllUCSs() {
     }
 }
 
+void LC_UCSListWidget::removeExistingUCS(LC_UCS* selectedUCS) {
+    if (selectedUCS != nullptr) {
+        if (selectedUCS->isUCS()) { // don't allow to delete wcs
+            bool remove = false;
+            if (m_options->askForDeletionConfirmation) {
+                const QString viewName = selectedUCS->getName();
+                const int result = QMessageBox::question(this, tr("Delete UCS"),
+                                                         tr("Are you sure to delete UCS\n \"%1\"?\n Warning: this action can NOT be undone!").arg(
+                                                             viewName),
+                                                         QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+                remove = result == QMessageBox::Yes;
+            } else {
+                remove = true;
+            }
+            if (remove) {
+                doRemoveExistingUCS(selectedUCS);
+                refresh();
+            }
+        }
+    }
+}
+
 void LC_UCSListWidget::removeUCS() {
     const QModelIndexList selectedIndexes = ui->tvTable->selectionModel()->selectedRows();
     const qsizetype selectedSize = selectedIndexes.size();
@@ -364,25 +388,7 @@ void LC_UCSListWidget::removeUCS() {
             const QModelIndex selectedIndex = selectedIndexes.at(0);
             if (selectedIndex.isValid()) {
                 LC_UCS *selectedUCS = m_ucsListModel->getItemForIndex(selectedIndex);
-                if (selectedUCS != nullptr) {
-                    if (selectedUCS->isUCS()) { // don't allow to delete wcs
-                        bool remove = false;
-                        if (m_options->askForDeletionConfirmation) {
-                            const QString viewName = selectedUCS->getName();
-                            const int result = QMessageBox::question(this, tr("Delete UCS"),
-                                                               tr("Are you sure to delete UCS\n \"%1\"?\n Warning: this action can NOT be undone!").arg(
-                                                                   viewName),
-                                                               QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
-                            remove = result == QMessageBox::Yes;
-                        } else {
-                            remove = true;
-                        }
-                        if (remove) {
-                            removeExistingUCS(selectedUCS);
-                            refresh();
-                        }
-                    }
-                }
+                removeExistingUCS(selectedUCS);
             }
         }
         else{
@@ -408,14 +414,14 @@ void LC_UCSListWidget::removeUCS() {
                                                    QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
                 if (result == QMessageBox::Yes){
                     for (const auto v: ucsToRemove){
-                        removeExistingUCS(v);
+                        doRemoveExistingUCS(v);
                     }
                     refresh();
                 }
             }
             else{
                 for (const auto v: ucsToRemove){
-                    removeExistingUCS(v);
+                    doRemoveExistingUCS(v);
                 }
                 refresh();
             }
@@ -450,6 +456,19 @@ void LC_UCSListWidget::setWCS() const {
     }
 }
 
+void LC_UCSListWidget::removeExistingUCS(const QString& name){
+    LC_UCS *existingUCS = m_currentUCSList->find(name);
+    if (existingUCS != nullptr) {
+        doRemoveExistingUCS(existingUCS);
+    }
+}
+
+void LC_UCSListWidget::renameExistingUCS(const QString& name) {
+    LC_UCS *existingUCS = m_currentUCSList->find(name);
+    if (existingUCS != nullptr) {
+        renameExistingUCS(existingUCS);
+    }
+}
 
 void LC_UCSListWidget::renameExistingUCS(LC_UCS *selectedUCS) {
     const QString viewName = selectedUCS->getName();
@@ -464,11 +483,11 @@ void LC_UCSListWidget::renameExistingUCS(LC_UCS *selectedUCS) {
             if (text.isEmpty()) {
                 tryRename = false;
             } else {
-                const LC_UCS *existingView = m_currentUCSList->find(text);
-                if (existingView == nullptr) {
+                const LC_UCS *existingUCS = m_currentUCSList->find(text);
+                if (existingUCS == nullptr) {
                     renameExistingUCS(text, selectedUCS);
                     tryRename = false;
-                } else if (existingView != selectedUCS) {
+                } else if (existingUCS != selectedUCS) {
                     QMessageBox::warning(this, tr("Rename UCS"),
                                          tr("UCS with provided name already exists, select another one"),
                                          QMessageBox::Close,
@@ -624,15 +643,23 @@ QModelIndex LC_UCSListWidget::getSelectedItemIndex() const {
     return result;
 }
 
-void LC_UCSListWidget::removeExistingUCS(LC_UCS *ucs) const {
+void LC_UCSListWidget::doRemoveExistingUCS(LC_UCS *ucs) const {
     m_currentUCSList->remove(ucs);
+    applyUCS(&LC_WCS::instance);
 }
 
 void LC_UCSListWidget::renameExistingUCS(const QString& newName, LC_UCS *ucs) {
-    m_currentUCSList->rename(ucs, newName);
+    if (ucs->isUCS()) {
+        ucs->setName(newName);
+        ucs->setTemporary(false);
+    }
+    if (m_ucsListModel->getActiveUCS() == ucs) {
+        const auto graphic = m_graphicView->getGraphic(true);
+        graphic->setCurrentUCS(ucs);
+    }
+    m_currentUCSList->setModified(true);
     refresh();
 }
-
 
 void LC_UCSListWidget::selectUCS(const LC_UCS *ucs) const {
     const QModelIndex index = m_ucsListModel->getIndexForUCS(ucs);

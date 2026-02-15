@@ -38,6 +38,7 @@ void LC_GridViewInvoker::setGridView(const bool toggle, const bool isometric, co
                 graphic->setIsometricGrid(isometric);
                 if (isometric) {
                     graphic->setIsoView(isoGridType);
+                    graphic->getSelection()->fireSelectionChanged();
                 }
                 const LC_GraphicViewport* viewport = view->getViewPort();
                 viewport->loadGridSettings();

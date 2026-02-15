@@ -244,7 +244,7 @@ public:
      */
     static std::unique_ptr<QC_ApplicationWindow>& getAppWindow();
 
-    QG_PenToolBar* getPenToolBar() const {
+    QG_PenToolBar* getPenToolBar() const { // fixme - rework later, it's not good that the active pen is actually saved as state of UI components!
         return m_penToolBar;
     }
 

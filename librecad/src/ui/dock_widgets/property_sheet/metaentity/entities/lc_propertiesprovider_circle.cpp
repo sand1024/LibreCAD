@@ -30,32 +30,32 @@ void LC_PropertiesProviderCircle::doFillEntitySpecificProperties(LC_PropertyCont
 
     addVector<RS_Circle>({"сenter", tr("Center"), tr("Center point of circle")}, [](const RS_Circle* e) -> RS_Vector {
                              return e->getCenter();
-                         }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Circle* l) -> void {
+                         }, [](const RS_Vector& v, RS_Circle* l) -> void {
                              l->setCenter(v);
                          }, list, contGeometry);
 
     addLinearDistance<RS_Circle>({"radius", tr("Radius"), tr("Radius of circle")}, [](const RS_Circle* e) -> double {
                                      return e->getRadius();
-                                 }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Circle* l) -> void {
+                                 }, [](const double& v, RS_Circle* l) -> void {
                                      l->setRadius(v);
                                  }, list, contGeometry);
 
     addLinearDistance<RS_Circle>({"diameter", tr("Diameter"), tr("Diameter of circle")}, [](const RS_Circle* e) -> double {
                                      return e->getRadius() * 2.0;
-                                 }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Circle* l) -> void {
+                                 }, [](const double& v, RS_Circle* l) -> void {
                                      l->setRadius(v / 2.0);
                                  }, list, contGeometry);
 
     addLinearDistance<RS_Circle>({"circumference", tr("Circumference", "circle"), tr("Circumference of circle")}, [](const RS_Circle* e) -> double {
                                      return e->getRadius() * 2.0 * M_PI;
-                                 }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Circle* l) -> void {
+                                 }, [](const double& v, RS_Circle* l) -> void {
                                      l->setRadius(v / 2.0 / M_PI);
                                  }, list, contGeometry);
 
     addLinearDistance<RS_Circle>({"area", tr("Area"), tr("Area of circle")}, [](const RS_Circle* e) -> double {
                                      const double radius = e->getRadius();
                                      return M_PI * radius * radius;
-                                 }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Circle* l) -> void {
+                                 }, [](const double& v, RS_Circle* l) -> void {
                                      const double radius = std::sqrt(v / M_PI);
                                      l->setRadius(radius);
                                  }, list, contGeometry);

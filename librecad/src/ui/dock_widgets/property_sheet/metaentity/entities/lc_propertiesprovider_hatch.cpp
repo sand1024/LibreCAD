@@ -32,13 +32,13 @@ void LC_PropertiesProviderHatch::doFillEntitySpecificProperties(LC_PropertyConta
 
     addBoolean<RS_Hatch>({"solid", tr("Is Solid"), tr("Determines whether hatch is solid or not")}, [](const RS_Hatch* e) -> bool {
                              return e->isSolid();
-                         }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Hatch* e) -> void {
+                         }, [](const bool& v, RS_Hatch* e) -> void {
                              e->setSolid(v);
                          }, list, contGeometry);
 
     addStringList<RS_Hatch>({"pattern", tr("Pattern"), tr("Hatch pattern name")}, [](const RS_Hatch* e) -> QString {
                                 return e->getPattern();
-                            }, [](const QString& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Hatch* l) -> void {
+                            }, [](const QString& v, RS_Hatch* l) -> void {
                                 l->setPattern(v);
                             }, []([[maybe_unused]] RS_Hatch* h, LC_PropertyViewDescriptor& descriptor)-> bool {
                                 QStringList values;
@@ -52,13 +52,13 @@ void LC_PropertiesProviderHatch::doFillEntitySpecificProperties(LC_PropertyConta
 
     addLinearDistance<RS_Hatch>({"scale", tr("Scale"), tr("Hatch scale")}, [](const RS_Hatch* e) -> double {
                                     return e->getScale();
-                                }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Hatch* l) -> void {
+                                }, [](const double& v, RS_Hatch* l) -> void {
                                     l->setScale(v);
                                 }, list, contGeometry);
 
     addWCSAngle<RS_Hatch>({"angle", tr("Angle"), tr("Hatch rotation angle")}, [](const RS_Hatch* e) -> double {
                               return e->getAngle();
-                          }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Hatch* l) -> void {
+                          }, [](const double& v, RS_Hatch* l) -> void {
                               l->setAngle(v);
                           }, list, contGeometry);
 }

@@ -64,6 +64,7 @@ public:
     void onDragEnterEvent(const QModelIndex& dropIndex) const;
     void onDropEvent(const QModelIndex& dropIndex, DropIndicatorPosition position) const;
     void setGraphicView(RS_GraphicView* gview) override;
+    void removeActiveLayer(bool removeWithChildren);
 signals :
     void escape();
 public slots :

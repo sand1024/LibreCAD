@@ -201,11 +201,16 @@ public:
      */
     bool setConstruction(bool construction);
 
+    LayerType getLayerType()const {return m_layerType;}
+
+    void setLayerType(LayerType layerType) {m_layerType = layerType;}
+
     friend std::ostream& operator <<(std::ostream& os, const RS_Layer& l);
 
 private:
     //! Layer data
     RS_LayerData m_data;
+    LayerType m_layerType = LayerType::NORMAL; // transient field, should be updated by LayerTreeWidget
 };
 
 #endif

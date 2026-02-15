@@ -80,21 +80,21 @@ public:
     const RS_Vector& getCellVector() const;
     void loadSettings();
     void drawGrid(RS_Painter* painter) const;
+    bool isGridMetric() const;
 
     int getMetaGridEvery() const {
         return m_metaGridEvery;
     }
 
+    bool isDrawMetaGrid() const;
+
 private:
     //! copy ctor disabled
     RS_Grid(const RS_Grid&) = delete;
     RS_Grid& operator =(const RS_Grid&) = delete;
-    //! \{ \brief determine grid width
     RS_Vector getMetricGridWidth(const RS_Vector& userGrid, bool scaleGrid, int minGridSpacing);
     RS_Vector getImperialGridWidth(const RS_Vector& userGrid, bool scaleGrid, int minGridSpacing);
     void prepareGridCalculations(RS_Vector& viewZero, RS_Vector& viewSize, RS_Vector& metaGridWidthToUse, RS_Vector& gridWidthToUse);
-    //! \}
-
     //! Graphic view this grid is connected to.
     LC_GraphicViewport* m_viewport = nullptr;
     QString m_gridInfoString = "";

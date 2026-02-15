@@ -31,7 +31,7 @@ void LC_PropertiesProviderPolyline::doFillEntitySpecificProperties(LC_PropertyCo
 
     addBoolean<RS_Polyline>({"closed", tr("Is Closed"), tr("Determines whether polyline is closed")}, [](const RS_Polyline* e) -> bool {
                                 return e->isClosed();
-                            }, [](const bool& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Polyline* e) -> void {
+                            }, [](const bool& v, RS_Polyline* e) -> void {
                                 e->setClosed(v);
                             }, list, contGeometry);
 

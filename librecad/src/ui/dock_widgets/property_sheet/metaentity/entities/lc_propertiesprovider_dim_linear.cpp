@@ -30,33 +30,33 @@ void LC_PropertiesProviderDimLinear::doCreateDimGeometrySection(LC_PropertyConta
     addVector<RS_DimLinear>({"dimExtPoint1", tr("Ext point 1"), tr("Position of first extension point")},
                             [](const RS_DimLinear* e) -> RS_Vector {
                                 return e->getExtensionPoint1();
-                            }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_DimLinear* e) -> void {
+                            }, [](const RS_Vector& v, RS_DimLinear* e) -> void {
                                 e->setExtensionPoint1(v);
                             }, list, container);
 
     addVector<RS_DimLinear>({"dimExtPoint2", tr("Ext point 2"), tr("Position of second extension point")},
                             [](const RS_DimLinear* e) -> RS_Vector {
                                 return e->getExtensionPoint2();
-                            }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_DimLinear* e) -> void {
+                            }, [](const RS_Vector& v, RS_DimLinear* e) -> void {
                                 e->setExtensionPoint2(v);
                             }, list, container);
 
     addVector<RS_DimLinear>({"dimDefPoint", tr("Definition point "), tr("Position of definition point")},
                             [](const RS_DimLinear* e) -> RS_Vector {
                                 return e->getDefinitionPoint();
-                            }, [](const RS_Vector& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_DimLinear* e) -> void {
+                            }, [](const RS_Vector& v, RS_DimLinear* e) -> void {
                                 e->setDefinitionPoint(v);
                             }, list, container);
 
     addWCSAngle<RS_DimLinear>({"dimAngle", tr("Angle"), tr("Rotation angle")}, [](const RS_DimLinear* e) -> double {
                                   return e->getAngle();
-                              }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_DimLinear* l) -> void {
+                              }, [](const double& v, RS_DimLinear* l) -> void {
                                   l->setAngle(v);
                               }, list, container);
 
     addWCSAngle<RS_DimLinear>({"dimOblique", tr("Oblique angle"), tr("Oblique angle")}, [](const RS_DimLinear* e) -> double {
                                   return e->getOblique();
-                              }, [](const double& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_DimLinear* l) -> void {
+                              }, [](const double& v, RS_DimLinear* l) -> void {
                                   l->setOblique(v);
                               }, list, container);
     /*

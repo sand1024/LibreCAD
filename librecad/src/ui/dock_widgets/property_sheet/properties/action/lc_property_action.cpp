@@ -25,8 +25,8 @@ LC_PropertyAction::LC_PropertyAction(QObject* parent, [[maybe_unused]] bool hold
     : LC_PropertyAtomic(parent) {
 }
 
-void LC_PropertyAction::invokeClick() {
-    emit click(this);
+void LC_PropertyAction::invokeClick(int linkIdx) {
+    emit click(this, linkIdx);
 }
 
 void LC_PropertyAction::setClickHandler(const FunClickHandler& clickHandler) const {
