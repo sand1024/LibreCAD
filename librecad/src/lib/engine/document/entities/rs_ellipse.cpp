@@ -1355,28 +1355,26 @@ LC_Quadratic RS_Ellipse::getQuadratic() const {
  *@author Dongxu Li
  */
 double RS_Ellipse::areaLineIntegral() const {
-    const double a = getMajorRadius();
-    const double b = getMinorRadius();
-    if (!isEllipticArc()) {
-        return M_PI * a * b;
-    }
-    const double ab = a * b;
-    const double r2 = a * a + b * b;
-    const double& cx = m_data.center.x;
-    const double aE = getAngle();
-    const double& a0 = m_data.angle1;
-    const double& a1 = m_data.angle2;
-    const double sinAE = sin(aE);
-    const double sin2AE = sin(2. * aE);
-    const double sin2a0 = sin(2. * a0);
-    const double sin2a1 = sin(2. * a1);
-    const double fStart = cx * getStartpoint().y + 0.25 * r2 * sin2AE * cos(a0) * cos(a0) - 0.25 * ab * (2. * sinAE * sinAE * sin2a0 -
-        sin2a0);
-    const double fEnd = cx * getEndpoint().y + 0.25 * r2 * sin2AE * cos(a1) * cos(a1) - 0.25 * ab * (2. * sinAE * sinAE * sin2a1 - sin2a1);
-    if (isReversed()) {
-        return fEnd - fStart - 0.5 * a * b * getAngleLength();
-    }
-    return fEnd - fStart + 0.5 * a * b * getAngleLength();
+  const double a = getMajorRadius();
+  const double b = getMinorRadius();
+  if (!isEllipticArc()) {
+      return M_PI * a * b;
+  }
+  const double ab = a * b;
+  const double r2 = a * a + b * b;
+  const double& cx = m_data.center.x;
+  const double aE = getAngle();
+  const double y_start = getStartpoint().y;
+  const double y_end = getEndpoint().y;
+  const double start_angle = m_data.angle1;
+  const double end_angle = isReversed() ? start_angle - getAngleLength() : start_angle + getAngleLength();
+  const double aE2 = aE + aE;
+  const auto antiDerivative = [&cx, c1 = r2 * std::sin(aE2), c2 = std::cos(aE2), &ab](double t, double y) {
+    const double t2 = t + t;
+    return cx * y + (c1 + c1 * std::cos(t2) + 2. * ab * ( t2 + c2 * std::sin(t2))) / 8.;
+  };
+
+  return antiDerivative(end_angle, y_end) - antiDerivative(start_angle, y_start);
 }
 
 bool RS_Ellipse::isReversed() const {
