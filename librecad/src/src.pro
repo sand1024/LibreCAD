@@ -270,6 +270,7 @@ INCLUDEPATH += \
     ui/dock_widgets/property_sheet/lib/widgets/sheet \
     ui/dock_widgets/property_sheet/metaentity \
     ui/dock_widgets/property_sheet/metaentity/entities \
+    ui/dock_widgets/property_sheet/metaentity/entities/document \
     ui/dock_widgets/property_sheet/properties \
     ui/dock_widgets/property_sheet/properties/action \    
     ui/dock_widgets/property_sheet/properties/bool \    
@@ -280,6 +281,7 @@ INCLUDEPATH += \
     ui/dock_widgets/property_sheet/properties/layer \    
     ui/dock_widgets/property_sheet/properties/linetype \    
     ui/dock_widgets/property_sheet/properties/linewidth \    
+    ui/dock_widgets/property_sheet/properties/rect \
     ui/dock_widgets/property_sheet/properties/rsvector \
     ui/dock_widgets/property_sheet/properties/string \    
     ui/dock_widgets/views_list \
@@ -514,7 +516,10 @@ HEADERS += \
     lib/actions/lc_actioncontext.h \
     ui/components/utils/lc_entitymetauiutils.h \
     ui/components/utils/lc_guarded_signals_blocker.h \
-    ui/components/creators/lc_creatorinvoker.h \    
+    ui/components/utils/lc_mouse_tracking_table_view.h \
+    ui/components/utils/lc_tableitem_delegate_base.h \
+    ui/components/creators/lc_creatorinvoker.h \
+    ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.h \
     ui/dialogs/creators/lc_dlgmenuassigner.h \
     ui/dialogs/creators/lc_dlgwidgetcreator.h \
     ui/components/creators/lc_menuactivator.h \
@@ -739,6 +744,7 @@ HEADERS += \
     ui/dock_widgets/property_sheet/properties/double/lc_property_double.h \
     ui/dock_widgets/property_sheet/properties/double/lc_property_double_spinbox_view.h \
     ui/dock_widgets/property_sheet/properties/double/lc_property_double_interactivepick_view.h \
+    ui/dock_widgets/property_sheet/properties/double/lc_property_double_line_edit_view.h \
     ui/dock_widgets/property_sheet/properties/enum/lc_property_enum.h \
     ui/dock_widgets/property_sheet/properties/enum/lc_enum_descriptor.h \
     ui/dock_widgets/property_sheet/properties/enum/lc_enum_value_descriptor.h \
@@ -755,6 +761,8 @@ HEADERS += \
     ui/dock_widgets/property_sheet/properties/linewidth/lc_property_linewidth.h \
     ui/dock_widgets/property_sheet/properties/linewidth/lc_property_linewidth_combobox.h \
     ui/dock_widgets/property_sheet/properties/linewidth/lc_property_linewidth_combobox_view.h \
+    ui/dock_widgets/property_sheet/properties/rect/lc_property_rect.h \
+    ui/dock_widgets/property_sheet/properties/rect/lc_property_rect_view.h \
     ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector.h \
     ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector_view.h \
     ui/dock_widgets/property_sheet/properties/string/lc_property_qstring.h \
@@ -769,6 +777,7 @@ HEADERS += \
     ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_arrows_combobox_view.h \
     ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_arrows_combobox_view_handler.h \
     ui/dock_widgets/property_sheet/lc_propertysheetwidget.h \
+    ui/dock_widgets/property_sheet/lc_propertysheet_widget_options.h \
     ui/dock_widgets/property_sheet/metaentity/lc_entity_property_containerprovider.h \
     ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.h \
     ui/dock_widgets/property_sheet/metaentity/entities/lc_indexed_propertiesprovider_base.h \
@@ -797,7 +806,20 @@ HEADERS += \
     ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.h \
     ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_tolerance.h \
     ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_leader.h \
-    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.h
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.h  \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertyprovider_utils.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_active_pen.h  \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_block.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_document.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_component.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_grid.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_layer.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_paper.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_ucs.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_units.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_views.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_workspace.h \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_render_options.h
 
 SOURCES += \
     actions/dock_widgets/layer/lc_actionentitylayerbase.cpp \
@@ -893,7 +915,10 @@ SOURCES += \
     plugins/lc_plugininvoker.cpp \
     lib/actions/lc_actioncontext.cpp \
     ui/components/utils/lc_entitymetauiutils.cpp \
-    ui/components/creators/lc_creatorinvoker.cpp \    
+    ui/components/creators/lc_creatorinvoker.cpp \
+    ui/components/utils/lc_mouse_tracking_table_view.cpp \
+    ui/components/utils/lc_tableitem_delegate_base.cpp \
+    ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.cpp  \
     ui/dialogs/creators/lc_dlgmenuassigner.cpp \
     ui/dialogs/creators/lc_dlgwidgetcreator.cpp \
     ui/components/creators/lc_menuactivator.cpp \
@@ -1142,7 +1167,19 @@ SOURCES += \
     ui/action_options/ellipse/lc_ellipse1pointoptions.cpp \
     ui/components/status_bar/lc_relzerocoordinateswidget.cpp \
     ui/dialogs/lc_dialog.cpp \
-    ui/main/lc_mdiapplicationwindow.cpp
+    ui/main/lc_mdiapplicationwindow.cpp  \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_active_pen.cpp     \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_block.cpp     \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_document.cpp  \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_grid.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_layer.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_paper.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_ucs.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_units.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_views.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_workspace.cpp     \
+    ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_render_options.cpp \
+    ui/dock_widgets/property_sheet/metaentity/entities/lc_propertyprovider_utils.cpp
     # ui/not_used/lc_dlgdimordinate.cpp \
 
 # ################################################################################
@@ -1799,7 +1836,7 @@ SOURCES +=ui/action_options/lc_actionoptionsmanager.cpp \
     ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet_model.cpp \
     ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet.cpp \
     ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet_panel.cpp \
-    ui/dock_widgets/property_sheet/lib/widgets/lc_property_double_spinbox.cpp \
+    ui/dock_widgets/property_sheet/lib/widgets/lc_property_double_spinbox.cpp \    
     ui/dock_widgets/property_sheet/lib/widgets/lc_property_lineedit_with_button.cpp \
     ui/dock_widgets/property_sheet/lib/widgets/lc_multilinetexteditdialog.cpp \
     ui/dock_widgets/property_sheet/lib/widgets/lc_property_label_with_button.cpp \
@@ -1814,6 +1851,7 @@ SOURCES +=ui/action_options/lc_actionoptionsmanager.cpp \
     ui/dock_widgets/property_sheet/properties/double/lc_property_double.cpp \
     ui/dock_widgets/property_sheet/properties/double/lc_property_double_spinbox_view.cpp \
     ui/dock_widgets/property_sheet/properties/double/lc_property_double_interactivepick_view.cpp \
+    ui/dock_widgets/property_sheet/properties/double/lc_property_double_line_edit_view.cpp \
     ui/dock_widgets/property_sheet/properties/enum/lc_property_enum.cpp \
     ui/dock_widgets/property_sheet/properties/enum/lc_enum_descriptor.cpp \
     ui/dock_widgets/property_sheet/properties/enum/lc_enum_value_descriptor.cpp \
@@ -1826,6 +1864,8 @@ SOURCES +=ui/action_options/lc_actionoptionsmanager.cpp \
     ui/dock_widgets/property_sheet/properties/linetype/lc_property_linetype_combobox_view.cpp \
     ui/dock_widgets/property_sheet/properties/linewidth/lc_property_linewidth_combobox.cpp \
     ui/dock_widgets/property_sheet/properties/linewidth/lc_property_linewidth_combobox_view.cpp \
+    ui/dock_widgets/property_sheet/properties/rect/lc_property_rect.cpp  \
+    ui/dock_widgets/property_sheet/properties/rect/lc_property_rect_view.cpp \
     ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector.cpp \
     ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector_view.cpp \
     ui/dock_widgets/property_sheet/properties/string/lc_property_qstring.cpp \
@@ -1840,6 +1880,7 @@ SOURCES +=ui/action_options/lc_actionoptionsmanager.cpp \
     ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_arrows_combobox_view.cpp \
     ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_arrows_combobox_view_handler.cpp \
     ui/dock_widgets/property_sheet/lc_propertysheetwidget.cpp \
+    ui/dock_widgets/property_sheet/lc_propertysheet_widget_options.cpp \
     ui/dock_widgets/property_sheet/metaentity/lc_entity_property_containerprovider.cpp \
     ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp \
     ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp \
@@ -1948,7 +1989,8 @@ FORMS = ui/action_options/circle/lc_circlebyarcoptions.ui \
        ui/action_options/text/qg_textoptions.ui \
        ui/components/comboboxes/comboboxoption.ui \
        ui/components/containers/lc_optionswidgetsholder.ui \
-       ui/components/containers/lc_snapoptionswidgetsholder.ui \       
+       ui/components/containers/lc_snapoptionswidgetsholder.ui \
+       ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui \
        ui/dialogs/creators/lc_dlgmenuassigner.ui \
        ui/dialogs/creators/lc_dlgwidgetcreator.ui \
        ui/components/pen/qg_widgetpen.ui \

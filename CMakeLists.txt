@@ -5,20 +5,20 @@ set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 set (Boost_DEBUG OFF)
 #LOCAL -----
-#set (CMAKE_VERBOSE_MAKEFILE ON)
-#set (MIN_GW_PATH_PREFIX "d:\\Qt\\QT6\\6.9.0\\msvc2022_64")
-#set (BOOST_DIR "c:\\Local\\boost_1_84_0")
-#set (BOOST_ROOT "c:\\Local\\boost_1_84_0")
-#set (Boost_DIR "c:\\Local\\boost_1_84_0")
-#set (Boost_INCLUDE_DIR "c:\\Local\\boost_1_84_0")
-#set (CMAKE_PREFIX_PATH "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6")
-#set (Qt6_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6")
-#set (Qt6Core_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6Core")
-#set (Qt6Svg_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6Svg")
-#set (Qt6CoreTools_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6CoreTools")
-#set (Qt6Gui_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\QtGui")
-#set (QtNetwork_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\QtNetwork")
-#set (CMAKE_INSTALL_PREFIX "Z:/LC_BUILD_PROD")
+#[[set (CMAKE_VERBOSE_MAKEFILE ON)
+set (MIN_GW_PATH_PREFIX "d:\\Qt\\QT6\\6.9.0\\msvc2022_64")
+set (BOOST_DIR "c:\\Local\\boost_1_84_0")
+set (BOOST_ROOT "c:\\Local\\boost_1_84_0")
+set (Boost_DIR "c:\\Local\\boost_1_84_0")
+set (Boost_INCLUDE_DIR "c:\\Local\\boost_1_84_0")
+set (CMAKE_PREFIX_PATH "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6")
+set (Qt6_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6")
+set (Qt6Core_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6Core")
+set (Qt6Svg_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6Svg")
+set (Qt6CoreTools_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6CoreTools")
+set (Qt6Gui_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\QtGui")
+set (QtNetwork_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\QtNetwork")
+set (CMAKE_INSTALL_PREFIX "Z:/LC_BUILD_PROD")]]
 #local end ------
 
 set (CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -275,6 +275,7 @@ set (SHARED_INCLUDES
      librecad/src/ui/dock_widgets/property_sheet/properties/string
      librecad/src/ui/dock_widgets/property_sheet/metaentity
      librecad/src/ui/dock_widgets/property_sheet/metaentity/entities
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document
      librecad/src/ui/main
      librecad/src/ui/main/fontviewer
      librecad/src/ui/main/init
@@ -442,7 +443,6 @@ set (SHARED_SOURCES
      librecad/src/actions/drawing/draw/curve/lc_actiondrawarc2pointslength.h
      librecad/src/actions/drawing/draw/curve/lc_actiondrawarc2pointsradius.cpp
      librecad/src/actions/drawing/draw/curve/lc_actiondrawarc2pointsradius.h
-     librecad/src/actions/drawing/draw/curve/lc_actiondrawhyperbolafp.cpp
      librecad/src/actions/drawing/draw/curve/lc_actiondrawhyperbolafp.cpp
      librecad/src/actions/drawing/draw/curve/lc_actiondrawparabola4points.cpp
      librecad/src/actions/drawing/draw/curve/lc_actiondrawparabolaFD.cpp
@@ -710,6 +710,11 @@ set (SHARED_SOURCES
      librecad/src/actions/drawing/rel_zero/rs_actionsetrelativezero.h
      librecad/src/actions/drawing/rs_actiondefault.cpp
      librecad/src/actions/drawing/rs_actiondefault.h
+     librecad/src/actions/drawing/selection/lc_actionselectgeneric.cpp
+     librecad/src/actions/drawing/selection/lc_actionselectgeneric.h
+     librecad/src/actions/drawing/selection/lc_actionselectmodetoggle.cpp
+     librecad/src/actions/drawing/selection/lc_actionselectmodetoggle.h
+     librecad/src/actions/drawing/selection/lc_actionselectquick.cpp
      librecad/src/actions/drawing/selection/lc_actionsingleentityselectbase.cpp
      librecad/src/actions/drawing/selection/lc_actionsingleentityselectbase.h
      librecad/src/actions/drawing/selection/rs_actionselectall.cpp
@@ -726,9 +731,6 @@ set (SHARED_SOURCES
      librecad/src/actions/drawing/selection/rs_actionselectsingle.h
      librecad/src/actions/drawing/selection/rs_actionselectwindow.cpp
      librecad/src/actions/drawing/selection/rs_actionselectwindow.h
-     librecad/src/actions/drawing/selection/lc_actionselectmodetoggle.cpp
-     librecad/src/actions/drawing/selection/lc_actionselectmodetoggle.h
-     librecad/src/actions/drawing/selection/lc_actionselectquick.cpp
      librecad/src/actions/drawing/snap/lc_actionsnapmiddlemanual.cpp
      librecad/src/actions/drawing/snap/rs_actionsnapintersectionmanual.cpp
      librecad/src/actions/drawing/snap/rs_actionsnapintersectionmanual.h
@@ -765,6 +767,8 @@ set (SHARED_SOURCES
      librecad/src/lib/actions/lc_modifiersinfo.h
      librecad/src/lib/actions/lc_overlayboxaction.cpp
      librecad/src/lib/actions/lc_overlayboxaction.h
+     librecad/src/lib/actions/lc_undoabledocumentmodificationaction.cpp
+     librecad/src/lib/actions/lc_undoabledocumentmodificationaction.h
      librecad/src/lib/actions/rs_actioninterface.cpp
      librecad/src/lib/actions/rs_actioninterface.h
      librecad/src/lib/actions/rs_actionselectbase.cpp
@@ -773,16 +777,14 @@ set (SHARED_SOURCES
      librecad/src/lib/actions/rs_previewactioninterface.h
      librecad/src/lib/actions/rs_snapper.cpp
      librecad/src/lib/actions/rs_snapper.h
-     librecad/src/lib/actions/lc_undoabledocumentmodificationaction.cpp
-     librecad/src/lib/actions/lc_undoabledocumentmodificationaction.h
-     librecad/src/lib/creation/rs_creation.cpp
-     librecad/src/lib/creation/rs_creation.h
+     librecad/src/lib/creation/lc_creation_arc.cpp
+     librecad/src/lib/creation/lc_creation_arc.h
      librecad/src/lib/creation/lc_creation_circle.cpp
      librecad/src/lib/creation/lc_creation_circle.h
      librecad/src/lib/creation/lc_creation_ellipse.cpp
      librecad/src/lib/creation/lc_creation_ellipse.h
-     librecad/src/lib/creation/lc_creation_arc.cpp
-     librecad/src/lib/creation/lc_creation_arc.h
+     librecad/src/lib/creation/rs_creation.cpp
+     librecad/src/lib/creation/rs_creation.h
      librecad/src/lib/debug/rs_debug.cpp
      librecad/src/lib/debug/rs_debug.h
      librecad/src/lib/engine/clipboard/rs_clipboard.cpp
@@ -918,8 +920,8 @@ set (SHARED_SOURCES
      librecad/src/lib/engine/document/rs_document.h
      librecad/src/lib/engine/document/rs_graphic.cpp
      librecad/src/lib/engine/document/rs_graphic.h
-     librecad/src/lib/engine/document/selection/lc_selectedset.h
      librecad/src/lib/engine/document/selection/lc_selectedset.cpp
+     librecad/src/lib/engine/document/selection/lc_selectedset.h
      librecad/src/lib/engine/document/selection/lc_selectedsetlistener.h
      librecad/src/lib/engine/document/textstyles/lc_textstyle.cpp
      librecad/src/lib/engine/document/textstyles/lc_textstyle.h
@@ -1081,22 +1083,22 @@ set (SHARED_SOURCES
      librecad/src/lib/information/rs_locale.h
      librecad/src/lib/math/lc_convert.cpp
      librecad/src/lib/math/lc_convert.h
+     librecad/src/lib/math/lc_formatter.cpp
+     librecad/src/lib/math/lc_formatter.h
      librecad/src/lib/math/lc_linemath.cpp
      librecad/src/lib/math/lc_linemath.h
      librecad/src/lib/math/lc_quadratic.cpp
      librecad/src/lib/math/lc_quadratic.h
      librecad/src/lib/math/rs_math.cpp
      librecad/src/lib/math/rs_math.h
-     librecad/src/lib/math/lc_formatter.h
-     librecad/src/lib/math/lc_formatter.cpp
      librecad/src/lib/modification/lc_align.cpp
      librecad/src/lib/modification/lc_align.h
+     librecad/src/lib/modification/lc_copyutils.cpp
+     librecad/src/lib/modification/lc_copyutils.h
      librecad/src/lib/modification/lc_division.cpp
      librecad/src/lib/modification/lc_division.h
      librecad/src/lib/modification/rs_modification.cpp
      librecad/src/lib/modification/rs_modification.h
-     librecad/src/lib/modification/lc_copyutils.h
-     librecad/src/lib/modification/lc_copyutils.cpp
      librecad/src/lib/printing/lc_printing.cpp
      librecad/src/lib/printing/lc_printing.h
      librecad/src/lib/scripting/rs_python.cpp
@@ -1109,74 +1111,73 @@ set (SHARED_SOURCES
      librecad/src/lib/scripting/rs_scriptlist.h
      librecad/src/lib/scripting/rs_simplepython.cpp
      librecad/src/lib/scripting/rs_simplepython.h
-     librecad/src/lib/selection/rs_selection.cpp
-     librecad/src/lib/selection/rs_selection.h
-     librecad/src/lib/selection/lc_selectionpredicate.h
      librecad/src/lib/selection/lc_selectionpredicate.cpp
-     librecad/src/lib/selection/metaentity/lc_entitymatchdescriptor.h
-     librecad/src/lib/selection/metaentity/lc_propertymatchertypes.h
-     librecad/src/lib/selection/metaentity/lc_propertymatchertypes.cpp
-     librecad/src/lib/selection/metaentity/lc_entitymatchdescriptor.h
-     librecad/src/lib/selection/metaentity/lc_entitymatcher.h
-     librecad/src/lib/selection/metaentity/lc_typedentitymatcher.h
-     librecad/src/lib/selection/metaentity/lc_vectorentitymatcher.h
-     librecad/src/lib/selection/metaentity/lc_vectorlistentitymatcher.h
-     librecad/src/lib/selection/metaentity/lc_propertymatcher.h
-     librecad/src/lib/selection/metaentity/lc_propertymatchtypedescriptor.h
-     librecad/src/lib/selection/metaentity/lc_entitymatchdescriptorsregistry.h
-     librecad/src/lib/selection/metaentity/lc_entitymatchdescriptorsregistry.cpp
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_line.cpp
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_line.h
+     librecad/src/lib/selection/lc_selectionpredicate.h
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.h
      librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_base.h
      librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_circle.cpp
      librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_circle.h
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.cpp
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_arc.h
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_polyline.cpp
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_polyline.h
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_spline.cpp
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_spline.h
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_hatch.cpp
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_hatch.h
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_hyperbola.cpp
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_hyperbola.h
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.h
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_text.cpp
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_text.h
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_mtext.cpp
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_mtext.h
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_image.cpp
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_image.h
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_dimlinear.cpp
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_dimlinear.h
      librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_dimaligned.cpp
      librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_dimaligned.h
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_dimradial.cpp
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_dimradial.h
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_dimdiametric.cpp
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_dimdiametric.h
      librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_dimangular.cpp
      librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_dimangular.h
      librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_dimarc.cpp
      librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_dimarc.h
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_dimbase.h
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_dimdiametric.cpp
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_dimdiametric.h
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_dimlinear.cpp
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_dimlinear.h
      librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.cpp
      librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_dimordinate.h
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_leader.cpp
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_leader.h
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_parabola.cpp
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_parabola.h
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_tolerance.cpp
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_tolerance.h
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_multiple.cpp
-     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_multiple.h
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_dimradial.cpp
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_dimradial.h
      librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_ellipse.cpp
      librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_ellipse.h
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_hatch.cpp
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_hatch.h
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_hyperbola.cpp
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_hyperbola.h
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_image.cpp
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_image.h
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.cpp
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_insert.h
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_leader.cpp
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_leader.h
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_line.cpp
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_line.h
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_mtext.cpp
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_mtext.h
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_multiple.cpp
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_multiple.h
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_parabola.cpp
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_parabola.h
      librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_point.cpp
      librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_point.h
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_polyline.cpp
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_polyline.h
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_spline.cpp
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_spline.h
      librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.cpp
      librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_splinepoints.h
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_text.cpp
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_text.h
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_tolerance.cpp
+     librecad/src/lib/selection/metaentity/entities/lc_matchdescriptor_tolerance.h
+     librecad/src/lib/selection/metaentity/lc_entitymatchdescriptor.h
+     librecad/src/lib/selection/metaentity/lc_entitymatchdescriptorsregistry.cpp
+     librecad/src/lib/selection/metaentity/lc_entitymatchdescriptorsregistry.h
+     librecad/src/lib/selection/metaentity/lc_entitymatcher.h
+     librecad/src/lib/selection/metaentity/lc_propertymatcher.h
+     librecad/src/lib/selection/metaentity/lc_propertymatchertypes.cpp
+     librecad/src/lib/selection/metaentity/lc_propertymatchertypes.h
+     librecad/src/lib/selection/metaentity/lc_propertymatchtypedescriptor.h
+     librecad/src/lib/selection/metaentity/lc_typedentitymatcher.h
+     librecad/src/lib/selection/metaentity/lc_vectorentitymatcher.h
+     librecad/src/lib/selection/metaentity/lc_vectorlistentitymatcher.h
+     librecad/src/lib/selection/rs_selection.cpp
+     librecad/src/lib/selection/rs_selection.h
      librecad/src/main/doc_plugin_interface.cpp
      librecad/src/main/doc_plugin_interface.h
      librecad/src/main/lc_application.cpp
@@ -1377,13 +1378,18 @@ set (SHARED_SOURCES
      librecad/src/ui/components/toolbars/qg_pentoolbar.h
      librecad/src/ui/components/toolbars/qg_snaptoolbar.cpp
      librecad/src/ui/components/toolbars/qg_snaptoolbar.h
-     librecad/src/ui/components/utils/lc_entitymetauiutils.h
      librecad/src/ui/components/utils/lc_entitymetauiutils.cpp
+     librecad/src/ui/components/utils/lc_entitymetauiutils.h
+     librecad/src/ui/components/utils/lc_guarded_signals_blocker.h
      librecad/src/ui/components/utils/lc_item_info.h
+     librecad/src/ui/components/utils/lc_mouse_tracking_table_view.cpp
+     librecad/src/ui/components/utils/lc_mouse_tracking_table_view.h
+     librecad/src/ui/components/utils/lc_tableitem_delegate_base.cpp
+     librecad/src/ui/components/utils/lc_tableitem_delegate_base.h
      librecad/src/ui/dialogs/actions/qg_layerdialog.cpp
      librecad/src/ui/dialogs/actions/qg_layerdialog.h
-     librecad/src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.h
      librecad/src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp
+     librecad/src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.h
      librecad/src/ui/dialogs/creators/lc_dlgmenuassigner.cpp
      librecad/src/ui/dialogs/creators/lc_dlgmenuassigner.h
      librecad/src/ui/dialogs/creators/lc_dlgnewwidget.cpp
@@ -1410,8 +1416,8 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/entity/lc_entitypropertieseditorsupport.h
      librecad/src/ui/dialogs/entity/lc_entitypropertieseditorwidget.cpp
      librecad/src/ui/dialogs/entity/lc_entitypropertieseditorwidget.h
-     librecad/src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.h
      librecad/src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.cpp
+     librecad/src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.h
      librecad/src/ui/dialogs/entity/lc_imagepropertieseditingwidget.cpp
      librecad/src/ui/dialogs/entity/lc_imagepropertieseditingwidget.h
      librecad/src/ui/dialogs/entity/lc_insertpropertieseditingwidget.cpp
@@ -1565,221 +1571,246 @@ set (SHARED_SOURCES
      librecad/src/ui/dock_widgets/pen_wizard/colorwizard.h
      librecad/src/ui/dock_widgets/pen_wizard/lc_penwizard.cpp
      librecad/src/ui/dock_widgets/pen_wizard/lc_penwizard.h
-     librecad/src/ui/dock_widgets/property_sheet/lib/properties/lc_property.h
+     librecad/src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.cpp
+     librecad/src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.h
+     librecad/src/ui/dock_widgets/property_sheet/lc_propertysheet_widget_options.h
+     librecad/src/ui/dock_widgets/property_sheet/lc_propertysheet_widget_options.cpp
+     librecad/src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.h
+     librecad/src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.cpp
      librecad/src/ui/dock_widgets/property_sheet/lib/properties/lc_property.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lib/properties/lc_property_atomic.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/properties/lc_property.h
      librecad/src/ui/dock_widgets/property_sheet/lib/properties/lc_property_atomic.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lib/properties/lc_property_container.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/properties/lc_property_atomic.h
      librecad/src/ui/dock_widgets/property_sheet/lib/properties/lc_property_container.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lib/properties/lc_property_multi.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/properties/lc_property_container.h
      librecad/src/ui/dock_widgets/property_sheet/lib/properties/lc_property_multi.cpp
+     librecad/src/ui/dock_widgets/property_sheet/lib/properties/lc_property_multi.h
      librecad/src/ui/dock_widgets/property_sheet/lib/properties/lc_property_numeric.h
      librecad/src/ui/dock_widgets/property_sheet/lib/properties/lc_property_single.h
      librecad/src/ui/dock_widgets/property_sheet/lib/properties/lc_property_structbase.h
-     librecad/src/ui/dock_widgets/property_sheet/lib/properties/lc_property_utils.h
      librecad/src/ui/dock_widgets/property_sheet/lib/properties/lc_property_utils.cpp
+     librecad/src/ui/dock_widgets/property_sheet/lib/properties/lc_property_utils.h
      librecad/src/ui/dock_widgets/property_sheet/lib/properties/lc_property_valuestorage.h
-     librecad/src/ui/dock_widgets/property_sheet/lib/properties/lc_property_view_descriptor.h
      librecad/src/ui/dock_widgets/property_sheet/lib/properties/lc_property_view_descriptor.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_event_context.h
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_event_context.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_edit_context.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/properties/lc_property_view_descriptor.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/edit/lc_inplace_property_editing_controller.cpp
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/edit/lc_inplace_property_editing_controller.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/edit/lc_inplace_property_editing_stopper.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_button_handler.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_handler.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_handler_base.cpp
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_handler_base.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_handler_value_typed.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_utils.cpp
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_utils.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_guardedconnectionslist.cpp
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_guardedconnectionslist.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_container_view.cpp
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_container_view.h
      librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_edit_context.cpp
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_edit_context.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_event_context.cpp
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_event_context.h
      librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_paint_context.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_simple_combobox_view.h
      librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_editable.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view.h
      librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_editable.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_error.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_editable.h
      librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_error.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_factory.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_error.h
      librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_factory.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_multiple.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_factory.h
      librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_multiple.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_part.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_multiple.h
      librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_part.cpp
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_part.h
      librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_typed.h
      librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_typed_compound.h
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_with_values.h
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_with_values.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_with_value.h
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_with_value.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_utils.h
      librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_utils.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_guardedconnectionslist.h
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_guardedconnectionslist.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_container_view.h
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_container_view.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_handler_base.h
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_handler_base.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_handler.h
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_handler_value_typed.h
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_button_handler.h
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_utils.h
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/edit/lc_property_editor_utils.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/edit/lc_inplace_property_editing_stopper.h
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/edit/lc_inplace_property_editing_controller.h
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/edit/lc_inplace_property_editing_controller.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_simple_combobox_view.h
-     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet_model.h
-     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet_model.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet.h
-     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet_panel.h
-     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet_panel.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/lc_property_double_spinbox.h
-     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/lc_property_double_spinbox.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/lc_property_lineedit_with_button.h
-     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/lc_property_lineedit_with_button.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/lc_multilinetexteditdialog.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_utils.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_with_value.cpp
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_with_value.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_with_values.cpp
+     librecad/src/ui/dock_widgets/property_sheet/lib/view/lc_property_view_with_values.h
      librecad/src/ui/dock_widgets/property_sheet/lib/widgets/lc_multilinetexteditdialog.cpp
+     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/lc_multilinetexteditdialog.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/lc_property_combobox.cpp
+     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/lc_property_combobox.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/lc_property_double_spinbox.cpp
+     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/lc_property_double_spinbox.h
      librecad/src/ui/dock_widgets/property_sheet/lib/widgets/lc_property_label_with_button.cpp
      librecad/src/ui/dock_widgets/property_sheet/lib/widgets/lc_property_label_with_button.h
-     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/lc_property_combobox.h
-     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/lc_property_combobox.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/lc_property_view_registrator.h
-     librecad/src/ui/dock_widgets/property_sheet/properties/lc_property_view_registrator.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/lc_entitypropertyvaluedelegate.h
-     librecad/src/ui/dock_widgets/property_sheet/properties/action/lc_property_action.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/lc_property_lineedit_with_button.cpp
+     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/lc_property_lineedit_with_button.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet.cpp
+     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet_model.cpp
+     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet_model.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet_panel.cpp
+     librecad/src/ui/dock_widgets/property_sheet/lib/widgets/sheet/lc_properties_sheet_panel.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_active_pen.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_active_pen.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_block.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_block.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_document.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_document.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_component.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_grid.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_grid.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_layer.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_layer.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_paper.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_paper.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_ucs.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_ucs.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_units.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_units.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_views.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_views.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_workspace.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_graphic_workspace.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_render_options.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document/lc_propertiesprovider_render_options.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_indexed_propertiesprovider_base.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_angular.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_angular.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_arc.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_arc.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_diametric.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_diametric.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_radial.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_radial.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_leader.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_leader.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_multiple.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_tolerance.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_tolerance.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertyprovider_utils.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertyprovider_utils.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/lc_entity_property_containerprovider.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/lc_entity_property_containerprovider.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.h
      librecad/src/ui/dock_widgets/property_sheet/properties/action/lc_property_action.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/action/lc_property_action_link_view.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/action/lc_property_action.h
      librecad/src/ui/dock_widgets/property_sheet/properties/action/lc_property_action_link_view.cpp
+     librecad/src/ui/dock_widgets/property_sheet/properties/action/lc_property_action_link_view.h
      librecad/src/ui/dock_widgets/property_sheet/properties/bool/lc_property_bool.h
-     librecad/src/ui/dock_widgets/property_sheet/properties/bool/lc_property_bool_checkbox_view.h
      librecad/src/ui/dock_widgets/property_sheet/properties/bool/lc_property_bool_checkbox_view.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/bool/lc_property_bool_combobox_view.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/bool/lc_property_bool_checkbox_view.h
      librecad/src/ui/dock_widgets/property_sheet/properties/bool/lc_property_bool_combobox_view.cpp
+     librecad/src/ui/dock_widgets/property_sheet/properties/bool/lc_property_bool_combobox_view.h
      librecad/src/ui/dock_widgets/property_sheet/properties/color/lc_property_rscolor.h
-     librecad/src/ui/dock_widgets/property_sheet/properties/color/lc_property_rscolor_combobox.h
      librecad/src/ui/dock_widgets/property_sheet/properties/color/lc_property_rscolor_combobox.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/color/lc_property_rscolor_combobox_view.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/color/lc_property_rscolor_combobox.h
      librecad/src/ui/dock_widgets/property_sheet/properties/color/lc_property_rscolor_combobox_view.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/double/lc_property_double.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/color/lc_property_rscolor_combobox_view.h
      librecad/src/ui/dock_widgets/property_sheet/properties/double/lc_property_double.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_spinbox_view.h
-     librecad/src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_spinbox_view.cpp
+     librecad/src/ui/dock_widgets/property_sheet/properties/double/lc_property_double.h
      librecad/src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_interactivepick_view.cpp
      librecad/src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_interactivepick_view.h
-     librecad/src/ui/dock_widgets/property_sheet/properties/enum/lc_property_enum.h
-     librecad/src/ui/dock_widgets/property_sheet/properties/enum/lc_property_enum.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/enum/lc_enum_descriptor.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_spinbox_view.cpp
+     librecad/src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_spinbox_view.h
      librecad/src/ui/dock_widgets/property_sheet/properties/enum/lc_enum_descriptor.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/enum/lc_enum_value_descriptor.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/enum/lc_enum_descriptor.h
      librecad/src/ui/dock_widgets/property_sheet/properties/enum/lc_enum_value_descriptor.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/enum/lc_property_enum_combobox_view.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/enum/lc_enum_value_descriptor.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/enum/lc_property_enum.cpp
+     librecad/src/ui/dock_widgets/property_sheet/properties/enum/lc_property_enum.h
      librecad/src/ui/dock_widgets/property_sheet/properties/enum/lc_property_enum_combobox_view.cpp
+     librecad/src/ui/dock_widgets/property_sheet/properties/enum/lc_property_enum_combobox_view.h
      librecad/src/ui/dock_widgets/property_sheet/properties/int/lc_property_int.h
-     librecad/src/ui/dock_widgets/property_sheet/properties/int/lc_property_int_list_combobox_view.h
      librecad/src/ui/dock_widgets/property_sheet/properties/int/lc_property_int_list_combobox_view.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/int/lc_property_int_spinbox_view.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/int/lc_property_int_list_combobox_view.h
      librecad/src/ui/dock_widgets/property_sheet/properties/int/lc_property_int_spinbox_view.cpp
+     librecad/src/ui/dock_widgets/property_sheet/properties/int/lc_property_int_spinbox_view.h
      librecad/src/ui/dock_widgets/property_sheet/properties/layer/lc_property_layer.h
-     librecad/src/ui/dock_widgets/property_sheet/properties/layer/lc_property_layer_combobox.h
      librecad/src/ui/dock_widgets/property_sheet/properties/layer/lc_property_layer_combobox.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/layer/lc_property_layer_combobox_view.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/layer/lc_property_layer_combobox.h
      librecad/src/ui/dock_widgets/property_sheet/properties/layer/lc_property_layer_combobox_view.cpp
+     librecad/src/ui/dock_widgets/property_sheet/properties/layer/lc_property_layer_combobox_view.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/lc_entitypropertyvaluedelegate.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/lc_property_view_registrator.cpp
+     librecad/src/ui/dock_widgets/property_sheet/properties/lc_property_view_registrator.h
      librecad/src/ui/dock_widgets/property_sheet/properties/linetype/lc_property_linetype.h
-     librecad/src/ui/dock_widgets/property_sheet/properties/linetype/lc_property_linetype_combobox.h
      librecad/src/ui/dock_widgets/property_sheet/properties/linetype/lc_property_linetype_combobox.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/linetype/lc_property_linetype_combobox_view.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/linetype/lc_property_linetype_combobox.h
      librecad/src/ui/dock_widgets/property_sheet/properties/linetype/lc_property_linetype_combobox_view.cpp
+     librecad/src/ui/dock_widgets/property_sheet/properties/linetype/lc_property_linetype_combobox_view.h
      librecad/src/ui/dock_widgets/property_sheet/properties/linewidth/lc_property_linewidth.h
-     librecad/src/ui/dock_widgets/property_sheet/properties/linewidth/lc_property_linewidth_combobox.h
      librecad/src/ui/dock_widgets/property_sheet/properties/linewidth/lc_property_linewidth_combobox.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/linewidth/lc_property_linewidth_combobox_view.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/linewidth/lc_property_linewidth_combobox.h
      librecad/src/ui/dock_widgets/property_sheet/properties/linewidth/lc_property_linewidth_combobox_view.cpp
+     librecad/src/ui/dock_widgets/property_sheet/properties/linewidth/lc_property_linewidth_combobox_view.h
      librecad/src/ui/dock_widgets/property_sheet/properties/rect/lc_property_rect.cpp
      librecad/src/ui/dock_widgets/property_sheet/properties/rect/lc_property_rect.h
      librecad/src/ui/dock_widgets/property_sheet/properties/rect/lc_property_rect_view.cpp
      librecad/src/ui/dock_widgets/property_sheet/properties/rect/lc_property_rect_view.h
-     librecad/src/ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector.h
      librecad/src/ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector_view.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector.h
      librecad/src/ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector_view.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector_view.h
      librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_invalid_view_base.h
-     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_invalid_view_base.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_file_view.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring.h
      librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_file_view.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_file_view_handler.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_file_view.h
      librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_file_view_handler.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_font_combobox.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_file_view_handler.h
      librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_font_combobox.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_font_combobox_view.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_font_combobox.h
      librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_font_combobox_view.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_arrows_combobox_view.h
-     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_arrows_combobox_view.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_arrows_combobox_view_handler.h
-     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_arrows_combobox_view_handler.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_combobox_view.h
-     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_combobox_view.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_combobox_view_handler.h
-     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_combobox_view_handler.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_lineedit_view.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_font_combobox_view.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_invalid_view_base.cpp
+     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_invalid_view_base.h
      librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_lineedit_view.cpp
-     librecad/src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.h
-     librecad/src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/lc_entity_property_containerprovider.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/lc_entity_property_containerprovider.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_indexed_propertiesprovider_base.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_multiple.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_radial.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_radial.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_diametric.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_diametric.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_arc.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_arc.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_angular.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_angular.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_document.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_document.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_tolerance.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_tolerance.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_leader.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_leader.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.h
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertyprovider_utils.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertyprovider_utils.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_lineedit_view.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_arrows_combobox_view.cpp
+     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_arrows_combobox_view.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_arrows_combobox_view_handler.cpp
+     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_arrows_combobox_view_handler.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_combobox_view.cpp
+     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_combobox_view.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_combobox_view_handler.cpp
+     librecad/src/ui/dock_widgets/property_sheet/properties/string/lc_property_qstring_list_combobox_view_handler.h
      librecad/src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.cpp
      librecad/src/ui/dock_widgets/ucs_list/lc_dlgucslistoptions.h
      librecad/src/ui/dock_widgets/ucs_list/lc_dlgucsproperties.cpp
@@ -1817,10 +1848,10 @@ set (SHARED_SOURCES
      librecad/src/ui/main/init/lc_applicationwindowinitializer.h
      librecad/src/ui/main/init/lc_menufactory.cpp
      librecad/src/ui/main/init/lc_menufactory.h
-     librecad/src/ui/main/init/lc_menufactory_graphicview.cpp
-     librecad/src/ui/main/init/lc_menufactory_graphicview.h
      librecad/src/ui/main/init/lc_menufactory_base.cpp
      librecad/src/ui/main/init/lc_menufactory_base.h
+     librecad/src/ui/main/init/lc_menufactory_graphicview.cpp
+     librecad/src/ui/main/init/lc_menufactory_graphicview.h
      librecad/src/ui/main/init/lc_menufactory_main.cpp
      librecad/src/ui/main/init/lc_menufactory_main.h
      librecad/src/ui/main/init/lc_toolbarfactory.cpp
@@ -1868,14 +1899,6 @@ set (SHARED_SOURCES
      librecad/src/ui/view/lc_printpreviewview.h
      librecad/src/ui/view/qg_graphicview.cpp
      librecad/src/ui/view/qg_graphicview.h
-     librecad/src/actions/drawing/selection/lc_actionselectgeneric.cpp
-     librecad/src/actions/drawing/selection/lc_actionselectgeneric.h
-     librecad/src/ui/components/utils/lc_guarded_signals_blocker.h
-     librecad/src/ui/components/utils/lc_item_info.h
-     librecad/src/ui/components/utils/lc_tableitem_delegate_base.cpp
-     librecad/src/ui/components/utils/lc_tableitem_delegate_base.h
-     librecad/src/ui/components/utils/lc_mouse_tracking_table_view.cpp
-     librecad/src/ui/components/utils/lc_mouse_tracking_table_view.h
 )
 
 set (MUPARSER_SOURCES
@@ -1899,10 +1922,8 @@ set (MUPARSER_SOURCES
      libraries/muparser/src/muParserError.cpp
      libraries/muparser/src/muParserInt.cpp
      libraries/muparser/src/muParserTokenReader.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_document.cpp
-     librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_document.h
-     librecad/src/ui/components/utils/lc_mouse_tracking_table_view.cpp
-     librecad/src/ui/components/utils/lc_mouse_tracking_table_view.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_line_edit_view.cpp
+     librecad/src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_line_edit_view.h
 )
 
 # Static library from shared sources

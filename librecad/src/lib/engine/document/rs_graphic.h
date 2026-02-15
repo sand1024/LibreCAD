@@ -52,7 +52,7 @@ struct LC_MarginsRect {
     double right {0.0};
 
     bool operator == (const LC_MarginsRect& v) const {
-        return left == v.left && top == v.top && bottom == v.bottom & right == v.right;
+        return (left == v.left) && (top == v.top) && (bottom == v.bottom) && (right == v.right);
     }
 
     double getLeft() const {
