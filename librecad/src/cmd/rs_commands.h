@@ -72,6 +72,13 @@ public:
     static QString getAliasFile();
     void updateAlias();
 
+    QString getCommandForAction(RS2::ActionType action) {
+        if (m_actionToCommand.count(action)) {
+            return m_actionToCommand[action];
+        }
+        return "";
+    }
+
     ~RS_Commands()=delete;
     RS_Commands(const RS_Commands &) = delete;
     RS_Commands &operator=(const RS_Commands &) = delete;

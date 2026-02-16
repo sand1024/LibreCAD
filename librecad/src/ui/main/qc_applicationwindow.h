@@ -34,6 +34,7 @@
 #include "lc_plugininvoker.h"
 #include "lc_actionfactory.h"
 
+
 class LC_PropertySheetWidget;
 class LC_ActionGroupManager;
 class LC_ActionGroup;
@@ -330,6 +331,8 @@ public:
     LC_NamedViewsListWidget* getNamedViewsListWidget() const{
         return m_namedViewsWidget;
     }
+
+    void commandMessage(const QString& msg) const;
     LC_ActionGroup* getActionGroup(const QString& groupName) const;
     LC_ActionContext* getActionContext() const;
 

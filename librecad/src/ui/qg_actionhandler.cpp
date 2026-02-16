@@ -27,6 +27,9 @@
 
 #include "qg_actionhandler.h"
 
+#include <QStatusBar>
+
+#include "lc_action.h"
 #include "lc_actionhandlerfactory.h"
 #include "lc_defaultactioncontext.h"
 #include "lc_graphicviewport.h"
@@ -64,6 +67,35 @@ RS_ActionInterface* QG_ActionHandler::getCurrentAction() const {
     return nullptr;
 }
 
+// fixme - sand - initial implementation of command promotion. ADD: 1) support of command aliases 2) notification type? 3) Stats for future displaying the user?
+void QG_ActionHandler::promoteCommandIfNeeded(const RS2::ActionType id) const {
+    auto sndr = sender();
+    auto action = dynamic_cast<LC_Action*>(sndr);
+    if (action != nullptr) {
+        const bool actionInvokedViaShortcut = action->isInvokedViaShortcut();
+        if (actionInvokedViaShortcut) {
+            // shortcut is assigned to action, nothing to do (yet later we may note this fact!)
+        }
+        else{
+            // unefficient way, invocation from UI. Promote command, if it is allowed
+            bool promoteCommands = LC_GET_ONE_BOOL("CommandsPromotion", "PromoteCommands", true);
+            if (promoteCommands) {
+                // fixme - sand - more details are needed (like aliases)
+                const QString command = RS_COMMANDS->getCommandForAction(id);
+                if (!command.isEmpty()) {
+                    const auto actionName = action->text().remove("&");
+                    // fixme - probably the exact way of notification should be isolated from there (say, support notification banners too)
+                    QC_ApplicationWindow::getAppWindow()->commandMessage( QObject::tr("%2 - command for \"%1\"").arg(actionName).arg(command));
+                }
+            }
+        }
+    }
+    else {
+        // action is invoked via command, nothing to do
+        // LC_ERR << "FROM CMD";
+    }
+}
+
 /**
  * Sets current action.
  *
@@ -78,6 +110,8 @@ std::shared_ptr<RS_ActionInterface> QG_ActionHandler::setCurrentAction(const RS2
         RS_DEBUG->print(RS_Debug::D_WARNING, "QG_ActionHandler::setCurrentAction: graphic view or document is nullptr");
         return nullptr;
     }
+
+    promoteCommandIfNeeded(id);
 
     std::shared_ptr<RS_ActionInterface> a = createActionInstance(id, data);
 

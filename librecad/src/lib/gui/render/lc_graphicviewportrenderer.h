@@ -30,7 +30,7 @@
 #define DEBUG_RENDERING_
 
 #ifdef DEBUG_RENDERING
-#include <QElapsedTimer>
+    #include <QElapsedTimer>
 
 #define DEBUG_RENDERING_DETAILS
 #endif
