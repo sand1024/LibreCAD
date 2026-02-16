@@ -655,6 +655,12 @@ void QG_DlgOptionsGeneral::init(){
     }
     LC_GROUP_END();
 
+    LC_GROUP("CommandsPromotion");
+    {
+        cbShowCommandInMenu->setChecked(LC_GET_BOOL("ShowCommandInMenu", true));
+        cbPromoteCommandInCmd->setChecked(LC_GET_BOOL("PromoteCommands", true));
+    }
+    LC_GROUP_END();
     LC_GROUP("Keyboard"); {
         cbEvaluateOnSpace->setChecked(LC_GET_BOOL("EvaluateCommandOnSpace"));
         cbToggleFreeSnapOnSpace->setChecked(LC_GET_BOOL("ToggleFreeSnapOnSpace"));
@@ -930,6 +936,12 @@ void QG_DlgOptionsGeneral::ok(){
         }
         LC_GROUP_END();
 
+        LC_GROUP("CommandsPromotion");
+        {
+            LC_SET("ShowCommandInMenu", cbShowCommandInMenu->isChecked());
+            LC_SET("PromoteCommands", cbPromoteCommandInCmd->isChecked());
+        }
+        LC_GROUP_END();
         LC_GROUP("Startup");
         {
             LC_SET("ShowSplash", cbSplash->isChecked());

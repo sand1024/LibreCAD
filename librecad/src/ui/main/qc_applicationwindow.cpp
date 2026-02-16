@@ -1886,6 +1886,10 @@ QAction* QC_ApplicationWindow::getAction(const QString& actionName) const {
     return m_actionGroupManager->getActionByName(actionName);
 }
 
+void QC_ApplicationWindow::commandMessage(const QString& msg) const {
+   m_commandWidget->appendHistory(msg);
+}
+
 LC_ActionGroup* QC_ApplicationWindow::getActionGroup(const QString& groupName) const {
     return m_actionGroupManager->getActionGroup(groupName);
 }

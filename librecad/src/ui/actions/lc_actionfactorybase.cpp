@@ -24,6 +24,7 @@
 
 #include <QActionGroup>
 
+#include "lc_action.h"
 #include "lc_actiongroup.h"
 #include "lc_actiongroupmanager.h"
 #include "lc_shortcutinfo.h"
@@ -75,7 +76,8 @@ QAction* LC_ActionFactoryBase::createAction_AH(const char* name, RS2::ActionType
 
 QAction* LC_ActionFactoryBase::justCreateAction(QMap<QString, QAction*>& actionsMap, const char* name, const QString& text, const char* iconName,
                                                 const char* themeIconName, QActionGroup* parent) const {
-    auto* action = new QAction(text, parent);
+    // auto* action = new QAction(text, parent);
+    auto* action = new LC_Action(text, parent);
     if (iconName != nullptr) {
         const auto icon = QIcon(iconName);
         if (m_usingTheme && themeIconName != nullptr) {

@@ -6,7 +6,6 @@ set (CMAKE_CXX_STANDARD_REQUIRED ON)
 set (Boost_DEBUG OFF)
 
 set (LOCAL_BUILD "sand1024")
-
 #LOCAL -----
 if (LOCAL_BUILD STREQUAL "sand1024_")
     set (CMAKE_VERBOSE_MAKEFILE ON)
@@ -32,7 +31,6 @@ set (CMAKE_AUTOUIC_OPTIONS --connections string)
 set (CMAKE_AUTOMOC ON)
 set (CMAKE_AUTOUIC ON)
 set (CMAKE_AUTORCC ON)
-
 
 add_compile_definitions (DWGSUPPORT)
 add_compile_definitions (MUPARSER_STATIC)
@@ -1317,18 +1315,20 @@ set (SHARED_SOURCES
      librecad/src/ui/action_options/text/qg_mtextoptions.h
      librecad/src/ui/action_options/text/qg_textoptions.cpp
      librecad/src/ui/action_options/text/qg_textoptions.h
-     librecad/src/ui/actions/lc_actionfactorybase.cpp
+     librecad/src/ui/actions/lc_action.h
+     librecad/src/ui/actions/lc_action.cpp
      librecad/src/ui/actions/lc_actionfactorybase.h
-     librecad/src/ui/actions/lc_actiongroup.cpp
+     librecad/src/ui/actions/lc_actionfactorybase.cpp
      librecad/src/ui/actions/lc_actiongroup.h
-     librecad/src/ui/actions/lc_actiongroupmanager.cpp
+     librecad/src/ui/actions/lc_actiongroup.cpp
      librecad/src/ui/actions/lc_actiongroupmanager.h
-     librecad/src/ui/actions/lc_shortcutinfo.cpp
+     librecad/src/ui/actions/lc_actiongroupmanager.cpp
      librecad/src/ui/actions/lc_shortcutinfo.h
-     librecad/src/ui/actions/lc_shortcuts_manager.cpp
+     librecad/src/ui/actions/lc_shortcutinfo.cpp
      librecad/src/ui/actions/lc_shortcuts_manager.h
-     librecad/src/ui/actions/lc_shortcutsstorage.cpp
+     librecad/src/ui/actions/lc_shortcuts_manager.cpp
      librecad/src/ui/actions/lc_shortcutsstorage.h
+     librecad/src/ui/actions/lc_shortcutsstorage.cpp
      librecad/src/ui/components/comboboxes/comboboxoption.cpp
      librecad/src/ui/components/comboboxes/comboboxoption.h
      librecad/src/ui/components/comboboxes/qg_colorbox.cpp

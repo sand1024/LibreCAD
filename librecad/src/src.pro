@@ -1575,6 +1575,7 @@ HEADERS += ui/action_options/lc_actionoptionsmanager.h \
     ui/action_options/snap/qg_snapmiddleoptions.h \
     ui/action_options/text/qg_mtextoptions.h \
     ui/action_options/text/qg_textoptions.h \
+    ui/actions/lc_action.h \
     ui/actions/lc_actionfactorybase.h \
     ui/actions/lc_actiongroup.h \
     ui/actions/lc_actiongroupmanager.h \
@@ -1728,6 +1729,7 @@ SOURCES +=ui/action_options/lc_actionoptionsmanager.cpp \
     ui/action_options/snap/qg_snapmiddleoptions.cpp \
     ui/action_options/text/qg_mtextoptions.cpp \
     ui/action_options/text/qg_textoptions.cpp \
+    ui/actions/lc_action.cpp \
     ui/actions/lc_actionfactorybase.cpp \
     ui/actions/lc_actiongroup.cpp \
     ui/actions/lc_actiongroupmanager.cpp \
