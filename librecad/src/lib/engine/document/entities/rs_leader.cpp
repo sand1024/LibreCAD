@@ -52,10 +52,21 @@ RS_Leader::RS_Leader(RS_EntityContainer* parent, const RS_LeaderData& d)
 }
 
 RS_Entity* RS_Leader::clone() const {
-    auto* p = new RS_Leader(*this);
+    RS_LeaderData data(hasArrowHead(), m_data.styleName);
+    // fixme - setup other parts of data?
+    auto* p = new RS_Leader(nullptr, data);
     p->setOwner(isOwner());
-    p->detach();
-    p->m_empty = m_empty;
+
+    p->setPen(getPen(false));
+    p->setLayer(m_layer);
+
+    p->m_empty = true;
+    p->m_data.arrowHead = m_data.arrowHead;
+    const qsizetype count = m_data.vertexes.count();
+    for (const auto v : m_data.vertexes) {
+        p->m_data.vertexes << v;
+    }
+    p->update();
     return p;
 }
 
@@ -63,35 +74,30 @@ void RS_Leader::doUpdateDim() {
     // fixme - sand - rework leader!
 }
 
+
+void RS_Leader::addArrowHead(const RS_Vector& start, const RS_Vector& end) {
+    // fixme - rework this method, use arrowhead based on style, similarly to normal dimensions!!!
+    auto* s = new RS_Solid(this, RS_SolidData());
+    s->shapeArrow(start, end.angleTo(start), getGraphicVariableDouble("$DIMASZ", 2.5) * getGraphicVariableDouble("$DIMSCALE", 1.0));
+    s->setPen(RS_Pen(RS2::FlagInvalid));
+    s->setLayer(nullptr);
+    RS_EntityContainer::addEntity(s);
+}
+
 /**
  * Implementation of update. Updates the arrow.
  */
 void RS_Leader::update() {
-    // find and delete arrow:
-    for (RS_Entity* e : *this) {
-        if (e->rtti() == RS2::EntitySolid) {
-            removeEntity(e);
-            break;
-        }
-    }
-
     if (isDeleted()) {
         return;
     }
-
-    RS_Entity* fe = firstEntity();
-    if (fe && fe->isAtomic()) {
-        // first entity must be the line which gets the arrow:
-        if (hasArrowHead()) {
-            const RS_Vector p1 = static_cast<RS_AtomicEntity*>(fe)->getStartpoint();
-            const RS_Vector p2 = static_cast<RS_AtomicEntity*>(fe)->getEndpoint();
-
-            auto* s = new RS_Solid(this, RS_SolidData());
-            s->shapeArrow(p1, p2.angleTo(p1), getGraphicVariableDouble("$DIMASZ", 2.5) * getGraphicVariableDouble("$DIMSCALE", 1.0));
-            s->setPen(RS_Pen(RS2::FlagInvalid));
-            s->setLayer(nullptr);
-            RS_EntityContainer::addEntity(s);
+    clear();
+    m_empty = true;
+    if (!m_data.vertexes.empty()) {
+        for (const auto v: m_data.vertexes) {
+            doAddVertex(v);
         }
+        m_dimGenericData.definitionPoint = m_data.vertexes.first();
     }
     calculateBorders();
 }
@@ -99,15 +105,58 @@ void RS_Leader::update() {
 RS_VectorSolutions RS_Leader::getRefPoints() const {
     auto result = RS_VectorSolutions();
     result.clear();
-    const size_t count = size();
-    if (count > 1) {
-        const RS_Entity* startEntity = first();
-        result.push_back(startEntity->getStartpoint());
-        for (const RS_Entity* edge : *this) {
-            result.push_back(edge->getEndpoint());
-        }
+    for (const auto& v : m_data.vertexes) {
+        result.push_back(v);
     }
     return result;
+}
+
+void RS_Leader::moveRef(const RS_Vector& ref, const RS_Vector& offset) {
+    for (auto& v: m_data.vertexes) {
+        if (v == ref) {
+            v.move(offset);
+        };
+    }
+    update();
+}
+
+void RS_Leader::moveSelectedRef(const RS_Vector& ref, const RS_Vector& offset) {
+    if (isSelected()) {
+        moveRef(ref, offset);
+    }
+}
+
+RS_Entity* RS_Leader::doAddVertex(const RS_Vector& v) {
+    RS_Entity* entity{nullptr};
+    if (m_empty) {
+        m_dimGenericData.definitionPoint = v;
+        m_empty = false;
+    }
+    else {
+        // add line to the leader:
+        RS_Vector startPoint;
+        const bool firstSegment = count() == 0;
+        if (firstSegment) {
+            startPoint = m_dimGenericData.definitionPoint;
+        }
+        else {
+            startPoint = getEntityList().last()->getEndpoint();
+        }
+
+        if (firstSegment && hasArrowHead()) {
+            addArrowHead(startPoint, v);
+        }
+
+        const auto line = new RS_Line{this, {startPoint,v}};
+        auto pen = RS_Pen();
+        pen.setLineType(RS2::LineByBlock);
+        pen.setWidth(RS2::WidthByBlock);
+        pen.setColor(RS_Color(RS2::FlagByBlock));
+        line->setPen(pen);
+        RS_EntityContainer::addEntity(line);
+        entity = line;
+    }
+    return entity;
 }
 
 /**
@@ -122,27 +171,8 @@ RS_VectorSolutions RS_Leader::getRefPoints() const {
  *         was the first vertex added.
  */
 RS_Entity* RS_Leader::addVertex(const RS_Vector& v) {
-    RS_Entity* entity{nullptr};
-    static auto last = RS_Vector{false};
-
-    if (m_empty) {
-        last = v;
-        m_empty = false;
-    }
-    else {
-        // add line to the leader:
-        entity = new RS_Line{this, {last, v}};
-        entity->setPen(RS_Pen(RS2::FlagInvalid));
-        entity->setLayer(nullptr);
-        RS_EntityContainer::addEntity(entity);
-
-        if (count() == 1 && hasArrowHead()) {
-            update();
-        }
-
-        last = v;
-    }
-
+    m_data.vertexes.push_back(v);
+    RS_Entity* entity = doAddVertex(v);
     return entity;
 }
 
@@ -163,32 +193,48 @@ void RS_Leader::addEntity(const RS_Entity* entity) {
 }
 
 void RS_Leader::move(const RS_Vector& offset) {
-    RS_EntityContainer::move(offset);
+   for (auto& v: m_data.vertexes) {
+        v.move(offset);
+    }
     update();
 }
 
 void RS_Leader::rotate(const RS_Vector& center, const double angle) {
-    RS_EntityContainer::rotate(center, angle);
+    for (auto& v: m_data.vertexes) {
+        v.rotate(center, angle);
+    }
     update();
 }
 
 void RS_Leader::rotate(const RS_Vector& center, const RS_Vector& angleVector) {
-    RS_EntityContainer::rotate(center, angleVector);
+     for (auto& v: m_data.vertexes) {
+        v.rotate(center, angleVector);
+     }
     update();
 }
 
 void RS_Leader::scale(const RS_Vector& center, const RS_Vector& factor) {
-    RS_EntityContainer::scale(center, factor);
-    update();
+     for (auto& v: m_data.vertexes) {
+        v.scale(center, factor);
+     }
+     update();
 }
 
 void RS_Leader::mirror(const RS_Vector& axisPoint1, const RS_Vector& axisPoint2) {
-    RS_EntityContainer::mirror(axisPoint1, axisPoint2);
-    update();
+     for (auto& v: m_data.vertexes) {
+        v.mirror(axisPoint1, axisPoint2);
+     }
+     update();
 }
 
 void RS_Leader::stretch(const RS_Vector& firstCorner, const RS_Vector& secondCorner, const RS_Vector& offset) {
-    RS_EntityContainer::stretch(firstCorner, secondCorner, offset);
+    const RS_Vector vLow{std::min(firstCorner.x, secondCorner.x), std::min(firstCorner.y, secondCorner.y)};
+    const RS_Vector vHigh{std::max(firstCorner.x, secondCorner.x), std::max(firstCorner.y, secondCorner.y)};
+    for (auto& v : m_data.vertexes) {
+        if (getStartpoint().isInWindowOrdered(vLow, vHigh)) {
+            v.move(offset);
+        }
+    }
     update();
 }
 
