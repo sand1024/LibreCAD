@@ -317,8 +317,8 @@ void RS_Image::rotate(const RS_Vector& center, const RS_Vector& angleVector) {
 
 void RS_Image::scale(const RS_Vector& center, const RS_Vector& factor) {
     m_data.insertionPoint.scale(center, factor);
-    m_data.uVector.scale(factor);
-    m_data.vVector.scale(factor);
+    m_data.uVector.scale(factor.x);
+    m_data.vVector.scale(factor.y);
     calculateBorders();
 }
 
@@ -401,6 +401,8 @@ std::ostream& operator <<(std::ostream& os, const RS_Image& img) {
 }
 
 RS_Entity* RS_Image::cloneProxy() const {
+    // fixme - sand - rework this, create special object for proxy - it may represent entity container PLUS support of refPoints for highlight.
+    // fixme - sand - proxy will be used just in limited cases (for image - it's important on highlight!), so such a specialized object may be handy
     const auto result = new RS_EntityContainer(nullptr, true);
     const auto pl = new RS_Polyline(result);
     // draw a rectangle for images as preview
@@ -416,5 +418,6 @@ RS_Entity* RS_Image::cloneProxy() const {
 
     const auto* diag = new RS_Line(result, {corners.at(1), corners.at(3)});
     result->addEntity(diag);
+    result->setSelectionFlag(true);
     return result;
 }

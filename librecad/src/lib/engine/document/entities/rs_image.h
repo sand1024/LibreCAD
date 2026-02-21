@@ -173,6 +173,15 @@ public:
     double getImageHeight() const {
         return m_data.size.y * m_data.vVector.magnitude();
     }
+
+    RS_Vector getImageSize() const {
+         return RS_Vector(getImageWidth(), getImageHeight());
+    }
+
+    RS_Vector getScale() const {
+        return RS_Vector(m_data.uVector.magnitude(), m_data.vVector.magnitude());
+    }
+
     void move(const RS_Vector& offset) override;
     void rotate(const RS_Vector& center, double angle) override;
     void rotate(const RS_Vector& center, const RS_Vector& angleVector) override;

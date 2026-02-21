@@ -35,33 +35,39 @@
 
 #define ALLOW_PICK_SCALE false
 
-LC_ImagePropertiesEditingWidget::LC_ImagePropertiesEditingWidget(QWidget *parent)
-    : LC_EntityPropertiesEditorWidget(parent)
-    , ui(new Ui::LC_ImagePropertiesEditingWidget){
+LC_ImagePropertiesEditingWidget::LC_ImagePropertiesEditingWidget(QWidget* parent)
+    : LC_EntityPropertiesEditorWidget(parent), ui(new Ui::LC_ImagePropertiesEditingWidget) {
     ui->setupUi(this);
     connect(ui->leInsertX, &QLineEdit::editingFinished, this, &LC_ImagePropertiesEditingWidget::onInsertionPointEditingFinished);
     connect(ui->leInsertY, &QLineEdit::editingFinished, this, &LC_ImagePropertiesEditingWidget::onInsertionPointEditingFinished);
     connect(ui->leAngle, &QLineEdit::editingFinished, this, &LC_ImagePropertiesEditingWidget::onAngleEditingFinished);
     connect(ui->leWidth, &QLineEdit::editingFinished, this, &LC_ImagePropertiesEditingWidget::onWidthChanged);
     connect(ui->leHeight, &QLineEdit::editingFinished, this, &LC_ImagePropertiesEditingWidget::onHeightChanged);
-    connect(ui->leScale, &QLineEdit::editingFinished, this, &LC_ImagePropertiesEditingWidget::onScaleChanged);
-    connect(ui->leDPI, &QLineEdit::editingFinished, this, &LC_ImagePropertiesEditingWidget::onDPIChanged);
-    connect(ui->pbFile, &QPushButton::toggled, this,&LC_ImagePropertiesEditingWidget::onImageFileClick);
+    connect(ui->leScaleX, &QLineEdit::editingFinished, this, &LC_ImagePropertiesEditingWidget::onScaleXChanged);
+    connect(ui->leScaleY, &QLineEdit::editingFinished, this, &LC_ImagePropertiesEditingWidget::onScaleYChanged);
+
+    connect(ui->pbFile, &QPushButton::toggled, this, &LC_ImagePropertiesEditingWidget::onImageFileClick);
     connect(ui->lePath, &QLineEdit::textChanged, this, &LC_ImagePropertiesEditingWidget::onPathChanged);
     if (!ALLOW_PICK_SCALE) {
-        ui->tbPickScale->setVisible(false);
+        ui->tbPickScaleX->setVisible(false);
+        ui->tbPickScaleY->setVisible(false);
     }
 }
 
-LC_ImagePropertiesEditingWidget::~LC_ImagePropertiesEditingWidget(){
+LC_ImagePropertiesEditingWidget::~LC_ImagePropertiesEditingWidget() {
     delete ui;
 }
 
-void LC_ImagePropertiesEditingWidget::setEntity(RS_Entity* entity) {
-    m_entity = static_cast<RS_Image*>(entity);
-
+void LC_ImagePropertiesEditingWidget::updateUIbyEntity() {
     LC_GuardedSignalsBlocker signalsBlocker({
-        ui->leInsertX, ui->leInsertX,  ui->leAngle, ui->leWidth, ui->leHeight, ui->leScale, ui->leDPI, ui->lePath
+        ui->leInsertX,
+        ui->leInsertX,
+        ui->leAngle,
+        ui->leWidth,
+        ui->leHeight,
+        ui->leScaleX,
+        ui->leScaleY,
+        ui->lePath
     });
 
     const auto wcsInsertionPoint = m_entity->getInsertionPoint();
@@ -70,43 +76,71 @@ void LC_ImagePropertiesEditingWidget::setEntity(RS_Entity* entity) {
     toUIAngleDeg(m_entity->getUVector().angle(), ui->leAngle);
     toUIValue(m_entity->getImageWidth(), ui->leWidth);
     toUIValue(m_entity->getImageHeight(), ui->leHeight);
-    toUIValue(m_entity->getUVector().magnitude(), ui->leScale);
+    RS_Vector scale = m_entity->getScale();
 
-    toUIValue(RS_Units::scaleToDpi(m_scale, m_entity->getGraphicUnit()), ui->leDPI);
+    toUIValue(scale.x, ui->leScaleX);
+    toUIValue(scale.y, ui->leScaleY);
+
+    updateDPI(scale);
+    updateSizeInPixels();
     ui->lePath->setText(m_entity->getFile());
 }
 
+void LC_ImagePropertiesEditingWidget::setEntity(RS_Entity* entity) {
+    m_entity = static_cast<RS_Image*>(entity);
+    updateUIbyEntity();
+}
 
 void LC_ImagePropertiesEditingWidget::onWidthChanged() {
-    const double width = toWCSValue(ui->leWidth, m_entity->getWidth());
-    m_scale = width / m_entity->getWidth();
+    const RS_Vector originalSize = m_entity->getImageSize();
 
-    toUIValue(m_entity->getHeight()*m_scale, ui->leHeight);
-    toUIValue(m_scale, ui->leScale);
+    double newWidthY;
+    const bool meaningful = toDouble(ui->leWidth->text(), newWidthY, 0.0, true);
+    newWidthY = meaningful ? newWidthY : originalSize.x;
+
+    double scaleY = 1.0;
+    double scaleX = newWidthY / originalSize.x;
+    m_entity->scale(m_entity->getInsertionPoint(), RS_Vector(scaleX, scaleY));
+    updateUIbyEntity();
 }
 
 void LC_ImagePropertiesEditingWidget::onHeightChanged() {
-    const double height = toWCSValue(ui->leHeight, m_entity->getHeight());
-    m_scale = height / m_entity->getHeight();
+    const RS_Vector originalSize = m_entity->getImageSize();
 
-    toUIValue(m_entity->getWidth()*m_scale, ui->leWidth);
-    toUIValue(m_scale, ui->leScale);
+    double newHeightY;
+    const bool meaningful = toDouble(ui->leHeight->text(), newHeightY, 0.0, true);
+    newHeightY = meaningful ? newHeightY : originalSize.y;
+
+    double scaleX = 1.0;
+    double scaleY = newHeightY / originalSize.y;
+    m_entity->scale(m_entity->getInsertionPoint(), RS_Vector(scaleX, scaleY));
+    updateUIbyEntity();
 }
 
-void LC_ImagePropertiesEditingWidget::onScaleChanged() {
-    m_scale = toWCSValue(ui->leScale, m_scale);
-    toUIValue(m_entity->getWidth()*m_scale, ui->leWidth);
-    toUIValue(m_entity->getHeight()*m_scale, ui->leHeight);
-    toUIValue(RS_Units::scaleToDpi(m_scale, m_entity->getGraphicUnit()), ui->leDPI);
+void LC_ImagePropertiesEditingWidget::onScaleXChanged() {
+    RS_Vector scale = m_entity->getScale();
+
+    double newScaleX;
+    const bool meaningful = toDouble(ui->leScaleX->text(), newScaleX, 1.0, true);
+    newScaleX = meaningful ? newScaleX : scale.getX();
+    double scaleY = 1.0;
+    double scaleX = newScaleX / scale.x;
+
+    m_entity->scale(m_entity->getInsertionPoint(), RS_Vector(scaleX, scaleY));
+    updateUIbyEntity();
 }
 
-void LC_ImagePropertiesEditingWidget::onDPIChanged(){
-    const double oldDpi = RS_Units::scaleToDpi(m_scale, m_entity->getGraphicUnit()); // todo - what if scale was changed? Save dpi in dlg?
-    const double dpi = toWCSValue(ui->leDPI, oldDpi);
-    m_scale = RS_Units::dpiToScale(dpi, m_entity->getGraphicUnit());
-    toUIValue(m_scale, ui->leScale);
-    toUIValue(m_entity->getWidth()*m_scale, ui->leWidth);
-    toUIValue(m_entity->getHeight()*m_scale, ui->leHeight);
+void LC_ImagePropertiesEditingWidget::onScaleYChanged() {
+    RS_Vector scale = m_entity->getScale();
+
+    double newScaleY;
+    const bool meaningful = toDouble(ui->leScaleY->text(), newScaleY, 1.0, true);
+    newScaleY = meaningful ? newScaleY : scale.getY();
+    double scaleX = 1.0;
+    double scaleY = newScaleY / scale.y;
+
+    m_entity->scale(m_entity->getInsertionPoint(), RS_Vector(scaleX, scaleY));
+    updateUIbyEntity();
 }
 
 void LC_ImagePropertiesEditingWidget::onInsertionPointEditingFinished() const {
@@ -123,7 +157,7 @@ void LC_ImagePropertiesEditingWidget::onAngleEditingFinished() {
 }
 
 void LC_ImagePropertiesEditingWidget::onImageFileClick() const {
-    ui->lePath->setText(RS_DIALOGFACTORY->requestImageOpenDialog()); // fixme - is it bad dependency?
+    ui->lePath->setText(RS_DIALOGFACTORY->requestImageOpenDialog()); // fixme - isn't it bad dependency?
 }
 
 void LC_ImagePropertiesEditingWidget::onPathChanged(const QString&) const {
@@ -133,12 +167,30 @@ void LC_ImagePropertiesEditingWidget::onPathChanged(const QString&) const {
     }
 }
 
+void LC_ImagePropertiesEditingWidget::updateDPI(const RS_Vector& scale) const {
+    const auto graphicUnit = m_entity->getGraphicUnit();
+    const double dpiX = RS_Units::scaleToDpi(scale.x, graphicUnit);
+    const double dpiY = RS_Units::scaleToDpi(scale.y, graphicUnit);
+    const QString sX = asString(dpiX);
+    const QString sY = asString(dpiY);
+    const QString dpiStr = QString("[%1 x %2]").arg(sX, sY);
+    ui->lblDPI->setText(dpiStr);
+}
+
+void LC_ImagePropertiesEditingWidget::updateSizeInPixels() {
+    QString sizeX = QString::number(m_entity->getWidth());
+    QString sizeY = QString::number(m_entity->getHeight());
+    const QString sizeStr = QString("[%1 x %2] px").arg(sizeX, sizeY);
+    ui->lblPictureSize->setText(sizeStr);
+}
+
 void LC_ImagePropertiesEditingWidget::setupInteractiveInputWidgets() {
     pickPointSetup(ui->wPickInsertionPoint, "insert", ui->leInsertX, ui->leInsertY);
     pickDistanceSetup(ui->tbPickWidth, "width", ui->leWidth);
     pickDistanceSetup(ui->tbPickHeight, "height", ui->leHeight);
     pickAngleSetup(ui->tbPickAngle, "angle", ui->leAngle);
     if (!ALLOW_PICK_SCALE) {
-        pickDistanceSetup(ui->tbPickScale, "scale", ui->leScale);
+        pickDistanceSetup(ui->tbPickScaleX, "scalex", ui->leScaleX);
+        pickDistanceSetup(ui->tbPickScaleY, "scaley", ui->leScaleY);
     }
 }

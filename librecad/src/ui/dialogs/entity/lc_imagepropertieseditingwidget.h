@@ -37,6 +37,9 @@ class LC_ImagePropertiesEditingWidget : public LC_EntityPropertiesEditorWidget{
 public:
     explicit LC_ImagePropertiesEditingWidget(QWidget *parent = nullptr);
     ~LC_ImagePropertiesEditingWidget() override;
+    void updateUIbyEntity();
+    void setupInteractiveInputWidgets() override;
+
     void setEntity(RS_Entity* entity) override;
 protected slots:
     void onInsertionPointEditingFinished() const;
@@ -44,12 +47,12 @@ protected slots:
     void onImageFileClick() const;
     void onWidthChanged();
     void onHeightChanged();
-    void onScaleChanged();
-    void onDPIChanged();
+    void onScaleXChanged();
+    void onScaleYChanged();
     void onPathChanged(const QString &) const;
-public:
-    void setupInteractiveInputWidgets() override;
 private:
+    void updateDPI(const RS_Vector& scale) const;
+    void updateSizeInPixels();
     Ui::LC_ImagePropertiesEditingWidget *ui;
     RS_Image* m_entity = nullptr;
     double m_scale = 1.;
