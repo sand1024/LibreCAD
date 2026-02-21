@@ -61,7 +61,7 @@ double LC_EntityPropertiesEditorSupport::toWCSAngle(const QString &val, const do
 
 double LC_EntityPropertiesEditorSupport::toWCSValue(const QString& val, const double wcsDefault) const {
     // note - this implementation assumes that there is no scale transformations due to coordinate system!
-    return toDouble(val, 0, wcsDefault);
+    return toDouble(val, 0.0, wcsDefault);
 }
 
 RS_Vector LC_EntityPropertiesEditorSupport::toWCSVector(const RS_Vector &vect) const{
