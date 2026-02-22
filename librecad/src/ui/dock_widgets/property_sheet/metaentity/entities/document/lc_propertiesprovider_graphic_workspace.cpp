@@ -37,7 +37,7 @@ void LC_PropertiesProviderGraphicWorkspace::fillDocumentProperties(LC_PropertyCo
         createShowMainMenu(cont);
         createShowStatusBar(cont);
         createWorkspaceSelector(cont);
-        if (m_widget->getOptions()->showLinks) {
+        if (isShowLinks()) {
             createWorkspaceCommands(cont);
         }
     }
@@ -48,31 +48,34 @@ void LC_PropertiesProviderGraphicWorkspace::createWorkspaceSelector(LC_PropertyC
 
     QList<QPair<int, QString>> workspacesList;
     QC_ApplicationWindow::getAppWindow()->fillWorkspacesList(workspacesList);
-    QVector<LC_EnumValueDescriptor> values;
-    const auto count = workspacesList.count();
-    auto desc = LC_EnumValueDescriptor(-1, tr("<Select Workspace>"));
-    values.append(desc);
 
-    for (int i = 0; i < count; i++) {
-        const auto [fst, snd] = workspacesList.at(i);
-        desc = LC_EnumValueDescriptor(fst, snd);
+    if (!workspacesList.empty()) {
+        const auto count = workspacesList.count();
+        QVector<LC_EnumValueDescriptor> values;
+        auto desc = LC_EnumValueDescriptor(-1, tr("<Select Workspace>"));
         values.append(desc);
-    }
-    const auto enumDescriptor = new LC_EnumDescriptor("uiWorkspaceListEnum", values);
 
-    auto funGet = [currentUCSIndex]([[maybe_unused]] const RS_Graphic* e)-> LC_PropertyEnumValueType {
-        return currentUCSIndex;
-    };
-
-    auto funSet = [this](const LC_PropertyEnumValueType& v, [[maybe_unused]] const RS_Graphic* e) -> void {
-        if (v > 0) {
-            QC_ApplicationWindow::getAppWindow()->applyWorkspaceById(v);
+        for (int i = 0; i < count; i++) {
+            const auto [fst, snd] = workspacesList.at(i);
+            desc = LC_EnumValueDescriptor(fst, snd);
+            values.append(desc);
         }
-        m_widget->selectionChanged();
-    };
+        const auto enumDescriptor = new LC_EnumDescriptor("uiWorkspaceListEnum", values);
 
-    const LC_Property::Names names = {"viewSelection", tr("Workspace to use"), tr("Restores one of previously saved workspaces")};
-    addDirectEnum<LC_PropertyEnumValueType, RS_Graphic>(container, names, enumDescriptor, funGet, funSet, nullptr, true);
+        auto funGet = [currentUCSIndex]([[maybe_unused]] const RS_Graphic* e)-> LC_PropertyEnumValueType {
+            return currentUCSIndex;
+        };
+
+        auto funSet = [this](const LC_PropertyEnumValueType& v, [[maybe_unused]] const RS_Graphic* e) -> void {
+            if (v > 0) {
+                QC_ApplicationWindow::getAppWindow()->applyWorkspaceById(v);
+            }
+            m_widget->selectionChanged();
+        };
+
+        const LC_Property::Names names = {"viewSelection", tr("Workspace to use"), tr("Restores one of previously saved workspaces")};
+        addDirectEnum<LC_PropertyEnumValueType, RS_Graphic>(container, names, enumDescriptor, funGet, funSet, nullptr, true);
+    }
 }
 
 void LC_PropertiesProviderGraphicWorkspace::createUIActionProperty(LC_PropertyContainer* cont, const char* actionName, LC_Property::Names names) {

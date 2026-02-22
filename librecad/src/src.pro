@@ -520,28 +520,29 @@ HEADERS += \
     ui/components/utils/lc_tableitem_delegate_base.h \
     ui/components/creators/lc_creatorinvoker.h \
     ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.h \
-    ui/dialogs/creators/lc_dlgmenuassigner.h \
-    ui/dialogs/creators/lc_dlgwidgetcreator.h \
+    ui/dialogs/creators/lc_dlg_menu_assigner.h \
+    ui/dialogs/creators/lc_dlg_widget_creator.h \
     ui/components/creators/lc_menuactivator.h \
-    ui/dialogs/creators/lc_dlgnewwidget.h \
-    ui/dialogs/entity/lc_arcpropertieseditingwidget.h \
-    ui/dialogs/entity/lc_circlepropertieseditingwidget.h \
-    ui/dialogs/entity/lc_dlgdimension.h \
-    ui/dialogs/entity/lc_dlgentityproperties.h \
-    ui/dialogs/entity/lc_ellipsepropertieseditingwidget.h \
+    ui/dialogs/creators/lc_dlg_new_widget.h \
+    ui/dialogs/entity/lc_propertieseditingwidget_arc.h \
+    ui/dialogs/entity/lc_propertieseditingwidget_circle.h \
+    ui/dialogs/entity/lc_dlg_dimension.h \
+    ui/dialogs/entity/lc_dlg_entityproperties.h \
+    ui/dialogs/entity/lc_propertieseditingwidget_ellipse.h \
     ui/dialogs/entity/lc_entitypropertieseditor.h \
     ui/dialogs/entity/lc_entitypropertieseditorsupport.h \
     ui/dialogs/entity/lc_entitypropertieseditorwidget.h \
-    ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.h \
-    ui/dialogs/entity/lc_imagepropertieseditingwidget.h \
-    ui/dialogs/entity/lc_insertpropertieseditingwidget.h \
-    ui/dialogs/entity/lc_linepropertieseditingwidget.h \
-    ui/dialogs/entity/lc_parabolapropertieseditingwidget.h \
+    ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.h \
+    ui/dialogs/entity/lc_propertieseditingwidget_image.h \
+    ui/dialogs/entity/lc_propertieseditingwidget_insert.h \
+    ui/dialogs/entity/lc_propertieseditingwidget_line.h \
+    ui/dialogs/entity/lc_propertieseditingwidget_parabola.h \
     ui/dialogs/entity/lc_pointpickbutton.h \
-    ui/dialogs/entity/lc_pointpropertieseditingwidget.h \
-    ui/dialogs/entity/lc_polylinepropertieseditingwidget.h \
-    ui/dialogs/entity/lc_splinepointspropertieseditingwidget.h \
-    ui/dialogs/entity/lc_splinepropertieseditingwidget.h \
+    ui/dialogs/entity/lc_propertieseditingwidget_point.h \
+    ui/dialogs/entity/lc_propertieseditingwidget_polyline.h \
+    ui/dialogs/entity/lc_propertieseditingwidget_spline.h \
+    ui/dialogs/entity/lc_propertieseditingwidget_splinepoints.h \
+    ui/dialogs/entity/lc_propertieseditingwidget.h \
     ui/dialogs/file/export/image/lc_exporttoimageservice.h \
     ui/dialogs/file/export/layers/lc_exportlayersdialogservice.h \
     ui/dialogs/lc_inputtextdialog.h \
@@ -919,29 +920,29 @@ SOURCES += \
     ui/components/utils/lc_mouse_tracking_table_view.cpp \
     ui/components/utils/lc_tableitem_delegate_base.cpp \
     ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.cpp  \
-    ui/dialogs/creators/lc_dlgmenuassigner.cpp \
-    ui/dialogs/creators/lc_dlgwidgetcreator.cpp \
+    ui/dialogs/creators/lc_dlg_menu_assigner.cpp \
+    ui/dialogs/creators/lc_dlg_widget_creator.cpp \
     ui/components/creators/lc_menuactivator.cpp \
-    ui/dialogs/creators/lc_dlgnewwidget.cpp \
-    ui/dialogs/entity/lc_arcpropertieseditingwidget.cpp \
-    ui/dialogs/entity/lc_circlepropertieseditingwidget.cpp \
-    ui/dialogs/entity/lc_dlgdimension.cpp \
-    ui/dialogs/entity/lc_dlgentityproperties.cpp \
-    ui/dialogs/entity/lc_dlgtolerance.cpp \
-    ui/dialogs/entity/lc_ellipsepropertieseditingwidget.cpp \
+    ui/dialogs/creators/lc_dlg_new_widget.cpp \
+    ui/dialogs/entity/lc_propertieseditingwidget_arc.cpp \
+    ui/dialogs/entity/lc_propertieseditingwidget_circle.cpp \
+    ui/dialogs/entity/lc_dlg_dimension.cpp \
+    ui/dialogs/entity/lc_dlg_entityproperties.cpp \
+    ui/dialogs/entity/lc_dlg_tolerance.cpp \
+    ui/dialogs/entity/lc_propertieseditingwidget_ellipse.cpp \
     ui/dialogs/entity/lc_entitypropertieseditor.cpp \
     ui/dialogs/entity/lc_entitypropertieseditorsupport.cpp \
     ui/dialogs/entity/lc_entitypropertieseditorwidget.cpp \
-    ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.cpp \
-    ui/dialogs/entity/lc_imagepropertieseditingwidget.cpp \
-    ui/dialogs/entity/lc_insertpropertieseditingwidget.cpp \
-    ui/dialogs/entity/lc_linepropertieseditingwidget.cpp \
-    ui/dialogs/entity/lc_parabolapropertieseditingwidget.cpp \
+    ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.cpp \
+    ui/dialogs/entity/lc_propertieseditingwidget_image.cpp \
+    ui/dialogs/entity/lc_propertieseditingwidget_insert.cpp \
+    ui/dialogs/entity/lc_propertieseditingwidget_line.cpp \
+    ui/dialogs/entity/lc_propertieseditingwidget_parabola.cpp \
     ui/dialogs/entity/lc_pointpickbutton.cpp \
-    ui/dialogs/entity/lc_pointpropertieseditingwidget.cpp \
-    ui/dialogs/entity/lc_polylinepropertieseditingwidget.cpp \
-    ui/dialogs/entity/lc_splinepointspropertieseditingwidget.cpp \
-    ui/dialogs/entity/lc_splinepropertieseditingwidget.cpp \
+    ui/dialogs/entity/lc_propertieseditingwidget_point.cpp \
+    ui/dialogs/entity/lc_propertieseditingwidget_polyline.cpp \
+    ui/dialogs/entity/lc_propertieseditingwidget_splinepoints.cpp \
+    ui/dialogs/entity/lc_propertieseditingwidget_spline.cpp \
     ui/dialogs/file/export/image/lc_exporttoimageservice.cpp \
     ui/dialogs/file/export/layers/lc_exportlayersdialogservice.cpp \
     ui/dialogs/lc_inputtextdialog.cpp \
@@ -1608,12 +1609,12 @@ HEADERS += ui/action_options/lc_actionoptionsmanager.h \
     ui/dialogs/actions/qg_layerdialog.h \    
     ui/dialogs/entity/qg_blockdialog.h \
     ui/dialogs/entity/qg_dimensionlabeleditor.h \    
-    ui/dialogs/entity/qg_dlgattributes.h \    
-    ui/dialogs/entity/lc_dlgtolerance.h \    
-    ui/dialogs/entity/qg_dlghatch.h \    
+    ui/dialogs/entity/qg_dlg_attributes.h \
+    ui/dialogs/entity/lc_dlg_tolerance.h \
+    ui/dialogs/entity/qg_dlg_hatch.h \
     ui/dialogs/file/export/image/qg_dlgimageoptions.h \    
-    ui/dialogs/entity/qg_dlgmtext.h \    
-    ui/dialogs/entity/qg_dlgtext.h \
+    ui/dialogs/entity/qg_dlg_mtext.h \
+    ui/dialogs/entity/qg_dlg_text.h \
     ui/dialogs/file/export/makercam/qg_dlgoptionsmakercam.h \
     ui/dialogs/file/export/layers/lc_filedialogservice.h \
     ui/dialogs/file/qg_filedialog.h \
@@ -1760,11 +1761,11 @@ SOURCES +=ui/action_options/lc_actionoptionsmanager.cpp \
     ui/dialogs/actions/qg_layerdialog.cpp \    
     ui/dialogs/entity/qg_blockdialog.cpp \
     ui/dialogs/entity/qg_dimensionlabeleditor.cpp \    
-    ui/dialogs/entity/qg_dlgattributes.cpp \    
-    ui/dialogs/entity/qg_dlghatch.cpp \    
+    ui/dialogs/entity/qg_dlg_attributes.cpp \
+    ui/dialogs/entity/qg_dlg_hatch.cpp \
     ui/dialogs/file/export/image/qg_dlgimageoptions.cpp \    
-    ui/dialogs/entity/qg_dlgmtext.cpp \    
-    ui/dialogs/entity/qg_dlgtext.cpp \
+    ui/dialogs/entity/qg_dlg_mtext.cpp \
+    ui/dialogs/entity/qg_dlg_text.cpp \
     ui/dialogs/file/export/makercam/qg_dlgoptionsmakercam.cpp \
     ui/dialogs/file/export/layers/lc_filedialogservice.cpp \
     ui/dialogs/file/qg_filedialog.cpp \
@@ -1993,8 +1994,8 @@ FORMS = ui/action_options/circle/lc_circlebyarcoptions.ui \
        ui/components/containers/lc_optionswidgetsholder.ui \
        ui/components/containers/lc_snapoptionswidgetsholder.ui \
        ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui \
-       ui/dialogs/creators/lc_dlgmenuassigner.ui \
-       ui/dialogs/creators/lc_dlgwidgetcreator.ui \
+       ui/dialogs/creators/lc_dlg_menu_assigner.ui \
+       ui/dialogs/creators/lc_dlg_widget_creator.ui \
        ui/components/pen/qg_widgetpen.ui \
        ui/components/status_bar/lc_anglesbasiswidget.ui \
        ui/components/status_bar/lc_relzerocoordinateswidget.ui \
@@ -2006,30 +2007,30 @@ FORMS = ui/action_options/circle/lc_circlebyarcoptions.ui \
        ui/components/textfileviewer.ui \
        ui/dialogs/actions/quick_selection/lc_dlgquickselection.ui \      
        ui/dialogs/actions/qg_layerdialog.ui \
-       ui/dialogs/creators/lc_dlgnewwidget.ui \
-       ui/dialogs/entity/lc_arcpropertieseditingwidget.ui \
-       ui/dialogs/entity/lc_circlepropertieseditingwidget.ui \
-       ui/dialogs/entity/lc_dlgdimension.ui \
-       ui/dialogs/entity/lc_dlgentityproperties.ui \
-       ui/dialogs/entity/lc_dlgtolerance.ui \       
-       ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui \
-       ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui \
-       ui/dialogs/entity/lc_imagepropertieseditingwidget.ui \
-       ui/dialogs/entity/lc_insertpropertieseditingwidget.ui \
-       ui/dialogs/entity/lc_linepropertieseditingwidget.ui \
-       ui/dialogs/entity/lc_parabolapropertieseditingwidget.ui \
+       ui/dialogs/creators/lc_dlg_new_widget.ui \
+       ui/dialogs/entity/lc_propertieseditingwidget_arc.ui \
+       ui/dialogs/entity/lc_propertieseditingwidget_circle.ui \
+       ui/dialogs/entity/lc_dlg_dimension.ui \
+       ui/dialogs/entity/lc_dlg_entityproperties.ui \
+       ui/dialogs/entity/lc_dlg_tolerance.ui \
+       ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui \
+       ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui \
+       ui/dialogs/entity/lc_propertieseditingwidget_image.ui \
+       ui/dialogs/entity/lc_propertieseditingwidget_insert.ui \
+       ui/dialogs/entity/lc_propertieseditingwidget_line.ui \
+       ui/dialogs/entity/lc_propertieseditingwidget_parabola.ui \
        ui/dialogs/entity/lc_pointpickbutton.ui \
-       ui/dialogs/entity/lc_pointpropertieseditingwidget.ui \
-       ui/dialogs/entity/lc_polylinepropertieseditingwidget.ui \
-       ui/dialogs/entity/lc_splinepointspropertieseditingwidget.ui \
-       ui/dialogs/entity/lc_splinepropertieseditingwidget.ui \
+       ui/dialogs/entity/lc_propertieseditingwidget_point.ui \
+       ui/dialogs/entity/lc_propertieseditingwidget_polyline.ui \
+       ui/dialogs/entity/lc_propertieseditingwidget_splinepoints.ui \
+       ui/dialogs/entity/lc_propertieseditingwidget_spline.ui \
        ui/dialogs/entity/qg_blockdialog.ui \
        ui/dialogs/entity/qg_dimensionlabeleditor.ui \       
-       ui/dialogs/entity/qg_dlgattributes.ui \
-       ui/dialogs/entity/qg_dlghatch.ui \       
+       ui/dialogs/entity/qg_dlg_attributes.ui \
+       ui/dialogs/entity/qg_dlg_hatch.ui \
        ui/dialogs/file/export/image/qg_dlgimageoptions.ui \       
-       ui/dialogs/entity/qg_dlgmtext.ui \       
-       ui/dialogs/entity/qg_dlgtext.ui \
+       ui/dialogs/entity/qg_dlg_mtext.ui \
+       ui/dialogs/entity/qg_dlg_text.ui \
        ui/dialogs/file/export/makercam/qg_dlgoptionsmakercam.ui \
        ui/dialogs/lc_inputtextdialog.ui \
        ui/dialogs/main/lc_dlgabout.ui \

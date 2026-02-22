@@ -113,7 +113,7 @@ void LC_PropertyEditorHandlerBase::onPropertyDidChange(const LC_PropertyChangeRe
         return;
     }
     if (reason & (PropertyChangeReasonValue | PropertyChangeReasonState)) {
-        if (propertyBase() == sender() || getStateProperty() == sender()) {
+        if (getBaseProperty() == sender() || getStateProperty() == sender()) {
             doUpdateEditor();
         }
     }
@@ -126,8 +126,7 @@ LC_Property* LC_PropertyEditorHandlerBase::getStateProperty() const {
     return nullptr;
 }
 
-// fixme - rename
-LC_Property* LC_PropertyEditorHandlerBase::propertyBase() const {
+LC_Property* LC_PropertyEditorHandlerBase::getBaseProperty() const {
     if (m_view != nullptr) {
         return m_view->getProperty();
     }

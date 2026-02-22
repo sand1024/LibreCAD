@@ -117,15 +117,15 @@ void LC_OrthogonalGrid::fillPointsLatticeWithGapsForMetaGrid() const {
     // create meta grid coordinates arrays:
     if (m_numMetaX > 0) {
         metaX.resize(m_numMetaX);
-        size_t i = 0;
-        for (size_t x = 0; x < m_numMetaX; ++x) {
+        int i = 0;
+        for (int x = 0; x < m_numMetaX; ++x) {
             metaX[i++] = m_metaGridMin.x + (x * m_metaGridCellSize.x);
         }
     }
     if (m_numMetaY > 0) {
         size_t i = 0;
         metaY.resize(m_numMetaY);
-        for (size_t y = 0; y < m_numMetaY; ++y) {
+        for (int y = 0; y < m_numMetaY; ++y) {
             metaY[i++] = m_metaGridMin.y + (y * m_metaGridCellSize.y);
         }
     }
@@ -134,7 +134,7 @@ void LC_OrthogonalGrid::fillPointsLatticeWithGapsForMetaGrid() const {
     if (m_numMetaX > 0 && m_numMetaY > 0) {
         for (int mx = 0; mx < m_numMetaX - 1; ++mx) {
             tileBasePoint.x = metaX[mx];
-            for (size_t my = 0; my < m_numMetaY - 1; ++my) {
+            for (int my = 0; my < m_numMetaY - 1; ++my) {
                 tileBasePoint.y = metaY[my];
                 m_gridLattice->fill(m_numPointsInMetagridX, m_numPointsInMetagridY, tileBasePoint, false, false);
             }
@@ -143,7 +143,7 @@ void LC_OrthogonalGrid::fillPointsLatticeWithGapsForMetaGrid() const {
 
     // fill top row
     tileBasePoint.y = m_metaGridMax.y;
-    for (size_t mx = 0; mx < m_numMetaX - 1; ++mx) {
+    for (int mx = 0; mx < m_numMetaX - 1; ++mx) {
         tileBasePoint.x = metaX[mx];
         m_gridLattice->fill(m_numPointsInMetagridX, m_numPointsYTop, tileBasePoint, false, false);
     }
@@ -163,7 +163,7 @@ void LC_OrthogonalGrid::fillPointsLatticeWithGapsForMetaGrid() const {
     //    if (numMetaX == 0) { // no vid
     //        tileBasePoint.x = gridBasePointIfMetagridNotVisible.x;
     //    }
-    for (size_t my = 0; my < m_numMetaY - 1; ++my) {
+    for (int my = 0; my < (m_numMetaY - 1); ++my) {
         tileBasePoint.y = metaY[my];
         m_gridLattice->fill(m_numPointsXRight, m_numPointsInMetagridY, tileBasePoint, false, false);
     }
@@ -184,14 +184,14 @@ void LC_OrthogonalGrid::fillPointsLatticeWithGapsForMetaGrid() const {
 
     // fill bottom row
     tileBasePoint.y = m_metaGridMin.y;
-    for (size_t mx = 0; mx < m_numMetaX - 1; ++mx) {
+    for (int mx = 0; mx < m_numMetaX - 1; ++mx) {
         tileBasePoint.x = metaX[mx];
         m_gridLattice->fill(m_numPointsInMetagridX, m_numPointsYBottom, tileBasePoint, false, true);
     }
 
     // fill left column
     tileBasePoint.x = m_metaGridMin.x;
-    for (size_t my = 0; my < m_numMetaY - 1; ++my) {
+    for (int my = 0; my < m_numMetaY - 1; ++my) {
         tileBasePoint.y = metaY[my];
         m_gridLattice->fill(m_numPointsXLeft, m_numPointsInMetagridY, tileBasePoint, true, false);
     }

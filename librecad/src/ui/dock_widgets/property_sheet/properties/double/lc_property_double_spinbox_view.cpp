@@ -70,7 +70,7 @@ protected:
         m_updating--;
     }
     void doUpdatePropertyValue() override{
-        if (propertyBase() != nullptr) {
+        if (getBaseProperty() != nullptr) {
             setPropertyValue(m_newValue / m_view->getMultiplier());
         }
     }

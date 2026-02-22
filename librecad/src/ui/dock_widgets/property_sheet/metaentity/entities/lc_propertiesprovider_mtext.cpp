@@ -25,7 +25,7 @@
 
 #include "rs_mtext.h"
 
-void LC_PropertiesProviderMText::doFillEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
+void LC_PropertiesProviderMText::doCreateEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
     const auto contGeometry = createGeometrySection(container);
 
     addVector<RS_MText>({"insert", tr("Insertion Point"), tr("Point of text insertion")}, [](const RS_MText* e) -> RS_Vector {
@@ -138,4 +138,24 @@ void LC_PropertiesProviderMText::doFillEntitySpecificProperties(LC_PropertyConta
                                 }, [](const double& v, RS_MText* l) -> void {
                                     l->setLineSpacingFactor(v);
                                 }, list, contText);
+}
+
+void LC_PropertiesProviderMText::fillComputedProperites([[maybe_unused]]LC_PropertyContainer* container, [[maybe_unused]]const QList<RS_Entity*>& entitiesList) {
+}
+
+void LC_PropertiesProviderMText::doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) {
+    const auto text = static_cast<RS_MText*>(entity);
+
+    const std::list<CommandLinkInfo> commands = {
+        {tr("Explode operations"),
+            {RS2::ActionModifyExplodeText, tr("Explode text"), tr("Explodes text into individual letters")},
+            {RS2::ActionBlocksExplode, tr("Explode"), tr("Explodes text to individual strokes")}
+       },
+        {
+            tr("Other text operations"),
+            {RS2::ActionDrawBoundingBox, tr("Bounding box"), tr("Creation of bounding box for text")}
+        }
+    };
+
+    createEntityContextCommands<RS_MText>(commands, cont, text, "textCommands");
 }

@@ -165,12 +165,13 @@ void RS_Polyline::appendVertexs(const std::vector<std::pair<RS_Vector, double>>&
 
     // consequent vertices:
     for (; idx < vl.size(); idx++) {
-        std::unique_ptr<RS_Entity> vertex = createVertex(first, m_nextBulge, false);
+        auto current = vl.at(idx);
+        std::unique_ptr<RS_Entity> vertex = createVertex(current.first, m_nextBulge, false);
         m_data.endpoint = vertex->getEndpoint();
         const RS_Entity* entity = vertex.get();
         vertex.release();
         RS_EntityContainer::addEntity(entity);
-        m_nextBulge = vl.at(idx).second;
+        m_nextBulge = current.second;
     }
 
     endPolyline();

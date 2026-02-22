@@ -47,6 +47,25 @@
 #include "rs_settings.h"
 #include "ui_lc_propertysheetwidget.h"
 
+void LC_PropertySheetWidget::setupSelectionButton(QToolButton* selectionButton, QAction* selectionPointerAction, LC_ActionGroupManager* actionGroupManager) {
+    selectionButton->setDefaultAction(selectionPointerAction);
+    selectionButton->setPopupMode(QToolButton::MenuButtonPopup);
+    auto* menu      = new QMenu();
+    QList<QAction*> actions;
+    actions.push_back(actionGroupManager->getActionByName("SelectAll"));
+    actions.push_back(actionGroupManager->getActionByName("SelectSingle"));
+    actions.push_back(actionGroupManager->getActionByName("SelectContour"));
+    actions.push_back(actionGroupManager->getActionByName("SelectWindow"));
+    actions.push_back(actionGroupManager->getActionByName("DeselectWindow"));
+    actions.push_back(actionGroupManager->getActionByName("SelectIntersected"));
+    actions.push_back(actionGroupManager->getActionByName("DeselectIntersected"));
+    actions.push_back(actionGroupManager->getActionByName("SelectLayer"));
+    actions.push_back(actionGroupManager->getActionByName("SelectPoints"));
+    actions.push_back(actionGroupManager->getActionByName("SelectInvert"));
+    menu->addActions(actions);
+    selectionButton->setMenu(menu);
+}
+
 LC_PropertySheetWidget::LC_PropertySheetWidget(QWidget* parent, LC_ActionContext* actionContext, LC_ActionGroupManager* actionGroupManager)
     : LC_GraphicViewAwareWidget(parent), ui(new Ui::LC_PropertySheetWidget), m_actionContext{actionContext},
       m_propertySheetOptions{std::make_unique<LC_PropertySheetWidgetOptions>()} {
@@ -75,27 +94,19 @@ LC_PropertySheetWidget::LC_PropertySheetWidget(QWidget* parent, LC_ActionContext
     ui->tbPickAddSwitch->setDefaultAction(toggleSelectModeAction);
     ui->tbSelectObjects->setDefaultAction(selectEntitiesAction);
 
-    ui->tbSelectionGeneral->setDefaultAction(selectionPointerAction);
-    ui->tbSelectionGeneral->setPopupMode(QToolButton::MenuButtonPopup);
-    auto* menu      = new QMenu();
-    QList<QAction*> actions;
-    actions.push_back(actionGroupManager->getActionByName("SelectAll"));
-    actions.push_back(actionGroupManager->getActionByName("SelectSingle"));
-    actions.push_back(actionGroupManager->getActionByName("SelectContour"));
-    actions.push_back(actionGroupManager->getActionByName("SelectWindow"));
-    actions.push_back(actionGroupManager->getActionByName("DeselectWindow"));
-    actions.push_back(actionGroupManager->getActionByName("SelectIntersected"));
-    actions.push_back(actionGroupManager->getActionByName("DeselectIntersected"));
-    actions.push_back(actionGroupManager->getActionByName("SelectLayer"));
-    actions.push_back(actionGroupManager->getActionByName("SelectInvert"));
-    menu->addActions(actions);
-    ui->tbSelectionGeneral->setMenu(menu);
+    ui->tbSelectQuickLeft->setDefaultAction(quickSelectAction);
+    ui->tbPickAddSwitchLeft->setDefaultAction(toggleSelectModeAction);
+    ui->tbSelectObjectsLeft->setDefaultAction(selectEntitiesAction);
+
+    setupSelectionButton(ui->tbSelectionGeneral, selectionPointerAction, actionGroupManager);
+    setupSelectionButton(ui->tbSelectionGeneralLeft, selectionPointerAction, actionGroupManager);
 
     m_entityContainerProvider = std::make_unique<LC_EntityPropertyContainerProvider>();
     m_entityContainerProvider->init(this, actionContext);
 
     loadCollapsedSections();
     ui->tbSelectionGeneral->setVisible(m_propertySheetOptions->duplicateSelectionAction);
+    ui->tbSelectionGeneralLeft->setVisible(m_propertySheetOptions->duplicateSelectionAction);
     updateWidgetSettings();
 }
 
@@ -691,4 +702,23 @@ void LC_PropertySheetWidget::onSettingsClicked() {
         ui->tbSelectionGeneral->setVisible(m_propertySheetOptions->duplicateSelectionAction);
         selectionChanged();
     };
+}
+
+void LC_PropertySheetWidget::doAdjustForDockLocation(Qt::DockWidgetArea area) {
+    LC_GraphicViewAwareWidget::doAdjustForDockLocation(area);
+    switch (area) {
+        case Qt::DockWidgetArea::LeftDockWidgetArea:{
+            ui->wCommandsForLeft->setVisible(true);
+            ui->wCommandsForRight->setVisible(false);
+            break;
+        }
+        case Qt::DockWidgetArea::RightDockWidgetArea:{
+            ui->wCommandsForLeft->setVisible(false);
+            ui->wCommandsForRight->setVisible(true);
+            break;
+        }
+        default:
+            // do nothing so far
+            break;
+    }
 }

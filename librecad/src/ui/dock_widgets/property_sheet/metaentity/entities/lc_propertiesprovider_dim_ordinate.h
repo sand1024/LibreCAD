@@ -39,6 +39,8 @@ protected:
     void rebaseDimensions(const LC_GraphicViewport* viewport, double horizontalDirection, const RS_Vector& origin,
                           const QList<RS_Entity*>& list) const;
     void doCreateDimGeometrySection(LC_PropertyContainer* container, const QList<RS_Entity*>& list) override;
+    void doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) override;
+    void doCreateSelectedSetCommands(LC_PropertyContainer* propertyContainer, const QList<RS_Entity*>& list) override;
 };
 
 #endif

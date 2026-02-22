@@ -95,6 +95,9 @@ void LC_EntityPropertyContainerProvider::fillPropertyContainerForNoSelection([[m
     if (!m_entitiesList.empty()) {
         m_entitiesList.clear();
     }
+    if (container == nullptr) {
+        return;
+    }
     m_document->fillDocumentProperties(container);
     container->setTag(TAG_CONTAINER_NO_SELECTION);
 }

@@ -44,7 +44,7 @@ void LC_PropertiesProviderGraphicUCS::fillDocumentProperties(LC_PropertyContaine
         createUcsOriginAndDirection(cont, currentUcs);
         createUcsGrid(cont, currentUcs);
         const bool isUCS = currentUcs->isUCS();
-        if (m_widget->getOptions()->showLinks) {
+        if (isShowLinks()) {
             createUCSListCommands(cont, graphic, ucsList, currentUCSIndex, isUCS);
             createUCSOperations(cont, graphic, ucsList, currentUCSIndex, isUCS);
         }

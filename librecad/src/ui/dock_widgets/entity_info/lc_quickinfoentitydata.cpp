@@ -785,7 +785,7 @@ void LC_QuickInfoEntityData::collectHyperbolaProperties(const LC_Hyperbola* hype
     const auto& minorR = hyperbola->getMinorRadius();
     const auto& ratio = hyperbola->getRatio();
     addVectorProperty(tr("Start"), startPoint);
-    addVectorProperty(tr("End"), startPoint);
+    addVectorProperty(tr("End"), endPoint);
     addVectorProperty(tr("Focus 1"), focus1);
     addVectorProperty(tr("Focus 2"), focus2);
     addLinearProperty(tr("Major Radius"), majorR);
@@ -794,6 +794,7 @@ void LC_QuickInfoEntityData::collectHyperbolaProperties(const LC_Hyperbola* hype
     addProperty(tr("Reversed"), hyperbola->isReversed() ? tr("Yes") : tr("No"), PROPERTY_TYPE_OTHER);
     addLinearProperty(tr("Ratio"), ratio);
     addVectorProperty(tr("Center"), center);
+    addDoubleProperty(tr("Eccentricity"), formatDouble(eccentricity), eccentricity, PROPERTY_TYPE_OTHER);
     addVectorProperty(tr("Middle"), hyperbola->getMiddlePoint());
     addAngleProperty(tr("Start Angle"), hyperbola->getAngle1());
     addAngleProperty(tr("End Angle"), hyperbola->getAngle2());

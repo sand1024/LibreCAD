@@ -135,8 +135,9 @@ void LC_PropertyActionLinkView::builSingleLinkPart(const QRect& valuesRect, cons
             }
             case LC_PropertyViewPartEvent::Activated: {
                 m_cursorSet = true;
-                m_widgetCursor = eventContext.sheet->cursor();
-                eventContext.sheet->setCursor(Qt::PointingHandCursor);
+                const auto sheet = eventContext.sheet;
+                m_widgetCursor = sheet->cursor();
+                sheet->setCursor(Qt::PointingHandCursor);
                 break;
             }
             case LC_PropertyViewPartEvent::Deactivated: {

@@ -128,7 +128,7 @@ void LC_ApplicationWindowInitializer::initDockCorners() const {
     LC_GROUP("Widgets");
     {
         const bool allowDockNesting = LC_GET_BOOL("DockAllowNested", true);
-        const bool verticalTabs = LC_GET_BOOL("DockVerticalTabs", false);
+        const bool verticalTabs = LC_GET_BOOL("DockVerticalTabs", true);
         LC_WidgetFactory::updateDockOptions(m_appWin, allowDockNesting, verticalTabs);
     }
     LC_GROUP_END();

@@ -35,8 +35,10 @@ public:
     LC_PropertiesProviderArc(LC_ActionContext* actionContext, LC_PropertySheetWidget* widget)
         : LC_EntityTypePropertiesProvider(RS2::EntityArc, actionContext, widget) {
     }
-
 protected:
-    void doFillEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) override;
+    void doCreateEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) override;
+    void doCreateCalculatedProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) override;
+    void doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) override;
+    void doCreateSelectedSetCommands(LC_PropertyContainer* propertyContainer, const QList<RS_Entity*>& list) override;
 };
 #endif

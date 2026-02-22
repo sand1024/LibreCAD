@@ -34,7 +34,7 @@ protected:
     }
 
     PropertyClass& getProperty() const {
-        return *static_cast<PropertyClass*>(propertyBase());
+        return *static_cast<PropertyClass*>(getBaseProperty());
     }
 
     PropertyValueType getPropertyValue() const {

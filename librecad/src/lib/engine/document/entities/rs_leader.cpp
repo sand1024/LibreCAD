@@ -61,8 +61,7 @@ RS_Entity* RS_Leader::clone() const {
     p->setLayer(m_layer);
 
     p->m_empty = true;
-    p->m_data.arrowHead = m_data.arrowHead;
-    const qsizetype count = m_data.vertexes.count();
+    p->m_data.arrowHead = m_data.arrowHead;    
     for (const auto v : m_data.vertexes) {
         p->m_data.vertexes << v;
     }

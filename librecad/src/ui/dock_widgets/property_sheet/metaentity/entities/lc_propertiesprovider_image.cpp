@@ -26,15 +26,14 @@
 #include <QFileDialog>
 
 #include "lc_property_qstring_file_view.h"
+#include "lc_property_rsvector_view.h"
 #include "rs_image.h"
 #include "rs_units.h"
 
-void LC_PropertiesProviderImage::doFillEntitySpecificProperties(LC_PropertyContainer* cont, const QList<RS_Entity*>& list) {
+void LC_PropertiesProviderImage::doCreateEntitySpecificProperties(LC_PropertyContainer* cont, const QList<RS_Entity*>& list) {
     const auto contGeometry = createGeometrySection(cont);
 
     // fixme - prop -  add errors processing!
-
-    // fixme - add to method???
     add<RS_Image>({"file", tr("File"), tr("Name of image file")},
                   [this](const LC_Property::Names& names, RS_Image* entity, LC_PropertyContainer* container,
                          QList<LC_PropertyAtomic*>* props) -> void {
@@ -69,50 +68,137 @@ void LC_PropertiesProviderImage::doFillEntitySpecificProperties(LC_PropertyConta
                             e->setInsertionPoint(v);
                         }, list, contGeometry);
 
-    addLinearDistance<RS_Image>({"scale", tr("Scale"), tr("Scale factor for image")}, [](const RS_Image* e) -> double {
-                                    return e->getUVector().magnitude();
-                                }, [](double& v, RS_Image* l) -> void {
-                                    // fixme - prop- update geometry
-                                    // l->setRadius(v);
-                                }, list, contGeometry);
+    add<RS_Image>({"scale", tr("Scale"), tr("Scale factor for image")}, [this](const LC_Property::Names& n, RS_Image* entity, LC_PropertyContainer* container,
+                                                   QList<LC_PropertyAtomic*>* props) -> void {
+        const auto property = createVectorProperty(n, props, container, m_actionContext, m_widget);
+        property->setInteractiveInputType(LC_ActionContext::InteractiveInputInfo::NOTNEEDED);
+        auto funGet = [](RS_Image* e) ->RS_Vector {
+            const double xScale = e->getUVector().magnitude();
+            const double yScale = e->getVVector().magnitude();
+            return RS_Vector(xScale, yScale);
+        };
+
+        auto funSet = [](const RS_Vector& v, RS_Image* e) {
+            const double originalScaleX = e->getUVector().magnitude();
+            const double originalScaleY = e->getVVector().magnitude();
+
+            const double newScaleX = v.getX();
+            const double newScaleY = v.getY();
+
+            double scaleX  = newScaleX / originalScaleX;
+            double scaleY  = newScaleY / originalScaleY;
+
+            e->scale(e->getInsertionPoint(), RS_Vector(scaleX, scaleY));
+        };
+
+        createDelegatedStorage(funGet, funSet, [funGet](RS_Vector& scale, RS_Image* e) -> bool {
+                                   const auto original = funGet(e);
+                                   return scale == original;
+                               }, entity, property);
+    }, list, contGeometry);
+
+    auto funGetSize = [](const RS_Image* e)-> RS_Vector {
+        const RS_Vector result = e->getData().size;
+        return result;
+    };
+
+    add<RS_Image>({"sizePx", tr("Size, pixels"), tr("Size of the image in pixels")},
+                  [this, funGetSize](const LC_Property::Names& n, RS_Image* e, LC_PropertyContainer* container,
+                                     QList<LC_PropertyAtomic*>* props) -> void {
+                      const auto property = createVectorProperty(n, props, container, m_actionContext, m_widget);
+                      property->setInteractiveInputType(LC_ActionContext::InteractiveInputInfo::NOTNEEDED);
+                      LC_PropertyViewDescriptor descriptor = {
+                          {
+                              {LC_PropertyRSVectorView::ATTR_X_DISPLAY_NAME, tr("Width")},
+                              {LC_PropertyRSVectorView::ATTR_Y_DISPLAY_NAME, tr("Height")},
+                              {LC_PropertyRSVectorView::ATTR_X_DESCRIPTION, tr("Width of the image in pixels")},
+                              {LC_PropertyRSVectorView::ATTR_Y_DESCRIPTION, tr("Height of the image in pixels")},
+                              {LC_PropertyRSVectorView::ATTR_FORMAT_AS_INT, true},
+                              {"x", QVariantMap{{LC_PropertyDoubleInteractivePickView::ATTR_FORMAT_AS_INT, true}}},
+                              {"y", QVariantMap{{LC_PropertyDoubleInteractivePickView::ATTR_FORMAT_AS_INT, true}}}
+                          }
+                      };
+                      property->setViewDescriptor(descriptor);
+
+                      const auto valueStorage = new LC_EntityPropertyValueDelegate<RS_Vector, RS_Image>();
+                      property->setValueStorage(valueStorage, true);
+                      const typename LC_EntityPropertyValueDelegate<RS_Vector, RS_Image>::FunValueSetShort funSet = nullptr;
+                      valueStorage->setup(e, m_widget, funGetSize, funSet, nullptr);
+                      property->setReadOnly();
+                  }, list, contGeometry);
+
+    auto funGetImageSize = [](RS_Image* e) -> RS_Vector {
+        return e->getImageSize();
+    };
+
+    auto funSetImageSize = [](const RS_Vector& size, RS_Image* e) -> void {
+        const RS_Vector originalSize = e->getImageSize();
+        double scaleX = size.x / originalSize.x;
+        double scaleY = size.y / originalSize.y;
+        e->scale(e->getInsertionPoint(), RS_Vector(scaleX, scaleY));
+    };
+
+    add<RS_Image>({"size", tr("Size"), tr("Size in drawing units")},
+                [this, funGetImageSize, funSetImageSize](const LC_Property::Names& n, RS_Image* e, LC_PropertyContainer* container,
+                                   QList<LC_PropertyAtomic*>* props) -> void {
+                    const auto property = createVectorProperty(n, props, container, m_actionContext, m_widget);
+                    LC_PropertyViewDescriptor descriptor = {
+                        {
+                            {LC_PropertyRSVectorView::ATTR_X_DISPLAY_NAME, tr("Width")},
+                            {LC_PropertyRSVectorView::ATTR_Y_DISPLAY_NAME, tr("Height")},
+                            {LC_PropertyRSVectorView::ATTR_X_DESCRIPTION, tr("Width of the image in drawing units")},
+                            {LC_PropertyRSVectorView::ATTR_Y_DESCRIPTION, tr("Height of the image in drawing units")},
+                            {LC_PropertyRSVectorView::ATTR_FORMAT_AS_INT, true}
+                        }
+                    };
+                    property->setViewDescriptor(descriptor);
+                    const auto valueStorage = new LC_EntityPropertyValueDelegate<RS_Vector, RS_Image>();
+                    property->setValueStorage(valueStorage, true);
+                    valueStorage->setup(e, m_widget, funGetImageSize, funSetImageSize, nullptr);
+                }, list, contGeometry);
+
+    auto funGetDpi = [this](RS_Image* e) ->RS_Vector {
+        RS_Vector scale = e->getScale();
+        const double dpiX = RS_Units::scaleToDpi(scale.x, getFormatter()->getUnit());
+        const double dpiY = RS_Units::scaleToDpi(scale.y, getFormatter()->getUnit());
+        return RS_Vector(dpiX, dpiY);
+    };
+
+    add<RS_Image>({"dpi", tr("DPI"), tr("Dots per inch for the image")},
+                [this, funGetDpi](const LC_Property::Names& n, RS_Image* e, LC_PropertyContainer* container,
+                                   QList<LC_PropertyAtomic*>* props) -> void {
+                    const auto property = createVectorProperty(n, props, container, m_actionContext, m_widget);
+                    const LC_PropertyViewDescriptor descriptor = {
+                        {
+                            {LC_PropertyRSVectorView::ATTR_X_DISPLAY_NAME, tr("By width")},
+                            {LC_PropertyRSVectorView::ATTR_Y_DISPLAY_NAME, tr("By height")},
+                            {LC_PropertyRSVectorView::ATTR_X_DESCRIPTION, tr("DPI by width direction of image")},
+                            {LC_PropertyRSVectorView::ATTR_Y_DESCRIPTION, tr("DPI by height direction of image")}
+                        }
+                    };
+                    property->setViewDescriptor(descriptor);
+                    const auto valueStorage = new LC_EntityPropertyValueDelegate<RS_Vector, RS_Image>();
+                    property->setValueStorage(valueStorage, true);
+                    typename LC_EntityPropertyValueDelegate<RS_Vector, RS_Image>::FunValueSetShort funSetDPI = nullptr;
+                    valueStorage->setup(e, m_widget, funGetDpi, funSetDPI, nullptr);
+                    property->setReadOnly(true);
+                }, list, contGeometry);
+
 
     addWCSAngle<RS_Image>({"angle", tr("Angle"), tr("Image rotation angle")}, [](const RS_Image* e) -> double {
                               return e->getUVector().angle();
-                          }, [](double& v, RS_Image* l) -> void {
-                              // fixme - update geometry
-                              // l->setAngle1(v);
+                          }, [this](const double& v, RS_Image* e) -> void {
+                              const double angle = toWCSAngle(v);
+                              const double orgAngle = e->getUVector().angle();
+                              e->rotate(e->getInsertionPoint(), angle - orgAngle);
                           }, list, contGeometry);
 
-    addReadOnlyString<RS_Image>({"sizeX", tr("Width pixels"), tr("Width of image in pixels")}, [this](const RS_Image* e)-> QString {
-        const double len = e->getData().size.getX();
-        QString value = formatInt(len);
-        return value;
-    }, list, contGeometry);
+}
 
-    addReadOnlyString<RS_Image>({"sizeY", tr("Height pixels"), tr("Height of image in pixels")}, [this](const RS_Image* e)-> QString {
-        const double len = e->getData().size.getY();
-        QString value = formatInt(len);
-        return value;
-    }, list, contGeometry);
+void LC_PropertiesProviderImage::fillComputedProperites([[maybe_unused]] LC_PropertyContainer* container,
+                                                        [[maybe_unused]] const QList<RS_Entity*>& entitiesList) {
+}
 
-    addLinearDistance<RS_Image>({"width", tr("Width"), tr("Width of image")}, [](const RS_Image* e) -> double {
-                                    return e->getImageWidth();
-                                }, [](double& v, RS_Image* l) -> void {
-                                    // fixme - prop- update geometry
-                                    // l->setRadius(v);
-                                }, list, contGeometry);
-
-    addLinearDistance<RS_Image>({"height", tr("Height"), tr("Height of image")}, [](const RS_Image* e) -> double {
-                                    return e->getImageHeight();
-                                }, [](double& v, RS_Image* l) -> void {
-                                    // fixme - prop- update geometry
-                                    // l->setRadius(v);
-                                }, list, contGeometry);
-
-    addReadOnlyString<RS_Image>({"dpi", tr("DPI"), tr("Dots per inch for the image")}, [this](const RS_Image* e)-> QString {
-        const double scale = e->getUVector().magnitude();
-        const double dpi = RS_Units::scaleToDpi(scale, getFormatter()->getUnit());
-        QString value = formatDouble(dpi);
-        return value;
-    }, list, contGeometry);
+void LC_PropertiesProviderImage::fillSingleEntityCommands([[maybe_unused]] LC_PropertyContainer* container,
+                                                          [[maybe_unused]] const QList<RS_Entity*>& entitiesList) {
 }

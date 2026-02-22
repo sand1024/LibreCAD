@@ -88,7 +88,7 @@ bool LC_PropertyViewEditable::doBuildPartValue(LC_PropertyPaintContext&, LC_Prop
         bool doEdit = false;
         switch (eventCtx.eventType()) {
             case QEvent::MouseButtonDblClick:
-                doEdit = eventCtx.sheet->getPropertyViewStyle() & PropertiesSheetStyleDblClickActivation; // fixme - add method in widget
+                doEdit = eventCtx.sheet->getPropertyViewStyle() & PropertiesSheetStyleDblClickActivation; // fixme - add method in widget?
                 break;
 
             case QEvent::MouseButtonRelease:

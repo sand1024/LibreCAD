@@ -52,7 +52,7 @@ void LC_GraphicViewAwareWidget::updateWidgetSettings() const {
     LC_GROUP_END();
 }
 
-void LC_GraphicViewAwareWidget::onDockLocationChanged(Qt::DockWidgetArea area) {
+void LC_GraphicViewAwareWidget::doAdjustForDockLocation(Qt::DockWidgetArea area) {
     switch (area) {
         case Qt::DockWidgetArea::LeftDockWidgetArea:{
             getTopLevelLayout()->setContentsMargins(2, 1, 0, 2);
@@ -70,4 +70,8 @@ void LC_GraphicViewAwareWidget::onDockLocationChanged(Qt::DockWidgetArea area) {
             getTopLevelLayout()->setContentsMargins(0, 1, 2, 0);
             break;
     }
+}
+
+void LC_GraphicViewAwareWidget::onDockLocationChanged(Qt::DockWidgetArea area) {
+    doAdjustForDockLocation(area);
 }

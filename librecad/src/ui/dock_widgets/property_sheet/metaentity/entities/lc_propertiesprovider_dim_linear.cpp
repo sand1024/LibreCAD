@@ -59,29 +59,26 @@ void LC_PropertiesProviderDimLinear::doCreateDimGeometrySection(LC_PropertyConta
                               }, [](const double& v, RS_DimLinear* l) -> void {
                                   l->setOblique(v);
                               }, list, container);
-    /*
-    fixme - think how Continue and Baseline may be invoke for the dimension.... The issue - selection of the proper dimension side...
-    if (list.size() == 1) {
-        auto* propertyContinue = new LC_PropertyAction(cont, true);
-        LC_Property::Names names = {
-            "dimCreateContinue",
-            tr("Continue"),
-            tr("Create another dimension that continues this one")
-        };
-        propertyContinue->setNames(names);
-        LC_PropertyViewDescriptor viewDescriptor("Link");
-        viewDescriptor["title"] = names.displayName;
-        propertyContinue->setClickHandler([this, list]([[maybe_unused]] const LC_PropertyAction* action) {
-            for (auto e : list) {
-                auto d = dynamic_cast<RS_Dimension*>(e);
-                if (d != nullptr) {
-                    m_actionContext->setCurrentAction(RS2::ActionDimContinue, e);
-                    return;
-                }
-            }
-        });
-        propertyContinue->setViewDescriptor(viewDescriptor);
-        cont->addChildProperty(propertyContinue);
-    }
-    */
+}
+
+void LC_PropertiesProviderDimLinear::doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) {
+    const std::list<CommandLinkInfo> commands = {
+        {
+            tr("Continue and baseline"),
+            {RS2::ActionDimContinue, tr("Continue"), tr("Continues linear dimension")},
+            {RS2::ActionDimBaseline, tr("Baseline"), tr("Uses linear dimension as base line and creates other dimensions")}
+        }
+    };
+
+    const auto dim = static_cast<RS_DimLinear*>(entity);
+    // fixme - think how Continue and Baseline may be invoked for the dimension.... The issue there is proper selection of right dimension side...
+    createEntityContextCommands<RS_DimLinear>(commands, cont, dim, "dimCommands", false);
+
+    const std::list<CommandLinkInfo> commandsContextual = {
+        {
+            tr("Apply dimension style to other dimension"),
+            {RS2::ActionDimStyleApply, tr("Apply style"), tr("Applies dimension style to other dimensions")}
+        }
+    };
+    createEntityContextCommands<RS_DimLinear>(commandsContextual, cont, dim, "dimCommandsCtx");
 }

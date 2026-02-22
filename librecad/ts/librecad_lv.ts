@@ -3927,32 +3927,32 @@ End Edge Point: (%9 , %10)</source>
     </message>
     <message>
         <location filename="../src/actions/drawing/modify/lc_actionmodifylinejoin.cpp" line="171"/>
-        <location filename="../src/actions/drawing/modify/lc_actionmodifylinejoin.cpp" line="222"/>
+        <location filename="../src/actions/drawing/modify/lc_actionmodifylinejoin.cpp" line="223"/>
         <source>No line selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/modify/lc_actionmodifylinejoin.cpp" line="192"/>
+        <location filename="../src/actions/drawing/modify/lc_actionmodifylinejoin.cpp" line="193"/>
         <source>Lines are parallel, can&apos;t merge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/modify/lc_actionmodifylinejoin.cpp" line="197"/>
+        <location filename="../src/actions/drawing/modify/lc_actionmodifylinejoin.cpp" line="198"/>
         <source>Lines already intersects, can&apos;t merge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/modify/lc_actionmodifylinejoin.cpp" line="811"/>
+        <location filename="../src/actions/drawing/modify/lc_actionmodifylinejoin.cpp" line="819"/>
         <source>Select first line</source>
         <translation type="unfinished">Izvēlieties pirmo līniju</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/modify/lc_actionmodifylinejoin.cpp" line="814"/>
+        <location filename="../src/actions/drawing/modify/lc_actionmodifylinejoin.cpp" line="822"/>
         <source>Select second line</source>
         <translation type="unfinished">Izvēlēties otro līniju</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/modify/lc_actionmodifylinejoin.cpp" line="817"/>
+        <location filename="../src/actions/drawing/modify/lc_actionmodifylinejoin.cpp" line="825"/>
         <source>Select part of first line that should remain after trim</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4559,148 +4559,148 @@ Are you sure you are going to discard changes?</source>
 <context>
     <name>LC_ArcPropertiesEditingWidget</name>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="14"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="14"/>
         <source>Form</source>
         <translation type="unfinished">Forma</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="47"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="47"/>
         <source>Geometry</source>
         <translation type="unfinished">Ģeometrija</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="65"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="65"/>
         <source>Center (x):</source>
         <translation type="unfinished">Centrs (x):</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="87"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="87"/>
         <source>X Coordinate of arc&apos;s center</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="112"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="112"/>
         <source>Pick center coordinate from the drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="131"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="131"/>
         <source>Center (y):</source>
         <translation type="unfinished">Centrs (y):</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="153"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="153"/>
         <source>Y Coordinate of arc&apos;s center</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="172"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="172"/>
         <source>Radius:</source>
         <translation type="unfinished">Rādiuss:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="194"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="194"/>
         <source>Radius of arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="201"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="201"/>
         <source>Pick radius value from the drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="227"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="227"/>
         <source>Diameter:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="249"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="249"/>
         <source>Diameter of arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="256"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="256"/>
         <source>Pick diameter value from the drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="282"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="282"/>
         <source>Arc Length:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="304"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="304"/>
         <source>Length of the arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="311"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="311"/>
         <source>Pick arc length value from the drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="337"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="337"/>
         <source>Sweep Angle:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="359"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="359"/>
         <source>Sweep angle of the arc (degrees)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="366"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="366"/>
         <source>Pick sweep angle from the drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="392"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="392"/>
         <source>Bulge:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="414"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="414"/>
         <source>Bulge (sagitta) of the arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="421"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="421"/>
         <source>Pick bulge value from the drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="447"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="447"/>
         <source>Start Angle:</source>
         <translation type="unfinished">Sākuma leņķis:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="469"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="469"/>
         <source>Starting angle of arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="476"/>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="531"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="476"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="531"/>
         <source>Pick angle value from the drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="502"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="502"/>
         <source>End Angle:</source>
         <translation type="unfinished">Beigu leņķis:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="524"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="524"/>
         <source>End angle of arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="567"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="567"/>
         <source>Defines whether arc is reversed (clockwise)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_arcpropertieseditingwidget.ui" line="570"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_arc.ui" line="570"/>
         <source>Reversed</source>
         <translation type="unfinished">Apgriezti</translation>
     </message>
@@ -4791,67 +4791,67 @@ Are you sure you are going to discard changes?</source>
 <context>
     <name>LC_CirclePropertiesEditingWidget</name>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_circlepropertieseditingwidget.ui" line="14"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_circle.ui" line="14"/>
         <source>Form</source>
         <translation type="unfinished">Forma</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_circlepropertieseditingwidget.ui" line="41"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_circle.ui" line="41"/>
         <source>Geometry</source>
         <translation type="unfinished">Ģeometrija</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_circlepropertieseditingwidget.ui" line="47"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_circle.ui" line="47"/>
         <source>Center (x):</source>
         <translation type="unfinished">Centrs (x):</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_circlepropertieseditingwidget.ui" line="63"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_circle.ui" line="63"/>
         <source>X Coordinate of circle&apos;s center</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_circlepropertieseditingwidget.ui" line="88"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_circle.ui" line="88"/>
         <source>Pick center coordinate from drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_circlepropertieseditingwidget.ui" line="95"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_circle.ui" line="95"/>
         <source>Center (y):</source>
         <translation type="unfinished">Centrs (y):</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_circlepropertieseditingwidget.ui" line="111"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_circle.ui" line="111"/>
         <source>Y Coordinate of circle&apos;s center</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_circlepropertieseditingwidget.ui" line="118"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_circle.ui" line="118"/>
         <source>Radius:</source>
         <translation type="unfinished">Rādiuss:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_circlepropertieseditingwidget.ui" line="134"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_circle.ui" line="134"/>
         <source>Radius of circle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_circlepropertieseditingwidget.ui" line="155"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_circle.ui" line="155"/>
         <source>Diameter:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_circlepropertieseditingwidget.ui" line="171"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_circle.ui" line="171"/>
         <source>Diameter of circle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_circlepropertieseditingwidget.ui" line="178"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_circle.ui" line="178"/>
         <source>Pick diameter value from drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_circlepropertieseditingwidget.ui" line="141"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_circle.ui" line="141"/>
         <source>Pick radius value from drawing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6607,298 +6607,298 @@ Are you sure you are going to discard changes?</source>
 <context>
     <name>LC_DlgDimension</name>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="14"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="14"/>
         <source>Dimension</source>
         <translation type="unfinished">Dimensija</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="209"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="209"/>
         <source>Layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="236"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="236"/>
         <source>Style</source>
         <translation type="unfinished">Stils</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="260"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="260"/>
         <source>Apply style to dimension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="274"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="274"/>
         <source>Select dimension style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="301"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="301"/>
         <source>Override entity&apos;s style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="318"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="318"/>
         <source>Remove style override</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="332"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="332"/>
         <source>Edit style override</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="346"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="346"/>
         <source>Save style override as independent style.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="360"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="360"/>
         <source>Set style as active one. Active style is applied to newly created dimensions.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="374"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="374"/>
         <source>Export</source>
         <translation type="unfinished">Eksportēt</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="388"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="388"/>
         <source>Import</source>
         <translation type="unfinished">Importēt</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="404"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="404"/>
         <source>Style Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="418"/>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="435"/>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="460"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="418"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="435"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="460"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="425"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="425"/>
         <source>Active:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="432"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="432"/>
         <source>Active style that is applied when new dimension is created.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="445"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="445"/>
         <source>Overriden:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="457"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="457"/>
         <source>Indicates whether style is overriden for specific entity (and so is unique for it).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="499"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="499"/>
         <source>Flip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="505"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="505"/>
         <source>If set, first arrow will be flipped</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="508"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="508"/>
         <source>Arrow 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="515"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="515"/>
         <source>If set, second arrow will be flipped</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="518"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="518"/>
         <source>Arrow 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="415"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="415"/>
         <source>Name of style for this dimension entity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="470"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="470"/>
         <source>Style:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="489"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="489"/>
         <source>Preview</source>
         <translation type="unfinished">Priekšskatījums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="42"/>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="99"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="42"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="99"/>
         <source>Geometry</source>
         <translation type="unfinished">Ģeometrija</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="123"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="123"/>
         <source>Angle:</source>
         <translation type="unfinished">Leņķis:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="145"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="145"/>
         <source>Rotation angle of dimension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="66"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="66"/>
         <source>Ordinate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="76"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="76"/>
         <source>X</source>
         <translation type="unfinished">X</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.ui" line="83"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.ui" line="83"/>
         <source>Y</source>
         <translation type="unfinished">Y</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="139"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="139"/>
         <source>Ordinate Dimension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="152"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="152"/>
         <source>Linear Dimension</source>
         <translation type="unfinished">Lineārā dimensija</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="163"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="163"/>
         <source>Aligned Dimension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="169"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="169"/>
         <source>Angular Dimension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="175"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="175"/>
         <source>Arc Dimension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="181"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="181"/>
         <source>Diametric Dimension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="187"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="187"/>
         <source>Radial Dimension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="210"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="210"/>
         <source>Pen</source>
         <translation type="unfinished">Zīmulis</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="411"/>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="417"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="411"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="417"/>
         <source>Saving Style Override</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="411"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="411"/>
         <source>New Style Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="417"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="417"/>
         <source>Style with such name already exists, please enter another unique one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="465"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="465"/>
         <source>New Dimension Style Override - </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="515"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="515"/>
         <source>Edit Dimension Style Override - </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="527"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="527"/>
         <source>View Dimension Style - </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="580"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="580"/>
         <source>&amp;Apply Style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="581"/>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="608"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="581"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="608"/>
         <source>&amp;Select Style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="586"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="586"/>
         <source>&amp;Set as Active</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="590"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="590"/>
         <source>&amp;Create override</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="594"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="594"/>
         <source>&amp;View Style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="597"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="597"/>
         <source>&amp;Edit override</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="598"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="598"/>
         <source>&amp;Save As Style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="599"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="599"/>
         <source>&amp;Remove Override</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="603"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="603"/>
         <source>E&amp;xport Styles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="604"/>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="611"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="604"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="611"/>
         <source>&amp;Import Styles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="664"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="664"/>
         <source>YES</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgdimension.cpp" line="671"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_dimension.cpp" line="671"/>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6906,97 +6906,97 @@ Are you sure you are going to discard changes?</source>
 <context>
     <name>LC_DlgEntityProperties</name>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgentityproperties.ui" line="20"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.ui" line="20"/>
         <source>Dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgentityproperties.ui" line="29"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.ui" line="29"/>
         <source>Object ID: 121</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgentityproperties.ui" line="64"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.ui" line="64"/>
         <source>Layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgentityproperties.ui" line="76"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.ui" line="76"/>
         <source>Name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgentityproperties.ui" line="98"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.ui" line="98"/>
         <source>Layer of entity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgentityproperties.cpp" line="145"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="145"/>
         <source>Pen</source>
         <translation type="unfinished">Zīmulis</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgentityproperties.cpp" line="172"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="172"/>
         <source>Point Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgentityproperties.cpp" line="178"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="178"/>
         <source>Line Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgentityproperties.cpp" line="184"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="184"/>
         <source>Arc Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgentityproperties.cpp" line="190"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="190"/>
         <source>Circle Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgentityproperties.cpp" line="196"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="196"/>
         <source>Ellipse Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgentityproperties.cpp" line="202"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="202"/>
         <source>Hyperbola Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgentityproperties.cpp" line="208"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="208"/>
         <source>Polyline Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgentityproperties.cpp" line="214"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="214"/>
         <source>Parabola Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgentityproperties.cpp" line="220"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="220"/>
         <source>Spline Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgentityproperties.cpp" line="226"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="226"/>
         <source>Spline Points Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgentityproperties.cpp" line="232"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="232"/>
         <source>Image Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgentityproperties.cpp" line="238"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="238"/>
         <source>Insert Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgentityproperties.cpp" line="246"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_entityproperties.cpp" line="246"/>
         <source>Properties?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8045,11 +8045,31 @@ Are you sure you are going to discard changes?</source>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="165"/>
-        <source>If enabled, generic selection-related actions will be included into the widget toolbar</source>
+        <source>If selected, in case there is only on entity in sheet, the list for commands that are relevant for entity will be shown (if any applicable).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="168"/>
+        <source>Show single entity commands</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="175"/>
+        <source>If selected, if there is one or more entities selected, the list of entity set modification commands will be shown (if any applicable).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="178"/>
+        <source>Show multiple entities modification commands</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="185"/>
+        <source>If enabled, generic selection-related actions will be included into the widget toolbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="188"/>
         <source>Show generic selection actions button in toolbar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8291,63 +8311,63 @@ Are you sure you are going to discard changes?</source>
 <context>
     <name>LC_DlgTolerance</name>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgtolerance.ui" line="14"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_tolerance.ui" line="14"/>
         <source>Feature Control Frame</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgtolerance.ui" line="26"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_tolerance.ui" line="26"/>
         <source>Layer of dimension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgtolerance.ui" line="45"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_tolerance.ui" line="45"/>
         <source>Pen attributes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgtolerance.ui" line="58"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_tolerance.ui" line="58"/>
         <source>Layer:</source>
         <translation type="unfinished">Slānis:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgtolerance.ui" line="91"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_tolerance.ui" line="91"/>
         <source>Geometric Characteristics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgtolerance.ui" line="117"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_tolerance.ui" line="117"/>
         <source>Composite</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgtolerance.ui" line="127"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_tolerance.ui" line="127"/>
         <source>Stated Tolerance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgtolerance.ui" line="133"/>
-        <location filename="../src/ui/dialogs/entity/lc_dlgtolerance.ui" line="173"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_tolerance.ui" line="133"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_tolerance.ui" line="173"/>
         <source>...</source>
         <translation type="unfinished">...</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgtolerance.ui" line="191"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_tolerance.ui" line="191"/>
         <source>Primary Datum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgtolerance.ui" line="240"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_tolerance.ui" line="240"/>
         <source>Secondary Datum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgtolerance.ui" line="289"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_tolerance.ui" line="289"/>
         <source>Tertiary Datum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_dlgtolerance.cpp" line="53"/>
+        <location filename="../src/ui/dialogs/entity/lc_dlg_tolerance.cpp" line="53"/>
         <source>Pen</source>
         <translation type="unfinished">Zīmulis</translation>
     </message>
@@ -9138,129 +9158,129 @@ Are you sure you are going to discard changes?</source>
 <context>
     <name>LC_EllipsePropertiesEditingWidget</name>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="14"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="14"/>
         <source>Form</source>
         <translation type="unfinished">Forma</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="47"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="47"/>
         <source>Geometry</source>
         <translation type="unfinished">Ģeometrija</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="59"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="59"/>
         <source>Center (x):</source>
         <translation type="unfinished">Centrs (x):</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="81"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="81"/>
         <source>X Coordinate of ellipse&apos;s center</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="106"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="106"/>
         <source>Pick center coordinate from drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="119"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="119"/>
         <source>Center (y):</source>
         <translation type="unfinished">Centrs (y):</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="141"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="141"/>
         <source>Y Coordinate of arc&apos;s center</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="154"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="154"/>
         <source>Major:</source>
         <translation type="unfinished">Primārā:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="176"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="176"/>
         <source>Radius of major axis of ellipse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="183"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="183"/>
         <source>Pick length of major axis radius from drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="203"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="203"/>
         <source>Minor:</source>
         <translation type="unfinished">Sekundārā:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="225"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="225"/>
         <source>Radius of minor axis of the ellipse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="232"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="232"/>
         <source>Pick length of minor axis radius from drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="252"/>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="304"/>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="356"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="252"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="304"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="356"/>
         <source>in degrees</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="255"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="255"/>
         <source>Rotation(°):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="277"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="277"/>
         <source>Rotation angle for the major axis of ellipse, degrees</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="284"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="284"/>
         <source>Pick rotation angle from drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="307"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="307"/>
         <source>Start Angle(°):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="329"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="329"/>
         <source>Start angle of elliptic arc, degrees</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="336"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="336"/>
         <source>Pick start angle from drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="359"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="359"/>
         <source>End Angle(°):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="381"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="381"/>
         <source>End angle of elliptic arc, degrees</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="388"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="388"/>
         <source>Pick end angle from drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="408"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="408"/>
         <source>Defines whether arc is reversed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.ui" line="411"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.ui" line="411"/>
         <source>Reversed</source>
         <translation type="unfinished">Apgriezti</translation>
     </message>
@@ -9401,92 +9421,258 @@ Are you sure you are going to discard changes?</source>
 <context>
     <name>LC_EntityTypePropertiesProvider</name>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="53"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="57"/>
         <source>X</source>
         <translation type="unfinished">X</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="53"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="57"/>
         <source>Y</source>
         <translation type="unfinished">Y</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="147"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="151"/>
         <source>Geometry</source>
         <translation type="unfinished">Ģeometrija</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="152"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="156"/>
         <source>Text</source>
         <translation type="unfinished">Teksts</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="159"/>
-        <source>Other</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="147"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="151"/>
         <source>Geometrical properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="152"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="156"/>
         <source>Text properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="159"/>
-        <source>Other properties</source>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="161"/>
+        <source>Calculated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="161"/>
+        <source>Calculated properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="166"/>
+        <source>Single Entity Actions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="166"/>
+        <source>Action commands applicable to single edited entity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="171"/>
+        <source>Selected Set Actions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="171"/>
+        <source>Action commands applicable for ALL selected entities</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="215"/>
+        <source>Moving or rotating operations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="216"/>
+        <source>Move / Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="216"/>
+        <source>Move selected entities</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="217"/>
+        <source>Rotate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="217"/>
+        <source>Rotate of selected entities</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="221"/>
+        <source>Duplicate selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="222"/>
+        <source>Mirror selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="225"/>
+        <source>Scaling and stretching</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="236"/>
+        <source>Move and rotate selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="237"/>
+        <source>Rotate selection two times</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="341"/>
+        <source>Unselect all entities in layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="342"/>
+        <source>Selection of layer&apos;s entities</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="220"/>
+        <source>Duplicating or mirroring</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="221"/>
+        <source>Duplicate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="222"/>
+        <source>Mirror</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="226"/>
+        <source>Scale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="226"/>
+        <source>Selection scaling</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="227"/>
+        <source>Stretch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="227"/>
+        <source>Strech selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="230"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="235"/>
+        <source>Aligning selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="231"/>
+        <source>Align</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="231"/>
+        <source>Align selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="232"/>
+        <source>Align ref</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="232"/>
+        <source>Align selection by reference points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="236"/>
+        <source>Move rotate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="237"/>
+        <source>Rotate two</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="296"/>
         <source>General</source>
         <translation type="unfinished">Vispārīgi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="226"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="296"/>
         <source>General properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="233"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="303"/>
         <source>Layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="233"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="303"/>
         <source>Layer of entity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="250"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="339"/>
+        <source>Select all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="340"/>
+        <source>Select all entities in layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="340"/>
+        <source>Unselect All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="345"/>
         <source>Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="250"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="345"/>
         <source>Color of entity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="267"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="362"/>
         <source>Line Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="267"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="362"/>
         <source>Type of entity pen line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="285"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="380"/>
         <source>Line Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="285"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/lc_entity_type_propertiesprovider.cpp" line="380"/>
         <source>Width of entity pen line</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9526,277 +9712,276 @@ Are you sure you are going to discard changes?</source>
 <context>
     <name>LC_HyperbolaPropertiesEditingWidget</name>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="14"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui" line="14"/>
         <source>Hyperbola Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="29"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui" line="29"/>
         <source>Standard Parameters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="35"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui" line="35"/>
         <source>Center X:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="45"/>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="109"/>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="176"/>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="196"/>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="216"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui" line="45"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui" line="109"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui" line="176"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui" line="196"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui" line="216"/>
         <source>Y:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="55"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui" line="55"/>
         <source>Major Radius (a):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="65"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui" line="65"/>
         <source>Minor Radius (b):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="75"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui" line="75"/>
         <source>Ratio (b/a):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="85"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui" line="85"/>
         <source>Rotation (deg):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="95"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui" line="95"/>
         <source>Vertex X:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="123"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui" line="123"/>
         <source>Start φ:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="133"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui" line="133"/>
         <source>End φ:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="143"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui" line="143"/>
         <source>(0,0 = full branch)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="150"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui" line="150"/>
         <source>Left Branch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="160"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui" line="160"/>
         <source>Foci &amp; Point on Curve (Alternative Editing)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="166"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui" line="166"/>
         <source>Focus 1 X:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="186"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui" line="186"/>
         <source>Focus 2 X:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="206"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui" line="206"/>
         <source>Point on Curve X:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="229"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui" line="229"/>
         <source>Derived Properties (Read-only)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.ui" line="235"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.ui" line="235"/>
         <source>Eccentricity:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.cpp" line="90"/>
-        <source>Invalid hyperbola definition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.cpp" line="93"/>
-        <source>Foci must be distinct</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.cpp" line="102"/>
-        <source>Invalid center coordinates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.cpp" line="106"/>
-        <source>Major radius must be positive</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.cpp" line="110"/>
-        <source>Invalid rotation angle</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.cpp" line="119"/>
-        <source>Ratio or minor radius must be positive</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>LC_ImagePropertiesEditingWidget</name>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="14"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="14"/>
         <source>Form</source>
         <translation type="unfinished">Forma</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="44"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="44"/>
         <source>Geometry</source>
         <translation type="unfinished">Ģeometrija</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="50"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="57"/>
+        <source>Scale X:</source>
+        <translation type="unfinished">Mērogs 1:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="70"/>
+        <source>Height of image in drawing units</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="98"/>
         <source>Insert Point(x):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="63"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="121"/>
+        <source>Dots per inch for width and height directions of image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="124"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="322"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="131"/>
+        <source>Scaling factor for image heigth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="165"/>
+        <source>Angle of image rotation over insert point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="178"/>
+        <source>Width of image in drawing units</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="191"/>
         <source>X coordinate of insertion point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="88"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="212"/>
+        <source>Picture Size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="266"/>
+        <source>Scaling factor for image width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="273"/>
+        <source>Scale Y:</source>
+        <translation type="unfinished">Mērogs Y:</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="298"/>
         <source>Pick insertion point coordinates from drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="95"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="91"/>
         <source>Insert Point (y):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="108"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="253"/>
         <source>Y coordinate of insertion point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="115"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="50"/>
         <source>Width:</source>
         <translation type="unfinished">Platums:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="128"/>
-        <source>Width of image</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="135"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="138"/>
         <source>Pick width value from drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="149"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="305"/>
         <source>Height:</source>
         <translation type="unfinished">Augstums:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="162"/>
-        <source>Height of image</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="169"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="219"/>
         <source>Pick height value from the drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="183"/>
         <source>Scale:</source>
-        <translation type="unfinished">Mērogs:</translation>
+        <translation type="obsolete">Mērogs:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="196"/>
-        <source>Scaling factor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="333"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="77"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="233"/>
         <source>Pick scale from drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="203"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="152"/>
         <source>Angle:</source>
         <translation type="unfinished">Leņķis:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="216"/>
-        <source>Rotation angle</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="223"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="198"/>
         <source>Pick angle from the drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="237"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="312"/>
+        <source>DPI:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="319"/>
+        <source>Size of the image, in pixels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="329"/>
         <source>File Path:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="250"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="342"/>
         <source>Path to image file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="266"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_image.ui" line="358"/>
         <source>Select an image file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="280"/>
         <source>Size (px):</source>
-        <translation type="unfinished">Izmērs (px):</translation>
+        <translation type="obsolete">Izmērs (px):</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="293"/>
-        <source>Size of image in pixels</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="303"/>
         <source>DPI</source>
-        <translation type="unfinished">DPI</translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dialogs/entity/lc_imagepropertieseditingwidget.ui" line="310"/>
-        <source>Resolution (dots per inch)</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">DPI</translation>
     </message>
 </context>
 <context>
     <name>LC_IndexedPropertiesProviderBase</name>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_indexed_propertiesprovider_base.h" line="112"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_indexed_propertiesprovider_base.h" line="132"/>
         <source>X</source>
         <translation type="unfinished">X</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_indexed_propertiesprovider_base.h" line="112"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_indexed_propertiesprovider_base.h" line="132"/>
         <source>Y</source>
         <translation type="unfinished">Y</translation>
     </message>
@@ -9835,132 +10020,132 @@ Are you sure you are going to discard changes?</source>
 <context>
     <name>LC_InsertPropertiesEditingWidget</name>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="14"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="14"/>
         <source>Form</source>
         <translation type="unfinished">Forma</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="35"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="35"/>
         <source>Geometry</source>
         <translation type="unfinished">Ģeometrija</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="41"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="41"/>
         <source>Insertion point (x):</source>
         <translation type="unfinished">Ievietošanas punkts (x):</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="60"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="60"/>
         <source>X coordinate of insertion point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="85"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="85"/>
         <source>Pick insertion point coordinates from drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="92"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="92"/>
         <source>Insertion point (y):</source>
         <translation type="unfinished">Ievietošanas punkts (y):</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="111"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="111"/>
         <source>Y coordinate of insertion point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="118"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="118"/>
         <source>Scale X:</source>
         <translation type="unfinished">Mērogs 1:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="137"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="137"/>
         <source>Scaling factor by X axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="144"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="144"/>
         <source>Pick scale by X value from drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="158"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="158"/>
         <source>Scale Y:</source>
         <translation type="unfinished">Mērogs Y:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="177"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="177"/>
         <source>Scaling factor by Y axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="184"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="184"/>
         <source>Pick scale Y value from drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="198"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="198"/>
         <source>Angle:</source>
         <translation type="unfinished">Leņķis:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="217"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="217"/>
         <source>Rotation angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="224"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="224"/>
         <source>Pick Angle value from drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="238"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="238"/>
         <source>Rows:</source>
         <translation type="unfinished">Rindas:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="257"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="257"/>
         <source>Amount of rows for copies</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="264"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="264"/>
         <source>Columns:</source>
         <translation type="unfinished">Kolonnas:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="283"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="283"/>
         <source>Amount of columns for copies</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="290"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="290"/>
         <source>Row Spacing:</source>
         <translation type="unfinished">Rindu atstarpe:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="309"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="309"/>
         <source>Spacing between rows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="316"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="316"/>
         <source>Pick row spacing value from drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="330"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="330"/>
         <source>Column Spacing:</source>
         <translation type="unfinished">Kolonnu atstarpe:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="349"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="349"/>
         <source>Spacing between columns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_insertpropertieseditingwidget.ui" line="356"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_insert.ui" line="356"/>
         <source>Pick column spacing from drawing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11176,62 +11361,62 @@ Please specify a different value.</source>
 <context>
     <name>LC_LinePropertiesEditingWidget</name>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_linepropertieseditingwidget.ui" line="14"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_line.ui" line="14"/>
         <source>Form</source>
         <translation type="unfinished">Forma</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_linepropertieseditingwidget.ui" line="41"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_line.ui" line="41"/>
         <source>Geometry</source>
         <translation type="unfinished">Ģeometrija</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_linepropertieseditingwidget.ui" line="68"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_line.ui" line="68"/>
         <source>Pick endpoint from the drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_linepropertieseditingwidget.ui" line="75"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_line.ui" line="75"/>
         <source>Start point (y):</source>
         <translation type="unfinished">Sākuma punkts (y):</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_linepropertieseditingwidget.ui" line="107"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_line.ui" line="107"/>
         <source>Starting point Y coordinate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_linepropertieseditingwidget.ui" line="114"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_line.ui" line="114"/>
         <source>End point (y):</source>
         <translation type="unfinished">Beigu punkts (y):</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_linepropertieseditingwidget.ui" line="130"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_line.ui" line="130"/>
         <source>Starting point X coordinate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_linepropertieseditingwidget.ui" line="137"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_line.ui" line="137"/>
         <source>Start point (x):</source>
         <translation type="unfinished">Sākuma punkts (x):</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_linepropertieseditingwidget.ui" line="153"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_line.ui" line="153"/>
         <source>Ending point Y coordinate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_linepropertieseditingwidget.ui" line="166"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_line.ui" line="166"/>
         <source>Ending point X coordinate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_linepropertieseditingwidget.ui" line="191"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_line.ui" line="191"/>
         <source>Pick start point from the drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_linepropertieseditingwidget.ui" line="214"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_line.ui" line="214"/>
         <source>End point (x):</source>
         <translation type="unfinished">Beigu punkts (x):</translation>
     </message>
@@ -16424,30 +16609,25 @@ Warning: this action can NOT be undone!</source>
 <context>
     <name>LC_ParabolaPropertiesEditingWidget</name>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_parabolapropertieseditingwidget.ui" line="14"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_parabola.ui" line="14"/>
         <source>Form</source>
         <translation type="unfinished">Forma</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_parabolapropertieseditingwidget.ui" line="41"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_parabola.ui" line="41"/>
         <source>Geometry</source>
         <translation type="unfinished">Ģeometrija</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_parabolapropertieseditingwidget.ui" line="56"/>
-        <location filename="../src/ui/dialogs/entity/lc_parabolapropertieseditingwidget.ui" line="59"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_parabola.ui" line="56"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_parabola.ui" line="59"/>
         <source>Points on Spline</source>
         <translation type="unfinished">Punkti uz splaina</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_parabolapropertieseditingwidget.ui" line="88"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_parabola.ui" line="88"/>
         <source>Control Points</source>
         <translation type="unfinished">Vadības punkti</translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dialogs/entity/lc_parabolapropertieseditingwidget.cpp" line="89"/>
-        <source>Parabola control points cannot be collinear</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -17372,37 +17552,37 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
 <context>
     <name>LC_PointPropertiesEditingWidget</name>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_pointpropertieseditingwidget.ui" line="14"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_point.ui" line="14"/>
         <source>Form</source>
         <translation type="unfinished">Forma</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_pointpropertieseditingwidget.ui" line="35"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_point.ui" line="35"/>
         <source>Geometry</source>
         <translation type="unfinished">Ģeometrija</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_pointpropertieseditingwidget.ui" line="63"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_point.ui" line="63"/>
         <source>Position of point by Y coordinate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_pointpropertieseditingwidget.ui" line="70"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_point.ui" line="70"/>
         <source>Position (x):</source>
         <translation type="unfinished">Pozīcija (x):</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_pointpropertieseditingwidget.ui" line="80"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_point.ui" line="80"/>
         <source>Position (y):</source>
         <translation type="unfinished">Pozīcija (y):</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_pointpropertieseditingwidget.ui" line="96"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_point.ui" line="96"/>
         <source>Position of point by X coordinate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_pointpropertieseditingwidget.ui" line="103"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_point.ui" line="103"/>
         <source>Pick position from the drawing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17448,23 +17628,64 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
 <context>
     <name>LC_PolylinePropertiesEditingWidget</name>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_polylinepropertieseditingwidget.ui" line="14"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_polyline.ui" line="14"/>
         <source>Form</source>
         <translation type="unfinished">Forma</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_polylinepropertieseditingwidget.ui" line="41"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_polyline.ui" line="41"/>
         <source>Geometry</source>
         <translation type="unfinished">Ģeometrija</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_polylinepropertieseditingwidget.ui" line="69"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_polyline.ui" line="69"/>
         <source>Defines whether polyline is closed contour</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_polylinepropertieseditingwidget.ui" line="72"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_polyline.ui" line="72"/>
         <source>Closed</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertiesEditingWidgetHyperbola</name>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.cpp" line="112"/>
+        <source>Invalid hyperbola definition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.cpp" line="115"/>
+        <source>Foci must be distinct</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.cpp" line="124"/>
+        <source>Invalid center coordinates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.cpp" line="128"/>
+        <source>Major radius must be positive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.cpp" line="132"/>
+        <source>Invalid rotation angle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.cpp" line="141"/>
+        <source>Ratio or minor radius must be positive</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertiesEditingWidgetParabola</name>
+    <message>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_parabola.cpp" line="92"/>
+        <source>Parabola control points cannot be collinear</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -17564,134 +17785,466 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
 <context>
     <name>LC_PropertiesProviderArc</name>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="34"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="35"/>
         <source>Center</source>
         <translation type="unfinished">Vidū</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="34"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="35"/>
         <source>Center point of arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="40"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="41"/>
         <source>Radius</source>
         <translation type="unfinished">Rādiuss</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="40"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="41"/>
         <source>Radius of arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="46"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="47"/>
         <source>Diameter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="46"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="47"/>
         <source>Diameter of arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="52"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="53"/>
         <source>Is Reversed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="52"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="53"/>
         <source>Clockwise direction if reversed, counterclockwise otherwise</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="59"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="60"/>
         <source>Start Angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="59"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="60"/>
         <source>Start angle of arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="65"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="66"/>
         <source>End Angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="65"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="66"/>
         <source>End angle of arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="76"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="74"/>
         <source>Start Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="76"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="74"/>
         <source>Start point of arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="80"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="78"/>
         <source>End Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="80"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="78"/>
         <source>End point of arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="84"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="82"/>
         <source>Arc Length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="84"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="82"/>
         <source>Total angle of arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="90"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="88"/>
         <source>Total linear length of arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="90"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="88"/>
         <source>Circumference</source>
         <comment>arc</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="96"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="95"/>
         <source>Chord Length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="96"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="95"/>
         <source>Distance between end points of arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="102"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="101"/>
         <source>Sagitta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="102"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="101"/>
         <source>Height of arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="108"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="107"/>
         <source>Bulge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="108"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="107"/>
         <source>Bulge of arc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="132"/>
+        <source>Tangental Arc (start)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="133"/>
+        <source>Create tangental arc in start point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="134"/>
+        <source>Create tangental arc in end point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="135"/>
+        <source>Create tangental arc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="139"/>
+        <source>Create parallel arc via offset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="140"/>
+        <source>Create parallel arc by point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="148"/>
+        <source>Creation of circle tangental to arc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="149"/>
+        <source>Tangent Circle (2 P)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="150"/>
+        <source>Tangent Circle (2 E, 1 P)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="154"/>
+        <source>Tangent Circle (3 E)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="179"/>
+        <source>Create elipse inscribed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="180"/>
+        <source>Create bounding box for arc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="185"/>
+        <source>Create of radial dimension for arc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="189"/>
+        <source>Create of ordinate dimension for arc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="190"/>
+        <source>Create of arc dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="200"/>
+        <source>Center marks and circle creation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="201"/>
+        <source>Create center mark for selected circles and arcs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="202"/>
+        <source>Create circles by selected arcs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="206"/>
+        <source>Change direction of arcs by swapping start and end points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="133"/>
+        <source>Tangental Arc (end)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="138"/>
+        <source>Concentric arcs creation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="139"/>
+        <source>Offset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="140"/>
+        <source>Parallel (Point)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="143"/>
+        <source>Arc trimming or dividing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="144"/>
+        <source>Divide</source>
+        <translation type="unfinished">Dalīts</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="144"/>
+        <source>Divide arc in specified point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="145"/>
+        <source>Trim the arc by other entity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="149"/>
+        <source>Create tangental circle by 2 points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="150"/>
+        <source>Create tangental circle by 2 entitites and 1 point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="154"/>
+        <source>Create tangental circle by 3 entities</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="155"/>
+        <source>Create tangental circle by 2 points and radius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="159"/>
+        <source>Create line tangental to arc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="160"/>
+        <source>Create line tangental for two circles/arcs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="164"/>
+        <source>Create line orthogonal to arc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="169"/>
+        <source>Create line with relative angle to arc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="170"/>
+        <source>Create fillet for arc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="173"/>
+        <source>Dividing arc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="145"/>
+        <source>Trim</source>
+        <translation type="unfinished">Īsināt</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="153"/>
+        <source>Creation of circle tangental</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="155"/>
+        <source>Tangent Circle (2 E, R)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="158"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="163"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="168"/>
+        <source>Creation of line tangental to circle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="159"/>
+        <source>Tangent (P,C)</source>
+        <translation type="unfinished">Pieskare (P,C)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="160"/>
+        <source>Tangent (C,C)</source>
+        <translation type="unfinished">Pieskare (C,C)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="164"/>
+        <source>Orthogonal</source>
+        <translation type="unfinished">Perpendikulārs</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="165"/>
+        <source>Tangent Orthogonal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="165"/>
+        <source>Create arc tangental line orthogonal to line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="169"/>
+        <source>Relative angle</source>
+        <translation type="unfinished">Relatīvais leņķis</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="170"/>
+        <source>Fillet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="174"/>
+        <source>Slice/Divide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="174"/>
+        <source>Slice or divide an arc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="175"/>
+        <source>Break/Divide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="175"/>
+        <source>Break or divide the arc by intesection points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="178"/>
+        <source>Creation of ellipse or bounding box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="179"/>
+        <source>Ellipse inscribed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="180"/>
+        <source>Bounding box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="183"/>
+        <source>Creation of dimension, diametric or radial</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="184"/>
+        <source>Dim Diametric</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="184"/>
+        <source>Create of diametric dimension for arc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="185"/>
+        <source>Dim Radial</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="188"/>
+        <source>Creation of dimension, angular or ordinate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="189"/>
+        <source>Dim Ordinate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="190"/>
+        <source>Dim Arc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="201"/>
+        <source>Center mark</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="202"/>
+        <source>Circle by arc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="205"/>
+        <source>Reverting direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_arc.cpp" line="206"/>
+        <source>Revert direction</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -17772,13 +18325,295 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="55"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="56"/>
         <source>Area</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="55"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="56"/>
         <source>Area of circle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="72"/>
+        <source>Concentric circles creation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="73"/>
+        <source>Offset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="73"/>
+        <source>Create parallel circle via offset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="74"/>
+        <source>Create parallel circle by point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="83"/>
+        <source>Create tangental circle 2 points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="84"/>
+        <source>Create tangental circle by 2 entitites and 1 point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="103"/>
+        <source>Slice or divide a circle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="104"/>
+        <source>Break or divide the circle by intesection points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="108"/>
+        <source>Create line with relative angle to circle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="113"/>
+        <source>Create elipse inscribed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="114"/>
+        <source>Create bounding box for circle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="119"/>
+        <source>Create radial dimension for circle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="123"/>
+        <source>Create ordinate dimension for circle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="124"/>
+        <source>Create leader for circle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="136"/>
+        <source>Create center mark for selected circles, ellipses and arcs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="74"/>
+        <source>Parallel (Point)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="77"/>
+        <source>Circle trimming or dividing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="78"/>
+        <source>Divide</source>
+        <translation type="unfinished">Dalīts</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="78"/>
+        <source>Divide circle in specified point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="79"/>
+        <source>Trim circle by other entity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="88"/>
+        <source>Create tangental circle by 3 entities</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="89"/>
+        <source>Create tangental circle by 2 points and radius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="93"/>
+        <source>Create line tangental to circle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="94"/>
+        <source>Create line tangental to two circles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="98"/>
+        <source>Create line orthogonal to circle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="99"/>
+        <source>Create tangental orthogonal line to line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="102"/>
+        <source>Dividing circle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="79"/>
+        <source>Trim</source>
+        <translation type="unfinished">Īsināt</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="82"/>
+        <source>Creation of circle tangental to circle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="83"/>
+        <source>Tangent Circle (2 P)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="84"/>
+        <source>Tangent Circle (2 E, 1 P)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="87"/>
+        <source>Creation of circle tangental</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="88"/>
+        <source>Tangent Circle (3 E)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="89"/>
+        <source>Tangent Circle (2 E, R)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="92"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="97"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="107"/>
+        <source>Creation of line tangental to circle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="93"/>
+        <source>Tangent (P,C)</source>
+        <translation type="unfinished">Pieskare (P,C)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="94"/>
+        <source>Tangent (C,C)</source>
+        <translation type="unfinished">Pieskare (C,C)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="98"/>
+        <source>Orthogonal</source>
+        <translation type="unfinished">Perpendikulārs</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="99"/>
+        <source>Tangent Orthogonal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="103"/>
+        <source>Slice/Divide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="104"/>
+        <source>Break/Divide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="108"/>
+        <source>Relative</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="109"/>
+        <source>Fillet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="109"/>
+        <source>Create fillet for circle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="112"/>
+        <source>Creation of ellipse or bounding box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="113"/>
+        <source>Ellipse inscribed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="114"/>
+        <source>Bounding box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="117"/>
+        <source>Creation of dimension, diametric or radial</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="118"/>
+        <source>Dim Diametric</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="118"/>
+        <source>Create diametric dimension for circle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="119"/>
+        <source>Dim Radial</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="122"/>
+        <source>Creation of dimension, angular or ordinate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="123"/>
+        <source>Dim Ordinate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="124"/>
+        <source>Leader</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="135"/>
+        <source>Center marks creation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_circle.cpp" line="136"/>
+        <source>Center mark</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -17812,6 +18647,46 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
     <message>
         <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.cpp" line="43"/>
         <source>Position of definition point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.cpp" line="54"/>
+        <source>Continue and baseline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.cpp" line="55"/>
+        <source>Continue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.cpp" line="55"/>
+        <source>Continues aligned dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.cpp" line="56"/>
+        <source>Baseline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.cpp" line="56"/>
+        <source>Uses aligned dimension as base line and creates other dimensions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.cpp" line="64"/>
+        <source>Apply dimension style to other dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.cpp" line="65"/>
+        <source>Apply style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_aligned.cpp" line="65"/>
+        <source>Applies dimension style to other dimensions</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -17867,6 +18742,21 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <source>Point that defines dimension arc</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_angular.cpp" line="69"/>
+        <source>Apply dimension style to other dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_angular.cpp" line="70"/>
+        <source>Apply style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_angular.cpp" line="70"/>
+        <source>Applies dimension style to other dimensions</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LC_PropertiesProviderDimArc</name>
@@ -17880,667 +18770,708 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <source>Center point of arc dimension</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_arc.cpp" line="42"/>
+        <source>Apply dimension style to other dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_arc.cpp" line="43"/>
+        <source>Apply style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_arc.cpp" line="43"/>
+        <source>Applies dimension style to other dimensions</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LC_PropertiesProviderDimBase</name>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="52"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="139"/>
         <source>Flip Arrow 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="52"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="139"/>
         <source>Flips direction of arrows 1, if any</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="75"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="162"/>
         <source>Flip Arrow 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="75"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="162"/>
         <source>Flips direction of arrows 2, if any</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="100"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="62"/>
         <source>Misc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="100"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="62"/>
         <source>Misc dimension data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="101"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="63"/>
         <source>Style</source>
         <translation type="unfinished">Stils</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="101"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="63"/>
         <source>Specifies current dimension style by name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="137"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="99"/>
         <source>Clear dim style override</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="138"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="100"/>
         <source>Clears dimension style override, if one is present for dimension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="197"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="127"/>
+        <source>Manage styles..</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="128"/>
+        <source>Invokes dimension styles management UI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="130"/>
+        <source>Dimension styles management</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="221"/>
         <source>User Block...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="211"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="235"/>
         <source>Lines and Arrows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="212"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="236"/>
         <source>Dimensions lines and arrows setup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="241"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="265"/>
         <source>Arrow 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="241"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="265"/>
         <source>Specifies type of the first dimension arrowhead (DIMBLK1 variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="263"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="287"/>
         <source>Arrow 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="263"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="287"/>
         <source>Specifies type of the second dimension arrowhead (DIMBLK2 variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="293"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="317"/>
         <source>Arrow size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="293"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="317"/>
         <source>Specifies size of the dimension arrowhead (DIMASZ variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="305"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="329"/>
         <source>Mark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="306"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="330"/>
         <source>Line</source>
         <translation type="unfinished">Līnija</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="307"/>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="677"/>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1343"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="331"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="701"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1367"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="310"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="334"/>
         <source>Center mark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="310"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="334"/>
         <source>Specified type of center mark on dimension (DIMCEN variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="336"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="360"/>
         <source>Center mark size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="337"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="361"/>
         <source>Specifies size of the center mark on the dimension (DIMCEN variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="363"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="387"/>
         <source>Dim line lineweight</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="363"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="387"/>
         <source>Specifies lineweight for dimension lines (DIMLWD variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="372"/>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="433"/>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="490"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="396"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="457"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="514"/>
         <source>Ext line lineweight</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="372"/>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="433"/>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="490"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="396"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="457"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="514"/>
         <source>Specifies lineweight for extension line (DIMLWE variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="380"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="404"/>
         <source>Dim line 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="380"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="404"/>
         <source>Sets suppression of first dimension line (DIMSD1 variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="387"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="411"/>
         <source>Dim line 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="387"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="411"/>
         <source>Sets suppression of second dimension line (DIMSD2 variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="394"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="418"/>
         <source>Dim line color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="394"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="418"/>
         <source>Specifies color of the dimension line (DIMCLRD variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="403"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="427"/>
         <source>Dim line linetype</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="403"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="427"/>
         <source>Specifies the linetype of the dimension line (DIMLTYPE variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="415"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="439"/>
         <source>Dim line ext</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="416"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="440"/>
         <source>Specifies amount to extend dimension lines beyond the extension lines (DIMDLE variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="425"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="449"/>
         <source>Ext line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="425"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="449"/>
         <source>Sets suppression of extension line (DIMSE1 variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="442"/>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="496"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="466"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="520"/>
         <source>Ext line linetype</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="443"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="467"/>
         <source>Specifies the linetype of the extension line (DIMLTEX1 variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="454"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="478"/>
         <source>Ext line 1 linetype</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="455"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="479"/>
         <source>Specifies the linetype of the first extension line (DIMLTEX1 variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="465"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="489"/>
         <source>Ext line 2 linetype</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="466"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="490"/>
         <source>Specifies the linetype of the second extension line (DIMLTEX2 variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="474"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="498"/>
         <source>Ext line 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="474"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="498"/>
         <source>Sets suppression of first extension line (DIMSE1 variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="481"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="505"/>
         <source>Ext line 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="481"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="505"/>
         <source>Sets suppression of second extension line (DIMSE2 variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="496"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="520"/>
         <source>Specifies the linetype for the extension line (DIMLTEX1 variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="505"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="529"/>
         <source>Ext line fixed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="505"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="529"/>
         <source>Sets suppression of extension line fixed length (DIMFXLON variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="512"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="536"/>
         <source>Ext line fixed length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="512"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="536"/>
         <source>Sets extension line fixed length (DIMFXL variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="520"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="544"/>
         <source>Ext line color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="520"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="544"/>
         <source>Specifies color of the extension line (DIMCLRE variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="532"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="556"/>
         <source>Ext line ext</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="533"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="557"/>
         <source>Specifies amount to extend extension line beyond the dimension line  (DIMEXE variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="542"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="566"/>
         <source>Ext line offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="542"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="566"/>
         <source>Specifies offset of extension lines from the origin points (DIMEXO variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="551"/>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="787"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="575"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="811"/>
         <source>Text</source>
         <translation type="unfinished">Teksts</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="551"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="575"/>
         <source>Text settings for dimensions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="553"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="577"/>
         <source>Fill color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="553"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="577"/>
         <source>Specifies the background color of the dimension (DIMTFILL variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="562"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="586"/>
         <source>Text color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="562"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="586"/>
         <source>Specifies the color of the dimension of the text (DIMCLRT variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="577"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="601"/>
         <source>Text height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="577"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="601"/>
         <source>Specifies text height of dimension (DIMTXT variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="586"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="610"/>
         <source>Text offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="587"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="611"/>
         <source>Specifies the distance around dimension text when dimension line breaks for dimension text (DIMGAP variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="597"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="621"/>
         <source>Text outside align</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="598"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="622"/>
         <source>Sets positioning of dimension text outside of extension lines (DIMTOH variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="610"/>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="627"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="634"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="651"/>
         <source>Centered</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="611"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="635"/>
         <source>First ext line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="612"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="636"/>
         <source>Second ext line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="613"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="637"/>
         <source>Over first ext line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="614"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="638"/>
         <source>Over second ext line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="617"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="641"/>
         <source>Text pos hor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="617"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="641"/>
         <source>Specified horizontal dimension text position (DIMJUST variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="628"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="652"/>
         <source>Above</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="629"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="653"/>
         <source>Outside</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="630"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="654"/>
         <source>JIS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="631"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="655"/>
         <source>Below</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="635"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="659"/>
         <source>Text pos vert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="635"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="659"/>
         <source>Specified vertical dimension text position (DIMTAD variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="643"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="667"/>
         <source>Text style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="643"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="667"/>
         <source>Specifies style of text for dimension (DIMTXSTY variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="655"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="679"/>
         <source>Text inside align</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="656"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="680"/>
         <source>Sets positioning of dimension text inside of extension lines (DIMTIH variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="664"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="688"/>
         <source>Specifies dimension text position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="664"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="688"/>
         <source>Text position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="675"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="699"/>
         <source>Preceeding dimension text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="676"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="700"/>
         <source>Above dimension text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="683"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="707"/>
         <source>Arc length symbol</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="684"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="708"/>
         <source>Specifies placement of the arch length dimension symbol (DIMARCSYM variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="695"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="719"/>
         <source>Text rotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="695"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="719"/>
         <source>Specifies the rotation angle for dimension text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="705"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="729"/>
         <source>Left-to-right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="705"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="729"/>
         <source>Right-to-left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="708"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="732"/>
         <source>Text view direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="708"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="732"/>
         <source>Specifies the text direction (DIMTXTDIRECTION variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="715"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="739"/>
         <source>Text measurement</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="715"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="739"/>
         <source>Specified dimension measurement value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="730"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="754"/>
         <source>Text override</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="731"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="755"/>
         <source>Specified the text string of dimension (overrides Measurement string)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="740"/>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="792"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="764"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="816"/>
         <source>Fit</source>
         <translation type="unfinished">Ietilpst</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="740"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="764"/>
         <source>Fit settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="745"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="769"/>
         <source>Dim line forced</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="746"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="770"/>
         <source>Force drawing dimension line between extension lines, even if text placed outside of extension lines (DIMTOFL variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="757"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="781"/>
         <source>Dim line inside</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="758"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="782"/>
         <source>Force displaying dimension line outside extension lines (DIMSOXD variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="775"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="799"/>
         <source>Dim scale overall</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="776"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="800"/>
         <source>Specifies the overall scale factor applied to properties, that specify sizes, distances or offsets (DIMSCALE variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="787"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="811"/>
         <source>Best Fit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="787"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="811"/>
         <source>Arrows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="787"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="811"/>
         <source>Both</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="787"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="811"/>
         <source>Always fit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="793"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="817"/>
         <source>Determines what elements are moved to fit text and arrowheads in space between extension lines (DIMATFIT variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="857"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="881"/>
         <source>Place bettween if has room</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="858"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="882"/>
         <source>Always inside</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="862"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="886"/>
         <source>Text inside</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="862"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="886"/>
         <source>Sets position of dimension text inside extension lines (DIMTIX variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="873"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="897"/>
         <source>Keep dim line with text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="874"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="898"/>
         <source>Move text, add leader</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="875"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="899"/>
         <source>Move text, no leader</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="881"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="905"/>
         <source>Text movement</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="882"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="906"/>
         <source>Specifies position of the text when it is moved, either manually or automatically (DIMTMOVE variable)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1787"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1788"/>
+        <source>Regenerate dimensions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1788"/>
+        <source>Dim Regenerate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18599,509 +19530,509 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <translation type="unfinished">Mērnieka mērvienības</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="944"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="968"/>
         <source>Primary Units</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="944"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="968"/>
         <source>Primary units for dimensions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="947"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="971"/>
         <source>.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="947"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="971"/>
         <source>,</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="949"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="973"/>
         <source>Decimal separator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="949"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="973"/>
         <source>Specifies the decimal separator for metric dimensions (DIMDSEP variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="964"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="988"/>
         <source>Dim prefix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="964"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="988"/>
         <source>Specifies the text prefix for the dimensions (DIMPOST variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="975"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="999"/>
         <source>Dim suffix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="975"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="999"/>
         <source>Specifies the text suffix for the dimensions (DIMPOST variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1009"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1033"/>
         <source>Dim roundoff</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1009"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1033"/>
         <source>Specifies the distance rounding value (DIMRND variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1020"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1044"/>
         <source>Dim scale linear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1021"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1045"/>
         <source>Specifies global scale factor for linear dimensions (DIMLFAC variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1033"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1057"/>
         <source>Dim sub-units scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1034"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1058"/>
         <source>Specifies sub-units scale factor for all applicable linear dimensions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1044"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1068"/>
         <source>Dim units</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1044"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1068"/>
         <source>Specifies units format for linear dimensions (DIMLUNIT variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1070"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1094"/>
         <source>Suppress leading zeros</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1071"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1095"/>
         <source>Sets suppression of leading zeros for dimensions (DIMZIN variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1080"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1104"/>
         <source>Suppress trailing zeros</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1081"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1105"/>
         <source>Sets suppression of trailing zeros for dimensions (DIMZIN variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1091"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1115"/>
         <source>Suppress zero feet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1092"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1116"/>
         <source>Sets suppression of zero feet in dimension (DIMZIN variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1103"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1127"/>
         <source>Suppress zero inches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1104"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1128"/>
         <source>Sets suppression of zero inches for dimension (DIMZIN variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1114"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1138"/>
         <source>Precision</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1114"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1138"/>
         <source>Specifies precision for primary units dimensions (DIMDEC variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1127"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1151"/>
         <source>Angle precision</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1128"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1152"/>
         <source>Specifies number of precision decimal places displayed for angular dimension text (DIMADEC variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1139"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1163"/>
         <source>Angle format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1139"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1163"/>
         <source>Specifies the angle format (DIMAUNIT variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1153"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1177"/>
         <source>Alternate Units</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1153"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1177"/>
         <source>Alternate units for dimensions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1157"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1181"/>
         <source>Alt enabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1158"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1182"/>
         <source>Sets units format for alternate units dimensions On or Off except angular (DIMALT variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1173"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1197"/>
         <source>Alt format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1174"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1198"/>
         <source>Specifies units format for alternate units dimensions except angular (DIMALTU variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1187"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1211"/>
         <source>Alt precision</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1188"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1212"/>
         <source>Specifies precision for alternate units dimensions (DIMALTD variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1198"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1222"/>
         <source>Alt round</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1198"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1222"/>
         <source>Specifies distances rounding value for alternate units (DIMALTRND variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1214"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1238"/>
         <source>Alt scale factor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1214"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1238"/>
         <source>Specifies scale factor for alternative units (DIMALTF variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1241"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1265"/>
         <source>Alt suppress leading zeros</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1242"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1266"/>
         <source>Sets suppression of leading zeros for alternate units in dimension (DIMALTZ variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1251"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1275"/>
         <source>Alt suppress trailing zeros</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1252"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1276"/>
         <source>Sets suppression of trailing zeros for alternate units in dimension (DIMALTZ variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1261"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1285"/>
         <source>Alt suppress zero feet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1262"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1286"/>
         <source>Sets suppression of zero feet for alternate units in dimension (DIMALTZ variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1272"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1296"/>
         <source>Alt suppress zero inches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1273"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1297"/>
         <source>Sets suppression of zero inches for alternate units in dimension (DIMALTZ variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1281"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1305"/>
         <source>Alt prefix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1281"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1305"/>
         <source>Specifies text prefix to alternate dimensions except angular (DIMAPOST variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1292"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1316"/>
         <source>Alt suffix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1292"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1316"/>
         <source>Specifies text suffix to alternate dimensions except angular (DIMAPOST variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1324"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1348"/>
         <source>Tolerances</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1324"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1348"/>
         <source>Tolerance settings for dimensions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1329"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1353"/>
         <source>Operational symbols</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1330"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1354"/>
         <source>Decimal separators</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1334"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1358"/>
         <source>Tolerance alignment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1334"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1358"/>
         <source>Specifies alignment for stacked numbers (DIMTALN variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1343"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1367"/>
         <source>Symmetrical</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1343"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1367"/>
         <source>Deviation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1343"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1367"/>
         <source>Limits</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1343"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1367"/>
         <source>Basic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1348"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1372"/>
         <source>Tolerance display</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1349"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1373"/>
         <source>Specifies display mode of dimension tolerances to dimension text (DIMTOL variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1370"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1394"/>
         <source>Tolerance limit lower</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1371"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1395"/>
         <source>Specifies the minimal (or lower) tolerance limit for dimension text when DIMTOL or DIMLIM is on (DIMTM variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1389"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1413"/>
         <source>Tolerance limit upper</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1390"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1414"/>
         <source>Specifies the maximum (or upper) tolerance limit for dimension text when DIMTOL or DIMLIM is on (DIMTP variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1409"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1433"/>
         <source>Bottom</source>
         <translation type="unfinished">Apakšā</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1410"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1434"/>
         <source>Middle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1411"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1435"/>
         <source>Top</source>
         <translation type="unfinished">Augšējais</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1417"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1441"/>
         <source>Tolerance pos vert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1418"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1442"/>
         <source>Specifies vertical justification for tolerance values relative to nominal dimension text (DIMTOLJ variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1431"/>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1446"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1455"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1470"/>
         <source>Tolerance precision</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1432"/>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1447"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1456"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1471"/>
         <source>Specifies number of decimal places for tolerance values of a dimension (DIMTDEC variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1472"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1496"/>
         <source>Tolerance suppress leading zeros</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1473"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1497"/>
         <source>Sets suppression of leading zeros for tolerance values in dimension (DIMTZIN value)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1482"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1506"/>
         <source>Tolerance suppress trailing zeros</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1483"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1507"/>
         <source>Sets suppression of trailing zeros for tolerance values in dimension (DIMTZIN value)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1493"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1517"/>
         <source>Tolerance suppress zero feet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1494"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1518"/>
         <source>Sets suppression of zero feet for tolerance values in dimension (DIMTZIN variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1504"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1528"/>
         <source>Tolerance suppress zero inches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1505"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1529"/>
         <source>Sets suppression of zero inches for tolerance values in dimension (DIMTZIN variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1516"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1540"/>
         <source>Tolerance text height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1517"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1541"/>
         <source>Specifies scale factor for text height of tolerance values relative to dimension text height as set by DIMTXT (DIMTFAC variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1544"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1568"/>
         <source>Alt tolerance precision</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1545"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1569"/>
         <source>Specifies number of decimal places for tolerance values of an alternate units dimension (DIMALTTD variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1562"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1586"/>
         <source>Alt tolerance suppress leading zeros</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1563"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1587"/>
         <source>Sets suppression of leading zeros for alternate units tolerance values in dimension (DIMALTTZ value)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1572"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1596"/>
         <source>Alt tolerance suppress trailing zeros</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1573"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1597"/>
         <source>Sets suppression of trailing zeros for alternate units tolerance values in dimension (DIMALTTZ value)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1582"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1606"/>
         <source>Alt tolerance suppress zero feet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1583"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1607"/>
         <source>Sets suppression of zero feet for alternate units tolerance values in dimension (DIMALTTZ variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1593"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1617"/>
         <source>Alt tolerance suppress zero inches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1594"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1618"/>
         <source>Sets suppression of zero inches for alterate units tolerance values in dimension (DIMALTTZ variable)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1768"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1779"/>
         <source>Dim geometry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1768"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_base.cpp" line="1779"/>
         <source>Dimension&apos;s geometry properties</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19136,6 +20067,21 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
     <message>
         <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_diametric.cpp" line="43"/>
         <source>Length of leader</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_diametric.cpp" line="54"/>
+        <source>Apply dimension style to other dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_diametric.cpp" line="55"/>
+        <source>Apply style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_diametric.cpp" line="55"/>
+        <source>Applies dimension style to other dimensions</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -19186,61 +20132,116 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <source>Oblique angle</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.cpp" line="67"/>
+        <source>Continue and baseline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.cpp" line="68"/>
+        <source>Continue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.cpp" line="68"/>
+        <source>Continues linear dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.cpp" line="69"/>
+        <source>Baseline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.cpp" line="69"/>
+        <source>Uses linear dimension as base line and creates other dimensions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.cpp" line="79"/>
+        <source>Apply dimension style to other dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.cpp" line="80"/>
+        <source>Apply style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_linear.cpp" line="80"/>
+        <source>Applies dimension style to other dimensions</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LC_PropertiesProviderDimOrdinate</name>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="52"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="35"/>
         <source>Feature point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="52"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="35"/>
         <source>Position of feature point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="59"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="42"/>
         <source>Leader end point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="59"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="42"/>
         <source>Position of leader end point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="66"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="49"/>
         <source>Is for X axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="66"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="49"/>
         <source>Defines whether ordinate dimension is for X axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="80"/>
-        <source>Select with similar base</source>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="99"/>
+        <source>Apply style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="81"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="100"/>
+        <source>Applies dimension style to other dimensions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="101"/>
+        <source>Select by base</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="102"/>
         <source>Selects all ordinate dimensions with the same base</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="119"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="103"/>
+        <source>Ordinate dimension operations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="122"/>
         <source>&lt;No name&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="125"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="128"/>
         <source>Re-Base to current UCS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="126"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_ordinate.cpp" line="129"/>
         <source>Rebase selected ordinate dimensions to current UCS - </source>
         <translation type="unfinished"></translation>
     </message>
@@ -19277,6 +20278,21 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <source>Length of leader</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_radial.cpp" line="54"/>
+        <source>Apply dimension style to other dimension</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_radial.cpp" line="55"/>
+        <source>Apply style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_dim_radial.cpp" line="55"/>
+        <source>Applies dimension style to other dimensions</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LC_PropertiesProviderEllipse</name>
@@ -19301,93 +20317,204 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="46"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="50"/>
         <source>Radius Major</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="46"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="50"/>
         <source>Major radius of ellipse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="53"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="63"/>
         <source>Radius Minor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="53"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="63"/>
         <source>Minor radius of ellipse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="60"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="74"/>
         <source>Radius Ratio</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="60"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="74"/>
         <source>Radius ratio of ellipse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="66"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="80"/>
         <source>Start Angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="66"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="80"/>
         <source>Start angle of elliptic arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="72"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="86"/>
         <source>End Angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="72"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="86"/>
         <source>End angle of elliptic arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="83"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="94"/>
         <source>Circumference of ellipse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="83"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="94"/>
         <source>Circumference</source>
         <comment>ellipse</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="90"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="101"/>
         <source>Area of ellipse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="96"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="107"/>
         <source>Start point of elliptic arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="100"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="111"/>
         <source>End point of elliptic arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="90"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="120"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="125"/>
+        <source>Creation of line tangental to ellipse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="121"/>
+        <source>Orthogonal</source>
+        <translation type="unfinished">Perpendikulārs</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="121"/>
+        <source>Create line orthogonal to ellipse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="122"/>
+        <source>Create tangental orthogonal line to line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="126"/>
+        <source>Create line tangental to ellipse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="127"/>
+        <source>Create line tangental for two entitiers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="130"/>
+        <source>Creation of line with relative angle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="131"/>
+        <source>Create line with relative angle to ellipse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="132"/>
+        <source>Create fillet for ellipse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="137"/>
+        <source>Create bounding box for ellipse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="149"/>
+        <source>Create center mark for selected circles, ellipses and arcs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="122"/>
+        <source>Tangent Orthogonal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="126"/>
+        <source>Tangent (P,C)</source>
+        <translation type="unfinished">Pieskare (P,C)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="127"/>
+        <source>Tangent (C,C)</source>
+        <translation type="unfinished">Pieskare (C,C)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="131"/>
+        <source>Relative</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="132"/>
+        <source>Fillet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="135"/>
+        <source>Dividing ellipse or creation of bounding box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="136"/>
+        <source>Divide</source>
+        <translation type="unfinished">Dalīts</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="136"/>
+        <source>Divide ellipse in given point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="137"/>
+        <source>Bounding box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="148"/>
+        <source>Center marks creation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="149"/>
+        <source>Center mark</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="101"/>
         <source>Area</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="96"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="107"/>
         <source>Start</source>
         <translation type="unfinished">Sākums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="100"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_ellipse.cpp" line="111"/>
         <source>End</source>
         <translation type="unfinished">Beigas</translation>
     </message>
@@ -20190,6 +21317,16 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <source>Hatch rotation angle</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.cpp" line="67"/>
+        <source>Area</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hatch.cpp" line="67"/>
+        <source>Area of hatch</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LC_PropertiesProviderHyperbola</name>
@@ -20294,146 +21431,203 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="107"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="104"/>
         <source>Eccentricity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="107"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="104"/>
         <source>Ecentricity of hyperbola</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="114"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="110"/>
         <source>Circumference</source>
         <comment>hyperbola</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="114"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="110"/>
         <source>Circumference of hyperbola</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="121"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="117"/>
         <source>Area</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="121"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="117"/>
         <source>Area of hyperbola</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="127"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="123"/>
         <source>Start</source>
         <translation type="unfinished">Sākums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="127"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="123"/>
         <source>Start point of hyperbola</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="131"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="127"/>
         <source>End</source>
         <translation type="unfinished">Beigas</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="131"/>
-        <source>End point of hyperbola </source>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="127"/>
+        <source>End point of hyperbola</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="136"/>
+        <source>Dividing hyperbola or creation of bounding box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="137"/>
+        <source>Divide</source>
+        <translation type="unfinished">Dalīts</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="137"/>
+        <source>Divide hyperbola in given point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="138"/>
+        <source>Bounding box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_hyperbola.cpp" line="138"/>
+        <source>Creation of bounding box for hyperbola</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>LC_PropertiesProviderImage</name>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="38"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="37"/>
         <source>File</source>
         <translation type="unfinished">Datne</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="38"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="37"/>
         <source>Name of image file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="66"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="65"/>
         <source>Insertion Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="66"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="65"/>
         <source>Point of image insertion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="72"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="71"/>
         <source>Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="72"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="71"/>
         <source>Scale factor for image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="79"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="105"/>
+        <source>Size, pixels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="105"/>
+        <source>Size of the image in pixels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="114"/>
+        <source>Width of the image in pixels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="115"/>
+        <source>Height of the image in pixels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="141"/>
+        <source>Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="141"/>
+        <source>Size in drawing units</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="149"/>
+        <source>Width of the image in drawing units</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="150"/>
+        <source>Height of the image in drawing units</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="173"/>
+        <source>By width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="174"/>
+        <source>By height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="175"/>
+        <source>DPI by width direction of image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="176"/>
+        <source>DPI by height direction of image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="188"/>
         <source>Angle</source>
         <translation type="unfinished">Leņķis</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="79"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="188"/>
         <source>Image rotation angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="86"/>
-        <source>Width pixels</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="86"/>
-        <source>Width of image in pixels</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="92"/>
-        <source>Height pixels</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="92"/>
-        <source>Height of image in pixels</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="98"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="112"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="147"/>
         <source>Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="98"/>
-        <source>Width of image</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="105"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="113"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="148"/>
         <source>Height</source>
         <translation type="unfinished">Augstums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="105"/>
-        <source>Height of image</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="112"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="167"/>
         <source>DPI</source>
         <translation type="unfinished">DPI</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="112"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_image.cpp" line="167"/>
         <source>Dots per inch for the image</source>
         <translation type="unfinished"></translation>
     </message>
@@ -20530,96 +21724,516 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <source>Spacing between rows of array (by Y)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp" line="127"/>
+        <source>Block exploding and editing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp" line="128"/>
+        <source>Explode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp" line="128"/>
+        <source>Explodes insert to individual entities of the block</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp" line="129"/>
+        <source>Edit block</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_insert.cpp" line="129"/>
+        <source>Performs editing of insert&apos;s block</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertiesProviderLeader</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_leader.cpp" line="31"/>
+        <source>Has arrowhead</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_leader.cpp" line="31"/>
+        <source>Determines whether leader has arrowhead or not</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_leader.cpp" line="38"/>
+        <source>Amount of vertexes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_leader.cpp" line="38"/>
+        <source>Vertexes count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_leader.cpp" line="62"/>
+        <source>Vertex index</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_leader.cpp" line="63"/>
+        <source>Index of current vertex of leader</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_leader.cpp" line="64"/>
+        <source>Vertex</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_leader.cpp" line="64"/>
+        <source>Vertext of leader with given index</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LC_PropertiesProviderLine</name>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="38"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="39"/>
         <source>Start</source>
         <translation type="unfinished">Sākums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="38"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="39"/>
         <source>Start point of line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="44"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="45"/>
         <source>End</source>
         <translation type="unfinished">Beigas</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="44"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="45"/>
         <source>End point of line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="51"/>
-        <source>Reverse line direction</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="51"/>
-        <source>Swaps start and end point of line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="94"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="53"/>
         <source>Length</source>
         <translation type="unfinished">Garums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="94"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="53"/>
         <source>Length of line</source>
         <translation type="unfinished">Līnijas garums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="100"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="59"/>
         <source>Angle 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="100"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="59"/>
         <source>Angle from 0.0 to first point of line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="106"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="65"/>
         <source>Angle 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="106"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="65"/>
         <source>Angle from 0.0 to second point of line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="113"/>
-        <source>Inclination</source>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="102"/>
+        <source>Length and lines join</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="103"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="144"/>
+        <source>Create parallel line through point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="108"/>
+        <source>Trim line by limiting entity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="137"/>
+        <source>Create tangental arc in start point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="138"/>
+        <source>Create tangental arc in end point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="139"/>
+        <source>Creation of tangental arc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="149"/>
+        <source>Create line orhtogonal to this line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="150"/>
+        <source>Create line with related angle to this line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="154"/>
+        <source>Create line from point to this line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="155"/>
+        <source>Create orthogonal line that is tangental to other entity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="159"/>
+        <source>Tangential Circle (2 P)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="159"/>
+        <source>Create circle tangental 2 points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="160"/>
+        <source>Tangential Circle (2 E, 1 P)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="160"/>
+        <source>Create circle tangental by 2 entitites and 1 point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="164"/>
+        <source>Tangential Circle (3 E)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="164"/>
+        <source>Create circle tangental to 3 entities</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="165"/>
+        <source>Create circle tangental by 2 entities and radius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="169"/>
+        <source>Create elipse inscribed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="170"/>
+        <source>Create of bounding box for line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="174"/>
+        <source>Create a bevel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="175"/>
+        <source>Create rounding between line and other entity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="179"/>
+        <source>Slice or divide a line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="180"/>
+        <source>Break or divide the line by intesection points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="183"/>
+        <source>Create center line between two lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="187"/>
+        <source>Create aligned dimension for line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="188"/>
+        <source>Create linear dimension for line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="192"/>
+        <source>Create angular dimension for line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="193"/>
+        <source>Create ordinate dimension for line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="206"/>
+        <source>Change direction of line by swapping start and end points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="103"/>
+        <source>Lengthen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="104"/>
+        <source>Line Join</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="104"/>
+        <source>Join two lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="107"/>
+        <source>Trimming two lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="108"/>
+        <source>Trim</source>
+        <translation type="unfinished">Īsināt</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="109"/>
+        <source>Trim Two</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="109"/>
+        <source>Trim two lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="112"/>
+        <source>Cutting and gap</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="113"/>
-        <source>Angle of the line inclination to x-axis</source>
+        <source>Divide</source>
+        <translation type="unfinished">Dalīts</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="113"/>
+        <source>Divide line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="121"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="114"/>
+        <source>Line Gap</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="114"/>
+        <source>Break the line by gap</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="136"/>
+        <source>Tangental Arc (start)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="138"/>
+        <source>Tangental Arc (end)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="143"/>
+        <source>Creation of parallels or bisector lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="144"/>
+        <source>Parallel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="145"/>
+        <source>Bisector</source>
+        <translation type="unfinished">Bisektrise</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="145"/>
+        <source>Create bisector between lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="148"/>
+        <source>Creating orthogonal or relative angle lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="149"/>
+        <source>Orthogonal</source>
+        <translation type="unfinished">Perpendikulārs</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="150"/>
+        <source>Relative Angle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="153"/>
+        <source>Creation line from point or tangental orthogonal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="154"/>
+        <source>Line from Point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="155"/>
+        <source>Tangent Ort</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="158"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="163"/>
+        <source>Creation of circle tangental to line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="165"/>
+        <source>Tangential Cicle (2 E, R)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="168"/>
+        <source>Creation of ellipse or bounding box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="169"/>
+        <source>Ellipse inscribed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="170"/>
+        <source>Bounding box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="173"/>
+        <source>Modification of line with bevel or fillet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="174"/>
+        <source>Bevel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="175"/>
+        <source>Round</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="178"/>
+        <source>Dividing line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="179"/>
+        <source>Slice/Divide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="180"/>
+        <source>Break/Divide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="182"/>
+        <source>Center line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="183"/>
+        <source>Centerline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="186"/>
+        <source>Creation of dimension, aligned or linear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="187"/>
+        <source>Dim Aligned</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="188"/>
+        <source>Dim Linear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="191"/>
+        <source>Creation of dimension, angular or ordinate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="192"/>
+        <source>Dim Angular</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="193"/>
+        <source>Dim Ordinate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="205"/>
+        <source>Reverting direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="206"/>
+        <source>Revert direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="81"/>
         <source>Delta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="121"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="81"/>
         <source>Distance between start and end point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="128"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="92"/>
         <source>Middle Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="128"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_line.cpp" line="92"/>
         <source>Middle point of line</source>
         <translation type="unfinished"></translation>
     </message>
@@ -20796,46 +22410,111 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <source>Linespacing factor for the text</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="150"/>
+        <source>Explode operations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="151"/>
+        <source>Explode text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="151"/>
+        <source>Explodes text into individual letters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="152"/>
+        <source>Explodes text to individual strokes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="156"/>
+        <source>Creation of bounding box for text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="155"/>
+        <source>Other text operations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="152"/>
+        <source>Explode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_mtext.cpp" line="156"/>
+        <source>Bounding box</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LC_PropertiesProviderParabola</name>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="32"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="33"/>
         <source>Focus</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="32"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="33"/>
         <source>Focus of parabola</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="38"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="39"/>
         <source>Vertex</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="44"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="45"/>
         <source>Angle</source>
         <translation type="unfinished">Leņķis</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="44"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="45"/>
         <source>Angle of parabola axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="38"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="65"/>
+        <source>Dividing parabola or creation of bounding box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="66"/>
+        <source>Divide</source>
+        <translation type="unfinished">Dalīts</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="66"/>
+        <source>Divide parabola in given point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="67"/>
+        <source>Bounding box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="67"/>
+        <source>Creation of bounding box for parabola</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="39"/>
         <source>Vertex of parabola</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="50"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="51"/>
         <source>Length</source>
         <translation type="unfinished">Garums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="50"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_parabola.cpp" line="51"/>
         <source>Length of parabola</source>
         <translation type="unfinished"></translation>
     </message>
@@ -20852,93 +22531,303 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <source>Position of point</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.cpp" line="47"/>
+        <source>Selection operations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.cpp" line="48"/>
+        <source>Select points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.cpp" line="48"/>
+        <source>Selecting points within selected area</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.cpp" line="49"/>
+        <source>Middle points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.cpp" line="49"/>
+        <source>Draw points in the middle of line between two points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.cpp" line="52"/>
+        <source>Other point operations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.cpp" line="53"/>
+        <source>Line of points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.cpp" line="53"/>
+        <source>Creation of several points along specified direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.cpp" line="54"/>
+        <source>Lattice of points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.cpp" line="54"/>
+        <source>Creation of lattice of points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.cpp" line="66"/>
+        <source>Point operations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.cpp" line="69"/>
+        <source>Paste to points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_point.cpp" line="70"/>
+        <source>Perform paste from clipboard, inserting copied content into positions of selected points</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LC_PropertiesProviderPolyline</name>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="32"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="31"/>
         <source>Is Closed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="32"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="31"/>
         <source>Determines whether polyline is closed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="38"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="37"/>
         <source>Segments Count</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="38"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="37"/>
         <source>Amount of polyline segments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="60"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="59"/>
         <source>Vertex Index</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="59"/>
         <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="60"/>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="61"/>
         <source>Index of current vertex of polyline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="61"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="60"/>
         <source>Vertex</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="75"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="71"/>
         <source>Length</source>
         <translation type="unfinished">Garums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="75"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="71"/>
         <source>Length of polyline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="81"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="77"/>
         <source>Has Arcs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="81"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="77"/>
         <source>Determines whether polyline includes arc segments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="84"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="80"/>
         <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="84"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="80"/>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="89"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="85"/>
         <source>Start</source>
         <translation type="unfinished">Sākums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="89"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="85"/>
         <source>Start point of polyline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="93"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="89"/>
         <source>End</source>
         <translation type="unfinished">Beigas</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="93"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="89"/>
         <source>End point of polyline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="99"/>
+        <source>Polyline structure expanding</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="100"/>
+        <source>Add node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="100"/>
+        <source>Inserts node of polyline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="101"/>
+        <source>Append node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="101"/>
+        <source>Append nodes to start or end points of polyline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="104"/>
+        <source>Polyline nodes removal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="105"/>
+        <source>Delete node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="106"/>
+        <source>Delete between 2 nodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="106"/>
+        <source>Delete segments between two nodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="109"/>
+        <source>Trimming and exploding polyline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="110"/>
+        <source>Trim segments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="110"/>
+        <source>Trim segments of polyline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="111"/>
+        <source>Arc segments to lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="111"/>
+        <source>Change arc segments to lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="114"/>
+        <source>Modification of segments of polyline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="115"/>
+        <source>Explode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="115"/>
+        <source>Explodes polyline to individual segments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="116"/>
+        <source>Change segment type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="116"/>
+        <source>Changes type of selected segment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="119"/>
+        <source>Parallel polyline and changing direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="120"/>
+        <source>Equidistant</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="120"/>
+        <source>Creates equidistnat polyline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="121"/>
+        <source>Revert direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="121"/>
+        <source>Reverst direction of polyline, swapping start and end points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="123"/>
+        <source>Creation of bounding box or spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="124"/>
+        <source>Bounding box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="124"/>
+        <source>Creation of bounding box for polyline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="126"/>
+        <source>Spline</source>
+        <translation type="unfinished">Splains</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_polyline.cpp" line="126"/>
+        <source>Creates spline from polyline</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -20986,256 +22875,594 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
     </message>
 </context>
 <context>
-    <name>LC_PropertiesProviderSplinePoints</name>
+    <name>LC_PropertiesProviderSpline</name>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="31"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="31"/>
         <source>Closed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="31"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="31"/>
         <source>Determines whether spline is closed or not</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="38"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="38"/>
+        <source>Degree</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="38"/>
+        <source>Degree of spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="52"/>
         <source>Points Count</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="38"/>
-        <source>Amount of spline points</source>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="52"/>
+        <source>Amount of control points</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="64"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="85"/>
         <source>Control Point Index</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="64"/>
-        <source>Fit Point Index</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="65"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="86"/>
         <source>Index of current point of spline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="66"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="90"/>
         <source>Control Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="66"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="90"/>
         <source>Control point of spline with given index</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="81"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="103"/>
+        <source>Weight</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="103"/>
+        <source>Weight of spline control point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="114"/>
         <source>Length</source>
         <translation type="unfinished">Garums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="81"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="114"/>
         <source>Length of spline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="88"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="121"/>
         <source>Start</source>
         <translation type="unfinished">Sākums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="88"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="121"/>
         <source>Start point of spline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="92"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="125"/>
         <source>End</source>
         <translation type="unfinished">Beigas</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="92"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="125"/>
         <source>End point of spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="135"/>
+        <source>Spline points adding</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="136"/>
+        <source>Insert point of spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="141"/>
+        <source>Remove point of spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="159"/>
+        <source>Changes direction of spline by swapping start and end points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="136"/>
+        <source>Insert point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="137"/>
+        <source>Append point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="137"/>
+        <source>Append point to start or end points of spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="140"/>
+        <source>Spline points removal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="141"/>
+        <source>Remove point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="142"/>
+        <source>Delete between 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="142"/>
+        <source>Delete points between two points of spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="145"/>
+        <source>Exploding spline and creating rounding box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="146"/>
+        <source>Explode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="146"/>
+        <source>Explode spline to lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="147"/>
+        <source>Rounding box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="147"/>
+        <source>Create bounding box around spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="158"/>
+        <source>Reverting direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_spline.cpp" line="159"/>
+        <source>Revert direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LC_PropertiesProviderSplinePoints</name>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="30"/>
+        <source>Closed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="30"/>
+        <source>Determines whether spline is closed or not</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="37"/>
+        <source>Points Count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="37"/>
+        <source>Amount of spline points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="63"/>
+        <source>Control Point Index</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="63"/>
+        <source>Fit Point Index</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="64"/>
+        <source>Index of current point of spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="65"/>
+        <source>Control Point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="65"/>
+        <source>Control point of spline with given index</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="77"/>
+        <source>Length</source>
+        <translation type="unfinished">Garums</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="77"/>
+        <source>Length of spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="84"/>
+        <source>Start</source>
+        <translation type="unfinished">Sākums</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="84"/>
+        <source>Start point of spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="88"/>
+        <source>End</source>
+        <translation type="unfinished">Beigas</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="88"/>
+        <source>End point of spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="99"/>
+        <source>Insert point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="99"/>
+        <source>Insert point of spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="104"/>
+        <source>Remove point of spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="114"/>
+        <source>Create tangental line in given position of spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="98"/>
+        <source>Spline points adding</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="100"/>
+        <source>Append point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="100"/>
+        <source>Append point to start or end points of spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="103"/>
+        <source>Spline points removal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="104"/>
+        <source>Remove point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="105"/>
+        <source>Delete between 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="105"/>
+        <source>Delete points between two points of spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="108"/>
+        <source>Dividing and exploding spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="109"/>
+        <source>Divide</source>
+        <translation type="unfinished">Dalīts</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="109"/>
+        <source>Divide spline in provided point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="110"/>
+        <source>Explode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="110"/>
+        <source>Explode spline to lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="113"/>
+        <source>Tangent and rounding box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="114"/>
+        <source>Tangent (P,C)</source>
+        <translation type="unfinished">Pieskare (P,C)</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="115"/>
+        <source>Rounding box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="115"/>
+        <source>Create bounding box around spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="126"/>
+        <source>Reverting direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="127"/>
+        <source>Revert direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_splinepoints.cpp" line="127"/>
+        <source>Change direction of spline by swapping start and end points</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>LC_PropertiesProviderText</name>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="33"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="32"/>
         <source>Insertion Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="33"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="32"/>
         <source>Point of text insertion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="39"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="38"/>
         <source>Second Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="39"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="38"/>
         <source>Second point of text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="45"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="44"/>
         <source>Angle</source>
         <translation type="unfinished">Leņķis</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="45"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="44"/>
         <source>Text rotation angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="54"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="53"/>
         <source>Left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="55"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="54"/>
         <source>Center</source>
         <translation type="unfinished">Vidū</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="56"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="55"/>
         <source>Right</source>
         <translation type="unfinished">Labais</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="57"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="56"/>
         <source>Aligned</source>
         <translation type="unfinished">Līdzināts</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="58"/>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="68"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="57"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="67"/>
         <source>Middle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="59"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="58"/>
         <source>Fit</source>
         <translation type="unfinished">Ietilpst</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="66"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="65"/>
         <source>Baseline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="67"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="66"/>
         <source>Bottom</source>
         <translation type="unfinished">Apakšā</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="69"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="68"/>
         <source>Top</source>
         <translation type="unfinished">Augšējais</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="76"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="75"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="77"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="76"/>
         <source>Backward</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="78"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="77"/>
         <source>Upside-down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="84"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="83"/>
         <source>Content</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="84"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="83"/>
         <source>Content text of MText</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="90"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="89"/>
         <source>Horizontal Align</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="90"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="89"/>
         <source>Horizontal align for text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="98"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="97"/>
         <source>Vertical Align</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="98"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="97"/>
         <source>Vertical align for text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="107"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="106"/>
         <source>Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="107"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="106"/>
         <source>Font of the text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="113"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="112"/>
         <source>Width Factor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="113"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="112"/>
         <source>Width factor of the text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="121"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="120"/>
         <source>Height</source>
         <translation type="unfinished">Augstums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="121"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="120"/>
         <source>Height of the text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="127"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="126"/>
         <source>Generation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="127"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="126"/>
         <source>Text generation method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="140"/>
+        <source>Explode operations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="141"/>
+        <source>Explode text </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="141"/>
+        <source>Explodes text into individual letters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="142"/>
+        <source>Explodes text to individual strokes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="144"/>
+        <source>Creation of bounding box for text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="144"/>
+        <source>Other text operations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="142"/>
+        <source>Explode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/metaentity/entities/lc_propertiesprovider_text.cpp" line="144"/>
+        <source>Bounding box</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>LC_PropertiesSheet</name>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_property_view.cpp" line="232"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_property_view.cpp" line="233"/>
         <source>Click to expand</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_property_view.cpp" line="233"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lib/view/lc_property_view.cpp" line="234"/>
         <source>Click to collapse</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21264,27 +23491,27 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
 <context>
     <name>LC_PropertyDoubleInteractivePickView</name>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_interactivepick_view.cpp" line="168"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_interactivepick_view.cpp" line="169"/>
         <source>Pick X component of position from drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_interactivepick_view.cpp" line="170"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_interactivepick_view.cpp" line="171"/>
         <source>Pick Y component of position from drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_interactivepick_view.cpp" line="172"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_interactivepick_view.cpp" line="173"/>
         <source>Pick coordinates of point from drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_interactivepick_view.cpp" line="174"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_interactivepick_view.cpp" line="175"/>
         <source>Pick angle value from drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_interactivepick_view.cpp" line="176"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_interactivepick_view.cpp" line="177"/>
         <source>Pick value as distance from drawing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21354,7 +23581,7 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
 <context>
     <name>LC_PropertyRSVectorView</name>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector_view.cpp" line="144"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/properties/rsvector/lc_property_rsvector_view.cpp" line="145"/>
         <source>Pick coordinate from drawing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21395,22 +23622,35 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <translation type="unfinished">Forma</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui" line="96"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui" line="74"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui" line="180"/>
         <source>Select Objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui" line="69"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui" line="60"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui" line="166"/>
         <source>Switch selection mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui" line="38"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui" line="118"/>
+        <source>Selects which type of selected entities will be shown in property sheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui" line="156"/>
+        <source>Selection operations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui" line="224"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui" line="55"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui" line="88"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_propertysheetwidget.ui" line="194"/>
         <source>Quick selection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21479,14 +23719,14 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="828"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="834"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="829"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="835"/>
         <source>POINT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="840"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="853"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="841"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="854"/>
         <source>POLYLINE</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21494,19 +23734,19 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="651"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="667"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="794"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="814"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="844"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="858"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1244"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1260"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1273"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1280"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1296"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="815"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="845"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="859"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1245"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1261"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1274"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1281"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1297"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1344"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1362"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1378"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1389"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1298"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1345"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1363"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1379"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1390"/>
         <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21514,66 +23754,66 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="651"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="667"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="794"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="814"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="844"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="858"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1244"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1260"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1273"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1280"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1296"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="815"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="845"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="859"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1245"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1261"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1274"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1281"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1297"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1344"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1362"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1378"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1389"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1298"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1345"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1363"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1379"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1390"/>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="919"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="940"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="920"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="941"/>
         <source>INSERT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="955"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="984"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="956"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="985"/>
         <source>TEXT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1013"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1031"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1014"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1032"/>
         <source>Left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1015"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1033"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1016"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1034"/>
         <source>Centered</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1017"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1035"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1018"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1036"/>
         <source>Right</source>
         <translation type="unfinished">Labais</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1037"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1038"/>
         <source>Aligned</source>
         <translation type="unfinished">Līdzināts</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="555"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="577"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="797"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="816"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="903"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1039"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1059"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1077"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="798"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="817"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="904"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1040"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1060"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1078"/>
         <source>Middle</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21648,33 +23888,33 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="705"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="744"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="793"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="812"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="904"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="923"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="945"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="959"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="988"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1107"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1141"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1207"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1229"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1347"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1370"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1493"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1509"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="813"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="905"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="924"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="946"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="960"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="989"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1108"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1142"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1208"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1230"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1348"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1371"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1494"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1510"/>
         <source>Angle</source>
         <translation type="unfinished">Leņķis</translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="559"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="571"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="905"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1246"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1258"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1282"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1295"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1318"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1333"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="906"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1247"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1259"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1283"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1296"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1319"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1334"/>
         <source>Length</source>
         <translation type="unfinished">Garums</translation>
     </message>
@@ -21686,10 +23926,10 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="701"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="741"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="796"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="815"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="886"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1399"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1417"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="816"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="887"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1400"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1418"/>
         <source>Center</source>
         <translation type="unfinished">Vidū</translation>
     </message>
@@ -21698,9 +23938,9 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="610"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="641"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="663"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="887"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1397"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1415"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="888"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1398"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1416"/>
         <source>Radius</source>
         <translation type="unfinished">Rādiuss</translation>
     </message>
@@ -21717,8 +23957,8 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="618"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="725"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="768"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="820"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1349"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="821"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1350"/>
         <source>Area</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21733,7 +23973,7 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="666"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="717"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="747"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="890"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="891"/>
         <source>Angle Length</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21743,8 +23983,8 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="718"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="761"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="787"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="806"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="841"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="807"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="842"/>
         <source>Start</source>
         <translation type="unfinished">Sākums</translation>
     </message>
@@ -21753,11 +23993,11 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="680"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="719"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="762"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="798"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="817"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="891"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1400"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1419"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="799"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="818"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="892"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1401"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1420"/>
         <source>Start Angle</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21767,8 +24007,8 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="720"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="763"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="788"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="807"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="842"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="808"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="843"/>
         <source>End</source>
         <translation type="unfinished">Beigas</translation>
     </message>
@@ -21777,18 +24017,18 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="681"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="721"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="764"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="799"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="818"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="892"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1401"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1420"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="800"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="819"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="893"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1402"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1421"/>
         <source>End Angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="650"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="683"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="880"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="881"/>
         <source>Bulge</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21796,7 +24036,7 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="702"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="742"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="792"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="811"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="812"/>
         <source>Minor Radius</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21804,7 +24044,7 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="703"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="743"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="791"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="810"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="811"/>
         <source>Major Radius</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21812,121 +24052,121 @@ Please note that if you&apos;ll save pen via editor without restart, current pen
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="704"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="754"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="795"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="813"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="814"/>
         <source>Ratio</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="830"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="835"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="831"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="836"/>
         <source>Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="844"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="858"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1244"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1260"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1280"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1297"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="845"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="859"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1245"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1261"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1281"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1298"/>
         <source>Closed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="843"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="868"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="844"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="869"/>
         <source>Segments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="869"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="870"/>
         <source>Vertex - 0:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="894"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="908"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="895"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="909"/>
         <source>Vertex - </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="915"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="916"/>
         <source>Total Length</source>
         <translation type="unfinished">Kopējais garums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="921"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="943"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="922"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="944"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="922"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="944"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="957"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="986"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1106"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1140"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1204"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1228"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="923"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="945"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="958"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="987"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1107"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1141"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1205"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1229"/>
         <source>Insertion Point</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="925"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="946"/>
-        <source>Scale X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="926"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="947"/>
-        <source>Scale Y</source>
+        <source>Scale X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="927"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="948"/>
-        <source>Cols</source>
+        <source>Scale Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="928"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="949"/>
-        <source>Spacing X</source>
+        <source>Cols</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="929"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="950"/>
-        <source>Rows</source>
+        <source>Spacing X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="930"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="951"/>
+        <source>Rows</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="931"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="952"/>
         <source>Spacing Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="958"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="987"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="959"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="988"/>
         <source>Second Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="962"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="989"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1109"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1142"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1213"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1235"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="963"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="990"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1110"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1143"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1214"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1236"/>
         <source>Height</source>
         <translation type="unfinished">Augstums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="960"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="990"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="961"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="991"/>
         <source>Width/Height</source>
         <translation type="unfinished"></translation>
     </message>
@@ -21966,7 +24206,7 @@ Layer: </source>
     <message>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="643"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="678"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="889"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="890"/>
         <source>Circumference</source>
         <comment>arc</comment>
         <translation type="unfinished"></translation>
@@ -21975,7 +24215,7 @@ Layer: </source>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="651"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="667"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="794"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="814"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="815"/>
         <source>Reversed</source>
         <translation type="unfinished">Apgriezti</translation>
     </message>
@@ -21993,392 +24233,389 @@ Layer: </source>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="775"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="805"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="806"/>
         <source>HYPERBOLA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="789"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="808"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="809"/>
         <source>Focus 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="790"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="809"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="810"/>
         <source>Focus 2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="800"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="819"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="797"/>
+        <source>Eccentricity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="801"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="820"/>
         <source>Circumference</source>
         <comment>hyperbola</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="961"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="991"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1108"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1145"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1396"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1413"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1429"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1441"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1448"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1455"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1462"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1473"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1488"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1504"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1515"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1527"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1538"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1553"/>
-        <source>Style</source>
-        <translation type="unfinished">Stils</translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="972"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1000"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1124"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1157"/>
-        <source>HAlign</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="973"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1001"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1125"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1158"/>
-        <source>VAlign</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="974"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1002"/>
-        <source>Generation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1041"/>
-        <source>Fit</source>
-        <translation type="unfinished">Ietilpst</translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1055"/>
-        <source>Baseline</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1057"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1075"/>
-        <source>Bottom</source>
-        <translation type="unfinished">Apakšā</translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1061"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1079"/>
-        <source>Top</source>
-        <translation type="unfinished">Augšējais</translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1093"/>
-        <source>Normal text</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1095"/>
-        <source>Mirrored in X</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1097"/>
-        <source>Mirrored in Y</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1104"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1138"/>
-        <source>MTEXT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1112"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1143"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1212"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1234"/>
-        <source>Width</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1113"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1144"/>
-        <source>Lines</source>
-        <translation type="unfinished">Līnijas</translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1126"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1159"/>
-        <source>Direction</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1127"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1160"/>
-        <source>Line Spacing Factor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1128"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1161"/>
-        <source>Line Spacing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1172"/>
-        <source>By Style</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1174"/>
-        <source>Left To Right</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1176"/>
-        <source>Right To Left</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1178"/>
-        <source>Top To Bottom</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1192"/>
-        <source>At Least</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1194"/>
-        <source>Exact</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1201"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1224"/>
-        <source>IMAGE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1203"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1227"/>
-        <source>File</source>
-        <translation type="unfinished">Datne</translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1210"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1232"/>
-        <source>Size (X) px</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1211"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1233"/>
-        <source>Size (Y) px</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1214"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1236"/>
-        <source>DPI</source>
-        <translation type="unfinished">DPI</translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1240"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1256"/>
-        <source>SPLINE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1242"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1259"/>
-        <source>Degree</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1243"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1275"/>
-        <source>Control Points</source>
-        <translation type="unfinished">Vadības punkti</translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1271"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1293"/>
-        <source>SPLINEPOINTS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1273"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1296"/>
-        <source>Use Control Points</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1481"/>
-        <source>[Override]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1519"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1531"/>
-        <source>Feature Point</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1265"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1300"/>
-        <source>Control Point </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1305"/>
-        <source>Spline Point </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1312"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1328"/>
-        <source>PARABOLA</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1314"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1330"/>
-        <source>Focus</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1315"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1331"/>
-        <source>Vertex</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1316"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1332"/>
-        <source>Axis Angle</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1335"/>
-        <source>Control Point</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1343"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1359"/>
-        <source>HATCH</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1344"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1362"/>
-        <source>Solid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1345"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1368"/>
-        <source>Pattern</source>
-        <translation type="unfinished">Raksts</translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1206"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1231"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1346"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1369"/>
-        <source>Scale</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1278"/>
-        <source>Spline Points</source>
-        <translation type="unfinished">Splaina punkti</translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="801"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1371"/>
-        <source>Total Area</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1376"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1387"/>
-        <source>DIMLEADER</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1378"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1389"/>
-        <source>Arrow Head</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1393"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1411"/>
-        <source>DIMARC</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1398"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1416"/>
-        <source>Arc Length</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1428"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1440"/>
-        <source>DIMANGULAR</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1447"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1454"/>
-        <source>DIMDIAMETRIC</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="962"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="992"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1109"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1146"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1397"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1414"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1430"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1442"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1449"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1456"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1463"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1474"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1489"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1505"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1516"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1528"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1539"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1554"/>
-        <source>Definition Point</source>
+        <source>Style</source>
+        <translation type="unfinished">Stils</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="973"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1001"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1125"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1158"/>
+        <source>HAlign</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1461"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1472"/>
-        <source>DIMRADIAL</source>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="974"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1002"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1126"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1159"/>
+        <source>VAlign</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1487"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1503"/>
-        <source>DIMLINEAR</source>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="975"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1003"/>
+        <source>Generation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1042"/>
+        <source>Fit</source>
+        <translation type="unfinished">Ietilpst</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1056"/>
+        <source>Baseline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1058"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1076"/>
+        <source>Bottom</source>
+        <translation type="unfinished">Apakšā</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1062"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1080"/>
+        <source>Top</source>
+        <translation type="unfinished">Augšējais</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1094"/>
+        <source>Normal text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1096"/>
+        <source>Mirrored in X</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1098"/>
+        <source>Mirrored in Y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1105"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1139"/>
+        <source>MTEXT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1113"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1144"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1213"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1235"/>
+        <source>Width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1114"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1145"/>
+        <source>Lines</source>
+        <translation type="unfinished">Līnijas</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1127"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1160"/>
+        <source>Direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1128"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1161"/>
+        <source>Line Spacing Factor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1129"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1162"/>
+        <source>Line Spacing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1173"/>
+        <source>By Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1175"/>
+        <source>Left To Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1177"/>
+        <source>Right To Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1179"/>
+        <source>Top To Bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1193"/>
+        <source>At Least</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1195"/>
+        <source>Exact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1202"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1225"/>
+        <source>IMAGE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1204"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1228"/>
+        <source>File</source>
+        <translation type="unfinished">Datne</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1211"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1233"/>
+        <source>Size (X) px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1212"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1234"/>
+        <source>Size (Y) px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1215"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1237"/>
+        <source>DPI</source>
+        <translation type="unfinished">DPI</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1241"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1257"/>
+        <source>SPLINE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1243"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1260"/>
+        <source>Degree</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1244"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1276"/>
+        <source>Control Points</source>
+        <translation type="unfinished">Vadības punkti</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1272"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1294"/>
+        <source>SPLINEPOINTS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1274"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1297"/>
+        <source>Use Control Points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1482"/>
+        <source>[Override]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1520"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1532"/>
+        <source>Feature Point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1266"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1301"/>
+        <source>Control Point </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1306"/>
+        <source>Spline Point </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1313"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1329"/>
+        <source>PARABOLA</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1315"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1331"/>
+        <source>Focus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1316"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1332"/>
+        <source>Vertex</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1317"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1333"/>
+        <source>Axis Angle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1336"/>
+        <source>Control Point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1344"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1360"/>
+        <source>HATCH</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1345"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1363"/>
+        <source>Solid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1346"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1369"/>
+        <source>Pattern</source>
+        <translation type="unfinished">Raksts</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1207"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1232"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1347"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1370"/>
+        <source>Scale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1279"/>
+        <source>Spline Points</source>
+        <translation type="unfinished">Splaina punkti</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="802"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1372"/>
+        <source>Total Area</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1377"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1388"/>
+        <source>DIMLEADER</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1379"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1390"/>
+        <source>Arrow Head</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1394"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1412"/>
+        <source>DIMARC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1399"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1417"/>
+        <source>Arc Length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1429"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1441"/>
+        <source>DIMANGULAR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1448"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1455"/>
+        <source>DIMDIAMETRIC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1450"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1457"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1464"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1475"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1490"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1506"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1540"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1555"/>
-        <source>Extension Point 1</source>
+        <source>Definition Point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1462"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1473"/>
+        <source>DIMRADIAL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1488"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1504"/>
+        <source>DIMLINEAR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -22386,62 +24623,70 @@ Layer: </source>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1507"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1541"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1556"/>
-        <source>Extension Point 2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1521"/>
-        <source>Text Middle Point </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1494"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1510"/>
-        <source>Oblique</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1514"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1526"/>
-        <source>DIMORDINATE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1516"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1530"/>
-        <source>Ordinate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1517"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1528"/>
-        <source>Origin Point</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1518"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1529"/>
-        <source>Horizontal Direction</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1520"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1532"/>
-        <source>Leader End Point</source>
+        <source>Extension Point 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1492"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1508"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1533"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1542"/>
         <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1557"/>
+        <source>Extension Point 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1522"/>
+        <source>Text Middle Point </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1495"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1511"/>
+        <source>Oblique</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1515"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1527"/>
+        <source>DIMORDINATE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1517"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1531"/>
+        <source>Ordinate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1518"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1529"/>
+        <source>Origin Point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1519"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1530"/>
+        <source>Horizontal Direction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1521"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1533"/>
+        <source>Leader End Point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1493"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1509"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1534"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1543"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1558"/>
         <source>Text Middle Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1537"/>
-        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1551"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1538"/>
+        <location filename="../src/ui/dock_widgets/entity_info/lc_quickinfoentitydata.cpp" line="1552"/>
         <source>DIMALIGNED</source>
         <translation type="unfinished"></translation>
     </message>
@@ -23970,43 +26215,43 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LC_SplinePointsPropertiesEditingWidget</name>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepointspropertieseditingwidget.ui" line="14"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_splinepoints.ui" line="14"/>
         <source>Form</source>
         <translation type="unfinished">Forma</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepointspropertieseditingwidget.ui" line="41"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_splinepoints.ui" line="41"/>
         <source>Geometry</source>
         <translation type="unfinished">Ģeometrija</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepointspropertieseditingwidget.ui" line="53"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_splinepoints.ui" line="53"/>
         <source>Closed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepointspropertieseditingwidget.ui" line="62"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_splinepoints.ui" line="62"/>
         <source>If selected, spline points are used</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepointspropertieseditingwidget.ui" line="65"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_splinepoints.ui" line="65"/>
         <source>Spline Points</source>
         <translation type="unfinished">Splaina punkti</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepointspropertieseditingwidget.ui" line="75"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_splinepoints.ui" line="75"/>
         <source>If selected, control points are used</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepointspropertieseditingwidget.ui" line="78"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_splinepoints.ui" line="78"/>
         <source>Control Points</source>
         <translation type="unfinished">Vadības punkti</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepointspropertieseditingwidget.ui" line="93"/>
-        <location filename="../src/ui/dialogs/entity/lc_splinepointspropertieseditingwidget.ui" line="96"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_splinepoints.ui" line="93"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_splinepoints.ui" line="96"/>
         <source>Points on Spline</source>
         <translation type="unfinished">Punkti uz splaina</translation>
     </message>
@@ -24018,151 +26263,151 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Forma</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="14"/>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="17"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="14"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="17"/>
         <source>Spline Properties Editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="20"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="20"/>
         <source>Edit properties of a spline entity, including degree, closed state, control points, and knot vector</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="47"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="47"/>
         <source>Geometry</source>
         <translation type="unfinished">Ģeometrija</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="61"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="61"/>
         <source>Degree:</source>
         <translation type="unfinished">Pakāpe:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="86"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="86"/>
         <source>Spline Degree ComboBox</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="89"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="89"/>
         <source>Select the degree of the spline curve</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="119"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="119"/>
         <source>Defines whether spline defines closed contour</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="122"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="122"/>
         <source>Closed Spline CheckBox</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="125"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="125"/>
         <source>Toggle whether the spline forms a closed contour</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="128"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="128"/>
         <source>Closed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="141"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="141"/>
         <source>Control Points:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="177"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="177"/>
         <source>Control points with coordinates and weights</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="180"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="180"/>
         <source>Control Points Table</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="183"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="183"/>
         <source>Edit control points coordinates and weights for the spline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="196"/>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="268"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="196"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="268"/>
         <source>#</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="204"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="204"/>
         <source>X</source>
         <translation type="unfinished">X</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="212"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="212"/>
         <source>Y</source>
         <translation type="unfinished">Y</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="220"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="220"/>
         <source>Weight</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="255"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="255"/>
         <source>Knot values control the spline’s curve shape (non-decreasing sequence)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="258"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="258"/>
         <source>Knot Vector Table</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="261"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="261"/>
         <source>Edit knot values for the spline (must be non-decreasing)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="276"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="276"/>
         <source>Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="303"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="303"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="306"/>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="312"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="306"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="312"/>
         <source>Add a new control point to the spline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="309"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="309"/>
         <source>Add Control Point Button</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="325"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="325"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="328"/>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="334"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="328"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="334"/>
         <source>Remove the selected control point from the spline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="331"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="331"/>
         <source>Remove Control Point Button</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/lc_splinepropertieseditingwidget.ui" line="83"/>
+        <location filename="../src/ui/dialogs/entity/lc_propertieseditingwidget_spline.ui" line="83"/>
         <source>Degree used to approximate spline</source>
         <translation type="unfinished"></translation>
     </message>
@@ -24743,18 +26988,18 @@ Warning: this action can NOT be undone!</source>
 <context>
     <name>LC_WidgetFactory</name>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="292"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="291"/>
         <source>Library Browser</source>
         <translation type="unfinished">Bibliotēka pārlūks</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="314"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="313"/>
         <source>Dock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="314"/>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="338"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="313"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="337"/>
         <source>Float</source>
         <translation type="unfinished"></translation>
     </message>
@@ -24800,7 +27045,7 @@ Warning: this action can NOT be undone!</source>
     </message>
     <message>
         <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="142"/>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="250"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="249"/>
         <source>Info</source>
         <translation type="unfinished">Informācija</translation>
     </message>
@@ -24810,12 +27055,12 @@ Warning: this action can NOT be undone!</source>
         <translation type="unfinished">Secība</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="250"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="249"/>
         <source>Entity Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="202"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="201"/>
         <source>Named Views</source>
         <translation type="unfinished"></translation>
     </message>
@@ -24840,131 +27085,131 @@ Warning: this action can NOT be undone!</source>
         <translation type="unfinished">Splains</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="175"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="174"/>
         <source>Pens Palette</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="175"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="174"/>
         <source>Pens</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="189"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="188"/>
         <source>Layers</source>
         <translation type="unfinished">Slāņi</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="202"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="201"/>
         <source>Views</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="225"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="224"/>
         <source>User Coordinate Systems</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="225"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="224"/>
         <source>UCSs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="237"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="236"/>
         <source>Layers Tree</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="262"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="261"/>
         <source>Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="277"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="276"/>
         <source>Blocks</source>
         <translation type="unfinished">Bloki</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="292"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="291"/>
         <source>Library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="308"/>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="337"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="307"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="336"/>
         <source>Cmd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="308"/>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="337"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="307"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="336"/>
         <source>Command Line</source>
         <translation type="unfinished">Komandrinda</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="338"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="337"/>
         <source>Dock</source>
         <comment>Dock the command widget to the main window</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="411"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="406"/>
         <source>Pen Wizard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="411"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="406"/>
         <source>PenWiz</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="459"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="454"/>
         <source>Toolbar: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="476"/>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="524"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="471"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="519"/>
         <source>Grid Status</source>
         <translation type="unfinished">Režģa satuss</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="519"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="514"/>
         <source>Coordinates</source>
         <translation type="unfinished">Koordinātas</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="520"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="515"/>
         <source>Relative Zero</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="521"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="516"/>
         <source>Mouse</source>
         <translation type="unfinished">Pele</translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="522"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="517"/>
         <source>Selection Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="523"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="518"/>
         <source>Active Layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="525"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="520"/>
         <source>UCS Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="526"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="521"/>
         <source>Angles Basis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="530"/>
+        <location filename="../src/ui/main/init/lc_widgetfactory.cpp" line="525"/>
         <source>Current size of Grid/MetaGrid. Click to change grid size.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -25574,17 +27819,17 @@ Lūdzu, pārbaudiet, vai tā eksistē un vai ir pareizas atļaujas.</translation
 <context>
     <name>QG_ActionHandler</name>
     <message>
-        <location filename="../src/ui/qg_actionhandler.cpp" line="154"/>
+        <location filename="../src/ui/qg_actionhandler.cpp" line="188"/>
         <source>Spacebar: restored snapping mode to normal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/qg_actionhandler.cpp" line="155"/>
+        <location filename="../src/ui/qg_actionhandler.cpp" line="189"/>
         <source>Spacebar: temporarily set snapping mode to free snapping</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/qg_actionhandler.cpp" line="165"/>
+        <location filename="../src/ui/qg_actionhandler.cpp" line="199"/>
         <source>escape</source>
         <comment>escape, go back from action steps</comment>
         <translation>atsolis</translation>
@@ -26011,38 +28256,38 @@ Lūdzu, pārbaudiet, vai tā eksistē un vai ir pareizas atļaujas.</translation
 <context>
     <name>QG_DlgAttributes</name>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgattributes.ui" line="26"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_attributes.ui" line="26"/>
         <source>Attributes</source>
         <translation>Atribūti</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgattributes.ui" line="44"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_attributes.ui" line="44"/>
         <source>Layer:</source>
         <translation>Slānis:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgattributes.ui" line="54"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_attributes.ui" line="54"/>
         <source>Layer to apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgattributes.ui" line="69"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_attributes.ui" line="69"/>
         <source>Pen attributes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgattributes.ui" line="76"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_attributes.ui" line="76"/>
         <source>Apply attributes also to all sub-entities of selected INSERT.
 This recursively modifies all entities of the Block itself.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgattributes.ui" line="80"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_attributes.ui" line="80"/>
         <source>Apply attributes Block-deep</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgattributes.cpp" line="61"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_attributes.cpp" line="61"/>
         <source>Pen</source>
         <translation type="unfinished">Zīmulis</translation>
     </message>
@@ -26050,72 +28295,72 @@ This recursively modifies all entities of the Block itself.</source>
 <context>
     <name>QG_DlgHatch</name>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlghatch.ui" line="14"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_hatch.ui" line="14"/>
         <source>Choose Hatch Attributes</source>
         <translation>Izvēlieties svītrojuma atribūtus</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlghatch.ui" line="22"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_hatch.ui" line="22"/>
         <source>Pattern</source>
         <translation>Raksts</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlghatch.ui" line="28"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_hatch.ui" line="28"/>
         <source>Scale factor for hatch pattern</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlghatch.ui" line="35"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_hatch.ui" line="35"/>
         <source>Angle:</source>
         <translation>Leņķis:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlghatch.ui" line="45"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_hatch.ui" line="45"/>
         <source>Scale:</source>
         <translation>Mērogs:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlghatch.ui" line="55"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_hatch.ui" line="55"/>
         <source>Rotation angle for the hatch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlghatch.ui" line="62"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_hatch.ui" line="62"/>
         <source>If checked, solid will will be used instead of pattern hatch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlghatch.ui" line="65"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_hatch.ui" line="65"/>
         <source>Solid Fill</source>
         <translation>Vienlaidus aizpildījums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlghatch.ui" line="72"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_hatch.ui" line="72"/>
         <source>Pattern of hatch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlghatch.ui" line="95"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_hatch.ui" line="95"/>
         <source>Preview</source>
         <translation>Priekšskatījums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlghatch.ui" line="101"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_hatch.ui" line="101"/>
         <source>If enabled, preview of hatch pattern will be shown below</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlghatch.ui" line="104"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_hatch.ui" line="104"/>
         <source>Enable Preview</source>
         <translation>Aktivēt priekšskatījumu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlghatch.ui" line="117"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_hatch.ui" line="117"/>
         <source>Area</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlghatch.ui" line="124"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_hatch.ui" line="124"/>
         <source>Hatched area</source>
         <translation type="unfinished"></translation>
     </message>
@@ -26151,847 +28396,847 @@ This recursively modifies all entities of the Block itself.</source>
 <context>
     <name>QG_DlgMText</name>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="20"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="20"/>
         <source>MText</source>
         <translation>VTeksts</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="51"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="51"/>
         <source>Layer:</source>
         <translation>Slānis:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="241"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="241"/>
         <source>&amp;Height:</source>
         <translation>&amp;Augstums:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="147"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="147"/>
         <source>&amp;Default line spacing</source>
         <translation>Noklusējuma &amp;rindstarpa</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="150"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="150"/>
         <source>Alt+D</source>
         <translation>Alt+D</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="322"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="322"/>
         <source>Alignment</source>
         <translation>Līdzināšana</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="372"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="372"/>
         <source>Top Right</source>
         <translation>Augšā pa labi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="564"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="564"/>
         <source>Top Left</source>
         <translation>Augšā pa kreisi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="532"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="532"/>
         <source>Middle Left</source>
         <translation>Vidū un pa kreisi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="500"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="500"/>
         <source>Middle Center</source>
         <translation>Vidū un centrēt</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="340"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="340"/>
         <source>Middle Right</source>
         <translation>Vidū un pa labi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="596"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="596"/>
         <source>Bottom Left</source>
         <translation>Apakšā pa kreisi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="404"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="404"/>
         <source>Bottom Right</source>
         <translation>Apakšā pa labi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="468"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="468"/>
         <source>Bottom Center</source>
         <translation>Apakšā un centrēt</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="436"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="436"/>
         <source>Top Center</source>
         <translation>Augšā un centrēt</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="70"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="70"/>
         <source>Layer of MText</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="144"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="144"/>
         <source>If checked, default line spacing will be used</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="192"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="192"/>
         <source>Height of line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="260"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="260"/>
         <source>Specific line spacing factor is used</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="289"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="289"/>
         <source>Font to use</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="631"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="631"/>
         <source>Angle</source>
         <translation>Leņķis</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="643"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="643"/>
         <source>Rotation angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="674"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="674"/>
         <source>Left to right text direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="690"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="690"/>
         <source>Right to left text direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="714"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="714"/>
         <source>Text:</source>
         <translation>Teksts:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="740"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="740"/>
         <source>Clear Text</source>
         <translation>Attīrīt tekstu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="754"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="754"/>
         <source>Load Text From File</source>
         <translation>Ielādēt tekstu no datnes</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="768"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="768"/>
         <source>Save Text To File</source>
         <translation>Saglabāt tekstu datnē</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="782"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="782"/>
         <source>Cut</source>
         <translation>Izgriezt</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="796"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="796"/>
         <source>Copy</source>
         <translation>Kopēt</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="810"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="810"/>
         <source>Paste</source>
         <translation>Ielīmēt</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="829"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="829"/>
         <source>Text lines to insert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="860"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="860"/>
         <source>Insert Symbol</source>
         <translation>Ievietot simbolu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="872"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="872"/>
         <source>Symbol insertion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="881"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="881"/>
         <source>Degree (°)</source>
         <translation>Grāds (°)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="886"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="886"/>
         <source>Plus / Minus (±)</source>
         <translation>Pluss / mīnuss (±)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="891"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="891"/>
         <source>At (@)</source>
         <translation>At (@)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="896"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="896"/>
         <source>Hash (#)</source>
         <translation>Reste (#)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="901"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="901"/>
         <source>Dollar ($)</source>
         <translation>Dolārs ($)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="906"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="906"/>
         <source>Copyright (©)</source>
         <translation>Autortiesības (©)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="911"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="911"/>
         <source>Registered (®)</source>
         <translation>Reģistrēts (®)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="916"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="916"/>
         <source>Paragraph (§)</source>
         <translation>Paragrāfs (§)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="921"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="921"/>
         <source>Pi (π)</source>
         <translation>Pī (π)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="926"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="926"/>
         <source>Pound (£)</source>
         <translation>Mārciņa (£)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="931"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="931"/>
         <source>Yen (¥)</source>
         <translation>Jēna (¥)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="936"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="936"/>
         <source>Times (×)</source>
         <translation>Reizes (×)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="941"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="941"/>
         <source>Division (÷)</source>
         <translation>Dalīšana (÷)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="952"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="952"/>
         <source>Insert Unicode</source>
         <translation>Ievietot unikodu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="958"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="958"/>
         <source>Page:</source>
         <translation>Lapa:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="968"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="968"/>
         <source>Char:</source>
         <translation>Rakstzīme:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="990"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="990"/>
         <source>Codepage to use for characted selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="994"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="994"/>
         <source>[0000-007F] Basic Latin</source>
         <translation>[0000-007F] Pamata latīņu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="999"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="999"/>
         <source>[0080-00FF] Latin-1 Supplementary</source>
         <translation>[0080-00FF] Latīņu-1 papildinājums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1004"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1004"/>
         <source>[0100-017F] Latin Extended-A</source>
         <translation>[0100-017F] Latīņu paplašinātais-A</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1009"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1009"/>
         <source>[0180-024F] Latin Extended-B</source>
         <translation>[0180-024F] Latīņu paplašinātais-B</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1014"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1014"/>
         <source>[0250-02AF] IPA Extensions</source>
         <translation>[0250-02AF] IPA paplašinājumi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1019"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1019"/>
         <source>[02B0-02FF] Spacing Modifier Letters</source>
         <translation>[02B0-02FF] Modificējošo zīmju izlīdzināšana</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1024"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1024"/>
         <source>[0300-036F] Combining Diacritical Marks</source>
         <translation>[0300-036F] Diakritisko zīmju kombinēšana</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1029"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1029"/>
         <source>[0370-03FF] Greek and Coptic</source>
         <translation>[0370-03FF] Grieķu un koptu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1034"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1034"/>
         <source>[0400-04FF] Cyrillic</source>
         <translation>[0400-04FF] Kirilica</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1039"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1039"/>
         <source>[0500-052F] Cyrillic Supplementary</source>
         <translation>[0500-052F] Kirilicas papildu rakstzīmes</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1044"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1044"/>
         <source>[0530-058F] Armenian</source>
         <translation>[0530-058F] Armēņu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1049"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1049"/>
         <source>[0590-05FF] Hebrew</source>
         <translation>[0590-05FF] Ivrits</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1054"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1054"/>
         <source>[0600-06FF] Arabic</source>
         <translation>[0600-06FF] Arābu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1059"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1059"/>
         <source>[0700-074F] Syriac</source>
         <translation>[0700-074F] Sīriešu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1064"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1064"/>
         <source>[0780-07BF] Thaana</source>
         <translation>[0780-07BF] Tāna</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1069"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1069"/>
         <source>[0900-097F] Devanagari</source>
         <translation>[0900-097F] Devanagari</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1074"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1074"/>
         <source>[0980-09FF] Bengali</source>
         <translation>[0980-09FF] Bengāļu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1079"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1079"/>
         <source>[0A00-0A7F] Gurmukhi</source>
         <translation>[0A00-0A7F] Gurmuki</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1084"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1084"/>
         <source>[0A80-0AFF] Gujarati</source>
         <translation>[0A80-0AFF] Gudžaratu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1089"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1089"/>
         <source>[0B00-0B7F] Oriya</source>
         <translation>[0B00-0B7F] Oriju</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1094"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1094"/>
         <source>[0B80-0BFF] Tamil</source>
         <translation>[0B80-0BFF] Tamilu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1099"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1099"/>
         <source>[0C00-0C7F] Telugu</source>
         <translation>[0C00-0C7F] Telugu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1104"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1104"/>
         <source>[0C80-0CFF] Kannada</source>
         <translation>[0C80-0CFF] Kannadu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1109"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1109"/>
         <source>[0D00-0D7F] Malayalam</source>
         <translation>[0D00-0D7F] Malajalu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1114"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1114"/>
         <source>[0D80-0DFF] Sinhala</source>
         <translation>[0D80-0DFF] Singāļu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1119"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1119"/>
         <source>[0E00-0E7F] Thai</source>
         <translation>[0E00-0E7F] Taju</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1124"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1124"/>
         <source>[0E80-0EFF] Lao</source>
         <translation>[0E80-0EFF] Laosiešu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1129"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1129"/>
         <source>[0F00-0FFF] Tibetan</source>
         <translation>[0F00-0FFF] Tibetiešu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1134"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1134"/>
         <source>[1000-109F] Myanmar</source>
         <translation>[1000-109F] Mjanmas</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1139"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1139"/>
         <source>[10A0-10FF] Georgian</source>
         <translation>[10A0-10FF] Gruzīnu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1144"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1144"/>
         <source>[1100-11FF] Hangul Jamo</source>
         <translation>[1100-11FF] Hangul džamo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1149"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1149"/>
         <source>[1200-137F] Ethiopic</source>
         <translation>[1200-137F] Etiopiešu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1154"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1154"/>
         <source>[13A0-13FF] Cherokee</source>
         <translation>[13A0-13FF] Šerokī</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1159"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1159"/>
         <source>[1400-167F] Unified Canadian Aboriginal Syllabic</source>
         <translation>[1400-167F] Vienotās Kanādas iezemiešu zilbes</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1164"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1164"/>
         <source>[1680-169F] Ogham</source>
         <translation>[1680-169F] Ogam</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1169"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1169"/>
         <source>[16A0-16FF] Runic</source>
         <translation>[16A0-16FF] Rūnu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1174"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1174"/>
         <source>[1700-171F] Tagalog</source>
         <translation>[1700-171F] Tagalu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1179"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1179"/>
         <source>[1720-173F] Hanunoo</source>
         <translation>[1720-173F] Hanunū</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1184"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1184"/>
         <source>[1740-175F] Buhid</source>
         <translation>[1740-175F] Buhidu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1189"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1189"/>
         <source>[1760-177F] Tagbanwa</source>
         <translation>[1760-177F] Tagbanva</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1194"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1194"/>
         <source>[1780-17FF] Khmer</source>
         <translation>[1780-17FF] Khmeru</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1199"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1199"/>
         <source>[1800-18AF] Mongolian</source>
         <translation>[1800-18AF] Mongoļu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1204"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1204"/>
         <source>[1E00-1EFF] Latin Extended Additional</source>
         <translation>[1E00-1EFF] Papildu latīņu paplašinātais</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1209"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1209"/>
         <source>[1F00-1FFF] Greek Extended</source>
         <translation>[1F00-1FFF] Grieķu paplašinātais</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1214"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1214"/>
         <source>[2000-206F] General Punctuation</source>
         <translation>[2000-206F] Vispārējā interpunkcija</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1219"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1219"/>
         <source>[2070-209F] Superscripts and Subscripts</source>
         <translation>[2070-209F] Augšraksti un apakšraksti</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1224"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1224"/>
         <source>[20A0-20CF] Currency Symbols</source>
         <translation>[20A0-20CF] Valūtu simboli</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1229"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1229"/>
         <source>[20D0-20FF] Combining Marks for Symbols</source>
         <translation>[20D0-20FF] Zīmju kombinēšana simboliem</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1234"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1234"/>
         <source>[2100-214F] Letterlike Symbols</source>
         <translation>[2100-214F] Burtveidīgie simboli</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1239"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1239"/>
         <source>[2150-218F] Number Forms</source>
         <translation>[2150-218F] Skaitļu formas</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1244"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1244"/>
         <source>[2190-21FF] Arrows</source>
         <translation>[2190-21FF] Bultas</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1249"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1249"/>
         <source>[2200-22FF] Mathematical Operators</source>
         <translation>[2200-22FF] Matemātiske operatori</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1254"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1254"/>
         <source>[2300-23FF] Miscellaneous Technical</source>
         <translation>[2300-23FF] Dažādi tehniskie</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1259"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1259"/>
         <source>[2400-243F] Control Pictures</source>
         <translation>[2400-243F] Vadības bildes</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1264"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1264"/>
         <source>[2440-245F] Optical Character Recognition</source>
         <translation>[2440-245F] Rakstzīmju optiskā pazīšana</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1269"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1269"/>
         <source>[2460-24FF] Enclosed Alphanumerics</source>
         <translation>[2460-24FF] Apvilktie burti un cipari</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1274"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1274"/>
         <source>[2500-257F] Box Drawing</source>
         <translation>[2500-257F] Kastu zīmēšana</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1279"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1279"/>
         <source>[2580-259F] Block Elements</source>
         <translation>[2580-259F] Bloku elementi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1284"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1284"/>
         <source>[25A0-25FF] Geometric Shapes</source>
         <translation>[25A0-25FF] Ģeometriskās figūras</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1289"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1289"/>
         <source>[2600-26FF] Miscellaneous Symbols</source>
         <translation>[2600-26FF] Dažādi simboli</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1294"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1294"/>
         <source>[2700-27BF] Dingbats</source>
         <translation>[2700-27BF] Dekorzīmes</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1299"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1299"/>
         <source>[27C0-27EF] Miscellaneous Mathematical Symbols-A</source>
         <translation>[27C0-27EF] Dažādi matemātiskie simboli A</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1304"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1304"/>
         <source>[27F0-27FF] Supplemental Arrows-A</source>
         <translation>[27F0-27FF] Papildu bultas A</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1309"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1309"/>
         <source>[2800-28FF] Braille Patterns</source>
         <translation>[2800-28FF] Braila raksts</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1314"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1314"/>
         <source>[2900-297F] Supplemental Arrows-B</source>
         <translation>[2900-297F] Papildu bultas B</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1319"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1319"/>
         <source>[2980-29FF] Miscellaneous Mathematical Symbols-B</source>
         <translation>[2980-29FF] Dažādi matemātiskie simboli B</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1324"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1324"/>
         <source>[2A00-2AFF] Supplemental Mathematical Operators</source>
         <translation>[2A00-2AFF] Matemātisko operatoru pielikums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1329"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1329"/>
         <source>[2E80-2EFF] CJK Radicals Supplement</source>
         <translation>[2E80-2EFF] CJK sakņu pielikums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1334"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1334"/>
         <source>[2F00-2FDF] Kangxi Radicals</source>
         <translation>[2F00-2FDF] Kangxi saknes</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1339"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1339"/>
         <source>[2FF0-2FFF] Ideographic Description Characters</source>
         <translation>[2FF0-2FFF] Ideogrāfisko aprakstu zīmes</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1344"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1344"/>
         <source>[3000-303F] CJK Symbols and Punctuation</source>
         <translation>[3000-303F] CJK simboli un interpunkcija</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1349"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1349"/>
         <source>[3040-309F] Hiragana</source>
         <translation>[3040-309F] Hiragana</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1354"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1354"/>
         <source>[30A0-30FF] Katakana</source>
         <translation>[30A0-30FF] Katakana</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1359"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1359"/>
         <source>[3100-312F] Bopomofo</source>
         <translation>[3100-312F] Bopomofo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1364"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1364"/>
         <source>[3130-318F] Hangul Compatibility Jamo</source>
         <translation>[3130-318F] Hangul savietojamības džamo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1369"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1369"/>
         <source>[3190-319F] Kanbun</source>
         <translation>[3190-319F] Kanbun</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1374"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1374"/>
         <source>[31A0-31BF] Bopomofo Extended</source>
         <translation>[31A0-31BF] Bopomofo paplašinātais</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1379"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1379"/>
         <source>[3200-32FF] Enclosed CJK Letters and Months</source>
         <translation>[3200-32FF] Apvilktie CJK burti un mēneši</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1384"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1384"/>
         <source>[3300-33FF] CJK Compatibility</source>
         <translation>[3300-33FF] CJK savietojamība</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1389"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1389"/>
         <source>[3400-4DBF] CJK Unified Ideographs Extension A</source>
         <translation>[3400-4DBF] CJK vienoto ideogrammu paplašinājums A</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1394"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1394"/>
         <source>[4E00-9FAF] CJK Unified Ideographs</source>
         <translation>[4E00-9FAF] CJK vienotās ideogrammas</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1399"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1399"/>
         <source>[A000-A48F] Yi Syllables</source>
         <translation>[A000-A48F] Yi zilbes</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1404"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1404"/>
         <source>[A490-A4CF] Yi Radicals</source>
         <translation>[A490-A4CF] Yi saknes</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1409"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1409"/>
         <source>[AC00-D7AF] Hangul Syllables</source>
         <translation>[AC00-D7AF] Hangul zilbes</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1414"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1414"/>
         <source>[D800-DBFF] High Surrogates</source>
         <translation>[D800-DBFF] Augstie aizstājēji</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1419"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1419"/>
         <source>[DC00-DFFF] Low Surrogate Area</source>
         <translation>[DC00-DFFF] Zemo aizstājēju laukums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1424"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1424"/>
         <source>[E000-F8FF] Private Use Area</source>
         <translation>[E000-F8FF] Privāts lietojuma lauks</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1429"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1429"/>
         <source>[F900-FAFF] CJK Compatibility Ideographs</source>
         <translation>[F900-FAFF] CJK savietojamības ideogrammas</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1434"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1434"/>
         <source>[FB00-FB4F] Alphabetic Presentation Forms</source>
         <translation>[FB00-FB4F] Burtu attēlošanas formas</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1439"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1439"/>
         <source>[FB50-FDFF] Arabic Presentation Forms-A</source>
         <translation>[FB50-FDFF] Arābu burtu attēlošanas formas A</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1444"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1444"/>
         <source>[FE00-FE0F] Variation Selectors</source>
         <translation>[FE00-FE0F] Variāciju selektori</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1449"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1449"/>
         <source>[FE20-FE2F] Combining Half Marks</source>
         <translation>[FE20-FE2F] Kombinējošās pusatzīmes</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1454"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1454"/>
         <source>[FE30-FE4F] CJK Compatibility Forms</source>
         <translation>[FE30-FE4F] CJK savietojamības formas</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1459"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1459"/>
         <source>[FE50-FE6F] Small Form Variants</source>
         <translation>[FE50-FE6F] Mazie formu varianti</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1464"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1464"/>
         <source>[FE70-FEFF] Arabic Presentation Forms-B</source>
         <translation>[FE70-FEFF] Arābu burtu attēlošanas formas B</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1469"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1469"/>
         <source>[FF00-FFEF] Halfwidth and Fullwidth Forms</source>
         <translation>[FF00-FFEF] Pusplatās un platās formas</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1474"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1474"/>
         <source>[FFF0-FFFF] Specials</source>
         <translation>[FFF0-FFFF] Speciālie</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1479"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1479"/>
         <source>[10300-1032F] Old Italic</source>
         <translation>[10300-1032F] Senais itāļu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1484"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1484"/>
         <source>[10330-1034F] Gothic</source>
         <translation>[10330-1034F] Gotu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1489"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1489"/>
         <source>[10400-1044F] Deseret</source>
         <translation>[10400-1044F] Deseret</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1494"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1494"/>
         <source>[1D000-1D0FF] Byzantine Musical Symbols</source>
         <translation>[1D000-1D0FF] Bizantiešu mūzikas simboli</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1499"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1499"/>
         <source>[1D100-1D1FF] Musical Symbols</source>
         <translation>[1D100-1D1FF] Mūzikas simboli</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1504"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1504"/>
         <source>[1D400-1D7FF] Mathematical Alphanumeric Symbols</source>
         <translation>[1D400-1D7FF] Matemātiskie burtu-ciparu simboli</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1509"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1509"/>
         <source>[20000-2A6DF] CJK Unified Ideographs Extension B</source>
         <translation>[20000-2A6DF] CJK vienoto ideogrammu paplašinājums B</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1514"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1514"/>
         <source>[2F800-2FA1F] CJK Compatibility Ideographs Supplement</source>
         <translation>[2F800-2FA1F] CJK savietojamības ideogrammu papildinājums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1519"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1519"/>
         <source>[E0000-E007F] Tags</source>
         <translation>[E0000-E007F] Birkas</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1524"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1524"/>
         <source>[F0000-FFFFD] Supplementary Private Use Area-A</source>
         <translation>[F0000-FFFFD] Papildu privātais A lauka lietojums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1529"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1529"/>
         <source>[100000-10FFFD] Supplementary Private Use Area-B</source>
         <translation>[F0000-FFFFD] Papildu privātais B lauka lietojums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1549"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1549"/>
         <source>Selection of character to insert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="1574"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="1574"/>
         <source>Selected character preview. Click to insert to text.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="876"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="876"/>
         <source>Diameter (⌀)</source>
         <translation>Diametrs (⌀)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="125"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="125"/>
         <source>&amp;Line spacing:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="113"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="113"/>
         <source>Font Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="267"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="267"/>
         <source>Font:</source>
         <translation type="unfinished">Fonts:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="656"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="656"/>
         <source>Text Direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="677"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="677"/>
         <source>Left to right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.ui" line="693"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.ui" line="693"/>
         <source>Right to left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgmtext.cpp" line="242"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_mtext.cpp" line="242"/>
         <source>Pen</source>
         <translation type="unfinished">Zīmulis</translation>
     </message>
@@ -28123,7 +30368,7 @@ This recursively modifies all entities of the Block itself.</source>
     <message>
         <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.ui" line="3130"/>
         <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1886"/>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1357"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1369"/>
         <source>Dwg Units</source>
         <translation type="unfinished"></translation>
     </message>
@@ -28164,7 +30409,7 @@ This recursively modifies all entities of the Block itself.</source>
     </message>
     <message>
         <location filename="../src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp" line="1883"/>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1354"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1366"/>
         <source>Screen %</source>
         <translation type="unfinished"></translation>
     </message>
@@ -28172,32 +30417,32 @@ This recursively modifies all entities of the Block itself.</source>
 <context>
     <name>QG_DlgOptionsGeneral</name>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="974"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="986"/>
         <source>Preferences</source>
         <translation>Iestatījumi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5367"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5396"/>
         <source>Translations:</source>
         <translation>Tulkojumi:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5263"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5292"/>
         <source>Hatch Patterns:</source>
         <translation>Svītrojuma raksti:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5287"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5316"/>
         <source>Fonts:</source>
         <translation>Fonti:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5339"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5368"/>
         <source>Part Libraries:</source>
         <translation>Daļu bibliotēkas:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4983"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5012"/>
         <source>Language</source>
         <translation>Valoda</translation>
     </message>
@@ -28212,17 +30457,17 @@ This recursively modifies all entities of the Block itself.</source>
         <translation>Noklusējumi jauniem zīmējumiem</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4996"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5025"/>
         <source>&amp;GUI Language:</source>
         <translation>&amp;Saskarnes valoda:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5016"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5045"/>
         <source>&amp;Command Language:</source>
         <translation>&amp;Komandu valoda:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5179"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5208"/>
         <source>&amp;Paths</source>
         <translation>&amp;Ceļi</translation>
     </message>
@@ -28248,7 +30493,7 @@ This recursively modifies all entities of the Block itself.</source>
         <translation>A&amp;utomātiski mērogot režģi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="975"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="987"/>
         <source>Please restart the application to apply all changes.</source>
         <translation>Lūdzu, pārstartējiet lietotni, lai izmaiņas stātos spēkā.</translation>
     </message>
@@ -28278,7 +30523,7 @@ This recursively modifies all entities of the Block itself.</source>
         <translation>Kad iestatīts, LibreCAD automātiski veidos pašreizējā zīmējuma rezerves kopijas.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5377"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5406"/>
         <source>Template:</source>
         <translation>Veidne:</translation>
     </message>
@@ -28314,18 +30559,18 @@ This recursively modifies all entities of the Block itself.</source>
         <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="2453"/>
         <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="2531"/>
         <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="3904"/>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5563"/>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5614"/>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5630"/>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5646"/>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5669"/>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5685"/>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5722"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5592"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5643"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5659"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5675"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5698"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5714"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5751"/>
         <source> px</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5604"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5633"/>
         <source>Line length:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -28423,12 +30668,12 @@ This recursively modifies all entities of the Block itself.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5518"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5547"/>
         <source>If selected, the angle of the line interpolation segment is calculated to ensure that resulting sagitta (height of arc segment) is less than specified.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5585"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5614"/>
         <source>If selected, the same rendering settings will be applied also to circles.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -28463,12 +30708,12 @@ This recursively modifies all entities of the Block itself.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5120"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5149"/>
         <source>If checked, prompt messages of actions will be also shown in bottom statusbar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5126"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5155"/>
         <source>Duplicate prompt messages of actions in statusbar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -28483,67 +30728,67 @@ This recursively modifies all entities of the Block itself.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5146"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5175"/>
         <source>New Versions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5152"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5181"/>
         <source>Check GitHub for new releases of LibreCAD on program startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5155"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5184"/>
         <source>Check for new versions on startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5162"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5191"/>
         <source>If checked, pre-release versions will be ignored</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5168"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5197"/>
         <source>Ignore pre-release versions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5064"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5093"/>
         <source>Open last opened files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5110"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5139"/>
         <source>If enabled, drop-down menus may become floating</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5113"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5142"/>
         <source>Allow menus detaching</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5100"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5129"/>
         <source>If unchecked, individual widgets of statusbar are toolbars</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5103"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5132"/>
         <source>Use &quot;classic&quot; statusbar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4930"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4959"/>
         <source>Clear Settings</source>
         <translation>Attīrīt iestatījumus</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4951"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4980"/>
         <source>Layout</source>
         <translation>Izkārtojums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4967"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4996"/>
         <source>All</source>
         <translation>Viss</translation>
     </message>
@@ -28558,33 +30803,33 @@ This recursively modifies all entities of the Block itself.</source>
         <translation>Slēpt kursoru, kad pievelk</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5054"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5083"/>
         <source>Start in tab mode</source>
         <translation>Sākt ciļņu režīmā</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4882"/>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5045"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4911"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5074"/>
         <source>Startup</source>
         <translation>Startēšana</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5084"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5113"/>
         <source>Display loading screen</source>
         <translation>Rādīt ielādēšanas ekrānu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5074"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5103"/>
         <source>Start with main window maximized</source>
         <translation>Sākt ar maksimizētu galveno logu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4907"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4936"/>
         <source>Enable CAD dockwidgets</source>
         <translation>Ieslēgt CAD doka sīkrīkus</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4897"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4926"/>
         <source>Enable CAD toolbars</source>
         <translation>Ieslēgt CAD rīkjoslas</translation>
     </message>
@@ -28599,43 +30844,43 @@ This recursively modifies all entities of the Block itself.</source>
         <translation>#1E90FF</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="996"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1008"/>
         <source>Select Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1115"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1127"/>
         <source>Clear settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1116"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1128"/>
         <source>This will also include custom menus and toolbars. Continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1120"/>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1126"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1132"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1138"/>
         <source>You must restart LibreCAD to see the changes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1142"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1154"/>
         <source>Select Fonts Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1149"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1161"/>
         <source>Select Translations Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1156"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1168"/>
         <source>Select Hatch Patterns Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1163"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp" line="1175"/>
         <source>Select Other Settings Folder</source>
         <translation type="unfinished"></translation>
     </message>
@@ -28645,7 +30890,7 @@ This recursively modifies all entities of the Block itself.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5231"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5260"/>
         <source>Variable File:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -29464,82 +31709,82 @@ This recursively modifies all entities of the Block itself.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5598"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5627"/>
         <source>Rendering Minimums</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5719"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5748"/>
         <source>If height of text line on the screen is less than specified pixels, placholder will be drawn instead of text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5659"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5688"/>
         <source>Height of text line:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5712"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5741"/>
         <source>Ellipse Major Axis:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5682"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5711"/>
         <source>If screen size of minor ellipse axis is less than value, ellipse is drawn as line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5627"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5656"/>
         <source>If screen length of line is less than value, the line is drawn as point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5666"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5695"/>
         <source>If screen radius of circle is less than value, circle is drawn as point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5741"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5770"/>
         <source>Circle Radius:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5698"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5727"/>
         <source>Arc Radius:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5643"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5672"/>
         <source>If screen radius of arc is less than value, arc is drawn as point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5705"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5734"/>
         <source>Ellipse Minor Axis:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5611"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5640"/>
         <source>If screen size for major ellipse axis is less than value, ellipse is drawn as point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5460"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5489"/>
         <source>If selected, text baselines will be drawn instead of the text letters (similar to draft mode) during panning. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5463"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5492"/>
         <source>Draw text as draft within paning operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5470"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5499"/>
         <source>If selected, text baselines will be drawn instead of the text letters (similar to draft mode) in preview. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5473"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5502"/>
         <source>Draw text as draft in preview</source>
         <translation type="unfinished"></translation>
     </message>
@@ -29831,27 +32076,27 @@ This recursively modifies all entities of the Block itself.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4989"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5018"/>
         <source>Languages for commands in Cmd Widget</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5009"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5038"/>
         <source>Language to use for GUI and messages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5081"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5110"/>
         <source>Defines whether splash screen will be shown on startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5051"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5080"/>
         <source>Controls default mode for drawings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5071"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5100"/>
         <source>If checked, after start the main window will be maximized</source>
         <translation type="unfinished"></translation>
     </message>
@@ -30255,182 +32500,207 @@ This recursively modifies all entities of the Block itself.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4888"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4887"/>
+        <source>If enabled, command aliases will be shown next to menu items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4890"/>
+        <source>Show commands in menu items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4897"/>
+        <source>If selected, invocation of actions with commands via UI will lead to displaying command in Cmd widget.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4900"/>
+        <source>Promote command in Cmd widget</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4917"/>
         <source>CAD Tools </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4894"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4923"/>
         <source>If checked, toolbars with commands will be enabled. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4914"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4943"/>
         <source>If this option is selected, all tools will be shown in one group, so the screen space is used more efficiently.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4920"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4949"/>
         <source>Show all tools in one widget</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5094"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5123"/>
         <source>UI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5133"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5162"/>
         <source>If enabled, tooltips toolbar&apos;s name will be shown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5136"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5165"/>
         <source>Show tooltips for toolbars</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5185"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5214"/>
         <source>Exchange</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5191"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5220"/>
         <source>Exports settings to the file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5194"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5223"/>
         <source>Export settings to file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5201"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5230"/>
         <source>Imports application&apos;s preferences from external file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5204"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5233"/>
         <source>Import settings from file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5214"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5243"/>
         <source>Paths</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5387"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5416"/>
         <source>Other settings locations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5394"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5423"/>
         <source>Directory where various settings are located (shortcuts, workspaces, pens etc.)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5445"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5474"/>
         <source>Renderer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5492"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5521"/>
         <source>If checked, archs are drawn using line segments interpolation.  This sliminates drawing artefacts near to endpoints, yet may result drawing of less smooth arcs.  No drawing errors near endpoints on large zooms.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5502"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5531"/>
         <source>If this method is selected, arcs are drawn using method of QT library.  On large zooms, arcs may be rendered with errors near endpoints.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5505"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5534"/>
         <source>Qt-native drawing method (unexact near endpoints)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5751"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5780"/>
         <source>Fonts Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5757"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5786"/>
         <source>Amount of letters columns:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5770"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5799"/>
         <source>Contains the number of columns in one row for rendering font letter blocks. If 0 - all letters in one row. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5451"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5480"/>
         <source>Operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5457"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5486"/>
         <source>If enabled, during pan operation TEXT and MTEXT objects will be drawn schematically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5483"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5512"/>
         <source>Defines how arcs are rendered in UI. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4904"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4933"/>
         <source>If checked, dock widgets with commands for left sidebar will be enabled. Otherwise, they will be disabled. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5486"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4881"/>
+        <source>Command line commands informer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5515"/>
         <source>Arcs Rendering Method</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5495"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5524"/>
         <source>Interpolate by line segments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5512"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5541"/>
         <source>Single segment angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5521"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5550"/>
         <source>Determine segments by max sagitta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5528"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5557"/>
         <source>If selected, the fixed angle of line interpolation segment will be used. Smaller angle deliver more smooth arc yet is slower.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5531"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5560"/>
         <source>Use fixed segment angle value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5538"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5567"/>
         <source>Value of fixed segment&apos;s angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5541"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5570"/>
         <source> degrees</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5560"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5589"/>
         <source>Maximal distance betwen arc and segment interpolation line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5588"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5617"/>
         <source>Render circles in the same way as arcs.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -30455,7 +32725,7 @@ This recursively modifies all entities of the Block itself.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5061"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5090"/>
         <source>If set, previously opened files during previous closing of the application will be re-opened.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -30490,52 +32760,52 @@ This recursively modifies all entities of the Block itself.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5245"/>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5300"/>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5314"/>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5325"/>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5349"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5274"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5329"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5343"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5354"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5378"/>
         <source>Click to select directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5273"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5302"/>
         <source>Path to folder with fonts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4948"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4977"/>
         <source>Restores program geometry/layout to original state</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4964"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="4993"/>
         <source>Restores the program settings to its original state</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5220"/>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5401"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5249"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5430"/>
         <source>Click to select file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5280"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5309"/>
         <source>Path to folder with hatch patterns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5238"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5267"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;-apple-system&apos;,&apos;BlinkMacSystemFont&apos;,&apos;Segoe UI&apos;,&apos;Noto Sans&apos;,&apos;Helvetica&apos;,&apos;Arial&apos;,&apos;sans-serif&apos;,&apos;Apple Color Emoji&apos;,&apos;Segoe UI Emoji&apos;; font-size:14px; color:#1f2328; background-color:#ffffff;&quot;&gt;Part library folder. The symbol library dxf files must be located in the subdirectories of this folder. The subfolder names will be displayed in the Library Browser.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;-apple-system&apos;,&apos;BlinkMacSystemFont&apos;,&apos;Segoe UI&apos;,&apos;Noto Sans&apos;,&apos;Helvetica&apos;,&apos;Arial&apos;,&apos;sans-serif&apos;,&apos;Apple Color Emoji&apos;,&apos;Segoe UI Emoji&apos;; font-size:14px; color:#1f2328; background-color:#ffffff;&quot;&gt;( Menu: Widgets &amp;gt; Dock Widgets &amp;gt; Library Browser)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5256"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5285"/>
         <source>Path to file with variables</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5360"/>
+        <location filename="../src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.ui" line="5389"/>
         <source>Path to folder with translation files</source>
         <translation type="unfinished"></translation>
     </message>
@@ -30689,860 +32959,860 @@ so default step value required for baking</source>
 <context>
     <name>QG_DlgText</name>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="20"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="20"/>
         <source>Text</source>
         <translation>Teksts</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="33"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="33"/>
         <source>Text:</source>
         <translation>Teksts:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="59"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="59"/>
         <source>Clear Text</source>
         <translation>Attīrīt tekstu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="73"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="73"/>
         <source>Load Text From File</source>
         <translation>Ielādēt tekstu no datnes</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="87"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="87"/>
         <source>Save Text To File</source>
         <translation>Saglabāt tekstu datnē</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="101"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="101"/>
         <source>Cut</source>
         <translation>Izgriezt</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="115"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="115"/>
         <source>Copy</source>
         <translation>Kopēt</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="129"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="129"/>
         <source>Paste</source>
         <translation>Ielīmēt</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="422"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="422"/>
         <source>Alignment</source>
         <translation>Līdzināšana</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="879"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="879"/>
         <source>Top Right</source>
         <translation>Augšā pa labi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="621"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="621"/>
         <source>Top Left</source>
         <translation>Augšā pa kreisi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="669"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="669"/>
         <source>Middle Left</source>
         <translation>Vidū un pa kreisi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="774"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="774"/>
         <source>Middle Center</source>
         <translation>Vidū un centrēt</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="538"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="538"/>
         <source>Middle Right</source>
         <translation>Vidū un pa labi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="455"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="455"/>
         <source>Bottom Left</source>
         <translation>Apakšā pa kreisi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="809"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="809"/>
         <source>Bottom Right</source>
         <translation>Apakšā pa labi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="490"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="490"/>
         <source>Bottom Center</source>
         <translation>Apakšā un centrēt</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="739"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="739"/>
         <source>Top Center</source>
         <translation>Augšā un centrēt</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="936"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="936"/>
         <source>Insert Symbol</source>
         <translation>Ievietot simbolu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="957"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="957"/>
         <source>Degree (°)</source>
         <translation>Grāds (°)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="962"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="962"/>
         <source>Plus / Minus (±)</source>
         <translation>Pluss / mīnuss (±)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="967"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="967"/>
         <source>At (@)</source>
         <translation>At (@)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="972"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="972"/>
         <source>Hash (#)</source>
         <translation>Reste (#)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="977"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="977"/>
         <source>Dollar ($)</source>
         <translation>Dolārs ($)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="982"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="982"/>
         <source>Copyright (©)</source>
         <translation>Autortiesības (©)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="987"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="987"/>
         <source>Registered (®)</source>
         <translation>Reģistrēts (®)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="992"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="992"/>
         <source>Paragraph (§)</source>
         <translation>Paragrāfs (§)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="997"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="997"/>
         <source>Pi (π)</source>
         <translation>Pī (π)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1002"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1002"/>
         <source>Pound (£)</source>
         <translation>Mārciņa (£)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1007"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1007"/>
         <source>Yen (¥)</source>
         <translation>Jēna (¥)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1012"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1012"/>
         <source>Times (×)</source>
         <translation>Reizes (×)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1017"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1017"/>
         <source>Division (÷)</source>
         <translation>Dalīšana (÷)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1028"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1028"/>
         <source>Insert Unicode</source>
         <translation>Ievietot unikodu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1593"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1593"/>
         <source>Page:</source>
         <translation>Lapa:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1621"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1621"/>
         <source>Selected character preview. Click to insert to text.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1631"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1631"/>
         <source>Char:</source>
         <translation>Rakstzīme:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1050"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1050"/>
         <source>[0000-007F] Basic Latin</source>
         <translation>[0000-007F] Pamata latīņu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="145"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="145"/>
         <source>Text to insert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="197"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="197"/>
         <source>Layer of text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="255"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="255"/>
         <source>Obligue of text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="268"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="268"/>
         <source>Rotation angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="301"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="301"/>
         <source>Width factor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="337"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="337"/>
         <source>Height of text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="513"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="513"/>
         <source>Aligned</source>
         <translation type="unfinished">Līdzināts</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="644"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="644"/>
         <source>Middle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="948"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="948"/>
         <source>Symbol to insert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1046"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1046"/>
         <source>Codepage selection for selecting character</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1055"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1055"/>
         <source>[0080-00FF] Latin-1 Supplementary</source>
         <translation>[0080-00FF] Latīņu-1 papildinājums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1060"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1060"/>
         <source>[0100-017F] Latin Extended-A</source>
         <translation>[0100-017F] Latīņu paplašinātais-A</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1065"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1065"/>
         <source>[0180-024F] Latin Extended-B</source>
         <translation>[0180-024F] Latīņu paplašinātais-B</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1070"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1070"/>
         <source>[0250-02AF] IPA Extensions</source>
         <translation>[0250-02AF] IPA paplašinājumi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1075"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1075"/>
         <source>[02B0-02FF] Spacing Modifier Letters</source>
         <translation>[02B0-02FF] Modificējošo zīmju izlīdzināšana</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1080"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1080"/>
         <source>[0300-036F] Combining Diacritical Marks</source>
         <translation>[0300-036F] Diakritisko zīmju kombinēšana</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1085"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1085"/>
         <source>[0370-03FF] Greek and Coptic</source>
         <translation>[0370-03FF] Grieķu un koptu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1090"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1090"/>
         <source>[0400-04FF] Cyrillic</source>
         <translation>[0400-04FF] Kirilica</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1095"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1095"/>
         <source>[0500-052F] Cyrillic Supplementary</source>
         <translation>[0500-052F] Kirilicas papildu rakstzīmes</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1100"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1100"/>
         <source>[0530-058F] Armenian</source>
         <translation>[0530-058F] Armēņu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1105"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1105"/>
         <source>[0590-05FF] Hebrew</source>
         <translation>[0590-05FF] Ivrits</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1110"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1110"/>
         <source>[0600-06FF] Arabic</source>
         <translation>[0600-06FF] Arābu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1115"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1115"/>
         <source>[0700-074F] Syriac</source>
         <translation>[0700-074F] Sīriešu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1120"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1120"/>
         <source>[0780-07BF] Thaana</source>
         <translation>[0780-07BF] Tāna</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1125"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1125"/>
         <source>[0900-097F] Devanagari</source>
         <translation>[0900-097F] Devanagari</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1130"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1130"/>
         <source>[0980-09FF] Bengali</source>
         <translation>[0980-09FF] Bengāļu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1135"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1135"/>
         <source>[0A00-0A7F] Gurmukhi</source>
         <translation>[0A00-0A7F] Gurmuki</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1140"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1140"/>
         <source>[0A80-0AFF] Gujarati</source>
         <translation>[0A80-0AFF] Gudžaratu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1145"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1145"/>
         <source>[0B00-0B7F] Oriya</source>
         <translation>[0B00-0B7F] Oriju</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1150"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1150"/>
         <source>[0B80-0BFF] Tamil</source>
         <translation>[0B80-0BFF] Tamilu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1155"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1155"/>
         <source>[0C00-0C7F] Telugu</source>
         <translation>[0C00-0C7F] Telugu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1160"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1160"/>
         <source>[0C80-0CFF] Kannada</source>
         <translation>[0C80-0CFF] Kannadu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1165"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1165"/>
         <source>[0D00-0D7F] Malayalam</source>
         <translation>[0D00-0D7F] Malajalu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1170"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1170"/>
         <source>[0D80-0DFF] Sinhala</source>
         <translation>[0D80-0DFF] Singāļu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1175"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1175"/>
         <source>[0E00-0E7F] Thai</source>
         <translation>[0E00-0E7F] Taju</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1180"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1180"/>
         <source>[0E80-0EFF] Lao</source>
         <translation>[0E80-0EFF] Laosiešu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1185"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1185"/>
         <source>[0F00-0FFF] Tibetan</source>
         <translation>[0F00-0FFF] Tibetiešu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1190"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1190"/>
         <source>[1000-109F] Myanmar</source>
         <translation>[1000-109F] Mjanmas</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1195"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1195"/>
         <source>[10A0-10FF] Georgian</source>
         <translation>[10A0-10FF] Gruzīnu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1200"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1200"/>
         <source>[1100-11FF] Hangul Jamo</source>
         <translation>[1100-11FF] Hangul džamo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1205"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1205"/>
         <source>[1200-137F] Ethiopic</source>
         <translation>[1200-137F] Etiopiešu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1210"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1210"/>
         <source>[13A0-13FF] Cherokee</source>
         <translation>[13A0-13FF] Šerokī</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1215"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1215"/>
         <source>[1400-167F] Unified Canadian Aboriginal Syllabic</source>
         <translation>[1400-167F] Vienotās Kanādas iezemiešu zilbes</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1220"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1220"/>
         <source>[1680-169F] Ogham</source>
         <translation>[1680-169F] Ogam</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1225"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1225"/>
         <source>[16A0-16FF] Runic</source>
         <translation>[16A0-16FF] Rūnu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1230"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1230"/>
         <source>[1700-171F] Tagalog</source>
         <translation>[1700-171F] Tagalu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1235"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1235"/>
         <source>[1720-173F] Hanunoo</source>
         <translation>[1720-173F] Hanunū</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1240"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1240"/>
         <source>[1740-175F] Buhid</source>
         <translation>[1740-175F] Buhidu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1245"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1245"/>
         <source>[1760-177F] Tagbanwa</source>
         <translation>[1760-177F] Tagbanva</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1250"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1250"/>
         <source>[1780-17FF] Khmer</source>
         <translation>[1780-17FF] Khmeru</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1255"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1255"/>
         <source>[1800-18AF] Mongolian</source>
         <translation>[1800-18AF] Mongoļu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1260"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1260"/>
         <source>[1E00-1EFF] Latin Extended Additional</source>
         <translation>[1E00-1EFF] Papildu latīņu paplašinātais</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1265"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1265"/>
         <source>[1F00-1FFF] Greek Extended</source>
         <translation>[1F00-1FFF] Grieķu paplašinātais</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1270"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1270"/>
         <source>[2000-206F] General Punctuation</source>
         <translation>[2000-206F] Vispārējā interpunkcija</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1275"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1275"/>
         <source>[2070-209F] Superscripts and Subscripts</source>
         <translation>[2070-209F] Augšraksti un apakšraksti</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1280"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1280"/>
         <source>[20A0-20CF] Currency Symbols</source>
         <translation>[20A0-20CF] Valūtu simboli</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1285"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1285"/>
         <source>[20D0-20FF] Combining Marks for Symbols</source>
         <translation>[20D0-20FF] Zīmju kombinēšana simboliem</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1290"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1290"/>
         <source>[2100-214F] Letterlike Symbols</source>
         <translation>[2100-214F] Burtveidīgie simboli</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1295"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1295"/>
         <source>[2150-218F] Number Forms</source>
         <translation>[2150-218F] Skaitļu formas</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1300"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1300"/>
         <source>[2190-21FF] Arrows</source>
         <translation>[2190-21FF] Bultas</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1305"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1305"/>
         <source>[2200-22FF] Mathematical Operators</source>
         <translation>[2200-22FF] Matemātiske operatori</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1310"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1310"/>
         <source>[2300-23FF] Miscellaneous Technical</source>
         <translation>[2300-23FF] Dažādi tehniskie</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1315"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1315"/>
         <source>[2400-243F] Control Pictures</source>
         <translation>[2400-243F] Vadības bildes</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1320"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1320"/>
         <source>[2440-245F] Optical Character Recognition</source>
         <translation>[2440-245F] Rakstzīmju optiskā pazīšana</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1325"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1325"/>
         <source>[2460-24FF] Enclosed Alphanumerics</source>
         <translation>[2460-24FF] Apvilktie burti un cipari</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1330"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1330"/>
         <source>[2500-257F] Box Drawing</source>
         <translation>[2500-257F] Kastu zīmēšana</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1335"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1335"/>
         <source>[2580-259F] Block Elements</source>
         <translation>[2580-259F] Bloku elementi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1340"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1340"/>
         <source>[25A0-25FF] Geometric Shapes</source>
         <translation>[25A0-25FF] Ģeometriskās figūras</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1345"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1345"/>
         <source>[2600-26FF] Miscellaneous Symbols</source>
         <translation>[2600-26FF] Dažādi simboli</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1350"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1350"/>
         <source>[2700-27BF] Dingbats</source>
         <translation>[2700-27BF] Dekorzīmes</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1355"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1355"/>
         <source>[27C0-27EF] Miscellaneous Mathematical Symbols-A</source>
         <translation>[27C0-27EF] Dažādi matemātiskie simboli A</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1360"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1360"/>
         <source>[27F0-27FF] Supplemental Arrows-A</source>
         <translation>[27F0-27FF] Papildu bultas A</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1365"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1365"/>
         <source>[2800-28FF] Braille Patterns</source>
         <translation>[2800-28FF] Braila raksts</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1370"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1370"/>
         <source>[2900-297F] Supplemental Arrows-B</source>
         <translation>[2900-297F] Papildu bultas B</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1375"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1375"/>
         <source>[2980-29FF] Miscellaneous Mathematical Symbols-B</source>
         <translation>[2980-29FF] Dažādi matemātiskie simboli B</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1380"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1380"/>
         <source>[2A00-2AFF] Supplemental Mathematical Operators</source>
         <translation>[2A00-2AFF] Matemātisko operatoru pielikums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1385"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1385"/>
         <source>[2E80-2EFF] CJK Radicals Supplement</source>
         <translation>[2E80-2EFF] CJK sakņu pielikums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1390"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1390"/>
         <source>[2F00-2FDF] Kangxi Radicals</source>
         <translation>[2F00-2FDF] Kangxi saknes</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1395"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1395"/>
         <source>[2FF0-2FFF] Ideographic Description Characters</source>
         <translation>[2FF0-2FFF] Ideogrāfisko aprakstu zīmes</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1400"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1400"/>
         <source>[3000-303F] CJK Symbols and Punctuation</source>
         <translation>[3000-303F] CJK simboli un interpunkcija</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1405"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1405"/>
         <source>[3040-309F] Hiragana</source>
         <translation>[3040-309F] Hiragana</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1410"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1410"/>
         <source>[30A0-30FF] Katakana</source>
         <translation>[30A0-30FF] Katakana</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1415"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1415"/>
         <source>[3100-312F] Bopomofo</source>
         <translation>[3100-312F] Bopomofo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1420"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1420"/>
         <source>[3130-318F] Hangul Compatibility Jamo</source>
         <translation>[3130-318F] Hangul savietojamības džamo</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1425"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1425"/>
         <source>[3190-319F] Kanbun</source>
         <translation>[3190-319F] Kanbun</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1430"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1430"/>
         <source>[31A0-31BF] Bopomofo Extended</source>
         <translation>[31A0-31BF] Bopomofo paplašinātais</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1435"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1435"/>
         <source>[3200-32FF] Enclosed CJK Letters and Months</source>
         <translation>[3200-32FF] Apvilktie CJK burti un mēneši</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1440"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1440"/>
         <source>[3300-33FF] CJK Compatibility</source>
         <translation>[3300-33FF] CJK savietojamība</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1445"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1445"/>
         <source>[3400-4DBF] CJK Unified Ideographs Extension A</source>
         <translation>[3400-4DBF] CJK vienoto ideogrammu paplašinājums A</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1450"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1450"/>
         <source>[4E00-9FAF] CJK Unified Ideographs</source>
         <translation>[4E00-9FAF] CJK vienotās ideogrammas</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1455"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1455"/>
         <source>[A000-A48F] Yi Syllables</source>
         <translation>[A000-A48F] Yi zilbes</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1460"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1460"/>
         <source>[A490-A4CF] Yi Radicals</source>
         <translation>[A490-A4CF] Yi saknes</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1465"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1465"/>
         <source>[AC00-D7AF] Hangul Syllables</source>
         <translation>[AC00-D7AF] Hangul zilbes</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1470"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1470"/>
         <source>[D800-DBFF] High Surrogates</source>
         <translation>[D800-DBFF] Augstie aizstājēji</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1475"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1475"/>
         <source>[DC00-DFFF] Low Surrogate Area</source>
         <translation>[DC00-DFFF] Zemo aizstājēju laukums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1480"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1480"/>
         <source>[E000-F8FF] Private Use Area</source>
         <translation>[E000-F8FF] Privāts lietojuma lauks</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1485"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1485"/>
         <source>[F900-FAFF] CJK Compatibility Ideographs</source>
         <translation>[F900-FAFF] CJK savietojamības ideogrammas</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1490"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1490"/>
         <source>[FB00-FB4F] Alphabetic Presentation Forms</source>
         <translation>[FB00-FB4F] Burtu attēlošanas formas</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1495"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1495"/>
         <source>[FB50-FDFF] Arabic Presentation Forms-A</source>
         <translation>[FB50-FDFF] Arābu burtu attēlošanas formas A</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1500"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1500"/>
         <source>[FE00-FE0F] Variation Selectors</source>
         <translation>[FE00-FE0F] Variāciju selektori</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1505"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1505"/>
         <source>[FE20-FE2F] Combining Half Marks</source>
         <translation>[FE20-FE2F] Kombinējošās pusatzīmes</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1510"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1510"/>
         <source>[FE30-FE4F] CJK Compatibility Forms</source>
         <translation>[FE30-FE4F] CJK savietojamības formas</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1515"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1515"/>
         <source>[FE50-FE6F] Small Form Variants</source>
         <translation>[FE50-FE6F] Mazie formu varianti</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1520"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1520"/>
         <source>[FE70-FEFF] Arabic Presentation Forms-B</source>
         <translation>[FE70-FEFF] Arābu burtu attēlošanas formas B</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1525"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1525"/>
         <source>[FF00-FFEF] Halfwidth and Fullwidth Forms</source>
         <translation>[FF00-FFEF] Pusplatās un platās formas</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1530"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1530"/>
         <source>[FFF0-FFFF] Specials</source>
         <translation>[FFF0-FFFF] Speciālie</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1535"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1535"/>
         <source>[10300-1032F] Old Italic</source>
         <translation>[10300-1032F] Senais itāļu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1540"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1540"/>
         <source>[10330-1034F] Gothic</source>
         <translation>[10330-1034F] Gotu</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1545"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1545"/>
         <source>[10400-1044F] Deseret</source>
         <translation>[10400-1044F] Deseret</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1550"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1550"/>
         <source>[1D000-1D0FF] Byzantine Musical Symbols</source>
         <translation>[1D000-1D0FF] Bizantiešu mūzikas simboli</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1555"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1555"/>
         <source>[1D100-1D1FF] Musical Symbols</source>
         <translation>[1D100-1D1FF] Mūzikas simboli</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1560"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1560"/>
         <source>[1D400-1D7FF] Mathematical Alphanumeric Symbols</source>
         <translation>[1D400-1D7FF] Matemātiskie burtu-ciparu simboli</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1565"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1565"/>
         <source>[20000-2A6DF] CJK Unified Ideographs Extension B</source>
         <translation>[20000-2A6DF] CJK vienoto ideogrammu paplašinājums B</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1570"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1570"/>
         <source>[2F800-2FA1F] CJK Compatibility Ideographs Supplement</source>
         <translation>[2F800-2FA1F] CJK savietojamības ideogrammu papildinājums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1575"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1575"/>
         <source>[E0000-E007F] Tags</source>
         <translation>[E0000-E007F] Birkas</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1580"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1580"/>
         <source>[F0000-FFFFD] Supplementary Private Use Area-A</source>
         <translation>[F0000-FFFFD] Papildu privātais A lauka lietojums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1585"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1585"/>
         <source>[100000-10FFFD] Supplementary Private Use Area-B</source>
         <translation>[F0000-FFFFD] Papildu privātais B lauka lietojums</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="1653"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="1653"/>
         <source>Selection of character to insert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="360"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="360"/>
         <source>&amp;Height:</source>
         <translation>&amp;Augstums:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="178"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="178"/>
         <source>Layer:</source>
         <translation>Slānis:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="240"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="240"/>
         <source>Font settings</source>
         <translation>Fontu iestatījumi</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="275"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="275"/>
         <source>Angle:</source>
         <translation>Leņķis:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="380"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="380"/>
         <source>Oblique:</source>
         <translation>Slīps:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="324"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="324"/>
         <source>Width factor:</source>
         <translation>Platuma koeficients:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="373"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="373"/>
         <source>Font:</source>
         <translation>Fonts:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="844"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="844"/>
         <source>Baseline Left</source>
         <translation>Bāzes līnijas kreisā puse</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="589"/>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="707"/>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="847"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="589"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="707"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="847"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="704"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="704"/>
         <source>Baseline Right</source>
         <translation>Bāzes līnijas labā puse</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="586"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="586"/>
         <source>Baseline Center</source>
         <translation>Bāzes līnijas vidus</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="561"/>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="564"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="561"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="564"/>
         <source>Fit</source>
         <translation>Ietilpst</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="952"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="952"/>
         <source>Diameter (⌀)</source>
         <translation>Diametrs (⌀)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="516"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="516"/>
         <source>A&amp;ligned</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.ui" line="647"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.ui" line="647"/>
         <source>&amp;Middle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dialogs/entity/qg_dlgtext.cpp" line="212"/>
+        <location filename="../src/ui/dialogs/entity/qg_dlg_text.cpp" line="212"/>
         <source>Pen</source>
         <translation type="unfinished">Zīmulis</translation>
     </message>
@@ -33073,52 +35343,52 @@ Vai vēlaties to aizvietot?</translation>
         <translation>Atvērta dwg datnes versija %1.</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5560"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5551"/>
         <source>unknown error opening dwg file</source>
         <translation>nezināma kļūda, atverot dwg datni</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5563"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5554"/>
         <source>can&apos;t open this dwg file</source>
         <translation>nevar atvērt šo dwg datni</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5566"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5557"/>
         <source>unsupported dwg version</source>
         <translation>neatbalstīta dwg versija</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5569"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5560"/>
         <source>error reading file metadata in dwg file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5572"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5563"/>
         <source>error reading file header in dwg file</source>
         <translation>kļūda, lasot datnes galveni dwg datnē</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5575"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5566"/>
         <source>error reading header vars in dwg file</source>
         <translation>kļūda, lasot galvenes mainīgos dwg datnē</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5578"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5569"/>
         <source>error reading classes in dwg file</source>
         <translation>kļūda, lasot klases dwg datnē</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5581"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5572"/>
         <source>error reading offsets in dwg file</source>
         <translation>kļūda, lasot nobīdes dwg datnē</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5584"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5575"/>
         <source>error reading tables in dwg file</source>
         <translation>kļūda, lasot tabulas dwg datnē</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5590"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5581"/>
         <source>error reading entities in dwg file</source>
         <translation>kļūda, lasot objektus dwg datnē</translation>
     </message>
@@ -33193,12 +35463,12 @@ Vai vēlaties to aizvietot?</translation>
         <translation>Brīdinājums</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5587"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5578"/>
         <source>error reading blocks in dwg file</source>
         <translation>kļūda, lasot dwg datnes blokus</translation>
     </message>
     <message>
-        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5593"/>
+        <location filename="../src/lib/filters/rs_filterdxfrw.cpp" line="5584"/>
         <source>error reading objects in dwg file</source>
         <translation>kļūda, lasot dwg datnes objektus</translation>
     </message>
@@ -36663,6 +38933,11 @@ Vai vēlaties to aizvietot?</translation>
         <source>[Override]</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/ui/qg_actionhandler.cpp" line="88"/>
+        <source>%2 - command for &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RS_ActionBlocksCreate</name>
@@ -39261,42 +41536,42 @@ Point: (%8 , %9)</source>
 <context>
     <name>RS_ActionModifyTrim</name>
     <message>
-        <location filename="../src/actions/drawing/modify/rs_actionmodifytrim.cpp" line="214"/>
+        <location filename="../src/actions/drawing/modify/rs_actionmodifytrim.cpp" line="217"/>
         <source>Select first trim entity</source>
         <translation>Izvēlieties pirmo īsināšanas objektu</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/modify/rs_actionmodifytrim.cpp" line="217"/>
+        <location filename="../src/actions/drawing/modify/rs_actionmodifytrim.cpp" line="220"/>
         <source>Select limiting entity</source>
         <translation>Izvēlieties ierobežojošo objektu</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/modify/rs_actionmodifytrim.cpp" line="127"/>
+        <location filename="../src/actions/drawing/modify/rs_actionmodifytrim.cpp" line="130"/>
         <source>Trim</source>
         <translation type="unfinished">Īsināt</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/modify/rs_actionmodifytrim.cpp" line="127"/>
+        <location filename="../src/actions/drawing/modify/rs_actionmodifytrim.cpp" line="130"/>
         <source>Trim Two</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/modify/rs_actionmodifytrim.cpp" line="128"/>
+        <location filename="../src/actions/drawing/modify/rs_actionmodifytrim.cpp" line="131"/>
         <source>Intersection:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/modify/rs_actionmodifytrim.cpp" line="130"/>
+        <location filename="../src/actions/drawing/modify/rs_actionmodifytrim.cpp" line="133"/>
         <source>Intersection 2:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/modify/rs_actionmodifytrim.cpp" line="222"/>
+        <location filename="../src/actions/drawing/modify/rs_actionmodifytrim.cpp" line="225"/>
         <source>Select second trim entity</source>
         <translation>Izvēlieties otro īsināšanas objektu</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/modify/rs_actionmodifytrim.cpp" line="225"/>
+        <location filename="../src/actions/drawing/modify/rs_actionmodifytrim.cpp" line="228"/>
         <source>Select entity to trim</source>
         <translation>Izvēlieties objektu, ko īsināt</translation>
     </message>

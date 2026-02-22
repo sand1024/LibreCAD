@@ -1363,7 +1363,7 @@ void QG_GraphicView::setDraftLinesMode(const bool mode) const {
 bool QG_GraphicView::isDraftLinesMode() const {
     auto* viewRenderer = dynamic_cast<LC_GraphicViewRenderer*>(getRenderer());
     if (viewRenderer != nullptr) {
-        return viewRenderer->getLineWidthScaling();
+        return !viewRenderer->getLineWidthScaling();
     }
     return false;
 }

@@ -47,7 +47,7 @@ protected:
     static const QString SECTION_DIM_TOLERANCES;
     static const QString SECTION_DIM_GEOMETRY;
 
-    void doFillEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) override;
+    void doCreateEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) override;
     void addArrowsFlipLinks(const QList<RS_Entity*>& list, LC_PropertyContainer* cont) const;
     void createMiscSection(LC_PropertyContainer* container, const QList<RS_Entity*>& list);
     void prepareArrowheadItemsDescriptor(QString arrowName, const std::vector<LC_DimArrowRegistry::ArrowInfo>& arrowTypes,
@@ -113,6 +113,8 @@ protected:
 
     void createDimGeometrySection(LC_PropertyContainer* container, const QList<RS_Entity*>& list);
     virtual void doCreateDimGeometrySection(LC_PropertyContainer* container, const QList<RS_Entity*>& list) = 0;
+    void fillComputedProperites([[maybe_unused]]LC_PropertyContainer* container, [[maybe_unused]]const QList<RS_Entity*>& entitiesList) override {};
+    void doCreateSelectedSetCommands(LC_PropertyContainer* propertyContainer, const QList<RS_Entity*>& list) override;
 };
 
 #endif

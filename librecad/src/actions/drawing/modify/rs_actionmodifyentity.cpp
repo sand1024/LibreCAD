@@ -26,13 +26,13 @@
 
 #include "rs_actionmodifyentity.h"
 
-#include "lc_dlgdimension.h"
+#include "lc_dlg_dimension.h"
 #include "lc_entitypropertieseditor.h"
 #include "lc_quickinfowidget.h"
 #include "qc_applicationwindow.h"
-#include "qg_dlghatch.h"
-#include "qg_dlgmtext.h"
-#include "qg_dlgtext.h"
+#include "qg_dlg_hatch.h"
+#include "qg_dlg_mtext.h"
+#include "qg_dlg_text.h"
 #include "rs_debug.h"
 #include "rs_dimension.h"
 #include "rs_entity.h"

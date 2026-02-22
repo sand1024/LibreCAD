@@ -189,6 +189,7 @@ void RS_Spline::setDegree(const int degree) {
 }
 int RS_Spline::getDegree() const { return m_data.degree; }
 
+
 /** Counts */
 size_t RS_Spline::getNumberOfControlPoints() const {
   return getUnwrappedSize();
@@ -473,6 +474,9 @@ void RS_Spline::setWeight(const size_t i, const double w) {
     if (isClosed()) {
         updateControlAndWeightWrapping();
     }
+    // fixme - is it really necessary? That might be not good for bulk update, probably call update explicitly once after all modifications?
+    // after all, this instance of entity will go to undoable and the clone will be added into the document - so probably update should be
+    // called on clone later?
     update();
   }
 }
@@ -481,7 +485,7 @@ void RS_Spline::setWeights(const std::vector<double> &w) {
   if (isClosed()) {
       updateControlAndWeightWrapping();
   }
-  update();
+  update(); // fixme - is it really necessary? That might be not good for bulk update, probably call update explicitly once after all modifications?
 }
 void RS_Spline::setControlPoint(const size_t i, const RS_Vector &v) {
   if (i < m_data.controlPoints.size()) {
@@ -489,7 +493,7 @@ void RS_Spline::setControlPoint(const size_t i, const RS_Vector &v) {
     if (isClosed()) {
         updateControlAndWeightWrapping();
     }
-    update();
+    update();  // fixme - is it really necessary? That might be not good for bulk update, probably call update explicitly once after all modifications?
   }
 }
 void RS_Spline::setKnot(const size_t i, const double k) {
@@ -499,7 +503,7 @@ void RS_Spline::setKnot(const size_t i, const double k) {
     if (isClosed()) {
         updateKnotWrapping();
     }
-    update();
+    update();  // fixme - is it really necessary? That might be not good for bulk update, probably call update explicitly once after all modifications?
   }
 }
 

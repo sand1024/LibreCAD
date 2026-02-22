@@ -314,7 +314,7 @@ void LC_MenuFactoryGraphicView::createGVMenuSelect(QMenu* ctxMenu, RS_Entity* co
                        "SelectContour",
                        "SelectIntersected",
                        "DeselectIntersected",
-                       "SelectLayer",
+                       "SelectLayer"
                    });
     }
     else {

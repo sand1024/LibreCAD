@@ -36,7 +36,7 @@ QString LC_PropertyRSVector::getXKey() {
 LC_PropertyAtomic* LC_PropertyRSVector::createXProperty() {
     const auto viewName = m_interactiveInputType == LC_ActionContext::InteractiveInputInfo::POINT
                               ? LC_PropertyDoubleInteractivePickView::VIEW_NAME
-                              : QByteArrayLiteral("");
+                              : LC_PropertyDoubleInteractivePickView::VIEW_NAME;
     return createFieldProperty(&RS_Vector::getX, &RS_Vector::setX, getXKey(), getXLabel(), getXDescriptionFormat(), viewName);
 }
 
@@ -47,7 +47,7 @@ QString LC_PropertyRSVector::getYKey() {
 LC_PropertyAtomic* LC_PropertyRSVector::createYProperty() {
     const auto viewName = m_interactiveInputType == LC_ActionContext::InteractiveInputInfo::POINT
                               ? LC_PropertyDoubleInteractivePickView::VIEW_NAME
-                              : QByteArrayLiteral("");
+                              : LC_PropertyDoubleInteractivePickView::VIEW_NAME;
     return createFieldProperty(&RS_Vector::getY, &RS_Vector::setY, getYKey(), getYLabel(), getYDescriptionFormat(), viewName);
 }
 

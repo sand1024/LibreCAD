@@ -136,7 +136,7 @@ signals:
     [[deprecated]] void beforePropertyLockToggled(LC_Property* property);
     [[deprecated]] void propertyLockToggled(LC_Property* property);
 
-public slots: // fixme - make private and add method for connect/disconnect
+public slots:
     void onEditedPropertyWillChange(LC_PropertyChangeReason reason, LC_Property::PropertyValuePtr newValue, int typeId);
     void onEditedPropertyDidChange(LC_PropertyChangeReason reason);
     void onActivePropertyDestroyed();

@@ -101,17 +101,17 @@ class DRW_Entity: public DRW_ParseableEntity{
     SETENTFRIENDS
 public:
     //initializes default values
-	DRW_Entity() = default;
-	virtual ~DRW_Entity() = default;
+    DRW_Entity() = default;
+    virtual ~DRW_Entity() = default;
 
-	//removed copy/move ctors
-	// looks like the potential issue is the "curr" pointer is reset in previous
-	// versions during copy ctor
+    //removed copy/move ctors
+    // looks like the potential issue is the "curr" pointer is reset in previous
+    // versions during copy ctor
 
-	void reset() {
-		extData.clear();
-		curr.reset();
-	}
+    void reset() {
+        extData.clear();
+        curr.reset();
+    }
 
     virtual void applyExtrusion() = 0;
 
@@ -133,26 +133,26 @@ protected:
 
 public:
     DRW::ETYPE eType = DRW::UNKNOWN;     /*!< enum: entity type, code 0 */
-	duint32 handle = DRW::NoHandle;            /*!< entity identifier, code 5 */
+    duint32 handle = DRW::NoHandle;            /*!< entity identifier, code 5 */
     std::list<std::list<DRW_Variant> > appData; /*!< list of application data, code 102 */
-	duint32 parentHandle = DRW::NoHandle;      /*!< Soft-pointer ID/handle to owner BLOCK_RECORD object, code 330 */
-	DRW::Space space = DRW::ModelSpace;          /*!< space indicator, code 67*/
-	UTF8STRING layer = "0";          /*!< layer name, code 8 */
-	UTF8STRING lineType = "BYLAYER";       /*!< line type, code 6 */
-	duint32 material = DRW::MaterialByLayer;          /*!< hard pointer id to material object, code 347 */
-	int color = DRW::ColorByLayer;                 /*!< entity color, code 62 */
+    duint32 parentHandle = DRW::NoHandle;      /*!< Soft-pointer ID/handle to owner BLOCK_RECORD object, code 330 */
+    DRW::Space space = DRW::ModelSpace;          /*!< space indicator, code 67*/
+    UTF8STRING layer = "0";          /*!< layer name, code 8 */
+    UTF8STRING lineType = "BYLAYER";       /*!< line type, code 6 */
+    duint32 material = DRW::MaterialByLayer;          /*!< hard pointer id to material object, code 347 */
+    int color = DRW::ColorByLayer;                 /*!< entity color, code 62 */
     DRW_LW_Conv::lineWidth lWeight = DRW_LW_Conv::widthByLayer; /*!< entity lineweight, code 370 */
-	double ltypeScale = 1.0;         /*!< linetype scale, code 48 */
-	bool visible = true;              /*!< entity visibility, code 60 */
-	int numProxyGraph = 0;         /*!< Number of bytes in proxy graphics, code 92 */
+    double ltypeScale = 1.0;         /*!< linetype scale, code 48 */
+    bool visible = true;              /*!< entity visibility, code 60 */
+    int numProxyGraph = 0;         /*!< Number of bytes in proxy graphics, code 92 */
     std::string proxyGraphics; /*!< proxy graphics bytes, code 310 */
-	int color24 = -1;               /*!< 24-bit color, code 420 */
+    int color24 = -1;               /*!< 24-bit color, code 420 */
     std::string colorName;     /*!< color name, code 430 */
-	int transparency = DRW::Opaque;          /*!< transparency, code 440 */
-	int plotStyle = DRW::DefaultPlotStyle;             /*!< hard pointer id to plot style object, code 390 */
-	DRW::ShadowMode shadow = DRW::CastAndReceieveShadows;    /*!< shadow mode, code 284 */
-	bool haveExtrusion = false;        /*!< set to true if the entity have extrusion*/
-	std::vector<std::shared_ptr<DRW_Variant>> extData; /*!< FIFO list of extended data, codes 1000 to 1071*/
+    int transparency = DRW::Opaque;          /*!< transparency, code 440 */
+    int plotStyle = DRW::DefaultPlotStyle;             /*!< hard pointer id to plot style object, code 390 */
+    DRW::ShadowMode shadow = DRW::CastAndReceieveShadows;    /*!< shadow mode, code 284 */
+    bool haveExtrusion = false;        /*!< set to true if the entity have extrusion*/
+    std::vector<std::shared_ptr<DRW_Variant>> extData; /*!< FIFO list of extended data, codes 1000 to 1071*/
 
 protected: //only for read dwg
     duint8 haveNextLinks; //aka nolinks //B
@@ -162,20 +162,20 @@ protected: //only for read dwg
     duint8 shadowFlag; //presence of shadow handle ?? (in dwg may be plotflag)//RC
     dwgHandle lTypeH;
     dwgHandle layerH;
-	duint32 nextEntLink = 0;
-	duint32 prevEntLink = 0;
-	bool ownerHandle = false;
+    duint32 nextEntLink = 0;
+    duint32 prevEntLink = 0;
+    bool ownerHandle = false;
 
-	duint8 xDictFlag = 0;
-	dint32 numReactors = 0; //
+    duint8 xDictFlag = 0;
+    dint32 numReactors = 0; //
     duint32 objSize = 0;  //RL 32bits object data size in bits
     dint16 oType = 0;
 
 private:
-	void init(const DRW_Entity& rhs);
-	DRW_Coord extAxisX;
+    void init(const DRW_Entity& rhs);
+    DRW_Coord extAxisX;
     DRW_Coord extAxisY;
-	std::shared_ptr<DRW_Variant> curr;
+    std::shared_ptr<DRW_Variant> curr;
 };
 
 
@@ -567,7 +567,7 @@ public:
         elevation = thickness = width = 0.0;
         flags = 0;
         extPoint.x = extPoint.y = 0;
-		extPoint.z = 1;
+        extPoint.z = 1;
     }
 
     DRW_LWPolyline(const DRW_LWPolyline& p):DRW_Entity(p){
@@ -576,21 +576,19 @@ public:
         this->thickness = p.thickness;
         this->width = p.width;
         this->flags = p.flags;
-		this->extPoint = p.extPoint;
+        this->extPoint = p.extPoint;
         for (unsigned i=0; i<p.vertlist.size(); i++)// RLZ ok or new
-		  this->vertlist.push_back(
-					std::make_shared<DRW_Vertex2D>(*p.vertlist.at(i))
-					);
+          this->vertlist.push_back(std::make_shared<DRW_Vertex2D>(*p.vertlist.at(i)));
     }
-	// TODO rule of 5
+// TODO rule of 5
 
     void applyExtrusion() override;
     void addVertex (DRW_Vertex2D v) {
-		std::shared_ptr<DRW_Vertex2D> vert = std::make_shared<DRW_Vertex2D>(v);
+        std::shared_ptr<DRW_Vertex2D> vert = std::make_shared<DRW_Vertex2D>(v);
         vertlist.push_back(vert);
     }
-	std::shared_ptr<DRW_Vertex2D> addVertex () {
-		std::shared_ptr<DRW_Vertex2D> vert = std::make_shared<DRW_Vertex2D>();
+    std::shared_ptr<DRW_Vertex2D> addVertex () {
+        std::shared_ptr<DRW_Vertex2D> vert = std::make_shared<DRW_Vertex2D>();
         vert->stawidth = 0;
         vert->endwidth = 0;
         vert->bulge = 0;
@@ -609,8 +607,8 @@ public:
     double elevation;         /*!< elevation, code 38 */
     double thickness;         /*!< thickness, code 39 */
     DRW_Coord extPoint;       /*!<  Dir extrusion normal vector, code 210, 220 & 230 */
-	std::shared_ptr<DRW_Vertex2D> vertex;       /*!< current vertex to add data */
-	std::vector<std::shared_ptr<DRW_Vertex2D>> vertlist;  /*!< vertex list */
+    std::shared_ptr<DRW_Vertex2D> vertex;       /*!< current vertex to add data */
+    std::vector<std::shared_ptr<DRW_Vertex2D>> vertlist;  /*!< vertex list */
 };
 
 //! Class to handle insert entries
@@ -867,7 +865,7 @@ public:
         numedges = objlist.size();
     }
 
-int type;               /*!< boundary path type, code 92, polyline=2, default=0 */
+    int type;               /*!< boundary path type, code 92, polyline=2, default=0 */
     int numedges;           /*!< number of edges (if not a polyline), code 93 */
 //TODO: store lwpolylines as entities
 //    std::vector<DRW_LWPolyline *> pollist;  /*!< polyline list */

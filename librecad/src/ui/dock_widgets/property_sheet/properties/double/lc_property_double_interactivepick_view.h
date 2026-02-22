@@ -34,6 +34,7 @@ public:
     static const QByteArray VIEW_NAME;
     static const QByteArray ATTR_POSITIVIE_VALUES_ONLY;
     static const QByteArray ATTR_NON_MEANINGFUL_DISTANCE;
+    static const QByteArray ATTR_FORMAT_AS_INT;
 
     explicit LC_PropertyDoubleInteractivePickView(LC_PropertyDouble& property);
 
@@ -47,6 +48,8 @@ public:
         m_cachedStrValue.clear();
     }
 
+    bool isFormatAsInt() const {return m_formatAsInt;}
+
 protected:
     using Inherited = LC_PropertyViewTyped;
     bool doAcceptKeyPressedForInplaceEdit(QKeyEvent* keyEvent) const override;
@@ -59,6 +62,7 @@ protected:
     QString m_cachedStrValue = "";
     bool m_positiveOnly = false;
     double m_notMeaningfulDistance = 0;
+    bool m_formatAsInt = false;
 };
 
 #endif

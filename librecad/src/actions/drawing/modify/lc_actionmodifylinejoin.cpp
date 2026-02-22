@@ -189,12 +189,14 @@ void LC_ActionModifyLineJoin::doOnLeftMouseButtonRelease(const LC_MouseEvent* e,
                             m_linesJoinData = joinData;
                             trigger();
                         } else { // truly parallel lines, can't merge them
+                            delete joinData;
                             commandMessage(tr("Lines are parallel, can't merge"));
                         }
                     } else { // lines may merge with angle
                         if (joinData->areLinesAlreadyIntersected()){
                             // both lines are already crossed, do nothing
                             commandMessage(tr("Lines already intersects, can't merge"));
+                            delete joinData;
                         } else {
                             // check whether intersection is on the first line.
                             // if it so, and mode for line is EXTEND/TRIM, we need to ask the user
@@ -217,7 +219,6 @@ void LC_ActionModifyLineJoin::doOnLeftMouseButtonRelease(const LC_MouseEvent* e,
                             }
                         }
                     }
-                    delete joinData;
                 } else {
                     commandMessage(tr("No line selected"));
                 }
@@ -267,6 +268,7 @@ void LC_ActionModifyLineJoin::doBack(const LC_MouseEvent* e, const int status){
 void LC_ActionModifyLineJoin::doAfterTrigger(){
     LC_AbstractActionWithPreview::doAfterTrigger();
     delete m_linesJoinData; // cleanup
+    m_linesJoinData = nullptr;
     redraw();
     // return to selection first line mode
     init(SetLine1);
@@ -347,7 +349,8 @@ void LC_ActionModifyLineJoin::applyAttributes(RS_Entity *e, bool forLine1){
             e->setLayer(layer);
             break;
         }
-        case ATTRIBUTES_BOTH_LINES:   // pick attributes from each original line individually
+        case ATTRIBUTES_BOTH_LINES: {
+            // pick attributes from each original line individually
             if (forLine1){ // proceed line 1
                 pen = m_line1->getPen(false);
                 e->setPen(pen);
@@ -360,15 +363,20 @@ void LC_ActionModifyLineJoin::applyAttributes(RS_Entity *e, bool forLine1){
                 e->setLayer(layer);
             }
             break;
-        case ATTRIBUTES_LINE_2:  // pick attributes from line 2
+        }
+        case ATTRIBUTES_LINE_2: {
+            // pick attributes from line 2
             pen = m_line2->getPen(false);
             e->setPen(pen);
             layer = m_line2->getLayer(true);
             e->setLayer(layer);
             break;
-        case ATTRIBUTES_ACTIVE_PEN_LAYER: // just set for active pen and layer
+        }
+        case ATTRIBUTES_ACTIVE_PEN_LAYER: {
+            // just set for active pen and layer
             setPenAndLayerToActive(e);
             break;
+        }
         default:
             break;
     }

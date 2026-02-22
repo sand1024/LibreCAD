@@ -35,8 +35,7 @@ namespace Ui {
 }
 
 namespace{
-    // fixme - to namespace or class
-    static QString toSingleLine(const QString& str) {
+    QString toSingleLine(const QString& str) {
         const int n = str.indexOf('\n');
         const int r = str.indexOf('\r');
         const int len = n < 0 ? r : (r < 0 ? n : qMin(n, r));

@@ -25,7 +25,7 @@
 #define LC_MENUACTIVATOR_H
 #include <QString>
 
-#include "lc_dlgdimension.h"
+#include "lc_dlg_dimension.h"
 
 class QMouseEvent;
 

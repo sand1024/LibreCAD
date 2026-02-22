@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>316</width>
-    <height>464</height>
+    <height>516</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -139,7 +139,7 @@
       <string>General</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
-      <item row="1" column="0">
+      <item row="2" column="0">
        <widget class="QCheckBox" name="cbShowComputed">
         <property name="toolTip">
          <string>If enabled, computed properties for entities will be also shown (if any exists)</string>
@@ -149,7 +149,7 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
+      <item row="1" column="0">
        <widget class="QCheckBox" name="cbShowLinks">
         <property name="toolTip">
          <string>If enabled, property sheet will include links to command actions, that are relevant to specific properties or sections</string>
@@ -159,7 +159,27 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="cbShowSingelEntityCommands">
+        <property name="toolTip">
+         <string>If selected, in case there is only on entity in sheet, the list for commands that are relevant for entity will be shown (if any applicable).</string>
+        </property>
+        <property name="text">
+         <string>Show single entity commands</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QCheckBox" name="cbShowMultipleEntitiesCommands">
+        <property name="toolTip">
+         <string>If selected, if there is one or more entities selected, the list of entity set modification commands will be shown (if any applicable).</string>
+        </property>
+        <property name="text">
+         <string>Show multiple entities modification commands</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
        <widget class="QCheckBox" name="cbDuplicateSelectionAction">
         <property name="toolTip">
          <string>If enabled, generic selection-related actions will be included into the widget toolbar</string>

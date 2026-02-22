@@ -61,7 +61,7 @@ struct LC_CrossData {
  * @param actionContext
  */
 LC_ActionDrawCross::LC_ActionDrawCross(LC_ActionContext *actionContext)
-    :LC_AbstractActionWithPreview("Draw Cross", actionContext,RS2::ActionDrawCross){
+    :LC_AbstractActionWithPreview("Draw Cross", actionContext,RS2::ActionDrawCenterMark){
 }
 
 LC_ActionDrawCross::~LC_ActionDrawCross() = default;

@@ -247,6 +247,9 @@ void RS_GraphicView::onViewportChanged() {
 
 void RS_GraphicView::onViewportRedrawNeeded(const RS2::RedrawMethod method) {
     redraw(method);
+    if (method & RS2::RedrawImmediately) {
+        repaint();
+    }
 }
 
 void RS_GraphicView::onUCSChanged(LC_UCS* ucs) {

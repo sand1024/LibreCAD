@@ -24,10 +24,9 @@
 #include "lc_propertiesprovider_text.h"
 
 #include "lc_property_double_interactivepick_view.h"
-#include "lc_property_qstring_font_combobox_view.h"
 #include "rs_text.h"
 
-void LC_PropertiesProviderText::doFillEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
+void LC_PropertiesProviderText::doCreateEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
     const auto contGeometry = createGeometrySection(container);
 
     addVector<RS_Text>({"insert", tr("Insertion Point"), tr("Point of text insertion")}, [](const RS_Text* e) -> RS_Vector {
@@ -131,4 +130,23 @@ void LC_PropertiesProviderText::doFillEntitySpecificProperties(LC_PropertyContai
                          const auto textgen = static_cast<RS_TextData::TextGeneration>(v);
                          e->setTextGeneration(textgen);
                      }, list, contText);
+}
+
+void LC_PropertiesProviderText::doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) {
+    const auto text = static_cast<RS_Text*>(entity);
+
+    const std::list<CommandLinkInfo> commands = {
+        {
+            tr("Explode operations"),
+            {RS2::ActionModifyExplodeText, tr("Explode text "), tr("Explodes text into individual letters")},
+            {RS2::ActionBlocksExplode, tr("Explode"), tr("Explodes text to individual strokes")}
+        },
+        {tr("Other text operations"), {RS2::ActionDrawBoundingBox, tr("Bounding box"), tr("Creation of bounding box for text")}}
+    };
+
+    createEntityContextCommands<RS_Text>(commands, cont, text, "textCommands");
+}
+
+void LC_PropertiesProviderText::fillComputedProperites([[maybe_unused]] LC_PropertyContainer* container,
+                                                       [[maybe_unused]] const QList<RS_Entity*>& entitiesList) {
 }

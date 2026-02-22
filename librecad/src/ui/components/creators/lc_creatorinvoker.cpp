@@ -31,8 +31,8 @@
 
 #include "lc_actiongroupmanager.h"
 #include "lc_dialog.h"
-#include "lc_dlgmenuassigner.h"
-#include "lc_dlgwidgetcreator.h"
+#include "lc_dlg_menu_assigner.h"
+#include "lc_dlg_widget_creator.h"
 #include "qc_applicationwindow.h"
 #include "qg_graphicview.h"
 #include "rs_settings.h"

@@ -22,10 +22,9 @@
  */
 
 #include "lc_propertiesprovider_splinepoints.h"
+#include "lc_splinepoints.h"
 
-#include "lc_property_rsvector_view.h"
-
-void LC_PropertiesProviderSplinePoints::doFillEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
+void LC_PropertiesProviderSplinePoints::doCreateEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
     const auto contGeometry = createGeometrySection(container);
 
     addBoolean<LC_SplinePoints>({"closed", tr("Closed"), tr("Determines whether spline is closed or not")},
@@ -72,25 +71,61 @@ void LC_PropertiesProviderSplinePoints::doFillEntitySpecificProperties(LC_Proper
                                           splineControlPointIndex = newValue;
                                       });
     }
+}
 
-    const auto contOther = createCalculatedInfoSection(container);
-    if (contOther == nullptr) {
-        return;
-    }
-
+void LC_PropertiesProviderSplinePoints::doCreateCalculatedProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
     addReadOnlyString<LC_SplinePoints>({"length", tr("Length"), tr("Length of spline")}, [this](const LC_SplinePoints* e) -> QString {
         const double len = e->getLength();
         QString value = formatLinear(len);
         return value;
-    }, list, contOther);
+    }, list, container);
 
-    if (singleEntity) {
+    if (list.size() == 1) {
         addVector<LC_SplinePoints>({"start", tr("Start"), tr("Start point of spline")}, [](const LC_SplinePoints* e) -> RS_Vector {
             return e->getStartpoint();
-        }, nullptr, list, contOther);
+        }, nullptr, list, container);
 
         addVector<LC_SplinePoints>({"end", tr("End"), tr("End point of spline")}, [](const LC_SplinePoints* line) -> RS_Vector {
             return line->getEndpoint();
-        }, nullptr, list, contOther);
+        }, nullptr, list, container);
     }
+}
+
+void LC_PropertiesProviderSplinePoints::doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) {
+    const auto spline = static_cast<LC_SplinePoints*>(entity);
+    const std::list<CommandLinkInfo> commands = {
+        {
+            tr("Spline points adding"),
+            {RS2::ActionDrawSplinePointAdd, tr("Insert point"), tr("Insert point of spline")},
+            {RS2::ActionDrawSplinePointAppend, tr("Append point"), tr("Append point to start or end points of spline")}
+        },
+        {
+            tr("Spline points removal"),
+            {RS2::ActionDrawSplinePointRemove, tr("Remove point"), tr("Remove point of spline")},
+            {RS2::ActionDrawSplinePointDelTwo, tr("Delete between 2"), tr("Delete points between two points of spline")}
+        },
+        {
+            tr("Dividing and exploding spline"),
+            {RS2::ActionModifyCut, tr("Divide"), tr("Divide spline in provided point")},
+            {RS2::ActionDrawSplineExplode, tr("Explode"), tr("Explode spline to lines")},
+        },
+        {
+            tr("Tangent and rounding box"),
+            {RS2::ActionDrawLineTangent1, tr("Tangent (P,C)"), tr("Create tangental line in given position of spline")},
+            {RS2::ActionDrawBoundingBox, tr("Rounding box"), tr("Create bounding box around spline")}
+        }
+    };
+    createEntityContextCommands<LC_SplinePoints>(commands, cont, spline, "splineCommands");
+}
+
+void LC_PropertiesProviderSplinePoints::doCreateSelectedSetCommands(LC_PropertyContainer* propertyContainer, const QList<RS_Entity*>& list) {
+    LC_EntityTypePropertiesProvider::doCreateSelectedSetCommands(propertyContainer, list);
+
+    const std::list<CommandLinkInfo> commands = {
+        {
+            tr("Reverting direction"),
+            {RS2::ActionModifyRevertDirection, tr("Revert direction"), tr("Change direction of spline by swapping start and end points")}
+        }
+    };
+    createEntityContextCommands<LC_SplinePoints>(commands, propertyContainer, nullptr, "splineMultiCommands", false);
 }

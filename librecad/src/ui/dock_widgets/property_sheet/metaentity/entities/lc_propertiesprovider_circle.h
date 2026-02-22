@@ -25,6 +25,7 @@
 #define LC_PROPERTIESPROVIDERCIRCLE_H
 
 #include "lc_entity_type_propertiesprovider.h"
+#include "rs_circle.h"
 
 class LC_PropertiesProviderCircle : public LC_EntityTypePropertiesProvider {
     Q_OBJECT
@@ -33,9 +34,11 @@ public:
     LC_PropertiesProviderCircle(LC_ActionContext* actionContext, LC_PropertySheetWidget* widget)
         : LC_EntityTypePropertiesProvider(RS2::EntityCircle, actionContext, widget) {
     }
-
 protected:
-    void doFillEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) override;
+    void doCreateEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) override;
+    void fillComputedProperites(LC_PropertyContainer* container, const QList<RS_Entity*>& entitiesList) override;
+    void doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) override;
+    void doCreateSelectedSetCommands(LC_PropertyContainer* propertyContainer, const QList<RS_Entity*>& list) override;
 };
 
 #endif

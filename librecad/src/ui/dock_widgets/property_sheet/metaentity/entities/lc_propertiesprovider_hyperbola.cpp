@@ -25,7 +25,7 @@
 
 #include "lc_hyperbola.h"
 
-void LC_PropertiesProviderHyperbola::doFillEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
+void LC_PropertiesProviderHyperbola::doCreateEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
     const auto contGeometry = createGeometrySection(container);
 
     addVector<LC_Hyperbola>({"center", tr("Center"), tr("Center point of hyperbola")}, [](const LC_Hyperbola* e) -> RS_Vector {
@@ -51,9 +51,9 @@ void LC_PropertiesProviderHyperbola::doFillEntitySpecificProperties(LC_PropertyC
                             }, [](double& v, LC_Hyperbola* l) -> void {
                                 // fixme - sand - move this to hyperbola entity?
                                 // recalculate the majorP - by rotation old majorP point to delta between old and new angle
-                                double oldAngle = l->getAngle();
+                                const double oldAngle = l->getAngle();
                                 auto majorP = l->getMajorP();
-                                double angleDelta = oldAngle - v;
+                                const double angleDelta = oldAngle - v;
                                 majorP.rotate(angleDelta);
                                 l->setMajorP(majorP);
                             }, list, contGeometry);
@@ -63,8 +63,8 @@ void LC_PropertiesProviderHyperbola::doFillEntitySpecificProperties(LC_PropertyC
                                   }, [](double& v, LC_Hyperbola* l) -> void {
                                       // fixme - sand - move this to hyperbola entity?
                                       // recalculate the majorP - by changing length of the vector to new radius, but with staying on the direction
-                                      double angle = l->getAngle();
-                                      auto majorP = l->getCenter().relative(v, angle);
+                                      const double angle = l->getAngle();
+                                      const auto majorP = l->getCenter().relative(v, angle);
                                       l->setMajorP(majorP);
                                   }, list, contGeometry);
 
@@ -98,37 +98,46 @@ void LC_PropertiesProviderHyperbola::doFillEntitySpecificProperties(LC_PropertyC
                        }, [](const bool& v, LC_Hyperbola* e) -> void {
                            e->setReversed(v);
                        }, list, contGeometry);
+}
 
-    const auto contOther = createCalculatedInfoSection(container);
-    if (contOther == nullptr) {
-        return;
-    }
-
+void LC_PropertiesProviderHyperbola::doCreateCalculatedProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
     addReadOnlyString<LC_Hyperbola>({"eccentricity", tr("Eccentricity"), tr("Ecentricity of hyperbola")}, [this](const LC_Hyperbola* e) -> QString {
         const double eccentricity = e->getEccentricity();
         QString value = formatLinear(eccentricity);
         return value;
-    }, list, contOther);
-
+    }, list, container);
 
     addReadOnlyString<LC_Hyperbola>({"circumference", tr("Circumference", "hyperbola"), tr("Circumference of hyperbola")},
                                   [this](const LC_Hyperbola* e) -> QString {
                                       const double len = e->getLength();
                                       QString value = formatLinear(len);
                                       return value;
-                                  }, list, contOther);
+                                  }, list, container);
 
     addReadOnlyString<LC_Hyperbola>({"area", tr("Area"), tr("Area of hyperbola")}, [this](const LC_Hyperbola* e) -> QString {
         const double area = e->areaLineIntegral();
         QString value = formatLinear(area);
         return value;
-    }, list, contOther);
+    }, list, container);
 
     addVector<LC_Hyperbola>({"start", tr("Start"), tr("Start point of hyperbola")}, [](const LC_Hyperbola* e) -> RS_Vector {
         return e->getStartpoint();
-    }, nullptr, list, contOther);
+    }, nullptr, list, container);
 
-    addVector<LC_Hyperbola>({"end", tr("End"), tr("End point of hyperbola ")}, [](const LC_Hyperbola* e) -> RS_Vector {
+    addVector<LC_Hyperbola>({"end", tr("End"), tr("End point of hyperbola")}, [](const LC_Hyperbola* e) -> RS_Vector {
         return e->getEndpoint();
-    }, nullptr, list, contOther);
+    }, nullptr, list, container);
+}
+
+void LC_PropertiesProviderHyperbola::doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) {
+    const auto ellipse = static_cast<LC_Hyperbola*>(entity);
+    const std::list<CommandLinkInfo> commands = {
+        {
+            tr("Dividing hyperbola or creation of bounding box"),
+            {RS2::ActionModifyCut, tr("Divide"), tr("Divide hyperbola in given point")},
+            {RS2::ActionDrawBoundingBox, tr("Bounding box"), tr("Creation of bounding box for hyperbola")}
+        },
+    };
+
+    createEntityContextCommands<LC_Hyperbola>(commands, cont, ellipse, "hypCommands");
 }

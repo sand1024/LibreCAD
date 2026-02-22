@@ -21,11 +21,11 @@
  * ********************************************************************************
  */
 
-#include "lc_dlgnewwidget.h"
+#include "lc_dlg_new_widget.h"
 
 #include <QMessageBox>
 
-#include "ui_lc_dlgnewwidget.h"
+#include "ui_lc_dlg_new_widget.h"
 
 LC_DlgNewWidget::LC_DlgNewWidget(QWidget *parent, const bool forMenu, QStringList* existingWidgetsList)
     : LC_Dialog(parent, forMenu ? "DlgNewMenu" : "DlgNewToolbar")

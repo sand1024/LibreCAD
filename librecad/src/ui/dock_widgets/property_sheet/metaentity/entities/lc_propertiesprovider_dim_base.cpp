@@ -32,6 +32,7 @@
 #include "lc_property_qstring_list_arrows_combobox_view.h"
 #include "lc_property_rscolor.h"
 #include "lc_propertyprovider_utils.h"
+#include "qc_applicationwindow.h"
 #include "rs_block.h"
 #include "rs_dimension.h"
 
@@ -44,56 +45,17 @@ const QString LC_PropertiesProviderDimBase::SECTION_DIM_ALTERNATE_UNITS = "_secD
 const QString LC_PropertiesProviderDimBase::SECTION_DIM_TOLERANCES = "_secDimTolerances";
 const QString LC_PropertiesProviderDimBase::SECTION_DIM_GEOMETRY = "_secDimTolerances";
 
-void LC_PropertiesProviderDimBase::addArrowsFlipLinks(const QList<RS_Entity*>& list, LC_PropertyContainer* cont) const {
-    const bool flipArrowEnabled = m_entityType != RS2::EntityDimOrdinate;
-    // fixme - use two columns for flipArrow commands?
-    if (flipArrowEnabled) {
-        auto* flipArrow1 = new LC_PropertyAction(cont, true);
-        const LC_Property::Names names1 = {"dimFlipArrow1", tr("Flip Arrow 1"), tr("Flips direction of arrows 1, if any")};
-        flipArrow1->setNames(names1);
-        LC_PropertyViewDescriptor viewDescriptor1("Link");
-        viewDescriptor1["title"] = names1.displayName;
-        flipArrow1->setClickHandler(
-            [this, flipArrow1, list]([[maybe_unused]] const LC_PropertyAction* action, [[maybe_unused]] int linkIndex) {
-                for (const auto e : list) {
-                    const auto d = dynamic_cast<RS_Dimension*>(e);
-                    if (d != nullptr) {
-                        const auto clone = static_cast<RS_Dimension*>(d->clone());
-                        const bool flip = clone->isFlipArrow1();
-                        clone->setFlipArrow1(!flip);
-                        m_widget->entityModified(d, clone);
-                    }
-                }
-                m_widget->onPropertyEdited(flipArrow1);
-            });
-
-        flipArrow1->setViewDescriptor(viewDescriptor1);
-        cont->addChildProperty(flipArrow1);
-
-        if (m_entityType != RS2::EntityDimRadial) {
-            auto* flipArrow2 = new LC_PropertyAction(cont, true);
-            const LC_Property::Names names2 = {"dimFlipArrow2", tr("Flip Arrow 2"), tr("Flips direction of arrows 2, if any")};
-            flipArrow2->setNames(names2);
-            LC_PropertyViewDescriptor viewDescriptor2("Link");
-            viewDescriptor2["title"] = names2.displayName;
-            flipArrow2->setClickHandler(
-                [this, flipArrow2, list]([[maybe_unused]] const LC_PropertyAction* action, [[maybe_unused]] int linkIndex) {
-                    for (const auto e : list) {
-                        const auto d = dynamic_cast<RS_Dimension*>(e);
-                        if (d != nullptr) {
-                            const auto clone = static_cast<RS_Dimension*>(d->clone());
-                            const bool flip = clone->isFlipArrow2();
-                            clone->setFlipArrow2(!flip);
-                            m_widget->entityModified(d, clone);
-                        }
-                    }
-                    m_widget->onPropertyEdited(flipArrow2);
-                });
-
-            flipArrow2->setViewDescriptor(viewDescriptor2);
-            cont->addChildProperty(flipArrow2);
-        }
+void LC_PropertiesProviderDimBase::doCreateEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
+    createMiscSection(container, list);
+    createDimGeometrySection(container, list);
+    createLinesAndArrowsSection(container, list);
+    createTextSection(container, list);
+    createFitSection(container, list);
+    createPrimaryUnitsSection(container, list);
+    if (m_entityType != RS2::EntityDimAngular) {
+        createAlternateUnitsSection(container, list);
     }
+    createTolerancesSection(container, list);
 }
 
 void LC_PropertiesProviderDimBase::createMiscSection(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
@@ -156,6 +118,68 @@ void LC_PropertiesProviderDimBase::createMiscSection(LC_PropertyContainer* conta
 
         property->setViewDescriptor(viewDescriptor);
         cont->addChildProperty(property);
+    }
+
+    if (isShowLinks()) {
+        auto clickHandler = []([[maybe_unused]] RS_Dimension* entity, [[maybe_unused]]const int linkIndex) {
+            QC_ApplicationWindow::getAppWindow()->changeDrawingOptions(3);
+        };
+        LC_PropertyProviderUtils::createSingleEntityCommand<RS_Dimension>(cont, "propertyName", tr("Manage styles.."),
+                                                                       tr("Invokes dimension styles management UI"), "",
+                                                                       "", nullptr,
+                                                                       clickHandler, tr("Dimension styles management"));
+    }
+}
+
+void LC_PropertiesProviderDimBase::addArrowsFlipLinks(const QList<RS_Entity*>& list, LC_PropertyContainer* cont) const {
+    const bool flipArrowEnabled = m_entityType != RS2::EntityDimOrdinate;
+    // todo - probably it's better to use two columns for flipArrow commands?
+    if (flipArrowEnabled) {
+        auto* flipArrow1 = new LC_PropertyAction(cont, true);
+        const LC_Property::Names names1 = {"dimFlipArrow1", tr("Flip Arrow 1"), tr("Flips direction of arrows 1, if any")};
+        flipArrow1->setNames(names1);
+        LC_PropertyViewDescriptor viewDescriptor1("Link");
+        viewDescriptor1["title"] = names1.displayName;
+        flipArrow1->setClickHandler(
+            [this, flipArrow1, list]([[maybe_unused]] const LC_PropertyAction* action, [[maybe_unused]] int linkIndex) {
+                for (const auto e : list) {
+                    const auto d = dynamic_cast<RS_Dimension*>(e);
+                    if (d != nullptr) {
+                        const auto clone = static_cast<RS_Dimension*>(d->clone());
+                        const bool flip = clone->isFlipArrow1();
+                        clone->setFlipArrow1(!flip);
+                        m_widget->entityModified(d, clone);
+                    }
+                }
+                m_widget->onPropertyEdited(flipArrow1);
+            });
+
+        flipArrow1->setViewDescriptor(viewDescriptor1);
+        cont->addChildProperty(flipArrow1);
+
+        if (m_entityType != RS2::EntityDimRadial) {
+            auto* flipArrow2 = new LC_PropertyAction(cont, true);
+            const LC_Property::Names names2 = {"dimFlipArrow2", tr("Flip Arrow 2"), tr("Flips direction of arrows 2, if any")};
+            flipArrow2->setNames(names2);
+            LC_PropertyViewDescriptor viewDescriptor2("Link");
+            viewDescriptor2["title"] = names2.displayName;
+            flipArrow2->setClickHandler(
+                [this, flipArrow2, list]([[maybe_unused]] const LC_PropertyAction* action, [[maybe_unused]] int linkIndex) {
+                    for (const auto e : list) {
+                        const auto d = dynamic_cast<RS_Dimension*>(e);
+                        if (d != nullptr) {
+                            const auto clone = static_cast<RS_Dimension*>(d->clone());
+                            const bool flip = clone->isFlipArrow2();
+                            clone->setFlipArrow2(!flip);
+                            m_widget->entityModified(d, clone);
+                        }
+                    }
+                    m_widget->onPropertyEdited(flipArrow2);
+                });
+
+            flipArrow2->setViewDescriptor(viewDescriptor2);
+            cont->addChildProperty(flipArrow2);
+        }
     }
 }
 
@@ -1034,7 +1058,7 @@ void LC_PropertiesProviderDimBase::createPrimaryUnitsSection(LC_PropertyContaine
                              tr("Specifies sub-units scale factor for all applicable linear dimensions")
                          }, [](const LC_DimStyle* ds) -> double {
                              auto suppression = ds->zerosSuppression();
-                             return /*suppression->roundTo();*/ 0.0; // fixme - dims - where from it's obtained?
+                             return /*suppression->roundTo();*/ 0.0; // fixme - dims - where from it's obtained from dxf point of view?
                          }, [](double& v, const LC_DimStyle* ds) -> void {
                              // fixme - dims - where from it's obtained?
                          }, list, cont, funPositiveDoubleSpin);
@@ -1601,19 +1625,6 @@ void LC_PropertiesProviderDimBase::createTolerancesSection(LC_PropertyContainer*
     }
 }
 
-void LC_PropertiesProviderDimBase::doFillEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
-    createMiscSection(container, list);
-    createDimGeometrySection(container, list);
-    createLinesAndArrowsSection(container, list);
-    createTextSection(container, list);
-    createFitSection(container, list);
-    createPrimaryUnitsSection(container, list);
-    if (m_entityType != RS2::EntityDimAngular) {
-        createAlternateUnitsSection(container, list);
-    }
-    createTolerancesSection(container, list);
-}
-
 void LC_PropertiesProviderDimBase::addColor_DS(const LC_Property::Names& names, const std::function<RS_Color(LC_DimStyle* ds)>& funGetValue,
                                                const std::function<void(RS_Color& v, LC_DimStyle* ds)>& funSetValue,
                                                const QList<RS_Entity*>& list, LC_PropertyContainer* cont) {
@@ -1767,4 +1778,16 @@ void LC_PropertiesProviderDimBase::addVarEnum_DS(const LC_Property::Names& names
 void LC_PropertiesProviderDimBase::createDimGeometrySection(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
     const auto cont = createSection(container, {SECTION_DIM_GEOMETRY, tr("Dim geometry"), tr("Dimension's geometry properties")});
     doCreateDimGeometrySection(cont, list);
+}
+
+void LC_PropertiesProviderDimBase::doCreateSelectedSetCommands(LC_PropertyContainer* propertyContainer, const QList<RS_Entity*>& list) {
+    LC_EntityTypePropertiesProvider::doCreateSelectedSetCommands(propertyContainer, list);
+    const std::list<CommandLinkInfo> commands = {
+        {
+            tr("Regenerate dimensions"),
+            {RS2::ActionDimRegenerate, tr("Dim Regenerate"), tr("Regenerate dimensions")},
+            // {RS2::ActionDimeStyles, tr("Dimension Styles"), tr("Uses aligned dimension as base line and creates other dimensions")}
+        }
+    };
+    createEntityContextCommands<RS_Dimension>(commands, propertyContainer, nullptr, "dimCommands", false);
 }

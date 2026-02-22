@@ -119,7 +119,7 @@ LC_WidgetOptionsDialog::LC_WidgetOptionsDialog(QWidget* parent)
         bool titleBarVertical = LC_GET_BOOL("DockTitleBarVertical", false);
         cbDockingVerticalTitleBar->setChecked(titleBarVertical);
 
-        bool verticalTabs = LC_GET_BOOL("DockVerticalTabs", false);
+        bool verticalTabs = LC_GET_BOOL("DockVerticalTabs", true);
         cbDockingVerticalTabs->setChecked(verticalTabs);
     }
     LC_GROUP_END();

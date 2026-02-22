@@ -177,7 +177,9 @@ void LC_PropertiesSheetModel::stopInvalidate(const bool enable) {
 
 void LC_PropertiesSheetModel::invalidateCached() const {
     const auto root = m_itemsTree.get();
-    invalidateCached(root);
+    if (root != nullptr) {
+        invalidateCached(root);
+    }
 }
 
 void LC_PropertiesSheetModel::invalidateCached(const PropertyItem* currentItem) const {

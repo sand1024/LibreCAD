@@ -23,6 +23,15 @@
 
 #include "lc_propertiesprovider_tolerance.h"
 
-void LC_PropertiesProviderTolerance::doFillEntitySpecificProperties([[maybe_unused]]LC_PropertyContainer* container, [[maybe_unused]]const QList<RS_Entity*>& list) {
+void LC_PropertiesProviderTolerance::doCreateEntitySpecificProperties([[maybe_unused]] LC_PropertyContainer* container,
+                                                                      [[maybe_unused]] const QList<RS_Entity*>& list) {
     // fixme - complete as tolerance will be ready
+}
+
+void LC_PropertiesProviderTolerance::fillComputedProperites([[maybe_unused]] LC_PropertyContainer* container,
+                                                            [[maybe_unused]] const QList<RS_Entity*>& entitiesList) {
+}
+
+void LC_PropertiesProviderTolerance::fillSingleEntityCommands([[maybe_unused]] LC_PropertyContainer* container,
+                                                              [[maybe_unused]] const QList<RS_Entity*>& entitiesList) {
 }

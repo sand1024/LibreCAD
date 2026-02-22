@@ -34,6 +34,7 @@
 const QByteArray LC_PropertyDoubleInteractivePickView::VIEW_NAME = QByteArrayLiteral("double_pickable");
 const QByteArray LC_PropertyDoubleInteractivePickView::ATTR_POSITIVIE_VALUES_ONLY = QByteArrayLiteral("positiveOnly");
 const QByteArray LC_PropertyDoubleInteractivePickView::ATTR_NON_MEANINGFUL_DISTANCE = QByteArrayLiteral("nonMeaningfulDistance");
+const QByteArray LC_PropertyDoubleInteractivePickView::ATTR_FORMAT_AS_INT = QByteArrayLiteral("formatAsInt");
 
 class
     LC_PropertyDoubleInteractivePickViewHandler : public LC_PropertyEditorButtonHandler<LC_PropertyDouble, LC_PropertyLineEditWithButton> {
@@ -207,6 +208,7 @@ QWidget* LC_PropertyDoubleInteractivePickView::doCreateValueEditor(QWidget* pare
 void LC_PropertyDoubleInteractivePickView::doApplyAttributes(const LC_PropertyViewDescriptor& info) {
     info.load(ATTR_POSITIVIE_VALUES_ONLY, m_positiveOnly);
     info.load(ATTR_NON_MEANINGFUL_DISTANCE, m_notMeaningfulDistance);
+    info.load(ATTR_FORMAT_AS_INT, m_formatAsInt);
 }
 
 bool LC_PropertyDoubleInteractivePickView::doPropertyValueToStrForView(QString& strValue) {
@@ -219,7 +221,12 @@ bool LC_PropertyDoubleInteractivePickView::doPropertyValueToStrForView(QString& 
             case LC_ActionContext::InteractiveInputInfo::POINT_X:
             case LC_ActionContext::InteractiveInputInfo::POINT_Y:
             case LC_ActionContext::InteractiveInputInfo::POINT:
-                value = formatter->formatDouble(doubleValue);
+                if (m_formatAsInt) { // fixme - might it be that for other modes int formatting is needed?
+                    strValue = formatter->formatInt(doubleValue);
+                }
+                else {
+                    value = formatter->formatDouble(doubleValue);
+                }
                 break;
             case LC_ActionContext::InteractiveInputInfo::ANGLE:
                 value = formatter->formatRawAngle(doubleValue);
@@ -259,7 +266,12 @@ bool LC_PropertyDoubleInteractivePickView::doPropertyValueToStrForEdit(QString& 
             strValue = formatter->formatDouble(doubleValue);
             break;
         default: {
-            strValue = formatter->formatDouble(doubleValue);
+            if (m_formatAsInt) {
+                strValue = formatter->formatInt(doubleValue);
+            }
+            else {
+                strValue = formatter->formatDouble(doubleValue);
+            }
             break;
         }
     }

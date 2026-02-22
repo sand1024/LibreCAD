@@ -49,7 +49,7 @@ void LC_PropertiesProviderActivePen::fillDocumentProperties(LC_PropertyContainer
             createColor(cont, pen);
             createLineWidth(cont, pen);
             createLineWidth(cont, pen);
-            if (m_widget->getOptions()->showLinks) {
+            if (isShowLinks()) {
                 createCommands(cont);
             }
         }

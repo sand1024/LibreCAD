@@ -187,6 +187,7 @@ namespace LC_PropertyProviderUtils {
                                                       const std::function<void(EntityClass*, int linkIndex)> &clickHandler, const QString &commonDescription) {
         auto* property = new LC_PropertyAction(container, true);
         property->setName(propertyName);
+        property->setDisplayName("");
         LC_PropertyViewDescriptor viewDescriptor("Link");
         viewDescriptor[LC_PropertyActionLinkView::ATTR_TITLE] = linkTitle;
         viewDescriptor[LC_PropertyActionLinkView::ATTR_TOOLTIP_LEFT] = linkTooltip;
@@ -204,7 +205,6 @@ namespace LC_PropertyProviderUtils {
         property->setViewDescriptor(viewDescriptor);
         container->addChildProperty(property);
     }
-
 };
 
 #endif

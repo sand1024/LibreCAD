@@ -35,7 +35,7 @@ using namespace LC_PropertyProviderUtils;
 void LC_PropertiesProviderGraphicViews::fillDocumentProperties(LC_PropertyContainer* container, RS_Graphic* graphic) {
     if (m_widget->getOptions()->noSelectionNamedView) {
         const auto viewsList = graphic->getViewList();
-        if (viewsList->isEmpty() && !m_widget->getOptions()->showLinks) {
+        if (viewsList->isEmpty() && !isShowLinks()) {
             return;
         }
         const auto cont = createSection(container, {SECTION_VIEWS, tr("Named View"), tr("Saved named views")});

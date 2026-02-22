@@ -25,7 +25,7 @@
 
 #include "rs_circle.h"
 
-void LC_PropertiesProviderCircle::doFillEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
+void LC_PropertiesProviderCircle::doCreateEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
     const auto contGeometry = createGeometrySection(container);
 
     addVector<RS_Circle>({"сenter", tr("Center"), tr("Center point of circle")}, [](const RS_Circle* e) -> RS_Vector {
@@ -46,7 +46,8 @@ void LC_PropertiesProviderCircle::doFillEntitySpecificProperties(LC_PropertyCont
                                      l->setRadius(v / 2.0);
                                  }, list, contGeometry);
 
-    addLinearDistance<RS_Circle>({"circumference", tr("Circumference", "circle"), tr("Circumference of circle")}, [](const RS_Circle* e) -> double {
+    addLinearDistance<RS_Circle>({"circumference", tr("Circumference", "circle"), tr("Circumference of circle")},
+                                 [](const RS_Circle* e) -> double {
                                      return e->getRadius() * 2.0 * M_PI;
                                  }, [](const double& v, RS_Circle* l) -> void {
                                      l->setRadius(v / 2.0 / M_PI);
@@ -59,4 +60,81 @@ void LC_PropertiesProviderCircle::doFillEntitySpecificProperties(LC_PropertyCont
                                      const double radius = std::sqrt(v / M_PI);
                                      l->setRadius(radius);
                                  }, list, contGeometry);
+}
+
+void LC_PropertiesProviderCircle::fillComputedProperites([[maybe_unused]]LC_PropertyContainer* container, [[maybe_unused]]const QList<RS_Entity*>& entitiesList) {
+}
+
+void LC_PropertiesProviderCircle::doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) {
+    const auto circle = static_cast<RS_Circle*>(entity);
+    const std::list<CommandLinkInfo> commands = {
+        {
+            tr("Concentric circles creation"),
+            {RS2::ActionModifyOffset, tr("Offset"), tr("Create parallel circle via offset")},
+            {RS2::ActionDrawLineParallelThrough, tr("Parallel (Point)"), tr("Create parallel circle by point")}
+        },
+        {
+            tr("Circle trimming or dividing"),
+            {RS2::ActionModifyCut, tr("Divide"), tr("Divide circle in specified point")},
+            {RS2::ActionModifyTrim, tr("Trim"), tr("Trim circle by other entity")}
+        },
+        {
+            tr("Creation of circle tangental to circle"),
+            {RS2::ActionDrawCircleTan1_2P, tr("Tangent Circle (2 P)"), tr("Create tangental circle 2 points")},
+            {RS2::ActionDrawCircleTan2_1P, tr("Tangent Circle (2 E, 1 P)"), tr("Create tangental circle by 2 entitites and 1 point")}
+        },
+        {
+            tr("Creation of circle tangental"),
+            {RS2::ActionDrawCircleTan3, tr("Tangent Circle (3 E)"), tr("Create tangental circle by 3 entities")},
+            {RS2::ActionDrawCircleTan2, tr("Tangent Circle (2 E, R)"), tr("Create tangental circle by 2 points and radius")}
+        },
+        {
+            tr("Creation of line tangental to circle"),
+            {RS2::ActionDrawLineTangent1, tr("Tangent (P,C)"), tr("Create line tangental to circle")},
+            {RS2::ActionDrawLineTangent2, tr("Tangent (C,C)"), tr("Create line tangental to two circles")}
+        },
+        {
+            tr("Creation of line tangental to circle"),
+            {RS2::ActionDrawLineOrthogonal, tr("Orthogonal"), tr("Create line orthogonal to circle")},
+            {RS2::ActionDrawLineOrthTan, tr("Tangent Orthogonal"), tr("Create tangental orthogonal line to line")},
+        },
+        {
+            tr("Dividing circle"),
+            {RS2::ActionDrawSliceDivideCircle, tr("Slice/Divide"), tr("Slice or divide a circle")},
+            {RS2::ActionModifyBreakDivide, tr("Break/Divide"), tr("Break or divide the circle by intesection points")}
+        },
+        {
+            tr("Creation of line tangental to circle"),
+            {RS2::ActionDrawLineAngleRel, tr("Relative"), tr("Create line with relative angle to circle")},
+            {RS2::ActionModifyRound, tr("Fillet"), tr("Create fillet for circle")},
+        },
+        {
+            tr("Creation of ellipse or bounding box"),
+            {RS2::ActionDrawEllipseInscribe, tr("Ellipse inscribed"), tr("Create elipse inscribed")},
+            {RS2::ActionDrawBoundingBox, tr("Bounding box"), tr("Create bounding box for circle")}
+        },
+        {
+            tr("Creation of dimension, diametric or radial"),
+            {RS2::ActionDimDiametric, tr("Dim Diametric"), tr("Create diametric dimension for circle")},
+            {RS2::ActionDimRadial, tr("Dim Radial"), tr("Create radial dimension for circle")}
+        },
+        {
+            tr("Creation of dimension, angular or ordinate"),
+            {RS2::ActionDimOrdinate, tr("Dim Ordinate"), tr("Create ordinate dimension for circle")},
+            {RS2::ActionDimLeader, tr("Leader"), tr("Create leader for circle")},
+        }
+    };
+
+    createEntityContextCommands<RS_Circle>(commands, cont, circle, "circleCommands");
+}
+
+void LC_PropertiesProviderCircle::doCreateSelectedSetCommands(LC_PropertyContainer* propertyContainer, const QList<RS_Entity*>& list) {
+    LC_EntityTypePropertiesProvider::doCreateSelectedSetCommands(propertyContainer, list);
+    const std::list<CommandLinkInfo> commands = {
+        {
+            tr("Center marks creation"),
+            {RS2::ActionDrawCenterMark, tr("Center mark"), tr("Create center mark for selected circles, ellipses and arcs")}
+        }
+    };
+    createEntityContextCommands<RS_Circle>(commands, propertyContainer, nullptr, "circleMultiCommands", false);
 }

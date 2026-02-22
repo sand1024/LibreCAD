@@ -68,7 +68,7 @@ void LC_PropertiesProviderGraphicLayer::fillDocumentProperties(LC_PropertyContai
         createLocked(graphic, cont);
         createPrintable(graphic, cont);
         createConstruction(cont, graphic);
-        if (m_widget->getOptions()->showLinks) {
+        if (isShowLinks()) {
             createLayerCommands(cont, graphic);
         }
     }

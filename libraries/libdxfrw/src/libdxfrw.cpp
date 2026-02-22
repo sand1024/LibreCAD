@@ -394,8 +394,8 @@ void dxfRW::writeHeader() {
     writeVar("$LUPREC", 4, 70);
     writeVar("$SKETCHINC", 1.0, 40);
     writeVar("$FILLETRAD", 0.0, 40);
-    writeVar("$AUNITS", 2, 70);
-    writeVar("$AUPREC", 0, 70);
+    writeVar("$AUNITS", 0, 70);
+    writeVar("$AUPREC", 2, 70);
     writeVar("$MENU", ".", 1);
 
     writeVar("$ELEVATION", 0.0, 40);

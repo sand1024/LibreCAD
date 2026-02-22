@@ -42,6 +42,7 @@
 class LC_ActionGroupManager;
 class LC_ActionContext;
 class LC_EntityPropertyContainerProvider;
+class QToolButton;
 
 namespace Ui {
     class LC_PropertySheetWidget;
@@ -87,6 +88,7 @@ public slots :
     void onActivePenChanged(RS_Pen pen);
     void onSettingsClicked();
 protected:
+    void setupSelectionButton(QToolButton* selectionButton, QAction* selectionPointerAction, LC_ActionGroupManager* actionGroupManager);
     void setupSelectionTypeCombobox(RS2::EntityType entityTypeTryToSet, QString propertyTryToSet);
     void clearContextEntities();
     void collectEntitiesToModify(RS2::EntityType entityType, QList<RS_Entity*>& entitiesToModify) const;
@@ -100,6 +102,7 @@ protected:
     bool isVirtualProperty(const LC_Property* property);
     int getCurrentlySelectedEntityType(int index) const;
     QLayout* getTopLevelLayout() const override;
+    void doAdjustForDockLocation(Qt::DockWidgetArea area) override;
 private:
     Ui::LC_PropertySheetWidget* ui;
     void initPropertySheet();

@@ -403,7 +403,7 @@ namespace InnerFactory{
             case RS2::ActionDrawRectangle1Point: {
                 return new LC_ActionDrawRectangle1Point(ctx);
             }
-            case RS2::ActionDrawCross: {
+            case RS2::ActionDrawCenterMark: {
                 return new LC_ActionDrawCross(ctx);
             }
             case RS2::ActionDrawBoundingBox: {

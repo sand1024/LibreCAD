@@ -5,15 +5,15 @@ set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 set (Boost_DEBUG OFF)
 
-set (LOCAL_BUILD "sand1024")
+set (LOCAL_BUILD "sand1024_")
 #LOCAL -----
-if (LOCAL_BUILD STREQUAL "sand1024_")
+if (LOCAL_BUILD STREQUAL "sand1024")
     set (CMAKE_VERBOSE_MAKEFILE ON)
     set (MIN_GW_PATH_PREFIX "d:\\Qt\\QT6\\6.9.0\\msvc2022_64")
-    set (BOOST_DIR "c:\\Local\\boost_1_84_0")
-    set (BOOST_ROOT "c:\\Local\\boost_1_84_0")
-    set (Boost_DIR "c:\\Local\\boost_1_84_0")
-    set (Boost_INCLUDE_DIR "c:\\Local\\boost_1_84_0")
+    set (BOOST_DIR "r:\\Local\\boost_1_84_0")
+    set (BOOST_ROOT "r:\\Local\\boost_1_84_0")
+    set (Boost_DIR "r:\\Local\\boost_1_84_0")
+    set (Boost_INCLUDE_DIR "r:\\Local\\boost_1_84_0")
     set (CMAKE_PREFIX_PATH "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6")
     set (Qt6_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6")
     set (Qt6Core_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6Core")
@@ -21,7 +21,7 @@ if (LOCAL_BUILD STREQUAL "sand1024_")
     set (Qt6CoreTools_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\Qt6CoreTools")
     set (Qt6Gui_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\QtGui")
     set (QtNetwork_DIR "${MIN_GW_PATH_PREFIX}\\lib\\cmake\\QtNetwork")
-    set (CMAKE_INSTALL_PREFIX "Z:/LC_BUILD_PROD")
+    set (CMAKE_INSTALL_PREFIX "R:/LC_BUILD_PROD")
 endif ()
 #local end ------
 
@@ -1395,24 +1395,24 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/actions/qg_layerdialog.h
      librecad/src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp
      librecad/src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.h
-     librecad/src/ui/dialogs/creators/lc_dlgmenuassigner.cpp
-     librecad/src/ui/dialogs/creators/lc_dlgmenuassigner.h
-     librecad/src/ui/dialogs/creators/lc_dlgnewwidget.cpp
-     librecad/src/ui/dialogs/creators/lc_dlgnewwidget.h
-     librecad/src/ui/dialogs/creators/lc_dlgwidgetcreator.cpp
-     librecad/src/ui/dialogs/creators/lc_dlgwidgetcreator.h
-     librecad/src/ui/dialogs/entity/lc_arcpropertieseditingwidget.cpp
-     librecad/src/ui/dialogs/entity/lc_arcpropertieseditingwidget.h
-     librecad/src/ui/dialogs/entity/lc_circlepropertieseditingwidget.cpp
-     librecad/src/ui/dialogs/entity/lc_circlepropertieseditingwidget.h
-     librecad/src/ui/dialogs/entity/lc_dlgdimension.cpp
-     librecad/src/ui/dialogs/entity/lc_dlgdimension.h
-     librecad/src/ui/dialogs/entity/lc_dlgentityproperties.cpp
-     librecad/src/ui/dialogs/entity/lc_dlgentityproperties.h
-     librecad/src/ui/dialogs/entity/lc_dlgtolerance.cpp
-     librecad/src/ui/dialogs/entity/lc_dlgtolerance.h
-     librecad/src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.cpp
-     librecad/src/ui/dialogs/entity/lc_ellipsepropertieseditingwidget.h
+     librecad/src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp
+     librecad/src/ui/dialogs/creators/lc_dlg_menu_assigner.h
+     librecad/src/ui/dialogs/creators/lc_dlg_new_widget.cpp
+     librecad/src/ui/dialogs/creators/lc_dlg_new_widget.h
+     librecad/src/ui/dialogs/creators/lc_dlg_widget_creator.cpp
+     librecad/src/ui/dialogs/creators/lc_dlg_widget_creator.h
+     librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_arc.cpp
+     librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_arc.h
+     librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_circle.cpp
+     librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_circle.h
+     librecad/src/ui/dialogs/entity/lc_dlg_dimension.cpp
+     librecad/src/ui/dialogs/entity/lc_dlg_dimension.h
+     librecad/src/ui/dialogs/entity/lc_dlg_entityproperties.cpp
+     librecad/src/ui/dialogs/entity/lc_dlg_entityproperties.h
+     librecad/src/ui/dialogs/entity/lc_dlg_tolerance.cpp
+     librecad/src/ui/dialogs/entity/lc_dlg_tolerance.h
+     librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.cpp
+     librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.h
      librecad/src/ui/dialogs/entity/lc_entitypropertiesdlg.cpp
      librecad/src/ui/dialogs/entity/lc_entitypropertiesdlg.h
      librecad/src/ui/dialogs/entity/lc_entitypropertieseditor.cpp
@@ -1421,38 +1421,38 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/entity/lc_entitypropertieseditorsupport.h
      librecad/src/ui/dialogs/entity/lc_entitypropertieseditorwidget.cpp
      librecad/src/ui/dialogs/entity/lc_entitypropertieseditorwidget.h
-     librecad/src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.cpp
-     librecad/src/ui/dialogs/entity/lc_hyperbolapropertieseditingwidget.h
-     librecad/src/ui/dialogs/entity/lc_imagepropertieseditingwidget.cpp
-     librecad/src/ui/dialogs/entity/lc_imagepropertieseditingwidget.h
-     librecad/src/ui/dialogs/entity/lc_insertpropertieseditingwidget.cpp
-     librecad/src/ui/dialogs/entity/lc_insertpropertieseditingwidget.h
-     librecad/src/ui/dialogs/entity/lc_linepropertieseditingwidget.cpp
-     librecad/src/ui/dialogs/entity/lc_linepropertieseditingwidget.h
-     librecad/src/ui/dialogs/entity/lc_parabolapropertieseditingwidget.cpp
-     librecad/src/ui/dialogs/entity/lc_parabolapropertieseditingwidget.h
+     librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.cpp
+     librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_hyperbola.h
+     librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_image.cpp
+     librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_image.h
+     librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_insert.cpp
+     librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_insert.h
+     librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_line.cpp
+     librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_line.h
+     librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_parabola.cpp
+     librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_parabola.h
      librecad/src/ui/dialogs/entity/lc_pointpickbutton.cpp
      librecad/src/ui/dialogs/entity/lc_pointpickbutton.h
-     librecad/src/ui/dialogs/entity/lc_pointpropertieseditingwidget.cpp
-     librecad/src/ui/dialogs/entity/lc_pointpropertieseditingwidget.h
-     librecad/src/ui/dialogs/entity/lc_polylinepropertieseditingwidget.cpp
-     librecad/src/ui/dialogs/entity/lc_polylinepropertieseditingwidget.h
-     librecad/src/ui/dialogs/entity/lc_splinepointspropertieseditingwidget.cpp
-     librecad/src/ui/dialogs/entity/lc_splinepointspropertieseditingwidget.h
-     librecad/src/ui/dialogs/entity/lc_splinepropertieseditingwidget.cpp
-     librecad/src/ui/dialogs/entity/lc_splinepropertieseditingwidget.h
+     librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_point.cpp
+     librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_point.h
+     librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_polyline.cpp
+     librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_polyline.h
+     librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_splinepoints.cpp
+     librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_splinepoints.h
+     librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_spline.cpp
+     librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_spline.h
      librecad/src/ui/dialogs/entity/qg_blockdialog.cpp
      librecad/src/ui/dialogs/entity/qg_blockdialog.h
      librecad/src/ui/dialogs/entity/qg_dimensionlabeleditor.cpp
      librecad/src/ui/dialogs/entity/qg_dimensionlabeleditor.h
-     librecad/src/ui/dialogs/entity/qg_dlgattributes.cpp
-     librecad/src/ui/dialogs/entity/qg_dlgattributes.h
-     librecad/src/ui/dialogs/entity/qg_dlghatch.cpp
-     librecad/src/ui/dialogs/entity/qg_dlghatch.h
-     librecad/src/ui/dialogs/entity/qg_dlgmtext.cpp
-     librecad/src/ui/dialogs/entity/qg_dlgmtext.h
-     librecad/src/ui/dialogs/entity/qg_dlgtext.cpp
-     librecad/src/ui/dialogs/entity/qg_dlgtext.h
+     librecad/src/ui/dialogs/entity/qg_dlg_attributes.cpp
+     librecad/src/ui/dialogs/entity/qg_dlg_attributes.h
+     librecad/src/ui/dialogs/entity/qg_dlg_hatch.cpp
+     librecad/src/ui/dialogs/entity/qg_dlg_hatch.h
+     librecad/src/ui/dialogs/entity/qg_dlg_mtext.cpp
+     librecad/src/ui/dialogs/entity/qg_dlg_mtext.h
+     librecad/src/ui/dialogs/entity/qg_dlg_text.cpp
+     librecad/src/ui/dialogs/entity/qg_dlg_text.h
      librecad/src/ui/dialogs/file/export/image/lc_exporttoimageservice.cpp
      librecad/src/ui/dialogs/file/export/image/lc_exporttoimageservice.h
      librecad/src/ui/dialogs/file/export/image/qg_dlgimageoptions.cpp

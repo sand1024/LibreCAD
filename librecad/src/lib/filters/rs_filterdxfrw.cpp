@@ -2568,6 +2568,17 @@ void RS_FilterDXFRW::addHeader(const DRW_Header* data) {
         return;
     }
 
+    //initialize units vars if not are present in dxf file - they will be overriden if they are present
+    m_graphic->addVariable("$LUNITS", 2, 70);
+    m_graphic->addVariable("$LUPREC", 4,70);
+    m_graphic->addVariable("$AUNITS", 0, 70);
+    m_graphic->addVariable("$AUPREC", 4, 70);
+    //initialize points drawing style vars if not present in dxf file
+    m_graphic->addVariable("$PDMODE", LC_DEFAULTS_PDMode, DXF_FORMAT_GC_VarName);
+    m_graphic->addVariable("$PDSIZE", LC_DEFAULTS_PDSize, DXF_FORMAT_GC_VarName);
+    m_graphic->addVariable("$JOINSTYLE", 1, DXF_FORMAT_GC_JoinStyle);
+    m_graphic->addVariable("$ENDCAPS", 1, DXF_FORMAT_GC_Endcaps);
+
     for (auto it = data->vars.begin(); it != data->vars.end(); ++it) {
         QString key = QString::fromStdString(it->first);
         const DRW_Variant* var = it->second;
@@ -2598,25 +2609,6 @@ void RS_FilterDXFRW::addHeader(const DRW_Header* data) {
     m_codePage = m_graphic->getVariableString("$DWGCODEPAGE", "ANSI_1252");
     m_textStyle = m_graphic->getVariableString("$TEXTSTYLE", "Standard");
     m_dimStyle = m_graphic->getVariableString("$DIMSTYLE", "Standard");
-    //initialize units vars if not are present in dxf file
-    m_graphic->getVariableInt("$LUNITS", 2);
-    m_graphic->getVariableInt("$LUPREC", 4);
-    m_graphic->getVariableInt("$AUNITS", 0);
-    m_graphic->getVariableInt("$AUPREC", 4);
-
-    //initialize points drawing style vars if not present in dxf file
-    if (m_graphic->getVariableInt("$PDMODE", -999) < 0) {
-        m_graphic->addVariable("$PDMODE", LC_DEFAULTS_PDMode, DXF_FORMAT_GC_VarName);
-    }
-    if (m_graphic->getVariableDouble("$PDSIZE", -999.9) < -100.0) {
-        m_graphic->addVariable("$PDSIZE", LC_DEFAULTS_PDSize, DXF_FORMAT_GC_VarName);
-    }
-    if (m_graphic->getVariableDouble("$JOINSTYLE", -999.9) < -100.0) {
-        m_graphic->addVariable("$JOINSTYLE", 1, DXF_FORMAT_GC_JoinStyle);
-    }
-    if (m_graphic->getVariableDouble("$ENDCAPS", -999.9) < -100.0) {
-        m_graphic->addVariable("$ENDCAPS", 1, DXF_FORMAT_GC_Endcaps);
-    }
 
     QString acadver = m_graphic->getVariableString("$ACADVER", "");
     m_versionStr = acadver;
@@ -2888,8 +2880,7 @@ void RS_FilterDXFRW::writeHeader(DRW_Header& data) {
     while (it != vars.end()) {
         auto value = it.value();
         const int code = value.getCode();
-        // const auto key = it.key().toStdString();
-        const auto key = it.key().toUtf8().constData();
+        const auto key = it.key().toStdString();
         switch (value.getType()) {
             case RS2::VariableInt: {
                 data.addInt(key, value.getInt(), code);

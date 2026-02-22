@@ -56,11 +56,11 @@ void LC_PropertyView::applySubPropertyInfo(const LC_PropertyViewDescriptor& attr
     LC_PropertyViewDescriptor subPropertyAttrs;
     auto& subAttrs = attrs.attributes;
     const auto key = subInfo.key.toUtf8();
-    const auto vSubDelegate = subAttrs.value(key);
-    switch (vSubDelegate.typeId()) {
+    const auto subAttrValue = subAttrs.value(key);
+    switch (subAttrValue.typeId()) {
         case QMetaType::QVariantMap:
         case QMetaType::QVariantHash: {
-            const auto vmap = vSubDelegate.toMap();
+            const auto vmap = subAttrValue.toMap();
             static const auto NAME_KEY = QStringLiteral("name");
             for (auto it = vmap.cbegin(); it != vmap.cend(); ++it) {
                 if (it.key() == NAME_KEY) {
@@ -68,7 +68,8 @@ void LC_PropertyView::applySubPropertyInfo(const LC_PropertyViewDescriptor& attr
                     subPropertyAttrs.viewName = vname.typeId() == QMetaType::QByteArray ? vname.toByteArray() : vname.toString().toUtf8();
                 }
                 else {
-                    subAttrs[it.key().toUtf8()] = it.value();
+                    auto subAttrName = it.key().toUtf8();
+                    subPropertyAttrs[subAttrName] = it.value();
                 }
             }
             break;

@@ -72,17 +72,20 @@ bool RS_ActionModifyTrim::doTriggerModifications(LC_DocumentModificationBatch& c
         const LC_TrimResult trimResult = RS_Modification::trim(m_actionData->trimCoord, m_trimEntity, m_actionData->limitCoord,
                                                                m_limitEntity, m_both, ctx);
 
-        trimResult.trimmed1->setPen(m_trimEntity->getPen(false));
-        trimResult.trimmed1->setLayer(m_trimEntity->getLayer(false));
+        if (trimResult.trimmed1 != nullptr) {
+            trimResult.trimmed1->setPen(m_trimEntity->getPen(false));
+            trimResult.trimmed1->setLayer(m_trimEntity->getLayer(false));
 
-        if (m_both) {
-            if (trimResult.trimmed2 != nullptr) {
-                trimResult.trimmed2->setPen(m_limitEntity->getPen(false));
-                trimResult.trimmed2->setLayer(m_limitEntity->getLayer(false));
+            if (m_both) {
+                if (trimResult.trimmed2 != nullptr) {
+                    trimResult.trimmed2->setPen(m_limitEntity->getPen(false));
+                    trimResult.trimmed2->setLayer(m_limitEntity->getLayer(false));
+                }
             }
+            ctx.dontSetActiveLayerAndPen();
+            return trimResult.result;
         }
-        ctx.dontSetActiveLayerAndPen();
-        return trimResult.result;
+        return false;
     }
     return false;
 }
@@ -144,7 +147,7 @@ void RS_ActionModifyTrim::onMouseMoveEvent(const int status, const LC_MouseEvent
     switch (status) {
         case ChooseLimitEntity: {
             RS_Entity* se = catchAndDescribe(e, RS2::ResolveAllButTextImage);
-            if (m_trimEntity != nullptr) {
+            if (m_trimEntity != nullptr && se != nullptr) {
                 previewTrim(m_trimEntity, se, m_actionData->trimCoord, mouse, trimInvalid);
                 if (trimInvalid) {
                     highlightSelected(m_trimEntity);

@@ -37,6 +37,8 @@ struct LC_PropertySheetWidgetOptions {
     bool showLinks = true;
     bool showComputed = true;
     bool duplicateSelectionAction = true;
+    bool showSingleEntityCommands = true;
+    bool showMultiEntityCommands = true;
 
     void save();
     void load();

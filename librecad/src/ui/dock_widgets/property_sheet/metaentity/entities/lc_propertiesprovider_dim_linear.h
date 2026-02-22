@@ -35,5 +35,6 @@ public:
 
 protected:
     void doCreateDimGeometrySection(LC_PropertyContainer* container, const QList<RS_Entity*>& list) override;
+    void doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) override;
 };
 #endif

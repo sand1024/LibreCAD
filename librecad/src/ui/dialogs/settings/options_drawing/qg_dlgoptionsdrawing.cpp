@@ -1126,7 +1126,7 @@ void QG_DlgOptionsDrawing::setGraphic(RS_Graphic* g) {
     cbLengthPrecision->setCurrentIndex(luprec);
 
     // units / angle format:
-    const int aunits = m_graphic->getVariableInt("$AUNITS", 0);
+    const int aunits = m_graphic->getAngleFormat();
     cbAngleFormat->setCurrentIndex(aunits);
 
     // units angle precision:

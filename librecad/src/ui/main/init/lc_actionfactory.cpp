@@ -218,7 +218,7 @@ void LC_ActionFactory::createDrawLineActions(QMap<QString, QAction*>& map, QActi
         {"DrawLineOrthogonalRel",    RS2::ActionDrawLineOrthogonalRel,   tr("Orthogonal From Line"),   ":/icons/line_ortho_rel.lci"},
         {"DrawLineFromPointToLine",  RS2::ActionDrawLineFromPointToLine, tr("From Point To Line"),     ":/icons/line_to_ortho.lci"},
         {"DrawLineMiddle",           RS2::ActionDrawLineMiddle,          tr("Centerline"),            ":/icons/line_middle.lci"},
-        {"DrawCross",                RS2::ActionDrawCross,               tr("Center Mark"),              ":/icons/cross_circle1.lci"},
+        {"DrawCross",                RS2::ActionDrawCenterMark,               tr("Center Mark"),              ":/icons/cross_circle1.lci"},
         {"DrawSliceDivideLine",      RS2::ActionDrawSliceDivideLine,     tr("Slice/Divide Line"),      ":/icons/slice_divide.lci"},
         {"DrawSliceDivideCircle",    RS2::ActionDrawSliceDivideCircle,   tr("Slice/Divide Circle"),    ":/icons/slice_divide_circle.lci"}
     });
@@ -818,6 +818,7 @@ void LC_ActionFactory::setDefaultShortcuts(QMap<QString, QAction*>& map, const L
         {"Fullscreen", QKeySequence::FullScreen},
         {"ExclusiveSnapMode", QKeySequence(Qt::ALT | Qt::Key_X)},
 #endif
+        {"MainMenu", QKeySequence("F10")},
     };
 
     map["FileClose"]->setShortcutContext(Qt::WidgetShortcut);
@@ -978,6 +979,7 @@ void LC_ActionFactory::fillActionLists(const QMap<QString, QAction *> &map){
                         "SelectIntersected",
                         "DeselectIntersected",
                         "SelectLayer",
+                        "SelectPoints",
                         "SelectInvert",
                         "SelectQuick"
                     }, map);

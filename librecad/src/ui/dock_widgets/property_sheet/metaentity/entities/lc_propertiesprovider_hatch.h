@@ -35,7 +35,9 @@ public:
     }
 
 protected:
-    void doFillEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) override;
+    void fillSingleEntityCommands(LC_PropertyContainer* container, const QList<RS_Entity*>& entitiesList) override;
+    void doCreateEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) override;
+    void doCreateCalculatedProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) override;
 };
 
 #endif

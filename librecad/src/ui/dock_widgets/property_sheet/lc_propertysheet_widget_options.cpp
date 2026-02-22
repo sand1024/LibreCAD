@@ -38,6 +38,8 @@ void LC_PropertySheetWidgetOptions::save() {
         LC_SET("noSelectionWorkspace", noSelectionWorkspace);
         LC_SET("noSelectionGraphicView", noSelectionGraphicView);
         LC_SET("showLinks", showLinks);
+        LC_SET("showSingleEntityCommands", showSingleEntityCommands);
+        LC_SET("showMultiEntityCommands", showMultiEntityCommands);
         LC_SET("showComputed", showComputed);
         LC_SET("duplicateSelectionAction", duplicateSelectionAction);
     }
@@ -56,6 +58,8 @@ void LC_PropertySheetWidgetOptions::load() {
         noSelectionWorkspace = LC_GET_BOOL("noSelectionWorkspace", true);
         noSelectionGraphicView = LC_GET_BOOL("noSelectionGraphicView", true);
         showLinks = LC_GET_BOOL("showLinks", true);
+        showSingleEntityCommands = LC_GET_BOOL("showSingleEntityCommands", true);
+        showMultiEntityCommands = LC_GET_BOOL("showMultiEntityCommands", true);
         showComputed = LC_GET_BOOL("showComputed", true);
         duplicateSelectionAction = LC_GET_BOOL("duplicateSelectionAction", true);
     }

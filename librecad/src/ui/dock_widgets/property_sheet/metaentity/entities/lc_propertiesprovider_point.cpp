@@ -25,7 +25,7 @@
 
 #include "rs_point.h"
 
-void LC_PropertiesProviderPoint::doFillEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
+void LC_PropertiesProviderPoint::doCreateEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
     const auto contGeometry = createGeometrySection(container);
 
     addVector<RS_Point>({"pos", tr("Position"), tr("Position of point")}, [](const RS_Point* e) -> RS_Vector {
@@ -33,4 +33,44 @@ void LC_PropertiesProviderPoint::doFillEntitySpecificProperties(LC_PropertyConta
                         }, [](const RS_Vector& v, RS_Point* e) -> void {
                             e->setPos(v);
                         }, list, contGeometry);
+}
+
+void LC_PropertiesProviderPoint::fillComputedProperites([[maybe_unused]] LC_PropertyContainer* container,
+                                                        [[maybe_unused]] const QList<RS_Entity*>& entitiesList) {
+}
+
+void LC_PropertiesProviderPoint::doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) {
+    const auto text = static_cast<RS_Point*>(entity);
+
+    const std::list<CommandLinkInfo> commands = {
+        {
+            tr("Selection operations"),
+            {RS2::ActionSelectPoints, tr("Select points"), tr("Selecting points within selected area")},
+            {RS2::ActionDrawPointsMiddle, tr("Middle points"), tr("Draw points in the middle of line between two points")}
+        },
+        {
+            tr("Other point operations"),
+            {RS2::ActionDrawLinePoints, tr("Line of points"), tr("Creation of several points along specified direction")},
+            {RS2::ActionDrawPointsLattice, tr("Lattice of points"), tr("Creation of lattice of points")}
+        }
+    };
+
+    createEntityContextCommands<RS_Point>(commands, cont, text, "pointCommands", false);
+}
+
+void LC_PropertiesProviderPoint::doCreateSelectedSetCommands(LC_PropertyContainer* propertyContainer, const QList<RS_Entity*>& list) {
+    LC_EntityTypePropertiesProvider::doCreateSelectedSetCommands(propertyContainer, list);
+
+    const std::list<CommandLinkInfo> commands = {
+        {
+            tr("Point operations"),
+            {
+                RS2::ActionPasteToPoints,
+                tr("Paste to points"),
+                tr("Perform paste from clipboard, inserting copied content into positions of selected points")
+            }
+        }
+    };
+
+    createEntityContextCommands<RS_Point>(commands, propertyContainer, nullptr, "pointCommands", false);
 }

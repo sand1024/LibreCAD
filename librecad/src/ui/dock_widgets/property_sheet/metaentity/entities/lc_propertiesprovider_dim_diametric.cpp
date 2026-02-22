@@ -46,3 +46,14 @@ void LC_PropertiesProviderDimDiametric::doCreateDimGeometrySection(LC_PropertyCo
                                            l->setLeaderLength(v);
                                        }, list, container);
 }
+
+void LC_PropertiesProviderDimDiametric::doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) {
+    const auto dim = static_cast<RS_DimDiametric*>(entity);
+    const std::list<CommandLinkInfo> commandsContextual = {
+        {
+            tr("Apply dimension style to other dimension"),
+            {RS2::ActionDimStyleApply, tr("Apply style"), tr("Applies dimension style to other dimensions")}
+        }
+    };
+    createEntityContextCommands<RS_DimDiametric>(commandsContextual, cont, dim, "dimCommandsCtx");
+}

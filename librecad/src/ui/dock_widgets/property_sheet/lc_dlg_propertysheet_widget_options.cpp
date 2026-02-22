@@ -14,6 +14,8 @@ LC_DlgPropertySheetWidgetOptions::LC_DlgPropertySheetWidgetOptions(QWidget* pare
     ui->cbWorkspace->setChecked(options->noSelectionWorkspace);
     ui->cbGraphicView->setChecked(options->noSelectionGraphicView);
     ui->cbShowLinks->setChecked(options->showLinks);
+    ui->cbShowSingelEntityCommands->setChecked(options->showSingleEntityCommands);
+    ui->cbShowMultipleEntitiesCommands->setChecked(options->showMultiEntityCommands);
     ui->cbShowComputed->setChecked(options->showComputed);
     ui->cbDuplicateSelectionAction->setChecked(options->duplicateSelectionAction);
 }
@@ -34,6 +36,8 @@ void LC_DlgPropertySheetWidgetOptions::accept() {
     m_options->noSelectionWorkspace = ui->cbWorkspace->isChecked();
     m_options->noSelectionGraphicView = ui->cbGraphicView->isChecked();
     m_options->showLinks = ui->cbShowLinks->isChecked();
+    m_options->showSingleEntityCommands = ui->cbShowSingelEntityCommands->isChecked();
+    m_options->showMultiEntityCommands = ui->cbShowMultipleEntitiesCommands->isChecked();
     m_options->showComputed = ui->cbShowComputed->isChecked();
     m_options->duplicateSelectionAction = ui->cbDuplicateSelectionAction->isChecked();
     m_options->save();

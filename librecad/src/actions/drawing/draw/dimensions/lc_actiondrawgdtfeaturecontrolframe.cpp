@@ -24,7 +24,7 @@
 #include "lc_actiondrawgdtfeaturecontrolframe.h"
 
 #include "lc_actioncontext.h"
-#include "lc_dlgtolerance.h"
+#include "lc_dlg_tolerance.h"
 #include "lc_graphicviewport.h"
 #include "qc_applicationwindow.h"
 #include "rs_document.h"

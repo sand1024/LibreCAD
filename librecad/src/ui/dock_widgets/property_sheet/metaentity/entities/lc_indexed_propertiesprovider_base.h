@@ -28,6 +28,7 @@
 #include "lc_linemath.h"
 #include "lc_property_rsvector_view.h"
 
+
 class LC_IndexedPropertiesProviderBase : public LC_EntityTypePropertiesProvider {
     Q_OBJECT
 
@@ -37,31 +38,11 @@ public:
     }
 
 protected:
+    using FunGetDoubleValueByIndex = typename std::function<double(int)>;
+    using FunSetDoubleValueByIndex = typename std::function<void(int, double)>;
+
     using FunGetWCSVectorByIndex = typename std::function<RS_Vector(int)>;
     using FunPersistValue = typename std::function<void(int)>;
-
-    template <typename EntityClass>
-    LC_PropertyInt* createIndexAndPointProperties(LC_PropertyContainer* container, EntityClass* entity,
-                                                  LC_Property::Names indexPropertNames, LC_Property::Names indexedPointName, int pointCount,
-                                                  int initialIndexToSet, FunGetWCSVectorByIndex funGetPointByIndex,
-                                                  FunPersistValue persistIndexValue);
-};
-
-template <typename EntityClass>
-LC_PropertyInt* LC_IndexedPropertiesProviderBase::createIndexAndPointProperties(LC_PropertyContainer* container, EntityClass* entity,
-                                                                                const LC_Property::Names indexPropertNames,
-                                                                                const LC_Property::Names indexedPointName, int pointCount,
-                                                                                const int initialIndexToSet,
-                                                                                FunGetWCSVectorByIndex funGetPointByIndex,
-                                                                                FunPersistValue persistIndexValue) {
-    auto propertyPointIndex = new LC_PropertyInt(container, false);
-    propertyPointIndex->setNames(indexPropertNames);
-    LC_PropertyViewDescriptor viewDescriptor(LC_PropertyIntSpinBoxView::VIEW_NAME);
-    viewDescriptor.attributes[LC_PropertyIntSpinBoxView::ATTR_MIN] = 0;
-    viewDescriptor.attributes[LC_PropertyIntSpinBoxView::ATTR_MAX] = pointCount + 1;
-    viewDescriptor.attributes[LC_PropertyIntSpinBoxView::ATTR_STEP] = 1;
-    viewDescriptor.attributes[LC_PropertyView::ATTR_VIRTUAL] = true;
-    propertyPointIndex->setViewDescriptor(viewDescriptor);
 
     class LC_IndexValueStorage : public LC_PropertyValueStorage<int> {
     public:
@@ -84,7 +65,7 @@ LC_PropertyInt* LC_IndexedPropertiesProviderBase::createIndexAndPointProperties(
             }
             m_index = newValue;
 
-            const RS_Vector wcsVector = m_funGetWCSVector(newValue);
+            const auto wcsVector = m_funGetWCSVector(newValue);
             m_funPersistValue(newValue);
             m_viewport->clearLocationsHighlight();
             m_viewport->highlightLocation(wcsVector);
@@ -100,14 +81,53 @@ LC_PropertyInt* LC_IndexedPropertiesProviderBase::createIndexAndPointProperties(
         int m_maxValue{0};
     };
 
+    LC_PropertyInt* createIndexProperty(LC_PropertyContainer* container, LC_Property::Names indexPropertNames, int pointCount,
+                                        const FunGetWCSVectorByIndex &funGetPointByIndex,
+                                        const FunPersistValue &persistIndexValue);
+    template <class EntityClass>
+    void createIndexedPointProperty(LC_PropertyContainer* container, EntityClass* entity, LC_Property::Names indexedPointNames,
+                                    const FunGetWCSVectorByIndex &funGetPointByIndex,
+                                    LC_PropertyInt* propertyPointIndex);
+    template <class EntityClass>
+    void createIndexedDoubleProperty(LC_PropertyContainer* container, EntityClass* entity, LC_Property::Names indexedPointNames,
+                                     const FunGetDoubleValueByIndex & funGetValueByIndex,
+                                     const FunSetDoubleValueByIndex& funSetValueByIndex,
+                                     LC_PropertyInt* propertyPointIndex);
+    template <typename EntityClass>
+    LC_PropertyInt* createIndexAndPointProperties(LC_PropertyContainer* container, EntityClass* entity,
+                                                  LC_Property::Names indexPropertNames, LC_Property::Names indexedPointName, int pointCount,
+                                                  int initialIndexToSet,
+                                                  const FunGetWCSVectorByIndex &funGetPointByIndex,
+                                                  const FunPersistValue &persistIndexValue);
+};
+
+
+inline LC_PropertyInt* LC_IndexedPropertiesProviderBase::createIndexProperty(LC_PropertyContainer* container, const LC_Property::Names indexPropertNames,
+    const int pointCount, const FunGetWCSVectorByIndex &funGetPointByIndex,
+    const FunPersistValue &persistIndexValue) {
+    auto propertyPointIndex = new LC_PropertyInt(container, false);
+    propertyPointIndex->setNames(indexPropertNames);
+    LC_PropertyViewDescriptor viewDescriptor(LC_PropertyIntSpinBoxView::VIEW_NAME);
+    viewDescriptor.attributes[LC_PropertyIntSpinBoxView::ATTR_MIN] = 0;
+    viewDescriptor.attributes[LC_PropertyIntSpinBoxView::ATTR_MAX] = pointCount + 1;
+    viewDescriptor.attributes[LC_PropertyIntSpinBoxView::ATTR_STEP] = 1;
+    viewDescriptor.attributes[LC_PropertyView::ATTR_VIRTUAL] = true;
+    propertyPointIndex->setViewDescriptor(viewDescriptor);
+
     auto valueStorage = new LC_IndexValueStorage(m_actionContext->getGraphicView()->getViewPort(), m_widget, pointCount, funGetPointByIndex,
                                                  persistIndexValue);
     propertyPointIndex->setValueStorage(valueStorage, true);
     container->addChildProperty(propertyPointIndex);
+    return propertyPointIndex;
+}
+
+template <class EntityClass>
+void LC_IndexedPropertiesProviderBase::createIndexedPointProperty(LC_PropertyContainer* container, EntityClass* entity,
+    LC_Property::Names indexedPointNames, const FunGetWCSVectorByIndex& funGetPointByIndex, LC_PropertyInt* propertyPointIndex) {
 
     auto* propertyPoint = new LC_PropertyRSVector(container, false);
 
-    propertyPoint->setNames(indexedPointName);
+    propertyPoint->setNames(indexedPointNames);
     propertyPoint->setViewDescriptorProvider([]() -> LC_PropertyViewDescriptor {
         return {{{LC_PropertyRSVectorView::ATTR_X_DISPLAY_NAME, tr("X")}, {LC_PropertyRSVectorView::ATTR_Y_DISPLAY_NAME, tr("Y")}}};
     });
@@ -139,6 +159,57 @@ LC_PropertyInt* LC_IndexedPropertiesProviderBase::createIndexAndPointProperties(
 
     propertyPoint->setValueStorage(vertexValueStorage, true);
     container->addChildProperty(propertyPoint);
+}
+
+template <typename EntityClass>
+void LC_IndexedPropertiesProviderBase::createIndexedDoubleProperty(LC_PropertyContainer* container, EntityClass* entity,
+                                                                  const LC_Property::Names indexedPointNames,
+                                                                  const FunGetDoubleValueByIndex &funGetValueByIndex,
+                                                                  const FunSetDoubleValueByIndex &funSetValueByIndex,
+                                                                  LC_PropertyInt* propertyPointIndex) {
+    auto* propertyPoint = new LC_PropertyDouble(container, false);
+
+    propertyPoint->setNames(indexedPointNames);
+    propertyPoint->setViewDescriptorProvider([]() -> LC_PropertyViewDescriptor {
+        return LC_PropertyViewDescriptor(LC_PropertyDoubleInteractivePickView::VIEW_NAME, {});
+    });
+
+    propertyPoint->setActionContextAndLaterRequestor(m_actionContext, m_widget);
+    propertyPoint->setInteractiveInputType(LC_ActionContext::InteractiveInputInfo::NOTNEEDED);
+
+    auto vertexValueStorage = new LC_EntityPropertyValueDelegate<double, EntityClass>();
+    vertexValueStorage->setup(entity, this->m_widget,
+                              [this,propertyPointIndex, funGetValueByIndex]([[maybe_unused]] EntityClass* e) -> double {
+                                  const int index = propertyPointIndex->value();
+                                  const double result = funGetValueByIndex(index);
+                                  return result;
+                              }, [this,propertyPointIndex, funSetValueByIndex](const double &v,
+                                                                               [[maybe_unused]] LC_PropertyChangeReason reason,
+                                                                               [[maybe_unused]] EntityClass* e) -> void {
+                                  const int index = propertyPointIndex->value();
+                                  funSetValueByIndex(index, v);
+                              }, [this, propertyPointIndex,funGetValueByIndex](const double &v, [[maybe_unused]] EntityClass* e) -> bool {
+                                  const int index = propertyPointIndex->value();
+                                  const double originalValue = funGetValueByIndex(index);
+                                  const bool valuesAreEqual = LC_LineMath::isNotMeaningful(originalValue - v);
+                                  return valuesAreEqual;
+                              });
+
+    propertyPoint->setValueStorage(vertexValueStorage, true);
+    container->addChildProperty(propertyPoint);
+}
+
+template <typename EntityClass>
+LC_PropertyInt* LC_IndexedPropertiesProviderBase::createIndexAndPointProperties(LC_PropertyContainer* container, EntityClass* entity,
+                                                                                const LC_Property::Names indexPropertNames,
+                                                                                const LC_Property::Names indexedPointName, const int pointCount,
+                                                                                const int initialIndexToSet,
+                                                                                const FunGetWCSVectorByIndex &funGetPointByIndex,
+                                                                                const FunPersistValue &persistIndexValue) {
+
+    LC_PropertyInt* propertyPointIndex = createIndexProperty(container, indexPropertNames, pointCount, funGetPointByIndex, persistIndexValue);
+
+    createIndexedPointProperty<EntityClass>(container, entity, indexedPointName, funGetPointByIndex, propertyPointIndex);
 
     constexpr LC_PropertyChangeReason reason(PropertyChangeReasonValueLoaded);
     propertyPointIndex->setValue(initialIndexToSet, reason);

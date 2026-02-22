@@ -146,7 +146,12 @@ void LC_PropertiesSheetPanel::setActiveProperty(const LC_Property* activePropert
         else {
             const auto &displayName = activeProperty->getDisplayName();
             const auto &description = activeProperty->getDescription();
-            m_propertyInfoLabel->setText(QStringLiteral("<b>%1</b><br>%2").arg(displayName,description));
+            if (displayName.isEmpty()) {
+                m_propertyInfoLabel->setText(description);
+            }
+            else {
+                m_propertyInfoLabel->setText(QStringLiteral("<b>%1</b><br>%2").arg(displayName,description));
+            }
         }
     }
 }

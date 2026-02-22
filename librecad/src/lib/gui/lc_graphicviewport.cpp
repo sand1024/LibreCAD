@@ -107,7 +107,7 @@ double LC_GraphicViewport::getAnglesBaseAngle() const {
 void LC_GraphicViewport::highlightLocation(const RS_Vector &vector) {
     const auto container = m_overlaysManager.getEntitiesContainer(RS2::OverlayGraphics::PermanentHighlights);
     container->addEntity(new LC_RefPoint(container, vector,m_refPointSize, m_refPointMode));
-    notifyChanged();
+    notifyChanged(static_cast<RS2::RedrawMethod>(RS2::RedrawOverlay + RS2::RedrawImmediately));
 }
 
 void LC_GraphicViewport::clearLocationsHighlight()  {

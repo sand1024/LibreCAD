@@ -133,7 +133,7 @@ public:
     virtual bool isContainer() const;
 
     LC_Property* getRootProperty();
-    LC_PropertyContainer* getRootPropertySet(); // fixme - not used
+    LC_PropertyContainer* getRootPropertySet();
     inline LC_Property* getPrimaryProperty() const;
 
     QString getViewName() const;
@@ -141,7 +141,7 @@ public:
     void setViewDescriptor(const LC_PropertyViewDescriptor& descriptor);
     void setViewDescriptorProvider(const FunViewDescriptorProvider& callback);
     void setViewAttribute(const QByteArray& attributeName, const QVariant& attributeValue,
-                          LC_PropertyChangeReason reason = LC_PropertyChangeReason()); // fixme - not used
+                          LC_PropertyChangeReason reason = LC_PropertyChangeReason());
     void connectPrimaryState(LC_Property* primaryProperty);
 
     void disconnectPrimaryState();

@@ -25,10 +25,11 @@
 
 #include "lc_property_container.h"
 #include "rs_entity.h"
+#include "lc_parabola.h"
 
-void LC_PropertiesProviderParabola::doFillEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
+void LC_PropertiesProviderParabola::doCreateEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
     const auto contGeometry = createGeometrySection(container);
-
+    // fixme - sand - complete editing of parabola
     addVector<LC_Parabola>({"focus", tr("Focus"), tr("Focus of parabola")}, [](LC_Parabola* e) -> RS_Vector {
                                return e->getFocus();
                            }, nullptr, /*[](RS_Vector& v, LC_Parabola* l) -> void {
@@ -52,4 +53,20 @@ void LC_PropertiesProviderParabola::doFillEntitySpecificProperties(LC_PropertyCo
         QString value = formatLinear(len);
         return value;
     }, list, contGeometry);
+}
+
+void LC_PropertiesProviderParabola::fillComputedProperites([[maybe_unused]]LC_PropertyContainer* container, [[maybe_unused]]const QList<RS_Entity*>& entitiesList) {
+}
+
+void LC_PropertiesProviderParabola::doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) {
+    const auto ellipse = static_cast<LC_Parabola*>(entity);
+    const std::list<CommandLinkInfo> commands = {
+        {
+            tr("Dividing parabola or creation of bounding box"),
+            {RS2::ActionModifyCut, tr("Divide"), tr("Divide parabola in given point")},
+            {RS2::ActionDrawBoundingBox, tr("Bounding box"), tr("Creation of bounding box for parabola")}
+        },
+    };
+
+    createEntityContextCommands<LC_Parabola>(commands, cont, ellipse, "parCommands");
 }

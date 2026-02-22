@@ -1,4 +1,4 @@
-/*
+    /*
  * ********************************************************************************
  * This file is part of the LibreCAD project, a 2D CAD program
  *
@@ -29,7 +29,7 @@
 #include "rs_graphic.h"
 #include "rs_insert.h"
 
-void LC_PropertiesProviderInsert::doFillEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
+void LC_PropertiesProviderInsert::doCreateEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
     const auto contGeometry = createGeometrySection(container);
 
     addStringList<RS_Insert>({"name", tr("Block"), tr("Block name")}, [](const RS_Insert* e) -> QString {
@@ -116,4 +116,19 @@ void LC_PropertiesProviderInsert::doFillEntitySpecificProperties(LC_PropertyCont
                                      spacing.setY(v);
                                      l->setSpacing(spacing);
                                  }, list, contGeometry);
+}
+
+void LC_PropertiesProviderInsert::fillComputedProperites([[maybe_unused]]LC_PropertyContainer* container, [[maybe_unused]]const QList<RS_Entity*>& entitiesList) {
+}
+
+void LC_PropertiesProviderInsert::doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) {
+    const std::list<CommandLinkInfo> commands = {
+        {
+            tr("Block exploding and editing"),
+            {RS2::ActionBlocksExplode, tr("Explode"), tr("Explodes insert to individual entities of the block")},
+            {RS2::ActionBlocksEdit, tr("Edit block"), tr("Performs editing of insert's block")}
+        }
+    };
+    const auto insert = static_cast<RS_Insert*>(entity);
+    createEntityContextCommands<RS_Insert>(commands, cont, insert, "insertCommands", true);
 }

@@ -25,16 +25,20 @@
 #define LC_PROPERTIESPROVIDERSPLINE_H
 
 #include "lc_entity_type_propertiesprovider.h"
+#include "lc_indexed_propertiesprovider_base.h"
 
-class LC_PropertiesProviderSpline : public LC_EntityTypePropertiesProvider {
+class LC_PropertiesProviderSpline : public LC_IndexedPropertiesProviderBase {
     Q_OBJECT
 
 public:
     LC_PropertiesProviderSpline(LC_ActionContext* actionContext, LC_PropertySheetWidget* widget)
-        : LC_EntityTypePropertiesProvider(RS2::EntitySpline, actionContext, widget) {
+        : LC_IndexedPropertiesProviderBase(RS2::EntitySpline, actionContext, widget) {
     }
 
 protected:
-    void doFillEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) override;
+    void doCreateEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) override;
+    void doCreateCalculatedProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) override;
+    void doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) override;
+    void doCreateSelectedSetCommands(LC_PropertyContainer* propertyContainer, const QList<RS_Entity*>& list) override;
 };
 #endif

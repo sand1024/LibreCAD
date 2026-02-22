@@ -27,7 +27,6 @@
 #include "lc_entitypropertyvaluedelegate.h"
 #include "lc_formatter.h"
 #include "lc_linemath.h"
-#include "lc_parabola.h"
 #include "lc_property_bool_checkbox_view.h"
 #include "lc_property_container.h"
 #include "lc_property_enum.h"
@@ -37,6 +36,7 @@
 #include "lc_property_qstring_font_combobox_view.h"
 #include "lc_property_qstring_list_combobox_view.h"
 #include "lc_property_rsvector.h"
+#include "lc_propertyprovider_utils.h"
 #include "lc_propertysheetwidget.h"
 #include "rs.h"
 #include "rs_entity.h"
@@ -58,17 +58,38 @@ class LC_EntityTypePropertiesProvider : public QObject {
     static const QString SECTION_GENERAL;
     static const QString SECTION_GEOMETRY;
     static const QString SECTION_CALCULATED_INFO;
+    static const QString SECTION_SINGLE_ENTITY_ACTIONS;
+    static const QString SECTION_MULTI_ENTITY_ACTIONS;
     static const QString SECTION_TEXT;
 
-    virtual void doFillEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) = 0;
     void fillEntityProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& entitiesList);
-
 protected:
     LC_ActionContext* m_actionContext = nullptr;
     LC_PropertySheetWidget* m_widget = nullptr;
     RS2::EntityType m_entityType;
 
+    virtual void fillSelectedSetCommands(LC_PropertyContainer* container, const QList<RS_Entity*>& entitiesList);
+    virtual void fillComputedProperites(LC_PropertyContainer* container, const QList<RS_Entity*>& entitiesList);
+    virtual void fillSingleEntityCommands(LC_PropertyContainer* container, const QList<RS_Entity*>& entitiesList);
+
+    virtual void doCreateCalculatedProperties([[maybe_unused]]LC_PropertyContainer* container, [[maybe_unused]]const QList<RS_Entity*>& list) {}
+    virtual void doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity);
+    virtual void doCreateEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) = 0;
+    virtual void doCreateSelectedSetCommands(LC_PropertyContainer* propertyContainer, const QList<RS_Entity*>& list);
+
     LC_Formatter* getFormatter() const;
+
+    bool isShowLinks() const {
+        return m_widget->getOptions()->showLinks;
+    }
+
+    bool isShowSingleEntitySection() const {
+        return m_widget->getOptions()->showSingleEntityCommands;
+    }
+
+    bool isShowComputedSection() const {
+        return m_widget->getOptions()->showComputed;
+    }
 
     template <typename EntityType>
     void add(const LC_Property::Names& names,
@@ -80,6 +101,32 @@ protected:
                                 typename LC_EntityPropertyValueDelegate<ValueType, EntityClass>::FunValueSetShort funSet,
                                 typename LC_EntityPropertyValueDelegate<ValueType, EntityClass>::FunValueEqual funEqual,
                                 EntityClass* entity, LC_PropertySingle<ValueType>* property);
+
+    template <class EntityClass>
+    void createEntityContextCommand(LC_PropertyContainer* container, const QString& propertyName, RS2::ActionType actionType,
+                                    const QString& linkTitle, const QString& linkTooltip, RS2::ActionType actionTypeRight,
+                                    const QString& linkTitleRight, const QString& linkTooltipRight, EntityClass* entity, const QString& commonDescription,
+                                    bool setContextEntity = true);
+
+    struct CommandLinkInfo {
+        struct LinkPartInfo {
+            RS2::ActionType actionType;
+            QString title;
+            QString tooltip;
+
+            LinkPartInfo(){title = "";actionType = RS2::ActionNone, tooltip = "";}
+            LinkPartInfo(RS2::ActionType type, const QString& titl, const QString ttip):actionType{type}, title{titl}, tooltip{ttip} {}
+        };
+        QString description;
+        LinkPartInfo leftLink;
+        LinkPartInfo rightLink;
+
+        CommandLinkInfo(const QString &desc, const LinkPartInfo &left, const LinkPartInfo &right): description{desc}, leftLink{left}, rightLink{right} {};
+        CommandLinkInfo(const QString &desc, const LinkPartInfo &left): description{desc}, leftLink{left}, rightLink{LinkPartInfo()} {};
+    };
+
+    template <class EntityClass>
+    void createEntityContextCommands(const std::list<CommandLinkInfo>& links, LC_PropertyContainer* container, EntityClass* entity, const QString& namePrefix, bool setContextEntity = true);
 
     RS_Vector toUCS(const RS_Vector& wcs) const;
     double toUCSBasisAngle(double wcsAngle) const;
@@ -143,7 +190,7 @@ protected:
     void addStringList(const LC_Property::Names& names, typename LC_EntityPropertyValueDelegate<QString, EntityClass>::FunValueGet funGet,
                        typename LC_EntityPropertyValueDelegate<QString, EntityClass>::FunValueSetShort funSet,
                        std::function<bool(EntityClass*, LC_PropertyViewDescriptor& descriptor)> funFillList,
-                       // fixme - expand to support icon, display name and data + change in View
+                       // fixme - this may be expanded to support item icon, display name and data + change in View
                        const QList<RS_Entity*>& list, LC_PropertyContainer* cont);
 
     template <class EntityClass>
@@ -160,7 +207,7 @@ protected:
     template <typename EntityClass>
     void addIntSpinbox(const LC_Property::Names& names, typename LC_EntityPropertyValueDelegate<int, EntityClass>::FunValueGet funGet,
                        typename LC_EntityPropertyValueDelegate<int, EntityClass>::FunValueSetShort funSet, const QList<RS_Entity*>& list,
-                       LC_PropertyContainer* cont);
+                       LC_PropertyContainer* cont, int minVal = 1, int maxVal = -1);
 
     template <typename EntityClass>
     void addEnum(const LC_Property::Names& names, const LC_EnumDescriptor* enumDescriptor,
@@ -199,6 +246,8 @@ protected:
     LC_PropertyContainer* createGeometrySection(LC_PropertyContainer* container) const;
     LC_PropertyContainer* createTextContainer(LC_PropertyContainer* container) const;
     LC_PropertyContainer* createCalculatedInfoSection(LC_PropertyContainer* container) const;
+    LC_PropertyContainer* createSingleEntityActionsSection(LC_PropertyContainer* container) const;
+    LC_PropertyContainer* createMultipleEntityActionsSection(LC_PropertyContainer* container) const;
 
     RS_Document* getDocument() const {
         return m_actionContext->getDocument();
@@ -447,10 +496,11 @@ void LC_EntityTypePropertiesProvider::addReadOnlyVector(const LC_Property::Names
                                                         const QList<RS_Entity*>& list, LC_PropertyContainer* cont) {
     add<EntityClass>(names, [this, funGet](const LC_Property::Names& n, EntityClass* e, LC_PropertyContainer* container,
                                            QList<LC_PropertyAtomic*>* props) -> void {
-        auto property = createVectorProperty(n, props, container, nullptr, nullptr);
+        auto property = createVectorProperty(n, props, container, m_actionContext, m_widget);
         auto valueStorage = new LC_EntityPropertyValueDelegate<RS_Vector, EntityClass>();
         property->setValueStorage(valueStorage, true);
-        valueStorage->setup(e, m_widget, funGet, nullptr, nullptr);
+        typename LC_EntityPropertyValueDelegate<RS_Vector, EntityClass>::FunValueSetShort funSet = nullptr;
+        valueStorage->setup(e, m_widget, funGet, funSet, nullptr);
         property->setReadOnly();
     }, list, cont);
 }
@@ -562,8 +612,8 @@ template <typename EntityClass>
 void LC_EntityTypePropertiesProvider::addIntSpinbox(const LC_Property::Names& names,
                                                     typename LC_EntityPropertyValueDelegate<int, EntityClass>::FunValueGet funGet,
                                                     typename LC_EntityPropertyValueDelegate<int, EntityClass>::FunValueSetShort funSet,
-                                                    const QList<RS_Entity*>& list, LC_PropertyContainer* cont) {
-    add<EntityClass>(names, [this, funGet, funSet](const LC_Property::Names& n, EntityClass* entity, LC_PropertyContainer* container,
+                                                    const QList<RS_Entity*>& list, LC_PropertyContainer* cont, int minVal, int maxVal) {
+    add<EntityClass>(names, [this, funGet, funSet,minVal, maxVal](const LC_Property::Names& n, EntityClass* entity, LC_PropertyContainer* container,
                                                    QList<LC_PropertyAtomic*>* props) -> void {
         auto* property = new LC_PropertyInt(container, false);
         property->setNames(n);
@@ -571,11 +621,14 @@ void LC_EntityTypePropertiesProvider::addIntSpinbox(const LC_Property::Names& na
 
         LC_PropertyViewDescriptor descriptor(LC_PropertyIntSpinBoxView::VIEW_NAME);
         descriptor.attributes[LC_PropertyIntSpinBoxView::ATTR_MIN] = 1;
-        descriptor.attributes[LC_PropertyIntSpinBoxView::ATTR_STEP] = 1;
+        descriptor.attributes[LC_PropertyIntSpinBoxView::ATTR_STEP] = minVal;
+        if (maxVal > 0) {
+            descriptor.attributes[LC_PropertyIntSpinBoxView::ATTR_MAX] = maxVal;
+        }
         property->setViewDescriptor(descriptor);
 
         auto valueStorage = new LC_EntityPropertyValueDelegate<int, EntityClass>();
-        valueStorage->setup(entity, m_widget, funGet, funSet, [this, funGet](int& v, RS_Insert* e) -> bool {
+        valueStorage->setup(entity, m_widget, funGet, funSet, [this, funGet](int& v, EntityClass* e) -> bool {
             return v == funGet(e);
         });
         property->setValueStorage(valueStorage, true);
@@ -591,6 +644,49 @@ void LC_EntityTypePropertiesProvider::createDelegatedStorage(
     auto valueStorage = new LC_EntityPropertyValueDelegate<ValueType, EntityClass>();
     valueStorage->setup(entity, this->m_widget, funGet, funSet, funEqual);
     property->setValueStorage(valueStorage, true);
+}
+
+template <typename EntityClass>
+void LC_EntityTypePropertiesProvider::createEntityContextCommand(LC_PropertyContainer* container, const QString& propertyName, RS2::ActionType actionType, const QString& linkTitle,
+                                                  const QString& linkTooltip, RS2::ActionType actionTypeRight,  const QString& linkTitleRight,
+                                                  const QString& linkTooltipRight,  EntityClass* entity,
+                                                  const QString &commonDescription, bool setContextEntity) {
+    auto clickHandler = [this, actionType, actionTypeRight, setContextEntity]([[maybe_unused]] EntityClass* entity, const int linkIndex) {
+        switch (linkIndex) {
+            case 0: {
+                if (setContextEntity) {
+                    m_actionContext->saveContextMenuActionContext(entity, entity->getMiddlePoint(), false);
+                }
+                m_actionContext->setCurrentAction(actionType, nullptr);
+                break;
+            }
+            case 1: {
+                if (setContextEntity) {
+                    m_actionContext->saveContextMenuActionContext(entity, entity->getMiddlePoint(), false);
+                }
+                m_actionContext->setCurrentAction(actionTypeRight, nullptr);
+                break;
+            }
+            default:
+                break;
+        }
+    };
+    LC_PropertyProviderUtils::createSingleEntityCommand<EntityClass>(container, propertyName, linkTitle,
+                                                                   linkTooltip, linkTitleRight,
+                                                                   linkTooltipRight, entity,
+                                                                   clickHandler, commonDescription);
+}
+
+template <typename EntityClass>
+void LC_EntityTypePropertiesProvider::createEntityContextCommands(const std::list<CommandLinkInfo>& links, LC_PropertyContainer* container, EntityClass* entity, const QString &namePrefix,
+    bool setContextEntity) {
+    int idx = 0;
+    for (const auto &i: links) {
+        QString propertyName = QString("%1_%2").arg(namePrefix).arg(idx);
+        createEntityContextCommand(container, propertyName, i.leftLink.actionType, i.leftLink.title, i.leftLink.tooltip,
+                i.rightLink.actionType, i.rightLink.title, i.rightLink.tooltip, entity, i.description, setContextEntity);
+        idx++;
+    }
 }
 
 #endif

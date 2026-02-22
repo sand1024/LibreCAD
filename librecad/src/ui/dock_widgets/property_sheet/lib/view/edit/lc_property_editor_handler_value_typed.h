@@ -44,7 +44,7 @@ protected:
     }
 
     virtual void doUpdatePropertyValue() {
-        if (this->propertyBase() != nullptr) {
+        if (this->getBaseProperty() != nullptr) {
             this->getProperty().setValue(m_newValue, this->changeReasonDueToEdit());
         }
     }

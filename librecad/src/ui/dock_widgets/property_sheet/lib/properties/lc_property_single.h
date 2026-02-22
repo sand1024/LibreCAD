@@ -82,11 +82,11 @@ public:
         if ((reason & PropertyChangeReasonEdit) && !isEditableByUser()) {
             return false;
         }
-        /// fixme - delegate to value storage
+        /// fixme - delegate to value storage?
         if (!isWritable() || !doAcceptValue(newValue)) {
             return false;
         }
-        /// fixme - delegate to value storage
+        /// fixme - delegate to value storage?
         if (!(reason & PropertyChangeReasonMultiEdit) && doCheckValueEqualToCurrent(newValue)) {
             return true;
         }

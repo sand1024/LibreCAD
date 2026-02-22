@@ -35,7 +35,8 @@ public:
     }
 
 protected:
-    void doFillEntitySpecificProperties([[maybe_unused]]LC_PropertyContainer* container, [[maybe_unused]]const QList<RS_Entity*>& list) override{};
+    void doCreateEntitySpecificProperties([[maybe_unused]]LC_PropertyContainer* container, [[maybe_unused]]const QList<RS_Entity*>& list) override{};
+    void fillComputedProperites([[maybe_unused]]LC_PropertyContainer* container, [[maybe_unused]]const QList<RS_Entity*>& entitiesList) override {};
 };
 
 #endif

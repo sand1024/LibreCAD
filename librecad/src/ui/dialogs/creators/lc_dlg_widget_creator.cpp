@@ -21,7 +21,7 @@
  * ********************************************************************************
  */
 
-#include "lc_dlgwidgetcreator.h"
+#include "lc_dlg_widget_creator.h"
 
 #include <QLineEdit>
 #include <QMessageBox>
@@ -30,11 +30,11 @@
 
 #include "lc_actiongroup.h"
 #include "lc_actiongroupmanager.h"
-#include "lc_dlgmenuassigner.h"
-#include "lc_dlgnewwidget.h"
+#include "lc_dlg_menu_assigner.h"
+#include "lc_dlg_new_widget.h"
 #include "lc_menuactivator.h"
 #include "rs_settings.h"
-#include "ui_lc_dlgwidgetcreator.h"
+#include "ui_lc_dlg_widget_creator.h"
 
 namespace {
     const QString g_menuNameSeparator = " | ";

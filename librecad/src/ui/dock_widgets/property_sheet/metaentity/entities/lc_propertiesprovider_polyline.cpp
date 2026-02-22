@@ -23,10 +23,9 @@
 
 #include "lc_propertiesprovider_polyline.h"
 
-#include "lc_property_rsvector_view.h"
 #include "rs_polyline.h"
 
-void LC_PropertiesProviderPolyline::doFillEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
+void LC_PropertiesProviderPolyline::doCreateEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
     const auto contGeometry = createGeometrySection(container);
 
     addBoolean<RS_Polyline>({"closed", tr("Is Closed"), tr("Determines whether polyline is closed")}, [](const RS_Polyline* e) -> bool {
@@ -66,32 +65,66 @@ void LC_PropertiesProviderPolyline::doFillEntitySpecificProperties(LC_PropertyCo
                                           polylineVertexIndex = newValue;
                                       });
     }
+}
 
-    const auto contOther = createCalculatedInfoSection(container);
-    if (contOther == nullptr) {
-        return;
-    }
-
+void LC_PropertiesProviderPolyline::doCreateCalculatedProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
     addReadOnlyString<RS_Polyline>({"length", tr("Length"), tr("Length of polyline")}, [this](const RS_Polyline* e) -> QString {
         const double len = e->getLength();
         QString value = formatLinear(len);
         return value;
-    }, list, contOther);
+    }, list, container);
 
     addReadOnlyString<RS_Polyline>({"hasArcs", tr("Has Arcs"), tr("Determines whether polyline includes arc segments")},
                                    [](const RS_Polyline* e) -> QString {
                                        const bool hasArcs = e->containsArc();
                                        QString value = hasArcs ? tr("Yes") : tr("No");
                                        return value;
-                                   }, list, contOther);
+                                   }, list, container);
 
-    if (singleEntity) {
+    if (list.size() == 1) {
         addVector<RS_Polyline>({"start", tr("Start"), tr("Start point of polyline")}, [](const RS_Polyline* e) -> RS_Vector {
             return e->getStartpoint();
-        }, nullptr, list, contOther);
+        }, nullptr, list, container);
 
         addVector<RS_Polyline>({"end", tr("End"), tr("End point of polyline")}, [](const RS_Polyline* line) -> RS_Vector {
             return line->getEndpoint();
-        }, nullptr, list, contOther);
+        }, nullptr, list, container);
     }
+}
+
+void LC_PropertiesProviderPolyline::doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) {
+    const auto polyline = static_cast<RS_Polyline*>(entity);
+    const std::list<CommandLinkInfo> commands = {
+        {
+            tr("Polyline structure expanding"),
+            {RS2::ActionPolylineAdd, tr("Add node"), tr("Inserts node of polyline")},
+            {RS2::ActionPolylineAppend, tr("Append node"), tr("Append nodes to start or end points of polyline")}
+        },
+        {
+            tr("Polyline nodes removal"),
+            {RS2::ActionPolylineDel, tr("Delete node"), tr("Delete node")},
+            {RS2::ActionPolylineDelBetween, tr("Delete between 2 nodes"), tr("Delete segments between two nodes")}
+        },
+        {
+            tr("Trimming and exploding polyline"),
+            {RS2::ActionPolylineTrim, tr("Trim segments"), tr("Trim segments of polyline")},
+            {RS2::ActionPolylineArcsToLines, tr("Arc segments to lines"), tr("Change arc segments to lines")},
+        },
+        {
+            tr("Modification of segments of polyline"),
+            {RS2::ActionBlocksExplode, tr("Explode"), tr("Explodes polyline to individual segments")},
+            {RS2::ActionPolylineChangeSegmentType, tr("Change segment type"), tr("Changes type of selected segment")}
+        },
+        {
+            tr("Parallel polyline and changing direction"),
+            {RS2::ActionPolylineEquidistant, tr("Equidistant"), tr("Creates equidistnat polyline")},
+            {RS2::ActionModifyRevertDirection, tr("Revert direction"), tr("Reverst direction of polyline, swapping start and end points")}
+        },
+        {tr("Creation of bounding box or spline"),
+            {RS2::ActionDrawBoundingBox, tr("Bounding box"), tr("Creation of bounding box for polyline")},
+            // fixme - will be be more conveient if spline from polyline will be called without context?
+           {RS2::ActionDrawSplineFromPolyline, tr("Spline"), tr("Creates spline from polyline")}
+        }
+    };
+    createEntityContextCommands<RS_Polyline>(commands, cont, polyline, "polylineCommands");
 }

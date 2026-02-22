@@ -47,3 +47,23 @@ void LC_PropertiesProviderDimAligned::doCreateDimGeometrySection(LC_PropertyCont
                                  e->setDefinitionPoint(v);
                              }, list, cont);
 }
+
+void LC_PropertiesProviderDimAligned::doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) {
+    const std::list<CommandLinkInfo> commands = {
+        {
+            tr("Continue and baseline"),
+            {RS2::ActionDimContinue, tr("Continue"), tr("Continues aligned dimension")},
+            {RS2::ActionDimBaseline, tr("Baseline"), tr("Uses aligned dimension as base line and creates other dimensions")}
+        }
+    };
+    const auto dim = static_cast<RS_DimAligned*>(entity);
+    createEntityContextCommands<RS_DimAligned>(commands, cont, dim, "dimCommands", false);
+
+    const std::list<CommandLinkInfo> commandsContextual = {
+        {
+            tr("Apply dimension style to other dimension"),
+            {RS2::ActionDimStyleApply, tr("Apply style"), tr("Applies dimension style to other dimensions")}
+        }
+    };
+    createEntityContextCommands<RS_DimAligned>(commandsContextual, cont, dim, "dimCommandsCtx");
+}

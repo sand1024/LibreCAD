@@ -27,14 +27,14 @@
 #include "rs_hatch.h"
 #include "rs_patternlist.h"
 
-void LC_PropertiesProviderHatch::doFillEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
-    const auto contGeometry = createGeometrySection(container);
+void LC_PropertiesProviderHatch::doCreateEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
+    const auto cont = createGeometrySection(container);
 
     addBoolean<RS_Hatch>({"solid", tr("Is Solid"), tr("Determines whether hatch is solid or not")}, [](const RS_Hatch* e) -> bool {
                              return e->isSolid();
                          }, [](const bool& v, RS_Hatch* e) -> void {
                              e->setSolid(v);
-                         }, list, contGeometry);
+                         }, list, cont);
 
     addStringList<RS_Hatch>({"pattern", tr("Pattern"), tr("Hatch pattern name")}, [](const RS_Hatch* e) -> QString {
                                 return e->getPattern();
@@ -48,17 +48,29 @@ void LC_PropertiesProviderHatch::doFillEntitySpecificProperties(LC_PropertyConta
                                 values.sort();
                                 descriptor[LC_PropertyQStringListComboBoxView::ATTR_ITEMS] = values;
                                 return values.isEmpty();
-                            }, list, contGeometry);
+                            }, list, cont);
 
     addLinearDistance<RS_Hatch>({"scale", tr("Scale"), tr("Hatch scale")}, [](const RS_Hatch* e) -> double {
                                     return e->getScale();
                                 }, [](const double& v, RS_Hatch* l) -> void {
                                     l->setScale(v);
-                                }, list, contGeometry);
+                                }, list, cont);
 
     addWCSAngle<RS_Hatch>({"angle", tr("Angle"), tr("Hatch rotation angle")}, [](const RS_Hatch* e) -> double {
                               return e->getAngle();
                           }, [](const double& v, RS_Hatch* l) -> void {
                               l->setAngle(v);
-                          }, list, contGeometry);
+                          }, list, cont);
+}
+
+void LC_PropertiesProviderHatch::doCreateCalculatedProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
+    addReadOnlyString<RS_Hatch>({"area", tr("Area"), tr("Area of hatch")}, [this](const RS_Hatch* e) -> QString {
+        const double area = e->getTotalArea();
+        QString value = formatLinear(area);
+        return value;
+    }, list, container);
+}
+
+void LC_PropertiesProviderHatch::fillSingleEntityCommands([[maybe_unused]] LC_PropertyContainer* container,
+                                                          [[maybe_unused]] const QList<RS_Entity*>& entitiesList) {
 }

@@ -45,7 +45,7 @@ protected:
     bool isEditableByUser() const;
     bool isMultiValue() const;
 
-    LC_Property* propertyBase() const;
+    LC_Property* getBaseProperty() const;
     LC_Property* getStateProperty() const;
 
     QWidget* editorBase() const {

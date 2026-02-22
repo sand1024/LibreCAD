@@ -584,7 +584,7 @@ void LC_MakerCamSVG::writeQuadraticBeziers(const std::vector<RS_Vector>& control
 
     const size_t bezier_points_size = bezier_points.size();
 
-    const size_t bezier_count = (bezier_points_size - 1) / 2;
+    const int bezier_count = (bezier_points_size - 1) / 2;
 
     for (int i = 0; i < bezier_count; i++) {
         path += svgPathQuadraticCurveTo(convertToSvg(bezier_points[2 * (i + 1)]), convertToSvg(bezier_points[2 * (i + 1) - 1]));

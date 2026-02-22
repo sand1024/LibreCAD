@@ -37,7 +37,7 @@ void LC_PropertiesProviderBlock::fillDocumentProperties(LC_PropertyContainer* co
     createName(cont, block, graphic);
     createBasePoint(cont, block, graphic);
 
-    // fixme - this is just a basic placeholder implementation. Think which properties form graphic should be also shown for block!
+    // fixme - this is just a basic placeholder implementation. Think which properties from rs_graphic should be also shown for block!
 }
 
 void LC_PropertiesProviderBlock::createName(LC_PropertyContainer* cont, RS_Block* block,[[maybe_unused]] RS_Graphic* graphic) {

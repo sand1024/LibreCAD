@@ -27,14 +27,15 @@
 #include "lc_indexed_propertiesprovider_base.h"
 
 class LC_PropertiesProviderPolyline : public LC_IndexedPropertiesProviderBase {
-    Q_OBJECT
-
-public:
+private:
+    Q_OBJECT public:
     LC_PropertiesProviderPolyline(LC_ActionContext* actionContext, LC_PropertySheetWidget* widget)
         : LC_IndexedPropertiesProviderBase(RS2::EntityPolyline, actionContext, widget) {
     }
 
 protected:
-    void doFillEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) override;
+    void doCreateEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) override;
+    void doCreateCalculatedProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) override;
+    void doCreateSingleEntityCommands(LC_PropertyContainer* cont, RS_Entity* entity) override;
 };
 #endif

@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "ui_lc_crossoptions.h"
 
 LC_CrossOptions::LC_CrossOptions() :
-    LC_ActionOptionsWidgetBase(RS2::ActionDrawCross, "Draw", "Cross"),
+    LC_ActionOptionsWidgetBase(RS2::ActionDrawCenterMark, "Draw", "Cross"),
     ui(new Ui::LC_CrossOptions) {
     ui->setupUi(this);
 

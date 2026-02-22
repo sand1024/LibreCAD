@@ -38,7 +38,7 @@ public:
 
     virtual void fillDocumentProperties(LC_PropertyContainer* container, RS_Graphic* graphic) = 0;
 protected:
-    void doFillEntitySpecificProperties([[maybe_unused]]LC_PropertyContainer* container,[[maybe_unused]] const QList<RS_Entity*>& list) override{};
+    void doCreateEntitySpecificProperties([[maybe_unused]]LC_PropertyContainer* container,[[maybe_unused]] const QList<RS_Entity*>& list) override{};
 
     void notifyDrawingOptionsChanged() const {
         m_widget->stopInplaceEdit();
@@ -61,7 +61,7 @@ public:
     LC_PropertiesProviderBlockComponent(LC_ActionContext* actionContext, LC_PropertySheetWidget* widget)
         : LC_EntityTypePropertiesProvider(RS2::EntityBlock, actionContext, widget) {
     }
-    void doFillEntitySpecificProperties([[maybe_unused]]LC_PropertyContainer* container, [[maybe_unused]]const QList<RS_Entity*>& list) override{};
+    void doCreateEntitySpecificProperties([[maybe_unused]]LC_PropertyContainer* container, [[maybe_unused]]const QList<RS_Entity*>& list) override{};
     virtual void fillDocumentProperties(LC_PropertyContainer* container, RS_Graphic* graphic, RS_Block *block) = 0;
 };
 
@@ -71,7 +71,7 @@ public:
         : LC_EntityTypePropertiesProvider(RS2::EntityUnknown, actionContext, widget) {
     }
 
-    void doFillEntitySpecificProperties([[maybe_unused]]LC_PropertyContainer* container, [[maybe_unused]]const QList<RS_Entity*>& list) override{};
+    void doCreateEntitySpecificProperties([[maybe_unused]]LC_PropertyContainer* container, [[maybe_unused]]const QList<RS_Entity*>& list) override{};
     virtual void fillDocumentProperties(LC_PropertyContainer* container) = 0;
 };
 

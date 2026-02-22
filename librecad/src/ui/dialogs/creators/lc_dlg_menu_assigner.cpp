@@ -21,12 +21,12 @@
  * ********************************************************************************
  */
 
-#include "lc_dlgmenuassigner.h"
+#include "lc_dlg_menu_assigner.h"
 
 #include <QMouseEvent>
 
 #include "lc_dialog.h"
-#include "ui_lc_dlgmenuassigner.h"
+#include "ui_lc_dlg_menu_assigner.h"
 
 LC_DlgMenuAssigner::LC_DlgMenuAssigner(QWidget *parent, LC_MenuActivator* activator, QList<LC_MenuActivator*>* activators)
     :LC_Dialog(parent, "MenuAssigner"), ui(new Ui::LC_DlgMenuAssigner),

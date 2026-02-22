@@ -40,6 +40,7 @@ const QByteArray LC_PropertyRSVectorView::ATTR_X_DISPLAY_NAME = QByteArrayLitera
 const QByteArray LC_PropertyRSVectorView::ATTR_X_DESCRIPTION = QByteArrayLiteral("xDescription");
 const QByteArray LC_PropertyRSVectorView::ATTR_Y_DISPLAY_NAME = QByteArrayLiteral("yDisplayName");
 const QByteArray LC_PropertyRSVectorView::ATTR_Y_DESCRIPTION = QByteArrayLiteral("yDescription");
+const QByteArray LC_PropertyRSVectorView::ATTR_FORMAT_AS_INT = QByteArrayLiteral("formatAsInt");
 
 class LC_PropertyRSVectorPickViewHandler : public LC_PropertyEditorButtonHandler<LC_PropertyRSVector, LC_PropertyLabelWithButton> {
 public:
@@ -56,7 +57,7 @@ protected:
         QString strValue;
         auto* typedView = static_cast<LC_PropertyRSVectorView*>(view());
         const auto formatter = typedView->typedProperty().getFormatter();
-        LC_PropertyRSVectorView::formatVectorToString(value, "", formatter, strValue);
+        LC_PropertyRSVectorView::formatVectorToString(value, "", formatter, strValue, typedView->isFormatAsInt());
         return strValue;
     }
 
@@ -113,6 +114,7 @@ LC_PropertyRSVectorView::LC_PropertyRSVectorView(LC_PropertyRSVector& property)
 
 void LC_PropertyRSVectorView::doApplyAttributes(const LC_PropertyViewDescriptor& atts) {
     atts.load(ATTR_SUFFIX, m_suffix);
+    atts.load(ATTR_FORMAT_AS_INT, m_formatAsInt);
 
     enum {
         X,
@@ -134,7 +136,6 @@ QWidget* LC_PropertyRSVectorView::doCreateValueEditor(QWidget* parent, const QRe
         if (!pickable) {
             return createValueEditorLineEdit(parent, rect, true, ctx);
         }
-        // fixme = create line edit with button for picking values?
         const auto le = new LC_PropertyLabelWithButton(parent);
         le->setGeometry(rect);
         new LC_PropertyRSVectorPickViewHandler(this, *le);
@@ -163,10 +164,10 @@ bool LC_PropertyRSVectorView::doPropertyValueToStrForView(QString& strValue) {
 }
 
 void LC_PropertyRSVectorView::formatVectorToString(const RS_Vector& value, const QString& suffix, const LC_Formatter* formatter,
-                                                   QString& strValue) {
+                                                   QString& strValue, bool asInt) {
     const auto format = LC_PropertyRSVector::getToStrValueFormat();
-    const QString valueX = formatter->formatLinear(value.getX());
-    const QString valueY = formatter->formatLinear(value.getY());
+    const QString valueX = asInt ? formatter->formatInt(value.getX()) : formatter->formatLinear(value.getX());
+    const QString valueY =  asInt ? formatter->formatInt(value.getY()) :formatter->formatLinear(value.getY());
     strValue = format.arg(valueX + suffix).arg(valueY + suffix);
 }
 
@@ -176,5 +177,5 @@ void LC_PropertyRSVectorView::invalidateCached() {
 
 void LC_PropertyRSVectorView::vectorToString(const RS_Vector& value, const QString& suffix, QString& strValue) {
     const LC_Formatter* formatter = typedProperty().getFormatter();
-    formatVectorToString(value, suffix, formatter, strValue);
+    formatVectorToString(value, suffix, formatter, strValue, m_formatAsInt);
 }

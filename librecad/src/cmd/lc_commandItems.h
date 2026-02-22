@@ -181,7 +181,7 @@ const LC_CommandItem g_commandList[] = {
         {
             {{"cross", QObject::tr("cross", "draw cross for circle")}},
             {{"cx", QObject::tr("cx", "draw cross for circle")}},
-            RS2::ActionDrawCross
+            RS2::ActionDrawCenterMark
         },
         {
             {{"bbox", QObject::tr("bbox", "draw bound box")}},

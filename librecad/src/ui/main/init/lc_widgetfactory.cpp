@@ -163,7 +163,6 @@ void LC_WidgetFactory::createCADSidebar(const int columns, const int iconSize, c
 
 QDockWidget* LC_WidgetFactory::createDockWidget(const QString& horizontalTitle, const char *name, const QString& verticalTitle) const {
     const auto result = new LC_DockWidget(m_appWin, horizontalTitle, verticalTitle);
-    // auto result = new QDockWidget(horizontalTitle, m_appWin);
     result->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     result->setWindowTitle(horizontalTitle);
     result->setObjectName(name);
@@ -357,7 +356,6 @@ void LC_WidgetFactory::updateDockWidgetsTitleBarType(const QC_ApplicationWindow*
 }
 
 void LC_WidgetFactory::createRightSidebar(QG_ActionHandler* actionHandler){
-
     const bool verticalTitle = LC_GET_ONE_BOOL("Widgets", "DockTitleBarVertical", false);
     QDockWidget *dock_pen_palette = createPenPalletteWidget();
     QDockWidget *dock_layer = createLayerWidget(actionHandler);
@@ -371,21 +369,18 @@ void LC_WidgetFactory::createRightSidebar(QG_ActionHandler* actionHandler){
     QDockWidget *dock_pen_wiz = createPenWizardWidget();
     QDockWidget *dock_property_sheet = createPropertySheetWidget();
 
-    m_appWin->addDockWidget(Qt::RightDockWidgetArea, dock_pen_wiz);
-
     m_appWin->addDockWidget(Qt::RightDockWidgetArea, dock_library);
     m_appWin->tabifyDockWidget(dock_library, dock_block);
-    m_appWin->tabifyDockWidget(dock_block, dock_layer);
-    m_appWin->tabifyDockWidget(dock_layer, dock_quick_info);
-    m_appWin->tabifyDockWidget(dock_quick_info, dock_pen_palette);
+    m_appWin->tabifyDockWidget(dock_block, dock_pen_wiz);
+    m_appWin->tabifyDockWidget(dock_pen_wiz, dock_pen_palette);
     m_appWin->tabifyDockWidget(dock_pen_palette, dock_layer_tree);
-
-    m_appWin->addDockWidget(Qt::RightDockWidgetArea, dock_views);
-    m_appWin->tabifyDockWidget(dock_views, dock_ucss);
-    m_appWin->addDockWidget(Qt::RightDockWidgetArea, dock_command);
-
-    m_appWin->addDockWidget(Qt::RightDockWidgetArea, dock_property_sheet);
+    m_appWin->tabifyDockWidget(dock_layer_tree, dock_layer);
+    m_appWin->tabifyDockWidget(dock_layer, dock_quick_info);
     m_appWin->tabifyDockWidget(dock_quick_info, dock_property_sheet);
+    m_appWin->tabifyDockWidget(dock_property_sheet, dock_ucss);
+    m_appWin->tabifyDockWidget(dock_ucss, dock_views);
+    m_appWin->tabifyDockWidget(dock_views, dock_command);
+
     updateDockWidgetsTitleBarType(m_appWin, verticalTitle);
 }
 
