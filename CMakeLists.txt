@@ -1755,6 +1755,8 @@ set (SHARED_SOURCES
      librecad/src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_interactivepick_view.h
      librecad/src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_spinbox_view.cpp
      librecad/src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_spinbox_view.h
+     librecad/src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_line_edit_view.cpp
+     librecad/src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_line_edit_view.h
      librecad/src/ui/dock_widgets/property_sheet/properties/enum/lc_enum_descriptor.cpp
      librecad/src/ui/dock_widgets/property_sheet/properties/enum/lc_enum_descriptor.h
      librecad/src/ui/dock_widgets/property_sheet/properties/enum/lc_enum_value_descriptor.cpp
@@ -1927,8 +1929,6 @@ set (MUPARSER_SOURCES
      libraries/muparser/src/muParserError.cpp
      libraries/muparser/src/muParserInt.cpp
      libraries/muparser/src/muParserTokenReader.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_line_edit_view.cpp
-     librecad/src/ui/dock_widgets/property_sheet/properties/double/lc_property_double_line_edit_view.h
 )
 
 # Static library from shared sources

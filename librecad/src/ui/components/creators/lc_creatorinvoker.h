@@ -43,6 +43,7 @@ public:
 protected slots:
     void createToolbar(const QString& toolbarName, const QStringList& actionNames, int areaIndex) const;
     void destroyToolbar(const QString& toolbarName) const;
+    void onCustomToolbarVisibilityChanged(bool visible);
 private:
     QC_ApplicationWindow *m_appWindow;
     LC_ActionGroupManager* m_actionGroupManager {nullptr};

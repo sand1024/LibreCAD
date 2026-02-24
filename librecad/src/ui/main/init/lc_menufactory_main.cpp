@@ -524,6 +524,12 @@ void LC_MenuFactoryMain::prepareWorkspaceMenuComponents() const {
     }
 }
 
+void LC_MenuFactoryMain::recreateToolbarsMenu() {
+    m_menusHolder->m_menuWorkspace->clear();
+    prepareWorkspaceMenuComponents();
+}
+
+
 void LC_MenuFactoryMain::onWorkspaceMenuAboutToShow(const QList<QC_MDIWindow*>& windowList) {
     LC_GROUP_GUARD("WindowOptions");
     {

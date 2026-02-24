@@ -761,6 +761,10 @@ QC_MDIWindow* QC_ApplicationWindow::createNewDrawingWindow(RS_Document* doc, con
     return w;
 }
 
+void QC_ApplicationWindow::recreateToolbarsMenu() {
+    m_menuFactory->recreateToolbarsMenu();
+}
+
 QG_GraphicView* QC_ApplicationWindow::setupNewGraphicView(const QC_MDIWindow* w) {
     QG_GraphicView* view = w->getGraphicView();
     LC_GROUP("Appearance");

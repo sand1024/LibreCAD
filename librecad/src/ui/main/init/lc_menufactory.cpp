@@ -28,3 +28,7 @@ LC_MenuFactory::LC_MenuFactory(QC_ApplicationWindow* mainWin)
     : m_menuFactoryMain(mainWin, mainWin->m_actionGroupManager.get(), mainWin->m_actionFactory.get(), &m_menusHolder),
 m_menuFactoryGraphicView(mainWin, mainWin->m_actionGroupManager.get(), &m_menusHolder) {
 }
+
+void LC_MenuFactory::recreateToolbarsMenu() {
+    m_menuFactoryMain.recreateToolbarsMenu();
+}

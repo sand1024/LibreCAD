@@ -41,6 +41,7 @@ public:
     void onWorkspaceMenuAboutToShow(const QList<QC_MDIWindow *> &windowList);
     QMenu* createMainWindowPopupMenu() const;
     QMenu * getRecentFilesMenu() const;
+    void recreateToolbarsMenu();
 protected:
     LC_ActionFactory *m_actionFactory = nullptr;
 

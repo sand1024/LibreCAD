@@ -23,6 +23,8 @@
 #ifndef LC_MENUFACTORY_H
 #define LC_MENUFACTORY_H
 
+#include <qtoolbar.h>
+
 #include "lc_actioncontext.h"
 #include "lc_menufactory_graphicview.h"
 #include "lc_menufactory_main.h"
@@ -65,6 +67,9 @@ public:
                                       const RS_Vector& contextPosition, QStringList& actionNames, bool mayInvokeDefaultMenu) {
         return m_menuFactoryGraphicView.createGraphicViewPopupMenu(graphicView, contextEntity, contextPosition, actionNames, mayInvokeDefaultMenu);
     }
+
+    void recreateToolbarsMenu();
+
 protected:
    LC_MenusHolder m_menusHolder;
    LC_MenuFactoryMain m_menuFactoryMain;

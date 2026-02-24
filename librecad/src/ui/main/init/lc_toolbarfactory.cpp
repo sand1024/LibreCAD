@@ -489,26 +489,4 @@ void LC_ToolbarFactory::addToLeft(QToolBar *toolbar) const { m_appWin->addToolBa
 void LC_ToolbarFactory::createCustomToolbars(){
     m_appWin->m_creatorInvoker = std::make_unique<LC_CreatorInvoker>(m_appWin, m_agm);
     m_appWin->m_creatorInvoker->createCustomToolbars(m_showToolbarTooltips);
-
-    /*bool firstLoad = LC_GET_ONE_BOOL("Startup", "FirstLoad", true);
-    if (firstLoad){
-        QStringList list;
-        list << "DrawMText"
-             << "DrawHatch"
-             << "DrawImage"
-             << "BlocksCreate"
-             << "DrawPoint";
-
-        auto toolbar = new QToolBar("DefaultCustom", m_appWin);
-        toolbar->setObjectName("DefaultCustom");
-        foreach (auto& actionName, list){
-            toolbar->addAction(m_appWin->getAction(actionName));
-        }
-        m_appWin->addToolBar(Qt::LeftToolBarArea, toolbar);
-        // fixme - sand - files - check whether we actually default custom toolbar on start??? It's quite confusing, actually...
-        toolbar->toggleViewAction()->toggle();
-
-        QSettings settings;
-        settings.setValue("CustomToolbars/DefaultCustom", list);
-    }*/
 }

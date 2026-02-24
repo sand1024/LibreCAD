@@ -135,6 +135,7 @@ class QC_ApplicationWindow : public LC_MDIApplicationWindow {
     void relayAction(QAction* q_action);
     /** generates a new document for a graphic. */
     QC_MDIWindow* createNewDrawingWindow(RS_Document* doc, const QString& expectedFileName);
+    void recreateToolbarsMenu();
 public slots:
     void slotFocus();
     void slotKillAllActions();

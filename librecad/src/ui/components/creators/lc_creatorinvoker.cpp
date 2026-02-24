@@ -26,8 +26,10 @@
 #include <QMenu>
 #include <QMouseEvent>
 #include <QSettings>
+#include <QTimer>
 #include <QToolBar>
 #include <QVBoxLayout>
+#include <boost/qvm/mat_traits.hpp>
 
 #include "lc_actiongroupmanager.h"
 #include "lc_dialog.h"
@@ -65,9 +67,12 @@ void createCustomMenuForFirstRunIfNeeded() {
 void LC_CreatorInvoker::createCustomToolbars(const bool showToolTips) {
     m_showToolbarTooltips = showToolTips;
     QSettings settings;
+    settings.beginGroup("CustomToolbarsVisibility");
+    const QStringList visibleToolbars = settings.value("VisibleList").toStringList();
+    settings.endGroup();
+
     settings.beginGroup("CustomToolbars");
     const QStringList &customToolbars = settings.childKeys();
-
     for (const QString& key : customToolbars) {
         QList<QAction*> actionsList;
         auto actionNames = settings.value(key).toStringList();
@@ -98,7 +103,16 @@ void LC_CreatorInvoker::createCustomToolbars(const bool showToolTips) {
                     toolbar->addAction(action);
                 }
             }
+            connect(toolbar, &QToolBar::visibilityChanged, this, &LC_CreatorInvoker::onCustomToolbarVisibilityChanged);
+            bool visible = visibleToolbars.contains(key);
+            // LC_ERR << "Custom TB creation " << key << (visible ? " VISIBLE" : " NOT_VISIBLE");
+            toolbar->setVisible(visible);
             m_appWindow->addToolBar(toolbar);
+            // due to some reasons, visibilty TRUE event comes even if toolbar is set as invisible (probably as part of add toolbar).
+            // therefore, we forcefully disable toolbar, if necessary, after some delay.
+            QTimer::singleShot(5, [toolbar, visible] {
+                toolbar->setVisible(visible);
+            });
         }
     }
 
@@ -115,6 +129,7 @@ void LC_CreatorInvoker::invokeToolbarCreator() {
 
     dlg.exec();
     dlg.deleteLater();
+    m_appWindow->recreateToolbarsMenu();
 }
 
 void LC_CreatorInvoker::createToolbar(const QString &toolbarName, const QStringList& actionNames, const int areaIndex) const {
@@ -158,11 +173,49 @@ void LC_CreatorInvoker::createToolbar(const QString &toolbarName, const QStringL
             toolbar->addAction(getAction(key));
         }
     }
+
+    connect(toolbar, &QToolBar::visibilityChanged, this, &LC_CreatorInvoker::onCustomToolbarVisibilityChanged);
 }
 
 void LC_CreatorInvoker::destroyToolbar(const QString &toolbarName) const {
     const auto toolbar = m_appWindow->findChild<QToolBar *>(toolbarName);
+    toolbar->setVisible(false);
+    disconnect(toolbar, &QToolBar::visibilityChanged, this, &LC_CreatorInvoker::onCustomToolbarVisibilityChanged);
     delete toolbar;
+}
+
+void LC_CreatorInvoker::onCustomToolbarVisibilityChanged(const bool visible) {
+    const auto toolbar = dynamic_cast<QToolBar*>(sender());
+    if (toolbar != nullptr) {
+        const QString toolbarName = toolbar->objectName();
+        QSettings settings;
+        settings.beginGroup("CustomToolbarsVisibility");
+        QStringList visibleToolbars = settings.value("VisibleList").toStringList();
+
+        const qsizetype size = visibleToolbars.count();
+        int idx = -1;
+        for (qsizetype i = 0; i < size; i++) {
+            const QString& s = visibleToolbars.at(i);
+            if (s == toolbarName) {
+                idx = i;
+                break;
+            }
+        }
+        if (visible) {
+            if (idx == -1) {
+                visibleToolbars << toolbarName;
+            }
+        }
+        else {
+            if (idx != -1) {
+                visibleToolbars.remove(idx);
+            }
+        }
+        settings.setValue("VisibleList", visibleToolbars);
+        settings.endGroup();
+
+        // LC_ERR << "TB_Visible " << toolbarName << (visible ? " Yes" : " no");
+    }
 }
 
 void LC_CreatorInvoker::invokeMenuCreator() {
