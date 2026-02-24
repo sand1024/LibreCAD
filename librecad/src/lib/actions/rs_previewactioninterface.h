@@ -159,6 +159,7 @@ protected:
 
     void previewSnapAngleMark(const RS_Vector &center, double angle) const;
     void previewSnapAngleMark(const RS_Vector &center, const RS_Vector &refPoint) const;
+    void previewSnapAngleMark(const RS_Vector& center, const double angle, double angleBase, bool isAnglesCounterClockWise) const;
 
     RS_Entity *catchModifiableEntity(const LC_MouseEvent *e, const EntityTypeList &enTypeList) const;
     RS_Entity *catchModifiableEntity(const LC_MouseEvent *e, RS2::EntityType enType) const;

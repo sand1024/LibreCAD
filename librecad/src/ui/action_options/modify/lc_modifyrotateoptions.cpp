@@ -35,7 +35,9 @@ LC_ModifyRotateOptions::LC_ModifyRotateOptions()
     connect(ui->cbCurrentLayer, &QCheckBox::clicked, this, &LC_ModifyRotateOptions::cbUseCurrentLayerClicked);
 
     connect(ui->cbFreeAngle, &QCheckBox::clicked, this, &LC_ModifyRotateOptions::cbFreeAngleClicked);
+    connect(ui->cbRelativeAngle, &QCheckBox::clicked, this, &LC_ModifyRotateOptions::cbRelativeAngleClicked);
     connect(ui->cbFreeRefAngle, &QCheckBox::clicked, this, &LC_ModifyRotateOptions::cbFreeRefAngleClicked);
+    connect(ui->cbCenterPointFirst, &QCheckBox::clicked, this, &LC_ModifyRotateOptions::cbCenterPointFirstClicked);
     connect(ui->cbTwoRotations, &QCheckBox::clicked, this, &LC_ModifyRotateOptions::onTwoRotationsClicked);
     connect(ui->cbAbsoluteRefAngle, &QCheckBox::clicked, this, &LC_ModifyRotateOptions::onAbsoluteRefAngleClicked);
 
@@ -50,20 +52,6 @@ LC_ModifyRotateOptions::LC_ModifyRotateOptions()
 
 LC_ModifyRotateOptions::~LC_ModifyRotateOptions(){
     delete ui;
-}
-
-void LC_ModifyRotateOptions::doSaveSettings() {
-    save("KeepOriginals", ui->cbKeepOriginals->isChecked());
-    save("MultipleCopies", ui->cbMultipleCopies->isChecked());
-    save("Copies", ui->sbNumberOfCopies->value());
-    save("UseCurrentLayer",ui->cbCurrentLayer->isChecked());
-    save("UseCurrentAttributes",ui->cbCurrentAttr->isChecked());
-    save("Angle", ui->leAngle->text());
-    save("AngleIsFree", ui->cbFreeAngle->isChecked());
-    save("TwoRotations",     ui->cbTwoRotations->isChecked());
-    save("AngleRef", ui->leAngle2->text());
-    save("AngleRefIsFree", ui->cbFreeRefAngle->isChecked());
-    save("AngleRefIsAbsolute", ui->cbAbsoluteRefAngle->isChecked());
 }
 
 void LC_ModifyRotateOptions::updateUI(const int mode) {
@@ -111,6 +99,22 @@ void LC_ModifyRotateOptions::allowSecondRotationUI(const bool enable) const {
 
 }
 
+void LC_ModifyRotateOptions::doSaveSettings() {
+    save("KeepOriginals", ui->cbKeepOriginals->isChecked());
+    save("MultipleCopies", ui->cbMultipleCopies->isChecked());
+    save("Copies", ui->sbNumberOfCopies->value());
+    save("UseCurrentLayer",ui->cbCurrentLayer->isChecked());
+    save("UseCurrentAttributes",ui->cbCurrentAttr->isChecked());
+    save("Angle", ui->leAngle->text());
+    save("AngleIsFree", ui->cbFreeAngle->isChecked());
+    save("AngleIsRelative", ui->cbFreeAngle->isChecked());
+    save("CenterPointFirst", ui->cbCenterPointFirst->isChecked());
+    save("TwoRotations",     ui->cbTwoRotations->isChecked());
+    save("AngleRef", ui->leAngle2->text());
+    save("AngleRefIsFree", ui->cbFreeRefAngle->isChecked());
+    save("AngleRefIsAbsolute", ui->cbAbsoluteRefAngle->isChecked());
+}
+
 void LC_ModifyRotateOptions::doSetAction(RS_ActionInterface *a, const bool update) {
     m_action = static_cast<RS_ActionModifyRotate *>(a);
     QString angle;
@@ -123,9 +127,11 @@ void LC_ModifyRotateOptions::doSetAction(RS_ActionInterface *a, const bool updat
     int copiesNumber;
 
     bool freeAngle;
+    bool relativeAngle;
     bool freeRefAngle;
     bool absoluteRefAngle;
     bool twoRotations;
+    bool centerPointFirst;
 
     if (update){
         useCurrentLayer = m_action->isUseCurrentLayer();
@@ -136,6 +142,8 @@ void LC_ModifyRotateOptions::doSetAction(RS_ActionInterface *a, const bool updat
 
         twoRotations = m_action->isRotateAlsoAroundReferencePoint();
         freeAngle = m_action->isFreeAngle();
+        relativeAngle = m_action->isRelativeAngle();
+        centerPointFirst = m_action->isCenterPointFirst();
         freeRefAngle = m_action->isFreeRefPointAngle();
         absoluteRefAngle = m_action->isRefPointAngleAbsolute();
         angle = fromDouble(RS_Math::rad2deg(m_action->getAngle()));
@@ -150,6 +158,8 @@ void LC_ModifyRotateOptions::doSetAction(RS_ActionInterface *a, const bool updat
 
         twoRotations = loadBool("TwoRotations", false);
         freeAngle = loadBool("AngleIsFree", true);
+        relativeAngle = loadBool("AngleIsRelative", true);
+        centerPointFirst = loadBool("CenterPointFirst", false);
         freeRefAngle = loadBool("AngleRefIsFree", false);
         absoluteRefAngle = loadBool("AngleRefIsAbsolute", false);
         angle = load("Angle", "0.0");
@@ -163,6 +173,8 @@ void LC_ModifyRotateOptions::doSetAction(RS_ActionInterface *a, const bool updat
 
     setAngleToActionAndView(angle);
     setFreeAngleToActionAndView(freeAngle);
+    setRelativeAngleToActionAndView(relativeAngle);
+    setCenterPointFirstToActionAndView(centerPointFirst);
 
     setFreeRefAngleToActionAndView(freeRefAngle);
     setRefPointAngleToActionAndView(angle2);
@@ -217,6 +229,17 @@ void LC_ModifyRotateOptions::setFreeAngleToActionAndView(const bool val) const {
         ui->leAngle->setEnabled(true);
         ui->tbPickAngle->setEnabled(true);
     }
+    ui->cbRelativeAngle->setEnabled(val);
+}
+
+void LC_ModifyRotateOptions::setRelativeAngleToActionAndView(bool val) {
+    ui->cbRelativeAngle->setChecked(val);
+    m_action->setRelativeAngle(val);
+}
+
+void LC_ModifyRotateOptions::setCenterPointFirstToActionAndView(bool val) {
+    ui->cbCenterPointFirst->setChecked(val);
+    m_action->setCenterPointFirst(val);
 }
 
 void LC_ModifyRotateOptions::setAbsoluteRefAngleToActionAndView(const bool checked) const {
@@ -269,6 +292,14 @@ void LC_ModifyRotateOptions::cbUseCurrentLayerClicked(const bool val) {
 
 void LC_ModifyRotateOptions::cbFreeAngleClicked(const bool val) {
     setFreeAngleToActionAndView(val);
+}
+
+void LC_ModifyRotateOptions::cbRelativeAngleClicked(const bool val) {
+    setRelativeAngleToActionAndView(val);
+}
+
+void LC_ModifyRotateOptions::cbCenterPointFirstClicked(const bool val) {
+    setCenterPointFirstToActionAndView(val);
 }
 
 void LC_ModifyRotateOptions::cbFreeRefAngleClicked(const bool val) {

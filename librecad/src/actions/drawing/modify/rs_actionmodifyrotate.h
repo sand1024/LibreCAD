@@ -45,7 +45,9 @@ public:
     double getAngle() const;
     void setAngle(double angleRad) const;
     void setFreeAngle(bool enable);
+    void setRelativeAngle(bool enable);
     bool isFreeAngle() const {return m_freeAngle;}
+    bool isRelativeAngle() const {return m_relativeAngle;}
     double getRefPointAngle() const;
     void setRefPointAngle(double angle) const;
     void setFreeRefPointAngle(bool value);
@@ -57,6 +59,8 @@ public:
     double getCurrentAngleDegrees() const;
     double getCurrentAngle2Degrees() const;
     void keyPressEvent(QKeyEvent *e) override;
+    void setCenterPointFirst(bool val);
+    bool isCenterPointFirst()const {return !m_selectRefPointFirst;}
 protected:
     /**
      * Action States.
@@ -70,6 +74,7 @@ protected:
     // support of old mode, most probably it should be removed and one selection mode should remain
     bool m_selectRefPointFirst = true;
     bool m_freeAngle = false;
+    bool m_relativeAngle = false;
     bool m_freeRefPointAngle = false;
     std::unique_ptr<RS_RotateData> m_rotateData;
     double m_currentAngle = 0.0;

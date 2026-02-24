@@ -50,6 +50,8 @@ public slots:
     void cbUseCurrentAttributesClicked(bool val);
     void cbUseCurrentLayerClicked(bool val);
     void cbFreeAngleClicked(bool val);
+    void cbRelativeAngleClicked(bool val);
+    void cbCenterPointFirstClicked(bool val);
     void cbFreeRefAngleClicked(bool val);
     void onTwoRotationsClicked(bool val);
     void onAbsoluteRefAngleClicked(bool val);
@@ -68,6 +70,8 @@ private:
     void setKeepOriginalsToActionAndView(bool val) const;
     void setCopiesNumberToActionAndView(int number) const;
     void setFreeAngleToActionAndView(bool val) const;
+    void setRelativeAngleToActionAndView(bool val);
+    void setCenterPointFirstToActionAndView(bool val);
     void setFreeRefAngleToActionAndView(bool checked) const;
     void setAbsoluteRefAngleToActionAndView(bool checked) const;
     void setTwoRotationsToActionAndView(bool val);

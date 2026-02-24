@@ -497,19 +497,24 @@ void RS_PreviewActionInterface::initFromSettings() {
     m_doNotAllowNonDecimalAnglesInput = LC_GET_ONE_BOOL("CADPreferences", "InputAnglesAsDecimalsOnly", false);
 }
 
+void RS_PreviewActionInterface::previewSnapAngleMark(const RS_Vector& center, const double angle) const {
+    double angleBase = m_formatter->getAnglesBase();
+    bool isAnglesCounterClockWise = m_formatter->isAnglesCounterClockWise();
+    previewSnapAngleMark(center, angle, angleBase, isAnglesCounterClockWise);
+}
+
 // fixme - sand - snap to relative angle support!!!
 // fixme - rework to natural paint via overlay
-void RS_PreviewActionInterface::previewSnapAngleMark(const RS_Vector& center, const double angle) const {
+void RS_PreviewActionInterface::previewSnapAngleMark(const RS_Vector& center, const double angle, double angleBase, bool isAnglesCounterClockWise) const {
     // todo - add separate option that will control visibility of mark?
     const int radiusInPixels = m_angleSnapMarkerSize; // todo - move to settings
     const int lineInPixels = radiusInPixels * 2; // todo - move to settings
     const double lineLength = toGraphDX(lineInPixels);
-
-    const double angleZero = toWorldAngle(m_formatter->getAnglesBase());
+    const double angleZero = toWorldAngle(angleBase);
     const double correctedAngle = RS_Math::correctAnglePlusMinusPi(angle);
     if (LC_LineMath::isMeaningfulAngle(correctedAngle)) {
         const double radius = toGraphDX(radiusInPixels);
-        previewRefArc(RS_ArcData(center, radius, angleZero, correctedAngle, !m_formatter->isAnglesCounterClockWise()));
+        previewRefArc(RS_ArcData(center, radius, angleZero, correctedAngle, !isAnglesCounterClockWise));
         previewRefLine(center, center + RS_Vector::polar(lineLength, correctedAngle));
     }
     previewRefLine(center, center.relative(lineLength, angleZero));

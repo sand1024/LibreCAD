@@ -1160,7 +1160,7 @@ RS_Vector RS_EntityContainer::obtainNearestEndpoint(const RS_Vector& coord, doub
 RS_Vector RS_EntityContainer::doGetNearestPointOnEntity(const RS_Vector& coord, const bool onEntity, double* dist, RS_Entity** entity) const {
     RS_Vector point(false);
     const RS_Entity* en = getNearestEntity(coord, dist, RS2::ResolveNone);
-    if (en && en->isVisible() && !en->getParent()->ignoredSnap()) {
+    if (en != nullptr && en->isVisible() && !en->getParent()->ignoredSnap()) {
         point = en->getNearestPointOnEntity(coord, onEntity, dist, entity);
     }
     return point;

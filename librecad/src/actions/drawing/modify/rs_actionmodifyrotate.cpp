@@ -29,6 +29,7 @@
 #include <QKeyEvent>
 
 #include "lc_actioninfomessagebuilder.h"
+#include "lc_formatter.h"
 #include "lc_modifyrotateoptions.h"
 #include "rs_modification.h"
 #include "rs_preview.h"
@@ -172,6 +173,16 @@ void RS_ActionModifyRotate::onMouseMoveEventSelected(int status, const LC_MouseE
                     }
                     if (m_showRefEntitiesOnPreview) {
                         previewRefLine(center, mouse);
+                        previewRefSelectablePoint(mouse);
+                        previewRefPoint(center);
+                        if (!m_freeAngle) {
+                            previewRotationCircleAndPoints(mouse, center, m_rotateData->angle);
+                        }
+                    }
+                    if (!m_freeAngle) {
+                        RS_RotateData tmpData = *m_rotateData;
+                        tmpData.center = mouse;
+                        previewRotatedEntities(tmpData);
                     }
                 }
             }
@@ -182,12 +193,27 @@ void RS_ActionModifyRotate::onMouseMoveEventSelected(int status, const LC_MouseE
             RS_Vector &originalReferencePoint = m_rotateData->refPoint;
             mouse = getSnapAngleAwarePoint(e, center, mouse, true);
             double radius = center.distanceTo(originalReferencePoint);
-            double wcsAngle = center.angleTo(mouse);
-            double rotationAngle = RS_Math::correctAngle(toUCSBasisAngle(wcsAngle));
-            RS_Vector newAxisPoint = center.relative(radius, wcsAngle);
+            double rotationAngle;
+            double angleFromCenterToMouse = center.angleTo(mouse);
+            double angleCenterToOriginalRefPpoint = center.angleTo(originalReferencePoint);
+            if (m_relativeAngle) {
+                rotationAngle = angleFromCenterToMouse - angleCenterToOriginalRefPpoint;
+            }
+            else {
+                rotationAngle = RS_Math::correctAngle(toUCSBasisAngle(angleFromCenterToMouse));
+            }
+
+            RS_Vector newAxisPoint = center.relative(radius, angleFromCenterToMouse);
             if (m_showRefEntitiesOnPreview) {
-                RS_Vector xAxisPoint = center.relative(radius, toWorldAngleFromUCSBasis(0));
-                previewSnapAngleMark(center, mouse);
+                RS_Vector xAxisPoint;
+                if (m_relativeAngle) {
+                    xAxisPoint = originalReferencePoint;
+                    previewSnapAngleMark(center, angleFromCenterToMouse, angleCenterToOriginalRefPpoint, m_formatter->isAnglesCounterClockWise());
+                }
+                else {
+                    xAxisPoint = center.relative(radius, toWorldAngleFromUCSBasis(0));
+                    previewSnapAngleMark(center, mouse);
+                }
                 previewRefSelectablePoint(newAxisPoint);
                 previewRefPoint(xAxisPoint);
                 previewRefLine(center, xAxisPoint);
@@ -307,6 +333,18 @@ void RS_ActionModifyRotate::keyPressEvent(QKeyEvent *e) {
     }
 }
 
+void RS_ActionModifyRotate::setCenterPointFirst(bool val) {
+    m_selectRefPointFirst = !val;
+    if (m_selectionComplete) {
+        if (m_selectRefPointFirst){
+            setStatus(SetReferencePoint);
+        }
+        else{
+            setStatus(SetCenterPoint);
+        }
+    }
+}
+
 void RS_ActionModifyRotate::onCoordinateEvent(const int status, [[maybe_unused]]bool isZero, const RS_Vector &pos) {
     if (!pos.valid){
         return;
@@ -381,14 +419,32 @@ void RS_ActionModifyRotate::onCoordinateEvent(const int status, [[maybe_unused]]
             else{
                 m_rotateData->center = pos;
                 moveRelativeZero(m_rotateData->center);
-                setStatus(SetReferencePoint);
+                if (m_rotateData->twoRotations) {
+                    setStatus(SetReferencePoint);
+                }
+                else {
+                    if (m_freeAngle) {
+                        setStatus(SetReferencePoint);
+                    }
+                    else {
+                        tryTrigger();
+                    }
+                }
             }
             break;
         }
         case SetTargetPoint: {
-            const double wcsAngle = m_rotateData->center.angleTo(pos);
-            const double rotationAngle = RS_Math::correctAngle(toUCSBasisAngle(wcsAngle));
-            m_rotateData->angle = adjustRelativeAngleSignByBasis(rotationAngle);
+            const double angleCenterToPosWCS = m_rotateData->center.angleTo(pos);
+            double rotationAngle;
+            if (m_relativeAngle) {
+                const double angleCenterToRefPointWCS = m_rotateData->center.angleTo(m_rotateData->refPoint);
+                rotationAngle = RS_Math::getAngleDifference(angleCenterToRefPointWCS,angleCenterToPosWCS);
+            }
+            else {
+                double rotation = RS_Math::correctAngle(toUCSBasisAngle(angleCenterToPosWCS));
+                rotationAngle = adjustRelativeAngleSignByBasis(rotation);
+            }
+            m_rotateData->angle = rotationAngle;
 
             const RS_Vector radius = m_rotateData->center - m_rotateData->refPoint;
             const bool rotationOverSamePoint = radius.squared() <= RS_TOLERANCE;
@@ -465,7 +521,14 @@ void RS_ActionModifyRotate::onMouseLeftButtonReleaseSelected(const int status, c
                 snapped = boundingForSelected.getCenter();
             }
             else {
-                snapped = getSnapAngleAwarePoint(e, m_rotateData->refPoint, snapped);
+                if (m_selectRefPointFirst) {
+                    snapped = getSnapAngleAwarePoint(e, m_rotateData->refPoint, snapped);
+                }
+                else {
+                    const RS_BoundData boundingForSelected = RS_Modification::getBoundingRect(m_selectedEntities);
+                    const RS_Vector selectionCenter = boundingForSelected.getCenter();
+                    snapped = getSnapAngleAwarePoint(e, selectionCenter, snapped);
+                }
             }
             break;
         }
@@ -534,6 +597,10 @@ void RS_ActionModifyRotate::setFreeAngle(const bool enable) {
         }
         m_freeAngle = enable;
     }
+}
+
+void RS_ActionModifyRotate::setRelativeAngle(bool enable) {
+    m_relativeAngle = enable;
 }
 
 void RS_ActionModifyRotate::setFreeRefPointAngle(const bool value) {
