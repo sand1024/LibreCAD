@@ -39,6 +39,7 @@ class LC_DlgWidgetCreator : public LC_Dialog{
     Q_OBJECT
 public:
     void updateSaveAndDeleteButtons() const;
+    void reloadCustomWidgets();
     explicit LC_DlgWidgetCreator(QWidget *parent, bool forMenu, LC_ActionGroupManager* actionGroupManager);
     ~LC_DlgWidgetCreator() override;
 protected slots:
@@ -55,6 +56,8 @@ protected slots:
     void newWidget();
     void saveWidget();
     void destroyWidget();
+    void exportConfiguration();
+    void importConfiguration();
 signals:
     void widgetCreationRequest(const QString&, const QStringList&, int areaIndex);
     void widgetDestroyRequest(const QString&);

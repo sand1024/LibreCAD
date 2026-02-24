@@ -33,6 +33,7 @@
 #include "lc_dlg_menu_assigner.h"
 #include "lc_dlg_new_widget.h"
 #include "lc_menuactivator.h"
+#include "lc_settingsexporter.h"
 #include "rs_settings.h"
 #include "ui_lc_dlg_widget_creator.h"
 
@@ -64,6 +65,8 @@ LC_DlgWidgetCreator::LC_DlgWidgetCreator(QWidget *parent, const bool forMenu, LC
         connect(ui->pbMenuAssign, &QPushButton::clicked, this, &LC_DlgWidgetCreator::onAssignMenu);
         connect(ui->pbMenuUnassign, &QPushButton::clicked, this, &LC_DlgWidgetCreator::onUnAssignMenu);
 
+        ui->pbExportToFile->setToolTip(tr("Export custom menus setup to file"));
+        ui->pbImportFromFile->setToolTip(tr("Import custom  menus setup from file"));
     }
     else {
         setWindowTitle(tr("Custom Toolbar Creator"));
@@ -80,8 +83,14 @@ LC_DlgWidgetCreator::LC_DlgWidgetCreator(QWidget *parent, const bool forMenu, LC
         }
         ui->cbTBPlacementArea->setCurrentIndex(area);
 
+        ui->pbExportToFile->setToolTip(tr("Export custom toolbars setup to file"));
+        ui->pbImportFromFile->setToolTip(tr("Import custom  toolbars setup from file"));
+
         connect(ui->cbTBPlacementArea, &QComboBox::currentIndexChanged, this, &LC_DlgWidgetCreator::onToolbarPlacementIndexChanged);
     }
+
+    connect(ui->pbExportToFile, &QPushButton::clicked, this, &LC_DlgWidgetCreator::exportConfiguration);
+    connect(ui->pbImportFromFile, &QPushButton::clicked, this, &LC_DlgWidgetCreator::importConfiguration);
 
     ui->cbCategories->setCurrentIndex(-1);
     ui->cbCategories->addItem(QObject::tr("All"), "_all");
@@ -108,6 +117,15 @@ LC_DlgWidgetCreator::LC_DlgWidgetCreator(QWidget *parent, const bool forMenu, LC
     connect(ui->btnSave, &QToolButton::released, this, &LC_DlgWidgetCreator::saveWidget);
     connect(ui->btnDelete, &QToolButton::released, this, &LC_DlgWidgetCreator::destroyWidget);
 
+    reloadCustomWidgets();
+}
+
+LC_DlgWidgetCreator::~LC_DlgWidgetCreator(){
+    delete ui;
+    qDeleteAll(m_menuActivators);
+}
+
+void LC_DlgWidgetCreator::reloadCustomWidgets() {
     setCategoryAll();
     loadCustomWidgets();
 
@@ -122,15 +140,10 @@ void LC_DlgWidgetCreator::updateSaveAndDeleteButtons() const {
     ui->btnSave->setEnabled(hasItems);
 }
 
-LC_DlgWidgetCreator::~LC_DlgWidgetCreator(){
-    delete ui;
-}
-
 void LC_DlgWidgetCreator::setCategoryAll() const {
     ui->cbCategories->setCurrentIndex(0);
     onCategoryActivated(0);
 }
-
 
 void LC_DlgWidgetCreator::addChosenAction() const {
     const QListWidgetItem *item = ui->alOfferredActions->currentItem();
@@ -424,6 +437,7 @@ void LC_DlgWidgetCreator::saveWidget() {
     }
 }
 
+
 void LC_DlgWidgetCreator::destroyWidget() {
     const int index = ui->cbWidgetName->currentIndex();
     if (index == -1) {
@@ -487,8 +501,9 @@ QString LC_DlgWidgetCreator::createMenuItemDisplayName(const QString& key) {
 void LC_DlgWidgetCreator::loadCustomWidgets() {
     if (m_forMenu) {
         LC_GROUP("Activators");
-        auto activators = LC_CHILD_KEYS();
+        qDeleteAll(m_menuActivators);
 
+        auto activators = LC_CHILD_KEYS();
         for (auto key : activators) {
             LC_MenuActivator* activator = LC_MenuActivator::fromShortcut(key);
             if (activator != nullptr) {
@@ -546,6 +561,7 @@ void LC_DlgWidgetCreator::loadCustomWidgets() {
     }
     else {
         LC_GROUP(getSettingsGroupName());
+        ui->cbWidgetName->clear();
         auto widgets = LC_CHILD_KEYS();
 
         for (auto key : widgets) {
@@ -574,4 +590,15 @@ void LC_DlgWidgetCreator::removeMenuActivator(const QString& menuName) {
 
         delete activator;
     }
+}
+
+void LC_DlgWidgetCreator::exportConfiguration() {
+    LC_SettingsExporter exporter;
+    exporter.exportCustomWidgetSettings(this, m_forMenu);
+}
+
+void LC_DlgWidgetCreator::importConfiguration() {
+    LC_SettingsExporter exporter;
+    exporter.importCustomWidgetSettings(this, m_forMenu);
+    reloadCustomWidgets();
 }
