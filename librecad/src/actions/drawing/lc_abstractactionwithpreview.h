@@ -82,11 +82,6 @@ protected:
      */
     RS_Vector m_lastSnapPoint  = RS_Vector(false);
 
-    /**
-    * This is "major" status of action - it is used for determining, to which status state should be changed after various intermediate statuses (mostly,
-    * this is needed for support of command events);
-    */
-    int m_mainStatus  = 0;
 
     /**
      * snap mode saved for further restored, convenient if the actions would like to manage current snap (say, for simpler selection of entities)
@@ -169,10 +164,6 @@ protected:
 
     virtual void checkPreSnapToRelativeZero(int status, const LC_MouseEvent* e);
     virtual bool doCheckMouseEventValidForInitialSnap(const LC_MouseEvent* e);
-
-    // main status support
-    void setMainStatus(const int status) {m_mainStatus = status; setStatus(status);}
-    void restoreMainStatus(){setStatus(m_mainStatus);}
 
     // snap control support
     void restoreSnapMode();

@@ -217,10 +217,11 @@ void LC_ActionFactory::createDrawLineActions(QMap<QString, QAction*>& map, QActi
         {"DrawLineAngleRel",         RS2::ActionDrawLineAngleRel,        tr("Angle From Line"),        ":/icons/line_angle_rel.lci"},
         {"DrawLineOrthogonalRel",    RS2::ActionDrawLineOrthogonalRel,   tr("Orthogonal From Line"),   ":/icons/line_ortho_rel.lci"},
         {"DrawLineFromPointToLine",  RS2::ActionDrawLineFromPointToLine, tr("From Point To Line"),     ":/icons/line_to_ortho.lci"},
-        {"DrawLineMiddle",           RS2::ActionDrawLineMiddle,          tr("Centerline"),            ":/icons/line_middle.lci"},
-        {"DrawCross",                RS2::ActionDrawCenterMark,               tr("Center Mark"),              ":/icons/cross_circle1.lci"},
+        {"DrawLineMiddle",           RS2::ActionDrawLineMiddle,          tr("Centerline"),             ":/icons/line_middle.lci"},
+        {"DrawCross",                RS2::ActionDrawCenterMark,          tr("Center Mark"),            ":/icons/cross_circle1.lci"},
         {"DrawSliceDivideLine",      RS2::ActionDrawSliceDivideLine,     tr("Slice/Divide Line"),      ":/icons/slice_divide.lci"},
-        {"DrawSliceDivideCircle",    RS2::ActionDrawSliceDivideCircle,   tr("Slice/Divide Circle"),    ":/icons/slice_divide_circle.lci"}
+        {"DrawSliceDivideCircle",    RS2::ActionDrawSliceDivideCircle,   tr("Slice/Divide Circle"),    ":/icons/slice_divide_circle.lci"},
+        {"DrawLineRadiant",          RS2::ActionDrawLineRadiant,         tr("Radiant Line"),           ":/icons/line_far_point.lci"}
     });
 }
 
@@ -891,7 +892,8 @@ void LC_ActionFactory::fillActionLists(const QMap<QString, QAction *> &map){
                         "DrawSliceDivideLine",
                         "DrawSliceDivideCircle",
                         "DrawCross",
-                        "DrawLineMiddle"
+                        "DrawLineMiddle",
+                        "DrawLineRadiant"
                     }, map);
 
     fillActionsList(pointActions, {

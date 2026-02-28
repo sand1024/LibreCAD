@@ -67,7 +67,14 @@ void RS_ActionModifyOffset::doTriggerSelectionUpdate(const bool keepSelected, co
 }
 
 void RS_ActionModifyOffset::doTriggerCompletion([[maybe_unused]]bool success) {
-    finish();
+     finish();
+    // fixme - sand - review whethe we can stay in entity's selection mode and don't finish there...
+    // m_selectionComplete = false;
+    // if (!m_distanceIsFixed){
+    //     if (getStatus() == SetPosition){
+    //         setStatus(SetReferencePoint);
+    //     }
+    // }
 }
 
 void RS_ActionModifyOffset::onMouseMoveEventSelected(const int status, const LC_MouseEvent* e) {

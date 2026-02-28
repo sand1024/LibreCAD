@@ -243,7 +243,7 @@ void LC_ActionOptionsWidget::onInteractiveInputButtonClicked([[maybe_unused]]boo
                 case LC_ActionContext::InteractiveInputInfo::POINT:
                 case LC_ActionContext::InteractiveInputInfo::POINT_X:
                 case LC_ActionContext::InteractiveInputInfo::POINT_Y: {
-                    // NOTE: point is not supported. Potentially, this is developer's error....
+                    m_actionContext->interactiveInputStart(inputType, m_laterCompletionRequestor, tag);
                     break;
                 }
                 default:

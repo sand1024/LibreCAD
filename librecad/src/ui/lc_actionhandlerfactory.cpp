@@ -32,7 +32,8 @@
 #include "lc_actiondrawarc2pointsheight.h"
 #include "lc_actiondrawarc2pointslength.h"
 #include "lc_actiondrawarc2pointsradius.h"
-#include "lc_actiondrawboundingbox.h"
+#include "lc_action_draw_boundingbox.h"
+#include "lc_action_draw_line_radiant.h"
 #include "lc_actiondrawcircle2pr.h"
 #include "lc_actiondrawcirclebyarc.h"
 #include "lc_actiondrawcross.h"
@@ -465,6 +466,9 @@ namespace InnerFactory{
             }
             case RS2::ActionDrawLineMiddle: {
                 return new LC_ActionDrawMidLine(ctx);
+            }
+            case RS2::ActionDrawLineRadiant: {
+                return new LC_ActionDrawLineRadiant(ctx);
             }
             case RS2::ActionDrawStar: {
                 return new LC_ActionDrawStar(ctx);

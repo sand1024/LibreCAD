@@ -93,6 +93,15 @@ protected:
     bool m_highlightEntitiesOnHover = false;
     bool m_highlightEntitiesRefPointsOnHover = false;
     bool m_doNotAllowNonDecimalAnglesInput = false;
+    /**
+    * This is "major" status of action - it is used for determining, to which status state should be changed after various intermediate statuses (mostly,
+    * this is needed for support of command events);
+    */
+    int m_mainStatus  = 0;
+    // main status support
+    void setMainStatus(const int status) {m_mainStatus = status; setStatus(status);}
+    void restoreMainStatus(){setStatus(m_mainStatus);}
+
 
     virtual void doTrigger(){}
     void deletePreview();

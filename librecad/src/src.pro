@@ -338,7 +338,8 @@ HEADERS += \
     actions/drawing/draw/dimensions/lc_actionselectdimordinatesameorigin.h \
     actions/drawing/draw/dimensions/lc_actiondrawgdtfeaturecontrolframe.h \
     actions/drawing/draw/line/misc/lc_actiondrawmidline.h \
-    actions/drawing/draw/line/misc/lc_actiondrawboundingbox.h \
+    actions/drawing/draw/line/misc/lc_action_draw_line_radiant.h \
+    actions/drawing/draw/line/misc/lc_action_draw_boundingbox.h \
     actions/drawing/draw/polygon/lc_actiondrawlinepolygon4.h \
     actions/drawing/draw/spline/lc_actionremovesplinepoints.h \
     actions/drawing/draw/spline/lc_actionsplineaddpoint.h \
@@ -514,6 +515,7 @@ HEADERS += \
     lib/modification/lc_copyutils.h \
     plugins/lc_plugininvoker.h \
     lib/actions/lc_actioncontext.h \
+    ui/action_options/line/lc_radiant_line_options.h \
     ui/components/utils/lc_entitymetauiutils.h \
     ui/components/utils/lc_guarded_signals_blocker.h \
     ui/components/utils/lc_mouse_tracking_table_view.h \
@@ -840,7 +842,8 @@ SOURCES += \
     actions/drawing/draw/dimensions/lc_actiondimordinaterebase.cpp \
     actions/drawing/draw/dimensions/lc_actionselectdimordinatesameorigin.cpp \
     actions/drawing/draw/line/misc/lc_actiondrawmidline.cpp \
-    actions/drawing/draw/line/misc/lc_actiondrawboundingbox.cpp \
+    actions/drawing/draw/line/misc/lc_action_draw_line_radiant.cpp \
+    actions/drawing/draw/line/misc/lc_action_draw_boundingbox.cpp \
     actions/drawing/draw/polygon/lc_actiondrawlinepolygon4.cpp \
     actions/drawing/draw/spline/lc_actionremovesplinepoints.cpp \
     actions/drawing/draw/spline/lc_actionsplineaddpoint.cpp \
@@ -915,6 +918,7 @@ SOURCES += \
     lib/modification/lc_copyutils.cpp \
     plugins/lc_plugininvoker.cpp \
     lib/actions/lc_actioncontext.cpp \
+    ui/action_options/line/lc_radiant_line_options.cpp \
     ui/components/utils/lc_entitymetauiutils.cpp \
     ui/components/creators/lc_creatorinvoker.cpp \
     ui/components/utils/lc_mouse_tracking_table_view.cpp \
@@ -1931,6 +1935,7 @@ FORMS = ui/action_options/circle/lc_circlebyarcoptions.ui \
        ui/action_options/circle/qg_circletan2options.ui \
        ui/action_options/curve/lc_actiondrawarc2poptions.ui \
        ui/action_options/curve/lc_ellipsearcoptions.ui \
+       ui/action_options/line/lc_radiant_line_options.ui \
        ui/action_options/misc/lc_midlineoptions.ui \
        ui/action_options/misc/lc_drawboundingboxoptions.ui \
        ui/action_options/modify/lc_modifyalignoptions.ui \

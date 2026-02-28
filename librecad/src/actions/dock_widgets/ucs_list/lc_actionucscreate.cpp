@@ -88,7 +88,8 @@ void LC_ActionUCSCreate::onMouseLeftButtonRelease(const int status, const LC_Mou
     switch (status){
         case SetOrigin:{
             snap = getRelZeroAwarePoint(e, snap);
-            break;        }
+            break;
+        }
         case SetAngle:{
             snap = getSnapAngleAwarePoint(e, m_originPoint, snap);
             break;

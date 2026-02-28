@@ -67,8 +67,6 @@ protected:
     RS_Entity* m_firstEntity = nullptr;
     RS_Entity* m_secondEntity = nullptr;
 
-    int m_mainStatus = 0;
-    void restoreMainStatus(){setStatus(m_mainStatus);}
     void prepareLine(LineInfo &info, const RS_Entity* ent, bool alternate) const;
     RS2::LineType getLineTypeForCenterLine() const;
     void setupCenterlinePenLayer(RS_Line* line) const;

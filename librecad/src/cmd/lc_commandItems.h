@@ -193,6 +193,11 @@ const LC_CommandItem g_commandList[] = {
             {{"ml", QObject::tr("ml", "draw mid line")}},
             RS2::ActionDrawLineMiddle
         },
+        {
+                {{"radiant", QObject::tr("radiant", "draw perspective line")}},
+                {{"rl", QObject::tr("rl", "draw perspective line")}},
+                RS2::ActionDrawLineRadiant
+        },
         // draw line of points
         {
             {{"linepoints", QObject::tr("linepoints", "draw line of points")}},
@@ -1159,6 +1164,10 @@ inline std::vector<std::pair<QString, QString>> g_transList={
         {"dist_flex",QObject::tr("dist_flex")},
         {"distance",QObject::tr("distance")},
 
+        // line radiant
+         {"radiant",QObject::tr("radiant")},
+         {"active",QObject::tr("active")},
+         {"lentype",QObject::tr("lentype")},
 
         // star
         {"sym",QObject::tr("sym")},

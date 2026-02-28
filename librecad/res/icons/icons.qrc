@@ -376,5 +376,6 @@
         <file alias="interactive_pick_point_y.lci">interactive_pick_point_y.svg</file>
         <file alias="hyperbola_foci_point.lci">hyperbola_foci_point.svg</file>
         <file alias="item_by_layer.lci">item_by_layer.svg</file>
+        <file alias="line_far_point.lci">line_far_point.svg</file>
     </qresource>
 </RCC>

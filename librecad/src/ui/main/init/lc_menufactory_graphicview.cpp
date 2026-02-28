@@ -613,7 +613,8 @@ void LC_MenuFactoryGraphicView::createGVMenuEntitySpecific(QMenu* contextMenu, Q
                                            "DrawLineBisector",
                                            "DrawLineFree",
                                            "DrawLineMiddle",
-                                           "DrawLineFromPointToLine"
+                                           "DrawLineFromPointToLine",
+                                           "DrawLineRadiant"
                                        });
 
                 addProxyActionsSubMenu(contextMenu, tr("Draw Circle"), ":/icons/circle_center_point.lci",

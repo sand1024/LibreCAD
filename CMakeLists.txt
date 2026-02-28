@@ -513,12 +513,14 @@ set (SHARED_SOURCES
      librecad/src/actions/drawing/draw/line/lc_actiondrawlinesnake.cpp
      librecad/src/actions/drawing/draw/line/lc_actiondrawlinesnake.h
      librecad/src/actions/drawing/draw/line/lc_actiondrawslicedivide.cpp
-     librecad/src/actions/drawing/draw/line/misc/lc_actiondrawboundingbox.cpp
-     librecad/src/actions/drawing/draw/line/misc/lc_actiondrawboundingbox.h
+     librecad/src/actions/drawing/draw/line/misc/lc_action_draw_boundingbox.cpp
+     librecad/src/actions/drawing/draw/line/misc/lc_action_draw_boundingbox.h
      librecad/src/actions/drawing/draw/line/misc/lc_actiondrawcross.cpp
      librecad/src/actions/drawing/draw/line/misc/lc_actiondrawcross.h
      librecad/src/actions/drawing/draw/line/misc/lc_actiondrawmidline.cpp
      librecad/src/actions/drawing/draw/line/misc/lc_actiondrawmidline.h
+     librecad/src/actions/drawing/draw/line/misc/lc_action_draw_line_radiant.h
+     librecad/src/actions/drawing/draw/line/misc/lc_action_draw_line_radiant.cpp
      librecad/src/actions/drawing/draw/line/rs_actiondrawline.cpp
      librecad/src/actions/drawing/draw/line/rs_actiondrawline.h
      librecad/src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp
@@ -1231,6 +1233,8 @@ set (SHARED_SOURCES
      librecad/src/ui/action_options/line/lc_linefrompointtolineoptions.cpp
      librecad/src/ui/action_options/line/lc_lineoptions.cpp
      librecad/src/ui/action_options/line/lc_slicedivideoptions.cpp
+     librecad/src/ui/action_options/line/lc_radiant_line_options.h
+     librecad/src/ui/action_options/line/lc_radiant_line_options.cpp
      librecad/src/ui/action_options/line/qg_lineangleoptions.cpp
      librecad/src/ui/action_options/line/qg_lineangleoptions.h
      librecad/src/ui/action_options/line/qg_linebisectoroptions.cpp

@@ -47,7 +47,7 @@
    <item row="0" column="20">
     <spacer name="horizontalSpacer">
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
@@ -73,13 +73,13 @@
    <item row="0" column="6">
     <widget class="Line" name="line_2">
      <property name="frameShadow">
-      <enum>QFrame::Sunken</enum>
+      <enum>QFrame::Shadow::Sunken</enum>
      </property>
      <property name="lineWidth">
       <number>1</number>
      </property>
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
     </widget>
    </item>
@@ -96,7 +96,7 @@
    <item row="0" column="14">
     <widget class="Line" name="line_3">
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
     </widget>
    </item>
@@ -122,7 +122,7 @@
    <item row="0" column="12">
     <widget class="Line" name="line">
      <property name="frameShadow">
-      <enum>QFrame::Sunken</enum>
+      <enum>QFrame::Shadow::Sunken</enum>
      </property>
      <property name="lineWidth">
       <number>1</number>
@@ -131,7 +131,7 @@
       <number>0</number>
      </property>
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
     </widget>
    </item>
@@ -226,14 +226,17 @@
    <item row="0" column="17">
     <widget class="Line" name="line_4">
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
     </widget>
    </item>
    <item row="0" column="1">
     <widget class="QLabel" name="label">
+     <property name="toolTip">
+      <string>Rotation angle</string>
+     </property>
      <property name="text">
-      <string>Rotation Angle:</string>
+      <string>Angle:</string>
      </property>
     </widget>
    </item>
@@ -276,7 +279,7 @@
       <string>If selected, first it is necessary to specify center point. Otherwise - reference point. </string>
      </property>
      <property name="text">
-      <string>From Center</string>
+      <string>By Center</string>
      </property>
     </widget>
    </item>
