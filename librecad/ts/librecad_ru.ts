@@ -8203,57 +8203,67 @@ Are you sure you are going to discard changes?</source>
         <translation>Общие</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="145"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="155"/>
         <source>Font size:</source>
         <translation>Размер шрифта:</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="175"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="162"/>
+        <source>Size of the font, in points, that is used by properties sheet</source>
+        <translation>Размер шрифта, в пунктах, который используется панелью свойств</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="188"/>
         <source>If enabled, property sheet will include links to command actions, that are relevant to specific properties or sections</source>
         <translation>Если выбрано, то таблица будет включать ссылки на команды, которые применимы к определенным свойствам или секциям (если такие есть)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="178"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="191"/>
         <source>Include command links</source>
         <translation>Включать ссылки на команды</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="208"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="221"/>
         <source>If selected, in case there is only on entity in sheet, the list for commands that are relevant for entity will be shown (if any applicable).</source>
         <translation>Если выбрано, и редактируется единичный объект, то будет показан список команд, которые применимы для объекта этого типа (если таковые есть)</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="211"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="224"/>
         <source>Show single entity commands</source>
         <translation>Показывать команды единичного объекта</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="185"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="231"/>
+        <source>points</source>
+        <translation>пунктов</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="198"/>
         <source>If selected, if there is one or more entities selected, the list of entity set modification commands will be shown (if any applicable).</source>
         <translation>Если выбрано, и редактирутся несколько выбранных объектов, то будет показана секция со списоком групповых команд редактирования</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="188"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="201"/>
         <source>Show multiple entities modification commands</source>
         <translation>Показывать комманды группового редактирования</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="165"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="178"/>
         <source>If enabled, generic selection-related actions will be included into the widget toolbar</source>
         <translation>Если выбрано, то общие команды выделения объектов будут продублированы в панели инструментов панели свойств.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="168"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="181"/>
         <source>Show generic selection actions button in toolbar</source>
         <translation>Показывать общие команды выделения</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="218"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="145"/>
         <source>If enabled, computed properties for entities will be also shown (if any exists)</source>
         <translation>Если включено, таблица будет включать не только редактируемые свойства объектов, но также те, которые вычисляются на основании других свойств.</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="221"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="148"/>
         <source>Show computed properties</source>
         <translation>Показывать вычисляемые свойства</translation>
     </message>
@@ -39531,19 +39541,19 @@ Do you want to replace it?</source>
         <location filename="../src/cmd/lc_commandItems.h" line="1177"/>
         <source>s</source>
         <comment>snap start</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">s</translation>
     </message>
     <message>
         <location filename="../src/cmd/lc_commandItems.h" line="1178"/>
         <source>m</source>
         <comment>snap middle</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">m</translation>
     </message>
     <message>
         <location filename="../src/cmd/lc_commandItems.h" line="1179"/>
         <source>e</source>
         <comment>snap end</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">e</translation>
     </message>
     <message>
         <location filename="../src/cmd/lc_commandItems.h" line="1198"/>
@@ -44270,24 +44280,20 @@ Point: (%8 , %9)</source>
         <translation>Определяет, как трактовать заданную длину</translation>
     </message>
     <message>
-        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="250"/>
         <source>Line</source>
-        <translation>Прямая</translation>
+        <translation type="vanished">Прямая</translation>
     </message>
     <message>
-        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="255"/>
         <source>By X</source>
-        <translation>По X</translation>
+        <translation type="vanished">По X</translation>
     </message>
     <message>
-        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="260"/>
         <source>By Y</source>
-        <translation>По Y</translation>
+        <translation type="vanished">По Y</translation>
     </message>
     <message>
-        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="265"/>
         <source>Free</source>
-        <translation>Вручную</translation>
+        <translation type="vanished">Вручную</translation>
     </message>
     <message>
         <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="62"/>

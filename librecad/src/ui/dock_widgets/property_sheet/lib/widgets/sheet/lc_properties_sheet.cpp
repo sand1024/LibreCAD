@@ -894,7 +894,8 @@ void LC_PropertiesSheet::updateVerticalScrollbar() const {
 
 void LC_PropertiesSheet::updateStylingVars() {
     const QFontMetrics fm(font());
-    m_itemHeight = fm.height() + m_itemHeightSpacing;
+    const int fontHeight = fm.height();
+    m_itemHeight = fontHeight + m_itemHeightSpacing;
     m_linesColor = palette().color(QPalette::Button);
     m_propertySetBackgroundColor = m_linesColor;
     m_valueLeftMargin = style()->pixelMetric(QStyle::PM_ButtonMargin);

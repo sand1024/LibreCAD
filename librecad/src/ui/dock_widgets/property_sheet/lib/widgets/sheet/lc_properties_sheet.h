@@ -94,6 +94,8 @@ public:
     LC_Property* getPropertyAt(const QPoint& position, QRect* itemViewRect = nullptr) const;
     void connectPropertyToEdit(const LC_Property* property, LC_GuardedConnectionsList& outConnections);
 
+    void updateStylingVars();
+
     int getItemHeight() const {
         return m_itemHeight;
     }
@@ -158,7 +160,6 @@ protected:
     QRect getPropertyViewPartRect(const LC_Property* property, int partIndex) const;
     [[deprecated]] QRect getItemColumnRect(const LC_Property* property, bool forLeftColumn) const;
     QRect getItemViewRect(int itemViewIndex) const;
-
 protected slots:
     void onModelChanged();
     void onModelDataChanged() const;
@@ -185,7 +186,6 @@ private:
     bool grabMouseForPart(LC_PropertyViewPart* part, QPoint mousePos);
     bool releaseMouseForPart(const LC_PropertyViewPart* part, QPoint mousePos);
     void updateVerticalScrollbar() const;
-    void updateStylingVars();
     int splitPosition() const;
     void updateSplitRatio(float splitRatio);
     void connectActiveProperty();

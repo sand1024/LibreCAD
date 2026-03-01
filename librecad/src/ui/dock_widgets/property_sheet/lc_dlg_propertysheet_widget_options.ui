@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>316</width>
-    <height>516</height>
+    <width>1107</width>
+    <height>718</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,10 +17,10 @@
    <item row="3" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
+      <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
    </item>
@@ -139,7 +139,7 @@
       <string>General</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
-      <item row="2" column="0">
+      <item row="5" column="0" colspan="4">
        <widget class="QCheckBox" name="cbShowComputed">
         <property name="toolTip">
          <string>If enabled, computed properties for entities will be also shown (if any exists)</string>
@@ -149,7 +149,40 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Font size:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QSpinBox" name="sbFontSize">
+        <property name="toolTip">
+         <string>Size of the font, in points, that is used by properties sheet</string>
+        </property>
+        <property name="minimum">
+         <number>5</number>
+        </property>
+        <property name="maximum">
+         <number>20</number>
+        </property>
+        <property name="value">
+         <number>9</number>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="4">
+       <widget class="QCheckBox" name="cbDuplicateSelectionAction">
+        <property name="toolTip">
+         <string>If enabled, generic selection-related actions will be included into the widget toolbar</string>
+        </property>
+        <property name="text">
+         <string>Show generic selection actions button in toolbar</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="4">
        <widget class="QCheckBox" name="cbShowLinks">
         <property name="toolTip">
          <string>If enabled, property sheet will include links to command actions, that are relevant to specific properties or sections</string>
@@ -159,17 +192,7 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QCheckBox" name="cbShowSingelEntityCommands">
-        <property name="toolTip">
-         <string>If selected, in case there is only on entity in sheet, the list for commands that are relevant for entity will be shown (if any applicable).</string>
-        </property>
-        <property name="text">
-         <string>Show single entity commands</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
+      <item row="4" column="0" colspan="4">
        <widget class="QCheckBox" name="cbShowMultipleEntitiesCommands">
         <property name="toolTip">
          <string>If selected, if there is one or more entities selected, the list of entity set modification commands will be shown (if any applicable).</string>
@@ -179,13 +202,33 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="cbDuplicateSelectionAction">
+      <item row="6" column="3">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="3" column="0" colspan="4">
+       <widget class="QCheckBox" name="cbShowSingelEntityCommands">
         <property name="toolTip">
-         <string>If enabled, generic selection-related actions will be included into the widget toolbar</string>
+         <string>If selected, in case there is only on entity in sheet, the list for commands that are relevant for entity will be shown (if any applicable).</string>
         </property>
         <property name="text">
-         <string>Show generic selection actions button in toolbar</string>
+         <string>Show single entity commands</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="2">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>points</string>
         </property>
        </widget>
       </item>

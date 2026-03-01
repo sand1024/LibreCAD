@@ -18,6 +18,7 @@ LC_DlgPropertySheetWidgetOptions::LC_DlgPropertySheetWidgetOptions(QWidget* pare
     ui->cbShowMultipleEntitiesCommands->setChecked(options->showMultiEntityCommands);
     ui->cbShowComputed->setChecked(options->showComputed);
     ui->cbDuplicateSelectionAction->setChecked(options->duplicateSelectionAction);
+    ui->sbFontSize->setValue(options->fontSize);
 }
 
 LC_DlgPropertySheetWidgetOptions::~LC_DlgPropertySheetWidgetOptions() {
@@ -40,5 +41,6 @@ void LC_DlgPropertySheetWidgetOptions::accept() {
     m_options->showMultiEntityCommands = ui->cbShowMultipleEntitiesCommands->isChecked();
     m_options->showComputed = ui->cbShowComputed->isChecked();
     m_options->duplicateSelectionAction = ui->cbDuplicateSelectionAction->isChecked();
+    m_options->fontSize = ui->sbFontSize->value();
     m_options->save();
 }

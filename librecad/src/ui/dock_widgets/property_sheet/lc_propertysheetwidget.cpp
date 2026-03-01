@@ -105,6 +105,9 @@ LC_PropertySheetWidget::LC_PropertySheetWidget(QWidget* parent, LC_ActionContext
     m_entityContainerProvider->init(this, actionContext);
 
     loadCollapsedSections();
+    m_propertySheetOptions->load();
+    updatePropertiesSheetFont();
+
     ui->tbSelectionGeneral->setVisible(m_propertySheetOptions->duplicateSelectionAction);
     ui->tbSelectionGeneralLeft->setVisible(m_propertySheetOptions->duplicateSelectionAction);
     updateWidgetSettings();
@@ -112,6 +115,13 @@ LC_PropertySheetWidget::LC_PropertySheetWidget(QWidget* parent, LC_ActionContext
 
 LC_PropertySheetWidget::~LC_PropertySheetWidget() {
     delete ui;
+}
+
+void LC_PropertySheetWidget::updatePropertiesSheetFont() const {
+    auto font = ui->propertySheet->propertiesSheet()->font();
+    font.setPointSize(m_propertySheetOptions->fontSize);
+    ui->propertySheet->propertiesSheet()->setFont(font);
+    ui->propertySheet->propertiesSheet()->updateStylingVars();
 }
 
 void LC_PropertySheetWidget::loadCollapsedSections() {
@@ -122,7 +132,6 @@ void LC_PropertySheetWidget::loadCollapsedSections() {
             m_collapsedContainerNames << sectionName;
         }
     }
-    m_propertySheetOptions->load();
 }
 
 void LC_PropertySheetWidget::saveCollapsedSections() {
@@ -700,6 +709,7 @@ void LC_PropertySheetWidget::onSettingsClicked() {
     LC_DlgPropertySheetWidgetOptions dlg(this, m_propertySheetOptions.get());
     if (dlg.exec() == QDialog::Accepted) {
         ui->tbSelectionGeneral->setVisible(m_propertySheetOptions->duplicateSelectionAction);
+        updatePropertiesSheetFont();
         selectionChanged();
     };
 }

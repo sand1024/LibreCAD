@@ -42,6 +42,7 @@ void LC_PropertySheetWidgetOptions::save() {
         LC_SET("showMultiEntityCommands", showMultiEntityCommands);
         LC_SET("showComputed", showComputed);
         LC_SET("duplicateSelectionAction", duplicateSelectionAction);
+        LC_SET("fontSize", fontSize);
     }
 }
 
@@ -62,5 +63,6 @@ void LC_PropertySheetWidgetOptions::load() {
         showMultiEntityCommands = LC_GET_BOOL("showMultiEntityCommands", true);
         showComputed = LC_GET_BOOL("showComputed", true);
         duplicateSelectionAction = LC_GET_BOOL("duplicateSelectionAction", true);
+        fontSize = LC_GET_INT("fontSize", 9);
     }
 }
