@@ -89,6 +89,7 @@ public slots :
     void onSettingsClicked();
 protected:
     void setupSelectionButton(QToolButton* selectionButton, QAction* selectionPointerAction, LC_ActionGroupManager* actionGroupManager);
+    void updatePropertiesSheetFont() const;
     void setupSelectionTypeCombobox(RS2::EntityType entityTypeTryToSet, QString propertyTryToSet);
     void clearContextEntities();
     void collectEntitiesToModify(RS2::EntityType entityType, QList<RS_Entity*>& entitiesToModify) const;
