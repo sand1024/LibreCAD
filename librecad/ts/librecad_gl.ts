@@ -830,6 +830,10 @@ or [%2]</source>
         <translation type="unfinished">liña</translation>
     </message>
     <message>
+        <source>fixed</source>
+        <translation type="obsolete">Fixa</translation>
+    </message>
+    <message>
         <location filename="../src/actions/drawing/draw/line/misc/lc_action_draw_line_radiant.cpp" line="170"/>
         <location filename="../src/actions/drawing/draw/line/misc/lc_action_draw_line_radiant.cpp" line="387"/>
         <source>x</source>
@@ -8136,52 +8140,57 @@ Are you sure you are going to discard changes?</source>
         <translation type="unfinished">Xeral</translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="155"/>
-        <source>If enabled, property sheet will include links to command actions, that are relevant to specific properties or sections</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="158"/>
-        <source>Include command links</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="165"/>
-        <source>If selected, in case there is only on entity in sheet, the list for commands that are relevant for entity will be shown (if any applicable).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="168"/>
-        <source>Show single entity commands</source>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="145"/>
+        <source>Font size:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="175"/>
-        <source>If selected, if there is one or more entities selected, the list of entity set modification commands will be shown (if any applicable).</source>
+        <source>If enabled, property sheet will include links to command actions, that are relevant to specific properties or sections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="178"/>
-        <source>Show multiple entities modification commands</source>
+        <source>Include command links</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="208"/>
+        <source>If selected, in case there is only on entity in sheet, the list for commands that are relevant for entity will be shown (if any applicable).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="211"/>
+        <source>Show single entity commands</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="185"/>
-        <source>If enabled, generic selection-related actions will be included into the widget toolbar</source>
+        <source>If selected, if there is one or more entities selected, the list of entity set modification commands will be shown (if any applicable).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="188"/>
+        <source>Show multiple entities modification commands</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="165"/>
+        <source>If enabled, generic selection-related actions will be included into the widget toolbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="168"/>
         <source>Show generic selection actions button in toolbar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="145"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="218"/>
         <source>If enabled, computed properties for entities will be also shown (if any exists)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="148"/>
+        <location filename="../src/ui/dock_widgets/property_sheet/lc_dlg_propertysheet_widget_options.ui" line="221"/>
         <source>Show computed properties</source>
         <translation type="unfinished"></translation>
     </message>
@@ -34484,6 +34493,29 @@ Os contidos dunha Capa de Construción non deberan aparecer na impresión.</tran
     </message>
 </context>
 <context>
+    <name>QG_LineAngleOptions</name>
+    <message>
+        <location filename="../src/ui/action_options/line/qg_lineangleoptions.cpp" line="72"/>
+        <source>Line</source>
+        <translation type="unfinished">Liña</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/action_options/line/qg_lineangleoptions.cpp" line="74"/>
+        <source>By X</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/action_options/line/qg_lineangleoptions.cpp" line="75"/>
+        <source>By Y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/action_options/line/qg_lineangleoptions.cpp" line="77"/>
+        <source>Free</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QG_LineTypeBox</name>
     <message>
         <location filename="../src/ui/components/comboboxes/qg_linetypebox.cpp" line="83"/>
@@ -36189,7 +36221,7 @@ Quere reemprazalo?</translation>
     </message>
     <message>
         <location filename="../src/cmd/lc_commandItems.h" line="1013"/>
-        <location filename="../src/cmd/lc_commandItems.h" line="1251"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1257"/>
         <source>u</source>
         <comment>undo cycle</comment>
         <translation>d</translation>
@@ -36648,7 +36680,7 @@ Quere reemprazalo?</translation>
     </message>
     <message>
         <location filename="../src/cmd/lc_commandItems.h" line="1081"/>
-        <location filename="../src/cmd/lc_commandItems.h" line="1180"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1186"/>
         <source>angle</source>
         <translation>angulo</translation>
     </message>
@@ -36659,13 +36691,13 @@ Quere reemprazalo?</translation>
     </message>
     <message>
         <location filename="../src/cmd/lc_commandItems.h" line="1085"/>
-        <location filename="../src/cmd/lc_commandItems.h" line="1194"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1200"/>
         <source>close</source>
         <translation>pechar</translation>
     </message>
     <message>
         <location filename="../src/cmd/lc_commandItems.h" line="1087"/>
-        <location filename="../src/cmd/lc_commandItems.h" line="1197"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1203"/>
         <source>columns</source>
         <translation>columnas</translation>
     </message>
@@ -36676,7 +36708,7 @@ Quere reemprazalo?</translation>
     </message>
     <message>
         <location filename="../src/cmd/lc_commandItems.h" line="1090"/>
-        <location filename="../src/cmd/lc_commandItems.h" line="1205"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1211"/>
         <source>factor</source>
         <translation>factor</translation>
     </message>
@@ -36692,7 +36724,7 @@ Quere reemprazalo?</translation>
     </message>
     <message>
         <location filename="../src/cmd/lc_commandItems.h" line="1095"/>
-        <location filename="../src/cmd/lc_commandItems.h" line="1232"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1238"/>
         <source>radius</source>
         <translation>raio</translation>
     </message>
@@ -36708,7 +36740,7 @@ Quere reemprazalo?</translation>
     </message>
     <message>
         <location filename="../src/cmd/lc_commandItems.h" line="1098"/>
-        <location filename="../src/cmd/lc_commandItems.h" line="1247"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1253"/>
         <source>through</source>
         <translation>atraves</translation>
     </message>
@@ -36718,247 +36750,247 @@ Quere reemprazalo?</translation>
         <translation>tallar</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1183"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1189"/>
         <source>ang</source>
         <comment>angle</comment>
         <translation>ang</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1184"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1190"/>
         <source>an</source>
         <comment>angle</comment>
         <translation>an</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1186"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1192"/>
         <source>center</source>
         <translation>centro</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1187"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1193"/>
         <source>cen</source>
         <comment>center</comment>
         <translation>cen</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1188"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1194"/>
         <source>ce</source>
         <comment>center</comment>
         <translation>c</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1195"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1201"/>
         <source>c</source>
         <comment>close</comment>
         <translation>p</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1198"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1204"/>
         <source>cols</source>
         <comment>columns</comment>
         <translation>col</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1199"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1205"/>
         <source>co</source>
         <comment>columns</comment>
         <translation>co</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1201"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1207"/>
         <source>columnspacing</source>
         <comment>columnspacing for inserts</comment>
         <translation>espazadocolumnas</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1202"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1208"/>
         <source>colspacing</source>
         <comment>columnspacing for inserts</comment>
         <translation>espazadocol</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1203"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1209"/>
         <source>cs</source>
         <comment>columnspacing for inserts</comment>
         <translation>eco</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1206"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1212"/>
         <source>fact</source>
         <comment>factor</comment>
         <translation>fa</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1207"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1213"/>
         <source>f</source>
         <comment>factor</comment>
         <translation>f</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1213"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1219"/>
         <source>help</source>
         <translation>axuda</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1214"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1220"/>
         <source>?</source>
         <comment>help</comment>
         <translation>?</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1216"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1222"/>
         <source>length</source>
         <comment>length</comment>
         <translation>lonxitude</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1217"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1223"/>
         <source>len</source>
         <comment>length</comment>
         <translation>lon</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1218"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1224"/>
         <source>l</source>
         <comment>length</comment>
         <translation>lo</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1220"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1226"/>
         <source>length1</source>
         <comment>length1</comment>
         <translation>lonxitude1</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1221"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1227"/>
         <source>len1</source>
         <comment>length1</comment>
         <translation>lon1</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1222"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1228"/>
         <source>l1</source>
         <comment>length1</comment>
         <translation>l1</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1224"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1230"/>
         <source>length2</source>
         <comment>length2</comment>
         <translation>lonxitude2</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1225"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1231"/>
         <source>len2</source>
         <comment>length2</comment>
         <translation>lon2</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1226"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1232"/>
         <source>l2</source>
         <comment>length2</comment>
         <translation>l2</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1228"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1234"/>
         <source>number</source>
         <comment>number</comment>
         <translation>cantidade</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1229"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1235"/>
         <source>num</source>
         <comment>number</comment>
         <translation>can</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1230"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1236"/>
         <source>n</source>
         <comment>number</comment>
         <translation>ca</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1233"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1239"/>
         <source>ra</source>
         <comment>radius</comment>
         <translation>ra</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1235"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1241"/>
         <source>reversed</source>
         <comment>reversed</comment>
         <translation>reverter</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1236"/>
-        <location filename="../src/cmd/lc_commandItems.h" line="1237"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1242"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1243"/>
         <source>rev</source>
         <comment>reversed</comment>
         <translation>rev</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1239"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1245"/>
         <source>row</source>
         <comment>row</comment>
         <translation>ringleira</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1241"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1247"/>
         <source>rowspacing</source>
         <comment>rowspacing for inserts</comment>
         <translation>espazadoringleiras</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1242"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1248"/>
         <source>rs</source>
         <comment>rowspacing for inserts</comment>
         <translation>eri</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1244"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1250"/>
         <source>text</source>
         <translation>texto</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1245"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1251"/>
         <source>t</source>
         <comment>text</comment>
         <translation>t</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1248"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1254"/>
         <source>t</source>
         <comment>through</comment>
         <translation>at</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1250"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1256"/>
         <source>undo</source>
         <translation>desfacer</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1253"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1259"/>
         <source>redo</source>
         <translation>refacer</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1256"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1262"/>
         <source>back</source>
         <translation>atras</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1257"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1263"/>
         <source>b</source>
         <comment>back</comment>
         <translation>at</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1262"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1268"/>
         <source>paperoffset</source>
         <translation>desprazarfolla</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1263"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1269"/>
         <source>graphoffset</source>
         <translation>desprazargrafico</translation>
     </message>
@@ -37020,17 +37052,17 @@ Quere reemprazalo?</translation>
         <translation>Erro de calculadora para a entrada: </translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1259"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1265"/>
         <source>bw</source>
         <translation>bn</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1260"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1266"/>
         <source>blackwhite</source>
         <translation>branconegro</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1261"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1267"/>
         <source>color</source>
         <translation>cor</translation>
     </message>
@@ -38500,25 +38532,25 @@ Quere reemprazalo?</translation>
     </message>
     <message>
         <location filename="../src/cmd/lc_commandItems.h" line="1082"/>
-        <location filename="../src/cmd/lc_commandItems.h" line="1181"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1187"/>
         <source>angle1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/cmd/lc_commandItems.h" line="1083"/>
-        <location filename="../src/cmd/lc_commandItems.h" line="1182"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1188"/>
         <source>angle2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/cmd/lc_commandItems.h" line="1086"/>
-        <location filename="../src/cmd/lc_commandItems.h" line="1190"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1196"/>
         <source>chordlen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/cmd/lc_commandItems.h" line="1089"/>
-        <location filename="../src/cmd/lc_commandItems.h" line="1209"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1215"/>
         <source>equation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -38821,35 +38853,63 @@ Quere reemprazalo?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1173"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1171"/>
+        <source>fixed</source>
+        <translation type="unfinished">Fixa</translation>
+    </message>
+    <message>
+        <location filename="../src/cmd/lc_commandItems.h" line="1174"/>
         <source>sym</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1174"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1175"/>
         <source>nosym</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1192"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1176"/>
+        <source>snap</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/cmd/lc_commandItems.h" line="1177"/>
+        <source>s</source>
+        <comment>snap start</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/cmd/lc_commandItems.h" line="1178"/>
+        <source>m</source>
+        <comment>snap middle</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/cmd/lc_commandItems.h" line="1179"/>
+        <source>e</source>
+        <comment>snap end</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/cmd/lc_commandItems.h" line="1198"/>
         <source>cl</source>
         <comment>chordlen</comment>
         <translation type="unfinished">lc</translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1210"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1216"/>
         <source>eqn</source>
         <comment>equation</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1211"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1217"/>
         <source>eq</source>
         <comment>equation</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/cmd/lc_commandItems.h" line="1254"/>
+        <location filename="../src/cmd/lc_commandItems.h" line="1260"/>
         <source>r</source>
         <comment>redo redo cycle</comment>
         <translation type="unfinished">r</translation>
@@ -40320,30 +40380,101 @@ This block cannot be inserted.</source>
 <context>
     <name>RS_ActionDrawLineAngle</name>
     <message>
-        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="234"/>
-        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="248"/>
         <source>Not a valid expression</source>
-        <translation>Non é unha expresión válida</translation>
+        <translation type="vanished">Non é unha expresión válida</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="313"/>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="431"/>
+        <source>Not a valid expression for angle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="445"/>
+        <source>Not a valid expression for length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="452"/>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="587"/>
+        <source>s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="457"/>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="587"/>
+        <source>m</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="462"/>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="587"/>
+        <source>e</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>fixed</source>
+        <translation type="obsolete">Fixa</translation>
+    </message>
+    <message>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="473"/>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="574"/>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="577"/>
+        <source>line</source>
+        <translation type="unfinished">liña</translation>
+    </message>
+    <message>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="478"/>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="577"/>
+        <source>x</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="483"/>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="577"/>
+        <source>y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="488"/>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="574"/>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="577"/>
+        <source>free</source>
+        <translation type="unfinished">man</translation>
+    </message>
+    <message>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="560"/>
         <source>Specify position</source>
         <translation>Especifique a posición</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="313"/>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="560"/>
         <source>Alternate Direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="316"/>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="564"/>
         <source>Enter angle:</source>
         <translation>Introducir ángulo:</translation>
     </message>
     <message>
-        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="319"/>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="568"/>
         <source>Enter length:</source>
         <translation>Introducir lonxitude:</translation>
+    </message>
+    <message>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="579"/>
+        <source>Enter length type </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="583"/>
+        <source>Specify second point</source>
+        <translation type="unfinished">Especifique o segundo punto</translation>
+    </message>
+    <message>
+        <location filename="../src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp" line="587"/>
+        <source>Enter snap type </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -43132,67 +43263,92 @@ Point: (%8 , %9)</source>
         <translation>Opcións de liña en ángulo</translation>
     </message>
     <message>
-        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="95"/>
+        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="113"/>
         <source>Angle:</source>
         <translation>Ángulo:</translation>
     </message>
     <message>
-        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="210"/>
+        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="135"/>
         <source>Point on created line that will be placed into insertion point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="133"/>
+        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="198"/>
         <source>Line angle</source>
         <translation>Ángulo da liña:</translation>
     </message>
     <message>
-        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="159"/>
+        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="246"/>
+        <source>Specifies how to handle length parameter.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="250"/>
+        <source>Line</source>
+        <translation type="unfinished">Liña</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="255"/>
+        <source>By X</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="260"/>
+        <source>By Y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="265"/>
+        <source>Free</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="62"/>
         <source>Length:</source>
         <translation>Lonxitude:</translation>
     </message>
     <message>
-        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="184"/>
+        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="169"/>
         <source>Length of line</source>
         <translation>Lonxitude da liña</translation>
     </message>
     <message>
-        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="56"/>
+        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="81"/>
         <source>Snap Point:</source>
         <translation>Punto de agarre:</translation>
     </message>
     <message>
-        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="69"/>
+        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="205"/>
         <source>Pick line angle from drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="214"/>
+        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="139"/>
         <source>Start</source>
         <translation>Principio</translation>
     </message>
     <message>
-        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="219"/>
+        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="144"/>
         <source>Middle</source>
         <translation>Metade</translation>
     </message>
     <message>
-        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="224"/>
+        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="149"/>
         <source>End</source>
         <translation>Final</translation>
     </message>
     <message>
-        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="232"/>
+        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="219"/>
         <source>PIck line length from drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="191"/>
+        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="176"/>
         <source>If selected, line will be orhotogonal to axis of angles basis. Otherwise - to screen axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="194"/>
+        <location filename="../src/ui/action_options/line/qg_lineangleoptions.ui" line="179"/>
         <source>To Angles Basis</source>
         <translation type="unfinished"></translation>
     </message>

@@ -191,7 +191,7 @@ bool LC_ActionSnapMiddleManual::doProcessCommand(const int status, const QString
         }
         case SetStartPoint: {
             if (checkCommand("help", inputCommand)){
-                commandMessage(msgAvailableCommands() + getAvailableCommands().join(", "));
+                commandMessage(msgAvailableCommands() + " " + getAvailableCommands().join(", "));
                 accepted = true;
             }
             break;

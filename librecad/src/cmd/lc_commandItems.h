@@ -1168,10 +1168,16 @@ inline std::vector<std::pair<QString, QString>> g_transList={
          {"radiant",QObject::tr("radiant")},
          {"active",QObject::tr("active")},
          {"lentype",QObject::tr("lentype")},
+         {"fixed",QObject::tr("fixed")},
 
         // star
         {"sym",QObject::tr("sym")},
         {"nosym",QObject::tr("nosym")},
+        {"snap",QObject::tr("snap")},
+        {"s",QObject::tr("s", "snap start")},
+        {"m",QObject::tr("m", "snap middle")},
+        {"e",QObject::tr("e", "snap end")},
+
         // commands
 
         /** following are reversed translation,i.e.,from translated to english **/

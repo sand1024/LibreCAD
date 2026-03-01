@@ -35,9 +35,16 @@
  *
  * @author Andrew Mustun
  */
-class RS_ActionDrawLineAngle : public LC_SingleEntityCreationAction {
+class   RS_ActionDrawLineAngle : public LC_SingleEntityCreationAction {
     Q_OBJECT
 public:
+    enum LengthType {
+        LINE = 0,
+        BY_X,
+        BY_Y,
+        FREE
+    };
+
     explicit RS_ActionDrawLineAngle(LC_ActionContext* actionContext, bool fixedAngle = false,
                                     RS2::ActionType actionType = RS2::ActionDrawLineAngle);
     ~RS_ActionDrawLineAngle() override;
@@ -52,10 +59,13 @@ public:
     double getLength() const;
     bool hasFixedAngle() const;
     void setInAngleBasis(bool b);
-
     bool isInAngleBasis() const {
         return m_orthoToAnglesBasis;
     }
+
+    LengthType getLengthType() const {return m_lengthType;}
+    void setLengthType(LengthType type, bool updateOptions=true);
+    bool isFreeLineMode() const;
 
 protected:
     /**
@@ -63,8 +73,11 @@ protected:
  */
     enum Status {
         SetPos = InitialActionStatus, /**< Setting the position.  */
+        SetPoint2,
         SetAngle, /**< Setting angle in the command line. */
-        SetLength /**< Setting length in the command line. */
+        SetLength, /**< Setting length in the command line. */
+        SetLengthType, /**< Setting length type in the command line. */
+        SetSnapPoint /**< Setting type of snap point in the command line. */
     };
 
     enum SnapMode {
@@ -76,6 +89,7 @@ protected:
     bool m_persistRelativeZero = false;
     bool m_alternateDirection = false;
     bool m_orthoToAnglesBasis = false;
+    LengthType m_lengthType = LengthType::LINE;
 
     void preparePreview() const;
     RS2::CursorType doGetMouseCursor(int status) override;

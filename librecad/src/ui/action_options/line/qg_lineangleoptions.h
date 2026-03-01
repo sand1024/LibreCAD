@@ -28,6 +28,7 @@
 
 
 #include "lc_actionoptionswidgetbase.h"
+#include "rs_actiondrawlineangle.h"
 
 class RS_ActionInterface;
 class RS_ActionDrawLineAngle;
@@ -45,10 +46,12 @@ protected:
     void doSaveSettings() override;
     void doSetAction(RS_ActionInterface *a, bool update) override;
     bool checkActionRttiValid(RS2::ActionType actionType) override;
+    void setupLengthType();
 public slots:
     void onAngleEditingFinished();
     void onLengthEditingFinished();
     void onSnapPointCurrentIndexChanged(int number);
+    void onLengthTypeCurrentIndexChanged(int number);
     void onAnglesBasisToggled(bool val);
     void languageChange() override;
 private:
@@ -58,6 +61,7 @@ private:
     void setSnapPointToActionAndView(int val) const;
     void setLengthToActionAndView(const QString& val);
     void setToAngleBasis(bool val) const;
+    void setLengthTypeToActionAndView(RS_ActionDrawLineAngle::LengthType lenType);
 };
 
 #endif

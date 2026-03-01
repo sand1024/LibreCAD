@@ -41,6 +41,7 @@ QG_LineAngleOptions::QG_LineAngleOptions()
     connect(ui->leLength, &QLineEdit::editingFinished, this, &QG_LineAngleOptions::onLengthEditingFinished);
     connect(ui->cbSnapPoint, &QComboBox::currentIndexChanged, this, &QG_LineAngleOptions::onSnapPointCurrentIndexChanged);
     connect(ui->cbForAnglesBasis, &QCheckBox::toggled, this, &QG_LineAngleOptions::onAnglesBasisToggled);
+    connect(ui->cbLengthType,&QComboBox::currentIndexChanged, this, &QG_LineAngleOptions::onLengthTypeCurrentIndexChanged);
 
     pickAngleSetup("angle", ui->tbPickAngle, ui->leAngle);
     pickDistanceSetup("length", ui->tbPickLength, ui->leLength);
@@ -65,14 +66,29 @@ bool QG_LineAngleOptions::checkActionRttiValid(const RS2::ActionType actionType)
            actionType == RS2::ActionDrawLineVertical;
 }
 
+void QG_LineAngleOptions::setupLengthType() {
+    ui->cbLengthType->blockSignals(true);
+    ui->cbLengthType->clear();
+    ui->cbLengthType->addItem(tr("Line"), RS_ActionDrawLineAngle::LengthType::LINE);
+    if (m_action->rtti() == RS2::ActionDrawLineAngle) {
+        ui->cbLengthType->addItem(tr("By X"), RS_ActionDrawLineAngle::LengthType::BY_X);
+        ui->cbLengthType->addItem(tr("By Y"), RS_ActionDrawLineAngle::LengthType::BY_Y);
+    }
+    ui->cbLengthType->addItem(tr("Free"), RS_ActionDrawLineAngle::LengthType::FREE);
+    ui->cbLengthType->blockSignals(false);
+}
+
 void QG_LineAngleOptions::doSetAction(RS_ActionInterface *a, const bool update){
     m_action = static_cast<RS_ActionDrawLineAngle*>(a);
     const bool angleIsFixed = m_action->hasFixedAngle();
 
+    setupLengthType();
     QString angle;
     QString length;
     int snapPoint;
     bool inAngleBasis = false;
+
+    int lenType;
 
     // settings from action:
     if (update) {
@@ -83,12 +99,14 @@ void QG_LineAngleOptions::doSetAction(RS_ActionInterface *a, const bool update){
         }
         length = fromDouble(m_action->getLength());
         snapPoint = m_action->getSnapPoint();
+        lenType = m_action->getLengthType();
     } else {
         if (angleIsFixed) {
             inAngleBasis = loadBool("InAnglesBasis", false);
         } else {
             angle = load("Angle", "30.0");
         }
+        lenType = loadInt("LengthType", 0);
         length = load("Length", "10.0");
         snapPoint = loadInt("SnapPoint", 0);
     }
@@ -107,9 +125,21 @@ void QG_LineAngleOptions::doSetAction(RS_ActionInterface *a, const bool update){
     }
     setSnapPointToActionAndView(snapPoint);
     setLengthToActionAndView(length);
+    setupLengthType();
 
     ui->leAngle->setText(angle);
     ui->leLength->setText(length);
+
+    ui->cbLengthType->blockSignals(true);
+    const int idx = ui->cbLengthType->findData(lenType);
+    if (idx != -1) {
+        ui->cbLengthType->setCurrentIndex(idx);
+        const bool notFreeLength = lenType != RS_ActionDrawLineAngle::FREE;
+        ui->leLength->setEnabled(notFreeLength);
+    }
+    auto type = static_cast<RS_ActionDrawLineAngle::LengthType>(lenType);
+    m_action->setLengthType(type, false);
+    ui->cbLengthType->blockSignals(false);
 }
 
 void QG_LineAngleOptions::doSaveSettings() {
@@ -121,10 +151,21 @@ void QG_LineAngleOptions::doSaveSettings() {
 
     save("Length", ui->leLength->text());
     save("SnapPoint", ui->cbSnapPoint->currentIndex());
+    save("LengthType", ui->cbLengthType->currentData().toInt());
 }
 
 void QG_LineAngleOptions::onSnapPointCurrentIndexChanged(const int number){
     setSnapPointToActionAndView(number);
+}
+
+void QG_LineAngleOptions::onLengthTypeCurrentIndexChanged(int number) {
+    int lt = ui->cbLengthType->itemData(number).toInt();
+    const auto type = static_cast<RS_ActionDrawLineAngle::LengthType>(lt);
+    setLengthTypeToActionAndView(type);
+}
+
+void QG_LineAngleOptions::setLengthTypeToActionAndView(RS_ActionDrawLineAngle::LengthType lenType) {
+    m_action->setLengthType(lenType, true);
 }
 
 void QG_LineAngleOptions::onLengthEditingFinished(){

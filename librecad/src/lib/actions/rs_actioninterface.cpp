@@ -279,7 +279,7 @@ void RS_ActionInterface::commandEvent(RS_CommandEvent* e) {
         if (checkCommand("help", c)) {
             const QStringList& list = getAvailableCommands();
             if (!list.isEmpty()) {
-                commandMessage(msgAvailableCommands() + list.join(", ") + getAdditionalHelpMessage());
+                commandMessage(msgAvailableCommands() + " " +  list.join(", ") + getAdditionalHelpMessage());
             }
             else {
                 // fixme - need some indication that commands are not supported
