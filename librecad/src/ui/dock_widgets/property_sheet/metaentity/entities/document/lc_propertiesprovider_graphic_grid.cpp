@@ -49,12 +49,12 @@ void LC_PropertiesProviderGraphicGrid::fillDocumentProperties(LC_PropertyContain
 
 bool LC_PropertiesProviderGraphicGrid::createShowGrid(LC_PropertyContainer* cont, RS_Graphic* graphic) const {
     const auto gridOn = graphic->isGridOn();
-    const auto funGet = [gridOn]([[maybe_unused]]const RS_Graphic* e) -> bool {
-        return gridOn;
+    const auto funGet = [graphic]([[maybe_unused]]const RS_Graphic* e) -> bool {
+        return graphic->isGridOn();
     };
     const auto funSet = [this]([[maybe_unused]] const bool& v, [[maybe_unused]]RS_Graphic* e) -> void {
         QC_ApplicationWindow::getAppWindow()->getAction("ViewGrid")->trigger();
-        m_widget->selectionChanged();
+        m_widget->refill();
     };
 
     const LC_Property::Names names = {"gridVisible", tr("Show grid"), tr("Defines whether grid is shown or not")};
@@ -106,7 +106,7 @@ void LC_PropertiesProviderGraphicGrid::createGridType(LC_PropertyContainer* cont
         if (gridAction != nullptr) {
             gridAction->trigger();
         }
-        m_widget->selectionChanged();
+        m_widget->refill();
     };
 
     const LC_Property::Names names = {"gridType", tr("Grid Type"), tr("Defines which time of grid should be drawn")};
@@ -193,7 +193,7 @@ bool LC_PropertiesProviderGraphicGrid::createShowMetaGrid(LC_PropertyContainer* 
                     if (viewport != nullptr) {
                         viewport->loadGridSettings();
                     }
-                    m_widget->selectionChanged();
+                    m_widget->refill();
                 };
                 createDirectDelegatedBool<RS_Graphic>(cont, names, funGet, funSet, graphic);
             }
@@ -237,7 +237,7 @@ void LC_PropertiesProviderGraphicGrid::createDecimalMetaGrid(LC_PropertyContaine
                     if (viewport != nullptr) {
                         viewport->loadGridSettings();
                     }
-                    m_widget->selectionChanged();
+                    m_widget->refill();
                 };
 
                 createDirectDelegatedStorage<int, RS_Graphic>(funGetPagesHor, funSetPagesHor, graphic, propertyMetaStepEvery);

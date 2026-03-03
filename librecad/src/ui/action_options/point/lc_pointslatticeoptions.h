@@ -23,8 +23,7 @@
 #ifndef LC_POINTSLATTICEOPTIONS_H
 #define LC_POINTSLATTICEOPTIONS_H
 
-#include "lc_actionoptionswidget.h"
-#include "lc_actionoptionswidgetbase.h"
+#include "lc_action_options_widget_base.h"
 
 class LC_ActionDrawPointsLattice;
 

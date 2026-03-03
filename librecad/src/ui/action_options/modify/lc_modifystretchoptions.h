@@ -23,7 +23,7 @@
 #ifndef LC_MODIFYSTRETCHOPTIONS_H
 #define LC_MODIFYSTRETCHOPTIONS_H
 
-#include "lc_actionoptionswidgetbase.h"
+#include "lc_action_options_widget_base.h"
 
 class RS_ActionModifyStretch;
 namespace Ui {

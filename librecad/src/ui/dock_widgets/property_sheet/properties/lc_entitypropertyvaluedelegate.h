@@ -86,7 +86,6 @@ public:
         m_funIsValueEqual = funValueEqual;
     }
 
-
 protected:
     EntityClass* m_entity{nullptr};
     LC_EntitiesModificationContext* m_modificationContext{nullptr};

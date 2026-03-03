@@ -23,7 +23,7 @@
 #ifndef LC_MODIFYALIGNOPTIONS_H
 #define LC_MODIFYALIGNOPTIONS_H
 
-#include "lc_actionoptionswidget.h"
+#include "lc_action_options_widget.h"
 
 class LC_ActionModifyAlignData;
 namespace Ui {

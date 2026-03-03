@@ -27,7 +27,7 @@
 #define QG_LINEANGLEOPTIONS_H
 
 
-#include "lc_actionoptionswidgetbase.h"
+#include "lc_action_options_widget_base.h"
 #include "rs_actiondrawlineangle.h"
 
 class RS_ActionInterface;

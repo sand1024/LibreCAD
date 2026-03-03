@@ -23,7 +23,7 @@
 #ifndef LC_UCSSETOPTIONS_H
 #define LC_UCSSETOPTIONS_H
 
-#include "lc_actionoptionswidgetbase.h"
+#include "lc_action_options_widget_base.h"
 
 class LC_ActionUCSCreate;
 namespace Ui {
@@ -35,7 +35,7 @@ class LC_UCSSetOptions : public LC_ActionOptionsWidgetBase{
 public:
     explicit LC_UCSSetOptions();
     ~LC_UCSSetOptions() override;
-    void updateUI(int mode) override;
+    void updateUI(int mode, const QVariant* value) override;
 public slots:
     void onAngleEditingFinished();
     void cbFreeAngleClicked(bool val);

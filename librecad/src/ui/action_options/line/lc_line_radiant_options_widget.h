@@ -24,25 +24,21 @@
 #ifndef LC_LINE_TO_PERSPECTIVE_POINT_OPTIONS_H
 #define LC_LINE_TO_PERSPECTIVE_POINT_OPTIONS_H
 
-#include <QWidget>
 
 #include "lc_action_draw_line_radiant.h"
-#include "lc_actionoptionswidgetbase.h"
+#include "lc_action_options_widget_base.h"
 
 class LC_ActionDrawLineRadiant;
 class RS_ActionInterface;
 
 namespace Ui {
-    class LC_RadiantLineOptions;
+    class LC_OptionsWidgetLineRadiant;
 }
 
-class LC_RadiantLineOptions : public LC_ActionOptionsWidgetBase {
+class LC_OptionsWidgetRadiantLine : public LC_ActionOptionsWidgetBase {
     Q_OBJECT public:
-    explicit LC_RadiantLineOptions();
-    ~LC_RadiantLineOptions() override;
-    void saveRadiantPoint(LC_ActionDrawLineRadiant::RadiantIdx idx);
-    RS_Vector loadRadiantPoint(LC_ActionDrawLineRadiant::RadiantIdx idx);
-
+    explicit LC_OptionsWidgetRadiantLine();
+    ~LC_OptionsWidgetRadiantLine() override;
 protected slots:
     void languageChange() override;
     void onLengthTypeIndexChanged(int index);
@@ -52,15 +48,9 @@ protected slots:
     void onLengthEditingFinished();
 protected:
     void doSaveSettings() override;
-    void setCurrentPointUI(LC_ActionDrawLineRadiant::RadiantIdx pointId, RS_Vector activePoint);
     void doSetAction(RS_ActionInterface* a, bool update) override;
-    void setLenghtTypeToActionAndView(int index);
-    void setPointXToActionAndView(const QString& val);
-    void setPointYToActionAndView(const QString& val);
-    void setLengthToActionAndView(const QString& val);
-    void setActivePointIndexToActionAndView(int index);
 private:
-    Ui::LC_RadiantLineOptions* ui;
+    Ui::LC_OptionsWidgetLineRadiant* ui;
     LC_ActionDrawLineRadiant* m_action = nullptr;
 };
 #endif

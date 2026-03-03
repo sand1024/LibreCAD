@@ -463,7 +463,7 @@ bool QG_PrintPreviewOptions::isUseImperialScales() const {
     return result;
 }
 
-void QG_PrintPreviewOptions::updateUI(const int mode) {
+void QG_PrintPreviewOptions::updateUI(const int mode, const QVariant* value) {
     switch (mode){
         case MODE_UPDATE_ORIENTATION: {
             setPaperOrientation(m_action->isPortrait());

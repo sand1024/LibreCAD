@@ -22,7 +22,7 @@
 
 #include "lc_defaultactioncontext.h"
 
-#include "lc_actionoptionsmanager.h"
+#include "lc_action_options_manager.h"
 #include "lc_qtstatusbarmanager.h"
 #include "qg_actionhandler.h"
 #include "qg_commandwidget.h"

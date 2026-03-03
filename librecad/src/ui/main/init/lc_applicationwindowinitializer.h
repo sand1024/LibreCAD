@@ -38,6 +38,7 @@ private:
     void initReleaseChecker();
     void initActionGroupManager();
     void initActionOptionsManager();
+    void initPropertySheetWidget();
     void initActionFactory() const;
     void initDockCorners() const;
     void initCentralWidget();

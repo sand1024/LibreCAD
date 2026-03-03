@@ -52,7 +52,7 @@ bool LC_PropertiesProviderRenderOptions::createDraft(LC_PropertyContainer* cont)
     };
     const auto funSet = [this]([[maybe_unused]] const bool& v, [[maybe_unused]] RS_Graphic* e) -> void {
         QC_ApplicationWindow::getAppWindow()->getAction("ViewDraft")->trigger();
-        m_widget->selectionChanged();
+        m_widget->refill();
     };
 
     const LC_Property::Names names = {"graphicViewShowDraft", tr("Draft mode"), tr("Defines whether draft mode is enabled for drawing")};
@@ -81,7 +81,7 @@ void LC_PropertiesProviderRenderOptions::createDraftLines(LC_PropertyContainer* 
     else {
         const auto funSet = [this]([[maybe_unused]] const bool& v, [[maybe_unused]] RS_Graphic* e) -> void {
             QC_ApplicationWindow::getAppWindow()->getAction("ViewLinesDraft")->trigger();
-            m_widget->selectionChanged();
+            m_widget->refill();
         };
         createDirectDelegatedBool<RS_Graphic>(cont, names, funGet, funSet, nullptr);
     }
@@ -98,7 +98,7 @@ void LC_PropertiesProviderRenderOptions::createAntialiasing(LC_PropertyContainer
     };
     const auto funSet = [this]([[maybe_unused]] const bool& v, [[maybe_unused]] RS_Graphic* e) -> void {
         QC_ApplicationWindow::getAppWindow()->getAction("ViewAntialiasing")->trigger();
-        m_widget->selectionChanged();
+        m_widget->refill();
     };
 
     const LC_Property::Names names = {

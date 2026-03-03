@@ -20,25 +20,29 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_ACTIONOPTIONSWIDGETBASE_H
-#define LC_ACTIONOPTIONSWIDGETBASE_H
+#include "lc_action_options_widget_base.h"
 
-#include "lc_actionoptionswidget.h"
+#include <QSettings>
 
-class RS_PreviewActionInterface;
+#include "rs_actioninterface.h"
 
-class LC_ActionOptionsWidgetBase:public LC_ActionOptionsWidget{
-public:
-    LC_ActionOptionsWidgetBase(RS2::ActionType actionType, const QString &optionsGroupName, const QString &optionNamePrefix);
-    ~LC_ActionOptionsWidgetBase() override;
-protected:
-    bool checkActionRttiValid(RS2::ActionType actionType) override;
-    QString getSettingsGroupName() override;
-    QString getSettingsOptionNamePrefix() override;
-private:
-    RS2::ActionType m_supportedActionType;
-    QString m_settingsGroupName;
-    QString m_settingsOptionNamePrefix;
-};
+LC_ActionOptionsWidgetBase::LC_ActionOptionsWidgetBase(const RS2::ActionType actionType, const QString &optionsGroupName, const QString &optionNamePrefix):
+    LC_ActionOptionsWidget(nullptr){
+    m_supportedActionType  = actionType;
+    m_settingsGroupName = optionsGroupName;
+    m_settingsOptionNamePrefix = optionNamePrefix;
+}
 
-#endif
+LC_ActionOptionsWidgetBase::~LC_ActionOptionsWidgetBase()= default;
+
+bool LC_ActionOptionsWidgetBase::checkActionRttiValid(const RS2::ActionType actionType){
+    return actionType == m_supportedActionType;
+}
+
+QString LC_ActionOptionsWidgetBase::getSettingsGroupName(){
+    return m_settingsGroupName;
+}
+
+QString LC_ActionOptionsWidgetBase::getSettingsOptionNamePrefix(){
+    return m_settingsOptionNamePrefix;
+}

@@ -23,7 +23,7 @@
 #ifndef LC_ELLIPSEARCOPTIONS_H
 #define LC_ELLIPSEARCOPTIONS_H
 
-#include "lc_actionoptionswidgetbase.h"
+#include "lc_action_options_widget_base.h"
 
 namespace Ui {
     class LC_EllipseArcOptions;

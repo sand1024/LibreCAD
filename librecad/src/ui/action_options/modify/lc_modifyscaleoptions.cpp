@@ -54,7 +54,7 @@ void LC_ModifyScaleOptions::doSaveSettings() {
     save("ExplicitFactor", ui->cbExplicitFactor->isChecked());
 }
 
-void LC_ModifyScaleOptions::updateUI(const int mode) {
+void LC_ModifyScaleOptions::updateUI(const int mode, const QVariant* value) {
     if (mode == 0) {
         // update on SetTargetPoint
         const QString factorX = fromDouble(m_action->getFactorX());

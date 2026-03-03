@@ -54,7 +54,7 @@ LC_ModifyRotateOptions::~LC_ModifyRotateOptions(){
     delete ui;
 }
 
-void LC_ModifyRotateOptions::updateUI(const int mode) {
+void LC_ModifyRotateOptions::updateUI(const int mode, const QVariant* value) {
     switch (mode){
         case UPDATE_ANGLE: {  // update on SetTargetPoint
             const QString angle = fromDouble(m_action->getCurrentAngleDegrees());

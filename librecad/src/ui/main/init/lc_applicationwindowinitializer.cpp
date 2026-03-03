@@ -27,7 +27,7 @@
 
 #include "lc_actionfactory.h"
 #include "lc_actiongroupmanager.h"
-#include "lc_actionoptionsmanager.h"
+#include "lc_action_options_manager.h"
 #include "lc_appwindowdialogsinvoker.h"
 #include "lc_centralwidget.h"
 #include "lc_customstylehelper.h"
@@ -38,6 +38,7 @@
 #include "lc_menufactory.h"
 #include "lc_optionswidgetsholder.h"
 #include "lc_plugininvoker.h"
+#include "lc_propertysheetwidget.h"
 #include "lc_releasechecker.h"
 #include "lc_snapmanager.h"
 #include "lc_toolbarfactory.h"
@@ -84,6 +85,7 @@ void LC_ApplicationWindowInitializer::initApplication(){
     initDockAndToolbarAreasActions();
     initActionOptionsManager();
     setupActionContextWidgets();
+    initPropertySheetWidget();
     initDialogFactory();
     initRecentFilesList();
     m_appWin->initSettings();
@@ -116,6 +118,11 @@ void LC_ApplicationWindowInitializer::initActionOptionsManager(){
     m_appWin->m_actionOptionsManager = new LC_ActionOptionsManager(m_appWin, m_appWin->m_toolOptionsToolbar, snapOptionsHolder);
     const LC_OptionsWidgetsHolder* optionsWidgetsHolder = m_appWin->m_actionOptionsManager->getActionOptionWidgetHolder();
     connect(m_appWin, &QC_ApplicationWindow::currentActionIconChanged, optionsWidgetsHolder, &LC_OptionsWidgetsHolder::setCurrentQAction);
+}
+
+void LC_ApplicationWindowInitializer::initPropertySheetWidget() {
+    const LC_PropertySheetWidget* propertySheetWidget = m_appWin->getPropertySheetWidget();
+    connect(m_appWin, &QC_ApplicationWindow::currentActionIconChanged, propertySheetWidget, &LC_PropertySheetWidget::setCurrentQAction);
 }
 
 void LC_ApplicationWindowInitializer::initActionFactory() const {
@@ -260,6 +267,7 @@ void LC_ApplicationWindowInitializer::initActionContext() const {
     m_appWin->m_actionContext = action_context;
     actionHandler->setActionContext(action_context);
 }
+
 void LC_ApplicationWindowInitializer::setupActionContextWidgets() const {
     m_appWin->m_actionContext->setActionOptionsManager(m_appWin->m_actionOptionsManager);
     m_appWin->m_actionContext->setCommandWidget(m_appWin->m_commandWidget);

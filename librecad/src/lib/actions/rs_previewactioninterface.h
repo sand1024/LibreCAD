@@ -58,6 +58,7 @@ struct LC_MouseEvent{
     QMouseEvent* originalEvent = nullptr;
 };
 
+
 /**
  * This is the interface that must be implemented for all
  * action classes which need a preview.
@@ -98,6 +99,7 @@ protected:
     * this is needed for support of command events);
     */
     int m_mainStatus  = 0;
+
     // main status support
     void setMainStatus(const int status) {m_mainStatus = status; setStatus(status);}
     void restoreMainStatus(){setStatus(m_mainStatus);}
@@ -230,5 +232,6 @@ private:
     LC_MouseEvent toLCMouseMoveEvent(QMouseEvent *e);
     friend LC_ActionInfoMessageBuilder;
 };
+
 
 #endif

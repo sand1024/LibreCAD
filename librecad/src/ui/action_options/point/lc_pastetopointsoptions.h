@@ -23,7 +23,7 @@
 #ifndef LC_PASTETOPOINTSACTION_H
 #define LC_PASTETOPOINTSACTION_H
 
-#include "lc_actionoptionswidgetbase.h"
+#include "lc_action_options_widget_base.h"
 
 class LC_ActionPasteToPoints;
 namespace Ui {

@@ -23,7 +23,7 @@
 #ifndef LC_SPLINEFROMPOLYLINEOPTIONS_H
 #define LC_SPLINEFROMPOLYLINEOPTIONS_H
 
-#include "lc_actionoptionswidgetbase.h"
+#include "lc_action_options_widget_base.h"
 
 class LC_ActionSplineFromPolyline;
 namespace Ui {

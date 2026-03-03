@@ -3,7 +3,7 @@
 
 #include <QLabel>
 
-#include "lc_actionoptionswidget.h"
+#include "lc_action_options_widget.h"
 
 namespace Ui {
     class LC_ActionDrawArc2POptions;

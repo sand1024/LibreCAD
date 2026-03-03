@@ -65,7 +65,7 @@ QString LC_SliceDivideOptions::getSettingsOptionNamePrefix(){
 }
 
 // just provide indication to the user that some options are not applicable for selected entity
-void LC_SliceDivideOptions::updateUI(const int mode){
+void LC_SliceDivideOptions::updateUI(const int mode, const QVariant* value){
     switch (mode){
         case LC_ActionDrawSliceDivide::SELECTION_NONE:
             ui->frmCircle->setEnabled(true);

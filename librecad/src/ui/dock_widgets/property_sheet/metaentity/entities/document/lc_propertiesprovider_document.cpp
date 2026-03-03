@@ -28,7 +28,6 @@
 #include "lc_propertiesprovider_graphic_workspace.h"
 #include "lc_propertiesprovider_render_options.h"
 #include "lc_propertyprovider_utils.h"
-#include "qc_applicationwindow.h"
 #include "qg_graphicview.h"
 #include "rs_block.h"
 #include "rs_document.h"
@@ -75,12 +74,43 @@ void LC_PropertiesProviderDocument::fillDocumentProperties(LC_PropertyContainer*
     m_providerRenderOptions->fillDocumentProperties(container);
 }
 
+LC_PropertyContainer*  LC_PropertiesProviderDocument::createToolOptionsSection(LC_PropertyContainer* container) const{
+    const auto result = createSection(container, {SECTION_TOOL_OPTIONS, tr("Action Options"), tr("Options for currenctly active tool")});
+    return result;
+}
+
+void LC_PropertiesProviderDocument::fillDocumentPropertiesForToolOptions(LC_PropertyContainer* container) const {
+    if (m_actionContext == nullptr) {
+        // check needed for initial load
+        return;
+    }
+    const auto document = getDocument();
+    if (document == nullptr) {
+        return;
+    }
+    m_providerActivePen->fillDocumentProperties(container);
+    const auto rtti = document->rtti();
+    if (rtti == RS2::EntityBlock) {
+        const auto block = static_cast<RS_Block*>(document);
+        // fillBlockProperties(container, block);
+    }
+    else if (rtti == RS2::EntityGraphic) {
+        const auto graphic = static_cast<RS_Graphic*>(document);
+        m_providerGraphicLayer->fillDocumentProperties(container, graphic);
+        m_providerGraphicViews->fillDocumentProperties(container, graphic);
+        m_providerGraphicUcs->fillDocumentProperties(container, graphic);
+        m_providerGraphicGrid->fillDocumentProperties(container, graphic);
+    }
+    m_providerGraphicWorkspace->fillDocumentProperties(container);
+    m_providerRenderOptions->fillDocumentProperties(container);
+}
+
 void LC_PropertiesProviderDocument::fillBlockProperties(LC_PropertyContainer* container, RS_Block* block) const {
     [[maybe_unused]] RS_Graphic* graphic = block->getGraphic();
     m_providerBlock->fillDocumentProperties(container, nullptr, block);
 }
 
-void LC_PropertiesProviderDocument::fillGraphicProperties(LC_PropertyContainer* container, RS_Graphic* graphic) {
+void LC_PropertiesProviderDocument::fillGraphicProperties(LC_PropertyContainer* container, RS_Graphic* graphic) const {
     m_providerGraphicLayer->fillDocumentProperties(container, graphic);
     m_providerGraphicViews->fillDocumentProperties(container, graphic);
     m_providerGraphicUcs->fillDocumentProperties(container, graphic);

@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef LC_MODIFYSCALEOPTIONS_H
 #define LC_MODIFYSCALEOPTIONS_H
 
-#include "lc_actionoptionswidgetbase.h"
+#include "lc_action_options_widget_base.h"
 
 class RS_ActionModifyScale;
 
@@ -46,7 +46,7 @@ public slots:
     void onFactorXEditingFinished();
     void onFactorYEditingFinished();
     void onCopiesNumberValueChanged(int value);
-    void updateUI(int mode) override;
+    void updateUI(int mode, const QVariant* value) override;
 protected:
     void doSaveSettings() override;
     void doSetAction(RS_ActionInterface *a, bool update) override;

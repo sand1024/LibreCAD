@@ -23,7 +23,7 @@
 #ifndef LC_INFODIST2OPTIONS_H
 #define LC_INFODIST2OPTIONS_H
 
-#include "lc_actionoptionswidgetbase.h"
+#include "lc_action_options_widget_base.h"
 
 namespace Ui {
     class LC_InfoDist2Options;

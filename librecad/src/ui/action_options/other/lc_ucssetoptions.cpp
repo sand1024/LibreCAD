@@ -59,7 +59,7 @@ void LC_UCSSetOptions::doSaveSettings() {
     save("AngleIsFree", ui->cbFreeAngle->isChecked());
 }
 
-void LC_UCSSetOptions::updateUI(const int mode) {
+void LC_UCSSetOptions::updateUI(const int mode, const QVariant* value) {
    if (mode == 1){
        const QString angle = fromDouble(RS_Math::rad2deg(m_action->getCurrentAngle()));
 

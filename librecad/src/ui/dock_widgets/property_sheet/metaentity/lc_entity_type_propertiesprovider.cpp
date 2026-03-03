@@ -43,23 +43,7 @@ const QString LC_EntityTypePropertiesProvider::SECTION_CALCULATED_INFO = "_secCa
 const QString LC_EntityTypePropertiesProvider::SECTION_SINGLE_ENTITY_ACTIONS = "_secSingleEntityActions";
 const QString LC_EntityTypePropertiesProvider::SECTION_MULTI_ENTITY_ACTIONS = "_secMultiEntityActions";
 const QString LC_EntityTypePropertiesProvider::SECTION_TEXT = "_secText";
-
-LC_PropertyRSVector* LC_EntityTypePropertiesProvider::createVectorProperty(const LC_Property::Names& names,
-                                                                           QList<LC_PropertyAtomic*>* props, LC_PropertyContainer* cont,
-                                                                           LC_ActionContext* actionContext,
-                                                                           LC_LateCompletionRequestor* requestor) {
-    auto* property = new LC_PropertyRSVector(cont, false);
-    property->setNames(names);
-    if (requestor != nullptr) {
-        property->setInteractiveInputType(LC_ActionContext::InteractiveInputInfo::POINT);
-    }
-    property->setViewDescriptorProvider([]() -> LC_PropertyViewDescriptor {
-        return {{{LC_PropertyRSVectorView::ATTR_X_DISPLAY_NAME, tr("X")}, {LC_PropertyRSVectorView::ATTR_Y_DISPLAY_NAME, tr("Y")}}};
-    });
-    property->setActionContextAndLaterRequestor(actionContext, requestor);
-    props->push_back(property);
-    return property;
-}
+const QString LC_EntityTypePropertiesProvider::SECTION_TOOL_OPTIONS = "_secToolOptions";
 
 void LC_EntityTypePropertiesProvider::addMultipleProperties(LC_PropertyContainer* cont, QList<LC_PropertyAtomic*> props) {
     const auto firstProperty = props.first();
@@ -71,80 +55,6 @@ void LC_EntityTypePropertiesProvider::addMultipleProperties(LC_PropertyContainer
     propertyMulti->setDisplayName(firstProperty->getDisplayName());
     propertyMulti->setDescription(firstProperty->getDescription());
     cont->addChildProperty(propertyMulti);
-}
-
-LC_PropertyQString* LC_EntityTypePropertiesProvider::createReadonlyStringProperty(const LC_Property::Names& names,
-                                                                                  QList<LC_PropertyAtomic*>* props,
-                                                                                  LC_PropertyContainer* cont, const QString& value) {
-    auto* property = new LC_PropertyQString(cont, true);
-    property->setNames(names);
-    property->setValue(value);
-    property->setReadOnly();
-    props->push_back(property);
-    return property;
-}
-
-LC_PropertyDouble* LC_EntityTypePropertiesProvider::createDoubleProperty(const LC_Property::Names& names, QList<LC_PropertyAtomic*>* props,
-                                                                         LC_PropertyContainer* cont,
-                                                                         const LC_ActionContext::InteractiveInputInfo::InputType inputType,
-                                                                         LC_ActionContext* actionContext,
-                                                                         LC_LateCompletionRequestor* requestor) {
-    auto* property = new LC_PropertyDouble(cont, false);
-    property->setNames(names);
-    property->setInteractiveInputType(inputType);
-    if (inputType != LC_ActionContext::InteractiveInputInfo::NOTNEEDED) {
-        LC_PropertyViewDescriptor attrs;
-        attrs.viewName = LC_PropertyDoubleInteractivePickView::VIEW_NAME;
-        property->setViewDescriptor(attrs);
-    }
-    property->setActionContextAndLaterRequestor(actionContext, requestor);
-    props->push_back(property);
-    return property;
-}
-
-QString LC_EntityTypePropertiesProvider::formatLinear(const double length) const {
-    const LC_Formatter* formatter = getFormatter();
-    return formatter->formatLinear(length);
-}
-
-QString LC_EntityTypePropertiesProvider::formatDouble(const double length) const {
-    const LC_Formatter* formatter = getFormatter();
-    return formatter->formatDouble(length);
-}
-
-QString LC_EntityTypePropertiesProvider::formatInt(const int length) const {
-    const LC_Formatter* formatter = getFormatter();
-    return formatter->formatInt(length);
-}
-
-QString LC_EntityTypePropertiesProvider::formatInt(const double length) const {
-    const LC_Formatter* formatter = getFormatter();
-    const int len = static_cast<int>(length);
-    return formatter->formatInt(len);
-}
-
-QString LC_EntityTypePropertiesProvider::formatInt(const qsizetype length) const {
-    const LC_Formatter* formatter = getFormatter();
-    const int len = static_cast<int>(length);
-    return formatter->formatInt(len);
-}
-
-QString LC_EntityTypePropertiesProvider::formatWCSAngleDegrees(const double wcsAngle) const {
-    const LC_Formatter* formatter = getFormatter();
-    auto result = formatter->formatWCSAngleDegrees(wcsAngle);
-    return result;
-}
-
-QString LC_EntityTypePropertiesProvider::formatRawAngle(const double length) const {
-    const LC_Formatter* formatter = getFormatter();
-    auto result = formatter->formatRawAngle(length);
-    return result;
-}
-
-QString LC_EntityTypePropertiesProvider::formatRawAngle(const double length, const RS2::AngleFormat format) const {
-    const LC_Formatter* formatter = getFormatter();
-    auto result = formatter->formatRawAngle(length, format);
-    return result;
 }
 
 LC_PropertyContainer* LC_EntityTypePropertiesProvider::createGeometrySection(LC_PropertyContainer* container) const {
@@ -172,42 +82,6 @@ LC_PropertyContainer* LC_EntityTypePropertiesProvider::createMultipleEntityActio
     return result;
 }
 
-
-LC_Formatter* LC_EntityTypePropertiesProvider::getFormatter() const {
-    const auto graphicView = m_actionContext->getGraphicView();
-    const auto viewport = graphicView->getViewPort();
-    LC_Formatter* result = viewport->getFormatter();
-    return result;
-}
-
-RS_Vector LC_EntityTypePropertiesProvider::toUCS(const RS_Vector& wcs) const {
-    const auto graphicView = m_actionContext->getGraphicView();
-    const auto viewport = graphicView->getViewPort();
-    const auto ucs = viewport->toUCS(wcs);
-    return ucs;
-}
-
-double LC_EntityTypePropertiesProvider::toUCSBasisAngle(const double wcsAngle) const {
-    const auto graphicView = m_actionContext->getGraphicView();
-    const auto viewport = graphicView->getViewPort();
-    const double ucsAngle = viewport->toUCSAngle(wcsAngle);
-    const double ucsBasisAngle = viewport->toBasisUCSAngle(ucsAngle);
-    return ucsBasisAngle;
-}
-
-double LC_EntityTypePropertiesProvider::toWCSAngle(const double ucsBasicAngle) const {
-    const auto graphicView = m_actionContext->getGraphicView();
-    const auto viewport = graphicView->getViewPort();
-    const double ucsAngle = viewport->toAbsUCSAngle(ucsBasicAngle);
-    const double wcsAngle = viewport->toWorldAngle(ucsAngle);
-    return wcsAngle;
-}
-
-RS_Vector LC_EntityTypePropertiesProvider::toWCS(const RS_Vector& ucs) const {
-    const auto viewport = m_actionContext->getGraphicView()->getViewPort();
-    const auto wcs = viewport->toWorld(ucs);
-    return wcs;
-}
 
 void LC_EntityTypePropertiesProvider::doCreateSelectedSetCommands(LC_PropertyContainer* propertyContainer, [[maybe_unused]]const QList<RS_Entity*>& list) {
     const std::list<CommandLinkInfo> commands = {
@@ -283,14 +157,6 @@ void LC_EntityTypePropertiesProvider::addCommon(const LC_Property::Names& names,
     addMultipleProperties(cont, props);
 }
 
-LC_PropertyContainer*
-LC_EntityTypePropertiesProvider::createSection(LC_PropertyContainer* container, const LC_Property::Names& names) const {
-    const auto result = new LC_PropertyContainer(container);
-    result->setNames(names);
-    container->addChildProperty(result);
-    m_widget->checkSectionCollapsed(result);
-    return result;
-}
 
 void LC_EntityTypePropertiesProvider::fillGenericAttributes(LC_PropertyContainer* container, const QList<RS_Entity*>& list) {
     const auto containerGeneric = createSection(container, {SECTION_GENERAL, tr("General"), tr("General properties")});

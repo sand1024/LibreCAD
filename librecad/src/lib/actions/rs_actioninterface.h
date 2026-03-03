@@ -29,6 +29,7 @@
 
 #include <rs_math.h>
 
+#include "lc_action_options_editor.h"
 #include "lc_actioncontext.h"
 #include "lc_latecompletionrequestor.h"
 #include "lc_modifiersinfo.h"
@@ -37,6 +38,7 @@
 #include "rs_entity.h"
 #include "rs_snapper.h"
 
+class LC_ActionOptions;
 class RS_Undoable;
 class LC_ModifiersInfo;
 class QInputEvent;
@@ -51,6 +53,12 @@ class QAction;
 class QString;
 class LC_ActionOptionsWidget; // todo - think about depencency - options in in ui, while this action in lib... quite artificial separation, actually
 
+class LC_ActionOptions {
+public:
+    virtual ~LC_ActionOptions() = default;
+    virtual void save() = 0;
+    virtual void load() = 0;
+};
 
 /**
  * This is the interface that must be implemented for all
@@ -98,6 +106,9 @@ public:
     virtual void hideOptions();
     virtual void showOptions();
     void onLateRequestCompleted(bool shouldBeSkipped) override;
+    virtual LC_ActionOptions* getOptions() const {return nullptr;}
+    void updateOptions(const QString& tagToFocus = "");
+    void saveOptions();
 private:
     /**
      * Current status of the action. After an action has
@@ -135,6 +146,7 @@ protected:
     std::shared_ptr<RS_ActionInterface> m_predecessor = nullptr; // fixme - sand - review!!!
     RS2::ActionType m_actionType = RS2::ActionNone;
     std::unique_ptr<LC_ActionOptionsWidget> m_optionWidget;
+    std::unique_ptr<LC_ActionOptionsEditor> m_optionsEditor;
     double m_snapToAngleStep;
 
     virtual bool mayInitWithContextEntity(int status);
@@ -147,8 +159,9 @@ protected:
     // Accessor for drawing keys
     int getGraphicVariableInt(const QString& key, int def) const;
 
+    [[deprecated]]
     virtual LC_ActionOptionsWidget* createOptionsWidget();
-    void updateOptions(const QString& tagToFocus = "");
+
     void updateOptionsUI(int mode) const;
 
     virtual RS2::CursorType doGetMouseCursor(int status);

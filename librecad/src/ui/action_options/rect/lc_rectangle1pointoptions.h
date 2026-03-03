@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef LC_RECTANGLE1POINTOPTIONS_H
 #define LC_RECTANGLE1POINTOPTIONS_H
 
-#include "lc_actionoptionswidgetbase.h"
+#include "lc_action_options_widget_base.h"
 
 class LC_ActionDrawRectangle1Point;
 namespace Ui {
@@ -54,7 +54,7 @@ public slots:
     void onEdgesIndexChanged(int index);
     void onBaseAngleFixedClicked(bool value);
     void languageChange() override;
-    void updateUI(int mode) override;
+    void updateUI(int mode, const QVariant* value) override;
 protected:
     void doSetAction( RS_ActionInterface * a, bool update) override;
     void doSaveSettings() override;

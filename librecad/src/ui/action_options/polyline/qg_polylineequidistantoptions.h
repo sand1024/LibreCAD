@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define QG_POLYLINEEQUIDISTANTOPTIONS_H
 
 
-#include "lc_actionoptionswidgetbase.h"
+#include "lc_action_options_widget_base.h"
 
 class RS_ActionDrawLineRelAngle;
 class RS_ActionPolylineEquidistant;

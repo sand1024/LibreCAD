@@ -23,7 +23,7 @@
 #ifndef LC_SPLINEEXPLODEOPTIONS_H
 #define LC_SPLINEEXPLODEOPTIONS_H
 
-#include "lc_actionoptionswidgetbase.h"
+#include "lc_action_options_widget_base.h"
 
 class LC_ActionSplineExplode;
 namespace Ui {

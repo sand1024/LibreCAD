@@ -23,7 +23,7 @@
 #ifndef LC_MODIFYALIGNREFOPTIONS_H
 #define LC_MODIFYALIGNREFOPTIONS_H
 
-#include "lc_actionoptionswidgetbase.h"
+#include "lc_action_options_widget_base.h"
 
 class LC_ActionModifyAlignRef;
 namespace Ui {

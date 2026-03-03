@@ -23,7 +23,7 @@
 #ifndef LC_ELLIPSE1POINTOPTIONS_H
 #define LC_ELLIPSE1POINTOPTIONS_H
 
-#include "lc_actionoptionswidgetbase.h"
+#include "lc_action_options_widget_base.h"
 
 namespace Ui {
     class LC_Ellipse1PointOptions;

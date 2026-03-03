@@ -102,6 +102,25 @@ void LC_EntityPropertyContainerProvider::fillPropertyContainerForNoSelection([[m
     container->setTag(TAG_CONTAINER_NO_SELECTION);
 }
 
+void LC_EntityPropertyContainerProvider::fillPropertyContainerToolOptions(RS_Document* doc, LC_PropertyContainer* container,
+    LC_ToolOptionsPropertiesContainerProvider* toolOptionsProvider) {
+    if (!m_entitiesList.empty()) {
+        m_entitiesList.clear();
+    }
+    if (container == nullptr) {
+        return;
+    }
+    if (toolOptionsProvider != nullptr) {
+        createToolOptions(container, toolOptionsProvider);
+    }
+    m_document->fillDocumentPropertiesForToolOptions(container);
+}
+
+void LC_EntityPropertyContainerProvider::createToolOptions(LC_PropertyContainer* container,LC_ToolOptionsPropertiesContainerProvider* toolOptionsProvider) {
+   LC_PropertyContainer* toolOptionsSectionContainer = m_document->createToolOptionsSection(container);
+   toolOptionsProvider->fillToolOptionsContainer(toolOptionsSectionContainer);
+}
+
 void LC_EntityPropertyContainerProvider::refillPropertyContainer([[maybe_unused]] RS_Document* doc, LC_PropertyContainer* container) const {
     switch (m_entityType) {
         case RS2::EntityUnknown: {

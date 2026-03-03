@@ -42,10 +42,12 @@ class LC_PropertiesProviderDocument : public LC_EntityTypePropertiesProvider {
 public:
     LC_PropertiesProviderDocument(LC_ActionContext* actionContext, LC_PropertySheetWidget* widget);
     virtual void fillDocumentProperties(LC_PropertyContainer* container);
+    LC_PropertyContainer* createToolOptionsSection(LC_PropertyContainer* container) const;
+    void fillDocumentPropertiesForToolOptions(LC_PropertyContainer* container) const;
     void doCreateEntitySpecificProperties([[maybe_unused]]LC_PropertyContainer* container,[[maybe_unused]] const QList<RS_Entity*>& list) override {};
 protected:
     void fillBlockProperties(LC_PropertyContainer* container, RS_Block* block) const;
-    void fillGraphicProperties(LC_PropertyContainer* container, RS_Graphic* graphic);
+    void fillGraphicProperties(LC_PropertyContainer* container, RS_Graphic* graphic) const;
 
     std::unique_ptr<LC_PropertiesProviderGraphicLayer> m_providerGraphicLayer;
     std::unique_ptr<LC_PropertiesProviderGraphicGrid> m_providerGraphicGrid;

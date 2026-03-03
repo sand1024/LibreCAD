@@ -26,7 +26,7 @@
 #ifndef QG_PRINTPREVIEWOPTIONS_H
 #define QG_PRINTPREVIEWOPTIONS_H
 
-#include "lc_actionoptionswidgetbase.h"
+#include "lc_action_options_widget_base.h"
 
 class RS_ActionInterface;
 class RS_ActionPrintPreview;
@@ -46,7 +46,7 @@ public:
         MODE_UPDATE_PAGE_NUMBERS
     };
 public slots:
-    void updateUI(int mode) override;
+    void updateUI(int mode, const QVariant* value) override;
     void onCenterClicked() const;
     void onZoomToPageClicked() const;
     void onScaleLineClicked(bool state);

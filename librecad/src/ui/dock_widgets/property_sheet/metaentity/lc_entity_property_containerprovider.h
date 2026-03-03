@@ -68,10 +68,12 @@ public:
     void fillPropertyContainerForSelection(RS_Document* doc, LC_PropertyContainer* container, RS2::EntityType entityType,
                                const QList<RS_Entity*>& entitiesList);
     void fillPropertyContainerForNoSelection(RS_Document* doc, LC_PropertyContainer* container);
+    void fillPropertyContainerToolOptions(RS_Document* doc, LC_PropertyContainer* container, LC_ToolOptionsPropertiesContainerProvider* toolOptionsProvider);
     void setGraphicView(RS_GraphicView* gview) override;
     void cleanup();
     void clearEntities();
 private:
+    void createToolOptions(LC_PropertyContainer* container, LC_ToolOptionsPropertiesContainerProvider* toolOptionsProvider);
     void refillPropertyContainer(RS_Document* doc, LC_PropertyContainer* container) const;
     void clearCachedDimStyles();
     std::unique_ptr<LC_PropertiesProviderMultiple> m_multiple{nullptr};

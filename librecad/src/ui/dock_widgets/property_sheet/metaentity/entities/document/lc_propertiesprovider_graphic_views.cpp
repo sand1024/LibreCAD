@@ -79,7 +79,7 @@ void LC_PropertiesProviderGraphicViews::createViewSelector(LC_PropertyContainer*
                 graphicViewport->restoreView(view);
             }
         }
-        m_widget->selectionChanged();
+        m_widget->refill();
     };
 
     const LC_Property::Names names = {"viewSelection", tr("View to restore"), tr("Restoring one of previously saved named views")};

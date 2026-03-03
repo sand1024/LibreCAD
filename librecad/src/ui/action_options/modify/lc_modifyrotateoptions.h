@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef LC_MODIFYROTATEOPTIONS_H
 #define LC_MODIFYROTATEOPTIONS_H
 
-#include "lc_actionoptionswidgetbase.h"
+#include "lc_action_options_widget_base.h"
 
 class RS_ActionModifyRotate;
 namespace Ui {
@@ -42,7 +42,7 @@ public:
         ENABLE_SECOND_ROTATION,
         UPDATE_ANGLE2
     };
-    void updateUI(int mode) override;
+    void updateUI(int mode, const QVariant* value) override;
 public slots:
     void languageChange() override;
     void cbKeepOriginalsClicked(bool val);

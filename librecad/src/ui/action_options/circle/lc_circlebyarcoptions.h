@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef LC_CIRCLEBYARCOPTIONS_H
 #define LC_CIRCLEBYARCOPTIONS_H
 
-#include "lc_actionoptionswidgetbase.h"
+#include "lc_action_options_widget_base.h"
 
 namespace Ui {
     class LC_CircleByArcOptions;

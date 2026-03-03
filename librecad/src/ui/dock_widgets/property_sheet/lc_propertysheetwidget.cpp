@@ -40,12 +40,16 @@
 #include "lc_property_rsvector.h"
 #include "lc_property_view_registrator.h"
 #include "lc_propertysheet_widget_options.h"
+#include "lc_shortcuts_manager.h"
+#include "qg_graphicview.h"
 #include "rs_debug.h"
 #include "rs_document.h"
 #include "rs_graphicview.h"
 #include "rs_selection.h"
 #include "rs_settings.h"
 #include "ui_lc_propertysheetwidget.h"
+
+class LC_ToolOptionsPropertiesContainerProvider;
 
 void LC_PropertySheetWidget::setupSelectionButton(QToolButton* selectionButton, QAction* selectionPointerAction, LC_ActionGroupManager* actionGroupManager) {
     selectionButton->setDefaultAction(selectionPointerAction);
@@ -101,6 +105,8 @@ LC_PropertySheetWidget::LC_PropertySheetWidget(QWidget* parent, LC_ActionContext
     setupSelectionButton(ui->tbSelectionGeneral, selectionPointerAction, actionGroupManager);
     setupSelectionButton(ui->tbSelectionGeneralLeft, selectionPointerAction, actionGroupManager);
 
+    ui->tbCancel->setDefaultAction(selectionPointerAction);
+
     m_entityContainerProvider = std::make_unique<LC_EntityPropertyContainerProvider>();
     m_entityContainerProvider->init(this, actionContext);
 
@@ -110,6 +116,8 @@ LC_PropertySheetWidget::LC_PropertySheetWidget(QWidget* parent, LC_ActionContext
 
     ui->tbSelectionGeneral->setVisible(m_propertySheetOptions->duplicateSelectionAction);
     ui->tbSelectionGeneralLeft->setVisible(m_propertySheetOptions->duplicateSelectionAction);
+
+    ui->headerAction->setVisible(false);
     updateWidgetSettings();
 }
 
@@ -210,25 +218,43 @@ void LC_PropertySheetWidget::stopInplaceEdit() const {
     ui->propertySheet->stopInplaceEdit();
 }
 
-void LC_PropertySheetWidget::selectionChanged() {
+void LC_PropertySheetWidget::refill() {
     // LC_ERR << "On Selection Changed!";
     stopInplaceEdit();
-    if (m_handleSelectionChange) {
-        const int selectionIndex = ui->cbSelection->currentIndex();
-        if (selectionIndex >= 0) {
-            // save current state
-            int itemEntityType = getCurrentlySelectedEntityType(selectionIndex);
-            const auto entityType = static_cast<RS2::EntityType>(itemEntityType);
-            const auto activeProperty = ui->propertySheet->propertiesSheet()->activeProperty();
-            const QString propertyName = activeProperty != nullptr ? activeProperty->getName() : "";
+    if (m_operationMode == MODE_SELECTION) {
+        if (m_handleSelectionChange) {
+            const int selectionIndex = ui->cbSelection->currentIndex();
+            if (selectionIndex >= 0) {
+                // save current state
+                int itemEntityType = getCurrentlySelectedEntityType(selectionIndex);
+                const auto entityType = static_cast<RS2::EntityType>(itemEntityType);
+                const auto activeProperty = ui->propertySheet->propertiesSheet()->activeProperty();
+                const QString propertyName = activeProperty != nullptr ? activeProperty->getName() : "";
 
-            setupSelectionTypeCombobox(entityType, propertyName);
-        }
-        else {
-            // clean init
-            setupSelectionTypeCombobox(RS2::EntityContainer, "");
+                setupSelectionTypeCombobox(entityType, propertyName);
+            }
+            else {
+                // clean init
+                setupSelectionTypeCombobox(RS2::EntityContainer, "");
+            }
         }
     }
+    else {
+        LC_PropertyContainer* container = prepareToolOptionsContainer(m_toolOptionsPropertiesContainerProvider);
+        replaceTopLevelContainer(container);
+    }
+}
+
+void LC_PropertySheetWidget::showToolOptions(LC_ToolOptionsPropertiesContainerProvider* provider) {
+    if (provider != nullptr) {
+        m_toolOptionsPropertiesContainerProvider = provider;
+        m_operationMode = MODE_TOOL_OPTIONS;
+    }
+    else {
+        m_toolOptionsPropertiesContainerProvider = nullptr;
+        m_operationMode = MODE_SELECTION;
+    }
+    refill();
 }
 
 void LC_PropertySheetWidget::setShouldHandleSelectionChange(const bool value) {
@@ -236,7 +262,7 @@ void LC_PropertySheetWidget::setShouldHandleSelectionChange(const bool value) {
 }
 
 void LC_PropertySheetWidget::updateFormats() {
-    selectionChanged();
+    refill();
 }
 
 void LC_PropertySheetWidget::onLateRequestCompleted(const bool shouldBeSkipped) {
@@ -289,7 +315,7 @@ void LC_PropertySheetWidget::onLateRequestCompleted(const bool shouldBeSkipped) 
 
 void LC_PropertySheetWidget::onUcsChanged([[maybe_unused]] LC_UCS* ucs) {
     m_handleSelectionChange = true;
-    selectionChanged();
+    refill();
 }
 
 void LC_PropertySheetWidget::onViewDefaultActionActivated(const bool defaultActionActivated, const RS2::ActionType prevActionRtti) {
@@ -298,7 +324,7 @@ void LC_PropertySheetWidget::onViewDefaultActionActivated(const bool defaultActi
         // prevent refresh of the widget if activation is called after interactive input  - it might be that update
         // is already performed as result of setting value of property
         if (!RS2::isInteractiveInputAction(prevActionRtti) && prevActionRtti != RS2::ActionDefault) {
-            selectionChanged();
+            refill();
         }
     }
 }
@@ -423,15 +449,19 @@ QLayout* LC_PropertySheetWidget::getTopLevelLayout() const {
     return ui->gridLayout;
 }
 
-void LC_PropertySheetWidget::onSelectionIndexChanged(const int index) {
-    int itemEntityType = getCurrentlySelectedEntityType(index);
-    const auto entityType = static_cast<RS2::EntityType>(itemEntityType);
-    const auto newContainer = preparePropertiesContainer(entityType);
+void LC_PropertySheetWidget::replaceTopLevelContainer(LC_PropertyContainer* const newContainer) {
     const auto previousContainer = ui->propertySheet->propertyContainer();
     ui->propertySheet->setPropertyContainer(newContainer);
     if (previousContainer != nullptr) {
         destroyContainer(previousContainer);
     }
+}
+
+void LC_PropertySheetWidget::onSelectionIndexChanged(const int index) {
+    int itemEntityType = getCurrentlySelectedEntityType(index);
+    const auto entityType = static_cast<RS2::EntityType>(itemEntityType);
+    const auto newContainer = preparePropertiesContainer(entityType);
+    replaceTopLevelContainer(newContainer);
 }
 
 LC_PropertyContainer* LC_PropertySheetWidget::preparePropertiesContainer(const RS2::EntityType entityType) {
@@ -440,6 +470,16 @@ LC_PropertyContainer* LC_PropertySheetWidget::preparePropertiesContainer(const R
     LC_PropertyContainer* result = createPropertiesContainer(entityType, entitiesToModify);
     return result;
 }
+
+LC_PropertyContainer* LC_PropertySheetWidget::prepareToolOptionsContainer(LC_ToolOptionsPropertiesContainerProvider*  toolOptionsContainerProvider) {
+    LC_PropertyContainer* result = nullptr;
+    if (isVisible()) {
+        result = new LC_PropertyContainer(this);
+    }
+    m_entityContainerProvider->fillPropertyContainerToolOptions(m_document, result, toolOptionsContainerProvider);
+    return result;
+}
+
 
 void LC_PropertySheetWidget::collectEntitiesToModify(RS2::EntityType entityType, QList<RS_Entity*>& entitiesToModify) const {
     if (entityType == RS2::EntityUnknown || entityType == RS2::EntityContainer) {
@@ -688,7 +728,7 @@ void LC_PropertySheetWidget::onDockVisibilityChanged(const bool visible) {
     // LC_ERR << "Dock visibility changed - " << visible;
     if (visible) {
         m_handleSelectionChange = true;
-        selectionChanged();
+        refill();
     }
     else {
         m_handleSelectionChange = false;
@@ -700,7 +740,7 @@ void LC_PropertySheetWidget::onActivePenChanged(RS_Pen) {
     if (container != nullptr) {
         int tag = container->getTag();
         if (tag == LC_EntityPropertyContainerProvider::TAG_CONTAINER_NO_SELECTION) {
-            selectionChanged();
+            refill();
         }
     }
 }
@@ -710,7 +750,7 @@ void LC_PropertySheetWidget::onSettingsClicked() {
     if (dlg.exec() == QDialog::Accepted) {
         ui->tbSelectionGeneral->setVisible(m_propertySheetOptions->duplicateSelectionAction);
         updatePropertiesSheetFont();
-        selectionChanged();
+        refill();
     };
 }
 
@@ -730,5 +770,45 @@ void LC_PropertySheetWidget::doAdjustForDockLocation(Qt::DockWidgetArea area) {
         default:
             // do nothing so far
             break;
+    }
+}
+
+void LC_PropertySheetWidget::setCurrentQAction(const QAction* a) {
+    bool showIcon = a != nullptr && LC_GET_ONE_BOOL("Appearance", "ShowActionIconInOptions", true);
+    if (showIcon) {
+        // check for actions those icons should not be shown
+        const auto property = a->property("_SetAsCurrentActionInView");
+        if (property.isValid()) {
+            showIcon = property.toBool();
+        }
+    }
+    if (showIcon){
+        QIcon icon = a->icon();
+        QString text=  LC_ShortcutsManager::getPlainActionToolTip(a);
+        ui->lblActionIcon->setVisible(!icon.isNull());
+        int m_iconSize = 24;
+        ui->lblActionIcon->setPixmap(icon.pixmap(m_iconSize));
+        ui->lblActionName->setText(text);
+        ui->headerAction->setVisible(true);
+        ui->headerSelection->setVisible(false);
+        m_operationMode = MODE_TOOL_OPTIONS;
+    }
+    else{
+        ui->headerAction->setVisible(false);
+        ui->headerSelection->setVisible(true);
+        m_operationMode = MODE_SELECTION;
+
+        /*auto graphicView = m_actionContext->getGraphicView();
+        if (graphicView != nullptr) {
+            auto gv = static_cast<QG_GraphicView*>(graphicView);
+            auto recentActions = gv->getRecentActions();
+            if (recentActions.empty()) {
+                ui->tbLastAction->setVisible(false);
+            }
+            else {
+                ui->tbLastAction->setVisible(true);
+                ui->tbLastAction->setDefaultAction(recentActions.first());
+            }
+        }*/
     }
 }

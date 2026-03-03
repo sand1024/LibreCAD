@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef LC_SLICEDIVIDEOPTIONS_H
 #define LC_SLICEDIVIDEOPTIONS_H
 
-#include "lc_actionoptionswidget.h"
+#include "lc_action_options_widget.h"
 
 class LC_ActionDrawSliceDivide;
 namespace Ui {
@@ -34,7 +34,7 @@ class LC_SliceDivideOptions : public LC_ActionOptionsWidget{
 public:
     explicit LC_SliceDivideOptions();
     ~LC_SliceDivideOptions() override;
-    void updateUI(int mode) override;
+    void updateUI(int mode, const QVariant* value) override;
 protected slots:
     void languageChange() override;
     bool checkActionRttiValid(RS2::ActionType actionType) override;

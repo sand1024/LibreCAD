@@ -87,7 +87,12 @@ public:
     using FunValueAccepted = std::function<bool(ValueType)>;
     using FunValueEqual = std::function<bool(ValueType)>;
     using FunValueSet = std::function<void(ValueType, LC_PropertyChangeReason)>;
+    using FunValueSetShort = std::function<void(ValueType)>;
     using FunValueGet = std::function<ValueTypeStore()>;
+
+    explicit LC_PropertyValueDelegated()
+            : LC_PropertyValueStorage<ValueType>() {
+    }
 
     bool doAcceptValue(ValueType valueToAccept) override {
         if (m_funIsValueAccepted) {
@@ -108,7 +113,7 @@ public:
     }
 
     bool doCheckValueEqualToCurrent(ValueType valueToCompare) override {
-        if (m_funIsValueEqual) {
+        if (m_funIsValueEqual != nullptr) {
             return m_funIsValueEqual(valueToCompare);
         }
 
@@ -148,9 +153,20 @@ public:
         m_funIsValueEqual = fun;
     }
 
-protected:
-    explicit LC_PropertyValueDelegated()
-        : LC_PropertyValueStorage<ValueType>() {
+    void setupFull(const FunValueGet& funGetValue, const FunValueSet& funSetValue,
+               const FunValueEqual& funValueEqual = nullptr) {
+        m_funGetValue = funGetValue;
+        m_funSetValue = funSetValue;
+        m_funIsValueEqual = funValueEqual;
+    }
+
+    void setup(const FunValueGet& funGetValue, const FunValueSetShort& funSetValue,
+             const FunValueEqual& funValueEqual = nullptr) {
+        m_funGetValue = funGetValue;
+        m_funSetValue = [funSetValue](ValueType val, LC_PropertyChangeReason) {
+            funSetValue(val);
+        };
+        m_funIsValueEqual = funValueEqual;
     }
 
 private:

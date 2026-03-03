@@ -70,7 +70,7 @@ void LC_PropertiesProviderGraphicWorkspace::createWorkspaceSelector(LC_PropertyC
             if (v > 0) {
                 QC_ApplicationWindow::getAppWindow()->applyWorkspaceById(v);
             }
-            m_widget->selectionChanged();
+            m_widget->refill();
         };
 
         const LC_Property::Names names = {"viewSelection", tr("Workspace to use"), tr("Restores one of previously saved workspaces")};
@@ -111,7 +111,7 @@ void LC_PropertiesProviderGraphicWorkspace::createShowStatusBar(LC_PropertyConta
 void LC_PropertiesProviderGraphicWorkspace::createWorkspaceCommands(LC_PropertyContainer* cont) const {
     auto saveClickHandler = [this]([[maybe_unused]] RS_Graphic* g, [[maybe_unused]] const int linkIndex) {
         QC_ApplicationWindow::getAppWindow()->saveWorkspace(true);
-        m_widget->selectionChanged();
+        m_widget->refill();
     };
 
     createSingleEntityCommand<RS_Graphic>(cont, "workspaceSave", tr("Save workspace..."),

@@ -26,7 +26,7 @@
 #ifndef QG_CIRCLEOPTIONS_H
 #define QG_CIRCLEOPTIONS_H
 
-#include "lc_actionoptionswidgetbase.h"
+#include "lc_action_options_widget_base.h"
 
 class RS_ActionInterface;
 class RS_ActionDrawCircleCR;

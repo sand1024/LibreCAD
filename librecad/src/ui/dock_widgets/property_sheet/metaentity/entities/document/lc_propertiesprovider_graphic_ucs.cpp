@@ -88,7 +88,7 @@ int LC_PropertiesProviderGraphicUCS::createUcsActive(RS_Graphic* graphic, LC_UCS
                 graphicViewport->applyUCS(ucs);
             }
         }
-        m_widget->selectionChanged();
+        m_widget->refill();
     };
 
     const LC_Property::Names names = {"activeUCS", tr("Active UCS"), tr("UCS switch to")};

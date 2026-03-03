@@ -33,6 +33,7 @@
 #include "lc_property_rsvector.h"
 #include "lc_propertysheet_widget_options.h"
 #include "lc_selectedsetlistener.h"
+#include "lc_tool_options_properties_container_provider.h"
 #include "lc_ucslist.h"
 #include "lc_viewslist.h"
 #include "rs_entity.h"
@@ -60,7 +61,9 @@ public:
     void saveCollapsedSections();
     void setGraphicView(RS_GraphicView* gv) override;
     void stopInplaceEdit() const;
-    void selectionChanged() override;
+    void selectionChanged() override {refill();}
+    void refill();
+    void showToolOptions(LC_ToolOptionsPropertiesContainerProvider* provider);
     void setShouldHandleSelectionChange(bool value);
     void updateFormats();
     void onLateRequestCompleted(bool shouldBeSkipped) override;
@@ -68,9 +71,9 @@ public:
     void markContainerCollapsed(const QString& name, bool collapse);
     void checkSectionCollapsed(LC_PropertyContainer* result);
     void entityModified(RS_Entity* originalEntity, RS_Entity* entityClone) override;
-    void ucsListModified([[maybe_unused]]bool changed) override {selectionChanged();}
-    void layerListModified(bool) override {selectionChanged();}
-    void viewsListModified([[maybe_unused]]bool changed) override {selectionChanged();}
+    void ucsListModified([[maybe_unused]]bool changed) override {refill();}
+    void layerListModified(bool) override {refill();}
+    void viewsListModified([[maybe_unused]]bool changed) override {refill();}
     LC_PropertySheetWidgetOptions* getOptions() const {return m_propertySheetOptions.get();}
 public slots :
     void onUcsChanged(LC_UCS* ucs);
@@ -87,7 +90,12 @@ public slots :
     void onDockVisibilityChanged(bool visible);
     void onActivePenChanged(RS_Pen pen);
     void onSettingsClicked();
+    void setCurrentQAction(const QAction *a);
 protected:
+    enum OperationMode {
+        MODE_SELECTION,
+        MODE_TOOL_OPTIONS
+    };
     void setupSelectionButton(QToolButton* selectionButton, QAction* selectionPointerAction, LC_ActionGroupManager* actionGroupManager);
     void updatePropertiesSheetFont() const;
     void setupSelectionTypeCombobox(RS2::EntityType entityTypeTryToSet, QString propertyTryToSet);
@@ -95,6 +103,7 @@ protected:
     void collectEntitiesToModify(RS2::EntityType entityType, QList<RS_Entity*>& entitiesToModify) const;
     LC_PropertyContainer* createPropertiesContainer(RS2::EntityType entityType, const QList<RS_Entity*>& list);
     LC_PropertyContainer* preparePropertiesContainer(RS2::EntityType entityType);
+    LC_PropertyContainer* prepareToolOptionsContainer(LC_ToolOptionsPropertiesContainerProvider* toolOptionsContainerProvider);
     void destroyContainer(LC_PropertyContainer* previousContainer) const;
     void setPickedPointPropertyValue(const QString& propertyName, const RS_Vector& ucsVector) const;
     void setPickedPropertyValue(const QString& propertyName, double interactiveInputValue,
@@ -103,6 +112,7 @@ protected:
     bool isVirtualProperty(const LC_Property* property);
     int getCurrentlySelectedEntityType(int index) const;
     QLayout* getTopLevelLayout() const override;
+    void replaceTopLevelContainer(LC_PropertyContainer* newContainer);
     void doAdjustForDockLocation(Qt::DockWidgetArea area) override;
 private:
     Ui::LC_PropertySheetWidget* ui;
@@ -114,9 +124,11 @@ private:
     LC_ActionContext* m_actionContext{nullptr};
     std::unique_ptr<LC_EntityPropertyContainerProvider> m_entityContainerProvider;
     std::unique_ptr<LC_PropertySheetWidgetOptions> m_propertySheetOptions;
+    LC_ToolOptionsPropertiesContainerProvider* m_toolOptionsPropertiesContainerProvider = nullptr;
     QSet<QString> m_collapsedContainerNames;
     QList<RS_Entity*> m_orginalEntities;
     QList<RS_Entity*> m_modifiedEntities;
+    OperationMode m_operationMode = MODE_SELECTION;
 };
 
 #endif

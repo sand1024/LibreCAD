@@ -29,7 +29,8 @@
 #include <QMouseEvent>
 
 #include "lc_actioncontext.h"
-#include "lc_actionoptionswidget.h"
+#include "lc_action_options_widget.h"
+#include "lc_action_options_editor.h"
 #include "lc_cursoroverlayinfo.h"
 #include "lc_graphicviewport.h"
 #include "lc_undosection.h"
@@ -442,42 +443,27 @@ void RS_ActionInterface::resume() {
  * Hides the tool options.
  */
 void RS_ActionInterface::hideOptions() {
-    if (m_optionWidget != nullptr) {
-        m_optionWidget->hideOptions();
+    if (m_optionsEditor != nullptr) {
+        m_optionsEditor->hideOptions();
     }
 }
 
 void RS_ActionInterface::updateOptions(const QString& tagToFocus) {
-    if (m_optionWidget == nullptr) {
-        LC_ActionOptionsWidget* widget = createOptionsWidget();
-        if (widget != nullptr) {
-            m_optionWidget.reset(widget);
-        }
+    if (m_optionsEditor != nullptr) {
+        m_optionsEditor->updateOptions(tagToFocus);
     }
-    if (m_optionWidget != nullptr) {
-        if (!m_optionWidget->isVisible()) {
-            if (m_optionWidget->parent() == nullptr) {
-                // first time created
-                m_actionContext->addOptionsWidget(m_optionWidget.get());
-                m_optionWidget->setAction(this, true);
-            }
-            else {
-                m_optionWidget->setAction(this, true);
-                m_optionWidget->show();
-            }
-        }
-        else {
-            m_optionWidget->setAction(this, true);
-        }
-        if (!tagToFocus.isEmpty()) {
-            m_optionWidget->requestFocusForTag(tagToFocus);
-        }
+}
+
+void RS_ActionInterface::saveOptions() {
+    auto options = getOptions();
+    if (options != nullptr) {
+        options->save();
     }
 }
 
 void RS_ActionInterface::updateOptionsUI(const int mode) const {
-    if (m_optionWidget != nullptr) {
-        m_optionWidget->updateUI(mode);
+    if (m_optionsEditor != nullptr) {
+        m_optionsEditor->updateOptionsUI(mode);
     }
 }
 
@@ -485,20 +471,8 @@ void RS_ActionInterface::updateOptionsUI(const int mode) const {
  * Shows the tool options. Default implementation does nothing.
  */
 void RS_ActionInterface::showOptions() {
-    if (m_optionWidget == nullptr) {
-        m_optionWidget.reset(createOptionsWidget());
-    }
-    if (m_optionWidget != nullptr) {
-        if (!m_optionWidget->isVisible()) {
-            if (m_optionWidget->parent() == nullptr) {
-                // first time created
-                m_actionContext->addOptionsWidget(m_optionWidget.get());
-                m_optionWidget->setAction(this);
-            }
-            else {
-                m_optionWidget->show();
-            }
-        }
+    if (m_optionsEditor != nullptr) {
+        m_optionsEditor->showOptions();
     }
 }
 
@@ -535,6 +509,7 @@ void RS_ActionInterface::onLateRequestCompleted(const bool shouldBeSkipped) {
 LC_ActionOptionsWidget* RS_ActionInterface::createOptionsWidget() {
     return nullptr;
 }
+
 
 void RS_ActionInterface::setActionType(const RS2::ActionType actionType) {
     this->m_actionType = actionType;

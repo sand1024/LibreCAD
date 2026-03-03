@@ -26,7 +26,7 @@
 #ifndef QG_POLYLINEOPTIONS_H
 #define QG_POLYLINEOPTIONS_H
 
-#include "lc_actionoptionswidgetbase.h"
+#include "lc_action_options_widget_base.h"
 
 class RS_ActionInterface;
 class RS_ActionDrawPolyline;

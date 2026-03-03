@@ -29,7 +29,7 @@
 #include<memory>
 #include <qcombobox.h>
 
-#include "lc_actionoptionswidgetbase.h"
+#include "lc_action_options_widget_base.h"
 #include "lc_dimstyleslistmodel.h"
 #include "rs_graphic.h"
 
@@ -62,7 +62,7 @@ public slots:
     void onBaselineDistanceTextChanged();
     void onAngleCircleTextChanged();
     void onDimStyleChanged(int index) const;
-    void updateUI(int mode) override;
+    void updateUI(int mode, const QVariant* value) override;
 protected:
     RS_ActionDimension* m_action = nullptr;
     std::unique_ptr<Ui::Ui_DimOptions> ui;

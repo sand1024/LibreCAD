@@ -29,6 +29,7 @@
 #include "lc_linemath.h"
 #include "lc_property_bool_checkbox_view.h"
 #include "lc_property_container.h"
+#include "lc_property_container_builder.h"
 #include "lc_property_enum.h"
 #include "lc_property_int.h"
 #include "lc_property_int_spinbox_view.h"
@@ -46,13 +47,13 @@ class LC_PropertySheetWidget;
 class LC_ActionContext;
 class RS_Document;
 
-class LC_EntityTypePropertiesProvider : public QObject {
+class LC_EntityTypePropertiesProvider : public LC_PropertyContainerBuilder {
     Q_OBJECT public:
     using FunCreateGenericProperty = typename std::function<void(const LC_Property::Names& names, RS_Entity* entity,
                                                                  LC_PropertyContainer* container, QList<LC_PropertyAtomic*>*)>;
 
     LC_EntityTypePropertiesProvider(const RS2::EntityType entityType, LC_ActionContext* actionContext, LC_PropertySheetWidget* widget)
-        : m_actionContext{actionContext}, m_widget{widget}, m_entityType{entityType} {
+        : LC_PropertyContainerBuilder(actionContext,widget), m_entityType{entityType} {
     }
 
     static const QString SECTION_GENERAL;
@@ -61,11 +62,11 @@ class LC_EntityTypePropertiesProvider : public QObject {
     static const QString SECTION_SINGLE_ENTITY_ACTIONS;
     static const QString SECTION_MULTI_ENTITY_ACTIONS;
     static const QString SECTION_TEXT;
+    static const QString SECTION_TOOL_OPTIONS;
 
     void fillEntityProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& entitiesList);
 protected:
-    LC_ActionContext* m_actionContext = nullptr;
-    LC_PropertySheetWidget* m_widget = nullptr;
+
     RS2::EntityType m_entityType;
 
     virtual void fillSelectedSetCommands(LC_PropertyContainer* container, const QList<RS_Entity*>& entitiesList);
@@ -77,7 +78,6 @@ protected:
     virtual void doCreateEntitySpecificProperties(LC_PropertyContainer* container, const QList<RS_Entity*>& list) = 0;
     virtual void doCreateSelectedSetCommands(LC_PropertyContainer* propertyContainer, const QList<RS_Entity*>& list);
 
-    LC_Formatter* getFormatter() const;
 
     bool isShowLinks() const {
         return m_widget->getOptions()->showLinks;
@@ -108,30 +108,11 @@ protected:
                                     const QString& linkTitleRight, const QString& linkTooltipRight, EntityClass* entity, const QString& commonDescription,
                                     bool setContextEntity = true);
 
-    struct CommandLinkInfo {
-        struct LinkPartInfo {
-            RS2::ActionType actionType;
-            QString title;
-            QString tooltip;
 
-            LinkPartInfo(){title = "";actionType = RS2::ActionNone, tooltip = "";}
-            LinkPartInfo(RS2::ActionType type, const QString& titl, const QString ttip):actionType{type}, title{titl}, tooltip{ttip} {}
-        };
-        QString description;
-        LinkPartInfo leftLink;
-        LinkPartInfo rightLink;
-
-        CommandLinkInfo(const QString &desc, const LinkPartInfo &left, const LinkPartInfo &right): description{desc}, leftLink{left}, rightLink{right} {};
-        CommandLinkInfo(const QString &desc, const LinkPartInfo &left): description{desc}, leftLink{left}, rightLink{LinkPartInfo()} {};
-    };
 
     template <class EntityClass>
     void createEntityContextCommands(const std::list<CommandLinkInfo>& links, LC_PropertyContainer* container, EntityClass* entity, const QString& namePrefix, bool setContextEntity = true);
 
-    RS_Vector toUCS(const RS_Vector& wcs) const;
-    double toUCSBasisAngle(double wcsAngle) const;
-    double toWCSAngle(double ucsBasicAngle) const;
-    RS_Vector toWCS(const RS_Vector& ucs) const;
 
     template <class EntityClass>
     void doCreateDelegatedVector(const LC_Property::Names& names,
@@ -141,7 +122,7 @@ protected:
 
     void addCommon(const LC_Property::Names& names, const FunCreateGenericProperty& propertyInit, const QList<RS_Entity*>& list,
                    LC_PropertyContainer* cont);
-    LC_PropertyContainer* createSection(LC_PropertyContainer* container, const LC_Property::Names& names) const;
+
     void addMultipleProperties(LC_PropertyContainer* cont, QList<LC_PropertyAtomic*> props);
 
     void fillGenericAttributes(LC_PropertyContainer* container, const QList<RS_Entity*>& list);
@@ -227,31 +208,11 @@ protected:
     void addReadOnlyString(const LC_Property::Names& names, std::function<QString(EntityClass*)> funValue, const QList<RS_Entity*>& list,
                            LC_PropertyContainer* cont);
 
-    LC_PropertyRSVector* createVectorProperty(const LC_Property::Names& names, QList<LC_PropertyAtomic*>* props, LC_PropertyContainer* cont,
-                                              LC_ActionContext* actionContext = nullptr, LC_LateCompletionRequestor* requestor = nullptr);
-    LC_PropertyQString* createReadonlyStringProperty(const LC_Property::Names& names, QList<LC_PropertyAtomic*>* props,
-                                                     LC_PropertyContainer* cont, const QString& value);
-    LC_PropertyDouble* createDoubleProperty(const LC_Property::Names& names, QList<LC_PropertyAtomic*>* props, LC_PropertyContainer* cont,
-                                            LC_ActionContext::InteractiveInputInfo::InputType inputType, LC_ActionContext* actionContext,
-                                            LC_LateCompletionRequestor* requestor);
-    QString formatLinear(double length) const;
-    QString formatDouble(double length) const;
-    QString formatInt(int length) const;
-    QString formatInt(double length) const;
-    QString formatInt(qsizetype length) const;
-    QString formatWCSAngleDegrees(double wcsAngle) const;
-    QString formatRawAngle(double length) const;
-    QString formatRawAngle(double length, RS2::AngleFormat format) const;
-
     LC_PropertyContainer* createGeometrySection(LC_PropertyContainer* container) const;
     LC_PropertyContainer* createTextContainer(LC_PropertyContainer* container) const;
     LC_PropertyContainer* createCalculatedInfoSection(LC_PropertyContainer* container) const;
     LC_PropertyContainer* createSingleEntityActionsSection(LC_PropertyContainer* container) const;
     LC_PropertyContainer* createMultipleEntityActionsSection(LC_PropertyContainer* container) const;
-
-    RS_Document* getDocument() const {
-        return m_actionContext->getDocument();
-    }
 };
 
 template <typename EntityType>
@@ -337,6 +298,7 @@ void LC_EntityTypePropertiesProvider::addBoolean(const LC_Property::Names& names
                                                                                   QList<LC_PropertyAtomic*>* props) -> void {
         auto property = new LC_PropertyBool(container, false);
         property->setNames(n);
+
         LC_PropertyViewDescriptor descriptor(viewName.toLatin1());
         bool readOnly = false;
         if (funPrepareDescriptor != nullptr) {

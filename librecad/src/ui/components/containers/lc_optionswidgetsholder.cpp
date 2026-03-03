@@ -23,6 +23,7 @@
 #include "lc_optionswidgetsholder.h"
 
 #include "lc_shortcuts_manager.h"
+#include "rs_debug.h"
 #include "rs_settings.h"
 #include "ui_lc_optionswidgetsholder.h"
 
@@ -69,9 +70,9 @@ void LC_OptionsWidgetsHolder::removeOptionsWidget(QWidget *optionsWidget) {
         const QObjectList &list = ui->wOptionsWidgetsContainer->children();
         LC_ERR << "OPTION WIDGETS BEFORE: " << list.size();
 #endif
-
-        ui->wOptionsWidgetsContainer->layout()->removeWidget(optionsWidget);
-        optionsWidget->deleteLater();
+        // ui->wOptionsWidgetsContainer->layout()->removeWidget(optionsWidget);
+        optionsWidget->setParent(nullptr);
+        // optionsWidget->deleteLater();
 #ifdef DEBUG_WIDGETS_COUNT
         const QObjectList &listAfter = ui->wOptionsWidgetsContainer->children();
         LC_ERR << "OPTION WIDGETS AFTER: " << listAfter.size();

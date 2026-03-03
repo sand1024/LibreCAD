@@ -40,7 +40,7 @@
 #include <QTimer>
 
 #include "lc_actiongroupmanager.h"
-#include "lc_actionoptionsmanager.h"
+#include "lc_action_options_manager.h"
 #include "lc_actionsshortcutsdialog.h"
 #include "lc_anglesbasiswidget.h"
 #include "lc_applicationwindowinitializer.h"

@@ -23,7 +23,7 @@
 #ifndef LC_SELECTWINDOWOPTIONS_H
 #define LC_SELECTWINDOWOPTIONS_H
 
-#include "lc_actionoptionswidgetbase.h"
+#include "lc_action_options_widget_base.h"
 
 class RS_ActionSelectWindow;
 namespace Ui {
