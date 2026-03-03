@@ -23,11 +23,15 @@
 
 #ifndef LC_ACTIONDRAWLINETOPERSPECTIVEPOINT_H
 #define LC_ACTIONDRAWLINETOPERSPECTIVEPOINT_H
+#include "lc_action_options_base.h"
 #include "lc_undoabledocumentmodificationaction.h"
 
-class LC_ActionDrawLineRadiant : public LC_UndoableDocumentModificationAction{
-    Q_OBJECT
+
+class LC_ActionDrawLineRadiantOptions: public LC_ActionOptionsBase {
 public:
+    LC_ActionDrawLineRadiantOptions(const QString& groupName, const QString& namePrefix)
+        : LC_ActionOptionsBase(groupName, namePrefix) {
+    }
     enum RadiantIdx {
         ONE = 0, TWO, THREE, FOUR, LAST
     };
@@ -39,25 +43,55 @@ public:
         TO_POINT,
         FREE
     };
+
+    bool isFreeLength() {return m_lengthType == FREE;}
+    RS_Vector getActiveRadiant() const {return m_radiantPoints[m_activeRadiantIndex];}
+    RadiantIdx getActiveRadiantIndex() const {return m_activeRadiantIndex;}
+    void setLength(double len) {m_length = len;}
+    double getLength() const {return m_length;}
+    void setLengthType(LenghtType type) {m_lengthType = type;}
+    LenghtType getLenghType() const {return m_lengthType;}
+    RS_Vector getRadiantPoint(RadiantIdx idx) const {return m_radiantPoints[idx];}
+    void setRadiantPoint(RadiantIdx idx, const RS_Vector& pos) {m_radiantPoints[idx] = pos;}
+    void setActiveRadiantIndex(RadiantIdx idx) { m_activeRadiantIndex = (idx == LAST) ? FOUR : idx;}
+    void setActiveX(const double val) {m_radiantPoints[m_activeRadiantIndex].setX(val);}
+    void setActiveRadiantPoint(const RS_Vector& v) {m_radiantPoints[m_activeRadiantIndex] = v;}
+    void setActiveY(double val) {m_radiantPoints[m_activeRadiantIndex].setY(val);}
+    double getActiveX() const {return m_radiantPoints[m_activeRadiantIndex].x;}
+    double getActiveY() const {return m_radiantPoints[m_activeRadiantIndex].y;}
+protected:
+    void doSaveSettings() override;
+    void doLoadSettings() override;
+    RS_Vector m_radiantPoints[LAST];
+    RadiantIdx m_activeRadiantIndex {ONE};
+    double m_length {100.0};
+    LenghtType m_lengthType {LINE};
+
+    friend class LC_ActionDrawLineRadiant;
+};
+
+class LC_ActionDrawLineRadiant : public LC_UndoableDocumentModificationAction{
+    Q_OBJECT
+public:
     explicit LC_ActionDrawLineRadiant(LC_ActionContext *actionContext);
     QStringList getAvailableCommands() override;
-    RS_Vector getRadiantPoint(RadiantIdx idx) const;
-    void setRadiantPoint(RadiantIdx idx, const RS_Vector& pos);
-    void setActiveRadiantIndex(RadiantIdx idx);
-    RadiantIdx getActiveRadiantIndex() const;
     void init(int status) override;
+    RS_Vector getRadiantPoint(LC_ActionDrawLineRadiantOptions::RadiantIdx idx) const;
+    void setRadiantPoint(LC_ActionDrawLineRadiantOptions::RadiantIdx idx, const RS_Vector& pos);
+    void setActiveRadiantIndex(LC_ActionDrawLineRadiantOptions::RadiantIdx idx);
+    LC_ActionDrawLineRadiantOptions::RadiantIdx getActiveRadiantIndex() const;
     void setLength(double len);
     double getLength() const;
-    void setLengthType(LenghtType type);
-    LenghtType getLenghType() const;
+    void setLengthType(LC_ActionDrawLineRadiantOptions::LenghtType type);
+    LC_ActionDrawLineRadiantOptions::LenghtType getLenghType() const;
     void setActiveX(double val);
     void setActiveRadiantPoint(const RS_Vector& v);
     RS_Vector getActiveRadiant() const;
     void setActiveY(double val);
     double getActiveX() const;
     double getActiveY() const;
+    LC_ActionOptions* getOptions() const override {return m_actionOptions.get();}
 protected:
-    LC_ActionOptionsWidget *createOptionsWidget() override;
     RS2::CursorType doGetMouseCursor(int status) override;
     void updateMouseButtonHints() override;
     void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
@@ -77,12 +111,10 @@ protected:
         SetActive
     };
 
-    RS_Vector m_radiantPoints[LAST];
-    RadiantIdx m_activeRadiantIndex {ONE};
-    double m_length {100.0};
-    LenghtType m_lengthType {LINE};
     RS_Vector m_startPoint;
     RS_Vector m_secondSnapPoint;
+
+    std::unique_ptr<LC_ActionDrawLineRadiantOptions> m_actionOptions;
 
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
     bool doUpdatePointByInteractiveInput(const QString& tag, RS_Vector& point) override;

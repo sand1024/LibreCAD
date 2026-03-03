@@ -1223,18 +1223,18 @@ set (SHARED_SOURCES
      librecad/src/ui/action_options/insert/qg_insertoptions.h
      librecad/src/ui/action_options/insert/qg_libraryinsertoptions.cpp
      librecad/src/ui/action_options/insert/qg_libraryinsertoptions.h
-     librecad/src/ui/action_options/lc_actionoptionsmanager.cpp
-     librecad/src/ui/action_options/lc_actionoptionsmanager.h
-     librecad/src/ui/action_options/lc_actionoptionswidget.cpp
-     librecad/src/ui/action_options/lc_actionoptionswidget.h
-     librecad/src/ui/action_options/lc_actionoptionswidgetbase.cpp
-     librecad/src/ui/action_options/lc_actionoptionswidgetbase.h
+     librecad/src/ui/action_options/lc_action_options_manager.cpp
+     librecad/src/ui/action_options/lc_action_options_manager.h
+     librecad/src/ui/action_options/lc_action_options_widget.cpp
+     librecad/src/ui/action_options/lc_action_options_widget.h
+     librecad/src/ui/action_options/lc_action_options_widget_base.cpp
+     librecad/src/ui/action_options/lc_action_options_widget_base.h
      librecad/src/ui/action_options/line/lc_lineanglereloptions.cpp
      librecad/src/ui/action_options/line/lc_linefrompointtolineoptions.cpp
      librecad/src/ui/action_options/line/lc_lineoptions.cpp
      librecad/src/ui/action_options/line/lc_slicedivideoptions.cpp
-     librecad/src/ui/action_options/line/lc_radiant_line_options.h
-     librecad/src/ui/action_options/line/lc_radiant_line_options.cpp
+     librecad/src/ui/action_options/line/lc_line_radiant_options_widget.h
+     librecad/src/ui/action_options/line/lc_line_radiant_options_widget.cpp
      librecad/src/ui/action_options/line/qg_lineangleoptions.cpp
      librecad/src/ui/action_options/line/qg_lineangleoptions.h
      librecad/src/ui/action_options/line/qg_linebisectoroptions.cpp
@@ -1910,6 +1910,20 @@ set (SHARED_SOURCES
      librecad/src/ui/view/lc_printpreviewview.h
      librecad/src/ui/view/qg_graphicview.cpp
      librecad/src/ui/view/qg_graphicview.h
+     librecad/src/ui/dock_widgets/property_sheet/lib/lc_tool_options_properties_container_provider.h
+     librecad/src/ui/action_options/lc_action_options_support.cpp
+     librecad/src/ui/action_options/lc_action_options_support.h
+     librecad/src/ui/action_options/lc_action_options_editor.h
+     librecad/src/ui/action_options/lc_action_options_editor_typed.h
+     librecad/src/ui/action_options/lc_action_options_editor_typed.cpp
+     librecad/src/ui/action_options/lc_action_options_properties_filler.cpp
+     librecad/src/ui/action_options/lc_action_options_properties_filler.h
+     librecad/src/ui/action_options/line/lc_line_radiant_options_filler.cpp
+     librecad/src/ui/action_options/line/lc_line_radiant_options_filler.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/lc_property_container_builder.h
+     librecad/src/ui/dock_widgets/property_sheet/metaentity/lc_property_container_builder.cpp
+     librecad/src/lib/actions/lc_action_options_base.cpp
+     librecad/src/lib/actions/lc_action_options_base.h
 )
 
 set (MUPARSER_SOURCES
