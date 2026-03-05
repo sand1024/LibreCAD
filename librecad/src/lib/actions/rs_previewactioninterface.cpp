@@ -63,18 +63,11 @@
  * Sets the entity container on which the action class inherited
  * from this interface operates.
  */
-RS_PreviewActionInterface::RS_PreviewActionInterface(const char* name, LC_ActionContext* actionContext, const RS2::ActionType actionType) :
-    RS_ActionInterface(name, actionContext, actionType), m_msgBuilder{std::make_unique<LC_ActionInfoMessageBuilder>(this)},
+RS_PreviewActionInterface::RS_PreviewActionInterface(const QString& actionName, LC_ActionContext* actionContext, const RS2::ActionType actionType) :
+    RS_ActionInterface(actionName, actionContext, actionType), m_msgBuilder{std::make_unique<LC_ActionInfoMessageBuilder>(this)},
     m_preview(std::make_unique<RS_Preview>(actionContext->getDocument(), m_viewport)), m_highlight(std::make_unique<LC_Highlight>()) {
-    RS_DEBUG->print("RS_PreviewActionInterface::RS_PreviewActionInterface: Setting up action with preview: \"%s\"", name);
-
-    // preview is linked to the container for getting access to
-    // document settings / dictionary variables
-
     m_preview->setLayer(nullptr);
     initRefEntitiesMetrics();
-
-    RS_DEBUG->print("RS_PreviewActionInterface::RS_PreviewActionInterface: Setting up action with preview: \"%s\": OK", name);
 }
 
 /** Destructor */

@@ -29,16 +29,16 @@
 
 #include <rs_math.h>
 
+#include "lc_action_options_base.h"
 #include "lc_action_options_editor.h"
 #include "lc_actioncontext.h"
 #include "lc_latecompletionrequestor.h"
 #include "lc_modifiersinfo.h"
 #include "rs.h"
-#include "rs_document.h"
-#include "rs_entity.h"
 #include "rs_snapper.h"
 
-class LC_ActionOptions;
+class LC_ActionOptionsPropertiesFiller;
+class LC_ActionOptionsWidget;
 class RS_Undoable;
 class LC_ModifiersInfo;
 class QInputEvent;
@@ -51,14 +51,8 @@ class RS_Graphic;
 class RS_Document;
 class QAction;
 class QString;
-class LC_ActionOptionsWidget; // todo - think about depencency - options in in ui, while this action in lib... quite artificial separation, actually
 
-class LC_ActionOptions {
-public:
-    virtual ~LC_ActionOptions() = default;
-    virtual void save() = 0;
-    virtual void load() = 0;
-};
+
 
 /**
  * This is the interface that must be implemented for all
@@ -71,7 +65,7 @@ public:
  */
 //fixme - actually, inheritance from snapper is rather bad design... not all actions (say, file open or print-preview) should be
 // inherited from snapper - only ones that really work with drawing should be snap-aware
-class RS_ActionInterface : public RS_Snapper, public LC_LateCompletionRequestor {
+class RS_ActionInterface : public RS_Snapper, public LC_LateCompletionRequestor, public LC_ActionOptionsBase {
 Q_OBJECT
 public:
     ~RS_ActionInterface() override;
@@ -80,7 +74,6 @@ public:
     };
     virtual RS2::ActionType rtti() const;
     virtual bool isSupportsPredecessorAction(){return false;}
-    void setName(const char* name);
     QString getName();
     virtual void init(int status);
     virtual void mouseMoveEvent(QMouseEvent*);
@@ -103,12 +96,11 @@ public:
     void suspend() override;
     void resume() override;
     virtual bool mayBeTerminatedExternally() {return true;}
-    virtual void hideOptions();
-    virtual void showOptions();
+    void hideOptions();
+    void showOptions();
     void onLateRequestCompleted(bool shouldBeSkipped) override;
-    virtual LC_ActionOptions* getOptions() const {return nullptr;}
     void updateOptions(const QString& tagToFocus = "");
-    void saveOptions();
+    void postCreateInit();
 private:
     /**
      * Current status of the action. After an action has
@@ -121,12 +113,9 @@ private:
      */
     int m_status = 0;
 protected:
-    RS_ActionInterface(const char* name,
+    RS_ActionInterface(const QString& actionName,
                        LC_ActionContext *actionContext,
                        RS2::ActionType actionType /*= RS2::ActionNone*/);
-
-    /** Action name. Used internally for debugging */
-    QString m_name;
 
     /**
      * This flag is set when the action has terminated and
@@ -145,7 +134,6 @@ protected:
      */
     std::shared_ptr<RS_ActionInterface> m_predecessor = nullptr; // fixme - sand - review!!!
     RS2::ActionType m_actionType = RS2::ActionNone;
-    std::unique_ptr<LC_ActionOptionsWidget> m_optionWidget;
     std::unique_ptr<LC_ActionOptionsEditor> m_optionsEditor;
     double m_snapToAngleStep;
 
@@ -159,10 +147,10 @@ protected:
     // Accessor for drawing keys
     int getGraphicVariableInt(const QString& key, int def) const;
 
-    [[deprecated]]
     virtual LC_ActionOptionsWidget* createOptionsWidget();
+    virtual LC_ActionOptionsPropertiesFiller* createOptionsFiller();
 
-    void updateOptionsUI(int mode) const;
+    void updateOptionsUI(int mode, const QVariant *value = nullptr) const;
 
     virtual RS2::CursorType doGetMouseCursor(int status);
     void updateMouseCursor();
@@ -217,7 +205,7 @@ protected:
     void select(const QList<RS_Entity*>& entitiesList) const;
     void unselect(const QList<RS_Entity*>& entitiesList) const;
     void unselectAll() const;
-    void unselect(RS_Entity* e) const {m_document->unselect(e);}
+    void unselect(RS_Entity* e) const;
 
     virtual bool doUpdateAngleByInteractiveInput([[maybe_unused]]const QString& tag,[[maybe_unused]] double angleRad) {return false;}
     virtual bool doUpdateDistanceByInteractiveInput([[maybe_unused]]const QString& tag, [[maybe_unused]]double distance) {return false;}

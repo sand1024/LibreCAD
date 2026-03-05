@@ -23,23 +23,33 @@
 
 #ifndef LC_ACTIONOPTIONSBASE_H
 #define LC_ACTIONOPTIONSBASE_H
-#include "rs_previewactioninterface.h"
+
+#include <QString>
+#include <rs_vector.h>
+
+class LC_ActionOptions {
+public:
+    virtual ~LC_ActionOptions() = default;
+    virtual void saveOptions() = 0;
+    virtual void loadOptions() = 0;
+};
 
 class LC_ActionOptionsBase: public LC_ActionOptions{
 public:
-    LC_ActionOptionsBase(const QString& groupName, const QString& namePrefix) : m_settingsGroupName{groupName},
+    LC_ActionOptionsBase(const QString& groupName, const QString& namePrefix) : m_optionsSettingsGroupName{groupName},
                                                                                 m_settingsPrefix{namePrefix} {
     }
+    void saveOptions() override;
+    void loadOptions() override;
+protected:
+    // saving settings shortcut methods
+    virtual void doSaveOptions() {};
+    virtual void doLoadOptions() {};
+
     // conversion utilities
     QString fromDouble(double value);
     bool toDouble(const QString &strValue, double &res, double notMeaningful, bool positiveOnly);
     bool toDoubleAngleDegrees(const QString &strValue, double &res, double notMeaningful, bool positiveOnly);
-    void save() override;
-    void load() override;
-protected:
-    // saving settings shortcut methods
-    virtual void doSaveSettings() {};
-    virtual void doLoadSettings() {};
     void save(const QString& name, const QString& value);
     void save(const QString& name, int value);
     void save(const QString& name, bool value);
@@ -49,7 +59,7 @@ protected:
    * Default name for settings group name
    * @return name of group
    */
-    virtual QString getSettingsGroupName(){return m_settingsGroupName;}
+    virtual QString getSettingsGroupName(){return m_optionsSettingsGroupName;}
     /**
      * Default name for prefix for settings. It assumes that all settings for the action starts with the same prefix.
      * @return  prefix to use.
@@ -63,7 +73,7 @@ protected:
     double loadDouble(const QString& name, double defaultValue);
     RS_Vector loadVector(const QString& name, const RS_Vector& defaultValue);
 
-    QString m_settingsGroupName;
+    QString m_optionsSettingsGroupName;
     QString m_settingsPrefix;
 };
 

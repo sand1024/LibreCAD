@@ -25,21 +25,23 @@
 #include "lc_action_options_base.h"
 
 #include "lc_convert.h"
+#include "lc_linemath.h"
+#include "rs_math.h"
 #include "rs_settings.h"
 
 /**
  * Generic method for saving settings. Simply delegates actual saving of options to doSaveSettings (that should be implemented in inherited widget),
  * by wrapping it by settings begin/end group calls.
  */
-void LC_ActionOptionsBase::save(){
+void LC_ActionOptionsBase::saveOptions(){
     LC_GROUP(getSettingsGroupName());
-    doSaveSettings();
+    doSaveOptions();
     LC_GROUP_END();
 }
 
-void LC_ActionOptionsBase::load() {
+void LC_ActionOptionsBase::loadOptions() {
     LC_GROUP(getSettingsGroupName());
-    doLoadSettings();
+    doLoadOptions();
     LC_GROUP_END();
 }
 

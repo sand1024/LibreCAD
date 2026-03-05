@@ -26,9 +26,11 @@
 
 #include "rs_previewactioninterface.h"
 
+struct LC_DocumentModificationBatch;
+
 class LC_UndoableDocumentModificationAction: public RS_PreviewActionInterface {
 protected:
-    LC_UndoableDocumentModificationAction(const char *name,LC_ActionContext *actionContext, const RS2::ActionType actionType = RS2::ActionNone):
+    LC_UndoableDocumentModificationAction(const QString& name,LC_ActionContext *actionContext, const RS2::ActionType actionType = RS2::ActionNone):
      RS_PreviewActionInterface(name, actionContext, actionType){}
     ~LC_UndoableDocumentModificationAction() override = default;
     void previewEntitiesToAdd(LC_DocumentModificationBatch& ctx) const;
@@ -40,7 +42,7 @@ protected:
 
 class LC_SingleEntityCreationAction: public LC_UndoableDocumentModificationAction {
 protected:
-    LC_SingleEntityCreationAction(const char *name,LC_ActionContext *actionContext, const RS2::ActionType actionType = RS2::ActionNone):
+    LC_SingleEntityCreationAction(const QString& name,LC_ActionContext *actionContext, const RS2::ActionType actionType = RS2::ActionNone):
     LC_UndoableDocumentModificationAction(name, actionContext, actionType){}
     ~LC_SingleEntityCreationAction() override = default;
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;

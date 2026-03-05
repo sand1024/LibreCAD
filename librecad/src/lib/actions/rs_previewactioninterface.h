@@ -75,7 +75,7 @@ public:
     void mouseMoveEvent(QMouseEvent *event) override;
     QStringList getAvailableCommands() override;
 protected:
-    RS_PreviewActionInterface(const char *name,LC_ActionContext *actionContext,RS2::ActionType actionType = RS2::ActionNone);
+    RS_PreviewActionInterface(const QString& actionName,LC_ActionContext *actionContext,RS2::ActionType actionType = RS2::ActionNone);
     ~RS_PreviewActionInterface() override;
     std::unique_ptr<LC_ActionInfoMessageBuilder> m_msgBuilder;
     // fixme - sand - tmp -  move to overlay!!!

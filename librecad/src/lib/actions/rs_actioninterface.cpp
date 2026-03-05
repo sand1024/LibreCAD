@@ -31,6 +31,7 @@
 #include "lc_actioncontext.h"
 #include "lc_action_options_widget.h"
 #include "lc_action_options_editor.h"
+#include "lc_action_options_editor_typed.h"
 #include "lc_cursoroverlayinfo.h"
 #include "lc_graphicviewport.h"
 #include "lc_undosection.h"
@@ -53,36 +54,18 @@ namespace {
  * Sets the entity container on which the action class inherited
  * from this interface operates.
  *
- * @param name Action name. This can be used internally for
- *             debugging mainly.
+ * @param actionName Action name. This can be used internally for
+ *            action settings group name and for debugging.
  * @param actionContext
  * @param actionType
  */
-RS_ActionInterface::RS_ActionInterface(const char* name, LC_ActionContext* actionContext, const RS2::ActionType actionType)
-    : RS_Snapper(actionContext), m_name{name}, m_graphic{actionContext->getDocument()->getGraphic()}, m_actionType{actionType},
-      m_snapToAngleStep{DEFAULT_SNAP_ANGLE_STEP} {
-    RS_DEBUG->print("RS_ActionInterface::RS_ActionInterface: Setting up action: \"%s\"", name);
-
-    //triggerOnResume = false;
-
-    // graphic provides a pointer to the graphic if the
-    // entity container is a graphic (i.e. can also hold
-    // layers).
-    // graphic = container.getGraphic();
-
-    // document pointer will be used for undo / redo
-    // document = container.getDocument();
-
+RS_ActionInterface::RS_ActionInterface(const QString& actionName, LC_ActionContext* actionContext, const RS2::ActionType actionType)
+    : RS_Snapper(actionContext), LC_ActionOptionsBase(actionName, ""), m_graphic{actionContext->getDocument()->getGraphic()},
+      m_actionType{actionType}, m_snapToAngleStep{DEFAULT_SNAP_ANGLE_STEP} {
     updateSnapAngleStep();
-
-    RS_DEBUG->print("RS_ActionInterface::RS_ActionInterface: Setting up action: \"%s\": OK", name);
 }
 
 RS_ActionInterface::~RS_ActionInterface() {
-    if (m_optionWidget != nullptr) {
-        m_optionWidget->deleteLater();
-        m_optionWidget.reset();
-    }
 }
 
 /**
@@ -106,6 +89,10 @@ void RS_ActionInterface::unselectAll() const {
     RS_Selection::unselectAllInDocument(m_document, m_viewport);
 }
 
+void RS_ActionInterface::unselect(RS_Entity* e) const {
+    m_document->unselect(e);
+}
+
 void RS_ActionInterface::select(RS_Entity* e) const {
     const RS_Selection sel(m_document, m_viewport);
     sel.selectSingle(e);
@@ -115,11 +102,7 @@ void RS_ActionInterface::select(RS_Entity* e) const {
  * @return name of this action
  */
 QString RS_ActionInterface::getName() {
-    return m_name;
-}
-
-void RS_ActionInterface::setName(const char* name) {
-    m_name = name;
+    return LC_ActionOptionsBase::m_optionsSettingsGroupName;
 }
 
 bool RS_ActionInterface::mayInitWithContextEntity(const int status) {
@@ -280,7 +263,7 @@ void RS_ActionInterface::commandEvent(RS_CommandEvent* e) {
         if (checkCommand("help", c)) {
             const QStringList& list = getAvailableCommands();
             if (!list.isEmpty()) {
-                commandMessage(msgAvailableCommands() + " " +  list.join(", ") + getAdditionalHelpMessage());
+                commandMessage(msgAvailableCommands() + " " + list.join(", ") + getAdditionalHelpMessage());
             }
             else {
                 // fixme - need some indication that commands are not supported
@@ -444,6 +427,7 @@ void RS_ActionInterface::resume() {
  */
 void RS_ActionInterface::hideOptions() {
     if (m_optionsEditor != nullptr) {
+        saveOptions();
         m_optionsEditor->hideOptions();
     }
 }
@@ -451,19 +435,26 @@ void RS_ActionInterface::hideOptions() {
 void RS_ActionInterface::updateOptions(const QString& tagToFocus) {
     if (m_optionsEditor != nullptr) {
         m_optionsEditor->updateOptions(tagToFocus);
+        /*QTimer::singleShot(5, [this, tagToFocus]() {
+            if (m_optionsEditor != nullptr) {
+                m_optionsEditor->updateOptions(tagToFocus);
+            }
+        });*/
     }
 }
 
-void RS_ActionInterface::saveOptions() {
-    auto options = getOptions();
-    if (options != nullptr) {
-        options->save();
-    }
+void RS_ActionInterface::postCreateInit() {
+    loadOptions();
+    m_optionsEditor.reset(new LC_ActionOptionsEditorTyped(this, [this] {
+        return createOptionsWidget();
+    }, [this] {
+        return createOptionsFiller();
+    }));
 }
 
-void RS_ActionInterface::updateOptionsUI(const int mode) const {
+void RS_ActionInterface::updateOptionsUI(const int mode, const QVariant *value) const {
     if (m_optionsEditor != nullptr) {
-        m_optionsEditor->updateOptionsUI(mode);
+        m_optionsEditor->updateOptionsUI(mode, value);
     }
 }
 
@@ -510,6 +501,9 @@ LC_ActionOptionsWidget* RS_ActionInterface::createOptionsWidget() {
     return nullptr;
 }
 
+LC_ActionOptionsPropertiesFiller* RS_ActionInterface::createOptionsFiller() {
+    return nullptr;
+}
 
 void RS_ActionInterface::setActionType(const RS2::ActionType actionType) {
     this->m_actionType = actionType;

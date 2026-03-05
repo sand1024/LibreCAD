@@ -232,8 +232,9 @@ struct RS_Snapper::ImpData {
  * Constructor.
  */
 RS_Snapper::RS_Snapper(LC_ActionContext* actionContext, QObject* parent)
-    : QObject(parent), m_document(actionContext->getDocument()), m_graphicView(actionContext->getGraphicView()), m_actionContext(actionContext),
-      m_infoCursorOverlayData{std::make_unique<LC_InfoCursorData>()}, m_impData{std::make_unique<ImpData>()}, m_snapIndicator{std::make_unique<Indicator>()} {
+    : QObject(parent), m_document(actionContext->getDocument()), m_graphicView(actionContext->getGraphicView()),
+      m_actionContext(actionContext), m_infoCursorOverlayData{std::make_unique<LC_InfoCursorData>()},
+      m_impData{std::make_unique<ImpData>()}, m_snapIndicator{std::make_unique<Indicator>()} {
     Q_ASSERT(m_document != nullptr);
     Q_ASSERT(m_graphicView != nullptr);
     m_viewport = m_graphicView->getViewPort();
@@ -893,7 +894,6 @@ void RS_Snapper::hideSnapOptions() const {
  * Deletes the snapper from the screen.
  */
 void RS_Snapper::deleteSnapper() const {
-    //    LC_ERR<<"Delete Snapper";
     if (m_graphicView != nullptr && !m_graphicView->isCleanUp()) {
         m_viewport->clearOverlayDrawablesContainer(RS2::Snapper);
         m_graphicView->redraw(RS2::RedrawOverlay); // redraw will happen in the mouse movement event
@@ -901,7 +901,6 @@ void RS_Snapper::deleteSnapper() const {
 }
 
 void RS_Snapper::deleteInfoCursor() const {
-    //    LC_ERR<<"Delete Info Cursor";
     if (m_graphicView != nullptr && !m_graphicView->isCleanUp()) {
         m_viewport->clearOverlayDrawablesContainer(RS2::InfoCursor);
         m_graphicView->redraw(RS2::RedrawOverlay); // redraw will happen in the mouse movement event

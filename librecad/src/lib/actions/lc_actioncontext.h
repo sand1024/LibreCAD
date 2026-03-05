@@ -103,6 +103,16 @@ public:
         InputType inputType {NOTNEEDED};
         QString requestorTag;
         LC_LateCompletionRequestor* requestor {nullptr};
+
+        void copyTo(InteractiveInputInfo& copy) {
+            copy.state = state;
+            copy.distance = distance;
+            copy.angleRad  = angleRad;
+            copy.wcsPoint = wcsPoint;
+            copy.inputType = inputType;
+            copy.requestorTag = requestorTag;
+            // don't need requestor in copy!
+        }
     };
 
     void interactiveInputStart(InteractiveInputInfo::InputType inputType, LC_LateCompletionRequestor* requestor, const QString &tag);
