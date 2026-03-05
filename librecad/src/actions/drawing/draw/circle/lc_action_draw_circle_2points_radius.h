@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef LC_ACTIONDRAWCIRCLE2PR_H
 #define LC_ACTIONDRAWCIRCLE2PR_H
 
-#include "rs_actiondrawcirclecr.h"
+#include "lc_action_draw_circle_center_radius.h"
 
 /**
  * This action class can handle user events to draw a
@@ -29,11 +29,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @author Dongxu Li
  */
-class LC_ActionDrawCircle2PR : public RS_ActionDrawCircleCR {
+class LC_ActionDrawCircle2PointsRadius : public LC_ActionDrawCircleCenterRadius {
     Q_OBJECT
 public:
-    explicit LC_ActionDrawCircle2PR(LC_ActionContext* actionContext);
-    ~LC_ActionDrawCircle2PR() override;
+    explicit LC_ActionDrawCircle2PointsRadius(LC_ActionContext* actionContext);
+    ~LC_ActionDrawCircle2PointsRadius() override;
     void init(int status) override;
     QStringList getAvailableCommands() override;
 
@@ -49,7 +49,7 @@ protected:
 
     struct Points;
     std::unique_ptr<Points> m_actionData;
-    bool preparePreview(const RS_Vector& mouse, RS_Vector& altCenter) const;
+    bool preparePreview(const RS_Vector& mouse, RS_Vector& altCenter);
     void reset() override;
     void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;

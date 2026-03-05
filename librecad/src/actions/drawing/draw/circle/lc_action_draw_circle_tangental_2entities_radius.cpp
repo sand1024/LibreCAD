@@ -20,10 +20,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
 
-#include "rs_actiondrawcircletan2.h"
+#include "lc_action_draw_circle_tangental_2entities_radius.h"
 
+#include "lc_circle_tangental_2_entities_radius_options_filler.h"
+#include "lc_circle_tangental_2_entities_radius_options_widget.h"
 #include "lc_creation_circle.h"
-#include "qg_circletan2options.h"
 #include "rs_atomicentity.h"
 #include "rs_circle.h"
 #include "rs_document.h"
@@ -33,7 +34,7 @@ namespace {
     const EntityTypeList g_enTypeList = {RS2::EntityLine, RS2::EntityArc, RS2::EntityCircle};
 }
 
-struct RS_ActionDrawCircleTan2::ActionData {
+struct LC_ActionDrawCircleTangental2EntitiesRadius::ActionData {
     RS_CircleData circleData;
     RS_Vector coord;
     double radius{0.};
@@ -46,31 +47,39 @@ struct RS_ActionDrawCircleTan2::ActionData {
  * Constructor.
  *
  */
-RS_ActionDrawCircleTan2::RS_ActionDrawCircleTan2(LC_ActionContext* actionContext)
-    : LC_ActionDrawCircleBase("Tangential 2 Circles, Radius", actionContext, RS2::ActionDrawCircleTan2),
+LC_ActionDrawCircleTangental2EntitiesRadius::LC_ActionDrawCircleTangental2EntitiesRadius(LC_ActionContext* actionContext)
+    : LC_ActionDrawCircleBase("ActionDrawCircleTan2EntitiesRadius", actionContext, RS2::ActionDrawCircleTan2EntitiesRadius),
       m_actionData(std::make_unique<ActionData>()) {
 }
 
-RS_ActionDrawCircleTan2::~RS_ActionDrawCircleTan2() = default;
+LC_ActionDrawCircleTangental2EntitiesRadius::~LC_ActionDrawCircleTangental2EntitiesRadius() = default;
 
-void RS_ActionDrawCircleTan2::init(const int status) {
+void LC_ActionDrawCircleTangental2EntitiesRadius::doSaveOptions() {
+    save("Radius", m_actionData->radius);
+}
+
+void LC_ActionDrawCircleTangental2EntitiesRadius::doLoadOptions() {
+    m_actionData->radius  = loadDouble("Radius", 1.0);
+}
+
+void LC_ActionDrawCircleTangental2EntitiesRadius::init(const int status) {
     LC_ActionDrawCircleBase::init(status);
     if (status >= 0) {
         RS_PreviewActionInterface::suspend();
     }
 }
 
-void RS_ActionDrawCircleTan2::doInitialInit() {
+void LC_ActionDrawCircleTangental2EntitiesRadius::doInitialInit() {
     m_actionData->circles.clear();
 }
 
-void RS_ActionDrawCircleTan2::doInitWithContextEntity(RS_Entity* contextEntity, [[maybe_unused]] const RS_Vector& clickPos) {
+void LC_ActionDrawCircleTangental2EntitiesRadius::doInitWithContextEntity(RS_Entity* contextEntity, [[maybe_unused]] const RS_Vector& clickPos) {
     if (g_enTypeList.contains(contextEntity->rtti())) {
         setCircleOne(contextEntity);
     }
 }
 
-void RS_ActionDrawCircleTan2::finish() {
+void LC_ActionDrawCircleTangental2EntitiesRadius::finish() {
     if (!m_actionData->circles.empty()) {
         for (const auto p : m_actionData->circles) {
             // todo - check whether we really need this?
@@ -84,7 +93,7 @@ void RS_ActionDrawCircleTan2::finish() {
     RS_PreviewActionInterface::finish();
 }
 
-RS_Entity* RS_ActionDrawCircleTan2::doTriggerCreateEntity() {
+RS_Entity* LC_ActionDrawCircleTangental2EntitiesRadius::doTriggerCreateEntity() {
     auto* circle = new RS_Circle(m_document, m_actionData->circleData);
     if (m_moveRelPointAtCenterAfterTrigger) {
         moveRelativeZero(circle->getCenter());
@@ -92,7 +101,7 @@ RS_Entity* RS_ActionDrawCircleTan2::doTriggerCreateEntity() {
     return circle;
 }
 
-void RS_ActionDrawCircleTan2::doTriggerCompletion([[maybe_unused]] bool success) {
+void LC_ActionDrawCircleTangental2EntitiesRadius::doTriggerCompletion([[maybe_unused]] bool success) {
     for (const auto p : m_actionData->circles) {
         p->setHighlighted(false);
     }
@@ -100,7 +109,7 @@ void RS_ActionDrawCircleTan2::doTriggerCompletion([[maybe_unused]] bool success)
     setStatus(SetCircle1);
 }
 
-bool RS_ActionDrawCircleTan2::doUpdateDistanceByInteractiveInput(const QString& tag, const double distance) {
+bool LC_ActionDrawCircleTangental2EntitiesRadius::doUpdateDistanceByInteractiveInput(const QString& tag, const double distance) {
     if (tag == "radius") {
         setRadius(distance);
         return true;
@@ -108,11 +117,11 @@ bool RS_ActionDrawCircleTan2::doUpdateDistanceByInteractiveInput(const QString& 
     return false;
 }
 
-void RS_ActionDrawCircleTan2::drawSnapper() {
+void LC_ActionDrawCircleTangental2EntitiesRadius::drawSnapper() {
     // disable snapper for action
 }
 
-void RS_ActionDrawCircleTan2::onMouseMoveEvent([[maybe_unused]] const int status, const LC_MouseEvent* e) {
+void LC_ActionDrawCircleTangental2EntitiesRadius::onMouseMoveEvent([[maybe_unused]] const int status, const LC_MouseEvent* e) {
     for (RS_AtomicEntity* const pc : m_actionData->circles) {
         // highlight already selected
         highlightSelected(pc);
@@ -162,7 +171,7 @@ void RS_ActionDrawCircleTan2::onMouseMoveEvent([[maybe_unused]] const int status
     }
 }
 
-void RS_ActionDrawCircleTan2::setRadius(const double r) {
+void LC_ActionDrawCircleTangental2EntitiesRadius::setRadius(const double r) {
     m_actionData->circleData.radius = r;
     if (getStatus() == SetCenter) {
         // force re-selection of circles to check whether this new radius is suitable
@@ -171,7 +180,7 @@ void RS_ActionDrawCircleTan2::setRadius(const double r) {
     }
 }
 
-bool RS_ActionDrawCircleTan2::getCenters(RS_Entity* secondEntityCandidate) const {
+bool LC_ActionDrawCircleTangental2EntitiesRadius::getCenters(RS_Entity* secondEntityCandidate) const {
     std::vector<RS_AtomicEntity*> circlesList;
     if (secondEntityCandidate != nullptr) {
         std::vector<RS_AtomicEntity*> testCirclesList = m_actionData->circles;
@@ -188,14 +197,14 @@ bool RS_ActionDrawCircleTan2::getCenters(RS_Entity* secondEntityCandidate) const
     return m_actionData->valid;
 }
 
-bool RS_ActionDrawCircleTan2::preparePreview() const {
+bool LC_ActionDrawCircleTangental2EntitiesRadius::preparePreview() const {
     if (m_actionData->valid) {
         m_actionData->circleData.center = m_actionData->centers.getClosest(m_actionData->coord);
     }
     return m_actionData->valid;
 }
 
-RS_Entity* RS_ActionDrawCircleTan2::catchTangentEntity(const LC_MouseEvent* e, const bool forPreview) const {
+RS_Entity* LC_ActionDrawCircleTangental2EntitiesRadius::catchTangentEntity(const LC_MouseEvent* e, const bool forPreview) const {
     RS_Entity* en;
     // fixme - sand - check whether snap is used for entity selection?  Ensure free snap?
     if (forPreview) {
@@ -219,13 +228,13 @@ RS_Entity* RS_ActionDrawCircleTan2::catchTangentEntity(const LC_MouseEvent* e, c
     return en;
 }
 
-void RS_ActionDrawCircleTan2::setCircleOne(RS_Entity* en) {
+void LC_ActionDrawCircleTangental2EntitiesRadius::setCircleOne(RS_Entity* en) {
     m_actionData->circles.resize(SetCircle1); // todo - what for? Why not have fixes size
     m_actionData->circles.push_back(dynamic_cast<RS_AtomicEntity*>(en));
     setStatus(SetCircle2);
 }
 
-void RS_ActionDrawCircleTan2::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
+void LC_ActionDrawCircleTangental2EntitiesRadius::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     switch (status) {
         case SetCircle1: {
             RS_Entity* en = catchTangentEntity(e, false);
@@ -267,7 +276,7 @@ void RS_ActionDrawCircleTan2::onMouseLeftButtonRelease(const int status, const L
     }
 }
 
-void RS_ActionDrawCircleTan2::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
+void LC_ActionDrawCircleTangental2EntitiesRadius::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
     // Return to last status:
     if (getStatus() > 0) {
         m_actionData->circles.pop_back();
@@ -277,7 +286,7 @@ void RS_ActionDrawCircleTan2::onMouseRightButtonRelease(const int status, [[mayb
     initPrevious(status);
 }
 
-void RS_ActionDrawCircleTan2::updateMouseButtonHints() {
+void LC_ActionDrawCircleTangental2EntitiesRadius::updateMouseButtonHints() {
     switch (getStatus()) {
         case SetCircle1:
             updateMouseWidgetTRCancel(tr("Specify the first line/arc/circle"));
@@ -294,16 +303,16 @@ void RS_ActionDrawCircleTan2::updateMouseButtonHints() {
     }
 }
 
-RS2::CursorType RS_ActionDrawCircleTan2::doGetMouseCursor([[maybe_unused]] int status) {
+RS2::CursorType LC_ActionDrawCircleTangental2EntitiesRadius::doGetMouseCursor([[maybe_unused]] int status) {
     return RS2::SelectCursor;
 }
 
-double RS_ActionDrawCircleTan2::getRadius() const {
+double LC_ActionDrawCircleTangental2EntitiesRadius::getRadius() const {
     return m_actionData->circleData.radius;
 }
 
 // fixme - sand -  move to base class or util - and reuse among other actions
-RS_Vector RS_ActionDrawCircleTan2::getTangentPoint(const RS_Vector& creatingCircleCenter, const double creatingCircleRadius,
+RS_Vector LC_ActionDrawCircleTangental2EntitiesRadius::getTangentPoint(const RS_Vector& creatingCircleCenter, const double creatingCircleRadius,
                                                    const RS_AtomicEntity* circle) {
     const double circleRadius = circle->getRadius();
     const RS_Vector& circleCenter = circle->getCenter();
@@ -316,6 +325,10 @@ RS_Vector RS_ActionDrawCircleTan2::getTangentPoint(const RS_Vector& creatingCirc
     return creatingCircleCenter + RS_Vector::polar(creatingCircleRadius, creatingCircleCenter.angleTo(circleCenter));
 }
 
-LC_ActionOptionsWidget* RS_ActionDrawCircleTan2::createOptionsWidget() {
-    return new QG_CircleTan2Options();
+LC_ActionOptionsWidget* LC_ActionDrawCircleTangental2EntitiesRadius::createOptionsWidget() {
+    return new LC_CircleTangental2EntitiesRadiusOptionsWidget();
+}
+
+LC_ActionOptionsPropertiesFiller* LC_ActionDrawCircleTangental2EntitiesRadius::createOptionsFiller() {
+    return new LC_CircleTangental2EntitiesRadiusOptionsFiller();
 }

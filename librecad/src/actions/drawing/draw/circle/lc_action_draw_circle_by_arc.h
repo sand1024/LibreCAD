@@ -72,6 +72,7 @@ protected:
     };
 
     LC_ActionOptionsWidget* createOptionsWidget() override;
+    LC_ActionOptionsPropertiesFiller* createOptionsFiller() override;
     bool doCheckMayTrigger() override;
     RS2::CursorType doGetMouseCursor(int status) override;
     void doOnLeftMouseButtonRelease(const LC_MouseEvent* e, int status, const RS_Vector& snapPoint) override;
@@ -87,6 +88,9 @@ protected:
     bool isSetActivePenAndLayerOnTrigger() override;
     void updateMouseButtonHints() override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
+    void doSaveOptions() override;
+    void doLoadOptions() override;
+
 private:
     /** Chosen arc or ellipse arc entity */
     RS_Entity* m_entity = nullptr;

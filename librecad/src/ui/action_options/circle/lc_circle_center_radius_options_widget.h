@@ -29,25 +29,23 @@
 #include "lc_action_options_widget_base.h"
 
 class RS_ActionInterface;
-class RS_ActionDrawCircleCR;
+class LC_ActionDrawCircleCenterRadius;
 namespace Ui {
-    class Ui_CircleOptions;
+    class LC_CircleCenterRadiusOptionsWidget;
 }
 
-class QG_CircleOptions : public LC_ActionOptionsWidgetBase{
+class LC_CircleCenterRadiusOptionsWidget : public LC_ActionOptionsWidgetBase{
     Q_OBJECT
 public:
-    QG_CircleOptions();
-    ~QG_CircleOptions() override;
+    LC_CircleCenterRadiusOptionsWidget();
+    ~LC_CircleCenterRadiusOptionsWidget() override;
 public slots:
     void languageChange() override;
     void onRadiusEditingFinished();
 protected:
-    void doSaveSettings() override;
-    void doSetAction(RS_ActionInterface *a, bool update) override;
+    void doSetAction(RS_ActionInterface *a) override;
     bool checkActionRttiValid(RS2::ActionType actionType) override;
-    RS_ActionDrawCircleCR* m_action = nullptr;
-    std::unique_ptr<Ui::Ui_CircleOptions> ui;
-    void setRadiusToActionAndVIew(const QString& val);
+    LC_ActionDrawCircleCenterRadius* m_action = nullptr;
+    std::unique_ptr<Ui::LC_CircleCenterRadiusOptionsWidget> ui;
 };
 #endif

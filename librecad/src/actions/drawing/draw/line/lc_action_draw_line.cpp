@@ -73,7 +73,7 @@ size_t LC_ActionDrawLine::ActionData::index(const int offset /*= 0*/) const {
 }
 
 LC_ActionDrawLine::LC_ActionDrawLine(LC_ActionContext *actionContext) :
-    LC_SingleEntityCreationAction( "ActionDrawLine", actionContext, RS2::ActionDrawLine),
+    LC_SingleEntityCreationAction("ActionDrawLine", actionContext, RS2::ActionDrawLine),
     m_actionData(std::make_unique<ActionData>()){
 }
 

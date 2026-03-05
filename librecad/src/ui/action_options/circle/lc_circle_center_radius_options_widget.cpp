@@ -23,19 +23,21 @@
 ** This copyright notice MUST APPEAR in all copies of the script!  
 **
 **********************************************************************/
-#include "qg_circleoptions.h"
 
-#include "rs_actiondrawcirclecr.h"
-#include "ui_qg_circleoptions.h"
+#include "lc_circle_center_radius_options_widget.h"
+
+#include "lc_action_draw_circle_center_radius.h"
+#include "lc_guarded_signals_blocker.h"
+#include "ui_lc_circle_center_radius_options_widget.h"
 
 /*
  *  Constructs a QG_CircleOptions as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-QG_CircleOptions::QG_CircleOptions()
-    : LC_ActionOptionsWidgetBase(RS2::ActionNone, "Draw", "Circle"), ui(std::make_unique<Ui::Ui_CircleOptions>()) {
+LC_CircleCenterRadiusOptionsWidget::LC_CircleCenterRadiusOptionsWidget()
+    : LC_ActionOptionsWidgetBase(RS2::ActionNone, "Draw", "Circle"), ui(std::make_unique<Ui::LC_CircleCenterRadiusOptionsWidget>()) {
     ui->setupUi(this);
-    connect(ui->leRadius, &QLineEdit::editingFinished, this, &QG_CircleOptions::onRadiusEditingFinished);
+    connect(ui->leRadius, &QLineEdit::editingFinished, this, &LC_CircleCenterRadiusOptionsWidget::onRadiusEditingFinished);
 
     pickDistanceSetup("radius", ui->tbPickRadius, ui->leRadius);
 }
@@ -43,45 +45,33 @@ QG_CircleOptions::QG_CircleOptions()
 /*
  *  Destroys the object and frees any allocated resources
  */
-QG_CircleOptions::~QG_CircleOptions() = default;
+LC_CircleCenterRadiusOptionsWidget::~LC_CircleCenterRadiusOptionsWidget() = default;
 
 /*
  *  Sets the strings of the subwidgets using the current
  *  language.
  */
-void QG_CircleOptions::languageChange() {
+void LC_CircleCenterRadiusOptionsWidget::languageChange() {
     ui->retranslateUi(this);
 }
 
-bool QG_CircleOptions::checkActionRttiValid(const RS2::ActionType actionType) {
+bool LC_CircleCenterRadiusOptionsWidget::checkActionRttiValid(const RS2::ActionType actionType) {
     return actionType == RS2::ActionDrawCircleCR || actionType == RS2::ActionDrawCircle2PR;
 }
 
-void QG_CircleOptions::doSaveSettings() {
-    save("Radius", ui->leRadius->text());
+void LC_CircleCenterRadiusOptionsWidget::doSetAction(RS_ActionInterface* a) {
+    m_action = static_cast<LC_ActionDrawCircleCenterRadius*>(a);
+
+    QString radius = fromDouble(m_action->getRadius());
+    LC_GuardedSignalsBlocker({ui->leRadius});
+    ui->leRadius->setText(radius);
 }
 
-void QG_CircleOptions::doSetAction(RS_ActionInterface* a, const bool update) {
-    m_action = static_cast<RS_ActionDrawCircleCR*>(a);
-    QString radius;
-    if (update) {
-        radius = fromDouble(m_action->getRadius());
-    }
-    else {
-        radius = load("Radius", "1.0");
-    }
-
-    setRadiusToActionAndVIew(radius);
-}
-
-void QG_CircleOptions::setRadiusToActionAndVIew(const QString& val) {
+void LC_CircleCenterRadiusOptionsWidget::onRadiusEditingFinished() {
+    const QString& val = ui->leRadius->text();
     double radius;
     if (toDouble(val, radius, 1.0, true)) {
         m_action->setRadius(radius);
-        ui->leRadius->setText(fromDouble(radius));
     }
-}
-
-void QG_CircleOptions::onRadiusEditingFinished() {
-    setRadiusToActionAndVIew(ui->leRadius->text());
+    m_action->updateOptions();
 }

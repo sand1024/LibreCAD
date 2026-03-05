@@ -37,16 +37,16 @@ struct RS_CircleData;
  *
  * @author Andrew Mustun
  */
-class RS_ActionDrawCircleCR : public LC_ActionDrawCircleBase {
+class LC_ActionDrawCircleCenterRadius : public LC_ActionDrawCircleBase {
     Q_OBJECT
 public:
-    explicit RS_ActionDrawCircleCR(LC_ActionContext* actionContext);
-    ~RS_ActionDrawCircleCR() override;
+    explicit LC_ActionDrawCircleCenterRadius(LC_ActionContext* actionContext);
+    ~LC_ActionDrawCircleCenterRadius() override;
     void reset() override;
     void init(int status) override;
     QStringList getAvailableCommands() override;
     double getRadius() const;
-    void setRadius(double val) const;
+    void setRadius(double val);
 
 protected:
     /**
@@ -58,11 +58,15 @@ protected:
     };
 
     LC_ActionOptionsWidget* createOptionsWidget() override;
+    LC_ActionOptionsPropertiesFiller* createOptionsFiller() override;
     /**
      * Circle data defined so far.
      */
-    std::unique_ptr<RS_CircleData> m_circleData;
-    bool setRadiusStr(const QString& sr) const;
+
+    double m_radius = 1.0;
+    RS_Vector m_center;
+
+    bool setRadiusStr(const QString& sr);
     bool doProcessCommand(int status, const QString& command) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector& pos) override;
     void updateMouseButtonHints() override;
@@ -70,5 +74,7 @@ protected:
     RS_Entity* doTriggerCreateEntity() override;
     void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
+    void doSaveOptions() override;
+    void doLoadOptions() override;
 };
 #endif

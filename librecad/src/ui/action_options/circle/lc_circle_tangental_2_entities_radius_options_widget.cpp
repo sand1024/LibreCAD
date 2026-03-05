@@ -19,58 +19,48 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
-#include "qg_circletan2options.h"
+#include "lc_circle_tangental_2_entities_radius_options_widget.h"
 
-#include "rs_actiondrawcircletan2.h"
-#include "ui_qg_circletan2options.h"
+#include "lc_action_draw_circle_tangental_2entities_radius.h"
+#include "lc_guarded_signals_blocker.h"
+#include "ui_lc_circle_tangental_2_entities_radius_options_widget.h"
+
 /*
  *  Constructs a QG_CircleTan2Options as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-QG_CircleTan2Options::QG_CircleTan2Options()
-    : LC_ActionOptionsWidgetBase(RS2::ActionDrawCircleTan2, "Draw", "CircleTan2"), m_action{nullptr}, ui(new Ui::Ui_CircleTan2Options{}) {
+LC_CircleTangental2EntitiesRadiusOptionsWidget::LC_CircleTangental2EntitiesRadiusOptionsWidget()
+    : LC_ActionOptionsWidgetBase(RS2::ActionDrawCircleTan2EntitiesRadius, "Draw", "CircleTan2"), m_action{nullptr}, ui(new Ui::LC_CircleTangental2EntitiesRadiusOptionsWidget{}) {
     ui->setupUi(this);
-    connect(ui->leRadius, &QLineEdit::editingFinished, this, &QG_CircleTan2Options::onRadiusEditingFinished);
+    connect(ui->leRadius, &QLineEdit::editingFinished, this, &LC_CircleTangental2EntitiesRadiusOptionsWidget::onRadiusEditingFinished);
     pickDistanceSetup("radius", ui->tbPickRadius, ui->leRadius);
 }
 
 /*
  *  Destroys the object and frees any allocated resources
  */
-QG_CircleTan2Options::~QG_CircleTan2Options() = default;
+LC_CircleTangental2EntitiesRadiusOptionsWidget::~LC_CircleTangental2EntitiesRadiusOptionsWidget() = default;
 
 /*
  *  Sets the strings of the subwidgets using the current
  *  language.
  */
-void QG_CircleTan2Options::languageChange() {
+void LC_CircleTangental2EntitiesRadiusOptionsWidget::languageChange() {
     ui->retranslateUi(this);
 }
 
-void QG_CircleTan2Options::doSaveSettings() {
-    save("Radius", ui->leRadius->text());
+void LC_CircleTangental2EntitiesRadiusOptionsWidget::doSetAction(RS_ActionInterface* a) {
+    m_action = static_cast<LC_ActionDrawCircleTangental2EntitiesRadius*>(a);
+    QString radius = fromDouble(m_action->getRadius());
+    LC_GuardedSignalsBlocker({ui->leRadius});
+    ui->leRadius->setText(radius);
 }
 
-void QG_CircleTan2Options::doSetAction(RS_ActionInterface* a, const bool update) {
-    m_action = static_cast<RS_ActionDrawCircleTan2*>(a);
-    QString radius;
-    if (update) {
-        radius = fromDouble(m_action->getRadius());
-    }
-    else {
-        radius = load("Radius", "1.0");
-    }
-    setRadiusToActionAndView(radius);
-}
-
-void QG_CircleTan2Options::setRadiusToActionAndView(const QString& val) {
+void LC_CircleTangental2EntitiesRadiusOptionsWidget::onRadiusEditingFinished() {
+    auto val = ui->leRadius->text();
     double radius;
     if (toDouble(val, radius, 1.0, true)) {
         m_action->setRadius(radius);
-        ui->leRadius->setText(fromDouble(radius));
     }
-}
-
-void QG_CircleTan2Options::onRadiusEditingFinished() {
-    setRadiusToActionAndView(ui->leRadius->text());
+    m_action->updateOptions();
 }

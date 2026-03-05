@@ -280,7 +280,7 @@ namespace RS2 {
         ActionDrawCircleInscribe,
         ActionDrawCircleTan2_1P,
         ActionDrawCircleTan1_2P,
-        ActionDrawCircleTan2,
+        ActionDrawCircleTan2EntitiesRadius,
         ActionDrawCircleTan3,
         ActionDrawCircleByArc,
 

@@ -24,9 +24,10 @@
 **
 **********************************************************************/
 
-#include "rs_actiondrawcirclecr.h"
+#include "lc_action_draw_circle_center_radius.h"
 
-#include "qg_circleoptions.h"
+#include "lc_circle_center_radius_options_filler.h"
+#include "lc_circle_center_radius_options_widget.h"
 #include "rs_circle.h"
 #include "rs_document.h"
 #include "rs_entitycontainer.h"
@@ -34,23 +35,29 @@
 /**
  * Constructor.
  */
-RS_ActionDrawCircleCR::RS_ActionDrawCircleCR(LC_ActionContext* actionContext)
-    : LC_ActionDrawCircleBase("Draw circles CR", actionContext, RS2::ActionDrawCircleCR), m_circleData(std::make_unique<RS_CircleData>()) {
-    RS_ActionDrawCircleCR::reset();
+LC_ActionDrawCircleCenterRadius::LC_ActionDrawCircleCenterRadius(LC_ActionContext* actionContext)
+    : LC_ActionDrawCircleBase("ActionDrawCircleCenterRadius", actionContext, RS2::ActionDrawCircleCR), m_radius{1.0} {
 }
 
-RS_ActionDrawCircleCR::~RS_ActionDrawCircleCR() = default;
+LC_ActionDrawCircleCenterRadius::~LC_ActionDrawCircleCenterRadius() = default;
 
-void RS_ActionDrawCircleCR::reset() {
-    m_circleData = std::make_unique<RS_CircleData>();
+void LC_ActionDrawCircleCenterRadius::doSaveOptions() {
+    save("Radius", m_radius);
 }
 
-void RS_ActionDrawCircleCR::init(const int status) {
+void LC_ActionDrawCircleCenterRadius::doLoadOptions() {
+    m_radius = loadDouble("Radius", 1.0);
+}
+
+void LC_ActionDrawCircleCenterRadius::reset() {
+}
+
+void LC_ActionDrawCircleCenterRadius::init(const int status) {
     LC_ActionDrawCircleBase::init(status);
 }
 
-RS_Entity* RS_ActionDrawCircleCR::doTriggerCreateEntity() {
-    auto* circle = new RS_Circle(m_document, *m_circleData);
+RS_Entity* LC_ActionDrawCircleCenterRadius::doTriggerCreateEntity() {
+    auto* circle = new RS_Circle(m_document, RS_CircleData(m_center, m_radius));
     switch (getStatus()) {
         case SetCenter:
             moveRelativeZero(circle->getCenter());
@@ -63,18 +70,18 @@ RS_Entity* RS_ActionDrawCircleCR::doTriggerCreateEntity() {
     return circle;
 }
 
-void RS_ActionDrawCircleCR::doTriggerCompletion([[maybe_unused]] bool success) {
+void LC_ActionDrawCircleCenterRadius::doTriggerCompletion([[maybe_unused]] bool success) {
     setStatus(SetCenter);
 }
 
-void RS_ActionDrawCircleCR::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
+void LC_ActionDrawCircleCenterRadius::onMouseMoveEvent(const int status, const LC_MouseEvent* e) {
     const RS_Vector mouse = e->snapPoint;
     switch (status) {
         case SetCenter: {
             if (!trySnapToRelZeroCoordinateEvent(e)) {
-                m_circleData->center = mouse;
-                previewToCreateCircle(*m_circleData);
-                previewRefSelectablePoint(m_circleData->center);
+                m_center = mouse;
+                previewToCreateCircle(RS_CircleData(m_center, m_radius));
+                previewRefSelectablePoint(m_center);
             }
             else {
                 setStatus(-1);
@@ -86,7 +93,7 @@ void RS_ActionDrawCircleCR::onMouseMoveEvent(const int status, const LC_MouseEve
     }
 }
 
-bool RS_ActionDrawCircleCR::doUpdateDistanceByInteractiveInput(const QString& tag, const double distance) {
+bool LC_ActionDrawCircleCenterRadius::doUpdateDistanceByInteractiveInput(const QString& tag, const double distance) {
     if (tag == "radius") {
         setRadius(distance);
         return true;
@@ -94,10 +101,10 @@ bool RS_ActionDrawCircleCR::doUpdateDistanceByInteractiveInput(const QString& ta
     return false;
 }
 
-void RS_ActionDrawCircleCR::onCoordinateEvent(const int status, [[maybe_unused]] bool isZero, const RS_Vector& pos) {
+void LC_ActionDrawCircleCenterRadius::onCoordinateEvent(const int status, [[maybe_unused]] bool isZero, const RS_Vector& pos) {
     switch (status) {
         case SetCenter: {
-            m_circleData->center = pos;
+            m_center = pos;
             trigger();
             break;
         }
@@ -106,7 +113,7 @@ void RS_ActionDrawCircleCR::onCoordinateEvent(const int status, [[maybe_unused]]
     }
 }
 
-bool RS_ActionDrawCircleCR::doProcessCommand(const int status, const QString& command) {
+bool LC_ActionDrawCircleCenterRadius::doProcessCommand(const int status, const QString& command) {
     bool accept = false;
     switch (status) {
         case SetCenter: {
@@ -122,7 +129,7 @@ bool RS_ActionDrawCircleCR::doProcessCommand(const int status, const QString& co
             // fixme - review processing and add more messages if needed
             const double r = RS_Math::eval(command, &ok);
             if (ok && r > RS_TOLERANCE) {
-                m_circleData->radius = r;
+               m_radius = r;
                 accept = true;
                 trigger();
             }
@@ -138,7 +145,7 @@ bool RS_ActionDrawCircleCR::doProcessCommand(const int status, const QString& co
     return accept;
 }
 
-bool RS_ActionDrawCircleCR::setRadiusStr(const QString& sr) const {
+bool LC_ActionDrawCircleCenterRadius::setRadiusStr(const QString& sr) {
     bool ok = false;
     const double r = RS_Math::eval(sr, &ok);
     if (!ok) {
@@ -154,12 +161,12 @@ bool RS_ActionDrawCircleCR::setRadiusStr(const QString& sr) const {
         ok = false;
     }
     else {
-        m_circleData->radius = r;
+        m_radius = r;
     }
     return ok;
 }
 
-QStringList RS_ActionDrawCircleCR::getAvailableCommands() {
+QStringList LC_ActionDrawCircleCenterRadius::getAvailableCommands() {
     QStringList cmd;
     switch (getStatus()) {
         case SetCenter:
@@ -171,7 +178,7 @@ QStringList RS_ActionDrawCircleCR::getAvailableCommands() {
     return cmd;
 }
 
-void RS_ActionDrawCircleCR::updateMouseButtonHints() {
+void LC_ActionDrawCircleCenterRadius::updateMouseButtonHints() {
     switch (getStatus()) {
         case SetCenter:
             updateMouseWidgetTRCancel(tr("Specify circle center"), MOD_SHIFT_RELATIVE_ZERO);
@@ -185,14 +192,18 @@ void RS_ActionDrawCircleCR::updateMouseButtonHints() {
     }
 }
 
-void RS_ActionDrawCircleCR::setRadius(const double val) const {
-    m_circleData->radius = val;
+void LC_ActionDrawCircleCenterRadius::setRadius(const double val){
+    m_radius = val;
 }
 
-double RS_ActionDrawCircleCR::getRadius() const {
-    return m_circleData->radius;
+double LC_ActionDrawCircleCenterRadius::getRadius() const {
+    return m_radius;
 }
 
-LC_ActionOptionsWidget* RS_ActionDrawCircleCR::createOptionsWidget() {
-    return new QG_CircleOptions();
+LC_ActionOptionsWidget* LC_ActionDrawCircleCenterRadius::createOptionsWidget() {
+    return new LC_CircleCenterRadiusOptionsWidget();
+}
+
+LC_ActionOptionsPropertiesFiller* LC_ActionDrawCircleCenterRadius::createOptionsFiller() {
+    return new LC_CircleCenterRadiusOptionsFiller();
 }

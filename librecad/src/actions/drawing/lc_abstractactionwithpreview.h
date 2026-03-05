@@ -45,7 +45,7 @@ public:
     /**
    * Mode that controls where from apply pen
    */
-    enum {
+    enum PenApplyMode{
         PEN_ACTIVE, // use active pen
         PEN_ORIGINAL, // use pen from original entity
         PEN_ORIGINAL_RESOLVED // use resolved pen from original entity
@@ -54,7 +54,7 @@ public:
     /**
      * controls how to apply layer to entity's duplicate
      */
-    enum {
+    enum LayerApplyMode{
         LAYER_ACTIVE, // set layer to active layer
         LAYER_ORIGINAL // use the same layer as original
     };

@@ -27,27 +27,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "lc_action_options_widget_base.h"
 
 class RS_ActionInterface;
-class RS_ActionDrawCircleTan2;
+class LC_ActionDrawCircleTangental2EntitiesRadius;
 
 namespace Ui {
-    class Ui_CircleTan2Options;
+    class LC_CircleTangental2EntitiesRadiusOptionsWidget;
 }
 
-class QG_CircleTan2Options : public LC_ActionOptionsWidgetBase{
+class LC_CircleTangental2EntitiesRadiusOptionsWidget : public LC_ActionOptionsWidgetBase{
     Q_OBJECT
 public:
-    QG_CircleTan2Options();
-    ~QG_CircleTan2Options() override;
+    LC_CircleTangental2EntitiesRadiusOptionsWidget();
+    ~LC_CircleTangental2EntitiesRadiusOptionsWidget() override;
 public slots:
     void languageChange() override;
     void onRadiusEditingFinished();
 protected:
-    RS_ActionDrawCircleTan2* m_action;
-    std::unique_ptr<Ui::Ui_CircleTan2Options> ui;
-    void setRadiusToActionAndView(const QString& val);
-    void doSaveSettings() override;
-    void doSetAction(RS_ActionInterface *a, bool update) override;
+    LC_ActionDrawCircleTangental2EntitiesRadius* m_action;
+    std::unique_ptr<Ui::LC_CircleTangental2EntitiesRadiusOptionsWidget> ui;
+    void doSetAction(RS_ActionInterface *a) override;
 };
-
 #endif
-// QG_CIRCLETAN2OPTIONS_H

@@ -20,9 +20,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
 
-#include "lc_actiondrawcirclebyarc.h"
+#include "lc_action_draw_circle_by_arc.h"
 
-#include "lc_circlebyarcoptions.h"
+#include "lc_circle_by_arc_options_filler.h"
+#include "lc_circle_by_arc_options_widget.h"
 #include "lc_linemath.h"
 #include "rs_arc.h"
 #include "rs_circle.h"
@@ -34,7 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 // selection by mouse is more convenient so do nothing there
 
 LC_ActionDrawCircleByArc::LC_ActionDrawCircleByArc(LC_ActionContext* actionContext) : LC_AbstractActionWithPreview(
-    "Circle By Arc", actionContext, RS2::ActionDrawCircleByArc) {
+    "ActionDrawCircleByArc", actionContext, RS2::ActionDrawCircleByArc) {
 }
 
 LC_ActionDrawCircleByArc::~LC_ActionDrawCircleByArc() = default;
@@ -42,6 +43,19 @@ LC_ActionDrawCircleByArc::~LC_ActionDrawCircleByArc() = default;
 // support of trigger on init functions (so on invocation, we'll check for selection and create circles for selected arcs)
 bool LC_ActionDrawCircleByArc::doCheckMayTriggerOnInit(const int status) {
     return status == SetArc;
+}
+void LC_ActionDrawCircleByArc::doSaveOptions() {
+    save("ReplaceArc", m_replaceArcByCircle);
+    save("PenMode", m_penMode);
+    save("LayerMode", m_layerMode);
+    save("RadiusShift", m_radiusShift);
+}
+
+void LC_ActionDrawCircleByArc::doLoadOptions() {
+    m_replaceArcByCircle = loadBool("ReplaceArc", true);
+    m_penMode = loadInt("PenMode", 0);
+    m_layerMode = loadInt("LayerMode", 0);
+    m_radiusShift = loadDouble("RadiusShift", 0.0);
 }
 
 // fixme - sand - CTX_entity init!
@@ -250,7 +264,11 @@ RS2::CursorType LC_ActionDrawCircleByArc::doGetMouseCursor([[maybe_unused]] int 
 }
 
 LC_ActionOptionsWidget* LC_ActionDrawCircleByArc::createOptionsWidget() {
-    return new LC_CircleByArcOptions();
+    return new LC_CircleByArcOptionsWidget();
+}
+
+LC_ActionOptionsPropertiesFiller* LC_ActionDrawCircleByArc::createOptionsFiller() {
+    return new LC_CircleByArcOptionsFiller();;
 }
 
 void LC_ActionDrawCircleByArc::setReplaceArcByCircle(const bool value) {

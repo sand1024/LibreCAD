@@ -413,25 +413,25 @@ set (SHARED_SOURCES
      librecad/src/actions/dock_widgets/ucs_list/lc_actionucsbydimordinate.h
      librecad/src/actions/dock_widgets/ucs_list/lc_actionucscreate.cpp
      librecad/src/actions/dock_widgets/ucs_list/lc_actionucscreate.h
-     librecad/src/actions/drawing/draw/circle/lc_actiondrawcircle2pr.cpp
-     librecad/src/actions/drawing/draw/circle/lc_actiondrawcircle2pr.h
+     librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_2points_radius.cpp
+     librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_2points_radius.h
      librecad/src/actions/drawing/draw/circle/lc_actiondrawcirclebase.cpp
      librecad/src/actions/drawing/draw/circle/lc_actiondrawcirclebase.h
-     librecad/src/actions/drawing/draw/circle/lc_actiondrawcirclebyarc.cpp
+     librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_by_arc.cpp
      librecad/src/actions/drawing/draw/circle/rs_actiondrawcircle.cpp
      librecad/src/actions/drawing/draw/circle/rs_actiondrawcircle.h
      librecad/src/actions/drawing/draw/circle/rs_actiondrawcircle2p.cpp
      librecad/src/actions/drawing/draw/circle/rs_actiondrawcircle2p.h
      librecad/src/actions/drawing/draw/circle/rs_actiondrawcircle3p.cpp
      librecad/src/actions/drawing/draw/circle/rs_actiondrawcircle3p.h
-     librecad/src/actions/drawing/draw/circle/rs_actiondrawcirclecr.cpp
-     librecad/src/actions/drawing/draw/circle/rs_actiondrawcirclecr.h
+     librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_center_radius.cpp
+     librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_center_radius.h
      librecad/src/actions/drawing/draw/circle/rs_actiondrawcircleinscribe.cpp
      librecad/src/actions/drawing/draw/circle/rs_actiondrawcircleinscribe.h
      librecad/src/actions/drawing/draw/circle/rs_actiondrawcircletan1_2p.cpp
      librecad/src/actions/drawing/draw/circle/rs_actiondrawcircletan1_2p.h
-     librecad/src/actions/drawing/draw/circle/rs_actiondrawcircletan2.cpp
-     librecad/src/actions/drawing/draw/circle/rs_actiondrawcircletan2.h
+     librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_tangental_2entities_radius.cpp
+     librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_tangental_2entities_radius.h
      librecad/src/actions/drawing/draw/circle/rs_actiondrawcircletan2_1p.cpp
      librecad/src/actions/drawing/draw/circle/rs_actiondrawcircletan2_1p.h
      librecad/src/actions/drawing/draw/circle/rs_actiondrawcircletan3.cpp
@@ -1199,11 +1199,11 @@ set (SHARED_SOURCES
      librecad/src/plugins/lc_plugininvoker.cpp
      librecad/src/plugins/lc_plugininvoker.h
      librecad/src/plugins/qc_plugininterface.h
-     librecad/src/ui/action_options/circle/lc_circlebyarcoptions.cpp
-     librecad/src/ui/action_options/circle/qg_circleoptions.cpp
-     librecad/src/ui/action_options/circle/qg_circleoptions.h
-     librecad/src/ui/action_options/circle/qg_circletan2options.cpp
-     librecad/src/ui/action_options/circle/qg_circletan2options.h
+     librecad/src/ui/action_options/circle/lc_circle_by_arc_options_widget.cpp
+     librecad/src/ui/action_options/circle/lc_circle_center_radius_options_widget.cpp
+     librecad/src/ui/action_options/circle/lc_circle_center_radius_options_widget.h
+     librecad/src/ui/action_options/circle/lc_circle_tangental_2_entities_radius_options_widget.cpp
+     librecad/src/ui/action_options/circle/lc_circle_tangental_2_entities_radius_options_widget.h
      librecad/src/ui/action_options/curve/lc_actiondrawarc2poptions.cpp
      librecad/src/ui/action_options/curve/lc_actiondrawarc2poptions.h
      librecad/src/ui/action_options/curve/lc_ellipsearcoptions.cpp
@@ -1948,6 +1948,14 @@ set (SHARED_SOURCES
      librecad/src/ui/action_options/line/lc_line_bisector_options_filler.h
      librecad/src/ui/action_options/line/lc_line_rel_angle_options_filler.cpp
      librecad/src/ui/action_options/line/lc_line_rel_angle_options_filler.h
+     librecad/src/ui/action_options/circle/lc_circle_by_arc_options_filler.cpp
+     librecad/src/ui/action_options/circle/lc_circle_by_arc_options_filler.h
+     librecad/src/ui/action_options/line/lc_line_options_filler.cpp
+     librecad/src/ui/action_options/line/lc_line_options_filler.h
+     librecad/src/ui/action_options/circle/lc_circle_center_radius_options_filler.cpp
+     librecad/src/ui/action_options/circle/lc_circle_center_radius_options_filler.h
+     librecad/src/ui/action_options/circle/lc_circle_tangental_2_entities_radius_options_filler.cpp
+     librecad/src/ui/action_options/circle/lc_circle_tangental_2_entities_radius_options_filler.h
 )
 
 set (MUPARSER_SOURCES
@@ -2009,8 +2017,6 @@ set (MAIN_SOURCES
      librecad/src/ui/dialogs/main/qg_dlginitial.cpp
      librecad/src/ui/dialogs/main/qg_dlginitial.h
      ${LIBRECAD_RES}
-     librecad/src/ui/action_options/line/lc_line_options_filler.cpp
-     librecad/src/ui/action_options/line/lc_line_options_filler.h
 )
 
 # Main executable

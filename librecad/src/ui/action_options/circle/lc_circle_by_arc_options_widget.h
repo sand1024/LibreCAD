@@ -26,34 +26,29 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "lc_action_options_widget_base.h"
 
 namespace Ui {
-    class LC_CircleByArcOptions;
+    class LC_CircleByArcOptionsWidget;
 }
 
 class LC_ActionDrawCircleByArc;
 /**
  * Options for CircleByArc action
  */
-class LC_CircleByArcOptions : public LC_ActionOptionsWidgetBase{
+class LC_CircleByArcOptionsWidget : public LC_ActionOptionsWidgetBase{
     Q_OBJECT
 public:
-    explicit LC_CircleByArcOptions();
-    ~LC_CircleByArcOptions() override;
+    explicit LC_CircleByArcOptionsWidget();
+    ~LC_CircleByArcOptionsWidget() override;
 protected:
-    void doSaveSettings() override;
     void languageChange() override;
-    void doSetAction(RS_ActionInterface *a, bool update) override;
+    void doSetAction(RS_ActionInterface *a) override;
 protected slots:
     void onReplaceClicked(bool value) const;
     void onPenModeIndexChanged(int mode) const;
     void onLayerModeIndexChanged(int mode) const;
     void onRadiusShiftEditingFinished();
 private:
-    Ui::LC_CircleByArcOptions *ui = nullptr;
+    Ui::LC_CircleByArcOptionsWidget *ui = nullptr;
     LC_ActionDrawCircleByArc* m_action;
-    void setReplaceArcToActionAndView(bool value) const;
-    void setPenModeToActionAndView(int mode) const;
-    void setLayerModeToActionAndeView(int mode) const;
-    void setRadiusShiftToModelAndView(const QString& val);
 };
 
 #endif

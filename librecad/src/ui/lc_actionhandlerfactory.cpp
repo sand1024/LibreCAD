@@ -26,6 +26,10 @@
 #include "lc_action_draw_bounding_box.h"
 #include "lc_action_draw_center_line.h"
 #include "lc_action_draw_center_mark.h"
+#include "lc_action_draw_circle_2points_radius.h"
+#include "lc_action_draw_circle_by_arc.h"
+#include "lc_action_draw_circle_center_radius.h"
+#include "lc_action_draw_circle_tangental_2entities_radius.h"
 #include "lc_action_draw_line.h"
 #include "lc_action_draw_line_angle.h"
 #include "lc_action_draw_line_angle_rel.h"
@@ -46,8 +50,6 @@
 #include "lc_actiondrawarc2pointsheight.h"
 #include "lc_actiondrawarc2pointslength.h"
 #include "lc_actiondrawarc2pointsradius.h"
-#include "lc_actiondrawcircle2pr.h"
-#include "lc_actiondrawcirclebyarc.h"
 #include "lc_actiondrawdimbaseline.h"
 #include "lc_actiondrawellipse1point.h"
 #include "lc_actiondrawgdtfeaturecontrolframe.h"
@@ -126,10 +128,8 @@
 #include "rs_actiondrawcircle.h"
 #include "rs_actiondrawcircle2p.h"
 #include "rs_actiondrawcircle3p.h"
-#include "rs_actiondrawcirclecr.h"
 #include "rs_actiondrawcircleinscribe.h"
 #include "rs_actiondrawcircletan1_2p.h"
-#include "rs_actiondrawcircletan2.h"
 #include "rs_actiondrawcircletan2_1p.h"
 #include "rs_actiondrawcircletan3.h"
 #include "rs_actiondrawellipse4points.h"
@@ -519,7 +519,7 @@ namespace InnerFactory{
                 return new RS_ActionDrawCircle(ctx);
             }
             case RS2::ActionDrawCircleCR: {
-                return new RS_ActionDrawCircleCR(ctx);
+                return new LC_ActionDrawCircleCenterRadius(ctx);
             }
             case RS2::ActionDrawCircleByArc: {
                 return new LC_ActionDrawCircleByArc(ctx);
@@ -528,7 +528,7 @@ namespace InnerFactory{
                 return new RS_ActionDrawCircle2P(ctx);
             }
             case RS2::ActionDrawCircle2PR: {
-                return new LC_ActionDrawCircle2PR(ctx);
+                return new LC_ActionDrawCircle2PointsRadius(ctx);
             }
             case RS2::ActionDrawCircle3P: {
                 return new RS_ActionDrawCircle3P(ctx);
@@ -542,8 +542,8 @@ namespace InnerFactory{
             case RS2::ActionDrawCircleInscribe: {
                 return new RS_ActionDrawCircleInscribe(ctx);
             }
-            case RS2::ActionDrawCircleTan2: {
-                return new RS_ActionDrawCircleTan2(ctx);
+            case RS2::ActionDrawCircleTan2EntitiesRadius: {
+                return new LC_ActionDrawCircleTangental2EntitiesRadius(ctx);
             }
             case RS2::ActionDrawCircleTan3: {
                 return new RS_ActionDrawCircleTan3(ctx);

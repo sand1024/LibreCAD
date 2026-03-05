@@ -33,11 +33,11 @@ struct RS_CircleData;
  *
  * @author Dongxu Li
  */
-class RS_ActionDrawCircleTan2 : public LC_ActionDrawCircleBase {
+class LC_ActionDrawCircleTangental2EntitiesRadius : public LC_ActionDrawCircleBase {
     Q_OBJECT
 public:
-    explicit RS_ActionDrawCircleTan2(LC_ActionContext* actionContext);
-    ~RS_ActionDrawCircleTan2() override;
+    explicit LC_ActionDrawCircleTangental2EntitiesRadius(LC_ActionContext* actionContext);
+    ~LC_ActionDrawCircleTangental2EntitiesRadius() override;
     void init(int status) override;
     bool getCenters(RS_Entity* secondEntityCandidate = nullptr) const;
     bool preparePreview() const;
@@ -64,6 +64,7 @@ protected:
     void setCircleOne(RS_Entity* en);
     RS_Vector getTangentPoint(const RS_Vector& creatingCircleCenter, double creatingCircleRadius, const RS_AtomicEntity* circle);
     LC_ActionOptionsWidget* createOptionsWidget() override;
+    LC_ActionOptionsPropertiesFiller* createOptionsFiller() override;
     RS2::CursorType doGetMouseCursor(int status) override;
     void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
@@ -72,5 +73,7 @@ protected:
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
+    void doSaveOptions() override;
+    void doLoadOptions() override;
 };
 #endif
