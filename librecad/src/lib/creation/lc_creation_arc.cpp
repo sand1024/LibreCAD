@@ -23,6 +23,7 @@
 
 #include "lc_creation_arc.h"
 
+#include "lc_linemath.h"
 #include "rs_circle.h"
 #include "rs_debug.h"
 #include "rs_information.h"

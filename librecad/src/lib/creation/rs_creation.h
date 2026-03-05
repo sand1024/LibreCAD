@@ -58,7 +58,7 @@ class LC_GraphicViewport;
  * @author Andrew Mustun
  */
 namespace RS_Creation {
-    void createParallelThrough(const RS_Vector& coord, int number, RS_Entity* e, bool symmetric, QList<RS_Entity*>& createdEntities);
+    void createParallelThrough(const RS_Vector& coord, int number, RS_Entity* e, bool symmetric, bool distributeWithin, QList<RS_Entity*>& createdEntities);
     void createParallel(const RS_Vector& coord, double distance, int number, RS_Entity* e, bool symmetric, QList<RS_Entity*>& createdEntities);
     void createParallelLine(const RS_Vector& coord, double distance, int number, const RS_Line* e, bool symmetric, QList<RS_Entity*>& createdEntities);
     void createParallelArc(const RS_Vector& coord, double distance, int number, RS_Arc* e, QList<RS_Entity*>& createdEntities);

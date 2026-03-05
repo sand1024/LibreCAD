@@ -97,6 +97,7 @@ namespace {
  *    parallel has been created.
  */
 void RS_Creation::createParallelThrough(const RS_Vector& coord, const int number, RS_Entity* e, const bool symmetric,
+                                        bool distributeWithin,
                                         QList<RS_Entity*>& createdEntities) {
     Q_ASSERT(e != nullptr);
 
@@ -110,8 +111,12 @@ void RS_Creation::createParallelThrough(const RS_Vector& coord, const int number
         dist = e->getDistanceToPoint(coord);
     }
 
+    if (distributeWithin) {
+        dist = dist / number;
+    }
+
     if (dist < RS_MAXDOUBLE) {
-        return createParallel(coord, dist, number, e, symmetric, createdEntities);
+        return createParallel(coord, dist, number, e, symmetric,  createdEntities);
     }
 }
 
