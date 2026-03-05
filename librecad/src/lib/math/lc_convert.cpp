@@ -97,11 +97,16 @@ bool LC_Convert::parseToToDoubleAngleDegrees(const QString& strValue, double &re
     bool ok = false;
     const bool doNotAllowNonDecimalAnglesInput = LC_GET_ONE_BOOL("CADPreferences", "InputAnglesAsDecimalsOnly", false);
     double angleDegrees;
+    // cleanup degree size, if any
     if (doNotAllowNonDecimalAnglesInput){
-        angleDegrees = RS_Math::eval(strValue, &ok);
+        QString stringToEval = strValue;
+        stringToEval = stringToEval.remove( QChar(0xB0));
+        angleDegrees = RS_Math::eval(stringToEval, &ok);
     }
     else{
-        const QString stringToEval = RS_Units::replaceAllPotentialAnglesByDecimalDegrees(strValue, &ok);
+        QString stringToEval = strValue;
+        stringToEval = stringToEval.remove( QChar(0xB0));
+        stringToEval = RS_Units::replaceAllPotentialAnglesByDecimalDegrees(stringToEval, &ok);
         angleDegrees = RS_Math::eval(stringToEval, &ok);
     }
     if(ok){

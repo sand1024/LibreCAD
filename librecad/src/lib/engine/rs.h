@@ -319,7 +319,7 @@ namespace RS2 {
         ActionDrawLineTangent1,
         ActionDrawLineTangent2,
         ActionDrawLineVertical,
-        ActionDrawLineMiddle,
+        ActionDrawCenterLine,
         ActionDrawLineRadiant,
         ActionDrawMText,
         ActionDrawPoint,
