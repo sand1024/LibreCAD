@@ -24,43 +24,42 @@
 #include "lc_line_radiant_options_filler.h"
 #include "lc_action_draw_line_radiant.h"
 
-void LC_RadiantLineOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* container) {
-    auto options = static_cast<LC_ActionDrawLineRadiantOptions*>(m_action->getOptions());
+void LC_LineRadiantOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* container) {
+    auto action = static_cast<LC_ActionDrawLineRadiant*>(m_action);
 
-    addIntSpinbox({"activeRadiantIdx", "Radiant Index", "Selection of radiant (center) point draw to"}, [options]() {
-                      return options->getActiveRadiantIndex()+1;
-                  }, [options](LC_PropertyEnumValueType index) {
-                      options->setActiveRadiantIndex(static_cast<LC_ActionDrawLineRadiantOptions::RadiantIdx>(index-1));
+    addIntSpinbox({"a_ctiveRadiantIdx", tr("Radiant Index"), tr("Selection of radiant (center) point draw to")}, [action]() {
+                      return action->getActiveRadiantIndex() + 1;
+                  }, [action](LC_PropertyEnumValueType index) {
+                      action->setActiveRadiantIndex(static_cast<LC_ActionDrawLineRadiant::RadiantIdx>(index - 1));
                   }, container, 1, 4);
 
-    addVector({"activeRadiant", "Radiant Point", "Specifies position of active radiant point"}, [options]() -> RS_Vector {
-                  return options->getActiveRadiant();
-              }, [options](const RS_Vector& v)-> void {
-                  options->setActiveRadiantPoint(v);
+    addVector({"a_activeRadiant", tr("Radiant Point"), tr("Specifies position of active radiant point")}, [action]() -> RS_Vector {
+                  return action->getActiveRadiant();
+              }, [action](const RS_Vector& v)-> void {
+                  action->setActiveRadiantPoint(v);
               }, container);
 
     static LC_EnumDescriptor descriptor = {
         "lenTypeDescriptor",
         {
-            {LC_ActionDrawLineRadiantOptions::LenghtType::LINE, tr("Line")},
-            {LC_ActionDrawLineRadiantOptions::LenghtType::BY_X, tr("By X")},
-            {LC_ActionDrawLineRadiantOptions::LenghtType::BY_Y, tr("By Y")},
-            {LC_ActionDrawLineRadiantOptions::LenghtType::TO_POINT, tr("To Point")},
-            {LC_ActionDrawLineRadiantOptions::LenghtType::FREE, tr("Free")},
+            {LC_ActionDrawLineRadiant::LenghtType::LINE, tr("Line")},
+            {LC_ActionDrawLineRadiant::LenghtType::BY_X, tr("By X")},
+            {LC_ActionDrawLineRadiant::LenghtType::BY_Y, tr("By Y")},
+            {LC_ActionDrawLineRadiant::LenghtType::TO_POINT, tr("To Point")},
+            {LC_ActionDrawLineRadiant::LenghtType::FREE, tr("Free")},
         }
     };
 
-    addEnum({"lenType", "Length type:", "Defines how to handle length parameter"}, &descriptor, [options]() -> LC_PropertyEnumValueType {
-                return options->getLenghType();
-            }, [this](const LC_PropertyEnumValueType& v)-> void {
-                auto action = static_cast<LC_ActionDrawLineRadiant*>(m_action);
-                auto type = static_cast<LC_ActionDrawLineRadiantOptions::LenghtType>(v);
+    addEnum({"a_lenType", tr("Length type"), tr("Defines how to handle length parameter")}, &descriptor, [action]() -> LC_PropertyEnumValueType {
+                return action->getLenghType();
+            }, [action](const LC_PropertyEnumValueType& v)-> void {
+                const auto type = static_cast<LC_ActionDrawLineRadiant::LenghtType>(v);
                 action->setLengthType(type);
             }, container);
 
-    addLinearDistance({"length", "Length:", "Length of line to draw"}, [options]() {
-                          return options->getLength();
-                      }, [options](double val) {
-                          options->setLength(val);
+    addLinearDistance({"a_length", tr("Length"), tr("Length of line to draw")}, [action]() {
+                          return action->getLength();
+                      }, [action](double val) {
+                          action->setLength(val);
                       }, container);
 }

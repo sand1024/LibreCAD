@@ -33,7 +33,9 @@ class RS_ActionInterface;
 class LC_ActionOptionsSupport {
 public:
     virtual ~LC_ActionOptionsSupport() = default;
+    [[deprecated]]
     void setAction(RS_ActionInterface * a, bool update = false);
+    [[deprecated]]
     virtual void hideOptions() = 0;
     /**
      * Extension point. Method allows action to request update of UI (say, by enabling or hiding some parts of the widget).
@@ -42,6 +44,7 @@ public:
      * @param value
      * @param value
      */
+    [[deprecated]]
     virtual void updateUI([[maybe_unused]]int mode, const QVariant* value){}
 protected:
     /**
@@ -55,16 +58,19 @@ protected:
     /**
      * Setter for corresponding action
      * @param a action
-     * @param update true if options widget should be updated by action values, false - loading from settings
      */
-    virtual void doSetAction(RS_ActionInterface* a, bool update) = 0;
+    [[deprecated]]
+    virtual void doSetAction(RS_ActionInterface* a) = 0;
     /**
      * Performs check that provided action type is accepted by options widget
      * @param actionType type of action
      * @return true if type is ok, false otherwise
      */
+    [[deprecated]]
     virtual bool checkActionRttiValid(RS2::ActionType actionType);
+    [[deprecated]]
     virtual void preSetupByAction(RS_ActionInterface* a) = 0;
+    [[deprecated]]
     virtual void cleanup() = 0;
 
     /**

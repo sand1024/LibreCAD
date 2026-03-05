@@ -48,7 +48,7 @@ void LC_PropertiesProviderActivePen::fillDocumentProperties(LC_PropertyContainer
             const RS_Pen pen = doc->getActivePen();
             createColor(cont, pen);
             createLineWidth(cont, pen);
-            createLineWidth(cont, pen);
+            createLineType(cont, pen);
             if (isShowLinks()) {
                 createCommands(cont);
             }

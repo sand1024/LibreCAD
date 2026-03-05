@@ -37,6 +37,7 @@ protected:
         return *static_cast<PropertyClass*>(getBaseProperty());
     }
 
+
     PropertyValueType getPropertyValue() const {
         return getProperty().value();
     }

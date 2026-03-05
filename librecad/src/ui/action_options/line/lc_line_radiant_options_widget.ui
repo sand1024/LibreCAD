@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LC_OptionsWidgetLineRadiant</class>
- <widget class="QWidget" name="LC_OptionsWidgetLineRadiant">
+ <class>LC_LineRadiantOptionsWidget</class>
+ <widget class="QWidget" name="LC_LineRadiantOptionsWidget">
   <property name="geometry">
    <rect>
     <x>0</x>

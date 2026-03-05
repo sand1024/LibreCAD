@@ -58,7 +58,8 @@ namespace LC_PropertyProviderUtils {
         ValueType doGetValue() const override {
             Q_ASSERT(m_funGetValue);
             EntityClass* entity = m_entity;
-            return m_funGetValue(entity);
+            auto result = m_funGetValue(entity);
+            return result;
         }
 
         void doSetValue(ValueType newValue, LC_PropertyChangeReason reason) override {
@@ -111,8 +112,8 @@ namespace LC_PropertyProviderUtils {
 
     template <typename EntityClass>
     void createDirectDelegatedDouble(LC_PropertyContainer* container, const LC_Property::Names& names,
-                                   const typename LC_EntityPropertyValueDirectEntityDelegate<bool, EntityClass>::FunValueGet &funGet,
-                                   const std::function<void(const bool&, EntityClass*)> &funSet, EntityClass* entity,
+                                   const typename LC_EntityPropertyValueDirectEntityDelegate<double, EntityClass>::FunValueGet &funGet,
+                                   const std::function<void(const double&, EntityClass*)> &funSet, EntityClass* entity,
                                    LC_ActionContext::InteractiveInputInfo::InputType inputType,
                                    LC_ActionContext* actionContext, LC_LateCompletionRequestor* requestor) {
         auto* property = new LC_PropertyDouble(container, false);

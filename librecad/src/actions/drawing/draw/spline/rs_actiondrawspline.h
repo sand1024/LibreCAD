@@ -62,6 +62,8 @@ protected:
         SetNextPoint      /**< Setting the next point. */
     };
 
+    RS_ActionDrawSpline(const QString& actionName, LC_ActionContext* actionContext, RS2::ActionType actionType);
+
 private:
     RS2::CursorType doGetMouseCursor(int status) override;
     void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;

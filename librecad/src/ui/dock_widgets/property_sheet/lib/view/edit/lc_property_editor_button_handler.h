@@ -23,14 +23,16 @@
 #define LC_PROPERTYEDITORBUTTONHANDLER_H
 
 #include "lc_property_editor_handler.h"
+#include <QMouseEvent>
+#include <QToolButton>
 
 template <typename PropertyClass, typename PropertyEditorClass>
 class LC_PropertyEditorButtonHandler : public LC_PropertyEditorHandler<PropertyClass, PropertyEditorClass> {
 protected:
     using Inherited = LC_PropertyEditorHandler<PropertyClass, PropertyEditorClass>;
 
-    LC_PropertyEditorButtonHandler(LC_PropertyViewEditable* view, PropertyEditorClass& editor)
-        : Inherited(view, editor) {
+    LC_PropertyEditorButtonHandler(LC_PropertyViewEditable* view, PropertyEditorClass& editor, QToolButton* button = nullptr)
+        : Inherited(view, editor), m_toolButton{button} {
     }
 
     virtual void doOnToolButtonClick() = 0;
@@ -50,6 +52,21 @@ protected:
                     }
                     break;
                 }
+                case QEvent::MouseButtonPress: {
+                    if (this->m_toolButton != nullptr) {
+                        const auto mouseEvent = static_cast<QMouseEvent*>(event);
+                        if (mouseEvent->button() == Qt::LeftButton) {
+                            auto maybeButton = dynamic_cast<QToolButton*>(obj);
+                            if (maybeButton != nullptr) {
+                                if (this->m_toolButton == maybeButton) {
+                                    doOnToolButtonClick();
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                    break;
+                }
                 default:
                     break;
             }
@@ -59,6 +76,7 @@ protected:
 
 private:
     bool m_mouseDoubleClick{false};
+    QToolButton* m_toolButton{nullptr};
 };
 
 #endif

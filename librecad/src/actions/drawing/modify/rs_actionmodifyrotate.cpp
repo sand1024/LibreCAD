@@ -323,7 +323,8 @@ void RS_ActionModifyRotate::keyPressEvent(QKeyEvent *e) {
     switch (key) {
         case Qt::Key_Space: {
             if (isControl(e)){
-                m_optionWidget->setFocus();
+                // fixme - options- update UI
+                // m_optionWidget->setFocus();
             }
             break;
         }

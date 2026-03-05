@@ -22,6 +22,7 @@
 
 #include "lc_actionsplinemodifybase.h"
 
+#include "rs_document.h"
 #include "rs_entity.h"
 #include "rs_pen.h"
 

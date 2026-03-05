@@ -48,8 +48,7 @@ struct LC_ActionDrawSplinePoints::ActionData {
 };
 
 LC_ActionDrawSplinePoints::LC_ActionDrawSplinePoints(LC_ActionContext* actionContext)
-    : RS_ActionDrawSpline(actionContext, RS2::ActionDrawSplinePoints), m_actionData(std::make_unique<ActionData>()) {
-    setName("DrawSplinePoints");
+    : RS_ActionDrawSpline("ActionDrawSplinePoints", actionContext, RS2::ActionDrawSplinePoints), m_actionData(std::make_unique<ActionData>()) {
 }
 
 LC_ActionDrawSplinePoints::~LC_ActionDrawSplinePoints() = default;

@@ -26,6 +26,7 @@
 #include <QMenu>
 #include <QTimer>
 
+#include "lc_action.h"
 #include "lc_actioncontext.h"
 #include "lc_actiongroupmanager.h"
 #include "lc_dlg_propertysheet_widget_options.h"
@@ -265,6 +266,37 @@ void LC_PropertySheetWidget::updateFormats() {
     refill();
 }
 
+void LC_PropertySheetWidget::doProcessLateRequest(const LC_ActionContext::InteractiveInputInfo& interactiveInputInfo) {
+    const auto inputType = interactiveInputInfo.inputType;
+    switch (inputType) {
+        case LC_ActionContext::InteractiveInputInfo::DISTANCE: {
+            setPickedPropertyValue(interactiveInputInfo.requestorTag, interactiveInputInfo.distance, inputType);
+            break;
+        }
+        case LC_ActionContext::InteractiveInputInfo::ANGLE: {
+            setPickedPropertyValue(interactiveInputInfo.requestorTag, interactiveInputInfo.angleRad, inputType);
+            break;
+        }
+        case LC_ActionContext::InteractiveInputInfo::POINT: {
+            const RS_Vector ucsVector = m_viewport->toUCS(interactiveInputInfo.wcsPoint);
+            setPickedPointPropertyValue(interactiveInputInfo.requestorTag, ucsVector);
+            break;
+        }
+        case LC_ActionContext::InteractiveInputInfo::POINT_X: {
+            const RS_Vector ucsVector = m_viewport->toUCS(interactiveInputInfo.wcsPoint);
+            setPickedPropertyCoordinateValue(interactiveInputInfo.requestorTag, ucsVector.x, true);
+            break;
+        }
+        case LC_ActionContext::InteractiveInputInfo::POINT_Y: {
+            const RS_Vector ucsVector = m_viewport->toUCS(interactiveInputInfo.wcsPoint);
+            setPickedPropertyCoordinateValue(interactiveInputInfo.requestorTag, ucsVector.y, false);
+            break;
+        }
+        default:
+            break;
+    }
+}
+
 void LC_PropertySheetWidget::onLateRequestCompleted(const bool shouldBeSkipped) {
     if (shouldBeSkipped) {
         const auto interactiveInput = m_actionContext->getInteractiveInputInfo();
@@ -275,40 +307,18 @@ void LC_PropertySheetWidget::onLateRequestCompleted(const bool shouldBeSkipped) 
     else {
         const auto interactiveInputInfo = m_actionContext->getInteractiveInputInfo();
         const bool updateInteractiveInputValues = interactiveInputInfo->state == LC_ActionContext::InteractiveInputInfo::REQUESTED;
-
-        auto inputType = interactiveInputInfo->inputType;
-
         if (updateInteractiveInputValues) {
-            switch (inputType) {
-                case LC_ActionContext::InteractiveInputInfo::DISTANCE: {
-                    setPickedPropertyValue(interactiveInputInfo->requestorTag, interactiveInputInfo->distance, inputType);
-                    break;
-                }
-                case LC_ActionContext::InteractiveInputInfo::ANGLE: {
-                    setPickedPropertyValue(interactiveInputInfo->requestorTag, interactiveInputInfo->angleRad, inputType);
-                    break;
-                }
-                case LC_ActionContext::InteractiveInputInfo::POINT: {
-                    const RS_Vector ucsVector = m_viewport->toUCS(interactiveInputInfo->wcsPoint);
-                    setPickedPointPropertyValue(interactiveInputInfo->requestorTag, ucsVector);
-                    break;
-                }
-                case LC_ActionContext::InteractiveInputInfo::POINT_X: {
-                    const RS_Vector ucsVector = m_viewport->toUCS(interactiveInputInfo->wcsPoint);
-                    setPickedPropertyCoordinateValue(interactiveInputInfo->requestorTag, ucsVector.x, true);
-                    break;
-                }
-                case LC_ActionContext::InteractiveInputInfo::POINT_Y: {
-                    const RS_Vector ucsVector = m_viewport->toUCS(interactiveInputInfo->wcsPoint);
-                    setPickedPropertyCoordinateValue(interactiveInputInfo->requestorTag, ucsVector.y, false);
-                    break;
-                }
-                default:
-                    break;
+            if (m_operationMode == MODE_SELECTION) {
+                doProcessLateRequest(*interactiveInputInfo);
             }
-        }
-        else {
-            inputType = LC_ActionContext::InteractiveInputInfo::NOTNEEDED;
+            else {
+                // delayed call, as we may be in pick action and property sheet could be empty (without tool options properties)
+                LC_ActionContext::InteractiveInputInfo inputCopy;
+                interactiveInputInfo->copyTo(inputCopy);
+                QTimer::singleShot(10, [inputCopy, this]() ->void{
+                    doProcessLateRequest(inputCopy);
+                });
+            }
         }
     }
 }
@@ -532,6 +542,12 @@ void LC_PropertySheetWidget::setPickedPropertyValue(const QString& propertyName,
                     propertiesSheet->connectOnPropertyChange(valueMultiProperty, true);
                     valuePropertyDouble->setValue(interactiveInputValue, coordinatePropertyView->changeReasonDueToEdit());
                     propertiesSheet->connectOnPropertyChange(valueMultiProperty, false);
+                }
+            }
+            else {
+                const auto valuePropertyDouble = dynamic_cast<LC_PropertyDouble*>(p);
+                if (valuePropertyDouble != nullptr) {
+                    valuePropertyDouble->setValue(interactiveInputValue, PropertyChangeReasonEdit);
                 }
             }
         }

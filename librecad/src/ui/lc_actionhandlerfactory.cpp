@@ -23,6 +23,20 @@
 
 #include "lc_actionhandlerfactory.h"
 
+#include "lc_action_draw_bounding_box.h"
+#include "lc_action_draw_center_line.h"
+#include "lc_action_draw_center_mark.h"
+#include "lc_action_draw_line.h"
+#include "lc_action_draw_line_angle.h"
+#include "lc_action_draw_line_angle_rel.h"
+#include "lc_action_draw_line_bisector.h"
+#include "lc_action_draw_line_from_point_to_line.h"
+#include "lc_action_draw_line_parallel.h"
+#include "lc_action_draw_line_parallel_through.h"
+#include "lc_action_draw_line_radiant.h"
+#include "lc_action_draw_line_rel_angle.h"
+#include "lc_action_draw_line_snake.h"
+#include "lc_action_draw_slice_divide.h"
 #include "lc_actioncontext.h"
 #include "lc_actiondimarc.h"
 #include "lc_actiondimordinate.h"
@@ -32,29 +46,21 @@
 #include "lc_actiondrawarc2pointsheight.h"
 #include "lc_actiondrawarc2pointslength.h"
 #include "lc_actiondrawarc2pointsradius.h"
-#include "lc_action_draw_boundingbox.h"
-#include "lc_action_draw_line_radiant.h"
 #include "lc_actiondrawcircle2pr.h"
 #include "lc_actiondrawcirclebyarc.h"
-#include "lc_actiondrawcross.h"
 #include "lc_actiondrawdimbaseline.h"
 #include "lc_actiondrawellipse1point.h"
 #include "lc_actiondrawgdtfeaturecontrolframe.h"
-#include "lc_actiondrawlineanglerel.h"
-#include "lc_actiondrawlinefrompointtoline.h"
+#include "lc_actiondrawhyperbolafp.h"
 #include "lc_actiondrawlinepoints.h"
 #include "lc_actiondrawlinepolygon3.h"
 #include "lc_actiondrawlinepolygon4.h"
-#include "lc_actiondrawlinesnake.h"
-#include "lc_actiondrawmidline.h"
 #include "lc_actiondrawparabola4points.h"
 #include "lc_actiondrawparabolaFD.h"
-#include "lc_actiondrawhyperbolafp.h"
 #include "lc_actiondrawpointslattice.h"
 #include "lc_actiondrawrectangle1point.h"
 #include "lc_actiondrawrectangle2points.h"
 #include "lc_actiondrawrectangle3points.h"
-#include "lc_actiondrawslicedivide.h"
 #include "lc_actiondrawsplinepoints.h"
 #include "lc_actiondrawstar.h"
 #include "lc_actioneditpastetransform.h"
@@ -133,18 +139,12 @@
 #include "rs_actiondrawellipseinscribe.h"
 #include "rs_actiondrawhatch.h"
 #include "rs_actiondrawimage.h"
-#include "rs_actiondrawline.h"
-#include "rs_actiondrawlineangle.h"
-#include "rs_actiondrawlinebisector.h"
 #include "rs_actiondrawlinefree.h"
 #include "rs_actiondrawlinehorvert.h"
 #include "rs_actiondrawlineorthtan.h"
-#include "rs_actiondrawlineparallel.h"
-#include "rs_actiondrawlineparallelthrough.h"
 #include "rs_actiondrawlinepolygon.h"
 #include "rs_actiondrawlinepolygon2.h"
 #include "rs_actiondrawlinerectangle.h"
-#include "rs_actiondrawlinerelangle.h"
 #include "rs_actiondrawlinetangent1.h"
 #include "rs_actiondrawlinetangent2.h"
 #include "rs_actiondrawmtext.h"
@@ -363,34 +363,34 @@ namespace InnerFactory{
                 return new RS_ActionDrawPoint(ctx);
             }
             case RS2::ActionDrawLine: {
-                return new RS_ActionDrawLine(ctx);
+                return new LC_ActionDrawLine(ctx);
             }
             case RS2::ActionDrawLineAngle: {
-                return new RS_ActionDrawLineAngle(ctx, false);
+                return new LC_ActionDrawLineAngle(ctx, false);
             }
             case RS2::ActionDrawLineHorizontal: {
-                return new RS_ActionDrawLineAngle(ctx, true,RS2::ActionDrawLineHorizontal);
+                return new LC_ActionDrawLineAngle(ctx, true,RS2::ActionDrawLineHorizontal);
             }
             case RS2::ActionDrawLineHorVert: {
                 return new RS_ActionDrawLineHorVert(ctx);
             }
             case RS2::ActionDrawLineVertical: {
-                return new RS_ActionDrawLineAngle(ctx, true,RS2::ActionDrawLineVertical);
+                return new LC_ActionDrawLineAngle(ctx, true,RS2::ActionDrawLineVertical);
             }
             case RS2::ActionDrawLineFree: {
                 return new RS_ActionDrawLineFree(ctx);
             }
             case RS2::ActionDrawLineParallel: {
-                return new RS_ActionDrawLineParallel(ctx, RS2::ActionDrawLineParallel);
+                return new LC_ActionDrawLineParallel(ctx, RS2::ActionDrawLineParallel);
             }
             case RS2::ActionDrawCircleParallel: {
-                return new RS_ActionDrawLineParallel(ctx, RS2::ActionDrawCircleParallel);
+                return new LC_ActionDrawLineParallel(ctx, RS2::ActionDrawCircleParallel);
             }
             case RS2::ActionDrawArcParallel: {
-                return new RS_ActionDrawLineParallel(ctx, RS2::ActionDrawArcParallel);
+                return new LC_ActionDrawLineParallel(ctx, RS2::ActionDrawArcParallel);
             }
             case RS2::ActionDrawLineParallelThrough: {
-                return new RS_ActionDrawLineParallelThrough(ctx);
+                return new LC_ActionDrawLineParallelThrough(ctx);
             }
             case RS2::ActionDrawLineRectangle: {
                 return new RS_ActionDrawLineRectangle(ctx);
@@ -405,7 +405,7 @@ namespace InnerFactory{
                 return new LC_ActionDrawRectangle1Point(ctx);
             }
             case RS2::ActionDrawCenterMark: {
-                return new LC_ActionDrawCross(ctx);
+                return new LC_ActionDrawCenterMark(ctx);
             }
             case RS2::ActionDrawBoundingBox: {
                 return new LC_ActionDrawBoundingBox(ctx);
@@ -435,7 +435,7 @@ namespace InnerFactory{
                 return new LC_ActionDrawPointsLattice(ctx);
             }
             case RS2::ActionDrawLineBisector: {
-                return new RS_ActionDrawLineBisector(ctx);
+                return new LC_ActionDrawLineBisector(ctx);
             }
             case RS2::ActionDrawLineOrthTan: {
                 return new RS_ActionDrawLineOrthTan(ctx);
@@ -447,10 +447,10 @@ namespace InnerFactory{
                 return new RS_ActionDrawLineTangent2(ctx);
             }
             case RS2::ActionDrawLineOrthogonal: {
-                return new RS_ActionDrawLineRelAngle(ctx, M_PI_2, true);
+                return new LC_ActionDrawLineRelAngle(ctx, M_PI_2, true);
             }
             case RS2::ActionDrawLineRelAngle: {
-                return new RS_ActionDrawLineRelAngle(ctx, M_PI_2, false);
+                return new LC_ActionDrawLineRelAngle(ctx, M_PI_2, false);
             }
             case RS2::ActionDrawPolyline: {
                 return new RS_ActionDrawPolyline(ctx);
@@ -464,8 +464,8 @@ namespace InnerFactory{
             case RS2::ActionDrawLineFromPointToLine: {
                 return new LC_ActionDrawLineFromPointToLine(ctx);
             }
-            case RS2::ActionDrawLineMiddle: {
-                return new LC_ActionDrawMidLine(ctx);
+            case RS2::ActionDrawCenterLine: {
+                return new LC_ActionDrawCenterLine(ctx);
             }
             case RS2::ActionDrawLineRadiant: {
                 return new LC_ActionDrawLineRadiant(ctx);
@@ -1026,6 +1026,9 @@ mingw32-make[3]: *** [Makefile.Debug:88797: ../../generated/librecad/obj/lc_acti
 */
 std::shared_ptr<RS_ActionInterface> LC_ActionsHandlerFactory::createActionInstance(const RS2::ActionType actionType, LC_ActionContext* ctx, void* data) {
     RS_ActionInterface* actionInstance = InnerFactory::doCreateActionInstance(actionType, ctx, data);
+    if (actionInstance != nullptr) {
+        actionInstance->postCreateInit();
+    }
     std::shared_ptr<RS_ActionInterface> result{actionInstance};
     return result;
 }

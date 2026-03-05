@@ -29,11 +29,11 @@
 class LC_ActionDrawLineRadiant;
 class LC_PropertyContainer;
 
-class LC_RadiantLineOptionsFiller: public LC_ActionOptionsPropertiesFiller{
+class LC_LineRadiantOptionsFiller: public LC_ActionOptionsPropertiesFiller{
 public:
-    LC_RadiantLineOptionsFiller() = default;
-    ~LC_RadiantLineOptionsFiller() override = default;
-    void fillToolOptionsContainer(LC_PropertyContainer* propertyContainer) override;
+    LC_LineRadiantOptionsFiller() = default;
+    ~LC_LineRadiantOptionsFiller() override = default;
+    void fillToolOptionsContainer(LC_PropertyContainer* container) override;
 };
 
 #endif

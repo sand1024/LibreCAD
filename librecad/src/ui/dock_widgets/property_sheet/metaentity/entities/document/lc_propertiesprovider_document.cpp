@@ -75,7 +75,7 @@ void LC_PropertiesProviderDocument::fillDocumentProperties(LC_PropertyContainer*
 }
 
 LC_PropertyContainer*  LC_PropertiesProviderDocument::createToolOptionsSection(LC_PropertyContainer* container) const{
-    const auto result = createSection(container, {SECTION_TOOL_OPTIONS, tr("Action Options"), tr("Options for currenctly active tool")});
+    const auto result = createSection(container, {SECTION_TOOL_OPTIONS, tr("Action Options"), tr("Options for currently active tool action")});
     return result;
 }
 

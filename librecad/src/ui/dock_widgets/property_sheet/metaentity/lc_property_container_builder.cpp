@@ -21,7 +21,6 @@
  * ********************************************************************************
  */
 
-
 #include "lc_property_container_builder.h"
 
 #include "lc_graphicviewport.h"
@@ -35,8 +34,8 @@
 #include "lc_propertysheetwidget.h"
 
 LC_PropertyQString* LC_PropertyContainerBuilder::createReadonlyStringProperty(const LC_Property::Names& names,
-                                                                              QList<LC_PropertyAtomic*>* props,
-                                                                              LC_PropertyContainer* cont, const QString& value) {
+                                                                              QList<LC_PropertyAtomic*>* props, LC_PropertyContainer* cont,
+                                                                              const QString& value) {
     auto* property = new LC_PropertyQString(cont, true);
     property->setNames(names);
     property->setValue(value);
@@ -45,7 +44,10 @@ LC_PropertyQString* LC_PropertyContainerBuilder::createReadonlyStringProperty(co
     return property;
 }
 
-LC_PropertyDouble* LC_PropertyContainerBuilder::createDoubleProperty(const LC_Property::Names& names, LC_PropertyContainer* cont, const LC_ActionContext::InteractiveInputInfo::InputType inputType, LC_ActionContext* actionContext, LC_LateCompletionRequestor* requestor) {
+LC_PropertyDouble* LC_PropertyContainerBuilder::createDoubleProperty(const LC_Property::Names& names, LC_PropertyContainer* cont,
+                                                                     const LC_ActionContext::InteractiveInputInfo::InputType inputType,
+                                                                     LC_ActionContext* actionContext,
+                                                                     LC_LateCompletionRequestor* requestor) {
     auto* property = new LC_PropertyDouble(cont, false);
     property->setNames(names);
     property->setInteractiveInputType(inputType);
@@ -63,13 +65,14 @@ LC_PropertyDouble* LC_PropertyContainerBuilder::createDoubleProperty(const LC_Pr
                                                                      const LC_ActionContext::InteractiveInputInfo::InputType inputType,
                                                                      LC_ActionContext* actionContext,
                                                                      LC_LateCompletionRequestor* requestor) {
-
     LC_PropertyDouble* property = createDoubleProperty(names, cont, inputType, actionContext, requestor);
     props->push_back(property);
     return property;
 }
 
-LC_PropertyRSVector* LC_PropertyContainerBuilder::createVectorProperty(const LC_Property::Names& names, LC_PropertyContainer* cont, LC_ActionContext* actionContext, LC_LateCompletionRequestor* requestor) {
+LC_PropertyRSVector* LC_PropertyContainerBuilder::createVectorProperty(const LC_Property::Names& names, LC_PropertyContainer* cont,
+                                                                       LC_ActionContext* actionContext,
+                                                                       LC_LateCompletionRequestor* requestor) {
     auto* property = new LC_PropertyRSVector(cont, false);
     property->setNames(names);
     if (requestor != nullptr) {
@@ -82,16 +85,14 @@ LC_PropertyRSVector* LC_PropertyContainerBuilder::createVectorProperty(const LC_
     return property;
 }
 
-LC_PropertyBool* LC_PropertyContainerBuilder::createBoolProperty(const LC_Property::Names& names,
-    LC_PropertyContainer* cont) {
+LC_PropertyBool* LC_PropertyContainerBuilder::createBoolProperty(const LC_Property::Names& names, LC_PropertyContainer* cont) {
     auto property = new LC_PropertyBool(cont, false);
     property->setNames(names);
     return property;
 }
 
-LC_PropertyRSVector* LC_PropertyContainerBuilder::createVectorProperty(const LC_Property::Names& names,
-                                                                       QList<LC_PropertyAtomic*>* props, LC_PropertyContainer* cont,
-                                                                       LC_ActionContext* actionContext,
+LC_PropertyRSVector* LC_PropertyContainerBuilder::createVectorProperty(const LC_Property::Names& names, QList<LC_PropertyAtomic*>* props,
+                                                                       LC_PropertyContainer* cont, LC_ActionContext* actionContext,
                                                                        LC_LateCompletionRequestor* requestor) {
     LC_PropertyRSVector* property = createVectorProperty(names, cont, actionContext, requestor);
     props->push_back(property);

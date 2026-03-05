@@ -25,6 +25,7 @@
 
 #include "lc_propertyprovider_utils.h"
 #include "rs_graphic.h"
+#include "rs_math.h"
 #include "rs_units.h"
 
 namespace {
@@ -156,8 +157,8 @@ void LC_PropertiesProviderGraphicUnits::createAnglesBasisZeroDirection(LC_Proper
         tr("Direction of zero angle (in degrees). 0 degrees there is 3 pm.")
     };
     auto funGet = [](const RS_Graphic* e) -> double {
-        const double anglesBase = e->getAnglesBase();
-        return anglesBase;
+        const double base = e->getAnglesBase();
+        return base;
     };
     auto funSet = [this](const double& v, RS_Graphic* e) -> void {
         e->setAnglesBase(v);

@@ -507,36 +507,36 @@ set (SHARED_SOURCES
      librecad/src/actions/drawing/draw/image/rs_actiondrawimage.cpp
      librecad/src/actions/drawing/draw/image/rs_actiondrawimage.h
      librecad/src/actions/drawing/draw/line/lc_abstractactiondrawline.cpp
-     librecad/src/actions/drawing/draw/line/lc_actiondrawlineanglerel.cpp
-     librecad/src/actions/drawing/draw/line/lc_actiondrawlineanglerel.h
-     librecad/src/actions/drawing/draw/line/lc_actiondrawlinefrompointtoline.cpp
-     librecad/src/actions/drawing/draw/line/lc_actiondrawlinesnake.cpp
-     librecad/src/actions/drawing/draw/line/lc_actiondrawlinesnake.h
-     librecad/src/actions/drawing/draw/line/lc_actiondrawslicedivide.cpp
-     librecad/src/actions/drawing/draw/line/misc/lc_action_draw_boundingbox.cpp
-     librecad/src/actions/drawing/draw/line/misc/lc_action_draw_boundingbox.h
-     librecad/src/actions/drawing/draw/line/misc/lc_actiondrawcross.cpp
-     librecad/src/actions/drawing/draw/line/misc/lc_actiondrawcross.h
-     librecad/src/actions/drawing/draw/line/misc/lc_actiondrawmidline.cpp
-     librecad/src/actions/drawing/draw/line/misc/lc_actiondrawmidline.h
+     librecad/src/actions/drawing/draw/line/lc_action_draw_line_angle_rel.cpp
+     librecad/src/actions/drawing/draw/line/lc_action_draw_line_angle_rel.h
+     librecad/src/actions/drawing/draw/line/lc_action_draw_line_from_point_to_line.cpp
+     librecad/src/actions/drawing/draw/line/lc_action_draw_line_snake.cpp
+     librecad/src/actions/drawing/draw/line/lc_action_draw_line_snake.h
+     librecad/src/actions/drawing/draw/line/lc_action_draw_slice_divide.cpp
+     librecad/src/actions/drawing/draw/line/misc/lc_action_draw_bounding_box.cpp
+     librecad/src/actions/drawing/draw/line/misc/lc_action_draw_bounding_box.h
+     librecad/src/actions/drawing/draw/line/misc/lc_action_draw_center_mark.cpp
+     librecad/src/actions/drawing/draw/line/misc/lc_action_draw_center_mark.h
+     librecad/src/actions/drawing/draw/line/misc/lc_action_draw_center_line.cpp
+     librecad/src/actions/drawing/draw/line/misc/lc_action_draw_center_line.h
      librecad/src/actions/drawing/draw/line/misc/lc_action_draw_line_radiant.h
      librecad/src/actions/drawing/draw/line/misc/lc_action_draw_line_radiant.cpp
-     librecad/src/actions/drawing/draw/line/rs_actiondrawline.cpp
-     librecad/src/actions/drawing/draw/line/rs_actiondrawline.h
-     librecad/src/actions/drawing/draw/line/rs_actiondrawlineangle.cpp
-     librecad/src/actions/drawing/draw/line/rs_actiondrawlineangle.h
-     librecad/src/actions/drawing/draw/line/rs_actiondrawlinebisector.cpp
-     librecad/src/actions/drawing/draw/line/rs_actiondrawlinebisector.h
+     librecad/src/actions/drawing/draw/line/lc_action_draw_line.cpp
+     librecad/src/actions/drawing/draw/line/lc_action_draw_line.h
+     librecad/src/actions/drawing/draw/line/lc_action_draw_line_angle.cpp
+     librecad/src/actions/drawing/draw/line/lc_action_draw_line_angle.h
+     librecad/src/actions/drawing/draw/line/lc_action_draw_line_bisector.cpp
+     librecad/src/actions/drawing/draw/line/lc_action_draw_line_bisector.h
      librecad/src/actions/drawing/draw/line/rs_actiondrawlinehorvert.cpp
      librecad/src/actions/drawing/draw/line/rs_actiondrawlinehorvert.h
      librecad/src/actions/drawing/draw/line/rs_actiondrawlineorthtan.cpp
      librecad/src/actions/drawing/draw/line/rs_actiondrawlineorthtan.h
-     librecad/src/actions/drawing/draw/line/rs_actiondrawlineparallel.cpp
-     librecad/src/actions/drawing/draw/line/rs_actiondrawlineparallel.h
-     librecad/src/actions/drawing/draw/line/rs_actiondrawlineparallelthrough.cpp
-     librecad/src/actions/drawing/draw/line/rs_actiondrawlineparallelthrough.h
-     librecad/src/actions/drawing/draw/line/rs_actiondrawlinerelangle.cpp
-     librecad/src/actions/drawing/draw/line/rs_actiondrawlinerelangle.h
+     librecad/src/actions/drawing/draw/line/lc_action_draw_line_parallel.cpp
+     librecad/src/actions/drawing/draw/line/lc_action_draw_line_parallel.h
+     librecad/src/actions/drawing/draw/line/lc_action_draw_line_parallel_through.cpp
+     librecad/src/actions/drawing/draw/line/lc_action_draw_line_parallel_through.h
+     librecad/src/actions/drawing/draw/line/lc_action_draw_line_rel_angle.cpp
+     librecad/src/actions/drawing/draw/line/lc_action_draw_line_rel_angle.h
      librecad/src/actions/drawing/draw/line/rs_actiondrawlinetangent1.cpp
      librecad/src/actions/drawing/draw/line/rs_actiondrawlinetangent1.h
      librecad/src/actions/drawing/draw/line/rs_actiondrawlinetangent2.cpp
@@ -1229,29 +1229,29 @@ set (SHARED_SOURCES
      librecad/src/ui/action_options/lc_action_options_widget.h
      librecad/src/ui/action_options/lc_action_options_widget_base.cpp
      librecad/src/ui/action_options/lc_action_options_widget_base.h
-     librecad/src/ui/action_options/line/lc_lineanglereloptions.cpp
-     librecad/src/ui/action_options/line/lc_linefrompointtolineoptions.cpp
-     librecad/src/ui/action_options/line/lc_lineoptions.cpp
-     librecad/src/ui/action_options/line/lc_slicedivideoptions.cpp
+     librecad/src/ui/action_options/line/lc_line_angle_rel_options_widget.cpp
+     librecad/src/ui/action_options/line/lc_line_from_point_to_line_options_widget.cpp
+     librecad/src/ui/action_options/line/lc_line_snake_options_widget.cpp
+     librecad/src/ui/action_options/line/lc_slice_divide_options_widget.cpp
      librecad/src/ui/action_options/line/lc_line_radiant_options_widget.h
      librecad/src/ui/action_options/line/lc_line_radiant_options_widget.cpp
-     librecad/src/ui/action_options/line/qg_lineangleoptions.cpp
-     librecad/src/ui/action_options/line/qg_lineangleoptions.h
-     librecad/src/ui/action_options/line/qg_linebisectoroptions.cpp
-     librecad/src/ui/action_options/line/qg_linebisectoroptions.h
-     librecad/src/ui/action_options/line/qg_lineoptions.cpp
-     librecad/src/ui/action_options/line/qg_lineoptions.h
-     librecad/src/ui/action_options/line/qg_lineparalleloptions.cpp
-     librecad/src/ui/action_options/line/qg_lineparalleloptions.h
-     librecad/src/ui/action_options/line/qg_lineparallelthroughoptions.cpp
-     librecad/src/ui/action_options/line/qg_lineparallelthroughoptions.h
-     librecad/src/ui/action_options/line/qg_linerelangleoptions.cpp
-     librecad/src/ui/action_options/line/qg_linerelangleoptions.h
-     librecad/src/ui/action_options/misc/lc_crossoptions.cpp
-     librecad/src/ui/action_options/misc/lc_drawboundingboxoptions.cpp
-     librecad/src/ui/action_options/misc/lc_drawboundingboxoptions.h
-     librecad/src/ui/action_options/misc/lc_midlineoptions.cpp
-     librecad/src/ui/action_options/misc/lc_midlineoptions.h
+     librecad/src/ui/action_options/line/lc_line_angle_options_widget.cpp
+     librecad/src/ui/action_options/line/lc_line_angle_options_widget.h
+     librecad/src/ui/action_options/line/lc_line_bisector_options_widget.cpp
+     librecad/src/ui/action_options/line/lc_line_bisector_options_widget.h
+     librecad/src/ui/action_options/line/lc_line_options_widget.cpp
+     librecad/src/ui/action_options/line/lc_line_options_widget.h
+     librecad/src/ui/action_options/line/lc_line_parallel_options_widget.cpp
+     librecad/src/ui/action_options/line/lc_line_parallel_options_widget.h
+     librecad/src/ui/action_options/line/lc_line_parallel_through_options_widget.cpp
+     librecad/src/ui/action_options/line/lc_line_parallel_through_options_widget.h
+     librecad/src/ui/action_options/line/lc_line_rel_angle_options_widget.cpp
+     librecad/src/ui/action_options/line/lc_line_rel_angle_options_widget.h
+     librecad/src/ui/action_options/misc/lc_center_mark_options_widget.cpp
+     librecad/src/ui/action_options/misc/lc_draw_bounding_box_options_widget.cpp
+     librecad/src/ui/action_options/misc/lc_draw_bounding_box_options_widget.h
+     librecad/src/ui/action_options/misc/lc_center_line_options_widget.cpp
+     librecad/src/ui/action_options/misc/lc_center_line_options_widget.h
      librecad/src/ui/action_options/modify/lc_duplicateoptions.cpp
      librecad/src/ui/action_options/modify/lc_linejoinoptions.cpp
      librecad/src/ui/action_options/modify/lc_modifyalignoptions.cpp
@@ -1924,6 +1924,30 @@ set (SHARED_SOURCES
      librecad/src/ui/dock_widgets/property_sheet/metaentity/lc_property_container_builder.cpp
      librecad/src/lib/actions/lc_action_options_base.cpp
      librecad/src/lib/actions/lc_action_options_base.h
+     librecad/src/ui/action_options/line/lc_line_angle_rel_options_filler.cpp
+     librecad/src/ui/action_options/line/lc_line_angle_rel_options_filler.h
+     librecad/src/ui/action_options/line/lc_slice_divide_options_filler.cpp
+     librecad/src/ui/action_options/line/lc_slice_divide_options_filler.h
+     librecad/src/ui/action_options/misc/lc_center_mark_options_filler.cpp
+     librecad/src/ui/action_options/misc/lc_center_mark_options_filler.h
+     librecad/src/ui/action_options/misc/lc_center_line_options_filler.cpp
+     librecad/src/ui/action_options/misc/lc_center_line_options_filler.h
+     librecad/src/ui/action_options/misc/lc_draw_bounding_box_options_filler.cpp
+     librecad/src/ui/action_options/misc/lc_draw_bounding_box_options_filler.h
+     librecad/src/ui/action_options/line/lc_line_angle_options_filler.cpp
+     librecad/src/ui/action_options/line/lc_line_angle_options_filler.h
+     librecad/src/ui/action_options/line/lc_line_parallel_through_options_filler.cpp
+     librecad/src/ui/action_options/line/lc_line_parallel_through_options_filler.h
+     librecad/src/ui/action_options/line/lc_line_parallel_options_filler.cpp
+     librecad/src/ui/action_options/line/lc_line_parallel_options_filler.h
+     librecad/src/ui/action_options/line/lc_line_snake_options_filler.cpp
+     librecad/src/ui/action_options/line/lc_line_snake_options_filler.h
+     librecad/src/ui/action_options/line/lc_line_from_point_to_line_options_filler.cpp
+     librecad/src/ui/action_options/line/lc_line_from_point_to_line_options_filler.h
+     librecad/src/ui/action_options/line/lc_line_bisector_options_filler.cpp
+     librecad/src/ui/action_options/line/lc_line_bisector_options_filler.h
+     librecad/src/ui/action_options/line/lc_line_rel_angle_options_filler.cpp
+     librecad/src/ui/action_options/line/lc_line_rel_angle_options_filler.h
 )
 
 set (MUPARSER_SOURCES
@@ -1985,6 +2009,8 @@ set (MAIN_SOURCES
      librecad/src/ui/dialogs/main/qg_dlginitial.cpp
      librecad/src/ui/dialogs/main/qg_dlginitial.h
      ${LIBRECAD_RES}
+     librecad/src/ui/action_options/line/lc_line_options_filler.cpp
+     librecad/src/ui/action_options/line/lc_line_options_filler.h
 )
 
 # Main executable

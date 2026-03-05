@@ -56,7 +56,8 @@ public:
 
     // fixme - rename
     ValueType value() const {
-        return correctValue(LC_PropertySingle<ValueType>::value());
+        auto value = LC_PropertySingle<ValueType>::value();
+        return correctValue(value);
     }
     ValueType minValue() const {
         return m_minValue;

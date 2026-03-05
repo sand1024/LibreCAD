@@ -38,6 +38,8 @@
 class LC_ActionOptionsPropertiesFiller : public LC_ToolOptionsPropertiesContainerProvider, public LC_ActionOptionsSupport,
                                          public LC_PropertyContainerBuilder {
 public:
+    // fixme - more interface high-level, move impl-specific methods into base impl class
+    [[deprecated]]
     LC_ActionOptionsPropertiesFiller()
         : LC_PropertyContainerBuilder(nullptr, QC_ApplicationWindow::getAppWindow()->getPropertySheetWidget()) {
     }
@@ -48,6 +50,7 @@ public:
 
     ~LC_ActionOptionsPropertiesFiller() override = default;
     void hideOptions() override;
+protected:
 
     template <class TValue>
     void createDelegatedStorage(LC_PropertySingle<TValue>* property, const typename LC_PropertyValueDelegated<TValue>::FunValueGet& funGet,
@@ -65,9 +68,11 @@ public:
 
     void addLinearDistance(const LC_Property::Names& names, LC_PropertyValueDelegated<double>::FunValueGet funGet,
                            LC_PropertyValueDelegated<double>::FunValueSetShort funSet, LC_PropertyContainer* cont,
-                           std::function<void(LC_PropertyViewDescriptor*)> funFillViewAttrs = nullptr);
+                           std::function<bool(LC_PropertyViewDescriptor*)> funFillViewAttrs = nullptr);
     void addRawAngle(const LC_Property::Names& names, LC_PropertyValueDelegated<double>::FunValueGet funGet,
                      LC_PropertyValueDelegated<double>::FunValueSetShort funSet, LC_PropertyContainer* cont);
+    void addRawAngleDegrees(const LC_Property::Names& names, LC_PropertyValueDelegated<double>::FunValueGet funGet,
+                            LC_PropertyValueDelegated<double>::FunValueSetShort funSet, LC_PropertyContainer* cont);
     void addWCSAngle(const LC_Property::Names& names, LC_PropertyValueDelegated<double>::FunValueGet funGet,
                      LC_PropertyValueDelegated<double>::FunValueSetShort funSet, LC_PropertyContainer* cont);
     void addEnum(const LC_Property::Names& names, const LC_EnumDescriptor* enumDescriptor,
@@ -82,10 +87,13 @@ public:
     void addString(const LC_Property::Names& names, LC_PropertyValueDelegated<QString>::FunValueGet funGet,
                    LC_PropertyValueDelegated<QString>::FunValueSetShort funSet, LC_PropertyContainer* container, bool multiLine = false,
                    std::function<bool(LC_PropertyViewDescriptor&)> funPrepareDescriptor = nullptr);
+    void createCommandsLine(LC_PropertyContainer* container, const QString& propertyName, const QString& linkTitle,
+                            const QString& linkTooltip, const QString& linkTitleRight, const QString& linkTooltipRight,
+                            const std::function<void(int linkIndex)>& clickHandler, const QString& commonDescription,
+                            bool leftEnabled = true, bool rightEnabled = true);
 
-protected:
     RS_ActionInterface* m_action {nullptr};
-    void doSetAction(RS_ActionInterface* a, bool update) override;
+    void doSetAction(RS_ActionInterface* a) override;
     void preSetupByAction(RS_ActionInterface* a) override;
     RS_ActionInterface* getAction() {return m_action;}
 

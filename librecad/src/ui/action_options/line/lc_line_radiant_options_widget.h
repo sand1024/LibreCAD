@@ -32,13 +32,13 @@ class LC_ActionDrawLineRadiant;
 class RS_ActionInterface;
 
 namespace Ui {
-    class LC_OptionsWidgetLineRadiant;
+    class LC_LineRadiantOptionsWidget;
 }
 
-class LC_OptionsWidgetRadiantLine : public LC_ActionOptionsWidgetBase {
+class LC_LineRadiantOptionsWidget : public LC_ActionOptionsWidgetBase {
     Q_OBJECT public:
-    explicit LC_OptionsWidgetRadiantLine();
-    ~LC_OptionsWidgetRadiantLine() override;
+    explicit LC_LineRadiantOptionsWidget();
+    ~LC_LineRadiantOptionsWidget() override;
 protected slots:
     void languageChange() override;
     void onLengthTypeIndexChanged(int index);
@@ -47,10 +47,9 @@ protected slots:
     void onYEditingFinished();
     void onLengthEditingFinished();
 protected:
-    void doSaveSettings() override;
-    void doSetAction(RS_ActionInterface* a, bool update) override;
+    void doSetAction(RS_ActionInterface* a) override;
 private:
-    Ui::LC_OptionsWidgetLineRadiant* ui;
+    Ui::LC_LineRadiantOptionsWidget* ui;
     LC_ActionDrawLineRadiant* m_action = nullptr;
 };
 #endif

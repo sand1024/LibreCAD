@@ -23,13 +23,14 @@
 
 #include "lc_action_draw_line_radiant.h"
 
+#include "rs_document.h"
 #include "lc_action_options_editor_typed.h"
 #include "lc_line_radiant_options_filler.h"
 #include "lc_line_radiant_options_widget.h"
 #include "rs_line.h"
 #include "rs_settings.h"
 
-void LC_ActionDrawLineRadiantOptions::doSaveSettings() {
+void LC_ActionDrawLineRadiant::doSaveOptions() {
     save("Radiant1" ,m_radiantPoints[ONE]);
     save("Radiant2" ,m_radiantPoints[TWO]);
     save("Radiant3", m_radiantPoints[THREE]);
@@ -39,7 +40,7 @@ void LC_ActionDrawLineRadiantOptions::doSaveSettings() {
     save("LengthType", m_lengthType);
 }
 
-void LC_ActionDrawLineRadiantOptions::doLoadSettings() {
+void LC_ActionDrawLineRadiant::doLoadOptions() {
     m_radiantPoints[ONE] = loadVector("Radiant1" ,RS_Vector(-1000, 0));
     m_radiantPoints[TWO] = loadVector("Radiant2" ,RS_Vector(1000, 0));
     m_radiantPoints[THREE] = loadVector("Radiant3", RS_Vector(0, -1000));
@@ -50,14 +51,7 @@ void LC_ActionDrawLineRadiantOptions::doLoadSettings() {
 }
 
 LC_ActionDrawLineRadiant::LC_ActionDrawLineRadiant(LC_ActionContext* actionContext) :
-    LC_UndoableDocumentModificationAction("DrawLineRadiant", actionContext, RS2::ActionDrawLineRadiant),
-    m_actionOptions{std::make_unique<LC_ActionDrawLineRadiantOptions>("ActionDrawLineRadiant", "")}{
-    m_actionOptions->load();
-    m_optionsEditor.reset(new LC_ActionOptionsEditorTyped(this, [] {
-        return new LC_OptionsWidgetRadiantLine();
-    }, [] {
-        return new LC_RadiantLineOptionsFiller();
-    }));
+    LC_UndoableDocumentModificationAction("ActionDrawLineRadiant", actionContext, RS2::ActionDrawLineRadiant) {
 }
 
 void LC_ActionDrawLineRadiant::init(const int status) {
@@ -111,10 +105,6 @@ void LC_ActionDrawLineRadiant::previewRadiantLine(const RS_Vector& snapped, cons
             }
         }
     }
-}
-
-bool LC_ActionDrawLineRadiant::isFreeLength() const {
-    return m_actionOptions->isFreeLength();
 }
 
 void LC_ActionDrawLineRadiant::onMouseMoveEvent([[maybe_unused]] const int status, const LC_MouseEvent* e) {
@@ -178,7 +168,7 @@ bool LC_ActionDrawLineRadiant::doProcessCommand(const int status, const QString&
             bool ok = false;
             const double l = RS_Math::eval(command, &ok);
             if (ok && l > RS_TOLERANCE) {
-                m_actionOptions->setLength(l);
+                setLength(l);
                 restoreMainStatus();
                 updateOptions();
             }
@@ -188,23 +178,23 @@ bool LC_ActionDrawLineRadiant::doProcessCommand(const int status, const QString&
         }
         else if (status == SetLengthType) {
            if (tr("line") == command) {
-               setLengthType(LC_ActionDrawLineRadiantOptions::LINE);
+               setLengthType(LINE);
                updateOptions();
            }
             else if (tr("x") == command) {
-               setLengthType(LC_ActionDrawLineRadiantOptions::BY_X);
+               setLengthType(BY_X);
                updateOptions();
             }
             else if (tr("y") == command) {
-               setLengthType(LC_ActionDrawLineRadiantOptions::BY_Y);
+               setLengthType(BY_Y);
                updateOptions();
             }
             else if (tr("point") == command) {
-               setLengthType(LC_ActionDrawLineRadiantOptions::TO_POINT);
+               setLengthType(TO_POINT);
                updateOptions();
             }
             else if (tr("free") == command) {
-               setLengthType(LC_ActionDrawLineRadiantOptions::FREE);
+               setLengthType(FREE);
                updateOptions();
             }
             else {
@@ -216,7 +206,7 @@ bool LC_ActionDrawLineRadiant::doProcessCommand(const int status, const QString&
             const int idx = command.toInt(&ok);
             if (ok) {
                 if (idx < 5 && idx > 0) {
-                    const auto type = static_cast<LC_ActionDrawLineRadiantOptions::RadiantIdx>(idx-1);
+                    const auto type = static_cast<RadiantIdx>(idx-1);
                     setActiveRadiantIndex(type);
                     updateOptions();
                     RS_Vector activePoint = getActiveRadiant();
@@ -259,7 +249,7 @@ void LC_ActionDrawLineRadiant::onCoordinateEvent(const int status, const bool is
             break;
         }
         case SetRadiant: {
-            m_actionOptions->setActiveRadiantPoint(pos);
+            setActiveRadiantPoint(pos);
             updateOptions();
             restoreMainStatus();
             break;
@@ -277,18 +267,16 @@ RS_Vector LC_ActionDrawLineRadiant::defineLineSecondPointFree(const RS_Vector& s
 
 RS_Vector LC_ActionDrawLineRadiant::defineLineSecondPointAuto(const RS_Vector& snapped) const {
     const auto activePoint = getActiveRadiant();
-    switch (m_actionOptions->getLenghType()) {
-        case LC_ActionDrawLineRadiantOptions::LenghtType::TO_POINT: {
+    switch (m_lengthType) {
+        case LenghtType::TO_POINT: {
             return activePoint;
         }
-        case LC_ActionDrawLineRadiantOptions::LenghtType::LINE: {
+        case LenghtType::LINE: {
             const double angle = snapped.angleTo(activePoint);
-            double length = m_actionOptions->getLength();
-            const RS_Vector result = snapped.relative(length, angle);
+            const RS_Vector result = snapped.relative(m_length, angle);
             return result;
         }
-        case LC_ActionDrawLineRadiantOptions::LenghtType::BY_X: {
-            const double len = m_actionOptions->getLength();
+        case LenghtType::BY_X: {
             const double angle = snapped.angleTo(activePoint);
             // here we perform all calculations in user coordinate system
             const RS_Vector snappedUCS = toUCS(snapped);
@@ -298,10 +286,10 @@ RS_Vector LC_ActionDrawLineRadiant::defineLineSecondPointAuto(const RS_Vector& s
             double ucsY;
 
             if (snappedUCS.x > activeUCS.x) {
-                ucsX = snappedUCS.x - len;
+                ucsX = snappedUCS.x - m_length;
             }
             else {
-                ucsX = snappedUCS.x + len;
+                ucsX = snappedUCS.x + m_length;
             }
 
             const double ucsAngle = toUCSAngle(angle);
@@ -312,7 +300,7 @@ RS_Vector LC_ActionDrawLineRadiant::defineLineSecondPointAuto(const RS_Vector& s
             }
             else {
                 const double tanAlpha = std::tan(correctedAngle);
-                const double leg = len * tanAlpha;
+                const double leg = m_length * tanAlpha;
                 if (snappedUCS.y > activeUCS.y) {
                     ucsY = snappedUCS.y - leg;
                 }
@@ -323,8 +311,8 @@ RS_Vector LC_ActionDrawLineRadiant::defineLineSecondPointAuto(const RS_Vector& s
             const RS_Vector ucsPoint(ucsX, ucsY);
             return toWorld(ucsPoint);
         }
-        case LC_ActionDrawLineRadiantOptions::LenghtType::BY_Y: {
-            const double len = m_actionOptions->getLength();
+        case LenghtType::BY_Y: {
+            const double len = m_length;
             const double angle = snapped.angleTo(activePoint);
 
             const RS_Vector snappedUCS = toUCS(snapped);
@@ -430,59 +418,15 @@ QStringList LC_ActionDrawLineRadiant::getAvailableCommands() {
     return cmd;
 }
 
-RS_Vector LC_ActionDrawLineRadiant::getRadiantPoint(const LC_ActionDrawLineRadiantOptions::RadiantIdx idx) const {
-    return m_actionOptions->getRadiantPoint(idx);
-}
-
-void LC_ActionDrawLineRadiant::setRadiantPoint(const LC_ActionDrawLineRadiantOptions::RadiantIdx idx, const RS_Vector& pos) {
-    m_actionOptions->setRadiantPoint(idx, pos);
-}
-
-RS_Vector LC_ActionDrawLineRadiant::getActiveRadiant() const {
-    return m_actionOptions->getActiveRadiant();
-}
-
-void LC_ActionDrawLineRadiant::setActiveRadiantIndex(LC_ActionDrawLineRadiantOptions::RadiantIdx idx) {
-    m_actionOptions->setActiveRadiantIndex(idx);
-}
-
-LC_ActionDrawLineRadiantOptions::RadiantIdx LC_ActionDrawLineRadiant::getActiveRadiantIndex() const {
-    return m_actionOptions->getActiveRadiantIndex();
-}
-
-void LC_ActionDrawLineRadiant::setActiveX(const double val) {
-    m_actionOptions->setActiveX(val);
-}
-
-void LC_ActionDrawLineRadiant::setActiveRadiantPoint(const RS_Vector& v) {
-    m_actionOptions->setActiveRadiantPoint(v);
-}
-
-void LC_ActionDrawLineRadiant::setActiveY(const double val) {
-    m_actionOptions->setActiveY(val);
-}
-
-double LC_ActionDrawLineRadiant::getActiveX() const {
-    return m_actionOptions->getActiveX();
-}
-
-double LC_ActionDrawLineRadiant::getActiveY() const {
-    return m_actionOptions->getActiveY();
-}
-
-void LC_ActionDrawLineRadiant::setLength(const double len) {
-    m_actionOptions->m_length = len;
-}
-
-double LC_ActionDrawLineRadiant::getLength() const {
-    return m_actionOptions->m_length;
-}
-
-void LC_ActionDrawLineRadiant::setLengthType(const LC_ActionDrawLineRadiantOptions::LenghtType type) {
-    m_actionOptions->m_lengthType = type;
+void LC_ActionDrawLineRadiant::setLengthType(const LenghtType type) {
+    m_lengthType = type;
     setMainStatus(SetPoint);
 }
 
-LC_ActionDrawLineRadiantOptions::LenghtType LC_ActionDrawLineRadiant::getLenghType() const {
-    return m_actionOptions->m_lengthType;
+LC_ActionOptionsWidget* LC_ActionDrawLineRadiant::createOptionsWidget() {
+    return new LC_LineRadiantOptionsWidget();
+}
+
+LC_ActionOptionsPropertiesFiller* LC_ActionDrawLineRadiant::createOptionsFiller() {
+    return new LC_LineRadiantOptionsFiller();
 }

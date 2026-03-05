@@ -60,9 +60,9 @@ void LC_PropertiesProviderGraphicLayer::fillDocumentProperties(LC_PropertyContai
         const LC_Property::Names names = {SECTION_GENERAL, tr("Active Layer"), tr("Active layer properties")};
         const auto cont = createSection(container, names);
         createActiveLayer(cont, graphic);
+        createLayerType(cont, graphic);
         createColor(cont, graphic);
         createLineWidth(cont, graphic);
-        createLayerType(cont, graphic);
         createLineType(cont, graphic);
         createVisible(graphic, cont);
         createLocked(graphic, cont);

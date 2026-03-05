@@ -131,6 +131,7 @@ protected:
     static ChildExpandsionViewStyle m_expandedIndicatorStyle;
 
     static QColor disabledTextColor(const QStylePainter& painter);
+    static QColor activeTextColor(const QStylePainter& painter);
 
 private:
     LC_PropertyViewFactory* m_factory = nullptr;

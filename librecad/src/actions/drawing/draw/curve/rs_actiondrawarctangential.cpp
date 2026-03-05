@@ -321,16 +321,23 @@ LC_ActionOptionsWidget* RS_ActionDrawArcTangential::createOptionsWidget(){
     return new QG_ArcTangentialOptions();
 }
 
+// fixme - options- update UI
+[[deprecated]]
 void RS_ActionDrawArcTangential::updateOptionsRadius(const double radius) const {
-    if (m_optionWidget != nullptr){
+    QVariant value(radius);
+    updateOptionsUI(1, &value);
+    /*if (m_optionWidget != nullptr){
         auto* options = static_cast <QG_ArcTangentialOptions*> (m_optionWidget.get());
         options->updateRadius(radius);
-    }
+    }*/
 }
-
+// fixme - options- update UI
+[[deprecated]]
 void RS_ActionDrawArcTangential::updateOptionsAngle(const double angle) const {
-    if (m_optionWidget != nullptr){
-        auto* options = static_cast <QG_ArcTangentialOptions*> (m_optionWidget.get());
-        options->updateAngle(angle);
-    }
+    QVariant value(angle);
+    updateOptionsUI(2, &value);
+    // if (m_optionWidget != nullptr){
+    //     auto* options = static_cast <QG_ArcTangentialOptions*> (m_optionWidget.get());
+    //     options->updateAngle(angle);
+    // }
 }

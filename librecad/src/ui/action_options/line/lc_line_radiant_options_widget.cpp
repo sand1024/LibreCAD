@@ -28,15 +28,15 @@
 #include "rs_settings.h"
 #include "ui_lc_line_radiant_options_widget.h"
 
-LC_OptionsWidgetRadiantLine::LC_OptionsWidgetRadiantLine()
+LC_LineRadiantOptionsWidget::LC_LineRadiantOptionsWidget()
     :  LC_ActionOptionsWidgetBase(RS2::ActionDrawLineRadiant, "Draw", "LineToFarPoint")
-    , ui(new Ui::LC_OptionsWidgetLineRadiant){
+    , ui(new Ui::LC_LineRadiantOptionsWidget){
     ui->setupUi(this);
-    connect(ui->cbLengthType, &QComboBox::currentIndexChanged, this, &LC_OptionsWidgetRadiantLine::onLengthTypeIndexChanged);
-    connect(ui->cbPointSelector, &QComboBox::currentIndexChanged, this, &LC_OptionsWidgetRadiantLine::onActivePointIndexChanged);
-    connect(ui->leX, &QLineEdit::editingFinished, this, &LC_OptionsWidgetRadiantLine::onXEditingFinished);
-    connect(ui->leY, &QLineEdit::editingFinished, this, &LC_OptionsWidgetRadiantLine::onYEditingFinished);
-    connect(ui->leLength, &QLineEdit::editingFinished, this, &LC_OptionsWidgetRadiantLine::onLengthEditingFinished);
+    connect(ui->cbLengthType, &QComboBox::currentIndexChanged, this, &LC_LineRadiantOptionsWidget::onLengthTypeIndexChanged);
+    connect(ui->cbPointSelector, &QComboBox::currentIndexChanged, this, &LC_LineRadiantOptionsWidget::onActivePointIndexChanged);
+    connect(ui->leX, &QLineEdit::editingFinished, this, &LC_LineRadiantOptionsWidget::onXEditingFinished);
+    connect(ui->leY, &QLineEdit::editingFinished, this, &LC_LineRadiantOptionsWidget::onYEditingFinished);
+    connect(ui->leLength, &QLineEdit::editingFinished, this, &LC_LineRadiantOptionsWidget::onLengthEditingFinished);
 
     connectInteractiveInputButton(ui->tbPickX, LC_ActionContext::InteractiveInputInfo::POINT_X, "pointX");
     ui->leX->setProperty("_tagHolder", "pointX");
@@ -50,20 +50,16 @@ LC_OptionsWidgetRadiantLine::LC_OptionsWidgetRadiantLine()
     connectInteractiveInputButton(ui->tbPickPoint, LC_ActionContext::InteractiveInputInfo::POINT, "farPoint");
 }
 
-LC_OptionsWidgetRadiantLine::~LC_OptionsWidgetRadiantLine(){
+LC_LineRadiantOptionsWidget::~LC_LineRadiantOptionsWidget(){
     delete ui;
     m_action = nullptr;
 }
 
-void LC_OptionsWidgetRadiantLine::doSaveSettings() {
-    m_action->saveOptions();
-}
-
-void LC_OptionsWidgetRadiantLine::doSetAction(RS_ActionInterface* a, bool update) {
+void LC_LineRadiantOptionsWidget::doSetAction(RS_ActionInterface* a) {
     m_action = static_cast<LC_ActionDrawLineRadiant *>(a);
     const double len = m_action->getLength();
     const int lengthType = m_action->getLenghType();
-    const LC_ActionDrawLineRadiantOptions::RadiantIdx pointId = m_action->getActiveRadiantIndex();
+    const LC_ActionDrawLineRadiant::RadiantIdx pointId = m_action->getActiveRadiantIndex();
     const RS_Vector activePoint = m_action->getActiveRadiant();
 
     LC_GuardedSignalsBlocker({ui->cbPointSelector, ui->leX, ui->leY, ui->cbLengthType, ui->leLength});
@@ -81,19 +77,19 @@ void LC_OptionsWidgetRadiantLine::doSetAction(RS_ActionInterface* a, bool update
     ui->cbPointSelector->setCurrentIndex(pointId);
 }
 
-void LC_OptionsWidgetRadiantLine::onActivePointIndexChanged(int index) {
-    const auto pointIdx = static_cast<LC_ActionDrawLineRadiantOptions::RadiantIdx>(index);
+void LC_LineRadiantOptionsWidget::onActivePointIndexChanged(int index) {
+    const auto pointIdx = static_cast<LC_ActionDrawLineRadiant::RadiantIdx>(index);
     m_action->setActiveRadiantIndex(pointIdx);
     m_action->updateOptions();
 }
 
-void LC_OptionsWidgetRadiantLine::onLengthTypeIndexChanged(int index) {
-    const auto lengthType = static_cast<LC_ActionDrawLineRadiantOptions::LenghtType>(index);
+void LC_LineRadiantOptionsWidget::onLengthTypeIndexChanged(int index) {
+    const auto lengthType = static_cast<LC_ActionDrawLineRadiant::LenghtType>(index);
     m_action->setLengthType(lengthType);
     m_action->updateOptions();
 }
 
-void LC_OptionsWidgetRadiantLine::onXEditingFinished() {
+void LC_LineRadiantOptionsWidget::onXEditingFinished() {
     const QString val = ui->leX->text();
     double value;
     if (toDouble(val, value, 0.0, false)) {
@@ -108,7 +104,7 @@ void LC_OptionsWidgetRadiantLine::onXEditingFinished() {
     }
 }
 
-void LC_OptionsWidgetRadiantLine::onYEditingFinished() {
+void LC_LineRadiantOptionsWidget::onYEditingFinished() {
     const QString val = ui->leY->text();
     double value;
     if (toDouble(val, value, 0.0, false)) {
@@ -122,7 +118,7 @@ void LC_OptionsWidgetRadiantLine::onYEditingFinished() {
     }
 }
 
-void LC_OptionsWidgetRadiantLine::onLengthEditingFinished() {
+void LC_LineRadiantOptionsWidget::onLengthEditingFinished() {
     const QString val = ui->leLength->text();
     double value;
     if (toDouble(val, value, 0.0, false)) {
@@ -136,6 +132,6 @@ void LC_OptionsWidgetRadiantLine::onLengthEditingFinished() {
     }
 }
 
-void LC_OptionsWidgetRadiantLine::languageChange() {
+void LC_LineRadiantOptionsWidget::languageChange() {
     ui->retranslateUi(this);
 }

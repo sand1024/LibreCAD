@@ -30,6 +30,29 @@ LC_AbstractActionDrawLine::LC_AbstractActionDrawLine(const char* name, LC_Action
 
 LC_AbstractActionDrawLine::~LC_AbstractActionDrawLine() = default;
 
+void LC_AbstractActionDrawLine::setDirection(int dir) {
+    switch (dir) {
+        case DIRECTION_X: {
+            setSetXDirectionState();
+            break;
+        }
+        case DIRECTION_Y: {
+            setSetYDirectionState();
+            break;
+        }
+        case DIRECTION_POINT: {
+            setSetPointDirectionState();
+            break;
+        }
+        case DIRECTION_ANGLE: {
+            setSetAngleDirectionState();
+            break;
+        }
+        default:
+            break;
+    }
+}
+
 /**
  * Setting new line start point. Checks whether we're in state that allows to set new start point and changes the action state.
  */
@@ -114,6 +137,7 @@ bool LC_AbstractActionDrawLine::doProcessCommand(const int status, const QString
     // line to angle
     else if (checkCommand("angle", c) && allowDirectionCommands) {
         setSetAngleState(false);
+        updateOptions();
     }
     else if (doProceedCommand(status, c)) {
         // delegate other commands to inherited actions
@@ -155,7 +179,6 @@ bool LC_AbstractActionDrawLine::doProcessCommandValue([[maybe_unused]] int statu
  */
 void LC_AbstractActionDrawLine::setAngleIsRelative(const bool value) {
     m_angleIsRelative = value;
-    updateOptions();
 }
 
 /**
@@ -172,7 +195,6 @@ bool LC_AbstractActionDrawLine::isAngleRelative() const {
 void LC_AbstractActionDrawLine::setSetAngleDirectionState() {
     m_direction = DIRECTION_ANGLE;
     setStatusForValidStartPoint(SetAngle);
-    updateOptions();
 }
 
 /**
@@ -181,7 +203,6 @@ void LC_AbstractActionDrawLine::setSetAngleDirectionState() {
 void LC_AbstractActionDrawLine::setSetPointDirectionState() {
     m_direction = DIRECTION_POINT;
     setStatusForValidStartPoint(SetPoint);
-    updateOptions();
 }
 
 /**
@@ -192,7 +213,6 @@ void LC_AbstractActionDrawLine::setSetAngleState(const bool relative) {
     m_direction = DIRECTION_ANGLE;
     m_angleIsRelative = relative;
     setStatusForValidStartPoint(SetAngle);
-    updateOptions();
 }
 
 /**
@@ -201,7 +221,6 @@ void LC_AbstractActionDrawLine::setSetAngleState(const bool relative) {
 void LC_AbstractActionDrawLine::setSetXDirectionState() {
     m_direction = DIRECTION_X;
     setStatusForValidStartPoint(SetDistance);
-    updateOptions();
 }
 
 /**
@@ -210,7 +229,6 @@ void LC_AbstractActionDrawLine::setSetXDirectionState() {
 void LC_AbstractActionDrawLine::setSetYDirectionState() {
     m_direction = DIRECTION_Y;
     setStatusForValidStartPoint(SetDistance);
-    updateOptions();
 }
 
 /**
@@ -221,7 +239,6 @@ void LC_AbstractActionDrawLine::setAngleValueDegrees(const double value) {
     if (getStatus() == SetAngle) {
         setStatusForValidStartPoint(SetDistance);
     }
-    updateOptions();
 }
 
 void LC_AbstractActionDrawLine::doSetAngleDegrees(const double value) {

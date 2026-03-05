@@ -22,11 +22,7 @@
 #ifndef LC_PROPERTYCONTAINER_H
 #define LC_PROPERTYCONTAINER_H
 
-#include <boost/geometry/algorithms/buffer.hpp>
-
 #include "lc_property_atomic.h"
-
-class QJsonObject;
 
 class LC_PropertyContainer : public LC_Property {
     Q_OBJECT Q_DISABLE_COPY(LC_PropertyContainer)

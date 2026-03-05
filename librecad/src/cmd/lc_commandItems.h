@@ -191,7 +191,7 @@ const LC_CommandItem g_commandList[] = {
         {
             {{"midline", QObject::tr("midline", "draw middle line")}},
             {{"ml", QObject::tr("ml", "draw mid line")}},
-            RS2::ActionDrawLineMiddle
+            RS2::ActionDrawCenterLine
         },
         {
                 {{"radiant", QObject::tr("radiant", "draw perspective line")}},

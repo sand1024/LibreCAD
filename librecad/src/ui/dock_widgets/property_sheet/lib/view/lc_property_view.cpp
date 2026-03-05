@@ -134,9 +134,14 @@ QStyle::State LC_PropertyView::getState(const bool isActive, const LC_PropertyVi
     return state;
 }
 
-QColor LC_PropertyView::disabledTextColor(const QStylePainter& painter) {
+QColor LC_PropertyView::activeTextColor(const QStylePainter& painter) {
     const auto palette = painter.style()->standardPalette();
     return palette.color(QPalette::Active, QPalette::PlaceholderText);
+}
+
+QColor LC_PropertyView::disabledTextColor(const QStylePainter& painter) {
+    const auto palette = painter.style()->standardPalette();
+    return palette.color(QPalette::Disabled, QPalette::PlaceholderText);
 }
 
 void LC_PropertyView::buildPartChildrenExpansion(LC_PropertyPaintContext& ctx, QList<LC_PropertyViewPart>& parts) const {

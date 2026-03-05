@@ -24,6 +24,8 @@
 #include "lc_action_options_properties_filler.h"
 
 #include "lc_enum_value_descriptor.h"
+#include "lc_property_action.h"
+#include "lc_property_action_link_view.h"
 #include "lc_property_container.h"
 #include "lc_property_enum.h"
 #include "lc_property_int.h"
@@ -43,7 +45,7 @@ void LC_ActionOptionsPropertiesFiller::hideOptions() {
     // saveSettings();
 }
 
-void LC_ActionOptionsPropertiesFiller::doSetAction(RS_ActionInterface* a, bool update) {
+void LC_ActionOptionsPropertiesFiller::doSetAction(RS_ActionInterface* a) {
     m_action = a;
 }
 
@@ -92,16 +94,20 @@ void LC_ActionOptionsPropertiesFiller::addLinearDistance(const LC_Property::Name
                                                          typename LC_PropertyValueDelegated<double>::FunValueGet funGet,
                                                          typename LC_PropertyValueDelegated<double>::FunValueSetShort funSet,
                                                          LC_PropertyContainer* cont,
-                                                         std::function<void(LC_PropertyViewDescriptor*)> funFillViewAttrs) {
+                                                         std::function<bool(LC_PropertyViewDescriptor*)> funFillViewAttrs) {
     auto property = createDoubleProperty(names, cont, LC_ActionContext::InteractiveInputInfo::InputType::DISTANCE, m_actionContext,
                                          m_widget);
+    bool readonly = false;
     if (funFillViewAttrs != nullptr) {
         LC_PropertyViewDescriptor descriptor;
-        funFillViewAttrs(&descriptor);
+        readonly = funFillViewAttrs(&descriptor);
         property->setViewDescriptor(descriptor);
     }
 
     createDelegatedStorage<double>(property, funGet, funSet);
+    if (readonly || funSet == nullptr) {
+        property->setReadOnly();
+    }
     cont->addChildProperty(property);
 }
 
@@ -114,6 +120,32 @@ void LC_ActionOptionsPropertiesFiller::addRawAngle(const LC_Property::Names& nam
     createDelegatedStorage<double>(property, funGet, funSet, [funGet](const double& v) -> bool {
         return LC_LineMath::isSameAngle(v, funGet());
     });
+    if (funSet == nullptr) {
+        property->setReadOnly();
+    }
+    cont->addChildProperty(property);
+}
+
+void LC_ActionOptionsPropertiesFiller::addRawAngleDegrees(const LC_Property::Names& names,
+                                                   typename LC_PropertyValueDelegated<double>::FunValueGet funGet,
+                                                   typename LC_PropertyValueDelegated<double>::FunValueSetShort funSet,
+                                                   LC_PropertyContainer* cont) {
+    auto property = createDoubleProperty(names, cont, LC_ActionContext::InteractiveInputInfo::InputType::ANGLE, m_actionContext, m_widget);
+
+    auto funGetValue = [funGet]()->double {
+      return RS_Math::deg2rad(funGet());
+    };
+
+    auto funSetValue = funSet == nullptr ? funSet : [funSet](double v) ->void {
+        funSet(RS_Math::rad2deg(v));
+    };
+
+    createDelegatedStorage<double>(property, funGetValue, funSetValue, [funGet](const double& v) -> bool {
+        return LC_LineMath::isSameAngle(v, funGet());
+    });
+    if (funSet == nullptr) {
+        property->setReadOnly();
+    }
     cont->addChildProperty(property);
 }
 
@@ -248,5 +280,34 @@ void LC_ActionOptionsPropertiesFiller::addString(const LC_Property::Names& names
     if (readonly || funSet == nullptr) {
         property->setReadOnly();
     }
+    container->addChildProperty(property);
+}
+
+   void LC_ActionOptionsPropertiesFiller::createCommandsLine(LC_PropertyContainer* container, const QString& propertyName, const QString& linkTitle,
+                                                     const QString& linkTooltip, const QString& linkTitleRight,
+                                                     const QString& linkTooltipRight,
+                                                     const std::function<void(int linkIndex)> &clickHandler,
+                                                     const QString &commonDescription,
+                                                     bool leftEnabled, bool rightEnabled) {
+    auto* property = new LC_PropertyAction(container, true);
+    property->setName(propertyName);
+    property->setDisplayName("");
+    LC_PropertyViewDescriptor viewDescriptor("Link");
+    viewDescriptor[LC_PropertyActionLinkView::ATTR_TITLE] = linkTitle;
+    viewDescriptor[LC_PropertyActionLinkView::ATTR_TOOLTIP_LEFT] = linkTooltip;
+    viewDescriptor[LC_PropertyActionLinkView::ATTR_ENABLED_LEFT] = leftEnabled;
+    if (!linkTitleRight.isEmpty()) {
+        viewDescriptor[LC_PropertyActionLinkView::ATTR_TITLE_RIGHT] = linkTitleRight;
+        viewDescriptor[LC_PropertyActionLinkView::ATTR_TOOLTIP_RIGHT] = linkTooltipRight;
+        viewDescriptor[LC_PropertyActionLinkView::ATTR_ENABLED_RIGHT] = rightEnabled;
+    }
+
+    property->setClickHandler([clickHandler](const LC_PropertyAction*, int linkIndex)  {
+        QTimer::singleShot(10, [linkIndex, clickHandler] {
+            clickHandler(linkIndex);
+        });
+    });
+    property->setDescription(commonDescription);
+    property->setViewDescriptor(viewDescriptor);
     container->addChildProperty(property);
 }

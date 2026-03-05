@@ -28,6 +28,8 @@
 
 #include "lc_actioncontext.h"
 #include "lc_graphicviewport.h"
+#include "rs_document.h"
+#include "rs_pen.h"
 #include "rs_polyline.h"
 
 RS_ActionPolylineAppend::RS_ActionPolylineAppend(LC_ActionContext *actionContext)

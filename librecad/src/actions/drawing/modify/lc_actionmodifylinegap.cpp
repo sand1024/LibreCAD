@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "lc_actioninfomessagebuilder.h"
 #include "lc_linemath.h"
 #include "lc_modifygapoptions.h"
+#include "rs_document.h"
 #include "rs_line.h"
 
 namespace {

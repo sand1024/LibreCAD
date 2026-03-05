@@ -61,7 +61,8 @@ public:
     }
 
     ValueType value() const {
-        return doGetValue(ValueTag());
+        auto result = doGetValue(ValueTag());
+        return result;
     }
 
     bool isValueEqualTo(LC_PropertyAtomic* prop) override {

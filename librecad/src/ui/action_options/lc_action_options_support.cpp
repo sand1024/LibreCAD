@@ -51,7 +51,7 @@ void LC_ActionOptionsSupport::setAction(RS_ActionInterface *a, const bool update
             // that should be ok for the most of the actions as most probably they will rely on the same group
             LC_GROUP(getSettingsGroupName());
             preSetupByAction(a);
-            doSetAction(a, update);
+            doSetAction(a);
             LC_GROUP_END();
         }
         else{

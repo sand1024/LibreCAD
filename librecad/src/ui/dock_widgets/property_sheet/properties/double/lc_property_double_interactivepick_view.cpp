@@ -40,11 +40,13 @@ class
     LC_PropertyDoubleInteractivePickViewHandler : public LC_PropertyEditorButtonHandler<LC_PropertyDouble, LC_PropertyLineEditWithButton> {
 public:
     LC_PropertyDoubleInteractivePickViewHandler(LC_PropertyViewEditable* view,
-                                                LC_PropertyLineEditWithButton& editor) : LC_PropertyEditorButtonHandler(view, editor) {
+                                                LC_PropertyLineEditWithButton& editor) : LC_PropertyEditorButtonHandler(view, editor, editor.getToolButton()) {
         const auto lineEdit = editor.getLineEdit();
         const auto toolButton = editor.getToolButton();
         lineEdit->installEventFilter(this);
-        connect(toolButton, &QToolButton::clicked, this, &LC_PropertyDoubleInteractivePickViewHandler::onToolButtonClicked);
+        toolButton->installEventFilter(this);
+        // editor.installEventFilter(this);
+        // connect(toolButton, &QToolButton::clicked, this, &LC_PropertyDoubleInteractivePickViewHandler::onToolButtonClicked);
         connect(lineEdit, &QLineEdit::editingFinished, this, &LC_PropertyDoubleInteractivePickViewHandler::onEditingFinished);
         QSignalBlocker blocker(lineEdit);
         LC_PropertyDoubleInteractivePickViewHandler::doUpdateEditor();
@@ -79,10 +81,11 @@ protected:
         if (doCheckMayApply()) {
             auto lineEdit = getEditor()->getLineEdit();
             const auto text = lineEdit->text();
-            // LC_ERR << "ON EditingFinished " << text;
+            LC_ERR << "ON EditingFinished " << text;
             double value;
             const bool ok = fromString(text, value);
             if (ok) {
+                LC_ERR << "ON EditingFinished " << "IN OK";
                 getProperty().setValue(value, changeReasonDueToEdit());
                 // due to some weird reasons, when dectructor of LC_PropertyLineWithButton is executed, onEditingFinishied is
                 // called again... so we disconnect as we got the first value (during the normal edit) as the tree will be rebuild.
@@ -94,9 +97,13 @@ protected:
     }
 
     void onToolButtonClicked(bool) {
-        // LC_ERR << "Pick button clicked!";
+        LC_ERR << "Pick button clicked!";
         stopInplaceEdit();
-        getProperty().requestInteractiveInput();
+        auto propertyDouble = getBaseProperty();
+        if (propertyDouble != nullptr) {
+            const auto propDouble = static_cast<LC_PropertyDouble*>(propertyDouble);
+            propDouble->requestInteractiveInput();
+        }
     }
 };
 
@@ -261,6 +268,8 @@ bool LC_PropertyDoubleInteractivePickView::doPropertyValueToStrForEdit(QString& 
             break;
         case LC_ActionContext::InteractiveInputInfo::ANGLE:
             strValue = formatter->formatRawAngle(doubleValue);
+            // todo - this is workaround for editing angles in decimal degrees. What about other formats?
+            strValue = strValue.remove( QChar(0xB0));
             break;
         case LC_ActionContext::InteractiveInputInfo::DISTANCE:
             strValue = formatter->formatDouble(doubleValue);

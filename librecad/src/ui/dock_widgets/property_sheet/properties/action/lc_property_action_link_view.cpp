@@ -32,6 +32,8 @@
 
 const QByteArray LC_PropertyActionLinkView::VIEW_NAME = QByteArrayLiteral("Link");
 const QByteArray LC_PropertyActionLinkView::ATTR_TITLE = QByteArrayLiteral("title");
+const QByteArray LC_PropertyActionLinkView::ATTR_ENABLED_LEFT = QByteArrayLiteral("enabledLeft");
+const QByteArray LC_PropertyActionLinkView::ATTR_ENABLED_RIGHT = QByteArrayLiteral("enabledRight");
 const QByteArray LC_PropertyActionLinkView::ATTR_TITLE_RIGHT = QByteArrayLiteral("titleRight");
 const QByteArray LC_PropertyActionLinkView::ATTR_TOOLTIP_LEFT = QByteArrayLiteral("tooltipLeft");
 const QByteArray LC_PropertyActionLinkView::ATTR_TOOLTIP_RIGHT = QByteArrayLiteral("tooltipRight");
@@ -45,6 +47,8 @@ void LC_PropertyActionLinkView::doApplyAttributes(const LC_PropertyViewDescripto
     info.load(ATTR_TITLE_RIGHT, m_titleRight);
     info.load(ATTR_TOOLTIP_LEFT, m_tooltipLeft);
     info.load(ATTR_TOOLTIP_RIGHT, m_tooltipRight);
+    info.load(ATTR_ENABLED_LEFT, m_enabledLeft);
+    info.load(ATTR_ENABLED_RIGHT, m_enabledRight);
 }
 
 LC_PropertyAction& LC_PropertyActionLinkView::typedProperty() const {
@@ -74,7 +78,8 @@ void LC_PropertyActionLinkView::buildPartBackground(const LC_PropertyPaintContex
     parts.append(part);
 }
 
-void LC_PropertyActionLinkView::builSingleLinkPart(const QRect& valuesRect, const QString &title, const QString& tooltip, bool linkIndex, QList<LC_PropertyViewPart>& parts) {
+void LC_PropertyActionLinkView::builSingleLinkPart(const QRect& valuesRect, const QString& title, const QString& tooltip, bool linkIndex,
+                                                   QList<LC_PropertyViewPart>& parts, bool linkEnabled) {
     LC_PropertyViewPart part(valuesRect);
     // part.m_rect.setWidth(ctx.painter->fontMetrics().boundingRect(m_title).width() + 5);
     if (tooltip.isEmpty()) {
@@ -82,12 +87,12 @@ void LC_PropertyActionLinkView::builSingleLinkPart(const QRect& valuesRect, cons
     }
     else {
         part.funGetTooltip = [tooltip](LC_PropertyEventContext&, const LC_PropertyViewPart&) -> QString {
-           return tooltip;
+            return tooltip;
         };
     }
     part.trackState();
 
-    part.funPaint = [title, this,linkIndex](const LC_PropertyPaintContext& paintContext, const LC_PropertyViewPart& p) {
+    part.funPaint = [title, this,linkIndex, linkEnabled](const LC_PropertyPaintContext& paintContext, const LC_PropertyViewPart& p) {
         bool drawPressed = false;
         if (isLocked()) {
             if (isClicked(linkIndex)) {
@@ -99,22 +104,28 @@ void LC_PropertyActionLinkView::builSingleLinkPart(const QRect& valuesRect, cons
         }
         const auto painter = paintContext.painter;
         painter->save();
-        const QColor linkColor = paintContext.getPalette().color(paintContext.getCurrentColorGroup(),
-                                                                 paintContext.isActive ? QPalette::HighlightedText : QPalette::Link);
-        if (drawPressed) {
-            auto font = painter->font();
-            font.setUnderline(true);
-            painter->setFont(font);
+        QColor linkColor;
+        if (linkEnabled) {
+            linkColor = paintContext.getPalette().color(paintContext.getCurrentColorGroup(),
+                                                                     paintContext.isActive ? QPalette::HighlightedText : QPalette::Link);
+            if (drawPressed) {
+                auto font = painter->font();
+                font.setUnderline(true);
+                painter->setFont(font);
+            }
+            else if (p.isUnderCursor()) {
+                auto font = painter->font();
+                font.setUnderline(true);
+                painter->setFont(font);
+            }
+            else if (p.isPushed()) {
+                auto font = painter->font();
+                font.setUnderline(true);
+                painter->setFont(font);
+            }
         }
-        else if (p.isUnderCursor()) {
-            auto font = painter->font();
-            font.setUnderline(true);
-            painter->setFont(font);
-        }
-        else if (p.isPushed()) {
-            auto font = painter->font();
-            font.setUnderline(true);
-            painter->setFont(font);
+        else {
+            linkColor = paintContext.getPalette().color(QPalette::Disabled, QPalette::Text);
         }
 
         painter->setPen(linkColor);
@@ -122,48 +133,51 @@ void LC_PropertyActionLinkView::builSingleLinkPart(const QRect& valuesRect, cons
         painter->restore();
     };
 
-    part.funHandleEvent = [this, linkIndex](LC_PropertyEventContext& eventContext, const LC_PropertyViewPart&, LC_PropertyEditContext*) -> bool {
-        bool doClick = false;
-        if (isLocked()) {
-            return false;
-        }
-        switch (eventContext.eventType()) {
-            case QEvent::KeyPress: {
-                const int key = eventContext.typedEvent<QKeyEvent>()->key();
-                doClick = (key == Qt::Key_Space) || (key == Qt::Key_Return);
-                break;
+    if (linkEnabled) {
+        part.funHandleEvent = [this, linkIndex](LC_PropertyEventContext& eventContext, const LC_PropertyViewPart&,
+                                                LC_PropertyEditContext*) -> bool {
+            bool doClick = false;
+            if (isLocked()) {
+                return false;
             }
-            case LC_PropertyViewPartEvent::Activated: {
-                m_cursorSet = true;
-                const auto sheet = eventContext.sheet;
-                m_widgetCursor = sheet->cursor();
-                sheet->setCursor(Qt::PointingHandCursor);
-                break;
-            }
-            case LC_PropertyViewPartEvent::Deactivated: {
-                if (m_cursorSet) {
-                    const auto sheet = eventContext.sheet;
-                    if (!sheet->isInTreeRebuild()) {
-                        sheet->setCursor(m_widgetCursor);
-                    }
+            switch (eventContext.eventType()) {
+                case QEvent::KeyPress: {
+                    const int key = eventContext.typedEvent<QKeyEvent>()->key();
+                    doClick = (key == Qt::Key_Space) || (key == Qt::Key_Return);
+                    break;
                 }
-                break;
+                case LC_PropertyViewPartEvent::Activated: {
+                    m_cursorSet = true;
+                    const auto sheet = eventContext.sheet;
+                    m_widgetCursor = sheet->cursor();
+                    sheet->setCursor(Qt::PointingHandCursor);
+                    break;
+                }
+                case LC_PropertyViewPartEvent::Deactivated: {
+                    if (m_cursorSet) {
+                        const auto sheet = eventContext.sheet;
+                        if (!sheet->isInTreeRebuild()) {
+                            sheet->setCursor(m_widgetCursor);
+                        }
+                    }
+                    break;
+                }
+                case LC_PropertyViewPartEvent::ReleaseMouse: {
+                    doClick = true;
+                    break;
+                }
+                default:
+                    break;
             }
-            case LC_PropertyViewPartEvent::ReleaseMouse: {
-                doClick = true;
-                break;
+            if (doClick) {
+                // ctx.m_sheet->setSkipNextMouseReleaseEvent();
+                lock(linkIndex);
+                typedProperty().invokeClick(linkIndex);
+                return false;
             }
-            default:
-                break;
-        }
-        if (doClick) {
-            // ctx.m_sheet->setSkipNextMouseReleaseEvent();
-            lock(linkIndex);
-            typedProperty().invokeClick(linkIndex);
             return false;
-        }
-        return false;
-    };
+        };
+    }
     parts.append(part);
 }
 
@@ -173,17 +187,17 @@ void LC_PropertyActionLinkView::doBuildViewParts(LC_PropertyPaintContext& ctx, Q
     const bool hasNoRightPart = m_titleRight.isEmpty();
 
     if (hasNoRightPart) {
-        builSingleLinkPart(valuesRect, m_titleLeft, m_tooltipLeft, 0, parts);
+        builSingleLinkPart(valuesRect, m_titleLeft, m_tooltipLeft, 0, parts, m_enabledLeft);
     }
     else {
         int splitPos = ctx.splitPos;
         QRect leftRect = valuesRect;
         leftRect.setRight(splitPos);
 
-        builSingleLinkPart(leftRect, m_titleLeft, m_tooltipLeft, 0, parts);
+        builSingleLinkPart(leftRect, m_titleLeft, m_tooltipLeft, 0, parts, m_enabledLeft);
 
         QRect rightRect = valuesRect;
         rightRect.setLeft(splitPos);
-        builSingleLinkPart(rightRect, m_titleRight, m_tooltipRight, 1, parts);
+        builSingleLinkPart(rightRect, m_titleRight, m_tooltipRight, 1, parts, m_enabledRight);
     }
 }

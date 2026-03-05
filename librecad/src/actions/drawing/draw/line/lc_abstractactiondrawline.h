@@ -39,6 +39,7 @@ public:
     LC_AbstractActionDrawLine(const char* name, LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone);
     ~LC_AbstractActionDrawLine() override;
     int getDirection() const{return m_direction;}
+    void setDirection(int dir);
     void setNewStartPointState();
     void setSetAngleDirectionState();
     void setSetPointDirectionState();

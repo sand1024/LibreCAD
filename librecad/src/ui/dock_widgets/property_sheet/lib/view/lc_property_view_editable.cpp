@@ -162,7 +162,7 @@ void LC_PropertyViewEditable::doDrawValue([[maybe_unused]] LC_PropertyPaintConte
         if (isNormalPainterState(painter) && isPlaceholderColor()) {
             oldPen = painter.pen();
             penChanged = true;
-            painter.setPen(disabledTextColor(painter));
+            painter.setPen(activeTextColor(painter));
         }
         LC_PropertyViewUtils::drawElidedText(painter, strValue, rect, painter.style());
         if (penChanged) {

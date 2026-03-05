@@ -66,6 +66,7 @@ public:
     void showToolOptions(LC_ToolOptionsPropertiesContainerProvider* provider);
     void setShouldHandleSelectionChange(bool value);
     void updateFormats();
+    void doProcessLateRequest(const LC_ActionContext::InteractiveInputInfo& interactiveInputInfo);
     void onLateRequestCompleted(bool shouldBeSkipped) override;
     bool isCollapsedSection(const QString& name) const;
     void markContainerCollapsed(const QString& name, bool collapse);

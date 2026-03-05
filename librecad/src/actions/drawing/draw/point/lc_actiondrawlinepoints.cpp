@@ -24,6 +24,7 @@
 
 #include "lc_linemath.h"
 #include "lc_linepointsoptions.h"
+#include "rs_document.h"
 #include "rs_point.h"
 
 LC_ActionDrawLinePoints::LC_ActionDrawLinePoints(LC_ActionContext *actionContext, const bool drawMiddle)

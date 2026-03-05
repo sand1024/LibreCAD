@@ -57,6 +57,12 @@ RS_ActionDrawSpline::RS_ActionDrawSpline(LC_ActionContext *actionContext, const 
     reset();
 }
 
+RS_ActionDrawSpline::RS_ActionDrawSpline(const QString& actionName, LC_ActionContext *actionContext, const RS2::ActionType actionType)
+    :LC_SingleEntityCreationAction(actionName,actionContext, actionType)
+    , m_actionData(std::make_unique<ActionData>()){
+    reset();
+}
+
 RS_ActionDrawSpline::~RS_ActionDrawSpline() = default;
 
 void RS_ActionDrawSpline::reset() const {

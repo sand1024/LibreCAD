@@ -180,7 +180,8 @@ void LC_PropertiesProviderLine::doCreateSingleEntityCommands(LC_PropertyContaine
             {RS2::ActionModifyBreakDivide, tr("Break/Divide"), tr("Break or divide the line by intesection points")}
         },
         {tr("Center line"),
-            {RS2::ActionDrawLineMiddle, tr("Centerline"), tr("Create center line between two lines")}
+            {RS2::ActionDrawCenterLine, tr("Centerline"), tr("Create center line between two lines")},
+            {RS2::ActionDrawLineRadiant, tr("Radiant"), tr("Create radiant line from center point")},
         },
         {
             tr("Creation of dimension, aligned or linear"),
