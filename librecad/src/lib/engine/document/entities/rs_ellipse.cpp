@@ -1846,6 +1846,21 @@ void RS_Ellipse::draw(RS_Painter* painter) {
   if (painter == nullptr)
     return;
 
+  const double uiRadius = painter->toGuiDX((getRatio() > 1.) ? getMajorRadius() : getMinorRadius());
+  if (uiRadius <= double(RS_Painter::getMaximumArcNonErrorRadius())) {
+    const double majorPDegrees = RS_Math::rad2deg(getMajorP().angle());
+    if (isArc()) {
+      painter->drawEllipseArcWCS(getCenter(), getMajorRadius(), getRatio(), majorPDegrees,
+                                 RS_Math::rad2deg(getAngle1()),
+                                 RS_Math::rad2deg(getAngleLength()),
+                                 isReversed());
+    } else {
+      painter->drawEllipseWCS(getCenter(), getMajorRadius(), getRatio(), majorPDegrees);
+
+    }
+    return;
+  }
+
   RS_Vector startUi = painter->toGui(isArc() ? getStartpoint() : getCenter() + getMajorP());
   QPointF startPos{startUi.x, startUi.y};
   QPainterPath path(startPos);

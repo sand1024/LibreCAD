@@ -342,7 +342,7 @@ RS_Vector RS_Arc::getEndpoint() const{
 RS_VectorSolutions RS_Arc::getRefPoints() const{
 	//order: start, end, center
     //order: start, center, middle, end
-    return {{getStartpoint(),  data.center, middlePoint, getEndpoint()}};
+    return {{getStartpoint(),  data.center, m_middlePoint, getEndpoint()}};
 }
 
 double RS_Arc::getDirection1() const {
@@ -353,6 +353,7 @@ double RS_Arc::getDirection1() const {
         return RS_Math::correctAngle(data.angle1-M_PI_2);
     }
 }
+
 /**
  * @return Direction 2. The angle at which the arc starts at
  * the endpoint.
@@ -984,18 +985,23 @@ void RS_Arc::createPainterPath(RS_Painter* painter, QPainterPath& path) const {
 }
 
 void RS_Arc::draw(RS_Painter* painter) {
-  QPainterPath path;
-  RS_Vector startUi = painter->toGui(getStartpoint());
-  path.moveTo(startUi.x, startUi.y);
-  createPainterPath(painter, path);
-  painter->drawPath(path);
+  const double radiusUi = painter->toGuiDX(getRadius());
+  if (radiusUi < RS_Painter::getMaximumArcNonErrorRadius()) {
+    painter->drawEntityArc(this);
+  } else {
+    QPainterPath path;
+    RS_Vector startUi = painter->toGui(getStartpoint());
+    path.moveTo(startUi.x, startUi.y);
+    createPainterPath(painter, path);
+    painter->drawPath(path);
+  }
 }
 
 /**
  * @return Middle point of the entity.
  */
 RS_Vector RS_Arc::getMiddlePoint() const {
-    return middlePoint;
+    return m_middlePoint;
 }
 
 /**
@@ -1087,7 +1093,7 @@ void RS_Arc::updateMiddlePoint() {
     } else {
         a += RS_Math::correctAngle(b - a) * 0.5;
     }
-    middlePoint =  getCenter() + RS_Vector::polar(getRadius(), a);
+    m_middlePoint =  getCenter() + RS_Vector::polar(getRadius(), a);
 }
 
 void RS_Arc::moveMiddlePoint(const RS_Vector& vector) {
