@@ -412,7 +412,7 @@ RS_Entity* createParabola(const LC_Quadratic& q,
   };
 
   LC_ParabolaData data;
-  data.controlPoints = cps;
+  data.m_controlPoints = cps;
 
   return new LC_Parabola(nullptr, data);
 }

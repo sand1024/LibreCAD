@@ -233,7 +233,7 @@ RS_Ellipse::RS_Ellipse(RS_EntityContainer* parent,
 	:LC_CachedLengthEntity(parent)
 	,data(d) {
     //calculateEndpoints();
-    calculateBorders();
+    RS_Ellipse::calculateBorders();
 }
 
 RS_Entity* RS_Ellipse::clone() const {
