@@ -23,7 +23,7 @@
 #ifndef RS_ACTIONDRAWELLIPSEFOCIPOINT_H
 #define RS_ACTIONDRAWELLIPSEFOCIPOINT_H
 
-#include "lc_actiondrawcirclebase.h"
+#include "lc_action_draw_circle_base.h"
 
 /**
  * Draw ellipse by foci and a point on ellipse
@@ -57,7 +57,7 @@ protected:
     bool doProcessCommand(int status, const QString& command) override;
     QString getAdditionalHelpMessage() override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector& coord) override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;
 };

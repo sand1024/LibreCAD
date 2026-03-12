@@ -23,7 +23,7 @@
 #ifndef RS_ACTIONDRAWELLIPSEINSCRIBE_H
 #define RS_ACTIONDRAWELLIPSEINSCRIBE_H
 
-#include "lc_actiondrawcirclebase.h"
+#include "lc_action_draw_circle_base.h"
 
 /**
  * Draw ellipse by foci and a point on ellipse
@@ -63,7 +63,7 @@ protected:
     void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void clearLines(bool checkStatus = false) const;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;
 };

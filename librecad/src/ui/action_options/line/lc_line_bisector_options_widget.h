@@ -26,7 +26,7 @@
 #ifndef QG_LINEBISECTOROPTIONS_H
 #define QG_LINEBISECTOROPTIONS_H
 
-#include "lc_action_options_widget_base.h"
+#include "lc_action_options_widget.h"
 
 class RS_ActionInterface;
 class LC_ActionDrawLineBisector;
@@ -35,7 +35,7 @@ namespace Ui {
     class LC_LineBisectorOptionsWidget;
 }
 
-class LC_LineBisectorOptionsWidget : public LC_ActionOptionsWidgetBase{
+class LC_LineBisectorOptionsWidget : public LC_ActionOptionsWidget{
     Q_OBJECT
 public:
     LC_LineBisectorOptionsWidget();
@@ -45,7 +45,7 @@ public slots:
     void onNumberValueChanged(int number);
     void onLengthEditingFinished();
 protected:
-    void doSetAction(RS_ActionInterface *a) override;
+    void doUpdateByAction(RS_ActionInterface *a) override;
 private:
     LC_ActionDrawLineBisector* m_action;
     std::unique_ptr<Ui::LC_LineBisectorOptionsWidget> ui;

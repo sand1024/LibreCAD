@@ -79,7 +79,7 @@ protected:
     void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     bool doProcessCommand(int status, const QString &command) override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
     LC_ActionOptionsPropertiesFiller* createOptionsFiller() override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &coord) override;

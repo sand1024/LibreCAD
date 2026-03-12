@@ -25,7 +25,7 @@
 **********************************************************************/
 #include<cmath>
 #include "rs_math.h"
-#include "../dialogs/actions/modify/qg_dlgmove.h"
+#include "qg_dlgmove.h"
 
 #include "rs_settings.h"
 #include "rs_modification.h"

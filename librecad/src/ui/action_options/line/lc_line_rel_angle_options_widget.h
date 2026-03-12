@@ -26,7 +26,7 @@
 #ifndef QG_LINERELANGLEOPTIONS_H
 #define QG_LINERELANGLEOPTIONS_H
 
-#include "lc_action_options_widget_base.h"
+#include "lc_action_options_widget.h"
 
 class RS_ActionInterface;
 class LC_ActionDrawLineRelAngle;
@@ -35,7 +35,7 @@ namespace Ui {
     class LC_LineRelAngleOptionsWidget;
 }
 
-class LC_LineRelAngleOptionsWidget : public LC_ActionOptionsWidgetBase {
+class LC_LineRelAngleOptionsWidget : public LC_ActionOptionsWidget {
     Q_OBJECT
 public:
     LC_LineRelAngleOptionsWidget();
@@ -47,8 +47,7 @@ public
     void onLengthEditingFinished();
     void onAngleEditingFinished();
 protected:
-    void doSetAction(RS_ActionInterface* a) override;
-    bool checkActionRttiValid(RS2::ActionType actionType) override;
+    void doUpdateByAction(RS_ActionInterface* a) override;
 private:
     LC_ActionDrawLineRelAngle* m_action = nullptr;
     std::unique_ptr<Ui::LC_LineRelAngleOptionsWidget> ui;

@@ -30,7 +30,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *  name 'name' and widget flags set to 'f'.
  */
 LC_CircleTangental2EntitiesRadiusOptionsWidget::LC_CircleTangental2EntitiesRadiusOptionsWidget()
-    : LC_ActionOptionsWidgetBase(RS2::ActionDrawCircleTan2EntitiesRadius, "Draw", "CircleTan2"), m_action{nullptr}, ui(new Ui::LC_CircleTangental2EntitiesRadiusOptionsWidget{}) {
+    :m_action{nullptr}, ui(new Ui::LC_CircleTangental2EntitiesRadiusOptionsWidget{}) {
     ui->setupUi(this);
     connect(ui->leRadius, &QLineEdit::editingFinished, this, &LC_CircleTangental2EntitiesRadiusOptionsWidget::onRadiusEditingFinished);
     pickDistanceSetup("radius", ui->tbPickRadius, ui->leRadius);
@@ -49,7 +49,7 @@ void LC_CircleTangental2EntitiesRadiusOptionsWidget::languageChange() {
     ui->retranslateUi(this);
 }
 
-void LC_CircleTangental2EntitiesRadiusOptionsWidget::doSetAction(RS_ActionInterface* a) {
+void LC_CircleTangental2EntitiesRadiusOptionsWidget::doUpdateByAction(RS_ActionInterface* a) {
     m_action = static_cast<LC_ActionDrawCircleTangental2EntitiesRadius*>(a);
     QString radius = fromDouble(m_action->getRadius());
     LC_GuardedSignalsBlocker({ui->leRadius});

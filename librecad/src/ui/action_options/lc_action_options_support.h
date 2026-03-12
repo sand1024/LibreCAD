@@ -47,20 +47,13 @@ public:
     [[deprecated]]
     virtual void updateUI([[maybe_unused]]int mode, const QVariant* value){}
 protected:
-    /**
- * Default workflow for saving settings values
- */
-    virtual void saveSettings();
-    /**
-     * Extension point for actuall saving of settings
-     */
-    virtual void doSaveSettings(){}
+
     /**
      * Setter for corresponding action
      * @param a action
      */
     [[deprecated]]
-    virtual void doSetAction(RS_ActionInterface* a) = 0;
+    virtual void doUpdateByAction(RS_ActionInterface* a) = 0;
     /**
      * Performs check that provided action type is accepted by options widget
      * @param actionType type of action
@@ -72,27 +65,6 @@ protected:
     virtual void preSetupByAction(RS_ActionInterface* a) = 0;
     [[deprecated]]
     virtual void cleanup() = 0;
-
-    /**
-    * Default name for settings group name
-    * @return name of group
-    */
-    virtual QString getSettingsGroupName(){return "Draw";}
-    /**
-     * Default name for prefix for settings. It assumes that all settings for the action starts with the same prefix.
-     * @return  prefix to use.
-     */
-    virtual QString getSettingsOptionNamePrefix(){ return "";}
-
-    // saving settings shortcut methods
-    void save(const QString& name, const QString& value);
-    void save(const QString& name, int value);
-    void save(const QString& name, bool value);
-
-    // loading settings shortcut methods
-    QString load(const QString& name, const QString& defaultValue);
-    int loadInt(const QString& name, int defaultValue);
-    bool loadBool(const QString& name, bool defaultValue);
 
     // conversion utilities
     QString fromDouble(double value);

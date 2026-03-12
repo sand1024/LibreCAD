@@ -131,18 +131,18 @@ void RS_ActionZoomWindow::onMouseRightButtonRelease(const int status, [[maybe_un
     initPrevious(status);
 }
 
-void RS_ActionZoomWindow::updateMouseButtonHints() {
+void RS_ActionZoomWindow::updateActionPrompt() {
     RS_DEBUG->print("RS_ActionZoomWindow::updateMouseButtonHints()");
 
     switch (getStatus()) {
         case SetFirstCorner:
-            updateMouseWidgetTRCancel(tr("Specify first edge"));
+            updatePromptTRCancel(tr("Specify first edge"));
             break;
         case SetSecondCorner:
-            updateMouseWidgetTRBack(tr("Specify second edge"));
+            updatePromptTRBack(tr("Specify second edge"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

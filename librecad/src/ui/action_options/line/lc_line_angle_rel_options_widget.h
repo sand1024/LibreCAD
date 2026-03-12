@@ -38,8 +38,7 @@ class LC_LineAngleRelOptionsWidget : public LC_ActionOptionsWidget {
     ~LC_LineAngleRelOptionsWidget() override;
 
 protected:
-    void doSetAction(RS_ActionInterface* a) override;
-
+    void doUpdateByAction(RS_ActionInterface* a) override;
 protected slots:
     void onLengthEditingFinished();
     void onDistanceEditingFinished();
@@ -51,10 +50,6 @@ protected slots:
     void onDivideClicked(bool clicked);
     void onFreeLengthClicked(bool clicked);
     void languageChange() override;
-
-protected:
-    bool checkActionRttiValid(RS2::ActionType actionType) override;
-
 private:
     std::unique_ptr<Ui::LC_LineAngleRelOptionsWidget> ui;
     LC_ActionDrawLineAngleRel* m_action{nullptr};

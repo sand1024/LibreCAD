@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef LC_CIRCLEBYARCOPTIONS_H
 #define LC_CIRCLEBYARCOPTIONS_H
 
-#include "lc_action_options_widget_base.h"
+#include "lc_action_options_widget.h"
 
 namespace Ui {
     class LC_CircleByArcOptionsWidget;
@@ -33,14 +33,14 @@ class LC_ActionDrawCircleByArc;
 /**
  * Options for CircleByArc action
  */
-class LC_CircleByArcOptionsWidget : public LC_ActionOptionsWidgetBase{
+class LC_CircleByArcOptionsWidget : public LC_ActionOptionsWidget{
     Q_OBJECT
 public:
     explicit LC_CircleByArcOptionsWidget();
     ~LC_CircleByArcOptionsWidget() override;
 protected:
     void languageChange() override;
-    void doSetAction(RS_ActionInterface *a) override;
+    void doUpdateByAction(RS_ActionInterface *a) override;
 protected slots:
     void onReplaceClicked(bool value) const;
     void onPenModeIndexChanged(int mode) const;

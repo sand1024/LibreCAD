@@ -26,7 +26,7 @@
 
 
 #include "lc_action_draw_line_radiant.h"
-#include "lc_action_options_widget_base.h"
+#include "lc_action_options_widget.h"
 
 class LC_ActionDrawLineRadiant;
 class RS_ActionInterface;
@@ -35,7 +35,7 @@ namespace Ui {
     class LC_LineRadiantOptionsWidget;
 }
 
-class LC_LineRadiantOptionsWidget : public LC_ActionOptionsWidgetBase {
+class LC_LineRadiantOptionsWidget : public LC_ActionOptionsWidget {
     Q_OBJECT public:
     explicit LC_LineRadiantOptionsWidget();
     ~LC_LineRadiantOptionsWidget() override;
@@ -47,7 +47,7 @@ protected slots:
     void onYEditingFinished();
     void onLengthEditingFinished();
 protected:
-    void doSetAction(RS_ActionInterface* a) override;
+    void doUpdateByAction(RS_ActionInterface* a) override;
 private:
     Ui::LC_LineRadiantOptionsWidget* ui;
     LC_ActionDrawLineRadiant* m_action = nullptr;

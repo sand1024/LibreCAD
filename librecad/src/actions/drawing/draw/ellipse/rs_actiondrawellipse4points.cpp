@@ -270,22 +270,22 @@ QStringList RS_ActionDrawEllipse4Points::getAvailableCommands() {
     return {};
 }
 
-void RS_ActionDrawEllipse4Points::updateMouseButtonHints() {
+void RS_ActionDrawEllipse4Points::updateActionPrompt() {
     switch (getStatus()) {
         case SetPoint1:
-            updateMouseWidgetTRCancel(tr("Specify the first point on ellipse"), MOD_SHIFT_RELATIVE_ZERO);
+            updatePromptTRCancel(tr("Specify the first point on ellipse"), MOD_SHIFT_RELATIVE_ZERO);
             break;
         case SetPoint2:
-            updateMouseWidgetTRBack(tr("Specify the second point on ellipse"), MOD_SHIFT_ANGLE_SNAP);
+            updatePromptTRBack(tr("Specify the second point on ellipse"), MOD_SHIFT_ANGLE_SNAP);
             break;
         case SetPoint3:
-            updateMouseWidgetTRBack(tr("Specify the third point on ellipse"));
+            updatePromptTRBack(tr("Specify the third point on ellipse"));
             break;
         case SetPoint4:
-            updateMouseWidgetTRBack(tr("Specify the fourth point on ellipse"));
+            updatePromptTRBack(tr("Specify the fourth point on ellipse"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

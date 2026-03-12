@@ -38,6 +38,7 @@ public:
     void fillDocumentProperties(LC_PropertyContainer* container, RS_Graphic* graphic);
 protected:
     void createActiveLayer(LC_PropertyContainer* cont, RS_Graphic* graphic);
+    bool inPrintPreview() const;
     void createLayerType(LC_PropertyContainer* cont, RS_Graphic* graphic);
     void createVisible(RS_Graphic* graphic, LC_PropertyContainer* cont);
     void createLocked(RS_Graphic* graphic, LC_PropertyContainer* cont);

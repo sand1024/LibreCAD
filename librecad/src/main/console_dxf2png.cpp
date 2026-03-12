@@ -249,9 +249,12 @@ static void touchGraphic(RS_Graphic* graphic){
     constexpr int pagesV = 0;      // use value from dxf file.
 
     graphic->calculateBorders();
-    graphic->setMargins(marginLeft, marginTop,
+
+
+    LC_PlotSettings* ps = graphic->getPlotSettings();
+    ps->setMarginsInMm(marginLeft, marginTop,
                         marginRight, marginBottom);
-    graphic->setPagesNum(pagesH, pagesV);
+    ps->setPagesNum(pagesH, pagesV);
 
     //if (params.pageSize != RS_Vector(0.0, 0.0))
     //    graphic->setPaperSize(params.pageSize);

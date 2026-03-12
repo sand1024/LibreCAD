@@ -35,7 +35,7 @@
  * @return true if action is valid
  */
 bool LC_ActionOptionsSupport::checkActionRttiValid([[maybe_unused]]RS2::ActionType actionType){
-    return false;
+    return true;
 }
 /**
  * Setter for the action. Checks that action rtti type is valid and delegates actual processing to doSetAction.
@@ -49,13 +49,11 @@ void LC_ActionOptionsSupport::setAction(RS_ActionInterface *a, const bool update
         const RS2::ActionType actionType = a->rtti();
         if (checkActionRttiValid(actionType)){
             // that should be ok for the most of the actions as most probably they will rely on the same group
-            LC_GROUP(getSettingsGroupName());
             preSetupByAction(a);
-            doSetAction(a);
-            LC_GROUP_END();
+            doUpdateByAction(a);
         }
         else{
-            Q_ASSERT_X(false, typeid(*this).name(), "::setAction: wrong action type");
+            // Q_ASSERT_X(false, typeid(*this).name(), "::setAction: wrong action type");
         }
     }
     else {
@@ -63,23 +61,12 @@ void LC_ActionOptionsSupport::setAction(RS_ActionInterface *a, const bool update
     }
 }
 
-
 /**
  * Method is called from the action when options should be hidden.
  * Simply hides UI and saves settings.
  */
 void LC_ActionOptionsSupport::hideOptions(){
-    saveSettings();
-}
 
-/**
- * Generic method for saving settings. Simply delegates actual saving of options to doSaveSettings (that should be implemented in inherited widget),
- * by wrapping it by settings begin/end group calls.
- */
-void LC_ActionOptionsSupport::saveSettings(){
-    LC_GROUP(getSettingsGroupName());
-    doSaveSettings();
-    LC_GROUP_END();
 }
 
 /**
@@ -126,47 +113,4 @@ QString LC_ActionOptionsSupport::fromDouble(double value){
         value = 0.0;
     }
     return QString::number(value, 'g', 6);
-}
-
-/**
- * Utility method that loads setting value. Default implementation assumes that all settings for the action
- * has the same prefix, and this method creates full name of settings based on prefix returned by getSettingsOptionNamePrefix()
- * @param name short name of setting (without prefix)
- * @param defaultValue default value that should be used
- * @return setting value
- */
-QString LC_ActionOptionsSupport::load(const QString& name, const QString& defaultValue){
-    const QString key = getSettingsOptionNamePrefix() + name;
-    return LC_GET_STR(key, defaultValue);
-}
-
-/**
- * Utility method that loads int settings value
- * @param name
- * @param defaultValue
- * @return
- */
-int LC_ActionOptionsSupport::loadInt(const QString& name, const int defaultValue){
-    const QString key = getSettingsOptionNamePrefix() + name;
-    return LC_GET_INT(key, defaultValue);
-}
-
-bool LC_ActionOptionsSupport::loadBool(const QString& name, const bool defaultValue){
-    const QString key = getSettingsOptionNamePrefix() + name;
-    return LC_GET_INT(key, defaultValue ? 1 : 0) == 1;
-}
-
-void LC_ActionOptionsSupport::save(const QString& name, const QString& value){
-    const QString key = getSettingsOptionNamePrefix() + name;
-    LC_SET(key, value);
-}
-
-void LC_ActionOptionsSupport::save(const QString& name, const int value){
-    const QString key = getSettingsOptionNamePrefix() + name;
-    LC_SET(key, value);
-}
-
-void LC_ActionOptionsSupport::save(const QString& name, const bool value){
-    const QString key = getSettingsOptionNamePrefix() + name;
-    LC_SET(key, value ? 1 : 0);
 }

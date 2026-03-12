@@ -63,6 +63,6 @@ protected:
     int m_x2 = 0;
     int m_y2 = 0;
     RS2::CursorType doGetMouseCursor(int status) override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
 };
 #endif

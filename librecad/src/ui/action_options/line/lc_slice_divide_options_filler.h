@@ -23,9 +23,11 @@
 
 #ifndef LC_SLICEDIVIDEOPTIONSFILLER_H
 #define LC_SLICEDIVIDEOPTIONSFILLER_H
+
 #include "lc_action_options_properties_filler.h"
 
 class LC_SliceDivideOptionsFiller: public LC_ActionOptionsPropertiesFiller{
+    Q_OBJECT
 public:
     LC_SliceDivideOptionsFiller() = default;
     ~LC_SliceDivideOptionsFiller() override = default;

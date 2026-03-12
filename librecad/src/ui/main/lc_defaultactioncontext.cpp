@@ -52,7 +52,7 @@ void LC_DefaultActionContext::hideSnapOptions(){
     m_actionOptionsManager->hideSnapOptions();
 }
 [[deprecated]]
-void LC_DefaultActionContext::updateMouseWidget(const QString &left, const QString &right, const LC_ModifiersInfo &modifiers){
+void LC_DefaultActionContext::updateActionPrompt(const QString &left, const QString &right, const LC_ModifiersInfo &modifiers){
     if (m_mouseWidget != nullptr) {
         m_mouseWidget->setHelp(left, right, modifiers);
     }

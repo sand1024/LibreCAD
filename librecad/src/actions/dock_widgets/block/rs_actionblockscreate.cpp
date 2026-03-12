@@ -49,7 +49,7 @@ RS_ActionBlocksCreate::~RS_ActionBlocksCreate() = default;
 void RS_ActionBlocksCreate::onSelectionCompleted([[maybe_unused]]bool singleEntity, const bool fromInit) {
     setSelectionComplete(isAllowTriggerOnEmptySelection(), fromInit);
     if (m_selectionComplete) {
-        updateMouseButtonHints();
+        updateActionPrompt();
     }
 }
 
@@ -78,7 +78,7 @@ bool RS_ActionBlocksCreate::doTriggerModifications(LC_DocumentModificationBatch&
 
 void RS_ActionBlocksCreate::doTriggerCompletion([[maybe_unused]]bool success) {
     setStatus(getStatus()+1); // clear mouse button hints
-    updateMouseButtonHints();
+    updateActionPrompt();
     finish();
 }
 
@@ -103,16 +103,16 @@ void RS_ActionBlocksCreate::onCoordinateEvent(const int status, [[maybe_unused]]
 }
 
 void RS_ActionBlocksCreate::updateMouseButtonHintsForSelection() {
-    updateMouseWidgetTRCancel(tr("Select to create block") + getSelectionCompletionHintMsg(), MOD_SHIFT_LC(tr("Select contour")));
+    updatePromptTRCancel(tr("Select to create block") + getSelectionCompletionHintMsg(), MOD_SHIFT_LC(tr("Select contour")));
 }
 
 void RS_ActionBlocksCreate::updateMouseButtonHintsForSelected(const int status) {
     switch (status) {
         case SetReferencePoint:
-            updateMouseWidgetTRCancel(tr("Specify reference point"));
+            updatePromptTRCancel(tr("Specify reference point"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

@@ -83,7 +83,7 @@ protected:
     void doPreparePreviewEntities(const LC_MouseEvent* e, RS_Vector &snap, QList<RS_Entity *> &list, int status) override;
     bool doCheckMayDrawPreview(const LC_MouseEvent* event, int status) override;
     RS2::CursorType doGetMouseCursor(int status) override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
 
     void doSaveOptions() override;
     void doLoadOptions() override;

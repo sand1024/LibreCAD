@@ -53,6 +53,7 @@ public:
 
     bool toString(const LC_EnumValueDescriptor* value, QString& str) const;
     bool toString(LC_PropertyEnumValueType value, QString& str) const;
+
 private:
     Qt::CaseSensitivity m_caseSensitivity;
     QString m_name;

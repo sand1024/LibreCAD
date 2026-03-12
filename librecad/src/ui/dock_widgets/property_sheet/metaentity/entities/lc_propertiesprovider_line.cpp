@@ -156,13 +156,13 @@ void LC_PropertiesProviderLine::doCreateSingleEntityCommands(LC_PropertyContaine
         },
         {
             tr("Creation of circle tangental to line"),
-            {RS2::ActionDrawCircleTan1_2P, tr("Tangential Circle (2 P)"), tr("Create circle tangental 2 points")},
-            {RS2::ActionDrawCircleTan2_1P, tr("Tangential Circle (2 E, 1 P)"), tr("Create circle tangental by 2 entitites and 1 point")}
+            {RS2::ActionDrawCircleTangental1Entity2Points, tr("Tangential Circle (2 P)"), tr("Create circle tangental 2 points")},
+            {RS2::ActionDrawCircleTangental2Entities1Point, tr("Tangential Circle (2 E, 1 P)"), tr("Create circle tangental by 2 entitites and 1 point")}
         },
         {
             tr("Creation of circle tangental to line"),
-            {RS2::ActionDrawCircleTan3, tr("Tangential Circle (3 E)"), tr("Create circle tangental to 3 entities")},
-            {RS2::ActionDrawCircleTan2, tr("Tangential Cicle (2 E, R)"), tr("Create circle tangental by 2 entities and radius")}
+            {RS2::ActionDrawCircleTan3Entities, tr("Tangential Circle (3 E)"), tr("Create circle tangental to 3 entities")},
+            {RS2::ActionDrawCircleTan2EntitiesRadius, tr("Tangential Cicle (2 E, R)"), tr("Create circle tangental by 2 entities and radius")}
         },
         {
             tr("Creation of ellipse or bounding box"),

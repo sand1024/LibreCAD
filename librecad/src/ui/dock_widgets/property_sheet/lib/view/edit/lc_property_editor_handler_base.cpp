@@ -48,7 +48,7 @@ void LC_PropertyEditorHandlerBase::cleanup() {
     if (m_editor != nullptr) {
         m_editor->removeEventFilter(this);
     }
-    stopInplaceEdit();
+    // stopInplaceEdit();
     if (m_view != nullptr) {
         m_view->m_editorHandler = nullptr;
         m_view = nullptr;

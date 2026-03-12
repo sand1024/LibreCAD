@@ -78,7 +78,7 @@ public:
     LC_PropertySheetWidgetOptions* getOptions() const {return m_propertySheetOptions.get();}
 public slots :
     void onUcsChanged(LC_UCS* ucs);
-    void onViewDefaultActionActivated(bool defaultActionActivated, RS2::ActionType prevActionRtti);
+    void onViewDefaultActionActivated(bool defaultActionActivated, RS2::ActionType actionRtti, RS2::ActionType prevActionRtti);
     void onRelativeZeroChanged(const RS_Vector&);
     void onBeforePropertyEdited(LC_Property* property, LC_Property::PropertyValuePtr newValue, int typeId);
     void onPropertyEdited(LC_Property* property);

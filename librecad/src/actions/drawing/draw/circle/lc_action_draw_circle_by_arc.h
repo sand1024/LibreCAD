@@ -86,7 +86,7 @@ protected:
     void doCreateEntitiesOnTrigger(RS_Entity* en, QList<RS_Entity*>& list) override;
     void doPerformOriginalEntitiesDeletionOnInitTrigger(QList<RS_Entity*>& list, LC_DocumentModificationBatch& ctx) override;
     bool isSetActivePenAndLayerOnTrigger() override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
     void doSaveOptions() override;
     void doLoadOptions() override;

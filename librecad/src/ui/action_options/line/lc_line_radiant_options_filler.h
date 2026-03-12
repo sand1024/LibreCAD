@@ -30,6 +30,7 @@ class LC_ActionDrawLineRadiant;
 class LC_PropertyContainer;
 
 class LC_LineRadiantOptionsFiller: public LC_ActionOptionsPropertiesFiller{
+    Q_OBJECT
 public:
     LC_LineRadiantOptionsFiller() = default;
     ~LC_LineRadiantOptionsFiller() override = default;

@@ -183,19 +183,19 @@ void LC_ActionDrawLineParallelThrough::onCoordinateEvent(const int status, [[may
     }
 }
 
-void LC_ActionDrawLineParallelThrough::updateMouseButtonHints() {
+void LC_ActionDrawLineParallelThrough::updateActionPrompt() {
     switch (getStatus()) {
         case SetEntity:
-            updateMouseWidgetTRCancel(tr("Select entity"));
+            updatePromptTRCancel(tr("Select entity"));
             break;
         case SetPos:
-            updateMouseWidgetTRBack(tr("Specify through point"), MOD_SHIFT_FREE_SNAP);
+            updatePromptTRBack(tr("Specify through point"), MOD_SHIFT_FREE_SNAP);
             break;
         case SetNumber:
-            updateMouseWidgetTRBack(tr("Number:"));
+            updatePromptTRBack(tr("Number:"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

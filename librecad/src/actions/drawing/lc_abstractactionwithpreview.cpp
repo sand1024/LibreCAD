@@ -551,7 +551,7 @@ RS2::CursorType LC_AbstractActionWithPreview::doGetMouseCursor([[maybe_unused]]i
  */
 void LC_AbstractActionWithPreview::finishAction(){
     init(-1);
-    updateMouseButtonHints();
+    updateActionPrompt();
     finish();
     m_graphicView->repaint();
 }
@@ -625,8 +625,8 @@ void LC_AbstractActionWithPreview::applyPenAndLayerBySourceEntity(const RS_Entit
     }
 }
 
-void LC_AbstractActionWithPreview::updateMouseButtonHints(){
-    updateMouseWidget();
+void LC_AbstractActionWithPreview::updateActionPrompt(){
+    updatePrompt();
 }
 
 /**

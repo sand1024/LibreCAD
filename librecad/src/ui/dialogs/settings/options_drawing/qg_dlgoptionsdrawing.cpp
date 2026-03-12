@@ -934,7 +934,8 @@ void QG_DlgOptionsDrawing::setupGridTab() const {
 void QG_DlgOptionsDrawing::setupPaperTab() {
     // paper format:
     bool landscape;
-    const RS2::PaperFormat format = m_graphic->getPaperFormat(&landscape);
+    LC_PlotSettings* ps = m_graphic->getPlotSettings();
+    const RS2::PaperFormat format = ps->getPaperFormat(&landscape);
     RS_DEBUG->print("QG_DlgOptionsDrawing::setGraphic: paper format is: %d", format);
     cbPaperFormat->setCurrentIndex(format);
 
@@ -948,7 +949,7 @@ void QG_DlgOptionsDrawing::setupPaperTab() {
     }
     rbLandscape->blockSignals(false);
     if (format == RS2::Custom) {
-        const RS_Vector s = m_graphic->getPaperSize();
+        const RS_Vector s = ps->getPaperSize();
         const auto widthStr = QString("%1").setNum(s.x, 'g', 5);
         const auto heightStr = QString("%1").setNum(s.y, 'g', 5);
 
@@ -974,10 +975,10 @@ void QG_DlgOptionsDrawing::setupPaperTab() {
     leMarginTop->blockSignals(block);
     leMarginBottom->blockSignals(block);
 
-    leMarginLeft->setText(QString::number(m_graphic->getMarginLeftInUnits()));
-    leMarginTop->setText(QString::number(m_graphic->getMarginTopInUnits()));
-    leMarginRight->setText(QString::number(m_graphic->getMarginRightInUnits()));
-    leMarginBottom->setText(QString::number(m_graphic->getMarginBottomInUnits()));
+    leMarginLeft->setText(QString::number(ps->getMarginLeftInUnits()));
+    leMarginTop->setText(QString::number(ps->getMarginTopInUnits()));
+    leMarginRight->setText(QString::number(ps->getMarginRightInUnits()));
+    leMarginBottom->setText(QString::number(ps->getMarginBottomInUnits()));
 
     block = false;
     leMarginLeft->blockSignals(block);
@@ -990,8 +991,8 @@ void QG_DlgOptionsDrawing::setupPaperTab() {
     updatePaperPreview();
 
     // Number of pages
-    sbPagesNumH->setValue(m_graphic->getPagesNumHoriz());
-    sbPagesNumV->setValue(m_graphic->getPagesNumVert());
+    sbPagesNumH->setValue(ps->getPagesNumHoriz());
+    sbPagesNumV->setValue(ps->getPagesNumVert());
 }
 
 void QG_DlgOptionsDrawing::_toRemoveSetupLegacyDimsTab(RS2::LinearFormat& linearFormat, const int lunits, const int luprec,
@@ -1464,20 +1465,21 @@ void QG_DlgOptionsDrawing::validateGridTab() const {
 void QG_DlgOptionsDrawing::validatePaperTab() const {
     const auto currentFormat{static_cast<RS2::PaperFormat>(cbPaperFormat->currentIndex())};
     // paper:
-    m_graphic->setPaperFormat(currentFormat, rbLandscape->isChecked());
+    LC_PlotSettings* ps = m_graphic->getPlotSettings();
+    ps->setPaperFormat(currentFormat, rbLandscape->isChecked());
     // custom paper size:
     if (RS2::Custom == currentFormat) {
-        m_graphic->setPaperSize(RS_Vector(RS_Math::eval(lePaperWidth->text()), RS_Math::eval(lePaperHeight->text())));
+        ps->setPaperSize(RS_Vector(RS_Math::eval(lePaperWidth->text()), RS_Math::eval(lePaperHeight->text())));
         bool landscape;
-        m_graphic->getPaperFormat(&landscape);
+        ps->getPaperFormat(&landscape);
         rbLandscape->setChecked(landscape);
     }
 
     // Pager margins:
-    m_graphic->setMarginsInUnits(RS_Math::eval(leMarginLeft->text()), RS_Math::eval(leMarginTop->text()),
+    ps->setMarginsInUnits(RS_Math::eval(leMarginLeft->text()), RS_Math::eval(leMarginTop->text()),
                                  RS_Math::eval(leMarginRight->text()), RS_Math::eval(leMarginBottom->text()));
     // Number of pages:
-    m_graphic->setPagesNum(sbPagesNumH->value(), sbPagesNumV->value());
+    ps->setPagesNum(sbPagesNumH->value(), sbPagesNumV->value());
 }
 
 void QG_DlgOptionsDrawing::validateMetaTab() const {
@@ -1746,7 +1748,9 @@ void QG_DlgOptionsDrawing::updatePaperSize() {
     if (rbLandscape->isChecked() != (s.x > s.y)) {
         std::swap(s.x, s.y);
     }
-    m_graphic->setPaperSize(s);
+
+    LC_PlotSettings* ps = m_graphic->getPlotSettings();
+    ps->setPaperSize(s);
 
     lePaperWidth->blockSignals(true);
     lePaperWidth->setText(QString("%1").setNum(s.x, 'g', 5));
@@ -1805,20 +1809,21 @@ void QG_DlgOptionsDrawing::updatePaperPreview() const {
     const int previewH = gvPaperPreview->height() - 10;
     const double scale = qMin(previewW / paperW, previewH / paperH);
     int lMargin = qRound(RS_Math::eval(leMarginLeft->text(), -1) * scale);
+    LC_PlotSettings* ps = m_graphic->getPlotSettings();
     if (lMargin < 0.0) {
-        lMargin = m_graphic->getMarginLeftInUnits();
+        lMargin = ps->getMarginLeftInUnits();
     }
     int tMargin = qRound(RS_Math::eval(leMarginTop->text(), -1) * scale);
     if (tMargin < 0.0) {
-        tMargin = m_graphic->getMarginTopInUnits();
+        tMargin = ps->getMarginTopInUnits();
     }
     int rMargin = qRound(RS_Math::eval(leMarginRight->text(), -1) * scale);
     if (rMargin < 0.0) {
-        rMargin = m_graphic->getMarginRightInUnits();
+        rMargin = ps->getMarginRightInUnits();
     }
     int bMargin = qRound(RS_Math::eval(leMarginBottom->text(), -1) * scale);
     if (bMargin < 0.0) {
-        bMargin = m_graphic->getMarginBottomInUnits();
+        bMargin = ps->getMarginBottomInUnits();
     }
     const int printAreaW = qRound(paperW * scale) - lMargin - rMargin;
     const int printAreaH = qRound(paperH * scale) - tMargin - bMargin;

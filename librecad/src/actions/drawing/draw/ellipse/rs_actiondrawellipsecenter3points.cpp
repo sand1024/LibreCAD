@@ -236,22 +236,22 @@ QStringList RS_ActionDrawEllipseCenter3Points::getAvailableCommands() {
     return {};
 }
 
-void RS_ActionDrawEllipseCenter3Points::updateMouseButtonHints() {
+void RS_ActionDrawEllipseCenter3Points::updateActionPrompt() {
     switch (getStatus()) {
         case SetCenter:
-            updateMouseWidgetTRCancel(tr("Specify the center of ellipse"), MOD_SHIFT_RELATIVE_ZERO);
+            updatePromptTRCancel(tr("Specify the center of ellipse"), MOD_SHIFT_RELATIVE_ZERO);
             break;
         case SetPoint1:
-            updateMouseWidgetTRCancel(tr("Specify the first point on ellipse"));
+            updatePromptTRCancel(tr("Specify the first point on ellipse"));
             break;
         case SetPoint2:
-            updateMouseWidgetTRBack(tr("Specify the second point on ellipse"));
+            updatePromptTRBack(tr("Specify the second point on ellipse"));
             break;
         case SetPoint3:
-            updateMouseWidgetTRBack(tr("Specify the third point on ellipse"));
+            updatePromptTRBack(tr("Specify the third point on ellipse"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

@@ -60,7 +60,7 @@ protected:
     void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseMoveEvent(int status, const LC_MouseEvent* event) override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     void updateInfoCursor1(const RS_Line* line) const;
     void updateInfoCursor2(const RS_Vector &mouse, const RS_Vector &intersection) const;
     void doTrigger() override;

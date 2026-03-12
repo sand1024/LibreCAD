@@ -60,7 +60,7 @@ public:
     double getActiveY() const {return m_radiantPoints[m_activeRadiantIndex].y;}
 protected:
     RS2::CursorType doGetMouseCursor(int status) override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
     RS_Vector defineLineSecondPointAuto(const RS_Vector& snapped) const;

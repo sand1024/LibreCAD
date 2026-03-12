@@ -38,7 +38,7 @@ protected:
         SetLayerName
     };
     QString m_layerName;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     bool doProcessCommand(int status, const QString& command) override;
     void onMouseRightButtonRelease(int status, QMouseEvent* e) override;
     void activateLayer() const;

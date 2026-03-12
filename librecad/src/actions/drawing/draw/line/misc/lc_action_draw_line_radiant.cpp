@@ -378,30 +378,30 @@ RS2::CursorType LC_ActionDrawLineRadiant::doGetMouseCursor([[maybe_unused]]int s
     return RS2::CadCursor;
 }
 
-void LC_ActionDrawLineRadiant::updateMouseButtonHints() {
+void LC_ActionDrawLineRadiant::updateActionPrompt() {
     switch (getStatus()) {
         case SetPoint: {
-            updateMouseWidgetTRCancel(tr("Specify start point"), MOD_SHIFT_RELATIVE_ZERO);
+            updatePromptTRCancel(tr("Specify start point"), MOD_SHIFT_RELATIVE_ZERO);
             break;
         }
         case SetPoint2: {
-            updateMouseWidgetTRCancel(tr("Specify second point"), MOD_SHIFT_RELATIVE_ZERO);
+            updatePromptTRCancel(tr("Specify second point"), MOD_SHIFT_RELATIVE_ZERO);
             break;
         }
         case SetRadiant: {
-            updateMouseWidgetTRCancel(tr("Specify radiant point position"));
+            updatePromptTRCancel(tr("Specify radiant point position"));
             break;
         }
         case SetLength: {
-            updateMouseWidgetTRCancel(tr("Specify line length"));
+            updatePromptTRCancel(tr("Specify line length"));
             break;
         }
          case SetLengthType: {
-            updateMouseWidgetTRCancel(tr("Specify line length type ") + QString("[%1|%2|%3|%4|%5]").arg(tr("line"), tr("x"), tr("y"), tr("point"), tr("free")));
+            updatePromptTRCancel(tr("Specify line length type ") + QString("[%1|%2|%3|%4|%5]").arg(tr("line"), tr("x"), tr("y"), tr("point"), tr("free")));
             break;
         }
         case SetActive: {
-            updateMouseWidgetTRCancel(tr("Specify number of radiant point to use [1-4]"));
+            updatePromptTRCancel(tr("Specify number of radiant point to use [1-4]"));
             break;
         }
         default:

@@ -104,7 +104,7 @@ protected:
     bool isAcceptSelectedEntityToTriggerOnInit(RS_Entity *pEntity) override;
     void doCreateEntitiesOnTrigger(RS_Entity *en, QList<RS_Entity *> &list) override;
     void addCrossDataEntities(QList<RS_Entity *> &list, const LC_CrossData &crossData) const;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     LC_CrossData createCrossDataForEntity(RS_Entity *ent) const;
     LC_ActionOptionsWidget* createOptionsWidget() override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) override;

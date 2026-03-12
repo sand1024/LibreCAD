@@ -282,27 +282,27 @@ void LC_ActionInteractivePickAngle::onCoordinateEvent(const int status,[[maybe_u
     }
 }
 
-void LC_ActionInteractivePickAngle::updateMouseButtonHints() {
+void LC_ActionInteractivePickAngle::updateActionPrompt() {
     const int status = getStatus();
     switch (status){
         case SetPoint1:{
-            updateMouseWidgetTRCancel(tr("Select first edge point of angle"), MOD_SHIFT_AND_CTRL(tr("Select first line/Pick Supplementary"), tr("Pick from line")));
+            updatePromptTRCancel(tr("Select first edge point of angle"), MOD_SHIFT_AND_CTRL(tr("Select first line/Pick Supplementary"), tr("Pick from line")));
             break;
         }
         case SetPoint2:{
-            updateMouseWidgetTRCancel(tr("Select second (intersection) point of angle"), MOD_SHIFT_AND_CTRL_ANGLE(tr("Pick angle")));
+            updatePromptTRCancel(tr("Select second (intersection) point of angle"), MOD_SHIFT_AND_CTRL_ANGLE(tr("Pick angle")));
             break;
         }
         case SetPoint3:{
-            updateMouseWidgetTRCancel(tr("Select second edge point of angle"), MOD_SHIFT_AND_CTRL(MSG_ANGLE_SNAP, tr("Pick Supplementary")));
+            updatePromptTRCancel(tr("Select second edge point of angle"), MOD_SHIFT_AND_CTRL(MSG_ANGLE_SNAP, tr("Pick Supplementary")));
             break;
         }
         case SetSecondLine: {
-            updateMouseWidgetTRBack(tr("Specify second line"), MOD_SHIFT_AND_CTRL(tr("Pick Complementary"), tr("Pick Supplementary")));
+            updatePromptTRBack(tr("Specify second line"), MOD_SHIFT_AND_CTRL(tr("Pick Complementary"), tr("Pick Supplementary")));
             break;
         }
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

@@ -29,7 +29,7 @@
 #include<memory>
 #include <qcombobox.h>
 
-#include "lc_action_options_widget_base.h"
+#include "lc_action_options_widget.h"
 #include "lc_dimstyleslistmodel.h"
 #include "rs_graphic.h"
 
@@ -39,7 +39,7 @@ namespace Ui {
     class Ui_DimOptions;
 }
 
-class QG_DimOptions : public LC_ActionOptionsWidgetBase{
+class QG_DimOptions : public LC_ActionOptionsWidget{
     Q_OBJECT
 public:
     explicit QG_DimOptions(RS_Graphic *graphic);
@@ -69,9 +69,9 @@ protected:
     LC_StylesListModel* m_dimItemsListModel = nullptr;
     void initStylesCombobox(RS_Graphic *g);
     void updateAngle( const QString& a );
-    void doSaveSettings() override;
-    void doSetAction(RS_ActionInterface *a, bool update) override;
-    bool checkActionRttiValid(RS2::ActionType actionType) override;
+    void doSaveSettings() ;
+    void doUpdateByAction(RS_ActionInterface *a) override;
+    bool checkActionRttiValid(RS2::ActionType actionType);
 };
 
 #endif

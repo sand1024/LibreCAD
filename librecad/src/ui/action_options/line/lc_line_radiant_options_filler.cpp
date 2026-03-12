@@ -50,7 +50,8 @@ void LC_LineRadiantOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer*
         }
     };
 
-    addEnum({"a_lenType", tr("Length type"), tr("Defines how to handle length parameter")}, &descriptor, [action]() -> LC_PropertyEnumValueType {
+    addEnum({"a_lenType", tr("Length type"), tr("Defines how to handle length parameter")}, &descriptor,
+            [action]() -> LC_PropertyEnumValueType {
                 return action->getLenghType();
             }, [action](const LC_PropertyEnumValueType& v)-> void {
                 const auto type = static_cast<LC_ActionDrawLineRadiant::LenghtType>(v);

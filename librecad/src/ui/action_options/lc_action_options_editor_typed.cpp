@@ -139,10 +139,10 @@ void LC_ActionOptionsEditorTyped::showOptionsInPropertySheetWidget() {
     }
     if (m_optionFiller != nullptr) {
         m_optionFiller->setAction(m_action);
-        // fixme - more elegant depenency?
-        const auto propertySheetWidget = QC_ApplicationWindow::getAppWindow()->getPropertySheetWidget();
-        propertySheetWidget->showToolOptions(m_optionFiller.get());
     }
+    // fixme - more elegant depenency?
+    const auto propertySheetWidget = QC_ApplicationWindow::getAppWindow()->getPropertySheetWidget();
+    propertySheetWidget->showToolOptions(m_optionFiller.get());
 }
 
 void LC_ActionOptionsEditorTyped::updateOptionsUIInPropertySheetWidget(int mode, const QVariant *value) {

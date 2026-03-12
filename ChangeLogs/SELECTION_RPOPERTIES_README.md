@@ -58,3 +58,10 @@ Workspace state now includes the state of main menu and fullscreen.
 - Ability to perform entities selection without pressed mouse button (similar to AutoCAD rect selection)
 - LibreCAD#2375 - added property to specify selection overlay linetype
 - Improved angle snap mode. If grid is enabled, now with shift it acts like hor/vert restriction
+
+### Changes in Actions: 
+
+1) New Action - Line Radiant
+2) Parallel through point - added "within" mode for multiple copies, that allows to specify that parallels are between point and entity 
+3) Modify Rotate - added ability to specify which point should be selected first (reference or rotation center) plus added support of relative angle selection (instead of absolute one)
+4) Line Angle (and Horizontal and Vertical) - added new option that defines how to handle length of line. Options are "Line", "By X", "By Y", "Free"

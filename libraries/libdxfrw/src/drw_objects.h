@@ -671,10 +671,31 @@ public:
 
     void reset(){
         tType = DRW::PLOTSETTINGS;
-        marginLeft = 0.0;
-        marginBottom = 0.0;
-        marginRight = 0.0;
-        marginTop = 0.0;
+        marginLeftMM = 0.0;
+        marginBottomMM = 0.0;
+        marginRightMM = 0.0;
+        marginTopMM = 0.0;
+        paperWidthMM = 0.0;
+        paperHeightMM = 0.0;
+        originOffsetXMM = 0.0;
+        originOffsetYMM = 0.0;
+        plotWindowLowerLeftX = 0.0;
+        plotWindowLowerLeftY = 0.0;
+        plotWindowUpperRightX = 0.0;
+        plotWindowUpperRightY = 0.0;
+        customPrintScalePaperUnitsNumerator = 0.0;
+        customPrintScaleDrawingUnitsDenominator = 0.0;
+        standardScaleFactor = 0.0;
+        paperImageOriginX = 0.0;
+        paperImageOriginY = 0.0;
+        plotLayoutFlag = 0;
+        plotPaperUnits = 0;
+        plotRotation = 0;
+        plotType = 0;
+        standardScaleType = 0;
+        shadePlotMode = 0;
+        shadePlotCustomDPI = 0;
+        shadePlotResolutionMode = 0;
         DRW_TableEntry::reset();
     }
 
@@ -684,10 +705,33 @@ protected:
 
 public:
     UTF8STRING plotViewName;/*!< Plot view name, code 6 */
-    double marginLeft;      /*!< Size, in millimeters, of unprintable margin on left side of paper, code 40 */
-    double marginBottom;    /*!< Size, in millimeters, of unprintable margin on bottom side of paper, code 41 */
-    double marginRight;     /*!< Size, in millimeters, of unprintable margin on right side of paper, code 42 */
-    double marginTop;       /*!< Size, in millimeters, of unprintable margin on top side of paper, code 43 */
+    UTF8STRING paperSizeName;/*!< Plot view name, code 4 */
+    UTF8STRING currentStyleName;/*!< Plot view name, code 7 */
+    double marginLeftMM;      /*!< Size, in millimeters, of unprintable margin on left side of paper, code 40 */
+    double marginBottomMM;    /*!< Size, in millimeters, of unprintable margin on bottom side of paper, code 41 */
+    double marginRightMM;     /*!< Size, in millimeters, of unprintable margin on right side of paper, code 42 */
+    double marginTopMM;       /*!< Size, in millimeters, of unprintable margin on top side of paper, code 43 */
+    double paperWidthMM;
+    double paperHeightMM;
+    double originOffsetXMM;
+    double originOffsetYMM;
+    double plotWindowLowerLeftX;
+    double plotWindowLowerLeftY;
+    double plotWindowUpperRightX;
+    double plotWindowUpperRightY;
+    double customPrintScalePaperUnitsNumerator;
+    double customPrintScaleDrawingUnitsDenominator;
+    int plotLayoutFlag;
+    int plotPaperUnits;
+    int plotRotation;
+    int plotType;
+    int standardScaleType;
+    int shadePlotMode;
+    int shadePlotResolutionMode;
+    int shadePlotCustomDPI;
+    double standardScaleFactor;
+    double paperImageOriginX;
+    double paperImageOriginY;
 };
 
 //! Class to handle AppId entries

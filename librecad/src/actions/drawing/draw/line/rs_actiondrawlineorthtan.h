@@ -54,7 +54,7 @@ protected:
 
     void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
     RS2::CursorType doGetMouseCursor(int status) override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;

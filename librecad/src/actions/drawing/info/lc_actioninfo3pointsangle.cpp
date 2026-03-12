@@ -132,23 +132,23 @@ void LC_ActionInfo3PointsAngle::onCoordinateEvent(const int status, [[maybe_unus
     }
 }
 
-void LC_ActionInfo3PointsAngle::updateMouseButtonHints() {
+void LC_ActionInfo3PointsAngle::updateActionPrompt() {
     const int status = getStatus();
     switch (status){
         case SetPoint1:{
-            updateMouseWidgetTRCancel(tr("Select first edge point of angle"));
+            updatePromptTRCancel(tr("Select first edge point of angle"));
             break;
         }
         case SetPoint2:{
-            updateMouseWidgetTRCancel(tr("Select second (intersection) point of angle"), MOD_SHIFT_ANGLE_SNAP);
+            updatePromptTRCancel(tr("Select second (intersection) point of angle"), MOD_SHIFT_ANGLE_SNAP);
             break;
         }
         case SetPoint3:{
-            updateMouseWidgetTRCancel(tr("Select second edge point of angle"), MOD_SHIFT_AND_CTRL_ANGLE(tr("Restart with first edge point selection")));
+            updatePromptTRCancel(tr("Select second edge point of angle"), MOD_SHIFT_AND_CTRL_ANGLE(tr("Restart with first edge point selection")));
             break;
         }
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

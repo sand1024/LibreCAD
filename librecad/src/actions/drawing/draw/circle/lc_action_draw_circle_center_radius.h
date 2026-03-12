@@ -27,7 +27,7 @@
 #ifndef RS_ACTIONDRAWCIRCLECR_H
 #define RS_ACTIONDRAWCIRCLECR_H
 
-#include "lc_actiondrawcirclebase.h"
+#include "lc_action_draw_circle_base.h"
 
 struct RS_CircleData;
 
@@ -41,6 +41,7 @@ class LC_ActionDrawCircleCenterRadius : public LC_ActionDrawCircleBase {
     Q_OBJECT
 public:
     explicit LC_ActionDrawCircleCenterRadius(LC_ActionContext* actionContext);
+
     ~LC_ActionDrawCircleCenterRadius() override;
     void reset() override;
     void init(int status) override;
@@ -57,8 +58,6 @@ protected:
         SetRadius /**< Setting radius in command line. */
     };
 
-    LC_ActionOptionsWidget* createOptionsWidget() override;
-    LC_ActionOptionsPropertiesFiller* createOptionsFiller() override;
     /**
      * Circle data defined so far.
      */
@@ -66,10 +65,13 @@ protected:
     double m_radius = 1.0;
     RS_Vector m_center;
 
+    LC_ActionDrawCircleCenterRadius(const QString& name, LC_ActionContext* actionContext, RS2::ActionType type);
+    LC_ActionOptionsWidget* createOptionsWidget() override;
+    LC_ActionOptionsPropertiesFiller* createOptionsFiller() override;
     bool setRadiusStr(const QString& sr);
     bool doProcessCommand(int status, const QString& command) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector& pos) override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;
     void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;

@@ -202,7 +202,7 @@ void LC_ActionFactory::createDrawLineActions(QMap<QString, QAction*>& map, QActi
         {"DrawLineAngle",            RS2::ActionDrawLineAngle,           tr("&Angle"),                 ":/icons/line_angle.lci"},
         {"DrawLineHorizontal",       RS2::ActionDrawLineHorizontal,      tr("&Horizontal"),            ":/icons/line_horizontal.lci"},
         {"DrawLineVertical",         RS2::ActionDrawLineVertical,        tr("Vertical"),               ":/icons/line_vertical.lci"},
-        {"DrawLineFree",             RS2::ActionDrawLineFree,            tr("&Freehand Line"),         ":/icons/line_freehand.lci"},
+        {"DrawLineFree",             RS2::ActionDrawLineFreehand,            tr("&Freehand Line"),         ":/icons/line_freehand.lci"},
         {"DrawLineParallel",         RS2::ActionDrawLineParallel,        tr("&Parallel"),              ":/icons/line_parallel.lci"},
         {"DrawLineParallelThrough",  RS2::ActionDrawLineParallelThrough, tr("Parallel through point"), ":/icons/line_parallel_p.lci"},
         {"DrawLineBisector",         RS2::ActionDrawLineBisector,        tr("Bisector"),               ":/icons/line_bisector.lci"},
@@ -228,7 +228,7 @@ void LC_ActionFactory::createDrawLineActions(QMap<QString, QAction*>& map, QActi
 void LC_ActionFactory::createDrawPointsActions(QMap<QString, QAction*>& map, QActionGroup* group) const {
     createActionHandlerActions(map, group,{
         {"DrawPoint",                RS2::ActionDrawPoint,               tr("&Points"),                ":/icons/points.lci"},
-        {"DrawLinePoints",           RS2::ActionDrawLinePoints,          tr("Line of Points"),         ":/icons/line_points.lci"},
+        {"DrawLinePoints",           RS2::ActionDrawPointsLine,          tr("Line of Points"),         ":/icons/line_points.lci"},
         {"DrawPointsMiddle",         RS2::ActionDrawPointsMiddle,        tr("Middle Points"),          ":/icons/points_middle.lci"},
         {"DrawPointLattice",         RS2::ActionDrawPointsLattice,       tr("Lattice of Points"),      ":/icons/points_lattice.lci"},
         {"SelectPoints",             RS2::ActionSelectPoints,            tr("Select Points"),          ":/icons/select_points.lci"},
@@ -253,18 +253,18 @@ void LC_ActionFactory::createSelectActions(QMap<QString, QAction*>& map, QAction
 
 void LC_ActionFactory::createDrawCircleActions(QMap<QString, QAction*>& map, QActionGroup* group) const {
     createActionHandlerActions(map, group,{
-        {"DrawCircle",         RS2::ActionDrawCircle,         tr("Center, &Point"),                ":/icons/circle_center_point.lci"},
+        {"DrawCircle",         RS2::ActionDrawCircleCenterPoint,         tr("Center, &Point"),                ":/icons/circle_center_point.lci"},
         {"DrawCircleByArc",    RS2::ActionDrawCircleByArc,    tr("By Arc"),                        ":/icons/circle_by_arc.lci"},
-        {"DrawCircleCR",       RS2::ActionDrawCircleCR,       tr("Center, &Radius"),               ":/icons/circle_center_radius.lci"},
-        {"DrawCircle2P",       RS2::ActionDrawCircle2P,       tr("2 Points"),                      ":/icons/circle_2_points.lci"},
-        {"DrawCircle2PR",      RS2::ActionDrawCircle2PR,      tr("2 Points, Radius"),              ":/icons/circle_2_points_radius.lci"},
-        {"DrawCircle3P",       RS2::ActionDrawCircle3P,       tr("3 Points"),                      ":/icons/circle_3_points.lci"},
+        {"DrawCircleCR",       RS2::ActionDrawCircleCenterRadius,       tr("Center, &Radius"),               ":/icons/circle_center_radius.lci"},
+        {"DrawCircle2P",       RS2::ActionDrawCircle2Points,       tr("2 Points"),                      ":/icons/circle_2_points.lci"},
+        {"DrawCircle2PR",      RS2::ActionDrawCircle2PointsRadius,      tr("2 Points, Radius"),              ":/icons/circle_2_points_radius.lci"},
+        {"DrawCircle3P",       RS2::ActionDrawCircle3Points,       tr("3 Points"),                      ":/icons/circle_3_points.lci"},
         {"DrawCircleParallel", RS2::ActionDrawCircleParallel, tr("&Concentric"),                   ":/icons/circle_concentric.lci"},
         {"DrawCircleInscribe", RS2::ActionDrawCircleInscribe, tr("Circle &Inscribed"),             ":/icons/circle_inscribed.lci"},
-        {"DrawCircleTan2",     RS2::ActionDrawCircleTan2,     tr("Tangential 2 Entities, Radius"),  ":/icons/circle_tangential_2circles_radius.lci"},
-        {"DrawCircleTan2_1P",  RS2::ActionDrawCircleTan2_1P,  tr("Tangential 2 Entities, 1 Point"), ":/icons/circle_tangential_2circles_point.lci"},
-        {"DrawCircleTan3",     RS2::ActionDrawCircleTan3,     tr("Tangential &3 Entities"),         ":/icons/circle_tangential_3entities.lci"},
-        {"DrawCircleTan1_2P",  RS2::ActionDrawCircleTan1_2P,  tr("Tangential, 2 P&oints"),         ":/icons/circle_tangential_2points.lci"}
+        {"DrawCircleTan2",     RS2::ActionDrawCircleTan2EntitiesRadius,     tr("Tangential 2 Entities, Radius"),  ":/icons/circle_tangential_2circles_radius.lci"},
+        {"DrawCircleTan2_1P",  RS2::ActionDrawCircleTangental2Entities1Point,  tr("Tangential 2 Entities, 1 Point"), ":/icons/circle_tangential_2circles_point.lci"},
+        {"DrawCircleTan3",     RS2::ActionDrawCircleTan3Entities,     tr("Tangential &3 Entities"),         ":/icons/circle_tangential_3entities.lci"},
+        {"DrawCircleTan1_2P",  RS2::ActionDrawCircleTangental1Entity2Points,  tr("Tangential, 2 P&oints"),         ":/icons/circle_tangential_2points.lci"}
     });
 }
 
@@ -286,8 +286,8 @@ void LC_ActionFactory::createDrawCurveActions(QMap<QString, QAction*>& map, QAct
 void LC_ActionFactory::createDrawSplineActions(QMap<QString, QAction*>& map, QActionGroup* group) const {
     createActionHandlerActions(map, group, {
         {"DrawParabola4Points",    RS2::ActionDrawParabola4Points,   tr("Para&bola 4 points"),        ":/icons/parabola_4_points.lci"},
-        {"DrawParabolaFD",         RS2::ActionDrawParabolaFD,        tr("Parabola &Focus Directrix"), ":/icons/parabola_focus_directrix.lci"},
-        {"DrawHyperbolaFP",        RS2::ActionDrawHyperbolaFP,       tr("&Hyperbola &Foci Point"),    ":/icons/hyperbola_foci_point.lci"},
+        {"DrawParabolaFD",         RS2::ActionDrawParabolaFocusDiretrix,        tr("Parabola &Focus Directrix"), ":/icons/parabola_focus_directrix.lci"},
+        {"DrawHyperbolaFP",        RS2::ActionDrawHyperbolaFoci2Points,       tr("&Hyperbola &Foci Point"),    ":/icons/hyperbola_foci_point.lci"},
         {"DrawSpline",             RS2::ActionDrawSpline,            tr("&Spline"),                   ":/icons/spline.lci"},
         {"DrawSplinePoints",       RS2::ActionDrawSplinePoints,      tr("&Spline through points"),    ":/icons/spline_points.lci"},
         {"DrawSplinePointsAppend", RS2::ActionDrawSplinePointAppend, tr("&Append spline point"),      ":/icons/spline_points_add.lci"},
@@ -377,7 +377,7 @@ void LC_ActionFactory::createModifyActions(QMap<QString, QAction *> &map, QActio
         {"ModifyScale",           RS2::ActionModifyScale,           tr("&Scale"),                     ":/icons/scale.lci"},
         {"ModifyMirror",          RS2::ActionModifyMirror,          tr("&Mirror"),                    ":/icons/mirror.lci"},
         {"ModifyMoveRotate",      RS2::ActionModifyMoveRotate,      tr("Mo&ve and Rotate"),           ":/icons/move_rotate.lci"},
-        {"ModifyRotate2",         RS2::ActionModifyRotate2,         tr("Rotate T&wo"),                ":/icons/rotate2.lci"},
+        {"ModifyRotate2",         RS2::ActionModifyRotateTwice,         tr("Rotate T&wo"),                ":/icons/rotate2.lci"},
         {"ModifyEntity",          RS2::ActionModifyEntity,          tr("&Properties"),                ":/icons/properties.lci"},
         {"ModifyTrim",            RS2::ActionModifyTrim,            tr("&Trim"),                      ":/icons/trim.lci"},
         {"ModifyTrim2",           RS2::ActionModifyTrim2,           tr("Tr&im Two"),                  ":/icons/trim2.lci"},

@@ -297,17 +297,17 @@ RS_Vector LC_ActionDimLinearBase::adjustByAdjacentDim(const RS_Vector& mouse, co
 }
 
 void LC_ActionDimLinearBase::updateMouseButtonHintForExtPoint2() {
-    updateMouseWidgetTRBack(tr("Specify second extension line origin"), MOD_SHIFT_ANGLE_SNAP);
+    updatePromptTRBack(tr("Specify second extension line origin"), MOD_SHIFT_ANGLE_SNAP);
 }
 
 void LC_ActionDimLinearBase::updateMouseButtonHintForDefPoint() {
-    updateMouseWidgetTRBack(tr("Specify dimension line location"), MOD_SHIFT_LC(tr("Snap to Adjacent Dim")));
+    updatePromptTRBack(tr("Specify dimension line location"), MOD_SHIFT_LC(tr("Snap to Adjacent Dim")));
 }
 
-void LC_ActionDimLinearBase::updateMouseButtonHints(){
+void LC_ActionDimLinearBase::updateActionPrompt(){
     switch (getStatus()) {
         case SetExtPoint1:
-            updateMouseWidgetTRCancel(tr("Specify first extension line origin"),MOD_SHIFT_AND_CTRL( MSG_REL_ZERO, "Select Line for origin points"));
+            updatePromptTRCancel(tr("Specify first extension line origin"),MOD_SHIFT_AND_CTRL( MSG_REL_ZERO, "Select Line for origin points"));
             break;
         case SetExtPoint2:
             updateMouseButtonHintForExtPoint2();
@@ -316,13 +316,13 @@ void LC_ActionDimLinearBase::updateMouseButtonHints(){
             updateMouseButtonHintForDefPoint();
             break;
         case SetText:
-            updateMouseWidget(tr("Enter dimension text:"));
+            updatePrompt(tr("Enter dimension text:"));
             break;
         case SetAngle:
-            updateMouseWidget(tr("Enter dimension line angle:"));
+            updatePrompt(tr("Enter dimension line angle:"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

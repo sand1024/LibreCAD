@@ -391,13 +391,13 @@ void LC_ActionDrawCenterMark::doOnLeftMouseButtonRelease([[maybe_unused]] const 
     }
 }
 
-void LC_ActionDrawCenterMark::updateMouseButtonHints(){
+void LC_ActionDrawCenterMark::updateActionPrompt(){
     switch (getStatus()) {
         case SetEntity:
-            updateMouseWidgetTRCancel(tr("Select circle, arc or ellipse"));
+            updatePromptTRCancel(tr("Select circle, arc or ellipse"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

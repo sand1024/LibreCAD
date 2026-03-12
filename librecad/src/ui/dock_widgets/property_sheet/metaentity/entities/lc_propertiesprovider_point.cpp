@@ -50,7 +50,7 @@ void LC_PropertiesProviderPoint::doCreateSingleEntityCommands(LC_PropertyContain
         },
         {
             tr("Other point operations"),
-            {RS2::ActionDrawLinePoints, tr("Line of points"), tr("Creation of several points along specified direction")},
+            {RS2::ActionDrawPointsLine, tr("Line of points"), tr("Creation of several points along specified direction")},
             {RS2::ActionDrawPointsLattice, tr("Lattice of points"), tr("Creation of lattice of points")}
         }
     };

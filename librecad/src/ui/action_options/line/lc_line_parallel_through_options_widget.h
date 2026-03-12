@@ -26,7 +26,7 @@
 #ifndef QG_LINEPARALLELTHROUGHOPTIONS_H
 #define QG_LINEPARALLELTHROUGHOPTIONS_H
 
-#include "lc_action_options_widget_base.h"
+#include "lc_action_options_widget.h"
 
 class RS_ActionInterface;
 class LC_ActionDrawLineParallelThrough;
@@ -35,7 +35,7 @@ namespace Ui {
     class LC_LineParallelThroughOptionsWidget;
 }
 
-class LC_LineParallelThroughOptionsWidget:public LC_ActionOptionsWidgetBase {
+class LC_LineParallelThroughOptionsWidget:public LC_ActionOptionsWidget {
     Q_OBJECT
 public:
     LC_LineParallelThroughOptionsWidget();
@@ -46,7 +46,7 @@ protected slots:
     void onNumberValueChanged(int number);
     void languageChange() override;
 protected:
-    void doSetAction(RS_ActionInterface *a) override;
+    void doUpdateByAction(RS_ActionInterface *a) override;
 private:
     LC_ActionDrawLineParallelThrough *m_action = nullptr;
     std::unique_ptr<Ui::LC_LineParallelThroughOptionsWidget> ui;

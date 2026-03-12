@@ -182,7 +182,7 @@ protected:
     void clearTickData();
     RS2::CursorType doGetMouseCursor(int status) override;
     EntityTypeList getCatchEntityTypeList() const;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angle) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
     LC_ActionOptionsWidget* createOptionsWidget() override;

@@ -35,29 +35,18 @@ void LC_LineParallelThroughOptionsFiller::fillToolOptionsContainer(LC_PropertyCo
                       action->setNumber(val);
                   }, container);
 
-    const int number = action->getNumber();
-    if (number > 1) {
-        addBoolean({
-                       "a_within",
-                       tr("Within"),
-                       tr(
-                           "If checked, parallels will be equally distributed between point and line, otherwise they will be distributed starting from point.")
-                   }, [action]()-> bool {
-                       return action->isSymmetric();
-                   }, [action](bool val)-> void {
-                       action->setSymmetric(val);
-                   }, container);
-    }
-    else {
-        addBoolean({
-                       "a_within",
-                       tr("Within"),
-                       tr(
-                           "If checked, parallels will be equally distributed between point and line, otherwise they will be distributed starting from point.")
-                   }, [action]()-> bool {
-                       return action->isSymmetric();
-                   }, nullptr, container);
-    }
+    addBoolean({
+                   "a_within",
+                   tr("Within"),
+                   tr(
+                       "If checked, parallels will be equally distributed between point and line, otherwise they will be distributed starting from point.")
+               }, [action]()-> bool {
+                   return action->isSymmetric();
+               }, [action](bool val)-> void {
+                   action->setSymmetric(val);
+               }, container, [action](LC_PropertyViewDescriptor& d) -> bool {
+                   return action->getNumber() == 1;
+               });
 
     addBoolean({"a_symmetric", tr("Symmetric"), tr("If checked, parallels will be created on both sides of entity")}, [action]()-> bool {
                    return action->isSymmetric();

@@ -48,8 +48,7 @@ namespace {
  *  Constructs a QG_LineRelAngleOptions as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-LC_LineRelAngleOptionsWidget::LC_LineRelAngleOptionsWidget()
-    : LC_ActionOptionsWidgetBase(RS2::ActionNone, "Draw", "LineRelAngleAngle"), ui(std::make_unique<Ui::LC_LineRelAngleOptionsWidget>()) {
+LC_LineRelAngleOptionsWidget::LC_LineRelAngleOptionsWidget(): ui(std::make_unique<Ui::LC_LineRelAngleOptionsWidget>()) {
     ui->setupUi(this);
     connect(ui->leLength, &QLineEdit::editingFinished, this, &LC_LineRelAngleOptionsWidget::onLengthEditingFinished);
     connect(ui->leAngle, &QLineEdit::editingFinished, this, &LC_LineRelAngleOptionsWidget::onAngleEditingFinished);
@@ -71,11 +70,7 @@ void LC_LineRelAngleOptionsWidget::languageChange() {
     ui->retranslateUi(this);
 }
 
-bool LC_LineRelAngleOptionsWidget::checkActionRttiValid(const RS2::ActionType actionType) {
-    return actionType == RS2::ActionDrawLineRelAngle || actionType == RS2::ActionDrawLineOrthogonal;
-}
-
-void LC_LineRelAngleOptionsWidget::doSetAction(RS_ActionInterface* a) {
+void LC_LineRelAngleOptionsWidget::doUpdateByAction(RS_ActionInterface* a) {
     m_action = static_cast<LC_ActionDrawLineRelAngle*>(a);
     const bool fixedAngle = m_action->hasFixedAngle();
 

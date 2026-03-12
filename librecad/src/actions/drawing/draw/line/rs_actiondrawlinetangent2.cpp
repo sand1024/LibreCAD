@@ -214,19 +214,19 @@ void RS_ActionDrawLineTangent2::preparePreview(const int status, const LC_MouseE
     deleteSnapper();
 }
 
-void RS_ActionDrawLineTangent2::updateMouseButtonHints(){
+void RS_ActionDrawLineTangent2::updateActionPrompt(){
     switch (getStatus()) {
         case SetCircle1:
-            updateMouseWidgetTRCancel(tr("Select first circle/ellipse/parabola"));
+            updatePromptTRCancel(tr("Select first circle/ellipse/parabola"));
             break;
         case SetCircle2:
-            updateMouseWidgetTRBack(tr("Select second circle/ellipse/parabola"));
+            updatePromptTRBack(tr("Select second circle/ellipse/parabola"));
             break;
         case SelectLine:
-            updateMouseWidgetTRBack(tr("Select the tangent line closest to cursor"));
+            updatePromptTRBack(tr("Select the tangent line closest to cursor"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

@@ -36,19 +36,13 @@ void LC_LineFromPointToLineOptionsFiller::fillToolOptionsContainer(LC_PropertyCo
                    action->setOrthogonal(val);
                }, container);
 
-    const bool ortho = action->getOrthogonal();
-    if (ortho) {
-        addRawAngleDegrees({"a_angle", tr("Angle"), tr("Angle between original line and created one")}, [action]() {
-            return action->getAngleDegrees();
-        }, nullptr, container);
-    }
-    else {
-        addRawAngleDegrees({"a_angle", tr("Angle"), tr("Angle between original line and created one")}, [action]() {
-                               return action->getAngleDegrees();
-                           }, [action](double val) {
-                               action->setAngleDegrees(val);
-                           }, container);
-    }
+    addRawAngleDegrees({"a_angle", tr("Angle"), tr("Angle between original line and created one")}, [action]() {
+                           return action->getAngleDegrees();
+                       }, [action](double val) {
+                           action->setAngleDegrees(val);
+                       }, container, [action](LC_PropertyViewDescriptor& d) -> bool {
+                           return action->getOrthogonal();
+                       });
 
     static LC_EnumDescriptor sizeTypDescriptor = {
         "sizeTypeDescriptor",

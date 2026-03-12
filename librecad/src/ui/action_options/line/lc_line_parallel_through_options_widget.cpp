@@ -33,9 +33,7 @@
  *  Constructs a QG_LineParallelThroughOptions as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-LC_LineParallelThroughOptionsWidget::LC_LineParallelThroughOptionsWidget()
-    : LC_ActionOptionsWidgetBase(RS2::ActionDrawLineParallelThrough, "Draw", "LineParallel"),
-      ui(new Ui::LC_LineParallelThroughOptionsWidget{}) {
+LC_LineParallelThroughOptionsWidget::LC_LineParallelThroughOptionsWidget():ui(new Ui::LC_LineParallelThroughOptionsWidget{}) {
     ui->setupUi(this);
 
     connect(ui->cbSymmetric, &QCheckBox::toggled, this, &LC_LineParallelThroughOptionsWidget::onSymmetricToggled);
@@ -56,7 +54,7 @@ void LC_LineParallelThroughOptionsWidget::languageChange() {
     ui->retranslateUi(this);
 }
 
-void LC_LineParallelThroughOptionsWidget::doSetAction(RS_ActionInterface* a) {
+void LC_LineParallelThroughOptionsWidget::doUpdateByAction(RS_ActionInterface* a) {
     m_action = static_cast<LC_ActionDrawLineParallelThrough*>(a);
 
     const bool symmetric = m_action->isSymmetric();

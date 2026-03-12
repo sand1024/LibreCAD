@@ -70,7 +70,7 @@ protected:
     void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector& pos) override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     RS_Entity* doTriggerCreateEntity() override;
 };
 #endif

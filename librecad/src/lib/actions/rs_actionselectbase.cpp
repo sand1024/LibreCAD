@@ -28,7 +28,7 @@
 #include "rs_document.h"
 #include "rs_selection.h"
 
-RS_ActionSelectBase::RS_ActionSelectBase(const char* name, LC_ActionContext* actionContext, const RS2::ActionType actionType,
+RS_ActionSelectBase::RS_ActionSelectBase(const QString& name, LC_ActionContext* actionContext, const RS2::ActionType actionType,
                                          QList<RS2::EntityType> entityTypeList)
     : LC_OverlayBoxAction(name, actionContext, actionType), m_catchForSelectionEntityTypes(std::move(entityTypeList)) {
 }

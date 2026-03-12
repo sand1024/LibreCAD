@@ -26,22 +26,43 @@
 #include "lc_ucs_mark.h"
 #include "rs_previewactioninterface.h"
 
-class LC_ActionUCSCreate:public RS_PreviewActionInterface{
-Q_OBJECT
-public:
-    explicit LC_ActionUCSCreate(LC_ActionContext *actionContext);
+class LC_ActionUCSCreate : public RS_PreviewActionInterface {
+    Q_OBJECT public:
+    explicit LC_ActionUCSCreate(LC_ActionContext* actionContext);
     ~LC_ActionUCSCreate() override;
-    double getAngle() const {return m_angle;}
-    void setAngle(const double mAngle) {m_angle = mAngle;}
-    bool isFixedAngle() const {return m_fixedAngle;}
-    void setFixedAngle(const bool val) {m_fixedAngle = val;}
-    bool isParentIsWcs() const {return m_parentIsWCS;}
-    void setParentIsWcs(const bool parentIsWcs) {m_parentIsWCS =parentIsWcs;}
-    QStringList getAvailableCommands() override;
-    double getCurrentAngle() const {return m_currentAngle;}
-protected:
 
-    enum{
+    double getAngle() const {
+        return m_angle;
+    }
+
+    void setAngle(const double mAngle) {
+        m_angle = mAngle;
+    }
+
+    bool isFixedAngle() const {
+        return m_fixedAngle;
+    }
+
+    void setFixedAngle(const bool val) {
+        m_fixedAngle = val;
+    }
+
+    bool isParentIsWcs() const {
+        return m_parentIsWCS;
+    }
+
+    void setParentIsWcs(const bool parentIsWcs) {
+        m_parentIsWCS = parentIsWcs;
+    }
+
+    QStringList getAvailableCommands() override;
+
+    double getCurrentAngle() const {
+        return m_currentAngle;
+    }
+
+protected:
+    enum {
         SetOrigin,
         SetAngle
     };
@@ -55,17 +76,21 @@ protected:
     LC_UCSMarkOptions m_ucsMarkOptions;
 
     void doTrigger() override;
-    LC_ActionOptionsWidget *createOptionsWidget() override;
-    void showUCSMark(const RS_Vector &point, double angle);
+    LC_ActionOptionsWidget* createOptionsWidget() override;
+    LC_ActionOptionsPropertiesFiller* createOptionsFiller() override;
+    void showUCSMark(const RS_Vector& point, double angle);
     void initFromSettings() override;
     RS2::CursorType doGetMouseCursor(int status) override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseMoveEvent(int status, const LC_MouseEvent* event) override;
-    bool doProcessCommand(int status, const QString &command) override;
-    void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
+    bool doProcessCommand(int status, const QString& command) override;
+    void onCoordinateEvent(int status, bool isZero, const RS_Vector& pos) override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angle) override;
+
+    void doSaveOptions() override;
+    void doLoadOptions() override;
 };
 
 #endif

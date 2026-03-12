@@ -323,6 +323,10 @@ bool LC_LineMath::isSameLength(const double angle1, const double angle2) {
     return std::abs(angle1 - angle2) < RS_TOLERANCE;
 }
 
+bool LC_LineMath::isSameValue(const double angle1, const double angle2) {
+    return std::abs(angle1 - angle2) < RS_TOLERANCE;
+}
+
 /**
  * Return true if distance between two points is meaningful and so these are
  * different points

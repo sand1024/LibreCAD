@@ -33,7 +33,7 @@ LC_ActionLayerBase::LC_ActionLayerBase(const char* name, LC_ActionContext* actio
 
 void LC_ActionLayerBase::onSelectionCompleted([[maybe_unused]]bool singleEntity, const bool fromInit) {
     setSelectionComplete(isAllowTriggerOnEmptySelection(), fromInit);
-    updateMouseButtonHints();
+    updateActionPrompt();
     if (m_selectionComplete) {
         trigger();
     }

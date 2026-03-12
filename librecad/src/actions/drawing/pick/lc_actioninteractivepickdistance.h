@@ -54,7 +54,7 @@ protected:
     void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void updateInfoCursorForPoint1(const RS_Vector& mouse) const;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     void updateInfoCursorForPoint2(const RS_Vector &mouse, const RS_Vector &startPoint) const;
 };
 

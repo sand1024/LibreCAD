@@ -24,13 +24,24 @@
 
 #include "lc_graphicviewport.h"
 #include "lc_overlayentitiescontainer.h"
-#include "lc_ucssetoptions.h"
+#include "lc_ucs_create_options_filler.h"
+#include "lc_ucs_create_options_widget.h"
 
 LC_ActionUCSCreate::LC_ActionUCSCreate(LC_ActionContext *actionContext)
-    :RS_PreviewActionInterface("UCSCreate", actionContext, RS2::ActionUCSCreate){
+    :RS_PreviewActionInterface("ActionUCSCreate", actionContext, RS2::ActionUCSCreate){
 }
 
 LC_ActionUCSCreate::~LC_ActionUCSCreate() = default;
+
+void LC_ActionUCSCreate::doSaveOptions() {
+    save("Angle", m_angle);
+    save("AngleIsFixed", m_fixedAngle);
+}
+
+void LC_ActionUCSCreate::doLoadOptions() {
+    m_angle = loadDouble("Angle", 0.0);
+    m_fixedAngle = loadBool("AngleIsFixed", true);
+}
 
 void LC_ActionUCSCreate::doTrigger() {
 //   LC_ERR << "SET Origin. UCS: " << formatVector(m_originPoint) << " World: "<< formatVectorWCS(m_originPoint) << " Angle: " << formatAngle(m_angle);
@@ -69,7 +80,6 @@ void LC_ActionUCSCreate::onMouseMoveEvent(const int status, const LC_MouseEvent*
         case SetAngle:{
             const RS_Vector pos = getSnapAngleAwarePoint(event, m_originPoint, snap, true);
             m_currentAngle = m_originPoint.angleTo(pos);
-            updateOptionsUI(1);
             if (m_showRefEntitiesOnPreview){
                 previewRefPoint(m_originPoint);
                 previewRefSelectablePoint(pos);
@@ -109,6 +119,7 @@ void LC_ActionUCSCreate::onCoordinateEvent(const int status, [[maybe_unused]]boo
                 trigger();
             }
             else {
+                moveRelativeZero(m_originPoint);
                 setStatus(SetAngle);
             }
             break;
@@ -139,18 +150,18 @@ QStringList LC_ActionUCSCreate::getAvailableCommands() {
     return RS_ActionInterface::getAvailableCommands();
 }
 
-void LC_ActionUCSCreate::updateMouseButtonHints() {
+void LC_ActionUCSCreate::updateActionPrompt() {
     switch (getStatus()){
         case SetOrigin:{
-            updateMouseWidgetTRCancel("Specify origin point", MOD_SHIFT_RELATIVE_ZERO);
+            updatePromptTRCancel("Specify origin point", MOD_SHIFT_RELATIVE_ZERO);
             break;
         }
         case SetAngle:{
-            updateMouseWidgetTRCancel("Specify direction point for X axis", MOD_SHIFT_ANGLE_SNAP);
+            updatePromptTRCancel("Specify direction point for X axis", MOD_SHIFT_ANGLE_SNAP);
             break;
         }
         default:
-            updateMouseWidget();
+            updatePrompt();
     }
 }
 
@@ -158,9 +169,12 @@ bool LC_ActionUCSCreate::doProcessCommand(const int status, const QString &comma
     return RS_ActionInterface::doProcessCommand(status, command);
 }
 
-
 LC_ActionOptionsWidget *LC_ActionUCSCreate::createOptionsWidget() {
-    return new LC_UCSSetOptions();
+    return new LC_UCSCreateOptionsWidget();
+}
+
+LC_ActionOptionsPropertiesFiller* LC_ActionUCSCreate::createOptionsFiller() {
+    return new LC_UCSCreateOptionsFiller();
 }
 
 RS2::CursorType LC_ActionUCSCreate::doGetMouseCursor([[maybe_unused]]int status) {

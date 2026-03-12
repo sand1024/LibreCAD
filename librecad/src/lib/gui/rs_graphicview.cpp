@@ -271,8 +271,8 @@ void RS_GraphicView::notifyLastActionFinished() const {
     return getEventHandler()->notifyLastActionFinished();
 }
 
-void RS_GraphicView::onSwitchToDefaultAction(const bool actionIsDefault, const RS2::ActionType prevActionRtti) {
-    emit defaultActionActivated(actionIsDefault, prevActionRtti);
+void RS_GraphicView::onSwitchToDefaultAction(const bool actionIsDefault, const RS2::ActionType actionRtti, const RS2::ActionType prevActionRtti) {
+    emit defaultActionActivated(actionIsDefault, actionRtti, prevActionRtti);
 }
 
 void RS_GraphicView::onRelativeZeroChanged(const RS_Vector &pos) {

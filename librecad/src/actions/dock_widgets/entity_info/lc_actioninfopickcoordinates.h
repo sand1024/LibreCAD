@@ -37,7 +37,7 @@ protected:
     void doOnLeftMouseButtonRelease(const LC_MouseEvent* e, int status, const RS_Vector &snapPoint) override;
     RS_Vector doGetMouseSnapPoint(const LC_MouseEvent* e) override;
     void doFinish() override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
 private:
     /**
      * collected points

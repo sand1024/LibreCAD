@@ -37,8 +37,6 @@ public:
     void updateUI(int mode, const QVariant* value) override;
 protected slots:
     void languageChange() override;
-    bool checkActionRttiValid(RS2::ActionType actionType) override;
-    void doSetAction(RS_ActionInterface *a) override;
     void onCountChanged(int value);
     void onDistanceEditingFinished();
     void onTickLengthEditingFinished();
@@ -51,6 +49,7 @@ protected slots:
     void onDivideClicked(bool checked);
     void onModeClicked(bool checked);
 protected:
+    void doUpdateByAction(RS_ActionInterface *a) override;
     Ui::LC_SliceDivideOptionsWidget *ui;
     LC_ActionDrawSliceDivide* m_action = nullptr;
     bool m_forCircle {false};

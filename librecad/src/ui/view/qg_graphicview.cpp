@@ -38,7 +38,7 @@
 #include <iostream>
 
 #include "lc_actioncontext.h"
-#include "lc_actionmodifymoveadjust.h"
+#include "lc_action_modify_move_adjust.h"
 #include "lc_eventhandler.h"
 #include "lc_graphicviewport.h"
 #include "lc_graphicviewrenderer.h"
@@ -52,8 +52,8 @@
 #include "qg_scrollbar.h"
 #include "rs.h"
 #include "rs_actiondefault.h"
-#include "rs_actionmodifyentity.h"
-#include "rs_actionselectsingle.h"
+
+#include "lc_action_select_single.h"
 #include "rs_blocklist.h"
 #include "rs_debug.h"
 #include "rs_dialogfactoryinterface.h"
@@ -743,7 +743,7 @@ void QG_GraphicView::tabletEvent(QTabletEvent* e) {
             case QPointingDevice::PointerType::Eraser:
                 if (e->type() == QEvent::TabletRelease) {
                     if (getDocument() != nullptr) {
-                        auto a = std::make_shared<RS_ActionSelectSingle>(m_actionContext);
+                        auto a = std::make_shared<LC_ActionSelectSingle>(m_actionContext);
                         setCurrentAction(a);
                         QMouseEvent ev(QEvent::MouseButtonRelease, e->position(), e->globalPosition(), Qt::LeftButton, Qt::LeftButton,
                                        Qt::NoModifier); //RLZ

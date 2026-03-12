@@ -211,7 +211,7 @@ bool RS_ActionDimLinear::checkMaySwitchDimDirection() const {
 void RS_ActionDimLinear::updateMouseButtonHintForExtPoint2() {
     const bool maySwitchDirection = checkMaySwitchDimDirection();
     if (maySwitchDirection) {
-        updateMouseWidgetTRBack(tr("Specify second extension line origin"), MOD_SHIFT_AND_CTRL( MSG_REL_ZERO, tr("Switch Direction")));
+        updatePromptTRBack(tr("Specify second extension line origin"), MOD_SHIFT_AND_CTRL( MSG_REL_ZERO, tr("Switch Direction")));
     }
     else {
         LC_ActionDimLinearBase::updateMouseButtonHintForExtPoint2();
@@ -221,7 +221,7 @@ void RS_ActionDimLinear::updateMouseButtonHintForExtPoint2() {
 void RS_ActionDimLinear::updateMouseButtonHintForDefPoint() {
     const bool maySwitchDirection = checkMaySwitchDimDirection();
     if (maySwitchDirection) {
-        updateMouseWidgetTRBack(tr("Specify dimension line location"), MOD_SHIFT_AND_CTRL(tr("Snap to Adjacent Dim"), tr("Switch Direction")));
+        updatePromptTRBack(tr("Specify dimension line location"), MOD_SHIFT_AND_CTRL(tr("Snap to Adjacent Dim"), tr("Switch Direction")));
     }
     else {
         LC_ActionDimLinearBase::updateMouseButtonHintForDefPoint();

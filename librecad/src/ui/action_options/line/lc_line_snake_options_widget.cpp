@@ -30,8 +30,7 @@
  *  Constructs a QG_LineOptions as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-LC_LineSnakeOptionsWidget::LC_LineSnakeOptionsWidget()
-    : LC_ActionOptionsWidgetBase(RS2::ActionDrawSnakeLine, "Draw", "LineSnake"), ui(new Ui::LC_LineSnakeOptionsWidget{}) {
+LC_LineSnakeOptionsWidget::LC_LineSnakeOptionsWidget(): ui(new Ui::LC_LineSnakeOptionsWidget{}) {
     ui->setupUi(this);
     connect(ui->rbX, &QRadioButton::clicked, this, &LC_LineSnakeOptionsWidget::onXClicked);
     connect(ui->rbY, &QRadioButton::clicked, this, &LC_LineSnakeOptionsWidget::onYClicked);
@@ -43,9 +42,6 @@ LC_LineSnakeOptionsWidget::LC_LineSnakeOptionsWidget()
     pickAngleSetup("angle", ui->tbPickAngle, ui->leAngle);
 }
 
-bool LC_LineSnakeOptionsWidget::checkActionRttiValid(const RS2::ActionType actionType) {
-    return actionType == RS2::ActionDrawSnakeLine || actionType == RS2::ActionDrawSnakeLineX || actionType == RS2::ActionDrawSnakeLineY;
-}
 
 /*
  *  Destroys the object and frees any allocated resources
@@ -63,7 +59,7 @@ void LC_LineSnakeOptionsWidget::languageChange() {
     ui->retranslateUi(this);
 }
 
-void LC_LineSnakeOptionsWidget::doSetAction(RS_ActionInterface* a) {
+void LC_LineSnakeOptionsWidget::doUpdateByAction(RS_ActionInterface* a) {
     m_action = static_cast<LC_ActionDrawLineSnake*>(a);
 
     ui->bClose->setEnabled(m_action->mayClose());

@@ -110,9 +110,10 @@ void LC_Printing::print(QC_MDIWindow& mdiWindow, PrinterType printerType) {
     printer.setFullPage(true);
 
     bool landscape = false;
-    RS2::PaperFormat paperFormat = graphic->getPaperFormat(&landscape);
+    LC_PlotSettings* ps = graphic->getPlotSettings();
+    RS2::PaperFormat paperFormat = ps->getPaperFormat(&landscape);
     QPageSize::PageSizeId paperSizeName = rsToQtPaperFormat(paperFormat);
-    RS_Vector paperSize = graphic->getPaperSize();
+    RS_Vector paperSize = ps->getPaperSize();
     RS2::Unit unit = graphic->getUnit();
     if (paperSizeName == QPageSize::Custom) {
         RS_Vector s = RS_Units::convert(paperSize, unit, RS2::Millimeter);
@@ -127,7 +128,7 @@ void LC_Printing::print(QC_MDIWindow& mdiWindow, PrinterType printerType) {
     }
     // qDebug()<<"paper size=("<<printer.paperSize(QPrinter::Millimeter).width()<<", "<<printer.paperSize(QPrinter::Millimeter).height()<<")";
     printer.setPageOrientation(landscape ? QPageLayout::Landscape : QPageLayout::Portrait);
-    QMarginsF paperMargins{graphic->getMarginLeft(), graphic->getMarginRight(), graphic->getMarginTop(), graphic->getMarginBottom()};
+    QMarginsF paperMargins{ps->getMarginLeftMm(), ps->getMarginRightMm(), ps->getMarginTopMm(), ps->getMarginBottomMm()};
     printer.setPageMargins(paperMargins, QPageLayout::Millimeter);
 
     // printer setup:
@@ -235,8 +236,8 @@ void LC_Printing::print(QC_MDIWindow& mdiWindow, PrinterType printerType) {
             int answer = msgBox.exec();
             switch (answer) {
                 case QMessageBox::Yes:
-                    graphic->setPaperSize(RS_Units::convert(printerSizeMm, RS2::Millimeter, unit));
-                    graphic->setMargins(printMarginsLeft, printMarginsTop, printMarginsRight, printMarginsBottom);
+                    ps->setPaperSize(RS_Units::convert(printerSizeMm, RS2::Millimeter, unit));
+                    ps->setMarginsInMm(printMarginsLeft, printMarginsTop, printMarginsRight, printMarginsBottom);
                     break;
                 case QMessageBox::No:
                     break;
@@ -305,7 +306,7 @@ void LC_Printing::print(QC_MDIWindow& mdiWindow, PrinterType printerType) {
 
         double f = (fx + fy) / 2.0;
 
-        double scale = graphic->getPaperScale();
+        double scale = ps->getPaperScale();
         double factor = f * scale;
 
         //RS_DEBUG->print(RS_Debug::D_ERROR, "PaperSize=(%d, %d)\n",printer.widthMM(), printer.heightMM());
@@ -313,9 +314,9 @@ void LC_Printing::print(QC_MDIWindow& mdiWindow, PrinterType printerType) {
         double baseX = graphic->getPaperInsertionBase().x;
         double baseY = graphic->getPaperInsertionBase().y;
 
-        int numX = graphic->getPagesNumHoriz();
-        int numY = graphic->getPagesNumVert();
-        RS_Vector printArea = graphic->getPrintAreaSize(false);
+        int numX = ps->getPagesNumHoriz();
+        int numY = ps->getPagesNumVert();
+        RS_Vector printArea = ps->getPrintAreaSize(false);
 
         for (int pY = 0; pY < numY; pY++) {
             double offsetY = printArea.y * pY;

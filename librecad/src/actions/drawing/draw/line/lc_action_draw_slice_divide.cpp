@@ -622,14 +622,14 @@ void LC_ActionDrawSliceDivide::prepareTickData(const RS_Vector &tickSnapPosition
     tickLineData.endpoint = tickLineData.startpoint.relative(actualTickLength, actualTickAngle);
 }
 
-void LC_ActionDrawSliceDivide::updateMouseButtonHints(){
+void LC_ActionDrawSliceDivide::updateActionPrompt(){
     // todo - actually , if tick angle is 90 degrees, alternative mode is not meaningful, so it's better to adjust more
     // fine grained shift status there
     if (m_actionType == RS2::ActionDrawSliceDivideLine){
-        updateMouseWidgetTRCancel(tr("Select line"), MOD_SHIFT_MIRROR_ANGLE);
+        updatePromptTRCancel(tr("Select line"), MOD_SHIFT_MIRROR_ANGLE);
     }
     else{
-        updateMouseWidgetTRCancel(tr("Select circle or arc"), MOD_SHIFT_MIRROR_ANGLE);
+        updatePromptTRCancel(tr("Select circle or arc"), MOD_SHIFT_MIRROR_ANGLE);
     }
 }
 

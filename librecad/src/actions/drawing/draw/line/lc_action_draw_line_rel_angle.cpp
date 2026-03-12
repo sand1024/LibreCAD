@@ -257,22 +257,22 @@ QStringList LC_ActionDrawLineRelAngle::getAvailableCommands() {
     return cmd;
 }
 
-void LC_ActionDrawLineRelAngle::updateMouseButtonHints() {
+void LC_ActionDrawLineRelAngle::updateActionPrompt() {
     switch (getStatus()) {
         case SetEntity:
-            updateMouseWidgetTRCancel(tr("Select base entity"));
+            updatePromptTRCancel(tr("Select base entity"));
             break;
         case SetPos:
-            updateMouseWidgetTRBack(tr("Specify position"), MOD_SHIFT_RELATIVE_ZERO);
+            updatePromptTRBack(tr("Specify position"), MOD_SHIFT_RELATIVE_ZERO);
             break;
         case SetAngle:
-            updateMouseWidgetTRBack(tr("Specify angle"));
+            updatePromptTRBack(tr("Specify angle"));
             break;
         case SetLength:
-            updateMouseWidgetTRBack(tr("Specify length"));
+            updatePromptTRBack(tr("Specify length"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

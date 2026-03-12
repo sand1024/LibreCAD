@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef LC_LINEFROMPOINTTOLINEOPTIONS_H
 #define LC_LINEFROMPOINTTOLINEOPTIONS_H
 
-#include "lc_action_options_widget_base.h"
+#include "lc_action_options_widget.h"
 
 class LC_ActionDrawLineFromPointToLine;
 
@@ -32,8 +32,7 @@ namespace Ui {
 /**
  * UI options for LC_ActionDrawLineFromPointToLine
  */
-class LC_LineFromPointToLineOptionsWidget :public LC_ActionOptionsWidgetBase
-{
+class LC_LineFromPointToLineOptionsWidget :public LC_ActionOptionsWidget{
     Q_OBJECT
 public:
     explicit LC_LineFromPointToLineOptionsWidget();
@@ -47,7 +46,7 @@ protected slots:
     void onSizeModeIndexChanged(int index) const;
     void onOrthogonalClicked(bool value) const;
 protected:
-    void doSetAction(RS_ActionInterface *a) override;
+    void doUpdateByAction(RS_ActionInterface *a) override;
 private:
     LC_ActionDrawLineFromPointToLine* m_action = nullptr;
     Ui::LC_LineFromPointToLineOptionsWidget *ui;

@@ -55,7 +55,7 @@ protected:
     void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
     bool doProcessCommand(int status, const QString& c) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector& coord) override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;
     void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;

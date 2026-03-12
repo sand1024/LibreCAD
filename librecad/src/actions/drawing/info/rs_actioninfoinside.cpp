@@ -79,13 +79,13 @@ void RS_ActionInfoInside::onMouseRightButtonRelease(const int status, [[maybe_un
     initPrevious(status);
 }
 
-void RS_ActionInfoInside::updateMouseButtonHints() {
+void RS_ActionInfoInside::updateActionPrompt() {
     switch (getStatus()) {
         case 0:
-            updateMouseWidgetTRCancel(tr("Specify point"));
+            updatePromptTRCancel(tr("Specify point"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

@@ -86,7 +86,7 @@ protected:
     void setEntity(RS_Entity* en);
     bool doProcessCommand(int status, const QString &command) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &coord) override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) override;

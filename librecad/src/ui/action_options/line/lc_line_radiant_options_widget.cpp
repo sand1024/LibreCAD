@@ -28,9 +28,7 @@
 #include "rs_settings.h"
 #include "ui_lc_line_radiant_options_widget.h"
 
-LC_LineRadiantOptionsWidget::LC_LineRadiantOptionsWidget()
-    :  LC_ActionOptionsWidgetBase(RS2::ActionDrawLineRadiant, "Draw", "LineToFarPoint")
-    , ui(new Ui::LC_LineRadiantOptionsWidget){
+LC_LineRadiantOptionsWidget::LC_LineRadiantOptionsWidget(): ui(new Ui::LC_LineRadiantOptionsWidget){
     ui->setupUi(this);
     connect(ui->cbLengthType, &QComboBox::currentIndexChanged, this, &LC_LineRadiantOptionsWidget::onLengthTypeIndexChanged);
     connect(ui->cbPointSelector, &QComboBox::currentIndexChanged, this, &LC_LineRadiantOptionsWidget::onActivePointIndexChanged);
@@ -55,7 +53,7 @@ LC_LineRadiantOptionsWidget::~LC_LineRadiantOptionsWidget(){
     m_action = nullptr;
 }
 
-void LC_LineRadiantOptionsWidget::doSetAction(RS_ActionInterface* a) {
+void LC_LineRadiantOptionsWidget::doUpdateByAction(RS_ActionInterface* a) {
     m_action = static_cast<LC_ActionDrawLineRadiant *>(a);
     const double len = m_action->getLength();
     const int lengthType = m_action->getLenghType();

@@ -61,7 +61,7 @@ protected:
     };
 
     RS2::CursorType doGetMouseCursor(int status) override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
 private:
     bool m_completed = false;
     std::unique_ptr<QString> m_message;

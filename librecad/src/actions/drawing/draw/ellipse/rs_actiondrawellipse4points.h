@@ -23,7 +23,7 @@
 #ifndef RS_ACTIONDRAWELLIPSE4POINTS_H
 #define RS_ACTIONDRAWELLIPSE4POINTS_H
 
-#include "lc_actiondrawcirclebase.h"
+#include "lc_action_draw_circle_base.h"
 
 struct RS_CircleData;
 struct RS_EllipseData;
@@ -60,7 +60,7 @@ protected:
     void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector& coord) override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;
 };

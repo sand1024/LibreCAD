@@ -26,8 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "lc_guarded_signals_blocker.h"
 #include "ui_lc_circle_by_arc_options_widget.h"
 
-LC_CircleByArcOptionsWidget::LC_CircleByArcOptionsWidget() : LC_ActionOptionsWidgetBase(RS2::ActionDrawCircleByArc, "Draw", "CircleByArc"),
-                                                             ui(new Ui::LC_CircleByArcOptionsWidget), m_action(nullptr) {
+LC_CircleByArcOptionsWidget::LC_CircleByArcOptionsWidget() : ui(new Ui::LC_CircleByArcOptionsWidget), m_action(nullptr) {
     ui->setupUi(this);
     connect(ui->cbReplace, &QCheckBox::clicked, this, &LC_CircleByArcOptionsWidget::onReplaceClicked);
     connect(ui->cbPen, &QComboBox::currentIndexChanged, this, &LC_CircleByArcOptionsWidget::onPenModeIndexChanged);
@@ -42,7 +41,7 @@ LC_CircleByArcOptionsWidget::~LC_CircleByArcOptionsWidget() {
     m_action = nullptr;
 }
 
-void LC_CircleByArcOptionsWidget::doSetAction(RS_ActionInterface* a) {
+void LC_CircleByArcOptionsWidget::doUpdateByAction(RS_ActionInterface* a) {
     m_action = static_cast<LC_ActionDrawCircleByArc*>(a);
 
     const bool replace = m_action->isReplaceArcByCircle();

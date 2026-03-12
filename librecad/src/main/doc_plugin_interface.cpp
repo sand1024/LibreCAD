@@ -31,6 +31,7 @@
 #include <QInputDialog>
 #include <QList>
 
+#include "lc_action_select_single.h"
 #include "lc_actioncontext.h"
 #include "lc_containertraverser.h"
 #include "lc_documentsstorage.h"
@@ -38,7 +39,7 @@
 #include "lc_splinepoints.h"
 #include "lc_undosection.h"
 #include "rs_actioninterface.h"
-#include "rs_actionselectsingle.h"
+
 #include "rs_arc.h"
 #include "rs_block.h"
 #include "rs_circle.h"
@@ -1210,8 +1211,8 @@ bool Doc_plugin_interface::performSelect(RS2::EntityType typeToSelect, const QSt
         RS_DIALOGFACTORY->commandMessage(message);
     }
     const auto inner = typeToSelect == RS2::EntityType::EntityUnknown
-                     ? std::make_shared<RS_ActionSelectSingle>(m_actionContext, a.get())
-                     : std::make_shared<RS_ActionSelectSingle>(typeToSelect, m_actionContext, a.get());
+                     ? std::make_shared<LC_ActionSelectSingle>(m_actionContext, a.get())
+                     : std::make_shared<LC_ActionSelectSingle>(typeToSelect, m_actionContext, a.get());
     if (inner == nullptr) {
         return false; // Rare shared_ptr fail
     }

@@ -42,8 +42,24 @@ namespace {
 }
 
 LC_ActionDrawLineParallel::LC_ActionDrawLineParallel(LC_ActionContext* actionContext, const RS2::ActionType actionType)
-    : LC_UndoableDocumentModificationAction("Draw Parallels", actionContext, actionType), m_distance(1.0),
+    : LC_UndoableDocumentModificationAction("ActionDrawParallels", actionContext, actionType), m_distance(1.0),
       m_numberToCreate(1), m_coord(new RS_Vector{}) {
+    switch (actionType) {
+        case RS2::ActionDrawLineParallel: {
+            m_optionsSettingsGroupName = "ActionDrawLineParallel";
+            break;
+        }
+        case  RS2::ActionDrawCircleParallel: {
+            m_optionsSettingsGroupName = "ActionDrawCircleParallel";
+            break;
+        }
+        case RS2::ActionDrawArcParallel: {
+            m_optionsSettingsGroupName = "ActionDrawArcParallel";
+            break;
+        }
+        default:
+            Q_ASSERT_X(false,"LC_ActionDrawLineParallel", "constructor");
+    }
 }
 
 LC_ActionDrawLineParallel::~LC_ActionDrawLineParallel() = default;
@@ -134,16 +150,16 @@ void LC_ActionDrawLineParallel::onMouseRightButtonRelease(const int status, [[ma
     initPrevious(status);
 }
 
-void LC_ActionDrawLineParallel::updateMouseButtonHints() {
+void LC_ActionDrawLineParallel::updateActionPrompt() {
     switch (getStatus()) {
         case SetEntity:
-            updateMouseWidgetTRCancel(tr("Specify Distance <%1> or select entity or [%2]").arg(m_distance).arg(command("through")));
+            updatePromptTRCancel(tr("Specify Distance <%1> or select entity or [%2]").arg(m_distance).arg(command("through")));
             break;
         case SetNumber:
-            updateMouseWidget(tr("Enter number:"));
+            updatePrompt(tr("Enter number:"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }
@@ -174,7 +190,7 @@ bool LC_ActionDrawLineParallel::doProcessCommand(const int status, const QString
                     commandMessage(tr("Not a valid expression"));
                 }
                 updateOptions();
-                updateMouseButtonHints();
+                updateActionPrompt();
                 //setStatus(SetEntity);
             }
             break;

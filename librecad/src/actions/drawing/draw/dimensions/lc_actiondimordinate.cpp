@@ -201,15 +201,15 @@ QStringList LC_ActionDimOrdinate::doGetAvailableCommands([[maybe_unused]]int sta
     return {command("text")};
 }
 
-void LC_ActionDimOrdinate::updateMouseButtonHints() {
+void LC_ActionDimOrdinate::updateActionPrompt() {
     const int status = getStatus();
     switch (status) {
         case SetFeaturePoint: {
-            updateMouseWidgetTRCancel(tr("Specify first point"), MOD_SHIFT_RELATIVE_ZERO);
+            updatePromptTRCancel(tr("Specify first point"), MOD_SHIFT_RELATIVE_ZERO);
             break;
         }
         case SetLeaderEnd: {
-            updateMouseWidgetTRCancel(tr("Specify leader end point"), MOD_SHIFT_AND_CTRL_ANGLE(tr("Change Ordinate")));
+            updatePromptTRCancel(tr("Specify leader end point"), MOD_SHIFT_AND_CTRL_ANGLE(tr("Change Ordinate")));
             break;
         }
         default:

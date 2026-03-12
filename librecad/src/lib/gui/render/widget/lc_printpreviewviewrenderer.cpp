@@ -43,7 +43,7 @@ LC_PrintPreviewViewRenderer::LC_PrintPreviewViewRenderer(LC_GraphicViewport *vie
 
 void LC_PrintPreviewViewRenderer::doRender() {
     if (m_graphic != nullptr){
-        m_paperScale = m_graphic->getPaperScale();
+        m_paperScale = m_graphic->getPlotSettings()->getPaperScale();
     }
     else{
         m_paperScale = 1.0;
@@ -68,15 +68,16 @@ void LC_PrintPreviewViewRenderer::drawPaper(RS_Painter *painter) {
     }
 // draw paper:
     RS_Vector pinsbase = m_graphic->getPaperInsertionBase();
-    const RS_Vector printAreaSize = m_graphic->getPrintAreaSize();
+    LC_PlotSettings* ps = m_graphic->getPlotSettings();
+    const RS_Vector printAreaSize = ps->getPrintAreaSize();
 
     const double paperFactorX = painter->toGuiDX(1.0) / m_paperScale;
     const double paperFactorY = painter->toGuiDY(1.0) / m_paperScale;
 
-    const int marginLeft = static_cast<int>(m_graphic->getMarginLeftInUnits() * paperFactorX);
-    const int marginTop = static_cast<int>(m_graphic->getMarginTopInUnits() * paperFactorY);
-    const int marginRight = static_cast<int>(m_graphic->getMarginRightInUnits() * paperFactorX);
-    const int marginBottom = static_cast<int>(m_graphic->getMarginBottomInUnits() * paperFactorY);
+    const int marginLeft = static_cast<int>(ps->getMarginLeftInUnits() * paperFactorX);
+    const int marginTop = static_cast<int>(ps->getMarginTopInUnits() * paperFactorY);
+    const int marginRight = static_cast<int>(ps->getMarginRightInUnits() * paperFactorX);
+    const int marginBottom = static_cast<int>(ps->getMarginBottomInUnits() * paperFactorY);
 
     const RS_Vector &wcsLeftBottomCorner = (RS_Vector(0, 0) - pinsbase) / m_paperScale;
     const RS_Vector &wcsTopBottomCorner = (printAreaSize - pinsbase) / m_paperScale;
@@ -85,8 +86,8 @@ void LC_PrintPreviewViewRenderer::drawPaper(RS_Painter *painter) {
     painter->toGui(wcsLeftBottomCorner, v1x, v1y);
     painter->toGui(wcsTopBottomCorner, v2x, v2y);
 
-    const int numX = m_graphic->getPagesNumHoriz();
-    const int numY = m_graphic->getPagesNumVert();
+    const int numX = ps->getPagesNumHoriz();
+    const int numY = ps->getPagesNumVert();
 
     const int viewWidth = m_viewport->getWidth();
     const int viewHeight = m_viewport->getHeight();

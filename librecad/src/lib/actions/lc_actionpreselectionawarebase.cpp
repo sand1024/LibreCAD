@@ -31,7 +31,7 @@
 #include "rs_settings.h"
 
 LC_ActionPreSelectionAwareBase::LC_ActionPreSelectionAwareBase(
-    const char *name, LC_ActionContext *actionContext, const RS2::ActionType actionType,
+    const QString& name, LC_ActionContext *actionContext, const RS2::ActionType actionType,
     const QList<RS2::EntityType> &entityTypeList)
     :RS_ActionSelectBase(name, actionContext, actionType, entityTypeList){}
 
@@ -237,13 +237,13 @@ void LC_ActionPreSelectionAwareBase::drawSnapper() {
     }
 }
 
-void LC_ActionPreSelectionAwareBase::updateMouseButtonHints() {
+void LC_ActionPreSelectionAwareBase::updateActionPrompt() {
     if (m_selectionComplete){
         updateMouseButtonHintsForSelected(getStatus());
     }
     else{
         if (m_inBoxSelectionMode){
-            updateMouseWidgetTRBack(tr("Choose second edge"), MOD_SHIFT_AND_CTRL(tr("Select/Deselect entities"), tr("Select Intersecting")));
+            updatePromptTRBack(tr("Choose second edge"), MOD_SHIFT_AND_CTRL(tr("Select/Deselect entities"), tr("Select Intersecting")));
         }
         else {
             updateMouseButtonHintsForSelection();
@@ -253,7 +253,7 @@ void LC_ActionPreSelectionAwareBase::updateMouseButtonHints() {
 
 void LC_ActionPreSelectionAwareBase::onSelectionCompleted([[maybe_unused]] const bool singleEntity, const bool fromInit) {
     setSelectionComplete(isAllowTriggerOnEmptySelection(), fromInit);
-    updateMouseButtonHints();
+    updateActionPrompt();
     if (m_selectionComplete) {
         trigger();
         if (singleEntity) {
@@ -289,7 +289,7 @@ void LC_ActionPreSelectionAwareBase::setSelectionComplete(const bool allowEmptyS
 }
 
 void LC_ActionPreSelectionAwareBase::updateMouseButtonHintsForSelected([[maybe_unused]]int status) {
-    updateMouseWidget();
+    updatePrompt();
 }
 
 void LC_ActionPreSelectionAwareBase::onMouseLeftButtonReleaseSelected([[maybe_unused]]int status, [[maybe_unused]] const LC_MouseEvent* event) {}

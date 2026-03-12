@@ -159,16 +159,16 @@ void LC_ActionDimStyleApply::onMouseRightButtonRelease(const int status, [[maybe
     redraw();
 }
 
-void LC_ActionDimStyleApply::updateMouseButtonHints(){
+void LC_ActionDimStyleApply::updateActionPrompt(){
     switch (getStatus()) {
         case SelectEntity:
-            updateMouseWidgetTRCancel(tr("Specify dimension to pick the style"));
+            updatePromptTRCancel(tr("Specify dimension to pick the style"));
             break;
         case ApplyToEntity:
-            updateMouseWidgetTRCancel(tr("Specify dimension to apply style"), MOD_SHIFT_LC(tr("Do not apply style override")));
+            updatePromptTRCancel(tr("Specify dimension to apply style"), MOD_SHIFT_LC(tr("Do not apply style override")));
             break;
         default:
-            RS_ActionInterface::updateMouseButtonHints();
+            RS_ActionInterface::updateActionPrompt();
             break;
     }
 }

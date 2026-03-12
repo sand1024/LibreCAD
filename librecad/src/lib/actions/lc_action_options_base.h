@@ -27,7 +27,7 @@
 #include <QString>
 #include <rs_vector.h>
 
-class LC_ActionOptions {
+class [[deprecated]]LC_ActionOptions {
 public:
     virtual ~LC_ActionOptions() = default;
     virtual void saveOptions() = 0;

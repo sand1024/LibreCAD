@@ -55,11 +55,12 @@ LC_ActionDrawCircleTangental2EntitiesRadius::LC_ActionDrawCircleTangental2Entiti
 LC_ActionDrawCircleTangental2EntitiesRadius::~LC_ActionDrawCircleTangental2EntitiesRadius() = default;
 
 void LC_ActionDrawCircleTangental2EntitiesRadius::doSaveOptions() {
-    save("Radius", m_actionData->radius);
+    save("Radius", getRadius());
 }
 
 void LC_ActionDrawCircleTangental2EntitiesRadius::doLoadOptions() {
-    m_actionData->radius  = loadDouble("Radius", 1.0);
+    double radius  = loadDouble("Radius", 1.0);
+    setRadius(radius);
 }
 
 void LC_ActionDrawCircleTangental2EntitiesRadius::init(const int status) {
@@ -286,19 +287,19 @@ void LC_ActionDrawCircleTangental2EntitiesRadius::onMouseRightButtonRelease(cons
     initPrevious(status);
 }
 
-void LC_ActionDrawCircleTangental2EntitiesRadius::updateMouseButtonHints() {
+void LC_ActionDrawCircleTangental2EntitiesRadius::updateActionPrompt() {
     switch (getStatus()) {
         case SetCircle1:
-            updateMouseWidgetTRCancel(tr("Specify the first line/arc/circle"));
+            updatePromptTRCancel(tr("Specify the first line/arc/circle"));
             break;
         case SetCircle2:
-            updateMouseWidgetTRBack(tr("Specify the second line/arc/circle"));
+            updatePromptTRBack(tr("Specify the second line/arc/circle"));
             break;
         case SetCenter:
-            updateMouseWidgetTRBack(tr("Select the center of the tangent circle"));
+            updatePromptTRBack(tr("Select the center of the tangent circle"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

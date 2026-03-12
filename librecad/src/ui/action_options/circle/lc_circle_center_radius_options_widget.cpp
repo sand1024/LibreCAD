@@ -34,8 +34,7 @@
  *  Constructs a QG_CircleOptions as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-LC_CircleCenterRadiusOptionsWidget::LC_CircleCenterRadiusOptionsWidget()
-    : LC_ActionOptionsWidgetBase(RS2::ActionNone, "Draw", "Circle"), ui(std::make_unique<Ui::LC_CircleCenterRadiusOptionsWidget>()) {
+LC_CircleCenterRadiusOptionsWidget::LC_CircleCenterRadiusOptionsWidget() {
     ui->setupUi(this);
     connect(ui->leRadius, &QLineEdit::editingFinished, this, &LC_CircleCenterRadiusOptionsWidget::onRadiusEditingFinished);
 
@@ -55,11 +54,8 @@ void LC_CircleCenterRadiusOptionsWidget::languageChange() {
     ui->retranslateUi(this);
 }
 
-bool LC_CircleCenterRadiusOptionsWidget::checkActionRttiValid(const RS2::ActionType actionType) {
-    return actionType == RS2::ActionDrawCircleCR || actionType == RS2::ActionDrawCircle2PR;
-}
 
-void LC_CircleCenterRadiusOptionsWidget::doSetAction(RS_ActionInterface* a) {
+void LC_CircleCenterRadiusOptionsWidget::doUpdateByAction(RS_ActionInterface* a) {
     m_action = static_cast<LC_ActionDrawCircleCenterRadius*>(a);
 
     QString radius = fromDouble(m_action->getRadius());

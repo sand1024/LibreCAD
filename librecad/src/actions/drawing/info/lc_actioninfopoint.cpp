@@ -117,14 +117,14 @@ void LC_ActionInfoPoint::onCoordinateEvent(const int status, [[maybe_unused]] bo
     }
 }
 
-void LC_ActionInfoPoint::updateMouseButtonHints(){
+void LC_ActionInfoPoint::updateActionPrompt(){
     switch (getStatus()) {
         case SetPoint:
-            updateMouseWidgetTRBack(tr("Select position for coordinates"));
+            updatePromptTRBack(tr("Select position for coordinates"));
                 // MOD_SHIFT_AND_CTRL(tr("Pick relative zero coordinates"), tr("Pick relative coordinates")));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

@@ -431,13 +431,13 @@ RS_Line* LC_ActionDrawLineFromPointToLine::createLineFromPointToTarget(const RS_
     return result;
 }
 
-void LC_ActionDrawLineFromPointToLine::updateMouseButtonHints() {
+void LC_ActionDrawLineFromPointToLine::updateActionPrompt() {
     switch (getStatus()) {
         case SetPoint:
-            updateMouseWidgetTRCancel(tr("Select Initial Point"), MOD_SHIFT_RELATIVE_ZERO);
+            updatePromptTRCancel(tr("Select Initial Point"), MOD_SHIFT_RELATIVE_ZERO);
             break;
         case SelectLine:
-            updateMouseWidgetTRBack(tr("Select Line"),
+            updatePromptTRBack(tr("Select Line"),
                                     (m_orthogonalMode && (m_sizeMode == SIZE_INTERSECTION)) ? MOD_NONE : MOD_SHIFT_MIRROR_ANGLE);
             break;
         default:

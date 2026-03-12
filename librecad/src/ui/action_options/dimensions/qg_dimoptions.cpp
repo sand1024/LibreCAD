@@ -38,9 +38,7 @@
  *  Constructs a QG_DimOptions as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-QG_DimOptions::QG_DimOptions(RS_Graphic *graphic)
-    :LC_ActionOptionsWidgetBase(RS2::ActionNone, "Draw", "Dim"),
-    ui(std::make_unique<Ui::Ui_DimOptions>()){
+QG_DimOptions::QG_DimOptions(RS_Graphic *graphic):ui(std::make_unique<Ui::Ui_DimOptions>()){
     ui->setupUi(this);
 
     initStylesCombobox(graphic);
@@ -83,7 +81,7 @@ bool QG_DimOptions::checkActionRttiValid(const RS2::ActionType actionType){
 }
 
 void QG_DimOptions::doSaveSettings() {
-    save("Label", ui->leLabel->text());
+    /*save("Label", ui->leLabel->text());
     save("Tol1", ui->leTol1->text());
     save("Tol2", ui->leTol2->text());
 
@@ -103,10 +101,10 @@ void QG_DimOptions::doSaveSettings() {
     else if (rtti == RS2::ActionDimBaseline){
         save("BaselineDistanceFree", ui->cbFreeBaselineDistance->isChecked());
         save("BaselineDistance", ui->leBaselineDistance->text());
-    }
+    }*/
 }
 
-void QG_DimOptions::doSetAction(RS_ActionInterface *a, const bool update){
+void QG_DimOptions::doUpdateByAction(RS_ActionInterface *a){
     m_action = static_cast<RS_ActionDimension *>(a);
     QString st;
     QString stol1;
@@ -122,6 +120,7 @@ void QG_DimOptions::doSetAction(RS_ActionInterface *a, const bool update){
     bool circleAngleFree = false;
     QString circleAngle;
     QString baselineDistance;
+    bool update = true;
     if (update){
         st = m_action->getLabel();
         stol1 = m_action->getTol1();
@@ -144,7 +143,7 @@ void QG_DimOptions::doSetAction(RS_ActionInterface *a, const bool update){
         }
 
     } else {
-        //st = "";
+ /*       //st = "";
         st = load("Label", "");
         stol1 = load("Tol1", "");
         stol2 = load("Tol2", "");
@@ -164,8 +163,9 @@ void QG_DimOptions::doSetAction(RS_ActionInterface *a, const bool update){
         else if (type == RS2::ActionDimRadial){
             circleAngle = load("RadialAngle", "45");
             circleAngleFree = loadBool("RadialAngleFree", true);
-        }
+        }*/
     }
+
 
     if (type == RS2::ActionDimRadial){
             ui->bDiameter->setIcon({});

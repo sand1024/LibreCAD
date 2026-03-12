@@ -26,9 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "lc_guarded_signals_blocker.h"
 #include "ui_lc_line_from_point_to_line_options_widget.h"
 
-LC_LineFromPointToLineOptionsWidget::LC_LineFromPointToLineOptionsWidget() :
-    LC_ActionOptionsWidgetBase(RS2::ActionDrawLineFromPointToLine, "Draw", "LinePointToLine"),
-    ui(new Ui::LC_LineFromPointToLineOptionsWidget) {
+LC_LineFromPointToLineOptionsWidget::LC_LineFromPointToLineOptionsWidget() : ui(new Ui::LC_LineFromPointToLineOptionsWidget) {
     ui->setupUi(this);
 
     connect(ui->cbOrthogonal, &QCheckBox::clicked, this, &LC_LineFromPointToLineOptionsWidget::onOrthogonalClicked);
@@ -52,7 +50,7 @@ void LC_LineFromPointToLineOptionsWidget::languageChange() {
     ui->retranslateUi(this);
 }
 
-void LC_LineFromPointToLineOptionsWidget::doSetAction(RS_ActionInterface* a) {
+void LC_LineFromPointToLineOptionsWidget::doUpdateByAction(RS_ActionInterface* a) {
     m_action = static_cast<LC_ActionDrawLineFromPointToLine*>(a);
 
     const bool orthogonal = m_action->getOrthogonal();

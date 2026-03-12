@@ -209,19 +209,19 @@ QStringList LC_ActionCircleDimBase::getAvailableCommands() {
     return cmd;
 }
 
-void LC_ActionCircleDimBase::updateMouseButtonHints() {
+void LC_ActionCircleDimBase::updateActionPrompt() {
     switch (getStatus()) {
         case SetEntity:
-            updateMouseWidgetTRCancel(tr("Select arc or circle entity"), m_angleIsFree ? MOD_NONE : MOD_CTRL(tr("Free angle")));
+            updatePromptTRCancel(tr("Select arc or circle entity"), m_angleIsFree ? MOD_NONE : MOD_CTRL(tr("Free angle")));
             break;
         case SetPos:
-            updateMouseWidgetTRCancel(tr("Specify dimension line position or enter angle:"), MOD_SHIFT_ANGLE_SNAP);
+            updatePromptTRCancel(tr("Specify dimension line position or enter angle:"), MOD_SHIFT_ANGLE_SNAP);
             break;
         case SetText:
-            updateMouseWidget(tr("Enter dimension text:"));
+            updatePrompt(tr("Enter dimension text:"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef RS_ACTIONDRAWCIRCLETAN2_H
 #define RS_ACTIONDRAWCIRCLETAN2_H
 
-#include "lc_actiondrawcirclebase.h"
+#include "lc_action_draw_circle_base.h"
 
 class RS_AtomicEntity;
 struct RS_CircleData;
@@ -69,7 +69,7 @@ protected:
     void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     void doTriggerCompletion(bool success) override;
     RS_Entity* doTriggerCreateEntity() override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;

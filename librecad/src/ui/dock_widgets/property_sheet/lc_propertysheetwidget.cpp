@@ -52,10 +52,11 @@
 
 class LC_ToolOptionsPropertiesContainerProvider;
 
-void LC_PropertySheetWidget::setupSelectionButton(QToolButton* selectionButton, QAction* selectionPointerAction, LC_ActionGroupManager* actionGroupManager) {
+void LC_PropertySheetWidget::setupSelectionButton(QToolButton* selectionButton, QAction* selectionPointerAction,
+                                                  LC_ActionGroupManager* actionGroupManager) {
     selectionButton->setDefaultAction(selectionPointerAction);
     selectionButton->setPopupMode(QToolButton::MenuButtonPopup);
-    auto* menu      = new QMenu();
+    auto* menu = new QMenu();
     QList<QAction*> actions;
     actions.push_back(actionGroupManager->getActionByName("SelectAll"));
     actions.push_back(actionGroupManager->getActionByName("SelectSingle"));
@@ -80,7 +81,7 @@ LC_PropertySheetWidget::LC_PropertySheetWidget(QWidget* parent, LC_ActionContext
 
     ui->setupUi(this);
 
-    auto propertiesSheet = ui->propertySheet->propertiesSheet();
+    const auto propertiesSheet = ui->propertySheet->propertiesSheet();
     connect(propertiesSheet, &LC_PropertiesSheet::propertyEdited, this, &LC_PropertySheetWidget::onPropertyEdited);
     connect(propertiesSheet, &LC_PropertiesSheet::beforePropertyEdited, this, &LC_PropertySheetWidget::onBeforePropertyEdited);
     connect(propertiesSheet, &LC_PropertiesSheet::activePropertyChanged, this, &LC_PropertySheetWidget::onActivePropertyChanged);
@@ -134,7 +135,7 @@ void LC_PropertySheetWidget::updatePropertiesSheetFont() const {
 }
 
 void LC_PropertySheetWidget::loadCollapsedSections() {
-    QString sectionsList = LC_GET_ONE_STR("PropertySheet", "CollapsedSections", "");
+    const QString sectionsList = LC_GET_ONE_STR("PropertySheet", "CollapsedSections", "");
     if (!sectionsList.isEmpty()) {
         QStringList parts = sectionsList.split(",", Qt::SkipEmptyParts);
         for (const auto& sectionName : parts) {
@@ -247,14 +248,8 @@ void LC_PropertySheetWidget::refill() {
 }
 
 void LC_PropertySheetWidget::showToolOptions(LC_ToolOptionsPropertiesContainerProvider* provider) {
-    if (provider != nullptr) {
-        m_toolOptionsPropertiesContainerProvider = provider;
-        m_operationMode = MODE_TOOL_OPTIONS;
-    }
-    else {
-        m_toolOptionsPropertiesContainerProvider = nullptr;
-        m_operationMode = MODE_SELECTION;
-    }
+    m_toolOptionsPropertiesContainerProvider = provider;
+    m_operationMode = MODE_TOOL_OPTIONS;
     refill();
 }
 
@@ -315,7 +310,7 @@ void LC_PropertySheetWidget::onLateRequestCompleted(const bool shouldBeSkipped) 
                 // delayed call, as we may be in pick action and property sheet could be empty (without tool options properties)
                 LC_ActionContext::InteractiveInputInfo inputCopy;
                 interactiveInputInfo->copyTo(inputCopy);
-                QTimer::singleShot(10, [inputCopy, this]() ->void{
+                QTimer::singleShot(10, [inputCopy, this]() -> void {
                     doProcessLateRequest(inputCopy);
                 });
             }
@@ -328,12 +323,13 @@ void LC_PropertySheetWidget::onUcsChanged([[maybe_unused]] LC_UCS* ucs) {
     refill();
 }
 
-void LC_PropertySheetWidget::onViewDefaultActionActivated(const bool defaultActionActivated, const RS2::ActionType prevActionRtti) {
+void LC_PropertySheetWidget::onViewDefaultActionActivated(const bool defaultActionActivated, const RS2::ActionType actionRtti, const RS2::ActionType prevActionRtti) {
     setShouldHandleSelectionChange(defaultActionActivated);
     if (defaultActionActivated) {
         // prevent refresh of the widget if activation is called after interactive input  - it might be that update
         // is already performed as result of setting value of property
-        if (!RS2::isInteractiveInputAction(prevActionRtti) && prevActionRtti != RS2::ActionDefault) {
+        bool shouldRefill = !RS2::isInteractiveInputAction(prevActionRtti) && (prevActionRtti != RS2::ActionDefault && prevActionRtti != RS2::ActionNone);
+        if (shouldRefill) {
             refill();
         }
     }
@@ -481,7 +477,8 @@ LC_PropertyContainer* LC_PropertySheetWidget::preparePropertiesContainer(const R
     return result;
 }
 
-LC_PropertyContainer* LC_PropertySheetWidget::prepareToolOptionsContainer(LC_ToolOptionsPropertiesContainerProvider*  toolOptionsContainerProvider) {
+LC_PropertyContainer* LC_PropertySheetWidget::prepareToolOptionsContainer(
+    LC_ToolOptionsPropertiesContainerProvider* toolOptionsContainerProvider) {
     LC_PropertyContainer* result = nullptr;
     if (isVisible()) {
         result = new LC_PropertyContainer(this);
@@ -489,7 +486,6 @@ LC_PropertyContainer* LC_PropertySheetWidget::prepareToolOptionsContainer(LC_Too
     m_entityContainerProvider->fillPropertyContainerToolOptions(m_document, result, toolOptionsContainerProvider);
     return result;
 }
-
 
 void LC_PropertySheetWidget::collectEntitiesToModify(RS2::EntityType entityType, QList<RS_Entity*>& entitiesToModify) const {
     if (entityType == RS2::EntityUnknown || entityType == RS2::EntityContainer) {
@@ -752,9 +748,9 @@ void LC_PropertySheetWidget::onDockVisibilityChanged(const bool visible) {
 }
 
 void LC_PropertySheetWidget::onActivePenChanged(RS_Pen) {
-    auto container = ui->propertySheet->propertyContainer();
+    const auto container = ui->propertySheet->propertyContainer();
     if (container != nullptr) {
-        int tag = container->getTag();
+        const int tag = container->getTag();
         if (tag == LC_EntityPropertyContainerProvider::TAG_CONTAINER_NO_SELECTION) {
             refill();
         }
@@ -773,12 +769,12 @@ void LC_PropertySheetWidget::onSettingsClicked() {
 void LC_PropertySheetWidget::doAdjustForDockLocation(Qt::DockWidgetArea area) {
     LC_GraphicViewAwareWidget::doAdjustForDockLocation(area);
     switch (area) {
-        case Qt::DockWidgetArea::LeftDockWidgetArea:{
+        case Qt::DockWidgetArea::LeftDockWidgetArea: {
             ui->wCommandsForLeft->setVisible(true);
             ui->wCommandsForRight->setVisible(false);
             break;
         }
-        case Qt::DockWidgetArea::RightDockWidgetArea:{
+        case Qt::DockWidgetArea::RightDockWidgetArea: {
             ui->wCommandsForLeft->setVisible(false);
             ui->wCommandsForRight->setVisible(true);
             break;
@@ -790,7 +786,7 @@ void LC_PropertySheetWidget::doAdjustForDockLocation(Qt::DockWidgetArea area) {
 }
 
 void LC_PropertySheetWidget::setCurrentQAction(const QAction* a) {
-    bool showIcon = a != nullptr && LC_GET_ONE_BOOL("Appearance", "ShowActionIconInOptions", true);
+    bool showIcon = a != nullptr /*&& LC_GET_ONE_BOOL("Appearance", "ShowActionIconInOptions", true)*/;
     if (showIcon) {
         // check for actions those icons should not be shown
         const auto property = a->property("_SetAsCurrentActionInView");
@@ -798,18 +794,18 @@ void LC_PropertySheetWidget::setCurrentQAction(const QAction* a) {
             showIcon = property.toBool();
         }
     }
-    if (showIcon){
-        QIcon icon = a->icon();
-        QString text=  LC_ShortcutsManager::getPlainActionToolTip(a);
+    if (showIcon) {
+        const QIcon icon = a->icon();
+        const QString text = LC_ShortcutsManager::getPlainActionToolTip(a);
         ui->lblActionIcon->setVisible(!icon.isNull());
-        int m_iconSize = 24;
+        const int m_iconSize = 24;
         ui->lblActionIcon->setPixmap(icon.pixmap(m_iconSize));
         ui->lblActionName->setText(text);
         ui->headerAction->setVisible(true);
         ui->headerSelection->setVisible(false);
         m_operationMode = MODE_TOOL_OPTIONS;
     }
-    else{
+    else {
         ui->headerAction->setVisible(false);
         ui->headerSelection->setVisible(true);
         m_operationMode = MODE_SELECTION;

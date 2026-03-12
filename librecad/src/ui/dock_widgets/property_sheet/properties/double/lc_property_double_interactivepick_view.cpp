@@ -81,11 +81,11 @@ protected:
         if (doCheckMayApply()) {
             auto lineEdit = getEditor()->getLineEdit();
             const auto text = lineEdit->text();
-            LC_ERR << "ON EditingFinished " << text;
+            // LC_ERR << "ON EditingFinished " << text;
             double value;
             const bool ok = fromString(text, value);
             if (ok) {
-                LC_ERR << "ON EditingFinished " << "IN OK";
+                // LC_ERR << "ON EditingFinished " << "IN OK";
                 getProperty().setValue(value, changeReasonDueToEdit());
                 // due to some weird reasons, when dectructor of LC_PropertyLineWithButton is executed, onEditingFinishied is
                 // called again... so we disconnect as we got the first value (during the normal edit) as the tree will be rebuild.

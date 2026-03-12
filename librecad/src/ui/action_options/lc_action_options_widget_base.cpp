@@ -26,23 +26,12 @@
 
 #include "rs_actioninterface.h"
 
-LC_ActionOptionsWidgetBase::LC_ActionOptionsWidgetBase(const RS2::ActionType actionType, const QString &optionsGroupName, const QString &optionNamePrefix):
-    LC_ActionOptionsWidget(nullptr){
-    m_supportedActionType  = actionType;
-    m_settingsGroupName = optionsGroupName;
-    m_settingsOptionNamePrefix = optionNamePrefix;
+LC_ActionOptionsWidgetBase::LC_ActionOptionsWidgetBase():LC_ActionOptionsWidget(nullptr) {
 }
+
 
 LC_ActionOptionsWidgetBase::~LC_ActionOptionsWidgetBase()= default;
 
 bool LC_ActionOptionsWidgetBase::checkActionRttiValid(const RS2::ActionType actionType){
-    return actionType == m_supportedActionType;
-}
-
-QString LC_ActionOptionsWidgetBase::getSettingsGroupName(){
-    return m_settingsGroupName;
-}
-
-QString LC_ActionOptionsWidgetBase::getSettingsOptionNamePrefix(){
-    return m_settingsOptionNamePrefix;
+    return true;
 }

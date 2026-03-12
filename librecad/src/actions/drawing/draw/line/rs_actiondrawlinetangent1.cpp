@@ -187,21 +187,21 @@ void RS_ActionDrawLineTangent1::onCoordinateEvent(const int status, [[maybe_unus
     }
 }
 
-void RS_ActionDrawLineTangent1::updateMouseButtonHints() {
+void RS_ActionDrawLineTangent1::updateActionPrompt() {
     switch (getStatus()) {
         case SetPoint:
             if (m_setCircleFirst) {
-                updateMouseWidgetTRCancel(tr("Specify point"), MOD_CTRL(tr("Alternate Point")));
+                updatePromptTRCancel(tr("Specify point"), MOD_CTRL(tr("Alternate Point")));
             }
             else {
-                updateMouseWidgetTRCancel(tr("Specify point"), MOD_SHIFT_RELATIVE_ZERO);
+                updatePromptTRCancel(tr("Specify point"), MOD_SHIFT_RELATIVE_ZERO);
             }
             break;
         case SetCircle:
-            updateMouseWidgetTRBack(tr("Select circle, arc or ellipse"));
+            updatePromptTRBack(tr("Select circle, arc or ellipse"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

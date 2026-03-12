@@ -63,16 +63,16 @@ void RS_ActionSetRelativeZero::onMouseRightButtonRelease(const int status, [[may
 void RS_ActionSetRelativeZero::onCoordinateEvent( [[maybe_unused]]int status, [[maybe_unused]]bool isZero, const RS_Vector &pos) {
     *m_position = pos;
     trigger();
-    updateMouseButtonHints();
+    updateActionPrompt();
 }
 
-void RS_ActionSetRelativeZero::updateMouseButtonHints(){
+void RS_ActionSetRelativeZero::updateActionPrompt(){
     switch (getStatus()) {
         case 0:
-            updateMouseWidgetTRCancel(tr("Set relative Zero"));
+            updatePromptTRCancel(tr("Set relative Zero"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

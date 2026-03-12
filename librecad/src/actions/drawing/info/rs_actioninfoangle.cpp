@@ -245,16 +245,16 @@ void RS_ActionInfoAngle::onMouseRightButtonRelease(const int status, [[maybe_unu
     initPrevious(status);
 }
 
-void RS_ActionInfoAngle::updateMouseButtonHints() {
+void RS_ActionInfoAngle::updateActionPrompt() {
     switch (getStatus()) {
         case SetEntity1:
-            updateMouseWidgetTRCancel(tr("Specify first line"), MOD_CTRL(tr("Single Line Mode")));
+            updatePromptTRCancel(tr("Specify first line"), MOD_CTRL(tr("Single Line Mode")));
             break;
         case SetEntity2:
-            updateMouseWidgetTRBack(tr("Specify second line"), MOD_CTRL(tr("Restart with first line selection")));
+            updatePromptTRBack(tr("Specify second line"), MOD_CTRL(tr("Restart with first line selection")));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

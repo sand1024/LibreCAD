@@ -50,7 +50,7 @@ public:
   ~LC_ActionDrawHyperbolaFP() override = default;
 
   void init(int status) override;
-  void updateMouseButtonHints() override;
+  void updateActionPrompt() override;
 protected:
     RS_Entity* doTriggerCreateEntity() override;
     void doTriggerCompletion(bool success) override;

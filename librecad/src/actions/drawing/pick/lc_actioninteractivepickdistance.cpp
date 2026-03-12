@@ -280,16 +280,16 @@ void LC_ActionInteractivePickDistance::onCoordinateEvent(const int status, [[may
     }
 }
 
-void LC_ActionInteractivePickDistance::updateMouseButtonHints(){
+void LC_ActionInteractivePickDistance::updateActionPrompt(){
     switch (getStatus()) {
         case SetPoint1:
-            updateMouseWidgetTRCancel(tr("Specify first point of distance"), MOD_SHIFT_AND_CTRL(tr("Entity geometry length"), tr("Segment length/Diameter")));
+            updatePromptTRCancel(tr("Specify first point of distance"), MOD_SHIFT_AND_CTRL(tr("Entity geometry length"), tr("Segment length/Diameter")));
             break;
         case SetPoint2:
-            updateMouseWidgetTRBack(tr("Specify second point of distance"));
+            updatePromptTRBack(tr("Specify second point of distance"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

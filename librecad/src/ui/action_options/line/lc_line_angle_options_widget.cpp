@@ -33,8 +33,7 @@
  *  name 'name' and widget flags set to 'f'.
  */
 LC_LineAngleOptionsWidget::LC_LineAngleOptionsWidget()
-    : LC_ActionOptionsWidgetBase( RS2::ActionNone, "Draw", "LineAngle")
-    , ui(std::make_unique<Ui::LC_LineAngleOptionsWidget>()){
+    : ui(std::make_unique<Ui::LC_LineAngleOptionsWidget>()){
     ui->setupUi(this);
 
     connect(ui->leAngle, &QLineEdit::editingFinished, this, &LC_LineAngleOptionsWidget::onAngleEditingFinished);
@@ -60,12 +59,6 @@ void LC_LineAngleOptionsWidget::languageChange(){
     ui->retranslateUi(this);
 }
 
-bool LC_LineAngleOptionsWidget::checkActionRttiValid(const RS2::ActionType actionType){
-    return actionType == RS2::ActionDrawLineAngle ||
-           actionType == RS2::ActionDrawLineHorizontal ||
-           actionType == RS2::ActionDrawLineVertical;
-}
-
 void LC_LineAngleOptionsWidget::setupLengthType(bool angleIsNotFixed) {
     ui->cbLengthType->blockSignals(true);
     ui->cbLengthType->clear();
@@ -78,7 +71,7 @@ void LC_LineAngleOptionsWidget::setupLengthType(bool angleIsNotFixed) {
     ui->cbLengthType->blockSignals(false);
 }
 
-void LC_LineAngleOptionsWidget::doSetAction(RS_ActionInterface *a){
+void LC_LineAngleOptionsWidget::doUpdateByAction(RS_ActionInterface *a){
     m_action = static_cast<LC_ActionDrawLineAngle*>(a);
     const bool angleIsFixed = m_action->hasFixedAngle();
 
@@ -118,18 +111,6 @@ void LC_LineAngleOptionsWidget::doSetAction(RS_ActionInterface *a){
     const auto type = static_cast<LC_ActionDrawLineAngle::LengthType>(lenType);
     m_action->setLengthType(type, false);
     ui->cbLengthType->blockSignals(false);
-}
-
-void LC_LineAngleOptionsWidget::doSaveSettings() {
-    /*if (m_action->hasFixedAngle()) {
-        save("InAnglesBasis", ui->cbForAnglesBasis->isChecked());
-    } else {
-        save("Angle", ui->leAngle->text());
-    }
-
-    save("Length", ui->leLength->text());
-    save("SnapPoint", ui->cbSnapPoint->currentIndex());
-    save("LengthType", ui->cbLengthType->currentData().toInt());*/
 }
 
 void LC_LineAngleOptionsWidget::onSnapPointCurrentIndexChanged(const int number){

@@ -30,7 +30,7 @@ class RS_Dimension;
 class LC_ActionCircleDimBase:public RS_ActionDimension {
     Q_OBJECT
 public:
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     QStringList getAvailableCommands() override;
     double getUcsAngleDegrees() const;
     void setUcsAngleDegrees(double ucsRelAngleDegrees);

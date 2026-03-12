@@ -25,7 +25,7 @@
 #include "rs_overlaybox.h"
 #include "rs_settings.h"
 
-LC_OverlayBoxAction::LC_OverlayBoxAction(const char *name, LC_ActionContext *actionContext, const RS2::ActionType actionType)
+LC_OverlayBoxAction::LC_OverlayBoxAction(const QString& name, LC_ActionContext *actionContext, const RS2::ActionType actionType)
     : LC_UndoableDocumentModificationAction(name, actionContext, actionType),
       m_overlayBoxOptions{std::make_unique<LC_OverlayBoxOptions>()} {
 }

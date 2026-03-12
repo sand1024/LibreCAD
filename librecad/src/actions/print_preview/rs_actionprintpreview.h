@@ -31,7 +31,7 @@
 
 #include "rs_actioninterface.h"
 
-class QG_PrintPreviewOptions;
+class LC_PrintPreviewOptionsWidget;
 
 /**
  * Default action for print preview.
@@ -77,6 +77,9 @@ public:
     void invokeSettingsDialog() const;
     bool isPortrait() const;
     void setPaperOrientation(bool portrait) const;
+
+    QStringList getStandardPrintScales();
+    bool isUseImperialScales() const;
 protected:
     /**
     * Action States.
@@ -90,12 +93,15 @@ protected:
     bool m_hasOptions = false;
     bool m_bPaperOffset = false;
 
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     RS2::CursorType doGetMouseCursor(int status) override;
     bool doProcessCommand(int status, const QString &command) override;
     QString getAdditionalHelpMessage() override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &pos) override;
     void zoomPageExWithBorder(int borderSize) const;
     LC_ActionOptionsWidget* createOptionsWidget() override;
+    LC_ActionOptionsPropertiesFiller* createOptionsFiller() override;
+    void doSaveOptions() override;
+    void doLoadOptions() override;
 };
 #endif

@@ -93,6 +93,10 @@ void LC_PropertiesProviderGraphicLayer::createActiveLayer(LC_PropertyContainer* 
     cont->addChildProperty(activeLayerProperty);
 }
 
+bool LC_PropertiesProviderGraphicLayer::inPrintPreview() const {
+    return m_actionContext->getGraphicView()->isPrintPreview();
+}
+
 void LC_PropertiesProviderGraphicLayer::createColor(LC_PropertyContainer* const cont, RS_Graphic* graphic) {
     const LC_Property::Names names = {"color", tr("Color"), tr("Color of active layer")};
     auto* layerColorProperty = new LC_PropertyRSColor(cont, false);
@@ -344,8 +348,11 @@ void LC_PropertiesProviderGraphicLayer::createLayerCommands(LC_PropertyContainer
     if (activeLayer != nullptr) {
         const auto layerName = activeLayer->getName();
         const bool nonZeroLayer = "0" != layerName;
+        const bool isPrintPreview = inPrintPreview();
+        if (!isPrintPreview) {
+            createAddRemoveCommands(cont, graphic, nonZeroLayer);
+        }
 
-        createAddRemoveCommands(cont, graphic, nonZeroLayer);
         createLockingCommand(cont, graphic);
         createVisibleCommand(cont, graphic);
     }

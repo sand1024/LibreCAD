@@ -110,16 +110,16 @@ void RS_ActionDrawLineHorVert::onMouseRightButtonRelease(const int status, [[may
     initPrevious(status);
 }
 
-void RS_ActionDrawLineHorVert::updateMouseButtonHints() {
+void RS_ActionDrawLineHorVert::updateActionPrompt() {
     switch (getStatus()) {
         case SetStartpoint:
-            updateMouseWidgetTRCancel(tr("Specify first point"));
+            updatePromptTRCancel(tr("Specify first point"));
             break;
         case SetEndpoint:
-            updateMouseWidgetTRBack(tr("Specify second point"));
+            updatePromptTRBack(tr("Specify second point"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

@@ -3634,15 +3634,43 @@ void RS_FilterDXFRW::prepareDRWDimStyle(DRW_Dimstyle& d, const LC_DimStyle* ds) 
     // }
 }
 
+// fixme - dxf - add support of LAYOUT objects as it will be needed
 void RS_FilterDXFRW::writeObjects() {
     /* PLOTSETTINGS */
     DRW_PlotSettings ps;
-    const QString horizXvert = QString("%1x%2").arg(m_graphic->getPagesNumHoriz()).arg(m_graphic->getPagesNumVert());
-    ps.plotViewName = horizXvert.toStdString();
-    ps.marginLeft = m_graphic->getMarginLeft();
-    ps.marginTop = m_graphic->getMarginTop();
-    ps.marginRight = m_graphic->getMarginRight();
-    ps.marginBottom = m_graphic->getMarginBottom();
+    LC_PlotSettings* gps = m_graphic->getPlotSettings();
+    const QString horizXvert = QString("%1x%2").arg(gps->getPagesNumHoriz()).arg(gps->getPagesNumVert());
+    ps.plotViewName = horizXvert.toStdString(); // fixme - use other property?
+    ps.marginLeftMM = gps->getMarginLeftMm();
+    ps.marginTopMM = gps->getMarginTopMm();
+    ps.marginRightMM = gps->getMarginRightMm();
+    ps.marginBottomMM = gps->getMarginBottomMm();
+
+    ps.currentStyleName = gps->getCurrentStyleName().toStdString();
+    ps.paperSizeName = gps->getPaperSizeName().toStdString();
+
+    ps.paperWidthMM = gps->getPaperWidthMm();
+    ps.paperHeightMM = gps->getPaperHeightMm();
+    ps.originOffsetXMM  = gps->getOriginOffsetXMm();
+    ps.originOffsetYMM = gps->getOriginOffsetYMm();
+    ps.plotWindowLowerLeftX = gps->getPlotWindowLowerLeftX();
+    ps.plotWindowLowerLeftY  = gps->getPlotWindowLowerLeftY();
+    ps.plotWindowUpperRightX  = gps->getPlotWindowUpperRightX();
+    ps.plotWindowUpperRightY = gps->getPlotWindowUpperRightY();
+    ps.customPrintScalePaperUnitsNumerator = gps->getCustomPrintScalePaperUnitsNumerator();
+    ps.customPrintScaleDrawingUnitsDenominator = gps->getCustomPrintScaleDrawingUnitsDenominator();
+    ps.plotLayoutFlag = gps->getPlotLayoutFlag();
+    ps.plotPaperUnits = gps->getPlotPaperUnits();
+    ps.plotRotation = gps->getPlotRotation();
+    ps.plotType = gps->getStandardScaleType();
+    ps.standardScaleType = gps->getStandardScaleType();
+    ps.shadePlotMode = gps->getShadePlotMode();
+    ps.shadePlotResolutionMode = gps->getShadePlotResolutionMode();
+    ps.shadePlotCustomDPI = gps->getShadePlotCustomDpi();
+    ps.standardScaleFactor = gps->getStandardScaleFactor();
+    ps.paperImageOriginX = gps->getPaperImageOriginX();
+    ps.paperImageOriginY = gps->getPaperImageOriginY();
+
     m_dxfW->writePlotSettings(&ps);
 }
 
@@ -4899,8 +4927,41 @@ void RS_FilterDXFRW::addComment(const char*) {
 }
 
 void RS_FilterDXFRW::addPlotSettings(const DRW_PlotSettings* data) {
-    m_graphic->setPagesNum(QString::fromStdString(data->plotViewName));
-    m_graphic->setMargins(data->marginLeft, data->marginTop, data->marginRight, data->marginBottom);
+    LC_PlotSettings* ps = m_graphic->getPlotSettings();
+    // fixme - review and rework this. It should not be stored there from DXF point of view!
+    // may be use current style name instead of view name..?
+    ps->setPagesNum(QString::fromStdString(data->plotViewName));
+    ps->setMarginsInMm(data->marginLeftMM, data->marginTopMM, data->marginRightMM, data->marginBottomMM);
+
+    ps->setPaperWidthMm(data->paperWidthMM);
+    ps->setPaperHeightMm(data->paperHeightMM);
+    ps->setCustomPrintScaleDrawingUnitsDenominator(data->customPrintScaleDrawingUnitsDenominator);
+    ps->setCustomPrintScalePaperUnitsNumerator(data->customPrintScalePaperUnitsNumerator);
+    ps->setOriginOffsetXMm(data->originOffsetXMM);
+    ps->setOriginOffsetYMm(data->originOffsetYMM);
+    ps->setPlotWindowLowerLeftX(data->plotWindowLowerLeftX);
+    ps->setPlotWindowLowerLeftY(data->plotWindowLowerLeftY);
+    ps->setPlotWindowUpperRightX(data->plotWindowUpperRightX);
+    ps->setPlotWindowUpperRightY(data->plotWindowUpperRightY);
+    ps->setPlotType(data->plotType);
+    ps->setPlotLayoutFlag(data->plotLayoutFlag);
+    ps->setPlotPaperUnits(data->plotPaperUnits);
+    ps->setPlotRotation(data->plotRotation);
+    ps->setStandardScaleType(data->standardScaleType);
+    ps->setShadePlotMode(data->shadePlotMode);
+    ps->setShadePlotResolutionMode(data->shadePlotResolutionMode);
+    ps->setShadePlotCustomDpi(data->shadePlotCustomDPI);
+
+    ps->setStandardScaleFactor(data->standardScaleFactor);
+    ps->setPaperImageOriginX(data->paperImageOriginX);
+    ps->setPaperImageOriginY(data->paperImageOriginY);
+
+    ps->setPaperSizeName(QString::fromStdString(data->paperSizeName));
+    ps->setCurrentStyleName(QString::fromStdString(data->currentStyleName));
+
+
+
+    UTF8STRING currentStyleName;/*!< Plot view name, code 7 */
 }
 
 /**

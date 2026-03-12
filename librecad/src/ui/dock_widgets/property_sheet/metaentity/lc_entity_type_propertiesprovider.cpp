@@ -108,7 +108,7 @@ void LC_EntityTypePropertiesProvider::doCreateSelectedSetCommands(LC_PropertyCon
         {
             tr("Aligning selection"),
             {RS2::ActionModifyMoveRotate, tr("Move rotate"), tr("Move and rotate selection")},
-            {RS2::ActionModifyRotate2, tr("Rotate two"), tr("Rotate selection two times")}
+            {RS2::ActionModifyRotateTwice, tr("Rotate two"), tr("Rotate selection two times")}
         }
     };
 

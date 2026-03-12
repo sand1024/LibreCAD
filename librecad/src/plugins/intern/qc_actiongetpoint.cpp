@@ -54,7 +54,7 @@ QC_ActionGetPoint::~QC_ActionGetPoint() = default;
 void QC_ActionGetPoint::trigger() {
     RS_DEBUG->print("QC_ActionGetPoint::trigger()");
     m_completed = true;
-    updateMouseButtonHints();
+    updateActionPrompt();
 }
 
 void QC_ActionGetPoint::mouseMoveEvent(QMouseEvent* e) {
@@ -100,12 +100,12 @@ void QC_ActionGetPoint::onCoordinateEvent([[maybe_unused]] int status, [[maybe_u
     trigger();
 }
 
-void QC_ActionGetPoint::updateMouseButtonHints() {
+void QC_ActionGetPoint::updateActionPrompt() {
     if (!m_completed) {
-        updateMouseWidget(m_actionData->message, tr("Cancel"));
+        updatePrompt(m_actionData->message, tr("Cancel"));
     }
     else {
-        updateMouseWidget();
+        updatePrompt();
     }
 }
 

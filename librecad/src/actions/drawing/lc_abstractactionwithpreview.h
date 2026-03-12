@@ -41,7 +41,7 @@ public:
       // inherited methods with basic template method implementation
     void init(int status) override;
     void finish() override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     /**
    * Mode that controls where from apply pen
    */

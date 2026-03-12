@@ -27,18 +27,16 @@
 
 class RS_PreviewActionInterface;
 
-class LC_ActionOptionsWidgetBase:public LC_ActionOptionsWidget{
+class LC_ActionOptionsWidgetBase : public LC_ActionOptionsWidget {
 public:
-    LC_ActionOptionsWidgetBase(RS2::ActionType actionType, const QString &optionsGroupName, const QString &optionNamePrefix);
+    LC_ActionOptionsWidgetBase();
     ~LC_ActionOptionsWidgetBase() override;
+
 protected:
     bool checkActionRttiValid(RS2::ActionType actionType) override;
-    QString getSettingsGroupName() override;
-    QString getSettingsOptionNamePrefix() override;
+
 private:
     RS2::ActionType m_supportedActionType;
-    QString m_settingsGroupName;
-    QString m_settingsOptionNamePrefix;
 };
 
 #endif

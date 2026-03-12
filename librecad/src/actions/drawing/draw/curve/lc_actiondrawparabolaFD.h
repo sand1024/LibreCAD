@@ -55,7 +55,7 @@ protected:
     std::unique_ptr<ActionData> m_actionData;
     RS2::CursorType doGetMouseCursor(int status) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &coord) override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     LC_Parabola* preparePreview() const;
     void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;

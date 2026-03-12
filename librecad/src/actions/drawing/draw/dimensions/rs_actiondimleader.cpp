@@ -164,16 +164,16 @@ bool RS_ActionDimLeader::doProcessCommand([[maybe_unused]] int status, const QSt
     return accept;
 }
 
-void RS_ActionDimLeader::updateMouseButtonHints() {
+void RS_ActionDimLeader::updateActionPrompt() {
     switch (getStatus()) {
         case SetStartpoint:
-            updateMouseWidgetTRCancel(tr("Specify target point"), MOD_SHIFT_RELATIVE_ZERO);
+            updatePromptTRCancel(tr("Specify target point"), MOD_SHIFT_RELATIVE_ZERO);
             break;
         case SetEndpoint:
-            updateMouseWidget(tr("Specify next point"), tr("Finish"), MOD_SHIFT_ANGLE_SNAP);
+            updatePrompt(tr("Specify next point"), tr("Finish"), MOD_SHIFT_ANGLE_SNAP);
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

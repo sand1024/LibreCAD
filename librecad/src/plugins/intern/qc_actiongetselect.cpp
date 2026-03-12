@@ -28,7 +28,7 @@
 #include <QKeyEvent>
 
 #include "doc_plugin_interface.h"
-#include "rs_actionselectsingle.h"
+#include "lc_action_select_single.h"
 #include "rs_graphicview.h"
 
 
@@ -45,13 +45,13 @@ QC_ActionGetSelect::QC_ActionGetSelect(const RS2::EntityType typeToSelect, LC_Ac
 
 QC_ActionGetSelect::~QC_ActionGetSelect() = default;
 
-void QC_ActionGetSelect::updateMouseButtonHints() {
+void QC_ActionGetSelect::updateActionPrompt() {
     switch (getStatus()) {
         case Select:
-            updateMouseWidget(*m_message, tr("Cancel"));
+            updatePrompt(*m_message, tr("Cancel"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }
@@ -67,20 +67,20 @@ void QC_ActionGetSelect::setMessage(QString msg) const {
 void QC_ActionGetSelect::init(const int status) {
         RS_ActionInterface::init(status);
         m_graphicView->setCurrentAction(
-                std::make_shared<RS_ActionSelectSingle>(m_entityTypeToSelect,  m_actionContext, this));
+                std::make_shared<LC_ActionSelectSingle>(m_entityTypeToSelect,  m_actionContext, this));
 }
 
 void QC_ActionGetSelect::mouseReleaseEvent(QMouseEvent* e) {
     if (e->button()==Qt::RightButton) {
         m_completed = true;
-        updateMouseWidget();
+        updatePrompt();
         finish();
     }
 }
 
 void QC_ActionGetSelect::keyPressEvent(QKeyEvent* e){
     if (e->key()==Qt::Key_Escape || e->key()==Qt::Key_Enter){
-        updateMouseWidget();
+        updatePrompt();
         finish();
         m_completed = true;
     }

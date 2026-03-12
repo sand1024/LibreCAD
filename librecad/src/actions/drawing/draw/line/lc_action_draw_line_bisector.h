@@ -81,7 +81,7 @@ protected:
     void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void setFirstLine(RS_Entity* en);
     bool doProcessCommand(int status, const QString &command) override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     LC_ActionOptionsWidget* createOptionsWidget() override;
     LC_ActionOptionsPropertiesFiller* createOptionsFiller() override;
     bool doTriggerModifications(LC_DocumentModificationBatch& ctx) override;

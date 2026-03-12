@@ -23,7 +23,8 @@
 
 #ifndef LC_ACTIONSELECTDIMORDINATESAMEORIGIN_H
 #define LC_ACTIONSELECTDIMORDINATESAMEORIGIN_H
-#include "lc_actionsingleentityselectbase.h"
+
+#include "lc_action_select_single_entity_base.h"
 #include "lc_dimordinate.h"
 
 class LC_ActionSelectDimOrdinateSameOrigin:public LC_ActionSingleEntitySelectBase{

@@ -80,14 +80,14 @@ QStringList LC_ActionDrawGDTFeatureControlFrame::getAvailableCommands() {
     return RS_PreviewActionInterface::getAvailableCommands();
 }
 
-void LC_ActionDrawGDTFeatureControlFrame::updateMouseButtonHints() {
+void LC_ActionDrawGDTFeatureControlFrame::updateActionPrompt() {
     switch (getStatus()) {
         case ShowDialog: {
-            updateMouseWidgetTRCancel("Specify features data");
+            updatePromptTRCancel("Specify features data");
             break;
         }
         case SetInsertionPoint: {
-            updateMouseWidgetTRCancel("Specify feature control frame insertion point");
+            updatePromptTRCancel("Specify feature control frame insertion point");
             break;
         }
         default:

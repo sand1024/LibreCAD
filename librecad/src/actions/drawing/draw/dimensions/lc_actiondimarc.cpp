@@ -182,16 +182,16 @@ QStringList LC_ActionDimArc::getAvailableCommands(){
     return availableCommandsList;
 }
 
-void LC_ActionDimArc::updateMouseButtonHints(){
+void LC_ActionDimArc::updateActionPrompt(){
     switch (getStatus()) {
         case SetEntity:
-            updateMouseWidgetTRCancel(tr("Select arc entity"));
+            updatePromptTRCancel(tr("Select arc entity"));
             break;
         case SetPos:
-            updateMouseWidgetTRBack(tr("Specify dimension arc location"),MOD_SHIFT_FREE_SNAP);
+            updatePromptTRBack(tr("Specify dimension arc location"),MOD_SHIFT_FREE_SNAP);
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

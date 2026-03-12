@@ -146,7 +146,7 @@ protected:
     bool isSetActivePenAndLayerOnTrigger() override;
     void doFinish() override;
     void setLine(RS_Entity* en, const RS_Vector& snapPoint);
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) override;
     bool doUpdateDistanceByInteractiveInput(const QString& tag, double distance) override;
     QString getSettingsGroupName() override;

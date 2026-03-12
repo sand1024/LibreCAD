@@ -69,7 +69,7 @@ void LC_ActionDrawLineAngleRel::doLoadOptions() {
 }
 
 LC_ActionDrawLineAngleRel::LC_ActionDrawLineAngleRel(LC_ActionContext* actionContext, const double angle, const bool fixedAngle)
-    : LC_AbstractActionWithPreview("ActionDrawLineAngleRel", actionContext), m_fixedAngle{fixedAngle} {
+    : LC_AbstractActionWithPreview(fixedAngle ? "ActionDrawLineAngleRel" : "ActionDrawLineOrthogonalRel", actionContext), m_fixedAngle{fixedAngle} {
     // the same action may be used for drawing orthogonal lines and lines with specified angles
     if (fixedAngle && RS_Math::getAngleDifference(RS_Math::deg2rad(angle), M_PI_2) < RS_TOLERANCE_ANGLE) {
         m_actionType = RS2::ActionDrawLineOrthogonalRel;
@@ -486,18 +486,18 @@ RS2::CursorType LC_ActionDrawLineAngleRel::doGetMouseCursor(const int status) {
     }
 }
 
-void LC_ActionDrawLineAngleRel::updateMouseButtonHints() {
+void LC_ActionDrawLineAngleRel::updateActionPrompt() {
     const bool hasModifiers = m_actionType == RS2::ActionDrawLineAngleRel;
     switch (getStatus()) {
         case SetLine:
             // fixme - sand - support mirrorring of snap by CTRL?
-            updateMouseWidgetTRCancel(tr("Select base line"), hasModifiers ? MOD_SHIFT_MIRROR_ANGLE : MOD_NONE);
+            updatePromptTRCancel(tr("Select base line"), hasModifiers ? MOD_SHIFT_MIRROR_ANGLE : MOD_NONE);
             break;
         case SetTickLength:
-            updateMouseWidgetTRBack(tr("Specify length"), hasModifiers ? MOD_SHIFT_MIRROR_ANGLE : MOD_NONE);
+            updatePromptTRBack(tr("Specify length"), hasModifiers ? MOD_SHIFT_MIRROR_ANGLE : MOD_NONE);
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

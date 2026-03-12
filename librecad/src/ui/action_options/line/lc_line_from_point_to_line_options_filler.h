@@ -26,6 +26,7 @@
 #include "lc_action_options_properties_filler.h"
 
 class LC_LineFromPointToLineOptionsFiller: public LC_ActionOptionsPropertiesFiller{
+    Q_OBJECT
 public:
     LC_LineFromPointToLineOptionsFiller() = default;
     ~LC_LineFromPointToLineOptionsFiller() override = default;

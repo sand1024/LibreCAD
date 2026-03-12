@@ -35,12 +35,13 @@
 #include "qc_applicationwindow.h"
 #include "rs_actioninterface.h"
 
+using FunPepareDescriptor = typename std::function<bool(LC_PropertyViewDescriptor&)>;
+
 class LC_ActionOptionsPropertiesFiller : public LC_ToolOptionsPropertiesContainerProvider, public LC_ActionOptionsSupport,
                                          public LC_PropertyContainerBuilder {
 public:
     // fixme - more interface high-level, move impl-specific methods into base impl class
-    [[deprecated]]
-    LC_ActionOptionsPropertiesFiller()
+    [[deprecated]] LC_ActionOptionsPropertiesFiller()
         : LC_PropertyContainerBuilder(nullptr, QC_ApplicationWindow::getAppWindow()->getPropertySheetWidget()) {
     }
 
@@ -50,59 +51,72 @@ public:
 
     ~LC_ActionOptionsPropertiesFiller() override = default;
     void hideOptions() override;
-protected:
 
+protected:
     template <class TValue>
     void createDelegatedStorage(LC_PropertySingle<TValue>* property, const typename LC_PropertyValueDelegated<TValue>::FunValueGet& funGet,
                                 const typename LC_PropertyValueDelegated<TValue>::FunValueSetShort& funSet,
                                 const typename LC_PropertyValueDelegated<TValue>::FunValueEqual& funEqual = nullptr) const;
 
-    void addBoolean(const LC_Property::Names& names, typename LC_PropertyValueDelegated<bool>::FunValueGet funGet,
-                    typename LC_PropertyValueDelegated<bool>::FunValueSetShort funSet, LC_PropertyContainer* cont,
-                    const QString& viewName = LC_PropertyBoolCheckBoxView::VIEW_NAME,
-                    std::function<bool(LC_PropertyViewDescriptor& descriptor)> funPrepareDescriptor = nullptr);
+    template <typename T, typename TProperty>
+    void setupViewDescriptor(const typename LC_PropertyValueDelegated<T>::FunValueSetShort& funSet,
+                             const FunPepareDescriptor& funFillViewAttrs, TProperty* property, const QByteArray& viewName);
 
-    void addDouble(const LC_Property::Names& names, LC_PropertyValueDelegated<double>::FunValueGet funGet,
-                   LC_PropertyValueDelegated<double>::FunValueSetShort funSet, LC_PropertyContainer* cont,
-                   std::function<bool(LC_PropertyViewDescriptor&)> funFillViewAttrs = nullptr);
+    void addBoolean(const LC_Property::Names& names, const typename LC_PropertyValueDelegated<bool>::FunValueGet& funGet,
+                    const typename LC_PropertyValueDelegated<bool>::FunValueSetShort& funSet, LC_PropertyContainer* cont,
+                    const FunPepareDescriptor& funPrepareDescriptor = nullptr);
 
-    void addLinearDistance(const LC_Property::Names& names, LC_PropertyValueDelegated<double>::FunValueGet funGet,
-                           LC_PropertyValueDelegated<double>::FunValueSetShort funSet, LC_PropertyContainer* cont,
-                           std::function<bool(LC_PropertyViewDescriptor*)> funFillViewAttrs = nullptr);
+    void addDouble(const LC_Property::Names& names, const LC_PropertyValueDelegated<double>::FunValueGet& funGet,
+                   const LC_PropertyValueDelegated<double>::FunValueSetShort& funSet, LC_PropertyContainer* cont,
+                   const FunPepareDescriptor& funFillViewAttrs = nullptr);
+
+    void addLinearDistance(const LC_Property::Names& names, const LC_PropertyValueDelegated<double>::FunValueGet& funGet,
+                           const LC_PropertyValueDelegated<double>::FunValueSetShort& funSet, LC_PropertyContainer* cont,
+                           const FunPepareDescriptor& funFillViewAttrs = nullptr);
+
     void addRawAngle(const LC_Property::Names& names, LC_PropertyValueDelegated<double>::FunValueGet funGet,
-                     LC_PropertyValueDelegated<double>::FunValueSetShort funSet, LC_PropertyContainer* cont);
+                     const LC_PropertyValueDelegated<double>::FunValueSetShort& funSet, LC_PropertyContainer* cont,
+                     const FunPepareDescriptor& funFillViewAttrs = nullptr);
+
     void addRawAngleDegrees(const LC_Property::Names& names, LC_PropertyValueDelegated<double>::FunValueGet funGet,
-                            LC_PropertyValueDelegated<double>::FunValueSetShort funSet, LC_PropertyContainer* cont);
+                            LC_PropertyValueDelegated<double>::FunValueSetShort funSet, LC_PropertyContainer* cont,
+                            const FunPepareDescriptor& funFillViewAttrs = nullptr);
     void addWCSAngle(const LC_Property::Names& names, LC_PropertyValueDelegated<double>::FunValueGet funGet,
-                     LC_PropertyValueDelegated<double>::FunValueSetShort funSet, LC_PropertyContainer* cont);
+                     LC_PropertyValueDelegated<double>::FunValueSetShort funSet, LC_PropertyContainer* cont,
+                     const FunPepareDescriptor& funFillViewAttrs = nullptr);
+
     void addEnum(const LC_Property::Names& names, const LC_EnumDescriptor* enumDescriptor,
-                 LC_PropertyValueDelegated<LC_PropertyEnumValueType>::FunValueGet funGetValue,
-                 LC_PropertyValueDelegated<LC_PropertyEnumValueType>::FunValueSetShort funSetValue, LC_PropertyContainer* container,
-                 std::function<bool(LC_PropertyViewDescriptor& descriptor)> funPrepareDescriptor = nullptr);
+                 const LC_PropertyValueDelegated<LC_PropertyEnumValueType>::FunValueGet& funGetValue,
+                 const LC_PropertyValueDelegated<LC_PropertyEnumValueType>::FunValueSetShort& funSetValue, LC_PropertyContainer* container,
+                 const FunPepareDescriptor& funPrepareDescriptor = nullptr);
+
     void addVector(const LC_Property::Names& names, LC_PropertyValueDelegated<RS_Vector>::FunValueGet funGet,
-                   LC_PropertyValueDelegated<RS_Vector>::FunValueSetShort funSet, LC_PropertyContainer* cont);
-    void addIntSpinbox(const LC_Property::Names& names, LC_PropertyValueDelegated<int>::FunValueGet funGet,
-                       LC_PropertyValueDelegated<int>::FunValueSetShort funSet, LC_PropertyContainer* container, int minVal = 1,
-                       int maxVal = -1);
-    void addString(const LC_Property::Names& names, LC_PropertyValueDelegated<QString>::FunValueGet funGet,
-                   LC_PropertyValueDelegated<QString>::FunValueSetShort funSet, LC_PropertyContainer* container, bool multiLine = false,
-                   std::function<bool(LC_PropertyViewDescriptor&)> funPrepareDescriptor = nullptr);
+                   LC_PropertyValueDelegated<RS_Vector>::FunValueSetShort funSet, LC_PropertyContainer* cont,
+                   const FunPepareDescriptor& funFillViewAttrs = nullptr);
+
+    void addIntSpinbox(const LC_Property::Names& names, const LC_PropertyValueDelegated<int>::FunValueGet& funGet,
+                       const LC_PropertyValueDelegated<int>::FunValueSetShort& funSet, LC_PropertyContainer* container,
+                       int minVal = 1, int maxVal = -1, const FunPepareDescriptor& funFillViewAttrs = nullptr);
+
+    void addString(const LC_Property::Names& names, const LC_PropertyValueDelegated<QString>::FunValueGet& funGet,
+                   const LC_PropertyValueDelegated<QString>::FunValueSetShort& funSet, LC_PropertyContainer* container,
+                   bool multiLine = false, const FunPepareDescriptor& funPrepareDescriptor = nullptr);
+
     void createCommandsLine(LC_PropertyContainer* container, const QString& propertyName, const QString& linkTitle,
                             const QString& linkTooltip, const QString& linkTitleRight, const QString& linkTooltipRight,
                             const std::function<void(int linkIndex)>& clickHandler, const QString& commonDescription,
                             bool leftEnabled = true, bool rightEnabled = true);
 
-    RS_ActionInterface* m_action {nullptr};
-    void doSetAction(RS_ActionInterface* a) override;
+    RS_ActionInterface* m_action{nullptr};
+    void doUpdateByAction(RS_ActionInterface* a) override;
     void preSetupByAction(RS_ActionInterface* a) override;
-    RS_ActionInterface* getAction() {return m_action;}
+
+    RS_ActionInterface* getAction() {
+        return m_action;
+    }
 
     void cleanup() override {
     };
-
-    bool checkActionRttiValid(RS2::ActionType actionType) override {
-        return true;
-    } // fixme - temporary stub
 };
 
 template <typename ValueType>
@@ -115,8 +129,9 @@ public:
 protected:
     void doSetValue(ValueType newValue, LC_PropertyChangeReason reason) override {
         LC_PropertyValueDelegated<ValueType>::doSetValue(newValue, reason);
-        QTimer::singleShot(10, [this] {
-            m_action->updateOptions();
+        auto action = m_action;
+        QTimer::singleShot(10, [action] {
+            action->updateOptions();
         });
     }
 
@@ -127,7 +142,8 @@ template <typename TValue>
 void LC_ActionOptionsPropertiesFiller::createDelegatedStorage(LC_PropertySingle<TValue>* property,
                                                               const typename LC_PropertyValueDelegated<TValue>::FunValueGet& funGet,
                                                               const typename LC_PropertyValueDelegated<TValue>::FunValueSetShort& funSet,
-                                                              const typename LC_PropertyValueDelegated<TValue>::FunValueEqual& funEqual) const {
+                                                              const typename LC_PropertyValueDelegated<TValue>::FunValueEqual& funEqual)
+const {
     auto valueStorage = new LC_PropertyValueDelegatedWithReload<TValue>(m_action);
     valueStorage->setup(funGet, funSet, funEqual);
     property->setValueStorage(valueStorage, true);

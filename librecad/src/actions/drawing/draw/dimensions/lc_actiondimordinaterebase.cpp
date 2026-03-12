@@ -39,7 +39,7 @@ void LC_ActionDimOrdinateRebase::doInitWithContextEntity(RS_Entity* contextEntit
 }
 
 void LC_ActionDimOrdinateRebase::updateMouseButtonHintsForSelection() {
-    updateMouseWidgetTRCancel("Select Ordinate dimension to rebase (Enter - to complete)", MOD_CTRL(tr("Select and rebase")));
+    updatePromptTRCancel("Select Ordinate dimension to rebase (Enter - to complete)", MOD_CTRL(tr("Select and rebase")));
 }
 
 bool LC_ActionDimOrdinateRebase::isAllowTriggerOnEmptySelection() {

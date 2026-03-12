@@ -92,7 +92,7 @@ namespace LC_PropertyProviderUtils {
                                       EntityClass* entity, LC_PropertySingle<ValueType>* property) {
         auto valueStorage = new LC_EntityPropertyValueDirectEntityDelegate<ValueType, EntityClass>();
 
-        auto funSetWrapped = [funSet](const ValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason, RS_Graphic* e) -> void {
+        auto funSetWrapped = [funSet](const ValueType& v, [[maybe_unused]] LC_PropertyChangeReason reason, EntityClass* e) -> void {
             funSet(v, e);
         };
         valueStorage->setup(entity, funGet, funSetWrapped);

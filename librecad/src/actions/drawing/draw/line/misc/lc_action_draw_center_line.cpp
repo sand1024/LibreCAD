@@ -252,7 +252,7 @@ void LC_ActionDrawCenterLine::onMouseRightButtonRelease([[maybe_unused]] const i
             break;
         }
         default:
-            updateMouseWidget();
+            updatePrompt();
     }
 }
 
@@ -289,22 +289,22 @@ void LC_ActionDrawCenterLine::onCoordinateEvent(const int status, const bool isZ
     }
 }
 
-void LC_ActionDrawCenterLine::updateMouseButtonHints() {
+void LC_ActionDrawCenterLine::updateActionPrompt() {
     switch (getStatus()){
         case SetEntity1:{
-            updateMouseWidgetTRCancel(tr("Select first entity"));
+            updatePromptTRCancel(tr("Select first entity"));
             break;
         }
         case SetEntity2:{
-            updateMouseWidgetTRBack(tr("Select second entity"), MOD_SHIFT_LC(tr("Alternate endpoints")));
+            updatePromptTRBack(tr("Select second entity"), MOD_SHIFT_LC(tr("Alternate endpoints")));
             break;
         }
         case SetOffset:{
-            updateMouseWidgetTRBack(tr("Enter offset value"));
+            updatePromptTRBack(tr("Enter offset value"));
             break;
         }
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

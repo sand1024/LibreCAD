@@ -172,19 +172,19 @@ void RS_ActionInfoArea::onCoordinateEvent(const int status, [[maybe_unused]] boo
     }
 }
 
-void RS_ActionInfoArea::updateMouseButtonHints() {
+void RS_ActionInfoArea::updateActionPrompt() {
     switch (getStatus()) {
         case SetFirstPoint:
-            updateMouseWidgetTRCancel(tr("Specify first point of polygon"), MOD_SHIFT_RELATIVE_ZERO);
+            updatePromptTRCancel(tr("Specify first point of polygon"), MOD_SHIFT_RELATIVE_ZERO);
             break;
         case SetNextPoint: {
             const bool enoughPointsForArea = m_infoArea->size() > 1;
-            updateMouseWidgetTRCancel(tr("Specify next point of polygon"), enoughPointsForArea ? MOD_SHIFT_AND_CTRL_ANGLE(tr("Specify point and complete")) :
+            updatePromptTRCancel(tr("Specify next point of polygon"), enoughPointsForArea ? MOD_SHIFT_AND_CTRL_ANGLE(tr("Specify point and complete")) :
                                                                            MOD_SHIFT_RELATIVE_ZERO);
             break;
         }
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

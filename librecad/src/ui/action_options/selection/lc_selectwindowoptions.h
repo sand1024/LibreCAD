@@ -23,28 +23,27 @@
 #ifndef LC_SELECTWINDOWOPTIONS_H
 #define LC_SELECTWINDOWOPTIONS_H
 
-#include "lc_action_options_widget_base.h"
+#include "lc_action_options_widget.h"
 
-class RS_ActionSelectWindow;
+class LC_ActionSelectWindow;
 namespace Ui {
     class LC_SelectWindowOptions;
 }
 
-class LC_SelectWindowOptions: public LC_ActionOptionsWidgetBase {
+class LC_SelectWindowOptionsWidget: public LC_ActionOptionsWidget {
 Q_OBJECT
 public:
-    explicit LC_SelectWindowOptions();
-    ~LC_SelectWindowOptions() override;
+    explicit LC_SelectWindowOptionsWidget();
+    ~LC_SelectWindowOptionsWidget() override;
 public slots:
     void languageChange() override;
     void onAllToggled(bool value);
     void onTypeToggled(bool value) const;
 protected:
     Ui::LC_SelectWindowOptions *ui;
-    RS_ActionSelectWindow* m_action = nullptr;
-    bool checkActionRttiValid(RS2::ActionType actionType) override;
-    void doSaveSettings() override;
-    void doSetAction(RS_ActionInterface *a, bool update) override;
+    LC_ActionSelectWindow* m_action = nullptr;
+    void doSaveSettings() ;
+    void doUpdateByAction(RS_ActionInterface *a) override;
     void setSelectAllToActionAndView(bool value);
     void setEntityTypesToActinAndView(QList<RS2::EntityType> entityTypes) const;
     void enableEntityTypes(bool enable) const;

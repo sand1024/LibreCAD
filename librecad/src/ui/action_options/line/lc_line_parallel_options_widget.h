@@ -26,7 +26,7 @@
 #ifndef QG_LINEPARALLELOPTIONS_H
 #define QG_LINEPARALLELOPTIONS_H
 
-#include "lc_action_options_widget_base.h"
+#include "lc_action_options_widget.h"
 
 class RS_ActionInterface;
 class LC_ActionDrawLineParallel;
@@ -35,7 +35,7 @@ namespace Ui {
     class LC_LineParallelOptionsWidget;
 }
 
-class LC_LineParallelOptionsWidget : public LC_ActionOptionsWidgetBase {
+class LC_LineParallelOptionsWidget : public LC_ActionOptionsWidget {
     Q_OBJECT
 public:
     explicit LC_LineParallelOptionsWidget(RS2::ActionType actionType);
@@ -47,9 +47,7 @@ public slots :
     void onDistEditingFinished();
 
 protected:
-    void doSetAction(RS_ActionInterface* a) override;
-    bool checkActionRttiValid(RS2::ActionType actionType) override;
-
+    void doUpdateByAction(RS_ActionInterface* a) override;
 private:
     LC_ActionDrawLineParallel* m_action = nullptr;
     std::unique_ptr<Ui::LC_LineParallelOptionsWidget> ui;

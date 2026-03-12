@@ -156,12 +156,12 @@ protected:
     void updateMouseCursor();
     void setMouseCursor(RS2::CursorType cursor) const;
 
-    virtual void updateMouseButtonHints();
+    virtual void updateActionPrompt();
 
     // simplified mouse widget and command message operations
-    void updateMouseWidgetTRBack(const QString &msg,const LC_ModifiersInfo& modifiers = LC_ModifiersInfo::NONE()) const;
-    void updateMouseWidgetTRCancel(const QString &msg,const LC_ModifiersInfo& modifiers = LC_ModifiersInfo::NONE()) const;
-    void updateMouseWidget(const QString& = QString(),const QString& = QString(), const LC_ModifiersInfo& modifiers = LC_ModifiersInfo::NONE()) const;
+    void updatePromptTRBack(const QString &msg,const LC_ModifiersInfo& modifiers = LC_ModifiersInfo::NONE()) const;
+    void updatePromptTRCancel(const QString &msg,const LC_ModifiersInfo& modifiers = LC_ModifiersInfo::NONE()) const;
+    void updatePrompt(const QString& = QString(),const QString& = QString(), const LC_ModifiersInfo& modifiers = LC_ModifiersInfo::NONE()) const;
     void clearMouseWidgetIcon() const;
 
     static bool isControl(const QInputEvent *e);

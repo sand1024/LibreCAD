@@ -39,6 +39,7 @@
 #include <QStatusBar>
 #include <QTimer>
 
+#include "lc_action_block_library_insert.h"
 #include "lc_actiongroupmanager.h"
 #include "lc_action_options_manager.h"
 #include "lc_actionsshortcutsdialog.h"
@@ -87,7 +88,7 @@
 #include "qg_selectionwidget.h"
 #include "qg_snaptoolbar.h"
 #include "rs_actioninterface.h"
-#include "rs_actionlibraryinsert.h"
+
 #include "rs_actionprintpreview.h"
 #include "rs_debug.h"
 #include "rs_settings.h"
@@ -1348,8 +1349,9 @@ void QC_ApplicationWindow::openPrintPreview(QC_MDIWindow* parent) {
             w->setWindowIcon(QIcon(":/icons/document.lci"));
             QG_GraphicView* view = w->getGraphicView();
             view->setDeviceName(LC_GET_ONE_STR("Hardware", "Device", "Mouse"));
-            //                gv->setBackground(RS_Color(255, 255, 255));
-            view->setDefaultAction(new RS_ActionPrintPreview(m_actionContext)); // fixme - sand - is it correct for preview?
+            const auto printPreviewAction = new RS_ActionPrintPreview(m_actionContext);
+            printPreviewAction->postCreateInit();
+            view->setDefaultAction(printPreviewAction); // fixme - sand - is it correct for preview?
 
             // fixme - view_connect_ok
              connect(view, &RS_GraphicView::currentActionChanged, this, &QC_ApplicationWindow::onViewCurrentActionChanged);
@@ -1363,8 +1365,9 @@ void QC_ApplicationWindow::openPrintPreview(QC_MDIWindow* parent) {
             view->zoomAuto(false);
             RS_Graphic* graphic = w->getDocument()->getGraphic();
             if (graphic != nullptr) {
-                const bool bigger = graphic->isBiggerThanPaper();
-                const bool fixed = graphic->getPaperScaleFixed();
+                const auto plotSettings = graphic->getPlotSettings();
+                const bool bigger = plotSettings->isBiggerThanPaper(graphic->getSize());
+                const bool fixed = plotSettings->isPaperScaleFixed();
 
                 graphic->fitToPage();
 
@@ -1573,7 +1576,7 @@ void QC_ApplicationWindow::slotImportBlock() {
         if (m_actionHandler != nullptr) {
             const std::shared_ptr<RS_ActionInterface> a = m_actionHandler->setCurrentAction(RS2::ActionLibraryInsert);
             if (a) {
-                const auto action = static_cast<RS_ActionLibraryInsert*>(a.get());
+                const auto action = static_cast<LC_ActionBlockLibraryInsert*>(a.get());
                 action->setFile(dxfPath);
             }
             else {
@@ -1695,6 +1698,14 @@ void QC_ApplicationWindow::relayAction(QAction* q_action) {
         return;
     }
 
+    auto* graphicView = static_cast<QG_GraphicView*>(view);
+
+    if (q_action == nullptr) {
+        if (graphicView->isPrintPreview()) {
+            q_action = getAction("FilePrintPreview");
+        }
+    }
+
     if (q_action != nullptr) {
         bool setAsCurrentActionInView = true;
         const auto property = q_action->property("_SetAsCurrentActionInView");
@@ -1703,7 +1714,6 @@ void QC_ApplicationWindow::relayAction(QAction* q_action) {
         }
 
         if (setAsCurrentActionInView) {
-            auto* graphicView = static_cast<QG_GraphicView*>(view);
             graphicView->setCurrentQAction(q_action);
         }
 
@@ -1772,7 +1782,7 @@ bool QC_ApplicationWindow::eventFilter(QObject* obj, QEvent* event) {
 }
 
 void QC_ApplicationWindow::onViewCurrentActionChanged(const RS2::ActionType actionType) {
-    if (actionType != RS2::ActionNone) {
+    if (actionType != RS2::ActionNone && actionType != RS2::ActionDefault) {
         const auto qAction = m_actionGroupManager->getActionByType(actionType);
         relayAction(qAction);
     }
@@ -1917,6 +1927,8 @@ void QC_ApplicationWindow::updateActionsAndWidgetsForPrintPreview(const bool pri
 
     if (printPreviewOn) {
         m_mouseWidget->setActionIcon(QIcon());
+        m_propertySheetWidget->setEnabled(true);
+        m_propertySheetWidget->setCurrentQAction(getAction("FilePrintPreview"));
     }
 
     emit printPreviewChanged(printPreviewOn);

@@ -56,7 +56,7 @@ protected:
     RS_Vector doGetRelativeZeroAfterTrigger() override;
     void doSetStartPoint(const RS_Vector& start) override;
     bool doCheckMayDrawPreview(const LC_MouseEvent* e, int status) override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &coord) override;
 private:
     /// History Actions

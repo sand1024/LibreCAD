@@ -26,6 +26,7 @@
 #include "lc_action_options_properties_filler.h"
 
 class LC_LineAngleOptionsFiller: public LC_ActionOptionsPropertiesFiller{
+    Q_OBJECT
 public:
     LC_LineAngleOptionsFiller() = default;
     ~LC_LineAngleOptionsFiller() override = default;

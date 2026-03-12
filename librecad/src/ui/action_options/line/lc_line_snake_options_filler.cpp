@@ -45,29 +45,21 @@ void LC_LineSnakeOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* c
                 action->setDirection(v);
             }, container);
 
-    const int dir = action->getDirection();
-    if (dir == LC_AbstractActionDrawLine::Direction::DIRECTION_ANGLE) {
-        addRawAngleDegrees({"a_angle", tr("Angle"), tr("Angle of line")}, [action]() {
-                               return action->getAngleDegrees();
-                           }, [action](double val) {
-                               action->setAngleDegrees(val);
-                           }, container);
+    addRawAngleDegrees({"a_angle", tr("Angle"), tr("Angle of line")}, [action]() {
+                           return action->getAngleDegrees();
+                       }, [action](double val) {
+                           action->setAngleDegrees(val);
+                       }, container, [action](LC_PropertyViewDescriptor& d) -> bool {
+                           return action->getDirection() != LC_AbstractActionDrawLine::Direction::DIRECTION_ANGLE;
+                       });
 
-        addBoolean({"a_relAngle", tr("Relative angle"), tr("If checked, angle is relative to previous segment")}, [action]()-> bool {
-                       return action->isAngleRelative();
-                   }, [action](bool val)-> void {
-                       action->setAngleIsRelative(val);
-                   }, container);
-    }
-    else {
-        addRawAngleDegrees({"a_angle", tr("Angle"), tr("Angle of line")}, [action]() {
-            return action->getAngleDegrees();
-        }, nullptr, container);
-
-        addBoolean({"a_relAngle", tr("Relative angle"), tr("If checked, angle is relative to previous segment")}, [action]()-> bool {
-            return action->isAngleRelative();
-        }, nullptr, container);
-    }
+    addBoolean({"a_relAngle", tr("Relative angle"), tr("If checked, angle is relative to previous segment")}, [action]()-> bool {
+                   return action->isAngleRelative();
+               }, [action](bool val)-> void {
+                   action->setAngleIsRelative(val);
+               }, container, [action](LC_PropertyViewDescriptor& d) -> bool {
+                   return action->getDirection() != LC_AbstractActionDrawLine::Direction::DIRECTION_ANGLE;
+               });
 
     createCommandsLine(container, "a_commands1", tr("Close"), tr("Form a closed contour from lines drawn"), tr("Polyline"),
                        tr("Creates polyline from line segments"), [action](int linkIndex)-> void {
@@ -79,8 +71,8 @@ void LC_LineSnakeOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer* c
                            }
                        }, tr("Generic commands for line"), action->mayClose(), action->mayClose());
 
-    createCommandsLine(container, "a_commands2", tr("Undo"), tr("Undo the last line drawing"), tr("Redo"),
-                       tr("Redo the last line drawing"), [action](int linkIndex)-> void {
+    createCommandsLine(container, "a_commands2", tr("Undo"), tr("Undo the last line drawing"), tr("Redo"), tr("Redo the last line drawing"),
+                       [action](int linkIndex)-> void {
                            if (linkIndex == 0) {
                                action->undo();
                            }

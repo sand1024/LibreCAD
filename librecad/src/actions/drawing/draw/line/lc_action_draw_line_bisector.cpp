@@ -276,22 +276,22 @@ QStringList LC_ActionDrawLineBisector::getAvailableCommands() {
     return cmd;
 }
 
-void LC_ActionDrawLineBisector::updateMouseButtonHints() {
+void LC_ActionDrawLineBisector::updateActionPrompt() {
     switch (getStatus()) {
         case SetLine1:
-            updateMouseWidgetTRCancel(tr("Select first line"));
+            updatePromptTRCancel(tr("Select first line"));
             break;
         case SetLine2:
-            updateMouseWidgetTRBack(tr("Select second line"));
+            updatePromptTRBack(tr("Select second line"));
             break;
         case SetLength:
-            updateMouseWidgetTRBack(tr("Enter bisector length:"));
+            updatePromptTRBack(tr("Enter bisector length:"));
             break;
         case SetNumber:
-            updateMouseWidgetTRBack(tr("Enter number of bisectors:"));
+            updatePromptTRBack(tr("Enter number of bisectors:"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

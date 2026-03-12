@@ -28,9 +28,8 @@
 #include "lc_action_draw_line.h"
 
 #include "lc_line_options_filler.h"
-#include "qg_graphicview.h"
 #include "lc_line_options_widget.h"
-#include "rs_actioneditundo.h"
+#include "qg_graphicview.h"
 #include "rs_debug.h"
 #include "rs_line.h"
 
@@ -169,7 +168,7 @@ void LC_ActionDrawLine::onCoordinateEvent(const int status, [[maybe_unused]] boo
             addHistory( HA_SetStartpoint, getRelativeZero(), coord, m_actionData->startOffset);
             setStatus(SetEndpoint);
             moveRelativeZero(coord);
-            updateMouseButtonHints();
+            updateActionPrompt();
             updateOptions();
             break;
         }
@@ -182,7 +181,7 @@ void LC_ActionDrawLine::onCoordinateEvent(const int status, [[maybe_unused]] boo
                 trigger();
                 m_actionData->data.startpoint = m_actionData->data.endpoint;
                 if (m_actionData->history.size() >= 2) {
-                    updateMouseButtonHints();
+                    updateActionPrompt();
                     updateOptions();
                 }
             }
@@ -203,7 +202,7 @@ bool LC_ActionDrawLine::doProcessCommand(const int status, const QString &comman
     if (checkCommand( "redo", command)) {
         redo();
         accept = true;
-        updateMouseButtonHints();
+        updateActionPrompt();
     }
     else {
         switch (status) {
@@ -212,11 +211,11 @@ bool LC_ActionDrawLine::doProcessCommand(const int status, const QString &comman
             case SetEndpoint: {
                 if (checkCommand("close", command)) {
                     close();
-                    updateMouseButtonHints();
+                    updateActionPrompt();
                     accept = true;
                 } else if (checkCommand("undo", command)) {
                     undo();
-                    updateMouseButtonHints();
+                    updateActionPrompt();
                     accept = true;
                 }
                 break;
@@ -254,10 +253,10 @@ QStringList LC_ActionDrawLine::getAvailableCommands(){
     return cmd;
 }
 
-void LC_ActionDrawLine::updateMouseButtonHints(){
+void LC_ActionDrawLine::updateActionPrompt(){
     switch (getStatus()) {
         case SetStartpoint:
-            updateMouseWidgetTRCancel(tr("Specify first point"), MOD_SHIFT_RELATIVE_ZERO);
+            updatePromptTRCancel(tr("Specify first point"), MOD_SHIFT_RELATIVE_ZERO);
             break;
         case SetEndpoint: {
             QString msg = "";
@@ -279,14 +278,14 @@ void LC_ActionDrawLine::updateMouseButtonHints(){
             }
 
             if (m_actionData->historyIndex >= 1) {
-                updateMouseWidgetTRBack(tr("Specify next point or [%1]").arg(msg), MOD_SHIFT_ANGLE_SNAP);
+                updatePromptTRBack(tr("Specify next point or [%1]").arg(msg), MOD_SHIFT_ANGLE_SNAP);
             } else {
-                updateMouseWidgetTRBack(tr("Specify next point"), MOD_SHIFT_ANGLE_SNAP);
+                updatePromptTRBack(tr("Specify next point"), MOD_SHIFT_ANGLE_SNAP);
             }
             break;
         }
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

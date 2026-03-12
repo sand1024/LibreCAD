@@ -71,7 +71,10 @@ void LC_PropertiesProviderDocument::fillDocumentProperties(LC_PropertyContainer*
         fillGraphicProperties(container, graphic);
     }
     m_providerGraphicWorkspace->fillDocumentProperties(container);
-    m_providerRenderOptions->fillDocumentProperties(container);
+    const bool isPrintPreview = m_actionContext->getGraphicView()->isPrintPreview();
+    if (!isPrintPreview) {
+        m_providerRenderOptions->fillDocumentProperties(container);
+    }
 }
 
 LC_PropertyContainer*  LC_PropertiesProviderDocument::createToolOptionsSection(LC_PropertyContainer* container) const{
@@ -88,7 +91,10 @@ void LC_PropertiesProviderDocument::fillDocumentPropertiesForToolOptions(LC_Prop
     if (document == nullptr) {
         return;
     }
-    m_providerActivePen->fillDocumentProperties(container);
+    const bool isPrintPreview = m_actionContext->getGraphicView()->isPrintPreview();
+    if (!isPrintPreview) {
+        m_providerActivePen->fillDocumentProperties(container);
+    }
     const auto rtti = document->rtti();
     if (rtti == RS2::EntityBlock) {
         const auto block = static_cast<RS_Block*>(document);
@@ -98,11 +104,16 @@ void LC_PropertiesProviderDocument::fillDocumentPropertiesForToolOptions(LC_Prop
         const auto graphic = static_cast<RS_Graphic*>(document);
         m_providerGraphicLayer->fillDocumentProperties(container, graphic);
         m_providerGraphicViews->fillDocumentProperties(container, graphic);
-        m_providerGraphicUcs->fillDocumentProperties(container, graphic);
-        m_providerGraphicGrid->fillDocumentProperties(container, graphic);
+        if (!isPrintPreview) {
+            // m_providerGraphicPaper->fillDocumentProperties(container, graphic);
+            m_providerGraphicUcs->fillDocumentProperties(container, graphic);
+            m_providerGraphicGrid->fillDocumentProperties(container, graphic);
+        }
     }
     m_providerGraphicWorkspace->fillDocumentProperties(container);
-    m_providerRenderOptions->fillDocumentProperties(container);
+    if (!isPrintPreview) {
+        m_providerRenderOptions->fillDocumentProperties(container);
+    }
 }
 
 void LC_PropertiesProviderDocument::fillBlockProperties(LC_PropertyContainer* container, RS_Block* block) const {
@@ -111,10 +122,16 @@ void LC_PropertiesProviderDocument::fillBlockProperties(LC_PropertyContainer* co
 }
 
 void LC_PropertiesProviderDocument::fillGraphicProperties(LC_PropertyContainer* container, RS_Graphic* graphic) const {
+    const bool isPrintPreview = m_actionContext->getGraphicView()->isPrintPreview();
     m_providerGraphicLayer->fillDocumentProperties(container, graphic);
     m_providerGraphicViews->fillDocumentProperties(container, graphic);
-    m_providerGraphicUcs->fillDocumentProperties(container, graphic);
-    m_providerGraphicGrid->fillDocumentProperties(container, graphic);
+    if (!isPrintPreview) {
+        m_providerGraphicUcs->fillDocumentProperties(container, graphic);
+        m_providerGraphicGrid->fillDocumentProperties(container, graphic);
+    }
     m_providerGraphicUnits->fillDocumentProperties(container, graphic);
-    m_providerGraphicPaper->fillDocumentProperties(container, graphic);
+
+    if (!isPrintPreview) {
+        m_providerGraphicPaper->fillDocumentProperties(container, graphic);
+    }
 }

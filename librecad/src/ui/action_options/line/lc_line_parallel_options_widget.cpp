@@ -34,8 +34,7 @@
  *  Constructs a QG_LineParallelOptions as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-LC_LineParallelOptionsWidget::LC_LineParallelOptionsWidget(const RS2::ActionType actionType)
-    : LC_ActionOptionsWidgetBase(actionType, "Draw", "LineParallel"), ui(new Ui::LC_LineParallelOptionsWidget{}) {
+LC_LineParallelOptionsWidget::LC_LineParallelOptionsWidget(const RS2::ActionType actionType):ui(new Ui::LC_LineParallelOptionsWidget{}) {
     ui->setupUi(this);
     connect(ui->leDist, &QLineEdit::editingFinished, this, &LC_LineParallelOptionsWidget::onDistEditingFinished);
     connect(ui->sbNumber, &QSpinBox::valueChanged, this, &LC_LineParallelOptionsWidget::onNumberValueChanged);
@@ -56,12 +55,7 @@ void LC_LineParallelOptionsWidget::languageChange() {
     ui->retranslateUi(this);
 }
 
-bool LC_LineParallelOptionsWidget::checkActionRttiValid(const RS2::ActionType actionType) {
-    return actionType == RS2::ActionDrawLineParallel || actionType == RS2::ActionDrawCircleParallel || actionType ==
-        RS2::ActionDrawArcParallel;
-}
-
-void LC_LineParallelOptionsWidget::doSetAction(RS_ActionInterface* a) {
+void LC_LineParallelOptionsWidget::doUpdateByAction(RS_ActionInterface* a) {
     m_action = static_cast<LC_ActionDrawLineParallel*>(a);
 
     const QString distance = fromDouble(m_action->getDistance());

@@ -58,7 +58,7 @@ protected:
     void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &coord) override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     void preparePreview(const RS_Vector& mouse, bool rebuild) const;
     RS_Entity* doTriggerCreateEntity() override;
     void doTriggerCompletion(bool success) override;

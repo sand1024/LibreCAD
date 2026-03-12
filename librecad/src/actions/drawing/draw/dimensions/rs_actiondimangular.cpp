@@ -210,22 +210,22 @@ QStringList RS_ActionDimAngular::getAvailableCommands(){
 }
 
 // REVIEW - PROBABLY THERE SHOULD BE BACK INSTEAD OF CANCEL
-void RS_ActionDimAngular::updateMouseButtonHints(){
+void RS_ActionDimAngular::updateActionPrompt(){
     switch (getStatus()) {
         case SetLine1:
-            updateMouseWidgetTRCancel(tr("Select first line"));
+            updatePromptTRCancel(tr("Select first line"));
             break;
         case SetLine2:
-            updateMouseWidgetTRCancel(tr("Select second line"));
+            updatePromptTRCancel(tr("Select second line"));
             break;
         case SetPos:
-            updateMouseWidgetTRCancel(tr("Specify dimension arc line location"), MOD_SHIFT_FREE_SNAP);
+            updatePromptTRCancel(tr("Specify dimension arc line location"), MOD_SHIFT_FREE_SNAP);
             break;
         case SetText:
-            updateMouseWidget(tr("Enter dimension text:"));
+            updatePrompt(tr("Enter dimension text:"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

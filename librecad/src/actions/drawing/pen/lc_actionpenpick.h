@@ -53,6 +53,6 @@ protected:
     void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void pickPen(const RS_Entity* en);
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
 };
 #endif

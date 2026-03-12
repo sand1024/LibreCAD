@@ -168,8 +168,8 @@ void LC_ActionInfoProperties::clearQuickInfoWidget(){
     updateQuickInfoWidget(nullptr);
 }
 
-void LC_ActionInfoProperties::updateMouseButtonHints(){
-    updateMouseWidgetTRCancel(tr("Select entity"), MOD_CTRL(tr("Select child entities")));
+void LC_ActionInfoProperties::updateActionPrompt(){
+    updatePromptTRCancel(tr("Select entity"), MOD_CTRL(tr("Select child entities")));
 }
 
 RS2::CursorType LC_ActionInfoProperties::doGetMouseCursor([[maybe_unused]]int status) {

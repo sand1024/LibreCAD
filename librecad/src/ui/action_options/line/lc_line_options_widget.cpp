@@ -32,8 +32,7 @@
  *  Constructs a QG_LineOptions as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-LC_LineOptionsWidget::LC_LineOptionsWidget()
-    : LC_ActionOptionsWidgetBase(RS2::ActionDrawLine, "", ""), ui(new Ui::LC_LineOptionsWidget{}) {
+LC_LineOptionsWidget::LC_LineOptionsWidget():ui(new Ui::LC_LineOptionsWidget{}) {
     ui->setupUi(this);
 }
 
@@ -51,7 +50,7 @@ void LC_LineOptionsWidget::languageChange() {
 }
 
 
-void LC_LineOptionsWidget::doSetAction(RS_ActionInterface* a) {
+void LC_LineOptionsWidget::doUpdateByAction(RS_ActionInterface* a) {
     m_action = dynamic_cast<LC_ActionDrawLine*>(a);
     enableButtons();
 }

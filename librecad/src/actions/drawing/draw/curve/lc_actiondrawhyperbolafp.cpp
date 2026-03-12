@@ -1,4 +1,3 @@
-// lc_ActionDrawHyperbolaFP.cpp
 /*******************************************************************************
  *
  This file is part of the LibreCAD project, a 2D CAD program
@@ -30,7 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "qg_graphicview.h"
 
 LC_ActionDrawHyperbolaFP::LC_ActionDrawHyperbolaFP(LC_ActionContext* actionContext)
-    : LC_SingleEntityCreationAction("Draw Hyperbola by Foci and Two Points", actionContext, RS2::ActionDrawHyperbolaFP) {
+    : LC_SingleEntityCreationAction("ActionDrawHyperbolaFoci2Points", actionContext, RS2::ActionDrawHyperbolaFoci2Points) {
     LC_ActionDrawHyperbolaFP::reset();
 }
 
@@ -258,26 +257,26 @@ void LC_ActionDrawHyperbolaFP::onCoordinateEvent(const int status, [[maybe_unuse
             break;
     }
 
-    updateMouseButtonHints();
+    updateActionPrompt();
     m_graphicView->redraw(RS2::RedrawOverlay);
 }
 
-void LC_ActionDrawHyperbolaFP::updateMouseButtonHints() {
+void LC_ActionDrawHyperbolaFP::updateActionPrompt() {
     switch (getStatus()) {
         case SetFocus1:
-            updateMouseWidgetTRCancel(tr("Specify first focus"), MOD_SHIFT_RELATIVE_ZERO);
+            updatePromptTRCancel(tr("Specify first focus"), MOD_SHIFT_RELATIVE_ZERO);
             break;
         case SetFocus2:
-            updateMouseWidgetTRCancel(tr("Specify second focus"), MOD_SHIFT_ANGLE_SNAP);
+            updatePromptTRCancel(tr("Specify second focus"), MOD_SHIFT_ANGLE_SNAP);
             break;
         case SetStartPoint:
-            updateMouseWidgetTRCancel(tr("Specify start point on branch"));
+            updatePromptTRCancel(tr("Specify start point on branch"));
             break;
         case SetEndPoint:
-            updateMouseWidgetTRCancel(tr("Specify end point on branch"));
+            updatePromptTRCancel(tr("Specify end point on branch"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

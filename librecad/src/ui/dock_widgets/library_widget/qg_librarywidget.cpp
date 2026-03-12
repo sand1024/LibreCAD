@@ -46,7 +46,7 @@
 #include "lc_printviewportrenderer.h"
 #include "qg_actionhandler.h"
 #include "rs_actioninterface.h"
-#include "rs_actionlibraryinsert.h"
+#include "lc_action_block_library_insert.h"
 #include "rs_debug.h"
 #include "rs_graphic.h"
 #include "rs_painter.h"
@@ -149,7 +149,7 @@ void QG_LibraryWidget::insert() {
         if (m_actionHandler) {
             const std::shared_ptr<RS_ActionInterface> a = m_actionHandler->setCurrentAction(RS2::ActionLibraryInsert);
             if (a) {
-                const auto* action = static_cast<RS_ActionLibraryInsert*>(a.get());
+                const auto* action = static_cast<LC_ActionBlockLibraryInsert*>(a.get());
                 action->setFile(std::move(dxfPath));
             }
             else {

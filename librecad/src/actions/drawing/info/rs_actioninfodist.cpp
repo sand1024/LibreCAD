@@ -151,16 +151,16 @@ void RS_ActionInfoDist::onCoordinateEvent(const int status, [[maybe_unused]]bool
     }
 }
 
-void RS_ActionInfoDist::updateMouseButtonHints(){
+void RS_ActionInfoDist::updateActionPrompt(){
     switch (getStatus()) {
         case SetPoint1:
-            updateMouseWidgetTRCancel(tr("Specify first point of distance"), MOD_SHIFT_RELATIVE_ZERO);
+            updatePromptTRCancel(tr("Specify first point of distance"), MOD_SHIFT_RELATIVE_ZERO);
             break;
         case SetPoint2:
-            updateMouseWidgetTRBack(tr("Specify second point of distance"), MOD_SHIFT_AND_CTRL_ANGLE(tr("Don't move relative zero")));
+            updatePromptTRBack(tr("Specify second point of distance"), MOD_SHIFT_AND_CTRL_ANGLE(tr("Don't move relative zero")));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

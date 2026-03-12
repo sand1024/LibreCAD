@@ -38,7 +38,7 @@ public:
 protected:
     const QList<RS2::EntityType> m_catchForSelectionEntityTypes;
 
-    RS_ActionSelectBase(const char *name,LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone, QList<RS2::EntityType> entityTypeList = {});
+    RS_ActionSelectBase(const QString& name,LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone, QList<RS2::EntityType> entityTypeList = {});
     RS2::CursorType doGetMouseCursor(int status) override;
     virtual bool isEntityAllowedToSelect([[maybe_unused]]RS_Entity *ent) const { return true; }
     bool selectEntity(RS_Entity* entityToSelect, bool selectContour) const;

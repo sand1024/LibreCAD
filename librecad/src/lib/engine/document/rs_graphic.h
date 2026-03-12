@@ -29,6 +29,7 @@
 
 #include "lc_dimstyle.h"
 #include "lc_dimstyleslist.h"
+#include "lc_plot_settings.h"
 #include "lc_textstylelist.h"
 #include "lc_ucslist.h"
 #include "lc_viewslist.h"
@@ -45,48 +46,7 @@ class QString;
 class LC_View;
 class QG_LayerWidget;
 
-struct LC_MarginsRect {
-    double left {0.0};
-    double top {0.0};
-    double bottom {0.0};
-    double right {0.0};
 
-    bool operator == (const LC_MarginsRect& v) const {
-        return (left == v.left) && (top == v.top) && (bottom == v.bottom) && (right == v.right);
-    }
-
-    double getLeft() const {
-        return left;
-    }
-
-    void setLeft(const double v) {
-        left = v;
-    }
-
-    double getTop() const {
-        return top;
-    }
-
-    void setTop(const double v) {
-        top = v;
-    }
-
-    double getBottom() const {
-        return bottom;
-    }
-
-    void setBottom(const double v) {
-        bottom = v;
-    }
-
-    double getRight() const {
-        return right;
-    }
-
-    void setRight(const double v) {
-        right = v;
-    }
-};
 
 
 /**
@@ -216,18 +176,8 @@ public:
     int getAnglePrecision() const;
     void addAnglePrecision(int value);
 
-    RS_Vector getPaperSize() const;
-    void setPaperSize(const RS_Vector& s);
-    RS_Vector getPrintAreaSize(bool total=true) const;
-
     RS_Vector getPaperInsertionBase() const;
     void setPaperInsertionBase(const RS_Vector& p);
-
-    RS2::PaperFormat getPaperFormat(bool* landscape) const;
-    void setPaperFormat(RS2::PaperFormat f, bool landscape);
-
-    double getPaperScale() const;
-    void setPaperScale(double s);
 
     void setUnit(RS2::Unit u);
     RS2::Unit getUnit() const;
@@ -242,7 +192,7 @@ public:
     void setIsoView(RS2::IsoGridViewType viewType);
     void centerToPage();
     bool fitToPage();
-    bool isBiggerThanPaper() const;
+
     /**
      * @retval true The document has been modified since it was last saved.
      * @retval false The document has not been modified since it was last saved.
@@ -257,54 +207,8 @@ public:
     QDateTime getLastSaveTime(){return m_lastSaveTime;}
     void setLastSaveTime(const QDateTime &time) { m_lastSaveTime = time;}
 
-    //if set to true, will refuse to modify paper scale
-    void setPaperScaleFixed(const bool fixed){m_paperScaleFixed=fixed;}
-    bool getPaperScaleFixed() const{return m_paperScaleFixed;}
+    LC_PlotSettings* getPlotSettings() const;
 
-    /**
-     * Paper margins in millimeters
-     */
-    void setMargins(const double left, const double top, const double right, const double bottom){
-        if (left >= 0.0) {
-            m_marginLeft = left;
-        }
-        if (top >= 0.0) {
-            m_marginTop = top;
-        }
-        if (right >= 0.0) {
-            m_marginRight = right;
-        }
-        if (bottom >= 0.0) {
-            m_marginBottom = bottom;
-        }
-    }
-
-    void setMargins(const LC_MarginsRect& margins) {
-        setMargins(margins.left, margins.top, margins.right, margins.bottom);
-    }
-
-    double getMarginLeft() const{return m_marginLeft;}
-    double getMarginTop() const{return m_marginTop;}
-    double getMarginRight() const{ return m_marginRight;}
-    double getMarginBottom() const{return m_marginBottom;}
-
-    /**
-     * Paper margins in graphic units
-     */
-    void setMarginsInUnits(double left, double top, double right, double bottom);
-    void setMarginsInUnits(const LC_MarginsRect& margins);
-    LC_MarginsRect getMarginsInUnits() const;
-    double getMarginLeftInUnits() const;
-    double getMarginTopInUnits() const;
-    double getMarginRightInUnits() const;
-    double getMarginBottomInUnits() const;
-    /**
-     * Number of pages drawing occupies
-     */
-    void setPagesNum(int horiz, int vert);
-    void setPagesNum(const QString &horizXvert);
-    int getPagesNumHoriz() const {return m_pagesNumH;}
-    int getPagesNumVert() const {return m_pagesNumV;}
     friend std::ostream& operator << (std::ostream& os, RS_Graphic& g);
     int clean();
     LC_View *findNamedView(const QString& viewName) const {return m_namedViewsList.find(viewName);}
@@ -371,28 +275,16 @@ private:
     LC_DimStylesList m_dimstyleList;
     LC_TextStyleList m_textStyleList;
 
-    //if set to true, will refuse to modify paper scale
-    bool m_paperScaleFixed = false;
-
     /** Format type */
     RS2::FormatType m_formatType = RS2::FormatUnknown;
-
-    // Paper margins in millimeters
-    double m_marginLeft = 0.;
-    double m_marginTop = 0.;
-    double m_marginRight = 0.;
-    double m_marginBottom = 0.;
-
-    // Number of pages drawing occupies
-    int m_pagesNumH = 1;
-    int m_pagesNumV = 1;
 
     /** File name of the document or empty for a new document. */
     QString m_filename;
     /** Auto-save file name of document. */
     QString m_autosaveFilename;
 
-
     bool m_anglesCounterClockWize;
+
+    std::unique_ptr<LC_PlotSettings> m_plotSettings;
 };
 #endif

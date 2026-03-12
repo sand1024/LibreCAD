@@ -31,7 +31,7 @@ public:
     void init(int status) override;
     void drawSnapper() override;
 protected:
-    LC_ActionPreSelectionAwareBase(const char *name, LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone,
+    LC_ActionPreSelectionAwareBase(const QString &name, LC_ActionContext *actionContext, RS2::ActionType actionType = RS2::ActionNone,
         const QList<RS2::EntityType> &entityTypeList = {});
     ~LC_ActionPreSelectionAwareBase() override;
 
@@ -70,7 +70,7 @@ protected:
     virtual RS2::CursorType doGetMouseCursorSelected(int status);
     unsigned int collectSelectedEntities();
     void setSelectionComplete(bool allowEmptySelection, bool fromInit);
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     void doSelectEntity(RS_Entity *entityToSelect, bool selectContour) const override;
     void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
 };

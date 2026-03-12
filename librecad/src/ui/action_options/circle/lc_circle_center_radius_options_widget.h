@@ -26,7 +26,7 @@
 #ifndef QG_CIRCLEOPTIONS_H
 #define QG_CIRCLEOPTIONS_H
 
-#include "lc_action_options_widget_base.h"
+#include "lc_action_options_widget.h"
 
 class RS_ActionInterface;
 class LC_ActionDrawCircleCenterRadius;
@@ -34,7 +34,7 @@ namespace Ui {
     class LC_CircleCenterRadiusOptionsWidget;
 }
 
-class LC_CircleCenterRadiusOptionsWidget : public LC_ActionOptionsWidgetBase{
+class LC_CircleCenterRadiusOptionsWidget : public LC_ActionOptionsWidget{
     Q_OBJECT
 public:
     LC_CircleCenterRadiusOptionsWidget();
@@ -43,8 +43,7 @@ public slots:
     void languageChange() override;
     void onRadiusEditingFinished();
 protected:
-    void doSetAction(RS_ActionInterface *a) override;
-    bool checkActionRttiValid(RS2::ActionType actionType) override;
+    void doUpdateByAction(RS_ActionInterface *a) override;
     LC_ActionDrawCircleCenterRadius* m_action = nullptr;
     std::unique_ptr<Ui::LC_CircleCenterRadiusOptionsWidget> ui;
 };

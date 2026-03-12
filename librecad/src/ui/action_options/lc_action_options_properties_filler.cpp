@@ -27,132 +27,119 @@
 #include "lc_property_action.h"
 #include "lc_property_action_link_view.h"
 #include "lc_property_container.h"
+#include "lc_property_double_interactivepick_view.h"
 #include "lc_property_enum.h"
+#include "lc_property_enum_combobox_view.h"
 #include "lc_property_int.h"
 #include "lc_property_int_spinbox_view.h"
 #include "lc_property_qstring.h"
 #include "lc_property_qstring_lineedit_view.h"
+#include "lc_property_rsvector_view.h"
 #include "lc_propertysheetwidget.h"
 #include "rs_actioninterface.h"
 
 class LC_EnumDescriptor;
 
-void LC_ActionOptionsPropertiesFiller::preSetupByAction(RS_ActionInterface* a) {
-    m_actionContext = a->getActionContext();
-}
-
 void LC_ActionOptionsPropertiesFiller::hideOptions() {
     // saveSettings();
 }
 
-void LC_ActionOptionsPropertiesFiller::doSetAction(RS_ActionInterface* a) {
-    m_action = a;
+template <typename T,typename TProperty>
+void LC_ActionOptionsPropertiesFiller::setupViewDescriptor(const typename LC_PropertyValueDelegated<T>::FunValueSetShort& funSet, const FunPepareDescriptor& funFillViewAttrs, TProperty* property,
+                                                           const QByteArray& viewName) {
+    bool readonly = false;
+    if (funFillViewAttrs != nullptr) {
+        LC_PropertyViewDescriptor descriptor;
+        descriptor.viewName = viewName;
+        readonly = funFillViewAttrs(descriptor);
+        property->setViewDescriptor(descriptor);
+    }
+    if (readonly || funSet == nullptr) {
+        property->setReadOnly();
+    }
 }
 
 void LC_ActionOptionsPropertiesFiller::addBoolean(const LC_Property::Names& names,
-                                                  typename LC_PropertyValueDelegated<bool>::FunValueGet funGet,
-                                                  typename LC_PropertyValueDelegated<bool>::FunValueSetShort funSet,
-                                                  LC_PropertyContainer* cont, const QString& viewName,
-                                                  std::function<bool(LC_PropertyViewDescriptor& descriptor)> funPrepareDescriptor) {
+                                                  const typename LC_PropertyValueDelegated<bool>::FunValueGet& funGet,
+                                                  const typename LC_PropertyValueDelegated<bool>::FunValueSetShort& funSet,
+                                                  LC_PropertyContainer* cont,
+                                                  const FunPepareDescriptor& funFillViewAttrs) {
     auto property = new LC_PropertyBool(cont, false);
     property->setNames(names);
-    LC_PropertyViewDescriptor descriptor(viewName.toLatin1());
-    bool readOnly = false;
-    if (funPrepareDescriptor != nullptr) {
-        readOnly = funPrepareDescriptor(descriptor);
-    }
-    property->setViewDescriptor(descriptor);
     createDelegatedStorage<bool>(property, funGet, funSet);
-    if (funSet == nullptr || readOnly) {
-        property->setReadOnly();
-    }
+    setupViewDescriptor<double>(funSet, funFillViewAttrs, property, LC_PropertyBoolCheckBoxView::VIEW_NAME);
     cont->addChildProperty(property);
 }
 
 void LC_ActionOptionsPropertiesFiller::addDouble(const LC_Property::Names& names,
-                                                 typename LC_PropertyValueDelegated<double>::FunValueGet funGet,
-                                                 typename LC_PropertyValueDelegated<double>::FunValueSetShort funSet,
+                                                 const typename LC_PropertyValueDelegated<double>::FunValueGet& funGet,
+                                                 const typename LC_PropertyValueDelegated<double>::FunValueSetShort& funSet,
                                                  LC_PropertyContainer* cont,
-                                                 std::function<bool(LC_PropertyViewDescriptor&)> funFillViewAttrs) {
+                                                 const FunPepareDescriptor& funFillViewAttrs) {
     auto property = createDoubleProperty(names, cont, LC_ActionContext::InteractiveInputInfo::InputType::NOTNEEDED, m_actionContext,
                                          m_widget);
-    bool readonly = false;
-    if (funFillViewAttrs != nullptr) {
-        LC_PropertyViewDescriptor descriptor;
-        readonly = funFillViewAttrs(descriptor);
-        property->setViewDescriptor(descriptor);
-    }
-
     createDelegatedStorage<double>(property, funGet, funSet);
-    if (readonly || funSet == nullptr) {
-        property->setReadOnly();
-    }
+    setupViewDescriptor<double>(funSet, funFillViewAttrs, property, LC_PropertyDoubleInteractivePickView::VIEW_NAME);
     cont->addChildProperty(property);
 }
 
 void LC_ActionOptionsPropertiesFiller::addLinearDistance(const LC_Property::Names& names,
-                                                         typename LC_PropertyValueDelegated<double>::FunValueGet funGet,
-                                                         typename LC_PropertyValueDelegated<double>::FunValueSetShort funSet,
+                                                         const typename LC_PropertyValueDelegated<double>::FunValueGet& funGet,
+                                                         const typename LC_PropertyValueDelegated<double>::FunValueSetShort& funSet,
                                                          LC_PropertyContainer* cont,
-                                                         std::function<bool(LC_PropertyViewDescriptor*)> funFillViewAttrs) {
+                                                         const  FunPepareDescriptor &funFillViewAttrs) {
     auto property = createDoubleProperty(names, cont, LC_ActionContext::InteractiveInputInfo::InputType::DISTANCE, m_actionContext,
                                          m_widget);
-    bool readonly = false;
-    if (funFillViewAttrs != nullptr) {
-        LC_PropertyViewDescriptor descriptor;
-        readonly = funFillViewAttrs(&descriptor);
-        property->setViewDescriptor(descriptor);
-    }
 
     createDelegatedStorage<double>(property, funGet, funSet);
-    if (readonly || funSet == nullptr) {
-        property->setReadOnly();
-    }
+    setupViewDescriptor<double>(funSet, funFillViewAttrs, property, LC_PropertyDoubleInteractivePickView::VIEW_NAME);
     cont->addChildProperty(property);
 }
 
 void LC_ActionOptionsPropertiesFiller::addRawAngle(const LC_Property::Names& names,
                                                    typename LC_PropertyValueDelegated<double>::FunValueGet funGet,
-                                                   typename LC_PropertyValueDelegated<double>::FunValueSetShort funSet,
-                                                   LC_PropertyContainer* cont) {
+                                                   const typename LC_PropertyValueDelegated<double>::FunValueSetShort& funSet,
+                                                   LC_PropertyContainer* cont,
+                                                   const  FunPepareDescriptor &funFillViewAttrs) {
     auto property = createDoubleProperty(names, cont, LC_ActionContext::InteractiveInputInfo::InputType::ANGLE, m_actionContext, m_widget);
 
     createDelegatedStorage<double>(property, funGet, funSet, [funGet](const double& v) -> bool {
         return LC_LineMath::isSameAngle(v, funGet());
     });
-    if (funSet == nullptr) {
-        property->setReadOnly();
-    }
+
+    setupViewDescriptor<double>(funSet, funFillViewAttrs, property, LC_PropertyDoubleInteractivePickView::VIEW_NAME);
     cont->addChildProperty(property);
 }
 
 void LC_ActionOptionsPropertiesFiller::addRawAngleDegrees(const LC_Property::Names& names,
-                                                   typename LC_PropertyValueDelegated<double>::FunValueGet funGet,
-                                                   typename LC_PropertyValueDelegated<double>::FunValueSetShort funSet,
-                                                   LC_PropertyContainer* cont) {
+                                                          typename LC_PropertyValueDelegated<double>::FunValueGet funGet,
+                                                          typename LC_PropertyValueDelegated<double>::FunValueSetShort funSet,
+                                                          LC_PropertyContainer* cont,
+                                                          const  FunPepareDescriptor &funFillViewAttrs) {
     auto property = createDoubleProperty(names, cont, LC_ActionContext::InteractiveInputInfo::InputType::ANGLE, m_actionContext, m_widget);
 
-    auto funGetValue = [funGet]()->double {
-      return RS_Math::deg2rad(funGet());
+    auto funGetValue = [funGet]()-> double {
+        return RS_Math::deg2rad(funGet());
     };
 
-    auto funSetValue = funSet == nullptr ? funSet : [funSet](double v) ->void {
-        funSet(RS_Math::rad2deg(v));
-    };
+    auto funSetValue = funSet == nullptr
+                           ? funSet
+                           : [funSet](double v) -> void {
+                               funSet(RS_Math::rad2deg(v));
+                           };
 
     createDelegatedStorage<double>(property, funGetValue, funSetValue, [funGet](const double& v) -> bool {
         return LC_LineMath::isSameAngle(v, funGet());
     });
-    if (funSet == nullptr) {
-        property->setReadOnly();
-    }
+    setupViewDescriptor<double>(funSet, funFillViewAttrs, property,LC_PropertyDoubleInteractivePickView::VIEW_NAME);
     cont->addChildProperty(property);
 }
 
 void LC_ActionOptionsPropertiesFiller::addWCSAngle(const LC_Property::Names& names,
                                                    typename LC_PropertyValueDelegated<double>::FunValueGet funGet,
                                                    typename LC_PropertyValueDelegated<double>::FunValueSetShort funSet,
-                                                   LC_PropertyContainer* cont) {
+                                                   LC_PropertyContainer* cont,
+                                                   const  FunPepareDescriptor &funFillViewAttrs) {
     auto property = createDoubleProperty(names, cont, LC_ActionContext::InteractiveInputInfo::InputType::ANGLE, m_actionContext, m_widget);
 
     auto funGetValue = [this, funGet]() -> double {
@@ -174,41 +161,31 @@ void LC_ActionOptionsPropertiesFiller::addWCSAngle(const LC_Property::Names& nam
         return LC_LineMath::isSameAngle(v, funGet());
     };
     createDelegatedStorage<double>(property, funGetValue, funSetValue, funValueEqual);
-    if (funSet == nullptr) {
-        property->setReadOnly();
-    }
+    setupViewDescriptor<double>(funSet, funFillViewAttrs, property, LC_PropertyDoubleInteractivePickView::VIEW_NAME);
     cont->addChildProperty(property);
 }
 
 void LC_ActionOptionsPropertiesFiller::addEnum(const LC_Property::Names& names, const LC_EnumDescriptor* enumDescriptor,
-                                               typename LC_PropertyValueDelegated<LC_PropertyEnumValueType>::FunValueGet funGetValue,
-                                               typename LC_PropertyValueDelegated<LC_PropertyEnumValueType>::FunValueSetShort funSetValue,
-                                               LC_PropertyContainer* container,
-                                               std::function<bool(LC_PropertyViewDescriptor& descriptor)> funPrepareDescriptor) {
+                                               const typename LC_PropertyValueDelegated<LC_PropertyEnumValueType>::FunValueGet& funGetValue,
+                                               const typename LC_PropertyValueDelegated<LC_PropertyEnumValueType>::FunValueSetShort&
+                                               funSetValue, LC_PropertyContainer* container,
+                                               const FunPepareDescriptor &funFillViewAttrs) {
     auto property = new LC_PropertyEnum(container, false);
     property->setNames(names);
     property->setEnumInfo(enumDescriptor);
 
     createDelegatedStorage<LC_PropertyEnumValueType>(property, funGetValue, funSetValue);
 
-    bool readonly = false;
-    if (funPrepareDescriptor != nullptr) {
-        LC_PropertyViewDescriptor descriptor;
-        readonly = funPrepareDescriptor(descriptor);
-        property->setViewDescriptor(descriptor);
-    }
-    if (readonly || funSetValue == nullptr) {
-        property->setReadOnly();
-    }
+    setupViewDescriptor<int>(funSetValue, funFillViewAttrs, property,LC_PropertyEnumComboBoxView::VIEW_NAME);
     container->addChildProperty(property);
 }
 
 void LC_ActionOptionsPropertiesFiller::addVector(const LC_Property::Names& names,
                                                  typename LC_PropertyValueDelegated<RS_Vector>::FunValueGet funGet,
                                                  typename LC_PropertyValueDelegated<RS_Vector>::FunValueSetShort funSet,
-                                                 LC_PropertyContainer* cont) {
+                                                 LC_PropertyContainer* cont,
+                                                 const  FunPepareDescriptor &funFillViewAttrs) {
     auto property = createVectorProperty(names, cont, m_actionContext, m_widget);
-
 
     auto funGetValue = [this, funGet]() -> RS_Vector {
         const RS_Vector wcsVector = funGet();
@@ -230,16 +207,15 @@ void LC_ActionOptionsPropertiesFiller::addVector(const LC_Property::Names& names
     };
 
     createDelegatedStorage<RS_Vector>(property, funGetValue, funSetValue, funValueEqual);
-    if (funSet == nullptr) {
-        property->setReadOnly();
-    }
+    setupViewDescriptor<RS_Vector>(funSetValue, funFillViewAttrs, property, LC_PropertyRSVectorView::VIEW_NAME);
     cont->addChildProperty(property);
 }
 
 void LC_ActionOptionsPropertiesFiller::addIntSpinbox(const LC_Property::Names& names,
-                                                     typename LC_PropertyValueDelegated<int>::FunValueGet funGet,
-                                                     typename LC_PropertyValueDelegated<int>::FunValueSetShort funSet,
-                                                     LC_PropertyContainer* container, int minVal, int maxVal) {
+                                                     const typename LC_PropertyValueDelegated<int>::FunValueGet& funGet,
+                                                     const typename LC_PropertyValueDelegated<int>::FunValueSetShort& funSet,
+                                                     LC_PropertyContainer* container,
+                                                     int minVal, int maxVal, const  FunPepareDescriptor &funFillViewAttrs) {
     auto* property = new LC_PropertyInt(container, false);
     property->setNames(names);
 
@@ -253,17 +229,15 @@ void LC_ActionOptionsPropertiesFiller::addIntSpinbox(const LC_Property::Names& n
 
     createDelegatedStorage<LC_PropertyEnumValueType>(property, funGet, funSet);
 
-    if (funSet == nullptr) {
-        property->setReadOnly();
-    }
+    setupViewDescriptor<int>(funSet, funFillViewAttrs, property, LC_PropertyIntSpinBoxView::VIEW_NAME);
     container->addChildProperty(property);
 }
 
 void LC_ActionOptionsPropertiesFiller::addString(const LC_Property::Names& names,
-                                                 typename LC_PropertyValueDelegated<QString>::FunValueGet funGet,
-                                                 typename LC_PropertyValueDelegated<QString>::FunValueSetShort funSet,
+                                                 const typename LC_PropertyValueDelegated<QString>::FunValueGet& funGet,
+                                                 const typename LC_PropertyValueDelegated<QString>::FunValueSetShort& funSet,
                                                  LC_PropertyContainer* container, bool multiLine,
-                                                 std::function<bool(LC_PropertyViewDescriptor&)> funPrepareDescriptor) {
+                                                 const FunPepareDescriptor &funFillViewAttrs) {
     auto property = new LC_PropertyQString(container, false);
     property->setNames(names);
     LC_PropertyViewDescriptor viewDescriptor;
@@ -274,8 +248,8 @@ void LC_ActionOptionsPropertiesFiller::addString(const LC_Property::Names& names
     createDelegatedStorage<QString>(property, funGet, funSet);
 
     bool readonly = false;
-    if (funPrepareDescriptor != nullptr) {
-        readonly = funPrepareDescriptor(viewDescriptor);
+    if (funFillViewAttrs != nullptr) {
+        readonly = funFillViewAttrs(viewDescriptor);
     }
     if (readonly || funSet == nullptr) {
         property->setReadOnly();
@@ -283,12 +257,11 @@ void LC_ActionOptionsPropertiesFiller::addString(const LC_Property::Names& names
     container->addChildProperty(property);
 }
 
-   void LC_ActionOptionsPropertiesFiller::createCommandsLine(LC_PropertyContainer* container, const QString& propertyName, const QString& linkTitle,
-                                                     const QString& linkTooltip, const QString& linkTitleRight,
-                                                     const QString& linkTooltipRight,
-                                                     const std::function<void(int linkIndex)> &clickHandler,
-                                                     const QString &commonDescription,
-                                                     bool leftEnabled, bool rightEnabled) {
+void LC_ActionOptionsPropertiesFiller::createCommandsLine(LC_PropertyContainer* container, const QString& propertyName,
+                                                          const QString& linkTitle, const QString& linkTooltip,
+                                                          const QString& linkTitleRight, const QString& linkTooltipRight,
+                                                          const std::function<void(int linkIndex)>& clickHandler,
+                                                          const QString& commonDescription, bool leftEnabled, bool rightEnabled) {
     auto* property = new LC_PropertyAction(container, true);
     property->setName(propertyName);
     property->setDisplayName("");
@@ -302,7 +275,7 @@ void LC_ActionOptionsPropertiesFiller::addString(const LC_Property::Names& names
         viewDescriptor[LC_PropertyActionLinkView::ATTR_ENABLED_RIGHT] = rightEnabled;
     }
 
-    property->setClickHandler([clickHandler](const LC_PropertyAction*, int linkIndex)  {
+    property->setClickHandler([clickHandler](const LC_PropertyAction*, int linkIndex) {
         QTimer::singleShot(10, [linkIndex, clickHandler] {
             clickHandler(linkIndex);
         });
@@ -310,4 +283,12 @@ void LC_ActionOptionsPropertiesFiller::addString(const LC_Property::Names& names
     property->setDescription(commonDescription);
     property->setViewDescriptor(viewDescriptor);
     container->addChildProperty(property);
+}
+
+void LC_ActionOptionsPropertiesFiller::doUpdateByAction(RS_ActionInterface* a) {
+    m_action = a;
+}
+
+void LC_ActionOptionsPropertiesFiller::preSetupByAction(RS_ActionInterface* a) {
+    m_actionContext = a->getActionContext();
 }

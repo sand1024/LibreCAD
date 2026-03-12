@@ -23,7 +23,7 @@
 #ifndef LC_LINEOPTIONS_H
 #define LC_LINEOPTIONS_H
 
-#include "lc_action_options_widget_base.h"
+#include "lc_action_options_widget.h"
 
 class LC_ActionDrawLineSnake;
 
@@ -31,7 +31,7 @@ namespace Ui {
     class LC_LineSnakeOptionsWidget;
 }
 
-class LC_LineSnakeOptionsWidget : public LC_ActionOptionsWidgetBase{
+class LC_LineSnakeOptionsWidget : public LC_ActionOptionsWidget{
     Q_OBJECT
 public:
     LC_LineSnakeOptionsWidget();
@@ -52,8 +52,7 @@ protected slots:
     void languageChange() override;
 protected:
     LC_ActionDrawLineSnake* m_action = nullptr;
-    void doSetAction(RS_ActionInterface *a) override;
-    bool checkActionRttiValid(RS2::ActionType actionType) override;
+    void doUpdateByAction(RS_ActionInterface *a) override;
 private:
     Ui::LC_LineSnakeOptionsWidget* ui;
     void setupAngleRelatedUI(bool value) const;

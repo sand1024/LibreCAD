@@ -53,7 +53,7 @@ public:
     virtual void requestSnapMiddleOptions([[maybe_unused]]int* middlePoints, [[maybe_unused]]bool on) {}
     virtual void hideSnapOptions() {}
 
-    virtual void updateMouseWidget([[maybe_unused]]const QString& left,
+    virtual void updateActionPrompt([[maybe_unused]]const QString& left,
                                   [[maybe_unused]]const QString& right,
                                   [[maybe_unused]]const LC_ModifiersInfo& modifiers){}
 
@@ -79,6 +79,7 @@ public:
     RS_Vector getContextMenuActionClickPosition() const;
     bool hasSelection() const;
     LC_GraphicViewport* getViewport() const {return m_graphicView == nullptr ? nullptr : m_graphicView->getViewPort();}
+    RS_Graphic* getGraphic(bool resolved = true) const  {return m_graphicView == nullptr ? nullptr : m_graphicView->getGraphic(true);};
     LC_Formatter * getFormatter() const;
 
     struct InteractiveInputInfo {

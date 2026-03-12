@@ -70,27 +70,27 @@ void LC_ActionLayerToggle::doWithLayer(RS_Graphic* graphic, RS_Layer* layer) {
 void LC_ActionLayerToggle::updateMouseButtonHintsForSelection() {
     switch (m_actionType) {
         case RS2::ActionLayerEntityActivate: {
-            updateMouseWidgetTRCancel("Select entity to activate layer");
+            updatePromptTRCancel("Select entity to activate layer");
             break;
         }
         case RS2::ActionLayerEntityToggleLock: {
-            updateMouseWidgetTRCancel("Select entity to toggle layer lock");
+            updatePromptTRCancel("Select entity to toggle layer lock");
             break;
         }
         case RS2::ActionLayerEntityHideOthers: {
-            updateMouseWidgetTRCancel("Select entity to hide other layers");
+            updatePromptTRCancel("Select entity to hide other layers");
             break;
         }
         case RS2::ActionLayerEntityToggleView: {
-            updateMouseWidgetTRCancel("Select entity to toggle layer visibility");
+            updatePromptTRCancel("Select entity to toggle layer visibility");
             break;
         }
         case RS2::ActionLayerEntityToggleConstruction: {
-            updateMouseWidgetTRCancel("Select entity to toggle layer print");
+            updatePromptTRCancel("Select entity to toggle layer print");
             break;
         }
         case RS2::ActionLayerEntityTogglePrint: {
-            updateMouseWidgetTRCancel("Select entity to toggle layer construction");
+            updatePromptTRCancel("Select entity to toggle layer construction");
             break;
         }
         default:

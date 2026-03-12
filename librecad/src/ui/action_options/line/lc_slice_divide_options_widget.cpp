@@ -52,10 +52,6 @@ LC_SliceDivideOptionsWidget::~LC_SliceDivideOptionsWidget() {
     delete ui;
 }
 
-bool LC_SliceDivideOptionsWidget::checkActionRttiValid(const RS2::ActionType actionType) {
-    return actionType == RS2::ActionDrawSliceDivideLine || actionType == RS2::ActionDrawSliceDivideCircle;
-}
-
 // just provide indication to the user that some options are not applicable for selected entity
 void LC_SliceDivideOptionsWidget::updateUI(const int mode, const QVariant* value) {
     switch (mode) {
@@ -76,7 +72,7 @@ void LC_SliceDivideOptionsWidget::updateUI(const int mode, const QVariant* value
     }
 }
 
-void LC_SliceDivideOptionsWidget::doSetAction(RS_ActionInterface* a) {
+void LC_SliceDivideOptionsWidget::doUpdateByAction(RS_ActionInterface* a) {
     m_action = static_cast<LC_ActionDrawSliceDivide*>(a);
 
     m_forCircle = a->rtti() == RS2::ActionDrawSliceDivideCircle;

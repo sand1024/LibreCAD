@@ -177,16 +177,16 @@ void LC_ActionPenApply::onMouseRightButtonRelease(const int status, [[maybe_unus
     redraw();
 }
 
-void LC_ActionPenApply::updateMouseButtonHints() {
+void LC_ActionPenApply::updateActionPrompt() {
     switch (getStatus()) {
         case SelectEntity:
-            updateMouseWidgetTRCancel(tr("Specify entity to pick the pen"));
+            updatePromptTRCancel(tr("Specify entity to pick the pen"));
             break;
         case ApplyToEntity:
-            updateMouseWidgetTRCancel(tr("Specify entity to apply pen"), m_copyMode ? MOD_SHIFT_LC(tr("Apply Resolved Pen")) : MOD_NONE);
+            updatePromptTRCancel(tr("Specify entity to apply pen"), m_copyMode ? MOD_SHIFT_LC(tr("Apply Resolved Pen")) : MOD_NONE);
             break;
         default:
-            RS_ActionInterface::updateMouseButtonHints();
+            RS_ActionInterface::updateActionPrompt();
             break;
     }
 }

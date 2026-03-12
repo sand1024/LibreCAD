@@ -35,22 +35,13 @@ void LC_LineAngleRelOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer
                    action->setLengthIsFree(val);
                }, container);
 
-    if (action->isLengthFree()) {
-        addLinearDistance({"a_length", tr("Length"), tr("Length of line")}, [action]() {
-            return action->getTickLength();
-        }, nullptr, container);
-    }
-    else {
-        addLinearDistance({"a_length", tr("Length"), tr("Length of line")}, [action]() {
-                              return action->getTickLength();
-                          }, [action](double val) {
-                              action->setTickLength(val);
-                          }, container);
-    }
-
-    /*if (action->isAngleRelative()) {
-
-    }*/
+    addLinearDistance({"a_length", tr("Length"), tr("Length of line")}, [action]() {
+                          return action->getTickLength();
+                      }, [action](double val) {
+                          action->setTickLength(val);
+                      }, container, [action](LC_PropertyViewDescriptor& d) -> bool {
+                          return action->isLengthFree();
+                      });
 
     if (!action->isFixedAngleActionMode()) {
         // fixme - should there be different angles (wcs and raw) for abs and relative cases?
@@ -60,7 +51,8 @@ void LC_LineAngleRelOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer
                         action->setTickAngleDegrees(RS_Math::rad2deg(val));
                     }, container);
 
-        addBoolean({"a_relAngle", tr("Relative angle"), tr("If checked, angle is relative to angle of selected entity")}, [action]()-> bool {
+        addBoolean({"a_relAngle", tr("Relative angle"), tr("If checked, angle is relative to angle of selected entity")},
+                   [action]()-> bool {
                        return action->isAngleRelative();
                    }, [action](bool val)-> void {
                        action->setAngleIsRelative(val);
@@ -88,41 +80,36 @@ void LC_LineAngleRelOptionsFiller::fillToolOptionsContainer(LC_PropertyContainer
             }, container);
 
     addLinearDistance({"a_snapDistance", tr("Snap Distance"), "Distance of intersection point from specified line snap point"}, [action]() {
-                           return action->getTickLength();
-                       }, [action](double val) {
-                           action->setTickLength(val);
-                       }, container);
+                          return action->getTickLength();
+                      }, [action](double val) {
+                          action->setTickLength(val);
+                      }, container);
 
     static LC_EnumDescriptor tickSnapTypeDescriptor = {
         "tickSnapTypeDescriptor",
         {
-                {LC_ActionDrawLineAngleRel::TICK_SNAP_START, tr("Start")},
-                {LC_ActionDrawLineAngleRel::TICK_SNAP_MIDDLE, tr("Middle")},
-                {LC_ActionDrawLineAngleRel::TICK_SNAP_END, tr("End")}
+            {LC_ActionDrawLineAngleRel::TICK_SNAP_START, tr("Start")},
+            {LC_ActionDrawLineAngleRel::TICK_SNAP_MIDDLE, tr("Middle")},
+            {LC_ActionDrawLineAngleRel::TICK_SNAP_END, tr("End")}
         }
     };
 
-    addEnum({
-                "a_lenType",
-                tr("Tick Snap"),
-                tr("Defines which part of created line will be snapped to intersection point")
-            }, &tickSnapTypeDescriptor, [action]() -> LC_PropertyEnumValueType {
+    addEnum({"a_lenType", tr("Tick Snap"), tr("Defines which part of created line will be snapped to intersection point")},
+            &tickSnapTypeDescriptor, [action]() -> LC_PropertyEnumValueType {
                 return action->getTickSnapMode();
             }, [action](const LC_PropertyEnumValueType& v)-> void {
                 action->setTickSnapMode(v);
             }, container);
 
     addLinearDistance({"a_offset", tr("Offset"), tr("Offset of tick snap point from intersection point")}, [action]() {
-                            return action->getTickOffset();
-                        }, [action](double val) {
-                            action->setTickOffset(val);
-                        }, container);
+                          return action->getTickOffset();
+                      }, [action](double val) {
+                          action->setTickOffset(val);
+                      }, container);
 
-    addBoolean({"a_divide", tr("Divide"), tr("If checked, original entity will be divided by intersection point.")},
-             [action]()-> bool {
-                 return action->isDivideLine();
-             }, [action](bool val)-> void {
-                 action->setDivideLine(val);
-             }, container);
-
+    addBoolean({"a_divide", tr("Divide"), tr("If checked, original entity will be divided by intersection point.")}, [action]()-> bool {
+                   return action->isDivideLine();
+               }, [action](bool val)-> void {
+                   action->setDivideLine(val);
+               }, container);
 }

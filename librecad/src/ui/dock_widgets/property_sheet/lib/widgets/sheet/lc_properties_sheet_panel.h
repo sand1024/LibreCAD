@@ -56,7 +56,7 @@ public:
     inline LC_PropertiesSheet* propertiesSheet() const;
     bool stopInplaceEdit(bool deleteLater = true, bool restoreParentFocus = true) override;
     void createDescriptionLabel(QSplitter* splitter);
-    signals  :
+signals  :
     void propertySetChanged();
 
 private:

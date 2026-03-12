@@ -142,14 +142,14 @@ void LC_ActionInteractivePickPosition::onCoordinateEvent(const int status, [[may
     }
 }
 
-void LC_ActionInteractivePickPosition::updateMouseButtonHints(){
+void LC_ActionInteractivePickPosition::updateActionPrompt(){
     switch (getStatus()) {
         case SetPoint:
-            updateMouseWidgetTRBack(tr("Pick coordinates from the drawing"),
+            updatePromptTRBack(tr("Pick coordinates from the drawing"),
                 MOD_SHIFT_AND_CTRL(tr("Pick relative zero coordinates"), m_viewport->hasUCS() ? "" : tr("Pick relative coordinates")));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

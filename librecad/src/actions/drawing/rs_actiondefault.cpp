@@ -985,10 +985,10 @@ QStringList RS_ActionDefault::getAvailableCommands(){
     return cmd;
 }
 
-void RS_ActionDefault::updateMouseButtonHints(){
+void RS_ActionDefault::updateActionPrompt(){
     switch (getStatus()) {
         case Moving:{
-            updateMouseWidgetTRCancel(tr("Set new position"), MOD_SHIFT_AND_CTRL_ANGLE(tr("Create a copy")));
+            updatePromptTRCancel(tr("Set new position"), MOD_SHIFT_AND_CTRL_ANGLE(tr("Create a copy")));
             break;
         }
         case MovingRef: {
@@ -1008,20 +1008,20 @@ void RS_ActionDefault::updateMouseButtonHints(){
                     modifiers = MOD_SHIFT_ANGLE_SNAP;
                     break;
             }
-            updateMouseWidget(tr("Set new ref position"), "", modifiers);
+            updatePrompt(tr("Set new ref position"), "", modifiers);
             break;
         }
         case Neutral: {
-            updateMouseWidget(tr("Zoom, pan or select entity"), "", MOD_SHIFT_AND_CTRL(tr("Scroll Horizontally / Select Contour"), tr("Pan / Scroll Vertically / Select Child entities")));
+            updatePrompt(tr("Zoom, pan or select entity"), "", MOD_SHIFT_AND_CTRL(tr("Scroll Horizontally / Select Contour"), tr("Pan / Scroll Vertically / Select Child entities")));
             commandPrompt("");
             break;
         }
         case SetCorner2: {
-            updateMouseWidgetTRBack(tr("Choose second edge"), MOD_SHIFT_AND_CTRL(tr("Select/Deselect entities"), tr("Select Intersecting")));
+            updatePromptTRBack(tr("Choose second edge"), MOD_SHIFT_AND_CTRL(tr("Select/Deselect entities"), tr("Select Intersecting")));
             break;
         }
         default: {
-            updateMouseWidget();
+            updatePrompt();
             break;
         }
     }

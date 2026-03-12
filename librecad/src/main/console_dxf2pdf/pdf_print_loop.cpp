@@ -189,16 +189,17 @@ static bool openDocAndSetGraphic(RS_Document** doc, RS_Graphic** graphic,
 
 static void touchGraphic(RS_Graphic* graphic, const PdfPrintParams& params){
     graphic->calculateBorders();
-    graphic->setMargins(params.margins.left, params.margins.top,
+    LC_PlotSettings* ps = graphic->getPlotSettings();
+    ps->setMarginsInMm(params.margins.left, params.margins.top,
                         params.margins.right, params.margins.bottom);
-    graphic->setPagesNum(params.pagesH, params.pagesV);
+    ps->setPagesNum(params.pagesH, params.pagesV);
 
     if (params.scale > 0.0) {
-        graphic->setPaperScale(params.scale);
+        ps->setPaperScale(params.scale);
     }
 
     if (params.pageSize != RS_Vector(0.0, 0.0)) {
-        graphic->setPaperSize(params.pageSize);
+        ps->setPaperSize(params.pageSize);
     }
 
     if (params.fitToPage) {
@@ -212,12 +213,12 @@ static void touchGraphic(RS_Graphic* graphic, const PdfPrintParams& params){
 static void setupPrinterAndPaper(const RS_Graphic* graphic, QPrinter& printer,
     PdfPrintParams& params){
     bool landscape = false;
-
-    const RS2::PaperFormat pf = graphic->getPaperFormat(&landscape);
+    LC_PlotSettings* ps = graphic->getPlotSettings();
+    const RS2::PaperFormat pf = ps->getPaperFormat(&landscape);
     const QPageSize::PageSizeId paperSize = LC_Printing::rsToQtPaperFormat(pf);
 
     if (paperSize == QPageSize::Custom){
-        const RS_Vector r = graphic->getPaperSize();
+        const RS_Vector r = ps->getPaperSize();
         RS_Vector s = RS_Units::convert(r, graphic->getUnit(),
             RS2::Millimeter);
         if (landscape) {
@@ -259,10 +260,12 @@ static void drawGraphic(RS_Graphic* graphic, QPrinter& printer,
     const double printerFx = printerWidth / printer.widthMM();
     const double printerFy = printerHeight / printer.heightMM();
 
-    const double marginLeft = graphic->getMarginLeft();
-    const double marginTop = graphic-> getMarginTop();
-    const double marginRight = graphic->getMarginRight();
-    const double marginBottom = graphic->getMarginBottom();
+    LC_PlotSettings* ps = graphic->getPlotSettings();
+
+    const double marginLeft = ps->getMarginLeftMm();
+    const double marginTop = ps->getMarginTopMm();
+    const double marginRight = ps->getMarginRightMm();
+    const double marginBottom = ps->getMarginBottomMm();
 
     painter.setClipRect(marginLeft * printerFx, marginTop * printerFy,
                         printer.width() - (marginLeft + marginRight) * printerFx,
@@ -283,7 +286,7 @@ static void drawGraphic(RS_Graphic* graphic, QPrinter& printer,
 
     const double f = (fx + fy) / 2.0;
 
-    const double paperScale = graphic->getPaperScale();
+    const double paperScale = ps->getPaperScale();
     renderer.setPaperScale(paperScale);
 
     const double paperInsertionX = graphic->getPaperInsertionBase().x;
@@ -296,9 +299,9 @@ static void drawGraphic(RS_Graphic* graphic, QPrinter& printer,
 
     const double baseX = paperInsertionX;
     const double baseY = paperInsertionY;
-    const int numX = graphic->getPagesNumHoriz();
-    const int numY = graphic->getPagesNumVert();
-    const RS_Vector printArea = graphic->getPrintAreaSize(false);
+    const int numX = ps->getPagesNumHoriz();
+    const int numY = ps->getPagesNumVert();
+    const RS_Vector printArea = ps->getPrintAreaSize(false);
 
     for (int pY = 0; pY < numY; pY++) {
         const double offsetY = printArea.y * pY;

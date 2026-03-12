@@ -34,8 +34,7 @@
  *  name 'name' and widget flags set to 'f'.
  */
 LC_LineBisectorOptionsWidget::LC_LineBisectorOptionsWidget()
-    : LC_ActionOptionsWidgetBase(RS2::ActionDrawLineBisector, "Draw", "LineBisector"), m_action{nullptr},
-      ui(new Ui::LC_LineBisectorOptionsWidget{}) {
+    : ui(new Ui::LC_LineBisectorOptionsWidget{}) {
     ui->setupUi(this);
     connect(ui->leLength, &QLineEdit::editingFinished, this, &LC_LineBisectorOptionsWidget::onLengthEditingFinished);
     connect(ui->sbNumber, &QSpinBox::valueChanged, this, &LC_LineBisectorOptionsWidget::onNumberValueChanged);
@@ -56,7 +55,7 @@ void LC_LineBisectorOptionsWidget::languageChange() {
     ui->retranslateUi(this);
 }
 
-void LC_LineBisectorOptionsWidget::doSetAction(RS_ActionInterface* a) {
+void LC_LineBisectorOptionsWidget::doUpdateByAction(RS_ActionInterface* a) {
     m_action = static_cast<LC_ActionDrawLineBisector*>(a);
 
     const QString length = fromDouble(m_action->getLength());

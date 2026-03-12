@@ -50,11 +50,7 @@ LC_LineAngleRelOptionsWidget::~LC_LineAngleRelOptionsWidget() {
     m_action = nullptr;
 }
 
-bool LC_LineAngleRelOptionsWidget::checkActionRttiValid(const RS2::ActionType actionType) {
-    return actionType == RS2::ActionDrawLineAngleRel || actionType == RS2::ActionDrawLineOrthogonalRel;
-}
-
-void LC_LineAngleRelOptionsWidget::doSetAction(RS_ActionInterface* a) {
+void LC_LineAngleRelOptionsWidget::doUpdateByAction(RS_ActionInterface* a) {
     m_action = static_cast<LC_ActionDrawLineAngleRel*>(a);
 
     const bool fixedAngle = m_action->isFixedAngleActionMode();

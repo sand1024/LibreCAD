@@ -169,13 +169,13 @@ public:
     void notifyCurrentActionChanged(RS2::ActionType actionType);
     bool hasAction() const;
     void notifyLastActionFinished() const;
-    void onSwitchToDefaultAction(bool actionIsDefault, RS2::ActionType prevActionRtti);
+    void onSwitchToDefaultAction(bool actionIsDefault, RS2::ActionType actionRtti, RS2::ActionType prevActionRtti);
 signals:
     void ucsChanged(LC_UCS* ucs);
     void relativeZeroChanged(const RS_Vector &);
     void previousZoomAvailable(bool available);
     void currentActionChanged(RS2::ActionType actionType);
-    void defaultActionActivated(bool value, RS2::ActionType prevActionRtti);
+    void defaultActionActivated(bool value,RS2::ActionType actionRtti, RS2::ActionType prevActionRtti);
 protected:
     void setRenderer(std::unique_ptr<LC_WidgetViewPortRenderer> renderer);
     LC_WidgetViewPortRenderer* getRenderer() const;
@@ -183,15 +183,6 @@ protected:
     void onViewportRedrawNeeded(RS2::RedrawMethod method) override;
     LC_EventHandler *getEventHandler() const;
 
-    // fixme - sand - temporary object for testing, remove it!
-    class TEST_DESTRUCTOR {
-    public:
-        explicit TEST_DESTRUCTOR(const int val):value{val}{}
-        ~TEST_DESTRUCTOR() {
-            LC_ERR << "Destructor TES called" << value;
-        }
-        int value;
-    };
 private:
     std::unique_ptr<LC_EventHandler> m_eventHandler;
     RS_Document *m_document = nullptr;

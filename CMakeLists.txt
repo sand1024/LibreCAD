@@ -94,8 +94,8 @@ set (SHARED_INCLUDES
      librecad/src/actions/dock_widgets/ucs_list
      librecad/src/actions/dock_widgets/workspaces
      librecad/src/actions/drawing
-     librecad/src/actions/drawing/arc
      librecad/src/actions/drawing/draw
+     librecad/src/actions/drawing/draw/arc
      librecad/src/actions/drawing/draw/circle
      librecad/src/actions/drawing/draw/curve
      librecad/src/actions/drawing/draw/dimensions
@@ -373,8 +373,8 @@ set (SHARED_SOURCES
      librecad/src/actions/dock_widgets/block/rs_actionblocksedit.h
      librecad/src/actions/dock_widgets/block/rs_actionblocksfreezeall.cpp
      librecad/src/actions/dock_widgets/block/rs_actionblocksfreezeall.h
-     librecad/src/actions/dock_widgets/block/rs_actionblocksinsert.cpp
-     librecad/src/actions/dock_widgets/block/rs_actionblocksinsert.h
+     librecad/src/actions/dock_widgets/block/lc_action_block_insert.cpp
+     librecad/src/actions/dock_widgets/block/lc_action_block_insert.h
      librecad/src/actions/dock_widgets/block/rs_actionblocksremove.cpp
      librecad/src/actions/dock_widgets/block/rs_actionblocksremove.h
      librecad/src/actions/dock_widgets/block/rs_actionblockssave.cpp
@@ -407,56 +407,56 @@ set (SHARED_SOURCES
      librecad/src/actions/dock_widgets/layer/rs_actionlayerstoggleprint.h
      librecad/src/actions/dock_widgets/layer/rs_actionlayerstoggleview.cpp
      librecad/src/actions/dock_widgets/layer/rs_actionlayerstoggleview.h
-     librecad/src/actions/dock_widgets/library/rs_actionlibraryinsert.cpp
-     librecad/src/actions/dock_widgets/library/rs_actionlibraryinsert.h
+     librecad/src/actions/dock_widgets/library/lc_action_block_library_insert.cpp
+     librecad/src/actions/dock_widgets/library/lc_action_block_library_insert.h
      librecad/src/actions/dock_widgets/ucs_list/lc_actionucsbydimordinate.cpp
      librecad/src/actions/dock_widgets/ucs_list/lc_actionucsbydimordinate.h
      librecad/src/actions/dock_widgets/ucs_list/lc_actionucscreate.cpp
      librecad/src/actions/dock_widgets/ucs_list/lc_actionucscreate.h
      librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_2points_radius.cpp
      librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_2points_radius.h
-     librecad/src/actions/drawing/draw/circle/lc_actiondrawcirclebase.cpp
-     librecad/src/actions/drawing/draw/circle/lc_actiondrawcirclebase.h
+     librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_base.cpp
+     librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_base.h
      librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_by_arc.cpp
-     librecad/src/actions/drawing/draw/circle/rs_actiondrawcircle.cpp
-     librecad/src/actions/drawing/draw/circle/rs_actiondrawcircle.h
-     librecad/src/actions/drawing/draw/circle/rs_actiondrawcircle2p.cpp
-     librecad/src/actions/drawing/draw/circle/rs_actiondrawcircle2p.h
-     librecad/src/actions/drawing/draw/circle/rs_actiondrawcircle3p.cpp
-     librecad/src/actions/drawing/draw/circle/rs_actiondrawcircle3p.h
+     librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_center_point.cpp
+     librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_center_point.h
+     librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_2points.cpp
+     librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_2points.h
+     librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_3points.cpp
+     librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_3points.h
      librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_center_radius.cpp
      librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_center_radius.h
-     librecad/src/actions/drawing/draw/circle/rs_actiondrawcircleinscribe.cpp
-     librecad/src/actions/drawing/draw/circle/rs_actiondrawcircleinscribe.h
-     librecad/src/actions/drawing/draw/circle/rs_actiondrawcircletan1_2p.cpp
-     librecad/src/actions/drawing/draw/circle/rs_actiondrawcircletan1_2p.h
+     librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_inscribe.cpp
+     librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_inscribe.h
+     librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_tangental_1entity_2points.cpp
+     librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_tangental_1entity_2points.h
      librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_tangental_2entities_radius.cpp
      librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_tangental_2entities_radius.h
-     librecad/src/actions/drawing/draw/circle/rs_actiondrawcircletan2_1p.cpp
-     librecad/src/actions/drawing/draw/circle/rs_actiondrawcircletan2_1p.h
-     librecad/src/actions/drawing/draw/circle/rs_actiondrawcircletan3.cpp
-     librecad/src/actions/drawing/draw/circle/rs_actiondrawcircletan3.h
-     librecad/src/actions/drawing/draw/curve/lc_actiondrawarc2pointsangle.cpp
-     librecad/src/actions/drawing/draw/curve/lc_actiondrawarc2pointsangle.h
-     librecad/src/actions/drawing/draw/curve/lc_actiondrawarc2pointsbase.cpp
-     librecad/src/actions/drawing/draw/curve/lc_actiondrawarc2pointsbase.h
-     librecad/src/actions/drawing/draw/curve/lc_actiondrawarc2pointsheight.cpp
-     librecad/src/actions/drawing/draw/curve/lc_actiondrawarc2pointsheight.h
-     librecad/src/actions/drawing/draw/curve/lc_actiondrawarc2pointslength.cpp
-     librecad/src/actions/drawing/draw/curve/lc_actiondrawarc2pointslength.h
-     librecad/src/actions/drawing/draw/curve/lc_actiondrawarc2pointsradius.cpp
-     librecad/src/actions/drawing/draw/curve/lc_actiondrawarc2pointsradius.h
+     librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_tangental_2entities_1point.cpp
+     librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_tangental_2entities_1point.h
+     librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_tangental_3entities.cpp
+     librecad/src/actions/drawing/draw/circle/lc_action_draw_circle_tangental_3entities.h
+     librecad/src/actions/drawing/draw/arc/lc_action_draw_arc_2points_angle.cpp
+     librecad/src/actions/drawing/draw/arc/lc_action_draw_arc_2points_angle.h
+     librecad/src/actions/drawing/draw/arc/lc_action_draw_arc_2points_base.cpp
+     librecad/src/actions/drawing/draw/arc/lc_action_draw_arc_2points_base.h
+     librecad/src/actions/drawing/draw/arc/lc_action_draw_arc_2points_height.cpp
+     librecad/src/actions/drawing/draw/arc/lc_action_draw_arc_2points_height.h
+     librecad/src/actions/drawing/draw/arc/lc_action_draw_arc_2points_length.cpp
+     librecad/src/actions/drawing/draw/arc/lc_action_draw_arc_2points_length.h
+     librecad/src/actions/drawing/draw/arc/lc_action_draw_arc_2points_radius.cpp
+     librecad/src/actions/drawing/draw/arc/lc_action_draw_arc_2points_radius.h
      librecad/src/actions/drawing/draw/curve/lc_actiondrawhyperbolafp.cpp
      librecad/src/actions/drawing/draw/curve/lc_actiondrawparabola4points.cpp
      librecad/src/actions/drawing/draw/curve/lc_actiondrawparabolaFD.cpp
-     librecad/src/actions/drawing/draw/curve/rs_actiondrawarc.cpp
-     librecad/src/actions/drawing/draw/curve/rs_actiondrawarc.h
-     librecad/src/actions/drawing/draw/curve/rs_actiondrawarc3p.cpp
-     librecad/src/actions/drawing/draw/curve/rs_actiondrawarc3p.h
-     librecad/src/actions/drawing/draw/curve/rs_actiondrawarctangential.cpp
-     librecad/src/actions/drawing/draw/curve/rs_actiondrawarctangential.h
-     librecad/src/actions/drawing/draw/curve/rs_actiondrawlinefree.cpp
-     librecad/src/actions/drawing/draw/curve/rs_actiondrawlinefree.h
+     librecad/src/actions/drawing/draw/arc/lc_action_draw_arc_center_point_param.cpp
+     librecad/src/actions/drawing/draw/arc/lc_action_draw_arc_center_point_param.h
+     librecad/src/actions/drawing/draw/arc/lc_action_draw_arc_3points.cpp
+     librecad/src/actions/drawing/draw/arc/lc_action_draw_arc_3points.h
+     librecad/src/actions/drawing/draw/arc/lc_action_draw_arc_tangential.cpp
+     librecad/src/actions/drawing/draw/arc/lc_action_draw_arc_tangential.h
+     librecad/src/actions/drawing/draw/curve/lc_action_draw_line_freehand.cpp
+     librecad/src/actions/drawing/draw/curve/lc_action_draw_line_freehand.h
      librecad/src/actions/drawing/draw/dimensions/lc_actioncircledimbase.cpp
      librecad/src/actions/drawing/draw/dimensions/lc_actioncircledimbase.h
      librecad/src/actions/drawing/draw/dimensions/lc_actiondimarc.cpp
@@ -490,12 +490,12 @@ set (SHARED_SOURCES
      librecad/src/actions/drawing/draw/dimensions/rs_actiondimradial.h
      librecad/src/actions/drawing/draw/dimensions/rs_actiontoolregeneratedimensions.cpp
      librecad/src/actions/drawing/draw/dimensions/rs_actiontoolregeneratedimensions.h
-     librecad/src/actions/drawing/draw/ellipse/lc_actiondrawellipse1point.cpp
-     librecad/src/actions/drawing/draw/ellipse/lc_actiondrawellipse1point.h
+     librecad/src/actions/drawing/draw/ellipse/lc_action_draw_ellipse_1point.cpp
+     librecad/src/actions/drawing/draw/ellipse/lc_action_draw_ellipse_1point.h
      librecad/src/actions/drawing/draw/ellipse/rs_actiondrawellipse4points.cpp
      librecad/src/actions/drawing/draw/ellipse/rs_actiondrawellipse4points.h
-     librecad/src/actions/drawing/draw/ellipse/rs_actiondrawellipseaxis.cpp
-     librecad/src/actions/drawing/draw/ellipse/rs_actiondrawellipseaxis.h
+     librecad/src/actions/drawing/draw/ellipse/lc_action_draw_ellipse_axis.cpp
+     librecad/src/actions/drawing/draw/ellipse/lc_action_draw_ellipse_axis.h
      librecad/src/actions/drawing/draw/ellipse/rs_actiondrawellipsecenter3points.cpp
      librecad/src/actions/drawing/draw/ellipse/rs_actiondrawellipsecenter3points.h
      librecad/src/actions/drawing/draw/ellipse/rs_actiondrawellipsefocipoint.cpp
@@ -504,8 +504,8 @@ set (SHARED_SOURCES
      librecad/src/actions/drawing/draw/ellipse/rs_actiondrawellipseinscribe.h
      librecad/src/actions/drawing/draw/hatch/rs_actiondrawhatch.cpp
      librecad/src/actions/drawing/draw/hatch/rs_actiondrawhatch.h
-     librecad/src/actions/drawing/draw/image/rs_actiondrawimage.cpp
-     librecad/src/actions/drawing/draw/image/rs_actiondrawimage.h
+     librecad/src/actions/drawing/draw/image/lc_action_draw_image.cpp
+     librecad/src/actions/drawing/draw/image/lc_action_draw_image.h
      librecad/src/actions/drawing/draw/line/lc_abstractactiondrawline.cpp
      librecad/src/actions/drawing/draw/line/lc_action_draw_line_angle_rel.cpp
      librecad/src/actions/drawing/draw/line/lc_action_draw_line_angle_rel.h
@@ -541,85 +541,85 @@ set (SHARED_SOURCES
      librecad/src/actions/drawing/draw/line/rs_actiondrawlinetangent1.h
      librecad/src/actions/drawing/draw/line/rs_actiondrawlinetangent2.cpp
      librecad/src/actions/drawing/draw/line/rs_actiondrawlinetangent2.h
-     librecad/src/actions/drawing/draw/point/lc_actiondrawlinepoints.cpp
-     librecad/src/actions/drawing/draw/point/lc_actiondrawlinepoints.h
-     librecad/src/actions/drawing/draw/point/lc_actiondrawpointslattice.cpp
-     librecad/src/actions/drawing/draw/point/lc_actiondrawpointslattice.h
-     librecad/src/actions/drawing/draw/point/lc_actionpastetopoints.cpp
-     librecad/src/actions/drawing/draw/point/lc_actionpastetopoints.h
-     librecad/src/actions/drawing/draw/point/lc_actionselectpoints.cpp
-     librecad/src/actions/drawing/draw/point/lc_actionselectpoints.h
-     librecad/src/actions/drawing/draw/point/rs_actiondrawpoint.cpp
-     librecad/src/actions/drawing/draw/point/rs_actiondrawpoint.h
-     librecad/src/actions/drawing/draw/polygon/lc_actiondrawlinepolygon3.cpp
-     librecad/src/actions/drawing/draw/polygon/lc_actiondrawlinepolygon3.h
-     librecad/src/actions/drawing/draw/polygon/lc_actiondrawlinepolygon4.cpp
-     librecad/src/actions/drawing/draw/polygon/lc_actiondrawlinepolygon4.h
-     librecad/src/actions/drawing/draw/polygon/lc_actiondrawlinepolygonbase.cpp
-     librecad/src/actions/drawing/draw/polygon/lc_actiondrawlinepolygonbase.h
-     librecad/src/actions/drawing/draw/polygon/lc_actiondrawstar.cpp
-     librecad/src/actions/drawing/draw/polygon/rs_actiondrawlinepolygon.cpp
-     librecad/src/actions/drawing/draw/polygon/rs_actiondrawlinepolygon.h
-     librecad/src/actions/drawing/draw/polygon/rs_actiondrawlinepolygon2.cpp
-     librecad/src/actions/drawing/draw/polygon/rs_actiondrawlinepolygon2.h
-     librecad/src/actions/drawing/draw/polyline/lc_actionpolylinearcstolines.cpp
-     librecad/src/actions/drawing/draw/polyline/lc_actionpolylinearcstolines.h
-     librecad/src/actions/drawing/draw/polyline/lc_actionpolylinechangesegmenttype.cpp
-     librecad/src/actions/drawing/draw/polyline/lc_actionpolylinechangesegmenttype.h
-     librecad/src/actions/drawing/draw/polyline/lc_actionpolylinedeletebase.cpp
-     librecad/src/actions/drawing/draw/polyline/rs_actiondrawpolyline.cpp
-     librecad/src/actions/drawing/draw/polyline/rs_actiondrawpolyline.h
-     librecad/src/actions/drawing/draw/polyline/rs_actionpolylineadd.cpp
-     librecad/src/actions/drawing/draw/polyline/rs_actionpolylineadd.h
-     librecad/src/actions/drawing/draw/polyline/rs_actionpolylineappend.cpp
-     librecad/src/actions/drawing/draw/polyline/rs_actionpolylineappend.h
-     librecad/src/actions/drawing/draw/polyline/rs_actionpolylinedel.cpp
-     librecad/src/actions/drawing/draw/polyline/rs_actionpolylinedel.h
-     librecad/src/actions/drawing/draw/polyline/rs_actionpolylinedelbetween.cpp
-     librecad/src/actions/drawing/draw/polyline/rs_actionpolylinedelbetween.h
-     librecad/src/actions/drawing/draw/polyline/rs_actionpolylineequidistant.cpp
-     librecad/src/actions/drawing/draw/polyline/rs_actionpolylineequidistant.h
-     librecad/src/actions/drawing/draw/polyline/rs_actionpolylinesegment.cpp
-     librecad/src/actions/drawing/draw/polyline/rs_actionpolylinesegment.h
-     librecad/src/actions/drawing/draw/polyline/rs_actionpolylinetrim.cpp
-     librecad/src/actions/drawing/draw/polyline/rs_actionpolylinetrim.h
-     librecad/src/actions/drawing/draw/rect/lc_abstractactiondrawrectangle.cpp
-     librecad/src/actions/drawing/draw/rect/lc_abstractactiondrawrectangle.h
-     librecad/src/actions/drawing/draw/rect/lc_actiondrawrectangle1point.cpp
-     librecad/src/actions/drawing/draw/rect/lc_actiondrawrectangle2points.cpp
-     librecad/src/actions/drawing/draw/rect/lc_actiondrawrectangle2points.h
-     librecad/src/actions/drawing/draw/rect/lc_actiondrawrectangle3points.cpp
-     librecad/src/actions/drawing/draw/rect/lc_actiondrawrectangle3points.h
-     librecad/src/actions/drawing/draw/rect/rs_actiondrawlinerectangle.cpp
-     librecad/src/actions/drawing/draw/rect/rs_actiondrawlinerectangle.h
-     librecad/src/actions/drawing/draw/spline/lc_actiondrawsplinepoints.cpp
-     librecad/src/actions/drawing/draw/spline/lc_actiondrawsplinepoints.h
-     librecad/src/actions/drawing/draw/spline/lc_actionremovesplinepoints.cpp
-     librecad/src/actions/drawing/draw/spline/lc_actionremovesplinepoints.h
-     librecad/src/actions/drawing/draw/spline/lc_actionsplineaddpoint.cpp
-     librecad/src/actions/drawing/draw/spline/lc_actionsplineaddpoint.h
-     librecad/src/actions/drawing/draw/spline/lc_actionsplineappendpoint.cpp
-     librecad/src/actions/drawing/draw/spline/lc_actionsplineappendpoint.h
-     librecad/src/actions/drawing/draw/spline/lc_actionsplineexplode.cpp
-     librecad/src/actions/drawing/draw/spline/lc_actionsplineexplode.h
-     librecad/src/actions/drawing/draw/spline/lc_actionsplinefrompolyline.cpp
-     librecad/src/actions/drawing/draw/spline/lc_actionsplinefrompolyline.h
-     librecad/src/actions/drawing/draw/spline/lc_actionsplinemodifybase.cpp
-     librecad/src/actions/drawing/draw/spline/lc_actionsplinemodifybase.h
-     librecad/src/actions/drawing/draw/spline/lc_actionsplineremovebetween.cpp
-     librecad/src/actions/drawing/draw/spline/lc_actionsplineremovebetween.h
-     librecad/src/actions/drawing/draw/spline/rs_actiondrawspline.cpp
-     librecad/src/actions/drawing/draw/spline/rs_actiondrawspline.h
-     librecad/src/actions/drawing/draw/text/rs_actiondrawmtext.cpp
-     librecad/src/actions/drawing/draw/text/rs_actiondrawmtext.h
-     librecad/src/actions/drawing/draw/text/rs_actiondrawtext.cpp
-     librecad/src/actions/drawing/draw/text/rs_actiondrawtext.h
-     librecad/src/actions/drawing/edit/lc_actioneditpastetransform.cpp
-     librecad/src/actions/drawing/edit/lc_actioneditpastetransform.h
-     librecad/src/actions/drawing/edit/rs_actioneditcopy.cpp
-     librecad/src/actions/drawing/edit/rs_actioneditcopy.h
-     librecad/src/actions/drawing/edit/rs_actioneditundo.cpp
-     librecad/src/actions/drawing/edit/rs_actioneditundo.h
+     librecad/src/actions/drawing/draw/point/lc_action_draw_points_line.cpp
+     librecad/src/actions/drawing/draw/point/lc_action_draw_points_line.h
+     librecad/src/actions/drawing/draw/point/lc_action_draw_points_lattice.cpp
+     librecad/src/actions/drawing/draw/point/lc_action_draw_points_lattice.h
+     librecad/src/actions/drawing/edit/lc_action_edit_paste_to_points.cpp
+     librecad/src/actions/drawing/edit/lc_action_edit_paste_to_points.h
+     librecad/src/actions/drawing/selection/lc_action_select_points.cpp
+     librecad/src/actions/drawing/selection/lc_action_select_points.h
+     librecad/src/actions/drawing/draw/point/lc_action_draw_point.cpp
+     librecad/src/actions/drawing/draw/point/lc_action_draw_point.h
+     librecad/src/actions/drawing/draw/polygon/lc_action_draw_polygon_center_tan.cpp
+     librecad/src/actions/drawing/draw/polygon/lc_action_draw_polygon_center_tan.h
+     librecad/src/actions/drawing/draw/polygon/lc_action_draw_polygon_side_side.cpp
+     librecad/src/actions/drawing/draw/polygon/lc_action_draw_polygon_side_side.h
+     librecad/src/actions/drawing/draw/polygon/lc_action_draw_polygon_base.cpp
+     librecad/src/actions/drawing/draw/polygon/lc_action_draw_polygon_base.h
+     librecad/src/actions/drawing/draw/polygon/lc_action_draw_star.cpp
+     librecad/src/actions/drawing/draw/polygon/lc_action_draw_polygon_center_corner.cpp
+     librecad/src/actions/drawing/draw/polygon/lc_action_draw_polygon_center_corner.h
+     librecad/src/actions/drawing/draw/polygon/lc_action_draw_polygon_corner_corner.cpp
+     librecad/src/actions/drawing/draw/polygon/lc_action_draw_polygon_corner_corner.h
+     librecad/src/actions/drawing/draw/polyline/lc_action_polyline_arcs_to_lines.cpp
+     librecad/src/actions/drawing/draw/polyline/lc_action_polyline_arcs_to_lines.h
+     librecad/src/actions/drawing/draw/polyline/lc_action_polyline_change_segment_type.cpp
+     librecad/src/actions/drawing/draw/polyline/lc_action_polyline_change_segment_type.h
+     librecad/src/actions/drawing/draw/polyline/lc_action_polyline_delete_base.cpp
+     librecad/src/actions/drawing/draw/polyline/lc_action_draw_polyline.cpp
+     librecad/src/actions/drawing/draw/polyline/lc_action_draw_polyline.h
+     librecad/src/actions/drawing/draw/polyline/lc_action_polyline_add.cpp
+     librecad/src/actions/drawing/draw/polyline/lc_action_polyline_add.h
+     librecad/src/actions/drawing/draw/polyline/lc_action_polyline_append.cpp
+     librecad/src/actions/drawing/draw/polyline/lc_action_polyline_append.h
+     librecad/src/actions/drawing/draw/polyline/lc_action_polyline_delete_node.cpp
+     librecad/src/actions/drawing/draw/polyline/lc_action_polyline_delete_node.h
+     librecad/src/actions/drawing/draw/polyline/lc_action_polyline_delete_node_between.cpp
+     librecad/src/actions/drawing/draw/polyline/lc_action_polyline_delete_node_between.h
+     librecad/src/actions/drawing/draw/polyline/lc_action_polyline_equidistant.cpp
+     librecad/src/actions/drawing/draw/polyline/lc_action_polyline_equidistant.h
+     librecad/src/actions/drawing/draw/polyline/lc_action_polyline_from_segment.cpp
+     librecad/src/actions/drawing/draw/polyline/lc_action_polyline_from_segment.h
+     librecad/src/actions/drawing/draw/polyline/lc_action_polyline_trim.cpp
+     librecad/src/actions/drawing/draw/polyline/lc_action_polyline_trim.h
+     librecad/src/actions/drawing/draw/rect/lc_action_draw_rectangle_abstract.cpp
+     librecad/src/actions/drawing/draw/rect/lc_action_draw_rectangle_abstract.h
+     librecad/src/actions/drawing/draw/rect/lc_action_draw_rectangle_1point.cpp
+     librecad/src/actions/drawing/draw/rect/lc_action_draw_rectangle_2points.cpp
+     librecad/src/actions/drawing/draw/rect/lc_action_draw_rectangle_2points.h
+     librecad/src/actions/drawing/draw/rect/lc_action_draw_rectangle_3points.cpp
+     librecad/src/actions/drawing/draw/rect/lc_action_draw_rectangle_3points.h
+     librecad/src/actions/drawing/draw/rect/lc_action_draw_rectangle_simple.cpp
+     librecad/src/actions/drawing/draw/rect/lc_action_draw_rectangle_simple.h
+     librecad/src/actions/drawing/draw/spline/lc_action_draw_spline_points.cpp
+     librecad/src/actions/drawing/draw/spline/lc_action_draw_spline_points.h
+     librecad/src/actions/drawing/draw/spline/lc_action_spline_remove_points.cpp
+     librecad/src/actions/drawing/draw/spline/lc_action_spline_remove_points.h
+     librecad/src/actions/drawing/draw/spline/lc_action_spline_add_point.cpp
+     librecad/src/actions/drawing/draw/spline/lc_action_spline_add_point.h
+     librecad/src/actions/drawing/draw/spline/lc_action_spline_append_point.cpp
+     librecad/src/actions/drawing/draw/spline/lc_action_spline_append_point.h
+     librecad/src/actions/drawing/draw/spline/lc_action_spline_modify_explode.cpp
+     librecad/src/actions/drawing/draw/spline/lc_action_spline_modify_explode.h
+     librecad/src/actions/drawing/draw/spline/lc_action_spline_from_polyline.cpp
+     librecad/src/actions/drawing/draw/spline/lc_action_spline_from_polyline.h
+     librecad/src/actions/drawing/draw/spline/lc_action_spline_modify_base.cpp
+     librecad/src/actions/drawing/draw/spline/lc_action_spline_modify_base.h
+     librecad/src/actions/drawing/draw/spline/lc_action_spline_remove_between.cpp
+     librecad/src/actions/drawing/draw/spline/lc_action_spline_remove_between.h
+     librecad/src/actions/drawing/draw/spline/lc_action_draw_spline.cpp
+     librecad/src/actions/drawing/draw/spline/lc_action_draw_spline.h
+     librecad/src/actions/drawing/draw/text/lc_action_draw_mtext.cpp
+     librecad/src/actions/drawing/draw/text/lc_action_draw_mtext.h
+     librecad/src/actions/drawing/draw/text/lc_action_draw_text.cpp
+     librecad/src/actions/drawing/draw/text/lc_action_draw_text.h
+     librecad/src/actions/drawing/edit/lc_action_edit_paste_transform.cpp
+     librecad/src/actions/drawing/edit/lc_action_edit_paste_transform.h
+     librecad/src/actions/drawing/edit/lc_action_edit_copy_cut.cpp
+     librecad/src/actions/drawing/edit/lc_action_edit_copy_cut.h
+     librecad/src/actions/drawing/edit/lc_action_edit_undo_redo.cpp
+     librecad/src/actions/drawing/edit/lc_action_edit_undo_redo.h
      librecad/src/actions/drawing/info/lc_actioninfo3pointsangle.cpp
      librecad/src/actions/drawing/info/lc_actioninfo3pointsangle.h
      librecad/src/actions/drawing/info/lc_actioninfopoint.cpp
@@ -631,72 +631,72 @@ set (SHARED_SOURCES
      librecad/src/actions/drawing/info/rs_actioninfoarea.h
      librecad/src/actions/drawing/info/rs_actioninfodist.cpp
      librecad/src/actions/drawing/info/rs_actioninfodist.h
-     librecad/src/actions/drawing/info/rs_actioninfodist2.cpp
-     librecad/src/actions/drawing/info/rs_actioninfodist2.h
+     librecad/src/actions/drawing/info/lc_action_info_dist_point_to_entity.cpp
+     librecad/src/actions/drawing/info/lc_action_info_dist_point_to_entity.h
      librecad/src/actions/drawing/info/rs_actioninfoinside.cpp
      librecad/src/actions/drawing/info/rs_actioninfoinside.h
      librecad/src/actions/drawing/info/rs_actioninfototallength.cpp
      librecad/src/actions/drawing/info/rs_actioninfototallength.h
      librecad/src/actions/drawing/lc_abstractactionwithpreview.cpp
      librecad/src/actions/drawing/lc_abstractactionwithpreview.h
-     librecad/src/actions/drawing/modify/lc_actionmodifyalign.cpp
-     librecad/src/actions/drawing/modify/lc_actionmodifyalign.h
-     librecad/src/actions/drawing/modify/lc_actionmodifyalignref.cpp
-     librecad/src/actions/drawing/modify/lc_actionmodifyalignref.h
-     librecad/src/actions/drawing/modify/lc_actionmodifyalignsingle.cpp
-     librecad/src/actions/drawing/modify/lc_actionmodifyalignsingle.h
-     librecad/src/actions/drawing/modify/lc_actionmodifybase.cpp
-     librecad/src/actions/drawing/modify/lc_actionmodifybase.h
-     librecad/src/actions/drawing/modify/lc_actionmodifybreakdivide.cpp
-     librecad/src/actions/drawing/modify/lc_actionmodifybreakdivide.h
-     librecad/src/actions/drawing/modify/lc_actionmodifyduplicate.cpp
-     librecad/src/actions/drawing/modify/lc_actionmodifyduplicate.h
-     librecad/src/actions/drawing/modify/lc_actionmodifylinegap.cpp
-     librecad/src/actions/drawing/modify/lc_actionmodifylinejoin.cpp
-     librecad/src/actions/drawing/modify/lc_actionmodifymoveadjust.cpp
-     librecad/src/actions/drawing/modify/lc_actionmodifymoveadjust.h
-     librecad/src/actions/drawing/modify/rs_actionblocksexplode.cpp
-     librecad/src/actions/drawing/modify/rs_actionblocksexplode.h
-     librecad/src/actions/drawing/modify/rs_actionmodifyattributes.cpp
-     librecad/src/actions/drawing/modify/rs_actionmodifyattributes.h
-     librecad/src/actions/drawing/modify/rs_actionmodifybevel.cpp
-     librecad/src/actions/drawing/modify/rs_actionmodifybevel.h
-     librecad/src/actions/drawing/modify/rs_actionmodifycut.cpp
-     librecad/src/actions/drawing/modify/rs_actionmodifycut.h
-     librecad/src/actions/drawing/modify/rs_actionmodifydelete.cpp
-     librecad/src/actions/drawing/modify/rs_actionmodifydelete.h
-     librecad/src/actions/drawing/modify/rs_actionmodifydeletefree.cpp
-     librecad/src/actions/drawing/modify/rs_actionmodifydeletefree.h
-     librecad/src/actions/drawing/modify/rs_actionmodifyentity.cpp
-     librecad/src/actions/drawing/modify/rs_actionmodifyentity.h
-     librecad/src/actions/drawing/modify/rs_actionmodifyexplodetext.cpp
-     librecad/src/actions/drawing/modify/rs_actionmodifyexplodetext.h
-     librecad/src/actions/drawing/modify/rs_actionmodifymirror.cpp
-     librecad/src/actions/drawing/modify/rs_actionmodifymirror.h
-     librecad/src/actions/drawing/modify/rs_actionmodifymove.cpp
-     librecad/src/actions/drawing/modify/rs_actionmodifymove.h
-     librecad/src/actions/drawing/modify/rs_actionmodifymoverotate.cpp
-     librecad/src/actions/drawing/modify/rs_actionmodifymoverotate.h
-     librecad/src/actions/drawing/modify/rs_actionmodifyoffset.cpp
-     librecad/src/actions/drawing/modify/rs_actionmodifyoffset.h
-     librecad/src/actions/drawing/modify/rs_actionmodifyrevertdirection.cpp
-     librecad/src/actions/drawing/modify/rs_actionmodifyrevertdirection.h
-     librecad/src/actions/drawing/modify/rs_actionmodifyrotate.cpp
-     librecad/src/actions/drawing/modify/rs_actionmodifyrotate.h
-     librecad/src/actions/drawing/modify/rs_actionmodifyrotate2.cpp
-     librecad/src/actions/drawing/modify/rs_actionmodifyrotate2.h
-     librecad/src/actions/drawing/modify/rs_actionmodifyround.cpp
-     librecad/src/actions/drawing/modify/rs_actionmodifyround.h
-     librecad/src/actions/drawing/modify/rs_actionmodifyscale.cpp
-     librecad/src/actions/drawing/modify/rs_actionmodifyscale.h
-     librecad/src/actions/drawing/modify/rs_actionmodifystretch.cpp
-     librecad/src/actions/drawing/modify/rs_actionmodifystretch.h
-     librecad/src/actions/drawing/modify/rs_actionmodifytrim.cpp
-     librecad/src/actions/drawing/modify/rs_actionmodifytrim.h
-     librecad/src/actions/drawing/modify/rs_actionmodifytrimamount.cpp
-     librecad/src/actions/drawing/modify/rs_actionmodifytrimamount.h
-     librecad/src/actions/drawing/modify/rs_actionorder.cpp
-     librecad/src/actions/drawing/modify/rs_actionorder.h
+     librecad/src/actions/drawing/modify/lc_action_modify_align.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_align.h
+     librecad/src/actions/drawing/modify/lc_action_modify_align_ref.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_align_ref.h
+     librecad/src/actions/drawing/modify/lc_action_modify_align_single.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_align_single.h
+     librecad/src/actions/drawing/modify/lc_action_modify_base.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_base.h
+     librecad/src/actions/drawing/modify/lc_action_modify_break_divide.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_break_divide.h
+     librecad/src/actions/drawing/modify/lc_action_modify_duplicate.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_duplicate.h
+     librecad/src/actions/drawing/modify/lc_action_modify_line_gap.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_line_join.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_move_adjust.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_move_adjust.h
+     librecad/src/actions/drawing/modify/lc_action_block_explode.cpp
+     librecad/src/actions/drawing/modify/lc_action_block_explode.h
+     librecad/src/actions/drawing/modify/lc_action_modify_attributes.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_attributes.h
+     librecad/src/actions/drawing/modify/lc_action_modify_bevel.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_bevel.h
+     librecad/src/actions/drawing/modify/lc_action_modify_cut.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_cut.h
+     librecad/src/actions/drawing/modify/lc_action_modify_delete.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_delete.h
+     librecad/src/actions/drawing/modify/lc_action_modify_delete_free.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_delete_free.h
+     librecad/src/actions/drawing/modify/lc_action_modify_entity.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_entity.h
+     librecad/src/actions/drawing/modify/lc_action_modify_explode_text.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_explode_text.h
+     librecad/src/actions/drawing/modify/lc_action_modify_mirror.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_mirror.h
+     librecad/src/actions/drawing/modify/lc_action_modify_move.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_move.h
+     librecad/src/actions/drawing/modify/lc_action_modify_move_rotate.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_move_rotate.h
+     librecad/src/actions/drawing/modify/lc_action_modify_offset.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_offset.h
+     librecad/src/actions/drawing/modify/lc_action_modify_revert_direction.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_revert_direction.h
+     librecad/src/actions/drawing/modify/lc_action_modify_rotate.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_rotate.h
+     librecad/src/actions/drawing/modify/lc_action_modify_rotate_twice.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_rotate_twice.h
+     librecad/src/actions/drawing/modify/lc_action_modify_round.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_round.h
+     librecad/src/actions/drawing/modify/lc_action_modify_scale.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_scale.h
+     librecad/src/actions/drawing/modify/lc_action_modify_stretch.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_stretch.h
+     librecad/src/actions/drawing/modify/lc_action_modify_trim.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_trim.h
+     librecad/src/actions/drawing/modify/lc_action_modify_trim_amount.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_trim_amount.h
+     librecad/src/actions/drawing/modify/lc_action_modify_order.cpp
+     librecad/src/actions/drawing/modify/lc_action_modify_order.h
      librecad/src/actions/drawing/pen/lc_actionpenapply.cpp
      librecad/src/actions/drawing/pen/lc_actionpenpick.cpp
      librecad/src/actions/drawing/pen/lc_actionpensyncactivebylayer.cpp
@@ -715,27 +715,27 @@ set (SHARED_SOURCES
      librecad/src/actions/drawing/rel_zero/rs_actionsetrelativezero.h
      librecad/src/actions/drawing/rs_actiondefault.cpp
      librecad/src/actions/drawing/rs_actiondefault.h
-     librecad/src/actions/drawing/selection/lc_actionselectgeneric.cpp
-     librecad/src/actions/drawing/selection/lc_actionselectgeneric.h
-     librecad/src/actions/drawing/selection/lc_actionselectmodetoggle.cpp
-     librecad/src/actions/drawing/selection/lc_actionselectmodetoggle.h
-     librecad/src/actions/drawing/selection/lc_actionselectquick.cpp
-     librecad/src/actions/drawing/selection/lc_actionsingleentityselectbase.cpp
-     librecad/src/actions/drawing/selection/lc_actionsingleentityselectbase.h
-     librecad/src/actions/drawing/selection/rs_actionselectall.cpp
-     librecad/src/actions/drawing/selection/rs_actionselectall.h
-     librecad/src/actions/drawing/selection/rs_actionselectcontour.cpp
-     librecad/src/actions/drawing/selection/rs_actionselectcontour.h
-     librecad/src/actions/drawing/selection/rs_actionselectintersected.cpp
-     librecad/src/actions/drawing/selection/rs_actionselectintersected.h
-     librecad/src/actions/drawing/selection/rs_actionselectinvert.cpp
-     librecad/src/actions/drawing/selection/rs_actionselectinvert.h
-     librecad/src/actions/drawing/selection/rs_actionselectlayer.cpp
-     librecad/src/actions/drawing/selection/rs_actionselectlayer.h
-     librecad/src/actions/drawing/selection/rs_actionselectsingle.cpp
-     librecad/src/actions/drawing/selection/rs_actionselectsingle.h
-     librecad/src/actions/drawing/selection/rs_actionselectwindow.cpp
-     librecad/src/actions/drawing/selection/rs_actionselectwindow.h
+     librecad/src/actions/drawing/selection/lc_action_select_generic.cpp
+     librecad/src/actions/drawing/selection/lc_action_select_generic.h
+     librecad/src/actions/drawing/selection/lc_action_select_mode_toggle.cpp
+     librecad/src/actions/drawing/selection/lc_action_select_mode_toggle.h
+     librecad/src/actions/drawing/selection/lc_action_select_quick.cpp
+     librecad/src/actions/drawing/selection/lc_action_select_single_entity_base.cpp
+     librecad/src/actions/drawing/selection/lc_action_select_single_entity_base.h
+     librecad/src/actions/drawing/selection/lc_action_select_all.cpp
+     librecad/src/actions/drawing/selection/lc_action_select_all.h
+     librecad/src/actions/drawing/selection/lc_action_select_contour.cpp
+     librecad/src/actions/drawing/selection/lc_action_select_contour.h
+     librecad/src/actions/drawing/selection/lc_action_select_intersected.cpp
+     librecad/src/actions/drawing/selection/lc_action_select_intersected.h
+     librecad/src/actions/drawing/selection/lc_action_select_invert.cpp
+     librecad/src/actions/drawing/selection/lc_action_select_invert.h
+     librecad/src/actions/drawing/selection/lc_action_select_layer.cpp
+     librecad/src/actions/drawing/selection/lc_action_select_layer.h
+     librecad/src/actions/drawing/selection/lc_action_select_single.cpp
+     librecad/src/actions/drawing/selection/lc_action_select_single.h
+     librecad/src/actions/drawing/selection/lc_action_select_window.cpp
+     librecad/src/actions/drawing/selection/lc_action_select_window.h
      librecad/src/actions/drawing/snap/lc_actionsnapmiddlemanual.cpp
      librecad/src/actions/drawing/snap/rs_actionsnapintersectionmanual.cpp
      librecad/src/actions/drawing/snap/rs_actionsnapintersectionmanual.h
@@ -1204,25 +1204,25 @@ set (SHARED_SOURCES
      librecad/src/ui/action_options/circle/lc_circle_center_radius_options_widget.h
      librecad/src/ui/action_options/circle/lc_circle_tangental_2_entities_radius_options_widget.cpp
      librecad/src/ui/action_options/circle/lc_circle_tangental_2_entities_radius_options_widget.h
-     librecad/src/ui/action_options/curve/lc_actiondrawarc2poptions.cpp
-     librecad/src/ui/action_options/curve/lc_actiondrawarc2poptions.h
-     librecad/src/ui/action_options/curve/lc_ellipsearcoptions.cpp
-     librecad/src/ui/action_options/curve/qg_arcoptions.cpp
-     librecad/src/ui/action_options/curve/qg_arcoptions.h
-     librecad/src/ui/action_options/curve/qg_arctangentialoptions.cpp
-     librecad/src/ui/action_options/curve/qg_arctangentialoptions.h
+     librecad/src/ui/action_options/curve/lc_arc_2points_options_widget.cpp
+     librecad/src/ui/action_options/curve/lc_arc_2points_options_widget.h
+     librecad/src/ui/action_options/curve/lc_ellipse_arc_options_widget.cpp
+     librecad/src/ui/action_options/curve/lc_arc_center_point_param_options_widget.cpp
+     librecad/src/ui/action_options/curve/lc_arc_center_point_param_options_widget.h
+     librecad/src/ui/action_options/curve/lc_arc_tangential_options_widget.cpp
+     librecad/src/ui/action_options/curve/lc_arc_tangential_options_widget.h
      librecad/src/ui/action_options/dimensions/qg_dimoptions.cpp
      librecad/src/ui/action_options/dimensions/qg_dimoptions.h
-     librecad/src/ui/action_options/edit/lc_pastetransformoptions.cpp
-     librecad/src/ui/action_options/ellipse/lc_ellipse1pointoptions.cpp
-     librecad/src/ui/action_options/ellipse/lc_ellipse1pointoptions.h
-     librecad/src/ui/action_options/image/qg_imageoptions.cpp
-     librecad/src/ui/action_options/image/qg_imageoptions.h
-     librecad/src/ui/action_options/info/lc_infodist2options.cpp
-     librecad/src/ui/action_options/insert/qg_insertoptions.cpp
-     librecad/src/ui/action_options/insert/qg_insertoptions.h
-     librecad/src/ui/action_options/insert/qg_libraryinsertoptions.cpp
-     librecad/src/ui/action_options/insert/qg_libraryinsertoptions.h
+     librecad/src/ui/action_options/edit/lc_paste_transform_options_widget.cpp
+     librecad/src/ui/action_options/ellipse/lc_ellipse_1point_options_widget.cpp
+     librecad/src/ui/action_options/ellipse/lc_ellipse_1point_options_widget.h
+     librecad/src/ui/action_options/image/lc_image_options_widget.cpp
+     librecad/src/ui/action_options/image/lc_image_options_widget.h
+     librecad/src/ui/action_options/info/lc_info_dist_point_to_entity_options_widget.cpp
+     librecad/src/ui/action_options/insert/lc_block_insert_options_widget.cpp
+     librecad/src/ui/action_options/insert/lc_block_insert_options_widget.h
+     librecad/src/ui/action_options/insert/lc_block_library_insert_options_widget.cpp
+     librecad/src/ui/action_options/insert/lc_block_library_insert_options_widget.h
      librecad/src/ui/action_options/lc_action_options_manager.cpp
      librecad/src/ui/action_options/lc_action_options_manager.h
      librecad/src/ui/action_options/lc_action_options_widget.cpp
@@ -1252,73 +1252,74 @@ set (SHARED_SOURCES
      librecad/src/ui/action_options/misc/lc_draw_bounding_box_options_widget.h
      librecad/src/ui/action_options/misc/lc_center_line_options_widget.cpp
      librecad/src/ui/action_options/misc/lc_center_line_options_widget.h
-     librecad/src/ui/action_options/modify/lc_duplicateoptions.cpp
-     librecad/src/ui/action_options/modify/lc_linejoinoptions.cpp
-     librecad/src/ui/action_options/modify/lc_modifyalignoptions.cpp
-     librecad/src/ui/action_options/modify/lc_modifyalignoptions.h
-     librecad/src/ui/action_options/modify/lc_modifyalignrefoptions.cpp
-     librecad/src/ui/action_options/modify/lc_modifyalignrefoptions.h
-     librecad/src/ui/action_options/modify/lc_modifybreakdivideoptions.cpp
-     librecad/src/ui/action_options/modify/lc_modifybreakdivideoptions.h
-     librecad/src/ui/action_options/modify/lc_modifygapoptions.cpp
-     librecad/src/ui/action_options/modify/lc_modifygapoptions.h
-     librecad/src/ui/action_options/modify/lc_modifymirroroptions.cpp
-     librecad/src/ui/action_options/modify/lc_modifyrotateoptions.cpp
-     librecad/src/ui/action_options/modify/lc_modifyscaleoptions.cpp
-     librecad/src/ui/action_options/modify/lc_modifyscaleoptions.h
-     librecad/src/ui/action_options/modify/lc_modifystretchoptions.cpp
-     librecad/src/ui/action_options/modify/lc_modifystretchoptions.h
-     librecad/src/ui/action_options/modify/lc_moveoptions.cpp
-     librecad/src/ui/action_options/modify/lc_moveoptions.h
-     librecad/src/ui/action_options/modify/lc_rotate2options.cpp
-     librecad/src/ui/action_options/modify/lc_rotate2options.h
-     librecad/src/ui/action_options/modify/qg_beveloptions.cpp
-     librecad/src/ui/action_options/modify/qg_beveloptions.h
-     librecad/src/ui/action_options/modify/qg_modifyoffsetoptions.cpp
-     librecad/src/ui/action_options/modify/qg_modifyoffsetoptions.h
-     librecad/src/ui/action_options/modify/qg_moverotateoptions.cpp
-     librecad/src/ui/action_options/modify/qg_moverotateoptions.h
-     librecad/src/ui/action_options/modify/qg_roundoptions.cpp
-     librecad/src/ui/action_options/modify/qg_roundoptions.h
-     librecad/src/ui/action_options/modify/qg_trimamountoptions.cpp
-     librecad/src/ui/action_options/modify/qg_trimamountoptions.h
-     librecad/src/ui/action_options/other/lc_ucssetoptions.cpp
-     librecad/src/ui/action_options/other/lc_ucssetoptions.h
-     librecad/src/ui/action_options/point/lc_linepointsoptions.cpp
-     librecad/src/ui/action_options/point/lc_linepointsoptions.h
-     librecad/src/ui/action_options/point/lc_pastetopointsoptions.cpp
-     librecad/src/ui/action_options/point/lc_pastetopointsoptions.h
-     librecad/src/ui/action_options/point/lc_pointslatticeoptions.cpp
-     librecad/src/ui/action_options/point/lc_pointslatticeoptions.h
-     librecad/src/ui/action_options/polygon/lc_staroptions.cpp
-     librecad/src/ui/action_options/polygon/qg_linepolygonoptions.cpp
-     librecad/src/ui/action_options/polygon/qg_linepolygonoptions.h
-     librecad/src/ui/action_options/polyline/qg_polylineequidistantoptions.cpp
-     librecad/src/ui/action_options/polyline/qg_polylineequidistantoptions.h
-     librecad/src/ui/action_options/polyline/qg_polylineoptions.cpp
-     librecad/src/ui/action_options/polyline/qg_polylineoptions.h
-     librecad/src/ui/action_options/print_preview/qg_printpreviewoptions.cpp
-     librecad/src/ui/action_options/print_preview/qg_printpreviewoptions.h
-     librecad/src/ui/action_options/rect/lc_rectangle1pointoptions.cpp
-     librecad/src/ui/action_options/rect/lc_rectangle2pointsoptions.cpp
-     librecad/src/ui/action_options/rect/lc_rectangle2pointsoptions.h
-     librecad/src/ui/action_options/rect/lc_rectangle3pointsoptions.cpp
+     librecad/src/ui/action_options/modify/lc_duplicate_options_widget.cpp
+     librecad/src/ui/action_options/modify/lc_line_join_options_widget.cpp
+     librecad/src/ui/action_options/modify/lc_align_options_widget.cpp
+     librecad/src/ui/action_options/modify/lc_align_options_widget.h
+     librecad/src/ui/action_options/modify/lc_align_ref_options_widget.cpp
+     librecad/src/ui/action_options/modify/lc_align_ref_options_widget.h
+     librecad/src/ui/action_options/modify/lc_break_divide_options_widget.cpp
+     librecad/src/ui/action_options/modify/lc_break_divide_options_widget.h
+     librecad/src/ui/action_options/modify/lc_line_gap_options_widget.cpp
+     librecad/src/ui/action_options/modify/lc_line_gap_options_widget.h
+     librecad/src/ui/action_options/modify/lc_mirror_options_widget.cpp
+     librecad/src/ui/action_options/modify/lc_rotate_options_widget.h
+     librecad/src/ui/action_options/modify/lc_rotate_options_widget.cpp
+     librecad/src/ui/action_options/modify/lc_scale_options_widget.cpp
+     librecad/src/ui/action_options/modify/lc_scale_options_widget.h
+     librecad/src/ui/action_options/modify/lc_stretch_options_widget.cpp
+     librecad/src/ui/action_options/modify/lc_stretch_options_widget.h
+     librecad/src/ui/action_options/modify/lc_move_options_widget.cpp
+     librecad/src/ui/action_options/modify/lc_move_options_widget.h
+     librecad/src/ui/action_options/modify/lc_rotate_2_options_widget.cpp
+     librecad/src/ui/action_options/modify/lc_rotate_2_options_widget.h
+     librecad/src/ui/action_options/modify/lc_bevel_options_widget.cpp
+     librecad/src/ui/action_options/modify/lc_bevel_options_widget.h
+     librecad/src/ui/action_options/modify/lc_offset_options_widget.cpp
+     librecad/src/ui/action_options/modify/lc_offset_options_widget.h
+     librecad/src/ui/action_options/modify/lc_move_rotate_options_widget.cpp
+     librecad/src/ui/action_options/modify/lc_move_rotate_options_widget.h
+     librecad/src/ui/action_options/modify/lc_round_options_widget.cpp
+     librecad/src/ui/action_options/modify/lc_round_options_widget.h
+     librecad/src/ui/action_options/modify/lc_trim_amount_options_widget.cpp
+     librecad/src/ui/action_options/modify/lc_trim_amount_options_widget.h
+     librecad/src/ui/action_options/other/lc_ucs_create_options_widget.cpp
+     librecad/src/ui/action_options/other/lc_ucs_create_options_widget.h
+     librecad/src/ui/action_options/point/lc_points_line_options_widget.cpp
+     librecad/src/ui/action_options/point/lc_points_line_options_widget.h
+     librecad/src/ui/action_options/edit/lc_paste_to_points_options_widget.cpp
+     librecad/src/ui/action_options/edit/lc_paste_to_points_options_widget.h
+     librecad/src/ui/action_options/point/lc_points_lattice_options_widget.cpp
+     librecad/src/ui/action_options/point/lc_points_lattice_options_widget.h
+     librecad/src/ui/action_options/polygon/lc_star_options_widget.cpp
+     librecad/src/ui/action_options/polygon/lc_polygon_options_widget.cpp
+     librecad/src/ui/action_options/polygon/lc_polygon_options_widget.h
+     librecad/src/ui/action_options/polyline/lc_polyline_equidistant_options_widget.cpp
+     librecad/src/ui/action_options/polyline/lc_polyline_equidistant_options_widget.h
+     librecad/src/ui/action_options/polyline/lc_polyline_options_widget.cpp
+     librecad/src/ui/action_options/polyline/lc_polyline_options_widget.h
+     librecad/src/ui/action_options/print_preview/lc_print_preview_options_widget.cpp
+     librecad/src/ui/action_options/print_preview/lc_print_preview_options_widget.h
+     librecad/src/ui/action_options/rect/lc_rectangle_1point_options_widget.cpp
+     librecad/src/ui/action_options/rect/lc_rectangle_2points_options_widget.cpp
+     librecad/src/ui/action_options/rect/lc_rectangle_2points_options_widget.h
+     librecad/src/ui/action_options/rect/lc_rectangle_3points_options_widget.cpp
      librecad/src/ui/action_options/selection/lc_selectwindowoptions.cpp
      librecad/src/ui/action_options/selection/lc_selectwindowoptions.h
      librecad/src/ui/action_options/snap/qg_snapdistoptions.cpp
      librecad/src/ui/action_options/snap/qg_snapdistoptions.h
      librecad/src/ui/action_options/snap/qg_snapmiddleoptions.cpp
      librecad/src/ui/action_options/snap/qg_snapmiddleoptions.h
-     librecad/src/ui/action_options/spline/lc_splineexplodeoptions.cpp
-     librecad/src/ui/action_options/spline/lc_splineexplodeoptions.h
-     librecad/src/ui/action_options/spline/lc_splinefrompolylineoptions.cpp
-     librecad/src/ui/action_options/spline/lc_splinefrompolylineoptions.h
-     librecad/src/ui/action_options/spline/qg_splineoptions.cpp
-     librecad/src/ui/action_options/spline/qg_splineoptions.h
-     librecad/src/ui/action_options/text/qg_mtextoptions.cpp
-     librecad/src/ui/action_options/text/qg_mtextoptions.h
-     librecad/src/ui/action_options/text/qg_textoptions.cpp
-     librecad/src/ui/action_options/text/qg_textoptions.h
+     librecad/src/ui/action_options/spline/lc_spline_explode_options_widget.cpp
+     librecad/src/ui/action_options/spline/lc_spline_explode_options_widget.h
+     librecad/src/ui/action_options/spline/lc_spline_from_polyline_options_widget.cpp
+     librecad/src/ui/action_options/spline/lc_spline_from_polyline_options_widget.h
+     librecad/src/ui/action_options/spline/lc_spline_options_widget.cpp
+     librecad/src/ui/action_options/spline/lc_spline_options_widget.h
+     librecad/src/ui/action_options/text/lc_m_text_options_widget.cpp
+     librecad/src/ui/action_options/text/lc_m_text_options_widget.h
+     librecad/src/ui/action_options/text/lc_text_options_widget.cpp
+     librecad/src/ui/action_options/text/lc_text_options_widget.h
      librecad/src/ui/actions/lc_action.h
      librecad/src/ui/actions/lc_action.cpp
      librecad/src/ui/actions/lc_actionfactorybase.h
@@ -1956,6 +1957,102 @@ set (SHARED_SOURCES
      librecad/src/ui/action_options/circle/lc_circle_center_radius_options_filler.h
      librecad/src/ui/action_options/circle/lc_circle_tangental_2_entities_radius_options_filler.cpp
      librecad/src/ui/action_options/circle/lc_circle_tangental_2_entities_radius_options_filler.h
+     librecad/src/ui/action_options/curve/lc_arc_2_points_options_widget_filler.cpp
+     librecad/src/ui/action_options/curve/lc_arc_2_points_options_widget_filler.h
+     librecad/src/ui/action_options/curve/lc_arc_center_point_param_options_filler.cpp
+     librecad/src/ui/action_options/curve/lc_arc_center_point_param_options_filler.h
+     librecad/src/ui/action_options/curve/lc_arc_tangential_options_filler.cpp
+     librecad/src/ui/action_options/curve/lc_arc_tangential_options_filler.h
+     librecad/src/ui/action_options/curve/lc_ellipse_arc_options_filler.cpp
+     librecad/src/ui/action_options/curve/lc_ellipse_arc_options_filler.h
+     librecad/src/ui/action_options/edit/lc_paste_transform_options_filler.cpp
+     librecad/src/ui/action_options/edit/lc_paste_transform_options_filler.h
+     librecad/src/ui/action_options/ellipse/lc_ellipse_1_point_options_filler.cpp
+     librecad/src/ui/action_options/ellipse/lc_ellipse_1_point_options_filler.h
+     librecad/src/ui/action_options/image/lc_image_options_filler.cpp
+     librecad/src/ui/action_options/image/lc_image_options_filler.h
+     librecad/src/ui/action_options/info/lc_info_dist_point_to_entity_options_filler.cpp
+     librecad/src/ui/action_options/info/lc_info_dist_point_to_entity_options_filler.h
+     librecad/src/ui/action_options/polygon/lc_polygon_options_filler.cpp
+     librecad/src/ui/action_options/polygon/lc_polygon_options_filler.h
+     librecad/src/ui/action_options/polygon/lc_polygon_side_side_options_filler.cpp
+     librecad/src/ui/action_options/polygon/lc_polygon_side_side_options_filler.h
+     librecad/src/ui/action_options/point/lc_points_line_options_filler.cpp
+     librecad/src/ui/action_options/point/lc_points_line_options_filler.h
+     librecad/src/ui/action_options/point/lc_points_lattice_options_filler.cpp
+     librecad/src/ui/action_options/point/lc_points_lattice_options_filler.h
+     librecad/src/ui/action_options/edit/lc_paste_to_points_options_filler.cpp
+     librecad/src/ui/action_options/edit/lc_paste_to_points_options_filler.h
+     librecad/src/ui/action_options/insert/lc_block_insert_options_filler.cpp
+     librecad/src/ui/action_options/insert/lc_block_insert_options_filler.h
+     librecad/src/ui/action_options/insert/lc_block_library_insert_options_filler.cpp
+     librecad/src/ui/action_options/insert/lc_block_library_insert_options_filler.h
+     librecad/src/ui/action_options/rect/lc_rectangle_1_point_options_filler.cpp
+     librecad/src/ui/action_options/rect/lc_rectangle_1_point_options_filler.h
+     librecad/src/ui/action_options/rect/lc_rectangle_abstract_options_filler.cpp
+     librecad/src/ui/action_options/rect/lc_rectangle_abstract_options_filler.h
+     librecad/src/ui/action_options/rect/lc_rectangle_2points_options_filler.cpp
+     librecad/src/ui/action_options/rect/lc_rectangle_2points_options_filler.h
+     librecad/src/ui/action_options/rect/lc_rectangle_3_points_options_filler.cpp
+     librecad/src/ui/action_options/rect/lc_rectangle_3_points_options_filler.h
+     librecad/src/ui/action_options/spline/lc_spline_options_filler.cpp
+     librecad/src/ui/action_options/spline/lc_spline_options_filler.h
+     librecad/src/ui/action_options/spline/lc_spline_explode_options_filler.cpp
+     librecad/src/ui/action_options/spline/lc_spline_explode_options_filler.h
+     librecad/src/ui/action_options/spline/lc_spline_from_polyline_options_filler.cpp
+     librecad/src/ui/action_options/spline/lc_spline_from_polyline_options_filler.h
+     librecad/src/ui/action_options/modify/lc_duplicate_options_filler.cpp
+     librecad/src/ui/action_options/modify/lc_duplicate_options_filler.h
+     librecad/src/ui/action_options/modify/lc_line_join_options_filler.cpp
+     librecad/src/ui/action_options/modify/lc_line_join_options_filler.h
+     librecad/src/ui/action_options/modify/lc_mirror_options_filler.cpp
+     librecad/src/ui/action_options/modify/lc_mirror_options_filler.h
+     librecad/src/ui/action_options/modify/lc_align_options_filler.cpp
+     librecad/src/ui/action_options/modify/lc_align_options_filler.h
+     librecad/src/ui/action_options/modify/lc_align_single_options_widget.cpp
+     librecad/src/ui/action_options/modify/lc_align_single_options_widget.h
+     librecad/src/ui/action_options/modify/lc_align_single_options_filler.cpp
+     librecad/src/ui/action_options/modify/lc_align_single_options_filler.h
+     librecad/src/ui/action_options/modify/lc_align_ref_options_filler.cpp
+     librecad/src/ui/action_options/modify/lc_align_ref_options_filler.h
+     librecad/src/ui/action_options/modify/lc_line_gap_options_filler.cpp
+     librecad/src/ui/action_options/modify/lc_line_gap_options_filler.h
+     librecad/src/ui/action_options/modify/lc_bevel_options_filler.cpp
+     librecad/src/ui/action_options/modify/lc_bevel_options_filler.h
+     librecad/src/ui/action_options/modify/lc_round_options_filler.cpp
+     librecad/src/ui/action_options/modify/lc_round_options_filler.h
+     librecad/src/ui/action_options/modify/lc_trim_amount_options_filler.cpp
+     librecad/src/ui/action_options/modify/lc_trim_amount_options_filler.h
+     librecad/src/ui/action_options/modify/lc_offset_options_filler.cpp
+     librecad/src/ui/action_options/modify/lc_offset_options_filler.h
+     librecad/src/ui/action_options/modify/lc_move_rotate_options_filler.cpp
+     librecad/src/ui/action_options/modify/lc_move_rotate_options_filler.h
+     librecad/src/ui/action_options/modify/lc_move_options_filler.cpp
+     librecad/src/ui/action_options/modify/lc_move_options_filler.h
+     librecad/src/ui/action_options/modify/lc_rotate_2_options_filler.cpp
+     librecad/src/ui/action_options/modify/lc_rotate_2_options_filler.h
+     librecad/src/ui/action_options/modify/lc_stretch_options_filler.cpp
+     librecad/src/ui/action_options/modify/lc_stretch_options_filler.h
+     librecad/src/ui/action_options/other/lc_ucs_create_options_filler.cpp
+     librecad/src/ui/action_options/other/lc_ucs_create_options_filler.h
+     librecad/src/ui/action_options/modify/lc_scale_options_filler.cpp
+     librecad/src/ui/action_options/modify/lc_scale_options_filler.h
+     librecad/src/ui/action_options/modify/lc_rotate_options_filler.cpp
+     librecad/src/ui/action_options/modify/lc_rotate_options_filler.h
+     librecad/src/ui/action_options/polyline/lc_polyline_equidistant_options_filler.cpp
+     librecad/src/ui/action_options/polyline/lc_polyline_equidistant_options_filler.h
+     librecad/src/ui/action_options/polyline/lc_polyline_options_filler.cpp
+     librecad/src/ui/action_options/polyline/lc_polyline_options_filler.h
+     librecad/src/ui/action_options/text/lc_text_options_filler.cpp
+     librecad/src/ui/action_options/text/lc_text_options_filler.h
+     librecad/src/ui/action_options/text/lc_m_text_options_filler.cpp
+     librecad/src/ui/action_options/text/lc_m_text_options_filler.h
+     librecad/src/ui/action_options/selection/lc_select_window_options_filler.cpp
+     librecad/src/ui/action_options/selection/lc_select_window_options_filler.h
+     librecad/src/ui/action_options/print_preview/lc_print_preview_options_filler.cpp
+     librecad/src/ui/action_options/print_preview/lc_print_preview_options_filler.h
+     librecad/src/lib/engine/document/lc_plot_settings.cpp
+     librecad/src/lib/engine/document/lc_plot_settings.h
 )
 
 set (MUPARSER_SOURCES
@@ -1979,6 +2076,10 @@ set (MUPARSER_SOURCES
      libraries/muparser/src/muParserError.cpp
      libraries/muparser/src/muParserInt.cpp
      libraries/muparser/src/muParserTokenReader.cpp
+     librecad/src/ui/action_options/polygon/lc_star_options_filler.cpp
+     librecad/src/ui/action_options/polygon/lc_star_options_filler.h
+     librecad/src/ui/action_options/modify/lc_break_divide_options_filler.cpp
+     librecad/src/ui/action_options/modify/lc_break_divide_options_filler.h
 )
 
 # Static library from shared sources

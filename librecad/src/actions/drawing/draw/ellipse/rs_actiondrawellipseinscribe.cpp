@@ -302,22 +302,22 @@ QStringList RS_ActionDrawEllipseInscribe::getAvailableCommands() {
     return {};
 }
 
-void RS_ActionDrawEllipseInscribe::updateMouseButtonHints() {
+void RS_ActionDrawEllipseInscribe::updateActionPrompt() {
     switch (getStatus()) {
         case SetLine1:
-            updateMouseWidgetTRCancel(tr("Specify the first line"));
+            updatePromptTRCancel(tr("Specify the first line"));
             break;
         case SetLine2:
-            updateMouseWidgetTRBack(tr("Specify the second line"));
+            updatePromptTRBack(tr("Specify the second line"));
             break;
         case SetLine3:
-            updateMouseWidgetTRBack(tr("Specify the third line"));
+            updatePromptTRBack(tr("Specify the third line"));
             break;
         case SetLine4:
-            updateMouseWidgetTRBack(tr("Specify the fourth line"));
+            updatePromptTRBack(tr("Specify the fourth line"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

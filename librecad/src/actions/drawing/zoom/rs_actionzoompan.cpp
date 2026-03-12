@@ -103,16 +103,16 @@ void RS_ActionZoomPan::mouseReleaseEvent(QMouseEvent* e) {
     //RS_DEBUG->print("RS_ActionZoomPan::mousePressEvent(): %f %f", v1.x, v1.y);
 }
 
-void RS_ActionZoomPan::updateMouseButtonHints(){
+void RS_ActionZoomPan::updateActionPrompt(){
     switch (getStatus()) {
         case SetPanStart:
-            updateMouseWidgetTRCancel(tr("Click and drag to pan zoom"));
+            updatePromptTRCancel(tr("Click and drag to pan zoom"));
             break;
         case SetPanning:
-            updateMouseWidgetTRCancel(tr("Zoom panning"));
+            updatePromptTRCancel(tr("Zoom panning"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

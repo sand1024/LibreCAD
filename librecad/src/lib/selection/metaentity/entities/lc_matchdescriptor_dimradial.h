@@ -24,7 +24,7 @@
 #ifndef LC_MATCHDESCRIPTORDIMRADIAL_H
 #define LC_MATCHDESCRIPTORDIMRADIAL_H
 
-#include "lc_actionselectquick.h"
+#include "lc_action_select_quick.h"
 #include "lc_matchdescriptor_dimbase.h"
 
 class LC_MatchDescriptorDimRadial: public LC_MatchDescriptorDimBase {

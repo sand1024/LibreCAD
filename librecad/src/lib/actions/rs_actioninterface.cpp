@@ -120,7 +120,7 @@ void RS_ActionInterface::init(const int status) {
     setStatus(status);
     if (status >= InitialActionStatus) {
         RS_Snapper::init();
-        updateMouseButtonHints();
+        updateActionPrompt();
         updateMouseCursor();
         if (mayInitWithContextEntity(status)) {
             doInitialInit();
@@ -314,7 +314,7 @@ QStringList RS_ActionInterface::getAvailableCommands() {
  */
 void RS_ActionInterface::setStatus(const int status) {
     m_status = status;
-    updateMouseButtonHints();
+    updateActionPrompt();
     updateMouseCursor();
     if (status < 0) {
         finish();
@@ -340,7 +340,7 @@ void RS_ActionInterface::trigger() {
  * Should be overwritten to update the mouse button hints
  * wherever they might needed.
  */
-void RS_ActionInterface::updateMouseButtonHints() {
+void RS_ActionInterface::updateActionPrompt() {
 }
 
 /**
@@ -417,7 +417,7 @@ void RS_ActionInterface::suspend() {
  */
 void RS_ActionInterface::resume() {
     updateMouseCursor();
-    updateMouseButtonHints();
+    updateActionPrompt();
     updateSnapAngleStep();
     RS_Snapper::resume();
 }
@@ -548,18 +548,6 @@ void RS_ActionInterface::setMouseCursor(const RS2::CursorType cursor) const {
     }
 }
 
-/**
- * Just a shortcut for updating mouse widgets with message that should be translated
- * @param msg
- * @param modifiers
- */
-void RS_ActionInterface::updateMouseWidgetTRBack(const QString& msg, const LC_ModifiersInfo& modifiers) const {
-    if (m_infoCursorOverlayPrefs->enabled) {
-        preparePromptForInfoCursorOverlay(msg, modifiers);
-    }
-    m_actionContext->updateMouseWidget(msg, tr("Back"), modifiers);
-}
-
 void RS_ActionInterface::preparePromptForInfoCursorOverlay(const QString& msg, const LC_ModifiersInfo& modifiers) const {
     QString prompt = "";
     const LC_InfoCursorOverlayPrefs* prefs = getInfoCursorOverlayPrefs();
@@ -597,15 +585,21 @@ void RS_ActionInterface::preparePromptForInfoCursorOverlay(const QString& msg, c
 }
 
 /**
- * Just a shortcut for updating mouse widgets with message that should be translated
+ * Just a shortcut for updating action prompt with message that should be translated
  * @param msg
  * @param modifiers
  */
-void RS_ActionInterface::updateMouseWidgetTRCancel(const QString& msg, const LC_ModifiersInfo& modifiers) const {
-    if (m_infoCursorOverlayPrefs->enabled) {
-        preparePromptForInfoCursorOverlay(msg, modifiers);
-    }
-    m_actionContext->updateMouseWidget(msg, tr("Cancel"), modifiers);
+void RS_ActionInterface::updatePromptTRBack(const QString& msg, const LC_ModifiersInfo& modifiers) const {
+    updatePrompt(msg, tr("Back"), modifiers);
+}
+
+/**
+ * Just a shortcut for updating action promopt with message that should be translated
+ * @param msg
+ * @param modifiers
+ */
+void RS_ActionInterface::updatePromptTRCancel(const QString& msg, const LC_ModifiersInfo& modifiers) const {
+    updatePrompt(msg, tr("Cancel"), modifiers);
 }
 
 /**
@@ -614,11 +608,11 @@ void RS_ActionInterface::updateMouseWidgetTRCancel(const QString& msg, const LC_
  * @param right string
  * @param modifiers
  */
-void RS_ActionInterface::updateMouseWidget(const QString& left, const QString& right, const LC_ModifiersInfo& modifiers) const {
+void RS_ActionInterface::updatePrompt(const QString& left, const QString& right, const LC_ModifiersInfo& modifiers) const {
     if (m_infoCursorOverlayPrefs->enabled) {
         preparePromptForInfoCursorOverlay(left, modifiers);
     }
-    m_actionContext->updateMouseWidget(left, right, modifiers);
+    m_actionContext->updateActionPrompt(left, right, modifiers);
 }
 
 void RS_ActionInterface::clearMouseWidgetIcon() const {

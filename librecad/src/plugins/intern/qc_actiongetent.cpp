@@ -39,12 +39,12 @@ QC_ActionGetEnt::QC_ActionGetEnt(LC_ActionContext* actionContext)
     m_entity = nullptr;
 }
 
-void QC_ActionGetEnt::updateMouseButtonHints() {
+void QC_ActionGetEnt::updateActionPrompt() {
     if (!m_completed) {
-        updateMouseWidget(m_message, tr("Cancel"));
+        updatePrompt(m_message, tr("Cancel"));
     }
     else {
-        updateMouseWidget();
+        updatePrompt();
     }
 }
 
@@ -62,7 +62,7 @@ void QC_ActionGetEnt::trigger() {
         const RS_Selection s(m_document, m_viewport);
         s.selectSingle(m_entity);
         m_completed = true;
-        updateMouseButtonHints();
+        updateActionPrompt();
     } else {
         RS_DEBUG->print("QC_ActionGetEnt::trigger: Entity is NULL\n");
     }
@@ -74,14 +74,14 @@ void QC_ActionGetEnt::onMouseLeftButtonRelease([[maybe_unused]]int status, [[may
 }
 void QC_ActionGetEnt::onMouseRightButtonRelease([[maybe_unused]]int status, [[maybe_unused]]QMouseEvent * e){
     m_completed = true;
-    updateMouseButtonHints();
+    updateActionPrompt();
     finish();
 }
 
 void QC_ActionGetEnt::keyPressEvent(QKeyEvent *e){
     // qDebug() << "QC_ActionGetEnt::keyPressEvent";
     if (e->key() == Qt::Key_Escape) {
-        updateMouseWidget();
+        updatePrompt();
         m_completed = true;
         // qDebug() << "escape QC_ActionGetEnt";
     }

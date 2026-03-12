@@ -32,9 +32,8 @@ struct LC_ActionDrawCircle2PointsRadius::Points {
 };
 
 LC_ActionDrawCircle2PointsRadius::LC_ActionDrawCircle2PointsRadius(LC_ActionContext* actionContext)
-    : LC_ActionDrawCircleCenterRadius(actionContext), m_actionData(std::make_unique<Points>()) {
-    m_actionType = RS2::ActionDrawCircle2PR;
-    m_settingsPrefix = "ActionDrawCircle2PR";
+    : LC_ActionDrawCircleCenterRadius("ActionDrawCircle2PointsRadius", actionContext, RS2::ActionDrawCircle2PointsRadius),
+      m_actionData(std::make_unique<Points>()) {
     LC_ActionDrawCircle2PointsRadius::reset();
 }
 
@@ -66,7 +65,7 @@ void LC_ActionDrawCircle2PointsRadius::doTriggerCompletion([[maybe_unused]] bool
     reset();
 }
 
-bool LC_ActionDrawCircle2PointsRadius::preparePreview(const RS_Vector& mouse, RS_Vector& altCenter){
+bool LC_ActionDrawCircle2PointsRadius::preparePreview(const RS_Vector& mouse, RS_Vector& altCenter) {
     RS_CircleData circleData(m_center, m_radius);
     const bool result = LC_CreationCircle::create2PRadius(m_actionData->point1, m_actionData->point2, m_radius, altCenter, circleData);
     if (result) {
@@ -170,8 +169,8 @@ void LC_ActionDrawCircle2PointsRadius::onCoordinateEvent(const int status, [[may
             }
             else {
                 commandMessage(
-                    tr("radius=%1 is too small for points selected\ndistance between points=%2 is larger than diameter=%3").
-                    arg(m_radius).arg(distance).arg(2. * m_radius));
+                    tr("radius=%1 is too small for points selected\ndistance between points=%2 is larger than diameter=%3").arg(m_radius).
+                    arg(distance).arg(2. * m_radius));
             }
             break;
         }
@@ -202,19 +201,19 @@ QStringList LC_ActionDrawCircle2PointsRadius::getAvailableCommands() {
     return cmd;
 }
 
-void LC_ActionDrawCircle2PointsRadius::updateMouseButtonHints() {
+void LC_ActionDrawCircle2PointsRadius::updateActionPrompt() {
     switch (getStatus()) {
         case SetPoint1:
-            updateMouseWidgetTRCancel(tr("Specify first point"), MOD_SHIFT_RELATIVE_ZERO);
+            updatePromptTRCancel(tr("Specify first point"), MOD_SHIFT_RELATIVE_ZERO);
             break;
         case SetPoint2:
-            updateMouseWidgetTRBack(tr("Specify second point"), MOD_SHIFT_ANGLE_SNAP);
+            updatePromptTRBack(tr("Specify second point"), MOD_SHIFT_ANGLE_SNAP);
             break;
         case SelectCenter:
-            updateMouseWidgetTRBack(tr("Select circle center"));
+            updatePromptTRBack(tr("Select circle center"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

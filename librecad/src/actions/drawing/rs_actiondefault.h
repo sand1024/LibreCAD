@@ -88,7 +88,7 @@ protected:
 
     void highlightHoveredEntities(const LC_MouseEvent* event);
     void highlightEntity(const RS_Entity* entity) const;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     void createEditedLineDescription(RS_Line* clone, bool ctrlPressed, bool shiftPressed) const;
     void createEditedArcDescription(const RS_Arc* clone, bool ctrlPressed, bool shiftPressed) const;
     void createEditedCircleDescription(const RS_Circle* clone, bool ctrlPressed, bool shiftPressed) const;

@@ -125,16 +125,16 @@ void RS_ActionSnapIntersectionManual::onMouseRightButtonRelease(const int status
     initPrevious(status);
 }
 
-void RS_ActionSnapIntersectionManual::updateMouseButtonHints() {
+void RS_ActionSnapIntersectionManual::updateActionPrompt() {
     switch (getStatus()) {
         case ChooseEntity1:
-            updateMouseWidgetTRCancel(tr("Select first entity"));
+            updatePromptTRCancel(tr("Select first entity"));
             break;
         case ChooseEntity2:
-            updateMouseWidgetTRBack(tr("Select second entity"));
+            updatePromptTRBack(tr("Select second entity"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

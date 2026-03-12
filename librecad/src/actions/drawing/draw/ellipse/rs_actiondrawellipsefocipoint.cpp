@@ -195,19 +195,19 @@ QStringList RS_ActionDrawEllipseFociPoint::getAvailableCommands() {
     return {};
 }
 
-void RS_ActionDrawEllipseFociPoint::updateMouseButtonHints() {
+void RS_ActionDrawEllipseFociPoint::updateActionPrompt() {
     switch (getStatus()) {
         case SetFocus1:
-            updateMouseWidgetTRCancel(tr("Specify first focus of ellipse"), MOD_SHIFT_RELATIVE_ZERO);
+            updatePromptTRCancel(tr("Specify first focus of ellipse"), MOD_SHIFT_RELATIVE_ZERO);
             break;
         case SetFocus2:
-            updateMouseWidgetTRBack(tr("Specify second focus of ellipse"), MOD_SHIFT_ANGLE_SNAP);
+            updatePromptTRBack(tr("Specify second focus of ellipse"), MOD_SHIFT_ANGLE_SNAP);
             break;
         case SetPoint:
-            updateMouseWidgetTRBack(tr("Specify a point on ellipse or total distance to foci"));
+            updatePromptTRBack(tr("Specify a point on ellipse or total distance to foci"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

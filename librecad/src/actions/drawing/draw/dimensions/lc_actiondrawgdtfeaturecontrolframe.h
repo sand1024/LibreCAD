@@ -56,7 +56,7 @@ protected:
     };
 
     std::unique_ptr<ActionData> m_actionData;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     bool doProcessCommand(int status, const QString& command) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector& pos) override;
     void doTriggerCompletion(bool success) override;

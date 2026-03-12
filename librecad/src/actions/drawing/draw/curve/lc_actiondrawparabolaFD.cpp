@@ -97,7 +97,7 @@ struct LC_ActionDrawParabolaFD::ActionData {
  *
  */
 LC_ActionDrawParabolaFD::LC_ActionDrawParabolaFD(LC_ActionContext *actionContext)
-    :LC_SingleEntityCreationAction("Draw parabola by focus and directrix", actionContext,RS2::ActionDrawParabolaFD)
+    :LC_SingleEntityCreationAction("ActionDrawParabolaFocusDiretrix", actionContext,RS2::ActionDrawParabolaFocusDiretrix)
     , m_actionData(std::make_unique<ActionData>()){
 }
 
@@ -280,24 +280,24 @@ QStringList LC_ActionDrawParabolaFD::getAvailableCommands() {
     return {};
 }
 
-void LC_ActionDrawParabolaFD::updateMouseButtonHints() {
+void LC_ActionDrawParabolaFD::updateActionPrompt() {
     switch (getStatus()) {
         case SetFocus:
-            updateMouseWidgetTRCancel(tr("Specify the focus of parabola"), MOD_SHIFT_RELATIVE_ZERO);
+            updatePromptTRCancel(tr("Specify the focus of parabola"), MOD_SHIFT_RELATIVE_ZERO);
             break;
         case SetDirectrix:
-            updateMouseWidgetTRBack(tr("Select line that is parallel to directrix of parabola or set vertex point"));
+            updatePromptTRBack(tr("Select line that is parallel to directrix of parabola or set vertex point"));
             break;
 
         case SetStartPoint:
-            updateMouseWidgetTRBack(tr("Specify the start point on parabola"));
+            updatePromptTRBack(tr("Specify the start point on parabola"));
             break;
 
         case SetEndPoint:
-            updateMouseWidgetTRBack(tr("Specify the end point on parabola"));
+            updatePromptTRBack(tr("Specify the end point on parabola"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

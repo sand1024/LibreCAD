@@ -48,7 +48,7 @@ protected:
    void doInitWithContextEntity(RS_Entity* contextEntity, const RS_Vector& clickPos) override;
    void reset()   override;
     void setRadius(const RS_Vector& selectedPosition);
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     bool doProcessCommand(int status, const QString &command)  override;
     void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;

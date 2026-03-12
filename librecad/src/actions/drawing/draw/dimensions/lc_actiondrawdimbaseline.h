@@ -65,7 +65,7 @@ protected:
     void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
     void pickOriginalEntity(RS_Entity* dimCandidate, const RS_Vector& mouse);
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector &coord) override;
     RS_Entity* doTriggerCreateEntity() override;
 };

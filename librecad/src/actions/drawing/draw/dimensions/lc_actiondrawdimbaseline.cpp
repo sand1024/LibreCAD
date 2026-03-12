@@ -408,23 +408,23 @@ QStringList LC_ActionDrawDimBaseline::getAvailableCommands() {
     return cmd;
 }
 
-void LC_ActionDrawDimBaseline::updateMouseButtonHints() {
+void LC_ActionDrawDimBaseline::updateActionPrompt() {
     const int status = getStatus();
     switch (status) {
         case SetExtPoint1:
-            updateMouseWidgetTRCancel(tr("Select base linear/aligned dimension"), MOD_CTRL(tr("Select distant extension point")));
+            updatePromptTRCancel(tr("Select base linear/aligned dimension"), MOD_CTRL(tr("Select distant extension point")));
             break;
         case SetExtPoint2:
-            updateMouseWidgetTRBack(tr("Specify second extension line origin"), isBaseline() && !m_freeBaselineDistance ? MOD_CTRL(tr("Mirror offset direction")): MOD_NONE);
+            updatePromptTRBack(tr("Specify second extension line origin"), isBaseline() && !m_freeBaselineDistance ? MOD_CTRL(tr("Mirror offset direction")): MOD_NONE);
             break;
         case SetDefPoint:
-            updateMouseWidgetTRBack(tr("Specify dimension line location"), MOD_SHIFT_LC(tr("Snap to Adjacent Dim")));
+            updatePromptTRBack(tr("Specify dimension line location"), MOD_SHIFT_LC(tr("Snap to Adjacent Dim")));
             break;
         case SetText:
-            updateMouseWidget(tr("Enter dimension text:"));
+            updatePrompt(tr("Enter dimension text:"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

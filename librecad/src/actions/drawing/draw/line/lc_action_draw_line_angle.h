@@ -130,7 +130,7 @@ protected:
     LC_ActionOptionsWidget* createOptionsWidget() override;
     LC_ActionOptionsPropertiesFiller* createOptionsFiller() override;
     bool doProcessCommand(int status, const QString& command) override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector& pos) override;
     void initFromSettings() override;
     bool doUpdateAngleByInteractiveInput(const QString& tag, double angleRad) override;

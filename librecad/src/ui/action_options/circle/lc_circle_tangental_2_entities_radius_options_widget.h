@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include<memory>
 
-#include "lc_action_options_widget_base.h"
+#include "lc_action_options_widget.h"
 
 class RS_ActionInterface;
 class LC_ActionDrawCircleTangental2EntitiesRadius;
@@ -33,7 +33,7 @@ namespace Ui {
     class LC_CircleTangental2EntitiesRadiusOptionsWidget;
 }
 
-class LC_CircleTangental2EntitiesRadiusOptionsWidget : public LC_ActionOptionsWidgetBase{
+class LC_CircleTangental2EntitiesRadiusOptionsWidget : public LC_ActionOptionsWidget{
     Q_OBJECT
 public:
     LC_CircleTangental2EntitiesRadiusOptionsWidget();
@@ -44,6 +44,6 @@ public slots:
 protected:
     LC_ActionDrawCircleTangental2EntitiesRadius* m_action;
     std::unique_ptr<Ui::LC_CircleTangental2EntitiesRadiusOptionsWidget> ui;
-    void doSetAction(RS_ActionInterface *a) override;
+    void doUpdateByAction(RS_ActionInterface *a) override;
 };
 #endif

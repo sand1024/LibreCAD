@@ -37,7 +37,7 @@ struct LC_ActionDrawParabola4Points::ActionData {
  *
  */
 LC_ActionDrawParabola4Points::LC_ActionDrawParabola4Points(LC_ActionContext *actionContext)
-    :LC_SingleEntityCreationAction("Draw parabola from 4 points", actionContext,RS2::ActionDrawParabola4Points),
+    :LC_SingleEntityCreationAction("ActionDrawParabola4Points", actionContext,RS2::ActionDrawParabola4Points),
      m_actionData(std::make_unique<ActionData>()){
 }
 
@@ -180,25 +180,25 @@ QStringList LC_ActionDrawParabola4Points::getAvailableCommands() {
     return {};
 }
 
-void LC_ActionDrawParabola4Points::updateMouseButtonHints() {
+void LC_ActionDrawParabola4Points::updateActionPrompt() {
     switch (getStatus()) {
         case SetPoint1:
-            updateMouseWidgetTRCancel(tr("Specify the first point on parabola"), MOD_SHIFT_RELATIVE_ZERO);
+            updatePromptTRCancel(tr("Specify the first point on parabola"), MOD_SHIFT_RELATIVE_ZERO);
             break;
         case SetPoint2:
-            updateMouseWidgetTRBack(tr("Specify the second point on parabola"));
+            updatePromptTRBack(tr("Specify the second point on parabola"));
             break;
         case SetPoint3:
-            updateMouseWidgetTRBack(tr("Specify the third point on parabola"));
+            updatePromptTRBack(tr("Specify the third point on parabola"));
             break;
         case SetPoint4:
-            updateMouseWidgetTRBack(tr("Specify the fourth point on parabola"));
+            updatePromptTRBack(tr("Specify the fourth point on parabola"));
             break;
         case SetAxis:
-            updateMouseWidgetTRBack(tr("Specify the Axis on parabola"));
+            updatePromptTRBack(tr("Specify the Axis on parabola"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

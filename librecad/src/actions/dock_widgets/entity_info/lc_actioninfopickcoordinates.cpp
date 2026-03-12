@@ -115,6 +115,6 @@ void LC_ActionInfoPickCoordinates::updateQuickInfoWidget(const RS_Vector& coord)
     }
 }
 
-void LC_ActionInfoPickCoordinates::updateMouseButtonHints(){
-    updateMouseWidgetTRCancel(tr("Select point"), MOD_SHIFT_FREE_SNAP);
+void LC_ActionInfoPickCoordinates::updateActionPrompt(){
+    updatePromptTRCancel(tr("Select point"), MOD_SHIFT_FREE_SNAP);
 }

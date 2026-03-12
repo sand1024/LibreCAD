@@ -1110,7 +1110,9 @@ void LC_GraphicViewport::zoomPage() {
         return;
     }
 
-    const RS_Vector s = graphic->getPrintAreaSize() / graphic->getPaperScale();
+    LC_PlotSettings* ps = graphic->getPlotSettings();
+
+    const RS_Vector s = ps->getPrintAreaSize() / ps->getPaperScale();
 
     double fx = 0., fy = 0.;
 
@@ -1173,11 +1175,12 @@ void LC_GraphicViewport::zoomPageEx() {
     }
 
     const RS2::Unit dest = graphic->getUnit();
-    const double marginsWidth = RS_Units::convert(graphic->getMarginLeft() + graphic->getMarginRight(), RS2::Millimeter, dest);
-    const double marginsHeight = RS_Units::convert(graphic->getMarginTop() +graphic->getMarginBottom(), RS2::Millimeter, dest);
+    LC_PlotSettings* ps = m_graphic->getPlotSettings();
+    const double marginsWidth = RS_Units::convert(ps->getMarginLeftMm() + ps->getMarginRightMm(), RS2::Millimeter, dest);
+    const double marginsHeight = RS_Units::convert(ps->getMarginTopMm() + ps->getMarginBottomMm(), RS2::Millimeter, dest);
 
-    const RS_Vector &printAreaSize = graphic->getPrintAreaSize(true);
-    const double paperScale = graphic->getPaperScale();
+    const RS_Vector &printAreaSize = ps->getPrintAreaSize(true);
+    const double paperScale = ps->getPaperScale();
     const RS_Vector printAreaSizeInViewCoordinates = (printAreaSize + RS_Vector(marginsWidth, marginsHeight)) / paperScale;
 
     LC_ERR<<"margin: "<<marginsWidth<<", "<<marginsHeight;

@@ -246,21 +246,21 @@ void RS_ActionDrawLineOrthTan::onMouseRightButtonRelease(const int status, [[may
     }
 }
 
-void RS_ActionDrawLineOrthTan::updateMouseButtonHints() {
+void RS_ActionDrawLineOrthTan::updateActionPrompt() {
     switch (getStatus()) {
         case SetLine:
             if (m_actionData->setCircleFirst) {
-                updateMouseWidgetTRCancel(tr("Select a line"), MOD_CTRL(tr("Alternate Point")));
+                updatePromptTRCancel(tr("Select a line"), MOD_CTRL(tr("Alternate Point")));
             }
             else {
-                updateMouseWidgetTRCancel(tr("Select a line"));
+                updatePromptTRCancel(tr("Select a line"));
             }
             break;
         case SetCircle:
-            updateMouseWidgetTRBack(tr("Select circle, arc or ellipse"));
+            updatePromptTRBack(tr("Select circle, arc or ellipse"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

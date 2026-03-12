@@ -240,13 +240,13 @@ void LC_ActionDrawCircleByArc::doOnLeftMouseButtonRelease([[maybe_unused]] const
     }
 }
 
-void LC_ActionDrawCircleByArc::updateMouseButtonHints() {
+void LC_ActionDrawCircleByArc::updateActionPrompt() {
     switch (getStatus()) {
         case SetArc:
-            updateMouseWidgetTRCancel(tr("Select arc or ellipse arc"));
+            updatePromptTRCancel(tr("Select arc or ellipse arc"));
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

@@ -138,7 +138,7 @@ void LC_ActionSnapMiddleManual::onCoordinateEvent(const int status, [[maybe_unus
             m_actionData->startPoint = pos;
             setStatus(SetEndPoint);
             moveRelativeZero(pos);
-            updateMouseButtonHints();
+            updateActionPrompt();
             break;
         }
         case SetEndPoint: {
@@ -162,7 +162,7 @@ void LC_ActionSnapMiddleManual::onCoordinateEvent(const int status, [[maybe_unus
                 }
 
                 setStatus(SetPercentage);
-                updateMouseButtonHints();
+                updateActionPrompt();
                 init(getStatus());
             }
             break;
@@ -183,7 +183,7 @@ bool LC_ActionSnapMiddleManual::doProcessCommand(const int status, const QString
             if (ok){
                 setStatus(SetStartPoint);
                 accepted = true;
-                updateMouseButtonHints();
+                updateActionPrompt();
             } else {
                 m_actionData->percentage = g_defaultRatio;
             }
@@ -200,7 +200,7 @@ bool LC_ActionSnapMiddleManual::doProcessCommand(const int status, const QString
             if (checkCommand("close", inputCommand)){
                 setStatus(-1);
                 accepted = true;
-                updateMouseButtonHints();
+                updateActionPrompt();
             }
             break;
         }
@@ -222,19 +222,19 @@ QStringList LC_ActionSnapMiddleManual::doGetAvailableCommands(const int status){
     return actionCommandsList;
 }
 
-void LC_ActionSnapMiddleManual::updateMouseButtonHints(){
+void LC_ActionSnapMiddleManual::updateActionPrompt(){
     switch (getStatus()) {
         case SetPercentage:
-            updateMouseWidgetTRCancel(tr("Specify percentage / start-point"));
+            updatePromptTRCancel(tr("Specify percentage / start-point"));
             break;
         case SetStartPoint:
-            updateMouseWidgetTRCancel(tr("Specify start point"));
+            updatePromptTRCancel(tr("Specify start point"));
             break;
         case SetEndPoint:
-            updateMouseWidgetTRBack(tr("Specify end point"), MOD_SHIFT_ANGLE_SNAP);
+            updatePromptTRBack(tr("Specify end point"), MOD_SHIFT_ANGLE_SNAP);
             break;
         default:
-            updateMouseWidget();
+            updatePrompt();
             break;
     }
 }

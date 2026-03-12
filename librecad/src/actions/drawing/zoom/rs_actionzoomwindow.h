@@ -55,7 +55,7 @@ protected:
     RS2::CursorType doGetMouseCursor(int status) override;
     void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
     void doTrigger() override;
 };
 #endif

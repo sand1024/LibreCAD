@@ -26,7 +26,7 @@
 #ifndef QG_LINEOPTIONS_H
 #define QG_LINEOPTIONS_H
 
-#include "lc_action_options_widget_base.h"
+#include "lc_action_options_widget.h"
 
 class RS_ActionInterface;
 class LC_ActionDrawLine;
@@ -35,7 +35,7 @@ namespace Ui {
     class LC_LineOptionsWidget;
 }
 
-class LC_LineOptionsWidget : public LC_ActionOptionsWidgetBase{
+class LC_LineOptionsWidget : public LC_ActionOptionsWidget{
     Q_OBJECT
 public:
     LC_LineOptionsWidget();
@@ -48,7 +48,7 @@ public slots:
     void languageChange() override;
 protected:
     LC_ActionDrawLine* m_action = nullptr;
-    void doSetAction(RS_ActionInterface *a) override;
+    void doUpdateByAction(RS_ActionInterface *a) override;
 private:
     std::unique_ptr<Ui::LC_LineOptionsWidget> ui;
 };

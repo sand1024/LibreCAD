@@ -3143,13 +3143,36 @@ bool dxfRW::processPlotSettings() {
 
 bool dxfRW::writePlotSettings(DRW_PlotSettings *ent) {
     writeName("PLOTSETTINGS");
+    // writeUtf8String(4, ent->plotViewName);
     writeString(5, toHexStr(++entCount));
     writeSubClass("PlotSettings");
     writeUtf8String(6, ent->plotViewName);
-    writeDouble(40, ent->marginLeft);
-    writeDouble(41, ent->marginBottom);
-    writeDouble(42, ent->marginRight);
-    writeDouble(43, ent->marginTop);
+    writeUtf8String(7, ent->currentStyleName);
+    writeDouble(40, ent->marginLeftMM);
+    writeDouble(41, ent->marginBottomMM);
+    writeDouble(42, ent->marginRightMM);
+    writeDouble(43, ent->marginTopMM);
+    writeDouble(44, ent->paperWidthMM);
+    writeDouble(45, ent->paperHeightMM);
+    writeDouble(46, ent->originOffsetXMM);
+    writeDouble(47, ent->originOffsetYMM);
+    writeDouble(48, ent->plotWindowLowerLeftX);
+    writeDouble(49, ent->plotWindowLowerLeftY);
+    writeDouble(140, ent->plotWindowUpperRightX);
+    writeDouble(141, ent->plotWindowUpperRightY);
+    writeDouble(142, ent->customPrintScalePaperUnitsNumerator);
+    writeDouble(143, ent->customPrintScaleDrawingUnitsDenominator);
+    writeInt32(70, ent->plotLayoutFlag);
+    writeInt32(72, ent->plotPaperUnits);
+    writeInt32(73, ent->plotRotation);
+    writeInt32(74, ent->plotType);
+    writeInt32(75, ent->standardScaleType);
+    writeInt32(76, ent->shadePlotMode);
+    writeInt32(77, ent->shadePlotResolutionMode);
+    writeInt32(78, ent->shadePlotCustomDPI);
+    writeDouble(147, ent->standardScaleFactor);
+    writeDouble(148, ent->paperImageOriginX);
+    writeDouble(149, ent->paperImageOriginY);
     return true;
 }
 

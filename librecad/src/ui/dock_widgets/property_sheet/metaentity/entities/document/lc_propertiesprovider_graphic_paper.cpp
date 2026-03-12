@@ -68,29 +68,32 @@ void LC_PropertiesProviderGraphicPaper::createTiledPrintingPages(LC_PropertyCont
     propertyPagesHor->setNames({"printNumX", tr("Horizontal pages"), tr("Number of pages to print by horizontal")});
     propertyPagesHor->setViewDescriptor(pagesDescriptor);
 
-    auto funGetPagesHor = [](const RS_Graphic* e) -> int {
+    LC_PlotSettings* ps = graphic->getPlotSettings();
+
+    auto funGetPagesHor = [](const LC_PlotSettings* e) -> int {
         return e->getPagesNumHoriz();
     };
 
-    auto funSetPagesHor = [](const int& v, RS_Graphic* e) -> void {
+    auto funSetPagesHor = [](const int& v, LC_PlotSettings* e) -> void {
         e->setPagesNum(v, -1);
     };
 
-    createDirectDelegatedStorage<int, RS_Graphic>(funGetPagesHor, funSetPagesHor, graphic, propertyPagesHor);
+    createDirectDelegatedStorage<int, LC_PlotSettings>(funGetPagesHor, funSetPagesHor, ps, propertyPagesHor);
     cont->addChildProperty(propertyPagesHor);
 
     auto* propertyPagesVert = new LC_PropertyInt(cont, false);
     propertyPagesVert->setNames({"printNumY", tr("Vertical pages"), tr("Number of pages to print by vertical")});
     propertyPagesVert->setViewDescriptor(pagesDescriptor);
 
-    auto funGetPagesVert = [](const RS_Graphic* e) -> int {
+    auto funGetPagesVert = [](const LC_PlotSettings* e) -> int {
         return e->getPagesNumVert();
     };
 
-    auto funSetPagesVert = [](const int& v, RS_Graphic* e) -> void {
+    auto funSetPagesVert = [](const int& v, LC_PlotSettings* e) -> void {
         e->setPagesNum(-1, v);
     };
-    createDirectDelegatedStorage<int, RS_Graphic>(funGetPagesVert, funSetPagesVert, graphic, propertyPagesVert);
+
+    createDirectDelegatedStorage<int, LC_PlotSettings>(funGetPagesVert, funSetPagesVert, ps, propertyPagesVert);
     cont->addChildProperty(propertyPagesVert);
 }
 
@@ -103,16 +106,18 @@ void LC_PropertiesProviderGraphicPaper::createPrintMargins(LC_PropertyContainer*
     propertyMargins->setTopDescription(tr("Top page margin"));
     propertyMargins->setBottomDescription(tr("Bottom page margin"));
 
-    auto funGet = [](const RS_Graphic* e) -> LC_MarginsRect {
+    LC_PlotSettings* ps = graphic->getPlotSettings();
+
+    auto funGet = [](const LC_PlotSettings* e) -> LC_MarginsRect {
         return e->getMarginsInUnits();
     };
 
-    auto funSet = [this](const LC_MarginsRect& v, RS_Graphic* e) -> void {
-        e->setMarginsInUnits(v);
+    auto funSet = [this](const LC_MarginsRect& v, LC_PlotSettings* e) -> void {
+        e->setMarginsInUnits(v.left, v.top,  v.right,  v.bottom);
         notifyDrawingOptionsChanged();
     };
 
-    createDirectDelegatedStorage<LC_MarginsRect, RS_Graphic>(funGet, funSet, graphic, propertyMargins);
+    createDirectDelegatedStorage<LC_MarginsRect, LC_PlotSettings>(funGet, funSet, ps, propertyMargins);
     cont->addChildProperty(propertyMargins);
 }
 
@@ -122,14 +127,16 @@ void LC_PropertiesProviderGraphicPaper::createPrintOrientation(LC_PropertyContai
         {1, tr("Portrait")}}
     };
 
-    auto funGetValue = [](const RS_Graphic* e) -> LC_PropertyEnumValueType {
+    LC_PlotSettings* ps = graphic->getPlotSettings();
+
+    auto funGetValue = [](const LC_PlotSettings* e) -> LC_PropertyEnumValueType {
         bool landscape;
         [[maybe_unused]] RS2::PaperFormat format = e->getPaperFormat(&landscape);
         const int result = landscape ? 0 : 1;
         return result;
     };
 
-    auto funSetValue = [this]([[maybe_unused]] const LC_PropertyEnumValueType& v,  RS_Graphic* e) -> void {
+    auto funSetValue = [this]([[maybe_unused]] const LC_PropertyEnumValueType& v,  LC_PlotSettings* e) -> void {
         bool landscape;
         [[maybe_unused]] const RS2::PaperFormat format = e->getPaperFormat(&landscape);
         const bool newLandscape = v == 0;
@@ -138,12 +145,13 @@ void LC_PropertiesProviderGraphicPaper::createPrintOrientation(LC_PropertyContai
     };
 
     const LC_Property::Names names = {"printOrientation", tr("Orientation"), tr("Orientation of page for printing")};
-    addDirectEnum<LC_PropertyEnumValueType, RS_Graphic>(cont, names, &orientationDescriptor, funGetValue, funSetValue, graphic);
+    addDirectEnum<LC_PropertyEnumValueType, LC_PlotSettings>(cont, names, &orientationDescriptor, funGetValue, funSetValue, ps);
 }
 
 void LC_PropertiesProviderGraphicPaper::createPageSize(LC_PropertyContainer* const cont, RS_Graphic* graphic) const {
     bool landscape;
-    const RS2::PaperFormat paperFormat = graphic->getPaperFormat(&landscape);
+    auto ps = graphic->getPlotSettings();
+    const RS2::PaperFormat paperFormat = ps->getPaperFormat(&landscape);
 
     const bool readOnlyPageSize = paperFormat != RS2::PaperFormat::Custom;
     auto* propertyPageSize = new LC_PropertyRSVector(cont, false);
@@ -159,28 +167,29 @@ void LC_PropertiesProviderGraphicPaper::createPageSize(LC_PropertyContainer* con
 
     propertyPageSize->setActionContextAndLaterRequestor(m_actionContext, m_widget);
 
-    auto funGet = [](const RS_Graphic* e) -> RS_Vector {
+    auto funGet = [](const LC_PlotSettings* e) -> RS_Vector {
         const auto paperSize = e->getPaperSize();
         return paperSize;
     };
 
-    auto funSet = [this](const RS_Vector& v, RS_Graphic* e) -> void {
+    auto funSet = [this](const RS_Vector& v, LC_PlotSettings* e) -> void {
         e->setPaperSize(v);
         notifyDrawingOptionsChanged();
     };
 
-    createDirectDelegatedStorage<RS_Vector, RS_Graphic>(funGet, funSet, graphic, propertyPageSize);
+    createDirectDelegatedStorage<RS_Vector, LC_PlotSettings>(funGet, funSet, ps, propertyPageSize);
     propertyPageSize->setReadOnly(readOnlyPageSize);
     cont->addChildProperty(propertyPageSize);
 }
 
 void LC_PropertiesProviderGraphicPaper::createPageFormat(LC_PropertyContainer* const cont, RS_Graphic* graphic) {
-    auto funGetValue = [](const RS_Graphic* e) -> RS2::PaperFormat {
+    LC_PlotSettings* ps = graphic->getPlotSettings();
+    auto funGetValue = [](const LC_PlotSettings* e) -> RS2::PaperFormat {
         [[maybe_unused]] bool landscape;
         return e->getPaperFormat(&landscape);
     };
 
-    auto funSetValue = [this]([[maybe_unused]] const LC_PropertyEnumValueType& v,  RS_Graphic* e) -> void {
+    auto funSetValue = [this]([[maybe_unused]] const LC_PropertyEnumValueType& v,  LC_PlotSettings* e) -> void {
         bool landscape;
         [[maybe_unused]] auto oldFormat = e->getPaperFormat(&landscape);
         e->setPaperFormat(static_cast<RS2::PaperFormat>(v), landscape);
@@ -189,5 +198,5 @@ void LC_PropertiesProviderGraphicPaper::createPageFormat(LC_PropertyContainer* c
 
     static LC_EnumDescriptor paperFormatDescriptor = createPaperFormatDescriptor();
     const LC_Property::Names names = {"printPage", tr("Page"), tr("Page format used for printing")};
-    addDirectEnum<LC_PropertyEnumValueType, RS_Graphic>(cont, names, &paperFormatDescriptor, funGetValue, funSetValue, graphic);
+    addDirectEnum<LC_PropertyEnumValueType, LC_PlotSettings>(cont, names, &paperFormatDescriptor, funGetValue, funSetValue, ps);
 }

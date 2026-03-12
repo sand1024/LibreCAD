@@ -34,7 +34,21 @@
 
 
 LC_ActionDrawLineAngle::LC_ActionDrawLineAngle(LC_ActionContext* actionContext, const bool fixedAngle, const RS2::ActionType actionType)
-    : LC_SingleEntityCreationAction("Draw lines with given angle", actionContext, actionType) {
+    : LC_SingleEntityCreationAction("", actionContext, actionType) {
+    switch (actionType) {
+        case RS2::ActionDrawLineAngle: {
+            m_optionsSettingsGroupName = "ActionDrawLineAngle";
+            break;
+        }
+        case RS2::ActionDrawLineHorizontal: {
+            m_optionsSettingsGroupName = "ActionDrawLineHorizontal";
+            break;
+        }
+        case RS2::ActionDrawLineVertical: {
+            m_optionsSettingsGroupName = "ActionDrawLineVertical";
+            break;
+        }
+    }
     m_fixedAngle = fixedAngle;
     reset();
 }
@@ -458,18 +472,18 @@ QStringList LC_ActionDrawLineAngle::getAvailableCommands() {
     return cmd;
 }
 
-void LC_ActionDrawLineAngle::updateMouseButtonHints() {
+void LC_ActionDrawLineAngle::updateActionPrompt() {
     switch (getStatus()) {
         case SetPos: {
-            updateMouseWidgetTRCancel(tr("Specify position"), MOD_SHIFT_AND_CTRL(MSG_REL_ZERO, tr("Alternate Direction")));
+            updatePromptTRCancel(tr("Specify position"), MOD_SHIFT_AND_CTRL(MSG_REL_ZERO, tr("Alternate Direction")));
             break;
         }
         case SetAngle: {
-            updateMouseWidgetTRBack(tr("Enter angle:"));
+            updatePromptTRBack(tr("Enter angle:"));
             break;
         }
         case SetLength: {
-            updateMouseWidgetTRBack(tr("Enter length:"));
+            updatePromptTRBack(tr("Enter length:"));
             break;
         }
         case SetLengthType: {
@@ -480,19 +494,19 @@ void LC_ActionDrawLineAngle::updateMouseButtonHints() {
             else {
                 typesStr = QString("[%1|%2|%3|%4]:").arg(tr("line"), tr("x"), tr("y"), tr("free"));
             }
-            updateMouseWidgetTRBack(tr("Enter length type ") + typesStr);
+            updatePromptTRBack(tr("Enter length type ") + typesStr);
             break;
         }
         case SetPoint2: {
-            updateMouseWidgetTRBack(tr("Specify second point"));
+            updatePromptTRBack(tr("Specify second point"));
             break;
         }
         case SetSnapPoint: {
-            updateMouseWidgetTRBack(tr("Enter snap type ") + QString("[%1|%2|%3]:").arg(tr("s"), tr("m"),tr("e")));
+            updatePromptTRBack(tr("Enter snap type ") + QString("[%1|%2|%3]:").arg(tr("s"), tr("m"),tr("e")));
             break;
         }
         default: {
-            updateMouseWidget();
+            updatePrompt();
             break;
         }
     }

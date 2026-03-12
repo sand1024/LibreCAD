@@ -41,7 +41,7 @@ public:
     void requestSnapDistOptions(double *dist, bool on) override;
     void requestSnapMiddleOptions(int *middlePoints, bool on) override;
     void hideSnapOptions() override;
-    void updateMouseWidget(const QString &, const QString &, const LC_ModifiersInfo &modifiers) override;
+    void updateActionPrompt(const QString &, const QString &, const LC_ModifiersInfo &modifiers) override;
     void commandMessage(const QString &message) override;
     void commandPrompt(const QString &message) override;
     void updateCoordinateWidget(const RS_Vector &abs, const RS_Vector &rel, bool updateFormat) override;

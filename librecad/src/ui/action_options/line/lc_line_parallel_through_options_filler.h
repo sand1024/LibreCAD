@@ -26,6 +26,7 @@
 #include "lc_action_options_properties_filler.h"
 
 class LC_LineParallelThroughOptionsFiller: public LC_ActionOptionsPropertiesFiller{
+    Q_OBJECT
 public:
     LC_LineParallelThroughOptionsFiller() = default;
     ~LC_LineParallelThroughOptionsFiller() override = default;

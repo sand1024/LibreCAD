@@ -39,6 +39,7 @@ namespace LC_LineMath {
     bool isMeaningfulAngle(double value);
     bool isSameAngle(double angle1, double angle2);
     bool isSameLength(double angle1, double angle2);
+    bool isSameValue(double angle1, double angle2);
     double getMeaningfulAngle(double candidate, double replacementValue = 0.0);
     bool isNonZeroLineLength(const RS_Vector &startPoint, const RS_Vector &endPoint);
     RS_Vector getEndOfLineSegment(const RS_Vector &startPoint, double angleValueDegree, double distance);

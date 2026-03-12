@@ -65,6 +65,6 @@ protected:
     std::unique_ptr<ActionData> m_actionData;
     RS2::CursorType doGetMouseCursor(int status) override;
     void onCoordinateEvent(int status, bool isZero, const RS_Vector& pos) override;
-    void updateMouseButtonHints() override;
+    void updateActionPrompt() override;
 };
 #endif
