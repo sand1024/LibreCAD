@@ -122,7 +122,7 @@ void LC_ActionSelectQuick::showDialog() {
     auto* dlg = new LC_DlgQuickSelection(parent,m_actionContext, inputType, m_savedState,
                                            interactiveInputValueOne, interactiveInputValueTwo);
     m_allowExternalTermination = false;
-    const int result = dlg->exec();
+    const int result = dlg->showModal();
     if (result == QDialog::Accepted) {
         const auto interactiveInputRequestType = dlg->isInteractiveInputRequested();
         if (interactiveInputRequestType == LC_ActionContext::InteractiveInputInfo::NOTNEEDED) { // normal closing of the dialog or ask for additional selection

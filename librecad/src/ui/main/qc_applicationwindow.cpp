@@ -1602,7 +1602,7 @@ void QC_ApplicationWindow::updateGridViewActions(const bool isometric, const RS2
 
 void QC_ApplicationWindow::slotOptionsShortcuts() {
     LC_ActionsShortcutsDialog dlg(this, m_actionGroupManager.get());
-    dlg.exec();
+    dlg.showModal();
 }
 
 void QC_ApplicationWindow::rebuildMenuIfNecessary() const {

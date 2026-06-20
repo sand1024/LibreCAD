@@ -464,7 +464,7 @@ void LC_DlgDimension::onDimStyleOverrideNew([[maybe_unused]]bool val) {
             dimStyleManager.refreshPreview();
             dimStyleManager.setWindowTitle(tr("New Dimension Style Override - ") + itemToOverride->displayName());
             QApplication::restoreOverrideCursor();
-            if (dimStyleManager.exec() == Accepted) {
+            if (dimStyleManager.showModal() == Accepted) {
                 const auto item = new LC_DimStyleItem(newOverrideStyle, 0, false);
                 item->setOverrideItem(true);
                 item->setUnsaved(true);
@@ -515,7 +515,7 @@ void LC_DlgDimension::onDimStyleOverrideEdit([[maybe_unused]]bool checked) {
             dimStyleManager.setWindowTitle(tr("Edit Dimension Style Override - ") +
                     LC_DimStyleItem::getDisplayDimStyleName(originalStyleToEdit));
             QApplication::restoreOverrideCursor();
-            if (dimStyleManager.exec() == Accepted) {
+            if (dimStyleManager.showModal() == Accepted) {
                 styleCopyToEdit->copyTo(originalStyleToEdit);
                 updateDimStylePreview(originalStyleToEdit, model, true, baseStyleName);
             }
@@ -538,7 +538,7 @@ void LC_DlgDimension::onDimStyleOverrideEdit([[maybe_unused]]bool checked) {
             dimStyleManager.refreshPreview();
             dimStyleManager.setReadOnly();
             QApplication::restoreOverrideCursor();
-            dimStyleManager.exec();
+            dimStyleManager.showModal();
         }
     }
 }

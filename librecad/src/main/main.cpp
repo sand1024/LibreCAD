@@ -330,6 +330,7 @@ int main(int argc, char** argv) {
 
     loadIconsStylingOptions();
 
+
     const bool first_load = LC_GET_ONE_BOOL("Startup", "FirstLoad", true);
 
     bool allowOptions=true;

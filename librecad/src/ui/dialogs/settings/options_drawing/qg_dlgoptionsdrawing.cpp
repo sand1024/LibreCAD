@@ -372,7 +372,7 @@ void QG_DlgOptionsDrawing::onCustomVariableAdd([[maybe_unused]] bool checked) {
         propertyNames.push_back(propertyName);
     }
     dlg.setPropertyNames(&propertyNames);
-    if (dlg.exec() == Accepted) {
+    if (dlg.showModal() == Accepted) {
         const QString propertyName = dlg.getPropertyName();
         const QString propertyValue = dlg.getPropertyValue();
         rowCount = twCustomVars->rowCount();
@@ -516,7 +516,7 @@ void QG_DlgOptionsDrawing::onDimStyleNew([[maybe_unused]] bool checked) {
     QList<LC_DimStyleItem*> styleItems;
     model->collectAllStyleItems(styleItems);
     dlgNewDimStyle.setup(defaultItem, styleItems);
-    if (dlgNewDimStyle.exec() == Accepted) {
+    if (dlgNewDimStyle.showModal() == Accepted) {
         QString newStyleName = "";
         newStyleName = dlgNewDimStyle.getStyleName();
         const auto styleItemBaseOn = dlgNewDimStyle.getBaseDimStyle();
@@ -558,7 +558,7 @@ void QG_DlgOptionsDrawing::doCreateDimStyle(const QString& newStyleName, LC_DimS
     QApplication::restoreOverrideCursor();
     dimStyleManager.refreshPreview();
 
-    if (dimStyleManager.exec() == QDialog::Accepted) {
+    if (dimStyleManager.showModal() == QDialog::Accepted) {
         const auto item = new LC_DimStyleItem(styleCopyToEdit, 0, false);
         model->addItem(item);
         expandStylesTree();
@@ -609,7 +609,7 @@ void QG_DlgOptionsDrawing::onDimStyleEdit([[maybe_unused]] bool checked) {
         dimStyleManager.setWindowTitle(tr("Dimension style editing - ") + LC_DimStyleItem::getDisplayDimStyleName(originalStyleToEdit));
         QApplication::restoreOverrideCursor();
 
-        if (dimStyleManager.exec() == QDialog::Accepted) {
+        if (dimStyleManager.showModal() == QDialog::Accepted) {
             styleCopyToEdit->copyTo(originalStyleToEdit);
             m_hasImportantModificationsToAskOnCancel = true;
             updateDimStylePreview(originalStyleToEdit, model);

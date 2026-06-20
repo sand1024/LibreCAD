@@ -132,7 +132,7 @@ RS_Layer* QG_DialogFactory::requestNewLayerDialog(RS_LayerList* layerList) {
     dlg.setLayer(layer);
     dlg.setLayerList(layerList);
     dlg.getQLineEdit()->selectAll();
-    if (dlg.exec() != 0) {
+    if (dlg.showModal() != 0) {
         dlg.updateLayer();
     }
     else {
@@ -305,7 +305,7 @@ RS_Layer* QG_DialogFactory::requestEditLayerDialog(RS_LayerList* layerList) {
         dlg.setLayer(layer);
         dlg.setLayerList(layerList);
         dlg.setEditLayer(true);
-        if (dlg.exec() != 0) {
+        if (dlg.showModal() != 0) {
             dlg.updateLayer();
         }
         else {
@@ -338,7 +338,7 @@ RS_BlockData QG_DialogFactory::requestNewBlockDialog(RS_BlockList* blockList) {
 
     QG_BlockDialog dlg(parent);
     dlg.setBlockList(blockList);
-    if (dlg.exec() != 0) {
+    if (dlg.showModal() != 0) {
         ret = dlg.getBlockData();
     }
 
@@ -373,7 +373,7 @@ RS_BlockData QG_DialogFactory::requestBlockAttributesDialog(RS_BlockList* blockL
     //    QG_BlockDialog dlg(parent, "Rename Block");
     QG_BlockDialog dlg(parent);
     dlg.setBlockList(blockList);
-    if (dlg.exec() != 0) {
+    if (dlg.showModal() != 0) {
         //dlg.updateBlock();
         //block->setData();
         ret = dlg.getBlockData();
@@ -549,7 +549,7 @@ QString QG_DialogFactory::requestImageOpenDialog() {
 bool QG_DialogFactory::requestAttributesDialog(RS_AttributesData& data, RS_LayerList& layerList) {
     QG_DlgAttributes dlg(parent);
     dlg.setData(&data, layerList);
-    if (dlg.exec() != 0) {
+    if (dlg.showModal() != 0) {
         dlg.updateData();
         return true;
     }
@@ -604,7 +604,7 @@ bool QG_DialogFactory::requestModifyEntityDialog(RS_Entity* entity, [[maybe_unus
     }
 
     if (hasDialog) {
-        if (editDialog->exec() != 0) {
+        if (editDialog->showModal() != 0) {
             editDialog->updateEntity();
             ret = true;
         }
@@ -623,7 +623,7 @@ bool QG_DialogFactory::requestMTextDialog(RS_MText* text, LC_GraphicViewport* vi
     }
 
     QG_DlgMText dlg(parent, viewport, text, true);
-    if (dlg.exec() != 0) {
+    if (dlg.showModal() != 0) {
         dlg.updateEntity();
         return true;
     }
@@ -640,7 +640,7 @@ bool QG_DialogFactory::requestTextDialog(RS_Text* text, LC_GraphicViewport* view
     }
 
     QG_DlgText dlg(parent, viewport, text, true);
-    if (dlg.exec() != 0) {
+    if (dlg.showModal() != 0) {
         dlg.updateEntity();
         return true;
     }
@@ -659,7 +659,7 @@ bool QG_DialogFactory::requestHatchDialog(RS_Hatch* hatch, LC_GraphicViewport* v
     RS_PATTERNLIST->init();
 
     QG_DlgHatch dlg(parent, viewport, hatch, true);
-    if (dlg.exec() != 0) {
+    if (dlg.showModal() != 0) {
         dlg.updateEntity();
         dlg.saveSettings();
         return true;
@@ -674,7 +674,7 @@ int QG_DialogFactory::requestOptionsDrawingDialog(RS_Graphic& graphic, const int
     QG_DlgOptionsDrawing dlg(parent);
     dlg.setGraphic(&graphic);
     dlg.showInitialTab(tabIndex);
-    const int result = dlg.exec();
+    const int result = dlg.showModal();
     return result;
 }
 

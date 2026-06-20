@@ -230,7 +230,7 @@ int LC_NamedViewsListWidget::getSingleSelectedRow() const {
 
 void LC_NamedViewsListWidget::invokeOptionsDialog() {
     auto dlg = LC_DlgNamedViewsListOptions(m_options, this);
-    const int dialogResult = dlg.exec();
+    const int dialogResult = dlg.showModal();
     if (dialogResult == QDialog::Accepted) {
         const int selectedRow = getSingleSelectedRow();
         m_options->save();

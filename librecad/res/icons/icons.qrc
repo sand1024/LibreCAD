@@ -402,5 +402,8 @@
         <file alias="snap_visual_add_snaps_auto.lci">snap_visual_add_snaps_auto.svg</file>
         <file alias="snap_visual_add_snaps_last.lci">snap_visual_add_snaps_last.svg</file>
         <file alias="snap_visual_show_far_guides.lci">snap_visual_show_far_guides.svg</file>
+        <file alias="palette_1_point.lci">palette_1_point.svg</file>
+        <file alias="palette_2_points.lci">palette_2_points.svg</file>
+        <file alias="palette_hi_contrast.lci">palette_hi_contrast.svg</file>
     </qresource>
 </RCC>

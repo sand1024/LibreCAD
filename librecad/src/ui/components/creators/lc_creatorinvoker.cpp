@@ -126,7 +126,7 @@ void LC_CreatorInvoker::invokeToolbarCreator() {
     connect(&dlg, &LC_DlgWidgetCreator::widgetCreationRequest, this, &LC_CreatorInvoker::createToolbar);
     connect(&dlg, &LC_DlgWidgetCreator::widgetDestroyRequest, this, &LC_CreatorInvoker::destroyToolbar);
 
-    dlg.exec();
+    dlg.showModal();
     dlg.deleteLater();
     m_appWindow->recreateToolbarsMenu();
 }
@@ -219,7 +219,7 @@ void LC_CreatorInvoker::onCustomToolbarVisibilityChanged(const bool visible) {
 
 void LC_CreatorInvoker::invokeMenuCreator() {
     auto dlg = LC_DlgWidgetCreator(m_appWindow, true, m_actionGroupManager);
-    dlg.exec();
+    dlg.showModal();
     loadMenuActivators();
 }
 

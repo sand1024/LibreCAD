@@ -793,7 +793,7 @@ void LC_QuickInfoWidget::invokeOptionsDialog(){
     auto dlg = LC_QuickInfoWidgetOptionsDialog(this, m_options.get());
 
     const bool oldDisplayDistance = m_options->displayDistanceAndAngle;
-    const int dialogResult = dlg.exec();
+    const int dialogResult = dlg.showModal();
     if (dialogResult == QDialog::Accepted){
         m_options->save();
         // do refresh of collected points, if needed

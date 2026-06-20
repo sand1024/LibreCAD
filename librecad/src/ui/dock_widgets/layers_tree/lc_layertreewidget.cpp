@@ -1821,7 +1821,7 @@ void LC_LayerTreeWidget::invokeLayerEditOrRenameDialog(LC_LayerTreeItem *pItem, 
     dlg.setParentPath(path);
     dlg.setLayer(layer);
 
-    const int dialogResult = dlg.exec();
+    const int dialogResult = dlg.showModal();
     if (dialogResult == QDialog::Accepted){
       if (edit){ // do editing for layer
           // first apply generic attributes
@@ -1903,7 +1903,7 @@ void LC_LayerTreeWidget::invokeLayerAddDialog(LC_LayerTreeItem *parentItem, int 
     tmpLayer->setPen(penCopy);
     dlg.setLayer(tmpLayer);
 
-    int dialogResult = dlg.exec();
+    int dialogResult = dlg.showModal();
     if (dialogResult == QDialog::Accepted){
       QString layerName = dlg.getLayerName();
       int editedLayerType = dlg.getEditedLayerType();
@@ -1929,7 +1929,7 @@ void LC_LayerTreeWidget::invokeLayerAddDialog(LC_LayerTreeItem *parentItem, int 
 void LC_LayerTreeWidget::invokeSettingsDialog(){
     LC_LayerTreeModelOptions* options = m_layerTreeModel->getOptions();
     auto dlg = LC_LayerTreeOptionsDialog(this, options);
-    const int dialogResult = dlg.exec();
+    const int dialogResult = dlg.showModal();
     if (dialogResult == QDialog::Accepted){
         options->save();
         update();

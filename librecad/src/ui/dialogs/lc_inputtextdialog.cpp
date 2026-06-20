@@ -48,7 +48,7 @@ QString LC_InputTextDialog::getText(QWidget *parent, const QString &title, const
 
     dlg.ui->cbInput->setFocus();
 
-    if (dlg.exec() == Accepted){
+    if (dlg.showModal() == Accepted){
         *ok = true;
         return dlg.ui->cbInput->currentText();
     }
@@ -69,7 +69,7 @@ int LC_InputTextDialog::selectId(QWidget *parent, const QString &title, const QS
         cb_input->addItem(snd, fst);
     }
 
-    if (dlg.exec() == Accepted){
+    if (dlg.showModal() == Accepted){
         *ok = true;
         return cb_input->itemData(cb_input->currentIndex()).toInt();
     }

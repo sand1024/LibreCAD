@@ -258,7 +258,7 @@ void LC_DlgWidgetCreator::onAssignMenu([[maybe_unused]]bool checked) {
         copyToEdit->setMenuName(menuName);
 
         auto* dlgMenuAssigner = new LC_DlgMenuAssigner(this, copyToEdit, &m_menuActivators);
-        if (dlgMenuAssigner->exec() == Accepted) {
+        if (dlgMenuAssigner->showModal() == Accepted) {
             copyToEdit->update();
             const QString shortcutView = copyToEdit->getShortcutView();
             ui->lblMenuShortcut->setText(shortcutView);

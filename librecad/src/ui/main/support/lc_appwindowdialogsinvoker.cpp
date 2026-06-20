@@ -46,16 +46,16 @@ LC_AppWindowDialogsInvoker::LC_AppWindowDialogsInvoker(QC_ApplicationWindow* app
 
 void LC_AppWindowDialogsInvoker::showAboutWindow() const {
     LC_DlgAbout dlg(m_appWin);
-    dlg.exec();
+    dlg.showModal();
 }
 
 void LC_AppWindowDialogsInvoker::showNewVersionAvailableDialog(const LC_ReleaseChecker* releaseChecker) const {
     LC_DlgNewVersionAvailable dlg(m_appWin, releaseChecker);
-    dlg.exec();
+    dlg.showModal();
 }
 
 void LC_AppWindowDialogsInvoker::showLicenseWindow() const {
-    QDialog dlg(m_appWin);
+    LC_Dialog dlg(m_appWin, "Licence");
     dlg.setWindowTitle(tr("License")); // Use non-static tr() since this class likely inherits QObject
 
     auto* viewer = new TextFileViewer(&dlg); // Use raw pointer with parent for Qt ownership
@@ -81,7 +81,7 @@ void LC_AppWindowDialogsInvoker::showLicenseWindow() const {
         // Attempt to set the default file if available
         viewer->setFile("readme");
         dlg.resize(800, 600); // Set a reasonable default size for better UX; adjust as needed
-        dlg.exec();
+        dlg.showModal();
     }
     else {
         const QString errorMsg = tr("The following files could not be loaded:\n") + missingFiles.join("\n");
@@ -90,7 +90,7 @@ void LC_AppWindowDialogsInvoker::showLicenseWindow() const {
 }
 
 void LC_AppWindowDialogsInvoker::showDeviceOptions() {
-    QDialog dlg(m_appWin);
+    LC_Dialog dlg(m_appWin, "DeviceOptions");
     dlg.setWindowTitle(tr("Device Options"));
     const auto layout = new QVBoxLayout;
     const auto device_combo = new ComboBoxOption(&dlg);
@@ -100,17 +100,17 @@ void LC_AppWindowDialogsInvoker::showDeviceOptions() {
     layout->addWidget(device_combo);
     dlg.setLayout(layout);
     connect(device_combo, &ComboBoxOption::optionToSave, m_appWin, &QC_ApplicationWindow::updateDevice);
-    dlg.exec();
+    dlg.showModal();
 }
 
 bool LC_AppWindowDialogsInvoker::showWidgetOptionsDialog() const {
     LC_WidgetOptionsDialog dlg(m_appWin);
-    return dlg.exec() == QDialog::Accepted;
+    return dlg.showModal() == QDialog::Accepted;
 }
 
 bool LC_AppWindowDialogsInvoker::showGeneralOptionsDialog() const {
     QG_DlgOptionsGeneral dlg(m_appWin);
-    const bool result = dlg.exec() == QDialog::Accepted;
+    const bool result = dlg.showModal() == QDialog::Accepted;
     return result;
 }
 
@@ -118,7 +118,7 @@ int LC_AppWindowDialogsInvoker::requestOptionsDrawingDialog(RS_Graphic& graphic,
     QG_DlgOptionsDrawing dlg(m_appWin);
     dlg.setGraphic(&graphic);
     dlg.showInitialTab(tabIndex);
-    const int result = dlg.exec();
+    const int result = dlg.showModal();
     return result;
 }
 

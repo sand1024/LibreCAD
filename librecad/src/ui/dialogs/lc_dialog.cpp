@@ -22,13 +22,38 @@
 
 #include "lc_dialog.h"
 
+#include <QApplication>
+#include <QTimer>
+
 #include "rs_settings.h"
+
+
 
 // fixme - sand - review all dialogs and actions and make all conversions (double/string, angle/string and vise versa consistent)!
 LC_Dialog::LC_Dialog(QWidget* parent, const QString& dlgName)
     :QDialog(parent)
     ,m_dialogName(dlgName){
+
 }
+
+int LC_Dialog::showModal() {
+#ifdef Q_OS_WIN
+    // fixme - sand - potentially here we'll may start displaying Wait cursor .. check with other dialogs
+    int result = exec();
+    return result;
+#    elif
+    return exec();
+#     endif
+}
+
+
+// В файле реализации (.cpp):
+#ifdef Q_OS_WIN
+#include <qt_windows.h>
+#endif
+
+
+
 
 void LC_Dialog::showEvent(QShowEvent *event) {
     QDialog::showEvent(event);

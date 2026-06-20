@@ -75,7 +75,7 @@ void LC_EntityPropertiesEditor::showEntityPropertiesDialog() {
     auto dlg = LC_DlgEntityProperties(m_parent, m_viewport, m_entity, inputType, interactiveInputTag,
                                            interactiveInputValueOne, interactiveInputValueTwo);
 
-    const int result = dlg.exec();
+    const int result = dlg.showModal();
     if ( result == QDialog::Accepted) {
         const auto interactiveInputRequestType = dlg.isInteractiveInputRequested();
         if (interactiveInputRequestType == LC_ActionContext::InteractiveInputInfo::NOTNEEDED) { // normal closing of the dialog

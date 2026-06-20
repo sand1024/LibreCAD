@@ -771,7 +771,7 @@ void LC_PropertySheetWidget::onActivePenChanged(RS_Pen) {
 
 void LC_PropertySheetWidget::onSettingsClicked() {
     LC_DlgPropertySheetWidgetOptions dlg(this, m_propertySheetOptions.get());
-    if (dlg.exec() == QDialog::Accepted) {
+    if (dlg.showModal() == QDialog::Accepted) {
         const bool showSelectionButton = m_propertySheetOptions->duplicateSelectionAction;
         ui->tbSelectionGeneral->setVisible(showSelectionButton);
         ui->tbSelectionGeneralLeft->setVisible(showSelectionButton);

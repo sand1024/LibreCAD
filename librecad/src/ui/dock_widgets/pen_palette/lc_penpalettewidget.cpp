@@ -413,7 +413,7 @@ void LC_PenPaletteWidget::invokeOptionsDialog(const bool focusOnFile) {
     LC_PenPaletteOptions* options = m_penPaletteModel->getOptions();
     auto dlg = LC_PenPaletteOptionsDialog(this, options, focusOnFile);
     const QString oldFileName = options->pensFileName;
-    const int dialogResult = dlg.exec();
+    const int dialogResult = dlg.showModal();
     if (dialogResult == QDialog::Accepted) {
         options->saveToSettings();
         m_penPaletteModel->update(true);

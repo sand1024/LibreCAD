@@ -51,7 +51,7 @@ LC_DlgNewWidget::LC_DlgNewWidget(QWidget *parent, const bool forMenu, QStringLis
 QString LC_DlgNewWidget::askForNewWidgetName(QWidget* parent, const bool forMenu, QStringList* existingWidgetsList, bool& clearActionsList) {
     const auto dlg = new LC_DlgNewWidget(parent, forMenu, existingWidgetsList);
     QString result;
-    if (dlg->exec() == Accepted) {
+    if (dlg->showModal() == Accepted) {
         clearActionsList = dlg->ui->cbClearActions->isChecked();
         result = dlg->ui->leWidgetName->text().trimmed();
         result = result.replace("/", "-");

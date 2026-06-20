@@ -24,6 +24,7 @@
 
 #include "lc_widgetoptionsdialog.h"
 
+#include <csignal>
 #include <QColorDialog>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -32,7 +33,10 @@
 #include <QStyleFactory>
 
 #include "lc_dlgiconssetup.h"
+#include "lc_dlg_palette_editor.h"
+#include "lc_fusion_proxy_style.h"
 #include "lc_inputtextdialog.h"
+
 #include "lc_widgetfactory.h"
 #include "qc_applicationwindow.h"
 #include "rs_settings.h"
@@ -52,13 +56,17 @@ LC_WidgetOptionsDialog::LC_WidgetOptionsDialog(QWidget* parent)
         bool allow_style = LC_GET_BOOL("AllowStyle", false);
         style_checkbox->setChecked(allow_style);
         style_combobox->addItems(QStyleFactory::keys());
+        bool enablePaletteEditor = false;
         if (allow_style) {
             QString a_style = LC_GET_STR("Style", "");
             if (!a_style.isEmpty()) {
                 int index = style_combobox->findText(a_style);
                 style_combobox->setCurrentIndex(index);
+                enablePaletteEditor = a_style == "Fusion";
             }
         }
+        pbPaletteEditor->setEnabled(enablePaletteEditor);
+
 
         QString sheet_path = LC_GET_STR("StyleSheet", "");
         if (!sheet_path.isEmpty() && QFile::exists(sheet_path)) {
@@ -123,6 +131,29 @@ LC_WidgetOptionsDialog::LC_WidgetOptionsDialog(QWidget* parent)
         cbDockingVerticalTabs->setChecked(verticalTabs);
     }
     LC_GROUP_END();
+
+    connect(style_combobox, &QComboBox::currentIndexChanged, [this](int index)->void {
+        auto styleName = style_combobox->currentText();
+        bool paletteEditorEnabled = false;
+        if (styleName == "Fusion") {
+            paletteEditorEnabled = true;
+        }
+        pbPaletteEditor->setEnabled(paletteEditorEnabled);
+    });
+
+    connect(pbPaletteEditor, &QPushButton::clicked, [this](bool)->void {
+        // DEBUG_PROXY::g_globalPerfTimer.start();
+        // DEBUG_PROXY::g_perfTimerStarted = true;
+       if (!DEBUG_PROXY::g_perfTimerStarted) {
+           DEBUG_PROXY::g_globalPerfTimer.start();
+           DEBUG_PROXY::g_perfTimerStarted = true;
+       }
+        QApplication::setOverrideCursor(Qt::WaitCursor);
+        LC_ERR << "Start creation of dialog!!!" << DEBUG_PROXY::g_globalPerfTimer.elapsed() << "ms for LC_DlgPaletteEditor";
+        LC_DlgPaletteEditor dialog(this);
+        LC_ERR << "Dialog created, before exec()" << DEBUG_PROXY::g_globalPerfTimer.elapsed() << "ms for LC_DlgPaletteEditor";
+        dialog.showModal();
+    });
 
     bool useClassicalStatusBar = LC_GET_ONE_BOOL("Startup", "UseClassicStatusBar", false);
 
@@ -436,7 +467,7 @@ void LC_WidgetOptionsDialog::showAdvancedSetup(){
     LC_DlgIconsSetup dlg(this);
     auto copy = LC_IconColorsOptions(m_iconColorsOptions);
     dlg.setIconsOptions(&copy);
-    if (dlg.exec() == Accepted){
+    if (dlg.showModal() == Accepted){
         m_iconColorsOptions.apply(copy);
         updateUIByOptions();
         applyIconColors();

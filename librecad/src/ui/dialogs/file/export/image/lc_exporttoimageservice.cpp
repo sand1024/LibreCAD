@@ -34,7 +34,7 @@ bool LC_ExportToImageService::exportGraphicsToImage(RS_Graphic* graphic, const Q
     graphic->calculateBorders();
     imageOptionsDialog.setGraphicSize(graphic->getSize() * 2.);
 
-    if (imageOptionsDialog.exec() == QDialog::Accepted) {
+    if (imageOptionsDialog.showModal() == QDialog::Accepted) {
         LC_ImageExporter::ExportOptions options;
         options.size = imageOptionsDialog.getSize();
         options.borders = imageOptionsDialog.getBorders();

@@ -31,6 +31,7 @@ public:
     ~LC_Dialog() override = default;
     void accept() override;
     void reject() override;
+    int showModal();
 protected:
     QString m_dialogName;
     bool m_positionLoaded = false;
