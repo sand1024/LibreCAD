@@ -230,7 +230,8 @@ void LC_UCSListWidget::updateCurrentUCSWidget(const LC_UCS* ucs) const {
             name = tr("<No name>");
         }
         const QString info = m_ucsListModel->getUCSInfo(ucs);
-        m_ucsStateWidget->update(typeIcon, name, info);
+        const bool isUCS = ucs->isUCS();
+        m_ucsStateWidget->update(typeIcon, name, info, isUCS);
     }
 }
 

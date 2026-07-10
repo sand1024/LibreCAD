@@ -1633,6 +1633,6 @@ void QG_DlgOptionsGeneral::importSettings(){
     if (importer.importSettings(this)) {
         init();
         QC_ApplicationWindow& appWin = *QC_ApplicationWindow::getAppWindow(); // fixme - sand - files - remove static
-        appWin.initSettings();
+        appWin.initSettings(false);
     }
 }

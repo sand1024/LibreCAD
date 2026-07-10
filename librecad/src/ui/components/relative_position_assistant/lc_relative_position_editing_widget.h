@@ -56,7 +56,7 @@ class LC_RelativePositionEditingWidget : public QWidget {
     void focusCurrentParam();
     void updateByInteractiveInput(RS2::RelativePointParam paramType, double value);
     bool toDouble(const QString& strValue, double& res, double notMeaningful, bool positiveOnly);
-
+    void updateInputEditorsIcons() const;
 public slots:
     void onEditingReturnPressed();
     void onOKButtonClicked(bool checked);

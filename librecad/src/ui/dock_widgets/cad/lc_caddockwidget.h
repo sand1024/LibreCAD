@@ -34,23 +34,36 @@ class LC_CADDockWidget : public QDockWidget{
     Q_OBJECT
 public:
     explicit LC_CADDockWidget(QWidget* parent, bool allTools = false);
-    void addSpacers(QGridLayout* layout, int columns);
+    virtual ~LC_CADDockWidget() override = default;
+
+
     void addActions(const QList<QAction*>& list, int columns, int iconSize, bool flatButton);
     void doUpdateWidgetSettings(int leftToolbarColumnsCount,
                                 int leftToolbarIconSize,
                                 bool leftToolbarFlatIcons);
     QSize minimumSizeHint() const override;
-  private:
+
+protected:
+    // Hooks for subclass extensions (segmented matrix controls)
+    virtual void onBeforeAddActions();
+    virtual bool shouldCreateButtonForAction(QAction* action) const;
+    virtual void handleIgnoredAction(QAction* action);
+    virtual void configureButton(QToolButton* toolButton, QAction* action);
+    virtual void onLayoutUpdated();
+    virtual void doSetupGridLayout(QGridLayout* newGridLayout);
+    void addSpacers(QGridLayout* layout, int columns, bool addHorizontal);
+
     QFrame* m_frame = nullptr;
     QGridLayout* m_gridLayout = nullptr;
+    bool m_addHorizontalSpacer = false;
     bool m_allTools = false;
     int m_columns{5};
     int m_iconSize{24};
     QScrollArea *m_scrollArea{nullptr};
     void updateMinimumWidth();
+
 public slots:
     void updateWidgetSettings();
-
 };
 
 #endif

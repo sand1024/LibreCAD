@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_DlgStylesPresetsGenerator</class>
+ <widget class="QDialog" name="LC_DlgStylesPresetsGenerator">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>476</width>
+    <height>659</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Styling Presets Generator</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="14" column="3">
+    <widget class="QPushButton" name="pbGenerateTypography">
+     <property name="text">
+      <string>Generate Typography</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../../res/icons/icons.qrc">
+       <normaloff>:/icons/back.lci</normaloff>:/icons/back.lci</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="2">
+    <widget class="QLineEdit" name="leMetricsDir"/>
+   </item>
+   <item row="10" column="3">
+    <widget class="QPushButton" name="pbGenerateMetrics">
+     <property name="text">
+      <string>Generic metric</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../../res/icons/icons.qrc">
+       <normaloff>:/icons/back.lci</normaloff>:/icons/back.lci</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="3">
+    <widget class="QPushButton" name="pbGenerateStyles">
+     <property name="text">
+      <string>Generate Icon Styles</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../../res/icons/icons.qrc">
+       <normaloff>:/icons/back.lci</normaloff>:/icons/back.lci</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QLineEdit" name="leStylesDir"/>
+   </item>
+   <item row="0" column="3">
+    <widget class="QToolButton" name="pbSelectIconStylesDir">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../../res/icons/icons.qrc">
+       <normaloff>:/icons/fileopen.lci</normaloff>:/icons/fileopen.lci</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0">
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>Skins to generate:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="14" column="2">
+    <widget class="QSpinBox" name="sbTypographyCount">
+     <property name="maximum">
+      <number>10</number>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="2">
+    <widget class="QLineEdit" name="leTypographyDir"/>
+   </item>
+   <item row="4" column="2">
+    <widget class="QLineEdit" name="leSkinsDir"/>
+   </item>
+   <item row="10" column="0">
+    <widget class="QLabel" name="label_5">
+     <property name="text">
+      <string>Metrics to generate:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Fusion Skins repository directory</string>
+     </property>
+    </widget>
+   </item>
+   <item row="16" column="0" colspan="4">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::StandardButton::Close</set>
+     </property>
+    </widget>
+   </item>
+   <item row="15" column="2">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="3" column="0" colspan="4">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="3">
+    <widget class="QToolButton" name="pbSelectSkinsDir">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../../res/icons/icons.qrc">
+       <normaloff>:/icons/fileopen.lci</normaloff>:/icons/fileopen.lci</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="3">
+    <widget class="QToolButton" name="pbSelectTypographyDir">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../../res/icons/icons.qrc">
+       <normaloff>:/icons/open.lci</normaloff>:/icons/open.lci</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="QSpinBox" name="sbStylesCount">
+     <property name="maximum">
+      <number>96</number>
+     </property>
+     <property name="value">
+      <number>12</number>
+     </property>
+     <property name="displayIntegerBase">
+      <number>10</number>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="0">
+    <widget class="QLabel" name="label_6">
+     <property name="text">
+      <string>Metrics directory:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Icon styles repository directory:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="12" column="0" colspan="4">
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="3">
+    <widget class="QPushButton" name="pbGenerateSkins">
+     <property name="text">
+      <string>Generate Skins</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../../res/icons/icons.qrc">
+       <normaloff>:/icons/back.lci</normaloff>:/icons/back.lci</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="14" column="0">
+    <widget class="QLabel" name="label_7">
+     <property name="text">
+      <string>Typography to generate:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="0" colspan="3">
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="0">
+    <widget class="QLabel" name="label_8">
+     <property name="text">
+      <string>Typography Directory:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="2">
+    <widget class="QSpinBox" name="sbMetricsCount">
+     <property name="maximum">
+      <number>12</number>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="2">
+    <widget class="QSpinBox" name="sbSkinsCount">
+     <property name="maximum">
+      <number>960</number>
+     </property>
+     <property name="value">
+      <number>30</number>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="3">
+    <widget class="QToolButton" name="pbSelectMetricsDir">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../../res/icons/icons.qrc">
+       <normaloff>:/icons/open.lci</normaloff>:/icons/open.lci</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Styles to generate:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="4">
+    <widget class="QCheckBox" name="chIconStyleShortBases">
+     <property name="toolTip">
+      <string>Defines short or large set of accent bases will be used</string>
+     </property>
+     <property name="text">
+      <string>On short accent bases</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../../../../res/icons/icons.qrc"/>
+ </resources>
+ <connections/>
+</ui>

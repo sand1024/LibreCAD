@@ -50,11 +50,20 @@ namespace {
     }
 }
 
+void LC_RelativePositionEditingWidget::updateInputEditorsIcons() const {
+    setupIconLabel(":/icons/relative_len.lci", ui->lblIconLength);
+    setupIconLabel(":/icons/relative_angle.lci", ui->lblIconAngle);
+    setupIconLabel(":/icons/relative_dx.lci", ui->lblIconDX);
+    setupIconLabel(":/icons/relative_dy.lci", ui->lblIconDY);
+    setupIconLabel(":/icons/relative_x.lci", ui->lblIconX);
+    setupIconLabel(":/icons/relative_y.lci", ui->lblIconY);
+}
+
 LC_RelativePositionEditingWidget::LC_RelativePositionEditingWidget(LC_RelativePointInputWidget* parent, LC_GraphicViewport* viewport,
                                                                    LC_ActionContext* actionContext,
                                                                    LC_LateCompletionRequestor* lateCompletionRequestor) : QWidget(parent),
-    ui(new Ui::LC_RelativePositionEditingWidget), m_viewport{viewport}, m_actionContext{actionContext},
-    m_lateCompletionRequestor{lateCompletionRequestor} {
+                                                                                                                          ui(new Ui::LC_RelativePositionEditingWidget), m_viewport{viewport}, m_actionContext{actionContext},
+                                                                                                                          m_lateCompletionRequestor{lateCompletionRequestor} {
     m_formatter = m_viewport->getFormatter();
     m_relativePositionEvaluator.setViewport(viewport);
     ui->setupUi(this);
@@ -98,12 +107,7 @@ LC_RelativePositionEditingWidget::LC_RelativePositionEditingWidget(LC_RelativePo
         "<br/><span style='font-weight:700;'>ESC</span> - " + tr("Cancel assistant") + "</p>";
     setToolTip(tooltip);
 
-    setupIconLabel(":/icons/relative_len.lci", ui->lblIconLength);
-    setupIconLabel(":/icons/relative_angle.lci", ui->lblIconAngle);
-    setupIconLabel(":/icons/relative_dx.lci", ui->lblIconDX);
-    setupIconLabel(":/icons/relative_dy.lci", ui->lblIconDY);
-    setupIconLabel(":/icons/relative_x.lci", ui->lblIconX);
-    setupIconLabel(":/icons/relative_y.lci", ui->lblIconY);
+    updateInputEditorsIcons();
 }
 
 LC_RelativePositionEditingWidget::~LC_RelativePositionEditingWidget() {
@@ -407,6 +411,7 @@ void LC_RelativePositionEditingWidget::switchToggleMode(bool value) {
 }
 
 void LC_RelativePositionEditingWidget::activateParamEditor(const RS2::RelativePointParam param, bool forceParam) {
+    updateInputEditorsIcons();
     updateByEditedValue();
     refreshPreview();
 

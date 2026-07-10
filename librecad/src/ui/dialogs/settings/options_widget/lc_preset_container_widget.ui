@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_PresetContainerWidget</class>
+ <widget class="QWidget" name="LC_PresetContainerWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>620</width>
+    <height>500</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Preset Container</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_main" stretch="0,5,0,0">
+   <property name="spacing">
+    <number>8</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <layout class="QVBoxLayout" name="presetBarLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="editorLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="previewControlGroup">
+     <property name="title">
+      <string>Preview Options</string>
+     </property>
+     <layout class="QHBoxLayout" name="previewLayout">
+      <item>
+       <widget class="QCheckBox" name="chkShowPreview">
+        <property name="toolTip">
+         <string>Display the isolated style preview window.</string>
+        </property>
+        <property name="text">
+         <string>Show Live Preview</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="previewSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="lblCvd">
+        <property name="toolTip">
+         <string>Simulate how your color scheme is perceived under different color vision deficiencies.</string>
+        </property>
+        <property name="text">
+         <string>Accessibility Check:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="cbCvdSimulator">
+        <property name="toolTip">
+         <string>Simulate red-blind, green-blind, or blue-blind perception on the active preview.</string>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="chkDisablePreview">
+        <property name="toolTip">
+         <string>Simulate disabled states on preview controls.</string>
+        </property>
+        <property name="text">
+         <string>Simulate Disabled State</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="databaseOpsLayout">
+     <item>
+      <spacer name="dbSpacer">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnRevert">
+       <property name="toolTip">
+        <string>Discard active modifications and reload the preset as saved on disk.</string>
+       </property>
+       <property name="text">
+        <string>Revert</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../../../../res/icons/icons.qrc">
+         <normaloff>:/icons/undo.lci</normaloff>:/icons/undo.lci</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnReset">
+       <property name="toolTip">
+        <string>Restore standard factory defaults for the active category.</string>
+       </property>
+       <property name="text">
+        <string>Reset to Defaults</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../../../../res/icons/icons.qrc">
+         <normaloff>:/icons/redraw.lci</normaloff>:/icons/redraw.lci</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../../../../../res/icons/icons.qrc"/>
+ </resources>
+ <connections/>
+</ui>

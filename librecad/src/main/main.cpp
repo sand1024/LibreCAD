@@ -57,7 +57,8 @@
 #include "lc_crash_handler.h"
 #include "main.h"
 
-#include "lc_iconcolorsoptions.h"
+#include "lc_uiutils.h"
+#include "lc_palette_color_utils.h"
 #include "qc_applicationwindow.h"
 #include "qg_dlginitial.h"
 #include "rs_debug.h"
@@ -183,11 +184,6 @@ void loadFilesOnStartup(QSplashScreen *splash, const QC_ApplicationWindow& appWi
     RS_DEBUG->print("main: loading files: OK");
 }
 
-void loadIconsStylingOptions() {
-    LC_IconColorsOptions iconColorsOptions;
-    iconColorsOptions.loadSettings();
-    iconColorsOptions.applyOptions();
-}
 
 int execApplication(LC_Application& app) {
     RS_DEBUG->print("main: entering Qt event loop");
@@ -328,8 +324,6 @@ int main(int argc, char** argv) {
 
     QGuiApplication::setDesktopFileName("librecad");
 
-    loadIconsStylingOptions();
-
 
     const bool first_load = LC_GET_ONE_BOOL("Startup", "FirstLoad", true);
 
@@ -384,7 +378,11 @@ int main(int argc, char** argv) {
             }
         }
     }
+
     initSystem(argv, app);
+
+
+
     showFirstLoadSetupDialog(first_load);
 
     std::unique_ptr<QSplashScreen> splash;
@@ -403,10 +401,12 @@ int main(int argc, char** argv) {
 
     RS_DEBUG->print("main: creating main window..");
     QC_ApplicationWindow& appWin = *QC_ApplicationWindow::getAppWindow();
-    const auto& appWindow = QC_ApplicationWindow::getAppWindow();
-    if (appWindow != nullptr) {
-        appWindow->fireIconsRefresh();
-    }
+    LC_UIStyleManager* styleManager = new LC_UIStyleManager();
+    styleManager->initialize(&appWin);
+    appWin.setUIStyleManager(styleManager);
+
+    appWin.fireIconsRefresh();
+
 #ifdef __APPLE__
     app.installEventFilter(&appWin);
 #endif
@@ -571,7 +571,7 @@ QPixmap getSplashImage(const std::unique_ptr<QSplashScreen>& splash, const QStri
         }
 
         auto splashFileName = ":/images/splash_librecad.png";
-        if (LC_IconColorsOptions::isDarkColorScheme()) {
+        if (LC_PaletteColorUtils::isSystemInDarkMode()) {
             splashFileName = ":/images/splash_librecad_dark.svg";
         }
         QPixmap pixmapSplash(splashFileName);

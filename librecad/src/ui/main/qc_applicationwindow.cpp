@@ -40,7 +40,7 @@
 #include <QStyleHints>
 #include <QTimer>
 
-#include "lc_iconcolorsoptions.h"
+
 
 #include "lc_action_block_library_insert.h"
 #include "lc_action_options_manager.h"
@@ -50,11 +50,11 @@
 #include "lc_applicationwindowinitializer.h"
 #include "lc_appwindowdialogsinvoker.h"
 #include "lc_creatorinvoker.h"
-#include "lc_customstylehelper.h"
 #include "lc_defaultactioncontext.h"
 #include "lc_exporttoimageservice.h"
 #include "lc_graphicviewport.h"
 #include "lc_gridviewinvoker.h"
+#include "../styling/icons_styling/lc_icons_style_manager.h"
 #include "lc_infocursorsettingsmanager.h"
 #include "lc_lastopenfilesopener.h"
 #include "lc_layertreewidget.h"
@@ -135,9 +135,7 @@ QC_ApplicationWindow::QC_ApplicationWindow() {
     // when the key is absent.
     connect(QGuiApplication::styleHints(), &QStyleHints::colorSchemeChanged,
             this, [this](Qt::ColorScheme) {
-                LC_IconColorsOptions opts;
-                opts.loadSettings();
-                opts.applyOptions();
+                LC_IconsStyleManager::applyCurrentStyle();
                 fireIconsRefresh();
             });
 #endif
@@ -508,7 +506,7 @@ void QC_ApplicationWindow::slotUpdateActiveLayer() const {
  * Initializes the global application settings from the
  * config file (unix, mac) or registry (windows).
  */
-void QC_ApplicationWindow::initSettings() {
+void QC_ApplicationWindow::initSettings(bool fromStartup) {
     RS_DEBUG->print("QC_ApplicationWindow::initSettings()");
 
     const bool first_load = LC_GET_ONE_BOOL("Startup", "FirstLoad", true);
@@ -516,7 +514,10 @@ void QC_ApplicationWindow::initSettings() {
         m_workspacesInvoker->init();
     }
     fireWorkspacesChanged();
-    m_styleHelper->loadFromSettings();
+    if (!fromStartup) {
+        m_uiStyleManager->initialize(this);
+    }
+
     LC_GROUP("Appearance");
     {
         QAction* viewLinesDraftAction = getAction("ViewLinesDraft");
@@ -1871,12 +1872,8 @@ void QC_ApplicationWindow::widgetOptionsDialog() {
     }
 }
 
-bool QC_ApplicationWindow::loadStyleSheet(const QString& path) const {
-    return m_styleHelper->loadStyleSheet(path);
-}
-
 void QC_ApplicationWindow::reloadStyleSheet() {
-    m_styleHelper->reloadStyleSheet();
+    m_uiStyleManager->reloadStyleSheet();
 }
 
 bool QC_ApplicationWindow::eventFilter(QObject* obj, QEvent* event) {

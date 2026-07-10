@@ -329,7 +329,7 @@ void LC_ToolbarFactory::createCADToolbars() const {
     auto *shape     = createCADToolbar(tr("Polygon"), "Polygon", tbPolicy, m_actionFactory->shapeActions);
     auto *circle    = createCADToolbar(tr("Circle"), "Circle", tbPolicy, m_actionFactory->circleActions);
     auto *curve     = createCADToolbar(tr("Arc"), "Curve", tbPolicy, m_actionFactory->curveActions);
-    auto *spline    = createCADToolbar(tr("Spline"), "Spline", tbPolicy, m_actionFactory->curveActions);
+    auto *spline    = createCADToolbar(tr("Spline"), "Spline", tbPolicy, m_actionFactory->splineActions);
     auto *ellipse   = createCADToolbar(tr("Ellipse"), "Ellipse", tbPolicy, m_actionFactory->ellipseActions);
     auto *polyline  = createCADToolbar(tr("Polyline"), "Polyline", tbPolicy, m_actionFactory->polylineActions);
     auto *select    = createCADToolbar(tr("Select"), "Select", tbPolicy, m_actionFactory->selectActions);

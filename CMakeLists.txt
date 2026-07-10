@@ -32,7 +32,7 @@ set (CMAKE_AUTOMOC ON)
 set (CMAKE_AUTOUIC ON)
 set (CMAKE_AUTORCC ON)
 
-add_compile_definitions(QC_APPDIR=librecad)
+add_compile_definitions (QC_APPDIR=librecad)
 add_compile_definitions (DWGSUPPORT)
 add_compile_definitions (MUPARSER_STATIC)
 
@@ -215,6 +215,7 @@ set (SHARED_INCLUDES
      librecad/src/ui/action_options/text
      librecad/src/ui/actions
      librecad/src/ui/components
+     librecad/src/ui/components/buttons
      librecad/src/ui/components/comboboxes
      librecad/src/ui/components/containers
      librecad/src/ui/components/creators
@@ -284,6 +285,16 @@ set (SHARED_INCLUDES
      librecad/src/ui/dock_widgets/property_sheet/metaentity
      librecad/src/ui/dock_widgets/property_sheet/metaentity/entities
      librecad/src/ui/dock_widgets/property_sheet/metaentity/entities/document
+     librecad/src/ui/styling
+     librecad/src/ui/styling/fusion_skin
+     librecad/src/ui/styling/icons_styling
+     librecad/src/ui/styling/presets_generator
+     librecad/src/ui/styling/proxy_style
+     librecad/src/ui/styling/proxy_style/events
+     librecad/src/ui/styling/support
+     librecad/src/ui/styling/support/ui
+     librecad/src/ui/styling/typography
+     librecad/src/ui/styling/metrics
      librecad/src/ui/main
      librecad/src/ui/main/fontviewer
      librecad/src/ui/main/init
@@ -344,11 +355,11 @@ set (SHARED_SOURCES
      libraries/libdxfrw/src/intern/dwgbuffer.cpp
      libraries/libdxfrw/src/intern/dwgbuffer.h
      libraries/libdxfrw/src/intern/dwgbufferw.cpp
-    libraries/libdxfrw/src/intern/dwgbufferw.h
-    libraries/libdxfrw/src/intern/dwgwriter.h
-    libraries/libdxfrw/src/intern/dwgwriter15.cpp
-    libraries/libdxfrw/src/intern/dwgwriter15.h
-    libraries/libdxfrw/src/intern/dwgreader.cpp
+     libraries/libdxfrw/src/intern/dwgbufferw.h
+     libraries/libdxfrw/src/intern/dwgwriter.h
+     libraries/libdxfrw/src/intern/dwgwriter15.cpp
+     libraries/libdxfrw/src/intern/dwgwriter15.h
+     libraries/libdxfrw/src/intern/dwgreader.cpp
      libraries/libdxfrw/src/intern/dwgreader.h
      libraries/libdxfrw/src/intern/dwgreader15.cpp
      libraries/libdxfrw/src/intern/dwgreader15.h
@@ -361,8 +372,8 @@ set (SHARED_SOURCES
      libraries/libdxfrw/src/intern/dwgreader27.cpp
      libraries/libdxfrw/src/intern/dwgreader27.h
      libraries/libdxfrw/src/intern/dwgreader32.cpp
-    libraries/libdxfrw/src/intern/dwgreader32.h
-        libraries/libdxfrw/src/intern/dwgutil.cpp
+     libraries/libdxfrw/src/intern/dwgreader32.h
+     libraries/libdxfrw/src/intern/dwgutil.cpp
      libraries/libdxfrw/src/intern/dwgutil.h
      libraries/libdxfrw/src/intern/dxfreader.cpp
      libraries/libdxfrw/src/intern/dxfreader.h
@@ -878,17 +889,17 @@ set (SHARED_SOURCES
      librecad/src/lib/engine/document/entities/rs_hatch.h
      librecad/src/lib/engine/document/entities/rs_image.cpp
      librecad/src/lib/engine/document/entities/rs_image.h
-        librecad/src/lib/engine/document/entities/lc_wipeout.cpp
-    librecad/src/lib/engine/document/entities/lc_wipeout.h
+     librecad/src/lib/engine/document/entities/lc_wipeout.cpp
+     librecad/src/lib/engine/document/entities/lc_wipeout.h
      librecad/src/lib/engine/document/entities/rs_insert.cpp
      librecad/src/lib/engine/document/entities/rs_insert.h
      librecad/src/lib/engine/document/entities/rs_leader.cpp
      librecad/src/lib/engine/document/entities/rs_leader.h
      librecad/src/lib/engine/document/entities/lc_mleader.cpp
-    librecad/src/lib/engine/document/entities/lc_mleader.h
-    librecad/src/lib/engine/document/entities/lc_textbidi.cpp
-    librecad/src/lib/engine/document/entities/lc_textbidi.h
-        librecad/src/lib/engine/document/entities/rs_line.cpp
+     librecad/src/lib/engine/document/entities/lc_mleader.h
+     librecad/src/lib/engine/document/entities/lc_textbidi.cpp
+     librecad/src/lib/engine/document/entities/lc_textbidi.h
+     librecad/src/lib/engine/document/entities/rs_line.cpp
      librecad/src/lib/engine/document/entities/rs_line.h
      librecad/src/lib/engine/document/entities/rs_mtext.cpp
      librecad/src/lib/engine/document/entities/rs_mtext.h
@@ -1043,8 +1054,8 @@ set (SHARED_SOURCES
      librecad/src/lib/fileio/rs_fileio.h
      librecad/src/lib/filters/lc_hyperbolaspline.cpp
      librecad/src/lib/filters/lc_hyperbolaspline.h
-        librecad/src/lib/filters/lc_parabolaspline.cpp
-    librecad/src/lib/filters/lc_parabolaspline.h
+     librecad/src/lib/filters/lc_parabolaspline.cpp
+     librecad/src/lib/filters/lc_parabolaspline.h
      librecad/src/lib/filters/rs_filtercxf.cpp
      librecad/src/lib/filters/rs_filterdxf1.cpp
      librecad/src/lib/filters/rs_filterdxf1.h
@@ -1447,12 +1458,12 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/entity/lc_dlg_tolerance.h
      librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.cpp
      librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_ellipse.h
-    librecad/src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.cpp
-    librecad/src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.h
+     librecad/src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.cpp
+     librecad/src/ui/dialogs/entity/lc_hatchpropertieseditingwidget.h
      librecad/src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.cpp
-    librecad/src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.h
-    librecad/src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp
-    librecad/src/ui/dialogs/entity/lc_textpropertieseditingwidget.h
+     librecad/src/ui/dialogs/entity/lc_mtextpropertieseditingwidget.h
+     librecad/src/ui/dialogs/entity/lc_textpropertieseditingwidget.cpp
+     librecad/src/ui/dialogs/entity/lc_textpropertieseditingwidget.h
      librecad/src/ui/dialogs/entity/lc_entitypropertiesdlg.cpp
      librecad/src/ui/dialogs/entity/lc_entitypropertiesdlg.h
      librecad/src/ui/dialogs/entity/lc_entitypropertieseditor.cpp
@@ -1545,12 +1556,16 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.h
      librecad/src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp
      librecad/src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.h
-     librecad/src/ui/dialogs/settings/options_widget/lc_dlgiconssetup.cpp
-     librecad/src/ui/dialogs/settings/options_widget/lc_iconcolorsoptions.cpp
-     librecad/src/ui/dialogs/settings/options_widget/lc_iconcolorsoptions.h
-     librecad/src/ui/dialogs/settings/options_widget/lc_iconengineshared.cpp
      librecad/src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.cpp
      librecad/src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.h
+     #     librecad/src/ui/dialogs/settings/options_widget/lc_dlg_icons_style_editor.h
+     #     librecad/src/ui/dialogs/settings/options_widget/lc_dlg_icons_style_editor.cpp
+     #     librecad/src/ui/dialogs/settings/options_widget/lc_dlg_fusion_skin_editor.cpp
+     #     librecad/src/ui/dialogs/settings/options_widget/lc_dlg_fusion_skin_editor.h
+     #     librecad/src/ui/dialogs/settings/options_widget/lc_font_settings_widget.cpp
+     #     librecad/src/ui/dialogs/settings/options_widget/lc_font_settings_widget.h
+     librecad/src/ui/dialogs/settings/options_widget/lc_skin_preview_window.cpp
+     librecad/src/ui/dialogs/settings/options_widget/lc_skin_preview_window.h
      librecad/src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp
      librecad/src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.h
      librecad/src/ui/dialogs/settings/shortcuts/lc_shortcutbutton.cpp
@@ -1923,8 +1938,6 @@ set (SHARED_SOURCES
      librecad/src/ui/main/release_check/lc_releasechecker.h
      librecad/src/ui/main/support/lc_appwindowdialogsinvoker.cpp
      librecad/src/ui/main/support/lc_appwindowdialogsinvoker.h
-     librecad/src/ui/main/support/lc_customstylehelper.cpp
-     librecad/src/ui/main/support/lc_customstylehelper.h
      librecad/src/ui/main/support/lc_gridviewinvoker.cpp
      librecad/src/ui/main/support/lc_gridviewinvoker.h
      librecad/src/ui/main/support/lc_infocursorsettingsmanager.cpp
@@ -1937,7 +1950,6 @@ set (SHARED_SOURCES
      librecad/src/ui/main/workspaces/lc_workspacesinvoker.h
      librecad/src/ui/main/workspaces/lc_workspacesmanager.cpp
      librecad/src/ui/main/workspaces/lc_workspacesmanager.h
-
      librecad/src/ui/qg_actionhandler.cpp
      librecad/src/ui/qg_actionhandler.h
      librecad/src/ui/view/lc_centralwidget.cpp
@@ -2125,8 +2137,93 @@ set (SHARED_SOURCES
      librecad/src/ui/action_options/lc_action_options_properties_filler_base.cpp
      librecad/src/ui/action_options/lc_action_options_properties_filler_base.h
      librecad/src/lib/actions/options/lc_property_sheet_interface.h
+     librecad/src/ui/components/buttons/lc_color_button.cpp
+     librecad/src/ui/components/buttons/lc_color_button.h
+     librecad/src/ui/styling/lc_palette_editor_shared.h
+     librecad/src/ui/styling/fusion_skin/lc_palette_color_utils.cpp
+     librecad/src/ui/styling/fusion_skin/lc_palette_color_utils.h
+     librecad/src/ui/styling/fusion_skin/lc_fusion_skins_repository.cpp
+     librecad/src/ui/styling/fusion_skin/lc_fusion_skins_repository.h
+     librecad/src/ui/styling/icons_styling/lc_icons_style_shared.h
+     librecad/src/ui/styling/icons_styling/lc_icons_style_repository.cpp
+     librecad/src/ui/styling/icons_styling/lc_icons_style_repository.h
+     librecad/src/ui/styling/icons_styling/lc_icons_style_manager.cpp
+     librecad/src/ui/styling/icons_styling/lc_icons_style_manager.h
+     librecad/src/ui/styling/icons_styling/lc_icons_color_utils.cpp
+     librecad/src/ui/styling/icons_styling/lc_icons_color_utils.h
+     librecad/src/ui/styling/support/lc_custom_style_helper.cpp
+     librecad/src/ui/styling/support/lc_custom_style_helper.h
+     librecad/src/ui/styling/icons_styling/lc_icon_colors_options.h
+     librecad/src/ui/styling/icons_styling/lc_icon_colors_options.cpp
+     librecad/src/ui/styling/icons_styling/lc_icon_engine_shared.h
+     librecad/src/ui/styling/icons_styling/lc_icon_engine_shared.cpp
+     librecad/src/ui/styling/lc_ui_style_manager.cpp
+     librecad/src/ui/styling/lc_ui_style_manager.h
+     librecad/src/ui/dialogs/settings/options_widget/lc_editor_utils.cpp
+     librecad/src/ui/dialogs/settings/options_widget/lc_editor_utils.h
+     librecad/src/ui/styling/presets_generator/lc_style_preset_generator.cpp
+     librecad/src/ui/styling/presets_generator/lc_style_preset_generator.h
+     librecad/src/ui/styling/presets_generator/lc_dlg_styles_presets_generator.h
+     librecad/src/ui/styling/presets_generator/lc_dlg_styles_presets_generator.cpp
+     librecad/src/ui/styling/support/lc_style_index_helper.cpp
+     librecad/src/ui/styling/support/lc_style_index_helper.h
+     librecad/src/ui/styling/support/lc_style_repository_base.cpp
+     librecad/src/ui/styling/support/lc_style_repository_base.h
+     librecad/src/ui/styling/metrics/lc_metrics_repository.cpp
+     librecad/src/ui/styling/metrics/lc_metrics_repository.h
+     librecad/src/ui/styling/typography/lc_typography_repository.cpp
+     librecad/src/ui/styling/typography/lc_typography_repository.h
+     librecad/src/ui/styling/typography/lc_typography_utils.cpp
+     librecad/src/ui/styling/typography/lc_typography_utils.h
+     librecad/src/ui/styling/metrics/lc_style_metrics_utils.cpp
+     librecad/src/ui/styling/metrics/lc_style_metrics_utils.h
+     librecad/src/ui/styling/support/lc_workspace_import_export_helper.cpp
+     librecad/src/ui/styling/support/lc_workspace_import_export_helper.h
+     librecad/src/ui/styling/support/ui/lc_style_editor_interface.cpp
+     librecad/src/ui/styling/support/ui/lc_style_editor_interface.h
+     librecad/src/ui/styling/support/ui/lc_preset_manager_bar.cpp
+     librecad/src/ui/styling/support/ui/lc_preset_manager_bar.h
+     librecad/src/ui/dialogs/settings/options_widget/lc_preset_container_widget.cpp
+     librecad/src/ui/dialogs/settings/options_widget/lc_preset_container_widget.h
+     librecad/src/ui/dialogs/settings/options_widget/lc_dlg_preset_editor.cpp
+     librecad/src/ui/dialogs/settings/options_widget/lc_dlg_preset_editor.h
+     librecad/src/ui/dialogs/settings/options_widget/lc_style_editor_typography.cpp
+     librecad/src/ui/dialogs/settings/options_widget/lc_style_editor_typography.h
+     librecad/src/ui/dialogs/settings/options_widget/lc_style_editor_base.cpp
+     librecad/src/ui/dialogs/settings/options_widget/lc_style_editor_base.h
+     librecad/src/ui/dialogs/settings/options_widget/lc_style_editor_metrics.cpp
+     librecad/src/ui/dialogs/settings/options_widget/lc_style_editor_metrics.h
+     librecad/src/ui/dialogs/settings/options_widget/lc_style_editor_fusion_skin.cpp
+     librecad/src/ui/dialogs/settings/options_widget/lc_style_editor_fusion_skin.h
+     librecad/src/ui/dialogs/settings/options_widget/lc_style_editor_icons_style.cpp
+     librecad/src/ui/dialogs/settings/options_widget/lc_style_editor_icons_style.h
+     librecad/src/ui/dock_widgets/cad/lc_cad_tool_matrix_dock_widget.cpp
+     librecad/src/ui/dock_widgets/cad/lc_cad_tool_matrix_dock_widget.h
+     librecad/src/ui/styling/proxy_style/lc_proxy_style_shared.h
+     librecad/src/ui/styling/proxy_style/lc_skin_scaled_geometry_provider.h
+     librecad/src/ui/styling/proxy_style/lc_skin_scaled_geometry_provider.cpp
+     librecad/src/ui/styling/proxy_style/lc_skin_colors_resolver.h
+     librecad/src/ui/styling/proxy_style/lc_skin_colors_resolver.cpp
+     librecad/src/ui/styling/proxy_style/lc_skin_widgets_layout_resolver.h
+     librecad/src/ui/styling/proxy_style/lc_skin_widgets_layout_resolver.cpp
+     librecad/src/ui/styling/proxy_style/lc_proxy_style.h
+     librecad/src/ui/styling/proxy_style/lc_proxy_style.cpp
+     librecad/src/ui/styling/proxy_style/events/lc_event_filter_mnemonic.h
+     librecad/src/ui/styling/proxy_style/events/lc_event_filter_mnemonic.cpp
+     librecad/src/ui/styling/proxy_style/events/lc_proxy_style_event_filter.h
+     librecad/src/ui/styling/proxy_style/events/lc_event_filter_tool_tip.cpp
+     librecad/src/ui/styling/proxy_style/events/lc_event_filter_tool_tip.h
+     librecad/src/ui/styling/proxy_style/events/lc_event_filter_floating_hud.cpp
+     librecad/src/ui/styling/proxy_style/events/lc_event_filter_floating_hud.h
+     librecad/src/ui/styling/proxy_style/events/lc_event_filter_win_32_window_cloaking.cpp
+     librecad/src/ui/styling/proxy_style/events/lc_event_filter_win_32_window_cloaking.h
+     librecad/src/ui/styling/proxy_style/events/lc_event_filter_auto_popup_controller.cpp
+     librecad/src/ui/styling/proxy_style/events/lc_event_filter_auto_popup_controller.h
+     librecad/src/ui/styling/proxy_style/lc_dock_title_bar.cpp
+     librecad/src/ui/styling/proxy_style/lc_dock_title_bar.h
+     librecad/src/ui/styling/proxy_style/lc_detached_menu.cpp
+     librecad/src/ui/styling/proxy_style/lc_detached_menu.h
 )
-
 set (MUPARSER_SOURCES
      libraries/muparser/include/muParser.h
      libraries/muparser/include/muParserBase.h
@@ -2161,8 +2258,8 @@ target_compile_definitions (librecad_lib PRIVATE
                             LC_VERSION=2.2.2.5-alpha
                             LC_PRERELEASE=true
 )
-target_include_directories(librecad_lib PRIVATE
-    ${SHARED_INCLUDES}
+target_include_directories (librecad_lib PRIVATE
+                            ${SHARED_INCLUDES}
 )
 
 target_link_libraries (librecad_lib PRIVATE
@@ -2293,33 +2390,33 @@ if (BUILD_TESTS)
     add_subdirectory (externals/Catch2)
 
     # Define test executable
-    qt_add_executable(librecad_tests
-	# this is needed to allow testing methods used by main()
-	# main() is excluded when BUILD_TEST=ON
-	${MAIN_SOURCES}
-        ${LIBRECAD_RES}
-	### The actual tests
-        librecad/src/lib/engine/document/entities/tests/lc_splinehelper_tests.cpp
-        librecad/src/lib/engine/document/entities/tests/lc_hyperbola_tests.cpp
-        librecad/src/lib/engine/document/entities/tests/lc_parabola_tests.cpp
-        librecad/src/lib/engine/document/entities/tests/rs_ellipse_tests.cpp
-        librecad/src/lib/engine/document/entities/tests/rs_spline_tests.cpp
-        librecad/src/lib/engine/document/entities/tests/rs_hatch_tests.cpp
-        librecad/src/lib/engine/document/entities/tests/lc_textbidi_tests.cpp
-        librecad/src/lib/engine/document/entities/tests/rs_mtext_bidi_tests.cpp
-        librecad/src/lib/engine/document/entities/tests/rs_text_bidi_tests.cpp
-        librecad/src/lib/math/tests/rs_math_tests.cpp
-        librecad/src/lib/math/tests/lc_quadratic_tests.cpp
-        librecad/src/lib/filters/tests/dwg_buffer_round_trip_tests.cpp
-        librecad/src/lib/filters/tests/dwg_entity_encode_round_trip_tests.cpp
-        librecad/src/lib/filters/tests/dwg_header_encode_round_trip_tests.cpp
-        librecad/src/lib/filters/tests/dwg_smoke_tests.cpp
-        librecad/src/lib/filters/tests/dwg_write_smoke_tests.cpp
-        librecad/src/lib/filters/tests/eed_tests.cpp
-        librecad/src/lib/filters/tests/dbcolor_tests.cpp
-        librecad/src/lib/filters/tests/entity_metadata_tests.cpp
-        librecad/src/lib/filters/tests/mline_tests.cpp
-        librecad/src/lib/filters/tests/underlay_tests.cpp
+    qt_add_executable (librecad_tests
+                       # this is needed to allow testing methods used by main()
+                       # main() is excluded when BUILD_TEST=ON
+                       ${MAIN_SOURCES}
+                       ${LIBRECAD_RES}
+                       ### The actual tests
+                       librecad/src/lib/engine/document/entities/tests/lc_splinehelper_tests.cpp
+                       librecad/src/lib/engine/document/entities/tests/lc_hyperbola_tests.cpp
+                       librecad/src/lib/engine/document/entities/tests/lc_parabola_tests.cpp
+                       librecad/src/lib/engine/document/entities/tests/rs_ellipse_tests.cpp
+                       librecad/src/lib/engine/document/entities/tests/rs_spline_tests.cpp
+                       librecad/src/lib/engine/document/entities/tests/rs_hatch_tests.cpp
+                       librecad/src/lib/engine/document/entities/tests/lc_textbidi_tests.cpp
+                       librecad/src/lib/engine/document/entities/tests/rs_mtext_bidi_tests.cpp
+                       librecad/src/lib/engine/document/entities/tests/rs_text_bidi_tests.cpp
+                       librecad/src/lib/math/tests/rs_math_tests.cpp
+                       librecad/src/lib/math/tests/lc_quadratic_tests.cpp
+                       librecad/src/lib/filters/tests/dwg_buffer_round_trip_tests.cpp
+                       librecad/src/lib/filters/tests/dwg_entity_encode_round_trip_tests.cpp
+                       librecad/src/lib/filters/tests/dwg_header_encode_round_trip_tests.cpp
+                       librecad/src/lib/filters/tests/dwg_smoke_tests.cpp
+                       librecad/src/lib/filters/tests/dwg_write_smoke_tests.cpp
+                       librecad/src/lib/filters/tests/eed_tests.cpp
+                       librecad/src/lib/filters/tests/dbcolor_tests.cpp
+                       librecad/src/lib/filters/tests/entity_metadata_tests.cpp
+                       librecad/src/lib/filters/tests/mline_tests.cpp
+                       librecad/src/lib/filters/tests/underlay_tests.cpp
     )
 
     # Include directories for rs_math.h and other dependencies

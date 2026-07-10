@@ -26,11 +26,9 @@
 #include <QApplication>
 #include <QPalette>
 
-#include "lc_iconcolorsoptions.h"
+#include "lc_palette_color_utils.h"
 #include "rs_settings.h"
 #include "rs_system.h"
-
-
 
 void LC_PenPaletteOptions::loadDefaults(bool isDark) {
     QPalette palette = QApplication::palette();
@@ -52,7 +50,7 @@ void LC_PenPaletteOptions::loadFromSettings(){
     LC_GROUP_GUARD("Widget.PenPalette");
     {
         LC_PenPaletteOptions defaults;
-        defaults.loadDefaults(LC_IconColorsOptions::isDarkColorScheme());
+        defaults.loadDefaults(LC_PaletteColorUtils::isSystemInDarkMode());
         activeItemBGColor = QColor(LC_GET_STR("activeItemBgColor", defaults.activeItemBGColor.name()));
         matchedItemColor = QColor(LC_GET_STR("matchedItemBgColor", defaults.matchedItemColor.name()));
         showGrid = LC_GET_BOOL("showGrid", true);

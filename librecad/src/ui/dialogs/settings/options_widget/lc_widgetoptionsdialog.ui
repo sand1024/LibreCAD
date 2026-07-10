@@ -6,790 +6,661 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>648</height>
+    <width>612</width>
+    <height>603</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>400</width>
-    <height>0</height>
-   </size>
-  </property>
   <property name="windowTitle">
-   <string>Widget Options</string>
+   <string>UI Style Options</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../../../../../res/images/images.qrc">
     <normaloff>:/images/librecad.png</normaloff>:/images/librecad.png</iconset>
   </property>
-  <layout class="QGridLayout" name="gridLayout_4">
-   <item row="9" column="0" colspan="2">
+  <layout class="QGridLayout" name="gridLayout_main">
+   <item row="1" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
       <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Save</set>
      </property>
-     <property name="centerButtons">
-      <bool>false</bool>
-     </property>
     </widget>
    </item>
-   <item row="3" column="1">
-    <widget class="QGroupBox" name="groupBox_6">
-     <property name="title">
-      <string>Dock Widgets</string>
+   <item row="0" column="0">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>1</number>
      </property>
-     <layout class="QGridLayout" name="gridLayout_7">
-      <item row="0" column="0" colspan="2">
-       <widget class="QCheckBox" name="cbDockWidgetsFlatButtons">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Flat Buttons</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>Icon Size</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="sbDocWidgtetIconSize">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Side length in pixels</string>
-        </property>
-        <property name="minimum">
-         <number>8</number>
-        </property>
-        <property name="maximum">
-         <number>150</number>
-        </property>
-        <property name="value">
-         <number>24</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="0" column="0" colspan="2">
-    <widget class="QGroupBox" name="groupBox_3">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="title">
-      <string>General Styling</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-     </property>
-     <property name="flat">
-      <bool>false</bool>
-     </property>
-     <property name="checkable">
-      <bool>false</bool>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_6" columnstretch="0,5,0">
-      <property name="sizeConstraint">
-       <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
-      </property>
-      <property name="leftMargin">
-       <number>9</number>
-      </property>
-      <property name="topMargin">
-       <number>9</number>
-      </property>
-      <property name="rightMargin">
-       <number>9</number>
-      </property>
-      <property name="bottomMargin">
-       <number>9</number>
-      </property>
-      <property name="horizontalSpacing">
-       <number>6</number>
-      </property>
-      <item row="1" column="0">
-       <widget class="QPushButton" name="stylesheet_button">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Style Sheet</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="style_checkbox">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>If enabled, specific style of UI may be applied</string>
-        </property>
-        <property name="text">
-         <string>Style</string>
-        </property>
-        <property name="tristate">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="style_combobox">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>150</width>
-          <height>0</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QPushButton" name="pbPaletteEditor">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Edit Palette...</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1" colspan="2">
-       <widget class="QLineEdit" name="stylesheet_field">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>2</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>150</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>Input the path of a Qt style sheet.</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="0" colspan="2">
-    <widget class="QGroupBox" name="groupBox_4">
-     <property name="title">
-      <string>Icons Styling</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="4" column="4">
-       <widget class="QPushButton" name="pbBack">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Click to select color</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../../../../../res/controls/controls.qrc">
-          <normaloff>:/controls/colorxx.png</normaloff>:/controls/colorxx.png</iconset>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="2" colspan="2">
-       <widget class="QComboBox" name="cbIconColorAccent">
-        <property name="toolTip">
-         <string>Color for accent elements (originally green)</string>
-        </property>
-        <property name="accessibleDescription">
-         <string notr="true"/>
-        </property>
-        <property name="editable">
-         <bool>true</bool>
-        </property>
-        <item>
-         <property name="text">
-          <string notr="true">#00FFFF</string>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Generic</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_generic">
+       <item row="0" column="1">
+        <widget class="QGroupBox" name="groupBox_6">
+         <property name="title">
+          <string>Dock Widgets</string>
          </property>
-        </item>
-       </widget>
-      </item>
-      <item row="4" column="0" colspan="2">
-       <widget class="QLabel" name="lStartHandleColor_3">
-        <property name="text">
-         <string>Back Color</string>
-        </property>
-        <property name="buddy">
-         <cstring>cbIconColorMain</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="2">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>External Icons Directory:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="4">
-       <widget class="QPushButton" name="pbAccent">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Click to select color</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../../../../../res/controls/controls.qrc">
-          <normaloff>:/controls/colorxx.png</normaloff>:/controls/colorxx.png</iconset>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2" colspan="2">
-       <widget class="QComboBox" name="cbIconColorMain">
-        <property name="toolTip">
-         <string>Color for main elements (originally black)</string>
-        </property>
-        <property name="accessibleDescription">
-         <string notr="true"/>
-        </property>
-        <property name="editable">
-         <bool>true</bool>
-        </property>
-        <item>
-         <property name="text">
-          <string notr="true">#00FFFF</string>
+         <layout class="QGridLayout" name="gridLayout_dockWidgets">
+          <item row="0" column="0" colspan="2">
+           <widget class="QCheckBox" name="cbDockWidgetsFlatButtons">
+            <property name="text">
+             <string>Flat Buttons</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>Icon Size:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="sbDocWidgtetIconSize">
+            <property name="toolTip">
+             <string>Side length in pixels.</string>
+            </property>
+            <property name="minimum">
+             <number>8</number>
+            </property>
+            <property name="maximum">
+             <number>150</number>
+            </property>
+            <property name="value">
+             <number>24</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QGroupBox" name="gbCADWidgetsUngrouped">
+         <property name="title">
+          <string>CAD Widgets (Ungrouped)</string>
          </property>
-        </item>
-       </widget>
-      </item>
-      <item row="0" column="7">
-       <widget class="QToolButton" name="tbOverridesDir">
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../../../../../res/icons/icons.qrc">
-          <normaloff>:/icons/folderclosed.lci</normaloff>:/icons/folderclosed.lci</iconset>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="2" colspan="2">
-       <widget class="QComboBox" name="cbIconColorBack">
-        <property name="toolTip">
-         <string>Color for filled background (originally white)</string>
-        </property>
-        <property name="accessibleDescription">
-         <string notr="true"/>
-        </property>
-        <property name="editable">
-         <bool>true</bool>
-        </property>
-        <item>
-         <property name="text">
-          <string notr="true">#00FFFF</string>
+         <layout class="QGridLayout" name="gridLayout_ungrouped">
+          <item row="0" column="0" colspan="2">
+           <widget class="QCheckBox" name="cbLeftTBAllFlatButtons">
+            <property name="toolTip">
+             <string>If checked, buttons in CAD widgets will be flat</string>
+            </property>
+            <property name="text">
+             <string>Flat Buttons</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>Icon Size:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="sbLeftTBAllIconSize">
+            <property name="toolTip">
+             <string>Side length in pixels.</string>
+            </property>
+            <property name="minimum">
+             <number>8</number>
+            </property>
+            <property name="maximum">
+             <number>150</number>
+            </property>
+            <property name="value">
+             <number>24</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_7">
+            <property name="text">
+             <string>Columns Count:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="sbLeftTBAllColumnCount">
+            <property name="toolTip">
+             <string>Number of columns for actions in left toolbar.</string>
+            </property>
+            <property name="minimum">
+             <number>3</number>
+            </property>
+            <property name="maximum">
+             <number>60</number>
+            </property>
+            <property name="value">
+             <number>5</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QGroupBox" name="gbCADWidgets">
+         <property name="title">
+          <string>CAD Widgets</string>
          </property>
-        </item>
-       </widget>
-      </item>
-      <item row="2" column="4">
-       <widget class="QPushButton" name="pbMain">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Click to select color</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../../../../../res/controls/controls.qrc">
-          <normaloff>:/controls/colorxx.png</normaloff>:/controls/colorxx.png</iconset>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0" colspan="2">
-       <widget class="QLabel" name="lStartHandleColor">
-        <property name="text">
-         <string>Main Color:</string>
-        </property>
-        <property name="buddy">
-         <cstring>cbIconColorMain</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2" colspan="5">
-       <widget class="QLineEdit" name="leIconsOverrideDir">
-        <property name="toolTip">
-         <string>Defines location of custom user-provided icons.</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" colspan="2">
-       <widget class="QLabel" name="lblStyle">
-        <property name="text">
-         <string>Saved Icons Style:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2" colspan="3">
-       <widget class="QComboBox" name="cbIconsStyle"/>
-      </item>
-      <item row="1" column="5" colspan="3">
-       <widget class="QPushButton" name="pbStyleSave">
-        <property name="text">
-         <string>Save Style</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="5" colspan="3">
-       <widget class="QPushButton" name="pbRemoveStyle">
-        <property name="text">
-         <string>Remove Style</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="5" colspan="3">
-       <widget class="QPushButton" name="pbAdvancedIcons">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Advanced Setup ...</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0" colspan="2">
-       <widget class="QLabel" name="lStartHandleColor_2">
-        <property name="text">
-         <string>Accent Color:</string>
-        </property>
-        <property name="buddy">
-         <cstring>cbIconColorMain</cstring>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="title">
-      <string>Toolbar</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0" colspan="2">
-       <widget class="QCheckBox" name="cbFlatPickValuesButtons">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>If checked, buttons for picking values from drawing will be flat</string>
-        </property>
-        <property name="text">
-         <string>Flat pick values buttons</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="toolbar_icon_size_spinbox">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Side length in pixels</string>
-        </property>
-        <property name="minimum">
-         <number>8</number>
-        </property>
-        <property name="maximum">
-         <number>150</number>
-        </property>
-        <property name="value">
-         <number>24</number>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="toolbar_icon_size_checkbox">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Icon Size</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="7" column="0">
-    <widget class="QGroupBox" name="gbCADWidgets">
-     <property name="title">
-      <string>CAD Widgets</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_8">
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Icon Size</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="sbLeftTBIconSize">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Side length in pixels</string>
-        </property>
-        <property name="minimum">
-         <number>8</number>
-        </property>
-        <property name="maximum">
-         <number>150</number>
-        </property>
-        <property name="value">
-         <number>24</number>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QSpinBox" name="sbLeftTBColumnCount">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Number of columns for actions in left toolbar.</string>
-        </property>
-        <property name="minimum">
-         <number>4</number>
-        </property>
-        <property name="maximum">
-         <number>12</number>
-        </property>
-        <property name="value">
-         <number>5</number>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="2">
-       <widget class="QCheckBox" name="cbLeftTBFlatButtons">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Flat Buttons</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Columns Count:</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="7" column="1">
-    <widget class="QGroupBox" name="gbCADWidgetsUngrouped">
-     <property name="title">
-      <string>CAD Widgets (Ungrouped)</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_9">
-      <item row="0" column="0" colspan="2">
-       <widget class="QCheckBox" name="cbLeftTBAllFlatButtons">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Flat Buttons</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_6">
-        <property name="text">
-         <string>Icon Size</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="sbLeftTBAllIconSize">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Side length in pixels</string>
-        </property>
-        <property name="minimum">
-         <number>8</number>
-        </property>
-        <property name="maximum">
-         <number>150</number>
-        </property>
-        <property name="value">
-         <number>24</number>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_7">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Columns Count:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QSpinBox" name="sbLeftTBAllColumnCount">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Number of columns for actions in left toolbar.</string>
-        </property>
-        <property name="minimum">
-         <number>3</number>
-        </property>
-        <property name="maximum">
-         <number>60</number>
-        </property>
-        <property name="value">
-         <number>5</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="8" column="0">
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="title">
-      <string>Statusbar</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_5">
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="statusbar_height_spinbox">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="2">
-       <widget class="QLabel" name="label_2">
-        <property name="toolTip">
-         <string>lClassicStatusBarOnly</string>
-        </property>
-        <property name="text">
-         <string>For &quot;classic&quot; statusbar only. </string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QCheckBox" name="statusbar_fontsize_checkbox">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Font Size</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QSpinBox" name="statusbar_fontsize_spinbox">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="statusbar_height_checkbox">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Height</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <spacer name="verticalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Orientation::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>0</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="8" column="1">
-    <widget class="QGroupBox" name="groupBox_7">
-     <property name="title">
-      <string>General Docking</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="cbDockingVerticalTitleBar">
-        <property name="toolTip">
-         <string>If selected, title bar for docked dock widgets will be vertical. Otherwise, it will be horizontal.</string>
-        </property>
-        <property name="text">
-         <string>Tile bar is vertical (except CAD widgets)</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QCheckBox" name="cbDockingVerticalTabs">
-        <property name="toolTip">
-         <string>If checked, the two vertical dock areas on the sides of the main window show their tabs vertically. </string>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">margin-left:15px</string>
-        </property>
-        <property name="text">
-         <string>Vertical tabs</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="cbDockingAllowNested">
-        <property name="toolTip">
-         <string>If not checked, dock areas can only contain a single row (horizontal or vertical) of dock widgets. If checked, the area occupied by a dock widget can be split in either direction to contain more dock widgets.</string>
-        </property>
-        <property name="text">
-         <string>Allow nested docking</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+         <layout class="QGridLayout" name="gridLayout_cadWidgets">
+          <item row="0" column="0" colspan="2">
+           <widget class="QCheckBox" name="cbLeftTBFlatButtons">
+            <property name="toolTip">
+             <string>If checked, buttons in CAD widgets will be flat.</string>
+            </property>
+            <property name="text">
+             <string>Flat Buttons</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>Icon Size:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="sbLeftTBIconSize">
+            <property name="toolTip">
+             <string>Side length in pixels.</string>
+            </property>
+            <property name="minimum">
+             <number>8</number>
+            </property>
+            <property name="maximum">
+             <number>150</number>
+            </property>
+            <property name="value">
+             <number>24</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Columns Count:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="sbLeftTBColumnCount">
+            <property name="toolTip">
+             <string>Number of columns for actions in left toolbar.</string>
+            </property>
+            <property name="minimum">
+             <number>4</number>
+            </property>
+            <property name="maximum">
+             <number>12</number>
+            </property>
+            <property name="value">
+             <number>5</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>Statusbar</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_statusbar">
+          <item row="0" column="0" colspan="2">
+           <widget class="QLabel" name="label_2">
+            <property name="toolTip">
+             <string>lClassicStatusBarOnly</string>
+            </property>
+            <property name="text">
+             <string>For &quot;classic&quot; statusbar only.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="statusbar_height_checkbox">
+            <property name="text">
+             <string>Height:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="statusbar_height_spinbox"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="statusbar_fontsize_checkbox">
+            <property name="text">
+             <string>Font Size:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="statusbar_fontsize_spinbox"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>Toolbar</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_toolbar">
+          <item row="0" column="0" colspan="2">
+           <widget class="QCheckBox" name="cbFlatPickValuesButtons">
+            <property name="toolTip">
+             <string>If checked, buttons for picking values from drawing will be flat.</string>
+            </property>
+            <property name="text">
+             <string>Flat pick values buttons</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="toolbar_icon_size_checkbox">
+            <property name="text">
+             <string>Icon Size:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="toolbar_icon_size_spinbox">
+            <property name="toolTip">
+             <string>Side length in pixels.</string>
+            </property>
+            <property name="minimum">
+             <number>8</number>
+            </property>
+            <property name="maximum">
+             <number>150</number>
+            </property>
+            <property name="value">
+             <number>24</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QGroupBox" name="groupBox_7">
+         <property name="title">
+          <string>General Docking</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_docking">
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="cbDockingAllowNested">
+            <property name="toolTip">
+             <string>If not checked, dock areas can only contain a single row of dock widgets. If checked, dock areas can contain multiple split/nested rows.</string>
+            </property>
+            <property name="text">
+             <string>Allow nested docking</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="cbDockingVerticalTitleBar">
+            <property name="toolTip">
+             <string>If selected, title bar for docked widgets will be vertical. Otherwise, it will be horizontal.</string>
+            </property>
+            <property name="text">
+             <string>Titlebar is vertical</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="cbDockingVerticalTabs">
+            <property name="toolTip">
+             <string>If checked, the vertical dock areas on the sides of the main window show their tabs vertically.</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">margin-left:15px</string>
+            </property>
+            <property name="text">
+             <string>Vertical tabs</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>UI Style</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_style">
+       <item row="2" column="0">
+        <widget class="QGroupBox" name="groupBox_4">
+         <property name="title">
+          <string>Icons Styling</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_icons">
+          <item row="1" column="2">
+           <widget class="QPushButton" name="pbAdvancedIcons">
+            <property name="toolTip">
+             <string>Launch advanced setup to configure individual color replacements and state overrides.</string>
+            </property>
+            <property name="text">
+             <string>Edit Icon Style...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../../../../../res/icons/icons.qrc">
+              <normaloff>:/icons/rename_active_block.lci</normaloff>:/icons/rename_active_block.lci</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>Icons Style:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" colspan="3">
+           <layout class="QHBoxLayout" name="horizontalLayout_overrides">
+            <item>
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>External Icons Directory:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="leIconsOverrideDir">
+              <property name="toolTip">
+               <string>Defines location of custom user-provided icons.</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="tbOverridesDir">
+              <property name="toolTip">
+               <string>Browse for directory.</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../../../../../res/icons/icons.qrc">
+                <normaloff>:/icons/folderclosed.lci</normaloff>:/icons/folderclosed.lci</iconset>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="2" column="0" colspan="3">
+           <widget class="QCheckBox" name="cbIgnoreIconStylingInTheme">
+            <property name="toolTip">
+             <string>If selected, icons style setting that is applied as part of Fusion theme skin will be ignored - and explicitly used icon style should be used</string>
+            </property>
+            <property name="text">
+             <string>Ignore icon style in Fusion skin</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="cbIconStyle">
+            <property name="toolTip">
+             <string>Select a saved custom icon color style or load system defaults.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" colspan="3">
+           <widget class="QLabel" name="label_11">
+            <property name="text">
+             <string>Styles of icons defines which primary, accent and back colors are used to draw application's icons as well as how icons for different states looks like.</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="title">
+          <string>General Styling</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_general">
+          <item row="1" column="2">
+           <widget class="QPushButton" name="pbPaletteEditor">
+            <property name="toolTip">
+             <string>Launch the advanced Fusion style and colors palette editor.</string>
+            </property>
+            <property name="text">
+             <string>Edit Skins...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../../../../../res/icons/icons.qrc">
+              <normaloff>:/icons/rename_active_block.lci</normaloff>:/icons/rename_active_block.lci</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QComboBox" name="cbActiveMetrics"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="lblSkin">
+            <property name="text">
+             <string>Fusion Skin:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="style_combobox"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="lblMetrics">
+            <property name="text">
+             <string>Fusion Metrics:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QComboBox" name="cbThemeModeOverride">
+            <property name="toolTip">
+             <string>Force the application palette and SVG icons to remain in a fixed light or dark mode, regardless of your operating system settings.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="cbFusionSkin"/>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLineEdit" name="stylesheet_field">
+            <property name="toolTip">
+             <string>Specify file with external Qt CSS. Use with caution, as setting custom QCSS prevent proper updating of style preview window.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="lblThemeModeOverride">
+            <property name="text">
+             <string>Fusion Skin Mode:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QPushButton" name="pbMetricsEditor">
+            <property name="text">
+             <string>Edit Metrics...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../../../../../res/icons/icons.qrc">
+              <normaloff>:/icons/rename_active_block.lci</normaloff>:/icons/rename_active_block.lci</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="style_checkbox">
+            <property name="toolTip">
+             <string>If enabled, specific style of UI may be applied.</string>
+            </property>
+            <property name="text">
+             <string>Used Theme:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="lblStylesheet">
+            <property name="text">
+             <string>QCSS Stylesheet:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="2">
+           <widget class="QToolButton" name="tbSelectStylesheet">
+            <property name="toolTip">
+             <string>Select custom stylesheet file (use with caution)</string>
+            </property>
+            <property name="text">
+             <string>...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../../../../../res/icons/icons.qrc">
+              <normaloff>:/icons/fileopen.lci</normaloff>:/icons/fileopen.lci</iconset>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QGroupBox" name="groupBox_5">
+         <property name="title">
+          <string>Typography</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="1" column="1">
+           <widget class="QComboBox" name="cbTypography"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="lblTypography">
+            <property name="text">
+             <string>Typography set:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QPushButton" name="pbTypographyEditor">
+            <property name="text">
+             <string>Edit Typography...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../../../../../res/icons/icons.qrc">
+              <normaloff>:/icons/rename_active_block.lci</normaloff>:/icons/rename_active_block.lci</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" colspan="3">
+           <widget class="QLabel" name="label_10">
+            <property name="text">
+             <string>Fonts families and font sizes used by elements of UI</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QGroupBox" name="groupBox_8">
+         <property name="title">
+          <string>Exchange</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="0" column="2">
+           <spacer name="profileSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Policy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="0" column="1">
+           <widget class="QPushButton" name="pbExportProfile">
+            <property name="toolTip">
+             <string>Export current selected active configurations into a self-contained .lcws package.</string>
+            </property>
+            <property name="text">
+             <string>Export Profile...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../../../../../res/icons/icons.qrc">
+              <normaloff>:/icons/save.lci</normaloff>:/icons/save.lci</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QPushButton" name="pbImportProfile">
+            <property name="toolTip">
+             <string>Import a consolidated workspace profile (.lcws) containing skins, fonts, and metrics.</string>
+            </property>
+            <property name="text">
+             <string>Import Profile...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../../../../../res/icons/icons.qrc">
+              <normaloff>:/icons/fileopen.lci</normaloff>:/icons/fileopen.lci</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QPushButton" name="pbPresetsGenerator">
+            <property name="text">
+             <string>Presets Generator</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../../../../../res/icons/icons.qrc">
+              <normaloff>:/icons/back.lci</normaloff>:/icons/back.lci</iconset>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>
@@ -797,9 +668,7 @@
  <resources>
   <include location="../../../../../res/images/images.qrc"/>
   <include location="../../../../../res/controls/controls.qrc"/>
-  <include location="../../../../../res/images/images.qrc"/>
   <include location="../../../../../res/icons/icons.qrc"/>
-  <include location="../../../../../res/controls/controls.qrc"/>
  </resources>
  <connections>
   <connection>

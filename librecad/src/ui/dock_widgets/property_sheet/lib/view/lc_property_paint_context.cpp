@@ -54,8 +54,8 @@ QColor LC_PropertyPaintContext::getTextColor(const bool normalText) const {
         role = QPalette::Text;
     }
     else {
-        group = QPalette::Active;
-        role = QPalette::PlaceholderText;
+        group = QPalette::Disabled;
+        role = QPalette::Text;
     }
     return getPalette().color(group, role);
 }

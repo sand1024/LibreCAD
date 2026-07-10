@@ -25,38 +25,76 @@
 #define LC_WIDGETOPTIONSDIALOG_H
 
 #include "lc_dialog.h"
-#include "lc_iconcolorsoptions.h"
+#include "lc_icon_colors_options.h"
+#include "lc_icons_style_repository.h"
 #include "ui_lc_widgetoptionsdialog.h"
 
-class LC_WidgetOptionsDialog: public LC_Dialog, public Ui::LC_WidgetOptionsDialog{
+class LC_UIStyleManager;
+class LC_FusionSkinsRepository;
+
+class LC_WidgetOptionsDialog : public LC_Dialog, public Ui::LC_WidgetOptionsDialog {
     Q_OBJECT
 public:
-    QString selectFolder(const QString& title);
-    void updateUIByOptions() const;
-    explicit LC_WidgetOptionsDialog(QWidget* parent = nullptr);
-    void reject() override;
-public slots:
-    void chooseStyleSheet();
-    void accept() override;
-    void applyIconColors();
-    void onpbMainClicked();
-    void onpbAccentClicked();
-    void onpbBackClicked();
-    void onMainIconColorChanged(const QString &);
-    void onAccentIconColorChanged(const QString &);
-    void onBackIconColorChanged(const QString &);
-    void showAdvancedSetup();
-    void setIconsOverrideFoler();
-    void onSaveStylePressed();
-    void onRemoveStylePressed();
-    void onStyleChanged(const QString& val);
-protected:
-    QString m_currentIconsStyleName;
-    LC_IconColorsOptions m_iconColorsOptions;
-    QString setComboBoxColor(const QComboBox *combo);
+    LC_WidgetOptionsDialog(QWidget* parent, LC_UIStyleManager* styleManager);
+    ~LC_WidgetOptionsDialog() override = default;
 
-    bool setupStylesCombobox() const;
-    void updateStylesCombobox(QStringList options) const;
- };
+    void reject() override;
+
+public slots:
+    void accept() override;
+    void chooseStyleSheet();
+    void updateSkinComboFonts() const;
+    void updateIconStyleComboFonts() const;
+    void updateTypographyComboFonts() const;
+    void updateMetricsComboFonts() const;
+
+private slots:
+    void updateStyleDependencyStates();
+    void setIconsOverrideFolder();
+
+    // Pluggable preset launchers
+    void onEditSkinsClicked();
+    void onEditIconStylesClicked();
+    void onEditTypographyClicked();
+    void onEditMetricsClicked();
+
+    // 1-Click consolidated workspace profiles and test generators
+    void onImportProfileClicked();
+    void onExportProfileClicked();
+    void applyTransientStylePreview();
+private:
+    void setupGenericTabUI() const;
+    void setupThemeModeOverrideCombobox();
+    void populateSkinsCombobox();
+    void populateIconsStyleCombobox();
+    void populateTypographyCombobox();
+    void setComboboxToActive(QString activeIconStyleKey, QComboBox* cb);
+    void populateMetricsCombobox();
+    void populateDropdowns();
+    QString selectFolder(const QString& title);
+
+    // Legacy CAD widget setups
+    void setupMegaCADBarSettingUI() const;
+    void setupCADBarSettingsUI() const;
+    void setupDockWidgetSettingsUI() const;
+    void setupToolbarsSettingsUI() const;
+    void setupStatusBarSettingsUI() const;
+    void setupDockingSettingsUI() const;
+
+    LC_UIStyleManager* m_styleManager;
+    LC_IconColorsOptions m_iconColorsOptions;
+
+    // Symmetrical rollbacks: original active presets captured on startup
+    QString m_origSkinKey;
+    QString m_origIconStyleKey;
+    QString m_origTypographyKey;
+    QString m_origMetricsKey;
+
+    bool    m_origAllowStyle = false;
+    QString m_origStyle;
+    int     m_origThemeMode = 0;
+    QString m_origStyleSheet;
+    bool    m_origIgnoreIconStyling = false;
+};
 
 #endif

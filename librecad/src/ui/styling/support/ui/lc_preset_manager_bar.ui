@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_PresetManagerBar</class>
+ <widget class="QWidget" name="LC_PresetManagerBar">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>620</width>
+    <height>38</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Preset Manager</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <property name="spacing">
+    <number>6</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="lblSelect">
+     <property name="text">
+      <string>Select Preset:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QComboBox" name="themeCombo">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="toolTip">
+      <string>Choose from available saved configurations or load standard defaults.</string>
+     </property>
+     <property name="sizeAdjustPolicy">
+      <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="btnSave">
+     <property name="toolTip">
+      <string>Save current configurations directly to the active preset file on disk.</string>
+     </property>
+     <property name="text">
+      <string>Save</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../../../res/icons/icons.qrc">
+       <normaloff>:/icons/save.lci</normaloff>:/icons/save.lci</iconset>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="btnSaveAs">
+     <property name="toolTip">
+      <string>Save current configuration as a new preset file.</string>
+     </property>
+     <property name="text">
+      <string>Save As...</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../../../res/icons/icons.qrc">
+       <normaloff>:/icons/save_as.lci</normaloff>:/icons/save_as.lci</iconset>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="btnDelete">
+     <property name="toolTip">
+      <string>Permanently delete the selected custom preset from disk.</string>
+     </property>
+     <property name="text">
+      <string>Delete</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../../../res/icons/icons.qrc">
+       <normaloff>:/icons/remove.lci</normaloff>:/icons/remove.lci</iconset>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QPushButton" name="btnApply">
+     <property name="toolTip">
+      <string>Apply the active configuration on-the-fly globally to the application workspace.</string>
+     </property>
+     <property name="text">
+      <string>Apply</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../../../../../res/icons/icons.qrc">
+       <normaloff>:/icons/check_mark.lci</normaloff>:/icons/check_mark.lci</iconset>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../../../../../res/icons/icons.qrc"/>
+ </resources>
+ <connections/>
+</ui>

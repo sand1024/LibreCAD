@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_StyleEditorIconsStyle</class>
+ <widget class="QWidget" name="LC_StyleEditorIconsStyle">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>540</width>
+    <height>540</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Icons Style Editor Panel</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_main">
+   <property name="spacing">
+    <number>8</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout" name="modeSelectionLayout">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="lblModeSelector">
+       <property name="text">
+        <string>Edit Color Maps For:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="rbLightMode">
+       <property name="text">
+        <string>Light Mode Theme</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="rbDarkMode">
+       <property name="text">
+        <string>Dark Mode Theme</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="modeSpacer">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_5">
+     <property name="title">
+      <string>Baseline Seeds (Used for Auto-Calculations and as defaults)</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_5">
+      <property name="spacing">
+       <number>10</number>
+      </property>
+      <item row="0" column="0" colspan="4">
+       <widget class="QLabel" name="lblInstructions">
+        <property name="text">
+         <string>Enable &lt;b&gt;'Link to Theme Palette'&lt;/b&gt; to automatically synchronize icon strokes, highlights, and backgrounds with your active UI theme. Disable it to manually assign custom, static colors.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lblMainSeed">
+        <property name="text">
+         <string>Main Color (Strokes):</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QCheckBox" name="chkMainPalette">
+        <property name="toolTip">
+         <string>If checked, icon strokes will automatically follow your active UI theme's text colors.</string>
+        </property>
+        <property name="text">
+         <string>Link to Theme Palette</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="LC_ColorButton" name="btnMainColor" native="true">
+        <property name="toolTip">
+         <string>Manually specify a static color for icon strokes.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QComboBox" name="cbMainPaletteRole">
+        <property name="toolTip">
+         <string>Select which active theme text role these icon strokes should follow.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lblAccentSeed">
+        <property name="text">
+         <string>Accent Color (Details):</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="chkAccentPalette">
+        <property name="toolTip">
+         <string>If checked, icon details and highlighting lines will automatically follow your active UI theme's accent color.</string>
+        </property>
+        <property name="text">
+         <string>Link to Theme Palette</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="LC_ColorButton" name="btnAccentColor" native="true">
+        <property name="toolTip">
+         <string>Manually specify a static color for icon highlighting details.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="QComboBox" name="cbAccentPaletteRole">
+        <property name="toolTip">
+         <string>Select which active theme highlight role these icon details should follow.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="lblAccentAltSeed">
+        <property name="text">
+         <string>Accent Alt (Checked):</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QCheckBox" name="chkAccentAltPalette">
+        <property name="toolTip">
+         <string>If checked, active or checked icon details will automatically follow your active UI theme's highlight color.</string>
+        </property>
+        <property name="text">
+         <string>Link to Theme Palette</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="LC_ColorButton" name="btnAccentAltColor" native="true">
+        <property name="toolTip">
+         <string>Manually specify a static color for active/checked icon details.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="3">
+       <widget class="QComboBox" name="cbAccentAltPaletteRole">
+        <property name="toolTip">
+         <string>Select which active theme highlight role these active details should follow.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="lblBackSeed">
+        <property name="text">
+         <string>Back Color (Fills):</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QCheckBox" name="chkBackPalette">
+        <property name="toolTip">
+         <string>If checked, background fills of icons will automatically follow your active UI theme's panel backgrounds.</string>
+        </property>
+        <property name="text">
+         <string>Link to Theme Palette</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="LC_ColorButton" name="btnBackColor" native="true">
+        <property name="toolTip">
+         <string>Manually specify a static color for icon background fills.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="3">
+       <widget class="QComboBox" name="cbBackPaletteRole">
+        <property name="toolTip">
+         <string>Select which active theme background role these icon fills should follow.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0" colspan="4">
+       <widget class="QCheckBox" name="chkSyncAccents">
+        <property name="toolTip">
+         <string>When enabled, changing the baseline Accent Color automatically updates the Accent Alt Color, and vice versa.</string>
+        </property>
+        <property name="text">
+         <string>Keep Accent Alt synchronized with Accent</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0" colspan="4">
+       <layout class="QHBoxLayout" name="harmonizeLayout">
+        <item>
+         <widget class="QToolButton" name="tbHarmonizeSeeds">
+          <property name="toolTip">
+           <string>Automatically generate harmonized Main and Back colors based on the current Accent Color.</string>
+          </property>
+          <property name="text">
+           <string>Harmonize Seeds</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../../../res/icons/icons.qrc">
+            <normaloff>:/icons/halign_middle.lci</normaloff>:/icons/halign_middle.lci</iconset>
+          </property>
+          <property name="toolButtonStyle">
+           <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="harmonizeSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="chkAutoCalcStates">
+     <property name="toolTip">
+      <string>Automatically calculates active, hover, and selected states relative to the baseline seeds.</string>
+     </property>
+     <property name="text">
+      <string>Auto-calculate Advanced States</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gbIconStates">
+     <property name="title">
+      <string>Dynamic State &amp; Value Overrides</string>
+     </property>
+     <layout class="QVBoxLayout" name="tableLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QTableWidget" name="tableStates"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="bidiLayout">
+     <item>
+      <widget class="QPushButton" name="pbAutoGenerateOpposite">
+       <property name="toolTip">
+        <string>Automatically generate the opposite Light/Dark variant of this active icon style.</string>
+       </property>
+       <property name="text">
+        <string>Auto-generate Opposite Scheme</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../../../../res/icons/icons.qrc">
+         <normaloff>:/icons/new.lci</normaloff>:/icons/new.lci</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="bidiSpacer">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LC_ColorButton</class>
+   <extends>QWidget</extends>
+   <header>lc_color_button.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../../../../../res/icons/icons.qrc"/>
+ </resources>
+ <connections/>
+</ui>

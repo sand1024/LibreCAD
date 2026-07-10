@@ -22,8 +22,6 @@
  *
  */
 
-// This file was first published at: github.com/r-a-v-a-s/LibreCAD.git
-
 // fixme - sand - add support of flex layout, with it potentially will be possible to support something ribbon-like
 // oh - just have and options (hor/ver  orientation)
 
@@ -50,34 +48,48 @@ LC_CADDockWidget::LC_CADDockWidget(QWidget *parent, const bool allTools)
       m_scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
       m_scrollArea->setWidget(m_frame);
       setWidget(m_scrollArea);
+
+      // Connect rangeChanged signal to dynamically trigger minimum width updates on scrollbar transitions [74]
+      connect(m_scrollArea->verticalScrollBar(), &QScrollBar::rangeChanged,
+              this, &LC_CADDockWidget::updateMinimumWidth);
   }
   else {
       setWidget(m_frame);
   }
-  m_gridLayout->setSpacing(0);
-  m_gridLayout->setContentsMargins(0, 0, 0, 0);
+  doSetupGridLayout(m_gridLayout);
   m_frame->setLayout(m_gridLayout);
 }
 
-void LC_CADDockWidget::addSpacers(QGridLayout *layout, const int columns) {
+void LC_CADDockWidget::addSpacers(QGridLayout *layout, const int columns, bool addHorizontal) {
   const auto verticalSpacer = new QSpacerItem(0, 0, QSizePolicy::Policy::Minimum,
                                         QSizePolicy::Policy::Expanding);
   const int filledRows = layout->count() / columns;
   layout->addItem(verticalSpacer, filledRows + 1, 0, 1, 1);
 
-  // auto hSpacer = new QSpacerItem(0, 0, QSizePolicy::Policy::Expanding,
-  // QSizePolicy::Policy::Minimum); layout->addItem(hSpacer, 0, columns,
-  // filledRows + 1, 1);
+    if (addHorizontal) {
+        auto hSpacer = new QSpacerItem(0, 0, QSizePolicy::Policy::Expanding,
+       QSizePolicy::Policy::Minimum); layout->addItem(hSpacer, 0, columns,
+       filledRows + 1, 1);
+    }
 }
 
 void LC_CADDockWidget::addActions(const QList<QAction *> &list, int columns, const int iconSize, const bool flatButton) {
+  onBeforeAddActions(); // Hook
+
   for (const auto&item : list) {
+    if (!shouldCreateButtonForAction(item)) { // Hook
+       handleIgnoredAction(item);             // Hook
+       continue;
+    }
+
     auto *toolButton = new QToolButton(this);
     toolButton->setDefaultAction(item);
     toolButton->setAutoRaise(flatButton);
     toolButton->setIconSize(QSize(iconSize, iconSize));
 
     toolButton->setFixedSize(QSize(iconSize + 8, iconSize + 8));
+
+    configureButton(toolButton, item); // Hook
 
     const int count = m_gridLayout->count();
     if (columns == 0) {
@@ -87,10 +99,17 @@ void LC_CADDockWidget::addActions(const QList<QAction *> &list, int columns, con
     m_gridLayout->addWidget(toolButton, count / columns, count % columns);
   }
 
-  addSpacers(m_gridLayout, columns);
+  addSpacers(m_gridLayout, columns, m_addHorizontalSpacer);
+
+  onLayoutUpdated(); // Hook
 
   m_frame->setFrameShadow(QFrame::Raised);
   m_frame->setLineWidth(2);
+}
+
+void LC_CADDockWidget::doSetupGridLayout(QGridLayout* newGridLayout) {
+    newGridLayout->setSpacing(0);
+    newGridLayout->setContentsMargins(0, 0, 0, 0);
 }
 
 void LC_CADDockWidget::doUpdateWidgetSettings(int leftToolbarColumnsCount, const int leftToolbarIconSize, const bool leftToolbarFlatIcons) {
@@ -99,8 +118,7 @@ void LC_CADDockWidget::doUpdateWidgetSettings(int leftToolbarColumnsCount, const
   QList<QToolButton *> widgets = m_frame->findChildren<QToolButton *>();
 
   auto *newGridLayout = new QGridLayout();
-  newGridLayout->setSpacing(0);
-  newGridLayout->setContentsMargins(0, 0, 0, 0);
+  doSetupGridLayout(newGridLayout);
 
   if (leftToolbarColumnsCount == 0) {
     leftToolbarColumnsCount = 5;
@@ -119,12 +137,14 @@ void LC_CADDockWidget::doUpdateWidgetSettings(int leftToolbarColumnsCount, const
   }
   delete m_frame->layout();
 
-  addSpacers(newGridLayout, leftToolbarColumnsCount);
+  addSpacers(newGridLayout, leftToolbarColumnsCount,m_addHorizontalSpacer);
   m_frame->setLayout(newGridLayout);
   m_gridLayout = newGridLayout;
 
   m_columns = leftToolbarColumnsCount;
   m_iconSize = leftToolbarIconSize;
+
+  onLayoutUpdated(); // Hook
 
   updateMinimumWidth();
 }
@@ -152,10 +172,13 @@ void LC_CADDockWidget::updateMinimumWidth() {
     // Mathematically calculate the exact horizontal space required by the grid
     const int contentWidth = m_columns * (m_iconSize + 8);
 
-    // Retrieve the OS vertical scrollbar width
-    int sbWidth = m_scrollArea->verticalScrollBar()->sizeHint().width();
-    if (sbWidth <= 0) {
-        sbWidth = 16;
+    // Dynamically check if the vertical scrollbar is currently active (maximum > 0)
+    int sbWidth = 0;
+    if (m_scrollArea->verticalScrollBar()->maximum() > 0) {
+        sbWidth = m_scrollArea->verticalScrollBar()->sizeHint().width();
+        if (sbWidth <= 0) {
+            sbWidth = 16;
+        }
     }
 
     // Account for m_frame's Raised border shadows
@@ -165,7 +188,6 @@ void LC_CADDockWidget::updateMinimumWidth() {
 
     m_scrollArea->setMinimumWidth(totalMinWidth);
     setMinimumWidth(totalMinWidth);
-
 
     updateGeometry();
 }
@@ -180,3 +202,9 @@ QSize LC_CADDockWidget::minimumSizeHint() const {
     }
     return baseHint;
 }
+
+void LC_CADDockWidget::onBeforeAddActions() {}
+bool LC_CADDockWidget::shouldCreateButtonForAction(QAction* action) const { Q_UNUSED(action); return true; }
+void LC_CADDockWidget::handleIgnoredAction(QAction* action) { Q_UNUSED(action); }
+void LC_CADDockWidget::configureButton(QToolButton* toolButton, QAction* action) { Q_UNUSED(toolButton); Q_UNUSED(action); }
+void LC_CADDockWidget::onLayoutUpdated() {}

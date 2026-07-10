@@ -27,8 +27,8 @@
 #include <QApplication>
 #include <QPalette>
 
-#include "lc_iconcolorsoptions.h"
 #include "lc_layertreeitem.h"
+#include "lc_palette_color_utils.h"
 #include "rs_settings.h"
 
 void LC_LayerTreeModelOptions::loadDefaults(bool isDark) {
@@ -106,7 +106,7 @@ void LC_LayerTreeModelOptions::load(){
     LC_GROUP_GUARD("Widget.LayerTree");
     {
         LC_LayerTreeModelOptions defaults;
-        defaults.loadDefaults(LC_IconColorsOptions::isDarkColorScheme());
+        defaults.loadDefaults(LC_PaletteColorUtils::isSystemInDarkMode());
         activeLayerBgColor = QColor(LC_GET_STR("activeLayerBgColor", defaults.activeLayerBgColor.name()));
         selectedItemBgColor = QColor(LC_GET_STR("selectedItemBgColor", defaults.selectedItemBgColor.name()));
         virtualLayerBgColor = QColor(LC_GET_STR("virtualLayerBgColor", defaults.virtualLayerBgColor.name()));

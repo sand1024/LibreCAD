@@ -345,9 +345,9 @@ QSize LC_SVGIconEngine::actualSize(const QSize &size, const QIcon::Mode mode, co
 }
 
 namespace {
-    constexpr auto TEMPLATE_COLOR_MAIN = "#000";
-    constexpr auto TEMPLATE_COLOR_ACCENT = "#00ff7f";
-    constexpr auto TEMPLATE_COLOR_BACKGROUND_FILL = "#fff";
+    constexpr auto TEMPLATE_COLOR_MAIN = "\"#000\"";
+    constexpr auto TEMPLATE_COLOR_ACCENT = "\"#00ff7f\"";
+    constexpr auto TEMPLATE_COLOR_BACKGROUND_FILL = "\"#fff\"";
 }
 
 QString LC_SvgIconEnginePrivate::getColorForReplacement(const QString& baseKey, const QIcon::Mode mode, const QIcon::State state){
@@ -365,8 +365,11 @@ QString LC_SvgIconEnginePrivate::getColorForReplacement(const QString& baseKey, 
 
 QString LC_SvgIconEnginePrivate::replaceColor(QString content, const QString& baseColorKey, const QIcon::Mode mode, const QIcon::State state, const QString& originalColor){
     const QString color = getColorForReplacement(baseColorKey, mode, state);
-    if (!color.isEmpty()  && color != originalColor) {
-        content = content.replace(originalColor, color);
+    if (!color.isEmpty()) {
+        QString colorStr = "\""+color+"\"";
+        if ( colorStr != originalColor) {
+            content = content.replace(originalColor, colorStr);
+        }
     }
     return content;
 }
@@ -392,6 +395,14 @@ bool LC_SvgIconEnginePrivate::tryLoad(QSvgRenderer *renderer, const QIcon::Mode 
 
                     const QByteArray byteArrayContent = content.toUtf8();
                     renderer->load(byteArrayContent);
+
+                    // QFile file_out("r:\\" + fileInfo->fileName.section('\\', -1));
+                    // if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+                    //     QTextStream out(&file_out);
+                    //     out << content;
+                    //     file.close();
+                    // }
+
                     colorsReplaced = true;
                     return true;
                 }

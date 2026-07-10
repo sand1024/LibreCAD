@@ -699,6 +699,7 @@ HEADERS += \
     ui/main/support/lc_gridviewinvoker.h \
     ui/main/support/lc_infocursorsettingsmanager.h \
     ui/main/workspaces/lc_workspacesinvoker.h \
+    ui/styling/presets_generator/lc_dlg_syles_presets_generator.h \
     ui/view/lc_printpreviewview.h \
     lib/information/rs_locale.h \
     lib/information/rs_information.h \
@@ -1220,6 +1221,7 @@ SOURCES += \
     ui/main/support/lc_gridviewinvoker.cpp \
     ui/main/support/lc_infocursorsettingsmanager.cpp \
     ui/main/workspaces/lc_workspacesinvoker.cpp \
+    ui/styling/presets_generator/lc_dlg_syles_presets_generator.cpp \
     ui/view/lc_printpreviewview.cpp \
     lib/information/rs_locale.cpp \
     lib/information/rs_information.cpp \
@@ -2235,7 +2237,8 @@ FORMS = ui/action_options/circle/lc_circle_by_arc_options_widget.ui \
        ui/dialogs/entity/lc_propertieseditingwidget_image.ui \
        ui/dialogs/entity/lc_propertieseditingwidget_insert.ui \
        ui/dialogs/entity/lc_propertieseditingwidget_line.ui \
-       ui/dialogs/entity/lc_propertieseditingwidget_parabola.ui \       
+       ui/dialogs/entity/lc_propertieseditingwidget_parabola.ui \        \
+       ui/styling/presets_generator/lc_dlg_syles_presets_generator.ui
        ui/dialogs/entity/lc_pointpickbutton.ui \
        ui/dialogs/entity/lc_propertieseditingwidget_point.ui \
        ui/dialogs/entity/lc_propertieseditingwidget_polyline.ui \

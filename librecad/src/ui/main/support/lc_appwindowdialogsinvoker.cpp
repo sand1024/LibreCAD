@@ -104,7 +104,7 @@ void LC_AppWindowDialogsInvoker::showDeviceOptions() {
 }
 
 bool LC_AppWindowDialogsInvoker::showWidgetOptionsDialog() const {
-    LC_WidgetOptionsDialog dlg(m_appWin);
+    LC_WidgetOptionsDialog dlg(m_appWin, m_appWin->getUiStyleManager());
     return dlg.showModal() == QDialog::Accepted;
 }
 

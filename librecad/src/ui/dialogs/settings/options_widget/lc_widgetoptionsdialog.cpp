@@ -27,259 +27,426 @@
 #include <csignal>
 #include <QColorDialog>
 #include <QFileDialog>
+#include <QInputDialog>
 #include <QMessageBox>
 #include <QPixmapCache>
 #include <QStatusBar>
 #include <QStyleFactory>
+#include <QTimer>
 
-#include "lc_dlgiconssetup.h"
-#include "lc_dlg_palette_editor.h"
-#include "lc_fusion_proxy_style.h"
+#include "lc_dlg_preset_editor.h"
+#include "lc_dlg_styles_presets_generator.h"
+#include "lc_editor_utils.h"
+#include "lc_fusion_skins_repository.h"
+#include "lc_proxy_style.h"
+#include "lc_icons_style_manager.h"
 #include "lc_inputtextdialog.h"
+#include "lc_metrics_repository.h"
+#include "lc_palette_color_utils.h"
+#include "lc_style_editor_fusion_skin.h"
+#include "lc_style_editor_icons_style.h"
+#include "lc_style_editor_metrics.h"
+#include "lc_style_editor_typography.h"
+#include "lc_style_preset_generator.h"
+#include "lc_typography_repository.h"
 
 #include "lc_widgetfactory.h"
 #include "qc_applicationwindow.h"
 #include "rs_settings.h"
 
-LC_WidgetOptionsDialog::LC_WidgetOptionsDialog(QWidget* parent)
-    : LC_Dialog(parent, "WidgetOptions"){
+#define ENABLE_PRESETS_GENERATOR true
+
+LC_WidgetOptionsDialog::LC_WidgetOptionsDialog(QWidget* parent, LC_UIStyleManager *styleManager)
+    : LC_Dialog(parent, "WidgetOptions")
+    , m_styleManager(styleManager) {
     setupUi(this);
-    connect(stylesheet_button,&QPushButton::released, this, &LC_WidgetOptionsDialog::chooseStyleSheet);
 
-    connect(pbMain, &QToolButton::clicked, this, &LC_WidgetOptionsDialog::onpbMainClicked);
-    connect(pbAccent, &QToolButton::clicked, this, &LC_WidgetOptionsDialog::onpbAccentClicked);
-    connect(pbBack, &QToolButton::clicked, this, &LC_WidgetOptionsDialog::onpbBackClicked);
+    m_origAllowStyle = m_styleManager->isStyleAllowed();
+    m_origStyle                 = m_styleManager->getActiveStyle();
+    m_origThemeMode             = m_styleManager->getThemeModeOverride();
+    m_origStyleSheet            = m_styleManager->getActiveStyleSheet();
+    m_origIgnoreIconStyling     = m_styleManager->getIgnoreIconStylingInTheme();
 
-    connect(pbAdvancedIcons, &QPushButton::clicked, this, &LC_WidgetOptionsDialog::showAdvancedSetup);
+    m_origSkinKey               = m_styleManager->getActiveSkin();
+    m_origIconStyleKey          = m_styleManager->getActiveIconStyle();
+    m_origTypographyKey         = m_styleManager->getActiveTypography();
+    m_origMetricsKey            = m_styleManager->getActiveMetrics();
 
-    LC_GROUP("Widgets");{
-        bool allow_style = LC_GET_BOOL("AllowStyle", false);
-        style_checkbox->setChecked(allow_style);
-        style_combobox->addItems(QStyleFactory::keys());
-        bool enablePaletteEditor = false;
-        if (allow_style) {
-            QString a_style = LC_GET_STR("Style", "");
-            if (!a_style.isEmpty()) {
-                int index = style_combobox->findText(a_style);
-                style_combobox->setCurrentIndex(index);
-                enablePaletteEditor = a_style == "Fusion";
-            }
+
+    populateDropdowns();
+
+    style_checkbox->setChecked(m_origAllowStyle);
+    style_combobox->addItems(QStyleFactory::keys());
+    if (!m_origStyle.isEmpty()) {
+        const int styleIdx = style_combobox->findText(m_origStyle);
+        if (styleIdx >= 0) {
+            style_combobox->setCurrentIndex(styleIdx);
         }
-        pbPaletteEditor->setEnabled(enablePaletteEditor);
+    }
+
+   cbIgnoreIconStylingInTheme->setChecked( m_styleManager->getIgnoreIconStylingInTheme());
+
+    connect(pbPaletteEditor, &QPushButton::clicked, this, &LC_WidgetOptionsDialog::onEditSkinsClicked);
+    connect(pbAdvancedIcons, &QPushButton::clicked, this, &LC_WidgetOptionsDialog::onEditIconStylesClicked);
+    connect(pbTypographyEditor, &QPushButton::clicked, this, &LC_WidgetOptionsDialog::onEditTypographyClicked);
+    connect(pbMetricsEditor, &QPushButton::clicked, this, &LC_WidgetOptionsDialog::onEditMetricsClicked);
 
 
-        QString sheet_path = LC_GET_STR("StyleSheet", "");
-        if (!sheet_path.isEmpty() && QFile::exists(sheet_path)) {
-            stylesheet_field->setText(sheet_path);
-        }
+    connect(pbImportProfile, &QPushButton::clicked, this, &LC_WidgetOptionsDialog::onImportProfileClicked);
+    connect(pbExportProfile, &QPushButton::clicked, this, &LC_WidgetOptionsDialog::onExportProfileClicked);
+    pbPresetsGenerator->setVisible(ENABLE_PRESETS_GENERATOR);
+    if (ENABLE_PRESETS_GENERATOR) {
+        connect(pbPresetsGenerator, &QPushButton::clicked, [this](bool)-> void {
+            LC_DlgStylesPresetsGenerator dlg(this, m_styleManager);
+            dlg.showModal();
+        });
+    }
 
-        // bool allow_theme = LC_GET_BOOL("AllowTheme", false);
-        // theme_checkbox->setChecked(allow_theme);
+    connect(style_checkbox, &QCheckBox::toggled, this, &LC_WidgetOptionsDialog::updateStyleDependencyStates);
+    connect(style_combobox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_WidgetOptionsDialog::updateStyleDependencyStates);
 
-        bool allow_toolbar_icon_size = LC_GET_BOOL("AllowToolbarIconSize", false);
-        toolbar_icon_size_checkbox->setChecked(allow_toolbar_icon_size);
+    connect(style_checkbox, &QCheckBox::toggled, m_styleManager, &LC_UIStyleManager::applyActiveStyleAndTheme);
+    connect(style_combobox, QOverload<int>::of(&QComboBox::currentIndexChanged), m_styleManager, &LC_UIStyleManager::applyActiveStyleAndTheme);
+    // connect(cbIgnoreIconStylingInTheme, &QCheckBox::toggled, m_styleManager, &LC_UIStyleManager::applyActiveIconStyle);
 
-        int toolbar_icon_size = LC_GET_INT("ToolbarIconSize", 24);
-        toolbar_icon_size_spinbox->setValue(toolbar_icon_size);
+    connect(tbSelectStylesheet, &QPushButton::released, this, &LC_WidgetOptionsDialog::chooseStyleSheet);
+    connect(stylesheet_field, &QLineEdit::editingFinished, m_styleManager, &LC_UIStyleManager::applyActiveStyleSheet);
+    connect(tbOverridesDir, &QToolButton::clicked, this, &LC_WidgetOptionsDialog::setIconsOverrideFolder);
 
-        bool allow_statusbar_height = LC_GET_BOOL("AllowStatusbarHeight", false);
-        statusbar_height_checkbox->setChecked(allow_statusbar_height);
 
-        int statusbar_height = LC_GET_INT("StatusbarHeight", 32);
-        statusbar_height_spinbox->setValue(statusbar_height);
+    connect(style_checkbox, &QCheckBox::toggled, this, &LC_WidgetOptionsDialog::applyTransientStylePreview);
+    connect(style_combobox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_WidgetOptionsDialog::applyTransientStylePreview);
+    connect(cbFusionSkin, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_WidgetOptionsDialog::applyTransientStylePreview);
+    connect(cbActiveMetrics, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_WidgetOptionsDialog::applyTransientStylePreview);
+    connect(cbTypography, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_WidgetOptionsDialog::applyTransientStylePreview);
+    connect(cbIconStyle, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_WidgetOptionsDialog::applyTransientStylePreview);
+    connect(cbThemeModeOverride, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_WidgetOptionsDialog::applyTransientStylePreview);
+    connect(cbIgnoreIconStylingInTheme, &QCheckBox::toggled, this, &LC_WidgetOptionsDialog::applyTransientStylePreview);
 
-        bool allow_statusbar_fontsize = LC_GET_BOOL("AllowStatusbarFontSize", false);
-        statusbar_fontsize_checkbox->setChecked(allow_statusbar_fontsize);
+    setupThemeModeOverrideCombobox();
+    updateStyleDependencyStates();
+    setupGenericTabUI(); // Load legacy CAD widgets and status bar configurations
+}
 
-        int statusbar_fontsize = LC_GET_INT("StatusbarFontSize", 12);
-        statusbar_fontsize_spinbox->setValue(statusbar_fontsize);
+void LC_WidgetOptionsDialog::setupThemeModeOverrideCombobox() {
+    cbThemeModeOverride->blockSignals(true);
+    cbThemeModeOverride->addItem(tr("Follow System Settings"), static_cast<int>(ThemeModeOverride::FollowSystem));
+    cbThemeModeOverride->addItem(tr("Force Light Mode"), static_cast<int>(ThemeModeOverride::ForceLight));
+    cbThemeModeOverride->addItem(tr("Force Dark Mode"), static_cast<int>(ThemeModeOverride::ForceDark));
 
-        int leftToolbarColumnsCount = LC_GET_INT("LeftToolbarColumnsCount", 5);
-        sbLeftTBColumnCount->setValue(leftToolbarColumnsCount);
+    const int modeIdx = cbThemeModeOverride->findData(m_origThemeMode);
+    if (modeIdx >= 0) {
+        cbThemeModeOverride->setCurrentIndex(modeIdx);
+    }
+    cbThemeModeOverride->blockSignals(false);
+    connect(cbThemeModeOverride, QOverload<int>::of(&QComboBox::currentIndexChanged), m_styleManager, &LC_UIStyleManager::applyActiveThemeOverride);
+}
 
-        int leftToolbarAllColumnsCount = LC_GET_INT("LeftToolbarAllColumnsCount", 5);
-        sbLeftTBAllColumnCount->setValue(leftToolbarAllColumnsCount);
+void LC_WidgetOptionsDialog::populateSkinsCombobox() {
+    cbFusionSkin->blockSignals(true);
+    cbFusionSkin->clear();
+    cbFusionSkin->addItem(tr("Default (Follow Theme)"), DEFAULT_THEME_KEY);
+    for (const auto& choice : m_styleManager->getSkinsRepository()->getPresetChoices()) {
+        cbFusionSkin->addItem(choice.first, choice.second);
+    }
+    setComboboxToActive( m_styleManager->getActiveSkin(), cbFusionSkin);
+    cbFusionSkin->blockSignals(false);
+    updateSkinComboFonts();
+}
 
-        bool leftToolbarFlatIcons = LC_GET_BOOL("LeftToolbarFlatIcons", true);
-        cbLeftTBFlatButtons->setChecked(leftToolbarFlatIcons);
+void LC_WidgetOptionsDialog::populateIconsStyleCombobox() {
+    cbIconStyle->blockSignals(true);
+    cbIconStyle->clear();
+    cbIconStyle->addItem(tr("Default (Classic)"), DEFAULT_THEME_KEY);
+    for (const auto& choice : m_styleManager->getIconsStyleRepository()->getPresetChoices()) {
+        cbIconStyle->addItem(choice.first, choice.second);
+    }
+    setComboboxToActive( m_styleManager->getActiveIconStyle(), cbIconStyle);
+    cbIconStyle->blockSignals(false);
+    updateIconStyleComboFonts();
+}
 
-        bool leftToolbarAllFlatIcons = LC_GET_BOOL("LeftToolbarAllFlatIcons", true);
+void LC_WidgetOptionsDialog::populateTypographyCombobox() {
+    cbTypography->blockSignals(true);
+    cbTypography->clear();
+    cbTypography->addItem(tr("Default Typography"), DEFAULT_THEME_KEY);
+    for (const auto& choice : m_styleManager->getTypographyRepository()->getPresetChoices()) {
+        cbTypography->addItem(choice.first, choice.second);
+    }
+    setComboboxToActive( m_styleManager->getActiveTypography(), cbTypography);
+    cbTypography->blockSignals(false);
+    updateTypographyComboFonts();
+}
+
+void LC_WidgetOptionsDialog::setComboboxToActive(QString activeIconStyleKey, QComboBox* cb) {
+    const int index = cb->findData(activeIconStyleKey);
+    cb->setCurrentIndex(index >= 0 ? index : 0);
+}
+
+void LC_WidgetOptionsDialog::populateMetricsCombobox() {
+    cbActiveMetrics->blockSignals(true);
+    cbActiveMetrics->clear();
+    cbActiveMetrics->addItem(tr("Standard Density"), DEFAULT_THEME_KEY);
+    for (const auto& choice : m_styleManager->getMetricsRepository()->getPresetChoices()) {
+        cbActiveMetrics->addItem(choice.first, choice.second);
+    }
+    setComboboxToActive( m_styleManager->getActiveMetrics(), cbActiveMetrics);
+    cbActiveMetrics->blockSignals(false);
+    updateMetricsComboFonts();
+}
+
+void LC_WidgetOptionsDialog::populateDropdowns() {
+    populateSkinsCombobox();
+    populateIconsStyleCombobox();
+    populateTypographyCombobox();
+    populateMetricsCombobox();
+}
+
+void LC_WidgetOptionsDialog::updateStyleDependencyStates() {
+    const bool allowStyle = style_checkbox->isChecked();
+    style_combobox->setEnabled(allowStyle);
+
+    const bool isFusion = allowStyle && (style_combobox->currentText() == "Fusion");
+    cbFusionSkin->setEnabled(isFusion);
+    pbPaletteEditor->setEnabled(isFusion);
+    cbActiveMetrics->setEnabled(isFusion);
+    pbMetricsEditor->setEnabled(isFusion);
+    // cbTypography->setEnabled(isFusion);
+    // pbTypographyEditor->setEnabled(isFusion);
+    
+    cbThemeModeOverride->setEnabled(isFusion);
+    lblThemeModeOverride->setEnabled(isFusion);
+
+    stylesheet_field->setEnabled(!isFusion);
+    tbSelectStylesheet->setEnabled(!isFusion);
+    lblStylesheet->setEnabled(!isFusion);
+
+    cbIgnoreIconStylingInTheme->setEnabled(isFusion);
+}
+
+void LC_WidgetOptionsDialog::onEditSkinsClicked() {
+    auto* editor = new LC_StyleEditorFusionSkin(this, m_styleManager);
+    QString selectedKey = cbFusionSkin->currentData().toString();
+    LC_DlgPresetEditor dlg(this, m_styleManager, editor, "PaletteEditor", selectedKey);
+
+    dlg.exec();
+    populateSkinsCombobox();
+}
+
+void LC_WidgetOptionsDialog::onEditIconStylesClicked() {
+    auto* editor = new LC_StyleEditorIconsStyle(this, m_styleManager);
+    QString selectedKey = cbIconStyle->currentData().toString();
+    LC_DlgPresetEditor dlg(this, m_styleManager, editor, "IconsStyling", selectedKey);
+    dlg.exec();
+    populateIconsStyleCombobox();
+}
+
+void LC_WidgetOptionsDialog::onEditTypographyClicked() {
+    auto* editor = new LC_StyleEditorTypography(this, m_styleManager);
+    QString selectedKey = cbTypography->currentData().toString();
+    LC_DlgPresetEditor dlg(this, m_styleManager, editor, "TypographyEditor", selectedKey);
+
+    dlg.exec();
+    populateTypographyCombobox();
+}
+
+void LC_WidgetOptionsDialog::onEditMetricsClicked() {
+    auto* editor = new LC_StyleEditorMetrics(this, m_styleManager);
+    QString selectedKey = cbActiveMetrics->currentData().toString();
+    LC_DlgPresetEditor dlg(this, m_styleManager, editor, "MetricsEditor", selectedKey);
+    dlg.exec();
+    populateMetricsCombobox();
+}
+
+void LC_WidgetOptionsDialog::onImportProfileClicked() {
+    const QString path = QFileDialog::getOpenFileName(this, tr("Import Workspace Profile"), "", tr("LibreCAD Workspace Profiles (*.lcws)"));
+    if (path.isEmpty()) return;
+
+    QString profileName, skinFile, iconFile, typographyFile, metricsFile;
+    if (m_styleManager->importProfile(path, profileName, skinFile, iconFile, typographyFile, metricsFile)) {
+        populateDropdowns(); // Synchronously rebuild combobox indexes
+
+        // Dynamic visual update selecting the unpacked active keys
+        if (!skinFile.isEmpty()) cbFusionSkin->setCurrentIndex(cbFusionSkin->findData(skinFile));
+        if (!iconFile.isEmpty()) cbIconStyle->setCurrentIndex(cbIconStyle->findData(iconFile));
+        if (!typographyFile.isEmpty()) cbTypography->setCurrentIndex(cbTypography->findData(typographyFile));
+        if (!metricsFile.isEmpty()) cbActiveMetrics->setCurrentIndex(cbActiveMetrics->findData(metricsFile));
+
+        QMessageBox::information(this, tr("Profile Imported"), tr("Workspace profile '%1' has been successfully imported and applied.").arg(profileName));
+    } else {
+        QMessageBox::critical(this, tr("Error"), tr("Could not parse or import the workspace profile."));
+    }
+}
+
+void LC_WidgetOptionsDialog::onExportProfileClicked() {
+    QString path = QFileDialog::getSaveFileName(this, tr("Export Workspace Profile"), "", tr("LibreCAD Workspace Profiles (*.lcws)"));
+    if (path.isEmpty()) return;
+
+    bool ok;
+    QString profileName = QInputDialog::getText(this, tr("Export Profile"), tr("Enter profile name:"), QLineEdit::Normal, "My Custom Profile", &ok);
+    if (!ok || profileName.trimmed().isEmpty()) return;
+
+    SkinConfig skin;
+    bool hasSkin = m_styleManager->getSkinsRepository()->loadByKey(cbFusionSkin->currentData().toString(), skin);
+
+    IconStyleConfig icon;
+    bool hasIcon = m_styleManager->getIconsStyleRepository()->loadByKey(cbIconStyle->currentData().toString(), icon);
+
+    FontConfig font;
+    bool hasFont = m_styleManager->getTypographyRepository()->loadByKey(cbTypography->currentData().toString(), font);
+
+    StyleMetricsConfig metrics;
+    bool hasMetrics = m_styleManager->getMetricsRepository()->loadByKey(cbActiveMetrics->currentData().toString(), metrics);
+
+    if (m_styleManager->exportProfile(path, profileName.trimmed(),
+                                      hasSkin ? &skin : nullptr, 
+                                      hasIcon ? &icon : nullptr, 
+                                      hasFont ? &font : nullptr, 
+                                      hasMetrics ? &metrics : nullptr)) {
+        QMessageBox::information(this, tr("Profile Exported"), tr("Workspace profile '%1' has been successfully exported.").arg(profileName));
+    } else {
+        QMessageBox::critical(this, tr("Error"), tr("Could not export the workspace profile."));
+    }
+}
+
+void LC_WidgetOptionsDialog::updateSkinComboFonts() const {
+    LC_EditorUtils::updatePresetComboFonts(cbFusionSkin, m_styleManager->getActiveSkin());
+}
+
+void LC_WidgetOptionsDialog::updateIconStyleComboFonts() const {
+    LC_EditorUtils::updatePresetComboFonts(cbIconStyle, m_styleManager->getActiveIconStyle());
+}
+
+
+void LC_WidgetOptionsDialog::updateTypographyComboFonts() const {
+    LC_EditorUtils::updatePresetComboFonts(cbTypography, m_styleManager->getActiveTypography());
+}
+
+void LC_WidgetOptionsDialog::updateMetricsComboFonts() const {
+    LC_EditorUtils::updatePresetComboFonts(cbActiveMetrics, m_styleManager->getActiveMetrics());
+}
+
+void LC_WidgetOptionsDialog::reject() {
+    // Transactional Rollback: Restore original active selections to discard on-the-fly previews
+    m_styleManager->setStyleAllowed(m_origAllowStyle);
+    m_styleManager->setActiveStyle(m_origStyle);
+    m_styleManager->setThemeModeOverride(m_origThemeMode);
+    m_styleManager->setActiveStyleSheet(m_origStyleSheet);
+
+    m_styleManager->setActiveSkin(m_origSkinKey);
+    m_styleManager->setActiveIconStyle(m_origIconStyleKey);
+    m_styleManager->setActiveTypography(m_origTypographyKey);
+    m_styleManager->setActiveMetrics(m_origMetricsKey);
+
+    m_styleManager->setIgnoreIconStylingInTheme(m_origIgnoreIconStyling);
+
+    m_styleManager->applyActiveStyleAndTheme();
+
+    LC_Dialog::reject();
+}
+
+void LC_WidgetOptionsDialog::setupMegaCADBarSettingUI() const {
+    LC_GROUP_GUARD("Widgets");
+    {
+        const bool cadSidebarUngrouped = LC_GET_ONE_BOOL("Startup", "CADSideBarUngrouped", false);
+        gbCADWidgets->setEnabled(!cadSidebarUngrouped);
+        gbCADWidgetsUngrouped->setEnabled(cadSidebarUngrouped);
+
+        const bool leftToolbarAllFlatIcons = LC_GET_BOOL("LeftToolbarAllFlatIcons", true);
         cbLeftTBAllFlatButtons->setChecked(leftToolbarAllFlatIcons);
 
-        int leftToolbarIconSize = LC_GET_INT("LeftToolbarIconSize", 24);
+        const int leftToolbarIconSize = LC_GET_INT("LeftToolbarIconSize", 24);
         sbLeftTBIconSize->setValue(leftToolbarIconSize);
 
-        int leftToolbarAllIconSize = LC_GET_INT("LeftToolbarAllIconSize", 24);
+        const int leftToolbarAllIconSize = LC_GET_INT("LeftToolbarAllIconSize", 24);
         sbLeftTBAllIconSize->setValue(leftToolbarAllIconSize);
+    }
+}
 
-        bool dockWidgetsFlatIcons = LC_GET_BOOL("DockWidgetsFlatIcons", true);
+void LC_WidgetOptionsDialog::setupCADBarSettingsUI() const {
+     LC_GROUP_GUARD("Widgets");
+    {
+        const int leftToolbarColumnsCount = LC_GET_INT("LeftToolbarColumnsCount", 5);
+         sbLeftTBColumnCount->setValue(leftToolbarColumnsCount);
+
+         const int leftToolbarAllColumnsCount = LC_GET_INT("LeftToolbarAllColumnsCount", 5);
+         sbLeftTBAllColumnCount->setValue(leftToolbarAllColumnsCount);
+
+         const bool leftToolbarFlatIcons = LC_GET_BOOL("LeftToolbarFlatIcons", true);
+         cbLeftTBFlatButtons->setChecked(leftToolbarFlatIcons);
+    }
+}
+
+void LC_WidgetOptionsDialog::setupDockWidgetSettingsUI() const {
+    LC_GROUP_GUARD("Widgets");
+    {
+        const bool dockWidgetsFlatIcons = LC_GET_BOOL("DockWidgetsFlatIcons", true);
         cbDockWidgetsFlatButtons->setChecked(dockWidgetsFlatIcons);
 
-        bool pickValuesButtonsFlatIcons = LC_GET_BOOL("PickValueButtonsFlatIcons", true);
+        const bool pickValuesButtonsFlatIcons = LC_GET_BOOL("PickValueButtonsFlatIcons", true);
         cbFlatPickValuesButtons->setChecked(pickValuesButtonsFlatIcons);
+    }
+}
 
-        int docWidgetsIconSize = LC_GET_INT("DockWidgetsIconSize", 16);
+void LC_WidgetOptionsDialog::setupToolbarsSettingsUI() const {
+    LC_GROUP_GUARD("Widgets");
+    {
+        const bool allow_toolbar_icon_size = LC_GET_BOOL("AllowToolbarIconSize", false);
+        toolbar_icon_size_checkbox->setChecked(allow_toolbar_icon_size);
+
+        const int toolbar_icon_size = LC_GET_INT("ToolbarIconSize", 24);
+        toolbar_icon_size_spinbox->setValue(toolbar_icon_size);
+    }
+}
+
+void LC_WidgetOptionsDialog::setupGenericTabUI() const {
+    setupToolbarsSettingsUI();
+    setupCADBarSettingsUI();
+    setupDockWidgetSettingsUI();
+    setupDockingSettingsUI();
+    setupMegaCADBarSettingUI();
+    setupStatusBarSettingsUI();
+}
+
+void LC_WidgetOptionsDialog::setupDockingSettingsUI() const {
+    LC_GROUP_GUARD("Widgets");
+    {
+        const int docWidgetsIconSize = LC_GET_INT("DockWidgetsIconSize", 16);
         sbDocWidgtetIconSize->setValue(docWidgetsIconSize);
 
-        bool allowDockNesting = LC_GET_BOOL("DockAllowNested", true);
+        const bool allowDockNesting = LC_GET_BOOL("DockAllowNested", true);
         cbDockingAllowNested->setChecked(allowDockNesting);
 
-        bool titleBarVertical = LC_GET_BOOL("DockTitleBarVertical", false);
+        const bool titleBarVertical = LC_GET_BOOL("DockTitleBarVertical", false);
         cbDockingVerticalTitleBar->setChecked(titleBarVertical);
 
-        bool verticalTabs = LC_GET_BOOL("DockVerticalTabs", true);
+        const bool verticalTabs = LC_GET_BOOL("DockVerticalTabs", true);
         cbDockingVerticalTabs->setChecked(verticalTabs);
     }
-    LC_GROUP_END();
+}
 
-    connect(style_combobox, &QComboBox::currentIndexChanged, [this](int index)->void {
-        auto styleName = style_combobox->currentText();
-        bool paletteEditorEnabled = false;
-        if (styleName == "Fusion") {
-            paletteEditorEnabled = true;
-        }
-        pbPaletteEditor->setEnabled(paletteEditorEnabled);
-    });
+void LC_WidgetOptionsDialog::setupStatusBarSettingsUI() const {
+    LC_GROUP_GUARD("Widgets");
+    {
+        const bool allow_statusbar_height = LC_GET_BOOL("AllowStatusbarHeight", false);
+        statusbar_height_checkbox->setChecked(allow_statusbar_height);
 
-    connect(pbPaletteEditor, &QPushButton::clicked, [this](bool)->void {
-        // DEBUG_PROXY::g_globalPerfTimer.start();
-        // DEBUG_PROXY::g_perfTimerStarted = true;
-       if (!DEBUG_PROXY::g_perfTimerStarted) {
-           DEBUG_PROXY::g_globalPerfTimer.start();
-           DEBUG_PROXY::g_perfTimerStarted = true;
-       }
-        QApplication::setOverrideCursor(Qt::WaitCursor);
-        LC_ERR << "Start creation of dialog!!!" << DEBUG_PROXY::g_globalPerfTimer.elapsed() << "ms for LC_DlgPaletteEditor";
-        LC_DlgPaletteEditor dialog(this);
-        LC_ERR << "Dialog created, before exec()" << DEBUG_PROXY::g_globalPerfTimer.elapsed() << "ms for LC_DlgPaletteEditor";
-        dialog.showModal();
-    });
+        const int statusbar_height = LC_GET_INT("StatusbarHeight", 32);
+        statusbar_height_spinbox->setValue(statusbar_height);
 
-    bool useClassicalStatusBar = LC_GET_ONE_BOOL("Startup", "UseClassicStatusBar", false);
+        const bool allow_statusbar_fontsize = LC_GET_BOOL("AllowStatusbarFontSize", false);
+        statusbar_fontsize_checkbox->setChecked(allow_statusbar_fontsize);
+
+        const int statusbar_fontsize = LC_GET_INT("StatusbarFontSize", 12);
+        statusbar_fontsize_spinbox->setValue(statusbar_fontsize);
+    }
+
+    const bool useClassicalStatusBar = LC_GET_ONE_BOOL("Startup", "UseClassicStatusBar", false);
 
     statusbar_height_spinbox->setEnabled(useClassicalStatusBar);
     statusbar_height_checkbox->setEnabled(useClassicalStatusBar);
     statusbar_fontsize_checkbox->setEnabled(useClassicalStatusBar);
     statusbar_fontsize_spinbox->setEnabled(useClassicalStatusBar);
-
-    m_iconColorsOptions.loadSettings();
-    m_iconColorsOptions.mark();
-
-    QString iconsOverrideDir = m_iconColorsOptions.getIconsOverridesDir();
-    leIconsOverrideDir->setText(iconsOverrideDir);
-
-    updateUIByOptions();
-    connect(cbIconColorMain->lineEdit(), &QLineEdit::textEdited, this, &LC_WidgetOptionsDialog::onMainIconColorChanged);
-    connect(cbIconColorAccent->lineEdit(), &QLineEdit::textEdited, this, &LC_WidgetOptionsDialog::onAccentIconColorChanged);
-    connect(cbIconColorBack->lineEdit(), &QLineEdit::textEdited, this, &LC_WidgetOptionsDialog::onBackIconColorChanged);
-
-    connect(tbOverridesDir, &QToolButton::clicked, this, &LC_WidgetOptionsDialog::setIconsOverrideFoler);
-
-    QFile iconsDir(iconsOverrideDir);
-    bool directoryExists = iconsDir.exists();
-
-    bool readingStyleEnabled = directoryExists;
-    bool writingStyleEnabled = directoryExists;
-
-    // fixme - sand - check why here we have false?
-    /*bool readingStyleEnabled = false;
-    bool writingStyleEnabled = false;
-    if (directoryExists){
-        readingStyleEnabled = iconsDir.isReadable();
-        writingStyleEnabled = iconsDir.isWritable();
-    }*/
-
-    lblStyle->setEnabled(readingStyleEnabled);
-    cbIconsStyle->setEnabled(readingStyleEnabled);
-    pbStyleSave->setEnabled(writingStyleEnabled);
-
-    if (readingStyleEnabled){
-        if (!setupStylesCombobox()){
-            cbIconsStyle->setEnabled(false);
-            pbRemoveStyle->setEnabled(false);
-        }
-        else{
-            cbIconsStyle->insertItem(0,"");
-            cbIconsStyle->blockSignals(true);
-            cbIconsStyle->setCurrentIndex(0);
-            cbIconsStyle->blockSignals(false);
-            pbRemoveStyle->setEnabled(true);
-        }
-        connect(cbIconsStyle, &QComboBox::currentTextChanged, this, &LC_WidgetOptionsDialog::onStyleChanged);
-    }
-
-    if (writingStyleEnabled){
-        connect(pbStyleSave, &QPushButton::clicked, this, &LC_WidgetOptionsDialog::onSaveStylePressed);
-    }
-
-    connect(pbRemoveStyle, &QPushButton::clicked, this, &LC_WidgetOptionsDialog::onRemoveStylePressed);
-
-    bool cadSidebarUngrouped = LC_GET_ONE_BOOL("Startup", "CADSideBarUngrouped", false);
-    gbCADWidgets->setEnabled(!cadSidebarUngrouped);
-    gbCADWidgetsUngrouped->setEnabled(cadSidebarUngrouped);
-}
-
-void LC_WidgetOptionsDialog::onStyleChanged(const QString & /*val*/){
-    const QString style = cbIconsStyle->currentText();
-    if (!style.isEmpty()) {
-        if (m_iconColorsOptions.loadFromFile(style)) {
-            m_currentIconsStyleName = style;
-            updateUIByOptions();
-            applyIconColors();
-        }
-    }
-}
-
-bool LC_WidgetOptionsDialog::setupStylesCombobox() const {
-    QStringList existingStyles;
-    m_iconColorsOptions.getAvailableStyles(existingStyles);
-    if (!existingStyles.isEmpty()) {
-        for (const auto& style : std::as_const(existingStyles)) {
-            cbIconsStyle->addItem(style);
-        }
-        return true;
-    }
-    return false;
-}
-
-void LC_WidgetOptionsDialog::updateStylesCombobox(QStringList options) const {
-    options.clear();
-    m_iconColorsOptions.getAvailableStyles(options);
-    pbRemoveStyle->setEnabled(!options.isEmpty());
-    cbIconsStyle->clear();
-    for (const auto& style : std::as_const(options)) {
-        cbIconsStyle->addItem(style);
-    }
-}
-
-void LC_WidgetOptionsDialog::onSaveStylePressed(){
-    bool ok = false;
-    QStringList options;
-    m_iconColorsOptions.getAvailableStyles(options);
-    const auto styleName = LC_InputTextDialog::getText(this, tr("Save Icons Style"), tr("Enter name of icons style:"), options, true, m_currentIconsStyleName, &ok);
-    if (ok){
-        m_iconColorsOptions.saveToFile(styleName);
-        updateStylesCombobox(options);
-    }
-}
-
-void LC_WidgetOptionsDialog::onRemoveStylePressed(){
-    bool ok = false;
-    QStringList options;
-    m_iconColorsOptions.getAvailableStyles(options);
-    const auto styleName = LC_InputTextDialog::getText(this, tr("Remove Icons Style"), tr("Select style to remove:"), options, false, m_currentIconsStyleName, &ok);
-    if (ok) {
-        if (m_iconColorsOptions.removeStyle(styleName)) {
-            updateStylesCombobox(options);
-        }
-    }
-}
-
-void LC_WidgetOptionsDialog::setIconsOverrideFoler() {
-    const QString folder = selectFolder(tr("Select External Icons Folder"));
-    if (folder != nullptr) {
-        leIconsOverrideDir->setText(QDir::toNativeSeparators(folder));
-    }
 }
 
 QString LC_WidgetOptionsDialog::selectFolder(const QString& title) {
@@ -298,94 +465,36 @@ QString LC_WidgetOptionsDialog::selectFolder(const QString& title) {
     return folder;
 }
 
-void LC_WidgetOptionsDialog::updateUIByOptions() const {
-    const QString colorMain = m_iconColorsOptions.getColor(LC_SVGIconEngineAPI::AnyMode, LC_SVGIconEngineAPI::AnyState, LC_SVGIconEngineAPI::Main);
-    const QString colorAccent = m_iconColorsOptions.getColor(LC_SVGIconEngineAPI::AnyMode, LC_SVGIconEngineAPI::AnyState, LC_SVGIconEngineAPI::Accent);
-    const QString colorBack = m_iconColorsOptions.getColor(LC_SVGIconEngineAPI::AnyMode, LC_SVGIconEngineAPI::AnyState, LC_SVGIconEngineAPI::Background);
-
-    cbIconColorMain->setCurrentText(colorMain);
-    cbIconColorAccent->setCurrentText(colorAccent);
-    cbIconColorBack->setCurrentText(colorBack);
-}
-
-void LC_WidgetOptionsDialog::onpbMainClicked() {
-    const QString colorName = setComboBoxColor(cbIconColorMain);
-    if (!colorName.isEmpty()) {
-        onMainIconColorChanged(colorName);
-    }
-}
-
-void LC_WidgetOptionsDialog::onpbAccentClicked() {
-    const QString colorName = setComboBoxColor(cbIconColorAccent);
-    if (!colorName.isEmpty()) {
-        onAccentIconColorChanged(colorName);
-    }
-}
-
-void LC_WidgetOptionsDialog::onpbBackClicked() {
-    const QString colorName = setComboBoxColor(cbIconColorBack);
-    if (!colorName.isEmpty()) {
-        onBackIconColorChanged(colorName);
-    }
-}
-
-void LC_WidgetOptionsDialog::onMainIconColorChanged(const QString &value){
-    m_iconColorsOptions.setColor(LC_SVGIconEngineAPI::AnyMode, LC_SVGIconEngineAPI::AnyState, LC_SVGIconEngineAPI::Main, value);
-    applyIconColors();
-}
-
-void LC_WidgetOptionsDialog::onAccentIconColorChanged(const QString &value){
-    m_iconColorsOptions.setColor(LC_SVGIconEngineAPI::AnyMode, LC_SVGIconEngineAPI::AnyState, LC_SVGIconEngineAPI::Accent, value);
-    applyIconColors();
-}
-
-void LC_WidgetOptionsDialog::onBackIconColorChanged(const QString &value){
-    m_iconColorsOptions.setColor(LC_SVGIconEngineAPI::AnyMode, LC_SVGIconEngineAPI::AnyState, LC_SVGIconEngineAPI::Background, value);
-    applyIconColors();
-}
-
-QString LC_WidgetOptionsDialog::setComboBoxColor(const QComboBox *combo) {
-    const QColor current = QColor::fromString(combo->lineEdit()->text());
-
-    QColorDialog dlg;
-    // dlg.setCustomColor(0, custom.rgb());
-
-    const QColor color = dlg.getColor(current, this, tr("Select Color"), QColorDialog::DontUseNativeDialog);
-    if (color.isValid()) {
-        auto colorName = color.name();
-        combo->lineEdit()->setText(colorName);
-        return colorName;
-    }
-    return "";
-}
-
 void LC_WidgetOptionsDialog::accept() {
+    if (m_styleManager) {
+        m_styleManager->setStyleAllowed(style_checkbox->isChecked());
+        m_styleManager->setActiveStyle(style_combobox->currentText());
+        m_styleManager->setThemeModeOverride(cbThemeModeOverride->currentData().toInt());
+        m_styleManager->setActiveStyleSheet(stylesheet_field->text());
+
+        // Save selections as stable keys (filenames without paths) to protect I/O
+        m_styleManager->setActiveSkin(cbFusionSkin->currentData().toString());
+        m_styleManager->setActiveIconStyle(cbIconStyle->currentData().toString());
+        m_styleManager->setActiveTypography(cbTypography->currentData().toString());
+        m_styleManager->setActiveMetrics(cbActiveMetrics->currentData().toString());
+
+        m_styleManager->setIgnoreIconStylingInTheme(cbIgnoreIconStylingInTheme->isChecked());
+        m_styleManager->applyActiveStyleAndTheme();
+    }
+
+    // 4. Save low-level local CAD widget preferences
     LC_GROUP_GUARD("Widgets");
     {
-        const bool allow_style = style_checkbox->isChecked();
-        LC_SET("AllowStyle", allow_style);
-        if (allow_style) {
-            const QString style = style_combobox->currentText();
-            LC_SET("Style", style);
-            QApplication::setStyle(QStyleFactory::create(style)); // fixme - sand - move to style helper?
-        }
-
-        const auto& appWindow = QC_ApplicationWindow::getAppWindow(); // fixme - avoid static?
-
-        const QString sheet_path = stylesheet_field->text();
-        LC_SET("StyleSheet", sheet_path);
-        if (appWindow->loadStyleSheet(sheet_path)) {
-           // nothing to do
-        }
-
         const bool pickValuesButtonsFlatIcons = cbFlatPickValuesButtons->isChecked();
         LC_SET("PickValueButtonsFlatIcons", pickValuesButtonsFlatIcons);
 
-        const bool allow_theme = false; //theme_checkbox->isChecked();
+        const bool allow_theme = false;
         LC_SET("AllowTheme", allow_theme);
+
         const bool allow_toolbar_icon_size = toolbar_icon_size_checkbox->isChecked();
         LC_SET("AllowToolbarIconSize", allow_toolbar_icon_size);
-        if (allow_toolbar_icon_size) {
+        const auto& appWindow = QC_ApplicationWindow::getAppWindow();
+        if (allow_toolbar_icon_size && appWindow != nullptr) {
             const int toolbar_icon_size = toolbar_icon_size_spinbox->value();
             LC_SET("ToolbarIconSize", toolbar_icon_size);
             appWindow->setIconSize(QSize(toolbar_icon_size, toolbar_icon_size));
@@ -393,7 +502,7 @@ void LC_WidgetOptionsDialog::accept() {
 
         const bool allow_statusbar_fontsize = statusbar_fontsize_checkbox->isChecked();
         LC_SET("AllowStatusbarFontSize", allow_statusbar_fontsize);
-        if (allow_statusbar_fontsize) {
+        if (allow_statusbar_fontsize && appWindow != nullptr) {
             const int statusbar_fontsize = statusbar_fontsize_spinbox->value();
             LC_SET("StatusbarFontSize", statusbar_fontsize);
             QFont font;
@@ -403,18 +512,14 @@ void LC_WidgetOptionsDialog::accept() {
 
         const bool allow_statusbar_height = statusbar_height_checkbox->isChecked();
         LC_SET("AllowStatusbarHeight", allow_statusbar_height);
-        if (allow_statusbar_height) {
+        if (allow_statusbar_height && appWindow != nullptr) {
             const int statusbar_height = statusbar_height_spinbox->value();
             LC_SET("StatusbarHeight", statusbar_height);
             appWindow->statusBar()->setMinimumHeight(statusbar_height);
         }
 
-        const int columnCount = sbLeftTBColumnCount->value();
-        LC_SET("LeftToolbarColumnsCount", columnCount);
-
-        const int columnCountAll = sbLeftTBAllColumnCount->value();
-        LC_SET("LeftToolbarAllColumnsCount", columnCountAll);
-
+        LC_SET("LeftToolbarColumnsCount", sbLeftTBColumnCount->value());
+        LC_SET("LeftToolbarAllColumnsCount", sbLeftTBAllColumnCount->value());
 
         LC_SET("LeftToolbarFlatIcons", cbLeftTBFlatButtons->isChecked());
         LC_SET("LeftToolbarAllFlatIcons", cbLeftTBAllFlatButtons->isChecked());
@@ -425,8 +530,7 @@ void LC_WidgetOptionsDialog::accept() {
         LC_SET("DockWidgetsFlatIcons", cbDockWidgetsFlatButtons->isChecked());
         LC_SET("DockWidgetsIconSize", sbDocWidgtetIconSize->value());
 
-
-        const bool allowDockNesting =cbDockingAllowNested->isChecked();
+        const bool allowDockNesting = cbDockingAllowNested->isChecked();
         LC_SET("DockAllowNested", allowDockNesting);
 
         const bool titleBarVertical = cbDockingVerticalTitleBar->isChecked();
@@ -435,18 +539,16 @@ void LC_WidgetOptionsDialog::accept() {
         const bool verticalTabs = cbDockingVerticalTabs->isChecked();
         LC_SET("DockVerticalTabs", verticalTabs);
 
-        LC_WidgetFactory::updateDockOptions(appWindow.get(), allowDockNesting, verticalTabs);
-        LC_WidgetFactory::updateDockWidgetsTitleBarType(appWindow.get(), titleBarVertical);
+        if (appWindow != nullptr) {
+            LC_WidgetFactory::updateDockOptions(appWindow.get(), allowDockNesting, verticalTabs);
+            LC_WidgetFactory::updateDockWidgetsTitleBarType(appWindow.get(), titleBarVertical);
+        }
     }
+    LC_GROUP_END();
 
-    m_iconColorsOptions.setColor(LC_SVGIconEngineAPI::AnyMode, LC_SVGIconEngineAPI::AnyState, LC_SVGIconEngineAPI::Main, cbIconColorMain->currentText());
-    m_iconColorsOptions.setColor(LC_SVGIconEngineAPI::AnyMode, LC_SVGIconEngineAPI::AnyState, LC_SVGIconEngineAPI::Accent, cbIconColorAccent->currentText());
-    m_iconColorsOptions.setColor(LC_SVGIconEngineAPI::AnyMode, LC_SVGIconEngineAPI::AnyState, LC_SVGIconEngineAPI::Background, cbIconColorBack->currentText());
-
+    // 5. Commit baseline icon colors and custom directory configurations
     const QString iconsOverrideDir = leIconsOverrideDir->text();
     m_iconColorsOptions.setIconsOverridesDir(iconsOverrideDir);
-
-    applyIconColors();
     m_iconColorsOptions.save();
 
     if (m_iconColorsOptions.isIconOverridesChanged()) {
@@ -457,43 +559,105 @@ void LC_WidgetOptionsDialog::accept() {
     LC_Dialog::accept();
 }
 
-void LC_WidgetOptionsDialog::reject(){
-    m_iconColorsOptions.restore();
-    applyIconColors();
-    LC_Dialog::reject();
-}
+/*void LC_WidgetOptionsDialog::reject() {
+    // 1. Terminate any outstanding asynchronous loading loops
 
-void LC_WidgetOptionsDialog::showAdvancedSetup(){
-    LC_DlgIconsSetup dlg(this);
-    auto copy = LC_IconColorsOptions(m_iconColorsOptions);
-    dlg.setIconsOptions(&copy);
-    if (dlg.showModal() == Accepted){
-        m_iconColorsOptions.apply(copy);
-        updateUIByOptions();
-        applyIconColors();
-    }
-}
-
-/**
- * NOTE: This method properly called only on closing of the dialog. Calling it when modal dialog is open, does lead to clearing pixmap cached and invalidation
- * of icons (and so re-expanding templates in icon engine) at least under Windows. Don't have idea why it's so...
- */
-
-void LC_WidgetOptionsDialog::applyIconColors(){
-    m_iconColorsOptions.applyOptions();
-    QPixmapCache::clear();
     const auto& appWindow = QC_ApplicationWindow::getAppWindow();
-    if (appWindow != nullptr) {
-        appWindow->fireIconsRefresh();
+
+    // 2. Re-apply the original visual parameters to revert the application background
+    if (m_styleManager) {
+        if (m_origAllowStyle && !m_origStyle.isEmpty()) {
+            QApplication::setStyle(QStyleFactory::create(m_origStyle));
+
+            if (m_origStyle == "Fusion") {
+                bool isDarkMode = false;
+                if (m_origThemeMode == 2) { // ForceDark
+                    isDarkMode = true;
+                } else if (m_origThemeMode == 1) { // ForceLight
+                    isDarkMode = false;
+                } else {
+                    isDarkMode = LC_PaletteColorUtils::isSystemInDarkMode();
+                }
+
+                if (!m_origSkinName.isEmpty() && m_origSkinName != "Default") {
+                    FusionSkinConfig config;
+                    if (m_styleManager->loadFusionSkinByName(m_origSkinName, config)) {
+                        // Apply the original theme. Override fonts if the original setting required it.
+                        if (m_origIgnoreThemeTypography) {
+                            config.font = m_origFontConfig;
+                        }
+                        m_styleManager->applyThemeToApplication(config, isDarkMode);
+                    }
+                } else {
+                    m_styleManager->applyCleanFusionTheme();
+                }
+            } else {
+                // Non-Fusion native styles
+                QApplication::setPalette(QApplication::style()->standardPalette());
+            }
+        } else {
+            m_styleManager->applyCleanFusionTheme();
+        }
     }
-    appWindow->update();
-    appWindow->repaint();
-    QApplication::processEvents();
-}
+
+    // 3. Restore the original stylesheet path in the active UI on Cancel
+    if (appWindow != nullptr) {
+        m_styleManager->loadStyleSheet(m_origStyleSheet);
+    }
+
+    // 4. Restore the original in-memory icon color options and re-apply
+    m_iconColorsOptions.restore();
+    if (m_styleManager) {
+        if (m_origIconStyleName == "Default") {
+            bool isDarkMode = (m_origThemeMode == 2) || (m_origThemeMode == 0 && LC_PaletteColorUtils::isSystemInDarkMode());
+            LC_IconsStyleManager::applyThemeLinkedIcons("Default", true, isDarkMode);
+        } else {
+            IconStyleConfig iconStyle;
+            if (m_styleManager->loadIconStyle(m_origIconStyleName, iconStyle)) {
+                bool isDarkMode = (m_origThemeMode == 2) || (m_origThemeMode == 0 && LC_PaletteColorUtils::isSystemInDarkMode());
+                LC_IconColorsOptions iconOptions;
+                iconOptions.loadSettings();
+                iconOptions.importStyleConfig(iconStyle, isDarkMode);
+                LC_IconsStyleManager::applyStyle(iconOptions, isDarkMode);
+            }
+        }
+    }
+
+    LC_Dialog::reject();
+}*/
+
+
 
 void LC_WidgetOptionsDialog::chooseStyleSheet(){
     const QString path = QFileDialog::getOpenFileName(this);
     if (!path.isEmpty()){
         stylesheet_field->setText(QDir::toNativeSeparators(path));
+        m_styleManager->applyActiveIconStyle();;
     }
+}
+
+void LC_WidgetOptionsDialog::setIconsOverrideFolder() {
+    const QString folder = selectFolder(tr("Select External Icons Folder"));
+    if (folder != nullptr) {
+        leIconsOverrideDir->setText(QDir::toNativeSeparators(folder));
+    }
+}
+
+void LC_WidgetOptionsDialog::applyTransientStylePreview() {
+    const bool allowStyle = style_checkbox->isChecked();
+    const auto styleName = style_combobox->currentText();
+    const auto skinKey = cbFusionSkin->currentData().toString();
+    const auto metricsKey = cbActiveMetrics->currentData().toString();
+    const auto typographyKey = cbTypography->currentData().toString();
+    const auto iconStyleKey = cbIconStyle->currentData().toString();
+    const auto themeModeOverride = static_cast<ThemeModeOverride>(cbThemeModeOverride->currentData().toInt());
+        m_styleManager->applyTransientTheme(allowStyle, styleName,
+                                        skinKey, metricsKey,
+                                        typographyKey, iconStyleKey,
+                                        themeModeOverride);
+
+        updateSkinComboFonts();
+        updateIconStyleComboFonts();
+        updateTypographyComboFonts();
+        updateMetricsComboFonts();
 }

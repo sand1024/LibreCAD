@@ -33,6 +33,7 @@
 #include "lc_actionfactory.h"
 #include "lc_mdiapplicationwindow.h"
 #include "lc_plugininvoker.h"
+#include "lc_ui_style_manager.h"
 
 class RS_Graphic;
 class RS_GraphicView;
@@ -102,7 +103,7 @@ class QC_ApplicationWindow : public LC_MDIApplicationWindow {
 
     ~QC_ApplicationWindow() override;
 
-    void initSettings();
+    void initSettings(bool fromStartup);
     void storeSettings() const;
 
     /** Catch hotkey for giving focus to command line. */
@@ -111,7 +112,6 @@ class QC_ApplicationWindow : public LC_MDIApplicationWindow {
 
     void setUndoEnable(bool enable);
     void setSaveEnable(bool enable) const;
-    bool loadStyleSheet(const QString& path) const;
 
     bool eventFilter(QObject* obj, QEvent* event) override;
     void onViewCurrentActionChanged(RS2::ActionType actionType);
@@ -344,6 +344,12 @@ public:
     LC_ActionGroup* getActionGroup(const QString& groupName) const;
     LC_ActionContext* getActionContext() const;
 
+    LC_UIStyleManager* getUiStyleManager() {return m_uiStyleManager.get();}
+    void setUIStyleManager(LC_UIStyleManager* manager) {
+        m_uiStyleManager.reset(manager);
+    }
+
+
 protected:
     bool closePrintPreview(QC_MDIWindow* parent);
     void openPrintPreview(QC_MDIWindow* parent);
@@ -395,7 +401,6 @@ protected:
 
     std::unique_ptr<LC_GridViewInvoker> m_gridViewInvoker;
     std::unique_ptr<LC_InfoCursorSettingsManager> m_infoCursorSettingsManager;
-    std::unique_ptr<LC_CustomStyleHelper> m_styleHelper;
     std::unique_ptr<LC_SnapManager> m_snapManager;
 
     /** Pointer to the application window (this). */
@@ -462,6 +467,9 @@ protected:
 
     QStringList m_openedFiles;
     QList<QAction*> m_actionsToDisableInPrintPreviewList;
+
+
+    std::unique_ptr<LC_UIStyleManager> m_uiStyleManager;
 
     friend class LC_WidgetFactory;
     friend class LC_ActionFactory;

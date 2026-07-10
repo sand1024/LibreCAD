@@ -1,0 +1,1295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_StyleEditorMetrics</class>
+ <widget class="QWidget" name="LC_StyleEditorMetrics">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>494</width>
+    <height>423</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Metrics Editor Panel</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_main">
+   <property name="spacing">
+    <number>8</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="lblInfo">
+     <property name="font">
+      <font>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Customize the physical margins, spacing sizes, and layout parameters of the application using native style proxy overrides. Select an optimized density preset (such as Compact to maximize CAD drawing area) or fine-tune individual pixel metrics manually. Mouse hover tooltips expands purpose of each editor.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="densityLayout">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="lblDensity">
+       <property name="toolTip">
+        <string>Select a quick layout density preset or configure manually.</string>
+       </property>
+       <property name="text">
+        <string>Workspace Density Preset:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="cbWorkspaceDensity">
+       <property name="toolTip">
+        <string>Choose between optimized presets or custom layout sizes.</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>4</number>
+     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Layout</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_tab1">
+       <item row="1" column="1">
+        <widget class="QGroupBox" name="groupBox_11">
+         <property name="title">
+          <string>Splitter</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="sbSplitterWidth">
+            <property name="toolTip">
+             <string>Adjust the thickness of layout dividing boundaries.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>20</number>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="lblSplitterWidth">
+            <property name="toolTip">
+             <string>The thickness of the draggable dividing boundaries between frames.</string>
+            </property>
+            <property name="text">
+             <string>Splitter Width:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="lblSplitterHandleLength">
+            <property name="text">
+             <string>Splitter Handle Length:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="sbSplitterHandleLength">
+            <property name="toolTip">
+             <string>Physical width/length of the centered vector handle on splitter bars (prevents screen clutter on tall dividers).</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="minimum">
+             <number>10</number>
+            </property>
+            <property name="maximum">
+             <number>150</number>
+            </property>
+            <property name="value">
+             <number>30</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="groupBox_4">
+         <property name="title">
+          <string>Layout</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_layout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="lblLayoutMargin">
+            <property name="toolTip">
+             <string>The application-wide base margin padding added globally to all new layout containers.</string>
+            </property>
+            <property name="text">
+             <string>Global Layout Margin:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="sbLayoutMargin">
+            <property name="toolTip">
+             <string>Adjust the global outer padding of layouts.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="maximum">
+             <number>30</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="lblLayoutSpacing">
+            <property name="toolTip">
+             <string>The application-wide base spacing gap added globally between sibling elements in all layouts.</string>
+            </property>
+            <property name="text">
+             <string>Global Layout Spacing:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="sbLayoutSpacing">
+            <property name="toolTip">
+             <string>Adjust the global inner spacing gaps between controls inside layouts.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="maximum">
+             <number>30</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QGroupBox" name="groupBox_6">
+         <property name="title">
+          <string>Dock Widget</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_dock">
+          <item row="0" column="0">
+           <widget class="QLabel" name="lblDockTitleHeight">
+            <property name="toolTip">
+             <string>Compresses the height of the title bars on all dockable utility panels.</string>
+            </property>
+            <property name="text">
+             <string>Dock Titlebar Height:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="sbDockTitleHeight">
+            <property name="toolTip">
+             <string>Set the height of nested side panel title frames.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="minimum">
+             <number>10</number>
+            </property>
+            <property name="maximum">
+             <number>40</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="lblDockButtonMargin">
+            <property name="toolTip">
+             <string>Compresses the spacing around close and float action buttons inside panel title frames.</string>
+            </property>
+            <property name="text">
+             <string>Dock Button Margin:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="sbDockButtonMargin">
+            <property name="toolTip">
+             <string>Adjust panel title button paddings.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="maximum">
+             <number>10</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="0">
+        <widget class="QGroupBox" name="gbGroupBoxMetrics">
+         <property name="title">
+          <string>Group Boxes Layout</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_groupBoxMetrics">
+          <item row="0" column="0">
+           <widget class="QLabel" name="lblGroupBoxTitleLeftPadding">
+            <property name="text">
+             <string>Title Left Padding:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="sbGroupBoxTitleLeftPadding">
+            <property name="toolTip">
+             <string>Horizontal spacing (padding) from the left edge of the group box boundary to the start of the title text/checkbox.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>50</number>
+            </property>
+            <property name="value">
+             <number>8</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="lblGroupBoxTitleLineGap">
+            <property name="text">
+             <string>Title Line Gap:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="sbGroupBoxTitleLineGap">
+            <property name="toolTip">
+             <string>Safety gap between the title text edges and the split border lines.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>25</number>
+            </property>
+            <property name="value">
+             <number>6</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QGroupBox" name="groupBox_9">
+         <property name="title">
+          <string>Titlebar</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_other">
+          <item row="0" column="0">
+           <widget class="QLabel" name="lblTitleBarButtonSize">
+            <property name="toolTip">
+             <string>The size of close, minimize, maximize, and float buttons on side panels.</string>
+            </property>
+            <property name="text">
+             <string>Titlebar Button Size:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="sbTitleBarButtonSize">
+            <property name="toolTip">
+             <string>Adjust the size of title bar buttons.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="minimum">
+             <number>8</number>
+            </property>
+            <property name="maximum">
+             <number>48</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>Navigation</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_tab2">
+       <item row="3" column="1" rowspan="2">
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="4" column="0">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="0">
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>Menus</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_menus">
+          <item row="4" column="0">
+           <widget class="QLabel" name="lblSubMenuOverlap">
+            <property name="toolTip">
+             <string>The horizontal overlap between cascading dropdown menus.</string>
+            </property>
+            <property name="text">
+             <string>Submenu Overlap:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QSpinBox" name="sbSubMenuOverlap">
+            <property name="toolTip">
+             <string>Adjust the horizontal layout overlap of cascading submenus.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="minimum">
+             <number>-20</number>
+            </property>
+            <property name="maximum">
+             <number>20</number>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QSpinBox" name="sbMenuBorderWidth">
+            <property name="toolTip">
+             <string>Set the border width of dropdown and context menu popup containers.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="sbMenuVerticalPadding">
+            <property name="toolTip">
+             <string>Set the vertical padding between options in dropdown and context menus.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="lblMenuVerticalPadding">
+            <property name="toolTip">
+             <string>The vertical padding above and below each item inside popup and context menus. Compress this value for dense tool listings.</string>
+            </property>
+            <property name="text">
+             <string>Menu Vertical Padding:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="lblMenuHorizontalPadding">
+            <property name="toolTip">
+             <string>The horizontal padding inside popup and context menus, defining the side space between menu edges and items.</string>
+            </property>
+            <property name="text">
+             <string>Menu Horizontal Padding:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="lblMenuBorderWidth">
+            <property name="toolTip">
+             <string>The outer border width of popup and context menu panels. Set to 1 pixel for clean, flat modern layouts.</string>
+            </property>
+            <property name="text">
+             <string>Menu Border Width:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="sbMenuHorizontalPadding">
+            <property name="toolTip">
+             <string>Set the horizontal padding of options in dropdown and context menus.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="groupBox_12">
+         <property name="title">
+          <string>Menu Bar</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="0">
+           <widget class="QLabel" name="lblMenuBarItemSpacing">
+            <property name="toolTip">
+             <string>The horizontal gap between options on the main window menu bar.</string>
+            </property>
+            <property name="text">
+             <string>Menu Bar Item Spacing:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="sbMenuBarItemSpacing">
+            <property name="toolTip">
+             <string>Adjust the spacing of menu options inside the menu bar.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="maximum">
+             <number>30</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="lblMenuBarVMargin">
+            <property name="toolTip">
+             <string>The vertical padding above and below text on the main window menu bar.</string>
+            </property>
+            <property name="text">
+             <string>Menu Bar Vert Margin:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="sbMenuBarVerticalMargin">
+            <property name="toolTip">
+             <string>Adjust the height padding inside the menu bar.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="maximum">
+             <number>20</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="title">
+          <string>Toolbars</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_toolbars">
+          <item row="0" column="0">
+           <widget class="QLabel" name="lblToolbarItemSpacing">
+            <property name="toolTip">
+             <string>The horizontal gap between buttons inside action toolbars.</string>
+            </property>
+            <property name="text">
+             <string>Toolbar Item Spacing:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="sbToolbarItemSpacing">
+            <property name="toolTip">
+             <string>Adjust the spacing between items inside toolbars.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="maximum">
+             <number>20</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="lblToolbarSepWidth">
+            <property name="toolTip">
+             <string>The physical width of vertical separator lines inside action toolbars.</string>
+            </property>
+            <property name="text">
+             <string>Toolbar Separator Width:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="sbToolbarSeparatorWidth">
+            <property name="toolTip">
+             <string>Adjust the width of vertical separators in toolbars.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>20</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_3">
+      <attribute name="title">
+       <string>Controls</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_tab3">
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="groupBox_7">
+         <property name="title">
+          <string>Checkboxes and Radiobuttons</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_indicators">
+          <item row="0" column="0">
+           <widget class="QLabel" name="lblIndicatorBoxSize">
+            <property name="toolTip">
+             <string>The physical size of standard checkboxes and radio button circles.</string>
+            </property>
+            <property name="text">
+             <string>Indicator Box Size:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="sbIndicatorBoxSize">
+            <property name="toolTip">
+             <string>Adjust the size of binary indicator box elements.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="minimum">
+             <number>6</number>
+            </property>
+            <property name="maximum">
+             <number>32</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="lblIndicatorLabelSpacing">
+            <property name="toolTip">
+             <string>The horizontal spacing between selection boxes/circles and their text labels.</string>
+            </property>
+            <property name="text">
+             <string>Indicator Label Spacing:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="sbIndicatorLabelSpacing">
+            <property name="toolTip">
+             <string>Adjust the spacing between indicator shapes and text labels.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="maximum">
+             <number>20</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="3" column="1" rowspan="3">
+        <spacer name="verticalSpacer_5">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="5" column="0">
+        <spacer name="verticalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="1">
+        <widget class="QGroupBox" name="groupBox_8">
+         <property name="title">
+          <string>Scrollbars</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_scrollbars">
+          <item row="0" column="0">
+           <widget class="QLabel" name="lblScrollbarWidth">
+            <property name="toolTip">
+             <string>The physical width of vertical scrollbars and height of horizontal scrollbars.</string>
+            </property>
+            <property name="text">
+             <string>Scrollbar Width:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="sbScrollbarWidth">
+            <property name="toolTip">
+             <string>Set the default width of all scrollbars.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="minimum">
+             <number>6</number>
+            </property>
+            <property name="maximum">
+             <number>30</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="lblScrollbarMinLength">
+            <property name="toolTip">
+             <string>Sets the absolute minimum physical length of the draggable handle grip.</string>
+            </property>
+            <property name="text">
+             <string>Scrollbar Min Length:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="sbScrollbarMinLength">
+            <property name="toolTip">
+             <string>Prevent the scrollbar grip handle from becoming too small on large layouts.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="minimum">
+             <number>10</number>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="0" rowspan="3">
+        <widget class="QGroupBox" name="grpNavigationMetrics">
+         <property name="title">
+          <string>Slider and Editors</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_sliders">
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="sbSliderHandleLength">
+            <property name="toolTip">
+             <string>Set the width or length of the draggable handle knob on sliders.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="sbSliderThickness">
+            <property name="toolTip">
+             <string>Adjust the size of slider handle knobs.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="minimum">
+             <number>4</number>
+            </property>
+            <property name="maximum">
+             <number>45</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="lblSliderHandleLength">
+            <property name="toolTip">
+             <string>The physical horizontal length of draggable slider handles. Set a smaller value for compact control layouts.</string>
+            </property>
+            <property name="text">
+             <string>Slider Handle Length:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="lblSliderThickness">
+            <property name="toolTip">
+             <string>The physical width/thickness of the draggable handle knob on sliders.</string>
+            </property>
+            <property name="text">
+             <string>Slider Knob Thickness:</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QGroupBox" name="groupBox_10">
+         <property name="title">
+          <string>Edits</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="lblFocusHMargin">
+            <property name="toolTip">
+             <string>The horizontal margin padding surrounding the active keyboard focus outline ring.</string>
+            </property>
+            <property name="text">
+             <string>Focus Ring H-Margin:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="sbFocusHMargin">
+            <property name="toolTip">
+             <string>Adjust the horizontal padding of the keyboard focus ring.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="maximum">
+             <number>10</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="lblFocusVMargin">
+            <property name="toolTip">
+             <string>The vertical margin padding surrounding the active keyboard focus outline ring.</string>
+            </property>
+            <property name="text">
+             <string>Focus Ring V-Margin:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="sbFocusVMargin">
+            <property name="toolTip">
+             <string>Adjust the vertical padding of the keyboard focus ring.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="maximum">
+             <number>10</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QGroupBox" name="grpMetrics">
+         <property name="title">
+          <string>Buttons</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_buttons">
+          <item row="0" column="0">
+           <widget class="QLabel" name="lblButtonPadding">
+            <property name="toolTip">
+             <string>The internal padding between a button's text or icon and its outer border.</string>
+            </property>
+            <property name="text">
+             <string>Button Padding:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="sbButtonPadding">
+            <property name="toolTip">
+             <string>Adjust the inner margins of clickable buttons.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="maximum">
+             <number>20</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_5">
+      <attribute name="title">
+       <string>Tabs, Tables, Lists, Trees</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_tab5">
+       <item row="0" column="0" rowspan="2">
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>Tabs</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_tabs">
+          <item row="0" column="0">
+           <widget class="QLabel" name="lblTabHSpace">
+            <property name="toolTip">
+             <string>The horizontal spacing padded inside tab button labels.</string>
+            </property>
+            <property name="text">
+             <string>Tab Horizontal Space:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="sbTabHSpace">
+            <property name="toolTip">
+             <string>Set the horizontal padding of tabs.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="maximum">
+             <number>40</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="lblTabVSpace">
+            <property name="toolTip">
+             <string>The vertical spacing padded inside tab button labels.</string>
+            </property>
+            <property name="text">
+             <string>Tab Vertical Space:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="sbTabVSpace">
+            <property name="toolTip">
+             <string>Set the vertical padding of tabs.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="maximum">
+             <number>20</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="lblTabOverlapHorizontal">
+            <property name="toolTip">
+             <string>The horizontal overlap distance between adjacent tab buttons.</string>
+            </property>
+            <property name="text">
+             <string>Tab Horizontal Overlap:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="sbTabOverlapHorizontal">
+            <property name="toolTip">
+             <string>Set the horizontal overlap of adjacent tabs.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="minimum">
+             <number>-5</number>
+            </property>
+            <property name="maximum">
+             <number>15</number>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="lblTabCloseSize">
+            <property name="toolTip">
+             <string>Adjust the size of the close button inside tabs to prevent text clipping.</string>
+            </property>
+            <property name="text">
+             <string>Tab Close Button Size:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QSpinBox" name="sbTabCloseSize">
+            <property name="toolTip">
+             <string>Set the size of tab close buttons.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="maximum">
+             <number>32</number>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="lblTabOverlap">
+            <property name="toolTip">
+             <string>The number of pixels the tab base overlaps the active tab widget's border frame.</string>
+            </property>
+            <property name="text">
+             <string>Tab Base Overlap:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QSpinBox" name="sbTabOverlap">
+            <property name="toolTip">
+             <string>Set the layout overlap of the tab bar base.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="maximum">
+             <number>10</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QGroupBox" name="groupBox_5">
+         <property name="title">
+          <string>Tables, Lists, Trees</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_tables">
+          <item row="0" column="0">
+           <widget class="QLabel" name="lblHeaderDefaultHeight">
+            <property name="toolTip">
+             <string>The default vertical height for table column headers. Reduce this value for more compact CAD data grids.</string>
+            </property>
+            <property name="text">
+             <string>Table Header Default Height:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="sbRowPadding">
+            <property name="toolTip">
+             <string>Adjust the height padding for items inside structured grids.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="maximum">
+             <number>20</number>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="sbHeaderDefaultHeight">
+            <property name="toolTip">
+             <string>Set the default height of column header sections in table and tree views.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="sbTreeIndentation">
+            <property name="toolTip">
+             <string>Set the indentation size for nested tree views.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="minimum">
+             <number>4</number>
+            </property>
+            <property name="maximum">
+             <number>50</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="lblTreeIndentation">
+            <property name="toolTip">
+             <string>The horizontal gap added for each nested level in hierarchical lists and part trees.</string>
+            </property>
+            <property name="text">
+             <string>Tree Indentation:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="lblRowPadding">
+            <property name="toolTip">
+             <string>The programmatic vertical row spacing added inside all list, table, and tree views.</string>
+            </property>
+            <property name="text">
+             <string>Row Padding:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="lblTreeBranchIndicatorSize">
+            <property name="text">
+             <string>Tree Node Icon Size:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QSpinBox" name="sbTreeBranchIndicatorSize">
+            <property name="toolTip">
+             <string>Physical width/height of the vector arrows or boxes in tree branch indicators.</string>
+            </property>
+            <property name="minimum">
+             <number>4</number>
+            </property>
+            <property name="maximum">
+             <number>30</number>
+            </property>
+            <property name="value">
+             <number>8</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <spacer name="verticalSpacer_6">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>19</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="1" rowspan="2">
+        <spacer name="verticalSpacer_8">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>19</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_4">
+      <attribute name="title">
+       <string>Behavior</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_tab4">
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="grpBehaviors">
+         <property name="title">
+          <string>Fine-Tuning Visual Behaviors</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_behaviors">
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="chkFlatDisabledText">
+            <property name="toolTip">
+             <string>Disables the default legacy 3D engraved shadows behind disabled elements.</string>
+            </property>
+            <property name="text">
+             <string>Flat disabled text (No etched shadows)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="chkMenuIcons">
+            <property name="toolTip">
+             <string>Toggle the visibility of icons inside standard dropdown menus and submenus.</string>
+            </property>
+            <property name="text">
+             <string>Menu icons</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QCheckBox" name="chkMenuDisabledActive">
+            <property name="toolTip">
+             <string>Toggle whether the highlight hover remains active when hovering disabled menu items.</string>
+            </property>
+            <property name="text">
+             <string>Hover disabled items</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <spacer name="verticalSpacer_7">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="0">
+        <widget class="QGroupBox" name="gbShortcutMetrics">
+         <property name="title">
+          <string>Keyboard Mnemonics</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_shortcutMetrics">
+          <item row="1" column="1">
+           <widget class="QComboBox" name="cbMnemonicUnderlineMode">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>Choose how menu shortcut underlines respond to the ALT key. (Only active if 'Hide shortcut underlines' is checked).</string>
+            </property>
+            <property name="sizeAdjustPolicy">
+             <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="lblMnemonicUnderlineMode">
+            <property name="text">
+             <string>Displaying hotkey underlines mode:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <spacer name="shortcutSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="0" column="0" colspan="3">
+           <widget class="QCheckBox" name="chkHideShortcuts">
+            <property name="toolTip">
+             <string>Prevents visual clutter by hiding shortcut underlines unless the Alt key is held.</string>
+            </property>
+            <property name="text">
+             <string>Hide hotkeys underlines</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

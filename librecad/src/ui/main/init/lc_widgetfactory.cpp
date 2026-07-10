@@ -28,12 +28,14 @@
 #include "lc_actiongroupmanager.h"
 #include "lc_anglesbasiswidget.h"
 #include "lc_caddockwidget.h"
+#include "lc_cad_tool_matrix_dock_widget.h"
 #include "lc_dockwidget.h"
 #include "lc_layertreewidget.h"
 #include "lc_namedviewslistwidget.h"
 #include "lc_penpalettewidget.h"
 #include "lc_penwizard.h"
 #include "lc_propertysheetwidget.h"
+#include "lc_proxy_style_shared.h"
 #include "lc_qtstatusbarmanager.h"
 #include "lc_quickinfowidget.h"
 #include "lc_relzerocoordinateswidget.h"
@@ -100,24 +102,41 @@ void LC_WidgetFactory::initLeftCADSidebar(){
 }
 
 void LC_WidgetFactory::createCADMegaSidebar(const int columns, const int iconSize, const bool flatButtons) {
-    auto* mega = new LC_CADDockWidget(m_appWin, true);
+    auto* mega = new LC_CADToolMatrixDockWidget(m_appWin, true);
     mega->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
     mega->setObjectName("dock_cad_mega");
     mega->setWindowTitle(tr("All"));
     auto actions = QList<QAction*>();
+    QAction separatorAct = QAction(this);
+    QAction* separator = &separatorAct;
+    separatorAct.setSeparator(true); // Turns th
+
     actions.append(m_actionFactory->lineActions);
+    actions.append(separator);
     actions.append(m_actionFactory->pointActions);
+    actions.append(separator);
     actions.append(m_actionFactory->shapeActions);
+    actions.append(separator);
     actions.append(m_actionFactory->circleActions);
+    actions.append(separator);
     actions.append(m_actionFactory->curveActions);
+    actions.append(separator);
     actions.append(m_actionFactory->splineActions);
+    actions.append(separator);
     actions.append(m_actionFactory->ellipseActions);
+    actions.append(separator);
     actions.append(m_actionFactory->polylineActions);
+    actions.append(separator);
     actions.append(m_actionFactory->selectActions);
+    actions.append(separator);
     actions.append(m_actionFactory->modifyActions);
+    actions.append(separator);
     actions.append(m_actionFactory->dimension_Actions);
+    actions.append(separator);
     actions.append(m_actionFactory->infoActions);
+    actions.append(separator);
     actions.append(m_actionFactory->otherDrawingActions);
+    actions.append(separator);
     actions.append(m_actionFactory->orderActions);
     mega->addActions(actions, columns, iconSize, flatButtons);
     mega->hide();
@@ -466,7 +485,7 @@ LC_CADDockWidget* LC_WidgetFactory::cadDockWidget(const QString& title, const ch
     return result;
 }
 
- QToolBar* LC_WidgetFactory::createStatusBarToolbar(const QSizePolicy &tbPolicy, QWidget *widget, const QString& title, const char *name, const bool showToolTip) const {
+ QToolBar* LC_WidgetFactory::createStatusBarToolbar(const QSizePolicy &tbPolicy, QWidget *widget, const QString& title, const char *name, const bool showToolTip, bool usePillChips) const {
     const auto tb = new QToolBar(title, m_appWin);
     tb->setSizePolicy(tbPolicy);
     tb->addWidget(widget);
@@ -474,6 +493,9 @@ LC_CADDockWidget* LC_WidgetFactory::cadDockWidget(const QString& title, const ch
     tb->setProperty("_group", 3);
     if (showToolTip) {
         tb->setToolTip(tr("Toolbar: %1").arg(title));
+    }
+    if (usePillChips) {
+        tb->setProperty(PROP_USE_STATUS_PILL_CHIPS, true);
     }
     addToBottom(tb);
     return tb;
@@ -533,14 +555,14 @@ void LC_WidgetFactory::initStatusBar() {
     else {
         constexpr QSizePolicy tbPolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
         const bool showToolbarTooltips = LC_GET_ONE_BOOL("Startup", "ShowToolbarsTooltip", true);
-        createStatusBarToolbar(tbPolicy, m_appWin->m_coordinateWidget, tr("Coordinates"), "TBCoordinates", showToolbarTooltips);
-        createStatusBarToolbar(tbPolicy, m_appWin->m_relativeZeroCoordinatesWidget, tr("Relative Zero"), "TBRelZero", showToolbarTooltips);
-        createStatusBarToolbar(tbPolicy, m_appWin->m_mouseWidget, tr("Mouse"), "TBMouse", showToolbarTooltips);
-        createStatusBarToolbar(tbPolicy, m_appWin->m_selectionWidget, tr("Selection Info"), "TBSelectionInfo", showToolbarTooltips);
-        createStatusBarToolbar(tbPolicy, m_appWin->m_activeLayerNameWidget, tr("Active Layer"), "TBActiveLayer", showToolbarTooltips);
-        createStatusBarToolbar(tbPolicy, m_appWin->m_gridStatusWidget, tr("Grid Status"), "TBGridStatus", showToolbarTooltips);
-        createStatusBarToolbar(tbPolicy, m_appWin->m_ucsStateWidget, tr("UCS Status"), "TBUCSStatus", showToolbarTooltips);
-        createStatusBarToolbar(tbPolicy, m_appWin->m_anglesBasisWidget, tr("Angles Basis"), "TBAnglesBasis", showToolbarTooltips);
+        createStatusBarToolbar(tbPolicy, m_appWin->m_coordinateWidget, tr("Coordinates"), "TBCoordinates", showToolbarTooltips, true);
+        createStatusBarToolbar(tbPolicy, m_appWin->m_relativeZeroCoordinatesWidget, tr("Relative Zero"), "TBRelZero", showToolbarTooltips, true);
+        createStatusBarToolbar(tbPolicy, m_appWin->m_mouseWidget, tr("Mouse"), "TBMouse", showToolbarTooltips, true);
+        createStatusBarToolbar(tbPolicy, m_appWin->m_selectionWidget, tr("Selection Info"), "TBSelectionInfo", showToolbarTooltips, true);
+        createStatusBarToolbar(tbPolicy, m_appWin->m_activeLayerNameWidget, tr("Active Layer"), "TBActiveLayer", showToolbarTooltips, true);
+        createStatusBarToolbar(tbPolicy, m_appWin->m_gridStatusWidget, tr("Grid Status"), "TBGridStatus", showToolbarTooltips, true);
+        createStatusBarToolbar(tbPolicy, m_appWin->m_ucsStateWidget, tr("UCS Status"), "TBUCSStatus", showToolbarTooltips, true);
+        createStatusBarToolbar(tbPolicy, m_appWin->m_anglesBasisWidget, tr("Angles Basis"), "TBAnglesBasis", showToolbarTooltips, true);
 
         m_appWin->m_statusbarManager->setup();
 

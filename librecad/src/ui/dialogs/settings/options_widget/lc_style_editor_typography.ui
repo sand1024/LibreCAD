@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_StyleEditorTypography</class>
+ <widget class="QWidget" name="LC_StyleEditorTypography">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>434</width>
+    <height>393</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Typography Editor Panel</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <widget class="QLabel" name="lblInstructions">
+     <property name="text">
+      <string>Configure the global application typography. Specify the baseline interface font family and size, then apply relative size offsets and styles (Bold, Italic) to target specific control groups (such as menus, buttons, and text fields). Mouse hover tooltips on editors provide more information how each value is applied.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="grpTypography">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="title">
+      <string>Typography Hierarchy</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
+       <number>9</number>
+      </property>
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item row="10" column="2">
+       <widget class="QCheckBox" name="chkTechnicalBold">
+        <property name="toolTip">
+         <string>Toggle bold weight for the monospaced text console.</string>
+        </property>
+        <property name="text">
+         <string>Bold</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="3">
+       <widget class="QCheckBox" name="chkTechnicalItalic">
+        <property name="toolTip">
+         <string>Toggle italic slant for the monospaced text console.</string>
+        </property>
+        <property name="text">
+         <string>Italic</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lblMainSize">
+        <property name="toolTip">
+         <string>The base typography size in points, acting as the scale reference for other roles.</string>
+        </property>
+        <property name="text">
+         <string>Base Size:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="lblMenuBarOffset">
+        <property name="toolTip">
+         <string>Adjustments applied exclusively to the horizontal main menu bar at the top of windows.</string>
+        </property>
+        <property name="text">
+         <string>Main Menu Bar:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QCheckBox" name="chkMenuBarBold">
+        <property name="toolTip">
+         <string>Toggle bold weight for the main window menu bar options.</string>
+        </property>
+        <property name="text">
+         <string>Bold</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QSpinBox" name="sbHeadingOffset">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Set the relative size offset for headings and table headers.</string>
+        </property>
+        <property name="suffix">
+         <string> pt</string>
+        </property>
+        <property name="minimum">
+         <number>-10</number>
+        </property>
+        <property name="maximum">
+         <number>10</number>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="3">
+       <widget class="QCheckBox" name="chkMenuBarItalic">
+        <property name="toolTip">
+         <string>Toggle italic slant for the main window menu bar options.</string>
+        </property>
+        <property name="text">
+         <string>Italic</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QSpinBox" name="sbMenuOffset">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Set the relative size offset for dropdowns and context menus.</string>
+        </property>
+        <property name="suffix">
+         <string> pt</string>
+        </property>
+        <property name="minimum">
+         <number>-10</number>
+        </property>
+        <property name="maximum">
+         <number>10</number>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="1">
+       <widget class="QSpinBox" name="sbTechnicalOffset">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Adjust the font size of the monospace text areas.</string>
+        </property>
+        <property name="suffix">
+         <string> pt</string>
+        </property>
+        <property name="minimum">
+         <number>-10</number>
+        </property>
+        <property name="maximum">
+         <number>10</number>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="3">
+       <widget class="QCheckBox" name="chkHeadingItalic">
+        <property name="toolTip">
+         <string>Toggle italic slant for section headings and column headers.</string>
+        </property>
+        <property name="text">
+         <string>Italic</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="3">
+       <widget class="QCheckBox" name="chkMenuItalic">
+        <property name="toolTip">
+         <string>Toggle italic slant for dropdown list choices and context items.</string>
+        </property>
+        <property name="text">
+         <string>Italic</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="0">
+       <widget class="QLabel" name="lblTechnicalFont">
+        <property name="toolTip">
+         <string>The independent monospaced font family used inside consoles, log areas, and code displays.</string>
+        </property>
+        <property name="text">
+         <string>Code &amp; Technical:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="QSpinBox" name="sbInputOffset">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Set the relative size offset for input fields and spinners.</string>
+        </property>
+        <property name="suffix">
+         <string> pt</string>
+        </property>
+        <property name="minimum">
+         <number>-10</number>
+        </property>
+        <property name="maximum">
+         <number>10</number>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="4">
+       <widget class="QLabel" name="lblOffsetsHeader">
+        <property name="font">
+         <font>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Specify offsets from base font size to customize specific UI elements.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="2">
+       <widget class="QCheckBox" name="chkButtonBold">
+        <property name="toolTip">
+         <string>Toggle bold weight for button labels and toolbar options.</string>
+        </property>
+        <property name="text">
+         <string>Bold</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="2">
+       <widget class="QCheckBox" name="chkInputBold">
+        <property name="toolTip">
+         <string>Toggle bold weight for text fields and dropdown choices.</string>
+        </property>
+        <property name="text">
+         <string>Bold</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QSpinBox" name="sbMenuBarOffset">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Set the relative size offset for the horizontal main menu bar.</string>
+        </property>
+        <property name="suffix">
+         <string> pt</string>
+        </property>
+        <property name="minimum">
+         <number>-10</number>
+        </property>
+        <property name="maximum">
+         <number>10</number>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="lblHeadingOffset">
+        <property name="toolTip">
+         <string>Adjustments applied to structural grouping titles, panel headers, and table column headers.</string>
+        </property>
+        <property name="text">
+         <string>Section Headings:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QCheckBox" name="chkHeadingBold">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Toggle bold weight for section headings and column headers.</string>
+        </property>
+        <property name="text">
+         <string>Bold</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="lblButtonOffset">
+        <property name="toolTip">
+         <string>Adjustments applied to clickable buttons, toolbar actions, and interactive task controls.</string>
+        </property>
+        <property name="text">
+         <string>Buttons &amp; Toolbars:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="3">
+       <widget class="QCheckBox" name="chkButtonItalic">
+        <property name="toolTip">
+         <string>Toggle italic slant for button labels and toolbar options.</string>
+        </property>
+        <property name="text">
+         <string>Italic</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QFontComboBox" name="fcMainFont">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Select the default font family used throughout the application.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lblMainFont">
+        <property name="toolTip">
+         <string>The baseline font family for the overall user interface.</string>
+        </property>
+        <property name="text">
+         <string>Main Interface Font:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="QFontComboBox" name="fcTechnicalFont">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Select the monospace font family for log outputs and scripts.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="lblMenuOffset">
+        <property name="toolTip">
+         <string>Adjustments applied to dropdown menus, submenus, and context popup menus.</string>
+        </property>
+        <property name="text">
+         <string>Menus &amp; Dropdowns:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="2">
+       <widget class="QCheckBox" name="chkMenuBold">
+        <property name="toolTip">
+         <string>Toggle bold weight for dropdown list choices and context items.</string>
+        </property>
+        <property name="text">
+         <string>Bold</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="sbMainSize">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Adjust the base font size for normal text labels and general elements.</string>
+        </property>
+        <property name="suffix">
+         <string> pt</string>
+        </property>
+        <property name="minimum">
+         <number>6</number>
+        </property>
+        <property name="maximum">
+         <number>72</number>
+        </property>
+        <property name="value">
+         <number>10</number>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="0">
+       <widget class="QLabel" name="lblTechnicalOffset">
+        <property name="toolTip">
+         <string>Relative size offset for monospaced logs and terminal areas.</string>
+        </property>
+        <property name="text">
+         <string>Offset:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QSpinBox" name="sbButtonOffset">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Set the relative size offset for buttons and toolbars.</string>
+        </property>
+        <property name="suffix">
+         <string> pt</string>
+        </property>
+        <property name="minimum">
+         <number>-10</number>
+        </property>
+        <property name="maximum">
+         <number>10</number>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="3">
+       <widget class="QCheckBox" name="chkInputItalic">
+        <property name="toolTip">
+         <string>Toggle italic slant for text fields and dropdown choices.</string>
+        </property>
+        <property name="text">
+         <string>Italic</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="lblInputOffset">
+        <property name="toolTip">
+         <string>Adjustments applied to single-line text fields, combo selectors, and numerical spinners.</string>
+        </property>
+        <property name="text">
+         <string>Inputs &amp; Editors:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="4">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="2" column="0" colspan="5">
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0" colspan="5">
+       <widget class="Line" name="line_2">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
