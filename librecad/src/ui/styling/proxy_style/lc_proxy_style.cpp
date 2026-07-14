@@ -71,6 +71,7 @@
 #include <QTreeView>
 #include <QVariant>
 
+#include "lc_custom_title_bar_widget.h"
 #include "lc_dock_title_bar.h"
 #include "lc_event_filter_auto_popup_controller.h"
 #include "lc_event_filter_floating_hud.h"
@@ -386,8 +387,16 @@ void LC_ProxyStyle::unpolish(QApplication *app) {
 }
 
 void LC_ProxyStyle::unpolish(QWidget *widget) {
+    // if (auto *dock = qobject_cast<QDockWidget*>(widget)) {
+    //     if (dock->titleBarWidget() && dock->titleBarWidget()->inherits("LC_DockTitleBar")) {
+    //         QWidget *old = dock->titleBarWidget();
+    //         dock->setTitleBarWidget(nullptr);
+    //         old->deleteLater(); // Safe deferred execution prevents unpolish iterator crash
+    //     }
+    // }
+
     if (auto *dock = qobject_cast<QDockWidget*>(widget)) {
-        if (dock->titleBarWidget() && dock->titleBarWidget()->inherits("LC_DockTitleBar")) {
+        if (dock->titleBarWidget() && (dock->titleBarWidget()->inherits("LC_CustomTitleBarWidget") || dock->titleBarWidget()->inherits("LC_DockTitleBar"))) {
             QWidget *old = dock->titleBarWidget();
             dock->setTitleBarWidget(nullptr);
             old->deleteLater(); // Safe deferred execution prevents unpolish iterator crash
@@ -1320,11 +1329,32 @@ void LC_ProxyStyle::precomputeSegmentedGroupColors(QWidget *widget, const int to
 
 // Delegate standard icons through the descriptor cache
 QIcon LC_ProxyStyle::standardIcon(const StandardPixmap standardIcon, const QStyleOption *option, const QWidget *widget) const {
-    QIcon customIcon = m_skinColorsResolver.getStandardIcon(standardIcon, option, widget);
+    // QIcon customIcon = m_skinColorsResolver.getStandardIcon(standardIcon, option, widget);
+    // if (!customIcon.isNull()) {
+    //     return customIcon;
+    // }
+    // return QProxyStyle::standardIcon(standardIcon, option, widget);
+
+    QStyleOption fallbackOpt;
+    const QStyleOption *actualOption = option;
+
+    // Globally sanitize null option pointers passed by Qt's own internal widgets (e.g., QMdiSubWindow)
+    if (!actualOption) {
+        if (widget) {
+            fallbackOpt.initFrom(widget);
+        } else {
+            fallbackOpt.palette = QApplication::palette();
+            fallbackOpt.state = QStyle::State_Enabled | QStyle::State_Active;
+        }
+        actualOption = &fallbackOpt;
+    }
+
+    QIcon customIcon = m_skinColorsResolver.getStandardIcon(standardIcon, actualOption, widget);
     if (!customIcon.isNull()) {
         return customIcon;
     }
-    return QProxyStyle::standardIcon(standardIcon, option, widget);
+
+    return QProxyStyle::standardIcon(standardIcon, actualOption, widget);
 }
 
 const SkinScaledGeometries& LC_ProxyStyle::getGeometries(const QWidget* widget) const {
@@ -1526,16 +1556,16 @@ void LC_ProxyStyle::drawCustomLineEditFrame(const QStyleOption *option, QPainter
     const QPalette::ColorGroup finalGroup = resolveColorGroup(option->state);
 
     // Unconditional diagnostic debug logging to trace exact palette behavior and color roles
-    LC_ERR << "[LineEdit Paint Debug] widget=" << actualWidget
-           << " WA_SetPalette=" << (actualWidget ? actualWidget->testAttribute(Qt::WA_SetPalette) : false)
-           << " optionBase_Active=" << option->palette.color(QPalette::Active, QPalette::Base).name()
-           << " optionBase_Inactive=" << option->palette.color(QPalette::Inactive, QPalette::Base).name()
-           << " optionWindow_Active=" << option->palette.color(QPalette::Active, QPalette::Window).name()
-           << " appBase_Active=" << QApplication::palette().color(QPalette::Active, QPalette::Base).name()
-           << " desc_bgInput=" << desc.input.bgInput.name()
-           << " desc_bgStart=" << desc.common.bgStart.name()
-           << " finalGroup=" << finalGroup
-           << " hasFullBorder=" << desc.frame.hasFullBorder;
+    // LC_ERR << "[LineEdit Paint Debug] widget=" << actualWidget
+    //        << " WA_SetPalette=" << (actualWidget ? actualWidget->testAttribute(Qt::WA_SetPalette) : false)
+    //        << " optionBase_Active=" << option->palette.color(QPalette::Active, QPalette::Base).name()
+    //        << " optionBase_Inactive=" << option->palette.color(QPalette::Inactive, QPalette::Base).name()
+    //        << " optionWindow_Active=" << option->palette.color(QPalette::Active, QPalette::Window).name()
+    //        << " appBase_Active=" << QApplication::palette().color(QPalette::Active, QPalette::Base).name()
+    //        << " desc_bgInput=" << desc.input.bgInput.name()
+    //        << " desc_bgStart=" << desc.common.bgStart.name()
+    //        << " finalGroup=" << finalGroup
+    //        << " hasFullBorder=" << desc.frame.hasFullBorder;
 
     {
         LCPainterGuard guard(painter, true); // AA allows smooth rounded corners / clean angled lines
@@ -2210,8 +2240,8 @@ void LC_ProxyStyle::drawCustomDockTitleBar(const QStyleOptionDockWidget *option,
     drawParameterizedBox(painter, option->rect, desc, option->verticalTitleBar);
 
     if (activeStyle != DockTitleBarStyle::CustomSolid &&
-     activeStyle != DockTitleBarStyle::CustomAccentOutline &&
-     activeStyle != DockTitleBarStyle::Native) {
+        activeStyle != DockTitleBarStyle::CustomAccentOutline &&
+        activeStyle != DockTitleBarStyle::Native) {
 
         const QColor highlightBorder = desc.dockTitleBar.highlightBorder;
         painter->setPen(highlightBorder);
@@ -2221,44 +2251,47 @@ void LC_ProxyStyle::drawCustomDockTitleBar(const QStyleOptionDockWidget *option,
         } else {
             painter->drawLine(option->rect.left(), option->rect.top() + 1, option->rect.right(), option->rect.top() + 1);
         }
-     }
+    }
 
-    const QString titleText = option->title;
-    if (!titleText.isEmpty()) {
-        QFont font = widget ? widget->font() : painter->font();
-        font.setBold(false);
-        painter->setFont(font);
+    const bool isCustomWidget = widget && widget->inherits("LC_CustomTitleBarWidget");
 
-        // Fetch dynamic button clearances based on active dock widget features
-        const auto *dock = qobject_cast<const QDockWidget*>(widget);
-        QDockWidget::DockWidgetFeatures features = QDockWidget::NoDockWidgetFeatures;
-        if (dock) {
-            features = dock->features();
-        } else if (option) {
-            features = QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable;
+    if (!isCustomWidget) {
+        // Draw standard native title text
+        const QString titleText = option->title;
+        if (!titleText.isEmpty()) {
+            QFont font = widget ? widget->font() : painter->font();
+            font.setBold(false);
+            painter->setFont(font);
+
+            const auto buttonLayout = LC_SkinWidgetsLayoutResolver::resolveTitleBarButtonLayout(
+                option->rect, geoms, option->closable ? (QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable) : QDockWidget::NoDockWidgetFeatures, option->verticalTitleBar);
+
+            const int leftSpacing = desc.frame.hasLeftAccentBar ? geoms.groupBox.titleLeftSpacing + geoms.ints.scale4
+                                                    : geoms.groupBox.titleLeftSpacing;
+
+            if (option->verticalTitleBar) {
+                painter->translate(option->rect.left(), option->rect.bottom());
+                painter->rotate(-90);
+                const QRect textRect(leftSpacing, 0, buttonLayout.textRect.height(), option->rect.width());
+                painter->setPen(desc.common.textColor);
+                painter->drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, titleText);
+            } else {
+                const QRect textRect(buttonLayout.textRect.left(), option->rect.top(),
+                                     buttonLayout.textRect.width(), option->rect.height());
+                painter->setPen(desc.common.textColor);
+                painter->drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, titleText);
+            }
         }
+    } else {
+        // Draw the unified grip handle inside the reserved layout margin area [74]
+        const QPoint cx = option->verticalTitleBar
+            ? QPoint(option->rect.center().x(), option->rect.top() + geoms.ints.scale8)
+            : QPoint(option->rect.left() + geoms.ints.scale8, option->rect.center().y());
 
-        const auto buttonLayout = LC_SkinWidgetsLayoutResolver::resolveTitleBarButtonLayout(
-            option->rect, geoms, features, option->verticalTitleBar);
+        const QColor gripColor = desc.splitter.splitterGripColorIdle;
+        const int handleLen = geoms.ints.scale12;
 
-        const int leftSpacing = desc.frame.hasLeftAccentBar ? geoms.groupBox.titleLeftSpacing + geoms.ints.scale4
-                                                : geoms.groupBox.titleLeftSpacing;
-
-        if (option->verticalTitleBar) {
-            painter->translate(option->rect.left(), option->rect.bottom());
-            painter->rotate(-90);
-
-            // Use dynamic buttonLayout height constraint in rotated coordinates
-            const QRect textRect(leftSpacing, 0, buttonLayout.textRect.height(), option->rect.width());
-            painter->setPen(desc.common.textColor);
-            painter->drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, titleText);
-        } else {
-            // Use dynamic textRect horizontal width constraints
-            const QRect textRect(buttonLayout.textRect.left(), option->rect.top(),
-                                 buttonLayout.textRect.width(), option->rect.height());
-            painter->setPen(desc.common.textColor);
-            painter->drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, titleText);
-        }
+        drawUnifiedGripPattern(painter, cx, option->rect, option->verticalTitleBar, gripColor, m_splitterGripStyle, handleLen, geoms);
     }
 }
 
@@ -3893,24 +3926,48 @@ void LC_ProxyStyle::drawCustomStatusPillToolbarHandle(const QStyleOption *option
 
 
 void LC_ProxyStyle::setupPermanentTitleBar(QDockWidget *dock) const  {
+    // if (!dock) return;
+    //
+    // const bool needCustom = m_useFloatingHUD || m_customDockTitleBar;
+    // if (needCustom) {
+    //     if (!dock->titleBarWidget() || !dock->titleBarWidget()->inherits("LC_DockTitleBar")) {
+    //         if (dock->titleBarWidget()) {
+    //             QWidget *old = dock->titleBarWidget();
+    //             if (old->inherits("LC_DockTitleBar")) {
+    //                 dock->setTitleBarWidget(nullptr);
+    //                 old->deleteLater();
+    //             }
+    //         }
+    //         auto *titleBar = new LC_DockTitleBar(dock, this);
+    //         dock->setTitleBarWidget(titleBar);
+    //         // Removed titleBar->show(); to let QDockWidgetLayout manage dynamic tab visibility automatically
+    //     }
+    // } else {
+    //     if (dock->titleBarWidget() && dock->titleBarWidget()->inherits("LC_DockTitleBar")) {
+    //         QWidget *old = dock->titleBarWidget();
+    //         dock->setTitleBarWidget(nullptr);
+    //         old->deleteLater();
+    //     }
+    // }
+
     if (!dock) return;
 
     const bool needCustom = m_useFloatingHUD || m_customDockTitleBar;
     if (needCustom) {
-        if (!dock->titleBarWidget() || !dock->titleBarWidget()->inherits("LC_DockTitleBar")) {
+        if (!dock->titleBarWidget() || !dock->titleBarWidget()->inherits("LC_CustomTitleBarWidget")) {
             if (dock->titleBarWidget()) {
                 QWidget *old = dock->titleBarWidget();
-                if (old->inherits("LC_DockTitleBar")) {
+                if (old->inherits("LC_CustomTitleBarWidget") || old->inherits("LC_DockTitleBar")) {
                     dock->setTitleBarWidget(nullptr);
                     old->deleteLater();
                 }
             }
-            auto *titleBar = new LC_DockTitleBar(dock, this);
+            // Pass the dock's title directly to the custom constructor as its default text [74]
+            auto *titleBar = new LC_CustomTitleBarWidget(dock->windowTitle(), dock->windowTitle(), "", dock);
             dock->setTitleBarWidget(titleBar);
-            // Removed titleBar->show(); to let QDockWidgetLayout manage dynamic tab visibility automatically
         }
     } else {
-        if (dock->titleBarWidget() && dock->titleBarWidget()->inherits("LC_DockTitleBar")) {
+        if (dock->titleBarWidget() && (dock->titleBarWidget()->inherits("LC_CustomTitleBarWidget") || dock->titleBarWidget()->inherits("LC_DockTitleBar"))) {
             QWidget *old = dock->titleBarWidget();
             dock->setTitleBarWidget(nullptr);
             old->deleteLater();

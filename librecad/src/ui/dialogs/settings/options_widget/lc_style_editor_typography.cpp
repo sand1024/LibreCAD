@@ -21,7 +21,6 @@
 
 #include "lc_style_editor_typography.h"
 #include "ui_lc_style_editor_typography.h"
-#include "support/lc_font_settings_widget.h"
 #include "lc_ui_style_manager.h"
 #include "lc_typography_repository.h"
 #include "lc_typography_utils.h"

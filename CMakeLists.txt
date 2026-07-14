@@ -2223,6 +2223,8 @@ set (SHARED_SOURCES
      librecad/src/ui/styling/proxy_style/lc_dock_title_bar.h
      librecad/src/ui/styling/proxy_style/lc_detached_menu.cpp
      librecad/src/ui/styling/proxy_style/lc_detached_menu.h
+     librecad/src/ui/components/lc_custom_title_bar_widget.cpp
+     librecad/src/ui/components/lc_custom_title_bar_widget.h
 )
 set (MUPARSER_SOURCES
      libraries/muparser/include/muParser.h
