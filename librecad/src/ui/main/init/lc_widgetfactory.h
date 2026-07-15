@@ -51,7 +51,7 @@ public:
 private:
     LC_ActionGroupManager *m_agm {nullptr};
     LC_ActionFactory *m_actionFactory {nullptr};
-    QDockWidget *createDockWidget(const QString &horizontalTitle, const char *name, const QString& verticalTitle = "") const;
+    QDockWidget *createDockWidget(const QString &horizontalTitle, const char *name, const QString& iconName = "",  const QString& verticalTitle = "") const;
     QDockWidget *createPenPalletteWidget();
     QDockWidget* createLayerWidget(const QG_ActionHandler* actionHandler);
     QDockWidget *createNamedViewsWidget();

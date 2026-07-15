@@ -405,5 +405,16 @@
         <file alias="palette_1_point.lci">palette_1_point.svg</file>
         <file alias="palette_2_points.lci">palette_2_points.svg</file>
         <file alias="palette_hi_contrast.lci">palette_hi_contrast.svg</file>
+        <file alias="widget_blocks.lci">widget_blocks.svg</file>
+        <file alias="widget_cmd.lci">widget_cmd.svg</file>
+        <file alias="widget_info.lci">widget_info.svg</file>
+        <file alias="widget_layer_list.lci">widget_layer_list.svg</file>
+        <file alias="widget_layer_tree.lci">widget_layer_tree.svg</file>
+        <file alias="widget_library.lci">widget_library.svg</file>
+        <file alias="widget_pen_wiz.lci">widget_pen_wiz.svg</file>
+        <file alias="widget_pens_palette.lci">widget_pens_palette.svg</file>
+        <file alias="widget_properties.lci">widget_properties.svg</file>
+        <file alias="widget_ucs.lci">widget_ucs.svg</file>
+        <file alias="widget_views.lci">widget_views.svg</file>
     </qresource>
 </RCC>

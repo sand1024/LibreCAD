@@ -180,17 +180,21 @@ void LC_WidgetFactory::createCADSidebar(const int columns, const int iconSize, c
     m_appWin->tabifyDockWidget(modify, order);
 }
 
-QDockWidget* LC_WidgetFactory::createDockWidget(const QString& horizontalTitle, const char *name, const QString& verticalTitle) const {
+QDockWidget* LC_WidgetFactory::createDockWidget(const QString& horizontalTitle, const char *name, const QString& iconName, const QString& verticalTitle) const {
     const auto result = new LC_DockWidget(m_appWin, horizontalTitle, verticalTitle);
     result->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     result->setWindowTitle(horizontalTitle);
     result->setObjectName(name);
     result->setProperty("_lc_doc_widget", true);
+    if (!iconName.isEmpty()) {
+        auto toggleViewAction = result->toggleViewAction();
+        toggleViewAction->setIcon(QIcon(iconName));
+    }
     return result;
 }
 
 QDockWidget* LC_WidgetFactory::createPenPalletteWidget(){
-    const auto dock = createDockWidget(tr("Pens Palette"), "pen_palette_dockwidget", tr("Pens"));
+    const auto dock = createDockWidget(tr("Pens Palette"), "pen_palette_dockwidget", ":/icons/widget_pens_palette.lci", tr("Pens"));
     const auto widget = new LC_PenPaletteWidget("PenPalette", dock);
     widget->setFocusPolicy(Qt::NoFocus);
     dock->setWidget(widget);
@@ -204,7 +208,7 @@ QDockWidget* LC_WidgetFactory::createPenPalletteWidget(){
 }
 
 QDockWidget* LC_WidgetFactory::createLayerWidget(const QG_ActionHandler* actionHandler){
-    const auto dock = createDockWidget(tr("Layers"), "layer_dockwidget", tr("Layers"));
+    const auto dock = createDockWidget(tr("Layers"), "layer_dockwidget", ":/icons/widget_layer_list.lci", tr("Layers"));
     const auto widget = new QG_LayerWidget(m_agm, actionHandler, dock, "Layer");
     widget->setFocusPolicy(Qt::NoFocus);
     dock->setWidget(widget);
@@ -217,7 +221,7 @@ QDockWidget* LC_WidgetFactory::createLayerWidget(const QG_ActionHandler* actionH
 }
 
 QDockWidget* LC_WidgetFactory::createNamedViewsWidget(){
-    const auto dock   = createDockWidget(tr("Named Views"), "view_dockwidget", tr("Views"));
+    const auto dock   = createDockWidget(tr("Named Views"), "view_dockwidget", ":/icons/widget_views.lci", tr("Views"));
     const auto widget = new LC_NamedViewsListWidget("View", dock);
     widget->setFocusPolicy(Qt::NoFocus);
     dock->setWidget(widget);
@@ -240,7 +244,7 @@ QDockWidget* LC_WidgetFactory::createNamedViewsWidget(){
 }
 
 QDockWidget*  LC_WidgetFactory::createUCSListWidget(){
-    const auto dock = createDockWidget(tr("User Coordinate Systems"), "ucs_dockwidget", tr("UCSs"));
+    const auto dock = createDockWidget(tr("User Coordinate Systems"), "ucs_dockwidget", ":/icons/widget_ucs.lci", tr("UCSs"));
     const auto widget = new LC_UCSListWidget("UCS", dock);
     widget->setFocusPolicy(Qt::NoFocus);
     dock->setWidget(widget);
@@ -252,7 +256,7 @@ QDockWidget*  LC_WidgetFactory::createUCSListWidget(){
 }
 
 QDockWidget* LC_WidgetFactory::createLayerTreeWidget(const QG_ActionHandler* actionHandler){
-    QDockWidget* dock = createDockWidget(tr("Layers Tree"), "layer_tree_dockwidget", tr("Layers Tree"));
+    QDockWidget* dock = createDockWidget(tr("Layers Tree"), "layer_tree_dockwidget", ":/icons/widget_layer_tree.lci", tr("Layers Tree"));
     const auto widget = new LC_LayerTreeWidget(actionHandler, dock, "Layer Tree");
     widget->setFocusPolicy(Qt::NoFocus);
     dock->setWidget(widget);
@@ -265,7 +269,7 @@ QDockWidget* LC_WidgetFactory::createLayerTreeWidget(const QG_ActionHandler* act
 }
 
 QDockWidget* LC_WidgetFactory::createEntityInfoWidget(){
-    QDockWidget* dock = createDockWidget(tr("Entity Info"), "quick_entity_info", tr("Info"));
+    QDockWidget* dock = createDockWidget(tr("Entity Info"), "quick_entity_info",":/icons/widget_info.lci",  tr("Info"));
     const auto widget = new LC_QuickInfoWidget(dock, m_agm->getActionsMap());
     widget->setFocusPolicy(Qt::NoFocus);
     dock->setWidget(widget);
@@ -277,7 +281,7 @@ QDockWidget* LC_WidgetFactory::createEntityInfoWidget(){
 }
 
 QDockWidget* LC_WidgetFactory::createPropertySheetWidget(){
-    QDockWidget* dock = createDockWidget(tr("Properties"), "property_sheet", tr("Properties"));
+    QDockWidget* dock = createDockWidget(tr("Properties"), "property_sheet", ":/icons/widget_properties.lci", tr("Properties"));
 
 
     const auto widget = new LC_PropertySheetWidget(dock, m_appWin->getActionContext(), m_agm);
@@ -292,7 +296,7 @@ QDockWidget* LC_WidgetFactory::createPropertySheetWidget(){
 }
 
 QDockWidget*  LC_WidgetFactory::createBlockListWidget(const QG_ActionHandler* actionHandler){
-    const auto dock =  createDockWidget(tr("Blocks"), "block_dockwidget", tr("Blocks"));
+    const auto dock =  createDockWidget(tr("Blocks"), "block_dockwidget", ":/icons/widget_blocks.lci", tr("Blocks"));
 
     const auto widget = new QG_BlockWidget(m_agm, actionHandler, dock, "Block");
     widget->setFocusPolicy(Qt::NoFocus);
@@ -307,7 +311,7 @@ QDockWidget*  LC_WidgetFactory::createBlockListWidget(const QG_ActionHandler* ac
 }
 
 QDockWidget* LC_WidgetFactory::createLibraryWidget(const QG_ActionHandler* actionHandler){
-    const auto dock = createDockWidget(tr("Library Browser"), "library_dockwidget", tr("Library"));
+    const auto dock = createDockWidget(tr("Library Browser"), "library_dockwidget",":/icons/widget_library.lci",  tr("Library"));
 
     const auto widget = new QG_LibraryWidget(actionHandler, dock, "Library");
     widget->setFocusPolicy(Qt::NoFocus);
@@ -323,7 +327,7 @@ QDockWidget* LC_WidgetFactory::createLibraryWidget(const QG_ActionHandler* actio
 }
 
 QDockWidget * LC_WidgetFactory::createCmdWidget(QG_ActionHandler *actionHandler){
-    const auto dock = createDockWidget(tr("Command Line"), "command_dockwidget", tr("Cmd"));
+    const auto dock = createDockWidget(tr("Command Line"), "command_dockwidget",":/icons/widget_cmd.lci",  tr("Cmd"));
 
     const auto widget = new QG_CommandWidget(actionHandler, dock, "Command");
     widget->setActionHandler(actionHandler);
@@ -444,7 +448,7 @@ void LC_WidgetFactory::addAction(QToolBar* toolbar, const char* actionName) cons
 }
 
 QDockWidget* LC_WidgetFactory::createPenWizardWidget(){
-    const auto dock = createDockWidget(tr("Pen Wizard"), "pen_wiz_dockwidget", tr("PenWiz"));
+    const auto dock = createDockWidget(tr("Pen Wizard"), "pen_wiz_dockwidget",":/icons/widget_pen_wiz.lci",  tr("PenWiz"));
     const auto widget = new LC_PenWizard(dock);
     widget->setFocusPolicy(Qt::NoFocus);
     dock->setWidget(widget);

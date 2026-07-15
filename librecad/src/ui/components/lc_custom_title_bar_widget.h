@@ -80,7 +80,18 @@ public:
         IconOnly,
         IconAndText
     };
+
+    enum class TitleTextDirection {
+        Horizontal = 0,  // Standard horizontal layout (0 degrees)
+        Vertical,        // Bottom-to-top layout (-90 degrees)
+        VerticalAlt      // Top-to-bottom layout (+90 degrees)
+    };
+
+    TitleTextDirection textDirection() const { return m_textDirection; }
+    void setTextDirection(TitleTextDirection direction);
+
     Q_ENUM(DisplayMode)
+    Q_ENUM(TitleTextDirection)
 
     struct VerticalTextInfo {
         QString displayText;
@@ -129,6 +140,11 @@ private slots:
     void showTooltip();
 
 private:
+private:
+    TitleTextDirection m_textDirection = TitleTextDirection::Vertical;
+
+    // Updated helper signature to accept the parameterized text direction
+    QPixmap createRotatedTextPixmap(const QString& text, TitleTextDirection direction) const;
     // Layout and Label Instantiation Helpers
     QLabel* createTitleLabel(const QString& text);
     QString getCurrentTitle() const;
@@ -167,7 +183,6 @@ private:
     void createVerticalText(const QString& text);
     int getSafeAvailableHeight() const;
     QString safeUnicodeLeft(const QString& text, int maxChars) const;
-    QPixmap createRotatedTextPixmap(const QString& text) const;
     bool isVerticalCacheValid() const;
     QString getElidedText(const QString& text, int width);
     QString safeElideText(const QString& text, int width) const;

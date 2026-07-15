@@ -38,14 +38,25 @@
 // Constructor with separate strings for horizontal and vertical orientation
 LC_CustomTitleBarWidget::LC_CustomTitleBarWidget(const QString& horizontalTitle, const QString& verticalTitle, const QString& iconName,
                                                  QWidget* parent, DisplayMode mode)
-    : QWidget(parent), m_titleLabel(createTitleLabel(horizontalTitle)), m_iconLabel(nullptr), m_dockWidget(nullptr),
-      m_closeButton(nullptr), m_floatButton(nullptr),
-      m_horizontalTitle(horizontalTitle), m_verticalTitle(verticalTitle), m_iconName(iconName), m_currentOrientation(Qt::Horizontal),
-      m_displayMode(mode), m_isTextElided(false), m_fontMetrics(nullptr), m_blockRebuild(false), m_verticalPixmapCache(nullptr),
-      m_updateTimer(nullptr), m_tooltipTimer(nullptr), m_lastTooltipPos(QPoint()) {
+                                                     :QWidget(parent), m_titleLabel(createTitleLabel(horizontalTitle)), m_iconLabel(nullptr), m_dockWidget(nullptr),
+   m_closeButton(nullptr), m_floatButton(nullptr),
+   m_horizontalTitle(horizontalTitle), m_verticalTitle(verticalTitle), m_iconName(iconName), m_currentOrientation(Qt::Horizontal),
+   m_displayMode(mode), m_isTextElided(false), m_fontMetrics(nullptr), m_blockRebuild(false), m_verticalPixmapCache(nullptr),
+   m_updateTimer(nullptr), m_tooltipTimer(nullptr), m_lastTooltipPos(QPoint()) {
 
     // Initialize font metrics
     updateFontMetrics();
+
+    // Instantiate timers to prevent null pointer dereferences and crash loops
+    m_updateTimer = new QTimer(this);
+    m_updateTimer->setSingleShot(true);
+    m_updateTimer->setInterval(50);
+    connect(m_updateTimer, &QTimer::timeout, this, &LC_CustomTitleBarWidget::delayedUpdate);
+
+    m_tooltipTimer = new QTimer(this);
+    m_tooltipTimer->setSingleShot(true);
+    m_tooltipTimer->setInterval(500);
+    connect(m_tooltipTimer, &QTimer::timeout, this, &LC_CustomTitleBarWidget::showTooltip);
 
     bool hasIcon = !iconName.isEmpty();
     if (mode != TextOnly && hasIcon) {
@@ -59,6 +70,15 @@ LC_CustomTitleBarWidget::LC_CustomTitleBarWidget(const QString& horizontalTitle,
     setupConnections();
 
     setMouseTracking(true);
+}
+
+void LC_CustomTitleBarWidget::setTextDirection(TitleTextDirection direction) {
+    if (m_textDirection == direction) {
+        return;
+    }
+    m_textDirection = direction;
+    clearVerticalCache();
+    scheduleUpdate();
 }
 
 // Backwards compatibility constructor override
@@ -353,6 +373,8 @@ void LC_CustomTitleBarWidget::updateButtonAndLabelGeometries() {
         m_titleLabel->setGeometry(textRect);
     }
     m_blockRebuild = false;
+
+    updateTitleForCurrentOrientation();
 }
 
 void LC_CustomTitleBarWidget::createDockButtons() {
@@ -414,17 +436,22 @@ void LC_CustomTitleBarWidget::updateDockWidgetPointer() {
 void LC_CustomTitleBarWidget::updateOrientation() {
     if (!m_dockWidget || m_blockRebuild) return;
 
-    Qt::Orientation newOrientation = (m_dockWidget->features() & QDockWidget::DockWidgetVerticalTitleBar) ? Qt::Vertical : Qt::Horizontal;
+    // Robust state coupling: Title is vertical ONLY when docked AND vertical feature flag is set
+    const bool isVertical = (m_dockWidget->features() & QDockWidget::DockWidgetVerticalTitleBar)
+                            && !m_dockWidget->isFloating();
 
-    m_currentOrientation = newOrientation;
-    clearVerticalCache();
+    Qt::Orientation newOrientation = isVertical ? Qt::Vertical : Qt::Horizontal;
 
-    // Dynamically adjust text alignment based on horizontal/vertical layout [74]
-    if (m_titleLabel) {
-        if (m_currentOrientation == Qt::Horizontal) {
-            m_titleLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-        } else {
-            m_titleLabel->setAlignment(Qt::AlignCenter);
+    if (m_currentOrientation != newOrientation) {
+        m_currentOrientation = newOrientation;
+        clearVerticalCache();
+
+        if (m_titleLabel) {
+            if (m_currentOrientation == Qt::Horizontal) {
+                m_titleLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+            } else {
+                m_titleLabel->setAlignment(Qt::AlignCenter);
+            }
         }
     }
 
@@ -436,7 +463,9 @@ void LC_CustomTitleBarWidget::updateTitleForCurrentOrientation() {
 
     QString currentTitle = getCurrentTitle();
 
-    if (m_currentOrientation == Qt::Horizontal) {
+    // Force horizontal layout if physically horizontal (docked horizontally or floating)
+    // or if the text direction is explicitly set to horizontal
+    if (m_currentOrientation == Qt::Horizontal || m_textDirection == TitleTextDirection::Horizontal) {
         m_titleLabel->setText(currentTitle);
         m_titleLabel->setPixmap(QPixmap());
 
@@ -524,7 +553,7 @@ void LC_CustomTitleBarWidget::createVerticalText(const QString& text) {
         return;
     }
 
-    QPixmap pixmap = createRotatedTextPixmap(textInfo.displayText);
+    QPixmap pixmap = createRotatedTextPixmap(textInfo.displayText, m_textDirection);
 
     // Safely delete the old cached pixmap before assigning a new one to prevent memory leaks
     clearVerticalCache();
@@ -574,7 +603,7 @@ QString LC_CustomTitleBarWidget::safeUnicodeLeft(const QString& text, int maxCha
     return result;
 }
 
-QPixmap LC_CustomTitleBarWidget::createRotatedTextPixmap(const QString& text) const {
+QPixmap LC_CustomTitleBarWidget::createRotatedTextPixmap(const QString& text, TitleTextDirection direction) const {
     if (!m_fontMetrics) return QPixmap();
 
     QSize textSize = m_fontMetrics->size(Qt::TextSingleLine, text);
@@ -582,9 +611,14 @@ QPixmap LC_CustomTitleBarWidget::createRotatedTextPixmap(const QString& text) co
     int width = textSize.height() + padding;
     int height = textSize.width() + padding;
 
-    QPixmap pixmap(width, height);
+    // Fix Hi-DPI scaling: physical texture boundaries must be scaled by the device pixel ratio
+    qreal dpr = devicePixelRatioF();
+    int physicalWidth = qRound(width * dpr);
+    int physicalHeight = qRound(height * dpr);
+
+    QPixmap pixmap(physicalWidth, physicalHeight);
     pixmap.fill(Qt::transparent);
-    pixmap.setDevicePixelRatio(devicePixelRatioF());
+    pixmap.setDevicePixelRatio(dpr);
 
     QPainter painter(&pixmap);
     painter.setFont(m_titleLabel ? m_titleLabel->font() : font());
@@ -594,10 +628,14 @@ QPixmap LC_CustomTitleBarWidget::createRotatedTextPixmap(const QString& text) co
     painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
     painter.setRenderHint(QPainter::TextAntialiasing, true);
 
-    painter.translate(pixmap.width() / 2, pixmap.height() / 2);
-    painter.rotate(-90);
+    // Translate coordinates relative to the logical center of the high-res pixmap
+    painter.translate(width / 2.0, height / 2.0);
 
-    QRectF textRect(-textSize.width() / 2, -textSize.height() / 2, textSize.width(), textSize.height());
+    // Apply rotation based on custom orthogonal text directions (VerticalAlt = 90 deg, Vertical = -90 deg)
+    double rotationAngle = (direction == TitleTextDirection::VerticalAlt) ? 90.0 : -90.0;
+    painter.rotate(rotationAngle);
+
+    QRectF textRect(-textSize.width() / 2.0, -textSize.height() / 2.0, textSize.width(), textSize.height());
 
     QTextOption textOption;
     textOption.setAlignment(Qt::AlignCenter);
