@@ -52,8 +52,9 @@
 class RS_Polyline;
 
 struct RS_ActionDefault::ActionData {
-    RS_Vector v1;
-    RS_Vector v2;
+    RS_Vector firstPointSnap;
+    RS_Vector firstPointGraph;
+    RS_Vector secondPoint;
     RS_Entity* refMovingEntity = nullptr;
 };
 
@@ -105,8 +106,8 @@ void RS_ActionDefault::init(const int status){
         deleteSnapper();
     }
     RS_PreviewActionInterface::init(status);
-    m_actionData->v1 = {};
-    m_actionData->v2 = {};
+    m_actionData->firstPointSnap = {};
+    m_actionData->secondPoint = {};
     //    snapMode.clear();
     //    snapMode.restriction = RS2::RestrictNothing;
     //    restrBak = RS2::RestrictNothing;
@@ -261,33 +262,33 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]] const int status, const
             break;
         }
         case Dragging:{
-            m_actionData->v2 = mouse;
+            m_actionData->secondPoint = mouse;
 
-            if (toGuiDX(m_actionData->v1.distanceTo(m_actionData->v2)) > 10){
+            if (toGuiDX(m_actionData->firstPointSnap.distanceTo(m_actionData->secondPoint)) > 10){
                 // look for reference points to drag:
                 double dist = NAN;
                 bool singleEntitySelection = m_document->isSingleEntitySelected();
                 RS_EntityContainer::RefInfo refInfo;
                 if (singleEntitySelection) {
                     // we'll try to change ref point if there is single entity selected
-                    refInfo = m_document->getNearestSelectedRefInfo(m_actionData->v1, &dist);
+                    refInfo = m_document->getNearestSelectedRefInfo(m_actionData->firstPointSnap, &dist);
                 }
                 RS_Vector ref = refInfo.ref;
                 // dist will be initialized if ref.valid = true.
                 if (ref.valid && toGuiDX(dist) < 8){
                     m_actionData->refMovingEntity = refInfo.entity;
-                    m_actionData->v1 = ref;
-                    moveRelativeZero(m_actionData->v1);
+                    m_actionData->firstPointSnap = ref;
+                    moveRelativeZero(m_actionData->firstPointSnap);
                     setStatus(MovingRef);
                 } else {
                     // test for an entity to drag:
-                    RS_Entity *en =  catchEntity(m_actionData->v1);
+                    RS_Entity *en =  catchEntity(m_actionData->firstPointSnap);
                     if (en != nullptr && en->isSelected()){
                         //RS_Vector vp = en->getNearestRef(m_actionData->v1);
                         /*if (vp.valid) {
                             m_actionData->v1 = vp;
                         }*/
-                        moveRelativeZero(m_actionData->v1);
+                        moveRelativeZero(m_actionData->firstPointSnap);
                         setStatus(Moving);
                     }
                     // no entity found. start area selection:
@@ -315,7 +316,7 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]] const int status, const
                 case RS2::EntityLine: {
                     auto *refMovingLine = static_cast<RS_Line *>(refMovingEntity);
                     RS_Vector basePoint;
-                    if (refMovingLine->getStartpoint() == m_actionData->v1){
+                    if (refMovingLine->getStartpoint() == m_actionData->firstPointSnap){
                         basePoint = refMovingLine->getEndpoint();
                     }
                     else {
@@ -327,11 +328,11 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]] const int status, const
                             RS_ConstructionLineData(refMovingLine->getStartpoint(),
                                 refMovingLine->getEndpoint()));
                         RS_Vector newEndpoint = constructionLine.getNearestPointOnEntity(mouse, false);
-                        m_actionData->v2 = newEndpoint;
+                        m_actionData->secondPoint = newEndpoint;
                     }
                     else{
-                        m_actionData->v2 = mouse;
-                        previewRefLine(m_actionData->v2, m_actionData->v1);
+                        m_actionData->secondPoint = mouse;
+                        previewRefLine(m_actionData->secondPoint, m_actionData->firstPointSnap);
                     }
                     if (isInfoCursorForModificationEnabled()) {
                         createEditedLineDescription(nullptr, ctrlPressed, shiftPressed);
@@ -348,17 +349,17 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]] const int status, const
                     const RS_Vector &arcStart = refMovingArc->getStartpoint();
                     if (ctrlPressed){ // for arc, we just correct angle of endpoint without changing the center and radius - if we move endpoint ref
                         mouse = getSnapAngleAwarePoint(e, arcCenter, mouse, true);
-                        if (arcStart == m_actionData->v1){
+                        if (arcStart == m_actionData->firstPointSnap){
                             clone->trimStartpoint(mouse);
-                            m_actionData->v2 = clone->getStartpoint();
+                            m_actionData->secondPoint = clone->getStartpoint();
                             m_preview->addEntity(clone);
                             if (m_showRefEntitiesOnPreview) {
                                 previewRefPoint(clone->getCenter());
                             }
                             addClone = false;
-                        } else if (arcEnd == m_actionData->v1){
+                        } else if (arcEnd == m_actionData->firstPointSnap){
                             clone->trimEndpoint(mouse);
-                            m_actionData->v2 = clone->getEndpoint();
+                            m_actionData->secondPoint = clone->getEndpoint();
                             m_preview->addEntity(clone);
                             if (m_showRefEntitiesOnPreview) {
                                 previewRefPoint(clone->getCenter());
@@ -366,24 +367,24 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]] const int status, const
                             addClone = false;
                         }
                         else{ // center
-                            m_actionData->v2 = getSnapAngleAwarePoint(e, m_actionData->v1, mouse, true);
-                            clone->moveRef(m_actionData->v1, m_actionData->v2 - m_actionData->v1);
+                            m_actionData->secondPoint = getSnapAngleAwarePoint(e, m_actionData->firstPointSnap, mouse, true);
+                            clone->moveRef(m_actionData->firstPointSnap, m_actionData->secondPoint - m_actionData->firstPointSnap);
                             m_preview->addEntity(clone);
                             if (m_showRefEntitiesOnPreview) {
-                                previewRefLine(m_actionData->v2, m_actionData->v1);
+                                previewRefLine(m_actionData->secondPoint, m_actionData->firstPointSnap);
                             }
                             addClone = false;
                         }
                         if (!addClone){
                             if (m_showRefEntitiesOnPreview) {
-                                previewRefLine(arcCenter, m_actionData->v2);
+                                previewRefLine(arcCenter, m_actionData->secondPoint);
                                 previewRefPoint(arcCenter);
                             }
                         }
                     }
                     else{
                         bool referenceMoved = false;
-                        if (arcMiddle == m_actionData->v1){ // middle point processing
+                        if (arcMiddle == m_actionData->firstPointSnap){ // middle point processing
                             mouse = LC_LineMath::getNearestPointOnInfiniteLine(mouse, arcCenter, arcMiddle);
                             if (shiftPressed) { // do scaling
                                 double fromMouse = arcCenter.distanceTo(mouse);
@@ -412,22 +413,22 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]] const int status, const
                         }
                         else {
                             if (shiftPressed) {
-                                if (arcEnd == m_actionData->v1 ||
-                                    arcStart == m_actionData->v1) { // change chord length
+                                if (arcEnd == m_actionData->firstPointSnap ||
+                                    arcStart == m_actionData->firstPointSnap) { // change chord length
                                     mouse = LC_LineMath::getNearestPointOnInfiniteLine(mouse, arcStart, arcEnd);
                                 }
                             } else {
-                                mouse = getSnapAngleAwarePoint(e, m_actionData->v1, mouse, true);
+                                mouse = getSnapAngleAwarePoint(e, m_actionData->firstPointSnap, mouse, true);
                             }
                         }
-                        m_actionData->v2 = mouse;
+                        m_actionData->secondPoint = mouse;
                         if (!referenceMoved) {
-                            clone->moveRef(m_actionData->v1, m_actionData->v2 - m_actionData->v1);
+                            clone->moveRef(m_actionData->firstPointSnap, m_actionData->secondPoint - m_actionData->firstPointSnap);
                             m_preview->addEntity(clone);
                         }
 
                         if (m_showRefEntitiesOnPreview) {
-                            previewRefLine(m_actionData->v2, m_actionData->v1);
+                            previewRefLine(m_actionData->secondPoint, m_actionData->firstPointSnap);
                             previewRefPoint(clone->getCenter());
                         }
                         addClone = false;
@@ -441,19 +442,19 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]] const int status, const
                 case RS2::EntityPolyline:{
                     if (shiftPressed || ctrlPressed){
                         auto* polyline = static_cast<RS_Polyline *>(refMovingEntity);
-                        RS_Vector directionPoint = polyline->getRefPointAdjacentDirection(shiftPressed, m_actionData->v1);
+                        RS_Vector directionPoint = polyline->getRefPointAdjacentDirection(shiftPressed, m_actionData->firstPointSnap);
                         if (directionPoint.valid) {
-                            m_actionData->v2 = LC_LineMath::getNearestPointOnInfiniteLine(mouse, m_actionData->v1, directionPoint);
+                            m_actionData->secondPoint = LC_LineMath::getNearestPointOnInfiniteLine(mouse, m_actionData->firstPointSnap, directionPoint);
                         }
                         else{
-                            m_actionData->v2 = getSnapAngleAwarePoint(e, m_actionData->v1, mouse, true);
+                            m_actionData->secondPoint = getSnapAngleAwarePoint(e, m_actionData->firstPointSnap, mouse, true);
                         }
                     }
                     else{
-                        m_actionData->v2 = getSnapAngleAwarePoint(e, m_actionData->v1, mouse, true);
+                        m_actionData->secondPoint = getSnapAngleAwarePoint(e, m_actionData->firstPointSnap, mouse, true);
                     }
                     if (m_showRefEntitiesOnPreview) {
-                        previewRefLine(m_actionData->v2, m_actionData->v1);
+                        previewRefLine(m_actionData->secondPoint, m_actionData->firstPointSnap);
                     }
                     break;
                 }
@@ -461,12 +462,12 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]] const int status, const
                     // fixme -sand - add morphing of circle to ellipse
                     auto *refMovingCircle = static_cast<RS_Circle *>(refMovingEntity);
                     auto *clone = static_cast<RS_Circle *>(refMovingCircle->cloneProxy());
-                    m_actionData->v2 = getSnapAngleAwarePoint(e, m_actionData->v1, mouse, true);
+                    m_actionData->secondPoint = getSnapAngleAwarePoint(e, m_actionData->firstPointSnap, mouse, true);
 
                     if (m_showRefEntitiesOnPreview) {
-                        previewRefLine(m_actionData->v2, m_actionData->v1);
+                        previewRefLine(m_actionData->secondPoint, m_actionData->firstPointSnap);
                     }
-                    clone->moveRef(m_actionData->v1, m_actionData->v2 - m_actionData->v1);
+                    clone->moveRef(m_actionData->firstPointSnap, m_actionData->secondPoint - m_actionData->firstPointSnap);
                     m_preview->addEntity(clone);
                     if (isInfoCursorForModificationEnabled()) {
                         createEditedCircleDescription(clone, ctrlPressed, shiftPressed);
@@ -476,28 +477,28 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]] const int status, const
                 }
                 case RS2::EntityEllipse:{
                     // fixme - sand - add rotation of major axis
-                    m_actionData->v2 = getSnapAngleAwarePoint(e, m_actionData->v1, mouse, true);
+                    m_actionData->secondPoint = getSnapAngleAwarePoint(e, m_actionData->firstPointSnap, mouse, true);
                     if (m_showRefEntitiesOnPreview) {
-                        previewRefLine(m_actionData->v2, m_actionData->v1);
+                        previewRefLine(m_actionData->secondPoint, m_actionData->firstPointSnap);
                     }
                     break;
                 }
                 // FIXME - add additional processing for dimensions to ensure snapping of dimension lines (same as for creation of dims)
                 default: {
-                    m_actionData->v2 = getSnapAngleAwarePoint(e, m_actionData->v1, mouse, true);
+                    m_actionData->secondPoint = getSnapAngleAwarePoint(e, m_actionData->firstPointSnap, mouse, true);
                     if (m_showRefEntitiesOnPreview) {
-                        previewRefLine(m_actionData->v2, m_actionData->v1);
+                        previewRefLine(m_actionData->secondPoint, m_actionData->firstPointSnap);
                     }
                     break;
                 }
             }
 
-            updateCoordinateWidgetByRelZero(m_actionData->v2);
+            updateCoordinateWidgetByRelZero(m_actionData->secondPoint);
 
             if (addClone){
                 RS_Entity* clone = getClone(refMovingEntity);
-                const RS_Vector &offset = m_actionData->v2 - m_actionData->v1;
-                clone->moveRef(m_actionData->v1, offset);
+                const RS_Vector &offset = m_actionData->secondPoint - m_actionData->firstPointSnap;
+                clone->moveRef(m_actionData->firstPointSnap, offset);
                 m_preview->addEntity(clone);
 
                 if (isInfoCursorForModificationEnabled()) {
@@ -510,8 +511,8 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]] const int status, const
             }
 
             if (m_showRefEntitiesOnPreview) {
-                previewRefSelectablePoint(m_actionData->v2);
-                previewRefPoint(m_actionData->v1);
+                previewRefSelectablePoint(m_actionData->secondPoint);
+                previewRefPoint(m_actionData->firstPointSnap);
             }
 
             drawPreview();
@@ -520,8 +521,8 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]] const int status, const
         }
         case Moving: {
             mouse = e->snapPoint;
-            m_actionData->v2 = getSnapAngleAwarePoint(e, m_actionData->v1, mouse, true);
-            updateCoordinateWidgetByRelZero(m_actionData->v2);
+            m_actionData->secondPoint = getSnapAngleAwarePoint(e, m_actionData->firstPointSnap, mouse, true);
+            updateCoordinateWidgetByRelZero(m_actionData->secondPoint);
 
             QList<RS_Entity*> selection;
             if (m_document->collectSelected(selection)) {
@@ -531,15 +532,15 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]] const int status, const
                 }
             }
 
-            const RS_Vector &offset = m_actionData->v2 - m_actionData->v1;
+            const RS_Vector &offset = m_actionData->secondPoint - m_actionData->firstPointSnap;
             m_preview->move(offset);
 
-            auto *line = new RS_Line(m_actionData->v1, m_actionData->v2);
+            auto *line = new RS_Line(m_actionData->firstPointSnap, m_actionData->secondPoint);
             m_preview->addEntity(line);
             if (m_showRefEntitiesOnPreview) {
-                previewRefLine(m_actionData->v1, m_actionData->v2);
-                previewRefPoint(m_actionData->v1);
-                previewRefSelectablePoint(m_actionData->v2);
+                previewRefLine(m_actionData->firstPointSnap, m_actionData->secondPoint);
+                previewRefPoint(m_actionData->firstPointSnap);
+                previewRefSelectablePoint(m_actionData->secondPoint);
             }
             line->setSelectionFlag(true); // just use for drawing in preview, so just flag is ok
             if (isInfoCursorForModificationEnabled()){
@@ -557,14 +558,14 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]] const int status, const
             break;
         }
         case SetCorner2: {
-            if (m_actionData->v1.valid){
-                m_actionData->v2 = mouse;
-                drawOverlayBox(m_actionData->v1, m_actionData->v2);
+            if (m_actionData->firstPointSnap.valid){
+                m_actionData->secondPoint = mouse;
+                drawOverlayBox(m_actionData->firstPointSnap, m_actionData->secondPoint);
 
                 if (isInfoCursorForModificationEnabled()) {
                     // restore selection box to ucs
-                    RS_Vector ucsP1 = toUCS(m_actionData->v1);
-                    RS_Vector ucsP2 = toUCS(m_actionData->v2);
+                    RS_Vector ucsP1 = toUCS(m_actionData->firstPointSnap);
+                    RS_Vector ucsP2 = toUCS(m_actionData->secondPoint);
                     bool selectIntersecting = ucsP1.x > ucsP2.x;
 
                     bool alterSelectIntersecting = e->isControl;
@@ -584,10 +585,10 @@ void RS_ActionDefault::onMouseMoveEvent([[maybe_unused]] const int status, const
         }
         case Panning: {
             const RS_Vector vTarget{e->uiPosition};
-            const RS_Vector v01 = vTarget - m_actionData->v1;
+            const RS_Vector v01 = vTarget - m_actionData->firstPointSnap;
             if (v01.squared() >= 64.){
                 m_viewport->zoomPan(static_cast<int>(v01.x), static_cast<int>(v01.y));
-                m_actionData->v1 = vTarget;
+                m_actionData->firstPointSnap = vTarget;
             }
             break;
         }
@@ -620,8 +621,8 @@ RS_Entity* RS_ActionDefault::getClone(const RS_Entity* e){
 
 void RS_ActionDefault::createEditedLineDescription([[maybe_unused]]RS_Line* clone, [[maybe_unused]]bool ctrlPressed,  [[maybe_unused]]bool shiftPressed) const {
     msg(tr("Line"))
-        .linear(tr("Length: "), m_actionData->v1.distanceTo(m_actionData->v2))
-        .wcsAngle(tr("Angle: "), m_actionData->v1.angleTo(m_actionData->v2))
+        .linear(tr("Length: "), m_actionData->firstPointSnap.distanceTo(m_actionData->secondPoint))
+        .wcsAngle(tr("Angle: "), m_actionData->firstPointSnap.angleTo(m_actionData->secondPoint))
         .toInfoCursorZone2(true);
 }
 
@@ -664,7 +665,7 @@ void RS_ActionDefault::onMouseMovingRefCompleted(const LC_MouseEvent* e) {
         case RS2::EntityLine: {
             const auto *refMovingLine = static_cast<RS_Line *>(refMovingEntity);
             RS_Vector basePoint;
-            if (refMovingLine->getStartpoint() == m_actionData->v1) {
+            if (refMovingLine->getStartpoint() == m_actionData->firstPointSnap) {
                 basePoint = refMovingLine->getEndpoint();
             } else {
                 basePoint = refMovingLine->getStartpoint();
@@ -676,9 +677,9 @@ void RS_ActionDefault::onMouseMovingRefCompleted(const LC_MouseEvent* e) {
                                                                            RS_ConstructionLineData(refMovingLine->getStartpoint(),
                                                                                                    refMovingLine->getEndpoint()));
                 const RS_Vector newEndpoint = constructionLine.getNearestPointOnEntity(mouse, false);
-                m_actionData->v2      = newEndpoint;
+                m_actionData->secondPoint      = newEndpoint;
             } else {
-                m_actionData->v2 = mouse;
+                m_actionData->secondPoint = mouse;
             }
             break;
         }
@@ -692,23 +693,23 @@ void RS_ActionDefault::onMouseMovingRefCompleted(const LC_MouseEvent* e) {
             if (ctrlPressed) {
                 // for arc, we just correct angle of enpoint without changing the center and radius - if we move endpoint ref
                 mouse = getSnapAngleAwarePoint(e, arcCenter, mouse, false);
-                if (arcStart == m_actionData->v1) {
+                if (arcStart == m_actionData->firstPointSnap) {
                     arcClone->trimStartpoint(mouse);
-                    m_actionData->v2 = arcClone->getStartpoint();
+                    m_actionData->secondPoint = arcClone->getStartpoint();
 
                     moveRefOnClone = false;
-                } else if (arcEnd == m_actionData->v1) {
+                } else if (arcEnd == m_actionData->firstPointSnap) {
                     arcClone->trimEndpoint(mouse);
-                    m_actionData->v2 = arcClone->getEndpoint();
+                    m_actionData->secondPoint = arcClone->getEndpoint();
                     moveRefOnClone   = false;
                 } else {
                     // center
-                    m_actionData->v2 = getSnapAngleAwarePoint(e, m_actionData->v1, mouse, true);
+                    m_actionData->secondPoint = getSnapAngleAwarePoint(e, m_actionData->firstPointSnap, mouse, true);
                 }
             } else {
                 bool referenceMoved        = false;
                 const RS_Vector &arcMiddle = refMovingArc->getMiddlePoint();
-                if (arcMiddle == m_actionData->v1) {
+                if (arcMiddle == m_actionData->firstPointSnap) {
                     mouse = LC_LineMath::getNearestPointOnInfiniteLine(mouse, arcCenter, arcMiddle);
                     if (shiftPressed) {
                         const double fromMouse   = arcCenter.distanceTo(mouse);
@@ -732,18 +733,18 @@ void RS_ActionDefault::onMouseMovingRefCompleted(const LC_MouseEvent* e) {
                 }
                 else { // one of endpoint
                     if (shiftPressed){ // changing chord
-                        if (arcEnd == m_actionData->v1 ||
-                            arcStart == m_actionData->v1) { // change chord length
+                        if (arcEnd == m_actionData->firstPointSnap ||
+                            arcStart == m_actionData->firstPointSnap) { // change chord length
                             mouse = LC_LineMath::getNearestPointOnInfiniteLine(mouse, arcStart, arcEnd);
                         }
                     }
                     else{ // free change of endpoint position
-                        mouse = getSnapAngleAwarePoint(e, m_actionData->v1, mouse, false);
+                        mouse = getSnapAngleAwarePoint(e, m_actionData->firstPointSnap, mouse, false);
                     }
                 }
                 if (!referenceMoved) {
-                    m_actionData->v2 = mouse;
-                    arcClone->moveRef(m_actionData->v1, m_actionData->v2 - m_actionData->v1);
+                    m_actionData->secondPoint = mouse;
+                    arcClone->moveRef(m_actionData->firstPointSnap, m_actionData->secondPoint - m_actionData->firstPointSnap);
                 }
                 moveRefOnClone = false;
             }
@@ -752,27 +753,27 @@ void RS_ActionDefault::onMouseMovingRefCompleted(const LC_MouseEvent* e) {
         case RS2::EntityPolyline:{
             if (shiftPressed || ctrlPressed){
                 const auto* polyline           = static_cast<RS_Polyline *>(refMovingEntity);
-                const RS_Vector directionPoint = polyline->getRefPointAdjacentDirection(shiftPressed, m_actionData->v1);
+                const RS_Vector directionPoint = polyline->getRefPointAdjacentDirection(shiftPressed, m_actionData->firstPointSnap);
                 if (directionPoint.valid) {
-                    m_actionData->v2 = LC_LineMath::getNearestPointOnInfiniteLine(mouse, m_actionData->v1, directionPoint);
+                    m_actionData->secondPoint = LC_LineMath::getNearestPointOnInfiniteLine(mouse, m_actionData->firstPointSnap, directionPoint);
                 }
                 else{
-                    m_actionData->v2 = getSnapAngleAwarePoint(e, m_actionData->v1, mouse, true);
+                    m_actionData->secondPoint = getSnapAngleAwarePoint(e, m_actionData->firstPointSnap, mouse, true);
                 }
             }
             else{
-                m_actionData->v2 = getSnapAngleAwarePoint(e, m_actionData->v1, mouse, true);
+                m_actionData->secondPoint = getSnapAngleAwarePoint(e, m_actionData->firstPointSnap, mouse, true);
             }
             break;
         }
         default: {
-            m_actionData->v2 = getSnapAngleAwarePoint(e, m_actionData->v1, mouse, false);
+            m_actionData->secondPoint = getSnapAngleAwarePoint(e, m_actionData->firstPointSnap, mouse, false);
             break;
         }
     }
 
     if (moveRefOnClone) {
-        clone->moveRef(m_actionData->v1, m_actionData->v2 - m_actionData->v1);
+        clone->moveRef(m_actionData->firstPointSnap, m_actionData->secondPoint - m_actionData->firstPointSnap);
     }
 
     if (m_document != nullptr) {
@@ -794,8 +795,8 @@ void RS_ActionDefault::onMouseMovingRefCompleted(const LC_MouseEvent* e) {
 }
 
 void RS_ActionDefault::onMouseMovingCompleted(const LC_MouseEvent* e) {
-    m_actionData->v2 = e->snapPoint;
-    m_actionData->v2 = getSnapAngleAwarePoint(e, m_actionData->v1, m_actionData->v2);
+    m_actionData->secondPoint = e->snapPoint;
+    m_actionData->secondPoint = getSnapAngleAwarePoint(e, m_actionData->firstPointSnap, m_actionData->secondPoint);
     deletePreview();
 
     QList<RS_Entity*> selectedEntities;
@@ -808,7 +809,7 @@ void RS_ActionDefault::onMouseMovingCompleted(const LC_MouseEvent* e) {
                              data.useCurrentLayer      = false;
                              data.useCurrentAttributes = false;
                              data.keepOriginals        = keepOriginal;
-                             data.offset               = m_actionData->v2 - m_actionData->v1;
+                             data.offset               = m_actionData->secondPoint - m_actionData->firstPointSnap;
                              RS_Modification::move(data, selectedEntities, false, ctx);
                              return true;
                          }, [keepOriginal, selectedEntities](const LC_DocumentModificationBatch& ctx, RS_Document* doc)-> void {
@@ -819,12 +820,12 @@ void RS_ActionDefault::onMouseMovingCompleted(const LC_MouseEvent* e) {
                          });
 
     if (e->isControl) { // allow creation of several copies
-        m_actionData->v1 = m_actionData->v2;
+        m_actionData->firstPointSnap = m_actionData->secondPoint;
     }
     else {
         goToNeutralStatus();
     }
-    moveRelativeZero(m_actionData->v2);
+    moveRelativeZero(m_actionData->secondPoint);
     deleteSnapper();
     m_movingJustCompleted = true;
 }
@@ -839,12 +840,13 @@ void RS_ActionDefault::onMouseLeftButtonPress(const int status, const LC_MouseEv
     switch (status) {
         case Neutral: {
             if (e->isControl){
-                m_actionData->v1 = RS_Vector{e->uiPosition};
+                m_actionData->firstPointSnap = RS_Vector{e->uiPosition};
                 setStatus(Panning);
             } else {
                 // dragging should be without modifiers to let custom menu invocation
                 if (e->originalEvent->modifiers() == Qt::NoModifier) {
-                    m_actionData->v1 = e->graphPoint;
+                    m_actionData->firstPointSnap = e->snapPoint;
+                    m_actionData->firstPointGraph = e->graphPoint;
                     setStatus(Dragging);
                 }
             }
@@ -869,7 +871,7 @@ void RS_ActionDefault::onMouseLeftButtonPress(const int status, const LC_MouseEv
 
 void RS_ActionDefault::onMouseLeftButtonRelease(const int status, const LC_MouseEvent* e) {
     RS_DEBUG->print("RS_ActionDefault::mouseReleaseEvent()");
-    m_actionData->v2 = e->graphPoint;
+    m_actionData->secondPoint = e->graphPoint;
     switch (status) {
         case Neutral: {
             if (m_movingJustCompleted) {
@@ -902,13 +904,13 @@ void RS_ActionDefault::onMouseLeftButtonRelease(const int status, const LC_Mouse
             break;
         }
         case SetCorner2: {
-            m_actionData->v2 = e->graphPoint;
+            m_actionData->secondPoint = e->graphPoint;
             // select window:
             deletePreview();
 
             // restore selection box to ucs
-            const RS_Vector ucsP1 = toUCS(m_actionData->v1);
-            const RS_Vector ucsP2 = toUCS(m_actionData->v2);
+            const RS_Vector ucsP1 = toUCS(m_actionData->firstPointGraph);
+            const RS_Vector ucsP2 = toUCS(m_actionData->secondPoint);
             bool selectIntersecting = (ucsP1.x > ucsP2.x);
 
             const bool select = !e->isShift;
