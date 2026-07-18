@@ -29,6 +29,7 @@
 #include "lc_anglesbasiswidget.h"
 #include "lc_caddockwidget.h"
 #include "lc_cad_tool_matrix_dock_widget.h"
+#include "lc_custom_title_bar_widget.h"
 #include "lc_dockwidget.h"
 #include "lc_layertreewidget.h"
 #include "lc_namedviewslistwidget.h"
@@ -141,25 +142,28 @@ void LC_WidgetFactory::createCADMegaSidebar(const int columns, const int iconSiz
     mega->addActions(actions, columns, iconSize, flatButtons);
     mega->hide();
     mega->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+
+    auto toggleViewAction = mega->toggleViewAction();
+    toggleViewAction->setIcon(QIcon(":/icons/line_polygon_star.lci"));
     connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, mega, &LC_CADDockWidget::updateWidgetSettings);
     m_appWin->addDockWidget(Qt::LeftDockWidgetArea, mega);
 }
 
 void LC_WidgetFactory::createCADSidebar(const int columns, const int iconSize, const bool flatButtons){
-    auto* line = cadDockWidget(tr("Line"), "Line", m_actionFactory->lineActions, columns, iconSize, flatButtons);
-    auto* point = cadDockWidget(tr("Point"), "Point", m_actionFactory->pointActions, columns, iconSize, flatButtons);
-    auto* shape = cadDockWidget(tr("Polygon"), "Polygon", m_actionFactory->shapeActions, columns, iconSize, flatButtons);
-    auto* circle = cadDockWidget(tr("Circle"), "Circle", m_actionFactory->circleActions, columns, iconSize, flatButtons);
-    auto* curve = cadDockWidget(tr("Arc"), "Curve", m_actionFactory->curveActions, columns, iconSize, flatButtons);
-    auto* spline = cadDockWidget(tr("Spline"), "Spline", m_actionFactory->splineActions, columns, iconSize, flatButtons);
-    auto* ellipse = cadDockWidget(tr("Ellipse"), "Ellipse", m_actionFactory->ellipseActions, columns, iconSize, flatButtons);
-    auto* polyline = cadDockWidget(tr("Polyline"), "Polyline", m_actionFactory->polylineActions, columns, iconSize, flatButtons);
-    auto* select = cadDockWidget(tr("Select"), "Select", m_actionFactory->selectActions, columns, iconSize, flatButtons);
-    auto* dimension = cadDockWidget(tr("Dimension"), "Dimension", m_actionFactory->dimension_Actions, columns, iconSize, flatButtons);
-    auto* other = cadDockWidget(tr("Other"), "Other", m_actionFactory->otherDrawingActions, columns, iconSize, flatButtons);
-    auto* modify = cadDockWidget(tr("Modify"), "Modify", m_actionFactory->modifyActions, columns, iconSize, flatButtons);
-    auto* info = cadDockWidget(tr("Info"), "Info", m_actionFactory->infoActions, columns, iconSize, flatButtons);
-    auto* order = cadDockWidget(tr("Order"), "Order", m_actionFactory->orderActions, columns, iconSize, flatButtons);
+    auto* line = cadDockWidget(tr("Line"), ":/icons/line.lci","Line", m_actionFactory->lineActions, columns, iconSize, flatButtons);
+    auto* point = cadDockWidget(tr("Point"), ":/icons/points.lci", "Point", m_actionFactory->pointActions, columns, iconSize, flatButtons);
+    auto* shape = cadDockWidget(tr("Polygon"), ":/icons/rectangle_2_points.lci", "Polygon", m_actionFactory->shapeActions, columns, iconSize, flatButtons);
+    auto* circle = cadDockWidget(tr("Circle"), ":/icons/circle.lci", "Circle", m_actionFactory->circleActions, columns, iconSize, flatButtons);
+    auto* curve = cadDockWidget(tr("Arc"), ":/icons/arc_center_point_angle.lci", "Curve", m_actionFactory->curveActions, columns, iconSize, flatButtons);
+    auto* spline = cadDockWidget(tr("Spline"), ":/icons/spline_points.lci", "Spline", m_actionFactory->splineActions, columns, iconSize, flatButtons);
+    auto* ellipse = cadDockWidget(tr("Ellipse"), ":/icons/ellipses.lci",  "Ellipse", m_actionFactory->ellipseActions, columns, iconSize, flatButtons);
+    auto* polyline = cadDockWidget(tr("Polyline"),":/icons/polylines.lci",  "Polyline", m_actionFactory->polylineActions, columns, iconSize, flatButtons);
+    auto* select = cadDockWidget(tr("Select"),  ":/icons/select.lci", "Select", m_actionFactory->selectActions, columns, iconSize, flatButtons);
+    auto* dimension = cadDockWidget(tr("Dimension"),  ":/icons/dim_horizontal.lci","Dimension", m_actionFactory->dimension_Actions, columns, iconSize, flatButtons);
+    auto* other = cadDockWidget(tr("Other"), ":/icons/text.lci","Other",   m_actionFactory->otherDrawingActions, columns, iconSize, flatButtons);
+    auto* modify = cadDockWidget(tr("Modify"), ":/icons/move_rotate.lci", "Modify",m_actionFactory->modifyActions, columns, iconSize, flatButtons);
+    auto* info = cadDockWidget(tr("Info"), ":/icons/measure.lci","Info", m_actionFactory->infoActions, columns, iconSize, flatButtons);
+    auto* order = cadDockWidget(tr("Order"), ":/icons/order.lci","Order", m_actionFactory->orderActions, columns, iconSize, flatButtons);
 
     m_appWin->addDockWidget(Qt::LeftDockWidgetArea, line);
     m_appWin->tabifyDockWidget(line, polyline);
@@ -190,6 +194,13 @@ QDockWidget* LC_WidgetFactory::createDockWidget(const QString& horizontalTitle, 
         auto toggleViewAction = result->toggleViewAction();
         toggleViewAction->setIcon(QIcon(iconName));
     }
+
+    // auto *proxyStyle = qobject_cast<LC_ProxyStyle*>(QApplication::style());
+    // if (proxyStyle && proxyStyle->customDockTitleBarEnabled()) {
+        auto *titleBar = new LC_CustomTitleBarWidget(horizontalTitle, verticalTitle, iconName, result);
+        result->setTitleBarWidget(titleBar);
+    // }
+
     return result;
 }
 
@@ -471,25 +482,27 @@ void LC_WidgetFactory::setDockWidgetTitleType(QDockWidget *widget, const bool ve
         features |= QDockWidget::DockWidgetVerticalTitleBar;
     }
     widget->setFeatures(features);
-    const auto lcDocWidget = dynamic_cast<LC_DockWidget*>(widget);
-    if (lcDocWidget != nullptr) {
-        lcDocWidget->updateTitle();
-    }
+    // const auto lcDocWidget = dynamic_cast<LC_DockWidget*>(widget);
+    // if (lcDocWidget != nullptr) {
+        // lcDocWidget->updateTitle();
+    // }
 
 }
 
-LC_CADDockWidget* LC_WidgetFactory::cadDockWidget(const QString& title, const char* name, const QList<QAction*> &actions, const int columns, const int iconSize, const bool flatButtons){
+LC_CADDockWidget* LC_WidgetFactory::cadDockWidget(const QString& title,  const QString& iconName, const char* name, const QList<QAction*> &actions, const int columns, const int iconSize, const bool flatButtons){
     auto* result = new LC_CADDockWidget(m_appWin);
     result->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     result->setObjectName("dock_" + QString(name).toLower());
     result->setWindowTitle(title);
     result->addActions(actions, columns, iconSize, flatButtons);
     result->hide();
+
+    setWidgetToggleActionIcon(result, iconName);
     connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, result, &LC_CADDockWidget::updateWidgetSettings);
     return result;
 }
 
- QToolBar* LC_WidgetFactory::createStatusBarToolbar(const QSizePolicy &tbPolicy, QWidget *widget, const QString& title, const char *name, const bool showToolTip, bool usePillChips) const {
+ QToolBar* LC_WidgetFactory::createStatusBarToolbar(const QSizePolicy &tbPolicy, QWidget *widget, const QString& title, const QString &iconName, const char *name, const bool showToolTip, bool usePillChips) const {
     const auto tb = new QToolBar(title, m_appWin);
     tb->setSizePolicy(tbPolicy);
     tb->addWidget(widget);
@@ -501,6 +514,7 @@ LC_CADDockWidget* LC_WidgetFactory::cadDockWidget(const QString& title, const ch
     if (usePillChips) {
         tb->setProperty(PROP_USE_STATUS_PILL_CHIPS, true);
     }
+    setWidgetToggleActionIcon(tb, iconName);
     addToBottom(tb);
     return tb;
 }
@@ -559,14 +573,14 @@ void LC_WidgetFactory::initStatusBar() {
     else {
         constexpr QSizePolicy tbPolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
         const bool showToolbarTooltips = LC_GET_ONE_BOOL("Startup", "ShowToolbarsTooltip", true);
-        createStatusBarToolbar(tbPolicy, m_appWin->m_coordinateWidget, tr("Coordinates"), "TBCoordinates", showToolbarTooltips, true);
-        createStatusBarToolbar(tbPolicy, m_appWin->m_relativeZeroCoordinatesWidget, tr("Relative Zero"), "TBRelZero", showToolbarTooltips, true);
-        createStatusBarToolbar(tbPolicy, m_appWin->m_mouseWidget, tr("Mouse"), "TBMouse", showToolbarTooltips, true);
-        createStatusBarToolbar(tbPolicy, m_appWin->m_selectionWidget, tr("Selection Info"), "TBSelectionInfo", showToolbarTooltips, true);
-        createStatusBarToolbar(tbPolicy, m_appWin->m_activeLayerNameWidget, tr("Active Layer"), "TBActiveLayer", showToolbarTooltips, true);
-        createStatusBarToolbar(tbPolicy, m_appWin->m_gridStatusWidget, tr("Grid Status"), "TBGridStatus", showToolbarTooltips, true);
-        createStatusBarToolbar(tbPolicy, m_appWin->m_ucsStateWidget, tr("UCS Status"), "TBUCSStatus", showToolbarTooltips, true);
-        createStatusBarToolbar(tbPolicy, m_appWin->m_anglesBasisWidget, tr("Angles Basis"), "TBAnglesBasis", showToolbarTooltips, true);
+        createStatusBarToolbar(tbPolicy, m_appWin->m_coordinateWidget, tr("Coordinates"), ":/icons/info_point.lci", "TBCoordinates", showToolbarTooltips, true);
+        createStatusBarToolbar(tbPolicy, m_appWin->m_relativeZeroCoordinatesWidget, tr("Relative Zero"),  ":/icons/set_rel_zero.lci", "TBRelZero",showToolbarTooltips, true);
+        createStatusBarToolbar(tbPolicy, m_appWin->m_mouseWidget, tr("Mouse"), ":/icons/mouse.lci", "TBMouse", showToolbarTooltips, true);
+        createStatusBarToolbar(tbPolicy, m_appWin->m_selectionWidget, tr("Selection Info"), ":/icons/select_conditional.lci", "TBSelectionInfo", showToolbarTooltips, true);
+        createStatusBarToolbar(tbPolicy, m_appWin->m_activeLayerNameWidget, tr("Active Layer"), ":/icons/item_by_layer.lci", "TBActiveLayer", showToolbarTooltips, true);
+        createStatusBarToolbar(tbPolicy, m_appWin->m_gridStatusWidget, tr("Grid Status"), ":/icons/grid.lci", "TBGridStatus", showToolbarTooltips, true);
+        createStatusBarToolbar(tbPolicy, m_appWin->m_ucsStateWidget, tr("UCS Status"), ":/icons/ucs_ucs.lci", "TBUCSStatus", showToolbarTooltips, true);
+        createStatusBarToolbar(tbPolicy, m_appWin->m_anglesBasisWidget, tr("Angles Basis"), ":/icons/dirpos.lci", "TBAnglesBasis", showToolbarTooltips, true);
 
         m_appWin->m_statusbarManager->setup();
 

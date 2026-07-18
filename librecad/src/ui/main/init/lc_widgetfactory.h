@@ -48,6 +48,8 @@ public:
     void initWidgets();
     static void updateDockWidgetsTitleBarType(const QC_ApplicationWindow* mainWin, bool verticalTitle);
     static void updateDockOptions(QC_ApplicationWindow* mainWin, bool allowDockNesting, bool verticalTabs);
+    template <class T>
+    static void setWidgetToggleActionIcon(T* result, const QString& iconName);
 private:
     LC_ActionGroupManager *m_agm {nullptr};
     LC_ActionFactory *m_actionFactory {nullptr};
@@ -71,11 +73,19 @@ private:
     void createRightSidebar(QG_ActionHandler *actionHandler);
     void initStatusBar();
     void createCADSidebar(int columns, int iconSize, bool flatButtons);
-    LC_CADDockWidget *cadDockWidget(const QString &title, const char *name, const QList<QAction *> &actions, int columns, int iconSize, bool flatButtons);
+    LC_CADDockWidget *cadDockWidget(const QString &title, const QString& iconName, const char *name, const QList<QAction *> &actions, int columns, int iconSize, bool flatButtons);
     void addToBottom(QToolBar *toolbar) const;
-    QToolBar *createStatusBarToolbar(const QSizePolicy &tbPolicy, QWidget* widget, const QString& title, const char* name, bool showToolTip, bool usePillChips = false) const;
+    QToolBar *createStatusBarToolbar(const QSizePolicy &tbPolicy, QWidget* widget, const QString& title, const QString& iconName, const char* name, bool showToolTip, bool usePillChips = false) const;
     void addAction(QToolBar *toolbar, const char *actionName) const;
     void makeActionsInvisible(const std::vector<QString> &actionNames) const;
     static void setDockWidgetTitleType(QDockWidget *widget, bool verticalTitleBar);
 };
+
+template <class T>
+void LC_WidgetFactory::setWidgetToggleActionIcon(T* result, const QString& iconName) {
+    if (!iconName.isEmpty()) {
+        auto toggleAction = result->toggleViewAction();
+        toggleAction->setIcon(QIcon(iconName));
+    }
+}
 #endif

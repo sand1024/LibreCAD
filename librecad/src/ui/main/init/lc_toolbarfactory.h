@@ -66,10 +66,10 @@ private:
     QToolBar *createNamedViewsToolbar(const QSizePolicy &toolBarPolicy) const;
     QToolBar *createUCSToolbar(const QSizePolicy &toolBarPolicy);
     QToolBar *createWorkspacesToolbar(const QSizePolicy &toolBarPolicy);
-    QToolBar *createGenericToolbar(const QString &title, const QString &name, const QSizePolicy& toolBarPolicy, const std::vector<QString> &actionNames, int group) const;
-    QToolBar *doCreateToolBar(const QString &title, const QString &name, const QSizePolicy &toolBarPolicy, int group) const;
-    QToolBar *createCADToolbar(const QString &title, const QString &name, const QSizePolicy& toolBarPolicy, const QList<QAction *> &actions) const;
-    QToolBar *genericToolbarWithActions(const QString &title, const QString &name, const QSizePolicy& toolBarPolicy, const QList<QAction *> &actions, int toolbarGroup) const;
+    QToolBar *createGenericToolbar(const QString &title, const QString &name, const QString& iconName, const QSizePolicy& toolBarPolicy, const std::vector<QString> &actionNames, int group) const;
+    QToolBar *doCreateToolBar(const QString &title, const QString &name, const QString& iconName, const QSizePolicy &toolBarPolicy, int group) const;
+    QToolBar *createCADToolbar(const QString &title, const QString &name, const QString& iconName, const QSizePolicy& toolBarPolicy, const QList<QAction *> &actions) const;
+    QToolBar *genericToolbarWithActions(const QString &title, const QString &name, const QString& iconName, const QSizePolicy& toolBarPolicy, const QList<QAction *> &actions, int toolbarGroup) const;
     QToolButton *toolButton(QToolBar *toolbar, const QString &tooltip, const char *icon, const QList<QAction *> &actions);
     void addToTop(QToolBar *toolbar) const;
     void addToBottom(QToolBar *toolbar) const;
