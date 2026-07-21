@@ -34,6 +34,7 @@
 #include <QColorDialog>
 
 #include "lc_fusion_skins_repository.h"
+#include "rs_debug.h"
 
 LC_StyleEditorFusionSkin::LC_StyleEditorFusionSkin(QWidget* parent, LC_UIStyleManager* styleManager)
     : LC_StyleEditorBase(parent, styleManager, styleManager->getSkinsRepository())
@@ -278,14 +279,16 @@ void LC_StyleEditorFusionSkin::setupConnections() {
     connect(ui->chkCustomToolTipCard, &QCheckBox::toggled, this, &LC_StyleEditorFusionSkin::onControlChanged);
     connect(ui->chkCustomVectorIcons, &QCheckBox::toggled, this, &LC_StyleEditorFusionSkin::onControlChanged);
     connect(ui->chkTabStripeAtBottom, &QCheckBox::toggled, this, &LC_StyleEditorFusionSkin::onControlChanged);
+    connect(ui->chkCustomMenuForTearOff, &QCheckBox::toggled, this, &LC_StyleEditorFusionSkin::onControlChanged);
 
+    connect(ui->chkSyncCheckedMenuState, &QCheckBox::toggled, this, &LC_StyleEditorFusionSkin::onControlChanged);
 
     connect(ui->chkHighContrastScrollbars, &QCheckBox::toggled, this, &LC_StyleEditorFusionSkin::onControlChanged);
     connect(ui->chkTransparentScrollbars, &QCheckBox::toggled, this, &LC_StyleEditorFusionSkin::onControlChanged);
     connect(ui->chkUseThemeIcons, &QCheckBox::toggled, this, &LC_StyleEditorFusionSkin::onUseThemeIconsToggled);
     connect(ui->cbLinkedIconStyle, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_StyleEditorFusionSkin::onControlChanged);
 
-        connect(ui->chkUseFloatingHUD, &QCheckBox::toggled, this, [this](bool checked) {
+    connect(ui->chkUseFloatingHUD, &QCheckBox::toggled, this, [this](bool checked) {
         ui->cbCloseColorPolicy->setEnabled(checked);
         onControlChanged();
     });
@@ -294,6 +297,10 @@ void LC_StyleEditorFusionSkin::setupConnections() {
     connect(ui->chkUseStatusPillChips, &QCheckBox::toggled, this, &LC_StyleEditorFusionSkin::onControlChanged);
 
     connect(ui->qssEdit, &QTextEdit::textChanged, this, &LC_StyleEditorFusionSkin::onControlChanged);
+
+    connect(ui->chkShowGenericDockIcons, &QCheckBox::toggled, this, &LC_StyleEditorFusionSkin::onControlChanged);
+    connect(ui->chkShowSpecialDockIcons, &QCheckBox::toggled, this, &LC_StyleEditorFusionSkin::onControlChanged);
+    connect(ui->chkCustomDialogTitleBar, &QCheckBox::toggled, this, &LC_StyleEditorFusionSkin::onControlChanged);
 }
 
 void LC_StyleEditorFusionSkin::onControlChanged() {
@@ -344,6 +351,10 @@ bool LC_StyleEditorFusionSkin::doLoadPreset(const QString& key) {
     ui->chkAutoPopupMenuBar->setChecked(m_currentConfig.autoPopupMenuBar);
     ui->chkMenuBarHoverCard->setChecked(m_currentConfig.useMenuBarHoverCard);
     ui->chkShowMenuCommandAliases->setChecked(m_currentConfig.showMenuCommandAliases);
+    ui->chkCustomMenuForTearOff->setChecked(m_currentConfig.customMenuTearOff);
+
+
+    ui->chkSyncCheckedMenuState->setChecked(m_currentConfig.syncCheckedMenuState);
 
     ui->chkCustomSplitterGrip->setChecked(m_currentConfig.customSplitterGrip);
     ui->cbSplitterGripStyle->setCurrentIndex(ui->cbSplitterGripStyle->findData(static_cast<int>(m_currentConfig.splitterGripStyle)));
@@ -351,6 +362,8 @@ bool LC_StyleEditorFusionSkin::doLoadPreset(const QString& key) {
     ui->chkShowGripBackgroundWell->setChecked(m_currentConfig.showGripBackgroundWell);
     ui->chkAccentGrips->setChecked(m_currentConfig.accentGrips);
     ui->chkPersistentDockSplitter->setChecked(m_currentConfig.persistentDockSplitter);
+    ui->chkShowGenericDockIcons->setChecked(m_currentConfig.showGenericDockIcons);
+    ui->chkShowSpecialDockIcons->setChecked(m_currentConfig.showSpecialDockIcons);
     ui->chkFocusedInputGlow->setChecked(m_currentConfig.useFocusedInputGlow);
     ui->chkUseStatusPillChips->setChecked(m_currentConfig.useStatusPillChips);
     ui->chkUseSpinBoxProgressBar->setChecked(m_currentConfig.useSpinBoxProgressBar);
@@ -402,6 +415,8 @@ bool LC_StyleEditorFusionSkin::doLoadPreset(const QString& key) {
     ui->chkUseFloatingHUD->setChecked(m_currentConfig.useFloatingHUD);
     ui->cbCloseColorPolicy->setCurrentIndex(ui->cbCloseColorPolicy->findData(static_cast<int>(m_currentConfig.closeButtonColorPolicy)));
     ui->cbCloseColorPolicy->setEnabled(m_currentConfig.useFloatingHUD);
+
+    ui->chkCustomDialogTitleBar->setChecked(m_currentConfig.customDialogTitleBar);
 
     // Synchronize UI Color Variants Tab
     m_blockSignals = false;
@@ -497,6 +512,8 @@ void LC_StyleEditorFusionSkin::saveUiToConfig(bool isDarkMode) {
     m_currentConfig.showGripBackgroundWell  = ui->chkShowGripBackgroundWell->isChecked();
     m_currentConfig.accentGrips       = ui->chkAccentGrips->isChecked();
     m_currentConfig.persistentDockSplitter   = ui->chkPersistentDockSplitter->isChecked();
+    m_currentConfig.showGenericDockIcons = ui->chkShowGenericDockIcons->isChecked();
+    m_currentConfig.showSpecialDockIcons = ui->chkShowSpecialDockIcons->isChecked();
 
     m_currentConfig.useFocusedInputGlow     = ui->chkFocusedInputGlow->isChecked();
     m_currentConfig.useStatusPillChips      = ui->chkUseStatusPillChips->isChecked();
@@ -529,13 +546,16 @@ void LC_StyleEditorFusionSkin::saveUiToConfig(bool isDarkMode) {
     m_currentConfig.useFloatingHUD          = ui->chkUseFloatingHUD->isChecked();
     m_currentConfig.closeButtonColorPolicy  = static_cast<CloseButtonColorPolicy>(ui->cbCloseColorPolicy->currentData().toInt());
 
+    m_currentConfig.customMenuTearOff = ui->chkCustomMenuForTearOff->isChecked();
+    m_currentConfig.syncCheckedMenuState = ui->chkSyncCheckedMenuState->isChecked();
+
+    m_currentConfig.customDialogTitleBar = ui->chkCustomDialogTitleBar->isChecked();
+
     scheme.qss = ui->qssEdit->toPlainText();
     scheme.autoCalculate3DHelpers = ui->chkAutoCalc3D->isChecked();
     scheme.bevelSeedRole = static_cast<QPalette::ColorRole>(ui->cbBevelSeed->currentData().toInt());
     scheme.contrastWeight = static_cast<ContrastWeight>(ui->cbContrastWeight->currentData().toInt());
     scheme.contrastPolicy = static_cast<ContrastPolicy>(ui->cbContrastPolicy->currentData().toInt());
-
-
 
     auto saveTableColors = [&](const QList<PaletteRoleMapping>& rolesList, QTableWidget* table) {
         for (int row = 0; row < rolesList.size(); ++row) {
@@ -622,6 +642,7 @@ void LC_StyleEditorFusionSkin::rollbackState() {
 }
 
 void LC_StyleEditorFusionSkin::onAutoCalc3DToggled(bool checked) {
+    if (m_blockSignals) return;
     ui->cbBevelSeed->setEnabled(checked);
     ui->cbContrastWeight->setEnabled(checked);
 

@@ -2225,6 +2225,12 @@ set (SHARED_SOURCES
      librecad/src/ui/styling/proxy_style/lc_detached_menu.h
      librecad/src/ui/components/lc_custom_title_bar_widget.cpp
      librecad/src/ui/components/lc_custom_title_bar_widget.h
+     librecad/src/ui/components/lc_icon_label.cpp
+     librecad/src/ui/components/lc_icon_label.h
+     librecad/src/ui/styling/proxy_style/events/lc_event_filter_dialog.cpp
+     librecad/src/ui/styling/proxy_style/events/lc_event_filter_dialog.h
+     librecad/src/ui/styling/proxy_style/events/lc_event_filter_win_resize_native_event.h
+
 )
 set (MUPARSER_SOURCES
      libraries/muparser/include/muParser.h

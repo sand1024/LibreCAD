@@ -49,6 +49,7 @@ public:
     void applyTransientState(QWidget* previewWindow) const override;
     void applyCurrentPreset() override;
     void rollbackState() override;
+    bool supportsAccessibilityCheck() const override { return true; }
 
 private slots:
     void onControlChanged();

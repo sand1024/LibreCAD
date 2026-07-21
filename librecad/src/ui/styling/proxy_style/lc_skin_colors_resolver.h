@@ -54,6 +54,10 @@ public:
     SkinColors resolveTabBorders(const QStyleOptionTab *option, const QWidget *widget) const;
     SkinColors resolveHeaderSectionDescriptor(const QStyleOptionHeader *option) const;
     SkinColors resolveLineEditDescriptor(const QStyleOption *option, const QWidget *widget) const;
+
+    // fixme - move to other place
+    static void drawCloseIcon(QPainter *painter, const QRectF &rect, const QColor &color, qreal penWidth);
+    static void drawFloatIcon(QPainter *painter, const QRectF &rect, const QColor &color, qreal penWidth, const QColor &fillColor = Qt::transparent);
 private:
     SkinColors resolveStyleDescriptor(StyleArchetype archetype, const QPalette &palette, QPalette::ColorGroup group) const;
     void resolveDynamicGroupBoxFallback(SkinColors& desc, const QPalette& palette, QPalette::ColorGroup group) const;

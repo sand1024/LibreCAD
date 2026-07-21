@@ -43,6 +43,8 @@ public:
                                 bool leftToolbarFlatIcons);
     QSize minimumSizeHint() const override;
 
+    static constexpr const char* PROPERTY_CAD_DOC_WIDGET = "_lc_cad_doc_widget";
+
 protected:
     // Hooks for subclass extensions (segmented matrix controls)
     virtual void onBeforeAddActions();

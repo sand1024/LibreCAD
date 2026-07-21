@@ -234,6 +234,8 @@ struct SkinColors {
         QColor accentBarColor;
         QColor highlightBorder;
         QColor midlightBorder;
+        QColor titleBarButtonStrokeIdle;
+        QColor titleBarButtonStrokeIdleCad;
     } dockTitleBar;
 
     struct Slider {

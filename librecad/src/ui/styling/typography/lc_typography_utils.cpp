@@ -36,6 +36,9 @@ void LC_TypographyUtils::initializeDefaultConfig(FontConfig& config) {
     config.buttons.setup(-1, false, false);
     config.inputs.setup(0, false, false);
 
+    config.genericDockTitle.setup(0, false, false);
+    config.specialDockTitle.setup(0, true, false);
+
     config.techFamily = "Consolas";
     config.technical.setup(0, false, false);
 }
@@ -55,6 +58,9 @@ void LC_TypographyUtils::initializeWithSystem(FontConfig &config) {
     config.menus.setup(0, false, false);
     config.buttons.setup(0, false, false);
     config.inputs.setup(0, false, false);
+    config.genericDockTitle.setup(0, false, false);
+    config.specialDockTitle.setup(0, false, false);
+
 
     // Fallback monospace technical/log font
     config.techFamily = "Consolas";

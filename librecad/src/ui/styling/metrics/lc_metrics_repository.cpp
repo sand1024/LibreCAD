@@ -77,6 +77,7 @@ QJsonObject LC_MetricsRepository::configToJson(const StyleMetricsConfig& config)
     root["splitter_handle_length"]       = config.splitterHandleLength;
 
     root["toolbar_popup_delay"]        = config.toolbarPopupDelay;
+    root["drag_cursor_style"] = static_cast<int>(config.dragCursorStyle);
 
     return root;
 }
@@ -106,7 +107,7 @@ bool LC_MetricsRepository::configFromJson(const QJsonObject& json, StyleMetricsC
     config.headerDefaultHeight = json["headerDefaultHeight"].toInt(22);
     config.sliderHandleLength = json["sliderHandleLength"].toInt(15);
 
-    config.dockWidgetTitleBarButtonMargin = json["dockWidgetTitleBarButtonMargin"].toInt(2);
+    config.dockWidgetTitleBarButtonMargin = json["dockWidgetTitleBarButtonMargin"].toInt(-1);
     config.sliderControlThickness = json["sliderControlThickness"].toInt(12);
     config.focusFrameHMargin = json["focusFrameHMargin"].toInt(1);
     config.focusFrameVMargin = json["focusFrameVMargin"].toInt(1);
@@ -133,6 +134,7 @@ bool LC_MetricsRepository::configFromJson(const QJsonObject& json, StyleMetricsC
     config.splitterHandleLength      = json["splitter_handle_length"].toInt(30);
 
     config.toolbarPopupDelay       = json["toolbar_popup_delay"].toInt(400);
+    config.dragCursorStyle = static_cast<DragCursorStyle>(json["drag_cursor_style"].toInt(static_cast<int>(DragCursorStyle::SizeAll)));
 
     return true;
 }

@@ -20,6 +20,8 @@
  ******************************************************************************/
 
 #include "lc_style_editor_typography.h"
+
+#include "lc_caddockwidget.h"
 #include "ui_lc_style_editor_typography.h"
 #include "lc_ui_style_manager.h"
 #include "lc_typography_repository.h"
@@ -127,6 +129,15 @@ void LC_StyleEditorTypography::applyTransientState(QWidget* previewWindow) const
     inputFont.setBold(tempFont.inputs.bold);
     inputFont.setItalic(tempFont.inputs.italic);
 
+    QFont genericDockFont(tempFont.mainFamily, tempFont.mainSize + tempFont.genericDockTitle.sizeOffset);
+    genericDockFont.setBold(tempFont.genericDockTitle.bold);
+    genericDockFont.setItalic(tempFont.genericDockTitle.italic);
+
+    QFont specialDockFont(tempFont.mainFamily, tempFont.mainSize + tempFont.specialDockTitle.sizeOffset);
+    specialDockFont.setBold(tempFont.specialDockTitle.bold);
+    specialDockFont.setItalic(tempFont.specialDockTitle.italic);
+
+
     QFont techFont(tempFont.techFamily, tempFont.mainSize + tempFont.technical.sizeOffset);
     techFont.setBold(tempFont.technical.bold);
     techFont.setItalic(tempFont.technical.italic);
@@ -143,7 +154,13 @@ void LC_StyleEditorTypography::applyTransientState(QWidget* previewWindow) const
             child->setFont(menuBarFont);
         } else if (child->inherits("QMenu")) {
             child->setFont(menuFont);
-        } else if (child->inherits("QToolBar") || child->inherits("QToolButton") || child->inherits("QPushButton")) {
+        } else if (child->inherits("QDockWidget") || child->inherits("LC_CustomTitleBarWidget")) {
+            // Safe property checks route font classes based on generic vs. special properties
+            const bool isSpecial = child->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool() ||
+                                   (child->parentWidget() && child->parentWidget()->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool());
+            child->setFont(isSpecial ? specialDockFont : genericDockFont);
+        }
+        else if (child->inherits("QToolBar") || child->inherits("QToolButton") || child->inherits("QPushButton")) {
             child->setFont(buttonFont);
         } else if (child->inherits("QLineEdit") || child->inherits("QComboBox") || child->inherits("QAbstractSpinBox")) {
             child->setFont(inputFont);
@@ -190,6 +207,15 @@ void LC_StyleEditorTypography::loadConfigToUi(const FontConfig& config) {
     ui->chkInputBold->setChecked(config.inputs.bold);
     ui->chkInputItalic->setChecked(config.inputs.italic);
 
+    ui->sbGenericDockOffset->setValue(config.genericDockTitle.sizeOffset);
+    ui->chkGenericDockBold->setChecked(config.genericDockTitle.bold);
+    ui->chkGenericDockItalic->setChecked(config.genericDockTitle.italic);
+
+    ui->sbSpecialDockOffset->setValue(config.specialDockTitle.sizeOffset);
+    ui->chkSpecialDockBold->setChecked(config.specialDockTitle.bold);
+    ui->chkSpecialDockItalic->setChecked(config.specialDockTitle.italic);
+
+
     ui->fcTechnicalFont->setCurrentFont(QFont(config.techFamily));
     ui->sbTechnicalOffset->setValue(config.technical.sizeOffset);
     ui->chkTechnicalBold->setChecked(config.technical.bold);
@@ -221,6 +247,14 @@ FontConfig LC_StyleEditorTypography::getConfigFromUi() const {
     config.inputs.sizeOffset = ui->sbInputOffset->value();
     config.inputs.bold       = ui->chkInputBold->isChecked();
     config.inputs.italic     = ui->chkInputItalic->isChecked();
+
+    config.genericDockTitle.sizeOffset = ui->sbGenericDockOffset->value();
+    config.genericDockTitle.bold       = ui->chkGenericDockBold->isChecked();
+    config.genericDockTitle.italic     = ui->chkGenericDockItalic->isChecked();
+
+    config.specialDockTitle.sizeOffset = ui->sbSpecialDockOffset->value();
+    config.specialDockTitle.bold       = ui->chkSpecialDockBold->isChecked();
+    config.specialDockTitle.italic     = ui->chkSpecialDockItalic->isChecked();
 
     config.techFamily            = ui->fcTechnicalFont->currentFont().family();
     config.technical.sizeOffset  = ui->sbTechnicalOffset->value();

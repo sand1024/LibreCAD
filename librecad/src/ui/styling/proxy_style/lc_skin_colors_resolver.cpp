@@ -21,6 +21,7 @@
 
 #include "lc_skin_colors_resolver.h"
 #include <QApplication>
+#include <QDockWidget>
 #include <QIconEngine>
 #include <QPainter>
 #include "lc_palette_color_utils.h"
@@ -31,30 +32,29 @@ namespace {
         enum IconType { Close = 0, Float, Min, Max };
 
         LC_VectorIconEngine(IconType type, bool useAccent)
-            : m_type(type), m_useAccent(useAccent) {}
+            : m_type(type), m_useAccent(useAccent) {
+        }
 
-        void paint(QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state) override {
+        void paint(QPainter* painter, const QRect& rect, QIcon::Mode mode, QIcon::State state) override {
             Q_UNUSED(state);
             painter->save();
             painter->setRenderHint(QPainter::Antialiasing, true);
 
-            const QWidget *widget = nullptr;
+            const QWidget* widget = nullptr;
             if (painter->device() && painter->device()->devType() == QInternal::Widget) {
                 widget = static_cast<const QWidget*>(painter->device());
             }
             QPalette palette = widget ? widget->palette() : QApplication::palette();
 
             SkinColors desc;
-            const QStyle *style = QApplication::style();
+            const QStyle* style = QApplication::style();
             if (style) {
                 QPalette::ColorGroup group = (mode == QIcon::Disabled) ? QPalette::Disabled : QPalette::Active;
                 // Safely resolve the descriptor from style's pass-through
-                const QMetaObject *meta = style->metaObject();
+                const QMetaObject* meta = style->metaObject();
                 if (meta) {
-                    QMetaObject::invokeMethod(const_cast<QStyle*>(style), "getCachedStyleDescriptor",
-                        Q_RETURN_ARG(SkinColors, desc),
-                        Q_ARG(QPalette, palette),
-                        Q_ARG(QPalette::ColorGroup, group));
+                    QMetaObject::invokeMethod(const_cast<QStyle*>(style), "getCachedStyleDescriptor", Q_RETURN_ARG(SkinColors, desc),
+                                              Q_ARG(QPalette, palette), Q_ARG(QPalette::ColorGroup, group));
                 }
             }
 
@@ -65,7 +65,8 @@ namespace {
 
             if (mode == QIcon::Active || mode == QIcon::Selected) {
                 strokeColor = palette.color(QPalette::Active, QPalette::Highlight);
-            } else if (mode == QIcon::Disabled) {
+            }
+            else if (mode == QIcon::Disabled) {
                 strokeColor = palette.color(QPalette::Disabled, QPalette::WindowText);
             }
 
@@ -74,17 +75,12 @@ namespace {
             QPoint cx = rect.center();
             int hSize = qMax(3, rect.width() * 80 / 200);
 
+            // Fix: Delegate rendering directly to static utility functions to eliminate code duplication
             if (m_type == Close) {
-                painter->setPen(QPen(strokeColor, penWidth, Qt::SolidLine, Qt::RoundCap));
-                painter->drawLine(cx.x() - hSize, cx.y() - hSize, cx.x() + hSize, cx.y() + hSize);
-                painter->drawLine(cx.x() - hSize, cx.y() + hSize, cx.x() + hSize, cx.y() - hSize);
+                LC_SkinColorsResolver::drawCloseIcon(painter, QRectF(rect), strokeColor, penWidth);
             }
             else if (m_type == Float) {
-                painter->setPen(QPen(strokeColor, penWidth * 0.85, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-                painter->setBrush(Qt::NoBrush);
-                int boxSize = qMax(3, rect.width() * 55 / 200);
-                painter->drawRect(QRect(cx.x() - boxSize + 1, cx.y() - boxSize, boxSize, boxSize));
-                painter->drawRect(QRect(cx.x() - 1, cx.y() - 1, boxSize, boxSize));
+                LC_SkinColorsResolver::drawFloatIcon(painter, QRectF(rect), strokeColor, penWidth);
             }
             else if (m_type == Min) {
                 painter->setPen(QPen(strokeColor, penWidth, Qt::SolidLine, Qt::RoundCap));
@@ -98,7 +94,7 @@ namespace {
             painter->restore();
         }
 
-        QIconEngine *clone() const override {
+        QIconEngine* clone() const override {
             return new LC_VectorIconEngine(m_type, m_useAccent);
         }
 
@@ -127,15 +123,23 @@ void LC_SkinColorsResolver::setSkin(const SkinConfig& skin) {
     m_activeDockTitleStyle = skin.dockTitleBarStyle;
     if (!skin.customDockTitleBar) {
         switch (skin.styleArchetype) {
-            case StyleArchetype::FlatModern:     m_activeDockTitleStyle = DockTitleBarStyle::CustomSolid; break;
-            case StyleArchetype::SoftSatin:      m_activeDockTitleStyle = DockTitleBarStyle::CustomSatin; break;
-            case StyleArchetype::GlassyGloss:    m_activeDockTitleStyle = DockTitleBarStyle::CustomGlassy; break;
-            case StyleArchetype::AccentOutline:  m_activeDockTitleStyle = DockTitleBarStyle::CustomAccentOutline; break;
-            case StyleArchetype::ClassicFusion:
-            default:                             m_activeDockTitleStyle = DockTitleBarStyle::Native; break;
+            case StyleArchetype::FlatModern:
+                m_activeDockTitleStyle = DockTitleBarStyle::CustomSolid;
+                break;
+            case StyleArchetype::SoftSatin:
+                m_activeDockTitleStyle = DockTitleBarStyle::CustomSatin;
+                break;
+            case StyleArchetype::GlassyGloss:
+                m_activeDockTitleStyle = DockTitleBarStyle::CustomGlassy;
+                break;
+            case StyleArchetype::AccentOutline:
+                m_activeDockTitleStyle = DockTitleBarStyle::CustomAccentOutline;
+                break;
+            case StyleArchetype::ClassicFusion: default:
+                m_activeDockTitleStyle = DockTitleBarStyle::Native;
+                break;
         }
     }
-
 
     invalidate();
 }
@@ -156,7 +160,7 @@ void LC_SkinColorsResolver::invalidate() const {
     m_cachedMonoFont = QFont();
 }
 
-SkinColors LC_SkinColorsResolver::getDescriptor(const QPalette &palette, QPalette::ColorGroup group) const {
+SkinColors LC_SkinColorsResolver::getDescriptor(const QPalette& palette, QPalette::ColorGroup group) const {
     const int idx = static_cast<int>(group);
 
     // Verify both the palette matches AND the specific color-group descriptor has been calculated
@@ -172,7 +176,8 @@ SkinColors LC_SkinColorsResolver::getDescriptor(const QPalette &palette, QPalett
     if (palette == QApplication::palette()) {
         m_globalSlot.palette = palette;
         m_globalSlot.descriptors[idx] = desc;
-    } else {
+    }
+    else {
         m_customSlot.palette = palette;
         m_customSlot.descriptors[idx] = desc;
     }
@@ -180,12 +185,12 @@ SkinColors LC_SkinColorsResolver::getDescriptor(const QPalette &palette, QPalett
     return desc;
 }
 
-QIcon LC_SkinColorsResolver::getStandardIcon(QStyle::StandardPixmap standardIcon, const QStyleOption *option, const QWidget *widget) const {
+QIcon LC_SkinColorsResolver::getStandardIcon(QStyle::StandardPixmap standardIcon, const QStyleOption* option, const QWidget* widget) const {
     if (m_skin.customVectorIconsInButtons) {
         const bool isClose = (standardIcon == QStyle::SP_TitleBarCloseButton || standardIcon == QStyle::SP_DockWidgetCloseButton);
         const bool isFloat = (standardIcon == QStyle::SP_TitleBarNormalButton);
-        const bool isMin   = (standardIcon == QStyle::SP_TitleBarMinButton);
-        const bool isMax   = (standardIcon == QStyle::SP_TitleBarMaxButton);
+        const bool isMin = (standardIcon == QStyle::SP_TitleBarMinButton);
+        const bool isMax = (standardIcon == QStyle::SP_TitleBarMaxButton);
 
         if (isClose || isFloat || isMin || isMax) {
             const QPalette::ColorGroup group = (option && (option->state & QStyle::State_Enabled)) ? QPalette::Active : QPalette::Disabled;
@@ -199,11 +204,14 @@ QIcon LC_SkinColorsResolver::getStandardIcon(QStyle::StandardPixmap standardIcon
             QIcon icon;
             if (isClose) {
                 icon = QIcon(new LC_VectorIconEngine(LC_VectorIconEngine::Close, m_skin.accentGrips));
-            } else if (isFloat) {
+            }
+            else if (isFloat) {
                 icon = QIcon(new LC_VectorIconEngine(LC_VectorIconEngine::Float, m_skin.accentGrips));
-            } else if (isMin) {
+            }
+            else if (isMin) {
                 icon = QIcon(new LC_VectorIconEngine(LC_VectorIconEngine::Min, m_skin.accentGrips));
-            } else {
+            }
+            else {
                 icon = QIcon(new LC_VectorIconEngine(LC_VectorIconEngine::Max, m_skin.accentGrips));
             }
 
@@ -214,7 +222,7 @@ QIcon LC_SkinColorsResolver::getStandardIcon(QStyle::StandardPixmap standardIcon
     return QIcon();
 }
 
-const QFont& LC_SkinColorsResolver::getResolvedMonoFont(const QFont &baseFont) const {
+const QFont& LC_SkinColorsResolver::getResolvedMonoFont(const QFont& baseFont) const {
     const int targetSize = qMax(6, baseFont.pointSize() - 1);
     if (m_cachedMonoPointSize != targetSize) {
         m_cachedMonoFont = QFont("monospace", targetSize);
@@ -223,7 +231,7 @@ const QFont& LC_SkinColorsResolver::getResolvedMonoFont(const QFont &baseFont) c
     return m_cachedMonoFont;
 }
 
-QColor LC_SkinColorsResolver::mixColors(const QColor &c1, const QColor &c2, double factor) {
+QColor LC_SkinColorsResolver::mixColors(const QColor& c1, const QColor& c2, double factor) {
     return LC_PaletteColorUtils::interpolateColors(c1, c2, factor);
 }
 
@@ -235,46 +243,47 @@ QPalette::ColorGroup LC_SkinColorsResolver::resolveColorGroup(QStyle::State stat
     return group;
 }
 
-SkinColors LC_SkinColorsResolver::resolveStyleDescriptor(StyleArchetype archetype, const QPalette &palette, QPalette::ColorGroup group) const {
+SkinColors LC_SkinColorsResolver::resolveStyleDescriptor(StyleArchetype archetype, const QPalette& palette,
+                                                         QPalette::ColorGroup group) const {
     SkinColors desc;
 
-    QColor windowColor    = palette.color(group, QPalette::Window);
-    QColor buttonColor    = palette.color(group, QPalette::Button);
-    QColor baseColor      = palette.color(group, QPalette::Base);
+    QColor windowColor = palette.color(group, QPalette::Window);
+    QColor buttonColor = palette.color(group, QPalette::Button);
+    QColor baseColor = palette.color(group, QPalette::Base);
     QColor highlightColor = palette.color(group, QPalette::Highlight);
 
     bool isDark = windowColor.value() < 120;
 
     if (archetype == StyleArchetype::ClassicFusion) {
         desc.common.selectionHighlight = highlightColor;
-    } else if (archetype == StyleArchetype::AccentOutline) {
+    }
+    else if (archetype == StyleArchetype::AccentOutline) {
         desc.common.selectionHighlight = QColor(highlightColor.red(), highlightColor.green(), highlightColor.blue(), isDark ? 40 : 50);
-    } else {
+    }
+    else {
         // FlatModern, SoftSatin, GlassyGloss: use a beautiful, lightened/darkened pastel tint [74]
         desc.common.selectionHighlight = mixColors(isDark ? windowColor : baseColor, highlightColor, isDark ? 0.15 : 0.09);
     }
 
-    QColor textColor      = palette.color(group, QPalette::WindowText);
-    QColor midColor       = palette.color(group, QPalette::Mid);
+    QColor textColor = palette.color(group, QPalette::WindowText);
+    QColor midColor = palette.color(group, QPalette::Mid);
 
-    QColor lightColor  = palette.color(group, QPalette::Light);
-    QColor darkColor   = palette.color(group, QPalette::Dark);
+    QColor lightColor = palette.color(group, QPalette::Light);
+    QColor darkColor = palette.color(group, QPalette::Dark);
     const QColor midlightColor = palette.color(group, QPalette::Midlight);
 
     desc.common.bgStart = windowColor;
     desc.common.textColor = textColor;
 
     // Define baseline borders before the BoxDecoration switch block
-    QColor baseBorder = (archetype == StyleArchetype::FlatModern)
-                        ? mixColors(windowColor, textColor, 0.15)
-                        : midColor;
+    QColor baseBorder = (archetype == StyleArchetype::FlatModern) ? mixColors(windowColor, textColor, 0.15) : midColor;
 
     desc.frame.borderButton = mixColors(windowColor, textColor, isDark ? 0.12 : 0.15);
 
-    desc.button.glassStart     = windowColor.lighter(isDark ? 125 : 110);
-    desc.button.glassMidStart  = windowColor.lighter(isDark ? 108 : 104);
-    desc.button.glassMidEnd    = windowColor.darker(isDark ? 104 : 103);
-    desc.button.glassEnd       = windowColor.darker(isDark ? 115 : 108);
+    desc.button.glassStart = windowColor.lighter(isDark ? 125 : 110);
+    desc.button.glassMidStart = windowColor.lighter(isDark ? 108 : 104);
+    desc.button.glassMidEnd = windowColor.darker(isDark ? 104 : 103);
+    desc.button.glassEnd = windowColor.darker(isDark ? 115 : 108);
 
     // ================= RESOLVE REFINED BOX DECORATIONS =================
     switch (m_skin.boxDecoration) {
@@ -285,7 +294,8 @@ SkinColors LC_SkinColorsResolver::resolveStyleDescriptor(StyleArchetype archetyp
             if (archetype == StyleArchetype::FlatModern || archetype == StyleArchetype::AccentOutline) {
                 desc.frame.borderBottom = buttonColor;
                 desc.frame.hasTopBottomBorder = true;
-            } else {
+            }
+            else {
                 desc.frame.borderTop = lightColor;
                 desc.frame.borderBottom = darkColor;
                 desc.frame.hasTopBottomBorder = true;
@@ -294,10 +304,13 @@ SkinColors LC_SkinColorsResolver::resolveStyleDescriptor(StyleArchetype archetyp
 
         case BoxDecoration::BoxOutline:
             if (archetype == StyleArchetype::AccentOutline) {
-                desc.frame.borderTop = desc.frame.borderBottom = desc.frame.borderLeft = desc.frame.borderRight = mixColors(windowColor, textColor, 0.20);
-            } else if (archetype == StyleArchetype::FlatModern) {
+                desc.frame.borderTop = desc.frame.borderBottom = desc.frame.borderLeft = desc.frame.borderRight = mixColors(
+                    windowColor, textColor, 0.20);
+            }
+            else if (archetype == StyleArchetype::FlatModern) {
                 desc.frame.borderTop = desc.frame.borderBottom = desc.frame.borderLeft = desc.frame.borderRight = desc.frame.borderButton;
-            } else {
+            }
+            else {
                 desc.frame.borderTop = desc.frame.borderBottom = desc.frame.borderLeft = desc.frame.borderRight = midColor;
             }
             desc.frame.hasFullBorder = true;
@@ -309,10 +322,13 @@ SkinColors LC_SkinColorsResolver::resolveStyleDescriptor(StyleArchetype archetyp
                 desc.common.bgEnd = desc.common.bgStart;
                 desc.frame.borderTop = desc.frame.borderBottom = desc.frame.borderLeft = desc.frame.borderRight = desc.frame.borderButton;
                 desc.frame.hasFullBorder = true;
-            } else if (archetype == StyleArchetype::AccentOutline) {
-                desc.frame.borderTop = desc.frame.borderBottom = desc.frame.borderLeft = desc.frame.borderRight = mixColors(windowColor, textColor, 0.35);
+            }
+            else if (archetype == StyleArchetype::AccentOutline) {
+                desc.frame.borderTop = desc.frame.borderBottom = desc.frame.borderLeft = desc.frame.borderRight = mixColors(
+                    windowColor, textColor, 0.35);
                 desc.frame.hasFullBorder = true;
-            } else {
+            }
+            else {
                 desc.common.bgEnd = windowColor.lighter(106);
                 desc.common.useGradient = true;
                 desc.frame.borderTop = lightColor;
@@ -330,7 +346,8 @@ SkinColors LC_SkinColorsResolver::resolveStyleDescriptor(StyleArchetype archetyp
                 desc.frame.hasTopBottomBorder = true;
                 desc.frame.hasSideBorders = true;
                 desc.frame.borderLeft = QColor();
-            } else {
+            }
+            else {
                 desc.frame.borderBottom = palette.color(group, QPalette::Midlight);
                 desc.frame.hasTopBottomBorder = true;
             }
@@ -338,8 +355,10 @@ SkinColors LC_SkinColorsResolver::resolveStyleDescriptor(StyleArchetype archetyp
 
         case BoxDecoration::ActiveAccentFrame:
             if (archetype == StyleArchetype::AccentOutline) {
-                desc.frame.borderTop = desc.frame.borderBottom = desc.frame.borderLeft = desc.frame.borderRight = QColor(highlightColor.red(), highlightColor.green(), highlightColor.blue(), 90);
-            } else {
+                desc.frame.borderTop = desc.frame.borderBottom = desc.frame.borderLeft = desc.frame.borderRight = QColor(
+                    highlightColor.red(), highlightColor.green(), highlightColor.blue(), 90);
+            }
+            else {
                 desc.frame.borderTop = desc.frame.borderBottom = desc.frame.borderLeft = desc.frame.borderRight = highlightColor;
             }
             desc.frame.hasFullBorder = true;
@@ -356,71 +375,76 @@ SkinColors LC_SkinColorsResolver::resolveStyleDescriptor(StyleArchetype archetyp
         }
 
         if (isDark) {
-            desc.button.bgButton    = mixColors(windowColor, Qt::white, 0.06);
+            desc.button.bgButton = mixColors(windowColor, Qt::white, 0.06);
             desc.button.bgButtonEnd = desc.button.bgButton;
-            desc.button.bgHovered   = mixColors(desc.button.bgButton, highlightColor, 0.22);
-            desc.button.bgChecked   = mixColors(desc.button.bgButton, highlightColor, 0.14);
-            desc.button.bgSunken    = mixColors(desc.button.bgButton, highlightColor, 0.35);
-        } else {
-            desc.button.bgButton    = windowColor.darker(106);
-            desc.button.bgButtonEnd = desc.button.bgButton;
-            desc.button.bgHovered   = windowColor.darker(112);
-            desc.button.bgChecked   = windowColor.darker(110);
-            desc.button.bgSunken    = windowColor.darker(118);
+            desc.button.bgHovered = mixColors(desc.button.bgButton, highlightColor, 0.22);
+            desc.button.bgChecked = mixColors(desc.button.bgButton, highlightColor, 0.14);
+            desc.button.bgSunken = mixColors(desc.button.bgButton, highlightColor, 0.35);
         }
-    } else if (archetype == StyleArchetype::SoftSatin) {
+        else {
+            desc.button.bgButton = windowColor.darker(106);
+            desc.button.bgButtonEnd = desc.button.bgButton;
+            desc.button.bgHovered = windowColor.darker(112);
+            desc.button.bgChecked = windowColor.darker(110);
+            desc.button.bgSunken = windowColor.darker(118);
+        }
+    }
+    else if (archetype == StyleArchetype::SoftSatin) {
         desc.common.useGradient = true;
         if (!desc.common.bgEnd.isValid()) {
             desc.common.bgEnd = desc.common.bgStart.darker(isDark ? 106 : 108);
         }
 
         if (isDark) {
-            desc.button.bgButton    = mixColors(windowColor, Qt::black, 0.18);
+            desc.button.bgButton = mixColors(windowColor, Qt::black, 0.18);
             desc.button.bgButtonEnd = mixColors(windowColor, Qt::black, 0.35);
-            desc.button.bgHovered   = mixColors(windowColor, Qt::white, 0.16);
-            desc.button.bgSunken    = mixColors(windowColor, Qt::black, 0.50);
-            desc.button.bgChecked   = mixColors(windowColor, highlightColor, 0.15);
-        } else {
-            desc.button.bgButton    = desc.common.bgStart;
-            desc.button.bgButtonEnd = desc.common.bgEnd;
-            desc.button.bgHovered   = desc.common.bgStart.lighter(105);
-            desc.button.bgSunken    = mixColors(desc.common.bgStart, baseColor, 0.20);
-            desc.button.bgChecked   = mixColors(desc.common.bgStart, highlightColor, 0.15);
+            desc.button.bgHovered = mixColors(windowColor, Qt::white, 0.16);
+            desc.button.bgSunken = mixColors(windowColor, Qt::black, 0.50);
+            desc.button.bgChecked = mixColors(windowColor, highlightColor, 0.15);
         }
-    }  else if (archetype == StyleArchetype::GlassyGloss) {
+        else {
+            desc.button.bgButton = desc.common.bgStart;
+            desc.button.bgButtonEnd = desc.common.bgEnd;
+            desc.button.bgHovered = desc.common.bgStart.lighter(105);
+            desc.button.bgSunken = mixColors(desc.common.bgStart, baseColor, 0.20);
+            desc.button.bgChecked = mixColors(desc.common.bgStart, highlightColor, 0.15);
+        }
+    }
+    else if (archetype == StyleArchetype::GlassyGloss) {
         desc.common.useGradient = false;
         desc.common.useGlassyGloss = true;
 
         if (isDark) {
-            desc.button.glassStart          = mixColors(windowColor, Qt::white, 0.22);
-            desc.button.glassMidStart       = mixColors(windowColor, Qt::white, 0.10);
-            desc.button.glassMidEnd         = mixColors(windowColor, Qt::white, 0.02);
-            desc.button.glassEnd            = mixColors(windowColor, Qt::black, 0.15);
+            desc.button.glassStart = mixColors(windowColor, Qt::white, 0.22);
+            desc.button.glassMidStart = mixColors(windowColor, Qt::white, 0.10);
+            desc.button.glassMidEnd = mixColors(windowColor, Qt::white, 0.02);
+            desc.button.glassEnd = mixColors(windowColor, Qt::black, 0.15);
 
-            desc.button.glassHoverStart     = mixColors(desc.button.glassStart, highlightColor, 0.25);
-            desc.button.glassHoverMidStart  = mixColors(desc.button.glassMidStart, highlightColor, 0.20);
-            desc.button.glassHoverMidEnd    = mixColors(desc.button.glassMidEnd, highlightColor, 0.15);
-            desc.button.glassHoverEnd       = mixColors(desc.button.glassEnd, highlightColor, 0.10);
+            desc.button.glassHoverStart = mixColors(desc.button.glassStart, highlightColor, 0.25);
+            desc.button.glassHoverMidStart = mixColors(desc.button.glassMidStart, highlightColor, 0.20);
+            desc.button.glassHoverMidEnd = mixColors(desc.button.glassMidEnd, highlightColor, 0.15);
+            desc.button.glassHoverEnd = mixColors(desc.button.glassEnd, highlightColor, 0.10);
 
-            desc.button.glassSunkenStart    = mixColors(windowColor, Qt::black, 0.30);
+            desc.button.glassSunkenStart = mixColors(windowColor, Qt::black, 0.30);
             desc.button.glassSunkenMidStart = mixColors(windowColor, Qt::black, 0.15);
-            desc.button.glassSunkenMidEnd   = mixColors(windowColor, Qt::white, 0.10);
-            desc.button.glassSunkenEnd      = mixColors(windowColor, Qt::white, 0.20);
-        } else {
-            desc.button.glassStart     = windowColor.lighter(110);
-            desc.button.glassMidStart  = windowColor.lighter(104);
-            desc.button.glassMidEnd    = windowColor.darker(103);
-            desc.button.glassEnd       = windowColor.darker(108);
+            desc.button.glassSunkenMidEnd = mixColors(windowColor, Qt::white, 0.10);
+            desc.button.glassSunkenEnd = mixColors(windowColor, Qt::white, 0.20);
+        }
+        else {
+            desc.button.glassStart = windowColor.lighter(110);
+            desc.button.glassMidStart = windowColor.lighter(104);
+            desc.button.glassMidEnd = windowColor.darker(103);
+            desc.button.glassEnd = windowColor.darker(108);
 
-            desc.button.glassHoverStart     = windowColor.lighter(112);
-            desc.button.glassHoverMidStart  = windowColor.lighter(106);
-            desc.button.glassHoverMidEnd    = windowColor.darker(101);
-            desc.button.glassHoverEnd       = windowColor.darker(105);
+            desc.button.glassHoverStart = windowColor.lighter(112);
+            desc.button.glassHoverMidStart = windowColor.lighter(106);
+            desc.button.glassHoverMidEnd = windowColor.darker(101);
+            desc.button.glassHoverEnd = windowColor.darker(105);
 
-            desc.button.glassSunkenStart    = windowColor.darker(115);
+            desc.button.glassSunkenStart = windowColor.darker(115);
             desc.button.glassSunkenMidStart = windowColor.darker(108);
-            desc.button.glassSunkenMidEnd   = windowColor.lighter(102);
-            desc.button.glassSunkenEnd      = windowColor.lighter(106);
+            desc.button.glassSunkenMidEnd = windowColor.lighter(102);
+            desc.button.glassSunkenEnd = windowColor.lighter(106);
         }
 
         if (m_skin.boxDecoration == BoxDecoration::RecessedWell) {
@@ -429,13 +453,14 @@ SkinColors LC_SkinColorsResolver::resolveStyleDescriptor(StyleArchetype archetyp
             desc.common.bgEnd = windowColor.darker(isDark ? 118 : 115);
         }
 
-        desc.button.bgSunken  = mixColors(desc.common.bgStart, palette.color(group, QPalette::Base), isDark ? 0.40 : 0.20);
+        desc.button.bgSunken = mixColors(desc.common.bgStart, palette.color(group, QPalette::Base), isDark ? 0.40 : 0.20);
         desc.button.bgHovered = desc.common.bgStart.lighter(105);
         desc.button.bgChecked = mixColors(desc.common.bgStart, highlightColor, 0.15);
 
-        desc.button.bgButton    = desc.common.bgStart;
+        desc.button.bgButton = desc.common.bgStart;
         desc.button.bgButtonEnd = desc.common.bgEnd.isValid() ? desc.common.bgEnd : desc.common.bgStart;
-    }    else if (archetype == StyleArchetype::AccentOutline) {
+    }
+    else if (archetype == StyleArchetype::AccentOutline) {
         desc.common.useGradient = false;
         desc.common.useGlassyGloss = false;
 
@@ -443,56 +468,60 @@ SkinColors LC_SkinColorsResolver::resolveStyleDescriptor(StyleArchetype archetyp
 
         desc.button.bgHovered = QColor(highlightColor.red(), highlightColor.green(), highlightColor.blue(), 65);
         desc.button.bgChecked = QColor(highlightColor.red(), highlightColor.green(), highlightColor.blue(), 50);
-        desc.button.bgSunken  = QColor(highlightColor.red(), highlightColor.green(), highlightColor.blue(), 90);
+        desc.button.bgSunken = QColor(highlightColor.red(), highlightColor.green(), highlightColor.blue(), 90);
 
-        desc.button.bgButton  = desc.common.bgStart;
+        desc.button.bgButton = desc.common.bgStart;
         desc.button.bgButtonEnd = desc.common.bgStart;
 
         baseBorder = mixColors(windowColor, textColor, 0.20);
         desc.frame.borderTop = desc.frame.borderBottom = desc.frame.borderLeft = desc.frame.borderRight = baseBorder;
         desc.frame.hasFullBorder = true;
         desc.common.textColor = highlightColor;
-    } else {
-        desc.button.bgButton    = desc.common.bgStart;
+    }
+    else {
+        desc.button.bgButton = desc.common.bgStart;
         desc.button.bgButtonEnd = desc.common.bgEnd.isValid() ? desc.common.bgEnd : desc.common.bgStart;
-        desc.button.bgSunken    = mixColors(desc.common.bgStart, baseColor, isDark ? 0.40 : 0.20);
-        desc.button.bgHovered   = desc.common.bgStart.lighter(105);
-        desc.button.bgChecked   = mixColors(desc.common.bgStart, highlightColor, 0.15);
+        desc.button.bgSunken = mixColors(desc.common.bgStart, baseColor, isDark ? 0.40 : 0.20);
+        desc.button.bgHovered = desc.common.bgStart.lighter(105);
+        desc.button.bgChecked = mixColors(desc.common.bgStart, highlightColor, 0.15);
 
-        desc.button.glassStart     = windowColor.lighter(isDark ? 125 : 110);
-        desc.button.glassMidStart  = windowColor.lighter(isDark ? 108 : 104);
-        desc.button.glassMidEnd    = windowColor.darker(isDark ? 104 : 103);
-        desc.button.glassEnd       = windowColor.darker(isDark ? 115 : 108);
+        desc.button.glassStart = windowColor.lighter(isDark ? 125 : 110);
+        desc.button.glassMidStart = windowColor.lighter(isDark ? 108 : 104);
+        desc.button.glassMidEnd = windowColor.darker(isDark ? 104 : 103);
+        desc.button.glassEnd = windowColor.darker(isDark ? 115 : 108);
     }
 
-    desc.frame.borderHovered     = mixColors(baseBorder, highlightColor, 0.35);
+    desc.frame.borderHovered = mixColors(baseBorder, highlightColor, 0.35);
 
     if (m_skin.boxDecoration == BoxDecoration::RecessedWell) {
-        desc.input.bgInput       = mixColors(baseColor, desc.button.bgButton, isDark ? 0.30 : 0.08);
-        desc.input.bgInputEnd    = mixColors(baseColor, desc.button.bgButtonEnd, isDark ? 0.30 : 0.08);
+        desc.input.bgInput = mixColors(baseColor, desc.button.bgButton, isDark ? 0.30 : 0.08);
+        desc.input.bgInputEnd = mixColors(baseColor, desc.button.bgButtonEnd, isDark ? 0.30 : 0.08);
         if (desc.input.bgInput == desc.input.bgInputEnd) {
             desc.input.bgInputEnd = desc.input.bgInput.darker(isDark ? 104 : 102);
         }
-    } else {
-        desc.input.bgInput       = baseColor;
+    }
+    else {
+        desc.input.bgInput = baseColor;
         // If SoftSatin archetype is selected, apply a beautifully subtle satin gradient to input backgrounds
         if (archetype == StyleArchetype::SoftSatin) {
             desc.input.bgInputEnd = baseColor.darker(isDark ? 105 : 103);
-        } else {
+        }
+        else {
             desc.input.bgInputEnd = desc.input.bgInput;
         }
     }
-    desc.input.bgInputHovered    = mixColors(desc.input.bgInput, highlightColor, isDark ? 0.08 : 0.04);
+    desc.input.bgInputHovered = mixColors(desc.input.bgInput, highlightColor, isDark ? 0.08 : 0.04);
 
-    desc.input.bgInputHovered    = mixColors(desc.input.bgInput, highlightColor, isDark ? 0.08 : 0.04);
+    desc.input.bgInputHovered = mixColors(desc.input.bgInput, highlightColor, isDark ? 0.08 : 0.04);
     if (m_skin.boxDecoration == BoxDecoration::RecessedWell) {
         desc.input.bgInputHoveredEnd = desc.input.bgInputHovered.darker(isDark ? 104 : 103);
-    } else {
+    }
+    else {
         desc.input.bgInputHoveredEnd = desc.input.bgInputHovered;
     }
 
-    desc.input.bgInputFocused    = mixColors(baseColor, highlightColor, isDark ? 0.12 : 0.06);
-    desc.itemView.bgItemHovered          = desc.common.selectionHighlight;
+    desc.input.bgInputFocused = mixColors(baseColor, highlightColor, isDark ? 0.12 : 0.06);
+    desc.itemView.bgItemHovered = desc.common.selectionHighlight;
 
     QColor alternateBaseColor = palette.color(group, QPalette::AlternateBase);
     if (!alternateBaseColor.isValid() || alternateBaseColor == Qt::black) {
@@ -500,13 +529,13 @@ SkinColors LC_SkinColorsResolver::resolveStyleDescriptor(StyleArchetype archetyp
     }
     desc.itemView.bgItemAlternateHovered = mixColors(alternateBaseColor, highlightColor, isDark ? 0.14 : 0.09);
 
-    desc.tab.bgTabInactive     = mixColors(windowColor, Qt::black, isDark ? 0.38 : 0.08);
+    desc.tab.bgTabInactive = mixColors(windowColor, Qt::black, isDark ? 0.38 : 0.08);
     desc.tab.bgTabInactiveDock = mixColors(windowColor, Qt::black, isDark ? 0.20 : 0.04);
 
-    desc.tab.textTabInactive   = mixColors(textColor, windowColor, 0.45);
+    desc.tab.textTabInactive = mixColors(textColor, windowColor, 0.45);
     desc.tab.borderTabInactiveTop = isDark ? desc.tab.bgTabInactive.lighter(115) : desc.tab.bgTabInactive.darker(108);
 
-    desc.tab.bgTabInactiveHovered     = mixColors(windowColor, Qt::black, isDark ? 0.20 : 0.04);
+    desc.tab.bgTabInactiveHovered = mixColors(windowColor, Qt::black, isDark ? 0.20 : 0.04);
     desc.tab.bgTabInactiveHoveredDock = mixColors(windowColor, Qt::black, isDark ? 0.10 : 0.02);
 
     desc.tab.borderTabInactiveHovered = mixColors(desc.frame.borderButton, highlightColor, isDark ? 0.18 : 0.25);
@@ -514,53 +543,52 @@ SkinColors LC_SkinColorsResolver::resolveStyleDescriptor(StyleArchetype archetyp
     desc.slider.sliderInnerDotColor = (highlightColor.value() < 120) ? Qt::white : Qt::black;
 
     desc.tab.tabWidgetFrameBorder = (archetype == StyleArchetype::FlatModern)
-                                ? desc.frame.borderButton
-                                : (desc.frame.borderTop.isValid() ? desc.frame.borderTop : desc.frame.borderHovered);
+                                        ? desc.frame.borderButton
+                                        : (desc.frame.borderTop.isValid() ? desc.frame.borderTop : desc.frame.borderHovered);
 
-    desc.dockTitleBar.dockTitleBgAccentOutline = QColor(highlightColor.red(), highlightColor.green(), highlightColor.blue(), isDark ? 20 : 35);
+    desc.dockTitleBar.dockTitleBgAccentOutline = QColor(highlightColor.red(), highlightColor.green(), highlightColor.blue(),
+                                                        isDark ? 20 : 35);
 
     bool isFlat = (archetype == StyleArchetype::FlatModern || archetype == StyleArchetype::AccentOutline);
     if (isFlat) {
         desc.toolBar.toolbarSeparatorPen = palette.color(group, QPalette::Midlight);
-    } else {
+    }
+    else {
         desc.toolBar.toolbarSeparatorPen = palette.color(group, QPalette::Dark);
         desc.toolBar.toolbarSeparatorHighlightPen = palette.color(group, QPalette::Light);
     }
 
     if (desc.common.bgStart.isValid() && desc.common.textColor.isValid()) {
         desc.header.headerSeparator = mixColors(desc.common.bgStart, desc.common.textColor, isDark ? 0.18 : 0.12);
-    } else {
+    }
+    else {
         desc.header.headerSeparator = midColor;
     }
 
     resolveDynamicGroupBoxFallback(desc, palette, group);
 
-    LC_PaletteColorUtils::calculateSegmentedGroupColors(
-           group,
-           archetype,
-           palette,
-           m_skin.segmentedColorPolicy,
-           15,
-           desc.segmentedGroup.groupBgStart,
-           desc.segmentedGroup.groupBgEnd,
-           desc.segmentedGroup.groupGradientStops,
-           desc.segmentedGroup.groupBgStartHovered,
-           desc.segmentedGroup.groupBgEndHovered,
-           desc.segmentedGroup.groupGradientStopsHovered
-       );
+    LC_PaletteColorUtils::calculateSegmentedGroupColors(group, archetype, palette, m_skin.segmentedColorPolicy, 15,
+                                                        desc.segmentedGroup.groupBgStart, desc.segmentedGroup.groupBgEnd,
+                                                        desc.segmentedGroup.groupGradientStops, desc.segmentedGroup.groupBgStartHovered,
+                                                        desc.segmentedGroup.groupBgEndHovered,
+                                                        desc.segmentedGroup.groupGradientStopsHovered);
 
     desc.splitter.splitterGripColor = mixColors(windowColor, textColor, isDark ? 0.18 : 0.28);
-    desc.splitter.splitterGripDark  = desc.splitter.splitterGripColor.darker(isDark ? 115 : 120);
+    desc.splitter.splitterGripDark = desc.splitter.splitterGripColor.darker(isDark ? 115 : 120);
     desc.splitter.splitterGripLight = desc.splitter.splitterGripColor.lighter(isDark ? 120 : 115);
-    desc.splitter.splitterGripColorIdle   = QColor(desc.splitter.splitterGripColor.red(), desc.splitter.splitterGripColor.green(), desc.splitter.splitterGripColor.blue(), 90);
-    desc.splitter.splitterGripWellColor   = QColor(desc.splitter.splitterGripColor.red(), desc.splitter.splitterGripColor.green(), desc.splitter.splitterGripColor.blue(), 50);
-    desc.itemView.indicatorHoverWellColor = QColor(desc.splitter.splitterGripColor.red(), desc.splitter.splitterGripColor.green(), desc.splitter.splitterGripColor.blue(), 30);
-    desc.splitter.splitterHoverGlowColor  = QColor(highlightColor.red(), highlightColor.green(), highlightColor.blue(), 25);
+    desc.splitter.splitterGripColorIdle = QColor(desc.splitter.splitterGripColor.red(), desc.splitter.splitterGripColor.green(),
+                                                 desc.splitter.splitterGripColor.blue(), 90);
+    desc.splitter.splitterGripWellColor = QColor(desc.splitter.splitterGripColor.red(), desc.splitter.splitterGripColor.green(),
+                                                 desc.splitter.splitterGripColor.blue(), 50);
+    desc.itemView.indicatorHoverWellColor = QColor(desc.splitter.splitterGripColor.red(), desc.splitter.splitterGripColor.green(),
+                                                   desc.splitter.splitterGripColor.blue(), 30);
+    desc.splitter.splitterHoverGlowColor = QColor(highlightColor.red(), highlightColor.green(), highlightColor.blue(), 25);
 
     if (isDark) {
         desc.input.inputFocusGlowOuter = QColor(highlightColor.red(), highlightColor.green(), highlightColor.blue(), 20);
         desc.input.inputFocusGlowInner = QColor(highlightColor.red(), highlightColor.green(), highlightColor.blue(), 64);
-    } else {
+    }
+    else {
         desc.input.inputFocusGlowOuter = QColor(highlightColor.red(), highlightColor.green(), highlightColor.blue(), 46);
         desc.input.inputFocusGlowInner = QColor(highlightColor.red(), highlightColor.green(), highlightColor.blue(), 115);
     }
@@ -568,18 +596,21 @@ SkinColors LC_SkinColorsResolver::resolveStyleDescriptor(StyleArchetype archetyp
     bool activeAccent = m_skin.groupBoxUseAccent || (archetype == StyleArchetype::AccentOutline);
     if (activeAccent) {
         desc.toolButton.toolButtonWellColor = QColor(highlightColor.red(), highlightColor.green(), highlightColor.blue(), isDark ? 40 : 50);
-    } else {
-        desc.toolButton.toolButtonWellColor = QColor(desc.splitter.splitterGripColor.red(), desc.splitter.splitterGripColor.green(), desc.splitter.splitterGripColor.blue(), isDark ? 50 : 60);
+    }
+    else {
+        desc.toolButton.toolButtonWellColor = QColor(desc.splitter.splitterGripColor.red(), desc.splitter.splitterGripColor.green(),
+                                                     desc.splitter.splitterGripColor.blue(), isDark ? 50 : 60);
     }
 
-    desc.toolButton.toolButtonIndicatorColor      = highlightColor;
+    desc.toolButton.toolButtonIndicatorColor = highlightColor;
     desc.toolButton.toolButtonIndicatorColorHover = highlightColor.lighter(115);
-    desc.toolButton.toolButtonWellColorHover      = mixColors(desc.toolButton.toolButtonWellColor, highlightColor, isDark ? 0.35 : 0.65);
-    desc.toolButton.toolButtonBgCheckedHover      = isDark ? desc.button.bgChecked.lighter(116) : desc.button.bgChecked.darker(112);
+    desc.toolButton.toolButtonWellColorHover = mixColors(desc.toolButton.toolButtonWellColor, highlightColor, isDark ? 0.35 : 0.65);
+    desc.toolButton.toolButtonBgCheckedHover = isDark ? desc.button.bgChecked.lighter(116) : desc.button.bgChecked.darker(112);
 
     if (m_skin.boxDecoration == BoxDecoration::ActiveAccentFrame || archetype == StyleArchetype::AccentOutline) {
         desc.toolBar.toolbarOverflowIndicatorColor = highlightColor;
-    } else {
+    }
+    else {
         desc.toolBar.toolbarOverflowIndicatorColor = mixColors(windowColor, textColor, isDark ? 0.60 : 0.65);
     }
 
@@ -588,29 +619,40 @@ SkinColors LC_SkinColorsResolver::resolveStyleDescriptor(StyleArchetype archetyp
     if (archetype == StyleArchetype::AccentOutline) {
         int alpha = 25;
         switch (m_skin.boxDecoration) {
-            case BoxDecoration::Frameless:        alpha = 15; break;
-            case BoxDecoration::DividingHairline: alpha = 20; break;
+            case BoxDecoration::Frameless:
+                alpha = 15;
+                break;
+            case BoxDecoration::DividingHairline:
+                alpha = 20;
+                break;
             case BoxDecoration::BoxOutline:
-            case BoxDecoration::LeftAccentBar:    alpha = 25; break;
-            case BoxDecoration::RecessedWell:     alpha = 40; break;
-            case BoxDecoration::ActiveAccentFrame:alpha = 45; break;
+            case BoxDecoration::LeftAccentBar:
+                alpha = 25;
+                break;
+            case BoxDecoration::RecessedWell:
+                alpha = 40;
+                break;
+            case BoxDecoration::ActiveAccentFrame:
+                alpha = 45;
+                break;
         }
         desc.tab.accentOutlineTabBg = QColor(highlightColor.red(), highlightColor.green(), highlightColor.blue(), alpha);
     }
 
     if (archetype == StyleArchetype::GlassyGloss) {
-        desc.groupBox.groupBoxGlassStart    = mixColors(windowColor, desc.button.glassStart, 0.35);
+        desc.groupBox.groupBoxGlassStart = mixColors(windowColor, desc.button.glassStart, 0.35);
         desc.groupBox.groupBoxGlassMidStart = mixColors(windowColor, desc.button.glassMidStart, 0.35);
-        desc.groupBox.groupBoxGlassMidEnd   = mixColors(windowColor, desc.button.glassMidEnd, 0.35);
-        desc.groupBox.groupBoxGlassEnd      = mixColors(windowColor, desc.button.glassEnd, 0.35);
+        desc.groupBox.groupBoxGlassMidEnd = mixColors(windowColor, desc.button.glassMidEnd, 0.35);
+        desc.groupBox.groupBoxGlassEnd = mixColors(windowColor, desc.button.glassEnd, 0.35);
     }
 
     QColor hl = highlightColor;
     desc.spinBox.spinBoxProgressBarTrack = hl;
     desc.spinBox.spinBoxProgressBarTrack.setAlpha(isDark ? 15 : 6);
 
-    int fillAlpha = isDark ? ((m_skin.boxDecoration == BoxDecoration::ActiveAccentFrame) ? 90 : 72)
-                           : ((m_skin.boxDecoration == BoxDecoration::ActiveAccentFrame) ? 42 : 32);
+    int fillAlpha = isDark
+                        ? ((m_skin.boxDecoration == BoxDecoration::ActiveAccentFrame) ? 90 : 72)
+                        : ((m_skin.boxDecoration == BoxDecoration::ActiveAccentFrame) ? 42 : 32);
 
     desc.spinBox.spinBoxProgressBarFill = hl;
     desc.spinBox.spinBoxProgressBarFill.setAlpha(fillAlpha);
@@ -669,7 +711,8 @@ SkinColors LC_SkinColorsResolver::resolveStyleDescriptor(StyleArchetype archetyp
         desc.scrollBar.scrollBarBorderColor = scrollBorder;
         desc.scrollBar.scrollBarBorderColor.setAlpha(90);
         desc.scrollBar.scrollBarBorderColorHovered = scrollBorder;
-    } else {
+    }
+    else {
         desc.scrollBar.scrollBarTrackColor = baseScrollTrack;
         desc.scrollBar.scrollBarHandleColor = scrollHandle;
         desc.scrollBar.scrollBarHandleColorHovered = scrollHandle;
@@ -720,7 +763,8 @@ SkinColors LC_SkinColorsResolver::resolveStyleDescriptor(StyleArchetype archetyp
     if (m_skin.showActiveRowSpotlight) {
         desc.itemView.branchIndicatorSelectedColor = highlightColor;
         desc.itemView.branchLineSelectedColor = desc.groupBox.groupBoxFrameColor;
-    } else {
+    }
+    else {
         desc.itemView.branchIndicatorSelectedColor = palette.color(group, QPalette::HighlightedText);
         desc.itemView.branchLineSelectedColor = palette.color(group, QPalette::HighlightedText);
     }
@@ -751,6 +795,8 @@ SkinColors LC_SkinColorsResolver::resolveStyleDescriptor(StyleArchetype archetyp
     desc.dockTitleBar.accentBarColor = highlightColor;
     desc.dockTitleBar.highlightBorder = lightColor;
     desc.dockTitleBar.midlightBorder = midlightColor;
+    desc.dockTitleBar.titleBarButtonStrokeIdle = mixColors(desc.common.bgStart, desc.common.textColor, 0.5);
+    desc.dockTitleBar.titleBarButtonStrokeIdleCad = mixColors(desc.common.bgStart, desc.common.textColor, 0.15);
 
     // Tab accessory precomputations (tear guidelines and hover close states)
     desc.tab.closeButtonHoverColor = highlightColor;
@@ -762,8 +808,8 @@ SkinColors LC_SkinColorsResolver::resolveStyleDescriptor(StyleArchetype archetyp
 
 void LC_SkinColorsResolver::resolveDynamicGroupBoxFallback(SkinColors& desc, const QPalette& palette, QPalette::ColorGroup group) const {
     QColor highlightColor = palette.color(group, QPalette::Highlight);
-    QColor windowColor    = palette.color(group, QPalette::Window);
-    QColor buttonColor    = palette.color(group, QPalette::Button);
+    QColor windowColor = palette.color(group, QPalette::Window);
+    QColor buttonColor = palette.color(group, QPalette::Button);
 
     GroupBoxHeaderStyle activeHeader = GroupBoxHeaderStyle::Overlapping;
     GroupBoxBoundaryStyle activeBoundary = GroupBoxBoundaryStyle::Full;
@@ -773,7 +819,8 @@ void LC_SkinColorsResolver::resolveDynamicGroupBoxFallback(SkinColors& desc, con
         activeHeader = m_skin.groupBoxHeaderStyle;
         activeBoundary = m_skin.groupBoxBoundaryStyle;
         activeAccent = m_skin.groupBoxUseAccent;
-    } else if (!m_isClassic) {
+    }
+    else if (!m_isClassic) {
         switch (m_skin.boxDecoration) {
             case BoxDecoration::Frameless:
                 activeBoundary = GroupBoxBoundaryStyle::None;
@@ -821,7 +868,8 @@ void LC_SkinColorsResolver::resolveDynamicGroupBoxFallback(SkinColors& desc, con
 
     if (activeAccent) {
         desc.groupBox.groupBoxFrameColor = highlightColor;
-    } else {
+    }
+    else {
         desc.groupBox.groupBoxFrameColor = palette.color(group, QPalette::Dark);
     }
 
@@ -832,28 +880,29 @@ void LC_SkinColorsResolver::resolveDynamicGroupBoxFallback(SkinColors& desc, con
 
     if (activeAccent) {
         desc.groupBox.groupBoxBannerFillColor = mixColors(bannerBaseColor, highlightColor, 0.12);
-    } else {
+    }
+    else {
         desc.groupBox.groupBoxBannerFillColor = bannerBaseColor;
     }
 
     if (m_isGlossy) {
-        desc.groupBox.groupBoxGlassStart    = mixColors(windowColor, desc.button.glassStart, 0.35);
+        desc.groupBox.groupBoxGlassStart = mixColors(windowColor, desc.button.glassStart, 0.35);
         desc.groupBox.groupBoxGlassMidStart = mixColors(windowColor, desc.button.glassMidStart, 0.35);
-        desc.groupBox.groupBoxGlassMidEnd   = mixColors(windowColor, desc.button.glassMidEnd, 0.35);
-        desc.groupBox.groupBoxGlassEnd      = mixColors(windowColor, desc.button.glassEnd, 0.35);
+        desc.groupBox.groupBoxGlassMidEnd = mixColors(windowColor, desc.button.glassMidEnd, 0.35);
+        desc.groupBox.groupBoxGlassEnd = mixColors(windowColor, desc.button.glassEnd, 0.35);
     }
 
     QColor groupTextColor = palette.color(group, QPalette::WindowText);
-    if (activeHeader == GroupBoxHeaderStyle::Plain &&
-        (activeBoundary == GroupBoxBoundaryStyle::LeftStripe || activeBoundary == GroupBoxBoundaryStyle::None) &&
-        activeAccent) {
+    if (activeHeader == GroupBoxHeaderStyle::Plain && (activeBoundary == GroupBoxBoundaryStyle::LeftStripe || activeBoundary ==
+        GroupBoxBoundaryStyle::None) && activeAccent) {
         groupTextColor = highlightColor;
     }
     desc.groupBox.groupBoxTextColor = groupTextColor;
 }
 
-void LC_SkinColorsResolver::precomputeSegmentedGroupColors(QWidget *widget, int totalGroups) const {
-    if (!widget) return;
+void LC_SkinColorsResolver::precomputeSegmentedGroupColors(QWidget* widget, int totalGroups) const {
+    if (!widget)
+        return;
     const QPalette::ColorGroup group = widget->isEnabled() ? QPalette::Active : QPalette::Disabled;
 
     QMap<int, QColor> groupBgStart;
@@ -863,19 +912,9 @@ void LC_SkinColorsResolver::precomputeSegmentedGroupColors(QWidget *widget, int 
     QMap<int, QColor> groupBgEndHovered;
     QMap<int, LC_PaletteColorUtils::GroupGradientStops> groupGradientStopsHovered;
 
-    LC_PaletteColorUtils::calculateSegmentedGroupColors(
-        group,
-        m_skin.styleArchetype,
-        widget->palette(),
-        m_skin.segmentedColorPolicy,
-        totalGroups,
-        groupBgStart,
-        groupBgEnd,
-        groupGradientStops,
-        groupBgStartHovered,
-        groupBgEndHovered,
-        groupGradientStopsHovered
-    );
+    LC_PaletteColorUtils::calculateSegmentedGroupColors(group, m_skin.styleArchetype, widget->palette(), m_skin.segmentedColorPolicy,
+                                                        totalGroups, groupBgStart, groupBgEnd, groupGradientStops, groupBgStartHovered,
+                                                        groupBgEndHovered, groupGradientStopsHovered);
 
     QVariantMap bgStartMap, bgEndMap, stop0Map, stop42Map, stop55Map, stop100Map;
     QVariantMap bgStartHoveredMap, bgEndHoveredMap, stop0HoveredMap, stop42HoveredMap, stop55HoveredMap, stop100HoveredMap;
@@ -886,18 +925,18 @@ void LC_SkinColorsResolver::precomputeSegmentedGroupColors(QWidget *widget, int 
         bgEndMap[key] = groupBgEnd.value(it.key());
 
         const LC_PaletteColorUtils::GroupGradientStops s = groupGradientStops.value(it.key());
-        stop0Map[key]   = s.stop0;
-        stop42Map[key]  = s.stop42;
-        stop55Map[key]  = s.stop55;
+        stop0Map[key] = s.stop0;
+        stop42Map[key] = s.stop42;
+        stop55Map[key] = s.stop55;
         stop100Map[key] = s.stop100;
 
         bgStartHoveredMap[key] = groupBgStartHovered.value(it.key());
-        bgEndHoveredMap[key]   = groupBgEndHovered.value(it.key());
+        bgEndHoveredMap[key] = groupBgEndHovered.value(it.key());
 
         const LC_PaletteColorUtils::GroupGradientStops sh = groupGradientStopsHovered.value(it.key());
-        stop0HoveredMap[key]   = sh.stop0;
-        stop42HoveredMap[key]  = sh.stop42;
-        stop55HoveredMap[key]  = sh.stop55;
+        stop0HoveredMap[key] = sh.stop0;
+        stop42HoveredMap[key] = sh.stop42;
+        stop55HoveredMap[key] = sh.stop55;
         stop100HoveredMap[key] = sh.stop100;
     }
 
@@ -916,15 +955,15 @@ void LC_SkinColorsResolver::precomputeSegmentedGroupColors(QWidget *widget, int 
     widget->setProperty(PROP_GROUP_STOP100_HOVERED, stop100HoveredMap);
 
     // Cache the window color used to prevent redundant updates during paint passes
-    widget->setProperty(PROP_GROUP_PALETTE_COLOR,  widget->palette().color(QPalette::Window));
+    widget->setProperty(PROP_GROUP_PALETTE_COLOR, widget->palette().color(QPalette::Window));
 }
 
-SkinColors LC_SkinColorsResolver::resolveStandardButtonDescriptor(const QStyleOptionButton *option, const QWidget *widget) const {
+SkinColors LC_SkinColorsResolver::resolveStandardButtonDescriptor(const QStyleOptionButton* option, const QWidget* widget) const {
     const QPalette::ColorGroup finalGroup = resolveColorGroup(option->state);
 
     SkinColors buttonDesc = getDescriptor(option->palette, finalGroup);
 
-    const bool sunken  = (option->state & QStyle::State_Sunken);
+    const bool sunken = (option->state & QStyle::State_Sunken);
     const bool checked = (option->state & QStyle::State_On);
     const bool hovered = (option->state & QStyle::State_MouseOver);
 
@@ -939,33 +978,37 @@ SkinColors LC_SkinColorsResolver::resolveStandardButtonDescriptor(const QStyleOp
             }
 
             if (buttonDesc.common.useGlassyGloss) {
-                buttonDesc.button.glassStart    = buttonDesc.button.glassSunkenStart;
+                buttonDesc.button.glassStart = buttonDesc.button.glassSunkenStart;
                 buttonDesc.button.glassMidStart = buttonDesc.button.glassSunkenMidStart;
-                buttonDesc.button.glassMidEnd   = buttonDesc.button.glassSunkenMidEnd;
-                buttonDesc.button.glassEnd      = buttonDesc.button.glassSunkenEnd;
+                buttonDesc.button.glassMidEnd = buttonDesc.button.glassSunkenMidEnd;
+                buttonDesc.button.glassEnd = buttonDesc.button.glassSunkenEnd;
             }
-        } else { // sunken (actively pressed)
+        }
+        else {
+            // sunken (actively pressed)
             buttonDesc.common.bgStart = buttonDesc.button.bgSunken;
             buttonDesc.common.bgEnd = buttonDesc.button.bgSunken;
 
             if (buttonDesc.common.useGlassyGloss) {
-                buttonDesc.button.glassStart    = buttonDesc.button.glassSunkenStart;
+                buttonDesc.button.glassStart = buttonDesc.button.glassSunkenStart;
                 buttonDesc.button.glassMidStart = buttonDesc.button.glassSunkenMidStart;
-                buttonDesc.button.glassMidEnd   = buttonDesc.button.glassSunkenMidEnd;
-                buttonDesc.button.glassEnd      = buttonDesc.button.glassSunkenEnd;
+                buttonDesc.button.glassMidEnd = buttonDesc.button.glassSunkenMidEnd;
+                buttonDesc.button.glassEnd = buttonDesc.button.glassSunkenEnd;
             }
         }
-    } else if (hovered) {
+    }
+    else if (hovered) {
         buttonDesc.common.bgStart = buttonDesc.button.bgHovered;
         buttonDesc.common.bgEnd = buttonDesc.button.bgHovered;
 
         if (buttonDesc.common.useGlassyGloss) {
-            buttonDesc.button.glassStart    = buttonDesc.button.glassHoverStart;
+            buttonDesc.button.glassStart = buttonDesc.button.glassHoverStart;
             buttonDesc.button.glassMidStart = buttonDesc.button.glassHoverMidStart;
-            buttonDesc.button.glassMidEnd   = buttonDesc.button.glassHoverMidEnd;
-            buttonDesc.button.glassEnd      = buttonDesc.button.glassHoverEnd;
+            buttonDesc.button.glassMidEnd = buttonDesc.button.glassHoverMidEnd;
+            buttonDesc.button.glassEnd = buttonDesc.button.glassHoverEnd;
         }
-    } else if (m_isFlatModern) {
+    }
+    else if (m_isFlatModern) {
         buttonDesc.common.bgStart = buttonDesc.button.bgButton;
         buttonDesc.common.bgEnd = buttonDesc.button.bgButtonEnd;
 
@@ -979,10 +1022,12 @@ SkinColors LC_SkinColorsResolver::resolveStandardButtonDescriptor(const QStyleOp
         }
 
         if (needsBorder) {
-            buttonDesc.frame.borderTop = buttonDesc.frame.borderBottom = buttonDesc.frame.borderLeft = buttonDesc.frame.borderRight = buttonDesc.frame.borderButton;
+            buttonDesc.frame.borderTop = buttonDesc.frame.borderBottom = buttonDesc.frame.borderLeft = buttonDesc.frame.borderRight =
+                buttonDesc.frame.borderButton;
             buttonDesc.frame.hasFullBorder = true;
         }
-    } else {
+    }
+    else {
         buttonDesc.common.bgStart = buttonDesc.button.bgButton;
         buttonDesc.common.bgEnd = buttonDesc.button.bgButtonEnd;
     }
@@ -994,19 +1039,20 @@ SkinColors LC_SkinColorsResolver::resolveStandardButtonDescriptor(const QStyleOp
         buttonDesc.frame.hasLeftAccentBar = false;
 
         if (m_skin.styleArchetype != StyleArchetype::AccentOutline) {
-            buttonDesc.frame.borderTop = buttonDesc.frame.borderBottom = buttonDesc.frame.borderLeft = buttonDesc.frame.borderRight = buttonDesc.frame.borderButton;
+            buttonDesc.frame.borderTop = buttonDesc.frame.borderBottom = buttonDesc.frame.borderLeft = buttonDesc.frame.borderRight =
+                buttonDesc.frame.borderButton;
         }
     }
 
     return buttonDesc;
 }
 
-SkinColors LC_SkinColorsResolver::resolveToolButtonDescriptor(const QStyleOption *option, const QWidget *widget) const {
+SkinColors LC_SkinColorsResolver::resolveToolButtonDescriptor(const QStyleOption* option, const QWidget* widget) const {
     const QPalette::ColorGroup finalGroup = resolveColorGroup(option->state);
 
     SkinColors buttonDesc = getDescriptor(option->palette, finalGroup);
 
-    const bool sunken  = (option->state & QStyle::State_Sunken);
+    const bool sunken = (option->state & QStyle::State_Sunken);
     const bool checked = (option->state & QStyle::State_On);
     const bool hovered = (option->state & QStyle::State_MouseOver);
 
@@ -1016,33 +1062,37 @@ SkinColors LC_SkinColorsResolver::resolveToolButtonDescriptor(const QStyleOption
             buttonDesc.common.bgEnd = buttonDesc.button.bgChecked;
 
             if (buttonDesc.common.useGlassyGloss) {
-                buttonDesc.button.glassStart    = buttonDesc.button.glassSunkenStart;
+                buttonDesc.button.glassStart = buttonDesc.button.glassSunkenStart;
                 buttonDesc.button.glassMidStart = buttonDesc.button.glassSunkenMidStart;
-                buttonDesc.button.glassMidEnd   = buttonDesc.button.glassSunkenMidEnd;
-                buttonDesc.button.glassEnd      = buttonDesc.button.glassSunkenEnd;
+                buttonDesc.button.glassMidEnd = buttonDesc.button.glassSunkenMidEnd;
+                buttonDesc.button.glassEnd = buttonDesc.button.glassSunkenEnd;
             }
-        } else { // sunken
+        }
+        else {
+            // sunken
             buttonDesc.common.bgStart = buttonDesc.button.bgSunken;
             buttonDesc.common.bgEnd = buttonDesc.button.bgSunken;
 
             if (buttonDesc.common.useGlassyGloss) {
-                buttonDesc.button.glassStart    = buttonDesc.button.glassSunkenStart;
+                buttonDesc.button.glassStart = buttonDesc.button.glassSunkenStart;
                 buttonDesc.button.glassMidStart = buttonDesc.button.glassSunkenMidStart;
-                buttonDesc.button.glassMidEnd   = buttonDesc.button.glassSunkenMidEnd;
-                buttonDesc.button.glassEnd      = buttonDesc.button.glassSunkenEnd;
+                buttonDesc.button.glassMidEnd = buttonDesc.button.glassSunkenMidEnd;
+                buttonDesc.button.glassEnd = buttonDesc.button.glassSunkenEnd;
             }
         }
-    } else if (hovered) {
+    }
+    else if (hovered) {
         buttonDesc.common.bgStart = buttonDesc.button.bgHovered;
         buttonDesc.common.bgEnd = buttonDesc.button.bgHovered;
 
         if (buttonDesc.common.useGlassyGloss) {
-            buttonDesc.button.glassStart    = buttonDesc.button.glassHoverStart;
+            buttonDesc.button.glassStart = buttonDesc.button.glassHoverStart;
             buttonDesc.button.glassMidStart = buttonDesc.button.glassHoverMidStart;
-            buttonDesc.button.glassMidEnd   = buttonDesc.button.glassHoverMidEnd;
-            buttonDesc.button.glassEnd      = buttonDesc.button.glassHoverEnd;
+            buttonDesc.button.glassMidEnd = buttonDesc.button.glassHoverMidEnd;
+            buttonDesc.button.glassEnd = buttonDesc.button.glassHoverEnd;
         }
-    } else {
+    }
+    else {
         buttonDesc.common.bgStart = buttonDesc.button.bgButton;
         buttonDesc.common.bgEnd = buttonDesc.button.bgButtonEnd;
     }
@@ -1057,7 +1107,7 @@ SkinColors LC_SkinColorsResolver::resolveToolButtonDescriptor(const QStyleOption
     return buttonDesc;
 }
 
-SkinColors LC_SkinColorsResolver::resolveTabBorders(const QStyleOptionTab *option, const QWidget *widget) const {
+SkinColors LC_SkinColorsResolver::resolveTabBorders(const QStyleOptionTab* option, const QWidget* widget) const {
     const QPalette::ColorGroup finalGroup = resolveColorGroup(option->state);
 
     const SkinColors desc = getDescriptor(option->palette, finalGroup);
@@ -1074,12 +1124,15 @@ SkinColors LC_SkinColorsResolver::resolveTabBorders(const QStyleOptionTab *optio
         if (!m_isClassic && m_skin.boxDecoration == BoxDecoration::DividingHairline) {
             tabDesc.frame.borderTop = desc.tab.borderTabInactiveTop;
         }
-    } else {
+    }
+    else {
         if (m_skin.boxDecoration == BoxDecoration::ActiveAccentFrame) {
             tabDesc.common.bgStart = desc.tab.activeTabAccentBg;
-        } else if (m_isAccentOnline) {
+        }
+        else if (m_isAccentOnline) {
             tabDesc.common.bgStart = desc.tab.accentOutlineTabBg;
-        } else {
+        }
+        else {
             tabDesc.common.bgStart = option->palette.color(finalGroup, QPalette::Window);
         }
         tabDesc.common.bgEnd = tabDesc.common.bgStart;
@@ -1098,42 +1151,52 @@ SkinColors LC_SkinColorsResolver::resolveTabBorders(const QStyleOptionTab *optio
 
         if (selected) {
             if (m_skin.boxDecoration == BoxDecoration::ActiveAccentFrame) {
-                tabDesc.frame.borderTop = tabDesc.frame.borderBottom = tabDesc.frame.borderLeft = tabDesc.frame.borderRight = option->palette.color(finalGroup, QPalette::Highlight);
+                tabDesc.frame.borderTop = tabDesc.frame.borderBottom = tabDesc.frame.borderLeft = tabDesc.frame.borderRight = option->
+                    palette.color(finalGroup, QPalette::Highlight);
                 tabDesc.frame.hasFullBorder = true;
-            } else {
-                if (option->shape == QTabBar::RoundedNorth || option->shape == QTabBar::TriangularNorth ||
-                    option->shape == QTabBar::RoundedSouth || option->shape == QTabBar::TriangularSouth) {
+            }
+            else {
+                if (option->shape == QTabBar::RoundedNorth || option->shape == QTabBar::TriangularNorth || option->shape ==
+                    QTabBar::RoundedSouth || option->shape == QTabBar::TriangularSouth) {
                     tabDesc.frame.borderLeft = tabDesc.frame.borderRight = flatBorder;
                     tabDesc.frame.hasSideBorders = true;
-                } else {
+                }
+                else {
                     tabDesc.frame.borderTop = tabDesc.frame.borderBottom = flatBorder;
                     tabDesc.frame.hasTopBottomBorder = true;
                 }
             }
-        } else {
+        }
+        else {
             if (m_skin.boxDecoration != BoxDecoration::Frameless) {
                 if (option->shape == QTabBar::RoundedNorth || option->shape == QTabBar::TriangularNorth) {
                     tabDesc.frame.borderBottom = flatBorder;
                     tabDesc.frame.hasTopBottomBorder = true;
-                } else if (option->shape == QTabBar::RoundedSouth || option->shape == QTabBar::TriangularSouth) {
+                }
+                else if (option->shape == QTabBar::RoundedSouth || option->shape == QTabBar::TriangularSouth) {
                     tabDesc.frame.borderTop = flatBorder;
                     tabDesc.frame.hasTopBottomBorder = true;
-                } else if (option->shape == QTabBar::RoundedWest || option->shape == QTabBar::TriangularWest) {
+                }
+                else if (option->shape == QTabBar::RoundedWest || option->shape == QTabBar::TriangularWest) {
                     tabDesc.frame.borderRight = flatBorder;
                     tabDesc.frame.hasSideBorders = true;
-                } else if (option->shape == QTabBar::RoundedEast || option->shape == QTabBar::TriangularEast) {
+                }
+                else if (option->shape == QTabBar::RoundedEast || option->shape == QTabBar::TriangularEast) {
                     tabDesc.frame.borderLeft = flatBorder;
                     tabDesc.frame.hasSideBorders = true;
                 }
             }
         }
-    } else {
+    }
+    else {
         if (selected) {
             if (m_skin.boxDecoration == BoxDecoration::LeftAccentBar) {
                 tabDesc.frame.hasLeftAccentBar = true;
                 tabDesc.frame.accentBarColor = option->palette.color(finalGroup, QPalette::Highlight);
-            } else if (m_skin.boxDecoration == BoxDecoration::ActiveAccentFrame) {
-                tabDesc.frame.borderTop = tabDesc.frame.borderBottom = tabDesc.frame.borderLeft = tabDesc.frame.borderRight = option->palette.color(finalGroup, QPalette::Highlight);
+            }
+            else if (m_skin.boxDecoration == BoxDecoration::ActiveAccentFrame) {
+                tabDesc.frame.borderTop = tabDesc.frame.borderBottom = tabDesc.frame.borderLeft = tabDesc.frame.borderRight = option->
+                    palette.color(finalGroup, QPalette::Highlight);
                 tabDesc.frame.hasFullBorder = true;
             }
         }
@@ -1141,9 +1204,11 @@ SkinColors LC_SkinColorsResolver::resolveTabBorders(const QStyleOptionTab *optio
 
     if (selected && m_isAccentOnline) {
         if (m_skin.boxDecoration != BoxDecoration::Frameless && m_skin.boxDecoration != BoxDecoration::DividingHairline) {
-            tabDesc.frame.borderTop = tabDesc.frame.borderBottom = tabDesc.frame.borderLeft = tabDesc.frame.borderRight = option->palette.color(finalGroup, QPalette::Highlight);
+            tabDesc.frame.borderTop = tabDesc.frame.borderBottom = tabDesc.frame.borderLeft = tabDesc.frame.borderRight = option->palette.
+                color(finalGroup, QPalette::Highlight);
             tabDesc.frame.hasFullBorder = true;
-        } else if (m_skin.boxDecoration == BoxDecoration::DividingHairline) {
+        }
+        else if (m_skin.boxDecoration == BoxDecoration::DividingHairline) {
             tabDesc.frame.borderTop = option->palette.color(finalGroup, QPalette::Highlight);
             tabDesc.frame.hasTopBottomBorder = true;
         }
@@ -1159,7 +1224,8 @@ SkinColors LC_SkinColorsResolver::resolveTabBorders(const QStyleOptionTab *optio
         if (isLeftmost && !m_isFlatModern) {
             tabDesc.frame.borderLeft = option->palette.color(finalGroup, QPalette::Mid);
             tabDesc.frame.hasSideBorders = true;
-        } else {
+        }
+        else {
             tabDesc.frame.hasSideBorders = false;
         }
 
@@ -1171,7 +1237,7 @@ SkinColors LC_SkinColorsResolver::resolveTabBorders(const QStyleOptionTab *optio
     return tabDesc;
 }
 
-SkinColors LC_SkinColorsResolver::resolveHeaderSectionDescriptor(const QStyleOptionHeader *option) const {
+SkinColors LC_SkinColorsResolver::resolveHeaderSectionDescriptor(const QStyleOptionHeader* option) const {
     const QPalette::ColorGroup finalGroup = resolveColorGroup(option->state);
     SkinColors desc = getDescriptor(option->palette, finalGroup);
 
@@ -1183,7 +1249,8 @@ SkinColors LC_SkinColorsResolver::resolveHeaderSectionDescriptor(const QStyleOpt
     if (m_isFlat) {
         desc.frame.borderBottom = option->palette.color(finalGroup, QPalette::Button);
         desc.frame.borderTop = QColor();
-    } else {
+    }
+    else {
         desc.frame.borderTop = option->palette.color(finalGroup, QPalette::Light);
         desc.frame.borderBottom = desc.header.headerBorderBottom;
     }
@@ -1191,7 +1258,7 @@ SkinColors LC_SkinColorsResolver::resolveHeaderSectionDescriptor(const QStyleOpt
     return desc;
 }
 
-SkinColors LC_SkinColorsResolver::resolveLineEditDescriptor(const QStyleOption *option, const QWidget *widget) const {
+SkinColors LC_SkinColorsResolver::resolveLineEditDescriptor(const QStyleOption* option, const QWidget* widget) const {
     const QPalette::ColorGroup finalGroup = resolveColorGroup(option->state);
     SkinColors desc = getDescriptor(option->palette, finalGroup);
 
@@ -1214,7 +1281,7 @@ SkinColors LC_SkinColorsResolver::resolveLineEditDescriptor(const QStyleOption *
     bool hasFocus = (option->state & QStyle::State_HasFocus);
     if (widget && widget->isEnabled()) {
         if (!hasFocus) {
-            const QWidget *activeFocusWidget = widget->window() ? widget->window()->focusWidget() : nullptr;
+            const QWidget* activeFocusWidget = widget->window() ? widget->window()->focusWidget() : nullptr;
             if (activeFocusWidget && (activeFocusWidget == widget || widget->isAncestorOf(activeFocusWidget))) {
                 hasFocus = true;
             }
@@ -1225,7 +1292,7 @@ SkinColors LC_SkinColorsResolver::resolveLineEditDescriptor(const QStyleOption *
     if (widget && widget->isEnabled()) {
         isHovered = false;
         const QPoint globalCursorPos = QCursor::pos();
-        const QWidget *currWidget = widget;
+        const QWidget* currWidget = widget;
 
         while (currWidget) {
             if (!currWidget->property(PROP_IS_INPUT_COMPONENT).toBool()) {
@@ -1244,10 +1311,12 @@ SkinColors LC_SkinColorsResolver::resolveLineEditDescriptor(const QStyleOption *
     if (hasFocus) {
         desc.common.bgStart = desc.input.bgInputFocused;
         desc.common.bgEnd = desc.input.bgInputFocused;
-    } else if (isHovered && (option->state & QStyle::State_Enabled)) {
+    }
+    else if (isHovered && (option->state & QStyle::State_Enabled)) {
         desc.common.bgStart = desc.input.bgInputHovered;
         desc.common.bgEnd = desc.input.bgInputHoveredEnd;
-    } else {
+    }
+    else {
         desc.common.bgStart = desc.input.bgInput;
         desc.common.bgEnd = desc.input.bgInputEnd;
     }
@@ -1255,7 +1324,7 @@ SkinColors LC_SkinColorsResolver::resolveLineEditDescriptor(const QStyleOption *
     return desc;
 }
 
-SkinColors LC_SkinColorsResolver::resolveDockTitleBarDescriptor(const QStyleOptionDockWidget *option, const QWidget *widget) const {
+SkinColors LC_SkinColorsResolver::resolveDockTitleBarDescriptor(const QStyleOptionDockWidget* option, const QWidget* widget) const {
     const QPalette::ColorGroup finalGroup = resolveColorGroup(option->state);
     SkinColors desc = getDescriptor(option->palette, finalGroup);
 
@@ -1311,5 +1380,69 @@ SkinColors LC_SkinColorsResolver::resolveDockTitleBarDescriptor(const QStyleOpti
         }
     }
 
+        // Safe parenting check: Resolve the parent QDockWidget safely to prevent header circularity
+        const QDockWidget *dock = nullptr;
+        if (widget) {
+            if (widget->inherits("LC_CustomTitleBarWidget") || widget->inherits("LC_DockTitleBar")) {
+                dock = qobject_cast<const QDockWidget*>(widget->parent());
+            } else {
+                dock = qobject_cast<const QDockWidget*>(widget);
+            }
+        }
+
+        bool isFocused = false;
+        if (dock) {
+            QWidget *fw = QApplication::focusWidget();
+            // A dock panel is focused if its containing window is active AND either the dock or its children holds focus
+            isFocused = dock->isActiveWindow() && (dock->hasFocus() || (fw && (dock == fw || dock->isAncestorOf(fw))));
+        } else {
+            isFocused = (option->state & QStyle::State_Active);
+        }
+
+        // If the dock panel has active keyboard/input focus, dynamically apply a soft accent tint background
+        if (isFocused) {
+        const bool isDark = desc.common.bgStart.value() < 120;
+        const qreal blendFactor = isDark ? 0.18 : 0.12;
+
+        // Blend both bgStart and bgEnd to preserve underlying solid or gradient characteristics
+        desc.common.bgStart = mixColors(desc.common.bgStart, desc.common.highlightColor, blendFactor);
+        desc.common.bgEnd = mixColors(desc.common.bgEnd.isValid() ? desc.common.bgEnd : desc.common.bgStart, desc.common.highlightColor,
+                                      blendFactor);
+    }
+
     return desc;
+}
+
+void LC_SkinColorsResolver::drawCloseIcon(QPainter* painter, const QRectF& rect, const QColor& color, qreal penWidth) {
+    painter->save();
+    painter->setRenderHint(QPainter::Antialiasing, true);
+    painter->setPen(QPen(color, penWidth, Qt::SolidLine, Qt::RoundCap));
+    painter->setBrush(Qt::NoBrush);
+
+    const QPointF cx = rect.center();
+    const qreal hSize = qMax(3.0, rect.width() * 80.0 / 200.0);
+
+    painter->drawLine(QPointF(cx.x() - hSize, cx.y() - hSize), QPointF(cx.x() + hSize, cx.y() + hSize));
+    painter->drawLine(QPointF(cx.x() - hSize, cx.y() + hSize), QPointF(cx.x() + hSize, cx.y() - hSize));
+    painter->restore();
+}
+
+void LC_SkinColorsResolver::drawFloatIcon(QPainter* painter, const QRectF& rect, const QColor& color, qreal penWidth,
+                                          const QColor& fillColor) {
+    painter->save();
+    painter->setRenderHint(QPainter::Antialiasing, true);
+    painter->setPen(QPen(color, penWidth * 0.85, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    painter->setBrush(Qt::NoBrush);
+
+    const QPointF cx = rect.center();
+    const qreal size = qMin(rect.width(), rect.height()) * 0.55;
+    const QRectF box1(cx.x() - size + 1.0, cx.y() - size, size, size);
+    const QRectF box2(cx.x() - 1.0, cx.y() - 1.0, size, size);
+
+    painter->drawRect(box1);
+    if (fillColor != Qt::transparent) {
+        painter->fillRect(box2.adjusted(0.5, 0.5, -0.5, -0.5), fillColor);
+    }
+    painter->drawRect(box2);
+    painter->restore();
 }

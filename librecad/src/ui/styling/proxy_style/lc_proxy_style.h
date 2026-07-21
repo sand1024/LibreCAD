@@ -35,12 +35,14 @@
 #include "lc_palette_editor_shared.h"
 #include "lc_skin_colors_resolver.h"
 #include "lc_skin_scaled_geometry_provider.h"
+#include "lc_event_filter_win_resize_native_event.h"
 
 class QDockWidget;
 class LC_EventFilterWin32WindowCloaking;
 class LC_EventFilterAutoPopupController;
 class LC_EventFilterToolTip;
 class LC_EventFilterMnemonic;
+class LC_EventFilterDialog;
 class QToolBar;
 class QStyleOptionButton;
 class QStyleOptionTab;
@@ -55,16 +57,6 @@ namespace DEBUG_PROXY {
     extern QElapsedTimer g_globalPerfTimer;
     extern bool g_perfTimerStarted;
 }
-
-#ifdef Q_OS_WIN
-#define USE_WIN_NATIVE_RESIZE_FILTER_
-#endif
-
-#ifdef USE_WIN_NATIVE_RESIZE_FILTER
-class LC_WinResizeNativeEventFilter;
-#endif
-
-
 
 class LC_ProxyStyle : public QProxyStyle {
     Q_OBJECT
@@ -112,7 +104,21 @@ public:
 
     void drawSegmentedGroupBackdrops(QPainter *painter, const QWidget *widget) const;
     void drawCustomDockTitleBar(const QStyleOptionDockWidget *option, QPainter *painter, const QWidget *widget) const;
+    bool customDockTitleBarEnabled() const;
+    bool customMenuTearOffEnabled() const;
+    void drawCustomDockTitleButton(const QStyleOptionComplex* option, QPainter* painter, const QWidget* widget) const;
+
+    Qt::CursorShape resolveDragCursor() const;
+
+    bool showGenericDockIcons() const { return m_showGenericDockIcons; }
+    bool showSpecialDockIcons() const { return m_showSpecialDockIcons; }
+
+    const FontConfig& fontConfig() const { return m_fontConfig; }
+    void setFont(const FontConfig& font);
+    bool customDialogTitleBarEnabled() const;
+    void setupCustomDialogTitleBar(QDialog *dialog) const;
 private:
+    void onFocusChanged(QWidget *old, QWidget *now);
     void drawParameterizedBox(QPainter *painter, const QRect &rect, const SkinColors &desc, bool isVertical = false) const;
     void invalidateCache() const;
     // Extracted widget-specific drawing helpers [3]
@@ -151,6 +157,7 @@ private:
     void drawCustomIndicatorTabClose(const QStyleOption* option, QPainter* painter) const;
     void drawCustomIndicatorTabTear(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const;
     void drawSegmentedToolButton(const QStyleOption *option, QPainter *painter, const QWidget *widget, int mask) const;
+    void drawCustomMenuTearOff(const QStyleOptionMenuItem* option, QPainter* painter, const QWidget* widget) const;
 
     void paintTabBackground(QPainter *painter, const QRectF &rect, const QStyleOptionTab *option, const SkinColors &desc, const TabPaths &paths, bool selected) const;
     void paintTabBorders(QPainter *painter, const QStyleOptionTab *option, const SkinColors &desc, const TabPaths &paths, bool selected) const;
@@ -241,10 +248,21 @@ private:
     bool m_useSpinBoxProgressBar = true;
 
     bool m_useFloatingHUD = false;
+
+    bool m_customMenuTearOff = false;
+    bool m_syncCheckedMenuState = false;
+
+    bool m_showGenericDockIcons = true;
+    bool m_showSpecialDockIcons = true;
+    bool m_customDialogTitleBar = false;
+
+    FontConfig m_fontConfig;
+
     CloseButtonColorPolicy m_closeButtonColorPolicy = CloseButtonColorPolicy::AccentColor;
     mutable LC_SkinScaledGeometryProvider m_scaledGeometryProvider;
     mutable LC_SkinColorsResolver m_skinColorsResolver;
 
+    std::unique_ptr<LC_EventFilterDialog> m_dialogFilter;
     std::unique_ptr<LC_EventFilterMnemonic> m_mnemonicFilter;
     std::unique_ptr<LC_EventFilterToolTip>  m_toolTipFilter;
     std::unique_ptr<LC_EventFilterAutoPopupController> m_autoPopupController;

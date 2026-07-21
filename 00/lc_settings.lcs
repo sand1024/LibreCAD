@@ -1,0 +1,1901 @@
+{
+    "_lc_file_type": "LibreCAD_SETTINGS",
+    "groups": {
+        "ActionBlocksInsert": {
+            "Angle": "1",
+            "ColumnSpacing": "1",
+            "Factor": "1",
+            "RowSpacing": "1"
+        },
+        "ActionDrawArc": {
+            "Reversed": "0"
+        },
+        "ActionDrawArc2PAngle": {
+            "Parameter": "0.523598775598",
+            "Reversed": "1"
+        },
+        "ActionDrawArc2PHeight": {
+            "Parameter": "1"
+        },
+        "ActionDrawArc2PLength": {
+            "Parameter": "1"
+        },
+        "ActionDrawArc2PRadius": {
+            "Parameter": "50",
+            "Reversed": "1"
+        },
+        "ActionDrawArcChord": {
+            "Reversed": "1"
+        },
+        "ActionDrawArcTangential": {
+            "Angle": "0.785398163397",
+            "ByRadius": "1",
+            "Radius": "15"
+        },
+        "ActionDrawBoundingBox": {
+            "Offset": "10"
+        },
+        "ActionDrawCenterLine": {
+            "Offset": "0"
+        },
+        "ActionDrawCenterMark": {
+            "Angle": "42.8077965523",
+            "Mode": "0",
+            "X": "5",
+            "Y": "5"
+        },
+        "ActionDrawCircleByArc": {
+            "LayerMode": "1",
+            "PenMode": "0",
+            "RadiusShift": "17.1361513216",
+            "ReplaceArc": "1"
+        },
+        "ActionDrawCircleCenterRadius": {
+            "ActionDrawCircle2PRRadius": "19",
+            "Radius": "31"
+        },
+        "ActionDrawCircleTan2EntitiesRadius": {
+            "Radius": "5"
+        },
+        "ActionDrawEllipse1Point": {
+            "Angle": "1317.8029288",
+            "FreeAngle": "0",
+            "MajorRadius": "40",
+            "MinorRadius": "20",
+            "UseAngle": "1"
+        },
+        "ActionDrawEllipseArc1Point": {
+            "Angle": "22.5309979327",
+            "ArcReversed": "1",
+            "FreeAngle": "1",
+            "MajorRadius": "100",
+            "MinorRadius": "10",
+            "UseAngle": "1"
+        },
+        "ActionDrawImage": {
+            "Angle": "0",
+            "Factor": "1"
+        },
+        "ActionDrawLineAngle": {
+            "Angle": "0.226892802759",
+            "Length": "100",
+            "LengthType": "1"
+        },
+        "ActionDrawLineAngleRel": {
+            "Angle": "23",
+            "Length": "1000",
+            "LineAngleRelAngle": "90",
+            "LineAngleRelAngleIsRelative": "1",
+            "LineAngleRelLength": "500",
+            "LineAngleRelLengthIsFree": "1",
+            "LineAngleRelLineSnapMode": "2",
+            "LineAngleRelOffset": "0",
+            "LineAngleRelSnapDistance": "0",
+            "LineOrthogonalRelLength": "1",
+            "LineOrthogonalRelOffset": "0",
+            "LineOrthogonalRelSnapDistance": "0",
+            "Offset": "0",
+            "SnapDistance": "0"
+        },
+        "ActionDrawLineFromPointToLine": {
+            "Angle": "31",
+            "EndOffset": "0",
+            "Length": "100",
+            "Orthogonal": "0"
+        },
+        "ActionDrawLineHorizontal": {
+            "Length": "500",
+            "SnapPoint": "1"
+        },
+        "ActionDrawLineOrthogonal": {
+            "Length": "500"
+        },
+        "ActionDrawLineOrthogonalRel": {
+            "Length": "1000",
+            "LengthIsFree": "1",
+            "LineSnapMode": "0",
+            "Offset": "0",
+            "SnapDistance": "0"
+        },
+        "ActionDrawLineParallel": {
+            "Distance": "50"
+        },
+        "ActionDrawLineParallelThrough": {
+            "Number": "3",
+            "Symmetric": "1",
+            "Within": "1"
+        },
+        "ActionDrawLinePolygonCenCor": {
+            "Number": "3",
+            "Polyline": "1",
+            "Radius": "20",
+            "Rounded": "1"
+        },
+        "ActionDrawLinePolygonCenTan": {
+            "Number": "23",
+            "Polyline": "0",
+            "Radius": "10",
+            "Rounded": "1"
+        },
+        "ActionDrawLinePolygonCorCor": {
+            "Number": "3",
+            "Polyline": "0",
+            "Radius": "5",
+            "Rounded": "1"
+        },
+        "ActionDrawLinePolygonSideSide": {
+            "Number": "7",
+            "Radius": "10"
+        },
+        "ActionDrawLineRadiant": {
+            "ActiveRadiantIdx": "3",
+            "Length": "100",
+            "LengthType": "3",
+            "Radiant1_X": "-1000",
+            "Radiant1_Y": "0",
+            "Radiant2_X": "1000",
+            "Radiant2_Y": "0",
+            "Radiant3_X": "0",
+            "Radiant3_Y": "-1000",
+            "Radiant4_X": "370",
+            "Radiant4_Y": "113.099837641"
+        },
+        "ActionDrawLineRelAngle": {
+            "Angle": "0.401425727959",
+            "Length": "100"
+        },
+        "ActionDrawLineVertical": {
+            "Length": "500",
+            "SnapPoint": "1"
+        },
+        "ActionDrawPointsLattice": {
+            "AdjustLastPoint": "1",
+            "Columns": "6",
+            "Rows": "6"
+        },
+        "ActionDrawPointsLine": {
+            "Angle": "15",
+            "Count": "3",
+            "EdgeMode": "0",
+            "FitToLine": "1",
+            "PointsDistance": "5",
+            "UseFixedDistance": "0"
+        },
+        "ActionDrawPointsMiddle": {
+            "Count": "3"
+        },
+        "ActionDrawPolyline": {
+            "Angle": "140",
+            "Mode": "0",
+            "Radius": "20",
+            "Reversed": "1"
+        },
+        "ActionDrawRectangle1Point": {
+            "Angle": "0.486899231811",
+            "BaseAngleIsFixed": "1",
+            "BaseAngleIsFree": "1",
+            "Corners": "1",
+            "Edges": "1",
+            "Height": "12",
+            "LengthX": "1",
+            "LengthY": "4",
+            "Polyline": "1",
+            "Radius": "2",
+            "RadiusSnap": "1",
+            "SizeInner": "1",
+            "SnapMode": "4",
+            "Width": "11"
+        },
+        "ActionDrawRectangle2Points": {
+            "Angle": "0.401425727959",
+            "BaseAngleIsFixed": "0",
+            "Corners": "0",
+            "LengthX": "1",
+            "LengthY": "1",
+            "Radius": "12",
+            "RadiusSnap": "1",
+            "SecondPointSnapMode": "0",
+            "SnapMode": "0"
+        },
+        "ActionDrawRectangle3Points": {
+            "Angle": "0.261799387799",
+            "BaseAngleIsFixed": "1",
+            "Corners": "2",
+            "Edges": "1",
+            "LengthX": "5",
+            "LengthY": "5",
+            "Quadrangle": "0",
+            "QuadrangleAngleIsFixed": "0",
+            "QuadrangleFixedAngle": "80",
+            "Radius": "1"
+        },
+        "ActionDrawSliceDivideCircle": {
+            "Angle": "90",
+            "CircleStartAngle": "0",
+            "Distance": "0",
+            "Length": "1",
+            "Offset": "0"
+        },
+        "ActionDrawSliceDivideLine": {
+            "Angle": "34",
+            "CircleStartAngle": "0",
+            "Distance": "57.121",
+            "Length": "31",
+            "Offset": "38.2116",
+            "TickSnap": "1"
+        },
+        "ActionDrawSnakeLine": {
+            "Angle": "30",
+            "AngleRelative": "1"
+        },
+        "ActionDrawSpline": {
+            "Closed": "1",
+            "Degree": "3"
+        },
+        "ActionDrawSplineExplode": {
+            "CustomSegmentsCount": "9",
+            "KeepOriginals": "1",
+            "ToPolyline": "1",
+            "UseCurrentAttributes": "1",
+            "UseCurrentLayer": "1",
+            "UseCustomSegmentsCount": "1"
+        },
+        "ActionDrawSplineFromPolyline": {
+            "Degree": "3",
+            "KeepOriginals": "1",
+            "MidPointsCount": "5",
+            "UseFitPoints": "1"
+        },
+        "ActionDrawSplinePoints": {
+            "Closed": "1"
+        },
+        "ActionDrawStar": {
+            "InnerRadius": "10",
+            "Number": "6",
+            "OuterRadius": "10",
+            "Symmetric": "0"
+        },
+        "ActionDrawText": {
+            "Angle": "0"
+        },
+        "ActionEditPasteTransform": {
+            "Angle": "0",
+            "ArrayAngle": "0",
+            "ArrayXSpacing": "10",
+            "ArrayYSpacing": "10",
+            "IsArray": "1",
+            "ScaleFactor": "1"
+        },
+        "ActionFilePrintPreview": {
+            "BlackWhiteSet": "0",
+            "PrintScaleFixed": "0",
+            "PrintScaleValue": "1.41395238095",
+            "ScaleLineWidth": "0"
+        },
+        "ActionInfoDistEntity2Point": {
+            "NearestIsOnEntity": "1"
+        },
+        "ActionLibraryInsert": {
+            "Angle": "0",
+            "Factor": "1"
+        },
+        "ActionModifyAlign": {
+            "AlignTo": "1",
+            "AsGroup": "1",
+            "HAlign": "2",
+            "VAlign": "2"
+        },
+        "ActionModifyAlignOne": {
+            "HAlign": "1"
+        },
+        "ActionModifyBevel": {
+            "Length1": "10",
+            "Length2": "10",
+            "Trim": "0"
+        },
+        "ActionModifyDuplicate": {
+            "InPlace": "1",
+            "LayerMode": "1",
+            "OffsetX": "13",
+            "OffsetY": "14",
+            "PenMode": "2"
+        },
+        "ActionModifyLineGap": {
+            "GapFree": "0",
+            "GapSize": "2",
+            "GapSnap": "1",
+            "LineSnap": "2",
+            "SnapDistance": "0"
+        },
+        "ActionModifyLineJoin": {
+            "AttributesSource": "2",
+            "Line2EdgeMode": "1"
+        },
+        "ActionModifyMirror": {
+            "KeepOriginals": "1",
+            "ToLine": "0",
+            "UseCurrentLayer": "0"
+        },
+        "ActionModifyMove": {
+            "Copies": "4",
+            "KeepOriginals": "1",
+            "MultipleCopies": "0",
+            "UseCurrentAttributes": "0",
+            "UseCurrentLayer": "0"
+        },
+        "ActionModifyMoveRotate": {
+            "Angle": "0.261799387799",
+            "Copies": "4",
+            "FreeAngle": "0",
+            "MultipleCopies": "1",
+            "SameAngleForCopies": "1",
+            "UseCurrentLayer": "1"
+        },
+        "ActionModifyOffset": {
+            "Copies": "4",
+            "Distance": "12",
+            "DistanceFixed": "1",
+            "MultipleCopies": "1"
+        },
+        "ActionModifyRotate": {
+            "Angle": "2.94419709374",
+            "AngleIsFree": "1",
+            "AngleIsRelative": "1",
+            "AngleRef": "1.58541485362",
+            "AngleRefIsAbsolute": "1",
+            "AngleRefIsFree": "1",
+            "CenterPointFirst": "0",
+            "Copies": "6",
+            "MultipleCopies": "0",
+            "TwoRotations": "0",
+            "UseCurrentAttributes": "0",
+            "UseCurrentLayer": "0"
+        },
+        "ActionModifyRotateTwice": {
+            "Angle1": "2.30383461263",
+            "Angle2": "0",
+            "Copies": "2",
+            "MultipleCopies": "1"
+        },
+        "ActionModifyRound": {
+            "Radius": "15",
+            "Trim": "0"
+        },
+        "ActionModifyScale": {
+            "Copies": "2",
+            "ExplicitFactor": "0",
+            "FactorX": "2",
+            "FactorY": "1",
+            "Isotropic": "1",
+            "MultipleCopies": "0"
+        },
+        "ActionModifyStretch": {
+            "RemoveOriginals": "0"
+        },
+        "ActionModifyTrimAmount": {
+            "Amount": "-10"
+        },
+        "ActionPasteToPoints": {
+            "Angle": "0.261799387799",
+            "ScaleFactor": "0.5"
+        },
+        "ActionPolylineAppend": {
+            "Angle": "90",
+            "Radius": "10"
+        },
+        "ActionPolylineEquidistant": {
+            "Copies": "4",
+            "Dist": "20"
+        },
+        "ActionUCSCreate": {
+            "Angle": "0.124354994547",
+            "AngleIsFixed": "0"
+        },
+        "Actions.DrawLineRadiant": {
+            "ActiveRadiantIdx": "3",
+            "Length": "500",
+            "LengthType": "1",
+            "Radiant1_X": "-1000",
+            "Radiant1_Y": "0",
+            "Radiant2_X": "1000",
+            "Radiant2_Y": "0",
+            "Radiant3_X": "0",
+            "Radiant3_Y": "-1000",
+            "Radiant4_X": "0",
+            "Radiant4_Y": "2000"
+        },
+        "Activators": {
+            "NCAFCN": "raposzk",
+            "NNAMCN": "middle",
+            "NNNFCN": "Custorka",
+            "NNNLCN": "Click Test",
+            "NNNLDY": "Properties",
+            "NNNMDN": "AutoZoom",
+            "NNNMDNE": "AutoZoom",
+            "NNNRDN": "Dimensions",
+            "SNNMCNE": "Custom",
+            "SNNRCCI": "CircleOps",
+            "SNNRCEE": "GenericOptsAny",
+            "SNNRCLI": "LineOps",
+            "SNNRCNE": "GenericOps"
+        },
+        "Appearance": {
+            "AngleSnapMarkerSize": "40",
+            "AnglesBasisMarkPolicy": "0",
+            "Antialiasing": "1",
+            "ClassicRenderer": "0",
+            "CrosshairType": "0",
+            "DocumentPerLayer": "0",
+            "DraftLinesMode": "1",
+            "DraftMarkerFontSize": "16",
+            "DraftMode": "0",
+            "EntitiesInOriginalLayer": "0",
+            "EntityHandleSize": "10",
+            "ExtendAxisLines": "1",
+            "FirstTimeNoZoom": "0",
+            "FullscreenMode": "0",
+            "GridDisableWithinPan": "1",
+            "GridDraw": "1",
+            "GridDrawIsoVerticalForTop": "1",
+            "GridLineType": "1",
+            "GridLineWidth": "1",
+            "GridLinesLineType": "1",
+            "GridPointsLineType": "1",
+            "GridPointsLineWidth": "1",
+            "GridSpacingX": "4",
+            "GridSpacingY": "3",
+            "GridType": "1",
+            "IgnoreDraftForHighlight": "1",
+            "IsometricGrid": "0",
+            "Language": "en",
+            "LanguageCmd": "en",
+            "MainMenuVisible": "1",
+            "MaxPreview": "200",
+            "MetaGridEvery": "5",
+            "MinRenderableTextHeightPx": "6",
+            "ModifyOnViewChange": "0",
+            "PanOnZoom": "0",
+            "PersistDialogPositions": "1",
+            "RefPointSize": "-1",
+            "RelZeroMarkerRadius": "6",
+            "ScrollBars": "0",
+            "ScrollZoomFactor": "1250",
+            "ScroolZoomFactor": "1140",
+            "ShowCommandPromptInStatusBar": "1",
+            "ShowEntityIDs": "0",
+            "ShowUCSZeroMarker": "1",
+            "ShowWCSZeroMarker": "1",
+            "SnapGridIgnoreIfNoGrid": "1",
+            "StatusBarVisible": "0",
+            "UCSHighlightBlinkCount": "4",
+            "UCSHighlightBlinkDelay": "300",
+            "UnitlessGrid": "0",
+            "VerticalSubPixelPositioning": "1",
+            "VisualizeHoveringRefPoints": "1",
+            "ZeroMarkerSize": "60",
+            "ZeroShortAxisMarkSize": "30",
+            "cursor_hiding": "0",
+            "hideRelativeZero": "0",
+            "indicator_lines_line_type": "15",
+            "indicator_lines_line_width": "1",
+            "indicator_lines_state": "1",
+            "indicator_lines_type": "1",
+            "indicator_shape_state": "1",
+            "indicator_shape_type": "0",
+            "metaGridDraw": "1",
+            "metaGridLineType": "1",
+            "metaGridLineWidth": "1",
+            "metaGridLinesLineType": "1",
+            "metaGridPointsLineWidth": "2",
+            "metaGridShow": "1",
+            "selection_overlay_inverted_line_type": "1",
+            "selection_overlay_line_type": "1",
+            "showSnapOptionsInSnapToolbar": "1"
+        },
+        "Blocks Insert": {
+            "Angle": "-1.57079632679",
+            "ColumnSpacing": "1",
+            "Columns": "1",
+            "Factor": "1",
+            "RowSpacing": "1",
+            "Rows": "1"
+        },
+        "CADPreferences": {
+            "AdHockMovingEndsByMouseClick": "0",
+            "AutoZoomDrawing": "1",
+            "SelectionWindowBy2Clicks": "1"
+        },
+        "Calculator": {
+            "sectCircles_State": "0",
+            "sectPercents_State": "0",
+            "sectPolygons_State": "1",
+            "sectProportions_State": "0",
+            "sectScientific_State": "0",
+            "sectTriangles_State": "1",
+            "sectUnits_State": "0",
+            "sectVariables_State": "1"
+        },
+        "ColorBox": {
+            "CustomColor0": "2130750207",
+            "CustomColor1": "2143833360",
+            "CustomColor2": "2135327231",
+            "CustomColor3": "2141847807",
+            "CustomColor4": "2138963801",
+            "CustomColor5": "2143817925"
+        },
+        "Colors": {
+            "RelativePositionAssistantBackground": "#2c3641",
+            "RelativePositionAssistantText": "#00f0e8",
+            "VisualSnapDocumentEntitiesColor": "#00aaff",
+            "VisualSnapGuideEntities": "#00ff00",
+            "VisualSnapGuideEntitiesColor": "#00ff00",
+            "VisualSnapProjectedSnapColor": "#00ffff",
+            "VisualSnapVertexesColor": "#00ff00",
+            "angles_basis_angleray": "#00ffff",
+            "angles_basis_direction": "#0055ff",
+            "background": "#212830",
+            "draft_mode_marker": "#91ff00",
+            "grid": "#7e8fe8",
+            "gridLines": "#2c3641",
+            "grid_x_axisColor": "#c50000",
+            "grid_y_axisColor": "#006600",
+            "handle": "#009900",
+            "highlight": "#739374",
+            "info_overlay_snap": "#00dad3",
+            "meta_grid": "#01437c",
+            "meta_grid_lines": "#005f84",
+            "overlay_box_fill_inv": "#00ffff",
+            "overlay_box_line_inv": "#d6ff07",
+            "overlay_box_transparency": "25",
+            "previewReferencesColor": "#ffff00",
+            "previewReferencesHighlightColor": "#55ff00",
+            "snap_indicator": "#ff5500"
+        },
+        "CommandsPromotion": {
+            "PromoteCommands": "1",
+            "ShowCommandInMenu": "0"
+        },
+        "CustomMenus": {
+            "Attributes": "SL$|ModifyAttributes",
+            "AutoZoom": "SL$|ZoomAuto",
+            "CircleOps": "SL$|DimDiametric|DimOrdinate|DimRadial|DrawCircleParallel|DrawCross|DrawLineOrthogonal|DrawSliceDivideCircle|DrawLineTangent1|DrawLineTangent2|DrawLineOrthTan",
+            "Custom": "SL$|DrawLine|DrawCircle2P",
+            "Dimensions": "SL$|DimAligned|DimLinearVer|DimLinearHor|DimAngular|DimArc|DimBaseline|DimContinue|DimRadial|DimDiametric|DimStyles|DimPickApply|GTDFeatureFrame|DimLeader|DimLinear|DimModify|DimOrdinate|DimOrdinateReBase|DimRegenerate|DimOrdinateForBase",
+            "GenericOps": "SL$|ModifyAttributes||EditCopy|PenCopy|ModifyDelete|ViewGrid||Fullscreen",
+            "GenericOptsAny": "SL$|BlocksExplode|ModifyDuplicate|ModifyMirror|ModifyMove|ModifyRotate|ModifyStretch|ModifyScale|ModifyMoveRotate|ModifyRotate2",
+            "LineOps": "SL$|DrawArcTangential|ModifyCut|ModifyTrimAmount|ModifyLineGap|DimAligned|DimLinearVer|DimLinearHor|DimLinear",
+            "Zoom Auto": "SL$|ZoomAuto"
+        },
+        "CustomToolbars": {
+            "Demo": "SL$|DrawLine|DrawCircle2P|ModifyMove|DrawArc3P|InfoAngle",
+            "cobosata": "SL$|SelectLayer||DrawCircle2P|DrawArc2PAngle|DrawArc2PHeight|DrawArc2PRadius||InfoCursorAbs|DrawCircle3P",
+            "test": "SL$|SelectLayer||DrawCircle2P|DrawArc2PAngle|DrawArc2PHeight|DrawArc2PRadius||InfoCursorAbs|DrawCircle3P",
+            "vaseawer": "SL$|SelectLayer||DrawCircle2P|DrawArc2PAngle|DrawArc2PHeight|DrawArc2PRadius||InfoCursorAbs|DrawCircle3P"
+        },
+        "CustomToolbarsVisibility": {
+            "VisibleList": "SL$|another|addd|adfwt aedf"
+        },
+        "Defaults": {
+            "AngleSnapStep": "4",
+            "AnglesBaseAngle": "0",
+            "AutoBackupDocument": "1",
+            "AutoSaveTime": "1",
+            "AutosaveFilePrefix": "~",
+            "BackupFileSuffix": ".bak",
+            "InteractiveInputEnabled": "1",
+            "NewToolBarArea": "3",
+            "Unit": "Millimeter",
+            "UseQtFileOpenDialog": "0",
+            "WheelScrollInvertH": "1",
+            "WheelScrollInvertV": "1"
+        },
+        "Dimension": {
+            "Angle": "90"
+        },
+        "Dlg": {
+            "Height": "278",
+            "Width": "350",
+            "X": "1064",
+            "Y": "537",
+            "hasPosition": "1"
+        },
+        "DlgAbout": {
+            "Height": "373",
+            "Width": "566",
+            "X": "899",
+            "Y": "466",
+            "hasPosition": "1"
+        },
+        "DlgArcProperties": {
+            "Height": "244",
+            "Width": "373",
+            "X": "1088",
+            "Y": "152",
+            "hasPosition": "1"
+        },
+        "DlgBlockProperties": {
+            "Height": "79",
+            "Width": "253",
+            "X": "1070",
+            "Y": "450",
+            "hasPosition": "1"
+        },
+        "DlgCalcCategoriesEditor": {
+            "Height": "370",
+            "Width": "497",
+            "X": "363",
+            "Y": "360",
+            "hasPosition": "1"
+        },
+        "DlgCalcCategoryEditor": {
+            "Height": "233",
+            "Width": "444",
+            "X": "1514",
+            "Y": "658",
+            "hasPosition": "1"
+        },
+        "DlgCalculatorEditor": {
+            "Height": "1404",
+            "Width": "1359",
+            "X": "475",
+            "Y": "5",
+            "hasPosition": "1"
+        },
+        "DlgCircleProperties": {
+            "Height": "190",
+            "Width": "504",
+            "X": "1080",
+            "Y": "575",
+            "hasPosition": "1"
+        },
+        "DlgDimLinearProperties": {
+            "Height": "257",
+            "Width": "511",
+            "X": "1040",
+            "Y": "560",
+            "hasPosition": "1"
+        },
+        "DlgDimStyleManager": {
+            "Height": "868",
+            "Width": "1219",
+            "X": "821",
+            "Y": "169",
+            "hasPosition": "1"
+        },
+        "DlgDimensionProperties": {
+            "Height": "218",
+            "Width": "461",
+            "X": "474",
+            "Y": "419",
+            "hasPosition": "1"
+        },
+        "DlgDlgArcProperties": {
+            "Height": "360",
+            "Width": "905",
+            "X": "759",
+            "Y": "468",
+            "hasPosition": "1"
+        },
+        "DlgDlgCircleProperties": {
+            "Height": "244",
+            "Width": "500",
+            "X": "847",
+            "Y": "391",
+            "hasPosition": "1"
+        },
+        "DlgDlgDimOrdinate": {
+            "Height": "734",
+            "Width": "1020",
+            "X": "666",
+            "Y": "304",
+            "hasPosition": "1"
+        },
+        "DlgDlgEllipseProperties": {
+            "Height": "304",
+            "Width": "500",
+            "X": "1064",
+            "Y": "504",
+            "hasPosition": "1"
+        },
+        "DlgDlgExit": {
+            "Height": "114",
+            "Width": "450",
+            "X": "1045",
+            "Y": "638",
+            "hasPosition": "1"
+        },
+        "DlgDlgHatchProperties": {
+            "Height": "550",
+            "Width": "520",
+            "X": "1010",
+            "Y": "416",
+            "hasPosition": "1"
+        },
+        "DlgDlgHyperbolaProperties": {
+            "Height": "647",
+            "Width": "1083",
+            "X": "931",
+            "Y": "372",
+            "hasPosition": "1"
+        },
+        "DlgDlgImageProperties": {
+            "Height": "352",
+            "Width": "500",
+            "X": "1010",
+            "Y": "451",
+            "hasPosition": "1"
+        },
+        "DlgDlgLineProperties": {
+            "Height": "288",
+            "Width": "746",
+            "X": "933",
+            "Y": "413",
+            "hasPosition": "1"
+        },
+        "DlgDlgMTextProperties": {
+            "Height": "539",
+            "Width": "852",
+            "X": "1650",
+            "Y": "788",
+            "hasPosition": "1"
+        },
+        "DlgDlgNewMenu": {
+            "Height": "100",
+            "Width": "364",
+            "X": "581",
+            "Y": "364",
+            "hasPosition": "1"
+        },
+        "DlgDlgNewToolbar": {
+            "Height": "96",
+            "Width": "206",
+            "X": "1127",
+            "Y": "610",
+            "hasPosition": "1"
+        },
+        "DlgDlgParabolaProperties": {
+            "Height": "450",
+            "Width": "500",
+            "X": "1020",
+            "Y": "451",
+            "hasPosition": "1"
+        },
+        "DlgDlgPointProperties": {
+            "Height": "239",
+            "Width": "473",
+            "X": "1064",
+            "Y": "537",
+            "hasPosition": "1"
+        },
+        "DlgDlgPolylineProperties": {
+            "Height": "280",
+            "Width": "500",
+            "X": "1064",
+            "Y": "537",
+            "hasPosition": "1"
+        },
+        "DlgDlgSplinePointsProperties": {
+            "Height": "420",
+            "Width": "868",
+            "X": "1003",
+            "Y": "355",
+            "hasPosition": "1"
+        },
+        "DlgDlgSplineProperties": {
+            "Height": "550",
+            "Width": "1122",
+            "X": "525",
+            "Y": "632",
+            "hasPosition": "1"
+        },
+        "DlgDlgTextProperties": {
+            "Height": "473",
+            "Width": "647",
+            "X": "1147",
+            "Y": "663",
+            "hasPosition": "1"
+        },
+        "DlgDlgTolerance": {
+            "Height": "138",
+            "Width": "762",
+            "X": "935",
+            "Y": "462",
+            "hasPosition": "1"
+        },
+        "DlgDlgToleranceNew": {
+            "Height": "138",
+            "Width": "882",
+            "X": "505",
+            "Y": "580",
+            "hasPosition": "1"
+        },
+        "DlgEllipseProperties": {
+            "Height": "328",
+            "Width": "545",
+            "X": "728",
+            "Y": "662",
+            "hasPosition": "1"
+        },
+        "DlgEntityAttributes": {
+            "Height": "294",
+            "Width": "332",
+            "X": "1120",
+            "Y": "559",
+            "hasPosition": "1"
+        },
+        "DlgHatchProperties": {
+            "Height": "667",
+            "Width": "1071",
+            "X": "553",
+            "Y": "365",
+            "hasPosition": "1"
+        },
+        "DlgIconsStyling": {
+            "Height": "548",
+            "Width": "434",
+            "X": "1064",
+            "Y": "357",
+            "hasPosition": "1"
+        },
+        "DlgImageOptions": {
+            "Height": "545",
+            "Width": "449",
+            "X": "1046",
+            "Y": "419",
+            "hasPosition": "1"
+        },
+        "DlgInputDlg": {
+            "Height": "126",
+            "Width": "365",
+            "X": "1003",
+            "Y": "607",
+            "hasPosition": "1"
+        },
+        "DlgInsertProperties": {
+            "Height": "310",
+            "Width": "457",
+            "X": "1042",
+            "Y": "505",
+            "hasPosition": "1"
+        },
+        "DlgLayerProperties": {
+            "Height": "294",
+            "Width": "464",
+            "X": "1144",
+            "Y": "559",
+            "hasPosition": "1"
+        },
+        "DlgLayerTreeOptions": {
+            "Height": "352",
+            "Width": "521",
+            "X": "1044",
+            "Y": "425",
+            "hasPosition": "1"
+        },
+        "DlgLayersTreeLayerDialog": {
+            "Height": "344",
+            "Width": "263",
+            "X": "1109",
+            "Y": "557",
+            "hasPosition": "1"
+        },
+        "DlgLineProperties": {
+            "Height": "220",
+            "Width": "487",
+            "X": "1020",
+            "Y": "550",
+            "hasPosition": "1"
+        },
+        "DlgMTextProperties": {
+            "Height": "547",
+            "Width": "768",
+            "X": "952",
+            "Y": "451",
+            "hasPosition": "1"
+        },
+        "DlgMenuAssigner": {
+            "Height": "514",
+            "Width": "506",
+            "X": "1216",
+            "Y": "318",
+            "hasPosition": "1"
+        },
+        "DlgMenuCreator": {
+            "Height": "613",
+            "Width": "1018",
+            "X": "784",
+            "Y": "342",
+            "hasPosition": "1"
+        },
+        "DlgNamedViewsListOptions": {
+            "Height": "416",
+            "Width": "519",
+            "X": "1017",
+            "Y": "569",
+            "hasPosition": "1"
+        },
+        "DlgNewCustomVarDlg": {
+            "Height": "104",
+            "Width": "274",
+            "X": "935",
+            "Y": "548",
+            "hasPosition": "1"
+        },
+        "DlgNewDimStyle": {
+            "Height": "132",
+            "Width": "426",
+            "X": "1057",
+            "Y": "617",
+            "hasPosition": "1"
+        },
+        "DlgNewVersion": {
+            "Height": "465",
+            "Width": "357",
+            "X": "1103",
+            "Y": "476",
+            "hasPosition": "1"
+        },
+        "DlgOptionsDrawing": {
+            "Height": "918",
+            "Width": "1368",
+            "X": "445",
+            "Y": "318",
+            "hasPosition": "1"
+        },
+        "DlgOptionsGeneral": {
+            "Height": "865",
+            "Width": "1359",
+            "X": "1122",
+            "Y": "216",
+            "hasPosition": "1"
+        },
+        "DlgParabolaProperties": {
+            "Height": "320",
+            "Width": "520",
+            "X": "1067",
+            "Y": "500",
+            "hasPosition": "1"
+        },
+        "DlgPenPaletteOptions": {
+            "Height": "446",
+            "Width": "373",
+            "X": "1064",
+            "Y": "541",
+            "hasPosition": "1"
+        },
+        "DlgPointProperties": {
+            "Height": "192",
+            "Width": "457",
+            "X": "1042",
+            "Y": "575",
+            "hasPosition": "1"
+        },
+        "DlgPolylineProperties": {
+            "Height": "234",
+            "Width": "300",
+            "X": "1067",
+            "Y": "554",
+            "hasPosition": "1"
+        },
+        "DlgPropertySheetOptions": {
+            "Height": "312",
+            "Width": "529",
+            "X": "1116",
+            "Y": "402",
+            "hasPosition": "1"
+        },
+        "DlgQuickInfoOptions": {
+            "Height": "435",
+            "Width": "407",
+            "X": "1067",
+            "Y": "474",
+            "hasPosition": "1"
+        },
+        "DlgQuickSelection": {
+            "AppendToSet": "0",
+            "ApplyToSelection": "0",
+            "EditValue": "242",
+            "EntityType": "11",
+            "Height": "711",
+            "IncludeIntoSet": "1",
+            "Operation": "1",
+            "PrecisionAngle": "0.0001",
+            "PrecisionLength": "0.8",
+            "PropertyName": "layer",
+            "Width": "554",
+            "X": "1106",
+            "Y": "210",
+            "hasPosition": "1"
+        },
+        "DlgShortcuts": {
+            "Height": "615",
+            "Width": "630",
+            "X": "1085",
+            "Y": "153",
+            "hasPosition": "1"
+        },
+        "DlgSplinePointProperties": {
+            "Height": "381",
+            "Width": "739",
+            "X": "1067",
+            "Y": "500",
+            "hasPosition": "1"
+        },
+        "DlgSplineProperties": {
+            "Height": "331",
+            "Width": "855",
+            "X": "1067",
+            "Y": "543",
+            "hasPosition": "1"
+        },
+        "DlgTextProperties": {
+            "Height": "457",
+            "Width": "803",
+            "X": "595",
+            "Y": "511",
+            "hasPosition": "1"
+        },
+        "DlgToolbarCreator": {
+            "Height": "601",
+            "Width": "836",
+            "X": "1048",
+            "Y": "114",
+            "hasPosition": "1"
+        },
+        "DlgUCSListOptions": {
+            "Height": "430",
+            "Width": "396",
+            "X": "1006",
+            "Y": "452",
+            "hasPosition": "1"
+        },
+        "DlgWidgetOptions": {
+            "Height": "924",
+            "Width": "958",
+            "X": "207",
+            "Y": "174",
+            "hasPosition": "1"
+        },
+        "Draw": {
+            "Arc2PAngleParameter": "90",
+            "Arc2PAngleReversed": "0",
+            "Arc2PHeightParameter": "50",
+            "Arc2PHeightReversed": "1",
+            "Arc2PLengthParameter": "100",
+            "Arc2PLengthReversed": "1",
+            "Arc2PRadiusParameter": "70.7107",
+            "Arc2PRadiusReversed": "1",
+            "ArcReversed": "0",
+            "ArcTangentialAngle": "270",
+            "ArcTangentialByRadius": "1",
+            "ArcTangentialRadius": "50",
+            "ArccReversed": "1",
+            "BoundingBoxAsGroup": "1",
+            "BoundingBoxCornerPoints": "0",
+            "BoundingBoxOffset": "0",
+            "BoundingBoxPolyline": "1",
+            "CircleByArcLayerMode": "1",
+            "CircleByArcPenMode": "1",
+            "CircleByArcRadiusShift": "10",
+            "CircleByArcReplaceArc": "0",
+            "CircleRadius": "20",
+            "CircleTan2Radius": "10",
+            "CrossAngle": "0",
+            "CrossMode": "0",
+            "CrossX": "5",
+            "CrossY": "5",
+            "DimAngle": "0",
+            "DimBaselineDistance": "27.2122",
+            "DimBaselineDistanceFree": "0",
+            "DimDiameter": "0",
+            "DimDiameterAngle": "0",
+            "DimDiameterAngleFree": "0",
+            "DimLabel": "",
+            "DimRadial": "0",
+            "DimRadialAngle": "207.706",
+            "DimRadialAngleFree": "1",
+            "DimTol1": "",
+            "DimTol2": "",
+            "Ellipse1PAngle": "0",
+            "Ellipse1PArcReversed": "0",
+            "Ellipse1PFreeAngle": "0",
+            "Ellipse1PMajorRadius": "10",
+            "Ellipse1PMinorRadius": "10",
+            "Ellipse1PUseAngle": "0",
+            "EllipseArcReversed": "0",
+            "HatchAngle": "0",
+            "HatchPattern": "ansi31",
+            "HatchPreview": "1",
+            "HatchScale": "4",
+            "HatchSolid": "0",
+            "InfoDist2NearestIsOnEntity": "1",
+            "LineAngleAngle": "2497.22",
+            "LineAngleInAnglesBasis": "1",
+            "LineAngleLength": "50",
+            "LineAngleLengthType": "0",
+            "LineAngleRelAngle": "30",
+            "LineAngleRelAngleIsRelative": "1",
+            "LineAngleRelDoDivide": "0",
+            "LineAngleRelLength": "90",
+            "LineAngleRelLengthIsFree": "1",
+            "LineAngleRelLineSnapMode": "2",
+            "LineAngleRelOffset": "0",
+            "LineAngleRelSnapDistance": "0",
+            "LineAngleRelTickSnapMode": "0",
+            "LineAngleSnapPoint": "1",
+            "LineBisectorLength": "20",
+            "LineBisectorNumber": "4",
+            "LineJoinAttributesSource": "3",
+            "LineJoinLine1EdgeMode": "1",
+            "LineJoinLine2EdgeMode": "1",
+            "LineJoinPolyline": "0",
+            "LineJoinRemoveOriginals": "1",
+            "LineMiddleOffset": "9.08639",
+            "LineOrthogonalRel": "0",
+            "LineOrthogonalRelDoDivide": "0",
+            "LineOrthogonalRelLength": "1000",
+            "LineOrthogonalRelLengthIsFree": "0",
+            "LineOrthogonalRelLineSnapMode": "0",
+            "LineOrthogonalRelOffset": "0",
+            "LineOrthogonalRelSnapDistance": "0",
+            "LineOrthogonalRelTickSnapMode": "0",
+            "LineParallelDistance": "14",
+            "LineParallelNumber": "2",
+            "LineParallelSymmetric": "0",
+            "LinePointToLineAngle": "30.2138",
+            "LinePointToLineEndOffset": "20",
+            "LinePointToLineLength": "78.1025",
+            "LinePointToLineOrthogonal": "0",
+            "LinePointToLineSizeMode": "0",
+            "LinePointToLineSnapMode": "1",
+            "LinePointsAngle": "0",
+            "LinePointsCount": "1",
+            "LinePointsEdgeMode": "1",
+            "LinePointsFitToLine": "0",
+            "LinePointsPointsDistance": "1",
+            "LinePointsUseFixedDistance": "0",
+            "LinePolygon2Number": "3",
+            "LinePolygon2Polyline": "0",
+            "LinePolygon2Radius": "0",
+            "LinePolygon2Rounded": "0",
+            "LinePolygon3Number": "3",
+            "LinePolygon3Polyline": "0",
+            "LinePolygon3Radius": "0",
+            "LinePolygon3Rounded": "0",
+            "LinePolygonNumber": "3",
+            "LinePolygonPolyline": "0",
+            "LinePolygonRadius": "0",
+            "LinePolygonRounded": "0",
+            "LinePolygonSSNumber": "3",
+            "LinePolygonSSPolyline": "0",
+            "LinePolygonSSRadius": "0",
+            "LinePolygonSSRounded": "0",
+            "LinePolygonSSVertexVertex": "0",
+            "LineRelAngleAngle": "45",
+            "LineRelAngleAngleAngle": "15",
+            "LineRelAngleAngleLength": "1000",
+            "LineRelAngleLength": "100",
+            "LineSnakeAngle": "30",
+            "LineSnakeAngleRelative": "1",
+            "LineToFarPointActivePoint": "0",
+            "LineToFarPointActiveX": "",
+            "LineToFarPointActiveY": "",
+            "LineToFarPointFarPointX_0": "-1000",
+            "LineToFarPointFarPointX_1": "1000",
+            "LineToFarPointFarPointX_2": "0",
+            "LineToFarPointFarPointX_3": "0",
+            "LineToFarPointFarPointY_0": "0",
+            "LineToFarPointFarPointY_1": "0",
+            "LineToFarPointFarPointY_2": "-1000",
+            "LineToFarPointFarPointY_3": "1000",
+            "LineToFarPointLength": "100",
+            "LineToFarPointLengthType": "4",
+            "LineToFarPointPointX_1": "1000",
+            "LineToFarPointPointX_2": "0",
+            "LineToFarPointPointX_3": "0",
+            "LineToFarPointPointY_0": "1",
+            "LineToFarPointPointY_1": "0",
+            "LineToFarPointPointY_2": "-1000",
+            "LineToFarPointPointY_3": "1000",
+            "LineToFarPointRadiantPointX_0": "-1000",
+            "LineToFarPointRadiantPointX_1": "1000",
+            "LineToFarPointRadiantPointX_2": "0",
+            "LineToFarPointRadiantPointX_3": "0",
+            "LineToFarPointRadiantPointY_0": "0",
+            "LineToFarPointRadiantPointY_1": "0",
+            "LineToFarPointRadiantPointY_2": "-1000",
+            "LineToFarPointRadiantPointY_3": "1000",
+            "ModifyOffsetCopies": "1",
+            "ModifyOffsetDistance": "1",
+            "ModifyOffsetDistanceFixed": "1",
+            "ModifyOffsetKeepOriginals": "0",
+            "ModifyOffsetMultipleCopies": "0",
+            "ModifyOffsetUseCurrentAttributes": "1",
+            "ModifyOffsetUseCurrentLayer": "1",
+            "Parameter": "3.14",
+            "PointsLatticeAdjustLastPoint": "0",
+            "PointsLatticeColumns": "5",
+            "PointsLatticeRows": "5",
+            "PointsMiddleCount": "1",
+            "PolylineAngle": "0",
+            "PolylineEquidistantCopies": "2",
+            "PolylineEquidistantDist": "10",
+            "PolylineMode": "0",
+            "PolylineRadius": "1",
+            "PolylineReversed": "0",
+            "Rectangle1PointAngle": "0",
+            "Rectangle1PointBaseAngleIsFixed": "0",
+            "Rectangle1PointBaseAngleIsFree": "0",
+            "Rectangle1PointCorners": "0",
+            "Rectangle1PointEdges": "0",
+            "Rectangle1PointHeight": "0",
+            "Rectangle1PointLengthX": "1",
+            "Rectangle1PointLengthY": "1",
+            "Rectangle1PointPolyline": "0",
+            "Rectangle1PointRadius": "1",
+            "Rectangle1PointRadiusSnap": "0",
+            "Rectangle1PointSizeInner": "0",
+            "Rectangle1PointSnapMode": "0",
+            "Rectangle1PointWidth": "0",
+            "Rectangle2PointsAngle": "0",
+            "Rectangle2PointsBaseAngleIsFixed": "0",
+            "Rectangle2PointsCorners": "1",
+            "Rectangle2PointsEdges": "0",
+            "Rectangle2PointsInsertSnapMode": "0",
+            "Rectangle2PointsLengthX": "1",
+            "Rectangle2PointsLengthY": "1",
+            "Rectangle2PointsPolyline": "0",
+            "Rectangle2PointsRadius": "1",
+            "Rectangle2PointsRadiusSnap": "0",
+            "Rectangle2PointsSecondPointMode": "0",
+            "Rectangle3PointsAngle": "0",
+            "Rectangle3PointsBaseAngleIsFixed": "0",
+            "Rectangle3PointsCorners": "0",
+            "Rectangle3PointsEdges": "0",
+            "Rectangle3PointsLengthX": "1",
+            "Rectangle3PointsLengthY": "1",
+            "Rectangle3PointsPolyline": "0",
+            "Rectangle3PointsQuadrangle": "0",
+            "Rectangle3PointsQuadrangleAngleIsFixed": "0",
+            "Rectangle3PointsQuadrangleFixedAngle": "1",
+            "Rectangle3PointsRadius": "1",
+            "Rectangle3PointsRadiusSnap": "0",
+            "RectangleFixAngle": "0",
+            "RectangleFixCorners": "1",
+            "RectangleFixHeight": "20",
+            "RectangleFixLengthX": "50",
+            "RectangleFixLengthY": "10",
+            "RectangleFixPolyline": "1",
+            "RectangleFixRadius": "5",
+            "RectangleFixRadiusSnap": "1",
+            "RectangleFixSnapMode": "4",
+            "RectangleFixWidth": "200",
+            "SliceDivideAngle": "90",
+            "SliceDivideCircleAngle": "90",
+            "SliceDivideCircleCircleStartAngle": "0",
+            "SliceDivideCircleCount": "4",
+            "SliceDivideCircleDistance": "1",
+            "SliceDivideCircleDoDivide": "0",
+            "SliceDivideCircleLength": "90.5539",
+            "SliceDivideCircleLengthTickAngleRel": "1",
+            "SliceDivideCircleOffset": "0",
+            "SliceDivideCircleStartAngle": "0",
+            "SliceDivideCircleTickEdgeMode": "0",
+            "SliceDivideCircleTickSnap": "1",
+            "SliceDivideCount": "3",
+            "SliceDivideDistance": "1",
+            "SliceDivideDoDivide": "0",
+            "SliceDivideLength": "20",
+            "SliceDivideLengthTickAngleRel": "1",
+            "SliceDivideLineAngle": "45",
+            "SliceDivideLineCircleStartAngle": "0",
+            "SliceDivideLineCount": "5",
+            "SliceDivideLineDistance": "5",
+            "SliceDivideLineDoDivide": "1",
+            "SliceDivideLineFixedDistance": "0",
+            "SliceDivideLineLength": "0",
+            "SliceDivideLineLengthTickAngleRel": "1",
+            "SliceDivideLineOffset": "0",
+            "SliceDivideLineTickEdgeMode": "0",
+            "SliceDivideLineTickSnap": "0",
+            "SliceDivideOffset": "0",
+            "SliceDivideTickEdgeMode": "1",
+            "SliceDivideTickSnap": "1",
+            "SplineClosed": "0",
+            "SplineDegree": "3",
+            "SplineExplodeCustomSegmentsCount": "20",
+            "SplineExplodeKeepOriginals": "1",
+            "SplineExplodeToPolyline": "1",
+            "SplineExplodeUseCurrentAttributes": "1",
+            "SplineExplodeUseCurrentLayer": "1",
+            "SplineExplodeUseCustomSegmentsCount": "1",
+            "SplineFromPolylineDegree": "3",
+            "SplineFromPolylineKeepOriginals": "1",
+            "SplineFromPolylineMidPointsCount": "2",
+            "SplineFromPolylineUseFitPoints": "1",
+            "StarInnerRadius": "10",
+            "StarInnerRound": "1",
+            "StarNumber": "5",
+            "StarOuterRadius": "10",
+            "StarOuterRound": "1",
+            "StarPolyline": "1",
+            "StarSymmetric": "0",
+            "TextAlignment": "1",
+            "TextAlignmentT": "1",
+            "TextAngle": "360",
+            "TextDefault": "1",
+            "TextFont": "unicode",
+            "TextHeight": "10",
+            "TextLeftToRight": "1",
+            "TextLineSpacingFactor": "1",
+            "TextString": "\\pt280;SC065 Shadowclad to solid plaster external junctions",
+            "TextStringT": "manual selection needed"
+        },
+        "Draw Bisectors": {
+            "Length": "210",
+            "Number": "3"
+        },
+        "Draw Parallels": {
+            "Distance": "5",
+            "Number": "2"
+        },
+        "Draw Text": {
+            "Angle": "0"
+        },
+        "Draw arcs tangential": {
+            "Angle": "0.785398163397",
+            "ByRadius": "1",
+            "Radius": "15"
+        },
+        "Draw ellipse by 1 point": {
+            "Angle": "0",
+            "MajorRadius": "10",
+            "MinorRadius": "10"
+        },
+        "Draw ellipse with axis": {
+            "Reversed": "1"
+        },
+        "Draw lines with given angle": {
+            "Angle": "1.10358215801",
+            "InAnglesBasis": "0",
+            "Length": "50",
+            "LengthType": "0",
+            "SnapPoint": "0"
+        },
+        "Edit": {
+            "PasteToPointsAngle": "0",
+            "PasteToPointsRemovePoints": "1",
+            "PasteToPointsScaleFactor": "0.5",
+            "PasteTransformAngle": "0",
+            "PasteTransformArrayAngle": "0",
+            "PasteTransformArrayRotate": "1",
+            "PasteTransformArrayXCount": "3",
+            "PasteTransformArrayXSpacing": "1",
+            "PasteTransformArrayYCount": "1",
+            "PasteTransformArrayYSpacing": "1",
+            "PasteTransformIsArray": "1",
+            "PasteTransformSameAngles": "0",
+            "PasteTransformScaleFactor": "1"
+        },
+        "Export": {
+            "BlackWhite": "0",
+            "ExportImage": "Z:/",
+            "ExportImageFilter": "Portable Network Graphic (png)(*.png)",
+            "ExportSettings": "Z:/",
+            "ExportSettingsDir": "Z:/00",
+            "ExportWidgetSettingsDir": "Z:/00",
+            "Height": "208",
+            "Resolution": "auto",
+            "Width": "233"
+        },
+        "Export.Layers": {
+            "DirPath": "Z:/Downloads",
+            "DocumentPerLayer": "0",
+            "EntitiesInOriginalLayer": "1"
+        },
+        "Geometry": {
+            "StateOfWidgets": "AAAA/wAAAAD9AAAAAgAAAAAAAAAAAAAAAPwCAAAAAfsAAAAaAGQAbwBjAGsAXwBjAGEAZABfAG0AZQBnAGEAAAAAAP////8AAAByAP///wAAAAEAAAG9AAAE8PwCAAAAAfwAAAB6AAAE8AAAAPgA////+gAAAAsCAAAADPsAAAAUAGMAYQBsAGMAdQBsAGEAdABvAHIBAAAAAP////8AAAAAAAAAAPsAAAAkAGwAaQBiAHIAYQByAHkAXwBkAG8AYwBrAHcAaQBkAGcAZQB0AQAAAAD/////AAAA8QD////7AAAAIABiAGwAbwBjAGsAXwBkAG8AYwBrAHcAaQBkAGcAZQB0AQAAAAD/////AAAAjQD////7AAAAJABwAGUAbgBfAHcAaQB6AF8AZABvAGMAawB3AGkAZABnAGUAdAEAAAAA/////wAAAHYA////+wAAACwAcABlAG4AXwBwAGEAbABlAHQAdABlAF8AZABvAGMAawB3AGkAZABnAGUAdAEAAAAA/////wAAAPgA////+wAAACoAbABhAHkAZQByAF8AdAByAGUAZQBfAGQAbwBjAGsAdwBpAGQAZwBlAHQBAAAAAP////8AAAB9AP////sAAAAgAGwAYQB5AGUAcgBfAGQAbwBjAGsAdwBpAGQAZwBlAHQBAAAAAP////8AAAB5AP////sAAAAiAHEAdQBpAGMAawBfAGUAbgB0AGkAdAB5AF8AaQBuAGYAbwEAAAAA/////wAAAHYA////+wAAABwAcAByAG8AcABlAHIAdAB5AF8AcwBoAGUAZQB0AQAAAAD/////AAAAtAD////7AAAAHAB1AGMAcwBfAGQAbwBjAGsAdwBpAGQAZwBlAHQBAAAAAP////8AAAB2AP////sAAAAeAHYAaQBlAHcAXwBkAG8AYwBrAHcAaQBkAGcAZQB0AQAAAAD/////AAAAdgD////7AAAAJABjAG8AbQBtAGEAbgBkAF8AZABvAGMAawB3AGkAZABnAGUAdAEAAAAA/////wAAAHYA////AAAIDgAABPAAAAABAAAAAgAAAAEAAAAC/AAAAAQAAAAAAAAAAgAAACQAYwBhAHQAZQBnAG8AcgBpAGUAcwBfAHQAbwBvAGwAYgBhAHIDAAAAAP////8AAAAAAAAAAAAAABoAbwByAGQAZQByAF8AdABvAG8AbABiAGEAcgIAAAAA/////wAAAAAAAAAAAAAAAgAAAAgAAAAkAGkAbgBmAG8AYwB1AHIAcwBvAHIAXwB0AG8AbwBsAGIAYQByAQAAAAD/////AAAAAAAAAAAAAAAYAGYAaQBsAGUAXwB0AG8AbwBsAGIAYQByAQAAAE3/////AAAAAAAAAAAAAAAYAGUAZABpAHQAXwB0AG8AbwBsAGIAYQByAQAAAbX/////AAAAAAAAAAAAAAAYAHYAaQBlAHcAXwB0AG8AbwBsAGIAYQByAQAAA2z/////AAAAAAAAAAAAAAAkAHcAbwByAGsAcwBwAGEAYwBlAHMAXwB0AG8AbwBsAGIAYQByAQAABV7/////AAAAAAAAAAAAAAAaAHYAaQBlAHcAcwBfAHQAbwBvAGwAYgBhAHIBAAAF6P////8AAAAAAAAAAAAAABYAdQBjAHMAXwB0AG8AbwBsAGIAYQByAQAABmD/////AAAAAAAAAAAAAAAmAHAAcgBlAGYAZQByAGUAbgBjAGUAcwBfAHQAbwBvAGwAYgBhAHIBAAAG2P////8AAAAAAAAAAAAAAAIAAAAHAAAAFgBwAGUAbgBfAHQAbwBvAGwAYgBhAHIBAAAAAP////8AAAAAAAAAAAAAACYAZQBuAHQAaQB0AHkAbABhAHkAZQByAF8AdABvAG8AbABiAGEAcgEAAALd/////wAAAAAAAAAAAAAAJgB0AG8AbwBsAG8AcAB0AGkAbwBuAHMAXwB0AG8AbwBsAGIAYQByAQAAA1X/////AAAAAAAAAAAAAAAIAEQAZQBtAG8AAAAChf////8AAAAAAAAAAAAAABAAYwBvAGIAbwBzAGEAdABhAAAAAAD/////AAAAAAAAAAAAAAAIAHQAZQBzAHQAAAAAAP////8AAAAAAAAAAAAAABAAdgBhAHMAZQBhAHcAZQByAAAAAAD/////AAAAAAAAAAAAAAADAAAAGAAAABoAVABCAEMAbwBvAHIAZABpAG4AYQB0AGUAcwEAAAAA/////wAAAAAAAAAAAAAAEgBUAEIAUgBlAGwAWgBlAHIAbwEAAAGM/////wAAAAAAAAAAAAAADgBUAEIATQBvAHUAcwBlAQAAAiX/////AAAAAAAAAAAAAAAeAFQAQgBTAGUAbABlAGMAdABpAG8AbgBJAG4AZgBvAQAAA4X/////AAAAAAAAAAAAAAAaAFQAQgBBAGMAdABpAHYAZQBMAGEAeQBlAHIBAAAEbv////8AAAAAAAAAAAAAABgAVABCAEcAcgBpAGQAUwB0AGEAdAB1AHMBAAAE7v////8AAAAAAAAAAAAAABYAVABCAFUAQwBTAFMAdABhAHQAdQBzAQAABVz/////AAAAAAAAAAAAAAAaAFQAQgBBAG4AZwBsAGUAcwBCAGEAcwBpAHMBAAAGTv////8AAAAAAAAAAAAAABgAbABpAG4AZQBfAHQAbwBvAGwAYgBhAHIAAAAAAP////8AAAAAAAAAAAAAABoAcABvAGkAbgB0AF8AdABvAG8AbABiAGEAcgAAAAAA/////wAAAAAAAAAAAAAAHgBwAG8AbAB5AGcAbwBuAF8AdABvAG8AbABiAGEAcgAAAAAA/////wAAAAAAAAAAAAAAHABjAGkAcgBjAGwAZQBfAHQAbwBvAGwAYgBhAHIAAAAAAP////8AAAAAAAAAAAAAABoAYwB1AHIAdgBlAF8AdABvAG8AbABiAGEAcgAAAAAA/////wAAAAAAAAAAAAAAHABzAHAAbABpAG4AZQBfAHQAbwBvAGwAYgBhAHIAAAAAAP////8AAAAAAAAAAAAAAB4AZQBsAGwAaQBwAHMAZQBfAHQAbwBvAGwAYgBhAHIAAAAAAP////8AAAAAAAAAAAAAACAAcABvAGwAeQBsAGkAbgBlAF8AdABvAG8AbABiAGEAcgAAAAAA/////wAAAAAAAAAAAAAAIgBkAGkAbQBlAG4AcwBpAG8AbgBfAHQAbwBvAGwAYgBhAHIAAAAAAP////8AAAAAAAAAAAAAACoAbwB0AGgAZQByAF8AZAByAGEAdwBpAG4AZwBfAHQAbwBvAGwAYgBhAHIAAAAAAP////8AAAAAAAAAAAAAABwAbQBvAGQAaQBmAHkAXwB0AG8AbwBsAGIAYQByAAAAAAD/////AAAAAAAAAAAAAAAYAGkAbgBmAG8AXwB0AG8AbwBsAGIAYQByAAAAAAD/////AAAAAAAAAAAAAAAcAHMAZQBsAGUAYwB0AF8AdABvAG8AbABiAGEAcgAAAAAA/////wAAAAAAAAAAAAAAGABzAG4AYQBwAF8AdABvAG8AbABiAGEAcgEAAAbV/////wAAAAAAAAAAAAAAIgBkAG8AYwBrAGEAcgBlAGEAcwBfAHQAbwBvAGwAYgBhAHIBAAAJZv////8AAAAAAAAAAAAAACAAYwByAGUAYQB0AG8AcgBzAF8AdABvAG8AbABiAGEAcgEAAAmz/////wAAAAAAAAAA",
+            "WindowGeometry": "AdnQywADAAAAAAIuAAAAsgAADC0AAAZ+AAACLgAAAN8AAAwtAAAGfgAAAAAAAAAADwAAAAIuAAAA3wAADC0AAAZ+",
+            "WindowHeight": "1440",
+            "WindowWidth": "2560",
+            "WindowX": "558",
+            "WindowY": "178"
+        },
+        "Image": {
+            "Angle": "34",
+            "Factor": "0.352777777778",
+            "ImageAngle": "0",
+            "ImageFactor": "1"
+        },
+        "Info": {
+            "InfoDist2NearestIsOnEntity": "1"
+        },
+        "InfoOverlayCursor": {
+            "Enabled": "1",
+            "FontName": "Verdana",
+            "OffsetFromCursor": "15",
+            "ShowAbsolute": "1",
+            "ShowAbsoluteWCS": "1",
+            "ShowRelativeDA": "1",
+            "ShowSnapInfo": "1"
+        },
+        "Insert": {
+            "InsertAngle": "0",
+            "InsertColumnSpacing": "300",
+            "InsertColumns": "1",
+            "InsertFactor": "1",
+            "InsertRowSpacing": "300",
+            "InsertRows": "1"
+        },
+        "Keyboard": {
+            "AllowScrollMoveAdjustByKeys": "1",
+            "EvaluateCommandOnSpace": "1",
+            "ToggleFreeSnapOnSpace": "1"
+        },
+        "LCDialog_ArcProperties": {
+            "Height": "285",
+            "Width": "609",
+            "X": "1120",
+            "Y": "529",
+            "hasPosition": "1"
+        },
+        "LCDialog_OptionsGeneral": {
+            "Height": "628",
+            "Width": "844",
+            "X": "848",
+            "Y": "357",
+            "hasPosition": "1"
+        },
+        "LayerTree": {
+            "namingCopyPrefix": "(Copy",
+            "namingLayerSeparator": "-",
+            "penDimensionalLayerColor": "#0000ff",
+            "penDimensionalLayerLineType": "6",
+            "penDimensionalLayerWidth": "18",
+            "penNormalLayerColor": "#000000",
+            "penNormalLayerWidth": "13"
+        },
+        "Library Insert": {
+            "Angle": "0.349065850399",
+            "Factor": "3"
+        },
+        "LibraryInsert": {
+            "LibraryInsertAngle": "0",
+            "LibraryInsertFactor": "1"
+        },
+        "Modify": {
+            "AlignAlignTo": "0",
+            "AlignAsGroup": "0",
+            "AlignHAlign": "0",
+            "AlignOneAlignTo": "0",
+            "AlignOneHAlign": "1",
+            "AlignOneVAlign": "3",
+            "AlignRefKeepOriginals": "0",
+            "AlignRefScale": "0",
+            "AlignRefUseCurrentAttributes": "0",
+            "AlignRefUseCurrentLayer": "0",
+            "AlignVAlign": "0",
+            "BevelLength1": "10",
+            "BevelLength2": "10",
+            "BevelTrim": "1",
+            "BreakDivideRemoveSegments": "1",
+            "BreakDivideRemoveSelected": "1",
+            "BreakOutLineRemoveSegments": "1",
+            "BreakOutLineRemoveSelected": "0",
+            "DuplicateInPlace": "0",
+            "DuplicateLayerMode": "0",
+            "DuplicateOffsetX": "0",
+            "DuplicateOffsetY": "0",
+            "DuplicatePenMode": "0",
+            "KeepModifiedSelected": "1",
+            "LineGapGapFree": "1",
+            "LineGapGapSize": "20",
+            "LineGapGapSnap": "1",
+            "LineGapLineSnap": "0",
+            "LineGapSnapDistance": "10",
+            "LineJoinAttributesSource": "3",
+            "LineJoinLine1EdgeMode": "0",
+            "LineJoinLine2EdgeMode": "0",
+            "LineJoinRemoveOriginals": "1",
+            "MirrorKeepOriginals": "1",
+            "MirrorMode": "1",
+            "MirrorToLine": "0",
+            "MirrorUseCurrentAttributes": "0",
+            "MirrorUseCurrentLayer": "1",
+            "ModifyEntitiesToActiveLayer": "0",
+            "MoveCopies": "1",
+            "MoveKeepOriginals": "0",
+            "MoveMode": "0",
+            "MoveMultipleCopies": "0",
+            "MoveRotateAngle": "0",
+            "MoveRotateCopies": "1",
+            "MoveRotateFixedAngle": "0",
+            "MoveRotateFreeAngle": "0",
+            "MoveRotateKeepOriginals": "0",
+            "MoveRotateMode": "2",
+            "MoveRotateMultipleCopies": "0",
+            "MoveRotateSameAngleForCopies": "0",
+            "MoveRotateUseCurrentAttributes": "0",
+            "MoveRotateUseCurrentLayer": "0",
+            "MoveUseCurrentAttributes": "0",
+            "MoveUseCurrentLayer": "0",
+            "Rotate2Angle1": "0",
+            "Rotate2Angle2": "0",
+            "Rotate2Copies": "1",
+            "Rotate2KeepOriginals": "0",
+            "Rotate2MirrorAngles": "0",
+            "Rotate2Mode": "2",
+            "Rotate2MultipleCopies": "0",
+            "Rotate2SameAngleForCopies": "0",
+            "Rotate2UseCurrentAttributes": "0",
+            "Rotate2UseCurrentLayer": "0",
+            "RotateAngle": "45",
+            "RotateAngle2": "0",
+            "RotateAngleIsFree": "0",
+            "RotateAngleIsRelative": "0",
+            "RotateAngleRef": "90",
+            "RotateAngleRefIsAbsolute": "1",
+            "RotateAngleRefIsFree": "0",
+            "RotateCenterPointFirst": "1",
+            "RotateCopies": "7",
+            "RotateKeepOriginals": "1",
+            "RotateMode": "2",
+            "RotateMultipleCopies": "1",
+            "RotateTwoRotations": "0",
+            "RotateUseCurrentAttributes": "0",
+            "RotateUseCurrentLayer": "1",
+            "RoundRadius": "10",
+            "RoundTrim": "1",
+            "ScaleCopies": "1",
+            "ScaleExplicitFactor": "0",
+            "ScaleFactorX": "1.1",
+            "ScaleFactorY": "1",
+            "ScaleIsotropic": "1",
+            "ScaleKeepOriginals": "0",
+            "ScaleMode": "2",
+            "ScaleMultipleCopies": "0",
+            "ScaleUseCurrentAttributes": "0",
+            "ScaleUseCurrentLayer": "0",
+            "StretchKeepOriginals": "1",
+            "TrimAmount": "50",
+            "TrimAmountSymmetric": "1",
+            "TrimAmountTotal": "1"
+        },
+        "PasteTransform": {
+            "Angle": "0.0872664625997",
+            "ArrayAngle": "0",
+            "ArrayXCount": "3",
+            "ArrayXSpacing": "100",
+            "ArrayYCount": "1",
+            "ArrayYSpacing": "120",
+            "IsArray": "1",
+            "SameAngles": "0",
+            "ScaleFactor": "1"
+        },
+        "Paths": {
+            "Fonts": "C:\\Program Files (x86)\\LibreCAD\\resources\\fonts",
+            "ImageFilter": "All Image Files ( *.bmp *.cur *.gif *.icns *.ico *.jfif *.jpeg *.jpg *.pbm *.pgm *.png *.ppm *.svg *.svgz *.tga *.tif *.tiff *.wbmp *.webp *.xbm *.xpm)",
+            "Library": "C:\\Local\\LibreCADProjects\\master\\librecad\\support\\library",
+            "Open": "Z:/CADS/DXFs",
+            "OpenFilter": "Drawing Exchange (*.dxf)",
+            "OpenImage": "Z:/LibreCAD_Screens",
+            "Patterns": "C:\\Local\\LibreCADProjects\\patterns",
+            "Save": "Z:/CADS",
+            "SaveDrawingFilter": "Drawing Exchange DXF 2007 (*.dxf)",
+            "Translations": "C:\\Local\\LibreCADProjects\\master\\librecad\\ts"
+        },
+        "PenPaletteWidget": {
+            "activeItemBgColor": "#f0ffff",
+            "colorDisplayMode": "2",
+            "doubleClickOnTableMode": "1",
+            "filterInHighlightsMode": "0",
+            "gridColor": "#d8d8d8",
+            "matchedItemBgColor": "#0000ff",
+            "pensFile": "C:\\Local\\_to_rename1\\lc_palette.pens",
+            "showColorIconCol": "1",
+            "showColorNameCol": "0",
+            "showEntireActiveRowBold": "0",
+            "showLineTypeIconCol": "1",
+            "showLineTypeNameCol": "1",
+            "showLineWidthIconCol": "1",
+            "showLineWidthNameCol": "1",
+            "showNoSelectionMessage": "1"
+        },
+        "Print": {
+            "ColorMode": "1",
+            "FileName": "Z:/CADS/DXFs/FleurStaging.pdf",
+            "PaperSizeX": "210",
+            "PaperSizeY": "297"
+        },
+        "PrintPreview": {
+            "BlackWhiteSet": "0",
+            "CustomScaleIm10": "1:97.0277",
+            "CustomScaleIm11": "1:5.41479",
+            "CustomScaleIm12": "1:6.16344",
+            "CustomScaleIm13": "1:469.608",
+            "CustomScaleIm14": "1:10607.3",
+            "CustomScaleMe0": "1:27.588",
+            "CustomScaleMe1": "1:3.69754",
+            "CustomScaleMe2": "1:3.69754",
+            "CustomScaleMe3": "1.97878:1",
+            "CustomScaleMe4": "2.37453:1",
+            "PrintScaleFixed": "0",
+            "PrintScaleValue": "1:3.69754",
+            "ScaleLineWidth": "1"
+        },
+        "PropertySheet": {
+            "CollapsedSections": ",$_secCalcInfo,$_secGeneral,$_secViews,_secPrintPaper",
+            "duplicateSelectionAction": "1",
+            "fontSize": "9",
+            "noSelectionActiveLayer": "1",
+            "noSelectionActivePen": "1",
+            "noSelectionDrawingUnits": "1",
+            "noSelectionGraphicView": "1",
+            "noSelectionGrid": "1",
+            "noSelectionNamedView": "1",
+            "noSelectionPrintPaper": "0",
+            "noSelectionUCS": "1",
+            "noSelectionWorkspace": "1",
+            "showComputed": "1",
+            "showLinks": "1",
+            "showMultiEntityCommands": "1",
+            "showSingleEntityCommands": "1",
+            "showToolOptions": "1"
+        },
+        "QuickInfoWidget": {
+            "AutoSelectEntityInDefaultAction": "0",
+            "EntityCoordinatesMode": "0",
+            "PointsCoordinatesMode": "0",
+            "SelectEntityInDefaultAction": "1",
+            "ShowDistanceAndAngle": "1",
+            "ShowEntityBoundaries": "1",
+            "ShowPointsPathOnPreview": "1",
+            "ShowPolylineDetails": "1",
+            "penHighlightColor": "#ff0000",
+            "penHighlightLineType": "1",
+            "penHighlightLineWidth": "5"
+        },
+        "RecentFiles": {
+            "File1": "Z:\\CADS\\ortho_grid_snap.dxf",
+            "File2": "Z:\\CADS\\Untitled2311.dxf",
+            "File3": "Z:\\CADS\\2lines.dxf",
+            "File4": "Z:\\CADS\\TTR error.dxf",
+            "File5": "Z:\\CADS\\#FENOUILLET_19JJ_Plan2D_RDC.dxf",
+            "File6": "Z:\\CADS\\ARC_ERR.dxf",
+            "File7": "Z:\\CADS\\empty.dxf",
+            "File8": "Z:\\CADS\\DXFs\\Drawing NCJ10FE-H.dxf",
+            "File9": "Z:\\CADS\\visual_snap.dxf"
+        },
+        "RelativePositionAssistant": {
+            "FontName": "Verdana",
+            "FontSize": "10",
+            "LastInvocationOffsetMode": "1",
+            "RememberCoordinatesMode": "0",
+            "StartInOffsetMode": "0"
+        },
+        "Render": {
+            "ArcRenderInterpolate": "1",
+            "ArcRenderInterpolateSegmentAngle": "3000",
+            "ArcRenderInterpolateSegmentFixed": "0",
+            "ArcRenderInterpolateSegmentSagitta": "500",
+            "DrawTextsAsDraftInPreview": "0",
+            "FontLettersColumnsCount": "16",
+            "MinArcRadius": "86",
+            "MinCircleRadius": "250",
+            "MinEllipseMajor": "150",
+            "MinEllipseMinor": "150",
+            "MinRenderableTextHeightPx": "5"
+        },
+        "Select": {
+            "WindowAll": "1",
+            "WindowArc": "0",
+            "WindowCircle": "0",
+            "WindowDimension": "0",
+            "WindowEllipse": "0",
+            "WindowHatch": "0",
+            "WindowImage": "0",
+            "WindowInsert": "0",
+            "WindowLine": "0",
+            "WindowMText": "0",
+            "WindowPoint": "0",
+            "WindowPolyline": "0",
+            "WindowSpline": "0",
+            "WindowText": "0",
+            "WindowWipeout": "0"
+        },
+        "Selection": {
+            "Additivity": "1"
+        },
+        "Snap": {
+            "AdvSnapGridCellSnapFactor": "40",
+            "AngleSnapToLinesIfGrid": "1",
+            "Distance": "100",
+            "DocEntityAddingDelay": "1525",
+            "MiddlePoints": "5",
+            "SnapMode": "97",
+            "SnapPointAddingDelay": "300",
+            "VSAngleSnapStepRaysRelative": "1",
+            "VSAngleSnapStepRaysVertexes": "0",
+            "VSClearSolutionByRMB": "0",
+            "VSDocEntityAddingDelay": "1700",
+            "VSGuidingEntiitesCatchDistance": "12",
+            "VSGuidingEntitiesShowLabels": "1",
+            "VSGuidingEntityLabelFontSize": "9",
+            "VSGuidingLabelOffsetPx": "40",
+            "VSHighlightedVertexSize": "8",
+            "VSShowNotSnappableGuides": "0",
+            "VSSnapAutoAddLastSnapPointOnly": "1",
+            "VSSnapAutoAddSnapPoint": "1",
+            "VSSnapManualAddingWithCTRL": "1",
+            "VSVertexVertexDistanceCircles": "0",
+            "VSVertexVertexDistanceTangents": "0",
+            "VertexAddingDelay": "1200",
+            "VisualSnapHighlightedVertexSize": "8",
+            "VisualSnapProjectedSnapSize": "7",
+            "VisualSnapVertexSize": "6"
+        },
+        "Snaps": {
+            "VSAngleSnapStepRaysVertexes": "1"
+        },
+        "Startup": {
+            "CADSideBarUngrouped": "1",
+            "CheckForNewVersions": "0",
+            "EnableCADToolbars": "1",
+            "EnableLeftSidebar": "1",
+            "ExpandedToolsMenu": "1",
+            "ExpandedToolsMenuTillEntity": "1",
+            "FirstLoad": "0",
+            "IgnoredPreRelease": "",
+            "IgnoredRelease": "",
+            "LastOpenFilesActive": "",
+            "LastOpenFilesList": "",
+            "OpenLastOpenedFiles": "1",
+            "ShowToolbarsTooltip": "1",
+            "ShowVersionInTitle": "1",
+            "SkippedPreRelease": "2.2.2_alpha-latest",
+            "TabMode": "1"
+        },
+        "Tangential 2 Circles, Radius": {
+            "Radius": "1"
+        },
+        "UCS": {
+            "SetAngle": "180",
+            "SetAngleIsFree": "1"
+        },
+        "UCSCreate": {
+            "Angle": "0.573573716047",
+            "AngleIsFixed": "0"
+        },
+        "UCSList": {
+            "ConfirmDelete": "1",
+            "ShowColumnGridType": "1",
+            "ShowColumnPositionAndAngle": "1",
+            "ShowColumnTypeIcon": "1",
+            "ShowPositionAndAngle": "1",
+            "ShowTypeIcon": "1"
+        },
+        "UiIconsStyling": {
+            "IconOverridesDir": "Z:\\LCI",
+            "LCI_ColorAccent": "#a4d5f5",
+            "LCI_ColorAccentAF": "#aaffff",
+            "LCI_ColorAccentAN": "#55ffff",
+            "LCI_ColorAccentDF": "#f0f0f0",
+            "LCI_ColorAccentDN": "#f5f5f5",
+            "LCI_ColorAccentNN": "#00ffff",
+            "LCI_ColorAccentSF": "#ffff00",
+            "LCI_ColorAccentSN": "#f4166b",
+            "LCI_ColorBack": "",
+            "LCI_ColorBackDF": "#d4d4d4",
+            "LCI_ColorBackDN": "#e1e1e1",
+            "LCI_ColorMain": "#000",
+            "LCI_ColorMainAF": "#0055ff",
+            "LCI_ColorMainAN": "#00aaff",
+            "LCI_ColorMainDF": "#9e9e9e",
+            "LCI_ColorMainDN": "#9d9d9d",
+            "LCI_ColorMainNN": "#00547e",
+            "LCI_ColorMainSN": "#ffff00"
+        },
+        "ViewsList": {
+            "DoubleClickPolicy": "3",
+            "RestoreViewBySingleClick": "1",
+            "ShowColumnIconGrid": "1",
+            "ShowColumnIconUCS": "1",
+            "ShowColumnUCSDetails": "1",
+            "ShowColumnViewDetails": "0",
+            "ShowTooltip": "1",
+            "ShowTypeIcon": "1"
+        },
+        "Widget.LayerTree": {
+            "activeLayerBgColor": "#e5e8e5",
+            "gridColor": "#55ffff",
+            "hideLayerTypeIcons": "0",
+            "indentSize": "4",
+            "namingAltSuffix": "@",
+            "namingDimSuffix": "#",
+            "namingInfoSuffix": "+",
+            "penDimensionalLayerColor": "#0000ff",
+            "selectedItemBgColor": "#f3f3f3",
+            "showGrid": "1",
+            "showIndentedName": "1",
+            "virtualLayerBgColor": "#fafafa"
+        },
+        "Widget.PenPalette": {
+            "activeItemBgColor": "#e7e7e2",
+            "gridColor": "#ffffff",
+            "pensFile": "C:\\Local\\_to_rename1\\lc_palette.pens",
+            "showColorIconCol": "1",
+            "showColorNameCol": "0",
+            "showGrid": "1",
+            "showLineTypeNameCol": "1",
+            "showLineWidthNameCol": "1"
+        },
+        "Widget.QuickInfo": {
+            "AutoSelectEntityInDefaultAction": "0",
+            "penHighlightColor": "#ff0000"
+        },
+        "Widget.UCSList": {
+            "ConfirmDelete": "1",
+            "ShowColumnGridType": "1",
+            "ShowColumnPositionAndAngle": "1",
+            "ShowColumnTypeIcon": "1",
+            "ShowGrid": "1"
+        },
+        "Widget.ViewsList": {
+            "ConfirmDelete": "1",
+            "ReplaceDuplicateSilently": "1",
+            "ShowColumnIconGrid": "0",
+            "ShowColumnIconUCSType": "0",
+            "ShowColumnUCSDetails": "0",
+            "ShowColumnViewDetails": "1",
+            "ShowGrid": "1"
+        },
+        "Widgets": {
+            "AllowStatusbarFontSize": "1",
+            "AllowStatusbarHeight": "1",
+            "AllowStyle": "1",
+            "AllowToolbarIconSize": "1",
+            "DockTitleBarVertical": "1",
+            "DockVerticalTabs": "1",
+            "DockWidgetsFlatIcons": "1",
+            "DockWidgetsIconSize": "20",
+            "FavoriteColors": "SL$|aqua|red|blue|coral|#ffaa00|antiquewhite",
+            "KeycodeMode": "0",
+            "LeftToolbarAllColumnsCount": "4",
+            "LeftToolbarAllFlatIcons": "1",
+            "LeftToolbarAllIconSize": "22",
+            "LeftToolbarColumnsCount": "7",
+            "LeftToolbarFlatIcons": "1",
+            "LeftToolbarIconSize": "24",
+            "PickValueButtonsFlatIcons": "1",
+            "StatusbarFontSize": "9",
+            "StatusbarHeight": "34",
+            "Style": "windowsvista",
+            "StyleSheet": "",
+            "ToolbarIconSize": "28"
+        },
+        "WindowOptions": {
+            "SubWindowMode": "0",
+            "TabPosition": "0"
+        }
+    }
+}

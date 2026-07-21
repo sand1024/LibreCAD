@@ -87,6 +87,13 @@ QJsonObject LC_FusionSkinsRepository::configToJson(const SkinConfig& config) con
     root["use_status_pill_chips"]      = config.useStatusPillChips;
     root["use_floating_hud"]           = config.useFloatingHUD;
     root["close_button_color_policy"]  = static_cast<int>(config.closeButtonColorPolicy);
+    root["custom_menu_tear_off"]       = config.customMenuTearOff;
+    root["sync_checked_menu_state"]    = config.syncCheckedMenuState;
+
+    root["show_generic_dock_icons"]    = config.showGenericDockIcons; // Serialize
+    root["show_special_dock_icons"]    = config.showSpecialDockIcons; // Serialize
+
+    root["custom_dialog_title_bar"] = config.customDialogTitleBar;
 
     auto serializeScheme = [](const ColorSchemeData &scheme) {
         QJsonObject obj;
@@ -172,6 +179,14 @@ bool LC_FusionSkinsRepository::configFromJson(const QJsonObject& json, SkinConfi
     config.closeButtonColorPolicy = static_cast<CloseButtonColorPolicy>(
         json["close_button_color_policy"].toInt(static_cast<int>(CloseButtonColorPolicy::AccentColor))
     );
+
+    config.customMenuTearOff = json["custom_menu_tear_off"].toBool(false);
+    config.syncCheckedMenuState = json["sync_checked_menu_state"].toBool(false);
+
+    config.showGenericDockIcons = json["show_generic_dock_icons"].toBool(true); // Deserialize
+    config.showSpecialDockIcons = json["show_special_dock_icons"].toBool(true); // Deserialize
+
+    config.customDialogTitleBar = json["custom_dialog_title_bar"].toBool(false); // Deserialize
 
     auto deserializeScheme = [](const QJsonObject &obj, ColorSchemeData &scheme) {
         scheme.qss = obj["qss"].toString();

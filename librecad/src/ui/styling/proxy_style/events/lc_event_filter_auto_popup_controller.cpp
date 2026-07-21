@@ -60,6 +60,11 @@ void LC_EventFilterAutoPopupController::handlePopupTimeout() {
                 if (menu) {
                     connect(menu, &QMenu::aboutToHide, this, &LC_EventFilterAutoPopupController::onMenuAboutToHide, Qt::UniqueConnection);
                 }
+                if (QWidget* activePopup = QApplication::activePopupWidget()) {
+                    if (const auto* activeMenu = qobject_cast<QMenu*>(activePopup)) {
+                        disconnect(activeMenu, &QMenu::aboutToHide, this, &LC_EventFilterAutoPopupController::onMenuAboutToHide);
+                    }
+                }
                 extButton->click();
             }
         }
@@ -77,7 +82,13 @@ void LC_EventFilterAutoPopupController::handlePopupTimeout() {
                         menu = toolButton->defaultAction()->menu();
                     }
                     if (menu) {
-                        connect(menu, &QMenu::aboutToHide, this, &LC_EventFilterAutoPopupController::onMenuAboutToHide, Qt::UniqueConnection);
+                        connect(menu, &QMenu::aboutToHide, this, &LC_EventFilterAutoPopupController::onMenuAboutToHide,
+                                Qt::UniqueConnection);
+                    }
+                    if (QWidget* activePopup = QApplication::activePopupWidget()) {
+                        if (const auto* activeMenu = qobject_cast<QMenu*>(activePopup)) {
+                            disconnect(activeMenu, &QMenu::aboutToHide, this, &LC_EventFilterAutoPopupController::onMenuAboutToHide);
+                        }
                     }
                     toolButton->showMenu();
                 }
@@ -94,9 +105,13 @@ void LC_EventFilterAutoPopupController::handlePopupTimeout() {
                 QCoreApplication::sendEvent(menuBar, &press);
 
                 QMouseEvent release(QEvent::MouseButtonRelease, clickPoint, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+                if (QWidget* activePopup = QApplication::activePopupWidget()) {
+                    if (const auto* activeMenu = qobject_cast<QMenu*>(activePopup)) {
+                        disconnect(activeMenu, &QMenu::aboutToHide, this, &LC_EventFilterAutoPopupController::onMenuAboutToHide);
+                    }
+                }
                 QCoreApplication::sendEvent(menuBar, &release);
             }
-            // Retain m_hoveredMenuBarAction so subsequent hovers over the active dropdown's trigger are recognized as identical.
         }
     }
 }
@@ -139,6 +154,59 @@ bool LC_EventFilterAutoPopupController::eventFilter(QObject* watched, QEvent* ev
                 return true;
             }
             handleMenuBarHover(watched);
+
+            // Dynamically shift cursor to hand ONLY if custom tear-off menu styling is active
+            if (auto* menu = qobject_cast<QMenu*>(watched)) {
+                if (style()->customMenuTearOffEnabled()) {
+                    const QPoint pos = menu->mapFromGlobal(QCursor::pos());
+                    const QAction* action = menu->actionAt(pos);
+                    if (action && action->isSeparator() && menu->isTearOffEnabled() && action == menu->actions().first()) {
+                        menu->setCursor(Qt::OpenHandCursor);
+                    }
+                    else {
+                        menu->unsetCursor();
+                    }
+                }
+                else {
+                    menu->unsetCursor();
+                }
+            }
+
+            // Dynamically change cursor to the unified drag cursor when hovering over the toolbar handle grip [3]
+            if (auto* toolBar = qobject_cast<QToolBar*>(watched)) {
+                if (toolBar->isMovable()) {
+                    QStyleOptionToolBar opt;
+                    opt.initFrom(toolBar);
+                    opt.rect = toolBar->rect();
+                    if (toolBar->orientation() == Qt::Horizontal) {
+                        opt.state |= QStyle::State_Horizontal;
+                    } else {
+                        opt.state &= ~QStyle::State_Horizontal;
+                    }
+
+                    opt.features = QStyleOptionToolBar::None;
+                    opt.features |= QStyleOptionToolBar::Movable;
+
+                    const QRect handleRect = toolBar->style()->subElementRect(QStyle::SE_ToolBarHandle, &opt, toolBar);
+                    const QPoint localPos = toolBar->mapFromGlobal(QCursor::pos());
+
+                    if (handleRect.contains(localPos)) {
+                        const auto resolvedDragCursor = style()->resolveDragCursor();
+                        toolBar->setCursor(resolvedDragCursor);
+                        return true;
+                    } else {
+                        toolBar->unsetCursor();
+                    }
+                }
+            }
+
+            // Dynamically change cursor to the unified drag cursor on splitter handles [3]
+            if (watched && watched->inherits("QSplitterHandle")) {
+                if (auto* handle = qobject_cast<QWidget*>(watched)) {
+                    const auto resolvedDragCursor = style()->resolveDragCursor();
+                    handle->setCursor(resolvedDragCursor);
+                }
+            }
             break;
         }
 
@@ -148,7 +216,6 @@ bool LC_EventFilterAutoPopupController::eventFilter(QObject* watched, QEvent* ev
 
     return false;
 }
-
 
 void LC_EventFilterAutoPopupController::handleSegmentedButtonEnter(QObject* watched) {
     if (style()->useSegmentedToolButtons()) {
@@ -190,8 +257,7 @@ void LC_EventFilterAutoPopupController::handleToolbarOverflowEnter(QObject* watc
 
 void LC_EventFilterAutoPopupController::handleInstantButtonEnter(QObject* watched) {
     if (auto* toolButton = qobject_cast<QToolButton*>(watched)) {
-        if (style()->autoPopupInstantButtonsEnabled() && toolButton->window() && toolButton->window() ==
-            QApplication::activeWindow()) {
+        if (style()->autoPopupInstantButtonsEnabled() && toolButton->window() && toolButton->window() == QApplication::activeWindow()) {
             const bool isPopup = (toolButton->popupMode() == QToolButton::InstantPopup || toolButton->popupMode() ==
                 QToolButton::MenuButtonPopup);
             if (isPopup) {
@@ -213,7 +279,7 @@ void LC_EventFilterAutoPopupController::handleInstantButtonEnter(QObject* watche
                             m_toolbarPopupTimer->start();
                         }
                         else if (!m_toolbarPopupTimer->isActive()) {
-                            QMenu* btnMenu = toolButton->menu();
+                            const QMenu* btnMenu = toolButton->menu();
                             if (!btnMenu && toolButton->defaultAction()) {
                                 btnMenu = toolButton->defaultAction()->menu();
                             }
@@ -229,7 +295,7 @@ void LC_EventFilterAutoPopupController::handleInstantButtonEnter(QObject* watche
 }
 
 void LC_EventFilterAutoPopupController::handleReEntryCancellation(QObject* watched) {
-    if (auto* widget = qobject_cast<QWidget*>(watched)) {
+    if (const auto* widget = qobject_cast<QWidget*>(watched)) {
         bool cursorInPopup = false;
         if (const QWidget* activePopup = QApplication::activePopupWidget()) {
             if (widget == activePopup || activePopup->isAncestorOf(widget)) {
@@ -398,9 +464,8 @@ bool LC_EventFilterAutoPopupController::handleActiveGrabNavigation(QObject* watc
                 // Determine robustly if the active popup menu belongs to the QMenuBar actions
                 bool isMenuBarMenu = false;
                 if (auto* menu = qobject_cast<QMenu*>(activePopup)) {
-                    isMenuBarMenu = (menu->parentWidget() == menuBar ||
-                                     menu->parent() == menuBar ||
-                                     menuBar->actions().contains(menu->menuAction()));
+                    isMenuBarMenu = (menu->parentWidget() == menuBar || menu->parent() == menuBar || menuBar->actions().contains(
+                        menu->menuAction()));
                 }
 
                 if (!isMenuBarMenu) {
@@ -410,6 +475,9 @@ bool LC_EventFilterAutoPopupController::handleActiveGrabNavigation(QObject* watc
                     QPoint localPos = menuBar->mapFromGlobal(QCursor::pos());
                     QAction* action = menuBar->actionAt(localPos);
 
+                    if (auto* activeMenu = qobject_cast<QMenu*>(activePopup)) {
+                        disconnect(activeMenu, &QMenu::aboutToHide, this, &LC_EventFilterAutoPopupController::onMenuAboutToHide);
+                    }
                     activePopup->close();
 
                     if (action) {
@@ -423,11 +491,9 @@ bool LC_EventFilterAutoPopupController::handleActiveGrabNavigation(QObject* watc
 
                             QRect geom = menuBar->actionGeometry(action);
                             QPoint clickPoint = geom.center();
-                            QMouseEvent press(QEvent::MouseButtonPress, clickPoint, Qt::LeftButton, Qt::LeftButton,
-                                              Qt::NoModifier);
+                            QMouseEvent press(QEvent::MouseButtonPress, clickPoint, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
                             QCoreApplication::sendEvent(menuBar, &press);
-                            QMouseEvent release(QEvent::MouseButtonRelease, clickPoint, Qt::LeftButton, Qt::LeftButton,
-                                                Qt::NoModifier);
+                            QMouseEvent release(QEvent::MouseButtonRelease, clickPoint, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
                             QCoreApplication::sendEvent(menuBar, &release);
                         }
                         else {
@@ -442,8 +508,8 @@ bool LC_EventFilterAutoPopupController::handleActiveGrabNavigation(QObject* watc
                     QToolButton::MenuButtonPopup);
                 if (isPopupMode) {
                     int threshold = toolButton->defaultAction() ? 1 : 0;
-                    bool hasMenu = toolButton->menu() || (toolButton->defaultAction() && toolButton->defaultAction()->menu()) ||
-                        (toolButton->actions().size() > threshold);
+                    bool hasMenu = toolButton->menu() || (toolButton->defaultAction() && toolButton->defaultAction()->menu()) || (toolButton
+                      ->actions().size() > threshold);
 
                     if (hasMenu) {
                         QMenu* btnMenu = toolButton->menu();
@@ -456,6 +522,10 @@ bool LC_EventFilterAutoPopupController::handleActiveGrabNavigation(QObject* watc
                                 m_toolbarPopupTimer->stop();
                                 m_leaveCloseTimer->stop();
 
+                                if (auto* activeMenu = qobject_cast<QMenu*>(activePopup)) {
+                                    disconnect(activeMenu, &QMenu::aboutToHide, this,
+                                               &LC_EventFilterAutoPopupController::onMenuAboutToHide);
+                                }
                                 activePopup->close();
 
                                 m_hoveredPopupTrigger = toolButton;
@@ -482,6 +552,9 @@ bool LC_EventFilterAutoPopupController::handleActiveGrabNavigation(QObject* watc
                         m_toolbarPopupTimer->stop();
                         m_leaveCloseTimer->stop();
 
+                        if (auto* activeMenu = qobject_cast<QMenu*>(activePopup)) {
+                            disconnect(activeMenu, &QMenu::aboutToHide, this, &LC_EventFilterAutoPopupController::onMenuAboutToHide);
+                        }
                         activePopup->close();
 
                         m_hoveredPopupTrigger = toolBar;
@@ -507,7 +580,7 @@ bool LC_EventFilterAutoPopupController::handleActiveGrabNavigation(QObject* watc
 void LC_EventFilterAutoPopupController::handleMenuBarHover(QObject* watched) {
     if (auto* menuBar = qobject_cast<QMenuBar*>(watched)) {
         if (menuBar->window() && menuBar->window() == QApplication::activeWindow()) {
-            QPoint localPos = menuBar->mapFromGlobal(QCursor::pos());
+            const QPoint localPos = menuBar->mapFromGlobal(QCursor::pos());
             QAction* action = menuBar->actionAt(localPos);
 
             if (action != m_hoveredMenuBarAction) {

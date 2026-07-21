@@ -152,6 +152,7 @@ StyleMetricsConfig LC_SkinScaledGeometryProvider::scaleMetricsConfig(const Style
     scaled.menuBarVerticalMargin          = scaleMetric(base.menuBarVerticalMargin, dpr);
     scaled.indicatorBoxSize               = scaleMetric(base.indicatorBoxSize, dpr);
     scaled.indicatorLabelSpacing          = scaleMetric(base.indicatorLabelSpacing, dpr);
+    scaled.titleBarButtonSpacing          = scaleMetric(base.titleBarButtonSpacing, dpr);
     scaled.titleBarButtonSize             = scaleMetric(base.titleBarButtonSize, dpr);
     scaled.subMenuOverlap                 = scaleMetric(base.subMenuOverlap, dpr);
     scaled.menuSupportsIcons              = base.menuSupportsIcons;

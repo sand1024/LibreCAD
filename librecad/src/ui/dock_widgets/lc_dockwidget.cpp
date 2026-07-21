@@ -27,7 +27,7 @@ LC_DockWidget::LC_DockWidget(QWidget* parent, const QString& title, const QStrin
     : QDockWidget{title, parent, flags}, m_verticalTitle{verticalTitle}, m_horizontalTitle{title} {
 }
 
-void LC_DockWidget::updateTitle() {
+void LC_DockWidget::updateTitleOld() {
     const DockWidgetFeatures currentFeatures = features();
     const auto verticalTitleBar = currentFeatures & QDockWidget::DockWidgetVerticalTitleBar;
     if (verticalTitleBar) {

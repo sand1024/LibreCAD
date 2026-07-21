@@ -41,6 +41,9 @@ QJsonObject LC_TypographyRepository::configToJson(const FontConfig& config) cons
     root["menus"]     = serializeRole(config.menus);
     root["buttons"]   = serializeRole(config.buttons);
     root["inputs"]    = serializeRole(config.inputs);
+    root["genericDock"] = serializeRole(config.genericDockTitle); // Serialize
+    root["specialDock"] = serializeRole(config.specialDockTitle); // Serialize
+
     root["technical"] = serializeRole(config.technical);
 
     return root;
@@ -63,6 +66,8 @@ bool LC_TypographyRepository::configFromJson(const QJsonObject& json, FontConfig
     loadRole("menus", config.menus);
     loadRole("buttons", config.buttons);
     loadRole("inputs", config.inputs);
+    loadRole("genericDock", config.genericDockTitle); // Deserialize
+    loadRole("specialDock", config.specialDockTitle); // Deserialize
     loadRole("technical", config.technical);
 
     return true;

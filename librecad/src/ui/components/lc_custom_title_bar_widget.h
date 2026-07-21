@@ -50,6 +50,7 @@
 #include <QList>
 #include <QMetaObject>
 
+class LC_IconLabel;
 class QLabel;
 class QDockWidget;
 class QToolButton;
@@ -87,6 +88,15 @@ public:
         VerticalAlt      // Top-to-bottom layout (+90 degrees)
     };
 
+    enum class TitleTextAlignment {
+        Start = 0, // Aligns to Left (Horizontal), Bottom (Vertical), or Top (VerticalAlt)
+        Center,    // Centered in the title bar (Default)
+        End        // Aligns to Right (Horizontal), Top (Vertical), or Bottom (VerticalAlt)
+    };
+
+    TitleTextAlignment textAlignment() const { return m_textAlignment; }
+    void setTextAlignment(TitleTextAlignment alignment);
+
     TitleTextDirection textDirection() const { return m_textDirection; }
     void setTextDirection(TitleTextDirection direction);
 
@@ -116,6 +126,9 @@ public:
 
     // Override sizeHint to return the correct PM_TitleBarHeight [74]
     QSize sizeHint() const override;
+    void updateButtonIcons() const;
+    void updateTitleBar();
+    void showEvent(QShowEvent* event);
 
 signals:
     void displayModeChanged(LC_CustomTitleBarWidget::DisplayMode mode);
@@ -130,6 +143,7 @@ protected:
     void paintEvent(QPaintEvent* event) override;
     void changeEvent(QEvent* event) override;
     bool event(QEvent* event) override;
+    virtual bool checkOrientationFromSettings() const;
 
 private slots:
     void onDockWidgetFeaturesChanged();
@@ -140,17 +154,18 @@ private slots:
     void showTooltip();
 
 private:
-private:
-    TitleTextDirection m_textDirection = TitleTextDirection::Vertical;
 
+    TitleTextDirection m_textDirection = TitleTextDirection::Vertical;
+    TitleTextAlignment m_textAlignment = TitleTextAlignment::Start;
     // Updated helper signature to accept the parameterized text direction
     QPixmap createRotatedTextPixmap(const QString& text, TitleTextDirection direction) const;
     // Layout and Label Instantiation Helpers
     QLabel* createTitleLabel(const QString& text);
     QString getCurrentTitle() const;
     void createIconLabel(const QString& iconName);
-    void loadIcon(const QString& iconName);
+    void loadIcon(const QString& iconName) const;
     void updateIconForMode();
+    void updateLabelAlignment() const;
 
     // Pixel-perfect manual positioning [74]
     void updateButtonAndLabelGeometries();
@@ -188,9 +203,10 @@ private:
     QString safeElideText(const QString& text, int width) const;
     bool isTextElided() const;
 
-private:
+    void updateCursor();
+
     QLabel* m_titleLabel;
-    QLabel* m_iconLabel;
+    LC_IconLabel* m_iconLabel;
     QDockWidget* m_dockWidget;
 
     // Symmetrical Dock control buttons
@@ -220,6 +236,9 @@ private:
     QList<QMetaObject::Connection> m_screenConnections;
     QList<QMetaObject::Connection> m_windowConnections;
     QList<QMetaObject::Connection> m_appConnections;
+
+    QPoint m_dragStartPos;    // Tracks the relative mouse offset during drag starts
+    bool m_isDragging = false;
 };
 
 #endif

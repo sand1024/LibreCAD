@@ -45,6 +45,25 @@ LC_StyleEditorMetrics::LC_StyleEditorMetrics(QWidget* parent, LC_UIStyleManager*
     ui->cbMnemonicUnderlineMode->addItem(tr("Hold ALT Key"), static_cast<int>(MnemonicUnderlineMode::PressAndHold));
     ui->cbMnemonicUnderlineMode->addItem(tr("Tap ALT to Toggle"), static_cast<int>(MnemonicUnderlineMode::StickyToggle));
 
+    ui->cbDragCursorStyle->addItem(tr("Standard Arrow"), static_cast<int>(DragCursorStyle::StandardArrow));
+    ui->cbDragCursorStyle->addItem(tr("Open Hand"), static_cast<int>(DragCursorStyle::OpenHand));
+    ui->cbDragCursorStyle->addItem(tr("4-Way Move Arrows"), static_cast<int>(DragCursorStyle::SizeAll));
+
+    ui->sbDockButtonMargin->setMinimum(-1);  // replaces -1 with text
+    ui->sbDockButtonMargin->setSpecialValueText(tr("Auto-Center"));
+
+    ui->sbScrollbarWidth->setMinimum(-1);
+    ui->sbScrollbarWidth->setSpecialValueText(tr("System Default"));
+
+    ui->sbDockTitleHeight->setMinimum(-1);
+    ui->sbDockTitleHeight->setSpecialValueText(tr("Font-Adaptive"));
+
+    ui->sbTreeBranchIndicatorSize->setMinimum(-1);
+    ui->sbTreeBranchIndicatorSize->setSpecialValueText(tr("Auto-Scale"));
+
+    ui->sbSplitterHandleLength->setMinimum(-1);
+    ui->sbSplitterHandleLength->setSpecialValueText(tr("Full Length"));
+
     setupConnections();
 }
 
@@ -65,15 +84,12 @@ void LC_StyleEditorMetrics::setupConnections() {
     }
 
     connect(ui->cbWorkspaceDensity, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_StyleEditorMetrics::onDensityPresetChanged);
-
     connect(ui->sbGroupBoxTitleLeftPadding, QOverload<int>::of(&QSpinBox::valueChanged), this, &LC_StyleEditorMetrics::onControlChanged);
     connect(ui->sbGroupBoxTitleLineGap, QOverload<int>::of(&QSpinBox::valueChanged), this, &LC_StyleEditorMetrics::onControlChanged);
-
     connect(ui->sbTreeBranchIndicatorSize, QOverload<int>::of(&QSpinBox::valueChanged), this, &LC_StyleEditorMetrics::onControlChanged);
-
     connect(ui->cbMnemonicUnderlineMode, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_StyleEditorMetrics::onControlChanged);
-
     connect(ui->sbSplitterHandleLength, QOverload<int>::of(&QSpinBox::valueChanged), this, &LC_StyleEditorMetrics::onControlChanged);
+    connect(ui->cbDragCursorStyle, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &LC_StyleEditorMetrics::onControlChanged);
 }
 
 void LC_StyleEditorMetrics::onControlChanged() {
@@ -115,30 +131,10 @@ bool LC_StyleEditorMetrics::doLoadPreset(const QString& key) {
 
     m_blockSignals = true;
     loadConfigToUi(m_currentConfig);
-
     // Default load leaves the preset bar on custom unless a perfect preset match is implemented
     ui->cbWorkspaceDensity->setCurrentIndex(ui->cbWorkspaceDensity->findData("custom"));
 
     ui->sbTreeBranchIndicatorSize->setValue(m_currentConfig.treeBranchIndicatorSize);
-
-    ui->sbDockButtonMargin->setMinimum(-1);  // replaces -1 with text
-    ui->sbDockButtonMargin->setSpecialValueText(tr("Auto-Center"));
-
-    ui->sbScrollbarWidth->setMinimum(-1);
-    ui->sbScrollbarWidth->setSpecialValueText(tr("System Default"));
-    ui->sbScrollbarWidth->setValue(m_currentConfig.scrollBarWidth);
-
-    ui->sbDockTitleHeight->setMinimum(-1);
-    ui->sbDockTitleHeight->setSpecialValueText(tr("Font-Adaptive"));
-    ui->sbDockTitleHeight->setValue(m_currentConfig.dockTitleBarHeight);
-
-    ui->sbTreeBranchIndicatorSize->setMinimum(-1);
-    ui->sbTreeBranchIndicatorSize->setSpecialValueText(tr("Auto-Scale"));
-    ui->sbTreeBranchIndicatorSize->setValue(m_currentConfig.treeBranchIndicatorSize);
-
-    ui->sbSplitterHandleLength->setMinimum(-1);
-    ui->sbSplitterHandleLength->setSpecialValueText(tr("Full Length"));
-    ui->sbSplitterHandleLength->setValue(m_currentConfig.splitterHandleLength);
 
 
     m_blockSignals = false;
@@ -257,6 +253,14 @@ void LC_StyleEditorMetrics::loadConfigToUi(const StyleMetricsConfig& config) con
        );
 
     ui->sbSplitterHandleLength->setValue(m_currentConfig.splitterHandleLength);
+
+    int cursorIndex = ui->cbDragCursorStyle->findData(static_cast<int>(m_currentConfig.dragCursorStyle));
+    ui->cbDragCursorStyle->setCurrentIndex(cursorIndex != -1 ? cursorIndex : 1);
+
+    ui->sbScrollbarWidth->setValue(m_currentConfig.scrollBarWidth);
+    ui->sbSplitterHandleLength->setValue(m_currentConfig.splitterHandleLength);
+    ui->sbTreeBranchIndicatorSize->setValue(m_currentConfig.treeBranchIndicatorSize);
+    ui->sbDockTitleHeight->setValue(m_currentConfig.dockTitleBarHeight);
 }
 
 StyleMetricsConfig LC_StyleEditorMetrics::getConfigFromUi() const {
@@ -312,6 +316,8 @@ StyleMetricsConfig LC_StyleEditorMetrics::getConfigFromUi() const {
   );
 
     config.splitterHandleLength      = ui->sbSplitterHandleLength->value();
+
+    config.dragCursorStyle = static_cast<DragCursorStyle>(ui->cbDragCursorStyle->currentData().toInt());
 
     return config;
 }

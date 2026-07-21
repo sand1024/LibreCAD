@@ -181,6 +181,9 @@ struct FontConfig {
     FontRoleConfig buttons;   // Role 5: Clickable buttons and actions
     FontRoleConfig inputs;     // Role 6: Input fields, dropdowns, spinners
 
+    FontRoleConfig genericDockTitle; // Font for generic dock widget title bar
+    FontRoleConfig specialDockTitle; // Font for special (CAD-related) dock widget title bar
+
     // Role 6: Code & Technical (includes independent monospaced family selection)
     QString techFamily;
     FontRoleConfig technical;
@@ -198,6 +201,11 @@ enum class SegmentedSeparationStyle {
     TransparentIdle     // Transparent idle, active/hover elements render segmented shapes
 };
 
+enum class DragCursorStyle {
+    StandardArrow = 0, // Default arrow pointer (Qt::ArrowCursor)
+    OpenHand,          // Sleek, modern grab hand (Qt::OpenHandCursor) [3]
+    SizeAll            // Classic, highly visible 4-way move arrows (Qt::SizeAllCursor) [3]
+};
 
 struct StyleMetricsConfig {
     QString name; // Unique descriptor name
@@ -242,6 +250,7 @@ struct StyleMetricsConfig {
     int indicatorLabelSpacing = 4;    // PM_CheckBoxLabelSpacing & PM_RadioButtonLabelSpacing
 
     int titleBarButtonSize = 16;      // PM_TitleBarButtonSize
+    int titleBarButtonSpacing = 4;     // Custom gap between title bar buttons in pixels 
     int subMenuOverlap = -2;          // PM_SubMenuOverlap
 
     bool menuSupportsIcons = true;             // SH_Menu_SupportsIcons
@@ -256,6 +265,7 @@ struct StyleMetricsConfig {
     int splitterHandleLength = -1;
 
     int toolbarPopupDelay = 400; // default delay in milliseconds
+    DragCursorStyle dragCursorStyle = DragCursorStyle::SizeAll; // Unified drag cursor style
 };
 
 enum class BranchIndicatorStyle {
@@ -350,8 +360,17 @@ struct SkinConfig {
 
     bool useStatusPillChips = false;
 
+    bool customMenuTearOff = false;
+    bool syncCheckedMenuState = false;
+
     bool useFloatingHUD = false;
+
+    bool showGenericDockIcons = true; // Show icons on generic dock title bars
+    bool showSpecialDockIcons = true; // Show icons on special (CAD) dock title bars
+
     CloseButtonColorPolicy closeButtonColorPolicy = CloseButtonColorPolicy::AccentColor;
+
+    bool customDialogTitleBar = false;
 };
 
 // Consolidated Workspace Profile linking the 4 decoupled configurations (.lcws)

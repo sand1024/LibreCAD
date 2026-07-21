@@ -21,28 +21,34 @@
 #include "lc_custom_title_bar_widget.h"
 
 #include <QApplication>
-#include <QToolButton>
-#include <QWidget>
-#include <QLabel>
-#include <QStyle>
-#include <QPainter>
 #include <QDockWidget>
-#include <QMouseEvent>
 #include <QFontMetrics>
+#include <QLabel>
+#include <QMouseEvent>
+#include <QPainter>
 #include <QPointer>
-#include <QTimer>
-#include <QToolTip>
-#include <QWindow>
+#include <QStyle>
 #include <QStyleOptionDockWidget>
+#include <QTimer>
+#include <QToolButton>
+#include <QToolTip>
+#include <QWidget>
+#include <QWindow>
+
+#include "lc_caddockwidget.h"
+#include "lc_dockwidget.h"
+#include "lc_icon_label.h"
+#include "lc_proxy_style.h"
+#include "rs_settings.h"
 
 // Constructor with separate strings for horizontal and vertical orientation
 LC_CustomTitleBarWidget::LC_CustomTitleBarWidget(const QString& horizontalTitle, const QString& verticalTitle, const QString& iconName,
                                                  QWidget* parent, DisplayMode mode)
-                                                     :QWidget(parent), m_titleLabel(createTitleLabel(horizontalTitle)), m_iconLabel(nullptr), m_dockWidget(nullptr),
-   m_closeButton(nullptr), m_floatButton(nullptr),
-   m_horizontalTitle(horizontalTitle), m_verticalTitle(verticalTitle), m_iconName(iconName), m_currentOrientation(Qt::Horizontal),
-   m_displayMode(mode), m_isTextElided(false), m_fontMetrics(nullptr), m_blockRebuild(false), m_verticalPixmapCache(nullptr),
-   m_updateTimer(nullptr), m_tooltipTimer(nullptr), m_lastTooltipPos(QPoint()) {
+    : QWidget(parent), m_titleLabel(createTitleLabel(horizontalTitle)), m_iconLabel(nullptr), m_dockWidget(nullptr), m_closeButton(nullptr),
+      m_floatButton(nullptr), m_horizontalTitle(horizontalTitle), m_verticalTitle(verticalTitle), m_iconName(iconName),
+      m_currentOrientation(Qt::Horizontal), m_displayMode(mode), m_isTextElided(false), m_fontMetrics(nullptr), m_blockRebuild(false),
+      m_verticalPixmapCache(nullptr), m_updateTimer(nullptr), m_tooltipTimer(nullptr), m_lastTooltipPos(QPoint()),
+      m_textAlignment(TitleTextAlignment::Start), m_textDirection(TitleTextDirection::Vertical) {
 
     // Initialize font metrics
     updateFontMetrics();
@@ -58,7 +64,9 @@ LC_CustomTitleBarWidget::LC_CustomTitleBarWidget(const QString& horizontalTitle,
     m_tooltipTimer->setInterval(500);
     connect(m_tooltipTimer, &QTimer::timeout, this, &LC_CustomTitleBarWidget::showTooltip);
 
-    bool hasIcon = !iconName.isEmpty();
+    const bool hasIcon = !iconName.isEmpty()
+                        || (m_dockWidget && !m_dockWidget->windowIcon().isNull())
+                        || (!m_dockWidget && parentWidget() && !parentWidget()->windowIcon().isNull());
     if (mode != TextOnly && hasIcon) {
         createIconLabel(iconName);
     }
@@ -72,14 +80,6 @@ LC_CustomTitleBarWidget::LC_CustomTitleBarWidget(const QString& horizontalTitle,
     setMouseTracking(true);
 }
 
-void LC_CustomTitleBarWidget::setTextDirection(TitleTextDirection direction) {
-    if (m_textDirection == direction) {
-        return;
-    }
-    m_textDirection = direction;
-    clearVerticalCache();
-    scheduleUpdate();
-}
 
 // Backwards compatibility constructor override
 LC_CustomTitleBarWidget::LC_CustomTitleBarWidget(const QString& title, const QString& iconName, QWidget* parent, DisplayMode mode)
@@ -142,9 +142,28 @@ void LC_CustomTitleBarWidget::resizeEvent(QResizeEvent* event) {
 }
 
 void LC_CustomTitleBarWidget::mouseDoubleClickEvent(QMouseEvent* event) { event->ignore(); }
-void LC_CustomTitleBarWidget::mousePressEvent(QMouseEvent* event) { hideTooltip(); event->ignore(); }
+
+void LC_CustomTitleBarWidget::mousePressEvent(QMouseEvent* event) {
+    hideTooltip();
+
+    // Fix: If headless (detached menu), handle window drag start
+    if (!m_dockWidget && event->button() == Qt::LeftButton) {
+        m_dragStartPos = event->globalPos() - parentWidget()->pos();
+        m_isDragging = true;
+        event->accept();
+        return;
+    }
+    event->ignore();
+}
 
 void LC_CustomTitleBarWidget::mouseMoveEvent(QMouseEvent* event) {
+    // Fix: If headless and dragging, move the parent detached window
+    if (!m_dockWidget && m_isDragging && (event->buttons() & Qt::LeftButton)) {
+        parentWidget()->move(event->globalPos() - m_dragStartPos);
+        event->accept();
+        return;
+    }
+
     if (m_displayMode != IconOnly && isTextElided()) {
         QPoint globalPos = mapToGlobal(event->pos());
         if (globalPos != m_lastTooltipPos) {
@@ -157,7 +176,15 @@ void LC_CustomTitleBarWidget::mouseMoveEvent(QMouseEvent* event) {
     event->ignore();
 }
 
-void LC_CustomTitleBarWidget::mouseReleaseEvent(QMouseEvent* event) { event->ignore(); }
+void LC_CustomTitleBarWidget::mouseReleaseEvent(QMouseEvent* event) {
+    // Fix: If headless, handle window drag release
+    if (!m_dockWidget && event->button() == Qt::LeftButton) {
+        m_isDragging = false;
+        event->accept();
+        return;
+    }
+    event->ignore();
+}
 void LC_CustomTitleBarWidget::leaveEvent(QEvent* event) { hideTooltip(); QWidget::leaveEvent(event); }
 
 void LC_CustomTitleBarWidget::paintEvent(QPaintEvent* event) {
@@ -167,7 +194,7 @@ void LC_CustomTitleBarWidget::paintEvent(QPaintEvent* event) {
     QStyleOptionDockWidget opt;
     opt.initFrom(this);
     opt.rect = rect();
-    opt.title = getCurrentTitle();
+    opt.title = "";
     opt.verticalTitleBar = (m_currentOrientation == Qt::Vertical);
 
     if (m_dockWidget) {
@@ -185,6 +212,8 @@ void LC_CustomTitleBarWidget::changeEvent(QEvent* event) {
         if (m_displayMode != IconOnly) {
             scheduleUpdate();
         }
+    } else if (event->type() == QEvent::StyleChange) {
+        updateTitleBar(); // Force a full metric and layout refresh upon style changes
     }
     QWidget::changeEvent(event);
 }
@@ -197,11 +226,17 @@ bool LC_CustomTitleBarWidget::event(QEvent* event) {
     return QWidget::event(event);
 }
 
+bool LC_CustomTitleBarWidget::checkOrientationFromSettings() const {
+    const bool verticalTitle = LC_GET_ONE_BOOL("Widgets", "DockTitleBarVertical", false);
+    return verticalTitle;
+}
+
 // Private Slots
 void LC_CustomTitleBarWidget::onDockWidgetFeaturesChanged() {
     if (m_dockWidget && !m_blockRebuild) {
         updateDockButtonsVisibility();
         updateOrientation();
+        updateCursor();
     }
 }
 
@@ -254,22 +289,34 @@ QString LC_CustomTitleBarWidget::getCurrentTitle() const {
 }
 
 void LC_CustomTitleBarWidget::createIconLabel(const QString& iconName) {
-    m_iconLabel = new QLabel(this);
+    m_iconLabel = new LC_IconLabel(this);
     updateIconSize();
-    m_iconLabel->setScaledContents(true);
     loadIcon(iconName);
 }
 
-void LC_CustomTitleBarWidget::loadIcon(const QString& iconName) {
-    QIcon icon(iconName);
+void LC_CustomTitleBarWidget::loadIcon(const QString& iconName) const {
+
+    QIcon icon;
+    if (!iconName.isEmpty()) {
+        icon = QIcon(iconName);
+    } else if (m_dockWidget) {
+        icon = m_dockWidget->windowIcon();
+        if (icon.isNull() && m_dockWidget->toggleViewAction()) {
+            icon = m_dockWidget->toggleViewAction()->icon();
+        }
+    } else if (parentWidget()) {
+        // Fix: Load from parent window icon for headless configurations
+        icon = parentWidget()->windowIcon();
+    }
+
     if (!icon.isNull()) {
-        m_iconLabel->setPixmap(icon.pixmap(getScaledIconSize()));
+        m_iconLabel->setIcon(icon);
     } else {
         qWarning() << "LC_CustomTitleBarWidget: Failed to load icon:" << iconName;
         if (m_displayMode != IconOnly) {
             QStyleOption opt;
             opt.initFrom(this);
-            m_iconLabel->setPixmap(style()->standardIcon(QStyle::SP_FileIcon, &opt, this).pixmap(getScaledIconSize()));
+            m_iconLabel->setIcon(style()->standardIcon(QStyle::SP_FileIcon, &opt, this).pixmap(getScaledIconSize()));
         }
     }
 }
@@ -290,66 +337,184 @@ void LC_CustomTitleBarWidget::updateIconForMode() {
 }
 
 void LC_CustomTitleBarWidget::updateButtonAndLabelGeometries() {
-    if (!m_dockWidget || m_blockRebuild) return;
+    if (!m_dockWidget || m_blockRebuild) {
+        // If headless, proceed with geometry calculations using nullptr fallback
+        if (m_dockWidget) return;
+    }
 
     QStyleOptionDockWidget opt;
     opt.initFrom(this);
     opt.rect = rect();
     opt.verticalTitleBar = (m_currentOrientation == Qt::Vertical);
 
-    QDockWidget::DockWidgetFeatures features = m_dockWidget->features();
+    QDockWidget::DockWidgetFeatures features = m_dockWidget ? m_dockWidget->features() : QDockWidget::NoDockWidgetFeatures;
 
-    // Resolve metrics parameters directly from active style [74]
     const int btnSize = style()->pixelMetric(QStyle::PM_TitleBarButtonSize, &opt, this);
-    const int margin = style()->pixelMetric(QStyle::PM_DockWidgetTitleBarButtonMargin, &opt, this);
-    const int spacing = scaleToDpi(2);
-    const int leftSpacing = scaleToDpi(8);
-
     const QRect titleRect = rect();
-    const int thickness = m_currentOrientation == Qt::Vertical ? titleRect.width() : titleRect.height();
-    const int actualMargin = margin >= 0 ? margin : qMax(0, (thickness - btnSize) / 2);
+
+    // Check if our custom theme style is active
+    const auto *proxyStyle = qobject_cast<const LC_ProxyStyle*>(style());
+    const bool isCustomTheme = proxyStyle && proxyStyle->customDockTitleBarEnabled();
+
+    // Resolve if we should show the icon based on the active skin configuration
+    bool shouldShowIcon = true;
+    if (m_dockWidget && proxyStyle) {
+        const bool isSpecial = m_dockWidget->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool();
+        shouldShowIcon = isSpecial ? proxyStyle->showSpecialDockIcons() : proxyStyle->showGenericDockIcons();
+    }
+
+    // Resolve button visibilities dynamically: show close only if headless
+    const bool showClose = m_dockWidget ? (features & QDockWidget::DockWidgetClosable) : true;
+    const bool showFloat = m_dockWidget ? (features & QDockWidget::DockWidgetFloatable) : false;
 
     QRect closeRect;
     QRect floatRect;
     QRect textRect;
 
-    if (m_currentOrientation == Qt::Vertical) {
-        const int left = titleRect.left() + qMax(0, (titleRect.width() - btnSize) / 2);
-        int top = titleRect.top() + actualMargin;
+    int spacing = scaleToDpi(2);
+    int iconSizeVal = btnSize - scaleToDpi(4);
 
-        if (features & QDockWidget::DockWidgetClosable) {
+    if (m_currentOrientation == Qt::Vertical) {
+        int left = 0;
+        int top = 0;
+
+        if (isCustomTheme) {
+            // Custom theme path: use original layout metrics
+            const int thickness = titleRect.width();
+            const int margin = style()->pixelMetric(QStyle::PM_DockWidgetTitleBarButtonMargin, &opt, this);
+            const int actualMargin = margin >= 0 ? margin : qMax(0, (thickness - btnSize) / 2);
+            left = titleRect.left() + qMax(0, (titleRect.width() - btnSize) / 2);
+            top = titleRect.top() + actualMargin;
+            spacing = proxyStyle->getGeometries(this).scaledMetrics.titleBarButtonSpacing;
+            iconSizeVal = btnSize - scaleToDpi(4);
+        } else {
+            // Native theme path: use dynamic vertical centering and crisp icon proportions
+            const int horizontalMargin = qMax(0, (titleRect.width() - btnSize) / 2);
+            left = titleRect.left() + horizontalMargin;
+            top = titleRect.top() + horizontalMargin;
+            spacing = scaleToDpi(4);
+            iconSizeVal = qMin(scaleToDpi(12), btnSize - scaleToDpi(6));
+        }
+
+        if (showClose) {
             closeRect = QRect(left, top, btnSize, btnSize);
             top += (btnSize + spacing);
         }
-        if (features & QDockWidget::DockWidgetFloatable) {
+        if (showFloat) {
             floatRect = QRect(left, top, btnSize, btnSize);
             top += (btnSize + spacing);
         }
 
-        // Top margin matches the double height margin space of the handle pattern
-        const int verticalGripOffset = scaleToDpi(16);
-        textRect = QRect(titleRect.left(), top + verticalGripOffset,
-                         titleRect.width(), qMax(0, titleRect.bottom() - top - verticalGripOffset));
-    } else {
-        const int top = titleRect.top() + actualMargin;
-        int right = titleRect.right() - actualMargin;
+        const int verticalGripOffset = scaleToDpi(6);
+        const int topStart = top + verticalGripOffset;
 
-        if (features & QDockWidget::DockWidgetClosable) {
+        int iconHeight = 0;
+        int iconY = topStart;
+
+        if (m_iconLabel) {
+            if (shouldShowIcon) {
+                const int iconWidth = getScaledIconSize().width();
+                iconHeight = getScaledIconSize().height();
+                const int iconX = titleRect.left() + qMax(0, (titleRect.width() - iconWidth) / 2);
+
+                if (m_textDirection == TitleTextDirection::Vertical) {
+                    iconY = titleRect.bottom() - iconHeight - scaleToDpi(4);
+                } else {
+                    iconY = topStart;
+                }
+                m_iconLabel->setGeometry(QRect(iconX, iconY, iconWidth, iconHeight));
+                m_iconLabel->show();
+            } else {
+                m_iconLabel->hide();
+            }
+        } else if (shouldShowIcon && m_dockWidget && m_displayMode != TextOnly) {
+            // If the icon label wasn't created yet but we now need to show it, create it
+            const bool hasIcon = !m_iconName.isEmpty() || !m_dockWidget->windowIcon().isNull();
+            if (hasIcon) {
+                createIconLabel(m_iconName);
+        if (m_iconLabel) {
+            const int iconWidth = getScaledIconSize().width();
+            iconHeight = getScaledIconSize().height();
+            const int iconX = titleRect.left() + qMax(0, (titleRect.width() - iconWidth) / 2);
+
+            if (m_textDirection == TitleTextDirection::Vertical) {
+                // Bottom-to-Top: Place the icon at the bottom edge
+                iconY = titleRect.bottom() - iconHeight - scaleToDpi(4);
+            } else {
+                // Top-to-Bottom: Place the icon at the top edge
+                iconY = topStart;
+            }
+            m_iconLabel->setGeometry(QRect(iconX, iconY, iconWidth, iconHeight));
+            m_iconLabel->show();
+        }
+            }
+        }
+
+        if (m_textDirection == TitleTextDirection::Vertical) {
+            textRect = QRect(titleRect.left(), topStart,
+                             titleRect.width(), qMax(0, iconY - topStart - spacing));
+        } else {
+            const int textTop = topStart + iconHeight + (iconHeight > 0 ? scaleToDpi(4) : 0);
+            textRect = QRect(titleRect.left(), textTop,
+                             titleRect.width(), qMax(0, titleRect.bottom() - textTop));
+        }
+    } else {
+        int top = 0;
+        int right = 0;
+
+        if (isCustomTheme) {
+            // Custom theme path: use original layout metrics
+            const int thickness = titleRect.height();
+            const int margin = style()->pixelMetric(QStyle::PM_DockWidgetTitleBarButtonMargin, &opt, this);
+            const int actualMargin = margin >= 0 ? margin : qMax(0, (thickness - btnSize) / 2);
+            top = titleRect.top() + actualMargin;
+            right = titleRect.right() - actualMargin;
+            spacing = proxyStyle->getGeometries(this).scaledMetrics.titleBarButtonSpacing;
+            iconSizeVal = btnSize - scaleToDpi(4);
+        } else {
+            // Native theme path: use dynamic vertical centering and crisp icon proportions
+            const int verticalMargin = qMax(0, (titleRect.height() - btnSize) / 2);
+            top = titleRect.top() + verticalMargin;
+            right = titleRect.right() - verticalMargin;
+            spacing = scaleToDpi(4);
+            iconSizeVal = qMin(scaleToDpi(12), btnSize - scaleToDpi(6));
+        }
+
+        if (showClose) {
             closeRect = QRect(right - btnSize, top, btnSize, btnSize);
             right -= (btnSize + spacing);
         }
-        if (features & QDockWidget::DockWidgetFloatable) {
+        if (showFloat) {
             floatRect = QRect(right - btnSize, top, btnSize, btnSize);
             right -= (btnSize + spacing);
         }
 
-        // Horizontal Grip handle margin offset spacing
-        const int gripOffset = scaleToDpi(16);
+        const int gripOffset = scaleToDpi(6);
         int iconWidth = 0;
 
-        if (m_iconLabel && m_iconLabel->isVisible()) {
+        if (m_iconLabel) {
+            if (shouldShowIcon) {
+            const int iconHeight = getScaledIconSize().height();
             iconWidth = getScaledIconSize().width();
-            m_iconLabel->setGeometry(QRect(titleRect.left() + gripOffset, top + actualMargin, iconWidth, iconWidth));
+            const int iconY = titleRect.top() + qMax(0, (titleRect.height() - iconHeight) / 2);
+            m_iconLabel->setGeometry(QRect(titleRect.left() + gripOffset, iconY, iconWidth, iconHeight));
+                m_iconLabel->show();
+            } else {
+                m_iconLabel->hide();
+            }
+        } else if (shouldShowIcon && m_dockWidget && m_displayMode != TextOnly) {
+            // If the icon label wasn't created yet but we now need to show it, create it
+            const bool hasIcon = !m_iconName.isEmpty() || !m_dockWidget->windowIcon().isNull();
+            if (hasIcon) {
+                createIconLabel(m_iconName);
+                if (m_iconLabel) {
+                    const int iconHeight = getScaledIconSize().height();
+                    iconWidth = getScaledIconSize().width();
+                    const int iconY = titleRect.top() + qMax(0, (titleRect.height() - iconHeight) / 2);
+                    m_iconLabel->setGeometry(QRect(titleRect.left() + gripOffset, iconY, iconWidth, iconHeight));
+                    m_iconLabel->show();
+                }
+            }
         }
 
         const int textLeft = titleRect.left() + gripOffset + iconWidth + (iconWidth > 0 ? scaleToDpi(4) : 0);
@@ -357,36 +522,53 @@ void LC_CustomTitleBarWidget::updateButtonAndLabelGeometries() {
                          qMax(0, right - textLeft), titleRect.height());
     }
 
-    // Set absolute geometries directly, preventing layout caching issues [74]
     m_blockRebuild = true;
     if (m_closeButton) {
         m_closeButton->setGeometry(closeRect);
         m_closeButton->setFixedSize(btnSize, btnSize);
-        m_closeButton->setIconSize(QSize(btnSize - scaleToDpi(4), btnSize - scaleToDpi(4)));
+        m_closeButton->setIconSize(QSize(iconSizeVal, iconSizeVal));
+        m_closeButton->setVisible(showClose); // Apply visibility
     }
     if (m_floatButton) {
         m_floatButton->setGeometry(floatRect);
         m_floatButton->setFixedSize(btnSize, btnSize);
-        m_floatButton->setIconSize(QSize(btnSize - scaleToDpi(4), btnSize - scaleToDpi(4)));
+        m_floatButton->setIconSize(QSize(iconSizeVal, iconSizeVal));
+        m_floatButton->setVisible(showFloat); // Apply visibility
     }
     if (m_titleLabel) {
         m_titleLabel->setGeometry(textRect);
     }
     m_blockRebuild = false;
 
+    updateButtonIcons();
+
     updateTitleForCurrentOrientation();
 }
 
 void LC_CustomTitleBarWidget::createDockButtons() {
-    if (!m_dockWidget) return;
-
+    // If there is no parent dock widget, we are a detached floating HUD panel
     QStyleOption opt;
     opt.initFrom(this);
+    if (!m_dockWidget) {
+        if (!m_closeButton) {
+            m_closeButton = new QToolButton( this);
+            m_closeButton->setObjectName("lc_titlebar_close_btn");
+            m_closeButton->setAutoRaise(true);
+            m_closeButton->setIcon(style()->standardIcon(QStyle::SP_TitleBarCloseButton, &opt, this));
+            connect(m_closeButton, &QToolButton::clicked, parentWidget(), &QWidget::close);
+        }
+        if (m_floatButton) {
+            m_floatButton->hide();
+        }
+        updateDockButtonsVisibility();
+        return;
+    }
 
     // Create Close Button and connect standard click trigger
     if (!m_closeButton) {
         m_closeButton = new QToolButton(this);
         m_closeButton->setObjectName("lc_titlebar_close_btn");
+        m_closeButton->setAutoRaise(true);
         m_closeButton->setIcon(style()->standardIcon(QStyle::SP_TitleBarCloseButton, &opt, this));
         connect(m_closeButton, &QToolButton::clicked, m_dockWidget, &QDockWidget::close);
     }
@@ -396,6 +578,7 @@ void LC_CustomTitleBarWidget::createDockButtons() {
         m_floatButton = new QToolButton(this);
         m_floatButton->setObjectName("lc_titlebar_float_btn");
         m_floatButton->setIcon(style()->standardIcon(QStyle::SP_TitleBarNormalButton, &opt, this));
+        m_floatButton->setAutoRaise(true);
         connect(m_floatButton, &QToolButton::clicked, this, [this]() {
             if (m_dockWidget) {
                 m_dockWidget->setFloating(!m_dockWidget->isFloating());
@@ -428,15 +611,36 @@ void LC_CustomTitleBarWidget::updateDockWidgetPointer() {
         if (!m_dockWidget->property("lcfs_originalFeatures").isValid()) {
             m_dockWidget->setProperty("lcfs_originalFeatures", static_cast<int>(m_dockWidget->features()));
         }
-        createDockButtons();
-        updateOrientation();
     }
+
+    // Fix: Execute setup, orientation, and cursor mapping for both docked and headless modes
+    createDockButtons();
+    updateOrientation();
+    updateCursor();
 }
 
 void LC_CustomTitleBarWidget::updateOrientation() {
     if (!m_dockWidget || m_blockRebuild) return;
 
-    // Robust state coupling: Title is vertical ONLY when docked AND vertical feature flag is set
+    // Symmetrical validation: If docked at startup or during layout update, sync features to settings
+    if (!m_dockWidget->isFloating()) {
+        QDockWidget::DockWidgetFeatures features = m_dockWidget->features();
+        const bool wantsVertical = checkOrientationFromSettings();
+        const bool hasVertical = (features & QDockWidget::DockWidgetVerticalTitleBar);
+
+        if (wantsVertical != hasVertical) {
+            if (wantsVertical) {
+                features |= QDockWidget::DockWidgetVerticalTitleBar;
+            } else {
+                features &= ~QDockWidget::DockWidgetVerticalTitleBar;
+            }
+
+            m_dockWidget->blockSignals(true);
+            m_dockWidget->setFeatures(features);
+            m_dockWidget->blockSignals(false);
+        }
+    }
+
     const bool isVertical = (m_dockWidget->features() & QDockWidget::DockWidgetVerticalTitleBar)
                             && !m_dockWidget->isFloating();
 
@@ -445,14 +649,7 @@ void LC_CustomTitleBarWidget::updateOrientation() {
     if (m_currentOrientation != newOrientation) {
         m_currentOrientation = newOrientation;
         clearVerticalCache();
-
-        if (m_titleLabel) {
-            if (m_currentOrientation == Qt::Horizontal) {
-                m_titleLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-            } else {
-                m_titleLabel->setAlignment(Qt::AlignCenter);
-            }
-        }
+        updateLabelAlignment();
     }
 
     updateButtonAndLabelGeometries();
@@ -718,9 +915,15 @@ bool LC_CustomTitleBarWidget::isTextElided() const {
 void LC_CustomTitleBarWidget::setupConnections() {
     if (m_dockWidget) {
         m_dockWidgetConnections << connect(m_dockWidget, &QDockWidget::featuresChanged, this,
-                                           &LC_CustomTitleBarWidget::onDockWidgetFeaturesChanged);
+                                              &LC_CustomTitleBarWidget::onDockWidgetFeaturesChanged);
 
-        // Setup parent floating orientation feature toggle connection [1.2.2]
+        m_dockWidgetConnections << connect(m_dockWidget, &QDockWidget::windowTitleChanged, this, [this](const QString &title) {
+            m_horizontalTitle = title;
+            m_verticalTitle = title;
+            delayedUpdate();
+        });
+
+        // Setup parent floating orientation feature toggle connection with settings check on docking
         m_dockWidgetConnections << connect(m_dockWidget, &QDockWidget::topLevelChanged, this, [this](bool floating) {
             if (m_dockWidget) {
                 QDockWidget::DockWidgetFeatures features = static_cast<QDockWidget::DockWidgetFeatures>(
@@ -728,6 +931,12 @@ void LC_CustomTitleBarWidget::setupConnections() {
 
                 if (floating) {
                     features &= ~QDockWidget::DockWidgetVerticalTitleBar;
+                } else {
+                    if (checkOrientationFromSettings()) {
+                        features |= QDockWidget::DockWidgetVerticalTitleBar;
+                    } else {
+                        features &= ~QDockWidget::DockWidgetVerticalTitleBar;
+                    }
                 }
 
                 m_dockWidget->blockSignals(true);
@@ -796,4 +1005,145 @@ void LC_CustomTitleBarWidget::updateFontMetrics() {
     QFontMetrics* oldMetrics = m_fontMetrics;
     m_fontMetrics = newMetrics;
     delete oldMetrics;
+}
+
+
+void LC_CustomTitleBarWidget::setTextDirection(TitleTextDirection direction) {
+    if (m_textDirection == direction) {
+        return;
+    }
+    m_textDirection = direction;
+    updateLabelAlignment();
+    clearVerticalCache();
+    scheduleUpdate();
+}
+
+void LC_CustomTitleBarWidget::setTextAlignment(TitleTextAlignment alignment) {
+    if (m_textAlignment == alignment) {
+        return;
+    }
+    m_textAlignment = alignment;
+    updateLabelAlignment();
+    clearVerticalCache();
+    scheduleUpdate();
+}
+
+void LC_CustomTitleBarWidget::updateLabelAlignment() const {
+    if (!m_titleLabel) return;
+
+    Qt::Alignment alignment = Qt::AlignCenter;
+
+    if (m_currentOrientation == Qt::Horizontal) {
+        switch (m_textAlignment) {
+            case TitleTextAlignment::Start:
+                alignment = Qt::AlignLeft | Qt::AlignVCenter;
+                break;
+            case TitleTextAlignment::Center:
+                alignment = Qt::AlignHCenter | Qt::AlignVCenter;
+                break;
+            case TitleTextAlignment::End:
+                alignment = Qt::AlignRight | Qt::AlignVCenter;
+                break;
+        }
+    } else { // Qt::Vertical
+        if (m_textDirection == TitleTextDirection::Horizontal) {
+            switch (m_textAlignment) {
+                case TitleTextAlignment::Start:
+                    alignment = Qt::AlignLeft | Qt::AlignVCenter;
+                    break;
+                case TitleTextAlignment::Center:
+                    alignment = Qt::AlignCenter;
+                    break;
+                case TitleTextAlignment::End:
+                    alignment = Qt::AlignRight | Qt::AlignVCenter;
+                    break;
+            }
+        } else if (m_textDirection == TitleTextDirection::Vertical) { // Bottom-to-top
+            switch (m_textAlignment) {
+                case TitleTextAlignment::Start:
+                    alignment = Qt::AlignBottom | Qt::AlignHCenter; // Aligns bottom (starts the flow)
+                    break;
+                case TitleTextAlignment::Center:
+                    alignment = Qt::AlignCenter;
+                    break;
+                case TitleTextAlignment::End:
+                    alignment = Qt::AlignTop | Qt::AlignHCenter;    // Aligns top
+                    break;
+            }
+        } else if (m_textDirection == TitleTextDirection::VerticalAlt) { // Top-to-bottom
+            switch (m_textAlignment) {
+                case TitleTextAlignment::Start:
+                    alignment = Qt::AlignTop | Qt::AlignHCenter;    // Aligns top (starts the flow)
+                    break;
+                case TitleTextAlignment::Center:
+                    alignment = Qt::AlignCenter;
+                    break;
+                case TitleTextAlignment::End:
+                    alignment = Qt::AlignBottom | Qt::AlignHCenter; // Aligns bottom
+                    break;
+            }
+        }
+    }
+
+    m_titleLabel->setAlignment(alignment);
+}
+
+
+void LC_CustomTitleBarWidget::updateButtonIcons() const {
+    QStyleOption opt;
+    opt.initFrom(this);
+    if (m_closeButton) {
+        m_closeButton->setIcon(style()->standardIcon(QStyle::SP_TitleBarCloseButton, &opt, this));
+    }
+    if (m_floatButton) {
+        m_floatButton->setIcon(style()->standardIcon(QStyle::SP_TitleBarNormalButton, &opt, this));
+    }
+}
+
+void LC_CustomTitleBarWidget::updateTitleBar() {
+    const auto *proxyStyle = qobject_cast<const LC_ProxyStyle*>(style());
+    if (proxyStyle && m_dockWidget) {
+        const FontConfig &fontCfg = proxyStyle->fontConfig();
+
+        // Detect if this is the special (CAD-related) dock widget
+        const bool isSpecial = m_dockWidget->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool();
+        const FontRoleConfig &roleCfg = isSpecial ? fontCfg.specialDockTitle : fontCfg.genericDockTitle;
+
+        QFont font(fontCfg.mainFamily, fontCfg.mainSize + roleCfg.sizeOffset);
+        font.setBold(roleCfg.bold);
+        font.setItalic(roleCfg.italic);
+
+        if (m_titleLabel) {
+            m_titleLabel->setFont(font);
+        }
+        setFont(font); // Set the font on the container for metric sizeHint evaluations
+    }
+    updateFontMetrics();
+    clearVerticalCache();
+    updateButtonAndLabelGeometries(); // Automatically updates button sizes and vector icons
+    updateGeometry();                 // Notifies parent layouts of sizeHint changes
+    updateCursor();
+}
+
+void LC_CustomTitleBarWidget::showEvent(QShowEvent* event) {
+    QWidget::showEvent(event);
+    updateButtonAndLabelGeometries(); // Force layout sync when first displayed
+}
+
+void LC_CustomTitleBarWidget::updateCursor() {
+    // Detached menus are always draggable; docks require the Movable feature flag [3]
+    const bool isMovable = m_dockWidget
+                           ? (m_dockWidget->features() & QDockWidget::DockWidgetMovable)
+                           : true;
+
+    if (isMovable) {
+        const auto *proxyStyle = qobject_cast<const LC_ProxyStyle*>(style());
+        const Qt::CursorShape dragCursor = proxyStyle ? proxyStyle->resolveDragCursor() : Qt::OpenHandCursor;
+        setCursor(dragCursor);
+    } else {
+        unsetCursor();
+    }
+
+    if (m_closeButton) m_closeButton->setCursor(Qt::ArrowCursor);
+    if (m_floatButton) m_floatButton->setCursor(Qt::ArrowCursor);
 }

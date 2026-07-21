@@ -25,6 +25,8 @@
 #include <QAction>
 #include <QVBoxLayout>
 #include <QPainter>
+
+#include "lc_custom_title_bar_widget.h"
 #include "lc_proxy_style.h"
 #include "lc_proxy_style_shared.h"
 #include "lc_dock_title_bar.h"
@@ -35,6 +37,14 @@ class LC_DetachedMenuContent : public QMenu {
 public:
     explicit LC_DetachedMenuContent(QWidget *parent = nullptr)
         : QMenu(parent) {}
+
+    // Overriding setVisible to robustly intercept and block standard popup closing sweeps
+    void setVisible(bool visible) override {
+        if (!visible && parentWidget()) {
+            return; // Prevent the embedded child menu from being hidden
+        }
+        QMenu::setVisible(visible);
+    }
 
 protected:
     bool event(QEvent *e) override {
@@ -68,7 +78,7 @@ LC_DetachedMenu::LC_DetachedMenu(const QString &title,
     setMouseTracking(true);
 
     setWindowTitle(title); // Sync window title so LC_DockTitleBar queries it correctly
-    m_titleBar = new LC_DockTitleBar(nullptr, style, this); // Sets QDockWidget* to nullptr for detached menus
+    m_titleBar = new LC_CustomTitleBarWidget(title, title, "", this);
 
     m_menu = new LC_DetachedMenuContent(this);  // subclass with deactivation suppressed
     m_menu->setWindowFlags(Qt::Widget);
@@ -82,7 +92,8 @@ LC_DetachedMenu::LC_DetachedMenu(const QString &title,
     populateMenu(m_menu, actions);
 
     auto *layout = new QVBoxLayout(this);
-    layout->setContentsMargins(BORDER_WIDTH, m_titleBar->sizeHint().height(), BORDER_WIDTH, BORDER_WIDTH);
+    // Fix: Add BORDER_WIDTH to the top margin so the layout leaves space for the title bar inside the 1px border
+    layout->setContentsMargins(BORDER_WIDTH, BORDER_WIDTH + m_titleBar->sizeHint().height(), BORDER_WIDTH, BORDER_WIDTH);
     layout->setSpacing(0);
     layout->addWidget(m_menu);
 
@@ -153,5 +164,15 @@ void LC_DetachedMenu::paintEvent(QPaintEvent *event) {
             painter.setBrush(Qt::NoBrush);
             painter.drawRect(rect().adjusted(0, 0, -1, -1));
         }
+    }
+}
+
+void LC_DetachedMenu::resizeEvent(QResizeEvent *event) {
+    QWidget::resizeEvent(event);
+    if (m_titleBar) {
+        // Stretch the title bar horizontally inside the 1px borders
+        m_titleBar->setGeometry(BORDER_WIDTH, BORDER_WIDTH,
+                                width() - 2 * BORDER_WIDTH,
+                                m_titleBar->sizeHint().height());
     }
 }

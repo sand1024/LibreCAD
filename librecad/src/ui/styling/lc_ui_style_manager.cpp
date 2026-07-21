@@ -274,7 +274,7 @@ bool LC_UIStyleManager::applyThemeToApplication(const SkinConfig &skin,
     QStyle *baseStyle = QStyleFactory::create("Fusion");
     auto* proxyStyle = new LC_ProxyStyle(baseStyle, metrics);
     proxyStyle->setSkin(skin);
-
+    proxyStyle->setFont(font);
     QApplication::setStyle(proxyStyle);
 
     // 4. Set the custom palette AGAIN because setStyle() internally resets

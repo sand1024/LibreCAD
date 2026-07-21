@@ -103,10 +103,11 @@ void LC_WidgetFactory::initLeftCADSidebar(){
 }
 
 void LC_WidgetFactory::createCADMegaSidebar(const int columns, const int iconSize, const bool flatButtons) {
-    auto* mega = new LC_CADToolMatrixDockWidget(m_appWin, true);
-    mega->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
-    mega->setObjectName("dock_cad_mega");
-    mega->setWindowTitle(tr("All"));
+    auto* result = new LC_CADToolMatrixDockWidget(m_appWin, true);
+    result->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
+    result->setObjectName("dock_cad_mega");
+    result->setWindowTitle(tr("All"));
+    result->setProperty(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET, true);
     auto actions = QList<QAction*>();
     QAction separatorAct = QAction(this);
     QAction* separator = &separatorAct;
@@ -139,14 +140,14 @@ void LC_WidgetFactory::createCADMegaSidebar(const int columns, const int iconSiz
     actions.append(m_actionFactory->otherDrawingActions);
     actions.append(separator);
     actions.append(m_actionFactory->orderActions);
-    mega->addActions(actions, columns, iconSize, flatButtons);
-    mega->hide();
-    mega->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    result->addActions(actions, columns, iconSize, flatButtons);
+    result->hide();
+    result->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
-    auto toggleViewAction = mega->toggleViewAction();
+    auto toggleViewAction = result->toggleViewAction();
     toggleViewAction->setIcon(QIcon(":/icons/line_polygon_star.lci"));
-    connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, mega, &LC_CADDockWidget::updateWidgetSettings);
-    m_appWin->addDockWidget(Qt::LeftDockWidgetArea, mega);
+    connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, result, &LC_CADDockWidget::updateWidgetSettings);
+    m_appWin->addDockWidget(Qt::LeftDockWidgetArea, result);
 }
 
 void LC_WidgetFactory::createCADSidebar(const int columns, const int iconSize, const bool flatButtons){
@@ -195,12 +196,8 @@ QDockWidget* LC_WidgetFactory::createDockWidget(const QString& horizontalTitle, 
         toggleViewAction->setIcon(QIcon(iconName));
     }
 
-    // auto *proxyStyle = qobject_cast<LC_ProxyStyle*>(QApplication::style());
-    // if (proxyStyle && proxyStyle->customDockTitleBarEnabled()) {
-        auto *titleBar = new LC_CustomTitleBarWidget(horizontalTitle, verticalTitle, iconName, result);
-        result->setTitleBarWidget(titleBar);
-    // }
-
+    auto *titleBar = new LC_CustomTitleBarWidget(horizontalTitle, verticalTitle, iconName, result);
+    result->setTitleBarWidget(titleBar);
     return result;
 }
 
@@ -497,7 +494,11 @@ LC_CADDockWidget* LC_WidgetFactory::cadDockWidget(const QString& title,  const Q
     result->addActions(actions, columns, iconSize, flatButtons);
     result->hide();
 
+    result->setProperty(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET, true);
+
     setWidgetToggleActionIcon(result, iconName);
+    auto *titleBar = new LC_CustomTitleBarWidget(title, title, iconName, result);
+    result->setTitleBarWidget(titleBar);
     connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, result, &LC_CADDockWidget::updateWidgetSettings);
     return result;
 }

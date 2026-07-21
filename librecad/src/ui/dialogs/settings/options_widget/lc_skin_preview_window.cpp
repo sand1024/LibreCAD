@@ -114,6 +114,7 @@ void LC_SkinPreviewWindow::setupMenuBar() {
     actClose->setEnabled(false);
 
     fileMenu->addSeparator();
+    fileMenu->setTearOffEnabled(true);
 
     QMenu *exportSubMenu = fileMenu->addMenu(tr("&Export"));
     exportSubMenu->QWidget::addAction(tr("Export to &PDF"));
@@ -131,7 +132,10 @@ void LC_SkinPreviewWindow::setupMenuBar() {
     QAction *actPrefs = editMenu->QWidget::addAction(tr("&Preferences"));
     actPrefs->setEnabled(false);
 
+    editMenu->setTearOffEnabled(true);
+
     QMenu *cmdMenu = previewMenuBar->addMenu(tr("&Command line support"));
+    cmdMenu->setTearOffEnabled(true);
 
     auto line = cmdMenu->QWidget::addAction(QIcon(":/icons/line_2p.lci"), tr("&Line 2 points"));
     line->setProperty("cmdLine", "line2p");

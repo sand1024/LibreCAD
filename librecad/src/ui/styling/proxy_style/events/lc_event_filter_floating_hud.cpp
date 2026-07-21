@@ -90,30 +90,32 @@ bool LC_EventFilterFloatingHUD::eventFilter(QObject* watched, QEvent* event) {
 
         widget->removeEventFilter(this);
 
-        // Move the standard QTornOffMenu completely off-screen and set opacity to 0.
-        // We do NOT call hide() here; we let Qt finish its native show sequence
-        // to cleanly release mouse grabs and close popup loops!
-        // widget->move(-10000, -10000);
-        // widget->setWindowOpacity(0.0);
-
         widget->hide();
         widget->setAttribute(Qt::WA_DontShowOnScreen, true); // cleanup
 
-        // Dynamically resolve parent menu pointer
+        // Dynamically resolve the actual source menu, stepping up from temporary QTornOffMenu if necessary
+        QMenu* sourceMenu = qobject_cast<QMenu*>(parent());
+        if (sourceMenu && sourceMenu->inherits("QTornOffMenu")) {
+            sourceMenu = qobject_cast<QMenu*>(sourceMenu->parent());
+        }
 
-        auto* sourceMenu = qobject_cast<QMenu*>(parent());
+        QTimer::singleShot(5, [widget, title, actions, this, sourceMenu, pos]() {
+            // At this point Qt's popup machinery has fully closed all popups — the popup stack is empty
 
-        QTimer::singleShot(5, [widget, title, actions, this,sourceMenu,  pos]() {
-            // At this point Qt's popup machinery has fully closed
-                   // all popups — the popup stack is empty
+            // Safe Top-Level Window Parentage: avoids nesting conflicts by binding to the top-level main window
+            QWidget* parentWin = QApplication::activeWindow() ? QApplication::activeWindow()->window() : nullptr;
 
-                   auto *detached = new LC_DetachedMenu(title, actions, style(), sourceMenu,
-                                                        QApplication::activeWindow());
-                   detached->move(pos);
-                   detached->show();
-                   this->deleteLater();
+            auto *detached = new LC_DetachedMenu(title, actions, style(), sourceMenu, parentWin);
+            detached->move(pos);
+            detached->show();
+
+            // Fix: Tie the lifetime of the hidden native QTornOffMenu to our custom detached HUD container
+            // When the custom panel is closed/destroyed, delete the native handle to release 'tornPopup'
+            connect(detached, &QObject::destroyed, widget, &QObject::deleteLater);
+
+            this->deleteLater();
         });
-        return true; // Return false to let standard Qt proceed and complete its native show routines safely
+        return true; // Return true to signal that the event has been fully intercepted and handled
     }
     return false;
 }

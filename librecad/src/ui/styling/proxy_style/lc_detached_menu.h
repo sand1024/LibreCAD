@@ -26,6 +26,7 @@
 #include <QPointer>
 #include <QWidget>
 
+class LC_CustomTitleBarWidget;
 class LC_DockTitleBar;
 class LC_ProxyStyle;
 
@@ -41,11 +42,12 @@ public:
     static void populateMenu(QMenu* target, const QList<QAction*>& actions);
 protected:
     void paintEvent(QPaintEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
 
 private:
     QPointer<QMenu> m_sourceMenu;
-    LC_DockTitleBar *m_titleBar;
     QMenu *m_menu;
+    LC_CustomTitleBarWidget *m_titleBar;
 };
 
 #endif

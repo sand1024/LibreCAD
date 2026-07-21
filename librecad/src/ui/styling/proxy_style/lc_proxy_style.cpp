@@ -35,6 +35,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QComboBox>
+#include <QDialog>
 #include <QDockWidget>
 #include <QDockWidget>
 #include <QEvent>
@@ -70,63 +71,27 @@
 #include <QToolTip>
 #include <QTreeView>
 #include <QVariant>
+#include <QVBoxLayout>
 
+#include "lc_caddockwidget.h"
 #include "lc_custom_title_bar_widget.h"
 #include "lc_dock_title_bar.h"
 #include "lc_event_filter_auto_popup_controller.h"
+#include "lc_event_filter_dialog.h"
 #include "lc_event_filter_floating_hud.h"
 #include "lc_event_filter_mnemonic.h"
 #include "lc_event_filter_tool_tip.h"
 #include "lc_event_filter_win_32_window_cloaking.h"
+#include "lc_event_filter_win_resize_native_event.h"
 #include "lc_mouse_tracking_table_view.h"
 #include "lc_skin_widgets_layout_resolver.h"
 #include "rs_debug.h"
 
+
 #ifdef Q_OS_WIN
 #include <windows.h>
-typedef HRESULT (WINAPI *DwmSetWindowAttributePtr)(HWND, DWORD, LPCVOID, DWORD);
-#endif
-
-#ifdef USE_WIN_NATIVE_RESIZE_FILTER
-#include <QAbstractNativeEventFilter>
-#include <windows.h>
 #include <windowsx.h>
-
-class LC_WinResizeNativeEventFilter : public QAbstractNativeEventFilter {
-public:
-    bool nativeEventFilter(const QByteArray &eventType, void *message, qintptr *result) override {
-        if (eventType == "windows_generic_MSG") {
-            const MSG *msg = static_cast<MSG*>(message);
-            if (msg->message == WM_NCHITTEST) {
-                const HWND hwnd = msg->hwnd;
-                QWidget *w = QWidget::find(reinterpret_cast<WId>(hwnd));
-
-                // Safely verifies whether target is the QDockWidget or its platform container wrapper
-                if (w && (qobject_cast<QDockWidget*>(w) || w->findChild<QDockWidget*>())) {
-                    RECT winRect;
-                    ::GetWindowRect(hwnd, &winRect);
-                    const int x = GET_X_LPARAM(msg->lParam);
-                    const int y = GET_Y_LPARAM(msg->lParam);
-                    const int border = 8; // Expanded comfortable hit zone
-
-                    const bool left   = (x < winRect.left   + border);
-                    const bool right  = (x > winRect.right  - border);
-                    const bool top    = (y < winRect.top    + border);
-                    const bool bottom = (y > winRect.bottom - border);
-
-                    if (left  && top)    { *result = HTTOPLEFT;     return true; }
-                    if (right && top)    { *result = HTTOPRIGHT;    return true; }
-                    if (left  && bottom) { *result = HTBOTTOMLEFT;  return true; }
-                    if (right && bottom) { *result = HTBOTTOMRIGHT; return true; }
-                    if (left)            { *result = HTLEFT;        return true; }
-                    if (right)           { *result = HTRIGHT;       return true; }
-                    if (bottom)          { *result = HTBOTTOM;      return true; }
-                }
-            }
-        }
-        return false;
-    }
-};
+typedef HRESULT (WINAPI *DwmSetWindowAttributePtr)(HWND, DWORD, LPCVOID, DWORD);
 #endif
 
 class QTreeView;
@@ -291,6 +256,12 @@ void LC_ProxyStyle::setSkin(const SkinConfig& skin) {
     m_skinColorsResolver.setSkin(skin);
     m_useFloatingHUD          = skin.useFloatingHUD;
     m_closeButtonColorPolicy  = skin.closeButtonColorPolicy;
+    m_customMenuTearOff     = skin.customMenuTearOff;
+    m_syncCheckedMenuState = skin.syncCheckedMenuState;
+
+    m_showGenericDockIcons    = skin.showGenericDockIcons;
+    m_showSpecialDockIcons    = skin.showSpecialDockIcons;
+    m_customDialogTitleBar    = skin.customDialogTitleBar;
 
     for (QWidget *widget : QApplication::allWidgets()) {
         if (auto *tb = qobject_cast<QToolBar*>(widget)) {
@@ -329,7 +300,7 @@ void LC_ProxyStyle::invalidateCache() const {
     m_skinColorsResolver.invalidate();
 }
 
-void LC_ProxyStyle::polish(QApplication *app) {
+void LC_ProxyStyle::polish(QApplication* app) {
     QProxyStyle::polish(app);
     if (app) {
         m_mnemonicFilter = std::make_unique<LC_EventFilterMnemonic>(this);
@@ -341,6 +312,10 @@ void LC_ProxyStyle::polish(QApplication *app) {
         m_autoPopupController = std::make_unique<LC_EventFilterAutoPopupController>(this);
         app->installEventFilter(m_autoPopupController.get());
 
+        // Instantiate and install the global dialog event filter
+        m_dialogFilter = std::make_unique<LC_EventFilterDialog>(this);
+        app->installEventFilter(m_dialogFilter.get());
+
 #ifdef USE_WIN_NATIVE_RESIZE_FILTER
         m_winResizeFilter = std::make_unique<LC_WinResizeNativeEventFilter>();
         app->installNativeEventFilter(m_winResizeFilter.get());
@@ -350,6 +325,9 @@ void LC_ProxyStyle::polish(QApplication *app) {
         m_win32CloakingFilter = std::make_unique<LC_EventFilterWin32WindowCloaking>(this);
         app->installEventFilter(m_win32CloakingFilter.get());
 #endif
+
+        // Connect to global focus change signal
+        connect(app, &QApplication::focusChanged, this, &LC_ProxyStyle::onFocusChanged);
     }
     invalidateCache();
 }
@@ -370,6 +348,10 @@ void LC_ProxyStyle::unpolish(QApplication *app) {
             app->removeEventFilter(m_autoPopupController.get());
             m_autoPopupController.reset();
         }
+        if (m_dialogFilter) {
+            app->removeEventFilter(m_dialogFilter.get());
+            m_dialogFilter.reset();
+        }
 #ifdef USE_WIN_NATIVE_RESIZE_FILTER
         if (m_winResizeFilter) {
             app->removeNativeEventFilter(m_winResizeFilter.get());
@@ -383,23 +365,35 @@ void LC_ProxyStyle::unpolish(QApplication *app) {
             m_win32CloakingFilter.reset();
         }
 #endif
+
+        disconnect(app, &QApplication::focusChanged, this, &LC_ProxyStyle::onFocusChanged);
     }
 }
 
 void LC_ProxyStyle::unpolish(QWidget *widget) {
-    // if (auto *dock = qobject_cast<QDockWidget*>(widget)) {
-    //     if (dock->titleBarWidget() && dock->titleBarWidget()->inherits("LC_DockTitleBar")) {
-    //         QWidget *old = dock->titleBarWidget();
-    //         dock->setTitleBarWidget(nullptr);
-    //         old->deleteLater(); // Safe deferred execution prevents unpolish iterator crash
-    //     }
-    // }
+    if (auto* dialog = qobject_cast<QDialog*>(widget)) {
+        // If the dialog is modal and currently visible, do NOT unpolish its flags or delete
+        // its title bar because setWindowFlags() calls hide(), which forces QDialog::exec() to return!
+        if (dialog->isModal() && dialog->isVisible()) {
+            return;
+        }
 
-    if (auto *dock = qobject_cast<QDockWidget*>(widget)) {
-        if (dock->titleBarWidget() && (dock->titleBarWidget()->inherits("LC_CustomTitleBarWidget") || dock->titleBarWidget()->inherits("LC_DockTitleBar"))) {
-            QWidget *old = dock->titleBarWidget();
-            dock->setTitleBarWidget(nullptr);
-            old->deleteLater(); // Safe deferred execution prevents unpolish iterator crash
+        // Safe unpolish: Remove custom title bars and restore native OS frames on standard dialogs
+        if (dialog->layout() && dialog->layout()->menuBar()) {
+            QWidget* titleBar = dialog->layout()->menuBar();
+            if (titleBar->inherits("LC_CustomTitleBarWidget")) {
+                dialog->layout()->setMenuBar(nullptr);
+                titleBar->deleteLater();
+
+                // Clear the state tracking property and restore native window borders
+                dialog->setProperty("lcfs_dialogTitleBarInstalled", false);
+
+                const bool wasVisible = dialog->isVisible();
+                dialog->setWindowFlags(dialog->windowFlags() & ~Qt::FramelessWindowHint);
+                if (wasVisible) {
+                    dialog->show();
+                }
+            }
         }
     }
 
@@ -485,6 +479,11 @@ void LC_ProxyStyle::polish(QWidget *widget) {
             const bool isPopup = (toolButton->popupMode() == QToolButton::InstantPopup ||
                             toolButton->popupMode() == QToolButton::MenuButtonPopup);
             if (isPopup) {
+                toolButton->setAttribute(Qt::WA_Hover, true);
+            }
+
+            if (toolButton->objectName() == "lc_titlebar_close_btn" || toolButton->objectName() == "lc_titlebar_float_btn") {
+                toolButton->setProperty(PROP_IS_DOCK_TITLE_BUTTON, true);
                 toolButton->setAttribute(Qt::WA_Hover, true);
             }
         }
@@ -677,57 +676,82 @@ void LC_ProxyStyle::polish(QWidget *widget) {
                 return;
             }
         }
+
+        if (widget->inherits("QSplitterHandle")) {
+            widget->setCursor(resolveDragCursor()); // Set cursor on the splitters handle
+        }
+
+        if (auto* dialog = qobject_cast<QDialog*>(widget)) {
+            // Symmetrical guard: If the dialog is modal and already visible, do NOT
+            // trigger the recreate sequence as it will terminate the active QDialog::exec() loop.
+            if (dialog->isModal() && dialog->isVisible()) {
+                return;
+            }
+
+            if (customDialogTitleBarEnabled() && !dialog->property("lcfs_dialogTitleBarInstalled").toBool()) {
+                if (dialog->isVisible()) {
+                    dialog->hide();
+                    dialog->setWindowFlags(dialog->windowFlags() | Qt::FramelessWindowHint);
+                    setupCustomDialogTitleBar(dialog);
+                    dialog->setContentsMargins(1, 1, 1, 1); // Set margin to reveal 1px custom border
+                    dialog->setMouseTracking(true);
+                    dialog->setAttribute(Qt::WA_Hover, true);
+                    dialog->setProperty("lcfs_dialogTitleBarInstalled", true);
+                    dialog->show();
+                }
+            }
+        }
     }
 }
 
 // ================= METRICS & SIZE INTERCEPTS =================
 
-int LC_ProxyStyle::pixelMetric(const PixelMetric metric, const QStyleOption *option, const QWidget *widget) const {
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(widget);
+int LC_ProxyStyle::pixelMetric(const PixelMetric metric, const QStyleOption* option, const QWidget* widget) const {
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(widget);
     switch (metric) {
         case PM_ToolBarExtensionExtent:
-        if (m_autoPopupToolbarOverflow) {
-            auto toolBar = qobject_cast<const QToolBar*>(widget);
-            if (!toolBar && isToolbarExtensionButton(widget)) {
-                toolBar = qobject_cast<const QToolBar*>(widget->parentWidget());
-            }
+            if (m_autoPopupToolbarOverflow) {
+                auto toolBar = qobject_cast<const QToolBar*>(widget);
+                if (!toolBar && isToolbarExtensionButton(widget)) {
+                    toolBar = qobject_cast<const QToolBar*>(widget->parentWidget());
+                }
 
-            if (toolBar && toolBar->isMovable()) {
-                return 0;
+                if (toolBar && toolBar->isMovable()) {
+                    return 0;
+                }
             }
-        }
             break;
 
         case PM_ButtonMargin:
-        return geoms.scaledMetrics.buttonPadding;
+            return geoms.scaledMetrics.buttonPadding;
 
         case PM_SpinBoxFrameWidth:
         case PM_ComboBoxFrameWidth:
         case PM_DefaultFrameWidth:
-        return m_isClassic ? 2 : 3;
+            return m_isClassic ? 2 : 3;
 
         case PM_ButtonShiftHorizontal:
         case PM_ButtonShiftVertical:
-        return m_isFlat ? 0 : 1;
+            return m_isFlat ? 0 : 1;
 
         case PM_MenuButtonIndicator:
-        return m_isClassic ? 14 : (12 + geoms.scaledMetrics.buttonPadding);
+            return m_isClassic ? 14 : (12 + geoms.scaledMetrics.buttonPadding);
 
         case PM_TabCloseIndicatorWidth:
         case PM_TabCloseIndicatorHeight:
-        return geoms.scaledMetrics.tabCloseIndicatorSize;
+            return geoms.scaledMetrics.tabCloseIndicatorSize;
 
         case PM_DockWidgetSeparatorExtent:
-        return geoms.scaledMetrics.splitterWidth;
+            return geoms.scaledMetrics.splitterWidth;
 
         case PM_DockWidgetFrameWidth:
-        return (m_boxDecoration == BoxDecoration::Frameless) ? 0 : 1;
+            return (m_boxDecoration == BoxDecoration::Frameless) ? 0 : 1;
 
         case PM_ScrollBarExtent:
-        if (m_metrics.scrollBarWidth < 0) {
-            return QProxyStyle::pixelMetric(PM_ScrollBarExtent, option, widget);
-        }
-        return geoms.scaledMetrics.scrollBarWidth;
+            if (m_metrics.scrollBarWidth < 0) {
+                return QProxyStyle::pixelMetric(PM_ScrollBarExtent, option, widget);
+            }
+            return geoms.scaledMetrics.scrollBarWidth;
 
         case PM_ScrollBarSliderMin:
             return geoms.scaledMetrics.scrollBarMinLength;
@@ -742,32 +766,34 @@ int LC_ProxyStyle::pixelMetric(const PixelMetric metric, const QStyleOption *opt
             return geoms.scaledMetrics.splitterWidth;
 
         case PM_TitleBarHeight: {
-        if (m_metrics.dockTitleBarHeight < 0) {
-            const int fontHeight = option ? option->fontMetrics.height() :
-                             (widget ? widget->fontMetrics().height() : QApplication::fontMetrics().height());
-            return fontHeight + geoms.ints.scale8;
+            if (m_metrics.dockTitleBarHeight < 0) {
+                const int fontHeight = option
+                                           ? option->fontMetrics.height()
+                                           : (widget ? widget->fontMetrics().height() : QApplication::fontMetrics().height());
+                return fontHeight + geoms.ints.scale8;
+            }
+            return geoms.scaledMetrics.dockTitleBarHeight;
         }
-        return geoms.scaledMetrics.dockTitleBarHeight;
-    }
 
         case PM_TitleBarButtonSize:
             return geoms.scaledMetrics.titleBarButtonSize;
 
         case PM_TitleBarButtonIconSize:
-        return qMax(8, geoms.scaledMetrics.titleBarButtonSize - 6);
+            return qMax(8, geoms.scaledMetrics.titleBarButtonSize - 6);
 
         case PM_DockWidgetTitleBarButtonMargin: {
-        if (m_metrics.dockWidgetTitleBarButtonMargin < 0) {
-            int activeTitleBarH = geoms.scaledMetrics.dockTitleBarHeight;
-            if (activeTitleBarH < 0) {
-                const int fontHeight = option ? option->fontMetrics.height() :
-                                 (widget ? widget->fontMetrics().height() : QApplication::fontMetrics().height());
-                activeTitleBarH = fontHeight + geoms.ints.scale8;;
+            if (m_metrics.dockWidgetTitleBarButtonMargin < 0) {
+                int activeTitleBarH = geoms.scaledMetrics.dockTitleBarHeight;
+                if (activeTitleBarH < 0) {
+                    const int fontHeight = option
+                                               ? option->fontMetrics.height()
+                                               : (widget ? widget->fontMetrics().height() : QApplication::fontMetrics().height());
+                    activeTitleBarH = fontHeight + geoms.ints.scale8;;
+                }
+                return qMax(0, (activeTitleBarH - geoms.scaledMetrics.titleBarButtonSize) / 2);
             }
-            return qMax(0, (activeTitleBarH - geoms.scaledMetrics.titleBarButtonSize) / 2);
+            return geoms.scaledMetrics.dockWidgetTitleBarButtonMargin;
         }
-        return geoms.scaledMetrics.dockWidgetTitleBarButtonMargin;
-    }
 
         case PM_TabBarTabOverlap:
             return geoms.scaledMetrics.tabBarTabOverlap;
@@ -803,11 +829,11 @@ int LC_ProxyStyle::pixelMetric(const PixelMetric metric, const QStyleOption *opt
         case PM_LayoutTopMargin:
         case PM_LayoutRightMargin:
         case PM_LayoutBottomMargin:
-        return geoms.scaledMetrics.layoutMargin;
+            return geoms.scaledMetrics.layoutMargin;
 
         case PM_LayoutHorizontalSpacing:
         case PM_LayoutVerticalSpacing:
-        return geoms.scaledMetrics.layoutSpacing;
+            return geoms.scaledMetrics.layoutSpacing;
 
         case PM_ToolBarItemSpacing:
             return geoms.scaledMetrics.toolbarItemSpacing;
@@ -825,19 +851,28 @@ int LC_ProxyStyle::pixelMetric(const PixelMetric metric, const QStyleOption *opt
         case PM_ExclusiveIndicatorWidth:
         case PM_IndicatorHeight:
         case PM_ExclusiveIndicatorHeight:
-        return geoms.scaledMetrics.indicatorBoxSize;
+            return geoms.scaledMetrics.indicatorBoxSize;
 
         case PM_CheckBoxLabelSpacing:
         case PM_RadioButtonLabelSpacing:
-        return geoms.scaledMetrics.indicatorLabelSpacing;
+            return geoms.scaledMetrics.indicatorLabelSpacing;
 
         case PM_SubMenuOverlap:
             return geoms.scaledMetrics.subMenuOverlap;
 
         case PM_DockWidgetTitleMargin: {
-        const int fontHeight = option ? option->fontMetrics.height() : (widget ? widget->fontMetrics().height() : 14);
-        return qMax(0, (geoms.scaledMetrics.dockTitleBarHeight - fontHeight) / 2);
-    }
+            const int fontHeight = option ? option->fontMetrics.height() : (widget ? widget->fontMetrics().height() : 14);
+            return qMax(0, (geoms.scaledMetrics.dockTitleBarHeight - fontHeight) / 2);
+        }
+        case PM_MenuTearoffHeight: {
+            if (m_customMenuTearOff) {
+                QFont font = widget ? widget->font() : QApplication::font();
+                font.setPointSize(qMax(6, font.pointSize() - 2)); // Reduced size (e.g. 10pt -> 8pt)
+                QFontMetrics fm(font);
+                return fm.height() + geoms.ints.scale6; // Text height + compact total padding
+            }
+            break;
+        }
 
         case PM_TreeViewIndentation:
             return geoms.scaledMetrics.treeIndentation;
@@ -1069,6 +1104,19 @@ void LC_ProxyStyle::drawPrimitive(const PrimitiveElement element,
             }
             return;
         }
+        case PE_Widget: {
+            QProxyStyle::drawPrimitive(element, option, painter, widget);
+
+            // Draw a 1px border matching the theme aesthetics for all frameless dialogs [2]
+            if (widget && qobject_cast<const QDialog*>(widget) && widget->windowFlags().testFlag(Qt::FramelessWindowHint)) {
+                LCPainterGuard guard(painter, false);
+                const SkinColors desc = getCachedStyleDescriptor(option->palette, QPalette::Active);
+                painter->setPen(QPen(desc.tooltip.tooltipBorder, 1.0));
+                painter->setBrush(Qt::NoBrush);
+                painter->drawRect(widget->rect().adjusted(0, 0, -1, -1));
+            }
+            return;
+        }
         case PE_PanelTipLabel: {
             if (m_customToolTipCard) {
                 drawCustomToolTipCard(option, painter, widget);
@@ -1233,6 +1281,15 @@ void LC_ProxyStyle::drawControl(const ControlElement element,
             }
             return;
         }
+        case CE_MenuTearoff: {
+            if (m_customMenuTearOff) {
+                if (const auto* menuItemOpt = qstyleoption_cast<const QStyleOptionMenuItem*>(option)) {
+                    drawCustomMenuTearOff(menuItemOpt, painter, widget);
+                    return;
+                }
+            }
+            break;
+        }
         default:
             break;
     }
@@ -1259,6 +1316,11 @@ void LC_ProxyStyle::drawComplexControl(const ComplexControl control,
     switch (control) {
         case CC_ToolButton:
         if (const auto *toolOpt = qstyleoption_cast<const QStyleOptionToolButton*>(option)) {
+            if (widget && widget->property(PROP_IS_DOCK_TITLE_BUTTON).toBool()) {
+                // Bypass standard draw for marked title bar buttons
+                drawCustomDockTitleButton(option, painter, widget);
+                return;
+            }
             const QVariant neighborsVar = widget ? widget->property(PROP_GROUP_NEIGHBORS) : QVariant();
                 const bool isSegmented = m_useSegmentedToolButtons && neighborsVar.isValid() && !isTitleOrDockButton(widget);
 
@@ -2239,7 +2301,9 @@ void LC_ProxyStyle::drawCustomDockTitleBar(const QStyleOptionDockWidget *option,
 
     drawParameterizedBox(painter, option->rect, desc, option->verticalTitleBar);
 
-    if (activeStyle != DockTitleBarStyle::CustomSolid &&
+    const bool hasOuterTopBorder = desc.frame.hasFullBorder || desc.frame.hasTopBottomBorder;
+
+    if (!hasOuterTopBorder && activeStyle != DockTitleBarStyle::CustomSolid &&
         activeStyle != DockTitleBarStyle::CustomAccentOutline &&
         activeStyle != DockTitleBarStyle::Native) {
 
@@ -2282,23 +2346,13 @@ void LC_ProxyStyle::drawCustomDockTitleBar(const QStyleOptionDockWidget *option,
                 painter->drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, titleText);
             }
         }
-    } else {
-        // Draw the unified grip handle inside the reserved layout margin area [74]
-        const QPoint cx = option->verticalTitleBar
-            ? QPoint(option->rect.center().x(), option->rect.top() + geoms.ints.scale8)
-            : QPoint(option->rect.left() + geoms.ints.scale8, option->rect.center().y());
-
-        const QColor gripColor = desc.splitter.splitterGripColorIdle;
-        const int handleLen = geoms.ints.scale12;
-
-        drawUnifiedGripPattern(painter, cx, option->rect, option->verticalTitleBar, gripColor, m_splitterGripStyle, handleLen, geoms);
     }
 }
 
 
 void LC_ProxyStyle::drawCustomToolTipCard(const QStyleOption *option,
                                                 QPainter *painter,
-                                                const QWidget *widget) const {
+                                          const QWidget *widget) const {
     Q_UNUSED(widget);
     const SkinColors desc = getStyleDescriptor(option);
     const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
@@ -2950,10 +3004,24 @@ void LC_ProxyStyle::drawCustomMenuBarEmptyArea(const QStyleOption *option, QPain
 }
 
 void LC_ProxyStyle::drawCustomMenuItem(const QStyleOptionMenuItem* option, QPainter* painter, const QWidget* widget) const {
+    if (option->menuItemType == QStyleOptionMenuItem::TearOff) {
+        drawCustomMenuTearOff(option, painter, widget);
+        return;
+    }
+
     QStyleOptionMenuItem copy = *option;
 
     const QPalette::ColorGroup group = resolveColorGroup(option->state);
     const SkinColors desc = getCachedStyleDescriptor(option->palette, group);
+
+    // Verify if we should custom-draw checkmarks based on active sync configuration
+    const bool customCheck = m_syncCheckedMenuState
+                             && option->checked
+                             && option->checkType != QStyleOptionMenuItem::NotCheckable;
+
+    if (customCheck) {
+        copy.checked = false; // Suppress standard Qt checkmark drawing to avoid overlaps
+    }
 
     if (option->state & State_Selected) {
         copy.palette.setBrush(QPalette::Highlight, desc.common.selectionHighlight);
@@ -2981,6 +3049,42 @@ void LC_ProxyStyle::drawCustomMenuItem(const QStyleOptionMenuItem* option, QPain
     // Draw custom aligned columns if alias is active
     if (hasAliases) {
         drawMenuItemColumns(painter, option, desc, maxCmdWidth, maxShortcutWidth, baseFont, widget);
+    }
+
+    // Paint the custom synchronized vector indicator inside the icon column on top of the row
+    if (customCheck) {
+        LCPainterGuard guard(painter, true); // Antialiasing enabled
+
+        const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(widget);
+        const int iconColumnWidth = option->maxIconWidth;
+        const int leftEdge = option->rect.left() + geoms.ints.scale6;
+        const int centerX = leftEdge + iconColumnWidth / 2;
+        const int centerY = option->rect.center().y();
+
+        const QColor indicatorColor = (option->state & State_Selected)
+                                      ? desc.common.highlightColor
+                                      : desc.toolButton.toolButtonIndicatorColor;
+
+        if (m_toolButtonIndicatorStyle == ToolButtonIndicatorStyle::ContextStripe) {
+            const int barHeight = option->rect.height() - geoms.ints.scale8;
+            const QRect barRect(option->rect.left() + geoms.ints.scale4, centerY - barHeight / 2, geoms.ints.scale2, barHeight);
+            painter->fillRect(barRect, indicatorColor);
+        }
+        else if (m_toolButtonIndicatorStyle == ToolButtonIndicatorStyle::AccentDot) {
+            // Fix: Shift the dot to the left to align horizontally with the stripe and prevent icon overlaps
+            const int dotX = option->rect.left() + geoms.ints.scale5;
+            painter->setBrush(indicatorColor);
+            painter->setPen(Qt::NoPen);
+            painter->drawEllipse(QPointF(dotX, centerY), geoms.ints.scale2, geoms.ints.scale2);
+        }
+        else if (m_toolButtonIndicatorStyle == ToolButtonIndicatorStyle::AccentFrame) {
+            // Fix: Dynamically size the boundary frame to option->maxIconWidth to enclose the entire icon with a gap
+            const int size = option->maxIconWidth;
+            const QRectF borderRect(centerX - size / 2.0, centerY - size / 2.0, size, size);
+            painter->setPen(QPen(indicatorColor, 1.0));
+            painter->setBrush(Qt::NoBrush);
+            painter->drawRoundedRect(borderRect.adjusted(0.5, 0.5, -0.5, -0.5), 3.0, 3.0);
+        }
     }
 }
 
@@ -3704,9 +3808,9 @@ void LC_ProxyStyle::drawGroupBoxHeader(QPainter *painter,
 void LC_ProxyStyle::drawMenuItemColumns(QPainter* painter, const QStyleOptionMenuItem* option, const SkinColors& desc,
                                               int maxCmdWidth, int maxShortcutWidth, const QFont& baseFont, const QWidget* widget) const {
     LCPainterGuard guard(painter);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
 
-    const QAction *action = findActionForOption(option, widget);
+    const QAction* action = findActionForOption(option, widget);
 
     QString labelText = option->text;
     QString shortcutText;
@@ -3716,7 +3820,8 @@ void LC_ProxyStyle::drawMenuItemColumns(QPainter* painter, const QStyleOptionMen
         if (!action->shortcut().isEmpty()) {
             shortcutText = action->shortcut().toString(QKeySequence::NativeText);
         }
-    } else {
+    }
+    else {
         const int tabIdx = labelText.indexOf(QLatin1Char('\t'));
         if (tabIdx >= 0) {
             shortcutText = labelText.mid(tabIdx + 1);
@@ -3725,22 +3830,32 @@ void LC_ProxyStyle::drawMenuItemColumns(QPainter* painter, const QStyleOptionMen
     }
 
     // Resolve column alignment coordinates mathematically
-    const LC_SkinWidgetsLayoutResolver::MenuItemColumnsLayout layout = LC_SkinWidgetsLayoutResolver::resolveMenuItemLayout(option, geoms, maxCmdWidth, maxShortcutWidth);
+    const LC_SkinWidgetsLayoutResolver::MenuItemColumnsLayout layout = LC_SkinWidgetsLayoutResolver::resolveMenuItemLayout(
+        option, geoms, maxCmdWidth, maxShortcutWidth);
 
     const bool isEnabled = (option->state & State_Enabled);
     const bool isSelected = (option->state & State_Selected);
 
+    // Create a local copy of the palette and ensure highlighted text uses the correct contrast color
+    QPalette pal = option->palette;
+    if (isSelected) {
+        pal.setColor(QPalette::HighlightedText, desc.common.textColor);
+    }
+
     const QString elidedLabel = option->fontMetrics.elidedText(labelText, Qt::ElideRight, layout.labelRect.width());
     constexpr int labelFlags = Qt::AlignLeft | Qt::AlignVCenter | Qt::TextShowMnemonic;
-    proxy()->drawItemText(painter, layout.labelRect, labelFlags, option->palette, isEnabled, elidedLabel,
-                          isSelected ? QPalette::HighlightedText : QPalette::WindowText);
 
-        if (action) {
+    // Draw action labels using the updated palette
+    proxy()->drawItemText(painter, layout.labelRect, labelFlags, pal, isEnabled, elidedLabel,
+                          isSelected ? QPalette::HighlightedText : QPalette::Text);
+
+    if (action) {
         const QVariant cmdLineProp = action->property(PROP_CMD_LINE);
         if (cmdLineProp.isValid() && !cmdLineProp.toString().isEmpty()) {
             painter->setFont(getResolvedMonoFont(baseFont));
 
-            const QColor aliasColor = isSelected ? desc.itemView.menuAliasColorSelected
+            // Fix: Use the main contrast text color (desc.common.textColor) when selected
+            const QColor aliasColor = isSelected ? desc.common.textColor
                                            : desc.itemView.menuAliasColorNormal;
             painter->setPen(aliasColor);
 
@@ -3751,8 +3866,10 @@ void LC_ProxyStyle::drawMenuItemColumns(QPainter* painter, const QStyleOptionMen
     if (!shortcutText.isEmpty()) {
         painter->setFont(baseFont);
         constexpr int scFlags = Qt::AlignRight | Qt::AlignVCenter | Qt::TextShowMnemonic;
-        proxy()->drawItemText(painter, layout.shortcutRect, scFlags, option->palette, isEnabled, shortcutText,
-                              isSelected ? QPalette::HighlightedText : QPalette::WindowText);
+
+        // Draw shortcuts using the updated palette
+        proxy()->drawItemText(painter, layout.shortcutRect, scFlags, pal, isEnabled, shortcutText,
+                              isSelected ? QPalette::HighlightedText : QPalette::Text);
     }
 }
 
@@ -3925,52 +4042,236 @@ void LC_ProxyStyle::drawCustomStatusPillToolbarHandle(const QStyleOption *option
 }
 
 
-void LC_ProxyStyle::setupPermanentTitleBar(QDockWidget *dock) const  {
-    // if (!dock) return;
-    //
-    // const bool needCustom = m_useFloatingHUD || m_customDockTitleBar;
-    // if (needCustom) {
-    //     if (!dock->titleBarWidget() || !dock->titleBarWidget()->inherits("LC_DockTitleBar")) {
-    //         if (dock->titleBarWidget()) {
-    //             QWidget *old = dock->titleBarWidget();
-    //             if (old->inherits("LC_DockTitleBar")) {
-    //                 dock->setTitleBarWidget(nullptr);
-    //                 old->deleteLater();
-    //             }
-    //         }
-    //         auto *titleBar = new LC_DockTitleBar(dock, this);
-    //         dock->setTitleBarWidget(titleBar);
-    //         // Removed titleBar->show(); to let QDockWidgetLayout manage dynamic tab visibility automatically
-    //     }
-    // } else {
-    //     if (dock->titleBarWidget() && dock->titleBarWidget()->inherits("LC_DockTitleBar")) {
-    //         QWidget *old = dock->titleBarWidget();
-    //         dock->setTitleBarWidget(nullptr);
-    //         old->deleteLater();
-    //     }
-    // }
-
+void LC_ProxyStyle::setupPermanentTitleBar(QDockWidget *dock) const {
     if (!dock) return;
 
-    const bool needCustom = m_useFloatingHUD || m_customDockTitleBar;
-    if (needCustom) {
-        if (!dock->titleBarWidget() || !dock->titleBarWidget()->inherits("LC_CustomTitleBarWidget")) {
-            if (dock->titleBarWidget()) {
-                QWidget *old = dock->titleBarWidget();
-                if (old->inherits("LC_CustomTitleBarWidget") || old->inherits("LC_DockTitleBar")) {
-                    dock->setTitleBarWidget(nullptr);
-                    old->deleteLater();
-                }
-            }
-            // Pass the dock's title directly to the custom constructor as its default text [74]
-            auto *titleBar = new LC_CustomTitleBarWidget(dock->windowTitle(), dock->windowTitle(), "", dock);
-            dock->setTitleBarWidget(titleBar);
+    QWidget *currentTitleBar = dock->titleBarWidget();
+    if (currentTitleBar && currentTitleBar->inherits("LC_CustomTitleBarWidget")) {
+        if (auto *customTitle = qobject_cast<LC_CustomTitleBarWidget*>(currentTitleBar)) {
+            customTitle->updateTitleBar();
         }
+    }
+}
+
+bool LC_ProxyStyle::customDockTitleBarEnabled() const {
+    return m_customDockTitleBar || m_useFloatingHUD;
+}
+
+void LC_ProxyStyle::drawCustomMenuTearOff(const QStyleOptionMenuItem* option, QPainter* painter, const QWidget* widget) const {
+    LCPainterGuard guard(painter, true); // Antialiasing enabled
+
+    const SkinColors desc = getStyleDescriptor(option);
+    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(widget);
+
+    // 1. Draw Background (Standard window background, or highlight if hovered)
+    if (option->state & State_Selected) {
+        painter->fillRect(option->rect, desc.common.selectionHighlight);
     } else {
-        if (dock->titleBarWidget() && (dock->titleBarWidget()->inherits("LC_CustomTitleBarWidget") || dock->titleBarWidget()->inherits("LC_DockTitleBar"))) {
-            QWidget *old = dock->titleBarWidget();
-            dock->setTitleBarWidget(nullptr);
-            old->deleteLater();
+        painter->fillRect(option->rect, desc.common.bgStart);
+    }
+
+    // 2. Set up a reduced, bold font
+    QFont font = widget ? widget->font() : QApplication::font();
+    font.setPointSize(qMax(5, font.pointSize() - 3));
+    font.setBold(true);
+    painter->setFont(font);
+
+    QFontMetrics fm(font);
+    const QString label = QObject::tr("⧉ DETACH MENU");
+    const int textWidth = fm.horizontalAdvance(label);
+
+    const int cx = option->rect.center().x();
+    const int cy = option->rect.center().y();
+
+    // 3. Draw Centered Text Label (Muted idle, Highlighted when hovered)
+    const QColor textColor = (option->state & State_Selected)
+                             ? desc.common.highlightColor
+                             : desc.splitter.splitterGripColorIdle;
+    painter->setPen(textColor);
+
+    const QRect textRect(cx - textWidth / 2, option->rect.top(), textWidth, option->rect.height());
+    painter->drawText(textRect, Qt::AlignCenter, label);
+
+    // 4. Draw Grip Hairlines on both sides of the text
+    painter->setPen(QPen(desc.splitter.splitterGripColorIdle, 1, Qt::SolidLine));
+    const int gap = geoms.ints.scale8;
+    const int leftLineEnd = cx - (textWidth / 2) - gap;
+    const int rightLineStart = cx + (textWidth / 2) + gap;
+
+    const int leftLineStart = option->rect.left() + geoms.ints.scale12;
+    const int rightLineEnd = option->rect.right() - geoms.ints.scale12;
+
+    if (leftLineEnd > leftLineStart) {
+        painter->drawLine(leftLineStart, cy, leftLineEnd, cy);
+    }
+    if (rightLineEnd > rightLineStart) {
+        painter->drawLine(rightLineStart, cy, rightLineEnd, cy);
+    }
+}
+
+
+bool LC_ProxyStyle::customMenuTearOffEnabled() const {
+    return m_customMenuTearOff;
+}
+
+void LC_ProxyStyle::drawCustomDockTitleButton(const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const {
+    const auto *toolOpt = qstyleoption_cast<const QStyleOptionToolButton*>(option);
+    if (!toolOpt) return;
+
+    LCPainterGuard guard(painter, true); // Antialiasing enabled
+
+    const bool hovered = (option->state & State_MouseOver);
+    const bool pressed = (option->state & State_Sunken);
+    const QPalette::ColorGroup group = resolveColorGroup(option->state);
+    const SkinColors desc = getCachedStyleDescriptor(option->palette, group);
+
+    const bool isCloseBtn = (widget->objectName() == "lc_titlebar_close_btn");
+
+    // 1. Draw Background Well (Flat rounded rectangle matching usual tool buttons)
+    QColor bgCol;
+    if (hovered || pressed) {
+        if (isCloseBtn) {
+            switch (m_closeButtonColorPolicy) {
+                case CloseButtonColorPolicy::VibrantRed:
+                    bgCol = QColor(255, 59, 48, pressed ? 220 : 180);
+                    break;
+                case CloseButtonColorPolicy::MutedRed:
+                    bgCol = QColor(224, 108, 117, pressed ? 120 : 60);
+                    break;
+                case CloseButtonColorPolicy::AccentColor:
+                case CloseButtonColorPolicy::MutedNeutral:
+                default:
+                    bgCol = pressed ? desc.button.bgSunken : desc.button.bgHovered;
+                    break;
+            }
+        } else {
+            bgCol = pressed ? desc.button.bgSunken : desc.button.bgHovered;
         }
+
+        painter->setPen(Qt::NoPen);
+        painter->setBrush(bgCol);
+
+        // Draw standard flat 2px rounded rectangle (usual toolbutton hover style)
+        painter->drawRoundedRect(QRectF(option->rect), 2.0, 2.0);
+    }
+
+    // 2. Draw Sharp Vector Icon
+    // Zero runtime color modifications: reads the pre-calculated, cached idle color directly
+    QColor strokeColor = desc.dockTitleBar.titleBarButtonStrokeIdle;
+
+    if (!hovered && !pressed) {
+        // Detect if this button is physically hosted inside a CAD-specific dock panel
+        const QWidget *w = widget;
+        const QDockWidget *dock = nullptr;
+        while (w) {
+            if (auto *d = qobject_cast<const QDockWidget*>(w)) {
+                dock = d;
+                break;
+            }
+            w = w->parentWidget();
+        }
+        if (dock && dock->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool()) {
+            strokeColor = desc.dockTitleBar.titleBarButtonStrokeIdleCad;
+        }
+    }
+
+    if (hovered) {
+        if (isCloseBtn) {
+            if (m_closeButtonColorPolicy == CloseButtonColorPolicy::VibrantRed ||
+                m_closeButtonColorPolicy == CloseButtonColorPolicy::MutedRed) {
+                strokeColor = Qt::white;
+            } else {
+                strokeColor = desc.common.highlightColor;
+            }
+        } else {
+            strokeColor = desc.common.highlightColor;
+        }
+    }
+
+    const qreal penWidth = 1.35;
+    const QRectF rect = QRectF(option->rect).adjusted(4.5, 4.5, -4.5, -4.5);
+
+    if (isCloseBtn) {
+        LC_SkinColorsResolver::drawCloseIcon(painter, rect, strokeColor, penWidth);
+    } else {
+        const QColor fill = (hovered || pressed) ? bgCol : Qt::transparent;
+        LC_SkinColorsResolver::drawFloatIcon(painter, rect, strokeColor, penWidth, fill);
+    }
+}
+
+void LC_ProxyStyle::onFocusChanged(QWidget *old, QWidget *now) {
+    // Helper lambda to find the ancestor QDockWidget of any widget
+    auto findDockWidget = [](QWidget *w) -> QDockWidget* {
+        while (w) {
+            if (auto *dock = qobject_cast<QDockWidget*>(w)) {
+                return dock;
+            }
+            w = w->parentWidget();
+        }
+        return nullptr;
+    };
+
+    QDockWidget *oldDock = findDockWidget(old);
+    QDockWidget *nowDock = findDockWidget(now);
+
+    // Schedule paint updates strictly for the two affected dock panels
+    if (oldDock) {
+        oldDock->update();
+        if (oldDock->titleBarWidget()) {
+            oldDock->titleBarWidget()->update();
+        }
+    }
+    if (nowDock && nowDock != oldDock) {
+        nowDock->update();
+        if (nowDock->titleBarWidget()) {
+            nowDock->titleBarWidget()->update();
+        }
+    }
+}
+
+Qt::CursorShape LC_ProxyStyle::resolveDragCursor() const {
+    switch (m_metrics.dragCursorStyle) {
+        case DragCursorStyle::OpenHand:
+            return Qt::OpenHandCursor; // Sleek modern hand grab [3]
+        case DragCursorStyle::SizeAll:
+            return Qt::SizeAllCursor;  // Standard 4-way move arrows [3]
+        case DragCursorStyle::StandardArrow:
+        default:
+            return Qt::ArrowCursor;
+    }
+}
+
+void LC_ProxyStyle::setFont(const FontConfig& font) {
+    m_fontConfig = font;
+    invalidateCache();
+}
+
+bool LC_ProxyStyle::customDialogTitleBarEnabled() const {
+    return m_customDialogTitleBar;
+}
+
+void LC_ProxyStyle::setupCustomDialogTitleBar(QDialog *dialog) const {
+    if (!dialog) return;
+
+#ifdef Q_OS_WIN
+    HWND hwnd = reinterpret_cast<HWND>(dialog->winId());
+    if (hwnd) {
+        ::SetClassLongPtrW(hwnd, GCL_STYLE, ::GetClassLongPtrW(hwnd, GCL_STYLE) | CS_DROPSHADOW);
+    }
+#endif
+
+    // Create the custom title bar widget
+    // Note: Since m_dockWidget is nullptr, it automatically runs in headless mode,
+    // hiding the float button, showing only close, and connecting it to close() [2].
+    auto *titleBar = new LC_CustomTitleBarWidget(dialog->windowTitle(), dialog->windowTitle(), dialog->windowIcon().name(), dialog);
+
+    if (dialog->layout()) {
+        dialog->layout()->setMenuBar(titleBar); // Natively injects above content margins [1]
+    } else {
+        // Fallback: if no layout is set, create a clean vertical layout
+        auto *mainLayout = new QVBoxLayout(dialog);
+        mainLayout->setContentsMargins(0, 0, 0, 0);
+        mainLayout->setSpacing(0);
+        mainLayout->addWidget(titleBar);
     }
 }
