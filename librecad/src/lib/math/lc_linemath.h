@@ -37,6 +37,7 @@ namespace LC_LineMath {
     double getMeaningful(double candidate, double replacementValue = 0.0);
     double getMeaningfulPositive(double candidate, double replacementValue = 0.0);
     bool isMeaningfulAngle(double value);
+    bool isNotMeaninigfulAgleDifference(double angle1, double angle2);
     bool isSameAngle(double angle1, double angle2);
     bool isSameLength(double angle1, double angle2);
     bool isSameValue(double angle1, double angle2);

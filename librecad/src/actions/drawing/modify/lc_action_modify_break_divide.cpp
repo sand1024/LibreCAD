@@ -147,7 +147,7 @@ bool LC_ActionModifyBreakDivide::doCheckMayTrigger(){
                     break;
             }
         }
-        if (m_triggerData->entitiesToCreate.isEmpty()){
+        if (m_triggerData->entitiesToCreate.isEmpty() && !m_alternativeActionMode){
             commandMessage(tr("Invalid entity selected - no segments between intersections to break/divide."));
         }
         else {
@@ -285,6 +285,9 @@ void LC_ActionModifyBreakDivide::createLineEntity(const bool preview, const RS_V
         createLine(start, end, list);
     }
     else{
+        if (LC_LineMath::isNotMeaningfulDistance(start, end)) {
+            return;
+        }
         auto *createdLine = createLine(start, end, list);
         createdLine->setPen(pen);
         createdLine->setLayer(layer);
@@ -495,6 +498,9 @@ void LC_ActionModifyBreakDivide::createArcEntity(const RS_ArcData &arcData, cons
         list << arc;
     }
     else{
+        if (LC_LineMath::isNotMeaninigfulAgleDifference(arcData.angle1, arcData.angle2)) {
+            return;
+        }
         const auto createdArc = new RS_Arc(m_document, arcData);
         createdArc->setPen(pen);
         createdArc->setLayer(layer);

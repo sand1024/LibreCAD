@@ -315,6 +315,11 @@ bool LC_LineMath::isMeaningfulAngle(const double value) {
     return std::abs(value) >= RS_TOLERANCE_ANGLE;
 }
 
+bool LC_LineMath::isNotMeaninigfulAgleDifference(double angle1, double angle2) {
+  const double angleDif = RS_Math::getAngleDifference(angle1, angle2);
+  return std::abs(angleDif) < RS_TOLERANCE_ANGLE;
+}
+
 bool LC_LineMath::isSameAngle(const double angle1, const double angle2) {
     return std::abs(angle1 - angle2) < RS_TOLERANCE_ANGLE;
 }
