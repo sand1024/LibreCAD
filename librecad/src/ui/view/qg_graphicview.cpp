@@ -46,6 +46,12 @@
 #include "lc_rect.h"
 #include "lc_relative_point_input_widget.h"
 #include "lc_relative_position_editing_widget.h"
+#include "lc_settings_colors.h"
+#include "lc_settings_defaults.h"
+#include "lc_settings_keyboard.h"
+#include "lc_settings_modify.h"
+#include "lc_settings_relative_position_assistant.h"
+#include "lc_settings_snap.h"
 #include "lc_ucs_mark.h"
 #include "lc_undosection.h"
 #include "qc_applicationwindow.h"
@@ -1255,7 +1261,7 @@ void QG_GraphicView::setOffset([[maybe_unused]] const int ox, [[maybe_unused]] c
 }
 
 void QG_GraphicView::layerActivated(RS_Layer* layer) {
-    const bool applyLayerToSelectedEntities = LC_GET_ONE_BOOL("Modify", "ModifyEntitiesToActiveLayer");
+    const bool applyLayerToSelectedEntities = CFG_Modify::o_ModifyEntitiesToActiveLayer;
 
     if (applyLayerToSelectedEntities) {
         RS_Graphic* graphic = getGraphic();
@@ -1309,29 +1315,29 @@ void QG_GraphicView::loadSettings() {
     RS_GraphicView::loadSettings();
 
     {
-        LC_GROUP_GUARD("Appearance");
-        const int zoomFactor1000 = LC_GET_INT("ScrollZoomFactor", 1137);
+        using namespace CFG_Appearance;
+        const int zoomFactor1000 = o_ScrollZoomFactor;
         m_scrollZoomFactor = zoomFactor1000 / 1000.0;
 
-        m_ucsHighlightData->maxBlinkNumber = LC_GET_INT("UCSHighlightBlinkCount", 10) * 2;
+        m_ucsHighlightData->maxBlinkNumber = o_UCSHighlightBlinkCount * 2;
         // one blink includes both for visible and invisible phase
-        m_ucsHighlightData->timerInterval = LC_GET_INT("UCSHighlightBlinkDelay", 250);
+        m_ucsHighlightData->timerInterval = o_UCSHighlightBlinkDelay;
     }
 
     {
-        LC_GROUP_GUARD("Defaults");
-        m_invertZoomDirection = LC_GET_ONE_BOOL("Defaults", "InvertZoomDirection");
-        m_invertHorizontalScroll = LC_GET_BOOL("WheelScrollInvertH");
-        m_invertVerticalScroll = LC_GET_BOOL("WheelScrollInvertV");
+        using namespace CFG_Defaults;
+        m_invertZoomDirection = o_InvertZoomDirection;
+        m_invertHorizontalScroll = o_WheelScrollInvertH;
+        m_invertVerticalScroll = o_WheelScrollInvertV;
     }
 
-    m_allowScrollAndMoveAdjustByKeys = LC_GET_ONE_BOOL("Keyboard", "AllowScrollMoveAdjustByKeys", true);
+    m_allowScrollAndMoveAdjustByKeys = CFG_Keyboard::o_AllowScrollMoveAdjustByKeys;
 
-    LC_GROUP("Appearance");
     {
-        m_cursorHiding = LC_GET_BOOL("cursor_hiding", false);
-        bool showSnapIndicatorLines = LC_GET_BOOL("indicator_lines_state", true);
-        bool showSnapIndicatorShape = LC_GET_BOOL("indicator_shape_state", true);
+        using namespace CFG_Appearance;
+        m_cursorHiding = o_CursorHidingWhenSnapping;
+        bool showSnapIndicatorLines = CFG_Snap::o_IndicatorDrawLines;
+        bool showSnapIndicatorShape = CFG_Snap::o_IndicatorDrawShape;
         if (HIDE_SELECT_CURSOR) {
             // potentially, select cursor may be also hidden and so snapper will be used instead of cursor.
             // however, this will require review and modifications of significant amount of actions, so
@@ -1340,24 +1346,21 @@ void QG_GraphicView::loadSettings() {
         }
         m_selectCursorHiding = false;
     }
-    LC_GROUP_END();
     m_ucsMarkOptions->loadSettings();
 
-    LC_GROUP("Colors");
     {
-        const RS_Color bgColor(LC_GET_STR("RelativePositionAssistantBackground", RS_Settings::RELATIVE_POSITION_BACKGROUND));
-        const RS_Color txtColor(LC_GET_STR("RelativePositionAssistantText", RS_Settings::RELATIVE_POSITION_BACKGROUND));
+        using namespace CFG_Colors;
+        const RS_Color bgColor(o_RelativePositionAssistantBackground);
+        const RS_Color txtColor(o_RelativePositionAssistantText);
         m_relativePointWidgetHolder->setWidgetColors(bgColor, txtColor);
     }
-    LC_GROUP_END();
 
-    LC_GROUP("RelativePositionAssistant");
     {
-        const int fontSize = LC_GET_INT("FontSize", 10);
-        const QString fontName = LC_GET_STR("FontName", "Helvetica");
+        using namespace CFG_RelativePositionAssistant;
+        const int fontSize = o_AssistantFontSize;
+        const QString fontName = o_AssistantFontName;
         m_relativePointWidgetHolder->setFont(fontName, fontSize);
     }
-    LC_GROUP_END();
 }
 
 void QG_GraphicView::setAntialiasing(const bool state) const {
@@ -1511,7 +1514,7 @@ bool QG_GraphicView::isAutoPan(const QMouseEvent* event) const {
         return false;
     }
 
-    const bool autopanEnabled = LC_GET_ONE_BOOL("Appearance", "Autopanning");
+    const bool autopanEnabled = CFG_Appearance::o_Autopanning;
 
     if (!autopanEnabled) {
         return false;
