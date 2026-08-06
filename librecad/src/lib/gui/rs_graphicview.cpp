@@ -31,6 +31,7 @@
 #include "lc_cursoroverlayinfo.h"
 #include "lc_eventhandler.h"
 #include "lc_graphicviewport.h"
+#include "lc_graphicviewrenderer.h"
 #include "lc_relative_point_input_widget.h"
 #include "lc_shortcuts_manager.h"
 #include "lc_visual_snap_data.h"
@@ -70,13 +71,9 @@ RS_GraphicView::~RS_GraphicView() {
 }
 
 void RS_GraphicView::loadSettings() {
-    LC_GROUP("Appearance");
-    {
-        m_panOnZoom = LC_GET_BOOL("PanOnZoom", false);
-        m_skipFirstZoom = LC_GET_BOOL("FirstTimeNoZoom", false);
-
-    }
-    LC_GROUP_END();
+    using namespace CFG_Appearance;
+    m_panOnZoom = o_PanOnZoom;
+    m_skipFirstZoom = o_FirstTimeNoZoom;
 
     m_infoCursorOverlayPreferences->loadSettings();
     m_viewport->loadSettings();
@@ -423,8 +420,9 @@ void RS_GraphicView::setRenderer(std::unique_ptr<LC_WidgetViewPortRenderer> rend
     m_renderer = std::move(renderer);
 }
 
-void RS_GraphicView::showRelativeInputWidget(const RS_Vector& wcsPos, const RS_Vector& basePoint, bool baseIsRelativePoint, RS2::RelativePointParam param) const {
-    m_relativePointWidgetHolder->show(wcsPos, basePoint,baseIsRelativePoint, param);
+void RS_GraphicView::showRelativeInputWidget(const RS_Vector& wcsPos, const RS_Vector& basePoint, bool baseIsRelativePoint,
+                                             RS2::RelativePointParam param, bool readOnly) const {
+    m_relativePointWidgetHolder->show(wcsPos, basePoint, baseIsRelativePoint, param, readOnly);
 }
 
 void RS_GraphicView::hideRelativeInputWidget() const {

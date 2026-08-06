@@ -221,6 +221,7 @@ bool LC_EventHandler::checkLastActionFinishedAndUncheckQAction() {
             m_QAction = nullptr;
         }
         const auto predecessor = m_currentAction->getPredecessor();
+
         if (predecessor != nullptr) {
             const RS2::ActionType prevActionRtti = predecessor->rtti();
             m_currentAction = predecessor;

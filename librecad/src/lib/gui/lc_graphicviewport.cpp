@@ -28,6 +28,7 @@
 #include "lc_linemath.h"
 #include "lc_overlayentitiescontainer.h"
 #include "lc_refpoint.h"
+#include "lc_settings_appearance.h"
 #include "lc_undoablerelzero.h"
 #include "rs_debug.h"
 #include "rs_dialogfactory.h"
@@ -60,12 +61,12 @@ void LC_GraphicViewport::setDocument(RS_Document *c) {
 }
 
 void LC_GraphicViewport::loadSettings() {
-    LC_GROUP("Appearance");
     {
-        m_ucsApplyingPolicy = LC_GET_INT("UCSApplyPolicy",0);
-        m_modifyOnZoom = LC_GET_BOOL("ModifyOnViewChange", true);
-        m_refPointMode = LC_GET_INT("RefPointType", DXF_FORMAT_PDMode_EncloseSquare(DXF_FORMAT_PDMode_CentreDot));
-        const QString pdsizeStr = LC_GET_STR("RefPointSize", "2.0");
+        using namespace CFG_Appearance;
+        m_ucsApplyingPolicy = o_UCSApplyPolicy;
+        m_modifyOnZoom = o_ModifyOnViewChange;
+        m_refPointMode = o_RefPointType;
+        const QString pdsizeStr = o_RefPointSize;
 
         bool ok = false;
         m_refPointSize = RS_Math::eval(pdsizeStr, &ok);
@@ -73,7 +74,6 @@ void LC_GraphicViewport::loadSettings() {
             m_refPointSize = LC_DEFAULTS_PDSize;
         }
     }
-    LC_GROUP_END();
 
     if (m_grid != nullptr){
         m_grid->loadSettings();

@@ -33,12 +33,15 @@
 #include "lc_ref_snap_entity.h"
 #include "lc_ref_snap_line.h"
 #include "lc_ref_snap_mark.h"
+#include "lc_settings_colors.h"
+#include "lc_settings_render.h"
+#include "lc_settings_snap.h"
+#include "lc_settings_snap_visual.h"
 #include "rs_entity.h"
 #include "rs_entitycontainer.h"
 #include "rs_grid.h"
 #include "rs_math.h"
 #include "rs_painter.h"
-#include "rs_settings.h"
 
 LC_GraphicViewRenderer::LC_GraphicViewRenderer(LC_GraphicViewport* viewport, QPaintDevice* d)
     : LC_WidgetViewPortRenderer(viewport, d) {
@@ -56,50 +59,62 @@ void LC_GraphicViewRenderer::loadSettings() {
     m_ucsMarkOptions.loadSettings();
     m_anglesBaseOptions.loadSettings();
 
-    LC_GROUP("Appearance");
     {
-        m_entityHandleHalfSize = LC_GET_INT("EntityHandleSize", 4) / 2;
-        m_ignoreDraftForHighlight = LC_GET_BOOL("IgnoreDraftForHighlight", false);
-        m_scaleLineWidth = !LC_GET_BOOL("DraftLinesMode", false);
+        using namespace CFG_Appearance;
+        m_entityHandleHalfSize = o_EntityHandleSize/ 2;
+        m_ignoreDraftForHighlight = o_IgnoreDraftForHighlight;
+        m_scaleLineWidth = ! o_DraftLinesMode;
 
-        const QString draftMarkerFontName = LC_GET_STR("DraftMarkerFontName", "Verdana");
-        const int draftMarkerFontSize = LC_GET_INT("DraftMarkerFontSize", 10);
+        const QString draftMarkerFontName = o_DraftMarkerFontName;
+        const int draftMarkerFontSize = o_DraftMarkerFontSize;
         m_draftSignFont = QFont(draftMarkerFontName, draftMarkerFontSize);
 
-        m_drawDrawSign = LC_GET_BOOL("ShowDraftModeMarker", true);
+        m_drawDrawSign = o_ShowDraftModeMarker;
     }
-    LC_GROUP_END();
 
-    LC_GROUP("Render");
     {
-        m_drawTextsAsDraftForPreview = LC_GET_BOOL("DrawTextsAsDraftInPreview", true);
-        m_drawTextsAsDraftForPanning = LC_GET_BOOL("DrawTextsAsDraftInPanning", true);
+        using namespace CFG_Render;
+        m_drawTextsAsDraftForPreview = o_DrawTextsAsDraftInPreview;
+        m_drawTextsAsDraftForPanning = o_DrawTextsAsDraftInPanning;
     }
-    LC_GROUP_END();
-
-    LC_GROUP_GUARD("Colors");
     {
-        const RS_Color bgColor(LC_GET_STR("background", RS_Settings::BACKGROUND));
+        using namespace CFG_Colors;
+        const RS_Color bgColor(o_Background);
         setBackground(bgColor);
-        m_colorSelectedEntity = RS_Color(LC_GET_STR("select", RS_Settings::SELECT));
-        m_colorHighlightedEntity = RS_Color(LC_GET_STR("highlight", RS_Settings::HIGHLIGHT));
-        m_colorStartHandle = RS_Color(LC_GET_STR("start_handle", RS_Settings::START_HANDLE));
-        m_colorHangle = RS_Color(LC_GET_STR("handle", RS_Settings::HANDLE));
-        m_colorEndHandleColor = RS_Color(LC_GET_STR("end_handle", RS_Settings::END_HANDLE));
+        setForegroundColor(RS_Color(o_Foreground));
 
-        m_colorPreviewReferenceEntities = RS_Color(LC_GET_STR("previewReferencesColor", RS_Settings::PREVIEW_REF_COLOR));
-        m_colorPreviewReferenceHighlightedEntities = RS_Color(LC_GET_STR("previewReferencesHighlightColor",
-                                                                         RS_Settings::PREVIEW_REF_HIGHLIGHT_COLOR));
+        m_colorSelectedEntity =  RS_Color(o_Select);
+        m_colorHighlightedEntity = RS_Color(o_Highlight);
+        m_colorStartHandle = RS_Color(o_StartHandle);
+        m_colorHangle = RS_Color(o_Handle);
+        m_colorEndHandleColor = RS_Color(o_EndHandle);
 
-        m_colorVisualSnapGuideEntities = RS_Color(LC_GET_STR("VisualSnapGuideEntitiesColor", RS_Settings::VISUAL_SNAP_ENTITIES));
-        m_colorVisualSnapVertexes = RS_Color(LC_GET_STR("VisualSnapVertexesColor", RS_Settings::VISUAL_SNAP_VERTEXES));
-        m_colorVisualSnapProjectedSnap= RS_Color(LC_GET_STR("VisualSnapProjectedSnapColor", RS_Settings::VISUAL_SNAP_PROJECTED_SNAP));
-        m_colorVisualSnapDocumentEntities= RS_Color(LC_GET_STR("VisualSnapDocumentEntitiesColor", RS_Settings::VISUAL_SNAP_DOCUMENT_ENTITIES));
+        m_colorPreviewReferenceEntities = RS_Color(o_PreviewReferencesColor);
+        m_colorPreviewReferenceHighlightedEntities = RS_Color(o_PreviewReferencesHighlightColor);
 
-        const QString& name = LC_GET_STR("draft_mode_marker", RS_Settings::SELECT);
-        m_draftSignColor = RS_Color(name);
-    } // colors group
+        m_colorVisualSnapGuideEntities = RS_Color(o_VisualSnapGuideEntitiesColor);
+        m_colorVisualSnapVertexes = RS_Color(o_VisualSnapVertexesColor);
+        m_colorVisualSnapProjectedSnap= RS_Color(o_VisualSnapProjectedSnapColor);
+        m_colorVisualSnapDocumentEntities= RS_Color(o_VisualSnapDocumentEntitiesColor);
 
+        m_draftSignColor = RS_Color(o_DraftModeMarker);
+    }
+
+    {
+        using namespace CFG_VisualSnap;
+        m_VisualSnapGuidingEntitiesLineWidth = o_VSGuidingEntitiesLineWidth;
+        if (m_VisualSnapGuidingEntitiesLineWidth == 1) {
+            m_VisualSnapGuidingEntitiesLineWidth = 0;
+        }
+        m_VisualSnapGuidingPointsLineWidth = o_VSGuidingPointsLineWidth;
+        if (m_VisualSnapGuidingEntitiesLineWidth == 1) {
+            m_VisualSnapGuidingEntitiesLineWidth = 0;
+        }
+
+        m_visualSnapGuidingEntitiesLineType = o_VSGuidingEntitiesLineType;
+        m_visualSnapActiveGuidingEntitiesLineType = o_VSActiveGuidingEntityLineType;
+        m_visualSnapDocEntitiesLineType = o_VSDocGuidingEntitiesLineType;
+    }
     m_drawGrid = m_viewport->isGridOn();
 }
 
@@ -370,18 +385,19 @@ void LC_GraphicViewRenderer::setupRefSnapEntityPen(const RS_Painter* painter, RS
         pen.setLineType(RS2::SolidLine);
     }
     else if (ent->isActive()) {
-        pen.setLineType(RS2::DotLineTiny);
+        pen.setLineType(m_visualSnapActiveGuidingEntitiesLineType);
     }
     else {
-        pen.setLineType(RS2::DotLine2);
+        pen.setLineType(m_visualSnapGuidingEntitiesLineType);
     }
     pen.setColor(m_colorVisualSnapGuideEntities); // fixme - cache pen for snap marks in painter!
     if (inVisualSnap) {
         pen.setColor(m_colorVisualSnapDocumentEntities);
-        pen.setLineType(RS2::DashLineTiny);
+        pen.setLineType(m_visualSnapDocEntitiesLineType);
     }
     else {
         pen.setWidth(RS2::LineWidth::Width00);
+        pen.setScreenWidth(m_VisualSnapGuidingEntitiesLineWidth);
     }
 
     const double width = pen.getWidth();
@@ -402,7 +418,7 @@ void LC_GraphicViewRenderer::setupRefSnapEntityPen(const RS_Painter* painter, RS
             pen.setScreenWidth(screenWidth);
         }
         else {
-            pen.setScreenWidth(0.0);
+            // pen.setScreenWidth(0.0);
         }
     }
     else {
@@ -435,6 +451,7 @@ void LC_GraphicViewRenderer::setPenForOverlayEntity(RS_Painter* painter, const R
             }
             pen.setLineType(RS2::SolidLine);
             pen.setWidth(RS2::LineWidth::Width00);
+            pen.setScreenWidth(m_VisualSnapGuidingEntitiesLineWidth);
 
             // todo - sand - ucs -  USE THE SAME CACHING OF THE PEN!!!! The amount of overlay entities should be small, yet still...
             e->setPen(pen);
@@ -448,6 +465,7 @@ void LC_GraphicViewRenderer::setPenForOverlayEntity(RS_Painter* painter, const R
             pen.setColor(snapMark->getMarkType() == LC_RefSnapMark::PROJECTED ? m_colorVisualSnapProjectedSnap : m_colorVisualSnapVertexes);
             pen.setLineType(RS2::SolidLine);
             pen.setWidth(RS2::LineWidth::Width00);
+            pen.setScreenWidth(m_VisualSnapGuidingPointsLineWidth);
             painter->setPen(pen);
             break;
         }
@@ -476,7 +494,6 @@ void LC_GraphicViewRenderer::setPenForOverlayEntity(RS_Painter* painter, const R
             break;
         }
         case RS2::EntitySnapLine:{
-
             RS_Pen pen = e->getPen(true);
             const auto ent = static_cast<const LC_RefSnapLine*>(e);
             setupRefSnapEntityPen(painter, pen, ent, e->getFlag(RS2::FlagInVisualSnap));
@@ -606,10 +623,11 @@ void LC_GraphicViewRenderer::setPenForEntity(RS_Painter* painter, const RS_Entit
         else if (e->getFlag(RS2::FlagTransparent)) {
             pen.setColor(m_colorBackground);
         }
-        else if (pen.getColor().isEqualIgnoringFlags(m_colorBackground) || (pen.getColor().toIntColor() == RS_Color::Black
+        else if (pen.getColor().isEqualIgnoringFlags(m_colorBackground) || (pen.getColor().toIntColor() == RS_Color::Black)){
             // fixme - sand - think about Black... is it really necessary there?
-            && pen.getColor().colorDistance(m_colorBackground) < RS_Color::MinColorDistance)) {
-            pen.setColor(m_colorForeground);
+            // if (pen.getColor().colorDistance(m_colorBackground) < RS_Color::MinColorDistance) {
+                pen.setColor(m_colorForeground);
+            // }
         }
     }
 
@@ -746,7 +764,7 @@ void LC_GraphicViewRenderer::drawCoordinateSystems(RS_Painter* painter) {
         bool showByPolicy = true;
         const double baseAngle = m_angleBasisBaseAngle;
         const bool counterClockWise = m_angleBasisCounterClockwise;
-        if (m_anglesBaseOptions.displayPolicy != LC_AnglesBaseMarkOptions::SHOW_ALWAYS) {
+        if (m_anglesBaseOptions.displayPolicy != CFG_Appearance::ShowAnglesBaseMarkType::SHOW_ALWAYS) {
             showByPolicy = LC_LineMath::isMeaningfulAngle(baseAngle) || !counterClockWise;
         }
         if (showByPolicy) {

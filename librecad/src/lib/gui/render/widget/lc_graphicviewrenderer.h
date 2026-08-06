@@ -99,6 +99,13 @@ protected:
     RS_Color m_colorVisualSnapProjectedSnap;
     RS_Color m_colorVisualSnapDocumentEntities;
 
+    RS2::LineType m_visualSnapGuidingEntitiesLineType = RS2::LineType::DashLine2;
+    RS2::LineType m_visualSnapActiveGuidingEntitiesLineType = RS2::LineType::DashLine2;
+    RS2::LineType m_visualSnapDocEntitiesLineType = RS2::LineType::SolidLine;
+
+    int m_VisualSnapGuidingEntitiesLineWidth = 0;
+    int m_VisualSnapGuidingPointsLineWidth = 0;
+
     bool m_lastPaintedHighlighted = false;
     bool m_lastPaintedSelected = false;
     bool m_lastPaintOverlay = false;

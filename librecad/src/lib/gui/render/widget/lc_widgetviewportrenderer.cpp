@@ -22,6 +22,8 @@
 #include "lc_widgetviewportrenderer.h"
 
 #include "lc_graphicviewport.h"
+#include "lc_settings_appearance.h"
+#include "lc_settings_render.h"
 #include "rs_document.h"
 #include "rs_entitycontainer.h"
 #include "rs_math.h"
@@ -42,43 +44,42 @@ LC_WidgetViewPortRenderer::~LC_WidgetViewPortRenderer() = default;
 
 void LC_WidgetViewPortRenderer::loadSettings() {
     LC_GraphicViewportRenderer::loadSettings();
-    LC_GROUP("Appearance");
     {
-        m_antialiasing  = LC_GET_BOOL("Antialiasing");
-        m_classicRenderer =  LC_GET_BOOL("ClassicRenderer", true);
+        using namespace CFG_Appearance;
+        m_antialiasing  = o_Antialiasing;
+        m_classicRenderer =  o_ClassicRenderer;;
     }
 
-    LC_GROUP("Render");
     {
-        m_render_minRenderableTextHeightInPx = LC_GET_INT("MinRenderableTextHeightPx", 4);
-        const int minArcRadius100 = LC_GET_INT("MinArcRadius", 80);
+        using namespace CFG_Render;
+        m_render_minRenderableTextHeightInPx = o_MinRenderableTextHeightPx;
+        const int minArcRadius100 = o_MinArcRadius;
         m_render_minArcDrawingRadius = minArcRadius100 / 100.0;
 
-        const int minCircleRadius100 = LC_GET_INT("MinCircleRadius", 200);
+        const int minCircleRadius100 = o_MinCircleRadius;
         m_render_minCircleDrawingRadius = minCircleRadius100 / 100.0;
 
-        const int minLineLen100 = LC_GET_INT("MinLineLen", 200);
+        const int minLineLen100 = o_MinLineLen;
         m_render_minLineDrawingLen = minLineLen100 / 100.0;
 
-        const int minEllipseMajor100 = LC_GET_INT("MinEllipseMajor", 200);
+        const int minEllipseMajor100 = o_MinEllipseMajor;
         m_render_minEllipseMajorRadius = minEllipseMajor100 / 100.0;
 
-        const int minEllipseMinor100 = LC_GET_INT("MinEllipseMinor", 200);
+        const int minEllipseMinor100 = o_MinEllipseMinor;
         m_render_minEllipseMinorRadius = minEllipseMinor100 / 100.0;
 
-        m_render_arcsInterpolate = LC_GET_BOOL("ArcRenderInterpolate", false);
+        m_render_arcsInterpolate = o_ArcRenderInterpolate;
 
-        m_render_arcsInterpolateAngleFixed = LC_GET_BOOL("ArcRenderInterpolateSegmentFixed", true);
+        m_render_arcsInterpolateAngleFixed = o_ArcRenderInterpolateSegmentFixed;
 
-        const int angle100 = LC_GET_INT("ArcRenderInterpolateSegmentAngle", 500);
+        const int angle100 = o_ArcRenderInterpolateSegmentAngle;
         m_render_arcsInterpolateAngleValue = RS_Math::deg2rad(angle100 / 100.0);
 
-        const int sagittaMax = LC_GET_INT("ArcRenderInterpolateSegmentSagitta",90);
+        const int sagittaMax = o_ArcRenderInterpolateSegmentSagitta;
         m_render_arcsInterpolateMaxSagitta = sagittaMax / 100.0;
 
-        m_render_circlesSameAsArcs = LC_GET_BOOL("CircleRenderAsArcs", false);
-    } // Render group
-    LC_GROUP_END();
+        m_render_circlesSameAsArcs = o_CircleRenderAsArcs;
+    }
 }
 
 void LC_WidgetViewPortRenderer::doRender() {

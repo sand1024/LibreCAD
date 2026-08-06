@@ -25,6 +25,7 @@
 #define LC_RELATIVEPOINTINPUTWIDGET_H
 
 #include "lc_graphicviewportlistener.h"
+#include "lc_latecompletionrequestor.h"
 #include "lc_relative_position_editing_widget.h"
 #include "rs_vector.h"
 
@@ -39,7 +40,7 @@ public:
     void completeInteractiveInput(RS2::RelativePointParam paramType, double value);
     void setContentWidget(QWidget* w);
     RS_Vector getGraphPosition() const {return m_graphPosition;}
-    void show(const RS_Vector& pos, const RS_Vector& basePoint, bool baseIsRelativePoint, RS2::RelativePointParam activeParam);
+    void show(const RS_Vector& pos, const RS_Vector& basePoint, bool baseIsRelativePoint, RS2::RelativePointParam activeParam, bool readOnly = false);
     void onViewportChanged() override;
     void updatePosition(bool resume);
     void setWidgetColors(const RS_Color& bgColor, const RS_Color& textColor);

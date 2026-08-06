@@ -1297,6 +1297,10 @@ void RS_Painter::noCapStyle() {
     QPainter::setPen(pen);
 }
 
+void RS_Painter::setNativePen(const QPen& pen) {
+    QPainter::setPen(pen);
+}
+
 void RS_Painter::setPen(const RS_Pen& pen) {
     m_lpen = pen;
     QColor pColor;

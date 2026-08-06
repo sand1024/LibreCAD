@@ -29,11 +29,11 @@
 #include <QTimer>
 #include <QVBoxLayout>
 
+#include "lc_actioncontext.h"
 #include "lc_graphicviewport.h"
 #include "lc_relative_position_editing_widget.h"
 #include "rs_color.h"
 #include "rs_graphicview.h"
-
 
 
 LC_RelativePointInputWidget::LC_RelativePointInputWidget(RS_GraphicView* parent, LC_ActionContext* actionContext) : QWidget(parent),
@@ -60,25 +60,25 @@ void LC_RelativePointInputWidget::onLateRequestCompleted(bool shouldBeSkipped) {
         double value;
         bool hasValue = true;
         switch (inputInfo->inputType) {
-            case LC_ActionContext::InteractiveInputInfo::ANGLE: {
+            case InteractiveInputInfo::ANGLE: {
                 paramType = RS2::REL_POINT_ANGLE;
                 value = inputInfo->angleRad;
                 break;
             }
-            case LC_ActionContext::InteractiveInputInfo::DISTANCE: {
+            case InteractiveInputInfo::DISTANCE: {
                 bool ok;
                 int intValue = requestorTag.toInt(&ok);
                 paramType = static_cast<RS2::RelativePointParam>(intValue);
                 value = inputInfo->distance;
                 break;
             }
-            case LC_ActionContext::InteractiveInputInfo::POINT_X: {
+            case InteractiveInputInfo::POINT_X: {
                 const RS_Vector ucsPoint = m_viewport->toUCS(inputInfo->wcsPoint);
                 paramType = RS2::REL_POINT_X;
                 value = ucsPoint.x;
                 break;
             }
-            case LC_ActionContext::InteractiveInputInfo::POINT_Y: {
+            case InteractiveInputInfo::POINT_Y: {
                 const RS_Vector ucsPoint = m_viewport->toUCS(inputInfo->wcsPoint);
                 value = ucsPoint.y;
                 paramType = RS2::REL_POINT_Y;
@@ -97,9 +97,11 @@ void LC_RelativePointInputWidget::onLateRequestCompleted(bool shouldBeSkipped) {
     m_actionContext->interactiveInputRequestCancel();
 }
 
-void LC_RelativePointInputWidget::show(const RS_Vector& pos, const RS_Vector& basePoint, bool baseIsRelativePoint, RS2::RelativePointParam activeParam) {
+void LC_RelativePointInputWidget::show(const RS_Vector& pos, const RS_Vector& basePoint, bool baseIsRelativePoint,
+                                       RS2::RelativePointParam activeParam, bool readOnly) {
     m_graphPosition = pos;
     updatePosition(false);
+    m_contentWidget->setReadOnly(readOnly);
     m_contentWidget->updateForPoints(pos, basePoint, baseIsRelativePoint);
     m_contentWidget->activateParamEditor(activeParam, true);
     layout()->setSizeConstraint(QLayout::SetFixedSize);

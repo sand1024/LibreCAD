@@ -51,6 +51,8 @@ class LC_GraphicViewportRenderer{
     void renderEntityAsChild(RS_Painter *painter, RS_Entity *e);
     void justDrawEntity(RS_Painter *painter, RS_Entity *e);
     void setBackground(const RS_Color &bg);
+    void updateEffectiveColors();
+    void updateVisibleForeground(const RS_Color& bg, const RS_Color& userForeground);
     const LC_Rect &getBoundingClipRect() const {return m_renderBoundingClipRect;}
 
     virtual bool isTextLineNotRenderable(double uiLineHeight) const = 0;
@@ -77,8 +79,10 @@ class LC_GraphicViewportRenderer{
 
     /** background color (any color) */
     RS_Color m_colorBackground;
+    RS_Color m_userBackground;
     /** foreground color (black or white) */
     RS_Color m_colorForeground;
+    RS_Color m_userForeground;
 
     RS_Pen m_lastPaintEntityPen;
 
@@ -106,6 +110,7 @@ class LC_GraphicViewportRenderer{
     virtual void updateGraphicRelatedSettings(RS_Graphic *g);
     void updateEndCapsStyle(const RS_Graphic *graphic);
     void updateJoinStyle(const RS_Graphic *graphic);
+    void setForegroundColor(const RS_Color& bg);
     void updatePointEntitiesStyle(const RS_Graphic *graphic);
     void updateUnitAndDefaultWidthFactors(const RS_Graphic *g);
     bool isOutsideOfBoundingClipRect(const RS_Entity *e, bool constructionEntity) const;

@@ -173,15 +173,63 @@ void LC_GraphicViewportRenderer::updateJoinStyle(const RS_Graphic *graphic) {//0
     }
 }
 
-void LC_GraphicViewportRenderer::setBackground(const RS_Color &bg) {
-    m_colorBackground = bg;
+void LC_GraphicViewportRenderer::setForegroundColor(const RS_Color &color) {
+    m_userForeground = color;
+    updateEffectiveColors();
+}
 
-    const RS_Color black(0, 0, 0);
-    if (black.colorDistance(bg) >= RS_Color::MinColorDistance) {
-        m_colorForeground = black;
+void LC_GraphicViewportRenderer::setBackground(const RS_Color &bg) {
+    m_userBackground = bg;
+    m_colorBackground = bg;
+    updateEffectiveColors();
+}
+
+void LC_GraphicViewportRenderer::updateEffectiveColors() {
+    if (m_userForeground.colorDistance(m_userBackground) >= RS_Color::MinColorDistance) {
+        m_colorForeground = m_userForeground;
     } else {
-        m_colorForeground = RS_Color(255, 255, 255);
+        m_colorForeground = RS_Color(
+            255 - m_userForeground.red(),
+            255 - m_userForeground.green(),
+            255 - m_userForeground.blue()
+        );
     }
+}
+
+namespace {
+    double getLightness(const RS_Color& color) {
+        // factors are based on specifics of human vision!
+        return (0.299 * color.red() + 0.587 * color.green() + 0.114 * color.blue()) / 255.0;
+    }
+}
+
+void LC_GraphicViewportRenderer::updateVisibleForeground(const RS_Color& bg, const RS_Color& userForeground) {
+    if (userForeground.colorDistance(bg) >= RS_Color::MinColorDistance) {
+        m_colorForeground = userForeground;
+        return;
+    }
+
+    double bgLightness = getLightness(bg);
+
+    int r = userForeground.red();
+    int g = userForeground.green();
+    int b = userForeground.blue();
+
+    if (bgLightness < 0.5) {
+        // dark background
+        // move foreground to white
+        r = qMin(255, r + 150);
+        g = qMin(255, g + 150);
+        b = qMin(255, b + 150);
+    } else {
+        // light background
+        // move to black
+        r = qMax(0, r - 150);
+        g = qMax(0, g - 150);
+        b = qMax(0, b - 150);
+    }
+
+    m_colorForeground = RS_Color(r, g, b);
 }
 
 void LC_GraphicViewportRenderer::updateGraphicRelatedSettings(RS_Graphic *g) {

@@ -32,6 +32,7 @@
 #include <memory>
 
 #include "lc_graphicviewportlistener.h"
+#include "lc_graphicviewrenderer.h"
 #include "rs.h"
 #include "rs_debug.h"
 
@@ -171,7 +172,7 @@ public:
     bool hasAction() const;
     void notifyLastActionFinished() const;
     void onSwitchToDefaultAction(bool actionIsDefault, RS2::ActionType actionRtti, RS2::ActionType prevActionRtti);
-    void showRelativeInputWidget(const RS_Vector& wcsPos, const RS_Vector& basePoint, bool baseIsRelativePoint, RS2::RelativePointParam param) const;
+    void showRelativeInputWidget(const RS_Vector& wcsPos, const RS_Vector& basePoint, bool baseIsRelativePoint, RS2::RelativePointParam param, bool readOnly = false) const;
     void hideRelativeInputWidget() const;
     void restoreRelativeInputWidget() const;
     bool isInRelativePointInput() const;
