@@ -28,6 +28,7 @@
 #include <QSplashScreen>
 #include <qcoreapplication.h>
 
+#include "lc_settings_startup.h"
 #include "qc_applicationwindow.h"
 #include "qc_mdiwindow.h"
 #include "rs_debug.h"
@@ -39,7 +40,7 @@ LC_LastOpenFilesOpener::LC_LastOpenFilesOpener(QC_ApplicationWindow* appWin):m_a
 LC_LastOpenFilesOpener::~LC_LastOpenFilesOpener() = default;
 
 void LC_LastOpenFilesOpener::collectFilesList(const QList<QC_MDIWindow*>& windowList, const QMdiSubWindow* activWindow) {
-    const bool rememberOpenedFiles = LC_GET_ONE_BOOL("Startup", "OpenLastOpenedFiles", false);
+    const bool rememberOpenedFiles = CFG_Startup::o_OpenLastOpenedFiles;
     m_activeFile.clear();
     m_openedFiles.clear();
     if (rememberOpenedFiles) {
@@ -57,22 +58,21 @@ void LC_LastOpenFilesOpener::collectFilesList(const QList<QC_MDIWindow*>& window
 }
 
 void LC_LastOpenFilesOpener::saveSettings() const {
-    LC_GROUP_GUARD("Startup"); {
-        const bool rememberOpenedFiles = LC_GET_BOOL("OpenLastOpenedFiles", false);
-        if (rememberOpenedFiles) {
-            LC_SET("LastOpenFilesList", m_openedFiles);
-            LC_SET("LastOpenFilesActive", m_activeFile);
-        }
+    using namespace CFG_Startup;
+    const bool rememberOpenedFiles = o_OpenLastOpenedFiles;
+    if (rememberOpenedFiles) {
+        o_LastOpenFilesList = m_openedFiles;
+        o_LastOpenFilesActive = m_activeFile;
     }
 }
 
 
 void LC_LastOpenFilesOpener::openLastOpenFiles(QStringList &fileList,  QSplashScreen* splash) const {
-    LC_GROUP("Startup"); // fixme - sand - files - move saved files opening to the appwindow or util class out of there
     {
+        using namespace CFG_Startup;
         bool files_loaded = false;
-        const QString lastFiles = LC_GET_STR("LastOpenFilesList", "");
-        const bool reopenLastFiles = LC_GET_BOOL("OpenLastOpenedFiles");
+        const QString lastFiles = o_LastOpenFilesList;
+        const bool reopenLastFiles = o_OpenLastOpenedFiles;
         if (reopenLastFiles) {
             foreach(const QString &filename, lastFiles.split(";")) {
                 if (!filename.isEmpty() && QFileInfo::exists(filename)) {
@@ -91,7 +91,7 @@ void LC_LastOpenFilesOpener::openLastOpenFiles(QStringList &fileList,  QSplashSc
                 files_loaded = true;
             }
             if (reopenLastFiles) {
-                const QString activeFile = LC_GET_STR("LastOpenFilesActive", "");
+                const QString activeFile = o_LastOpenFilesActive;
                 m_appWindow->activateWindowWithFile(activeFile);
             }
         }

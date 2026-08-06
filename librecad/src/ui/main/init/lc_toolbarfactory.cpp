@@ -30,6 +30,7 @@
 #include "lc_infocursorsettingsmanager.h"
 #include "lc_namedviewslistwidget.h"
 #include "lc_propertysheetwidget.h"
+#include "lc_settings_startup.h"
 #include "lc_ucslistwidget.h"
 #include "lc_widgetfactory.h"
 #include "lc_workspacelistbutton.h"
@@ -43,7 +44,7 @@ LC_ToolbarFactory::LC_ToolbarFactory(QC_ApplicationWindow *mainWin)
 }
 
 void LC_ToolbarFactory::initToolBars(){
-    m_showToolbarTooltips = LC_GET_ONE_BOOL("Startup", "ShowToolbarsTooltip", true);
+    m_showToolbarTooltips = CFG_Startup::o_ShowToolbarsTooltip;
     initCADToolbars();
     createCategoriesToolbar();
     createStandardToolbars();
@@ -214,7 +215,9 @@ QToolBar *LC_ToolbarFactory::createCreatorsToolbar(const QSizePolicy &tbPolicy) 
 QToolBar *LC_ToolbarFactory::createPreferencesToolbar(const QSizePolicy &tbPolicy) const {
     return createGenericToolbar(tr("Preferences"), "Preferences", ":/icons/settings.lci", tbPolicy, {
                                     "OptionsGeneral",
+                                    "OptionsGeneralNew",
                                     "OptionsDrawing"
+
                                 }, 1);
 }
 
@@ -321,7 +324,7 @@ void LC_ToolbarFactory::addInfoCursorOptionAction(QMenu *menu, const char *name,
 }
 
 void LC_ToolbarFactory::initCADToolbars() const {
-    const bool enableCadToolbars = LC_GET_ONE_BOOL("Startup", "EnableCADToolbars", true);
+    const bool enableCadToolbars = CFG_Startup::o_EnableCADToolbars;
     if (enableCadToolbars) {
         createCADToolbars();
     }

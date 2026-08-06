@@ -191,6 +191,7 @@ public slots:
     void slotViewGridIsoRight(bool toggle);
     void slotViewGridIsoTop(bool toggle);
     void slotOptionsGeneral();
+    void slotOptionsGeneralNew();
     void slotOptionsShortcuts();
     void slotImportBlock();
     /** shows an about dlg*/

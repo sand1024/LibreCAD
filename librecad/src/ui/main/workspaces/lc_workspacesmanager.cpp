@@ -32,6 +32,9 @@
 #include <QMessageBox>
 #include <QScreen>
 
+#include "lc_settings_paths.h"
+#include "lc_settings_startup.h"
+#include "lc_settings_widget.h"
 #include "qc_applicationwindow.h"
 #include "rs_debug.h"
 #include "rs_settings.h"
@@ -157,31 +160,28 @@ void LC_WorkspacesManager::activateWorkspace(int id){
     }
 }
 
-void LC_WorkspacesManager::fillIconsAndMenuState(LC_Workspace &workspace){
-    LC_GROUP("Widgets");
+void LC_WorkspacesManager::fillIconsAndMenuState(LC_Workspace &workspace){    
     {
-        workspace.columnCountLeftDoc = LC_GET_INT("LeftToolbarColumnsCount", 5);
-        workspace.columnCountLeftAllDoc = LC_GET_INT("LeftToolbarAllColumnsCount", 5);
+        using namespace CFG_Widgets;
+        workspace.columnCountLeftDoc = o_LeftToolbarColumnsCount;
+        workspace.columnCountLeftAllDoc = o_LeftToolbarAllColumnsCount;
 
-        workspace.iconsSizeLeftDock = LC_GET_INT("LeftToolbarIconSize", 24);
-        workspace.iconsSizeLeftAllDock = LC_GET_INT("LeftToolbarAllIconSize", 24);
+        workspace.iconsSizeLeftDock = o_LeftToolbarIconSize;
+        workspace.iconsSizeLeftAllDock = o_LeftToolbarAllIconSize;
 
-        workspace.iconsSizeRightDoc = LC_GET_INT("DockWidgetsIconSize", 16);
-        workspace.iconsSizeToolbar = LC_GET_INT("ToolbarIconSize", 25);
+        workspace.iconsSizeRightDoc = o_DockWidgetsIconSize;
+        workspace.iconsSizeToolbar = o_ToolbarIconSize;
     }
-    LC_GROUP_END();
-    LC_GROUP("Startup");
     {
-        workspace.extendMenu = LC_GET_BOOL("ExpandedToolsMenu", false);
-        workspace.extendMenuTillEntities = LC_GET_BOOL("ExpandedToolsMenuTillEntity", false);
+        using namespace CFG_Startup;
+        workspace.extendMenu = o_ExpandedToolsMenu;
+        workspace.extendMenuTillEntities = o_ExpandedToolsMenuTillEntity;
     }
-    LC_GROUP_END();
-
-    LC_GROUP_GUARD("Appearance");
     {
-        workspace.showStatusBar = LC_GET_BOOL("StatusBarVisible", false);
-        workspace.showMainMenu = LC_GET_BOOL("MainMenuVisible", true);
-        workspace.showFullScreen = LC_GET_BOOL("FullscreenMode", false);
+        using namespace CFG_Appearance;
+        workspace.showStatusBar = o_StatusBarVisible;
+        workspace.showMainMenu = o_MainMenuVisible;
+        workspace.showFullScreen = o_FullscreenMode;
     }
 }
 
@@ -211,36 +211,6 @@ void LC_WorkspacesManager::fillBySettings(LC_Workspace &workspace){
         // workspace.docAreaFloatingActive = LC_GET_BOOL("FloatingDockwidgets", false);
     }
     LC_GROUP_END();
-
-    fillIconsAndMenuState(workspace);
-}
-
-
-void LC_WorkspacesManager::fillByState(LC_Workspace &workspace){
-    QC_ApplicationWindow& appWin = *QC_ApplicationWindow::getAppWindow();
-    const QString geometryB64 = appWin.saveGeometry().toBase64(QByteArray::Base64Encoding);
-    const QString stateB64 = appWin.saveState().toBase64(QByteArray::Base64Encoding);
-    workspace.geometry = geometryB64;
-    workspace.widgetsState = stateB64;
-    workspace.windowHeight = appWin.height();
-    workspace.windowWidth = appWin.width();
-    workspace.windowX = appWin.x();
-    workspace.windowY = appWin.y();
-
-    const auto& dockAreaToggleActions = appWin.getDockAreaToggleActions();
-    workspace.dockAreaLeftActive = dockAreaToggleActions.left->isChecked();
-    workspace.dockAreaRightActive = dockAreaToggleActions.right->isChecked();
-    workspace.dockAreaBottomActive = dockAreaToggleActions.bottom->isChecked();
-    workspace.dockAreaToptActive = dockAreaToggleActions.top->isChecked();
-    workspace.docAreaFloatingActive = dockAreaToggleActions.floating->isChecked();
-
-    const auto& tbAreaToggleActions = appWin.getToolbarAreaToggleActions();
-
-    workspace.tbAreaLeftActive = tbAreaToggleActions.left->isChecked();
-    workspace.tbAreaRightActive = tbAreaToggleActions.right->isChecked();
-    workspace.tbAreaBottomActive = tbAreaToggleActions.bottom->isChecked();
-    workspace.tbAreaToptActive = tbAreaToggleActions.top->isChecked();
-    // workspace.docAreaFloatingActive = appWin.getDockAreas().floating->isChecked();
 
     fillIconsAndMenuState(workspace);
 }
@@ -291,6 +261,35 @@ void LC_WorkspacesManager::applyToSettings(const LC_Workspace &workspace){
         LC_SET("MainMenuVisible", workspace.showMainMenu);
         LC_SET("FullscreenMode", workspace.showFullScreen);
     }
+}
+
+void LC_WorkspacesManager::fillByState(LC_Workspace &workspace){
+    QC_ApplicationWindow& appWin = *QC_ApplicationWindow::getAppWindow();
+    const QString geometryB64 = appWin.saveGeometry().toBase64(QByteArray::Base64Encoding);
+    const QString stateB64 = appWin.saveState().toBase64(QByteArray::Base64Encoding);
+    workspace.geometry = geometryB64;
+    workspace.widgetsState = stateB64;
+    workspace.windowHeight = appWin.height();
+    workspace.windowWidth = appWin.width();
+    workspace.windowX = appWin.x();
+    workspace.windowY = appWin.y();
+
+    const auto& dockAreaToggleActions = appWin.getDockAreaToggleActions();
+    workspace.dockAreaLeftActive = dockAreaToggleActions.left->isChecked();
+    workspace.dockAreaRightActive = dockAreaToggleActions.right->isChecked();
+    workspace.dockAreaBottomActive = dockAreaToggleActions.bottom->isChecked();
+    workspace.dockAreaToptActive = dockAreaToggleActions.top->isChecked();
+    workspace.docAreaFloatingActive = dockAreaToggleActions.floating->isChecked();
+
+    const auto& tbAreaToggleActions = appWin.getToolbarAreaToggleActions();
+
+    workspace.tbAreaLeftActive = tbAreaToggleActions.left->isChecked();
+    workspace.tbAreaRightActive = tbAreaToggleActions.right->isChecked();
+    workspace.tbAreaBottomActive = tbAreaToggleActions.bottom->isChecked();
+    workspace.tbAreaToptActive = tbAreaToggleActions.top->isChecked();
+    // workspace.docAreaFloatingActive = appWin.getDockAreas().floating->isChecked();
+
+    fillIconsAndMenuState(workspace);
 }
 
 void LC_WorkspacesManager::restoreGeometryAndState(const LC_Workspace &workspace) const {
@@ -367,7 +366,7 @@ void LC_WorkspacesManager::persist(){
 }
 
 QString LC_WorkspacesManager::getWorkspacesFileName(){
-    const QString settingsDir = LC_GET_ONE_STR("Paths","OtherSettingsDir", RS_System::instance()->getAppDataDir()).trimmed();
+    const QString settingsDir = CFG_Paths::o_OtherSettingsDir;
     QString workspacesFile = settingsDir + "/workspaces.lcws";
     return workspacesFile;
 }

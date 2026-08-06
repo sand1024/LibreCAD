@@ -55,6 +55,7 @@ private:
     void initAutoSaveTimer() const;
     void initActionContext() const;
     void setupActionContextWidgets() const;
+    void initSettingsDialogs();
 };
 
 #endif

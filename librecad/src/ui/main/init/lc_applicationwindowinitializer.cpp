@@ -38,7 +38,14 @@
 #include "lc_plugininvoker.h"
 #include "lc_propertysheetwidget.h"
 #include "lc_releasechecker.h"
+#include "lc_settings_app_styling.h"
+#include "lc_settings_defaults.h"
+#include "lc_settings_paths.h"
+#include "lc_settings_startup.h"
+#include "lc_settings_widget.h"
+#include "lc_settings_window_options.h"
 #include "lc_snapmanager.h"
+#include "lc_tmp_generic_options_init.h"
 #include "lc_toolbarfactory.h"
 #include "lc_widgetfactory.h"
 #include "lc_workspacesinvoker.h"
@@ -92,6 +99,7 @@ void LC_ApplicationWindowInitializer::initApplication(){
     initPlugins();
     m_appWin->showStatusMessage(qApp->applicationName() + " Ready", 2000);
     initReleaseChecker();
+    initSettingsDialogs();
 }
 
 void LC_ApplicationWindowInitializer::initSnapManager() const {
@@ -124,18 +132,17 @@ void LC_ApplicationWindowInitializer::initPropertySheetWidget() {
 
 void LC_ApplicationWindowInitializer::initActionFactory() const {
     m_appWin->m_actionFactory = std::make_unique<LC_ActionFactory>(m_appWin, m_appWin->m_actionHandler.get());
-    const bool using_theme = LC_GET_ONE_BOOL("Widgets","AllowTheme", false);
+    const bool using_theme = CFG_AppStyling::o_AllowTheme;
     m_appWin->m_actionFactory->initActions(m_appWin->m_actionGroupManager.get(), using_theme);
 }
 
 void LC_ApplicationWindowInitializer::initDockCorners() const {
-    LC_GROUP("Widgets");
     {
-        const bool allowDockNesting = LC_GET_BOOL("DockAllowNested", true);
-        const bool verticalTabs = LC_GET_BOOL("DockVerticalTabs", true);
+        using namespace CFG_Widgets;
+        const bool allowDockNesting = o_DockAllowNested;
+        const bool verticalTabs = o_DockVerticalTabs;
         LC_WidgetFactory::updateDockOptions(m_appWin, allowDockNesting, verticalTabs);
     }
-    LC_GROUP_END();
 
     // make the left and right dock areas dominant
     m_appWin->setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
@@ -143,7 +150,6 @@ void LC_ApplicationWindowInitializer::initDockCorners() const {
     m_appWin->setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
     m_appWin->setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
 }
-
 
 void LC_ApplicationWindowInitializer::initCentralWidget(){
     RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: creating LC_CentralWidget");
@@ -153,12 +159,10 @@ void LC_ApplicationWindowInitializer::initCentralWidget(){
     m_appWin->m_mdiAreaCAD = central->getMdiArea();
     m_appWin->m_mdiAreaCAD->setDocumentMode(true);
 
-    LC_GROUP("WindowOptions");
-    m_appWin->setTabLayout(static_cast<RS2::TabShape>(LC_GET_INT("TabShape", RS2::Triangular)),
-                 static_cast<RS2::TabPosition>(LC_GET_INT("TabPosition", RS2::West)));
-    LC_GROUP_END();
+    using namespace CFG_WindowOptions;
+    m_appWin->setTabLayout(o_TabShape, o_TabPosition);
 
-    const bool tabMode = LC_GET_ONE_BOOL("Startup", "TabMode", false);
+    const bool tabMode = CFG_Startup::o_TabMode;
     if (tabMode) {
         m_appWin->setupCADAreaTabbar();
     }
@@ -176,19 +180,16 @@ void LC_ApplicationWindowInitializer::initCentralWidget(){
 }
 
 void LC_ApplicationWindowInitializer::initIconSize() const {
-    LC_GROUP("Widgets");
-    {
-        const bool hasCustomIconSize = LC_GET_BOOL("AllowToolbarIconSize", false);
-        if (hasCustomIconSize) {
-            const int iconSize = LC_GET_INT("ToolbarIconSize", 24);
-            m_appWin->setIconSize(QSize(iconSize, iconSize));
-        }
+    using namespace CFG_Widgets;
+    const bool hasCustomIconSize = o_AllowToolbarIconSize;
+    if (hasCustomIconSize) {
+        const int iconSize = o_ToolbarIconSize;
+        m_appWin->setIconSize(QSize(iconSize, iconSize));
     }
-    LC_GROUP_END();
 }
 
 void LC_ApplicationWindowInitializer::loadCmdWidgetVariablesFile() const {
-    const auto commandFile = LC_GET_ONE_STR("Paths","VariableFile", "");
+    const QString commandFile = CFG_Paths::o_VariableFile;
     if (!commandFile.isEmpty()) {
         m_appWin->m_commandWidget->leCommand->readCommandFile(commandFile);
     }
@@ -250,7 +251,7 @@ void LC_ApplicationWindowInitializer::initPlugins(){
 }
 
 void LC_ApplicationWindowInitializer::initAutoSaveTimer() const {
-    const bool allowAutoSave = LC_GET_ONE_BOOL("Defaults", "AutoBackupDocument", true);
+    const bool allowAutoSave = CFG_Defaults::o_AutoBackupDocument;
     m_appWin->startAutoSaveTimer(allowAutoSave);
 }
 
@@ -272,4 +273,8 @@ void LC_ApplicationWindowInitializer::setupActionContextWidgets() const {
     m_appWin->m_actionContext->setMouseWidget(m_appWin->m_mouseWidget);
     m_appWin->m_actionContext->setStatusBarManager(m_appWin->m_statusbarManager);
     m_appWin->m_actionContext->setPropertySheetWidget(m_appWin->m_propertySheetWidget);
+}
+
+void LC_ApplicationWindowInitializer::initSettingsDialogs() {
+    LC_TmpGenericOptionsInit::initializeApplicationSettings();
 }

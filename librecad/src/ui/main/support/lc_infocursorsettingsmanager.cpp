@@ -22,6 +22,8 @@
 
 #include "lc_infocursorsettingsmanager.h"
 
+#include "lc_settings_colors.h"
+#include "lc_settings_info_overlay_cursor.h"
 #include "qc_applicationwindow.h"
 #include "qc_mdiwindow.h"
 #include "qg_graphicview.h"
@@ -38,28 +40,28 @@ void LC_InfoCursorSettingsManager::slotInfoCursorSetting(const bool toggle) {
                 bool doUpdate = true;
                 switch (tagValue) {
                     case 0: {
-                        LC_SET_ONE("InfoOverlayCursor", "Enabled", toggle);
+                        CFG_InfoOverlayCursor::o_InfoCursorEnabled = toggle;
                         emit showInfoCursorSettingChanged(toggle);
                         break;
                     }
                     case 1: {
-                        LC_SET_ONE("InfoOverlayCursor", "ShowAbsolute", toggle);
+                        CFG_InfoOverlayCursor::o_ShowAbsolute = toggle;
                         break;
                     }
                     case 2: {
-                        LC_SET_ONE("InfoOverlayCursor", "ShowSnapInfo", toggle);
+                        CFG_InfoOverlayCursor::o_ShowSnapInfo = toggle;
                         break;
                     }
                     case 3: {
-                        LC_SET_ONE("InfoOverlayCursor", "ShowRelativeDA", toggle);
+                        CFG_InfoOverlayCursor::o_ShowRelativeDA = toggle;
                         break;
                     }
                     case 4: {
-                        LC_SET_ONE("InfoOverlayCursor", "ShowPrompt", toggle);
+                        CFG_InfoOverlayCursor::o_ShowPrompt = toggle;
                         break;
                     }
                     case 5: {
-                        LC_SET_ONE("InfoOverlayCursor", "ShowPropertiesCatched", toggle);
+                        CFG_InfoOverlayCursor::o_ShowPropertiesCatched = toggle;
                         break;
                     }
                     case 6: {
@@ -85,23 +87,20 @@ void LC_InfoCursorSettingsManager::slotInfoCursorSetting(const bool toggle) {
 }
 
 void LC_InfoCursorSettingsManager::loadFromSettings() const {
-    LC_GROUP("InfoOverlayCursor");
-    {
-        const bool infoCursorEnabled = LC_GET_BOOL("Enabled", true);
-        QAction *action = m_appWin->getAction("EntityDescriptionInfo");
-        if (action != nullptr) {
-            action->setVisible(infoCursorEnabled);
-        }
-
-        action = m_appWin->getAction("InfoCursorEnable");
-        if (action != nullptr) {
-            action->setChecked(infoCursorEnabled);
-        }
-        m_appWin->checkAction("InfoCursorAbs", LC_GET_BOOL("ShowAbsolute", true));
-        m_appWin->checkAction("InfoCursorSnap",LC_GET_BOOL("ShowSnapInfo", true));
-        m_appWin->checkAction("InfoCursorRel",LC_GET_BOOL("ShowRelativeDA", true));
-        m_appWin->checkAction("InfoCursorPrompt",LC_GET_BOOL("ShowPrompt", true));
-        m_appWin->checkAction("InfoCursorCatchedEntity",LC_GET_BOOL("ShowPropertiesCatched", true));
+    using namespace CFG_InfoOverlayCursor;
+    const bool infoCursorEnabled = o_InfoCursorEnabled;
+    QAction* action = m_appWin->getAction("EntityDescriptionInfo");
+    if (action != nullptr) {
+        action->setVisible(infoCursorEnabled);
     }
-    LC_GROUP_END();
+
+    action = m_appWin->getAction("InfoCursorEnable");
+    if (action != nullptr) {
+        action->setChecked(infoCursorEnabled);
+    }
+    m_appWin->checkAction("InfoCursorAbs", o_ShowAbsolute);
+    m_appWin->checkAction("InfoCursorSnap",o_ShowSnapInfo);
+    m_appWin->checkAction("InfoCursorRel",o_ShowRelativeDA);
+    m_appWin->checkAction("InfoCursorPrompt",o_ShowPrompt);
+    m_appWin->checkAction("InfoCursorCatchedEntity",o_ShowPropertiesCatched);
 }

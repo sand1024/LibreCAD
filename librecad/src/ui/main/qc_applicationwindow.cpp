@@ -68,8 +68,14 @@
 #include "lc_quickinfowidget.h"
 #include "lc_releasechecker.h"
 #include "lc_relzerocoordinateswidget.h"
+#include "lc_settings_cad_preferences.h"
+#include "lc_settings_defaults.h"
+#include "lc_settings_hardware.h"
+#include "lc_settings_paths.h"
+#include "lc_settings_startup.h"
 #include "lc_snapmanager.h"
 #include "lc_snapoptionswidgetsholder.h"
+#include "lc_tmp_generic_options_init.h"
 #include "lc_ucslistwidget.h"
 #include "lc_ucsstatewidget.h"
 #include "lc_workspacesinvoker.h"
@@ -188,11 +194,11 @@ void QC_ApplicationWindow::startAutoSaveTimer(const bool startAutoBackup) {
         }
         if (!m_autosaveTimer->isActive()) {
             // autosaving has been turned on. Make a backup immediately
-            LC_GROUP_GUARD("Defaults");
             {
-                LC_SET("AutoBackupDocument", 1);
+                using namespace CFG_Defaults;
+                o_AutoBackupDocument =  true;
                 autoSaveCurrentDrawing();
-                const int ms = 60000 * LC_GET_INT("AutoSaveTime", 5);
+                const int ms = 60000 * o_AutoSaveTime;
                 m_autosaveTimer->start(ms);
             }
         }
@@ -280,7 +286,7 @@ bool QC_ApplicationWindow::doSave(QC_MDIWindow* w, const bool forceSaveAs) {
             const bool draftMode = graphicView->isDraftMode();
             setupMDIWindowTitleByFile(w, drawingFileFullPath, draftMode, graphicView->isPrintPreview());
 
-            const bool autoBackup = LC_GET_ONE_BOOL("Defaults", "AutoBackupDocument", true);
+            const bool autoBackup = CFG_Defaults::o_AutoBackupDocument;
             startAutoSaveTimer(autoBackup);
         }
         else {
@@ -509,7 +515,7 @@ void QC_ApplicationWindow::slotUpdateActiveLayer() const {
 void QC_ApplicationWindow::initSettings(bool fromStartup) {
     RS_DEBUG->print("QC_ApplicationWindow::initSettings()");
 
-    const bool first_load = LC_GET_ONE_BOOL("Startup", "FirstLoad", true);
+    const bool first_load = CFG_Startup::o_FirstLoad;
     if (!first_load) {
         m_workspacesInvoker->init();
     }
@@ -518,21 +524,20 @@ void QC_ApplicationWindow::initSettings(bool fromStartup) {
         m_uiStyleManager->initialize(this);
     }
 
-    LC_GROUP("Appearance");
     {
+        using namespace CFG_Appearance;
         QAction* viewLinesDraftAction = getAction("ViewLinesDraft");
-        viewLinesDraftAction->setChecked(LC_GET_BOOL("DraftLinesMode", false));
+        viewLinesDraftAction->setChecked(o_DraftLinesMode);
 
-        const bool draftMode = LC_GET_BOOL("DraftMode", false);
+        const bool draftMode = o_DraftMode;
 
         getAction("ViewDraft")->setChecked(draftMode);
         viewLinesDraftAction->setDisabled(draftMode);
 
         QAction* viewAntialiasing = getAction("ViewAntialiasing");
-        const bool antialiasing = LC_GET_BOOL("Antialiasing", false);
+        const bool antialiasing = o_Antialiasing;
         viewAntialiasing->setChecked(antialiasing);
     }
-    LC_GROUP_END();
     m_infoCursorSettingsManager->loadFromSettings();
 }
 
@@ -780,7 +785,7 @@ QC_MDIWindow* QC_ApplicationWindow::createNewDrawingWindow(RS_Document* doc, con
         }
     }
 
-    const bool draftMode = LC_GET_ONE_BOOL("Appearance", "DraftMode", false);
+    const bool draftMode = CFG_Appearance::o_DraftMode;
     view->setDraftMode(draftMode);
 
     setupMDIWindowTitleByName(w, baseTitleString, draftMode);
@@ -803,18 +808,20 @@ void QC_ApplicationWindow::recreateToolbarsMenu() {
 
 QG_GraphicView* QC_ApplicationWindow::setupNewGraphicView(const QC_MDIWindow* w) {
     QG_GraphicView* view = w->getGraphicView();
-    LC_GROUP("Appearance");
-    const bool antialiasing = LC_GET_BOOL("Antialiasing"); // fixme - sand - check whether its not loaded in loadSettings() later
-    const bool showScrollbars = LC_GET_BOOL("ScrollBars", true);
-    const bool cursor_hiding = LC_GET_BOOL("cursor_hiding");
-    LC_GROUP_END();
-
-    view->setAntialiasing(antialiasing);
-    view->setCursorHiding(cursor_hiding);
-    view->setDeviceName(LC_GET_ONE_STR("Hardware", "Device", "Mouse"));
-    if (showScrollbars) {
-        view->addScrollbars();
+    {
+        using namespace CFG_Appearance;
+        const bool antialiasing = o_Antialiasing; // fixme - sand - check whether its not loaded in loadSettings() later
+        const bool showScrollbars = o_ScrollBars;
+        const bool cursor_hiding = o_CursorHidingWhenSnapping;
+        view->setAntialiasing(antialiasing);
+        view->setCursorHiding(cursor_hiding);
+        if (showScrollbars) {
+            view->addScrollbars();
+        }
     }
+
+    view->setDeviceName(CFG_Hardware::o_Device);
+
      connect(view, &QG_GraphicView::gridStatusChanged, this, &QC_ApplicationWindow::updateGridStatus);
      connect(view, &RS_GraphicView::currentActionChanged, this, &QC_ApplicationWindow::onViewCurrentActionChanged);
     // ==========================================================================================================================
@@ -881,7 +888,7 @@ bool QC_ApplicationWindow::newDrawingFromTemplate(const QString& fileName, QC_MD
  */
 void QC_ApplicationWindow::slotFileNewFromDefaultTemplate() {
     //tried to load template file indicated in RS_Settings
-    const QString templateFileName = LC_GET_ONE_STR("Paths", "Template", "");
+    const QString templateFileName = CFG_Paths::o_Template;
     newDrawingFromTemplate(templateFileName);
 }
 
@@ -1024,7 +1031,7 @@ void QC_ApplicationWindow::updateWidgetsAsDocumentLoaded(const QC_MDIWindow* w) 
 }
 
 void QC_ApplicationWindow::autoZoomAfterLoad(const QG_GraphicView* graphicView) {
-    if (LC_GET_ONE_BOOL("CADPreferences", "AutoZoomDrawing", true)) {
+    if (CFG_CADPreferences::o_AutoZoomDrawing) {
         graphicView->zoomAuto(false);
     }
 }
@@ -1223,7 +1230,7 @@ void QC_ApplicationWindow::slotFileSaveAll() {
  */
 void QC_ApplicationWindow::autoSaveCurrentDrawing() {
     RS_DEBUG->print("QC_ApplicationWindow::slotFileAutoSave(): begin");
-    if (!LC_GET_ONE_BOOL("Defaults", "AutoBackupDocument", true)) {
+    if (!CFG_Defaults::o_AutoBackupDocument) {
         startAutoSaveTimer(false);
         return;
     }
@@ -1423,12 +1430,12 @@ void QC_ApplicationWindow::openPrintPreview(QC_MDIWindow* parent) {
             m_mdiAreaCAD->addSubWindow(w);
             parent->addChildWindow(w);
 
-            const bool draftMode = LC_GET_ONE_BOOL("Appearance", "DraftMode");
+            const bool draftMode = CFG_Appearance::o_DraftMode;
             setupMDIWindowTitleByFile(w, parent->getFileName(), draftMode, true);
 
             w->setWindowIcon(QIcon(":/icons/document.lci"));
             QG_GraphicView* view = w->getGraphicView();
-            view->setDeviceName(LC_GET_ONE_STR("Hardware", "Device", "Mouse"));
+            view->setDeviceName(CFG_Hardware::o_Device);
             const auto printPreviewAction = new RS_ActionPrintPreview(m_actionContext);
             printPreviewAction->postCreateInit();
             view->setDefaultAction(printPreviewAction); // fixme - sand - is it correct for preview?
@@ -1518,7 +1525,7 @@ void QC_ApplicationWindow::slotViewGrid(const bool toggle) {
  * @param toggle true: enable, false: disable.
  */
 void QC_ApplicationWindow::slotViewDraft(bool toggle) {
-    LC_SET_ONE("Appearance", "DraftMode", toggle);
+    CFG_Appearance::o_DraftMode = toggle;
     // fixme - sand - files - probably just rely on signal??
 
     doForEachWindowGraphicView([toggle, this](QG_GraphicView* gv, QC_MDIWindow* w) {
@@ -1541,7 +1548,7 @@ void QC_ApplicationWindow::slotShowEntityDescriptionOnHover(bool toggle) {
 }
 
 void QC_ApplicationWindow::slotViewDraftLines(bool toggle) {
-    LC_SET_ONE("Appearance", "DraftLinesMode", toggle);
+    CFG_Appearance::o_DraftLinesMode = toggle;
     doForEachWindowGraphicView([toggle](const QG_GraphicView* gv, [[maybe_unused]] QC_MDIWindow* w) {
         // fixme - sand - files - probably just rely on signal??
         gv->setDraftLinesMode(toggle);
@@ -1551,7 +1558,7 @@ void QC_ApplicationWindow::slotViewDraftLines(bool toggle) {
 }
 
 void QC_ApplicationWindow::slotViewAntialiasing(bool toggle) {
-    LC_SET_ONE("Appearance", "Antialiasing", toggle);
+    CFG_Appearance::o_Antialiasing = toggle;
 
     doForEachSubWindowGraphicView([toggle](const QG_GraphicView* gv, [[maybe_unused]] QC_MDIWindow* w) {
         // fixme - sand - files - probably just rely on signal??
@@ -1578,7 +1585,7 @@ void QC_ApplicationWindow::updateGrids() const {
  */
 void QC_ApplicationWindow::slotViewStatusBar(const bool toggle) {
     statusBar()->setVisible(toggle);
-    LC_SET_ONE("Appearance", "StatusBarVisible", toggle);
+    CFG_Appearance::o_StatusBarVisible = toggle;
 }
 
 void QC_ApplicationWindow::slotViewGridOrtho(const bool toggle) {
@@ -1618,6 +1625,34 @@ void QC_ApplicationWindow::slotOptionsGeneral() {
     if (dialogResult == QDialog::Accepted) {
         m_actionOptionsManager->update();
         // fixme - check this signal, probably it's better to rely on settings change
+        const bool hideRelativeZero = CFG_Appearance::o_HideRelativeZero;
+        emit signalEnableRelativeZeroSnaps(!hideRelativeZero);
+
+        const bool antialiasing = CFG_Appearance::o_Antialiasing;
+        emit antialiasingChanged(antialiasing);
+
+        m_statusbarManager->loadSettings();
+        onCADTabBarIndexChanged(0); // force update if settings changed
+
+        doForEachSubWindowGraphicView([this](QG_GraphicView* gv, const QC_MDIWindow* w) {
+            gv->loadSettings();
+            if (w == m_activeMdiSubWindow) {
+                gv->redraw();
+            }
+        });
+
+        // fixme - sand - consider emitting signal on properties change instead of processing changes there
+        m_infoCursorSettingsManager->loadFromSettings();
+        rebuildMenuIfNecessary();
+    }
+    fireCurrentActionIconChanged(nullptr);
+}
+
+void QC_ApplicationWindow::slotOptionsGeneralNew() {
+    bool accepted = LC_TmpGenericOptionsInit::showAltOptionsGeneral(this);
+    /*if (accepted) {
+        m_actionOptionsManager->update();
+        // fixme - check this signal, probably it's better to rely on settings change
         const bool hideRelativeZero = LC_GET_ONE_BOOL("Appearance", "hideRelativeZero");
         emit signalEnableRelativeZeroSnaps(!hideRelativeZero);
 
@@ -1638,7 +1673,7 @@ void QC_ApplicationWindow::slotOptionsGeneral() {
         m_infoCursorSettingsManager->loadFromSettings();
         rebuildMenuIfNecessary();
     }
-    fireCurrentActionIconChanged(nullptr);
+    fireCurrentActionIconChanged(nullptr);*/
 }
 
 void QC_ApplicationWindow::slotImportBlock() {
@@ -1845,12 +1880,12 @@ QMenu* QC_ApplicationWindow::createPopupMenu() {
 
 void QC_ApplicationWindow::toggleFullscreen(const bool checked) {
     checked ? showFullScreen() : showMaximized();
-    LC_SET_ONE("Appearance", "FullscreenMode", checked);
+    CFG_Appearance::o_FullscreenMode = checked;
 }
 
 void QC_ApplicationWindow::toggleMainMenu(const bool toggle) {
     menuBar()->setVisible(toggle);
-    LC_SET_ONE("Appearance", "MainMenuVisible", toggle);
+    CFG_Appearance::o_MainMenuVisible = toggle;
 }
 
 void QC_ApplicationWindow::slotFileOpenRecent(const QAction* action) {
@@ -1904,7 +1939,7 @@ void QC_ApplicationWindow::showDeviceOptions() {
 }
 
 void QC_ApplicationWindow::updateDevice(const QString& device) {
-    LC_SET_ONE("Hardware", "Device", device);
+    CFG_Hardware::o_Device = device;
     for (const auto& win : std::as_const(m_windowList)) {
         win->getGraphicView()->setDeviceName(device);
     }

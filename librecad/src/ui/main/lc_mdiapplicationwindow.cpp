@@ -31,6 +31,7 @@
 #include <QStyle>
 #include <qtabbar.h>
 
+#include "lc_settings_window_options.h"
 #include "qc_mdiwindow.h"
 #include "qg_graphicview.h"
 #include "rs_debug.h"
@@ -197,7 +198,8 @@ void LC_MDIApplicationWindow::activateWindowWithFile(const QString &fileName) {
  * @param actuallyDont just set the setting, don't actually do the arrangement
  */
 void LC_MDIApplicationWindow::doArrangeWindows(const RS2::SubWindowMode subwindowMode, const bool actuallyDont) {
-    const int mode = subwindowMode != RS2::CurrentMode ? subwindowMode : LC_GET_ONE_INT("WindowOptions", "SubWindowMode", RS2::Maximized);
+    using namespace CFG_WindowOptions;
+    const RS2::SubWindowMode mode = subwindowMode != RS2::CurrentMode ? subwindowMode :o_SubWindowMode;
 
     if (!actuallyDont) {
         switch (mode) {
@@ -222,7 +224,7 @@ void LC_MDIApplicationWindow::doArrangeWindows(const RS2::SubWindowMode subwindo
                 break;
         }
     }
-    LC_SET_ONE("WindowOptions", "SubWindowMode", mode);
+    o_SubWindowMode = mode;
 }
 
 /**
@@ -233,18 +235,15 @@ void LC_MDIApplicationWindow::doArrangeWindows(const RS2::SubWindowMode subwindo
  * @param p the tab bar position; if RS2::AnyPosition read the current setting
  */
 void LC_MDIApplicationWindow::setTabLayout(const RS2::TabShape s, const RS2::TabPosition p) {
-    LC_GROUP("WindowOptions");
-    int shape = (s == RS2::AnyShape) ? LC_GET_INT("TabShape", RS2::Triangular) : s;
-    int position = (p == RS2::AnyPosition) ? LC_GET_INT("TabPosition", RS2::West) : p;
-    LC_GROUP_END();
+    using namespace CFG_WindowOptions;
+    RS2::TabShape shape = (s == RS2::AnyShape) ? o_TabShape : s;
+    RS2::TabPosition position  = (p == RS2::AnyPosition) ? o_TabPosition : p;
+
     m_mdiAreaCAD->setTabShape(static_cast<QTabWidget::TabShape>(shape));
     m_mdiAreaCAD->setTabPosition(static_cast<QTabWidget::TabPosition>(position));
     doArrangeWindows(RS2::Maximized);
-    LC_GROUP_GUARD("WindowOptions");
-    {
-        LC_SET("TabShape", shape);
-        LC_SET("TabPosition", position);
-    }
+    o_TabShape = shape;
+    o_TabPosition = position;
 }
 
 /**
@@ -464,38 +463,38 @@ void LC_MDIApplicationWindow::setupCADAreaTabbar() {
 }
 
 void LC_MDIApplicationWindow::onCADTabBarIndexChanged([[maybe_unused]]int index) const {
-    LC_GROUP("Appearance");
-    {
-        const QList<QTabBar *> tabBarList = m_mdiAreaCAD->findChildren<QTabBar *>();
-        if (tabBarList.isEmpty()){
-            return;
-        }
-        const bool showCloseButtons = LC_GET_BOOL("ShowCloseButton", true);
-        const bool showActive = LC_GET_BOOL("ShowCloseButtonActiveOnly", true);
-        // setup close button in window tab for tabbed mode
-        QTabBar *tabBar = tabBarList.at(0);
-        if (tabBar != nullptr) {
-            const auto closeSide = static_cast<QTabBar::ButtonPosition>(style()->styleHint(QStyle::SH_TabBar_CloseButtonPosition, nullptr, this));
+    const QList<QTabBar*> tabBarList = m_mdiAreaCAD->findChildren<QTabBar*>();
+    if (tabBarList.isEmpty()) {
+        return;
+    }
+    using namespace CFG_Appearance;
+    const bool showCloseButtons = o_ShowCloseButton;
+    const bool showActive = o_ShowCloseButtonActiveOnly;
+    // setup close button in window tab for tabbed mode
+    QTabBar* tabBar = tabBarList.at(0);
+    if (tabBar != nullptr) {
+        const auto closeSide = static_cast<QTabBar::ButtonPosition>(style()->
+            styleHint(QStyle::SH_TabBar_CloseButtonPosition, nullptr, this));
 
-            for (int i = 0; i < tabBar->count(); ++i) {
-                QWidget *closeButtonWidget = tabBar->tabButton(i, closeSide);
-                tabBar->setTabEnabled(i, closeButtonWidget != nullptr);
-                if (closeButtonWidget != nullptr) {
-                    if (showCloseButtons){
-                        if (showActive) {
-                            if (i != tabBar->currentIndex()) {
-                                closeButtonWidget->hide();
-                            } else {
-                                closeButtonWidget->show();
-                            }
+        for (int i = 0; i < tabBar->count(); ++i) {
+            QWidget* closeButtonWidget = tabBar->tabButton(i, closeSide);
+            tabBar->setTabEnabled(i, closeButtonWidget != nullptr);
+            if (closeButtonWidget != nullptr) {
+                if (showCloseButtons) {
+                    if (showActive) {
+                        if (i != tabBar->currentIndex()) {
+                            closeButtonWidget->hide();
                         }
-                        else{
+                        else {
                             closeButtonWidget->show();
                         }
                     }
                     else {
-                        closeButtonWidget->hide();
+                        closeButtonWidget->show();
                     }
+                }
+                else {
+                    closeButtonWidget->hide();
                 }
             }
         }
@@ -536,7 +535,7 @@ void LC_MDIApplicationWindow::enableWidget(QWidget *win, const bool enable) {
  * Force-Activate this sub window.
  */
 void LC_MDIApplicationWindow::doActivate(QMdiSubWindow *win) {
-    const bool maximized = LC_GET_ONE_BOOL("WindowOptions","Maximized");
+    const bool maximized = CFG_WindowOptions::o_Maximized;
     if (win != nullptr) {
         doWindowActivated(win, true);
         win->activateWindow();

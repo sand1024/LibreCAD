@@ -28,6 +28,7 @@
 #include "comboboxoption.h"
 #include "lc_dlgabout.h"
 #include "lc_dlgnewversionavailable.h"
+#include "lc_settings_hardware.h"
 #include "lc_widgetoptionsdialog.h"
 #include "qc_applicationwindow.h"
 #include "qc_mdiwindow.h"
@@ -96,7 +97,7 @@ void LC_AppWindowDialogsInvoker::showDeviceOptions() {
     const auto device_combo = new ComboBoxOption(&dlg);
     device_combo->setTitle(tr("Device"));
     device_combo->setOptionsList(QStringList({"Mouse", "Tablet", "Trackpad", "Touchscreen"}));
-    device_combo->setCurrentOption(LC_GET_ONE_STR("Hardware", "Device", "Mouse"));
+    device_combo->setCurrentOption(CFG_Hardware::o_Device);
     layout->addWidget(device_combo);
     dlg.setLayout(layout);
     connect(device_combo, &ComboBoxOption::optionToSave, m_appWin, &QC_ApplicationWindow::updateDevice);

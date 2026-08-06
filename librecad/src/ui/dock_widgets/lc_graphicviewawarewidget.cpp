@@ -26,6 +26,7 @@
 #include <QLayout>
 #include <QToolButton>
 
+#include "lc_settings_widget.h"
 #include "rs_settings.h"
 
 LC_GraphicViewAwareWidget::LC_GraphicViewAwareWidget(QWidget* parent, const char* name, const Qt::WindowFlags f):
@@ -36,20 +37,17 @@ LC_GraphicViewAwareWidget::LC_GraphicViewAwareWidget(QWidget* parent, const char
 LC_GraphicViewAwareWidget::~LC_GraphicViewAwareWidget() = default;
 
 void LC_GraphicViewAwareWidget::updateWidgetSettings() const {
-    LC_GROUP("Widgets");
-    {
-        const bool flatIcons = LC_GET_BOOL("DockWidgetsFlatIcons", true);
-        const int iconSize = LC_GET_INT("DockWidgetsIconSize", 16);
+    using namespace CFG_Widgets;
+    const bool flatIcons = o_DockWidgetsFlatIcons;
+    const int iconSize = o_DockWidgetsIconSize;
 
-        const QSize size(iconSize, iconSize);
+    const QSize size(iconSize, iconSize);
 
-        QList<QToolButton*> widgets = this->findChildren<QToolButton*>();
-        foreach(QToolButton *w, widgets) {
-            w->setAutoRaise(flatIcons);
-            w->setIconSize(size);
-        }
+    QList<QToolButton*> widgets = this->findChildren<QToolButton*>();
+    foreach(QToolButton *w, widgets) {
+        w->setAutoRaise(flatIcons);
+        w->setIconSize(size);
     }
-    LC_GROUP_END();
 }
 
 void LC_GraphicViewAwareWidget::doAdjustForDockLocation(Qt::DockWidgetArea area) {

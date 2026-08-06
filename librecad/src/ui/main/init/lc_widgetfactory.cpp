@@ -40,6 +40,8 @@
 #include "lc_qtstatusbarmanager.h"
 #include "lc_quickinfowidget.h"
 #include "lc_relzerocoordinateswidget.h"
+#include "lc_settings_startup.h"
+#include "lc_settings_widget.h"
 #include "lc_ucslistwidget.h"
 #include "lc_ucsstatewidget.h"
 #include "qc_applicationwindow.h"
@@ -81,24 +83,24 @@ void LC_WidgetFactory::initWidgets(){
 }
 
 void LC_WidgetFactory::initLeftCADSidebar(){
-    const bool enable_left_sidebar = LC_GET_ONE_BOOL("Startup", "EnableLeftSidebar", true);
+    const bool enable_left_sidebar =  CFG_Startup::o_EnableLeftSidebar;
     if (enable_left_sidebar) {
-        const bool cadSidebarUngrouped = LC_GET_ONE_BOOL("Startup", "CADSideBarUngrouped", false);
-        LC_GROUP("Widgets"); {
-           if (cadSidebarUngrouped) {
-             const int leftSidebarAllColumnsCount = LC_GET_INT("LeftToolbarAllColumnsCount", 5);
-             const int leftSidebarAllIconSize = LC_GET_INT("LeftToolbarAllIconSize", 24);
-             const bool flatIconsAll = LC_GET_BOOL("LeftToolbarAllFlatIcons", true);
-             createCADMegaSidebar(leftSidebarAllColumnsCount, leftSidebarAllIconSize, flatIconsAll);
-           }
-           else {
-            const int leftSidebarColumnsCount = LC_GET_INT("LeftToolbarColumnsCount", 5);
-            const int leftSidebarIconSize = LC_GET_INT("LeftToolbarIconSize", 24);
-            const bool flatIcons = LC_GET_BOOL("LeftToolbarFlatIcons", true);
-            createCADSidebar(leftSidebarColumnsCount, leftSidebarIconSize, flatIcons);
+        const bool cadSidebarUngrouped =CFG_Startup::o_CADSideBarUngrouped;
+        {
+            using namespace CFG_Widgets;
+            if (cadSidebarUngrouped) {
+                const int leftSidebarAllColumnsCount = o_LeftToolbarAllColumnsCount;
+                const int leftSidebarAllIconSize = o_LeftToolbarAllIconSize;
+                const bool flatIconsAll = o_LeftToolbarAllFlatIcons;
+                createCADMegaSidebar(leftSidebarAllColumnsCount, leftSidebarAllIconSize, flatIconsAll);
             }
-        }
-        LC_GROUP_END();
+            else {
+                const int leftSidebarColumnsCount = o_LeftToolbarColumnsCount;
+                const int leftSidebarIconSize = o_LeftToolbarIconSize;
+                const bool flatIcons = o_LeftToolbarFlatIcons;
+                createCADSidebar(leftSidebarColumnsCount, leftSidebarIconSize, flatIcons);
+            }
+        }        
     }
 }
 
@@ -387,7 +389,7 @@ void LC_WidgetFactory::updateDockWidgetsTitleBarType(const QC_ApplicationWindow*
 }
 
 void LC_WidgetFactory::createRightSidebar(QG_ActionHandler* actionHandler){
-    const bool verticalTitle = LC_GET_ONE_BOOL("Widgets", "DockTitleBarVertical", false);
+    const bool verticalTitle = CFG_Widgets::o_DockTitleBarVertical;
     QDockWidget *dock_pen_palette = createPenPalletteWidget();
     QDockWidget *dock_layer = createLayerWidget(actionHandler);
     QDockWidget *dock_ucss = createUCSListWidget();
@@ -542,7 +544,7 @@ void LC_WidgetFactory::initStatusBar() {
     m_appWin->m_statusbarManager = new LC_QTStatusbarManager(status_bar);
     m_appWin->m_statusbarManager->loadSettings();
 
-    const bool useClassicalStatusBar = LC_GET_ONE_BOOL("Startup", "UseClassicStatusBar", false);
+    const bool useClassicalStatusBar = CFG_Startup::o_UseClassicStatusBar;
     if (useClassicalStatusBar) {
         status_bar->addWidget(m_appWin->m_coordinateWidget);
         status_bar->addWidget(m_appWin->m_mouseWidget);
@@ -553,19 +555,20 @@ void LC_WidgetFactory::initStatusBar() {
         status_bar->addWidget(m_appWin->m_ucsStateWidget);
         status_bar->addWidget(m_appWin->m_anglesBasisWidget);
 
-        LC_GROUP_GUARD("Widgets");{
-            const bool allow_statusbar_fontsize = LC_GET_BOOL("AllowStatusbarFontSize", false);
-            const bool allow_statusbar_height = LC_GET_BOOL("AllowStatusbarHeight", false);
+        {
+            using namespace CFG_Widgets;
+            const bool allow_statusbar_fontsize = o_AllowStatusbarFontSize;
+            const bool allow_statusbar_height = o_AllowStatusbarHeight;
 
             if (allow_statusbar_fontsize) {
-                const int fontsize = LC_GET_INT("StatusbarFontSize", 12);
+                const int fontsize = o_StatusbarFontSize;
                 QFont font;
                 font.setPointSize(fontsize);
                 status_bar->setFont(font);
             }
             int height{64};
             if (allow_statusbar_height) {
-                height = LC_GET_INT("StatusbarHeight", 64);
+                height = o_StatusbarHeight;
             }
             status_bar->setMinimumHeight(height);
             status_bar->setMaximumHeight(height);
@@ -573,7 +576,7 @@ void LC_WidgetFactory::initStatusBar() {
     }
     else {
         constexpr QSizePolicy tbPolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
-        const bool showToolbarTooltips = LC_GET_ONE_BOOL("Startup", "ShowToolbarsTooltip", true);
+        const bool showToolbarTooltips = CFG_Startup::o_ShowToolbarsTooltip;
         createStatusBarToolbar(tbPolicy, m_appWin->m_coordinateWidget, tr("Coordinates"), ":/icons/info_point.lci", "TBCoordinates", showToolbarTooltips, true);
         createStatusBarToolbar(tbPolicy, m_appWin->m_relativeZeroCoordinatesWidget, tr("Relative Zero"),  ":/icons/set_rel_zero.lci", "TBRelZero",showToolbarTooltips, true);
         createStatusBarToolbar(tbPolicy, m_appWin->m_mouseWidget, tr("Mouse"), ":/icons/mouse.lci", "TBMouse", showToolbarTooltips, true);
@@ -598,7 +601,7 @@ void LC_WidgetFactory::initStatusBar() {
     connect(m_appWin, &QC_ApplicationWindow::currentActionIconChanged, m_appWin->m_mouseWidget, &QG_MouseWidget::setCurrentQAction);
     connect(m_appWin, &QC_ApplicationWindow::currentActionIconChanged, m_appWin->m_statusbarManager, &LC_QTStatusbarManager::setCurrentQAction);
 
-    const bool statusBarVisible = LC_GET_ONE_BOOL("Appearance", "StatusBarVisible", true);
+    const bool statusBarVisible = CFG_Appearance::o_StatusBarVisible;
     status_bar->setVisible(statusBarVisible);
 }
 

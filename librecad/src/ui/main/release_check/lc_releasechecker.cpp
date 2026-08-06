@@ -26,6 +26,7 @@
 #include <QJsonArray>
 #include <qjsondocument.h>
 
+#include "lc_settings_startup.h"
 #include "rs_debug.h"
 #include "rs_dialogfactory.h"
 #include "rs_dialogfactoryinterface.h"
@@ -177,10 +178,10 @@ void LC_ReleaseChecker::processReleasesJSON(const QByteArray& responseContent) {
             QVector<LC_ReleaseInfo> releases;
             QVector<LC_ReleaseInfo> preReleases;
             LC_TagInfo ownTagInfo = m_ownReleaseInfo.getTagInfo();
-            LC_GROUP_GUARD("Startup");
-            bool ignorePreReleases = LC_GET_BOOL("IgnorePreReleaseVersions", true);
-            QString ignoredReleaseTagStr = LC_GET_STR("IgnoredRelease", "0.0.0.0");
-            QString ignoredPreReleaseTag = LC_GET_STR("IgnoredPreRelease", "0.0.0.0");
+            using namespace  CFG_Startup;
+            bool ignorePreReleases = o_IgnorePreReleaseVersions;
+            QString ignoredReleaseTagStr = o_IgnoredRelease;
+            QString ignoredPreReleaseTag = o_IgnoredPreRelease;
 
             LC_TagInfo ignoredRelease = parseTagInfo(ignoredReleaseTagStr);
             LC_TagInfo ignoredPreRelease = parseTagInfo(ignoredPreReleaseTag);

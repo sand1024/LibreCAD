@@ -25,6 +25,8 @@
 #include <QApplication>
 
 #include "lc_filedialogservice.h"
+#include "lc_settings_defaults.h"
+#include "lc_settings_paths.h"
 #include "qg_filedialog.h"
 #include "rs_dialogfactory.h"
 #include "rs_dialogfactoryinterface.h"
@@ -143,7 +145,7 @@ bool LC_DocumentsStorage::loadDocumentFromTemplate(const RS_Document* document, 
  * Loads the given file into this graphic.
  */
 bool LC_DocumentsStorage::loadGraphicFromTemplate(RS_Graphic* graphic, const QString &templateFileName, const RS2::FormatType type) const {
-    const QString autosaveFilePrefix = LC_GET_ONE_STR("Path", "AutosaveFilePrefix", "#");
+    const QString autosaveFilePrefix = CFG_Defaults::o_AutosaveFilePrefix;
     const QString autosaveFilename = createAutoSaveFileName(QDir::tempPath (), autosaveFilePrefix, tr("Unnamed")+".dxf");
 
     // clean all:
@@ -199,7 +201,7 @@ bool LC_DocumentsStorage::doSave(RS_Graphic* graphic, const bool sameFile) {
     }
 
     const QString& actualName = filename;
-    if (LC_GET_ONE_BOOL("Defaults","AutoBackupDocument", true)) {
+    if (CFG_Defaults::o_AutoBackupDocument) {
         backupDrawingFile(filename);
     }
 
@@ -308,7 +310,7 @@ bool LC_DocumentsStorage::saveGraphicAs(RS_Graphic* graphic, const QString &file
 }
 
 bool LC_DocumentsStorage::backupDrawingFile(const QString &drawingFileName) {
-    const QString backupFileSuffix = LC_GET_ONE_STR("Defaults", "BackupFileSuffix", "~");
+    const QString backupFileSuffix =  CFG_Defaults::o_BackupFileSuffix;
     return backupDrawingFile(drawingFileName, backupFileSuffix);
 }
 
@@ -329,7 +331,7 @@ bool LC_DocumentsStorage::backupDrawingFile(const QString &drawingFileName, cons
 }
 
 QString LC_DocumentsStorage::createAutoSaveFileName(const QFileInfo &fileInfo) const {
-    const QString autosaveFilePrefix = LC_GET_ONE_STR("Defaults", "AutosaveFilePrefix", "#");
+    const QString autosaveFilePrefix = CFG_Defaults::o_AutosaveFilePrefix;
     QString autosaveFileName = createAutoSaveFileName(fileInfo, autosaveFilePrefix);
     return autosaveFileName;
 }

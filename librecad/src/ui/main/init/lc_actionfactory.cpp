@@ -35,12 +35,16 @@
 #include "lc_actiongroup.h"
 #include "lc_actiongroupmanager.h"
 #include "lc_infocursorsettingsmanager.h"
+#include "lc_settings_keyboard.h"
+#include "lc_settings_selection.h"
+#include "lc_settings_snap.h"
+#include "lc_settings_snap_visual.h"
 #include "lc_shortcutinfo.h"
 #include "qc_applicationwindow.h"
 #include "qg_actionhandler.h"
 #include "rs_actioninterface.h"
 #include "rs_previewactioninterface.h"
-#include "rs_settings.h"
+
 
 LC_ActionFactory::LC_ActionFactory(QC_ApplicationWindow* parent, QG_ActionHandler* actionHandler)
     : LC_ActionFactoryBase(parent, actionHandler){
@@ -652,6 +656,7 @@ void LC_ActionFactory::createOptionsActionsUncheckable(QMap<QString, QAction *> 
 
     createMainWindowActions(map, group, {
         {"OptionsGeneral", &QC_ApplicationWindow::slotOptionsGeneral, tr("&Application Preferences"), ":/icons/settings.lci"},
+        {"OptionsGeneralNew", &QC_ApplicationWindow::slotOptionsGeneralNew, tr("&NEW Application Preferences"), ":/icons/ctrl.lci"},
         {"WidgetOptions", &QC_ApplicationWindow::widgetOptionsDialog, tr("Widget Options")},
         {"ShortcutsOptions", &QC_ApplicationWindow::slotOptionsShortcuts, tr("Keyboard Shortcuts"), ":/icons/shortcuts_settings.lci"},
         {"DeviceOptions", &QC_ApplicationWindow::showDeviceOptions, tr("Device Options")},
@@ -789,36 +794,35 @@ void LC_ActionFactory::createEditActions(QMap<QString, QAction*>& map, QActionGr
 }
 
 void LC_ActionFactory::updateSnapActionsBySettings(const QMap<QString, QAction*>& map) {
-    LC_GROUP("Snap"); {
-        map["SnapVisualAngleSnap"]->setChecked(LC_GET_BOOL("VSAngleSnapStepRaysVertexes", true));
-        map["SnapVisualRelAngleSnap"]->setChecked(LC_GET_BOOL("VSAngleSnapStepRaysRelative", true));
-        map["SnapVisualDynDistance"]->setChecked(LC_GET_BOOL("VSVertexVertexDistanceCircles", true));
-        map["SnapVisualDistanceTan"]->setChecked(LC_GET_BOOL("VSVertexVertexDistanceTangents", true));
-        map["SnapVisualShowFarGuides"]->setChecked(LC_GET_BOOL("VSShowNotSnappableGuides", true));
+    using namespace CFG_VisualSnap;
+    map["SnapVisualAngleSnap"]->setChecked(o_VSAngleSnapStepRaysVertexes);
+    map["SnapVisualRelAngleSnap"]->setChecked(o_VSAngleSnapStepRaysRelative);
+    map["SnapVisualDynDistance"]->setChecked(o_VSVertexVertexDistanceCircles);
+    map["SnapVisualDistanceTan"]->setChecked(o_VSVertexVertexDistanceTangents);
+    map["SnapVisualShowFarGuides"]->setChecked(o_VSShowNotSnappableGuides);
 
-        const bool autoAddSnapPoints = LC_GET_BOOL("VSSnapAutoAddSnapPoint", true);
-        const auto actionAddSnapAuto = map["SnapVisualAutoAddSnap"];
-        actionAddSnapAuto->setChecked(autoAddSnapPoints);
-        const auto actionAddLastSnapOnly = map["SnapVisualAutoAddSnapLast"];
-        actionAddLastSnapOnly->setEnabled(autoAddSnapPoints);
-        actionAddLastSnapOnly->setChecked(LC_GET_BOOL("VSSnapAutoAddLastSnapPointOnly", true));
-    }
+    const bool autoAddSnapPoints = o_VSSnapAutoAddSnapPoint;
+    const auto actionAddSnapAuto = map["SnapVisualAutoAddSnap"];
+    actionAddSnapAuto->setChecked(autoAddSnapPoints);
+    const auto actionAddLastSnapOnly = map["SnapVisualAutoAddSnapLast"];
+    actionAddLastSnapOnly->setEnabled(autoAddSnapPoints);
+    actionAddLastSnapOnly->setChecked(o_VSSnapAutoAddLastSnapPointOnly);
 }
 
 void LC_ActionFactory::setupCreatedActions(QMap<QString, QAction *> &map) {
     map["ZoomPrevious"]->setEnabled(false);
     map["RightDockAreaToggle"]->setChecked(true);
-    LC_GROUP("Appearance"); {
-        const bool statusBarVisible = LC_GET_BOOL("StatusBarVisible", false);
-        const bool mainMenuVisible = LC_GET_BOOL("MainMenuVisible", true);
-        const bool fullScreenMode = LC_GET_BOOL("FullscreenMode", false);
+    {
+        using namespace CFG_Appearance;
+        const bool statusBarVisible = o_StatusBarVisible;
+        const bool mainMenuVisible = o_MainMenuVisible;
+        const bool fullScreenMode = o_FullscreenMode;
         map["ViewStatusBar"]->setChecked(statusBarVisible);
         map["MainMenu"]->setChecked(mainMenuVisible);
         map["Fullscreen"]->setChecked(fullScreenMode);
         map["OptionsGeneral"]->setMenuRole(QAction::NoRole);
     }
-    LC_GROUP_END();
-    const bool additiveSelection = LC_GET_ONE_BOOL("Selection", "Additivity", true);
+    const bool additiveSelection = CFG_Selection::o_Additivity;
     map["SelectionModeToggle"]->setChecked(additiveSelection);
 
     connect(m_appWin, &QC_ApplicationWindow::printPreviewChanged, map["FilePrint"], &QAction::setChecked);
@@ -856,7 +860,7 @@ void LC_ActionFactory::setupCreatedActions(QMap<QString, QAction *> &map) {
     map["SelectionModeToggle"]->setProperty("_SetAsCurrentActionInView", false);
 
     connect(RS_SETTINGS, &RS_Settings::optionChanged, [map](const QString& groupName, const QString &propertyName, [[maybe_unused]]QVariant oldValue, const QVariant& newValue) -> void {
-        if (groupName == "Selection" && propertyName == "Additivity") {
+        if (groupName == CFG_Selection::Group.groupName() && propertyName == CFG_Selection::o_Additivity.key()) {
             const auto action = map["SelectionModeToggle"];
             const bool value = newValue.toBool();
             action->setChecked(value);
@@ -894,7 +898,7 @@ void LC_ActionFactory::setupCreatedActions(QMap<QString, QAction *> &map) {
 void LC_ActionFactory::setDefaultShortcuts(QMap<QString, QAction*>& map, const LC_ActionGroupManager* agm) {
     QList<QKeySequence> commandLineShortcuts;
     commandLineShortcuts << QKeySequence(Qt::CTRL | Qt::Key_M) << QKeySequence(Qt::Key_Colon);
-    if (LC_GET_BOOL("Keyboard/ToggleFreeSnapOnSpace")) {
+    if (CFG_Keyboard::o_ToggleFreeSnapOnSpace) {
         commandLineShortcuts << QKeySequence(Qt::Key_Space);
     }
 

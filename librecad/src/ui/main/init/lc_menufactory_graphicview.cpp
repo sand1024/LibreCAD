@@ -238,7 +238,7 @@ QMenu* LC_MenuFactoryGraphicView::createGraphicViewDefaultPopupMenu(QG_GraphicVi
     ctxMenu->addSeparator();
     createGVMenuView(ctxMenu);
     createGVMenuFiles(ctxMenu);
-    if (!LC_GET_ONE_BOOL("Appearance", "MainMenuVisible", true)) {
+    if (!CFG_Appearance::o_MainMenuVisible) {
         const auto wsMenu = subMenu(ctxMenu, tr("Workspaces"), "ctxws", "", {"Fullscreen", "MainMenu"}, false);
         wsMenu->addMenu(m_menusHolder->m_menuToolBarAreas);
         wsMenu->addMenu(m_menusHolder->m_menuDockAreas);

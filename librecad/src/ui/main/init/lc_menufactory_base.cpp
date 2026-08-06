@@ -79,7 +79,7 @@ QMenu* LC_MenuFactoryBase::subMenu(QMenu* parent, const QString& title, const QS
 
 LC_MenuFactoryBase::LC_MenuFactoryBase(QC_ApplicationWindow* mainWin,  LC_ActionGroupManager* actionGroupManager, LC_MenusHolder* menusHolder):LC_AppWindowAware(mainWin),
      m_actionGroupManager{actionGroupManager}, m_menusHolder{menusHolder} {
-    m_allowTearOffMenus = LC_GET_ONE_BOOL("Appearance", "AllowMenusTearOff", true);
+    m_allowTearOffMenus = CFG_Appearance::o_AllowMenusTearOff;
 }
 
 QMenu* LC_MenuFactoryBase::subMenuWithActions(QMenu* parent, const QString& title, const QString& name, const char* icon,

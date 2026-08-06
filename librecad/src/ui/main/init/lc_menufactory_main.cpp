@@ -32,6 +32,8 @@
 #include "lc_actionfactory.h"
 #include "lc_actiongroupmanager.h"
 #include "lc_menufactory.h"
+#include "lc_settings_startup.h"
+#include "lc_settings_window_options.h"
 #include "main.h"
 #include "qc_applicationwindow.h"
 #include "qc_mdiwindow.h"
@@ -41,12 +43,12 @@ class QToolBar;
 
 void LC_MenuFactoryMain::recreateMainMenuIfNeeded(QMenuBar* menuBar) {
     MenuOptions options;
-    LC_GROUP("Startup");
     {
-        options.expandToolsMenu = LC_GET_BOOL("ExpandedToolsMenu", false);
-        options.expandToolsTillEntity = LC_GET_BOOL("ExpandedToolsMenuTillEntity", false);
+        using namespace CFG_Startup;
+        options.expandToolsMenu = o_ExpandedToolsMenu;
+        options.expandToolsTillEntity = o_ExpandedToolsMenuTillEntity;
     }
-    LC_GROUP_END();
+
     if (m_menuOptions.isDifferent(options)) {
         m_menuOptions.apply(options);
         menuBar->clear();
@@ -55,10 +57,10 @@ void LC_MenuFactoryMain::recreateMainMenuIfNeeded(QMenuBar* menuBar) {
 }
 
 void LC_MenuFactoryMain::createMainMenu(QMenuBar* menuBar) {
-    LC_GROUP("Startup");
     {
-        m_menuOptions.expandToolsMenu = LC_GET_BOOL("ExpandedToolsMenu", false);
-        m_menuOptions.expandToolsTillEntity = LC_GET_BOOL("ExpandedToolsMenuTillEntity", false);
+        using namespace CFG_Startup;
+        m_menuOptions.expandToolsMenu = o_ExpandedToolsMenu;
+        m_menuOptions.expandToolsTillEntity = o_ExpandedToolsMenuTillEntity;
     }
     doCreateMenus(menuBar, true);
 }
@@ -452,7 +454,7 @@ void LC_MenuFactoryMain::prepareWorkspaceMenuComponents() const {
 
     m_menusHolder->m_menuDockWidgets->addSeparator();
 
-    const bool cadDocWidgetsAreEnabled = LC_GET_ONE_BOOL("Startup", "EnableLeftSidebar", true);
+    const bool cadDocWidgetsAreEnabled = CFG_Startup::o_EnableLeftSidebar;
 
     if (cadDocWidgetsAreEnabled) {
         const auto menuCADDockWidgets = doCreateSubMenu(menuWorkspace, tr("CAD Wid&gets"), "caddockwidgets", nullptr, m_allowTearOffMenus);
@@ -485,7 +487,7 @@ void LC_MenuFactoryMain::prepareWorkspaceMenuComponents() const {
 
     QList<QToolBar*> toolbarsList = m_appWin->findChildren<QToolBar*>();
 
-    const bool cadToolbarsAreEnabled = LC_GET_ONE_BOOL("Startup", "EnableCADToolbars", true);
+    const bool cadToolbarsAreEnabled = CFG_Startup::o_EnableCADToolbars;
     if (cadToolbarsAreEnabled) {
         QList<QToolBar*> cadToolbarsList;
         QList<QToolBar*> otherToolbarsList;
@@ -531,11 +533,11 @@ void LC_MenuFactoryMain::recreateToolbarsMenu() const {
 
 
 void LC_MenuFactoryMain::onWorkspaceMenuAboutToShow(const QList<QC_MDIWindow*>& windowList) {
-    LC_GROUP_GUARD("WindowOptions");
+    using namespace CFG_WindowOptions;
     {
         const auto menuWorkspace = m_menusHolder->m_menuWorkspace;
         menuWorkspace->clear(); // this is a temporary menu; constructed on-demand
-        m_allowTearOffMenus = LC_GET_ONE_BOOL("Appearance", "AllowMenusTearOff", true);
+        m_allowTearOffMenus = CFG_Appearance::o_AllowMenusTearOff;
         QMenu* menu = nullptr;
 
         addActions(menuWorkspace, {
@@ -602,7 +604,7 @@ void LC_MenuFactoryMain::onWorkspaceMenuAboutToShow(const QList<QC_MDIWindow*>& 
             menuItem = menu->addAction(tr("Rounded"), m_appWin, &LC_MDIApplicationWindow::slotTabShapeRounded);
             menuItem->setCheckable(true);
 
-            const int tabShape = LC_GET_INT("TabShape");
+            const int tabShape = o_TabShape;
             menuItem->setChecked(tabShape == RS2::Rounded);
 
             menuItem = menu->addAction(tr("Triangular"), m_appWin, &LC_MDIApplicationWindow::slotTabShapeTriangular);
@@ -610,7 +612,7 @@ void LC_MenuFactoryMain::onWorkspaceMenuAboutToShow(const QList<QC_MDIWindow*>& 
             menuItem->setChecked(tabShape == RS2::Triangular);
 
             menu->addSeparator();
-            const int tabPosition = LC_GET_INT("TabPosition");
+            const int tabPosition = o_TabPosition;
 
             menuItem = menu->addAction(tr("North"), m_appWin, &LC_MDIApplicationWindow::slotTabPositionNorth);
             menuItem->setCheckable(true);
@@ -635,7 +637,7 @@ void LC_MenuFactoryMain::onWorkspaceMenuAboutToShow(const QList<QC_MDIWindow*>& 
 
             menuItem = menu->addAction(tr("&Maximized"), m_appWin, &LC_MDIApplicationWindow::slotSetMaximized);
             menuItem->setCheckable(true);
-            menuItem->setChecked(LC_GET_INT("SubWindowMode") == RS2::Maximized);
+            menuItem->setChecked(o_SubWindowMode == RS2::Maximized);
 
             menu->addAction(tr("&Cascade"), m_appWin, &LC_MDIApplicationWindow::slotCascade);
             menu->addAction(tr("&Tile"), m_appWin, &LC_MDIApplicationWindow::slotTile);
