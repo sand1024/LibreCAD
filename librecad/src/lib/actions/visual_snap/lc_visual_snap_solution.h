@@ -152,17 +152,18 @@ struct LC_VisualSnapItem {
     }
 };
 
-struct LC_VisualSnapSolution {
+class LC_VisualSnapSolution {
+public:
     std::list<LC_VisualSnapEntityHolder> guidingEntities;
     RS2::LC_VisualSnapIntersectionInfo foundSnapPointInfo; // fixme - rename class
     RS_Vector foundSnapPoint{false};
-    RS_Vector wcsPoint{false};
+
     RS_Vector restrictedPoint{false};
     RS_Vector previousSnapPoint{false};
     RS2::SnapType restrictedOriginalSnapType{RS2::SnapType::GRID};
     std::list<RS_Vector> snapCandidatesToShow;
     std::list<RS_Vector> middlePoints;
-    bool valid = true;
+
     LC_VisualSnapData* snapData {nullptr};
 
     ~LC_VisualSnapSolution() {
@@ -171,8 +172,20 @@ struct LC_VisualSnapSolution {
         }
     }
 
+    RS_Vector getWcsPoint() const {return wcsPoint;}
+    void setWCSPoint(const RS_Vector& point) {wcsPoint = point;}
+
+    bool hasGuidingEntities() const {return !guidingEntities.empty();}
+
+    bool isValid() const { return valid;}
+    void setInvalid() {valid = false;}
+
     bool hasFoundSnapPoint() const {
         return foundSnapPoint.valid;
+    }
+
+    bool hasSingleGuidingEntity() const {
+        return guidingEntities.size() == 1;
     }
 
     void setFoundSnapPoint(RS_Vector& snapPoint, const RS2::LC_VisualSnapIntersectionInfo& pointInfo) {
@@ -205,6 +218,10 @@ struct LC_VisualSnapSolution {
     void addSnapCandidate(const RS_Vector& v) {
         snapCandidatesToShow.push_back(v);
     }
+
+private:
+    bool valid = true;
+    RS_Vector wcsPoint{false};
 };
 
 

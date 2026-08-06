@@ -33,6 +33,7 @@
 #include<vector>
 
 #include "lc_commandItems.h"
+#include "lc_settings_paths.h"
 #include "rs_debug.h"
 #include "rs_dialogfactory.h"
 #include "rs_dialogfactoryinterface.h"
@@ -231,7 +232,7 @@ RS_Commands::RS_Commands() {
 }
 
 QString RS_Commands::getAliasFile(){
-    const QString settingsDir = LC_GET_ONE_STR("Paths","OtherSettingsDir", RS_System::instance()->getAppDataDir()).trimmed();
+    const QString settingsDir = CFG_Paths::o_OtherSettingsDir;
     if (settingsDir.isEmpty()) {
         LC_ERR << __func__ << "(): line "<<__LINE__<<": empty alias folder name: aborting";
         return {};

@@ -23,6 +23,7 @@
 
 #include "lc_visual_snap_manager.h"
 
+#include "lc_actioncontext.h"
 #include "lc_graphicviewport.h"
 #include "lc_ref_snap_circle.h"
 #include "lc_ref_snap_line.h"
@@ -30,10 +31,7 @@
 #include "lc_relative_point_data.h"
 #include "rs_creation.h"
 #include "rs_entitycontainer.h"
-#include "rs_information.h"
 #include "rs_line.h"
-#include "rs_settings.h"
-#include "rs_preview.h"
 #include "lc_property_editor_utils.h"
 #include "lc_visual_snap_solution.h"
 
@@ -57,8 +55,8 @@ void LC_VisualSnapManager::solveAndVisualizeSolution(RS_Preview* preview, LC_Hig
     if (m_solution != nullptr) {
         lock();
         auto visualSnapSolution = m_solution.get();
-        if (!visualSnapSolution->valid) {
-            const RS_Vector wcsPos = visualSnapSolution->wcsPoint;
+        if (!visualSnapSolution->isValid()) {
+            const RS_Vector wcsPos = visualSnapSolution->getWcsPoint();
             solveVisualSnap(wcsPos);
             visualSnapSolution = m_solution.get();
         }
@@ -196,7 +194,7 @@ bool LC_VisualSnapManager::hasVisualSnap(bool ignoreLastSnapData) const {
     bool result = !m_snapData->isEmpty();
     if (!result) {
         if (m_solution != nullptr) {
-            result = !m_solution->guidingEntities.empty();
+            result = m_solution->hasGuidingEntities();
         }
     }
     if (!result && !ignoreLastSnapData) {
@@ -213,7 +211,7 @@ LC_VisualSnapSolution* LC_VisualSnapManager::getCurrentSolution() const {
 void LC_VisualSnapManager::refreshSolutionVisualization(RS_Preview* preview, LC_Highlight* highlight) {
     lock();
     if (m_solution != nullptr) {
-        const RS_Vector wcsPoint = m_solution->wcsPoint;
+        const RS_Vector wcsPoint = m_solution->getWcsPoint();
         solveVisualSnap(wcsPoint);
         visualizeSolution(preview, highlight, *m_solution);
     }
@@ -241,7 +239,7 @@ void LC_VisualSnapManager::setSnapRange(const double range) {
 
 void LC_VisualSnapManager::doSaveLastSnappedPoint(const RS_Vector& v) const {
     if (m_solution != nullptr) {
-        m_solution->valid = false;
+        m_solution->setInvalid();
     }
     m_snapData->saveLastSnappedPoint(v);
 }
@@ -259,7 +257,7 @@ RS_Vector LC_VisualSnapManager::getLastSnappedPoint() const {
 void LC_VisualSnapManager::addRelativePointInfo(const LC_RelativePositionData* relativePositionData) const {
     m_snapData->addRelativePositionInfo(relativePositionData);
     if (m_solution != nullptr) {
-        m_solution->valid = false;
+        m_solution->setInvalid();
     }
 }
 
@@ -296,7 +294,7 @@ void LC_VisualSnapManager::addGuidingPoint(const RS_Vector& snapPoint, [[maybe_u
 
 void LC_VisualSnapManager::invalidateSolution() const {
     if (m_solution != nullptr) {
-        m_solution->valid = false;
+        m_solution->setInvalid();
     }
 }
 
@@ -503,7 +501,7 @@ void LC_VisualSnapManager::registerEntityEndpoints(RS_Entity* const entity) {
 void LC_VisualSnapManager::storeEntityRef(RS_Entity* const snapEntity, RS_Entity* documentViewSnapEntity,  unsigned long long entityId) const {
     m_snapData->storeEntityRef(snapEntity, documentViewSnapEntity, entityId);
     invalidateSolution();
-    m_snapper->onVisualSnapEntityRegistered(snapEntity->clone());
+    m_snapper->onVisualSnapEntityRegistered(/*snapEntity->clone()*/nullptr);
 }
 
 void LC_VisualSnapManager::storeVertexRef(LC_VisualSnapVertex* const vertex) const {

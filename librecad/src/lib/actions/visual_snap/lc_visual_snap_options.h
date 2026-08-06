@@ -61,6 +61,4 @@ struct LC_VisualSnapOptions {
     void load();
 };
 
-
-
 #endif

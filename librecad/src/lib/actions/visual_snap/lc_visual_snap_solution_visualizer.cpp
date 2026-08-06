@@ -120,19 +120,7 @@ namespace{
 void LC_VisualSnapSolutionVisualizer::visualizeSolution(RS_Preview* preview, LC_Highlight* highlight, LC_VisualSnapSolution& solution) const {
     // add marks
     solution.snapData->forEachItem([this, highlight, preview](LC_VisualSnapItem* i) {
-        if (i->isVertexItem) {
-            const auto p = i->vertex.get();
-            if (p->flagHighlighted) {
-                const auto mark = new LC_RefSnapMark(preview, p->wcsSnapCoordinate, m_options->vertexSizeHighlighted,
-                                                     LC_RefSnapMark::HIGHLIGHTED);
-                preview->addEntity(mark);
-            }
-            else {
-                const auto mark = new LC_RefSnapMark(nullptr, p->wcsSnapCoordinate, m_options->vertexSizeNormal, LC_RefSnapMark::NORMAL);
-                preview->addEntity(mark);
-            }
-        }
-        else {
+        if (!i->isVertexItem) {
             if (i->docEntityRef != nullptr) {
                 highlight->addEntity(i->docEntityRef->documentViewEntity.get(), false);
             }
@@ -169,6 +157,21 @@ void LC_VisualSnapSolutionVisualizer::visualizeSolution(RS_Preview* preview, LC_
     if (solution.restrictedPoint.valid) {
         preview->addEntity(new LC_RefSnapLine(solution.foundSnapPoint, solution.restrictedPoint));
     }
+
+    solution.snapData->forEachItem([this, highlight, preview](LC_VisualSnapItem* i) {
+      if (i->isVertexItem) {
+          const auto p = i->vertex.get();
+          if (p->flagHighlighted) {
+              const auto mark = new LC_RefSnapMark(preview, p->wcsSnapCoordinate, m_options->vertexSizeHighlighted,
+                                                   LC_RefSnapMark::HIGHLIGHTED);
+              preview->addEntity(mark);
+          }
+          else {
+              const auto mark = new LC_RefSnapMark(nullptr, p->wcsSnapCoordinate, m_options->vertexSizeNormal, LC_RefSnapMark::NORMAL);
+              preview->addEntity(mark);
+          }
+      }
+  });
 
     for (const auto& v : solution.snapCandidatesToShow) {
         const auto mark = new LC_RefSnapMark(nullptr, v, m_options->vertexSizeProjected, LC_RefSnapMark::PROJECTED);

@@ -37,12 +37,35 @@ class RS_Vector;
 struct LC_VisualSnapPointHolder;
 struct LC_VisualSnapSolution;
 
-class LC_VisualSnapSolutionSolver {
+class LC_CurrentSnapConfigProviderInterface {
 public:
-    LC_VisualSnapSolutionSolver(RS_Snapper* snapper, LC_VisualSnapOptions* options)
-        : m_snapper(snapper), m_options(options) {
+    virtual ~LC_CurrentSnapConfigProviderInterface() = default;
+    virtual double getAngleStep() = 0;
+    virtual RS_SnapMode* getSnapMode() = 0;
+    virtual double getSnapDistance() = 0;
+    virtual int getSnapMiddlePoints() = 0;
+    virtual RS_Vector getRelativeZero() = 0;
+};
+
+class LC_CurrentSnapperSnapConfigProvider: public LC_CurrentSnapConfigProviderInterface {
+public:
+    explicit LC_CurrentSnapperSnapConfigProvider(RS_Snapper* snapper)
+        : m_snapper(snapper) {
     }
 
+    double getAngleStep() override {return m_snapper->getAngleStep();}
+    RS_SnapMode* getSnapMode() override {return m_snapper->getSnapMode();}
+    double getSnapDistance() override {return m_snapper->getSnapDistance();}
+    int getSnapMiddlePoints() override {return m_snapper->getSnapMiddlePoints();}
+    RS_Vector getRelativeZero() override {return m_snapper->getRelativeZero();}
+
+private:
+    RS_Snapper* m_snapper{nullptr};
+};
+
+
+class LC_VisualSnapSolutionSolverBase {
+public:
     void solveVisualSnap(const RS_Vector& wcsPos, LC_VisualSnapSolution& solution) const;
     void findSnapPoint(const RS_Vector& wcsPos, LC_VisualSnapSolution& solution, const std::vector<LC_VisualSnapPointHolder>& specialPointSnapCandidates) const;
     void setSnapRange(double snapRangeToUse) {m_wcsSnapRange = snapRangeToUse;}
@@ -50,6 +73,10 @@ public:
         m_viewport = viewport;
     }
 protected:
+    LC_VisualSnapSolutionSolverBase(LC_CurrentSnapConfigProviderInterface* snapper, LC_VisualSnapOptions* options)
+        : m_snapper(snapper), m_options(options) {
+    }
+
     void addOrthoRaysForVertexes(const RS_Vector& wcsPos, LC_VisualSnapSolution& solution) const;
     void addLineRayAndNormal(const RS_Vector& wcsPos, LC_VisualSnapSolution& solution, const RS_Vector& wcsSnapCoordinate, const LC_RefSnapConstructionLine* refLine) const;
     bool hasNoLinesForPoints(const LC_VisualSnapSolution& solution, const RS_Vector& endPoint, const RS_Vector& startPoint) const;
@@ -102,7 +129,16 @@ protected:
 
     double m_wcsSnapRange{0.0};
     LC_GraphicViewport* m_viewport = nullptr;
-    RS_Snapper* m_snapper{nullptr};
+    LC_CurrentSnapConfigProviderInterface* m_snapper{nullptr};
     LC_VisualSnapOptions* m_options {nullptr};
+};
+
+class LC_VisualSnapSolutionSolver:public LC_VisualSnapSolutionSolverBase{
+public:
+    LC_VisualSnapSolutionSolver(RS_Snapper* snapper, LC_VisualSnapOptions* options)
+        : LC_VisualSnapSolutionSolverBase(new LC_CurrentSnapperSnapConfigProvider(snapper), options){
+    }
+
+    ~LC_VisualSnapSolutionSolver() {delete m_snapper;};
 };
 #endif

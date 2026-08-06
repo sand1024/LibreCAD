@@ -23,41 +23,40 @@
 
 #include "lc_visual_snap_options.h"
 
-#include "rs_settings.h"
+#include "lc_settings_info_overlay_cursor.h"
+#include "lc_settings_snap_visual.h"
 
 void LC_VisualSnapOptions::load() {
-    LC_GROUP("Snap");
     {
-        vertexSizeNormal = LC_GET_INT("VSVertexSize", 6);
-        vertexSizeProjected = LC_GET_INT("VSProjectedSnapSize", 4);
-        vertexSizeHighlighted = LC_GET_INT("VSHighlightedVertexSize", 10);
-        delayMsSnapVertex = LC_GET_INT("VSSnapPointAddingDelay", 300);
-        delayMsProjectedSnap = LC_GET_INT("VSVertexAddingDelay", 1200);
-        delayMsDocumentEntity = LC_GET_INT("VSDocEntityAddingDelay", 1500);
+        using namespace CFG_VisualSnap;
+        vertexSizeNormal = o_VSVertexSize;
+        vertexSizeProjected = o_VSProjectedSnapSize;
+        vertexSizeHighlighted = o_VSHighlightedVertexSize;
+        delayMsSnapVertex = o_VSSnapPointAddingDelay;
+        delayMsProjectedSnap = o_VSVertexAddingDelay;
+        delayMsDocumentEntity = o_VSDocEntityAddingDelay;
 
-        createAngleStepRaysForVertexes = LC_GET_BOOL("VSAngleSnapStepRaysVertexes", true);
-        createAngleStepRaysForEntitiesEndpoints = LC_GET_BOOL("VSAngleSnapStepRaysRelative", true);
-        createVertexVertexDistanceCircles = LC_GET_BOOL("VSVertexVertexDistanceCircles", true);
-        createVertexVertexDistanceCirclesTangents = LC_GET_BOOL("VSVertexVertexDistanceTangents", true);
+        createAngleStepRaysForVertexes = o_VSAngleSnapStepRaysVertexes;
+        createAngleStepRaysForEntitiesEndpoints = o_VSAngleSnapStepRaysRelative;
+        createVertexVertexDistanceCircles = o_VSVertexVertexDistanceCircles;
+        createVertexVertexDistanceCirclesTangents = o_VSVertexVertexDistanceTangents;
 
-        autoAddSnappedPointToVisualSnap = LC_GET_BOOL("VSSnapAutoAddSnapPoint", true);
-        autoAddGuidesForLastSnapOnly = LC_GET_BOOL("VSSnapAutoAddLastSnapPointOnly", true);
-        manualVertexAddingRequiresCTRL = LC_GET_BOOL("VSSnapManualAddingWithCTRL", false);
-        guidingEntitiesSnapDistance = LC_GET_INT("VSGuidingEntitiesCatchDistance", 24);
+        autoAddSnappedPointToVisualSnap = o_VSSnapAutoAddSnapPoint;
+        autoAddGuidesForLastSnapOnly = o_VSSnapAutoAddLastSnapPointOnly;
+        manualVertexAddingRequiresCTRL = o_VSSnapManualAddingWithCTRL;
+        guidingEntitiesSnapDistance = o_VSGuidingEntitiesCatchDistance;
 
-        showGuidingEntitiesLabels = LC_GET_BOOL("VSGuidingEntitiesShowLabels", true);
-        guidingEntitiesFontSize = LC_GET_INT("VSGuidingEntityLabelFontSize", 10);
+        showGuidingEntitiesLabels = o_VSGuidingEntitiesShowLabels;
+        guidingEntitiesFontSize = o_VSGuidingEntityLabelFontSize;
 
-        allowClearingVisualSnapByRMB = LC_GET_BOOL("VSClearSolutionByRMB", false);
+        allowClearingVisualSnapByRMB = o_VSClearSolutionByRMB;
 
-        baseLabelOffsetPx = LC_GET_INT("VSGuidingLabelOffsetPx", 50);
-        showNotSnappableGuides = LC_GET_BOOL("VSShowNotSnappableGuides", false);
+        baseLabelOffsetPx = o_VSGuidingLabelOffsetPx;
+        showNotSnappableGuides = o_VSShowNotSnappableGuides;
     }
-    LC_GROUP_END();
-
-    LC_GROUP("InfoOverlayCursor");
     {
-        const QString fontName = LC_GET_STR("FontName", "Helvetica");
+        using namespace CFG_InfoOverlayCursor;
+        const QString fontName = o_FontName;
         guidingEntitiesFont = QFont(fontName, guidingEntitiesFontSize);
 
         guidingEntitiesFontActive = QFont(fontName, guidingEntitiesFontSize + 2);
