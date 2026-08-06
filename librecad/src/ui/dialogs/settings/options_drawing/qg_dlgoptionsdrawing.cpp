@@ -43,6 +43,7 @@
 #include "lc_dlgnewcustomvariable.h"
 #include "lc_dlgnewdimstyle.h"
 #include "lc_inputtextdialog.h"
+#include "lc_settings_widget.h"
 #include "qc_applicationwindow.h"
 #include "rs_debug.h"
 #include "rs_filterdxfrw.h"
@@ -255,7 +256,7 @@ void QG_DlgOptionsDrawing::setupDimStylesTab() {
     connect(tbDimImport, &QToolButton::clicked, this, &QG_DlgOptionsDrawing::onDimStyleImport);
     connect(tbDimDefault, &QToolButton::clicked, this, &QG_DlgOptionsDrawing::onDimStyleSetDefault);
 
-    const bool autoRaiseButtons = LC_GET_ONE_BOOL("Widgets", "DockWidgetsFlatIcons", true);
+    const bool autoRaiseButtons = CFG_Widgets::o_DockWidgetsFlatIcons;
     tbDimNew->setAutoRaise(autoRaiseButtons);
     tbDimEdit->setAutoRaise(autoRaiseButtons);
     tbDimRename->setAutoRaise(autoRaiseButtons);
@@ -912,18 +913,19 @@ void QG_DlgOptionsDrawing::setupGridTab() const {
     if (cbYSpacing->currentText() == "0") {
         cbYSpacing->setEditText(tr("auto"));
     }
-    LC_GROUP("Appearance");
+
     {
-        bool state = LC_GET_BOOL("ScaleGrid");
+        using namespace CFG_Appearance;
+        bool state = o_ScaleGrid;
         lGridStateScaling->setText(state ? tr("ON") : tr("OFF"));
 
-        state = LC_GET_BOOL("UnitlessGrid");
+        state = o_UnitlessGrid;
         lGridStateUnitless->setText(state ? tr("ON") : tr("OFF"));
 
-        state = LC_GET_BOOL("GridDraw");
+        state = o_GridDraw;
         lGridStateDrawGrid->setText(state ? tr("ON") : tr("OFF"));
 
-        state = LC_GET_BOOL("metaGridDraw");
+        state = o_metaGridDraw;
         lGridStateDrawMetaGrid->setText(state ? tr("ON") : tr("OFF"));
     }
 

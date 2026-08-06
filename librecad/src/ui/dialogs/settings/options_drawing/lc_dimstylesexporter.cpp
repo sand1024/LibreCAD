@@ -32,6 +32,7 @@
 #include "lc_dimstyleitem.h"
 #include "lc_dimstyletovariablesmapper.h"
 #include "lc_filenameselectionservice.h"
+#include "lc_settings_paths.h"
 #include "rs_settings.h"
 
 LC_DimStylesExporter::LC_DimStylesExporter() {}
@@ -107,9 +108,7 @@ bool LC_DimStylesExporter::exportStyles(QWidget* parent, const QList<LC_DimStyle
     }
     jsonFile.write(doc.toJson());
 
-    LC_GROUP_GUARD("Export"); {
-        LC_SET("ExportSettingsDir", QFileInfo(jsonFile).absolutePath());
-    }
+    CFG_Paths::o_ExportSettingsDir =QFileInfo(jsonFile).absolutePath();
 
     QMessageBox::information(parent, tr("Dimension Styles Export"), tr("Dimensions Styles were exported."));
     return true;

@@ -25,33 +25,31 @@
 #define LC_DIMSTYLEPREVIEWGRAPHICVIEW_H
 
 #include "lc_dimstyleitem.h"
-#include "qg_graphicview.h"
+#include "lc_graphicviewrenderer.h"
+#include "lc_preview_graphic_view.h"
 
-class LC_PreviewGraphic;
+class LC_DimStylePreviewGraphic;
 class LC_DimStyle;
 
-class LC_DimStylePreviewGraphicView: public QG_GraphicView{
+class LC_DimStylePreviewGraphicView: public LC_PreviewGraphicView {
 public:
     void updateDims();
-    void refresh();
+    void refresh() override;
     void setDimStyle(LC_DimStyle *dimStyle) const;
     void setEntityDimStyle(const LC_DimStyle* dimStyle, bool override, const QString& baseName) const;
     void setEntityPen(const RS_Pen& pen) const;
-    void zoomPan() const;
+
     void addDimStyle(LC_DimStyle* dimStyle) const;
     void setEntityArrowsFlipMode(bool flipArrow1, bool flipArrow2) const;
     static LC_DimStylePreviewGraphicView* init(QWidget* parent,RS_Graphic* originalGraphic, RS2::EntityType dimensionType);
     static LC_DimStylePreviewGraphicView* init(QWidget* parent,RS_Graphic* originalGraphic, const RS_Dimension* dimension);
+    void hideNonZeroLayers() const;
+    void hideNonRelevantLayers(RS2::EntityType dimType) const;
 protected:
     LC_DimStylePreviewGraphicView(QWidget* parent,LC_ActionContext* actionContext);
-    ~LC_DimStylePreviewGraphicView() override;
-    bool proceedEvent(QEvent* event) override;
-    void mousePressEvent(QMouseEvent* event) override;
-    void mouseDoubleClickEvent(QMouseEvent* e) override;
-    void mouseReleaseEvent(QMouseEvent* event) override;
-    void hideNonRelevantLayers(RS2::EntityType dimType) const;
+    ~LC_DimStylePreviewGraphicView() override = default;
     static LC_DimStylePreviewGraphicView* createAndSetupView(QWidget* parent,
-            LC_PreviewGraphic* graphic, const RS_Graphic* originalGraphic, bool showInWCS);
-    static void copyBlocks(RS_Graphic* originalGraphic, LC_PreviewGraphic* graphic);
+            RS_Graphic* graphic, const RS_Graphic* originalGraphic, bool showInWCS);
+    static void copyBlocks(RS_Graphic* originalGraphic, RS_Graphic* graphic);
 };
 #endif

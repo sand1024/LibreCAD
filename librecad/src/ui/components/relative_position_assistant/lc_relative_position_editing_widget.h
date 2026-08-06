@@ -28,7 +28,7 @@
 #include <QStackedWidget>
 #include <QToolButton>
 
-#include "lc_actioncontext.h"
+#include "lc_interactive_input_info.h"
 #include "lc_relative_position_evaluator.h"
 #include "rs.h"
 
@@ -36,6 +36,8 @@ struct LC_RelativePositionData;
 class LC_RelativePointInputWidget;
 class LC_GraphicViewport;
 class LC_Formatter;
+class LC_ActionContext;
+class LC_LateCompletionRequestor;
 class RS_Vector;
 class QLineEdit;
 class QLabel;
@@ -57,6 +59,7 @@ class LC_RelativePositionEditingWidget : public QWidget {
     void updateByInteractiveInput(RS2::RelativePointParam paramType, double value);
     bool toDouble(const QString& strValue, double& res, double notMeaningful, bool positiveOnly);
     void updateInputEditorsIcons() const;
+    void setReadOnly(bool readonly) {m_readOnly = readonly;}
 public slots:
     void onEditingReturnPressed();
     void onOKButtonClicked(bool checked);
@@ -91,10 +94,11 @@ private:
     bool m_baseIsRelativePoint {false};
     QString m_editingStartValueString;
     bool m_inParamActivation {false};
+    bool m_readOnly{false};
     void setupLabelAndEditor(QLabel* label, QLineEdit* lineEdit, RS2::RelativePointParam relativePointParam);
     void setupButtons(QToolButton* btnOk, QToolButton* btnInteractivePick, QToolButton* btnManualSnap,
-                      RS2::RelativePointParam relativePointParam, LC_ActionContext::InteractiveInputInfo::InputType);
-    void connectInteractiveInputButton(QToolButton* button, LC_ActionContext::InteractiveInputInfo::InputType inputType,
+                      RS2::RelativePointParam relativePointParam, InteractiveInputInfo::InputType inputType);
+    void connectInteractiveInputButton(QToolButton* button, InteractiveInputInfo::InputType inputType,
                                        RS2::RelativePointParam relativePointParam);
     void applyInput(bool applyProjected);
     void updateUIByData(bool baseIsRelativePoint, RS2::RelativePointParam currentParam);

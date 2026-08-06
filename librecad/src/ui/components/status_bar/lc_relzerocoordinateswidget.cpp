@@ -101,7 +101,7 @@ void LC_RelZeroCoordinatesWidget::showRelZero(const RS_Vector& rel) const {
 
         angle = m_viewport->toBasisUCSAngle(angle);
 
-        if (!LC_GET_ONE_BOOL("Appearance", "UnitlessGrid", true)) {
+        if (!CFG_Appearance::o_UnitlessGrid) {
             x = RS_Units::convert(x);
             y = RS_Units::convert(y);
             len = RS_Units::convert(magnitude);

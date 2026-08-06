@@ -34,6 +34,7 @@
 #include "lc_dialog.h"
 #include "lc_dlg_menu_assigner.h"
 #include "lc_dlg_widget_creator.h"
+#include "lc_settings_startup.h"
 #include "qc_applicationwindow.h"
 #include "qg_graphicview.h"
 #include "rs_settings.h"
@@ -44,7 +45,7 @@ LC_CreatorInvoker::LC_CreatorInvoker(QC_ApplicationWindow *appWin, LC_ActionGrou
 }
 
 void createCustomMenuForFirstRunIfNeeded() {
-    const bool firstLoad = LC_GET_BOOL("FirstLoad", true);
+    const bool firstLoad = CFG_Startup::o_FirstLoad;
     if (firstLoad) {
         QStringList list;
         list << "ZoomAuto";

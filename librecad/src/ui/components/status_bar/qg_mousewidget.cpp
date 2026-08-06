@@ -26,6 +26,8 @@
 #include "qg_mousewidget.h"
 
 #include "lc_modifiersinfo.h"
+#include "lc_settings_startup.h"
+#include "lc_settings_widget.h"
 #include "lc_shortcuts_manager.h"
 #include "rs_settings.h"
 
@@ -37,19 +39,19 @@ QG_MouseWidget::QG_MouseWidget(QWidget* parent, const char* name, const Qt::Wind
     : QWidget(parent, fl){
     setObjectName(name);
     setupUi(this);
-    const bool useClassicalStatusBar = LC_GET_ONE_BOOL("Startup", "UseClassicStatusBar", false);
+    const bool useClassicalStatusBar = CFG_Startup::o_UseClassicStatusBar;
 
-    LC_GROUP_GUARD("Widgets");
     {
-        const bool custom_size = LC_GET_BOOL("AllowToolbarIconSize", false);
-        m_iconSize = custom_size ? LC_GET_INT("ToolbarIconSize", 24) : 24;
+        using namespace CFG_Widgets;
+        const bool custom_size = o_AllowToolbarIconSize;
+        m_iconSize = custom_size ? o_ToolbarIconSize : 24;
 
 
         if (useClassicalStatusBar) {
             int height{64};
-            const bool allowStatusbarHeight = LC_GET_BOOL("AllowStatusbarHeight", false);
+            const bool allowStatusbarHeight = o_AllowStatusbarHeight;
             if (allowStatusbarHeight) {
-                height = LC_GET_INT("StatusbarHeight", 64);
+                height = o_StatusbarHeight;
             }
 
             setMinimumHeight(height);

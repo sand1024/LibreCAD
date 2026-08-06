@@ -107,7 +107,7 @@ void QG_CoordinateWidget::setCoordinates(double ucsX, double ucsY,
                 m_formatter = m_viewport->getFormatter(); // fixme- fmt - most probably it's not necessary
             }
 
-            if (!LC_GET_ONE_BOOL("Appearance", "UnitlessGrid", true)){
+            if (!CFG_Appearance::o_UnitlessGrid){
                 ucsX  = RS_Units::convert(ucsX);
                 ucsY  = RS_Units::convert(ucsY);
                 ucsDeltaX = RS_Units::convert(ucsDeltaX);

@@ -25,6 +25,7 @@
 
 #include "lc_dimstylepreviewgraphicview.h"
 #include "lc_graphicviewport.h"
+#include "lc_settings_widget.h"
 #include "rs_graphicview.h"
 #include "rs_settings.h"
 #include "ui_lc_dimstylepreviewpanel.h"
@@ -35,20 +36,17 @@ void LC_DimStylePreviewPanel::setupButton(const bool dockWidgetsFlatIcons, int d
 }
 
 LC_DimStylePreviewPanel::LC_DimStylePreviewPanel(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::LC_DimStylePreviewPanel){
+    : QWidget(parent), ui(new Ui::LC_DimStylePreviewPanel) {
     ui->setupUi(this);
 
-    LC_GROUP_GUARD("Widgets");
-    {
-        const bool dockWidgetsFlatIcons = LC_GET_BOOL("DockWidgetsFlatIcons", true);
-        const int docWidgetsIconSize = LC_GET_INT("DockWidgetsIconSize", 16);
+    using namespace CFG_Widgets;
+    const bool dockWidgetsFlatIcons = o_DockWidgetsFlatIcons;
+    const int docWidgetsIconSize = o_DockWidgetsIconSize;
 
-        setupButton(dockWidgetsFlatIcons, docWidgetsIconSize, ui->tbZoomAuto);
-        setupButton(dockWidgetsFlatIcons, docWidgetsIconSize, ui->tbZoomIn);
-        setupButton(dockWidgetsFlatIcons, docWidgetsIconSize, ui->tbZoomOut);
-        setupButton(dockWidgetsFlatIcons, docWidgetsIconSize, ui->tbZoomPan);
-    }
+    setupButton(dockWidgetsFlatIcons, docWidgetsIconSize, ui->tbZoomAuto);
+    setupButton(dockWidgetsFlatIcons, docWidgetsIconSize, ui->tbZoomIn);
+    setupButton(dockWidgetsFlatIcons, docWidgetsIconSize, ui->tbZoomOut);
+    setupButton(dockWidgetsFlatIcons, docWidgetsIconSize, ui->tbZoomPan);
 }
 
 LC_DimStylePreviewPanel::~LC_DimStylePreviewPanel(){

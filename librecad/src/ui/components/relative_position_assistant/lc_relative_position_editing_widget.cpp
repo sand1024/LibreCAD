@@ -30,9 +30,9 @@
 #include "lc_graphicviewport.h"
 #include "lc_linemath.h"
 #include "lc_relative_point_input_widget.h"
+#include "lc_settings_relative_position_assistant.h"
 #include "rs_math.h"
 #include "rs_previewactioninterface.h"
-#include "rs_settings.h"
 #include "ui_lc_relative_position_editing_widget.h"
 
 namespace {
@@ -81,17 +81,17 @@ LC_RelativePositionEditingWidget::LC_RelativePositionEditingWidget(LC_RelativePo
     }
 
     setupButtons(ui->pbOKLength, ui->tbSelectLength, ui->tbManualSnapLength, RS2::RelativePointParam::REL_POINT_LENGTH,
-                 LC_ActionContext::InteractiveInputInfo::InputType::DISTANCE);
+                 InteractiveInputInfo::InputType::DISTANCE);
     setupButtons(ui->pbOKAngle, ui->tbSelectAngle, ui->tbManualSnapAngle, RS2::RelativePointParam::REL_POINT_ANGLE,
-                 LC_ActionContext::InteractiveInputInfo::InputType::ANGLE);
+                 InteractiveInputInfo::InputType::ANGLE);
     setupButtons(ui->pbOKDX, ui->tbSelectDX, ui->tbManualSnapDX, RS2::RelativePointParam::REL_POINT_DX,
-                 LC_ActionContext::InteractiveInputInfo::InputType::DISTANCE);
+                 InteractiveInputInfo::InputType::DISTANCE);
     setupButtons(ui->pbOKDY, ui->tbSelectDY, ui->tbManualSnapDY, RS2::RelativePointParam::REL_POINT_DY,
-                 LC_ActionContext::InteractiveInputInfo::InputType::DISTANCE);
+                 InteractiveInputInfo::InputType::DISTANCE);
     setupButtons(ui->pbOKX, ui->tbSelectX, ui->tbManualSnapX, RS2::RelativePointParam::REL_POINT_X,
-                 LC_ActionContext::InteractiveInputInfo::InputType::POINT_X);
+                 InteractiveInputInfo::InputType::POINT_X);
     setupButtons(ui->pbOKY, ui->tbSelectY, ui->tbManualSnapY, RS2::RelativePointParam::REL_POINT_Y,
-                 LC_ActionContext::InteractiveInputInfo::InputType::POINT_Y);
+                 InteractiveInputInfo::InputType::POINT_Y);
 
     connect(ui->cbByOffset, &QCheckBox::toggled, this, &LC_RelativePositionEditingWidget::onByOffsetToggled);
 
@@ -116,7 +116,7 @@ LC_RelativePositionEditingWidget::~LC_RelativePositionEditingWidget() {
 
 void LC_RelativePositionEditingWidget::setupButtons(QToolButton* btnOk, QToolButton* btnInteractivePick, QToolButton* btnManualSnap,
                                                     const RS2::RelativePointParam relativePointParam,
-                                                    const LC_ActionContext::InteractiveInputInfo::InputType inputType) {
+                                                    const InteractiveInputInfo::InputType inputType) {
     const QVariant type(relativePointParam);
     btnOk->setProperty("_propType", type);
     btnInteractivePick->setProperty("_propType", type);
@@ -129,7 +129,7 @@ void LC_RelativePositionEditingWidget::setupButtons(QToolButton* btnOk, QToolBut
 }
 
 void LC_RelativePositionEditingWidget::connectInteractiveInputButton(QToolButton* button,
-                                                                     const LC_ActionContext::InteractiveInputInfo::InputType inputType,
+                                                                     const InteractiveInputInfo::InputType inputType,
                                                                      const RS2::RelativePointParam relativePointParam) {
     button->setVisible(true);
     button->setProperty("_interactiveInputButton", inputType);
@@ -140,10 +140,12 @@ void LC_RelativePositionEditingWidget::connectInteractiveInputButton(QToolButton
 
 void LC_RelativePositionEditingWidget::applyInput(bool applyProjected) {
     updateByEditedValue();
-    hideAssistant();
-    const auto currentAction = dynamic_cast<RS_PreviewActionInterface*>(m_actionContext->getCurrentAction());
-    if (currentAction != nullptr) {
-        currentAction->addProjectedRelativePointToVisualSnap(m_relativePositionEvaluator.getRelativePositionData(), applyProjected);
+    if (!m_readOnly) {
+        hideAssistant();
+        const auto currentAction = dynamic_cast<RS_PreviewActionInterface*>(m_actionContext->getCurrentAction());
+        if (currentAction != nullptr) {
+            currentAction->addProjectedRelativePointToVisualSnap(m_relativePositionEvaluator.getRelativePositionData(), applyProjected);
+        }
     }
 }
 
@@ -172,7 +174,7 @@ void LC_RelativePositionEditingWidget::onInteractiveInputButtonClicked([[maybe_u
     if (senderButton != nullptr) {
         const auto property = senderButton->property("_interactiveInputButton");
         if (property.isValid()) {
-            const auto inputType = static_cast<LC_ActionContext::InteractiveInputInfo::InputType>(property.toInt());
+            const auto inputType = static_cast<InteractiveInputInfo::InputType>(property.toInt());
             const auto tagProperty = senderButton->property("_interactiveInputTag");
             const QString tag = tagProperty.toString();
             m_actionContext->interactiveInputStart(inputType, m_lateCompletionRequestor, tag);
@@ -214,7 +216,7 @@ void LC_RelativePositionEditingWidget::onByOffsetToggled(const bool checked) {
                 break;
         }
     }
-    LC_SET_ONE("RelativePositionAssistant", "LastInvocationOffsetMode", checked);
+    CFG_RelativePositionAssistant::o_LastInvocationOffsetMode = checked;
 }
 
 bool LC_RelativePositionEditingWidget::tryProcessActivationKeyMnemonic(QKeyEvent* event, const bool activate) {
@@ -307,19 +309,17 @@ void LC_RelativePositionEditingWidget::updateForPoints(const RS_Vector& wcsPos, 
                                                        const bool baseIsRelativePoint) {
     m_relativePositionEvaluator.update(wcsPos, baseWCSPoint);
     updateUIByData(baseIsRelativePoint, m_currentParam);
-    LC_GROUP("RelativePositionAssistant");
-    {
-        bool showInOffsetMode = false;
-        const bool rememberMode = LC_GET_BOOL("RememberCoordinatesMode", false);
-        if (rememberMode) {
-            showInOffsetMode = LC_GET_BOOL("LastInvocationOffsetMode", true);
-        }
-        else {
-            showInOffsetMode = LC_GET_BOOL("StartInOffsetMode", true);
-        }
-        ui->cbByOffset->setChecked(showInOffsetMode);
+
+    using namespace CFG_RelativePositionAssistant;
+    bool showInOffsetMode = false;
+    const bool rememberMode = o_RememberCoordinatesMode;
+    if (rememberMode) {
+        showInOffsetMode = o_LastInvocationOffsetMode;
     }
-    LC_GROUP_END();
+    else {
+        showInOffsetMode = o_StartInOffsetMode;
+    }
+    ui->cbByOffset->setChecked(showInOffsetMode);
 }
 
 void LC_RelativePositionEditingWidget::updateUIByData(const bool baseIsRelativePoint, RS2::RelativePointParam currentParam) {
@@ -498,8 +498,10 @@ bool LC_RelativePositionEditingWidget::eventFilter(QObject* watched, QEvent* eve
             return true;
         }
         if (key == Qt::Key_Escape) {
-            hideAssistant();
-            return true;
+            if (!m_readOnly) {
+                hideAssistant();
+                return true;
+            }
         }
         if (tryProcessActivationKeyMnemonic(keyEvent, true)) {
             return true;
@@ -862,6 +864,3 @@ void LC_RelativePositionEditingWidget::changeParamVisibility(const RS2::Relative
             break;
     }
 }
-
-// fixme - absolute x and y mode - bugs!
-// persistent visual snap - survive between actions!

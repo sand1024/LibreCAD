@@ -25,6 +25,7 @@
 #include <QRegularExpression>
 
 #include "lc_linemath.h"
+#include "lc_settings_cad_preferences.h"
 #include "rs_debug.h"
 #include "rs_math.h"
 #include "rs_settings.h"
@@ -95,7 +96,7 @@ bool LC_Convert::toDoubleAngleRad(const QString& strValue, double &res, const do
 
 bool LC_Convert::parseToToDoubleAngleDegrees(const QString& strValue, double &res, const double notMeaningful, const bool positiveOnly){
     bool ok = false;
-    const bool doNotAllowNonDecimalAnglesInput = LC_GET_ONE_BOOL("CADPreferences", "InputAnglesAsDecimalsOnly", false);
+    const bool doNotAllowNonDecimalAnglesInput = CFG_CADPreferences::o_InputAnglesAsDecimalsOnly;
     double angleDegrees;
     // cleanup degree size, if any
     if (doNotAllowNonDecimalAnglesInput){

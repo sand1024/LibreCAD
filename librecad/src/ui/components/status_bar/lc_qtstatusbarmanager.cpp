@@ -25,6 +25,7 @@
 #include <QStatusBar>
 
 #include "lc_modifiersinfo.h"
+#include "lc_settings_startup.h"
 #include "lc_shortcuts_manager.h"
 #include "rs_settings.h"
 
@@ -71,14 +72,15 @@ void LC_QTStatusbarManager::setCurrentQAction(const QAction *a) {
 }
 
 void LC_QTStatusbarManager::loadSettings() {
-    LC_GROUP_GUARD("Startup");{
-        const bool useClassicalStatusBar = LC_GET_BOOL("UseClassicStatusBar", false);
-        if (useClassicalStatusBar) {
-            m_actionPromptEnabled = false;
-        } else {
-            m_actionPromptEnabled = LC_GET_BOOL("ShowCommandPromptInStatusBar", true);
-        }
+    using namespace CFG_Startup;
+    const bool useClassicalStatusBar = o_UseClassicStatusBar;
+    if (useClassicalStatusBar) {
+        m_actionPromptEnabled = false;
     }
+    else {
+        m_actionPromptEnabled = o_ShowCommandPromptInStatusBar;
+    }
+
 
     if (m_actionPromptEnabled){
         m_statusBar->showMessage("", 5); // just cleanup
