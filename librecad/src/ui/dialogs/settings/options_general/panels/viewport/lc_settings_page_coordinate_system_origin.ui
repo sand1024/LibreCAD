@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_SettingsPageCoordinateSystemOrigin</class>
+ <widget class="QWidget" name="LC_SettingsPageCoordinateSystemOrigin">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>257</width>
+    <height>239</height>
+   </rect>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_main">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="gbWorldZero">
+     <property name="title">
+      <string>Coordinates Zero Marker</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_35">
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_22">
+        <property name="text">
+         <string>Marker size</string>
+        </property>
+        <property name="buddy">
+         <cstring>sbCoordinateSystemMarkerSize</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QSpinBox" name="sbCoordinateSystemMarkerSize">
+        <property name="toolTip">
+         <string>Marker Size
+
+Size of axis of coordinate system's zero marker</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>10</number>
+        </property>
+        <property name="maximum">
+         <number>200</number>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_24">
+        <property name="text">
+         <string>Font size:</string>
+        </property>
+        <property name="buddy">
+         <cstring>sbUCSFontSize</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QCheckBox" name="cbShowUCSZeroMarker">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>UCS Marker Visibility
+
+If selected, marker for coodinate system will be shown in zero point of current user coordinates system. </string>
+        </property>
+        <property name="text">
+         <string>Show UCS zero marker</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="cbShowWCSZeroMarker">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>WCS Marker Visibility
+
+If selected and view is in user coordinate system, the marker for coodinate system will be shown in zero point of world coordinates system. </string>
+        </property>
+        <property name="text">
+         <string>Show WCS zero marker</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QFontComboBox" name="fcbUCSFont">
+        <property name="toolTip">
+         <string>Axis Name Font
+
+Font that should be used for drawing name of axis in coordinate system zero.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QSpinBox" name="sbUCSFontSize">
+        <property name="toolTip">
+         <string>Axis Font Size
+
+Font size that should be used for drawing name of axis in coordinate system zero.</string>
+        </property>
+        <property name="suffix">
+         <string> pt</string>
+        </property>
+        <property name="minimum">
+         <number>5</number>
+        </property>
+        <property name="maximum">
+         <number>30</number>
+        </property>
+        <property name="value">
+         <number>10</number>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_23">
+        <property name="text">
+         <string>Font:</string>
+        </property>
+        <property name="buddy">
+         <cstring>fcbUCSFont</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="3">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Coordinates Zero Marker is an overlay that is drawn in the origin point of coordinates system - either for World Coordinates (WCS) or for user-defined User Coordinates (UCS).</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

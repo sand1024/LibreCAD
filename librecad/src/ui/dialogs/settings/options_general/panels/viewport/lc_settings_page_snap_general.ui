@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_SettingsPageSnapGeneral</class>
+ <widget class="QWidget" name="LC_SettingsPageSnapGeneral">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>407</width>
+    <height>669</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="gbGBSnap">
+     <property name="title">
+      <string>Snap Indicator</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_snap">
+      <item row="5" column="0">
+       <widget class="QCheckBox" name="indicator_shape_checkbox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Indicator Shape Visibility
+
+If checked, a shap for snap will be drawn,</string>
+        </property>
+        <property name="text">
+         <string>Indicator shape</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QSpinBox" name="sbSnapLinesLineWidth">
+        <property name="toolTip">
+         <string>Indicator Lines Widthr
+
+Width of line for snap indicator.</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>10</number>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QComboBox" name="indicator_shape_combobox">
+        <property name="toolTip">
+         <string>Indicator Shap Type
+
+Type of snap indicator shape.</string>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+        </property>
+        <item>
+         <property name="text">
+          <string>Circle</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Point</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Square</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Gap</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Line width:</string>
+        </property>
+        <property name="buddy">
+         <cstring>sbSnapLinesLineWidth</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="LC_ColorButton" name="pb_snap_lines_color">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Lines Color
+
+Click to select color.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="4">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Snap functionality is a precision drawing tool that forces cursor to lock exactly onto specific geometric points (defined automatically by current geometry and enabled snap modes). Position of snapped point may be higlighted by Snap Marker.&lt;br&gt;Marker includes lines and indicator shape, and its parameteres may be customized below.&lt;br&gt;
+Note: Snap indicator is shown in fixed position in preview and does not follow cursor.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1" colspan="2">
+       <widget class="QG_LineTypeBox" name="wSnapLinesLineType" native="true">
+        <property name="toolTip">
+         <string>Indicator Line Type
+
+Type of line to draw snap indicator lines.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="cb_snap_lines_color">
+        <property name="toolTip">
+         <string>Indicator Lines Color
+
+Color for snap lines indicator.</string>
+        </property>
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+        </property>
+        <item>
+         <property name="text">
+          <string notr="true">#FFC200</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>#1E90FF</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Lines color:</string>
+        </property>
+        <property name="buddy">
+         <cstring>cb_snap_lines_color</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Line type:</string>
+        </property>
+        <property name="buddy">
+         <cstring>wSnapLinesLineType</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="lSnapIndicatorColor">
+        <property name="text">
+         <string>Shape color:</string>
+        </property>
+        <property name="buddy">
+         <cstring>cb_snap_color</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="indicator_lines_checkbox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Indicator Lines Visibility
+
+If checked, snap indicator lines will be shown.</string>
+        </property>
+        <property name="text">
+         <string>Indicator lines</string>
+        </property>
+        <property name="shortcut">
+         <string>Alt+S</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="indicator_lines_combobox">
+        <property name="toolTip">
+         <string>Indicator Type
+
+Type of snap lines indicator</string>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+        </property>
+        <item>
+         <property name="text">
+          <string>Adaptive</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Crosshair</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Spiderweb</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QComboBox" name="cb_snap_color">
+        <property name="toolTip">
+         <string>Indicator Shape Color
+
+Color for snap indicator shape.</string>
+        </property>
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+        </property>
+        <item>
+         <property name="text">
+          <string notr="true">#FFC200</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>#1E90FF</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="6" column="2">
+       <widget class="LC_ColorButton" name="pb_snap_color">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Shape Color
+
+Click to select color.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="label_8">
+        <property name="text">
+         <string>Shape size:</string>
+        </property>
+        <property name="buddy">
+         <cstring>sbShapeSize</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QSpinBox" name="sbShapeSize">
+        <property name="toolTip">
+         <string>Shape Size
+
+Size in pixels for the shape indicator drawn around snap point.</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>2</number>
+        </property>
+        <property name="maximum">
+         <number>30</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_24">
+     <property name="title">
+      <string>Snap Behavior</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="cbShowSnapOptionsInSnapBar">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Snap Mode Options Location
+
+If checked, snap options (middle, distance) will be shown in snap toolbar
+instead of tool properties toolbar.</string>
+        </property>
+        <property name="text">
+         <string>Show snap options in Snap Selection Toolbar</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="cbDontSnapToInvisibleGrid">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Snap to Grid
+
+If checked, &quot;Snap To Grid&quot; is ignored if grid is not drawn.</string>
+        </property>
+        <property name="text">
+         <string>Ignore &quot;Snap to Grid&quot; if grid is not drawn</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="cursor_hiding_checkbox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Cursor in Snapping
+
+If checked, cursor will be hidden during snapping</string>
+        </property>
+        <property name="text">
+         <string>Hide cursor when snapping</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <spacer name="horizontalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="0" colspan="2">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>Behavior of snapping is customized by the settings below.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_25">
+     <property name="title">
+      <string>Advanced Snap Fine-tuning settings</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_adv">
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_35">
+        <property name="toolTip">
+         <string>Snap distance (in pixels) for catching entities.</string>
+        </property>
+        <property name="text">
+         <string>Catch entities Snap Distance:</string>
+        </property>
+        <property name="buddy">
+         <cstring>sbCatchEntitySnapDistance</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="sbCatchEntitySnapDistance">
+        <property name="toolTip">
+         <string>Catch Entities Distance
+
+Distance in screen coordinates that is used for catching entities as part of snapping</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="value">
+         <number>32</number>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QDoubleSpinBox" name="sbFreeSnapSwitchDistance">
+        <property name="toolTip">
+         <string>Free Snap Distance
+
+Snap on entity will be invoked if it is enabled and the distance between mouse
+and snapped point is larger than specified value.
+Othersize, it will be &quot;Free Snap&quot; mode.</string>
+        </property>
+        <property name="suffix">
+         <string> drawing units</string>
+        </property>
+        <property name="maximum">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="1">
+       <widget class="QDoubleSpinBox" name="sbMinGridCellSnapFactor">
+        <property name="toolTip">
+         <string>Grid Cell Factor
+
+Grid cell factor used for snapping to grid. Lower value means smaller snap range
+(so the cursor should be closer to the grid).. </string>
+        </property>
+        <property name="maximum">
+         <double>1.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.010000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_34">
+        <property name="text">
+         <string>Min grid cell snap factor:</string>
+        </property>
+        <property name="buddy">
+         <cstring>sbMinGridCellSnapFactor</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_36">
+        <property name="text">
+         <string>Snap on Entity &quot;Free snap&quot; distance switch:</string>
+        </property>
+        <property name="buddy">
+         <cstring>sbFreeSnapSwitchDistance</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="3">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Snap coordinates calculations are based on various distances and ranges. Some of them may be configured below.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QG_LineTypeBox</class>
+   <extends>QWidget</extends>
+   <header>qg_linetypebox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LC_ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>lc_color_button.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

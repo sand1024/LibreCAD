@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_SettingsPageGridLines</class>
+ <widget class="QWidget" name="LC_SettingsPageGridLines">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>283</width>
+    <height>306</height>
+   </rect>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_main">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox_10">
+     <property name="title">
+      <string>Grid</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_g">
+      <item row="2" column="1" colspan="2">
+       <widget class="QG_LineTypeBox" name="wGridLinesLineType" native="true">
+        <property name="toolTip">
+         <string>Grid Line Type
+
+Line type for grid lines</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QSpinBox" name="sbGridLinesLineWidth">
+        <property name="toolTip">
+         <string>Grid Line Width
+
+Width of grid lines</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>10</number>
+        </property>
+        <property name="value">
+         <number>1</number>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="lGridLineWidth_2">
+        <property name="text">
+         <string>Line width:</string>
+        </property>
+        <property name="buddy">
+         <cstring>sbGridLinesLineWidth</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="LC_ColorButton" name="pb_gridLines">
+        <property name="toolTip">
+         <string>Line
+
+Click to select color.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="cbGridLinesColor">
+        <property name="toolTip">
+         <string>Color Of Grid
+
+Color of grid lines if grid drawn by lines</string>
+        </property>
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+        <property name="currentText">
+         <string>#736F6E</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lGridLineType_2">
+        <property name="text">
+         <string>Line type:</string>
+        </property>
+        <property name="buddy">
+         <cstring>wGridLinesLineType</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lGridColor_2">
+        <property name="text">
+         <string>Grid color:</string>
+        </property>
+        <property name="buddy">
+         <cstring>cbGridLinesColor</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="4">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Points Grid is a visual pattern of grid drawn with lines. </string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="2" column="0">
+    <widget class="QGroupBox" name="groupBox_11">
+     <property name="title">
+      <string>Meta-grid</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_gl">
+      <item row="1" column="1">
+       <widget class="QComboBox" name="cbMetaGridLinesColor">
+        <property name="toolTip">
+         <string>Meta-Grid Color
+
+Color of Meta Grid if grid drawn by lines</string>
+        </property>
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+        <property name="currentText">
+         <string>#404040</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="lMetaGridLineWidth_2">
+        <property name="text">
+         <string>Line width:</string>
+        </property>
+        <property name="buddy">
+         <cstring>sbMetaGridLinesWidth</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lMetaGridLineType_2">
+        <property name="text">
+         <string>Line type: </string>
+        </property>
+        <property name="buddy">
+         <cstring>wMetaGridLinesLineType</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" colspan="2">
+       <widget class="QG_LineTypeBox" name="wMetaGridLinesLineType" native="true">
+        <property name="toolTip">
+         <string>Meta Grid Line Type
+
+Type of Meta Grid lines if grid is drawn by lines</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QSpinBox" name="sbMetaGridLinesWidth">
+        <property name="toolTip">
+         <string>Meta-Grid Line Type
+
+Width of grid lines</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>10</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="2">
+       <widget class="LC_ColorButton" name="pb_metaLines">
+        <property name="toolTip">
+         <string>Meta-Grid Line
+
+Click to select color.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lMetaGridColor_2">
+        <property name="text">
+         <string>Meta-grid color:</string>
+        </property>
+        <property name="buddy">
+         <cstring>cbMetaGridLinesColor</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="4">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Meta-Grid lines group the background grid into distinct, readable blocks. </string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QG_LineTypeBox</class>
+   <extends>QWidget</extends>
+   <header>qg_linetypebox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LC_ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>lc_color_button.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

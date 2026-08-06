@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_SettingsPageCoordinateSystemAxisLines</class>
+ <widget class="QWidget" name="LC_SettingsPageCoordinateSystemAxisLines">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>312</width>
+    <height>273</height>
+   </rect>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_main">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox_9">
+     <property name="title">
+      <string>Axis Lines</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_ax">
+      <item row="6" column="0">
+       <widget class="QLabel" name="lAxisYColor">
+        <property name="text">
+         <string>Y-axis color:</string>
+        </property>
+        <property name="buddy">
+         <cstring>cbAxisYColor</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="lXAxisAreas">
+        <property name="styleSheet">
+         <string notr="true">margin-left:15px</string>
+        </property>
+        <property name="text">
+         <string>X-axis extension</string>
+        </property>
+        <property name="buddy">
+         <cstring>cbXAxisAreas</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="cbGridExtendAxisLines">
+        <property name="toolTip">
+         <string>Extend Axis Lines
+
+If checked, axises will be inifinite lines.</string>
+        </property>
+        <property name="text">
+         <string>Extend axis lines</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="LC_ColorButton" name="pb_axis_X">
+        <property name="toolTip">
+         <string>X-Axis Color
+
+Click to select color.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="lYAxisAreas">
+        <property name="styleSheet">
+         <string notr="true">margin-left:15px</string>
+        </property>
+        <property name="text">
+         <string>Y-axis extension</string>
+        </property>
+        <property name="buddy">
+         <cstring>cbYAxisAreas</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="2">
+       <widget class="LC_ColorButton" name="pb_axis_Y">
+        <property name="toolTip">
+         <string>Y-Axis Color
+
+Click to select color.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QComboBox" name="cbAxisXColor">
+        <property name="toolTip">
+         <string>X-Axis Color
+
+Color for X axis</string>
+        </property>
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+        <property name="currentText">
+         <string>#736F6E</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="lAxisXColor">
+        <property name="text">
+         <string>X-axis color:</string>
+        </property>
+        <property name="buddy">
+         <cstring>cbAxisXColor</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lAxisSize">
+        <property name="text">
+         <string>Short axis size</string>
+        </property>
+        <property name="buddy">
+         <cstring>sbAxisSize</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="3">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="4" column="1">
+       <widget class="QComboBox" name="cbYAxisAreas">
+        <property name="toolTip">
+         <string>Y-Axis Extension Mode
+
+Defines how to draw extended Y axis</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Whole Area</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Positive Values Area</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QComboBox" name="cbXAxisAreas">
+        <property name="toolTip">
+         <string>X-Axis Extension Mode
+
+Defines how to draw extended X axis</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Whole Area</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Positive Values Area</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QComboBox" name="cbAxisYColor">
+        <property name="toolTip">
+         <string>Y-Axis Color
+
+Color for Y axis</string>
+        </property>
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+        <property name="currentText">
+         <string>#404040</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="sbAxisSize">
+        <property name="toolTip">
+         <string>Short Axis Line Size
+
+Size of fixed Axis Lines drawn in absolute zero point</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="maximum">
+         <number>150</number>
+        </property>
+        <property name="value">
+         <number>10</number>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="4">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Axis Lines could be drawn in the origin point of the current coordinate system and highlights X and Y axis. Both short (with fixed size) and extended (infinite size) axis lines are supported.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LC_ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>lc_color_button.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
