@@ -29,14 +29,14 @@ public:
     void load();
     void save() const;
 
-    enum DoubleClick{
+    enum DoubleClickPolicy{
         NOTHING,
         RENAME,
         UPDATE,
         INVOKE
     };
 
-    int doubleClickPolicy {RENAME};
+    LC_NamedViewsListOptions::DoubleClickPolicy doubleClickPolicy {RENAME};
     bool askForDeletionConfirmation{true};
     bool duplicatedNameReplacesSilently{false};
     bool showColumnIconType{true};

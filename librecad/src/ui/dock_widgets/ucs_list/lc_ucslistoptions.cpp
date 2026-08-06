@@ -22,49 +22,51 @@
 
 #include "lc_ucslistoptions.h"
 
+#include "lc_settings_appearance.h"
+#include "lc_settings_startup.h"
+#include "lc_settings_ucs_list_widget.h"
 #include "rs_settings.h"
 
 LC_UCSListOptions::LC_UCSListOptions() = default;
 
 void LC_UCSListOptions::load() {
-    LC_GROUP("Appearance");
     {
-        ucsApplyingPolicy = LC_GET_INT("UCSApplyPolicy",0);
-        highlightBlinksCount = LC_GET_INT("UCSHighlightBlinkCount",10);
-        highlightBlinksDelay =  LC_GET_INT("UCSHighlightBlinkDelay",250);
+        using namespace CFG_Appearance;
+        ucsApplyingPolicy = o_UCSApplyPolicy;
+        highlightBlinksCount = o_UCSHighlightBlinkCount;
+        highlightBlinksDelay =  o_UCSHighlightBlinkDelay;
     }
-    LC_GROUP_END();
 
-    LC_GROUP_GUARD("Widget.UCSList");
     {
-        showViewInfoToolTip = LC_GET_BOOL("ShowTooltip", true);
-        showColumnTypeIcon = LC_GET_BOOL("ShowColumnTypeIcon", false);
-        showColumnGridType = LC_GET_BOOL("ShowColumnGridType", false);
-        showColumnPositionAndAngle = LC_GET_BOOL("ShowColumnPositionAndAngle", false);
-        askForDeletionConfirmation = LC_GET_BOOL("ConfirmDelete", false);
-        restoreViewBySingleClick = LC_GET_BOOL("SingleClickRestore", false);
-        doubleClickPolicy = LC_GET_INT("DoubleClickPolicy",APPLY_UCS);
-        showGrid = LC_GET_BOOL("ShowGrid", true);
+        using namespace CFG_WidgetUCSList;
+        showViewInfoToolTip =o_ShowTooltip;
+        showColumnTypeIcon = o_ShowColumnTypeIcon;
+        showColumnGridType = o_ShowColumnGridType;
+        showColumnPositionAndAngle = o_ShowColumnPositionAndAngle;
+        askForDeletionConfirmation = o_ConfirmDelete;
+        restoreViewBySingleClick = o_SingleClickRestore;
+        doubleClickPolicy = o_DoubleClickPolicy;
+        showGrid = o_ShowGrid;
     }
 }
 
 void LC_UCSListOptions::save() const{
-    LC_GROUP("Appearance");
     {
-        LC_SET("UCSApplyPolicy",ucsApplyingPolicy);
-        LC_SET("UCSHighlightBlinkCount",highlightBlinksCount);
-        LC_SET("UCSHighlightBlinkDelay",highlightBlinksDelay);
+        using namespace CFG_Appearance;
+        o_UCSApplyPolicy = ucsApplyingPolicy;
+        o_UCSHighlightBlinkCount = highlightBlinksCount;
+        o_UCSHighlightBlinkDelay = highlightBlinksDelay;
     }
-    LC_GROUP_END();
-    LC_GROUP_GUARD("Widget.UCSList");
+    LC_GROUP_END();    
     {
-        LC_SET("ShowTooltip", showViewInfoToolTip);
-        LC_SET("ShowColumnTypeIcon", showColumnTypeIcon);
-        LC_SET("ShowColumnGridType", showColumnGridType);
-        LC_SET("ShowColumnPositionAndAngle", showColumnPositionAndAngle);
-        LC_SET("ConfirmDelete", askForDeletionConfirmation);
-        LC_SET("DoubleClickPolicy", doubleClickPolicy);
-        LC_SET("SingleClickRestore", restoreViewBySingleClick);
-        LC_SET("ShowGrid", showGrid);
+        using namespace CFG_WidgetUCSList;
+        o_ShowTooltip= showViewInfoToolTip;
+        o_ShowColumnTypeIcon= showColumnTypeIcon;
+        o_ShowColumnGridType= showColumnGridType;
+        o_ShowColumnPositionAndAngle= showColumnPositionAndAngle;
+        o_ConfirmDelete= askForDeletionConfirmation;
+        o_DoubleClickPolicy = doubleClickPolicy;
+        o_SingleClickRestore= restoreViewBySingleClick;
+        o_ShowGrid= showGrid;
     }
 }

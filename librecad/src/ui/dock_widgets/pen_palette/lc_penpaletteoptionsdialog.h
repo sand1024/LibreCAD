@@ -39,7 +39,6 @@ public slots:
 protected slots:
     void languageChange();
 private:
-    void selectActivePenBGColor();
     void setComboBoxColor(const QComboBox *combo, const QColor &custom);
     void initComboBox(QComboBox *cb, const QColor &color);
     void selectMatchedItemColor();

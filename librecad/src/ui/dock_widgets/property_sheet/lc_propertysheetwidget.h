@@ -67,7 +67,7 @@ public:
     void showToolOptions(LC_ToolOptionsPropertiesContainerProvider* provider) override;
     void setShouldHandleSelectionChange(bool value);
     void updateFormats();
-    void doProcessLateRequest(const LC_ActionContext::InteractiveInputInfo& interactiveInputInfo);
+    void doProcessLateRequest(const InteractiveInputInfo& interactiveInputInfo);
     void onLateRequestCompleted(bool shouldBeSkipped) override;
     bool isCollapsedSection(const QString& name) const;
     void markContainerCollapsed(const QString& name, bool collapse);
@@ -109,7 +109,7 @@ protected:
     void destroyContainer(LC_PropertyContainer* previousContainer) const;
     void setPickedPointPropertyValue(const QString& propertyName, const RS_Vector& ucsVector) const;
     void setPickedPropertyValue(const QString& propertyName, double interactiveInputValue,
-                                LC_ActionContext::InteractiveInputInfo::InputType input) const;
+                                InteractiveInputInfo::InputType input) const;
     void setPickedPropertyCoordinateValue(const QString& propertyName, double interactiveInputValue, bool forX) const;
     bool isVirtualProperty(const LC_Property* property);
     int getCurrentlySelectedEntityType(int index) const;

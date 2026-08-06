@@ -25,19 +25,12 @@
 #define LC_PENPALETTEOPTIONS_H
 
 #include "lc_peninforegistry.h"
+#include "lc_settings_pen_palette_widget.h"
+
+using namespace CFG_WidgetPenPallette;
 
 class LC_PenPaletteOptions{
 public:
-    enum {
-        DOUBLE_CLICK_DOES_NOTHING,
-        DOUBLE_CLICK_SELECT_ENTITIES_BY_ATTRIBUTES_PEN,
-        DOUBLE_CLICK_SELECT_ENTITIES_BY_DRAWING_PEN
-    };
-
-    /**
-     * color for active item background in table
-     */
-    QColor activeItemBGColor = QColor("azure");
     /**
      * color used to highlight items that matched to regexp
      */
@@ -53,15 +46,15 @@ public:
     /**
      * should we show all fields for active pen in the table or only for name
      */
-    bool showEntireRowBold {true};
+    bool showEntireRowBold = o_showEntireActiveRowBold.defaultValue();
     /**
      *  controls whether items matched by regexp should be highlighted or filtered
      */
-    bool filterIsInHighlightMode {false};
+    bool filterIsInHighlightMode = o_filterInHighlightsMode.defaultValue();
     /**
      * controls whether items regexp matching should ignore case
      */
-    bool ignoreCaseOnMatch {true};
+    bool ignoreCaseOnMatch = o_ignoreCaseOnMatch.defaultValue();
 
     // fixme - well, probably we should use some reasonable defaults with paths related to the app there...
     /**
@@ -72,34 +65,32 @@ public:
     /**
      * columns visibility flags
      */
-    bool showColorIcon {true};
-    bool showColorName {false};
-    bool showTypeIcon{true};
-    bool showTypeName{false};
-    bool showWidthIcon{true};
-    bool showWidthName{false};
-    bool showNoSelectionMessage{false};
+    bool showColorIcon = o_showColorIconCol.defaultValue();
+    bool showColorName  = o_showColorNameCol.defaultValue();
+    bool showTypeIcon = o_showLineTypeIconCol.defaultValue();
+    bool showTypeName = o_showLineTypeNameCol.defaultValue();
+    bool showWidthIcon = o_showLineWidthIconCol.defaultValue();
+    bool showWidthName = o_showLineWidthNameCol.defaultValue();
+    bool showNoSelectionMessage = o_showNoSelectionMessage.defaultValue();
 
     /**
      * flag that defines how to process double click on table item
      */
-    int doubleClickOnTableMode = DOUBLE_CLICK_SELECT_ENTITIES_BY_ATTRIBUTES_PEN;
+    PenPaletteDoubleClickMode doubleClickOnTableMode = DOUBLE_CLICK_SELECT_ENTITIES_BY_ATTRIBUTES_PEN;
 
     /**
      * should we show tooltip in table or not
      */
-    bool showToolTip {true};
+    bool showToolTip  = o_showToolTip.defaultValue();
 
     /**
      * Saves options in settings
      */
     void saveToSettings() const;
-    void loadDefaults(bool isDark);
     /**
      * loads options from settings
      */
     void loadFromSettings();
-
 };
 
 #endif

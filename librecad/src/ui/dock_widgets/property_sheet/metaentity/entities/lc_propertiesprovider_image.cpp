@@ -71,7 +71,7 @@ void LC_PropertiesProviderImage::doCreateEntitySpecificProperties(LC_PropertyCon
     add<RS_Image>({"scale", tr("Scale"), tr("Scale factor for image")}, [this](const LC_Property::Names& n, RS_Image* entity, LC_PropertyContainer* container,
                                                    QList<LC_PropertyAtomic*>* props) -> void {
         const auto property = createVectorProperty(n, props, container, m_actionContext, m_widget);
-        property->setInteractiveInputType(LC_ActionContext::InteractiveInputInfo::NOTNEEDED);
+        property->setInteractiveInputType(InteractiveInputInfo::NOTNEEDED);
         auto funGet = [](RS_Image* e) ->RS_Vector {
             const double xScale = e->getUVector().magnitude();
             const double yScale = e->getVVector().magnitude();
@@ -106,7 +106,7 @@ void LC_PropertiesProviderImage::doCreateEntitySpecificProperties(LC_PropertyCon
                   [this, funGetSize](const LC_Property::Names& n, RS_Image* e, LC_PropertyContainer* container,
                                      QList<LC_PropertyAtomic*>* props) -> void {
                       const auto property = createVectorProperty(n, props, container, m_actionContext, m_widget);
-                      property->setInteractiveInputType(LC_ActionContext::InteractiveInputInfo::NOTNEEDED);
+                      property->setInteractiveInputType(InteractiveInputInfo::NOTNEEDED);
                       const LC_PropertyViewDescriptor descriptor = {
                           {
                               {LC_PropertyRSVectorView::ATTR_X_DISPLAY_NAME, tr("Width")},

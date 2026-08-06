@@ -134,7 +134,7 @@ void LC_PropertiesProviderGraphicGrid::createGridX(LC_PropertyContainer* const c
     };
     auto* property = new LC_PropertyDouble(cont, false);
     property->setNames(names);
-    property->setInteractiveInputType(LC_ActionContext::InteractiveInputInfo::InputType::NOTNEEDED);
+    property->setInteractiveInputType(InteractiveInputInfo::InputType::NOTNEEDED);
     LC_PropertyViewDescriptor attrs;
     attrs.viewName = LC_PropertyDoubleLineEditView::VIEW_NAME;
     attrs[LC_PropertyDoubleLineEditView::ATTR_ZERO_PLACEHOLDER] = tr("auto");
@@ -162,7 +162,7 @@ void LC_PropertiesProviderGraphicGrid::createGridY(LC_PropertyContainer* const c
     };
     auto* property = new LC_PropertyDouble(cont, false);
     property->setNames(names);
-    property->setInteractiveInputType(LC_ActionContext::InteractiveInputInfo::InputType::NOTNEEDED);
+    property->setInteractiveInputType(InteractiveInputInfo::InputType::NOTNEEDED);
     LC_PropertyViewDescriptor attrs;
     attrs.viewName = LC_PropertyDoubleLineEditView::VIEW_NAME;
     attrs[LC_PropertyDoubleLineEditView::ATTR_ZERO_PLACEHOLDER] = tr("auto");
@@ -188,7 +188,7 @@ bool LC_PropertiesProviderGraphicGrid::createShowMetaGrid(LC_PropertyContainer* 
             const LC_Property::Names names = {"gridMetaVisible", tr("Show meta-grid"), tr("Defines whether meta-grid is shown or not")};
             if (showGrid) {
                 auto funSet = [this]([[maybe_unused]] const bool& v, [[maybe_unused]]RS_Graphic* e) -> void {
-                    LC_SET_ONE("Appearance", "metaGridDraw", v);
+                    CFG_Appearance::o_metaGridDraw = v;
                     const auto viewport = m_actionContext->getViewport();
                     if (viewport != nullptr) {
                         viewport->loadGridSettings();
@@ -232,7 +232,7 @@ void LC_PropertiesProviderGraphicGrid::createDecimalMetaGrid(LC_PropertyContaine
                 };
 
                 const auto funSetPagesHor = [this](const int& v, [[maybe_unused]]RS_Graphic* e) -> void {
-                    LC_SET_ONE("Appearance", "MetaGridEvery", v);
+                    CFG_Appearance::o_MetaGridEvery = v;
                     const auto viewport = m_actionContext->getViewport();
                     if (viewport != nullptr) {
                         viewport->loadGridSettings();

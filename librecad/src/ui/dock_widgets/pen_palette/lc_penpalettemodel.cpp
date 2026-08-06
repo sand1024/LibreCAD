@@ -207,10 +207,6 @@ QVariant LC_PenPaletteModel::data(const QModelIndex &index, const int role) cons
             }
             break;
         case Qt::BackgroundRole: {
-            // highlight pen that was active (in pen editor) by appropriate background
-            if ((m_activePen != nullptr) && m_activePen == item){
-                return m_options->activeItemBGColor;
-            }
             break;
         }
         case Qt::ForegroundRole: {

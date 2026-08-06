@@ -54,7 +54,7 @@ protected:
     using Inherited = LC_PropertyViewTyped;
     bool doAcceptKeyPressedForInplaceEdit(QKeyEvent* keyEvent) const override;
     QString getButtonIconName();
-    QString getButtonTooltip(LC_ActionContext::InteractiveInputInfo::InputType interactiveInputType);
+    QString getButtonTooltip(InteractiveInputInfo::InputType interactiveInputType);
     QWidget* doCreateValueEditor(QWidget* parent, const QRect& rect, const EditActivationContext* ctx) override;
     void doApplyAttributes(const LC_PropertyViewDescriptor& info) override;
     bool doPropertyValueToStrForView(QString& strValue) override;

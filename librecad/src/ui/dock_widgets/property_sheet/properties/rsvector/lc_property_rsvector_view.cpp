@@ -90,17 +90,17 @@ LC_PropertyRSVectorView::LC_PropertyRSVectorView(LC_PropertyRSVector* property)
 
     const auto xProperty = static_cast<LC_PropertyDouble*>(property->createXProperty());
 
-    const bool pickable = property->getInteractiveInputType() != LC_ActionContext::InteractiveInputInfo::NOTNEEDED;
+    const bool pickable = property->getInteractiveInputType() != InteractiveInputInfo::NOTNEEDED;
 
     xProperty->setActionContextAndLaterRequestor(actionContext, interactiveInputRequestor);
     if (pickable && !readOnly) {
-        xProperty->setInteractiveInputType(LC_ActionContext::InteractiveInputInfo::POINT_X);
+        xProperty->setInteractiveInputType(InteractiveInputInfo::POINT_X);
     }
     addSubProperty(xProperty);
     const auto yProperty = static_cast<LC_PropertyDouble*>(property->createYProperty());
     yProperty->setActionContextAndLaterRequestor(actionContext, interactiveInputRequestor);
     if (pickable && !readOnly) {
-        yProperty->setInteractiveInputType(LC_ActionContext::InteractiveInputInfo::POINT_Y);
+        yProperty->setInteractiveInputType(InteractiveInputInfo::POINT_Y);
     }
     if (readOnly) {
         property->setReadOnly(); // should restore original readonly
@@ -130,7 +130,7 @@ void LC_PropertyRSVectorView::doApplyAttributes(const LC_PropertyViewDescriptor&
 QWidget* LC_PropertyRSVectorView::doCreateValueEditor(QWidget* parent, const QRect& rect, const EditActivationContext* ctx) {
     if (isEditableByUser()) {
         const auto interactiveInputType = typedProperty().getInteractiveInputType();
-        const bool pickable = interactiveInputType != LC_ActionContext::InteractiveInputInfo::NOTNEEDED;
+        const bool pickable = interactiveInputType != InteractiveInputInfo::NOTNEEDED;
         if (!pickable) {
             return createValueEditorLineEdit(parent, rect, true, ctx);
         }

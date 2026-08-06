@@ -38,8 +38,8 @@ void LC_PropertyDouble::setActionContextAndLaterRequestor(LC_ActionContext* acti
 
 void LC_PropertyDouble::requestInteractiveInput() const {
     QString propertyName;
-    if (m_interactiveInputType == LC_ActionContext::InteractiveInputInfo::POINT_X || m_interactiveInputType ==
-        LC_ActionContext::InteractiveInputInfo::POINT_Y) {
+    if (m_interactiveInputType == InteractiveInputInfo::POINT_X || m_interactiveInputType ==
+        InteractiveInputInfo::POINT_Y) {
         const auto masterProperty = getPrimaryProperty();
         if (masterProperty != nullptr) {
             propertyName = masterProperty->getName();

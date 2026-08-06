@@ -132,7 +132,7 @@ void LC_IndexedPropertiesProviderBase::createIndexedPointProperty(LC_PropertyCon
         return {{{LC_PropertyRSVectorView::ATTR_X_DISPLAY_NAME, tr("X")}, {LC_PropertyRSVectorView::ATTR_Y_DISPLAY_NAME, tr("Y")}}};
     });
     propertyPoint->setActionContextAndLaterRequestor(m_actionContext, m_widget);
-    propertyPoint->setInteractiveInputType(LC_ActionContext::InteractiveInputInfo::POINT);
+    propertyPoint->setInteractiveInputType(InteractiveInputInfo::POINT);
 
     auto vertexValueStorage = new LC_EntityPropertyValueDelegate<RS_Vector, EntityClass>();
     vertexValueStorage->setup(entity, this->m_widget,
@@ -175,7 +175,7 @@ void LC_IndexedPropertiesProviderBase::createIndexedDoubleProperty(LC_PropertyCo
     });
 
     propertyPoint->setActionContextAndLaterRequestor(m_actionContext, m_widget);
-    propertyPoint->setInteractiveInputType(LC_ActionContext::InteractiveInputInfo::NOTNEEDED);
+    propertyPoint->setInteractiveInputType(InteractiveInputInfo::NOTNEEDED);
 
     auto vertexValueStorage = new LC_EntityPropertyValueDelegate<double, EntityClass>();
     vertexValueStorage->setup(entity, this->m_widget,

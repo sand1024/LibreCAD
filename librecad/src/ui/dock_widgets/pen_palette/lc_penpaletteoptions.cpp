@@ -27,85 +27,65 @@
 #include <QPalette>
 
 #include "lc_palette_color_utils.h"
+#include "lc_settings_paths.h"
+#include "lc_settings_pen_palette_widget.h"
 #include "rs_settings.h"
 #include "rs_system.h"
-
-void LC_PenPaletteOptions::loadDefaults(bool isDark) {
-    QPalette palette = QApplication::palette();
-
-    if (isDark) {
-        activeItemBGColor = palette.color(QPalette::Mid);
-        matchedItemColor = QColor("blue");
-    }
-    else {
-        activeItemBGColor = palette.color(QPalette::Mid);
-        matchedItemColor = QColor("blue");
-    }
-}
 
 /**
  * Straightforwards storing options to settings
  */
-void LC_PenPaletteOptions::loadFromSettings(){
-    LC_GROUP_GUARD("Widget.PenPalette");
-    {
-        LC_PenPaletteOptions defaults;
-        defaults.loadDefaults(LC_PaletteColorUtils::isSystemInDarkMode());
-        activeItemBGColor = QColor(LC_GET_STR("activeItemBgColor", defaults.activeItemBGColor.name()));
-        matchedItemColor = QColor(LC_GET_STR("matchedItemBgColor", defaults.matchedItemColor.name()));
-        showGrid = LC_GET_BOOL("showGrid", true);
+void LC_PenPaletteOptions::loadFromSettings() {
+    matchedItemColor = o_matchedItemBgColor;
+    showGrid = o_showGrid;
 
-        showToolTip = LC_GET_BOOL("showToolTip", defaults.showToolTip);
+    showToolTip = o_showToolTip;
 
-        showColorName = LC_GET_BOOL("showColorNameCol", defaults.showColorName);
-        showColorIcon = LC_GET_BOOL("showColorIconCol", defaults.showColorIcon);
+    showColorName = o_showColorNameCol;
+    showColorIcon = o_showColorIconCol;
 
-        showTypeName = LC_GET_BOOL("showLineTypeNameCol", defaults.showTypeName);
-        showTypeIcon = LC_GET_BOOL("showLineTypeIconCol", defaults.showTypeIcon);
+    showTypeName = o_showLineTypeNameCol;
+    showTypeIcon = o_showLineTypeIconCol;
 
-        showWidthName = LC_GET_BOOL("showLineWidthNameCol", defaults.showWidthName);
-        showWidthIcon = LC_GET_BOOL("showLineWidthIconCol", defaults.showWidthIcon);
+    showWidthName = o_showLineWidthNameCol;
+    showWidthIcon = o_showLineWidthIconCol;
 
-        showEntireRowBold = LC_GET_BOOL("showEntireActiveRowBold", defaults.showEntireRowBold);
-        filterIsInHighlightMode = LC_GET_BOOL("filterInHighlightsMode", defaults.filterIsInHighlightMode);
-        ignoreCaseOnMatch = LC_GET_BOOL("ignoreCaseOnMatch", defaults.ignoreCaseOnMatch);
-        showNoSelectionMessage = LC_GET_BOOL("showNoSelectionMessage", defaults.showNoSelectionMessage);
+    showEntireRowBold = o_showEntireActiveRowBold;;
+    filterIsInHighlightMode = o_filterInHighlightsMode;
+    ignoreCaseOnMatch = o_ignoreCaseOnMatch;
+    showNoSelectionMessage = o_showNoSelectionMessage;
 
-        colorNameDisplayMode = static_cast<LC_PenInfoRegistry::ColorNameDisplayMode>(LC_GET_INT("colorDisplayMode", defaults.colorNameDisplayMode));
-        doubleClickOnTableMode = LC_GET_INT("doubleClickOnTableMode", defaults.doubleClickOnTableMode);
+    colorNameDisplayMode = o_colorDisplayMode;
+    doubleClickOnTableMode = doubleClickOnTableMode;
 
-        const QString settingsDir = LC_GET_ONE_STR("Paths", "OtherSettingsDir", RS_System::instance()->getAppDataDir()).trimmed();
-        pensFileName = settingsDir + "/penpalette.lcpp";
-    }
+    const QString settingsDir = CFG_Paths::o_OtherSettingsDir;
+    pensFileName = settingsDir + "/penpalette.lcpp";
 }
 
 /**
  * Straightforward loading from settings
  */
 void LC_PenPaletteOptions::saveToSettings() const {
-    LC_GROUP_GUARD("Widget.PenPalette");
-    {
-        LC_SET("activeItemBgColor", activeItemBGColor.name());
-        LC_SET("matchedItemBgColor", matchedItemColor.name());
-        LC_SET("showGrid", showGrid);
+    using namespace CFG_WidgetPenPallette;
+    o_matchedItemBgColor = matchedItemColor.name();
+    o_showGrid = showGrid;
 
-        LC_SET("showToolTip", showToolTip);
+    o_showToolTip = showToolTip;
 
-        LC_SET("showColorNameCol", showColorName);
-        LC_SET("showColorIconCol", showColorIcon);
+    o_showColorNameCol = showColorName;
+    o_showColorIconCol = showColorIcon;
 
-        LC_SET("showLineTypeNameCol", showTypeName);
-        LC_SET("showLineTypeIconCol", showTypeIcon);
+    o_showLineTypeNameCol = showTypeName;
+    o_showLineTypeIconCol = showTypeIcon;
 
-        LC_SET("showLineWidthNameCol", showWidthName);
-        LC_SET("showLineWidthIconCol", showWidthIcon);
+    o_showLineWidthNameCol = showWidthName;
+    o_showLineWidthIconCol = showWidthIcon;
 
-        LC_SET("showEntireActiveRowBold", showEntireRowBold);
-        LC_SET("filterInHighlightsMode", filterIsInHighlightMode);
-        LC_SET("ignoreCaseOnMatch", ignoreCaseOnMatch);
-        LC_SET("showNoSelectionMessage", showNoSelectionMessage);
+    o_showEntireActiveRowBold = showEntireRowBold;
+    o_filterInHighlightsMode = filterIsInHighlightMode;
+    o_ignoreCaseOnMatch = ignoreCaseOnMatch;
+    o_showNoSelectionMessage = showNoSelectionMessage;
 
-        LC_SET("colorDisplayMode", colorNameDisplayMode);
-        LC_SET("doubleClickOnTableMode", doubleClickOnTableMode);
-    }
+    o_colorDisplayMode = colorNameDisplayMode;
+    o_doubleClickOnTableMode = doubleClickOnTableMode;
 }

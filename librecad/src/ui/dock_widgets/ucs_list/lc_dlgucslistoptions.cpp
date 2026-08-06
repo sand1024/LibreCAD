@@ -69,7 +69,7 @@ void LC_DlgUCSListOptions::validate() const {
     m_options->restoreViewBySingleClick = ui->cbSingleClickRestore->isChecked();
     m_options->duplicatedNameReplacesSilently = ui->cbSilentUpdate->isChecked();
     m_options->askForDeletionConfirmation = ui->cbRemovalConfirmation->isChecked();
-    m_options->doubleClickPolicy = ui->cbDoubleClickPolicy->currentIndex();
+    m_options->doubleClickPolicy = static_cast<LC_UCSListOptions::DoubleClickPolicy>(ui->cbDoubleClickPolicy->currentIndex());
     m_options->ucsApplyingPolicy = ui->cbUCSApplyPolicy->currentIndex();
     m_options->highlightBlinksCount = ui->sbHighlightBlinkCount->value();
     m_options->highlightBlinksDelay = ui->sbHighlightBlinkDelay->value();

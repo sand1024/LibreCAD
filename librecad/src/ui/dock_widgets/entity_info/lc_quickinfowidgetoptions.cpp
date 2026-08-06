@@ -19,42 +19,37 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **********************************************************************/
+
 #include "lc_quickinfowidgetoptions.h"
 
-#include "rs_settings.h"
+#include "lc_settings_quick_info_widget.h"
 
 void LC_QuickInfoOptions::load(){
-    RS_Pen highlightPen;
+    using namespace CFG_WidgetQuickInfo;
 
-    LC_GROUP_GUARD("Widget.QuickInfo");
-    {
-        displayDistanceAndAngle = LC_GET_BOOL("ShowDistanceAndAngle", true);
-        displayEntityBoundaries = LC_GET_BOOL("ShowEntityBoundaries", true);
-        displayPointsPath = LC_GET_BOOL("ShowPointsPathOnPreview", true);
-        displayPolylineDetailed = LC_GET_BOOL("ShowPolylineDetails", true);
-        selectEntitiesInDefaultActionByCTRL = LC_GET_BOOL("SelectEntityInDefaultAction", true);
-        autoSelectEntitiesInDefaultAction = LC_GET_BOOL("AutoSelectEntityInDefaultAction", true);
+    displayDistanceAndAngle = o_ShowDistanceAndAngle;
+    displayEntityBoundaries = o_ShowEntityBoundaries;
+    displayPointsPath = o_ShowPointsPathOnPreview;
+    displayPolylineDetailed = o_ShowPolylineDetails;
+    selectEntitiesInDefaultActionByCTRL = o_SelectEntityInDefaultAction;
+    autoSelectEntitiesInDefaultAction = o_AutoSelectEntityInDefaultAction;
 
-        auto color = RS_Color(LC_GET_STR("penHighlightColor", "red"));
-        auto lineType = static_cast<RS2::LineType> (LC_GET_INT("penHighlightLineType", RS2::LineType::SolidLine));
-        auto lineWidth = static_cast<RS2::LineWidth> (LC_GET_INT("penHighlightLineWidth", RS2::LineWidth::WidthDefault));
-        highlightPen = RS_Pen(color, lineWidth, lineType);
-    }
+    const auto color = RS_Color(o_penHighlightColor);
+    const auto lineType = o_penHighlightLineType;
+    const auto lineWidth = o_penHighlightLineWidth;
 
-    pen = highlightPen;
+    pen = RS_Pen(color, lineWidth, lineType);
 }
 
-void LC_QuickInfoOptions::save() const{
-    LC_GROUP_GUARD("Widget.QuickInfo");
-    {
-        LC_SET("ShowDistanceAndAngle", displayDistanceAndAngle);
-        LC_SET("ShowEntityBoundaries", displayEntityBoundaries);
-        LC_SET("ShowPointsPathOnPreview", displayPointsPath);
-        LC_SET("ShowPolylineDetails", displayPolylineDetailed);
-        LC_SET("SelectEntityInDefaultAction", selectEntitiesInDefaultActionByCTRL);
-        LC_SET("AutoSelectEntityInDefaultAction", autoSelectEntitiesInDefaultAction);
-        LC_SET("penHighlightColor", pen.getColor().name());
-        LC_SET("penHighlightLineType", pen.getLineType());
-        LC_SET("penHighlightLineWidth", pen.getWidth());
-    }
+void LC_QuickInfoOptions::save() const {
+    using namespace CFG_WidgetQuickInfo;
+    o_ShowDistanceAndAngle = displayDistanceAndAngle;
+    o_ShowEntityBoundaries = displayEntityBoundaries;
+    o_ShowPointsPathOnPreview = displayPointsPath;
+    o_ShowPolylineDetails = displayPolylineDetailed;
+    o_SelectEntityInDefaultAction = selectEntitiesInDefaultActionByCTRL;
+    o_AutoSelectEntityInDefaultAction = autoSelectEntitiesInDefaultAction;
+    o_penHighlightColor = pen.getColor().name();
+    o_penHighlightLineType = pen.getLineType();
+    o_penHighlightLineWidth = pen.getWidth();
 }

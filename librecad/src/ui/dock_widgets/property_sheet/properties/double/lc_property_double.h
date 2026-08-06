@@ -35,11 +35,11 @@ public:
     explicit LC_PropertyDouble(QObject* parent, bool holdValue = true);
     LC_PropertyDouble(const LC_PropertyDouble& other) = delete;
 
-    LC_ActionContext::InteractiveInputInfo::InputType getInteractiveInputType() const {
+    InteractiveInputInfo::InputType getInteractiveInputType() const {
         return m_interactiveInputType;
     }
 
-    void setInteractiveInputType(const LC_ActionContext::InteractiveInputInfo::InputType interactiveInputType) {
+    void setInteractiveInputType(const InteractiveInputInfo::InputType interactiveInputType) {
         m_interactiveInputType = interactiveInputType;
     }
 
@@ -55,7 +55,7 @@ public:
     }
 
 protected:
-    LC_ActionContext::InteractiveInputInfo::InputType m_interactiveInputType = LC_ActionContext::InteractiveInputInfo::NOTNEEDED;
+    InteractiveInputInfo::InputType m_interactiveInputType = InteractiveInputInfo::NOTNEEDED;
     LC_ActionContext* m_actionContext = nullptr;
     LC_LateCompletionRequestor* m_lateCompletionRequestor = nullptr;
     LC_Formatter* m_formatter = nullptr;

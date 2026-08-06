@@ -33,7 +33,7 @@
 #include <QScrollBar>
 #include <QToolButton>
 
-#include "rs_settings.h"
+#include "lc_settings_widget.h"
 
 LC_CADDockWidget::LC_CADDockWidget(QWidget *parent, const bool allTools)
     : QDockWidget(parent), m_frame(new QFrame(this)),
@@ -150,20 +150,21 @@ void LC_CADDockWidget::doUpdateWidgetSettings(int leftToolbarColumnsCount, const
 }
 
 void LC_CADDockWidget::updateWidgetSettings() {
-  LC_GROUP("Widgets");
-  int columnsCount = 0, iconSize = 0;
-  bool flatIcons = false;
-  if (m_allTools) {
-    columnsCount = LC_GET_INT("LeftToolbarAllColumnsCount", 5);
-    flatIcons = LC_GET_BOOL("LeftToolbarAllFlatIcons", true);
-    iconSize = LC_GET_INT("LeftToolbarAllIconSize", 24);
-  } else {
-    columnsCount = LC_GET_INT("LeftToolbarColumnsCount", 5);
-    flatIcons = LC_GET_BOOL("LeftToolbarFlatIcons", true);
-    iconSize = LC_GET_INT("LeftToolbarIconSize", 24);
-  }
-  doUpdateWidgetSettings(columnsCount, iconSize, flatIcons);
-  LC_GROUP_END();
+    int columnsCount = 0, iconSize = 0;
+    bool flatIcons = false;
+
+    using namespace CFG_Widgets;
+    if (m_allTools) {
+        columnsCount = o_LeftToolbarAllColumnsCount;
+        flatIcons = o_LeftToolbarAllFlatIcons;
+        iconSize = o_LeftToolbarAllIconSize;
+    }
+    else {
+        columnsCount = o_LeftToolbarColumnsCount;
+        flatIcons = o_LeftToolbarFlatIcons;
+        iconSize = o_LeftToolbarIconSize;
+    }
+    doUpdateWidgetSettings(columnsCount, iconSize, flatIcons);
 }
 
 void LC_CADDockWidget::updateMinimumWidth() {

@@ -45,7 +45,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "rs_entitycontainer.h"
 #include "rs_graphicview.h"
 #include "rs_point.h"
-#include "rs_settings.h"
+#include "lc_settings_quick_info_widget.h"
 #include "ui_lc_quickinfowidget.h"
 
 // todo - discover generic way for reliable refresh of entity info widget if entity editing properties/attributes is performed outside of outside of widget
@@ -124,12 +124,12 @@ LC_QuickInfoWidget::LC_QuickInfoWidget(QWidget *parent, QMap<QString, QAction *>
     m_options->load();
     m_entityData->setOptions(m_options.get());
 
-    m_options->displayEntityID = LC_GET_ONE_BOOL("Appearance","ShowEntityIDs", false);
+    m_options->displayEntityID = CFG_Appearance::o_ShowEntityIDs;
 
-    LC_GROUP_GUARD("Widget.QuickInfo");
     {
-        m_entityData->setCoordinatesMode(LC_GET_INT("EntityCoordinatesMode", LC_QuickInfoBaseData::COORD_ABSOLUTE));
-        m_pointsData->setCoordinatesMode(LC_GET_INT("PointsCoordinatesMode", LC_QuickInfoBaseData::COORD_ABSOLUTE));
+        using namespace CFG_WidgetQuickInfo;
+        m_entityData->setCoordinatesMode(o_EntityCoordinatesMode);
+        m_pointsData->setCoordinatesMode(o_PointsCoordinatesMode);
     }
 
     // initial message
@@ -153,7 +153,7 @@ void LC_QuickInfoWidget::processEntity(const RS_Entity* en){
         clearEntityInfo();
     }
     else { // just delegate action processing to entity data
-        m_options->displayEntityID = LC_GET_ONE_BOOL("Appearance","ShowEntityIDs", false);
+        m_options->displayEntityID = CFG_Appearance::o_ShowEntityIDs;
         const bool updated = m_entityData->processEntity(en);
         if (updated){
             updateEntityInfoView();
@@ -221,7 +221,7 @@ void LC_QuickInfoWidget::updateEntityInfoView(const bool forceUpdate, const bool
             const RS_Entity *entity = findEntityById(entityId);
             if (entity != nullptr){
                 m_entityData->clear();
-                m_options->displayEntityID = LC_GET_ONE_BOOL("Appearance","ShowEntityIDs", false);
+                m_options->displayEntityID = CFG_Appearance::o_ShowEntityIDs;
                 m_entityData->processEntity(entity);
             }
         }
@@ -268,10 +268,10 @@ void LC_QuickInfoWidget::onCoordinateModeIndexChanged(const int index) const {
     {
         if (m_widgetMode == MODE_ENTITY_INFO) {
             setEntityPointsCoordinateViewMode(index);
-            LC_SET("EntityCoordinatesMode", index);
+            CFG_WidgetQuickInfo::o_EntityCoordinatesMode = index;
         } else if (m_widgetMode == MODE_COORDINATE_COLLECTING) {
             setCollectedPointsCoordinateViewMode(index);
-            LC_SET("PointsCoordinatesMode", index);
+            CFG_WidgetQuickInfo::o_PointsCoordinatesMode = index;
         }
     }
 }

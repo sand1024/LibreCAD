@@ -29,6 +29,13 @@ public:
     void load();
     void save() const;
 
+    enum DoubleClickPolicy{
+        DO_NOTHING,
+        EDIT_UCS,
+        APPLY_UCS,
+        SHOW_MARKER
+    };
+
     bool showColumnTypeIcon = true;
     bool showColumnPositionAndAngle = true;
     bool showColumnGridType = true;
@@ -36,18 +43,13 @@ public:
     bool duplicatedNameReplacesSilently = false;
     bool askForDeletionConfirmation = true;
     bool restoreViewBySingleClick= false;
-    int doubleClickPolicy = DO_NOTHING;
+    DoubleClickPolicy doubleClickPolicy = DO_NOTHING;
     int ucsApplyingPolicy = 0;
     int highlightBlinksCount = 10;
     int highlightBlinksDelay = 250;
     bool showGrid = false;
 
-    enum DoubleClickPolicy{
-        DO_NOTHING,
-        EDIT_UCS,
-        APPLY_UCS,
-        SHOW_MARKER
-    };
+
 };
 
 #endif

@@ -72,9 +72,7 @@ LC_PenPaletteOptionsDialog::LC_PenPaletteOptionsDialog(QWidget *parent, LC_PenPa
             break;
     }
 
-    connect(tbActiveColorSelect, &QToolButton::clicked, this, &LC_PenPaletteOptionsDialog::selectActivePenBGColor);
     connect(tbMatchedItemColorSelect, &QToolButton::clicked, this, &LC_PenPaletteOptionsDialog::selectMatchedItemColor);
-    initComboBox(cbColorActiveBg, m_options->activeItemBGColor);
     initComboBox(cbColorMatchedItem, m_options->matchedItemColor);
 
     connect(buttonBox, &QDialogButtonBox::accepted, this, &LC_PenPaletteOptionsDialog::validate);
@@ -101,9 +99,6 @@ void LC_PenPaletteOptionsDialog::initComboBox(QComboBox* cb, const QColor &color
     cb->setCurrentIndex(idx);
 }
 
-void LC_PenPaletteOptionsDialog::selectActivePenBGColor(){
-    setComboBoxColor(cbColorActiveBg, m_options->activeItemBGColor);
-}
 
 void LC_PenPaletteOptionsDialog::selectMatchedItemColor(){
     setComboBoxColor(cbColorMatchedItem, m_options->matchedItemColor);
@@ -141,14 +136,6 @@ void LC_PenPaletteOptionsDialog::validate(){
       colorMode = LC_PenInfoRegistry::ColorNameDisplayMode::NATURAL;
     }
 
-    const QString activeBgColorName = cbColorActiveBg->currentText();
-    const auto activeBgColor = QColor(activeBgColorName);
-    if (!activeBgColor.isValid()){
-        showInvalidColorMessage("active row background");
-        cbColorActiveBg ->setFocus();
-        doAccept = false;
-    }
-
     const QString matchedColorName = cbColorMatchedItem->currentText();
     const auto matchedItemColor = QColor(matchedColorName);
     if (!matchedItemColor.isValid()){
@@ -161,7 +148,6 @@ void LC_PenPaletteOptionsDialog::validate(){
     if (doAccept){
         m_options->matchedItemColor = matchedItemColor;
         m_options->showGrid =  cbShowGrid->isChecked();
-        m_options->activeItemBGColor = activeBgColor;
 
         const bool showToolTip = cbShowTooltip->isChecked();
         const bool showColorIcon = chkShowColorIcon->isChecked();
@@ -188,7 +174,7 @@ void LC_PenPaletteOptionsDialog::validate(){
         m_options->colorNameDisplayMode = colorMode;
 
         const int doubleClickMode = cbDoubleClickMode->currentIndex();
-        m_options->doubleClickOnTableMode = doubleClickMode;
+        m_options->doubleClickOnTableMode = static_cast<PenPaletteDoubleClickMode>(doubleClickMode);
         accept();
     }
 }

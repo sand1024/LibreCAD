@@ -39,9 +39,7 @@ public:
     ~LC_LayerTreeOptionsDialog() override;
 public slots:
    void pb_highlightedColorClicked();
-   void pb_selectedItemColorClicked();
-   void pbSelectedItemsBgColorClicked();
-   void pbActiveLayerBgColorClicked();
+
    void showIndentedClicked() const;
    void validate();
    void onLayerTypesRowChanged(int currentRow);

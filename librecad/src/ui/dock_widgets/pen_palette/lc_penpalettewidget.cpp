@@ -376,12 +376,12 @@ void LC_PenPaletteWidget::doDoubleClick() {
 void LC_PenPaletteWidget::onTableRowDoubleClicked() {
     // execute command specified by option
     switch (m_penPaletteModel->getOptions()->doubleClickOnTableMode) {
-        case LC_PenPaletteOptions::DOUBLE_CLICK_DOES_NOTHING:
+        case PenPaletteDoubleClickMode::DOUBLE_CLICK_DOES_NOTHING:
             break;
-        case LC_PenPaletteOptions::DOUBLE_CLICK_SELECT_ENTITIES_BY_ATTRIBUTES_PEN:
+        case PenPaletteDoubleClickMode::DOUBLE_CLICK_SELECT_ENTITIES_BY_ATTRIBUTES_PEN:
             selectEntitiesWithAttributesPenBySelectedPenItem();
             break;
-        case LC_PenPaletteOptions::DOUBLE_CLICK_SELECT_ENTITIES_BY_DRAWING_PEN:
+        case PenPaletteDoubleClickMode::DOUBLE_CLICK_SELECT_ENTITIES_BY_DRAWING_PEN:
             selectEntitiesWithAttributesPenByPenEditor();
             break;
         default:

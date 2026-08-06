@@ -112,23 +112,23 @@ bool LC_PropertyDoubleInteractivePickView::getPropertyValueFromEditString(const 
     const auto interactiveInputType = typedProperty().getInteractiveInputType();
     bool result = false;
     switch (interactiveInputType) {
-        case LC_ActionContext::InteractiveInputInfo::POINT_X: {
+        case InteractiveInputInfo::POINT_X: {
             result = LC_Convert::toDouble(text, val, 0.0, false);
             break;
         }
-        case LC_ActionContext::InteractiveInputInfo::POINT_Y: {
+        case InteractiveInputInfo::POINT_Y: {
             result = LC_Convert::toDouble(text, val, 0.0, false);
             break;
         }
-        case LC_ActionContext::InteractiveInputInfo::POINT: {
+        case InteractiveInputInfo::POINT: {
             result = false;
             break;
         }
-        case LC_ActionContext::InteractiveInputInfo::ANGLE: {
+        case InteractiveInputInfo::ANGLE: {
             result = LC_Convert::toDoubleAngleRad(text, val, 0.0, m_positiveOnly);
             break;
         }
-        case LC_ActionContext::InteractiveInputInfo::DISTANCE: {
+        case InteractiveInputInfo::DISTANCE: {
             result = LC_Convert::toDouble(text, val, m_notMeaningfulDistance, m_positiveOnly);
             break;
         }
@@ -150,15 +150,15 @@ bool LC_PropertyDoubleInteractivePickView::doAcceptKeyPressedForInplaceEdit(QKey
 QString LC_PropertyDoubleInteractivePickView::getButtonIconName() {
     const auto interactiveInputType = typedProperty().getInteractiveInputType();
     switch (interactiveInputType) {
-        case LC_ActionContext::InteractiveInputInfo::POINT_X:
+        case InteractiveInputInfo::POINT_X:
             return ":/icons/interactive_pick_point_x.lci";
-        case LC_ActionContext::InteractiveInputInfo::POINT_Y:
+        case InteractiveInputInfo::POINT_Y:
             return ":/icons/interactive_pick_point_y.lci";
-        case LC_ActionContext::InteractiveInputInfo::POINT:
+        case InteractiveInputInfo::POINT:
             return ":/icons/interactive_pick_point.lci";
-        case LC_ActionContext::InteractiveInputInfo::ANGLE:
+        case InteractiveInputInfo::ANGLE:
             return ":/icons/interactive_pick_angle.lci";
-        case LC_ActionContext::InteractiveInputInfo::DISTANCE:
+        case InteractiveInputInfo::DISTANCE:
             return ":/icons/interactive_pick_distance.lci";
         default:
             break;
@@ -167,17 +167,17 @@ QString LC_PropertyDoubleInteractivePickView::getButtonIconName() {
 }
 
 QString LC_PropertyDoubleInteractivePickView::getButtonTooltip(
-    const LC_ActionContext::InteractiveInputInfo::InputType interactiveInputType) {
+    const InteractiveInputInfo::InputType interactiveInputType) {
     switch (interactiveInputType) {
-        case LC_ActionContext::InteractiveInputInfo::POINT_X:
+        case InteractiveInputInfo::POINT_X:
             return tr("Pick X component of position from drawing");
-        case LC_ActionContext::InteractiveInputInfo::POINT_Y:
+        case InteractiveInputInfo::POINT_Y:
             return tr("Pick Y component of position from drawing");
-        case LC_ActionContext::InteractiveInputInfo::POINT:
+        case InteractiveInputInfo::POINT:
             return tr("Pick coordinates of point from drawing");
-        case LC_ActionContext::InteractiveInputInfo::ANGLE:
+        case InteractiveInputInfo::ANGLE:
             return tr("Pick angle value from drawing");
-        case LC_ActionContext::InteractiveInputInfo::DISTANCE:
+        case InteractiveInputInfo::DISTANCE:
             return tr("Pick value as distance from drawing");
         default:
             break;
@@ -222,9 +222,9 @@ bool LC_PropertyDoubleInteractivePickView::doPropertyValueToStrForView(QString& 
         const auto formatter = typedProperty().getFormatter();
         const auto interactiveInputType = typedProperty().getInteractiveInputType();
         switch (interactiveInputType) {
-            case LC_ActionContext::InteractiveInputInfo::POINT_X:
-            case LC_ActionContext::InteractiveInputInfo::POINT_Y:
-            case LC_ActionContext::InteractiveInputInfo::POINT:
+            case InteractiveInputInfo::POINT_X:
+            case InteractiveInputInfo::POINT_Y:
+            case InteractiveInputInfo::POINT:
                 if (m_formatAsInt) { // fixme - might it be that for other modes int formatting is needed?
                     strValue = formatter->formatInt(doubleValue);
                 }
@@ -232,10 +232,10 @@ bool LC_PropertyDoubleInteractivePickView::doPropertyValueToStrForView(QString& 
                     value = formatter->formatDouble(doubleValue);
                 }
                 break;
-            case LC_ActionContext::InteractiveInputInfo::ANGLE:
+            case InteractiveInputInfo::ANGLE:
                 value = formatter->formatRawAngle(doubleValue);
                 break;
-            case LC_ActionContext::InteractiveInputInfo::DISTANCE:
+            case InteractiveInputInfo::DISTANCE:
                 value = formatter->formatDouble(doubleValue);
                 break;
             default: {
@@ -258,17 +258,17 @@ bool LC_PropertyDoubleInteractivePickView::doPropertyValueToStrForEdit(QString& 
     const auto formatter = typedProperty().getFormatter();
     const auto interactiveInputType = typedProperty().getInteractiveInputType();
     switch (interactiveInputType) {
-        case LC_ActionContext::InteractiveInputInfo::POINT_X:
-        case LC_ActionContext::InteractiveInputInfo::POINT_Y:
-        case LC_ActionContext::InteractiveInputInfo::POINT:
+        case InteractiveInputInfo::POINT_X:
+        case InteractiveInputInfo::POINT_Y:
+        case InteractiveInputInfo::POINT:
             strValue = formatter->formatDouble(doubleValue);
             break;
-        case LC_ActionContext::InteractiveInputInfo::ANGLE:
+        case InteractiveInputInfo::ANGLE:
             strValue = formatter->formatRawAngle(doubleValue);
             // todo - this is workaround for editing angles in decimal degrees. What about other formats?
             strValue = strValue.remove( QChar(0xB0));
             break;
-        case LC_ActionContext::InteractiveInputInfo::DISTANCE:
+        case InteractiveInputInfo::DISTANCE:
             strValue = formatter->formatDouble(doubleValue);
             break;
         default: {

@@ -30,10 +30,22 @@
 #include <QFileDialog>
 #include <QKeyEvent>
 
+#include "lc_settings_keyboard.h"
+#include "lc_settings_widget.h"
 #include "qc_applicationwindow.h"
 #include "qg_actionhandler.h"
 #include "rs_commands.h"
 #include "rs_settings.h"
+
+
+namespace CFG_WidgetCmd {
+    inline const LC_SettingsGroupBase Group("Widget.Cmd");
+
+    inline const LC_Setting<bool> o_KeycodeMode(&Group, "KeycodeMode", false);
+}
+
+
+
 /*
  *  Constructs a QG_CommandWidget as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
@@ -59,7 +71,7 @@ QG_CommandWidget::QG_CommandWidget(QG_ActionHandler* actionHandler, QWidget* par
     connect(a1, &QAction::toggled, this, &QG_CommandWidget::setKeycodeMode);
     options_button->addAction(a1);
 
-    if (LC_GET_ONE_BOOL("Widgets", "KeycodeMode", false)) {
+    if (CFG_WidgetCmd::o_KeycodeMode) {
         leCommand->setKeyCodeMode(true);
         a1->setChecked(true);
     }
@@ -89,7 +101,7 @@ QG_CommandWidget::QG_CommandWidget(QG_ActionHandler* actionHandler, QWidget* par
  */
 QG_CommandWidget::~QG_CommandWidget() {
     const auto action = findChild<QAction*>("keycode_action");
-    LC_SET_ONE("Widgets", "KeycodeMode", action->isChecked());
+    CFG_WidgetCmd::o_KeycodeMode =  action->isChecked();
 }
 
 /*
@@ -116,7 +128,7 @@ bool QG_CommandWidget::eventFilter(QObject*/*obj*/, QEvent* event) {
             case Qt::Key_Escape:
                 return false;
             case Qt::Key_Space:
-                if (!hasFocus() && LC_GET_BOOL("Keyboard/ToggleFreeSnapOnSpace", false)) {
+                if (!hasFocus() && CFG_Keyboard::o_ToggleFreeSnapOnSpace) {
                     // do not take focus here
                     spacePressed();
                     e->accept();

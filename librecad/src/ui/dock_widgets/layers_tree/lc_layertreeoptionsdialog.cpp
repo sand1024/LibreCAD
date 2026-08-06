@@ -53,16 +53,10 @@ void LC_LayerTreeOptionsDialog::init() {
     leDuplicatedPrefix->setText(m_options->copiedNamePathPrefix);
     leDuplicatedSuffix->setText(m_options->copiedNamePathSuffix);
 
-    QColor virtualLayerBgColor = m_options->virtualLayerBgColor;
+
     QColor matchHighlightColor = m_options->matchedItemColor;
-    QColor selectedItemBgColor = m_options->selectedItemBgColor;
-    QColor activeLayerBgColor = m_options->activeLayerBgColor;
 
     initComboBox(cbHighlightedColor, matchHighlightColor);
-    initComboBox(cbVirtualLayerBackgroundColor, virtualLayerBgColor);
-    initComboBox(cbSelectedItemBgColor, selectedItemBgColor);
-    initComboBox(cbActiveLayerBgColor, activeLayerBgColor);
-
     sbIndentSize->setValue(m_options->identSize);
 
     wPenNormal->setPen(m_options->defaultPenNormal, false, false, tr("Normal Layer"));
@@ -104,29 +98,6 @@ void LC_LayerTreeOptionsDialog::validate() {
         cbHighlightedColor->setFocus();
         doAccept = false;
     }
-    QString virtualLayerBgColorName = cbVirtualLayerBackgroundColor->currentText();
-    auto virtualLayerBgColor = QColor(virtualLayerBgColorName);
-    if (!virtualLayerBgColor.isValid()) {
-        showInvalidColorMessage(tr("virtual layer background"));
-        cbVirtualLayerBackgroundColor->setFocus();
-        doAccept = false;
-    }
-
-    QString selectedItemBgColorName = cbSelectedItemBgColor->currentText();
-    auto selectedItemBgColor = QColor(selectedItemBgColorName);
-    if (!selectedItemBgColor.isValid()) {
-        showInvalidColorMessage(tr("selected item background"));
-        cbSelectedItemBgColor->setFocus();
-        doAccept = false;
-    }
-
-    QString activeLayerBgColorName = cbActiveLayerBgColor->currentText();
-    auto activeLayerBgColor = QColor(activeLayerBgColorName);
-    if (!activeLayerBgColor.isValid()) {
-        showInvalidColorMessage(tr("active layer background"));
-        cbActiveLayerBgColor->setFocus();
-        doAccept = false;
-    }
 
     if (duplicatePrefix.trimmed().isEmpty() && duplicatedSuffix.trimmed().isEmpty()) {
         // TODO - think about this - whether it's allowed or not.
@@ -158,9 +129,6 @@ void LC_LayerTreeOptionsDialog::validate() {
     m_options->hideLayerTypeIcons = !showTypeIcons;
     m_options->showGrid = cbShowGrid->isChecked();
     m_options->matchedItemColor = highlightedColor;
-    m_options->virtualLayerBgColor = virtualLayerBgColor;
-    m_options->activeLayerBgColor = activeLayerBgColor;
-    m_options->selectedItemBgColor = selectedItemBgColor;
     m_options->identSize = indentSize;
 
     m_options->copiedNamePathPrefix = duplicatePrefix;
@@ -208,18 +176,6 @@ void LC_LayerTreeOptionsDialog::showInvalidColorMessage(const QString& name) {
 
 void LC_LayerTreeOptionsDialog::pb_highlightedColorClicked() {
     setComboBoxColor(cbHighlightedColor, m_options->matchedItemColor);
-}
-
-void LC_LayerTreeOptionsDialog::pb_selectedItemColorClicked() {
-    setComboBoxColor(cbVirtualLayerBackgroundColor, m_options->virtualLayerBgColor);
-}
-
-void LC_LayerTreeOptionsDialog::pbSelectedItemsBgColorClicked() {
-    setComboBoxColor(cbSelectedItemBgColor, m_options->selectedItemBgColor);
-}
-
-void LC_LayerTreeOptionsDialog::pbActiveLayerBgColorClicked() {
-    setComboBoxColor(cbActiveLayerBgColor, m_options->activeLayerBgColor);
 }
 
 void LC_LayerTreeOptionsDialog::showIndentedClicked() const {

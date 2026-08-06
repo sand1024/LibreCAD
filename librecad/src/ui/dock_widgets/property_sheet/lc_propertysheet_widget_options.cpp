@@ -23,48 +23,45 @@
 
 #include "lc_propertysheet_widget_options.h"
 
+#include "lc_settings_property_sheet_widget.h"
 #include "rs_settings.h"
 
 void LC_PropertySheetWidgetOptions::save() const {
-    LC_GROUP_GUARD("PropertySheet");
-    {
-        LC_SET("noSelectionActivePen", noSelectionActivePen);
-        LC_SET("noSelectionActiveLayer", noSelectionActiveLayer);
-        LC_SET("noSelectionNamedView", noSelectionNamedView);
-        LC_SET("noSelectionUCS", noSelectionUCS);
-        LC_SET("noSelectionGrid", noSelectionGrid);
-        LC_SET("noSelectionDrawingUnits", noSelectionDrawingUnits);
-        LC_SET("noSelectionPrintPaper", noSelectionPrintPaper);
-        LC_SET("noSelectionWorkspace", noSelectionWorkspace);
-        LC_SET("noSelectionGraphicView", noSelectionGraphicView);
-        LC_SET("showLinks", showLinks);
-        LC_SET("showSingleEntityCommands", showSingleEntityCommands);
-        LC_SET("showMultiEntityCommands", showMultiEntityCommands);
-        LC_SET("showComputed", showComputed);
-        LC_SET("duplicateSelectionAction", duplicateSelectionAction);
-        LC_SET("showToolOptions", showToolOptions);
-        LC_SET("fontSize", fontSize);
-    }
+    using namespace CFG_WidgetPropertySheet;
+    o_NoSelectionActivePen = noSelectionActivePen;
+    o_NoSelectionActiveLayer = noSelectionActiveLayer;
+    o_NoSelectionNamedView = noSelectionNamedView;
+    o_noSelectionUCS = noSelectionUCS;
+    o_noSelectionGrid = noSelectionGrid;
+    o_noSelectionDrawingUnits = noSelectionDrawingUnits;
+    o_noSelectionPrintPaper = noSelectionPrintPaper;
+    o_noSelectionWorkspace = noSelectionWorkspace;
+    o_noSelectionGraphicView = noSelectionGraphicView;
+    o_showLinks = showLinks;
+    o_showSingleEntityCommands = showSingleEntityCommands;
+    o_showMultiEntityCommands = showMultiEntityCommands;
+    o_showComputed = showComputed;
+    o_duplicateSelectionAction = duplicateSelectionAction;
+    o_showToolOptions = showToolOptions;
+    o_fontSize = fontSize;
 }
 
 void LC_PropertySheetWidgetOptions::load() {
-    LC_GROUP_GUARD("PropertySheet");
-    {
-        noSelectionActivePen = LC_GET_BOOL("noSelectionActivePen", true);
-        noSelectionActiveLayer = LC_GET_BOOL("noSelectionActiveLayer", true);
-        noSelectionNamedView = LC_GET_BOOL("noSelectionNamedView", true);
-        noSelectionUCS = LC_GET_BOOL("noSelectionUCS", true);
-        noSelectionGrid = LC_GET_BOOL("noSelectionGrid", true);
-        noSelectionDrawingUnits = LC_GET_BOOL("noSelectionDrawingUnits", true);
-        noSelectionPrintPaper = LC_GET_BOOL("noSelectionPrintPaper", true);
-        noSelectionWorkspace = LC_GET_BOOL("noSelectionWorkspace", true);
-        noSelectionGraphicView = LC_GET_BOOL("noSelectionGraphicView", true);
-        showLinks = LC_GET_BOOL("showLinks", true);
-        showSingleEntityCommands = LC_GET_BOOL("showSingleEntityCommands", true);
-        showMultiEntityCommands = LC_GET_BOOL("showMultiEntityCommands", true);
-        showComputed = LC_GET_BOOL("showComputed", true);
-        duplicateSelectionAction = LC_GET_BOOL("duplicateSelectionAction", true);
-        showToolOptions = LC_GET_BOOL("showToolOptions", true);
-        fontSize = LC_GET_INT("fontSize", 9);
-    }
+    using namespace CFG_WidgetPropertySheet;
+    noSelectionActivePen = o_NoSelectionActivePen;
+    noSelectionActiveLayer = o_NoSelectionActiveLayer;
+    noSelectionNamedView = o_NoSelectionNamedView;
+    noSelectionUCS = o_noSelectionUCS;
+    noSelectionGrid = o_noSelectionGrid;
+    noSelectionDrawingUnits = o_noSelectionDrawingUnits;
+    noSelectionPrintPaper = o_noSelectionPrintPaper;
+    noSelectionWorkspace = o_noSelectionWorkspace;
+    noSelectionGraphicView = o_noSelectionGraphicView;
+    showLinks = o_showLinks;
+    showSingleEntityCommands = o_showSingleEntityCommands;
+    showMultiEntityCommands = o_showMultiEntityCommands;
+    showComputed = o_showComputed;
+    duplicateSelectionAction = o_duplicateSelectionAction;
+    showToolOptions = o_showToolOptions;
+    fontSize = o_fontSize;
 }

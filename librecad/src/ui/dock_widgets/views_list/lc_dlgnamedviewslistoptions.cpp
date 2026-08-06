@@ -23,6 +23,7 @@
 #include "lc_dlgnamedviewslistoptions.h"
 
 #include "lc_namedviewslistoptions.h"
+#include "lc_ucslistoptions.h"
 #include "ui_lc_dlgnamedviewslistoptions.h"
 
 LC_DlgNamedViewsListOptions::LC_DlgNamedViewsListOptions(LC_NamedViewsListOptions* options, QWidget *parent)
@@ -59,7 +60,7 @@ void LC_DlgNamedViewsListOptions::validate() const {
     m_options->duplicatedNameReplacesSilently = ui->cbSilentUpdate->isChecked();
     m_options->showViewInfoToolTip = ui->cbShowTooltip->isChecked();
     m_options->askForDeletionConfirmation = ui->cbRemovalConfirmation->isChecked();
-    m_options->doubleClickPolicy = ui->cbDoubleClickPolicy->currentIndex();
+    m_options->doubleClickPolicy = static_cast<LC_NamedViewsListOptions::DoubleClickPolicy>(ui->cbDoubleClickPolicy->currentIndex());
     m_options->showColumnGridType = ui->cbColumnGridType->isChecked();
     m_options->showColumnUCSType = ui->cbColumnUCSType->isChecked();
     m_options->showColumnUCSDetails = ui->cbColumnUCSDetails->isChecked();

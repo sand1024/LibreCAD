@@ -33,6 +33,7 @@
 #include <QKeyEvent>
 #include <QRegularExpression>
 
+#include "lc_settings_keyboard.h"
 #include "rs_dialogfactory.h"
 #include "rs_dialogfactoryinterface.h"
 #include "rs_math.h"
@@ -174,7 +175,7 @@ void QG_CommandEdit::keyPressEvent(QKeyEvent* e) {
             processInput(text());
             break;
         case Qt::Key_Space:
-            if (LC_GET_ONE_BOOL("Keyboard","EvaluateCommandOnSpace", false)) {
+            if (CFG_Keyboard::o_EvaluateCommandOnSpace) {
                 processInput(text());
             }
             else if (!text().isEmpty()) {

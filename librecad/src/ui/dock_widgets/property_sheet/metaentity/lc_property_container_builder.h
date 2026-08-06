@@ -67,11 +67,11 @@ public:
     LC_PropertyQString* createReadonlyStringProperty(const LC_Property::Names& names, QList<LC_PropertyAtomic*>* props,
                                                      LC_PropertyContainer* cont, const QString& value);
     LC_PropertyDouble* createDoubleProperty(const LC_Property::Names& names, LC_PropertyContainer* cont,
-                                            LC_ActionContext::InteractiveInputInfo::InputType inputType, LC_ActionContext* actionContext,
+                                            InteractiveInputInfo::InputType inputType, LC_ActionContext* actionContext,
                                             LC_LateCompletionRequestor* requestor);
 
     LC_PropertyDouble* createDoubleProperty(const LC_Property::Names& names, QList<LC_PropertyAtomic*>* props, LC_PropertyContainer* cont,
-                                            LC_ActionContext::InteractiveInputInfo::InputType inputType, LC_ActionContext* actionContext,
+                                            InteractiveInputInfo::InputType inputType, LC_ActionContext* actionContext,
                                             LC_LateCompletionRequestor* requestor);
 
     LC_PropertyBool* createBoolProperty(const LC_Property::Names& names, LC_PropertyContainer* cont);

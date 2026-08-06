@@ -45,13 +45,13 @@ LC_PropertyQString* LC_PropertyContainerBuilder::createReadonlyStringProperty(co
 }
 
 LC_PropertyDouble* LC_PropertyContainerBuilder::createDoubleProperty(const LC_Property::Names& names, LC_PropertyContainer* cont,
-                                                                     const LC_ActionContext::InteractiveInputInfo::InputType inputType,
+                                                                     const InteractiveInputInfo::InputType inputType,
                                                                      LC_ActionContext* actionContext,
                                                                      LC_LateCompletionRequestor* requestor) {
     auto* property = new LC_PropertyDouble(cont, false);
     property->setNames(names);
     property->setInteractiveInputType(inputType);
-    if (inputType != LC_ActionContext::InteractiveInputInfo::NOTNEEDED) {
+    if (inputType != InteractiveInputInfo::NOTNEEDED) {
         LC_PropertyViewDescriptor attrs;
         attrs.viewName = LC_PropertyDoubleInteractivePickView::VIEW_NAME;
         property->setViewDescriptor(attrs);
@@ -62,7 +62,7 @@ LC_PropertyDouble* LC_PropertyContainerBuilder::createDoubleProperty(const LC_Pr
 
 LC_PropertyDouble* LC_PropertyContainerBuilder::createDoubleProperty(const LC_Property::Names& names, QList<LC_PropertyAtomic*>* props,
                                                                      LC_PropertyContainer* cont,
-                                                                     const LC_ActionContext::InteractiveInputInfo::InputType inputType,
+                                                                     const InteractiveInputInfo::InputType inputType,
                                                                      LC_ActionContext* actionContext,
                                                                      LC_LateCompletionRequestor* requestor) {
     LC_PropertyDouble* property = createDoubleProperty(names, cont, inputType, actionContext, requestor);
@@ -76,7 +76,7 @@ LC_PropertyRSVector* LC_PropertyContainerBuilder::createVectorProperty(const LC_
     auto* property = new LC_PropertyRSVector(cont, false);
     property->setNames(names);
     if (requestor != nullptr) {
-        property->setInteractiveInputType(LC_ActionContext::InteractiveInputInfo::POINT);
+        property->setInteractiveInputType(InteractiveInputInfo::POINT);
     }
     property->setViewDescriptorProvider([]() -> LC_PropertyViewDescriptor {
         return {{{LC_PropertyRSVectorView::ATTR_X_DISPLAY_NAME, tr("X")}, {LC_PropertyRSVectorView::ATTR_Y_DISPLAY_NAME, tr("Y")}}};

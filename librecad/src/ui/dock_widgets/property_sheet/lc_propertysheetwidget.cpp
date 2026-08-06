@@ -39,6 +39,7 @@
 #include "lc_property_rsvector.h"
 #include "lc_property_view_registrator.h"
 #include "lc_propertysheet_widget_options.h"
+#include "lc_settings_property_sheet_widget.h"
 #include "lc_shortcuts_manager.h"
 #include "qg_graphicview.h"
 #include "rs_debug.h"
@@ -131,7 +132,7 @@ void LC_PropertySheetWidget::updatePropertiesSheetFont() const {
 }
 
 void LC_PropertySheetWidget::loadCollapsedSections() {
-    const QString sectionsList = LC_GET_ONE_STR("PropertySheet", "CollapsedSections", "");
+    const QString sectionsList = CFG_WidgetPropertySheet::o_CollapsedSections;
     if (!sectionsList.isEmpty()) {
         QStringList parts = sectionsList.split(",", Qt::SkipEmptyParts);
         for (const auto& sectionName : std::as_const(parts)) {
@@ -145,7 +146,7 @@ void LC_PropertySheetWidget::saveCollapsedSections() {
     for (const auto& sectionName : std::as_const(m_collapsedContainerNames)) {
         settingsValue = settingsValue + "," + sectionName;
     }
-    LC_SET_ONE("PropertySheet", "CollapsedSections", settingsValue);
+    CFG_WidgetPropertySheet::o_CollapsedSections = settingsValue;
 }
 
 void LC_PropertySheetWidget::setGraphicView(RS_GraphicView* gv) {
@@ -269,28 +270,28 @@ void LC_PropertySheetWidget::updateFormats() {
     refill();
 }
 
-void LC_PropertySheetWidget::doProcessLateRequest(const LC_ActionContext::InteractiveInputInfo& interactiveInputInfo) {
+void LC_PropertySheetWidget::doProcessLateRequest(const InteractiveInputInfo& interactiveInputInfo) {
     const auto inputType = interactiveInputInfo.inputType;
     switch (inputType) {
-        case LC_ActionContext::InteractiveInputInfo::DISTANCE: {
+        case InteractiveInputInfo::DISTANCE: {
             setPickedPropertyValue(interactiveInputInfo.requestorTag, interactiveInputInfo.distance, inputType);
             break;
         }
-        case LC_ActionContext::InteractiveInputInfo::ANGLE: {
+        case InteractiveInputInfo::ANGLE: {
             setPickedPropertyValue(interactiveInputInfo.requestorTag, interactiveInputInfo.angleRad, inputType);
             break;
         }
-        case LC_ActionContext::InteractiveInputInfo::POINT: {
+        case InteractiveInputInfo::POINT: {
             const RS_Vector ucsVector = m_viewport->toUCS(interactiveInputInfo.wcsPoint);
             setPickedPointPropertyValue(interactiveInputInfo.requestorTag, ucsVector);
             break;
         }
-        case LC_ActionContext::InteractiveInputInfo::POINT_X: {
+        case InteractiveInputInfo::POINT_X: {
             const RS_Vector ucsVector = m_viewport->toUCS(interactiveInputInfo.wcsPoint);
             setPickedPropertyCoordinateValue(interactiveInputInfo.requestorTag, ucsVector.x, true);
             break;
         }
-        case LC_ActionContext::InteractiveInputInfo::POINT_Y: {
+        case InteractiveInputInfo::POINT_Y: {
             const RS_Vector ucsVector = m_viewport->toUCS(interactiveInputInfo.wcsPoint);
             setPickedPropertyCoordinateValue(interactiveInputInfo.requestorTag, ucsVector.y, false);
             break;
@@ -304,19 +305,19 @@ void LC_PropertySheetWidget::onLateRequestCompleted(const bool shouldBeSkipped) 
     if (shouldBeSkipped) {
         const auto interactiveInput = m_actionContext->getInteractiveInputInfo();
         interactiveInput->requestor = nullptr;
-        interactiveInput->state = LC_ActionContext::InteractiveInputInfo::NONE;
+        interactiveInput->state = InteractiveInputInfo::NONE;
         // fixme - cancel editing or defreese state?
     }
     else {
         const auto interactiveInputInfo = m_actionContext->getInteractiveInputInfo();
-        const bool updateInteractiveInputValues = interactiveInputInfo->state == LC_ActionContext::InteractiveInputInfo::REQUESTED;
+        const bool updateInteractiveInputValues = interactiveInputInfo->state == InteractiveInputInfo::REQUESTED;
         if (updateInteractiveInputValues) {
             if (m_operationMode == MODE_SELECTION) {
                 doProcessLateRequest(*interactiveInputInfo);
             }
             else {
                 // delayed call, as we may be in pick action and property sheet could be empty (without tool options properties)
-                LC_ActionContext::InteractiveInputInfo inputCopy;
+                InteractiveInputInfo inputCopy;
                 interactiveInputInfo->copyTo(inputCopy);
                 QTimer::singleShot(10, [inputCopy, this]() -> void {
                     doProcessLateRequest(inputCopy);
@@ -527,7 +528,7 @@ void LC_PropertySheetWidget::destroyContainer(LC_PropertyContainer* previousCont
 }
 
 void LC_PropertySheetWidget::setPickedPropertyValue(const QString& propertyName, const double interactiveInputValue,
-                                                    [[maybe_unused]] LC_ActionContext::InteractiveInputInfo::InputType input) const {
+                                                    [[maybe_unused]] InteractiveInputInfo::InputType input) const {
     const auto propertyContainer = ui->propertySheet->propertyContainer();
     auto propertiesByName = propertyContainer->findChildProperties(propertyName);
     const auto propertiesSheet = ui->propertySheet->propertiesSheet();

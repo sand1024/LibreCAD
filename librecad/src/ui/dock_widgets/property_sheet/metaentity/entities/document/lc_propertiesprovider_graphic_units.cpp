@@ -164,5 +164,5 @@ void LC_PropertiesProviderGraphicUnits::createAnglesBasisZeroDirection(LC_Proper
         notifyDrawingOptionsChanged();
     };
     createDirectDelegatedDouble<RS_Graphic>(cont, names, funGet, funSet, graphic,
-        LC_ActionContext::InteractiveInputInfo::InputType::ANGLE,m_actionContext, m_widget);
+        InteractiveInputInfo::InputType::ANGLE,m_actionContext, m_widget);
 }

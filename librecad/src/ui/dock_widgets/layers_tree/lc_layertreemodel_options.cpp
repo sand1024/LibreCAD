@@ -29,24 +29,8 @@
 
 #include "lc_layertreeitem.h"
 #include "lc_palette_color_utils.h"
+#include "lc_settings_layer_tree_widget.h"
 #include "rs_settings.h"
-
-void LC_LayerTreeModelOptions::loadDefaults(bool isDark) {
-    QPalette palette = QApplication::palette();
-
-    if (isDark) {
-        matchedItemColor = QColor("blue");
-        virtualLayerBgColor  = palette.color(QPalette::AlternateBase);
-        selectedItemBgColor  = palette.color(QPalette::Highlight);
-        activeLayerBgColor  = palette.color(QPalette::Mid);
-    }
-    else {
-        matchedItemColor = QColor("blue");
-        virtualLayerBgColor  = QColor( 245,245,245);
-        selectedItemBgColor  = QColor( 245,245,245);
-        activeLayerBgColor  = QColor( "white");
-    }
-}
 
 /**
  * Returns pen that will be used as default for creation of the layer with given type
@@ -73,26 +57,24 @@ RS_Pen LC_LayerTreeModelOptions::getDefaultPen(const int layerType) const{
 }
 
 void LC_LayerTreeModelOptions::save() const{
-    LC_GROUP_GUARD("Widget.LayerTree");
     {
-        LC_SET("activeLayerBgColor", activeLayerBgColor.name());
-        LC_SET("selectedItemBgColor", selectedItemBgColor.name());
-        LC_SET("virtualLayerBgColor", virtualLayerBgColor.name());
-        LC_SET("showGrid", showGrid);
+        using namespace CFG_WidgetLayersTree;
 
-        LC_SET("namingLayerSeparator", layerLevelSeparator);
-        LC_SET("namingInfoSuffix", informationalLayerNameSuffix);
-        LC_SET("namingDimSuffix", dimensionalLayerNameSuffix);
-        LC_SET("namingAltSuffix", alternatePositionLayerNameSuffix);
-        LC_SET("namingCopyPrefix", copiedNamePathPrefix);
-        LC_SET("namingCopySuffix", copiedNamePathSuffix);
+        o_showGrid = showGrid;
 
-        LC_SET("hideLayerTypeIcons", hideLayerTypeIcons);
-        LC_SET("dragDropEnabled", dragDropEnabled);
-        LC_SET("showIndentedName", showIndentedName);
-        LC_SET("showToolTips", showToolTips);
-        LC_SET("renameSecondaryOnPrimary", renameSecondaryLayersOnPrimaryRename);
-        LC_SET("indentSize", identSize);
+        o_namingLayerSeparator = layerLevelSeparator;
+        o_namingInfoSuffix = informationalLayerNameSuffix;
+        o_namingDimSuffix = dimensionalLayerNameSuffix;
+        o_namingAltSuffix = alternatePositionLayerNameSuffix;
+        o_namingCopyPrefix = copiedNamePathPrefix;
+        o_namingCopySuffix = copiedNamePathSuffix;
+
+        o_hideLayerTypeIcons = hideLayerTypeIcons;
+        o_dragDropEnabled = dragDropEnabled;
+        o_showIndentedName = showIndentedName;
+        o_showToolTips = showToolTips;
+        o_renameSecondaryOnPrimary = renameSecondaryLayersOnPrimaryRename;
+        o_indentSize = identSize;
 
         RS_Settings::writePen("NormalLayer", defaultPenNormal);
         RS_Settings::writePen("DimensionalLayer", defaultPenDimensional);
@@ -102,34 +84,30 @@ void LC_LayerTreeModelOptions::save() const{
 }
 
 void LC_LayerTreeModelOptions::load(){
-
-    LC_GROUP_GUARD("Widget.LayerTree");
+    using namespace CFG_WidgetLayersTree;
     {
-        LC_LayerTreeModelOptions defaults;
-        defaults.loadDefaults(LC_PaletteColorUtils::isSystemInDarkMode());
-        activeLayerBgColor = QColor(LC_GET_STR("activeLayerBgColor", defaults.activeLayerBgColor.name()));
-        selectedItemBgColor = QColor(LC_GET_STR("selectedItemBgColor", defaults.selectedItemBgColor.name()));
-        virtualLayerBgColor = QColor(LC_GET_STR("virtualLayerBgColor", defaults.virtualLayerBgColor.name()));
-        showGrid = LC_GET_BOOL("showGrid", true);
+        showGrid = o_showGrid;
 
-        layerLevelSeparator = LC_GET_STR("namingLayerSeparator", defaults.layerLevelSeparator);
-        informationalLayerNameSuffix = LC_GET_STR("namingInfoSuffix", defaults.informationalLayerNameSuffix);
-        dimensionalLayerNameSuffix = LC_GET_STR("namingDimSuffix", defaults.dimensionalLayerNameSuffix);
-        alternatePositionLayerNameSuffix = LC_GET_STR("namingAltSuffix", defaults.alternatePositionLayerNameSuffix);
-        copiedNamePathPrefix = LC_GET_STR("namingCopyPrefix", defaults.copiedNamePathPrefix);
-        copiedNamePathSuffix = LC_GET_STR("namingCopySuffix", defaults.copiedNamePathSuffix);
+        layerLevelSeparator = o_namingLayerSeparator;
+        informationalLayerNameSuffix = o_namingInfoSuffix;
+        dimensionalLayerNameSuffix = o_namingDimSuffix;
+        alternatePositionLayerNameSuffix = o_namingAltSuffix;
+        copiedNamePathPrefix = o_namingCopyPrefix;
+        copiedNamePathSuffix = o_namingCopySuffix;
 
-        hideLayerTypeIcons = LC_GET_BOOL("hideLayerTypeIcons", defaults.hideLayerTypeIcons);
-        dragDropEnabled = LC_GET_BOOL("dragDropEnabled", defaults.dragDropEnabled);
-        showIndentedName = LC_GET_BOOL("showIndentedName", defaults.showIndentedName);
-        showToolTips = LC_GET_BOOL("showToolTips", defaults.showToolTips);
-        renameSecondaryLayersOnPrimaryRename = LC_GET_BOOL("renameSecondaryOnPrimary", defaults.renameSecondaryLayersOnPrimaryRename);
+        hideLayerTypeIcons = o_hideLayerTypeIcons;
+        dragDropEnabled = o_dragDropEnabled;
+        showIndentedName = o_showIndentedName;
+        showToolTips = o_showToolTips;
+        renameSecondaryLayersOnPrimaryRename = o_renameSecondaryOnPrimary;
 
-        identSize = LC_GET_INT("indentSize", identSize);
+        identSize = o_indentSize;
 
-        defaultPenNormal = RS_Settings::readPen("NormalLayer", defaults.defaultPenNormal);
-        defaultPenDimensional = RS_Settings::readPen("DimensionalLayer", defaults.defaultPenDimensional);
-        defaultPenInformational = RS_Settings::readPen("InfoLayer", defaults.defaultPenInformational);
-        defaultPenAlternatePosition = RS_Settings::readPen("AltPosLayer", defaults.defaultPenAlternatePosition);
+        // fixme - sand - settings - rework!
+        LC_GROUP(CFG_WidgetLayersTree::Group.groupName());
+        defaultPenNormal = RS_Settings::readPen("NormalLayer", RS_Pen(Qt::black, RS2::Width00,RS2::SolidLine));
+        defaultPenDimensional = RS_Settings::readPen("DimensionalLayer", RS_Pen(Qt::blue, RS2::Width02,RS2::SolidLine));
+        defaultPenInformational = RS_Settings::readPen("InfoLayer", RS_Pen(Qt::magenta, RS2::Width02,RS2::SolidLine));
+        defaultPenAlternatePosition = RS_Settings::readPen("AltPosLayer", RS_Pen(Qt::cyan, RS2::Width00,RS2::SolidLine));
     }
 }

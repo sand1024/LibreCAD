@@ -26,6 +26,7 @@
 
 #include "lc_fontfileviewer.h"
 
+#include "lc_settings_render.h"
 #include "rs_block.h"
 #include "rs_blocklist.h"
 #include "rs_document.h"
@@ -42,7 +43,7 @@ void LC_FontFileViewer::drawFontChars() const {
     double sep = m_document->getGraphic()->getVariableDouble("LetterSpacing", 3.0);
     const double h = sep/3;
     sep = sep*3;
-    int columnCount = LC_GET_ONE_INT("Render", "FontLettersColumnsCount", 10);
+    int columnCount = CFG_Render::o_FontLettersColumnsCount;
     if (columnCount == 0) {
         columnCount = INT_MAX;
     }

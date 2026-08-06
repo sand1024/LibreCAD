@@ -880,13 +880,13 @@ QVariant LC_LayerTreeModel::data ( const QModelIndex & index, const int role ) c
             break;
         }
         case Qt::BackgroundRole: {
-            if (layerItem->isVirtual()) {
-                // background for virtual layer
-                return m_options->virtualLayerBgColor;
-            }
-            if (layerItem->isActiveLayer()) {
-                return m_options->activeLayerBgColor;
-            }
+            // if (layerItem->isVirtual()) {
+            //     // background for virtual layer
+            //     return m_options->virtualLayerBgColor;
+            // }
+            // if (layerItem->isActiveLayer()) {
+            //     return m_options->activeLayerBgColor;
+            // }
             break;
         }
         case Qt::FontRole: {

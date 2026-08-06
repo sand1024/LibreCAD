@@ -25,20 +25,23 @@
 #ifndef LC_LAYERTREEMODEL_OPTIONS_H
 #define LC_LAYERTREEMODEL_OPTIONS_H
 
+#include "lc_settings_layer_tree_widget.h"
 #include "rs_pen.h"
 
 /**
  * Implementation of customization options used by LC_LayerTreeWidget
  */
 
+using namespace CFG_WidgetLayersTree;
+
 struct LC_LayerTreeModelOptions{
     // naming convention settings
-    QString layerLevelSeparator{"-"};
-    QString informationalLayerNameSuffix{"_meta"};
-    QString dimensionalLayerNameSuffix{"+"};
-    QString alternatePositionLayerNameSuffix{"_pos"};
-    QString copiedNamePathSuffix {")"};
-    QString copiedNamePathPrefix {"(Copy"};
+    QString layerLevelSeparator = o_namingLayerSeparator.defaultValue();
+    QString informationalLayerNameSuffix = o_namingInfoSuffix.defaultValue();
+    QString dimensionalLayerNameSuffix = o_namingDimSuffix.defaultValue();
+    QString alternatePositionLayerNameSuffix = o_namingAltSuffix.defaultValue();
+    QString copiedNamePathSuffix = o_namingCopySuffix.defaultValue();
+    QString copiedNamePathPrefix = o_namingCopyPrefix.defaultValue();
     // display settings
     bool showIndentedName = {true};
     int identSize = {4};
@@ -49,16 +52,11 @@ struct LC_LayerTreeModelOptions{
     bool showGrid {true};
     // colors
     QColor matchedItemColor {QColor("blue")};
-    QColor virtualLayerBgColor {QColor( 245,245,245)};
-    QColor selectedItemBgColor {QColor( 245,245,245)};
-    QColor activeLayerBgColor {QColor( "white")};
-    // default pens
+
     RS_Pen defaultPenNormal = RS_Pen(Qt::black, RS2::Width00,RS2::SolidLine);
     RS_Pen defaultPenDimensional = RS_Pen(Qt::blue, RS2::Width02,RS2::SolidLine);
     RS_Pen defaultPenInformational = RS_Pen(Qt::magenta, RS2::Width02,RS2::SolidLine);
     RS_Pen defaultPenAlternatePosition =  RS_Pen(Qt::cyan, RS2::Width00,RS2::SolidLine);
-
-    void loadDefaults(bool isDark);
 
     RS_Pen getDefaultPen(int layerType) const;
     void load();

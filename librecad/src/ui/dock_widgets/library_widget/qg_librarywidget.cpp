@@ -44,6 +44,7 @@
 #include "lc_documentsstorage.h"
 #include "lc_graphicviewport.h"
 #include "lc_printviewportrenderer.h"
+#include "lc_settings_paths.h"
 #include "qg_actionhandler.h"
 #include "rs_actioninterface.h"
 #include "rs_debug.h"
@@ -178,7 +179,7 @@ void QG_LibraryWidget::scanTree() {
         appendTree(nullptr, directory);
     }
 
-    const QString customPath = LC_GET_ONE_STR("Paths", "Library", "");
+    const QString customPath = CFG_Paths::o_Library;
 
     if (customPath.size() > 0) {
         //todo: make the custom path more flexible

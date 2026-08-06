@@ -114,7 +114,7 @@ namespace LC_PropertyProviderUtils {
     void createDirectDelegatedDouble(LC_PropertyContainer* container, const LC_Property::Names& names,
                                    const typename LC_EntityPropertyValueDirectEntityDelegate<double, EntityClass>::FunValueGet &funGet,
                                    const std::function<void(const double&, EntityClass*)> &funSet, EntityClass* entity,
-                                   LC_ActionContext::InteractiveInputInfo::InputType inputType,
+                                   InteractiveInputInfo::InputType inputType,
                                    LC_ActionContext* actionContext, LC_LateCompletionRequestor* requestor) {
         auto* property = new LC_PropertyDouble(container, false);
         property->setNames(names);

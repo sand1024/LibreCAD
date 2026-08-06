@@ -242,7 +242,7 @@ void LC_EntityTypePropertiesProvider::addLinearDistance(const LC_Property::Names
     add<EntityClass>(names, [this, funGet, funSet,funFillViewAttrs](const LC_Property::Names& n, EntityClass* entity,
                                                                     LC_PropertyContainer* container,
                                                                     QList<LC_PropertyAtomic*>* props) -> void {
-        auto property = createDoubleProperty(n, props, container, LC_ActionContext::InteractiveInputInfo::InputType::DISTANCE,
+        auto property = createDoubleProperty(n, props, container, InteractiveInputInfo::InputType::DISTANCE,
                                              m_actionContext, m_widget);
         if (funFillViewAttrs != nullptr) {
             LC_PropertyViewDescriptor descriptor;
@@ -267,7 +267,7 @@ void LC_EntityTypePropertiesProvider::addDouble(const LC_Property::Names& names,
     add<EntityClass>(names, [this, funGet, funSet,funFillViewAttrs](const LC_Property::Names& n, EntityClass* entity,
                                                                     LC_PropertyContainer* container,
                                                                     QList<LC_PropertyAtomic*>* props) -> void {
-        auto property = createDoubleProperty(n, props, container, LC_ActionContext::InteractiveInputInfo::InputType::NOTNEEDED,
+        auto property = createDoubleProperty(n, props, container, InteractiveInputInfo::InputType::NOTNEEDED,
                                              m_actionContext, m_widget);
         bool readonly = false;
         if (funFillViewAttrs != nullptr) {
@@ -411,7 +411,7 @@ void LC_EntityTypePropertiesProvider::addWCSAngle(const LC_Property::Names& name
                                                   const QList<RS_Entity*>& list, LC_PropertyContainer* cont) {
     add<EntityClass>(names, [this, funGet, funSet](const LC_Property::Names& n, EntityClass* entity, LC_PropertyContainer* container,
                                                    QList<LC_PropertyAtomic*>* props) -> void {
-        auto property = createDoubleProperty(n, props, container, LC_ActionContext::InteractiveInputInfo::InputType::ANGLE, m_actionContext,
+        auto property = createDoubleProperty(n, props, container, InteractiveInputInfo::InputType::ANGLE, m_actionContext,
                                              m_widget);
         auto valueStorage = new LC_EntityPropertyValueDelegate<double, EntityClass>();
         valueStorage->setup(entity, m_widget, [this, funGet](EntityClass* e) -> double {
@@ -443,7 +443,7 @@ void LC_EntityTypePropertiesProvider::addRawAngle(const LC_Property::Names& name
                                                   const QList<RS_Entity*>& list, LC_PropertyContainer* cont) {
     add<EntityClass>(names, [this, funGet, funSet](const LC_Property::Names& n, EntityClass* entity, LC_PropertyContainer* container,
                                                    QList<LC_PropertyAtomic*>* props) -> void {
-        auto property = createDoubleProperty(n, props, container, LC_ActionContext::InteractiveInputInfo::InputType::ANGLE, m_actionContext,
+        auto property = createDoubleProperty(n, props, container, InteractiveInputInfo::InputType::ANGLE, m_actionContext,
                                              m_widget);
         auto valueStorage = new LC_EntityPropertyValueDelegate<double, EntityClass>();
         valueStorage->setup(entity, m_widget, funGet, funSet, [funGet](const double& v, EntityClass* e) -> bool {
