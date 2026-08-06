@@ -253,6 +253,8 @@ public:
     void drawAsChild(RS_Painter* painter) override;
     RS_Entity* cloneProxy() const override;
 
+    void collect(QList<RS_Entity*>& list, const std::function<bool(RS_Entity*)>& funEntityAcceptor);
+
 protected:
     /**
      * @brief getLoops for hatch, split closed loops into single simple loops. All returned containers are owned by

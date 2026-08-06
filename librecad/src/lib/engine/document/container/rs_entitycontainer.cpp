@@ -214,6 +214,14 @@ RS_Entity* RS_EntityContainer::cloneProxy() const {
     return ec;
 }
 
+void RS_EntityContainer::collect(QList<RS_Entity*>& list, const std::function<bool(RS_Entity*)>& funEntityAcceptor) {
+    for (auto e: std::as_const(m_entities)) {
+        if (funEntityAcceptor(e)) {
+            list.push_back(e);
+        }
+    }
+}
+
 /**
  * Detaches shallow copies and creates deep copies of all subentities.
  * This is called after cloning entity containers.
