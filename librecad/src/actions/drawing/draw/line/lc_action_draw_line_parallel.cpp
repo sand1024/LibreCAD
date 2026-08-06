@@ -105,6 +105,8 @@ bool LC_ActionDrawLineParallel::doUpdateDistanceByInteractiveInput(const QString
     return false;
 }
 
+
+
 bool LC_ActionDrawLineParallel::doTriggerModifications(LC_DocumentModificationBatch& ctx) {
     RS_Creation::createParallel(*m_coord, m_distance, m_numberToCreate, m_entity, false, ctx.entitiesToAdd);
     return true;
@@ -143,7 +145,9 @@ void LC_ActionDrawLineParallel::onMouseMoveEvent([[maybe_unused]] const int stat
 }
 
 void LC_ActionDrawLineParallel::onMouseLeftButtonRelease([[maybe_unused]] int status, [[maybe_unused]] const LC_MouseEvent* e) {
-    trigger();
+    if (m_entity != nullptr) {
+        trigger();
+    }
 }
 
 void LC_ActionDrawLineParallel::onMouseRightButtonRelease(const int status, [[maybe_unused]] const LC_MouseEvent* e) {
@@ -162,6 +166,10 @@ void LC_ActionDrawLineParallel::updateActionPrompt() {
             updatePrompt();
             break;
     }
+}
+
+bool LC_ActionDrawLineParallel::doCheckMayTrigger() {
+    return m_entity != nullptr;
 }
 
 bool LC_ActionDrawLineParallel::doProcessCommand(const int status, const QString& command) {

@@ -79,6 +79,6 @@ protected:
     void onMouseMoveEvent(int status, const LC_MouseEvent* e) override;
     bool doProcessCommand(int status, const QString &command) override;
     void updateActionPrompt() override;
-
+    bool doCheckMayTrigger() override;
 };
 #endif
