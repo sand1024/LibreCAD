@@ -31,6 +31,8 @@
 #include "lc_actionhandlerfactory.h"
 #include "lc_defaultactioncontext.h"
 #include "lc_graphicviewport.h"
+#include "lc_settings_commands_promotion.h"
+#include "lc_settings_keyboard.h"
 #include "lc_snapmanager.h"
 #include "qc_applicationwindow.h"
 #include "rs_actionlayerstogglelock.h"
@@ -75,8 +77,8 @@ void QG_ActionHandler::promoteCommandIfNeeded(const RS2::ActionType id) const {
             // shortcut is assigned to action, nothing to do (yet later we may note this fact!)
         }
         else{
-            // unefficient way, invocation from UI. Promote command, if it is allowed
-            const bool promoteCommands = LC_GET_ONE_BOOL("CommandsPromotion", "PromoteCommands", true);
+            // inefficient way, invocation from UI. Promote command, if it is allowed
+            const bool promoteCommands = CFG_CommandsPromotion::o_PromoteCommands;
             if (promoteCommands) {
                 // fixme - sand - more details are needed (like aliases)
                 const QString command = RS_COMMANDS->getCommandForAction(id);
@@ -179,7 +181,7 @@ bool QG_ActionHandler::command(const QString& cmd) const {
     }
 
     if (cmd.isEmpty()) {
-        if (LC_GET_BOOL("Keyboard/ToggleFreeSnapOnSpace")) {
+        if (CFG_Keyboard::o_ToggleFreeSnapOnSpace) {
             RS_DEBUG->print("QG_ActionHandler::command: toggle Snap Free: begin");
             const bool isSnappingFree = m_snapManager->toggleTemporarySnapFree();
             RS_DIALOGFACTORY->commandMessage(isSnappingFree?

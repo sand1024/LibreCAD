@@ -24,20 +24,20 @@
 #include <QFile>
 #include <QStyleFactory>
 
+#include "lc_settings_app_styling.h"
 #include "rs_settings.h"
 
 void LC_CustomStyleHelper::loadFromSettings() {
-    LC_GROUP_GUARD("Widgets");
-    {
-        const bool allowStyle = LC_GET_BOOL("AllowStyle", false);
-        if (allowStyle) {
-            const QString style = LC_GET_STR("Style", "");
-            QApplication::setStyle(QStyleFactory::create(style));
-        }
+    using namespace CFG_AppStyling;
 
-        const QString sheet_path = LC_GET_STR("StyleSheet", "");
-        loadStyleSheet(sheet_path);
+    const bool allowStyle = o_AllowStyle;
+    if (allowStyle) {
+        const QString style = o_Style;
+        QApplication::setStyle(QStyleFactory::create(style));
     }
+
+    const QString sheet_path = o_StyleSheet;
+    loadStyleSheet(sheet_path);
 }
 
 bool LC_CustomStyleHelper::loadStyleSheet(const QString& path) {
