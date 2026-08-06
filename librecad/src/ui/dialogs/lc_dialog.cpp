@@ -25,6 +25,7 @@
 #include <QApplication>
 #include <QTimer>
 
+#include "lc_settings_appearance.h"
 #include "rs_settings.h"
 
 
@@ -47,12 +48,9 @@ int LC_Dialog::showModal() {
 }
 
 
-// В файле реализации (.cpp):
 #ifdef Q_OS_WIN
 #include <qt_windows.h>
 #endif
-
-
 
 
 void LC_Dialog::showEvent(QShowEvent *event) {
@@ -63,53 +61,44 @@ void LC_Dialog::showEvent(QShowEvent *event) {
     }
 }
 
-QString LC_Dialog::getPositionSettingsGroupName() const{
-    return "Dlg"+m_dialogName;
-}
+
 
 void LC_Dialog::loadDialogPosition() {
-    LC_GROUP("Appearance");
-    const bool persistentDialogPositions = LC_GET_BOOL("PersistDialogPositions", false);
-    const bool restoreSizeOnly = LC_GET_BOOL("PersistDialogRestoreSizeOnly", false);
-    if (persistentDialogPositions) {
-        LC_GROUP_GUARD(getPositionSettingsGroupName());
-        {
-            const bool hasSettings = LC_GET_BOOL("hasPosition");
-            if (hasSettings) {
-                const int x = LC_GET_INT("X", 0);
-                const int y = LC_GET_INT("Y", 0);
-                const int h = LC_GET_INT("Height", 0);
-                const int w = LC_GET_INT("Width", 0);
-                if (x > 0 && y > 0 && h > 0 && w > 0) {
-                    if (!restoreSizeOnly) {
-                        move(x, y);
-                    }
-                    resize(w, h);
+    if (CFG_Appearance::o_PersistDialogPositions) {
+        LC_DialogPositionSettingsGroup CFG_DlgSettings(m_dialogName);
+        if (CFG_DlgSettings.o_hasPosition) {
+            const int x = CFG_DlgSettings.o_X;
+            const int y = CFG_DlgSettings.o_Y;
+            const int h = CFG_DlgSettings.o_Height;
+            const int w = CFG_DlgSettings.o_Width;
+            if (x > 0 && y > 0 && h > 0 && w > 0) {
+                if (!CFG_Appearance::o_PersistDialogRestoreSizeOnly) {
+                    move(x, y);
                 }
+                resize(w, h);
             }
+            loadInnerDialogPositions(CFG_DlgSettings);
         }
     }
 }
 
 void LC_Dialog::saveDialogPosition() const {
-    const bool persistentDialogPositions = LC_GET_ONE_BOOL("Appearance","PersistDialogPositions", false);
-    if (persistentDialogPositions) {
-        LC_GROUP_GUARD(getPositionSettingsGroupName());
-        {
-            LC_SET("hasPosition", true);
+    if (CFG_Appearance::o_PersistDialogPositions) {
+        LC_DialogPositionSettingsGroup CFG_DlgSettings(m_dialogName);
+        CFG_DlgSettings.o_hasPosition = true;
 
-            const QPoint &point = pos();
-            const QSize &size = QWidget::size();
+        const QPoint& point = pos();
+        const QSize& size = QWidget::size();
 
-            const int x = point.x();
-            const int y = point.y();
-            const int h = size.height();
-            const int w = size.width();
-            LC_SET("X", x);
-            LC_SET("Y", y);
-            LC_SET("Height", h);
-            LC_SET("Width", w);
-        }
+        const int x = point.x();
+        const int y = point.y();
+        const int h = size.height();
+        const int w = size.width();
+        CFG_DlgSettings.o_X = x;
+        CFG_DlgSettings.o_Y = y;
+        CFG_DlgSettings.o_Height = h;
+        CFG_DlgSettings.o_Width = w;
+        saveInnerDialogPositions(CFG_DlgSettings);
     }
 }
 

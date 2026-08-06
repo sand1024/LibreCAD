@@ -25,6 +25,23 @@
 
 #include <QDialog>
 
+#include "lc_setting.h"
+
+class LC_DialogPositionSettingsGroup : public LC_SettingsGroupBase {
+public:
+    explicit LC_DialogPositionSettingsGroup(const QString& dialogName)
+        : LC_SettingsGroupBase("Dlg" + dialogName) {}
+
+    ~LC_DialogPositionSettingsGroup() override = default;
+
+    // Fixed variable keys inside the dynamically named group [1]
+    LC_Setting<bool> o_hasPosition{this, "hasPosition", false};
+    LC_Setting<int> o_X{this, "X", 0};
+    LC_Setting<int> o_Y{this, "Y", 0};
+    LC_Setting<int> o_Height{this, "Height", 0};
+    LC_Setting<int> o_Width{this, "Width", 0};
+};
+
 class LC_Dialog : public QDialog{
 public:
     LC_Dialog(QWidget *parent, const QString &dlgName);
@@ -35,10 +52,12 @@ public:
 protected:
     QString m_dialogName;
     bool m_positionLoaded = false;
-    void setDialogName(const QString& dialogName) {m_dialogName = dialogName;}
+    void setDialogName(const QString& dialogName) {m_dialogName = dialogName;} ;
     void saveDialogPosition() const;
     void loadDialogPosition();
-    QString getPositionSettingsGroupName() const;
+    virtual void saveInnerDialogPositions(LC_DialogPositionSettingsGroup& group) const {}
+    virtual void loadInnerDialogPositions(LC_DialogPositionSettingsGroup& group) {};
+
     void showEvent(QShowEvent *event) override;
 };
 
