@@ -51,10 +51,10 @@ struct LC_QuickSearchSelectionDialogState;
 class LC_DlgQuickSelection : public LC_Dialog {
     Q_OBJECT
 public:
-    LC_DlgQuickSelection(QWidget* parent, LC_ActionContext* actionContext, LC_ActionContext::InteractiveInputInfo::InputType interactiveInputType, const LC_QuickSearchSelectionDialogState* savedState, double interactiveInputValue1,
+    LC_DlgQuickSelection(QWidget* parent, LC_ActionContext* actionContext, InteractiveInputInfo::InputType interactiveInputType, const LC_QuickSearchSelectionDialogState* savedState, double interactiveInputValue1,
                          double interactiveInputValue2);
     ~LC_DlgQuickSelection() override;
-    LC_ActionContext::InteractiveInputInfo::InputType isInteractiveInputRequested() const {return m_interactiveInputRequested;}
+    InteractiveInputInfo::InputType isInteractiveInputRequested() const {return m_interactiveInputRequested;}
     LC_QuickSearchSelectionDialogState* getSavedState() const;
     bool isAdditionalSelectionRequested() const {return m_selectionRequested;}
     RS_Selection::ConditionalSelectionOptions getSelectionOptions(RS_Selection::ConditionalSelectionOptions& result) const;
@@ -83,7 +83,7 @@ private:
     LC_PropertyMatchOperation m_operationType = MATCH_OPERATION_EQUALS;
 
     bool m_selectionRequested{false};
-    LC_ActionContext::InteractiveInputInfo::InputType  m_interactiveInputRequested{LC_ActionContext::InteractiveInputInfo::NOTNEEDED};
+    InteractiveInputInfo::InputType  m_interactiveInputRequested{InteractiveInputInfo::NOTNEEDED};
     QString m_inputTag{""};
 
     QString m_precisionLength;
@@ -101,7 +101,7 @@ private:
     void disablePrecision() const;
     void setPropertyValueInput(LC_PropertyMatchDescriptor* propertyDescriptor);
     void restoreFromSavedState(const LC_QuickSearchSelectionDialogState* savedState,
-        LC_ActionContext::InteractiveInputInfo::InputType inputType, double interactiveInputValue1, double interactiveInputValue2);
+        InteractiveInputInfo::InputType inputType, double interactiveInputValue1, double interactiveInputValue2);
     QString obtainPropertyName(int currentRow) const;
     QString obtainCurrentPropertyName() const;
     RS2::EntityType obtainEntityType(int index) const;

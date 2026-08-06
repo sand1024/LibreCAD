@@ -32,6 +32,8 @@
 #include <QMessageBox>
 
 #include "lc_layerexportoptions.h"
+#include "lc_settings_defaults.h"
+#include "lc_settings_paths.h"
 #include "rs_debug.h"
 #include "rs_settings.h"
 
@@ -135,12 +137,10 @@ namespace {
     }
 
     std::pair<QString, QString> readDefaultDirFilter() {
-        LC_GROUP_GUARD("Paths");
-        {
-            QString defaultDir = LC_GET_STR("Save", QDir::toNativeSeparators(QDir::homePath()));
-            QString defaultFilter = LC_GET_STR("SaveDrawingFilter", FILTERS_STRING_LIST.at(0));
-            return {defaultDir, defaultFilter};
-        }
+        using namespace CFG_Paths;
+        QString defaultDir = o_Save;
+        QString defaultFilter = o_SaveDrawingFilter;
+        return {defaultDir, defaultFilter};
     }
 }
 
@@ -177,7 +177,7 @@ LC_FileDialogService::FileDialogResult LC_FileDialogService::getFileDetails (con
     saveFileDialog->setAcceptMode (QFileDialog::AcceptSave);
     saveFileDialog->setOption (QFileDialog::HideNameFilterDetails, false);
 
-    const bool useQtFileDialog = LC_GET_ONE_BOOL("Defaults","UseQtFileOpenDialog");
+    const bool useQtFileDialog = CFG_Defaults::o_UseQtFileOpenDialog;
     saveFileDialog->setOption (QFileDialog::DontUseNativeDialog, useQtFileDialog);
 
     // Styling the QFileDialog widget

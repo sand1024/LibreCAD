@@ -25,6 +25,8 @@
 **********************************************************************/
 #include "qg_dlginitial.h"
 
+#include "lc_settings_appearance.h"
+#include "lc_settings_defaults.h"
 #include "rs_settings.h"
 #include "rs_system.h"
 #include "rs_units.h"
@@ -85,12 +87,13 @@ void QG_DlgInitial::setPixmap(const QPixmap& p) const {
 }
 
 void QG_DlgInitial::ok() {
-    LC_GROUP_GUARD("Appearance"); {
-        LC_SET("Language",cbLanguage->itemData(cbLanguage->currentIndex()).toString());
-        LC_SET("LanguageCmd",cbLanguage->itemData(cbLanguage->currentIndex()).toString());
+    {
+        using namespace CFG_Appearance;
+        o_Language = cbLanguage->itemData(cbLanguage->currentIndex()).toString();
+        o_LanguageCmd = cbLanguage->itemData(cbLanguage->currentIndex()).toString();
     }
 
-    LC_SET_ONE("Defaults", "Unit", cbUnit->currentText());
+    CFG_Defaults::o_Unit = cbUnit->currentText();
 
     accept();
 }

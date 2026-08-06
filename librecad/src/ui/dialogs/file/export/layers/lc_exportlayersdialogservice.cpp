@@ -30,6 +30,7 @@
 #include "lc_documentsstorage.h"
 #include "lc_layerexportoptions.h"
 #include "lc_layersexporter.h"
+#include "lc_settings_export_layers.h"
 #include "rs_graphic.h"
 #include "rs_settings.h"
 
@@ -193,20 +194,19 @@ bool LC_ExportLayersService::selectExportFile(LC_LayersExportOptions& options, L
 }
 
 std::pair<QString, QString> LC_ExportLayersService::readDefaultDirAndFilter() {
-    LC_GROUP_GUARD("Export.Layers");
-    {
-        QString defaultDir = LC_GET_STR("DirPath", QDir::toNativeSeparators(QDir::homePath()));
-        QString defaultFilter = LC_GET_STR("FileFilter", FILTERS_STRING_LIST.at(0));
-        return {defaultDir, defaultFilter};
+    using namespace CFG_ExportLayers;
+    QString defaultDir = o_DirPath;
+    QString defaultFilter = o_FileFilter;
+    if (defaultFilter.isEmpty()) {
+        defaultFilter = FILTERS_STRING_LIST.at(0);
     }
+    return {defaultDir, defaultFilter};
 }
 
 void LC_ExportLayersService::saveDefaultDirAndFilter(const LC_FileDialogResult& fileInfo, const QString& selectedFilter) {
-    LC_GROUP_GUARD("Export.Layers");
-    {
-        LC_SET("DirPath", fileInfo.dirPath);
-        LC_SET("FileFilter", selectedFilter);
-    }
+    using namespace CFG_ExportLayers;
+    o_DirPath = fileInfo.dirPath;
+    o_FileFilter = selectedFilter;
 }
 
 RS2::FormatType LC_ExportLayersService::getFormatType(const QString& formatString){

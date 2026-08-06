@@ -39,19 +39,19 @@ class LC_DlgEntityProperties : public LC_Dialog{
     Q_OBJECT
 public:
     LC_DlgEntityProperties(QWidget* parent, LC_GraphicViewport* viewport, RS_Entity* entity,
-                           LC_ActionContext::InteractiveInputInfo::InputType inputType, const QString& tag,
+                           InteractiveInputInfo::InputType inputType, const QString& tag,
                            double valueOne, double valueTwo);
     ~LC_DlgEntityProperties() override;
-    LC_ActionContext::InteractiveInputInfo::InputType isInteractiveInputRequested() const {return m_interactiveInputRequested;}
+    InteractiveInputInfo::InputType isInteractiveInputRequested() const {return m_interactiveInputRequested;}
     QString getInteractiveInputTag(){return m_inputTag;}
 protected slots:
     void onLayerChanged(RS_Layer* layer) const;
     void onPenChanged() const;
-    void onInteractiveInputRequested(LC_ActionContext::InteractiveInputInfo::InputType inputType, const QString& tag);
+    void onInteractiveInputRequested(InteractiveInputInfo::InputType inputType, const QString& tag);
 private:
     Ui::LC_DlgEntityProperties *ui;
     RS_Entity* m_entity{nullptr};
-    LC_ActionContext::InteractiveInputInfo::InputType  m_interactiveInputRequested{LC_ActionContext::InteractiveInputInfo::NOTNEEDED};
+    InteractiveInputInfo::InputType  m_interactiveInputRequested{InteractiveInputInfo::NOTNEEDED};
     QString m_inputTag{""};
     void prepareTypeSpecificUI(LC_EntityPropertiesEditorWidget*& primaryWidget,
                                LC_EntityPropertiesEditorWidget*& secondaryWidget,

@@ -28,15 +28,16 @@
 #include "lc_convert.h"
 #include "lc_entitymatchdescriptorsregistry.h"
 #include "lc_entitymetauiutils.h"
+#include "lc_setting.h"
+#include "lc_settings_widget.h"
 #include "rs_document.h"
 #include "rs_graphic.h"
 #include "rs_math.h"
 #include "rs_selection.h"
-#include "rs_settings.h"
 #include "ui_lc_dlgquickselection.h"
 
 LC_DlgQuickSelection::LC_DlgQuickSelection(QWidget* parent, LC_ActionContext* actionContext,
-                                           const LC_ActionContext::InteractiveInputInfo::InputType interactiveInputType,
+                                           const InteractiveInputInfo::InputType interactiveInputType,
                                            const LC_QuickSearchSelectionDialogState* savedState, const double interactiveInputValue1,
                                            const double interactiveInputValue2)
     : LC_Dialog(parent, "QuickSelection"), ui(new Ui::LC_DlgQuickSelection), m_actionContext{actionContext},
@@ -80,7 +81,7 @@ LC_DlgQuickSelection::LC_DlgQuickSelection(QWidget* parent, LC_ActionContext* ac
     const auto layerList = m_document->getGraphic()->getLayerList();
     ui->cbValueLayer->init(*layerList, false, false);
 
-    if (interactiveInputType != LC_ActionContext::InteractiveInputInfo::NOTNEEDED) {
+    if (interactiveInputType != InteractiveInputInfo::NOTNEEDED) {
         restoreFromSavedState(savedState, interactiveInputType, interactiveInputValue1, interactiveInputValue2);
     }
     else {
@@ -136,7 +137,7 @@ RS_Selection::ConditionalSelectionOptions LC_DlgQuickSelection::getSelectionOpti
 void LC_DlgQuickSelection::accept() {
     bool validate = !m_selectionRequested;
     if (validate) {
-        validate = m_interactiveInputRequested == LC_ActionContext::InteractiveInputInfo::NOTNEEDED;
+        validate = m_interactiveInputRequested == InteractiveInputInfo::NOTNEEDED;
     }
     if (validate && m_propertyDescriptor != nullptr) {
         const auto propertyType = m_propertyDescriptor->getPropertyType();
@@ -606,17 +607,17 @@ void LC_DlgQuickSelection::onAppendToCurrentSetClicked() const {
 }
 
 void LC_DlgQuickSelection::onPickLengthClicked() {
-    m_interactiveInputRequested = LC_ActionContext::InteractiveInputInfo::DISTANCE;
+    m_interactiveInputRequested = InteractiveInputInfo::DISTANCE;
     accept();
 }
 
 void LC_DlgQuickSelection::onPickCoord() {
-    m_interactiveInputRequested = LC_ActionContext::InteractiveInputInfo::POINT;
+    m_interactiveInputRequested = InteractiveInputInfo::POINT;
     accept();
 }
 
 void LC_DlgQuickSelection::onPickAngle() {
-    m_interactiveInputRequested = LC_ActionContext::InteractiveInputInfo::ANGLE;
+    m_interactiveInputRequested = InteractiveInputInfo::ANGLE;
     accept();
 }
 
@@ -661,29 +662,6 @@ void LC_DlgQuickSelection::onUpdatePrecisionByDocumentSettings() {
     }
 }
 
-void LC_DlgQuickSelection::saveState() const {
-    LC_GROUP_GUARD(getPositionSettingsGroupName());
-    {
-        const bool applyToSelection = ui->cbApplyTo->currentIndex() == 1;
-        LC_SET("ApplyToSelection", applyToSelection);
-
-        const int entityType = ui->cbEntityType->currentData().toInt();
-        LC_SET("EntityType", entityType);
-
-        const QString propertyName = obtainCurrentPropertyName();
-        LC_SET("PropertyName", propertyName);
-
-        const int operation = ui->cbOperator->currentData().toInt();
-        LC_SET("Operation", operation);
-
-        LC_SET("IncludeIntoSet", ui->rbIncludeInSelectionSet->isChecked());
-        LC_SET("AppendToSet", ui->cbAppendToCurrentSelectionSet->isChecked());
-
-        LC_SET("PrecisionLength", m_precisionLength);
-        LC_SET("PrecisionAngle", m_precisionAngle);
-        LC_SET("EditValue", ui->leValue->text());
-    }
-}
 
 void LC_DlgQuickSelection::setupEntitiesTypesList(const QMap<RS2::EntityType, int>& map) const {
     const auto entityTypeCombobox = ui->cbEntityType;
@@ -691,7 +669,7 @@ void LC_DlgQuickSelection::setupEntitiesTypesList(const QMap<RS2::EntityType, in
 }
 
 void LC_DlgQuickSelection::restoreFromSavedState(const LC_QuickSearchSelectionDialogState* savedState,
-                                                 const LC_ActionContext::InteractiveInputInfo::InputType inputType,
+                                                 const InteractiveInputInfo::InputType inputType,
                                                  const double interactiveInputValue1, const double interactiveInputValue2) {
     if (savedState != nullptr) {
         const int index = savedState->applyToIndex;
@@ -727,21 +705,21 @@ void LC_DlgQuickSelection::restoreFromSavedState(const LC_QuickSearchSelectionDi
     // set value to match based on interactive input.
     // value should be in ucs?
     switch (inputType) {
-        case LC_ActionContext::InteractiveInputInfo::DISTANCE: {
+        case InteractiveInputInfo::DISTANCE: {
             const double dist = interactiveInputValue1;
             const QString distanceAsString = LC_Convert::asString(dist);
             ui->leValue->setText(distanceAsString);
             break;
         }
-        case LC_ActionContext::InteractiveInputInfo::ANGLE: {
+        case InteractiveInputInfo::ANGLE: {
             const double angel = interactiveInputValue1;
             const QString angleStrDegree = LC_Convert::asStringAngleDeg(angel);
             ui->leValue->setText(angleStrDegree);
             break;
         }
-        case LC_ActionContext::InteractiveInputInfo::POINT:
-        case LC_ActionContext::InteractiveInputInfo::POINT_X:
-        case LC_ActionContext::InteractiveInputInfo::POINT_Y: {
+        case InteractiveInputInfo::POINT:
+        case InteractiveInputInfo::POINT_X:
+        case InteractiveInputInfo::POINT_Y: {
             if (m_propertyDescriptor != nullptr) { // we may got null if there is no saved state
                 // here we may use only one component from picked coordinate, based on property type
                 const double xCoord = interactiveInputValue1;
@@ -759,7 +737,7 @@ void LC_DlgQuickSelection::restoreFromSavedState(const LC_QuickSearchSelectionDi
             }
             break;
         }
-        case LC_ActionContext::InteractiveInputInfo::NOTNEEDED:
+        case InteractiveInputInfo::NOTNEEDED:
             break;
     }
 }
@@ -800,20 +778,17 @@ LC_PropertyMatchOperation LC_DlgQuickSelection::obtainOperation(const int index)
 }
 
 void LC_DlgQuickSelection::updateWidgetSettings() const {
-    LC_GROUP("Widgets");
-    {
-        const bool flatIcons = LC_GET_BOOL("DockWidgetsFlatIcons", true);
-        const int iconSize = LC_GET_INT("DockWidgetsIconSize", 16);
+    using namespace CFG_Widgets;
+    const bool flatIcons = o_DockWidgetsFlatIcons;
+    const int iconSize = o_DockWidgetsIconSize;
 
-        const QSize size(iconSize, iconSize);
+    const QSize size(iconSize, iconSize);
 
-        QList<QToolButton*> widgets = this->findChildren<QToolButton*>();
-        foreach(QToolButton *w, widgets) {
-            w->setAutoRaise(flatIcons);
-            w->setIconSize(size);
-        }
+    QList<QToolButton*> widgets = this->findChildren<QToolButton*>();
+    foreach(QToolButton *w, widgets) {
+        w->setAutoRaise(flatIcons);
+        w->setIconSize(size);
     }
-    LC_GROUP_END();
 }
 
 bool LC_DlgQuickSelection::setCurrentEntityType(const int entityType) const {
@@ -868,59 +843,93 @@ void LC_DlgQuickSelection::setCurrentOperation(const int operation) const {
         }
     }
 }
+namespace CFG_State {
+    inline const LC_SettingsGroupBase Group("DlgQuickSelectionState");
+
+    inline const LC_Setting<bool> o_ApplyToSelection{&Group, "ApplyToSelection", false};
+    inline const LC_Setting<int> o_EntityType{&Group, "EntityType", RS2::EntityUnknown};
+    inline const LC_Setting<QString> o_PropertyName{&Group, "PropertyName", ""};
+    inline const LC_Setting<int> o_Operation{&Group, "Operation", LC_PropertyMatchOperation::MATCH_OPERATION_EQUALS};
+    inline const LC_Setting<bool> o_IncludeIntoSet{&Group, "IncludeIntoSet", true};
+    inline const LC_Setting<bool> o_AppendToSet{&Group, "AppendToSet", false};
+    inline const LC_Setting<QString> o_PrecisionLength{&Group, "PrecisionLength", ""};
+    inline const LC_Setting<QString> o_PrecisionAngle{&Group, "PrecisionAngle", ""};
+    inline const LC_Setting<QString> o_EditValue{&Group, "EditValue", ""};
+
+}
+
+void LC_DlgQuickSelection::saveState() const {
+    using namespace CFG_State;
+    const bool applyToSelection = ui->cbApplyTo->currentIndex() == 1;
+    o_ApplyToSelection = applyToSelection;
+
+    const int entityType = ui->cbEntityType->currentData().toInt();
+    o_EntityType = entityType;
+
+    const QString propertyName = obtainCurrentPropertyName();
+    o_PropertyName = propertyName;
+
+    const int operation = ui->cbOperator->currentData().toInt();
+    o_Operation = operation;
+
+    o_IncludeIntoSet = ui->rbIncludeInSelectionSet->isChecked();
+    o_AppendToSet = ui->cbAppendToCurrentSelectionSet->isChecked();
+
+    o_PrecisionLength = m_precisionLength;
+    o_PrecisionAngle = m_precisionAngle;
+    o_EditValue = ui->leValue->text();
+}
 
 void LC_DlgQuickSelection::tryToRestorePreviousState() {
-    LC_GROUP_GUARD(getPositionSettingsGroupName());
-    {
-        const bool applyToSelection = LC_GET_BOOL("ApplyToSelection", false);
-        if (applyToSelection && ui->cbApplyTo->count() > 1) {
-            ui->cbApplyTo->setCurrentIndex(1);
-        }
-        else {
-            ui->cbApplyTo->setCurrentIndex(0);
-        }
-
-        const int entityType = LC_GET_INT("EntityType", RS2::EntityUnknown);
-        if (setCurrentEntityType(entityType)) {
-            const QString propertyName = LC_GET_STR("PropertyName", "");
-            setCurrentPropertyName(propertyName);
-
-            const int operation = LC_GET_INT("Operation", LC_PropertyMatchOperation::MATCH_OPERATION_EQUALS);
-            setCurrentOperation(operation);
-        }
-        else {
-            ui->lvProperties->setCurrentRow(0);
-        }
-
-        const bool includeIntoSet = LC_GET_BOOL("IncludeIntoSet", true);
-        if (includeIntoSet) {
-            ui->rbIncludeInSelectionSet->setChecked(true);
-        }
-        else {
-            ui->rbExcludeFromSelectionSet->setChecked(true);
-        }
-
-        const bool append = LC_GET_BOOL("AppendToSet", false);
-        ui->cbAppendToCurrentSelectionSet->setChecked(append);
-
-        m_precisionAngle = LC_GET_STR("PrecisionAngle", "");
-        if (m_precisionAngle.isEmpty()) {
-            updatePrecisionAngle();
-        }
-        else {
-            ui->lePrecision->setText(m_precisionAngle);
-        }
-
-        m_precisionLength = LC_GET_STR("PrecisionLength", "");
-        if (m_precisionLength.isEmpty()) {
-            updatePrecisionLength();
-        }
-        else {
-            ui->lePrecision->setText(m_precisionLength);
-        }
-
-        ui->leValue->setText(LC_GET_STR("EditValue", ""));
+    using namespace CFG_State;
+    const bool applyToSelection = o_ApplyToSelection;
+    if (applyToSelection && ui->cbApplyTo->count() > 1) {
+        ui->cbApplyTo->setCurrentIndex(1);
     }
+    else {
+        ui->cbApplyTo->setCurrentIndex(0);
+    }
+
+    const int entityType = o_EntityType;
+    if (setCurrentEntityType(entityType)) {
+        const QString propertyName = o_PropertyName;
+        setCurrentPropertyName(propertyName);
+
+        const int operation = o_Operation;
+        setCurrentOperation(operation);
+    }
+    else {
+        ui->lvProperties->setCurrentRow(0);
+    }
+
+    const bool includeIntoSet = o_IncludeIntoSet;
+    if (includeIntoSet) {
+        ui->rbIncludeInSelectionSet->setChecked(true);
+    }
+    else {
+        ui->rbExcludeFromSelectionSet->setChecked(true);
+    }
+
+    const bool append = o_AppendToSet;
+    ui->cbAppendToCurrentSelectionSet->setChecked(append);
+
+    m_precisionAngle = o_PrecisionAngle;
+    if (m_precisionAngle.isEmpty()) {
+        updatePrecisionAngle();
+    }
+    else {
+        ui->lePrecision->setText(m_precisionAngle);
+    }
+
+    m_precisionLength = o_PrecisionLength;
+    if (m_precisionLength.isEmpty()) {
+        updatePrecisionLength();
+    }
+    else {
+        ui->lePrecision->setText(m_precisionLength);
+    }
+
+    ui->leValue->setText(o_EditValue);
 }
 
 void LC_DlgQuickSelection::updatePrecisionLength() {

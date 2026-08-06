@@ -23,7 +23,7 @@
 #include "qg_dlgimageoptions.h"
 
 #include "rs_math.h"
-#include "rs_settings.h"
+#include "lc_settings_export_to_image.h"
 
 /*
  *  Constructs a QG_ImageOptionsDialog as a child of 'parent', with the
@@ -51,32 +51,31 @@ void QG_ImageOptionsDialog::init() {
     m_graphicSize = RS_Vector(0.0,0.0);
     m_updateEnabled = false;
     m_useResolution = true;
-
-    LC_GROUP_GUARD("Export");
     {
-        if (LC_GET_BOOL("UseResolution", true)) {
-            cbResolution->setCurrentIndex(cbResolution->findText(QString("%1").arg(LC_GET_STR("Resolution", "1"))));
+        using namespace CFG_ExportToImage;
+        if (o_UseResolution) {
+            cbResolution->setCurrentIndex(cbResolution->findText(QString("%1").arg(o_Resolution)));
         } else {
-            leWidth->setText(LC_GET_STR("Width", "640"));
-            leHeight->setText(LC_GET_STR("Height", "480"));
+            leWidth->setText(o_Width);
+            leHeight->setText(o_Height);
         }
-        if (LC_GET_BOOL("BlackBackground")) {
+        if (o_BlackBackground) {
             rbBlack->setChecked(true);
             rbWhite->setChecked(false);
         } else {
             rbBlack->setChecked(false);
             rbWhite->setChecked(true);
         }
-        if (LC_GET_BOOL("BlackWhite", true)) {
+        if (o_BlackWhite) {
             rbBlackWhite->setChecked(true);
             rbColoured->setChecked(false);
         } else {
             rbBlackWhite->setChecked(false);
             rbColoured->setChecked(true);
         }
-        leLeftRight->setText(LC_GET_STR("BorderLeftRight", "5"));
-        leTopBottom->setText(LC_GET_STR("BorderTopBottom", "5"));
-        if (LC_GET_STR("BorderSameSize", "1") == "1") {
+        leLeftRight->setText(o_BorderLeftRight);
+        leTopBottom->setText(o_BorderTopBottom);
+        if (o_BorderSameSize) {
             cbSameBorders->setChecked(true);
             sameBordersChanged();
         }
@@ -96,18 +95,18 @@ void QG_ImageOptionsDialog::setGraphicSize(const RS_Vector& s) {
 }
 
 void QG_ImageOptionsDialog::ok() {
-    LC_GROUP_GUARD("Export");
-    {
-        LC_SET("UseResolution", m_useResolution);
-        LC_SET("Resolution", cbResolution->currentText());
-        LC_SET("Width", leWidth->text());
-        LC_SET("Height", leHeight->text());
-        LC_SET("BorderLeftRight", leLeftRight->text());
-        LC_SET("BorderTopBottom", leTopBottom->text());
-        LC_SET("BorderSameSize", cbSameBorders->isChecked());
-        LC_SET("BlackBackground", rbBlack->isChecked());
-        LC_SET("BlackWhite", rbBlackWhite->isChecked());
-    }
+    using namespace CFG_ExportToImage;
+
+    o_UseResolution = m_useResolution;
+    o_Resolution = cbResolution->currentText();
+    o_Width = leWidth->text();
+    o_Height = leHeight->text();
+    o_BorderLeftRight = leLeftRight->text();
+    o_BorderTopBottom = leTopBottom->text();
+    o_BorderSameSize = cbSameBorders->isChecked();
+    o_BlackBackground = rbBlack->isChecked();
+    o_BlackWhite = rbBlackWhite->isChecked();
+
     accept();
 }
 

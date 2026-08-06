@@ -27,6 +27,9 @@
 
 #include <QMessageBox>
 #include <QSettings>
+
+#include "lc_settings_defaults.h"
+#include "lc_settings_paths.h"
 #ifdef Q_OS_LINUX
 #include <QDialogButtonBox>
 #include <QStyle>
@@ -122,7 +125,7 @@ QG_FileDialog::QG_FileDialog(QWidget* parent, Qt::WindowFlags f, FileType type)
     //    and 0 for other OS
     //    this is because QFileDialog is case insensitive for filters and the native not
 
-    setOption(QFileDialog::DontUseNativeDialog,LC_GET_ONE_BOOL("Defaults", "UseQtFileOpenDialog", false));
+    setOption(QFileDialog::DontUseNativeDialog,CFG_Defaults::o_UseQtFileOpenDialog);
     setOption(QFileDialog::HideNameFilterDetails, false);
     m_type = RS2::FormatDXFRW;
 
@@ -154,7 +157,7 @@ QString QG_FileDialog::getOpenFile(RS2::FormatType* type) {
     setAcceptMode(QFileDialog::AcceptOpen);
     // read default settings:
     LC_GROUP("Paths");
-    const QString defDir = LC_GET_STR("Open", RS_SYSTEM->getHomeDir());
+    const QString defDir =  CFG_Paths::o_Open;
     const QString openFilter = LC_GET_STR("OpenFilter", fDxfrw);
     LC_GROUP_END();
 
@@ -215,7 +218,7 @@ QString QG_FileDialog::getSaveFile(RS2::FormatType* type, const QString& current
     setAcceptMode(QFileDialog::AcceptSave);
     // read default settings:
 
-    QString defDir = LC_GET_ONE_STR("Paths", "Save",RS_SYSTEM->getHomeDir());
+    QString defDir = CFG_Paths::o_Save;
 
     if (!defDir.endsWith("/") && !defDir.endsWith("\\")) {
         defDir += QDir::separator();
@@ -318,7 +321,7 @@ QString QG_FileDialog::getSaveFileName(QWidget* parent, RS2::FormatType* type) {
     QString defDir, defFilter;
     LC_GROUP("Paths");
     {
-        defDir = LC_GET_STR("Save",RS_SYSTEM->getHomeDir());
+        defDir = CFG_Paths::o_Save;
         defFilter = LC_GET_STR("SaveFilter", "Drawing Exchange DXF 2007 (*.dxf)");
         //QString defFilter = "Drawing Exchange (*.dxf)";
     }
@@ -451,7 +454,7 @@ QString QG_FileDialog::getOpenFileName(QWidget* parent, RS2::FormatType* type) {
 
     // read default settings:
     LC_GROUP("Paths");
-    const QString defDir = LC_GET_STR("Open", RS_SYSTEM->getHomeDir());
+    const QString defDir = CFG_Paths::o_Open;
     //QString defFilter = RS_SETTINGS->readEntry("/OpenFilter",
     //                      "Drawing Exchange (*.dxf *.DXF)");
     const QString defFilter = "Drawing Exchange (*.dxf)";

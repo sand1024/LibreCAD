@@ -24,6 +24,8 @@
 #include "lc_layerexportoptions.h"
 
 #include "lc_layersexporter.h"
+#include "lc_setting.h"
+#include "lc_settings_export_layers.h"
 #include "rs_settings.h"
 #include "ui_lc_layerexportoptions.h"
 
@@ -54,23 +56,21 @@ void LC_LayerExportOptionsWidget::fillLayerExportOptions(LC_LayersExportOptions*
 }
 
 void LC_LayerExportOptionsWidget::loadFromOptions() const {
-    LC_GROUP_GUARD("Export.Layers");
-    {
-        ui->cbExportUCSs->setChecked(LC_GET_BOOL("ExportUCS", true));
-        ui->cbExportNamedViews->setChecked(LC_GET_BOOL("ExportViews", true));
-        const bool separateDocForLayer = LC_GET_BOOL("DocumentPerLayer", false);
-        ui->cbCreateSeparateDrawingForLayer->setChecked(separateDocForLayer);
-        ui->cbStoreEntitiesInOriginalLayer->setChecked(LC_GET_BOOL("EntitiesInOriginalLayer", false));
-        ui->cbStoreEntitiesInOriginalLayer->setEnabled(separateDocForLayer);
-    }
+    using namespace CFG_ExportLayers;
+
+    ui->cbExportUCSs->setChecked(o_ExportUCS);
+    ui->cbExportNamedViews->setChecked(o_ExportViews);
+    const bool separateDocForLayer = o_DocumentPerLayer;
+    ui->cbCreateSeparateDrawingForLayer->setChecked(separateDocForLayer);
+    ui->cbStoreEntitiesInOriginalLayer->setChecked(o_EntitiesInOriginalLayer);
+    ui->cbStoreEntitiesInOriginalLayer->setEnabled(separateDocForLayer);
 }
 
 void LC_LayerExportOptionsWidget::saveToOptions() const {
-    LC_GROUP_GUARD("Export.Layers");
-    {
-        LC_SET("ExportUCS", ui->cbExportUCSs->isChecked());
-        LC_SET("ExportViews", ui->cbExportNamedViews->isChecked());
-        LC_SET("DocumentPerLayer", ui->cbCreateSeparateDrawingForLayer->isChecked());
-        LC_SET("EntitiesInOriginalLayer", ui->cbStoreEntitiesInOriginalLayer->isChecked());
-    }
+    using namespace CFG_ExportLayers;
+
+    o_ExportUCS = ui->cbExportUCSs->isChecked();
+    o_ExportViews = ui->cbExportNamedViews->isChecked();
+    o_DocumentPerLayer = ui->cbCreateSeparateDrawingForLayer->isChecked();
+    o_EntitiesInOriginalLayer = ui->cbStoreEntitiesInOriginalLayer->isChecked();
 }

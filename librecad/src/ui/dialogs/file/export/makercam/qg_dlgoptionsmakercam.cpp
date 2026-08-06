@@ -23,7 +23,7 @@
 
 #include "qg_dlgoptionsmakercam.h"
 
-#include "rs_settings.h"
+#include "lc_settings_export_makercam.h"
 
 QG_DlgOptionsMakerCam::QG_DlgOptionsMakerCam(QWidget* parent, const bool modal, const Qt::WindowFlags fl) : QDialog(parent, fl) {
     setModal(modal);
@@ -61,50 +61,28 @@ void QG_DlgOptionsMakerCam::cancel() {
     reject();
 }
 
-void QG_DlgOptionsMakerCam::loadSettings() {
-    LC_GROUP_GUARD("ExportMakerCam");
-    {
-        // fixme - review settings
-        updateCheckbox(checkInvisibleLayers, "ExportInvisibleLayers", 0);
-        updateCheckbox(checkConstructionLayers, "ExportConstructionLayers", 0);
-        updateCheckbox(checkBlocksInline, "WriteBlocksInline", 1);
-        updateCheckbox(checkEllipsesToBeziers, "ConvertEllipsesToBeziers", 1);
-        updateCheckbox(checkImages, "ExportImages", 0);
-        updateCheckbox(checkDashDotLines, "BakeDashDotLines", 0);
-        updateCheckbox(checkPoint, "ExportPoints", 0);
-        updateDoubleSpinBox(dSpinBoxDefaultElementWidth, "DefaultElementWidth", 1.0);
-        updateDoubleSpinBox(dSpinBoxDashLinePatternLength, "DefaultDashLinePatternLength", 2.5);
-    }
-}
-
-void QG_DlgOptionsMakerCam::updateCheckbox(QCheckBox* checkbox, const QString& name, const int defaultValue) {
-    checkbox->setChecked(LC_GET_INT("" + name, defaultValue) ? true : false);
-}
-
-void QG_DlgOptionsMakerCam::updateDoubleSpinBox(QDoubleSpinBox* dSpinBox, const QString& name, const double defaultValue) {
-    dSpinBox->setValue(LC_GET_STR("" + name, QString::number(defaultValue)).toDouble());
+void QG_DlgOptionsMakerCam::loadSettings() const {
+    using namespace CFG_ExportMakerCam;
+    checkInvisibleLayers->setChecked(o_ExportInvisibleLayers);
+    checkConstructionLayers->setChecked(o_ExportConstructionLayers);
+    checkBlocksInline->setChecked(o_WriteBlocksInline);
+    checkEllipsesToBeziers->setChecked(o_ConvertEllipsesToBeziers);
+    checkImages->setChecked(o_ExportImages);
+    checkDashDotLines->setChecked(o_BakeDashDotLines);
+    checkPoint->setChecked(o_ExportPoints);
+    dSpinBoxDefaultElementWidth->setValue(o_DefaultElementWidth);
+    dSpinBoxDashLinePatternLength->setValue(o_DefaultDashLinePatternLength);
 }
 
 void QG_DlgOptionsMakerCam::saveSettings() {
-    // fixme - review settings
-    LC_GROUP_GUARD("ExportMakerCam");
-    {
-        saveBoolean("ExportInvisibleLayers", checkInvisibleLayers);
-        saveBoolean("ExportConstructionLayers", checkConstructionLayers);
-        saveBoolean("WriteBlocksInline", checkBlocksInline);
-        saveBoolean("ConvertEllipsesToBeziers", checkEllipsesToBeziers);
-        saveBoolean("ExportImages", checkImages);
-        saveBoolean("BakeDashDotLines", checkDashDotLines);
-        saveBoolean("ExportPoints", checkPoint);
-        saveDouble("DefaultElementWidth", dSpinBoxDefaultElementWidth);
-        saveDouble("DefaultDashLinePatternLength", dSpinBoxDashLinePatternLength);
-    }
-}
-
-void QG_DlgOptionsMakerCam::saveBoolean(const QString& name, const QCheckBox* checkbox) {
-    LC_SET("" + name, checkbox->isChecked());
-}
-
-void QG_DlgOptionsMakerCam::saveDouble(const QString& name, const QDoubleSpinBox* dSpinBox) {
-    LC_SET("" + name, dSpinBox->value());
+    using namespace CFG_ExportMakerCam;
+    o_ExportInvisibleLayers = checkInvisibleLayers->isChecked();
+    o_ExportConstructionLayers = checkConstructionLayers->isChecked();
+    o_WriteBlocksInline = checkBlocksInline->isChecked();
+    o_ConvertEllipsesToBeziers = checkEllipsesToBeziers->isChecked();
+    o_ExportImages = checkImages->isChecked();
+    o_BakeDashDotLines = checkDashDotLines->isChecked();
+    o_ExportPoints = checkPoint->isChecked();
+    o_DefaultElementWidth = dSpinBoxDefaultElementWidth->value();
+    o_DefaultDashLinePatternLength = dSpinBoxDashLinePatternLength->value();
 }

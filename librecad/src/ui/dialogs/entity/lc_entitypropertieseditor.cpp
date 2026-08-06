@@ -42,7 +42,7 @@ void LC_EntityPropertiesEditor::editEntity(QWidget* parent, RS_Entity* entity, L
 
 void LC_EntityPropertiesEditor::showEntityPropertiesDialog() {
     const auto interactiveInputInfo = m_actionContext->getInteractiveInputInfo();
-    const bool updateInteractiveInputValues = interactiveInputInfo->state == LC_ActionContext::InteractiveInputInfo::REQUESTED;
+    const bool updateInteractiveInputValues = interactiveInputInfo->state == InteractiveInputInfo::REQUESTED;
     double interactiveInputValueOne {0.0};
     double  interactiveInputValueTwo {0.0};
     QString interactiveInputTag = "";
@@ -51,15 +51,15 @@ void LC_EntityPropertiesEditor::showEntityPropertiesDialog() {
     if (updateInteractiveInputValues) {
         interactiveInputTag = interactiveInputInfo->requestorTag;
         switch (inputType) {
-            case LC_ActionContext::InteractiveInputInfo::DISTANCE: {
+            case InteractiveInputInfo::DISTANCE: {
                 interactiveInputValueOne = interactiveInputInfo->distance;
                 break;
             }
-            case LC_ActionContext::InteractiveInputInfo::ANGLE: {
+            case InteractiveInputInfo::ANGLE: {
                 interactiveInputValueOne = interactiveInputInfo->angleRad;
                 break;
             }
-            case LC_ActionContext::InteractiveInputInfo::POINT: {
+            case InteractiveInputInfo::POINT: {
                 interactiveInputValueOne = interactiveInputInfo->wcsPoint.x;
                 interactiveInputValueTwo = interactiveInputInfo->wcsPoint.y;
                 break;
@@ -69,7 +69,7 @@ void LC_EntityPropertiesEditor::showEntityPropertiesDialog() {
         }
     }
     else {
-        inputType = LC_ActionContext::InteractiveInputInfo::NOTNEEDED;
+        inputType = InteractiveInputInfo::NOTNEEDED;
     }
 
     auto dlg = LC_DlgEntityProperties(m_parent, m_viewport, m_entity, inputType, interactiveInputTag,
@@ -78,7 +78,7 @@ void LC_EntityPropertiesEditor::showEntityPropertiesDialog() {
     const int result = dlg.showModal();
     if ( result == QDialog::Accepted) {
         const auto interactiveInputRequestType = dlg.isInteractiveInputRequested();
-        if (interactiveInputRequestType == LC_ActionContext::InteractiveInputInfo::NOTNEEDED) { // normal closing of the dialog
+        if (interactiveInputRequestType == InteractiveInputInfo::NOTNEEDED) { // normal closing of the dialog
             m_actionContext->interactiveInputRequestCancel();
             m_lateCompletionRequestor->onLateRequestCompleted(false);
         }
@@ -96,7 +96,7 @@ void LC_EntityPropertiesEditor::onLateRequestCompleted(const bool shouldBeSkippe
     if (shouldBeSkipped) {
         const auto interactiveInput = m_actionContext->getInteractiveInputInfo();
         interactiveInput->requestor = nullptr;
-        interactiveInput->state = LC_ActionContext::InteractiveInputInfo::NONE;
+        interactiveInput->state = InteractiveInputInfo::NONE;
     }
     QTimer::singleShot(100, this, &LC_EntityPropertiesEditor::showEntityPropertiesDialog);
 }

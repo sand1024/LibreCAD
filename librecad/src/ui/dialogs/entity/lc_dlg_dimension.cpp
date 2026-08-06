@@ -32,6 +32,7 @@
 #include "lc_dimstylestreemodel.h"
 #include "lc_dlgdimstylemanager.h"
 #include "lc_inputtextdialog.h"
+#include "lc_settings_widget.h"
 #include "rs_dimension.h"
 #include "rs_dimlinear.h"
 #include "rs_graphic.h"
@@ -300,7 +301,7 @@ QModelIndex LC_DlgDimension::setupStylesList() {
     connect(ui->tbDimDefault, &QToolButton::clicked, this, &LC_DlgDimension::onDimStyleSetDefault);
     connect(ui->tbSelectEntityStyle, &QToolButton::clicked, this, &LC_DlgDimension::onDimStyleEntitySelect);
 
-    const bool autoRaiseButtons = LC_GET_ONE_BOOL("Widgets", "DockWidgetsFlatIcons", true);
+    const bool autoRaiseButtons = CFG_Widgets::o_DockWidgetsFlatIcons;
     ui->tbSetStyle->setAutoRaise(autoRaiseButtons);
     ui->tbDimNew->setAutoRaise(autoRaiseButtons);
     ui->tbDimRemove->setAutoRaise(autoRaiseButtons);

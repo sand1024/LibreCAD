@@ -39,6 +39,7 @@
 #include "lc_dockwidget.h"
 #include "lc_icon_label.h"
 #include "lc_proxy_style.h"
+#include "lc_settings_widget.h"
 #include "rs_settings.h"
 
 // Constructor with separate strings for horizontal and vertical orientation
@@ -227,7 +228,7 @@ bool LC_CustomTitleBarWidget::event(QEvent* event) {
 }
 
 bool LC_CustomTitleBarWidget::checkOrientationFromSettings() const {
-    const bool verticalTitle = LC_GET_ONE_BOOL("Widgets", "DockTitleBarVertical", false);
+    const bool verticalTitle = CFG_Widgets::o_DockTitleBarVertical;
     return verticalTitle;
 }
 

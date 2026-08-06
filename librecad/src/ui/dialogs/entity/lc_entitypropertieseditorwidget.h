@@ -38,18 +38,18 @@ public:
     explicit LC_EntityPropertiesEditorWidget(QWidget* parent);
     virtual void setEntity(RS_Entity* entity) = 0;
     virtual void updateEntityData() {}
-    void interactiveInputUpdate(LC_ActionContext::InteractiveInputInfo::InputType inputType,
+    void interactiveInputUpdate(InteractiveInputInfo::InputType inputType,
         const QString &tag, double valueOne, double valueTwo) const;
     virtual void setupInteractiveInputWidgets() {}
 signals:
-    void interactiveInputRequested(LC_ActionContext::InteractiveInputInfo::InputType inputType, QString tag);
+    void interactiveInputRequested(InteractiveInputInfo::InputType inputType, QString tag);
 protected slots:
     void onInteractiveInputButtonClicked(bool checked);
     void pickDistanceSetup(QToolButton* button, const QString &tag, QLineEdit* lineEditOne, QLineEdit* lineEditTwo = nullptr);
     void pickAngleSetup(QToolButton* button, const QString &tag, QLineEdit* lineEditOne, QLineEdit* lineEditTwo = nullptr);
     void pickPointSetup(const LC_PointPickButton* button, const QString &tag, QLineEdit* lineEditOne, QLineEdit* lineEditTwo = nullptr);
 protected:
-    void setupInteractiveInputControls(QToolButton* button, LC_ActionContext::InteractiveInputInfo::InputType inputType, const QString &tag,
+    void setupInteractiveInputControls(QToolButton* button, InteractiveInputInfo::InputType inputType, const QString &tag,
          QLineEdit* lineEditOne, QLineEdit* lineEditTwo = nullptr);
 };
 

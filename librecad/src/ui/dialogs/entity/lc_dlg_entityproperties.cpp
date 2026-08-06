@@ -41,6 +41,7 @@
 #include "lc_propertieseditingwidget_polyline.h"
 #include "lc_propertieseditingwidget_spline.h"
 #include "lc_propertieseditingwidget_splinepoints.h"
+#include "lc_settings_widget.h"
 #include "lc_textpropertieseditingwidget.h"
 #include "rs_layer.h"
 #include "rs_settings.h"
@@ -49,7 +50,7 @@
 class LC_Dialog;
 
 LC_DlgEntityProperties::LC_DlgEntityProperties(QWidget* parent, LC_GraphicViewport* viewport, RS_Entity* entity,
-                                               const LC_ActionContext::InteractiveInputInfo::InputType inputType, const QString& tag,
+                                               const InteractiveInputInfo::InputType inputType, const QString& tag,
                                                const double valueOne, const double valueTwo)
     : LC_Dialog(parent, ""), ui(new Ui::LC_DlgEntityProperties) {
     ui->setupUi(this);
@@ -86,7 +87,7 @@ LC_DlgEntityProperties::LC_DlgEntityProperties(QWidget* parent, LC_GraphicViewpo
         delete placeholder;
 
         secondaryEditingWidget->setupInteractiveInputWidgets();
-        if (inputType != LC_ActionContext::InteractiveInputInfo::NOTNEEDED) {
+        if (inputType != InteractiveInputInfo::NOTNEEDED) {
             if (primaryEditingWidget != nullptr) {
                 primaryEditingWidget->interactiveInputUpdate(inputType, tag, valueOne, valueTwo);
             }
@@ -103,12 +104,12 @@ LC_DlgEntityProperties::LC_DlgEntityProperties(QWidget* parent, LC_GraphicViewpo
     setupEntityLayerAndAttributesUI(entity);
 
     if (primaryEditingWidget != nullptr) {
-        if (inputType != LC_ActionContext::InteractiveInputInfo::NOTNEEDED) {
+        if (inputType != InteractiveInputInfo::NOTNEEDED) {
             primaryEditingWidget->interactiveInputUpdate(inputType, tag, valueOne, valueTwo);
         }
     }
     if (secondaryEditingWidget != nullptr) {
-        if (inputType != LC_ActionContext::InteractiveInputInfo::NOTNEEDED) {
+        if (inputType != InteractiveInputInfo::NOTNEEDED) {
             secondaryEditingWidget->interactiveInputUpdate(inputType, tag, valueOne, valueTwo);
         }
     }
@@ -116,7 +117,7 @@ LC_DlgEntityProperties::LC_DlgEntityProperties(QWidget* parent, LC_GraphicViewpo
     setWindowTitle(windowTitle);
     setDialogName(dlgName);
 
-    const bool autoRaiseButtons = LC_GET_ONE_BOOL("Widgets", "DockWidgetsFlatIcons", true);
+    const bool autoRaiseButtons = CFG_Widgets::o_DockWidgetsFlatIcons;
     QList<QToolButton*> list = findChildren<QToolButton*>();
     for (const auto button : std::as_const(list)) {
         button->setAutoRaise(autoRaiseButtons);
@@ -127,7 +128,7 @@ LC_DlgEntityProperties::~LC_DlgEntityProperties() {
     delete ui;
 }
 
-void LC_DlgEntityProperties::onInteractiveInputRequested(const LC_ActionContext::InteractiveInputInfo::InputType inputType,
+void LC_DlgEntityProperties::onInteractiveInputRequested(const InteractiveInputInfo::InputType inputType,
                                                          const QString& tag) {
     m_interactiveInputRequested = inputType;
     m_inputTag = tag;
@@ -150,7 +151,7 @@ void LC_DlgEntityProperties::setupEntityLayerAndAttributesUI(RS_Entity* entity) 
     connect(ui->cbLayer, &QG_LayerBox::layerChanged, this, &LC_DlgEntityProperties::onLayerChanged);
     connect(ui->wPen, &QG_WidgetPen::penChanged, this, &LC_DlgEntityProperties::onPenChanged);
 
-    if (LC_GET_ONE_BOOL("Appearance", "ShowEntityIDs", false)) {
+    if (CFG_Appearance::o_ShowEntityIDs) {
         ui->lId->setText(QString("ID: %1").arg(entity->getId()));
     }
     else {

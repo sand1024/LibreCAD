@@ -34,6 +34,7 @@
 #include "lc_dlg_new_widget.h"
 #include "lc_menuactivator.h"
 #include "lc_settingsexporter.h"
+#include "lc_settings_widget.h"
 #include "rs_settings.h"
 #include "ui_lc_dlg_widget_creator.h"
 
@@ -49,7 +50,7 @@ LC_DlgWidgetCreator::LC_DlgWidgetCreator(QWidget *parent, const bool forMenu, LC
     ui->gbMenuAssignment->setVisible(forMenu);
     ui->gbToolbarPlacement->setVisible(!forMenu);
 
-    const bool autoRaiseButtons = LC_GET_ONE_BOOL("Widgets", "DockWidgetsFlatIcons", true);
+    const bool autoRaiseButtons = CFG_Widgets::o_DockWidgetsFlatIcons;
     ui->btnDelete->setAutoRaise(autoRaiseButtons);
     ui->btnSave->setAutoRaise(autoRaiseButtons);
     ui->btnNew->setAutoRaise(autoRaiseButtons);
@@ -59,7 +60,7 @@ LC_DlgWidgetCreator::LC_DlgWidgetCreator(QWidget *parent, const bool forMenu, LC
         ui->lblWidgetTypeName->setText(tr("Menu Name:"));
         ui->btnDelete->setToolTip(tr("Destroy Menu"));
         ui->btnNew->setToolTip(tr("New Menu"));
-        ui->cbWidgetName->setToolTip(tr("Name of Custom Nenu"));
+        ui->cbWidgetName->setToolTip(tr("Name of Custom Menu"));
         ui->lblDialogHint->setText(tr("Define a custom menu by specifying the set of used actions. "
                   "Menu will be shown as a popup in the drawing area as soon as menu invocation shortcut is invoked. "));
         connect(ui->pbMenuAssign, &QPushButton::clicked, this, &LC_DlgWidgetCreator::onAssignMenu);

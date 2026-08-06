@@ -39,13 +39,8 @@ protected slots:
     void languageChange();
 
 private:
-    void loadSettings();
-    void updateCheckbox(QCheckBox* checkbox, const QString& name, int defaultValue);
-    void updateDoubleSpinBox(QDoubleSpinBox* dSpinBox, const QString& name, double defaultValue);
-
+    void loadSettings() const;
     void saveSettings();
-    void saveBoolean(const QString& name, const QCheckBox* checkbox);
-    void saveDouble(const QString& name, const QDoubleSpinBox* dSpinBox);
 };
 
 #endif

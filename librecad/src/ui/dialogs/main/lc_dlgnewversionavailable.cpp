@@ -22,8 +22,8 @@
 
 #include "lc_dlgnewversionavailable.h"
 
+#include "lc_settings_startup.h"
 #include "main.h"
-#include "rs_settings.h"
 #include "ui_lc_dlgnewversionavailable.h"
 
 LC_DlgNewVersionAvailable::LC_DlgNewVersionAvailable(QWidget *parent, const LC_ReleaseChecker* releaseChecker)
@@ -31,13 +31,13 @@ LC_DlgNewVersionAvailable::LC_DlgNewVersionAvailable(QWidget *parent, const LC_R
     , ui(new Ui::LC_DlgNewVersionAvailable){
     ui->setupUi(this);
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &LC_DlgNewVersionAvailable::onOk);
-    LC_GROUP_GUARD("Startup");
     {
-        const bool checkOnStartup = LC_GET_BOOL("CheckForNewVersions", true);
-        const bool ignorePreRelease = LC_GET_BOOL("IgnorePreReleaseVersions");
+        using namespace CFG_Startup;
+        const bool checkOnStartup = o_CheckForNewVersions;
+        const bool ignorePreRelease = o_IgnorePreReleaseVersions;
 
-        const QString ignoredRelease = LC_GET_STR("IgnoredRelease", "");
-        const QString ignoredPreRelease = LC_GET_STR("IgnoredPreRelease", "");
+        const QString ignoredRelease = o_IgnoredRelease;
+        const QString ignoredPreRelease = o_IgnoredPreRelease;
 
         ui->cbCheckForNewVersion->setChecked(checkOnStartup);
         ui->cbIgnorePreReleases->setChecked(ignorePreRelease);
@@ -115,24 +115,25 @@ void LC_DlgNewVersionAvailable::setup(const LC_ReleaseChecker *releaseChecker) {
 }
 
 void LC_DlgNewVersionAvailable::onOk(){
-    LC_GROUP_GUARD("Startup");
-    LC_SET("CheckForNewVersions", ui->cbCheckForNewVersion->isChecked());
-    LC_SET("IgnorePreReleaseVersions", ui->cbIgnorePreReleases->isChecked());
+    using namespace CFG_Startup;
+
+    o_CheckForNewVersions = ui->cbCheckForNewVersion->isChecked();
+    o_IgnorePreReleaseVersions = ui->cbIgnorePreReleases->isChecked();
 
     if (ui->cbReleaseIgnore->isChecked()){
-        LC_SET("IgnoredRelease", m_currentReleaseTag);
+        o_IgnoredPreRelease = m_currentReleaseTag;
     }
     else{
         if (!ui->cbIgnoredRelease->isChecked()){
-            LC_SET("IgnoredRelease", QString());
+            o_IgnoredRelease = QString();
         }
     }
 
     if (ui->cbPreReleaseIgnore->isChecked()){
-        LC_SET("IgnoredPreRelease", m_currentPreReleaseTag);
+        o_IgnoredPreRelease = m_currentPreReleaseTag;
     }
     else if (!ui->cbIgnoredPreRelease->isChecked()){
-        LC_SET("IgnoredPreRelease", QString());
+        o_IgnoredPreRelease = QString();
     }
     accept();
 }
