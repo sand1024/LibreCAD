@@ -30,7 +30,7 @@
 #include "lc_icon_engine_shared.h"
 
 namespace {
-    // Symmetrical field mapper to bridge hash keys with type-safe struct fields [3]
+    // Symmetrical field mapper to bridge hash keys with type-safe struct fields
     QString* getSchemeColorRef(IconSchemeConfig &scheme, LC_SVGIconEngineAPI::IconMode mode, LC_SVGIconEngineAPI::IconState state, LC_SVGIconEngineAPI::ColorType type) {
         if (mode == LC_SVGIconEngineAPI::AnyMode) {
             if (type == LC_SVGIconEngineAPI::Main) return &scheme.genericMain;
@@ -57,7 +57,7 @@ namespace {
 
     const QString STYLE_FILE_MARK = "LibreCAD Icons Style";
 
-    // Dynamic, Human-Readable String Translators [3]
+    // Dynamic, Human-Readable String Translators
     QString getModeStr(LC_SVGIconEngineAPI::IconMode mode) {
         switch (mode) {
             case LC_SVGIconEngineAPI::Active:   return "active";
@@ -122,7 +122,7 @@ QJsonObject LC_IconsStyleRepository::configToJson(const IconStyleConfig& config)
 
     auto serializeScheme = [this](const IconSchemeConfig &scheme) {
         QJsonObject obj;
-        obj["generic_main"]   = scheme.genericMain; // Direct QString assignment
+        obj["generic_main"]   = scheme.genericMain;
         obj["generic_accent"] = scheme.genericAccent;
         obj["generic_accent_checked"] = scheme.genericAccentChecked;
         obj["generic_back"]   = scheme.genericBack;
@@ -135,7 +135,7 @@ QJsonObject LC_IconsStyleRepository::configToJson(const IconStyleConfig& config)
                 setting["iconMode"]       = getModeStr(mode);
                 setting["iconState"]      = getStateStr(state);
                 setting["colorType"]      = getTypeStr(type);
-                setting["colorSvgString"] = *colorRef; // Direct QString assignment
+                setting["colorSvgString"] = *colorRef;
                 settings.append(setting);
             }
         };
@@ -161,7 +161,6 @@ bool LC_IconsStyleRepository::configFromJson(const QJsonObject& json, IconStyleC
     config.autoCalculateStates = json["auto_calculate_states"].toBool(true);
 
     auto deserializeScheme = [this](const QJsonObject &obj, IconSchemeConfig &scheme) {
-        // Direct QString load preserves palette links on disk perfectly
         scheme.genericMain   = obj["generic_main"].toString();
         scheme.genericAccent = obj["generic_accent"].toString();
         scheme.genericAccentChecked = obj.contains("generic_accent_checked")
@@ -184,7 +183,7 @@ bool LC_IconsStyleRepository::configFromJson(const QJsonObject& json, IconStyleC
             if (parseIconMode(modeStr, mode) && parseIconState(stateStr, state) && parseColorType(typeStr, type)) {
                 QString *colorRef = getSchemeColorRef(scheme, mode, state, type);
                 if (colorRef) {
-                    *colorRef = colorStr; // Direct QString mapping
+                    *colorRef = colorStr;
                 }
             }
         }

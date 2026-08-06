@@ -30,6 +30,7 @@
 #include <QList>
 
 inline const QString DEFAULT_THEME_KEY = "VIRTUAL_DEFAULT";
+inline const QString DEFAULT_THEME_NAME = "Default";
 
 inline const QString SKIN_EXTENSION = ".lcsk";
 inline const QString ICON_STYLE_EXTENSION = ".lcis";

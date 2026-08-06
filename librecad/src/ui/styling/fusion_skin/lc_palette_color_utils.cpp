@@ -30,6 +30,7 @@
 #include <QStyleHints>
 #include <QPixmapCache>
 #include "lc_icons_style_shared.h"
+#include "lc_settings_app_styling.h"
 #include "rs_debug.h"
 #include "rs_settings.h"
 
@@ -45,12 +46,12 @@ bool LC_PaletteColorUtils::isPaletteDarkMode() {
 }
 
 bool LC_PaletteColorUtils::isSystemInDarkMode() {
-    int themeMode = LC_GET_ONE_INT("Widgets", "ThemeModeOverride", 0);
+    ThemeModeOverride themeMode = CFG_AppStyling::o_ThemeModeOverride;
 
-    if (themeMode == static_cast<int>(ThemeModeOverride::ForceLight)) {
+    if (themeMode == ThemeModeOverride::ForceLight) {
         return false; // Force Light Palette and Icons
     }
-    if (themeMode == static_cast<int>(ThemeModeOverride::ForceDark)) {
+    if (themeMode == ThemeModeOverride::ForceDark) {
         return true;  // Force Dark Palette and Icons
     }
 
