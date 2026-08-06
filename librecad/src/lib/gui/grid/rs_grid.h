@@ -33,6 +33,7 @@
 #include "rs.h"
 #include "rs_vector.h"
 
+struct LC_GridOptions;
 class RS_Painter;
 class RS_GraphicView;
 class LC_GraphicViewport;
@@ -55,6 +56,7 @@ using LC_Rect = lc::geo::Area;
 class RS_Grid {
 public:
     explicit RS_Grid(LC_GraphicViewport* graphicView);
+    ~RS_Grid();
     void calculateGrid();
     void calculateSnapSettings();
     void invalidate(bool gridOn);
@@ -89,6 +91,8 @@ public:
 
     bool isDrawMetaGrid() const;
 
+    LC_GridOptions* getOptions() const {return m_gridOptions.get();}
+
 private:
     //! copy ctor disabled
     RS_Grid(const RS_Grid&) = delete;
@@ -109,6 +113,7 @@ private:
     int m_metaGridEvery{10};
     LC_GridSystem* m_gridSystem{nullptr};
     RS_Vector prepareGridWidth();
+    std::unique_ptr<LC_GridOptions> m_gridOptions;
 };
 
 #endif

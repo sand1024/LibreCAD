@@ -28,9 +28,14 @@
 
 #include "lc_graphicviewport.h"
 #include "lc_gridsystem.h"
+#include "lc_grid_options.h"
 #include "lc_isometricgrid.h"
 #include "lc_linemath.h"
 #include "lc_orthogonalgrid.h"
+#include "lc_settings_appearance.h"
+#include "lc_settings_colors.h"
+#include "lc_settings_defaults.h"
+#include "lc_settings_grid.h"
 #include "rs_graphic.h"
 #include "rs_math.h"
 #include "rs_settings.h"
@@ -47,12 +52,16 @@ namespace {
     constexpr double MINIMUM_GRID_WIDTH = 1.0e-8;
 }
 
+
+
 /**
  * Constructor.
  */
 RS_Grid::RS_Grid(LC_GraphicViewport* graphicView)
-    :m_viewport(graphicView), m_minGridSpacing{10}
-{
+    :m_viewport(graphicView), m_minGridSpacing{10}, m_gridOptions{std::make_unique<LC_GridOptions>()}{
+}
+
+RS_Grid::~RS_Grid() {
 }
 
 /**
@@ -71,7 +80,7 @@ RS_Vector RS_Grid::snapGrid(const RS_Vector& coord, const RS_Vector& rayStart, c
 void RS_Grid::loadSettings(){
 
     LC_GROUP("Appearance");
-    m_scaleGrid = LC_GET_BOOL("ScaleGrid", true);
+    m_scaleGrid = CFG_Appearance::o_ScaleGrid;
     // get grid setting
     auto graphic = m_viewport->getGraphic();
     if (graphic != nullptr) {
@@ -79,74 +88,25 @@ void RS_Grid::loadSettings(){
         m_isoViewType = graphic->getIsoView();
         m_userGrid = graphic->getVariableVector("$GRIDUNIT", RS_Vector(-1.0, -1.0));
     }else {
-        m_isometric = LC_GET_ONE_BOOL("Defaults", "IsometricGrid");
-        m_isoViewType=static_cast<RS2::IsoGridViewType>(LC_GET_ONE_INT("Defaults", "IsoGridView", 0));
-        m_userGrid.x = LC_GET_STR("GridSpacingX", QString("-1")).toDouble();
+        m_isometric = CFG_Defaults::o_IsometricGrid;
+        m_isoViewType= CFG_Defaults::o_IsoGridView;
+        m_userGrid.x = LC_GET_STR("GridSpacingX", QString("-1")).toDouble(); // fixme - sand - settings
         m_userGrid.y = LC_GET_STR("GridSpacingY", QString("-1")).toDouble();
     }
-
-    bool drawMetaGrid = LC_GET_BOOL("metaGridDraw", true);
-    bool drawGrid = LC_GET_BOOL("GridDraw", true);
-    bool simpleGridRendering = LC_GET_BOOL("GridRenderSimple", false);
-    m_minGridSpacing = LC_GET_INT("MinGridSpacing", 10);
-    int gridType = LC_GET_INT("GridType", 0);
-    bool linesGrid = gridType == 1;
-
-    RS2::LineType metagridLineType;
-    int metaGridWidthPx;
-
-    if (linesGrid){
-        metagridLineType =  static_cast<RS2::LineType> (LC_GET_INT("metaGridLinesLineType", RS2::SolidLine));
-        metaGridWidthPx = LC_GET_INT("metaGridLinesLineWidth", 1);
-    }
-    else{
-        metagridLineType =  static_cast<RS2::LineType> (LC_GET_INT("metaGridPointsLineType", RS2::DotLineTiny));
-        metaGridWidthPx = LC_GET_INT("metaGridPointsLineWidth", 1);
-    }
-
-    int gridWidthPx = LC_GET_INT("GridLinesLineWidth", 1);
-    auto gridLineType =  static_cast<RS2::LineType> (LC_GET_INT("GridLinesLineType", RS2::SolidLine));
-
-    bool disableGridOnPanning = LC_GET_BOOL("GridDisableWithinPan", false);
-    bool drawIsoVerticalForTop = LC_GET_BOOL("GridDrawIsoVerticalForTop", true);
-
-    m_metaGridEvery = LC_GET_INT("MetaGridEvery", 10);
     LC_GROUP_END();
 
-    LC_GROUP("Colors");
-    RS_Color metaGridColor;
-    auto gridColorLines = RS_Color(LC_GET_STR("gridLines", RS_Settings::COLOR_META_GRID_LINES));
-    auto gridColorPoint =  RS_Color(LC_GET_STR("grid", RS_Settings::COLOR_META_GRID_POINTS));
-     if (linesGrid) {
-         metaGridColor= RS_Color(LC_GET_STR("meta_grid_lines", RS_Settings::COLOR_META_GRID_LINES));
-     }
-     else{
-         metaGridColor= RS_Color(LC_GET_STR("meta_grid", RS_Settings::COLOR_META_GRID_POINTS));
-     }
-    LC_GROUP_END();
+    m_minGridSpacing = CFG_Appearance::o_MinGridSpacing;
+    m_metaGridEvery = CFG_Appearance::o_MetaGridEvery;
 
-    auto* gridOptions = new LC_GridSystem::LC_GridOptions();
-    gridOptions->drawMetaGrid = drawMetaGrid;
-    gridOptions->simpleGridRendering = simpleGridRendering;
-    gridOptions->gridWidthPx = gridWidthPx;
-    gridOptions->gridLineType = gridLineType;
-    gridOptions->drawGrid = drawGrid;
-    gridOptions->drawLines = linesGrid;
-    gridOptions->gridColorPoint = gridColorPoint;
-    gridOptions->gridColorLine = gridColorLines;
-    gridOptions->metaGridLineWidthPx  = metaGridWidthPx;
-    gridOptions->metaGridLineType = metagridLineType;
-    gridOptions->metaGridColor = metaGridColor;
-    gridOptions->disableGridOnPanning = disableGridOnPanning;
-    gridOptions->drawIsometricVerticalsAlways = drawIsoVerticalForTop;
+    m_gridOptions->loadSettings();
 
     delete m_gridSystem;
 
     if (m_isometric){
-        m_gridSystem = new LC_IsometricGrid(gridOptions, m_isoViewType);
+        m_gridSystem = new LC_IsometricGrid(m_gridOptions.get(), m_isoViewType);
     }
     else{
-        m_gridSystem = new LC_OrthogonalGrid(gridOptions);
+        m_gridSystem = new LC_OrthogonalGrid(m_gridOptions.get());
     }
 }
 

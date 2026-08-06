@@ -29,32 +29,17 @@
 #include "rs_color.h"
 #include "rs_vector.h"
 
+struct LC_GridOptions;
 class RS_Painter;
 class LC_Lattice;
 class LC_GraphicViewport;
 
 class LC_GridSystem {
 public:
-    struct LC_GridOptions{
-        RS_Color gridColorLine;
-        RS_Color gridColorPoint;
-        RS_Color metaGridColor;
-        RS2::LineType gridLineType{};
-        RS2::LineType metaGridLineType{};
-        int gridWidthPx = 1;
-        int metaGridLineWidthPx = 1;
-        bool drawMetaGrid = true;
-        bool disableGridOnPanning = false;
-        bool drawIsometricVerticalsAlways = true; // fixme - complete initialization
-        bool simpleGridRendering = false;
-        bool drawLines = false;
-        bool drawGrid = true;
-    };
-
     explicit LC_GridSystem(LC_GridOptions* options);
     virtual ~LC_GridSystem() ;
 
-    void setOptions(std::unique_ptr<LC_GridOptions> options);
+    void setOptions(LC_GridOptions* options);
     void invalidate();
 
     const RS_Vector&getCellVector() const {
@@ -69,12 +54,12 @@ public:
     bool isGridDisabledByPanning(const LC_GraphicViewport *view) const;
     bool isValid() const;
     void calculateSnapInfo(const RS_Vector& viewZero, const RS_Vector& viewSize, const RS_Vector& metaGridWidthToUse, const RS_Vector& gridWidthToUse);
-    bool isDrawMetaGrid() const {return m_gridOptions->drawMetaGrid;}
+    bool isDrawMetaGrid() const;
 
 protected:
     bool m_valid = false;
     RS_Vector m_cellVector = {0., 0.};
-    std::unique_ptr<LC_GridOptions> m_gridOptions;
+    LC_GridOptions* m_gridOptions;
     std::unique_ptr<LC_Lattice> m_gridLattice;
     std::unique_ptr<LC_Lattice> m_metaGridLattice;
 
@@ -126,6 +111,7 @@ protected:
     void drawMetaGrid(RS_Painter *painter, LC_GraphicViewport *view);
     void drawGrid(RS_Painter *painter, LC_GraphicViewport *view);
     void drawGridPoints(RS_Painter *painter, LC_GraphicViewport *view) const;
+    void drawGridPointsBulk(RS_Painter* painter) const;
     void drawGridLines(RS_Painter *painter, LC_GraphicViewport *view);
     int getGridPointsCount() const;
     virtual void drawMetaGridLines(RS_Painter *painter, LC_GraphicViewport *view) = 0;

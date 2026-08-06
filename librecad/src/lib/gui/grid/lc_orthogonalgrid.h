@@ -60,46 +60,25 @@ protected:
     RS_Vector m_gridBasePointIfMetagridNotVisible;
 
     void prepareGridOther(const RS_Vector &viewZero, const RS_Vector &viewSize) override;
-
     void fillMetaGridCoordinates();
-
     void ensureAllMetaGridLinesInView(const RS_Vector &viewZero, const RS_Vector &viewSize);
-
     void determineMetaGridBoundaries(const RS_Vector &viewZero, const RS_Vector &viewSize) override;
-
     void projectMetaGridLinesAmount(const RS_Vector &metaGridWidth);
-
     void determineGridPointsAmount(const RS_Vector &viewZero) override;
-
     int  determineTotalPointsAmount(bool drawGridWithoutGaps) override;
-
     void fillPointsLatticeWithGapsForMetaGrid() const;
-
     void determineGridBoundaries(const RS_Vector &viewZero,const RS_Vector &viewSize);
-
     void drawMetaGridLines(RS_Painter *painter, LC_GraphicViewport *view) override;
-
     void createGridPoints(const RS_Vector &min, const RS_Vector &max,const RS_Vector &gridWidth, bool drawGridWithoutGaps, int numPointsTotal) override;
-
     void createGridLines(const RS_Vector& min, const RS_Vector &max, const RS_Vector & gridWidth, bool drawGridWithoutGaps, const RS_Vector& lineOffset) override;
-
     void createVerticalLines(double start, double end, double baseX, double delta, int pointsToDraw) const;
-
     void createHorizontalLines(double start, double end, double baseY, double delta, int pointsToDraw) const;
-
     void createMetaGridLines(const RS_Vector &min, const RS_Vector &max) override;
-
     void doCreateVerticalLines(LC_Lattice *lattice, double start, double end, double baseX, double delta, int pointsToDraw) const;
-
     void doCreateHorizontalLines(LC_Lattice *lattice, double start, double end, double baseY, double delta, int pointsToDraw) const;
-
     void createGridLinesWithoutGaps(const RS_Vector &min, const RS_Vector &max) const;
-
     void createGridLinesWithGaps(const RS_Vector &min, const RS_Vector &max, const RS_Vector &lineOffset) const;
-
     void createCellVector(const RS_Vector &gridWidth) override;
-
-
 };
 
 #endif

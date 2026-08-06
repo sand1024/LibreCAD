@@ -22,7 +22,7 @@
 
 #include "lc_orthogonalgrid.h"
 
-
+#include "lc_grid_options.h"
 #include "lc_lattice.h"
 #include "lc_linemath.h"
 #include "rs_math.h"

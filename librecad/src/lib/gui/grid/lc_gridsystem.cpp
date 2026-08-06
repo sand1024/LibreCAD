@@ -23,7 +23,11 @@
 #include "lc_gridsystem.h"
 
 #include "lc_graphicviewport.h"
+#include "lc_grid_options.h"
 #include "lc_lattice.h"
+#include "lc_settings_appearance.h"
+#include "lc_settings_colors.h"
+#include "lc_settings_grid.h"
 #include "rs_painter.h"
 #include "rs_pen.h"
 
@@ -32,10 +36,9 @@ namespace {
     constexpr int MAX_GRID_POINTS = 1000000;
 }
 
-LC_GridSystem::LC_GridSystem(LC_GridOptions* options) : m_gridOptions{
-                                                            std::make_unique<LC_GridOptions>(
-                                                                options != nullptr ? *options : LC_GridOptions{})
-                                                        }, m_gridLattice{std::make_unique<LC_Lattice>()},
+
+
+LC_GridSystem::LC_GridSystem(LC_GridOptions* options) : m_gridOptions{options}, m_gridLattice{std::make_unique<LC_Lattice>()},
                                                         m_metaGridLattice{std::make_unique<LC_Lattice>()} {
 }
 
@@ -118,8 +121,8 @@ void LC_GridSystem::setCellSize(const RS_Vector& gridWidth, const RS_Vector& met
     m_gridCellSize = gridWidth;
 }
 
-void LC_GridSystem::setOptions(std::unique_ptr<LC_GridOptions> options) {
-    m_gridOptions = std::move(options);
+void LC_GridSystem::setOptions(LC_GridOptions* options) {
+    m_gridOptions = options;
 }
 
 void LC_GridSystem::invalidate() {
@@ -158,14 +161,14 @@ void LC_GridSystem::drawGrid(RS_Painter* painter, LC_GraphicViewport* view) {
         drawGridLines(painter, view);
     }
     else {
-        painter->setPen({m_gridOptions->gridColorPoint, RS2::Width00, RS2::SolidLine});
         drawGridPoints(painter, view);
     }
 }
 
 void LC_GridSystem::drawGridPoints(RS_Painter* painter, [[maybe_unused]] LC_GraphicViewport* view) const {
-    const int pointsCount = getGridPointsCount();
     if(painter->isHiDPIDevice()) {
+        const int pointsCount = getGridPointsCount();
+        painter->setPen({m_gridOptions->gridColorPoint, RS2::Width00, RS2::SolidLine});
         for (int i = 0; i < pointsCount; i++) {
             const double pX = m_gridLattice->getPointX(i);
             const double pY = m_gridLattice->getPointY(i);
@@ -173,12 +176,47 @@ void LC_GridSystem::drawGridPoints(RS_Painter* painter, [[maybe_unused]] LC_Grap
         }
     }
     else {
-        for (int i = 0; i < pointsCount; i++) {
-            const double pX = m_gridLattice->getPointX(i);
-            const double pY = m_gridLattice->getPointY(i);
-            painter->drawGridPoint(pX, pY);
-        }
+        // const int pointsCount = getGridPointsCount();
+        // painter->setPen({m_gridOptions->gridColorPoint, RS2::Width00, RS2::SolidLine});
+        // for (int i = 0; i < pointsCount; i++) {
+        //     const double pX = m_gridLattice->getPointX(i);
+        //     const double pY = m_gridLattice->getPointY(i);
+        //     painter->drawGridPoint(pX, pY);
+        // }
+        // painter->save();
+        drawGridPointsBulk(painter);
+        // painter->restore();
     }
+}
+
+void LC_GridSystem::drawGridPointsBulk(RS_Painter *painter) const {
+    QPen pen(m_gridOptions->gridColorPoint);
+    const int width = m_gridOptions->gridPointSize;
+    const double dpr = painter->getDevicePixelRatio();
+    double widthF = (width == 0? 1: width)*dpr;
+    pen.setWidthF(widthF);
+    const auto capStyle = m_gridOptions->capStyle;
+
+    pen.setCapStyle(capStyle);
+    painter->setNativePen(pen);
+
+    if (capStyle == Qt::PenCapStyle::RoundCap) {
+        painter->setRenderHint(QPainter::Antialiasing);
+    }
+
+    const int pointsCount = getGridPointsCount();
+
+    QVector<QPointF> points;
+    points.reserve(pointsCount);
+
+    for (int i = 0; i < pointsCount; ++i) {
+        const double pX = m_gridLattice->getPointX(i);
+        const double pY = m_gridLattice->getPointY(i);
+
+        points.append(QPointF(pX, pY));
+    }
+    // all points are drawn by single call
+    painter->drawPoints(points.data(), points.size());
 }
 
 void LC_GridSystem::drawGridLines(RS_Painter* painter, LC_GraphicViewport* view) {
@@ -231,4 +269,8 @@ void LC_GridSystem::calculateSnapInfo(const RS_Vector& viewZero, const RS_Vector
         doCalculateSnapInfo(viewZero, viewSize, metaGridWidthToUse, gridWidthToUse);
         m_valid = true;
     }
+}
+
+bool LC_GridSystem::isDrawMetaGrid() const {
+    return m_gridOptions->drawMetaGrid;
 }

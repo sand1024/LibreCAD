@@ -25,6 +25,7 @@
 
 #include "lc_gridsystem.h"
 
+
 class LC_IsometricGrid :public LC_GridSystem {
 public:
     explicit LC_IsometricGrid(LC_GridOptions *options, int isoProjection);
