@@ -26,6 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "rs.h"
 #include "rs_graphicview.h"
 #include "rs_vector.h"
+#include "lc_interactive_input_info.h"
 
 class LC_Formatter;
 class RS_Entity;
@@ -82,39 +83,6 @@ public:
     RS_Graphic* getGraphic(bool resolved = true) const  {return m_graphicView == nullptr ? nullptr : m_graphicView->getGraphic(resolved);}
     LC_Formatter * getFormatter() const;
 
-    struct InteractiveInputInfo {
-        enum State {
-            NONE,
-            REQUESTED
-        };
-
-        enum InputType {
-            POINT,
-            POINT_X,
-            POINT_Y,
-            DISTANCE,
-            ANGLE,
-            NOTNEEDED,
-        };
-
-        State state {NONE};
-        double distance {0};
-        double angleRad{0};
-        RS_Vector wcsPoint;
-        InputType inputType {NOTNEEDED};
-        QString requestorTag;
-        LC_LateCompletionRequestor* requestor {nullptr};
-
-        void copyTo(InteractiveInputInfo& copy) const {
-            copy.state = state;
-            copy.distance = distance;
-            copy.angleRad  = angleRad;
-            copy.wcsPoint = wcsPoint;
-            copy.inputType = inputType;
-            copy.requestorTag = requestorTag;
-            // don't need requestor in copy!
-        }
-    };
 
     void interactiveInputStart(InteractiveInputInfo::InputType inputType, LC_LateCompletionRequestor* requestor, const QString &tag);
     void interactiveInputRequestCancel();

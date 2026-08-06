@@ -31,7 +31,6 @@
 
 #include "lc_action_options_base.h"
 #include "lc_action_options_editor.h"
-#include "lc_actioncontext.h"
 #include "lc_latecompletionrequestor.h"
 #include "lc_modifiersinfo.h"
 #include "rs.h"
@@ -44,6 +43,7 @@ class LC_ModifiersInfo;
 class QInputEvent;
 class QKeyEvent;
 class QMouseEvent;
+class LC_ActionContext;
 
 class RS_CommandEvent;
 class RS_CoordinateEvent;
@@ -211,7 +211,7 @@ protected:
     void clearVisualSnap() const override;
     bool isSnapExpected() override {return isInVisualSnapStatus(getStatus());}
 
-virtual bool doUpdateAngleByInteractiveInput([[maybe_unused]]const QString& tag,[[maybe_unused]] double angleRad) {return false;}
+    virtual bool doUpdateAngleByInteractiveInput([[maybe_unused]]const QString& tag,[[maybe_unused]] double angleRad) {return false;}
     virtual bool doUpdateDistanceByInteractiveInput([[maybe_unused]]const QString& tag, [[maybe_unused]]double distance) {return false;}
     virtual bool doUpdatePointByInteractiveInput([[maybe_unused]]const QString& tag, [[maybe_unused]]RS_Vector &point) {return false;}
 };

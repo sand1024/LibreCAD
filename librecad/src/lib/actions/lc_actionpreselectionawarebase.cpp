@@ -26,6 +26,7 @@
 
 #include "lc_cursoroverlayinfo.h"
 #include "lc_graphicviewport.h"
+#include "lc_settings_modify.h"
 #include "rs_document.h"
 #include "rs_selection.h"
 #include "rs_settings.h"
@@ -36,7 +37,7 @@ LC_ActionPreSelectionAwareBase::LC_ActionPreSelectionAwareBase(
     :RS_ActionSelectBase(name, actionContext, actionType, entityTypeList){}
 
 bool LC_ActionPreSelectionAwareBase::isKeepModifiedEntitiesSelected() const {
-    const bool keepSelected      = LC_GET_ONE_BOOL("Modify", "KeepModifiedSelected", true);
+    const bool keepSelected = CFG_Modify::o_KeepModifiedSelected;
     return keepSelected;
 }
 

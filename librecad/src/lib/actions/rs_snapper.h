@@ -111,6 +111,8 @@ struct RS_SnapMode {
 
 using EntityTypeList = QList<RS2::EntityType>;
 
+struct SnapIndicatorOptions;
+
 /**
  * This class is used for snapping functions in a graphic view.
  * Actions are usually derived from this base class if they need
@@ -256,8 +258,7 @@ protected:
     std::unique_ptr<LC_VisualSnapManager> m_visualSnapManager;
 
     std::unique_ptr<ImpData> m_impData;
-    struct Indicator;
-    std::unique_ptr<Indicator> m_snapIndicator;
+    std::unique_ptr<SnapIndicatorOptions> m_snapIndicator;
 
     double m_snapToAngleStep;
     bool m_angleSnapSnapToGridLinesIfGrid = true;

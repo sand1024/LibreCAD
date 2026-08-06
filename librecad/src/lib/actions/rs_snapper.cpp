@@ -36,13 +36,13 @@
 #include "lc_graphicviewport.h"
 #include "lc_linemath.h"
 #include "lc_overlayentitiescontainer.h"
+#include "lc_settings_defaults.h"
+#include "lc_settings_snap.h"
 #include "rs_debug.h"
 #include "rs_graphic.h"
 #include "rs_graphicview.h"
 #include "rs_grid.h"
 #include "rs_line.h"
-#include "rs_pen.h"
-#include "rs_settings.h"
 #include "rs_vector.h"
 #include "lc_visual_snap_manager.h"
 
@@ -208,18 +208,7 @@ RS_SnapMode RS_SnapMode::fromInt(const unsigned int ret) {
 /**
   * Methods and structs for class RS_Snapper
   */
-struct RS_Snapper::Indicator {
-    bool drawLines = false;
-    int lines_Type = 0;
-    RS_Pen lines_Pen;
 
-    bool drawShape = false;
-    int shape_Type = 0;
-    RS_Pen shape_Pen;
-
-    int pointType = LC_DEFAULTS_PDMode;
-    int pointSize = LC_DEFAULTS_PDSize;
-};
 
 namespace {
     constexpr double DEFAULT_SNAP_ANGLE_STEP = RS_Math::deg2rad(15.0);
@@ -232,7 +221,7 @@ RS_Snapper::RS_Snapper(LC_ActionContext* actionContext, QObject* parent) :
     QObject(parent), m_document(actionContext->getDocument()), m_graphicView(actionContext->getGraphicView()),
     m_actionContext(actionContext), m_infoCursorOverlayData{std::make_unique<LC_InfoCursorData>()},
     m_visualSnapManager{std::make_unique<LC_VisualSnapManager>(this)}, m_impData{std::make_unique<ImpData>()},
-    m_snapIndicator{std::make_unique<Indicator>()}, m_snapToAngleStep{DEFAULT_SNAP_ANGLE_STEP} {
+    m_snapIndicator{std::make_unique<SnapIndicatorOptions>()}, m_snapToAngleStep{DEFAULT_SNAP_ANGLE_STEP} {
     Q_ASSERT(m_document != nullptr);
     Q_ASSERT(m_graphicView != nullptr);
     m_viewport = m_graphicView->getViewPort();
@@ -241,7 +230,8 @@ RS_Snapper::RS_Snapper(LC_ActionContext* actionContext, QObject* parent) :
     m_infoCursorOverlayPrefs = m_graphicView->getInfoCursorOverlayPreferences();
 }
 
-RS_Snapper::~RS_Snapper() = default;
+RS_Snapper::~RS_Snapper() {
+};
 
 /**
  * Initialize (called by all constructors)
@@ -265,50 +255,25 @@ void RS_Snapper::initSettings() {
 }
 
 void RS_Snapper::initFromSettings() {
-    LC_GROUP("Appearance");
-    {
-        const int snapIndicatorLineWidth = static_cast<RS2::LineType>(LC_GET_INT("indicator_lines_line_width", 1));
-        m_snapIndicator->drawLines = LC_GET_BOOL("indicator_lines_state", true);
-        if (m_snapIndicator->drawLines) {
-            m_snapIndicator->lines_Type = LC_GET_INT("indicator_lines_type", 0);
-            const auto snapIndicatorLineType = static_cast<RS2::LineType>(LC_GET_INT("indicator_lines_line_type", RS2::DashLine));
-            const QString snapColorLines = LC_GET_ONE_STR("Colors", "snap_indicator_lines", RS_Settings::SNAP_INDICATOR_LINES);
-            m_snapIndicator->lines_Pen = RS_Pen(RS_Color(snapColorLines), RS2::Width00, snapIndicatorLineType);
-            m_snapIndicator->lines_Pen.setScreenWidth(snapIndicatorLineWidth);
-        }
-        else {
-            m_snapIndicator->lines_Type = LC_Crosshair::NoLines;
-        }
-
-        m_snapIndicator->drawShape = LC_GET_BOOL("indicator_shape_state", true);
-        if (m_snapIndicator->drawShape) {
-            m_snapIndicator->shape_Type = LC_GET_INT("indicator_shape_type", 0);
-            const QString snapColor = LC_GET_ONE_STR("Colors", "snap_indicator", RS_Settings::SNAP_INDICATOR);
-            m_snapIndicator->shape_Pen = RS_Pen(RS_Color(snapColor), RS2::Width00, RS2::SolidLine);
-            m_snapIndicator->shape_Pen.setScreenWidth(snapIndicatorLineWidth);
-        }
-        else {
-            m_snapIndicator->shape_Type = LC_Crosshair::NoShape;
-        }
-
-        m_ignoreSnapToGridIfNoGrid = LC_GET_BOOL("SnapGridIgnoreIfNoGrid", false);
+    m_snapIndicator->loadSettings();
+    if (m_snapIndicator->shape_Type == LC_Crosshair::Point) {
+        m_snapIndicator->pointSize = LC_DEFAULTS_PDSize;
     }
-    LC_GROUP_END();
+    m_ignoreSnapToGridIfNoGrid = CFG_Appearance::o_SnapGridIgnoreIfNoGrid;
 
-    LC_GROUP("Snap");
     {
-        m_distanceBeforeSwitchToFreeSnap = LC_GET_INT("AdvSnapOnEntitySwitchToFreeDistance", 500) / 100.0;
-        m_catchEntityGuiRange = LC_GET_INT("AdvSnapEntityCatchRange", DEFAULT_CATCH_ENTITY_RANGE_PX);
-        m_minGridCellSnapFactor = LC_GET_INT("AdvSnapGridCellSnapFactor", 25) / 100.0;
-        m_angleSnapSnapToGridLinesIfGrid = LC_GET_BOOL("AngleSnapToLinesIfGrid", true);
+        using namespace CFG_Snap;
+        m_distanceBeforeSwitchToFreeSnap = o_AdvSnapOnEntitySwitchToFreeDistance / 100.0;
+        m_catchEntityGuiRange = o_AdvSnapEntityCatchRange;
+        m_minGridCellSnapFactor = o_AdvSnapGridCellSnapFactor / 100.0;
+        m_angleSnapSnapToGridLinesIfGrid = o_AngleSnapToLinesIfGrid;
     }
-    LC_GROUP_END();
 
     m_visualSnapManager->updateOptions();
 }
 
 void RS_Snapper::updateSnapAngleStep() {
-    const int stepType = LC_GET_ONE_INT("Defaults", "AngleSnapStep", 3);
+    const int stepType = CFG_Defaults::o_AngleSnapStep;
     double snapStepDegrees;
     switch (stepType) {
         case 0:
@@ -529,11 +494,11 @@ bool RS_Snapper::snapVisual(const RS_Vector& mouseCoord, RS_Entity** restricting
                 visualSnapFound = true;
             }
             else {
-                if (!visualSnapSolution->guidingEntities.empty()) {
-                    const int size = visualSnapSolution->guidingEntities.size();
+                if (visualSnapSolution->hasGuidingEntities()) {
+                    const bool singleEntity = visualSnapSolution->hasSingleGuidingEntity();
                     // LC_ERR << "VSnap entities size: " << size;
                     LC_VisualSnapEntityHolder holder;
-                    if (size == 1) {
+                    if (singleEntity == 1) {
                         holder = visualSnapSolution->guidingEntities.front();
                     }
                     else {
@@ -796,6 +761,8 @@ double RS_Snapper::getSnapRange() const {
     double minSize = RS_MAXDOUBLE;
     if (m_graphicView != nullptr) {
         minGraph = toGraphDX(DEFAULT_CATCH_ENTITY_RANGE_PX);
+        // fixme - sand - this will eliminate defaults duplication, yet is slower
+        // minGraph = toGraphDX(CFG_Snap::o_AdvSnapEntityCatchRange.defaultValue());
         // if grid is on, less than one quarter of the cell vector
         //        if (viewport->isGridOn()) {
         // todo - sand - check whether it's correct apply this check only if "Snap to Grid" is enabled
@@ -1211,8 +1178,7 @@ void RS_Snapper::drawSnapper() {
     bool showSnapIndicator = showSnapIndicator = isSnapExpected(); // LibreCAD#2520
     if (!m_finished && m_impData->snapSpot.valid && showSnapIndicator) {
         if (m_snapIndicator->drawLines || m_snapIndicator->drawShape) {
-            auto* crosshair = new LC_Crosshair(m_impData->snapCoord, m_snapIndicator->shape_Type, m_snapIndicator->lines_Type,
-                                               m_snapIndicator->lines_Pen, m_snapIndicator->pointSize, m_snapIndicator->pointType);
+            auto* crosshair = new LC_Crosshair(m_impData->snapCoord, *m_snapIndicator.get());
             crosshair->setShapesPen(m_snapIndicator->shape_Pen);
             snapperOverlay->add(crosshair);
         }
@@ -1235,19 +1201,20 @@ LC_OverlayInfoCursor* RS_Snapper::obtainInfoCursor() const {
 
 void RS_Snapper::drawInfoCursor() {
     const auto overlayContainer = m_viewport->getOverlaysDrawablesContainer(RS2::InfoCursor);
-    if (m_infoCursorOverlayPrefs != nullptr && m_infoCursorOverlayPrefs->enabled) {
+    const auto prefs = getInfoCursorOverlayPrefs();
+    if (prefs != nullptr && prefs->enabled) {
         // fixme - this is not absolutely safe if someone put another cursor to overlay container! Rework later!!
         const auto entity = overlayContainer->first();
         auto* infoCursor = dynamic_cast<LC_OverlayInfoCursor*>(entity);
         if (infoCursor == nullptr) {
-            infoCursor = new LC_OverlayInfoCursor(m_impData->snapCoord, &m_infoCursorOverlayPrefs->options);
+            infoCursor = new LC_OverlayInfoCursor(m_impData->snapCoord, &prefs->options);
             overlayContainer->add(infoCursor);
         }
         else {
-            infoCursor->setOptions(&m_infoCursorOverlayPrefs->options);
+            infoCursor->setOptions(&prefs->options);
             infoCursor->setPos(m_impData->snapCoord);
         }
-        const auto prefs = getInfoCursorOverlayPrefs();
+
         if (prefs->showSnapType) {
             if (m_graphicView->isInRelativePointInput()) {
                 m_infoCursorOverlayData->setZone2("");

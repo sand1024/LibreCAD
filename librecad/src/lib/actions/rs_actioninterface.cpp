@@ -511,17 +511,17 @@ void RS_ActionInterface::onLateRequestCompleted(const bool shouldBeSkipped) {
         bool updated = false;
         const auto requestorTag = inputInfo->requestorTag;
         switch (inputInfo->inputType) {
-            case LC_ActionContext::InteractiveInputInfo::ANGLE: {
+            case InteractiveInputInfo::ANGLE: {
                 updated = doUpdateAngleByInteractiveInput(requestorTag, inputInfo->angleRad);
                 break;
             }
-            case LC_ActionContext::InteractiveInputInfo::DISTANCE: {
+            case InteractiveInputInfo::DISTANCE: {
                 updated = doUpdateDistanceByInteractiveInput(requestorTag, inputInfo->distance);
                 break;
             }
-            case LC_ActionContext::InteractiveInputInfo::POINT:
-            case LC_ActionContext::InteractiveInputInfo::POINT_X:
-            case LC_ActionContext::InteractiveInputInfo::POINT_Y: {
+            case InteractiveInputInfo::POINT:
+            case InteractiveInputInfo::POINT_X:
+            case InteractiveInputInfo::POINT_Y: {
                 updated = doUpdatePointByInteractiveInput(requestorTag, inputInfo->wcsPoint);
                 break;
             }

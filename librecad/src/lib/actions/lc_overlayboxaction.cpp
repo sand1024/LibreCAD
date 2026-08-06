@@ -22,6 +22,7 @@
 
 #include "lc_overlayboxaction.h"
 
+#include "lc_settings_cad_preferences.h"
 #include "rs_overlaybox.h"
 #include "rs_settings.h"
 
@@ -40,8 +41,5 @@ void LC_OverlayBoxAction::drawOverlayBox(const RS_Vector &corner1, const RS_Vect
 void LC_OverlayBoxAction::initFromSettings() {
     RS_Snapper::initFromSettings();
     m_overlayBoxOptions->loadSettings();
-
-    LC_GROUP("CADPreferences"); {
-        m_selectWithPressedMouseOnly = LC_GET_BOOL("SelectionWindowBy2Clicks", false);
-    }
+    m_selectWithPressedMouseOnly = CFG_CADPreferences::o_SelectionWindowBy2Clicks;
 }

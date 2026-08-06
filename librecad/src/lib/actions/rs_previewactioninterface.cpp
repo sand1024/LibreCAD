@@ -27,6 +27,8 @@
 #include "rs_previewactioninterface.h"
 
 #include <QMouseEvent>
+#include <boost/core/snprintf.hpp>
+#include <boost/numeric/ublas/matrix_proxy.hpp>
 
 #include "lc_actioncontext.h"
 #include "lc_actioninfomessagebuilder.h"
@@ -41,6 +43,7 @@
 #include "lc_refellipse.h"
 #include "lc_refline.h"
 #include "lc_refpoint.h"
+#include "lc_settings_cad_preferences.h"
 #include "lc_visual_snap_manager.h"
 #include "rs_arc.h"
 #include "rs_circle.h"
@@ -52,6 +55,7 @@
 #include "rs_preview.h"
 #include "rs_settings.h"
 #include "rs_units.h"
+
 
 // fixme - sand - consider more generic support of overlays and containers,
 // with them working with preview etc might be more generic.. currently, preview handles both preview and reference points..
@@ -512,10 +516,9 @@ void RS_PreviewActionInterface::previewSnapAngleMark(const RS_Vector& center,
 // fixme - sand - move to overlay!
 void RS_PreviewActionInterface::initFromSettings() {
     RS_Snapper::initFromSettings();
-    m_angleSnapMarkerSize = LC_GET_ONE_INT("Appearance", "AngleSnapMarkerSize", 20);
-    m_doNotAllowNonDecimalAnglesInput = LC_GET_ONE_BOOL("CADPreferences", "InputAnglesAsDecimalsOnly", false);
+    m_angleSnapMarkerSize = CFG_Appearance::o_AngleSnapMarkerSize;
+    m_doNotAllowNonDecimalAnglesInput = CFG_CADPreferences::o_InputAnglesAsDecimalsOnly;
 }
-
 
 
 void RS_PreviewActionInterface::previewSnapAngleMark(const RS_Vector& center, const double angle) const {
@@ -528,8 +531,8 @@ void RS_PreviewActionInterface::previewSnapAngleMark(const RS_Vector& center, co
 // fixme - rework to natural paint via overlay
 void RS_PreviewActionInterface::previewSnapAngleMark(const RS_Vector& center, const double angle, double angleBase,
                                                      bool isAnglesCounterClockWise) const {
-    // todo - add separate option that will control visibility of mark?
-    const int radiusInPixels = m_angleSnapMarkerSize; // todo - move to settings
+    // // todo - add separate option that will control visibility of mark?
+    const int radiusInPixels = m_angleSnapMarkerSize;
     const int lineInPixels = radiusInPixels * 2; // todo - move to settings
     const double lineLength = toGraphDX(lineInPixels);
     const double angleZero = toWorldAngle(angleBase);
@@ -540,6 +543,17 @@ void RS_PreviewActionInterface::previewSnapAngleMark(const RS_Vector& center, co
         previewRefLine(center, center + RS_Vector::polar(lineLength, correctedAngle));
     }
     previewRefLine(center, center.relative(lineLength, angleZero));
+
+    // const double angleZero = toWorldAngle(angleBase);
+    // const double correctedAngle = RS_Math::correctAnglePlusMinusPi(angle);
+    // if (LC_LineMath::isMeaningfulAngle(correctedAngle)) {
+    //     double uiX, uiY;
+    //     m_viewport->toUI(center, uiX, uiY);
+    //     double uiBaseAngle = toUCSAngle(angleZero);
+    //     double uiCorrectedAngle = toUCSAngle(correctedAngle);
+    //     LC_OverlayRelativeAngle* overlay = new LC_OverlayRelativeAngle({uiX, uiY}, uiBaseAngle, uiCorrectedAngle);
+    //     m_preview->addEntity(overlay);
+    // }
 }
 
 RS_Circle* RS_PreviewActionInterface::previewRefCircle(const RS_Vector& center, const double radius) const {
@@ -560,15 +574,15 @@ RS_Vector RS_PreviewActionInterface::getFreeSnapAwarePoint(const LC_MouseEvent* 
 }
 
 void RS_PreviewActionInterface::initRefEntitiesMetrics() {
-    LC_GROUP_GUARD("Appearance");
+    using namespace CFG_Appearance;
     {
         // Points drawing style:
-        m_refPointMode = LC_GET_INT("RefPointType", DXF_FORMAT_PDMode_EncloseSquare(DXF_FORMAT_PDMode_CentreDot));
-        const QString pdsizeStr = LC_GET_STR("RefPointSize", "2.0");
+        m_refPointMode = o_RefPointType;
+        const QString pdsizeStr = o_RefPointSize;;
 
-        m_showRefEntitiesOnPreview = LC_GET_BOOL("VisualizePreviewRefPoints", true);
-        m_highlightEntitiesOnHover = LC_GET_BOOL("VisualizeHovering", true);
-        m_highlightEntitiesRefPointsOnHover = LC_GET_BOOL("VisualizeHoveringRefPoints", true);
+        m_showRefEntitiesOnPreview = o_VisualizePreviewRefPoints;
+        m_highlightEntitiesOnHover = o_VisualizeHovering;
+        m_highlightEntitiesRefPointsOnHover = o_VisualizeHoveringRefPoints;
 
         bool ok = false;
         m_refPointSize = RS_Math::eval(pdsizeStr, &ok);
