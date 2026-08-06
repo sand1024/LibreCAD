@@ -34,7 +34,7 @@ void LC_ActionSelectQuick::onLateRequestCompleted(const bool shouldBeSkipped) {
     if (shouldBeSkipped) {
         const auto interactiveInput = m_actionContext->getInteractiveInputInfo();
         interactiveInput->requestor = nullptr;
-        interactiveInput->state = LC_ActionContext::InteractiveInputInfo::NONE;
+        interactiveInput->state = InteractiveInputInfo::NONE;
     }
     else {
         QTimer::singleShot(100, this, &LC_ActionSelectQuick::showDialog);
@@ -88,24 +88,24 @@ void LC_ActionSelectQuick::performSelection(LC_DlgQuickSelection* dlg) const {
 
 void LC_ActionSelectQuick::showDialog() {
     const auto interactiveInputInfo = m_actionContext->getInteractiveInputInfo();
-    const bool updateInteractiveInputValues = interactiveInputInfo->state == LC_ActionContext::InteractiveInputInfo::REQUESTED;
+    const bool updateInteractiveInputValues = interactiveInputInfo->state == InteractiveInputInfo::REQUESTED;
     double interactiveInputValueOne {0.0};
     double  interactiveInputValueTwo {0.0};
 
     auto inputType = interactiveInputInfo->inputType;
     if (updateInteractiveInputValues) {
         switch (inputType) {
-            case LC_ActionContext::InteractiveInputInfo::DISTANCE: {
+            case InteractiveInputInfo::DISTANCE: {
                 interactiveInputValueOne = interactiveInputInfo->distance;
                 break;
             }
-            case LC_ActionContext::InteractiveInputInfo::ANGLE: {
+            case InteractiveInputInfo::ANGLE: {
                 interactiveInputValueOne = interactiveInputInfo->angleRad;
                 break;
             }
-            case LC_ActionContext::InteractiveInputInfo::POINT:
-            case LC_ActionContext::InteractiveInputInfo::POINT_X:
-            case LC_ActionContext::InteractiveInputInfo::POINT_Y: {
+            case InteractiveInputInfo::POINT:
+            case InteractiveInputInfo::POINT_X:
+            case InteractiveInputInfo::POINT_Y: {
                 interactiveInputValueOne = interactiveInputInfo->wcsPoint.x;
                 interactiveInputValueTwo = interactiveInputInfo->wcsPoint.y;
                 break;
@@ -115,7 +115,7 @@ void LC_ActionSelectQuick::showDialog() {
         }
     }
     else {
-        inputType = LC_ActionContext::InteractiveInputInfo::NOTNEEDED;
+        inputType = InteractiveInputInfo::NOTNEEDED;
     }
 
     QWidget* parent = QC_ApplicationWindow::getAppWindow().get();
@@ -125,7 +125,7 @@ void LC_ActionSelectQuick::showDialog() {
     const int result = dlg->showModal();
     if (result == QDialog::Accepted) {
         const auto interactiveInputRequestType = dlg->isInteractiveInputRequested();
-        if (interactiveInputRequestType == LC_ActionContext::InteractiveInputInfo::NOTNEEDED) { // normal closing of the dialog or ask for additional selection
+        if (interactiveInputRequestType == InteractiveInputInfo::NOTNEEDED) { // normal closing of the dialog or ask for additional selection
             if (dlg->isAdditionalSelectionRequested()) {
                 m_selectionComplete = false;
                 m_actionContext->interactiveInputRequestCancel();

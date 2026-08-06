@@ -74,7 +74,7 @@ void LC_ActionInteractivePickBase::keyPressEvent(QKeyEvent* e) {
 
 void LC_ActionInteractivePickBase::skipInteractiveInput() const {
     const auto interactiveInputInfo = m_actionContext->getInteractiveInputInfo();
-    if (interactiveInputInfo->state == LC_ActionContext::InteractiveInputInfo::REQUESTED) {
+    if (interactiveInputInfo->state == InteractiveInputInfo::REQUESTED) {
         if (interactiveInputInfo->requestor != nullptr) {
             interactiveInputInfo->requestor->onLateRequestCompleted(true);
         }
@@ -83,7 +83,7 @@ void LC_ActionInteractivePickBase::skipInteractiveInput() const {
 
 void LC_ActionInteractivePickBase::storeInteractiveInput() {
     const auto interactiveInputInfo = m_actionContext->getInteractiveInputInfo();
-    if (interactiveInputInfo->state == LC_ActionContext::InteractiveInputInfo::REQUESTED) {
+    if (interactiveInputInfo->state == InteractiveInputInfo::REQUESTED) {
         doSetInteractiveInputValue(interactiveInputInfo);
         if (interactiveInputInfo->requestor != nullptr) {
             interactiveInputInfo->requestor->onLateRequestCompleted(false);

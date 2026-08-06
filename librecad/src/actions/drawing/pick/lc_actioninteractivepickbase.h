@@ -39,7 +39,7 @@ protected:
     ~LC_ActionInteractivePickBase() override = default;
     void skipInteractiveInput() const;
     void storeInteractiveInput();
-    virtual void doSetInteractiveInputValue(LC_ActionContext::InteractiveInputInfo* interactiveInputInfo) = 0;
+    virtual void doSetInteractiveInputValue(InteractiveInputInfo* interactiveInputInfo) = 0;
     virtual bool isInteractiveDataValid() = 0;
 };
 

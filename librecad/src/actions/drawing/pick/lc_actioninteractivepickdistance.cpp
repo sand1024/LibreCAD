@@ -48,7 +48,7 @@ bool LC_ActionInteractivePickDistance::isInteractiveDataValid() {
 }
 
 void LC_ActionInteractivePickDistance::doSetInteractiveInputValue(
-    LC_ActionContext::InteractiveInputInfo* interactiveInputInfo) {
+    InteractiveInputInfo* interactiveInputInfo) {
     interactiveInputInfo->distance = m_distance;
 }
 

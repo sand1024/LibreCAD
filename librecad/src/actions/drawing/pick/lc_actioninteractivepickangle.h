@@ -53,7 +53,7 @@ protected:
     bool m_pickAlternative {false};
 
     bool isInteractiveDataValid() override;
-    void doSetInteractiveInputValue(LC_ActionContext::InteractiveInputInfo* interactiveInputInfo) override;
+    void doSetInteractiveInputValue(InteractiveInputInfo* interactiveInputInfo) override;
     RS2::CursorType doGetMouseCursor(int status) override;
     void onMouseLeftButtonRelease(int status, const LC_MouseEvent* e) override;
     void onMouseRightButtonRelease(int status, const LC_MouseEvent* e) override;

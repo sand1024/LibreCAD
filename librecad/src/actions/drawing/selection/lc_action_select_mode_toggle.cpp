@@ -23,6 +23,7 @@
 
 #include "lc_action_select_mode_toggle.h"
 
+#include "lc_settings_selection.h"
 #include "rs_settings.h"
 
 LC_ActionSelectModeToggle::LC_ActionSelectModeToggle(LC_ActionContext* actionContext)
@@ -36,6 +37,7 @@ void LC_ActionSelectModeToggle::init(const int status) {
 }
 
 void LC_ActionSelectModeToggle::trigger() {
-    const bool currentlySelected = LC_GET_ONE_BOOL("Selection", "Additivity", true);
-    LC_SET_ONE("Selection", "Additivity", !currentlySelected);
+    using namespace CFG_Selection;
+    const bool currentlySelected = o_Additivity;
+    o_Additivity = !currentlySelected;
 }

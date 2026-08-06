@@ -28,6 +28,7 @@
 #include <QTextStream>
 
 #include "lc_makercamsvg.h"
+#include "lc_settings_export_makercam.h"
 #include "lc_xmlwriterqxmlstreamwriter.h"
 #include "rs_debug.h"
 #include "rs_dialogfactory.h"
@@ -35,26 +36,18 @@
 #include "rs_settings.h"
 
 class LC_MakerCamSVG;
-
 namespace {
-    bool getSetting(const QString& entry) {
-        return LC_GET_INT("" + entry, 0);
-    }
 
     // create an SVG generator
     std::unique_ptr<LC_MakerCamSVG> getGenerator() {
-        LC_GROUP_GUARD("ExportMakerCam");
-        {
-            auto generator = std::make_unique<LC_MakerCamSVG>(std::make_unique<LC_XMLWriterQXmlStreamWriter>(),
-                                                              LC_GET_BOOL("ExportInvisibleLayers"), LC_GET_BOOL("ExportConstructionLayers"),
-                                                              LC_GET_BOOL("WriteBlocksInline"), LC_GET_BOOL("ConvertEllipsesToBeziers"),
-                                                              LC_GET_BOOL("ExportImages"), LC_GET_BOOL("BakeDashDotLines"),
-                                                              LC_GET_STR("DefaultElementWidth", "1.0").toDouble(),
-                                                              LC_GET_STR("DefaultDashLinePatternLength").toDouble());
-            const bool exportPoints = getSetting("ExportPoints");
-            generator->setExportPoints(exportPoints);
-            return generator;
-        }
+        using namespace CFG_ExportMakerCam;
+        auto generator = std::make_unique<LC_MakerCamSVG>(std::make_unique<LC_XMLWriterQXmlStreamWriter>(), o_ExportInvisibleLayers,
+                                                          o_ExportConstructionLayers, o_WriteBlocksInline, o_ConvertEllipsesToBeziers,
+                                                          o_ExportImages, o_BakeDashDotLines, o_DefaultElementWidth,
+                                                          o_DefaultDashLinePatternLength);
+        const bool exportPoints = o_ExportPoints;
+        generator->setExportPoints(exportPoints);
+        return generator;
     }
 }
 

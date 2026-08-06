@@ -27,6 +27,7 @@
 #include "lc_action_modify_stretch.h"
 
 #include "lc_actioninfomessagebuilder.h"
+#include "lc_settings_modify.h"
 #include "lc_stretch_options_filler.h"
 #include "lc_stretch_options_widget.h"
 #include "rs_document.h"
@@ -87,7 +88,7 @@ bool LC_ActionModifyStretch::doTriggerModifications(LC_DocumentModificationBatch
         unselect(m_entitiesList);
     }
     else {
-        const bool keepSelected =  LC_GET_ONE_BOOL("Modify", "KeepModifiedSelected", true);
+        const bool keepSelected =  CFG_Modify::o_KeepModifiedSelected;
         if (keepSelected) {
             select(m_entitiesList);
         }

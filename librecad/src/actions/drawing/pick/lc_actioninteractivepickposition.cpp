@@ -40,7 +40,7 @@ void LC_ActionInteractivePickPosition::init(const int status) {
     LC_ActionInteractivePickBase::init(status);
 }
 
-void LC_ActionInteractivePickPosition::doSetInteractiveInputValue(LC_ActionContext::InteractiveInputInfo* interactiveInputInfo) {
+void LC_ActionInteractivePickPosition::doSetInteractiveInputValue(InteractiveInputInfo* interactiveInputInfo) {
     interactiveInputInfo->wcsPoint = m_wcsPosition;
 }
 

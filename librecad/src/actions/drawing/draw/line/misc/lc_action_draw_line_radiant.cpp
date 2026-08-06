@@ -25,6 +25,7 @@
 
 #include "lc_line_radiant_options_filler.h"
 #include "lc_line_radiant_options_widget.h"
+#include "lc_settings_modify.h"
 #include "rs_document.h"
 #include "rs_line.h"
 #include "rs_settings.h"
@@ -86,7 +87,7 @@ void LC_ActionDrawLineRadiant::doTriggerCompletion(const bool success) {
 
 void LC_ActionDrawLineRadiant::doTriggerSelections(const LC_DocumentModificationBatch& ctx) {
     if (ctx.success) {
-        const bool keepSelected = LC_GET_ONE_BOOL("Modify", "KeepModifiedSelected", true);
+        const bool keepSelected = CFG_Modify::o_KeepModifiedSelected;
         if (keepSelected) {
             select(ctx.entitiesToAdd);
         }
