@@ -53,7 +53,7 @@ protected:
     bool m_interactiveInputControlsVisible {true};
     bool m_interactiveInputControlsAutoRaise {true};
 
-    void connectInteractiveInputButton(QToolButton* button, LC_ActionContext::InteractiveInputInfo::InputType inputType,
+    void connectInteractiveInputButton(QToolButton* button, InteractiveInputInfo::InputType inputType,
                                        const QString& tag) const;
     void pickDistanceSetup(const QString& tag, QToolButton* button, QLineEdit* lineedit) const;
     void pickAngleSetup(const QString& tag, QToolButton* button, QLineEdit* editor) const;

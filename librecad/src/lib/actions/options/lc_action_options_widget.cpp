@@ -27,15 +27,16 @@
 #include <QToolButton>
 
 #include "lc_actioncontext.h"
+#include "lc_settings_defaults.h"
+#include "lc_settings_widget.h"
 #include "rs_actioninterface.h"
-#include "rs_settings.h"
 
 class LC_LateCompletionRequestor;
 
 LC_ActionOptionsWidget::LC_ActionOptionsWidget(QWidget *parent, const Qt::WindowFlags fl) :
     QWidget(parent, fl) {
-    m_interactiveInputControlsAutoRaise = LC_GET_ONE_BOOL("Widgets", "PickValueButtonsFlatIcons", true);
-    m_interactiveInputControlsVisible = LC_GET_ONE_BOOL("Defaults", "InteractiveInputEnabled", true);
+    m_interactiveInputControlsAutoRaise = CFG_Widgets::o_PickValueButtonsFlatIcons;
+    m_interactiveInputControlsVisible = CFG_Defaults::o_InteractiveInputEnabled;
 }
 
 LC_ActionOptionsWidget::~LC_ActionOptionsWidget() = default;
@@ -56,7 +57,7 @@ void LC_ActionOptionsWidget::cleanup() {
 }
 
 void LC_ActionOptionsWidget::connectInteractiveInputButton(QToolButton* button,
-                                                           const LC_ActionContext::InteractiveInputInfo::InputType inputType,
+                                                           const InteractiveInputInfo::InputType inputType,
                                                            const QString& tag) const {
     if (m_interactiveInputControlsVisible) {
         button->setVisible(true);
@@ -85,12 +86,12 @@ void LC_ActionOptionsWidget::requestFocusForTag(const QString& tag) const {
 }
 
 void LC_ActionOptionsWidget::pickDistanceSetup(const QString& tag, QToolButton* button, QLineEdit* lineedit) const {
-    connectInteractiveInputButton(button, LC_ActionContext::InteractiveInputInfo::DISTANCE, tag);
+    connectInteractiveInputButton(button, InteractiveInputInfo::DISTANCE, tag);
     lineedit->setProperty("_tagHolder", tag);
 }
 
 void LC_ActionOptionsWidget::pickAngleSetup(const QString& tag, QToolButton* button, QLineEdit* editor) const {
-    connectInteractiveInputButton(button, LC_ActionContext::InteractiveInputInfo::ANGLE, tag);
+    connectInteractiveInputButton(button, InteractiveInputInfo::ANGLE, tag);
     editor->setProperty("_tagHolder", tag);
 }
 
@@ -99,18 +100,18 @@ void LC_ActionOptionsWidget::onInteractiveInputButtonClicked([[maybe_unused]]boo
     if (senderButton != nullptr) {
         const auto property = senderButton->property ("_interactiveInputButton");
         if (property.isValid()) {
-            const auto inputType = static_cast<LC_ActionContext::InteractiveInputInfo::InputType>(property.toInt());
+            const auto inputType = static_cast<InteractiveInputInfo::InputType>(property.toInt());
             const auto tagProperty = senderButton->property ("_interactiveInputTag");
             const QString tag = tagProperty.toString();
             switch (inputType) {
-                case LC_ActionContext::InteractiveInputInfo::DISTANCE:
-                case LC_ActionContext::InteractiveInputInfo::ANGLE: {
+                case InteractiveInputInfo::DISTANCE:
+                case InteractiveInputInfo::ANGLE: {
                     m_actionContext->interactiveInputStart(inputType, m_laterCompletionRequestor, tag);
                     break;
                 }
-                case LC_ActionContext::InteractiveInputInfo::POINT:
-                case LC_ActionContext::InteractiveInputInfo::POINT_X:
-                case LC_ActionContext::InteractiveInputInfo::POINT_Y: {
+                case InteractiveInputInfo::POINT:
+                case InteractiveInputInfo::POINT_X:
+                case InteractiveInputInfo::POINT_Y: {
                     m_actionContext->interactiveInputStart(inputType, m_laterCompletionRequestor, tag);
                     break;
                 }

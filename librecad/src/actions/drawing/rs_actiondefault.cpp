@@ -33,6 +33,8 @@
 #include "lc_linemath.h"
 #include "lc_propertysheetwidget.h"
 #include "lc_quickinfowidget.h"
+#include "lc_settings_cad_preferences.h"
+#include "lc_settings_render.h"
 #include "qc_applicationwindow.h"
 #include "rs_arc.h"
 #include "rs_circle.h"
@@ -604,7 +606,7 @@ RS_Entity* RS_ActionDefault::getClone(const RS_Entity* e){
         case RS2::EntityText:
         case RS2::EntityMText: {
             // fixme - sand - ucs - BAD dependency, rework.
-            const bool drawTextAsDraftInPreview = LC_GET_ONE_BOOL("Render", "DrawTextsAsDraftInPreview", true);
+            const bool drawTextAsDraftInPreview = CFG_Render::o_DrawTextsAsDraftInPreview;
             if (drawTextAsDraftInPreview) {
                 clone = e->cloneProxy();
             } else {
@@ -1075,9 +1077,7 @@ RS2::EntityType RS_ActionDefault::getTypeToSelect() const {
 
 void RS_ActionDefault::initFromSettings() {
     LC_OverlayBoxAction::initFromSettings();
-    LC_GROUP("CADPreferences"); {
-        m_completeMovingByMousePressed = LC_GET_BOOL("AdHockMovingEndsByMouseClick", true);
-    }
+    m_completeMovingByMousePressed = CFG_CADPreferences::o_AdHockMovingEndsByMouseClick;
 }
 
 // fixme - sand - avoid direct call to appWindow??
