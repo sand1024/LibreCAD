@@ -35,6 +35,7 @@
 #include <QStandardPaths>
 #include <QTranslator>
 
+#include "lc_settings_paths.h"
 #include "rs_debug.h"
 #include "rs_locale.h"
 #include "rs_settings.h"
@@ -101,13 +102,8 @@ void RS_System::initLanguageList() {
     RS_DEBUG->print("RS_System::initLanguageList");
     QStringList lst = getFileList("qm", "qm");
 
-    LC_GROUP("Paths"); // fixme settings
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
-    lst += LC_GET_STR("Translations", "").split(";", Qt::SkipEmptyParts);
-#else
-    lst += (RS_SETTINGS->readEntry("/Translations", "")).split(";", QString::SkipEmptyParts);
-#endif
-    LC_GROUP_END();
+    const QString translationsDir = CFG_Paths::o_Translations;
+    lst += translationsDir.split(";", Qt::SkipEmptyParts);
 
     for (auto& it : lst) {
 
@@ -409,13 +405,9 @@ void RS_System::loadTranslation(const QString& lang, const QString& /*langCmd*/)
     // search in various directories for translations
     QStringList lst = getDirectoryList( "qm");
 
-    LC_GROUP( "Paths");
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
-    lst += LC_GET_STR("Translations", "").split(";", Qt::SkipEmptyParts);
-#else
-    lst += (RS_SETTINGS->readEntry( "/Translations", "")).split( ";", QString::SkipEmptyParts);
-#endif
-    LC_GROUP_END();
+    const QString translationsDir = CFG_Paths::o_Translations;
+
+    lst += translationsDir.split(";", Qt::SkipEmptyParts);
 
     if( tLibreCAD != nullptr) {
         qApp->removeTranslator( tLibreCAD);
@@ -620,31 +612,31 @@ QStringList RS_System::getDirectoryList(const QString& subDir) const{
 #endif
 
     // Individual directories:
+    QString directoryName;
+    static const QRegularExpression SEP("[;]");
+    constexpr auto emptyBehavior = Qt::SkipEmptyParts;
     {
-        LC_GROUP_GUARD( "Paths");
-        {
-            constexpr auto emptyBehavior = Qt::SkipEmptyParts;
+        using namespace CFG_Paths;
 
-            static const QRegularExpression SEP("[;]");
-
-            if (subDirectory == "fonts") {
-                const QString savedFonts = LC_GET_STR("Fonts", "");
-                RS_DEBUG->print("saved fonts: %s\n", savedFonts.toUtf8().constData());
-                dirList += LC_GET_STR("Fonts", "").split(SEP, emptyBehavior);
-            }
-            else if (subDirectory == "patterns") {
-                dirList += LC_GET_STR("Patterns", "").split(SEP, emptyBehavior);
-            }
-            else if (subDirectory.startsWith("scripts")) {
-                dirList += LC_GET_STR("Scripts", "").split(SEP, emptyBehavior);
-            }
-            else if (subDirectory.startsWith("library")) {
-                dirList += LC_GET_STR("Library", "").split(SEP, emptyBehavior);
-            }
-            else if (subDirectory.startsWith("qm")) {
-                dirList += LC_GET_STR("Translations", "").split(SEP, emptyBehavior);
-            }
+        if (subDirectory == "fonts") {
+            directoryName = o_Fonts;
+            RS_DEBUG->print("saved fonts: %s\n", directoryName.toUtf8().constData());
         }
+        else if (subDirectory == "patterns") {
+            directoryName = o_Patterns;
+        }
+        // else if (subDirectory.startsWith("scripts")) {
+        //     dirList += LC_GET_STR("Scripts", "").split(SEP, emptyBehavior);
+        // }
+        else if (subDirectory.startsWith("library")) {
+            directoryName = o_Library;
+        }
+        else if (subDirectory.startsWith("qm")) {
+            directoryName = o_Translations;
+        }
+    }
+    if (!directoryName.isEmpty()) {
+        dirList += directoryName.split(SEP, emptyBehavior);
     }
 
     QStringList ret;

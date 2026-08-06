@@ -36,16 +36,16 @@ LC_LineRadiantOptionsWidget::LC_LineRadiantOptionsWidget(): ui(new Ui::LC_LineRa
     connect(ui->leY, &QLineEdit::editingFinished, this, &LC_LineRadiantOptionsWidget::onYEditingFinished);
     connect(ui->leLength, &QLineEdit::editingFinished, this, &LC_LineRadiantOptionsWidget::onLengthEditingFinished);
 
-    connectInteractiveInputButton(ui->tbPickX, LC_ActionContext::InteractiveInputInfo::POINT_X, "pointX");
+    connectInteractiveInputButton(ui->tbPickX, InteractiveInputInfo::POINT_X, "pointX");
     ui->leX->setProperty("_tagHolder", "pointX");
 
-    connectInteractiveInputButton(ui->tbPickY, LC_ActionContext::InteractiveInputInfo::POINT_Y, "pointY");
+    connectInteractiveInputButton(ui->tbPickY, InteractiveInputInfo::POINT_Y, "pointY");
     ui->leY->setProperty("_tagHolder", "pointY");
 
-    connectInteractiveInputButton(ui->tbPickLength, LC_ActionContext::InteractiveInputInfo::DISTANCE, "length");
+    connectInteractiveInputButton(ui->tbPickLength, InteractiveInputInfo::DISTANCE, "length");
     ui->leLength->setProperty("_tagHolder", "length");
 
-    connectInteractiveInputButton(ui->tbPickPoint, LC_ActionContext::InteractiveInputInfo::POINT, "farPoint");
+    connectInteractiveInputButton(ui->tbPickPoint, InteractiveInputInfo::POINT, "farPoint");
 }
 
 LC_LineRadiantOptionsWidget::~LC_LineRadiantOptionsWidget(){

@@ -29,6 +29,9 @@
 #include <QToolBar>
 
 #include "lc_actioncontext.h"
+#include "lc_settings_defaults.h"
+#include "lc_settings_snap_state.h"
+#include "lc_settings_widget.h"
 #include "qc_applicationwindow.h"
 #include "rs_math.h"
 #include "ui_qg_snapdistoptions.h"
@@ -58,13 +61,13 @@ void QG_SnapDistOptions::languageChange() {
 }
 
 void QG_SnapDistOptions::saveSettings() {
-    LC_SET_ONE("Snap", "Distance", ui->leDist->text());
+    CFG_SnapState::o_Distance = ui->leDist->text();
     emit distanceChanged();
 }
 
 void QG_SnapDistOptions::useSnapDistanceValue(double* d) {
     m_dist = d;
-    const QString distance = LC_GET_ONE_STR("Snap", "Distance", "1.0");
+    const QString distance = CFG_SnapState::o_Distance;
     *m_dist = RS_Math::eval(distance, 1.0);
     const QString value = QString::number(*m_dist, 'g', 6);
     ui->leDist->setText(value);
@@ -72,7 +75,7 @@ void QG_SnapDistOptions::useSnapDistanceValue(double* d) {
 
 void QG_SnapDistOptions::onPickDistanceClicked([[maybe_unused]] bool clicked) {
     LC_ActionContext* context = QC_ApplicationWindow::getAppWindow()->getActionContext();
-    context->interactiveInputStart(LC_ActionContext::InteractiveInputInfo::DISTANCE, this, "dist");
+    context->interactiveInputStart(InteractiveInputInfo::DISTANCE, this, "dist");
 }
 
 void QG_SnapDistOptions::onDistEditingFinished() {
@@ -86,8 +89,8 @@ void QG_SnapDistOptions::onDistEditingFinished() {
 }
 
 void QG_SnapDistOptions::doShow() {
-    const bool interactiveInputControlsAutoRaise = LC_GET_ONE_BOOL("Widgets", "PickValueButtonsFlatIcons", true);
-    const bool interactiveInputControlsVisible = LC_GET_ONE_BOOL("Defaults", "InteractiveInputEnabled", true);
+    const bool interactiveInputControlsAutoRaise = CFG_Widgets::o_PickValueButtonsFlatIcons;
+    const bool interactiveInputControlsVisible = CFG_Defaults::o_InteractiveInputEnabled;
     ui->tbPickDistance->setVisible(interactiveInputControlsVisible);
     ui->tbPickDistance->setAutoRaise(interactiveInputControlsAutoRaise);
 
@@ -106,7 +109,7 @@ void QG_SnapDistOptions::onLateRequestCompleted(const bool shouldBeSkipped) {
     LC_ActionContext* context = QC_ApplicationWindow::getAppWindow()->getActionContext();
     if (!shouldBeSkipped) {
         const auto inputInfo = context->getInteractiveInputInfo();
-        if (inputInfo->inputType == LC_ActionContext::InteractiveInputInfo::DISTANCE && inputInfo->requestorTag == "dist") {
+        if (inputInfo->inputType == InteractiveInputInfo::DISTANCE && inputInfo->requestorTag == "dist") {
             *m_dist = inputInfo->distance;
             const auto value = QString::number(*m_dist, 'g', 6);
             ui->leDist->setText(value);

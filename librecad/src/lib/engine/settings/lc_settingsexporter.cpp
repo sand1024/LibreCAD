@@ -29,6 +29,7 @@
 #include <QSettings>
 
 #include "lc_filenameselectionservice.h"
+#include "lc_settings_paths.h"
 #include "rs_settings.h"
 #include "rs_system.h"
 
@@ -114,10 +115,9 @@ bool LC_SettingsExporter::exportSettings(QWidget* parent) {
     }
     jsonFile.write(doc.toJson());
 
-    LC_GROUP_GUARD("Export");
-    {
-        LC_SET("ExportSettingsDir", QFileInfo(jsonFile).absolutePath());
-    }
+
+    CFG_Paths::o_ExportSettingsDir = QFileInfo(jsonFile).absolutePath();
+
     QMessageBox::information(parent, tr("Settings Export"), tr("Application preferences were exported."));
     return true;
 }

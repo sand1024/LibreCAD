@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "qg_snapmiddleoptions.h"
 
+#include "lc_settings_snap_state.h"
 #include "ui_qg_snapmiddleoptions.h"
 
 /*
@@ -51,18 +52,18 @@ void QG_SnapMiddleOptions::languageChange(){
 }
 
 void QG_SnapMiddleOptions::saveSettings() {
-    LC_SET_ONE("Snap", "MiddlePoints", *m_middlePoints);
+    CFG_SnapState::o_MiddlePoints = *m_middlePoints;
     emit middlePointsChanged();
 }
 
 void QG_SnapMiddleOptions::useMiddlePointsValue(int* i) {
     m_middlePoints = i;
-    LC_GROUP_GUARD("Snap");
     {
-        int points = LC_GET_INT("MiddlePoints", 1);
+        using namespace CFG_SnapState;
+        int points = o_MiddlePoints;
         if (!(points >= 1 && points <= 99)) {
             points = 1;
-            LC_SET("MiddlePoints", points);
+            o_MiddlePoints = points;
         }
 
         ui->sbMiddlePoints->setValue(points);

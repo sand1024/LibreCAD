@@ -46,7 +46,6 @@ RS_Settings::GroupGuard::~GroupGuard(){
     }
 }
 
-
 bool RS_Settings::saveIsAllowed = true;
 
 
@@ -128,7 +127,7 @@ bool RS_Settings::write(const QString &key, const bool value) {
 }
 
 bool RS_Settings::writeSingle(const QString &group, const QString &key, const bool value) {
-    return writeSingle(group, key, value ? 1 : 0);
+    return writeEntrySingle(group, key, QVariant(value));
 }
 
 bool RS_Settings::readBool(const QString &key, const bool defaultValue) {
@@ -136,8 +135,14 @@ bool RS_Settings::readBool(const QString &key, const bool defaultValue) {
 }
 
 bool RS_Settings::readBoolSingle(const QString &group, const QString &key, const bool defaultValue) {
-    const int def = defaultValue ? 1 : 0;
-    return readIntSingle(group, key, def) == 1;
+    const QString fullName = getFullName(group, key);
+    QVariant value = readEntryCache(fullName);
+    if (!value.isValid()) {
+        value = m_settings->value(fullName, QVariant(defaultValue));
+        writeEntryCache(fullName, value);
+    }
+    const int result = value.toBool();
+    return result;
 }
 
 bool RS_Settings::writeEntry(const QString &key, const QVariant &value) {
@@ -160,22 +165,38 @@ QString RS_Settings::readStr(const QString &key,const QString &def) {
 bool RS_Settings::writeEntrySingle(const QString& group, const QString &key, const QVariant &value) {
     const QString fullName = getFullName(group, key);
 
-    // Skip writing operations if the key is found in the cache and
-    // its value is the same as the new one (it was already written).
+    QVariant cachedValue = readEntryCache(fullName);
 
-    const QVariant ret = readEntryCache(fullName);
-    if (ret.isValid() && ret == value) {
-        return false;
+    const bool cashedValid = cachedValue.isValid();
+    // Symmetrical On-Demand Cache Backup on first write
+    if (m_inTransaction && m_transactionBackup.count(fullName) == 0) {
+        if (!cashedValid) {
+            cachedValue = m_settings->value(fullName);
+        }
+        m_transactionBackup[fullName] = cachedValue; // Caches the pre-dialog state
     }
 
-    // RVT_PORT not supported anymore s.insertSearchPath(QSettings::Windows, companyKey);
+    if (cashedValid){
+        bool tmpCached = cachedValue.toBool();
+        bool tmpValue = value.toBool();
+        if (cachedValue == value) {
+            return false;
+        }
+    }
 
-    m_settings->setValue(fullName, value);
-    m_cache[fullName] = value;
+    if (m_inTransaction) {
+        // Only write to the in-memory cache, bypassing disk/registry
+        writeEntryCache(fullName, value);
+    }
+    else {
+        // Standard non-transactional write (writes to disk/registry immediately)
+        m_settings->setValue(fullName, value);
+        writeEntryCache(fullName, value);
+    }
 
     // basically, that's a shortcut that we put value from cache as old value (instead of actual reading of it).
     // however, in most cases, properties will be read before modification, so that's fine
-    emit optionChanged(group, key, ret, value);
+    emit optionChanged(group, key, cachedValue, value);  // fixme - sand - review. What if we're in transaction?
 
     return true;
 }
@@ -185,7 +206,7 @@ QString RS_Settings::readStrSingle(const QString& group, const QString &key,cons
     QVariant value = readEntryCache(fullName);
     if (!value.isValid()) {
         value = m_settings->value(fullName, QVariant(def))/*.toString()*/;
-        m_cache[fullName] = value;
+        writeEntryCache(fullName, value);
     }
     return value.toString();
 }
@@ -217,7 +238,7 @@ int RS_Settings::readColorSingle(const QString& group, const QString &key, const
     QVariant value = readEntryCache(fullName);
     if (!value.isValid()) {
         value = m_settings->value(fullName, QVariant(def));
-        m_cache[fullName] = value;
+        writeEntryCache(fullName, value);
     }
     unsigned long long uValue = value.toULongLong();
     uValue = uValue % 0x80000000ULL;
@@ -234,7 +255,7 @@ int RS_Settings::readIntSingle(const QString& group, const QString &key, const i
     QVariant value = readEntryCache(fullName);
     if (!value.isValid()) {
         value = m_settings->value(fullName, QVariant(def));
-        m_cache[fullName] = value;
+        writeEntryCache(fullName, value);
     }
     const int result = value.toInt();
     return result;
@@ -249,12 +270,6 @@ QByteArray RS_Settings::readByteArraySingle(const QString& group, const QString 
     return m_settings->value(fullName, "").toByteArray();
 }
 
-QVariant RS_Settings::readEntryCache(const QString &key) {
-    if (m_cache.count(key) == 0) {
-        return QVariant();
-    }
-    return m_cache[key];
-}
 
 void RS_Settings::clearAll() {
     m_settings->clear();
@@ -282,4 +297,42 @@ RS_Pen RS_Settings::readPen(const QString& name, const RS_Pen &defaultPen){
 
     auto result = RS_Pen(color, lineWidth, lineType);
     return result;
+}
+
+void RS_Settings::startTransaction() {
+    m_transactionBackup.clear();
+    m_inTransaction = true;
+}
+
+void RS_Settings::commitTransaction() {
+    if (!m_inTransaction) return;
+    m_inTransaction = false;
+
+    // Bulk write only the modified keys permanently to QSettings
+    for (auto it = m_transactionBackup.begin(); it != m_transactionBackup.end(); ++it) {
+        QString fullName = it.key();
+        m_settings->setValue(fullName, m_cache[fullName]);
+    }
+    m_transactionBackup.clear();
+    emitOptionsChanged();
+}
+
+void RS_Settings::rollbackTransaction() {
+    if (!m_inTransaction) return;
+    m_inTransaction = false;
+
+    // Restore the in-memory cache to the pre-dialog baseline
+    for (auto it = m_transactionBackup.begin(); it != m_transactionBackup.end(); ++it) {
+        QString fullName = it.key();
+        QVariant originalVal = it.value();
+
+        writeEntryCache(fullName, originalVal); // Restore in-memory cache
+
+        QStringList parts = fullName.split('/', Qt::SkipEmptyParts);
+        if (parts.size() >= 2) {
+            emit optionChanged(parts[0], parts[1], QVariant(), originalVal);
+        }
+    }
+    m_transactionBackup.clear();
+    emitOptionsChanged();
 }

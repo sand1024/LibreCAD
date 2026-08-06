@@ -29,6 +29,7 @@
 #include "lc_containertraverser.h"
 #include "lc_graphicviewport.h"
 #include "lc_linemath.h"
+#include "lc_settings_render.h"
 #include "lc_splinepoints.h"
 #include "lc_undosection.h"
 #include "rs_arc.h"
@@ -971,7 +972,7 @@ RS_Entity* RS_Modification::getClone(const bool forPreviewOnly, const RS_Entity*
             case RS2::EntityText:
             case RS2::EntityMText: {
                 // fixme - sand - ucs - BAD dependency, rework.
-                const bool drawTextAsDraftInPreview = LC_GET_ONE_BOOL("Render", "DrawTextsAsDraftInPreview", true);
+                const bool drawTextAsDraftInPreview = CFG_Render::o_DrawTextsAsDraftInPreview;
                 if (drawTextAsDraftInPreview) {
                     result = e->cloneProxy();
                 }

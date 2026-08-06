@@ -159,7 +159,7 @@ void LC_PrintPreviewOptionsFiller::createPageSize(LC_PropertyContainer* const co
     const bool readOnlyPageSize = paperFormat != RS2::PaperFormat::Custom;
     auto* propertyPageSize = new LC_PropertyRSVector(cont, false);
     propertyPageSize->setNames({"printPageSize", tr("Page size"), tr("Size of page used for printing")});
-    propertyPageSize->setInteractiveInputType(LC_ActionContext::InteractiveInputInfo::InputType::POINT);
+    propertyPageSize->setInteractiveInputType(InteractiveInputInfo::InputType::POINT);
     propertyPageSize->setViewDescriptorProvider([]() -> LC_PropertyViewDescriptor {
         return {
             {{LC_PropertyRSVectorView::ATTR_X_DISPLAY_NAME, tr("Width")}, {LC_PropertyRSVectorView::ATTR_Y_DISPLAY_NAME, tr("Height")}}

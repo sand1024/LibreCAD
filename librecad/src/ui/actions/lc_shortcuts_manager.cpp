@@ -26,6 +26,8 @@
 #include <QDir>
 #include <QFile>
 
+#include "lc_settings_appearance.h"
+#include "lc_settings_paths.h"
 #include "lc_shortcutsstorage.h"
 #include "rs_debug.h"
 #include "rs_settings.h"
@@ -66,7 +68,7 @@ int LC_ShortcutsManager::loadShortcuts(const QString &filename, QMap<QString, QK
 }
 
 void LC_ShortcutsManager::updateActionTooltips(const QMap<QString, QAction *> &actionsMap) const {
-    const bool showShortcutsInActionsTooltips = LC_GET_ONE_BOOL("Appearance","ShowKeyboardShortcutsInTooltips", true);
+    const bool showShortcutsInActionsTooltips = CFG_Appearance::o_ShowKeyboardShortcutsInTooltips;
     updateActionShortcutTooltips(actionsMap, showShortcutsInActionsTooltips);
 }
 
@@ -188,7 +190,7 @@ QString LC_ShortcutsManager::strippedActionText(QString s) const{
 }
 
 QString LC_ShortcutsManager::getShortcutsMappingsFolder() const {
-    QString settingsDir = LC_GET_ONE_STR("Paths", "OtherSettingsDir", RS_System::instance()->getAppDataDir()).trimmed();
+    QString settingsDir = CFG_Paths::o_OtherSettingsDir;
     return settingsDir;
 }
 

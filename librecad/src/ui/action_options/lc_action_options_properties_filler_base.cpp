@@ -34,6 +34,8 @@
 #include "lc_property_int_spinbox_view.h"
 #include "lc_property_qstring_lineedit_view.h"
 #include "lc_property_rsvector_view.h"
+#include "lc_settings_snap.h"
+#include "lc_settings_snap_state.h"
 #include "rs_settings.h"
 
 template <typename T, typename TProperty>
@@ -67,7 +69,7 @@ void LC_ActionOptionsPropertiesFillerBase::addDouble(const LC_Property::Names& n
                                                      const typename LC_PropertyValueDelegated<double>::FunValueGet& funGet,
                                                      const typename LC_PropertyValueDelegated<double>::FunValueSetShort& funSet,
                                                      LC_PropertyContainer* cont, const FunPepareDescriptor& funFillViewAttrs) {
-    const auto property = createDoubleProperty(names, cont, LC_ActionContext::InteractiveInputInfo::InputType::NOTNEEDED, m_actionContext,
+    const auto property = createDoubleProperty(names, cont, InteractiveInputInfo::InputType::NOTNEEDED, m_actionContext,
                                                m_widget);
     createDelegatedStorage<double>(property, funGet, funSet);
     setupViewDescriptor<double>(funSet, funFillViewAttrs, property, LC_PropertyDoubleInteractivePickView::VIEW_NAME);
@@ -78,7 +80,7 @@ void LC_ActionOptionsPropertiesFillerBase::addLinearDistance(const LC_Property::
                                                              const typename LC_PropertyValueDelegated<double>::FunValueGet& funGet,
                                                              const typename LC_PropertyValueDelegated<double>::FunValueSetShort& funSet,
                                                              LC_PropertyContainer* cont, const FunPepareDescriptor& funFillViewAttrs) {
-    const auto property = createDoubleProperty(names, cont, LC_ActionContext::InteractiveInputInfo::InputType::DISTANCE, m_actionContext,
+    const auto property = createDoubleProperty(names, cont, InteractiveInputInfo::InputType::DISTANCE, m_actionContext,
                                                m_widget);
 
     createDelegatedStorage<double>(property, funGet, funSet);
@@ -90,7 +92,7 @@ void LC_ActionOptionsPropertiesFillerBase::addRawAngle(const LC_Property::Names&
                                                        typename LC_PropertyValueDelegated<double>::FunValueGet funGet,
                                                        const typename LC_PropertyValueDelegated<double>::FunValueSetShort& funSet,
                                                        LC_PropertyContainer* cont, const FunPepareDescriptor& funFillViewAttrs) {
-    const auto property = createDoubleProperty(names, cont, LC_ActionContext::InteractiveInputInfo::InputType::ANGLE, m_actionContext,
+    const auto property = createDoubleProperty(names, cont, InteractiveInputInfo::InputType::ANGLE, m_actionContext,
                                                m_widget);
 
     createDelegatedStorage<double>(property, funGet, funSet, [funGet](const double& v) -> bool {
@@ -105,7 +107,7 @@ void LC_ActionOptionsPropertiesFillerBase::addRawAngleDegrees(const LC_Property:
                                                               typename LC_PropertyValueDelegated<double>::FunValueGet funGet,
                                                               typename LC_PropertyValueDelegated<double>::FunValueSetShort funSet,
                                                               LC_PropertyContainer* cont, const FunPepareDescriptor& funFillViewAttrs) {
-    const auto property = createDoubleProperty(names, cont, LC_ActionContext::InteractiveInputInfo::InputType::ANGLE, m_actionContext,
+    const auto property = createDoubleProperty(names, cont, InteractiveInputInfo::InputType::ANGLE, m_actionContext,
                                                m_widget);
 
     auto funGetValue = [funGet]()-> double {
@@ -129,7 +131,7 @@ void LC_ActionOptionsPropertiesFillerBase::addWCSAngle(const LC_Property::Names&
                                                        typename LC_PropertyValueDelegated<double>::FunValueGet funGet,
                                                        typename LC_PropertyValueDelegated<double>::FunValueSetShort funSet,
                                                        LC_PropertyContainer* cont, const FunPepareDescriptor& funFillViewAttrs) {
-    const auto property = createDoubleProperty(names, cont, LC_ActionContext::InteractiveInputInfo::InputType::ANGLE, m_actionContext,
+    const auto property = createDoubleProperty(names, cont, InteractiveInputInfo::InputType::ANGLE, m_actionContext,
                                                m_widget);
 
     auto funGetValue = [this, funGet]() -> double {
@@ -293,12 +295,12 @@ void LC_ActionOptionsPropertiesFillerBase::fillSnapToolOptionsContainer(LC_Prope
     if (snapMode->snapDistance) {
         addLinearDistance({"a_snapDistance", tr("Snap Distance"), tr("Distance of snap point from initially resolved snap point")},
                           []()-> double {
-                              const QString distance = LC_GET_ONE_STR("Snap", "Distance", "1.0");
+                              const QString distance = CFG_SnapState::o_Distance;
                               double dist = RS_Math::eval(distance, 1.0);
                               return dist;
                           }, [this](double val)-> void {
                               QString value = QString::number(val, 'g', 6);
-                              LC_SET_ONE("Snap", "Distance", value);
+                              CFG_SnapState::o_Distance = value;
                               double dist = NAN;
                               m_actionContext->requestSnapDistOptions(&dist, true);
                           }, propertyContainer);
@@ -306,13 +308,13 @@ void LC_ActionOptionsPropertiesFillerBase::fillSnapToolOptionsContainer(LC_Prope
 
     if (snapMode->snapMiddle) {
         addIntSpinbox({"a_snapMiddleNum", tr("Snap middle"), tr("Number of equidistant division points")}, []()-> int {
-                          int points = LC_GET_ONE_INT("Snap", "MiddlePoints", 1);
+                          int points = CFG_SnapState::o_MiddlePoints;
                           if (!(points >= 1 && points <= 99)) {
                               points = 1;
                           }
                           return points;
                       }, [this](int val)-> void {
-                          LC_SET_ONE("Snap", "MiddlePoints", val);
+                          CFG_SnapState::o_MiddlePoints = val;
                           int mpoints = 0;
                           m_actionContext->requestSnapMiddleOptions(&mpoints, true);
                       }, propertyContainer);

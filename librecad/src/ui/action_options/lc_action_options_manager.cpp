@@ -84,7 +84,7 @@ void LC_ActionOptionsManager::requestSnapDistOptions(double* dist, const bool on
 
 LC_SnapOptionsWidgetsHolder* LC_ActionOptionsManager::getSnapOptionsHolder(){
     LC_SnapOptionsWidgetsHolder* result = nullptr;
-    const bool useSnapToolbar = LC_GET_ONE_BOOL("Appearance", "showSnapOptionsInSnapToolbar", false);
+    const bool useSnapToolbar = CFG_Appearance::o_showSnapOptionsInSnapToolbar;
     if (useSnapToolbar){
         result = m_snapOptionsWidgetHolderSnapToolbar;
         m_snapOptionsWidgetHolderOptionsToolbar->setVisible(false);

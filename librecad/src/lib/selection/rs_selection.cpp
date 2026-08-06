@@ -29,6 +29,7 @@
 #include "lc_containertraverser.h"
 #include "lc_graphicviewport.h"
 #include "lc_selectedset.h"
+#include "lc_settings_selection.h"
 #include "qc_applicationwindow.h"
 #include "qg_dialogfactory.h"
 #include "rs_entitycontainer.h"
@@ -41,11 +42,11 @@
 #include "rs_solid.h"
 
 RS_Selection::RS_Selection(RS_Document* container, LC_GraphicViewport* graphicView) : m_document{container}, m_viewPort{graphicView} {
-    m_additiveSelection = LC_GET_ONE_BOOL("Selection", "Additivity", true);
+    m_additiveSelection = CFG_Selection::o_Additivity;
 }
 
 RS_Selection::RS_Selection(const RS_GraphicView* graphicView) : m_document{graphicView->getDocument()}, m_viewPort{graphicView->getViewPort()} {
-    m_additiveSelection = LC_GET_ONE_BOOL("Selection", "Additivity", true);
+    m_additiveSelection = CFG_Selection::o_Additivity;
 }
 
 /**

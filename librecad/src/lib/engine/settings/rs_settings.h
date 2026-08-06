@@ -132,6 +132,11 @@ public:
      */
     static void init(const QString& companyKey, const QString& appKey);
 
+    void startTransaction();
+    void commitTransaction();
+    void rollbackTransaction();
+
+
     // RAII style group guard: endGroup() is called automatically at the end of lifetime of the returned object
     std::unique_ptr<GroupGuard> beginGroupGuard(QString group);
     void beginGroup(const QString& group);
@@ -179,21 +184,49 @@ public:
 
     void remove(const QString &key) const;
 
+    bool writeEntrySingle(const QString &group, const QString &key, const QVariant &value);
+
 signals:
     void optionChanged(const QString& groupName, const QString &propertyName, QVariant oldValue, QVariant newValue);
     void optionsChanged();
 
 private:
     explicit RS_Settings(QSettings *qsettings);
-    QVariant readEntryCache(const QString& key);
+
+// fixme - sand - cleanup debug code on code finalization!!!
+    QVariant readEntryCache(const QString &key) {
+        if (m_cache.count(key) == 0) {
+            return QVariant();
+        }
+/*        auto result = m_cache[key];
+        if (key == "/Appearance/PersistDialogPositions") {
+            LC_ERR << "Read Entry Cache: " << result.toBool();
+        }
+        return result;
+*/
+        return m_cache[key];
+    }
+
+
+    void writeEntryCache(const QString& key, QVariant value) {
+ /*       if (key == "/Appearance/PersistDialogPositions") {
+            int intValue = value.toInt();
+            bool boolValue = value.toBool();
+            auto mType = value.metaType();
+            auto metaType = mType.name();
+            LC_ERR << "Write Entry Cache: " << boolValue<< "  " << intValue << " Type: " << metaType;
+        }
+*/
+        m_cache[key] = value;
+    }
 
 protected:
     std::map<QString, QVariant> m_cache;
     QString m_group;
     QSettings *m_settings = nullptr;
     static inline RS_Settings* INSTANCE;
-
-    bool writeEntrySingle(const QString &group, const QString &key, const QVariant &value);
+    bool m_inTransaction = false;
+    QMap<QString, QVariant> m_transactionBackup;
     QString getFullName(const QString &group, const QString &key) const;
 };
 

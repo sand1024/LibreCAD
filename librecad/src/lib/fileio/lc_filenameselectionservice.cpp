@@ -26,17 +26,18 @@
 #include <QFileDialog>
 #include <QWidget>
 
+#include "lc_settings_defaults.h"
+#include "lc_settings_paths.h"
 #include "rs_settings.h"
 #include "rs_system.h"
 
 bool LC_FileNameSelectionService::doObtainFileName(QWidget* parent, QString& fileName, const bool forRead, const QString& extensionStr,
                                                    const QString& defaultFileName, const QString& captionForImport,
                                                    const QString& captionForExport, const QString& fileNameFilter) {
-    LC_GROUP("Export");
-    const QString defDir = LC_GET_STR("ExportSettingsDir", RS_SYSTEM->getHomeDir());
-    LC_GROUP_END();
 
-    const bool useQtFileDialog = LC_GET_ONE_BOOL("Defaults","UseQtFileOpenDialog");
+    const QString defDir = CFG_Paths::o_ExportSettingsDir;
+
+    const bool useQtFileDialog = CFG_Defaults::o_UseQtFileOpenDialog;
 
     const QString& defaultExtension{extensionStr};
 

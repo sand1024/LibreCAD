@@ -59,6 +59,7 @@
 
 #include "lc_uiutils.h"
 #include "lc_palette_color_utils.h"
+#include "lc_settings_startup.h"
 #include "qc_applicationwindow.h"
 #include "qg_dlginitial.h"
 #include "rs_debug.h"
@@ -152,10 +153,10 @@ void initPatternList() {
 void loadTranslations() {
     RS_DEBUG->print("main: loading translation..");
 
-    LC_GROUP("Appearance");
-    const QString lang = LC_GET_STR("Language", "en");
-    const QString langCmd = LC_GET_STR("LanguageCmd", "en");
-    LC_GROUP_END();
+    using namespace CFG_Appearance;
+
+    const QString lang = o_Language;;
+    const QString langCmd = o_LanguageCmd;
 
     RS_SYSTEM->loadTranslation(lang, langCmd);
     RS_DEBUG->print("main: loading translation: OK");
@@ -325,7 +326,7 @@ int main(int argc, char** argv) {
     QGuiApplication::setDesktopFileName("librecad");
 
 
-    const bool first_load = LC_GET_ONE_BOOL("Startup", "FirstLoad", true);
+    const bool first_load = CFG_Startup::o_FirstLoad;
 
     bool allowOptions=true;
     QList<int> argClean;
@@ -386,7 +387,7 @@ int main(int argc, char** argv) {
     showFirstLoadSetupDialog(first_load);
 
     std::unique_ptr<QSplashScreen> splash;
-    const bool show_splash = LC_GET_ONE_BOOL("Startup","ShowSplash", true);
+    const bool show_splash = CFG_Startup::o_ShowSplash;
 
     if (show_splash){
         splash = std::make_unique<QSplashScreen>();
@@ -413,7 +414,7 @@ int main(int argc, char** argv) {
     RS_DEBUG->print("main: setting caption");
     QString mainWinTitle = applicationName;
 
-    const bool showVersionInTitle = LC_GET_ONE_BOOL("Startup","ShowVersionInTitle", true);
+    const bool showVersionInTitle = CFG_Startup::o_ShowVersionInTitle;
     if (showVersionInTitle) {
         mainWinTitle = applicationName + " [" + versionStr + "]";
     }
@@ -435,7 +436,7 @@ int main(int argc, char** argv) {
     }
     settings.endGroup();
 
-    const bool maximize = LC_GET_ONE_BOOL("Startup","Maximize", false);
+    const bool maximize = CFG_Startup::o_Maximize;
 
     if (maximize || first_load) {
         appWin.showMaximized();
@@ -472,19 +473,18 @@ int main(int argc, char** argv) {
         splash.release();
     }
 
-    LC_GROUP("Startup");
     {
+        using namespace CFG_Startup;
         // fixme - sand - files - add support of command line flag to suppress version check (may be useful for automation)!
-        const bool checkForNewVersion = LC_GET_BOOL("CheckForNewVersions", true);
+        const bool checkForNewVersion = o_CheckForNewVersions;
         if (checkForNewVersion) {
             appWin.checkForNewVersion();
         }
 
-        if (first_load){
-            LC_SET("FirstLoad", false);
+        if (first_load) {
+            o_FirstLoad = false;
         }
     }
-    LC_GROUP_END();
 
     return execApplication(app);
 #    endif
