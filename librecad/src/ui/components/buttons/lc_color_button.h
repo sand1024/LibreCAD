@@ -25,7 +25,8 @@
 #include <QPushButton>
 #include <QColor>
 
-class LC_ColorButton : public QPushButton {
+class
+LC_ColorButton : public QPushButton {
     Q_OBJECT public:
     explicit LC_ColorButton(const QColor& color = Qt::white, QWidget* parent = nullptr);
     explicit LC_ColorButton(QWidget* parent = nullptr);
@@ -52,6 +53,7 @@ class LC_ColorButton : public QPushButton {
 
 signals:
     void colorChanged(const QColor& color);
+    void colorSelectionChanged(const QColor& color);
 
 protected:
     void paintEvent(QPaintEvent* event) override;

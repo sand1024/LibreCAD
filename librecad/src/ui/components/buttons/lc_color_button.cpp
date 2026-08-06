@@ -24,6 +24,8 @@
 #include <QColorDialog>
 #include <QPainter>
 
+#include "lc_settings_defaults.h"
+
 LC_ColorButton::LC_ColorButton(const QColor& color, QWidget* parent)
     : QPushButton(parent), m_color(color) {
     connect(this, &QPushButton::clicked, this, &LC_ColorButton::chooseColor);
@@ -131,9 +133,35 @@ void LC_ColorButton::chooseColor() {
     // Use the dynamic dialog title property if set, otherwise fallback to "Select Color"
     QString title = m_dialogTitle.isEmpty() ? tr("Select Color") : m_dialogTitle;
 
-    const QColor col = QColorDialog::getColor(initial, this, title, QColorDialog::ShowAlphaChannel);
-    if (col.isValid()) {
-        setColor(col);
-        emit colorChanged(col);
+    if (CFG_Defaults::o_UseQtColorPickerDialog) {
+        auto *dialog = new QColorDialog(initial, this);
+        dialog->setOption(QColorDialog::DontUseNativeDialog, true);
+        dialog->setOption(QColorDialog::ShowAlphaChannel, true);
+
+        connect(dialog, &QColorDialog::currentColorChanged, [this](const QColor& color) {
+            if (color.isValid()) {
+                setColor(color);
+                // emit colorSelectionChanged(color);
+                emit colorChanged(color);
+            }
+        });
+
+        int executionResult = dialog->exec();
+        if (executionResult == QDialog::Accepted) {
+            QColor finalColor = dialog->currentColor();
+            setColor(finalColor);
+            emit colorChanged(finalColor);
+        }
+        else {
+            setColor(initial);
+            emit colorChanged(initial);
+        }
+    }
+    else {
+        const QColor col = QColorDialog::getColor(initial, this, title, QColorDialog::ShowAlphaChannel);
+        if (col.isValid()) {
+            setColor(col);
+            emit colorChanged(col);
+        }
     }
 }
