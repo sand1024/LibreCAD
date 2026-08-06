@@ -24,21 +24,19 @@
 #define LC_OVERLAYANGLESBASEMARK_H
 
 #include "lc_overlayentity.h"
+#include "lc_settings_appearance.h"
 #include "rs_color.h"
 #include "rs_vector.h"
 
 struct LC_AnglesBaseMarkOptions{
-    enum {
-        SHOW_ALWAYS,
-        SHOW_IF_NON_DEFAULTS
-    };
     /** coordinate origin marker */
     bool showAnglesBaseMark = true;
-    int displayPolicy = SHOW_ALWAYS;
+    int displayPolicy = CFG_Appearance::ShowAnglesBaseMarkType::SHOW_ALWAYS;
     RS_Color colorDirectionType = Qt::blue;
     int markerRadius = 30;
     RS_Color colorAnglePointer = Qt::blue;
     RS_Color colorRadius = Qt::blue;
+    int overlayScreenLineWidth = 0;
     void loadSettings();
 };
 

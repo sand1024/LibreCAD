@@ -22,26 +22,30 @@
 
 #include "lc_overlayanglesbasemark.h"
 
+#include "lc_settings_appearance.h"
+#include "lc_settings_colors.h"
 #include "rs_painter.h"
-#include "rs_settings.h"
 
 void LC_AnglesBaseMarkOptions::loadSettings() {
-    LC_GROUP("Appearance");
-    {
-        showAnglesBaseMark = LC_GET_BOOL("AnglesBasisMarkEnabled", true);
-        displayPolicy = LC_GET_INT("AnglesBasisMarkPolicy", SHOW_ALWAYS);
+    using namespace CFG_Appearance;
 
-        const int zeroMarkerSize = LC_GET_INT("ZeroMarkerSize", 30);
-        markerRadius = zeroMarkerSize / 2;
+    showAnglesBaseMark = o_AnglesBasisMarkEnabled;
+    displayPolicy = o_AnglesBasisMarkPolicy;
+    const int zeroMarkerSize = o_ZeroMarkerSize;
+    markerRadius = zeroMarkerSize / 2;
+
+    using namespace CFG_Colors;
+
+    colorAnglePointer = RS_Color(o_AnglesBasisAngleRay);
+    colorDirectionType = RS_Color(o_AnglesBasisDirection);
+    // m_colorRadius = RS_Color(LC_GET_STR("colorAnglesBaseRadius", RS_Settings::anglesBasisDirection));
+    colorRadius = colorDirectionType;
+
+    overlayScreenLineWidth = o_OverlaysScreenLineWidth;
+    if (overlayScreenLineWidth ==1 ) {
+        overlayScreenLineWidth = 0;
     }
-    LC_GROUP_GUARD("Colors");
-    {
-        colorAnglePointer = RS_Color(LC_GET_STR("angles_basis_angleray", RS_Settings::ANGLES_BASIS_ANGLE_RAY));
-        colorDirectionType = RS_Color(LC_GET_STR("angles_basis_direction", RS_Settings::ANGLES_BASIS_DIRECTION));
-        // m_colorRadius = RS_Color(LC_GET_STR("colorAnglesBaseRadius", RS_Settings::anglesBasisDirection));
-        colorRadius = colorDirectionType;
-    }
-}
+ }
 
 LC_OverlayAnglesBaseMark::LC_OverlayAnglesBaseMark(const RS_Vector& uiOrigin, const double baseAngle, const bool counterClockWise,
                                                    LC_AnglesBaseMarkOptions* options)
@@ -59,21 +63,21 @@ LC_OverlayAnglesBaseMark::LC_OverlayAnglesBaseMark(LC_AnglesBaseMarkOptions* opt
 
 void LC_OverlayAnglesBaseMark::draw(RS_Painter* painter) {
     RS_Pen penRadius(m_options->colorRadius, RS2::Width00, RS2::SolidLine);
-    penRadius.setScreenWidth(0);
+    penRadius.setScreenWidth(m_options->overlayScreenLineWidth);
     painter->setPen(penRadius);
 
     int radius = m_options->markerRadius;
     painter->drawCircleUIDirect(m_origin, radius);
 
     RS_Pen penAngle(m_options->colorAnglePointer, RS2::Width00, RS2::SolidLine);
-    penAngle.setScreenWidth(0);
+    penAngle.setScreenWidth(m_options->overlayScreenLineWidth);
     painter->setPen(penAngle);
 
     RS_Vector angleEnd = m_origin.relative(radius, -m_baseAngle);
     painter->drawLineUISimple(m_origin, angleEnd);
 
     RS_Pen penDirection(m_options->colorRadius, RS2::Width00, RS2::SolidLine);
-    penDirection.setScreenWidth(2);
+    penDirection.setScreenWidth(m_options->overlayScreenLineWidth);
     painter->setPen(penDirection);
 
     RS_Vector p1, p2, p3;

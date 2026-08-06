@@ -27,10 +27,25 @@
 #include "rs_preview.h"
 
 #include "lc_graphicviewport.h"
+#include "lc_settings_appearance.h"
+#include "lc_settings_colors.h"
 #include "rs_color.h"
 #include "rs_line.h"
 #include "rs_pen.h"
 #include "rs_settings.h"
+
+void RS_Preview::loadSettings() {
+    m_maxEntities = CFG_Appearance::o_MaxPreview;
+    const auto highLight = RS_Color(CFG_Colors::o_PreviewEntitiesColor);
+
+    RS_Pen pen(highLight, RS2::Width00, RS2::SolidLine);
+    int screenLineWidth = CFG_Appearance::o_OverlaysScreenLineWidth;
+    if (screenLineWidth == 1) {
+        screenLineWidth = 0;
+    }
+    pen.setScreenWidth(screenLineWidth);
+    setPen(pen);
+}
 
 /**
  * Constructor.
@@ -39,10 +54,7 @@ RS_Preview::RS_Preview(RS_EntityContainer* parent, LC_GraphicViewport* viewport)
         : LC_PreviewDocument(parent), m_viewport{viewport}{
 
 // fixme - sand - ucs - check when preview is created and whether this may be delegated to actio init?
-
-    m_maxEntities = LC_GET_ONE_INT("Appearance", "MaxPreview", 100);
-    const auto highLight = RS_Color(LC_GET_ONE_STR("Colors", "highlight", RS_Settings::HIGHLIGHT));
-    setPen(RS_Pen(highLight, RS2::Width00, RS2::SolidLine));
+    loadSettings();
 }
 
 /**

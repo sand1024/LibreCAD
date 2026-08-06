@@ -23,26 +23,32 @@
 
 #include "lc_ucs_mark.h"
 
+#include "lc_settings_appearance.h"
+#include "lc_settings_colors.h"
 #include "rs_math.h"
 #include "rs_painter.h"
 #include "rs_pen.h"
 #include "rs_settings.h"
 
 void LC_UCSMarkOptions::loadSettings() {
-    LC_GROUP("Appearance");
     {
-        showUcsZeroMarker = LC_GET_BOOL("ShowUCSZeroMarker", false);
-        showWcsZeroMarker = LC_GET_BOOL("ShowWCSZeroMarker", true);
-        csZeroMarkerSize = LC_GET_INT("ZeroMarkerSize", 30);
-        csZeroMarkerFontSize = LC_GET_INT("ZeroMarkerFontSize", 10);
-        csZeroMarkerfontName = LC_GET_STR("ZeroMarkerFontName", "Verdana");
+        using namespace CFG_Appearance;
+        showUcsZeroMarker = o_ShowUCSZeroMarker;
+        showWcsZeroMarker = o_ShowWCSZeroMarker;
+        csZeroMarkerSize = o_ZeroMarkerSize;
+        csZeroMarkerFontSize = o_ZeroMarkerFontSize;
+        csZeroMarkerfontName = o_ZeroMarkerFontName;
         csZeroMarkerFont = QFont(csZeroMarkerfontName, csZeroMarkerFontSize);
+        overlayScreenLineWidth = o_OverlaysScreenLineWidth;
+        if (overlayScreenLineWidth == 1 ) {
+            overlayScreenLineWidth = 0;
+        }
     }
-    LC_GROUP_GUARD("Colors");
     {
-        colorXAxisExtension = RS_Color(LC_GET_STR("grid_x_axisColor", "red"));
-        colorYAxisExtension = RS_Color(LC_GET_STR("grid_y_axisColor", "green"));
-        colorAngleMark = RS_Color(LC_GET_STR("previewReferencesColor", RS_Settings::PREVIEW_REF_COLOR));
+        using namespace CFG_Colors;
+        colorXAxisExtension = RS_Color(o_GridXAxis);
+        colorYAxisExtension = RS_Color(o_GridYAxis);
+        colorAngleMark = RS_Color(o_PreviewReferencesColor);
     }
 }
 
@@ -66,10 +72,10 @@ void LC_OverlayUCSMark::draw(RS_Painter *painter) {
     RS_Vector uiYAxisEnd = m_uiOrigin.relative(zr,yAxisAngle);
 
     RS_Pen penXAxis (m_options->colorXAxisExtension, RS2::Width00, RS2::SolidLine);
-    penXAxis.setScreenWidth(2);
+    penXAxis.setScreenWidth(m_options->overlayScreenLineWidth);
 
     RS_Pen penYAxis (m_options->colorYAxisExtension, RS2::Width00, RS2::SolidLine);
-    penYAxis.setScreenWidth(2);
+    penYAxis.setScreenWidth(m_options->overlayScreenLineWidth);
 
     double anchorFactor = 0.2;
     double anchorAngle = RS_Math::deg2rad(70);
@@ -115,7 +121,7 @@ void LC_OverlayUCSMark::draw(RS_Painter *painter) {
     painter->drawText(yRect, Qt::AlignTop | Qt::AlignRight | Qt::TextDontClip, yString, &yBoundingRect);
 
     // square
-    double angleFactor = 0.05;
+    double angleFactor = 0.2;
     double angleLen = zr*angleFactor;
 
     RS_Vector angleX0 = m_uiOrigin.relative(angleLen, m_xAxisAngle);
@@ -123,7 +129,7 @@ void LC_OverlayUCSMark::draw(RS_Painter *painter) {
     RS_Vector anchorY0 = m_uiOrigin.relative(angleLen, yAxisAngle);
 
     RS_Pen anglePen (m_options->colorAngleMark, RS2::Width00, RS2::SolidLine);
-    anglePen.setScreenWidth(0);
+    anglePen.setScreenWidth(m_options->overlayScreenLineWidth);
 
     painter->setPen(anglePen);
 

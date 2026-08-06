@@ -23,6 +23,8 @@
 #include "lc_overlayucszero.h"
 
 #include "lc_graphicviewport.h"
+#include "lc_settings_appearance.h"
+#include "lc_settings_colors.h"
 #include "rs_painter.h"
 #include "rs_pen.h"
 #include "rs_settings.h"
@@ -30,17 +32,22 @@
 class LC_GraphicViewport;
 
 void LC_OverlayUCSZeroOptions::loadSettings(){
-    LC_GROUP("Appearance");
     {
-        extendAxisLines = LC_GET_BOOL("ExtendAxisLines", false);
-        extendAxisModeX = LC_GET_INT("ExtendModeXAxis", 0);
-        extendAxisModeY = LC_GET_INT("ExtendModeYAxis", 0);
-        zeroShortAxisMarkSize = LC_GET_INT("ZeroShortAxisMarkSize", 20);
+        using namespace CFG_Appearance;
+        extendAxisLines = o_ExtendAxisLines;
+        extendAxisModeX = o_ExtendModeXAxis;
+        extendAxisModeY = o_ExtendModeYAxis;
+        zeroShortAxisMarkSize = o_ZeroShortAxisMarkSize;
+
+        overlayScreenLineWidth = o_OverlaysScreenLineWidth;
+        if (overlayScreenLineWidth == 1 ) {
+            overlayScreenLineWidth = 0;
+        }
     }
-    LC_GROUP_GUARD("Colors");
     {
-        colorXAxisExtension = RS_Color(LC_GET_STR("grid_x_axisColor", "red"));
-        colorYAxisExtension = RS_Color(LC_GET_STR("grid_y_axisColor", "green"));
+        using namespace CFG_Colors;
+        colorXAxisExtension = RS_Color(o_GridXAxis);
+        colorYAxisExtension = RS_Color(o_GridYAxis);
     }
 }
 
@@ -54,10 +61,10 @@ void LC_OverlayUCSZero::draw(RS_Painter *painter) {
     const int zr = m_options->zeroShortAxisMarkSize;
 
     RS_Pen penXAxis (m_options->colorXAxisExtension, RS2::Width00, RS2::SolidLine);
-    penXAxis.setScreenWidth(0);
+    penXAxis.setScreenWidth(m_options->overlayScreenLineWidth);
 
     RS_Pen penYAxis (m_options->colorYAxisExtension, RS2::Width00, RS2::SolidLine);
-    penYAxis.setScreenWidth(0);
+    penYAxis.setScreenWidth(m_options->overlayScreenLineWidth);
 
     auto* viewport = painter->getViewPort();
 

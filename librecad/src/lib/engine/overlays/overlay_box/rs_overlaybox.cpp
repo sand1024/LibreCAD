@@ -27,28 +27,34 @@
 
 #include <math.h>
 
+#include "lc_settings_appearance.h"
+#include "lc_settings_colors.h"
 #include "rs_painter.h"
 #include "rs_settings.h"
 
 void LC_OverlayBoxOptions::loadSettings() {
-    LC_GROUP("Colors");
     {
-        int overlayTransparency = LC_GET_INT("overlay_box_transparency",90);
-        colorBoxLine = RS_Color(LC_GET_STR("overlay_box_line", RS_Settings::OVERLAY_BOX_LINE));
-        auto tmp = RS_Color(LC_GET_STR("overlay_box_fill", RS_Settings::OVERLAY_BOX_FILL));
-        RS_Color fillColor(tmp.red(), tmp.green(), tmp.blue(), overlayTransparency);
+        using namespace CFG_Colors;
+        int overlayTransparency = o_OverlayBoxTransparency;;
+        colorBoxLine = RS_Color(o_OverlayBoxLine);
+        auto tmp = RS_Color(o_OverlayBoxFill);
+        const RS_Color fillColor(tmp.red(), tmp.green(), tmp.blue(), overlayTransparency);
         colorBoxFill = fillColor;
-        colorLineInverted = RS_Color(LC_GET_STR("overlay_box_line_inv", RS_Settings::OVERLAY_BOX_LINE_INVERTED));
-        tmp = RS_Color(LC_GET_STR("overlay_box_fill_inv", RS_Settings::OVERLAY_BOX_FILL_INVERTED));
+        colorLineInverted = RS_Color(o_OverlayBoxLineInverted);
+        tmp = RS_Color(o_OverlayBoxFillInverted);
         RS_Color fillColorInverted(tmp.red(), tmp.green(), tmp.blue(), overlayTransparency);
         colorBoxFillInverted = fillColorInverted;
-    }// colors group
-    LC_GROUP_END();
-    LC_GROUP("Appearance"); {
-        lineType = static_cast<RS2::LineType>(LC_GET_INT("selection_overlay_line_type", RS2::SolidLine));
-        invertedLineType = static_cast<RS2::LineType>(LC_GET_INT("selection_overlay_inverted_line_type", RS2::DashLine));
     }
-    LC_GROUP_END();
+    
+    {
+        using namespace CFG_Appearance;
+        lineType = o_SelectionOverlayLineType;
+        invertedLineType = o_SelectionOverlayInvertedLineType;
+        overlayScreenLineWidth = o_OverlaysScreenLineWidth;
+        if (overlayScreenLineWidth ==1 ) {
+            overlayScreenLineWidth = 0;
+        }
+    }
 }
 
 RS_OverlayBox::RS_OverlayBox(const RS_Vector &corner1, const RS_Vector &corner2, LC_OverlayBoxOptions *options)
@@ -67,12 +73,14 @@ void RS_OverlayBox::draw(RS_Painter* painter) {
 
     if (v1x > v2x) {
         RS_Pen p(m_options->colorLineInverted, RS2::Width00, m_options->invertedLineType);
+        p.setScreenWidth(m_options->overlayScreenLineWidth);
         painter->setPen(p);
         const RS_Color &fillColor = m_options->colorBoxFillInverted;
         painter->fillRect(selectRect, fillColor);
     }
     else {
         RS_Pen p(m_options->colorBoxLine, RS2::Width00, m_options->lineType);
+        p.setScreenWidth(m_options->overlayScreenLineWidth);
         painter->setPen(p);
         const RS_Color &fillColor = m_options->colorBoxFill;
         painter->fillRect(selectRect, fillColor);

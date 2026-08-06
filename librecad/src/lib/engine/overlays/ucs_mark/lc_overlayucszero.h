@@ -40,6 +40,7 @@ struct LC_OverlayUCSZeroOptions{
     int zeroShortAxisMarkSize = 20;
     RS_Color colorXAxisExtension = Qt::red;
     RS_Color colorYAxisExtension = Qt::green;
+    int overlayScreenLineWidth = 0;
 
     void loadSettings();
 };

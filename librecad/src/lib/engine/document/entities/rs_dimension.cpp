@@ -1348,7 +1348,7 @@ QString RS_Dimension::createLinearMeasuredLabel(const double dist) const {
 
 double RS_Dimension::prepareLabelLinearDistance(const double distance) const {
     double dist = distance * getGeneralFactor();
-    if (!LC_GET_ONE_BOOL("Appearance", "UnitlessGrid", true)) {
+    if (!CFG_Appearance::o_UnitlessGrid) {
         dist = RS_Units::convert(dist);
     }
     return dist;

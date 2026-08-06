@@ -31,7 +31,7 @@ struct LC_OverlayRelZeroOptions{
     bool hideRelativeZero = false;
     int relativeZeroRadius  = 2;
     RS_Color colorRelativeZero = Qt::red;
-
+    int overlayScreenLineWidth = 0;
     void loadSettings();
 };
 

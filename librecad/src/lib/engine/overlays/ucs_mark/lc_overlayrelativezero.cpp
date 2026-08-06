@@ -23,25 +23,30 @@
 #include "lc_overlayrelativezero.h"
 
 #include "lc_graphicviewport.h"
+#include "lc_settings_appearance.h"
+#include "lc_settings_colors.h"
 #include "rs_painter.h"
 #include "rs_settings.h"
 
 void LC_OverlayRelZeroOptions::loadSettings() {
-    LC_GROUP("Appearance");
     {
-        hideRelativeZero = LC_GET_BOOL("hideRelativeZero");
-        relativeZeroRadius = LC_GET_INT("RelZeroMarkerRadius", 5);
+        using namespace CFG_Appearance;
+        hideRelativeZero = o_HideRelativeZero;
+        relativeZeroRadius = o_RelZeroMarkerRadius;
+        overlayScreenLineWidth = o_OverlaysScreenLineWidth;
+        if (overlayScreenLineWidth == 1 ) {
+            overlayScreenLineWidth = 0;
+        }
     }
-    LC_GROUP_GUARD("Colors");
     {
-        colorRelativeZero = RS_Color(LC_GET_STR("relativeZeroColor", RS_Settings::RELATIVE_ZERO_COLOR));
+        using namespace CFG_Colors;
+        colorRelativeZero = RS_Color(o_RelativeZeroColor);
     }
 }
 
 LC_OverlayRelativeZero::LC_OverlayRelativeZero(const RS_Vector &wcsPos, LC_OverlayRelZeroOptions *options)
     :m_wcsPosition(wcsPos)
-    , m_options(options)
-{}
+    , m_options(options){}
 
   LC_OverlayRelativeZero::LC_OverlayRelativeZero(LC_OverlayRelZeroOptions *options)
     :m_wcsPosition(RS_Vector(false))
@@ -54,7 +59,7 @@ void LC_OverlayRelativeZero::draw(RS_Painter *painter) {
     constexpr RS2::LineType relativeZeroPenType = RS2::SolidLine;
 
     RS_Pen p(m_options->colorRelativeZero, RS2::Width00, relativeZeroPenType);
-    p.setScreenWidth(0);
+    p.setScreenWidth(m_options->overlayScreenLineWidth);
     painter->setPen(p);
 
     const double zr = m_options->relativeZeroRadius;
@@ -71,7 +76,9 @@ void LC_OverlayRelativeZero::draw(RS_Painter *painter) {
         return;
     }
 
-    painter->drawLineUISimple(vpMin, vpMax);
+    //painter->drawLineUISimple(vpMin, vpMax);
+    painter->drawLineUISimple(uiPos, vpMax);
+    painter->drawLineUISimple({vpMin.x, vpMax.y}, uiPos);
 
     painter->drawCircleUIDirect(uiPos, m_options->relativeZeroRadius);
 }

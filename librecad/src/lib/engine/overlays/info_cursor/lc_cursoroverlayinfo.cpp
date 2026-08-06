@@ -22,6 +22,8 @@
 
 #include "lc_cursoroverlayinfo.h"
 
+#include "lc_settings_colors.h"
+#include "lc_settings_info_overlay_cursor.h"
 #include "rs_painter.h"
 #include "rs_settings.h"
 
@@ -60,43 +62,39 @@ void LC_InfoCursorOptions::setFontSize(const int size) {
 }
 
 void LC_InfoCursorOverlayPrefs::loadSettings() {
-    LC_GROUP("InfoOverlayCursor");
-    {
-        enabled = LC_GET_BOOL("Enabled", true);
-        if (enabled) {
-            showAbsolutePosition = LC_GET_BOOL("ShowAbsolute", true);
-            showAbsolutePositionWCS = LC_GET_BOOL("ShowAbsoluteWCS", false);
+    using namespace CFG_InfoOverlayCursor;
+    enabled = o_InfoCursorEnabled;
+    if (enabled) {
+        showAbsolutePosition = o_ShowAbsolute;
+        showAbsolutePositionWCS = o_ShowAbsoluteWCS;
 
-            showRelativePositionDistAngle = LC_GET_BOOL("ShowRelativeDA", true);
-            showRelativePositionDeltas = LC_GET_BOOL("ShowRelativeDD", true);
-            showSnapType = LC_GET_BOOL("ShowSnapInfo", true);
-            showCurrentActionName = LC_GET_BOOL("ShowActionName", true);
-            showCommandPrompt = LC_GET_BOOL("ShowPrompt", true);
-            showLabels = LC_GET_BOOL("ShowLabels", false);
-            multiLine = !LC_GET_BOOL("SingleLine", true);
+        showRelativePositionDistAngle = o_ShowRelativeDA;
+        showRelativePositionDeltas = o_ShowRelativeDD;
+        showSnapType = o_ShowSnapInfo;
+        showCurrentActionName = o_ShowActionName;
+        showCommandPrompt = o_ShowPrompt;
+        showLabels = o_ShowLabels;
+        multiLine = !o_SingleLine;
 
-            showEntityInfoOnCatch = LC_GET_BOOL("ShowPropertiesCatched", true);
-            showEntityInfoOnCreation = LC_GET_BOOL("ShowPropertiesCreating", true);
-            showEntityInfoOnModification = LC_GET_BOOL("ShowPropertiesEdit", true);
+        showEntityInfoOnCatch = o_ShowPropertiesCatched;
+        showEntityInfoOnCreation = o_ShowPropertiesCreating;
+        showEntityInfoOnModification = o_ShowPropertiesEdit;
 
-            const int infoCursorFontSize = LC_GET_INT("FontSize", 10);
-            // todo - potentially, we may use different font sizes for different zones later
-            options.setFontSize(infoCursorFontSize);
-            options.fontName = LC_GET_STR("FontName", "Helvetica");
-            options.offset = LC_GET_INT("OffsetFromCursor", 10);
-        }
+        const int infoCursorFontSize = o_FontSize;
+        // todo - potentially, we may use different font sizes for different zones later
+        options.setFontSize(infoCursorFontSize);
+        options.fontName = o_FontName;
+        options.offset = o_OffsetFromCursor;
     }
 
-    LC_GROUP("Colors");
-    {
-        if (enabled) {
-            options.zone(0).color = RS_Color(LC_GET_STR("info_overlay_absolute", RS_Settings::OVERLAY_INFO_CURSOR_ABSOLUTE_POS));
-            options.zone(1).color = RS_Color(LC_GET_STR("info_overlay_snap", RS_Settings::OVERLAY_INFO_CURSOR_SNAP));
-            options.zone(2).color = RS_Color(LC_GET_STR("info_overlay_relative", RS_Settings::OVERLAY_INFO_CURSOR_RELATIVE_POS));
-            options.zone(3).color = RS_Color(LC_GET_STR("info_overlay_prompt", RS_Settings::OVERLAY_INFO_CURSOR_COMMAND_PROMPT));
-        }
+    using namespace CFG_Colors;
+
+    if (enabled) {
+        options.zone(0).color = RS_Color(o_InfoOverlayAbsolute);
+        options.zone(1).color = RS_Color(o_InfoOverlaySnap);;
+        options.zone(2).color = RS_Color(o_InfoOverlayRelative);
+        options.zone(3).color = RS_Color(o_InfoOverlayPrompt);
     }
-    LC_GROUP_END();
 }
 
 LC_OverlayInfoCursor::LC_OverlayInfoCursor(const RS_Vector& coord, LC_InfoCursorOptions* cursorOverlaySettings) : m_wcsPos(coord) {

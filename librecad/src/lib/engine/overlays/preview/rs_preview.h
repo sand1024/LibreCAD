@@ -71,7 +71,7 @@ public:
     void draw(RS_Painter* painter) override;
     void clear() override;
     int getMaxAllowedEntities() const;
-
+    void loadSettings();
 private:
     unsigned int m_maxEntities {0};
     QList<RS_Entity*> m_referenceEntities;

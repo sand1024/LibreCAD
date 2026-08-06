@@ -283,7 +283,7 @@ double RS_Image::doGetDistanceToPoint(const RS_Vector& coord, RS_Entity** entity
     if (containsPoint(coord)) {
         //if coord is on image
         // fixme - sand - review why it's picked from settings and not from graphic view
-        const bool draftMode = LC_GET_ONE_BOOL("Appearance", "DraftMode");
+        const bool draftMode = CFG_Appearance::o_DraftMode;
         if (!draftMode) {
             return 0.0;
         }

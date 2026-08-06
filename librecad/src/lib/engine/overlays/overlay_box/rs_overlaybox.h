@@ -45,6 +45,8 @@ struct LC_OverlayBoxOptions{
     RS2::LineType lineType = RS2::SolidLine;
     RS2::LineType invertedLineType = RS2::DashLine;
 
+    int overlayScreenLineWidth = 0;
+
     void loadSettings();
 };
 

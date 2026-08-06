@@ -34,6 +34,7 @@
 #include "lc_dimarrowregistry.h"
 #include "lc_dimstyleslist.h"
 #include "lc_dimstyletovariablesmapper.h"
+#include "lc_settings_defaults.h"
 #include "rs_debug.h"
 #include "rs_dialogfactory.h"
 #include "rs_dialogfactoryinterface.h"
@@ -92,13 +93,14 @@ RS_Graphic::RS_Graphic(RS_EntityContainer* parent)
     : RS_Document(parent), m_autosaveFilename{"Unnamed"}, m_plotSettings{std::make_unique<LC_PlotSettings>(this)} {
     LC_GROUP_GUARD("Defaults");
     {
+        using namespace CFG_Defaults;
         setUnit(RS_Units::stringToUnit(LC_GET_ONE_STR("Defaults", "Unit", "None")));
         addVariable("$SNAPSTYLE", LC_GET_INT("IsometricGrid", 0), 70);
         addVariable("$SNAPISOPAIR", LC_GET_INT("IsoGridView", 1), 70);
-        setGridOn(!LC_GET_BOOL("GridOffForNewDrawing", false));
+        setGridOn(! o_GridOffForNewDrawing);
 
-        const QString& defaultAnglesBase = LC_GET_STR("AnglesBaseAngle", "0.0");
-        const bool anglesCounterClockwise = LC_GET_BOOL("AnglesCounterClockwise", true);
+        const QString& defaultAnglesBase = o_AnglesBaseAngle;
+        const bool anglesCounterClockwise = o_AnglesCounterClockwise;
 
         const double angleBaseDegrees = RS_Math::eval(defaultAnglesBase, 0.0);
         const double angleBaseRadians = RS_Math::deg2rad(angleBaseDegrees);

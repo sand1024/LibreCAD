@@ -25,37 +25,34 @@
 #include "lc_graphicviewport.h"
 #include "rs_painter.h"
 
-LC_Crosshair::LC_Crosshair(const RS_Vector& coord, const int shapeType, const int linesType,
-                           const RS_Pen& linesPen, const int pointSize, const int pointType)
+LC_Crosshair::LC_Crosshair(const RS_Vector& coord, SnapIndicatorOptions& options)
      :m_wcsPos(coord){
-     this->m_indicatorShape = shapeType;
-     this->m_linesShape = linesType;
-     this->m_linesPen = linesPen;
-     this->m_pointSize = pointSize;
-     this->m_pointType = pointType;
+     m_indicatorShape = options.shape_Type;
+     m_linesShape = options.lines_Type;
+     m_linesPen = options.lines_Pen;
+     m_pointSize = options.pointSize;
+     m_pointType = options.pointType;
+     m_shapeSize = options.shapeSize;
 }
 
 double LC_Crosshair::drawIndicator(RS_Painter* painter, const RS_Vector& uiPos) const {
-    double offset = 0.0;
+    double offset = m_shapeSize;
       switch (m_indicatorShape) {
           case Circle: {
-              offset = 4.0;
-              painter->drawCircleUIDirect(uiPos, offset);
+              painter->drawCircleUIDirect(uiPos, m_shapeSize);
               break;
           }
           case Point:{
               const int screenPDSize = painter->determinePointScreenSize(m_pointSize);
               offset = screenPDSize;
-              painter->drawPointEntityUI(uiPos, m_pointType, screenPDSize);
+              painter->drawPointEntityUI(uiPos, m_pointType, m_pointSize);
               break;
           }
           case Square: {
-              constexpr double a = 6.0; // fixme - sand - candidate for option?
-              offset = a;
-              const RS_Vector p1 = uiPos + RS_Vector(-a, a);
-              const RS_Vector p2 = uiPos + RS_Vector(a, a);
-              const RS_Vector p3 = uiPos + RS_Vector(a, -a);
-              const RS_Vector p4 = uiPos + RS_Vector(-a, -a);
+              const RS_Vector p1 = uiPos + RS_Vector(-m_shapeSize, m_shapeSize);
+              const RS_Vector p2 = uiPos + RS_Vector(m_shapeSize, m_shapeSize);
+              const RS_Vector p3 = uiPos + RS_Vector(m_shapeSize, -m_shapeSize);
+              const RS_Vector p4 = uiPos + RS_Vector(-m_shapeSize, -m_shapeSize);
 
               painter->drawLineUISimple(p1,p2);
               painter->drawLineUISimple(p2,p3);
@@ -64,7 +61,6 @@ double LC_Crosshair::drawIndicator(RS_Painter* painter, const RS_Vector& uiPos) 
               break;
           }
           case Gap:{
-              offset = 5.0;
               break;
           }
           default:
@@ -81,9 +77,7 @@ void LC_Crosshair::draw(RS_Painter *painter) {
     }
 
     const double offset = drawIndicator(painter, uiCoord);
-
     const LC_GraphicViewport* viewport = painter->getViewPort();
-
     const int width = viewport->getWidth();
     const int height = viewport->getHeight();
 

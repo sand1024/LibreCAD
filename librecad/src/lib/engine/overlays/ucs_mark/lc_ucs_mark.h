@@ -40,6 +40,7 @@ struct LC_UCSMarkOptions{
     RS_Color colorXAxisExtension = RS_Color(Qt::red);
     RS_Color colorYAxisExtension = RS_Color(Qt::green);
     RS_Color colorAngleMark = RS_Color(Qt::yellow);
+    int overlayScreenLineWidth = 0;
     void loadSettings();
 };
 
