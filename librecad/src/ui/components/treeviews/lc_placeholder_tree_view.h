@@ -1,3 +1,4 @@
+
 /*******************************************************************************
  * This file is part of the LibreCAD project, a 2D CAD program
  *
@@ -18,10 +19,28 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
+#ifndef LC_PLACEHOLDER_TREE_VIEW_H
+#define LC_PLACEHOLDER_TREE_VIEW_H
 
-//
-// Created by sand1 on 25/06/2026.
-//
+#include <QTreeView>
+#include <QString>
 
+class LC_PlaceholderTreeView : public QTreeView {
+    Q_OBJECT
+    Q_PROPERTY(QString placeholderText READ placeholderText WRITE setPlaceholderText)
 
-#include "lc_style_editor_interface.h"
+public:
+    explicit LC_PlaceholderTreeView(QWidget* parent = nullptr);
+    ~LC_PlaceholderTreeView() override = default;
+
+    // Getter & Setter for the custom empty-state message
+    QString placeholderText() const { return m_placeholderText; }
+    void setPlaceholderText(const QString& text);
+
+protected:
+    void paintEvent(QPaintEvent* event) override;
+
+private:
+    QString m_placeholderText;
+};
+#endif
