@@ -416,5 +416,8 @@
         <file alias="widget_properties.lci">widget_properties.svg</file>
         <file alias="widget_ucs.lci">widget_ucs.svg</file>
         <file alias="widget_views.lci">widget_views.svg</file>
+        <file alias="setting_search.lci">setting_search.svg</file>
+        <file alias="lineedit_clear.lci">lineedit_clear.svg</file>
+        <file alias="lineedit_clear_hover.lci">lineedit_clear_hover.svg</file>
     </qresource>
 </RCC>
