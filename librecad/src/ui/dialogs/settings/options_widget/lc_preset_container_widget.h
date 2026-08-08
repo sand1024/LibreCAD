@@ -27,8 +27,8 @@
 
 #include "lc_palette_color_utils.h"
 #include "lc_palette_editor_shared.h"
+#include "lc_preset_manager_bar.h"
 
-class LC_PresetManagerBar;
 class LC_StyleEditorInterface;
 class LC_UIStyleManager;
 class LC_SkinPreviewWindow;

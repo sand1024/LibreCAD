@@ -36,6 +36,7 @@ class LC_MetricsRepository;
 class LC_WorkspaceImportExportHelper;
 class LC_CustomStyleHelper;
 class LC_IconColorsOptions;
+class LC_IconColorsOptions;
 
 class LC_UIStyleManager : public QObject {
     Q_OBJECT
@@ -61,8 +62,8 @@ public:
     QString getActiveStyle() const;
     void setActiveStyle(const QString &style);
 
-    int getThemeModeOverride() const;
-    void setThemeModeOverride(int mode);
+    ThemeModeOverride getThemeModeOverride() const;
+    void setThemeModeOverride(ThemeModeOverride mode);
 
     QString getActiveStyleSheet() const;
     void setActiveStyleSheet(const QString &sheet);
@@ -120,7 +121,7 @@ public:
     void applyActiveOrDefaultIconStyle(bool isDarkMode) const;
     void applyActiveStyleSheet() const;
 
-    void reloadStyleSheet();
+    void reloadStyleSheet() const;
     bool resolveIsDarkMode() const;
     void loadStyleSheet(const QString& stylesheetFilePath) const;
 

@@ -92,7 +92,7 @@ private:
 
     bool    m_origAllowStyle = false;
     QString m_origStyle;
-    int     m_origThemeMode = 0;
+    ThemeModeOverride  m_origThemeMode = ThemeModeOverride::FollowSystem;
     QString m_origStyleSheet;
     bool    m_origIgnoreIconStyling = false;
 };

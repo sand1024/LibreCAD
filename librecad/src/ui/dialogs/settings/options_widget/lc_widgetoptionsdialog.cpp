@@ -43,6 +43,9 @@
 #include "lc_inputtextdialog.h"
 #include "lc_metrics_repository.h"
 #include "lc_palette_color_utils.h"
+#include "lc_settings_app_styling.h"
+#include "lc_settings_startup.h"
+#include "lc_settings_widget.h"
 #include "lc_style_editor_fusion_skin.h"
 #include "lc_style_editor_icons_style.h"
 #include "lc_style_editor_metrics.h"
@@ -134,7 +137,8 @@ void LC_WidgetOptionsDialog::setupThemeModeOverrideCombobox() {
     cbThemeModeOverride->addItem(tr("Force Light Mode"), static_cast<int>(ThemeModeOverride::ForceLight));
     cbThemeModeOverride->addItem(tr("Force Dark Mode"), static_cast<int>(ThemeModeOverride::ForceDark));
 
-    const int modeIdx = cbThemeModeOverride->findData(m_origThemeMode);
+    auto data = QVariant(static_cast<int>(m_origThemeMode));
+    const int modeIdx = cbThemeModeOverride->findData(data);
     if (modeIdx >= 0) {
         cbThemeModeOverride->setCurrentIndex(modeIdx);
     }
@@ -346,57 +350,51 @@ void LC_WidgetOptionsDialog::reject() {
 }
 
 void LC_WidgetOptionsDialog::setupMegaCADBarSettingUI() const {
-    LC_GROUP_GUARD("Widgets");
-    {
-        const bool cadSidebarUngrouped = LC_GET_ONE_BOOL("Startup", "CADSideBarUngrouped", false);
-        gbCADWidgets->setEnabled(!cadSidebarUngrouped);
-        gbCADWidgetsUngrouped->setEnabled(cadSidebarUngrouped);
+    using namespace CFG_Widgets;
+    const bool cadSidebarUngrouped = CFG_Startup::o_CADSideBarUngrouped;
+    gbCADWidgets->setEnabled(!cadSidebarUngrouped);
+    gbCADWidgetsUngrouped->setEnabled(cadSidebarUngrouped);
 
-        const bool leftToolbarAllFlatIcons = LC_GET_BOOL("LeftToolbarAllFlatIcons", true);
-        cbLeftTBAllFlatButtons->setChecked(leftToolbarAllFlatIcons);
+    const bool leftToolbarAllFlatIcons = o_LeftToolbarAllFlatIcons;
+    cbLeftTBAllFlatButtons->setChecked(leftToolbarAllFlatIcons);
 
-        const int leftToolbarIconSize = LC_GET_INT("LeftToolbarIconSize", 24);
-        sbLeftTBIconSize->setValue(leftToolbarIconSize);
+    const int leftToolbarIconSize = o_LeftToolbarIconSize;
+    sbLeftTBIconSize->setValue(leftToolbarIconSize);
 
-        const int leftToolbarAllIconSize = LC_GET_INT("LeftToolbarAllIconSize", 24);
-        sbLeftTBAllIconSize->setValue(leftToolbarAllIconSize);
-    }
+    const int leftToolbarAllIconSize = o_LeftToolbarAllIconSize;
+    sbLeftTBAllIconSize->setValue(leftToolbarAllIconSize);
 }
 
 void LC_WidgetOptionsDialog::setupCADBarSettingsUI() const {
-     LC_GROUP_GUARD("Widgets");
-    {
-        const int leftToolbarColumnsCount = LC_GET_INT("LeftToolbarColumnsCount", 5);
-         sbLeftTBColumnCount->setValue(leftToolbarColumnsCount);
+    using namespace CFG_Widgets;
 
-         const int leftToolbarAllColumnsCount = LC_GET_INT("LeftToolbarAllColumnsCount", 5);
-         sbLeftTBAllColumnCount->setValue(leftToolbarAllColumnsCount);
+    const int leftToolbarColumnsCount = o_LeftToolbarColumnsCount;
+    sbLeftTBColumnCount->setValue(leftToolbarColumnsCount);
 
-         const bool leftToolbarFlatIcons = LC_GET_BOOL("LeftToolbarFlatIcons", true);
-         cbLeftTBFlatButtons->setChecked(leftToolbarFlatIcons);
-    }
+    const int leftToolbarAllColumnsCount = o_LeftToolbarAllColumnsCount;
+    sbLeftTBAllColumnCount->setValue(leftToolbarAllColumnsCount);
+
+    const bool leftToolbarFlatIcons = o_LeftToolbarFlatIcons;
+    cbLeftTBFlatButtons->setChecked(leftToolbarFlatIcons);
 }
 
 void LC_WidgetOptionsDialog::setupDockWidgetSettingsUI() const {
-    LC_GROUP_GUARD("Widgets");
-    {
-        const bool dockWidgetsFlatIcons = LC_GET_BOOL("DockWidgetsFlatIcons", true);
-        cbDockWidgetsFlatButtons->setChecked(dockWidgetsFlatIcons);
+    using namespace CFG_Widgets;
 
-        const bool pickValuesButtonsFlatIcons = LC_GET_BOOL("PickValueButtonsFlatIcons", true);
-        cbFlatPickValuesButtons->setChecked(pickValuesButtonsFlatIcons);
-    }
+    const bool dockWidgetsFlatIcons = o_DockWidgetsFlatIcons;
+    cbDockWidgetsFlatButtons->setChecked(dockWidgetsFlatIcons);
+
+    const bool pickValuesButtonsFlatIcons = o_PickValueButtonsFlatIcons;
+    cbFlatPickValuesButtons->setChecked(pickValuesButtonsFlatIcons);
 }
 
 void LC_WidgetOptionsDialog::setupToolbarsSettingsUI() const {
-    LC_GROUP_GUARD("Widgets");
-    {
-        const bool allow_toolbar_icon_size = LC_GET_BOOL("AllowToolbarIconSize", false);
-        toolbar_icon_size_checkbox->setChecked(allow_toolbar_icon_size);
+    using namespace CFG_Widgets;
+    const bool allow_toolbar_icon_size = o_AllowToolbarIconSize;
+    toolbar_icon_size_checkbox->setChecked(allow_toolbar_icon_size);
 
-        const int toolbar_icon_size = LC_GET_INT("ToolbarIconSize", 24);
-        toolbar_icon_size_spinbox->setValue(toolbar_icon_size);
-    }
+    const int toolbar_icon_size = o_ToolbarIconSize;
+    toolbar_icon_size_spinbox->setValue(toolbar_icon_size);
 }
 
 void LC_WidgetOptionsDialog::setupGenericTabUI() const {
@@ -409,39 +407,37 @@ void LC_WidgetOptionsDialog::setupGenericTabUI() const {
 }
 
 void LC_WidgetOptionsDialog::setupDockingSettingsUI() const {
-    LC_GROUP_GUARD("Widgets");
-    {
-        const int docWidgetsIconSize = LC_GET_INT("DockWidgetsIconSize", 16);
-        sbDocWidgtetIconSize->setValue(docWidgetsIconSize);
+    using namespace CFG_Widgets;
+    const int docWidgetsIconSize = o_DockWidgetsIconSize;
+    sbDocWidgtetIconSize->setValue(docWidgetsIconSize);
 
-        const bool allowDockNesting = LC_GET_BOOL("DockAllowNested", true);
-        cbDockingAllowNested->setChecked(allowDockNesting);
+    const bool allowDockNesting = o_DockAllowNested;
+    cbDockingAllowNested->setChecked(allowDockNesting);
 
-        const bool titleBarVertical = LC_GET_BOOL("DockTitleBarVertical", false);
-        cbDockingVerticalTitleBar->setChecked(titleBarVertical);
+    const bool titleBarVertical = o_DockTitleBarVertical;
+    cbDockingVerticalTitleBar->setChecked(titleBarVertical);
 
-        const bool verticalTabs = LC_GET_BOOL("DockVerticalTabs", true);
-        cbDockingVerticalTabs->setChecked(verticalTabs);
-    }
+    const bool verticalTabs = o_DockVerticalTabs;
+    cbDockingVerticalTabs->setChecked(verticalTabs);
 }
 
 void LC_WidgetOptionsDialog::setupStatusBarSettingsUI() const {
-    LC_GROUP_GUARD("Widgets");
     {
-        const bool allow_statusbar_height = LC_GET_BOOL("AllowStatusbarHeight", false);
+        using namespace CFG_Widgets;
+        const bool allow_statusbar_height = o_AllowStatusbarHeight;
         statusbar_height_checkbox->setChecked(allow_statusbar_height);
 
-        const int statusbar_height = LC_GET_INT("StatusbarHeight", 32);
+        const int statusbar_height = o_StatusbarHeight;
         statusbar_height_spinbox->setValue(statusbar_height);
 
-        const bool allow_statusbar_fontsize = LC_GET_BOOL("AllowStatusbarFontSize", false);
+        const bool allow_statusbar_fontsize = o_AllowStatusbarFontSize;
         statusbar_fontsize_checkbox->setChecked(allow_statusbar_fontsize);
 
-        const int statusbar_fontsize = LC_GET_INT("StatusbarFontSize", 12);
+        const int statusbar_fontsize = o_StatusbarFontSize;
         statusbar_fontsize_spinbox->setValue(statusbar_fontsize);
     }
 
-    const bool useClassicalStatusBar = LC_GET_ONE_BOOL("Startup", "UseClassicStatusBar", false);
+    const bool useClassicalStatusBar = CFG_Startup::o_UseClassicStatusBar;
 
     statusbar_height_spinbox->setEnabled(useClassicalStatusBar);
     statusbar_height_checkbox->setEnabled(useClassicalStatusBar);
@@ -469,7 +465,7 @@ void LC_WidgetOptionsDialog::accept() {
     if (m_styleManager) {
         m_styleManager->setStyleAllowed(style_checkbox->isChecked());
         m_styleManager->setActiveStyle(style_combobox->currentText());
-        m_styleManager->setThemeModeOverride(cbThemeModeOverride->currentData().toInt());
+        m_styleManager->setThemeModeOverride(static_cast<ThemeModeOverride>(cbThemeModeOverride->currentData().toInt()));
         m_styleManager->setActiveStyleSheet(stylesheet_field->text());
 
         // Save selections as stable keys (filenames without paths) to protect I/O
@@ -483,61 +479,62 @@ void LC_WidgetOptionsDialog::accept() {
     }
 
     // 4. Save low-level local CAD widget preferences
-    LC_GROUP_GUARD("Widgets");
+
     {
+        using namespace  CFG_Widgets;
         const bool pickValuesButtonsFlatIcons = cbFlatPickValuesButtons->isChecked();
-        LC_SET("PickValueButtonsFlatIcons", pickValuesButtonsFlatIcons);
+        o_PickValueButtonsFlatIcons = pickValuesButtonsFlatIcons;
 
         const bool allow_theme = false;
-        LC_SET("AllowTheme", allow_theme);
+        CFG_AppStyling::o_AllowTheme = allow_theme;
 
         const bool allow_toolbar_icon_size = toolbar_icon_size_checkbox->isChecked();
-        LC_SET("AllowToolbarIconSize", allow_toolbar_icon_size);
+        o_AllowToolbarIconSize = allow_toolbar_icon_size;
         const auto& appWindow = QC_ApplicationWindow::getAppWindow();
         if (allow_toolbar_icon_size && appWindow != nullptr) {
             const int toolbar_icon_size = toolbar_icon_size_spinbox->value();
-            LC_SET("ToolbarIconSize", toolbar_icon_size);
+            o_ToolbarIconSize = toolbar_icon_size;
             appWindow->setIconSize(QSize(toolbar_icon_size, toolbar_icon_size));
         }
 
         const bool allow_statusbar_fontsize = statusbar_fontsize_checkbox->isChecked();
-        LC_SET("AllowStatusbarFontSize", allow_statusbar_fontsize);
+        o_AllowStatusbarFontSize = allow_statusbar_fontsize;
         if (allow_statusbar_fontsize && appWindow != nullptr) {
             const int statusbar_fontsize = statusbar_fontsize_spinbox->value();
-            LC_SET("StatusbarFontSize", statusbar_fontsize);
+            o_StatusbarFontSize = statusbar_fontsize;
             QFont font;
             font.setPointSize(statusbar_fontsize);
             appWindow->statusBar()->setFont(font);
         }
 
         const bool allow_statusbar_height = statusbar_height_checkbox->isChecked();
-        LC_SET("AllowStatusbarHeight", allow_statusbar_height);
+        o_AllowStatusbarHeight =  allow_statusbar_height;
         if (allow_statusbar_height && appWindow != nullptr) {
             const int statusbar_height = statusbar_height_spinbox->value();
-            LC_SET("StatusbarHeight", statusbar_height);
+            o_StatusbarHeight = statusbar_height;
             appWindow->statusBar()->setMinimumHeight(statusbar_height);
         }
 
-        LC_SET("LeftToolbarColumnsCount", sbLeftTBColumnCount->value());
-        LC_SET("LeftToolbarAllColumnsCount", sbLeftTBAllColumnCount->value());
+        o_LeftToolbarColumnsCount  = sbLeftTBColumnCount->value();
+        o_LeftToolbarAllColumnsCount  = sbLeftTBAllColumnCount->value();
 
-        LC_SET("LeftToolbarFlatIcons", cbLeftTBFlatButtons->isChecked());
-        LC_SET("LeftToolbarAllFlatIcons", cbLeftTBAllFlatButtons->isChecked());
+        o_LeftToolbarFlatIcons  = cbLeftTBFlatButtons->isChecked();
+        o_LeftToolbarAllFlatIcons =  cbLeftTBAllFlatButtons->isChecked();
 
-        LC_SET("LeftToolbarIconSize", sbLeftTBIconSize->value());
-        LC_SET("LeftToolbarAllIconSize", sbLeftTBAllIconSize->value());
+        o_LeftToolbarIconSize = sbLeftTBIconSize->value();
+        o_LeftToolbarAllIconSize = sbLeftTBAllIconSize->value();
 
-        LC_SET("DockWidgetsFlatIcons", cbDockWidgetsFlatButtons->isChecked());
-        LC_SET("DockWidgetsIconSize", sbDocWidgtetIconSize->value());
+        o_DockWidgetsFlatIcons = cbDockWidgetsFlatButtons->isChecked();
+        o_DockWidgetsIconSize =  sbDocWidgtetIconSize->value();
 
         const bool allowDockNesting = cbDockingAllowNested->isChecked();
-        LC_SET("DockAllowNested", allowDockNesting);
+        o_DockAllowNested = allowDockNesting;
 
         const bool titleBarVertical = cbDockingVerticalTitleBar->isChecked();
-        LC_SET("DockTitleBarVertical", titleBarVertical);
+        o_DockTitleBarVertical = titleBarVertical;
 
         const bool verticalTabs = cbDockingVerticalTabs->isChecked();
-        LC_SET("DockVerticalTabs", verticalTabs);
+        o_DockVerticalTabs = verticalTabs;
 
         if (appWindow != nullptr) {
             LC_WidgetFactory::updateDockOptions(appWindow.get(), allowDockNesting, verticalTabs);

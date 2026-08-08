@@ -31,6 +31,10 @@
 #include "lc_fusion_skins_repository.h"
 #include "lc_icons_style_repository.h"
 #include "lc_metrics_repository.h"
+#include "lc_settings_app_styling.h"
+#include "lc_settings_paths.h"
+#include "lc_settings_types.h"
+#include "lc_settings_widget.h"
 #include "lc_style_metrics_utils.h"
 #include "lc_typography_repository.h"
 #include "lc_typography_utils.h"
@@ -54,10 +58,7 @@ QString LC_UIStyleManager::getStyleConfigurationBaseDir() const {
     }
 
     // Tier 2: Check inside the user's personal settings or app data directory
-    QString otherSettings = LC_GET_ONE_STR("Paths", "OtherSettingsDir", "").trimmed();
-    if (otherSettings.isEmpty()) {
-        otherSettings = RS_System::instance()->getAppDataDir();
-    }
+    QString otherSettings = CFG_Paths::o_OtherSettingsDir;
 
     styleDir = otherSettings.trimmed() + "/styling";
     if (QDir(styleDir).exists()) {
@@ -148,31 +149,32 @@ void LC_UIStyleManager::initialize(QC_ApplicationWindow* appWindow) {
     }
 }
 bool LC_UIStyleManager::isStyleAllowed() const {
-    return LC_GET_ONE_BOOL("Widgets", "AllowStyle", false);
+    return CFG_AppStyling::o_AllowStyle;
 }
 void LC_UIStyleManager::setStyleAllowed(bool allowed) {
-    LC_SET_ONE("Widgets", "AllowStyle", allowed);
+    CFG_AppStyling::o_AllowStyle = allowed;
+}
+
+void LC_UIStyleManager::setActiveStyle(const QString &style) {
+    CFG_AppStyling::o_Style = style;
 }
 
 QString LC_UIStyleManager::getActiveStyle() const {
-    return LC_GET_ONE_STR("Widgets", "Style", "");
-}
-void LC_UIStyleManager::setActiveStyle(const QString &style) {
-    LC_SET_ONE("Widgets", "Style", style);
+    return CFG_AppStyling::o_Style;
 }
 
-int LC_UIStyleManager::getThemeModeOverride() const {
-    return LC_GET_ONE_INT("Widgets", "ThemeModeOverride", 0);
+ThemeModeOverride LC_UIStyleManager::getThemeModeOverride() const {
+    return CFG_AppStyling::o_ThemeModeOverride;
 }
-void LC_UIStyleManager::setThemeModeOverride(int mode) {
-    LC_SET_ONE("Widgets", "ThemeModeOverride", mode);
+void LC_UIStyleManager::setThemeModeOverride(ThemeModeOverride mode) {
+    CFG_AppStyling::o_ThemeModeOverride = mode;
 }
 
 QString LC_UIStyleManager::getActiveStyleSheet() const {
-    return LC_GET_ONE_STR("Widgets", "StyleSheet", "");
+    return CFG_AppStyling::o_StyleSheet;
 }
 void LC_UIStyleManager::setActiveStyleSheet(const QString &sheet) {
-    LC_SET_ONE("Widgets", "StyleSheet", sheet);
+    CFG_AppStyling::o_StyleSheet = sheet;
 }
 
 bool LC_UIStyleManager::getIgnoreIconStylingInTheme() const {
@@ -197,24 +199,24 @@ void LC_UIStyleManager::setIconsOverridesDir(const QString &dir) {
 }
 
 QString LC_UIStyleManager::getActiveSkin() const {
-    return LC_GET_ONE_STR("Widgets", "ActiveSkinName", "Default");
+    return CFG_AppStyling::o_ActiveSkinName;
 }
 void LC_UIStyleManager::setActiveSkin(const QString& name) {
-    LC_SET_ONE("Widgets", "ActiveSkinName", name);
+    CFG_AppStyling::o_ActiveSkinName = name;
 }
 
 QString LC_UIStyleManager::getActiveTypography() const {
-    return LC_GET_ONE_STR("Widgets", "ActiveTypographyName", "Default");
+    return CFG_AppStyling::o_ActiveTypographyName;
 }
 void LC_UIStyleManager::setActiveTypography(const QString& name) {
-    LC_SET_ONE("Widgets", "ActiveTypographyName", name);
+    CFG_AppStyling::o_ActiveTypographyName = name;
 }
 
 QString LC_UIStyleManager::getActiveMetrics() const {
-    return LC_GET_ONE_STR("Widgets", "ActiveMetricsName", "Default");
+    return CFG_AppStyling::o_ActiveMetricsName;
 }
 void LC_UIStyleManager::setActiveMetrics(const QString& name) {
-    LC_SET_ONE("Widgets", "ActiveMetricsName", name);
+    CFG_AppStyling::o_ActiveMetricsName = name;
 }
 
 void LC_UIStyleManager::loadIconColorsOptions(LC_IconColorsOptions &options) const {
@@ -436,9 +438,8 @@ void LC_UIStyleManager::applyTransientTheme(bool allowStyle,
         isDarkMode = LC_PaletteColorUtils::isPaletteDarkMode();
     }
 
-    // 5. Apply the requested Icon Style globally
+    // Apply the requested Icon Style globally
     applyActiveOrThemeIconStyle(iconStyleKey, isDarkMode);
-
 }
 
 void LC_UIStyleManager::applyActiveOrThemeIconStyle(const QString& themeLinkedIconStyleName, bool isDarkMode) const {
@@ -489,7 +490,7 @@ void LC_UIStyleManager::applyActiveStyleSheet() const {
     loadStyleSheet(getActiveStyleSheet());
 }
 
-void LC_UIStyleManager::reloadStyleSheet() {
+void LC_UIStyleManager::reloadStyleSheet() const {
     applyActiveStyleSheet();
 }
 
@@ -498,10 +499,10 @@ void LC_UIStyleManager::loadStyleSheet(const QString& stylesheetFilePath) const 
 }
 
 bool LC_UIStyleManager::resolveIsDarkMode() const {
-    int themeMode = getThemeModeOverride();
-    if (themeMode == static_cast<int>(ThemeModeOverride::ForceDark)) {
+    ThemeModeOverride themeMode = getThemeModeOverride();
+    if (themeMode == ThemeModeOverride::ForceDark) {
         return true;
-    } else if (themeMode == static_cast<int>(ThemeModeOverride::ForceLight)) {
+    } else if (themeMode == ThemeModeOverride::ForceLight) {
         return false;
     }
     return LC_PaletteColorUtils::isSystemInDarkMode();

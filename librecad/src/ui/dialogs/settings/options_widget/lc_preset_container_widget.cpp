@@ -20,15 +20,15 @@
  ******************************************************************************/
 
 #include "lc_preset_container_widget.h"
-#include "ui_lc_preset_container_widget.h"
-#include "lc_preset_manager_bar.h"
-#include "lc_style_editor_interface.h"
-#include "lc_ui_style_manager.h"
-#include "lc_skin_preview_window.h"
-#include "lc_inputtextdialog.h"
 #include <QMessageBox>
 #include <QTabWidget>
 #include <QTimer>
+#include "lc_inputtextdialog.h"
+#include "lc_preset_manager_bar.h"
+#include "lc_skin_preview_window.h"
+#include "lc_style_editor_interface.h"
+#include "lc_ui_style_manager.h"
+#include "ui_lc_preset_container_widget.h"
 
 #include "lc_editor_utils.h"
 #include "lc_palette_color_utils.h"
