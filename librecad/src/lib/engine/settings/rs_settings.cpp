@@ -32,6 +32,7 @@
 #include "rs_debug.h"
 #include "rs_pen.h"
 
+
 RS_Settings::GroupGuard::GroupGuard(const QString &group):m_group{group} {}
 
 RS_Settings::GroupGuard::~GroupGuard(){
@@ -162,6 +163,8 @@ QString RS_Settings::readStr(const QString &key,const QString &def) {
     return readStrSingle(m_group, key, def);
 }
 
+#define DEBUG_SETTINGS_READ_WRITE_
+
 bool RS_Settings::writeEntrySingle(const QString& group, const QString &key, const QVariant &value) {
     const QString fullName = getFullName(group, key);
 
@@ -184,6 +187,9 @@ bool RS_Settings::writeEntrySingle(const QString& group, const QString &key, con
         }
     }
 
+#ifdef DEBUG_SETTINGS_READ_WRITE
+     LC_ERR << "Write FullName: " << fullName << " | " << value.toString();
+#endif
     if (m_inTransaction) {
         // Only write to the in-memory cache, bypassing disk/registry
         writeEntryCache(fullName, value);
@@ -208,7 +214,11 @@ QString RS_Settings::readStrSingle(const QString& group, const QString &key,cons
         value = m_settings->value(fullName, QVariant(def))/*.toString()*/;
         writeEntryCache(fullName, value);
     }
-    return value.toString();
+    auto result = value.toString();
+#ifdef DEBUG_SETTINGS_READ_WRITE
+    LC_ERR << "Read FullName: " << fullName << " | " << value.toString();
+#endif
+    return result;
 }
 
 int RS_Settings::readColor(const QString &key, const int def) {

@@ -22,9 +22,9 @@
 #ifndef LC_SETTING_H
 #define LC_SETTING_H
 
+#include <QColor>
 #include <QString>
 #include <QVariant>
-#include <QColor>
 #include <type_traits>
 #include "rs_settings.h"
 
