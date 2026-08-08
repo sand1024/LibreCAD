@@ -20,9 +20,9 @@
  ******************************************************************************/
 
 #include "lc_preset_manager_bar.h"
-#include "ui_lc_preset_manager_bar.h"
 #include <QAbstractItemModel>
 #include <QFont>
+#include "ui_lc_preset_manager_bar.h"
 
 #include "lc_editor_utils.h"
 
