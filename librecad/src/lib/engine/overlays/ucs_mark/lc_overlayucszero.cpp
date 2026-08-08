@@ -46,8 +46,8 @@ void LC_OverlayUCSZeroOptions::loadSettings(){
     }
     {
         using namespace CFG_Colors;
-        colorXAxisExtension = RS_Color(o_GridXAxis);
-        colorYAxisExtension = RS_Color(o_GridYAxis);
+        colorXAxisExtension = RS_Color(o_XAxisColor);
+        colorYAxisExtension = RS_Color(o_YAxisColor);
     }
 }
 

@@ -79,15 +79,15 @@ void LC_GraphicViewRenderer::loadSettings() {
     }
     {
         using namespace CFG_Colors;
-        const RS_Color bgColor(o_Background);
+        const RS_Color bgColor(o_BackgroundColor);
         setBackground(bgColor);
-        setForegroundColor(RS_Color(o_Foreground));
+        setForegroundColor(RS_Color(o_ForegroundBWColor));
 
-        m_colorSelectedEntity =  RS_Color(o_Select);
-        m_colorHighlightedEntity = RS_Color(o_Highlight);
-        m_colorStartHandle = RS_Color(o_StartHandle);
-        m_colorHangle = RS_Color(o_Handle);
-        m_colorEndHandleColor = RS_Color(o_EndHandle);
+        m_colorSelectedEntity =  RS_Color(o_SelectedEntityColor);
+        m_colorHighlightedEntity = RS_Color(o_HighlightedEntityColor);
+        m_colorStartHandle = RS_Color(o_EntityHandleStartColor);
+        m_colorHangle = RS_Color(o_EntityHandleInternalColor);
+        m_colorEndHandleColor = RS_Color(o_EntityHandleEndColor);
 
         m_colorPreviewReferenceEntities = RS_Color(o_PreviewReferencesColor);
         m_colorPreviewReferenceHighlightedEntities = RS_Color(o_PreviewReferencesHighlightColor);
@@ -97,7 +97,7 @@ void LC_GraphicViewRenderer::loadSettings() {
         m_colorVisualSnapProjectedSnap= RS_Color(o_VisualSnapProjectedSnapColor);
         m_colorVisualSnapDocumentEntities= RS_Color(o_VisualSnapDocumentEntitiesColor);
 
-        m_draftSignColor = RS_Color(o_DraftModeMarker);
+        m_draftSignColor = RS_Color(o_DraftModeMarkerColor);
     }
 
     {
@@ -709,8 +709,9 @@ void LC_GraphicViewRenderer::setPenForDraftEntity(RS_Painter* painter, const RS_
         else if (e->getFlag(RS2::FlagTransparent)) {
             pen.setColor(m_colorBackground);
         }
-        else if (pen.getColor().isEqualIgnoringFlags(m_colorBackground) || (pen.getColor().toIntColor() == RS_Color::Black && pen.getColor()
-           .colorDistance(m_colorBackground) < RS_Color::MinColorDistance)) {
+        else if (pen.getColor().isEqualIgnoringFlags(m_colorBackground) || (pen.getColor().toIntColor() == RS_Color::Black)){
+            // fixme - pen color mapping - think how to avoid this on each draw. Cache resolved pens?
+            // if (pen.getColor() .colorDistance(m_colorBackground) < RS_Color::MinColorDistance)) {
             pen.setColor(m_colorForeground);
         }
     }

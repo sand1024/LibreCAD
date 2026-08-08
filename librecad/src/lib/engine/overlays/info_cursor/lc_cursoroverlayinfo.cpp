@@ -90,10 +90,10 @@ void LC_InfoCursorOverlayPrefs::loadSettings() {
     using namespace CFG_Colors;
 
     if (enabled) {
-        options.zone(0).color = RS_Color(o_InfoOverlayAbsolute);
-        options.zone(1).color = RS_Color(o_InfoOverlaySnap);;
-        options.zone(2).color = RS_Color(o_InfoOverlayRelative);
-        options.zone(3).color = RS_Color(o_InfoOverlayPrompt);
+        options.zone(0).color = RS_Color(o_InfoOverlayAbsoluteCoordinatesColor);
+        options.zone(1).color = RS_Color(o_InfoOverlaySnapInfoColor);;
+        options.zone(2).color = RS_Color(o_InfoOverlayRelativeColor);
+        options.zone(3).color = RS_Color(o_InfoOverlayPromptColor);
     }
 }
 

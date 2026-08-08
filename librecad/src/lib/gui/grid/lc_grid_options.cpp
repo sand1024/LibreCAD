@@ -41,8 +41,8 @@ void LC_GridOptions::loadSettings() {
     drawGrid = CFG_Appearance::o_GridDraw;
 
     drawLines = linesGrid;
-    gridColorPoint = RS_Color(CFG_Colors::o_Grid);;
-    gridColorLine = RS_Color(CFG_Colors::o_GridLines);;
+    gridColorPoint = RS_Color(CFG_Colors::o_GridPointsColor);;
+    gridColorLine = RS_Color(CFG_Colors::o_GridLinesColor);;
     if (linesGrid){
         metaGridLineType =  CFG_Grid::o_metaGridLinesLineType;
         metaGridLineWidthPx = CFG_Grid::o_metaGridLinesLineWidth;
@@ -52,10 +52,10 @@ void LC_GridOptions::loadSettings() {
         metaGridLineWidthPx =  CFG_Grid::o_metaGridPointsLineWidth;
     }
     if (linesGrid) {
-        metaGridColor= RS_Color(CFG_Colors::o_MetaGridLines);
+        metaGridColor= RS_Color(CFG_Colors::o_MetaGridLinesColor);
     }
     else{
-        metaGridColor= RS_Color(CFG_Colors::o_MetaGrid);
+        metaGridColor= RS_Color(CFG_Colors::o_MetaGridColor);
     }
     disableGridOnPanning = CFG_Appearance::o_GridDisableWithinPan;
     drawIsometricVerticalsAlways = CFG_Appearance::o_GridDrawIsoVerticalForTop;

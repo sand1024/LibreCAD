@@ -36,6 +36,7 @@ namespace CFG_AppStyling {
     inline const LC_Setting<QString> o_ActiveTypographyName(&Group, "ActiveTypographyName", "Default");
     inline const LC_Setting<QString> o_ActiveSkinName(&Group, "ActiveSkinName", "Default");
     inline const LC_Setting<QString> o_ActiveMetricsName(&Group, "ActiveMetricsName", "Default");
+    inline const LC_Setting<QString> o_ActiveGraphicViewScheme(&Group, "ActiveGraphicViewScheme", "Default");
     inline const LC_Setting<ThemeModeOverride> o_ThemeModeOverride(&Group, "ThemeModeOverride", ThemeModeOverride::FollowSystem);
 }
 #endif

@@ -36,12 +36,12 @@ void LC_OverlayBoxOptions::loadSettings() {
     {
         using namespace CFG_Colors;
         int overlayTransparency = o_OverlayBoxTransparency;;
-        colorBoxLine = RS_Color(o_OverlayBoxLine);
-        auto tmp = RS_Color(o_OverlayBoxFill);
+        colorBoxLine = RS_Color(o_OverlayBoxLineColor);
+        auto tmp = RS_Color(o_OverlayBoxFillColor);
         const RS_Color fillColor(tmp.red(), tmp.green(), tmp.blue(), overlayTransparency);
         colorBoxFill = fillColor;
-        colorLineInverted = RS_Color(o_OverlayBoxLineInverted);
-        tmp = RS_Color(o_OverlayBoxFillInverted);
+        colorLineInverted = RS_Color(o_OverlayBoxLineInvertedColor);
+        tmp = RS_Color(o_OverlayBoxFillInvertedColor);
         RS_Color fillColorInverted(tmp.red(), tmp.green(), tmp.blue(), overlayTransparency);
         colorBoxFillInverted = fillColorInverted;
     }

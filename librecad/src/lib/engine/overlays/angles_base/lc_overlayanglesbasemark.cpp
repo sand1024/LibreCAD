@@ -36,8 +36,8 @@ void LC_AnglesBaseMarkOptions::loadSettings() {
 
     using namespace CFG_Colors;
 
-    colorAnglePointer = RS_Color(o_AnglesBasisAngleRay);
-    colorDirectionType = RS_Color(o_AnglesBasisDirection);
+    colorAnglePointer = RS_Color(o_AnglesBasisAngleRayColor);
+    colorDirectionType = RS_Color(o_AnglesBasisDirectionIndicatorColor);
     // m_colorRadius = RS_Color(LC_GET_STR("colorAnglesBaseRadius", RS_Settings::anglesBasisDirection));
     colorRadius = colorDirectionType;
 
