@@ -75,9 +75,9 @@ void LC_SettingsPageInfoCursor::setupBindings() {
        });
 
     bindColor({
-        { ui->cbInfoOverlayRelativeColor, ui->pbInfoOverlayRelativeColor, CFG_Colors::o_InfoOverlayRelative, tr("Select Relative Coordinates Color") },
-        { ui->cbInfoOverlayCommandPromptColor, ui->pbInfoOverlayCommandPromptColor, CFG_Colors::o_InfoOverlayPrompt, tr("Select Command Prompt Color") },
-        { ui->cbInfoOverlayAbsolutePositionColor, ui->pbcbInfoOverlayAbsolutePositionColor, CFG_Colors::o_InfoOverlayAbsolute, tr("Select Absolute Coordinates Color") },
-        { ui->cbInfoOverlaySnapColor, ui->pbInfoOverlaySnapColor, CFG_Colors::o_InfoOverlaySnap, tr("Select Snap Marker Color") }
+        { ui->cbInfoOverlayRelativeColor, ui->pbInfoOverlayRelativeColor, CFG_Colors::o_InfoOverlayRelativeColor, tr("Select Relative Coordinates Color") },
+        { ui->cbInfoOverlayCommandPromptColor, ui->pbInfoOverlayCommandPromptColor, CFG_Colors::o_InfoOverlayPromptColor, tr("Select Command Prompt Color") },
+        { ui->cbInfoOverlayAbsolutePositionColor, ui->pbcbInfoOverlayAbsolutePositionColor, CFG_Colors::o_InfoOverlayAbsoluteCoordinatesColor, tr("Select Absolute Coordinates Color") },
+        { ui->cbInfoOverlaySnapColor, ui->pbInfoOverlaySnapColor, CFG_Colors::o_InfoOverlaySnapInfoColor, tr("Select Snap Marker Color") }
     });
 }

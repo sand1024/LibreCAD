@@ -48,6 +48,6 @@ void LC_SettingsPagePreviewHighlight::setupBindings() {
     });
 
     bindColor({
-        { ui->cbHighlightedColor, ui->pb_highlighted, o_Highlight, tr("Select Hover Highlight Color") }
+        { ui->cbHighlightedColor, ui->pb_highlighted, o_HighlightedEntityColor, tr("Select Hover Highlight Color") }
     });
 }

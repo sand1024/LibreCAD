@@ -61,7 +61,7 @@ void LC_SettingsPageCoordinateSystemAnglesBasis::setupBindings() {
     });
 
     bindColor({
-        { ui->cbAnglesMarkColorDirection, ui->pbAnglesMarkDirection, o_AnglesBasisDirection, tr("Select Arrow Direction Color") },
-        { ui->cbAnglesMarkColorAngleRay, ui->pbAnglesMarkAngleRay, o_AnglesBasisAngleRay, tr("Select Base Angle Ray Color") }
+        { ui->cbAnglesMarkColorDirection, ui->pbAnglesMarkDirection, o_AnglesBasisDirectionIndicatorColor, tr("Select Arrow Direction Color") },
+        { ui->cbAnglesMarkColorAngleRay, ui->pbAnglesMarkAngleRay, o_AnglesBasisAngleRayColor, tr("Select Base Angle Ray Color") }
     });
 }

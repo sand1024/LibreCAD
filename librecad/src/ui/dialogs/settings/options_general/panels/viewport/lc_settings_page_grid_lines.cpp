@@ -47,8 +47,8 @@ void LC_SettingsPageGridLines::setupBindings() {
     });
 
     bindColor({
-        { ui->cbGridLinesColor, ui->pb_gridLines, o_GridLines, tr("Select Grid Lines Color") },
-        { ui->cbMetaGridLinesColor, ui->pb_metaLines, o_MetaGridLines, tr("Select Meta-grid Lines Color") }
+        { ui->cbGridLinesColor, ui->pb_gridLines, o_GridLinesColor, tr("Select Grid Lines Color") },
+        { ui->cbMetaGridLinesColor, ui->pb_metaLines, o_MetaGridLinesColor, tr("Select Meta-grid Lines Color") }
     });
 
     ui->wGridLinesLineType->init(false, false, false);

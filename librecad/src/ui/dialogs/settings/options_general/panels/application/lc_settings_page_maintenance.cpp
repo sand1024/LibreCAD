@@ -49,27 +49,27 @@ void LC_SettingsPageMaintenance::setupUi() {
 
 void LC_SettingsPageMaintenance::exportSettings() {
     LC_SettingsExporter exporter;
-    exporter.exportSettings(settingEditingWidget());
+    exporter.exportSettings(getEditingWidget());
 }
 
 void LC_SettingsPageMaintenance::importSettings() {
     LC_SettingsExporter importer;
-    if (importer.importSettings(settingEditingWidget())) {
+    if (importer.importSettings(getEditingWidget())) {
         QC_ApplicationWindow::getAppWindow()->initSettings(false);
     }
 }
 
 void LC_SettingsPageMaintenance::clearGeometry() {
     RS_Settings::instance()->clearGeometry();
-    QMessageBox::information(settingEditingWidget(), "info", tr("You must restart LibreCAD to see the changes."));
+    QMessageBox::information(getEditingWidget(), "info", tr("You must restart LibreCAD to see the changes."));
 }
 
 void LC_SettingsPageMaintenance::clearAllSettings() {
-    const QMessageBox::StandardButton reply = QMessageBox::question(settingEditingWidget(), tr("Clear settings"),
+    const QMessageBox::StandardButton reply = QMessageBox::question(getEditingWidget(), tr("Clear settings"),
                                                               tr("This will also include custom menus and toolbars. Continue?"),
                                                               QMessageBox::Yes | QMessageBox::No);
     if (reply == QMessageBox::Yes) {
         RS_Settings::instance()->clearAll();
-        QMessageBox::information(settingEditingWidget(), "info", tr("You must restart LibreCAD to see the changes."));
+        QMessageBox::information(getEditingWidget(), "info", tr("You must restart LibreCAD to see the changes."));
     }
 }

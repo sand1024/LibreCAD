@@ -47,7 +47,7 @@ void LC_SettingsPageGraphicViewColors::setupBindings() {
     bindInt({{ui->sbOverlaysLineWidth, o_OverlaysScreenLineWidth}});
 
     bindColor({
-        {ui->cbBackgroundColor, ui->pb_background, o_Background, tr("Select Background Color")},
-        {ui->cbForegroundColor, ui->pb_selected, o_Foreground, tr("Select Foreground Entity Color")}
+        {ui->cbBackgroundColor, ui->pb_background, o_BackgroundColor, tr("Select Background Color")},
+        {ui->cbForegroundColor, ui->pb_selected, o_ForegroundBWColor, tr("Select Foreground Entity Color")}
     });
 }

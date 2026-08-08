@@ -61,7 +61,7 @@ void LC_SettingsPageInputAssistant::setupBindings() {
     });
 
     bindColor({
-        { ui->cbColorRelativePositionAssistantBackground, ui->pbRelativePositionAssistantBackgroundColor, o_RelativePositionAssistantBackground, tr("Select Assistant Background Color") },
-        { ui->cbColorRelativePositionAssistantText, ui->pbRelativePositionAssistantFontColor, o_RelativePositionAssistantText, tr("Select Assistant Text Color") }
+        { ui->cbColorRelativePositionAssistantBackground, ui->pbRelativePositionAssistantBackgroundColor, o_RelativePositionAssistantBackgroundColor, tr("Select Assistant Background Color") },
+        { ui->cbColorRelativePositionAssistantText, ui->pbRelativePositionAssistantFontColor, o_RelativePositionAssistantTextColor, tr("Select Assistant Text Color") }
     });
 }

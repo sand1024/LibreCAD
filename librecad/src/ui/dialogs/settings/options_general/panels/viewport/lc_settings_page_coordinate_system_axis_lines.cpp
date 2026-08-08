@@ -65,7 +65,7 @@ void LC_SettingsPageCoordinateSystemAxisLines::setupBindings() {
     });
 
     bindColor({
-        { ui->cbAxisXColor, ui->pb_axis_X, o_GridXAxis, tr("Select X-Axis Color") },
-        { ui->cbAxisYColor, ui->pb_axis_Y, o_GridYAxis, tr("Select Y-Axis Color") }
+        { ui->cbAxisXColor, ui->pb_axis_X, o_XAxisColor, tr("Select X-Axis Color") },
+        { ui->cbAxisYColor, ui->pb_axis_Y, o_YAxisColor, tr("Select Y-Axis Color") }
     });
 }

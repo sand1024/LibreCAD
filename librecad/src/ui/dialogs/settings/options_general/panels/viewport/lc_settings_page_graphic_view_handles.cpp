@@ -56,8 +56,8 @@ void LC_SettingsPageGraphicViewHandles::setupBindings() {
     });
 
     bindColor({
-        { ui->cbStartHandleColor, ui->pb_start, o_StartHandle, tr("Select Start Handle Color") },
-        { ui->cbHandleColor, ui->pb_handle, o_Handle, tr("Select Handle Color") },
-        { ui->cbEndHandleColor, ui->pb_end, o_EndHandle, tr("Select End Handle Color") }
+        { ui->cbStartHandleColor, ui->pb_start, o_EntityHandleStartColor, tr("Select Start Handle Color") },
+        { ui->cbHandleColor, ui->pb_handle, o_EntityHandleInternalColor, tr("Select Handle Color") },
+        { ui->cbEndHandleColor, ui->pb_end, o_EntityHandleEndColor, tr("Select End Handle Color") }
     });
 }

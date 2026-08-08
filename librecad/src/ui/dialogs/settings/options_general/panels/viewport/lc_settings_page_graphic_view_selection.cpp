@@ -47,11 +47,11 @@ void LC_SettingsPageGraphicViewSelection::setupBindings() {
     bindInt({{ui->sbOverlayBoxTransparency, o_OverlayBoxTransparency}});
 
     bindColor({
-        {ui->cbSelectedColor, ui->pb_selected, o_Select, tr("Select Selected Entity Color")},
-        {ui->cbOverlayBoxLine, ui->pbOverlayBoxLine, o_OverlayBoxLine, tr("Select Overlay Line Color")},
-        {ui->cbOverlayBoxFill, ui->pbOverlayBoxFill, o_OverlayBoxFill, tr("Select Overlay Fill Color")},
-        {ui->cbOverlayBoxLineInverted, ui->pbOverlayBoxLineInverted, o_OverlayBoxLineInverted, tr("Select Inverted Line Color")},
-        {ui->cbOverlayBoxFillInverted, ui->pbOverlayBoxFillInverted, o_OverlayBoxFillInverted, tr("Select Inverted Fill Color")}
+        {ui->cbSelectedColor, ui->pb_selected, o_SelectedEntityColor, tr("Select Selected Entity Color")},
+        {ui->cbOverlayBoxLine, ui->pbOverlayBoxLine, o_OverlayBoxLineColor, tr("Select Overlay Line Color")},
+        {ui->cbOverlayBoxFill, ui->pbOverlayBoxFill, o_OverlayBoxFillColor, tr("Select Overlay Fill Color")},
+        {ui->cbOverlayBoxLineInverted, ui->pbOverlayBoxLineInverted, o_OverlayBoxLineInvertedColor, tr("Select Inverted Line Color")},
+        {ui->cbOverlayBoxFillInverted, ui->pbOverlayBoxFillInverted, o_OverlayBoxFillInvertedColor, tr("Select Inverted Fill Color")}
     });
 
     ui->wOverlaySelectionLineType->init(false, false, false);

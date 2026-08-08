@@ -19,42 +19,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_settings_page_grid_points.h"
-#include "ui_lc_settings_page_grid_points.h"
+#include "lc_settings_page_snap_visual_timing.h"
+#include "ui_lc_settings_page_snap_visual_timing.h"
 #include "lc_settings_backend.h"
 #include "lc_settings_colors.h"
-#include "lc_settings_grid.h"
-#include "qg_linetypebox.h"
-#include "rs_settings.h"
+#include "lc_settings_snap_visual.h"
 
-LC_SettingsPageGridPoints::LC_SettingsPageGridPoints(QObject* parent)
-    : LC_SettingsPageBase(tr("Points Grid"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Grid::Group), parent),
-      ui(std::make_unique<Ui::LC_SettingsPageGridPoints>()) {
+LC_SettingsPageSnapVisualTiming::LC_SettingsPageSnapVisualTiming(QObject* parent)
+    : LC_SettingsPageBase(tr("Advanced"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_VisualSnap::Group), parent)
+    , ui(std::make_unique<Ui::LC_SettingsPageSnapVisualTiming>()) {
     setSortWeight(20);
 }
 
-LC_SettingsPageGridPoints::~LC_SettingsPageGridPoints() = default;
+LC_SettingsPageSnapVisualTiming::~LC_SettingsPageSnapVisualTiming() = default;
 
-void LC_SettingsPageGridPoints::setupUi() {
+void LC_SettingsPageSnapVisualTiming::setupUi() {
     ui->setupUi(m_widget);
 }
 
+void LC_SettingsPageSnapVisualTiming::setupBehavior() {
+}
 
-
-void LC_SettingsPageGridPoints::setupBindings() {
-    using namespace CFG_Grid;
+void LC_SettingsPageSnapVisualTiming::setupBindings() {
+    using namespace CFG_VisualSnap;
+    using namespace CFG_Colors;
 
     bindInt({
-        { ui->sbMetaGridPointsWidth, o_metaGridPointsLineWidth},
-        { ui->sbPointSize, o_GridPointsPointSize}
-
+        { ui->sbVisualSnapPointAddingDelay, o_VSSnapPointAddingDelay },
+        { ui->sbVisualSnapVertexAddingDelay, o_VSVertexAddingDelay },
+        { ui->sbVisualSnapSnapDocEntityAddingDelay, o_VSDocEntityAddingDelay},
     });
-
-    bindColor({
-        { ui->cbGridPointsColor, ui->pb_gridPoints, CFG_Colors::o_GridPointsColor, tr("Select Grid Points Color") },
-        { ui->cbMetaGridPointsColor, ui->pb_metaPoints, CFG_Colors::o_MetaGridColor, tr("Select Meta-grid Points Color") }
-    });
-
-    ui->wMetaGridPointsLineType->init(false, false, false);
-    bindLineType(ui->wMetaGridPointsLineType, o_metaGridPointsLineType);
 }

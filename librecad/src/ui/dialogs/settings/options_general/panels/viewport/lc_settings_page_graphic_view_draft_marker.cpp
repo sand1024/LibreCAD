@@ -63,6 +63,6 @@ void LC_SettingsPageGraphicViewDraftMarker::setupBindings() {
      });
 
     bindColor({
-        { ui->cbDraftModeMarkerColor, ui->pbDraftModeColor, o_DraftModeMarker, tr("Select Draft Marker Color") }
+        { ui->cbDraftModeMarkerColor, ui->pbDraftModeColor, o_DraftModeMarkerColor, tr("Select Draft Marker Color") }
     });
 }

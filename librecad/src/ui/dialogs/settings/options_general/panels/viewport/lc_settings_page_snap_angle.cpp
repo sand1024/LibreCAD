@@ -19,42 +19,40 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_settings_page_grid_points.h"
-#include "ui_lc_settings_page_grid_points.h"
+#include "lc_settings_page_snap_angle.h"
+#include "ui_lc_settings_page_snap_angle.h"
 #include "lc_settings_backend.h"
 #include "lc_settings_colors.h"
-#include "lc_settings_grid.h"
+#include "lc_settings_defaults.h"
+#include "lc_settings_snap.h"
 #include "qg_linetypebox.h"
 #include "rs_settings.h"
 
-LC_SettingsPageGridPoints::LC_SettingsPageGridPoints(QObject* parent)
-    : LC_SettingsPageBase(tr("Points Grid"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Grid::Group), parent),
-      ui(std::make_unique<Ui::LC_SettingsPageGridPoints>()) {
-    setSortWeight(20);
+LC_SettingsPageSnapAngle::LC_SettingsPageSnapAngle(QObject* parent)
+    : LC_SettingsPageBase(tr("Angle Snap"), std::make_unique<LC_LibreCADSettingsBackend>(CFG_Snap::Group), parent), ui(std::make_unique<Ui::LC_SettingsPageSnapAngle>())  {
 }
 
-LC_SettingsPageGridPoints::~LC_SettingsPageGridPoints() = default;
+LC_SettingsPageSnapAngle::~LC_SettingsPageSnapAngle() = default;
 
-void LC_SettingsPageGridPoints::setupUi() {
+void LC_SettingsPageSnapAngle::setupUi() {
     ui->setupUi(m_widget);
 }
 
+void LC_SettingsPageSnapAngle::setupBehavior() {
+}
 
+void LC_SettingsPageSnapAngle::setupBindings() {
+     using namespace CFG_Snap;
 
-void LC_SettingsPageGridPoints::setupBindings() {
-    using namespace CFG_Grid;
+    bindBoolean({
+        { ui->cbAngleSnapToLinesIfGrid, o_AngleSnapToLinesIfGrid }
+    });
 
     bindInt({
-        { ui->sbMetaGridPointsWidth, o_metaGridPointsLineWidth},
-        { ui->sbPointSize, o_GridPointsPointSize}
-
+        { ui->sbAngleSnapMarkRadius, CFG_Appearance::o_AngleSnapMarkerSize }
     });
 
-    bindColor({
-        { ui->cbGridPointsColor, ui->pb_gridPoints, CFG_Colors::o_GridPointsColor, tr("Select Grid Points Color") },
-        { ui->cbMetaGridPointsColor, ui->pb_metaPoints, CFG_Colors::o_MetaGridColor, tr("Select Meta-grid Points Color") }
+    bindComboIndex({
+        { ui->cbAngleSnapStep, CFG_Defaults::o_AngleSnapStep }
     });
-
-    ui->wMetaGridPointsLineType->init(false, false, false);
-    bindLineType(ui->wMetaGridPointsLineType, o_metaGridPointsLineType);
 }

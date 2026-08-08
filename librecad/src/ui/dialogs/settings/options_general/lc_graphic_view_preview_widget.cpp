@@ -173,7 +173,7 @@ void LC_GraphicViewPreviewWidget::updateLivePreview() {
             m_previewView->clearOverlayDrawables(RS2::PermanentHighlights);
         }
         if (tag == "draw.info_cursor") {
-            m_previewView->clearOverlayEntities(RS2::InfoCursor);
+            m_previewView->clearOverlayDrawables(RS2::InfoCursor);
             m_previewView->clearOverlayEntities(RS2::ActionPreviewEntity);
             m_previewView->clearOverlayDrawables(RS2::Snapper);
         }
