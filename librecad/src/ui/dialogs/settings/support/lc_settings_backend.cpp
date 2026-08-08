@@ -29,7 +29,7 @@ LC_LibreCADSettingsBackend::LC_LibreCADSettingsBackend(const LC_SettingsGroupBas
 
 void LC_LibreCADSettingsBackend::parseKey(const QString& key, QString& outGroup, QString& outKey) const {
     if (key.contains('/')) {
-        int idx = key.lastIndexOf('/');
+        const int idx = key.lastIndexOf('/');
         outGroup = key.left(idx);
         outKey = key.mid(idx + 1);
     } else {
@@ -42,33 +42,45 @@ QVariant LC_LibreCADSettingsBackend::value(const QString& key, const QVariant& d
     QString group, targetKey;
     parseKey(key, group, targetKey);
 
-    // LC_ERR << "LC_SettingsBackend::value: Parsed Group:" << group << "Parsed Key:" << targetKey << "Default:" << defaultValue.toString();
+    // Handle Colors (Fixing the "QColor(ARGB..." bug)
+    if (defaultValue.userType() == QMetaType::QColor) {
+        const QString defHex = defaultValue.value<QColor>().name();
+        const QString resultHex = RS_Settings::instance()->readStrSingle(group, targetKey, defHex);
 
-    QVariant result;
-    if (defaultValue.typeId() == QMetaType::Bool) {
-        result = QVariant(RS_Settings::instance()->readBoolSingle(group, targetKey, defaultValue.toBool()));
-    } else if (defaultValue.typeId() == QMetaType::Int) {
-        result = QVariant(RS_Settings::instance()->readIntSingle(group, targetKey, defaultValue.toInt()));
-    } else if (defaultValue.typeId() == QMetaType::Double) {
+        // We return a QVariant(QColor) so LC_Setting::get() can cast it correctly
+        return QVariant::fromValue(QColor::fromString(resultHex));
+    }
+
+    // Handle Doubles (Existing logic is okay, but let's be safe)
+    if (defaultValue.typeId() == QMetaType::Double) {
         bool ok = false;
-        QString valStr = RS_Settings::instance()->readStrSingle(group, targetKey, QString::number(defaultValue.toDouble()));
+        const QString valStr = RS_Settings::instance()->readStrSingle(group, targetKey, QString::number(defaultValue.toDouble()));
         double val = valStr.toDouble(&ok);
-        result = QVariant(ok ? val : defaultValue);
-    } else {
-        result = QVariant(RS_Settings::instance()->readStrSingle(group, targetKey, defaultValue.toString()));
-    }
-    if (!result.isValid() || result.toString().isEmpty()) {
-        return defaultValue;
+        return ok ? val : defaultValue;
     }
 
-    // LC_ERR << "LC_SettingsBackend::value: RS_Settings returned:" << result.toString();
-    return result;
+    // Handle Bools/Ints (Symmetrical with RS_Settings specialized methods)
+    if (defaultValue.typeId() == QMetaType::Bool) {
+        return RS_Settings::instance()->readBoolSingle(group, targetKey, defaultValue.toBool());
+    }
+    if (defaultValue.typeId() == QMetaType::Int) {
+        return RS_Settings::instance()->readIntSingle(group, targetKey, defaultValue.toInt());
+    }
+
+    return RS_Settings::instance()->readStrSingle(group, targetKey, defaultValue.toString());
 }
 
 void LC_LibreCADSettingsBackend::setValue(const QString& key, const QVariant& val) {
     QString group, targetKey;
     parseKey(key, group, targetKey);
-    RS_Settings::instance()->writeEntrySingle(group, targetKey, val);
+
+    QVariant toStore = val;
+    // Normalize QColor to Hex String so RS_Settings stays clean
+    if (val.userType() == QMetaType::QColor) {
+        toStore = val.value<QColor>().name();
+    }
+
+    RS_Settings::instance()->writeEntrySingle(group, targetKey, toStore);
 }
 
 bool LC_LibreCADSettingsBackend::sync() {

@@ -36,7 +36,7 @@ void LC_ColorBinding::load(const LC_SettingsBackend* backend) {
         return;
     }
 
-    QString defaultHex = m_defaultValue.name();
+    const QString defaultHex = m_defaultValue.name();
     // LC_ERR << "LC_ColorBinding::load: Querying backend. Key:" << m_key << "Default value:" << defaultHex;
 
     m_cleanValue = backend->value(m_key, defaultHex).toString();
@@ -45,7 +45,7 @@ void LC_ColorBinding::load(const LC_SettingsBackend* backend) {
         m_cleanValue = defaultHex;
     }
     // Force update the combobox text safely
-    int idx = m_comboBox->findText(m_cleanValue);
+    const int idx = m_comboBox->findText(m_cleanValue);
     // LC_ERR << "LC_ColorBinding::load: Search combobox for value index:" << idx;
 
     m_comboBox->blockSignals(true);
@@ -74,7 +74,7 @@ void LC_ColorBinding::save(LC_SettingsBackend* backend, bool& outRestartRequired
     if (!m_comboBox) {
         return;
     }
-    QString currentVal = m_comboBox->currentText();
+    const QString currentVal = m_comboBox->currentText();
     if (m_requiresRestart && currentVal != m_cleanValue) {
         outRestartRequired = true;
     }
@@ -90,9 +90,9 @@ void LC_ColorBinding::resetToDefault() {
     if (!m_comboBox || !m_button) {
         return;
     }
-    QString defHex = m_defaultValue.name();
+    const QString defHex = m_defaultValue.name();
 
-    int idx = m_comboBox->findText(defHex);
+    const int idx = m_comboBox->findText(defHex);
     if (idx >= 0) {
         m_comboBox->setCurrentIndex(idx);
     }
@@ -107,8 +107,8 @@ bool LC_ColorBinding::isModified() const {
     if (!m_comboBox) {
         return false;
     }
-    auto currentText = m_comboBox->currentText();
-    bool modified = currentText != m_cleanValue;
+    const auto currentText = m_comboBox->currentText();
+    const bool modified = currentText != m_cleanValue;
     return modified;
 }
 
@@ -163,7 +163,7 @@ void LC_SettingsBinder::bindText(QComboBox* comboBox, const QString& key, const 
     bindCustom<QComboBox, QString>(comboBox, key, defaultText, reqRestart, &QComboBox::currentTextChanged, [](QComboBox* w) {
                                        return w->currentText();
                                    }, [](QComboBox* w, const QString& v) {
-                                       int idx = w->findText(v);
+                                       const int idx = w->findText(v);
                                        if (idx >= 0) {
                                            w->setCurrentIndex(idx);
                                        }
@@ -192,7 +192,7 @@ void LC_SettingsBinder::loadAll() {
     // LC_ERR << "LC_SettingsBinder::loadAll: Initializing. Total bindings registered:" << m_bindings.size();
 
     int index = 0;
-    for (auto& binding : m_bindings) {
+    for (const auto& binding : m_bindings) {
         // LC_ERR << "LC_SettingsBinder::loadAll: Loading binding index:" << index++;
         binding->load(m_backend);
     }
@@ -200,10 +200,10 @@ void LC_SettingsBinder::loadAll() {
     m_blockSignals = false;
 }
 
-void LC_SettingsBinder::saveAll(bool commitBaseline) {
+void LC_SettingsBinder::saveAll(bool commitBaseline) const {
 
     bool restartRequired = false;
-    for (auto& binding : m_bindings) {
+    for (const auto& binding : m_bindings) {
         bool bindingRestart = false;
         binding->save(m_backend, bindingRestart, commitBaseline); // Forward parameter [1.1.2]
         if (bindingRestart) {
@@ -218,7 +218,7 @@ void LC_SettingsBinder::saveAll(bool commitBaseline) {
 
 void LC_SettingsBinder::resetAllDefaults() {
     m_blockSignals = true; // Block signals during bulk defaults reset [2.3]
-    for (auto& binding : m_bindings) {
+    for (const auto& binding : m_bindings) {
         binding->resetToDefault();
     }
     m_blockSignals = false; // Unblock

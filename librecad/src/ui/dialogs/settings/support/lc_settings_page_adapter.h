@@ -76,7 +76,7 @@ class LC_SettingsPageAdapter : public QObject, public LC_SettingsPageInterface {
         return m_displayName;
     }
 
-    QWidget* settingEditingWidget() override {
+    QWidget* getEditingWidget() override {
         return m_widget;
     }
 

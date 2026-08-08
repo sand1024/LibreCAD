@@ -46,19 +46,22 @@ public:
         int weight = -1;
     };
 
-    // The registration API defines where pages reside explicitly [4.1]
+    void configureDialog(const QString& dialogId, const QString& title, bool useGlobalTransaction = true);
     void registerPage(const QString& dialogId, const QString& id, const QString& parentId, const PageCreator& creator);
     void registerPages(const QString& dialogId, const std::initializer_list<PageRegistration>& pages);
     void registerPresetManager(const QString& dialogId, const QString& groupPathId, const PresetManagerCreator& creator);
-
     bool showDialog(const QString& dialogId, const QString& initialPageId = QString(), QWidget* parent = nullptr);
-
 private:
     LC_SettingsRegistry() = default;
     ~LC_SettingsRegistry() = default;
 
+    struct DialogProperties {
+        QString title = "Settings";
+        bool useGlobalTransaction = true;
+    };
 
     struct DialogRegistration {
+        DialogProperties properties;
         std::vector<PageRegistration> pageCreators;
         QMap<QString, PresetManagerCreator> presetCreators;
     };

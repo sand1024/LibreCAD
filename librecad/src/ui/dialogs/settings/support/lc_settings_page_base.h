@@ -22,11 +22,11 @@
 #ifndef LC_SETTINGS_PAGE_BASE_H
 #define LC_SETTINGS_PAGE_BASE_H
 
-#include "lc_settings_page_interface.h"
-#include "lc_settings_binder.h"
-#include <QLabel>
-#include <QFileDialog>
 #include <QColorDialog>
+#include <QFileDialog>
+#include <QLabel>
+#include "lc_settings_binder.h"
+#include "lc_settings_page_interface.h"
 
 #include "lc_action_draw_line_angle_rel.h"
 #include "lc_setting.h"
@@ -110,7 +110,7 @@ class LC_SettingsPageBase : public QObject, public LC_SettingsPageInterface {
         return m_displayName;
     }
 
-    QWidget* settingEditingWidget() override;
+    QWidget* getEditingWidget() override;
 
     void loadSettings() override {
         m_binder.loadAll();
@@ -212,7 +212,6 @@ protected:
 
     QWidget* m_widget = nullptr;
 
-private:
     template <typename WidgetType, typename ValueType>
     void bindCustom(WidgetType* widget, const QString& key, const ValueType& defaultValue, bool reqRestart,
                     std::function<ValueType(WidgetType*)> getter, std::function<void(WidgetType*, ValueType)> setter) {
@@ -224,6 +223,11 @@ private:
                     std::function<ValueType(WidgetType*)> getter, std::function<void(WidgetType*, ValueType)> setter) {
         m_binder.bindCustom<WidgetType, ValueType, SignalSignature>(widget, key, defaultValue, reqRestart, signal, getter, setter);
     }
+
+    bool isSettingsDialogVisible() const;
+
+private:
+
 
     QString m_id;
     QString m_parentId;

@@ -33,20 +33,26 @@ bool LC_SettingsFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex& 
     const QModelIndex idx = sourceModel()->index(sourceRow, 0, sourceParent);
     const QString pageId = idx.data(Qt::UserRole).toString();
 
-    if (m_filterText.isEmpty()) return true;
+    if (m_filterText.isEmpty()) {
+        return true;
+    }
 
     const QString name = idx.data(Qt::DisplayRole).toString();
     if (name.contains(m_filterText, Qt::CaseInsensitive)) return true;
 
     if (m_searchIndex.contains(pageId)) {
         for (const QString& kw : m_searchIndex[pageId]) {
-            if (kw.contains(m_filterText, Qt::CaseInsensitive)) return true;
+            if (kw.contains(m_filterText, Qt::CaseInsensitive)) {
+                return true;
+            }
         }
     }
 
     const int childCount = sourceModel()->rowCount(idx);
     for (int r = 0; r < childCount; ++r) {
-        if (filterAcceptsRow(r, idx)) return true;
+        if (filterAcceptsRow(r, idx)) {
+            return true;
+        }
     }
 
     return false;

@@ -69,13 +69,15 @@ bool LC_SettingsPageAdapter::validate(QString& outErrorMessage) {
 }
 
 void LC_SettingsPageAdapter::registerSearchTarget(QWidget* target, const QString& text) {
-    if (target) {
+    if (target != nullptr) {
         m_searchTargets.append({text, target});
     }
 }
 
 void LC_SettingsPageAdapter::autoIndexLabels() {
-    if (!m_widget) return;
+    if (m_widget == nullptr) {
+        return;
+    }
     m_searchTargets.clear();
 
     // Symmetrical Widget Tree Traversal: introspects and indexes any third-party layout
@@ -111,7 +113,9 @@ void LC_SettingsPageAdapter::autoIndexLabels() {
 
 void LC_SettingsPageAdapter::highlightSearchPattern(const QString& pattern) {
     clearSearchHighlight();
-    if (pattern.isEmpty()) return;
+    if (pattern.isEmpty()) {
+        return;
+    }
 
     for (const auto& target : m_searchTargets) {
         if (!target.targetWidget) {
@@ -125,7 +129,7 @@ void LC_SettingsPageAdapter::highlightSearchPattern(const QString& pattern) {
 
 void LC_SettingsPageAdapter::clearSearchHighlight() {
     for (const auto& target : m_searchTargets) {
-        if (!target.targetWidget) {
+        if (target.targetWidget == nullptr) {
             continue;
         }
 

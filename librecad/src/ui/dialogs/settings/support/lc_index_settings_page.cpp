@@ -45,7 +45,7 @@ LC_IndexSettingsPage::LC_IndexSettingsPage(const QString& displayName,
 
 // context around LC_IndexSettingsPage::setChildPages inside lc_index_settings_page.cpp:
 void LC_IndexSettingsPage::setChildPages(const QList<LC_SettingsPageInterface*>& children) {
-    if (m_linksWidget) {
+    if (m_linksWidget != nullptr) {
         m_mainLayout->removeWidget(m_linksWidget);
         m_linksWidget->deleteLater();
         m_linksWidget = nullptr;
@@ -56,7 +56,7 @@ void LC_IndexSettingsPage::setChildPages(const QList<LC_SettingsPageInterface*>&
     }
 
     QList<QPair<QString, QString>> links;
-    for (auto* child : children) {
+    for (const auto* child : children) {
         // Symmetrical Update: Use child->displayName() to register category index targets [4.2]
         links.append({child->id(), child->displayName()});
     }
@@ -71,13 +71,13 @@ void LC_IndexSettingsPage::setChildPages(const QList<LC_SettingsPageInterface*>&
 
 QList<LC_SearchTarget> LC_IndexSettingsPage::searchTargets() const {
     QList<LC_SearchTarget> targets;
-    if (m_descLabel) {
+    if (m_descLabel != nullptr) {
         targets.append({m_description, m_descLabel});
     }
-    if (m_linksWidget) {
+    if (m_linksWidget != nullptr) {
         auto buttons = m_linksWidget->findChildren<LC_HyperlinkButton*>();
         for (auto* btn : buttons) {
-            QString original = btn->property("originalText").toString();
+            const QString original = btn->property("originalText").toString();
             targets.append({original, btn});
         }
     }
@@ -95,7 +95,7 @@ void LC_IndexSettingsPage::highlightSearchPattern(const QString& pattern) {
         new LC_HighlightOverlay(m_descLabel);
     }
 
-    if (m_linksWidget) {
+    if (m_linksWidget != nullptr) {
         auto buttons = m_linksWidget->findChildren<LC_HyperlinkButton*>();
         for (auto* btn : buttons) {
             QString original = btn->property("originalText").toString();
@@ -107,8 +107,7 @@ void LC_IndexSettingsPage::highlightSearchPattern(const QString& pattern) {
 }
 
 void LC_IndexSettingsPage::clearSearchHighlight() {
-    // 1. Clear Description highlights
-    if (m_descLabel) {
+    if (m_descLabel != nullptr) {
         const auto childrenList = m_descLabel->children();
         for (QObject* child : childrenList) {
             if (auto* o = dynamic_cast<LC_HighlightOverlay*>(child)) {
@@ -117,10 +116,9 @@ void LC_IndexSettingsPage::clearSearchHighlight() {
         }
     }
 
-    // 2. Clear Hyperlink highlights
-    if (m_linksWidget) {
+    if (m_linksWidget != nullptr) {
         auto buttons = m_linksWidget->findChildren<LC_HyperlinkButton*>();
-        for (auto* btn : buttons) {
+        for (const auto* btn : buttons) {
             const auto childrenList = btn->children();
             for (QObject* child : childrenList) {
                 if (auto* o = dynamic_cast<LC_HighlightOverlay*>(child)) {

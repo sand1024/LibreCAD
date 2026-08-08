@@ -167,7 +167,7 @@ public:
     }
 
     void loadAll();
-    void saveAll(bool commitBaseline);
+    void saveAll(bool commitBaseline) const;
     void resetAllDefaults();
     bool isAnyModified() const;
 private:

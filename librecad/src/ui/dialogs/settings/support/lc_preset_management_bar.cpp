@@ -24,8 +24,12 @@
 #include <QAbstractItemModel>
 #include <QFileDialog>
 #include <QInputDialog>
+#include <QMessageBox>
 
+#include "lc_filenameselectionservice.h"
+#include "lc_inputtextdialog.h"
 #include "lc_palette_editor_shared.h"
+#include "lc_preset_manager_interface.h"
 #include "ui_lc_preset_management_bar.h"
 
 LC_PresetManagementBar::LC_PresetManagementBar(QWidget* parent)
@@ -41,9 +45,62 @@ LC_PresetManagementBar::~LC_PresetManagementBar() {
     delete ui;
 }
 
+bool LC_PresetManagementBar::savePresetAs(const LC_PresetManagerUIStrings& strings) {
+    if (m_manager == nullptr) {
+        return true;
+    }
+
+    auto presets = m_manager->getAvailablePresets();
+    QStringList existingNames;
+    for (const auto& p : presets) {
+        existingNames << p.first;
+    }
+
+    bool ok;
+    QString name;
+    QString suggestedName = currentPresetName();
+    bool isNotUnique = false;
+    int i = 1;
+
+    do {
+        name = LC_InputTextDialog::getText(this, strings.saveAsDialogTitle, strings.saveAsDialogLabel, existingNames, true, suggestedName, &ok);
+        name = name.trimmed();
+
+        if (ok) {
+            if (name.isEmpty()) {
+                isNotUnique = true; // Don't allow empty
+                continue;
+            }
+
+            isNotUnique = existingNames.QListSpecialMethods<QString>::contains(name, Qt::CaseInsensitive);
+            if (isNotUnique) {
+                suggestedName = name + "_" + QString::number(i++);
+            }
+        }
+        else {
+            return true; // User canceled
+        }
+    }
+    while (isNotUnique);
+
+    QString newKey;
+    if (m_manager->savePresetAs(name, newKey)) {
+        bindToManager(m_manager);
+    }
+    return false;
+}
+
+bool LC_PresetManagementBar::obtainFileName(QString& fileName, const bool forRead, const LC_PresetManagerUIStrings& strings) {
+    const QString& dir = ""; // fixme - complete file settings!!!
+    const QString defFileName = dir + "/shortcuts.lcvs";
+    return LC_FileNameSelectionService::doObtainFileName(this, fileName, forRead, "lcvs",
+        defFileName, strings.importDialogTitle,
+        strings.exportDialogTitle, strings.presetFileFilter);
+}
+
 void LC_PresetManagementBar::bindToManager(LC_PresetManagerInterface* manager) {
     m_manager = manager;
-    if (!m_manager) {
+    if (m_manager == nullptr) {
         setVisible(false);
         return;
     }
@@ -72,39 +129,41 @@ void LC_PresetManagementBar::bindToManager(LC_PresetManagerInterface* manager) {
     disconnect(ui->btnApply, nullptr, nullptr, nullptr);
 
     connect(ui->btnSave, &QPushButton::clicked, this, [this]() {
-        if (m_manager && m_manager->saveCurrentPreset()) {
+        if (m_manager != nullptr && m_manager->saveCurrentPreset()) {
             setDirty(false);
         }
     });
 
-    // fixme - sand - rework and move out of there?
-    connect(ui->btnSaveAs, &QPushButton::clicked, this, [this]() {
-        if (m_manager) {
-            bool ok;
-            // QString name = LC_InputTextDialog::getText(this, tr("Save Preset"), tr("Enter unique preset name:"), existingPresetNames, true, "",
-            //                                   &ok);
-            QString name = QInputDialog::getText(this, tr("Save Preset As"),
-                                                 tr("Enter unique preset name:"),
-                                                 QLineEdit::Normal, QString(), &ok);
-            if (ok && !name.trimmed().isEmpty()) {
-            QString newKey;
-                if (m_manager->savePresetAs(name.trimmed(), newKey)) {
-                bindToManager(m_manager);
-            }
-        }
+    connect(ui->btnSaveAs, &QPushButton::clicked, this, [this, strings]()->void {
+        if (savePresetAs(strings)) {
+            return;
         }
     });
 
-    connect(ui->btnDelete, &QPushButton::clicked, this, [this]() {
-        if (m_manager && m_manager->deletePreset(currentPresetKey())) {
-            bindToManager(m_manager);
+    connect(ui->btnDelete, &QPushButton::clicked, this, [this, strings]() {
+        if (m_manager == nullptr) {
+            return;
         }
+
+        const QString name = currentPresetName();
+         const auto result = QMessageBox::question(this,
+                                             strings.deleteConfirmTitle,
+                                             strings.deleteConfirmLabel.arg(name),
+                                             QMessageBox::Yes | QMessageBox::No);
+
+         if (result == QMessageBox::Yes) {
+             if (m_manager->deletePreset(currentPresetKey())) {
+                 bindToManager(m_manager);
+             }
+         }
     });
 
-    // Symmetrical File Import: prompts selector and delegates to manager [3.19]
-    connect(ui->btnImport, &QPushButton::clicked, this, [this]() {
-        if (m_manager) {
-            QString filePath = QFileDialog::getOpenFileName(this, tr("Import Preset"), QString(), tr("Preset Files (*.theme.json *.json)"));
+    // fixme - sand - use LC_DimStylesExporter::obtainFileName for file!!!
+
+    // Symmetrical File Import: prompts selector and delegates to manager
+    connect(ui->btnImport, &QPushButton::clicked, this, [this, strings]() {
+        if (m_manager != nullptr) {
+            const QString filePath = QFileDialog::getOpenFileName(this, strings.importDialogTitle, QString(), strings.presetFileFilter);
             if (!filePath.isEmpty()) {
                 if (m_manager->importPresetFromFile(filePath, this)) {
                     bindToManager(m_manager); // Reload choices dynamically
@@ -113,10 +172,10 @@ void LC_PresetManagementBar::bindToManager(LC_PresetManagerInterface* manager) {
         }
     });
 
-    // Symmetrical File Export: prompts selector and delegates to manager [3.19]
-    connect(ui->btnExport, &QPushButton::clicked, this, [this]() {
-        if (m_manager) {
-            QString filePath = QFileDialog::getSaveFileName(this, tr("Export Preset"), QString(), tr("Preset Files (*.theme.json *.json)"));
+    // Symmetrical File Export: prompts selector and delegates to manager
+    connect(ui->btnExport, &QPushButton::clicked, this, [this, strings]() {
+        if (m_manager != nullptr) {
+            const QString filePath = QFileDialog::getSaveFileName(this, strings.exportDialogTitle, QString(), strings.presetFileFilter);
             if (!filePath.isEmpty()) {
                 m_manager->exportPresetToFile(currentPresetKey(), filePath, this);
             }
@@ -125,27 +184,27 @@ void LC_PresetManagementBar::bindToManager(LC_PresetManagerInterface* manager) {
 
     // Wire the Apply button click (only enabled in clean states) [1.1.2]
     connect(ui->btnApply, &QPushButton::clicked, this, [this]() {
-        if (m_manager) {
+        if (m_manager != nullptr) {
             m_manager->applyCurrentPreset();
             bindToManager(m_manager); // Force list refresh
         }
     });
 
     connect(ui->btnRevert, &QPushButton::clicked, this, [this]() {
-       if (m_manager) {
+       if (m_manager != nullptr) {
            m_manager->rollbackState(); // Triggers reload/reset across the scope
            bindToManager(m_manager);   // Refresh list and button states
        }
    });
 
-    QList<QPair<QString, QString>> presets = m_manager->getAvailablePresets();
-    QString activeKey = m_manager->getActivePresetKey();
+    const QList<QPair<QString, QString>> presets = m_manager->getAvailablePresets();
+    const QString activeKey = m_manager->getActivePresetKey();
     populatePresets(presets, activeKey, activeKey);
 
-    // 5. Setup dirty-state tracking callback
-    m_manager->setChangedCallback([this](bool isDirty) {
-        setDirty(isDirty);
-    });
+     // 5. Setup dirty-state tracking callback
+     m_manager->setChangedCallback([this](bool isDirty) {
+         setDirty(isDirty);
+     });
 
     updateButtons();
     setVisible(true);
@@ -206,38 +265,58 @@ void LC_PresetManagementBar::setCurrentPresetKey(const QString& key) {
     }
 }
 
-void LC_PresetManagementBar::updateButtons() {
-    if (!m_manager) return;
+void LC_PresetManagementBar::updateButtons() const {
+    if (m_manager == nullptr) {
+        return;
+    }
 
-    QString key = currentPresetKey();
-    bool isDefault = (key == DEFAULT_THEME_KEY);
-
+    const QString key = currentPresetKey();
+    const bool isDefault = (key == DEFAULT_THEME_KEY);
     // 1. Visibilities (Configured dynamically based on manager properties) [2.3]
+
     ui->btnApply->setVisible(m_manager->supportsApply());
     ui->btnImport->setVisible(m_manager->supportsImportExport());
     ui->btnExport->setVisible(m_manager->supportsImportExport());
 
     // 2. Symmetrical Enabling states based on dirty status and read-only default constraints [1.1.2]
-    ui->btnSave->setEnabled(m_isDirty && !isDefault);
+    const bool anyChange = m_isDirty || m_manager->isPresetModified();
+    ui->btnSave->setEnabled(anyChange && !isDefault);
     ui->btnDelete->setEnabled(!isDefault);
-    ui->btnApply->setEnabled(!m_isDirty); // Enabled only if not modified
+    ui->btnApply->setEnabled(!anyChange);
+    ui->btnRevert->setEnabled(anyChange);
 
-    ui->btnRevert->setEnabled(m_isDirty);
+    updateActiveTabText(anyChange);
 }
 
-void LC_PresetManagementBar::updateComboFonts(const QString& activeItemKey) {
-    QAbstractItemModel* model = ui->themeCombo->model();
-    if (!model) {
+void LC_PresetManagementBar::updateActiveTabText(bool modified) const {
+    const int idx = ui->themeCombo->currentIndex();
+    if (idx < 0) {
         return;
     }
 
-    QFont normalFont = ui->themeCombo->font();
+    QString baseName = ui->themeCombo->itemText(idx);
+    const bool hasAsterisk = baseName.endsWith("*");
+
+    if (modified && !hasAsterisk) {
+        ui->themeCombo->setItemText(idx, baseName + " *");
+    } else if (!modified && hasAsterisk) {
+        ui->themeCombo->setItemText(idx, baseName.left(baseName.length() - 2));
+    }
+}
+
+void LC_PresetManagementBar::updateComboFonts(const QString& activeItemKey) const {
+    QAbstractItemModel* model = ui->themeCombo->model();
+    if (model == nullptr) {
+        return;
+    }
+
+    const QFont normalFont = ui->themeCombo->font();
     QFont boldFont = normalFont;
     boldFont.setBold(true);
 
     for (int i = 0; i < ui->themeCombo->count(); ++i) {
         QModelIndex itemIndex = model->index(i, 0);
-        bool isApplied = (ui->themeCombo->itemData(i).toString() == activeItemKey);
+        const bool isApplied = (ui->themeCombo->itemData(i).toString() == activeItemKey);
         model->setData(itemIndex, isApplied ? boldFont : normalFont, Qt::FontRole);
     }
 }

@@ -45,7 +45,7 @@ public:
 
     QString displayName() const override { return m_displayName; }
 
-    QWidget* settingEditingWidget() override { return m_mainWidget; }
+    QWidget* getEditingWidget() override { return m_mainWidget; }
     void loadSettings() override {}
     bool saveSettings() override { return true; }
     void resetDefaults() override {}

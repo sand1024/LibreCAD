@@ -76,7 +76,7 @@ void LC_SettingsPageBase::bindLineWidth(QG_WidthBox* lineWidthCombo, const LC_Se
 
 void LC_SettingsPageBase::bindColor(QComboBox* comboBox, LC_ColorButton* button, const LC_Setting<QColor>& setting,
                                     const QString& dialogTitle, bool reqRestart) {
-    if (!comboBox || !button) {
+    if (comboBox == nullptr || button == nullptr) {
         return;
     }
 
@@ -105,7 +105,7 @@ void LC_SettingsPageBase::bindColor(QComboBox* comboBox, LC_ColorButton* button,
 }
 
 void LC_SettingsPageBase::enableWhenChecked(QCheckBox* source, QWidget* target, bool invert) {
-    if (!source || !target) {
+    if (source == nullptr || target == nullptr) {
         return;
     }
     auto updateState = [target, invert](bool checked) {
@@ -116,7 +116,7 @@ void LC_SettingsPageBase::enableWhenChecked(QCheckBox* source, QWidget* target, 
 }
 
 void LC_SettingsPageBase::enableWhenChecked(QRadioButton* source, QWidget* target, bool invert) {
-    if (!source || !target) {
+    if (source == nullptr || target == nullptr) {
         return;
     }
     auto updateState = [target, invert](bool checked) {
@@ -127,7 +127,7 @@ void LC_SettingsPageBase::enableWhenChecked(QRadioButton* source, QWidget* targe
 }
 
 void LC_SettingsPageBase::showWhenChecked(QCheckBox* source, QWidget* target, bool invert) {
-    if (!source || !target) {
+    if (source == nullptr || target == nullptr) {
         return;
     }
     auto updateState = [target, invert](bool checked) {
@@ -138,11 +138,11 @@ void LC_SettingsPageBase::showWhenChecked(QCheckBox* source, QWidget* target, bo
 }
 
 void LC_SettingsPageBase::bindDirectoryChooser(QAbstractButton* button, QLineEdit* lineEdit, const QString& dialogTitle) {
-    if (!button || !lineEdit) {
+    if (button == nullptr || lineEdit == nullptr) {
         return;
     }
     connect(button, &QAbstractButton::clicked, this, [this, lineEdit, dialogTitle]() {
-        QFileDialog dlg(settingEditingWidget());
+        QFileDialog dlg(getEditingWidget());
         dlg.setWindowTitle(dialogTitle);
         dlg.setFileMode(QFileDialog::Directory);
         dlg.setOption(QFileDialog::ShowDirsOnly);
@@ -153,11 +153,11 @@ void LC_SettingsPageBase::bindDirectoryChooser(QAbstractButton* button, QLineEdi
 }
 
 void LC_SettingsPageBase::bindFileChooser(QAbstractButton* button, QLineEdit* lineEdit, const QString& dialogTitle, const QString& filter) {
-    if (!button || !lineEdit) {
+    if (button == nullptr || lineEdit == nullptr) {
         return;
     }
     connect(button, &QAbstractButton::clicked, this, [this, lineEdit, dialogTitle, filter]() {
-        const QString file = QFileDialog::getOpenFileName(settingEditingWidget(), dialogTitle, QString(), filter);
+        const QString file = QFileDialog::getOpenFileName(getEditingWidget(), dialogTitle, QString(), filter);
         if (!file.isEmpty()) {
             lineEdit->setText(QDir::toNativeSeparators(file));
         }
@@ -165,7 +165,7 @@ void LC_SettingsPageBase::bindFileChooser(QAbstractButton* button, QLineEdit* li
 }
 
 LC_SettingsLinksWidget* LC_SettingsPageBase::createLinksWidget(const QList<QPair<QString, QString>>& links, QWidget* parent) {
-    auto* widget = new LC_SettingsLinksWidget(links, parent ? parent : this->settingEditingWidget());
+    auto* widget = new LC_SettingsLinksWidget(links, parent ? parent : this->getEditingWidget());
     connect(widget, &LC_SettingsLinksWidget::pageSelected, this, &LC_SettingsPageBase::navigateToPage);
 
     for (const auto& pair : links) {
@@ -174,14 +174,25 @@ LC_SettingsLinksWidget* LC_SettingsPageBase::createLinksWidget(const QList<QPair
     return widget;
 }
 
+bool LC_SettingsPageBase::isSettingsDialogVisible() const {
+    const auto topWindow = m_widget->window();
+    const auto* parentDialog = qobject_cast<QDialog*>(topWindow);
+
+    if (parentDialog != nullptr && parentDialog->isVisible()) {
+       return true;
+    } else {
+        return false;
+    }
+}
+
 void LC_SettingsPageBase::autoIndexLabels() {
-    if (!settingEditingWidget()) {
+    if (getEditingWidget() == nullptr) {
         return;
     }
     m_searchTargets.clear();
 
-    // 1. Index Labels and map Highlight overlays to Buddy widgets [2]
-    auto labels = settingEditingWidget()->findChildren<QLabel*>();
+    // Index Labels and map Highlight overlays to Buddy widgets
+    auto labels = getEditingWidget()->findChildren<QLabel*>();
     for (auto* label : labels) {
         if (!label->text().isEmpty()) {
             QWidget* highlightTarget = label->buddy() ? label->buddy() : label;
@@ -189,24 +200,24 @@ void LC_SettingsPageBase::autoIndexLabels() {
         }
     }
 
-    // 2. Index Checkboxes [2]
-    auto checkBoxes = settingEditingWidget()->findChildren<QCheckBox*>();
+    // Index Checkboxes
+    auto checkBoxes = getEditingWidget()->findChildren<QCheckBox*>();
     for (auto* cb : checkBoxes) {
         if (!cb->text().isEmpty()) {
             registerSearchTarget(cb, cb->text());
         }
     }
 
-    // 3. Index Radio Buttons [2]
-    auto radioButtons = settingEditingWidget()->findChildren<QRadioButton*>();
+    // Index Radio Buttons
+    auto radioButtons = getEditingWidget()->findChildren<QRadioButton*>();
     for (auto* rb : radioButtons) {
         if (!rb->text().isEmpty()) {
             registerSearchTarget(rb, rb->text());
         }
     }
 
-    // 4. Index GroupBox Titles [2]
-    auto groupBoxes = settingEditingWidget()->findChildren<QGroupBox*>();
+    // Index GroupBox Titles
+    auto groupBoxes = getEditingWidget()->findChildren<QGroupBox*>();
     for (auto* gb : groupBoxes) {
         if (!gb->title().isEmpty()) {
             registerSearchTarget(gb, gb->title());
@@ -222,7 +233,9 @@ void LC_SettingsPageBase::highlightSearchPattern(const QString& pattern) {
     }
 
     for (const auto& target : m_searchTargets) {
-        if (!target.targetWidget) continue;
+        if (target.targetWidget == nullptr) {
+            continue;
+        }
         if (target.originalText.contains(pattern, Qt::CaseInsensitive)) {
             new LC_HighlightOverlay(target.targetWidget);
         }
@@ -231,7 +244,7 @@ void LC_SettingsPageBase::highlightSearchPattern(const QString& pattern) {
 
 void LC_SettingsPageBase::clearSearchHighlight() {
     for (const auto& target : m_searchTargets) {
-        if (!target.targetWidget) {
+        if (target.targetWidget == nullptr) {
             continue;
         }
 
@@ -281,31 +294,28 @@ void LC_SettingsPageBase::bindComboText(const std::initializer_list<ComboTextEnt
     }
 }
 
-
 void LC_SettingsPageBase::bindColor(const std::initializer_list<ColorEntry>& entries) {
     for (const auto& entry : entries) {
         bindColor(entry.comboBox, entry.button, entry.setting, entry.dialogTitle, entry.reqRestart);
     }
 }
 
-
-
-QWidget* LC_SettingsPageBase::settingEditingWidget() {
+QWidget* LC_SettingsPageBase::getEditingWidget() {
     if (!m_widget) {
         m_widget = new QWidget();
 
-        setupUi();         // 1. Compile layout
-        setupBehavior();   // 2. Wire UI interactivity
-        setupBindings();   // 3. Declare settings binders
-        autoIndexLabels(); // 4. Automatically index all search strings
+        setupUi();         // Compile layout
+        setupBehavior();   // Wire UI interactivity
+        setupBindings();   // Declare settings binders
+        autoIndexLabels(); // Automatically index all search strings
     }
     return m_widget;
 }
 
 void LC_SettingsPageBase::updateLivePreview() {
-    // 1. Write the current widget states temporarily to the in-memory settings backend
+    // Write the current widget states temporarily to the in-memory settings backend
     m_binder.saveAll(false);
 
-    // 2. Emit the notification signal to let the dialog update the repaint slots
+    // Emit the notification signal to let the dialog update the repaint slots
     emit livePreviewRequested();
 }

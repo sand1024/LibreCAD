@@ -25,7 +25,6 @@
 
 #include <QString>
 #include <QList>
-#include <QPair>
 #include <functional>
 
 class QWidget;
@@ -40,6 +39,13 @@ struct LC_PresetManagerUIStrings {
     QString importToolTip = "Import preset from external file.";
     QString exportToolTip = "Export preset to external file.";
     QString revertToolTip = "Discard active modifications and reload the preset as saved on disk.";
+    QString saveAsDialogTitle = "Save Preset As";
+    QString saveAsDialogLabel = "Select unique name of the preset";
+    QString deleteConfirmTitle = "Confirm Delete";
+    QString deleteConfirmLabel = "Are you sure that you'd like to delete preset?";
+    QString exportDialogTitle = "Export Preset";
+    QString importDialogTitle = "Import Preset";
+    QString presetFileFilter = "Preset file(*.json)";
 };
 
 class LC_PresetManagerInterface {
@@ -74,6 +80,7 @@ public:
 
     virtual QWidget* getSharedPreviewWidget() { return nullptr; }
     virtual QWidget* getSharedBottomWidget() { return nullptr; }
+    virtual bool isPresetModified() {return false;}
 
 protected:
     std::function<void()> m_resetCallback;

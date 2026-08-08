@@ -49,7 +49,7 @@ void LC_HighlightOverlay::paintEvent(QPaintEvent* event) {
     auto highlightColor = parentWidget()->palette().color(QPalette::Accent);
     // Amber Focus boundary border matching the visual IDE schema
     // QPen pen(QColor(189, 99, 19, 180), 1.5); // fixme - sand - customize color?? or at least use constant
-    const int highlightWidth = 1.5;// fixme - sand - customize color?? or at least use constant
+    constexpr int highlightWidth = 1.5;// fixme - sand - customize color?? or at least use constant
     const QPen pen(QColor(highlightColor), highlightWidth);
     painter.setPen(pen);
     painter.drawRoundedRect(rect().adjusted(1, 1, -1, -1), 4, 4);

@@ -25,7 +25,10 @@
 
 #include <QWidget>
 #include <QComboBox>
+
 #include "lc_preset_manager_interface.h"
+
+class LC_PresetManagerInterface;
 
 namespace Ui {
     class LC_PresetManagementBar;
@@ -38,16 +41,8 @@ public:
     ~LC_PresetManagementBar() override;
 
     void bindToManager(LC_PresetManagerInterface* manager);
-
-    void populatePresets(const QList<QPair<QString, QString>>& presets,
-                         const QString& activeKey,
-                         const QString& savedActiveKeyOnDisk);
-
-    QString currentPresetKey() const;
-    QString currentPresetName() const;
-    void setCurrentPresetKey(const QString& key);
     void setDirty(bool isDirty);
-
+    void setCurrentPresetKey(const QString& key);
 private slots:
     void onComboIndexChanged(int index);
 
@@ -55,8 +50,19 @@ signals:
     void presetSelected(const QString& name);
 
 private:
-    void updateComboFonts(const QString& activeItemKey);
-    void updateButtons();
+    QString currentPresetKey() const;
+    QString currentPresetName() const;
+
+
+    void populatePresets(const QList<QPair<QString, QString>>& presets,
+                       const QString& activeKey,
+                       const QString& savedActiveKeyOnDisk);
+
+    bool savePresetAs(const LC_PresetManagerUIStrings& strings);
+    void updateComboFonts(const QString& activeItemKey) const;
+    void updateButtons() const;
+    void updateActiveTabText(bool modified) const;
+    bool obtainFileName(QString& fileName, bool forRead, const LC_PresetManagerUIStrings& strings);
 
     Ui::LC_PresetManagementBar* ui;
     LC_PresetManagerInterface* m_manager = nullptr;

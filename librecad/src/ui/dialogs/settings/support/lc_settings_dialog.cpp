@@ -20,11 +20,11 @@
  ******************************************************************************/
 
 #include "lc_settings_dialog.h"
-#include <algorithm>
 #include <QHBoxLayout>
 #include <QHeaderView>
 #include <QMessageBox>
 #include <QScrollBar>
+#include <QShortcut>
 #include <QSplitter>
 #include <QToolButton>
 #include <QVBoxLayout>
@@ -34,14 +34,10 @@
 
 #include "lc_palette_editor_shared.h"
 #include "lc_preset_management_bar.h"
-#include "rs_debug.h"
-#include "rs_settings.h"
 
 LC_SettingsDialog::LC_SettingsDialog(QWidget* parent, const QString& dialogId)
-    : LC_Dialog(parent, "Settings." + dialogId), ui(std::make_unique<Ui::LC_SettingsDialog>()) {
+    : LC_Dialog(parent, "Settings." + dialogId), ui(std::make_unique<Ui::LC_SettingsDialog>()), m_dialogId(dialogId) {
     ui->setupUi(this);
-
-    setWindowTitle(tr("Settings")); // fixme - pass as parameter
 
     ui->saSettingsScrollArea->setWidgetResizable(true);
     ui->splMain->setChildrenCollapsible(false);
@@ -65,12 +61,25 @@ LC_SettingsDialog::LC_SettingsDialog(QWidget* parent, const QString& dialogId)
 
     ui->splMain->setSizes(QList<int>() << idealLeftWidth << 10000);
 
-    // Connections
+    auto* findShortcut = new QShortcut(QKeySequence(QKeySequence::Find), this);
+    findShortcut->setContext(Qt::WindowShortcut);
+
+    connect(findShortcut, &QShortcut::activated, this, [this]() {
+        ui->leSearch->setFocus(Qt::ShortcutFocusReason);
+        ui->leSearch->selectAll(); // Select all text so the user can type over a previous query instantly
+    });
+
+    //  Generate the native string representation of the shortcut (e.g. "Ctrl+F" or "⌘F")
+    const QString nativeShortcut = QKeySequence(QKeySequence::Find).toString(QKeySequence::NativeText);
+
+    // Set the localized tooltip dynamically
+    ui->leSearch->setToolTip(tr("Search settings... (%1)").arg(nativeShortcut));
+
     connect(ui->leSearch, &QLineEdit::textChanged, this, &LC_SettingsDialog::onSearchTextChanged);
+    connect(ui->leSearch, &QLineEdit::returnPressed, this, &LC_SettingsDialog::onSearchReturnPressed);
     connect(ui->tvCategoriesTree, &QTreeView::activated, this, &LC_SettingsDialog::onCategorySelected);
     // connect(ui->tvCategoriesTree, &QTreeView::clicked, this, &LC_SettingsDialog::onCategorySelected);
-    connect(ui->tvCategoriesTree->selectionModel(), &QItemSelectionModel::currentChanged,
-        this, &LC_SettingsDialog::onCategorySelected);
+    connect(ui->tvCategoriesTree->selectionModel(), &QItemSelectionModel::currentChanged, this, &LC_SettingsDialog::onCategorySelected);
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &LC_SettingsDialog::accept);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &LC_Dialog::reject);
 
@@ -81,6 +90,45 @@ LC_SettingsDialog::LC_SettingsDialog(QWidget* parent, const QString& dialogId)
 
 LC_SettingsDialog::~LC_SettingsDialog() = default;
 
+void LC_SettingsDialog::doUpdatePageLivePreview(LC_SettingsPageInterface* page) const {
+    QWidget* preview = page->getPreviewWidget();
+    if (preview == nullptr) {
+        if (auto* manager = getPresetManagerForPage(page->id())) {
+            preview = manager->getSharedPreviewWidget();
+        }
+    }
+    if (preview != nullptr) {
+        auto* livePreview = dynamic_cast<LC_LivePreview*>(preview);
+        if (livePreview != nullptr) {
+            livePreview->updateLivePreview();
+        }
+        else {
+            preview->update(); // Forces instant redraw on screen
+        }
+    }
+}
+
+void LC_SettingsDialog::showEvent(QShowEvent* event) {
+    LC_Dialog::showEvent(event);
+    if (m_activePage != nullptr) {
+        m_activePage->onDialogShown();
+    }
+}
+
+void LC_SettingsDialog::hideEvent(QHideEvent* event) {
+    if (m_activePage != nullptr) {
+        m_activePage->onAboutToHide(); // Clean up if needed
+    }
+    LC_Dialog::hideEvent(event);
+}
+
+void LC_SettingsDialog::resizeEvent(QResizeEvent* event) {
+    LC_Dialog::resizeEvent(event);
+    if (m_activePage != nullptr) {
+        m_activePage->onPageResized();
+    }
+}
+
 void LC_SettingsDialog::registerPage(std::unique_ptr<LC_SettingsPageInterface> pageRef) {
     if (!pageRef) {
         return;
@@ -88,37 +136,24 @@ void LC_SettingsDialog::registerPage(std::unique_ptr<LC_SettingsPageInterface> p
     LC_SettingsPageInterface* page = pageRef.get();
     m_pages.push_back(std::move(pageRef));
 
-    m_pageMap[page->id()] = page;
+    const auto pageId = page->id();
+    m_pageMapByPageId[pageId] = page;
 
     if (const auto* basePage = dynamic_cast<LC_SettingsPageBase*>(page)) {
         connect(basePage, &LC_SettingsPageBase::navigateToPage, this, &LC_SettingsDialog::selectPage);
 
         connect(basePage, &LC_SettingsPageBase::livePreviewRequested, this, [this, page]() {
             LC_PresetManagerInterface* manager = getPresetManagerForPage(page->id());
-            const bool isDirty = isPresetManagerScopeDirty(manager);
-            ui->presetBar->setDirty(isDirty);
+            if (manager != nullptr) {
+                const bool isDirty = isPresetManagerScopeDirty(manager);
+                ui->presetBar->setDirty(isDirty);
+            }
 
-            // Notify the main application viewport to repaint in-memory [2.2]
+            // Notify the main application viewport to repaint in-memory
             // RS_Settings::instance()->emitOptionsChanged();
 
-            // Find and repaint the active preview widget (local or shared) in real-time [4.1, 4.2]
             if (m_activePage == page) {
-                QWidget* preview = page->previewWidget();
-                if (!preview) {
-                    if (auto* manager = getPresetManagerForPage(page->id())) {
-                        preview = manager->getSharedPreviewWidget();
-                    }
-                }
-                if (preview) {
-                    // fixme - use custom interface to force review
-                    auto* livePreview = dynamic_cast<LC_LivePreview*>(preview);
-                    if (livePreview != nullptr) {
-                        livePreview->updateLivePreview();
-                    }
-                    else {
-                        preview->update(); // Forces instant redraw on screen
-                    }
-                }
+                doUpdatePageLivePreview(page);
             }
         });
     }
@@ -126,32 +161,34 @@ void LC_SettingsDialog::registerPage(std::unique_ptr<LC_SettingsPageInterface> p
         connect(indexPage, &LC_IndexSettingsPage::navigateToPage, this, &LC_SettingsDialog::selectPage);
     }
 
-    if (page->settingEditingWidget()) {
-        ui->swContent->addWidget(page->settingEditingWidget());
+    if (page->getEditingWidget()) {
+        ui->swContent->addWidget(page->getEditingWidget());
     }
 }
 
 void LC_SettingsDialog::registerPresetManager(const QString& groupPathId, std::unique_ptr<LC_PresetManagerInterface> manager) {
-    if (manager) {
+    if (manager != nullptr) {
         LC_PresetManagerInterface* rawPtr = manager.get();
         m_presetManagers[groupPathId] = std::move(manager);
 
         // Dynamic Callback Link: routes preset-defaults reset requests strictly to the pages in active scope
         rawPtr->setResetCallback([this, rawPtr]() {
-            for (const auto& page : m_pages) {
-                if (getPresetManagerForPage(page->id()) == rawPtr) {
-                    page->resetDefaults();
-                    page->saveSettings();
+            for (const QString& pageId : m_initializedPages) {
+                if (getPresetManagerForPage(pageId) == rawPtr) {
+                    m_pageMapByPageId.at(pageId)->loadSettings();
                 }
             }
+            doUpdatePageLivePreview(m_activePage);
             RS_Settings::instance()->emitOptionsChanged();
         });
 
-        // Symmetrical Save-Commit Link: commits all active page baselines on save
+        // commits all active page baselines on save
         rawPtr->setSaveCommitCallback([this, rawPtr]() {
             for (const auto& page : m_pages) {
                 if (getPresetManagerForPage(page->id()) == rawPtr) {
-                    page->saveSettings(); // Writes widget data to RS_Settings & resets baseline
+                    if (m_initializedPages.contains(page->id())) {
+                        page->saveSettings();
+                    }
                 }
             }
             RS_Settings::instance()->emitOptionsChanged(); // Force redraw
@@ -162,7 +199,7 @@ void LC_SettingsDialog::registerPresetManager(const QString& groupPathId, std::u
 QList<QPair<QString, QString>> LC_SettingsDialog::gatherChildLinks(const QString& parentPageId) const {
     QList<QPair<QString, QString>> links;
 
-    // Symmetrical Child Collection: directly scans the vector using parentId matching
+    // Child Collection: directly scans the vector using parentId matching
     for (const auto& page : m_pages) {
         if (page->parentId() == parentPageId) {
             links.append({page->id(), page->displayName()});
@@ -172,14 +209,15 @@ QList<QPair<QString, QString>> LC_SettingsDialog::gatherChildLinks(const QString
 }
 
 LC_PresetManagerInterface* LC_SettingsDialog::getPresetManagerForPage(const QString& pageId) const {
-    const auto itPage = m_pageMap.find(pageId);
-    if (itPage == m_pageMap.end())
+    const auto itPage = m_pageMapByPageId.find(pageId);
+    if (itPage == m_pageMapByPageId.end()) {
         return nullptr;
+    }
 
     const LC_SettingsPageInterface* page = itPage->second;
     const QString parentId = page->parentId();
 
-    // Symmetrical Preset Matching: find longest matching parent ID path
+    // Preset Matching: find longest matching parent ID path
     QString bestMatchGroup;
     for (const auto& [group, manager] : m_presetManagers) {
         if (pageId == group || pageId.startsWith(group + ".") || parentId == group || parentId.startsWith(group + ".")) {
@@ -198,20 +236,20 @@ LC_PresetManagerInterface* LC_SettingsDialog::getPresetManagerForPage(const QStr
 void LC_SettingsDialog::finalizeInitialization() {
     buildCategoryTree();
 
-    for (const auto& [id, page] : m_pageMap) {
-        auto pageIt = m_treeItemMap.find(id);
-        if (pageIt != m_treeItemMap.end()) {
+    for (const auto& [id, page] : m_pageMapByPageId) {
+        auto pageIt = m_treeItemMapByPageId.find(id);
+        if (pageIt != m_treeItemMapByPageId.end()) {
             QList<LC_SettingsPageInterface*> childPages;
 
             const auto pageItem = pageIt->second;
             const int count = pageItem->rowCount();
-            for (int i=0; i< count;i++) {
+            for (int i = 0; i < count; i++) {
                 const auto childItem = pageItem->child(i, 0);
                 auto childPageIdVariant = childItem->data(Qt::UserRole);
                 if (childPageIdVariant.isValid()) {
                     auto childPageId = childPageIdVariant.toString();
-                    auto childPageIt = m_pageMap.find(childPageId);
-                    if (childPageIt != m_pageMap.end()) {
+                    auto childPageIt = m_pageMapByPageId.find(childPageId);
+                    if (childPageIt != m_pageMapByPageId.end()) {
                         childPages.append(childPageIt->second);
                     }
                 }
@@ -224,7 +262,7 @@ void LC_SettingsDialog::finalizeInitialization() {
     }
 
     // Fully automate search caching indexing for all widgets on leaf pages
-    for (const auto& [id, page] : m_pageMap) {
+    for (const auto& [id, page] : m_pageMapByPageId) {
         page->autoIndexLabels();
 
         QStringList keywords;
@@ -247,9 +285,9 @@ void LC_SettingsDialog::finalizeInitialization() {
 
 void LC_SettingsDialog::buildCategoryTree() {
     m_treeModel->clear();
-    m_treeItemMap.clear();
+    m_treeItemMapByPageId.clear();
 
-    // 1. Copy raw page pointers and perform stable sort by priority weights
+    // Copy raw page pointers and perform stable sort by priority weights
     std::vector<LC_SettingsPageInterface*> sortedPages;
     for (const auto& page : m_pages) {
         sortedPages.push_back(page.get());
@@ -258,40 +296,40 @@ void LC_SettingsDialog::buildCategoryTree() {
         return a->sortWeight() < b->sortWeight();
     });
 
-    // 2. Symmetrical Adjacency List Tree Building:
+    //  Adjacency List Tree Building:
     // Resolves parent-child hierarchies dynamically without hardcoded path parsing
     std::vector<LC_SettingsPageInterface*> pending = sortedPages;
     bool insertedAny = true;
 
     while (!pending.empty() && insertedAny) {
-        LC_ERR << "Tree Building Pass +++";
+        // LC_ERR << "Tree Building Pass +++";
         insertedAny = false;
         for (auto it = pending.begin(); it != pending.end();) {
             const LC_SettingsPageInterface* page = *it;
             QString parentId = page->parentId();
 
             auto pageId = page->id();
-            LC_ERR << "Page: " << pageId;
+            // LC_ERR << "Page: " << pageId;
             if (parentId.isEmpty()) {
                 // Root Node Insertion
                 auto* item = new QStandardItem(page->displayName());
                 item->setData(pageId, Qt::UserRole);
                 m_treeModel->appendRow(item);
 
-                m_treeItemMap[pageId] = item;
+                m_treeItemMapByPageId[pageId] = item;
                 it = pending.erase(it);
                 insertedAny = true;
             }
             else {
                 // Child Node Insertion: verify parent has been created first
-                auto parentIt = m_treeItemMap.find(parentId);
-                if (parentIt != m_treeItemMap.end()) {
+                auto parentIt = m_treeItemMapByPageId.find(parentId);
+                if (parentIt != m_treeItemMapByPageId.end()) {
                     auto* parentItem = parentIt->second;
                     auto* item = new QStandardItem(page->displayName());
                     item->setData(pageId, Qt::UserRole);
                     parentItem->appendRow(item);
 
-                    m_treeItemMap[pageId] = item;
+                    m_treeItemMapByPageId[pageId] = item;
                     it = pending.erase(it);
                     insertedAny = true;
                 }
@@ -305,16 +343,16 @@ void LC_SettingsDialog::buildCategoryTree() {
 }
 
 bool LC_SettingsDialog::selectPage(const QString& pageId) {
-    const auto itPage = m_pageMap.find(pageId);
-    if (itPage == m_pageMap.end()) {
+    const auto itPage = m_pageMapByPageId.find(pageId);
+    if (itPage == m_pageMapByPageId.end()) {
         return false;
     }
 
     const LC_SettingsPageInterface* page = itPage->second;
 
     // Direct lookup of tree item by pageId
-    const auto itItem = m_treeItemMap.find(page->id());
-    if (itItem == m_treeItemMap.end()) {
+    const auto itItem = m_treeItemMapByPageId.find(page->id());
+    if (itItem == m_treeItemMapByPageId.end()) {
         return false;
     }
 
@@ -341,13 +379,19 @@ void LC_SettingsDialog::onSearchTextChanged(const QString& text) {
     m_filterModel->setFilterText(text);
     if (!text.isEmpty()) {
         ui->tvCategoriesTree->expandAll(); // Show all deep matches dynamically
+
+        // If the filter returned 0 visible rows, tell the SearchLineEdit
+        // to highlight its background in warning red.
+        const bool hasMatches = m_filterModel->rowCount() > 0;
+        ui->leSearch->setErrorState(!hasMatches);
     }
     else {
         restoreTreeExpandedState(); // Revert back to clean root-only state
+        ui->leSearch->setErrorState(false); // Reset background
     }
     if (const auto* currWidget = ui->swContent->currentWidget()) {
-        for (const auto& [id, page] : m_pageMap) {
-            if (page->settingEditingWidget() == currWidget) {
+        for (const auto& [id, page] : m_pageMapByPageId) {
+            if (page->getEditingWidget() == currWidget) {
                 highlightPageContent(page, text);
                 break;
             }
@@ -355,20 +399,49 @@ void LC_SettingsDialog::onSearchTextChanged(const QString& text) {
     }
 }
 
-// context around LC_SettingsDialog::onCategorySelected & updateBreadcrumbs in lc_settings_dialog.cpp:
-void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
-    if (!index.isValid())
+void LC_SettingsDialog::onSearchReturnPressed() {
+    if (ui->leSearch->text().trimmed().isEmpty() || ui->leSearch->isErrorState()) {
         return;
+    }
+
+    const QModelIndex firstIdx = findFirstVisibleIndex();
+    if (firstIdx.isValid()) {
+        const QString pageId = firstIdx.data(Qt::UserRole).toString();
+        selectPage(pageId); // Switches page and focuses the tree node
+    }
+}
+
+QModelIndex LC_SettingsDialog::findFirstVisibleIndex(const QModelIndex& parent) const {
+    if (!m_filterModel) {
+        return QModelIndex();
+    }
+    // If this node has no visible children in the filtered view, it is the deepest leaf match!
+    // NOTE:  Using leaf pages will work for most of searches, yet if page mix own settings and children - like Grid in App Settings
+    // that logic may lead to error and miss first parent page - but it's ok, the user may switch the page manually to find
+    // more precisely
+    if (m_filterModel->rowCount(parent) == 0) {
+        return parent;
+    }
+
+    // Recurse down to the first visible child
+    return findFirstVisibleIndex(m_filterModel->index(0, 0, parent));
+}
+
+void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
+    if (!index.isValid()) {
+        return;
+    }
 
     const QString pageId = index.data(Qt::UserRole).toString();
-    const auto it = m_pageMap.find(pageId);
-    if (it == m_pageMap.end())
+    const auto it = m_pageMapByPageId.find(pageId);
+    if (it == m_pageMapByPageId.end()) {
         return;
+    }
 
     LC_SettingsPageInterface* page = it->second;
 
     LC_PresetManagerInterface* manager = getPresetManagerForPage(pageId);
-    if (manager) {
+    if (manager != nullptr) {
         ui->presetBar->bindToManager(manager);
         const bool isDirty = isPresetManagerScopeDirty(manager);
         ui->presetBar->setDirty(isDirty);
@@ -377,10 +450,9 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
         ui->presetBar->bindToManager(nullptr);
     }
 
-
     auto* bottomLayout = ui->wContainerBottom->layout();
     const QWidget* currentBottom = (bottomLayout->count() > 0) ? bottomLayout->itemAt(0)->widget() : nullptr;
-    QWidget* targetBottom = page->bottomWidget();
+    QWidget* targetBottom = page->getBottomWidget();
     // Three-tiered fallback: query page first, then active preset manager
     if (!targetBottom && manager) {
         targetBottom = manager->getSharedBottomWidget();
@@ -396,7 +468,7 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
             delete item;
         }
 
-        if (targetBottom) {
+        if (targetBottom != nullptr) {
             bottomLayout->addWidget(targetBottom);
             targetBottom->show();
             ui->wContainerBottom->setVisible(true);
@@ -409,7 +481,7 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
     // Three-tiered fallback: query page first, then active preset manager
     auto* previewLayout = ui->wContainerPreview->layout();
     QWidget* currentPreview = (previewLayout->count() > 0) ? previewLayout->itemAt(0)->widget() : nullptr;
-    QWidget* targetPreview = page->previewWidget();
+    QWidget* targetPreview = page->getPreviewWidget();
     if (!targetPreview && manager) {
         if (page->acceptsSharedPreview()) {
             targetPreview = manager->getSharedPreviewWidget();
@@ -439,13 +511,12 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
             previewLayout->addWidget(targetPreview);
             targetPreview->show();
             ui->wContainerPreview->setVisible(true);
-            ui->splPreview->setSizes(QList<int>{500, 250}); // Symmetrical default ratio
+            ui->splPreview->setSizes(QList<int>{500, 250});
         }
         else {
             ui->wContainerPreview->setVisible(false);
             ui->splPreview->setSizes(QList<int>{750, 0});
         }
-
     }
 
     if (targetPreview != nullptr) {
@@ -454,7 +525,6 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
             livePreview->updatePreviewForContentCategory(pageId);
         }
     }
-
 
     if (m_activePage && m_activePage != page) {
         m_activePage->onAboutToHide();
@@ -478,17 +548,17 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
         updateHistoryButtons();
     }
 
-    if (page->settingEditingWidget()) {
-        ui->swContent->setCurrentWidget(page->settingEditingWidget());
+    if (page->getEditingWidget()) {
+        ui->swContent->setCurrentWidget(page->getEditingWidget());
 
         // LC_ERR << "LC_SettingsDialog::onCategorySelected: Checking if page is initialized. ID:" << pageId
         // << " | Already initialized:" << m_initializedPages.contains(pageId);
 
-        // Symmetrical Scroll Reset: Ensure the viewport starts unscrolled [4.2]
-        if (ui->saSettingsScrollArea->verticalScrollBar()) {
+        // Scroll Reset: Ensure the viewport starts unscrolled
+        if (ui->saSettingsScrollArea->verticalScrollBar() != nullptr) {
             ui->saSettingsScrollArea->verticalScrollBar()->setValue(0);
         }
-        if (ui->saSettingsScrollArea->horizontalScrollBar()) {
+        if (ui->saSettingsScrollArea->horizontalScrollBar() != nullptr) {
             ui->saSettingsScrollArea->horizontalScrollBar()->setValue(0);
         }
 
@@ -503,13 +573,18 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
         updateBreadcrumbs(index);
         highlightPageContent(page, ui->leSearch->text());
     }
+    // If we navigated to a category while a valid (non-error) search was active,
+    // we consider the search successful and commit it to history.
+    if (!ui->leSearch->text().trimmed().isEmpty() && !ui->leSearch->isErrorState()) {
+        ui->leSearch->addCurrentTextToHistory();
+    }
 }
 
 void LC_SettingsDialog::updateBreadcrumbs(const QModelIndex& index) const {
     QStringList segments;
     QModelIndex current = index;
 
-    // Symmetrical Breadcrumb Generation: recursively walks up the tree model
+    // Breadcrumb Generation: recursively walks up the tree model
     while (current.isValid()) {
         segments.prepend(current.data(Qt::DisplayRole).toString());
         current = current.parent();
@@ -517,28 +592,42 @@ void LC_SettingsDialog::updateBreadcrumbs(const QModelIndex& index) const {
     ui->lblBreadcrumbs->setText(segments.join(" > "));
 }
 
-// context around LC_SettingsDialog::accept inside lc_settings_dialog.cpp:
 void LC_SettingsDialog::accept() {
+    if (auto* focusWidget = QApplication::focusWidget()) {
+        focusWidget->clearFocus();
+    }
 
+    // Capture the exact set of modified pages upfront.
+    // This protects us from any state mutation side-effects during validation or saving.
+    std::vector<std::pair<QString, LC_SettingsPageInterface*>> modifiedPages;
 
-    for (const auto& [id, page] : m_pageMap) {
-        if (m_initializedPages.contains(page->id()) && page->isModified()) {
-            QString errMsg;
-            if (!page->validate(errMsg)) {
-                selectPage(page->id());
-                QMessageBox::critical(this, tr("Invalid Input"), tr("Error in '%1':\n%2").arg(page->displayName(), errMsg));
-                return;
+    for (const auto& [id, page] : m_pageMapByPageId) {
+        if (isPageInitialized(id)) {
+            const bool pageModified = page->isModified();
+            // LC_ERR << "Accept checking initialized page: " << id  << " | isModified: " << pageModified;
+            if (pageModified) {
+                modifiedPages.push_back({id, page});
             }
         }
     }
 
+    // VALIDATION PASS: Validate only the pre-cached modified pages.
+    for (const auto& [pageId, page] : modifiedPages) {
+        QString errMsg;
+        if (!page->validate(errMsg)) {
+            selectPage(pageId); // Focus on the failing tab
+            QMessageBox::critical(this, tr("Invalid Input"), tr("Error in '%1':\n%2").arg(page->displayName(), errMsg));
+            return; // Abort transaction entirely on validation failure
+        }
+    }
+
+    // COMMIT PASS: Save only the validated, cached pages.
+    // This is called exactly once when the user commits via "OK".
     bool restartNeeded = false;
-    for (const auto& [id, page] : m_pageMap) {
-        if (m_initializedPages.contains(page->id()) && page->isModified()) {
-            if (page->saveSettings()) {
-                if (page->requiresRestart()) {
-                    restartNeeded = true;
-                }
+    for (const auto& [pageId, page] : modifiedPages) {
+        if (page->saveSettings()) {
+            if (page->requiresRestart()) {
+                restartNeeded = true;
             }
         }
     }
@@ -558,7 +647,7 @@ void LC_SettingsDialog::highlightPageContent(LC_SettingsPageInterface* page, con
     }
 
     for (const auto& target : page->searchTargets()) {
-        if (target.targetWidget && target.originalText.contains(filterText, Qt::CaseInsensitive)) {
+        if (target.targetWidget != nullptr && target.originalText.contains(filterText, Qt::CaseInsensitive)) {
             ui->saSettingsScrollArea->ensureWidgetVisible(target.targetWidget);
             break;
         }
@@ -613,71 +702,112 @@ void LC_SettingsDialog::restoreTreeExpandedState() const {
 }
 
 namespace {
-    class LC_SettingsDlgInnerPositions {
+    class LC_SettingsDlgInnerData {
     public:
-        LC_SettingsDlgInnerPositions(const LC_DialogPositionSettingsGroup* original) :
-            o_CategoriesTreeWidth(original, "CategoriesTreeWidth", 150),
-            o_PreviewWidth(original, "PreviewWidth", 150) {
+        LC_SettingsDlgInnerData(const LC_SettingsGroupDialog* original)
+            : o_CategoriesTreeWidth(original, "CategoriesTreeWidth", 150),
+              o_PreviewWidth(original, "PreviewWidth", 150),
+              o_SearchHistory(original, "SearchHistory", "") {
         }
 
         LC_Setting<int> o_CategoriesTreeWidth;
         LC_Setting<int> o_PreviewWidth;
+        LC_Setting<QString> o_SearchHistory;
     };
 }
 
-void LC_SettingsDialog::saveInnerDialogPositions(LC_DialogPositionSettingsGroup& group) const {
-    LC_SettingsDlgInnerPositions CFG_Positions(&group);
-    QList<int> currentMainSplitterSizes = ui->splMain->sizes();
-    if (!currentMainSplitterSizes.isEmpty()) {
-        const int width = currentMainSplitterSizes[0];
-        CFG_Positions.o_CategoriesTreeWidth = width;
-    }
+void LC_SettingsDialog::saveInnerDialogData(LC_SettingsGroupDialog& group, bool savePositions) const {
+    LC_SettingsDlgInnerData CFG_InnerData(&group);
+    if (savePositions) {
+        QList<int> currentMainSplitterSizes = ui->splMain->sizes();
+        if (!currentMainSplitterSizes.isEmpty()) {
+            const int width = currentMainSplitterSizes[0];
+            CFG_InnerData.o_CategoriesTreeWidth = width;
+        }
 
-    const QList<int> currentPreviewSplitterSizes = ui->splPreview->sizes();
-    if (!currentPreviewSplitterSizes.isEmpty()) {
-        const int width = currentPreviewSplitterSizes[0];
-        CFG_Positions.o_PreviewWidth = width;
+        const QList<int> currentPreviewSplitterSizes = ui->splPreview->sizes();
+        if (!currentPreviewSplitterSizes.isEmpty()) {
+            const int width = currentPreviewSplitterSizes[0];
+            CFG_InnerData.o_PreviewWidth = width;
+        }
     }
+    const QString searchHistory = ui->leSearch->history().join(";");
+    CFG_InnerData.o_SearchHistory = searchHistory;
 }
 
-void LC_SettingsDialog::loadInnerDialogPositions(LC_DialogPositionSettingsGroup& group) {
-    const LC_SettingsDlgInnerPositions CFG_Positions(&group);
-    int treeViewWidth = CFG_Positions.o_CategoriesTreeWidth;
-    if (treeViewWidth < 150) {
-        treeViewWidth = 150;
-    }
-    ui->splMain->setSizes(QList<int>() << treeViewWidth << 10000);
+void LC_SettingsDialog::loadInnerDialogData(LC_SettingsGroupDialog& group, bool loadPosition) {
+    const LC_SettingsDlgInnerData CFG_InnerData(&group);
+    if (loadPosition) {
+        int treeViewWidth = CFG_InnerData.o_CategoriesTreeWidth;
+        if (treeViewWidth < 150) {
+            treeViewWidth = 150;
+        }
+        ui->splMain->setSizes(QList<int>() << treeViewWidth << 10000);
 
-    const int previewWidth = CFG_Positions.o_PreviewWidth;
-    const int otherWidth = ui->splPreview->width() - previewWidth;
-    ui->splPreview->setSizes(QList<int>() << previewWidth << otherWidth);
+        const int previewWidth = CFG_InnerData.o_PreviewWidth;
+        const int otherWidth = ui->splPreview->width() - previewWidth;
+        ui->splPreview->setSizes(QList<int>() << previewWidth << otherWidth);
+    }
+    const QString searchHistory = CFG_InnerData.o_SearchHistory;
+    if (!searchHistory.isEmpty()) {
+        const QStringList historyItems = searchHistory.split(";");
+        ui->leSearch->setHistory(historyItems);
+    }
 }
 
 void LC_SettingsDialog::onPresetSelected(const QString& key) const {
-    if (!m_activePage)
-        return;
-
-    LC_PresetManagerInterface* manager = getPresetManagerForPage(m_activePage->id());
-    if (!manager) {
+    if (m_activePage == nullptr) {
         return;
     }
 
+    LC_PresetManagerInterface* manager = getPresetManagerForPage(m_activePage->id());
+    if (manager == nullptr) {
+        return;
+    }
+    if (manager->getActivePresetKey() == key) {
+        return;
+    }
+
+    const bool hasUnsavedChanges = isPresetManagerScopeDirty(manager) || manager->isPresetModified();
+
+    if (hasUnsavedChanges) {
+        const auto result = QMessageBox::question(const_cast<LC_SettingsDialog*>(this), tr("Unsaved Changes"),
+                                                  tr("There are unsaved modifications. " "Switching will discard these changes.\n\n"
+                                                      "Do you want to proceed?"), QMessageBox::Yes | QMessageBox::No);
+
+        if (result == QMessageBox::No) {
+            ui->presetBar->setCurrentPresetKey(manager->getActivePresetKey());
+            return;
+        }
+    }
+
     if (manager->loadPreset(key)) {
-        m_activePage->loadSettings();
+        // Widgets in all initialized pages are now "stale".
+        // We must push the updated cache values into the widgets.
+        // If we don't, clicking "Save As" will take the old widget values
+        // and overwrite the theme we just loaded.
+        for (const QString& pageId : m_initializedPages) {
+            auto it = m_pageMapByPageId.find(pageId);
+            if (it != m_pageMapByPageId.end()) {
+                it->second->loadSettings();
+            }
+        }
+        doUpdatePageLivePreview(m_activePage);
+
         m_activePage->updateLivePreview();
         ui->presetBar->setDirty(false);
     }
 }
 
 bool LC_SettingsDialog::isPresetManagerScopeDirty(LC_PresetManagerInterface* manager) const {
-    if (!manager) {
+    if (manager == nullptr) {
         return false;
     }
 
     for (const auto& page : m_pages) {
         const auto& pageId = page->id();
         // Safe Guard: Ignore pages that have not been initialized by the user yet
-        if (m_initializedPages.contains(pageId)) {
+        if (isPageInitialized(pageId)) {
             if (getPresetManagerForPage(pageId) == manager) {
                 if (page->isModified()) {
                     return true;

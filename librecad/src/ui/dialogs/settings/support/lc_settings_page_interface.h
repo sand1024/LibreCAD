@@ -22,8 +22,8 @@
 #ifndef LC_SETTINGS_PAGE_INTERFACE_H
 #define LC_SETTINGS_PAGE_INTERFACE_H
 
-#include <QString>
 #include <QList>
+#include <QString>
 #include <QWidget>
 #include "lc_settings_types.h"
 
@@ -51,11 +51,13 @@ public:
     int sortWeight() const { return m_sortWeight;}
     void setSortWeight(int weight) {m_sortWeight = weight;}
 
-    virtual QWidget* settingEditingWidget() = 0; // fixme - sand - settings - rename to editingWidget
-    virtual QWidget* headerWidget() { return nullptr; }
-    virtual QWidget* previewWidget() { return nullptr; }
-    virtual QWidget* bottomWidget() { return nullptr; }
-    virtual void updateLivePreview() {};
+    virtual QWidget* getEditingWidget() = 0; // fixme - sand - settings - rename to editingWidget
+    virtual QWidget* getHeaderWidget() { return nullptr; }
+    virtual QWidget* getPreviewWidget() { return nullptr; }
+    virtual QWidget* getBottomWidget() { return nullptr; }
+    virtual void updateLivePreview() {}
+    virtual void onPageResized() {}
+    virtual void onDialogShown() {}
 
     virtual void loadSettings() = 0;
     virtual bool saveSettings() = 0;
@@ -76,7 +78,7 @@ public:
     virtual void autoIndexLabels() {}
     virtual bool acceptsSharedPreview(){return true;}
 
-    virtual void setChildPages(const QList<LC_SettingsPageInterface*>& children) { Q_UNUSED(children); }
+    virtual void setChildPages([[maybe_unused]]const QList<LC_SettingsPageInterface*>& children) {}
 private:
     int m_sortWeight = 100;
 };

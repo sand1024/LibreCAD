@@ -35,6 +35,7 @@
 #include <vector>
 #include <map>
 #include <memory>
+#include <qnetworkreply.h>
 
 #include "lc_dialog.h"
 #include "lc_preset_manager_interface.h"
@@ -54,25 +55,37 @@ class LC_SettingsDialog : public LC_Dialog {
 public:
     explicit LC_SettingsDialog(QWidget* parent, const QString& dialogId);
     ~LC_SettingsDialog() override;
-
     void registerPage(std::unique_ptr<LC_SettingsPageInterface> pageRef);
     void registerPresetManager(const QString& groupPathId, std::unique_ptr<LC_PresetManagerInterface> manager);
     bool selectPage(const QString& pageId);
     void finalizeInitialization();
-
     QList<QPair<QString, QString>> gatherChildLinks(const QString& parentPageId) const;
 
-    signals:
-        void restartRequired();
+signals:
+   void restartRequired();
 
 protected:
     void accept() override;
-    void saveInnerDialogPositions(LC_DialogPositionSettingsGroup& group) const override;
-    void loadInnerDialogPositions(LC_DialogPositionSettingsGroup& group) override;
+    void saveInnerDialogData(LC_SettingsGroupDialog& group, bool savePositions) const override;
+    void loadInnerDialogData(LC_SettingsGroupDialog& group, bool savePositions) override;
     void onPresetSelected(const QString& key) const;
+    void doUpdatePageLivePreview(LC_SettingsPageInterface* page) const;
+    void showEvent(QShowEvent *event) override;
+    void hideEvent(QHideEvent* event) override;
+    void resizeEvent(QResizeEvent* event) override;
+
+    bool isPageInitialized(const QString& pageId) const {
+        return m_initializedPages.contains(pageId);
+    }
+
+    bool isPageInitialized(LC_SettingsPageInterface* page) const {
+        return m_initializedPages.contains(page->id());
+    }
 
 private slots:
     void onSearchTextChanged(const QString& text);
+    void onSearchReturnPressed();
+    QModelIndex findFirstVisibleIndex(const QModelIndex& parent = QModelIndex()) const; 
     void onCategorySelected(const QModelIndex& index);
     void onNavigateBack();
     void onNavigateForward();
@@ -85,18 +98,15 @@ private:
 
     void updateHistoryButtons() const;
     void navigateToHistoryIndex(int index);
-
     void restoreTreeExpandedState() const;
-
     bool isPresetManagerScopeDirty(LC_PresetManagerInterface* manager) const; 
 
-    // Models & Storage
     QStandardItemModel* m_treeModel = nullptr;
     LC_SettingsFilterModel* m_filterModel = nullptr;
 
     std::vector<std::unique_ptr<LC_SettingsPageInterface>> m_pages;
-    std::map<QString, LC_SettingsPageInterface*> m_pageMap;       // Keyed by page->id()
-    std::map<QString, QStandardItem*> m_treeItemMap;              // Keyed by page->id() [4.2]
+    std::map<QString, LC_SettingsPageInterface*> m_pageMapByPageId;
+    std::map<QString, QStandardItem*> m_treeItemMapByPageId;
     QMap<QString, QStringList> m_searchIndex;
 
     std::map<QString, std::unique_ptr<LC_PresetManagerInterface>> m_presetManagers;
@@ -109,7 +119,7 @@ private:
     LC_SettingsPageInterface* m_activePage = nullptr;
 
     std::unique_ptr<Ui::LC_SettingsDialog> ui;
+
+    QString m_dialogId;
 };
-
-
 #endif

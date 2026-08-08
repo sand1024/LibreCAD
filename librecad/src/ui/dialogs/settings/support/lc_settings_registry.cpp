@@ -36,15 +36,20 @@ LC_SettingsRegistry* LC_SettingsRegistry::instance() {
     return &s_instance;
 }
 
+void LC_SettingsRegistry::configureDialog(const QString& dialogId, const QString& title, bool useGlobalTransaction) {
+    auto& reg = m_registrations[dialogId];
+    reg.properties.title = title;
+    reg.properties.useGlobalTransaction = useGlobalTransaction;
+}
+
 void LC_SettingsRegistry::registerPage(const QString& dialogId, const QString& id, const QString& idPath, const PageCreator& creator) {
     m_registrations[dialogId].pageCreators.push_back({id, idPath, creator});
 }
 
-
 void LC_SettingsRegistry::registerPages(const QString& dialogId, const std::initializer_list<PageRegistration>& pages) {
     auto& reg = m_registrations[dialogId];
     for (const auto& page : pages) {
-        reg.pageCreators.push_back(page); // Standard vector insertion [1.1.2]
+        reg.pageCreators.push_back(page); // Standard vector insertion
     }
 }
 
@@ -54,20 +59,28 @@ void LC_SettingsRegistry::registerPresetManager(const QString& dialogId, const Q
 
 bool LC_SettingsRegistry::showDialog(const QString& dialogId, const QString& initialPageId, QWidget* parent) {
     if (!m_registrations.contains(dialogId)) {
-        Q_ASSERT_X(true,QString("Unknown Dialog requested" + dialogId).toLatin1(), "LC_SettingsRegistry::showDialog");
+        Q_ASSERT_X(false, "LC_SettingsRegistry::showDialog", QString("Unknown Dialog requested: " + dialogId).toLatin1());
         return false;
     }
 
-    RS_Settings::instance()->startTransaction();
     auto& reg = m_registrations[dialogId];
-    auto dialog = std::make_unique<LC_SettingsDialog>(parent, dialogId);
 
-    // 1. Register preset managers
+    //  Conditionally start transaction
+    if (reg.properties.useGlobalTransaction) {
+        RS_Settings::instance()->startTransaction();
+    }
+
+    const auto dialog = std::make_unique<LC_SettingsDialog>(parent, dialogId);
+
+    // Set the configured title
+    dialog->setWindowTitle(reg.properties.title);
+
+    // Register preset managers
     for (auto it = reg.presetCreators.begin(); it != reg.presetCreators.end(); ++it) {
         dialog->registerPresetManager(it.key(), it.value()());
     }
 
-    // 2. Instantiate and inject routing properties dynamically [4.1]
+    // Instantiate and inject routing properties dynamically
     for (const auto& pageReg : reg.pageCreators) {
         auto page = pageReg.creator();
         page->setId(pageReg.id);
@@ -79,18 +92,23 @@ bool LC_SettingsRegistry::showDialog(const QString& dialogId, const QString& ini
         dialog->registerPage(std::move(page));
     }
 
-
     dialog->finalizeInitialization();
 
     if (!initialPageId.isEmpty()) {
         dialog->selectPage(initialPageId);
     }
 
-    bool accepted = dialog->exec() == QDialog::Accepted;
-    if (accepted) {
-        RS_Settings::instance()->commitTransaction(); // Commit changes safely to disk
-    } else {
-        RS_Settings::instance()->rollbackTransaction(); // Discard and restore in-memory baseline 
+    const bool accepted = dialog->exec() == QDialog::Accepted;
+
+    // Conditionally commit or rollback transaction
+    if (reg.properties.useGlobalTransaction) {
+        if (accepted) {
+            RS_Settings::instance()->commitTransaction();
+        }
+        else {
+            RS_Settings::instance()->rollbackTransaction();
+        }
     }
+
     return accepted;
 }

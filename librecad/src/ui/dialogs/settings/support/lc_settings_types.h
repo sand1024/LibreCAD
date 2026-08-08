@@ -32,9 +32,9 @@ struct LC_SearchTarget {
 };
 
 enum class LC_ViewportThemeComponent {
-    Style,       // Pure colors, line styles, opacities (Category A)
+    Style,       // Pure colors, line styles, opacities
     Behavior,    // Snapping logic, grid scaling, view modifiers
-    Sizing       // Font sizes, handle sizes, marker scales (Category B)
+    Sizing       // Font sizes, handle sizes, marker scales
 };
 
 #endif
