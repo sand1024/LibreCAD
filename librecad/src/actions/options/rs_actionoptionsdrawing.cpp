@@ -29,9 +29,9 @@
 #include "qc_applicationwindow.h"
 #include "rs_graphicview.h"
 
-RS_ActionOptionsDrawing::RS_ActionOptionsDrawing(LC_ActionContext *actionContext, const int tabIndex)
+RS_ActionOptionsDrawing::RS_ActionOptionsDrawing(LC_ActionContext *actionContext, const QString& pageName)
         :RS_ActionInterface("Drawing Options",actionContext, RS2::ActionOptionsDrawing) {
-    m_tabToShow = tabIndex;
+    m_pageToShow = pageName;
 }
 
 void RS_ActionOptionsDrawing::init(const int status) {
@@ -42,7 +42,7 @@ void RS_ActionOptionsDrawing::init(const int status) {
 void RS_ActionOptionsDrawing::trigger(){
     if (m_graphic != nullptr) {
         m_dialogVisible = true;
-        QC_ApplicationWindow::getAppWindow()->changeDrawingOptions(m_tabToShow);
+        QC_ApplicationWindow::getAppWindow()->changeDrawingOptions(m_pageToShow);
         m_dialogVisible = false;
     }
     finish();

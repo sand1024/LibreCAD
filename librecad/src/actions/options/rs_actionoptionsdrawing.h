@@ -38,12 +38,12 @@
 class RS_ActionOptionsDrawing : public RS_ActionInterface {
 Q_OBJECT
 public:
-    explicit RS_ActionOptionsDrawing(LC_ActionContext *actionContext, int tabIndex = -1);
+    explicit RS_ActionOptionsDrawing(LC_ActionContext *actionContext, const QString& pageName = "");
     void init(int status) override;
     void trigger() override;
     bool mayBeTerminatedExternally() override {return !m_dialogVisible;}
 protected:
-    int m_tabToShow = -1;
+    QString m_pageToShow = "";
     bool m_dialogVisible{false};
 };
 
