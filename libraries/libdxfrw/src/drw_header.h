@@ -147,6 +147,13 @@ private:
     std::string comments;
     std::string name;
     DRW_Variant* curr {nullptr};
+    enum WaitingFor {
+        VARIABLE_VALUE,
+        CUSTOM_VAR_NAME,
+        CUSTOM_VAR_VALUE
+    };
+    WaitingFor waitingFor = VARIABLE_VALUE;
+    std::string currentCustomVarName{""};
     int version; //to use on read
 
     duint32 linetypeCtrl;
