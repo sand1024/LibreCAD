@@ -43,8 +43,8 @@ QString LC_InputTextDialog::getText(QWidget *parent, const QString &title, const
     dlg.ui->lblLabel->setText(label);
 
     dlg.ui->cbInput->setEditable(allowsEditing);
-    dlg.ui->cbInput->setCurrentText(text);
     dlg.ui->cbInput->addItems(options);
+    dlg.ui->cbInput->setCurrentText(text);
 
     dlg.ui->cbInput->setFocus();
 

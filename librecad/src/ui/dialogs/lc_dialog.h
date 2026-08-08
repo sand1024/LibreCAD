@@ -27,12 +27,12 @@
 
 #include "lc_setting.h"
 
-class LC_DialogPositionSettingsGroup : public LC_SettingsGroupBase {
+class LC_SettingsGroupDialog : public LC_SettingsGroupBase {
 public:
-    explicit LC_DialogPositionSettingsGroup(const QString& dialogName)
+    explicit LC_SettingsGroupDialog(const QString& dialogName)
         : LC_SettingsGroupBase("Dlg" + dialogName) {}
 
-    ~LC_DialogPositionSettingsGroup() override = default;
+    ~LC_SettingsGroupDialog() override = default;
 
     // Fixed variable keys inside the dynamically named group [1]
     LC_Setting<bool> o_hasPosition{this, "hasPosition", false};
@@ -55,8 +55,8 @@ protected:
     void setDialogName(const QString& dialogName) {m_dialogName = dialogName;} ;
     void saveDialogPosition() const;
     void loadDialogPosition();
-    virtual void saveInnerDialogPositions(LC_DialogPositionSettingsGroup& group) const {}
-    virtual void loadInnerDialogPositions(LC_DialogPositionSettingsGroup& group) {};
+    virtual void saveInnerDialogData(LC_SettingsGroupDialog& group, bool savePositions) const {}
+    virtual void loadInnerDialogData(LC_SettingsGroupDialog& group, bool savePositions) {};
 
     void showEvent(QShowEvent *event) override;
 };

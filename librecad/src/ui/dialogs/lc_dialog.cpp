@@ -26,9 +26,6 @@
 #include <QTimer>
 
 #include "lc_settings_appearance.h"
-#include "rs_settings.h"
-
-
 
 // fixme - sand - review all dialogs and actions and make all conversions (double/string, angle/string and vise versa consistent)!
 LC_Dialog::LC_Dialog(QWidget* parent, const QString& dlgName)
@@ -61,11 +58,9 @@ void LC_Dialog::showEvent(QShowEvent *event) {
     }
 }
 
-
-
 void LC_Dialog::loadDialogPosition() {
+    LC_SettingsGroupDialog CFG_DlgSettings(m_dialogName);
     if (CFG_Appearance::o_PersistDialogPositions) {
-        LC_DialogPositionSettingsGroup CFG_DlgSettings(m_dialogName);
         if (CFG_DlgSettings.o_hasPosition) {
             const int x = CFG_DlgSettings.o_X;
             const int y = CFG_DlgSettings.o_Y;
@@ -77,14 +72,17 @@ void LC_Dialog::loadDialogPosition() {
                 }
                 resize(w, h);
             }
-            loadInnerDialogPositions(CFG_DlgSettings);
+            loadInnerDialogData(CFG_DlgSettings, true);
         }
+    }
+    else {
+        loadInnerDialogData(CFG_DlgSettings, false);
     }
 }
 
 void LC_Dialog::saveDialogPosition() const {
+    LC_SettingsGroupDialog CFG_DlgSettings(m_dialogName);
     if (CFG_Appearance::o_PersistDialogPositions) {
-        LC_DialogPositionSettingsGroup CFG_DlgSettings(m_dialogName);
         CFG_DlgSettings.o_hasPosition = true;
 
         const QPoint& point = pos();
@@ -98,7 +96,10 @@ void LC_Dialog::saveDialogPosition() const {
         CFG_DlgSettings.o_Y = y;
         CFG_DlgSettings.o_Height = h;
         CFG_DlgSettings.o_Width = w;
-        saveInnerDialogPositions(CFG_DlgSettings);
+        saveInnerDialogData(CFG_DlgSettings, true);
+    }
+    else {
+        saveInnerDialogData(CFG_DlgSettings, false);
     }
 }
 
