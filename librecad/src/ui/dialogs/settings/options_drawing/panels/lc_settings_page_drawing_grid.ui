@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_SettingsPageDrawingGrid</class>
+ <widget class="QWidget" name="LC_SettingsPageDrawingGrid">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>342</width>
+    <height>565</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QGroupBox" name="bgGrid">
+     <property name="title">
+      <string>Grid Settings</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="2" column="1">
+       <widget class="QRadioButton" name="rbIsometricGrid">
+        <property name="toolTip">
+         <string>Grid mode
+
+Use isometric grid</string>
+        </property>
+        <property name="text">
+         <string>Isometric Grid</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QRadioButton" name="rbOrthogonalGrid">
+        <property name="toolTip">
+         <string>Grid mode
+
+Use orthogonal grid</string>
+        </property>
+        <property name="text">
+         <string>Orthogonal Grid</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="cbGridOn">
+        <property name="toolTip">
+         <string>Grid Visibility
+
+If checked, grid will be shown for this particular drawing.
+Otherwise, it will be hidded.</string>
+        </property>
+        <property name="text">
+         <string>Show Grid</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="0" colspan="3">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>The grid serves as a vital precision drafting tool (Snap to Grid) and visual reference for visual scale and proportions.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="QGroupBox" name="gbIsoType">
+        <property name="title">
+         <string>Isometric View</string>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+        <layout class="QHBoxLayout" name="hboxIso">
+         <item>
+          <widget class="QRadioButton" name="rbIsoLeft">
+           <property name="toolTip">
+            <string>Isometric
+
+Left isometric grid</string>
+           </property>
+           <property name="text">
+            <string>Left</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="rbIsoTop">
+           <property name="toolTip">
+            <string>Isometric
+
+Top isometric grid</string>
+           </property>
+           <property name="text">
+            <string>Top</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="rbIsoRight">
+           <property name="toolTip">
+            <string>Isometric
+
+Right isometric grid</string>
+           </property>
+           <property name="text">
+            <string>Right</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gbSpacing">
+     <property name="title">
+      <string>Grid Spacing</string>
+     </property>
+     <layout class="QGridLayout" name="gridSpacingLayout">
+      <item row="0" column="0" colspan="3">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>By default, grid width and grid height is calculated automatically and grid cell is square. However, it it possible to specify custom rectangular size of grid cell for specific snap modes.&lt;br&gt;&lt;br&gt;Select or enter values for grid spacing (they will affect Grid drawing and Snap to Grid):</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lXSpacing">
+        <property name="text">
+         <string>X Spacing:</string>
+        </property>
+        <property name="buddy">
+         <cstring>cbXSpacing</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="cbXSpacing">
+        <property name="toolTip">
+         <string>Grid Spacing
+
+Select or enter grid spacing value by X axis</string>
+        </property>
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+        <item>
+         <property name="text">
+          <string>auto</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>0.01</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>0.1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>1.0</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>10.0</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lYSpacing">
+        <property name="text">
+         <string>Y Spacing:</string>
+        </property>
+        <property name="buddy">
+         <cstring>cbYSpacing</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="cbYSpacing">
+        <property name="toolTip">
+         <string>Grid Spacing
+
+Select or input grid spacing value by Y axis</string>
+        </property>
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+        <item>
+         <property name="text">
+          <string>auto</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>0.01</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>0.1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>1.0</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>10.0</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <spacer>
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gbAppState">
+     <property name="title">
+      <string>Application Settings (Informative)</string>
+     </property>
+     <layout class="QFormLayout" name="formAppState">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Unitless Grid:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="lGridStateUnitless"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Automatically Scale Grid:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="lGridStateScaling"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Draw Grid:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="lGridStateDrawGrid"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Draw Meta Grid:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLabel" name="lGridStateDrawMetaGrid"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer>
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

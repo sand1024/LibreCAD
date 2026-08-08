@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>LC_SettingsPageDrawingVariables</class>
+    <widget class="QWidget" name="LC_SettingsPageDrawingVariables">
+        <property name="geometry">
+            <rect><x>0</x><y>0</y><width>600</width><height>450</height></rect>
+        </property>
+        <layout class="QVBoxLayout" name="mainLayout">
+            <item>
+                <widget class="QGroupBox" name="gbVars">
+                    <property name="title"><string>Drawing Variables List</string></property>
+                    <layout class="QVBoxLayout" name="vbox">
+                        <item>
+                            <widget class="QLabel" name="lblNote">
+                                <property name="text">
+                                    <string>&lt;b&gt;Note:&lt;/b&gt; this list displays current variables stored in the document. Changes made in other tabs of this dialog will be reflected here only after you click &quot;Apply&quot; or &quot;OK&quot; and reopen the dialog.</string>
+                                </property>
+                                <property name="wordWrap"><bool>true</bool></property>
+                            </widget>
+                        </item>
+                        <item>
+                            <widget class="QTableWidget" name="tabVariables">
+                                <property name="toolTip"><string>List of all DXF header variables in this drawing</string></property>
+                                <attribute name="verticalHeaderVisible"><bool>false</bool></attribute>
+                                <attribute name="horizontalHeaderDefaultSectionSize"><number>120</number></attribute>
+                            </widget>
+                        </item>
+                    </layout>
+                </widget>
+            </item>
+        </layout>
+    </widget>
+    <resources/>
+</ui>

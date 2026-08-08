@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_SettingsPageDrawingDimensions</class>
+ <widget class="QWidget" name="LC_SettingsPageDrawingDimensions">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>637</width>
+    <height>810</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <widget class="QWidget" name="leftContainer">
+      <layout class="QVBoxLayout" name="vboxLeft">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Dimension styles that are available in the drawing are shown below.&lt;br&gt; Also, specify which style is active one (the style of dimensions that will be applied to the newly created dimension entity by default).</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="buttonBox">
+         <item>
+          <widget class="QToolButton" name="tbDimNew">
+           <property name="toolTip">
+            <string>New Style
+
+Creates new dimension style</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>:/icons/add.lci</normaloff>:/icons/add.lci</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="tbDimRemove">
+           <property name="toolTip">
+            <string>Remove Style
+
+Removes dimension style (if it is not used).</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>:/icons/remove.lci</normaloff>:/icons/remove.lci</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="tbDimEdit">
+           <property name="toolTip">
+            <string>Edit Style
+
+Dimension style attributes editing.</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>:/icons/attributes.lci</normaloff>:/icons/attributes.lci</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="tbDimRename">
+           <property name="toolTip">
+            <string>Rename Style
+
+Renaming dimension style. </string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>:/icons/rename_active_block.lci</normaloff>:/icons/rename_active_block.lci</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="tbDimDefault">
+           <property name="toolTip">
+            <string>Set as Active
+
+Set selected style as active one.</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>:/icons/dim_default.lci</normaloff>:/icons/dim_default.lci</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer>
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QToolButton" name="tbDimExport">
+           <property name="toolTip">
+            <string>Export
+
+Exporting dimension styles definition to external file.</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>:/icons/export.lci</normaloff>:/icons/export.lci</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="tbDimImport">
+           <property name="toolTip">
+            <string>Import
+
+Importing dimension styles definitions from external file.</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>:/icons/import.lci</normaloff>:/icons/import.lci</iconset>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QTreeView" name="lvDimStyles">
+         <property name="minimumSize">
+          <size>
+           <width>205</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="uniformRowHeights">
+          <bool>true</bool>
+         </property>
+         <property name="headerHidden">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="gbActiveInfo">
+         <property name="title">
+          <string>Active Style</string>
+         </property>
+         <layout class="QHBoxLayout">
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Style Name:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="lblActiveStyle"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QGroupBox" name="gbPreview">
+      <property name="title">
+       <string>Preview</string>
+      </property>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_SettingsPageDrawingUnits</class>
+ <widget class="QWidget" name="LC_SettingsPageDrawingUnits">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>470</width>
+    <height>527</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="bgUnit">
+     <property name="title">
+      <string>Main Unit</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="2" column="2">
+       <widget class="QComboBox" name="cbUnit">
+        <property name="toolTip">
+         <string>Main Drawing Unit
+
+Units of measurements to use in drawing </string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <spacer>
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="lUnit">
+        <property name="text">
+         <string>&amp;Main drawing unit:</string>
+        </property>
+        <property name="buddy">
+         <cstring>cbUnit</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" colspan="3">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Main drawing unit is used mostly for coordinate and measurement display, and for printing and paper layouts scaling.&lt;br&gt;
+&lt;b&gt;Note:&lt;/b&gt; The Main Drawing Unit is &lt;b&gt;informational&lt;/b&gt;, not conversational. Changing it midway through a project &lt;b&gt;does not&lt;/b&gt; automatically convert your geometry. </string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="0" column="0">
+      <layout class="QVBoxLayout">
+       <item>
+        <widget class="QGroupBox" name="bgLength">
+         <property name="title">
+          <string>Length</string>
+         </property>
+         <layout class="QFormLayout">
+          <item row="1" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Format:</string>
+            </property>
+            <property name="buddy">
+             <cstring>cbLengthFormat</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="cbLengthFormat">
+            <property name="toolTip">
+             <string>Linear Format
+
+Format for displaying linear units.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Precision:</string>
+            </property>
+            <property name="buddy">
+             <cstring>cbLengthPrecision</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QComboBox" name="cbLengthPrecision">
+            <property name="toolTip">
+             <string>Linear Precision
+
+Precision for displaying linear units (display only).</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" colspan="2">
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>Linear units settings.</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="bgLengthPreview">
+         <property name="title">
+          <string>Preview</string>
+         </property>
+         <layout class="QHBoxLayout">
+          <item>
+           <widget class="QLabel" name="lLinear">
+            <property name="text">
+             <string>linear</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="0" column="1">
+      <layout class="QVBoxLayout">
+       <item>
+        <widget class="QGroupBox" name="bgAngle">
+         <property name="title">
+          <string>Angle</string>
+         </property>
+         <layout class="QFormLayout">
+          <item row="1" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Format:</string>
+            </property>
+            <property name="buddy">
+             <cstring>cbAngleFormat</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="cbAngleFormat"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Precision:</string>
+            </property>
+            <property name="buddy">
+             <cstring>cbAnglePrecision</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QComboBox" name="cbAnglePrecision"/>
+          </item>
+          <item row="0" column="0" colspan="2">
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>Angular units settings.</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="bgAnglePreview">
+         <property name="title">
+          <string>Preview</string>
+         </property>
+         <layout class="QHBoxLayout">
+          <item>
+           <widget class="QLabel" name="lAngular">
+            <property name="text">
+             <string>angular</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="0" column="2">
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_6">
+     <property name="title">
+      <string>Angles Basis</string>
+     </property>
+     <layout class="QGridLayout">
+      <item row="1" column="2">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>degrees.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Positive angle increase direction:</string>
+        </property>
+        <property name="buddy">
+         <cstring>rbAngleBasePositive</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="leAngleBaseZero">
+        <property name="toolTip">
+         <string>Base Angle
+
+Zero base angle relative to the current user coordinate system.
+Affects polar coordinates input, snap to angle. 0.0 is 3pm.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Zero base angle:</string>
+        </property>
+        <property name="buddy">
+         <cstring>leAngleBaseZero</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="0" colspan="4">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>The Base Angle is the starting direction that the software defines as 0 degrees for measuring and calculating all angles within a drawing.&lt;br&gt;By default, LibreCAD sets 0° pointing straight East or 3.pm (horizontally to the right), with angles increasing in a counter-clockwise direction. &lt;br&gt;Changing the base angle shifts this reference point.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" colspan="2">
+       <layout class="QHBoxLayout">
+        <item>
+         <widget class="QRadioButton" name="rbAngleBasePositive">
+          <property name="toolTip">
+           <string>Positive Angles Direction
+
+Counterclockwise, 90 degrees is north.</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>:/icons/dirpos_plus.lci</normaloff>:/icons/dirpos_plus.lci</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="rbAngleBaseNegative">
+          <property name="toolTip">
+           <string>Positive Angles Direction
+
+Clockwise, 90 degrees is south.</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>:/icons/dirneg_plus.lci</normaloff>:/icons/dirneg_plus.lci</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer>
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

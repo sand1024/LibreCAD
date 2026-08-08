@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_SettingsPageDrawingPoints</class>
+ <widget class="QWidget" name="LC_SettingsPageDrawingPoints">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>602</width>
+    <height>612</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QGroupBox" name="gbPointStyle">
+     <property name="title">
+      <string>Point Style</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_style">
+      <item row="4" column="1">
+       <widget class="QToolButton" name="bBlankCircleSquare">
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_blank_circle_square.lci</normaloff>:/icons/point_blank_circle_square.lci</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="4">
+       <widget class="QToolButton" name="bTick">
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_tick.lci</normaloff>:/icons/point_tick.lci</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QToolButton" name="bPlusCircle">
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_plus_circle.lci</normaloff>:/icons/point_plus_circle.lci</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="QToolButton" name="bCrossCircle">
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_cross_circle.lci</normaloff>:/icons/point_cross_circle.lci</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="4">
+       <widget class="QToolButton" name="bTickCircleSquare">
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_tick_circle_square.lci</normaloff>:/icons/point_tick_circle_square.lci</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QToolButton" name="bDotCircle">
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_dot_circle.lci</normaloff>:/icons/point_dot_circle.lci</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QToolButton" name="bPlusSquare">
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_plus_square.lci</normaloff>:/icons/point_plus_square.lci</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="4">
+       <widget class="QToolButton" name="bTickSquare">
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_tick_square.lci</normaloff>:/icons/point_tick_square.lci</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="4">
+       <widget class="QToolButton" name="bTickCircle">
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_tick_circle.lci</normaloff>:/icons/point_tick_circle.lci</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QToolButton" name="bDotCircleSquare">
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_dot_circle_square.lci</normaloff>:/icons/point_dot_circle_square.lci</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QToolButton" name="bDot">
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_dot.lci</normaloff>:/icons/point_dot.lci</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="3">
+       <widget class="QToolButton" name="bCrossSquare">
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_cross_square.lci</normaloff>:/icons/point_cross_square.lci</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QToolButton" name="bPlus">
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_plus.lci</normaloff>:/icons/point_plus.lci</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QToolButton" name="bBlank">
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_blank.lci</normaloff>:/icons/point_blank.lci</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="7">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Specify which shape should be used to draw Point entities.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QToolButton" name="bPlusCircleSquare">
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_plus_circle_square.lci</normaloff>:/icons/point_plus_circle_square.lci</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QToolButton" name="bCross">
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_cross.lci</normaloff>:/icons/point_cross.lci</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QToolButton" name="bBlankCircle">
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_blank_circle.lci</normaloff>:/icons/point_blank_circle.lci</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QToolButton" name="bBlankSquare">
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_blank_square.lci</normaloff>:/icons/point_blank_square.lci</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="3">
+       <widget class="QToolButton" name="bCrossCircleSquare">
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_cross_circle_square.lci</normaloff>:/icons/point_cross_circle_square.lci</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QToolButton" name="bDotSquare">
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/point_dot_square.lci</normaloff>:/icons/point_dot_square.lci</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="5">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gbPointSize">
+     <property name="title">
+      <string>Point Size</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_size">
+      <item row="3" column="1">
+       <widget class="QRadioButton" name="rbRelSize">
+        <property name="toolTip">
+         <string>Point Size Fixed
+
+Point size will be calculated as percentage
+of the current screen size and so
+it is not affected by zoom level.</string>
+        </property>
+        <property name="text">
+         <string>Size relative to screen</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="lePointSize">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Point Size
+
+Enter value for points size</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" colspan="2">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>(0 =&gt; 5% relative to screen size)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Value:</string>
+        </property>
+        <property name="buddy">
+         <cstring>lePointSize</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="lPtSzUnits">
+        <property name="text">
+         <string>Dwg Units</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QRadioButton" name="rbAbsSize">
+        <property name="toolTip">
+         <string>Point Size Scaled
+
+Size will be defined in drawing units of current drawing
+ and so will be changed according to zoom level.</string>
+        </property>
+        <property name="text">
+         <string>Size in drawing units</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="4">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Specify how Point entity shape size should be calculated.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer>
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
