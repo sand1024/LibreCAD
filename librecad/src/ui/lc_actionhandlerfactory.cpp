@@ -23,6 +23,36 @@
 
 #include "lc_actionhandlerfactory.h"
 
+#include "lc_actioncontext.h"
+#include "lc_actiondimarc.h"
+#include "lc_actiondimordinate.h"
+#include "lc_actiondimordinaterebase.h"
+#include "lc_actiondimstyleapply.h"
+#include "lc_actiondrawdimbaseline.h"
+#include "lc_actiondrawdual.h"
+#include "lc_actiondrawgdtfeaturecontrolframe.h"
+#include "lc_actiondrawhyperbolafp.h"
+#include "lc_actiondrawparabola4points.h"
+#include "lc_actiondrawparabolaFD.h"
+#include "lc_actionentitylayertoggle.h"
+#include "lc_actionfileexportmakercam.h"
+#include "lc_actioninfo3pointsangle.h"
+#include "lc_actioninfopickcoordinates.h"
+#include "lc_actioninfopoint.h"
+#include "lc_actioninfoproperties.h"
+#include "lc_actioninteractivepickangle.h"
+#include "lc_actioninteractivepickdistance.h"
+#include "lc_actioninteractivepickposition.h"
+#include "lc_actionlayerscmd.h"
+#include "lc_actionlayersexport.h"
+#include "lc_actionlayerstoggleconstruction.h"
+#include "lc_actionpenapply.h"
+#include "lc_actionpenpick.h"
+#include "lc_actionpensyncactivebylayer.h"
+#include "lc_actionselectdimordinatesameorigin.h"
+#include "lc_actionsnapmiddlemanual.h"
+#include "lc_actionucsbydimordinate.h"
+#include "lc_actionucscreate.h"
 #include "lc_action_block_explode.h"
 #include "lc_action_block_insert.h"
 #include "lc_action_block_library_insert.h"
@@ -137,36 +167,7 @@
 #include "lc_action_spline_modify_explode.h"
 #include "lc_action_spline_remove_between.h"
 #include "lc_action_spline_remove_points.h"
-#include "lc_actioncontext.h"
-#include "lc_actiondimarc.h"
-#include "lc_actiondimordinate.h"
-#include "lc_actiondimordinaterebase.h"
-#include "lc_actiondimstyleapply.h"
-#include "lc_actiondrawdimbaseline.h"
-#include "lc_actiondrawdual.h"
-#include "lc_actiondrawgdtfeaturecontrolframe.h"
-#include "lc_actiondrawhyperbolafp.h"
-#include "lc_actiondrawparabola4points.h"
-#include "lc_actiondrawparabolaFD.h"
-#include "lc_actionentitylayertoggle.h"
-#include "lc_actionfileexportmakercam.h"
-#include "lc_actioninfo3pointsangle.h"
-#include "lc_actioninfopickcoordinates.h"
-#include "lc_actioninfopoint.h"
-#include "lc_actioninfoproperties.h"
-#include "lc_actioninteractivepickangle.h"
-#include "lc_actioninteractivepickdistance.h"
-#include "lc_actioninteractivepickposition.h"
-#include "lc_actionlayerscmd.h"
-#include "lc_actionlayersexport.h"
-#include "lc_actionlayerstoggleconstruction.h"
-#include "lc_actionpenapply.h"
-#include "lc_actionpenpick.h"
-#include "lc_actionpensyncactivebylayer.h"
-#include "lc_actionselectdimordinatesameorigin.h"
-#include "lc_actionsnapmiddlemanual.h"
-#include "lc_actionucsbydimordinate.h"
-#include "lc_actionucscreate.h"
+#include "lc_settings_manager_drawing.h"
 #include "rs_actionblocksadd.h"
 #include "rs_actionblocksattributes.h"
 #include "rs_actionblockscreate.h"
@@ -930,10 +931,10 @@ namespace InnerFactory{
                 return new RS_ActionOptionsDrawing(ctx);
             }
             case RS2::ActionOptionsDrawingGrid: {
-                return new RS_ActionOptionsDrawing(ctx, 2);
+                return new RS_ActionOptionsDrawing(ctx, LC_SettingsPagesDrawing::Grid);
             }
             case RS2::ActionOptionsDrawingUnits: {
-                return new RS_ActionOptionsDrawing(ctx, 1);
+                return new RS_ActionOptionsDrawing(ctx, LC_SettingsPagesDrawing::Units);
             }
             case RS2::ActionUCSCreate: {
                 return new LC_ActionUCSCreate(ctx);

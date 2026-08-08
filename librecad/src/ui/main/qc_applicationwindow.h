@@ -311,7 +311,7 @@ public:
  */
     void openFile(const QString& fileName, RS2::FormatType type);
     void notifyCurrentDrawingOptionsChanged();
-    void changeDrawingOptions(int tabToShowIndex);
+    void changeDrawingOptions(const QString& pageId = "");
     void closeWindow(QC_MDIWindow* win) override;
 
     // todo - think about more generic way of obtainin widgets!

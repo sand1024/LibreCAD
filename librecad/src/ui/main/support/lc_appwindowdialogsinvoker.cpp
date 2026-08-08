@@ -28,6 +28,7 @@
 #include "comboboxoption.h"
 #include "lc_dlgabout.h"
 #include "lc_dlgnewversionavailable.h"
+#include "lc_settings_manager_drawing.h"
 #include "lc_settings_hardware.h"
 #include "lc_widgetoptionsdialog.h"
 #include "qc_applicationwindow.h"
@@ -115,12 +116,16 @@ bool LC_AppWindowDialogsInvoker::showGeneralOptionsDialog() const {
     return result;
 }
 
-int LC_AppWindowDialogsInvoker::requestOptionsDrawingDialog(RS_Graphic& graphic, const int tabIndex) const {
-    QG_DlgOptionsDrawing dlg(m_appWin);
-    dlg.setGraphic(&graphic);
-    dlg.showInitialTab(tabIndex);
-    const int result = dlg.showModal();
-    return result;
+bool LC_AppWindowDialogsInvoker::requestOptionsDrawingDialog(RS_Graphic& graphic, const QString& pageId) const {
+    // fixme - restore
+    // QG_DlgOptionsDrawing dlg(m_appWin);
+    // dlg.setGraphic(&graphic);
+    // dlg.showInitialTab(tabIndex);
+    // const int result = dlg.showModal();
+    // return result;
+
+    bool accepted = LC_SettingsManagerDrawing::show(&graphic, m_appWin, pageId);
+    return accepted;
 }
 
 /**

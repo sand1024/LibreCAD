@@ -34,6 +34,7 @@
 
 #include "lc_actiongroup.h"
 #include "lc_actiongroupmanager.h"
+#include "lc_settings_manager_drawing.h"
 #include "lc_infocursorsettingsmanager.h"
 #include "lc_settings_keyboard.h"
 #include "lc_settings_selection.h"
@@ -768,7 +769,7 @@ void LC_ActionFactory::createDrawDimensionsUncheckable(QMap<QString, QAction *> 
        ":/icons/dim_style_manager.lci", "", group);
 
     connect(dimSettingsAction, &QAction::triggered, this, [this](bool){
-        m_appWin->changeDrawingOptions(3);
+        m_appWin->changeDrawingOptions(LC_SettingsPagesDrawing::Dimensions);
     });
 }
 

@@ -24,9 +24,9 @@
 #include <QMdiArea>
 #include <QMdiSubWindow>
 
-#include "lc_action_options_manager.h"
 #include "lc_actionfactory.h"
 #include "lc_actiongroupmanager.h"
+#include "lc_action_options_manager.h"
 #include "lc_appwindowdialogsinvoker.h"
 #include "lc_centralwidget.h"
 #include "lc_defaultactioncontext.h"
@@ -40,12 +40,13 @@
 #include "lc_releasechecker.h"
 #include "lc_settings_app_styling.h"
 #include "lc_settings_defaults.h"
+#include "lc_settings_manager_application.h"
+#include "lc_settings_manager_drawing.h"
 #include "lc_settings_paths.h"
 #include "lc_settings_startup.h"
 #include "lc_settings_widget.h"
 #include "lc_settings_window_options.h"
 #include "lc_snapmanager.h"
-#include "lc_tmp_generic_options_init.h"
 #include "lc_toolbarfactory.h"
 #include "lc_widgetfactory.h"
 #include "lc_workspacesinvoker.h"
@@ -276,5 +277,6 @@ void LC_ApplicationWindowInitializer::setupActionContextWidgets() const {
 }
 
 void LC_ApplicationWindowInitializer::initSettingsDialogs() {
-    LC_TmpGenericOptionsInit::initializeApplicationSettings();
+    LC_SettingsManagerApplication::initializeApplicationSettings();
+    LC_SettingsManagerDrawing::initialize();
 }

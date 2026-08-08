@@ -44,7 +44,7 @@ public:
     void showDeviceOptions();
     bool showWidgetOptionsDialog() const;
     bool showGeneralOptionsDialog() const;
-    int requestOptionsDrawingDialog(RS_Graphic& graphic, int tabIndex) const;
+    bool requestOptionsDrawingDialog(RS_Graphic& graphic, const QString& pageId) const;
     int showCloseDialog(const QC_MDIWindow *w, bool showSaveAll) const;
     QPair<QString, QString> showExportFileSelectionDialog(const QString& drawingFileName) const;
     QPair<QString, RS2::FormatType> requestDrawingFileName(RS2::FormatType format = RS2::FormatDXFRW) const;

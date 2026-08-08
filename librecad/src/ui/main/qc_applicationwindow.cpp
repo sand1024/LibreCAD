@@ -30,8 +30,8 @@
 #include "qc_applicationwindow.h"
 
 #include <QCloseEvent>
-#include <QGuiApplication>
 #include <QDockWidget>
+#include <QGuiApplication>
 #include <QMdiArea>
 #include <QMessageBox>
 #include <QMimeData>
@@ -42,10 +42,10 @@
 
 
 
-#include "lc_action_block_library_insert.h"
-#include "lc_action_options_manager.h"
 #include "lc_actiongroupmanager.h"
 #include "lc_actionsshortcutsdialog.h"
+#include "lc_action_block_library_insert.h"
+#include "lc_action_options_manager.h"
 #include "lc_anglesbasiswidget.h"
 #include "lc_applicationwindowinitializer.h"
 #include "lc_appwindowdialogsinvoker.h"
@@ -54,7 +54,6 @@
 #include "lc_exporttoimageservice.h"
 #include "lc_graphicviewport.h"
 #include "lc_gridviewinvoker.h"
-#include "../styling/icons_styling/lc_icons_style_manager.h"
 #include "lc_infocursorsettingsmanager.h"
 #include "lc_lastopenfilesopener.h"
 #include "lc_layertreewidget.h"
@@ -71,11 +70,11 @@
 #include "lc_settings_cad_preferences.h"
 #include "lc_settings_defaults.h"
 #include "lc_settings_hardware.h"
+#include "lc_settings_manager_application.h"
 #include "lc_settings_paths.h"
 #include "lc_settings_startup.h"
 #include "lc_snapmanager.h"
 #include "lc_snapoptionswidgetsholder.h"
-#include "lc_tmp_generic_options_init.h"
 #include "lc_ucslistwidget.h"
 #include "lc_ucsstatewidget.h"
 #include "lc_workspacesinvoker.h"
@@ -101,6 +100,7 @@
 #include "rs_settings.h"
 #include "rs_units.h"
 #include "twostackedlabels.h"
+#include "../styling/icons_styling/lc_icons_style_manager.h"
 
 #ifndef QC_APP_ICON
 # define QC_APP_ICON ":/images/librecad.png"
@@ -1169,12 +1169,12 @@ void QC_ApplicationWindow::notifyCurrentDrawingOptionsChanged() {
     graphicView->repaint();
 }
 
-void QC_ApplicationWindow::changeDrawingOptions(const int tabToShowIndex) {
+void QC_ApplicationWindow::changeDrawingOptions(const QString& pageId) {
     const auto graphicView = getCurrentGraphicView();
     RS_Graphic* graphic = graphicView->getGraphic(true);
 
-    const int dialogResult = m_dlgHelpr->requestOptionsDrawingDialog(*graphic, tabToShowIndex);
-    if (dialogResult == QDialog::Accepted) {
+    const bool dialogResultAccepted = m_dlgHelpr->requestOptionsDrawingDialog(*graphic, pageId);
+    if (dialogResultAccepted) {
         notifyCurrentDrawingOptionsChanged();
         // fixme - sand - emit signal?
     }
@@ -1649,14 +1649,14 @@ void QC_ApplicationWindow::slotOptionsGeneral() {
 }
 
 void QC_ApplicationWindow::slotOptionsGeneralNew() {
-    bool accepted = LC_TmpGenericOptionsInit::showAltOptionsGeneral(this);
-    /*if (accepted) {
+    bool accepted = LC_SettingsManagerApplication::showOptionsApplication(this);
+    if (accepted) {
         m_actionOptionsManager->update();
         // fixme - check this signal, probably it's better to rely on settings change
-        const bool hideRelativeZero = LC_GET_ONE_BOOL("Appearance", "hideRelativeZero");
+        const bool hideRelativeZero = CFG_Appearance::o_HideRelativeZero;
         emit signalEnableRelativeZeroSnaps(!hideRelativeZero);
 
-        const bool antialiasing = LC_GET_ONE_BOOL("Appearance", "Antialiasing", false);
+        const bool antialiasing = CFG_Appearance::o_Antialiasing;
         emit antialiasingChanged(antialiasing);
 
         m_statusbarManager->loadSettings();
@@ -1673,7 +1673,7 @@ void QC_ApplicationWindow::slotOptionsGeneralNew() {
         m_infoCursorSettingsManager->loadFromSettings();
         rebuildMenuIfNecessary();
     }
-    fireCurrentActionIconChanged(nullptr);*/
+    fireCurrentActionIconChanged(nullptr);
 }
 
 void QC_ApplicationWindow::slotImportBlock() {

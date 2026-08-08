@@ -1350,8 +1350,8 @@ void QG_GraphicView::loadSettings() {
 
     {
         using namespace CFG_Colors;
-        const RS_Color bgColor(o_RelativePositionAssistantBackground);
-        const RS_Color txtColor(o_RelativePositionAssistantText);
+        const RS_Color bgColor(o_RelativePositionAssistantBackgroundColor);
+        const RS_Color txtColor(o_RelativePositionAssistantTextColor);
         m_relativePointWidgetHolder->setWidgetColors(bgColor, txtColor);
     }
 

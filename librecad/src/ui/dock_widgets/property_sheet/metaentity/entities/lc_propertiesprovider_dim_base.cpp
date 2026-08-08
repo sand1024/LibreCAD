@@ -24,6 +24,7 @@
 #include "lc_propertiesprovider_dim_base.h"
 
 #include "lc_dlgdimstylemanager.h"
+#include "lc_settings_manager_drawing.h"
 #include "lc_property_action.h"
 #include "lc_property_action_link_view.h"
 #include "lc_property_double_spinbox_view.h"
@@ -122,7 +123,7 @@ void LC_PropertiesProviderDimBase::createMiscSection(LC_PropertyContainer* conta
 
     if (isShowLinks()) {
         auto clickHandler = []([[maybe_unused]] RS_Dimension* entity, [[maybe_unused]]const int linkIndex) {
-            QC_ApplicationWindow::getAppWindow()->changeDrawingOptions(3);
+            QC_ApplicationWindow::getAppWindow()->changeDrawingOptions(LC_SettingsPagesDrawing::Dimensions);
         };
         LC_PropertyProviderUtils::createSingleEntityCommand<RS_Dimension>(cont, "propertyName", tr("Manage styles.."),
                                                                        tr("Invokes dimension styles management UI"), "",
