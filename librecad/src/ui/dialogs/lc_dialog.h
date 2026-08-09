@@ -55,8 +55,9 @@ protected:
     void setDialogName(const QString& dialogName) {m_dialogName = dialogName;} ;
     void saveDialogPosition() const;
     void loadDialogPosition();
-    virtual void saveInnerDialogData(LC_SettingsGroupDialog& group, bool savePositions) const {}
-    virtual void loadInnerDialogData(LC_SettingsGroupDialog& group, bool savePositions) {};
+    virtual void saveInnerDialogData([[maybe_unused]] LC_SettingsGroupDialog& group, [[maybe_unused]] bool savePositions) const {
+    }
+    virtual void loadInnerDialogData([[maybe_unused]] LC_SettingsGroupDialog& group, [[maybe_unused]] bool savePositions) {};
 
     void showEvent(QShowEvent *event) override;
 };

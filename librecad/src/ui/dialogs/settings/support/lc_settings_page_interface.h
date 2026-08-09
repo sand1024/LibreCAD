@@ -30,8 +30,8 @@
 class LC_LivePreview {
 public:
     virtual void updateLivePreview() = 0;
-    virtual void updatePreviewForContentCategory(const QString& tag){};
-    virtual void cleanupPreviewForContentCategory(const QString& tag){};
+    virtual void updatePreviewForContentCategory([[maybe_unused]] const QString& tag) {};
+    virtual void cleanupPreviewForContentCategory([[maybe_unused]] const QString& tag) {};
 };
 
 class LC_SettingsPageInterface {

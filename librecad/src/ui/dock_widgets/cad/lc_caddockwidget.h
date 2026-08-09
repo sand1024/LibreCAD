@@ -25,6 +25,7 @@
 #define LC_CADDOCKWIDGET_H
 
 #include <QDockWidget>
+#include <QToolButton>
 
 class QScrollArea;
 class QFrame;
