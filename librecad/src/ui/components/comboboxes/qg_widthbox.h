@@ -29,12 +29,14 @@
 
 #include <QComboBox>
 
+#include "lc_content_adjustable_combo_box.h"
 #include "rs.h"
+
 
 /**
  * A combobox for choosing a line width.
  */
-class QG_WidthBox : public QComboBox {
+class QG_WidthBox : public LC_ContentAdjustableComboBox {
     Q_OBJECT
 public:
     explicit QG_WidthBox(QWidget* parent = nullptr, const char* name = nullptr);

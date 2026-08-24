@@ -35,7 +35,7 @@
  * to use this constructor.
  */
 QG_FontBox::QG_FontBox(QWidget* parent)
-    : QComboBox(parent) {
+    : LC_ContentAdjustableComboBox(parent) {
 }
 
 /**

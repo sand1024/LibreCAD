@@ -26,15 +26,15 @@
 
 #ifndef QG_FONTBOX_H
 #define QG_FONTBOX_H
-
-#include <QComboBox>
+#include "lc_content_adjustable_combo_box.h"
 
 class RS_Font;
+
 
 /**
  * A combobox for choosing a font name.
  */
-class QG_FontBox : public QComboBox {
+class QG_FontBox : public LC_ContentAdjustableComboBox {
     Q_OBJECT
 public:
     explicit QG_FontBox(QWidget* parent = nullptr);

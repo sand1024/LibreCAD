@@ -29,12 +29,13 @@
 
 #include <QComboBox>
 
+#include "lc_content_adjustable_combo_box.h"
 #include "rs.h"
 
 /**
  * A combobox for choosing a line type.
  */
-class QG_LineTypeBox : public QComboBox {
+class QG_LineTypeBox : public LC_ContentAdjustableComboBox {
     Q_OBJECT
 public:
     explicit QG_LineTypeBox(QWidget* parent = nullptr);

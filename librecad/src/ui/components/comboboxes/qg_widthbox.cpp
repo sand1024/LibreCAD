@@ -94,7 +94,7 @@ namespace {
  * to use this constructor.
  */
 QG_WidthBox::QG_WidthBox(QWidget* parent, const char* name)
-    : QComboBox(parent) {
+    : LC_ContentAdjustableComboBox(parent) {
     setObjectName(name);
 }
 
@@ -108,7 +108,7 @@ QG_WidthBox::QG_WidthBox(QWidget* parent, const char* name)
  * @param name
  */
 QG_WidthBox::QG_WidthBox(const bool showByLayer, const bool showUnchanged, QWidget* parent, const char* name)
-    : QComboBox(parent) {
+    : LC_ContentAdjustableComboBox(parent) {
     setObjectName(name);
     init(showByLayer, showUnchanged);
 }

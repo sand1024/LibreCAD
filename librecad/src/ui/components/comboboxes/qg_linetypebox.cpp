@@ -33,7 +33,7 @@
  * to use this constructor.
  */
 QG_LineTypeBox::QG_LineTypeBox(QWidget* parent)
-    : QComboBox(parent) {
+    : LC_ContentAdjustableComboBox(parent) {
     m_showByLayer = false;
     m_showUnchanged = false;
     m_unchanged = false;
@@ -49,7 +49,7 @@ QG_LineTypeBox::QG_LineTypeBox(QWidget* parent)
  * @param name
  */
 QG_LineTypeBox::QG_LineTypeBox(const bool showByLayer, const bool showUnchanged, QWidget* parent, const char* name)
-    : QComboBox(parent) {
+    : LC_ContentAdjustableComboBox(parent) {
     setObjectName(name);
     m_unchanged = false;
     init(showByLayer, showUnchanged);
