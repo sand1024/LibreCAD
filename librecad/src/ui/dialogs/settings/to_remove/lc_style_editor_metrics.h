@@ -1,5 +1,6 @@
 
 /*******************************************************************************
+ *
  * This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
@@ -19,27 +20,26 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
-
-#ifndef LC_STYLE_EDITOR_TYPOGRAPHY_H
-#define LC_STYLE_EDITOR_TYPOGRAPHY_H
+#ifndef LC_STYLE_EDITOR_METRICS_H
+#define LC_STYLE_EDITOR_METRICS_H
 
 #include "lc_style_editor_base.h"
 #include "lc_palette_editor_shared.h"
 
 namespace Ui {
-    class LC_StyleEditorTypography;
+    class LC_StyleEditorMetrics;
 }
-class LC_FontSettingsWidget;
 
-class LC_StyleEditorTypography : public LC_StyleEditorBase {
+class LC_StyleEditorMetrics : public LC_StyleEditorBase {
     Q_OBJECT
 public:
-    LC_StyleEditorTypography(QWidget* parent, LC_UIStyleManager* styleManager);
-    ~LC_StyleEditorTypography() override;
+    LC_StyleEditorMetrics(QWidget* parent, LC_UIStyleManager* styleManager);
+    ~LC_StyleEditorMetrics() override;
 
-    QString getPresetCategoryName() const override { return tr("Typography"); }
-    QString getFileExtension() const override { return FONT_EXTENSION; }
+    QString getPresetCategoryName() const override { return tr("Metrics"); }
+    QString getFileExtension() const override { return METRICS_EXTENSION; }
     QWidget* getWidget() override { return this; }
+
 
     bool saveCurrentPreset() override;
     QString getActivePresetKey() const override;
@@ -51,17 +51,18 @@ public:
 
 private slots:
     void onControlChanged();
-
+    void onDensityPresetChanged(int index);
 protected:
     bool doLoadPreset(const QString& key) override;
     bool doSavePresetAs(const QString& name, QString& key) override;
+
 private:
     void setupConnections();
-    void loadConfigToUi(const FontConfig& config);
-    FontConfig getConfigFromUi() const;
+    void loadConfigToUi(const StyleMetricsConfig& config) const;
+    StyleMetricsConfig getConfigFromUi() const;
 
-    Ui::LC_StyleEditorTypography* ui;
-    FontConfig m_currentConfig;
+    Ui::LC_StyleEditorMetrics* ui;
+    StyleMetricsConfig m_currentConfig;
     bool m_blockSignals = false;
 };
 
