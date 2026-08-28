@@ -26,14 +26,14 @@
 
 // Pages
 #include "lc_settings_page_drawing_paper.h"
-#include "lc_settings_page_drawing_units.h"
-#include "lc_settings_page_drawing_grid.h"
+#include "pages/lc_settings_page_drawing_units.h"
+#include "pages/lc_settings_page_drawing_grid.h"
 #include "lc_settings_page_drawing_dimensions.h"
-#include "lc_settings_page_drawing_points.h"
-#include "lc_settings_page_drawing_splines.h"
-#include "lc_settings_page_drawing_meta.h"
-#include "lc_settings_page_drawing_user_data.h"
-#include "lc_settings_page_drawing_variables.h"
+#include "pages/lc_settings_page_drawing_points.h"
+#include "pages/lc_settings_page_drawing_splines.h"
+#include "pages/lc_settings_page_drawing_meta.h"
+#include "pages/lc_settings_page_drawing_user_data.h"
+#include "pages/lc_settings_page_drawing_variables.h"
 
 namespace {
     // Static pointer used ONLY during the dialog instantiation phase

@@ -28,7 +28,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="cbSplineSegs">
+       <widget class="LC_ContentAdjustableComboBox" name="cbSplineSegs">
         <property name="toolTip">
          <string/>
         </property>
@@ -75,7 +75,7 @@
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="3" column="1">
-       <widget class="QComboBox" name="cbLineJoin">
+       <widget class="LC_ContentAdjustableComboBox" name="cbLineJoin">
         <property name="toolTip">
          <string>Line Joins
 
@@ -140,7 +140,7 @@ Mode of lines joining in polylines or paths</string>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="cbLineCap">
+       <widget class="LC_ContentAdjustableComboBox" name="cbLineCap">
         <property name="toolTip">
          <string>Caps
 
@@ -199,6 +199,13 @@ End cap for lines rendering mode</string>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+        <customwidget>
+            <class>LC_ContentAdjustableComboBox</class>
+            <extends>QComboBox</extends>
+            <header location="global">lc_content_adjustable_combo_box.h</header>
+        </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

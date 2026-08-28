@@ -46,6 +46,9 @@ protected:
 private slots:
     void updateSpacingEnabledState();
 
+public:
+    void onAboutToHide() override;
+
 private:
     std::unique_ptr<Ui::LC_SettingsPageDrawingGrid> ui;
     RS_Graphic* m_graphic;

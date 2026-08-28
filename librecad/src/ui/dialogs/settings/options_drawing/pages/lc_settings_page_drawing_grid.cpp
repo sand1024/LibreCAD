@@ -1,4 +1,5 @@
 /*******************************************************************************
+ *
  * This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
@@ -149,4 +150,8 @@ void LC_SettingsPageDrawingGrid::updateSpacingEnabledState() {
 
     ui->cbXSpacing->setEnabled(gridOn && ortho);
     ui->cbYSpacing->setEnabled(gridOn);
+}
+
+void LC_SettingsPageDrawingGrid::onAboutToHide() {
+    LC_SettingsPageBase::onAboutToHide();
 }

@@ -158,7 +158,7 @@ Right isometric grid</string>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="cbXSpacing">
+       <widget class="LC_ContentAdjustableComboBox" name="cbXSpacing">
         <property name="toolTip">
          <string>Grid Spacing
 
@@ -166,6 +166,9 @@ Select or enter grid spacing value by X axis</string>
         </property>
         <property name="editable">
          <bool>true</bool>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
         </property>
         <item>
          <property name="text">
@@ -205,7 +208,7 @@ Select or enter grid spacing value by X axis</string>
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QComboBox" name="cbYSpacing">
+       <widget class="LC_ContentAdjustableComboBox" name="cbYSpacing">
         <property name="toolTip">
          <string>Grid Spacing
 
@@ -213,6 +216,9 @@ Select or input grid spacing value by Y axis</string>
         </property>
         <property name="editable">
          <bool>true</bool>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
         </property>
         <item>
          <property name="text">
@@ -321,6 +327,13 @@ Select or input grid spacing value by Y axis</string>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LC_ContentAdjustableComboBox</class>
+   <extends>QComboBox</extends>
+   <header location="global">lc_content_adjustable_combo_box.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
