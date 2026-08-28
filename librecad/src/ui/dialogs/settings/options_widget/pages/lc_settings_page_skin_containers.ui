@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_SettingsPageSkinContainers</class>
+ <widget class="QWidget" name="LC_SettingsPageSkinContainers">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>750</width>
+    <height>540</height>
+   </rect>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_main">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item row="3" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="1">
+    <widget class="QGroupBox" name="gbDockTitle">
+     <property name="title">
+      <string>Dock Panels and Dialogs</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_dock">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="chkCustomDockTitle">
+        <property name="toolTip">
+         <string>Draw expressive horizontal titlebars for dock widgets.</string>
+        </property>
+        <property name="text">
+         <string>Use custom dock title bar</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="cbDockTitleStyle">
+        <property name="toolTip">
+         <string>Select visual style to render custom dock titlebar.</string>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QCheckBox" name="chkPersistentDockSplitter">
+        <property name="toolTip">
+         <string>If unchecked, divider lines between docked panels will be invisible when idle, lighting up only when hovered or dragged.</string>
+        </property>
+        <property name="text">
+         <string>Draw persistent divider lines between docked panels</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="chkShowGenericDockIcons">
+        <property name="toolTip">
+         <string>Display descriptive icons on title bars of generic dock panels.</string>
+        </property>
+        <property name="text">
+         <string>Show icons on generic dock title bars</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QCheckBox" name="chkShowSpecialDockIcons">
+        <property name="toolTip">
+         <string>Display action icons on title bars of special CAD tool panels.</string>
+        </property>
+        <property name="text">
+         <string>Show icons on CAD dock title bars</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="QCheckBox" name="chkCustomDialogTitleBar">
+        <property name="toolTip">
+         <string>Render dialogs and windows with lightweight custom titlebars and active highlights.</string>
+        </property>
+        <property name="text">
+         <string>Use custom style for dialogs and windows</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="gbGroupBox">
+     <property name="title">
+      <string>Group Boxes</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_groupbox">
+      <item row="0" column="0" colspan="2">
+       <widget class="QCheckBox" name="chkCustomGroupBox">
+        <property name="toolTip">
+         <string>Enable custom styled borders and headers for layout group boxes.</string>
+        </property>
+        <property name="text">
+         <string>Use custom group box style</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lblHeaderStyle">
+        <property name="toolTip">
+         <string>Select decoration of heading title text.</string>
+        </property>
+        <property name="text">
+         <string>Header style:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="cbGroupBoxHeaderStyle">
+        <property name="toolTip">
+         <string>Select decoration of heading title text.</string>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lblBoundaryStyle">
+        <property name="toolTip">
+         <string>Select frame line borders surrounding the layout group.</string>
+        </property>
+        <property name="text">
+         <string>Boundary style:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="cbGroupBoxBoundaryStyle">
+        <property name="toolTip">
+         <string>Select frame line borders surrounding the layout group.</string>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QCheckBox" name="chkGroupBoxUseAccent">
+        <property name="toolTip">
+         <string>Highlight borders and banner fills in active theme highlight accent color.</string>
+        </property>
+        <property name="text">
+         <string>Use active accent highlight color</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QGroupBox" name="gbFloatingHUD">
+     <property name="title">
+      <string>Floating HUD Palettes</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_hud">
+      <item row="0" column="0" colspan="2">
+       <widget class="QCheckBox" name="chkUseFloatingHUD">
+        <property name="toolTip">
+         <string>Render floating dock widgets and detachable menus as lightweight frosted HUD overlay panels.</string>
+        </property>
+        <property name="text">
+         <string>Use lightweight floating HUD style</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="cbCloseColorPolicy">
+        <property name="toolTip">
+         <string>Select close button hover/idle color policy.</string>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lblCloseColor">
+        <property name="toolTip">
+         <string>Select visual color policy applied to floating HUD close button.</string>
+        </property>
+        <property name="text">
+         <string>Close Button Color:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Orientation::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="gbSplitterGrips">
+     <property name="title">
+      <string>Splitters and Drag Handles</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_splitters">
+      <item row="1" column="1">
+       <widget class="QComboBox" name="cbSplitterGripStyle">
+        <property name="toolTip">
+         <string>Select visual vector design for center grab handle.</string>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QCheckBox" name="chkShowGripBackgroundWell">
+        <property name="toolTip">
+         <string>Render subtle background well capsule behind grip handles.</string>
+        </property>
+        <property name="text">
+         <string>Draw background well capsule behind grip handles</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="2">
+       <widget class="QCheckBox" name="chkCustomSplitterGrip">
+        <property name="toolTip">
+         <string>Enable modern hover-responsive visual handle shapes and drag highlights for splitters.</string>
+        </property>
+        <property name="text">
+         <string>Use custom splitter and toolbar grips</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="chkHighlightSplitterOnDrag">
+        <property name="toolTip">
+         <string>Paint entire splitter bar in accent colors while dragging.</string>
+        </property>
+        <property name="text">
+         <string>Highlight splitter bar during active drag resizes</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lblSplitterGripStyle">
+        <property name="toolTip">
+         <string>Select visual vector design to represent center grab handle.</string>
+        </property>
+        <property name="text">
+         <string>Grip Pattern Style:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="QCheckBox" name="chkAccentGrips">
+        <property name="toolTip">
+         <string>Highlight handles with theme highlight color even when idle.</string>
+        </property>
+        <property name="text">
+         <string>Accentuate handles with theme highlight color</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

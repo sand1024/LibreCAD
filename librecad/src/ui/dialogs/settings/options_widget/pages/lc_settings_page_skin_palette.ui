@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_SettingsPageSkinPalette</class>
+ <widget class="QWidget" name="LC_SettingsPageSkinPalette">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>558</width>
+    <height>399</height>
+   </rect>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_main">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <property name="spacing">
+    <number>6</number>
+   </property>
+   <item row="0" column="0" colspan="2">
+    <widget class="QWidget" name="variantContainer" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout_variant">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="lblVariants">
+        <property name="text">
+         <string>Edit colors for:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="rbLightMode">
+        <property name="toolTip">
+         <string>Configure palette colors for Light Mode theme.</string>
+        </property>
+        <property name="text">
+         <string>Light Mode Theme</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="rbDarkMode">
+        <property name="toolTip">
+         <string>Configure palette colors for Dark Mode theme.</string>
+        </property>
+        <property name="text">
+         <string>Dark Mode Theme</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="variantSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QToolButton" name="btnGenerate">
+        <property name="toolTip">
+         <string>Automatically generate harmonized or high-contrast color palettes from selected base colors.</string>
+        </property>
+        <property name="text">
+         <string>Generate...</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/new.lci</normaloff>:/icons/new.lci</iconset>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="gbInterface">
+     <property name="title">
+      <string>Primary Interface Palette</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_interface">
+      <item row="0" column="0" colspan="2">
+       <widget class="QTableWidget" name="tableInterface"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lblContrastPolicy">
+        <property name="toolTip">
+         <string>Alters background panel surfaces to programmatically establish visual layer depth.</string>
+        </property>
+        <property name="text">
+         <string>Surface Depth:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="cbContrastPolicy">
+        <property name="toolTip">
+         <string>Select how container surfaces are elevated or recessed relative to buttons.</string>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QGroupBox" name="gbBevels">
+     <property name="title">
+      <string>Borders and 3D Shading</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_bevels">
+      <item row="0" column="0" colspan="2">
+       <widget class="QTableWidget" name="tableBevel"/>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QCheckBox" name="chkAutoCalc3D">
+        <property name="toolTip">
+         <string>Automatically calculates Light, Midlight, Dark, and Shadow colors relative to the baseline seed.</string>
+        </property>
+        <property name="text">
+         <string>Procedural 3D Bevels</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lblBevelSeed">
+        <property name="toolTip">
+         <string>Choose which base color role is used to calculate 3D highlights and shadows.</string>
+        </property>
+        <property name="text">
+         <string>Lighting Baseline:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="cbBevelSeed">
+        <property name="toolTip">
+         <string>Select the base role used for procedural lighting calculations.</string>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="lblContrastWeight">
+        <property name="toolTip">
+         <string>Scales the calculated brightness difference for all 3D bevels and shadow edges.</string>
+        </property>
+        <property name="text">
+         <string>Border Intensity:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QComboBox" name="cbContrastWeight">
+        <property name="toolTip">
+         <string>Set intensity multiplier for procedural bevels and borders.</string>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="QGroupBox" name="gbIconsLink">
+     <property name="title">
+      <string>Icons Style Linkage</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_iconsLink">
+      <item>
+       <widget class="QCheckBox" name="chkUseThemeIcons">
+        <property name="toolTip">
+         <string>If checked, applying this skin will automatically load and apply its linked custom icon colors style globally.</string>
+        </property>
+        <property name="text">
+         <string>Apply linked icons style on activation</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="cbLinkedIconStyle">
+        <property name="toolTip">
+         <string>Select which custom saved icon color style should be bound to this skin.</string>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="iconsSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../../../../../res/icons/icons.qrc"/>
+ </resources>
+ <connections/>
+</ui>

@@ -108,7 +108,7 @@ void LC_WidgetFactory::createCADMegaSidebar(const int columns, const int iconSiz
     auto* result = new LC_CADToolMatrixDockWidget(m_appWin, true);
     result->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
     result->setObjectName("dock_cad_mega");
-    result->setWindowTitle(tr("All"));
+    result->setWindowTitle(tr("Tools Matrix"));
     result->setProperty(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET, true);
     auto actions = QList<QAction*>();
     QAction separatorAct = QAction(this);
