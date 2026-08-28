@@ -96,7 +96,7 @@ Click to select color.</string>
        </widget>
       </item>
       <item row="5" column="1">
-       <widget class="QComboBox" name="cbAxisXColor">
+       <widget class="LC_ContentAdjustableComboBox" name="cbAxisXColor">
         <property name="toolTip">
          <string>X-Axis Color
 
@@ -144,7 +144,7 @@ Color for X axis</string>
        </spacer>
       </item>
       <item row="4" column="1">
-       <widget class="QComboBox" name="cbYAxisAreas">
+       <widget class="LC_ContentAdjustableComboBox" name="cbYAxisAreas">
         <property name="toolTip">
          <string>Y-Axis Extension Mode
 
@@ -163,7 +163,7 @@ Defines how to draw extended Y axis</string>
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QComboBox" name="cbXAxisAreas">
+       <widget class="LC_ContentAdjustableComboBox" name="cbXAxisAreas">
         <property name="toolTip">
          <string>X-Axis Extension Mode
 
@@ -182,7 +182,7 @@ Defines how to draw extended X axis</string>
        </widget>
       </item>
       <item row="6" column="1">
-       <widget class="QComboBox" name="cbAxisYColor">
+       <widget class="LC_ContentAdjustableComboBox" name="cbAxisYColor">
         <property name="toolTip">
          <string>Y-Axis Color
 
@@ -248,6 +248,11 @@ Size of fixed Axis Lines drawn in absolute zero point</string>
    <extends>QPushButton</extends>
    <header>lc_color_button.h</header>
   </customwidget>
+         <customwidget>
+             <class>LC_ContentAdjustableComboBox</class>
+             <extends>QComboBox</extends>
+             <header location="global">lc_content_adjustable_combo_box.h</header>
+         </customwidget>
  </customwidgets>
  <resources/>
  <connections/>

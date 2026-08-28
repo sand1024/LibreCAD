@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>805</width>
-    <height>729</height>
+    <width>407</width>
+    <height>669</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -54,7 +54,7 @@ Width of line for snap indicator.</string>
        </widget>
       </item>
       <item row="5" column="1">
-       <widget class="QComboBox" name="indicator_shape_combobox">
+       <widget class="LC_ContentAdjustableComboBox" name="indicator_shape_combobox">
         <property name="toolTip">
          <string>Indicator Shap Type
 
@@ -131,7 +131,7 @@ Type of line to draw snap indicator lines.</string>
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QComboBox" name="cb_snap_lines_color">
+       <widget class="LC_ContentAdjustableComboBox" name="cb_snap_lines_color">
         <property name="toolTip">
          <string>Indicator Lines Color
 
@@ -220,7 +220,7 @@ If checked, snap indicator lines will be shown.</string>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="indicator_lines_combobox">
+       <widget class="LC_ContentAdjustableComboBox" name="indicator_lines_combobox">
         <property name="toolTip">
          <string>Indicator Type
 
@@ -247,7 +247,7 @@ Type of snap lines indicator</string>
        </widget>
       </item>
       <item row="6" column="1">
-       <widget class="QComboBox" name="cb_snap_color">
+       <widget class="LC_ContentAdjustableComboBox" name="cb_snap_color">
         <property name="toolTip">
          <string>Indicator Shape Color
 
@@ -405,161 +405,6 @@ If checked, cursor will be hidden during snapping</string>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_21">
-     <property name="title">
-      <string>Angle Snap</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_ang">
-      <item row="1" column="1">
-       <widget class="QComboBox" name="cbAngleSnapStep">
-        <property name="toolTip">
-         <string>Angle Step
-
-Angle between steps for Angle Snap (which is usually by corresponding actions if SHIFT is pressed)</string>
-        </property>
-        <property name="sizeAdjustPolicy">
-         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
-        </property>
-        <item>
-         <property name="text">
-          <string>1</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>3</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>5</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>10</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>15</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>18</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>22.5</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>30</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>45</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>90</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="1" column="3">
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="2" column="1">
-       <widget class="QSpinBox" name="sbAngleSnapMarkRadius">
-        <property name="toolTip">
-         <string>Angle Snap Mark
-
-When angle snap is active, a marker is shown.
-This is a radius of arc within angle snap mark.</string>
-        </property>
-        <property name="suffix">
-         <string> px</string>
-        </property>
-        <property name="minimum">
-         <number>20</number>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0" colspan="3">
-       <widget class="QCheckBox" name="cbAngleSnapToLinesIfGrid">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Angle Snap To Grid
-
-If selected and &quot;Snap to Grid&quot; is active, snapping will be performed to &lt;br&gt;closest intersection of angle ray and grid lines.&lt;br&gt;Otherwirse, angle step will be 90 degrees.</string>
-        </property>
-        <property name="text">
-         <string> Snap to grid lines if &quot;Snap to Grid&quot; is active</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="lblAngleSnap">
-        <property name="text">
-         <string>Angle snap single step:</string>
-        </property>
-        <property name="buddy">
-         <cstring>cbAngleSnapStep</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_33">
-        <property name="text">
-         <string>Radius of marker:</string>
-        </property>
-        <property name="buddy">
-         <cstring>sbAngleSnapMarkRadius</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="QLabel" name="lblAngleSnapUnits">
-        <property name="text">
-         <string>deg</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0" colspan="4">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Angle Snap (invoked in drawfting with SHIFT key pressed allows forces points to &quot;lock&quot; or &quot;snap&quot; onto lines with predefined angle step instead of arbitrary angles. </string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
     <widget class="QGroupBox" name="groupBox_25">
      <property name="title">
       <string>Advanced Snap Fine-tuning settings</string>
@@ -682,8 +527,8 @@ Grid cell factor used for snapping to grid. Lower value means smaller snap range
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>20</width>
-       <height>40</height>
+       <width>0</width>
+       <height>0</height>
       </size>
      </property>
     </spacer>
@@ -701,6 +546,11 @@ Grid cell factor used for snapping to grid. Lower value means smaller snap range
    <extends>QPushButton</extends>
    <header>lc_color_button.h</header>
   </customwidget>
+         <customwidget>
+             <class>LC_ContentAdjustableComboBox</class>
+             <extends>QComboBox</extends>
+             <header location="global">lc_content_adjustable_combo_box.h</header>
+         </customwidget>
  </customwidgets>
  <resources/>
  <connections/>

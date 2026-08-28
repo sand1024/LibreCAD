@@ -213,7 +213,7 @@ Click to select color.</string>
        </widget>
       </item>
       <item row="8" column="1">
-       <widget class="QComboBox" name="cbColorVisualSnapProjectedSnap">
+       <widget class="LC_ContentAdjustableComboBox" name="cbColorVisualSnapProjectedSnap">
         <property name="toolTip">
          <string>Projected Snap Point
 
@@ -257,7 +257,7 @@ Distance in screen coordinates that is used for
        </widget>
       </item>
       <item row="5" column="1">
-       <widget class="QComboBox" name="cbColorVisualSnapVertexes">
+       <widget class="LC_ContentAdjustableComboBox" name="cbColorVisualSnapVertexes">
         <property name="toolTip">
          <string>Guiding Point Color
 
@@ -278,7 +278,7 @@ Click to select color.</string>
        </widget>
       </item>
       <item row="11" column="1">
-       <widget class="QComboBox" name="cbColorVisualSnapDocumentEntity">
+       <widget class="LC_ContentAdjustableComboBox" name="cbColorVisualSnapDocumentEntity">
         <property name="toolTip">
          <string>Document Entity Color
 
@@ -418,7 +418,7 @@ Click to select color.</string>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="cbColorVisualSnapGuideEntities">
+       <widget class="LC_ContentAdjustableComboBox" name="cbColorVisualSnapGuideEntities">
         <property name="toolTip">
          <string>Guiding Entities Color
 
@@ -796,6 +796,11 @@ Otherwise, only vertical and horizontal rays will be considered for vertexes.</s
    <extends>QWidget</extends>
    <header>qg_linetypebox.h</header>
   </customwidget>
+         <customwidget>
+             <class>LC_ContentAdjustableComboBox</class>
+             <extends>QComboBox</extends>
+             <header location="global">lc_content_adjustable_combo_box.h</header>
+         </customwidget>
  </customwidgets>
  <resources/>
  <connections/>

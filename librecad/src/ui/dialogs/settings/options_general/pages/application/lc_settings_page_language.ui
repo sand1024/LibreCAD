@@ -30,7 +30,7 @@
      </property>
      <layout class="QGridLayout" name="language_layout">
       <item row="2" column="1">
-       <widget class="QComboBox" name="cbLanguageCmd">
+       <widget class="LC_ContentAdjustableComboBox" name="cbLanguageCmd">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -48,7 +48,7 @@ Languages for commands in Cmd Widget</string>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="cbLanguage">
+       <widget class="LC_ContentAdjustableComboBox" name="cbLanguage">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -132,6 +132,13 @@ Language to use for GUI and messages.</string>
    </item>
   </layout>
  </widget>
+    <customwidgets>
+        <customwidget>
+            <class>LC_ContentAdjustableComboBox</class>
+            <extends>QComboBox</extends>
+            <header location="global">lc_content_adjustable_combo_box.h</header>
+        </customwidget>
+    </customwidgets>
  <resources/>
  <connections/>
 </ui>

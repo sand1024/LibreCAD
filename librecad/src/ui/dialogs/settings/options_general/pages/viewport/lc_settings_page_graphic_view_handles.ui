@@ -30,7 +30,7 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_hnd">
       <item row="3" column="1">
-       <widget class="QComboBox" name="cbStartHandleColor">
+       <widget class="LC_ContentAdjustableComboBox" name="cbStartHandleColor">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -94,7 +94,7 @@ Click to select color.</string>
        </widget>
       </item>
       <item row="5" column="1">
-       <widget class="QComboBox" name="cbEndHandleColor">
+       <widget class="LC_ContentAdjustableComboBox" name="cbEndHandleColor">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -155,7 +155,7 @@ Size of square that is highlights entities reference points (endpoints etc.)</st
        </spacer>
       </item>
       <item row="4" column="1">
-       <widget class="QComboBox" name="cbHandleColor">
+       <widget class="LC_ContentAdjustableComboBox" name="cbHandleColor">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -275,6 +275,11 @@ Click to select color.</string>
    <extends>QPushButton</extends>
    <header>lc_color_button.h</header>
   </customwidget>
+         <customwidget>
+             <class>LC_ContentAdjustableComboBox</class>
+             <extends>QComboBox</extends>
+             <header location="global">lc_content_adjustable_combo_box.h</header>
+         </customwidget>
  </customwidgets>
  <resources/>
  <connections/>

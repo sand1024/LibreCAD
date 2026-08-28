@@ -107,7 +107,7 @@ tabs for drawings if drawings are in Tab mode</string>
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QComboBox" name="cbTabCloseButtonMode">
+       <widget class="LC_ContentAdjustableComboBox" name="cbTabCloseButtonMode">
         <property name="toolTip">
          <string>Tab Close Button
 
@@ -335,6 +335,13 @@ instead of entering numeric values.</string>
    </item>
   </layout>
  </widget>
+    <customwidgets>
+        <customwidget>
+            <class>LC_ContentAdjustableComboBox</class>
+            <extends>QComboBox</extends>
+            <header location="global">lc_content_adjustable_combo_box.h</header>
+        </customwidget>
+    </customwidgets>
  <resources/>
  <connections/>
 </ui>

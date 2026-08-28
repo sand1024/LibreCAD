@@ -39,7 +39,7 @@ Click to select color.</string>
        </widget>
       </item>
       <item row="7" column="1">
-       <widget class="QComboBox" name="cbPreviewRefHighlightColor">
+       <widget class="LC_ContentAdjustableComboBox" name="cbPreviewRefHighlightColor">
         <property name="toolTip">
          <string>Active Explanatory Entity Color
 
@@ -74,7 +74,7 @@ Color of explanatory entity that is currently active according to the command st
        </widget>
       </item>
       <item row="6" column="1">
-       <widget class="QComboBox" name="cbPreviewRefColor">
+       <widget class="LC_ContentAdjustableComboBox" name="cbPreviewRefColor">
         <property name="toolTip">
          <string>Explanatory Entities Color
 
@@ -154,7 +154,7 @@ Show additional operation's preview explanatory entities that explains the logic
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QComboBox" name="cbPreviewEntitiesColor">
+       <widget class="LC_ContentAdjustableComboBox" name="cbPreviewEntitiesColor">
         <property name="toolTip">
          <string>Entities Preview Color
 
@@ -869,6 +869,11 @@ If more entities in preview than specified, rect will be drawn instead of entiti
    <extends>QPushButton</extends>
    <header>lc_color_button.h</header>
   </customwidget>
+         <customwidget>
+             <class>LC_ContentAdjustableComboBox</class>
+             <extends>QComboBox</extends>
+             <header location="global">lc_content_adjustable_combo_box.h</header>
+         </customwidget>
  </customwidgets>
  <resources/>
  <connections/>

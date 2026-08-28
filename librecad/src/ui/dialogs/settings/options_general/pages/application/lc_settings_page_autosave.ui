@@ -55,7 +55,7 @@ When set, LibreCAD will automatically generate a backup of your current drawing.
        </spacer>
       </item>
       <item row="3" column="1">
-       <widget class="QComboBox" name="cbBackupFileSuffix">
+       <widget class="LC_ContentAdjustableComboBox" name="cbBackupFileSuffix">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -113,7 +113,7 @@ Suffix of backup file name (added to the name of opened file).</string>
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QComboBox" name="cbAutoSaveFileNamePrefix">
+       <widget class="LC_ContentAdjustableComboBox" name="cbAutoSaveFileNamePrefix">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -232,6 +232,13 @@ Time between automatic saving of the document in minutes.</string>
    </item>
   </layout>
  </widget>
+    <customwidgets>
+        <customwidget>
+            <class>LC_ContentAdjustableComboBox</class>
+            <extends>QComboBox</extends>
+            <header location="global">lc_content_adjustable_combo_box.h</header>
+        </customwidget>
+    </customwidgets>
  <resources/>
  <connections/>
 </ui>

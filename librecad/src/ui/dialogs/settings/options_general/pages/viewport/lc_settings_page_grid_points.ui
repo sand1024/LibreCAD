@@ -68,7 +68,7 @@ Click to select color.</string>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="cbGridPointsColor">
+       <widget class="LC_ContentAdjustableComboBox" name="cbGridPointsColor">
         <property name="toolTip">
          <string>Grid Point Color
 
@@ -177,7 +177,7 @@ Width of Meta Grid line if grid is drawn by points</string>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="cbMetaGridPointsColor">
+       <widget class="LC_ContentAdjustableComboBox" name="cbMetaGridPointsColor">
         <property name="toolTip">
          <string>Meta-Grid Color
 
@@ -276,6 +276,11 @@ Type of Meta Grid line if grid is drawn as points</string>
    <extends>QPushButton</extends>
    <header>lc_color_button.h</header>
   </customwidget>
+         <customwidget>
+             <class>LC_ContentAdjustableComboBox</class>
+             <extends>QComboBox</extends>
+             <header location="global">lc_content_adjustable_combo_box.h</header>
+         </customwidget>
  </customwidgets>
  <resources/>
  <connections/>

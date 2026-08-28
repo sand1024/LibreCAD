@@ -473,7 +473,7 @@ If unchecked, vertical line will not be drawn for &quot;Top&quot; isometric view
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="cbGridType">
+         <widget class="LC_ContentAdjustableComboBox" name="cbGridType">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -520,6 +520,13 @@ Type of grid to be drawn</string>
    </item>
   </layout>
  </widget>
+    <customwidgets>
+        <customwidget>
+            <class>LC_ContentAdjustableComboBox</class>
+            <extends>QComboBox</extends>
+            <header location="global">lc_content_adjustable_combo_box.h</header>
+        </customwidget>
+    </customwidgets>
  <resources/>
  <connections/>
 </ui>

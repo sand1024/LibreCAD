@@ -34,9 +34,7 @@ LC_SettingsPageProgramDefaults::LC_SettingsPageProgramDefaults(QObject* parent)
     setSortWeight(10);
 }
 
-
 LC_SettingsPageProgramDefaults::~LC_SettingsPageProgramDefaults() = default;
-
 
 void LC_SettingsPageProgramDefaults::setupUi() {
     ui->setupUi(m_widget);
@@ -55,7 +53,7 @@ void LC_SettingsPageProgramDefaults::setupBindings() {
 
     bindBoolean({
         { ui->cbUseQtFileOpenDialog, o_UseQtFileOpenDialog },
-        { ui->cbUseQtColorPickerDialog, o_UseQtFileOpenDialog },
+        { ui->cbUseQtColorPickerDialog, o_UseQtColorPickerDialog }, // fixme - sand - review usage and picking color via non-OS color picker all over the codebase
         { ui->cbShowKeyboardShortcutsInToolTips, o_ShowKeyboardShortcutsInTooltips },
         { ui->cbPersistentDialogs, o_PersistDialogPositions },
         { ui->cbPersistentDialogSizeOnly, o_PersistDialogRestoreSizeOnly },

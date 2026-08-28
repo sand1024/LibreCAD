@@ -101,7 +101,7 @@ If checked, relative zero marker will not be drawn.</string>
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QComboBox" name="cbRelativeZeroColor">
+       <widget class="LC_ContentAdjustableComboBox" name="cbRelativeZeroColor">
         <property name="toolTip">
          <string>Relative Point Marker Color
 
@@ -156,6 +156,11 @@ Color of relative zero marker</string>
    <extends>QPushButton</extends>
    <header>lc_color_button.h</header>
   </customwidget>
+         <customwidget>
+             <class>LC_ContentAdjustableComboBox</class>
+             <extends>QComboBox</extends>
+             <header location="global">lc_content_adjustable_combo_box.h</header>
+         </customwidget>
  </customwidgets>
  <resources/>
  <connections/>

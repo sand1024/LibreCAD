@@ -30,7 +30,6 @@ LC_SettingsPageGeneralStartup::LC_SettingsPageGeneralStartup(QObject* parent)
     : LC_SettingsPageBase(tr("Startup"),
                            std::make_unique<LC_LibreCADSettingsBackend>(CFG_Startup::Group),
                            parent) , ui(std::make_unique<Ui::LC_SettingsPageGeneralStartup>()){
-    setSortWeight(10);
 }
 
 LC_SettingsPageGeneralStartup::~LC_SettingsPageGeneralStartup() = default;

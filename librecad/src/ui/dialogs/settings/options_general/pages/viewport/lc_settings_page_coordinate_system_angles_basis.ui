@@ -83,7 +83,7 @@ If enabled, angles basis marker will be shown in the orign of coordinates system
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="cbAnglesBaseShowPolicy">
+         <widget class="LC_ContentAdjustableComboBox" name="cbAnglesBaseShowPolicy">
           <property name="toolTip">
            <string>Angles Basis Maker Display Mode
 
@@ -132,7 +132,7 @@ Defines when to draw angle basis marker</string>
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QComboBox" name="cbAnglesMarkColorAngleRay">
+         <widget class="LC_ContentAdjustableComboBox" name="cbAnglesMarkColorAngleRay">
           <property name="toolTip">
            <string>Base Angle Ray Color
 
@@ -147,7 +147,7 @@ Color of Base Angle baseline ray</string>
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QComboBox" name="cbAnglesMarkColorDirection">
+         <widget class="LC_ContentAdjustableComboBox" name="cbAnglesMarkColorDirection">
           <property name="toolTip">
            <string>Angles Basis Direction Color
 
@@ -215,6 +215,11 @@ Click to select color.</string>
    <extends>QPushButton</extends>
    <header>lc_color_button.h</header>
   </customwidget>
+         <customwidget>
+             <class>LC_ContentAdjustableComboBox</class>
+             <extends>QComboBox</extends>
+             <header location="global">lc_content_adjustable_combo_box.h</header>
+         </customwidget>
  </customwidgets>
  <resources/>
  <connections/>

@@ -18,7 +18,7 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_ang">
       <item row="1" column="1">
-       <widget class="QComboBox" name="cbAngleSnapStep">
+       <widget class="LC_ContentAdjustableComboBox" name="cbAngleSnapStep">
         <property name="toolTip">
          <string>Angle Step
 
@@ -181,6 +181,13 @@ If selected and &quot;Snap to Grid&quot; is active, snapping will be performed t
    </item>
   </layout>
  </widget>
+    <customwidgets>
+        <customwidget>
+            <class>LC_ContentAdjustableComboBox</class>
+            <extends>QComboBox</extends>
+            <header location="global">lc_content_adjustable_combo_box.h</header>
+        </customwidget>
+    </customwidgets>
  <resources/>
  <connections/>
 </ui>

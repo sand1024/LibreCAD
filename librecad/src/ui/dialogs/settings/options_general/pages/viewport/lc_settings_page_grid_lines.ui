@@ -92,7 +92,7 @@ Click to select color.</string>
        </spacer>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="cbGridLinesColor">
+       <widget class="LC_ContentAdjustableComboBox" name="cbGridLinesColor">
         <property name="toolTip">
          <string>Color Of Grid
 
@@ -159,7 +159,7 @@ Color of grid lines if grid drawn by lines</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_gl">
       <item row="1" column="1">
-       <widget class="QComboBox" name="cbMetaGridLinesColor">
+       <widget class="LC_ContentAdjustableComboBox" name="cbMetaGridLinesColor">
         <property name="toolTip">
          <string>Meta-Grid Color
 
@@ -278,6 +278,11 @@ Click to select color.</string>
    <extends>QPushButton</extends>
    <header>lc_color_button.h</header>
   </customwidget>
+         <customwidget>
+             <class>LC_ContentAdjustableComboBox</class>
+             <extends>QComboBox</extends>
+             <header location="global">lc_content_adjustable_combo_box.h</header>
+         </customwidget>
  </customwidgets>
  <resources/>
  <connections/>

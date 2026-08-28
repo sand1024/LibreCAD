@@ -177,7 +177,7 @@ Clockwise, 90 degrees is sourth.</string>
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="cbUnit">
+         <widget class="LC_ContentAdjustableComboBox" name="cbUnit">
           <property name="toolTip">
            <string>Units
 
@@ -221,6 +221,13 @@ Drawing units</string>
    </item>
   </layout>
  </widget>
+    <customwidgets>
+        <customwidget>
+            <class>LC_ContentAdjustableComboBox</class>
+            <extends>QComboBox</extends>
+            <header location="global">lc_content_adjustable_combo_box.h</header>
+        </customwidget>
+    </customwidgets>
  <resources>
   <include location="../../../../../../../res/icons/icons.qrc"/>
  </resources>

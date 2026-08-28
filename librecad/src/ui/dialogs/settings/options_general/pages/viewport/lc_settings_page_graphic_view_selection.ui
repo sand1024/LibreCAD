@@ -80,7 +80,7 @@ Click to select color.</string>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="cbSelectedColor">
+       <widget class="LC_ContentAdjustableComboBox" name="cbSelectedColor">
         <property name="toolTip">
          <string>Selected Entity Color
 
@@ -132,7 +132,7 @@ Color for selected entities</string>
        </spacer>
       </item>
       <item row="5" column="1">
-       <widget class="QComboBox" name="cbOverlayBoxFillInverted">
+       <widget class="LC_ContentAdjustableComboBox" name="cbOverlayBoxFillInverted">
         <property name="toolTip">
          <string>Inverted Selection Fill Color
 
@@ -149,7 +149,7 @@ Color for filling inverted overlay selection box</string>
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QComboBox" name="cbOverlayBoxLineInverted">
+       <widget class="LC_ContentAdjustableComboBox" name="cbOverlayBoxLineInverted">
         <property name="toolTip">
          <string>Inverted Selection Boundary Color
 
@@ -226,7 +226,7 @@ Overlay selection box boundary line type (inverted mode)</string>
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QComboBox" name="cbOverlayBoxFill">
+       <widget class="LC_ContentAdjustableComboBox" name="cbOverlayBoxFill">
         <property name="toolTip">
          <string>Selection Fill Color
 
@@ -297,7 +297,7 @@ Click to select color.</string>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="cbOverlayBoxLine">
+       <widget class="LC_ContentAdjustableComboBox" name="cbOverlayBoxLine">
         <property name="toolTip">
          <string>Selection Boundary Color
 
@@ -401,6 +401,11 @@ Click to select color.</string>
    <extends>QWidget</extends>
    <header>qg_linetypebox.h</header>
   </customwidget>
+         <customwidget>
+             <class>LC_ContentAdjustableComboBox</class>
+             <extends>QComboBox</extends>
+             <header location="global">lc_content_adjustable_combo_box.h</header>
+         </customwidget>
  </customwidgets>
  <resources/>
  <connections/>

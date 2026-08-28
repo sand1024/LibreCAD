@@ -199,7 +199,7 @@ If this option is selected, all tools will be shown in one group, so the screen 
          <string notr="true">margin-left:15px</string>
         </property>
         <property name="text">
-         <string>Show all tools in one widget</string>
+         <string>Show all CAD tools in one widget (tools matrix)</string>
         </property>
        </widget>
       </item>
