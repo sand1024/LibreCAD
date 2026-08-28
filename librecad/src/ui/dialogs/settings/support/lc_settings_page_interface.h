@@ -27,6 +27,8 @@
 #include <QWidget>
 #include "lc_settings_types.h"
 
+class LC_PresetManagerInterface;
+
 class LC_LivePreview {
 public:
     virtual void updateLivePreview() = 0;
@@ -79,6 +81,13 @@ public:
     virtual bool acceptsSharedPreview(){return true;}
 
     virtual void setChildPages([[maybe_unused]]const QList<LC_SettingsPageInterface*>& children) {}
+
+    virtual void bindToPresetManager([[maybe_unused]] LC_PresetManagerInterface* manager) {}
+    virtual bool isPageGated() const { return false; }
+    virtual QString gatedMessage() const { return QString(); }
+    virtual QString gatedActionText() const { return QString(); }
+    virtual std::function<void()> gatedActionCallback() const { return nullptr; }
+
 private:
     int m_sortWeight = 100;
 };

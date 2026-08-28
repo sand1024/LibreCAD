@@ -59,22 +59,22 @@ public:
         , m_requiresRestart(reqRestart), m_getter(g), m_setter(s) {}
 
     void load(const LC_SettingsBackend* backend) override {
-        if (!m_widget) {
+        if (!m_widget || backend == nullptr) {
             return;
         }
-        m_cleanValue = backend->value(m_key, m_defaultValue).value<ValueType>();
+        m_cleanValue = backend->value(m_key, QVariant::fromValue(m_defaultValue)).template value<ValueType>();
         m_setter(m_widget, m_cleanValue);
     }
 
     void save(LC_SettingsBackend* backend, bool& outRestartRequired, bool commitBaseline) override {
-        if (!m_widget) {
+        if (!m_widget || backend == nullptr) {
             return;
         }
         ValueType currentVal = m_getter(m_widget);
         if (m_requiresRestart && currentVal != m_cleanValue) {
             outRestartRequired = true;
         }
-        backend->setValue(m_key, currentVal);
+        backend->setValue(m_key, QVariant::fromValue(currentVal));
 
         // only commit baseline if explicitly requested on OK/Apply
         if (commitBaseline) {

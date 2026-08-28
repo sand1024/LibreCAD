@@ -29,6 +29,8 @@
 #include "lc_settings_page_interface.h"
 #include "lc_settings_list_widget.h"
 
+class LC_SettingsBannerWidget;
+
 class LC_IndexSettingsPage : public QObject, public LC_SettingsPageInterface {
     Q_OBJECT
 public:
@@ -59,8 +61,18 @@ public:
     void registerSearchTarget(QWidget* target, const QString& text) override { Q_UNUSED(target); Q_UNUSED(text); }
     void highlightSearchPattern(const QString& pattern) override;
     void clearSearchHighlight() override;
-
     void setChildPages(const QList<LC_SettingsPageInterface*>& children) override;
+
+    // --- Gating Methods ---
+    void setGating(std::function<bool()> isGatedFunc,
+                   std::function<QString()> messageFunc,
+                   const QString& actionText = QString(),
+                   std::function<void()> actionCallback = nullptr);
+
+    bool isPageGated() const override;
+    QString gatedMessage() const override;
+    QString gatedActionText() const override { return m_gatedActionText; }
+    std::function<void()> gatedActionCallback() const override { return m_gatedActionCallback; }
 
   signals:
         void navigateToPage(const QString& pageId);
@@ -70,6 +82,11 @@ private:
     QString m_parentId;
     QString m_displayName;
     QString m_description;
+
+    std::function<bool()> m_isGatedFunc;
+    std::function<QString()> m_gatedMessageFunc;
+    QString m_gatedActionText;
+    std::function<void()> m_gatedActionCallback;
 
     QWidget* m_mainWidget = nullptr;
     QVBoxLayout* m_mainLayout = nullptr;

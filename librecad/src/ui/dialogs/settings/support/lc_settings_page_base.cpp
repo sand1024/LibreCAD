@@ -26,6 +26,7 @@
 
 #include "lc_color_button.h"
 #include "lc_highlight_overlay.h"
+#include "lc_settings_banner_widget.h"
 #include "lc_settings_list_widget.h"
 #include "qg_linetypebox.h"
 #include "qg_widthbox.h"
@@ -313,9 +314,10 @@ QWidget* LC_SettingsPageBase::getEditingWidget() {
 }
 
 void LC_SettingsPageBase::updateLivePreview() {
-    // Write the current widget states temporarily to the in-memory settings backend
-    m_binder.saveAll(false);
-
+    if (m_backend != nullptr) {
+        // Write the current widget states temporarily to the in-memory settings backend
+        m_binder.saveAll(false);
+    }
     // Emit the notification signal to let the dialog update the repaint slots
     emit livePreviewRequested();
 }

@@ -22,6 +22,7 @@
 #include <QRegularExpression>
 
 #include "lc_highlight_overlay.h"
+#include "lc_settings_banner_widget.h"
 #include "lc_settings_list_widget.h"
 
 
@@ -34,7 +35,7 @@ LC_IndexSettingsPage::LC_IndexSettingsPage(const QString& displayName,
 
     m_mainWidget = new QWidget(parentWidget);
     m_mainLayout = new QVBoxLayout(m_mainWidget);
-    m_mainLayout->setContentsMargins(16, 16, 16, 16); // fixme - sand check this, how it's related do metrics?
+    m_mainLayout->setContentsMargins(16, 16, 16, 16);
     m_mainLayout->setSpacing(12);
 
     m_descLabel = new QLabel(m_description, m_mainWidget);
@@ -43,7 +44,6 @@ LC_IndexSettingsPage::LC_IndexSettingsPage(const QString& displayName,
     m_mainLayout->addWidget(m_descLabel);
 }
 
-// context around LC_IndexSettingsPage::setChildPages inside lc_index_settings_page.cpp:
 void LC_IndexSettingsPage::setChildPages(const QList<LC_SettingsPageInterface*>& children) {
     if (m_linksWidget != nullptr) {
         m_mainLayout->removeWidget(m_linksWidget);
@@ -127,4 +127,22 @@ void LC_IndexSettingsPage::clearSearchHighlight() {
             }
         }
     }
+}
+
+void LC_IndexSettingsPage::setGating(std::function<bool()> isGatedFunc,
+                                     std::function<QString()> messageFunc,
+                                     const QString& actionText,
+                                     std::function<void()> actionCallback) {
+    m_isGatedFunc = std::move(isGatedFunc);
+    m_gatedMessageFunc = std::move(messageFunc);
+    m_gatedActionText = actionText;
+    m_gatedActionCallback = std::move(actionCallback);
+}
+
+bool LC_IndexSettingsPage::isPageGated() const {
+    return m_isGatedFunc ? m_isGatedFunc() : false;
+}
+
+QString LC_IndexSettingsPage::gatedMessage() const {
+    return m_gatedMessageFunc ? m_gatedMessageFunc() : QString();
 }

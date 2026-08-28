@@ -45,47 +45,13 @@ LC_PresetManagementBar::~LC_PresetManagementBar() {
     delete ui;
 }
 
-bool LC_PresetManagementBar::savePresetAs(const LC_PresetManagerUIStrings& strings) {
+bool LC_PresetManagementBar::savePresetAs() {
     if (m_manager == nullptr) {
+        return false;
+    }
+    if (m_manager->promptSavePresetAs(this)) {
+        bindToManager(m_manager); // Reload choices and select newly created preset
         return true;
-    }
-
-    auto presets = m_manager->getAvailablePresets();
-    QStringList existingNames;
-    for (const auto& p : presets) {
-        existingNames << p.first;
-    }
-
-    bool ok;
-    QString name;
-    QString suggestedName = currentPresetName();
-    bool isNotUnique = false;
-    int i = 1;
-
-    do {
-        name = LC_InputTextDialog::getText(this, strings.saveAsDialogTitle, strings.saveAsDialogLabel, existingNames, true, suggestedName, &ok);
-        name = name.trimmed();
-
-        if (ok) {
-            if (name.isEmpty()) {
-                isNotUnique = true; // Don't allow empty
-                continue;
-            }
-
-            isNotUnique = existingNames.QListSpecialMethods<QString>::contains(name, Qt::CaseInsensitive);
-            if (isNotUnique) {
-                suggestedName = name + "_" + QString::number(i++);
-            }
-        }
-        else {
-            return true; // User canceled
-        }
-    }
-    while (isNotUnique);
-
-    QString newKey;
-    if (m_manager->savePresetAs(name, newKey)) {
-        bindToManager(m_manager);
     }
     return false;
 }
@@ -134,8 +100,8 @@ void LC_PresetManagementBar::bindToManager(LC_PresetManagerInterface* manager) {
         }
     });
 
-    connect(ui->btnSaveAs, &QPushButton::clicked, this, [this, strings]()->void {
-        if (savePresetAs(strings)) {
+    connect(ui->btnSaveAs, &QPushButton::clicked, this, [this]()->void {
+        if (savePresetAs()) {
             return;
         }
     });
@@ -198,8 +164,9 @@ void LC_PresetManagementBar::bindToManager(LC_PresetManagerInterface* manager) {
    });
 
     const QList<QPair<QString, QString>> presets = m_manager->getAvailablePresets();
-    const QString activeKey = m_manager->getActivePresetKey();
-    populatePresets(presets, activeKey, activeKey);
+    const QString selectedKey = m_manager->getActivePresetKey();
+    const QString appliedKey = m_manager->getAppliedPresetKey();
+    populatePresets(presets, selectedKey, appliedKey);
 
      // 5. Setup dirty-state tracking callback
      m_manager->setChangedCallback([this](bool isDirty) {
@@ -246,7 +213,11 @@ QString LC_PresetManagementBar::currentPresetKey() const {
 }
 
 QString LC_PresetManagementBar::currentPresetName() const {
-    return ui->themeCombo->currentText();
+    QString name = ui->themeCombo->currentText();
+    if (name.endsWith(" *")) {
+        name.chop(2);
+    }
+    return name;
 }
 
 void LC_PresetManagementBar::setCurrentPresetKey(const QString& key) {
@@ -286,21 +257,30 @@ void LC_PresetManagementBar::updateButtons() const {
     ui->btnRevert->setEnabled(anyChange);
 
     updateActiveTabText(anyChange);
+    updateComboFonts(m_manager->getAppliedPresetKey());
 }
 
 void LC_PresetManagementBar::updateActiveTabText(bool modified) const {
-    const int idx = ui->themeCombo->currentIndex();
-    if (idx < 0) {
-        return;
-    }
+    const int currentIdx = ui->themeCombo->currentIndex();
+    const int count = ui->themeCombo->count();
 
-    QString baseName = ui->themeCombo->itemText(idx);
-    const bool hasAsterisk = baseName.endsWith("*");
+    for (int i = 0; i < count; ++i) {
+        QString text = ui->themeCombo->itemText(i);
+        const bool hasAsterisk = text.endsWith(" *");
 
-    if (modified && !hasAsterisk) {
-        ui->themeCombo->setItemText(idx, baseName + " *");
-    } else if (!modified && hasAsterisk) {
-        ui->themeCombo->setItemText(idx, baseName.left(baseName.length() - 2));
+        if (i == currentIdx) {
+            if (modified && !hasAsterisk) {
+                ui->themeCombo->setItemText(i, text + " *");
+            }
+            else if (!modified && hasAsterisk) {
+                text.chop(2);
+                ui->themeCombo->setItemText(i, text);
+            }
+        }
+        else if (hasAsterisk) {
+            text.chop(2);
+            ui->themeCombo->setItemText(i, text);
+        }
     }
 }
 
@@ -326,7 +306,6 @@ void LC_PresetManagementBar::onComboIndexChanged(int index) {
         return;
     }
 
-    // Emit the stable non-localized key (itemData) to protect downstream logic
     emit presetSelected(ui->themeCombo->itemData(index).toString());
 }
 

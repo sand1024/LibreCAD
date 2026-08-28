@@ -57,7 +57,12 @@ void LC_SettingsRegistry::registerPresetManager(const QString& dialogId, const Q
     m_registrations[dialogId].presetCreators[groupPathId] = creator;
 }
 
-bool LC_SettingsRegistry::showDialog(const QString& dialogId, const QString& initialPageId, QWidget* parent) {
+
+bool LC_SettingsRegistry::showDialog(const QString& dialogId,
+                                     const QString& initialPageId,
+                                     QWidget* parent,
+                                     const std::function<void(LC_SettingsDialog*)>& preExecHook,
+                                     const std::function<void(LC_SettingsDialog*, bool accepted)>& postExecHook) {
     if (!m_registrations.contains(dialogId)) {
         Q_ASSERT_X(false, "LC_SettingsRegistry::showDialog", QString("Unknown Dialog requested: " + dialogId).toLatin1());
         return false;
@@ -92,13 +97,23 @@ bool LC_SettingsRegistry::showDialog(const QString& dialogId, const QString& ini
         dialog->registerPage(std::move(page));
     }
 
+    // Run custom pre-execution hook (e.g. preview controller attachment)
+    if (preExecHook != nullptr) {
+        preExecHook(dialog.get());
+    }
+
     dialog->finalizeInitialization();
 
     if (!initialPageId.isEmpty()) {
         dialog->selectPage(initialPageId);
     }
 
-    const bool accepted = dialog->exec() == QDialog::Accepted;
+    const bool accepted = (dialog->exec() == QDialog::Accepted);
+
+    // Run custom post-execution hook (e.g. preview controller detachment & teardown)
+    if (postExecHook != nullptr) {
+        postExecHook(dialog.get(), accepted);
+    }
 
     // Conditionally commit or rollback transaction
     if (reg.properties.useGlobalTransaction) {

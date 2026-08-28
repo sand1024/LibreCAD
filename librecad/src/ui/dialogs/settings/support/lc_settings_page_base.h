@@ -40,41 +40,44 @@ class QComboBox;
 class QLineEdit;
 class QAbstractButton;
 class LC_SettingsLinksWidget;
+class LC_SettingsBannerWidget;
 
 class LC_SettingsPageBase : public QObject, public LC_SettingsPageInterface {
     Q_OBJECT public:
+
+
     struct BoolEntry {
-        QCheckBox* widget;
+        QCheckBox* widget = nullptr;
         const LC_Setting<bool>& setting;
         bool reqRestart = false;
     };
 
     struct IntEntry {
-        QSpinBox* widget;
+        QSpinBox* widget = nullptr;
         const LC_Setting<int>& setting;
         bool reqRestart = false;
     };
 
     struct DoubleEntry {
-        QDoubleSpinBox* widget;
+        QDoubleSpinBox* widget = nullptr;
         const LC_Setting<double>& setting;
         bool reqRestart = false;
     };
 
     struct StringEntry {
-        QLineEdit* widget;
+        QLineEdit* widget = nullptr;
         const LC_Setting<QString>& setting;
         bool reqRestart = false;
     };
 
     struct ComboIndexEntry {
-        QComboBox* widget;
+        QComboBox* widget = nullptr;
         const LC_Setting<int>& setting;
         bool reqRestart = false;
     };
 
     struct ComboTextEntry {
-        QComboBox* widget;
+        QComboBox* widget = nullptr;
         const LC_Setting<QString>& setting;
         bool reqRestart = false;
     };
@@ -111,6 +114,8 @@ class LC_SettingsPageBase : public QObject, public LC_SettingsPageInterface {
     }
 
     QWidget* getEditingWidget() override;
+
+    bool isGated() const { return m_isGated; }
 
     void loadSettings() override {
         m_binder.loadAll();
@@ -210,8 +215,6 @@ protected:
 
     virtual void setupBindings() {}
 
-    QWidget* m_widget = nullptr;
-
     template <typename WidgetType, typename ValueType>
     void bindCustom(WidgetType* widget, const QString& key, const ValueType& defaultValue, bool reqRestart,
                     std::function<ValueType(WidgetType*)> getter, std::function<void(WidgetType*, ValueType)> setter) {
@@ -226,17 +229,16 @@ protected:
 
     bool isSettingsDialogVisible() const;
 
+    QWidget* m_widget = nullptr;
 private:
-
-
     QString m_id;
     QString m_parentId;
     QString m_displayName;
     std::unique_ptr<LC_SettingsBackend> m_backend;
     LC_SettingsBinder m_binder;
     bool m_restartRequired = false;
-
     QList<LC_SearchTarget> m_searchTargets;
+    bool m_isGated = false;
 };
 
 #endif

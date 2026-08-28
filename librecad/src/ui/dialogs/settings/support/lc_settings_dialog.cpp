@@ -233,8 +233,22 @@ LC_PresetManagerInterface* LC_SettingsDialog::getPresetManagerForPage(const QStr
     return nullptr;
 }
 
+LC_PresetManagerInterface* LC_SettingsDialog::getPresetManager(const QString& groupPathId) const {
+    const auto it = m_presetManagers.find(groupPathId);
+    if (it != m_presetManagers.end()) {
+        return it->second.get();
+    }
+    return nullptr;
+}
+
 void LC_SettingsDialog::finalizeInitialization() {
     buildCategoryTree();
+
+    for (const auto& [id, page] : m_pageMapByPageId) {
+        if (auto* manager = getPresetManagerForPage(id)) {
+            page->bindToPresetManager(manager);
+        }
+    }
 
     for (const auto& [id, page] : m_pageMapByPageId) {
         auto pageIt = m_treeItemMapByPageId.find(id);
@@ -441,6 +455,14 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
     LC_SettingsPageInterface* page = it->second;
 
     LC_PresetManagerInterface* manager = getPresetManagerForPage(pageId);
+
+    // 1. Page Visibility Lifecycle & Update active page pointer FIRST
+    if (m_activePage != nullptr && m_activePage != page) {
+        m_activePage->onAboutToHide();
+    }
+    m_activePage = page;
+
+    // 2. Preset Management Bar Binding & Scope Dirty State
     if (manager != nullptr) {
         ui->presetBar->bindToManager(manager);
         const bool isDirty = isPresetManagerScopeDirty(manager);
@@ -450,18 +472,43 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
         ui->presetBar->bindToManager(nullptr);
     }
 
+    // 2. Dynamic Shared Header Mounting (e.g. Workspace Density bar)
+    auto* headerLayout = ui->wContainerPresetHeader->layout();
+    const QWidget* currentHeader = (headerLayout->count() > 0) ? headerLayout->itemAt(0)->widget() : nullptr;
+    QWidget* targetHeader = (manager != nullptr) ? manager->getSharedHeaderWidget() : nullptr;
+
+    if (targetHeader != currentHeader) {
+        if (headerLayout->count() > 0) {
+            const QLayoutItem* item = headerLayout->takeAt(0);
+            if (item->widget() != nullptr) {
+                item->widget()->hide();
+                headerLayout->removeWidget(item->widget());
+            }
+            delete item;
+        }
+
+        if (targetHeader != nullptr) {
+            headerLayout->addWidget(targetHeader);
+            targetHeader->show();
+            ui->wContainerPresetHeader->setVisible(true);
+        }
+        else {
+            ui->wContainerPresetHeader->setVisible(false);
+        }
+    }
+
+    // 3. Dynamic Shared Bottom Mounting (e.g. Preview Controls Bar)
     auto* bottomLayout = ui->wContainerBottom->layout();
     const QWidget* currentBottom = (bottomLayout->count() > 0) ? bottomLayout->itemAt(0)->widget() : nullptr;
     QWidget* targetBottom = page->getBottomWidget();
-    // Three-tiered fallback: query page first, then active preset manager
-    if (!targetBottom && manager) {
+    if (!targetBottom && manager != nullptr) {
         targetBottom = manager->getSharedBottomWidget();
     }
 
     if (targetBottom != currentBottom) {
         if (bottomLayout->count() > 0) {
             const QLayoutItem* item = bottomLayout->takeAt(0);
-            if (item->widget()) {
+            if (item->widget() != nullptr) {
                 item->widget()->hide();
                 bottomLayout->removeWidget(item->widget());
             }
@@ -477,12 +524,12 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
             ui->wContainerBottom->setVisible(false);
         }
     }
-
+    // 4. Embedded Preview Layout Handling
     // Three-tiered fallback: query page first, then active preset manager
     auto* previewLayout = ui->wContainerPreview->layout();
     QWidget* currentPreview = (previewLayout->count() > 0) ? previewLayout->itemAt(0)->widget() : nullptr;
     QWidget* targetPreview = page->getPreviewWidget();
-    if (!targetPreview && manager) {
+    if (!targetPreview && manager != nullptr) {
         if (page->acceptsSharedPreview()) {
             targetPreview = manager->getSharedPreviewWidget();
         }
@@ -491,23 +538,21 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
     if (currentPreview != nullptr) {
         auto* livePreview = dynamic_cast<LC_LivePreview*>(currentPreview);
         if (livePreview != nullptr) {
-            if (m_activePage != nullptr) {
                 livePreview->cleanupPreviewForContentCategory(m_activePage->id());
             }
         }
-    }
 
     if (targetPreview != currentPreview) {
         if (previewLayout->count() > 0) {
             const QLayoutItem* item = previewLayout->takeAt(0);
-            if (item->widget()) {
+            if (item->widget() != nullptr) {
                 item->widget()->hide();
                 previewLayout->removeWidget(item->widget());
             }
             delete item;
         }
 
-        if (targetPreview) {
+        if (targetPreview != nullptr) {
             previewLayout->addWidget(targetPreview);
             targetPreview->show();
             ui->wContainerPreview->setVisible(true);
@@ -526,7 +571,12 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
         }
     }
 
-    if (m_activePage && m_activePage != page) {
+
+    // 5. Centralized Gating Resolution Pass
+    updateGatingState();
+
+    // 6. Page Visibility Lifecycle & History Tracking
+    if (m_activePage != nullptr && m_activePage != page) {
         m_activePage->onAboutToHide();
     }
     m_activePage = page;
@@ -548,7 +598,8 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
         updateHistoryButtons();
     }
 
-    if (page->getEditingWidget()) {
+    // 7. Stacked Widget Switch, Scroll Reset & Lazy Loading
+    if (page->getEditingWidget() != nullptr) {
         ui->swContent->setCurrentWidget(page->getEditingWidget());
 
         // LC_ERR << "LC_SettingsDialog::onCategorySelected: Checking if page is initialized. ID:" << pageId
@@ -573,11 +624,66 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
         updateBreadcrumbs(index);
         highlightPageContent(page, ui->leSearch->text());
     }
-    // If we navigated to a category while a valid (non-error) search was active,
-    // we consider the search successful and commit it to history.
+
+    // 8. Search History Commit on Successful Navigation
     if (!ui->leSearch->text().trimmed().isEmpty() && !ui->leSearch->isErrorState()) {
         ui->leSearch->addCurrentTextToHistory();
     }
+}
+
+void LC_SettingsDialog::updateGatingState() {
+    if (m_activePage == nullptr) {
+        ui->bannerWidget->setVisible(false);
+        ui->bannerWidget->clearAction();
+        return;
+    }
+
+    LC_PresetManagerInterface* manager = getPresetManagerForPage(m_activePage->id());
+    const bool isGated = (manager != nullptr && manager->isGated()) || m_activePage->isPageGated();
+    const bool isManagerSystemGated = (manager != nullptr && manager->isGated() && !manager->isReadOnlyDefault());
+
+    if (isGated) {
+        const QString gatedMsg = (manager != nullptr && manager->isGated()) ? manager->gatedMessage() : m_activePage->gatedMessage();
+        const QString actionTxt = (manager != nullptr && manager->isGated()) ? manager->gatedActionText() : m_activePage->gatedActionText();
+        auto actionCb = (manager != nullptr && manager->isGated()) ? manager->gatedActionCallback() : m_activePage->gatedActionCallback();
+
+        auto wrappedActionCb = [this, actionCb, manager]() {
+            if (actionCb) {
+                actionCb();
+            }
+            else if (manager != nullptr && manager->isReadOnlyDefault()) {
+                if (manager->promptSavePresetAs(this)) {
+                    ui->presetBar->bindToManager(manager);
+                }
+            }
+            updateGatingState();
+        };
+
+        ui->bannerWidget->setBanner(gatedMsg, actionTxt, wrappedActionCb);
+        ui->bannerWidget->setVisible(true);
+    }
+    else {
+        ui->bannerWidget->setVisible(false);
+        ui->bannerWidget->clearAction();
+    }
+
+    // Disable editing controls on leaf pages when gated.
+    // Index pages only contain navigation links and descriptions, so they remain enabled.
+    // NOTE: Links within normail (not index pages) will be disabled (yet that's rare case, so let it be so)
+    if (m_activePage->getEditingWidget() != nullptr) {
+        if (dynamic_cast<LC_IndexSettingsPage*>(m_activePage) != nullptr) {
+            m_activePage->getEditingWidget()->setEnabled(true);
+        }
+        else {
+        m_activePage->getEditingWidget()->setEnabled(!isGated);
+    }
+    }
+
+    // Preset bar remains enabled if only Default is selected (so user can switch presets or duplicate).
+    // It is disabled completely only if system-level gating (e.g. Style != Fusion) is active.
+    ui->presetBar->setEnabled(!isManagerSystemGated);
+    ui->wContainerPresetHeader->setEnabled(!isGated);
+    ui->wContainerBottom->setEnabled(!isManagerSystemGated);
 }
 
 void LC_SettingsDialog::updateBreadcrumbs(const QModelIndex& index) const {
@@ -621,6 +727,21 @@ void LC_SettingsDialog::accept() {
         }
     }
 
+    // PRESET MANAGERS ACCEPT PASS: Delegate acceptance checks to active preset managers
+    QSet<LC_PresetManagerInterface*> visitedManagers;
+    for (const auto& [id, page] : m_pageMapByPageId) {
+        if (isPageInitialized(id)) {
+            if (auto* manager = getPresetManagerForPage(id)) {
+                if (!visitedManagers.contains(manager)) {
+                    visitedManagers.insert(manager);
+                    if (!manager->onDialogAccept(this)) {
+                        return; // Abort dialog accept if a manager rejected/cancelled
+                    }
+                }
+            }
+        }
+    }
+
     // COMMIT PASS: Save only the validated, cached pages.
     // This is called exactly once when the user commits via "OK".
     bool restartNeeded = false;
@@ -638,6 +759,60 @@ void LC_SettingsDialog::accept() {
     }
 
     LC_Dialog::accept();
+}
+
+void LC_SettingsDialog::reject() {
+    // 1. Query active preset managers if cancellation should be confirmed
+    QSet<LC_PresetManagerInterface*> visitedManagers;
+    for (const auto& [id, page] : m_pageMapByPageId) {
+        if (isPageInitialized(id)) {
+            if (auto* manager = getPresetManagerForPage(id)) {
+                if (!visitedManagers.contains(manager)) {
+                    visitedManagers.insert(manager);
+                    if (!manager->onDialogReject(this)) {
+                        return; // User chose NOT to discard; abort rejection and keep dialog open
+                    }
+                }
+            }
+        }
+    }
+
+    // 2. Rollback transient states on all preset managers
+    for (const auto& [key, mgr] : m_presetManagers) {
+        if (mgr != nullptr) {
+            mgr->rollbackState();
+        }
+    }
+
+    LC_Dialog::reject();
+}
+
+
+void LC_SettingsDialog::closeEvent(QCloseEvent* event) {
+    // Symmetrically run the same rejection check on window top-right "X" closure
+    QSet<LC_PresetManagerInterface*> visitedManagers;
+    for (const auto& [id, page] : m_pageMapByPageId) {
+        if (isPageInitialized(id)) {
+            if (auto* manager = getPresetManagerForPage(id)) {
+                if (!visitedManagers.contains(manager)) {
+                    visitedManagers.insert(manager);
+                    if (!manager->onDialogReject(this)) {
+                        event->ignore();
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    for (const auto& [key, mgr] : m_presetManagers) {
+        if (mgr != nullptr) {
+            mgr->rollbackState();
+        }
+    }
+
+    event->accept();
+    LC_Dialog::reject();
 }
 
 void LC_SettingsDialog::highlightPageContent(LC_SettingsPageInterface* page, const QString& filterText) const {
@@ -755,7 +930,7 @@ void LC_SettingsDialog::loadInnerDialogData(LC_SettingsGroupDialog& group, bool 
     }
 }
 
-void LC_SettingsDialog::onPresetSelected(const QString& key) const {
+void LC_SettingsDialog::onPresetSelected(const QString& key){
     if (m_activePage == nullptr) {
         return;
     }
@@ -771,8 +946,9 @@ void LC_SettingsDialog::onPresetSelected(const QString& key) const {
     const bool hasUnsavedChanges = isPresetManagerScopeDirty(manager) || manager->isPresetModified();
 
     if (hasUnsavedChanges) {
-        const auto result = QMessageBox::question(const_cast<LC_SettingsDialog*>(this), tr("Unsaved Changes"),
-                                                  tr("There are unsaved modifications. " "Switching will discard these changes.\n\n"
+        const auto result = QMessageBox::question(this, tr("Unsaved Changes"),
+                                                  tr("There are unsaved modifications. "
+                                                     "Switching will discard these changes.\n\n"
                                                       "Do you want to proceed?"), QMessageBox::Yes | QMessageBox::No);
 
         if (result == QMessageBox::No) {
@@ -794,8 +970,10 @@ void LC_SettingsDialog::onPresetSelected(const QString& key) const {
         }
         doUpdatePageLivePreview(m_activePage);
 
-        m_activePage->updateLivePreview();
         ui->presetBar->setDirty(false);
+
+        // Re-evaluate gating so switching between Default and Custom instantly updates the banner and controls
+        updateGatingState();
     }
 }
 
@@ -816,4 +994,12 @@ bool LC_SettingsDialog::isPresetManagerScopeDirty(LC_PresetManagerInterface* man
         }
     }
     return false;
+}
+
+void LC_SettingsDialog::forEachPresetManager(const std::function<void(LC_PresetManagerInterface*)>& callback) const {
+    for (const auto& [key, mgr] : m_presetManagers) {
+        if (mgr != nullptr) {
+            callback(mgr.get());
+        }
+    }
 }

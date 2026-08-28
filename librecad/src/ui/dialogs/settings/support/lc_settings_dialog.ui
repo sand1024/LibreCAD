@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1391</width>
-    <height>600</height>
+    <height>512</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -181,6 +181,30 @@ Navigates forward in the list of previously visited pages</string>
         </widget>
        </item>
        <item>
+        <widget class="QWidget" name="wContainerPresetHeader" native="true">
+         <property name="visible">
+          <bool>false</bool>
+         </property>
+         <layout class="QVBoxLayout" name="m_presetHeaderLayout">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+         </layout>
+        </widget>
+       </item>
+       <item>
         <widget class="QSplitter" name="splPreview">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -210,7 +234,7 @@ Navigates forward in the list of previously visited pages</string>
              <x>0</x>
              <y>0</y>
              <width>787</width>
-             <height>500</height>
+             <height>412</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="scrollAreaLayout">
@@ -262,6 +286,13 @@ Navigates forward in the list of previously visited pages</string>
          </widget>
         </widget>
        </item>
+          <item>
+              <widget class="LC_SettingsBannerWidget" name="bannerWidget" native="true">
+                  <property name="visible">
+                      <bool>false</bool>
+                  </property>
+              </widget>
+          </item>
        <item>
         <widget class="QWidget" name="wContainerBottom" native="true">
          <property name="visible">
@@ -316,6 +347,12 @@ Navigates forward in the list of previously visited pages</string>
    <extends>QTreeView</extends>
    <header>lc_placeholder_tree_view.h</header>
   </customwidget>
+     <customwidget>
+         <class>LC_SettingsBannerWidget</class>
+         <extends>QWidget</extends>
+         <header>lc_settings_banner_widget.h</header>
+         <container>1</container>
+     </customwidget>
  </customwidgets>
  <resources/>
  <connections/>

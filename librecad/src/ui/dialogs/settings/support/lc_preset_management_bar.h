@@ -58,7 +58,7 @@ private:
                        const QString& activeKey,
                        const QString& savedActiveKeyOnDisk);
 
-    bool savePresetAs(const LC_PresetManagerUIStrings& strings);
+    bool savePresetAs();
     void updateComboFonts(const QString& activeItemKey) const;
     void updateButtons() const;
     void updateActiveTabText(bool modified) const;

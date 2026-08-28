@@ -32,6 +32,8 @@
 #include "lc_settings_page_interface.h"
 #include "lc_style_editor_interface.h"
 
+class LC_SettingsDialog;
+
 class LC_SettingsRegistry {
 public:
     using PageCreator = std::function<std::unique_ptr<LC_SettingsPageInterface>()>;
@@ -50,7 +52,11 @@ public:
     void registerPage(const QString& dialogId, const QString& id, const QString& parentId, const PageCreator& creator);
     void registerPages(const QString& dialogId, const std::initializer_list<PageRegistration>& pages);
     void registerPresetManager(const QString& dialogId, const QString& groupPathId, const PresetManagerCreator& creator);
-    bool showDialog(const QString& dialogId, const QString& initialPageId = QString(), QWidget* parent = nullptr);
+    bool showDialog(const QString& dialogId,
+                const QString& initialPageId = QString(),
+                QWidget* parent = nullptr,
+                const std::function<void(LC_SettingsDialog*)>& preExecHook = nullptr,
+                const std::function<void(LC_SettingsDialog*, bool accepted)>& postExecHook = nullptr);
 private:
     LC_SettingsRegistry() = default;
     ~LC_SettingsRegistry() = default;

@@ -32,7 +32,7 @@ void LC_ColorBinding::load(const LC_SettingsBackend* backend) {
     // if (!m_button) {
     //     LC_ERR << "LC_ColorBinding::load: ERROR - m_button is NULL!";
     // }
-    if (!m_comboBox || !m_button) {
+    if (!m_comboBox || !m_button || backend == nullptr) {
         return;
     }
 
@@ -71,7 +71,7 @@ void LC_ColorBinding::load(const LC_SettingsBackend* backend) {
 }
 
 void LC_ColorBinding::save(LC_SettingsBackend* backend, bool& outRestartRequired, bool commitBaseline) {
-    if (!m_comboBox) {
+    if (m_comboBox == nullptr || backend == nullptr) {
         return;
     }
     const QString currentVal = m_comboBox->currentText();
@@ -188,6 +188,9 @@ void LC_SettingsBinder::bindColor(QComboBox* comboBox, LC_ColorButton* button, c
 }
 
 void LC_SettingsBinder::loadAll() {
+    if (m_backend == nullptr) {
+        return;
+    }
     m_blockSignals = true;
     // LC_ERR << "LC_SettingsBinder::loadAll: Initializing. Total bindings registered:" << m_bindings.size();
 
@@ -201,7 +204,9 @@ void LC_SettingsBinder::loadAll() {
 }
 
 void LC_SettingsBinder::saveAll(bool commitBaseline) const {
-
+    if (m_backend == nullptr) {
+        return;
+    }
     bool restartRequired = false;
     for (const auto& binding : m_bindings) {
         bool bindingRestart = false;

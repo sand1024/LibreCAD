@@ -60,19 +60,24 @@ public:
     bool selectPage(const QString& pageId);
     void finalizeInitialization();
     QList<QPair<QString, QString>> gatherChildLinks(const QString& parentPageId) const;
-
+    LC_PresetManagerInterface* getPresetManager(const QString& groupPathId) const;
+    void forEachPresetManager(const std::function<void(LC_PresetManagerInterface*)>& callback) const;
+    void accept() override;
+    void reject() override;
 signals:
    void restartRequired();
 
 protected:
-    void accept() override;
+    void closeEvent(QCloseEvent* event) override;
     void saveInnerDialogData(LC_SettingsGroupDialog& group, bool savePositions) const override;
     void loadInnerDialogData(LC_SettingsGroupDialog& group, bool savePositions) override;
-    void onPresetSelected(const QString& key) const;
+    void onPresetSelected(const QString& key);
     void doUpdatePageLivePreview(LC_SettingsPageInterface* page) const;
     void showEvent(QShowEvent *event) override;
     void hideEvent(QHideEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
+
+    void updateGatingState();
 
     bool isPageInitialized(const QString& pageId) const {
         return m_initializedPages.contains(pageId);
