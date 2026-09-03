@@ -19,59 +19,51 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_SETTINGS_PAGE_ICONS_STYLE_H
-#define LC_SETTINGS_PAGE_ICONS_STYLE_H
+#ifndef LC_SETTINGS_PAGE_FUSION_THEME_H
+#define LC_SETTINGS_PAGE_FUSION_THEME_H
 
+#include <memory>
 #include "lc_settings_page_base.h"
 
+class LC_UIStyleManager;
+
 namespace Ui {
-    class LC_SettingsPageIconsStyle;
+    class LC_SettingsPageFusionTheme;
 }
 
-class LC_PresetManagerIconsStyle;
-class LC_ColorButton;
-class QCheckBox;
-class QComboBox;
-
-class LC_SettingsPageIconsStyle : public LC_SettingsPageBase {
+class LC_SettingsPageFusionTheme : public LC_SettingsPageBase {
     Q_OBJECT
 public:
-    explicit LC_SettingsPageIconsStyle(QObject* parent = nullptr);
-    ~LC_SettingsPageIconsStyle() override;
+    explicit LC_SettingsPageFusionTheme(QObject* parent = nullptr);
+    ~LC_SettingsPageFusionTheme() override;
 
-    void bindToPresetManager(LC_PresetManagerInterface* manager) override;
 
     void loadSettings() override;
     bool saveSettings() override;
-    bool isModified() const override;
-    void updateLivePreview() override;
-    void setReadOnly(bool readOnly) override;
+
+    void setChildPages(const QList<LC_SettingsPageInterface*>& children) override;
+    void onAboutToShow() override;
+
+    bool isPageGated() const override;
+    bool disablesWidgetOnGating() const override { return false; }
+    QString gatedMessage() const override;
+    QString gatedActionText() const override;
+    std::function<void()> gatedActionCallback() const override;
+    bool acceptsSharedPreview() override {return false;}
 protected:
     void setupUi() override;
     void setupBehavior() override;
-
+    void setupBindings() override;
 private slots:
     void onControlChanged();
-    void onVariantToggled(bool checked);
-    void onAutoCalcStatesToggled(bool checked);
-    void onHarmonizeSeedsPressed();
-    void onAutoGenerateOppositeSchemePressed();
 
 private:
-    void setupComboboxes();
-    void setupStatesTableStructure();
-    void setupHarmonizationButton();
-    void setupAccentControls();
+    void setupThemeModeCombobox();
+    void applyTransientTheme();
+    void updateGatedControlsState() const;
 
-    void populateUiFromWorkingConfig();
-    void syncUiToWorkingConfig();
-    void calculateAndApplyAutoStates();
-
-    void loadSeedControl(const QString& colorStr, QCheckBox* chk, LC_ColorButton* btn, QComboBox* cb);
-    QString getSeedValueFromUi(const QCheckBox* chk, const LC_ColorButton* btn, const QComboBox* cb) const;
-
-    LC_PresetManagerIconsStyle* m_presetManager = nullptr;
-    std::unique_ptr<Ui::LC_SettingsPageIconsStyle> ui;
+    std::unique_ptr<Ui::LC_SettingsPageFusionTheme> ui;
+    LC_UIStyleManager* m_styleManager = nullptr;
     bool m_blockSignals = false;
 };
 

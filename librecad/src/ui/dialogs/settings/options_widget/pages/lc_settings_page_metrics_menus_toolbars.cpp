@@ -26,9 +26,8 @@
 #include <QSpinBox>
 
 LC_SettingsPageMetricsMenusToolbars::LC_SettingsPageMetricsMenusToolbars(QObject* parent)
-    : LC_SettingsPageBase(tr("Menus & Toolbars"), nullptr, parent)
+    : LC_SettingsPageBase(tr("Navigation"), nullptr, parent)
     , ui(std::make_unique<Ui::LC_SettingsPageMetricsMenusToolbars>()) {
-    setSortWeight(20);
 }
 
 LC_SettingsPageMetricsMenusToolbars::~LC_SettingsPageMetricsMenusToolbars() = default;

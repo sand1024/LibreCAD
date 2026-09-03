@@ -19,6 +19,7 @@ public:
     void loadSettings() override;
     bool saveSettings() override;
     bool isModified() const override;
+    bool disablesWidgetOnGating() const override { return false; }
 
 protected:
     void setupUi() override;
@@ -33,6 +34,7 @@ private:
     void updateSegmentedButtonsUiState();
     void populateUiFromWorkingConfig();
     void syncUiToWorkingConfig() const;
+    void updateArchetypeGating();
 
     LC_PresetManagerFusionSkin* m_presetManager = nullptr;
     std::unique_ptr<Ui::LC_SettingsPageSkinToolbarsMenus> ui;

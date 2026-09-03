@@ -27,9 +27,8 @@
 #include <QComboBox>
 
 LC_SettingsPageMetricsBehavior::LC_SettingsPageMetricsBehavior(QObject* parent)
-    : LC_SettingsPageBase(tr("Behavior & Cursors"), nullptr, parent)
+    : LC_SettingsPageBase(tr("Behavior"), nullptr, parent)
     , ui(std::make_unique<Ui::LC_SettingsPageMetricsBehavior>()) {
-    setSortWeight(50);
 }
 
 LC_SettingsPageMetricsBehavior::~LC_SettingsPageMetricsBehavior() = default;

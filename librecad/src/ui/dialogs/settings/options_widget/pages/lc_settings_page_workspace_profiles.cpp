@@ -28,8 +28,10 @@
 #include "lc_fusion_skins_repository.h"
 #include "lc_icons_style_repository.h"
 #include "lc_metrics_repository.h"
+#include "lc_palette_repository.h"
 #include "lc_typography_repository.h"
 #include "lc_ui_style_manager.h"
+#include "lc_workspace_import_export_helper.h"
 #include "qc_applicationwindow.h"
 
 LC_SettingsPageWorkspaceProfiles::LC_SettingsPageWorkspaceProfiles(QObject* parent)
@@ -55,14 +57,28 @@ void LC_SettingsPageWorkspaceProfiles::onImportProfileClicked() {
 
     const QString path = QFileDialog::getOpenFileName(
         getEditingWidget(), tr("Import Workspace Profile"), QString(), tr("LibreCAD Workspace Profiles (*.lcws)"));
-    if (path.isEmpty()) return;
+    if (path.isEmpty()) {
+        return;
+    }
 
-    QString profileName, skinFile, iconFile, typographyFile, metricsFile;
-    if (m_styleManager->importProfile(path, profileName, skinFile, iconFile, typographyFile, metricsFile)) {
-        if (!skinFile.isEmpty()) m_styleManager->setActiveSkin(skinFile);
-        if (!iconFile.isEmpty()) m_styleManager->setActiveIconStyle(iconFile);
-        if (!typographyFile.isEmpty()) m_styleManager->setActiveTypography(typographyFile);
-        if (!metricsFile.isEmpty()) m_styleManager->setActiveMetrics(metricsFile);
+    QString profileName, paletteFile, skinFile, iconFile, typographyFile, metricsFile;
+    auto workspaceImportExportHelper = m_styleManager->getImportExportHelper();
+    if (workspaceImportExportHelper != nullptr && workspaceImportExportHelper->importProfile(path, profileName, paletteFile, skinFile, iconFile, typographyFile, metricsFile)) {
+        if (!paletteFile.isEmpty()) {
+            m_styleManager->setActivePalette(paletteFile);
+        }
+        if (!skinFile.isEmpty()) {
+            m_styleManager->setActiveSkin(skinFile);
+        }
+        if (!iconFile.isEmpty()) {
+            m_styleManager->setActiveIconStyle(iconFile);
+        }
+        if (!typographyFile.isEmpty()) {
+            m_styleManager->setActiveTypography(typographyFile);
+        }
+        if (!metricsFile.isEmpty()) {
+            m_styleManager->setActiveMetrics(metricsFile);
+        }
 
         m_styleManager->applyActiveStyleAndTheme();
         QMessageBox::information(getEditingWidget(), tr("Profile Imported"),
@@ -83,9 +99,15 @@ void LC_SettingsPageWorkspaceProfiles::onExportProfileClicked() {
     bool ok = false;
     const QString profileName = QInputDialog::getText(
         getEditingWidget(), tr("Export Profile"), tr("Enter profile name:"), QLineEdit::Normal, tr("My Custom Profile"), &ok);
-    if (!ok || profileName.trimmed().isEmpty()) return;
+    if (!ok || profileName.trimmed().isEmpty()) {
+        return;
+    }
 
-    SkinConfig skin;
+    PaletteConfig palette;
+    const bool hasPalette = m_styleManager->getPaletteRepository() &&
+                            m_styleManager->getPaletteRepository()->loadByKey(m_styleManager->getActivePalette(), palette);
+
+    ControlStyleConfig skin;
     const bool hasSkin = m_styleManager->getSkinsRepository() &&
                          m_styleManager->getSkinsRepository()->loadByKey(m_styleManager->getActiveSkin(), skin);
 
@@ -101,7 +123,9 @@ void LC_SettingsPageWorkspaceProfiles::onExportProfileClicked() {
     const bool hasMetrics = m_styleManager->getMetricsRepository() &&
                             m_styleManager->getMetricsRepository()->loadByKey(m_styleManager->getActiveMetrics(), metrics);
 
-    if (m_styleManager->exportProfile(path, profileName.trimmed(),
+    if (m_styleManager->getImportExportHelper() &&
+        m_styleManager->getImportExportHelper()->exportProfile(path, profileName.trimmed(),
+                                                              hasPalette ? &palette : nullptr,
                                       hasSkin ? &skin : nullptr,
                                       hasIcon ? &icon : nullptr,
                                       hasFont ? &font : nullptr,

@@ -5,8 +5,7 @@
 #include "lc_preset_manager_fusion_skin.h"
 
 LC_SettingsPageSkinToolbarsMenus::LC_SettingsPageSkinToolbarsMenus(QObject* parent)
-    : LC_SettingsPageBase(tr("Toolbars, Buttons & Menus"), nullptr, parent), ui(std::make_unique<Ui::LC_SettingsPageSkinToolbarsMenus>()) {
-    setSortWeight(30);
+    : LC_SettingsPageBase(tr("Navigation"), nullptr, parent), ui(std::make_unique<Ui::LC_SettingsPageSkinToolbarsMenus>()) {
 }
 
 LC_SettingsPageSkinToolbarsMenus::~LC_SettingsPageSkinToolbarsMenus() = default;
@@ -14,7 +13,7 @@ LC_SettingsPageSkinToolbarsMenus::~LC_SettingsPageSkinToolbarsMenus() = default;
 void LC_SettingsPageSkinToolbarsMenus::bindToPresetManager(LC_PresetManagerInterface* manager) {
     m_presetManager = dynamic_cast<LC_PresetManagerFusionSkin*>(manager);
     if (m_presetManager != nullptr) {
-        connect(m_presetManager, &LC_PresetManagerFusionSkin::configLoaded, this, [this](const SkinConfig&) {
+        connect(m_presetManager, &LC_PresetManagerFusionSkin::configLoaded, this, [this](const ControlStyleConfig&) {
             populateUiFromWorkingConfig();
         });
         populateUiFromWorkingConfig();
@@ -61,10 +60,12 @@ void LC_SettingsPageSkinToolbarsMenus::setupBehavior() {
         updateSegmentedButtonsUiState();
         onControlChanged();
     });
-    connect(ui->cbSegmentedSeparationStyle, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
-            &LC_SettingsPageSkinToolbarsMenus::onControlChanged);
-    connect(ui->cbSegmentedColorPolicy, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
-            &LC_SettingsPageSkinToolbarsMenus::onControlChanged);
+    connect(ui->cbSegmentedSeparationStyle, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int) {
+        updateSegmentedButtonsUiState();
+        onControlChanged();
+    });
+    connect(ui->cbSegmentedColorPolicy, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &LC_SettingsPageSkinToolbarsMenus::onControlChanged);
 
     connect(ui->chkCustomToolbarOverflow, &QCheckBox::toggled, this, &LC_SettingsPageSkinToolbarsMenus::onControlChanged);
     connect(ui->chkAutoPopupToolbarOverflow, &QCheckBox::toggled, this, &LC_SettingsPageSkinToolbarsMenus::onControlChanged);
@@ -73,6 +74,7 @@ void LC_SettingsPageSkinToolbarsMenus::setupBehavior() {
     connect(ui->chkMenuBarHoverCard, &QCheckBox::toggled, this, &LC_SettingsPageSkinToolbarsMenus::onControlChanged);
     connect(ui->chkShowMenuCommandAliases, &QCheckBox::toggled, this, &LC_SettingsPageSkinToolbarsMenus::onControlChanged);
     connect(ui->chkCustomMenuForTearOff, &QCheckBox::toggled, this, &LC_SettingsPageSkinToolbarsMenus::onControlChanged);
+    connect(ui->chkUseFloatingHUDMenus, &QCheckBox::toggled, this, &LC_SettingsPageSkinToolbarsMenus::onControlChanged);
     connect(ui->chkSyncCheckedMenuState, &QCheckBox::toggled, this, &LC_SettingsPageSkinToolbarsMenus::onControlChanged);
 }
 
@@ -103,16 +105,30 @@ void LC_SettingsPageSkinToolbarsMenus::updateToolButtonUiState() {
     if (m_blockSignals) {
         return;
     }
-    ui->cbToolButtonIndicatorStyle->setEnabled(ui->chkToolButtonUnderline->isChecked());
+
+    const bool isReadOnly = (m_presetManager != nullptr && (m_presetManager->isReadOnlyDefault() || m_presetManager->isGated()));
+    const bool customEnabled = !isReadOnly && ui->chkToolButtonUnderline->isChecked();
+
+    ui->cbToolButtonIndicatorStyle->setEnabled(customEnabled);
 }
 
 void LC_SettingsPageSkinToolbarsMenus::updateSegmentedButtonsUiState() {
     if (m_blockSignals) {
         return;
     }
-    const bool enabled = ui->chkUseSegmentedButtons->isChecked();
-    ui->cbSegmentedSeparationStyle->setEnabled(enabled);
-    ui->cbSegmentedColorPolicy->setEnabled(enabled);
+
+    const bool isReadOnly = (m_presetManager != nullptr && (m_presetManager->isReadOnlyDefault() || m_presetManager->isGated()));
+    const bool segmentedEnabled = !isReadOnly && ui->chkUseSegmentedButtons->isChecked();
+
+    ui->lblSepStyle->setEnabled(segmentedEnabled);
+    ui->cbSegmentedSeparationStyle->setEnabled(segmentedEnabled);
+
+    // Color Policy is only applicable for ContinuousCard style when not read-only
+    const auto sepStyle = static_cast<SegmentedSeparationStyle>(ui->cbSegmentedSeparationStyle->currentData().toInt());
+    const bool colorPolicyApplicable = segmentedEnabled && (sepStyle == SegmentedSeparationStyle::ContinuousCard);
+
+    ui->lblColorPolicy->setEnabled(colorPolicyApplicable);
+    ui->cbSegmentedColorPolicy->setEnabled(colorPolicyApplicable);
 }
 
 void LC_SettingsPageSkinToolbarsMenus::populateUiFromWorkingConfig() {
@@ -140,11 +156,13 @@ void LC_SettingsPageSkinToolbarsMenus::populateUiFromWorkingConfig() {
     ui->chkMenuBarHoverCard->setChecked(config.useMenuBarHoverCard);
     ui->chkShowMenuCommandAliases->setChecked(config.showMenuCommandAliases);
     ui->chkCustomMenuForTearOff->setChecked(config.customMenuTearOff);
+    ui->chkUseFloatingHUDMenus->setChecked(config.useFloatingHUDMenus);
     ui->chkSyncCheckedMenuState->setChecked(config.syncCheckedMenuState);
 
     m_blockSignals = false;
     updateToolButtonUiState();
     updateSegmentedButtonsUiState();
+    updateArchetypeGating();
 }
 
 void LC_SettingsPageSkinToolbarsMenus::syncUiToWorkingConfig() const {
@@ -168,5 +186,59 @@ void LC_SettingsPageSkinToolbarsMenus::syncUiToWorkingConfig() const {
     config.useMenuBarHoverCard = ui->chkMenuBarHoverCard->isChecked();
     config.showMenuCommandAliases = ui->chkShowMenuCommandAliases->isChecked();
     config.customMenuTearOff = ui->chkCustomMenuForTearOff->isChecked();
+    config.useFloatingHUDMenus = ui->chkUseFloatingHUDMenus->isChecked();
     config.syncCheckedMenuState = ui->chkSyncCheckedMenuState->isChecked();
+}
+
+void LC_SettingsPageSkinToolbarsMenus::updateArchetypeGating() {
+    if (m_presetManager == nullptr) {
+        return;
+    }
+
+    const bool isReadOnly = m_presetManager->isReadOnlyDefault();
+    const bool isClassic = m_presetManager->isClassicFusion();
+
+    if (isReadOnly) {
+        ui->gbToolButtons->setEnabled(false);
+        ui->gbOverflow->setEnabled(false);
+        ui->gbMenus->setEnabled(false);
+        ui->gbSegmented->setEnabled(false);
+    }
+    else if (isClassic) {
+        ui->gbSegmented->setEnabled(false);
+        ui->chkToolButtonUnderline->setEnabled(false);
+        ui->cbToolButtonIndicatorStyle->setEnabled(false);
+        ui->chkCustomToolbarOverflow->setEnabled(false);
+        ui->chkMenuBarHoverCard->setEnabled(false);
+        ui->chkShowMenuCommandAliases->setEnabled(false);
+        ui->chkCustomMenuForTearOff->setEnabled(false);
+        ui->chkSyncCheckedMenuState->setEnabled(false);
+
+        ui->gbToolButtons->setEnabled(true);
+        ui->chkAutoPopupInstantButtons->setEnabled(true);
+        ui->gbOverflow->setEnabled(true);
+        ui->chkAutoPopupToolbarOverflow->setEnabled(true);
+        ui->chkUseFloatingHUDMenus->setEnabled(true);
+        ui->gbMenus->setEnabled(true);
+        ui->chkAutoPopupMenuBar->setEnabled(true);
+    }
+    else {
+        ui->gbToolButtons->setEnabled(true);
+        ui->gbOverflow->setEnabled(true);
+        ui->gbMenus->setEnabled(true);
+        ui->gbSegmented->setEnabled(true);
+
+        ui->chkToolButtonUnderline->setEnabled(true);
+        ui->chkAutoPopupInstantButtons->setEnabled(true);
+        ui->chkCustomToolbarOverflow->setEnabled(true);
+        ui->chkAutoPopupToolbarOverflow->setEnabled(true);
+        ui->chkAutoPopupMenuBar->setEnabled(true);
+        ui->chkMenuBarHoverCard->setEnabled(true);
+        ui->chkShowMenuCommandAliases->setEnabled(true);
+        ui->chkCustomMenuForTearOff->setEnabled(true);
+        ui->chkSyncCheckedMenuState->setEnabled(true);
+
+        updateToolButtonUiState();
+        updateSegmentedButtonsUiState();
+    }
 }

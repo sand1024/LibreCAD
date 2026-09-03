@@ -26,9 +26,8 @@
 #include <QSpinBox>
 
 LC_SettingsPageMetricsViewsTabs::LC_SettingsPageMetricsViewsTabs(QObject* parent)
-    : LC_SettingsPageBase(tr("Views & Tabs"), nullptr, parent)
+    : LC_SettingsPageBase(tr("Views"), nullptr, parent)
     , ui(std::make_unique<Ui::LC_SettingsPageMetricsViewsTabs>()) {
-    setSortWeight(40);
 }
 
 LC_SettingsPageMetricsViewsTabs::~LC_SettingsPageMetricsViewsTabs() = default;

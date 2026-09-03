@@ -28,7 +28,6 @@
 LC_SettingsPageMetricsLayout::LC_SettingsPageMetricsLayout(QObject* parent)
     : LC_SettingsPageBase(tr("Layout & Spacing"), nullptr, parent)
     , ui(std::make_unique<Ui::LC_SettingsPageMetricsLayout>()) {
-    setSortWeight(10);
 }
 
 LC_SettingsPageMetricsLayout::~LC_SettingsPageMetricsLayout() = default;

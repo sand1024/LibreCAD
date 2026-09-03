@@ -5,9 +5,8 @@
 #include "lc_preset_manager_fusion_skin.h"
 
 LC_SettingsPageSkinContainers::LC_SettingsPageSkinContainers(QObject* parent)
-    : LC_SettingsPageBase(tr("Windows, Docks & Containers"), nullptr, parent)
+    : LC_SettingsPageBase(tr("Containers"), nullptr, parent)
     , ui(std::make_unique<Ui::LC_SettingsPageSkinContainers>()) {
-    setSortWeight(20);
 }
 
 LC_SettingsPageSkinContainers::~LC_SettingsPageSkinContainers() = default;
@@ -15,7 +14,7 @@ LC_SettingsPageSkinContainers::~LC_SettingsPageSkinContainers() = default;
 void LC_SettingsPageSkinContainers::bindToPresetManager(LC_PresetManagerInterface* manager) {
     m_presetManager = dynamic_cast<LC_PresetManagerFusionSkin*>(manager);
     if (m_presetManager != nullptr) {
-        connect(m_presetManager, &LC_PresetManagerFusionSkin::configLoaded, this, [this](const SkinConfig&) {
+        connect(m_presetManager, &LC_PresetManagerFusionSkin::configLoaded, this, [this](const ControlStyleConfig&) {
             populateUiFromWorkingConfig();
         });
         populateUiFromWorkingConfig();
@@ -69,15 +68,22 @@ void LC_SettingsPageSkinContainers::setupBehavior() {
     connect(ui->cbGroupBoxBoundaryStyle, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_SettingsPageSkinContainers::onControlChanged);
     connect(ui->chkGroupBoxUseAccent, &QCheckBox::toggled, this, &LC_SettingsPageSkinContainers::onControlChanged);
 
+    // Call on Dock Title Bar toggle
     connect(ui->chkCustomDockTitle, &QCheckBox::toggled, this, [this](bool checked) {
         ui->cbDockTitleStyle->setEnabled(checked);
+        updateCloseButtonUiState();
         onControlChanged();
     });
     connect(ui->cbDockTitleStyle, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_SettingsPageSkinContainers::onControlChanged);
     connect(ui->chkPersistentDockSplitter, &QCheckBox::toggled, this, &LC_SettingsPageSkinContainers::onControlChanged);
     connect(ui->chkShowGenericDockIcons, &QCheckBox::toggled, this, &LC_SettingsPageSkinContainers::onControlChanged);
     connect(ui->chkShowSpecialDockIcons, &QCheckBox::toggled, this, &LC_SettingsPageSkinContainers::onControlChanged);
-    connect(ui->chkCustomDialogTitleBar, &QCheckBox::toggled, this, &LC_SettingsPageSkinContainers::onControlChanged);
+
+    // Call on Custom Dialog Title Bar toggle
+    connect(ui->chkCustomDialogTitleBar, &QCheckBox::toggled, this, [this](bool) {
+        updateCloseButtonUiState();
+        onControlChanged();
+    });
 
     connect(ui->chkCustomSplitterGrip, &QCheckBox::toggled, this, [this](bool) {
         updateSplitterUiState();
@@ -88,11 +94,33 @@ void LC_SettingsPageSkinContainers::setupBehavior() {
     connect(ui->chkShowGripBackgroundWell, &QCheckBox::toggled, this, &LC_SettingsPageSkinContainers::onControlChanged);
     connect(ui->chkAccentGrips, &QCheckBox::toggled, this, &LC_SettingsPageSkinContainers::onControlChanged);
 
-    connect(ui->chkUseFloatingHUD, &QCheckBox::toggled, this, [this](bool checked) {
-        ui->cbCloseColorPolicy->setEnabled(checked);
-        onControlChanged();
-    });
+    // Call on Floating Dock Panels toggle
+    connect(ui->chkUseFloatingHUDDocks, &QCheckBox::toggled, this, [this](bool) {
+        updateCloseButtonUiState();
+       onControlChanged();
+   });
     connect(ui->cbCloseColorPolicy, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_SettingsPageSkinContainers::onControlChanged);
+}
+
+void LC_SettingsPageSkinContainers::updateCloseButtonUiState() const {
+    if (m_blockSignals) {
+        return;
+    }
+
+    const bool isReadOnly = (m_presetManager != nullptr && (m_presetManager->isReadOnlyDefault() || m_presetManager->isGated()));
+    if (isReadOnly) {
+        ui->lblCloseColor->setEnabled(false);
+        ui->cbCloseColorPolicy->setEnabled(false);
+        return;
+    }
+
+    // Enabled if ANY custom titlebar feature with a close button is active
+    const bool hasActiveTitleBar = ui->chkCustomDockTitle->isChecked() ||
+                                   ui->chkCustomDialogTitleBar->isChecked() ||
+                                   ui->chkUseFloatingHUDDocks->isChecked();
+
+    ui->lblCloseColor->setEnabled(hasActiveTitleBar);
+    ui->cbCloseColorPolicy->setEnabled(hasActiveTitleBar);
 }
 
 void LC_SettingsPageSkinContainers::loadSettings() {
@@ -117,14 +145,20 @@ void LC_SettingsPageSkinContainers::onControlChanged() {
 }
 
 void LC_SettingsPageSkinContainers::updateGroupBoxUiState() {
-    if (m_blockSignals) return;
+    if (m_blockSignals) {
+        return;
+    }
 
-    const bool customEnabled = ui->chkCustomGroupBox->isChecked();
+    const bool isReadOnly = (m_presetManager != nullptr && (m_presetManager->isReadOnlyDefault() || m_presetManager->isGated()));
+    const bool customEnabled = !isReadOnly && ui->chkCustomGroupBox->isChecked();
+
     ui->cbGroupBoxHeaderStyle->setEnabled(customEnabled);
     ui->cbGroupBoxBoundaryStyle->setEnabled(customEnabled);
     ui->chkGroupBoxUseAccent->setEnabled(customEnabled);
 
-    if (!customEnabled) return;
+    if (!customEnabled && isReadOnly) {
+        return;
+    }
 
     m_blockSignals = true;
     const auto headerStyle = static_cast<GroupBoxHeaderStyle>(ui->cbGroupBoxHeaderStyle->currentData().toInt());
@@ -150,15 +184,20 @@ void LC_SettingsPageSkinContainers::updateGroupBoxUiState() {
         ui->cbGroupBoxBoundaryStyle->addItem(tr("Box Outline Frame (All sides)"), static_cast<int>(GroupBoxBoundaryStyle::Full));
         ui->cbGroupBoxBoundaryStyle->addItem(tr("Active Left Sidebar (IDE Style)"), static_cast<int>(GroupBoxBoundaryStyle::LeftStripe));
         ui->cbGroupBoxBoundaryStyle->addItem(tr("Top Line Only"), static_cast<int>(GroupBoxBoundaryStyle::TopLine));
-        const int idx = ui->cbGroupBoxBoundaryStyle->findData(static_cast<int>(prevBoundary));
-        ui->cbGroupBoxBoundaryStyle->setCurrentIndex(idx >= 0 ? idx : 0);
+    const int idx = ui->cbGroupBoxBoundaryStyle->findData(static_cast<int>(prevBoundary));
+    ui->cbGroupBoxBoundaryStyle->setCurrentIndex(idx >= 0 ? idx : 0);
     }
     m_blockSignals = false;
 }
 
-void LC_SettingsPageSkinContainers::updateSplitterUiState() {
-    if (m_blockSignals) return;
-    const bool customEnabled = ui->chkCustomSplitterGrip->isChecked();
+void LC_SettingsPageSkinContainers::updateSplitterUiState() const {
+    if (m_blockSignals) {
+        return;
+    }
+
+    const bool isReadOnly = (m_presetManager != nullptr && (m_presetManager->isReadOnlyDefault() || m_presetManager->isGated()));
+    const bool customEnabled = !isReadOnly && ui->chkCustomSplitterGrip->isChecked();
+
     ui->cbSplitterGripStyle->setEnabled(customEnabled);
     ui->chkHighlightSplitterOnDrag->setEnabled(customEnabled);
     ui->chkShowGripBackgroundWell->setEnabled(customEnabled);
@@ -166,7 +205,9 @@ void LC_SettingsPageSkinContainers::updateSplitterUiState() {
 }
 
 void LC_SettingsPageSkinContainers::populateUiFromWorkingConfig() {
-    if (m_presetManager == nullptr || getEditingWidget() == nullptr) return;
+    if (m_presetManager == nullptr || getEditingWidget() == nullptr) {
+        return;
+    }
 
     m_blockSignals = true;
     const auto& config = m_presetManager->workingConfig();
@@ -190,20 +231,25 @@ void LC_SettingsPageSkinContainers::populateUiFromWorkingConfig() {
     ui->chkShowGripBackgroundWell->setChecked(config.showGripBackgroundWell);
     ui->chkAccentGrips->setChecked(config.accentGrips);
 
-    ui->chkUseFloatingHUD->setChecked(config.useFloatingHUD);
+    ui->chkUseFloatingHUDDocks->setChecked(config.useFloatingHUDDocks);
     ui->cbCloseColorPolicy->setCurrentIndex(ui->cbCloseColorPolicy->findData(static_cast<int>(config.closeButtonColorPolicy)));
-    ui->cbCloseColorPolicy->setEnabled(config.useFloatingHUD);
+    ui->cbCloseColorPolicy->setEnabled(config.useFloatingHUDDocks);
 
     m_blockSignals = false;
     updateGroupBoxUiState();
     updateSplitterUiState();
+    updateCloseButtonUiState();
     m_blockSignals = true;
     ui->cbGroupBoxBoundaryStyle->setCurrentIndex(ui->cbGroupBoxBoundaryStyle->findData(static_cast<int>(config.groupBoxBoundaryStyle)));
     m_blockSignals = false;
+
+    updateArchetypeGating();
 }
 
 void LC_SettingsPageSkinContainers::syncUiToWorkingConfig() {
-    if (m_presetManager == nullptr) return;
+    if (m_presetManager == nullptr) {
+        return;
+    }
 
     auto& config = m_presetManager->workingConfig();
     config.customGroupBoxBar = ui->chkCustomGroupBox->isChecked();
@@ -224,6 +270,66 @@ void LC_SettingsPageSkinContainers::syncUiToWorkingConfig() {
     config.showGripBackgroundWell = ui->chkShowGripBackgroundWell->isChecked();
     config.accentGrips = ui->chkAccentGrips->isChecked();
 
-    config.useFloatingHUD = ui->chkUseFloatingHUD->isChecked();
+    config.useFloatingHUDDocks = ui->chkUseFloatingHUDDocks->isChecked();
     config.closeButtonColorPolicy = static_cast<CloseButtonColorPolicy>(ui->cbCloseColorPolicy->currentData().toInt());
+}
+
+void LC_SettingsPageSkinContainers::updateArchetypeGating() {
+    if (m_presetManager == nullptr) {
+        return;
+    }
+
+    const bool isReadOnly = m_presetManager->isReadOnlyDefault();
+    const bool isClassic = m_presetManager->isClassicFusion();
+
+    if (isReadOnly) {
+        ui->gbGroupBox->setEnabled(false);
+        ui->gbDockTitle->setEnabled(false);
+        ui->gbSplitterGrips->setEnabled(false);
+        ui->gbFloatingHUD->setEnabled(false);
+    }
+    else if (isClassic) {
+        ui->gbGroupBox->setEnabled(false);
+        ui->gbSplitterGrips->setEnabled(false);
+        ui->chkPersistentDockSplitter->setEnabled(false);
+
+        // In Classic Fusion, custom dock bar can be enabled or disabled freely
+        ui->gbDockTitle->setEnabled(true);
+        ui->chkCustomDockTitle->setEnabled(true);
+        ui->cbDockTitleStyle->setEnabled(ui->chkCustomDockTitle->isChecked());
+        ui->chkShowGenericDockIcons->setEnabled(true);
+        ui->chkShowSpecialDockIcons->setEnabled(true);
+        ui->chkCustomDialogTitleBar->setEnabled(true);
+
+        ui->gbFloatingHUD->setEnabled(true);
+        ui->chkUseFloatingHUDDocks->setEnabled(true);
+        ui->cbCloseColorPolicy->setEnabled(ui->chkUseFloatingHUDDocks->isChecked());
+        updateCloseButtonUiState();
+    }
+    else {
+        // In Modern Archetypes, custom dock bar is always active for theme cohesion
+        ui->gbGroupBox->setEnabled(true);
+        ui->gbDockTitle->setEnabled(true);
+        ui->gbSplitterGrips->setEnabled(true);
+        ui->gbFloatingHUD->setEnabled(true);
+
+        ui->chkPersistentDockSplitter->setEnabled(true);
+
+        // Lock custom dock title checkbox to checked (Strategy 2)
+        ui->chkCustomDockTitle->setChecked(true);
+        ui->chkCustomDockTitle->setEnabled(false);
+        ui->cbDockTitleStyle->setEnabled(true);
+
+        ui->chkShowGenericDockIcons->setEnabled(true);
+        ui->chkShowSpecialDockIcons->setEnabled(true);
+        ui->chkCustomDialogTitleBar->setEnabled(true);
+
+        ui->gbFloatingHUD->setEnabled(true);
+        ui->chkUseFloatingHUDDocks->setEnabled(true);
+        ui->cbCloseColorPolicy->setEnabled(ui->chkUseFloatingHUDDocks->isChecked());
+
+        updateGroupBoxUiState();
+        updateSplitterUiState();
+        updateCloseButtonUiState();
+    }
 }

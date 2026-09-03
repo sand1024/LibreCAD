@@ -1,26 +1,4 @@
 /*******************************************************************************
- *
- * This file is part of the LibreCAD project, a 2D CAD program
- *
- * Copyright (C) 2026 LibreCAD.org
- * Copyright (C) 2026 sand1024
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
-
-/*******************************************************************************
  * This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
@@ -76,7 +54,7 @@ void LC_SkinArchetypeHeaderBar::setupComboboxes() {
     ui->cbBoxDecoration->addItem(tr("Active Accent Frame"), static_cast<int>(BoxDecoration::ActiveAccentFrame));
 }
 
-void LC_SkinArchetypeHeaderBar::populateFromConfig(const SkinConfig& config) {
+void LC_SkinArchetypeHeaderBar::populateFromConfig(const ControlStyleConfig& config) {
     m_blockSignals = true;
 
     const int archIdx = ui->cbStyleArchetype->findData(static_cast<int>(config.styleArchetype));
@@ -85,11 +63,25 @@ void LC_SkinArchetypeHeaderBar::populateFromConfig(const SkinConfig& config) {
     }
     ui->lblStyleArchetypeDescription->setText(getArchetypeDescription(config.styleArchetype));
 
+    const bool isClassic = (config.styleArchetype == StyleArchetype::ClassicFusion);
+
+    // Archetype combobox is always enabled; only container decoration is disabled in Classic Fusion
+    ui->cbStyleArchetype->setEnabled(true);
+    ui->lblStyleArchetype->setEnabled(true);
+    ui->cbBoxDecoration->setEnabled(!isClassic);
+    ui->lblBoxDecoration->setEnabled(!isClassic);
+
     const int decIdx = ui->cbBoxDecoration->findData(static_cast<int>(config.boxDecoration));
     if (decIdx >= 0) {
         ui->cbBoxDecoration->setCurrentIndex(decIdx);
     }
-    ui->lblCompositionDesc->setText(getDecorationDescription(config.boxDecoration));
+
+    if (isClassic) {
+        ui->lblCompositionDesc->setText(tr("<b>Container Decoration</b>: Not applicable in Classic Fusion (native 3D bevels and borders are used)."));
+    }
+    else {
+        ui->lblCompositionDesc->setText(getDecorationDescription(config.boxDecoration));
+    }
 
     m_blockSignals = false;
 }
@@ -108,6 +100,19 @@ void LC_SkinArchetypeHeaderBar::onArchetypeIndexChanged(int index) {
     }
     const auto archetype = static_cast<StyleArchetype>(ui->cbStyleArchetype->currentData().toInt());
     ui->lblStyleArchetypeDescription->setText(getArchetypeDescription(archetype));
+
+    const bool isClassic = (archetype == StyleArchetype::ClassicFusion);
+    ui->cbBoxDecoration->setEnabled(!isClassic);
+    ui->lblBoxDecoration->setEnabled(!isClassic);
+
+    if (isClassic) {
+        ui->lblCompositionDesc->setText(tr("<b>Container Decoration</b>: Not applicable in Classic Fusion (native 3D bevels and borders are used)."));
+    }
+    else {
+        const auto decoration = static_cast<BoxDecoration>(ui->cbBoxDecoration->currentData().toInt());
+        ui->lblCompositionDesc->setText(getDecorationDescription(decoration));
+    }
+
     if (!m_blockSignals) {
         emit archetypeChanged(archetype);
     }

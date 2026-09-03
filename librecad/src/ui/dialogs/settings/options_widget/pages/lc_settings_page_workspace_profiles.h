@@ -35,7 +35,7 @@ class LC_SettingsPageWorkspaceProfiles : public LC_SettingsPageBase {
 public:
     explicit LC_SettingsPageWorkspaceProfiles(QObject* parent = nullptr);
     ~LC_SettingsPageWorkspaceProfiles() override;
-
+    bool acceptsSharedPreview() override {return false;}
 protected:
     void setupUi() override;
     void setupBehavior() override;

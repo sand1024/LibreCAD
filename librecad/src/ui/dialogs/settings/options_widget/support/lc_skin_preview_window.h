@@ -26,6 +26,10 @@
 
 #include "lc_dockwidget.h"
 
+class QListWidgetItem;
+class QTreeWidgetItem;
+class QTableWidgetItem;
+class QGridLayout;
 QT_BEGIN_NAMESPACE
 namespace Ui { class LC_SkinPreviewWindow; }
 QT_END_NAMESPACE
@@ -33,12 +37,12 @@ QT_END_NAMESPACE
 class LC_SkinPreviewWindow : public QMainWindow {
     Q_OBJECT
 public:
-    void hideSliderAndDialControls() const;
-
     explicit LC_SkinPreviewWindow(QWidget *parent = nullptr);
     ~LC_SkinPreviewWindow() override;
-
-    signals:
+    void applyToolbarsAndDocksConfig();
+    void updateSemanticViews(const QColor& searchHighlightColor, const QColor& conflictingItemColor);
+    void activateTab(const QString& tag);
+signals:
         void windowClosed(); // Notifies the parent dialog to uncheck the toggle button (Note 3)
 
 protected:
@@ -47,7 +51,21 @@ protected:
 private:
     Ui::LC_SkinPreviewWindow *ui;
 
-    QWidget* setupDockContent(LC_DockWidget* propertiesDock);
+    QList<QToolBar*> m_mainToolBars;
+    QList<QToolButton*> m_dockToolButtons;
+    QList<QToolButton*> m_matrixToolButtons;
+    QWidget* m_matrixGridContainer = nullptr;
+    QGridLayout* m_matrixGridLayout = nullptr;
+    QList<LC_DockWidget*> m_allDockWidgets;
+    QTableWidgetItem* m_tableSearchItem = nullptr;
+    QTableWidgetItem* m_tableConflictItem = nullptr;
+    QTreeWidgetItem*  m_treeSearchItem = nullptr;
+    QTreeWidgetItem*  m_treeConflictItem = nullptr;
+    QListWidgetItem*  m_listSearchItem = nullptr;
+    QListWidgetItem*  m_listConflictItem = nullptr;
+
+    QWidget* setupDockContent(LC_DockWidget* propertiesDock, bool addTopToolbar);
+    QWidget* setupCadToolsMatrixContent(LC_DockWidget* matrixDock);
     void setupScrollArea() const;
     void setupMenuBar();
     void setupToolbars();
@@ -57,6 +75,7 @@ private:
     void setupToolButtonMenu() const;
     void setupTabPreviews();
     void setupStatusPillToolbars();
+    void hideSliderAndDialControls() const;
 };
 
 #endif

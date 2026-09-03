@@ -24,6 +24,8 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QStyleFactory>
+
+#include "lc_semantic_colors_ui_helper.h"
 #include "lc_settings_app_styling.h"
 #include "lc_settings_backend.h"
 #include "lc_ui_style_manager.h"
@@ -40,36 +42,36 @@ LC_SettingsPageGeneralStyling::LC_SettingsPageGeneralStyling(QObject* parent)
 LC_SettingsPageGeneralStyling::~LC_SettingsPageGeneralStyling() = default;
 
 void LC_SettingsPageGeneralStyling::setupUi() {
+    m_blockSignals = true;
     ui->setupUi(m_widget);
 
     setupStyleCombobox();
-    setupThemeModeCombobox();
+    LC_SemanticColorsUiHelper::setupTable(ui->tableSemantic);
     updateStyleDependencyStates();
+    m_blockSignals = false;
 }
 
-void LC_SettingsPageGeneralStyling::setupStyleCombobox() const {
+void LC_SettingsPageGeneralStyling::setupStyleCombobox() {
     ui->cbStyle->clear();
     ui->cbStyle->addItems(QStyleFactory::keys());
 }
 
-void LC_SettingsPageGeneralStyling::setupThemeModeCombobox() const {
-    ui->cbThemeModeOverride->clear();
-    ui->cbThemeModeOverride->addItem(tr("Follow System Settings"), static_cast<int>(ThemeModeOverride::FollowSystem));
-    ui->cbThemeModeOverride->addItem(tr("Force Light Mode"), static_cast<int>(ThemeModeOverride::ForceLight));
-    ui->cbThemeModeOverride->addItem(tr("Force Dark Mode"), static_cast<int>(ThemeModeOverride::ForceDark));
-}
-
 void LC_SettingsPageGeneralStyling::setupBehavior() {
-    connect(ui->cbAllowStyle, &QCheckBox::toggled, this, &LC_SettingsPageGeneralStyling::updateStyleDependencyStates);
-    connect(ui->cbStyle, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_SettingsPageGeneralStyling::updateStyleDependencyStates);
+    connect(ui->cbAllowStyle, &QCheckBox::toggled, this, &LC_SettingsPageGeneralStyling::onControlChanged);
+    connect(ui->cbStyle, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_SettingsPageGeneralStyling::onControlChanged);
+    connect(ui->leStylesheet, &QLineEdit::editingFinished, this, &LC_SettingsPageGeneralStyling::onControlChanged);
 
     connect(ui->tbSelectStylesheet, &QToolButton::clicked, this, &LC_SettingsPageGeneralStyling::chooseStyleSheet);
 
-    connect(ui->cbAllowStyle, &QCheckBox::toggled, this, [this](bool) { updateLivePreview(); });
-    connect(ui->cbStyle, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int) { updateLivePreview(); });
-    connect(ui->cbThemeModeOverride, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int) { updateLivePreview(); });
-    connect(ui->cbIgnoreIconStylingInTheme, &QCheckBox::toggled, this, [this](bool) { updateLivePreview(); });
-    connect(ui->leStylesheet, &QLineEdit::editingFinished, this, [this]() { updateLivePreview(); });
+    connect(ui->pbGoToFusionTheme, &QPushButton::clicked, this, [this]() {
+        emit navigateToPage(LC_SettingsPagesStyling::PAGE_STYLING_FUSION);
+    });
+
+    LC_SemanticColorsUiHelper::connectChanged(ui->tableSemantic, this, [this]() {
+        onControlChanged();
+    });
+
+
 }
 
 void LC_SettingsPageGeneralStyling::setupBindings() {
@@ -97,21 +99,6 @@ void LC_SettingsPageGeneralStyling::setupBindings() {
                 w->setCurrentIndex(0);
             }
         });
-
-    bindCustom<QComboBox, int>(
-            ui->cbThemeModeOverride, o_ThemeModeOverride.fullKey(), static_cast<int>(o_ThemeModeOverride.defaultValue()), false,
-            QOverload<int>::of(&QComboBox::currentIndexChanged),
-            [](QComboBox* w) { return w->currentData().toInt(); },
-            [](QComboBox* w, int val) {
-                int idx = w->findData(val);
-                if (idx >= 0) w->setCurrentIndex(idx);
-            });
-
-    bindCustom<QCheckBox, bool>(
-        ui->cbIgnoreIconStylingInTheme, "Widgets/IgnoreIconStylingInTheme", false, false,
-        &QCheckBox::toggled,
-        [](QCheckBox* w) { return w->isChecked(); },
-        [](QCheckBox* w, bool val) { w->setChecked(val); });
 }
 
 void LC_SettingsPageGeneralStyling::updateStyleDependencyStates() {
@@ -119,13 +106,51 @@ void LC_SettingsPageGeneralStyling::updateStyleDependencyStates() {
     ui->cbStyle->setEnabled(allowStyle);
 
     const bool isFusion = allowStyle && (ui->cbStyle->currentText() == "Fusion");
-    ui->lblThemeMode->setEnabled(isFusion);
-    ui->cbThemeModeOverride->setEnabled(isFusion);
-    ui->cbIgnoreIconStylingInTheme->setEnabled(isFusion);
-
     ui->lblStylesheet->setEnabled(!isFusion);
     ui->leStylesheet->setEnabled(!isFusion);
     ui->tbSelectStylesheet->setEnabled(!isFusion);
+
+    ui->gbSemanticColors->setVisible(!isFusion);
+    ui->gbFusionLink->setVisible(isFusion);
+}
+
+void LC_SettingsPageGeneralStyling::onControlChanged() {
+    if (m_blockSignals) {
+        return;
+    }
+    updateStyleDependencyStates();
+    applyTransientStyle();
+    updateLivePreview();
+}
+
+void LC_SettingsPageGeneralStyling::applyTransientStyle() {
+    if (m_styleManager == nullptr) {
+        return;
+    }
+
+    const bool allowStyle = ui->cbAllowStyle->isChecked();
+    const QString styleName = ui->cbStyle->currentText();
+    const auto themeModeOverride = m_styleManager->getThemeModeOverride();
+    const QString stylesheetPath = ui->leStylesheet->text().trimmed();
+
+    CFG_AppStyling::o_AllowStyle.set(allowStyle);
+    CFG_AppStyling::o_Style.set(styleName);
+    CFG_AppStyling::o_StyleSheet.set(stylesheetPath);
+
+    const QString paletteKey = m_styleManager->getActivePalette();
+    const QString skinKey = m_styleManager->getActiveSkin();
+    const QString metricsKey = m_styleManager->getActiveMetrics();
+    const QString typographyKey = m_styleManager->getActiveTypography();
+    const QString iconStyleKey = m_styleManager->getActiveIconStyle();
+
+    m_styleManager->applyTransientTheme(allowStyle, styleName,
+                                        paletteKey, skinKey, metricsKey,
+                                        typographyKey, iconStyleKey,
+                                        themeModeOverride);
+
+    if (allowStyle && styleName != "Fusion" && !stylesheetPath.isEmpty()) {
+        m_styleManager->loadStyleSheet(stylesheetPath);
+    }
 }
 
 void LC_SettingsPageGeneralStyling::chooseStyleSheet() {
@@ -133,19 +158,44 @@ void LC_SettingsPageGeneralStyling::chooseStyleSheet() {
         getEditingWidget(), tr("Select Stylesheet File"), QString(), tr("Qt Stylesheets (*.qss *.css);;All Files (*.*)"));
     if (!path.isEmpty()) {
         ui->leStylesheet->setText(QDir::toNativeSeparators(path));
-        updateLivePreview();
+        onControlChanged();
     }
+}
+
+void LC_SettingsPageGeneralStyling::loadSettings() {
+    m_blockSignals = true;
+    LC_SettingsPageBase::loadSettings();
+    updateStyleDependencyStates();
+
+    QMap<QString, QColor> baselineColors;
+    baselineColors[SEMANTIC_COLOR_KEY_FILTERED_ITEM]  = CFG_AppStyling::o_ColorFilteredItem.get();
+    baselineColors[SEMANTIC_COLOR_KEY_CONFLICTING_ITEM]   = CFG_AppStyling::o_ColorConflictingItem.get();
+    baselineColors[SEMANTIC_COLOR_KEY_SEARCH_RESULT]  = CFG_AppStyling::o_ColorSearchResultItem.get();
+
+    LC_SemanticColorsUiHelper::populateTable(ui->tableSemantic, baselineColors, false, false);
+    m_blockSignals = false;
 }
 
 bool LC_SettingsPageGeneralStyling::saveSettings() {
     const bool success = LC_SettingsPageBase::saveSettings();
-    if (success && m_styleManager != nullptr) {
-        m_styleManager->setStyleAllowed(ui->cbAllowStyle->isChecked());
-        m_styleManager->setActiveStyle(ui->cbStyle->currentText());
-        m_styleManager->setThemeModeOverride(static_cast<ThemeModeOverride>(ui->cbThemeModeOverride->currentData().toInt()));
-        m_styleManager->setActiveStyleSheet(ui->leStylesheet->text());
-        m_styleManager->setIgnoreIconStylingInTheme(ui->cbIgnoreIconStylingInTheme->isChecked());
-        m_styleManager->applyActiveStyleAndTheme();
+    if (success) {
+        QMap<QString, QColor> extracted;
+        LC_SemanticColorsUiHelper::extractColors(ui->tableSemantic, extracted);
+
+        if (extracted.contains(SEMANTIC_COLOR_KEY_FILTERED_ITEM)) {
+            CFG_AppStyling::o_ColorFilteredItem.set(extracted[SEMANTIC_COLOR_KEY_FILTERED_ITEM]);
+        }
+        if (extracted.contains(SEMANTIC_COLOR_KEY_CONFLICTING_ITEM)) {
+            CFG_AppStyling::o_ColorConflictingItem.set(extracted[SEMANTIC_COLOR_KEY_CONFLICTING_ITEM]);
+        }
+        if (extracted.contains(SEMANTIC_COLOR_KEY_SEARCH_RESULT)) {
+            CFG_AppStyling::o_ColorSearchResultItem.set(extracted[SEMANTIC_COLOR_KEY_SEARCH_RESULT]);
+        }
+
+        auto* styleMgr = QC_ApplicationWindow::getAppWindow() ? QC_ApplicationWindow::getAppWindow()->getUiStyleManager() : nullptr;
+        if (styleMgr != nullptr) {
+            styleMgr->updateSemanticColorsCache();
+        }
     }
     return success;
 }

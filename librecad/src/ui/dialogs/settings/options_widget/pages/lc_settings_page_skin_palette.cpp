@@ -1,52 +1,34 @@
-/*******************************************************************************
- * This file is part of the LibreCAD project, a 2D CAD program
- *
- * Copyright (C) 2026 LibreCAD.org
- * Copyright (C) 2026 sand1024
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- ******************************************************************************/
-
 #include "lc_settings_page_skin_palette.h"
 #include "ui_lc_settings_page_skin_palette.h"
 #include <QColorDialog>
 #include <QHeaderView>
 #include <QMenu>
 #include <QTableWidget>
+#include <QTextEdit>
+
 #include "lc_color_button.h"
 #include "lc_icons_style_repository.h"
 #include "lc_palette_color_utils.h"
-#include "lc_preset_manager_fusion_skin.h"
+#include "lc_preset_manager_palette.h"
+#include "lc_semantic_colors_ui_helper.h"
+#include "lc_settings_colors_semantics.h"
 #include "lc_ui_style_manager.h"
 #include "qc_applicationwindow.h"
 
 LC_SettingsPageSkinPalette::LC_SettingsPageSkinPalette(QObject* parent)
-    : LC_SettingsPageBase(tr("Color Palette & Bevels"), nullptr, parent)
-    , ui(std::make_unique<Ui::LC_SettingsPageSkinPalette>()) {
+    : LC_SettingsPageBase(tr("Color Palette"), nullptr, parent), ui(std::make_unique<Ui::LC_SettingsPageSkinPalette>()) {
     setSortWeight(10);
 }
 
 LC_SettingsPageSkinPalette::~LC_SettingsPageSkinPalette() = default;
 
 void LC_SettingsPageSkinPalette::bindToPresetManager(LC_PresetManagerInterface* manager) {
-    m_presetManager = dynamic_cast<LC_PresetManagerFusionSkin*>(manager);
+    m_presetManager = dynamic_cast<LC_PresetManagerPalette*>(manager);
     if (m_presetManager != nullptr) {
-        connect(m_presetManager, &LC_PresetManagerFusionSkin::configLoaded, this, [this](const SkinConfig&) {
+        connect(m_presetManager, &LC_PresetManagerPalette::configLoaded, this, [this](const PaletteConfig&) {
             populateTablesFromConfig();
         });
-        connect(m_presetManager, &LC_PresetManagerFusionSkin::variantChanged, this, [this](bool isDark) {
+        connect(m_presetManager, &LC_PresetManagerPalette::variantChanged, this, [this](bool isDark) {
             m_blockSignals = true;
             ui->rbDarkMode->setChecked(isDark);
             ui->rbLightMode->setChecked(!isDark);
@@ -69,7 +51,7 @@ void LC_SettingsPageSkinPalette::setupUi() {
     setupTablesStructure();
 }
 
-void LC_SettingsPageSkinPalette::setupComboboxes() {
+void LC_SettingsPageSkinPalette::setupComboboxes() const {
     ui->cbContrastPolicy->clear();
     ui->cbContrastPolicy->addItem(tr("Not Affected (Keep Baseline)"), static_cast<int>(ContrastPolicy::Standard));
     ui->cbContrastPolicy->addItem(tr("Recessed Window (Low Eye-Strain)"), static_cast<int>(ContrastPolicy::RecessedWindow));
@@ -127,11 +109,13 @@ void LC_SettingsPageSkinPalette::setupTablesStructure() {
 
         table->setRowCount(rolesList.size());
         for (int row = 0; row < table->rowCount(); ++row) {
-            const QString roleName = rolesList[row].name;
+            const QString roleKey = rolesList[row].name;
             const QPalette::ColorRole role = rolesList[row].role;
+            const QString roleDisplayName = getRoleDisplayName(role); // Proper lupdate-compatible translation
             const QString tooltipText = getRoleTooltip(role);
 
-            auto* item = new QTableWidgetItem(tr(roleName.toUtf8().constData()));
+            auto* item = new QTableWidgetItem(roleDisplayName);
+            item->setData(Qt::UserRole, roleKey);
             item->setFlags(item->flags() ^ Qt::ItemIsEditable);
             item->setToolTip(tooltipText);
             table->setItem(row, 0, item);
@@ -142,10 +126,11 @@ void LC_SettingsPageSkinPalette::setupTablesStructure() {
                 btn->setToolTip(tooltipText);
 
                 if (isBevelTable) {
-                    btn->setLockedToolTip(tooltipText + "\n" + tr("[Procedurally calculated: Uncheck 'Procedural 3D Bevels' to edit manually]"));
+                    btn->setLockedToolTip(
+                        tooltipText + "\n" + tr("[Procedurally calculated: Uncheck 'Procedural 3D Bevels' to edit manually]"));
                 }
 
-                btn->setDialogTitle(tr("Select %1 Color (%2)").arg(tr(roleName.toUtf8().constData()), tr(stateName.toUtf8().constData())));
+                btn->setDialogTitle(tr("Select %1 Color (%2)").arg(roleDisplayName, tr(stateName.toUtf8().constData())));
                 connect(btn, &LC_ColorButton::colorChanged, this, &LC_SettingsPageSkinPalette::onControlChanged);
                 table->setCellWidget(row, colIdx, btn);
             }
@@ -154,6 +139,9 @@ void LC_SettingsPageSkinPalette::setupTablesStructure() {
 
     configureTable(ui->tableInterface, BASE_INTERFACE_ROLES, false);
     configureTable(ui->tableBevel, BEVEL_HELPER_ROLES, true);
+
+    // Setup 2-Column Semantic Colors Table using shared helper
+    LC_SemanticColorsUiHelper::setupTable(ui->tableSemantic);
 }
 
 void LC_SettingsPageSkinPalette::setupBehavior() {
@@ -161,10 +149,36 @@ void LC_SettingsPageSkinPalette::setupBehavior() {
     connect(ui->rbDarkMode, &QRadioButton::toggled, this, &LC_SettingsPageSkinPalette::onVariantToggled);
     connect(ui->chkAutoCalc3D, &QCheckBox::toggled, this, &LC_SettingsPageSkinPalette::onAutoCalc3DToggled);
     connect(ui->cbBevelSeed, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_SettingsPageSkinPalette::onBevelSeedChanged);
-    connect(ui->cbContrastWeight, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_SettingsPageSkinPalette::onContrastWeightChanged);
-    connect(ui->cbContrastPolicy, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_SettingsPageSkinPalette::onContrastPolicyChanged);
+    connect(ui->cbContrastWeight, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+            &LC_SettingsPageSkinPalette::onContrastWeightChanged);
+    connect(ui->cbContrastPolicy, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+            &LC_SettingsPageSkinPalette::onContrastPolicyChanged);
     connect(ui->chkUseThemeIcons, &QCheckBox::toggled, this, &LC_SettingsPageSkinPalette::onUseThemeIconsToggled);
-    connect(ui->cbLinkedIconStyle, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &LC_SettingsPageSkinPalette::onControlChanged);
+    connect(ui->cbLinkedIconStyle, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+            &LC_SettingsPageSkinPalette::onControlChanged);
+
+    connect(ui->qssEdit, &QTextEdit::textChanged, this, &LC_SettingsPageSkinPalette::onControlChanged);
+
+    LC_SemanticColorsUiHelper::connectChanged(ui->tableSemantic, this, [this]() {
+        onControlChanged();
+    });
+
+    connect(ui->tabWidgetPalette, &QTabWidget::currentChanged, this, [this](int index) {
+       onPaletteTabChanged(index);
+   });
+}
+
+void LC_SettingsPageSkinPalette::onPaletteTabChanged(int index) {
+    if (m_presetManager == nullptr) {
+        return;
+    }
+
+    if (ui->tabWidgetPalette->widget(index) == ui->tabSemantic) {
+        m_presetManager->activatePreviewTab("advanced");
+    }
+    else if (ui->tabWidgetPalette->widget(index) == ui->tabColors) {
+        m_presetManager->activatePreviewTab("standard");
+    }
 }
 
 void LC_SettingsPageSkinPalette::loadSettings() {
@@ -180,8 +194,18 @@ bool LC_SettingsPageSkinPalette::isModified() const {
     return m_presetManager ? m_presetManager->isPresetModified() : false;
 }
 
+void LC_SettingsPageSkinPalette::setReadOnly(bool readOnly) {
+    ui->tabWidgetPalette->setEnabled(!readOnly);
+    ui->btnGenerate->setEnabled(!readOnly);
+    // rbLightMode and rbDarkMode remain enabled so user can inspect both default variants
+    ui->rbLightMode->setEnabled(true);
+    ui->rbDarkMode->setEnabled(true);
+}
+
 void LC_SettingsPageSkinPalette::onControlChanged() {
-    if (m_blockSignals) return;
+    if (m_blockSignals) {
+        return;
+    }
     syncUiToWorkingConfig();
     if (m_presetManager != nullptr) {
         m_presetManager->onSubPageControlChanged();
@@ -189,15 +213,24 @@ void LC_SettingsPageSkinPalette::onControlChanged() {
 }
 
 void LC_SettingsPageSkinPalette::onVariantToggled(bool checked) {
-    if (m_blockSignals || !checked || m_presetManager == nullptr) return;
+    if (m_blockSignals || !checked || m_presetManager == nullptr) {
+        return;
+    }
 
-    syncUiToWorkingConfig();
     const bool darkSelected = ui->rbDarkMode->isChecked();
+    if (darkSelected == m_presetManager->isCurrentVariantDark()) {
+        return;
+    }
+
+    syncUiToWorkingConfig(m_presetManager->isCurrentVariantDark());
     m_presetManager->setCurrentVariantDark(darkSelected);
+    populateTablesFromConfig();
 }
 
 void LC_SettingsPageSkinPalette::onAutoCalc3DToggled(bool checked) {
-    if (m_blockSignals || m_presetManager == nullptr) return;
+    if (m_blockSignals || m_presetManager == nullptr) {
+        return;
+    }
 
     ui->cbBevelSeed->setEnabled(checked);
     ui->cbContrastWeight->setEnabled(checked);
@@ -208,7 +241,7 @@ void LC_SettingsPageSkinPalette::onAutoCalc3DToggled(bool checked) {
     scheme.autoCalculate3DHelpers = checked;
 
     if (checked) {
-        m_presetManager->calculateProceduralBevels(isDark);
+        m_presetManager->calculateProceduralBevels(isDark, StyleArchetype::ClassicFusion);
     }
     else {
         for (int row = 0; row < ui->tableBevel->rowCount(); ++row) {
@@ -223,19 +256,23 @@ void LC_SettingsPageSkinPalette::onAutoCalc3DToggled(bool checked) {
 }
 
 void LC_SettingsPageSkinPalette::onBevelSeedChanged(int) {
-    if (m_blockSignals || m_presetManager == nullptr) return;
+    if (m_blockSignals || m_presetManager == nullptr) {
+        return;
+    }
     syncUiToWorkingConfig();
     if (ui->chkAutoCalc3D->isChecked()) {
-        m_presetManager->calculateProceduralBevels(ui->rbDarkMode->isChecked());
+        m_presetManager->calculateProceduralBevels(ui->rbDarkMode->isChecked(), StyleArchetype::ClassicFusion);
     }
     m_presetManager->onSubPageControlChanged();
 }
 
 void LC_SettingsPageSkinPalette::onContrastWeightChanged(int) {
-    if (m_blockSignals || m_presetManager == nullptr) return;
+    if (m_blockSignals || m_presetManager == nullptr) {
+        return;
+    }
     syncUiToWorkingConfig();
     if (ui->chkAutoCalc3D->isChecked()) {
-        m_presetManager->calculateProceduralBevels(ui->rbDarkMode->isChecked());
+        m_presetManager->calculateProceduralBevels(ui->rbDarkMode->isChecked(), StyleArchetype::ClassicFusion);
     }
     m_presetManager->onSubPageControlChanged();
 }
@@ -250,38 +287,62 @@ void LC_SettingsPageSkinPalette::onUseThemeIconsToggled(bool checked) {
 }
 
 void LC_SettingsPageSkinPalette::onGenerateHarmonizedTheme() {
-    if (m_presetManager == nullptr) return;
+    if (m_presetManager == nullptr) {
+        return;
+    }
     QColor baseColor = QColorDialog::getColor(Qt::blue, getEditingWidget(), tr("Select Base Harmony Color"));
-    if (!baseColor.isValid()) return;
+    if (!baseColor.isValid()) {
+        return;
+    }
     syncUiToWorkingConfig();
     m_presetManager->generateHarmonizedTheme(baseColor);
 }
 
 void LC_SettingsPageSkinPalette::onGenerateTwoColorTheme() {
-    if (m_presetManager == nullptr) return;
+    if (m_presetManager == nullptr) {
+        return;
+    }
     QColor surface = QColorDialog::getColor(QColor(45, 45, 45), getEditingWidget(), tr("Select Primary Surface Color"));
-    if (!surface.isValid()) return;
+    if (!surface.isValid()) {
+        return;
+    }
     QColor accent = QColorDialog::getColor(QColor(42, 130, 218), getEditingWidget(), tr("Select Accent Highlight Color"));
-    if (!accent.isValid()) return;
+    if (!accent.isValid()) {
+        return;
+    }
     syncUiToWorkingConfig();
     m_presetManager->generateTwoColorTheme(surface, accent);
 }
 
 void LC_SettingsPageSkinPalette::onGenerateHighContrastTheme() {
-    if (m_presetManager == nullptr) return;
+    if (m_presetManager == nullptr) {
+        return;
+    }
     QColor baseColor = QColorDialog::getColor(Qt::blue, getEditingWidget(), tr("Select Base Contrast Color"));
-    if (!baseColor.isValid()) return;
+    if (!baseColor.isValid()) {
+        return;
+    }
     syncUiToWorkingConfig();
     m_presetManager->generateHighContrastTheme(baseColor);
 }
 
 void LC_SettingsPageSkinPalette::populateTablesFromConfig() {
-    if (m_presetManager == nullptr || getEditingWidget() == nullptr) return;
+    if (m_presetManager == nullptr || getEditingWidget() == nullptr) {
+        return;
+    }
 
     m_blockSignals = true;
-    const bool isDark = ui->rbDarkMode->isChecked();
-    const auto& skin = m_presetManager->workingConfig();
-    const ColorSchemeData& scheme = isDark ? skin.dark : skin.light;
+    ui->tableInterface->blockSignals(true);
+    ui->tableBevel->blockSignals(true);
+    ui->qssEdit->blockSignals(true);
+
+    const bool isDark = m_presetManager->isCurrentVariantDark();
+    ui->rbDarkMode->setChecked(isDark);
+    ui->rbLightMode->setChecked(!isDark);
+
+    const bool isReadOnly = m_presetManager->isReadOnlyDefault();
+    const auto& paletteConfig = m_presetManager->workingConfig();
+    const ColorSchemeData& scheme = isDark ? paletteConfig.dark : paletteConfig.light;
 
     auto loadTableColors = [&](const QList<PaletteRoleMapping>& rolesList, QTableWidget* table, bool shouldLock) {
         for (int row = 0; row < rolesList.size(); ++row) {
@@ -290,51 +351,80 @@ void LC_SettingsPageSkinPalette::populateTablesFromConfig() {
                 if (auto* btn = qobject_cast<LC_ColorButton*>(table->cellWidget(row, colIdx))) {
                     const QString stateName = PALETTE_STATES[colIdx - 1].name;
                     const QColor col = scheme.palette.value(roleName).value(stateName, Qt::white);
+                    btn->blockSignals(true);
                     btn->setLocked(shouldLock);
                     btn->setColor(col);
+                    btn->blockSignals(false);
                 }
             }
         }
     };
 
-    loadTableColors(BASE_INTERFACE_ROLES, ui->tableInterface, false);
-    loadTableColors(BEVEL_HELPER_ROLES, ui->tableBevel, scheme.autoCalculate3DHelpers);
+    // Lock all color buttons if the palette is read-only default
+    loadTableColors(BASE_INTERFACE_ROLES, ui->tableInterface, isReadOnly);
+    loadTableColors(BEVEL_HELPER_ROLES, ui->tableBevel, isReadOnly || scheme.autoCalculate3DHelpers);
+
+    ui->btnGenerate->setEnabled(!isReadOnly);
+    ui->qssEdit->setReadOnly(isReadOnly);
 
     ui->chkAutoCalc3D->setChecked(scheme.autoCalculate3DHelpers);
-    ui->cbBevelSeed->setEnabled(scheme.autoCalculate3DHelpers);
-    ui->cbContrastWeight->setEnabled(scheme.autoCalculate3DHelpers);
+    ui->chkAutoCalc3D->setEnabled(!isReadOnly);
+    ui->cbBevelSeed->setEnabled(!isReadOnly && scheme.autoCalculate3DHelpers);
+    ui->cbContrastWeight->setEnabled(!isReadOnly && scheme.autoCalculate3DHelpers);
 
     const int seedIdx = ui->cbBevelSeed->findData(static_cast<int>(scheme.bevelSeedRole));
-    if (seedIdx >= 0) ui->cbBevelSeed->setCurrentIndex(seedIdx);
+    if (seedIdx >= 0) {
+        ui->cbBevelSeed->setCurrentIndex(seedIdx);
+    }
 
     const int weightIdx = ui->cbContrastWeight->findData(static_cast<int>(scheme.contrastWeight));
-    if (weightIdx >= 0) ui->cbContrastWeight->setCurrentIndex(weightIdx);
+    if (weightIdx >= 0) {
+        ui->cbContrastWeight->setCurrentIndex(weightIdx);
+    }
 
     const int policyIdx = ui->cbContrastPolicy->findData(static_cast<int>(scheme.contrastPolicy));
-    if (policyIdx >= 0) ui->cbContrastPolicy->setCurrentIndex(policyIdx);
+    if (policyIdx >= 0) {
+        ui->cbContrastPolicy->setCurrentIndex(policyIdx);
+    }
+    ui->cbContrastPolicy->setEnabled(!isReadOnly);
 
-    ui->chkUseThemeIcons->setChecked(skin.useThemeDefaultIcons);
-    ui->cbLinkedIconStyle->setEnabled(skin.useThemeDefaultIcons);
-    const int iconIdx = ui->cbLinkedIconStyle->findText(skin.linkedIconStyleName);
-    if (iconIdx >= 0) ui->cbLinkedIconStyle->setCurrentIndex(iconIdx);
+    ui->chkUseThemeIcons->setChecked(paletteConfig.useThemeDefaultIcons);
+    ui->chkUseThemeIcons->setEnabled(!isReadOnly);
+    ui->cbLinkedIconStyle->setEnabled(!isReadOnly && paletteConfig.useThemeDefaultIcons);
+    const int iconIdx = ui->cbLinkedIconStyle->findText(paletteConfig.linkedIconStyleName);
+    if (iconIdx >= 0) {
+        ui->cbLinkedIconStyle->setCurrentIndex(iconIdx);
+    }
 
+    ui->qssEdit->setPlainText(scheme.qss);
+
+    LC_SemanticColorsUiHelper::populateTable(ui->tableSemantic, scheme.semanticColors, isDark, isReadOnly);
     m_blockSignals = false;
 }
 
 void LC_SettingsPageSkinPalette::syncUiToWorkingConfig() {
-    if (m_presetManager == nullptr) return;
+    if (m_presetManager == nullptr) {
+        return;
+    }
+    syncUiToWorkingConfig(m_presetManager->isCurrentVariantDark());
+}
 
-    const bool isDark = ui->rbDarkMode->isChecked();
-    auto& skin = m_presetManager->workingConfig();
-    ColorSchemeData& scheme = isDark ? skin.dark : skin.light;
+void LC_SettingsPageSkinPalette::syncUiToWorkingConfig(bool isDark) {
+    if (m_presetManager == nullptr) {
+        return;
+    }
+
+    auto& paletteConfig = m_presetManager->workingConfig();
+    ColorSchemeData& scheme = isDark ? paletteConfig.dark : paletteConfig.light;
 
     scheme.autoCalculate3DHelpers = ui->chkAutoCalc3D->isChecked();
     scheme.bevelSeedRole = static_cast<QPalette::ColorRole>(ui->cbBevelSeed->currentData().toInt());
     scheme.contrastWeight = static_cast<ContrastWeight>(ui->cbContrastWeight->currentData().toInt());
     scheme.contrastPolicy = static_cast<ContrastPolicy>(ui->cbContrastPolicy->currentData().toInt());
+    scheme.qss = ui->qssEdit->toPlainText();
 
-    skin.useThemeDefaultIcons = ui->chkUseThemeIcons->isChecked();
-    skin.linkedIconStyleName = ui->cbLinkedIconStyle->currentText();
+    paletteConfig.useThemeDefaultIcons = ui->chkUseThemeIcons->isChecked();
+    paletteConfig.linkedIconStyleName = ui->cbLinkedIconStyle->currentText();
 
     auto saveTableColors = [&](const QList<PaletteRoleMapping>& rolesList, QTableWidget* table) {
         for (int row = 0; row < rolesList.size(); ++row) {
@@ -350,30 +440,98 @@ void LC_SettingsPageSkinPalette::syncUiToWorkingConfig() {
 
     saveTableColors(BASE_INTERFACE_ROLES, ui->tableInterface);
     saveTableColors(BEVEL_HELPER_ROLES, ui->tableBevel);
+
+    LC_SemanticColorsUiHelper::extractColors(ui->tableSemantic, scheme.semanticColors);
 }
 
 QString LC_SettingsPageSkinPalette::getRoleTooltip(QPalette::ColorRole role) const {
     switch (role) {
-        case QPalette::Window:            return tr("Background color for main windows, dialog boxes, and group containers.");
-        case QPalette::WindowText:        return tr("Standard text color for labels and static headings.");
-        case QPalette::Base:              return tr("Background color for text fields, tree views, and drop-down list boxes.");
-        case QPalette::AlternateBase:     return tr("Background color used for alternating rows in tabular grids.");
-        case QPalette::ToolTipBase:       return tr("Background color of popup tooltips.");
-        case QPalette::ToolTipText:       return tr("Text color of popup tooltips.");
-        case QPalette::Text:              return tr("Standard text color for user inputs and text editors.");
-        case QPalette::Button:            return tr("Background color for buttons, tabs, toolbars, and scrollbar arrows.");
-        case QPalette::ButtonText:        return tr("Text and icon foreground color for buttons and action controls.");
-        case QPalette::BrightText:        return tr("Contrasting text color used for highlights or error messages against dark backings.");
-        case QPalette::Link:              return tr("Color of interactive text hyperlinks.");
-        case QPalette::Highlight:         return tr("Background color for selected items and active focus outlines.");
-        case QPalette::HighlightedText:   return tr("Text color for selected items.");
-        case QPalette::PlaceholderText:   return tr("Muted text color shown in empty fields prior to user typing.");
-        case QPalette::Light:             return tr("Bevel color used for the brightest highlights and chiseled edges.");
-        case QPalette::Midlight:          return tr("Bevel color used for medium-bright lines and dividers.");
-        case QPalette::Dark:              return tr("Bevel color used for shadow lines and structural margins.");
-        case QPalette::Mid:               return tr("Bevel color used for medium shadows and standard boundaries.");
-        case QPalette::Shadow:            return tr("Bevel color used for deep outer 3D shadows.");
-        default: break;
+        case QPalette::Window:
+            return tr("Background color for main windows, dialog boxes, and group containers.");
+        case QPalette::WindowText:
+            return tr("Standard text color for labels and static headings.");
+        case QPalette::Base:
+            return tr("Background color for text fields, tree views, and drop-down list boxes.");
+        case QPalette::AlternateBase:
+            return tr("Background color used for alternating rows in tabular grids.");
+        case QPalette::ToolTipBase:
+            return tr("Background color of popup tooltips.");
+        case QPalette::ToolTipText:
+            return tr("Text color of popup tooltips.");
+        case QPalette::Text:
+            return tr("Standard text color for user inputs and text editors.");
+        case QPalette::Button:
+            return tr("Background color for buttons, tabs, toolbars, and scrollbar arrows.");
+        case QPalette::ButtonText:
+            return tr("Text and icon foreground color for buttons and action controls.");
+        case QPalette::BrightText:
+            return tr("Contrasting text color used for highlights or error messages against dark backings.");
+        case QPalette::Link:
+            return tr("Color of interactive text hyperlinks.");
+        case QPalette::Highlight:
+            return tr("Background color for selected items and active focus outlines.");
+        case QPalette::HighlightedText:
+            return tr("Text color for selected items.");
+        case QPalette::PlaceholderText:
+            return tr("Muted text color shown in empty fields prior to user typing.");
+        case QPalette::Light:
+            return tr("Bevel color used for the brightest highlights and chiseled edges.");
+        case QPalette::Midlight:
+            return tr("Bevel color used for medium-bright lines and dividers.");
+        case QPalette::Dark:
+            return tr("Bevel color used for shadow lines and structural margins.");
+        case QPalette::Mid:
+            return tr("Bevel color used for medium shadows and standard boundaries.");
+        case QPalette::Shadow:
+            return tr("Bevel color used for deep outer 3D shadows.");
+        default:
+            break;
+    }
+    return QString();
+}
+
+QString LC_SettingsPageSkinPalette::getRoleDisplayName(QPalette::ColorRole role) const {
+    switch (role) {
+        case QPalette::Window:
+            return tr("Window");
+        case QPalette::WindowText:
+            return tr("Window Text");
+        case QPalette::Base:
+            return tr("Base (Inputs / Trees)");
+        case QPalette::AlternateBase:
+            return tr("Alternate Base");
+        case QPalette::ToolTipBase:
+            return tr("Tooltip Background");
+        case QPalette::ToolTipText:
+            return tr("Tooltip Text");
+        case QPalette::Text:
+            return tr("Text");
+        case QPalette::Button:
+            return tr("Button");
+        case QPalette::ButtonText:
+            return tr("Button Text");
+        case QPalette::BrightText:
+            return tr("Bright Text");
+        case QPalette::Link:
+            return tr("Hyperlink");
+        case QPalette::Highlight:
+            return tr("Highlight");
+        case QPalette::HighlightedText:
+            return tr("Highlighted Text");
+        case QPalette::PlaceholderText:
+            return tr("Placeholder Text");
+        case QPalette::Light:
+            return tr("3D Light (Bevel Highlight)");
+        case QPalette::Midlight:
+            return tr("3D Midlight (Bevel Divider)");
+        case QPalette::Dark:
+            return tr("3D Dark (Bevel Shadow)");
+        case QPalette::Mid:
+            return tr("3D Mid (Bevel Border)");
+        case QPalette::Shadow:
+            return tr("3D Shadow (Deep Shadow)");
+        default:
+            break;
     }
     return QString();
 }

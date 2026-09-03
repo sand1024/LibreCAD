@@ -27,6 +27,9 @@
 #include "lc_palette_color_utils.h"
 #include "lc_palette_editor_shared.h"
 
+class LC_SettingsPageInterface;
+class LC_UIStyleManager;
+class LC_PresetManagerInterface;
 class LC_SkinPreviewWindow;
 class LC_StylingPreviewBottomBar;
 class LC_StylingPreviewController;
@@ -36,6 +39,18 @@ class LC_StylingPreviewAware {
 public:
     virtual ~LC_StylingPreviewAware() = default;
     virtual void setPreviewController(LC_StylingPreviewController* controller) = 0;
+    virtual bool supportsPreviewWindow() const { return true; }
+    virtual bool supportsAccessibilityCheck() const { return false; }
+};
+
+struct LC_PreviewCompositeState {
+    PaletteConfig palette;
+    ControlStyleConfig skin;
+    StyleMetricsConfig metrics;
+    FontConfig font;
+    bool isDarkMode = false;
+    LC_PaletteColorUtils::CVDType cvd = LC_PaletteColorUtils::CVDType::Normal;
+    bool isSimulatedDisabled = false;
 };
 
 class LC_StylingPreviewController : public QObject {
@@ -45,32 +60,40 @@ public:
     ~LC_StylingPreviewController() override;
 
     void setDialogParent(QWidget* dialogParent);
-    QWidget* createBottomWidget(bool includePreview = true, bool includeCvd = false, QWidget* parent = nullptr);
+    void initFromStyleManager(LC_UIStyleManager* styleManager);
 
+    QWidget* createBottomWidget(bool includePreview, bool includeCvd, QWidget* parent = nullptr);
     void setPreviewVisible(bool visible);
     bool isPreviewVisible() const;
-
-    void updatePreviewTypography(const FontConfig& font);
-    void updatePreviewMetrics(const StyleMetricsConfig& metrics, const SkinConfig& activeSkin) const;
-    void updatePreviewSkin(const SkinConfig& skin, bool isDarkMode, LC_PaletteColorUtils::CVDType cvd) const;
-
     void closePreview();
+    void hidePreviewTemporarily() const;
+
+    void onCategoryChanged(LC_SettingsPageInterface* page);
+
+    void updatePreviewPalette(const PaletteConfig& palette, bool isDarkMode);
+    void updatePreviewSkin(const ControlStyleConfig& skin);
+    void updatePreviewMetrics(const StyleMetricsConfig& metrics);
+    void updatePreviewTypography(const FontConfig& font);
+    void updatePreviewToolbarsAndDocks();
 
     LC_PaletteColorUtils::CVDType activeCvdType() const;
     bool isDisabledSimulated() const;
-
+    void activatePreviewTab(const QString& tag);
 
 signals:
-    void cvdChanged(LC_PaletteColorUtils::CVDType cvd);
+    void cvdChanged(LC_PaletteColorUtils::CVDType type);
     void disabledStateChanged(bool disabled);
 
 private:
     void ensurePreviewWindow();
+    void applyCompositePreview();
     void applyTypographyToPreview(const FontConfig& font) const;
 
     QPointer<QWidget> m_dialogParent;
     QPointer<LC_SkinPreviewWindow> m_previewWindow;
     QPointer<LC_StylingPreviewBottomBar> m_bottomBar;
+    LC_PreviewCompositeState m_state;
 };
+;
 
 #endif

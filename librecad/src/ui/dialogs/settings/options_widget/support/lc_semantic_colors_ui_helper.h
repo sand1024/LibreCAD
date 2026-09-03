@@ -19,42 +19,29 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
-#ifndef LC_SKIN_ARCHETYPE_HEADER_BAR_H
-#define LC_SKIN_ARCHETYPE_HEADER_BAR_H
 
-#include <QWidget>
-#include <memory>
-#include "lc_palette_editor_shared.h"
+#ifndef LC_SEMANTIC_COLORS_UI_HELPER_H
+#define LC_SEMANTIC_COLORS_UI_HELPER_H
 
-namespace Ui {
-    class LC_SkinArchetypeHeaderBar;
-}
+#include <QColor>
+#include <QMap>
+#include <QObject>
+#include <QString>
+#include <functional>
+#include "lc_settings_colors_semantics.h"
 
-class LC_SkinArchetypeHeaderBar : public QWidget {
+class QTableWidget;
+
+class LC_SemanticColorsUiHelper : public QObject {
     Q_OBJECT
 public:
-    explicit LC_SkinArchetypeHeaderBar(QWidget* parent = nullptr);
-    ~LC_SkinArchetypeHeaderBar() override;
+    static QString getRoleDisplayName(LC_SemanticColors role);
+    static QString getRoleTooltip(LC_SemanticColors role);
 
-    void populateFromConfig(const ControlStyleConfig& config);
-    StyleArchetype styleArchetype() const;
-    BoxDecoration boxDecoration() const;
-
-signals:
-    void archetypeChanged(StyleArchetype archetype);
-    void decorationChanged(BoxDecoration decoration);
-
-private slots:
-    void onArchetypeIndexChanged(int index);
-    void onDecorationIndexChanged(int index);
-
-private:
-    void setupComboboxes();
-    QString getArchetypeDescription(StyleArchetype archetype) const;
-    QString getDecorationDescription(BoxDecoration dec) const;
-
-    std::unique_ptr<Ui::LC_SkinArchetypeHeaderBar> ui;
-    bool m_blockSignals = false;
+    static void setupTable(QTableWidget* table);
+    static void populateTable(QTableWidget* table, const QMap<QString, QColor>& colors, bool isDark, bool isReadOnly = false);
+    static void extractColors(const QTableWidget* table, QMap<QString, QColor>& outColors);
+    static void connectChanged(QTableWidget* table, QObject* receiver, const std::function<void()>& callback);
 };
 
-#endif
+#endif // LC_SEMANTIC_COLORS_UI_HELPER_H

@@ -25,13 +25,34 @@
 #include <QStyleFactory>
 #include <QTabWidget>
 #include "lc_caddockwidget.h"
+#include "lc_fusion_skins_repository.h"
+#include "lc_metrics_repository.h"
+#include "lc_palette_repository.h"
+#include "lc_preset_manager_icons_style.h"
 #include "lc_proxy_style.h"
+#include "lc_setting.h"
+#include "lc_settings_colors_semantics.h"
+#include "lc_settings_page_interface.h"
 #include "lc_skin_preview_window.h"
+#include "lc_style_metrics_utils.h"
 #include "lc_styling_preview_bottom_bar.h"
+#include "lc_typography_repository.h"
+#include "lc_typography_utils.h"
+#include "lc_ui_style_manager.h"
+
+namespace {
+    const LC_SettingsGroupBase CFG_StylingPreviewGroup("StylingPreview");
+    const LC_Setting<bool> o_ShowLivePreviewWindow(&CFG_StylingPreviewGroup, "ShowLivePreviewWindow", true);
+}
 
 LC_StylingPreviewController::LC_StylingPreviewController(QWidget* dialogParent, QObject* parent)
     : QObject(parent)
     , m_dialogParent(dialogParent) {
+    LC_PaletteColorUtils::initializeDefaultPalette(m_state.palette);
+    LC_PaletteColorUtils::initializeDefaultControlStyle(m_state.skin);
+    LC_StyleMetricsUtils::initializeDefault(m_state.metrics);
+    LC_TypographyUtils::initializeDefaultConfig(m_state.font);
+    m_state.isDarkMode = LC_PaletteColorUtils::isSystemInDarkMode();
 }
 
 LC_StylingPreviewController::~LC_StylingPreviewController() {
@@ -42,9 +63,43 @@ void LC_StylingPreviewController::setDialogParent(QWidget* dialogParent) {
     m_dialogParent = dialogParent;
 }
 
+void LC_StylingPreviewController::initFromStyleManager(LC_UIStyleManager* styleManager) {
+    if (styleManager == nullptr) {
+        return;
+    }
+
+    const QString activePaletteKey = styleManager->getActivePalette();
+    if (styleManager->getPaletteRepository() == nullptr ||
+        !styleManager->getPaletteRepository()->loadByKey(activePaletteKey, m_state.palette)) {
+        LC_PaletteColorUtils::initializeDefaultPalette(m_state.palette);
+    }
+
+    const QString activeSkinKey = styleManager->getActiveSkin();
+    if (styleManager->getSkinsRepository() == nullptr ||
+        !styleManager->getSkinsRepository()->loadByKey(activeSkinKey, m_state.skin)) {
+        LC_PaletteColorUtils::initializeDefaultControlStyle(m_state.skin);
+    }
+
+    const QString activeMetricsKey = styleManager->getActiveMetrics();
+    if (styleManager->getMetricsRepository() == nullptr ||
+        !styleManager->getMetricsRepository()->loadByKey(activeMetricsKey, m_state.metrics)) {
+        LC_StyleMetricsUtils::initializeDefault(m_state.metrics);
+    }
+
+    const QString activeTypoKey = styleManager->getActiveTypography();
+    if (styleManager->getTypographyRepository() == nullptr ||
+        !styleManager->getTypographyRepository()->loadByKey(activeTypoKey, m_state.font)) {
+        LC_TypographyUtils::initializeDefaultConfig(m_state.font);
+    }
+
+    m_state.isDarkMode = styleManager->resolveIsDarkMode();
+    applyCompositePreview();
+}
+
 void LC_StylingPreviewController::ensurePreviewWindow() {
     if (m_previewWindow == nullptr) {
         m_previewWindow = new LC_SkinPreviewWindow(m_dialogParent.data());
+        m_previewWindow->setWindowTitle(tr("Live Theme Preview — Sandbox"));
         m_previewWindow->setWindowFlags(Qt::Window);
 
         if (m_dialogParent != nullptr) {
@@ -52,28 +107,46 @@ void LC_StylingPreviewController::ensurePreviewWindow() {
         }
 
         connect(m_previewWindow, &LC_SkinPreviewWindow::windowClosed, this, [this]() {
+            o_ShowLivePreviewWindow = false;
             if (m_bottomBar != nullptr) {
                 m_bottomBar->setPreviewChecked(false);
             }
         });
+
+        applyCompositePreview();
     }
 }
 
 QWidget* LC_StylingPreviewController::createBottomWidget(bool includePreview, bool includeCvd, QWidget* parent) {
+    if (m_bottomBar == nullptr) {
     m_bottomBar = new LC_StylingPreviewBottomBar(parent);
+
+    connect(m_bottomBar, &LC_StylingPreviewBottomBar::previewToggled, this, [this](bool checked) {
+        o_ShowLivePreviewWindow = checked;
+        setPreviewVisible(checked);
+    });
+
+    connect(m_bottomBar, &LC_StylingPreviewBottomBar::disabledStateToggled, this, [this](bool disabled) {
+        m_state.isSimulatedDisabled = disabled;
+        applyCompositePreview();
+        emit disabledStateChanged(disabled);
+    });
+
+    connect(m_bottomBar, &LC_StylingPreviewBottomBar::cvdChanged, this, [this](LC_PaletteColorUtils::CVDType cvd) {
+        m_state.cvd = cvd;
+        applyCompositePreview();
+        emit cvdChanged(cvd);
+    });
+    }
+    else if (parent != nullptr && m_bottomBar->parentWidget() != parent) {
+        m_bottomBar->setParent(parent);
+    }
+
     m_bottomBar->setPreviewControlsVisible(includePreview);
     m_bottomBar->setCvdVisible(includeCvd);
 
-    connect(m_bottomBar, &LC_StylingPreviewBottomBar::previewToggled, this, &LC_StylingPreviewController::setPreviewVisible);
-    connect(m_bottomBar, &LC_StylingPreviewBottomBar::disabledStateToggled, this, [this](bool disabled) {
-        if (m_previewWindow != nullptr) {
-            if (auto* tabs = m_previewWindow->findChild<QTabWidget*>()) {
-                tabs->setEnabled(!disabled);
-            }
-        }
-        emit disabledStateChanged(disabled);
-    });
-    connect(m_bottomBar, &LC_StylingPreviewBottomBar::cvdChanged, this, &LC_StylingPreviewController::cvdChanged);
+    const bool shouldShow = o_ShowLivePreviewWindow.get();
+    m_bottomBar->setPreviewChecked(shouldShow);
 
     return m_bottomBar;
 }
@@ -81,16 +154,14 @@ QWidget* LC_StylingPreviewController::createBottomWidget(bool includePreview, bo
 void LC_StylingPreviewController::setPreviewVisible(bool visible) {
     if (visible) {
         ensurePreviewWindow();
-        if (m_bottomBar != nullptr) {
-            if (auto* tabs = m_previewWindow->findChild<QTabWidget*>()) {
-                tabs->setEnabled(!m_bottomBar->isDisabledStateChecked());
-            }
+        if (!m_previewWindow->isVisible()) {
+            m_previewWindow->show();
+            m_previewWindow->raise();
+            // Note: activateWindow() is intentionally omitted on passive navigation
+            // so the preferences dialog retains keyboard focus without OS window flicker
         }
-        m_previewWindow->show();
-        m_previewWindow->raise();
-        m_previewWindow->activateWindow();
     }
-    else if (m_previewWindow != nullptr) {
+    else if (m_previewWindow != nullptr && m_previewWindow->isVisible()) {
         m_previewWindow->hide();
     }
 }
@@ -101,6 +172,8 @@ bool LC_StylingPreviewController::isPreviewVisible() const {
 
 void LC_StylingPreviewController::closePreview() {
     if (m_previewWindow != nullptr) {
+        // Disconnect windowClosed so teardown on dialog exit does not overwrite the user's setting
+        m_previewWindow->disconnect(this);
         m_previewWindow->close();
         m_previewWindow->deleteLater();
         m_previewWindow = nullptr;
@@ -115,11 +188,109 @@ bool LC_StylingPreviewController::isDisabledSimulated() const {
     return (m_bottomBar != nullptr) && m_bottomBar->isDisabledStateChecked();
 }
 
+void LC_StylingPreviewController::activatePreviewTab(const QString& tag) {
+    if (m_previewWindow != nullptr) {
+        m_previewWindow->activateTab(tag);
+    }
+}
+
+void LC_StylingPreviewController::hidePreviewTemporarily() const {
+    if (m_previewWindow != nullptr && m_previewWindow->isVisible()) {
+        m_previewWindow->hide();
+    }
+}
+
+void LC_StylingPreviewController::onCategoryChanged(LC_SettingsPageInterface* page) {
+    const bool supportsPreview = (page != nullptr && page->acceptsSharedPreview());
+
+    if (!supportsPreview) {
+        hidePreviewTemporarily();
+    }
+    else if (o_ShowLivePreviewWindow.get()) {
+        if (m_previewWindow == nullptr || !m_previewWindow->isVisible()) {
+            setPreviewVisible(true);
+        }
+        if (m_previewWindow != nullptr) {
+            m_previewWindow->applyToolbarsAndDocksConfig();
+        }
+    }
+}
+
+void LC_StylingPreviewController::updatePreviewPalette(const PaletteConfig& palette, bool isDarkMode) {
+    m_state.palette = palette;
+    m_state.isDarkMode = isDarkMode;
+    applyCompositePreview();
+}
+
+void LC_StylingPreviewController::updatePreviewSkin(const ControlStyleConfig& skin) {
+    m_state.skin = skin;
+    applyCompositePreview();
+}
+
+void LC_StylingPreviewController::updatePreviewMetrics(const StyleMetricsConfig& metrics) {
+    m_state.metrics = metrics;
+    applyCompositePreview();
+}
+
 void LC_StylingPreviewController::updatePreviewTypography(const FontConfig& font) {
-    if (!isPreviewVisible()) {
+    m_state.font = font;
+    applyCompositePreview();
+}
+
+void LC_StylingPreviewController::updatePreviewToolbarsAndDocks() {
+    if (m_previewWindow != nullptr) {
+        m_previewWindow->applyToolbarsAndDocksConfig();
+    }
+}
+void LC_StylingPreviewController::applyCompositePreview() {
+    if (m_previewWindow == nullptr) {
         return;
     }
-    applyTypographyToPreview(font);
+
+    const ColorSchemeData& scheme = m_state.isDarkMode ? m_state.palette.dark : m_state.palette.light;
+    const QPalette previewPalette = LC_PaletteColorUtils::createPaletteFromScheme(
+        scheme, m_state.skin.styleArchetype, m_state.cvd);
+
+    m_previewWindow->setPalette(previewPalette);
+
+    QStyle* baseStyle = QStyleFactory::create("Fusion");
+    auto* proxyStyle = new LC_ProxyStyle(baseStyle, m_state.metrics);
+    proxyStyle->setSkin(m_state.skin);
+    proxyStyle->setFont(m_state.font);
+    m_previewWindow->setStyle(proxyStyle);
+
+    // Apply custom palette again after setStyle()
+    m_previewWindow->setPalette(previewPalette);
+
+    applyTypographyToPreview(m_state.font);
+
+    m_previewWindow->setStyleSheet(scheme.qss);
+
+
+    m_previewWindow->applyToolbarsAndDocksConfig();
+
+    // Resolve in-progress semantic colors from the active preview state
+    const QColor searchColor = scheme.semanticColors.value(SEMANTIC_COLOR_KEY_FILTERED_ITEM, QColor("#2a82da"));
+    const QColor conflictColor = scheme.semanticColors.value(SEMANTIC_COLOR_KEY_CONFLICTING_ITEM, m_state.isDarkMode ? QColor("#e06c77") : QColor("#d9534f"));
+    m_previewWindow->updateSemanticViews(searchColor, conflictColor);
+
+    for (QWidget* child : m_previewWindow->findChildren<QWidget*>()) {
+        child->setStyle(proxyStyle);
+        child->setPalette(previewPalette);
+        child->updateGeometry();
+        child->update();
+    }
+
+    if (auto* tabs = m_previewWindow->findChild<QTabWidget*>()) {
+        tabs->setEnabled(!m_state.isSimulatedDisabled);
+    }
+
+    if (m_previewWindow->layout() != nullptr) {
+        m_previewWindow->layout()->invalidate();
+        m_previewWindow->layout()->activate();
+    }
+
+    m_previewWindow->update();
 }
 
 void LC_StylingPreviewController::applyTypographyToPreview(const FontConfig& font) const {
@@ -176,7 +347,7 @@ void LC_StylingPreviewController::applyTypographyToPreview(const FontConfig& fon
         }
         else if (child->inherits("QDockWidget") || child->inherits("LC_CustomTitleBarWidget")) {
             const bool isSpecial = child->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool() ||
-                                   (child->parentWidget() && child->parentWidget()->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool());
+                                   (child->parentWidget() != nullptr && child->parentWidget()->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool());
             child->setFont(isSpecial ? specialDockFont : genericDockFont);
         }
         else if (child->inherits("QToolBar") || child->inherits("QToolButton") || child->inherits("QPushButton")) {
@@ -191,50 +362,6 @@ void LC_StylingPreviewController::applyTypographyToPreview(const FontConfig& fon
         else {
             child->setFont(mainFont);
         }
-        child->update();
-    }
-    m_previewWindow->update();
-}
-
-void LC_StylingPreviewController::updatePreviewMetrics(const StyleMetricsConfig& metrics, const SkinConfig& activeSkin) const {
-    if (!isPreviewVisible()) {
-        return;
-    }
-    QStyle* baseStyle = QStyleFactory::create("Fusion");
-    auto* proxyStyle = new LC_ProxyStyle(baseStyle, metrics);
-    proxyStyle->setSkin(activeSkin);
-    m_previewWindow->setStyle(proxyStyle);
-
-    for (QWidget* child : m_previewWindow->findChildren<QWidget*>()) {
-        child->setStyle(proxyStyle);
-        child->updateGeometry();
-        child->update();
-    }
-
-    if (m_previewWindow->layout() != nullptr) {
-        m_previewWindow->layout()->invalidate();
-        m_previewWindow->layout()->activate();
-    }
-    m_previewWindow->update();
-}
-
-void LC_StylingPreviewController::updatePreviewSkin(const SkinConfig& skin, bool isDarkMode, LC_PaletteColorUtils::CVDType cvd) const {
-    if (!isPreviewVisible()) {
-        return;
-    }
-    const ColorSchemeData& scheme = isDarkMode ? skin.dark : skin.light;
-    const QPalette previewPalette = LC_PaletteColorUtils::createPaletteFromScheme(scheme, skin.styleArchetype, cvd);
-    m_previewWindow->setPalette(previewPalette);
-    m_previewWindow->setStyleSheet(scheme.qss);
-
-    QStyle* baseStyle = QStyleFactory::create("Fusion");
-    auto* proxyStyle = new LC_ProxyStyle(baseStyle);
-    proxyStyle->setSkin(skin);
-    m_previewWindow->setStyle(proxyStyle);
-
-    for (QWidget* child : m_previewWindow->findChildren<QWidget*>()) {
-        child->setStyle(proxyStyle);
-        child->setPalette(previewPalette);
         child->update();
     }
     m_previewWindow->update();

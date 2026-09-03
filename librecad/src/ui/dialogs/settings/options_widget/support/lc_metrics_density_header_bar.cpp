@@ -20,6 +20,8 @@
  ******************************************************************************/
 
 #include "lc_metrics_density_header_bar.h"
+
+#include "lc_palette_editor_shared.h"
 #include "ui_lc_metrics_density_header_bar.h"
 
 LC_MetricsDensityHeaderBar::LC_MetricsDensityHeaderBar(QWidget* parent)
@@ -43,7 +45,7 @@ LC_MetricsDensityHeaderBar::~LC_MetricsDensityHeaderBar() = default;
 
 void LC_MetricsDensityHeaderBar::setDensityPreset(const QString& presetKey) {
     m_blockSignals = true;
-    int idx = ui->cbWorkspaceDensity->findData(presetKey);
+    const int idx = ui->cbWorkspaceDensity->findData(presetKey);
     if (idx >= 0) {
         ui->cbWorkspaceDensity->setCurrentIndex(idx);
     }

@@ -1,4 +1,5 @@
 /*******************************************************************************
+ *
  * This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
@@ -18,25 +19,22 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
+
 #include "lc_preset_manager_typography.h"
-#include <QMessageBox>
-#include "lc_styling_preview_controller.h"
-#include "lc_typography_repository.h"
 #include "lc_typography_utils.h"
-#include "lc_ui_style_manager.h"
-#include "qc_applicationwindow.h"
 
 LC_PresetManagerTypography::LC_PresetManagerTypography(QObject* parent)
-    : QObject(parent){
-    m_styleManager=  QC_ApplicationWindow::getAppWindow()->getUiStyleManager();
-    m_repository = m_styleManager->getTypographyRepository();
-    m_originalActiveKey = m_styleManager ? m_styleManager->getActiveTypography() : DEFAULT_THEME_KEY;
-    m_activeKey = m_originalActiveKey;
+    : LC_PresetManagerBase(
+          QC_ApplicationWindow::getAppWindow()->getUiStyleManager(),
+          QC_ApplicationWindow::getAppWindow()->getUiStyleManager()->getTypographyRepository(),
+          QC_ApplicationWindow::getAppWindow()->getUiStyleManager()->getActiveTypography(),
+          parent) {
     loadPreset(m_activeKey);
 }
 
 LC_PresetManagerUIStrings LC_PresetManagerTypography::presetStrings() const {
     LC_PresetManagerUIStrings s;
+    s.defaultPresetName = tr("Default Typography");
     s.labelText = tr("Typography preset:");
     s.selectToolTip = tr("Select a typography configuration preset.");
     s.saveToolTip = tr("Save changes directly to active typography preset.");
@@ -53,97 +51,40 @@ LC_PresetManagerUIStrings LC_PresetManagerTypography::presetStrings() const {
 
     s.defaultReadOnlyMessage = tr("The Default typography preset is a read-only template. To customize font settings, duplicate it as a custom preset.");
     s.duplicateActionText = tr("Duplicate Typography...");
-    s.saveModifiedPromptTitle = tr("Unsaved Changes");
-    s.saveModifiedPromptMessage = tr("You have unsaved changes to typography preset '%1'. Do you want to save them before applying?");
-    s.discardConfirmTitle = tr("Unsaved Changes");
-    s.discardConfirmMessage = tr("You have unsaved modifications to typography preset '%1'. Do you want to discard these changes?");
     return s;
 }
 
 bool LC_PresetManagerTypography::loadPreset(const QString& key) {
-    if (key == DEFAULT_THEME_KEY || key.isEmpty()) {
-        LC_TypographyUtils::initializeDefaultConfig(m_workingConfig);
+    const bool isDefault = (key == DEFAULT_THEME_KEY || key.isEmpty() || key == DEFAULT_THEME_NAME ||
+                            (m_repository != nullptr && !m_repository->exists(key)));
+
+    if (isDefault) {
+        resetToDefaults(m_workingConfig);
+        m_workingConfig.name = defaultPresetDisplayName();
         m_activeKey = DEFAULT_THEME_KEY;
-    }
-    else if (m_repository != nullptr) {
+    } else if (m_repository != nullptr) {
         if (!m_repository->loadByKey(key, m_workingConfig)) {
-            LC_TypographyUtils::initializeDefaultConfig(m_workingConfig);
+            resetToDefaults(m_workingConfig);
+            m_workingConfig.name = defaultPresetDisplayName();
+            m_activeKey = DEFAULT_THEME_KEY;
+        } else {
+            m_activeKey = key;
         }
-        m_activeKey = key;
     }
 
     m_isDirty = false;
-    if (m_changedCallback) {
+    if (m_changedCallback != nullptr) {
         m_changedCallback(false);
     }
 
     emit configLoaded(m_workingConfig);
-
-    if (m_previewController) {
-        m_previewController->updatePreviewTypography(m_workingConfig);
-    }
+    updatePreview();
     return true;
-}
-
-bool LC_PresetManagerTypography::saveCurrentPreset() {
-    if (m_activeKey == DEFAULT_THEME_KEY || m_repository == nullptr) {
-        return false;
-    }
-    QString outKey;
-    if (m_repository->save(m_workingConfig.name, m_workingConfig, outKey)) {
-        m_activeKey = outKey;
-        m_isDirty = false;
-        if (m_changedCallback) {
-            m_changedCallback(false);
-        }
-        return true;
-    }
-    return false;
-}
-
-bool LC_PresetManagerTypography::savePresetAs(const QString& name, QString& outKey) {
-    if (m_repository == nullptr) {
-        return false;
-    }
-    m_workingConfig.name = name;
-    if (m_repository->save(name, m_workingConfig, outKey)) {
-        m_activeKey = outKey;
-        m_isDirty = false;
-        if (m_changedCallback) {
-            m_changedCallback(false);
-    }
-    return true;
-}
-    return false;
-}
-
-bool LC_PresetManagerTypography::deletePreset(const QString& key) {
-    if (key == DEFAULT_THEME_KEY || m_repository == nullptr) {
-        return false;
-    }
-    if (key == m_originalActiveKey) {
-        return false;
-    }
-    return m_repository->removeByKey(key);
-}
-
-QList<QPair<QString, QString>> LC_PresetManagerTypography::getAvailablePresets() const {
-    QList<QPair<QString, QString>> choices;
-    choices.append(qMakePair(tr("Default Typography"), DEFAULT_THEME_KEY));
-    if (m_repository != nullptr) {
-        choices.append(m_repository->getPresetChoices());
-    }
-    return choices;
-}
-
-QString LC_PresetManagerTypography::getActivePresetKey() const {
-    return m_activeKey;
 }
 
 QString LC_PresetManagerTypography::getAppliedPresetKey() const {
     return (m_styleManager != nullptr) ? m_styleManager->getActiveTypography() : m_originalActiveKey;
 }
-
 
 void LC_PresetManagerTypography::applyCurrentPreset() {
     if (m_styleManager != nullptr) {
@@ -151,50 +92,24 @@ void LC_PresetManagerTypography::applyCurrentPreset() {
         m_styleManager->applyActiveStyleAndTheme();
         m_originalActiveKey = m_activeKey;
         m_isDirty = false;
-        if (m_changedCallback) {
+        if (m_changedCallback != nullptr) {
             m_changedCallback(false);
         }
     }
 }
 
-void LC_PresetManagerTypography::rollbackState() {
-    loadPreset(m_originalActiveKey);
-}
-
-void LC_PresetManagerTypography::setChangedCallback(std::function<void(bool)> callback) {
-    m_changedCallback = std::move(callback);
-}
-
-QWidget* LC_PresetManagerTypography::getSharedBottomWidget() {
-    return (m_previewController != nullptr) ? m_previewController->createBottomWidget(true, false,nullptr) : nullptr;
-}
-
-void LC_PresetManagerTypography::notifyWorkingConfigChanged() {
-    m_isDirty = true;
-    if (m_changedCallback) {
-        m_changedCallback(true);
-    }
+void LC_PresetManagerTypography::updatePreview() {
     if (m_previewController != nullptr) {
         m_previewController->updatePreviewTypography(m_workingConfig);
     }
 }
 
-bool LC_PresetManagerTypography::onDialogAccept(QWidget* parentDialog) {
-    if (!handlePromptSaveOnAccept(parentDialog)) {
-        return false;
-    }
+void LC_PresetManagerTypography::resetToDefaults(FontConfig& config) {
+    LC_TypographyUtils::initializeDefaultConfig(config);
+}
+
+void LC_PresetManagerTypography::applyActiveConfigToSystem(const QString& activeKey) {
     if (m_styleManager != nullptr) {
-        m_styleManager->setActiveTypography(m_activeKey);
-    }
-    return true;
-}
-
-bool LC_PresetManagerTypography::onDialogReject(QWidget* parentDialog) {
-    return handlePromptDiscardOnReject(parentDialog);
-}
-void LC_PresetManagerTypography::setPreviewController(LC_StylingPreviewController* controller) {
-    m_previewController = controller;
-    if (m_previewController != nullptr) {
-        m_previewController->updatePreviewTypography(m_workingConfig);
+        m_styleManager->setActiveTypography(activeKey);
     }
 }

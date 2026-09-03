@@ -20,25 +20,23 @@
  ******************************************************************************/
 
 #include "lc_preset_manager_icons_style.h"
-#include <QMessageBox>
+
 #include "lc_icons_style_manager.h"
-#include "lc_icons_style_repository.h"
 #include "lc_palette_color_utils.h"
-#include "lc_ui_style_manager.h"
-#include "qc_applicationwindow.h"
 
 LC_PresetManagerIconsStyle::LC_PresetManagerIconsStyle(QObject* parent)
-    : QObject(parent){
-    m_styleManager=  QC_ApplicationWindow::getAppWindow()->getUiStyleManager();
-    m_repository = m_styleManager->getIconsStyleRepository();
-    m_currentVariantDark = LC_PaletteColorUtils::isSystemInDarkMode();
-    m_originalActiveKey = m_styleManager ? m_styleManager->getActiveIconStyle() : DEFAULT_THEME_KEY;
-    m_activeKey = m_originalActiveKey;
+    : LC_PresetManagerBase(
+          QC_ApplicationWindow::getAppWindow()->getUiStyleManager(),
+          QC_ApplicationWindow::getAppWindow()->getUiStyleManager()->getIconsStyleRepository(),
+          QC_ApplicationWindow::getAppWindow()->getUiStyleManager()->getActiveIconStyle(),
+          parent)
+    , m_currentVariantDark(LC_PaletteColorUtils::isSystemInDarkMode()) {
     loadPreset(m_activeKey);
 }
 
 LC_PresetManagerUIStrings LC_PresetManagerIconsStyle::presetStrings() const {
     LC_PresetManagerUIStrings s;
+    s.defaultPresetName = tr("Default (Classic)");
     s.labelText = tr("Icons style preset:");
     s.selectToolTip = tr("Select a saved custom icon color style or load system defaults.");
     s.saveToolTip = tr("Save changes directly to active icon style preset.");
@@ -55,34 +53,30 @@ LC_PresetManagerUIStrings LC_PresetManagerIconsStyle::presetStrings() const {
 
     s.defaultReadOnlyMessage = tr("The Default icon style is a read-only template. To customize icon colors, duplicate it as a custom preset.");
     s.duplicateActionText = tr("Duplicate Icon Style...");
-    s.saveModifiedPromptTitle = tr("Unsaved Changes");
-    s.saveModifiedPromptMessage = tr("You have unsaved changes to icon style preset '%1'. Do you want to save them before applying?");
-    s.discardConfirmTitle = tr("Unsaved Changes");
-    s.discardConfirmMessage = tr("You have unsaved modifications to icon style preset '%1'. Do you want to discard these changes?");
     return s;
 }
 
 bool LC_PresetManagerIconsStyle::loadPreset(const QString& key) {
-    if (key == DEFAULT_THEME_KEY || key.isEmpty()) {
-        m_iconColorsOptions.resetToDefaults();
-        m_workingConfig = IconStyleConfig();
-        m_workingConfig.name = tr("Default");
-        m_iconColorsOptions.exportStyleConfig(m_workingConfig, true);
-        m_iconColorsOptions.exportStyleConfig(m_workingConfig, false);
+    const bool isDefault = (key == DEFAULT_THEME_KEY || key.isEmpty() || key == DEFAULT_THEME_NAME ||
+                            (m_repository != nullptr && !m_repository->exists(key)));
+
+    if (isDefault) {
+        resetToDefaults(m_workingConfig);
+        m_workingConfig.name = defaultPresetDisplayName();
         m_activeKey = DEFAULT_THEME_KEY;
-    }
-    else if (m_repository != nullptr) {
+    } else if (m_repository != nullptr) {
         if (!m_repository->loadByKey(key, m_workingConfig)) {
-            m_iconColorsOptions.resetToDefaults();
-            m_workingConfig = IconStyleConfig();
-            m_workingConfig.name = tr("Default");
+            resetToDefaults(m_workingConfig);
+            m_workingConfig.name = defaultPresetDisplayName();
+            m_activeKey = DEFAULT_THEME_KEY;
+        } else {
+            m_iconColorsOptions.importStyleConfig(m_workingConfig, m_currentVariantDark);
+            m_activeKey = key;
         }
-        m_iconColorsOptions.importStyleConfig(m_workingConfig, m_currentVariantDark);
-        m_activeKey = key;
     }
 
     m_isDirty = false;
-    if (m_changedCallback) {
+    if (m_changedCallback != nullptr) {
         m_changedCallback(false);
     }
 
@@ -92,60 +86,13 @@ bool LC_PresetManagerIconsStyle::loadPreset(const QString& key) {
 }
 
 bool LC_PresetManagerIconsStyle::saveCurrentPreset() {
-    if (m_activeKey == DEFAULT_THEME_KEY || m_repository == nullptr) {
-        return false;
-    }
     m_iconColorsOptions.exportStyleConfig(m_workingConfig, m_currentVariantDark);
-    QString outKey;
-    if (m_repository->save(m_workingConfig.name, m_workingConfig, outKey)) {
-        m_activeKey = outKey;
-        m_isDirty = false;
-        if (m_changedCallback) {
-            m_changedCallback(false);
-        }
-        return true;
-    }
-    return false;
+    return LC_PresetManagerBase::saveCurrentPreset();
 }
 
 bool LC_PresetManagerIconsStyle::savePresetAs(const QString& name, QString& outKey) {
-    if (m_repository == nullptr) {
-        return false;
-    }
-    m_workingConfig.name = name;
     m_iconColorsOptions.exportStyleConfig(m_workingConfig, m_currentVariantDark);
-    if (m_repository->save(name, m_workingConfig, outKey)) {
-        m_activeKey = outKey;
-        m_isDirty = false;
-        if (m_changedCallback) {
-            m_changedCallback(false);
-        }
-        return true;
-    }
-    return false;
-}
-
-bool LC_PresetManagerIconsStyle::deletePreset(const QString& key) {
-    if (key == DEFAULT_THEME_KEY || m_repository == nullptr) {
-        return false;
-    }
-    if (key == m_originalActiveKey) {
-        return false;
-    }
-    return m_repository->removeByKey(key);
-}
-
-QList<QPair<QString, QString>> LC_PresetManagerIconsStyle::getAvailablePresets() const {
-    QList<QPair<QString, QString>> choices;
-    choices.append(qMakePair(tr("Default (Classic)"), DEFAULT_THEME_KEY));
-    if (m_repository != nullptr) {
-        choices.append(m_repository->getPresetChoices());
-    }
-    return choices;
-}
-
-QString LC_PresetManagerIconsStyle::getActivePresetKey() const {
-    return m_activeKey;
+    return LC_PresetManagerBase::savePresetAs(name, outKey);
 }
 
 QString LC_PresetManagerIconsStyle::getAppliedPresetKey() const {
@@ -158,7 +105,7 @@ void LC_PresetManagerIconsStyle::applyCurrentPreset() {
         m_styleManager->applyActiveIconStyle();
         m_originalActiveKey = m_activeKey;
         m_isDirty = false;
-        if (m_changedCallback) {
+        if (m_changedCallback != nullptr) {
             m_changedCallback(false);
         }
     }
@@ -171,20 +118,7 @@ void LC_PresetManagerIconsStyle::setPreviewController(LC_StylingPreviewControlle
             applyTransientStyle();
         });
     }
-}
-
-QWidget* LC_PresetManagerIconsStyle::getSharedBottomWidget() {
-    return (m_previewController != nullptr)
-               ? m_previewController->createBottomWidget(false, true)
-               : nullptr;
-}
-
-void LC_PresetManagerIconsStyle::rollbackState() {
-    loadPreset(m_originalActiveKey);
-}
-
-void LC_PresetManagerIconsStyle::setChangedCallback(std::function<void(bool)> callback) {
-    m_changedCallback = std::move(callback);
+    updatePreview();
 }
 
 void LC_PresetManagerIconsStyle::setCurrentVariantDark(bool dark) {
@@ -196,14 +130,6 @@ void LC_PresetManagerIconsStyle::setCurrentVariantDark(bool dark) {
     m_iconColorsOptions.importStyleConfig(m_workingConfig, m_currentVariantDark);
 
     emit variantChanged(m_currentVariantDark);
-    applyTransientStyle();
-}
-
-void LC_PresetManagerIconsStyle::notifyWorkingConfigChanged() {
-    m_isDirty = true;
-    if (m_changedCallback) {
-        m_changedCallback(true);
-    }
     applyTransientStyle();
 }
 
@@ -221,16 +147,42 @@ void LC_PresetManagerIconsStyle::applyTransientStyle() {
     LC_IconsStyleManager::applyStyle(tempOptions, m_currentVariantDark, cvdType);
 }
 
-bool LC_PresetManagerIconsStyle::onDialogAccept(QWidget* parentDialog) {
-    if (!handlePromptSaveOnAccept(parentDialog)) {
-        return false;
-    }
-    if (m_styleManager != nullptr) {
-        m_styleManager->setActiveIconStyle(m_activeKey);
-    }
-    return true;
+void LC_PresetManagerIconsStyle::updatePreview() {
+    applyTransientStyle();
 }
 
-bool LC_PresetManagerIconsStyle::onDialogReject(QWidget* parentDialog) {
-    return handlePromptDiscardOnReject(parentDialog);
+void LC_PresetManagerIconsStyle::resetToDefaults(IconStyleConfig& config) {
+    m_iconColorsOptions.resetToDefaults();
+    config = IconStyleConfig();
+    config.name = defaultPresetDisplayName();
+    m_iconColorsOptions.exportStyleConfig(config, true);
+    m_iconColorsOptions.exportStyleConfig(config, false);
+}
+
+void LC_PresetManagerIconsStyle::applyActiveConfigToSystem(const QString& activeKey) {
+    if (m_styleManager != nullptr) {
+        m_styleManager->setActiveIconStyle(activeKey);
+    }
+}
+
+bool LC_PresetManagerIconsStyle::isGated() const {
+    return isReadOnlyDefault();
+}
+
+QString LC_PresetManagerIconsStyle::gatedMessage() const {
+    if (isReadOnlyDefault()) {
+        return presetStrings().defaultReadOnlyMessage;
+    }
+    return QString();
+}
+
+QString LC_PresetManagerIconsStyle::gatedActionText() const {
+    if (isReadOnlyDefault()) {
+        return presetStrings().duplicateActionText;
+    }
+    return QString();
+}
+
+std::function<void()> LC_PresetManagerIconsStyle::gatedActionCallback() const {
+    return nullptr;
 }

@@ -26,9 +26,8 @@
 #include <QSpinBox>
 
 LC_SettingsPageMetricsControls::LC_SettingsPageMetricsControls(QObject* parent)
-    : LC_SettingsPageBase(tr("Controls & Inputs"), nullptr, parent)
+    : LC_SettingsPageBase(tr("Controls"), nullptr, parent)
     , ui(std::make_unique<Ui::LC_SettingsPageMetricsControls>()) {
-    setSortWeight(30);
 }
 
 LC_SettingsPageMetricsControls::~LC_SettingsPageMetricsControls() = default;

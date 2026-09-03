@@ -1,3 +1,4 @@
+
 /*******************************************************************************
  *
  * This file is part of the LibreCAD project, a 2D CAD program
@@ -20,42 +21,44 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_SETTINGS_PAGE_SKIN_QSS_H
-#define LC_SETTINGS_PAGE_SKIN_QSS_H
+#ifndef LC_SETTINGS_PAGE_TOOLBARS_AND_DOCKS_H
+#define LC_SETTINGS_PAGE_TOOLBARS_AND_DOCKS_H
+
+#include <complex.h>
 
 #include "lc_settings_page_base.h"
+#include "lc_styling_preview_controller.h"
+#include "qc_applicationwindow.h"
 
 namespace Ui {
-    class LC_SettingsPageSkinQss;
+    class LC_SettingsPageToolbarsAndDocks;
 }
 
-class LC_PresetManagerFusionSkin;
-
-class LC_SettingsPageSkinQss : public LC_SettingsPageBase {
+class LC_SettingsPageToolbarsAndDocks : public LC_SettingsPageBase, public LC_StylingPreviewAware {
     Q_OBJECT
 public:
-    explicit LC_SettingsPageSkinQss(QObject* parent = nullptr);
-    ~LC_SettingsPageSkinQss() override;
+    explicit LC_SettingsPageToolbarsAndDocks(QObject* parent = nullptr);
+    ~LC_SettingsPageToolbarsAndDocks() override;
 
-    void bindToPresetManager(LC_PresetManagerInterface* manager) override;
-    void loadSettings() override;
     bool saveSettings() override;
-    bool isModified() const override;
+    bool acceptsSharedPreview() override { return true; }
+    void updateLivePreview() override;
+    void setPreviewController(LC_StylingPreviewController* controller) override;
+    QWidget* getBottomWidget() override;
 
 protected:
+    void onControlChanged();
     void setupUi() override;
     void setupBehavior() override;
+    void setupBindings() override;
+    void loadSettings();
 
-private slots:
-    void onControlChanged();
+    bool m_blockSignals = false;
+    LC_UIStyleManager* m_styleManager;
 
 private:
-    void populateUiFromWorkingConfig();
-    void syncUiToWorkingConfig();
-
-    LC_PresetManagerFusionSkin* m_presetManager = nullptr;
-    std::unique_ptr<Ui::LC_SettingsPageSkinQss> ui;
-    bool m_blockSignals = false;
+    LC_StylingPreviewController* m_previewController = nullptr;
+    std::unique_ptr<Ui::LC_SettingsPageToolbarsAndDocks> ui;
 };
 
 #endif

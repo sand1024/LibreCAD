@@ -5,9 +5,8 @@
 #include "lc_preset_manager_fusion_skin.h"
 
 LC_SettingsPageSkinControls::LC_SettingsPageSkinControls(QObject* parent)
-    : LC_SettingsPageBase(tr("Views, Inputs & Controls"), nullptr, parent)
+    : LC_SettingsPageBase(tr("Views and Controls"), nullptr, parent)
     , ui(std::make_unique<Ui::LC_SettingsPageSkinControls>()) {
-    setSortWeight(40);
 }
 
 LC_SettingsPageSkinControls::~LC_SettingsPageSkinControls() = default;
@@ -15,7 +14,7 @@ LC_SettingsPageSkinControls::~LC_SettingsPageSkinControls() = default;
 void LC_SettingsPageSkinControls::bindToPresetManager(LC_PresetManagerInterface* manager) {
     m_presetManager = dynamic_cast<LC_PresetManagerFusionSkin*>(manager);
     if (m_presetManager != nullptr) {
-        connect(m_presetManager, &LC_PresetManagerFusionSkin::configLoaded, this, [this](const SkinConfig&) {
+        connect(m_presetManager, &LC_PresetManagerFusionSkin::configLoaded, this, [this](const ControlStyleConfig&) {
             populateUiFromWorkingConfig();
         });
         populateUiFromWorkingConfig();
@@ -70,7 +69,9 @@ void LC_SettingsPageSkinControls::onControlChanged() {
 }
 
 void LC_SettingsPageSkinControls::populateUiFromWorkingConfig() {
-    if (m_presetManager == nullptr || getEditingWidget() == nullptr) return;
+    if (m_presetManager == nullptr || getEditingWidget() == nullptr) {
+        return;
+    }
 
     m_blockSignals = true;
     const auto& config = m_presetManager->workingConfig();
@@ -92,6 +93,7 @@ void LC_SettingsPageSkinControls::populateUiFromWorkingConfig() {
     ui->chkUseStatusPillChips->setChecked(config.useStatusPillChips);
 
     m_blockSignals = false;
+    updateArchetypeGating();
 }
 
 void LC_SettingsPageSkinControls::syncUiToWorkingConfig() {
@@ -113,4 +115,40 @@ void LC_SettingsPageSkinControls::syncUiToWorkingConfig() {
     config.accentedScrollbars = ui->chkHighContrastScrollbars->isChecked();
     config.transparentScrollbars = ui->chkTransparentScrollbars->isChecked();
     config.useStatusPillChips = ui->chkUseStatusPillChips->isChecked();
+}
+
+void LC_SettingsPageSkinControls::updateArchetypeGating() {
+    if (m_presetManager == nullptr) {
+        return;
+    }
+
+    const bool isReadOnly = m_presetManager->isReadOnlyDefault();
+    const bool isClassic = m_presetManager->isClassicFusion();
+
+    if (isReadOnly) {
+        ui->gbViews->setEnabled(false);
+        ui->gbTabsToolTips->setEnabled(false);
+        ui->gbScrollbarsStatus->setEnabled(false);
+        ui->gbInputs->setEnabled(false);
+    }
+    else if (isClassic) {
+        ui->gbViews->setEnabled(false);
+        ui->gbTabsToolTips->setEnabled(false);
+        ui->gbInputs->setEnabled(false);
+
+        ui->gbScrollbarsStatus->setEnabled(true);
+        ui->chkHighContrastScrollbars->setEnabled(true);
+        ui->chkTransparentScrollbars->setEnabled(true);
+        ui->chkUseStatusPillChips->setEnabled(false);
+    }
+    else {
+        ui->gbViews->setEnabled(true);
+        ui->gbTabsToolTips->setEnabled(true);
+        ui->gbScrollbarsStatus->setEnabled(true);
+        ui->gbInputs->setEnabled(true);
+
+        ui->chkHighContrastScrollbars->setEnabled(true);
+        ui->chkTransparentScrollbars->setEnabled(true);
+        ui->chkUseStatusPillChips->setEnabled(true);
+    }
 }

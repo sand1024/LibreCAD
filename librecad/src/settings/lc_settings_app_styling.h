@@ -25,7 +25,6 @@
 
 #include "lc_setting.h"
 #include "lc_palette_editor_shared.h" // fixme - sand - bad dependency!!
-
 namespace CFG_AppStyling {
     inline const LC_SettingsGroupBase Group("AppStyling");
 
@@ -37,6 +36,11 @@ namespace CFG_AppStyling {
     inline const LC_Setting<QString> o_ActiveSkinName(&Group, "ActiveSkinName", "Default");
     inline const LC_Setting<QString> o_ActiveMetricsName(&Group, "ActiveMetricsName", "Default");
     inline const LC_Setting<QString> o_ActiveGraphicViewScheme(&Group, "ActiveGraphicViewScheme", "Default");
+    inline const LC_Setting<QString> o_ActivePalette(&Group, "ActivePaletteName", "Default");
     inline const LC_Setting<ThemeModeOverride> o_ThemeModeOverride(&Group, "ThemeModeOverride", ThemeModeOverride::FollowSystem);
+
+    inline const LC_Setting<QColor> o_ColorFilteredItem(&Group, "ColorSearchHighlight", QColor("#2a82da")); // Blue
+    inline const LC_Setting<QColor> o_ColorConflictingItem(&Group, "ColorConflictingItem", QColor("#d9534f")); // Red
+    inline const LC_Setting<QColor> o_ColorSearchResultItem(&Group, "ColorSearchResultItem", QColor("#bd6313")); // Amber
 }
 #endif

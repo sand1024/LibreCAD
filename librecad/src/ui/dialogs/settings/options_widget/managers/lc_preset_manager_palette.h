@@ -19,60 +19,54 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_PRESET_MANAGER_FUSION_SKIN_H
-#define LC_PRESET_MANAGER_FUSION_SKIN_H
+#ifndef LC_PRESET_MANAGER_PALETTE_H
+#define LC_PRESET_MANAGER_PALETTE_H
 
-#include <QObject>
-#include <memory>
-#include "lc_palette_editor_shared.h"
+#include "lc_palette_repository.h"
 #include "lc_preset_manager_base.h"
-#include "lc_preset_manager_interface.h"
-#include "lc_fusion_skins_repository.h"
 
-class LC_UIStyleManager;
-class LC_FusionSkinsRepository;
-class LC_SkinArchetypeHeaderBar;
-
-class LC_PresetManagerFusionSkin : public LC_PresetManagerBase<ControlStyleConfig, LC_FusionSkinsRepository>  {
+class LC_PresetManagerPalette : public LC_PresetManagerBase<PaletteConfig, LC_PaletteRepository> {
     Q_OBJECT
 
 public:
-    explicit LC_PresetManagerFusionSkin(QObject* parent = nullptr);
-    ~LC_PresetManagerFusionSkin() override = default;
+    explicit LC_PresetManagerPalette(QObject* parent = nullptr);
+    ~LC_PresetManagerPalette() override = default;
 
     LC_PresetManagerUIStrings presetStrings() const override;
     bool loadPreset(const QString& key) override;
     QString getAppliedPresetKey() const override;
     void applyCurrentPreset() override;
-    QWidget* getSharedHeaderWidget() override;
+    void setPreviewController(LC_StylingPreviewController* controller) override;
 
     bool isGated() const override;
     QString gatedMessage() const override;
     QString gatedActionText() const override;
     std::function<void()> gatedActionCallback() const override;
 
-    bool isClassicFusion() const {
-        return m_workingConfig.styleArchetype == StyleArchetype::ClassicFusion;
-    }
+    bool isCurrentVariantDark() const { return m_currentVariantDark; }
+    void setCurrentVariantDark(bool dark);
 
     void onSubPageControlChanged() {
         notifyWorkingConfigChanged();
     }
 
-    signals:
-        void configLoaded(const ControlStyleConfig& config);
+    void calculateProceduralBevels(bool isDarkMode, StyleArchetype archetype);
+    void generateHarmonizedTheme(const QColor& baseColor);
+    void generateTwoColorTheme(const QColor& surface, const QColor& accent);
+    void generateHighContrastTheme(const QColor& baseColor);
+    void activatePreviewTab(const QString& tag);
 
-private slots:
-    void onArchetypeChanged(StyleArchetype archetype);
-    void onDecorationChanged(BoxDecoration decoration);
+    signals:
+        void configLoaded(const PaletteConfig& config);
+    void variantChanged(bool isDark);
 
 protected:
     void updatePreview() override;
-    void resetToDefaults(ControlStyleConfig& config) override;
+    void resetToDefaults(PaletteConfig& config) override;
     void applyActiveConfigToSystem(const QString& activeKey) override;
 
 private:
-    std::unique_ptr<LC_SkinArchetypeHeaderBar> m_headerBar;
+    bool m_currentVariantDark = false;
 };
 
 #endif

@@ -41,7 +41,7 @@ public:
     void loadSettings() override;
     bool saveSettings() override;
     bool isModified() const override;
-
+    bool disablesWidgetOnGating() const override { return false; }
 protected:
     void setupUi() override;
     void setupBehavior() override;
@@ -53,6 +53,7 @@ private:
     void setupComboboxes();
     void populateUiFromWorkingConfig();
     void syncUiToWorkingConfig();
+    void updateArchetypeGating();
 
     LC_PresetManagerFusionSkin* m_presetManager = nullptr;
     std::unique_ptr<Ui::LC_SettingsPageSkinControls> ui;

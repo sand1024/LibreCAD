@@ -25,13 +25,14 @@
 #include <QObject>
 #include <QObject>
 
-#include "lc_index_settings_page.h"
 #include "lc_preset_manager_fusion_skin.h"
 #include "lc_preset_manager_icons_style.h"
 #include "lc_preset_manager_metrics.h"
+#include "lc_preset_manager_palette.h"
 #include "lc_preset_manager_typography.h"
 #include "lc_settings_app_styling.h"
 #include "lc_settings_dialog.h"
+#include "lc_settings_page_fusion_theme.h"
 #include "lc_settings_page_general_styling.h"
 #include "lc_settings_page_icons_style.h"
 #include "lc_settings_page_metrics_behavior.h"
@@ -42,8 +43,8 @@
 #include "lc_settings_page_skin_containers.h"
 #include "lc_settings_page_skin_controls.h"
 #include "lc_settings_page_skin_palette.h"
-#include "lc_settings_page_skin_qss.h"
 #include "lc_settings_page_skin_toolbars_menus.h"
+#include "lc_settings_page_toolbars_and_docks.h"
 #include "lc_settings_page_typography.h"
 #include "lc_settings_page_workspace_profiles.h"
 #include "lc_settings_registry.h"
@@ -52,200 +53,58 @@
 #include "qc_applicationwindow.h"
 
 void LC_SettingsManagerStyling::initializeStylingSettings() {
+     using namespace LC_SettingsPagesStyling;
+
     auto* reg = LC_SettingsRegistry::instance();
-    const QString targetDialog = "ui_styling_preferences";
+    const QString targetDialog = DLG_STYLING_PREFERENCES;
 
-    reg->configureDialog(targetDialog, QObject::tr("Application Styling & Theming"), true);
+    reg->configureDialog(targetDialog, {QObject::tr("Application Styling"), true, true});
 
-    // 1. Typography Preset Manager Registration
-    reg->registerPresetManager(targetDialog, "styling.typography", []() {
-        return std::make_unique<LC_PresetManagerTypography>();
+    // 1. Preset Managers Registration
+    reg->registerPresetManager(targetDialog, PAGE_STYLING_TYPOGRAPHY, []() {
+        return std::make_unique<LC_PresetManagerTypography>(nullptr);
     });
 
-    reg->registerPresetManager(targetDialog, "styling.icons", []() {
-        return std::make_unique<LC_PresetManagerIconsStyle>();
+    reg->registerPresetManager(targetDialog, PAGE_STYLING_ICONS, []() {
+        return std::make_unique<LC_PresetManagerIconsStyle>(nullptr);
     });
 
-    reg->registerPresetManager(targetDialog, "styling.metrics", []() {
-        return std::make_unique<LC_PresetManagerMetrics>();
+    reg->registerPresetManager(targetDialog, PAGE_STYLING_SKINS, []() {
+        return std::make_unique<LC_PresetManagerFusionSkin>(nullptr);
     });
 
-    reg->registerPresetManager(targetDialog, "styling.skins", []() {
-        return std::make_unique<LC_PresetManagerFusionSkin>();
+    reg->registerPresetManager(targetDialog, PAGE_STYLING_METRICS, []() {
+        return std::make_unique<LC_PresetManagerMetrics>(nullptr);
     });
 
-    // 2. Fusion Gating Condition & Callbacks for the Root Fusion Index Page
-    auto isFusionGated = []() {
-        return !(CFG_AppStyling::o_AllowStyle.get() && CFG_AppStyling::o_Style.get() == "Fusion");
-    };
+    reg->registerPresetManager(targetDialog, PAGE_STYLING_PALETTE, []() {
+        return std::make_unique<LC_PresetManagerPalette>();
+    });
 
-    auto fusionGatedMsg = []() {
-        if (!CFG_AppStyling::o_AllowStyle.get()) {
-            return QObject::tr("Custom UI styling is currently disabled. Enable styling and Fusion theme to customize skins and metrics.");
-        }
-        return QObject::tr("Fusion customization requires the 'Fusion' style (currently '%1').").arg(CFG_AppStyling::o_Style.get());
-    };
-
-    auto fusionGatedActionText = QObject::tr("Enable Fusion Styling");
-
-    auto fusionGatedActionCb = []() {
-        CFG_AppStyling::o_AllowStyle.set(true);
-        CFG_AppStyling::o_Style.set("Fusion");
-        auto* styleMgr = QC_ApplicationWindow::getAppWindow() ? QC_ApplicationWindow::getAppWindow()->getUiStyleManager() : nullptr;
-        if (styleMgr != nullptr) {
-            styleMgr->setStyleAllowed(true);
-            styleMgr->setActiveStyle("Fusion");
-            styleMgr->applyActiveStyleAndTheme();
-        }
-    };
-
-    // 3. Settings Pages Registrations
+    // 2. Settings Pages Registrations
     const std::initializer_list<LC_SettingsRegistry::PageRegistration> pages = {
-        { "styling.general", "", []() {
-            return std::make_unique<LC_SettingsPageGeneralStyling>();
-        }, 10 },
-        { "styling.profiles", "", []() {
-            return std::make_unique<LC_SettingsPageWorkspaceProfiles>();
-        }, 120 },
-        // Root: Typography & Icons
-        {
-            "styling.typography",
-            "",
-            []() {
-                return std::make_unique<LC_SettingsPageTypography>();
-            },
-            30
-        },
-        {
-            "styling.icons",
-            "",
-            []() {
-                return std::make_unique<LC_SettingsPageIconsStyle>();
-            },
-            30
-        },
-
-        // Root Index: Fusion Styling & Theming (Gated)
-        {
-            "styling.fusion",
-            "",
-            []() {
-                auto page = std::make_unique<LC_IndexSettingsPage>(QObject::tr("Fusion Theme"),
-                                                                   QObject::tr(
-                                                                       "Configure Fusion visual skins, color palettes, 3D shading, and metrics layout density."));
-                page->setGating(&LC_SettingsManagerStyling::isFusionGated, []() {
-                                    return LC_SettingsManagerStyling::fusionGatedMessage();
-                                }, LC_SettingsManagerStyling::fusionGatedActionText(), []() {
-                                    LC_SettingsManagerStyling::enableFusionStyling();
-                                });
-                return page;
-            },
-            30
-        },
-
-        // Branch 1: Skins (Parent: styling.fusion)
-        {
-            "styling.skins",
-            "styling.fusion",
-            []() {
-                return std::make_unique<LC_IndexSettingsPage>(QObject::tr("Skins & Theming"),
-                                                              QObject::tr(
-                                                                  "Customize visual archetypes, color palettes, containers, dock frames, and controls."));
-            },
-            10
-        },
-        {
-            "styling.skins.palette",
-            "styling.skins",
-            []() {
-                return std::make_unique<LC_SettingsPageSkinPalette>();
-            },
-            10
-        },
-        {
-            "styling.skins.containers",
-            "styling.skins",
-            []() {
-                return std::make_unique<LC_SettingsPageSkinContainers>();
-            },
-            20
-        },
-        {
-            "styling.skins.toolbars_menus",
-            "styling.skins",
-            []() {
-                return std::make_unique<LC_SettingsPageSkinToolbarsMenus>();
-            },
-            30
-        },
-        {
-            "styling.skins.controls",
-            "styling.skins",
-            []() {
-                return std::make_unique<LC_SettingsPageSkinControls>();
-            },
-            40
-        },
-        {
-            "styling.skins.qss",
-            "styling.skins",
-            []() {
-                return std::make_unique<LC_SettingsPageSkinQss>();
-            },
-            50
-        },
-
-        // Branch 2: Metrics (Parent: styling.fusion)
-        {
-            "styling.metrics",
-            "styling.fusion",
-            []() {
-                return std::make_unique<LC_IndexSettingsPage>(QObject::tr("Metrics & Density"),
-                                                              QObject::tr(
-                                                                  "Configure layout margins, paddings, densities, scrollbars, tabs, and menu metrics."));
-            },
-            20
-        },
-        {
-            "styling.metrics.layout",
-            "styling.metrics",
-            []() {
-                return std::make_unique<LC_SettingsPageMetricsLayout>();
-            },
-            10
-        },
-        {
-            "styling.metrics.menus_toolbars",
-            "styling.metrics",
-            []() {
-                return std::make_unique<LC_SettingsPageMetricsMenusToolbars>();
-            },
-            20
-        },
-        {
-            "styling.metrics.controls",
-            "styling.metrics",
-            []() {
-                return std::make_unique<LC_SettingsPageMetricsControls>();
-            },
-            30
-        },
-        {
-            "styling.metrics.views_tabs",
-            "styling.metrics",
-            []() {
-                return std::make_unique<LC_SettingsPageMetricsViewsTabs>();
-            },
-            40
-        },
-        {
-            "styling.metrics.behavior",
-            "styling.metrics",
-            []() {
-                return std::make_unique<LC_SettingsPageMetricsBehavior>();
-            },
-            50
-        }
+     { PAGE_STYLING_GENERAL, "", page<LC_SettingsPageGeneralStyling>(), 10 },
+        { PAGE_STYLING_WIDGETS, "", page<LC_SettingsPageToolbarsAndDocks>(), 15 },
+        { PAGE_STYLING_TYPOGRAPHY, "", page<LC_SettingsPageTypography>(), 30 },
+        { PAGE_STYLING_ICONS, "", page<LC_SettingsPageIconsStyle>(), 40 },
+        { PAGE_STYLING_FUSION, "", page<LC_SettingsPageFusionTheme>(), 50 },
+        { PAGE_STYLING_PALETTE, PAGE_STYLING_FUSION, page<LC_SettingsPageSkinPalette>(), 10 },
+        { PAGE_STYLING_SKINS, PAGE_STYLING_FUSION,
+        indexNoPreview(QObject::tr("Controls Style & Decorators"),
+         QObject::tr("Customize visual archetypes, container outlines, dock frames, toolbuttons, and widgets.")),
+           20 },
+        { PAGE_STYLING_SKINS_CONTAINERS, PAGE_STYLING_SKINS, page<LC_SettingsPageSkinContainers>(), 10 },
+        { PAGE_STYLING_SKINS_TOOLBARS_MENUS, PAGE_STYLING_SKINS, page<LC_SettingsPageSkinToolbarsMenus>(), 20 },
+        { PAGE_STYLING_SKINS_CONTROLS, PAGE_STYLING_SKINS, page<LC_SettingsPageSkinControls>(), 30 },
+        { PAGE_STYLING_METRICS, PAGE_STYLING_FUSION, indexNoPreview(QObject::tr("UI Metrics (Sizes)"),
+                QObject::tr("Configure layout margins, paddings, densities, scrollbars, tabs, and menu metrics.")),
+          20 },
+        { PAGE_STYLING_METRICS_LAYOUT, PAGE_STYLING_METRICS, page<LC_SettingsPageMetricsLayout>(), 10 },
+        { PAGE_STYLING_METRICS_MENUS_TOOLBARS, PAGE_STYLING_METRICS, page<LC_SettingsPageMetricsMenusToolbars>(), 20 },
+        { PAGE_STYLING_METRICS_CONTROLS, PAGE_STYLING_METRICS, page<LC_SettingsPageMetricsControls>(), 30 },
+        { PAGE_STYLING_METRICS_VIEWS_TABS, PAGE_STYLING_METRICS, page<LC_SettingsPageMetricsViewsTabs>(), 40 },
+        { PAGE_STYLING_METRICS_BEHAVIOR, PAGE_STYLING_METRICS, page<LC_SettingsPageMetricsBehavior>(), 50 },
+        { PAGE_STYLING_PROFILES, "", page<LC_SettingsPageWorkspaceProfiles>(), 120 }
     };
 
     reg->registerPages(targetDialog, pages);
@@ -254,6 +113,12 @@ void LC_SettingsManagerStyling::initializeStylingSettings() {
 bool LC_SettingsManagerStyling::showStylingSettings(QWidget* parent, const QString& initialPageId) {
     auto previewController = std::make_unique<LC_StylingPreviewController>();
 
+      auto* styleMgr = QC_ApplicationWindow::getAppWindow()->getUiStyleManager();
+
+    if (styleMgr != nullptr) {
+        previewController->initFromStyleManager(styleMgr);
+    }
+
     auto preExecHook = [&previewController](LC_SettingsDialog* dialog) {
         previewController->setDialogParent(dialog);
         dialog->forEachPresetManager([&previewController](LC_PresetManagerInterface* manager) {
@@ -261,7 +126,21 @@ bool LC_SettingsManagerStyling::showStylingSettings(QWidget* parent, const QStri
                 aware->setPreviewController(previewController.get());
             }
         });
-    };
+
+        // Wire standalone preview-aware pages
+        dialog->forEachPage([&previewController](LC_SettingsPageInterface* page) {
+            if (auto* aware = dynamic_cast<LC_StylingPreviewAware*>(page)) {
+                aware->setPreviewController(previewController.get());
+            }
+        });
+
+        QObject::connect(dialog, &LC_SettingsDialog::categoryChanged, previewController.get(),
+                         [&previewController, dialog](const QString& /*pageId*/) {
+                             auto* page = dialog->activePage();
+                             previewController->onCategoryChanged(page);
+                         });
+    };;
+;
 
     auto postExecHook = [&previewController](LC_SettingsDialog* dialog, bool /*accepted*/) {
         dialog->forEachPresetManager([](LC_PresetManagerInterface* manager) {
@@ -272,18 +151,17 @@ bool LC_SettingsManagerStyling::showStylingSettings(QWidget* parent, const QStri
         previewController->closePreview();
     };
 
-    const bool accepted = LC_SettingsRegistry::instance()->showDialog("ui_styling_preferences", initialPageId, parent, preExecHook,
+    const bool accepted = LC_SettingsRegistry::instance()->showDialog(LC_SettingsPagesStyling::DLG_STYLING_PREFERENCES, initialPageId, parent, preExecHook,
                                                                       postExecHook);
 
-    if (accepted) {
-        auto* styleMgr = QC_ApplicationWindow::getAppWindow()->getUiStyleManager();
-        if (styleMgr != nullptr) {
-            styleMgr->applyActiveStyleAndTheme();
-        }
-        if (parent != nullptr) {
-            parent->update();
-        }
+    // Re-apply style and theme once to reflect either committed changes (OK) or rolled-back baseline (Cancel)
+    if (styleMgr != nullptr) {
+        styleMgr->applyActiveStyleAndTheme();
     }
+    if (parent != nullptr) {
+        parent->update();
+    }
+
     return accepted;
 }
 

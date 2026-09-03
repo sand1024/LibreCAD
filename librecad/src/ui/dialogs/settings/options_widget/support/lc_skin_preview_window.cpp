@@ -32,14 +32,21 @@
 #include <QLabel>
 #include <QMenuBar>
 #include <QSpinBox>
+#include <QStatusBar>
 #include <QStyleFactory>
 #include <qtablewidget.h>
 #include <QToolBar>
 #include <qtreewidget.h>
 #include <QVBoxLayout>
+
+#include "lc_caddockwidget.h"
 #include "lc_dlg_widget_creator.h"
 #include "lc_dockwidget.h"
+#include "lc_highlight_overlay.h"
 #include "lc_proxy_style.h"
+#include "lc_settings_colors_semantics.h"
+#include "lc_settings_startup.h"
+#include "lc_settings_widget.h"
 #include "ui_lc_skin_preview_window.h"
 
 void LC_SkinPreviewWindow::hideSliderAndDialControls() const {
@@ -90,6 +97,122 @@ LC_SkinPreviewWindow::LC_SkinPreviewWindow(QWidget *parent)
 
 LC_SkinPreviewWindow::~LC_SkinPreviewWindow() {
     delete ui;
+}
+
+void LC_SkinPreviewWindow::applyToolbarsAndDocksConfig() {
+    using namespace CFG_Widgets;
+
+    // 1. Main Toolbar Icon Sizes
+    const int tbSize = o_AllowToolbarIconSize.get() ? o_ToolbarIconSize.get() : 24;
+    setIconSize(QSize(tbSize, tbSize));
+    for (auto* tb : m_mainToolBars) {
+        if (tb != nullptr) {
+            tb->setIconSize(QSize(tbSize, tbSize));
+            for (auto* btn : tb->findChildren<QToolButton*>()) {
+                if (btn != nullptr) {
+                    btn->setIconSize(QSize(tbSize, tbSize));
+                    btn->update();
+                }
+            }
+            tb->updateGeometry();
+            tb->update();
+        }
+    }
+
+    // 2. Dock Mini-Toolbar Buttons (Size and Flat/AutoRaise)
+    const int dockIconSize = qBound(12, o_DockWidgetsIconSize.get(), 64);
+    const bool dockFlat = o_DockWidgetsFlatIcons.get();
+    for (auto* btn : m_dockToolButtons) {
+        if (btn != nullptr) {
+            btn->setIconSize(QSize(dockIconSize, dockIconSize));
+            btn->setAutoRaise(dockFlat);
+            btn->setFixedSize(dockIconSize + 8, dockIconSize + 8);
+            btn->update();
+        }
+    }
+
+    // 3. CAD Tools Matrix (Columns, Icon Size, and Flat/AutoRaise)
+    const bool cadSidebarUngrouped = CFG_Startup::o_CADSideBarUngrouped;
+    const int matrixIconSize = qBound(12, cadSidebarUngrouped ? o_LeftToolbarAllIconSize.get() : o_LeftToolbarIconSize.get(), 64);
+    const int columns = qBound(1, cadSidebarUngrouped ? o_LeftToolbarAllColumnsCount.get() : o_LeftToolbarColumnsCount.get(), 12);
+    const bool matrixFlat = cadSidebarUngrouped ? o_LeftToolbarAllFlatIcons.get() : o_LeftToolbarFlatIcons.get();
+
+    if (m_matrixGridLayout != nullptr && !m_matrixToolButtons.isEmpty()) {
+        // Clear existing grid positioning
+        while (m_matrixGridLayout->count() > 0) {
+            m_matrixGridLayout->takeAt(0);
+        }
+
+        // Place buttons in grid with fixed dimensions
+        for (int i = 0; i < m_matrixToolButtons.size(); ++i) {
+            auto* btn = m_matrixToolButtons[i];
+            if (btn != nullptr) {
+                btn->setIconSize(QSize(matrixIconSize, matrixIconSize));
+                btn->setAutoRaise(matrixFlat);
+                btn->setFixedSize(matrixIconSize + 8, matrixIconSize + 8);
+                btn->update();
+
+                const int row = i / columns;
+                const int col = i % columns;
+                m_matrixGridLayout->addWidget(btn, row, col);
+            }
+        }
+
+        // Reset column stretches so buttons pack tightly to the left
+        for (int c = 0; c < columns; ++c) {
+            m_matrixGridLayout->setColumnStretch(c, 0);
+        }
+        // Right-side expanding horizontal spacer absorbs all extra width
+        m_matrixGridLayout->setColumnStretch(columns, 1);
+
+        // Vertical bottom spacer absorbs all extra height
+        const int totalRows = (m_matrixToolButtons.size() + columns - 1) / columns;
+        for (int r = 0; r < totalRows; ++r) {
+            m_matrixGridLayout->setRowStretch(r, 0);
+        }
+        m_matrixGridLayout->setRowStretch(totalRows, 1);
+    }
+
+    // 4. Docking Features & Nested Docking Option
+    QMainWindow::DockOptions opts = QMainWindow::AnimatedDocks;
+    if (o_DockAllowNested.get()) {
+        opts |= QMainWindow::AllowNestedDocks;
+        opts |= QMainWindow::GroupedDragging;
+    }
+    setDockOptions(opts);
+
+    // 5. Dock Title Bar Orientation (Horizontal vs Vertical)
+    const bool verticalTitleBar = o_DockTitleBarVertical.get();
+    for (auto* dock : m_allDockWidgets) {
+        if (dock != nullptr && !dock->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool()) {
+            QDockWidget::DockWidgetFeatures features = dock->features();
+            if (verticalTitleBar) {
+                features |= QDockWidget::DockWidgetVerticalTitleBar;
+            } else {
+                features &= ~QDockWidget::DockWidgetVerticalTitleBar;
+            }
+            dock->setFeatures(features);
+        }
+    }
+
+    // 6. Side Dock Tab Position
+    const bool verticalTabs = o_DockVerticalTabs.get();
+    setTabPosition(Qt::LeftDockWidgetArea, verticalTabs ? QTabWidget::West : QTabWidget::South);
+    setTabPosition(Qt::RightDockWidgetArea, verticalTabs ? QTabWidget::East : QTabWidget::South);
+
+    // 7. Status Bar Height and Font Size
+    if (statusBar() != nullptr) {
+        if (o_AllowStatusbarHeight.get() && o_StatusbarHeight.get() > 0) {
+            statusBar()->setMinimumHeight(o_StatusbarHeight.get());
+        }
+        if (o_AllowStatusbarFontSize.get() && o_StatusbarFontSize.get() > 0) {
+            QFont f = statusBar()->font();
+            f.setPointSize(o_StatusbarFontSize.get());
+            statusBar()->setFont(f);
+        }
+    }
+
+    update();
 }
 
 void LC_SkinPreviewWindow::setupScrollArea() const {
@@ -173,6 +296,7 @@ void LC_SkinPreviewWindow::setupToolbars() {
     toolbar1->addAction(QIcon(":/icons/create_toolbar.lci"), "");
 
     addToolBar(Qt::TopToolBarArea, toolbar1);
+    m_mainToolBars.append(toolbar1);
 
     auto *toolbar2 = new QToolBar(this);
     toolbar1->setMovable(true);
@@ -195,6 +319,7 @@ void LC_SkinPreviewWindow::setupToolbars() {
     toolbar2->addAction(QIcon(":/icons/create_toolbar.lci"), "");
 
     addToolBar(Qt::TopToolBarArea, toolbar2);
+    m_mainToolBars.append(toolbar2);
 
     // 4. Programmatic Toolbar 2 Setup
     auto *toolbar3 = new QToolBar(this);
@@ -225,13 +350,42 @@ void LC_SkinPreviewWindow::setupToolbars() {
 
     addToolBar(Qt::TopToolBarArea, toolbar3);
     insertToolBarBreak(toolbar3);
+    m_mainToolBars.append(toolbar3);
 }
 
-QWidget* LC_SkinPreviewWindow::setupDockContent(LC_DockWidget* propertiesDock) {
-    const auto dockContents = new QWidget(propertiesDock);
-    const auto dockLayout = new QVBoxLayout(dockContents);
+QWidget* LC_SkinPreviewWindow::setupDockContent(LC_DockWidget* propertiesDock, bool addTopToolbar) {
+    if (propertiesDock == nullptr) {
+        return nullptr;
+    }
+
+    auto* dockContents = new QWidget(propertiesDock);
+    auto* dockLayout = new QVBoxLayout(dockContents);
     dockLayout->setContentsMargins(6, 6, 6, 6);
     dockLayout->setSpacing(4);
+
+    // Mini Top Toolbar with action tool buttons
+    if (addTopToolbar) {
+        auto* miniToolbar = new QHBoxLayout();
+        miniToolbar->setContentsMargins(0, 0, 0, 2);
+        miniToolbar->setSpacing(2);
+
+        const QList<QPair<QString, QString>> miniActions = {
+            { ":/icons/add.lci", tr("Add Item") },
+            { ":/icons/visible.lci", tr("Toggle Visibility") },
+            { ":/icons/draft.lci", tr("Lock Layer") },
+            { ":/icons/close_all.lci", tr("Remove Item") }
+        };
+
+        for (const auto& act : miniActions) {
+            auto* btn = new QToolButton(dockContents);
+            btn->setIcon(QIcon(act.first));
+            btn->setToolTip(act.second);
+            miniToolbar->addWidget(btn);
+            m_dockToolButtons.append(btn);
+        }
+        miniToolbar->addStretch();
+        dockLayout->addLayout(miniToolbar);
+    }
 
     dockLayout->addWidget(new QLabel(tr("<b>Layer:</b> 0"), dockContents));
     dockLayout->addWidget(new QLabel(tr("<b>Color:</b> ByLayer"), dockContents));
@@ -241,43 +395,145 @@ QWidget* LC_SkinPreviewWindow::setupDockContent(LC_DockWidget* propertiesDock) {
     return dockContents;
 }
 
-void LC_SkinPreviewWindow::setupDockWidget() {
-    const auto propertiesDock = new LC_DockWidget(this, tr("Dockable Panel 1"), tr("Dockable Panel 1"));
-    propertiesDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetClosable);
-    QWidget* dockContents = setupDockContent(propertiesDock);
-    propertiesDock->setWidget(dockContents);
-    addDockWidget(Qt::RightDockWidgetArea, propertiesDock);
+QWidget* LC_SkinPreviewWindow::setupCadToolsMatrixContent(LC_DockWidget* matrixDock) {
+    if (matrixDock == nullptr) {
+        return nullptr;
+    }
 
-    const auto propertiesDock1 = new LC_DockWidget(this, tr("Dockable Panel 2"), tr("Dockable Panel 2"));
-    propertiesDock1->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetVerticalTitleBar);
-    QWidget* dockContents1 = setupDockContent(propertiesDock1);
-    propertiesDock1->setWidget(dockContents1);
-    addDockWidget(Qt::RightDockWidgetArea, propertiesDock1);
+    auto* scrollArea = new QScrollArea(matrixDock);
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setFrameShape(QFrame::NoFrame);
+
+    m_matrixGridContainer = new QWidget(scrollArea);
+    m_matrixGridLayout = new QGridLayout(m_matrixGridContainer);
+    m_matrixGridLayout->setContentsMargins(4, 4, 4, 4);
+    m_matrixGridLayout->setSpacing(2);
+
+    const QStringList matrixIcons = {
+        ":/icons/line_2p.lci", ":/icons/circle_2_points.lci", ":/icons/circle_center_radius.lci",
+        ":/icons/move_copy.lci", ":/icons/copy.lci", ":/icons/paste.lci",
+        ":/icons/visible.lci", ":/icons/draft.lci", ":/icons/grid.lci",
+        ":/icons/interactive_pick_angle.lci", ":/icons/spline_explode.lci", ":/icons/add.lci",
+        ":/icons/close_all.lci", ":/icons/save.lci", ":/icons/fileopen.lci",
+        ":/icons/zoom_auto.lci", ":/icons/create_toolbar.lci", ":/icons/halign_middle.lci",
+        ":/icons/new.lci", ":/icons/undo.lci"
+    };
+
+    m_matrixToolButtons.clear();
+    for (int i = 0; i < matrixIcons.size(); ++i) {
+        auto* btn = new QToolButton(m_matrixGridContainer);
+        btn->setIcon(QIcon(matrixIcons[i]));
+        btn->setCheckable(true);
+        if (i == 0 || i == 3) {
+            btn->setChecked(true);
+        }
+        m_matrixToolButtons.append(btn);
+    }
+
+    // Default layout with 5 columns
+    const int defaultCols = 5;
+    for (int i = 0; i < m_matrixToolButtons.size(); ++i) {
+        m_matrixGridLayout->addWidget(m_matrixToolButtons[i], i / defaultCols, i % defaultCols);
+        m_matrixGridLayout->setColumnStretch(i % defaultCols, 0);
+    }
+    m_matrixGridLayout->setColumnStretch(defaultCols, 1);
+
+    scrollArea->setWidget(m_matrixGridContainer);
+    return scrollArea;
+}
+
+void LC_SkinPreviewWindow::setupDockWidget() {
+    m_allDockWidgets.clear();
+    m_dockToolButtons.clear();
+
+    // ================= 1. LEFT DOCK AREA (CAD TOOLS MATRIX EMULATION) =================
+    auto* dockCadMatrix = new LC_DockWidget(this, tr("CAD Tools Matrix"), tr("CAD Tools Matrix"));
+    dockCadMatrix->setWindowIcon(QIcon(":/icons/line_2p.lci"));
+    dockCadMatrix->setProperty(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET, true);
+    dockCadMatrix->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable);
+    dockCadMatrix->setWidget(setupCadToolsMatrixContent(dockCadMatrix));
+    addDockWidget(Qt::LeftDockWidgetArea, dockCadMatrix);
+    m_allDockWidgets.append(dockCadMatrix);
+
+    // ================= 2. RIGHT DOCK AREA (STANDALONE + 3 TABBED DOCKS) =================
+
+    // Standalone Dock: Layer Properties with top mini-toolbar
+    auto* dockLayers = new LC_DockWidget(this, tr("Layer Properties"), tr("Layer Properties"));
+    dockLayers->setWindowIcon(QIcon(":/icons/visible.lci"));
+    dockLayers->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable);
+    dockLayers->setWidget(setupDockContent(dockLayers, true));
+
+    // 3 Tabified Docks on the Right
+    auto* dockBlocks = new LC_DockWidget(this, tr("Block List"), tr("Block List"));
+    dockBlocks->setWindowIcon(QIcon(":/icons/draft.lci"));
+    dockBlocks->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable);
+    dockBlocks->setWidget(setupDockContent(dockBlocks, true));
+
+    auto* dockExplorer = new LC_DockWidget(this, tr("Drawing Explorer"), tr("Drawing Explorer"));
+    dockExplorer->setWindowIcon(QIcon(":/icons/fileopen.lci"));
+    dockExplorer->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable);
+    dockExplorer->setWidget(setupDockContent(dockExplorer, false));
+
+    auto* dockSnap = new LC_DockWidget(this, tr("Snapping & Grid"), tr("Snapping & Grid"));
+    dockSnap->setWindowIcon(QIcon(":/icons/grid.lci"));
+    dockSnap->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable);
+    dockSnap->setWidget(setupDockContent(dockSnap, false));
+
+    addDockWidget(Qt::RightDockWidgetArea, dockLayers);
+    addDockWidget(Qt::RightDockWidgetArea, dockBlocks);
+    addDockWidget(Qt::RightDockWidgetArea, dockExplorer);
+    addDockWidget(Qt::RightDockWidgetArea, dockSnap);
+
+    tabifyDockWidget(dockLayers, dockBlocks);
+    tabifyDockWidget(dockBlocks, dockExplorer);
+    tabifyDockWidget(dockExplorer, dockSnap);
+    dockBlocks->raise();
+
+    splitDockWidget(dockLayers, dockBlocks, Qt::Vertical);
+
+    m_allDockWidgets.append(dockLayers);
+    m_allDockWidgets.append(dockBlocks);
+    m_allDockWidgets.append(dockExplorer);
+    m_allDockWidgets.append(dockSnap);
 }
 
 void LC_SkinPreviewWindow::setupAdvancedViewsWidgets() const {
+    if (ui->label_4 != nullptr) {
+        new LC_HighlightOverlay(ui->label_4);
+    }
+
+    // 1. Table View Setup
     ui->table->setRowCount(4);
-    ui->table->setItem(0, 0, new QTableWidgetItem(tr("Line 1")));
+
+    auto* self = const_cast<LC_SkinPreviewWindow*>(this);
+    self->m_tableSearchItem = new QTableWidgetItem(tr("Line 1"));
+    self->m_tableSearchItem->setToolTip(tr("[Search Highlight Text Demonstration]"));
+    ui->table->setItem(0, 0, self->m_tableSearchItem);
     ui->table->setItem(0, 1, new QTableWidgetItem(tr("Layer: 0")));
-    ui->table->setItem(1, 0, new QTableWidgetItem(tr("Circle 2")));
+
+    self->m_tableConflictItem = new QTableWidgetItem(tr("Circle 2"));
+    self->m_tableConflictItem->setToolTip(tr("[Conflicting Item Text Demonstration]"));
+    ui->table->setItem(1, 0, self->m_tableConflictItem);
     ui->table->setItem(1, 1, new QTableWidgetItem(tr("Layer: Construction")));
+
     ui->table->setItem(2, 0, new QTableWidgetItem(tr("Dimension 3")));
     ui->table->setItem(2, 1, new QTableWidgetItem(tr("Layer: Annotation")));
     ui->table->setItem(3, 0, new QTableWidgetItem(tr("Text 4")));
     ui->table->setItem(3, 1, new QTableWidgetItem(tr("Layer: TitleBlock")));
 
     ui->table->setSelectionBehavior(QAbstractItemView::SelectRows);
-
     ui->table->setSortingEnabled(true);
     ui->table->horizontalHeader()->setSortIndicator(0, Qt::AscendingOrder);
 
-    // 7. Programmatic Tree View Content Population (Multi-node nested dataset)
+    // 2. Tree View Setup
     const auto rootNode = new QTreeWidgetItem(ui->tree, QStringList(tr("Model Workspace")));
-
     const auto layersFolder = new QTreeWidgetItem(rootNode, QStringList(tr("Layers")));
-    const auto layer0 = new QTreeWidgetItem(layersFolder, QStringList(tr("Layer 0 (Visible)")));
-    const auto layerConst = new QTreeWidgetItem(layersFolder, QStringList(tr("Layer Construction (Hidden)")));
-    layerConst->setDisabled(true); // Demonstrates item-view disabled text color
+
+    self->m_treeSearchItem = new QTreeWidgetItem(layersFolder, QStringList(tr("Layer 0 (Visible)")));
+    self->m_treeSearchItem->setToolTip(0, tr("[Search Highlight Text Demonstration]"));
+
+    self->m_treeConflictItem = new QTreeWidgetItem(layersFolder, QStringList(tr("Layer Construction (Conflict)")));
+    self->m_treeConflictItem->setToolTip(0, tr("[Conflicting Item Text Demonstration]"));
 
     const auto blocksFolder = new QTreeWidgetItem(rootNode, QStringList(tr("Blocks")));
     new QTreeWidgetItem(blocksFolder, QStringList(tr("Title Block A1")));
@@ -285,16 +541,67 @@ void LC_SkinPreviewWindow::setupAdvancedViewsWidgets() const {
 
     ui->tree->addTopLevelItem(rootNode);
     ui->tree->expandAll();
-    ui->tree->setCurrentItem(layer0); // Highlight first layer row
+    ui->tree->setCurrentItem(self->m_treeSearchItem);
 
-    // 8. Programmatic List View Content Population (Note 3)
-    ui->listWidget->addItem(tr("drawing_floor_plan.dwg"));
-    ui->listWidget->addItem(tr("drawing_elevation.dwg"));
+    // 3. List View Setup
+    self->m_listSearchItem = new QListWidgetItem(tr("drawing_floor_plan.dwg"), ui->listWidget);
+    self->m_listSearchItem->setToolTip(tr("[Search Highlight Text Demonstration]"));
+    ui->listWidget->addItem(self->m_listSearchItem);
+
+    self->m_listConflictItem = new QListWidgetItem(tr("drawing_elevation.dwg"), ui->listWidget);
+    self->m_listConflictItem->setToolTip(tr("[Conflicting Item Text Demonstration]"));
+    ui->listWidget->addItem(self->m_listConflictItem);
+
     ui->listWidget->addItem(tr("template_metric_standard.dwt"));
 
     const auto selectedListItem = new QListWidgetItem(tr("layout_presentation_sheet.dwg"), ui->listWidget);
     ui->listWidget->addItem(selectedListItem);
-    ui->listWidget->setCurrentItem(selectedListItem); // Highlight selected item row
+    ui->listWidget->setCurrentItem(selectedListItem);
+}
+
+void LC_SkinPreviewWindow::updateSemanticViews(const QColor& searchHighlightColor, const QColor& conflictingItemColor) {
+    
+    // 1. Update Table Item Foregrounds
+    if (m_tableSearchItem != nullptr) {
+        m_tableSearchItem->setForeground(QBrush(searchHighlightColor));
+    }
+    if (m_tableConflictItem != nullptr) {
+        m_tableConflictItem->setForeground(QBrush(conflictingItemColor));
+    }
+
+    // 2. Update Tree Item Foregrounds
+    if (m_treeSearchItem != nullptr) {
+        m_treeSearchItem->setForeground(0, QBrush(searchHighlightColor));
+    }
+    if (m_treeConflictItem != nullptr) {
+        m_treeConflictItem->setForeground(0, QBrush(conflictingItemColor));
+    }
+
+    // 3. Update List Item Foregrounds
+    if (m_listSearchItem != nullptr) {
+        m_listSearchItem->setForeground(QBrush(searchHighlightColor));
+    }
+    if (m_listConflictItem != nullptr) {
+        m_listConflictItem->setForeground(QBrush(conflictingItemColor));
+    }
+
+    // 4. Force overlay repaint on label_4
+    if (ui->label_4 != nullptr) {
+        ui->label_4->update();
+    }
+
+    ui->table->viewport()->update();
+    ui->tree->viewport()->update();
+    ui->listWidget->viewport()->update();
+}
+
+void LC_SkinPreviewWindow::activateTab(const QString& tag) {
+    if (tag == "advanced") {
+        ui->tabs->setCurrentWidget(ui->tabAdvanced);
+    }
+    else if (tag == "standard") {
+        ui->tabs->setCurrentWidget(ui->tabBasic);
+    }
 }
 
 void LC_SkinPreviewWindow::setupEditors() const {
@@ -338,206 +645,211 @@ void LC_SkinPreviewWindow::setupToolButtonMenu() const {
 
 void LC_SkinPreviewWindow::setupTabPreviews() {
     auto *previewTabsContainer = new QWidget(this);
-    auto *mainGridLayout = new QGridLayout(previewTabsContainer);
-    mainGridLayout->setContentsMargins(10, 10, 10, 10);
-    mainGridLayout->setSpacing(16);
+    auto *containerLayout = new QVBoxLayout(previewTabsContainer);
+    containerLayout->setContentsMargins(0, 0, 0, 0);
 
-    // Constant parameters for strict visual uniformity
-    const int horizTabWidth = 320;
-    const int vertTabMinWidth = 40;
-    const int vertTabMaxHeight = 200;
+    auto *scrollArea = new QScrollArea(previewTabsContainer);
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setFrameShape(QFrame::NoFrame);
 
-    // ================= LEFT COLUMN: HORIZONTAL LAYOUTS =================
-    auto *leftColWidget = new QWidget(previewTabsContainer);
-    auto *leftColLayout = new QVBoxLayout(leftColWidget);
-    leftColLayout->setContentsMargins(0, 0, 0, 0);
-    leftColLayout->setSpacing(16);
+    auto *scrollWidget = new QWidget(scrollArea);
+    auto *vertLayout = new QVBoxLayout(scrollWidget);
+    vertLayout->setContentsMargins(10, 10, 10, 10);
+    vertLayout->setSpacing(16);
 
-    // Group Box 1: Rounded Horizontal Previews
+    const int vertTabMinWidth = 48;
+    const int vertTabMaxHeight = 220;
+
+    // ================= 1. ROUNDED HORIZONTAL PREVIEWS =================
     {
-        auto *roundedGroup = new QGroupBox(tr("Rounded Horizontal Previews"), leftColWidget);
+        auto *roundedGroup = new QGroupBox(tr("Rounded Horizontal Previews"), scrollWidget);
         auto *groupLayout = new QVBoxLayout(roundedGroup);
         groupLayout->setContentsMargins(8, 8, 8, 8);
         groupLayout->setSpacing(12);
 
-        // 1. Rounded North (Top Tabs - Scrollable)
+        // North (Top Tabs — Mixed Modes)
         {
             auto *vBox = new QVBoxLayout();
-            vBox->addWidget(new QLabel(tr("North (Top Tabs - Scrollable)"), roundedGroup));
+            vBox->addWidget(new QLabel(tr("North (Top Tabs — Mixed Modes)"), roundedGroup));
+            auto *bar = new QTabBar(roundedGroup);
+            bar->setShape(QTabBar::RoundedNorth);
+            bar->setTabsClosable(true);
+            bar->setAttribute(Qt::WA_Hover, true);
+
+            bar->addTab(QIcon(":/icons/fileopen.lci"), tr("Project A"));
+            bar->addTab(QIcon(":/icons/line_2p.lci"), tr("Model Space (Active)"));
+            bar->addTab(QIcon(":/icons/grid.lci"), QString());
+            bar->setTabToolTip(2, tr("Grid Settings (Icon Only)"));
+            bar->addTab(tr("Plain Text"));
+            bar->addTab(QIcon(":/icons/close_all.lci"), tr("Locked Sheet"));
+            bar->setTabEnabled(4, false);
+
+            bar->setCurrentIndex(1);
+            vBox->addWidget(bar);
+            groupLayout->addLayout(vBox);
+        }
+
+        // North (Top Tabs — Scrollable with Icons)
+        {
+            auto *vBox = new QVBoxLayout();
+            vBox->addWidget(new QLabel(tr("North (Top Tabs — Scrollable with Icons)"), roundedGroup));
             auto *bar = new QTabBar(roundedGroup);
             bar->setShape(QTabBar::RoundedNorth);
             bar->setTabsClosable(true);
             bar->setUsesScrollButtons(true);
             bar->setAttribute(Qt::WA_Hover, true);
-            for (int i = 1; i <= 16; ++i) {
-                bar->addTab(tr("Tab %1").arg(i));
+
+            const QList<QPair<QString, QString>> iconTabs = {
+                { ":/icons/fileopen.lci", tr("Floorplan") },
+                { ":/icons/line_2p.lci", tr("Elevation (Active)") },
+                { ":/icons/circle_center_radius.lci", tr("Section A-A") },
+                { ":/icons/grid.lci", tr("Grid Detail") },
+                { ":/icons/draft.lci", tr("Draft Overlay") },
+                { ":/icons/save.lci", tr("Sheet 1") },
+                { ":/icons/copy.lci", tr("Sheet 2") },
+                { ":/icons/paste.lci", tr("Sheet 3") }
+            };
+
+            for (const auto &entry : iconTabs) {
+                bar->addTab(QIcon(entry.first), entry.second);
             }
             bar->setCurrentIndex(1);
-            // bar->setFixedWidth(horizTabWidth); // Enforce same width
             vBox->addWidget(bar);
             groupLayout->addLayout(vBox);
         }
 
+        // South (Bottom Tabs — Icon + Text)
         {
             auto *vBox = new QVBoxLayout();
-            vBox->addWidget(new QLabel(tr("South (Bottom Tabs - Scrollable)"), roundedGroup));
-            auto *bar = new QTabBar(roundedGroup);
-            bar->setShape(QTabBar::RoundedSouth);
-            bar->setTabsClosable(true);
-            bar->setUsesScrollButtons(true);
-            bar->setAttribute(Qt::WA_Hover, true);
-            for (int i = 1; i <= 16; ++i) {
-                bar->addTab(tr("Tab %1").arg(i));
-            }
-            bar->setCurrentIndex(1);
-            // bar->setFixedWidth(horizTabWidth); // Enforce same width
-            vBox->addWidget(bar);
-            groupLayout->addLayout(vBox);
-        }
-
-        // 2. Rounded South (Bottom Tabs)
-        {
-            auto *vBox = new QVBoxLayout();
-            vBox->addWidget(new QLabel(tr("North (Top Tabs)"), roundedGroup));
-            auto *bar = new QTabBar(roundedGroup);
-            bar->setShape(QTabBar::RoundedNorth);
-            bar->setTabsClosable(true);
-            bar->setAttribute(Qt::WA_Hover, true);
-            bar->addTab(tr("Files"));
-            bar->addTab(tr("Layouts (Active)"));
-            bar->addTab(tr("Settings"));
-            bar->setCurrentIndex(1);
-            // bar->setFixedWidth(horizTabWidth); // Enforce same width
-            vBox->addWidget(bar);
-            groupLayout->addLayout(vBox);
-        }
-
-        // 2. Rounded South (Bottom Tabs)
-        {
-            auto *vBox = new QVBoxLayout();
-            vBox->addWidget(new QLabel(tr("South (Bottom Tabs)"), roundedGroup));
+            vBox->addWidget(new QLabel(tr("South (Bottom Tabs — Icon + Text)"), roundedGroup));
             auto *bar = new QTabBar(roundedGroup);
             bar->setShape(QTabBar::RoundedSouth);
             bar->setTabsClosable(true);
             bar->setAttribute(Qt::WA_Hover, true);
-            bar->addTab(tr("Files"));
-            bar->addTab(tr("Layouts (Active)"));
-            bar->addTab(tr("Settings"));
+
+            bar->addTab(QIcon(":/icons/visible.lci"), tr("Model"));
+            bar->addTab(QIcon(":/icons/draft.lci"), tr("Layout 1 (Active)"));
+            bar->addTab(QIcon(":/icons/save.lci"), tr("Layout 2"));
             bar->setCurrentIndex(1);
-            // bar->setFixedWidth(horizTabWidth); // Enforce same width
             vBox->addWidget(bar);
             groupLayout->addLayout(vBox);
         }
 
-        leftColLayout->addWidget(roundedGroup);
+        vertLayout->addWidget(roundedGroup);
     }
 
-    // Group Box 2: Beveled Horizontal Previews
+    // ================= 2. BEVELED HORIZONTAL PREVIEWS =================
     {
-        auto *beveledGroup = new QGroupBox(tr("Beveled Horizontal Previews"), leftColWidget);
+        auto *beveledGroup = new QGroupBox(tr("Beveled Horizontal Previews"), scrollWidget);
         auto *groupLayout = new QVBoxLayout(beveledGroup);
         groupLayout->setContentsMargins(8, 8, 8, 8);
         groupLayout->setSpacing(12);
 
-        // 3. Triangular North (Beveled Top Tabs)
+        // Beveled North
         {
             auto *vBox = new QVBoxLayout();
-            vBox->addWidget(new QLabel(tr("Beveled North (Top Tabs)"), beveledGroup));
+            vBox->addWidget(new QLabel(tr("Beveled North (Top Tabs — Mixed Modes)"), beveledGroup));
             auto *bar = new QTabBar(beveledGroup);
             bar->setShape(QTabBar::TriangularNorth);
             bar->setTabsClosable(true);
             bar->setAttribute(Qt::WA_Hover, true);
-            bar->addTab(tr("Viewport 1"));
-            bar->addTab(tr("Viewport 2 (Active)"));
+
+            bar->addTab(QIcon(":/icons/line_2p.lci"), tr("Viewport 1"));
+            bar->addTab(QIcon(":/icons/move_copy.lci"), tr("Viewport 2 (Active)"));
+            bar->addTab(QIcon(":/icons/grid.lci"), QString());
+            bar->setTabToolTip(2, tr("Grid View (Icon Only)"));
             bar->addTab(tr("Viewport 3"));
+
             bar->setCurrentIndex(1);
-            // bar->setFixedWidth(horizTabWidth); // Enforce same width
             vBox->addWidget(bar);
             groupLayout->addLayout(vBox);
         }
 
-        // 4. Triangular South (Beveled Bottom Tabs - Scrollable)
+        // Beveled South (Scrollable with Icons)
         {
             auto *vBox = new QVBoxLayout();
-            vBox->addWidget(new QLabel(tr("Beveled South (Bottom Tabs - Scrollable)"), beveledGroup));
+            vBox->addWidget(new QLabel(tr("Beveled South (Bottom Tabs — Scrollable with Icons)"), beveledGroup));
             auto *bar = new QTabBar(beveledGroup);
             bar->setShape(QTabBar::TriangularSouth);
             bar->setTabsClosable(true);
             bar->setUsesScrollButtons(true);
             bar->setAttribute(Qt::WA_Hover, true);
-            for (int i = 1; i <= 16; ++i) {
-                bar->addTab(tr("Page %1").arg(i));
+
+            for (int i = 1; i <= 10; ++i) {
+                const QString iconPath = (i % 2 == 0) ? ":/icons/circle_center_radius.lci" : ":/icons/line_2p.lci";
+                bar->addTab(QIcon(iconPath), tr("Page %1").arg(i));
             }
             bar->setCurrentIndex(1);
-            // bar->setFixedWidth(horizTabWidth); // Enforce same width
             vBox->addWidget(bar);
             groupLayout->addLayout(vBox);
         }
 
-        leftColLayout->addWidget(beveledGroup);
+        vertLayout->addWidget(beveledGroup);
     }
 
-    leftColLayout->addStretch();
-    mainGridLayout->addWidget(leftColWidget, 0, 0);
-
-    // ================= RIGHT COLUMN: VERTICAL LAYOUTS (4 Columns Side-by-Side) =================
-    auto *rightColWidget = new QWidget(previewTabsContainer);
-    auto *rightColLayout = new QVBoxLayout(rightColWidget);
-    rightColLayout->setContentsMargins(0, 0, 0, 0);
-    rightColLayout->setSpacing(16);
-
-    // Group Box 3: Rounded Vertical combination (4 columns side-by-side)
+    // ================= 3. ROUNDED VERTICAL PREVIEWS =================
     {
-        auto *pairGroupBox = new QGroupBox(tr("Rounded Vertical Previews"), rightColWidget);
-        auto *pairLayout = new QHBoxLayout(pairGroupBox);
+        auto *roundedVertGroup = new QGroupBox(tr("Rounded Vertical Previews"), scrollWidget);
+        auto *pairLayout = new QHBoxLayout(roundedVertGroup);
         pairLayout->setContentsMargins(8, 8, 8, 8);
         pairLayout->setSpacing(12);
 
-        // 1. Left (West)
+        // West
         {
             auto *westVBox = new QVBoxLayout();
-            westVBox->addWidget(new QLabel(tr("West (Left)"), pairGroupBox));
-            auto *westBar = new QTabBar(pairGroupBox);
+            westVBox->addWidget(new QLabel(tr("West (Left)"), roundedVertGroup));
+            auto *westBar = new QTabBar(roundedVertGroup);
             westBar->setShape(QTabBar::RoundedWest);
             westBar->setTabsClosable(true);
             westBar->setAttribute(Qt::WA_Hover, true);
-            westBar->addTab(tr("Toolbox"));
-            westBar->addTab(tr("Skins (Active)"));
+
+            westBar->addTab(QIcon(":/icons/line_2p.lci"), tr("Draw"));
+            westBar->addTab(QIcon(":/icons/move_copy.lci"), tr("Modify (Active)"));
+            westBar->addTab(QIcon(":/icons/grid.lci"), QString());
+            westBar->setTabToolTip(2, tr("Grid (Icon Only)"));
+            westBar->addTab(QIcon(":/icons/close_all.lci"), tr("Locked"));
+            westBar->setTabEnabled(3, false);
+
             westBar->setCurrentIndex(1);
-            westBar->setFixedWidth(vertTabMinWidth); // Strict fixed width binds scroll buttons [74]
+            westBar->setFixedWidth(vertTabMinWidth);
             westVBox->addWidget(westBar);
             westVBox->addStretch();
             pairLayout->addLayout(westVBox);
         }
 
-        // 2. Right (East)
+        // East
         {
             auto *eastVBox = new QVBoxLayout();
-            eastVBox->addWidget(new QLabel(tr("East (Right)"), pairGroupBox));
-            auto *eastBar = new QTabBar(pairGroupBox);
+            eastVBox->addWidget(new QLabel(tr("East (Right)"), roundedVertGroup));
+            auto *eastBar = new QTabBar(roundedVertGroup);
             eastBar->setShape(QTabBar::RoundedEast);
             eastBar->setTabsClosable(true);
             eastBar->setAttribute(Qt::WA_Hover, true);
-            eastBar->addTab(tr("Layers"));
-            eastBar->addTab(tr("Blocks (Active)"));
+
+            eastBar->addTab(QIcon(":/icons/visible.lci"), tr("Layers"));
+            eastBar->addTab(QIcon(":/icons/draft.lci"), tr("Blocks (Active)"));
+            eastBar->addTab(QIcon(":/icons/save.lci"), tr("Sheets"));
+
             eastBar->setCurrentIndex(1);
-            eastBar->setFixedWidth(vertTabMinWidth); // Unified minimum width [74]
+            eastBar->setFixedWidth(vertTabMinWidth);
             eastVBox->addWidget(eastBar);
             eastVBox->addStretch();
             pairLayout->addLayout(eastVBox);
         }
 
-        // 3. Left Scrollable (West Scrollable)
+        // West Scrollable
         {
             auto *westScrollVBox = new QVBoxLayout();
-            westScrollVBox->addWidget(new QLabel(tr("West (Scrollable)"), pairGroupBox));
-            auto *westBar = new QTabBar(pairGroupBox);
+            westScrollVBox->addWidget(new QLabel(tr("West (Scrollable)"), roundedVertGroup));
+            auto *westBar = new QTabBar(roundedVertGroup);
             westBar->setShape(QTabBar::RoundedWest);
             westBar->setTabsClosable(true);
             westBar->setUsesScrollButtons(true);
             westBar->setAttribute(Qt::WA_Hover, true);
-            for (int i = 1; i <= 16; ++i) {
-                westBar->addTab(tr("Tool %1").arg(i));
+
+            for (int i = 1; i <= 10; ++i) {
+                const QString iconPath = (i % 2 == 0) ? ":/icons/circle_center_radius.lci" : ":/icons/line_2p.lci";
+                westBar->addTab(QIcon(iconPath), tr("Tool %1").arg(i));
             }
             westBar->setCurrentIndex(1);
             westBar->setFixedWidth(vertTabMinWidth);
@@ -547,17 +859,19 @@ void LC_SkinPreviewWindow::setupTabPreviews() {
             pairLayout->addLayout(westScrollVBox);
         }
 
-        // 4. Right Scrollable (East Scrollable)
+        // East Scrollable
         {
             auto *eastScrollVBox = new QVBoxLayout();
-            eastScrollVBox->addWidget(new QLabel(tr("East (Scrollable)"), pairGroupBox));
-            auto *eastBar = new QTabBar(pairGroupBox);
+            eastScrollVBox->addWidget(new QLabel(tr("East (Scrollable)"), roundedVertGroup));
+            auto *eastBar = new QTabBar(roundedVertGroup);
             eastBar->setShape(QTabBar::RoundedEast);
             eastBar->setTabsClosable(true);
             eastBar->setUsesScrollButtons(true);
             eastBar->setAttribute(Qt::WA_Hover, true);
-            for (int i = 1; i <= 16; ++i) {
-                eastBar->addTab(tr("Prop %1").arg(i));
+
+            for (int i = 1; i <= 10; ++i) {
+                const QString iconPath = (i % 2 == 0) ? ":/icons/save.lci" : ":/icons/draft.lci";
+                eastBar->addTab(QIcon(iconPath), tr("Prop %1").arg(i));
             }
             eastBar->setCurrentIndex(1);
             eastBar->setFixedWidth(vertTabMinWidth);
@@ -567,99 +881,102 @@ void LC_SkinPreviewWindow::setupTabPreviews() {
             pairLayout->addLayout(eastScrollVBox);
         }
 
-        rightColLayout->addWidget(pairGroupBox);
+        vertLayout->addWidget(roundedVertGroup);
     }
 
-    // Group Box 4: Beveled Vertical combination (4 columns side-by-side)
+    // ================= 4. BEVELED VERTICAL PREVIEWS =================
     {
-        auto *pairGroupBox = new QGroupBox(tr("Beveled Vertical Previews (Scrollable)"), rightColWidget);
-        auto *pairLayout = new QHBoxLayout(pairGroupBox);
+        auto *beveledVertGroup = new QGroupBox(tr("Beveled Vertical Previews (Scrollable)"), scrollWidget);
+        auto *pairLayout = new QHBoxLayout(beveledVertGroup);
         pairLayout->setContentsMargins(8, 8, 8, 8);
         pairLayout->setSpacing(12);
 
-        // 1. Left (West)
+        // Triangular West
         {
             auto *westVBox = new QVBoxLayout();
-            westVBox->addWidget(new QLabel(tr("West (Left)"), pairGroupBox));
-            auto *westBar = new QTabBar(pairGroupBox);
+            westVBox->addWidget(new QLabel(tr("West (Left)"), beveledVertGroup));
+            auto *westBar = new QTabBar(beveledVertGroup);
             westBar->setShape(QTabBar::TriangularWest);
             westBar->setTabsClosable(true);
             westBar->setAttribute(Qt::WA_Hover, true);
-            westBar->addTab(tr("CAD Tools"));
-            westBar->addTab(tr("Viewport (Active)"));
+
+            westBar->addTab(QIcon(":/icons/line_2p.lci"), tr("CAD Tools"));
+            westBar->addTab(QIcon(":/icons/visible.lci"), tr("Viewport (Active)"));
             westBar->setCurrentIndex(1);
-            westBar->setFixedWidth(vertTabMinWidth); // Unified minimum width [74]
+            westBar->setFixedWidth(vertTabMinWidth);
             westVBox->addWidget(westBar);
             westVBox->addStretch();
             pairLayout->addLayout(westVBox);
         }
 
-        // 2. Right (East)
+        // Triangular East
         {
             auto *eastVBox = new QVBoxLayout();
-            eastVBox->addWidget(new QLabel(tr("East (Right)"), pairGroupBox));
-            auto *eastBar = new QTabBar(pairGroupBox);
+            eastVBox->addWidget(new QLabel(tr("East (Right)"), beveledVertGroup));
+            auto *eastBar = new QTabBar(beveledVertGroup);
             eastBar->setShape(QTabBar::TriangularEast);
             eastBar->setTabsClosable(true);
             eastBar->setAttribute(Qt::WA_Hover, true);
-            eastBar->addTab(tr("Layout A"));
-            eastBar->addTab(tr("Layout B (Active)"));
+
+            eastBar->addTab(QIcon(":/icons/fileopen.lci"), tr("Layout A"));
+            eastBar->addTab(QIcon(":/icons/save.lci"), tr("Layout B (Active)"));
             eastBar->setCurrentIndex(1);
-            eastBar->setFixedWidth(vertTabMinWidth); // Unified minimum width [74]
+            eastBar->setFixedWidth(vertTabMinWidth);
             eastVBox->addWidget(eastBar);
             eastVBox->addStretch();
             pairLayout->addLayout(eastVBox);
         }
 
-        // 3. Left Scrollable (West Scrollable)
+        // Triangular West Scrollable
         {
             auto *westScrollVBox = new QVBoxLayout();
-            westScrollVBox->addWidget(new QLabel(tr("West (Scrollable)"), pairGroupBox));
-            auto *westBar = new QTabBar(pairGroupBox);
+            westScrollVBox->addWidget(new QLabel(tr("West (Scrollable)"), beveledVertGroup));
+            auto *westBar = new QTabBar(beveledVertGroup);
             westBar->setShape(QTabBar::TriangularWest);
             westBar->setTabsClosable(true);
             westBar->setUsesScrollButtons(true);
             westBar->setAttribute(Qt::WA_Hover, true);
-            for (int i = 1; i <= 16; ++i) {
-                westBar->addTab(tr("Model %1").arg(i));
+
+            for (int i = 1; i <= 10; ++i) {
+                const QString iconPath = (i % 2 == 0) ? ":/icons/circle_center_radius.lci" : ":/icons/move_copy.lci";
+                westBar->addTab(QIcon(iconPath), tr("Model %1").arg(i));
             }
             westBar->setCurrentIndex(1);
-            westBar->setFixedWidth(vertTabMinWidth); // Unified minimum width [74]
+            westBar->setFixedWidth(vertTabMinWidth);
             westBar->setMaximumHeight(vertTabMaxHeight);
             westScrollVBox->addWidget(westBar);
             westScrollVBox->addStretch();
             pairLayout->addLayout(westScrollVBox);
         }
 
-        // 4. Right Scrollable (East Scrollable)
+        // Triangular East Scrollable
         {
             auto *eastScrollVBox = new QVBoxLayout();
-            eastScrollVBox->addWidget(new QLabel(tr("East (Scrollable)"), pairGroupBox));
-            auto *eastBar = new QTabBar(pairGroupBox);
+            eastScrollVBox->addWidget(new QLabel(tr("East (Scrollable)"), beveledVertGroup));
+            auto *eastBar = new QTabBar(beveledVertGroup);
             eastBar->setShape(QTabBar::TriangularEast);
             eastBar->setTabsClosable(true);
             eastBar->setUsesScrollButtons(true);
             eastBar->setAttribute(Qt::WA_Hover, true);
-            for (int i = 1; i <= 16; ++i) {
-                eastBar->addTab(tr("Sheet %1").arg(i));
+
+            for (int i = 1; i <= 10; ++i) {
+                const QString iconPath = (i % 2 == 0) ? ":/icons/save.lci" : ":/icons/draft.lci";
+                eastBar->addTab(QIcon(iconPath), tr("Sheet %1").arg(i));
             }
             eastBar->setCurrentIndex(1);
-            eastBar->setFixedWidth(vertTabMinWidth); // Unified minimum width [74]
+            eastBar->setFixedWidth(vertTabMinWidth);
             eastBar->setMaximumHeight(vertTabMaxHeight);
             eastScrollVBox->addWidget(eastBar);
             eastScrollVBox->addStretch();
             pairLayout->addLayout(eastScrollVBox);
         }
 
-        rightColLayout->addWidget(pairGroupBox);
+        vertLayout->addWidget(beveledVertGroup);
     }
 
-    rightColLayout->addStretch();
-    mainGridLayout->addWidget(rightColWidget, 0, 1);
-
-    // Apply strict proportional stretches: Left column 45%, Right column 55%
-    mainGridLayout->setColumnStretch(0, 45);
-    mainGridLayout->setColumnStretch(1, 55);
+    vertLayout->addStretch();
+    scrollArea->setWidget(scrollWidget);
+    containerLayout->addWidget(scrollArea);
 
     ui->tabs->addTab(previewTabsContainer, tr("Tabs Alignment"));
 }

@@ -229,6 +229,16 @@ void LC_SettingsPageIconsStyle::updateLivePreview() {
     emit livePreviewRequested();
 }
 
+void LC_SettingsPageIconsStyle::setReadOnly(bool readOnly) {
+    ui->gbBaselineSeeds->setEnabled(!readOnly);
+    ui->chkAutoCalcStates->setEnabled(!readOnly);
+    ui->gbIconStates->setEnabled(!readOnly);
+    ui->pbAutoGenerateOpposite->setEnabled(!readOnly);
+    // rbLightMode and rbDarkMode remain enabled so user can inspect both default variants
+    ui->rbLightMode->setEnabled(true);
+    ui->rbDarkMode->setEnabled(true);
+}
+
 void LC_SettingsPageIconsStyle::onControlChanged() {
     if (m_blockSignals) {
         return;

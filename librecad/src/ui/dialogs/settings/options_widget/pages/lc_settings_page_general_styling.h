@@ -36,7 +36,10 @@ public:
     explicit LC_SettingsPageGeneralStyling(QObject* parent = nullptr);
     ~LC_SettingsPageGeneralStyling() override;
 
+    void loadSettings() override;
     bool saveSettings() override;
+
+    bool acceptsSharedPreview() override {return false;}
 
 protected:
     void setupUi() override;
@@ -46,13 +49,15 @@ protected:
 private slots:
     void updateStyleDependencyStates();
     void chooseStyleSheet();
+    void onControlChanged();
 
 private:
-    void setupStyleCombobox() const;
-    void setupThemeModeCombobox() const;
+    void setupStyleCombobox();
+    void applyTransientStyle();
 
     LC_UIStyleManager* m_styleManager = nullptr;
     std::unique_ptr<Ui::LC_SettingsPageGeneralStyling> ui;
+    bool m_blockSignals = false;
 };
 
 #endif
