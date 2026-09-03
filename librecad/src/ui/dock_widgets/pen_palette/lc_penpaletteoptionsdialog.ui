@@ -26,40 +26,7 @@
       <string>Appearance</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_5">
-      <item row="2" column="0">
-       <widget class="QCheckBox" name="cbShowGrid">
-        <property name="toolTip">
-         <string>Grid
-
-If selected, grid lines will be drawn</string>
-        </property>
-        <property name="text">
-         <string>Show grid</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QToolButton" name="tbMatchedItemColorSelect">
-        <property name="toolTip">
-         <string>Click to select color</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="../../../../res/controls/controls.qrc">
-          <normaloff>:/controls/colorxx.png</normaloff>:/controls/colorxx.png</iconset>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Matched Item Color:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" colspan="2">
+      <item row="0" column="0" colspan="2">
        <widget class="QCheckBox" name="cbAllRowBold">
         <property name="toolTip">
          <string>Active Pen
@@ -72,19 +39,19 @@ Otherwise, bold font is used only for name.</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="cbColorMatchedItem">
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="cbShowGrid">
         <property name="toolTip">
-         <string>Matched Item Color
+         <string>Grid
 
-Color of pen item that is matched by filter</string>
+If selected, grid lines will be drawn</string>
         </property>
-        <property name="editable">
-         <bool>true</bool>
+        <property name="text">
+         <string>Show grid</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="3">
+      <item row="0" column="2">
        <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Orientation::Horizontal</enum>

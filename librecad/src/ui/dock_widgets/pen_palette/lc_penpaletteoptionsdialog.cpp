@@ -72,8 +72,6 @@ LC_PenPaletteOptionsDialog::LC_PenPaletteOptionsDialog(QWidget *parent, LC_PenPa
             break;
     }
 
-    connect(tbMatchedItemColorSelect, &QToolButton::clicked, this, &LC_PenPaletteOptionsDialog::selectMatchedItemColor);
-    initComboBox(cbColorMatchedItem, m_options->matchedItemColor);
 
     connect(buttonBox, &QDialogButtonBox::accepted, this, &LC_PenPaletteOptionsDialog::validate);
 }
@@ -84,42 +82,6 @@ void LC_PenPaletteOptionsDialog::languageChange(){
     retranslateUi(this);
 }
 
-/**
- * Color combobox initialization
- * @param cb
- * @param color
- */
-void LC_PenPaletteOptionsDialog::initComboBox(QComboBox* cb, const QColor &color){
-    const QString text = color.name();
-    int idx = cb->findText(text);
-    if (idx < 0){
-        idx = 0;
-        cb->insertItem(idx, text);
-    }
-    cb->setCurrentIndex(idx);
-}
-
-
-void LC_PenPaletteOptionsDialog::selectMatchedItemColor(){
-    setComboBoxColor(cbColorMatchedItem, m_options->matchedItemColor);
-}
-
-/**
- * Color selection
- * @param combo
- * @param custom
- */
-void LC_PenPaletteOptionsDialog::setComboBoxColor(const QComboBox* combo, const QColor &custom)
-{
-    const auto current = QColor::fromString(combo->lineEdit()->text());
-
-    QColorDialog::setCustomColor(0, custom.rgb());
-
-    const QColor color = QColorDialog::getColor(current, this, "Select Color", QColorDialog::DontUseNativeDialog);
-    if (color.isValid()){
-        combo->lineEdit()->setText(color.name());
-    }
-}
 
 /**
  * Validation of entered data on button closing
@@ -136,17 +98,9 @@ void LC_PenPaletteOptionsDialog::validate(){
       colorMode = LC_PenInfoRegistry::ColorNameDisplayMode::NATURAL;
     }
 
-    const QString matchedColorName = cbColorMatchedItem->currentText();
-    const auto matchedItemColor = QColor(matchedColorName);
-    if (!matchedItemColor.isValid()){
-        showInvalidColorMessage("filter matched item");
-        cbColorMatchedItem ->setFocus();
-        doAccept = false;
-    }
 
     // all fine, store user's input to options
     if (doAccept){
-        m_options->matchedItemColor = matchedItemColor;
         m_options->showGrid =  cbShowGrid->isChecked();
 
         const bool showToolTip = cbShowTooltip->isChecked();
@@ -177,16 +131,4 @@ void LC_PenPaletteOptionsDialog::validate(){
         m_options->doubleClickOnTableMode = static_cast<PenPaletteDoubleClickMode>(doubleClickMode);
         accept();
     }
-}
-
-/**
- * report invalid color (if value was entered manually directly in combobox)
- * @param name
- */
-void LC_PenPaletteOptionsDialog::showInvalidColorMessage(const QString &name){
-    QMessageBox::warning(this, QMessageBox::tr("Error"),
-                         QMessageBox::tr("Invalid value provided for %1 color.\n"
-                             "Please specify a different value.")
-                         .arg(QMessageBox::tr(name.toStdString().c_str())),
-                         QMessageBox::Ok);
 }

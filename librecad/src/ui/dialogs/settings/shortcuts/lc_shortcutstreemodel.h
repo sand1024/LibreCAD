@@ -26,6 +26,8 @@
 #include <QAbstractItemModel>
 #include <QRegularExpression>
 
+#include "lc_actionsshortcutsdialog.h"
+
 class LC_ShortcutInfo;
 class LC_ActionGroupManager;
 class LC_ShortcutTreeItem;
@@ -36,7 +38,7 @@ public:
     enum {
         ICON, NAME,/* DESCRIPTION, */SHORTCUT, LAST
     };
-    explicit LC_ShortcutsTreeModel(QObject *parent=nullptr);
+    LC_ShortcutsTreeModel(QObject *parent, QColor color, QColor conflictItemColor);
 
     ~LC_ShortcutsTreeModel() override;
 
@@ -78,6 +80,9 @@ protected:
     bool m_filterForConflicts = false;
 
     void setRootItem(LC_ShortcutTreeItem *rootItem);
+
+    QColor m_filteringColor;
+    QColor m_conflictColor;
 };
 
 #endif

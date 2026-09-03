@@ -26,9 +26,12 @@
 
 #include "lc_actiongroup.h"
 #include "lc_actiongroupmanager.h"
+#include "lc_palette_color_utils.h"
+#include "lc_settings_colors_semantics.h"
 #include "lc_shortcuttreeitem.h"
 
-LC_ShortcutsTreeModel::LC_ShortcutsTreeModel(QObject *parent):QAbstractItemModel(parent) {
+LC_ShortcutsTreeModel::LC_ShortcutsTreeModel(QObject* parent, QColor filteredItemColor, QColor conflictItemColor) :
+    QAbstractItemModel(parent), m_filteringColor(filteredItemColor), m_conflictColor(conflictItemColor) {
     m_filteringRegexp.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
 }
 
@@ -197,11 +200,11 @@ QVariant LC_ShortcutsTreeModel::data(const QModelIndex &index, const int role) c
             }
             case Qt::ForegroundRole:{
                 if (mappingItem -> isMatched()){ // highlighting of items that are matched by filter regexpt
-                    return QColorConstants::Blue/*options->matchedItemColor*/ ;
+                    return m_filteringColor;
                 }
 
                 if (mappingItem->hasCollision()){
-                    return QColorConstants::Red;
+                    return m_conflictColor;
                 }
                 break;
             }

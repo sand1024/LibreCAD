@@ -23,6 +23,8 @@
 
 #include "lc_actiongroupmanager.h"
 #include "lc_filenameselectionservice.h"
+#include "lc_palette_color_utils.h"
+#include "lc_settings_colors_semantics.h"
 #include "lc_shortcutsstorage.h"
 #include "lc_shortcutstreemodel.h"
 #include "lc_shortcuttreeitem.h"
@@ -105,7 +107,9 @@ void LC_ActionsShortcutsDialog::initTreeView() const {
 }
 
 void LC_ActionsShortcutsDialog::createMappingModel() {
-    m_mappingTreeModel = new LC_ShortcutsTreeModel(this);
+    QColor filteredItemColor = LC_PaletteColorUtils::getSemanticColor(LC_SemanticColors::FilteredItem, palette());
+    QColor conflictItemColor = LC_PaletteColorUtils::getSemanticColor(LC_SemanticColors::ConflictingItem, palette());
+    m_mappingTreeModel = new LC_ShortcutsTreeModel(this, filteredItemColor, conflictItemColor);
     m_mappingTreeModel->rebuildModel(m_actionGroupManager);
 }
 

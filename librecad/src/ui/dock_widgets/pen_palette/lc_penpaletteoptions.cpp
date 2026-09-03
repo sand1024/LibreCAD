@@ -36,7 +36,6 @@
  * Straightforwards storing options to settings
  */
 void LC_PenPaletteOptions::loadFromSettings() {
-    matchedItemColor = o_matchedItemBgColor;
     showGrid = o_showGrid;
 
     showToolTip = o_showToolTip;
@@ -67,7 +66,6 @@ void LC_PenPaletteOptions::loadFromSettings() {
  */
 void LC_PenPaletteOptions::saveToSettings() const {
     using namespace CFG_WidgetPenPallette;
-    o_matchedItemBgColor = matchedItemColor.name();
     o_showGrid = showGrid;
 
     o_showToolTip = showToolTip;

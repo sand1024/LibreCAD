@@ -26,10 +26,13 @@
 #include <QFile>
 #include <QStyledItemDelegate>
 
+#include "lc_palette_color_utils.h"
 #include "lc_peninforegistry.h"
 #include "lc_penitem.h"
 #include "lc_penpalettedata.h"
 #include "lc_penpaletteoptions.h"
+#include "lc_settings_colors_semantics.h"
+#include "qc_applicationwindow.h"
 
 static int COLOR_ICON_SIZE = 24;
 
@@ -213,7 +216,8 @@ QVariant LC_PenPaletteModel::data(const QModelIndex &index, const int role) cons
             if (item->isMatched()){
                 // highlighting of items that are matched by filter regexp
                 if (m_options->filterIsInHighlightMode){
-                    return m_options->matchedItemColor;
+                    QColor filteredItemColor = LC_PaletteColorUtils::getSemanticColor(LC_SemanticColors::FilteredItem, QC_ApplicationWindow::getAppWindow()->palette());
+                    return filteredItemColor;
                 }
             }
             break;

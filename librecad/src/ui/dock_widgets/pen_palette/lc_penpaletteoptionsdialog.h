@@ -39,10 +39,6 @@ public slots:
 protected slots:
     void languageChange();
 private:
-    void setComboBoxColor(const QComboBox *combo, const QColor &custom);
-    void initComboBox(QComboBox *cb, const QColor &color);
-    void selectMatchedItemColor();
-    void showInvalidColorMessage(const QString &name);
     LC_PenPaletteOptions* m_options = nullptr;
 };
 

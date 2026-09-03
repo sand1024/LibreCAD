@@ -34,9 +34,6 @@ enum PenPaletteDoubleClickMode{
 
 namespace CFG_WidgetPenPallette {
     inline const LC_SettingsGroupBase Group("Widget.PenPalette");
-
-    inline const LC_Setting<QColor> o_matchedItemBgColor(&Group, "matchedItemBgColor", QColor("blue"));
-
     inline const LC_Setting<bool> o_showGrid(&Group, "showGrid", true);
     inline const LC_Setting<bool> o_showToolTip(&Group, "showToolTip", true);
     inline const LC_Setting<bool> o_showColorNameCol(&Group, "showColorNameCol", false);

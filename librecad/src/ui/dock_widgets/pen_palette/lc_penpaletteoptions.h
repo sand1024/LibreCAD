@@ -32,10 +32,6 @@ using namespace CFG_WidgetPenPallette;
 class LC_PenPaletteOptions{
 public:
     /**
-     * color used to highlight items that matched to regexp
-     */
-    QColor matchedItemColor = QColor("blue");
-    /**
      * defines whether grid is shown
      */
     bool showGrid{true};
