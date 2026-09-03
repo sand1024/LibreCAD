@@ -27,6 +27,9 @@
 
 #include "lc_layertreeitem.h"
 #include "lc_layertreemodel_options.h"
+#include "lc_palette_color_utils.h"
+#include "lc_settings_colors_semantics.h"
+#include "qc_applicationwindow.h"
 #include "rs_layer.h"
 #include "rs_layerlist.h"
 
@@ -908,8 +911,10 @@ QVariant LC_LayerTreeModel::data ( const QModelIndex & index, const int role ) c
         }
         case Qt::ForegroundRole: {
             if (layerItem->isMatched()) {
-                // highlighting of items that are matched by filter regexpt
-                return m_options->matchedItemColor;
+                // highlighting of items that are matched by filter regexp
+                QColor filteredItemColor = LC_PaletteColorUtils::getSemanticColor(LC_SemanticColors::FilteredItem,
+                    QC_ApplicationWindow::getAppWindow()->palette());
+                return filteredItemColor;
             }
 
             // FIXME - layer color by settings

@@ -53,10 +53,6 @@ void LC_LayerTreeOptionsDialog::init() {
     leDuplicatedPrefix->setText(m_options->copiedNamePathPrefix);
     leDuplicatedSuffix->setText(m_options->copiedNamePathSuffix);
 
-
-    QColor matchHighlightColor = m_options->matchedItemColor;
-
-    initComboBox(cbHighlightedColor, matchHighlightColor);
     sbIndentSize->setValue(m_options->identSize);
 
     wPenNormal->setPen(m_options->defaultPenNormal, false, false, tr("Normal Layer"));
@@ -90,15 +86,6 @@ void LC_LayerTreeOptionsDialog::validate() {
 
     int indentSize = sbIndentSize->value();
 
-    QString higlightedColorName = cbHighlightedColor->currentText();
-
-    auto highlightedColor = QColor(higlightedColorName);
-    if (!highlightedColor.isValid()) {
-        showInvalidColorMessage(tr("highlighted item"));
-        cbHighlightedColor->setFocus();
-        doAccept = false;
-    }
-
     if (duplicatePrefix.trimmed().isEmpty() && duplicatedSuffix.trimmed().isEmpty()) {
         // TODO - think about this - whether it's allowed or not.
         //        QMessageBox::warning(this, QMessageBox::tr("Error"),
@@ -128,7 +115,6 @@ void LC_LayerTreeOptionsDialog::validate() {
     m_options->renameSecondaryLayersOnPrimaryRename = renameWitPrimary;
     m_options->hideLayerTypeIcons = !showTypeIcons;
     m_options->showGrid = cbShowGrid->isChecked();
-    m_options->matchedItemColor = highlightedColor;
     m_options->identSize = indentSize;
 
     m_options->copiedNamePathPrefix = duplicatePrefix;
@@ -169,40 +155,9 @@ void LC_LayerTreeOptionsDialog::onLayerTypesRowChanged(int currentRow) {
     }
 }
 
-void LC_LayerTreeOptionsDialog::showInvalidColorMessage(const QString& name) {
-    QMessageBox::warning(this, tr("Error"), tr("Invalid value provide for %1 color.\n" "Please specify a different value.").arg(name),
-                         QMessageBox::Ok);
-}
-
-void LC_LayerTreeOptionsDialog::pb_highlightedColorClicked() {
-    setComboBoxColor(cbHighlightedColor, m_options->matchedItemColor);
-}
 
 void LC_LayerTreeOptionsDialog::showIndentedClicked() const {
     sbIndentSize->setEnabled(cbShowIdented->isChecked());
 }
-
-void LC_LayerTreeOptionsDialog::initComboBox(QComboBox* cb, const QColor& color) {
-    const QString text = color.name();
-    int idx = cb->findText(text);
-    if (idx < 0) {
-        idx = 0;
-        cb->insertItem(idx, text);
-    }
-    cb->setCurrentIndex(idx);
-}
-
-void LC_LayerTreeOptionsDialog::setComboBoxColor(QComboBox* combo, QColor custom) {
-    QColor current = QColor::fromString(combo->lineEdit()->text());
-
-    QColorDialog dlg;
-    dlg.setCustomColor(0, custom.rgb());
-
-    QColor color = dlg.getColor(current, this, tr("Select Color"), QColorDialog::DontUseNativeDialog);
-    if (color.isValid()) {
-        combo->lineEdit()->setText(color.name());
-    }
-}
-
 LC_LayerTreeOptionsDialog::~LC_LayerTreeOptionsDialog() {
 }

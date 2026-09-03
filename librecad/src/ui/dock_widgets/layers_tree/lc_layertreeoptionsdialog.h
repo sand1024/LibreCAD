@@ -38,8 +38,6 @@ public:
     explicit LC_LayerTreeOptionsDialog(QWidget *parent, LC_LayerTreeModelOptions *options);
     ~LC_LayerTreeOptionsDialog() override;
 public slots:
-   void pb_highlightedColorClicked();
-
    void showIndentedClicked() const;
    void validate();
    void onLayerTypesRowChanged(int currentRow);
@@ -48,8 +46,5 @@ protected slots:
 private:
     LC_LayerTreeModelOptions* m_options;
     void init();
-    void initComboBox(QComboBox* cb, const QColor& color);
-    void setComboBoxColor(QComboBox* combo, QColor custom);
-    void showInvalidColorMessage(const QString& name);
 };
 #endif

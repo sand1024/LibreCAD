@@ -50,8 +50,6 @@ struct LC_LayerTreeModelOptions{
     bool hideLayerTypeIcons{false};
     bool dragDropEnabled {true};
     bool showGrid {true};
-    // colors
-    QColor matchedItemColor {QColor("blue")};
 
     RS_Pen defaultPenNormal = RS_Pen(Qt::black, RS2::Width00,RS2::SolidLine);
     RS_Pen defaultPenDimensional = RS_Pen(Qt::blue, RS2::Width02,RS2::SolidLine);
