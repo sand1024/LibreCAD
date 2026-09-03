@@ -31,13 +31,13 @@
 
 class LC_SettingsBannerWidget;
 
-class LC_IndexSettingsPage : public QObject, public LC_SettingsPageInterface {
+class LC_SettingsPageIndex : public QObject, public LC_SettingsPageInterface {
     Q_OBJECT
 public:
-    LC_IndexSettingsPage(const QString& displayName,
+    LC_SettingsPageIndex(const QString& displayName,
                             const QString& description,
                             QWidget* parentWidget = nullptr);
-    ~LC_IndexSettingsPage() override = default;
+    ~LC_SettingsPageIndex() override = default;
 
     QString id() const override { return m_id; }
     void setId(const QString& id) override { m_id = id; }
@@ -70,12 +70,15 @@ public:
                    std::function<void()> actionCallback = nullptr);
 
     bool isPageGated() const override;
+    bool disablesWidgetOnGating() const override { return false; }
     QString gatedMessage() const override;
     QString gatedActionText() const override { return m_gatedActionText; }
     std::function<void()> gatedActionCallback() const override { return m_gatedActionCallback; }
+    bool acceptsSharedPreview() override {return m_acceptsSharedPreview;}
+    void setAcceptsSharedPreview(bool value) {m_acceptsSharedPreview = value;}
 
   signals:
-        void navigateToPage(const QString& pageId);
+    void navigateToPage(const QString& pageId);
 
 private:
     QString m_id;
@@ -92,6 +95,8 @@ private:
     QVBoxLayout* m_mainLayout = nullptr;
     QLabel* m_descLabel = nullptr;
     LC_SettingsLinksWidget* m_linksWidget = nullptr;
+    bool m_acceptsSharedPreview = true;
+
 };
 
 #endif

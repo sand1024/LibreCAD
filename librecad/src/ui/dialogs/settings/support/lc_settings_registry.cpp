@@ -36,10 +36,11 @@ LC_SettingsRegistry* LC_SettingsRegistry::instance() {
     return &s_instance;
 }
 
-void LC_SettingsRegistry::configureDialog(const QString& dialogId, const QString& title, bool useGlobalTransaction) {
+void LC_SettingsRegistry::configureDialog(const QString& dialogId, const LC_SettingsRegistry::DialogProperties& props) {
     auto& reg = m_registrations[dialogId];
-    reg.properties.title = title;
-    reg.properties.useGlobalTransaction = useGlobalTransaction;
+    reg.properties.title = props.title;
+    reg.properties.useGlobalTransaction = props.useGlobalTransaction;
+    reg.properties.expandAllCategories = props.expandAllCategories;
 }
 
 void LC_SettingsRegistry::registerPage(const QString& dialogId, const QString& id, const QString& idPath, const PageCreator& creator) {
@@ -79,6 +80,7 @@ bool LC_SettingsRegistry::showDialog(const QString& dialogId,
 
     // Set the configured title
     dialog->setWindowTitle(reg.properties.title);
+    dialog->setExpandAllCategories(reg.properties.expandAllCategories);
 
     // Register preset managers
     for (auto it = reg.presetCreators.begin(); it != reg.presetCreators.end(); ++it) {

@@ -61,12 +61,18 @@ public:
     void finalizeInitialization();
     QList<QPair<QString, QString>> gatherChildLinks(const QString& parentPageId) const;
     LC_PresetManagerInterface* getPresetManager(const QString& groupPathId) const;
+    LC_PresetManagerInterface* getPresetManagerForPage(const QString& pageId) const;
     void forEachPresetManager(const std::function<void(LC_PresetManagerInterface*)>& callback) const;
+    void forEachPage(const std::function<void(LC_SettingsPageInterface*)>& callback) const;
     void accept() override;
     void reject() override;
+    LC_SettingsPageInterface* activePage() const { return m_activePage; }
+    void setExpandAllCategories(bool expandAll) { m_expandAllCategories = expandAll; }
+    bool expandAllCategories() const { return m_expandAllCategories; }
 signals:
    void restartRequired();
-
+   void categoryChanged(const QString& pageId);
+   void livePreviewRequested(const QString& pageId);
 protected:
     void closeEvent(QCloseEvent* event) override;
     void saveInnerDialogData(LC_SettingsGroupDialog& group, bool savePositions) const override;
@@ -99,7 +105,6 @@ private:
     void buildCategoryTree();
     void updateBreadcrumbs(const QModelIndex& index) const; // Updated to use ModelIndex [4.2]
     void highlightPageContent(LC_SettingsPageInterface* page, const QString& filterText) const;
-    LC_PresetManagerInterface* getPresetManagerForPage(const QString& pageId) const;
 
     void updateHistoryButtons() const;
     void navigateToHistoryIndex(int index);
@@ -119,6 +124,7 @@ private:
     std::vector<QString> m_history;
     int m_historyIndex = -1;
     bool m_isNavigatingHistory = false;
+    bool m_expandAllCategories = false;
 
     QSet<QString> m_initializedPages;
     LC_SettingsPageInterface* m_activePage = nullptr;

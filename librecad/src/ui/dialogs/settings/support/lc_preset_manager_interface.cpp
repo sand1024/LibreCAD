@@ -20,6 +20,8 @@
  ******************************************************************************/
 
 #include "lc_preset_manager_interface.h"
+
+#include <QFileInfo>
 #include <QMessageBox>
 #include <QStringList>
 #include <QWidget>
@@ -28,13 +30,17 @@
 
 QString LC_PresetManagerInterface::currentPresetDisplayName() const {
     const QString activeKey = getActivePresetKey();
+    if (isReadOnlyDefault()) {
+        return defaultPresetDisplayName();
+    }
+
     const auto presets = getAvailablePresets();
     for (const auto& p : presets) {
         if (p.second == activeKey) {
             return p.first;
         }
     }
-    return activeKey.isEmpty() ? QObject::tr("Default") : activeKey;
+    return QFileInfo(activeKey).completeBaseName();
 }
 
 bool LC_PresetManagerInterface::promptSavePresetAs(QWidget* parentWidget, QString* outNewKey) {

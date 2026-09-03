@@ -186,6 +186,12 @@ bool LC_SettingsPageBase::isSettingsDialogVisible() const {
     }
 }
 
+void LC_SettingsPageBase::setReadOnly(bool readOnly) {
+    if (m_widget != nullptr) {
+        m_widget->setEnabled(!readOnly);
+    }
+}
+
 void LC_SettingsPageBase::autoIndexLabels() {
     if (getEditingWidget() == nullptr) {
         return;

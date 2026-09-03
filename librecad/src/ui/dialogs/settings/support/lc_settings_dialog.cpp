@@ -28,7 +28,7 @@
 #include <QSplitter>
 #include <QToolButton>
 #include <QVBoxLayout>
-#include "lc_index_settings_page.h"
+#include "lc_settings_page_index.h"
 #include "lc_settings_page_base.h"
 #include "ui_lc_settings_dialog.h"
 
@@ -86,6 +86,9 @@ LC_SettingsDialog::LC_SettingsDialog(QWidget* parent, const QString& dialogId)
     connect(ui->btnBack, &QToolButton::clicked, this, &LC_SettingsDialog::onNavigateBack);
     connect(ui->btnForward, &QToolButton::clicked, this, &LC_SettingsDialog::onNavigateForward);
     connect(ui->presetBar, &LC_PresetManagementBar::presetSelected, this, &LC_SettingsDialog::onPresetSelected);
+    connect(ui->presetBar, &LC_PresetManagementBar::dirtyStateChanged, this, [this](bool) {
+        updateGatingState();
+    });
 }
 
 LC_SettingsDialog::~LC_SettingsDialog() = default;
@@ -149,16 +152,16 @@ void LC_SettingsDialog::registerPage(std::unique_ptr<LC_SettingsPageInterface> p
                 ui->presetBar->setDirty(isDirty);
             }
 
-            // Notify the main application viewport to repaint in-memory
-            // RS_Settings::instance()->emitOptionsChanged();
-
             if (m_activePage == page) {
                 doUpdatePageLivePreview(page);
             }
+
+            updateGatingState();
+            emit livePreviewRequested(page->id());
         });
     }
-    else if (const auto* indexPage = dynamic_cast<LC_IndexSettingsPage*>(page)) {
-        connect(indexPage, &LC_IndexSettingsPage::navigateToPage, this, &LC_SettingsDialog::selectPage);
+    else if (const auto* indexPage = dynamic_cast<LC_SettingsPageIndex*>(page)) {
+        connect(indexPage, &LC_SettingsPageIndex::navigateToPage, this, &LC_SettingsDialog::selectPage);
     }
 
     if (page->getEditingWidget()) {
@@ -456,9 +459,10 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
 
     LC_PresetManagerInterface* manager = getPresetManagerForPage(pageId);
 
-    // 1. Page Visibility Lifecycle & Update active page pointer FIRST
-    if (m_activePage != nullptr && m_activePage != page) {
-        m_activePage->onAboutToHide();
+    // 1. Capture previous page and trigger onAboutToHide()
+    LC_SettingsPageInterface* previousPage = m_activePage;
+    if (previousPage != nullptr && previousPage != page) {
+        previousPage->onAboutToHide();
     }
     m_activePage = page;
 
@@ -501,8 +505,11 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
     auto* bottomLayout = ui->wContainerBottom->layout();
     const QWidget* currentBottom = (bottomLayout->count() > 0) ? bottomLayout->itemAt(0)->widget() : nullptr;
     QWidget* targetBottom = page->getBottomWidget();
-    if (!targetBottom && manager != nullptr) {
+    if (targetBottom == nullptr && manager != nullptr) {
+        // Re-evaluates supportsPreviewWindow() and supportsAccessibilityCheck() for the active manager
         targetBottom = manager->getSharedBottomWidget();
+    } else if (targetBottom == nullptr && page->acceptsSharedPreview() && currentBottom != nullptr) {
+        targetBottom = const_cast<QWidget*>(currentBottom);
     }
 
     if (targetBottom != currentBottom) {
@@ -523,9 +530,15 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
         else {
             ui->wContainerBottom->setVisible(false);
         }
+    } else if (targetBottom != nullptr) {
+        // Force refresh visibility of sub-controls even if container pointer is reused
+        targetBottom->show();
+        ui->wContainerBottom->setVisible(true);
+    } else {
+        ui->wContainerBottom->setVisible(false);
     }
-    // 4. Embedded Preview Layout Handling
-    // Three-tiered fallback: query page first, then active preset manager
+
+    // 5. Embedded Preview Layout Handling & Symmetrical Category Cleanup
     auto* previewLayout = ui->wContainerPreview->layout();
     QWidget* currentPreview = (previewLayout->count() > 0) ? previewLayout->itemAt(0)->widget() : nullptr;
     QWidget* targetPreview = page->getPreviewWidget();
@@ -537,8 +550,9 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
 
     if (currentPreview != nullptr) {
         auto* livePreview = dynamic_cast<LC_LivePreview*>(currentPreview);
-        if (livePreview != nullptr) {
-                livePreview->cleanupPreviewForContentCategory(m_activePage->id());
+        if (livePreview != nullptr && previousPage != nullptr && previousPage != page) {
+            // Clean up using the PREVIOUS category ID being left
+            livePreview->cleanupPreviewForContentCategory(previousPage->id());
             }
         }
 
@@ -567,20 +581,15 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
     if (targetPreview != nullptr) {
         auto* livePreview = dynamic_cast<LC_LivePreview*>(targetPreview);
         if (livePreview != nullptr) {
+            // Update using the NEW category ID being activated
             livePreview->updatePreviewForContentCategory(pageId);
         }
     }
 
-
-    // 5. Centralized Gating Resolution Pass
+    // 6. Centralized Gating Resolution Pass
     updateGatingState();
 
-    // 6. Page Visibility Lifecycle & History Tracking
-    if (m_activePage != nullptr && m_activePage != page) {
-        m_activePage->onAboutToHide();
-    }
-    m_activePage = page;
-
+    // 7. History Tracking
     if (!m_isNavigatingHistory) {
         bool isDuplicate = false;
         if (m_historyIndex >= 0 && m_historyIndex < static_cast<int>(m_history.size())) {
@@ -588,7 +597,6 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
         }
 
         if (!isDuplicate) {
-            // Truncate any forward history if the user moved back and selected a new tab [2]
             if (m_historyIndex < static_cast<int>(m_history.size()) - 1) {
                 m_history.erase(m_history.begin() + m_historyIndex + 1, m_history.end());
             }
@@ -598,7 +606,7 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
         updateHistoryButtons();
     }
 
-    // 7. Stacked Widget Switch, Scroll Reset & Lazy Loading
+    // 8. Stacked Widget Switch, Scroll Reset & Lazy Loading
     if (page->getEditingWidget() != nullptr) {
         ui->swContent->setCurrentWidget(page->getEditingWidget());
 
@@ -625,10 +633,12 @@ void LC_SettingsDialog::onCategorySelected(const QModelIndex& index) {
         highlightPageContent(page, ui->leSearch->text());
     }
 
-    // 8. Search History Commit on Successful Navigation
+    // 9. Search History Commit on Successful Navigation
     if (!ui->leSearch->text().trimmed().isEmpty() && !ui->leSearch->isErrorState()) {
         ui->leSearch->addCurrentTextToHistory();
     }
+
+    emit categoryChanged(pageId);
 }
 
 void LC_SettingsDialog::updateGatingState() {
@@ -639,16 +649,32 @@ void LC_SettingsDialog::updateGatingState() {
     }
 
     LC_PresetManagerInterface* manager = getPresetManagerForPage(m_activePage->id());
-    const bool isGated = (manager != nullptr && manager->isGated()) || m_activePage->isPageGated();
-    const bool isManagerSystemGated = (manager != nullptr && manager->isGated() && !manager->isReadOnlyDefault());
 
-    if (isGated) {
-        const QString gatedMsg = (manager != nullptr && manager->isGated()) ? manager->gatedMessage() : m_activePage->gatedMessage();
-        const QString actionTxt = (manager != nullptr && manager->isGated()) ? manager->gatedActionText() : m_activePage->gatedActionText();
-        auto actionCb = (manager != nullptr && manager->isGated()) ? manager->gatedActionCallback() : m_activePage->gatedActionCallback();
+    // Hard Lockout States
+    const bool isManagerGated = (manager != nullptr && manager->isGated());
+    const bool isPageGated    = m_activePage->isPageGated();
+    const bool isReadOnly = (manager != nullptr && manager->isReadOnlyDefault());
+    const bool isSystemGated  = (isManagerGated && !isReadOnly) || isPageGated;
 
+    // Resolve Message & Action
+    QString gatedMsg;
+    QString actionTxt;
+    std::function<void()> actionCb;
+
+    if (manager != nullptr && !manager->gatedMessage().isEmpty()) {
+        gatedMsg  = manager->gatedMessage();
+        actionTxt = manager->gatedActionText();
+        actionCb  = manager->gatedActionCallback();
+    } else if (!m_activePage->gatedMessage().isEmpty()) {
+        gatedMsg  = m_activePage->gatedMessage();
+        actionTxt = m_activePage->gatedActionText();
+        actionCb  = m_activePage->gatedActionCallback();
+    }
+
+    // 1. Banner Display: Visible whenever any message is provided
+    if (!gatedMsg.isEmpty()) {
         auto wrappedActionCb = [this, actionCb, manager]() {
-            if (actionCb) {
+            if (actionCb != nullptr) {
                 actionCb();
             }
             else if (manager != nullptr && manager->isReadOnlyDefault()) {
@@ -667,23 +693,25 @@ void LC_SettingsDialog::updateGatingState() {
         ui->bannerWidget->clearAction();
     }
 
-    // Disable editing controls on leaf pages when gated.
-    // Index pages only contain navigation links and descriptions, so they remain enabled.
-    // NOTE: Links within normail (not index pages) will be disabled (yet that's rare case, so let it be so)
-    if (m_activePage->getEditingWidget() != nullptr) {
-        if (dynamic_cast<LC_IndexSettingsPage*>(m_activePage) != nullptr) {
-            m_activePage->getEditingWidget()->setEnabled(true);
+    // 2. Control Gating: Only lock editing controls on hard system gate or read-only template
+    auto* editingWidget = m_activePage->getEditingWidget();
+    if (editingWidget != nullptr) {
+        if (dynamic_cast<LC_SettingsPageIndex*>(m_activePage) != nullptr) {
+            editingWidget->setEnabled(true);
+        }
+        else if (isSystemGated) {
+            editingWidget->setEnabled(false);
         }
         else {
-        m_activePage->getEditingWidget()->setEnabled(!isGated);
-    }
+            editingWidget->setEnabled(true);
+            m_activePage->setReadOnly(isReadOnly);
+        }
     }
 
-    // Preset bar remains enabled if only Default is selected (so user can switch presets or duplicate).
-    // It is disabled completely only if system-level gating (e.g. Style != Fusion) is active.
-    ui->presetBar->setEnabled(!isManagerSystemGated);
-    ui->wContainerPresetHeader->setEnabled(!isGated);
-    ui->wContainerBottom->setEnabled(!isManagerSystemGated);
+    // 3. Preset Bar & Header Containers: Keep interactive in Classic Fusion
+    ui->presetBar->setEnabled(!isSystemGated);
+    ui->wContainerPresetHeader->setEnabled(!isSystemGated && !isReadOnly);
+    ui->wContainerBottom->setEnabled(!isSystemGated);
 }
 
 void LC_SettingsDialog::updateBreadcrumbs(const QModelIndex& index) const {
@@ -865,6 +893,11 @@ void LC_SettingsDialog::updateHistoryButtons() const {
 void LC_SettingsDialog::restoreTreeExpandedState() const {
     ui->tvCategoriesTree->collapseAll();
 
+    if (m_expandAllCategories) {
+        ui->tvCategoriesTree->expandAll();
+        return;
+    }
+
     // Iterate through Level 0 root items in the source model and expand them
     const int rootCount = m_treeModel->rowCount();
     for (int i = 0; i < rootCount; ++i) {
@@ -1000,6 +1033,14 @@ void LC_SettingsDialog::forEachPresetManager(const std::function<void(LC_PresetM
     for (const auto& [key, mgr] : m_presetManagers) {
         if (mgr != nullptr) {
             callback(mgr.get());
+        }
+    }
+}
+
+void LC_SettingsDialog::forEachPage(const std::function<void(LC_SettingsPageInterface*)>& callback) const {
+    for (const auto& page : m_pages) {
+        if (page != nullptr) {
+            callback(page.get());
         }
     }
 }

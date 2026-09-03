@@ -18,15 +18,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
-#include "lc_index_settings_page.h"
+#include "lc_settings_page_index.h"
 #include <QRegularExpression>
 
 #include "lc_highlight_overlay.h"
 #include "lc_settings_banner_widget.h"
 #include "lc_settings_list_widget.h"
 
-
-LC_IndexSettingsPage::LC_IndexSettingsPage(const QString& displayName,
+LC_SettingsPageIndex::LC_SettingsPageIndex(const QString& displayName,
                                            const QString& description,
                                            QWidget* parentWidget)
     : QObject(parentWidget)
@@ -44,7 +43,7 @@ LC_IndexSettingsPage::LC_IndexSettingsPage(const QString& displayName,
     m_mainLayout->addWidget(m_descLabel);
 }
 
-void LC_IndexSettingsPage::setChildPages(const QList<LC_SettingsPageInterface*>& children) {
+void LC_SettingsPageIndex::setChildPages(const QList<LC_SettingsPageInterface*>& children) {
     if (m_linksWidget != nullptr) {
         m_mainLayout->removeWidget(m_linksWidget);
         m_linksWidget->deleteLater();
@@ -66,10 +65,10 @@ void LC_IndexSettingsPage::setChildPages(const QList<LC_SettingsPageInterface*>&
     m_mainLayout->addStretch();
 
     connect(m_linksWidget, &LC_SettingsLinksWidget::pageSelected,
-            this, &LC_IndexSettingsPage::navigateToPage);
+            this, &LC_SettingsPageIndex::navigateToPage);
 }
 
-QList<LC_SearchTarget> LC_IndexSettingsPage::searchTargets() const {
+QList<LC_SearchTarget> LC_SettingsPageIndex::searchTargets() const {
     QList<LC_SearchTarget> targets;
     if (m_descLabel != nullptr) {
         targets.append({m_description, m_descLabel});
@@ -85,7 +84,7 @@ QList<LC_SearchTarget> LC_IndexSettingsPage::searchTargets() const {
 }
 
 
-void LC_IndexSettingsPage::highlightSearchPattern(const QString& pattern) {
+void LC_SettingsPageIndex::highlightSearchPattern(const QString& pattern) {
     clearSearchHighlight();
     if (pattern.isEmpty()) {
         return;
@@ -106,7 +105,7 @@ void LC_IndexSettingsPage::highlightSearchPattern(const QString& pattern) {
     }
 }
 
-void LC_IndexSettingsPage::clearSearchHighlight() {
+void LC_SettingsPageIndex::clearSearchHighlight() {
     if (m_descLabel != nullptr) {
         const auto childrenList = m_descLabel->children();
         for (QObject* child : childrenList) {
@@ -129,7 +128,7 @@ void LC_IndexSettingsPage::clearSearchHighlight() {
     }
 }
 
-void LC_IndexSettingsPage::setGating(std::function<bool()> isGatedFunc,
+void LC_SettingsPageIndex::setGating(std::function<bool()> isGatedFunc,
                                      std::function<QString()> messageFunc,
                                      const QString& actionText,
                                      std::function<void()> actionCallback) {
@@ -139,10 +138,10 @@ void LC_IndexSettingsPage::setGating(std::function<bool()> isGatedFunc,
     m_gatedActionCallback = std::move(actionCallback);
 }
 
-bool LC_IndexSettingsPage::isPageGated() const {
+bool LC_SettingsPageIndex::isPageGated() const {
     return m_isGatedFunc ? m_isGatedFunc() : false;
 }
 
-QString LC_IndexSettingsPage::gatedMessage() const {
+QString LC_SettingsPageIndex::gatedMessage() const {
     return m_gatedMessageFunc ? m_gatedMessageFunc() : QString();
 }

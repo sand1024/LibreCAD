@@ -21,6 +21,9 @@
 
 #include "lc_highlight_overlay.h"
 
+#include "lc_palette_color_utils.h"
+#include "lc_settings_colors_semantics.h"
+
 LC_HighlightOverlay::LC_HighlightOverlay(QWidget* parent)
     : QWidget(parent) {
     setAttribute(Qt::WA_TransparentForMouseEvents);
@@ -46,10 +49,16 @@ void LC_HighlightOverlay::paintEvent(QPaintEvent* event) {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
 
-    auto highlightColor = parentWidget()->palette().color(QPalette::Accent);
+    // auto highlightColor = parentWidget()->palette().color(QPalette::Accent);
     // Amber Focus boundary border matching the visual IDE schema
     // QPen pen(QColor(189, 99, 19, 180), 1.5); // fixme - sand - customize color?? or at least use constant
     constexpr int highlightWidth = 1.5;// fixme - sand - customize color?? or at least use constant
+    const QColor highlightColor = LC_PaletteColorUtils::getSemanticColor(
+        LC_SemanticColors::SearchResultItem,
+        (parentWidget() != nullptr) ? parentWidget()->palette() : QApplication::palette()
+    );
+
+
     const QPen pen(QColor(highlightColor), highlightWidth);
     painter.setPen(pen);
     painter.drawRoundedRect(rect().adjusted(1, 1, -1, -1), 4, 4);

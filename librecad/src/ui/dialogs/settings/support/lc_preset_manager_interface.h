@@ -50,6 +50,7 @@ struct LC_PresetManagerUIStrings {
     QString revertToolTip = QObject::tr("Discard active modifications and reload the preset as saved on disk.");
     QString saveAsDialogTitle = QObject::tr("Save Preset As");
     QString saveAsDialogLabel = QObject::tr("Select unique name of the preset");
+    QString defaultPresetName = QObject::tr("Default Preset");
     QString defaultNewPresetName = QObject::tr("Custom Preset");
     QString deleteConfirmTitle = QObject::tr("Confirm Delete");
     QString deleteConfirmLabel = QObject::tr("Are you sure that you'd like to delete preset '%1'?");
@@ -110,7 +111,13 @@ public:
 
     // Scope-level Gating Queries
     virtual bool isReadOnlyDefault() const {
-        return getActivePresetKey() == DEFAULT_THEME_KEY || getActivePresetKey().isEmpty();
+        const QString key = getActivePresetKey();
+        return key.isEmpty() || key == DEFAULT_THEME_KEY;
+    }
+
+    virtual QString defaultPresetDisplayName() const {
+        const QString name = presetStrings().defaultPresetName;
+        return name.isEmpty() ? QObject::tr("Default") : name;
     }
 
     virtual bool isGated() const { return isReadOnlyDefault(); }

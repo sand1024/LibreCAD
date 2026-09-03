@@ -63,7 +63,11 @@ public:
             return;
         }
         m_cleanValue = backend->value(m_key, QVariant::fromValue(m_defaultValue)).template value<ValueType>();
+
+        // Block widget signals during backend loading to prevent triggering live-change slots
+        const bool prevBlock = m_widget->blockSignals(true);
         m_setter(m_widget, m_cleanValue);
+        m_widget->blockSignals(prevBlock);
     }
 
     void save(LC_SettingsBackend* backend, bool& outRestartRequired, bool commitBaseline) override {
@@ -86,7 +90,9 @@ public:
         if (!m_widget) {
             return;
         }
+        const bool prevBlock = m_widget->blockSignals(true);
         m_setter(m_widget, m_defaultValue);
+        m_widget->blockSignals(prevBlock);
     }
 
     bool isModified() const override {

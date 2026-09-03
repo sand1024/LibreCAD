@@ -1,5 +1,5 @@
-
 /*******************************************************************************
+ *
  * This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
@@ -20,19 +20,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_HIGHLIGHT_OVERLAY_H
-#define LC_HIGHLIGHT_OVERLAY_H
+//
+// Created by sand1 on 29/08/2026.
+//
 
-#include <QWidget>
-#include <QPainter>
-#include <QEvent>
-
-class LC_HighlightOverlay : public QWidget {
-public:
-    explicit LC_HighlightOverlay(QWidget* parent);
-    ~LC_HighlightOverlay() override = default;
-    bool eventFilter(QObject* obj, QEvent* event) override;
-protected:
-    void paintEvent(QPaintEvent* event) override;
-};
-#endif
+#include "lc_settings_manager_base.h"

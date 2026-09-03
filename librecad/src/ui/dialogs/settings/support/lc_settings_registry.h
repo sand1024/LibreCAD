@@ -48,7 +48,13 @@ public:
         int weight = -1;
     };
 
-    void configureDialog(const QString& dialogId, const QString& title, bool useGlobalTransaction = true);
+    struct DialogProperties {
+        QString title = "Settings";
+        bool useGlobalTransaction = true;
+        bool expandAllCategories = false;
+    };
+
+    void configureDialog(const QString& dialogId, const DialogProperties& props);
     void registerPage(const QString& dialogId, const QString& id, const QString& parentId, const PageCreator& creator);
     void registerPages(const QString& dialogId, const std::initializer_list<PageRegistration>& pages);
     void registerPresetManager(const QString& dialogId, const QString& groupPathId, const PresetManagerCreator& creator);
@@ -61,10 +67,7 @@ private:
     LC_SettingsRegistry() = default;
     ~LC_SettingsRegistry() = default;
 
-    struct DialogProperties {
-        QString title = "Settings";
-        bool useGlobalTransaction = true;
-    };
+
 
     struct DialogRegistration {
         DialogProperties properties;

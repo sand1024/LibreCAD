@@ -177,6 +177,7 @@ void LC_PresetManagementBar::bindToManager(LC_PresetManagerInterface* manager) {
     setVisible(true);
 }
 
+
 void LC_PresetManagementBar::populatePresets(const QList<QPair<QString, QString>>& presets,
                                              const QString& activeKey,
                                              const QString& savedActiveKeyOnDisk) {
@@ -233,6 +234,7 @@ void LC_PresetManagementBar::setCurrentPresetKey(const QString& key) {
         ui->themeCombo->setCurrentIndex(idx);
         m_previousIndex = idx;
         m_blockSignals = false;
+        updateButtons();
     }
 }
 
@@ -311,5 +313,6 @@ void LC_PresetManagementBar::onComboIndexChanged(int index) {
 
 void LC_PresetManagementBar::setDirty(bool isDirty) {
     m_isDirty = isDirty;
-    updateButtons(); // Centralized state update loop
+    updateButtons(); 
+    emit dirtyStateChanged(isDirty);
 }

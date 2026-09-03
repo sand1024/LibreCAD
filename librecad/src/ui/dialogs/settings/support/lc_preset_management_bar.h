@@ -48,12 +48,10 @@ private slots:
 
 signals:
     void presetSelected(const QString& name);
-
+    void dirtyStateChanged(bool isDirty);
 private:
     QString currentPresetKey() const;
     QString currentPresetName() const;
-
-
     void populatePresets(const QList<QPair<QString, QString>>& presets,
                        const QString& activeKey,
                        const QString& savedActiveKeyOnDisk);

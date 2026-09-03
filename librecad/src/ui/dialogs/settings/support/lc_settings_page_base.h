@@ -229,6 +229,8 @@ protected:
 
     bool isSettingsDialogVisible() const;
 
+    void setReadOnly(bool readOnly) override;
+
     QWidget* m_widget = nullptr;
 private:
     QString m_id;

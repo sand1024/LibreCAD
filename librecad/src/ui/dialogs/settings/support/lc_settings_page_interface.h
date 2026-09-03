@@ -34,6 +34,7 @@ public:
     virtual void updateLivePreview() = 0;
     virtual void updatePreviewForContentCategory([[maybe_unused]] const QString& tag) {};
     virtual void cleanupPreviewForContentCategory([[maybe_unused]] const QString& tag) {};
+    virtual void activateMode(const QString& tag) { Q_UNUSED(tag); }
 };
 
 class LC_SettingsPageInterface {
@@ -82,8 +83,11 @@ public:
 
     virtual void setChildPages([[maybe_unused]]const QList<LC_SettingsPageInterface*>& children) {}
 
+    virtual void setReadOnly([[maybe_unused]] bool readOnly) {}
+
     virtual void bindToPresetManager([[maybe_unused]] LC_PresetManagerInterface* manager) {}
     virtual bool isPageGated() const { return false; }
+    virtual bool disablesWidgetOnGating() const { return true; }
     virtual QString gatedMessage() const { return QString(); }
     virtual QString gatedActionText() const { return QString(); }
     virtual std::function<void()> gatedActionCallback() const { return nullptr; }
