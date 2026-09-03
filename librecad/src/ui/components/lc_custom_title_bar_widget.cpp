@@ -40,6 +40,7 @@
 #include "lc_icon_label.h"
 #include "lc_proxy_style.h"
 #include "lc_settings_widget.h"
+#include "lc_skin_widgets_layout_resolver.h"
 #include "rs_settings.h"
 
 // Constructor with separate strings for horizontal and vertical orientation
@@ -339,210 +340,167 @@ void LC_CustomTitleBarWidget::updateIconForMode() {
 
 void LC_CustomTitleBarWidget::updateButtonAndLabelGeometries() {
     if (!m_dockWidget || m_blockRebuild) {
-        // If headless, proceed with geometry calculations using nullptr fallback
-        if (m_dockWidget) return;
+        if (m_dockWidget) {
+            return;
     }
+    }
+
+    const auto *proxyStyle = qobject_cast<const LC_ProxyStyle*>(style());
+    const bool isVertical = (m_currentOrientation == Qt::Vertical);
+    const QRect titleRect = rect();
 
     QStyleOptionDockWidget opt;
     opt.initFrom(this);
-    opt.rect = rect();
-    opt.verticalTitleBar = (m_currentOrientation == Qt::Vertical);
+    opt.rect = titleRect;
+    opt.verticalTitleBar = isVertical;
 
-    QDockWidget::DockWidgetFeatures features = m_dockWidget ? m_dockWidget->features() : QDockWidget::NoDockWidgetFeatures;
+    const QDockWidget::DockWidgetFeatures features = (m_dockWidget != nullptr)
+                                                    ? m_dockWidget->features()
+                                                    : (QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable);
 
-    const int btnSize = style()->pixelMetric(QStyle::PM_TitleBarButtonSize, &opt, this);
-    const QRect titleRect = rect();
+    const bool showClose = (m_dockWidget != nullptr) ? (features & QDockWidget::DockWidgetClosable) : true;
+    const bool showFloat = (m_dockWidget != nullptr) ? (features & QDockWidget::DockWidgetFloatable) : false;
 
-    // Check if our custom theme style is active
-    const auto *proxyStyle = qobject_cast<const LC_ProxyStyle*>(style());
-    const bool isCustomTheme = proxyStyle && proxyStyle->customDockTitleBarEnabled();
+    // 1. Declare and Resolve Titlebar Button and Action Geometries
+    LC_SkinWidgetsLayoutResolver::TitleBarButtonLayout buttonLayout;
+    int spacing = 2;
 
-    // Resolve if we should show the icon based on the active skin configuration
-    bool shouldShowIcon = true;
-    if (m_dockWidget && proxyStyle) {
-        const bool isSpecial = m_dockWidget->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool();
-        shouldShowIcon = isSpecial ? proxyStyle->showSpecialDockIcons() : proxyStyle->showGenericDockIcons();
-    }
-
-    // Resolve button visibilities dynamically: show close only if headless
-    const bool showClose = m_dockWidget ? (features & QDockWidget::DockWidgetClosable) : true;
-    const bool showFloat = m_dockWidget ? (features & QDockWidget::DockWidgetFloatable) : false;
-
-    QRect closeRect;
-    QRect floatRect;
-    QRect textRect;
-
-    int spacing = scaleToDpi(2);
-    int iconSizeVal = btnSize - scaleToDpi(4);
-
-    if (m_currentOrientation == Qt::Vertical) {
-        int left = 0;
-        int top = 0;
-
-        if (isCustomTheme) {
-            // Custom theme path: use original layout metrics
-            const int thickness = titleRect.width();
-            const int margin = style()->pixelMetric(QStyle::PM_DockWidgetTitleBarButtonMargin, &opt, this);
-            const int actualMargin = margin >= 0 ? margin : qMax(0, (thickness - btnSize) / 2);
-            left = titleRect.left() + qMax(0, (titleRect.width() - btnSize) / 2);
-            top = titleRect.top() + actualMargin;
-            spacing = proxyStyle->getGeometries(this).scaledMetrics.titleBarButtonSpacing;
-            iconSizeVal = btnSize - scaleToDpi(4);
+    if (proxyStyle != nullptr) {
+        const SkinScaledGeometries &geoms = proxyStyle->getGeometries(this);
+        buttonLayout = LC_SkinWidgetsLayoutResolver::resolveTitleBarButtonLayout(
+            titleRect, geoms, features, isVertical);
+        spacing = geoms.ints.scale2;
         } else {
-            // Native theme path: use dynamic vertical centering and crisp icon proportions
-            const int horizontalMargin = qMax(0, (titleRect.width() - btnSize) / 2);
-            left = titleRect.left() + horizontalMargin;
-            top = titleRect.top() + horizontalMargin;
-            spacing = scaleToDpi(4);
-            iconSizeVal = qMin(scaleToDpi(12), btnSize - scaleToDpi(6));
-        }
+        // Fallback for native/non-proxy styles
+        const int btnSize = style()->pixelMetric(QStyle::PM_TitleBarButtonSize, &opt, this);
+        const int thickness = isVertical ? titleRect.width() : titleRect.height();
+        const int margin = qMax(0, (thickness - btnSize) / 2);
+        spacing = 4;
 
+        if (isVertical) {
+            const int left = titleRect.left() + qMax(0, (titleRect.width() - btnSize) / 2);
+            int top = titleRect.top() + margin;
         if (showClose) {
-            closeRect = QRect(left, top, btnSize, btnSize);
+                buttonLayout.closeRect = QRect(left, top, btnSize, btnSize);
             top += (btnSize + spacing);
         }
         if (showFloat) {
-            floatRect = QRect(left, top, btnSize, btnSize);
+                buttonLayout.floatRect = QRect(left, top, btnSize, btnSize);
             top += (btnSize + spacing);
         }
+            const int topStart = top + 4;
+            buttonLayout.textRect = QRect(titleRect.left(), topStart, titleRect.width(), qMax(0, titleRect.bottom() - topStart));
+        } else {
+            const int top = titleRect.top() + margin;
+            int right = titleRect.right() - margin;
+            if (showClose) {
+                buttonLayout.closeRect = QRect(right - btnSize, top, btnSize, btnSize);
+                right -= (btnSize + spacing);
+            }
+            if (showFloat) {
+                buttonLayout.floatRect = QRect(right - btnSize, top, btnSize, btnSize);
+                right -= (btnSize + spacing);
+            }
+            const int left = titleRect.left() + 6;
+            buttonLayout.textRect = QRect(left, titleRect.top(), qMax(0, right - left), titleRect.height());
+        }
+    }
 
-        const int verticalGripOffset = scaleToDpi(6);
-        const int topStart = top + verticalGripOffset;
+    // 2. Resolve Icon Visibility Policy
+    bool shouldShowIcon = (m_displayMode != TextOnly);
+    if (m_dockWidget != nullptr && proxyStyle != nullptr) {
+        const bool isSpecial = m_dockWidget->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool();
+        shouldShowIcon = shouldShowIcon && (isSpecial ? proxyStyle->showSpecialDockIcons() : proxyStyle->showGenericDockIcons());
+    }
 
+    // 3. Ensure Icon Widget Exists if Needed
+    if (shouldShowIcon && m_iconLabel == nullptr && m_displayMode != TextOnly) {
+        const bool hasIcon = !m_iconName.isEmpty() || (m_dockWidget != nullptr && !m_dockWidget->windowIcon().isNull());
+        if (hasIcon) {
+            createIconLabel(m_iconName);
+        }
+    }
+
+    // 4. Calculate Category Icon (m_iconLabel) and Title (m_titleLabel) Geometries
+    QRect textRect = buttonLayout.textRect;
+    const QSize iconScaledSize = getScaledIconSize();
+
+    if (isVertical) {
         int iconHeight = 0;
-        int iconY = topStart;
+        int iconY = buttonLayout.textRect.top();
 
-        if (m_iconLabel) {
+        if (m_iconLabel != nullptr) {
             if (shouldShowIcon) {
-                const int iconWidth = getScaledIconSize().width();
-                iconHeight = getScaledIconSize().height();
+                const int iconWidth = iconScaledSize.width();
+                iconHeight = iconScaledSize.height();
                 const int iconX = titleRect.left() + qMax(0, (titleRect.width() - iconWidth) / 2);
 
                 if (m_textDirection == TitleTextDirection::Vertical) {
-                    iconY = titleRect.bottom() - iconHeight - scaleToDpi(4);
+                    iconY = titleRect.bottom() - iconHeight - 4;
                 } else {
-                    iconY = topStart;
+                    iconY = buttonLayout.textRect.top();
                 }
                 m_iconLabel->setGeometry(QRect(iconX, iconY, iconWidth, iconHeight));
                 m_iconLabel->show();
             } else {
                 m_iconLabel->hide();
             }
-        } else if (shouldShowIcon && m_dockWidget && m_displayMode != TextOnly) {
-            // If the icon label wasn't created yet but we now need to show it, create it
-            const bool hasIcon = !m_iconName.isEmpty() || !m_dockWidget->windowIcon().isNull();
-            if (hasIcon) {
-                createIconLabel(m_iconName);
-        if (m_iconLabel) {
-            const int iconWidth = getScaledIconSize().width();
-            iconHeight = getScaledIconSize().height();
-            const int iconX = titleRect.left() + qMax(0, (titleRect.width() - iconWidth) / 2);
-
-            if (m_textDirection == TitleTextDirection::Vertical) {
-                // Bottom-to-Top: Place the icon at the bottom edge
-                iconY = titleRect.bottom() - iconHeight - scaleToDpi(4);
-            } else {
-                // Top-to-Bottom: Place the icon at the top edge
-                iconY = topStart;
-            }
-            m_iconLabel->setGeometry(QRect(iconX, iconY, iconWidth, iconHeight));
-            m_iconLabel->show();
-        }
-            }
         }
 
         if (m_textDirection == TitleTextDirection::Vertical) {
-            textRect = QRect(titleRect.left(), topStart,
-                             titleRect.width(), qMax(0, iconY - topStart - spacing));
+            textRect = QRect(titleRect.left(), buttonLayout.textRect.top(),
+                             titleRect.width(), qMax(0, iconY - buttonLayout.textRect.top() - spacing));
         } else {
-            const int textTop = topStart + iconHeight + (iconHeight > 0 ? scaleToDpi(4) : 0);
+            const int textTop = buttonLayout.textRect.top() + iconHeight + (iconHeight > 0 ? 4 : 0);
             textRect = QRect(titleRect.left(), textTop,
                              titleRect.width(), qMax(0, titleRect.bottom() - textTop));
         }
     } else {
-        int top = 0;
-        int right = 0;
-
-        if (isCustomTheme) {
-            // Custom theme path: use original layout metrics
-            const int thickness = titleRect.height();
-            const int margin = style()->pixelMetric(QStyle::PM_DockWidgetTitleBarButtonMargin, &opt, this);
-            const int actualMargin = margin >= 0 ? margin : qMax(0, (thickness - btnSize) / 2);
-            top = titleRect.top() + actualMargin;
-            right = titleRect.right() - actualMargin;
-            spacing = proxyStyle->getGeometries(this).scaledMetrics.titleBarButtonSpacing;
-            iconSizeVal = btnSize - scaleToDpi(4);
-        } else {
-            // Native theme path: use dynamic vertical centering and crisp icon proportions
-            const int verticalMargin = qMax(0, (titleRect.height() - btnSize) / 2);
-            top = titleRect.top() + verticalMargin;
-            right = titleRect.right() - verticalMargin;
-            spacing = scaleToDpi(4);
-            iconSizeVal = qMin(scaleToDpi(12), btnSize - scaleToDpi(6));
-        }
-
-        if (showClose) {
-            closeRect = QRect(right - btnSize, top, btnSize, btnSize);
-            right -= (btnSize + spacing);
-        }
-        if (showFloat) {
-            floatRect = QRect(right - btnSize, top, btnSize, btnSize);
-            right -= (btnSize + spacing);
-        }
-
-        const int gripOffset = scaleToDpi(6);
         int iconWidth = 0;
 
-        if (m_iconLabel) {
+        if (m_iconLabel != nullptr) {
             if (shouldShowIcon) {
-            const int iconHeight = getScaledIconSize().height();
-            iconWidth = getScaledIconSize().width();
+                iconWidth = iconScaledSize.width();
+                const int iconHeight = iconScaledSize.height();
             const int iconY = titleRect.top() + qMax(0, (titleRect.height() - iconHeight) / 2);
-            m_iconLabel->setGeometry(QRect(titleRect.left() + gripOffset, iconY, iconWidth, iconHeight));
+                m_iconLabel->setGeometry(QRect(buttonLayout.textRect.left(), iconY, iconWidth, iconHeight));
                 m_iconLabel->show();
             } else {
                 m_iconLabel->hide();
             }
-        } else if (shouldShowIcon && m_dockWidget && m_displayMode != TextOnly) {
-            // If the icon label wasn't created yet but we now need to show it, create it
-            const bool hasIcon = !m_iconName.isEmpty() || !m_dockWidget->windowIcon().isNull();
-            if (hasIcon) {
-                createIconLabel(m_iconName);
-                if (m_iconLabel) {
-                    const int iconHeight = getScaledIconSize().height();
-                    iconWidth = getScaledIconSize().width();
-                    const int iconY = titleRect.top() + qMax(0, (titleRect.height() - iconHeight) / 2);
-                    m_iconLabel->setGeometry(QRect(titleRect.left() + gripOffset, iconY, iconWidth, iconHeight));
-                    m_iconLabel->show();
-                }
-            }
         }
 
-        const int textLeft = titleRect.left() + gripOffset + iconWidth + (iconWidth > 0 ? scaleToDpi(4) : 0);
+        const int textLeft = buttonLayout.textRect.left() + iconWidth + (iconWidth > 0 ? 4 : 0);
         textRect = QRect(textLeft, titleRect.top(),
-                         qMax(0, right - textLeft), titleRect.height());
+                         qMax(0, buttonLayout.textRect.right() - textLeft), titleRect.height());
     }
 
+    // 5. Apply Final Widget Geometries with Centered Boundaries
     m_blockRebuild = true;
-    if (m_closeButton) {
-        m_closeButton->setGeometry(closeRect);
-        m_closeButton->setFixedSize(btnSize, btnSize);
-        m_closeButton->setIconSize(QSize(iconSizeVal, iconSizeVal));
-        m_closeButton->setVisible(showClose); // Apply visibility
+    if (m_closeButton != nullptr) {
+        if (showClose && buttonLayout.closeRect.isValid()) {
+            m_closeButton->setGeometry(buttonLayout.closeRect);
+            m_closeButton->setFixedSize(buttonLayout.closeRect.size());
+            m_closeButton->show();
+        } else {
+            m_closeButton->hide();
+        }
     }
-    if (m_floatButton) {
-        m_floatButton->setGeometry(floatRect);
-        m_floatButton->setFixedSize(btnSize, btnSize);
-        m_floatButton->setIconSize(QSize(iconSizeVal, iconSizeVal));
-        m_floatButton->setVisible(showFloat); // Apply visibility
+    if (m_floatButton != nullptr) {
+        if (showFloat && buttonLayout.floatRect.isValid()) {
+            m_floatButton->setGeometry(buttonLayout.floatRect);
+            m_floatButton->setFixedSize(buttonLayout.floatRect.size());
+            m_floatButton->show();
+        } else {
+            m_floatButton->hide();
+        }
     }
-    if (m_titleLabel) {
+    if (m_titleLabel != nullptr) {
         m_titleLabel->setGeometry(textRect);
     }
     m_blockRebuild = false;
 
     updateButtonIcons();
-
     updateTitleForCurrentOrientation();
 }
 
@@ -926,17 +884,34 @@ void LC_CustomTitleBarWidget::setupConnections() {
 
         // Setup parent floating orientation feature toggle connection with settings check on docking
         m_dockWidgetConnections << connect(m_dockWidget, &QDockWidget::topLevelChanged, this, [this](bool floating) {
-            if (m_dockWidget) {
+            if (m_dockWidget != nullptr) {
+                const auto *proxyStyle = qobject_cast<const LC_ProxyStyle*>(style());
+                const bool useCustomFloating = (proxyStyle != nullptr && proxyStyle->useFloatingHUDDocksEnabled());
+
                 QDockWidget::DockWidgetFeatures features = static_cast<QDockWidget::DockWidgetFeatures>(
                     m_dockWidget->property("lcfs_originalFeatures").toInt());
 
                 if (floating) {
                     features &= ~QDockWidget::DockWidgetVerticalTitleBar;
+
+                    // Strip native OS window title bar and border if custom floating styling is active
+                    if (useCustomFloating) {
+                        const bool wasVisible = m_dockWidget->isVisible();
+                        m_dockWidget->setWindowFlags(Qt::Tool | Qt::FramelessWindowHint);
+                        if (wasVisible) {
+                            m_dockWidget->show();
+                        }
+                    }
                 } else {
                     if (checkOrientationFromSettings()) {
                         features |= QDockWidget::DockWidgetVerticalTitleBar;
                     } else {
                         features &= ~QDockWidget::DockWidgetVerticalTitleBar;
+                    }
+
+                    // Restore standard docked child widget flags
+                    if (useCustomFloating) {
+                        m_dockWidget->setWindowFlags(Qt::Widget);
                     }
                 }
 
@@ -945,6 +920,7 @@ void LC_CustomTitleBarWidget::setupConnections() {
                 m_dockWidget->blockSignals(false);
 
                 updateOrientation();
+                updateButtonAndLabelGeometries();
                 m_dockWidget->updateGeometry();
             }
         });
@@ -986,8 +962,24 @@ void LC_CustomTitleBarWidget::updateIconSize() {
 }
 
 QSize LC_CustomTitleBarWidget::getScaledIconSize() const {
-    int size = scaleToDpi(Constants::BASE_ICON_SIZE);
-    return QSize(size, size);
+    const auto *proxyStyle = qobject_cast<const LC_ProxyStyle*>(style());
+    if (proxyStyle != nullptr) {
+        const int size = proxyStyle->getGeometries(this).ints.scale16;
+        return QSize(size, size);
+    }
+    return QSize(Constants::BASE_ICON_SIZE, Constants::BASE_ICON_SIZE);
+}
+
+QSize LC_CustomTitleBarWidget::minimumSizeHint() const {
+    const auto *proxyStyle = qobject_cast<const LC_ProxyStyle*>(style());
+    const int height = (proxyStyle != nullptr)
+                           ? proxyStyle->pixelMetric(QStyle::PM_TitleBarHeight, nullptr, this)
+                           : 18;
+
+    if (m_currentOrientation == Qt::Vertical) {
+        return QSize(height, 50);
+    }
+    return QSize(50, height);
 }
 
 int LC_CustomTitleBarWidget::scaleToDpi(int value) const {

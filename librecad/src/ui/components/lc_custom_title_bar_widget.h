@@ -183,6 +183,7 @@ private:
     // Scaling
     void updateIconSize();
     QSize getScaledIconSize() const;
+    QSize minimumSizeHint() const;
     int scaleToDpi(int value) const;
     qreal getLogicalDpiX() const;
     void updateFontMetrics();
