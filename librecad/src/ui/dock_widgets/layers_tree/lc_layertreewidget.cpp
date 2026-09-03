@@ -154,7 +154,8 @@ QLayout *LC_LayerTreeWidget::initFilterAndSettingsSection(){
 
     // TODO - in general, it is possible to use persistent settings for the state, yet not sure it is reasonable
     m_matchModeCheckBox = new QCheckBox(this);
-    m_matchModeCheckBox->setText(tr("Highlight Mode"));
+    m_matchModeCheckBox->setText(tr("Highlight"));
+    m_matchModeCheckBox->setToolTip(tr("Highlight Mode\n\nIf selected, enables items highlight mode - in that mode,\nlayers that matches filter will be highlighted.\nOtherwise, not-matched layers will not be shown in the list."));
     m_matchModeCheckBox->setChecked(true);
     connect(m_matchModeCheckBox, &QCheckBox::clicked, this, &LC_LayerTreeWidget::slotFilteringMaskChanged);
 
