@@ -41,7 +41,7 @@ namespace LC_SettingsPagesStyling {
 
 class LC_SettingsManagerStyling : public LC_SettingsManagerBase {
 public:
-    static void initializeStylingSettings();
+    static void initialize();
     static bool showStylingSettings(QWidget* parent,const QString& initialPageId);
     static bool isFusionGated();
     static QString fusionGatedMessage(const QString& domainName = QString());

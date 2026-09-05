@@ -23,15 +23,15 @@ public:
     QString gatedActionText() const override;
     std::function<void()> gatedActionCallback() const override;
 
-    void onSubPageControlChanged() {
+    void onSubPageControlChanged() override {
         if (m_headerBar != nullptr) {
             m_headerBar->setDensityToCustom();
         }
         notifyWorkingConfigChanged();
     }
 
-    signals:
-        void configLoaded(const StyleMetricsConfig& config);
+ signals:
+   void configLoaded(const StyleMetricsConfig& config);
 
 public slots:
     void onDensityPresetSelected(const QString& presetName);
@@ -45,4 +45,4 @@ private:
     std::unique_ptr<LC_MetricsDensityHeaderBar> m_headerBar;
 };
 
-#endif // LC_PRESET_MANAGER_METRICS_H
+#endif

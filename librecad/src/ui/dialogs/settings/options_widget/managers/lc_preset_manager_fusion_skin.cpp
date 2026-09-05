@@ -76,15 +76,12 @@ QString LC_PresetManagerFusionSkin::getAppliedPresetKey() const {
 }
 
 void LC_PresetManagerFusionSkin::applyCurrentPreset() {
+    applyActiveConfigToSystem(m_activeKey);
     if (m_styleManager != nullptr) {
-        m_styleManager->setActiveSkin(m_activeKey);
         m_styleManager->applyActiveStyleAndTheme();
-        m_originalActiveKey = m_activeKey;
-        m_isDirty = false;
-        if (m_changedCallback != nullptr) {
-            m_changedCallback(false);
-        }
     }
+    m_originalActiveKey = m_activeKey;
+    setDirtyState(false);
 }
 
 QWidget* LC_PresetManagerFusionSkin::getSharedHeaderWidget() {

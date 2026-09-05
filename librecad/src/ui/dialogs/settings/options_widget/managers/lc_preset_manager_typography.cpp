@@ -87,15 +87,12 @@ QString LC_PresetManagerTypography::getAppliedPresetKey() const {
 }
 
 void LC_PresetManagerTypography::applyCurrentPreset() {
+    applyActiveConfigToSystem(m_activeKey);
     if (m_styleManager != nullptr) {
-        m_styleManager->setActiveTypography(m_activeKey);
         m_styleManager->applyActiveStyleAndTheme();
-        m_originalActiveKey = m_activeKey;
-        m_isDirty = false;
-        if (m_changedCallback != nullptr) {
-            m_changedCallback(false);
-        }
     }
+    m_originalActiveKey = m_activeKey;
+    setDirtyState(false);
 }
 
 void LC_PresetManagerTypography::updatePreview() {

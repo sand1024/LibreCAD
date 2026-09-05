@@ -16,9 +16,8 @@ public:
     QString getAppliedPresetKey() const override;
     void applyCurrentPreset() override;
 
-    signals:
-        void configLoaded(const FontConfig& config);
-
+signals:
+    void configLoaded(const FontConfig& config);
 protected:
     void updatePreview() override;
     void resetToDefaults(FontConfig& config) override;

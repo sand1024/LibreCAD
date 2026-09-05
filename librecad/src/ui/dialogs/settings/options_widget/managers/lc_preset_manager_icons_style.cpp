@@ -99,16 +99,19 @@ QString LC_PresetManagerIconsStyle::getAppliedPresetKey() const {
     return (m_styleManager != nullptr) ? m_styleManager->getActiveIconStyle() : m_originalActiveKey;
 }
 
-void LC_PresetManagerIconsStyle::applyCurrentPreset() {
+void LC_PresetManagerIconsStyle::applyActiveConfigToSystem(const QString& activeKey) {
     if (m_styleManager != nullptr) {
-        m_styleManager->setActiveIconStyle(m_activeKey);
-        m_styleManager->applyActiveIconStyle();
-        m_originalActiveKey = m_activeKey;
-        m_isDirty = false;
-        if (m_changedCallback != nullptr) {
-            m_changedCallback(false);
-        }
+        m_styleManager->setActiveIconStyle(activeKey);
     }
+}
+
+void LC_PresetManagerIconsStyle::applyCurrentPreset() {
+    applyActiveConfigToSystem(m_activeKey);
+    if (m_styleManager != nullptr) {
+        m_styleManager->applyActiveIconStyle();
+    }
+    m_originalActiveKey = m_activeKey;
+    setDirtyState(false);
 }
 
 void LC_PresetManagerIconsStyle::setPreviewController(LC_StylingPreviewController* controller) {
@@ -157,12 +160,6 @@ void LC_PresetManagerIconsStyle::resetToDefaults(IconStyleConfig& config) {
     config.name = defaultPresetDisplayName();
     m_iconColorsOptions.exportStyleConfig(config, true);
     m_iconColorsOptions.exportStyleConfig(config, false);
-}
-
-void LC_PresetManagerIconsStyle::applyActiveConfigToSystem(const QString& activeKey) {
-    if (m_styleManager != nullptr) {
-        m_styleManager->setActiveIconStyle(activeKey);
-    }
 }
 
 bool LC_PresetManagerIconsStyle::isGated() const {

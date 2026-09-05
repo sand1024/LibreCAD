@@ -1,22 +1,44 @@
-#ifndef LC_PRESET_MANAGER_BASE_H
-#define LC_PRESET_MANAGER_BASE_H
+/*******************************************************************************
+ *
+ * This file is part of the LibreCAD project, a 2D CAD program
+ *
+ * Copyright (C) 2026 LibreCAD.org
+ * Copyright (C) 2026 sand1024
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ ******************************************************************************/
 
 #include <QObject>
 #include "lc_preset_manager_interface.h"
 #include "lc_styling_preview_controller.h"
-#include "lc_style_repository_base.h"
 #include "lc_ui_style_manager.h"
 #include "qc_applicationwindow.h"
 
+#ifndef LC_PRESET_MANAGER_BASE_H
+#define LC_PRESET_MANAGER_BASE_H
+
+#include "lc_abstract_preset_manager.h"
+
+
 template <typename TConfig, typename TRepo>
-class LC_PresetManagerBase : public QObject, public LC_PresetManagerInterface, public LC_StylingPreviewAware {
+class LC_PresetManagerBase : public LC_AbstractPresetManager, public LC_StylingPreviewAware {
 public:
     explicit LC_PresetManagerBase(LC_UIStyleManager* styleManager, TRepo* repo, const QString& initialKey, QObject* parent = nullptr)
-        : QObject(parent)
+        : LC_AbstractPresetManager(initialKey, parent)
         , m_repository(repo)
-        , m_originalActiveKey(initialKey)
-        , m_activeKey(initialKey)
-        , m_styleManager (styleManager){
+        , m_styleManager(styleManager) {
         if (m_repository != nullptr) {
             m_repository->initializeIndex();
         }
@@ -28,12 +50,14 @@ public:
         m_activeKey = m_originalActiveKey;
     }
 
-    bool supportsPreviewWindow() const override { return true; }
-    bool supportsAccessibilityCheck() const override { return false; }
-
     ~LC_PresetManagerBase() override = default;
 
-    // 1. Common Preset Interface Implementations
+    // --- Preview Window & Accessibility Capabilities ---
+    bool supportsPreviewWindow() const override { return true; }
+    bool supportsAccessibilityCheck() const override { return false; }
+    bool supportsImportExport() const override { return false; }
+
+    // --- Common Preset Implementations ---
     QList<QPair<QString, QString>> getAvailablePresets() const override {
         QList<QPair<QString, QString>> choices;
         choices.append(qMakePair(defaultPresetDisplayName(), DEFAULT_THEME_KEY));
@@ -43,25 +67,18 @@ public:
         return choices;
     }
 
-    QString getActivePresetKey() const override {
-        return m_activeKey;
-    }
-
     bool isPresetModified() override {
         return m_isDirty;
     }
 
     bool saveCurrentPreset() override {
-        if (m_activeKey == DEFAULT_THEME_KEY || m_repository == nullptr) {
+        if (isReadOnlyDefault() || m_repository == nullptr) {
             return false;
         }
         QString outKey;
         if (m_repository->save(m_workingConfig.name, m_workingConfig, outKey)) {
             m_activeKey = outKey;
-            m_isDirty = false;
-            if (m_changedCallback != nullptr) {
-                m_changedCallback(false);
-            }
+            setDirtyState(false);
             return true;
         }
         return false;
@@ -74,10 +91,7 @@ public:
         m_workingConfig.name = name;
         if (m_repository->save(name, m_workingConfig, outKey)) {
             m_activeKey = outKey;
-            m_isDirty = false;
-            if (m_changedCallback != nullptr) {
-                m_changedCallback(false);
-            }
+            setDirtyState(false);
             return true;
         }
         return false;
@@ -93,27 +107,9 @@ public:
         return m_repository->removeByKey(key);
     }
 
-    void rollbackState() override {
-        loadPreset(m_originalActiveKey);
-    }
 
-    void setChangedCallback(std::function<void(bool)> callback) override {
-        m_changedCallback = std::move(callback);
-    }
 
-    bool onDialogAccept(QWidget* parentDialog) override {
-        if (!handlePromptSaveOnAccept(parentDialog)) {
-            return false;
-        }
-        applyActiveConfigToSystem(m_activeKey);
-        return true;
-    }
-
-    bool onDialogReject(QWidget* parentDialog) override {
-        return handlePromptDiscardOnReject(parentDialog);
-    }
-
-    // 2. Common Preview Controller Wiring
+    // --- Preview Controller Wiring ---
     void setPreviewController(LC_StylingPreviewController* controller) override {
         m_previewController = controller;
         updatePreview();
@@ -125,56 +121,27 @@ public:
                    : nullptr;
     }
 
-    // 3. Common Accessors & Dirty State Management
+    // --- Working Config & Change Notifications ---
     const TConfig& workingConfig() const { return m_workingConfig; }
     TConfig& workingConfig() { return m_workingConfig; }
 
-    void notifyWorkingConfigChanged() {
-        m_isDirty = true;
-        if (m_changedCallback != nullptr) {
-            m_changedCallback(true);
-        }
-        updatePreview();
+    virtual void onSubPageControlChanged() {
+        notifyWorkingConfigChanged();
     }
 
-    bool isGated() const override {
-        return isReadOnlyDefault();
+    void notifyWorkingConfigChanged() override {
+        LC_AbstractPresetManager::notifyWorkingConfigChanged();
+        updatePreview(); // Styling-specific preview update
     }
-
-    QString gatedMessage() const override {
-        if (isReadOnlyDefault()) {
-            return presetStrings().defaultReadOnlyMessage;
-        }
-        return QString();
-    }
-
-    QString gatedActionText() const override {
-        if (isReadOnlyDefault()) {
-            return presetStrings().duplicateActionText;
-        }
-        return QString();
-    }
-
-    std::function<void()> gatedActionCallback() const override {
-        return nullptr;
-    }
-
-    bool supportsApply() const override { return true; }
-    bool supportsImportExport() const override { return false; }
 
 protected:
     virtual void updatePreview() {}
     virtual void resetToDefaults(TConfig& config) = 0;
-    virtual void applyActiveConfigToSystem(const QString& activeKey) = 0;
 
     TConfig m_workingConfig;
     TRepo* m_repository = nullptr;
     LC_UIStyleManager* m_styleManager = nullptr;
     LC_StylingPreviewController* m_previewController = nullptr;
-    QString m_originalActiveKey;
-    QString m_activeKey;
-    bool m_isDirty = false;
-    std::function<void(bool)> m_changedCallback;
 };
 
 #endif

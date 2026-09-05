@@ -87,16 +87,22 @@ QString LC_PresetManagerPalette::getAppliedPresetKey() const {
     return (m_styleManager != nullptr) ? m_styleManager->getActivePalette() : m_originalActiveKey;
 }
 
-void LC_PresetManagerPalette::applyCurrentPreset() {
+void LC_PresetManagerPalette::applyActiveConfigToSystem(const QString& activeKey) {
     if (m_styleManager != nullptr) {
-        m_styleManager->setActivePalette(m_activeKey);
-        m_styleManager->applyActiveStyleAndTheme();
-        m_originalActiveKey = m_activeKey;
-        m_isDirty = false;
-        if (m_changedCallback != nullptr) {
-            m_changedCallback(false);
-        }
+        m_styleManager->setActivePalette(activeKey);
     }
+}
+
+void LC_PresetManagerPalette::applyCurrentPreset() {
+    // Reuses the core registration
+    applyActiveConfigToSystem(m_activeKey);
+
+    // Forces immediate live theme redraw on main window
+    if (m_styleManager != nullptr) {
+        m_styleManager->applyActiveStyleAndTheme();
+    }
+    m_originalActiveKey = m_activeKey;
+    setDirtyState(false);
 }
 
 void LC_PresetManagerPalette::setPreviewController(LC_StylingPreviewController* controller) {
@@ -128,12 +134,6 @@ void LC_PresetManagerPalette::updatePreview() {
 
 void LC_PresetManagerPalette::resetToDefaults(PaletteConfig& config) {
     LC_PaletteColorUtils::initializeDefaultPalette(config);
-}
-
-void LC_PresetManagerPalette::applyActiveConfigToSystem(const QString& activeKey) {
-    if (m_styleManager != nullptr) {
-        m_styleManager->setActivePalette(activeKey);
-    }
 }
 
 void LC_PresetManagerPalette::calculateProceduralBevels(bool isDarkMode, StyleArchetype archetype) {

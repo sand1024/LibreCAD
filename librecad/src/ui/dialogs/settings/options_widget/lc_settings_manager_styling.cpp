@@ -52,7 +52,7 @@
 #include "lc_ui_style_manager.h"
 #include "qc_applicationwindow.h"
 
-void LC_SettingsManagerStyling::initializeStylingSettings() {
+void LC_SettingsManagerStyling::initialize() {
      using namespace LC_SettingsPagesStyling;
 
     auto* reg = LC_SettingsRegistry::instance();
@@ -139,8 +139,8 @@ bool LC_SettingsManagerStyling::showStylingSettings(QWidget* parent, const QStri
                              auto* page = dialog->activePage();
                              previewController->onCategoryChanged(page);
                          });
-    };;
-;
+    };
+
 
     auto postExecHook = [&previewController](LC_SettingsDialog* dialog, bool /*accepted*/) {
         dialog->forEachPresetManager([](LC_PresetManagerInterface* manager) {

@@ -46,7 +46,7 @@ public:
     bool isCurrentVariantDark() const { return m_currentVariantDark; }
     void setCurrentVariantDark(bool dark);
 
-    void onSubPageControlChanged() {
+    void onSubPageControlChanged() override {
         notifyWorkingConfigChanged();
     }
 
