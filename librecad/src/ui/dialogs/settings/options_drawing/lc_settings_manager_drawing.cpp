@@ -26,14 +26,14 @@
 
 // Pages
 #include "lc_settings_page_drawing_paper.h"
-#include "pages/lc_settings_page_drawing_units.h"
-#include "pages/lc_settings_page_drawing_grid.h"
+#include "lc_settings_page_drawing_units.h"
+#include "lc_settings_page_drawing_grid.h"
 #include "lc_settings_page_drawing_dimensions.h"
-#include "pages/lc_settings_page_drawing_points.h"
-#include "pages/lc_settings_page_drawing_splines.h"
-#include "pages/lc_settings_page_drawing_meta.h"
-#include "pages/lc_settings_page_drawing_user_data.h"
-#include "pages/lc_settings_page_drawing_variables.h"
+#include "lc_settings_page_drawing_points.h"
+#include "lc_settings_page_drawing_splines.h"
+#include "lc_settings_page_drawing_meta.h"
+#include "lc_settings_page_drawing_user_data.h"
+#include "lc_settings_page_drawing_variables.h"
 
 namespace {
     // Static pointer used ONLY during the dialog instantiation phase
@@ -47,7 +47,7 @@ void LC_SettingsManagerDrawing::initialize() {
 
     const QString dlgId = "drawing_preferences"; // fixme - to namespace
 
-    reg->configureDialog(dlgId, QObject::tr("Drawing Preferences"), false);
+    reg->configureDialog(dlgId, {QObject::tr("Drawing Preferences"), false, false});
 
     auto addPage = [&](const QString& id, std::function<std::unique_ptr<LC_SettingsPageInterface>()> creator) {
         reg->registerPage(dlgId, id, "", creator);
