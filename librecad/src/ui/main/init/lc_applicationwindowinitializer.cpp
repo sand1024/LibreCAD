@@ -41,6 +41,7 @@
 #include "lc_settings_app_styling.h"
 #include "lc_settings_defaults.h"
 #include "lc_settings_manager_application.h"
+#include "lc_settings_manager_customization.h"
 #include "lc_settings_manager_drawing.h"
 #include "lc_settings_manager_styling.h"
 #include "lc_settings_paths.h"
@@ -278,7 +279,8 @@ void LC_ApplicationWindowInitializer::setupActionContextWidgets() const {
 }
 
 void LC_ApplicationWindowInitializer::initSettingsDialogs() {
-    LC_SettingsManagerApplication::initializeApplicationSettings();
+    LC_SettingsManagerApplication::initialize();
     LC_SettingsManagerDrawing::initialize();
-    LC_SettingsManagerStyling::initializeStylingSettings();
+    LC_SettingsManagerStyling::initialize();
+    LC_SettingsManagerCustomization::initialize(m_appWin->m_actionGroupManager.get());
 }
