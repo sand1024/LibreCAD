@@ -419,5 +419,8 @@
         <file alias="setting_search.lci">setting_search.svg</file>
         <file alias="lineedit_clear.lci">lineedit_clear.svg</file>
         <file alias="lineedit_clear_hover.lci">lineedit_clear_hover.svg</file>
+        <file alias="expand_all.lci">expand_all.svg</file>
+        <file alias="collapse_all.lci">collapse_all.svg</file>
+        <file alias="collapse_secondary.lci">collapse_secondary.svg</file>
     </qresource>
 </RCC>
