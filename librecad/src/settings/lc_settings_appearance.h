@@ -127,6 +127,8 @@ namespace CFG_Appearance {
     inline const LC_Setting<int> o_UCSApplyPolicy(&Group, "UCSApplyPolicy", 0);
     inline const LC_Setting<int> o_UCSHighlightBlinkCount(&Group, "UCSHighlightBlinkCount", 10);
     inline const LC_Setting<int> o_UCSHighlightBlinkDelay(&Group, "UCSHighlightBlinkDelay", 250);
+
+    inline const LC_Setting<QString> o_ActiveShortcutsScheme(&Group, "ActiveShortcutsScheme", "");
 }
 
 #endif

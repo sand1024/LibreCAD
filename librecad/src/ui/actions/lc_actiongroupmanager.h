@@ -41,7 +41,6 @@ public:
     explicit LC_ActionGroupManager(QC_ApplicationWindow *parent);
     ~LC_ActionGroupManager() override;
 
-
     QList<LC_ActionGroup*> toolGroups() const;
     QMap<QString, LC_ActionGroup*> allGroups();
     QList<LC_ActionGroup *> allGroupsList();
@@ -63,6 +62,7 @@ public:
     void persist();
     LC_ActionGroup* getGroupByName(const QString &name) const;
     void addActionGroup(const QString &name, LC_ActionGroup *actionGroup, bool isToolsGroup);
+    LC_ShortcutsManager* getShortcutsManager() const {return m_shortcutsManager.get();}
 public slots:
     void toggleExclusiveSnapMode(bool state); // fixme - sand - refactor later!!! Should be out of generic AGM?
     void toggleTools(bool state) const;

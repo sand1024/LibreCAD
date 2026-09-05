@@ -29,6 +29,7 @@
 #include "lc_settings_appearance.h"
 #include "lc_settings_paths.h"
 #include "lc_shortcutsstorage.h"
+#include "lc_shortcuts_repository.h"
 #include "rs_debug.h"
 #include "rs_settings.h"
 #include "rs_system.h"
@@ -58,6 +59,29 @@ int LC_ShortcutsManager::loadShortcuts(QMap<QString, QAction *> &actionsMap) con
     return loadResult;
 }
 
+int LC_ShortcutsManager::loadActiveScheme(QMap<QString, QAction*>& actionsMap) {
+    init();
+
+    const QString activeScheme = CFG_Appearance::o_ActiveShortcutsScheme.get();
+    if (activeScheme.isEmpty() || activeScheme == DEFAULT_THEME_KEY) {
+        // Fallback to native hardcoded QAction defaults
+        updateActionTooltips(actionsMap);
+        return LC_ShortcutsStorage::OK;
+    }
+
+    if (m_repository != nullptr) {
+        ShortcutsConfig config;
+        if (m_repository->loadByKey(activeScheme, config)) {
+            applyKeySequencesMapToActionsMap(config.shortcuts, actionsMap);
+            updateActionTooltips(actionsMap);
+            return LC_ShortcutsStorage::OK;
+        }
+    }
+
+    updateActionTooltips(actionsMap);
+    return LC_ShortcutsStorage::OK;
+}
+
 int LC_ShortcutsManager::saveShortcuts(const QString &fileName, const QList<LC_ShortcutInfo *> &shortcutsList) const {
     const int result = LC_ShortcutsStorage::saveShortcuts(fileName, shortcutsList);
     return result;
@@ -73,15 +97,14 @@ void LC_ShortcutsManager::updateActionTooltips(const QMap<QString, QAction *> &a
 }
 
 void LC_ShortcutsManager::init() const {
-    const QString defaultFileName = getDefaultShortcutsFileName();
-    if (!defaultFileName.isEmpty()) {
-        const QFile defaultFile(defaultFileName);
-        if (defaultFile.exists()) {
-            const QString backupFileName = defaultFileName + ".bak";
-            QFile::copy(defaultFileName, backupFileName);
-        }
+    const QString baseFolder = getShortcutsMappingsFolder();
+    auto* self = const_cast<LC_ShortcutsManager*>(this);
+    if (self->m_repository == nullptr) {
+        self->m_repository = std::make_unique<LC_ShortcutsRepository>(baseFolder + "/shortcuts");
     }
+    self->m_repository->migrateLegacyShortcutsIfNeeded(baseFolder);
 }
+
 
 void LC_ShortcutsManager::applyShortcutsMapToActionsMap(QMap<QString, LC_ShortcutInfo*> &shortcuts, QMap<QString, QAction *> &actionsMap) const{
     for (auto [key, shortcut] : shortcuts.asKeyValueRange()){
@@ -90,6 +113,10 @@ void LC_ShortcutsManager::applyShortcutsMapToActionsMap(QMap<QString, LC_Shortcu
             action->setShortcut(shortcut->getKey());
         }
     }
+}
+
+LC_ShortcutsRepository* LC_ShortcutsManager::getRepository() const {
+    return m_repository.get();
 }
 
 void LC_ShortcutsManager::applyKeySequencesMapToActionsMap(QMap<QString, QKeySequence> &shortcuts, QMap<QString, QAction *> &actionsMap) const{

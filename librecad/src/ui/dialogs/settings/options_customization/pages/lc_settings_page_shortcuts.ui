@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_SettingsPageShortcuts</class>
+ <widget class="QWidget" name="LC_SettingsPageShortcuts">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>750</width>
+    <height>540</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_root">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QSplitter" name="splShortcuts">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="childrenCollapsible">
+      <bool>false</bool>
+     </property>
+     <widget class="QWidget" name="paneTree" native="true">
+      <layout class="QVBoxLayout" name="verticalLayout_treePane">
+       <property name="spacing">
+        <number>6</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>4</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" name="topToolBarLayout">
+         <property name="spacing">
+          <number>4</number>
+         </property>
+         <item>
+          <widget class="QToolButton" name="tbExpandAll">
+           <property name="toolTip">
+            <string>Expand all action groups</string>
+           </property>
+           <property name="text">
+            <string>Expand All</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../../../../../../res/icons/icons.qrc">
+             <normaloff>:/icons/expand_all.lci</normaloff>:/icons/expand_all.lci</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="tbCollapseAll">
+           <property name="toolTip">
+            <string>Collapse all action groups</string>
+           </property>
+           <property name="text">
+            <string>Collapse All</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../../../../../../res/icons/icons.qrc">
+             <normaloff>:/icons/collapse_all.lci</normaloff>:/icons/collapse_all.lci</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="Line" name="toolbarSep">
+           <property name="orientation">
+            <enum>Qt::Orientation::Vertical</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="LC_SearchLineEdit" name="leFilter">
+           <property name="toolTip">
+            <string>Filter actions by name</string>
+           </property>
+           <property name="placeholderText">
+            <string>Filter actions by name...</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="cbMatchHighlight">
+           <property name="toolTip">
+            <string>If checked, matching actions will be highlighted only; otherwise non-matching actions are hidden</string>
+           </property>
+           <property name="text">
+            <string>Highlight</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="tbFindByShortcut">
+           <property name="toolTip">
+            <string>Find action by shortcut keys</string>
+           </property>
+           <property name="text">
+            <string>Find by Shortcut</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../../../../../../res/icons/icons.qrc">
+             <normaloff>:/icons/shortcuts_settings.lci</normaloff>:/icons/shortcuts_settings.lci</iconset>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="LC_ShortcutsTreeView" name="tvMappingsTree">
+         <property name="toolTip">
+          <string>Select an action to inspect or edit its shortcut</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QStackedWidget" name="swDetails">
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="pageEmpty">
+       <layout class="QVBoxLayout" name="verticalLayout_empty">
+        <item>
+         <spacer name="verticalSpacer_emptyTop">
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblEmptyTitle">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>No Action Selected</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblEmptyDesc">
+          <property name="text">
+           <string>Select an individual action from the tree on the left to view or customize its keyboard shortcut.</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignCenter</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_emptyBottom">
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageDetails">
+       <layout class="QVBoxLayout" name="verticalLayout_details">
+        <property name="spacing">
+         <number>10</number>
+        </property>
+        <property name="leftMargin">
+         <number>4</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QGroupBox" name="gbActionHeader">
+          <property name="title">
+           <string>Action Details</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_header">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_title">
+             <item>
+              <widget class="QLabel" name="lblActionIcon">
+               <property name="toolTip">
+                <string>Action icon</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="lblActionName">
+               <property name="font">
+                <font>
+                 <pointsize>8</pointsize>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="toolTip">
+                <string>Name of selected action</string>
+               </property>
+               <property name="text">
+                <string>Action Name</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_title">
+               <property name="orientation">
+                <enum>Qt::Orientation::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QLabel" name="lblGroupName">
+             <property name="font">
+              <font>
+               <italic>true</italic>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>Category of selected action</string>
+             </property>
+             <property name="text">
+              <string>Draw</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="gbShortcutEditor">
+          <property name="title">
+           <string>Keyboard Shortcut</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_shortcut">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_sequence">
+             <item>
+              <widget class="QLineEdit" name="leKeySequence">
+               <property name="toolTip">
+                <string>Current assigned keyboard shortcut</string>
+               </property>
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="LC_ShortcutButton" name="btnRecord">
+               <property name="toolTip">
+                <string>Click to record a new key combination</string>
+               </property>
+               <property name="text">
+                <string>Record Shortcut</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_actions">
+             <item>
+              <widget class="QPushButton" name="btnReset">
+               <property name="toolTip">
+                <string>Reset shortcut for this action to its default key sequence</string>
+               </property>
+               <property name="text">
+                <string>Reset Default</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pbClear">
+               <property name="toolTip">
+                <string>Remove keyboard shortcut from this action</string>
+               </property>
+               <property name="text">
+                <string>Clear</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_actions">
+               <property name="orientation">
+                <enum>Qt::Orientation::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="frameConflict">
+          <property name="toolTip">
+           <string>Conflict information</string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Shape::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Shadow::Sunken</enum>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_conflict">
+           <property name="leftMargin">
+            <number>8</number>
+           </property>
+           <property name="topMargin">
+            <number>8</number>
+           </property>
+           <property name="rightMargin">
+            <number>8</number>
+           </property>
+           <property name="bottomMargin">
+            <number>8</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="lblConflict">
+             <property name="toolTip">
+              <string>Conflict warning message</string>
+             </property>
+             <property name="text">
+              <string>Conflict Warning</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="gbDescription">
+          <property name="title">
+           <string>Description</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_desc">
+           <item>
+            <widget class="QLabel" name="lblDescription">
+             <property name="toolTip">
+              <string>Detailed description of the selected action</string>
+             </property>
+             <property name="text">
+              <string>Description of action</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_details">
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LC_SearchLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>lc_search_line_edit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LC_ShortcutsTreeView</class>
+   <extends>QTreeView</extends>
+   <header>lc_shortcutstreeview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LC_ShortcutButton</class>
+   <extends>QPushButton</extends>
+   <header>lc_shortcutbutton.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../../../../../../res/icons/icons.qrc"/>
+ </resources>
+ <connections/>
+</ui>

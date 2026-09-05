@@ -131,7 +131,7 @@ void LC_ActionGroupManager::assignShortcutsToActions(const QMap<QString, QAction
 
 int LC_ActionGroupManager::loadShortcuts([[maybe_unused]] const QMap<QString, QAction *> &map) {
     m_shortcutsManager->init();
-    const int loadResult = m_shortcutsManager->loadShortcuts(m_actionsMap);
+    const int loadResult = m_shortcutsManager->loadActiveScheme(m_actionsMap);
     return loadResult;
 }
 

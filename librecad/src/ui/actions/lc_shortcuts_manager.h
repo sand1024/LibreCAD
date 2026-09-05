@@ -24,6 +24,7 @@
 #define LC_SHORTCUTS_MANAGER_H
 
 #include "lc_shortcutinfo.h"
+#include "lc_shortcuts_repository.h"
 
 class LC_ShortcutsManager {
 public:
@@ -37,13 +38,17 @@ public:
     QString getShortcutsMappingsFolder() const;
     void updateActionTooltips(const QMap<QString, QAction *> &actionsMap) const;
     void init() const;
-
     static QString getPlainActionToolTip(const QAction* action);
+    void applyShortcutsMapToActionsMap(QMap<QString, LC_ShortcutInfo *> &shortcuts, QMap<QString, QAction *> &actionsMap) const;  // fixme - temporary, review
+
+    int loadActiveScheme(QMap<QString, QAction*>& actionsMap);
+    LC_ShortcutsRepository* getRepository() const;
 protected:
 
     static constexpr auto PROPERTY_SHORTCUT_BACKUP = "tooltip.original";
 
-    void applyShortcutsMapToActionsMap(QMap<QString, LC_ShortcutInfo *> &shortcuts, QMap<QString, QAction *> &actionsMap) const;
+    std::unique_ptr<LC_ShortcutsRepository> m_repository;
+
     void updateActionShortcutTooltips(const QMap<QString, QAction *> &map, bool enable) const;
     QString strippedActionText(QString s) const;
     QString getDefaultShortcutsFileName() const;

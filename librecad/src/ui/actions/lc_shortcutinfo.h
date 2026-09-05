@@ -47,6 +47,8 @@ public:
     void setKey(const QKeySequence& newKey);
     bool isModified() const {return m_modified;}
     void clear();
+    void commitBaseline();
+    QKeySequence getPresetKey() const { return m_presetKey; }
     bool hasCollision() const {return m_collision;}
     void setCollision(const bool val){m_collision = val;}
     static int translateModifiers(Qt::KeyboardModifiers state,const QString &text);
@@ -54,6 +56,7 @@ public:
 protected:
     QString m_name;
     QKeySequence m_defaultKey;
+    QKeySequence m_presetKey;
     QKeySequence m_key;
     bool m_modified = false;
     bool m_collision = false;

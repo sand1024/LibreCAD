@@ -33,20 +33,24 @@ QString LC_ShortcutInfo::getKeyAsString() const {
 
 QList<QKeySequence> LC_ShortcutInfo::getKeysList() const { return QList<QKeySequence>(); }
 
-void LC_ShortcutInfo::resetToDefault() {
-    m_key = m_defaultKey;
-    m_modified = false;
-}
-
-void LC_ShortcutInfo::setKey(const QKeySequence& newKey) {
-    m_key = newKey;
-    m_modified = m_key != m_defaultKey;
-}
-
 void LC_ShortcutInfo::clear() {
     setKey(QKeySequence());
 }
 
+void LC_ShortcutInfo::commitBaseline() {
+    m_presetKey = m_key;
+    m_modified = false;
+}
+
+void LC_ShortcutInfo::resetToDefault() {
+    m_key = m_defaultKey;
+    m_modified = (m_key != m_presetKey);
+}
+
+void LC_ShortcutInfo::setKey(const QKeySequence& newKey) {
+    m_key = newKey;
+    m_modified = (m_key != m_presetKey);
+}
 int LC_ShortcutInfo::translateModifiers(const Qt::KeyboardModifiers state,
                                         const QString& text) {
     int result = 0;
