@@ -108,8 +108,12 @@ void LC_WidgetFactory::createCADMegaSidebar(const int columns, const int iconSiz
     auto* result = new LC_CADToolMatrixDockWidget(m_appWin, true);
     result->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
     result->setObjectName("dock_cad_mega");
-    result->setWindowTitle(tr("Tools Matrix"));
+    result->setWindowTitle(tr("Tools"));
     result->setProperty(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET, true);
+
+    auto *titleBar = new LC_CustomTitleBarWidget(tr("Tools"), tr("CAD Tools Matrix"), ":/icons/line_polygon_star.lci", result);
+    result->setTitleBarWidget(titleBar);
+
     auto actions = QList<QAction*>();
     QAction separatorAct = QAction(this);
     QAction* separator = &separatorAct;
@@ -147,7 +151,9 @@ void LC_WidgetFactory::createCADMegaSidebar(const int columns, const int iconSiz
     result->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
     auto toggleViewAction = result->toggleViewAction();
-    toggleViewAction->setIcon(QIcon(":/icons/line_polygon_star.lci"));
+    QIcon icon(":/icons/line_polygon_star.lci");
+    toggleViewAction->setIcon(icon);
+    result->setWindowIcon(icon);
     connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, result, &LC_CADDockWidget::updateWidgetSettings);
     m_appWin->addDockWidget(Qt::LeftDockWidgetArea, result);
 }
@@ -497,8 +503,11 @@ LC_CADDockWidget* LC_WidgetFactory::cadDockWidget(const QString& title,  const Q
     result->hide();
 
     result->setProperty(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET, true);
-
-    setWidgetToggleActionIcon(result, iconName);
+    if (!iconName.isEmpty()) {
+        QIcon icon = QIcon(iconName);
+        setWidgetToggleActionIcon(result, icon);
+        result->setWindowIcon(icon);
+    }
     auto *titleBar = new LC_CustomTitleBarWidget(title, title, iconName, result);
     result->setTitleBarWidget(titleBar);
     connect(m_appWin, &QC_ApplicationWindow::widgetSettingsChanged, result, &LC_CADDockWidget::updateWidgetSettings);

@@ -50,6 +50,8 @@ public:
     static void updateDockOptions(QC_ApplicationWindow* mainWin, bool allowDockNesting, bool verticalTabs);
     template <class T>
     static void setWidgetToggleActionIcon(T* result, const QString& iconName);
+    template <class T>
+    static void setWidgetToggleActionIcon(T* result, const QIcon& iconName);
 private:
     LC_ActionGroupManager *m_agm {nullptr};
     LC_ActionFactory *m_actionFactory {nullptr};
@@ -87,5 +89,11 @@ void LC_WidgetFactory::setWidgetToggleActionIcon(T* result, const QString& iconN
         auto toggleAction = result->toggleViewAction();
         toggleAction->setIcon(QIcon(iconName));
     }
+}
+
+template <class T>
+void LC_WidgetFactory::setWidgetToggleActionIcon(T* result, const QIcon& icon) {
+        auto toggleAction = result->toggleViewAction();
+        toggleAction->setIcon(icon);
 }
 #endif
