@@ -22,7 +22,7 @@
 #include "lc_settings_manager_application.h"
 
 #include "lc_graphic_view_preview_widget.h"
-#include "lc_index_settings_page.h"
+#include "lc_settings_page_index.h"
 #include "lc_settings_page_autosave.h"
 #include "lc_settings_page_cad_preferences.h"
 #include "lc_settings_page_command_line.h"
@@ -58,6 +58,7 @@
 #include "lc_settings_page_snap_visual_behavior.h"
 #include "lc_settings_page_snap_visual_timing.h"
 #include "lc_settings_page_updates.h"
+#include "lc_preset_manager_viewport.h"
 #include "lc_viewport_theme_repository.h"
 #include "lc_visual_snap_data.h"
 
@@ -68,93 +69,83 @@ QWidget* LC_SettingsManagerApplication::createGraphicViewPreview(QWidget* parent
     return result;
 }
 
-template<class T>
-static LC_SettingsRegistry::PageCreator page() {
-     return [] {return std::make_unique<T>();};
-}
+void LC_SettingsManagerApplication::initialize() {
+    using namespace LC_SettingsPagesApplication;
 
-static LC_SettingsRegistry::PageCreator index(const QString& displayName, const QString& description) {
-    return [displayName, description] {
-        return std::make_unique<LC_IndexSettingsPage>(displayName, description);
-    };
-}
-
-void LC_SettingsManagerApplication::initializeApplicationSettings() {
     auto* reg = LC_SettingsRegistry::instance();
-    const QString targetDialog = "application_preferences";
+    const QString targetDialog = DLG_GENERAL_PREFERENCES;
 
-    reg->configureDialog(targetDialog, QObject::tr("Application Preferences"), true);
+    reg->configureDialog(targetDialog, {QObject::tr("Application Preferences"), true, false});
 
-    //  Viewport Theme Preset Manager Registration
-
-    reg->registerPresetManager(targetDialog, "draw", [] {
+    // Viewport Theme Preset Manager Registration
+    reg->registerPresetManager(targetDialog, PAGE_DRAW, []() {
         QWidget* previewLabel = createGraphicViewPreview(nullptr);
-        return std::make_unique<LC_ViewportThemeEditor>(nullptr, previewLabel);
+        return std::make_unique<LC_PresetManagerViewport>(nullptr, previewLabel);
     });
 
-    // pages
-    const std::initializer_list<LC_SettingsRegistry::PageRegistration>& pages = {
-        {"draw","",index(QObject::tr("Drawing Area"),
-    QObject::tr("Configure the drawing view environment, snapping parameters, "
-                "coordinate systems, visual overlays, and renderers."))},
-        {"draw.graphic_view","draw",index(QObject::tr("Graphic View"),
-    QObject::tr("Configure view behaviors, scrollbars, selection overlays, colors,"
-                " handles, and draft mode markers."))},
-        {"draw.grid","draw",page<LC_SettingsPageGridGeneral>()},
-        {"draw.grid.points","draw.grid",page<LC_SettingsPageGridPoints>()},
-        {"draw.grid.lines","draw.grid",page<LC_SettingsPageGridLines>()},
-        {"draw.preview","draw",page<LC_SettingsPagePreviewOptions>()},
-        {"draw.highlight","draw",page<LC_SettingsPagePreviewHighlight>()},
-        {"draw.snap", "draw", index(QObject::tr("Snapping"),
-    QObject::tr("Snap functionality is a precision drawing tool that forces cursor to lock exactly onto "
-                "specific geometric points (defined automatically by current geometry and enabled snap modes)."))},
-        {"draw.coordinate_system","draw",index(QObject::tr("Coordinate System"),
-    QObject::tr("Configure coordinate zero markers, relative zero markers, axis lines, and "
-                "angles basis representations."))},
-        {"app", "",index(QObject::tr("Application"),
-    QObject::tr("Configure general application settings, defaults, workspace "
-                "profiles, paths, and update preferences."))},
-        {"draw.view.behavior", "draw.graphic_view",page<LC_SettingsPageGraphicViewBehavior>()},
-        {"draw.view.colors","draw.graphic_view",page<LC_SettingsPageGraphicViewColors>()},
-        {"draw.view.selection","draw.graphic_view",page<LC_SettingsPageGraphicViewSelection>()},
-        {"draw.view.handles","draw.graphic_view",page<LC_SettingsPageGraphicViewHandles>()},
-        {"draw.view.draft_marker","draw.graphic_view",page<LC_SettingsPageGraphicViewDraftMarker>()},
-        {"draw.snap.general", "draw.snap", page<LC_SettingsPageSnapGeneral>()},
-        {"draw.snap.angle", "draw.snap", page<LC_SettingsPageSnapAngle>()},
-        {"draw.snap.visual", "draw.snap", index(QObject::tr("Visual Snap"),
-    QObject::tr("Visual Snap is a way to snap to specific points in a drawing by interpreting the natural geometry "
-                "of existing elements (lines, points, intersections, and circles), "
-                "reducing the need for manual calculations and the construction of auxiliary geometry.")), 100},
-        // {"draw.snap.visual.old", "draw.snap.visual", page<LC_SettingsPageSnapVisual>()},
-        {"draw.snap.visual.appearance", "draw.snap.visual", page<LC_SettingsPageSnapVisualAppearance>()},
-        {"draw.snap.visual.behavior", "draw.snap.visual", page<LC_SettingsPageSnapVisualBehavior>()},
-        {"draw.snap.visual.timing", "draw.snap.visual", page<LC_SettingsPageSnapVisualTiming>()},
-        {"draw.info_cursor","draw", page<LC_SettingsPageInfoCursor>()},
-        {"draw.input_assistant","draw",page<LC_SettingsPageInputAssistant>()},
-        {"draw.coordinate_system.origin","draw.coordinate_system",page<LC_SettingsPageCoordinateSystemOrigin>()},
-        {"draw.coordinate_system.relative_zero","draw.coordinate_system",page<LC_SettingsPageCoordinateSystemRelativeZero>()},
-        {"draw.coordinate_system.axis_lines","draw.coordinate_system",page<LC_SettingsPageCoordinateSystemAxisLines>()},
-        {"draw.coordinate_system.angles_basis","draw.coordinate_system",page<LC_SettingsPageCoordinateSystemAnglesBasis>()},
-        {"draw.renderer","draw",index(QObject::tr("Renderer"),
+    // Pages Registration
+    const std::initializer_list<LC_SettingsRegistry::PageRegistration> pages = {
+        { PAGE_DRAW, "", index(QObject::tr("Drawing Area"),
+            QObject::tr("Configure the drawing view environment, snapping parameters, "
+                        "coordinate systems, visual overlays, and renderers.")) },
+        { PAGE_DRAW_GRAPHIC_VIEW, PAGE_DRAW, index(QObject::tr("Graphic View"),
+            QObject::tr("Configure view behaviors, scrollbars, selection overlays, colors,"
+                        " handles, and draft mode markers.")) },
+        { PAGE_DRAW_VIEW_BEHAVIOR, PAGE_DRAW_GRAPHIC_VIEW, page<LC_SettingsPageGraphicViewBehavior>() },
+        { PAGE_DRAW_VIEW_COLORS, PAGE_DRAW_GRAPHIC_VIEW, page<LC_SettingsPageGraphicViewColors>() },
+        { PAGE_DRAW_VIEW_SELECTION, PAGE_DRAW_GRAPHIC_VIEW, page<LC_SettingsPageGraphicViewSelection>() },
+        { PAGE_DRAW_VIEW_HANDLES, PAGE_DRAW_GRAPHIC_VIEW, page<LC_SettingsPageGraphicViewHandles>() },
+        { PAGE_DRAW_VIEW_DRAFT_MARKER, PAGE_DRAW_GRAPHIC_VIEW, page<LC_SettingsPageGraphicViewDraftMarker>() },
+        { PAGE_DRAW_GRID, PAGE_DRAW, page<LC_SettingsPageGridGeneral>() },
+        { PAGE_DRAW_GRID_POINTS, PAGE_DRAW_GRID, page<LC_SettingsPageGridPoints>() },
+        { PAGE_DRAW_GRID_LINES, PAGE_DRAW_GRID, page<LC_SettingsPageGridLines>() },
+        { PAGE_DRAW_PREVIEW, PAGE_DRAW, page<LC_SettingsPagePreviewOptions>() },
+        { PAGE_DRAW_HIGHLIGHT, PAGE_DRAW, page<LC_SettingsPagePreviewHighlight>() },
+        { PAGE_DRAW_SNAP, PAGE_DRAW, index(QObject::tr("Snapping"),
+            QObject::tr("Snap functionality is a precision drawing tool that forces cursor to lock exactly onto "
+                        "specific geometric points (defined automatically by current geometry and enabled snap modes).")) },
+        { PAGE_DRAW_SNAP_GENERAL, PAGE_DRAW_SNAP, page<LC_SettingsPageSnapGeneral>() },
+        { PAGE_DRAW_SNAP_ANGLE, PAGE_DRAW_SNAP, page<LC_SettingsPageSnapAngle>() },
+        { PAGE_DRAW_SNAP_VISUAL, PAGE_DRAW_SNAP, index(QObject::tr("Visual Snap"),
+            QObject::tr("Visual Snap is a way to snap to specific points in a drawing by interpreting the natural geometry "
+                        "of existing elements (lines, points, intersections, and circles), "
+                        "reducing the need for manual calculations and the construction of auxiliary geometry.")), 100 },
+        { PAGE_DRAW_SNAP_VISUAL_APPEARANCE, PAGE_DRAW_SNAP_VISUAL, page<LC_SettingsPageSnapVisualAppearance>() },
+        { PAGE_DRAW_SNAP_VISUAL_BEHAVIOR, PAGE_DRAW_SNAP_VISUAL, page<LC_SettingsPageSnapVisualBehavior>() },
+        { PAGE_DRAW_SNAP_VISUAL_TIMING, PAGE_DRAW_SNAP_VISUAL, page<LC_SettingsPageSnapVisualTiming>() },
+        { PAGE_DRAW_INFO_CURSOR, PAGE_DRAW, page<LC_SettingsPageInfoCursor>() },
+        { PAGE_DRAW_INPUT_ASSISTANT, PAGE_DRAW, page<LC_SettingsPageInputAssistant>() },
+        { PAGE_DRAW_COORDINATE_SYSTEM, PAGE_DRAW, index(QObject::tr("Coordinate System"),
+            QObject::tr("Configure coordinate zero markers, relative zero markers, axis lines, and "
+                        "angles basis representations.")) },
+        { PAGE_DRAW_COORDINATE_SYSTEM_ORIGIN, PAGE_DRAW_COORDINATE_SYSTEM, page<LC_SettingsPageCoordinateSystemOrigin>() },
+        { PAGE_DRAW_COORDINATE_SYSTEM_RELATIVE_ZERO, PAGE_DRAW_COORDINATE_SYSTEM, page<LC_SettingsPageCoordinateSystemRelativeZero>() },
+        { PAGE_DRAW_COORDINATE_SYSTEM_AXIS_LINES, PAGE_DRAW_COORDINATE_SYSTEM, page<LC_SettingsPageCoordinateSystemAxisLines>() },
+        { PAGE_DRAW_COORDINATE_SYSTEM_ANGLES_BASIS, PAGE_DRAW_COORDINATE_SYSTEM, page<LC_SettingsPageCoordinateSystemAnglesBasis>() },
+        { PAGE_DRAW_RENDERER, PAGE_DRAW, index(QObject::tr("Renderer"),
             QObject::tr("Configure line segments interpolations, minimum rendering "
-                "pixel limits, and font files configurations.")), 100},
-        {"draw.renderer.text_ops","draw.renderer",page<LC_SettingsPageRendererTextOps>(), 110},
-        {"draw.renderer.advanced","draw.renderer",index(QObject::tr("Advanced"),
+                        "pixel limits, and font files configurations.")), 100 },
+        { PAGE_DRAW_RENDERER_TEXT_OPS, PAGE_DRAW_RENDERER, page<LC_SettingsPageRendererTextOps>(), 110 },
+        { PAGE_DRAW_RENDERER_ADVANCED, PAGE_DRAW_RENDERER, index(QObject::tr("Advanced"),
             QObject::tr("Configure advanced rendering settings, such as line "
-                "segments interpolations, minimum rendering pixel limits.")), 115},
-        {"draw.renderer.minimums","draw.renderer.advanced",page<LC_SettingsPageRendererMinimums>()},
-        {"draw.renderer.arcs","draw.renderer.advanced",page<LC_SettingsPageRendererArcs>()},
-        {"app.program_defaults","app",page<LC_SettingsPageProgramDefaults>()},
-        {"app.defaults","app",page<LC_SettingsPageDrawingDefaults>()},
-        {"app.autosave","app",page<LC_SettingsPageAutosave>()},
-        {"app.cad_preferences","app",page<LC_SettingsPageCadPreferences>()},
-        {"app.keyboard","app",page<LC_SettingsPageKeyboard>()},
-        {"app.command_line","app",page<LC_SettingsPageCommandLine>()},
-        {"app.paths","app",page<LC_SettingsPagePaths>()},
-        {"app.updates","app",page<LC_SettingsPageUpdates>()},
-        {"app.maintenance","app",page<LC_SettingsPageMaintenance>()},
-        {"app.startup","app",page<LC_SettingsPageGeneralStartup>()},
-        {"app.language","app",page<LC_SettingsPageLanguage>()},
-        };
-        reg->registerPages(targetDialog, pages);
-    }
+                        "segments interpolations, minimum rendering pixel limits.")), 115 },
+        { PAGE_DRAW_RENDERER_MINIMUMS, PAGE_DRAW_RENDERER_ADVANCED, page<LC_SettingsPageRendererMinimums>() },
+        { PAGE_DRAW_RENDERER_ARCS, PAGE_DRAW_RENDERER_ADVANCED, page<LC_SettingsPageRendererArcs>() },
+        { PAGE_APP, "", index(QObject::tr("Application"),
+            QObject::tr("Configure general application settings, defaults, workspace "
+                        "profiles, paths, and update preferences.")) },
+        { PAGE_APP_PROGRAM_DEFAULTS, PAGE_APP, page<LC_SettingsPageProgramDefaults>() },
+        { PAGE_APP_DEFAULTS, PAGE_APP, page<LC_SettingsPageDrawingDefaults>() },
+        { PAGE_APP_AUTOSAVE, PAGE_APP, page<LC_SettingsPageAutosave>() },
+        { PAGE_APP_CAD_PREFERENCES, PAGE_APP, page<LC_SettingsPageCadPreferences>() },
+        { PAGE_APP_KEYBOARD, PAGE_APP, page<LC_SettingsPageKeyboard>() },
+        { PAGE_APP_COMMAND_LINE, PAGE_APP, page<LC_SettingsPageCommandLine>() },
+        { PAGE_APP_PATHS, PAGE_APP, page<LC_SettingsPagePaths>() },
+        { PAGE_APP_UPDATES, PAGE_APP, page<LC_SettingsPageUpdates>() },
+        { PAGE_APP_MAINTENANCE, PAGE_APP, page<LC_SettingsPageMaintenance>() },
+        { PAGE_APP_STARTUP, PAGE_APP, page<LC_SettingsPageGeneralStartup>() },
+        { PAGE_APP_LANGUAGE, PAGE_APP, page<LC_SettingsPageLanguage>() }
+    };
+
+    reg->registerPages(targetDialog, pages);
+}
