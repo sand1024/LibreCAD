@@ -26,7 +26,6 @@
 QJsonObject LC_MetricsRepository::configToJson(const StyleMetricsConfig& config) const {
     QJsonObject root;
 
-
     root["scrollBarWidth"] = config.scrollBarWidth;
     root["treeIndentation"] = config.treeIndentation;
     root["buttonPadding"] = config.buttonPadding;

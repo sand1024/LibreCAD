@@ -22,9 +22,13 @@
 #ifndef LC_PALETTECOLORUTILS_H
 #define LC_PALETTECOLORUTILS_H
 
+#include <QApplication>
+
 #include "lc_palette_editor_shared.h"
 
 #define DEBUG_BEVEL_GENERATION_
+
+enum class LC_SemanticColors;
 
 class LC_PaletteColorUtils {
 public:
@@ -43,24 +47,27 @@ public:
         QColor stop100;
     };
 
-    static void generateHarmonizedTheme(const QColor &baseColor, SkinConfig  &config);
-    static void generateHarmonizedTheme(const QColor &surfaceColor, const QColor &accentColor, SkinConfig  &config);
-    static void generateHighContrastTheme(const QColor &baseColor, SkinConfig  &config);
+    // Default Initializers for Separated Configurations
+    static void initializeDefaultPalette(PaletteConfig &config);
+    static void initializeDefaultControlStyle(ControlStyleConfig &config);
+    static void initializeDefaultConfig(ControlStyleConfig &config);
+    static void initializeWithPalette(PaletteConfig &config, const QPalette &palette);
+
+    // 1-Click Palette Generators
+    static void generateHarmonizedTheme(const QColor &baseColor, PaletteConfig &config);
+    static void generateHarmonizedTheme(const QColor &surfaceColor, const QColor &accentColor, PaletteConfig &config);
+    static void generateHighContrastTheme(const QColor &baseColor, PaletteConfig &config, ControlStyleConfig* controlStyle = nullptr); // fixme - review
+
     static bool isPaletteDarkMode();
     static bool isSystemInDarkMode();
     static void calculate3DHelperRoles(QPalette &palette, BevelStyle style, ContrastWeight weight = ContrastWeight::Balanced, QPalette::ColorRole seedRole = QPalette::Button);
 
     // Unified palette generator that pre-calculates the 30 composition variants directly into standard roles
     static QPalette createPaletteFromScheme(const ColorSchemeData& scheme, StyleArchetype archetype, CVDType cvd);
-
-    static void initializeDefaultConfig(SkinConfig  &config);
-    static void initializeWithPalette(SkinConfig  &config, const QPalette &palette);
-
     static QColor simulateCVD(const QColor &color, CVDType type);
 
     static void calculateSegmentedGroupColors(QPalette::ColorGroup group, StyleArchetype archetype, const QPalette& palette,
                                               SegmentedColorPolicy policy, int totalGroups,
-                                              // Rely on dynamic group count instead of hardcoded modulo division (Solving Issue 3)
                                               QMap<int, QColor>& groupBgStart, QMap<int, QColor>& groupBgEnd,
                                               QMap<int, GroupGradientStops>& groupGradientStops, QMap<int, QColor>& groupBgStartHovered,
                                               QMap<int, QColor>& groupBgEndHovered,
@@ -68,6 +75,12 @@ public:
 
 
     static QColor interpolateColors(const QColor &c1, const QColor &c2, double factor);
+    static void resolveSemanticColors(bool hasPalette, const ColorSchemeData& scheme, bool isDark);
+
+    static void setResolvedSemanticColors(const QMap<LC_SemanticColors, QColor>& colors);
+    static QColor getSemanticColor(LC_SemanticColors role, const QPalette& palette = QApplication::palette());
+    static void generateSemanticColors(ColorSchemeData& scheme, const QColor& accentColor, bool isDark, bool highContrast);
+
 private:
     static void assignGroupHarmonics(ColorSchemeData &scheme, QPalette::ColorGroup group,
                                      const QColor &bg, const QColor &base, const QColor &btn,

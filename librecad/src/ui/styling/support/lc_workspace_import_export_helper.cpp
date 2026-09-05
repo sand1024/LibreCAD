@@ -21,29 +21,32 @@
 
 
 #include "lc_workspace_import_export_helper.h"
-#include "lc_workspace_import_export_helper.h"
 #include <QFile>
 #include <QJsonDocument>
-#include <QFileInfo>
+#include <QJsonObject>
 
+#include "lc_palette_repository.h"
 #include "lc_fusion_skins_repository.h"
 #include "lc_icons_style_repository.h"
 #include "lc_typography_repository.h"
 #include "lc_metrics_repository.h"
 
 LC_WorkspaceImportExportHelper::LC_WorkspaceImportExportHelper(
+    LC_PaletteRepository* paletteRepo,
     LC_FusionSkinsRepository* skinRepo,
     LC_IconsStyleRepository* iconRepo,
     LC_TypographyRepository* typographyRepo,
     LC_MetricsRepository* metricsRepo)
-    : m_skinRepo(skinRepo)
+    : m_paletteRepo(paletteRepo)
+    , m_skinRepo(skinRepo)
     , m_iconRepo(iconRepo)
     , m_typographyRepo(typographyRepo)
     , m_metricsRepo(metricsRepo) {}
 
 bool LC_WorkspaceImportExportHelper::exportProfile(const QString& exportFilePath,
                                                   const QString& profileName,
-                                                  const SkinConfig* skin,
+                                                  const PaletteConfig* palette,
+                                                  const ControlStyleConfig* controlStyle,
                                                   const IconStyleConfig* icon,
                                                   const FontConfig* font,
                                                   const StyleMetricsConfig* metrics) const {
@@ -51,25 +54,29 @@ bool LC_WorkspaceImportExportHelper::exportProfile(const QString& exportFilePath
     root["file_identifier"] = PROFILE_FILE_IDENTIFIER;
     root["profile_name"] = profileName;
 
-    // Delegate serialization entirely to the repositories if configs are present
-    if (skin && m_skinRepo) {
-        auto obj = m_skinRepo->configToJson(*skin);
-        obj["name"] = skin->name;
-        root["inlined_skin"] = obj;
+    if (palette && m_paletteRepo) {
+        auto obj = m_paletteRepo->configToJson(*palette);
+        obj["name"] = palette->name;
+        root["inlined_palette"] = obj;
+    }
+    if (controlStyle && m_skinRepo) {
+        auto obj = m_skinRepo->configToJson(*controlStyle);
+        obj["name"] = controlStyle->name;
+        root["inlined_control_style"] = obj;
     }
     if (icon && m_iconRepo) {
         auto obj = m_iconRepo->configToJson(*icon);
-        obj["name"] = skin->name;
+        obj["name"] = icon->name;
         root["inlined_icon"] = obj;
     }
     if (font && m_typographyRepo) {
         auto obj = m_typographyRepo->configToJson(*font);
-        obj["name"] = skin->name;
+        obj["name"] = font->name;
         root["inlined_font"] = obj;
     }
     if (metrics && m_metricsRepo) {
         auto obj = m_metricsRepo->configToJson(*metrics);
-        obj["name"] = skin->name;
+        obj["name"] = metrics->name;
         root["inlined_metrics"] = obj;
     }
 
@@ -82,7 +89,8 @@ bool LC_WorkspaceImportExportHelper::exportProfile(const QString& exportFilePath
 
 bool LC_WorkspaceImportExportHelper::importProfile(const QString& importFilePath,
                                                   QString& outProfileName,
-                                                  QString& outSkinName,
+                                                  QString& outPaletteName,
+                                                  QString& outControlStyleName,
                                                   QString& outIconStyleName,
                                                   QString& outTypographyName,
                                                   QString& outMetricsName) const {
@@ -95,23 +103,37 @@ bool LC_WorkspaceImportExportHelper::importProfile(const QString& importFilePath
 
     outProfileName = root["profile_name"].toString();
 
-    // 1. Skin (Optional, Fusion-only)
-    QJsonObject skinObj = root["inlined_skin"].toObject();
-    if (m_skinRepo) {
-        SkinConfig skin;
+    // 1. Palette
+    QJsonObject paletteObj = root["inlined_palette"].toObject();
+    if (m_paletteRepo && !paletteObj.isEmpty()) {
+        PaletteConfig palette;
         QString outPath;
-        if (m_skinRepo->configFromJson(skinObj, skin) && m_skinRepo->save(skin.name, skin, outPath)) {
-            outSkinName = skin.name;
+        if (m_paletteRepo->configFromJson(paletteObj, palette) && m_paletteRepo->save(palette.name, palette, outPath)) {
+            outPaletteName = palette.name;
         }
     } else {
-        outSkinName = "";
+        outPaletteName = "";
     }
 
-    // 2. Icon Style (Optional)
+    // 2. Control Style / Skin
+    QJsonObject skinObj = root["inlined_control_style"].toObject();
+    if (skinObj.isEmpty()) {
+        skinObj = root["inlined_skin"].toObject(); // Backward compatibility
+    }
+    if (m_skinRepo && !skinObj.isEmpty()) {
+        ControlStyleConfig skin;
+        QString outPath;
+        if (m_skinRepo->configFromJson(skinObj, skin) && m_skinRepo->save(skin.name, skin, outPath)) {
+            outControlStyleName = skin.name;
+        }
+    } else {
+        outControlStyleName = "";
+    }
+
+    // 3. Icon Style
     QJsonObject iconObj = root["inlined_icon"].toObject();
-    if (m_iconRepo) {
+    if (m_iconRepo && !iconObj.isEmpty()) {
         IconStyleConfig icon;
-        icon.name = iconObj["name"].toString();
         QString outPath;
         if (m_iconRepo->configFromJson(iconObj, icon) && m_iconRepo->save(icon.name, icon, outPath)) {
             outIconStyleName = icon.name;
@@ -120,11 +142,10 @@ bool LC_WorkspaceImportExportHelper::importProfile(const QString& importFilePath
         outIconStyleName = "";
     }
 
-    // 3. Typography (Optional)
+    // 4. Typography
     QJsonObject fontObj = root["inlined_font"].toObject();
-    if (m_typographyRepo) {
+    if (m_typographyRepo && !fontObj.isEmpty()) {
         FontConfig font;
-        font.name = iconObj["name"].toString();
         QString outPath;
         if (m_typographyRepo->configFromJson(fontObj, font) && m_typographyRepo->save(font.name, font, outPath)) {
             outTypographyName = font.name;
@@ -133,11 +154,10 @@ bool LC_WorkspaceImportExportHelper::importProfile(const QString& importFilePath
         outTypographyName = "";
     }
 
-    // 4. Metrics (Optional, Fusion-only)
+    // 5. Metrics
     QJsonObject metricsObj = root["inlined_metrics"].toObject();
-    if (m_metricsRepo) {
+    if (m_metricsRepo && !metricsObj.isEmpty()) {
         StyleMetricsConfig metrics;
-        metrics.name = iconObj["name"].toString();
         QString outPath;
         if (m_metricsRepo->configFromJson(metricsObj, metrics) && m_metricsRepo->save(metrics.name, metrics, outPath)) {
             outMetricsName = metrics.name;

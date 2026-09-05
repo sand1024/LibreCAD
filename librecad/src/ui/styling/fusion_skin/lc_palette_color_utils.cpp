@@ -31,15 +31,17 @@
 #include <QPixmapCache>
 #include "lc_icons_style_shared.h"
 #include "lc_settings_app_styling.h"
+#include "lc_settings_colors_semantics.h"
 #include "rs_debug.h"
 #include "rs_settings.h"
 
 bool LC_PaletteColorUtils::isPaletteDarkMode() {
     // Fallback: Query standard operating system theme
+
 #if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
     auto scheme = QGuiApplication::styleHints()->colorScheme();
     if (scheme != Qt::ColorScheme::Unknown) {
-        return scheme == QGuiApplication::styleHints()->colorScheme();
+        return scheme == Qt::ColorScheme::Dark;
     }
 #endif
     return QGuiApplication::palette().color(QPalette::Window).lightnessF() < 0.5;
@@ -110,16 +112,59 @@ void LC_PaletteColorUtils::debugBevelCalculation(const QPalette &palette, BevelS
 #endif
 
 
-// Excerpt from lc_palette_color_utils.cpp
-
-void LC_PaletteColorUtils::initializeDefaultConfig(SkinConfig &config) {
-    config.name = "Default Skin";
+void LC_PaletteColorUtils::initializeDefaultControlStyle(ControlStyleConfig &config) {
+    config.name = DEFAULT_THEME_NAME;
     config.styleArchetype = StyleArchetype::ClassicFusion;
     config.boxDecoration  = BoxDecoration::DividingHairline;
     config.customDockTitleBar = false;
     config.dockTitleBarStyle  = DockTitleBarStyle::Native;
     config.accentedScrollbars = false;
     config.transparentScrollbars = false;
+    config.customGroupBoxBar = false;
+    config.groupBoxHeaderStyle = GroupBoxHeaderStyle::Plain;
+    config.groupBoxBoundaryStyle = GroupBoxBoundaryStyle::Full;
+    config.groupBoxUseAccent = false;
+    config.showActiveRowSpotlight = false;
+    config.showItemViewHover = true;
+    config.branchIndicatorStyle = BranchIndicatorStyle::MutedChevrons;
+    config.showTreeConnectingLines = false;
+    config.customSplitterGrip = false;
+    config.splitterGripStyle = SplitterGripStyle::MutedDots;
+    config.highlightSplitterOnDrag = false;
+    config.showGripBackgroundWell = false;
+    config.accentGrips = false;
+    config.persistentDockSplitter = true;
+    config.useFocusedInputGlow = false;
+    config.useToolButtonUnderline = false;
+    config.toolButtonIndicatorStyle = ToolButtonIndicatorStyle::ContextStripe;
+    config.customToolTipCard = false;
+    config.customVectorIconsInButtons = false;
+    config.tabStripeAtBottom = false;
+    config.customToolbarOverflowGrip = false;
+    config.autoPopupToolbarOverflow = false;
+    config.autoPopupInstantButtons = false;
+    config.autoPopupMenuBar = false;
+    config.useMenuBarHoverCard = false;
+    config.showMenuCommandAliases = false;
+    config.useSegmentedToolButtons = false;
+    config.segmentedSeparationStyle = SegmentedSeparationStyle::ContinuousCard;
+    config.segmentedColorPolicy = SegmentedColorPolicy::HarmonizedAnalogous;
+    config.useSpinBoxProgressBar = false;
+    config.useStatusPillChips = false;
+    config.customMenuTearOff = false;
+    config.syncCheckedMenuState = false;
+    config.useFloatingHUDMenus = false;
+    config.useFloatingHUDDocks = false;
+    config.closeButtonColorPolicy = CloseButtonColorPolicy::AccentColor;
+    config.showGenericDockIcons = true;
+    config.showSpecialDockIcons = true;
+    config.customDialogTitleBar = false;
+}
+
+void LC_PaletteColorUtils::initializeDefaultPalette(PaletteConfig &config) {
+    config.name = DEFAULT_THEME_NAME;
+    config.linkedIconStyleName = "Default";
+    config.useThemeDefaultIcons = false;
 
     // Light palette population
     QPalette lightPal = QApplication::palette();
@@ -129,7 +174,7 @@ void LC_PaletteColorUtils::initializeDefaultConfig(SkinConfig &config) {
         delete lightStyle;
     }
 
-    calculate3DHelperRoles(lightPal, BevelStyle::Soft, ContrastWeight::Balanced);
+    calculate3DHelperRoles(lightPal, BevelStyle::Soft, ContrastWeight::Balanced, QPalette::Button);
 
     forEachRoleState([&](const PaletteRoleMapping &row, const PaletteStateMapping &state) {
         config.light.palette[row.name][state.name] = lightPal.color(state.group, row.role);
@@ -138,12 +183,10 @@ void LC_PaletteColorUtils::initializeDefaultConfig(SkinConfig &config) {
     config.light.qss = "";
     config.light.contrastWeight = ContrastWeight::Balanced;
     config.light.contrastPolicy = ContrastPolicy::Standard;
-
-    calculate3DHelperRoles(lightPal, BevelStyle::Soft, ContrastWeight::Balanced, QPalette::Button);
     config.light.autoCalculate3DHelpers = true;
     config.light.bevelSeedRole = QPalette::Button;
 
-    // Dark palette population (Symmetrically remains unchanged but mapped to SkinConfig)
+    // Dark palette population
     QPalette darkPal;
     const QColor windowColor(45, 45, 45);
     const QColor baseColor(25, 25, 25);
@@ -173,28 +216,34 @@ void LC_PaletteColorUtils::initializeDefaultConfig(SkinConfig &config) {
     darkPal.setColor(QPalette::Disabled, QPalette::Base, QColor(35, 35, 35));
     darkPal.setColor(QPalette::Disabled, QPalette::Window, QColor(40, 40, 40));
 
-    calculate3DHelperRoles(darkPal, BevelStyle::Soft, ContrastWeight::Balanced);
+    calculate3DHelperRoles(darkPal, BevelStyle::Soft, ContrastWeight::Balanced, QPalette::Button);
 
     forEachRoleState([&](const PaletteRoleMapping &row, const PaletteStateMapping &state) {
-         config.dark.palette[row.name][state.name] = darkPal.color(state.group, row.role);
+        config.dark.palette[row.name][state.name] = darkPal.color(state.group, row.role);
     });
 
     config.dark.qss = "";
     config.dark.contrastWeight = ContrastWeight::Balanced;
     config.dark.contrastPolicy = ContrastPolicy::Standard;
-
-    calculate3DHelperRoles(darkPal, BevelStyle::Soft, ContrastWeight::Balanced, QPalette::Button);
     config.dark.autoCalculate3DHelpers = true;
     config.dark.bevelSeedRole = QPalette::Button;
+
+    config.light.semanticColors[SEMANTIC_COLOR_KEY_FILTERED_ITEM]  = QColor("#2a82da");
+    config.light.semanticColors[SEMANTIC_COLOR_KEY_CONFLICTING_ITEM]   = QColor("#d9534f");
+    config.light.semanticColors[SEMANTIC_COLOR_KEY_SEARCH_RESULT]  = QColor("#d97706");
+
+    config.dark.semanticColors[SEMANTIC_COLOR_KEY_FILTERED_ITEM]   = QColor("#2a82da");
+    config.dark.semanticColors[SEMANTIC_COLOR_KEY_CONFLICTING_ITEM]    = QColor("#e06c77");
+    config.dark.semanticColors[SEMANTIC_COLOR_KEY_SEARCH_RESULT]   = QColor("#bd6313");
+}
+
+void LC_PaletteColorUtils::initializeDefaultConfig(ControlStyleConfig &config) {
+    initializeDefaultControlStyle(config);
 }
 
 
-void LC_PaletteColorUtils::initializeWithPalette(SkinConfig &config, const QPalette &palette) {
+void LC_PaletteColorUtils::initializeWithPalette(PaletteConfig &config, const QPalette &palette) {
     config.name = "System Platform Palette";
-    config.styleArchetype = StyleArchetype::ClassicFusion;
-    config.boxDecoration  = BoxDecoration::DividingHairline;
-    config.customDockTitleBar = false;
-    config.dockTitleBarStyle  = DockTitleBarStyle::Native;
 
     // Extract color roles symmetrically for both light and dark schema templates
     forEachRoleState([&](const PaletteRoleMapping &row, const PaletteStateMapping &state) {
@@ -217,7 +266,7 @@ void LC_PaletteColorUtils::initializeWithPalette(SkinConfig &config, const QPale
     config.dark.bevelSeedRole = QPalette::Button;
 }
 
-void LC_PaletteColorUtils::generateHarmonizedTheme(const QColor &baseColor, SkinConfig &config) {
+void LC_PaletteColorUtils::generateHarmonizedTheme(const QColor &baseColor, PaletteConfig  &config) {
     int h, s, v;
     baseColor.getHsv(&h, &s, &v);
 
@@ -244,6 +293,7 @@ void LC_PaletteColorUtils::generateHarmonizedTheme(const QColor &baseColor, Skin
     assignGroupHarmonics(dark, QPalette::Active, darkBg, darkBase, darkBtn, darkHighlight, darkText);
     assignGroupHarmonics(dark, QPalette::Inactive, darkBg, darkBase, darkBtn, darkHighlight, darkText.darker(110));
     assignGroupHarmonics(dark, QPalette::Disabled, darkBg.darker(110), darkBase.darker(110), darkBtn.darker(110), darkHighlight.darker(150), Qt::gray);
+    generateSemanticColors(dark, darkHighlight, true, false);
     dark.qss = "";
 
     // ================= LIGHT VARIANT GENERATION (Modern Soft Tint Hierarchy) =================
@@ -266,12 +316,13 @@ void LC_PaletteColorUtils::generateHarmonizedTheme(const QColor &baseColor, Skin
     assignGroupHarmonics(light, QPalette::Active, lightBg, lightBase, lightBtn, lightHighlight, lightText);
     assignGroupHarmonics(light, QPalette::Inactive, lightBg, lightBase, lightBtn, lightHighlight, lightText.lighter(120));
     assignGroupHarmonics(light, QPalette::Disabled, lightBg.lighter(105), lightBase, lightBtn.lighter(105), lightHighlight.lighter(150), Qt::gray);
+    generateSemanticColors(light, lightHighlight, false, false);
     light.qss = "";
 }
 
 void LC_PaletteColorUtils::generateHarmonizedTheme(const QColor &surfaceColor,
                                                    const QColor &accentColor,
-                                                   SkinConfig &config) {
+                                                   PaletteConfig  &config) {
     int sH, sS, sV;
     surfaceColor.getHsv(&sH, &sS, &sV);
     if (sH < 0) sH = 210;
@@ -301,6 +352,7 @@ void LC_PaletteColorUtils::generateHarmonizedTheme(const QColor &surfaceColor,
     assignGroupHarmonics(dark, QPalette::Active, darkBg, darkBase, darkBtn, darkHighlight, darkText);
     assignGroupHarmonics(dark, QPalette::Inactive, darkBg, darkBase, darkBtn, darkHighlight.darker(120), darkText.darker(110));
     assignGroupHarmonics(dark, QPalette::Disabled, darkBg.darker(110), darkBase.darker(110), darkBtn.darker(110), darkHighlight.darker(200), Qt::gray);
+    generateSemanticColors(dark, darkHighlight, true, false);
     dark.qss = "";
 
     // ================= DYNAMIC LIGHT SCHEMA =================
@@ -323,6 +375,7 @@ void LC_PaletteColorUtils::generateHarmonizedTheme(const QColor &surfaceColor,
     assignGroupHarmonics(light, QPalette::Active, lightBg, lightBase, lightBtn, lightHighlight, lightText);
     assignGroupHarmonics(light, QPalette::Inactive, lightBg, lightBase, lightBtn, lightHighlight.lighter(120), lightText.lighter(120));
     assignGroupHarmonics(light, QPalette::Disabled, lightBg.lighter(105), lightBase, lightBtn.lighter(105), lightHighlight.lighter(150), Qt::gray);
+    generateSemanticColors(light, lightHighlight, false, false);
     light.qss = "";
 }
 
@@ -347,7 +400,6 @@ void LC_PaletteColorUtils::assignGroupHarmonics(ColorSchemeData &scheme, QPalett
     scheme.palette["HighlightedText"][groupName] = (text.value() < 120) ? Qt::white : Qt::black;
     scheme.palette["PlaceholderText"][groupName] = Qt::gray;
 }
-
 
 // Updated Bevel Lighting generator to derive boundaries from custom seed role
 void LC_PaletteColorUtils::calculate3DHelperRoles(QPalette &palette, BevelStyle style, ContrastWeight weight, QPalette::ColorRole seedRole) {
@@ -536,14 +588,16 @@ QPalette LC_PaletteColorUtils::createPaletteFromScheme(const ColorSchemeData &sc
     return palette;
 }
 
-void LC_PaletteColorUtils::generateHighContrastTheme(const QColor &baseColor, SkinConfig &config) {
+void LC_PaletteColorUtils::generateHighContrastTheme(const QColor &baseColor, PaletteConfig &config, ControlStyleConfig* controlStyle) {
     int h, s, v;
     baseColor.getHsv(&h, &s, &v);
     if (h < 0) h = 120; // Default to green if grayscale
 
     // 1. Configure High-Contrast Metric Overrides
-    config.styleArchetype = StyleArchetype::FlatModern; // Clean flat geometry
-    config.boxDecoration  = BoxDecoration::BoxOutline;  // Stark 1px outlines
+    if (controlStyle != nullptr) {
+        controlStyle->styleArchetype = StyleArchetype::FlatModern; // Clean flat geometry
+        controlStyle->boxDecoration  = BoxDecoration::BoxOutline;  // Stark 1px outlines
+    }
 
     // ================= HIGH-CONTRAST DARK VARIANT =================
     ColorSchemeData &dark = config.dark;
@@ -568,6 +622,7 @@ void LC_PaletteColorUtils::generateHighContrastTheme(const QColor &baseColor, Sk
     dark.contrastWeight = ContrastWeight::Hard; // Maximum border intensity
     dark.contrastPolicy = ContrastPolicy::Standard;
     dark.bevelSeedRole = QPalette::Button;
+    generateSemanticColors(dark, hcDarkHighlight, true, true);
 
     // ================= HIGH-CONTRAST LIGHT VARIANT =================
     ColorSchemeData &light = config.light;
@@ -592,6 +647,7 @@ void LC_PaletteColorUtils::generateHighContrastTheme(const QColor &baseColor, Sk
     light.contrastWeight = ContrastWeight::Hard; // Maximum border intensity
     light.contrastPolicy = ContrastPolicy::Standard;
     light.bevelSeedRole = QPalette::Button;
+    generateSemanticColors(dark, hcLightHighlight, false, true);
 }
 
 QColor LC_PaletteColorUtils::simulateCVD(const QColor &color, CVDType type) {
@@ -795,4 +851,79 @@ QColor LC_PaletteColorUtils::interpolateColors(const QColor &c1, const QColor &c
     int b = c1.blue()  + static_cast<int>((c2.blue()  - c1.blue())  * f);
     int a = c1.alpha() + static_cast<int>((c2.alpha() - c1.alpha()) * f);
     return QColor(qBound(0, r, 255), qBound(0, g, 255), qBound(0, b, 255), qBound(0, a, 255));
+}
+
+namespace {
+    QMap<LC_SemanticColors, QColor> s_resolvedSemanticColors;
+}
+
+void LC_PaletteColorUtils::resolveSemanticColors(bool hasPalette, const ColorSchemeData& scheme, bool isDark) {
+    QMap<LC_SemanticColors, QColor> resolved;
+
+    for (const auto& def : SEMANTIC_COLOR_DEFS) {
+        if (hasPalette && scheme.semanticColors.contains(QLatin1String(def.key))) {
+            resolved[def.role] = scheme.semanticColors.value(QLatin1String(def.key));
+        } else {
+            // Native/Fallback setting
+            QColor fallback = isDark ? QColor(def.defaultDarkHex) : QColor(def.defaultLightHex);
+            if (def.role == LC_SemanticColors::FilteredItem) {
+                fallback = CFG_AppStyling::o_ColorFilteredItem.get();
+            } else if (def.role == LC_SemanticColors::ConflictingItem) {
+                fallback = CFG_AppStyling::o_ColorConflictingItem.get();
+            } else if (def.role == LC_SemanticColors::SearchResultItem) {
+                fallback = CFG_AppStyling::o_ColorSearchResultItem.get();
+            }
+            resolved[def.role] = fallback;
+        }
+    }
+
+    setResolvedSemanticColors(resolved);
+}
+
+void LC_PaletteColorUtils::setResolvedSemanticColors(const QMap<LC_SemanticColors, QColor>& colors) {
+    s_resolvedSemanticColors = colors;
+}
+
+QColor LC_PaletteColorUtils::getSemanticColor(LC_SemanticColors role, const QPalette& palette) {
+    // 1. Fast O(1) static cache lookup
+    if (s_resolvedSemanticColors.contains(role)) {
+        const QColor cached = s_resolvedSemanticColors.value(role);
+        if (cached.isValid()) {
+            return cached;
+        }
+    }
+
+    // 2. Adaptive fallback
+    const bool isDark = palette.color(QPalette::Window).value() < 120;
+    switch (role) {
+        case LC_SemanticColors::FilteredItem:
+            return CFG_AppStyling::o_ColorFilteredItem.get();
+        case LC_SemanticColors::ConflictingItem:
+            return isDark ? QColor("#e06c77") : QColor("#d9534f");
+        case LC_SemanticColors::SearchResultItem:
+            return isDark ? QColor("#bd6313") : QColor("#d97706");
+    }
+    return palette.color(QPalette::Highlight);
+}
+
+void LC_PaletteColorUtils::generateSemanticColors(ColorSchemeData& scheme,
+                                                   const QColor& accentColor,
+                                                   bool isDark,
+                                                   bool highContrast) {
+    if (highContrast) {
+        if (isDark) {
+            scheme.semanticColors[SEMANTIC_COLOR_KEY_FILTERED_ITEM] = accentColor.isValid() ? accentColor : QColor("#00ffff");
+            scheme.semanticColors[SEMANTIC_COLOR_KEY_CONFLICTING_ITEM]  = QColor("#ff4d4d");
+            scheme.semanticColors[SEMANTIC_COLOR_KEY_SEARCH_RESULT]     = QColor("#ffaa00");
+        } else {
+            scheme.semanticColors[SEMANTIC_COLOR_KEY_FILTERED_ITEM] = accentColor.isValid() ? accentColor : QColor("#0000ff");
+            scheme.semanticColors[SEMANTIC_COLOR_KEY_CONFLICTING_ITEM]  = QColor("#cc0000");
+            scheme.semanticColors[SEMANTIC_COLOR_KEY_SEARCH_RESULT]     = QColor("#b35900");
+        }
+    } else {
+        // Harmonized / Standard contrast:
+        scheme.semanticColors[SEMANTIC_COLOR_KEY_FILTERED_ITEM] = accentColor;
+        scheme.semanticColors[SEMANTIC_COLOR_KEY_CONFLICTING_ITEM]  = isDark ? QColor("#e06c77") : QColor("#d9534f");
+        scheme.semanticColors[SEMANTIC_COLOR_KEY_SEARCH_RESULT]     = isDark ? QColor("#bd6313") : QColor("#d97706");
+    }
 }

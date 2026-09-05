@@ -24,6 +24,10 @@
 QJsonObject LC_TypographyRepository::configToJson(const FontConfig& config) const {
     QJsonObject root;
 
+    root["type"] = m_fileIdentifier;
+    root["name"] = config.name;
+
+
     root["mainFamily"] = config.mainFamily;
     root["mainSize"]   = config.mainSize;
     root["techFamily"] = config.techFamily;

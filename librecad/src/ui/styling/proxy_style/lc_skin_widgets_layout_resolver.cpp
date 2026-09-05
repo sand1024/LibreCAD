@@ -1142,18 +1142,22 @@ LC_SkinWidgetsLayoutResolver::resolveTitleBarButtonLayout(
         const QRect &titleRect,
         const SkinScaledGeometries &geoms,
         QDockWidget::DockWidgetFeatures features,
-        bool isVertical)
-{
+        bool isVertical){
     TitleBarButtonLayout layout;
-    const int btnSize   = geoms.scaledMetrics.titleBarButtonSize;
 
     // Resolve title bar thickness along its narrow layout axis
     const int thickness = isVertical ? titleRect.width() : titleRect.height();
 
-    // Calculate fallback margin using layout axis thickness
-    const int margin    = geoms.scaledMetrics.dockWidgetTitleBarButtonMargin >= 0
+    // Ensure button size never exceeds titlebar thickness, maintaining a minimum 2px margin on both sides
+    const int maxAllowedBtnSize = qMax(geoms.ints.scale8, thickness - geoms.ints.scale4);
+    const int btnSize = qMin(geoms.scaledMetrics.titleBarButtonSize, maxAllowedBtnSize);
+
+    // Dynamic auto-centering margin
+    const int margin  = (geoms.scaledMetrics.dockWidgetTitleBarButtonMargin >= 0 &&
+                         (thickness - btnSize) > (geoms.scaledMetrics.dockWidgetTitleBarButtonMargin * 2))
                         ? geoms.scaledMetrics.dockWidgetTitleBarButtonMargin
-                        : qMax(0, (thickness - btnSize) / 2); // Perfect auto-centering
+                      : qMax(geoms.ints.scale1, (thickness - btnSize) / 2);
+
     const int spacing   = geoms.ints.scale2;
 
     if (isVertical) {

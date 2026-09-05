@@ -25,13 +25,13 @@
 #include "lc_palette_editor_shared.h"
 #include "lc_style_repository_base.h"
 
-class LC_FusionSkinsRepository : public LC_StyleRepositoryBase<SkinConfig> {
+class LC_FusionSkinsRepository : public LC_StyleRepositoryBase<ControlStyleConfig> {
 public:
     explicit LC_FusionSkinsRepository(const QString &configDir)
-        : LC_StyleRepositoryBase<SkinConfig>(configDir, SKIN_EXTENSION, SKIN_FILE_IDENTIFIER, "skins_index.lcix") {}
+        : LC_StyleRepositoryBase<ControlStyleConfig>(configDir, SKIN_EXTENSION, SKIN_FILE_IDENTIFIER, "skins_index.lcix") {}
 
-    QJsonObject configToJson(const SkinConfig& config) const override;
-    bool configFromJson(const QJsonObject& json, SkinConfig& config) const override;
+    QJsonObject configToJson(const ControlStyleConfig& config) const override;
+    bool configFromJson(const QJsonObject& json, ControlStyleConfig& config) const override;
 };
 
 #endif

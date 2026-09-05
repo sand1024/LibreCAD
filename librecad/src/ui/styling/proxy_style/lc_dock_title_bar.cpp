@@ -154,6 +154,7 @@ LC_DockTitleBar::LC_DockTitleBar(QDockWidget *dock, const LC_ProxyStyle *style, 
     setMouseTracking(true);
 
     m_closeBtn = new QToolButton(this);
+    m_closeBtn->setObjectName("lc_titlebar_close_btn");
     m_closeBtn->setAutoRaise(true);
     m_closeBtn->setCursor(Qt::ArrowCursor); // Overrides the OpenHandCursor of the container
     m_closeBtn->setProperty(PROP_IS_DOCK_TITLE_BUTTON, true);
@@ -169,6 +170,7 @@ LC_DockTitleBar::LC_DockTitleBar(QDockWidget *dock, const LC_ProxyStyle *style, 
     });
 
     m_floatBtn = new QToolButton(this);
+    m_floatBtn->setObjectName("lc_titlebar_float_btn");
     m_floatBtn->setAutoRaise(true);
     m_floatBtn->setCursor(Qt::ArrowCursor); // Overrides the OpenHandCursor of the container
     m_floatBtn->setProperty(PROP_IS_DOCK_TITLE_BUTTON, true);
@@ -299,25 +301,28 @@ void LC_DockTitleBar::resizeEvent(QResizeEvent *event) {
 
 void LC_DockTitleBar::paintEvent(QPaintEvent *event) {
     Q_UNUSED(event);
-    if (!m_style) return;
+    if (m_style == nullptr) {
+        return;
+    }
 
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
 
-    const bool active = m_dock ? m_dock->isActiveWindow() : (window() && window()->isActiveWindow());
+    const bool active = (m_dock != nullptr) ? m_dock->isActiveWindow() : (window() != nullptr && window()->isActiveWindow());
     const bool vertical = isVertical();
 
     QStyleOptionDockWidget titleOpt;
     titleOpt.rect = rect();
-    titleOpt.title = m_dock ? m_dock->windowTitle() : (window() ? window()->windowTitle() : QString());
+    titleOpt.title = (m_dock != nullptr) ? m_dock->windowTitle() : ((window() != nullptr) ? window()->windowTitle() : QString());
     titleOpt.verticalTitleBar = vertical;
+    titleOpt.closable = isClosable();
     if (active) {
         titleOpt.state |= QStyle::State_Active;
     } else {
         titleOpt.state &= ~QStyle::State_Active;
     }
 
-    m_style->drawCustomDockTitleBar(&titleOpt, &painter, m_dock ? static_cast<QWidget*>(m_dock.data()) : parentWidget());
+    m_style->drawCustomDockTitleBar(&titleOpt, &painter, this);
 }
 
 void LC_DockTitleBar::mousePressEvent(QMouseEvent *event) {

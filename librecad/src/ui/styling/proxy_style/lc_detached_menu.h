@@ -27,7 +27,6 @@
 #include <QWidget>
 
 class LC_CustomTitleBarWidget;
-class LC_DockTitleBar;
 class LC_ProxyStyle;
 
 class LC_DetachedMenu : public QWidget {

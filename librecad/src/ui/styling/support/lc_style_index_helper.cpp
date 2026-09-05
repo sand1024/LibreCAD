@@ -38,7 +38,7 @@ StyleIndexMap LC_StyleIndexHelper::loadIndex(const QString& indexFilePath) {
 
 #ifdef COMPRESS_INDEX
     const QJsonDocument doc = QJsonDocument::fromJson(qUncompress(file.readAll()));
-#    elif
+#    else
     const QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
 #    endif
     const QJsonObject root = doc.object();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * This file is part of the LibreCAD project, a 2D CAD program
+* This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
  * Copyright (C) 2026 sand1024
@@ -19,31 +19,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_DLG_SYLES_PRESETS_GENERATOR_H
-#define LC_DLG_SYLES_PRESETS_GENERATOR_H
+#ifndef LC_PALETTE_REPOSITORY_H
+#define LC_PALETTE_REPOSITORY_H
 
-#include <QDialog>
+#include "lc_palette_editor_shared.h"
+#include "lc_style_repository_base.h"
 
-#include "lc_dialog.h"
-#include "lc_ui_style_manager.h"
-
-namespace Ui {
-    class LC_DlgStylesPresetsGenerator;
-}
-
-class LC_DlgStylesPresetsGenerator : public LC_Dialog {
-    Q_OBJECT
+class LC_PaletteRepository : public LC_StyleRepositoryBase<PaletteConfig> {
 public:
-    LC_DlgStylesPresetsGenerator(QWidget* parent, LC_UIStyleManager* styleManager);
-    QString selectFolder(const QString& title);
-    ~LC_DlgStylesPresetsGenerator() override;
-protected slots:
-    void generateSkins(bool checked);
-    QString getEffectiveDir(const QString& uiText, const QString& fallback) const;
-    void generateIconStyles(bool checked);
+    explicit LC_PaletteRepository(const QString& configDir);
+    ~LC_PaletteRepository() override = default;
+
+    QJsonObject configToJson(const PaletteConfig& config) const override;
+    bool configFromJson(const QJsonObject& json, PaletteConfig& config) const override;
+
 private:
-    Ui::LC_DlgStylesPresetsGenerator* ui;
-    LC_UIStyleManager* m_styleManager;
+    QJsonObject serializeScheme(const ColorSchemeData& scheme) const;
+    void deserializeScheme(const QJsonObject& json, ColorSchemeData& scheme) const;
 };
 
 #endif

@@ -75,47 +75,5 @@ public:
     bool configFromJson(const QJsonObject& json, LC_ViewportThemeConfig& config) const override;
 };
 
-class LC_ViewportThemeEditor : public QObject, public LC_PresetManagerInterface {
-    Q_OBJECT
-public:
-    explicit LC_ViewportThemeEditor(QObject* parent = nullptr, QWidget* previewWidget = nullptr);
-    ~LC_ViewportThemeEditor() override = default;
-
-    bool isPresetModified() override;
-
-    // --- Preset Manager Interface Overrides ---
-    bool loadPreset(const QString& key) override;
-    bool saveCurrentPreset() override;
-    bool savePresetAs(const QString& name, QString& outKey) override;
-    bool deletePreset(const QString& key) override;
-
-
-    QList<QPair<QString, QString>> getAvailablePresets() const override;
-    QString getActivePresetKey() const override;
-
-    void applyCurrentPreset() override;
-    void rollbackState() override;
-
-
-    void setChangedCallback(std::function<void(bool isDirty)> callback) override;
-    LC_PresetManagerUIStrings presetStrings() const override;
-    bool resetToDefaults(const QString& key);
-
-    QWidget* getSharedPreviewWidget() override {return m_previewWidget;}
-
-private:
-    QJsonObject serializeCurrentSettings() const;
-    void applyThemeJson(const QJsonObject& obj);
-    bool importPresetFromFile(const QString& filePath, QWidget* parent);
-    bool exportPresetToFile(const QString& key, const QString& filePath, QWidget* parent);
-    bool calculateDivergence() const;
-    LC_ViewportThemeRepository m_repository;
-    QString m_activeKey;
-    bool m_isDirty = false;
-    bool m_registryDiverged = false;
-    std::function<void(bool)> m_changedCallback;
-
-    QWidget* m_previewWidget = nullptr;
-};
 
 #endif

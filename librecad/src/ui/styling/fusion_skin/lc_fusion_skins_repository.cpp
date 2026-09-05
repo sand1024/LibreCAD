@@ -37,16 +37,15 @@
 #include "lc_proxy_style.h"
 #include "rs_system.h"
 
-QJsonObject LC_FusionSkinsRepository::configToJson(const SkinConfig& config) const {
+QJsonObject LC_FusionSkinsRepository::configToJson(const ControlStyleConfig& config) const {
     QJsonObject root;
+    root["name"] = config.name;
     root["style_archetype"] = static_cast<int>(config.styleArchetype);
     root["box_decoration"]  = static_cast<int>(config.boxDecoration);
     root["custom_dock_title_bar"] = config.customDockTitleBar;
     root["dock_title_style"]  = static_cast<int>(config.dockTitleBarStyle);
     root["accented_scrollbars"] = config.accentedScrollbars;
     root["transparent_scrollbars"] = config.transparentScrollbars;
-    root["linked_icon_style"] = config.linkedIconStyleName;
-    root["use_theme_default_icons"] = config.useThemeDefaultIcons;
     root["custom_group_box_bar"] = config.customGroupBoxBar;
     root["group_box_header_style"]  = static_cast<int>(config.groupBoxHeaderStyle);
     root["group_box_boundary_style"] = static_cast<int>(config.groupBoxBoundaryStyle);
@@ -85,7 +84,8 @@ QJsonObject LC_FusionSkinsRepository::configToJson(const SkinConfig& config) con
 
     root["use_spin_box_progress_bar"] = config.useSpinBoxProgressBar;
     root["use_status_pill_chips"]      = config.useStatusPillChips;
-    root["use_floating_hud"]           = config.useFloatingHUD;
+    root["use_floating_hud_menus"]     = config.useFloatingHUDMenus;
+    root["use_floating_hud_docks"]     = config.useFloatingHUDDocks;
     root["close_button_color_policy"]  = static_cast<int>(config.closeButtonColorPolicy);
     root["custom_menu_tear_off"]       = config.customMenuTearOff;
     root["sync_checked_menu_state"]    = config.syncCheckedMenuState;
@@ -94,40 +94,17 @@ QJsonObject LC_FusionSkinsRepository::configToJson(const SkinConfig& config) con
     root["show_special_dock_icons"]    = config.showSpecialDockIcons;
 
     root["custom_dialog_title_bar"] = config.customDialogTitleBar;
-
-    auto serializeScheme = [](const ColorSchemeData &scheme) {
-        QJsonObject obj;
-        obj["qss"] = scheme.qss;
-        obj["contrast_policy"] = static_cast<int>(scheme.contrastPolicy);
-        obj["contrast_weight"] = static_cast<int>(scheme.contrastWeight);
-        obj["auto_calculate_3d_helpers"] = scheme.autoCalculate3DHelpers;
-        obj["bevel_seed_role"] = static_cast<int>(scheme.bevelSeedRole);
-
-        QJsonObject paletteObj;
-        forEachRoleState([&](const PaletteRoleMapping& row, const PaletteStateMapping& state) {
-            QJsonObject roleObj = paletteObj[row.name].toObject();
-            roleObj[state.name] = scheme.palette[row.name][state.name].name(QColor::HexArgb);
-            paletteObj[row.name] = roleObj;
-        });
-        obj["palette"] = paletteObj;
-        return obj;
-    };
-
-    root["light_scheme"] = serializeScheme(config.light);
-    root["dark_scheme"] = serializeScheme(config.dark);
-
     return root;
 }
 
-bool LC_FusionSkinsRepository::configFromJson(const QJsonObject& json, SkinConfig& config) const {
+bool LC_FusionSkinsRepository::configFromJson(const QJsonObject& json, ControlStyleConfig& config) const {
+    config.name = json["name"].toString();
     config.styleArchetype = static_cast<StyleArchetype>(json["style_archetype"].toInt(static_cast<int>(StyleArchetype::ClassicFusion)));
     config.boxDecoration  = static_cast<BoxDecoration>(json["box_decoration"].toInt(static_cast<int>(BoxDecoration::DividingHairline)));
     config.customDockTitleBar = json["custom_dock_title_bar"].toBool(false);
     config.dockTitleBarStyle  = static_cast<DockTitleBarStyle>(json["dock_title_style"].toInt(static_cast<int>(DockTitleBarStyle::Native)));
     config.accentedScrollbars = json["accented_scrollbars"].toBool(false);
     config.transparentScrollbars = json["transparent_scrollbars"].toBool(false);
-    config.linkedIconStyleName  = json["linked_icon_style"].toString("Default");
-    config.useThemeDefaultIcons = json["use_theme_default_icons"].toBool(true);
     config.customGroupBoxBar   = json["custom_group_box_bar"].toBool(false);
     config.groupBoxHeaderStyle  = static_cast<GroupBoxHeaderStyle>(json["group_box_header_style"].toInt(static_cast<int>(GroupBoxHeaderStyle::Plain)));
     config.groupBoxBoundaryStyle = static_cast<GroupBoxBoundaryStyle>(json["group_box_boundary_style"].toInt(static_cast<int>(GroupBoxBoundaryStyle::Full)));
@@ -175,7 +152,8 @@ bool LC_FusionSkinsRepository::configFromJson(const QJsonObject& json, SkinConfi
 
     config.useSpinBoxProgressBar = json["use_spin_box_progress_bar"].toBool(false);
     config.useStatusPillChips      = json["use_status_pill_chips"].toBool(false);
-    config.useFloatingHUD        = json["use_floating_hud"].toBool(false);
+    config.useFloatingHUDMenus   = json["use_floating_hud_menus"].toBool(false);
+    config.useFloatingHUDDocks   = json["use_floating_hud_docks"].toBool(false);
     config.closeButtonColorPolicy = static_cast<CloseButtonColorPolicy>(
         json["close_button_color_policy"].toInt(static_cast<int>(CloseButtonColorPolicy::AccentColor))
     );
@@ -188,23 +166,5 @@ bool LC_FusionSkinsRepository::configFromJson(const QJsonObject& json, SkinConfi
 
     config.customDialogTitleBar = json["custom_dialog_title_bar"].toBool(false);
 
-    auto deserializeScheme = [](const QJsonObject &obj, ColorSchemeData &scheme) {
-        scheme.qss = obj["qss"].toString();
-        scheme.contrastPolicy = static_cast<ContrastPolicy>(obj["contrast_policy"].toInt(static_cast<int>(ContrastPolicy::Standard)));
-        scheme.contrastWeight = static_cast<ContrastWeight>(obj["contrast_weight"].toInt(static_cast<int>(ContrastWeight::Balanced)));
-        scheme.autoCalculate3DHelpers = obj["auto_calculate_3d_helpers"].toBool(true);
-        scheme.bevelSeedRole = static_cast<QPalette::ColorRole>(obj["bevel_seed_role"].toInt(static_cast<int>(QPalette::Button)));
-
-        QJsonObject paletteObj = obj["palette"].toObject();
-        forEachRoleState([&](const PaletteRoleMapping& row, const PaletteStateMapping& state) {
-            QJsonObject roleObj = paletteObj[row.name].toObject();
-            QString hexColor = roleObj[state.name].toString();
-            auto color = !hexColor.isEmpty() ? QColor(hexColor) : Qt::white;
-            scheme.palette[row.name][state.name] = color;
-        });
-    };
-
-    deserializeScheme(json["light_scheme"].toObject(), config.light);
-    deserializeScheme(json["dark_scheme"].toObject(), config.dark);
     return true;
 }

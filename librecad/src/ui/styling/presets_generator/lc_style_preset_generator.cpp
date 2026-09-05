@@ -22,30 +22,46 @@
 
 #include "lc_style_preset_generator.h"
 
-#include "lc_palette_color_utils.h"
-#include "lc_icons_color_utils.h"
 #include <QDir>
-#include <QDateTime>
-#include <qrandom.h>
+#include <QSet>
+#include <QRandomGenerator>
 
 #include "lc_fusion_skins_repository.h"
+#include "lc_icons_color_utils.h"
 #include "lc_icons_style_repository.h"
 #include "lc_metrics_repository.h"
+#include "lc_palette_color_utils.h"
+#include "lc_palette_repository.h"
 #include "lc_style_metrics_utils.h"
 #include "lc_typography_repository.h"
+#include "lc_ui_style_manager.h"
 #include "rs_debug.h"
 
-LC_StylePresetGenerator::LC_StylePresetGenerator(const QString &skinsOutputDir, const QString &iconsOutputDir)
-    : m_skinsDir(skinsOutputDir)
-    , m_iconsDir(iconsOutputDir) {
-    m_skinsRepo = std::make_unique<LC_FusionSkinsRepository>(m_skinsDir);
-    m_iconsRepo = std::make_unique<LC_IconsStyleRepository>(m_iconsDir);
+LC_StylePresetGenerator::LC_StylePresetGenerator(LC_UIStyleManager* styleManager)
+    : LC_StylePresetGenerator(styleManager ? styleManager->getStyleConfigurationBaseDir() : QString()) {}
+
+LC_StylePresetGenerator::LC_StylePresetGenerator(const QString& baseConfigDir)
+    : LC_StylePresetGenerator(baseConfigDir + "/palettes",
+                              baseConfigDir + "/skins",
+                              baseConfigDir + "/icons",
+                              baseConfigDir + "/typography",
+                              baseConfigDir + "/metrics") {}
+
+LC_StylePresetGenerator::LC_StylePresetGenerator(const QString& palettesDir,
+                                                 const QString& skinsDir,
+                                                 const QString& iconsDir,
+                                                 const QString& typographyDir,
+                                                 const QString& metricsDir) {
+    m_paletteRepo    = std::make_unique<LC_PaletteRepository>(palettesDir);
+    m_skinsRepo      = std::make_unique<LC_FusionSkinsRepository>(skinsDir);
+    m_iconsRepo      = std::make_unique<LC_IconsStyleRepository>(iconsDir);
+    m_typographyRepo = std::make_unique<LC_TypographyRepository>(typographyDir);
+    m_metricsRepo    = std::make_unique<LC_MetricsRepository>(metricsDir);
 }
 
 LC_StylePresetGenerator::~LC_StylePresetGenerator() = default;
 
-int LC_StylePresetGenerator::generateSkins(int count) {
-    // 1. Color Hues definitions (H, S, V)
+int LC_StylePresetGenerator::generatePalettes(int count) {
     struct ColorBase { QString label; int h; int s; int v; QStringList adjectives; };
     const QList<ColorBase> bases = {
         { "Slate",  210, 20,  180, { "Steel", "Industrial", "Graphite", "Titanium", "Obsidian" } },
@@ -58,7 +74,40 @@ int LC_StylePresetGenerator::generateSkins(int count) {
         { "Sepia",  48,  15,  190, { "Sand", "Sepia", "Desert", "Flint", "Parchment" } }
     };
 
-    // 2. Style Archetype Combinations
+    const QStringList paletteNouns = { "Palette", "Harmonic", "Theme", "Canvas", "Spectrum", "Tone" };
+
+    int generatedCount = 0;
+    for (int i = 0; i < count; ++i) {
+        const ColorBase& colorBase = bases[i % bases.size()];
+        const QString adjective = colorBase.adjectives[(i / bases.size()) % colorBase.adjectives.size()];
+        const QString noun = paletteNouns[i % paletteNouns.size()];
+        QString paletteName = QString("%1 %2").arg(adjective, noun);
+        if (i >= bases.size() * paletteNouns.size()) {
+            paletteName += QString(" #%1").arg(i + 1);
+        }
+
+        PaletteConfig config;
+        config.name = paletteName;
+
+        QColor baseColor;
+        baseColor.setHsv(colorBase.h, colorBase.s, colorBase.v);
+        LC_PaletteColorUtils::generateHarmonizedTheme(baseColor, config);
+
+        // Apply distinct contrast policies and weights for variety
+        config.light.contrastPolicy = static_cast<ContrastPolicy>(i % 4);
+        config.dark.contrastPolicy  = static_cast<ContrastPolicy>(i % 4);
+        config.light.contrastWeight = static_cast<ContrastWeight>((i % 3) + 1);
+        config.dark.contrastWeight  = static_cast<ContrastWeight>((i % 3) + 1);
+
+        QString path;
+        if (m_paletteRepo->save(paletteName, config, path)) {
+            generatedCount++;
+        }
+    }
+    return generatedCount;
+}
+
+int LC_StylePresetGenerator::generateSkins(int count) {
     struct StyleCombination { StyleArchetype arch; BoxDecoration dec; QStringList nouns; };
     const QList<StyleCombination> styles = {
         { StyleArchetype::FlatModern,    BoxDecoration::Frameless,         { "Minimal", "Flat", "Clean", "Draft" } },
@@ -69,19 +118,21 @@ int LC_StylePresetGenerator::generateSkins(int count) {
         { StyleArchetype::AccentOutline, BoxDecoration::ActiveAccentFrame, { "Outline", "Stark", "Accent", "Neon" } }
     };
 
+    const QStringList styleAdjectives = { "Modern", "Classic", "Refined", "Pro", "Compact", "Solid", "Tactile", "Fluid" };
+
     int generatedCount = 0;
 
     for (int i = 0; i < count; ++i) {
-        // Symmetrical Selection: Cycle through hues and styles to guarantee maximum visual variety
-        const ColorBase &colorBase = bases[i % bases.size()];
-        const StyleCombination &styleComb = styles[(i / bases.size()) % styles.size()];
+        const StyleCombination& styleComb = styles[i % styles.size()];
+        const QString adjective = styleAdjectives[(i / styles.size()) % styleAdjectives.size()];
+        const QString noun = styleComb.nouns[(i / 2) % styleComb.nouns.size()];
+        QString styleName = QString("%1 %2").arg(adjective, noun);
+        if (i >= styles.size() * 2) {
+            styleName += QString(" #%1").arg(i + 1);
+        }
 
-        QString adjective = colorBase.adjectives[(i / (bases.size() * styles.size())) % colorBase.adjectives.size()];
-        QString noun = styleComb.nouns[(i / 2) % styleComb.nouns.size()];
-        QString themeName = QString("%1 %2").arg(adjective, noun);
-
-        SkinConfig config;
-        config.name = themeName;
+        ControlStyleConfig config;
+        config.name = styleName;
         config.styleArchetype = styleComb.arch;
         config.boxDecoration  = styleComb.dec;
 
@@ -90,15 +141,17 @@ int LC_StylePresetGenerator::generateSkins(int count) {
         config.dockTitleBarStyle  = static_cast<DockTitleBarStyle>(i % 6);
         config.accentedScrollbars = (i % 2 == 0);
         config.transparentScrollbars = (i % 3 == 0);
+        config.customSplitterGrip = (i % 2 == 0);
+        config.splitterGripStyle  = static_cast<SplitterGripStyle>(i % 5);
+        config.branchIndicatorStyle = static_cast<BranchIndicatorStyle>(i % 5);
+        config.customGroupBoxBar  = (i % 2 == 0);
+        config.groupBoxHeaderStyle = static_cast<GroupBoxHeaderStyle>(i % 5);
+        config.useSegmentedToolButtons = (i % 2 == 0);
+        config.useFocusedInputGlow = (i % 2 == 0);
+        config.useStatusPillChips = (i % 2 == 0);
 
-        // 3. Generate the light/dark ColorSchemeData palettes
-        QColor baseColor;
-        baseColor.setHsv(colorBase.h, colorBase.s, colorBase.v);
-        LC_PaletteColorUtils::generateHarmonizedTheme(baseColor, config);
-
-        // 4. Save using the updated Skins Repository
         QString path;
-        if (m_skinsRepo->save(themeName, config, path)) {
+        if (m_skinsRepo->save(styleName, config, path)) {
             generatedCount++;
         }
     }
@@ -184,28 +237,28 @@ int LC_StylePresetGenerator::generateIconStyles(int count, bool shortWheel) {
         { "Slate Blue",  QColor("#708090") }
     };
 
-    QList<AccentBase> accentBases = shortWheel ? accentBasesShort: accentBasesLarge;
+    const QList<AccentBase>& accentBases = shortWheel ? accentBasesShort : accentBasesLarge;
 
     QSet<QString> generatedNames;
     int generatedCount = 0;
 
     for (int i = 0; i < 5000 && generatedCount < count; ++i) {
         const auto &base = accentBases[i % accentBases.size()];
-        IconContrastMode contrastMode = static_cast<IconContrastMode>((i / accentBases.size()) % 3);
-        AccentHarmonizationPolicy policy = static_cast<AccentHarmonizationPolicy>((i / (accentBases.size() * 3)) % 2);
+        const auto contrastMode = static_cast<IconContrastMode>((i / accentBases.size()) % 3);
+        const auto policy = static_cast<AccentHarmonizationPolicy>((i / (accentBases.size() * 3)) % 2);
 
         // Extract HSV and apply controlled random jitter
         int h, s, v;
         base.accent.getHsv(&h, &s, &v);
         if (h < 0) h = 120;
 
-        int hJitter = QRandomGenerator::global()->bounded(-5, 6);
-        int sJitter = QRandomGenerator::global()->bounded(-10, 11);
-        int vJitter = QRandomGenerator::global()->bounded(-10, 11);
+        const int hJitter = QRandomGenerator::global()->bounded(-5, 6);
+        const int sJitter = QRandomGenerator::global()->bounded(-10, 11);
+        const int vJitter = QRandomGenerator::global()->bounded(-10, 11);
 
-        int finalH = (h + hJitter + 360) % 360;
-        int finalS = qBound(50, s + sJitter, 255);
-        int finalV = qBound(80, v + vJitter, 255);
+        const int finalH = (h + hJitter + 360) % 360;
+        const int finalS = qBound(50, s + sJitter, 255);
+        const int finalV = qBound(80, v + vJitter, 255);
 
         QColor jitteredAccent;
         jitteredAccent.setHsv(finalH, finalS, finalV);
@@ -213,12 +266,12 @@ int LC_StylePresetGenerator::generateIconStyles(int count, bool shortWheel) {
         // Generate unique names
         QString modeStr = (contrastMode == IconContrastMode::Soft) ? "Soft" :
                           (contrastMode == IconContrastMode::Balanced) ? "Balanced" : "Stark";
-        QString policyStr = (policy == AccentHarmonizationPolicy::ComplementaryShift) ? "Complement" : "Active";
+        const QString policyStr = (policy == AccentHarmonizationPolicy::ComplementaryShift) ? "Complement" : "Active";
         QString styleName = QString("%1 %2 %3").arg(base.label, modeStr, policyStr);
 
         // Symmetrical Uniqueness Loop: If the name is already taken, append a sequential suffix
         int suffix = 2;
-        QString baseStyleName = styleName;
+        const QString baseStyleName = styleName;
         while (generatedNames.contains(styleName) || m_iconsRepo->exists(styleName)) {
             styleName = QString("%1 #%2").arg(baseStyleName).arg(suffix++);
         }
@@ -228,8 +281,8 @@ int LC_StylePresetGenerator::generateIconStyles(int count, bool shortWheel) {
         style.name = styleName;
         style.autoCalculateStates = true;
 
-        QColor bgDark(30, 30, 30);
-        QColor bgLight(245, 245, 245);
+        const QColor bgDark(30, 30, 30);
+        const QColor bgLight(245, 245, 245);
 
         QColor darkMain, darkAccent, darkAccentChecked, darkBack;
         LC_IconsColorUtils::harmonizeSeeds(jitteredAccent, true, bgDark, contrastMode, policy,
@@ -300,6 +353,8 @@ int LC_StylePresetGenerator::generateTypography(int count) {
         config.menus.setup(0, false, false);
         config.buttons.setup((i % 2 == 0) ? -1 : 0, false, false);
         config.inputs.setup(0, false, false);
+        config.genericDockTitle.setup(0, false, false);
+        config.specialDockTitle.setup(0, (i % 2 == 0), false);
         config.technical.setup(0, false, false);
 
         QString path;

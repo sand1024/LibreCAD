@@ -45,7 +45,7 @@ bool LC_CustomStyleHelper::loadStyleSheet(const QString& path) {
         QFile file(path);
         if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
             auto content = file.readAll();
-            auto contentString = QString::fromLatin1(content);
+            auto contentString = QString::fromUtf8(content);
             qApp->setStyleSheet(contentString);
             return true;
         }

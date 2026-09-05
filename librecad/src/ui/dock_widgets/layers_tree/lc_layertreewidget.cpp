@@ -33,6 +33,7 @@
 #include "lc_layertreemodel_options.h"
 #include "lc_layertreeoptionsdialog.h"
 #include "lc_layertreeview.h"
+#include "lc_search_line_edit.h"
 #include "lc_widgets_common.h"
 #include "qc_applicationwindow.h"
 #include "qg_actionhandler.h"
@@ -145,12 +146,12 @@ QLayout *LC_LayerTreeWidget::initFilterAndSettingsSection(){
     layFiltering->setSpacing(2);
 
     // lineEdit to filter layer list with RegEx
-    m_matchLayerName = new QLineEdit(this);
-    m_matchLayerName->setReadOnly(false);
-    m_matchLayerName->setPlaceholderText(tr("Filter"));
-    m_matchLayerName->setClearButtonEnabled(true);
-    m_matchLayerName->setToolTip(tr("Looking for matching layer names"));
-    connect(m_matchLayerName, &QLineEdit::textChanged, this, &LC_LayerTreeWidget::slotFilteringMaskChanged);
+    m_leMatchLayerName = new LC_SearchLineEdit(this);
+    m_leMatchLayerName->setReadOnly(false);
+    m_leMatchLayerName->setPlaceholderText(tr("Filter"));
+    // m_leMatchLayerName->setClearButtonEnabled(true);
+    m_leMatchLayerName->setToolTip(tr("Looking for matching layer names"));
+    connect(m_leMatchLayerName, &QLineEdit::textChanged, this, &LC_LayerTreeWidget::slotFilteringMaskChanged);
 
     // TODO - in general, it is possible to use persistent settings for the state, yet not sure it is reasonable
     m_matchModeCheckBox = new QCheckBox(this);
@@ -159,7 +160,7 @@ QLayout *LC_LayerTreeWidget::initFilterAndSettingsSection(){
     m_matchModeCheckBox->setChecked(true);
     connect(m_matchModeCheckBox, &QCheckBox::clicked, this, &LC_LayerTreeWidget::slotFilteringMaskChanged);
 
-    layFiltering->addWidget(m_matchLayerName);
+    layFiltering->addWidget(m_leMatchLayerName);
     layFiltering->addWidget(m_matchModeCheckBox);
 
     // settings button
@@ -214,7 +215,7 @@ QLayout *LC_LayerTreeWidget::initButtonsBar(){
 
     // expand all layers
     but = new QToolButton(this);
-    but->setIcon(QIcon(":/icons/order.lci"));
+    but->setIcon(QIcon(":/icons/expand_all.lci"));
 
     but->setToolTip(tr("Expand All"));
     connect(but, &QToolButton::clicked, this, &LC_LayerTreeWidget::expandAllLayers);
@@ -223,7 +224,7 @@ QLayout *LC_LayerTreeWidget::initButtonsBar(){
 
     // collapse all layers
     but = new QToolButton(this);
-    but->setIcon(QIcon(":/icons/upmost.lci"));
+    but->setIcon(QIcon(":/icons/collapse_all.lci"));
     but->setToolTip(tr("Collapse All"));
     connect(but, &QToolButton::clicked, this, &LC_LayerTreeWidget::collapseAllLayers);
     layButtons->addWidget(but/*, 10*/);
@@ -231,7 +232,7 @@ QLayout *LC_LayerTreeWidget::initButtonsBar(){
 
     // expand all layers
     but = new QToolButton(this);
-    but->setIcon(QIcon(":/icons/dim_aligned.lci"));
+    but->setIcon(QIcon(":/icons/collapse_secondary.lci"));
     but->setToolTip(tr("Collapse Secondary"));
     connect(but, &QToolButton::clicked, this, &LC_LayerTreeWidget::collapseSecondaryLayers);
     layButtons->addWidget(but);
@@ -292,6 +293,10 @@ QLayout *LC_LayerTreeWidget::initButtonsBar(){
     m_btnListMode = but;
     updateToolBarButtons();
     return layButtons;
+}
+
+template <typename>
+constexpr auto LC_LayerTreeWidget::qt_create_metaobjectdata() {
 }
 
 /**
@@ -616,7 +621,7 @@ void LC_LayerTreeWidget::slotTreeClicked(const QModelIndex &layerIdx /*const QSt
  * Simply notifies model about filtering change and updates model and ui
  */
 void LC_LayerTreeWidget::slotFilteringMaskChanged() const {
-    const QString mask = m_matchLayerName->text();
+    const QString mask = m_leMatchLayerName->text();
     const bool highlightMode = m_matchModeCheckBox->isChecked();
     m_layerTreeModel->setFilteringRegexp(mask, highlightMode);
     update();

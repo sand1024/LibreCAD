@@ -78,12 +78,10 @@ bool LC_EventFilterFloatingHUD::eventFilter(QObject* watched, QEvent* event) {
         return false; // do not consume — let Qt finish its setup
     }
     if (event->type() == QEvent::Show) {
-        // Safe early return: If the custom floating HUD is disabled, let standard Qt render native windows
-        if (style() && !style()->m_useFloatingHUD) {
+        if (style() != nullptr && !style()->useFloatingHUDMenusEnabled()) {
             return false;
         }
 
-        // Extract original menu metadata before relocating the native handle
         const QPoint pos = widget->pos();
         const QString title = widget->windowTitle();
         const QList<QAction*> actions = widget->actions();

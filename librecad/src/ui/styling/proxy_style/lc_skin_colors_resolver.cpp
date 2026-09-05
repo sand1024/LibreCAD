@@ -110,7 +110,7 @@ LC_SkinColorsResolver::LC_SkinColorsResolver() {
 
 LC_SkinColorsResolver::~LC_SkinColorsResolver() = default;
 
-void LC_SkinColorsResolver::setSkin(const SkinConfig& skin) {
+void LC_SkinColorsResolver::setSkin(const ControlStyleConfig& skin) {
     m_skin = skin;
 
     m_isFlat = (skin.styleArchetype == StyleArchetype::FlatModern || skin.styleArchetype == StyleArchetype::AccentOutline);
@@ -1055,6 +1055,7 @@ SkinColors LC_SkinColorsResolver::resolveToolButtonDescriptor(const QStyleOption
     const bool sunken = (option->state & QStyle::State_Sunken);
     const bool checked = (option->state & QStyle::State_On);
     const bool hovered = (option->state & QStyle::State_MouseOver);
+    const bool autoRaise = (option->state & QStyle::State_AutoRaise);
 
     if (sunken || checked) {
         if (checked && !sunken) {
@@ -1091,8 +1092,17 @@ SkinColors LC_SkinColorsResolver::resolveToolButtonDescriptor(const QStyleOption
             buttonDesc.button.glassMidEnd = buttonDesc.button.glassHoverMidEnd;
             buttonDesc.button.glassEnd = buttonDesc.button.glassHoverEnd;
         }
-    }
-    else {
+    } else if (autoRaise) {
+        // Flat autoRaise button when idle: transparent background and no borders
+        buttonDesc.common.bgStart = Qt::transparent;
+        buttonDesc.common.bgEnd = Qt::transparent;
+        buttonDesc.common.useGradient = false;
+        buttonDesc.common.useGlassyGloss = false;
+        buttonDesc.frame.hasFullBorder = false;
+        buttonDesc.frame.hasTopBottomBorder = false;
+        buttonDesc.frame.hasSideBorders = false;
+        buttonDesc.frame.hasLeftAccentBar = false;
+    } else {
         buttonDesc.common.bgStart = buttonDesc.button.bgButton;
         buttonDesc.common.bgEnd = buttonDesc.button.bgButtonEnd;
     }

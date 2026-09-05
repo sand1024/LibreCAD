@@ -29,6 +29,7 @@
 #include "rs_document.h"
 #include "rs_layerlistlistener.h"
 
+class LC_SearchLineEdit;
 class RS_Graphic;
 class QCheckBox;
 class QToolButton;
@@ -119,7 +120,7 @@ protected:
     QLayout* getTopLevelLayout() const override;
 private:
     RS_LayerList* m_layerList{nullptr};
-    QLineEdit* m_matchLayerName{nullptr};
+    LC_SearchLineEdit* m_leMatchLayerName{nullptr};
     QCheckBox* m_matchModeCheckBox{nullptr};
     LC_LayerTreeView* m_layerTreeView{nullptr};
     LC_LayerTreeModel* m_layerTreeModel{nullptr};

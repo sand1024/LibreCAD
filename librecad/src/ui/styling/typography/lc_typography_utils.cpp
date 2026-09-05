@@ -26,7 +26,7 @@
 #include <QFont>
 
 void LC_TypographyUtils::initializeDefaultConfig(FontConfig& config) {
-    config.name       = "Default Typography";
+    config.name = DEFAULT_THEME_NAME;
     config.mainFamily = "Segoe UI";
     config.mainSize   = 10;
 
@@ -43,7 +43,7 @@ void LC_TypographyUtils::initializeDefaultConfig(FontConfig& config) {
     config.technical.setup(0, false, false);
 }
 
-
+// fixme - sand - call it on startup before style setup?
 void LC_TypographyUtils::initializeWithSystem(FontConfig &config) {
     config.name = "System Standard Typography";
 

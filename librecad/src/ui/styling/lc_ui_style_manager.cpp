@@ -34,7 +34,7 @@
 #include "lc_settings_app_styling.h"
 #include "lc_settings_paths.h"
 #include "lc_settings_types.h"
-#include "lc_settings_widget.h"
+#include "lc_palette_repository.h"
 #include "lc_style_metrics_utils.h"
 #include "lc_typography_repository.h"
 #include "lc_typography_utils.h"
@@ -71,22 +71,15 @@ QString LC_UIStyleManager::getStyleConfigurationBaseDir() const {
 
 
 void LC_UIStyleManager::initializeRepositories() {
-    QString baseDir = getStyleConfigurationBaseDir();
+    const QString baseDir = getStyleConfigurationBaseDir();
 
-    // Initialize repositories with their specific subdirectories under the base directory
+    m_paletteRepository     = std::make_unique<LC_PaletteRepository>(baseDir + "/palettes");
     m_fusionSkinsRepository = std::make_unique<LC_FusionSkinsRepository>(baseDir + "/skins");
     m_iconStylesRepository  = std::make_unique<LC_IconsStyleRepository>(baseDir + "/icons");
     m_typographyRepository  = std::make_unique<LC_TypographyRepository>(baseDir + "/typography");
     m_metricsRepository     = std::make_unique<LC_MetricsRepository>(baseDir + "/metrics");
 
-    m_importExportHelper    = std::make_unique<LC_WorkspaceImportExportHelper>(
-        m_fusionSkinsRepository.get(),
-        m_iconStylesRepository.get(),
-        m_typographyRepository.get(),
-        m_metricsRepository.get()
-    );
-
-    // Perform synchronous index handshakes for all repositories
+    m_paletteRepository->initializeIndex();
     m_fusionSkinsRepository->initializeIndex();
     m_iconStylesRepository->initializeIndex();
     m_typographyRepository->initializeIndex();
@@ -102,51 +95,15 @@ void LC_UIStyleManager::reloadStyleConfiguration() {
 void LC_UIStyleManager::initialize(QC_ApplicationWindow* appWindow) {
     initializeRepositories();
 
-    m_customStyleHelper = std::make_unique<LC_CustomStyleHelper>(appWindow);
-    bool allowStyle = isStyleAllowed();
-    QString activeStyleName = getActiveStyle();
-
-    if (allowStyle && !activeStyleName.isEmpty()) {
-        if (activeStyleName.toLower() == "fusion") {
-            bool isDarkMode = resolveIsDarkMode();
-
-            SkinConfig skin;
-            StyleMetricsConfig metrics;
-            FontConfig font;
-
-            // Load configurations individually with fallback defaults
-            QString activeSkin = getActiveSkin();
-            if (activeSkin.isEmpty() || !m_fusionSkinsRepository->loadByKey(activeSkin, skin)) {
-                LC_PaletteColorUtils::initializeDefaultConfig(skin);
-            }
-
-            QString activeMetrics = getActiveMetrics();
-            if (activeMetrics.isEmpty() || !m_metricsRepository->loadByKey(activeMetrics, metrics)) {
-                LC_StyleMetricsUtils::initializeDefault(metrics);
-            }
-
-            QString activeTypography = getActiveTypography();
-            if (activeTypography.isEmpty() || !m_typographyRepository->loadByKey(activeTypography, font)) {
-                LC_TypographyUtils::initializeDefaultConfig(font);
-            }
-
-            applyThemeToApplication(skin, metrics, font, isDarkMode);
-        } else {
-            // Symmetrical: load native non-Fusion styles
-            QStyle* nativeStyle = QStyleFactory::create(activeStyleName);
-            if (nativeStyle) {
-                QApplication::setStyle(nativeStyle);
-                QApplication::setPalette(nativeStyle->standardPalette());
-            }
-            qApp->setStyleSheet("");
-
-            // Apply global typography and icons on non-Fusion platforms
-            applyGlobalTypographyAndIcons();
-        }
-    } else {
-        // Style disabled fallback
-        applyGlobalTypographyAndIcons();
+    if (QApplication::style() != nullptr) {
+        m_nativeSystemStyleName = QApplication::style()->objectName();
+        m_nativeSystemPalette   = QApplication::style()->standardPalette();
     }
+
+    m_customStyleHelper = std::make_unique<LC_CustomStyleHelper>(appWindow);
+
+    applyActiveStyleAndTheme();
+
 }
 bool LC_UIStyleManager::isStyleAllowed() const {
     return CFG_AppStyling::o_AllowStyle;
@@ -173,6 +130,15 @@ void LC_UIStyleManager::setThemeModeOverride(ThemeModeOverride mode) {
 QString LC_UIStyleManager::getActiveStyleSheet() const {
     return CFG_AppStyling::o_StyleSheet;
 }
+
+QString LC_UIStyleManager::getActivePalette() const {
+    return CFG_AppStyling::o_ActivePalette;
+}
+
+void LC_UIStyleManager::setActivePalette(const QString& name) {
+    CFG_AppStyling::o_ActivePalette = name;
+}
+
 void LC_UIStyleManager::setActiveStyleSheet(const QString &sheet) {
     CFG_AppStyling::o_StyleSheet = sheet;
 }
@@ -229,14 +195,16 @@ void LC_UIStyleManager::saveIconColorsOptions(LC_IconColorsOptions &options) con
 // --- Import/Export Profile Facade ---
 bool LC_UIStyleManager::importProfile(const QString& importFilePath,
                                       QString& outProfileName,
-                                      QString& outSkinName,
+                                      QString& outPaletteName,
+                                      QString& outControlStyleName,
                                       QString& outIconStyleName,
                                       QString& outTypographyName,
                                       QString& outMetricsName) const {
     if (m_importExportHelper) {
         return m_importExportHelper->importProfile(importFilePath,
                                                    outProfileName,
-                                                   outSkinName,
+                                                   outPaletteName,
+                                                   outControlStyleName,
                                                    outIconStyleName,
                                                    outTypographyName,
                                                    outMetricsName);
@@ -246,54 +214,60 @@ bool LC_UIStyleManager::importProfile(const QString& importFilePath,
 
 bool LC_UIStyleManager::exportProfile(const QString& exportFilePath,
                                       const QString& profileName,
-                                      const SkinConfig* skin,
+                                      const PaletteConfig* palette,
+                                      const ControlStyleConfig* controlStyle,
                                       const IconStyleConfig* icon,
                                       const FontConfig* font,
                                       const StyleMetricsConfig* metrics) const {
     if (m_importExportHelper) {
-        return m_importExportHelper->exportProfile(exportFilePath, profileName, skin, icon, font, metrics);
+        return m_importExportHelper->exportProfile(exportFilePath,
+                                                   profileName,
+                                                   palette,
+                                                   controlStyle,
+                                                   icon,
+                                                   font,
+                                                   metrics);
     }
     return false;
 }
 
 // --- High-Level Theme & Style Application Actions ---
-bool LC_UIStyleManager::applyThemeToApplication(const SkinConfig &skin,
+bool LC_UIStyleManager::applyThemeToApplication(const PaletteConfig &paletteConfig,
+                                                const ControlStyleConfig &controlStyle,
                                                 const StyleMetricsConfig &metrics,
                                                 const FontConfig &font,
                                                 bool isDarkMode) {
-    const ColorSchemeData &scheme = isDarkMode ? skin.dark : skin.light;
+    const ColorSchemeData &scheme = isDarkMode ? paletteConfig.dark : paletteConfig.light;
 
-    // 1. Build the custom QPalette using the skin's colors and visual style archetype
+    // 1. Build custom QPalette using scheme colors and controlStyle's visual archetype
     const QPalette palette = LC_PaletteColorUtils::createPaletteFromScheme(
-        scheme, skin.styleArchetype, LC_PaletteColorUtils::CVDType::Normal
+        scheme, controlStyle.styleArchetype, LC_PaletteColorUtils::CVDType::Normal
     );
 
-    // 2. Set the custom palette FIRST so that widgets being recursively polished
-    // inside QApplication::setStyle() resolve the correct custom colors.
+    // 2. Set custom palette FIRST so widgets polished in setStyle resolve correct colors
     QApplication::setPalette(palette);
 
-    // 3. Set the dynamic proxy style and configure metrics
+    // 3. Set dynamic proxy style and configure metrics & control decorators
     QStyle *baseStyle = QStyleFactory::create("Fusion");
     auto* proxyStyle = new LC_ProxyStyle(baseStyle, metrics);
-    proxyStyle->setSkin(skin);
+    proxyStyle->setSkin(controlStyle);
     proxyStyle->setFont(font);
     QApplication::setStyle(proxyStyle);
 
-    // 4. Set the custom palette AGAIN because setStyle() internally resets
-    // the application-wide palette to the style's standardPalette() to match guidelines.
+    // 4. Set custom palette AGAIN (setStyle resets to style->standardPalette())
     QApplication::setPalette(palette);
 
     // 5. Apply typography offsets
     applyThemeTypography(font);
 
-    // 6. Set QCSS overrides
+    // 6. Set QCSS overrides from scheme
     qApp->setStyleSheet(scheme.qss);
 
     // 7. Apply icons styling
-    auto linkedIconsTheme = skin.useThemeDefaultIcons ? skin.linkedIconStyleName : "";
+    const auto linkedIconsTheme = paletteConfig.useThemeDefaultIcons ? paletteConfig.linkedIconStyleName : "";
     applyActiveOrThemeIconStyle(linkedIconsTheme, isDarkMode);
 
-    // 8. Safely trigger an update on all top-level windows to paint with the correct style
+    // 8. Force update on top-level widgets
     for (QWidget *widget : QApplication::topLevelWidgets()) {
         widget->update();
     }
@@ -302,93 +276,108 @@ bool LC_UIStyleManager::applyThemeToApplication(const SkinConfig &skin,
 }
 
 void LC_UIStyleManager::applyActiveStyleAndTheme() {
-    bool allowStyle = isStyleAllowed();
+    const bool allowStyle = isStyleAllowed();
     if (allowStyle) {
-        QString styleName = getActiveStyle();
-        if (styleName == "Fusion") {
+        const QString styleName = getActiveStyle();
+        if (styleName.compare(QStringLiteral("Fusion"), Qt::CaseInsensitive) == 0) {
             applyActiveThemeOverride();
         } else {
             QStyle *nativeStyle = QStyleFactory::create(styleName);
-            if (nativeStyle) {
+            if (nativeStyle != nullptr) {
                 QApplication::setStyle(nativeStyle);
                 QApplication::setPalette(nativeStyle->standardPalette());
             }
             qApp->setStyleSheet("");
+            applyActiveStyleSheet();
             applyGlobalTypographyAndIcons();
         }
     } else {
-        applyGlobalTypographyAndIcons();
+        resetToNativeStyle();
     }
+    updateSemanticColorsCache();
 }
 
 void LC_UIStyleManager::applyActiveThemeOverride() {
-    bool allowStyle = isStyleAllowed();
+    const bool allowStyle = isStyleAllowed();
     if (!allowStyle) return;
 
-    QString styleName = getActiveStyle();
+    const QString styleName = getActiveStyle();
     if (styleName != "Fusion") return;
 
-    bool isDarkMode = resolveIsDarkMode();
+    const bool isDarkMode = resolveIsDarkMode();
 
-    SkinConfig skin;
+    PaletteConfig palette;
+    ControlStyleConfig skin;
     StyleMetricsConfig metrics;
     FontConfig font;
 
-    QString activeSkin = getActiveSkin();
-    if (activeSkin.isEmpty() || !m_fusionSkinsRepository->loadByKey(activeSkin, skin)) {
-        LC_PaletteColorUtils::initializeDefaultConfig(skin);
+    const QString activePalette = getActivePalette();
+    if (activePalette.isEmpty() || !m_paletteRepository->loadByKey(activePalette, palette)) {
+        LC_PaletteColorUtils::initializeDefaultPalette(palette);
     }
 
-    QString activeMetrics = getActiveMetrics();
+    const QString activeSkin = getActiveSkin();
+    if (activeSkin.isEmpty() || !m_fusionSkinsRepository->loadByKey(activeSkin, skin)) {
+        LC_PaletteColorUtils::initializeDefaultControlStyle(skin);
+    }
+
+    const QString activeMetrics = getActiveMetrics();
     if (activeMetrics.isEmpty() || !m_metricsRepository->loadByKey(activeMetrics, metrics)) {
         LC_StyleMetricsUtils::initializeDefault(metrics);
     }
 
-    QString activeTypography = getActiveTypography();
+    const QString activeTypography = getActiveTypography();
     if (activeTypography.isEmpty() || !m_typographyRepository->loadByKey(activeTypography, font)) {
         LC_TypographyUtils::initializeDefaultConfig(font);
     }
 
-    applyThemeToApplication(skin, metrics, font, isDarkMode);
+    applyThemeToApplication(palette, skin, metrics, font, isDarkMode);
 }
 
 void LC_UIStyleManager::applyActiveIconStyle() const {
-    bool isDarkMode = resolveIsDarkMode();
-    QString activeIconStyle = "Default";
-    bool ignoreIconStyleInSkin = getIgnoreIconStylingInTheme();
+    const bool isDarkMode = resolveIsDarkMode();
+    QString linkedIconStyle;
 
-    if (ignoreIconStyleInSkin) {
-        activeIconStyle = getActiveIconStyle();
-    } else {
-        activeIconStyle = getActiveIconStyle();
+    if (!getIgnoreIconStylingInTheme() && m_paletteRepository != nullptr) {
+        PaletteConfig activePalette;
+        if (m_paletteRepository->loadByKey(getActivePalette(), activePalette) &&
+            activePalette.useThemeDefaultIcons) {
+            linkedIconStyle = activePalette.linkedIconStyleName;
+            }
     }
 
-    if (activeIconStyle == "Default") {
-        LC_IconsStyleManager::applyThemeLinkedIcons("Default", true, isDarkMode);
-    } else {
-        IconStyleConfig iconStyle;
-        if (m_iconStylesRepository->loadByKey(activeIconStyle, iconStyle)) {
-            LC_IconColorsOptions iconOptions;
-            iconOptions.loadSettings();
-            iconOptions.importStyleConfig(iconStyle, isDarkMode);
-            LC_IconsStyleManager::applyStyle(iconOptions, isDarkMode);
-        }
-    }
+    // Delegates directly to applyActiveOrThemeIconStyle
+    applyActiveOrThemeIconStyle(linkedIconStyle, isDarkMode);
 }
 
 void LC_UIStyleManager::applyTransientTheme(bool allowStyle,
                          const QString& styleName,
+                                            const QString& paletteKey,
                          const QString& skinKey,
                          const QString& metricsKey,
                          const QString& typographyKey,
                          const QString& iconStyleKey,
                          ThemeModeOverride themeModeOverride) {
 
+    if (!allowStyle) {
+        resetToNativeStyle();
+
+        FontConfig font;
+        if (typographyKey.isEmpty() || typographyKey == DEFAULT_THEME_KEY || !m_typographyRepository->loadByKey(typographyKey, font)) {
+            LC_TypographyUtils::initializeDefaultConfig(font);
+        }
+        applyThemeTypography(font);
+
+        const bool isDarkMode = LC_PaletteColorUtils::isPaletteDarkMode();
+        applyActiveOrThemeIconStyle(iconStyleKey, isDarkMode);
+        return;
+    }
 
     bool isDarkMode = false;
 
-    if (allowStyle && styleName.toLower() == "fusion") {
-        SkinConfig skin;
+    if (styleName.toLower() == "fusion") {
+        PaletteConfig palette;
+        ControlStyleConfig skin;
         StyleMetricsConfig metrics;
         FontConfig font;
 
@@ -397,30 +386,32 @@ void LC_UIStyleManager::applyTransientTheme(bool allowStyle,
         } else if (themeModeOverride == ThemeModeOverride::ForceLight) {
             isDarkMode = false;
         } else {
-            // Fallback to checking the system standard color scheme
             isDarkMode = LC_PaletteColorUtils::isSystemInDarkMode();
         }
 
-
-        // 1. Resolve and load the Skin configuration from repository
-        if (skinKey.isEmpty() || skinKey == DEFAULT_THEME_KEY || !m_fusionSkinsRepository->loadByKey(skinKey, skin)) {
-            LC_PaletteColorUtils::initializeDefaultConfig(skin);
+        if (paletteKey.isEmpty() || paletteKey == DEFAULT_THEME_KEY || !m_paletteRepository->loadByKey(paletteKey, palette)) {
+            PaletteConfig tempSkin;
+            LC_PaletteColorUtils::initializeDefaultPalette(tempSkin);
+            palette.light = tempSkin.light;
+            palette.dark = tempSkin.dark;
+            palette.name = DEFAULT_THEME_NAME;
         }
 
-        // 2. Resolve and load the Metrics configuration from repository
+        if (skinKey.isEmpty() || skinKey == DEFAULT_THEME_KEY || !m_fusionSkinsRepository->loadByKey(skinKey, skin)) {
+            skin = ControlStyleConfig();
+            skin.name = DEFAULT_THEME_NAME;
+        }
+
         if (metricsKey.isEmpty() || metricsKey == DEFAULT_THEME_KEY || !m_metricsRepository->loadByKey(metricsKey, metrics)) {
             LC_StyleMetricsUtils::initializeDefault(metrics);
         }
 
-        // 3. Resolve and load the Typography configuration from repository
         if (typographyKey.isEmpty() || typographyKey == DEFAULT_THEME_KEY || !m_typographyRepository->loadByKey(typographyKey, font)) {
             LC_TypographyUtils::initializeDefaultConfig(font);
         }
 
-        // 4. Apply the computed 3-tuple configuration globally
-        applyThemeToApplication(skin, metrics, font, isDarkMode);
+        applyThemeToApplication(palette, skin, metrics, font, isDarkMode);
     } else {
-        // Native platform styles
         QStyle* nativeStyle = QStyleFactory::create(styleName);
         if (nativeStyle) {
             QApplication::setStyle(nativeStyle);
@@ -428,7 +419,6 @@ void LC_UIStyleManager::applyTransientTheme(bool allowStyle,
         }
         qApp->setStyleSheet("");
 
-        // Typography still applies globally on native styles
         FontConfig font;
         if (typographyKey.isEmpty() || typographyKey == DEFAULT_THEME_KEY || !m_typographyRepository->loadByKey(typographyKey, font)) {
             LC_TypographyUtils::initializeDefaultConfig(font);
@@ -438,7 +428,6 @@ void LC_UIStyleManager::applyTransientTheme(bool allowStyle,
         isDarkMode = LC_PaletteColorUtils::isPaletteDarkMode();
     }
 
-    // Apply the requested Icon Style globally
     applyActiveOrThemeIconStyle(iconStyleKey, isDarkMode);
 }
 
@@ -566,4 +555,42 @@ void LC_UIStyleManager::applyThemeTypography(const FontConfig &activeFont) {
     techFont.setItalic(activeFont.technical.italic);
     QApplication::setFont(techFont, "QTextEdit");
     QApplication::setFont(techFont, "QPlainTextEdit");
+}
+
+void LC_UIStyleManager::resetToNativeStyle() {
+    QStyle* nativeStyle = nullptr;
+    if (!m_nativeSystemStyleName.isEmpty()) {
+        nativeStyle = QStyleFactory::create(m_nativeSystemStyleName);
+    }
+
+    if (nativeStyle != nullptr) {
+        QApplication::setStyle(nativeStyle);
+        QApplication::setPalette(nativeStyle->standardPalette());
+    } else {
+        QApplication::setPalette(m_nativeSystemPalette);
+    }
+
+    qApp->setStyleSheet("");
+
+    applyGlobalTypographyAndIcons();
+
+    for (QWidget* widget : QApplication::topLevelWidgets()) {
+        widget->update();
+    }
+}
+
+
+void LC_UIStyleManager::updateSemanticColorsCache() {
+    const bool isDark = resolveIsDarkMode();
+    const bool useFusion = isStyleAllowed() && (getActiveStyle() == "Fusion");
+
+    PaletteConfig activePalette;
+    bool hasPalette = false;
+    if (useFusion && m_paletteRepository != nullptr) {
+        hasPalette = m_paletteRepository->loadByKey(getActivePalette(), activePalette);
+    }
+
+    const ColorSchemeData& scheme = isDark ? activePalette.dark : activePalette.light;
+
+    LC_PaletteColorUtils::resolveSemanticColors(hasPalette, scheme, isDark);
 }

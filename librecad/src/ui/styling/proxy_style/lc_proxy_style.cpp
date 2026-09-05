@@ -20,8 +20,6 @@
  ******************************************************************************/
 
 #include "lc_proxy_style.h"
-#include "lc_proxy_style.h"
-#include "lc_proxy_style.h"
 #include <algorithm> // for qBound
 
 #include <QAbstractButton>
@@ -87,7 +85,6 @@
 #include "lc_skin_widgets_layout_resolver.h"
 #include "rs_debug.h"
 
-
 #ifdef Q_OS_WIN
 #include <windows.h>
 #include <windowsx.h>
@@ -104,26 +101,25 @@ namespace DEBUG_PROXY {
 namespace {
     thread_local bool g_inSegmentedDraw = false;
 
-   // Style Engine Internal Properties
-    constexpr auto PROP_CACHED_HIGHLIGHT_ROW     = "lcfs_cachedHighlightRow";
+    // Style Engine Internal Properties
+    constexpr auto PROP_CACHED_HIGHLIGHT_ROW = "lcfs_cachedHighlightRow";
 
-    constexpr auto PROP_STYLE_FILTER_INSTALLED   = "lcfs_styleEventFilterInstalled";
+    constexpr auto PROP_STYLE_FILTER_INSTALLED = "lcfs_styleEventFilterInstalled";
 
-    constexpr auto PROP_IS_WRAPPED               = "lcfs_isWrapped";
-    constexpr auto PROP_HAS_CMD_ALIASES          = "lcfs_hasCmdAliases";
-    constexpr auto PROP_MAX_CMD_WIDTH            = "lcfs_maxCmdWidth";
-    constexpr auto PROP_MAX_SHORTCUT_WIDTH       = "lcfs_maxShortcutWidth";
-
+    constexpr auto PROP_IS_WRAPPED = "lcfs_isWrapped";
+    constexpr auto PROP_HAS_CMD_ALIASES = "lcfs_hasCmdAliases";
+    constexpr auto PROP_MAX_CMD_WIDTH = "lcfs_maxCmdWidth";
+    constexpr auto PROP_MAX_SHORTCUT_WIDTH = "lcfs_maxShortcutWidth";
 
     // LibreCAD Core / Standard Qt Properties
-    constexpr auto PROP_DO_HOVER_ROW             = "_doHoverRow";
+    constexpr auto PROP_DO_HOVER_ROW = "_doHoverRow";
 
-    constexpr auto PROP_CMD_LINE                 = "cmdLine";
+    constexpr auto PROP_CMD_LINE = "cmdLine";
 
-    constexpr auto PROP_SPINBOX_PTR              = "lcfs_spinbox_ptr";
-    constexpr auto PROP_SPINBOX_VALUE            = "value";
-    constexpr auto PROP_SPINBOX_MIN              = "minimum";
-    constexpr auto PROP_SPINBOX_MAX              = "maximum";
+    constexpr auto PROP_SPINBOX_PTR = "lcfs_spinbox_ptr";
+    constexpr auto PROP_SPINBOX_VALUE = "value";
+    constexpr auto PROP_SPINBOX_MIN = "minimum";
+    constexpr auto PROP_SPINBOX_MAX = "maximum";
 
 #ifdef Q_OS_WIN
     // Thread-safe static resolver to cache dwmapi.dll exactly once globally
@@ -133,52 +129,47 @@ namespace {
         if (!resolved) {
             const HMODULE dwmDll = ::LoadLibraryW(L"dwmapi.dll");
             if (dwmDll) {
-                ptr = reinterpret_cast<DwmSetWindowAttributePtr>(
-                    ::GetProcAddress(dwmDll, "DwmSetWindowAttribute"));
+                ptr = reinterpret_cast<DwmSetWindowAttributePtr>(::GetProcAddress(dwmDll, "DwmSetWindowAttribute"));
             }
             resolved = true;
         }
         return ptr;
     }
 
-
 #endif
 
     class LCPainterGuard {
     public:
-        explicit LCPainterGuard(QPainter *p, const bool antiAlias = true) : m_painter(p) {
+        explicit LCPainterGuard(QPainter* p, const bool antiAlias = true) : m_painter(p) {
             m_painter->save();
             m_painter->setRenderHint(QPainter::Antialiasing, antiAlias);
         }
+
         ~LCPainterGuard() {
             m_painter->restore();
         }
+
     private:
-        QPainter *m_painter;
+        QPainter* m_painter;
     };
 
-
-
-    inline QRectF crispRect(const QRect &rect) {
+    inline QRectF crispRect(const QRect& rect) {
         return QRectF(rect).adjusted(0.5, 0.5, -0.5, -0.5);
     }
 
-
-    inline QRectF crispRect(const QRect &rect, const qreal crispOffset) {
+    inline QRectF crispRect(const QRect& rect, const qreal crispOffset) {
         return QRectF(rect).adjusted(crispOffset, crispOffset, -crispOffset, -crispOffset);
     }
 
-
-    QString cleanMnemonic(const QString &text) {
+    QString cleanMnemonic(const QString& text) {
         QString cleaned = text;
         cleaned.remove('&');
         return cleaned.trimmed();
     }
 
-
-    QAction* findActionForOption(const QStyleOptionMenuItem *option, const QWidget *widget) {
-        if (const auto *menu = qobject_cast<const QMenu*>(widget)) {
-            for (QAction *action : menu->actions()) {
+    QAction* findActionForOption(const QStyleOptionMenuItem* option, const QWidget* widget) {
+        if (const auto* menu = qobject_cast<const QMenu*>(widget)) {
+            for (QAction* action : menu->actions()) {
                 if (menu->actionGeometry(action) == option->rect) {
                     return action;
                 }
@@ -186,12 +177,11 @@ namespace {
         }
         return nullptr;
     }
-
 }
 
 // ================= CONSTRUCTORS & CACHE ENGINE COHESION =================
 
-LC_ProxyStyle::LC_ProxyStyle(QStyle *baseStyle, const StyleMetricsConfig &metrics)
+LC_ProxyStyle::LC_ProxyStyle(QStyle* baseStyle, const StyleMetricsConfig& metrics)
     : QProxyStyle(baseStyle), m_metrics(metrics) {
     m_scaledGeometryProvider.setBaseMetrics(metrics);
     setMetrics(metrics);
@@ -209,19 +199,19 @@ void LC_ProxyStyle::doSetStyleArtefact(const StyleArchetype archetype) {
     m_isAccentOnline = (archetype == StyleArchetype::AccentOutline);
 }
 
-void LC_ProxyStyle::setSkin(const SkinConfig& skin) {
+void LC_ProxyStyle::setSkin(const ControlStyleConfig& skin) {
     doSetStyleArtefact(skin.styleArchetype);
-    m_boxDecoration         = skin.boxDecoration;
-    m_customDockTitleBar    = skin.customDockTitleBar;
-    m_dockTitleBarStyle     = skin.dockTitleBarStyle;
-    m_accentedScrollbars    = skin.accentedScrollbars;
+    m_boxDecoration = skin.boxDecoration;
+    m_customDockTitleBar = skin.customDockTitleBar;
+    m_dockTitleBarStyle = skin.dockTitleBarStyle;
+    m_accentedScrollbars = skin.accentedScrollbars;
     m_transparentScrollbars = skin.transparentScrollbars;
-    m_customGroupBoxBar     = skin.customGroupBoxBar;
-    m_groupBoxHeaderStyle   = skin.groupBoxHeaderStyle;
+    m_customGroupBoxBar = skin.customGroupBoxBar;
+    m_groupBoxHeaderStyle = skin.groupBoxHeaderStyle;
     m_groupBoxBoundaryStyle = skin.groupBoxBoundaryStyle;
-    m_groupBoxUseAccent      = skin.groupBoxUseAccent;
+    m_groupBoxUseAccent = skin.groupBoxUseAccent;
     m_showActiveRowSpotlight = skin.showActiveRowSpotlight;
-    m_showItemViewHover      = skin.showItemViewHover;
+    m_showItemViewHover = skin.showItemViewHover;
     m_showTreeConnectingLines = skin.showTreeConnectingLines;
     m_branchIndicatorStyle = skin.branchIndicatorStyle;
     m_useFocusedInputGlow = skin.useFocusedInputGlow;
@@ -254,34 +244,35 @@ void LC_ProxyStyle::setSkin(const SkinConfig& skin) {
 
     // Forward skin variables directly to the descriptor cache
     m_skinColorsResolver.setSkin(skin);
-    m_useFloatingHUD          = skin.useFloatingHUD;
-    m_closeButtonColorPolicy  = skin.closeButtonColorPolicy;
-    m_customMenuTearOff     = skin.customMenuTearOff;
+    m_useFloatingHUDMenus = skin.useFloatingHUDMenus;
+    m_useFloatingHUDDocks = skin.useFloatingHUDDocks;
+    m_closeButtonColorPolicy = skin.closeButtonColorPolicy;
+    m_customMenuTearOff = skin.customMenuTearOff;
     m_syncCheckedMenuState = skin.syncCheckedMenuState;
 
-    m_showGenericDockIcons    = skin.showGenericDockIcons;
-    m_showSpecialDockIcons    = skin.showSpecialDockIcons;
-    m_customDialogTitleBar    = skin.customDialogTitleBar;
+    m_showGenericDockIcons = skin.showGenericDockIcons;
+    m_showSpecialDockIcons = skin.showSpecialDockIcons;
+    m_customDialogTitleBar = skin.customDialogTitleBar;
 
-    for (QWidget *widget : QApplication::allWidgets()) {
-        if (auto *tb = qobject_cast<QToolBar*>(widget)) {
+    for (QWidget* widget : QApplication::allWidgets()) {
+        if (auto* tb = qobject_cast<QToolBar*>(widget)) {
             // Recalculate toolbar geometry dynamically via sizes returned by sizeFromContents()
             if (m_customToolbarOverflowGrip && m_autoPopupToolbarOverflow && tb->isMovable()) {
-                if (auto *extButton = findToolbarExtensionButton(tb)) {
+                if (auto* extButton = findToolbarExtensionButton(tb)) {
                     extButton->hide();
                 }
-            } else {
-                if (auto *extButton = findToolbarExtensionButton(tb)) {
+            }
+            else {
+                if (auto* extButton = findToolbarExtensionButton(tb)) {
                     extButton->show();
                 }
             }
             tb->updateGeometry();
         }
-        if (auto *dock = qobject_cast<QDockWidget*>(widget)) {
+        if (auto* dock = qobject_cast<QDockWidget*>(widget)) {
             setupPermanentTitleBar(dock);
         }
-        if (widget && widget->inherits("LC_DetachedMenu") && !m_useFloatingHUD) {
-            // Cleanly reclaim active custom menu palettes when floating HUD features are disabled
+        if (widget != nullptr && widget->inherits("LC_DetachedMenu") && !m_useFloatingHUDMenus) {
             widget->close();
         }
     }
@@ -289,7 +280,7 @@ void LC_ProxyStyle::setSkin(const SkinConfig& skin) {
     invalidateCache();
 }
 
-void LC_ProxyStyle::setMetrics(const StyleMetricsConfig &metrics) {
+void LC_ProxyStyle::setMetrics(const StyleMetricsConfig& metrics) {
     m_metrics = metrics;
     m_scaledGeometryProvider.setBaseMetrics(metrics);
     invalidateCache();
@@ -332,7 +323,7 @@ void LC_ProxyStyle::polish(QApplication* app) {
     invalidateCache();
 }
 
-void LC_ProxyStyle::unpolish(QApplication *app) {
+void LC_ProxyStyle::unpolish(QApplication* app) {
     QProxyStyle::unpolish(app);
 
     if (app) {
@@ -370,7 +361,7 @@ void LC_ProxyStyle::unpolish(QApplication *app) {
     }
 }
 
-void LC_ProxyStyle::unpolish(QWidget *widget) {
+void LC_ProxyStyle::unpolish(QWidget* widget) {
     if (auto* dialog = qobject_cast<QDialog*>(widget)) {
         // If the dialog is modal and currently visible, do NOT unpolish its flags or delete
         // its title bar because setWindowFlags() calls hide(), which forces QDialog::exec() to return!
@@ -397,10 +388,9 @@ void LC_ProxyStyle::unpolish(QWidget *widget) {
         }
     }
 
-
-    if (auto *menu = qobject_cast<QMenu*>(widget)) {
+    if (auto* menu = qobject_cast<QMenu*>(widget)) {
         // Safe, stateless cleanup of the substitution event filter from standard menus
-        if (auto *filter = menu->findChild<LC_EventFilterFloatingHUD*>(QString(), Qt::FindDirectChildrenOnly)) {
+        if (auto* filter = menu->findChild<LC_EventFilterFloatingHUD*>(QString(), Qt::FindDirectChildrenOnly)) {
             menu->removeEventFilter(filter);
             filter->deleteLater();
         }
@@ -413,24 +403,22 @@ void LC_ProxyStyle::unpolish(QWidget *widget) {
     QProxyStyle::unpolish(widget);
 }
 
-void LC_ProxyStyle::polish(QPalette &palette) {
+void LC_ProxyStyle::polish(QPalette& palette) {
     QProxyStyle::polish(palette);
     invalidateCache();
 }
 
-
-void LC_ProxyStyle::polish(QWidget *widget) {
+void LC_ProxyStyle::polish(QWidget* widget) {
     QProxyStyle::polish(widget);
 
     if (widget) {
-
         // QTipLabel is the private native label class instantiated inside QToolTip
         if (widget->inherits("QTipLabel")) {
             if (m_customToolTipCard) {
                 // Apply padding margins here so the widget's native sizeHint() incorporates them
-                const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(widget);
-                widget->setContentsMargins(geoms.tooltip.marginLeft, geoms.tooltip.marginTop,
-                                           geoms.tooltip.marginRight, geoms.tooltip.marginBottom);
+                const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(widget);
+                widget->setContentsMargins(geoms.tooltip.marginLeft, geoms.tooltip.marginTop, geoms.tooltip.marginRight,
+                                           geoms.tooltip.marginBottom);
             }
 
             // Symmetrically enable mouse transparency so the cursor passes right through the tooltip.
@@ -439,15 +427,9 @@ void LC_ProxyStyle::polish(QWidget *widget) {
         }
 
         // cache Input Component status (using fast qobject_cast check)
-        const bool isInput = qobject_cast<QLineEdit*>(widget) ||
-                       qobject_cast<QAbstractSpinBox*>(widget) ||
-                       qobject_cast<QComboBox*>(widget) ||
-                       qobject_cast<QTextEdit*>(widget) ||
-                       qobject_cast<QPlainTextEdit*>(widget) ||
-                       qobject_cast<QCheckBox*>(widget) ||
-                       qobject_cast<QRadioButton*>(widget) ||
-                       qobject_cast<QTabBar*>(widget) ||
-                       qobject_cast<QAbstractItemView*>(widget);
+        const bool isInput = qobject_cast<QLineEdit*>(widget) || qobject_cast<QAbstractSpinBox*>(widget) || qobject_cast<QComboBox*>(widget)
+            || qobject_cast<QTextEdit*>(widget) || qobject_cast<QPlainTextEdit*>(widget) || qobject_cast<QCheckBox*>(widget) || qobject_cast
+            <QRadioButton*>(widget) || qobject_cast<QTabBar*>(widget) || qobject_cast<QAbstractItemView*>(widget);
 
         if (isInput) {
             widget->setAttribute(Qt::WA_Hover, true);
@@ -470,14 +452,13 @@ void LC_ProxyStyle::polish(QWidget *widget) {
             }
         }
 
-
-        if (auto *toolBar = qobject_cast<QToolBar*>(widget)) {
+        if (auto* toolBar = qobject_cast<QToolBar*>(widget)) {
             toolBar->setAttribute(Qt::WA_Hover, true);
         }
 
-        if (auto *toolButton = qobject_cast<QToolButton*>(widget)) {
-            const bool isPopup = (toolButton->popupMode() == QToolButton::InstantPopup ||
-                            toolButton->popupMode() == QToolButton::MenuButtonPopup);
+        if (auto* toolButton = qobject_cast<QToolButton*>(widget)) {
+            const bool isPopup = (toolButton->popupMode() == QToolButton::InstantPopup || toolButton->popupMode() ==
+                QToolButton::MenuButtonPopup);
             if (isPopup) {
                 toolButton->setAttribute(Qt::WA_Hover, true);
             }
@@ -488,7 +469,7 @@ void LC_ProxyStyle::polish(QWidget *widget) {
             }
         }
 
-        if (auto *menuBar = qobject_cast<QMenuBar*>(widget)) {
+        if (auto* menuBar = qobject_cast<QMenuBar*>(widget)) {
             menuBar->setAttribute(Qt::WA_Hover, true);
             menuBar->setMouseTracking(true); // Enable mouse tracking natively to trigger QEvent::MouseMove on sweeps
         }
@@ -506,41 +487,38 @@ void LC_ProxyStyle::polish(QWidget *widget) {
             }
         }
 
-
         // 3. Identify and cache Window Title Button association
-        const bool isWindowTitleButton = (className == "QMdiSubWindow" || className == "QTitleBar" ||
-                                    className == "QMdi::ControllerWidget" || className == "ControllerWidget" ||
-                                    widget->inherits("QMdiSubWindow") || widget->inherits("QTitleBar") ||
-                                    widget->inherits("QMdi::ControllerWidget") ||
-                                    (widget->parentWidget() &&
-                                     (widget->parentWidget()->inherits("QMdiSubWindow") ||
-                                      widget->parentWidget()->inherits("QTitleBar") ||
-                                      widget->parentWidget()->inherits("QMdi::ControllerWidget") ||
-                                      widget->parentWidget()->metaObject()->className() == "QMdi::ControllerWidget" ||
-                                      widget->parentWidget()->metaObject()->className() == "QTitleBar")));
+        const bool isWindowTitleButton = (className == "QMdiSubWindow" || className == "QTitleBar" || className == "QMdi::ControllerWidget"
+            || className == "ControllerWidget" || widget->inherits("QMdiSubWindow") || widget->inherits("QTitleBar") || widget->
+            inherits("QMdi::ControllerWidget") || (widget->parentWidget() && (widget->parentWidget()->inherits("QMdiSubWindow") || widget->
+                parentWidget()->inherits("QTitleBar") || widget->parentWidget()->inherits("QMdi::ControllerWidget") || widget->
+                parentWidget()->metaObject()->className() == "QMdi::ControllerWidget" || widget->parentWidget()->metaObject()->className()
+                == "QTitleBar")));
         if (isWindowTitleButton) {
             widget->setProperty(PROP_IS_WINDOW_TITLE_BUTTON, true);
         }
 
         // 4. Identify and cache Item View row highlight behavior
-            if (auto *itemView = qobject_cast<QAbstractItemView*>(widget)) {
-                bool highlightWholeRow = false;
-                const QVariant prop = itemView->property(PROP_DO_HOVER_ROW);
-                if (prop.isValid()) {
-                    highlightWholeRow = prop.toBool();
-                } else {
-                    if (qobject_cast<const QTableView*>(itemView)) {
-                        highlightWholeRow = (itemView->selectionBehavior() == QAbstractItemView::SelectRows);
-                    } else if (const auto *treeView = qobject_cast<const QTreeView*>(itemView)) {
-                        highlightWholeRow = !m_isClassic || treeView->allColumnsShowFocus();
-                    }
-                }
-                itemView->setProperty(PROP_CACHED_HIGHLIGHT_ROW, highlightWholeRow);
+        if (auto* itemView = qobject_cast<QAbstractItemView*>(widget)) {
+            bool highlightWholeRow = false;
+            const QVariant prop = itemView->property(PROP_DO_HOVER_ROW);
+            if (prop.isValid()) {
+                highlightWholeRow = prop.toBool();
             }
+            else {
+                if (qobject_cast<const QTableView*>(itemView)) {
+                    highlightWholeRow = (itemView->selectionBehavior() == QAbstractItemView::SelectRows);
+                }
+                else if (const auto* treeView = qobject_cast<const QTreeView*>(itemView)) {
+                    highlightWholeRow = !m_isClassic || treeView->allColumnsShowFocus();
+                }
+            }
+            itemView->setProperty(PROP_CACHED_HIGHLIGHT_ROW, highlightWholeRow);
+        }
 
         // 5. Install event filter on standard labels to capture QEvent::Leave
-        if (auto *label = qobject_cast<QLabel*>(widget)) {
-            connect(label, &QLabel::linkHovered, this, [label](const QString &link) {
+        if (auto* label = qobject_cast<QLabel*>(widget)) {
+            connect(label, &QLabel::linkHovered, this, [label](const QString& link) {
                 const bool alreadyHovered = label->property(PROP_LINK_ACTIVE_HOVER).toBool();
 
                 if (!link.isEmpty()) {
@@ -559,13 +537,15 @@ void LC_ProxyStyle::polish(QWidget *widget) {
 
                         QString originalHtml = label->property(PROP_ORIGINAL_HTML).toString();
                         const QString hoverColor = label->palette().color(QPalette::Active, QPalette::Highlight).name();
-                        const QString hoveredHtml = QString("<style>a { color: %1; text-decoration: underline; }</style>").arg(hoverColor) + originalHtml;
+                        const QString hoveredHtml = QString("<style>a { color: %1; text-decoration: underline; }</style>").arg(hoverColor) +
+                            originalHtml;
 
                         label->setText(hoveredHtml);
                         label->blockSignals(false);
                         label->update();
                     });
-                } else {
+                }
+                else {
                     if (!alreadyHovered) {
                         return;
                     }
@@ -587,9 +567,7 @@ void LC_ProxyStyle::polish(QWidget *widget) {
 
         // Symmetrical Dialog / Window flash overrides
         const Qt::WindowFlags flags = widget->windowFlags();
-        const bool isTargetWindow = widget->isWindow() &&
-                              !flags.testFlag(Qt::Popup) &&
-                              !flags.testFlag(Qt::ToolTip);
+        const bool isTargetWindow = widget->isWindow() && !flags.testFlag(Qt::Popup) && !flags.testFlag(Qt::ToolTip);
 
         if (isTargetWindow) {
             if (!widget->property("lcfs_styleEventFilterInstalled").toBool()) {
@@ -619,7 +597,7 @@ void LC_ProxyStyle::polish(QWidget *widget) {
                         // long before QWidget::show_sys() calls ShowWindow()
                         if (isDarkTheme && !widget->isVisible()) {
                             constexpr BOOL cloak = TRUE;
-                        constexpr DWORD DWMWA_CLOAK = 13;
+                            constexpr DWORD DWMWA_CLOAK = 13;
                             setWindowAttr(hwnd, DWMWA_CLOAK, &cloak, sizeof(cloak));
                             widget->setProperty(PROP_STYLE_PRE_CLOAKED, true); // Mark that we pre-cloaked this window
                         }
@@ -643,32 +621,32 @@ void LC_ProxyStyle::polish(QWidget *widget) {
         }
 
         if (widget->inherits("QFontComboBox")) {
-            if (auto *fontCombo = qobject_cast<QFontComboBox*>(widget)) {
+            if (auto* fontCombo = qobject_cast<QFontComboBox*>(widget)) {
                 // Prevent Qt from querying and sizing every font in the OS on startup
                 fontCombo->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
 
                 // Enable uniform, batched popup rendering for large system font databases
-                if (auto *view = qobject_cast<QListView*>(fontCombo->view())) {
+                if (auto* view = qobject_cast<QListView*>(fontCombo->view())) {
                     view->setUniformItemSizes(true);
                     view->setLayoutMode(QListView::Batched);
                 }
             }
         }
 
-        if (auto *dock = qobject_cast<QDockWidget*>(widget)) {
+        if (auto* dock = qobject_cast<QDockWidget*>(widget)) {
             setupPermanentTitleBar(dock);
         }
 
-        if (m_useFloatingHUD) {
-            if (auto *menu = qobject_cast<QMenu*>(widget)) {
+        if (m_useFloatingHUDMenus) {
+            if (auto* menu = qobject_cast<QMenu*>(widget)) {
                 // Respect and preserve original CAD menu layout configurations; do NOT force tearable flags.
                 // Install the filter to intercept and swap QTornOffMenu when instantiated
                 menu->installEventFilter(new LC_EventFilterFloatingHUD(menu, this));
                 return;
             }
 
-            const bool isTearOff = (className == "QTornOffMenu" || className == "QTearOffMenu" ||
-                                    widget->inherits("QTornOffMenu") || widget->inherits("QTearOffMenu"));
+            const bool isTearOff = (className == "QTornOffMenu" || className == "QTearOffMenu" || widget->inherits("QTornOffMenu") || widget
+              ->inherits("QTearOffMenu"));
 
             if (isTearOff) {
                 // Direct event trapping for freshly-polished native tear-off windows
@@ -884,22 +862,22 @@ int LC_ProxyStyle::pixelMetric(const PixelMetric metric, const QStyleOption* opt
     return QProxyStyle::pixelMetric(metric, option, widget);
 }
 
-int LC_ProxyStyle::styleHint(const StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const {
+int LC_ProxyStyle::styleHint(const StyleHint hint, const QStyleOption* option, const QWidget* widget, QStyleHintReturn* returnData) const {
     switch (hint) {
         case SH_EtchDisabledText:
-        return m_metrics.flatDisabledText ? 0 : 1;
+            return m_metrics.flatDisabledText ? 0 : 1;
 
         case SH_UnderlineShortcut:
-        if (m_metrics.hideShortcutUnderlines) {
-            if (QApplication::activePopupWidget() || (m_mnemonicFilter && m_mnemonicFilter->showUnderlines())) {
-                return 1;
+            if (m_metrics.hideShortcutUnderlines) {
+                if (QApplication::activePopupWidget() || (m_mnemonicFilter && m_mnemonicFilter->showUnderlines())) {
+                    return 1;
+                }
+                return 0;
             }
-            return 0;
-        }
-        return 1; // Always show if the setting is disabled
+            return 1; // Always show if the setting is disabled
 
         case SH_Menu_AllowActiveAndDisabled:
-        return m_metrics.menuAllowActiveAndDisabled ? 1 : 0;
+            return m_metrics.menuAllowActiveAndDisabled ? 1 : 0;
 
         default:
             break;
@@ -907,67 +885,68 @@ int LC_ProxyStyle::styleHint(const StyleHint hint, const QStyleOption *option, c
     return QProxyStyle::styleHint(hint, option, widget, returnData);
 }
 
-QSize LC_ProxyStyle::sizeFromContents(const ContentsType type, const QStyleOption *option, const QSize &size, const QWidget *widget) const {
+QSize LC_ProxyStyle::sizeFromContents(const ContentsType type, const QStyleOption* option, const QSize& size, const QWidget* widget) const {
     QSize calculatedSize = QProxyStyle::sizeFromContents(type, option, size, widget);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(widget);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(widget);
 
     switch (type) {
         case CT_ItemViewItem:
-        calculatedSize.setHeight(calculatedSize.height() + geoms.scaledMetrics.itemViewRowPadding);
+            calculatedSize.setHeight(calculatedSize.height() + geoms.scaledMetrics.itemViewRowPadding);
             break;
 
         case CT_TabBarTab: {
-        const qreal totalExtraHeight = geoms.tab.activeExtraHeight + geoms.scaledMetrics.tabBarTabBaseOverlap;
-        calculatedSize.setHeight(calculatedSize.height() + static_cast<int>(totalExtraHeight));
+            const qreal totalExtraHeight = geoms.tab.activeExtraHeight + geoms.scaledMetrics.tabBarTabBaseOverlap;
+            calculatedSize.setHeight(calculatedSize.height() + static_cast<int>(totalExtraHeight));
             break;
-    }
+        }
 
         case CT_HeaderSection:
-        if (option && (option->state & State_Horizontal)) {
-            calculatedSize.setHeight(qMax(calculatedSize.height(), geoms.scaledMetrics.headerDefaultHeight));
-        } else {
-            calculatedSize.setWidth(qMax(calculatedSize.width(), geoms.scaledMetrics.headerDefaultHeight));
-        }
+            if (option && (option->state & State_Horizontal)) {
+                calculatedSize.setHeight(qMax(calculatedSize.height(), geoms.scaledMetrics.headerDefaultHeight));
+            }
+            else {
+                calculatedSize.setWidth(qMax(calculatedSize.width(), geoms.scaledMetrics.headerDefaultHeight));
+            }
             break;
 
         case CT_ToolButton: {
-        if (isToolbarExtensionButton(widget)) {
-            if (m_customToolbarOverflowGrip && m_autoPopupToolbarOverflow) {
-                if (const auto *button = qobject_cast<const QToolButton*>(widget)) {
-                    if (const auto *toolBar = qobject_cast<const QToolBar*>(button->parentWidget())) {
-                        if (toolBar->isMovable()) {
-                            return QSize(0, 0);
+            if (isToolbarExtensionButton(widget)) {
+                if (m_customToolbarOverflowGrip && m_autoPopupToolbarOverflow) {
+                    if (const auto* button = qobject_cast<const QToolButton*>(widget)) {
+                        if (const auto* toolBar = qobject_cast<const QToolBar*>(button->parentWidget())) {
+                            if (toolBar->isMovable()) {
+                                return QSize(0, 0);
+                            }
                         }
                     }
                 }
             }
-        }
-        if (const auto *toolOpt = qstyleoption_cast<const QStyleOptionToolButton*>(option)) {
-            const bool hasMenu = (toolOpt->features & QStyleOptionToolButton::HasMenu);
-            const bool isMenuButtonPopup = (toolOpt->features & QStyleOptionToolButton::MenuButtonPopup);
+            if (const auto* toolOpt = qstyleoption_cast<const QStyleOptionToolButton*>(option)) {
+                const bool hasMenu = (toolOpt->features & QStyleOptionToolButton::HasMenu);
+                const bool isMenuButtonPopup = (toolOpt->features & QStyleOptionToolButton::MenuButtonPopup);
 
-            if (hasMenu && !isMenuButtonPopup) {
-                const int indicatorWidth = pixelMetric(PM_MenuButtonIndicator, option, widget);
-                const int offset = indicatorWidth / 2;
-                calculatedSize.setWidth(calculatedSize.width() + offset);
-            }
-        }
-            break;
-    }
-
-        case CT_MenuItem: {
-        if (m_showMenuCommandAliases) {
-            int maxCmdWidth = 0;
-            int maxShortcutWidth = 0;
-            const QFont baseFont = widget ? widget->font() : QApplication::font();
-            if (getMenuCommandAliasInfo(widget, baseFont, maxCmdWidth, maxShortcutWidth)) {
-                if (maxCmdWidth > 0) {
-                    calculatedSize.setWidth(calculatedSize.width() + maxCmdWidth + geoms.ints.scale16);
+                if (hasMenu && !isMenuButtonPopup) {
+                    const int indicatorWidth = pixelMetric(PM_MenuButtonIndicator, option, widget);
+                    const int offset = indicatorWidth / 2;
+                    calculatedSize.setWidth(calculatedSize.width() + offset);
                 }
             }
-        }
             break;
-    }
+        }
+
+        case CT_MenuItem: {
+            if (m_showMenuCommandAliases) {
+                int maxCmdWidth = 0;
+                int maxShortcutWidth = 0;
+                const QFont baseFont = widget ? widget->font() : QApplication::font();
+                if (getMenuCommandAliasInfo(widget, baseFont, maxCmdWidth, maxShortcutWidth)) {
+                    if (maxCmdWidth > 0) {
+                        calculatedSize.setWidth(calculatedSize.width() + maxCmdWidth + geoms.ints.scale16);
+                    }
+                }
+            }
+            break;
+        }
 
         default:
             break;
@@ -975,12 +954,11 @@ QSize LC_ProxyStyle::sizeFromContents(const ContentsType type, const QStyleOptio
 
     return calculatedSize;
 }
+
 // ================= COHESIVE DISPATCHING PASSTHROUGH ENGINES =================
 
-void LC_ProxyStyle::drawPrimitive(const PrimitiveElement element,
-                                        const QStyleOption *option,
-                                        QPainter *painter,
-                                        const QWidget *widget) const {
+void LC_ProxyStyle::drawPrimitive(const PrimitiveElement element, const QStyleOption* option, QPainter* painter,
+                                  const QWidget* widget) const {
     if (m_isClassic) {
         QProxyStyle::drawPrimitive(element, option, painter, widget);
         return;
@@ -1125,16 +1103,14 @@ void LC_ProxyStyle::drawPrimitive(const PrimitiveElement element,
             break;
         }
         case PE_FrameMenu: {
-            if (m_useFloatingHUD && widget && widget->isWindow()) {
-                // Background and titlebar are drawn on-demand by LC_EventFilterFloatingHUD
+            if (m_useFloatingHUDMenus && widget != nullptr && widget->isWindow()) {
                 return;
             }
             break;
         }
         case PE_FrameDockWidget: {
-            const auto *dock = qobject_cast<const QDockWidget*>(widget);
-            if (m_useFloatingHUD && dock && dock->isFloating()) {
-                // Background and titlebar are drawn on-demand by LC_EventFilterFloatingHUD
+            const auto* dock = qobject_cast<const QDockWidget*>(widget);
+            if (m_useFloatingHUDDocks && dock != nullptr && dock->isFloating()) {
                 return;
             }
             break;
@@ -1150,13 +1126,9 @@ bool LC_ProxyStyle::isStatusPillNeeded(const QWidget* widget) const {
     return m_useStatusPillChips && widget && widget->property(PROP_USE_STATUS_PILL_CHIPS).toBool();
 }
 
-void LC_ProxyStyle::drawControl(const ControlElement element,
-                                const QStyleOption *option,
-                                QPainter *painter,
-                                const QWidget *widget) const {
-
+void LC_ProxyStyle::drawControl(const ControlElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget) const {
     if (element == CE_DockWidgetTitle) {
-        if (const auto *dwOpt = qstyleoption_cast<const QStyleOptionDockWidget*>(option)) {
+        if (const auto* dwOpt = qstyleoption_cast<const QStyleOptionDockWidget*>(option)) {
             // Apply custom draw if not Classic, OR if Classic but customDockTitleBar is active
             const bool shouldDrawCustom = (!m_isClassic || m_customDockTitleBar);
 
@@ -1166,7 +1138,6 @@ void LC_ProxyStyle::drawControl(const ControlElement element,
             }
         }
     }
-
 
     if (m_isClassic) {
         QProxyStyle::drawControl(element, option, painter, widget);
@@ -1197,7 +1168,7 @@ void LC_ProxyStyle::drawControl(const ControlElement element,
                 drawCustomToolbarOverflowIndicator(option, painter, widget);
                 return;
             }
-            if (const auto *toolOpt = qstyleoption_cast<const QStyleOptionToolButton*>(option)) {
+            if (const auto* toolOpt = qstyleoption_cast<const QStyleOptionToolButton*>(option)) {
                 const bool hasMenu = (toolOpt->features & QStyleOptionToolButton::HasMenu);
                 const bool isMenuButtonPopup = (toolOpt->features & QStyleOptionToolButton::MenuButtonPopup);
 
@@ -1208,7 +1179,8 @@ void LC_ProxyStyle::drawControl(const ControlElement element,
 
                     if (copy.direction == Qt::RightToLeft) {
                         copy.rect.setLeft(copy.rect.left() + offset);
-                    } else {
+                    }
+                    else {
                         copy.rect.setRight(copy.rect.right() - offset);
                     }
 
@@ -1297,12 +1269,10 @@ void LC_ProxyStyle::drawControl(const ControlElement element,
     QProxyStyle::drawControl(element, option, painter, widget);
 }
 
-void LC_ProxyStyle::drawComplexControl(const ComplexControl control,
-                                              const QStyleOptionComplex *option,
-                                              QPainter *painter,
-                                              const QWidget *widget) const {
+void LC_ProxyStyle::drawComplexControl(const ComplexControl control, const QStyleOptionComplex* option, QPainter* painter,
+                                       const QWidget* widget) const {
     if (control == CC_ScrollBar && (m_accentedScrollbars || m_transparentScrollbars)) {
-        if (const auto *scrollOpt = qstyleoption_cast<const QStyleOptionSlider*>(option)) {
+        if (const auto* scrollOpt = qstyleoption_cast<const QStyleOptionSlider*>(option)) {
             drawCustomScrollBar(scrollOpt, painter, widget);
             return;
         }
@@ -1315,57 +1285,57 @@ void LC_ProxyStyle::drawComplexControl(const ComplexControl control,
 
     switch (control) {
         case CC_ToolButton:
-        if (const auto *toolOpt = qstyleoption_cast<const QStyleOptionToolButton*>(option)) {
-            if (widget && widget->property(PROP_IS_DOCK_TITLE_BUTTON).toBool()) {
-                // Bypass standard draw for marked title bar buttons
-                drawCustomDockTitleButton(option, painter, widget);
-                return;
-            }
-            const QVariant neighborsVar = widget ? widget->property(PROP_GROUP_NEIGHBORS) : QVariant();
+            if (const auto* toolOpt = qstyleoption_cast<const QStyleOptionToolButton*>(option)) {
+                if (widget && widget->property(PROP_IS_DOCK_TITLE_BUTTON).toBool()) {
+                    // Bypass standard draw for marked title bar buttons
+                    drawCustomDockTitleButton(option, painter, widget);
+                    return;
+                }
+                const QVariant neighborsVar = widget ? widget->property(PROP_GROUP_NEIGHBORS) : QVariant();
                 const bool isSegmented = m_useSegmentedToolButtons && neighborsVar.isValid() && !isTitleOrDockButton(widget);
 
-            if (isSegmented) {
-                // 1. Draw the segmented background well, outer borders, and internal separators
-                drawSegmentedToolButton(toolOpt, painter, widget, neighborsVar.toInt());
+                if (isSegmented) {
+                    // 1. Draw the segmented background well, outer borders, and internal separators
+                    drawSegmentedToolButton(toolOpt, painter, widget, neighborsVar.toInt());
 
-                // 2. Execute base drawing with re-entry guard active so it only paints labels (icons/text)
-                g_inSegmentedDraw = true;
-                QProxyStyle::drawComplexControl(control, option, painter, widget);
-                g_inSegmentedDraw = false;
-                return;
+                    // 2. Execute base drawing with re-entry guard active so it only paints labels (icons/text)
+                    g_inSegmentedDraw = true;
+                    QProxyStyle::drawComplexControl(control, option, painter, widget);
+                    g_inSegmentedDraw = false;
+                    return;
+                }
             }
-        }
             break;
 
         case CC_GroupBox:
-        if (const auto *gbOpt = qstyleoption_cast<const QStyleOptionGroupBox*>(option)) {
-            const bool shouldDrawCustom = (!m_isClassic || m_customGroupBoxBar);
-            if (shouldDrawCustom) {
-                drawCustomGroupBox(gbOpt, painter, widget);
-                return;
+            if (const auto* gbOpt = qstyleoption_cast<const QStyleOptionGroupBox*>(option)) {
+                const bool shouldDrawCustom = (!m_isClassic || m_customGroupBoxBar);
+                if (shouldDrawCustom) {
+                    drawCustomGroupBox(gbOpt, painter, widget);
+                    return;
+                }
             }
-        }
             break;
 
         case CC_Slider:
-        if (const auto *sliderOpt = qstyleoption_cast<const QStyleOptionSlider*>(option)) {
-            drawCustomSlider(sliderOpt, painter, widget);
-            return;
-        }
+            if (const auto* sliderOpt = qstyleoption_cast<const QStyleOptionSlider*>(option)) {
+                drawCustomSlider(sliderOpt, painter, widget);
+                return;
+            }
             break;
 
         case CC_ComboBox:
-        if (const auto *cbOpt = qstyleoption_cast<const QStyleOptionComboBox*>(option)) {
-            drawCustomComboBox(cbOpt, painter, widget);
-            return;
-        }
+            if (const auto* cbOpt = qstyleoption_cast<const QStyleOptionComboBox*>(option)) {
+                drawCustomComboBox(cbOpt, painter, widget);
+                return;
+            }
             break;
 
         case CC_SpinBox:
-        if (const auto *spinOpt = qstyleoption_cast<const QStyleOptionSpinBox*>(option)) {
-            drawCustomSpinBox(spinOpt, painter, widget);
-            return;
-        }
+            if (const auto* spinOpt = qstyleoption_cast<const QStyleOptionSpinBox*>(option)) {
+                drawCustomSpinBox(spinOpt, painter, widget);
+                return;
+            }
             break;
 
         default:
@@ -1377,20 +1347,20 @@ void LC_ProxyStyle::drawComplexControl(const ComplexControl control,
 
 // ================= ESTABLISHED CACHE & VECTOR RESOLUTION ENGINE =================
 
-SkinColors LC_ProxyStyle::getCachedStyleDescriptor(const QPalette &palette, const QPalette::ColorGroup group) const {
+SkinColors LC_ProxyStyle::getCachedStyleDescriptor(const QPalette& palette, const QPalette::ColorGroup group) const {
     return m_skinColorsResolver.getDescriptor(palette, group);
 }
 
-const QFont& LC_ProxyStyle::getResolvedMonoFont(const QFont &baseFont) const {
+const QFont& LC_ProxyStyle::getResolvedMonoFont(const QFont& baseFont) const {
     return m_skinColorsResolver.getResolvedMonoFont(baseFont);
 }
 
-void LC_ProxyStyle::precomputeSegmentedGroupColors(QWidget *widget, const int totalGroups) const {
+void LC_ProxyStyle::precomputeSegmentedGroupColors(QWidget* widget, const int totalGroups) const {
     m_skinColorsResolver.precomputeSegmentedGroupColors(widget, totalGroups);
 }
 
 // Delegate standard icons through the descriptor cache
-QIcon LC_ProxyStyle::standardIcon(const StandardPixmap standardIcon, const QStyleOption *option, const QWidget *widget) const {
+QIcon LC_ProxyStyle::standardIcon(const StandardPixmap standardIcon, const QStyleOption* option, const QWidget* widget) const {
     // QIcon customIcon = m_skinColorsResolver.getStandardIcon(standardIcon, option, widget);
     // if (!customIcon.isNull()) {
     //     return customIcon;
@@ -1398,13 +1368,14 @@ QIcon LC_ProxyStyle::standardIcon(const StandardPixmap standardIcon, const QStyl
     // return QProxyStyle::standardIcon(standardIcon, option, widget);
 
     QStyleOption fallbackOpt;
-    const QStyleOption *actualOption = option;
+    const QStyleOption* actualOption = option;
 
     // Globally sanitize null option pointers passed by Qt's own internal widgets (e.g., QMdiSubWindow)
     if (!actualOption) {
         if (widget) {
             fallbackOpt.initFrom(widget);
-        } else {
+        }
+        else {
             fallbackOpt.palette = QApplication::palette();
             fallbackOpt.state = QStyle::State_Enabled | QStyle::State_Active;
         }
@@ -1423,8 +1394,7 @@ const SkinScaledGeometries& LC_ProxyStyle::getGeometries(const QWidget* widget) 
     return m_scaledGeometryProvider.getGeometries(widget);
 }
 
-void LC_ProxyStyle::drawParameterizedBox(QPainter *painter, const QRect &rect, const SkinColors &desc, const bool isVertical) const {
-
+void LC_ProxyStyle::drawParameterizedBox(QPainter* painter, const QRect& rect, const SkinColors& desc, const bool isVertical) const {
     // LC_ERR << "[drawParameterizedBox]"
     //       << " style=" << this
     //       << " x=" << rect.x()
@@ -1437,7 +1407,6 @@ void LC_ProxyStyle::drawParameterizedBox(QPainter *painter, const QRect &rect, c
     //       << " useGradient=" << desc.useGradient
     //       << " hasFullBorder=" << desc.hasFullBorder;
 
-
     if (desc.common.useGlassyGloss) {
         QLinearGradient glassGrad(rect.topLeft(), rect.bottomLeft());
         // Softened stops stretching across 13% of the control's height
@@ -1446,19 +1415,22 @@ void LC_ProxyStyle::drawParameterizedBox(QPainter *painter, const QRect &rect, c
         glassGrad.setColorAt(0.55, desc.button.glassMidEnd);
         glassGrad.setColorAt(1.0, desc.button.glassEnd);
         painter->fillRect(rect, glassGrad);
-    } else if (desc.common.useGradient) {
+    }
+    else if (desc.common.useGradient) {
         QLinearGradient grad(rect.topLeft(), rect.bottomLeft());
         grad.setColorAt(0.0, desc.common.bgStart);
         grad.setColorAt(1.0, desc.common.bgEnd);
         painter->fillRect(rect, grad);
-    } else {
+    }
+    else {
         painter->fillRect(rect, desc.common.bgStart);
     }
 
     if (desc.frame.hasFullBorder) {
         painter->setPen(desc.frame.borderTop);
         painter->drawRect(rect.adjusted(0, 0, -1, -1));
-    } else if (isVertical) {
+    }
+    else if (isVertical) {
         // Rotated Border Mapping:
         // Top/Bottom of horizontal bar map to Left/Right of vertical bar
         if (desc.frame.borderTop.isValid()) {
@@ -1478,37 +1450,40 @@ void LC_ProxyStyle::drawParameterizedBox(QPainter *painter, const QRect &rect, c
             painter->setPen(desc.frame.borderRight);
             painter->drawLine(rect.left(), rect.top(), rect.right(), rect.top());
         }
-    } else {
+    }
+    else {
         // Standard horizontal border drawing
         if (desc.frame.hasTopBottomBorder) {
-        if (desc.frame.borderTop.isValid()) {
-            painter->setPen(desc.frame.borderTop);
-            painter->drawLine(rect.left(), rect.top(), rect.right(), rect.top());
+            if (desc.frame.borderTop.isValid()) {
+                painter->setPen(desc.frame.borderTop);
+                painter->drawLine(rect.left(), rect.top(), rect.right(), rect.top());
+            }
+            if (desc.frame.borderBottom.isValid()) {
+                painter->setPen(desc.frame.borderBottom);
+                painter->drawLine(rect.left(), rect.bottom() - 1, rect.right(), rect.bottom() - 1);
+            }
         }
-        if (desc.frame.borderBottom.isValid()) {
-            painter->setPen(desc.frame.borderBottom);
-            painter->drawLine(rect.left(), rect.bottom() - 1, rect.right(), rect.bottom() - 1);
+        else if (desc.frame.hasSideBorders) {
+            if (desc.frame.borderLeft.isValid()) {
+                painter->setPen(desc.frame.borderLeft);
+                painter->drawLine(rect.left(), rect.top(), rect.left(), rect.bottom());
+            }
+            if (desc.frame.borderRight.isValid()) {
+                painter->setPen(desc.frame.borderRight);
+                painter->drawLine(rect.right() - 1, rect.top(), rect.right() - 1, rect.bottom());
+            }
         }
-    } else if (desc.frame.hasSideBorders) {
-        if (desc.frame.borderLeft.isValid()) {
-            painter->setPen(desc.frame.borderLeft);
-            painter->drawLine(rect.left(), rect.top(), rect.left(), rect.bottom());
-        }
-        if (desc.frame.borderRight.isValid()) {
-            painter->setPen(desc.frame.borderRight);
-            painter->drawLine(rect.right() - 1, rect.top(), rect.right() - 1, rect.bottom());
-        }
-    }
     }
 
     // Align the left IDE-like accent bar to the bottom of the widget in vertical mode
     if (desc.frame.hasLeftAccentBar && desc.frame.accentBarColor.isValid()) {
-        const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+        const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
         const int thickness = geoms.ints.scale3;
         if (isVertical) {
             const QRect sidebarRect(rect.left(), rect.bottom() - thickness, rect.width(), thickness);
             painter->fillRect(sidebarRect, desc.frame.accentBarColor);
-        } else {
+        }
+        else {
             const QRect sidebarRect(rect.left(), rect.top(), thickness, rect.height());
             painter->fillRect(sidebarRect, desc.frame.accentBarColor);
         }
@@ -1517,7 +1492,7 @@ void LC_ProxyStyle::drawParameterizedBox(QPainter *painter, const QRect &rect, c
 
 // ================= EXTRACTED WIDGET RENDERING HELPERS =================
 
-void LC_ProxyStyle::drawCustomPushButton(const QStyleOptionButton *option, QPainter *painter, const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomPushButton(const QStyleOptionButton* option, QPainter* painter, const QWidget* widget) const {
     // LC_ERR << "[drawCustomPushButton]"
     //       << " style=" << this
     //       << " x=" << option->rect.x()
@@ -1531,19 +1506,26 @@ void LC_ProxyStyle::drawCustomPushButton(const QStyleOptionButton *option, QPain
     QProxyStyle::drawControl(CE_PushButtonLabel, option, painter, widget);
 }
 
-void LC_ProxyStyle::drawCustomPanelButton(const QStyleOption *option, QPainter *painter, const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomPanelButton(const QStyleOption* option, QPainter* painter, const QWidget* widget) const {
     if (g_inSegmentedDraw) {
         return;
     }
-    LCPainterGuard guard(painter, false);
 
     const SkinColors buttonDesc = m_skinColorsResolver.resolveToolButtonDescriptor(option, widget);
 
-    QRect drawRect = option->rect;
-    const bool isTitleBarButton = widget && widget->property(PROP_IS_DOCK_TITLE_BUTTON).toBool();
+    // Skip painting if the button is flat/autoRaise and idle (transparent with no borders)
+    const bool isIdleFlat = (option->state & State_AutoRaise) && !(option->state & (State_Sunken | State_On | State_MouseOver)) &&
+        buttonDesc.common.bgStart == Qt::transparent && !buttonDesc.frame.hasFullBorder;
+    if (isIdleFlat) {
+        return;
+    }
 
-    if (isTitleBarButton && widget) {
-        const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    LCPainterGuard guard(painter, false);
+    QRect drawRect = option->rect;
+    const bool isTitleBarButton = (widget != nullptr) && widget->property(PROP_IS_DOCK_TITLE_BUTTON).toBool();
+
+    if (isTitleBarButton && widget != nullptr) {
+        const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
         const int margin = geoms.ints.scale1;
         drawRect.adjust(margin, margin, -margin, -margin);
     }
@@ -1551,7 +1533,7 @@ void LC_ProxyStyle::drawCustomPanelButton(const QStyleOption *option, QPainter *
     drawParameterizedBox(painter, drawRect, buttonDesc);
 }
 
-void LC_ProxyStyle::drawCustomHeaderSection(const QStyleOptionHeader *option, QPainter *painter, const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomHeaderSection(const QStyleOptionHeader* option, QPainter* painter, const QWidget* widget) const {
     Q_UNUSED(widget);
     const SkinColors desc = m_skinColorsResolver.resolveHeaderSectionDescriptor(option);
 
@@ -1562,9 +1544,9 @@ void LC_ProxyStyle::drawCustomHeaderSection(const QStyleOptionHeader *option, QP
     painter->drawLine(option->rect.topRight(), option->rect.bottomRight() - QPoint(0, 1));
 }
 
-void LC_ProxyStyle::drawCustomProgressBar(const QStyleOptionProgressBar *option, QPainter *painter, const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomProgressBar(const QStyleOptionProgressBar* option, QPainter* painter, const QWidget* widget) const {
     LCPainterGuard guard(painter, true);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
     const SkinColors desc = getStyleDescriptor(option);
 
     // Resolve progress bar layout
@@ -1583,22 +1565,21 @@ void LC_ProxyStyle::drawCustomProgressBar(const QStyleOptionProgressBar *option,
     QProxyStyle::drawControl(CE_ProgressBarLabel, option, painter, widget);
 }
 
-void LC_ProxyStyle::drawCustomLineEditFrame(const QStyleOption *option, QPainter *painter, const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomLineEditFrame(const QStyleOption* option, QPainter* painter, const QWidget* widget) const {
     // Skip drawing duplicate borders and focus glows for nested LineEdit editors inside SpinBoxes
     // to prevent duplicate bevel and nested borderlines inside the edit area.
-    if (widget && widget->parentWidget() &&
-          (qobject_cast<const QAbstractSpinBox*>(widget->parentWidget()) ||
-           qobject_cast<const QComboBox*>(widget->parentWidget()))) {
+    if (widget && widget->parentWidget() && (qobject_cast<const QAbstractSpinBox*>(widget->parentWidget()) || qobject_cast<const QComboBox
+        *>(widget->parentWidget()))) {
         return;
     }
 
-    const QWidget *actualWidget = widget;
+    const QWidget* actualWidget = widget;
     if (!actualWidget && painter && painter->device() && painter->device()->devType() == QInternal::Widget) {
         actualWidget = static_cast<const QWidget*>(painter->device());
     }
 
     const SkinColors desc = m_skinColorsResolver.resolveLineEditDescriptor(option, actualWidget);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
 
     // Robust focus tracking fallback for composite controls (spinboxes, comboboxes)
     bool hasFocus = (option->state & State_HasFocus);
@@ -1640,10 +1621,12 @@ void LC_ProxyStyle::drawCustomLineEditFrame(const QStyleOption *option, QPainter
 
             if (isInput && !m_isClassic) {
                 painter->drawRoundedRect(crispRect(option->rect), 2.0, 2.0);
-            } else {
+            }
+            else {
                 painter->drawRect(option->rect.adjusted(0, 0, -1, -1));
             }
-        } else {
+        }
+        else {
             // Unfocused state: Respect the precise individual border parameters
             if (desc.frame.hasFullBorder) {
                 QColor borderColor = desc.frame.borderButton;
@@ -1660,10 +1643,12 @@ void LC_ProxyStyle::drawCustomLineEditFrame(const QStyleOption *option, QPainter
 
                 if (isInput && !m_isClassic) {
                     painter->drawRoundedRect(crispRect(option->rect), 2.0, 2.0);
-                } else {
+                }
+                else {
                     painter->drawRect(option->rect.adjusted(0, 0, -1, -1));
                 }
-            } else {
+            }
+            else {
                 // Draw individual borders as specified by the active BoxDecoration (e.g. omitting left border)
                 QColor tc = desc.frame.borderTop;
                 QColor bc = desc.frame.borderBottom;
@@ -1671,10 +1656,14 @@ void LC_ProxyStyle::drawCustomLineEditFrame(const QStyleOption *option, QPainter
                 QColor rc = desc.frame.borderRight;
 
                 if ((option->state & State_MouseOver) && (option->state & State_Enabled)) {
-                    if (tc.isValid()) tc = desc.frame.borderHovered;
-                    if (bc.isValid()) bc = desc.frame.borderHovered;
-                    if (lc.isValid()) lc = desc.frame.borderHovered;
-                    if (rc.isValid()) rc = desc.frame.borderHovered;
+                    if (tc.isValid())
+                        tc = desc.frame.borderHovered;
+                    if (bc.isValid())
+                        bc = desc.frame.borderHovered;
+                    if (lc.isValid())
+                        lc = desc.frame.borderHovered;
+                    if (rc.isValid())
+                        rc = desc.frame.borderHovered;
                 }
 
                 const QRectF rect = crispRect(option->rect);
@@ -1713,19 +1702,18 @@ void LC_ProxyStyle::drawCustomLineEditFrame(const QStyleOption *option, QPainter
 
         painter->setPen(QPen(desc.input.inputFocusGlowInner, 1));
         painter->drawRoundedRect(QRectF(option->rect).adjusted(geoms.focusGlow.margin2, geoms.focusGlow.margin2,
-                                                              -geoms.focusGlow.margin2, -geoms.focusGlow.margin2),
-                                 geoms.focusGlow.radius2, geoms.focusGlow.radius2);
+                                                               -geoms.focusGlow.margin2, -geoms.focusGlow.margin2), geoms.focusGlow.radius2,
+                                 geoms.focusGlow.radius2);
 
         painter->setPen(QPen(option->palette.color(finalGroup, QPalette::Highlight), 1));
         painter->drawRoundedRect(QRectF(option->rect).adjusted(geoms.focusGlow.margin3, geoms.focusGlow.margin3,
-                                                              -geoms.focusGlow.margin3, -geoms.focusGlow.margin3),
-                                 geoms.focusGlow.radius3, geoms.focusGlow.radius3);
+                                                               -geoms.focusGlow.margin3, -geoms.focusGlow.margin3), geoms.focusGlow.radius3,
+                                 geoms.focusGlow.radius3);
     }
 }
 
-void LC_ProxyStyle::drawSpinBoxProgressBar(QPainter *painter, const QRect &rect, const SkinScaledGeometries &geoms, const SkinColors &desc,
-    qreal pct, bool hasFocus, const QWidget *widget, const QAbstractSpinBox *spinBox) const {
-
+void LC_ProxyStyle::drawSpinBoxProgressBar(QPainter* painter, const QRect& rect, const SkinScaledGeometries& geoms, const SkinColors& desc,
+                                           qreal pct, bool hasFocus, const QWidget* widget, const QAbstractSpinBox* spinBox) const {
     // Resolve sub-control regions and progress offsets
     const LC_SkinWidgetsLayoutResolver::SpinBoxProgressBarLayout layout = LC_SkinWidgetsLayoutResolver::resolveSpinBoxProgressBarLayout(
         this, rect, geoms, pct, hasFocus, widget, spinBox, m_useFocusedInputGlow);
@@ -1734,13 +1722,13 @@ void LC_ProxyStyle::drawSpinBoxProgressBar(QPainter *painter, const QRect &rect,
     painter->setClipping(false);
 
     QColor highlightCol = desc.common.highlightColor.isValid()
-                        ? desc.common.highlightColor
-                        : (widget ? widget->palette().color(QPalette::Active, QPalette::Highlight)
-                                  : QApplication::palette().color(QPalette::Active, QPalette::Highlight));
+                              ? desc.common.highlightColor
+                              : (widget
+                                     ? widget->palette().color(QPalette::Active, QPalette::Highlight)
+                                     : QApplication::palette().color(QPalette::Active, QPalette::Highlight));
 
     // 1. Draw Empty Track Background (Boosted to 18% opacity when focused, 6% when idle)
-    QColor trackColor = hasFocus ? desc.spinBox.spinBoxProgressBarTrackFocused
-                             : desc.spinBox.spinBoxProgressBarTrack;
+    QColor trackColor = hasFocus ? desc.spinBox.spinBoxProgressBarTrackFocused : desc.spinBox.spinBoxProgressBarTrack;
     painter->fillRect(layout.bgRect, trackColor);
 
     // 2. Draw Progress Fill Bar
@@ -1783,10 +1771,10 @@ void LC_ProxyStyle::drawSpinBoxProgressBar(QPainter *painter, const QRect &rect,
     }
 }
 
-void LC_ProxyStyle::drawCustomGroupBoxFrame(const QStyleOptionFrame *option, QPainter *painter, const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomGroupBoxFrame(const QStyleOptionFrame* option, QPainter* painter, const QWidget* widget) const {
     Q_UNUSED(widget);
     LCPainterGuard guard(painter, false);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
 
     const SkinColors desc = getStyleDescriptor(option);
 
@@ -1795,18 +1783,17 @@ void LC_ProxyStyle::drawCustomGroupBoxFrame(const QStyleOptionFrame *option, QPa
     painter->drawRect(option->rect.adjusted(0, geoms.ints.scale8, -1, -1));
 }
 
-void LC_ProxyStyle::drawCustomGroupBox(const QStyleOptionGroupBox *option,
-                                             QPainter *painter,
-                                             const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomGroupBox(const QStyleOptionGroupBox* option, QPainter* painter, const QWidget* widget) const {
     const QRect textRect = proxy()->subControlRect(CC_GroupBox, option, SC_GroupBoxLabel, widget);
     const QRect checkBoxRect = proxy()->subControlRect(CC_GroupBox, option, SC_GroupBoxCheckBox, widget);
 
     const QPalette::ColorGroup group = resolveColorGroup(option->state);
     const SkinColors desc = getCachedStyleDescriptor(option->palette, group);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
 
     // Resolve dynamic group box layouts cleanly
-    const GroupBoxLayout layout = LC_SkinWidgetsLayoutResolver::resolveGroupBoxLayout(this, option, desc, geoms, textRect, checkBoxRect, widget);
+    const GroupBoxLayout layout = LC_SkinWidgetsLayoutResolver::resolveGroupBoxLayout(
+        this, option, desc, geoms, textRect, checkBoxRect, widget);
 
     LCPainterGuard guard(painter, false);
 
@@ -1845,11 +1832,14 @@ void LC_ProxyStyle::drawCustomGroupBox(const QStyleOptionGroupBox *option,
 
         if (option->state & State_On) {
             boxOpt.state |= State_On;
-        } else if (option->state & State_Off) {
+        }
+        else if (option->state & State_Off) {
             boxOpt.state |= State_Off;
         }
-        if (option->state & State_Sunken) boxOpt.state |= State_Sunken;
-        if (option->state & State_MouseOver) boxOpt.state |= State_MouseOver;
+        if (option->state & State_Sunken)
+            boxOpt.state |= State_Sunken;
+        if (option->state & State_MouseOver)
+            boxOpt.state |= State_MouseOver;
 
         proxy()->drawPrimitive(PE_IndicatorCheckBox, &boxOpt, painter, widget);
     }
@@ -1857,30 +1847,31 @@ void LC_ProxyStyle::drawCustomGroupBox(const QStyleOptionGroupBox *option,
     // Pass 6: Draw Text Caption Label (Uses localized RAII block to restore pen color)
     if (option->subControls & SC_GroupBoxLabel && !option->text.isEmpty()) {
         const QColor txtColor = (option->state & State_Enabled && option->state & State_MouseOver)
-                          ? desc.common.highlightColor
-                          : desc.groupBox.groupBoxTextColor;
+                                    ? desc.common.highlightColor
+                                    : desc.groupBox.groupBoxTextColor;
 
         {
             LCPainterGuard textGuard(painter);
             painter->setPen(txtColor);
 
             constexpr int textFlags = Qt::TextShowMnemonic | Qt::AlignLeft | Qt::AlignVCenter;
-            proxy()->drawItemText(painter, layout.drawTextRect, textFlags, option->palette, option->state & State_Enabled,
-                                  option->text, QPalette::NoRole);
+            proxy()->drawItemText(painter, layout.drawTextRect, textFlags, option->palette, option->state & State_Enabled, option->text,
+                                  QPalette::NoRole);
         }
     }
 }
 
-void LC_ProxyStyle::drawCustomSlider(const QStyleOptionSlider *option, QPainter *painter, const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomSlider(const QStyleOptionSlider* option, QPainter* painter, const QWidget* widget) const {
     LCPainterGuard guard(painter, true);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
     const SkinColors desc = getStyleDescriptor(option);
 
     // Resolve Slider geometries completely out of the paint pass
-    const LC_SkinWidgetsLayoutResolver::SliderLayout layout = LC_SkinWidgetsLayoutResolver::resolveSliderLayout(this, option, geoms, widget);
+    const LC_SkinWidgetsLayoutResolver::SliderLayout layout =
+        LC_SkinWidgetsLayoutResolver::resolveSliderLayout(this, option, geoms, widget);
 
     if ((option->subControls & SC_SliderGroove) && layout.grooveRect.isValid()) {
-        const QColor trackColor  = desc.slider.grooveBg;
+        const QColor trackColor = desc.slider.grooveBg;
         const QColor borderColor = desc.slider.grooveBorder;
         painter->setPen(QPen(borderColor, 1));
         painter->setBrush(trackColor);
@@ -1888,9 +1879,8 @@ void LC_ProxyStyle::drawCustomSlider(const QStyleOptionSlider *option, QPainter 
     }
 
     if ((option->subControls & SC_SliderHandle) && layout.handleRect.isValid()) {
-        const QColor handleColor = (option->state & State_MouseOver) ? desc.slider.sliderHandleColorHovered
-                                                               : desc.slider.sliderHandleColor;
-        const QColor borderColor  = desc.slider.handleBorder;
+        const QColor handleColor = (option->state & State_MouseOver) ? desc.slider.sliderHandleColorHovered : desc.slider.sliderHandleColor;
+        const QColor borderColor = desc.slider.handleBorder;
 
         painter->setPen(QPen(borderColor, 1));
         painter->setBrush(handleColor);
@@ -1902,12 +1892,10 @@ void LC_ProxyStyle::drawCustomSlider(const QStyleOptionSlider *option, QPainter 
     }
 }
 
-void LC_ProxyStyle::drawCustomSplitter(const QStyleOption *option,
-                                             QPainter *painter,
-                                             const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomSplitter(const QStyleOption* option, QPainter* painter, const QWidget* widget) const {
     const QPalette::ColorGroup group = resolveColorGroup(option->state);
     const SkinColors desc = getCachedStyleDescriptor(option->palette, group);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
 
     const bool isDockSplitter = !widget || !qobject_cast<const QSplitter*>(widget);
     const QRect rect = option->rect;
@@ -1923,8 +1911,8 @@ void LC_ProxyStyle::drawCustomSplitter(const QStyleOption *option,
     }
 
     const QPoint cx = rect.center();
-    const bool isIdleDockSplitter = isDockSplitter && !m_persistentDockSplitter &&
-                              !(option->state & State_MouseOver) && !(option->state & State_Sunken);
+    const bool isIdleDockSplitter = isDockSplitter && !m_persistentDockSplitter && !(option->state & State_MouseOver) && !(option->state &
+        State_Sunken);
 
     if (!isIdleDockSplitter) {
         painter->fillRect(rect, desc.common.bgStart);
@@ -1933,27 +1921,34 @@ void LC_ProxyStyle::drawCustomSplitter(const QStyleOption *option,
             painter->fillRect(rect, desc.splitter.splitterHoverGlowColor);
         }
 
-        const QColor lineColor = (option->state & (State_MouseOver | State_Sunken)) ? desc.common.highlightColor : desc.splitter.splitterGripColor;
+        const QColor lineColor = (option->state & (State_MouseOver | State_Sunken))
+                                     ? desc.common.highlightColor
+                                     : desc.splitter.splitterGripColor;
 
         painter->setPen(QPen(lineColor, 1));
         if (handleIsHorizontal) {
             painter->drawLine(rect.left(), cx.y(), rect.right(), cx.y());
-        } else {
+        }
+        else {
             painter->drawLine(cx.x(), rect.top(), cx.x(), rect.bottom());
         }
     }
 
-    const QColor gripColor = (m_accentGrips || (option->state & State_MouseOver)) ? desc.common.highlightColor : desc.splitter.splitterGripColorIdle;
+    const QColor gripColor = (m_accentGrips || (option->state & State_MouseOver))
+                                 ? desc.common.highlightColor
+                                 : desc.splitter.splitterGripColorIdle;
 
     int baseHandleLen = geoms.scaledMetrics.splitterHandleLength;
     if (baseHandleLen < 0) {
         baseHandleLen = handleIsHorizontal ? rect.width() : rect.height();
-    } else {
+    }
+    else {
         baseHandleLen = qMin(baseHandleLen, handleIsHorizontal ? rect.width() : rect.height());
     }
 
     // Resolve grip and background well geometries
-    const LC_SkinWidgetsLayoutResolver::GripLayout layout = LC_SkinWidgetsLayoutResolver::resolveGripLayout(option, geoms, m_showGripBackgroundWell, baseHandleLen, handleIsHorizontal);
+    const LC_SkinWidgetsLayoutResolver::GripLayout layout = LC_SkinWidgetsLayoutResolver::resolveGripLayout(
+        option, geoms, m_showGripBackgroundWell, baseHandleLen, handleIsHorizontal);
 
     if (layout.showWell) {
         painter->setRenderHint(QPainter::Antialiasing, true);
@@ -1967,9 +1962,7 @@ void LC_ProxyStyle::drawCustomSplitter(const QStyleOption *option,
     painter->restore();
 }
 
-void LC_ProxyStyle::drawCustomPanelButtonTool(const QStyleOption *option,
-                                                    QPainter *painter,
-                                                    const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomPanelButtonTool(const QStyleOption* option, QPainter* painter, const QWidget* widget) const {
     if (g_inSegmentedDraw) {
         return;
     }
@@ -1981,7 +1974,7 @@ void LC_ProxyStyle::drawCustomPanelButtonTool(const QStyleOption *option,
 
     QPalette::ColorGroup group = resolveColorGroup(option->state);
     SkinColors desc = getCachedStyleDescriptor(option->palette, group);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
 
     QRect rect = option->rect;
     bool selected = (option->state & State_On);
@@ -1990,7 +1983,7 @@ void LC_ProxyStyle::drawCustomPanelButtonTool(const QStyleOption *option,
     bool autoRaise = (option->state & State_AutoRaise);
 
     // Delegate accent boundaries and wel geometry straight to the layout resolver
-    const  LC_SkinWidgetsLayoutResolver::ToolButtonAccessoryLayout layout = LC_SkinWidgetsLayoutResolver::resolveToolButtonAccessoryLayout(
+    const LC_SkinWidgetsLayoutResolver::ToolButtonAccessoryLayout layout = LC_SkinWidgetsLayoutResolver::resolveToolButtonAccessoryLayout(
         option, geoms, m_useToolButtonUnderline, m_toolButtonIndicatorStyle, widget, autoRaise, m_showGripBackgroundWell);
 
     LCPainterGuard guard(painter);
@@ -2001,7 +1994,8 @@ void LC_ProxyStyle::drawCustomPanelButtonTool(const QStyleOption *option,
             painter->setPen(Qt::NoPen);
             painter->setBrush(wellBgColor);
             painter->drawRoundedRect(layout.wellRect, 2, 2);
-        } else {
+        }
+        else {
             QColor activeBgColor = hovered ? desc.toolButton.toolButtonBgCheckedHover : desc.button.bgChecked;
             painter->fillRect(rect, activeBgColor);
         }
@@ -2023,9 +2017,11 @@ void LC_ProxyStyle::drawCustomPanelButtonTool(const QStyleOption *option,
 
         if (layout.isIndicatorDot) {
             painter->drawEllipse(layout.indicatorDotCenter, geoms.ints.scale2, geoms.ints.scale2);
-        } else if (m_toolButtonIndicatorStyle == ToolButtonIndicatorStyle::ContextStripe) {
+        }
+        else if (m_toolButtonIndicatorStyle == ToolButtonIndicatorStyle::ContextStripe) {
             painter->drawRoundedRect(layout.indicatorRect, 1.0, 1.0);
-        } else if (m_toolButtonIndicatorStyle == ToolButtonIndicatorStyle::AccentFrame) {
+        }
+        else if (m_toolButtonIndicatorStyle == ToolButtonIndicatorStyle::AccentFrame) {
             painter->setPen(QPen(lineCol, 1));
             painter->setBrush(Qt::NoBrush);
             painter->drawRoundedRect(layout.indicatorRect, geoms.ints.scale3, geoms.ints.scale3);
@@ -2033,15 +2029,13 @@ void LC_ProxyStyle::drawCustomPanelButtonTool(const QStyleOption *option,
     }
 }
 
-void LC_ProxyStyle::drawSegmentedToolButton(const QStyleOption *option,
-                                                 QPainter *painter,
-                                                 const QWidget *widget,
-                                                 int mask) const {
+void LC_ProxyStyle::drawSegmentedToolButton(const QStyleOption* option, QPainter* painter, const QWidget* widget, int mask) const {
     LCPainterGuard guard(painter, true);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
 
     QPalette::ColorGroup group = (option->state & State_Enabled) ? QPalette::Active : QPalette::Disabled;
-    if (!(option->state & State_Active)) group = QPalette::Inactive;
+    if (!(option->state & State_Active))
+        group = QPalette::Inactive;
 
     const SkinColors desc = getCachedStyleDescriptor(option->palette, group);
 
@@ -2056,9 +2050,11 @@ void LC_ProxyStyle::drawSegmentedToolButton(const QStyleOption *option,
     QColor bgCol = Qt::transparent;
     if (selected) {
         bgCol = hovered ? desc.toolButton.toolButtonBgCheckedHover : desc.button.bgChecked;
-    } else if (sunken) {
+    }
+    else if (sunken) {
         bgCol = desc.button.bgSunken;
-    } else if (hovered) {
+    }
+    else if (hovered) {
         bgCol = desc.button.bgHovered;
     }
 
@@ -2068,7 +2064,7 @@ void LC_ProxyStyle::drawSegmentedToolButton(const QStyleOption *option,
 
     if (!layout.dividerLines.isEmpty()) {
         painter->setPen(QPen(desc.splitter.splitterGripColorIdle, 1.0));
-        for (const QLineF &divider : layout.dividerLines) {
+        for (const QLineF& divider : layout.dividerLines) {
             painter->drawLine(divider);
         }
     }
@@ -2080,9 +2076,11 @@ void LC_ProxyStyle::drawSegmentedToolButton(const QStyleOption *option,
 
         if (layout.isIndicatorDot) {
             painter->drawEllipse(layout.indicatorDotCenter, geoms.ints.scale2, geoms.ints.scale2);
-        } else if (m_toolButtonIndicatorStyle == ToolButtonIndicatorStyle::ContextStripe) {
+        }
+        else if (m_toolButtonIndicatorStyle == ToolButtonIndicatorStyle::ContextStripe) {
             painter->drawRoundedRect(layout.indicatorRect, 1.0, 1.0);
-        } else if (m_toolButtonIndicatorStyle == ToolButtonIndicatorStyle::AccentFrame) {
+        }
+        else if (m_toolButtonIndicatorStyle == ToolButtonIndicatorStyle::AccentFrame) {
             painter->setPen(QPen(lineCol, 1));
             painter->setBrush(Qt::NoBrush);
             painter->drawRoundedRect(layout.indicatorRect, geoms.ints.scale3, geoms.ints.scale3);
@@ -2090,29 +2088,31 @@ void LC_ProxyStyle::drawSegmentedToolButton(const QStyleOption *option,
     }
 }
 
-
-void LC_ProxyStyle::drawSegmentedGroupBackdrops(QPainter *painter, const QWidget *widget) const {
+void LC_ProxyStyle::drawSegmentedGroupBackdrops(QPainter* painter, const QWidget* widget) const {
     if (!m_useSegmentedToolButtons) {
         return;
     }
 
-    if (!widget || !painter) return;
+    if (!widget || !painter)
+        return;
 
     const QPalette::ColorGroup group = widget->isEnabled() ? QPalette::Active : QPalette::Disabled;
     const SkinColors desc = getCachedStyleDescriptor(widget->palette(), group);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
 
     QMap<int, QList<QToolButton*>> groups;
     const QList<QToolButton*> widgets = widget->findChildren<QToolButton*>();
-    for (QToolButton *w : widgets) {
-        if (!w->isVisible()) continue;
+    for (QToolButton* w : widgets) {
+        if (!w->isVisible())
+            continue;
         QVariant groupVal = w->property(PROP_BUTTON_GROUP);
         if (groupVal.isValid()) {
             groups[groupVal.toInt()].append(w);
         }
     }
 
-    if (groups.isEmpty()) return;
+    if (groups.isEmpty())
+        return;
 
     // Self-healing synchronization check: recompute if current paint-time palette differs from cached properties
     const QColor currentWinColor = widget->palette().color(QPalette::Window);
@@ -2123,19 +2123,19 @@ void LC_ProxyStyle::drawSegmentedGroupBackdrops(QPainter *painter, const QWidget
     }
 
     QVariantMap bgStartMap = widget->property(PROP_GROUP_BG_START).toMap();
-    QVariantMap bgEndMap   = widget->property(PROP_GROUP_BG_END).toMap();
+    QVariantMap bgEndMap = widget->property(PROP_GROUP_BG_END).toMap();
 
-    QVariantMap stop0Map   = widget->property(PROP_GROUP_STOP0).toMap();
-    QVariantMap stop42Map  = widget->property(PROP_GROUP_STOP42).toMap();
-    QVariantMap stop55Map  = widget->property(PROP_GROUP_STOP55).toMap();
+    QVariantMap stop0Map = widget->property(PROP_GROUP_STOP0).toMap();
+    QVariantMap stop42Map = widget->property(PROP_GROUP_STOP42).toMap();
+    QVariantMap stop55Map = widget->property(PROP_GROUP_STOP55).toMap();
     QVariantMap stop100Map = widget->property(PROP_GROUP_STOP100).toMap();
 
     QVariantMap bgStartHoveredMap = widget->property(PROP_GROUP_BG_START_HOVERED).toMap();
-    QVariantMap bgEndHoveredMap   = widget->property(PROP_GROUP_BG_END_HOVERED).toMap();
+    QVariantMap bgEndHoveredMap = widget->property(PROP_GROUP_BG_END_HOVERED).toMap();
 
-    QVariantMap stop0HoveredMap   = widget->property(PROP_GROUP_STOP0_HOVERED).toMap();
-    QVariantMap stop42HoveredMap  = widget->property(PROP_GROUP_STOP42_HOVERED ).toMap();
-    QVariantMap stop55HoveredMap  = widget->property(PROP_GROUP_STOP55_HOVERED).toMap();
+    QVariantMap stop0HoveredMap = widget->property(PROP_GROUP_STOP0_HOVERED).toMap();
+    QVariantMap stop42HoveredMap = widget->property(PROP_GROUP_STOP42_HOVERED).toMap();
+    QVariantMap stop55HoveredMap = widget->property(PROP_GROUP_STOP55_HOVERED).toMap();
     QVariantMap stop100HoveredMap = widget->property(PROP_GROUP_STOP100_HOVERED).toMap();
 
     LCPainterGuard guard(painter, true);
@@ -2143,7 +2143,8 @@ void LC_ProxyStyle::drawSegmentedGroupBackdrops(QPainter *painter, const QWidget
     for (auto it = groups.begin(); it != groups.end(); ++it) {
         const int groupId = it.key();
         const QList<QToolButton*>& buttons = it.value();
-        if (buttons.isEmpty()) continue;
+        if (buttons.isEmpty())
+            continue;
 
         bool groupHasAutoRaise = false;
         if (!buttons.isEmpty()) {
@@ -2160,10 +2161,12 @@ void LC_ProxyStyle::drawSegmentedGroupBackdrops(QPainter *painter, const QWidget
             if (m_segmentedSeparationStyle == SegmentedSeparationStyle::TransparentIdle) {
                 drawBg = isGroupHovered;
                 drawBorder = isGroupHovered;
-            } else if (m_segmentedSeparationStyle == SegmentedSeparationStyle::MinimalBorder) {
+            }
+            else if (m_segmentedSeparationStyle == SegmentedSeparationStyle::MinimalBorder) {
                 drawBg = isGroupHovered;
                 drawBorder = true;
-            } else if (m_segmentedSeparationStyle == SegmentedSeparationStyle::ContinuousCard) {
+            }
+            else if (m_segmentedSeparationStyle == SegmentedSeparationStyle::ContinuousCard) {
                 drawBg = true;
                 drawBorder = true;
             }
@@ -2177,10 +2180,12 @@ void LC_ProxyStyle::drawSegmentedGroupBackdrops(QPainter *painter, const QWidget
         const QPainterPath groupPath = LC_SkinWidgetsLayoutResolver::resolveSegmentedGroupPath(buttons, geoms.dpr);
 
         const QString key = QString::number(groupId);
-        const QColor bgStart = isGroupHovered ? bgStartHoveredMap.value(key, desc.tab.bgTabInactive).value<QColor>()
-                                        : bgStartMap.value(key, desc.tab.bgTabInactive).value<QColor>();
-        const QColor bgEnd   = isGroupHovered ? bgEndHoveredMap.value(key, desc.tab.bgTabInactive).value<QColor>()
-                                        : bgEndMap.value(key, desc.tab.bgTabInactive).value<QColor>();
+        const QColor bgStart = isGroupHovered
+                                   ? bgStartHoveredMap.value(key, desc.tab.bgTabInactive).value<QColor>()
+                                   : bgStartMap.value(key, desc.tab.bgTabInactive).value<QColor>();
+        const QColor bgEnd = isGroupHovered
+                                 ? bgEndHoveredMap.value(key, desc.tab.bgTabInactive).value<QColor>()
+                                 : bgEndMap.value(key, desc.tab.bgTabInactive).value<QColor>();
 
         if (drawBg) {
             const bool useActiveTabGradients = (m_isSoftSatin || m_isGlossy);
@@ -2188,18 +2193,28 @@ void LC_ProxyStyle::drawSegmentedGroupBackdrops(QPainter *painter, const QWidget
             if (useActiveTabGradients && m_isGlossy) {
                 QLinearGradient glassGrad(groupPath.boundingRect().topLeft(), groupPath.boundingRect().bottomLeft());
 
-                glassGrad.setColorAt(0.0,   isGroupHovered ? stop0HoveredMap.value(key, bgStart).value<QColor>()   : stop0Map.value(key, bgStart).value<QColor>());
-                glassGrad.setColorAt(0.42,  isGroupHovered ? stop42HoveredMap.value(key, bgStart).value<QColor>()  : stop42Map.value(key, bgStart).value<QColor>());
-                glassGrad.setColorAt(0.55,  isGroupHovered ? stop55HoveredMap.value(key, bgEnd).value<QColor>()    : stop55Map.value(key, bgEnd).value<QColor>());
-                glassGrad.setColorAt(1.0,   isGroupHovered ? stop100HoveredMap.value(key, bgEnd).value<QColor>()   : stop100Map.value(key, bgEnd).value<QColor>());
+                glassGrad.setColorAt(0.0, isGroupHovered
+                                              ? stop0HoveredMap.value(key, bgStart).value<QColor>()
+                                              : stop0Map.value(key, bgStart).value<QColor>());
+                glassGrad.setColorAt(0.42, isGroupHovered
+                                               ? stop42HoveredMap.value(key, bgStart).value<QColor>()
+                                               : stop42Map.value(key, bgStart).value<QColor>());
+                glassGrad.setColorAt(0.55, isGroupHovered
+                                               ? stop55HoveredMap.value(key, bgEnd).value<QColor>()
+                                               : stop55Map.value(key, bgEnd).value<QColor>());
+                glassGrad.setColorAt(1.0, isGroupHovered
+                                              ? stop100HoveredMap.value(key, bgEnd).value<QColor>()
+                                              : stop100Map.value(key, bgEnd).value<QColor>());
 
                 painter->fillPath(groupPath, glassGrad);
-            } else if (useActiveTabGradients && m_isSoftSatin) {
+            }
+            else if (useActiveTabGradients && m_isSoftSatin) {
                 QLinearGradient grad(groupPath.boundingRect().topLeft(), groupPath.boundingRect().bottomLeft());
                 grad.setColorAt(0.0, bgStart);
                 grad.setColorAt(1.0, bgEnd);
                 painter->fillPath(groupPath, grad);
-            } else {
+            }
+            else {
                 painter->fillPath(groupPath, bgStart);
             }
         }
@@ -2212,14 +2227,15 @@ void LC_ProxyStyle::drawSegmentedGroupBackdrops(QPainter *painter, const QWidget
     }
 }
 
-void LC_ProxyStyle::drawCustomScrollBar(const QStyleOptionSlider *option, QPainter *painter, const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomScrollBar(const QStyleOptionSlider* option, QPainter* painter, const QWidget* widget) const {
     LCPainterGuard guard(painter, false);
 
     QPalette::ColorGroup group = (option->state & State_Enabled) ? QPalette::Active : QPalette::Disabled;
-    if (!(option->state & State_Active)) group = QPalette::Inactive;
+    if (!(option->state & State_Active))
+        group = QPalette::Inactive;
 
     SkinColors desc = getCachedStyleDescriptor(option->palette, group);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
 
     // Fetch precomputed ScrollBar layout coordinates and handle boundaries
     const LC_SkinWidgetsLayoutResolver::ScrollBarLayout layout = LC_SkinWidgetsLayoutResolver::resolveScrollBarLayout(
@@ -2228,16 +2244,20 @@ void LC_ProxyStyle::drawCustomScrollBar(const QStyleOptionSlider *option, QPaint
     // 1. Resolve and render background track from cache
     const QColor trackColor = desc.scrollBar.scrollBarTrackColor;
 
-    if (layout.subPageRect.isValid()) painter->fillRect(layout.subPageRect, trackColor);
-    if (layout.addPageRect.isValid()) painter->fillRect(layout.addPageRect, trackColor);
+    if (layout.subPageRect.isValid())
+        painter->fillRect(layout.subPageRect, trackColor);
+    if (layout.addPageRect.isValid())
+        painter->fillRect(layout.addPageRect, trackColor);
 
     // 2. Resolve and render the handle
     if (layout.handleValid) {
-        const QColor handleColor = (option->state & State_MouseOver) ? desc.scrollBar.scrollBarHandleColorHovered
-                                                               : desc.scrollBar.scrollBarHandleColor;
+        const QColor handleColor = (option->state & State_MouseOver)
+                                       ? desc.scrollBar.scrollBarHandleColorHovered
+                                       : desc.scrollBar.scrollBarHandleColor;
 
-        const QColor borderColor = (option->state & State_MouseOver) ? desc.scrollBar.scrollBarBorderColorHovered
-                                                               : desc.scrollBar.scrollBarBorderColor;
+        const QColor borderColor = (option->state & State_MouseOver)
+                                       ? desc.scrollBar.scrollBarBorderColorHovered
+                                       : desc.scrollBar.scrollBarBorderColor;
 
         painter->setRenderHint(QPainter::Antialiasing, true);
         painter->setPen(QPen(borderColor, 1));
@@ -2246,7 +2266,7 @@ void LC_ProxyStyle::drawCustomScrollBar(const QStyleOptionSlider *option, QPaint
     }
 }
 
-void LC_ProxyStyle::drawCustomToolBar(const QStyleOptionToolBar *option, QPainter *painter, const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomToolBar(const QStyleOptionToolBar* option, QPainter* painter, const QWidget* widget) const {
     Q_UNUSED(widget);
     QPalette::ColorGroup group = (option->state & State_Enabled) ? QPalette::Active : QPalette::Disabled;
     if (!(option->state & State_Active))
@@ -2283,8 +2303,11 @@ void LC_ProxyStyle::drawCustomToolBar(const QStyleOptionToolBar *option, QPainte
 }
 
 void LC_ProxyStyle::drawCustomDockTitleBar(const QStyleOptionDockWidget *option,
-                                                 QPainter *painter,
-                                                 const QWidget *widget) const {
+                                           QPainter *painter,
+                                           const QWidget *widget) const {
+    if (option == nullptr || painter == nullptr) {
+        return;
+    }
 
     LCPainterGuard guard(painter, false);
     const SkinColors desc = m_skinColorsResolver.resolveDockTitleBarDescriptor(option, widget);
@@ -2292,17 +2315,16 @@ void LC_ProxyStyle::drawCustomDockTitleBar(const QStyleOptionDockWidget *option,
 
     const DockTitleBarStyle activeStyle = m_skinColorsResolver.activeDockTitleStyle();
 
-    if (activeStyle == DockTitleBarStyle::Native) {
-        if (m_isClassic) {
-            QProxyStyle::drawControl(CE_DockWidgetTitle, option, painter, widget);
-            return;
-        }
+    // 1. Native Qt Fallback for Classic Fusion
+    if (activeStyle == DockTitleBarStyle::Native && m_isClassic) {
+        QProxyStyle::drawControl(CE_DockWidgetTitle, option, painter, widget);
+        return;
     }
 
+    // 2. Draw Background Fill and Structural Borders
     drawParameterizedBox(painter, option->rect, desc, option->verticalTitleBar);
 
     const bool hasOuterTopBorder = desc.frame.hasFullBorder || desc.frame.hasTopBottomBorder;
-
     if (!hasOuterTopBorder && activeStyle != DockTitleBarStyle::CustomSolid &&
         activeStyle != DockTitleBarStyle::CustomAccentOutline &&
         activeStyle != DockTitleBarStyle::Native) {
@@ -2317,45 +2339,91 @@ void LC_ProxyStyle::drawCustomDockTitleBar(const QStyleOptionDockWidget *option,
         }
     }
 
-    const bool isCustomWidget = widget && widget->inherits("LC_CustomTitleBarWidget");
+    // 3. Resolve Parent Dock Widget and CAD Context
+    const QDockWidget *dock = nullptr;
+    if (widget != nullptr) {
+        if (widget->inherits("LC_DockTitleBar") || widget->inherits("LC_CustomTitleBarWidget")) {
+            dock = qobject_cast<const QDockWidget*>(widget->parentWidget());
+        } else {
+            dock = qobject_cast<const QDockWidget*>(widget);
+        }
+    }
 
+    const bool isCadDock = (dock != nullptr) && dock->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool();
+    const bool showIcon = isCadDock ? m_showSpecialDockIcons : m_showGenericDockIcons;
+
+    // Identify if the title bar is an LC_CustomTitleBarWidget (which renders its own child icon/text labels)
+    const bool isCustomWidget = (widget != nullptr) &&
+                                (widget->inherits("LC_CustomTitleBarWidget") ||
+                                 (widget->parentWidget() != nullptr && widget->parentWidget()->inherits("LC_CustomTitleBarWidget")));
+
+    // 4. Single-Pass Painter Text and Icon Rendering (Only when NOT using child widget labels)
     if (!isCustomWidget) {
-        // Draw standard native title text
         const QString titleText = option->title;
-        if (!titleText.isEmpty()) {
-            QFont font = widget ? widget->font() : painter->font();
+        const bool hasExplicitIcon = (dock != nullptr) && !dock->windowIcon().isNull() &&
+                                     (dock->windowIcon().cacheKey() != qApp->windowIcon().cacheKey());
+
+        if (!titleText.isEmpty() || (showIcon && hasExplicitIcon)) {
+            QFont font = (widget != nullptr) ? widget->font() : painter->font();
             font.setBold(false);
             painter->setFont(font);
 
             const auto buttonLayout = LC_SkinWidgetsLayoutResolver::resolveTitleBarButtonLayout(
-                option->rect, geoms, option->closable ? (QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable) : QDockWidget::NoDockWidgetFeatures, option->verticalTitleBar);
+                option->rect, geoms,
+                option->closable ? (QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable) : QDockWidget::NoDockWidgetFeatures,
+                option->verticalTitleBar);
 
-            const int leftSpacing = desc.frame.hasLeftAccentBar ? geoms.groupBox.titleLeftSpacing + geoms.ints.scale4
-                                                    : geoms.groupBox.titleLeftSpacing;
+            const int leftSpacing = desc.frame.hasLeftAccentBar ? (geoms.groupBox.titleLeftSpacing + geoms.ints.scale4)
+                                                                : geoms.groupBox.titleLeftSpacing;
 
             if (option->verticalTitleBar) {
+                painter->save();
                 painter->translate(option->rect.left(), option->rect.bottom());
                 painter->rotate(-90);
-                const QRect textRect(leftSpacing, 0, buttonLayout.textRect.height(), option->rect.width());
+
+                int textLeft = leftSpacing;
+
+                // Render Rotated Dock Icon
+                if (showIcon && hasExplicitIcon) {
+                    const int iconSize = qMax(geoms.ints.scale12, option->rect.width() - geoms.ints.scale6);
+                    const int iconY = (option->rect.width() - iconSize) / 2;
+                    const QRect iconRect(textLeft, iconY, iconSize, iconSize);
+                    dock->windowIcon().paint(painter, iconRect, Qt::AlignCenter);
+                    textLeft += iconSize + geoms.ints.scale4;
+                }
+
+                // Render Rotated Title Text
+                const QRect textRect(textLeft, 0, qMax(0, buttonLayout.textRect.height() - textLeft), option->rect.width());
                 painter->setPen(desc.common.textColor);
-                painter->drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, titleText);
+                const QString elidedText = painter->fontMetrics().elidedText(titleText, Qt::ElideRight, textRect.width());
+                painter->drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
+                painter->restore();
             } else {
-                const QRect textRect(buttonLayout.textRect.left(), option->rect.top(),
-                                     buttonLayout.textRect.width(), option->rect.height());
+                int textLeft = buttonLayout.textRect.left();
+
+                // Render Horizontal Dock Icon
+                if (showIcon && hasExplicitIcon) {
+                    const int iconSize = qMax(geoms.ints.scale12, option->rect.height() - geoms.ints.scale6);
+                    const int iconY = option->rect.top() + (option->rect.height() - iconSize) / 2;
+                    const QRect iconRect(textLeft, iconY, iconSize, iconSize);
+                    dock->windowIcon().paint(painter, iconRect, Qt::AlignCenter);
+                    textLeft += iconSize + geoms.ints.scale4;
+                }
+
+                // Render Horizontal Title Text
+                const QRect textRect(textLeft, option->rect.top(), qMax(0, buttonLayout.textRect.right() - textLeft), option->rect.height());
                 painter->setPen(desc.common.textColor);
-                painter->drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, titleText);
+                const QString elidedText = painter->fontMetrics().elidedText(titleText, Qt::ElideRight, textRect.width());
+                painter->drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
             }
         }
     }
 }
 
-
-void LC_ProxyStyle::drawCustomToolTipCard(const QStyleOption *option,
-                                                QPainter *painter,
-                                          const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomToolTipCard(const QStyleOption* option, QPainter* painter, const QWidget* widget) const {
     Q_UNUSED(widget);
     const SkinColors desc = getStyleDescriptor(option);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
 
     LCPainterGuard guard(painter, true);
 
@@ -2368,17 +2436,17 @@ void LC_ProxyStyle::drawCustomToolTipCard(const QStyleOption *option,
     painter->drawRoundedRect(crispRect(option->rect, geoms.crispOffset), geoms.tooltip.cornerRadius, geoms.tooltip.cornerRadius);
 }
 
-
-void LC_ProxyStyle::drawCustomTabWidgetFrame(const QStyleOption *option, QPainter *painter,const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomTabWidgetFrame(const QStyleOption* option, QPainter* painter, const QWidget* widget) const {
     const SkinColors desc = getStyleDescriptor(option);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
 
     LCPainterGuard guard(painter, false);
     painter->setPen(QPen(desc.tab.tabWidgetFrameBorder, 1));
     painter->setBrush(Qt::NoBrush);
 
     // Resolve viewport frame masks cleanly from the resolver
-    const  LC_SkinWidgetsLayoutResolver::TabWidgetFrameClipLayout layout = LC_SkinWidgetsLayoutResolver::resolveTabWidgetFrameClipLayout(option, geoms, widget, m_tabStripeAtBottom);
+    const LC_SkinWidgetsLayoutResolver::TabWidgetFrameClipLayout layout = LC_SkinWidgetsLayoutResolver::resolveTabWidgetFrameClipLayout(
+        option, geoms, widget, m_tabStripeAtBottom);
 
     if (layout.needClipping) {
         painter->setClipRegion(layout.clipRegion);
@@ -2390,13 +2458,14 @@ void LC_ProxyStyle::drawCustomTabWidgetFrame(const QStyleOption *option, QPainte
     }
 }
 
-void LC_ProxyStyle::drawCustomTabBarTab(const QStyleOptionTab *option, QPainter *painter, const QWidget *widget) const {
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+void LC_ProxyStyle::drawCustomTabBarTab(const QStyleOptionTab* option, QPainter* painter, const QWidget* widget) const {
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
     const bool selected = (option->state & State_Selected);
     const bool hovered = (option->state & State_MouseOver);
 
     // Resolve tab borders and geometric paths
-    const LC_SkinWidgetsLayoutResolver::TabLayout layout = LC_SkinWidgetsLayoutResolver::resolveTabLayout(option, widget, geoms, this, m_boxDecoration == BoxDecoration::LeftAccentBar, m_tabStripeAtBottom);
+    const LC_SkinWidgetsLayoutResolver::TabLayout layout = LC_SkinWidgetsLayoutResolver::resolveTabLayout(
+        option, widget, geoms, this, m_boxDecoration == BoxDecoration::LeftAccentBar, m_tabStripeAtBottom);
     const SkinColors tabDesc = m_skinColorsResolver.resolveTabBorders(option, widget);
 
     LCPainterGuard guard(painter, true);
@@ -2418,15 +2487,15 @@ void LC_ProxyStyle::drawCustomTabBarTab(const QStyleOptionTab *option, QPainter 
     QProxyStyle::drawControl(CE_TabBarTabLabel, &tabCopy, painter, widget);
 }
 
-
-void LC_ProxyStyle::drawCustomComboBox(const QStyleOptionComboBox *option, QPainter *painter, const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomComboBox(const QStyleOptionComboBox* option, QPainter* painter, const QWidget* widget) const {
     SkinColors desc = getStyleDescriptor(option);
 
     // Map interactive hover and sunken states dynamically inside the cached boundaries
     if (option->state & State_Sunken) {
         desc.common.bgStart = desc.button.bgSunken;
         desc.common.bgEnd = desc.button.bgSunken;
-    } else if (option->state & State_MouseOver) {
+    }
+    else if (option->state & State_MouseOver) {
         desc.common.bgStart = desc.button.bgHovered;
         desc.common.bgEnd = desc.button.bgHovered;
     }
@@ -2443,7 +2512,7 @@ void LC_ProxyStyle::drawCustomComboBox(const QStyleOptionComboBox *option, QPain
     QProxyStyle::drawComplexControl(CC_ComboBox, option, painter, widget);
 }
 
-void LC_ProxyStyle::drawCustomSpinBox(const QStyleOptionSpinBox *option, QPainter *painter, const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomSpinBox(const QStyleOptionSpinBox* option, QPainter* painter, const QWidget* widget) const {
     // Copy option and disable standard frame and 3D edit field background drawing
     // to prevent duplicate 3D bevel lines from rendering
     QStyleOptionSpinBox copy = *option;
@@ -2464,8 +2533,10 @@ void LC_ProxyStyle::drawCustomSpinBox(const QStyleOptionSpinBox *option, QPainte
 
         // Exclude the button rectangles from the drawing region to prevent our background fill from covering them
         QRegion clipRegion(option->rect);
-        if (!upRect.isEmpty())   clipRegion -= upRect;
-        if (!downRect.isEmpty()) clipRegion -= downRect;
+        if (!upRect.isEmpty())
+            clipRegion -= upRect;
+        if (!downRect.isEmpty())
+            clipRegion -= downRect;
         painter->setClipRegion(clipRegion);
 
         QStyleOptionFrame frameOpt;
@@ -2476,17 +2547,14 @@ void LC_ProxyStyle::drawCustomSpinBox(const QStyleOptionSpinBox *option, QPainte
     }
 }
 
-void LC_ProxyStyle::drawCustomIndicatorArrow(PrimitiveElement element,
-                                                   const QStyleOption *option,
-                                                   QPainter *painter,
-                                                   const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomIndicatorArrow(PrimitiveElement element, const QStyleOption* option, QPainter* painter,
+                                             const QWidget* widget) const {
     LCPainterGuard guard(painter, true);
 
     const SkinColors desc = getStyleDescriptor(option);
-    const QColor arrowColor = (option->state & State_MouseOver) ? desc.arrow.arrowColorHovered
-                                                                : desc.arrow.arrowColor;
+    const QColor arrowColor = (option->state & State_MouseOver) ? desc.arrow.arrowColorHovered : desc.arrow.arrowColor;
 
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
 
     // Fetch precomputed Arrow indicator polylines/lines
     const LC_SkinWidgetsLayoutResolver::ArrowLayout layout = LC_SkinWidgetsLayoutResolver::resolveArrowLayout(
@@ -2497,26 +2565,25 @@ void LC_ProxyStyle::drawCustomIndicatorArrow(PrimitiveElement element,
 
         if (option->state & State_Selected) {
             strokeColor = desc.arrow.menuArrowColorSelected;
-        } else if (option->state & State_MouseOver) {
+        }
+        else if (option->state & State_MouseOver) {
             strokeColor = desc.arrow.arrowColorHovered;
         }
 
         painter->setPen(QPen(strokeColor, 1.25, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         painter->setBrush(Qt::NoBrush);
         painter->drawPolyline(layout.polygon);
-    } else if (layout.isLines) {
+    }
+    else if (layout.isLines) {
         painter->setPen(QPen(arrowColor, 1.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         painter->drawLine(layout.line1);
         painter->drawLine(layout.line2);
     }
 }
 
-
-void LC_ProxyStyle::drawCustomIndicatorCheckBox(const QStyleOption *option,
-                                                      QPainter *painter,
-                                                      const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomIndicatorCheckBox(const QStyleOption* option, QPainter* painter, const QWidget* widget) const {
     LCPainterGuard guard(painter);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
     const SkinColors desc = getStyleDescriptor(option);
 
     const QRect rect = option->rect;
@@ -2524,7 +2591,7 @@ void LC_ProxyStyle::drawCustomIndicatorCheckBox(const QStyleOption *option,
     const bool isHovered = (option->state & State_MouseOver);
 
     const QColor highlightColor = desc.checkbox.checkMark;
-    QColor borderColor          = desc.checkbox.border;
+    QColor borderColor = desc.checkbox.border;
 
     if (isHovered && isCheckable) {
         borderColor = desc.frame.borderHovered;
@@ -2537,7 +2604,8 @@ void LC_ProxyStyle::drawCustomIndicatorCheckBox(const QStyleOption *option,
         borderPen.setStyle(Qt::DashLine);
         painter->setPen(borderPen);
         painter->setBrush(desc.tab.bgTabInactive);
-    } else {
+    }
+    else {
         painter->setPen(QPen(borderColor, 1));
         painter->setBrush(desc.checkbox.bg);
     }
@@ -2550,21 +2618,21 @@ void LC_ProxyStyle::drawCustomIndicatorCheckBox(const QStyleOption *option,
         if (isCheckable) {
             painter->fillRect(rect.adjusted(1, 1, -1, -1), highlightColor);
             painter->setPen(QPen(Qt::white, geoms.checkbox.checkPenWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-        } else {
+        }
+        else {
             painter->fillRect(rect.adjusted(1, 1, -1, -1), desc.frame.borderButton);
             painter->setPen(QPen(desc.tab.bgTabInactive, geoms.checkbox.checkPenWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         }
         // Coordinate alignment relative to logical bounds
-        painter->drawLine(rect.left() + inset, rect.top() + rect.height() / 2,
-                          rect.left() + rect.width() / 2 - 1, rect.bottom() - inset);
-        painter->drawLine(rect.left() + rect.width() / 2 - 1, rect.bottom() - inset,
-                          rect.right() - inset, rect.top() + inset);
+        painter->drawLine(rect.left() + inset, rect.top() + rect.height() / 2, rect.left() + rect.width() / 2 - 1, rect.bottom() - inset);
+        painter->drawLine(rect.left() + rect.width() / 2 - 1, rect.bottom() - inset, rect.right() - inset, rect.top() + inset);
     }
     else if (option->state & State_NoChange) {
         if (isCheckable) {
             painter->fillRect(rect.adjusted(1, 1, -1, -1), highlightColor);
             painter->setPen(QPen(Qt::white, geoms.checkbox.checkPenWidth, Qt::SolidLine, Qt::RoundCap));
-        } else {
+        }
+        else {
             painter->fillRect(rect.adjusted(1, 1, -1, -1), desc.frame.borderButton);
             painter->setPen(QPen(desc.tab.bgTabInactive, geoms.checkbox.checkPenWidth, Qt::SolidLine, Qt::RoundCap));
         }
@@ -2572,18 +2640,16 @@ void LC_ProxyStyle::drawCustomIndicatorCheckBox(const QStyleOption *option,
     }
 }
 
-void LC_ProxyStyle::drawCustomIndicatorRadioButton(const QStyleOption *option,
-                                                         QPainter *painter,
-                                                         const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomIndicatorRadioButton(const QStyleOption* option, QPainter* painter, const QWidget* widget) const {
     LCPainterGuard guard(painter, true);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
     const SkinColors desc = getStyleDescriptor(option);
 
     const QRect rect = option->rect;
     const bool isCheckable = isWidgetCheckable(widget);
     const bool isHovered = (option->state & State_MouseOver);
 
-    QColor borderColor          = desc.radioButton.border;
+    QColor borderColor = desc.radioButton.border;
 
     if (isHovered && isCheckable) {
         borderColor = desc.frame.borderHovered;
@@ -2596,7 +2662,8 @@ void LC_ProxyStyle::drawCustomIndicatorRadioButton(const QStyleOption *option,
         borderPen.setStyle(Qt::DashLine);
         painter->setPen(borderPen);
         painter->setBrush(desc.tab.bgTabInactive);
-    } else {
+    }
+    else {
         painter->setPen(QPen(borderColor, 1));
         painter->setBrush(desc.radioButton.bg);
     }
@@ -2611,14 +2678,12 @@ void LC_ProxyStyle::drawCustomIndicatorRadioButton(const QStyleOption *option,
     }
 }
 
-void LC_ProxyStyle::drawCustomIndicatorToolBarSeparator(const QStyleOption *option,
-                                                               QPainter *painter,
-                                                               const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomIndicatorToolBarSeparator(const QStyleOption* option, QPainter* painter, const QWidget* widget) const {
     Q_UNUSED(widget);
     LCPainterGuard guard(painter, false);
     const bool horizontal = option->state & State_Horizontal;
     const QRect rect = option->rect;
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
 
     const SkinColors desc = getStyleDescriptor(option);
     painter->setPen(desc.toolBar.toolbarSeparatorPen);
@@ -2629,15 +2694,18 @@ void LC_ProxyStyle::drawCustomIndicatorToolBarSeparator(const QStyleOption *opti
     if (m_isFlat) {
         if (horizontal) {
             painter->drawLine(rect.left(), rect.top() + offset2, rect.left(), rect.bottom() - offset2);
-        } else {
+        }
+        else {
             painter->drawLine(rect.left() + offset2, rect.top(), rect.right() - offset2, rect.top());
         }
-    } else {
+    }
+    else {
         if (horizontal) {
             painter->drawLine(rect.left(), rect.top() + offset2, rect.left(), rect.bottom() - offset2);
             painter->setPen(desc.toolBar.toolbarSeparatorHighlightPen);
             painter->drawLine(rect.left() + offset1, rect.top() + offset2, rect.left() + offset1, rect.bottom() - offset2);
-        } else {
+        }
+        else {
             painter->drawLine(rect.left() + offset2, rect.top(), rect.right() - offset2, rect.top());
             painter->setPen(desc.toolBar.toolbarSeparatorHighlightPen);
             painter->drawLine(rect.left() + offset2, rect.top() + offset1, rect.right() - 2, rect.top() + offset1);
@@ -2645,13 +2713,11 @@ void LC_ProxyStyle::drawCustomIndicatorToolBarSeparator(const QStyleOption *opti
     }
 }
 
-void LC_ProxyStyle::drawCustomToolbarOverflowIndicator(const QStyleOption *option,
-                                                            QPainter *painter,
-                                                            const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomToolbarOverflowIndicator(const QStyleOption* option, QPainter* painter, const QWidget* widget) const {
     LCPainterGuard guard(painter, true);
 
     const SkinColors desc = getStyleDescriptor(option);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
 
     QColor strokeColor = desc.toolBar.toolbarOverflowIndicatorColor;
     if (option->state & State_MouseOver) {
@@ -2666,7 +2732,7 @@ void LC_ProxyStyle::drawCustomToolbarOverflowIndicator(const QStyleOption *optio
 
     bool horizontal = true;
     if (widget && widget->parentWidget()) {
-        if (const auto *toolbar = qobject_cast<const QToolBar*>(widget->parentWidget())) {
+        if (const auto* toolbar = qobject_cast<const QToolBar*>(widget->parentWidget())) {
             horizontal = (toolbar->orientation() == Qt::Horizontal);
         }
     }
@@ -2677,43 +2743,45 @@ void LC_ProxyStyle::drawCustomToolbarOverflowIndicator(const QStyleOption *optio
 
     if (horizontal) {
         const bool rtl = (option->direction == Qt::RightToLeft);
-        if (rtl) { // Point Left (RTL layouts)
+        if (rtl) {
+            // Point Left (RTL layouts)
             // Inner chevron
             painter->drawLine(QPointF(cx.x() + s4, cy - s4), QPointF(cx.x() + s1, cy));
-            painter->drawLine(QPointF(cx.x() + s1, cy),     QPointF(cx.x() + s4, cy + s4));
+            painter->drawLine(QPointF(cx.x() + s1, cy), QPointF(cx.x() + s4, cy + s4));
             // Outer chevron
-            painter->drawLine(QPointF(cx.x(),     cy - s4), QPointF(cx.x() - s3, cy));
-            painter->drawLine(QPointF(cx.x() - s3, cy),     QPointF(cx.x(),     cy + s4));
-        } else { // Point Right (LTR layouts)
+            painter->drawLine(QPointF(cx.x(), cy - s4), QPointF(cx.x() - s3, cy));
+            painter->drawLine(QPointF(cx.x() - s3, cy), QPointF(cx.x(), cy + s4));
+        }
+        else {
+            // Point Right (LTR layouts)
             // Inner chevron
             painter->drawLine(QPointF(cx.x() - s4, cy - s4), QPointF(cx.x() - s1, cy));
-            painter->drawLine(QPointF(cx.x() - s1, cy),     QPointF(cx.x() - s4, cy + s4));
+            painter->drawLine(QPointF(cx.x() - s1, cy), QPointF(cx.x() - s4, cy + s4));
             // Outer chevron
-            painter->drawLine(QPointF(cx.x(),     cy - s4), QPointF(cx.x() + s3, cy));
-            painter->drawLine(QPointF(cx.x() + s3, cy),     QPointF(cx.x(),     cy + s4));
+            painter->drawLine(QPointF(cx.x(), cy - s4), QPointF(cx.x() + s3, cy));
+            painter->drawLine(QPointF(cx.x() + s3, cy), QPointF(cx.x(), cy + s4));
         }
-    } else { // Vertical: Point Down
+    }
+    else {
+        // Vertical: Point Down
         // Inner chevron
         painter->drawLine(QPointF(cx.x() - s4, cy - s4), QPointF(cx.x(), cy - s1));
-        painter->drawLine(QPointF(cx.x(),     cy - s1), QPointF(cx.x() + s4, cy - s4));
+        painter->drawLine(QPointF(cx.x(), cy - s1), QPointF(cx.x() + s4, cy - s4));
         // Outer chevron
-        painter->drawLine(QPointF(cx.x() - s4, cy),     QPointF(cx.x(), cy + s3));
-        painter->drawLine(QPointF(cx.x(),     cy + s3), QPointF(cx.x() + s4, cy));
+        painter->drawLine(QPointF(cx.x() - s4, cy), QPointF(cx.x(), cy + s3));
+        painter->drawLine(QPointF(cx.x(), cy + s3), QPointF(cx.x() + s4, cy));
     }
 }
 
-
-void LC_ProxyStyle::drawCustomIndicatorToolBarHandle(const QStyleOption *option,
-                                                           QPainter *painter,
-                                                           const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomIndicatorToolBarHandle(const QStyleOption* option, QPainter* painter, const QWidget* widget) const {
     const QPalette::ColorGroup group = resolveColorGroup(option->state);
     const SkinColors desc = getCachedStyleDescriptor(option->palette, group);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
 
     bool isWrapped = false;
     if (widget && m_autoPopupToolbarOverflow) {
-        if (auto *toolBar = qobject_cast<const QToolBar*>(widget)) {
-            if (const auto *extButton = findToolbarExtensionButton(toolBar)) {
+        if (auto* toolBar = qobject_cast<const QToolBar*>(widget)) {
+            if (const auto* extButton = findToolbarExtensionButton(toolBar)) {
                 isWrapped = extButton->isVisible() && !extButton->isChecked();
             }
         }
@@ -2732,8 +2800,9 @@ void LC_ProxyStyle::drawCustomIndicatorToolBarHandle(const QStyleOption *option,
         QRegion clipRegion(rect);
         const int halfGap = geoms.ints.scale6;
         const int gap = geoms.ints.scale12;
-        const QRect gapRect = horizontal ? QRect(rect.left(), cx.y() - halfGap, rect.width(), gap)
-                                   : QRect(cx.x() - halfGap, rect.top(), gap, rect.height());
+        const QRect gapRect = horizontal
+                                  ? QRect(rect.left(), cx.y() - halfGap, rect.width(), gap)
+                                  : QRect(cx.x() - halfGap, rect.top(), gap, rect.height());
         clipRegion -= gapRect;
         painter->setClipRegion(clipRegion);
     }
@@ -2743,11 +2812,13 @@ void LC_ProxyStyle::drawCustomIndicatorToolBarHandle(const QStyleOption *option,
         copy.palette.setColor(QPalette::Mid, desc.splitter.splitterGripColor);
         copy.palette.setColor(QPalette::Midlight, desc.splitter.splitterGripLight);
         QProxyStyle::drawPrimitive(PE_IndicatorToolBarHandle, &copy, painter, widget);
-    } else {
+    }
+    else {
         const int baseHandleLen = qMin(geoms.ints.scale24, (horizontal ? rect.height() : rect.width()) - geoms.ints.scale4);
 
         // Resolve dynamic grip well bounding rects cleanly from the layout resolver
-        const LC_SkinWidgetsLayoutResolver::GripLayout layout = LC_SkinWidgetsLayoutResolver::resolveGripLayout(option, geoms, m_showGripBackgroundWell, baseHandleLen, !horizontal);
+        const LC_SkinWidgetsLayoutResolver::GripLayout layout = LC_SkinWidgetsLayoutResolver::resolveGripLayout(
+            option, geoms, m_showGripBackgroundWell, baseHandleLen, !horizontal);
 
         if (layout.showWell) {
             painter->setPen(Qt::NoPen);
@@ -2760,9 +2831,11 @@ void LC_ProxyStyle::drawCustomIndicatorToolBarHandle(const QStyleOption *option,
         int gripLen = 0;
         if (m_splitterGripStyle == SplitterGripStyle::RoundedPill) {
             gripLen = geoms.ints.scale16;
-        } else if (m_splitterGripStyle == SplitterGripStyle::DoubleRidges || m_splitterGripStyle == SplitterGripStyle::BorderHairline) {
+        }
+        else if (m_splitterGripStyle == SplitterGripStyle::DoubleRidges || m_splitterGripStyle == SplitterGripStyle::BorderHairline) {
             gripLen = -1;
-        } else {
+        }
+        else {
             gripLen = geoms.ints.scale12;
         }
         if (gripLen >= 0) {
@@ -2781,7 +2854,7 @@ void LC_ProxyStyle::drawCustomIndicatorToolBarHandle(const QStyleOption *option,
 
         Qt::ToolBarArea area = Qt::NoToolBarArea;
         if (widget && widget->parentWidget()) {
-            if (const auto *mainWindow = qobject_cast<QMainWindow*>(widget->parentWidget())) {
+            if (const auto* mainWindow = qobject_cast<QMainWindow*>(widget->parentWidget())) {
                 area = mainWindow->toolBarArea(qobject_cast<const QToolBar*>(widget));
             }
         }
@@ -2791,16 +2864,19 @@ void LC_ProxyStyle::drawCustomIndicatorToolBarHandle(const QStyleOption *option,
             if (pointUp) {
                 painter->drawLine(cx.x() - 3, cy + 2, cx.x(), cy - 1);
                 painter->drawLine(cx.x(), cy - 1, cx.x() + 3, cy + 2);
-            } else {
+            }
+            else {
                 painter->drawLine(cx.x() - 3, cy - 2, cx.x(), cy + 1);
                 painter->drawLine(cx.x(), cy + 1, cx.x() + 3, cy - 2);
             }
-        } else {
+        }
+        else {
             const bool pointLeft = (area == Qt::RightToolBarArea);
             if (pointLeft) {
                 painter->drawLine(cx.x() + 2, cy - 3, cx.x() - 1, cy);
                 painter->drawLine(cx.x() - 1, cy, cx.x() + 2, cy + 3);
-            } else {
+            }
+            else {
                 painter->drawLine(cx.x() - 2, cy - 3, cx.x() + 1, cy);
                 painter->drawLine(cx.x() + 1, cy, cx.x() - 2, cy + 3);
             }
@@ -2808,20 +2884,18 @@ void LC_ProxyStyle::drawCustomIndicatorToolBarHandle(const QStyleOption *option,
     }
 }
 
-
-void LC_ProxyStyle::drawCustomIndicatorBranch(const QStyleOption *option,
-                                                    QPainter *painter,
-                                                    const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomIndicatorBranch(const QStyleOption* option, QPainter* painter, const QWidget* widget) const {
     Q_UNUSED(widget);
     QRect rect = option->rect;
     QPalette::ColorGroup group = (option->state & State_Enabled) ? QPalette::Active : QPalette::Disabled;
-    if (!(option->state & State_Active)) group = QPalette::Inactive;
+    if (!(option->state & State_Active))
+        group = QPalette::Inactive;
 
     const SkinColors desc = getCachedStyleDescriptor(option->palette, group);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
 
     // Resolve tree guideline lines and center coordinates mathematically
-    const  LC_SkinWidgetsLayoutResolver::BranchLayout layout = LC_SkinWidgetsLayoutResolver::resolveBranchLayout(option, geoms);
+    const LC_SkinWidgetsLayoutResolver::BranchLayout layout = LC_SkinWidgetsLayoutResolver::resolveBranchLayout(option, geoms);
 
     QColor indicatorColor = desc.groupBox.groupBoxFrameColor;
     QColor lineColor = desc.groupBox.groupBoxFrameColor;
@@ -2841,20 +2915,19 @@ void LC_ProxyStyle::drawCustomIndicatorBranch(const QStyleOption *option,
         QPen linePen(desc.groupBox.groupBoxFrameColor, 1, Qt::DotLine);
         painter->setPen(linePen);
         if (layout.drawLines) {
-        if (option->state & State_Sibling) {
+            if (option->state & State_Sibling) {
                 painter->drawLine(layout.verticalLine);
-        }
+            }
 
-        if (option->state & State_Item) {
+            if (option->state & State_Item) {
                 painter->drawLine(layout.horizontalLine);
             }
         }
     }
 
     // 2. Draw Expand/Collapse Indicator
-    if (option->state & State_Children && m_branchIndicatorStyle != BranchIndicatorStyle::None &&
-        m_branchIndicatorStyle != BranchIndicatorStyle::ClassicLinesOnly) {
-
+    if (option->state & State_Children && m_branchIndicatorStyle != BranchIndicatorStyle::None && m_branchIndicatorStyle !=
+        BranchIndicatorStyle::ClassicLinesOnly) {
         painter->setRenderHint(QPainter::Antialiasing, true);
 
         if (m_branchIndicatorStyle == BranchIndicatorStyle::MutedChevrons) {
@@ -2870,10 +2943,12 @@ void LC_ProxyStyle::drawCustomIndicatorBranch(const QStyleOption *option,
             painter->drawRect(layout.plusMinusBox);
 
             const int inset = qMax(1, geoms.ints.scale2);
-            painter->drawLine(layout.plusMinusBox.left() + inset, layout.center.y(), layout.plusMinusBox.right() - inset, layout.center.y());
+            painter->drawLine(layout.plusMinusBox.left() + inset, layout.center.y(), layout.plusMinusBox.right() - inset,
+                              layout.center.y());
 
             if (!layout.isExpanded) {
-                painter->drawLine(layout.center.x(), layout.plusMinusBox.top() + inset, layout.center.x(), layout.plusMinusBox.bottom() - inset);
+                painter->drawLine(layout.center.x(), layout.plusMinusBox.top() + inset, layout.center.x(),
+                                  layout.plusMinusBox.bottom() - inset);
             }
         }
         else if (m_branchIndicatorStyle == BranchIndicatorStyle::TactileCircles) {
@@ -2891,13 +2966,13 @@ void LC_ProxyStyle::drawCustomIndicatorBranch(const QStyleOption *option,
     }
 }
 
-void LC_ProxyStyle::drawCustomItemViewItem(const QStyleOptionViewItem *option, QPainter *painter, const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomItemViewItem(const QStyleOptionViewItem* option, QPainter* painter, const QWidget* widget) const {
     QPalette::ColorGroup group = (option->state & State_Enabled) ? QPalette::Active : QPalette::Disabled;
     if (!(option->state & State_Active))
         group = QPalette::Inactive;
 
     SkinColors desc = getCachedStyleDescriptor(option->palette, group);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
 
     bool selected = (option->state & State_Selected);
     bool hovered = (option->state & State_MouseOver);
@@ -2907,8 +2982,8 @@ void LC_ProxyStyle::drawCustomItemViewItem(const QStyleOptionViewItem *option, Q
         hovered = false;
     }
 
-    const auto* treeView  = qobject_cast<const QTreeView*>(widget);
-    const auto* listView  = qobject_cast<const QListView*>(widget);
+    const auto* treeView = qobject_cast<const QTreeView*>(widget);
+    const auto* listView = qobject_cast<const QListView*>(widget);
     const auto* tableView = qobject_cast<const QTableView*>(widget);
 
     // Retrieve row-level hover states instantly from the polished cache
@@ -2986,7 +3061,7 @@ void LC_ProxyStyle::drawCustomItemViewItem(const QStyleOptionViewItem *option, Q
     }
 }
 
-void LC_ProxyStyle::drawCustomMenuBarEmptyArea(const QStyleOption *option, QPainter *painter, const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomMenuBarEmptyArea(const QStyleOption* option, QPainter* painter, const QWidget* widget) const {
     Q_UNUSED(widget);
     const SkinColors desc = getStyleDescriptor(option);
 
@@ -3015,9 +3090,7 @@ void LC_ProxyStyle::drawCustomMenuItem(const QStyleOptionMenuItem* option, QPain
     const SkinColors desc = getCachedStyleDescriptor(option->palette, group);
 
     // Verify if we should custom-draw checkmarks based on active sync configuration
-    const bool customCheck = m_syncCheckedMenuState
-                             && option->checked
-                             && option->checkType != QStyleOptionMenuItem::NotCheckable;
+    const bool customCheck = m_syncCheckedMenuState && option->checked && option->checkType != QStyleOptionMenuItem::NotCheckable;
 
     if (customCheck) {
         copy.checked = false; // Suppress standard Qt checkmark drawing to avoid overlaps
@@ -3055,15 +3128,15 @@ void LC_ProxyStyle::drawCustomMenuItem(const QStyleOptionMenuItem* option, QPain
     if (customCheck) {
         LCPainterGuard guard(painter, true); // Antialiasing enabled
 
-        const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(widget);
+        const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(widget);
         const int iconColumnWidth = option->maxIconWidth;
         const int leftEdge = option->rect.left() + geoms.ints.scale6;
         const int centerX = leftEdge + iconColumnWidth / 2;
         const int centerY = option->rect.center().y();
 
         const QColor indicatorColor = (option->state & State_Selected)
-                                      ? desc.common.highlightColor
-                                      : desc.toolButton.toolButtonIndicatorColor;
+                                          ? desc.common.highlightColor
+                                          : desc.toolButton.toolButtonIndicatorColor;
 
         if (m_toolButtonIndicatorStyle == ToolButtonIndicatorStyle::ContextStripe) {
             const int barHeight = option->rect.height() - geoms.ints.scale8;
@@ -3088,7 +3161,7 @@ void LC_ProxyStyle::drawCustomMenuItem(const QStyleOptionMenuItem* option, QPain
     }
 }
 
-void LC_ProxyStyle::drawCustomPanelItemViewRow(const QStyleOptionViewItem *option, QPainter *painter, const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomPanelItemViewRow(const QStyleOptionViewItem* option, QPainter* painter, const QWidget* widget) const {
     const SkinColors desc = getStyleDescriptor(option);
 
     bool selected = (option->state & State_Selected);
@@ -3107,7 +3180,8 @@ void LC_ProxyStyle::drawCustomPanelItemViewRow(const QStyleOptionViewItem *optio
                 const QPoint localMousePos = viewport ? viewport->mapFromGlobal(QCursor::pos()) : widget->mapFromGlobal(QCursor::pos());
                 const QModelIndex hoveredIndex = itemView->indexAt(localMousePos);
 
-                if (hoveredIndex.isValid() && hoveredIndex.row() == option->index.row() && hoveredIndex.parent() == option->index.parent()) {
+                if (hoveredIndex.isValid() && hoveredIndex.row() == option->index.row() && hoveredIndex.parent() == option->index.
+                    parent()) {
                     hovered = true;
                 }
             }
@@ -3138,8 +3212,7 @@ void LC_ProxyStyle::drawCustomPanelItemViewRow(const QStyleOptionViewItem *optio
     QProxyStyle::drawPrimitive(PE_PanelItemViewRow, &copy, painter, widget);
 }
 
-
-void LC_ProxyStyle::drawCustomMenuBarItem(const QStyleOptionMenuItem *option, QPainter *painter, const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomMenuBarItem(const QStyleOptionMenuItem* option, QPainter* painter, const QWidget* widget) const {
     QStyleOptionMenuItem copy = *option;
 
     const SkinColors desc = getStyleDescriptor(option);
@@ -3147,7 +3220,7 @@ void LC_ProxyStyle::drawCustomMenuBarItem(const QStyleOptionMenuItem *option, QP
     bool isHovered = (option->state & State_Selected);
 
     // Retrieve the hovered action from our extracted auto-popup event controller
-    const LC_EventFilterAutoPopupController *controller = autoPopupController();
+    const LC_EventFilterAutoPopupController* controller = autoPopupController();
     const QPointer<QAction> hoveredAction = controller ? controller->hoveredMenuBarAction() : nullptr;
 
     // Symmetrically determine if the menu bar item is currently hovered in our state-machine
@@ -3160,9 +3233,10 @@ void LC_ProxyStyle::drawCustomMenuBarItem(const QStyleOptionMenuItem *option, QP
     QColor bgCol = desc.common.bgStart;
     if (option->state & State_Sunken) {
         bgCol = desc.button.bgSunken;
-    } else if (isHovered) {
+    }
+    else if (isHovered) {
         bgCol = desc.common.selectionHighlight; // Hover state represents the soft selection highlight tint
-        copy.state |= State_Selected;   // Force selection state so QCommonStyle draws the background highlight
+        copy.state |= State_Selected; // Force selection state so QCommonStyle draws the background highlight
     }
 
     copy.palette.setBrush(QPalette::Highlight, bgCol);
@@ -3176,14 +3250,13 @@ void LC_ProxyStyle::drawCustomMenuBarItem(const QStyleOptionMenuItem *option, QP
     QProxyStyle::drawControl(CE_MenuBarItem, &copy, painter, widget);
 }
 
-QRect LC_ProxyStyle::subControlRect(const ComplexControl control,
-                                          const QStyleOptionComplex *option, const SubControl subControl,
-                                          const QWidget *widget) const {
+QRect LC_ProxyStyle::subControlRect(const ComplexControl control, const QStyleOptionComplex* option, const SubControl subControl,
+                                    const QWidget* widget) const {
     QRect rect = QProxyStyle::subControlRect(control, option, subControl, widget);
 
     if (control == CC_GroupBox) {
         if (subControl == SC_GroupBoxLabel && !m_isClassic) {
-            const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(widget);
+            const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(widget);
             // Apply pre-scaled margin spacing around text block
             const int lineGap = geoms.scaledMetrics.groupBoxTitleLineGap;
             rect.adjust(-lineGap, 0, lineGap, 0);
@@ -3192,13 +3265,12 @@ QRect LC_ProxyStyle::subControlRect(const ComplexControl control,
     return rect;
 }
 
-
-void LC_ProxyStyle::drawCustomIndicatorHeaderArrow(const QStyleOption *option, QPainter *painter) const {
+void LC_ProxyStyle::drawCustomIndicatorHeaderArrow(const QStyleOption* option, QPainter* painter) const {
     const QRect rect = option->rect;
     const QPalette::ColorGroup group = resolveColorGroup(option->state);
 
     const SkinColors desc = getCachedStyleDescriptor(option->palette, group);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
 
     LCPainterGuard guard(painter, true);
 
@@ -3213,28 +3285,27 @@ void LC_ProxyStyle::drawCustomIndicatorHeaderArrow(const QStyleOption *option, Q
     const QPoint cx = rect.center();
     const int size = geoms.ints.scale6; // Scale sorting arrow geometry dynamically
 
-    const double quadSize = size/4.0;
+    const double quadSize = size / 4.0;
     if (option->state & State_UpArrow) {
         QPolygonF chevron;
-        chevron << QPointF(cx.x() - size/2.0, cx.y() + quadSize)
-                << QPointF(cx.x(), cx.y() - quadSize)
-                << QPointF(cx.x() + size/2.0, cx.y() + quadSize);
+        chevron << QPointF(cx.x() - size / 2.0, cx.y() + quadSize) << QPointF(cx.x(), cx.y() - quadSize) << QPointF(
+            cx.x() + size / 2.0, cx.y() + quadSize);
         painter->drawPolyline(chevron);
-    } else if (option->state & State_DownArrow) {
+    }
+    else if (option->state & State_DownArrow) {
         QPolygonF chevron;
-        chevron << QPointF(cx.x() - size/2.0, cx.y() - quadSize)
-                << QPointF(cx.x(), cx.y() + quadSize)
-                << QPointF(cx.x() + size/2.0, cx.y() - quadSize);
+        chevron << QPointF(cx.x() - size / 2.0, cx.y() - quadSize) << QPointF(cx.x(), cx.y() + quadSize) << QPointF(
+            cx.x() + size / 2.0, cx.y() - quadSize);
         painter->drawPolyline(chevron);
     }
 }
 
-void LC_ProxyStyle::drawCustomIndicatorTabClose(const QStyleOption *option, QPainter *painter) const {
+void LC_ProxyStyle::drawCustomIndicatorTabClose(const QStyleOption* option, QPainter* painter) const {
     const QRect rect = option->rect;
     const QPalette::ColorGroup group = resolveColorGroup(option->state);
 
     const SkinColors desc = getCachedStyleDescriptor(option->palette, group);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
 
     LCPainterGuard guard(painter);
 
@@ -3258,13 +3329,11 @@ void LC_ProxyStyle::drawCustomIndicatorTabClose(const QStyleOption *option, QPai
     painter->drawLine(cx.x() - hSize, cx.y() + hSize, cx.x() + hSize, cx.y() - hSize);
 }
 
-void LC_ProxyStyle::drawCustomIndicatorTabTear(const PrimitiveElement element,
-                                                      const QStyleOption *option,
-                                                      QPainter *painter,
-                                                      const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomIndicatorTabTear(const PrimitiveElement element, const QStyleOption* option, QPainter* painter,
+                                               const QWidget* widget) const {
     Q_UNUSED(widget);
     LCPainterGuard guard(painter);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
 
     const QRect rect = option->rect;
     const SkinColors desc = getStyleDescriptor(option);
@@ -3288,36 +3357,45 @@ void LC_ProxyStyle::drawCustomIndicatorTabTear(const PrimitiveElement element,
     bool isVertical = false;
 
     if (element == PE_IndicatorTabTear) {
-        if (const auto *tab = qstyleoption_cast<const QStyleOptionTab*>(option)) {
+        if (const auto* tab = qstyleoption_cast<const QStyleOptionTab*>(option)) {
             isLeft = (tab->direction == Qt::RightToLeft);
-            isVertical = (tab->shape == QTabBar::RoundedWest || tab->shape == QTabBar::TriangularWest ||
-                          tab->shape == QTabBar::RoundedEast || tab->shape == QTabBar::TriangularEast);
+            isVertical = (tab->shape == QTabBar::RoundedWest || tab->shape == QTabBar::TriangularWest || tab->shape == QTabBar::RoundedEast
+                || tab->shape == QTabBar::TriangularEast);
         }
-    } else {
+    }
+    else {
         isVertical = (element == PE_IndicatorTabTearLeft || element == PE_IndicatorTabTearRight);
     }
 
     const int halfSize = size / 2;
     if (isVertical) {
-        if (isLeft) { // Point Up
+        if (isLeft) {
+            // Point Up
             painter->drawLine(cx.x() - size, cx.y() + halfSize, cx.x(), cx.y() - halfSize);
             painter->drawLine(cx.x(), cx.y() - halfSize, cx.x() + size, cx.y() + halfSize);
-        } else { // Point Down
+        }
+        else {
+            // Point Down
             painter->drawLine(cx.x() - size, cx.y() - halfSize, cx.x(), cx.y() + halfSize);
             painter->drawLine(cx.x(), cx.y() + halfSize, cx.x() + size, cx.y() - halfSize);
         }
-    } else {
-        if (isLeft) { // Point Left
+    }
+    else {
+        if (isLeft) {
+            // Point Left
             painter->drawLine(cx.x() + halfSize, cx.y() - size, cx.x() - halfSize, cx.y());
             painter->drawLine(cx.x() - halfSize, cx.y(), cx.x() + halfSize, cx.y() + size);
-        } else { // Point Right
+        }
+        else {
+            // Point Right
             painter->drawLine(cx.x() - halfSize, cx.y() - size, cx.x() + halfSize, cx.y());
             painter->drawLine(cx.x() + halfSize, cx.y(), cx.x() - halfSize, cx.y() + size);
         }
     }
 }
 
-void LC_ProxyStyle::paintTabBackground(QPainter *painter, const QRectF &rect, const QStyleOptionTab *option, const SkinColors &desc, const TabPaths &paths, bool selected) const {
+void LC_ProxyStyle::paintTabBackground(QPainter* painter, const QRectF& rect, const QStyleOptionTab* option, const SkinColors& desc,
+                                       const TabPaths& paths, bool selected) const {
     Q_UNUSED(option);
 
     // Symmetrically draw standard Satin/Glossy gradients on the active selected tab face
@@ -3330,44 +3408,52 @@ void LC_ProxyStyle::paintTabBackground(QPainter *painter, const QRectF &rect, co
         glassGrad.setColorAt(0.55, desc.button.glassMidEnd);
         glassGrad.setColorAt(1.0, desc.button.glassEnd);
         painter->fillPath(paths.fillPath, glassGrad);
-    } else if (useActiveTabGradients && m_isSoftSatin) {
+    }
+    else if (useActiveTabGradients && m_isSoftSatin) {
         QLinearGradient grad(rect.topLeft(), rect.bottomLeft());
         grad.setColorAt(0.0, desc.button.bgButton);
         grad.setColorAt(1.0, desc.button.bgButtonEnd);
         painter->fillPath(paths.fillPath, grad);
-    } else if (desc.common.useGlassyGloss) {
+    }
+    else if (desc.common.useGlassyGloss) {
         QLinearGradient glassGrad(rect.topLeft(), rect.bottomLeft());
         glassGrad.setColorAt(0.0, desc.button.glassStart);
         glassGrad.setColorAt(0.42, desc.button.glassMidStart);
         glassGrad.setColorAt(0.55, desc.button.glassMidEnd);
         glassGrad.setColorAt(1.0, desc.button.glassEnd);
         painter->fillPath(paths.fillPath, glassGrad);
-    } else if (desc.common.useGradient) {
+    }
+    else if (desc.common.useGradient) {
         QLinearGradient grad(rect.topLeft(), rect.bottomLeft());
         grad.setColorAt(0.0, desc.common.bgStart);
         grad.setColorAt(1.0, desc.common.bgEnd);
         painter->fillPath(paths.fillPath, grad);
-    } else {
+    }
+    else {
         painter->fillPath(paths.fillPath, desc.common.bgStart);
     }
 }
 
-void LC_ProxyStyle::paintTabBorders(QPainter *painter, const QStyleOptionTab *option, const SkinColors &desc, const TabPaths &paths, bool selected) const {
+void LC_ProxyStyle::paintTabBorders(QPainter* painter, const QStyleOptionTab* option, const SkinColors& desc, const TabPaths& paths,
+                                    bool selected) const {
     Q_UNUSED(option);
 
     if (m_isFlatModern) {
         if (desc.frame.hasFullBorder) {
             painter->setPen(QPen(desc.frame.borderTop, 1));
             painter->drawPath(paths.fillPath);
-        } else {
+        }
+        else {
             painter->setPen(QPen(desc.frame.borderButton, 1));
             painter->drawPath(paths.borderPath);
         }
-    } else {
+    }
+    else {
         if (desc.frame.hasFullBorder) {
             painter->setPen(QPen(desc.frame.borderTop, 1));
             painter->drawPath(paths.fillPath);
-        } else {
+        }
+        else {
             const QColor softBorder = desc.frame.borderTop.isValid() ? desc.frame.borderTop : desc.frame.borderHovered;
             painter->setPen(QPen(softBorder, 1));
             painter->drawPath(paths.borderPath);
@@ -3375,13 +3461,14 @@ void LC_ProxyStyle::paintTabBorders(QPainter *painter, const QStyleOptionTab *op
     }
 }
 
-void LC_ProxyStyle::paintTabActiveStripe(QPainter *painter, const QRectF &rect, const QStyleOptionTab *option, const SkinColors &desc) const {
+void LC_ProxyStyle::paintTabActiveStripe(QPainter* painter, const QRectF& rect, const QStyleOptionTab* option,
+                                         const SkinColors& desc) const {
     const bool isAccentOutline = m_isAccentOnline;
     if (isAccentOutline && (m_boxDecoration == BoxDecoration::Frameless || m_boxDecoration == BoxDecoration::DividingHairline)) {
         return;
     }
 
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
 
     const QColor highlightColor = desc.common.highlightColor;
     painter->setPen(QPen(highlightColor, geoms.tab.stripeThickness, Qt::SolidLine, Qt::RoundCap));
@@ -3389,55 +3476,66 @@ void LC_ProxyStyle::paintTabActiveStripe(QPainter *painter, const QRectF &rect, 
     const qreal r = geoms.tab.roundedRadius;
     const qreal inset = geoms.tab.beveledInset;
 
-    const TabShape shape = (option->shape == QTabBar::TriangularNorth || option->shape == QTabBar::TriangularSouth ||
-                      option->shape == QTabBar::TriangularWest || option->shape == QTabBar::TriangularEast)
-                     ? TabShape::Beveled : TabShape::Rounded;
+    const TabShape shape = (option->shape == QTabBar::TriangularNorth || option->shape == QTabBar::TriangularSouth || option->shape ==
+                               QTabBar::TriangularWest || option->shape == QTabBar::TriangularEast)
+                               ? TabShape::Beveled
+                               : TabShape::Rounded;
 
     if (m_boxDecoration == BoxDecoration::LeftAccentBar && !m_tabStripeAtBottom) {
-        const bool isHorizontal = (option->shape == QTabBar::RoundedNorth || option->shape == QTabBar::TriangularNorth ||
-                             option->shape == QTabBar::RoundedSouth || option->shape == QTabBar::TriangularSouth);
+        const bool isHorizontal = (option->shape == QTabBar::RoundedNorth || option->shape == QTabBar::TriangularNorth || option->shape ==
+            QTabBar::RoundedSouth || option->shape == QTabBar::TriangularSouth);
 
         if (isHorizontal) {
             if (option->shape == QTabBar::RoundedNorth || option->shape == QTabBar::TriangularNorth) {
                 if (shape == TabShape::Beveled) {
                     painter->drawLine(QPointF(rect.left() + geoms.tab.stripeOffset, rect.bottom() - geoms.tab.marginDefault),
                                       QPointF(rect.left() + inset + geoms.tab.stripeOffset, rect.top() + geoms.tab.marginDefault));
-                } else {
+                }
+                else {
                     painter->drawLine(QPointF(rect.left() + geoms.tab.stripeOffset, rect.bottom() - geoms.tab.marginDefault),
                                       QPointF(rect.left() + geoms.tab.stripeOffset, rect.top() + r));
                 }
-            } else { // South
+            }
+            else {
+                // South
                 if (shape == TabShape::Beveled) {
                     painter->drawLine(QPointF(rect.left() + geoms.tab.stripeOffset, rect.top() + geoms.tab.marginDefault),
                                       QPointF(rect.left() + inset + geoms.tab.stripeOffset, rect.bottom() - geoms.tab.marginDefault));
-                } else {
+                }
+                else {
                     painter->drawLine(QPointF(rect.left() + geoms.tab.stripeOffset, rect.top() + geoms.tab.marginDefault),
                                       QPointF(rect.left() + geoms.tab.stripeOffset, rect.bottom() - r));
                 }
             }
-        } else {
+        }
+        else {
             if (option->shape == QTabBar::RoundedWest || option->shape == QTabBar::TriangularWest) {
                 if (shape == TabShape::Beveled) {
                     painter->drawLine(QPointF(rect.right() - geoms.tab.marginDefault, rect.top() + geoms.tab.stripeOffset),
                                       QPointF(rect.left() + geoms.tab.marginDefault, rect.top() + inset + geoms.tab.stripeOffset));
-                } else {
+                }
+                else {
                     painter->drawLine(QPointF(rect.right() - geoms.tab.marginDefault, rect.top() + geoms.tab.stripeOffset),
                                       QPointF(rect.left() + r, rect.top() + geoms.tab.stripeOffset));
                 }
-            } else { // East
+            }
+            else {
+                // East
                 if (shape == TabShape::Beveled) {
                     painter->drawLine(QPointF(rect.left() + geoms.tab.marginDefault, rect.top() + geoms.tab.stripeOffset),
                                       QPointF(rect.right() - geoms.tab.marginDefault, rect.top() + inset + geoms.tab.stripeOffset));
-                } else {
+                }
+                else {
                     painter->drawLine(QPointF(rect.left() + geoms.tab.marginDefault, rect.top() + geoms.tab.stripeOffset),
                                       QPointF(rect.right() - r, rect.top() + geoms.tab.stripeOffset));
                 }
             }
         }
-    } else {
+    }
+    else {
         const bool drawAtBase = m_tabStripeAtBottom;
-        const bool isHorizontal = (option->shape == QTabBar::RoundedNorth || option->shape == QTabBar::TriangularNorth ||
-                             option->shape == QTabBar::RoundedSouth || option->shape == QTabBar::TriangularSouth);
+        const bool isHorizontal = (option->shape == QTabBar::RoundedNorth || option->shape == QTabBar::TriangularNorth || option->shape ==
+            QTabBar::RoundedSouth || option->shape == QTabBar::TriangularSouth);
 
         if (isHorizontal) {
             qreal y = 0.0;
@@ -3447,32 +3545,39 @@ void LC_ProxyStyle::paintTabActiveStripe(QPainter *painter, const QRectF &rect, 
                 if (drawAtBase) {
                     y = rect.bottom() - geoms.tab.stripeOffset;
                     stripeIsAtBaseEdge = true;
-                } else {
+                }
+                else {
                     y = rect.top() + geoms.tab.stripeOffset;
                 }
-            } else { // South
+            }
+            else {
+                // South
                 if (drawAtBase) {
                     y = rect.top() + geoms.tab.stripeOffset;
                     stripeIsAtBaseEdge = true;
-                } else {
+                }
+                else {
                     y = rect.bottom() - geoms.tab.stripeOffset;
                 }
             }
 
             qreal xStart = rect.left() + geoms.tab.marginDefault;
-            qreal xEnd   = rect.right() - geoms.tab.marginDefault;
+            qreal xEnd = rect.right() - geoms.tab.marginDefault;
 
             if (!stripeIsAtBaseEdge) {
                 if (shape == TabShape::Rounded) {
                     xStart = rect.left() + r;
-                    xEnd   = rect.right() - r;
-                } else if (shape == TabShape::Beveled) {
+                    xEnd = rect.right() - r;
+                }
+                else if (shape == TabShape::Beveled) {
                     xStart = rect.left() + inset;
-                    xEnd   = rect.right() - inset;
+                    xEnd = rect.right() - inset;
                 }
             }
             painter->drawLine(QPointF(xStart, y), QPointF(xEnd, y));
-        } else { // Vertical
+        }
+        else {
+            // Vertical
             qreal x = 0.0;
             bool stripeIsAtBaseEdge = false;
 
@@ -3480,28 +3585,33 @@ void LC_ProxyStyle::paintTabActiveStripe(QPainter *painter, const QRectF &rect, 
                 if (drawAtBase) {
                     x = rect.right() - geoms.tab.stripeOffset;
                     stripeIsAtBaseEdge = true;
-                } else {
+                }
+                else {
                     x = rect.left() + geoms.tab.stripeOffset;
                 }
-            } else { // East
+            }
+            else {
+                // East
                 if (drawAtBase) {
                     x = rect.left() + geoms.tab.stripeOffset;
                     stripeIsAtBaseEdge = true;
-                } else {
+                }
+                else {
                     x = rect.right() - geoms.tab.stripeOffset;
                 }
             }
 
             qreal yStart = rect.top() + geoms.tab.marginDefault;
-            qreal yEnd   = rect.bottom() - geoms.tab.marginDefault;
+            qreal yEnd = rect.bottom() - geoms.tab.marginDefault;
 
             if (!stripeIsAtBaseEdge) {
                 if (shape == TabShape::Rounded) {
                     yStart = rect.top() + r;
-                    yEnd   = rect.bottom() - r;
-                } else if (shape == TabShape::Beveled) {
+                    yEnd = rect.bottom() - r;
+                }
+                else if (shape == TabShape::Beveled) {
                     yStart = rect.top() + inset;
-                    yEnd   = rect.bottom() - inset;
+                    yEnd = rect.bottom() - inset;
                 }
             }
             painter->drawLine(QPointF(x, yStart), QPointF(x, yEnd));
@@ -3509,23 +3619,26 @@ void LC_ProxyStyle::paintTabActiveStripe(QPainter *painter, const QRectF &rect, 
     }
 }
 
-bool LC_ProxyStyle::observeToolbarExtensionEvent(QObject *watched, QEvent *event) const {
+bool LC_ProxyStyle::observeToolbarExtensionEvent(QObject* watched, QEvent* event) const {
     const QEvent::Type type = event->type();
 
-    if (auto *extButton = qobject_cast<QToolButton*>(watched)) {
-        if (isToolbarExtensionButton(extButton)) { // Refactored helper
-            if (auto *toolBar = qobject_cast<QToolBar*>(extButton->parentWidget())) {
+    if (auto* extButton = qobject_cast<QToolButton*>(watched)) {
+        if (isToolbarExtensionButton(extButton)) {
+            // Refactored helper
+            if (auto* toolBar = qobject_cast<QToolBar*>(extButton->parentWidget())) {
                 if (m_customToolbarOverflowGrip && m_autoPopupToolbarOverflow && toolBar->isMovable()) {
                     if (type == QEvent::Show) {
                         toolBar->setProperty(PROP_IS_WRAPPED, true);
                         extButton->hide(); // Collapse the trailing layout gap natively
                         event->accept();
                         return true; // Mark as consumed
-                    } else if (type == QEvent::Hide) {
+                    }
+                    else if (type == QEvent::Hide) {
                         toolBar->setProperty(PROP_IS_WRAPPED, false);
                         return true; // Mark as consumed
                     }
-                } else if (type == QEvent::Show) {
+                }
+                else if (type == QEvent::Show) {
                     extButton->setMinimumWidth(0);
                     extButton->setMaximumWidth(QWIDGETSIZE_MAX);
                 }
@@ -3535,11 +3648,10 @@ bool LC_ProxyStyle::observeToolbarExtensionEvent(QObject *watched, QEvent *event
     return false;
 }
 
-
-bool LC_ProxyStyle::getMenuCommandAliasInfo(const QWidget *widget, const QFont &baseFont, int &maxCmdWidth, int &maxShortcutWidth) const {
+bool LC_ProxyStyle::getMenuCommandAliasInfo(const QWidget* widget, const QFont& baseFont, int& maxCmdWidth, int& maxShortcutWidth) const {
     maxCmdWidth = 0;
     maxShortcutWidth = 0;
-    const auto *menu = qobject_cast<const QMenu*>(widget);
+    const auto* menu = qobject_cast<const QMenu*>(widget);
     if (!menu) {
         return false;
     }
@@ -3547,11 +3659,11 @@ bool LC_ProxyStyle::getMenuCommandAliasInfo(const QWidget *widget, const QFont &
     const QVariant hasAliasesProp = menu->property(PROP_HAS_CMD_ALIASES);
     if (!hasAliasesProp.isValid()) {
         bool hasAliases = false;
-        const QFont &monoFont = getResolvedMonoFont(baseFont); // Zero-allocation cache lookup
+        const QFont& monoFont = getResolvedMonoFont(baseFont); // Zero-allocation cache lookup
         const QFontMetrics fmCmd(monoFont);
         const QFontMetrics fmBase(baseFont);
 
-        for (const QAction *action : menu->actions()) {
+        for (const QAction* action : menu->actions()) {
             // 1. Measure Command Alias Width
             QVariant cmdLine = action->property(PROP_CMD_LINE);
             if (cmdLine.isValid() && !cmdLine.toString().isEmpty()) {
@@ -3573,7 +3685,7 @@ bool LC_ProxyStyle::getMenuCommandAliasInfo(const QWidget *widget, const QFont &
         }
 
         // Cache the lookup and width retSkinults directly on the parent QMenu
-        auto *mutableMenu = const_cast<QMenu*>(menu);
+        auto* mutableMenu = const_cast<QMenu*>(menu);
         mutableMenu->setProperty(PROP_HAS_CMD_ALIASES, hasAliases);
         mutableMenu->setProperty(PROP_MAX_CMD_WIDTH, maxCmdWidth);
         mutableMenu->setProperty(PROP_MAX_SHORTCUT_WIDTH, maxShortcutWidth);
@@ -3585,7 +3697,6 @@ bool LC_ProxyStyle::getMenuCommandAliasInfo(const QWidget *widget, const QFont &
     return hasAliasesProp.toBool();
 }
 
-
 QPalette::ColorGroup LC_ProxyStyle::resolveColorGroup(const QStyle::State state) const {
     QPalette::ColorGroup group = (state & State_Enabled) ? QPalette::Active : QPalette::Disabled;
     if (!(state & State_Active)) {
@@ -3594,21 +3705,18 @@ QPalette::ColorGroup LC_ProxyStyle::resolveColorGroup(const QStyle::State state)
     return group;
 }
 
-SkinColors LC_ProxyStyle::getStyleDescriptor(const QStyleOption *option) const {
+SkinColors LC_ProxyStyle::getStyleDescriptor(const QStyleOption* option) const {
     return getCachedStyleDescriptor(option->palette, resolveColorGroup(option->state));
 }
 
-void LC_ProxyStyle::drawUnifiedGripPattern(QPainter *painter,
-                                                 const QPoint &cx,
-                                                 const QRect &rect, const bool horizontalPattern,
-                                                 const QColor &gripColor, const SplitterGripStyle style, const int handleLen,
-                                                 const SkinScaledGeometries &geoms) const {
+void LC_ProxyStyle::drawUnifiedGripPattern(QPainter* painter, const QPoint& cx, const QRect& rect, const bool horizontalPattern,
+                                           const QColor& gripColor, const SplitterGripStyle style, const int handleLen,
+                                           const SkinScaledGeometries& geoms) const {
     LCPainterGuard guard(painter);
 
     int realLen = handleLen;
     if (realLen < 0) {
-        realLen = horizontalPattern ? rect.width() - geoms.ints.scale4
-                                    : rect.height() - geoms.ints.scale4;
+        realLen = horizontalPattern ? rect.width() - geoms.ints.scale4 : rect.height() - geoms.ints.scale4;
     }
     const int halfLen = realLen / 2;
 
@@ -3616,17 +3724,17 @@ void LC_ProxyStyle::drawUnifiedGripPattern(QPainter *painter,
         case SplitterGripStyle::MutedDots: {
             painter->setPen(Qt::NoPen);
             painter->setBrush(gripColor);
-            const int dotOffset = (handleLen > 0) ? qMax(geoms.ints.scale4, halfLen - geoms.ints.scale3)
-                                            : geoms.ints.scale6;
+            const int dotOffset = (handleLen > 0) ? qMax(geoms.ints.scale4, halfLen - geoms.ints.scale3) : geoms.ints.scale6;
             constexpr qreal dotRadius = 1.5;
 
             if (horizontalPattern) {
                 painter->drawEllipse(QPointF(cx.x() - dotOffset, cx.y()), dotRadius, dotRadius);
-                painter->drawEllipse(QPointF(cx.x(),             cx.y()), dotRadius, dotRadius);
+                painter->drawEllipse(QPointF(cx.x(), cx.y()), dotRadius, dotRadius);
                 painter->drawEllipse(QPointF(cx.x() + dotOffset, cx.y()), dotRadius, dotRadius);
-            } else {
+            }
+            else {
                 painter->drawEllipse(QPointF(cx.x(), cx.y() - dotOffset), dotRadius, dotRadius);
-                painter->drawEllipse(QPointF(cx.x(), cx.y()),             dotRadius, dotRadius);
+                painter->drawEllipse(QPointF(cx.x(), cx.y()), dotRadius, dotRadius);
                 painter->drawEllipse(QPointF(cx.x(), cx.y() + dotOffset), dotRadius, dotRadius);
             }
             break;
@@ -3640,7 +3748,8 @@ void LC_ProxyStyle::drawUnifiedGripPattern(QPainter *painter,
 
             if (horizontalPattern) {
                 painter->drawRoundedRect(QRectF(cx.x() - halfLen, cx.y() - halfPill, realLen, pillHeight), halfPill, halfPill);
-            } else {
+            }
+            else {
                 painter->drawRoundedRect(QRectF(cx.x() - halfPill, cx.y() - halfLen, pillHeight, realLen), halfPill, halfPill);
             }
             break;
@@ -3652,11 +3761,12 @@ void LC_ProxyStyle::drawUnifiedGripPattern(QPainter *painter,
 
             if (horizontalPattern) {
                 painter->drawLine(cx.x() - spacing, cx.y() - spacing, cx.x() - spacing, cx.y() + spacing);
-                painter->drawLine(cx.x(),           cx.y() - spacing, cx.x(),           cx.y() + spacing);
+                painter->drawLine(cx.x(), cx.y() - spacing, cx.x(), cx.y() + spacing);
                 painter->drawLine(cx.x() + spacing, cx.y() - spacing, cx.x() + spacing, cx.y() + spacing);
-            } else {
+            }
+            else {
                 painter->drawLine(cx.x() - spacing, cx.y() - spacing, cx.x() + spacing, cx.y() - spacing);
-                painter->drawLine(cx.x() - spacing, cx.y(),           cx.x() + spacing, cx.y());
+                painter->drawLine(cx.x() - spacing, cx.y(), cx.x() + spacing, cx.y());
                 painter->drawLine(cx.x() - spacing, cx.y() + spacing, cx.x() + spacing, cx.y() + spacing);
             }
             break;
@@ -3669,7 +3779,8 @@ void LC_ProxyStyle::drawUnifiedGripPattern(QPainter *painter,
             if (horizontalPattern) {
                 painter->drawLine(cx.x() - halfLen, cx.y() - spacing, cx.x() + halfLen, cx.y() - spacing);
                 painter->drawLine(cx.x() - halfLen, cx.y() + spacing, cx.x() + halfLen, cx.y() + spacing);
-            } else {
+            }
+            else {
                 painter->drawLine(cx.x() - spacing, cx.y() - halfLen, cx.x() - spacing, cx.y() + halfLen);
                 painter->drawLine(cx.x() + spacing, cx.y() - halfLen, cx.x() + spacing, cx.y() + halfLen);
             }
@@ -3680,7 +3791,8 @@ void LC_ProxyStyle::drawUnifiedGripPattern(QPainter *painter,
             painter->setPen(QPen(gripColor, 1));
             if (horizontalPattern) {
                 painter->drawLine(cx.x() - halfLen, cx.y(), cx.x() + halfLen, cx.y());
-            } else {
+            }
+            else {
                 painter->drawLine(cx.x(), cx.y() - halfLen, cx.x(), cx.y() + halfLen);
             }
             break;
@@ -3688,13 +3800,10 @@ void LC_ProxyStyle::drawUnifiedGripPattern(QPainter *painter,
     }
 }
 
-void LC_ProxyStyle::drawGroupBoxBoundary(QPainter *painter,
-                                                const QStyleOptionGroupBox *option,
-                                                const SkinColors &desc,
-                                                const GroupBoxLayout &layout,
-                                                const QRegion &clipRegion) const {
+void LC_ProxyStyle::drawGroupBoxBoundary(QPainter* painter, const QStyleOptionGroupBox* option, const SkinColors& desc,
+                                         const GroupBoxLayout& layout, const QRegion& clipRegion) const {
     const QRect rect = option->rect;
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
     const bool hasBreak = (desc.groupBox.groupBoxHeaderStyle == GroupBoxHeaderStyle::BreakBorder);
 
     if (desc.groupBox.groupBoxBoundaryStyle == GroupBoxBoundaryStyle::Full) {
@@ -3704,15 +3813,18 @@ void LC_ProxyStyle::drawGroupBoxBoundary(QPainter *painter,
         if (desc.groupBox.groupBoxHeaderStyle == GroupBoxHeaderStyle::HeaderUnderline) {
             painter->drawLine(layout.drawFrameRect.left(), layout.underlineY, layout.drawFrameRect.left(), layout.drawFrameRect.bottom());
             painter->drawLine(layout.drawFrameRect.right(), layout.underlineY, layout.drawFrameRect.right(), layout.drawFrameRect.bottom());
-            painter->drawLine(layout.drawFrameRect.left(), layout.drawFrameRect.bottom(), layout.drawFrameRect.right(), layout.drawFrameRect.bottom());
-        } else {
+            painter->drawLine(layout.drawFrameRect.left(), layout.drawFrameRect.bottom(), layout.drawFrameRect.right(),
+                              layout.drawFrameRect.bottom());
+        }
+        else {
             if (hasBreak && !clipRegion.isEmpty()) {
                 painter->setClipRegion(clipRegion);
             }
             if (m_isSoftSatin) {
                 LCPainterGuard roundedGuard(painter, true);
                 painter->drawRoundedRect(layout.drawFrameRect, 4.0, 4.0);
-            } else {
+            }
+            else {
                 painter->drawRect(layout.drawFrameRect);
             }
             painter->setClipping(false);
@@ -3732,12 +3844,8 @@ void LC_ProxyStyle::drawGroupBoxBoundary(QPainter *painter,
     }
 }
 
-void LC_ProxyStyle::drawGroupBoxHeader(QPainter *painter,
-                                              const QStyleOptionGroupBox *option,
-                                              const SkinColors &desc,
-                                              const GroupBoxLayout &layout,
-                                              const QRect &textRect,
-                                              const QRect &checkBoxRect) const {
+void LC_ProxyStyle::drawGroupBoxHeader(QPainter* painter, const QStyleOptionGroupBox* option, const SkinColors& desc,
+                                       const GroupBoxLayout& layout, const QRect& textRect, const QRect& checkBoxRect) const {
     const QRect rect = option->rect;
 
     if (desc.groupBox.groupBoxHeaderStyle == GroupBoxHeaderStyle::HeaderBanner) {
@@ -3748,18 +3856,21 @@ void LC_ProxyStyle::drawGroupBoxHeader(QPainter *painter,
             if (m_isSoftSatin) {
                 LCPainterGuard roundedGuard(painter, true);
                 painter->drawRoundedRect(layout.drawTotalRect, 4.0, 4.0);
-            } else {
+            }
+            else {
                 painter->drawRect(layout.drawTotalRect);
             }
-        } else if (desc.groupBox.groupBoxBoundaryStyle == GroupBoxBoundaryStyle::LeftStripe) {
-            const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+        }
+        else if (desc.groupBox.groupBoxBoundaryStyle == GroupBoxBoundaryStyle::LeftStripe) {
+            const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
             QRect stripeRect(rect.left(), rect.top(), geoms.ints.scale3, layout.headerRect.height());
             painter->fillRect(stripeRect, desc.common.highlightColor);
 
             painter->drawLine(layout.headerRect.topLeft(), layout.headerRect.topRight());
             painter->drawLine(layout.headerRect.topRight(), layout.headerRect.bottomRight());
             painter->drawLine(layout.headerRect.topLeft(), layout.headerRect.bottomLeft());
-        } else {
+        }
+        else {
             painter->drawLine(layout.headerRect.topLeft(), layout.headerRect.topRight());
         }
 
@@ -3781,12 +3892,14 @@ void LC_ProxyStyle::drawGroupBoxHeader(QPainter *painter,
                 glassGrad.setColorAt(0.55, desc.groupBox.groupBoxGlassMidEnd);
                 glassGrad.setColorAt(1.0, desc.groupBox.groupBoxGlassEnd);
                 painter->fillRect(layout.fillHeaderRect, glassGrad);
-            } else if (desc.common.useGradient) {
+            }
+            else if (desc.common.useGradient) {
                 QLinearGradient grad(layout.fillHeaderRect.topLeft(), layout.fillHeaderRect.bottomLeft());
                 grad.setColorAt(0.0, desc.groupBox.groupBoxBannerFillColor);
                 grad.setColorAt(1.0, desc.groupBox.groupBoxBannerFillColor.darker(102));
                 painter->fillRect(layout.fillHeaderRect, grad);
-            } else {
+            }
+            else {
                 painter->fillRect(layout.fillHeaderRect, desc.groupBox.groupBoxBannerFillColor);
             }
         }
@@ -3805,8 +3918,8 @@ void LC_ProxyStyle::drawGroupBoxHeader(QPainter *painter,
     }
 }
 
-void LC_ProxyStyle::drawMenuItemColumns(QPainter* painter, const QStyleOptionMenuItem* option, const SkinColors& desc,
-                                              int maxCmdWidth, int maxShortcutWidth, const QFont& baseFont, const QWidget* widget) const {
+void LC_ProxyStyle::drawMenuItemColumns(QPainter* painter, const QStyleOptionMenuItem* option, const SkinColors& desc, int maxCmdWidth,
+                                        int maxShortcutWidth, const QFont& baseFont, const QWidget* widget) const {
     LCPainterGuard guard(painter);
     const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
 
@@ -3855,8 +3968,7 @@ void LC_ProxyStyle::drawMenuItemColumns(QPainter* painter, const QStyleOptionMen
             painter->setFont(getResolvedMonoFont(baseFont));
 
             // Fix: Use the main contrast text color (desc.common.textColor) when selected
-            const QColor aliasColor = isSelected ? desc.common.textColor
-                                           : desc.itemView.menuAliasColorNormal;
+            const QColor aliasColor = isSelected ? desc.common.textColor : desc.itemView.menuAliasColorNormal;
             painter->setPen(aliasColor);
 
             painter->drawText(layout.aliasRect, Qt::AlignLeft | Qt::AlignVCenter, QString("%1").arg(cmdLineProp.toString()));
@@ -3873,7 +3985,7 @@ void LC_ProxyStyle::drawMenuItemColumns(QPainter* painter, const QStyleOptionMen
     }
 }
 
-bool LC_ProxyStyle::getSpinBoxProgress(const QWidget* widget, qreal& pct, const QAbstractSpinBox* &resolvedSpinBox) const {
+bool LC_ProxyStyle::getSpinBoxProgress(const QWidget* widget, qreal& pct, const QAbstractSpinBox* & resolvedSpinBox) const {
     resolvedSpinBox = nullptr;
     if (!m_useSpinBoxProgressBar || !widget) {
         return false;
@@ -3912,12 +4024,11 @@ bool LC_ProxyStyle::getSpinBoxProgress(const QWidget* widget, qreal& pct, const 
     return true;
 }
 
-
-void LC_ProxyStyle::drawCustomLineEditPanel(const QStyleOption *option, QPainter *painter, const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomLineEditPanel(const QStyleOption* option, QPainter* painter, const QWidget* widget) const {
     const SkinColors desc = m_skinColorsResolver.resolveLineEditDescriptor(option, widget);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
 
-    const QWidget *actualWidget = widget;
+    const QWidget* actualWidget = widget;
     if (!actualWidget && painter && painter->device() && painter->device()->devType() == QInternal::Widget) {
         actualWidget = static_cast<const QWidget*>(painter->device());
     }
@@ -3946,13 +4057,15 @@ void LC_ProxyStyle::drawCustomLineEditPanel(const QStyleOption *option, QPainter
             glassGrad.setColorAt(0.58, desc.button.glassMidStart);
             glassGrad.setColorAt(1.0, desc.button.glassStart);
             bgBrush = glassGrad;
-        } else if (desc.common.useGradient) {
+        }
+        else if (desc.common.useGradient) {
             QLinearGradient grad(option->rect.topLeft(), option->rect.bottomLeft());
             // Invert stops (bgEnd at top, bgStart at bottom) to create a sunken inner shadow
             grad.setColorAt(0.0, desc.common.bgEnd);
             grad.setColorAt(1.0, desc.common.bgStart);
             bgBrush = grad;
-        } else {
+        }
+        else {
             bgBrush = desc.common.bgStart;
         }
 
@@ -3960,14 +4073,15 @@ void LC_ProxyStyle::drawCustomLineEditPanel(const QStyleOption *option, QPainter
         // Symmetrical background rounding matches the outer frame geometry
         if (isInput && !m_isClassic && desc.frame.hasFullBorder) {
             painter->drawRoundedRect(QRectF(option->rect), 2.0, 2.0);
-        } else {
+        }
+        else {
             painter->drawRect(option->rect);
         }
     }
 
     // 2. Draw the Interactive SpinBox Progress Bar overlay on top of the background panel
     qreal pct = 0.0;
-    const QAbstractSpinBox *spinBox = nullptr;
+    const QAbstractSpinBox* spinBox = nullptr;
 
     bool hasFocus = (option->state & State_HasFocus);
     if (!hasFocus && actualWidget) {
@@ -3979,18 +4093,19 @@ void LC_ProxyStyle::drawCustomLineEditPanel(const QStyleOption *option, QPainter
     }
 
     // 3. Delegate the border frame drawing explicitly to PE_FrameLineEdit
-    if (const auto *frameOpt = qstyleoption_cast<const QStyleOptionFrame*>(option)) {
+    if (const auto* frameOpt = qstyleoption_cast<const QStyleOptionFrame*>(option)) {
         if (frameOpt->lineWidth > 0) {
             proxy()->drawPrimitive(PE_FrameLineEdit, option, painter, widget);
         }
-    } else {
+    }
+    else {
         proxy()->drawPrimitive(PE_FrameLineEdit, option, painter, widget);
     }
 }
 
-void LC_ProxyStyle::drawCustomStatusPillToolbar(const QStyleOptionToolBar *option, QPainter *painter, const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomStatusPillToolbar(const QStyleOptionToolBar* option, QPainter* painter, const QWidget* widget) const {
     LCPainterGuard guard(painter, true);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
     const QPalette::ColorGroup group = resolveColorGroup(option->state);
     const SkinColors desc = getCachedStyleDescriptor(option->palette, group);
 
@@ -4001,10 +4116,12 @@ void LC_ProxyStyle::drawCustomStatusPillToolbar(const QStyleOptionToolBar *optio
     if (isActive) {
         bgCol = desc.common.highlightColor;
         bgCol.setAlpha(35); // Subtle transmissive 13-15% active tint overlay
-    } else if (isHovered) {
+    }
+    else if (isHovered) {
         bgCol = desc.splitter.splitterGripWellColor;
         bgCol.setAlpha(70); // Enhanced contrast during active hover sweeps
-    } else {
+    }
+    else {
         bgCol = desc.splitter.splitterGripWellColor; // Uses baseline low-alpha well color
     }
 
@@ -4021,9 +4138,9 @@ void LC_ProxyStyle::drawCustomStatusPillToolbar(const QStyleOptionToolBar *optio
     }
 }
 
-void LC_ProxyStyle::drawCustomStatusPillToolbarHandle(const QStyleOption *option, QPainter *painter, const QWidget *widget) const {
+void LC_ProxyStyle::drawCustomStatusPillToolbarHandle(const QStyleOption* option, QPainter* painter, const QWidget* widget) const {
     LCPainterGuard guard(painter, true);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(painter);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(painter);
     const SkinColors desc = getStyleDescriptor(option);
 
     const QRect rect = option->rect;
@@ -4036,37 +4153,40 @@ void LC_ProxyStyle::drawCustomStatusPillToolbarHandle(const QStyleOption *option
     const int baseHandleLen = qMin(geoms.ints.scale20, (horizontal ? rect.height() : rect.width()) - geoms.ints.scale2);
     // const QColor gripColor = desc.splitter.splitterGripColorIdle;
 
-    const QColor gripColor = (m_accentGrips || (option->state & State_MouseOver)) ? desc.common.highlightColor : desc.splitter.splitterGripColorIdle;
+    const QColor gripColor = (m_accentGrips || (option->state & State_MouseOver))
+                                 ? desc.common.highlightColor
+                                 : desc.splitter.splitterGripColorIdle;
 
     drawUnifiedGripPattern(painter, cx, rect, !horizontal, gripColor, m_splitterGripStyle, baseHandleLen, geoms);
 }
 
+void LC_ProxyStyle::setupPermanentTitleBar(QDockWidget* dock) const {
+    if (!dock)
+        return;
 
-void LC_ProxyStyle::setupPermanentTitleBar(QDockWidget *dock) const {
-    if (!dock) return;
-
-    QWidget *currentTitleBar = dock->titleBarWidget();
+    QWidget* currentTitleBar = dock->titleBarWidget();
     if (currentTitleBar && currentTitleBar->inherits("LC_CustomTitleBarWidget")) {
-        if (auto *customTitle = qobject_cast<LC_CustomTitleBarWidget*>(currentTitleBar)) {
+        if (auto* customTitle = qobject_cast<LC_CustomTitleBarWidget*>(currentTitleBar)) {
             customTitle->updateTitleBar();
         }
     }
 }
 
 bool LC_ProxyStyle::customDockTitleBarEnabled() const {
-    return m_customDockTitleBar || m_useFloatingHUD;
+    return m_customDockTitleBar || m_useFloatingHUDDocks;
 }
 
 void LC_ProxyStyle::drawCustomMenuTearOff(const QStyleOptionMenuItem* option, QPainter* painter, const QWidget* widget) const {
     LCPainterGuard guard(painter, true); // Antialiasing enabled
 
     const SkinColors desc = getStyleDescriptor(option);
-    const SkinScaledGeometries &geoms = m_scaledGeometryProvider.getGeometries(widget);
+    const SkinScaledGeometries& geoms = m_scaledGeometryProvider.getGeometries(widget);
 
     // 1. Draw Background (Standard window background, or highlight if hovered)
     if (option->state & State_Selected) {
         painter->fillRect(option->rect, desc.common.selectionHighlight);
-    } else {
+    }
+    else {
         painter->fillRect(option->rect, desc.common.bgStart);
     }
 
@@ -4084,9 +4204,7 @@ void LC_ProxyStyle::drawCustomMenuTearOff(const QStyleOptionMenuItem* option, QP
     const int cy = option->rect.center().y();
 
     // 3. Draw Centered Text Label (Muted idle, Highlighted when hovered)
-    const QColor textColor = (option->state & State_Selected)
-                             ? desc.common.highlightColor
-                             : desc.splitter.splitterGripColorIdle;
+    const QColor textColor = (option->state & State_Selected) ? desc.common.highlightColor : desc.splitter.splitterGripColorIdle;
     painter->setPen(textColor);
 
     const QRect textRect(cx - textWidth / 2, option->rect.top(), textWidth, option->rect.height());
@@ -4109,14 +4227,15 @@ void LC_ProxyStyle::drawCustomMenuTearOff(const QStyleOptionMenuItem* option, QP
     }
 }
 
-
 bool LC_ProxyStyle::customMenuTearOffEnabled() const {
     return m_customMenuTearOff;
 }
 
-void LC_ProxyStyle::drawCustomDockTitleButton(const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const {
-    const auto *toolOpt = qstyleoption_cast<const QStyleOptionToolButton*>(option);
-    if (!toolOpt) return;
+void LC_ProxyStyle::drawCustomDockTitleButton(const QStyleOptionComplex* option, QPainter* painter, const QWidget* widget) const {
+    const auto* toolOpt = qstyleoption_cast<const QStyleOptionToolButton*>(option);
+    if (toolOpt == nullptr) {
+        return;
+    }
 
     LCPainterGuard guard(painter, true); // Antialiasing enabled
 
@@ -4125,7 +4244,10 @@ void LC_ProxyStyle::drawCustomDockTitleButton(const QStyleOptionComplex *option,
     const QPalette::ColorGroup group = resolveColorGroup(option->state);
     const SkinColors desc = getCachedStyleDescriptor(option->palette, group);
 
-    const bool isCloseBtn = (widget->objectName() == "lc_titlebar_close_btn");
+    const QString objName = (widget != nullptr) ? widget->objectName() : QString();
+    const bool isCloseBtn =  (objName == "lc_titlebar_close_btn" ||
+                             objName == "qt_dockwidget_closebutton" ||
+                             (toolOpt->subControls & SC_TitleBarCloseButton));
 
     // 1. Draw Background Well (Flat rounded rectangle matching usual tool buttons)
     QColor bgCol;
@@ -4139,12 +4261,12 @@ void LC_ProxyStyle::drawCustomDockTitleButton(const QStyleOptionComplex *option,
                     bgCol = QColor(224, 108, 117, pressed ? 120 : 60);
                     break;
                 case CloseButtonColorPolicy::AccentColor:
-                case CloseButtonColorPolicy::MutedNeutral:
-                default:
+                case CloseButtonColorPolicy::MutedNeutral: default:
                     bgCol = pressed ? desc.button.bgSunken : desc.button.bgHovered;
                     break;
             }
-        } else {
+        }
+        else {
             bgCol = pressed ? desc.button.bgSunken : desc.button.bgHovered;
         }
 
@@ -4161,49 +4283,49 @@ void LC_ProxyStyle::drawCustomDockTitleButton(const QStyleOptionComplex *option,
 
     if (!hovered && !pressed) {
         // Detect if this button is physically hosted inside a CAD-specific dock panel
-        const QWidget *w = widget;
-        const QDockWidget *dock = nullptr;
-        while (w) {
-            if (auto *d = qobject_cast<const QDockWidget*>(w)) {
+        const QWidget* w = widget;
+        const QDockWidget* dock = nullptr;
+        while (w != nullptr) {
+            if (auto* d = qobject_cast<const QDockWidget*>(w)) {
                 dock = d;
                 break;
             }
             w = w->parentWidget();
         }
-        if (dock && dock->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool()) {
+        if (dock != nullptr && dock->property(LC_CADDockWidget::PROPERTY_CAD_DOC_WIDGET).toBool()) {
             strokeColor = desc.dockTitleBar.titleBarButtonStrokeIdleCad;
         }
     }
 
     if (hovered) {
-        if (isCloseBtn) {
-            if (m_closeButtonColorPolicy == CloseButtonColorPolicy::VibrantRed ||
-                m_closeButtonColorPolicy == CloseButtonColorPolicy::MutedRed) {
+        if (isCloseBtn && (m_closeButtonColorPolicy == CloseButtonColorPolicy::VibrantRed ||
+                           m_closeButtonColorPolicy == CloseButtonColorPolicy::MutedRed)) {
                 strokeColor = Qt::white;
-            } else {
-                strokeColor = desc.common.highlightColor;
-            }
         } else {
             strokeColor = desc.common.highlightColor;
         }
     }
 
     const qreal penWidth = 1.35;
-    const QRectF rect = QRectF(option->rect).adjusted(4.5, 4.5, -4.5, -4.5);
+
+    // Proportional Inset (22% margin) ensures uniform proportions regardless of button size
+    const qreal margin = qMax(2.0, option->rect.width() * 0.22);
+    const QRectF rect = QRectF(option->rect).adjusted(margin, margin, -margin, -margin);
 
     if (isCloseBtn) {
         LC_SkinColorsResolver::drawCloseIcon(painter, rect, strokeColor, penWidth);
-    } else {
+    }
+    else {
         const QColor fill = (hovered || pressed) ? bgCol : Qt::transparent;
         LC_SkinColorsResolver::drawFloatIcon(painter, rect, strokeColor, penWidth, fill);
     }
 }
 
-void LC_ProxyStyle::onFocusChanged(QWidget *old, QWidget *now) {
+void LC_ProxyStyle::onFocusChanged(QWidget* old, QWidget* now) {
     // Helper lambda to find the ancestor QDockWidget of any widget
-    auto findDockWidget = [](QWidget *w) -> QDockWidget* {
+    auto findDockWidget = [](QWidget* w) -> QDockWidget* {
         while (w) {
-            if (auto *dock = qobject_cast<QDockWidget*>(w)) {
+            if (auto* dock = qobject_cast<QDockWidget*>(w)) {
                 return dock;
             }
             w = w->parentWidget();
@@ -4211,8 +4333,8 @@ void LC_ProxyStyle::onFocusChanged(QWidget *old, QWidget *now) {
         return nullptr;
     };
 
-    QDockWidget *oldDock = findDockWidget(old);
-    QDockWidget *nowDock = findDockWidget(now);
+    QDockWidget* oldDock = findDockWidget(old);
+    QDockWidget* nowDock = findDockWidget(now);
 
     // Schedule paint updates strictly for the two affected dock panels
     if (oldDock) {
@@ -4234,9 +4356,8 @@ Qt::CursorShape LC_ProxyStyle::resolveDragCursor() const {
         case DragCursorStyle::OpenHand:
             return Qt::OpenHandCursor; // Sleek modern hand grab [3]
         case DragCursorStyle::SizeAll:
-            return Qt::SizeAllCursor;  // Standard 4-way move arrows [3]
-        case DragCursorStyle::StandardArrow:
-        default:
+            return Qt::SizeAllCursor; // Standard 4-way move arrows [3]
+        case DragCursorStyle::StandardArrow: default:
             return Qt::ArrowCursor;
     }
 }
@@ -4250,8 +4371,9 @@ bool LC_ProxyStyle::customDialogTitleBarEnabled() const {
     return m_customDialogTitleBar;
 }
 
-void LC_ProxyStyle::setupCustomDialogTitleBar(QDialog *dialog) const {
-    if (!dialog) return;
+void LC_ProxyStyle::setupCustomDialogTitleBar(QDialog* dialog) const {
+    if (!dialog)
+        return;
 
 #ifdef Q_OS_WIN
     HWND hwnd = reinterpret_cast<HWND>(dialog->winId());
@@ -4263,15 +4385,24 @@ void LC_ProxyStyle::setupCustomDialogTitleBar(QDialog *dialog) const {
     // Create the custom title bar widget
     // Note: Since m_dockWidget is nullptr, it automatically runs in headless mode,
     // hiding the float button, showing only close, and connecting it to close() [2].
-    auto *titleBar = new LC_CustomTitleBarWidget(dialog->windowTitle(), dialog->windowTitle(), dialog->windowIcon().name(), dialog);
+    auto* titleBar = new LC_CustomTitleBarWidget(dialog->windowTitle(), dialog->windowTitle(), dialog->windowIcon().name(), dialog);
 
     if (dialog->layout()) {
         dialog->layout()->setMenuBar(titleBar); // Natively injects above content margins [1]
-    } else {
+    }
+    else {
         // Fallback: if no layout is set, create a clean vertical layout
-        auto *mainLayout = new QVBoxLayout(dialog);
+        auto* mainLayout = new QVBoxLayout(dialog);
         mainLayout->setContentsMargins(0, 0, 0, 0);
         mainLayout->setSpacing(0);
         mainLayout->addWidget(titleBar);
     }
+}
+
+bool LC_ProxyStyle::useFloatingHUDMenusEnabled() const {
+    return m_useFloatingHUDMenus;
+}
+
+bool LC_ProxyStyle::useFloatingHUDDocksEnabled() const {
+    return m_useFloatingHUDDocks;
 }

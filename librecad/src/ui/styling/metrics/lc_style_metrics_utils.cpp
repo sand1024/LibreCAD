@@ -22,7 +22,7 @@
 
 #include "lc_style_metrics_utils.h"
 void LC_StyleMetricsUtils::initializeDefault(StyleMetricsConfig &config) {
-    config.name = "Standard Density";
+    config.name = DEFAULT_THEME_NAME;
     applyDensityPreset(config, "standard");
 }
 

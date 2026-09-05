@@ -29,7 +29,7 @@
 #include <QColor>
 #include <QList>
 
-inline const QString DEFAULT_THEME_KEY = "VIRTUAL_DEFAULT";
+inline const QString DEFAULT_THEME_KEY = "VIRTUAL_DEFAULT"; // fixme - sand - move to proper location
 inline const QString DEFAULT_THEME_NAME = "Default";
 
 inline const QString SKIN_EXTENSION = ".lcsk";
@@ -37,16 +37,15 @@ inline const QString ICON_STYLE_EXTENSION = ".lcis";
 inline const QString FONT_EXTENSION = ".lcft";
 inline const QString METRICS_EXTENSION = ".lcms";
 inline const QString PROFILE_EXTENSION = ".lcws";
-
+inline const QString PALETTE_EXTENSION = ".lcpl";
+inline const QString CONFIG_EXTENSION = ".lcfs";
 
 inline const QString SKIN_FILE_IDENTIFIER = "LibreCAD Skin Config v_1";
 inline const QString FONT_FILE_IDENTIFIER = "LibreCAD Font Config v_1";
 inline const QString METRICS_FILE_IDENTIFIER = "LibreCAD Metrics Config v_1";
 inline const QString PROFILE_FILE_IDENTIFIER = "LibreCAD Workspace Profile v_1";
+inline const QString PALETTE_FILE_IDENTIFIER = "LibreCAD Color Palette v_1";
 
-
-inline const QString FILE_IDENTIFIER = "LibreCAD Fusion Skin v_1";
-inline const QString CONFIG_EXTENSION = ".lcfs";
 
 // Global visual style engine rendering archetypes
 enum class StyleArchetype {
@@ -118,7 +117,6 @@ struct PaletteRoleMapping {
     QPalette::ColorRole role;
 };
 
-
 struct PaletteStateMapping {
     QString name;
     QPalette::ColorGroup group;
@@ -142,10 +140,9 @@ enum class ToolButtonIndicatorStyle {
     AccentFrame        // Soft 1px rounded outline box [cite: 74]
 };
 
-
-
 struct ColorSchemeData {
     QMap<QString, QMap<QString, QColor>> palette; // Role -> State -> Color
+    QMap<QString, QColor> semanticColors; // app-specific colors that are not part of the palette
     QString qss;
     ContrastPolicy contrastPolicy = ContrastPolicy::Standard;
     ContrastWeight contrastWeight = ContrastWeight::Balanced;
@@ -153,7 +150,6 @@ struct ColorSchemeData {
     bool autoCalculate3DHelpers = true;
     QPalette::ColorRole bevelSeedRole = QPalette::Button;
 };
-
 
 // Reusable structural block representing offsets and font weights
 struct FontRoleConfig {
@@ -184,6 +180,8 @@ struct FontConfig {
 
     FontRoleConfig genericDockTitle; // Font for generic dock widget title bar
     FontRoleConfig specialDockTitle; // Font for special (CAD-related) dock widget title bar
+
+    // fixme - add support for properties widget font
 
     // Role 6: Code & Technical (includes independent monospaced family selection)
     QString techFamily;
@@ -299,12 +297,18 @@ enum class CloseButtonColorPolicy {
     MutedNeutral     // Neutral border color matching standard controls
 };
 
-// Skin Configuration representing visual colors and aesthetic anchors (.lcsk)
-struct SkinConfig {
+// Standalone Color Palette Configuration (.lcpl)
+struct PaletteConfig {
     QString name;
     ColorSchemeData light;
     ColorSchemeData dark;
+    QString linkedIconStyleName = "Default";
+    bool useThemeDefaultIcons = false;
+};
 
+// Standalone Controls Style & Decorators Configuration (.lcsk)
+struct ControlStyleConfig {
+    QString name;
     StyleArchetype styleArchetype = StyleArchetype::ClassicFusion;
     BoxDecoration boxDecoration = BoxDecoration::DividingHairline;
 
@@ -317,9 +321,6 @@ struct SkinConfig {
 
     bool accentedScrollbars = false;
     bool transparentScrollbars = false;
-
-    QString linkedIconStyleName = "Default";
-    bool useThemeDefaultIcons = false;
 
     bool customGroupBoxBar = false;
     GroupBoxHeaderStyle groupBoxHeaderStyle = GroupBoxHeaderStyle::Plain;
@@ -364,7 +365,8 @@ struct SkinConfig {
     bool customMenuTearOff = false;
     bool syncCheckedMenuState = false;
 
-    bool useFloatingHUD = false;
+    bool useFloatingHUDMenus = false;
+    bool useFloatingHUDDocks = false;
 
     bool showGenericDockIcons = true; // Show icons on generic dock title bars
     bool showSpecialDockIcons = true; // Show icons on special (CAD) dock title bars
@@ -377,23 +379,12 @@ struct SkinConfig {
 // Consolidated Workspace Profile linking the 4 decoupled configurations (.lcws)
 struct WorkspaceProfile {
     QString name;
-    QString activeSkinFile;
-    QString activeIconStyleFile;
-    QString activeTypographyFile;
-    QString activeMetricsFile;
+    QString activePaletteFile;      // .lcpl
+    QString activeControlStyleFile; // .lcsk
+    QString activeIconStyleFile;    // .lcis
+    QString activeTypographyFile;   // .lcft
+    QString activeMetricsFile;      // .lcms
 };
-
-// Left for legacy code migration compatibility until deprecated
-struct FusionSkinConfig {
-    QString name;
-    FontConfig font;
-    StyleMetricsConfig metrics;
-    ColorSchemeData light;
-    ColorSchemeData dark;
-    QString linkedIconStyleName = "Default";
-    bool useThemeDefaultIcons = true;
-};
-
 
 inline const QList<PaletteRoleMapping> BASE_INTERFACE_ROLES = {
     {"Window", QPalette::Window},
@@ -427,6 +418,7 @@ inline const QList<PaletteStateMapping> PALETTE_STATES = {
     {"Disabled", QPalette::Disabled}
 };
 
+
 // Unified template iterator: Executes a given functor sequentially on every single role
 template <typename Functor>
 inline void forEachRole(Functor func) {
@@ -458,7 +450,7 @@ struct IndexEntry {
 };
 typedef QMap<QString, IndexEntry> StyleIndexMap;
 
-class LC_RepositoryBase {
+class LC_RepositoryBase {  // fixme - sand - move to separate file and directory
 public:
     virtual ~LC_RepositoryBase() = default;
     virtual bool exists(const QString& name) const = 0;

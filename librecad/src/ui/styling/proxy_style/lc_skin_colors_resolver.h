@@ -38,7 +38,7 @@ public:
     LC_SkinColorsResolver();
     ~LC_SkinColorsResolver();
 
-    void setSkin(const SkinConfig& skin);
+    void setSkin(const ControlStyleConfig& skin);
     void invalidate() const;
 
     SkinColors getDescriptor(const QPalette &palette, QPalette::ColorGroup group) const;
@@ -64,7 +64,7 @@ private:
     static QColor mixColors(const QColor &c1, const QColor &c2, double factor);
     static QPalette::ColorGroup resolveColorGroup(QStyle::State state);
 
-    SkinConfig m_skin;
+    ControlStyleConfig m_skin;
 
     bool m_isFlat = false;
     bool m_isClassic = false;

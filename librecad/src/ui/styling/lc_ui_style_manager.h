@@ -24,18 +24,18 @@
 
 #include <QObject>
 #include <memory>
-#include "lc_palette_editor_shared.h"
 #include "lc_icons_style_shared.h"
+#include "lc_palette_editor_shared.h"
 
 // Forward declarations
 class QC_ApplicationWindow;
+class LC_PaletteRepository;
 class LC_FusionSkinsRepository;
 class LC_IconsStyleRepository;
 class LC_TypographyRepository;
 class LC_MetricsRepository;
 class LC_WorkspaceImportExportHelper;
 class LC_CustomStyleHelper;
-class LC_IconColorsOptions;
 class LC_IconColorsOptions;
 
 class LC_UIStyleManager : public QObject {
@@ -78,6 +78,9 @@ public:
     void setIconsOverridesDir(const QString &dir);
 
     // --- Active Decoupled Preset Selection Accessors ---
+    QString getActivePalette() const;
+    void setActivePalette(const QString& name);
+
     QString getActiveSkin() const;
     void setActiveSkin(const QString& name);
 
@@ -87,7 +90,7 @@ public:
     QString getActiveMetrics() const;
     void setActiveMetrics(const QString& name);
 
-    // --- Legacy Compatibility Aliases (Helps migrating older UI dialogs) ---
+    // --- Legacy Compatibility Aliases ---
     QString getAppliedThemeName() const { return getActiveSkin(); }
     void saveAppliedThemeName(const QString &themeName) { setActiveSkin(themeName); }
 
@@ -96,6 +99,7 @@ public:
     void saveIconColorsOptions(LC_IconColorsOptions &options) const;
 
     // --- Repository & Helper Accessors ---
+    LC_PaletteRepository* getPaletteRepository() const { return m_paletteRepository.get(); }
     LC_FusionSkinsRepository* getSkinsRepository() const { return m_fusionSkinsRepository.get(); }
     LC_IconsStyleRepository* getIconsStyleRepository() const { return m_iconStylesRepository.get(); }
     LC_TypographyRepository* getTypographyRepository() const { return m_typographyRepository.get(); }
@@ -103,20 +107,23 @@ public:
     LC_WorkspaceImportExportHelper* getImportExportHelper() const { return m_importExportHelper.get(); }
 
     // --- High-Level Theme & Style Application Actions ---
-    bool applyThemeToApplication(const SkinConfig &skin, 
-                                 const StyleMetricsConfig &metrics, 
-                                 const FontConfig &font, 
-                                 bool isDarkMode);
+    bool applyThemeToApplication(const PaletteConfig &paletteConfig,
+                                    const ControlStyleConfig &controlStyle,
+                                    const StyleMetricsConfig &metrics,
+                                    const FontConfig &font,
+                                    bool isDarkMode);
+
     void applyActiveStyleAndTheme();
     void applyActiveThemeOverride();
     void applyActiveIconStyle() const;
     void applyTransientTheme(bool allowStyle,
-                         const QString& styleName,
-                         const QString& skinKey,
-                         const QString& metricsKey,
-                         const QString& typographyKey,
-                         const QString& iconStyleKey,
-                         ThemeModeOverride themeModeOverride);
+                           const QString& styleName,
+                           const QString& paletteKey,
+                           const QString& skinKey,
+                           const QString& metricsKey,
+                           const QString& typographyKey,
+                           const QString& iconStyleKey,
+                           ThemeModeOverride themeModeOverride);
     void applyActiveOrThemeIconStyle(const QString& themeLinkedIconStyleName, bool isDarkMode) const;
     void applyActiveOrDefaultIconStyle(bool isDarkMode) const;
     void applyActiveStyleSheet() const;
@@ -124,17 +131,21 @@ public:
     void reloadStyleSheet() const;
     bool resolveIsDarkMode() const;
     void loadStyleSheet(const QString& stylesheetFilePath) const;
+    void resetToNativeStyle();
+    void updateSemanticColorsCache();
 
     bool importProfile(const QString& importFilePath,
-                      QString& outProfileName,
-                      QString& outSkinName,
-                      QString& outIconStyleName,
-                      QString& outTypographyName,
-                      QString& outMetricsName) const;
+                       QString& outProfileName,
+                       QString& outPaletteName,
+                       QString& outControlStyleName,
+                       QString& outIconStyleName,
+                       QString& outTypographyName,
+                       QString& outMetricsName) const;
 
     bool exportProfile(const QString& exportFilePath,
                        const QString& profileName,
-                       const SkinConfig* skin,
+                       const PaletteConfig* palette,
+                       const ControlStyleConfig* controlStyle,
                        const IconStyleConfig* icon,
                        const FontConfig* font,
                        const StyleMetricsConfig* metrics) const;
@@ -144,7 +155,12 @@ private:
     void applyGlobalTypographyAndIcons();
     void applyThemeTypography(const FontConfig &activeFont);
 
+    QString m_nativeSystemStyleName;
+    QPalette m_nativeSystemPalette;
+
+
     std::unique_ptr<LC_CustomStyleHelper>           m_customStyleHelper;
+    std::unique_ptr<LC_PaletteRepository>           m_paletteRepository;
     std::unique_ptr<LC_FusionSkinsRepository>       m_fusionSkinsRepository;
     std::unique_ptr<LC_IconsStyleRepository>        m_iconStylesRepository;
     std::unique_ptr<LC_TypographyRepository>        m_typographyRepository;

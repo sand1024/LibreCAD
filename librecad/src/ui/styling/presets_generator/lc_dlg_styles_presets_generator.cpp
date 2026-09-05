@@ -26,6 +26,7 @@
 
 #include "lc_fusion_skins_repository.h"
 #include "lc_icons_style_repository.h"
+#include "lc_palette_repository.h"
 #include "lc_style_preset_generator.h"
 #include "lc_ui_style_manager.h"
 
@@ -81,16 +82,65 @@ QString LC_DlgStylesPresetsGenerator::selectFolder(const QString &title){
 }
 
 void LC_DlgStylesPresetsGenerator::generateSkins(bool checked) {
-    LC_StylePresetGenerator generator(ui->leSkinsDir->text(), ui->leStylesDir->text());
-    int generatedSkins = generator.generateSkins(ui->sbSkinsCount->value());
-    QMessageBox::information(this, "Skins Generator", QString("Skins were generated. Amount: %1.").arg(generatedSkins), QMessageBox::Ok);
-    m_styleManager->getIconsStyleRepository()->initializeIndex();
+    if (m_styleManager == nullptr) return;
+
+    const QString baseDir = m_styleManager->getStyleConfigurationBaseDir();
+    const QString palettesDir = baseDir + "/palettes";
+    const QString skinsDir = getEffectiveDir(ui->leSkinsDir->text(), baseDir + "/skins");
+    const QString iconsDir = getEffectiveDir(ui->leStylesDir->text(), baseDir + "/icons");
+    const QString typoDir = baseDir + "/typography";
+    const QString metricsDir = baseDir + "/metrics";
+
+    LC_StylePresetGenerator generator(palettesDir, skinsDir, iconsDir, typoDir, metricsDir);
+
+    const int count = ui->sbSkinsCount->value();
+    const int generatedPalettes = generator.generatePalettes(count);
+    const int generatedSkins    = generator.generateSkins(count);
+
+    QMessageBox::information(
+        this, tr("Skins & Palettes Generator"),
+        tr("Presets generation complete:\n- Control Style Skins: %1\n- Color Palettes: %2")
+            .arg(generatedSkins)
+            .arg(generatedPalettes),
+        QMessageBox::Ok);
+
+    if (m_styleManager->getPaletteRepository() != nullptr) {
+        m_styleManager->getPaletteRepository()->initializeIndex();
+    }
+    if (m_styleManager->getSkinsRepository() != nullptr) {
+        m_styleManager->getSkinsRepository()->initializeIndex();
+    }
+}
+
+QString LC_DlgStylesPresetsGenerator::getEffectiveDir(const QString& uiText, const QString& fallback) const {
+    const QString trimmed = uiText.trimmed();
+    return trimmed.isEmpty() ? fallback : trimmed;
 }
 
 void LC_DlgStylesPresetsGenerator::generateIconStyles(bool checked) {
-    LC_StylePresetGenerator generator(ui->leSkinsDir->text(), ui->leStylesDir->text());
-    int generatedIconStyles = generator.generateIconStyles(ui->sbStylesCount->value(), ui->chIconStyleShortBases->isChecked());
-    QMessageBox::information(this, "Styles Generator", QString("Icon styles were generated. Amount: %1.").arg(generatedIconStyles), QMessageBox::Ok);
+    if (m_styleManager == nullptr) return;
+
+    const QString baseDir = m_styleManager->getStyleConfigurationBaseDir();
+    const QString palettesDir = baseDir + "/palettes";
+    const QString skinsDir = getEffectiveDir(ui->leSkinsDir->text(), baseDir + "/skins");
+    const QString iconsDir = getEffectiveDir(ui->leStylesDir->text(), baseDir + "/icons");
+    const QString typoDir = baseDir + "/typography";
+    const QString metricsDir = baseDir + "/metrics";
+
+    LC_StylePresetGenerator generator(palettesDir, skinsDir, iconsDir, typoDir, metricsDir);
+
+    const int count = ui->sbStylesCount->value();
+    const bool shortWheel = ui->chIconStyleShortBases->isChecked();
+    const int generatedIconStyles = generator.generateIconStyles(count, shortWheel);
+
+    QMessageBox::information(
+        this, tr("Icon Styles Generator"),
+        tr("Icon styles were generated. Amount: %1.").arg(generatedIconStyles),
+        QMessageBox::Ok);
+
+    if (m_styleManager->getIconsStyleRepository() != nullptr) {
+        m_styleManager->getIconsStyleRepository()->initializeIndex();
+    }
 }
 
 LC_DlgStylesPresetsGenerator::~LC_DlgStylesPresetsGenerator() {

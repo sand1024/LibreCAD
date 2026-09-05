@@ -28,7 +28,7 @@
 #include "lc_palette_editor_shared.h"
 #include "lc_icons_style_shared.h"
 
-// Foreward declarations
+class LC_PaletteRepository;
 class LC_FusionSkinsRepository;
 class LC_IconsStyleRepository;
 class LC_TypographyRepository;
@@ -36,28 +36,32 @@ class LC_MetricsRepository;
 
 class LC_WorkspaceImportExportHelper {
 public:
-    LC_WorkspaceImportExportHelper(LC_FusionSkinsRepository* skinRepo,
+    LC_WorkspaceImportExportHelper(LC_PaletteRepository* paletteRepo,
+                                   LC_FusionSkinsRepository* skinRepo,
                                    LC_IconsStyleRepository* iconRepo,
                                    LC_TypographyRepository* typographyRepo,
                                    LC_MetricsRepository* metricsRepo);
 
-    // Packages active configurations into a single consolidated .lcws file
+    // Packages 5 active configurations into a single consolidated .lcws file
     bool exportProfile(const QString& exportFilePath,
                        const QString& profileName,
-                       const SkinConfig* skin,
+                       const PaletteConfig* palette,
+                       const ControlStyleConfig* controlStyle,
                        const IconStyleConfig* icon,
                        const FontConfig* font,
                        const StyleMetricsConfig* metrics) const;
 
-    // Unpacks configurations and delegates save/registration directly to the repositories
+    // Unpacks configurations and delegates save/registration directly to the 5 repositories
     bool importProfile(const QString& importFilePath,
                        QString& outProfileName,
-                       QString& outSkinName,
+                       QString& outPaletteName,
+                       QString& outControlStyleName,
                        QString& outIconStyleName,
                        QString& outTypographyName,
                        QString& outMetricsName) const;
 
 private:
+    LC_PaletteRepository*     m_paletteRepo;
     LC_FusionSkinsRepository* m_skinRepo;
     LC_IconsStyleRepository*  m_iconRepo;
     LC_TypographyRepository*  m_typographyRepo;

@@ -64,7 +64,7 @@ public:
     explicit LC_ProxyStyle(QStyle *baseStyle = nullptr, const StyleMetricsConfig &metrics = StyleMetricsConfig());
 
     void setMetrics(const StyleMetricsConfig& metrics);
-    void setSkin(const SkinConfig& skin);
+    void setSkin(const ControlStyleConfig& skin);
 
     int pixelMetric(PixelMetric metric, const QStyleOption *option = nullptr, const QWidget *widget = nullptr) const override;
     int styleHint(StyleHint hint, const QStyleOption *option = nullptr, const QWidget *widget = nullptr, QStyleHintReturn *returnData = nullptr) const override;
@@ -117,6 +117,9 @@ public:
     void setFont(const FontConfig& font);
     bool customDialogTitleBarEnabled() const;
     void setupCustomDialogTitleBar(QDialog *dialog) const;
+    bool useFloatingHUDMenusEnabled() const;
+    bool useFloatingHUDDocksEnabled() const;
+
 private:
     void onFocusChanged(QWidget *old, QWidget *now);
     void drawParameterizedBox(QPainter *painter, const QRect &rect, const SkinColors &desc, bool isVertical = false) const;
@@ -247,7 +250,8 @@ private:
 
     bool m_useSpinBoxProgressBar = true;
 
-    bool m_useFloatingHUD = false;
+    bool m_useFloatingHUDMenus  = false;
+    bool m_useFloatingHUDDocks = false;
 
     bool m_customMenuTearOff = false;
     bool m_syncCheckedMenuState = false;
@@ -275,7 +279,6 @@ private:
 #endif
 
     friend class LC_EventFilterFloatingHUD;
-    friend class LC_DockTitleBar;
 };
 
 #endif

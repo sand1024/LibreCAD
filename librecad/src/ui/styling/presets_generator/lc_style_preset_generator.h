@@ -21,29 +21,37 @@
 
 #ifndef LC_StylePresetGenerator_H
 #define LC_StylePresetGenerator_H
-
 #include <QString>
-#include <QColor>
 #include <memory>
-#include "lc_ui_style_manager.h"
+
+class LC_PaletteRepository;
+class LC_FusionSkinsRepository;
+class LC_IconsStyleRepository;
+class LC_TypographyRepository;
+class LC_MetricsRepository;
+class LC_UIStyleManager;
 
 class LC_StylePresetGenerator {
 public:
-    LC_StylePresetGenerator(const QString& skinsOutputDir, const QString& iconsOutputDir);
+    explicit LC_StylePresetGenerator(LC_UIStyleManager* styleManager);
+    explicit LC_StylePresetGenerator(const QString& baseConfigDir);
+    LC_StylePresetGenerator(const QString& palettesDir,
+                            const QString& skinsDir,
+                            const QString& iconsDir,
+                            const QString& typographyDir,
+                            const QString& metricsDir);
     ~LC_StylePresetGenerator();
 
-    int generateSkins(int count = 30);
-    int generateIconStyles(int count,  bool shortWheel);
-    int generateTypography(int count = 10);
-    int generateMetrics(int count = 10);
+    int generatePalettes(int count);
+    int generateSkins(int count);
+    int generateIconStyles(int count, bool shortWheel = true);
+    int generateTypography(int count);
+    int generateMetrics(int count);
 
 private:
-    QString m_skinsDir;
-    QString m_iconsDir;
-    QString m_typographyDir;
-    QString m_metricsDir;
+    std::unique_ptr<LC_PaletteRepository>     m_paletteRepo;
     std::unique_ptr<LC_FusionSkinsRepository> m_skinsRepo;
-    std::unique_ptr<LC_IconsStyleRepository> m_iconsRepo;
+    std::unique_ptr<LC_IconsStyleRepository>  m_iconsRepo;
     std::unique_ptr<LC_TypographyRepository>  m_typographyRepo;
     std::unique_ptr<LC_MetricsRepository>     m_metricsRepo;
 };

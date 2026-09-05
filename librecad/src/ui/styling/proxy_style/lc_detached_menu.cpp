@@ -77,7 +77,7 @@ LC_DetachedMenu::LC_DetachedMenu(const QString &title,
     setAttribute(Qt::WA_DeleteOnClose);
     setMouseTracking(true);
 
-    setWindowTitle(title); // Sync window title so LC_DockTitleBar queries it correctly
+    setWindowTitle(title); // Sync window title so title queries it correctly
     m_titleBar = new LC_CustomTitleBarWidget(title, title, "", this);
 
     m_menu = new LC_DetachedMenuContent(this);  // subclass with deactivation suppressed
