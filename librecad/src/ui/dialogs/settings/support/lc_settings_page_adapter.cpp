@@ -21,13 +21,11 @@
 
 
 #include "lc_settings_page_adapter.h"
-
-#include "lc_settings_page_adapter.h"
-#include "lc_highlight_overlay.h"
-#include <QLabel>
 #include <QCheckBox>
-#include <QRadioButton>
 #include <QGroupBox>
+#include <QLabel>
+#include <QRadioButton>
+#include "lc_highlight_overlay.h"
 
 LC_SettingsPageAdapter::LC_SettingsPageAdapter(const QString& displayName, QWidget* customWidget, const std::function<void()>& loadCallback,
                                                const std::function<bool()>& saveCallback, const std::function<bool()>& modifiedCallback,

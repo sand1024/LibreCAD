@@ -52,7 +52,7 @@ void LC_HighlightOverlay::paintEvent(QPaintEvent* event) {
     // auto highlightColor = parentWidget()->palette().color(QPalette::Accent);
     // Amber Focus boundary border matching the visual IDE schema
     // QPen pen(QColor(189, 99, 19, 180), 1.5); // fixme - sand - customize color?? or at least use constant
-    constexpr int highlightWidth = 1.5;// fixme - sand - customize color?? or at least use constant
+    constexpr qreal highlightWidth = 1.5;// fixme - sand - customize color?? or at least use constant
     const QColor highlightColor = LC_PaletteColorUtils::getSemanticColor(
         LC_SemanticColors::SearchResultItem,
         (parentWidget() != nullptr) ? parentWidget()->palette() : QApplication::palette()

@@ -43,6 +43,7 @@ public:
     void bindToManager(LC_PresetManagerInterface* manager);
     void setDirty(bool isDirty);
     void setCurrentPresetKey(const QString& key);
+    bool savePresetAs();
 private slots:
     void onComboIndexChanged(int index);
 
@@ -56,7 +57,6 @@ private:
                        const QString& activeKey,
                        const QString& savedActiveKeyOnDisk);
 
-    bool savePresetAs();
     void updateComboFonts(const QString& activeItemKey) const;
     void updateButtons() const;
     void updateActiveTabText(bool modified) const;

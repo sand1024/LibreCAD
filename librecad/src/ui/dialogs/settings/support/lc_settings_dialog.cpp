@@ -28,6 +28,8 @@
 #include <QSplitter>
 #include <QToolButton>
 #include <QVBoxLayout>
+
+#include "lc_abstract_preset_manager.h"
 #include "lc_settings_page_index.h"
 #include "lc_settings_page_base.h"
 #include "ui_lc_settings_dialog.h"
@@ -150,6 +152,12 @@ void LC_SettingsDialog::registerPage(std::unique_ptr<LC_SettingsPageInterface> p
             if (manager != nullptr) {
                 const bool isDirty = isPresetManagerScopeDirty(manager);
                 ui->presetBar->setDirty(isDirty);
+
+                if (isDirty) {
+                    if (auto* abstractMgr = dynamic_cast<LC_AbstractPresetManager*>(manager)) {
+                        abstractMgr->notifyWorkingConfigChanged();
+                    }
+                }
             }
 
             if (m_activePage == page) {
@@ -678,8 +686,11 @@ void LC_SettingsDialog::updateGatingState() {
                 actionCb();
             }
             else if (manager != nullptr && manager->isReadOnlyDefault()) {
-                if (manager->promptSavePresetAs(this)) {
-                    ui->presetBar->bindToManager(manager);
+                // Reuses the identical 'Save As' logic from the preset bar
+                if (ui->presetBar->savePresetAs()) {
+                    if (m_activePage != nullptr) {
+                        m_activePage->loadSettings();
+                    }
                 }
             }
             updateGatingState();
@@ -762,6 +773,14 @@ void LC_SettingsDialog::accept() {
             if (auto* manager = getPresetManagerForPage(id)) {
                 if (!visitedManagers.contains(manager)) {
                     visitedManagers.insert(manager);
+
+                    // Synchronize multi-page scope state before accept prompt
+                    if (isPresetManagerScopeDirty(manager)) {
+                        if (auto* abstractMgr = dynamic_cast<LC_AbstractPresetManager*>(manager)) {
+                            abstractMgr->notifyWorkingConfigChanged();
+                        }
+                    }
+
                     if (!manager->onDialogAccept(this)) {
                         return; // Abort dialog accept if a manager rejected/cancelled
                     }

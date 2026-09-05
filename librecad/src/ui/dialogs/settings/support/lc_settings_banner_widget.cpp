@@ -48,8 +48,10 @@ LC_SettingsBannerWidget::LC_SettingsBannerWidget(QWidget* parent)
     layout->addWidget(m_btnAction);
 
     connect(m_btnAction, &QPushButton::clicked, this, [this]() {
-        if (m_actionCallback) {
-            m_actionCallback();
+        if (m_actionCallback != nullptr) {
+            // Copy locally to keep closure alive if callback clears the banner
+            auto callbackCopy = m_actionCallback;
+            callbackCopy();
         }
     });
 }

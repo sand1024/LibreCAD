@@ -20,14 +20,6 @@
  ******************************************************************************/
 
 #include "lc_settings_registry.h"
-
-#include "lc_settings_registry.h"
-#include "lc_settings_dialog.h"
-
-#include "lc_settings_registry.h"
-#include "lc_settings_dialog.h"
-
-#include "lc_settings_registry.h"
 #include "lc_settings_dialog.h"
 #include "rs_settings.h"
 
