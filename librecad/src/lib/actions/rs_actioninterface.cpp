@@ -33,7 +33,6 @@
 #include "lc_graphicviewport.h"
 #include "lc_visual_snap_manager.h"
 #include "rs_commandevent.h"
-#include "rs_commands.h"
 #include "rs_coordinateevent.h"
 #include "rs_debug.h"
 #include "rs_graphic.h"
@@ -552,7 +551,13 @@ void RS_ActionInterface::setActionType(const RS2::ActionType actionType) {
  */
 // fixme - check for type and string literal
 bool RS_ActionInterface::checkCommand(const QString& cmd, const QString& str, const RS2::ActionType action) {
-    return (getAvailableCommands().contains(str) && cmd == str) || RS_COMMANDS->checkCommand(cmd, str, action);
+    if (getAvailableCommands().contains(str) && cmd == str) {
+        return true;
+    }
+    if (m_actionContext != nullptr) {
+        return m_actionContext->checkCommand(cmd, str, action);
+    }
+    return false;
 }
 
 /**
@@ -562,7 +567,10 @@ bool RS_ActionInterface::checkCommand(const QString& cmd, const QString& str, co
  */
 // fixme - check for type and string literal
 QString RS_ActionInterface::command(const QString& cmd) {
-    return RS_COMMANDS->command(cmd);
+    if (m_actionContext != nullptr) {
+        return m_actionContext->command(cmd);
+    }
+    return QString();
 }
 
 void RS_ActionInterface::switchToAction(const RS2::ActionType actionType, void* data) const {
@@ -572,8 +580,12 @@ void RS_ActionInterface::switchToAction(const RS2::ActionType actionType, void* 
 /**
  * Calls msgAvailableCommands() from the RS_COMMANDS module.
  */
+// fixme - sand - do we really need it??? It looks like quite obsolete
 QString RS_ActionInterface::msgAvailableCommands() {
-    return RS_COMMANDS->msgAvailableCommands(); // fixme - sand - via m_actionContext
+    if (m_actionContext != nullptr) {
+        return m_actionContext->msgAvailableCommands();
+    }
+    return tr("Available commands:");
 }
 
 int RS_ActionInterface::getGraphicVariableInt(const QString& key, const int def) const {

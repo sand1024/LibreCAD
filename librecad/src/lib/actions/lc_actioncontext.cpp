@@ -27,6 +27,9 @@
 #include "rs_document.h"
 #include "rs_graphicview.h"
 
+LC_ActionContext::~LC_ActionContext() {
+}
+
 RS_Document * LC_ActionContext::getDocument(){
     return m_document;
 }

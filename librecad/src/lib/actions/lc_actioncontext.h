@@ -28,6 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "rs_vector.h"
 #include "lc_interactive_input_info.h"
 
+class LC_CommandManager;
 class LC_Formatter;
 class RS_Entity;
 class QString;
@@ -46,7 +47,7 @@ class RS_ActionInterface;
 class LC_ActionContext{
 public:
     LC_ActionContext() = default;
-    virtual ~LC_ActionContext() = default;
+    virtual ~LC_ActionContext();
     virtual void addOptionsWidget([[maybe_unused]]LC_ActionOptionsWidget * widget){}
     virtual void removeOptionsWidget([[maybe_unused]]LC_ActionOptionsWidget * widget){}
     virtual void requestSnapDistOptions([[maybe_unused]]double* dist, [[maybe_unused]]bool on) {}
@@ -87,6 +88,19 @@ public:
     void interactiveInputStart(InteractiveInputInfo::InputType inputType, LC_LateCompletionRequestor* requestor, const QString &tag);
     void interactiveInputRequestCancel();
     InteractiveInputInfo* getInteractiveInputInfo(){return &m_interactiveInputInfo;}
+
+    virtual bool checkCommand([[maybe_unused]]const QString& cmd, [[maybe_unused]]const QString& str, [[maybe_unused]]RS2::ActionType action = RS2::ActionNone) const {
+        return false;
+    }
+    virtual QString command([[maybe_unused]]const QString& cmd) const {
+        return QString();
+    }
+    virtual QString msgAvailableCommands() const {
+        return QString();
+    }
+    virtual LC_CommandManager* getCommandManager() const {
+        return nullptr;
+    }
 protected:
     InteractiveInputInfo m_interactiveInputInfo;
     RS_Document * m_document {nullptr};
