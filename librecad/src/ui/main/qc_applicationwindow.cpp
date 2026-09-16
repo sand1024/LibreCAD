@@ -33,6 +33,7 @@
 #include <QDockWidget>
 #include <QGuiApplication>
 #include <QMdiArea>
+#include <QMenuBar>
 #include <QMessageBox>
 #include <QMimeData>
 #include <QPushButton>
@@ -42,22 +43,24 @@
 
 
 
-#include "lc_actiongroupmanager.h"
-#include "lc_actionsshortcutsdialog.h"
+#include "lc_action_group_manager.h"
 #include "lc_action_block_library_insert.h"
+#include "lc_action_command_updater.h"
 #include "lc_action_options_manager.h"
+#include "lc_action_tooltip_builder.h"
+#include "lc_action_type_mapper.h"
 #include "lc_anglesbasiswidget.h"
-#include "lc_applicationwindowinitializer.h"
+#include "lc_application_window_initializer.h"
 #include "lc_appwindowdialogsinvoker.h"
-#include "lc_creatorinvoker.h"
+#include "lc_navigation_creator.h"
 #include "lc_defaultactioncontext.h"
 #include "lc_exporttoimageservice.h"
 #include "lc_graphicviewport.h"
+#include "lc_graphic_view_context_menu_provider.h"
 #include "lc_gridviewinvoker.h"
 #include "lc_infocursorsettingsmanager.h"
 #include "lc_lastopenfilesopener.h"
 #include "lc_layertreewidget.h"
-#include "lc_menufactory.h"
 #include "lc_namedviewslistwidget.h"
 #include "lc_penpalettewidget.h"
 #include "lc_penwizard.h"
@@ -71,8 +74,10 @@
 #include "lc_settings_defaults.h"
 #include "lc_settings_hardware.h"
 #include "lc_settings_manager_application.h"
+#include "lc_settings_manager_customization.h"
 #include "lc_settings_paths.h"
 #include "lc_settings_startup.h"
+#include "lc_command_manager.h"
 #include "lc_snapmanager.h"
 #include "lc_snapoptionswidgetsholder.h"
 #include "lc_ucslistwidget.h"
@@ -100,7 +105,10 @@
 #include "rs_settings.h"
 #include "rs_units.h"
 #include "twostackedlabels.h"
-#include "../styling/icons_styling/lc_icons_style_manager.h"
+#include "lc_icons_style_manager.h"
+#include "lc_settings_app_state.h"
+#include "lc_settings_commands_promotion.h"
+#include "lc_settings_widget.h"
 
 #ifndef QC_APP_ICON
 # define QC_APP_ICON ":/images/librecad.png"
@@ -725,19 +733,12 @@ void QC_ApplicationWindow::doWindowActivated(QMdiSubWindow* w, const bool forced
     emit windowsChanged(hasDocumentInActivatedWindow);
 }
 
-/**
- * Called when the menu 'workspaces' is about to be shown.
- * This is used to update the window list in the menu.
- */
-void QC_ApplicationWindow::slotWorkspacesMenuAboutToShow() const {
-    m_menuFactory->onWorkspaceMenuAboutToShow(m_windowList);
-}
-
-QMenu* QC_ApplicationWindow::createGraphicViewContentMenu(const QMouseEvent* event, QG_GraphicView* view, RS_Entity* entity,
-                                                          const RS_Vector& pos) const {
-    QStringList actions;
-    const bool mayInvokeDefaultMenu = m_creatorInvoker->getMenuActionsForMouseEvent(event, entity, actions);
-    return m_menuFactory->createGraphicViewPopupMenu(view, entity, pos, actions, mayInvokeDefaultMenu);
+QMenu* QC_ApplicationWindow::createGraphicViewContentMenu(const QMouseEvent* event, QG_GraphicView* view,
+                                                         RS_Entity* entity, const RS_Vector& pos) const {
+    if (m_contextMenuProvider != nullptr) {
+        return m_contextMenuProvider->createContextMenu(view, entity, pos, event);
+    }
+    return nullptr;
 }
 
 /**
@@ -802,8 +803,48 @@ QC_MDIWindow* QC_ApplicationWindow::createNewDrawingWindow(RS_Document* doc, con
     return w;
 }
 
-void QC_ApplicationWindow::recreateToolbarsMenu() {
-    m_menuFactory->recreateToolbarsMenu();
+
+
+QMenu* QC_ApplicationWindow::getRecentFilesMenu() const {
+   return m_recentFilesMenu.get();
+}
+
+void QC_ApplicationWindow::updateToolbarsIconSize() {
+    using namespace CFG_Widgets;
+    updateToolbarsIconSize(o_AllowToolbarIconSize, o_ToolbarIconSize);
+}
+
+void QC_ApplicationWindow::updateToolbarsIconSize(bool allowCustom, int customSize) {
+    QSize targetSize;
+    if (allowCustom && customSize > 0) {
+        targetSize = QSize(customSize, customSize);
+    } else {
+        const int defSz = style()->pixelMetric(QStyle::PM_ToolBarIconSize, nullptr, this);
+        targetSize = QSize(defSz, defSz);
+    }
+
+    setIconSize(targetSize);
+
+    for (auto* tb : findChildren<QToolBar*>()) {
+        if (tb != nullptr) {
+            tb->setIconSize(targetSize);
+            for (auto* btn : tb->findChildren<QToolButton*>()) {
+                if (btn != nullptr) {
+                    btn->setIconSize(targetSize);
+                }
+            }
+        }
+    }
+}
+
+void QC_ApplicationWindow::updateActionsForCommandsInMenus(bool keycodeMode) {
+    bool currentThemeIsFusion = m_uiStyleManager->isCurrentActiveStyleFusion();
+    if (!currentThemeIsFusion || !CFG_CommandsPromotion::o_ShowCommandInMenu) {
+        LC_ActionCommandUpdater::clearActions(m_actionGroupManager.get());
+    }
+    else {
+        LC_ActionCommandUpdater::updateActions(m_actionGroupManager.get(), m_commandManager.get(), keycodeMode);
+    }
 }
 
 QG_GraphicView* QC_ApplicationWindow::setupNewGraphicView(const QC_MDIWindow* w) {
@@ -1609,47 +1650,24 @@ void QC_ApplicationWindow::updateGridViewActions(const bool isometric, const RS2
 }
 
 void QC_ApplicationWindow::slotOptionsShortcuts() {
-    LC_ActionsShortcutsDialog dlg(this, m_actionGroupManager.get());
-    dlg.showModal();
+    m_dlgHelpr->showCustomizationOptionsDialog(LC_SettingsPagesCustomization::PAGE_SHORTCUTS);
+}
+
+void QC_ApplicationWindow::slotOptionsCustomization() {
+    m_dlgHelpr->showCustomizationOptionsDialog(LC_SettingsPagesCustomization::PAGE_SHORTCUTS);
 }
 
 void QC_ApplicationWindow::rebuildMenuIfNecessary() const {
-    m_menuFactory->recreateMainMenuIfNeeded(menuBar());
+    if (m_creatorInvoker != nullptr) {
+        m_creatorInvoker->applyActiveLayoutScheme();
+    }
 }
 
 /**
  * Shows the dialog for general application preferences.
  */
 void QC_ApplicationWindow::slotOptionsGeneral() {
-    const int dialogResult = m_dlgHelpr->showGeneralOptionsDialog();
-    if (dialogResult == QDialog::Accepted) {
-        m_actionOptionsManager->update();
-        // fixme - check this signal, probably it's better to rely on settings change
-        const bool hideRelativeZero = CFG_Appearance::o_HideRelativeZero;
-        emit signalEnableRelativeZeroSnaps(!hideRelativeZero);
-
-        const bool antialiasing = CFG_Appearance::o_Antialiasing;
-        emit antialiasingChanged(antialiasing);
-
-        m_statusbarManager->loadSettings();
-        onCADTabBarIndexChanged(0); // force update if settings changed
-
-        doForEachSubWindowGraphicView([this](QG_GraphicView* gv, const QC_MDIWindow* w) {
-            gv->loadSettings();
-            if (w == m_activeMdiSubWindow) {
-                gv->redraw();
-            }
-        });
-
-        // fixme - sand - consider emitting signal on properties change instead of processing changes there
-        m_infoCursorSettingsManager->loadFromSettings();
-        rebuildMenuIfNecessary();
-    }
-    fireCurrentActionIconChanged(nullptr);
-}
-
-void QC_ApplicationWindow::slotOptionsGeneralNew() {
-    bool accepted = LC_SettingsManagerApplication::showOptionsApplication(this);
+    bool accepted = m_dlgHelpr->showGeneralOptionsDialog();
     if (accepted) {
         m_actionOptionsManager->update();
         // fixme - check this signal, probably it's better to rely on settings change
@@ -1671,7 +1689,20 @@ void QC_ApplicationWindow::slotOptionsGeneralNew() {
 
         // fixme - sand - consider emitting signal on properties change instead of processing changes there
         m_infoCursorSettingsManager->loadFromSettings();
+
+
+        // Refresh command engine defaults with the active language
+        if (m_commandManager != nullptr && m_actionGroupManager != nullptr) {
+            const LC_ActionTypeMapper mapper(m_actionGroupManager.get()); // fixme - review mapper outer dependency
+            m_commandManager->loadActiveScheme(&mapper);
+        }
+
+        bool keyMode = CFG_AppState::o_KeycodeMode;
+        updateActionsForCommandsInMenus(keyMode);
+        LC_ActionTooltipBuilder::updateAllTooltips(m_actionGroupManager->getActionsMap());
+
         rebuildMenuIfNecessary();
+
     }
     fireCurrentActionIconChanged(nullptr);
 }
@@ -1875,7 +1906,10 @@ void QC_ApplicationWindow::relayAction(QAction* q_action) {
  * See QMainWindow::createPopupMenu() for more information.
  */
 QMenu* QC_ApplicationWindow::createPopupMenu() {
-    return m_menuFactory->createMainWindowPopupMenu();
+    if (m_creatorInvoker != nullptr) {
+        return m_creatorInvoker->createMainWindowPopupMenu();
+    }
+    return nullptr;
 }
 
 void QC_ApplicationWindow::toggleFullscreen(const bool checked) {
@@ -1901,8 +1935,8 @@ void QC_ApplicationWindow::slotFileOpenRecent(const QAction* action) {
  * This slot manipulates the widget options dialog,
  * and reads / writes the associated settings.
  */
-void QC_ApplicationWindow::widgetOptionsDialog() {
-    if (m_dlgHelpr->showWidgetOptionsDialog()) {
+void QC_ApplicationWindow::stylingOptionsDialog() {
+    if (m_dlgHelpr->showStylingOptionsDialog()) {
         fireWidgetSettingsChanged();
     }
 }
@@ -2002,11 +2036,15 @@ void QC_ApplicationWindow::doRestoreNamedView(const int i) const {
 }
 
 void QC_ApplicationWindow::invokeToolbarCreator() {
-    m_creatorInvoker->invokeToolbarCreator();
+    m_dlgHelpr->showCustomizationOptionsDialog(LC_SettingsPagesCustomization::PAGE_MENU_AND_TOOLBARS);
 }
 
 void QC_ApplicationWindow::invokeMenuCreator() {
-    m_creatorInvoker->invokeMenuCreator();
+    m_dlgHelpr->showCustomizationOptionsDialog(LC_SettingsPagesCustomization::PAGE_CONTEXT_MENUS);
+}
+
+LC_NavigationControlsCreator* QC_ApplicationWindow::getCreatorInvoker() {
+    return m_creatorInvoker.get();
 }
 
 void QC_ApplicationWindow::changeEvent([[maybe_unused]] QEvent* event) {

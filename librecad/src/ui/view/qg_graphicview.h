@@ -118,6 +118,7 @@ protected slots:
     void slotHScrolled(int value);
     void slotVScrolled(int value);
 protected:
+    virtual void saveToRecentActions(QAction* q_action);
     void dragEnterEvent(QDragEnterEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
     bool invokeContextMenuForMouseEvent(QMouseEvent* e);

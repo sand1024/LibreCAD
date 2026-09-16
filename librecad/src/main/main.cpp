@@ -382,8 +382,6 @@ int main(int argc, char** argv) {
 
     initSystem(argv, app);
 
-
-
     showFirstLoadSetupDialog(first_load);
 
     std::unique_ptr<QSplashScreen> splash;

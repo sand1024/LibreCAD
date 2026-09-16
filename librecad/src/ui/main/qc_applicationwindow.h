@@ -30,11 +30,14 @@
 #define QC_APPLICATIONWINDOW_H
 
 #include "lc_actioncontext.h"
-#include "lc_actionfactory.h"
+#include "lc_action_factory.h"
 #include "lc_mdiapplicationwindow.h"
 #include "lc_plugininvoker.h"
+#include "lc_settings_manager_styling.h"
+#include "lc_special_menu_service_interface.h"
 #include "lc_ui_style_manager.h"
 
+class LC_GraphicViewContextMenuProvider;
 class RS_Graphic;
 class RS_GraphicView;
 class LC_PropertySheetWidget;
@@ -43,14 +46,13 @@ class LC_ActionGroup;
 class LC_ActionOptionsManager;
 class LC_AnglesBasisWidget;
 class LC_AppWindowDialogsInvoker;
-class LC_CreatorInvoker;
+class LC_NavigationControlsCreator;
 class LC_CustomStyleHelper;
 class LC_DefaultActionContext;
 class LC_GridViewInvoker;
 class LC_InfoCursorSettingsManager;
 class LC_LastOpenFilesOpener;
 class LC_LayerTreeWidget;
-class LC_MenuFactory;
 class LC_NamedViewsListWidget;
 class LC_PenPaletteWidget;
 class LC_PenWizard;
@@ -81,6 +83,7 @@ class RS_ActionInterface;
 class RS_Block;
 class RS_Pen;
 class TwoStackedLabels;
+class LC_CommandManager;
 
 struct AreasToggleActions {
     QAction* left{nullptr};
@@ -136,7 +139,10 @@ class QC_ApplicationWindow : public LC_MDIApplicationWindow {
     void relayAction(QAction* q_action);
     /** generates a new document for a graphic. */
     QC_MDIWindow* createNewDrawingWindow(RS_Document* doc, const QString& expectedFileName);
-    void recreateToolbarsMenu();
+    QMenu* getRecentFilesMenu() const;
+    void updateToolbarsIconSize();
+    void updateToolbarsIconSize(bool allowCustom, int customSize);
+    void updateActionsForCommandsInMenus(bool keycodeMode);
 public slots:
     void slotFocus();
     void slotKillAllActions();
@@ -145,7 +151,6 @@ public slots:
     void slotError(const QString& msg) const;
     void slotShowDrawingOptions() const;
     void slotShowDrawingOptionsUnits() const;
-    void slotWorkspacesMenuAboutToShow() const;
     void slotWindowsMenuActivated(bool);
     void slotPenChanged(const RS_Pen& pen);
     //void slotSnapsChanged(RS_SnapMode s);
@@ -191,8 +196,8 @@ public slots:
     void slotViewGridIsoRight(bool toggle);
     void slotViewGridIsoTop(bool toggle);
     void slotOptionsGeneral();
-    void slotOptionsGeneralNew();
     void slotOptionsShortcuts();
+    void slotOptionsCustomization();
     void slotImportBlock();
     /** shows an about dlg*/
     void showAboutWindow() const;
@@ -204,12 +209,13 @@ public slots:
     void toggleFullscreen(bool checked);
     void toggleMainMenu(bool toggle);
     void setPreviousZoomEnable(bool enable);
-    void widgetOptionsDialog();
+    void stylingOptionsDialog();
     void reloadStyleSheet();
     void updateGridStatus(const QString&) const;
     void showDeviceOptions();
     void updateDevice(const QString&);
     void invokeMenuCreator();
+    LC_NavigationControlsCreator* getCreatorInvoker();
     void invokeToolbarCreator();
     void saveNamedView();
     void saveWorkspace(bool on);
@@ -289,6 +295,19 @@ public:
         return m_anglesBasisWidget;
     }
 
+    LC_ActionFactory* getActionFactory() {return m_actionFactory.get();}
+
+    LC_SpecialMenuServiceInterface* getSpecialMenuService() const {
+        return m_specialMenuService.get();
+    }
+
+    LC_GraphicViewContextMenuProvider* getContextMenuProvider() const {
+        return m_contextMenuProvider.get();
+    }
+    LC_UCSStateWidget* getUcsStateWidget(){return m_ucsStateWidget;}
+
+    QMenu* getPluginsMenu() const;
+
     // Highlight the active block in the block widget
     void showBlockActivated(const RS_Block* block) const;
 
@@ -335,6 +354,11 @@ public:
         return m_namedViewsWidget;
     }
 
+    LC_CommandManager* getCommandManager() const {
+        return m_commandManager.get();
+    }
+
+
     void commandMessage(const QString& msg) const;
     // If a freshly opened drawing has empty modelspace but at least one
     // user-named block (i.e. not a *Model_Space / *Paper_Space variant)
@@ -349,8 +373,6 @@ public:
     void setUIStyleManager(LC_UIStyleManager* manager) {
         m_uiStyleManager.reset(manager);
     }
-
-
 protected:
     bool closePrintPreview(QC_MDIWindow* parent);
     void openPrintPreview(QC_MDIWindow* parent);
@@ -389,12 +411,14 @@ protected:
 #endif
 
     std::unique_ptr<LC_ActionGroupManager> m_actionGroupManager;
-    std::unique_ptr<LC_CreatorInvoker> m_creatorInvoker;
+    std::unique_ptr<LC_SpecialMenuServiceInterface> m_specialMenuService;
+    std::unique_ptr<LC_GraphicViewContextMenuProvider> m_contextMenuProvider;
+    std::unique_ptr<QMenu> m_recentFilesMenu;
+    std::unique_ptr<LC_NavigationControlsCreator> m_creatorInvoker;
     std::unique_ptr<LC_PluginInvoker> m_pluginInvoker;
     std::unique_ptr<LC_AppWindowDialogsInvoker> m_dlgHelpr;
     std::unique_ptr<LC_WorkspacesInvoker> m_workspacesInvoker;
     std::unique_ptr<LC_ActionFactory> m_actionFactory;
-    std::unique_ptr<LC_MenuFactory> m_menuFactory;
     std::unique_ptr<LC_ReleaseChecker> m_releaseChecker;
     std::unique_ptr<LC_LastOpenFilesOpener> m_lastFilesOpener;
     LC_DefaultActionContext* m_actionContext{nullptr};
@@ -403,6 +427,7 @@ protected:
     std::unique_ptr<LC_GridViewInvoker> m_gridViewInvoker;
     std::unique_ptr<LC_InfoCursorSettingsManager> m_infoCursorSettingsManager;
     std::unique_ptr<LC_SnapManager> m_snapManager;
+    std::unique_ptr<LC_CommandManager> m_commandManager;
 
     /** Pointer to the application window (this). */
     static QC_ApplicationWindow* m_appWindow;
@@ -472,10 +497,10 @@ protected:
 
     std::unique_ptr<LC_UIStyleManager> m_uiStyleManager;
 
+    // fixme - review
+    friend class LC_NavigationControlsCreator;
     friend class LC_WidgetFactory;
     friend class LC_ActionFactory;
-    friend class LC_MenuFactory;
-    friend class LC_ToolbarFactory;
     friend class LC_ApplicationWindowInitializer;
 };
 

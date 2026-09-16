@@ -1439,13 +1439,40 @@ void QG_GraphicView::setCursorHiding(const bool state) {
     m_cursorHiding = state;
 }
 
+void QG_GraphicView::saveToRecentActions(QAction* q_action) {
+    if (q_action == nullptr) {
+        return;
+    }
+
+    if (q_action->property(LC_ActionNames::PropertyExcludeFromRecent).toBool()) {
+        return;
+    }
+
+    const QString name = q_action->objectName();
+    if (name.startsWith(LC_ActionNames::PrefixSpecialMenu) ||
+        name.startsWith(LC_ActionNames::PrefixSpecialAction) ||
+        name.startsWith(LC_ActionNames::PrefixWidget)) {
+        return;
+        }
+
+    // Deduplicate: move to front if already in list
+    m_recentActions.removeAll(q_action);
+    m_recentActions.prepend(q_action);
+
+    // Keep list bounded (e.g. max 5 items in context menu)
+    constexpr int MAX_RECENT_ACTIONS = 5;
+    while (m_recentActions.size() > MAX_RECENT_ACTIONS) {
+        m_recentActions.removeLast();
+    }
+}
+
 void QG_GraphicView::setCurrentQAction(QAction* q_action) {
     getEventHandler()->setQAction(q_action);
 
     if (m_recentActions.contains(q_action)) {
         m_recentActions.removeOne(q_action);
     }
-    m_recentActions.prepend(q_action);
+    saveToRecentActions(q_action);
 }
 
 void QG_GraphicView::startAutoPanTimer(const QMouseEvent* event) {
