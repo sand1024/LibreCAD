@@ -38,6 +38,7 @@
 #include "lc_dlg_dimension.h"
 #include "lc_dlg_entityproperties.h"
 #include "lc_parabola.h"
+#include "lc_settings_manager_drawing.h"
 #include "qc_applicationwindow.h"
 #include "qg_blockdialog.h"
 #include "qg_commandwidget.h"
@@ -45,7 +46,6 @@
 #include "qg_dlg_hatch.h"
 #include "qg_dlg_mtext.h"
 #include "qg_dlg_text.h"
-#include "qg_dlgoptionsdrawing.h"
 #include "qg_dlgoptionsmakercam.h"
 #include "qg_layerdialog.h"
 #include "qg_selectionwidget.h"
@@ -671,11 +671,8 @@ bool QG_DialogFactory::requestHatchDialog(RS_Hatch* hatch, LC_GraphicViewport* v
  * Shows dialog for drawing options.
  */
 int QG_DialogFactory::requestOptionsDrawingDialog(RS_Graphic& graphic, const int tabIndex) {
-    QG_DlgOptionsDrawing dlg(parent);
-    dlg.setGraphic(&graphic);
-    dlg.showInitialTab(tabIndex);
-    const int result = dlg.showModal();
-    return result;
+    const bool accepted = LC_SettingsManagerDrawing::show(&graphic, parent, "");
+    return accepted;
 }
 
 bool QG_DialogFactory::requestOptionsMakerCamDialog() {
