@@ -28,13 +28,13 @@
 #include "lc_color_button.h"
 #include "lc_palette_color_utils.h"
 #include "lc_proxy_style.h"
-#include "lc_icons_style_repository.h"
 #include <QStyleFactory>
 #include <QHeaderView>
 #include <QMenu>
 #include <QColorDialog>
 
-#include "lc_fusion_skins_repository.h"
+#include "lc_repository_fusion_skin.h"
+#include "lc_repository_icons_style.h"
 #include "rs_debug.h"
 
 LC_StyleEditorFusionSkin::LC_StyleEditorFusionSkin(QWidget* parent, LC_UIStyleManager* styleManager)
@@ -404,18 +404,18 @@ bool LC_StyleEditorFusionSkin::doLoadPreset(const QString& key) {
     ui->cbLinkedIconStyle->addItems(m_styleManager->getIconsStyleRepository()->getAvailableNames());
     ui->cbLinkedIconStyle->blockSignals(false);
 
-    ui->chkUseThemeIcons->setChecked(m_currentConfig.useThemeDefaultIcons);
-    ui->cbLinkedIconStyle->setEnabled(m_currentConfig.useThemeDefaultIcons);
-    const int linkedIconStyleIdx = ui->cbLinkedIconStyle->findText(m_currentConfig.linkedIconStyleName);
+    ui->chkUseThemeIcons->setChecked(m_currentPalette.useThemeDefaultIcons);
+    ui->cbLinkedIconStyle->setEnabled(m_currentPalette.useThemeDefaultIcons);
+    const int linkedIconStyleIdx = ui->cbLinkedIconStyle->findText(m_currentPalette.linkedIconStyleName);
     if (linkedIconStyleIdx >= 0) {
         ui->cbLinkedIconStyle->setCurrentIndex(linkedIconStyleIdx);
     } else {
         ui->cbLinkedIconStyle->setCurrentIndex(0);
     }
 
-    ui->chkUseFloatingHUD->setChecked(m_currentConfig.useFloatingHUD);
+    // ui->chkUseFloatingHUD->setChecked(m_currentConfig.useFloatingHUD);
     ui->cbCloseColorPolicy->setCurrentIndex(ui->cbCloseColorPolicy->findData(static_cast<int>(m_currentConfig.closeButtonColorPolicy)));
-    ui->cbCloseColorPolicy->setEnabled(m_currentConfig.useFloatingHUD);
+    // ui->cbCloseColorPolicy->setEnabled(m_currentConfig.useFloatingHUD);
 
     ui->chkCustomDialogTitleBar->setChecked(m_currentConfig.customDialogTitleBar);
 
@@ -428,7 +428,7 @@ bool LC_StyleEditorFusionSkin::doLoadPreset(const QString& key) {
 
 void LC_StyleEditorFusionSkin::loadConfigToUi(bool isDarkMode) {
     m_blockSignals = true; // Block signals at start of the load pipeline
-    const ColorSchemeData& scheme = isDarkMode ? m_currentConfig.dark : m_currentConfig.light;
+    const ColorSchemeData& scheme = isDarkMode ? m_currentPalette.dark : m_currentPalette.light;
 
     auto loadTableColors = [&](const QList<PaletteRoleMapping>& rolesList, QTableWidget* table, bool shouldLock) {
         for (int row = 0; row < rolesList.size(); ++row) {
@@ -481,7 +481,7 @@ bool LC_StyleEditorFusionSkin::doSavePresetAs(const QString& name, QString& key)
 
 
 void LC_StyleEditorFusionSkin::saveUiToConfig(bool isDarkMode) {
-    ColorSchemeData& scheme = isDarkMode ? m_currentConfig.dark : m_currentConfig.light;
+    ColorSchemeData& scheme = isDarkMode ? m_currentPalette.dark : m_currentPalette.light;
 
     m_currentConfig.styleArchetype = static_cast<StyleArchetype>(ui->cbStyleArchetype->currentData().toInt());
     m_currentConfig.boxDecoration  = static_cast<BoxDecoration>(ui->cbBoxDecoration->currentData().toInt());
@@ -533,8 +533,8 @@ void LC_StyleEditorFusionSkin::saveUiToConfig(bool isDarkMode) {
     m_currentConfig.accentedScrollbars = ui->chkHighContrastScrollbars->isChecked();
     m_currentConfig.transparentScrollbars = ui->chkTransparentScrollbars->isChecked();
 
-    m_currentConfig.useThemeDefaultIcons = ui->chkUseThemeIcons->isChecked();
-    m_currentConfig.linkedIconStyleName  = ui->cbLinkedIconStyle->currentText();
+    m_currentPalette.useThemeDefaultIcons = ui->chkUseThemeIcons->isChecked();
+    m_currentPalette.linkedIconStyleName  = ui->cbLinkedIconStyle->currentText();
     m_currentConfig.useMenuBarHoverCard = ui->chkMenuBarHoverCard->isChecked();
     m_currentConfig.showMenuCommandAliases = ui->chkShowMenuCommandAliases->isChecked();
 
@@ -544,7 +544,7 @@ void LC_StyleEditorFusionSkin::saveUiToConfig(bool isDarkMode) {
     );
     m_currentConfig.segmentedColorPolicy = static_cast<SegmentedColorPolicy>(ui->cbSegmentedColorPolicy->currentData().toInt());
 
-    m_currentConfig.useFloatingHUD          = ui->chkUseFloatingHUD->isChecked();
+    // m_currentConfig.useFloatingHUD          = ui->chkUseFloatingHUD->isChecked();
     m_currentConfig.closeButtonColorPolicy  = static_cast<CloseButtonColorPolicy>(ui->cbCloseColorPolicy->currentData().toInt());
 
     m_currentConfig.customMenuTearOff = ui->chkCustomMenuForTearOff->isChecked();
@@ -587,12 +587,12 @@ QList<QPair<QString, QString>> LC_StyleEditorFusionSkin::getAvailablePresets() c
 }
 
 void LC_StyleEditorFusionSkin::applyTransientState(QWidget* previewWindow) const {
-    SkinConfig tempSkin = m_currentConfig;
+    ControlStyleConfig tempSkin = m_currentConfig;
     const_cast<LC_StyleEditorFusionSkin*>(this)->saveUiToConfig(m_currentVariantDark);
     tempSkin = m_currentConfig;
 
     const bool isDarkMode = m_currentVariantDark;
-    const ColorSchemeData& scheme = isDarkMode ? tempSkin.dark : tempSkin.light;
+    const ColorSchemeData& scheme = isDarkMode ? m_currentPalette.dark : m_currentPalette.light;
 
     auto cvdType = LC_PaletteColorUtils::CVDType::Normal;
     const auto* container = qobject_cast<LC_PresetContainerWidget*>(parentWidget());
@@ -673,7 +673,7 @@ void LC_StyleEditorFusionSkin::calculateProceduralBevels(bool isDarkMode) {
     m_blockSignals = true;
     saveUiToConfig(isDarkMode); // Sync active UI states first
 
-    ColorSchemeData& scheme = isDarkMode ? m_currentConfig.dark : m_currentConfig.light;
+    ColorSchemeData& scheme = isDarkMode ? m_currentPalette.dark : m_currentPalette.light;
 
     QPalette tempPalette;
     for (const auto& roleMapping : BASE_INTERFACE_ROLES) {
@@ -738,7 +738,7 @@ void LC_StyleEditorFusionSkin::onGenerateHarmonizedTheme() {
     QColor baseColor = QColorDialog::getColor(Qt::blue, this, tr("Select Base Harmony Color"));
     if (!baseColor.isValid()) return;
     saveUiToConfig(m_currentVariantDark);
-    LC_PaletteColorUtils::generateHarmonizedTheme(baseColor, m_currentConfig);
+    LC_PaletteColorUtils::generateHarmonizedTheme(baseColor, m_currentPalette);
     loadConfigToUi(m_currentVariantDark);
 }
 
@@ -750,7 +750,7 @@ void LC_StyleEditorFusionSkin::onGenerateTwoColorTheme() {
     if (!accentColor.isValid()) return;
 
     saveUiToConfig(m_currentVariantDark);
-    LC_PaletteColorUtils::generateHarmonizedTheme(surfaceColor, accentColor, m_currentConfig);
+    LC_PaletteColorUtils::generateHarmonizedTheme(surfaceColor, accentColor, m_currentPalette);
     loadConfigToUi(m_currentVariantDark);
 }
 
@@ -758,7 +758,7 @@ void LC_StyleEditorFusionSkin::onGenerateHighContrastTheme() {
     QColor baseColor = QColorDialog::getColor(Qt::blue, this, tr("Select Base Contrast Color"));
     if (!baseColor.isValid()) return;
     saveUiToConfig(m_currentVariantDark);
-    LC_PaletteColorUtils::generateHighContrastTheme(baseColor, m_currentConfig);
+    LC_PaletteColorUtils::generateHighContrastTheme(baseColor, m_currentPalette);
     loadConfigToUi(m_currentVariantDark);
 }
 

@@ -24,13 +24,14 @@
 #include "ui_lc_style_editor_metrics.h"
 #include "lc_style_metrics_utils.h"
 #include "lc_ui_style_manager.h"
-#include "lc_metrics_repository.h"
 #include "lc_proxy_style.h"
-#include "lc_fusion_skins_repository.h"
 #include <QSpinBox>
 #include <QCheckBox>
 #include <QStyleFactory>
 #include <QVBoxLayout>
+
+#include "lc_repository_fusion_skin.h"
+#include "lc_repository_metrics.h"
 
 LC_StyleEditorMetrics::LC_StyleEditorMetrics(QWidget* parent, LC_UIStyleManager* styleManager)
     : LC_StyleEditorBase(parent, styleManager, styleManager->getMetricsRepository())
@@ -173,7 +174,7 @@ void LC_StyleEditorMetrics::applyTransientState(QWidget* previewWindow) const {
     auto* proxyStyle = new LC_ProxyStyle(baseStyle, tempConfig);
 
     // Read the active skin's aesthetic options to prevent rendering visual breaks
-    SkinConfig activeSkin;
+    ControlStyleConfig activeSkin;
     if (m_styleManager->getSkinsRepository()->loadByKey(m_styleManager->getActiveSkin(), activeSkin)) {
         proxyStyle->setSkin(activeSkin);
     }

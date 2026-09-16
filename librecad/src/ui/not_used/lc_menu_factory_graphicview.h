@@ -1,5 +1,5 @@
-/*
- * ********************************************************************************
+/*******************************************************************************
+ *
  * This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
@@ -18,13 +18,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * ********************************************************************************
- */
+ ******************************************************************************/
 
 #ifndef LC_MENUFACTORYGRAPHICVIEW_H
 #define LC_MENUFACTORYGRAPHICVIEW_H
 
-#include "lc_menufactory_base.h"
+#include "lc_menu_factory_base.h"
 
 class LC_ActionContext;
 class RS_Vector;

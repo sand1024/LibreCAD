@@ -27,10 +27,11 @@
 #include <functional>
 
 #include "lc_palette_editor_shared.h"
+#include "lc_preset_repository.h"
 #include "lc_style_editor_interface.h"
 
 class LC_UIStyleManager;
-class LC_RepositoryBase;
+class LC_PresetRepository;
 
 class LC_StyleEditorBase : public QWidget, public LC_StyleEditorInterface {
     Q_OBJECT
@@ -38,7 +39,7 @@ class LC_StyleEditorBase : public QWidget, public LC_StyleEditorInterface {
 public:
     LC_StyleEditorBase(QWidget* parent,
                        LC_UIStyleManager* styleManager,
-                       LC_RepositoryBase* repository)
+                       LC_PresetRepository* repository)
         : QWidget(parent)
         , m_styleManager(styleManager)
         , m_repository(repository) {}
@@ -72,7 +73,7 @@ protected:
 
     LC_UIStyleManager* m_styleManager;
     QString m_currentPresetKey;
-    LC_RepositoryBase* m_repository;
+    LC_PresetRepository* m_repository;
     std::function<void(bool)> m_changedCallback;
 };
 

@@ -1,5 +1,5 @@
-/*
- * ********************************************************************************
+/*******************************************************************************
+ *
  * This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
@@ -18,8 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * ********************************************************************************
- */
+ ******************************************************************************/
 
 #include "lc_menufactory_main.h"
 
@@ -29,9 +28,9 @@
 #include <QToolBar>
 #include <QUrl>
 
-#include "lc_actionfactory.h"
-#include "lc_actiongroupmanager.h"
-#include "lc_menufactory.h"
+#include "lc_action_factory.h"
+#include "lc_action_group_manager.h"
+#include "lc_menu_factory.h"
 #include "lc_settings_startup.h"
 #include "lc_settings_window_options.h"
 #include "main.h"
@@ -322,14 +321,15 @@ void LC_MenuFactoryMain::createFileMenu(QMenuBar* menuBar, QList<QMenu*>& topMen
 
 void LC_MenuFactoryMain::createSettingsMenu(QMenuBar* menuBar, QList<QMenu*>& topMenuMenus) const {
     m_menusHolder->m_menuSettings = menu(tr("&Options"), "options", menuBar, {
-                              "OptionsGeneral",
-                              "ShortcutsOptions",
-                              "WidgetOptions",
-                              "DeviceOptions",
-                              "ReloadStyleSheet",
-                              "",
-                              "OptionsDrawing",
-                          });
+                                             "OptionsGeneral",
+                                             "OptionsCustomization",
+                                             "OptionsStyling",
+                                             "ShortcutsOptions",
+                                             "DeviceOptions",
+                                             "ReloadStyleSheet",
+                                             "",
+                                             "OptionsDrawing",
+                                         });
 
     topMenuMenus << m_menusHolder->m_menuSettings;
 }

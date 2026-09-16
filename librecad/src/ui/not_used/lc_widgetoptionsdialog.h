@@ -26,11 +26,11 @@
 
 #include "lc_dialog.h"
 #include "lc_icon_colors_options.h"
-#include "lc_icons_style_repository.h"
+#include "lc_repository_icons_style.h"
 #include "ui_lc_widgetoptionsdialog.h"
 
 class LC_UIStyleManager;
-class LC_FusionSkinsRepository;
+class LC_RepositoryFusionSkin;
 
 class LC_WidgetOptionsDialog : public LC_Dialog, public Ui::LC_WidgetOptionsDialog {
     Q_OBJECT

@@ -1,5 +1,6 @@
 
 /*******************************************************************************
+ *
  * This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
@@ -86,7 +87,8 @@ private:
 
 
     Ui::LC_StyleEditorFusionSkin* ui;
-    SkinConfig m_currentConfig;
+    ControlStyleConfig m_currentConfig;
+    PaletteConfig m_currentPalette;
 
     bool m_blockSignals = false;
     bool m_currentVariantDark = false;

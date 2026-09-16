@@ -1,26 +1,24 @@
-/*
-**********************************************************************************
-**
-** This file was created for the LibreCAD project (librecad.org), a 2D CAD program.
-**
-** Copyright (C) 2015 ravas (github.com/r-a-v-a-s)
-**
-** This program is free software; you can redistribute it and/or
-** modify it under the terms of the GNU General Public License
-** as published by the Free Software Foundation; either version 2
-** of the License, or (at your option) any later version.
-**
-** This program is distributed in the hope that it will be useful,
-** but WITHOUT ANY WARRANTY; without even the implied warranty of
-** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-** GNU General Public License for more details.
-**
-** You should have received a copy of the GNU General Public License
-** along with this program; if not, write to the Free Software
-** Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-**
-**********************************************************************************
- */
+/*******************************************************************************
+ *
+ * This file is part of the LibreCAD project, a 2D CAD program
+ *
+ * Copyright (C) 2026 LibreCAD.org
+ * Copyright (C) 2026 sand1024
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ ******************************************************************************/
 
 #include "lc_widgetoptionsdialog.h"
 
@@ -29,7 +27,6 @@
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QMessageBox>
-#include <QPixmapCache>
 #include <QStatusBar>
 #include <QStyleFactory>
 #include <QTimer>
@@ -37,12 +34,12 @@
 #include "lc_dlg_preset_editor.h"
 #include "lc_dlg_styles_presets_generator.h"
 #include "lc_editor_utils.h"
-#include "lc_fusion_skins_repository.h"
+#include "lc_repository_fusion_skin.h"
 #include "lc_proxy_style.h"
 #include "lc_icons_style_manager.h"
-#include "lc_inputtextdialog.h"
-#include "lc_metrics_repository.h"
+#include "lc_repository_metrics.h"
 #include "lc_palette_color_utils.h"
+#include "lc_repository_palette.h"
 #include "lc_settings_app_styling.h"
 #include "lc_settings_startup.h"
 #include "lc_settings_widget.h"
@@ -51,9 +48,9 @@
 #include "lc_style_editor_metrics.h"
 #include "lc_style_editor_typography.h"
 #include "lc_style_preset_generator.h"
-#include "lc_typography_repository.h"
+#include "lc_repository_typography.h"
 
-#include "lc_widgetfactory.h"
+#include "lc_widget_factory.h"
 #include "qc_applicationwindow.h"
 #include "rs_settings.h"
 
@@ -266,8 +263,8 @@ void LC_WidgetOptionsDialog::onImportProfileClicked() {
     const QString path = QFileDialog::getOpenFileName(this, tr("Import Workspace Profile"), "", tr("LibreCAD Workspace Profiles (*.lcws)"));
     if (path.isEmpty()) return;
 
-    QString profileName, skinFile, iconFile, typographyFile, metricsFile;
-    if (m_styleManager->importProfile(path, profileName, skinFile, iconFile, typographyFile, metricsFile)) {
+    QString profileName, skinFile, paletteFile, iconFile, typographyFile, metricsFile;
+    if (m_styleManager->importProfile(path, profileName, paletteFile, skinFile, iconFile, typographyFile, metricsFile)) {
         populateDropdowns(); // Synchronously rebuild combobox indexes
 
         // Dynamic visual update selecting the unpacked active keys
@@ -290,7 +287,7 @@ void LC_WidgetOptionsDialog::onExportProfileClicked() {
     QString profileName = QInputDialog::getText(this, tr("Export Profile"), tr("Enter profile name:"), QLineEdit::Normal, "My Custom Profile", &ok);
     if (!ok || profileName.trimmed().isEmpty()) return;
 
-    SkinConfig skin;
+    ControlStyleConfig skin;
     bool hasSkin = m_styleManager->getSkinsRepository()->loadByKey(cbFusionSkin->currentData().toString(), skin);
 
     IconStyleConfig icon;
@@ -302,7 +299,11 @@ void LC_WidgetOptionsDialog::onExportProfileClicked() {
     StyleMetricsConfig metrics;
     bool hasMetrics = m_styleManager->getMetricsRepository()->loadByKey(cbActiveMetrics->currentData().toString(), metrics);
 
+    PaletteConfig palette;
+    bool hasPalette = m_styleManager->getPaletteRepository()->loadByKey(cbActiveMetrics->currentData().toString(), palette);
+
     if (m_styleManager->exportProfile(path, profileName.trimmed(),
+                                      hasPalette ? &palette : nullptr,
                                       hasSkin ? &skin : nullptr, 
                                       hasIcon ? &icon : nullptr, 
                                       hasFont ? &font : nullptr, 
@@ -647,8 +648,9 @@ void LC_WidgetOptionsDialog::applyTransientStylePreview() {
     const auto metricsKey = cbActiveMetrics->currentData().toString();
     const auto typographyKey = cbTypography->currentData().toString();
     const auto iconStyleKey = cbIconStyle->currentData().toString();
+    const auto paletteName = cbFusionSkin->currentData().toString();
     const auto themeModeOverride = static_cast<ThemeModeOverride>(cbThemeModeOverride->currentData().toInt());
-        m_styleManager->applyTransientTheme(allowStyle, styleName,
+        m_styleManager->applyTransientTheme(allowStyle, paletteName, styleName,
                                         skinKey, metricsKey,
                                         typographyKey, iconStyleKey,
                                         themeModeOverride);

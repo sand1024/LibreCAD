@@ -27,7 +27,7 @@
 #include <QElapsedTimer>
 
 #include "lc_dialog.h"
-#include "lc_menuactivator.h"
+#include "lc_menu_activator.h"
 
 namespace Ui {
     class LC_DlgMenuAssigner;

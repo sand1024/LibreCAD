@@ -1,5 +1,5 @@
-/*
- * ********************************************************************************
+/*******************************************************************************
+ *
  * This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
@@ -18,17 +18,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * ********************************************************************************
- */
+ ******************************************************************************/
 
-#include "lc_menufactory_graphicview.h"
+#include "lc_menu_factory_graphicview.h"
 
 #include <QDockWidget>
 
 #include "lc_actioncontext.h"
-#include "lc_actiongroup.h"
-#include "lc_actiongroupmanager.h"
-#include "lc_menufactory.h"
+#include "lc_action_group.h"
+#include "lc_action_group_manager.h"
+#include "lc_menu_factory.h"
 #include "qc_applicationwindow.h"
 #include "qg_graphicview.h"
 #include "rs_ellipse.h"
@@ -403,8 +402,8 @@ void LC_MenuFactoryGraphicView::createGVMenuOptions(QMenu* ctxMenu) const {
     subMenu(ctxMenu, tr("Options"), "sub_options", ":/icons/settings.lci", {
                 "OptionsDrawing",
                 "OptionsGeneral",
-                "WidgetOptions",
-                "ShortcutsOptions"
+                "OptionsStyling",
+                "OptionsCustomization"
             }, false);
 }
 

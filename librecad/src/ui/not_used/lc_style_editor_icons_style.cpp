@@ -22,22 +22,20 @@
 
 #include "lc_style_editor_icons_style.h"
 
-#include <QCheckBox>
-#include <QComboBox>
-
 #include "ui_lc_style_editor_icons_style.h"
 #include "lc_ui_style_manager.h"
 #include "lc_preset_container_widget.h"
 #include "lc_color_button.h"
 #include "lc_icons_color_utils.h"
 #include "lc_icons_style_manager.h"
-#include "lc_icons_style_repository.h"
 #include <QHeaderView>
 #include <QMenu>
 #include <QMessageBox>
 #include <QRadioButton>
 #include <qtablewidget.h>
 #include <QToolButton>
+
+#include "lc_repository_icons_style.h"
 
 LC_StyleEditorIconsStyle::LC_StyleEditorIconsStyle(QWidget* parent, LC_UIStyleManager* styleManager)
     : LC_StyleEditorBase(parent, styleManager, styleManager->getIconsStyleRepository())

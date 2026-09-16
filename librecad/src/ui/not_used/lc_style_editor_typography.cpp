@@ -23,9 +23,10 @@
 #include "lc_style_editor_typography.h"
 
 #include "lc_caddockwidget.h"
+#include "lc_repository_typography.h"
 #include "ui_lc_style_editor_typography.h"
 #include "lc_ui_style_manager.h"
-#include "lc_typography_repository.h"
+
 #include "lc_typography_utils.h"
 
 LC_StyleEditorTypography::LC_StyleEditorTypography(QWidget* parent, LC_UIStyleManager* styleManager)
