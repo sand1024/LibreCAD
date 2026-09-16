@@ -1,9 +1,9 @@
-/*
- * ********************************************************************************
+/*******************************************************************************
+ *
  * This file is part of the LibreCAD project, a 2D CAD program
  *
- * Copyright (C) 2025 LibreCAD.org
- * Copyright (C) 2025 sand1024
+ * Copyright (C) 2026 LibreCAD.org
+ * Copyright (C) 2026 sand1024
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,15 +18,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * ********************************************************************************
- */
+ ******************************************************************************/
 
-#include "lc_menuactivator.h"
+#include "lc_menu_activator.h"
 
 #include <QMouseEvent>
 
 LC_MenuActivator::LC_MenuActivator()
-    : m_button{RIGHT}{
+    : m_button{NONE} {
+    update();
+}
+LC_MenuActivator::LC_MenuActivator(const Button button, const Type type, const bool entityRequired,
+                                   const RS2::EntityType entityType, const bool ctrl, const bool alt, const bool shift)
+    : m_eventType{type}, m_requiresEntity{entityRequired}, m_entityType{entityType}, m_button{button} {
+    setKeys(ctrl, alt, shift);
     update();
 }
 
@@ -41,6 +46,7 @@ LC_MenuActivator::LC_MenuActivator(const LC_MenuActivator& other) {
     m_eventType = other.m_eventType;
     m_keyModifiers = other.m_keyModifiers;
     m_requiresEntity = other.m_requiresEntity;
+    m_entityType = other.m_entityType;
     m_menuName = other.m_menuName;
 }
 
@@ -54,6 +60,8 @@ void LC_MenuActivator::copyTo(LC_MenuActivator& other) const {
     other.m_eventType = m_eventType;
     other.m_keyModifiers = m_keyModifiers;
     other.m_requiresEntity = m_requiresEntity;
+    other.m_entityType = m_entityType;
+    other.m_menuName = m_menuName;
 }
 
 bool LC_MenuActivator::isEventApplicable(const QMouseEvent* event) const {
@@ -194,6 +202,12 @@ void LC_MenuActivator::parseEntityType(const QString& entityTypeStr, bool& requi
     }
     else if ("IN" == entityTypeStr) {
         entityType = RS2::EntityInsert;
+    }
+    else if ("TE" == entityTypeStr) {
+        entityType = RS2::EntityText;
+    }
+    else if ("MT" == entityTypeStr) {
+        entityType = RS2::EntityMText;
     }
     else if ("DL" == entityTypeStr) {
         entityType = RS2::EntityDimLinear;
@@ -342,6 +356,12 @@ QString LC_MenuActivator::getEntityTypeStr() const {
             case RS2::EntityDimLeader: {
                 return "LD";
             }
+            case RS2::EntityText: {
+                return "TE";
+            }
+            case RS2::EntityMText: {
+                return "MT";
+            }
             default:
                 return "AE";
         }
@@ -351,6 +371,9 @@ QString LC_MenuActivator::getEntityTypeStr() const {
 
 void LC_MenuActivator::update() {
     m_shortcutString.clear();
+    if (m_button == NONE) {
+        return;
+    }
     if (m_keyModifiers & SHIFT) {
         m_shortcutString.append("S");
     }
@@ -369,7 +392,6 @@ void LC_MenuActivator::update() {
     else {
         m_shortcutString.append("N");
     }
-
     if (m_button == LEFT) {
         m_shortcutString.append("L");
     }
@@ -456,6 +478,9 @@ QString LC_MenuActivator::getEventView() const {
 }
 
 QString LC_MenuActivator::getShortcutView() const {
+    if (m_button == NONE || m_shortcutString.isEmpty()) {
+        return QObject::tr("NOT ASSIGNED");
+    }
     QString result = getEventView();
     result.append(" | ");
     if (m_requiresEntity) {
@@ -542,6 +567,14 @@ QString LC_MenuActivator::getShortcutView() const {
             }
             case RS2::EntityDimLeader: {
                 result.append(QObject::tr("Leader"));
+                break;
+            }
+            case RS2::EntityText: {
+                result.append(QObject::tr("Text"));
+                break;
+            }
+            case RS2::EntityMText: {
+                result.append(QObject::tr("MText"));
                 break;
             }
             default:

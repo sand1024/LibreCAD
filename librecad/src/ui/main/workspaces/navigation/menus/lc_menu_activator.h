@@ -51,6 +51,11 @@ public:
         SHIFT = 1 << 2
     };
 
+
+    LC_MenuActivator(Button button, Type type = CLICK_RELEASE, bool entityRequired = false,
+                     RS2::EntityType entityType = RS2::EntityUnknown,
+                     bool ctrl = false, bool alt = false, bool shift = false);
+
     LC_MenuActivator(const QString& shortcutString, bool ctrl, bool alt, bool shift, Button button, Type type,
                      bool entityRequired, RS2::EntityType entityType);
     LC_MenuActivator(const LC_MenuActivator& other);
