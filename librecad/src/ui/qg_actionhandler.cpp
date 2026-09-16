@@ -29,6 +29,7 @@
 
 #include "lc_action.h"
 #include "lc_actionhandlerfactory.h"
+#include "lc_command_manager.h"
 #include "lc_defaultactioncontext.h"
 #include "lc_graphicviewport.h"
 #include "lc_settings_commands_promotion.h"
@@ -37,7 +38,6 @@
 #include "qc_applicationwindow.h"
 #include "rs_actionlayerstogglelock.h"
 #include "rs_commandevent.h"
-#include "rs_commands.h"
 #include "rs_debug.h"
 #include "rs_dialogfactory.h"
 #include "rs_dialogfactoryinterface.h"
@@ -67,32 +67,31 @@ RS_ActionInterface* QG_ActionHandler::getCurrentAction() const {
     return nullptr;
 }
 
-// fixme - sand - initial implementation of command promotion. ADD: 1) support of command aliases 2) notification type? 3) Stats for future displaying the user?
 void QG_ActionHandler::promoteCommandIfNeeded(const RS2::ActionType id) const {
     const auto sndr = sender();
     const auto action = dynamic_cast<LC_Action*>(sndr);
-    if (action != nullptr) {
-        const bool actionInvokedViaShortcut = action->isInvokedViaShortcut();
-        if (actionInvokedViaShortcut) {
-            // shortcut is assigned to action, nothing to do (yet later we may note this fact!)
-        }
-        else{
-            // inefficient way, invocation from UI. Promote command, if it is allowed
-            const bool promoteCommands = CFG_CommandsPromotion::o_PromoteCommands;
-            if (promoteCommands) {
-                // fixme - sand - more details are needed (like aliases)
-                const QString command = RS_COMMANDS->getCommandForAction(id);
-                if (!command.isEmpty()) {
-                    const auto actionName = action->text().remove("&");
-                    // fixme - probably the exact way of notification should be isolated from there (say, support notification banners too)
-                    QC_ApplicationWindow::getAppWindow()->commandMessage( QObject::tr("%2 - command for \"%1\"").arg(actionName).arg(command));
-                }
+    if (action == nullptr) {
+        return;
+    }
+    const bool actionInvokedViaShortcut = action->isInvokedViaShortcut();
+    if (actionInvokedViaShortcut) {
+        // shortcut is assigned to action, nothing to do
+        return;
+    }
+
+    // inefficient way of invocation, invocation from UI. Promote command, if it is allowed
+    const bool promoteCommands = CFG_CommandsPromotion::o_PromoteCommands;
+    if (promoteCommands) {
+        auto* commandManager = (m_actionContext != nullptr) ? m_actionContext->getCommandManager() : nullptr;
+        if (commandManager != nullptr) {
+            const QStringList commands = commandManager->getCommandsForAction(id);
+            if (!commands.isEmpty()) {
+                const QString actionName = action->text().remove('&');
+                const QString commandListStr = commands.join(", ");
+                // fixme - probably the exact way of notification should be isolated from there (say, support notification banners too)
+                QC_ApplicationWindow::getAppWindow()->commandMessage(tr("%1 - command(s): %2").arg(actionName, commandListStr));
             }
         }
-    }
-    else {
-        // action is invoked via command, nothing to do
-        // LC_ERR << "FROM CMD";
     }
 }
 
@@ -131,6 +130,10 @@ std::shared_ptr<RS_ActionInterface> QG_ActionHandler::createActionInstance(const
     return LC_ActionsHandlerFactory::createActionInstance(id, m_actionContext, data);
 }
 
+LC_ActionContext* QG_ActionHandler::getActionContext() const {
+    return m_actionContext;
+}
+
 /**
  * @return Available commands of the application or the current action.
  */
@@ -156,8 +159,10 @@ QStringList QG_ActionHandler::getAvailableCommands() const {
 bool QG_ActionHandler::keycode(const QString& code) const {
     RS_DEBUG->print("QG_ActionHandler::keycode()");
 
+    auto commandManager = m_actionContext->getCommandManager();
+
     // keycode for new action:
-    const RS2::ActionType type = RS_COMMANDS->keycodeToAction(code);
+    const RS2::ActionType type = commandManager->keycodeToAction(code);
     if (type != RS2::ActionNone) {
         const bool result = m_snapManager->tryToProcessSnapActions(type);
         if (!result) {
@@ -215,7 +220,10 @@ bool QG_ActionHandler::command(const QString& cmd) const {
     if (!commandEvent.isAccepted()) {
         RS_DEBUG->print("QG_ActionHandler::command: convert cmd to action type");
         // command for new action:
-        const RS2::ActionType type = RS_COMMANDS->cmdToAction(cmd);
+        auto commandManager = m_actionContext->getCommandManager();
+
+        QString ambiguityDetails;
+        const RS2::ActionType type = commandManager->cmdToAction(cmd, &ambiguityDetails);
         if (type != RS2::ActionNone) {
             RS_DEBUG->print("QG_ActionHandler::command: setting current action");
             //special handling, currently needed for snap actions
@@ -225,6 +233,14 @@ bool QG_ActionHandler::command(const QString& cmd) const {
             }
             RS_DEBUG->print("QG_ActionHandler::command: current action set");
             return true;
+        }
+
+        if (!ambiguityDetails.isEmpty()) {
+            RS_DIALOGFACTORY->commandMessage(
+                tr("Ambiguous command '%1'. Matches multiple triggers: %2. Exact case required.")
+                    .arg(cmd, ambiguityDetails)
+            );
+            return true; // Mark as handled so generic "Unknown command" is not appended
         }
     }
     else {

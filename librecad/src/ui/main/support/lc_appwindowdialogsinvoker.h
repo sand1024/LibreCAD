@@ -41,10 +41,11 @@ public:
     void showAboutWindow() const;
     void showNewVersionAvailableDialog(const LC_ReleaseChecker* releaseChecker) const;
     void showLicenseWindow() const;
+    bool requestOptionsDrawingDialog(RS_Graphic& graphic, const QString& pageId = "") const;
     void showDeviceOptions();
-    bool showWidgetOptionsDialog() const;
+    bool showStylingOptionsDialog(const QString& pageId = "") const;
     bool showGeneralOptionsDialog() const;
-    bool requestOptionsDrawingDialog(RS_Graphic& graphic, const QString& pageId) const;
+    bool showCustomizationOptionsDialog(const QString& pageId = "");
     int showCloseDialog(const QC_MDIWindow *w, bool showSaveAll) const;
     QPair<QString, QString> showExportFileSelectionDialog(const QString& drawingFileName) const;
     QPair<QString, RS2::FormatType> requestDrawingFileName(RS2::FormatType format = RS2::FormatDXFRW) const;

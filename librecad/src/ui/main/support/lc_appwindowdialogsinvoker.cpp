@@ -30,12 +30,11 @@
 #include "lc_dlgnewversionavailable.h"
 #include "lc_settings_manager_drawing.h"
 #include "lc_settings_hardware.h"
-#include "lc_widgetoptionsdialog.h"
+#include "lc_settings_manager_application.h"
+#include "lc_settings_manager_customization.h"
 #include "qc_applicationwindow.h"
 #include "qc_mdiwindow.h"
 #include "qg_dialogfactory.h"
-#include "qg_dlgoptionsdrawing.h"
-#include "qg_dlgoptionsgeneral.h"
 #include "qg_exitdialog.h"
 #include "qg_filedialog.h"
 #include "rs_settings.h"
@@ -105,26 +104,24 @@ void LC_AppWindowDialogsInvoker::showDeviceOptions() {
     dlg.showModal();
 }
 
-bool LC_AppWindowDialogsInvoker::showWidgetOptionsDialog() const {
-    LC_WidgetOptionsDialog dlg(m_appWin, m_appWin->getUiStyleManager());
-    return dlg.showModal() == QDialog::Accepted;
+
+bool LC_AppWindowDialogsInvoker::showStylingOptionsDialog(const QString& pageId) const {
+   const bool accepted  =  LC_SettingsManagerStyling::showStylingSettings(m_appWin,pageId);
+   return accepted;
 }
 
 bool LC_AppWindowDialogsInvoker::showGeneralOptionsDialog() const {
-    QG_DlgOptionsGeneral dlg(m_appWin);
-    const bool result = dlg.showModal() == QDialog::Accepted;
-    return result;
+  bool accepted = LC_SettingsManagerApplication::showOptionsApplication(m_appWin);
+  return false;
 }
 
 bool LC_AppWindowDialogsInvoker::requestOptionsDrawingDialog(RS_Graphic& graphic, const QString& pageId) const {
-    // fixme - restore
-    // QG_DlgOptionsDrawing dlg(m_appWin);
-    // dlg.setGraphic(&graphic);
-    // dlg.showInitialTab(tabIndex);
-    // const int result = dlg.showModal();
-    // return result;
+    const bool accepted = LC_SettingsManagerDrawing::show(&graphic, m_appWin, pageId);
+    return accepted;
+}
 
-    bool accepted = LC_SettingsManagerDrawing::show(&graphic, m_appWin, pageId);
+bool LC_AppWindowDialogsInvoker::showCustomizationOptionsDialog(const QString& pageId) {
+    const bool accepted = LC_SettingsManagerCustomization::showCustomizationDialog(m_appWin, pageId);
     return accepted;
 }
 

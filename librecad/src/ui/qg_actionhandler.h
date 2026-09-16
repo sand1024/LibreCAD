@@ -31,6 +31,7 @@
 
 #include "rs.h"
 
+class LC_ActionContext;
 struct RS_SnapMode;
 class RS_GraphicView;
 class QC_ApplicationWindow;
@@ -63,6 +64,7 @@ public:
     void setActionContext(LC_DefaultActionContext* actionContext) {m_actionContext = actionContext;}
     void setSnapManager(LC_SnapManager* snapManager);
     std::shared_ptr<RS_ActionInterface> createActionInstance(RS2::ActionType id, void* data) const;
+    LC_ActionContext* getActionContext() const;
 public slots:
     void setSnaps(const RS_SnapMode&s) const;
     void slotSnapMiddleManual() const;
