@@ -45,12 +45,11 @@ private:
     void initIconSize() const;
     void loadCmdWidgetVariablesFile() const;
     void initDockAndToolbarAreasActions() const;
-    void initMainMenu() const;
-    static void updateCommandsAlias();
+    void initCommandsScheme() const;
     void initRecentFilesList() const;
     void initDialogFactory() const;
     void initWidgets() const;
-    void initToolbars() const;
+    void initNavigationLayout() const;
     void initPlugins();
     void initAutoSaveTimer() const;
     void initActionContext() const;

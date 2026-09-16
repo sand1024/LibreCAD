@@ -21,21 +21,24 @@
  * ********************************************************************************
  */
 
-#include "lc_menufactory_base.h"
+#include "lc_menu_factory_base.h"
 
 #include <QDockWidget>
 
-#include "lc_actiongroupmanager.h"
-#include "lc_menufactory.h"
+#include "lc_action_group_manager.h"
 #include "qc_applicationwindow.h"
 #include "rs_settings.h"
 
+
+[[deprecated]]
 void LC_MenuFactoryBase::findViewAndUCSToggleActions(QList<QDockWidget*> dockWidgetsList,
                                                  QAction*& namedViewsToggleViewAction, QAction*& ucsToggleViewAction) const {
+    // fixme - review and restore - were we'll find that menu? How it's initialized?
+
     for (QDockWidget* dw : dockWidgetsList) {
         if (m_appWin->dockWidgetArea(dw) == Qt::RightDockWidgetArea) { // fixme - well, it seems one docking area is limiting...
             QAction* action = dw->toggleViewAction();
-            m_menusHolder->m_menuDockWidgets->QWidget::addAction(action);
+            // m_menusHolder->m_menuDockWidgets->QWidget::addAction(action);
             QString objectName = dw->objectName();
             if (objectName == "view_dockwidget") {
                 namedViewsToggleViewAction = action;

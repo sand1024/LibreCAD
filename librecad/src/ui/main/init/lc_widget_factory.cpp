@@ -20,12 +20,12 @@
  * ********************************************************************************
  */
 
-#include "lc_widgetfactory.h"
+#include "lc_widget_factory.h"
 
 #include <QStatusBar>
 #include <QToolBar>
 
-#include "lc_actiongroupmanager.h"
+#include "lc_action_group_manager.h"
 #include "lc_anglesbasiswidget.h"
 #include "lc_caddockwidget.h"
 #include "lc_cad_tool_matrix_dock_widget.h"
@@ -52,7 +52,9 @@
 #include "qg_layerwidget.h"
 #include "qg_librarywidget.h"
 #include "qg_mousewidget.h"
+#include "qg_pentoolbar.h"
 #include "qg_selectionwidget.h"
+#include "qg_snaptoolbar.h"
 #include "rs_debug.h"
 #include "rs_settings.h"
 #include "twostackedlabels.h"
@@ -80,6 +82,7 @@ void LC_WidgetFactory::initWidgets(){
     initStatusBar();
     initLeftCADSidebar();
     createRightSidebar(m_appWin->m_actionHandler.get());
+    initSpecialToolbars();
 }
 
 void LC_WidgetFactory::initLeftCADSidebar(){
@@ -113,40 +116,6 @@ void LC_WidgetFactory::createCADMegaSidebar(const int columns, const int iconSiz
 
     auto *titleBar = new LC_CustomTitleBarWidget(tr("Tools"), tr("CAD Tools Matrix"), ":/icons/line_polygon_star.lci", result);
     result->setTitleBarWidget(titleBar);
-
-    auto actions = QList<QAction*>();
-    QAction separatorAct = QAction(this);
-    QAction* separator = &separatorAct;
-    separatorAct.setSeparator(true); // Turns th
-
-    actions.append(m_actionFactory->lineActions);
-    actions.append(separator);
-    actions.append(m_actionFactory->pointActions);
-    actions.append(separator);
-    actions.append(m_actionFactory->shapeActions);
-    actions.append(separator);
-    actions.append(m_actionFactory->circleActions);
-    actions.append(separator);
-    actions.append(m_actionFactory->curveActions);
-    actions.append(separator);
-    actions.append(m_actionFactory->splineActions);
-    actions.append(separator);
-    actions.append(m_actionFactory->ellipseActions);
-    actions.append(separator);
-    actions.append(m_actionFactory->polylineActions);
-    actions.append(separator);
-    actions.append(m_actionFactory->selectActions);
-    actions.append(separator);
-    actions.append(m_actionFactory->modifyActions);
-    actions.append(separator);
-    actions.append(m_actionFactory->dimension_Actions);
-    actions.append(separator);
-    actions.append(m_actionFactory->infoActions);
-    actions.append(separator);
-    actions.append(m_actionFactory->otherDrawingActions);
-    actions.append(separator);
-    actions.append(m_actionFactory->orderActions);
-    result->addActions(actions, columns, iconSize, flatButtons);
     result->hide();
     result->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
@@ -159,20 +128,20 @@ void LC_WidgetFactory::createCADMegaSidebar(const int columns, const int iconSiz
 }
 
 void LC_WidgetFactory::createCADSidebar(const int columns, const int iconSize, const bool flatButtons){
-    auto* line = cadDockWidget(tr("Line"), ":/icons/line.lci","Line", m_actionFactory->lineActions, columns, iconSize, flatButtons);
-    auto* point = cadDockWidget(tr("Point"), ":/icons/points.lci", "Point", m_actionFactory->pointActions, columns, iconSize, flatButtons);
-    auto* shape = cadDockWidget(tr("Polygon"), ":/icons/rectangle_2_points.lci", "Polygon", m_actionFactory->shapeActions, columns, iconSize, flatButtons);
-    auto* circle = cadDockWidget(tr("Circle"), ":/icons/circle.lci", "Circle", m_actionFactory->circleActions, columns, iconSize, flatButtons);
-    auto* curve = cadDockWidget(tr("Arc"), ":/icons/arc_center_point_angle.lci", "Curve", m_actionFactory->curveActions, columns, iconSize, flatButtons);
-    auto* spline = cadDockWidget(tr("Spline"), ":/icons/spline_points.lci", "Spline", m_actionFactory->splineActions, columns, iconSize, flatButtons);
-    auto* ellipse = cadDockWidget(tr("Ellipse"), ":/icons/ellipses.lci",  "Ellipse", m_actionFactory->ellipseActions, columns, iconSize, flatButtons);
-    auto* polyline = cadDockWidget(tr("Polyline"),":/icons/polylines.lci",  "Polyline", m_actionFactory->polylineActions, columns, iconSize, flatButtons);
-    auto* select = cadDockWidget(tr("Select"),  ":/icons/select.lci", "Select", m_actionFactory->selectActions, columns, iconSize, flatButtons);
-    auto* dimension = cadDockWidget(tr("Dimension"),  ":/icons/dim_horizontal.lci","Dimension", m_actionFactory->dimension_Actions, columns, iconSize, flatButtons);
-    auto* other = cadDockWidget(tr("Other"), ":/icons/text.lci","Other",   m_actionFactory->otherDrawingActions, columns, iconSize, flatButtons);
-    auto* modify = cadDockWidget(tr("Modify"), ":/icons/move_rotate.lci", "Modify",m_actionFactory->modifyActions, columns, iconSize, flatButtons);
-    auto* info = cadDockWidget(tr("Info"), ":/icons/measure.lci","Info", m_actionFactory->infoActions, columns, iconSize, flatButtons);
-    auto* order = cadDockWidget(tr("Order"), ":/icons/order.lci","Order", m_actionFactory->orderActions, columns, iconSize, flatButtons);
+    auto* line      = cadDockWidget(tr("Line"),      ":/icons/line.lci",                 "Line",      {}, columns, iconSize, flatButtons);
+    auto* point     = cadDockWidget(tr("Point"),     ":/icons/points.lci",               "Point",     {}, columns, iconSize, flatButtons);
+    auto* shape     = cadDockWidget(tr("Polygon"),   ":/icons/rectangle_2_points.lci",   "Polygon",   {}, columns, iconSize, flatButtons);
+    auto* circle    = cadDockWidget(tr("Circle"),    ":/icons/circle.lci",               "Circle",    {}, columns, iconSize, flatButtons);
+    auto* curve     = cadDockWidget(tr("Arc"),       ":/icons/arc_center_point_angle.lci", "Curve",   {}, columns, iconSize, flatButtons);
+    auto* spline    = cadDockWidget(tr("Spline"),    ":/icons/spline_points.lci",        "Spline",    {}, columns, iconSize, flatButtons);
+    auto* ellipse   = cadDockWidget(tr("Ellipse"),   ":/icons/ellipses.lci",             "Ellipse",   {}, columns, iconSize, flatButtons);
+    auto* polyline  = cadDockWidget(tr("Polyline"),  ":/icons/polylines.lci",            "Polyline",  {}, columns, iconSize, flatButtons);
+    auto* select    = cadDockWidget(tr("Select"),    ":/icons/select.lci",               "Select",    {}, columns, iconSize, flatButtons);
+    auto* dimension = cadDockWidget(tr("Dimension"), ":/icons/dim_horizontal.lci",       "Dimension", {}, columns, iconSize, flatButtons);
+    auto* other     = cadDockWidget(tr("Other"),     ":/icons/text.lci",                 "Other",     {}, columns, iconSize, flatButtons);
+    auto* modify    = cadDockWidget(tr("Modify"),    ":/icons/move_rotate.lci",          "Modify",    {}, columns, iconSize, flatButtons);
+    auto* info      = cadDockWidget(tr("Info"),      ":/icons/measure.lci",              "Info",      {}, columns, iconSize, flatButtons);
+    auto* order     = cadDockWidget(tr("Order"),     ":/icons/order.lci",                "Order",     {}, columns, iconSize, flatButtons);
 
     m_appWin->addDockWidget(Qt::LeftDockWidgetArea, line);
     m_appWin->tabifyDockWidget(line, polyline);
@@ -475,6 +444,41 @@ QDockWidget* LC_WidgetFactory::createPenWizardWidget(){
     connect(dock, &QDockWidget::dockLocationChanged, widget, &LC_GraphicViewAwareWidget::onDockLocationChanged);
     m_appWin->m_penWizard = widget;
     return dock;
+}
+
+void LC_WidgetFactory::initSpecialToolbars() {
+    constexpr QSizePolicy tbPolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    // 1. Pen Toolbar
+    const auto penTitle = tr("Pen");
+    auto* penTb = new QG_PenToolBar(penTitle, m_appWin);
+    penTb->setSizePolicy(tbPolicy);
+    penTb->setObjectName("pen_toolbar");
+    penTb->setProperty("_group", 1);
+    penTb->toggleViewAction()->setIcon(QIcon(":/icons/pen_apply.lci"));
+    m_appWin->m_penToolBar = penTb;
+
+    connect(penTb, &QG_PenToolBar::penChanged, m_appWin, &QC_ApplicationWindow::slotPenChanged);
+    connect(penTb, &QG_PenToolBar::penChanged, m_appWin->getPropertySheetWidget(), &LC_PropertySheetWidget::onActivePenChanged);
+
+    // 2. Snap Selection Toolbar
+    const auto snapTitle = tr("Snap Selection");
+    auto* snapTb = new QG_SnapToolBar(m_appWin, m_appWin->m_actionHandler.get(), m_agm, m_agm->getActionsMap());
+    snapTb->setWindowTitle(snapTitle);
+    snapTb->setSizePolicy(tbPolicy);
+    snapTb->setObjectName("snap_toolbar");
+    snapTb->setProperty("_group", 3);
+    snapTb->toggleViewAction()->setIcon(QIcon(":/icons/snap_visual.lci"));
+    m_appWin->m_snapToolBar = snapTb;
+    m_appWin->addToolBar(Qt::BottomToolBarArea, snapTb);
+
+    // 3. Tool Options Toolbar (Container for interactive CAD options)
+    auto* optTb = new QToolBar(tr("Tool Options"), m_appWin);
+    optTb->setSizePolicy(tbPolicy);
+    optTb->setObjectName("tool_options_toolbar");
+    optTb->setProperty("_group", 1);
+    m_appWin->m_toolOptionsToolbar = optTb;
+    m_appWin->addToolBar(Qt::TopToolBarArea, optTb);
 }
 
 void LC_WidgetFactory::setDockWidgetTitleType(QDockWidget *widget, const bool verticalTitleBar){

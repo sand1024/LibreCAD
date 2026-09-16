@@ -26,7 +26,7 @@
 
 #include <lc_appwindowaware.h>
 
-#include "lc_actionfactory.h"
+#include "lc_action_factory.h"
 
 class QAction;
 class QToolBar;
@@ -70,6 +70,7 @@ private:
     void initializeRightDockWidgets() const;
     void modifyCommandTitleBar(Qt::DockWidgetArea area) const;
     QDockWidget* createPenWizardWidget();
+    void initSpecialToolbars();
     void initLeftCADSidebar();
     void createCADMegaSidebar(int columns, int iconSize, bool flatButtons);
     void createRightSidebar(QG_ActionHandler *actionHandler);

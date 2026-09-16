@@ -19,26 +19,34 @@
  along with this program; if not, write to the Free Software
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
-#include "lc_applicationwindowinitializer.h"
+#include "lc_application_window_initializer.h"
 
 #include <QMdiArea>
 #include <QMdiSubWindow>
 
-#include "lc_actionfactory.h"
-#include "lc_actiongroupmanager.h"
+#include "lc_actions_naming_utils.h"
+#include "lc_action_command_updater.h"
+#include "lc_action_factory.h"
+#include "lc_action_group_manager.h"
 #include "lc_action_options_manager.h"
+#include "lc_action_tooltip_builder.h"
+#include "lc_action_type_mapper.h"
 #include "lc_appwindowdialogsinvoker.h"
 #include "lc_centralwidget.h"
+#include "lc_command_manager.h"
 #include "lc_defaultactioncontext.h"
+#include "lc_graphic_view_context_menu_provider.h"
 #include "lc_gridviewinvoker.h"
 #include "lc_infocursorsettingsmanager.h"
 #include "lc_lastopenfilesopener.h"
-#include "lc_menufactory.h"
+#include "lc_navigation_creator.h"
 #include "lc_optionswidgetsholder.h"
 #include "lc_plugininvoker.h"
 #include "lc_propertysheetwidget.h"
 #include "lc_releasechecker.h"
+#include "lc_settings_app_state.h"
 #include "lc_settings_app_styling.h"
+#include "lc_settings_commands_promotion.h"
 #include "lc_settings_defaults.h"
 #include "lc_settings_manager_application.h"
 #include "lc_settings_manager_customization.h"
@@ -49,17 +57,17 @@
 #include "lc_settings_widget.h"
 #include "lc_settings_window_options.h"
 #include "lc_snapmanager.h"
-#include "lc_toolbarfactory.h"
-#include "lc_widgetfactory.h"
+#include "lc_special_menu_service.h"
+#include "lc_widget_factory.h"
 #include "lc_workspacesinvoker.h"
 #include "main.h"
 #include "qc_applicationwindow.h"
 #include "qc_dialogfactory.h"
 #include "qg_actionhandler.h"
 #include "qg_commandwidget.h"
+#include "qg_pentoolbar.h"
 #include "qg_recentfiles.h"
 #include "qg_snaptoolbar.h"
-#include "rs_commands.h"
 #include "rs_debug.h"
 #include "rs_dialogfactory.h"
 #include "rs_settings.h"
@@ -77,6 +85,16 @@ void LC_ApplicationWindowInitializer::initApplication(){
     m_appWin->m_lastFilesOpener = std::make_unique<LC_LastOpenFilesOpener>(m_appWin);
 
     initActionGroupManager();
+
+    // fixme - sand - change signatures, move setting?
+    const QString settingsDir = CFG_Paths::o_OtherSettingsDir;
+    m_appWin->m_commandManager = std::make_unique<LC_CommandManager>(settingsDir + "/commands");
+
+    m_appWin->m_specialMenuService = std::make_unique<LC_SpecialMenuService>(m_appWin);
+    m_appWin->m_creatorInvoker = std::make_unique<LC_NavigationControlsCreator>(m_appWin, m_appWin->m_actionGroupManager.get(), m_appWin->getSpecialMenuService());
+    m_appWin->m_contextMenuProvider = std::make_unique<LC_GraphicViewContextMenuProvider>(m_appWin->m_actionGroupManager.get(), m_appWin->getSpecialMenuService());
+    m_appWin->m_recentFilesMenu = std::make_unique<QMenu>(tr("Recent Files"), m_appWin);
+
     //accept drop events to open files
     m_appWin->setAcceptDrops(true);
     initDockCorners();
@@ -84,11 +102,9 @@ void LC_ApplicationWindowInitializer::initApplication(){
     initActionContext();
     initActionFactory();
     initWidgets();
-    initToolbars();
     initSnapManager();
-
     initCentralWidget();
-    initMainMenu();
+    initNavigationLayout();
     initDockAndToolbarAreasActions();
     initActionOptionsManager();
     setupActionContextWidgets();
@@ -98,7 +114,7 @@ void LC_ApplicationWindowInitializer::initApplication(){
     m_appWin->initSettings(true);
     loadCmdWidgetVariablesFile();
     initAutoSaveTimer();
-    updateCommandsAlias();
+    initCommandsScheme();
     initPlugins();
     m_appWin->showStatusMessage(qApp->applicationName() + " Ready", 2000);
     initReleaseChecker();
@@ -212,18 +228,31 @@ void LC_ApplicationWindowInitializer::initDockAndToolbarAreasActions() const {
     // m_appWin->m_toolbarAreasToggleActions.floating = m_appWin->getAction("FloatingDockwidgetsToggle");
 }
 
-void LC_ApplicationWindowInitializer::initMainMenu() const {
-    m_appWin->m_menuFactory = std::make_unique<LC_MenuFactory>(m_appWin);
-    m_appWin->m_menuFactory->createMainMenu(m_appWin->menuBar());
-}
 
-void LC_ApplicationWindowInitializer::updateCommandsAlias(){
-    RS_COMMANDS->updateAlias();
+void LC_ApplicationWindowInitializer::initCommandsScheme() const {
+    auto actionGroupManager = m_appWin->m_actionGroupManager.get();
+    if (m_appWin->m_commandManager != nullptr && actionGroupManager != nullptr) {
+        auto uiStyleManager = m_appWin->getUiStyleManager();
+        bool currentThemeIsFusion = uiStyleManager->isCurrentActiveStyleFusion();
+        if (!currentThemeIsFusion || !CFG_CommandsPromotion::o_ShowCommandInMenu) {
+            LC_ActionCommandUpdater::clearActions(actionGroupManager);
+        }
+        else {
+            const LC_ActionTypeMapper mapper(actionGroupManager);
+            m_appWin->m_commandManager->loadActiveScheme(&mapper);
+            const bool keycodeMode = CFG_AppState::o_KeycodeMode;
+            LC_ActionCommandUpdater::updateActions(actionGroupManager,
+                                                   m_appWin->m_commandManager.get(),
+                                                   keycodeMode);
+        }
+    }
+
+    LC_ActionTooltipBuilder::updateAllTooltips(m_appWin->m_actionGroupManager->getActionsMap());
 }
 
 void LC_ApplicationWindowInitializer::initRecentFilesList() const {
     m_appWin->m_recentFilesList = new QG_RecentFiles(m_appWin, 9);
-    m_appWin->m_recentFilesList->addFiles(m_appWin->m_menuFactory->getRecentFilesMenu());
+    m_appWin->m_recentFilesList->addFiles(m_appWin->getRecentFilesMenu());
 }
 
 void LC_ApplicationWindowInitializer::initDialogFactory() const {
@@ -243,9 +272,11 @@ void LC_ApplicationWindowInitializer::initWidgets() const {
     widgetFactory.initWidgets();
 }
 
-void LC_ApplicationWindowInitializer::initToolbars() const {
-    LC_ToolbarFactory toolbarFactory(m_appWin);
-    toolbarFactory.initToolBars();
+void LC_ApplicationWindowInitializer::initNavigationLayout() const {
+    auto* creator = m_appWin->getCreatorInvoker();
+    if (creator != nullptr) {
+        creator->applyActiveLayoutScheme();
+    }
 }
 
 void LC_ApplicationWindowInitializer::initPlugins(){
@@ -276,11 +307,18 @@ void LC_ApplicationWindowInitializer::setupActionContextWidgets() const {
     m_appWin->m_actionContext->setMouseWidget(m_appWin->m_mouseWidget);
     m_appWin->m_actionContext->setStatusBarManager(m_appWin->m_statusbarManager);
     m_appWin->m_actionContext->setPropertySheetWidget(m_appWin->m_propertySheetWidget);
+    m_appWin->m_actionContext->setCommandManager(m_appWin->m_commandManager.get());
 }
 
 void LC_ApplicationWindowInitializer::initSettingsDialogs() {
     LC_SettingsManagerApplication::initialize();
     LC_SettingsManagerDrawing::initialize();
     LC_SettingsManagerStyling::initialize();
-    LC_SettingsManagerCustomization::initialize(m_appWin->m_actionGroupManager.get());
+    // fixme - review initialization
+    LC_SettingsManagerCustomization::initialize(
+        m_appWin->m_actionGroupManager.get(),
+        m_appWin->getCreatorInvoker(),
+        m_appWin->getContextMenuProvider(),
+        m_appWin->getActionFactory(),
+        m_appWin->getCommandManager());
 }
