@@ -38,7 +38,7 @@
 #include <QScrollBar>
 #include <QToolButton>
 
-#include "lc_actiongroupmanager.h"
+#include "lc_action_group_manager.h"
 #include "lc_flexlayout.h"
 #include "lc_mouse_tracking_table_view.h"
 #include "lc_tableitem_delegate_base.h"

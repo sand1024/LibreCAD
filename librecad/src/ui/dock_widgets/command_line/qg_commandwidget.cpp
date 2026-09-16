@@ -30,20 +30,22 @@
 #include <QFileDialog>
 #include <QKeyEvent>
 
+#include "lc_action_command_updater.h"
+#include "lc_command_manager.h"
+#include "lc_settings_app_state.h"
 #include "lc_settings_keyboard.h"
 #include "lc_settings_widget.h"
 #include "qc_applicationwindow.h"
 #include "qg_actionhandler.h"
-#include "rs_commands.h"
 #include "rs_settings.h"
 
 
-namespace CFG_WidgetCmd {
-    inline const LC_SettingsGroupBase Group("Widget.Cmd");
-
-    inline const LC_Setting<bool> o_KeycodeMode(&Group, "KeycodeMode", false);
-}
-
+// namespace CFG_WidgetCmd {
+//     inline const LC_SettingsGroupBase Group("Widget.Cmd");
+//
+//     inline const LC_Setting<bool> o_KeycodeMode(&Group, "KeycodeMode", false);
+// }
+//
 
 
 /*
@@ -71,7 +73,7 @@ QG_CommandWidget::QG_CommandWidget(QG_ActionHandler* actionHandler, QWidget* par
     connect(a1, &QAction::toggled, this, &QG_CommandWidget::setKeycodeMode);
     options_button->addAction(a1);
 
-    if (CFG_WidgetCmd::o_KeycodeMode) {
+    if (CFG_AppState::o_KeycodeMode) {
         leCommand->setKeyCodeMode(true);
         a1->setChecked(true);
     }
@@ -101,7 +103,7 @@ QG_CommandWidget::QG_CommandWidget(QG_ActionHandler* actionHandler, QWidget* par
  */
 QG_CommandWidget::~QG_CommandWidget() {
     const auto action = findChild<QAction*>("keycode_action");
-    CFG_WidgetCmd::o_KeycodeMode =  action->isChecked();
+    CFG_AppState::o_KeycodeMode =  action->isChecked();
 }
 
 /*
@@ -240,8 +242,10 @@ void QG_CommandWidget::tabPressed() const {
 
         // check current command:
         QStringList choices = m_actionHandler->getAvailableCommands();
+        auto actionContext = m_actionHandler->getActionContext();
+        auto* commandManager = actionContext->getCommandManager();
         if (choices.empty()) {
-            choices = RS_COMMANDS->complete(typed);
+            choices = commandManager->complete(typed);
         }
 
         QStringList reducedChoices;
@@ -257,10 +261,6 @@ void QG_CommandWidget::tabPressed() const {
         else if (!reducedChoices.isEmpty()) {
             const QString proposal = getRootCommand(reducedChoices, typed);
             appendHistory(reducedChoices.join(", "));
-            const QString aliasFile = RS_Commands::getAliasFile();
-            if (!aliasFile.isEmpty()) {
-                appendHistory(tr("Command Alias File: %1").arg(aliasFile));
-            }
             leCommand->setText(proposal);
         }
     }
@@ -346,6 +346,9 @@ void QG_CommandWidget::handleKeycode(const QString& code) const {
 
 void QG_CommandWidget::setKeycodeMode(const bool state) const {
     leCommand->setKeyCodeMode(state);
+    CFG_AppState::o_KeycodeMode = state;
+    auto* appWin = QC_ApplicationWindow::getAppWindow().get();
+    appWin->updateActionsForCommandsInMenus(state);
 }
 
 void QG_CommandWidget::dockingButtonTriggered(bool /*docked*/) {

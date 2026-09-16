@@ -26,7 +26,7 @@
 #include <QMenu>
 
 #include "lc_actioncontext.h"
-#include "lc_actiongroupmanager.h"
+#include "lc_action_group_manager.h"
 #include "lc_dlg_propertysheet_widget_options.h"
 #include "lc_entity_property_containerprovider.h"
 #include "lc_entitymetauiutils.h"
