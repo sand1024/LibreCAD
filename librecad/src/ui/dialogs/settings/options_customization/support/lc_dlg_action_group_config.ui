@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>LC_DlgActionGroupConfig</class>
+    <widget class="QDialog" name="LC_DlgActionGroupConfig">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>420</width>
+                <height>340</height>
+            </rect>
+        </property>
+        <property name="windowTitle">
+            <string>Configure Action Group</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_main">
+            <property name="spacing">
+                <number>8</number>
+            </property>
+            <item>
+                <widget class="QGroupBox" name="gbCategoryType">
+                    <property name="title">
+                        <string>Group Type</string>
+                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_catType">
+                        <property name="spacing">
+                            <number>6</number>
+                        </property>
+                        <item>
+                            <widget class="QRadioButton" name="rbPredefinedCategory">
+                                <property name="toolTip">
+                                    <string>Select a standard CAD category that will be automatically translated in all languages</string>
+                                </property>
+                                <property name="text">
+                                    <string>Predefined System Category (Auto-localized)</string>
+                                </property>
+                                <property name="checked">
+                                    <bool>true</bool>
+                                </property>
+                            </widget>
+                        </item>
+                        <item>
+                            <layout class="QHBoxLayout" name="horizontalLayout_sysCat">
+                                <property name="leftMargin">
+                                    <number>20</number>
+                                </property>
+                                <item>
+                                    <widget class="QLabel" name="lblSysCategory">
+                                        <property name="text">
+                                            <string>Category:</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                                <item>
+                                    <widget class="QComboBox" name="cbSystemCategory">
+                                        <property name="sizePolicy">
+                                            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="toolTip">
+                                            <string>Select predefined category</string>
+                                        </property>
+                                    </widget>
+                                </item>
+                            </layout>
+                        </item>
+                        <item>
+                            <widget class="QRadioButton" name="rbCustomGroup">
+                                <property name="toolTip">
+                                    <string>Create a custom group with your own title and icon</string>
+                                </property>
+                                <property name="text">
+                                    <string>Custom Group (User-defined title)</string>
+                                </property>
+                            </widget>
+                        </item>
+                    </layout>
+                </widget>
+            </item>
+            <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_title">
+                    <item>
+                        <widget class="QLabel" name="lblTitle">
+                            <property name="text">
+                                <string>Title:</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QLineEdit" name="leTitle">
+                            <property name="toolTip">
+                                <string>Display title for the group / flyout button</string>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
+            <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_icon">
+                    <item>
+                        <widget class="QLabel" name="lblIcon">
+                            <property name="text">
+                                <string>Icon:</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QToolButton" name="tbIconPreview">
+                            <property name="toolTip">
+                                <string>Current icon preview</string>
+                            </property>
+                            <property name="iconSize">
+                                <size>
+                                    <width>24</width>
+                                    <height>24</height>
+                                </size>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QPushButton" name="pbChooseIcon">
+                            <property name="toolTip">
+                                <string>Choose icon from resource library</string>
+                            </property>
+                            <property name="text">
+                                <string>Choose Icon...</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <spacer name="horizontalSpacer_icon">
+                            <property name="orientation">
+                                <enum>Qt::Orientation::Horizontal</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                                <size>
+                                    <width>40</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                        </spacer>
+                    </item>
+                </layout>
+            </item>
+            <item>
+                <widget class="QGroupBox" name="gbBehavior">
+                    <property name="title">
+                        <string>Toolbar Button Behavior</string>
+                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_behavior">
+                        <item>
+                            <widget class="QRadioButton" name="rbInstant">
+                                <property name="toolTip">
+                                    <string>Clicking the button opens the drop-down menu directly</string>
+                                </property>
+                                <property name="text">
+                                    <string>Instant Popup (Click opens menu)</string>
+                                </property>
+                            </widget>
+                        </item>
+                        <item>
+                            <widget class="QRadioButton" name="rbSplit">
+                                <property name="toolTip">
+                                    <string>Clicking the button runs default action; side arrow opens menu</string>
+                                </property>
+                                <property name="text">
+                                    <string>Split Button (Click runs default action)</string>
+                                </property>
+                            </widget>
+                        </item>
+                        <item>
+                            <widget class="QCheckBox" name="cbSticky">
+                                <property name="toolTip">
+                                    <string>Main button remembers and executes the last used action</string>
+                                </property>
+                                <property name="text">
+                                    <string>Remember last used action (Sticky)</string>
+                                </property>
+                            </widget>
+                        </item>
+                    </layout>
+                </widget>
+            </item>
+            <item>
+                <spacer name="verticalSpacer">
+                    <property name="orientation">
+                        <enum>Qt::Orientation::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                        <size>
+                            <width>20</width>
+                            <height>10</height>
+                        </size>
+                    </property>
+                </spacer>
+            </item>
+            <item>
+                <widget class="QDialogButtonBox" name="buttonBox">
+                    <property name="orientation">
+                        <enum>Qt::Orientation::Horizontal</enum>
+                    </property>
+                    <property name="standardButtons">
+                        <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
+                    </property>
+                </widget>
+            </item>
+        </layout>
+    </widget>
+    <resources/>
+    <connections/>
+</ui>

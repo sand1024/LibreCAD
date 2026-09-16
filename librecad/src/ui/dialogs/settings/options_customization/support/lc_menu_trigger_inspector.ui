@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_MenuTriggerInspector</class>
+ <widget class="QWidget" name="LC_MenuTriggerInspector">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>330</width>
+    <height>492</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_main">
+   <property name="spacing">
+    <number>8</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QGroupBox" name="gbPad">
+     <property name="title">
+      <string>Menu Assignment Pad</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4" columnstretch="4,0">
+      <item row="0" column="0">
+       <widget class="QLabel" name="lblClickPad">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Click or double-click here with mouse buttons and modifiers to assign trigger automatically</string>
+        </property>
+        <property name="styleSheet">
+         <string>border: 2px dashed palette(mid); border-radius: 4px; padding: 6px; background: palette(base);</string>
+        </property>
+        <property name="text">
+         <string>Click inside this box with desired mouse buttons &amp; modifiers</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="pbUnassign">
+        <property name="toolTip">
+         <string>Remove mouse trigger assignment from this menu</string>
+        </property>
+        <property name="text">
+         <string>Unassign</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../../../../res/icons/icons.qrc">
+          <normaloff>:/icons/remove.lci</normaloff>:/icons/remove.lci</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QLabel" name="lblTriggerBadge">
+        <property name="font">
+         <font>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Current assigned trigger view</string>
+        </property>
+        <property name="text">
+         <string>NOT ASSIGNED</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="LC_SettingsBannerWidget" name="bannerStatus" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>55</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Trigger validation status</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Mouse button</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="rbLeft">
+        <property name="toolTip">
+         <string>Left Mouse Button</string>
+        </property>
+        <property name="text">
+         <string>Left</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QRadioButton" name="rbRight">
+        <property name="toolTip">
+         <string>Right Mouse Button</string>
+        </property>
+        <property name="text">
+         <string>Right</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QRadioButton" name="rbMiddle">
+        <property name="toolTip">
+         <string>Middle Mouse Button (Wheel)</string>
+        </property>
+        <property name="text">
+         <string>Middle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QRadioButton" name="rbTask">
+        <property name="text">
+         <string>Task</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QRadioButton" name="rbBack">
+        <property name="text">
+         <string>Back</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QRadioButton" name="rbForward">
+        <property name="text">
+         <string>Forward</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gbManual">
+     <property name="title">
+      <string>Keyboard Modifiers</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_manual">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="cbCtrl">
+        <property name="toolTip">
+         <string>Require CTRL key</string>
+        </property>
+        <property name="text">
+         <string>CTRL</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QCheckBox" name="cbShift">
+        <property name="toolTip">
+         <string>Require SHIFT key</string>
+        </property>
+        <property name="text">
+         <string>SHIFT</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QCheckBox" name="cbAlt">
+        <property name="toolTip">
+         <string>Require ALT key</string>
+        </property>
+        <property name="text">
+         <string>ALT</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Mouse Click type</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="rbClick">
+        <property name="toolTip">
+         <string>Single Click (Release)</string>
+        </property>
+        <property name="text">
+         <string>Single-Click</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QRadioButton" name="rbDblClick">
+        <property name="toolTip">
+         <string>Double-Click</string>
+        </property>
+        <property name="text">
+         <string>Double-Click</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gbEntity">
+     <property name="title">
+      <string>Entity Context</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Menu will be applicable if invoked by click on</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QComboBox" name="cbEntityContext">
+        <property name="toolTip">
+         <string>Context entity type required under the mouse cursor</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer_end">
+     <property name="orientation">
+      <enum>Qt::Orientation::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LC_SettingsBannerWidget</class>
+   <extends>QWidget</extends>
+   <header>lc_settings_banner_widget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../../../../../../res/icons/icons.qrc"/>
+ </resources>
+ <connections/>
+</ui>

@@ -28,7 +28,7 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
-#include "lc_shortcutinfo.h"
+#include "lc_shortcut_info.h"
 
 LC_ShortcutSearchPopup::LC_ShortcutSearchPopup(QWidget* parent)
     : QFrame(parent, Qt::Popup | Qt::FramelessWindowHint) {

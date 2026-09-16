@@ -1,4 +1,3 @@
-
 /*******************************************************************************
  *
  * This file is part of the LibreCAD project, a 2D CAD program
@@ -26,21 +25,30 @@
 
 #include <QString>
 
+class LC_CommandManager;
+class LC_GraphicViewContextMenuProvider;
+class LC_ActionFactory;
+class LC_NavigationControlsCreator;
 class QWidget;
 class LC_ActionGroupManager;
 class LC_ShortcutsManager;
 
 namespace LC_SettingsPagesCustomization {
     inline const QString DLG_CUSTOMIZATION = "DlgCustomization";
-    inline const QString PAGE_SHORTCUTS    = "Shortcuts";
+    inline const QString PAGE_SHORTCUTS = "shortcuts";
+    inline const QString PAGE_COMMANDS = "commands";
+    inline const QString PAGE_TOOLBARS = "toolbars";
+    inline const QString PAGE_CONTEXT_MENUS = "context_menus";
+    inline const QString PAGE_MENU_AND_TOOLBARS = "menu_toolbars";
 }
 
 class LC_SettingsManagerCustomization {
 public:
-    static void initialize(LC_ActionGroupManager* groupManager);
+    static void initialize(LC_ActionGroupManager* groupManager, LC_NavigationControlsCreator* creatorInvoker,
+                           LC_GraphicViewContextMenuProvider* contextMenuProvider, LC_ActionFactory* actionFactory,
+                           LC_CommandManager* commandManager);
 
-    static bool showCustomizationDialog(QWidget* parent = nullptr,
-                                        const QString& initialPageId = "");
+    static bool showCustomizationDialog(QWidget* parent = nullptr, const QString& initialPageId = "");
 };
 
 #endif

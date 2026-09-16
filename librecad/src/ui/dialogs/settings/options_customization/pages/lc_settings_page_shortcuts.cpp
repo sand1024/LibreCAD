@@ -28,20 +28,25 @@
 
 #include <QScrollBar>
 
-#include "lc_actiongroup.h"
-#include "lc_actiongroupmanager.h"
+#include "lc_action.h"
+#include "lc_action_group.h"
+#include "lc_action_group_manager.h"
+#include "lc_cheatsheet_generator.h"
+#include "lc_cheatsheet_options.h"
+#include "lc_dlg_cheatsheet_options.h"
 #include "lc_palette_color_utils.h"
 #include "lc_preset_manager_shortcuts.h"
 #include "lc_settings_colors_semantics.h"
 #include "lc_shortcut_search_popup.h"
-#include "lc_shortcutinfo.h"
-#include "lc_shortcutstreemodel.h"
-#include "../support/lc_shortcuttreeitem.h"
+#include "lc_shortcut_info.h"
+#include "lc_shortcuts_tree_model.h"
+#include "lc_shortcut_tree_item.h"
+#include "lc_pages_utils.h"
+#include "lc_shortcuts_manager.h"
 
 LC_SettingsPageShortcuts::LC_SettingsPageShortcuts(LC_ActionGroupManager* groupManager, QObject* parent)
-    : LC_SettingsPageBase(tr("Keymap"), nullptr, parent)
-    , ui(std::make_unique<Ui::LC_SettingsPageShortcuts>())
-    , m_actionGroupManager(groupManager) {
+    : LC_SettingsPageBase(tr("Keymap"), nullptr, parent), ui(std::make_unique<Ui::LC_SettingsPageShortcuts>()),
+      m_actionGroupManager(groupManager) {
     setSortWeight(10);
 }
 
@@ -53,13 +58,42 @@ void LC_SettingsPageShortcuts::bindToPresetManager(LC_PresetManagerInterface* ma
     m_presetManager = dynamic_cast<LC_PresetManagerShortcuts*>(manager);
     if (m_presetManager != nullptr && m_mappingTreeModel != nullptr) {
         m_presetManager->setTreeModel(m_mappingTreeModel);
+        m_mappingTreeModel->setFilterForConflicts(false);
+
+        ui->tvMappingsTree->clearSelection();
+        ui->tvMappingsTree->setCurrentIndex(QModelIndex());
+        m_selectedRow = -1;
+        m_selectedParentRow = -1;
+        selectItem(nullptr, -1, -1);
+
+        rebuildTree(false);
+        validateCollisions();
     }
 }
+
+void LC_SettingsPageShortcuts::loadSettings() {
+    if (m_mappingTreeModel != nullptr) {
+        m_mappingTreeModel->setFilterForConflicts(false);
+    }
+    if (m_presetManager != nullptr) {
+        m_presetManager->loadPreset(m_presetManager->getActivePresetKey());
+    }
+
+    ui->tvMappingsTree->clearSelection();
+    ui->tvMappingsTree->setCurrentIndex(QModelIndex());
+    m_selectedRow = -1;
+    m_selectedParentRow = -1;
+    selectItem(nullptr, -1, -1);
+
+    rebuildTree(false);
+    validateCollisions();
+}
+
 
 void LC_SettingsPageShortcuts::setupUi() {
     ui->setupUi(m_widget);
 
-    const QColor filteredCol = LC_PaletteColorUtils::getSemanticColor(LC_SemanticColors::SearchResultItem, m_widget->palette());
+    const QColor filteredCol = LC_PaletteColorUtils::getSemanticColor(LC_SemanticColors::FilteredItem, m_widget->palette());
     const QColor conflictCol = LC_PaletteColorUtils::getSemanticColor(LC_SemanticColors::ConflictingItem, m_widget->palette());
 
     m_mappingTreeModel = new LC_ShortcutsTreeModel(this, filteredCol, conflictCol);
@@ -86,22 +120,16 @@ void LC_SettingsPageShortcuts::setupUi() {
     ui->splShortcuts->setChildrenCollapsible(false);
     ui->splShortcuts->setStretchFactor(0, 3);
     ui->splShortcuts->setStretchFactor(1, 2);
-    ui->splShortcuts->setSizes(QList<int>{480, 270});
+    trackSplitter(ui->splShortcuts, 480);
+
+    connect(ui->bannerConflict, &LC_SettingsBannerWidget::linkActivated,
+           this, &LC_SettingsPageShortcuts::onShowConflictsRequested);
 
     // Default to empty placeholder state
     ui->swDetails->setCurrentWidget(ui->pageEmpty);
-    ui->frameConflict->setVisible(false);
-    ui->lblConflict->setTextFormat(Qt::RichText);
 
     // Dynamic typography scaling based on active application style
-    QFont actionTitleFont = QApplication::font("QLabel");
-    actionTitleFont.setBold(true);
-    if (actionTitleFont.pointSize() > 0) {
-        actionTitleFont.setPointSize(actionTitleFont.pointSize() + 1);
-    } else if (actionTitleFont.pixelSize() > 0) {
-        actionTitleFont.setPixelSize(actionTitleFont.pixelSize() + 1);
-    }
-    ui->lblActionName->setFont(actionTitleFont);
+    LC_PagesUtils::updateLabelFont(ui->lblActionName, 1);
 
     m_searchPopup = new LC_ShortcutSearchPopup(m_widget);
 
@@ -120,7 +148,8 @@ void LC_SettingsPageShortcuts::setupBehavior() {
     connect(ui->tbFindByShortcut, &QToolButton::clicked, this, [this]() {
         if (m_searchPopup->isVisible()) {
             m_searchPopup->hide();
-        } else {
+        }
+        else {
             const QPoint pos = ui->tbFindByShortcut->mapToGlobal(QPoint(0, ui->tbFindByShortcut->height() + 2));
             m_searchPopup->move(pos);
             m_searchPopup->show();
@@ -128,19 +157,20 @@ void LC_SettingsPageShortcuts::setupBehavior() {
         }
     });
 
-    connect(m_searchPopup, &LC_ShortcutSearchPopup::shortcutFilterChanged,
-            this, &LC_SettingsPageShortcuts::onShortcutFilterChanged);
+    connect(m_searchPopup, &LC_ShortcutSearchPopup::shortcutFilterChanged, this, &LC_SettingsPageShortcuts::onShortcutFilterChanged);
 
-    connect(ui->tvMappingsTree, &QTreeView::customContextMenuRequested,
-           this, &LC_SettingsPageShortcuts::onTreeContextMenuRequested);
+    connect(ui->tvMappingsTree, &QTreeView::customContextMenuRequested, this, &LC_SettingsPageShortcuts::onTreeContextMenuRequested);
 
-    connect(ui->tvMappingsTree->selectionModel(), &QItemSelectionModel::selectionChanged,
-            this, &LC_SettingsPageShortcuts::onTreeSelectionChanged);
+    connect(ui->tvMappingsTree->selectionModel(), &QItemSelectionModel::selectionChanged, this,
+            &LC_SettingsPageShortcuts::onTreeSelectionChanged);
 
     connect(ui->tvMappingsTree, &QTreeView::doubleClicked, this, [this](const QModelIndex&) {
-        ui->btnRecord->setChecked(true);
-        ui->btnRecord->setFocus();
-    });
+          if (m_isReadOnly) {
+              return;
+          }
+          ui->btnRecord->setChecked(true);
+          ui->btnRecord->setFocus();
+      });
 
     connect(ui->btnRecord, &LC_ShortcutButton::keySequenceChanged, this, &LC_SettingsPageShortcuts::onKeySequenceRecorded);
     connect(ui->btnRecord, &QPushButton::toggled, this, &LC_SettingsPageShortcuts::onRecordToggled);
@@ -148,15 +178,14 @@ void LC_SettingsPageShortcuts::setupBehavior() {
     connect(ui->btnReset, &QPushButton::clicked, this, &LC_SettingsPageShortcuts::onResetItemClicked);
     connect(ui->pbClear, &QPushButton::clicked, this, &LC_SettingsPageShortcuts::onClearItemClicked);
 
-    connect(ui->lblConflict, &QLabel::linkActivated, this, &LC_SettingsPageShortcuts::onShowConflictsRequested);
+    connect(ui->bannerConflict, &LC_SettingsBannerWidget::linkActivated,
+           this, &LC_SettingsPageShortcuts::onShowConflictsRequested);
+
+    connect(ui->tbExportCheatsheet, &QToolButton::clicked,
+            this, &LC_SettingsPageShortcuts::onExportCheatsheetClicked);
 }
 
-void LC_SettingsPageShortcuts::loadSettings() {
-    if (m_presetManager != nullptr) {
-        m_presetManager->loadPreset(m_presetManager->getActivePresetKey());
-    }
-    rebuildTree(false);
-}
+
 
 bool LC_SettingsPageShortcuts::saveSettings() {
     if (m_presetManager != nullptr) {
@@ -170,7 +199,7 @@ bool LC_SettingsPageShortcuts::isModified() const {
 }
 
 bool LC_SettingsPageShortcuts::validate(QString& outErrorMessage) {
-    if (checkHasCollisions(nullptr)) {
+    if (!validateCollisions()) {
         outErrorMessage = tr("There are unresolved shortcut conflicts. Please resolve all collisions before saving.");
         onShowConflictsRequested();
         return false;
@@ -185,26 +214,35 @@ void LC_SettingsPageShortcuts::onControlChanged() {
     emit livePreviewRequested();
 }
 
-void LC_SettingsPageShortcuts::autoIndexLabels() {
-    LC_SettingsPageBase::autoIndexLabels();
 
-    if (m_actionGroupManager != nullptr) {
-        for (const auto* group : m_actionGroupManager->allGroupsList()) {
-            if (group == nullptr || !group->isActionMappingsMayBeConfigured()) {
-                continue;
-            }
-            for (const auto* action : group->actions()) {
-                if (action == nullptr) {
-                    continue;
-                }
-                const QString name = action->text().remove('&').trimmed();
-                registerSearchTarget(ui->tvMappingsTree, name);
-                if (!action->toolTip().isEmpty()) {
-                    registerSearchTarget(ui->tvMappingsTree, action->toolTip().trimmed());
-                }
-            }
+void LC_SettingsPageShortcuts::onExportCheatsheetClicked() {
+    LC_CheatsheetOptions options;
+    options.type = CheatsheetType::Keymap;
+    options.schemeName = (m_presetManager != nullptr)
+        ? m_presetManager->currentPresetDisplayName()
+        : tr("Default");
+
+    options.isModelFiltered = (m_mappingTreeModel != nullptr) &&
+        (m_mappingTreeModel->isFiltered() || m_mappingTreeModel->hasShortcutFilter());
+    options.onlyFilteredItems = options.isModelFiltered;
+
+    auto parent = getEditingWidget();
+    LC_DlgCheatsheetOptions dlg(parent, options);
+    if (dlg.exec() == QDialog::Accepted) {
+        if (options.isModelFiltered && !options.onlyFilteredItems) {
+            // User requested full catalog despite active UI filter: generate from unfiltered model
+            LC_ShortcutsTreeModel fullModel;
+            fullModel.rebuildModel(m_actionGroupManager);
+            LC_CheatsheetGenerator::generate(parent, options, &fullModel);
+        }
+        else {
+            LC_CheatsheetGenerator::generate(parent, options, m_mappingTreeModel);
         }
     }
+}
+void LC_SettingsPageShortcuts::autoIndexLabels() {
+    LC_SettingsPageBase::autoIndexLabels();
+    autoIndexActionGroupManager(m_actionGroupManager, ui->tvMappingsTree);
 }
 
 void LC_SettingsPageShortcuts::highlightSearchPattern(const QString& pattern) {
@@ -213,6 +251,27 @@ void LC_SettingsPageShortcuts::highlightSearchPattern(const QString& pattern) {
 
 void LC_SettingsPageShortcuts::clearSearchHighlight() {
     ui->leFilter->clear();
+}
+
+void LC_SettingsPageShortcuts::setReadOnly(bool readOnly) {
+    m_isReadOnly = readOnly;
+
+    // The tree view, search filter, and expansion controls remain fully interactive for browsing
+    ui->paneTree->setEnabled(true);
+    ui->tvMappingsTree->setEnabled(true);
+    ui->leFilter->setEnabled(true);
+    ui->cbMatchHighlight->setEnabled(true);
+    ui->tbExpandAll->setEnabled(true);
+    ui->tbCollapseAll->setEnabled(true);
+    ui->tbFindByShortcut->setEnabled(true);
+
+    // Detail headers and descriptions remain visible, but shortcut recorder is locked
+    ui->gbActionHeader->setEnabled(true);
+    ui->gbDescription->setEnabled(true);
+    ui->gbShortcutEditor->setEnabled(!readOnly);
+    ui->btnRecord->setEnabled(!readOnly);
+    ui->btnReset->setEnabled(!readOnly);
+    ui->pbClear->setEnabled(!readOnly);
 }
 
 void LC_SettingsPageShortcuts::onFilteringMaskChanged() {
@@ -249,21 +308,46 @@ void LC_SettingsPageShortcuts::selectItem(LC_ShortcutTreeItem* item, int row, in
         m_currentItem = nullptr;
         m_selectedRow = -1;
         m_selectedParentRow = -1;
-    } else {
-        ui->swDetails->setCurrentWidget(ui->pageDetails);
-        ui->lblActionName->setText(item->getName());
-        ui->lblGroupName->setText(tr("%1").arg(item->parent() != nullptr ? item->parent()->getName() : tr("General")));
-        ui->lblActionIcon->setPixmap(item->getIcon().pixmap(24, 24));
-        ui->leKeySequence->setText(item->getShortcutViewString());
+        validateCollisions();
+        return;
+    }
 
-        const QString desc = /*item->getDescription().trimmed();*/"";
-        ui->lblDescription->setText(desc.isEmpty() ? tr("No description available for this action.") : desc);
+    ui->swDetails->setCurrentWidget(ui->pageDetails);
+    ui->lblActionName->setText(item->getName());
+    ui->lblActionIcon->setPixmap(item->getIcon().pixmap(24, 24));
+    ui->leKeySequence->setText(item->getShortcutViewString());
 
-        checkHasCollisions(item->getShortcutInfo());
+    // Display Category Name and Icon
+    auto* parentItem = item->parent();
+    if (parentItem != nullptr) {
+        ui->lblGroupName->setText(parentItem->name());
+        if (!parentItem->icon().isNull()) {
+            ui->lblGroupIcon->setPixmap(parentItem->icon().pixmap(16, 16));
+            ui->lblGroupIcon->setVisible(true);
+        }
+        else {
+            ui->lblGroupIcon->setVisible(false);
+        }
+    }
+    else {
+        ui->lblGroupName->setText(tr("General"));
+        ui->lblGroupIcon->setVisible(false);
+    }
 
-        m_currentItem = item;
-        m_selectedRow = row;
-        m_selectedParentRow = parentRow;
+    const QString desc = item->getDescription();
+    ui->lblDescription->setText(!desc.isEmpty() ? desc : tr("No description available for this action."));
+
+    m_currentItem = item;
+    m_selectedRow = row;
+    m_selectedParentRow = parentRow;
+
+    validateCollisions();
+
+    if (m_isReadOnly) {
+        ui->gbShortcutEditor->setEnabled(false);
+        ui->btnRecord->setEnabled(false);
+        ui->btnReset->setEnabled(false);
+        ui->pbClear->setEnabled(false);
     }
 }
 
@@ -273,8 +357,8 @@ void LC_SettingsPageShortcuts::onRecordToggled(bool recording) {
         if (info != nullptr) {
             info->setKey(m_editingKeySequence);
             if (info->isModified()) {
-                checkHasCollisions(info);
                 rebuildTree(true);
+                validateCollisions();
                 onControlChanged();
             }
         }
@@ -291,8 +375,8 @@ void LC_SettingsPageShortcuts::onResetItemClicked() {
     if (m_currentItem != nullptr) {
         m_currentItem->resetShortcutToDefault();
         ui->leKeySequence->setText(m_currentItem->getShortcutViewString());
-        checkHasCollisions(m_currentItem->getShortcutInfo());
         rebuildTree(true);
+        validateCollisions();
         onControlChanged();
     }
 }
@@ -302,33 +386,57 @@ void LC_SettingsPageShortcuts::onClearItemClicked() {
         m_currentItem->clearShortcut();
         ui->leKeySequence->setText("");
         m_editingKeySequence = QKeySequence();
-        checkHasCollisions(m_currentItem->getShortcutInfo());
         rebuildTree(true);
+        validateCollisions();
         onControlChanged();
     }
 }
+void LC_SettingsPageShortcuts::onClearConflictsFilterRequested() {
+    if (m_mappingTreeModel != nullptr) {
+        m_mappingTreeModel->setFilterForConflicts(false);
+        rebuildTree(false);
+        validateCollisions();
+    }
+}
 
-bool LC_SettingsPageShortcuts::checkHasCollisions(LC_ShortcutInfo* shortcutInfo) const {
+bool LC_SettingsPageShortcuts::validateCollisions() {
     if (m_mappingTreeModel == nullptr) {
-        return false;
+        return true;
     }
 
-    const bool hasCollisions = m_mappingTreeModel->checkForCollisions(shortcutInfo);
-    if (hasCollisions) {
-        ui->frameConflict->setVisible(true);
-        ui->lblConflict->setText(tr("<font color='#d9534f'><b>Potential Conflict:</b></font><br/>"
-                                    "This shortcut sequence is assigned to multiple actions. "
-                                    "<a href=\"show\">Filter conflicting actions</a>"));
-    } else {
-        ui->frameConflict->setVisible(false);
+    QString conflictMsg;
+    const bool hasCollisions = m_mappingTreeModel->checkForCollisions(nullptr, &conflictMsg);
+    const bool isFilteringConflicts = m_mappingTreeModel->isFilterForConflicts();
+
+    const QString message = hasCollisions
+        ? tr("<b>Conflict Detected:</b> %1").arg(conflictMsg)
+        : tr("All shortcuts are unique and valid.");
+
+    const auto bannerType = hasCollisions
+        ? LC_SettingsBannerWidget::BannerType::Error
+        : LC_SettingsBannerWidget::BannerType::Info;
+
+    QString actionText;
+    std::function<void()> actionCallback;
+
+    if (isFilteringConflicts) {
+        actionText = tr("Show All Shortcuts");
+        actionCallback = [this]() { onClearConflictsFilterRequested(); };
     }
-    return hasCollisions;
+    else if (hasCollisions) {
+        actionText = tr("Filter Conflicts");
+        actionCallback = [this]() { onShowConflictsRequested(); };
+    }
+
+    ui->bannerConflict->setMessage(message, bannerType, actionText, actionCallback);
+    return !hasCollisions;
 }
 
 void LC_SettingsPageShortcuts::onShowConflictsRequested() {
     if (m_mappingTreeModel != nullptr) {
         m_mappingTreeModel->setFilterForConflicts(true);
         rebuildTree(false);
+        validateCollisions();
     }
 }
 
@@ -366,8 +474,16 @@ void LC_SettingsPageShortcuts::onTreeContextMenuRequested(const QPoint& pos) {
 
     QMenu menu(ui->tvMappingsTree);
 
+    // Read-Only / Default Scheme: Only show tree navigation actions
+    if (m_isReadOnly) {
+        menu.addAction(QIcon(":/icons/expand_all.lci"), tr("Expand All"), ui->tvMappingsTree, &QTreeView::expandAll);
+        menu.addAction(QIcon(":/icons/collapse_all.lci"), tr("Collapse All"), ui->tvMappingsTree, &QTreeView::collapseAll);
+        menu.exec(ui->tvMappingsTree->viewport()->mapToGlobal(pos));
+        return;
+    }
+
     if (item != nullptr && !item->isGroup()) {
-        // Case B: Clicked on a leaf action item
+        // Editable mode: leaf action item
         QAction* actAssign = menu.addAction(tr("Assign Shortcut..."), this, [this]() {
             ui->btnRecord->setChecked(true);
             ui->btnRecord->setFocus();
@@ -386,9 +502,13 @@ void LC_SettingsPageShortcuts::onTreeContextMenuRequested(const QPoint& pos) {
         menu.addAction(tr("Reset All"), this, &LC_SettingsPageShortcuts::onResetAllClicked);
     }
     else {
-        // Case A: Clicked on a group or outside of any item
+        // Editable mode: group item
         menu.addAction(tr("Reset All"), this, &LC_SettingsPageShortcuts::onResetAllClicked);
     }
+
+    menu.addSeparator();
+    menu.addAction(QIcon(":/icons/expand_all.lci"), tr("Expand All"), ui->tvMappingsTree, &QTreeView::expandAll);
+    menu.addAction(QIcon(":/icons/collapse_all.lci"), tr("Collapse All"), ui->tvMappingsTree, &QTreeView::collapseAll);
 
     menu.exec(ui->tvMappingsTree->viewport()->mapToGlobal(pos));
 }

@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_ActionsDualListWidget</class>
+ <widget class="QWidget" name="LC_ActionsDualListWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>700</width>
+    <height>460</height>
+   </rect>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_main">
+   <property name="spacing">
+    <number>6</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QWidget" name="paneAvailable" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout_avail">
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_availBar">
+        <item>
+         <widget class="QToolButton" name="tbExpandAll">
+          <property name="toolTip">
+           <string>Expand all action groups</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../../../../res/icons/icons.qrc">
+            <normaloff>:/icons/expand_all.lci</normaloff>:/icons/expand_all.lci</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="tbCollapseAll">
+          <property name="toolTip">
+           <string>Collapse all action groups</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../../../../res/icons/icons.qrc">
+            <normaloff>:/icons/collapse_all.lci</normaloff>:/icons/collapse_all.lci</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="LC_SearchLineEdit" name="leFilter">
+          <property name="toolTip">
+           <string>Filter available actions by name</string>
+          </property>
+          <property name="placeholderText">
+           <string>Filter actions...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QTreeView" name="tvAvailable">
+        <property name="contextMenuPolicy">
+         <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
+        </property>
+        <property name="toolTip">
+         <string>Available CAD actions grouped by category</string>
+        </property>
+        <property name="headerHidden">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_transfer">
+     <item>
+      <spacer name="verticalSpacer_transTop">
+       <property name="orientation">
+        <enum>Qt::Orientation::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnAdd">
+       <property name="toolTip">
+        <string>Add selected action to active group or root</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../../../../../../res/icons/icons.qrc">
+         <normaloff>:/icons/chevron_right.lci</normaloff>:/icons/chevron_right.lci</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnAddSeparator">
+       <property name="toolTip">
+        <string>Insert divider separator line</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../../../../../../res/icons/icons.qrc">
+         <normaloff>:/icons/separator_add.lci</normaloff>:/icons/separator_add.lci</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnAddGroup">
+       <property name="toolTip">
+        <string>Create a new action group / sub-menu</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../../../../../../res/icons/icons.qrc">
+         <normaloff>:/icons/create_menu.lci</normaloff>:/icons/create_menu.lci</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnRemove">
+       <property name="toolTip">
+        <string>Remove selected item</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../../../../../../res/icons/icons.qrc">
+         <normaloff>:/icons/chevron_left.lci</normaloff>:/icons/chevron_left.lci</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnRemoveAll">
+       <property name="toolTip">
+        <string>Remove all items</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../../../../../../res/icons/icons.qrc">
+         <normaloff>:/icons/chevron_left_all.lci</normaloff>:/icons/chevron_left_all.lci</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_transBottom">
+       <property name="orientation">
+        <enum>Qt::Orientation::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QWidget" name="paneChosen" native="true">
+     <property name="toolTip">
+      <string> Drag and drop into groups or reorder</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_chosen">
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_chosenBar">
+           <item>
+               <widget class="QToolButton" name="tbExpandAllChosen">
+                   <property name="toolTip">
+                       <string>Expand all groups</string>
+                   </property>
+                   <property name="icon">
+                       <iconset resource="../../../../../../res/icons/icons.qrc">
+                           <normaloff>:/icons/expand_all.lci</normaloff>:/icons/expand_all.lci</iconset>
+                   </property>
+               </widget>
+           </item>
+           <item>
+               <widget class="QToolButton" name="tbCollapseAllChosen">
+                   <property name="toolTip">
+                       <string>Collapse all groups</string>
+                   </property>
+                   <property name="icon">
+                       <iconset resource="../../../../../../res/icons/icons.qrc">
+                           <normaloff>:/icons/collapse_all.lci</normaloff>:/icons/collapse_all.lci</iconset>
+                   </property>
+               </widget>
+           </item>
+           <item>
+               <widget class="Line" name="lineSepChosen">
+                   <property name="orientation">
+                       <enum>Qt::Orientation::Vertical</enum>
+                   </property>
+               </widget>
+           </item>
+        <item>
+         <widget class="QToolButton" name="tbEdit">
+          <property name="toolTip">
+           <string>Edit group title, icon, or behavior</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../../../../res/icons/icons.qrc">
+            <normaloff>:/icons/rename_active_block.lci</normaloff>:/icons/rename_active_block.lci</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="tbMoveUp">
+          <property name="toolTip">
+           <string>Move item up</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../../../../res/icons/icons.qrc">
+            <normaloff>:/icons/up.lci</normaloff>:/icons/up.lci</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="tbMoveDown">
+          <property name="toolTip">
+           <string>Move item down</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../../../../res/icons/icons.qrc">
+            <normaloff>:/icons/down.lci</normaloff>:/icons/down.lci</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="tbPromote">
+          <property name="toolTip">
+           <string>Move item out of current group to parent level (Alt+Left)</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../../../../res/icons/icons.qrc">
+            <normaloff>:/icons/back.lci</normaloff>:/icons/back.lci</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="tbDelete">
+          <property name="toolTip">
+           <string>Delete selected item</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../../../../res/icons/icons.qrc">
+            <normaloff>:/icons/remove.lci</normaloff>:/icons/remove.lci</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_chosen">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QTreeWidget" name="twChosen">
+        <property name="contextMenuPolicy">
+         <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
+        </property>
+        <property name="toolTip">
+         <string>Included actions hierarchy. Drag and drop into groups or reorder</string>
+        </property>
+        <property name="dragDropMode">
+         <enum>QAbstractItemView::DragDropMode::InternalMove</enum>
+        </property>
+        <property name="headerHidden">
+         <bool>true</bool>
+        </property>
+        <column>
+         <property name="text">
+          <string notr="true">1</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LC_SearchLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>lc_search_line_edit.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../../../../../../res/icons/icons.qrc"/>
+ </resources>
+ <connections/>
+</ui>

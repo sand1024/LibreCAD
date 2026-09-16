@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LC_SettingsPageShortcuts</class>
- <widget class="QWidget" name="LC_SettingsPageShortcuts">
+ <class>LC_SettingsPageCommands</class>
+ <widget class="QWidget" name="LC_SettingsPageCommands">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>760</width>
-    <height>540</height>
+    <width>1224</width>
+    <height>900</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_root" stretch="0,5">
@@ -29,7 +29,7 @@
    <item>
     <widget class="QLabel" name="lblTopNote">
      <property name="text">
-      <string>Mange keyboard shortcuts keymap using the panel below. Note that shortcuts collisions are not allowed and should be resolved before keymap saving.</string>
+      <string>Mange command line commands and their aliases. Note that commands collisions are not allowed and should be resolved before keymap saving.</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
@@ -40,7 +40,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QSplitter" name="splShortcuts">
+    <widget class="QSplitter" name="splCommands">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
      </property>
@@ -72,12 +72,7 @@
          <item>
           <widget class="QToolButton" name="tbExpandAll">
            <property name="toolTip">
-            <string>Expand All
-
-Expand all action groups</string>
-           </property>
-           <property name="text">
-            <string>Expand All</string>
+            <string>Expand all command groups</string>
            </property>
            <property name="icon">
             <iconset resource="../../../../../../res/icons/icons.qrc">
@@ -88,12 +83,7 @@ Expand all action groups</string>
          <item>
           <widget class="QToolButton" name="tbCollapseAll">
            <property name="toolTip">
-            <string>Collapse All
-
-Collapse all action groups</string>
-           </property>
-           <property name="text">
-            <string>Collapse All</string>
+            <string>Collapse all command groups</string>
            </property>
            <property name="icon">
             <iconset resource="../../../../../../res/icons/icons.qrc">
@@ -111,40 +101,20 @@ Collapse all action groups</string>
          <item>
           <widget class="LC_SearchLineEdit" name="leFilter">
            <property name="toolTip">
-            <string>Filter
-
-Filter actions by name</string>
+            <string>Search commands or aliases...</string>
            </property>
            <property name="placeholderText">
-            <string>Filter actions by name...</string>
+            <string>Search commands or aliases...</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QCheckBox" name="cbMatchHighlight">
            <property name="toolTip">
-            <string>Highlight
-
-If checked, matching actions will be highlighted only; otherwise non-matching actions are hidden</string>
+            <string>Highlight matching items rather than hiding non-matching items</string>
            </property>
            <property name="text">
             <string>Highlight</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QToolButton" name="tbFindByShortcut">
-           <property name="toolTip">
-            <string>Find
-
-Find action by shortcut keys</string>
-           </property>
-           <property name="text">
-            <string>Find by Shortcut</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../../../../../../res/icons/icons.qrc">
-             <normaloff>:/icons/shortcuts_settings.lci</normaloff>:/icons/shortcuts_settings.lci</iconset>
            </property>
           </widget>
          </item>
@@ -153,7 +123,7 @@ Find action by shortcut keys</string>
            <property name="toolTip">
             <string>Cheatsheet
 
-Export cheatsheet with shortccuts as PDF or print...</string>
+Export command aliases cheatsheet as PDF or print...</string>
            </property>
            <property name="text">
             <string>Cheatsheet</string>
@@ -167,9 +137,18 @@ Export cheatsheet with shortccuts as PDF or print...</string>
         </layout>
        </item>
        <item>
-        <widget class="LC_ShortcutsTreeView" name="tvMappingsTree">
+        <widget class="QTreeView" name="tvCommandsTree">
          <property name="toolTip">
-          <string>Select an action to inspect or edit its shortcut</string>
+          <string>Select an action or keyword to inspect and edit its command line triggers</string>
+         </property>
+         <property name="rootIsDecorated">
+          <bool>true</bool>
+         </property>
+         <property name="uniformRowHeights">
+          <bool>true</bool>
+         </property>
+         <property name="headerHidden">
+          <bool>false</bool>
          </property>
         </widget>
        </item>
@@ -207,7 +186,7 @@ Export cheatsheet with shortccuts as PDF or print...</string>
              <property name="sizeHint" stdset="0">
               <size>
                <width>20</width>
-               <height>40</height>
+               <height>365</height>
               </size>
              </property>
             </spacer>
@@ -221,7 +200,7 @@ Export cheatsheet with shortccuts as PDF or print...</string>
               </font>
              </property>
              <property name="text">
-              <string>No Action Selected</string>
+              <string>No Command Selected</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -231,7 +210,7 @@ Export cheatsheet with shortccuts as PDF or print...</string>
            <item>
             <widget class="QLabel" name="lblEmptyDesc">
              <property name="text">
-              <string>Select an individual action from the tree on the left to view or customize its keyboard shortcut.</string>
+              <string>Select an action or in-prompt keyword from the tree on the left to customize its command line trigger and aliases.</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -249,7 +228,7 @@ Export cheatsheet with shortccuts as PDF or print...</string>
              <property name="sizeHint" stdset="0">
               <size>
                <width>20</width>
-               <height>40</height>
+               <height>365</height>
               </size>
              </property>
             </spacer>
@@ -285,7 +264,7 @@ Export cheatsheet with shortccuts as PDF or print...</string>
                    </font>
                   </property>
                   <property name="toolTip">
-                   <string>Name of selected action</string>
+                   <string>Action title</string>
                   </property>
                   <property name="text">
                    <string>Action Name</string>
@@ -315,7 +294,7 @@ Export cheatsheet with shortccuts as PDF or print...</string>
                 <item>
                  <widget class="QLabel" name="lblGroupIcon">
                   <property name="toolTip">
-                   <string>Category icon</string>
+                   <string>Action category icon</string>
                   </property>
                  </widget>
                 </item>
@@ -327,10 +306,10 @@ Export cheatsheet with shortccuts as PDF or print...</string>
                    </font>
                   </property>
                   <property name="toolTip">
-                   <string>Category of selected action</string>
+                   <string>Action category</string>
                   </property>
                   <property name="text">
-                   <string>Draw</string>
+                   <string>Category</string>
                   </property>
                  </widget>
                 </item>
@@ -353,66 +332,98 @@ Export cheatsheet with shortccuts as PDF or print...</string>
             </widget>
            </item>
            <item>
-            <widget class="QGroupBox" name="gbShortcutEditor">
+            <widget class="QGroupBox" name="gbCommandsEditor">
              <property name="title">
-              <string>Keyboard Shortcut</string>
+              <string>Command-line Trigger Setup</string>
              </property>
-             <layout class="QVBoxLayout" name="verticalLayout_shortcut">
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_sequence">
+             <layout class="QGridLayout" name="gridLayout_editor">
+              <property name="spacing">
+               <number>6</number>
+              </property>
+              <item row="3" column="1">
+               <widget class="QLineEdit" name="leAlias1Override">
+                <property name="toolTip">
+                 <string>Override two-letter keycode (leave empty to use default, '-' to suppress)</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0" colspan="3">
+               <widget class="QLabel" name="lblHdrEffectiveTriggers">
+                <property name="font">
+                 <font>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Effective Triggers:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="0" colspan="3">
+               <widget class="QLabel" name="lblAllTriggers">
+                <property name="toolTip">
+                 <string>All invocation triggers currently active for this command</string>
+                </property>
+                <property name="text">
+                 <string>&lt;None&gt;</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="6" column="0">
+               <widget class="QLabel" name="lblHdrKeycodes">
+                <property name="font">
+                 <font>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Keycodes:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="6" column="1" colspan="2">
+               <widget class="QLabel" name="lblKeycodes">
+                <property name="toolTip">
+                 <string>Two-letter triggers executed immediately without pressing Enter</string>
+                </property>
+                <property name="text">
+                 <string>&lt;None&gt;</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QLineEdit" name="leAlias2Override">
+                <property name="toolTip">
+                 <string>Override alternative alias (leave empty to use default, '-' to suppress)</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="2">
+               <layout class="QHBoxLayout" name="layoutBtnAlias2">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
                 <item>
-                 <widget class="QLineEdit" name="leKeySequence">
+                 <widget class="QToolButton" name="tbResetAlias2">
                   <property name="toolTip">
-                   <string>Shortcut
-
-Current assigned keyboard shortcut</string>
-                  </property>
-                  <property name="readOnly">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="LC_ShortcutButton" name="btnRecord">
-                  <property name="toolTip">
-                   <string>Recording
-
-Click to record a new key combination</string>
-                  </property>
-                  <property name="text">
-                   <string>Record Shortcut</string>
+                   <string>Reset alias to default</string>
                   </property>
                   <property name="icon">
                    <iconset resource="../../../../../../res/icons/icons.qrc">
-                    <normaloff>:/icons/chevron_left.lci</normaloff>:/icons/chevron_left.lci</iconset>
+                    <normaloff>:/icons/undo.lci</normaloff>:/icons/undo.lci</iconset>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="btnReset">
+                 <widget class="QToolButton" name="tbSuppressAlias2">
                   <property name="toolTip">
-                   <string>Reset
-
-Reset shortcut for this action to its default key sequence</string>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="../../../../../../res/icons/icons.qrc">
-                    <normaloff>:/icons/pen_2_current.lci</normaloff>:/icons/pen_2_current.lci</iconset>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="pbClear">
-                  <property name="toolTip">
-                   <string>Clear
-
-Remove keyboard shortcut from this action</string>
-                  </property>
-                  <property name="text">
-                   <string/>
+                   <string>Suppress this alias (disable without replacement)</string>
                   </property>
                   <property name="icon">
                    <iconset resource="../../../../../../res/icons/icons.qrc">
@@ -421,6 +432,99 @@ Remove keyboard shortcut from this action</string>
                  </widget>
                 </item>
                </layout>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="lblAlias1">
+                <property name="toolTip">
+                 <string>Keycode
+
+Two-character keycode (e.g. 'li', 'ci', 're'). In Keycode Mode, typing these two characters triggers the action immediately without pressing Enter.</string>
+                </property>
+                <property name="text">
+                 <string>Keycode:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QLineEdit" name="leMainOverride">
+                <property name="toolTip">
+                 <string>Override command name (leave empty to use localized default, '-' to suppress)</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="lblMain">
+                <property name="toolTip">
+                 <string>Command
+
+Full command name executed by pressing Enter or Space.</string>
+                </property>
+                <property name="text">
+                 <string>Command:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QToolButton" name="tbResetMain">
+                <property name="toolTip">
+                 <string>Reset command to default</string>
+                </property>
+                <property name="icon">
+                 <iconset resource="../../../../../../res/icons/icons.qrc">
+                  <normaloff>:/icons/undo.lci</normaloff>:/icons/undo.lci</iconset>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="2">
+               <layout class="QHBoxLayout" name="layoutBtnAlias1">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item>
+                 <widget class="QToolButton" name="tbResetAlias1">
+                  <property name="toolTip">
+                   <string>Reset keycode to default</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="../../../../../../res/icons/icons.qrc">
+                    <normaloff>:/icons/undo.lci</normaloff>:/icons/undo.lci</iconset>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QToolButton" name="tbSuppressAlias1">
+                  <property name="toolTip">
+                   <string>Suppress this keycode (disable without replacement)</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="../../../../../../res/icons/icons.qrc">
+                    <normaloff>:/icons/remove.lci</normaloff>:/icons/remove.lci</iconset>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="lblAlias2">
+                <property name="toolTip">
+                 <string>Alias
+
+Alternative shortcut or single-letter alias (e.g. 'l', 'c', 'rect').</string>
+                </property>
+                <property name="text">
+                 <string>Alias:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0" colspan="3" alignment="Qt::AlignmentFlag::AlignTop">
+               <widget class="QLabel" name="label">
+                <property name="text">
+                 <string>It is possible to specify primary command and alias, as well as 2-characters keycode (keycode mode should be enabled in Cmd widget). Either command or alias may be used to invoke the command, as well as original system command's name.</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+               </widget>
               </item>
              </layout>
             </widget>
@@ -434,10 +538,10 @@ Remove keyboard shortcut from this action</string>
               <item>
                <widget class="QLabel" name="lblDescription">
                 <property name="toolTip">
-                 <string>Detailed description of the selected action</string>
+                 <string>Detailed description</string>
                 </property>
                 <property name="text">
-                 <string>Description of action</string>
+                 <string>Description of command</string>
                 </property>
                 <property name="wordWrap">
                  <bool>true</bool>
@@ -465,7 +569,7 @@ Remove keyboard shortcut from this action</string>
         </widget>
        </item>
        <item>
-        <widget class="LC_SettingsBannerWidget" name="bannerConflict" native="true">
+        <widget class="LC_SettingsBannerWidget" name="bannerCollision" native="true">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -473,7 +577,7 @@ Remove keyboard shortcut from this action</string>
           </size>
          </property>
          <property name="toolTip">
-          <string>Trigger validation status</string>
+          <string>Collision status</string>
          </property>
         </widget>
        </item>
@@ -488,16 +592,6 @@ Remove keyboard shortcut from this action</string>
    <class>LC_SearchLineEdit</class>
    <extends>QLineEdit</extends>
    <header>lc_search_line_edit.h</header>
-  </customwidget>
-  <customwidget>
-   <class>LC_ShortcutsTreeView</class>
-   <extends>QTreeView</extends>
-   <header>lc_shortcuts_tree_view.h</header>
-  </customwidget>
-  <customwidget>
-   <class>LC_ShortcutButton</class>
-   <extends>QPushButton</extends>
-   <header>lc_shortcut_button.h</header>
   </customwidget>
   <customwidget>
    <class>LC_SettingsBannerWidget</class>

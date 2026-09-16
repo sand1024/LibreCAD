@@ -26,15 +26,16 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
-#include "lc_actiongroupmanager.h"
+#include "lc_action_group_manager.h"
 #include "lc_settings_appearance.h"
-#include "lc_shortcutinfo.h"
+#include "lc_settings_app_state.h"
+
 #include "lc_shortcuts_manager.h"
-#include "lc_shortcutsstorage.h"
-#include "lc_shortcutstreemodel.h"
+#include "lc_shortcuts_storage.h"
+#include "lc_shortcuts_tree_model.h"
 
 LC_PresetManagerShortcuts::LC_PresetManagerShortcuts(LC_ActionGroupManager* groupMgr, QObject* parent)
-    : LC_AbstractPresetManager(CFG_Appearance::o_ActiveShortcutsScheme.get(), parent), m_groupManager(groupMgr),
+    : LC_AbstractPresetManager(CFG_AppState::o_ActiveShortcutsScheme, parent), m_groupManager(groupMgr),
       m_shortcutsManager(groupMgr->getShortcutsManager()), m_repository(groupMgr->getShortcutsManager()->getRepository()) {
 }
 
@@ -45,30 +46,30 @@ void LC_PresetManagerShortcuts::setTreeModel(LC_ShortcutsTreeModel* model) {
 LC_PresetManagerUIStrings LC_PresetManagerShortcuts::presetStrings() const {
     LC_PresetManagerUIStrings s;
     s.defaultPresetName = tr("Default Keymap");
-    s.labelText = tr("Shortcuts scheme:");
+    s.labelText = tr("Keymap:");
     s.selectToolTip = tr("Select a keyboard shortcuts scheme or load application defaults.");
-    s.saveToolTip = tr("Save changes directly to the active shortcuts scheme.");
-    s.saveAsToolTip = tr("Save current shortcuts as a new scheme.");
-    s.deleteToolTip = tr("Permanently delete the selected custom shortcuts scheme from disk.");
-    s.applyToolTip = tr("Apply the active shortcut mappings globally to the workspace.");
-    s.revertToolTip = tr("Discard modifications and reload the scheme as saved on disk.");
-    s.saveAsDialogTitle = tr("Save Shortcuts Scheme As");
-    s.saveAsDialogLabel = tr("Enter unique shortcuts scheme name:");
-    s.defaultNewPresetName = tr("Custom Shortcuts");
-    s.deleteConfirmTitle = tr("Delete Shortcuts Scheme");
-    s.deleteConfirmLabel = tr("Are you sure you want to delete the shortcuts scheme '%1'?");
-    s.exportDialogTitle = tr("Export Shortcuts Scheme");
-    s.importDialogTitle = tr("Import Shortcuts Scheme");
-    s.presetFileFilter = tr("LibreCAD Shortcuts Files (*.lcsc *.lcs);;All Files (*.*)");
+    s.saveToolTip = tr("Save changes directly to the active keymap scheme.");
+    s.saveAsToolTip = tr("Save current keymap as a new scheme.");
+    s.deleteToolTip = tr("Permanently delete the selected custom keymap scheme from disk.");
+    s.applyToolTip = tr("Apply the active keymap globally to the workspace.");
+    s.revertToolTip = tr("Discard modifications and reload the keymap as saved on disk.");
+    s.saveAsDialogTitle = tr("Save Keymap As");
+    s.saveAsDialogLabel = tr("Enter unique keymap name:");
+    s.defaultNewPresetName = tr("Custom Keymap");
+    s.deleteConfirmTitle = tr("Delete Keymap");
+    s.deleteConfirmLabel = tr("Are you sure you want to delete the keymap '%1'?");
+    s.exportDialogTitle = tr("Export Keymap");
+    s.importDialogTitle = tr("Import Keymap");
+    s.presetFileFilter = tr("LibreCAD Keymap Files (*.lcsc *.lcs);;All Files (*.*)");
 
     s.defaultReadOnlyMessage = tr(
-        "The Default shortcuts scheme is a read-only template. To customize key bindings, duplicate it as a custom scheme.");
-    s.duplicateActionText = tr("Duplicate Scheme...");
+        "The Default keymap is a read-only template. To customize key bindings, duplicate it as a custom keymap.");
+    s.duplicateActionText = tr("Duplicate Keymap...");
 
-    s.saveModifiedPromptTitle = tr("Save Modified Shortcuts");
-    s.saveModifiedPromptMessage = tr("You have unsaved changes to shortcuts scheme '%1'.\n\nDo you want to save them before closing?");
+    s.saveModifiedPromptTitle = tr("Save Modified Keymap");
+    s.saveModifiedPromptMessage = tr("You have unsaved changes to keymap '%1'.\n\nDo you want to save them before closing?");
     s.discardConfirmTitle = tr("Discard Changes");
-    s.discardConfirmMessage = tr("You have unsaved modifications to shortcuts scheme '%1'.\n\nAre you sure you want to discard these changes?");
+    s.discardConfirmMessage = tr("You have unsaved modifications to keymap '%1'.\n\nAre you sure you want to discard these changes?");
     return s;
 }
 
@@ -119,7 +120,7 @@ bool LC_PresetManagerShortcuts::saveCurrentPreset() {
     QString outKey;
     if (m_repository->save(config.name, config, outKey)) {
         m_activeKey = outKey;
-        CFG_Appearance::o_ActiveShortcutsScheme.set(outKey);
+        CFG_AppState::o_ActiveShortcutsScheme.set(outKey);
         if (m_treeModel != nullptr) {
             m_treeModel->commitBaseline();
         }
@@ -137,7 +138,7 @@ bool LC_PresetManagerShortcuts::savePresetAs(const QString& name, QString& outKe
     ShortcutsConfig config = collectCurrentConfig(name);
     if (m_repository->save(name, config, outKey)) {
         m_activeKey = outKey;
-        CFG_Appearance::o_ActiveShortcutsScheme.set(outKey);
+        CFG_AppState::o_ActiveShortcutsScheme.set(outKey);
         if (m_treeModel != nullptr) {
             m_treeModel->commitBaseline();
         }
@@ -147,15 +148,8 @@ bool LC_PresetManagerShortcuts::savePresetAs(const QString& name, QString& outKe
     return false;
 }
 
-bool LC_PresetManagerShortcuts::deletePreset(const QString& key) {
-    if (key == DEFAULT_THEME_KEY || key.isEmpty()) {
-        return false;
-    }
-    return m_repository->removeByKey(key);
-}
-
 void LC_PresetManagerShortcuts::applyActiveConfigToSystem(const QString& activeKey) {
-    CFG_Appearance::o_ActiveShortcutsScheme.set(activeKey);
+    CFG_AppState::o_ActiveShortcutsScheme = activeKey;
 
     if (m_treeModel != nullptr && m_groupManager != nullptr && m_shortcutsManager != nullptr) {
         QMap<QString, LC_ShortcutInfo*> currentMap = m_treeModel->getShortcuts();
@@ -163,6 +157,10 @@ void LC_PresetManagerShortcuts::applyActiveConfigToSystem(const QString& activeK
         m_shortcutsManager->applyShortcutsMapToActionsMap(currentMap, actionsMap);
         m_shortcutsManager->updateActionTooltips(actionsMap);
     }
+}
+
+bool LC_PresetManagerShortcuts::doDeletePreset(const QString& key) {
+    return m_repository->deleteByKey(key);
 }
 
 void LC_PresetManagerShortcuts::applyCurrentPreset() {
@@ -220,7 +218,7 @@ bool LC_PresetManagerShortcuts::importPresetFromFile(const QString& filePath, QW
         importedMap = config.shortcuts;
     }
 
-    m_treeModel->applyShortcuts(importedMap, /*replace=*/false);
+    m_treeModel->applyShortcuts(importedMap, false);
     setDirtyState(true);
     return true;
 }

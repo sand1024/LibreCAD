@@ -32,10 +32,7 @@ public:
     explicit LC_ShortcutsTreeView(QWidget *parent = nullptr);
     void setup(LC_ShortcutsTreeModel *treeModel);
     LC_ShortcutsTreeModel *getTreeModel() const;
-    QStringList saveTreeExpansionState() const;
     void expandChildren(const QModelIndex &index);
-    void applyExpandState(QStringList &expandedItems, const QModelIndex& startIndex);
-    void restoreTreeExpansionState(QStringList treeExpansionState);
 };
 
 #endif

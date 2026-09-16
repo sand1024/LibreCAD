@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--****************************************************************************
+  *
+  * This file is part of the LibreCAD project, a 2D CAD program
+  *
+  * Copyright (C) 2026 LibreCAD.org
+  * Copyright (C) 2026 sand1024
+  *
+  * This program is free software; you can redistribute it and/or
+  * modify it under the terms of the GNU General Public License
+  * as published by the Free Software Foundation; either version 2
+  * of the License, or (at your option) any later version.
+  *
+  * This program is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  * GNU General Public License for more details.
+  *
+  * You should have received a copy of the GNU General Public License
+  * along with this program; if not, write to the Free Software
+  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  ***************************************************************************-->
+
+<ui version="4.0">
+    <class>LC_DlgIconPicker</class>
+    <widget class="QDialog" name="LC_DlgIconPicker">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>540</width>
+                <height>460</height>
+            </rect>
+        </property>
+        <property name="windowTitle">
+            <string>Select Icon</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_main">
+            <property name="spacing">
+                <number>8</number>
+            </property>
+            <item>
+                <widget class="LC_SearchLineEdit" name="leFilter">
+                    <property name="toolTip">
+                        <string>Filter icons by filename</string>
+                    </property>
+                    <property name="placeholderText">
+                        <string>Filter icons by name...</string>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <widget class="QListWidget" name="lwIcons">
+                    <property name="toolTip">
+                        <string>Double-click an icon to select</string>
+                    </property>
+                    <property name="movement">
+                        <enum>QListView::Movement::Static</enum>
+                    </property>
+                    <property name="resizeMode">
+                        <enum>QListView::ResizeMode::Adjust</enum>
+                    </property>
+                    <property name="viewMode">
+                        <enum>QListView::ViewMode::IconMode</enum>
+                    </property>
+                    <property name="iconSize">
+                        <size>
+                            <width>28</width>
+                            <height>28</height>
+                        </size>
+                    </property>
+                    <property name="gridSize">
+                        <size>
+                            <width>42</width>
+                            <height>42</height>
+                        </size>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <widget class="QLabel" name="lblSelectedPath">
+                    <property name="toolTip">
+                        <string>Selected icon resource path</string>
+                    </property>
+                    <property name="text">
+                        <string>Selected: None</string>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <widget class="QDialogButtonBox" name="buttonBox">
+                    <property name="orientation">
+                        <enum>Qt::Orientation::Horizontal</enum>
+                    </property>
+                    <property name="standardButtons">
+                        <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
+                    </property>
+                </widget>
+            </item>
+        </layout>
+    </widget>
+    <customwidgets>
+        <customwidget>
+            <class>LC_SearchLineEdit</class>
+            <extends>QLineEdit</extends>
+            <header>lc_search_line_edit.h</header>
+        </customwidget>
+    </customwidgets>
+    <resources/>
+    <connections/>
+</ui>

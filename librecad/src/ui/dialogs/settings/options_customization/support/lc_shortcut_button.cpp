@@ -20,13 +20,13 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_shortcutbutton.h"
+#include "lc_shortcut_button.h"
 
 #include <QApplication>
 #include <QEvent>
 #include <QKeyEvent>
 
-#include "lc_shortcutinfo.h"
+#include "lc_shortcut_info.h"
 
 LC_ShortcutButton::LC_ShortcutButton(QWidget *parent)
     : QPushButton(parent)

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_SettingsPageMenusToolbars</class>
+ <widget class="QWidget" name="LC_SettingsPageMenusToolbars">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>683</width>
+    <height>124</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_main">
+   <property name="spacing">
+    <number>8</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="lblDescription">
+     <property name="toolTip">
+      <string>Workspace scheme configuration</string>
+     </property>
+     <property name="text">
+      <string>Each navigation scheme contains the entire set of navigation elments, like main menu bar, toolbars and CAD widgets, that are included into the Applications' UI.
+Select navigation element from the comboobx belos (main menu bar, toolbar (ordinary or) CAD-related)  to customize it. </string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gbSelector">
+     <property name="title">
+      <string>Target Menu or Toolbar</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="3">
+       <widget class="QPushButton" name="pbNewToolbar">
+        <property name="toolTip">
+         <string>Create a new user-defined custom toolbar</string>
+        </property>
+        <property name="text">
+         <string>New Toolbar...</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../../../../res/icons/icons.qrc">
+          <normaloff>:/icons/add.lci</normaloff>:/icons/add.lci</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="pbMakeActiveMenu">
+        <property name="visible">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>Set this menu layout as the active application main menu</string>
+        </property>
+        <property name="text">
+         <string>Make Active</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="5">
+       <widget class="QPushButton" name="pbDeleteToolbar">
+        <property name="toolTip">
+         <string>Delete selected custom toolbar</string>
+        </property>
+        <property name="text">
+         <string>Delete</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../../../../res/icons/icons.qrc">
+          <normaloff>:/icons/remove.lci</normaloff>:/icons/remove.lci</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="QPushButton" name="pbRenameToolbar">
+        <property name="toolTip">
+         <string>Rename selected custom toolbar</string>
+        </property>
+        <property name="text">
+         <string>Rename...</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../../../../res/icons/icons.qrc">
+          <normaloff>:/icons/rename_active_block.lci</normaloff>:/icons/rename_active_block.lci</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="7">
+       <widget class="QComboBox" name="cbDockArea">
+        <property name="toolTip">
+         <string>Default dock area where this toolbar appears</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Bottom</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Left</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Right</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Top</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="cbTarget">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Select main menu layout, standard toolbar, or custom toolbar</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lblTarget">
+        <property name="text">
+         <string>Navigation widget:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="6">
+       <widget class="QLabel" name="lblArea">
+        <property name="text">
+         <string>Dock Area:</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="LC_ActionsDualListWidget" name="dualListWidget" native="true">
+     <property name="toolTip">
+      <string>Action list editor</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LC_ActionsDualListWidget</class>
+   <extends>QWidget</extends>
+   <header>lc_actions_dual_list_widget.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../../../../../../res/icons/icons.qrc"/>
+ </resources>
+ <connections/>
+</ui>

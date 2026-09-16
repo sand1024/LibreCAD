@@ -21,29 +21,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_PRESET_MANAGER_SHORTCUTS_H
-#define LC_PRESET_MANAGER_SHORTCUTS_H
+#ifndef LC_PRESET_MANAGER_MENUS_H
+#define LC_PRESET_MANAGER_MENUS_H
 
 #include "lc_abstract_preset_manager.h"
-#include "lc_repository_shortcuts.h"
+#include "lc_repository_graphic_view_context_menus.h"
 
-class LC_ActionGroupManager;
-class LC_ShortcutsManager;
-class LC_ShortcutsTreeModel;
+class LC_GraphicViewContextMenuProvider;
+class LC_NavigationControlsCreator;
 
-class LC_PresetManagerShortcuts : public LC_AbstractPresetManager {
+class LC_PresetManagerMenus : public LC_AbstractPresetManager {
     Q_OBJECT
 public:
-    LC_PresetManagerShortcuts(LC_ActionGroupManager* groupMgr,
-                              QObject* parent = nullptr);
-    ~LC_PresetManagerShortcuts() override = default;
+    explicit LC_PresetManagerMenus(LC_GraphicViewContextMenuProvider* provider, QObject* parent = nullptr);
+    ~LC_PresetManagerMenus() override = default;
 
-    // --- Preset Manager Interface ---
     bool loadPreset(const QString& key) override;
     bool saveCurrentPreset() override;
     bool savePresetAs(const QString& name, QString& outKey) override;
     void applyCurrentPreset() override;
-    bool isPresetModified() override;
+    void rollbackState() override;
 
     QList<QPair<QString, QString>> getAvailablePresets() const override;
     LC_PresetManagerUIStrings presetStrings() const override;
@@ -51,17 +48,16 @@ public:
     bool importPresetFromFile(const QString& filePath, QWidget* parent) override;
     bool exportPresetToFile(const QString& key, const QString& filePath, QWidget* parent) override;
 
-    void setTreeModel(LC_ShortcutsTreeModel* model);
+    ContextMenusConfig& workingConfig() { return m_workingConfig; }
+    const ContextMenusConfig& workingConfig() const { return m_workingConfig; }
+
 protected:
     void applyActiveConfigToSystem(const QString& activeKey) override;
     bool doDeletePreset(const QString& key) override;
 private:
-    ShortcutsConfig collectCurrentConfig(const QString& name) const;
-
-    LC_ActionGroupManager* m_groupManager = nullptr;
-    LC_ShortcutsManager* m_shortcutsManager = nullptr;
-    LC_RepositoryShortcuts* m_repository = nullptr;
-    LC_ShortcutsTreeModel* m_treeModel = nullptr;
+    LC_GraphicViewContextMenuProvider* m_contextMenuProvider{nullptr};
+    LC_RepositoryGraphicViewContextMenus* m_repository;
+    ContextMenusConfig m_workingConfig;
 };
 
 #endif

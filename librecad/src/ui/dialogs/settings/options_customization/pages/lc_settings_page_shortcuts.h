@@ -43,14 +43,11 @@ class LC_SettingsPageShortcuts : public LC_SettingsPageBase {
 public:
     explicit LC_SettingsPageShortcuts(LC_ActionGroupManager* groupManager, QObject* parent = nullptr);
     ~LC_SettingsPageShortcuts() override;
-
-    // --- Settings Framework Lifecycle ---
     void loadSettings() override;
     bool saveSettings() override;
     bool isModified() const override;
     bool validate(QString& outErrorMessage) override;
     bool acceptsSharedPreview() override { return false; }
-    // --- Search & Indexing Overrides ---
     void autoIndexLabels() override;
     void highlightSearchPattern(const QString& pattern) override;
     void clearSearchHighlight() override;
@@ -58,22 +55,25 @@ public:
 protected:
     void setupUi() override;
     void setupBehavior() override;
+    void setReadOnly(bool readOnly) override;
 private slots:
     void onFilteringMaskChanged();
     void onShortcutFilterChanged(const QKeySequence& sequence);
     void onTreeSelectionChanged();
-    void onRecordToggled(bool recording);
+    void onTreeContextMenuRequested(const QPoint& pos);
     void onKeySequenceRecorded(const QKeySequence& key);
+    void onRecordToggled(bool recording);
     void onResetItemClicked();
     void onClearItemClicked();
-    void onShowConflictsRequested();
-    void onControlChanged();
-    void onTreeContextMenuRequested(const QPoint& pos);
     void onResetAllClicked();
+    void onShowConflictsRequested();
+    void onClearConflictsFilterRequested();
+    void onControlChanged();
+    void onExportCheatsheetClicked();
 private:
     void rebuildTree(bool restoreSelection);
     void selectItem(LC_ShortcutTreeItem* item, int row, int parentRow);
-    bool checkHasCollisions(LC_ShortcutInfo* shortcutInfo) const;
+    bool validateCollisions();
 
     std::unique_ptr<Ui::LC_SettingsPageShortcuts> ui;
     LC_ActionGroupManager* m_actionGroupManager = nullptr;
@@ -85,6 +85,7 @@ private:
     QKeySequence m_editingKeySequence;
     int m_selectedRow = -1;
     int m_selectedParentRow = -1;
+    bool m_isReadOnly{false};
 };
 
 #endif // LC_SETTINGS_PAGE_SHORTCUTS_H

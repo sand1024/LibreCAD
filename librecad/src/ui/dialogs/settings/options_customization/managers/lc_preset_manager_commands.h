@@ -21,47 +21,58 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_PRESET_MANAGER_SHORTCUTS_H
-#define LC_PRESET_MANAGER_SHORTCUTS_H
+#ifndef LC_PRESET_MANAGER_COMMANDS_H
+#define LC_PRESET_MANAGER_COMMANDS_H
 
 #include "lc_abstract_preset_manager.h"
-#include "lc_repository_shortcuts.h"
+#include "lc_action_type_mapper.h"
+#include "lc_command_types.h"
+#include "lc_repository_commands.h"
 
+class LC_CommandManager;
 class LC_ActionGroupManager;
-class LC_ShortcutsManager;
-class LC_ShortcutsTreeModel;
 
-class LC_PresetManagerShortcuts : public LC_AbstractPresetManager {
+class LC_PresetManagerCommands : public LC_AbstractPresetManager {
     Q_OBJECT
 public:
-    LC_PresetManagerShortcuts(LC_ActionGroupManager* groupMgr,
-                              QObject* parent = nullptr);
-    ~LC_PresetManagerShortcuts() override = default;
+    explicit LC_PresetManagerCommands(LC_CommandManager* commandManager,LC_ActionGroupManager* agm, QObject* parent = nullptr);
+    ~LC_PresetManagerCommands() override = default;
 
-    // --- Preset Manager Interface ---
+    LC_PresetManagerUIStrings presetStrings() const override;
+
     bool loadPreset(const QString& key) override;
     bool saveCurrentPreset() override;
     bool savePresetAs(const QString& name, QString& outKey) override;
+    void updateActionForCommandsInMenu();
+
+    void applyActiveConfigToSystem(const QString& activeKey) override;
     void applyCurrentPreset() override;
+    void rollbackState() override;
+
     bool isPresetModified() override;
 
     QList<QPair<QString, QString>> getAvailablePresets() const override;
-    LC_PresetManagerUIStrings presetStrings() const override;
 
-    bool importPresetFromFile(const QString& filePath, QWidget* parent) override;
-    bool exportPresetToFile(const QString& key, const QString& filePath, QWidget* parent) override;
+    bool importPresetFromFile(const QString& filePath, QWidget* parent = nullptr) override;
+    bool exportPresetToFile(const QString& key, const QString& filePath, QWidget* parent = nullptr) override;
 
-    void setTreeModel(LC_ShortcutsTreeModel* model);
+    CommandsConfig& workingConfig() { return m_workingConfig; }
+    const CommandsConfig& workingConfig() const { return m_workingConfig; }
+
+    LC_ActionTypeMapper* getActionTypeMapper() const { return m_actionTypeMapper.get(); }
+    void notifyConfigChanged();
+
 protected:
-    void applyActiveConfigToSystem(const QString& activeKey) override;
     bool doDeletePreset(const QString& key) override;
-private:
-    ShortcutsConfig collectCurrentConfig(const QString& name) const;
 
-    LC_ActionGroupManager* m_groupManager = nullptr;
-    LC_ShortcutsManager* m_shortcutsManager = nullptr;
-    LC_RepositoryShortcuts* m_repository = nullptr;
-    LC_ShortcutsTreeModel* m_treeModel = nullptr;
+private:
+    bool importLegacyAliasFile(const QString& filePath);
+
+    CommandsConfig m_workingConfig;
+    LC_RepositoryCommands* m_repository{nullptr};
+    LC_CommandManager* m_commandManager{nullptr};
+    std::unique_ptr<LC_ActionTypeMapper> m_actionTypeMapper;
+    LC_ActionGroupManager* m_actionGroupManager{nullptr};
 };
 
 #endif

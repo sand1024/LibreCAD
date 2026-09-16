@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LC_SettingsPageCustomMenus</class>
+ <widget class="QWidget" name="LC_SettingsPageCustomMenus">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>780</width>
+    <height>540</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_root" stretch="0,0,5">
+   <property name="spacing">
+    <number>8</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Custom menus scheme allows to define a set of context menus, that could be invoked in drawing area. Use the panel below to customize them.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gbMenuSelector">
+     <property name="title">
+      <string>Context Menu</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_selector">
+      <item>
+       <widget class="QLabel" name="lblMenuName">
+        <property name="text">
+         <string>Menu:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="cbMenuName">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Select custom popup menu to edit</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pbNewMenu">
+        <property name="toolTip">
+         <string>Create a new custom popup menu</string>
+        </property>
+        <property name="text">
+         <string>New Menu...</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../../../../res/icons/icons.qrc">
+          <normaloff>:/icons/add.lci</normaloff>:/icons/add.lci</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pbSaveAsMenu">
+        <property name="toolTip">
+         <string>Save a copy of current menu under a new name</string>
+        </property>
+        <property name="text">
+         <string>Save As...</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../../../../res/icons/icons.qrc">
+          <normaloff>:/icons/save_as.lci</normaloff>:/icons/save_as.lci</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pbDeleteMenu">
+        <property name="toolTip">
+         <string>Delete this custom menu</string>
+        </property>
+        <property name="text">
+         <string>Delete</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../../../../res/icons/icons.qrc">
+          <normaloff>:/icons/remove.lci</normaloff>:/icons/remove.lci</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QSplitter" name="splMenu">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="childrenCollapsible">
+      <bool>false</bool>
+     </property>
+     <widget class="QWidget" name="paneActions" native="true">
+      <layout class="QVBoxLayout" name="verticalLayout_actionsPane" stretch="5,0">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="LC_ActionsDualListWidget" name="dualListWidget" native="true">
+         <property name="toolTip">
+          <string>Menu actions list</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lblSingleActionNote">
+         <property name="font">
+          <font>
+           <italic>true</italic>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>Behavior for single-action menus</string>
+         </property>
+         <property name="text">
+          <string>&lt;i&gt;&lt;b&gt;Note:&lt;/b&gt; For single-action menus, popup invocation directly triggers the action instead of showing a menu.&lt;/i&gt;</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="LC_MenuTriggerInspector" name="triggerInspector" native="true">
+      <property name="toolTip">
+       <string>Mouse invocation trigger settings</string>
+      </property>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LC_ActionsDualListWidget</class>
+   <extends>QWidget</extends>
+   <header>lc_actions_dual_list_widget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LC_MenuTriggerInspector</class>
+   <extends>QWidget</extends>
+   <header>lc_menu_trigger_inspector.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../../../../../../res/icons/icons.qrc"/>
+ </resources>
+ <connections/>
+</ui>

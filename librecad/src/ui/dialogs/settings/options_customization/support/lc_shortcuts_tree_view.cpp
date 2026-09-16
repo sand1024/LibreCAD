@@ -20,13 +20,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_shortcutstreeview.h"
+#include "lc_shortcuts_tree_view.h"
 
 #include <QPainter>
 #include <QStyledItemDelegate>
 
-#include "lc_shortcutstreemodel.h"
-#include "lc_shortcuttreeitem.h"
+#include "lc_shortcuts_tree_model.h"
+#include "lc_shortcut_tree_item.h"
 
 class LC_ShortcutsTreeGridDelegate:public QStyledItemDelegate {
 public:
@@ -75,32 +75,6 @@ void LC_ShortcutsTreeView::setup(LC_ShortcutsTreeModel *treeModel) {
     setItemDelegate(delegate);
 }
 
-// todo - duplicated code from LayerTreeView. Most probably, need separate tree widget that supports expanded state
-
-QStringList LC_ShortcutsTreeView::saveTreeExpansionState() const {
-    QStringList treeExpansionState;
-    const LC_ShortcutsTreeModel *treeModel = getTreeModel();
-        for (QModelIndex index : treeModel->getPersistentIndexList()) {
-            if (this->isExpanded(index)){
-                treeExpansionState << index.data(Qt::UserRole).toString();
-            }
-        }
-
-    return treeExpansionState;
-}
-
-/**
- * Restores previously saved state of expanded tree items
- * @brief LC_LayerTreeWidget::restoreTreeExpansionState
- * @param treeExpansionState
- */
-void LC_ShortcutsTreeView::restoreTreeExpansionState(QStringList treeExpansionState){
-    const LC_ShortcutsTreeModel *layerTreeModel = getTreeModel();
-    this->setUpdatesEnabled(false);
-    applyExpandState(treeExpansionState, layerTreeModel->index(0, 0, QModelIndex()));
-    this->setUpdatesEnabled(true);
-    treeExpansionState.clear();
-}
 
 LC_ShortcutsTreeModel *LC_ShortcutsTreeView::getTreeModel() const{
     auto* result = static_cast<LC_ShortcutsTreeModel *>(model());
@@ -123,23 +97,4 @@ void LC_ShortcutsTreeView::expandChildren(const QModelIndex &index){
         // Recursively call the function for each child node.
         expandChildren(child);
     }
-}
-
-/**
- * Utility method for recursive expanding nodes starting from
- * given index based on the list of expanded items
- * @brief LC_LayerTreeWidget::applyExpandState
- * @param expandedItems
- * @param startIndex
- */
-void LC_ShortcutsTreeView::applyExpandState(
-    QStringList &expandedItems, const QModelIndex& startIndex){
-    const LC_ShortcutsTreeModel* treeModel = getTreeModel();
-        for (const QString &item: expandedItems) {
-            QModelIndexList matches = treeModel->match(startIndex, Qt::UserRole, item);
-                for (QModelIndex index: std::as_const(matches)) {
-                    this->setExpanded(index, true);
-                    applyExpandState(expandedItems, treeModel->index(0, 0, index));
-                }
-        }
 }
