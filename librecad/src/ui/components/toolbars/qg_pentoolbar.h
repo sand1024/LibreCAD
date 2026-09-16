@@ -62,6 +62,8 @@ public:
     void setLineType(RS2::LineType lineType) const;
     void emitPenChanged();
 
+    void updateVariableActions(const QList<QAction*>& actions);
+
     void setGraphicView(RS_GraphicView* gview) override;
 
 public

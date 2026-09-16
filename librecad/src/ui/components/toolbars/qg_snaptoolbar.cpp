@@ -28,7 +28,7 @@
 
 #include <QMenu>
 
-#include "lc_actiongroupmanager.h"
+#include "lc_action_group_manager.h"
 #include "lc_settings_snap_state.h"
 #include "lc_snapoptionswidgetsholder.h"
 #include "lc_visual_snap_data.h"

@@ -120,6 +120,22 @@ void QG_PenToolBar::emitPenChanged() {
     emit penChanged(*m_currentPen);
 }
 
+void QG_PenToolBar::updateVariableActions(const QList<QAction*>& actions) {
+    // The first 3 items are the permanent widgets: Color, Width, and LineType boxes.
+    // Clear only the trailing variable actions.
+    const QList<QAction*> currentActions = this->actions();
+    for (int i = 3; i < currentActions.size(); ++i) {
+        removeAction(currentActions.at(i));
+    }
+
+    // Append the new variable actions
+    for (auto* act : actions) {
+        if (act != nullptr) {
+            addAction(act);
+        }
+    }
+}
+
 void QG_PenToolBar::setLayerList(RS_LayerList* ll) {
     if (m_layerList != nullptr) {
         m_layerList->removeListener(this);
