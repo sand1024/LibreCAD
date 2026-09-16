@@ -28,7 +28,7 @@
 
 #include <QAction>
 
-#include "lc_actiongroup.h"
+#include "lc_action_group.h"
 
 ActionList::ActionList(QWidget* parent)
     : QListWidget(parent)
