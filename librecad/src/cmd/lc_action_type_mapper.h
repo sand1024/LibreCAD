@@ -1,4 +1,6 @@
+
 /*******************************************************************************
+ *
  * This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
@@ -19,9 +21,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-//
-// Created by sand1 on 25/06/2026.
-//
+#ifndef LC_ACTION_TYPE_MAPPER_H
+#define LC_ACTION_TYPE_MAPPER_H
 
+#include <QMap>
+#include <QString>
+#include "rs.h"
 
-#include "lc_style_repository_base.h"
+class LC_ActionGroupManager;
+
+class LC_ActionTypeMapper {
+public:
+    explicit LC_ActionTypeMapper(const LC_ActionGroupManager* agm = nullptr);
+    ~LC_ActionTypeMapper() = default;
+
+    void setActionGroupManager(const LC_ActionGroupManager* agm);
+
+    RS2::ActionType actionTypeFromName(const QString& actionName) const;
+    QString actionNameFromType(RS2::ActionType actionType) const;
+
+    bool hasAction(const QString& actionName) const;
+    bool hasActionType(RS2::ActionType actionType) const;
+
+private:
+    void rebuildMap();
+
+    const LC_ActionGroupManager* m_agm{nullptr};
+    QMap<QString, RS2::ActionType> m_nameToType;
+    QMap<RS2::ActionType, QString> m_typeToName;
+};
+
+#endif
