@@ -29,10 +29,10 @@
 
 class QFile;
 
-class LC_IconsStyleRepository : public LC_StyleRepositoryBase<IconStyleConfig> {
+class LC_RepositoryIconsStyle : public LC_PresetRepositoryBase<IconStyleConfig> {
 public:
-    explicit LC_IconsStyleRepository(const QString &configDir)
-        : LC_StyleRepositoryBase<IconStyleConfig>(configDir, ICON_STYLE_EXTENSION, "LibreCAD Icons Style", "icons_index.lcix") {}
+    explicit LC_RepositoryIconsStyle(const QString &configDir)
+        : LC_PresetRepositoryBase<IconStyleConfig>(configDir, ICON_STYLE_EXTENSION, "LibreCAD Icons Style", "icons_index.lcix") {}
 
     QJsonObject configToJson(const IconStyleConfig& config) const override;
     bool configFromJson(const QJsonObject& json, IconStyleConfig& config) const override;

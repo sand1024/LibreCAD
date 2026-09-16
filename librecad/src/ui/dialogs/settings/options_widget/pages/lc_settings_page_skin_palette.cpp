@@ -7,11 +7,10 @@
 #include <QTextEdit>
 
 #include "lc_color_button.h"
-#include "lc_icons_style_repository.h"
 #include "lc_palette_color_utils.h"
 #include "lc_preset_manager_palette.h"
+#include "lc_repository_icons_style.h"
 #include "lc_semantic_colors_ui_helper.h"
-#include "lc_settings_colors_semantics.h"
 #include "lc_ui_style_manager.h"
 #include "qc_applicationwindow.h"
 

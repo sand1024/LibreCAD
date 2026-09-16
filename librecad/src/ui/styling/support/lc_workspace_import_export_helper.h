@@ -28,19 +28,19 @@
 #include "lc_palette_editor_shared.h"
 #include "lc_icons_style_shared.h"
 
-class LC_PaletteRepository;
-class LC_FusionSkinsRepository;
-class LC_IconsStyleRepository;
-class LC_TypographyRepository;
-class LC_MetricsRepository;
+class LC_RepositoryPalette;
+class LC_RepositoryFusionSkin;
+class LC_RepositoryIconsStyle;
+class LC_RepositoryTypography;
+class LC_RepostioryMetrics;
 
 class LC_WorkspaceImportExportHelper {
 public:
-    LC_WorkspaceImportExportHelper(LC_PaletteRepository* paletteRepo,
-                                   LC_FusionSkinsRepository* skinRepo,
-                                   LC_IconsStyleRepository* iconRepo,
-                                   LC_TypographyRepository* typographyRepo,
-                                   LC_MetricsRepository* metricsRepo);
+    LC_WorkspaceImportExportHelper(LC_RepositoryPalette* paletteRepo,
+                                   LC_RepositoryFusionSkin* skinRepo,
+                                   LC_RepositoryIconsStyle* iconRepo,
+                                   LC_RepositoryTypography* typographyRepo,
+                                   LC_RepostioryMetrics* metricsRepo);
 
     // Packages 5 active configurations into a single consolidated .lcws file
     bool exportProfile(const QString& exportFilePath,
@@ -61,11 +61,11 @@ public:
                        QString& outMetricsName) const;
 
 private:
-    LC_PaletteRepository*     m_paletteRepo;
-    LC_FusionSkinsRepository* m_skinRepo;
-    LC_IconsStyleRepository*  m_iconRepo;
-    LC_TypographyRepository*  m_typographyRepo;
-    LC_MetricsRepository*      m_metricsRepo;
+    LC_RepositoryPalette*     m_paletteRepo;
+    LC_RepositoryFusionSkin* m_skinRepo;
+    LC_RepositoryIconsStyle*  m_iconRepo;
+    LC_RepositoryTypography*  m_typographyRepo;
+    LC_RepostioryMetrics*      m_metricsRepo;
 };
 
 #endif

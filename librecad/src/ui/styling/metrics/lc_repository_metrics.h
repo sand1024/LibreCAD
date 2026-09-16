@@ -1,5 +1,6 @@
+
 /*******************************************************************************
-* This file is part of the LibreCAD project, a 2D CAD program
+ * This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
  * Copyright (C) 2026 sand1024
@@ -19,23 +20,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_PALETTE_REPOSITORY_H
-#define LC_PALETTE_REPOSITORY_H
+#ifndef LC_METRICS_REPOSITORY_H
+#define LC_METRICS_REPOSITORY_H
 
-#include "lc_palette_editor_shared.h"
 #include "lc_style_repository_base.h"
 
-class LC_PaletteRepository : public LC_StyleRepositoryBase<PaletteConfig> {
+class LC_RepostioryMetrics : public LC_PresetRepositoryBase<StyleMetricsConfig> {
 public:
-    explicit LC_PaletteRepository(const QString& configDir);
-    ~LC_PaletteRepository() override = default;
+    explicit LC_RepostioryMetrics(const QString& configDir)
+        : LC_PresetRepositoryBase<StyleMetricsConfig>(configDir, METRICS_EXTENSION, METRICS_FILE_IDENTIFIER, "metrics_index.lcix") {}
 
-    QJsonObject configToJson(const PaletteConfig& config) const override;
-    bool configFromJson(const QJsonObject& json, PaletteConfig& config) const override;
-
-private:
-    QJsonObject serializeScheme(const ColorSchemeData& scheme) const;
-    void deserializeScheme(const QJsonObject& json, ColorSchemeData& scheme) const;
+    QJsonObject configToJson(const StyleMetricsConfig& config) const override;
+    bool configFromJson(const QJsonObject& json, StyleMetricsConfig& config) const override;
 };
 
 #endif

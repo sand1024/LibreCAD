@@ -66,10 +66,10 @@ struct LC_ViewportThemeMapEntry {
     }
 };
 
-class LC_ViewportThemeRepository : public LC_StyleRepositoryBase<LC_ViewportThemeConfig> {
+class LC_RepositoryViewportTheme : public LC_PresetRepositoryBase<LC_ViewportThemeConfig> {
 public:
-    LC_ViewportThemeRepository();
-    ~LC_ViewportThemeRepository() override = default;
+    LC_RepositoryViewportTheme();
+    ~LC_RepositoryViewportTheme() override = default;
 
     QJsonObject configToJson(const LC_ViewportThemeConfig& config) const override;
     bool configFromJson(const QJsonObject& json, LC_ViewportThemeConfig& config) const override;

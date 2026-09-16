@@ -22,18 +22,17 @@
 
 #include "lc_style_preset_generator.h"
 
-#include <QDir>
-#include <QSet>
 #include <QRandomGenerator>
+#include <QSet>
 
-#include "lc_fusion_skins_repository.h"
 #include "lc_icons_color_utils.h"
-#include "lc_icons_style_repository.h"
-#include "lc_metrics_repository.h"
+#include "lc_repository_metrics.h"
 #include "lc_palette_color_utils.h"
-#include "lc_palette_repository.h"
+#include "lc_repository_fusion_skin.h"
+#include "lc_repository_icons_style.h"
+#include "lc_repository_palette.h"
 #include "lc_style_metrics_utils.h"
-#include "lc_typography_repository.h"
+#include "lc_repository_typography.h"
 #include "lc_ui_style_manager.h"
 #include "rs_debug.h"
 
@@ -52,11 +51,11 @@ LC_StylePresetGenerator::LC_StylePresetGenerator(const QString& palettesDir,
                                                  const QString& iconsDir,
                                                  const QString& typographyDir,
                                                  const QString& metricsDir) {
-    m_paletteRepo    = std::make_unique<LC_PaletteRepository>(palettesDir);
-    m_skinsRepo      = std::make_unique<LC_FusionSkinsRepository>(skinsDir);
-    m_iconsRepo      = std::make_unique<LC_IconsStyleRepository>(iconsDir);
-    m_typographyRepo = std::make_unique<LC_TypographyRepository>(typographyDir);
-    m_metricsRepo    = std::make_unique<LC_MetricsRepository>(metricsDir);
+    m_paletteRepo    = std::make_unique<LC_RepositoryPalette>(palettesDir);
+    m_skinsRepo      = std::make_unique<LC_RepositoryFusionSkin>(skinsDir);
+    m_iconsRepo      = std::make_unique<LC_RepositoryIconsStyle>(iconsDir);
+    m_typographyRepo = std::make_unique<LC_RepositoryTypography>(typographyDir);
+    m_metricsRepo    = std::make_unique<LC_RepostioryMetrics>(metricsDir);
 }
 
 LC_StylePresetGenerator::~LC_StylePresetGenerator() = default;

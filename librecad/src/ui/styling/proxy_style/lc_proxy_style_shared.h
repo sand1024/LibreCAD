@@ -399,6 +399,7 @@ constexpr auto PROP_IS_DOCK_TITLE_BUTTON     = "lcfs_isDockTitleButton";
 constexpr auto PROP_IS_WINDOW_TITLE_BUTTON   = "lcfs_isWindowTitleButton";
 constexpr auto PROP_GROUP_NEIGHBORS          = "groupNeighbors";
 
+constexpr auto PROP_CMD_LINE = "cmdLine";
 
 constexpr auto PROP_HOVERED_GROUP_ID         = "lcfs_hoveredGroupId";
 constexpr auto PROP_LINK_ACTIVE_HOVER        = "lcfs_linkActiveHover";

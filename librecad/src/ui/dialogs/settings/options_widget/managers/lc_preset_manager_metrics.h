@@ -2,10 +2,10 @@
 #define LC_PRESET_MANAGER_METRICS_H
 
 #include "lc_metrics_density_header_bar.h"
-#include "lc_metrics_repository.h"
+#include "lc_repository_metrics.h"
 #include "lc_preset_manager_base.h"
 
-class LC_PresetManagerMetrics : public LC_PresetManagerBase<StyleMetricsConfig, LC_MetricsRepository> {
+class LC_PresetManagerMetrics : public LC_PresetManagerBase<StyleMetricsConfig, LC_RepostioryMetrics> {
     Q_OBJECT
 
 public:

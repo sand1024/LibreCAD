@@ -19,9 +19,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_typography_repository.h"
+#include "lc_repository_typography.h"
 
-QJsonObject LC_TypographyRepository::configToJson(const FontConfig& config) const {
+QJsonObject LC_RepositoryTypography::configToJson(const FontConfig& config) const {
     QJsonObject root;
 
     root["type"] = m_fileIdentifier;
@@ -53,7 +53,7 @@ QJsonObject LC_TypographyRepository::configToJson(const FontConfig& config) cons
     return root;
 }
 
-bool LC_TypographyRepository::configFromJson(const QJsonObject& json, FontConfig& config) const {
+bool LC_RepositoryTypography::configFromJson(const QJsonObject& json, FontConfig& config) const {
     config.mainFamily = json["mainFamily"].toString();
     config.mainSize   = json["mainSize"].toInt(10);
     config.techFamily = json["techFamily"].toString();

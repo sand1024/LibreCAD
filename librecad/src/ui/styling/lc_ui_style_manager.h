@@ -29,11 +29,11 @@
 
 // Forward declarations
 class QC_ApplicationWindow;
-class LC_PaletteRepository;
-class LC_FusionSkinsRepository;
-class LC_IconsStyleRepository;
-class LC_TypographyRepository;
-class LC_MetricsRepository;
+class LC_RepositoryPalette;
+class LC_RepositoryFusionSkin;
+class LC_RepositoryIconsStyle;
+class LC_RepositoryTypography;
+class LC_RepostioryMetrics;
 class LC_WorkspaceImportExportHelper;
 class LC_CustomStyleHelper;
 class LC_IconColorsOptions;
@@ -99,12 +99,19 @@ public:
     void saveIconColorsOptions(LC_IconColorsOptions &options) const;
 
     // --- Repository & Helper Accessors ---
-    LC_PaletteRepository* getPaletteRepository() const { return m_paletteRepository.get(); }
-    LC_FusionSkinsRepository* getSkinsRepository() const { return m_fusionSkinsRepository.get(); }
-    LC_IconsStyleRepository* getIconsStyleRepository() const { return m_iconStylesRepository.get(); }
-    LC_TypographyRepository* getTypographyRepository() const { return m_typographyRepository.get(); }
-    LC_MetricsRepository* getMetricsRepository() const { return m_metricsRepository.get(); }
+    LC_RepositoryPalette* getPaletteRepository() const { return m_paletteRepository.get(); }
+    LC_RepositoryFusionSkin* getSkinsRepository() const { return m_fusionSkinsRepository.get(); }
+    LC_RepositoryIconsStyle* getIconsStyleRepository() const { return m_iconStylesRepository.get(); }
+    LC_RepositoryTypography* getTypographyRepository() const { return m_typographyRepository.get(); }
+    LC_RepostioryMetrics* getMetricsRepository() const { return m_metricsRepository.get(); }
     LC_WorkspaceImportExportHelper* getImportExportHelper() const { return m_importExportHelper.get(); }
+
+    bool isCurrentActiveStyleFusion() const {
+        const bool stylingAllowed = isStyleAllowed();
+        const auto currentStyleName = getActiveStyle();
+        const bool currentThemeIsFusion = stylingAllowed && (currentStyleName == "Fusion");
+        return currentThemeIsFusion;
+    }
 
     // --- High-Level Theme & Style Application Actions ---
     bool applyThemeToApplication(const PaletteConfig &paletteConfig,
@@ -160,11 +167,11 @@ private:
 
 
     std::unique_ptr<LC_CustomStyleHelper>           m_customStyleHelper;
-    std::unique_ptr<LC_PaletteRepository>           m_paletteRepository;
-    std::unique_ptr<LC_FusionSkinsRepository>       m_fusionSkinsRepository;
-    std::unique_ptr<LC_IconsStyleRepository>        m_iconStylesRepository;
-    std::unique_ptr<LC_TypographyRepository>        m_typographyRepository;
-    std::unique_ptr<LC_MetricsRepository>           m_metricsRepository;
+    std::unique_ptr<LC_RepositoryPalette>           m_paletteRepository;
+    std::unique_ptr<LC_RepositoryFusionSkin>       m_fusionSkinsRepository;
+    std::unique_ptr<LC_RepositoryIconsStyle>        m_iconStylesRepository;
+    std::unique_ptr<LC_RepositoryTypography>        m_typographyRepository;
+    std::unique_ptr<LC_RepostioryMetrics>           m_metricsRepository;
     std::unique_ptr<LC_WorkspaceImportExportHelper> m_importExportHelper;
 };
 

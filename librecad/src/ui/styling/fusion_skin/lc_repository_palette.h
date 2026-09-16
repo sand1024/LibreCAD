@@ -1,5 +1,5 @@
 /*******************************************************************************
- * This file is part of the LibreCAD project, a 2D CAD program
+* This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
  * Copyright (C) 2026 sand1024
@@ -19,19 +19,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_FUSION_PALETTES_REPOSITORY_H
-#define LC_FUSION_PALETTES_REPOSITORY_H
+#ifndef LC_PALETTE_REPOSITORY_H
+#define LC_PALETTE_REPOSITORY_H
 
 #include "lc_palette_editor_shared.h"
 #include "lc_style_repository_base.h"
 
-class LC_FusionSkinsRepository : public LC_StyleRepositoryBase<ControlStyleConfig> {
+class LC_RepositoryPalette : public LC_PresetRepositoryBase<PaletteConfig> {
 public:
-    explicit LC_FusionSkinsRepository(const QString &configDir)
-        : LC_StyleRepositoryBase<ControlStyleConfig>(configDir, SKIN_EXTENSION, SKIN_FILE_IDENTIFIER, "skins_index.lcix") {}
+    explicit LC_RepositoryPalette(const QString& configDir);
+    ~LC_RepositoryPalette() override = default;
 
-    QJsonObject configToJson(const ControlStyleConfig& config) const override;
-    bool configFromJson(const QJsonObject& json, ControlStyleConfig& config) const override;
+    QJsonObject configToJson(const PaletteConfig& config) const override;
+    bool configFromJson(const QJsonObject& json, PaletteConfig& config) const override;
+
+private:
+    QJsonObject serializeScheme(const ColorSchemeData& scheme) const;
+    void deserializeScheme(const QJsonObject& json, ColorSchemeData& scheme) const;
 };
 
 #endif

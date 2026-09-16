@@ -28,15 +28,15 @@
 #include "lc_palette_color_utils.h"
 #include "lc_icons_style_manager.h"
 #include "lc_proxy_style.h"
-#include "lc_fusion_skins_repository.h"
-#include "lc_icons_style_repository.h"
-#include "lc_metrics_repository.h"
+#include "lc_repository_fusion_skin.h"
+#include "lc_repository_icons_style.h"
+#include "lc_repository_metrics.h"
+#include "lc_repository_palette.h"
+#include "lc_repository_typography.h"
 #include "lc_settings_app_styling.h"
 #include "lc_settings_paths.h"
 #include "lc_settings_types.h"
-#include "lc_palette_repository.h"
 #include "lc_style_metrics_utils.h"
-#include "lc_typography_repository.h"
 #include "lc_typography_utils.h"
 #include "lc_workspace_import_export_helper.h"
 #include "qc_applicationwindow.h"
@@ -73,17 +73,11 @@ QString LC_UIStyleManager::getStyleConfigurationBaseDir() const {
 void LC_UIStyleManager::initializeRepositories() {
     const QString baseDir = getStyleConfigurationBaseDir();
 
-    m_paletteRepository     = std::make_unique<LC_PaletteRepository>(baseDir + "/palettes");
-    m_fusionSkinsRepository = std::make_unique<LC_FusionSkinsRepository>(baseDir + "/skins");
-    m_iconStylesRepository  = std::make_unique<LC_IconsStyleRepository>(baseDir + "/icons");
-    m_typographyRepository  = std::make_unique<LC_TypographyRepository>(baseDir + "/typography");
-    m_metricsRepository     = std::make_unique<LC_MetricsRepository>(baseDir + "/metrics");
-
-    m_paletteRepository->initializeIndex();
-    m_fusionSkinsRepository->initializeIndex();
-    m_iconStylesRepository->initializeIndex();
-    m_typographyRepository->initializeIndex();
-    m_metricsRepository->initializeIndex();
+    m_paletteRepository     = std::make_unique<LC_RepositoryPalette>(baseDir + "/palettes");
+    m_fusionSkinsRepository = std::make_unique<LC_RepositoryFusionSkin>(baseDir + "/skins");
+    m_iconStylesRepository  = std::make_unique<LC_RepositoryIconsStyle>(baseDir + "/icons");
+    m_typographyRepository  = std::make_unique<LC_RepositoryTypography>(baseDir + "/typography");
+    m_metricsRepository     = std::make_unique<LC_RepostioryMetrics>(baseDir + "/metrics");
 }
 
 void LC_UIStyleManager::reloadStyleConfiguration() {

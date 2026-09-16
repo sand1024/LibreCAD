@@ -25,7 +25,7 @@
 #include <QGuiApplication>
 #include <QPalette>
 #include <QPixmapCache>
-#include "lc_icons_style_repository.h"
+#include "lc_repository_icons_style.h"
 #include "lc_icon_colors_options.h"
 #include "lc_icons_color_utils.h"
 #include "lc_palette_color_utils.h"
@@ -43,7 +43,7 @@ void LC_IconsStyleManager::applyThemeLinkedIcons(const QString &linkedStyleName,
 
     // Load the linked style if a custom folder and style are specified [3]
     if (!iconsDir.isEmpty() && !linkedStyleName.isEmpty() && linkedStyleName != "Default") {
-        LC_IconsStyleRepository iconRepo(iconsDir);
+        LC_RepositoryIconsStyle iconRepo(iconsDir);
         IconStyleConfig iconStyle;
         if (iconRepo.loadByKey(linkedStyleName, iconStyle)) {
             LC_IconColorsOptions iconOptions;

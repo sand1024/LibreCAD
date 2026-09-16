@@ -22,10 +22,10 @@
 #ifndef LC_PRESET_MANAGER_PALETTE_H
 #define LC_PRESET_MANAGER_PALETTE_H
 
-#include "lc_palette_repository.h"
+#include "lc_repository_palette.h"
 #include "lc_preset_manager_base.h"
 
-class LC_PresetManagerPalette : public LC_PresetManagerBase<PaletteConfig, LC_PaletteRepository> {
+class LC_PresetManagerPalette : public LC_PresetManagerBase<PaletteConfig, LC_RepositoryPalette> {
     Q_OBJECT
 
 public:

@@ -104,10 +104,8 @@ public:
         if (key == m_originalActiveKey) {
             return false;
         }
-        return m_repository->removeByKey(key);
+        return doDeletePreset(key);
     }
-
-
 
     // --- Preview Controller Wiring ---
     void setPreviewController(LC_StylingPreviewController* controller) override {
@@ -137,6 +135,11 @@ public:
 protected:
     virtual void updatePreview() {}
     virtual void resetToDefaults(TConfig& config) = 0;
+
+    bool doDeletePreset(const QString& key) override {
+        const bool ok = m_repository->removeByKey(key);
+        return ok;
+    }
 
     TConfig m_workingConfig;
     TRepo* m_repository = nullptr;

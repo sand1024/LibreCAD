@@ -19,12 +19,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_palette_repository.h"
+#include "lc_repository_palette.h"
 
-LC_PaletteRepository::LC_PaletteRepository(const QString& configDir)
-    : LC_StyleRepositoryBase<PaletteConfig>(configDir, PALETTE_EXTENSION, PALETTE_FILE_IDENTIFIER, "palettes_index.lcix") {}
+LC_RepositoryPalette::LC_RepositoryPalette(const QString& configDir)
+    : LC_PresetRepositoryBase<PaletteConfig>(configDir, PALETTE_EXTENSION, PALETTE_FILE_IDENTIFIER, "palettes_index.lcix") {}
 
-QJsonObject LC_PaletteRepository::serializeScheme(const ColorSchemeData& scheme) const {
+QJsonObject LC_RepositoryPalette::serializeScheme(const ColorSchemeData& scheme) const {
     QJsonObject obj;
     obj["qss"] = scheme.qss;
     obj["contrast_policy"] = static_cast<int>(scheme.contrastPolicy);
@@ -51,7 +51,7 @@ QJsonObject LC_PaletteRepository::serializeScheme(const ColorSchemeData& scheme)
     return obj;
 }
 
-void LC_PaletteRepository::deserializeScheme(const QJsonObject& json, ColorSchemeData& scheme) const {
+void LC_RepositoryPalette::deserializeScheme(const QJsonObject& json, ColorSchemeData& scheme) const {
     scheme.qss = json["qss"].toString();
     scheme.contrastPolicy = static_cast<ContrastPolicy>(json["contrast_policy"].toInt(static_cast<int>(ContrastPolicy::Standard)));
     scheme.contrastWeight = static_cast<ContrastWeight>(json["contrast_weight"].toInt(static_cast<int>(ContrastWeight::Balanced)));
@@ -74,7 +74,7 @@ void LC_PaletteRepository::deserializeScheme(const QJsonObject& json, ColorSchem
     }
 }
 
-QJsonObject LC_PaletteRepository::configToJson(const PaletteConfig& config) const {
+QJsonObject LC_RepositoryPalette::configToJson(const PaletteConfig& config) const {
     QJsonObject root;
     root["name"] = config.name;
     root["linked_icon_style"] = config.linkedIconStyleName;
@@ -84,7 +84,7 @@ QJsonObject LC_PaletteRepository::configToJson(const PaletteConfig& config) cons
     return root;
 }
 
-bool LC_PaletteRepository::configFromJson(const QJsonObject& json, PaletteConfig& config) const {
+bool LC_RepositoryPalette::configFromJson(const QJsonObject& json, PaletteConfig& config) const {
     config.name = json["name"].toString();
     config.linkedIconStyleName = json["linked_icon_style"].toString("Default");
     config.useThemeDefaultIcons = json["use_theme_default_icons"].toBool(false);

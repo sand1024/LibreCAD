@@ -25,18 +25,18 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
-#include "lc_palette_repository.h"
-#include "lc_fusion_skins_repository.h"
-#include "lc_icons_style_repository.h"
-#include "lc_typography_repository.h"
-#include "lc_metrics_repository.h"
+#include "lc_repository_fusion_skin.h"
+#include "lc_repository_icons_style.h"
+#include "lc_repository_metrics.h"
+#include "lc_repository_palette.h"
+#include "lc_repository_typography.h"
 
 LC_WorkspaceImportExportHelper::LC_WorkspaceImportExportHelper(
-    LC_PaletteRepository* paletteRepo,
-    LC_FusionSkinsRepository* skinRepo,
-    LC_IconsStyleRepository* iconRepo,
-    LC_TypographyRepository* typographyRepo,
-    LC_MetricsRepository* metricsRepo)
+    LC_RepositoryPalette* paletteRepo,
+    LC_RepositoryFusionSkin* skinRepo,
+    LC_RepositoryIconsStyle* iconRepo,
+    LC_RepositoryTypography* typographyRepo,
+    LC_RepostioryMetrics* metricsRepo)
     : m_paletteRepo(paletteRepo)
     , m_skinRepo(skinRepo)
     , m_iconRepo(iconRepo)

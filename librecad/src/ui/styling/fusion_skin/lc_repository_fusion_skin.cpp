@@ -19,25 +19,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_fusion_skins_repository.h"
+#include "lc_repository_fusion_skin.h"
 
-#include <QApplication>
-#include <QDir>
-#include <QFile>
-#include <QFont>
-#include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonValue>
-#include <QPixmapCache>
-#include <QRegularExpression>
-#include <QSettings>
-#include <QStyle>
-#include <QStyleFactory>
 
 #include "lc_proxy_style.h"
-#include "rs_system.h"
 
-QJsonObject LC_FusionSkinsRepository::configToJson(const ControlStyleConfig& config) const {
+QJsonObject LC_RepositoryFusionSkin::configToJson(const ControlStyleConfig& config) const {
     QJsonObject root;
     root["name"] = config.name;
     root["style_archetype"] = static_cast<int>(config.styleArchetype);
@@ -97,7 +86,7 @@ QJsonObject LC_FusionSkinsRepository::configToJson(const ControlStyleConfig& con
     return root;
 }
 
-bool LC_FusionSkinsRepository::configFromJson(const QJsonObject& json, ControlStyleConfig& config) const {
+bool LC_RepositoryFusionSkin::configFromJson(const QJsonObject& json, ControlStyleConfig& config) const {
     config.name = json["name"].toString();
     config.styleArchetype = static_cast<StyleArchetype>(json["style_archetype"].toInt(static_cast<int>(StyleArchetype::ClassicFusion)));
     config.boxDecoration  = static_cast<BoxDecoration>(json["box_decoration"].toInt(static_cast<int>(BoxDecoration::DividingHairline)));

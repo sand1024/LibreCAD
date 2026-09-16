@@ -25,18 +25,18 @@
 #include <QStyleFactory>
 #include <QTabWidget>
 #include "lc_caddockwidget.h"
-#include "lc_fusion_skins_repository.h"
-#include "lc_metrics_repository.h"
-#include "lc_palette_repository.h"
 #include "lc_preset_manager_icons_style.h"
 #include "lc_proxy_style.h"
+#include "lc_repository_fusion_skin.h"
+#include "lc_repository_metrics.h"
+#include "lc_repository_palette.h"
+#include "lc_repository_typography.h"
 #include "lc_setting.h"
 #include "lc_settings_colors_semantics.h"
 #include "lc_settings_page_interface.h"
 #include "lc_skin_preview_window.h"
 #include "lc_style_metrics_utils.h"
 #include "lc_styling_preview_bottom_bar.h"
-#include "lc_typography_repository.h"
 #include "lc_typography_utils.h"
 #include "lc_ui_style_manager.h"
 

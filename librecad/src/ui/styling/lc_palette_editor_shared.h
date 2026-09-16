@@ -444,19 +444,7 @@ inline void forEachRoleState(Functor func) {
     processList(BEVEL_HELPER_ROLES);
 }
 
-struct IndexEntry {
-    QString displayName;
-    QString lastModified; // ISO 8601 string
-};
-typedef QMap<QString, IndexEntry> StyleIndexMap;
 
-class LC_RepositoryBase {  // fixme - sand - move to separate file and directory
-public:
-    virtual ~LC_RepositoryBase() = default;
-    virtual bool exists(const QString& name) const = 0;
-    virtual bool removeByKey(const QString& name) = 0;
-    virtual QStringList getAvailableNames() = 0;
-    virtual QList<QPair<QString, QString>> getPresetChoices() const = 0;
-};
+
 
 #endif

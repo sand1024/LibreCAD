@@ -40,11 +40,9 @@
 #include <QVBoxLayout>
 
 #include "lc_caddockwidget.h"
-#include "lc_dlg_widget_creator.h"
 #include "lc_dockwidget.h"
 #include "lc_highlight_overlay.h"
 #include "lc_proxy_style.h"
-#include "lc_settings_colors_semantics.h"
 #include "lc_settings_startup.h"
 #include "lc_settings_widget.h"
 #include "ui_lc_skin_preview_window.h"

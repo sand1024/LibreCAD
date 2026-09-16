@@ -44,10 +44,10 @@
 #define LC_PRESET_MANAGER_ICONS_STYLE_H
 
 #include "lc_icon_colors_options.h"
-#include "lc_icons_style_repository.h"
+#include "lc_repository_icons_style.h"
 #include "lc_preset_manager_base.h"
 
-class LC_PresetManagerIconsStyle : public LC_PresetManagerBase<IconStyleConfig, LC_IconsStyleRepository> {
+class LC_PresetManagerIconsStyle : public LC_PresetManagerBase<IconStyleConfig, LC_RepositoryIconsStyle> {
     Q_OBJECT
 
 public:

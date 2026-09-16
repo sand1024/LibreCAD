@@ -2,9 +2,9 @@
 #define LC_PRESET_MANAGER_TYPOGRAPHY_H
 
 #include "lc_preset_manager_base.h"
-#include "lc_typography_repository.h"
+#include "lc_repository_typography.h"
 
-class LC_PresetManagerTypography : public LC_PresetManagerBase<FontConfig, LC_TypographyRepository> {
+class LC_PresetManagerTypography : public LC_PresetManagerBase<FontConfig, LC_RepositoryTypography> {
     Q_OBJECT
 
 public:

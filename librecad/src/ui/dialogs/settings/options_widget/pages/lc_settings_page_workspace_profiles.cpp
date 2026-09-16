@@ -25,11 +25,11 @@
 #include <QInputDialog>
 #include <QMessageBox>
 #include "lc_dlg_styles_presets_generator.h"
-#include "lc_fusion_skins_repository.h"
-#include "lc_icons_style_repository.h"
-#include "lc_metrics_repository.h"
-#include "lc_palette_repository.h"
-#include "lc_typography_repository.h"
+#include "lc_repository_fusion_skin.h"
+#include "lc_repository_icons_style.h"
+#include "lc_repository_metrics.h"
+#include "lc_repository_palette.h"
+#include "lc_repository_typography.h"
 #include "lc_ui_style_manager.h"
 #include "lc_workspace_import_export_helper.h"
 #include "qc_applicationwindow.h"

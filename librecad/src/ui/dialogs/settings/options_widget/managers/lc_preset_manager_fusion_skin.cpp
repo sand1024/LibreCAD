@@ -1,6 +1,5 @@
 #include "lc_preset_manager_fusion_skin.h"
 
-#include "lc_fusion_skins_repository.h"
 #include "lc_palette_color_utils.h"
 #include "lc_settings_manager_styling.h"
 #include "lc_skin_archetype_header_bar.h"

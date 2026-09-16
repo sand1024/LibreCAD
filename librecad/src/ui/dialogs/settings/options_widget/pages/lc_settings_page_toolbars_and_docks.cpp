@@ -30,7 +30,7 @@
 #include "lc_settings_startup.h"
 #include "lc_settings_widget.h"
 #include "lc_styling_preview_controller.h"
-#include "lc_widgetfactory.h"
+#include "lc_widget_factory.h"
 #include "qc_applicationwindow.h"
 
 LC_SettingsPageToolbarsAndDocks::LC_SettingsPageToolbarsAndDocks(QObject* parent)
@@ -103,6 +103,11 @@ void LC_SettingsPageToolbarsAndDocks::loadSettings() {
     LC_SettingsPageBase::loadSettings();
     m_blockSignals = false;
 
+    // Explicitly synchronize dependent controls after binder load (since signals were blocked)
+    ui->sbToolbarIconSize->setEnabled(ui->cbAllowToolbarIconSize->isChecked());
+    ui->sbStatusbarHeight->setEnabled(ui->cbAllowStatusbarHeight->isChecked());
+    ui->sbStatusbarFontSize->setEnabled(ui->cbAllowStatusbarFontSize->isChecked());
+
     updateLivePreview();
 }
 
@@ -111,10 +116,9 @@ bool LC_SettingsPageToolbarsAndDocks::saveSettings() {
     if (success) {
         const auto& appWindow = QC_ApplicationWindow::getAppWindow();
         if (appWindow != nullptr) {
-            if (ui->cbAllowToolbarIconSize->isChecked()) {
-                const int size = ui->sbToolbarIconSize->value();
-                appWindow->setIconSize(QSize(size, size));
-            }
+            appWindow->updateToolbarsIconSize(ui->cbAllowToolbarIconSize->isChecked(),
+                                              ui->sbToolbarIconSize->value());
+
             if (ui->cbAllowStatusbarFontSize->isChecked()) {
                 QFont font;
                 font.setPointSize(ui->sbStatusbarFontSize->value());
@@ -133,6 +137,7 @@ bool LC_SettingsPageToolbarsAndDocks::saveSettings() {
     }
     return success;
 }
+
 
 void LC_SettingsPageToolbarsAndDocks::onControlChanged() {
     if (m_blockSignals) {

@@ -19,40 +19,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_viewport_theme_repository.h"
+#include "lc_repository_viewport_theme.h"
 
-#include <QCheckBox>
-#include <QDialog>
-#include <QDialogButtonBox>
-#include <QMessageBox>
-#include <QVBoxLayout>
-
-#include "lc_settings_appearance.h"
 #include "lc_settings_app_styling.h"
-#include "lc_settings_colors.h"
-#include "lc_settings_defaults.h"
-#include "lc_settings_grid.h"
-#include "lc_settings_info_overlay_cursor.h"
-#include "lc_settings_relative_position_assistant.h"
-#include "lc_settings_render.h"
-#include "lc_settings_snap.h"
-#include "lc_settings_snap_visual.h"
 #include "lc_settings_types.h"
 #include "rs_system.h"
-#include "rs_settings.h"
 
- // namespace
+// namespace
 
-LC_ViewportThemeRepository::LC_ViewportThemeRepository()
-    : LC_StyleRepositoryBase<LC_ViewportThemeConfig>(RS_System::instance()->getAppDataDir() + "/themes", ".theme.json", "viewport_theme",
+LC_RepositoryViewportTheme::LC_RepositoryViewportTheme()
+    : LC_PresetRepositoryBase<LC_ViewportThemeConfig>(RS_System::instance()->getAppDataDir() + "/themes", ".theme.json", "viewport_theme",
                                                      "themes_index.json") { // fixme - fixme filesystem
 }
 
-QJsonObject LC_ViewportThemeRepository::configToJson(const LC_ViewportThemeConfig& config) const {
+QJsonObject LC_RepositoryViewportTheme::configToJson(const LC_ViewportThemeConfig& config) const {
     return config.rootObject;
 }
 
-bool LC_ViewportThemeRepository::configFromJson(const QJsonObject& json, LC_ViewportThemeConfig& config) const {
+bool LC_RepositoryViewportTheme::configFromJson(const QJsonObject& json, LC_ViewportThemeConfig& config) const {
     config.rootObject = json;
     return true;
 }

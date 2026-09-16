@@ -24,9 +24,9 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
-#include "lc_fusion_skins_repository.h"
-#include "lc_icons_style_repository.h"
-#include "lc_palette_repository.h"
+#include "lc_repository_fusion_skin.h"
+#include "lc_repository_icons_style.h"
+#include "lc_repository_palette.h"
 #include "lc_style_preset_generator.h"
 #include "lc_ui_style_manager.h"
 

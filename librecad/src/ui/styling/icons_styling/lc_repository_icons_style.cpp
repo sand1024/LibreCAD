@@ -19,7 +19,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_icons_style_repository.h"
+#include "lc_repository_icons_style.h"
 #include <QDir>
 #include <QFile>
 #include <QJsonDocument>
@@ -115,7 +115,7 @@ namespace {
 }
 
 
-QJsonObject LC_IconsStyleRepository::configToJson(const IconStyleConfig& config) const {
+QJsonObject LC_RepositoryIconsStyle::configToJson(const IconStyleConfig& config) const {
     QJsonObject root;
     root["type"] = m_fileIdentifier;
     root["auto_calculate_states"] = config.autoCalculateStates;
@@ -157,7 +157,7 @@ QJsonObject LC_IconsStyleRepository::configToJson(const IconStyleConfig& config)
     return root;
 }
 
-bool LC_IconsStyleRepository::configFromJson(const QJsonObject& json, IconStyleConfig& config) const {
+bool LC_RepositoryIconsStyle::configFromJson(const QJsonObject& json, IconStyleConfig& config) const {
     config.autoCalculateStates = json["auto_calculate_states"].toBool(true);
 
     auto deserializeScheme = [this](const QJsonObject &obj, IconSchemeConfig &scheme) {

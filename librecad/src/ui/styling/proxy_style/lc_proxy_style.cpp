@@ -113,9 +113,6 @@ namespace {
 
     // LibreCAD Core / Standard Qt Properties
     constexpr auto PROP_DO_HOVER_ROW = "_doHoverRow";
-
-    constexpr auto PROP_CMD_LINE = "cmdLine";
-
     constexpr auto PROP_SPINBOX_PTR = "lcfs_spinbox_ptr";
     constexpr auto PROP_SPINBOX_VALUE = "value";
     constexpr auto PROP_SPINBOX_MIN = "minimum";

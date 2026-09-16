@@ -1,4 +1,3 @@
-
 /*******************************************************************************
  * This file is part of the LibreCAD project, a 2D CAD program
  *
@@ -20,18 +19,19 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_TYPOGRAPHYREPOSITORY_H
-#define LC_TYPOGRAPHYREPOSITORY_H
+#ifndef LC_FUSION_PALETTES_REPOSITORY_H
+#define LC_FUSION_PALETTES_REPOSITORY_H
 
+#include "lc_palette_editor_shared.h"
 #include "lc_style_repository_base.h"
 
-class LC_TypographyRepository : public LC_StyleRepositoryBase<FontConfig> {
+class LC_RepositoryFusionSkin : public LC_PresetRepositoryBase<ControlStyleConfig> {
 public:
-    explicit LC_TypographyRepository(const QString& configDir)
-        : LC_StyleRepositoryBase<FontConfig>(configDir, FONT_EXTENSION, FONT_FILE_IDENTIFIER, "fonts_index.lcix") {}
+    explicit LC_RepositoryFusionSkin(const QString &configDir)
+        : LC_PresetRepositoryBase<ControlStyleConfig>(configDir, SKIN_EXTENSION, SKIN_FILE_IDENTIFIER, "skins_index.lcix") {}
 
-    QJsonObject configToJson(const FontConfig& config) const override;
-    bool configFromJson(const QJsonObject& json, FontConfig& config) const override;
+    QJsonObject configToJson(const ControlStyleConfig& config) const override;
+    bool configFromJson(const QJsonObject& json, ControlStyleConfig& config) const override;
 };
 
 #endif

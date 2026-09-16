@@ -27,13 +27,13 @@
 #include "lc_palette_editor_shared.h"
 #include "lc_preset_manager_base.h"
 #include "lc_preset_manager_interface.h"
-#include "lc_fusion_skins_repository.h"
+#include "lc_repository_fusion_skin.h"
 
 class LC_UIStyleManager;
-class LC_FusionSkinsRepository;
+class LC_RepositoryFusionSkin;
 class LC_SkinArchetypeHeaderBar;
 
-class LC_PresetManagerFusionSkin : public LC_PresetManagerBase<ControlStyleConfig, LC_FusionSkinsRepository>  {
+class LC_PresetManagerFusionSkin : public LC_PresetManagerBase<ControlStyleConfig, LC_RepositoryFusionSkin>  {
     Q_OBJECT
 
 public:

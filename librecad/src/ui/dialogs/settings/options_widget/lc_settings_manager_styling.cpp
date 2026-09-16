@@ -58,7 +58,7 @@ void LC_SettingsManagerStyling::initialize() {
     auto* reg = LC_SettingsRegistry::instance();
     const QString targetDialog = DLG_STYLING_PREFERENCES;
 
-    reg->configureDialog(targetDialog, {QObject::tr("Application Styling"), true, true});
+    reg->configureDialog(targetDialog, {QObject::tr("Application Styling"), true, true, ":/icons/options_styling.lci"});
 
     // 1. Preset Managers Registration
     reg->registerPresetManager(targetDialog, PAGE_STYLING_TYPOGRAPHY, []() {

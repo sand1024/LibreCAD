@@ -20,10 +20,9 @@
  ******************************************************************************/
 
 
-#include "lc_metrics_repository.h"
+#include "lc_repository_metrics.h"
 
-
-QJsonObject LC_MetricsRepository::configToJson(const StyleMetricsConfig& config) const {
+QJsonObject LC_RepostioryMetrics::configToJson(const StyleMetricsConfig& config) const {
     QJsonObject root;
 
     root["scrollBarWidth"] = config.scrollBarWidth;
@@ -81,7 +80,7 @@ QJsonObject LC_MetricsRepository::configToJson(const StyleMetricsConfig& config)
     return root;
 }
 
-bool LC_MetricsRepository::configFromJson(const QJsonObject& json, StyleMetricsConfig& config) const {
+bool LC_RepostioryMetrics::configFromJson(const QJsonObject& json, StyleMetricsConfig& config) const {
 
     config.scrollBarWidth = json["scrollBarWidth"].toInt(12);
     config.treeIndentation = json["treeIndentation"].toInt(12);

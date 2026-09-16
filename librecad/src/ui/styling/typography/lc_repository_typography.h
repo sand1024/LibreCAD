@@ -20,18 +20,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_METRICS_REPOSITORY_H
-#define LC_METRICS_REPOSITORY_H
+#ifndef LC_TYPOGRAPHYREPOSITORY_H
+#define LC_TYPOGRAPHYREPOSITORY_H
 
 #include "lc_style_repository_base.h"
 
-class LC_MetricsRepository : public LC_StyleRepositoryBase<StyleMetricsConfig> {
+class LC_RepositoryTypography : public LC_PresetRepositoryBase<FontConfig> {
 public:
-    explicit LC_MetricsRepository(const QString& configDir)
-        : LC_StyleRepositoryBase<StyleMetricsConfig>(configDir, METRICS_EXTENSION, METRICS_FILE_IDENTIFIER, "metrics_index.lcix") {}
+    explicit LC_RepositoryTypography(const QString& configDir)
+        : LC_PresetRepositoryBase<FontConfig>(configDir, FONT_EXTENSION, FONT_FILE_IDENTIFIER, "fonts_index.lcix") {}
 
-    QJsonObject configToJson(const StyleMetricsConfig& config) const override;
-    bool configFromJson(const QJsonObject& json, StyleMetricsConfig& config) const override;
+    QJsonObject configToJson(const FontConfig& config) const override;
+    bool configFromJson(const QJsonObject& json, FontConfig& config) const override;
 };
 
 #endif
