@@ -19,15 +19,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#ifndef LC_SETTINGS_APPEARANCE_H
-#define LC_SETTINGS_APPEARANCE_H
+#ifndef LC_SETTINGS_APPSTATE_H
+#define LC_SETTINGS_APPSTATE_H
 
-#include "dxf_format.h"
+#include "lc_palette_editor_shared.h"
 #include "lc_setting.h"
-#include "rs.h"
-
 
 namespace CFG_AppState {
+    inline const LC_SettingsGroupBase Group("AppState");
+
+    inline const LC_Setting<QString> o_ActiveShortcutsScheme(&Group, "ActiveShortcutsScheme", DEFAULT_THEME_KEY);
+    inline const LC_Setting<QString> o_ActiveContextMenusScheme(&Group, "ActiveContextMenusScheme", DEFAULT_THEME_KEY);
+    inline const LC_Setting<QString> o_ActiveNavigationLayoutScheme(&Group, "ActiveNavigationLayoutScheme", DEFAULT_THEME_KEY);
+    inline const LC_Setting<QString> o_ActiveCommandsScheme(&Group, "ActiveCommandsScheme", DEFAULT_THEME_KEY);
+
+    inline const LC_Setting<bool>    o_KeycodeMode(&Group, "CmdWidgetKeyMode", false);
+
+
 }
 
 #endif

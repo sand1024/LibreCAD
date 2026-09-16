@@ -42,7 +42,6 @@ namespace CFG_Paths {
     inline const LC_Setting<QString> o_OtherSettingsDir(&Group, "OtherSettingsDir", RS_System::instance()->getAppDataDir().trimmed()); // fixme - rework, one may be not intitialized?
     inline const LC_Setting<QString> o_ExportSettingsDir(&Group, "ExportSettingsDir", RS_SYSTEM->getHomeDir());
 
-
     inline const LC_Setting<QString> o_Save(&Group, "Save", QDir::toNativeSeparators(QDir::homePath()));
     inline const LC_Setting<QString> o_SaveDrawingFilter(&Group, "SaveDrawingFilter",  "Drawing Exchange DXF 2007 (*.dxf)");
     inline const LC_Setting<QString> o_Open(&Group, "Open", QDir::toNativeSeparators(QDir::homePath()));

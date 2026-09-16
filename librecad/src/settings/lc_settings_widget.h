@@ -45,5 +45,7 @@ namespace CFG_Widgets {
     inline const LC_Setting<int> o_StatusbarFontSize(&Group, "StatusbarFontSize", 12);
     inline const LC_Setting<int> o_StatusbarHeight(&Group, "StatusbarHeight", 64);
     inline const LC_Setting<int> o_ToolbarIconSize(&Group, "ToolbarIconSize", 25);
+
+
 }
 #endif

@@ -30,6 +30,7 @@ namespace CFG_CommandsPromotion {
 
     inline const LC_Setting<bool> o_ShowCommandInMenu(&Group, "ShowCommandInMenu", true);
     inline const LC_Setting<bool> o_PromoteCommands(&Group, "PromoteCommands", true);
+    inline const LC_Setting<bool> o_ShowCommandsInTooltips(&Group, "ShowCommandInTooltips", true);
 }
 
 #endif

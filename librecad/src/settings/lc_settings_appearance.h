@@ -54,9 +54,13 @@ namespace CFG_Appearance {
     inline const LC_Setting<bool> o_ShowActionIconInOptions(&Group, "ShowActionIconInOptions", true);
     inline const LC_Setting<bool> o_ShowEntityIDs(&Group, "ShowEntityIDs", false);
     inline const LC_Setting<bool> o_ShowKeyboardShortcutsInTooltips(&Group, "ShowKeyboardShortcutsInTooltips", true);
+
+    inline const LC_Setting<bool> o_ShowTooltipActionName(&Group, "ShowTooltipActionName", true);
+    inline const LC_Setting<bool> o_ShowTooltipDescription(&Group, "ShowTooltipDescription", true);
     // - menus
     inline const LC_Setting<bool> o_AllowMenusTearOff(&Group, "AllowMenusTearOff", true);
     inline const LC_Setting<bool> o_MainMenuVisible(&Group, "MainMenuVisible", true);
+    inline const LC_Setting<bool> o_ShowMainMenuIcons(&Group, "ShowMainMenuIcons", false);
 
     // --- Sizing & Metrics ---
     inline const LC_Setting<int> o_EntityHandleSize(&Group, "EntityHandleSize", 4);
@@ -128,7 +132,6 @@ namespace CFG_Appearance {
     inline const LC_Setting<int> o_UCSHighlightBlinkCount(&Group, "UCSHighlightBlinkCount", 10);
     inline const LC_Setting<int> o_UCSHighlightBlinkDelay(&Group, "UCSHighlightBlinkDelay", 250);
 
-    inline const LC_Setting<QString> o_ActiveShortcutsScheme(&Group, "ActiveShortcutsScheme", "");
 }
 
 #endif
