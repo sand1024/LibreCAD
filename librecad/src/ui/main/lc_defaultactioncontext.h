@@ -71,6 +71,12 @@ public:
     void setSnapMode(const RS_SnapMode& mode) override;
     void setCurrentAction(RS2::ActionType, void* data) override;
     RS_ActionInterface* getCurrentAction() override;
+    void setCommandManager(LC_CommandManager* manager) { m_commandManager = manager; }
+    LC_CommandManager* getCommandManager() const override { return m_commandManager; }
+
+    bool checkCommand(const QString& cmd, const QString& str, RS2::ActionType action = RS2::ActionNone) const override;
+    QString command(const QString& cmd) const override;
+    QString msgAvailableCommands() const override;
 protected:
     void deleteActionHandler() const;
 private:
@@ -81,6 +87,7 @@ private:
     LC_QTStatusbarManager* m_statusBarManager{nullptr};
     QG_ActionHandler* m_actionHandler{nullptr};
     LC_PropertySheetWidget* m_propertySheetWidget{nullptr};
+    LC_CommandManager* m_commandManager{nullptr};
 };
 
 #endif

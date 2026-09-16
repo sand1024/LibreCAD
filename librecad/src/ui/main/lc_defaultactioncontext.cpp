@@ -23,6 +23,7 @@
 #include "lc_defaultactioncontext.h"
 
 #include "lc_action_options_manager.h"
+#include "lc_command_manager.h"
 #include "lc_qtstatusbarmanager.h"
 #include "qg_actionhandler.h"
 #include "qg_commandwidget.h"
@@ -110,4 +111,25 @@ RS_ActionInterface* LC_DefaultActionContext::getCurrentAction() {
 
 void LC_DefaultActionContext::deleteActionHandler() const {
     delete m_actionHandler;
+}
+
+bool LC_DefaultActionContext::checkCommand(const QString& cmd, const QString& str, const RS2::ActionType action) const {
+    if (m_commandManager != nullptr) {
+        return m_commandManager->checkCommand(cmd, str, action);
+    }
+    return false;
+}
+
+QString LC_DefaultActionContext::command(const QString& cmd) const {
+    if (m_commandManager != nullptr) {
+        return m_commandManager->command(cmd);
+    }
+    return QString();
+}
+
+QString LC_DefaultActionContext::msgAvailableCommands() const {
+    if (m_commandManager != nullptr) {
+        return m_commandManager->msgAvailableCommands();
+    }
+    return QObject::tr("Available commands:");
 }
