@@ -126,7 +126,7 @@ void LC_SearchLineEdit::setErrorState(bool error) {
 void LC_SearchLineEdit::addCurrentTextToHistory() {
     QString query = text().trimmed();
 
-    constexpr int MIN_SEARCH_LENGTH = 3;
+    constexpr int MIN_SEARCH_LENGTH = 2;
     // Prevent empty, short, or failed (error state) searches from entering the history
     if (query.length() < MIN_SEARCH_LENGTH || m_isErrorState)
         return;
