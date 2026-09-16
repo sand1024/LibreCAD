@@ -1,5 +1,5 @@
-
 /*******************************************************************************
+ *
  * This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
@@ -19,25 +19,21 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
-#ifndef LC_STYLE_INDEX_HELPER_H
-#define LC_STYLE_INDEX_HELPER_H
+
+#ifndef LC_PRESET_REPOSITORY_H
+#define LC_PRESET_REPOSITORY_H
 
 #include <QString>
+#include <QStringList>
 
-#include "lc_palette_editor_shared.h"
-
-class LC_StyleIndexHelper {
+class LC_PresetRepository {
 public:
-    // Loads the index map from a given index filepath on disk
-    static StyleIndexMap loadIndex(const QString& indexFilePath);
-    // Writes the index map back to disk
-    static bool saveIndex(const QString& indexFilePath, const StyleIndexMap& indexMap);
-    // High-performance handshake: checks directory structure and returns files requiring a parse
-    static QStringList getOutOfDateFiles(const QString& directoryPath,
-                                         const QString& extension,
-                                         const StyleIndexMap& indexMap,
-                                         StyleIndexMap& outUpdatedIndex,
-                                         bool& indexChanged);
+    virtual ~LC_PresetRepository() = default;
+    virtual bool exists(const QString& name) const = 0;
+    virtual bool removeByKey(const QString& name) = 0;
+    virtual QStringList getAvailableNames() = 0;
+    virtual QList<QPair<QString, QString>> getPresetChoices() const = 0;
 };
+
 
 #endif

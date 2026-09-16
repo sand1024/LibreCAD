@@ -1,5 +1,6 @@
 
 /*******************************************************************************
+ *
  * This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
@@ -36,12 +37,13 @@
 
 #include "lc_icons_style_shared.h"
 #include "lc_palette_editor_shared.h"
+#include "lc_preset_repository.h"
 #include "lc_style_index_helper.h"
 
 template <typename ConfigType>
-class LC_StyleRepositoryBase : public LC_RepositoryBase {
+class LC_PresetRepositoryBase : public LC_PresetRepository {
 public:
-    LC_StyleRepositoryBase(const QString& configDir,
+    LC_PresetRepositoryBase(const QString& configDir,
                            const QString& extension,
                            const QString& fileIdentifier,
                            const QString& indexFileName)
@@ -53,9 +55,10 @@ public:
     {
         QDir().mkpath(m_configDir);
         m_indexFilePath = m_configDir + "/" + m_indexFileName;
+        initializeIndex();
     }
 
-    virtual ~LC_StyleRepositoryBase() override = default;
+    virtual ~LC_PresetRepositoryBase() override = default;
 
     QString configDir() const { return m_configDir; }
     QString extension() const { return m_extension; }
