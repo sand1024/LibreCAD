@@ -179,6 +179,7 @@ set (SHARED_INCLUDES
      librecad/src/lib/modification
      librecad/src/lib/printing
      librecad/src/lib/properties
+     librecad/src/lib/presets
      librecad/src/lib/scripting
      librecad/src/lib/selection
      librecad/src/lib/selection/metaentity
@@ -215,6 +216,7 @@ set (SHARED_INCLUDES
      librecad/src/ui/action_options/spline
      librecad/src/ui/action_options/text
      librecad/src/ui/actions
+     librecad/src/ui/actions/shortcuts
      librecad/src/ui/components
      librecad/src/ui/components/buttons
      librecad/src/ui/components/comboboxes
@@ -242,22 +244,32 @@ set (SHARED_INCLUDES
      librecad/src/ui/dialogs/file/export_layers
      librecad/src/ui/dialogs/main
      librecad/src/ui/dialogs/settings
+     librecad/src/ui/dialogs/settings/to_remove
      librecad/src/ui/dialogs/settings/device_options
      librecad/src/ui/dialogs/settings/dimstyles
      librecad/src/ui/dialogs/settings/dimstyles/dimstyle_manager
      librecad/src/ui/dialogs/settings/dimstyles/dimstyle_manager/support
+     librecad/src/ui/dialogs/settings/options_customization
+     librecad/src/ui/dialogs/settings/options_customization/pages
+     librecad/src/ui/dialogs/settings/options_customization/managers
+     librecad/src/ui/dialogs/settings/options_customization/support
+     librecad/src/ui/dialogs/settings/options_customization/support/cheatsheet
      librecad/src/ui/dialogs/settings/options_device
      librecad/src/ui/dialogs/settings/options_drawing
      librecad/src/ui/dialogs/settings/options_drawing/support
      librecad/src/ui/dialogs/settings/options_drawing/panels
-     librecad/src/ui/dialogs/settings/options_drawing/panels/dimensions
+     librecad/src/ui/dialogs/settings/options_drawing/pages
      librecad/src/ui/dialogs/settings/options_general
-     librecad/src/ui/dialogs/settings/options_general/panels
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport
-     librecad/src/ui/dialogs/settings/options_general/panels/application
+     librecad/src/ui/dialogs/settings/options_general/support
+     librecad/src/ui/dialogs/settings/options_general/managers
+     librecad/src/ui/dialogs/settings/options_general/pages
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport
+     librecad/src/ui/dialogs/settings/options_general/pages/application
      librecad/src/ui/dialogs/settings/options_widget
+     librecad/src/ui/dialogs/settings/options_widget/pages
+     librecad/src/ui/dialogs/settings/options_widget/support
+     librecad/src/ui/dialogs/settings/options_widget/managers
      librecad/src/ui/dialogs/settings/support/
-     librecad/src/ui/dialogs/settings/shortcuts
      librecad/src/ui/dock_widgets
      librecad/src/ui/dock_widgets/block_widget
      librecad/src/ui/dock_widgets/cad
@@ -313,6 +325,11 @@ set (SHARED_INCLUDES
      librecad/src/ui/main/release_check
      librecad/src/ui/main/support
      librecad/src/ui/main/workspaces
+     librecad/src/ui/main/workspaces
+     librecad/src/ui/main/workspaces/navigation
+     librecad/src/ui/main/workspaces/navigation/menus
+     librecad/src/ui/main/workspaces/navigation/repository
+     librecad/src/ui/main/creators
      librecad/src/ui/view
 )
 
@@ -1371,18 +1388,18 @@ set (SHARED_SOURCES
      librecad/src/ui/action_options/text/lc_text_options_widget.h
      librecad/src/ui/actions/lc_action.h
      librecad/src/ui/actions/lc_action.cpp
-     librecad/src/ui/actions/lc_actionfactorybase.h
-     librecad/src/ui/actions/lc_actionfactorybase.cpp
-     librecad/src/ui/actions/lc_actiongroup.h
-     librecad/src/ui/actions/lc_actiongroup.cpp
-     librecad/src/ui/actions/lc_actiongroupmanager.h
-     librecad/src/ui/actions/lc_actiongroupmanager.cpp
-     librecad/src/ui/actions/lc_shortcutinfo.h
-     librecad/src/ui/actions/lc_shortcutinfo.cpp
-     librecad/src/ui/actions/lc_shortcuts_manager.h
-     librecad/src/ui/actions/lc_shortcuts_manager.cpp
-     librecad/src/ui/actions/lc_shortcutsstorage.h
-     librecad/src/ui/actions/lc_shortcutsstorage.cpp
+     librecad/src/ui/actions/lc_action_factory_base.h
+     librecad/src/ui/actions/lc_action_factory_base.cpp
+     librecad/src/ui/actions/lc_action_group.h
+     librecad/src/ui/actions/lc_action_group.cpp
+     librecad/src/ui/actions/lc_action_group_manager.h
+     librecad/src/ui/actions/lc_action_group_manager.cpp
+     librecad/src/ui/actions/shortcuts/lc_shortcut_info.h
+     librecad/src/ui/actions/shortcuts/lc_shortcut_info.cpp
+     librecad/src/ui/actions/shortcuts/lc_shortcuts_manager.h
+     librecad/src/ui/actions/shortcuts/lc_shortcuts_manager.cpp
+     librecad/src/ui/actions/shortcuts/lc_shortcuts_storage.h
+     librecad/src/ui/actions/shortcuts/lc_shortcuts_storage.cpp
      librecad/src/ui/components/comboboxes/comboboxoption.cpp
      librecad/src/ui/components/comboboxes/comboboxoption.h
      librecad/src/ui/components/comboboxes/qg_colorbox.cpp
@@ -1403,10 +1420,10 @@ set (SHARED_SOURCES
      librecad/src/ui/components/containers/lc_snapoptionswidgetsholder.h
      librecad/src/ui/components/creators/actionlist.cpp
      librecad/src/ui/components/creators/actionlist.h
-     librecad/src/ui/components/creators/lc_creatorinvoker.cpp
-     librecad/src/ui/components/creators/lc_creatorinvoker.h
-     librecad/src/ui/components/creators/lc_menuactivator.cpp
-     librecad/src/ui/components/creators/lc_menuactivator.h
+     librecad/src/ui/main/workspaces/navigation/lc_navigation_creator.cpp
+     librecad/src/ui/main/workspaces/navigation/lc_navigation_creator.h
+     librecad/src/ui/main/workspaces/navigation/menus/lc_menu_activator.cpp
+     librecad/src/ui/main/workspaces/navigation/menus/lc_menu_activator.h
      librecad/src/ui/components/layouts/lc_flexlayout.cpp
      librecad/src/ui/components/layouts/lc_flexlayout.h
      librecad/src/ui/components/lc_plaintextedit.h
@@ -1451,12 +1468,12 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/actions/qg_layerdialog.h
      librecad/src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.cpp
      librecad/src/ui/dialogs/actions/quick_selection/lc_dlgquickselection.h
-     librecad/src/ui/dialogs/creators/lc_dlg_menu_assigner.cpp
-     librecad/src/ui/dialogs/creators/lc_dlg_menu_assigner.h
-     librecad/src/ui/dialogs/creators/lc_dlg_new_widget.cpp
-     librecad/src/ui/dialogs/creators/lc_dlg_new_widget.h
-     librecad/src/ui/dialogs/creators/lc_dlg_widget_creator.cpp
-     librecad/src/ui/dialogs/creators/lc_dlg_widget_creator.h
+     #     librecad/src/ui/not_used/lc_dlg_menu_assigner.cpp
+     #     librecad/src/ui/not_used/lc_dlg_menu_assigner.h
+     #     librecad/src/ui/not_used/lc_dlg_new_widget.cpp
+     #     librecad/src/ui/not_used/lc_dlg_new_widget.h
+     #     librecad/src/ui/not_used/lc_dlg_widget_creator.cpp
+     #     librecad/src/ui/not_used/lc_dlg_widget_creator.h
      librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_arc.cpp
      librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_arc.h
      librecad/src/ui/dialogs/entity/lc_propertieseditingwidget_circle.cpp
@@ -1563,30 +1580,22 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/settings/options_drawing/lc_dlgnewdimstyle.h
      librecad/src/ui/dialogs/settings/options_drawing/lg_dimzerosbox.cpp
      librecad/src/ui/dialogs/settings/options_drawing/lg_dimzerosbox.h
-     librecad/src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.cpp
-     librecad/src/ui/dialogs/settings/options_drawing/qg_dlgoptionsdrawing.h
-     librecad/src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.cpp
-     librecad/src/ui/dialogs/settings/options_general/qg_dlgoptionsgeneral.h
-     librecad/src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.cpp
-     librecad/src/ui/dialogs/settings/options_widget/lc_widgetoptionsdialog.h
-     #     librecad/src/ui/dialogs/settings/options_widget/lc_dlg_icons_style_editor.h
-     #     librecad/src/ui/dialogs/settings/options_widget/lc_dlg_icons_style_editor.cpp
-     #     librecad/src/ui/dialogs/settings/options_widget/lc_dlg_fusion_skin_editor.cpp
-     #     librecad/src/ui/dialogs/settings/options_widget/lc_dlg_fusion_skin_editor.h
-     #     librecad/src/ui/dialogs/settings/options_widget/lc_font_settings_widget.cpp
-     #     librecad/src/ui/dialogs/settings/options_widget/lc_font_settings_widget.h
-     librecad/src/ui/dialogs/settings/options_widget/lc_skin_preview_window.cpp
-     librecad/src/ui/dialogs/settings/options_widget/lc_skin_preview_window.h
-     librecad/src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.cpp
-     librecad/src/ui/dialogs/settings/shortcuts/lc_actionsshortcutsdialog.h
-     librecad/src/ui/dialogs/settings/shortcuts/lc_shortcutbutton.cpp
-     librecad/src/ui/dialogs/settings/shortcuts/lc_shortcutbutton.h
-     librecad/src/ui/dialogs/settings/shortcuts/lc_shortcutstreemodel.cpp
-     librecad/src/ui/dialogs/settings/shortcuts/lc_shortcutstreemodel.h
-     librecad/src/ui/dialogs/settings/shortcuts/lc_shortcutstreeview.cpp
-     librecad/src/ui/dialogs/settings/shortcuts/lc_shortcutstreeview.h
-     librecad/src/ui/dialogs/settings/shortcuts/lc_shortcuttreeitem.cpp
-     librecad/src/ui/dialogs/settings/shortcuts/lc_shortcuttreeitem.h
+     #     librecad/src/ui/not_used/qg_dlgoptionsdrawing.cpp
+     #     librecad/src/ui/not_used/qg_dlgoptionsdrawing.h
+     #     librecad/src/ui/not_used/qg_dlgoptionsgeneral.cpp
+     #     librecad/src/ui/not_used/qg_dlgoptionsgeneral.h
+     #     librecad/src/ui/not_used/lc_widgetoptionsdialog.cpp
+     #     librecad/src/ui/not_used/lc_widgetoptionsdialog.h
+     librecad/src/ui/dialogs/settings/options_widget/support/lc_skin_preview_window.cpp
+     librecad/src/ui/dialogs/settings/options_widget/support/lc_skin_preview_window.h
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_shortcut_button.cpp
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_shortcut_button.h
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_shortcuts_tree_model.cpp
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_shortcuts_tree_model.h
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_shortcuts_tree_view.cpp
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_shortcuts_tree_view.h
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_shortcut_tree_item.cpp
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_shortcut_tree_item.h
      librecad/src/ui/dock_widgets/block_widget/qg_blockwidget.cpp
      librecad/src/ui/dock_widgets/block_widget/qg_blockwidget.h
      librecad/src/ui/dock_widgets/cad/lc_caddockwidget.cpp
@@ -1915,22 +1924,23 @@ set (SHARED_SOURCES
      librecad/src/ui/lc_uiutils.h
      librecad/src/ui/main/fontviewer/lc_fontfileviewer.cpp
      librecad/src/ui/main/fontviewer/lc_fontfileviewer.h
-     librecad/src/ui/main/init/lc_actionfactory.cpp
-     librecad/src/ui/main/init/lc_actionfactory.h
-     librecad/src/ui/main/init/lc_applicationwindowinitializer.cpp
-     librecad/src/ui/main/init/lc_applicationwindowinitializer.h
-     librecad/src/ui/main/init/lc_menufactory.cpp
-     librecad/src/ui/main/init/lc_menufactory.h
-     librecad/src/ui/main/init/lc_menufactory_base.cpp
-     librecad/src/ui/main/init/lc_menufactory_base.h
-     librecad/src/ui/main/init/lc_menufactory_graphicview.cpp
-     librecad/src/ui/main/init/lc_menufactory_graphicview.h
-     librecad/src/ui/main/init/lc_menufactory_main.cpp
-     librecad/src/ui/main/init/lc_menufactory_main.h
-     librecad/src/ui/main/init/lc_toolbarfactory.cpp
-     librecad/src/ui/main/init/lc_toolbarfactory.h
-     librecad/src/ui/main/init/lc_widgetfactory.cpp
-     librecad/src/ui/main/init/lc_widgetfactory.h
+     librecad/src/ui/main/init/lc_action_factory.cpp
+     librecad/src/ui/main/init/lc_action_factory.h
+     librecad/src/ui/main/init/lc_application_window_initializer.cpp
+     librecad/src/ui/main/init/lc_application_window_initializer.h
+
+     librecad/src/ui/main/init/lc_menu_factory_base.cpp
+     librecad/src/ui/main/init/lc_menu_factory_base.h
+     #     librecad/src/ui/not_used/lc_menu_factory.cpp
+     #     librecad/src/ui/not_used/lc_menu_factory.h
+     #     librecad/src/ui/not_used/lc_menu_factory_graphicview.cpp
+     #     librecad/src/ui/not_used/lc_menu_factory_graphicview.h
+     #     librecad/src/ui/not_used/lc_menufactory_main.cpp
+     #     librecad/src/ui/not_used/lc_menufactory_main.h
+     #     librecad/src/ui/not_used/lc_toolbar_factory.cpp
+     #     librecad/src/ui/not_used/lc_toolbar_factory.h
+     librecad/src/ui/main/init/lc_widget_factory.cpp
+     librecad/src/ui/main/init/lc_widget_factory.h
      librecad/src/ui/main/lc_appwindowaware.cpp
      librecad/src/ui/main/lc_appwindowaware.h
      librecad/src/ui/main/lc_defaultactioncontext.cpp
@@ -2153,11 +2163,11 @@ set (SHARED_SOURCES
      librecad/src/ui/styling/lc_palette_editor_shared.h
      librecad/src/ui/styling/fusion_skin/lc_palette_color_utils.cpp
      librecad/src/ui/styling/fusion_skin/lc_palette_color_utils.h
-     librecad/src/ui/styling/fusion_skin/lc_fusion_skins_repository.cpp
-     librecad/src/ui/styling/fusion_skin/lc_fusion_skins_repository.h
+     librecad/src/ui/styling/fusion_skin/lc_repository_fusion_skin.cpp
+     librecad/src/ui/styling/fusion_skin/lc_repository_fusion_skin.h
      librecad/src/ui/styling/icons_styling/lc_icons_style_shared.h
-     librecad/src/ui/styling/icons_styling/lc_icons_style_repository.cpp
-     librecad/src/ui/styling/icons_styling/lc_icons_style_repository.h
+     librecad/src/ui/styling/icons_styling/lc_repository_icons_style.cpp
+     librecad/src/ui/styling/icons_styling/lc_repository_icons_style.h
      librecad/src/ui/styling/icons_styling/lc_icons_style_manager.cpp
      librecad/src/ui/styling/icons_styling/lc_icons_style_manager.h
      librecad/src/ui/styling/icons_styling/lc_icons_color_utils.cpp
@@ -2170,43 +2180,42 @@ set (SHARED_SOURCES
      librecad/src/ui/styling/icons_styling/lc_icon_engine_shared.cpp
      librecad/src/ui/styling/lc_ui_style_manager.cpp
      librecad/src/ui/styling/lc_ui_style_manager.h
-     librecad/src/ui/dialogs/settings/options_widget/lc_editor_utils.cpp
-     librecad/src/ui/dialogs/settings/options_widget/lc_editor_utils.h
+     librecad/src/ui/dialogs/settings/support/lc_editor_utils.cpp
+     librecad/src/ui/dialogs/settings/support/lc_editor_utils.h
      librecad/src/ui/styling/presets_generator/lc_style_preset_generator.cpp
      librecad/src/ui/styling/presets_generator/lc_style_preset_generator.h
      librecad/src/ui/styling/presets_generator/lc_dlg_styles_presets_generator.h
      librecad/src/ui/styling/presets_generator/lc_dlg_styles_presets_generator.cpp
-     librecad/src/ui/styling/support/lc_style_index_helper.cpp
-     librecad/src/ui/styling/support/lc_style_index_helper.h
-     librecad/src/ui/styling/support/lc_style_repository_base.cpp
-     librecad/src/ui/styling/support/lc_style_repository_base.h
-     librecad/src/ui/styling/metrics/lc_metrics_repository.cpp
-     librecad/src/ui/styling/metrics/lc_metrics_repository.h
-     librecad/src/ui/styling/typography/lc_typography_repository.cpp
-     librecad/src/ui/styling/typography/lc_typography_repository.h
+     librecad/src/lib/presets/lc_style_index_helper.cpp
+     librecad/src/lib/presets/lc_style_index_helper.h
+     librecad/src/lib/presets/lc_style_repository_base.h
+     librecad/src/ui/styling/metrics/lc_repository_metrics.cpp
+     librecad/src/ui/styling/metrics/lc_repository_metrics.h
+     librecad/src/ui/styling/typography/lc_repository_typography.cpp
+     librecad/src/ui/styling/typography/lc_repository_typography.h
      librecad/src/ui/styling/typography/lc_typography_utils.cpp
      librecad/src/ui/styling/typography/lc_typography_utils.h
      librecad/src/ui/styling/metrics/lc_style_metrics_utils.cpp
      librecad/src/ui/styling/metrics/lc_style_metrics_utils.h
      librecad/src/ui/styling/support/lc_workspace_import_export_helper.cpp
      librecad/src/ui/styling/support/lc_workspace_import_export_helper.h
-     librecad/src/ui/styling/support/ui/lc_style_editor_interface.h
-     librecad/src/ui/styling/support/ui/lc_preset_manager_bar.h
-     librecad/src/ui/styling/support/ui/lc_preset_manager_bar.cpp
-     librecad/src/ui/dialogs/settings/options_widget/lc_preset_container_widget.cpp
-     librecad/src/ui/dialogs/settings/options_widget/lc_preset_container_widget.h
-     librecad/src/ui/dialogs/settings/options_widget/lc_dlg_preset_editor.cpp
-     librecad/src/ui/dialogs/settings/options_widget/lc_dlg_preset_editor.h
-     librecad/src/ui/dialogs/settings/options_widget/lc_style_editor_typography.cpp
-     librecad/src/ui/dialogs/settings/options_widget/lc_style_editor_typography.h
-     librecad/src/ui/dialogs/settings/options_widget/lc_style_editor_base.cpp
-     librecad/src/ui/dialogs/settings/options_widget/lc_style_editor_base.h
-     librecad/src/ui/dialogs/settings/options_widget/lc_style_editor_metrics.cpp
-     librecad/src/ui/dialogs/settings/options_widget/lc_style_editor_metrics.h
-     librecad/src/ui/dialogs/settings/options_widget/lc_style_editor_fusion_skin.cpp
-     librecad/src/ui/dialogs/settings/options_widget/lc_style_editor_fusion_skin.h
-     librecad/src/ui/dialogs/settings/options_widget/lc_style_editor_icons_style.cpp
-     librecad/src/ui/dialogs/settings/options_widget/lc_style_editor_icons_style.h
+     #     librecad/src/ui/not_used/lc_style_editor_interface.h
+     #     librecad/src/ui/not_used/lc_preset_manager_bar.h
+     #     librecad/src/ui/not_used/lc_preset_manager_bar.cpp
+     #     librecad/src/ui/not_used/lc_preset_container_widget.cpp
+     #     librecad/src/ui/not_used/lc_preset_container_widget.h
+     #     librecad/src/ui/not_used/lc_dlg_preset_editor.cpp
+     #     librecad/src/ui/not_used/lc_dlg_preset_editor.h
+     #     librecad/src/ui/not_used/lc_style_editor_typography.cpp
+     #     librecad/src/ui/not_used/lc_style_editor_typography.h
+     #     librecad/src/ui/not_used/lc_style_editor_base.cpp
+     #     librecad/src/ui/not_used/lc_style_editor_base.h
+     #     librecad/src/ui/not_used/lc_style_editor_metrics.cpp
+     #     librecad/src/ui/not_used/lc_style_editor_metrics.h
+     #     librecad/src/ui/not_used/lc_style_editor_fusion_skin.cpp
+     #     librecad/src/ui/not_used/lc_style_editor_fusion_skin.h
+     #     librecad/src/ui/not_used/lc_style_editor_icons_style.cpp
+     #     librecad/src/ui/not_used/lc_style_editor_icons_style.h
      librecad/src/ui/dock_widgets/cad/lc_cad_tool_matrix_dock_widget.cpp
      librecad/src/ui/dock_widgets/cad/lc_cad_tool_matrix_dock_widget.h
      librecad/src/ui/styling/proxy_style/lc_proxy_style_shared.h
@@ -2255,8 +2264,8 @@ set (SHARED_SOURCES
      librecad/src/ui/components/buttons/lc_hyperlink_button.cpp
      librecad/src/ui/components/buttons/lc_hyperlink_button.h
      librecad/src/ui/dialogs/settings/support/lc_settings_list_widget.h
-     librecad/src/ui/dialogs/settings/support/lc_index_settings_page.cpp
-     librecad/src/ui/dialogs/settings/support/lc_index_settings_page.h
+     librecad/src/ui/dialogs/settings/support/lc_settings_page_index.cpp
+     librecad/src/ui/dialogs/settings/support/lc_settings_page_index.h
      librecad/src/ui/dialogs/settings/support/lc_highlight_overlay.cpp
      librecad/src/ui/dialogs/settings/support/lc_highlight_overlay.h
      librecad/src/ui/dialogs/settings/support/lc_settings_registry.cpp
@@ -2264,82 +2273,82 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/settings/support/lc_preset_manager_interface.h
      librecad/src/ui/dialogs/settings/support/lc_preset_management_bar.h
      librecad/src/ui/dialogs/settings/support/lc_preset_management_bar.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/application/lc_settings_page_program_defaults.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/application/lc_settings_page_program_defaults.h
-     librecad/src/ui/dialogs/settings/options_general/panels/application/lc_settings_page_drawing_defaults.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/application/lc_settings_page_drawing_defaults.h
-     librecad/src/ui/dialogs/settings/options_general/panels/application/lc_settings_page_autosave.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/application/lc_settings_page_autosave.h
-     librecad/src/ui/dialogs/settings/options_general/panels/application/lc_settings_page_cad_preferences.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/application/lc_settings_page_cad_preferences.h
-     librecad/src/ui/dialogs/settings/options_general/panels/application/lc_settings_page_keyboard.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/application/lc_settings_page_keyboard.h
-     librecad/src/ui/dialogs/settings/options_general/panels/application/lc_settings_page_command_line.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/application/lc_settings_page_command_line.h
-     librecad/src/ui/dialogs/settings/options_general/panels/application/lc_settings_page_updates.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/application/lc_settings_page_updates.h
-     librecad/src/ui/dialogs/settings/options_general/panels/application/lc_settings_page_maintenance.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/application/lc_settings_page_maintenance.h
-     librecad/src/ui/dialogs/settings/options_general/panels/application/lc_settings_page_general_startup.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/application/lc_settings_page_general_startup.h
+     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_program_defaults.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_program_defaults.h
+     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_drawing_defaults.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_drawing_defaults.h
+     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_autosave.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_autosave.h
+     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_cad_preferences.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_cad_preferences.h
+     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_keyboard.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_keyboard.h
+     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_command_line.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_command_line.h
+     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_updates.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_updates.h
+     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_maintenance.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_maintenance.h
+     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_general_startup.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_general_startup.h
      librecad/src/ui/dialogs/settings/options_general/lc_settings_manager_application.h
      librecad/src/ui/dialogs/settings/options_general/lc_settings_manager_application.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/application/lc_settings_page_language.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/application/lc_settings_page_language.h
-     librecad/src/ui/dialogs/settings/options_general/panels/application/lc_settings_page_paths.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/application/lc_settings_page_paths.h
-     librecad/src/ui/styling/viewport/lc_viewport_theme_repository.cpp
-     librecad/src/ui/styling/viewport/lc_viewport_theme_repository.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_grid_points.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_grid_points.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_snap_general.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_snap_general.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_snap_angle.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_snap_angle.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_graphic_view_colors.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_graphic_view_colors.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_graphic_view_selection.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_graphic_view_selection.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_coordinate_system_origin.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_coordinate_system_origin.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_info_cursor.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_info_cursor.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_graphic_view_behavior.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_graphic_view_behavior.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_graphic_view_handles.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_graphic_view_handles.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_graphic_view_draft_marker.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_graphic_view_draft_marker.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_renderer_minimums.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_renderer_minimums.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_renderer_arcs.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_renderer_arcs.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_renderer_text_ops.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_renderer_text_ops.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_preview_highlight.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_preview_highlight.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_preview_options.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_preview_options.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_coordinate_system_angles_basis.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_coordinate_system_angles_basis.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_coordinate_system_axis_lines.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_coordinate_system_axis_lines.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_coordinate_system_relative_zero.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_coordinate_system_relative_zero.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_input_assistant.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_input_assistant.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_snap_visual.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_snap_visual.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_snap_visual_appearance.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_snap_visual_appearance.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_snap_visual_behavior.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_snap_visual_behavior.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_snap_visual_timing.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_snap_visual_timing.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_grid_lines.h
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_grid_lines.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_grid_general.cpp
-     librecad/src/ui/dialogs/settings/options_general/panels/viewport/lc_settings_page_grid_general.h
+     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_language.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_language.h
+     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_paths.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/application/lc_settings_page_paths.h
+     librecad/src/ui/styling/viewport/lc_repository_viewport_theme.cpp
+     librecad/src/ui/styling/viewport/lc_repository_viewport_theme.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_grid_points.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_grid_points.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_snap_general.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_snap_general.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_snap_angle.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_snap_angle.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_graphic_view_colors.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_graphic_view_colors.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_graphic_view_selection.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_graphic_view_selection.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_coordinate_system_origin.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_coordinate_system_origin.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_info_cursor.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_info_cursor.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_graphic_view_behavior.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_graphic_view_behavior.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_graphic_view_handles.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_graphic_view_handles.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_graphic_view_draft_marker.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_graphic_view_draft_marker.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_renderer_minimums.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_renderer_minimums.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_renderer_arcs.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_renderer_arcs.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_renderer_text_ops.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_renderer_text_ops.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_preview_highlight.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_preview_highlight.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_preview_options.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_preview_options.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_coordinate_system_angles_basis.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_coordinate_system_angles_basis.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_coordinate_system_axis_lines.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_coordinate_system_axis_lines.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_coordinate_system_relative_zero.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_coordinate_system_relative_zero.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_input_assistant.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_input_assistant.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_snap_visual.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_snap_visual.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_snap_visual_appearance.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_snap_visual_appearance.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_snap_visual_behavior.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_snap_visual_behavior.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_snap_visual_timing.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_snap_visual_timing.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_grid_lines.h
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_grid_lines.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_grid_general.cpp
+     librecad/src/ui/dialogs/settings/options_general/pages/viewport/lc_settings_page_grid_general.h
      librecad/src/lib/engine/settings/lc_setting.h
      librecad/src/settings/lc_settings_app_styling.h
      librecad/src/settings/lc_settings_startup.h
@@ -2366,8 +2375,8 @@ set (SHARED_SOURCES
      librecad/src/settings/lc_settings_widget.h
      librecad/src/settings/lc_settings_hardware.h
      librecad/src/lib/actions/lc_interactive_input_info.h
-     librecad/src/ui/dialogs/settings/options_general/lc_graphic_view_preview_widget.cpp
-     librecad/src/ui/dialogs/settings/options_general/lc_graphic_view_preview_widget.h
+     librecad/src/ui/dialogs/settings/options_general/support/lc_graphic_view_preview_widget.cpp
+     librecad/src/ui/dialogs/settings/options_general/support/lc_graphic_view_preview_widget.h
      librecad/src/lib/gui/grid/lc_grid_options.cpp
      librecad/src/lib/gui/grid/lc_grid_options.h
      librecad/src/ui/dock_widgets/entity_info/lc_settings_quick_info_widget.h
@@ -2382,28 +2391,172 @@ set (SHARED_SOURCES
      librecad/src/ui/dialogs/settings/options_drawing/support/lc_document_settings_backend.h
      librecad/src/ui/dialogs/settings/options_drawing/lc_settings_manager_drawing.h
      librecad/src/ui/dialogs/settings/options_drawing/lc_settings_manager_drawing.cpp
-     librecad/src/ui/dialogs/settings/options_drawing/panels/lc_settings_page_drawing_paper.cpp
-     librecad/src/ui/dialogs/settings/options_drawing/panels/lc_settings_page_drawing_paper.h
-     librecad/src/ui/dialogs/settings/options_drawing/panels/lc_settings_page_drawing_units.cpp
-     librecad/src/ui/dialogs/settings/options_drawing/panels/lc_settings_page_drawing_units.h
-     librecad/src/ui/dialogs/settings/options_drawing/panels/lc_settings_page_drawing_grid.cpp
-     librecad/src/ui/dialogs/settings/options_drawing/panels/lc_settings_page_drawing_grid.h
-     librecad/src/ui/dialogs/settings/options_drawing/panels/lc_settings_page_drawing_dimensions.cpp
-     librecad/src/ui/dialogs/settings/options_drawing/panels/lc_settings_page_drawing_dimensions.h
-     librecad/src/ui/dialogs/settings/options_drawing/panels/lc_settings_page_drawing_points.cpp
-     librecad/src/ui/dialogs/settings/options_drawing/panels/lc_settings_page_drawing_points.h
-     librecad/src/ui/dialogs/settings/options_drawing/panels/lc_settings_page_drawing_splines.cpp
-     librecad/src/ui/dialogs/settings/options_drawing/panels/lc_settings_page_drawing_splines.h
-     librecad/src/ui/dialogs/settings/options_drawing/panels/lc_settings_page_drawing_meta.cpp
-     librecad/src/ui/dialogs/settings/options_drawing/panels/lc_settings_page_drawing_meta.h
-     librecad/src/ui/dialogs/settings/options_drawing/panels/lc_settings_page_drawing_user_data.cpp
-     librecad/src/ui/dialogs/settings/options_drawing/panels/lc_settings_page_drawing_user_data.h
-     librecad/src/ui/dialogs/settings/options_drawing/panels/lc_settings_page_drawing_variables.cpp
-     librecad/src/ui/dialogs/settings/options_drawing/panels/lc_settings_page_drawing_variables.h
+     librecad/src/ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_paper.cpp
+     librecad/src/ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_paper.h
+     librecad/src/ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_units.cpp
+     librecad/src/ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_units.h
+     librecad/src/ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_grid.cpp
+     librecad/src/ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_grid.h
+     librecad/src/ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_dimensions.cpp
+     librecad/src/ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_dimensions.h
+     librecad/src/ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_points.cpp
+     librecad/src/ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_points.h
+     librecad/src/ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_splines.cpp
+     librecad/src/ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_splines.h
+     librecad/src/ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_meta.cpp
+     librecad/src/ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_meta.h
+     librecad/src/ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_user_data.cpp
+     librecad/src/ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_user_data.h
+     librecad/src/ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_variables.cpp
+     librecad/src/ui/dialogs/settings/options_drawing/pages/lc_settings_page_drawing_variables.h
      librecad/src/ui/components/edits/lc_search_line_edit.cpp
      librecad/src/ui/components/edits/lc_search_line_edit.h
      librecad/src/ui/components/treeviews/lc_placeholder_tree_view.cpp
      librecad/src/ui/components/treeviews/lc_placeholder_tree_view.h
+     librecad/src/ui/components/comboboxes/lc_content_adjustable_combo_box.cpp
+     librecad/src/ui/components/comboboxes/lc_content_adjustable_combo_box.h
+     librecad/src/ui/dialogs/settings/support/lc_settings_banner_widget.cpp
+     librecad/src/ui/dialogs/settings/support/lc_settings_banner_widget.h
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_toolbars_and_docks.cpp
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_toolbars_and_docks.h
+     librecad/src/ui/dialogs/settings/options_widget/support/lc_styling_preview_controller.cpp
+     librecad/src/ui/dialogs/settings/options_widget/support/lc_styling_preview_controller.h
+     librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_typography.cpp
+     librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_typography.h
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_typography.cpp
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_typography.h
+     librecad/src/ui/dialogs/settings/options_widget/lc_settings_manager_styling.cpp
+     librecad/src/ui/dialogs/settings/options_widget/lc_settings_manager_styling.h
+     librecad/src/ui/dialogs/settings/options_widget/support/lc_styling_preview_bottom_bar.cpp
+     librecad/src/ui/dialogs/settings/options_widget/support/lc_styling_preview_bottom_bar.h
+     librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_icons_style.cpp
+     librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_icons_style.h
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_icons_style.cpp
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_icons_style.h
+     librecad/src/ui/dialogs/settings/support/lc_preset_manager_interface.cpp
+     librecad/src/ui/dialogs/settings/options_widget/support/lc_metrics_density_header_bar.cpp
+     librecad/src/ui/dialogs/settings/options_widget/support/lc_metrics_density_header_bar.h
+     librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_metrics.cpp
+     librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_metrics.h
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_layout.cpp
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_layout.h
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_menus_toolbars.cpp
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_menus_toolbars.h
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_controls.cpp
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_controls.h
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_views_tabs.cpp
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_views_tabs.h
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_behavior.cpp
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_metrics_behavior.h
+     librecad/src/ui/dialogs/settings/options_widget/support/lc_skin_archetype_header_bar.cpp
+     librecad/src/ui/dialogs/settings/options_widget/support/lc_skin_archetype_header_bar.h
+     librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_fusion_skin.cpp
+     librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_fusion_skin.h
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_skin_palette.cpp
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_skin_palette.h
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_skin_containers.cpp
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_skin_containers.h
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_skin_toolbars_menus.cpp
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_skin_toolbars_menus.h
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_skin_controls.cpp
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_skin_controls.h
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_general_styling.cpp
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_general_styling.h
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_workspace_profiles.cpp
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_workspace_profiles.h
+     librecad/src/ui/dialogs/settings/support/lc_settings_manager_base.cpp
+     librecad/src/ui/dialogs/settings/support/lc_settings_manager_base.h
+     librecad/src/ui/styling/fusion_skin/lc_repository_palette.cpp
+     librecad/src/ui/styling/fusion_skin/lc_repository_palette.h
+     librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_palette.cpp
+     librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_palette.h
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_fusion_theme.cpp
+     librecad/src/ui/dialogs/settings/options_widget/pages/lc_settings_page_fusion_theme.h
+     librecad/src/ui/dialogs/settings/options_widget/managers/lc_preset_manager_base.h
+     librecad/src/settings/lc_settings_colors_semantics.h
+     librecad/src/ui/dialogs/settings/options_widget/support/lc_semantic_colors_ui_helper.cpp
+     librecad/src/ui/dialogs/settings/options_widget/support/lc_semantic_colors_ui_helper.h
+     librecad/src/ui/dialogs/settings/options_general/managers/lc_preset_manager_viewport.cpp
+     librecad/src/ui/dialogs/settings/options_general/managers/lc_preset_manager_viewport.h
+     librecad/src/ui/dialogs/settings/support/lc_abstract_preset_manager.cpp
+     librecad/src/ui/dialogs/settings/support/lc_abstract_preset_manager.h
+     librecad/src/ui/actions/shortcuts/lc_repository_shortcuts.cpp
+     librecad/src/ui/actions/shortcuts/lc_repository_shortcuts.h
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_shortcut_search_popup.cpp
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_shortcut_search_popup.h
+     librecad/src/ui/dialogs/settings/options_customization/managers/lc_preset_manager_shortcuts.cpp
+     librecad/src/ui/dialogs/settings/options_customization/managers/lc_preset_manager_shortcuts.h
+     librecad/src/ui/dialogs/settings/options_customization/pages/lc_settings_page_shortcuts.cpp
+     librecad/src/ui/dialogs/settings/options_customization/pages/lc_settings_page_shortcuts.h
+     librecad/src/ui/dialogs/settings/options_customization/lc_settings_manager_customization.cpp
+     librecad/src/ui/dialogs/settings/options_customization/lc_settings_manager_customization.h
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_actions_dual_list_widget.cpp
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_actions_dual_list_widget.h
+     librecad/src/ui/main/workspaces/navigation/repository/lc_repository_graphic_view_context_menus.cpp
+     librecad/src/ui/main/workspaces/navigation/repository/lc_repository_graphic_view_context_menus.h
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_menu_trigger_inspector.cpp
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_menu_trigger_inspector.h
+     librecad/src/ui/dialogs/settings/options_customization/managers/lc_preset_manager_menus.cpp
+     librecad/src/ui/dialogs/settings/options_customization/managers/lc_preset_manager_menus.h
+     librecad/src/ui/dialogs/settings/options_customization/pages/lc_settings_page_custom_menus.cpp
+     librecad/src/ui/dialogs/settings/options_customization/pages/lc_settings_page_custom_menus.h
+     librecad/src/ui/main/workspaces/navigation/lc_action_node.h
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_dlg_icon_picker.cpp
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_dlg_icon_picker.h
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_dlg_action_group_config.cpp
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_dlg_action_group_config.h
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_actions_tree_model.cpp
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_actions_tree_model.h
+     librecad/src/ui/main/workspaces/navigation/repository/lc_repository_menu_bar_and_toolbars.cpp
+     librecad/src/ui/main/workspaces/navigation/repository/lc_repository_menu_bar_and_toolbars.h
+     librecad/src/ui/dialogs/settings/options_customization/managers/lc_preset_manager_menus_toolbars.cpp
+     librecad/src/ui/dialogs/settings/options_customization/managers/lc_preset_manager_menus_toolbars.h
+     librecad/src/ui/dialogs/settings/options_customization/pages/lc_settings_page_menus_toolbars.cpp
+     librecad/src/ui/dialogs/settings/options_customization/pages/lc_settings_page_menus_toolbars.h
+     librecad/src/ui/main/init/lc_default_navigation_layout_builder.cpp
+     librecad/src/ui/main/init/lc_default_navigation_layout_builder.h
+     librecad/src/ui/main/init/lc_special_menu_service.cpp
+     librecad/src/ui/main/init/lc_special_menu_service.h
+     librecad/src/ui/main/workspaces/navigation/menus/lc_graphic_view_context_menu_provider.cpp
+     librecad/src/ui/main/workspaces/navigation/menus/lc_graphic_view_context_menu_provider.h
+     librecad/src/ui/main/workspaces/navigation/menus/lc_special_menu_service_interface.h
+     librecad/src/ui/main/workspaces/navigation/menus/lc_menu_builder_base.cpp
+     librecad/src/ui/main/workspaces/navigation/menus/lc_menu_builder_base.h
+     librecad/src/ui/main/init/lc_default_context_menus_builder.cpp
+     librecad/src/ui/main/init/lc_default_context_menus_builder.h
+     librecad/src/ui/actions/lc_action_naming_service_interface.h
+     librecad/src/cmd/lc_command_types.h
+     librecad/src/cmd/lc_action_type_mapper.cpp
+     librecad/src/cmd/lc_action_type_mapper.h
+     librecad/src/cmd/lc_default_commands_builder.cpp
+     librecad/src/cmd/lc_default_commands_builder.h
+     librecad/src/cmd/lc_repository_commands.cpp
+     librecad/src/cmd/lc_repository_commands.h
+     librecad/src/ui/dialogs/settings/options_customization/managers/lc_preset_manager_commands.cpp
+     librecad/src/ui/dialogs/settings/options_customization/managers/lc_preset_manager_commands.h
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_commands_tree_item.cpp
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_commands_tree_item.h
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_commands_tree_model.cpp
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_commands_tree_model.h
+     librecad/src/ui/dialogs/settings/options_customization/pages/lc_settings_page_commands.cpp
+     librecad/src/ui/dialogs/settings/options_customization/pages/lc_settings_page_commands.h
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_abstract_tree_item.h
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_action_mapping_item_base.h
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_action_mapping_tree_model_base.h
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_action_mapping_tree_model_base.cpp
+     librecad/src/cmd/lc_command_manager.cpp
+     librecad/src/cmd/lc_command_manager.h
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_pages_utils.cpp
+     librecad/src/ui/dialogs/settings/options_customization/support/lc_pages_utils.h
+     librecad/src/ui/dialogs/settings/options_customization/support/cheatsheet/lc_cheatsheet_options.h
+     librecad/src/ui/dialogs/settings/options_customization/support/cheatsheet/lc_dlg_cheatsheet_options.cpp
+     librecad/src/ui/dialogs/settings/options_customization/support/cheatsheet/lc_dlg_cheatsheet_options.h
+     librecad/src/ui/dialogs/settings/options_customization/support/cheatsheet/lc_cheatsheet_generator.cpp
+     librecad/src/ui/dialogs/settings/options_customization/support/cheatsheet/lc_cheatsheet_generator.h
+     librecad/src/cmd/lc_action_command_updater.cpp
+     librecad/src/cmd/lc_action_command_updater.h
+     librecad/src/ui/actions/lc_action_tooltip_builder.cpp
+     librecad/src/ui/actions/lc_action_tooltip_builder.h
 )
 set (MUPARSER_SOURCES
      libraries/muparser/include/muParser.h
@@ -2463,6 +2616,9 @@ set (MAIN_SOURCES
      librecad/src/ui/dialogs/main/qg_dlginitial.cpp
      librecad/src/ui/dialogs/main/qg_dlginitial.h
      ${LIBRECAD_RES}
+     librecad/src/ui/main/init/lc_actions_naming_utils.cpp
+     librecad/src/ui/main/init/lc_actions_naming_utils.h
+     librecad/src/lib/presets/lc_preset_repository.h
 )
 
 # Main executable
