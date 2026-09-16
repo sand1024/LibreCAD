@@ -32,7 +32,6 @@
 #include "lc_linemath.h"
 #include "lc_propertiesprovider_dim_linear.h"
 #include "lc_tabproxywidget.h"
-#include "qg_dlgoptionsdrawing.h"
 #include "qg_graphicview.h"
 #include "rs_fileio.h"
 #include "rs_filterdxfrw.h"
@@ -675,10 +674,92 @@ void LC_DlgDimStyleManager::onFitFineDrawDimlineBetweenToggled([[maybe_unused]]b
 void LC_DlgDimStyleManager::onLinearDimUnitFormatIndexChanged(const int index) const {
     const auto linear = m_dimStyle->linearFormat();
     linear->setFormatRaw(index+1);
-    QG_DlgOptionsDrawing::updateLengthPrecisionCombobox(linear->format(), ui->cbLinearDimPrecision);
-    QG_DlgOptionsDrawing::updateLengthPrecisionCombobox(linear->format(), ui->cbTolPrecision);
+    updateLengthPrecisionCombobox(linear->format(), ui->cbLinearDimPrecision);
+    updateLengthPrecisionCombobox(linear->format(), ui->cbTolPrecision);
     uiUpdateLinearFormat(linear->format());
     refreshPreview();
+}
+
+void LC_DlgDimStyleManager::updateLengthPrecisionCombobox(const RS2::LinearFormat unit, QComboBox* p) const{
+    p->clear();
+
+    switch (unit) {
+        // scientific
+        case RS2::Scientific: {
+            p->addItem("0E+01");
+            p->addItem("0.0E+01");
+            p->addItem("0.00E+01");
+            p->addItem("0.000E+01");
+            p->addItem("0.0000E+01");
+            p->addItem("0.00000E+01");
+            p->addItem("0.000000E+01");
+            p->addItem("0.0000000E+01");
+            p->addItem("0.00000000E+01");
+
+            // fixme - which precision is default for which unit type? Is it related to drawing precision?
+            p->setCurrentIndex(2);
+            break;
+        }
+        case RS2::Decimal: {
+            //   (0, 0.1, 0.01, ...)
+            // precision list:
+            for (int i = 0; i <= 8; i++) {
+                p->addItem(QString("%1").arg(0.0, 0, 'f', i));
+            }
+            p->setCurrentIndex(2); // fixme - which precision is default for which unit type?
+            break;
+        }
+        case RS2::Architectural: {
+            p->addItem("0'-0\"");
+            p->addItem("0'-0 1/2\"");
+            p->addItem("0'-0 1/4\"");
+            p->addItem("0'-0 1/8\"");
+            p->addItem("0'-0 1/16\"");
+            p->addItem("0'-0 1/32\"");
+            p->addItem("0'-0 1/64\"");
+            p->addItem("0'-0 1/128\"");
+
+            p->setCurrentIndex(2); // fixme - which precision is default for which unit type?
+            break;
+        }
+        case RS2::Engineering: {
+            p->addItem("0'-0\"");
+            p->addItem("0'-0.0\"");
+            p->addItem("0'-0.00\"");
+            p->addItem("0'-0.000\"");
+            p->addItem("0'-0.0000\"");
+            p->addItem("0'-0.00000\"");
+            p->addItem("0'-0.000000\"");
+            p->addItem("0'-0.0000000\"");
+            p->addItem("0'-0.00000000\"");
+
+            p->setCurrentIndex(2); // fixme - which precision is default for which unit type?
+            break;
+        }
+        case RS2::Fractional: {
+            p->addItem("0");
+            p->addItem("0 1/2");
+            p->addItem("0 1/4");
+            p->addItem("0 1/8");
+            p->addItem("0 1/16");
+            p->addItem("0 1/32");
+            p->addItem("0 1/64");
+            p->addItem("0 1/128");
+
+            p->setCurrentIndex(2); // fixme - which precision is default for which unit type?
+            break;
+        }
+        case RS2::ArchitecturalMetric: {
+            for (int i = 0; i <= 8; i++) {
+                p->addItem(QString("%1").arg(0.0, 0, 'f', i));
+            }
+
+            p->setCurrentIndex(2); // fixme - which precision is default for which unit type?
+            break;
+        }
+        default: LC_ERR << "QG_DlgOptionsDrawing::updateLengthPrecisionCombobox: error";
+            break;
+    }
 }
 
 void LC_DlgDimStyleManager::onLinearDimPrecisionIndexChanged(const int index) const {
@@ -783,9 +864,84 @@ void LC_DlgDimStyleManager::onAngularFormatIndexChanged(const int index) const {
     const auto angular = m_dimStyle->angularFormat();
     angular->setFormatRaw(index);
 
-    QG_DlgOptionsDrawing::updateAnglePrecisionCombobox(angular->format(), ui->cbAngularPrecision);
-    QG_DlgOptionsDrawing::updateAnglePrecisionCombobox(angular->format(), ui->cbTolAltPrecision);
+    updateAnglePrecisionCombobox(angular->format(), ui->cbAngularPrecision);
+    updateAnglePrecisionCombobox(angular->format(), ui->cbTolAltPrecision);
     refreshPreview();
+}
+
+void LC_DlgDimStyleManager::updateAnglePrecisionCombobox(const RS2::AngleFormat format, QComboBox* p) const {
+    const int index = p->currentIndex();
+    p->clear();
+    switch (format) {
+        case RS2::DegreesDecimal: {
+            for (int i = 0; i <= 8; i++) {
+                p->addItem(QString("%1").arg(0.0, 0, 'f', i));
+            }
+            break;
+        }
+        case RS2::AngleFormat::DegreesMinutesSeconds: {
+            p->addItem(QString("0%1").arg(QChar(0xB0)));
+            p->addItem(QString("0%100'").arg(QChar(0xB0)));
+            p->addItem(QString("0%100'00\"").arg(QChar(0xB0)));
+            p->addItem(QString("0%100'00.0\"").arg(QChar(0xB0)));
+            p->addItem(QString("0%100'00.00\"").arg(QChar(0xB0)));
+            p->addItem(QString("0%100'00.000\"").arg(QChar(0xB0)));
+            p->addItem(QString("0%100'00.0000\"").arg(QChar(0xB0)));
+            break;
+        }
+        case RS2::AngleFormat::Gradians: {
+            p->addItem("0g");
+            p->addItem("0.0g");
+            p->addItem("0.00g");
+            p->addItem("0.000g");
+            p->addItem("0.0000g");
+            p->addItem("0.00000g");
+            p->addItem("0.000000g");
+            p->addItem("0.0000000g");
+            p->addItem("0.00000000g");
+            break;
+        }
+        case RS2::AngleFormat::Radians: {
+            p->addItem("0r");
+            p->addItem("0.0r");
+            p->addItem("0.00r");
+            p->addItem("0.000r");
+            p->addItem("0.0000r");
+            p->addItem("0.00000r");
+            p->addItem("0.000000r");
+            p->addItem("0.0000000r");
+            p->addItem("0.00000000r");
+            break;
+        }
+        case RS2::AngleFormat::Surveyors: {
+            p->addItem("N 0d E");
+            p->addItem("N 0d00' E");
+            p->addItem("N 0d00'00\" E");
+            p->addItem("N 0d00'00.0\" E");
+            p->addItem("N 0d00'00.00\" E");
+            p->addItem("N 0d00'00.000\" E");
+            p->addItem("N 0d00'00.0000\" E");
+            break;
+        }
+        default:
+            break;
+    }
+    p->setCurrentIndex(index);
+}
+
+void LC_DlgDimStyleManager::fillLinearUnitsCombobox(QComboBox* combobox) const {
+    QStringList unitList;
+    unitList << tr("Scientific") << tr("Decimal") << tr("Engineering") << tr("Architectural") << tr("Fractional") << tr(
+        "Architectural (metric)");
+
+    combobox->insertItems(0, unitList);
+}
+
+void LC_DlgDimStyleManager::fillAngleUnitsCombobox(QComboBox* combobox) const{
+    // init angle units combobox:
+    QStringList aunitList;
+    aunitList << tr("Decimal Degrees") << tr("Deg/min/sec") << tr("Gradians") << tr("Radians") << tr("Surveyor's units");
+    combobox->insertItems(0, aunitList);
 }
 
 void LC_DlgDimStyleManager::onAngularPrecisionIndexChanged(const int index) const {
@@ -817,8 +973,8 @@ void LC_DlgDimStyleManager::onAlternateLinearFormatIndexChanged(const int index)
     const auto linear = m_dimStyle->linearFormat();
     linear->setAltFormatRaw(index+1);
     const auto unit = linear->altFormat();
-    QG_DlgOptionsDrawing::updateLengthPrecisionCombobox(unit, ui->cbAlternateLinearPrecision);
-    QG_DlgOptionsDrawing::updateLengthPrecisionCombobox(unit, ui->cbTolAltPrecision);
+    updateLengthPrecisionCombobox(unit, ui->cbAlternateLinearPrecision);
+    updateLengthPrecisionCombobox(unit, ui->cbTolAltPrecision);
     uiUpdateAltLinearFormat(unit);
     refreshPreview();
 }
@@ -1114,11 +1270,11 @@ void LC_DlgDimStyleManager::init(const RS2::EntityType dimensionType) {
 
     // unit comboboxes
 
-    QG_DlgOptionsDrawing::fillLinearUnitsCombobox(ui->cbLinearDimUnitFormat);
-    QG_DlgOptionsDrawing::fillLinearUnitsCombobox(ui->cbAlternateLinearFormat);
+    fillLinearUnitsCombobox(ui->cbLinearDimUnitFormat);
+    fillLinearUnitsCombobox(ui->cbAlternateLinearFormat);
 
     // init angle units combobox:
-    QG_DlgOptionsDrawing::fillAngleUnitsCombobox(ui->cbAngularFormat);
+    fillAngleUnitsCombobox(ui->cbAngularFormat);
     LC_DimArrowRegistry::fillDefaultArrowTypes(m_defaultArrowsInfo);
 
     for (const LC_DimArrowRegistry::ArrowInfo& arrowInfo : m_defaultArrowsInfo) {
@@ -1751,8 +1907,8 @@ void LC_DlgDimStyleManager::fillPrimaryUnitTab(const LC_DimStyle* dimStyle) cons
 
     const auto linearFormat = linear->format();
     ui->cbLinearDimUnitFormat->setCurrentIndex(linearFormat);
-    QG_DlgOptionsDrawing::updateLengthPrecisionCombobox(linearFormat, ui->cbLinearDimPrecision);
-    QG_DlgOptionsDrawing::updateLengthPrecisionCombobox(linearFormat, ui->cbTolPrecision);
+    updateLengthPrecisionCombobox(linearFormat, ui->cbLinearDimPrecision);
+    updateLengthPrecisionCombobox(linearFormat, ui->cbTolPrecision);
 
     uiUpdateLinearFormat(linearFormat);
 
@@ -1812,7 +1968,7 @@ void LC_DlgDimStyleManager::fillPrimaryUnitTab(const LC_DimStyle* dimStyle) cons
     const auto angular = dimStyle->angularFormat();
 
     ui->cbAngularFormat->setCurrentIndex(angular->format());
-    QG_DlgOptionsDrawing::updateAnglePrecisionCombobox(angular->format(), ui->cbAngularPrecision);
+    updateAnglePrecisionCombobox(angular->format(), ui->cbAngularPrecision);
     ui->cbAngularPrecision->setCurrentIndex(angular->decimalPlaces());
 
     const bool angularLeadingSuppress = zerosSuppression->isAngularSuppress(LC_DimStyle::ZerosSuppression::AngularSuppressionPolicy::SUPPRESS_LEADING_DECIMAL);
@@ -1829,8 +1985,8 @@ void LC_DlgDimStyleManager::fillAltUnitTab(const LC_DimStyle* dimStyle) const {
     const auto altFormat = linearFormat->altFormat();
     ui->cbAlternateLinearFormat->setCurrentIndex(altFormat);
 
-    QG_DlgOptionsDrawing::updateLengthPrecisionCombobox(altFormat, ui->cbAlternateLinearPrecision);
-    QG_DlgOptionsDrawing::updateLengthPrecisionCombobox(altFormat, ui->cbTolAltPrecision);
+    updateLengthPrecisionCombobox(altFormat, ui->cbAlternateLinearPrecision);
+    updateLengthPrecisionCombobox(altFormat, ui->cbTolAltPrecision);
 
     uiUpdateAltLinearFormat(altFormat);
 
@@ -1900,7 +2056,7 @@ void LC_DlgDimStyleManager::fillToleranceTab(const LC_DimStyle* dimStyle) const 
 
     ui->cbTolMethod->setCurrentIndex(tolMethod); // basic
     const auto linear = dimStyle->linearFormat();
-    QG_DlgOptionsDrawing::updateLengthPrecisionCombobox(linear->format(), ui->cbTolPrecision);
+    updateLengthPrecisionCombobox(linear->format(), ui->cbTolPrecision);
     ui->cbTolPrecision->setCurrentIndex(tolerance->decimalPlaces());
 
     ui->dsbTolUpperLimit->setValue(tolerance->upperToleranceLimit());
@@ -1938,7 +2094,7 @@ void LC_DlgDimStyleManager::fillToleranceTab(const LC_DimStyle* dimStyle) const 
     ui->cbTolZeros0Feet->setChecked(feetSuppress);
     ui->cbTolZeros0Inches->setChecked(inchesSuppress);
 
-    QG_DlgOptionsDrawing::updateLengthPrecisionCombobox(static_cast<RS2::LinearFormat>(ui->cbAlternateLinearFormat->currentIndex()), ui->cbTolAltPrecision); // fixme - connect for update
+    updateLengthPrecisionCombobox(static_cast<RS2::LinearFormat>(ui->cbAlternateLinearFormat->currentIndex()), ui->cbTolAltPrecision); // fixme - connect for update
     ui->cbTolAltPrecision->setCurrentIndex(tolerance->decimalPlacesAltDim());
 
     if (zerosSuppression->isAltToleranceSuppress(LC_DimStyle::ZerosSuppression::TOL_INCLUDE_ZERO_FEET_AND_ZERO_INCHES)) {
