@@ -38,13 +38,19 @@ public:
     void setIcon(const QIcon& icon);
     bool isActionMappingsMayBeConfigured() const;
     void setActionMappingsMayBeConfigured(bool actionMappingsMayBeConfigured);
+    bool isToolbarMenuConfigurable() const;
+    void setToolbarMenuConfigurable(bool configurable);
+    const QString& getIconPath() const;
+    void setIconPath(const QString& iconPath);
     QString getTitle() const;
 protected:
     QString m_name;
     QString m_title;
     QString m_description;
     QIcon m_icon;
+    QString m_iconPath;
     bool m_actionMappingsMayBeConfigured = true;
+    bool m_isToolbarMenuConfigurable = true;
 };
 
 #endif

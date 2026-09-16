@@ -20,7 +20,7 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_shortcutinfo.h"
+#include "lc_shortcut_info.h"
 
 QString LC_ShortcutInfo::retrieveKey(const bool useDefault) const {
     return useDefault ? m_defaultKey.toString() : m_key.toString();

@@ -46,9 +46,13 @@ public:
 
     bool isInvokedViaShortcut();
 
+    QString description() const { return m_description; }
+    void setDescription(const QString& desc) { m_description = desc; }
+
 protected:
     bool event(QEvent*) override;
     QElapsedTimer m_elapsedTimer;
+    QString m_description;
 };
 
 #endif

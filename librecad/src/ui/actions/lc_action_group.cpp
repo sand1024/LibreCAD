@@ -21,12 +21,13 @@
  * ********************************************************************************
  */
 
-#include "lc_actiongroup.h"
+#include "lc_action_group.h"
 
 LC_ActionGroup::LC_ActionGroup(QObject *parent, const QString &name, const QString& title, const QString &description, const char* iconName)
     :QActionGroup(parent), m_name{name}, m_title{title}, m_description{description}{
     setObjectName(name);
     if (iconName != nullptr){
+        m_iconPath = QString::fromUtf8(iconName);
         m_icon = QIcon(iconName);
     }
 }
@@ -68,4 +69,21 @@ bool LC_ActionGroup::isActionMappingsMayBeConfigured() const {
 
 void LC_ActionGroup::setActionMappingsMayBeConfigured(const bool actionMappingsMayBeConfigured) {
     m_actionMappingsMayBeConfigured = actionMappingsMayBeConfigured;
+}
+
+bool LC_ActionGroup::isToolbarMenuConfigurable() const {
+    return m_isToolbarMenuConfigurable;
+}
+
+void LC_ActionGroup::setToolbarMenuConfigurable(const bool configurable) {
+    m_isToolbarMenuConfigurable = configurable;
+}
+
+const QString& LC_ActionGroup::getIconPath() const {
+    return m_iconPath;
+}
+
+void LC_ActionGroup::setIconPath(const QString& iconPath) {
+    m_iconPath = iconPath;
+    m_icon = QIcon(m_iconPath);
 }

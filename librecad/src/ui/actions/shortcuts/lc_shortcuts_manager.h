@@ -1,30 +1,30 @@
 /*******************************************************************************
  *
- This file is part of the LibreCAD project, a 2D CAD program
-
- Copyright (C) 2024 LibreCAD.org
- Copyright (C) 2024 sand1024
-
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU General Public License
- as published by the Free Software Foundation; either version 2
- of the License, or (at your option) any later version.
-
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with this program; if not, write to the Free Software
- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * This file is part of the LibreCAD project, a 2D CAD program
+ *
+ * Copyright (C) 2026 LibreCAD.org
+ * Copyright (C) 2026 sand1024
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
 #ifndef LC_SHORTCUTS_MANAGER_H
 #define LC_SHORTCUTS_MANAGER_H
 
-#include "lc_shortcutinfo.h"
-#include "lc_shortcuts_repository.h"
+#include "lc_shortcut_info.h"
+#include "lc_repository_shortcuts.h"
 
 class LC_ShortcutsManager {
 public:
@@ -38,18 +38,18 @@ public:
     QString getShortcutsMappingsFolder() const;
     void updateActionTooltips(const QMap<QString, QAction *> &actionsMap) const;
     void init() const;
+    [[deprecated]]
     static QString getPlainActionToolTip(const QAction* action);
     void applyShortcutsMapToActionsMap(QMap<QString, LC_ShortcutInfo *> &shortcuts, QMap<QString, QAction *> &actionsMap) const;  // fixme - temporary, review
 
     int loadActiveScheme(QMap<QString, QAction*>& actionsMap);
-    LC_ShortcutsRepository* getRepository() const;
+    LC_RepositoryShortcuts* getRepository() const;
 protected:
 
     static constexpr auto PROPERTY_SHORTCUT_BACKUP = "tooltip.original";
 
-    std::unique_ptr<LC_ShortcutsRepository> m_repository;
-
-    void updateActionShortcutTooltips(const QMap<QString, QAction *> &map, bool enable) const;
+    std::unique_ptr<LC_RepositoryShortcuts> m_repository;
+    [[deprecated]]
     QString strippedActionText(QString s) const;
     QString getDefaultShortcutsFileName() const;
     void applyKeySequencesMapToActionsMap(QMap<QString, QKeySequence> &shortcuts, QMap<QString, QAction *> &actionsMap) const;

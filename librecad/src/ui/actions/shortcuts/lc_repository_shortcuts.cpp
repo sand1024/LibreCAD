@@ -1,4 +1,5 @@
 /*******************************************************************************
+ *
  * This file is part of the LibreCAD project, a 2D CAD program
  *
  * Copyright (C) 2026 LibreCAD.org
@@ -8,26 +9,34 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_shortcuts_repository.h"
+#include "lc_repository_shortcuts.h"
 
 #include <QDir>
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonObject>
 
-#include "lc_shortcutsstorage.h"
+#include "lc_shortcuts_storage.h"
 #include "rs_debug.h"
 
-LC_ShortcutsRepository::LC_ShortcutsRepository(const QString& configDir)
-    : LC_StyleRepositoryBase<ShortcutsConfig>(
+LC_RepositoryShortcuts::LC_RepositoryShortcuts(const QString& configDir)
+    : LC_PresetRepositoryBase<ShortcutsConfig>(
           configDir, SHORTCUTS_EXTENSION, SHORTCUTS_FILE_IDENTIFIER, "shortcuts_index.lcix") {
     QDir().mkpath(configDir);
-    initializeIndex();
 }
 
-QJsonObject LC_ShortcutsRepository::configToJson(const ShortcutsConfig& config) const {
+QJsonObject LC_RepositoryShortcuts::configToJson(const ShortcutsConfig& config) const {
     QJsonObject root;
     QJsonObject shortcutsObj;
 
@@ -40,7 +49,7 @@ QJsonObject LC_ShortcutsRepository::configToJson(const ShortcutsConfig& config) 
     return root;
 }
 
-bool LC_ShortcutsRepository::configFromJson(const QJsonObject& json, ShortcutsConfig& config) const {
+bool LC_RepositoryShortcuts::configFromJson(const QJsonObject& json, ShortcutsConfig& config) const {
     config.shortcuts.clear();
 
     const QJsonObject shortcutsObj = json["shortcuts"].toObject();
@@ -53,7 +62,7 @@ bool LC_ShortcutsRepository::configFromJson(const QJsonObject& json, ShortcutsCo
     return true;
 }
 
-void LC_ShortcutsRepository::migrateLegacyShortcutsIfNeeded(const QString& legacyFolder) {
+void LC_RepositoryShortcuts::migrateLegacyShortcutsIfNeeded(const QString& legacyFolder) {
     if (!getAvailableNames().isEmpty()) {
         return; // Presets already exist; migration previously completed
     }

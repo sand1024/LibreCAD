@@ -20,14 +20,15 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_actionfactorybase.h"
+#include "lc_action_factory_base.h"
 
 #include <QActionGroup>
 
 #include "lc_action.h"
-#include "lc_actiongroup.h"
-#include "lc_actiongroupmanager.h"
-#include "lc_shortcutinfo.h"
+#include "lc_action_group.h"
+#include "lc_action_group_manager.h"
+#include "shortcuts/lc_shortcut_info.h"
+
 #include "qc_applicationwindow.h"
 #include "qg_actionhandler.h"
 
@@ -37,9 +38,9 @@ LC_ActionFactoryBase::LC_ActionFactoryBase(QC_ApplicationWindow* parent, QG_Acti
 
 QAction* LC_ActionFactoryBase::createAction_MW(const char* name, void (QC_ApplicationWindow::*slotPtr)(),
                                                void (QC_ApplicationWindow::*slotBoolPtr)(bool), const QString& text, const char* iconName,
-                                               const char* themeIconName, QActionGroup* parent, QMap<QString, QAction*>& actionsMap,
-                                               const bool useToggled) const {
-    QAction* action = justCreateAction(actionsMap, name, text, iconName, themeIconName, parent);
+                                               QActionGroup* parent, QMap<QString, QAction*>& actionsMap,
+                                               const bool useToggled, const QString& description) const {
+    QAction* action = justCreateAction(actionsMap, name, text, iconName, parent, description);
     if (slotPtr != nullptr) {
         if (useToggled) {
             connect(action, &QAction::toggled, m_appWin, slotPtr);
@@ -60,10 +61,9 @@ QAction* LC_ActionFactoryBase::createAction_MW(const char* name, void (QC_Applic
 }
 
 QAction* LC_ActionFactoryBase::createAction_AH(const char* name, RS2::ActionType actionType, const QString& text, const char* iconName,
-                                               const char* themeIconName, QActionGroup* parent, QMap<QString, QAction*>& actionsMap) const {
-    QAction* action = justCreateAction(actionsMap, name, text, iconName, themeIconName, parent);
-    // LC_ERR <<  " ** original action handler" << this->action_handler;
-    // well, a bit crazy hacky code to let the lambda properly capture action handler... without local var, class member is not captured
+                                               QActionGroup* parent, QMap<QString, QAction*>& actionsMap,
+                                               const QString& description) const {
+    QAction* action = justCreateAction(actionsMap, name, text, iconName, parent, description);
     QG_ActionHandler* capturedHandler = m_actionHandler;
     connect(action, &QAction::triggered, capturedHandler, [ capturedHandler, actionType](bool) {
         // fixme - sand - simplify by using data() on QAction and sender()
@@ -74,18 +74,15 @@ QAction* LC_ActionFactoryBase::createAction_AH(const char* name, RS2::ActionType
     return action;
 }
 
-QAction* LC_ActionFactoryBase::justCreateAction(QMap<QString, QAction*>& actionsMap, const char* name, const QString& text, const char* iconName,
-                                                const char* themeIconName, QActionGroup* parent) const {
-    // auto* action = new QAction(text, parent);
+QAction* LC_ActionFactoryBase::justCreateAction(QMap<QString, QAction*>& actionsMap, const char* name, const QString& text,
+                                                const char* iconName, QActionGroup* parent,
+                                                const QString& description) const {
     auto* action = new LC_Action(text, parent);
     if (iconName != nullptr) {
-        const auto icon = QIcon(iconName);
-        if (m_usingTheme && themeIconName != nullptr) {
-            action->setIcon(QIcon::fromTheme(themeIconName, icon));
-        }
-        else {
-            action->setIcon(icon);
-        }
+        action->setIcon(QIcon(iconName));
+    }
+    if (!description.isEmpty()) {
+        action->setDescription(description);
     }
     action->setObjectName(name);
     action->setIconVisibleInMenu(true);
@@ -97,24 +94,23 @@ QAction* LC_ActionFactoryBase::justCreateAction(QMap<QString, QAction*>& actions
 void LC_ActionFactoryBase::createActions(QMap<QString, QAction*>& map, QActionGroup* group,
                                          const std::vector<ActionInfo>& actionList) const {
     for (const ActionInfo& a : actionList) {
-        justCreateAction(map, a.key, a.text, a.iconName, a.themeIconName, group);
+        justCreateAction(map, a.key, a.text, a.iconName, group, a.description);
     }
 }
 
 void LC_ActionFactoryBase::createActionHandlerActions(QMap<QString, QAction*>& map, QActionGroup* group,
                                                       const std::vector<ActionInfo>& actionList) const {
     for (const ActionInfo& a : actionList) {
-        createAction_AH(a.key, a.actionType, a.text, a.iconName, a.themeIconName, group, map);
+        createAction_AH(a.key, a.actionType, a.text, a.iconName, group, map, a.description);
     }
 }
 
 void LC_ActionFactoryBase::createMainWindowActions(QMap<QString, QAction*>& map, QActionGroup* group,
                                                    const std::vector<ActionInfo>& actionList, const bool useToggled) const {
     for (const ActionInfo& a : actionList) {
-        createAction_MW(a.key, a.slotPtr, a.slotPtrBool, a.text, a.iconName, a.themeIconName, group, map, useToggled);
+        createAction_MW(a.key, a.slotPtr, a.slotPtrBool, a.text, a.iconName, group, map, useToggled, a.description);
     }
 }
-
 void LC_ActionFactoryBase::makeActionsShortcutsNonEditable(const QMap<QString, QAction*>& map,
                                                            const std::vector<const char*>& actionNames) {
     for (const auto name : actionNames) {
@@ -140,6 +136,8 @@ void LC_ActionFactoryBase::createActionGroups(const std::vector<ActionGroupInfo>
     for (const ActionGroupInfo& groupInfo : actionGroups) {
         const auto group = new LC_ActionGroup(actionGroupManager, groupInfo.name, groupInfo.title, groupInfo.description,
                                               groupInfo.iconName);
+        group->setActionMappingsMayBeConfigured(groupInfo.isShortcutConfigurable);
+        group->setToolbarMenuConfigurable(groupInfo.isToolbarMenuConfigurable);
         actionGroupManager->addActionGroup(groupInfo.name, group, groupInfo.isToolGroup);
     }
 }
@@ -151,5 +149,38 @@ void LC_ActionFactoryBase::fillActionsList(QList<QAction*>& list, const std::vec
             const auto action = map.value(actionName);
             list << action;
         }
+    }
+}
+
+void LC_ActionFactoryBase::makeActionsExcludedFromRecent(const QMap<QString, QAction*>& map,
+                                                         const std::vector<const char*>& actionNames) {
+    for (const auto name : actionNames) {
+        if (map.contains(name)) {
+            QAction* action = map.value(name);
+            if (action != nullptr) {
+                action->setProperty(LC_ActionNames::PropertyExcludeFromRecent, true);
+            }
+        }
+    }
+}
+
+QAction* LC_ActionFactoryBase::createSpecialAction(QMap<QString, QAction*>& map,
+                                                   QActionGroup* group,
+                                                   const char* key,
+                                                   const QString& title,
+                                                   const char* icon,
+                                                   const QString& description) const {
+    auto* act = justCreateAction(map, key, title, icon, group, description);
+    if (act != nullptr) {
+        act->setProperty(LC_ShortcutInfo::PROPERTY_ACTION_SHORTCUT_CONFIGURABLE, false);
+    }
+    return act;
+}
+
+void LC_ActionFactoryBase::createSpecialActions(QMap<QString, QAction*>& map,
+                                                QActionGroup* group,
+                                                const std::initializer_list<SpecialActionEntry>& entries) const {
+    for (const auto& entry : entries) {
+        createSpecialAction(map, group, entry.key, entry.title, entry.icon, entry.description);
     }
 }

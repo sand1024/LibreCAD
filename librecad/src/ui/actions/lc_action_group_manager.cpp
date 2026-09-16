@@ -20,10 +20,11 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-#include "lc_actiongroupmanager.h"
+#include "lc_action_group_manager.h"
 
-#include "lc_actiongroup.h"
-#include "lc_shortcuts_manager.h"
+#include "lc_actions_naming_utils.h"
+#include "lc_action_group.h"
+#include "shortcuts/lc_shortcuts_manager.h"
 #include "qc_applicationwindow.h"
 
 namespace Sorting
@@ -35,7 +36,12 @@ namespace Sorting
 
 LC_ActionGroupManager::LC_ActionGroupManager(QC_ApplicationWindow* parent)
     : QObject(parent),
-      m_shortcutsManager{std::make_unique<LC_ShortcutsManager>()} {
+      m_shortcutsManager{std::make_unique<LC_ShortcutsManager>()},
+      m_namingService(std::make_unique<LC_ActionNamingService>(this)){
+}
+
+const LC_ActionNamingServiceInterface* LC_ActionGroupManager::getNamingService() const {
+    return m_namingService.get();
 }
 
 
@@ -69,7 +75,7 @@ QList<LC_ActionGroup *> LC_ActionGroupManager::toolGroups() const {
 
 QList<LC_ActionGroup *> LC_ActionGroupManager::allGroupsList() {
     QList<LC_ActionGroup *> agList = findChildren<LC_ActionGroup *>();
-    sortGroupsByName(agList);
+    // sortGroupsByName(agList);
     return agList;
 }
 

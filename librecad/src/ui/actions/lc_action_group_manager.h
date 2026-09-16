@@ -27,18 +27,22 @@
 #include <QMap>
 #include <QObject>
 
+#include "lc_actions_naming_utils.h"
 #include "rs.h"
 
+class LC_ActionNamingServiceInterface;
 class LC_ShortcutsManager;
 class LC_ShortcutInfo;
 class LC_ActionGroup;
 class QAction;
 class QC_ApplicationWindow;
 
-class LC_ActionGroupManager : public QObject{
+
+class LC_ActionGroupManager : public QObject {
     Q_OBJECT
 public:
     explicit LC_ActionGroupManager(QC_ApplicationWindow *parent);
+    const LC_ActionNamingServiceInterface* getNamingService() const;
     ~LC_ActionGroupManager() override;
 
     QList<LC_ActionGroup*> toolGroups() const;
@@ -73,6 +77,7 @@ private:
     QMap<QString, QAction*> m_actionsMap; // should be initialized by action factory by call of loadShortcuts()
     QMap<int, QAction*> m_actionsByTypes;
     std::unique_ptr<LC_ShortcutsManager> m_shortcutsManager;
+    std::unique_ptr<LC_ActionNamingServiceInterface> m_namingService;
     QList<bool> m_snapState;
 };
 

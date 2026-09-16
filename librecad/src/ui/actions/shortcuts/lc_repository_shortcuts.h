@@ -27,10 +27,10 @@ struct ShortcutsConfig {
     QMap<QString, QKeySequence> shortcuts; // ActionName -> QKeySequence
 };
 
-class LC_ShortcutsRepository : public LC_StyleRepositoryBase<ShortcutsConfig> {
+class LC_RepositoryShortcuts : public LC_PresetRepositoryBase<ShortcutsConfig> {
 public:
-    explicit LC_ShortcutsRepository(const QString& configDir);
-    ~LC_ShortcutsRepository() override = default;
+    explicit LC_RepositoryShortcuts(const QString& configDir);
+    ~LC_RepositoryShortcuts() override = default;
 
     QJsonObject configToJson(const ShortcutsConfig& config) const override;
     bool configFromJson(const QJsonObject& json, ShortcutsConfig& config) const override;
