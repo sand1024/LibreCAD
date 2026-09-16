@@ -54,7 +54,6 @@ void LC_SettingsPageProgramDefaults::setupBindings() {
     bindBoolean({
         { ui->cbUseQtFileOpenDialog, o_UseQtFileOpenDialog },
         { ui->cbUseQtColorPickerDialog, o_UseQtColorPickerDialog }, // fixme - sand - review usage and picking color via non-OS color picker all over the codebase
-        { ui->cbShowKeyboardShortcutsInToolTips, o_ShowKeyboardShortcutsInTooltips },
         { ui->cbPersistentDialogs, o_PersistDialogPositions },
         { ui->cbPersistentDialogSizeOnly, o_PersistDialogRestoreSizeOnly },
         { ui->cbTabCloseButton, o_ShowCloseButton },

@@ -43,6 +43,7 @@ void LC_SettingsPageKeyboard::setupBindings() {
     bindBoolean({
         { ui->cbEvaluateOnSpace, o_EvaluateCommandOnSpace },
         { ui->cbToggleFreeSnapOnSpace, o_ToggleFreeSnapOnSpace },
-        { ui->cbEnableKeyboardZoomAdjust, o_AllowScrollMoveAdjustByKeys }
+        { ui->cbEnableKeyboardZoomAdjust, o_AllowScrollMoveAdjustByKeys },
+        { ui->cbShowKeyboardShortcutsInToolTips, CFG_Appearance::o_ShowKeyboardShortcutsInTooltips }
     });
 }

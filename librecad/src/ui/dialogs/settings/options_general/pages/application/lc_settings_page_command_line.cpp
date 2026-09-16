@@ -23,6 +23,7 @@
 #include "ui_lc_settings_page_command_line.h"
 #include "lc_settings_backend.h"
 #include "lc_settings_commands_promotion.h"
+#include "qc_applicationwindow.h"
 
 LC_SettingsPageCommandLine::LC_SettingsPageCommandLine(QObject* parent)
     : LC_SettingsPageBase(tr("Command Line Informer"),
@@ -35,6 +36,9 @@ LC_SettingsPageCommandLine::~LC_SettingsPageCommandLine() = default;
 
 void LC_SettingsPageCommandLine::setupUi() {
     ui->setupUi(m_widget);
+    auto uiStyleManager = QC_ApplicationWindow::getAppWindow()->getUiStyleManager();
+    bool currentThemeIsFusion = uiStyleManager->isCurrentActiveStyleFusion();
+    ui->cbShowCommandInMenu->setEnabled(currentThemeIsFusion);
 }
 
 void LC_SettingsPageCommandLine::setupBindings() {
@@ -42,6 +46,7 @@ void LC_SettingsPageCommandLine::setupBindings() {
 
     bindBoolean({
         { ui->cbShowCommandInMenu, o_ShowCommandInMenu },
-        { ui->cbPromoteCommandInCmd, o_PromoteCommands }
+        { ui->cbPromoteCommandInCmd, o_PromoteCommands },
+        { ui->cbShowCommandInTooltips, o_ShowCommandsInTooltips}
     });
 }

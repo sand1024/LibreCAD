@@ -265,7 +265,6 @@ namespace {
 LC_PresetManagerViewport::LC_PresetManagerViewport(QObject* parent, QWidget* previewWidget)
     :LC_AbstractPresetManager(CFG_AppStyling::o_ActiveGraphicViewScheme.get(), parent)
     , m_previewWidget(previewWidget) {
-    m_repository.initializeIndex();
 }
 
 LC_PresetManagerUIStrings LC_PresetManagerViewport::presetStrings() const {
@@ -412,10 +411,7 @@ bool LC_PresetManagerViewport::savePresetAs(const QString& name, QString& outKey
     return false;
 }
 
-bool LC_PresetManagerViewport::deletePreset(const QString& key) {
-    if (key == DEFAULT_THEME_KEY || key.isEmpty()) {
-        return false;
-    }
+bool LC_PresetManagerViewport::doDeletePreset(const QString& key) {
     return m_repository.deleteByKey(key);
 }
 

@@ -48,7 +48,7 @@ void LC_SettingsPagePaths::setupBindings() {
         { ui->lePathFonts, o_Fonts },
         { ui->leTemplate, o_Template },
         { ui->variablefile_field, o_VariableFile },
-        { ui->leOtherSettingsDirectory, o_OtherSettingsDir },
+        { ui->leOtherSettingsDirectory, o_OtherSettingsDir, true },
         { ui->lePathLibrary, o_Library, true /*requiresRestart*/ }
     });
 

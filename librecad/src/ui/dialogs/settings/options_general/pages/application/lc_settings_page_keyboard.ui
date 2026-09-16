@@ -6,31 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>750</width>
+    <width>1147</width>
     <height>500</height>
    </rect>
   </property>
-  <layout class="QGridLayout" name="gridLayout_main">
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
-    <number>0</number>
-   </property>
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
     <widget class="QGroupBox" name="groupBox_4">
      <property name="title">
       <string>Keyboard Support</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="cbEvaluateOnSpace">
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="cbEnableKeyboardZoomAdjust">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -38,13 +26,14 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Evaluate Command By SPACE
+         <string>Zoom And Scroll By Keyboard
 
-If enabled, command entered in command line widget
-is evaluated when SPACE is pressed.</string>
+If enabled, it is possible to do with keys - zooming via +/-, 
+scrolling via arrow keys, moving selected entities position 
+via arrow keys and SHIFT/CTRL modifiers.</string>
         </property>
         <property name="text">
-         <string>Evaluate commands when SPACE BAR is pressed</string>
+         <string>Enable scroll and position adjustment via keyboard</string>
         </property>
        </widget>
       </item>
@@ -67,8 +56,8 @@ is pressed and the command window is activated.</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QCheckBox" name="cbEnableKeyboardZoomAdjust">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="cbEvaluateOnSpace">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -76,14 +65,13 @@ is pressed and the command window is activated.</string>
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Zoom And Scroll By Keyboard
+         <string>Evaluate Command By SPACE
 
-If enabled, it is possible to do with keys - zooming via +/-, 
-scrolling via arrow keys, moving selected entities position 
-via arrow keys and SHIFT/CTRL modifiers.</string>
+If enabled, command entered in command line widget
+is evaluated when SPACE is pressed.</string>
         </property>
         <property name="text">
-         <string>Enable scroll and position adjustment via keyboard</string>
+         <string>Evaluate commands when SPACE BAR is pressed</string>
         </property>
        </widget>
       </item>
@@ -100,10 +88,29 @@ via arrow keys and SHIFT/CTRL modifiers.</string>
         </property>
        </spacer>
       </item>
+      <item row="3" column="0">
+       <widget class="QCheckBox" name="cbShowKeyboardShortcutsInToolTips">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Keyboard Shortcuts in Tooltips
+
+If checked, keyboard shortcut assigned to the action
+will be shown in tooltip for action.</string>
+        </property>
+        <property name="text">
+         <string>Show keyboard shortcuts in actions tooltips</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Orientation::Vertical</enum>

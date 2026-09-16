@@ -59,7 +59,7 @@
 #include "lc_settings_page_snap_visual_timing.h"
 #include "lc_settings_page_updates.h"
 #include "lc_preset_manager_viewport.h"
-#include "lc_viewport_theme_repository.h"
+#include "lc_repository_viewport_theme.h"
 #include "lc_visual_snap_data.h"
 
 class LC_OverlayDrawablesContainer;
@@ -75,7 +75,7 @@ void LC_SettingsManagerApplication::initialize() {
     auto* reg = LC_SettingsRegistry::instance();
     const QString targetDialog = DLG_GENERAL_PREFERENCES;
 
-    reg->configureDialog(targetDialog, {QObject::tr("Application Preferences"), true, false});
+    reg->configureDialog(targetDialog, {QObject::tr("Application Preferences"), true, false,":/icons/settings.lci"});
 
     // Viewport Theme Preset Manager Registration
     reg->registerPresetManager(targetDialog, PAGE_DRAW, []() {

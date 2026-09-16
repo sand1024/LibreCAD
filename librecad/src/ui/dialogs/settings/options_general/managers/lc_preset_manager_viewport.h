@@ -26,7 +26,7 @@
 
 #include "lc_abstract_preset_manager.h"
 #include "lc_preset_manager_interface.h"
-#include "lc_viewport_theme_repository.h"
+#include "lc_repository_viewport_theme.h"
 
 class LC_PresetManagerViewport : public LC_AbstractPresetManager {
     Q_OBJECT
@@ -39,7 +39,6 @@ public:
     bool loadPreset(const QString& key) override;
     bool saveCurrentPreset() override;
     bool savePresetAs(const QString& name, QString& outKey) override;
-    bool deletePreset(const QString& key) override;
     void applyCurrentPreset() override;
     bool resetToDefaults(const QString& key);
 
@@ -51,12 +50,13 @@ public:
     bool exportPresetToFile(const QString& key, const QString& filePath, QWidget* parent) override;
 protected:
     void applyActiveConfigToSystem(const QString& activeKey) override;
+    bool doDeletePreset(const QString& key) override;
 private:
     QJsonObject serializeCurrentSettings() const;
     void applyThemeJson(const QJsonObject& obj);
     bool calculateDivergence() const;
 
-    LC_ViewportThemeRepository m_repository;
+    LC_RepositoryViewportTheme m_repository;
     bool m_registryDiverged = false;
     QWidget* m_previewWidget = nullptr;
 };
