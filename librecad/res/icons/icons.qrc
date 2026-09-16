@@ -422,5 +422,16 @@
         <file alias="expand_all.lci">expand_all.svg</file>
         <file alias="collapse_all.lci">collapse_all.svg</file>
         <file alias="collapse_secondary.lci">collapse_secondary.svg</file>
+        <file alias="chevron_left.lci">chevron_left.svg</file>
+        <file alias="chevron_left_all.lci">chevron_left_all.svg</file>
+        <file alias="chevron_right.lci">chevron_right.svg</file>
+        <file alias="chevron_right_all.lci">chevron_right_all.svg</file>
+        <file alias="separator_add.lci">separator_add.svg</file>
+        <file alias="options_styling.lci">options_styling.svg</file>
+        <file alias="options_customize.lci">options_customize.svg</file>
+        <file alias="help.lci">help.svg</file>
+        <file alias="issues.lci">issues.svg</file>
+        <file alias="feature_request.lci">feature_request.svg</file>
+        <file alias="github.lci">github.svg</file>
     </qresource>
 </RCC>
