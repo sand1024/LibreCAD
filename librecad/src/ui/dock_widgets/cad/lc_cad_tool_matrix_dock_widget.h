@@ -24,6 +24,9 @@
 #define LC_CADToolMatrixDockWidget_H
 #include "lc_caddockwidget.h"
 
+class LC_ActionGroupManager;
+struct ActionNode;
+
 class LC_CADToolMatrixDockWidget : public LC_CADDockWidget {
     Q_OBJECT
 public:
@@ -31,9 +34,9 @@ public:
     explicit LC_CADToolMatrixDockWidget(QWidget* parent, bool scrollContent = true);
     ~LC_CADToolMatrixDockWidget() override = default;
     bool eventFilter(QObject *watched, QEvent *event) override;
-    void changeEvent(QEvent* event) override;
+    void updateActionsFromNodes(const QList<ActionNode>& nodes, LC_ActionGroupManager* agm) override;
 protected:
-
+    void changeEvent(QEvent* event) override;
     void onBeforeAddActions() override;
     bool shouldCreateButtonForAction(QAction* action) const override;
     void handleIgnoredAction(QAction* action) override;

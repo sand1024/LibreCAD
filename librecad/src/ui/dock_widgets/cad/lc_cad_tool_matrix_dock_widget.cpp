@@ -19,7 +19,6 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  ******************************************************************************/
 
-
 #include "lc_cad_tool_matrix_dock_widget.h"
 
 #include <QApplication>
@@ -30,13 +29,15 @@
 #include <QToolButton>
 #include <QProxyStyle>
 
+#include "lc_action_group_manager.h"
+#include "lc_action_node.h"
 #include "lc_proxy_style.h"
+#include "lc_settings_widget.h"
 
 class LC_ProxyStyle;
 
 LC_CADToolMatrixDockWidget::LC_CADToolMatrixDockWidget(QWidget* parent, bool scrollContent)
     : LC_CADDockWidget(parent, scrollContent) {
-
     if (m_frame) {
         m_frame->installEventFilter(this); // Intercept m_frame paint events
     }
@@ -46,15 +47,59 @@ LC_CADToolMatrixDockWidget::LC_CADToolMatrixDockWidget(QWidget* parent, bool scr
     m_addHorizontalSpacer = true;
 }
 
-bool LC_CADToolMatrixDockWidget::eventFilter(QObject *watched, QEvent *event) {
+bool LC_CADToolMatrixDockWidget::eventFilter(QObject* watched, QEvent* event) {
     if (watched == m_frame && event->type() == QEvent::Paint) {
-        auto *style = qobject_cast<const LC_ProxyStyle*>(QApplication::style());
-        if (style && style->useSegmentedToolButtons()) { // <--- Safe Outer Check
+        auto* style = qobject_cast<const LC_ProxyStyle*>(QApplication::style());
+        if (style && style->useSegmentedToolButtons()) {
+            // <--- Safe Outer Check
             QPainter painter(m_frame);
             style->drawSegmentedGroupBackdrops(&painter, m_frame);
         }
     }
     return LC_CADDockWidget::eventFilter(watched, event);
+}
+
+void LC_CADToolMatrixDockWidget::updateActionsFromNodes(const QList<ActionNode>& nodes, LC_ActionGroupManager* agm) {
+    if (agm == nullptr) {
+        return;
+    }
+
+    QList<QAction*> actions;
+    for (int i = 0; i < nodes.size(); ++i) {
+        const auto& node = nodes[i];
+        if (node.type == ActionNodeType::Group) {
+            if (i > 0 && !actions.isEmpty() && !actions.last()->isSeparator()) {
+                auto* sep = new QAction(this);
+                sep->setSeparator(true);
+                actions.append(sep);
+            }
+            for (const auto& child : node.children) {
+                if (child.type == ActionNodeType::Action) {
+                    auto* act = agm->getActionByName(child.actionName);
+                    if (act != nullptr) {
+                        actions.append(act);
+                    }
+                }
+            }
+        } else if (node.type == ActionNodeType::Separator) {
+            auto* sep = new QAction(this);
+            sep->setSeparator(true);
+            actions.append(sep);
+        } else if (node.type == ActionNodeType::Action) {
+            auto* act = agm->getActionByName(node.actionName);
+            if (act != nullptr) {
+                actions.append(act);
+            }
+        }
+    }
+
+    int cols = 0;
+    int sz = 0;
+    bool flat = false;
+    getMetrics(cols, sz, flat);
+
+    clear();
+    addActions(actions, cols, sz, flat);
 }
 
 void LC_CADToolMatrixDockWidget::changeEvent(QEvent* event) {
@@ -71,7 +116,8 @@ void LC_CADToolMatrixDockWidget::onBeforeAddActions() {
 }
 
 bool LC_CADToolMatrixDockWidget::shouldCreateButtonForAction(QAction* action) const {
-    if (!action) return true;
+    if (!action)
+        return true;
     return !action->isSeparator(); // Prevent physical toolbutton creation for separators
 }
 
@@ -95,18 +141,19 @@ void LC_CADToolMatrixDockWidget::onLayoutUpdated() {
 void LC_CADToolMatrixDockWidget::doSetupGridLayout(QGridLayout* newGridLayout) {
     newGridLayout->setSpacing(0);
     newGridLayout->setContentsMargins(1, 1, 1, 1);
-
 }
 
 void LC_CADToolMatrixDockWidget::updateSegmentedButtonsMask() const {
-    if (!m_gridLayout) return;
+    if (!m_gridLayout)
+        return;
 
     QMap<QPair<int, int>, QToolButton*> gridMap;
     // 1. Scan and map all grid layout toolbuttons to row/column coordinate keys
     for (int i = 0; i < m_gridLayout->count(); ++i) {
-        QLayoutItem *item = m_gridLayout->itemAt(i);
-        if (!item) continue;
-        if (auto *btn = qobject_cast<QToolButton*>(item->widget())) {
+        QLayoutItem* item = m_gridLayout->itemAt(i);
+        if (!item)
+            continue;
+        if (auto* btn = qobject_cast<QToolButton*>(item->widget())) {
             int r, c, rSpan, cSpan;
             m_gridLayout->getItemPosition(i, &r, &c, &rSpan, &cSpan);
             gridMap.insert(qMakePair(r, c), btn);
@@ -114,7 +161,7 @@ void LC_CADToolMatrixDockWidget::updateSegmentedButtonsMask() const {
     }
 
     QSet<int> uniqueGroups;
-    for (auto *btn : gridMap) {
+    for (auto* btn : gridMap) {
         QVariant g = btn->property("buttonGroup");
         if (g.isValid()) {
             uniqueGroups.insert(g.toInt());
@@ -122,7 +169,7 @@ void LC_CADToolMatrixDockWidget::updateSegmentedButtonsMask() const {
     }
     int totalGroups = uniqueGroups.size();
 
-    auto *style = qobject_cast<const LC_ProxyStyle*>(QApplication::style());
+    auto* style = qobject_cast<const LC_ProxyStyle*>(QApplication::style());
     if (style) {
         style->precomputeSegmentedGroupColors(m_frame, totalGroups);
     }
@@ -131,7 +178,7 @@ void LC_CADToolMatrixDockWidget::updateSegmentedButtonsMask() const {
     for (auto it = gridMap.begin(); it != gridMap.end(); ++it) {
         int r = it.key().first;
         int c = it.key().second;
-        QToolButton *btn = it.value();
+        QToolButton* btn = it.value();
 
         QVariant groupVal = btn->property("buttonGroup");
         if (!groupVal.isValid()) {
@@ -154,16 +201,24 @@ void LC_CADToolMatrixDockWidget::updateSegmentedButtonsMask() const {
         int mask = 0;
 
         // Bits 0-3: Same group adjacency
-        if (sameT) mask |= 0x01;
-        if (sameB) mask |= 0x02;
-        if (sameL) mask |= 0x04;
-        if (sameR) mask |= 0x08;
+        if (sameT)
+            mask |= 0x01;
+        if (sameB)
+            mask |= 0x02;
+        if (sameL)
+            mask |= 0x04;
+        if (sameR)
+            mask |= 0x08;
 
         // Bits 4-7: Physical adjacency (any group)
-        if (hasT) mask |= 0x10;
-        if (hasB) mask |= 0x20;
-        if (hasL) mask |= 0x40;
-        if (hasR) mask |= 0x80;
+        if (hasT)
+            mask |= 0x10;
+        if (hasB)
+            mask |= 0x20;
+        if (hasL)
+            mask |= 0x40;
+        if (hasR)
+            mask |= 0x80;
 
         btn->setProperty("groupNeighbors", mask);
     }

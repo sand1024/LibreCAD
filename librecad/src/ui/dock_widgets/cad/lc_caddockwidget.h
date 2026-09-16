@@ -27,6 +27,8 @@
 #include <QDockWidget>
 #include <QToolButton>
 
+class LC_ActionGroupManager;
+struct ActionNode;
 class QScrollArea;
 class QFrame;
 class QGridLayout;
@@ -44,9 +46,13 @@ public:
                                 bool leftToolbarFlatIcons);
     QSize minimumSizeHint() const override;
 
+    virtual void updateActionsFromNodes(const QList<ActionNode>& nodes, LC_ActionGroupManager* agm);
+
     static constexpr const char* PROPERTY_CAD_DOC_WIDGET = "_lc_cad_doc_widget";
 
 protected:
+    void getMetrics(int& cols, int& sz, bool& flat) const;
+    virtual void clear();
     // Hooks for subclass extensions (segmented matrix controls)
     virtual void onBeforeAddActions();
     virtual bool shouldCreateButtonForAction(QAction* action) const;

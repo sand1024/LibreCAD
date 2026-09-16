@@ -33,6 +33,8 @@
 #include <QScrollBar>
 #include <QToolButton>
 
+#include "lc_action_group_manager.h"
+#include "lc_action_node.h"
 #include "lc_settings_widget.h"
 
 LC_CADDockWidget::LC_CADDockWidget(QWidget *parent, const bool allTools)
@@ -150,20 +152,11 @@ void LC_CADDockWidget::doUpdateWidgetSettings(int leftToolbarColumnsCount, const
 }
 
 void LC_CADDockWidget::updateWidgetSettings() {
-    int columnsCount = 0, iconSize = 0;
+    int columnsCount = 0;
+    int iconSize = 0;
     bool flatIcons = false;
 
-    using namespace CFG_Widgets;
-    if (m_allTools) {
-        columnsCount = o_LeftToolbarAllColumnsCount;
-        flatIcons = o_LeftToolbarAllFlatIcons;
-        iconSize = o_LeftToolbarAllIconSize;
-    }
-    else {
-        columnsCount = o_LeftToolbarColumnsCount;
-        flatIcons = o_LeftToolbarFlatIcons;
-        iconSize = o_LeftToolbarIconSize;
-    }
+    getMetrics(columnsCount, iconSize, flatIcons);
     doUpdateWidgetSettings(columnsCount, iconSize, flatIcons);
 }
 
@@ -202,6 +195,76 @@ QSize LC_CADDockWidget::minimumSizeHint() const {
         }
     }
     return baseHint;
+}
+
+void LC_CADDockWidget::updateActionsFromNodes(const QList<ActionNode>& nodes, LC_ActionGroupManager* agm) {
+    if (agm == nullptr) {
+        return;
+    }
+
+    QList<QAction*> actions;
+    for (const auto& node : nodes) {
+        if (node.type == ActionNodeType::Separator) {
+            auto* sep = new QAction(this);
+            sep->setSeparator(true);
+            actions.append(sep);
+        } else if (node.type == ActionNodeType::Action) {
+            auto* act = agm->getActionByName(node.actionName);
+            if (act != nullptr) {
+                actions.append(act);
+            }
+        }
+    }
+
+    int cols = 0;
+    int sz = 0;
+    bool flat = false;
+    getMetrics(cols, sz, flat);
+
+    clear();
+    addActions(actions, cols, sz, flat);
+}
+
+void LC_CADDockWidget::getMetrics(int& cols, int& sz, bool& flat) const {
+    using namespace CFG_Widgets;
+    if (m_allTools) {
+        cols = o_LeftToolbarAllColumnsCount;
+        sz   = o_LeftToolbarAllIconSize;
+        flat = o_LeftToolbarAllFlatIcons;
+    } else {
+        cols = o_LeftToolbarColumnsCount;
+        sz   = o_LeftToolbarIconSize;
+        flat = o_LeftToolbarFlatIcons;
+    }
+}
+void LC_CADDockWidget::clear() {
+    if (m_frame == nullptr) {
+        return;
+    }
+
+    // Remove and delete all child tool buttons
+    const QList<QToolButton*> buttons = m_frame->findChildren<QToolButton*>();
+    for (auto* btn : buttons) {
+        if (btn != nullptr) {
+            if (m_gridLayout != nullptr) {
+                m_gridLayout->removeWidget(btn);
+            }
+            btn->deleteLater();
+        }
+    }
+
+    // Delete existing layout and recreate fresh grid
+    if (m_frame->layout() != nullptr) {
+        QLayoutItem* item = nullptr;
+        while ((item = m_gridLayout->takeAt(0)) != nullptr) {
+            delete item;
+        }
+        delete m_frame->layout();
+    }
+
+    m_gridLayout = new QGridLayout();
+    doSetupGridLayout(m_gridLayout);
+    m_frame->setLayout(m_gridLayout);
 }
 
 void LC_CADDockWidget::onBeforeAddActions() {}
